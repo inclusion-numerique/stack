@@ -1,0 +1,635 @@
+version: 2.1
+
+orbs:
+  skip: theodo/skip@0.1.2
+  queue: eddiewebb/queue@1.8.4
+executors:
+  node:
+    docker:
+      - image: cimg/node:18.15.0
+        environment:
+          TZ: 'UTC'
+
+  node-postgres:
+    docker:
+      - image: cimg/node:18.15.0
+        environment:
+          TZ: 'UTC'
+          CI_DATABASE_URL: postgresql://postgres@localhost/test
+      - image: cimg/postgres:14.0
+        environment:
+          POSTGRES_USER: postgres
+  node-e2e:
+    docker:
+      - image: cimg/node:18.15.0-browsers
+        environment:
+          TZ: 'UTC'
+          CI_DATABASE_URL: postgresql://postgres@localhost/test
+      - image: cimg/postgres:14.0
+        environment:
+          POSTGRES_USER: postgres
+
+parameters:
+  cache_version:
+    type: string
+    default: '2023-04-07-01'
+  virtual_store_dir:
+    type: string
+    default: './.pnpm'
+  lockfile:
+    type: string
+    default: './pnpm-lock.yaml'
+  image:
+    type: string
+    default: stack-web-<< pipeline.git.branch >> | sed -e 's/\//-/g'
+  deploy_version:
+    type: string
+    default: latest
+  e2e_version:
+    type: string
+    default: e2e
+  trigger_workflow:
+    type: string
+    default: "web_app_deployment"
+  # Name of the environment to scrap
+  preview_deletion_branch:
+    type: string
+    default: ""
+
+workflows:
+  version: 2
+  nightly_web_app_deployment:
+    triggers: # use the triggers key to indicate a scheduled build
+      - schedule:
+          cron: "0 2 * * *"
+          filters:
+            branches:
+              only:
+                - main
+                - dev
+    when:
+      equal: [ web_app_deployment, << pipeline.parameters.trigger_workflow >> ]
+    jobs:
+      - prepare_workspace_dependencies
+      - prepare_web_prod_dependencies
+      - lint:
+          requires:
+            - prepare_workspace_dependencies
+      - test:
+          requires:
+            - prepare_workspace_dependencies
+      - test_components:
+          requires:
+            - prepare_workspace_dependencies
+      - build_web:
+          requires:
+            - prepare_workspace_dependencies
+            - prepare_web_prod_dependencies
+      - test_e2e:
+          requires:
+            - build_web
+      - deploy_web:
+          requires:
+            - lint
+            - test
+            - test_components
+            - test_e2e
+  web_app_deployment:
+    when:
+      equal: [ web_app_deployment, << pipeline.parameters.trigger_workflow >> ]
+    jobs:
+      - prepare_workspace_dependencies
+      - prepare_web_prod_dependencies
+      - lint:
+          requires:
+            - prepare_workspace_dependencies
+      - test:
+          requires:
+            - prepare_workspace_dependencies
+      - test_components:
+          requires:
+            - prepare_workspace_dependencies
+      - build_web:
+          requires:
+            - prepare_workspace_dependencies
+            - prepare_web_prod_dependencies
+
+      - chromatic:
+          requires:
+            - prepare_workspace_dependencies
+
+      - test_e2e:
+          requires:
+            - build_web
+
+      - deploy_web:
+          requires:
+            - lint
+            - test
+            - test_components
+            - chromatic
+            - test_e2e
+
+  project_infrastructure_deployment:
+    # This workflow exclusively runs on the infra branch
+    when:
+      and:
+        - equal: [ infra, << pipeline.git.branch >> ]
+        - not: << pipeline.parameters.preview_deletion_branch >>
+    jobs:
+      - prepare_workspace_dependencies
+      - lint_and_test_cdk_package:
+          requires:
+            - prepare_workspace_dependencies
+      - compute_project_infrastructure_diff:
+          requires:
+            - prepare_workspace_dependencies
+      - approve_infra_deployment:
+          type: approval
+          requires:
+            - lint_and_test_cdk_package
+            - compute_project_infrastructure_diff
+      - project_infrastructure_deployment:
+          requires:
+            - approve_infra_deployment
+
+  web_app_preview_deletion:
+    # This workflow exclusively runs on the infra branch, with target env to destroy as parameter
+    # It should never run with main as a parameter
+    when:
+      and:
+        - not:
+            equal: [ main, << pipeline.git.branch >> ]
+        - not:
+            equal: [ main, << pipeline.parameters.preview_deletion_branch >>]
+        - << pipeline.parameters.preview_deletion_branch >>
+        - equal: [ web_app_preview_deletion, << pipeline.parameters.trigger_workflow >> ]
+    jobs:
+      - prepare_workspace_dependencies
+      - web_app_preview_deletion:
+          requires:
+            - prepare_workspace_dependencies
+
+jobs:
+  prepare_workspace_dependencies:
+    executor: node
+    resource_class: large
+    steps:
+      - checkout
+      - skip/skip_unchanged:
+          paths: pnpm-lock.yaml
+      - install_dependencies
+      - run:
+          name: 'Fetch dependencies'
+          command: pnpm install --virtual-store-dir << pipeline.parameters.virtual_store_dir >> --frozen-lockfile
+      - save_cache:
+          key: << pipeline.parameters.cache_version >>-pnpm-{{ checksum "<< pipeline.parameters.lockfile >>" }}
+          paths:
+            - << pipeline.parameters.virtual_store_dir >>
+            - ./node_modules
+            - ./apps/web/node_modules
+            - ./apps/cli/node_modules
+            - ./packages/cdk/node_modules
+            - ./packages/config/node_modules
+            - ./packages/e2e/node_modules
+            - ./packages/emails/node_modules
+            - ./packages/lint/node_modules
+            - ./packages/storybook/node_modules
+            - ./packages/test/node_modules
+            - /home/circleci/.cache/Cypress
+
+  prepare_web_prod_dependencies:
+    executor: node
+    resource_class: large
+    steps:
+      - checkout
+      - skip/skip_unchanged:
+          paths: pnpm-lock.yaml
+      - install_pnpm
+      - run:
+          name: 'Install dependencies'
+          command: |
+            pnpm install -F @stack/web --prod --node-linker=hoisted --frozen-lockfile
+      - save_cache:
+          key: << pipeline.parameters.cache_version >>-web-prod-{{ checksum "<< pipeline.parameters.lockfile >>" }}
+          paths:
+            - ./node_modules
+            - ./apps/web/node_modules
+
+  lint:
+    executor: node
+    resource_class: large
+    steps:
+      - checkout
+      - install_dependencies
+      - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @stack/web prisma:generate
+      - run:
+          name: 'Monorepo manypkg check'
+          command: pnpm manypkg check
+      - run:
+          name: 'Tsc'
+          command: pnpm tsc
+      - run:
+          name: 'Lint'
+          command: pnpm lint
+          no_output_timeout: 30m
+
+  lint_and_test_cdk_package:
+    executor: node
+    resource_class: large
+    steps:
+      - checkout
+      - install_dependencies
+      - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @stack/web prisma:generate
+      - run:
+          name: 'Monorepo manypkg check'
+          command: pnpm manypkg check
+      - run:
+          name: 'Tsc'
+          command: pnpm tsc
+      - run:
+          name: 'Lint config'
+          command: pnpm -F @stack/config lint
+      - run:
+          name: 'Lint cdk'
+          command: pnpm -F @stack/cdk lint
+      - run:
+          name: 'Test config'
+          command: pnpm -F @stack/config test
+      - run:
+          name: 'Test cdk'
+          command: pnpm -F @stack/cdk test
+
+  test:
+    executor: node
+    resource_class: large
+    steps:
+      - checkout
+      - install_dependencies
+      - create_dotenv_file
+      - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @stack/web prisma:generate
+      - run:
+          name: 'Test @stack/web'
+          command: pnpm --silent -F @stack/web test
+
+  build_web:
+    executor: node-postgres
+    resource_class: large
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - install_dependencies
+      - create_dotenv_file
+      - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @stack/web prisma:generate
+      - add_secrets_to_dotenv_file
+      - add_dotenv_vars_to_bash_env
+      - setup_docker_web_env
+      - setup_next_public_env
+      - run:
+          name: 'Install DSFR'
+          command: pnpm --silent -F @stack/web setup:dsfr
+      - run:
+          name: 'Create CI database schema'
+          command: |
+            DATABASE_URL=$CI_DATABASE_URL pnpm --silent -F @stack/web prisma db push --skip-generate --accept-data-loss
+      - run:
+          name: 'Build next app'
+          command: DATABASE_URL=$CI_DATABASE_URL pnpm --silent -F @stack/web build
+      - run:
+          name: 'Clear dependencies to install only prod dependencies'
+          command: |
+            rm -rf node_modules
+            rm -rf apps/web/node_modules
+      - restore_cache:
+          keys:
+            - << pipeline.parameters.cache_version >>-web-prod-{{ checksum "<< pipeline.parameters.lockfile >>" }}
+      - run:
+          name: 'Re-generate Prisma after cleaning dependencies'
+          command: pnpm --silent -F @stack/web prisma:generate
+      - run:
+          name: 'Cleanup build'
+          command: |
+            # standalone not needed for plain build
+            rm -rf apps/web/.next/standalone
+      - run:
+          name: 'Build docker image'
+          command: DOCKER_BUILDKIT=1 docker build --progress=plain -t $IMAGE_BUILD_TAG -f docker/web/Dockerfile .
+      - run:
+          name: 'Login to registry and push image'
+          command: |
+            docker login $WEB_APP_DOCKER_REGISTRY -u nologin --password-stdin \<<< "$CI_SCW_SECRET_KEY"
+            docker push $IMAGE_BUILD_TAG
+      - save_cache:
+          key: << pipeline.id >>-web-build
+          paths:
+            - ./apps/web/.next
+
+  chromatic:
+    executor: node
+    resource_class: large
+    steps:
+      - checkout
+      - install_dependencies
+      - create_dotenv_file
+      - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @stack/web prisma:generate
+      - add_secrets_to_dotenv_file
+      - run:
+          name: 'Setup DSFR'
+          command: pnpm --silent -F @stack/web setup:dsfr
+      - run:
+          name: 'Build storybook and deploy on chromatic'
+          command: pnpm --silent -F @stack/storybook chromatic
+
+  test_components:
+    executor: node-e2e
+    resource_class: large
+    parallelism: 1
+    steps:
+      - checkout
+      - install_pnpm
+      - install_dependencies
+      - create_dotenv_file
+      - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @stack/web prisma:generate
+      - add_secrets_to_dotenv_file
+      - add_dotenv_vars_to_bash_env
+      - run:
+          name: 'Run Cypress component testing'
+          command: pnpm --silent -F @stack/web cy run --component --record
+
+  test_e2e:
+    executor: node-e2e
+    resource_class: large
+    parallelism: 1
+    steps:
+      - checkout
+      - install_pnpm
+      - install_dependencies
+      - create_dotenv_file
+      - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @stack/web prisma:generate
+      - add_secrets_to_dotenv_file
+      - run:
+          name: 'Install playwright'
+          # This will be instantly resolved from global store thanks to custom image playwright setup
+          command: |
+            pnpm --silent -F @stack/e2e install
+            pnpx playwright install
+      - run:
+          name: 'Create CI database schema'
+          command: |
+            DATABASE_URL=$CI_DATABASE_URL pnpm --silent -F @stack/web prisma db push --skip-generate --accept-data-loss
+      - restore_cache:
+          key: << pipeline.id >>-web-build
+      - run:
+          name: Running next server
+          background: true
+          command: |
+            DATABASE_URL=$CI_DATABASE_URL
+            pnpm --silent -F @stack/web start
+      - run:
+          name: 'Run e2e test'
+          command: |
+            DATABASE_URL=$CI_DATABASE_URL
+            pnpm --silent -F @stack/web e2e
+      - run:
+          name: 'Run playwright'
+          command: |
+            SHARD="$((${CIRCLE_NODE_INDEX}+1))"
+            DATABASE_URL=$CI_DATABASE_URL
+            pnpm --silent -F @stack/e2e playwright test --shard=${SHARD}/${CIRCLE_NODE_TOTAL}
+
+  deploy_web:
+    executor: node
+    resource_class: large
+    steps:
+      - checkout
+      - create_dotenv_file
+      - install_dependencies
+      - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @stack/web prisma:generate
+      - add_secrets_to_dotenv_file
+      - add_dotenv_vars_to_bash_env
+      - setup_docker_web_env
+      - run:
+          name: 'Setup and export database password'
+          command: |
+            pnpm --silent cli secrets:database:setup $NAMESPACE
+            echo "export DATABASE_PASSWORD=$(pnpm --silent cli secrets:database-password $NAMESPACE)" >> ${BASH_ENV}
+      - run:
+          name: "Create terraform variables file from environment variables"
+          command: |
+            pnpm --silent cli terraform:vars-from-env web
+      - install_terraform
+      - run:
+          name: 'Generate Prisma client for this platform'
+          command: |
+            pnpm --silent -F @stack/web prisma:generate
+      - queue/until_front_of_line:
+          time: '3'
+      - run:
+          name: Create Pending Deployment
+          command: |
+            output="$(pnpm --silent cli github:deployment:create << pipeline.git.branch >>)"
+            if [[ $? -ne 0 ]]; then echo "$output"; exit 1; else echo "export DEPLOYMENT_ID=$output" >> ${BASH_ENV}; fi
+            echo "Created deployment $DEPLOYMENT_ID"
+      - run:
+          name: Set deployment status to in progress
+          command: pnpm --silent cli github:deployment:update $DEPLOYMENT_ID in_progress 'Terraform stack deployment'
+      - run:
+          name: 'Deploy web app stack'
+          command: |
+            pnpm --silent -F @stack/cdk cdktf deploy web --var-file .tfvars.json --auto-approve --outputs-file=cdk.out.json --outputs-file-include-sensitive-outputs
+      - run:
+          name: 'Create .env file from deployment outputs'
+          command: |
+            pnpm --silent cli dotenv:from-cdk web
+      - add_dotenv_vars_to_bash_env
+      - run:
+          name: Set deployment status to migration
+          command: pnpm --silent cli github:deployment:update $DEPLOYMENT_ID in_progress -d 'Executing database migrations' -l https://app.circleci.com/pipelines/workflows/$CIRCLE_WORKFLOW_ID
+      - run:
+          name: 'Migrate database'
+          command: |
+            pnpm --silent -F @stack/web prisma db push --skip-generate --accept-data-loss
+      - run:
+          name: Set deployment status to data loading
+          command: pnpm --silent cli github:deployment:update $DEPLOYMENT_ID in_progress -d 'Loading data' -l https://app.circleci.com/pipelines/workflows/$CIRCLE_WORKFLOW_ID
+#      - run:
+#          name: Check that deployed container status is ok
+#          command: |
+#            pnpm --silent cli deployment:check-status https://$WEB_BASE_URL
+      - run:
+          name: Set deployment status to success
+          command: pnpm --silent cli github:deployment:update $DEPLOYMENT_ID success -d 'Deploy successful' -u https://$WEB_BASE_URL -l https://app.circleci.com/pipelines/workflows/$CIRCLE_WORKFLOW_ID
+      - run:
+          name: Set deployment status to failed
+          command: pnpm --silent cli github:deployment:update $DEPLOYMENT_ID failure -d 'Deploy failed' -l https://app.circleci.com/pipelines/workflows/$CIRCLE_WORKFLOW_ID
+          when: on_fail
+
+  compute_project_infrastructure_diff:
+    executor: node
+    resource_class: large
+    steps:
+      - checkout
+      - install_dependencies
+      - install_terraform
+      - create_dotenv_file
+      - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @stack/web prisma:generate
+      - add_secrets_to_dotenv_file
+      - run:
+          name: "Create terraform variables file from environment variables"
+          command: |
+            pnpm --silent cli terraform:vars-from-env project
+      - run:
+          name: 'Compute diff'
+          command: |
+            pnpm --silent -F @stack/cdk cdktf diff project --var-file .tfvars.json
+            
+
+  project_infrastructure_deployment:
+    executor: node
+    resource_class: large
+    steps:
+      - checkout
+      - install_dependencies
+      - install_terraform
+      - create_dotenv_file
+      - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @stack/web prisma:generate
+      - add_secrets_to_dotenv_file
+      - run:
+          name: "Create terraform variables file from environment variables"
+          command: |
+            pnpm --silent cli terraform:vars-from-env project
+      - run:
+          name: 'Deploy project infrastructure stack'
+          command: |
+            pnpm --silent -F @stack/cdk cdktf deploy project --var-file .tfvars.json --auto-approve --outputs-file=cdk.out.json --outputs-file-include-sensitive-outputs
+
+  web_app_preview_deletion:
+    executor: node
+    resource_class: large
+    steps:
+      - checkout
+      - install_dependencies
+      - install_terraform
+      - create_dotenv_file
+      - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @stack/web prisma:generate
+      - add_secrets_to_dotenv_file
+      - run:
+          name: "Create terraform variables file from environment variables"
+          command: |
+            DATABASE_PASSWORD='placeholder_for_destroy' WEB_CONTAINER_IMAGE='placeholder_for_destroy' pnpm --silent cli terraform:vars-from-env web
+      - when:
+          condition:
+            or:
+              - not: << pipeline.parameters.preview_deletion_branch >>
+              - equal: [ main, << pipeline.parameters.preview_deletion_branch >> ]
+              - equal: [ dev, << pipeline.parameters.preview_deletion_branch >> ]
+          steps:
+            - run:
+                name: 'Canceling job, invalid configuration << pipeline.parameters.preview_deletion_branch >>'
+                command: |
+                  echo "No preview_deletion_branch specified, or invalid one. Canceling job"
+                  exit 1
+      - run:
+          name: 'Destroy stack'
+          command: |
+            CDK_FORCE_BRANCH='<< pipeline.parameters.preview_deletion_branch >>' pnpm --silent -F @stack/cdk cdktf destroy web --auto-approve --var-file .tfvars.json
+      - run:
+          name: Deactivate Github deployments
+          command: pnpm --silent cli github:deployment:deactivate << pipeline.parameters.preview_deletion_branch >>
+
+commands:
+  install_pnpm:
+    steps:
+      - run:
+          name: 'Install pnpm'
+          command: sudo corepack enable && corepack prepare pnpm@latest --activate
+
+  install_terraform:
+    steps:
+      - run:
+          name: 'Install Terraform'
+          command: |
+            wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+            echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+            sudo apt update && sudo apt install terraform
+
+  install_dependencies:
+    steps:
+      - install_pnpm
+      - restore_cache:
+          keys:
+            - << pipeline.parameters.cache_version >>-pnpm-{{ checksum "<< pipeline.parameters.lockfile >>" }}
+
+  create_dotenv_file:
+    steps:
+      - run:
+          name: "Create .env file from .env.dist"
+          command: |
+            cp .env.dist .env
+
+  add_secrets_to_dotenv_file:
+    steps:
+      - run:
+          name: "Add ci secrets to .env"
+          command: |
+            SCW_ACCESS_KEY=$CI_SCW_ACCESS_KEY SCW_SECRET_KEY=$CI_SCW_SECRET_KEY pnpm --silent cli dotenv:from-secrets ci
+      - run:
+          name: "Add project secrets to .env"
+          command: |
+            pnpm --silent cli dotenv:from-secrets project
+      - run:
+          name: "Add web secrets to .env"
+          command: |
+            pnpm --silent cli dotenv:from-secrets web
+
+  setup_next_public_env:
+    steps:
+      - run:
+          name: "Add NEXT_PUBLIC_* env to .env"
+          command: |
+            pnpm --silent cli dotenv:add-next-public $NAMESPACE
+
+  add_dotenv_vars_to_bash_env:
+    steps:
+      - run:
+          name: 'Add .env vars to bash env'
+          command: |
+            grep -v -e '^[[:space:]]*$' -e '^#' .env | awk '{print "export " $0}' >> $BASH_ENV
+
+  setup_docker_web_env:
+    steps:
+      - run:
+          name: "Set docker env vars"
+          command: |
+            echo "export WEB_APP_DOCKER_REGISTRY='$WEB_APP_DOCKER_REGISTRY'" >> ${BASH_ENV}
+            echo "export BRANCH='<< pipeline.git.branch >>'" >> ${BASH_ENV}
+            echo "export NAMESPACE=$(echo '<< pipeline.git.branch >>' | sed -e 's/\//-/g')" >> ${BASH_ENV}
+            echo "export IMAGE_NAME=$(echo 'stack-web-<< pipeline.git.branch >>' | sed -e 's/\//-/g')" >> ${BASH_ENV}
+            echo "export IMAGE_BUILD_TAG=$(echo '$WEB_APP_DOCKER_REGISTRY/$IMAGE_NAME:$CIRCLE_BUILD_NUM')" >> ${BASH_ENV}
+            echo "export IMAGE_DEPLOY_TAG=$(echo '$WEB_APP_DOCKER_REGISTRY/$IMAGE_NAME:<< pipeline.parameters.deploy_version >>')" >> ${BASH_ENV}
+            echo "export IMAGE_E2E_TAG=$(echo '$WEB_APP_DOCKER_REGISTRY/$IMAGE_NAME:<< pipeline.parameters.e2e_version >>')" >> ${BASH_ENV}
+            echo "export WEB_CONTAINER_IMAGE=$(echo '$WEB_APP_DOCKER_REGISTRY/$IMAGE_NAME:$CIRCLE_BUILD_NUM')" >> ${BASH_ENV}
+

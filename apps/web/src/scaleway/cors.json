@@ -1,0 +1,21 @@
+{
+  "CORSRules": [
+    {
+      "AllowedOrigins": [
+        "https://lafrancedessolutions.gouv.fr",
+        "https://projets-territoires.osc-fr1.scalingo.io",
+        "https://territoires-de-solutions.anct.gouv.fr",
+        "https://stack.anct.gouv.fr",
+        "https://stack.gouv.fr",
+        "https://lafrancedessolutions.anct.gouv.fr",
+        "http://localhost:3000",
+        "http://localhost",
+        "https://*.osc-fr1.scalingo.io"
+      ],
+      "AllowedHeaders": ["*"],
+      "AllowedMethods": ["GET", "HEAD", "POST", "PUT", "DELETE"],
+      "MaxAgeSeconds": 3000,
+      "ExposeHeaders": ["Etag"]
+    }
+  ]
+}

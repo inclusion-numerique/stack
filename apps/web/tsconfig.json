@@ -1,0 +1,35 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true,
+    "module": "esnext",
+    "types": ["cypress"],
+    "paths": {
+      "@stack/cli/*": ["../../apps/cli/src/*"],
+      "@stack/web/*": ["src/*"],
+      "@stack/cdk/*": ["../../packages/cdk/src/*"],
+      "@stack/config/*": ["../../packages/config/src/*"],
+      "@stack/e2e/*": ["../../packages/e2e/src/*"],
+      "@stack/emails/*": ["../../packages/emails/src/*"],
+      "@stack/lint/*": ["../../packages/lint/src/*"],
+      "@stack/scaleway/*": ["../../packages/cdk/.gen/providers/scaleway/*"],
+      "@stack/storybook/*": ["../../packages/storybook/src/*"],
+      "@stack/test/*": ["../../packages/test/src/*"]
+    },
+    "baseUrl": ".",
+  },
+  "include": [
+    "next-env.d.ts",
+    "node_modules/@types/testing-library__jest-dom/index.d.ts",
+    "cypress/**/*.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    ".next/types/**/*.ts",
+    "./next-auth.d.ts"
+  ]
+}

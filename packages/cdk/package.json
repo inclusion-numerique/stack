@@ -1,0 +1,40 @@
+{
+  "name": "@stack/cdk",
+  "version": "0.1.0",
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "with-env": "dotenv -e ../../.env --",
+    "lint": "eslint src",
+    "tsc": "tsc --noEmit",
+    "test": "jest --passWithNoTests",
+    "synth": "pnpm --silent with-env cdktf synth",
+    "cdktf": "pnpm --silent with-env cdktf",
+    "output": "pnpm --silent clean-cdktf output --outputs-file=cdk.out.json --outputs-file-include-sensitive-outputs",
+    "clean-cdktf": "rm -rf cdktf.out && pnpm with-env cdktf",
+    "tf:web:backend-reconfigure": "cd cdktf.out/stacks/web && terraform init -reconfigure",
+    "scw": "pnpm --silent with-env scw"
+  },
+  "overrides": {
+    "cdktf-cli": {
+      "react": "*"
+    }
+  },
+  "dependencies": {
+    "cdktf": "^0.15.5",
+    "cdktf-cli": "^0.15.5",
+    "constructs": "^10.1.304",
+    "dotenv": "^16.0.3",
+    "dotenv-cli": "^7.2.1",
+    "git-rev-sync": "^3.0.2"
+  },
+  "devDependencies": {
+    "@types/git-rev-sync": "^2.0.0",
+    "@types/node": "^18.15.11",
+    "eslint": "^8.37.0",
+    "jest": "^29.5.0",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.0.3"
+  }
+}

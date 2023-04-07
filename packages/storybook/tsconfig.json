@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": [
+    "node_modules/@types/testing-library__jest-dom/index.d.ts",
+    "./src",
+    "./.storybook"
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "pipeline": {
+    "prisma:generate": {
+      "inputs": ["prisma/schema.prisma"],
+      "cache": true
+    },
+    "dev": {
+      "dependsOn": ["^prisma:generate"],
+      "cache": false
+    },
+    "build": {
+      "dependsOn": ["^build", "^prisma:generate"],
+      "outputs": [".next/**"],
+      "cache": false
+    },
+    "lint": {
+      "outputs": [],
+      "cache": false
+    },
+    "test": {
+      "outputs": [],
+      "cache": false
+    },
+    "clean": {
+      "cache": false
+    },
+    "//#clean": {
+      "cache": false
+    },
+    "tsc": {
+      "cache": false
+    }
+  },
+  "globalEnv": [
+    "CI",
+    "CHROMATIC_APP_ID",
+    "DATABASE_URL",
+    "BRANCH",
+    "CDK_FORCE_BRANCH",
+    "COCKPIT_GRAPHANA_EDITORS",
+    "COCKPIT_GRAPHANA_VIEWERS",
+    "COCKPIT_METRICS_URL",
+    "COCKPIT_LOGS_URL",
+    "COCKPIT_ALERT_MANAGER_URL",
+    "COCKPIT_GRAFANA_URL",
+    "NAMESPACE",
+    "NEXTAUTH_SECRET",
+    "NEXTAUTH_URL",
+    "NODE_ENV",
+    "PORT",
+    "APP",
+    "GITHUB_TOKEN",
+    "PRODUCTION_URL",
+    "PRODUCTION_APP",
+    "BASE_URL",
+    "NEXT_PUBLIC_SIREN_API_KEY",
+    "NEXT_PUBLIC_CONTACT_EMAIL",
+    "SIREN_ACCESS_TOKEN",
+    "SCW_DEFAULT_REGION",
+    "SCW_SECRET_KEY",
+    "SCW_ACCESS_KEY",
+    "SCW_API_KEY_ID",
+    "SCW_API_KEY_SECRET",
+    "DOCUMENTS_BUCKET",
+    "S3_HOST",
+    "SCW_ORGANIZATION_ID",
+    "SCW_PROJECT_ID",
+    "STACK_WEB_IMAGE",
+    "NEXT_PUBLIC_INCLUSION_CONNECT_ISSUER",
+    "NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID",
+    "NEXT_PUBLIC_SENTRY_DSN",
+    "NEXT_PUBLIC_SENTRY_ENVIRONMENT",
+    "NEXT_PUBLIC_DEVELOPMENT_DISABLE_LINK_PREFETCH",
+    "INCLUSION_CONNECT_CLIENT_SECRET",
+    "EMAIL_FROM_ADDRESS",
+    "EMAIL_FROM_NAME",
+    "SMTP_USERNAME",
+    "SMTP_PASSWORD",
+    "SMTP_SERVER",
+    "SMTP_PORT",
+    "DATABASE_INSTANCE_NAME",
+    "CONTAINER_NAMESPACE_NAME",
+    "MAIN_DOMAIN",
+    "PREVIEW_DOMAIN",
+    "NEXT_TELEMETRY_DISABLED",
+    "SENTRY_ORG",
+    "SENTRY_PROJECT",
+    "SENTRY_URL"
+  ]
+}

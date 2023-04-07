@@ -1,0 +1,8 @@
+.container {
+  width: fit-content;
+  height: fit-content;
+  padding: 12px;
+  border-radius: 50%;
+  background-color: var(--blue-france-975-75);
+  color: var(--blue-france-sun-113-625);
+}

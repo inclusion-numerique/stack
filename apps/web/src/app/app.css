@@ -1,0 +1,53 @@
+/* Import dsfr with url, outside of webpack build, as a static file */
+@import url('/dsfr/dsfr.min.css');
+@import url('/dsfr/utility/utility.min.css');
+
+/* Layout setup */
+html,
+body,
+body > div:not(#environment-information) {
+  min-height: 100% !important;
+  height: 100%;
+}
+
+textarea {
+  resize: none;
+}
+
+:root {
+  --slim-grey-border: 1px solid var(--border-default-grey);
+}
+
+/* Extensions of DSFR */
+.fr-text--medium {
+  font-weight: 500 !important;
+}
+
+/* DSFR Overrides and custom theming */
+
+/* Remove header dropshadow */
+.fr-header{
+  filter: none;
+}
+
+.fr-header__brand{
+  filter: none;
+  border-bottom: var(--slim-grey-border);
+}
+
+@media (width >= 62em) {
+  /* lg */
+  .fr-header{
+    .fr-header__menu{
+      box-shadow: inset 0 -1px 0 0 var(--border-default-grey),inset 0 1px 0 0 var(--border-default-grey);
+
+      .fr-nav__link:hover{
+        box-shadow: inset 0 -1px 0 0 var(--border-default-grey),inset 0 1px 0 0 var(--border-default-grey);
+      }
+    }
+  }
+
+  .fr-header__brand{
+    border-bottom: none;
+  }
+}
