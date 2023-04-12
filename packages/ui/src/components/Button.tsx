@@ -21,7 +21,7 @@ type IconOnlyProps = {
   iconPosition: never
 }
 
-export function Button({
+function Button({
   className,
   label,
   title,
@@ -37,12 +37,11 @@ export function Button({
   (ButtonProps | IconOnlyProps)) {
   return (
     <button
-      className={`fr-btn ${className || ''} ${
-        priority === 'primary' ? '' : `fr-btn--${priority}`
-      } ${icon || ''} ${
-        icon && label ? `fr-btn--icon-${iconPosition || 'left'}` : ''
-      }
-      ${title ? ' fr-btn-icon' : ''} fr-btn--${size}`}
+      className={`fr-btn${
+        priority === 'primary' ? '' : ` fr-btn--${priority}`
+      } ${icon || ''}${
+        icon && label ? ` fr-btn--icon-${iconPosition || 'left'}` : ''
+      }${title ? ' fr-btn-icon' : ''} fr-btn--${size} ${className || ''}`}
       type={type}
       title={title}
       {...rest}
@@ -52,3 +51,5 @@ export function Button({
     </button>
   )
 }
+
+export default Button
