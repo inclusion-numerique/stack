@@ -13,6 +13,7 @@
     "packages/storybook/.storybook/**/*",
     "packages/storybook/src",
     "packages/test/src",
-    "packages/ui/src"
+    "packages/ui/src",
+    "packages/ui/cypress"
   ]
 }
