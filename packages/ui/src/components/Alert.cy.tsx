@@ -9,7 +9,7 @@ describe('<Alert />', () => {
   })
 
   it('should close closable alert', () => {
-    const onClose = cy.stub()
+    const onClose = cy.stub().as('onClose')
 
     cy.mount(<Alert closable type="info" title="Hello you" onClose={onClose} />)
     cy.get('.fr-alert').should('exist')
@@ -17,6 +17,6 @@ describe('<Alert />', () => {
     cy.get('button').click()
 
     cy.get('.fr-alert').should('not.exist')
-    expect(onClose).to.be.calledOnce
+    cy.get('@onClose').should('have.been.calledOnce')
   })
 })
