@@ -4,7 +4,6 @@ import { UiComponentProps } from '../utils/uiComponentProps'
 type CommonProps = {
   type: 'success' | 'error' | 'info' | 'warning'
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
-  closable?: boolean
 }
 
 type SmallAlertProps = {
@@ -19,6 +18,16 @@ type AlertProps = {
   small: never
 }
 
+type ClosableProps = {
+  closable: true
+  onClose?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+}
+
+type NonClosableProps = {
+  closable: never
+  onClose: never
+}
+
 function Alert({
   className,
   as = 'h3',
@@ -27,7 +36,11 @@ function Alert({
   type,
   small,
   closable,
-}: UiComponentProps & CommonProps & (SmallAlertProps | AlertProps)) {
+  onClose,
+}: UiComponentProps &
+  CommonProps &
+  (SmallAlertProps | AlertProps) &
+  (ClosableProps | NonClosableProps)) {
   const Title = as
   return (
     <div
@@ -45,6 +58,9 @@ function Alert({
           onClick={(event) => {
             const alert = event.currentTarget.parentNode
             alert?.parentNode?.removeChild(alert)
+            if (onClose) {
+              onClose(event)
+            }
           }}
         >
           Masquer le message

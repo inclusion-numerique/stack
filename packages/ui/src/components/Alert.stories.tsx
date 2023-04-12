@@ -57,6 +57,7 @@ export const Small: Story = {
 
 export const Closable: Story = {
   name: 'Alert fermable',
+  argTypes: { onClose: { action: 'closed' } },
   args: {
     closable: true,
     type: 'info',
