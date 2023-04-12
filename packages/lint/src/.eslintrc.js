@@ -96,6 +96,15 @@ module.exports = {
         'unicorn/no-null': 'off',
         // We use typescript default values and types
         'react/require-default-props': 'off',
+        'unicorn/prevent-abbreviations': [
+          'error',
+          {
+            allowList: {
+              Props: true,
+              props: true,
+            },
+          },
+        ],
         'unicorn/filename-case': [
           'error',
           {

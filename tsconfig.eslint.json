@@ -12,6 +12,7 @@
     "packages/lint/src",
     "packages/storybook/.storybook/**/*",
     "packages/storybook/src",
-    "packages/test/src"
+    "packages/test/src",
+    "packages/ui/src"
   ]
 }

@@ -17,13 +17,14 @@ module.exports = {
   stories: [
     '../../../apps/web/src/**/*.mdx',
     '../../../apps/web/src/**/*.stories.@(js|jsx|ts|tsx)',
+    '../../../packages/ui/src/**/*.stories.@(js|jsx|ts|tsx)',
   ],
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
     '@storybook/addon-jest',
-    '@storybook/addon-a11y'
+    '@storybook/addon-a11y',
   ],
   framework: {
     name: '@storybook/nextjs',

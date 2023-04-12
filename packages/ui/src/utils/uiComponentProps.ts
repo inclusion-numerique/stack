@@ -1,5 +1,4 @@
 export type UiComponentProps = {
-  className?: string;
+  className?: string
   ['data-testid']?: string
 }
-
