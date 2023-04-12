@@ -126,18 +126,18 @@ importers:
       '@react-spring/web':
         specifier: ^9.7.2
         version: 9.7.2(react-dom@18.2.0)(react@18.2.0)
-      '@stack/emails':
-        specifier: '*'
-        version: link:../../packages/emails
-      '@stack/storybook':
-        specifier: '*'
-        version: link:../../packages/storybook
       '@sentry/browser':
         specifier: ^7.47.0
         version: 7.47.0
       '@sentry/nextjs':
         specifier: ^7.47.0
         version: 7.47.0(encoding@0.1.13)(next@13.3.0)(react@18.2.0)(webpack@5.76.1)
+      '@stack/emails':
+        specifier: '*'
+        version: link:../../packages/emails
+      '@stack/storybook':
+        specifier: '*'
+        version: link:../../packages/storybook
       '@tanstack/react-query':
         specifier: ^4.28.0
         version: 4.28.0(react-dom@18.2.0)(react@18.2.0)

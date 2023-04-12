@@ -13,9 +13,13 @@ export function InputFormField<T extends FieldValues>({
   disabled,
   multiple,
   'data-testid': dataTestId,
+  onBlur: onBlurProp,
+  onKeypress: onKeypressProp,
 }: {
   control: Control<T>
   path: FieldPath<T>
+  onBlur?: () => void
+  onKeypress?: (event: React.KeyboardEvent<HTMLInputElement>) => void
   disabled?: boolean
   label?: string
   hint?: string
@@ -53,7 +57,8 @@ export function InputFormField<T extends FieldValues>({
             type={type}
             id={id}
             placeholder={placeholder}
-            onBlur={onBlur}
+            onBlur={onBlurProp ?? onBlur}
+            onKeyPress={onKeypressProp}
             onChange={onChange}
             value={value ?? ''}
             ref={ref}

@@ -1,5 +1,5 @@
-const { withSentryConfig } = require('@sentry/nextjs')
-const packageJson = require('./package.json')
+import { withSentryConfig } from '@sentry/nextjs'
+import packageJson from './package.json' assert { type: 'json' }
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -45,9 +45,9 @@ const alwaysBundledPackages = new Set(['next', 'server-only'])
 const externalServerPackagesForFasterDevUx =
   process.env.NODE_ENV === 'development'
     ? [
-        ...Object.keys(packageJson.dependencies),
-        ...Object.keys(packageJson.devDependencies),
-      ].filter((packageName) => !alwaysBundledPackages.has(packageName))
+      ...Object.keys(packageJson.dependencies),
+      ...Object.keys(packageJson.devDependencies),
+    ].filter((packageName) => !alwaysBundledPackages.has(packageName))
     : []
 
 const nextConfig = {
@@ -56,6 +56,7 @@ const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@stack/emails'],
   experimental: {
+    typedRoutes: true,
     appDir: true,
     // See https://beta.nextjs.org/docs/api-reference/next.config.js#servercomponentsexternalpackages
     serverComponentsExternalPackages: [
@@ -86,6 +87,7 @@ const nextConfig = {
     if (isDev) {
       // config.plugins.push(new DebugCompiledModulesPlugin())
     }
+
     if (!isServer) {
       // Client bundling
       return config
@@ -107,4 +109,4 @@ const sentryWebpackPluginOptions = {
   silent: true, // Suppresses all logs
 }
 
-module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions)
+export default withSentryConfig(nextConfig, sentryWebpackPluginOptions)
