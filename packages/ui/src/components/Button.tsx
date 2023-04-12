@@ -37,7 +37,7 @@ export function Button({
   (ButtonProps | IconOnlyProps)) {
   return (
     <button
-      className={`fr-btn ${className || ''}${
+      className={`fr-btn ${className || ''} ${
         priority === 'primary' ? '' : `fr-btn--${priority}`
       } ${icon || ''} ${
         icon && label ? `fr-btn--icon-${iconPosition || 'left'}` : ''
