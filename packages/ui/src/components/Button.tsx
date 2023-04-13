@@ -1,4 +1,7 @@
+/* eslint react/button-has-type: 0 */
+
 import React, { HTMLProps } from 'react'
+import classNames from 'classnames'
 import { UiComponentProps } from '../utils/uiComponentProps'
 
 type CommonProps = {
@@ -9,39 +12,43 @@ type CommonProps = {
 
 type ButtonProps = {
   label: string
-  title: never
   icon?: string
   iconPosition?: 'left' | 'right'
 }
 
 type IconOnlyProps = {
-  label: never
   title: string
   icon: string
   iconPosition: never
 }
 
 function Button({
-  className,
-  label,
-  title,
-  priority = 'primary',
-  icon,
-  iconPosition,
-  size = 'md',
-  type = 'button',
-  ...rest
-}: UiComponentProps &
-  Omit<HTMLProps<HTMLButtonElement>, 'size' | 'type' | 'title'> &
+                  className,
+                  priority = 'primary',
+                  icon,
+                  iconPosition,
+                  size = 'md',
+                  type = 'button',
+                  ...rest
+                }: UiComponentProps &
+  Omit<HTMLProps<HTMLButtonElement>, 'size' | 'type' | 'title'|'label'> &
   CommonProps &
   (ButtonProps | IconOnlyProps)) {
+
+  const title = 'title' in rest ? rest.title : undefined
+  const label = 'label' in rest ? rest.label : undefined
+
   return (
     <button
-      className={`fr-btn${
-        priority === 'primary' ? '' : ` fr-btn--${priority}`
-      } ${icon || ''}${
-        icon && label ? ` fr-btn--icon-${iconPosition || 'left'}` : ''
-      }${title ? ' fr-btn-icon' : ''} fr-btn--${size} ${className || ''}`}
+      className={classNames(
+        'fr-btn',
+        priority && `fr-btn--${priority}`,
+        icon,
+        icon && label && `fr-btn--icon-${iconPosition || 'left'}`,
+        title && 'fr-btn-icon',
+        size !== 'md' && `fr-btn--${size}`,
+        className,
+      )}
       type={type}
       title={title}
       {...rest}
