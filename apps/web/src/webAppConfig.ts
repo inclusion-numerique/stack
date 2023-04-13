@@ -62,4 +62,8 @@ export const PublicWebAppConfig = {
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN ?? '',
     environment: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT ?? 'local',
   },
+  Matomo: {
+    host: process.env.NEXT_PUBLIC_MATOMO_HOST ?? '',
+    siteId: process.env.NEXT_PUBLIC_MATOMO_SITE_ID ?? '',
+  }
 }
