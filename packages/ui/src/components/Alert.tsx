@@ -1,4 +1,5 @@
 import React from 'react'
+import classNames from 'classnames'
 import { UiComponentProps } from '../utils/uiComponentProps'
 
 type CommonProps = {
@@ -28,7 +29,7 @@ type NonClosableProps = {
   onClose: never
 }
 
-function Alert({
+const Alert = ({
   className,
   as = 'h3',
   title,
@@ -40,13 +41,16 @@ function Alert({
 }: UiComponentProps &
   CommonProps &
   (SmallAlertProps | AlertProps) &
-  (ClosableProps | NonClosableProps)) {
+  (ClosableProps | NonClosableProps)) => {
   const Title = as
   return (
     <div
-      className={`fr-alert fr-alert--${type}${small ? ' fr-alert--sm' : ''} ${
-        className || ''
-      }`}
+      className={classNames(
+        'fr-alert',
+        `fr-alert--${type}`,
+        { 'fr-alert--sm': small },
+        className,
+      )}
     >
       {title && <Title className="fr-alert__title">{title}</Title>}
       {description && <p>{description}</p>}

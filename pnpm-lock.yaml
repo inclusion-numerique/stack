@@ -799,6 +799,9 @@ importers:
       eslint:
         specifier: ^8.37.0
         version: 8.37.0
+      eslint-plugin-cypress:
+        specifier: ^2.13.2
+        version: 2.13.2(eslint@8.37.0)
       jest:
         specifier: ^29.5.0
         version: 29.5.0(@types/node@18.15.11)(ts-node@10.9.1)
@@ -10870,6 +10873,15 @@ packages:
       eslint-import-resolver-typescript: 3.5.3(eslint-plugin-import@2.27.5)(eslint@8.37.0)
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /eslint-plugin-cypress@2.13.2(eslint@8.37.0):
+    resolution: {integrity: sha512-LlwjnBTzuKuC0A4H0RxVjs0YeAWK+CD1iM9Dp8un3lzT713ePQxfpPstCD+9HSAss8emuE3b2hCNUST+NrUwKw==}
+    peerDependencies:
+      eslint: '>= 3.2.1'
+    dependencies:
+      eslint: 8.37.0
+      globals: 11.12.0
     dev: true
 
   /eslint-plugin-eslint-comments@3.2.0(eslint@8.37.0):
