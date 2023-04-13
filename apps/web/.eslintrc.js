@@ -4,8 +4,6 @@ module.exports = {
   rules: {
     // __dirname is fine for now
     'unicorn/prefer-module': 'off',
-    // Common abbreviations are fine (e.g. react ref)
-    'unicorn/prevent-abbreviations': 'off',
   },
   overrides: [
     {
