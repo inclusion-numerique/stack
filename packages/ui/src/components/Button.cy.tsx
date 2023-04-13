@@ -6,7 +6,7 @@ describe('<Button />', () => {
   it('should transfer click action', () => {
     const onClick = cy.stub().as('onClick') as MouseEventHandler & SinonStub
 
-    cy.mount(<Button label="My label" onClick={onClick} />)
+    cy.mount(<Button label="yo" onClick={onClick} />)
 
     cy.get('button').click()
 

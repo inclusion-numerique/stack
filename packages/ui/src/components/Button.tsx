@@ -10,17 +10,21 @@ type CommonProps = {
   type?: 'button' | 'submit' | 'reset'
 }
 
-type ButtonProps = {
+type ButtonWithLabelProps = {
   label: string
   icon?: string
   iconPosition?: 'left' | 'right'
+  title?: undefined
 }
 
 type IconOnlyProps = {
   title: string
   icon: string
   iconPosition: never
+  label?: undefined
 }
+
+type ButtonProps = CommonProps & (ButtonWithLabelProps | IconOnlyProps)
 
 const Button = ({
   className,
@@ -28,36 +32,32 @@ const Button = ({
   icon,
   iconPosition,
   size = 'md',
+  title,
+  label,
   type = 'button',
   ...rest
 }: UiComponentProps &
   Omit<HTMLProps<HTMLButtonElement>, 'size' | 'type' | 'title' | 'label'> &
-  CommonProps &
-  (ButtonProps | IconOnlyProps)) => {
-  const title = 'title' in rest ? rest.title : undefined
-  const label = 'label' in rest ? rest.label : undefined
-
-  return (
-    <button
-      className={classNames(
-        'fr-btn',
-        {
-          [`fr-btn--${priority}`]: priority !== 'primary',
-          [`fr-btn--icon-${iconPosition || 'left'}`]: icon && label,
-          'fr-btn-icon': title,
-          [`fr-btn--${size}`]: size !== 'md',
-        },
-        icon,
-        className,
-      )}
-      type={type}
-      title={title}
-      {...rest}
-    >
-      {label}
-      {title}
-    </button>
-  )
-}
+  ButtonProps) => (
+  <button
+    className={classNames(
+      'fr-btn',
+      {
+        [`fr-btn--${priority}`]: priority !== 'primary',
+        [`fr-btn--icon-${iconPosition || 'left'}`]: icon && label,
+        'fr-btn-icon': title,
+        [`fr-btn--${size}`]: size !== 'md',
+      },
+      icon,
+      className,
+    )}
+    type={type}
+    title={title}
+    {...rest}
+  >
+    {label}
+    {title}
+  </button>
+)
 
 export default Button
