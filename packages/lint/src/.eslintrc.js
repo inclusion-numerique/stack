@@ -23,6 +23,7 @@ module.exports = {
     'unicorn/prefer-module': 'off',
     'unicorn/no-array-callback-reference': 'off',
     'no-continue': 'off',
+    'prettier/prettier': 'error',
     'no-unused-vars': [
       'error',
       {
@@ -70,6 +71,7 @@ module.exports = {
       ],
       rules: {
         'no-restricted-syntax': 'off',
+        'prettier/prettier': 'error',
         'no-continue': 'off',
         // Module resolve leads to false negatives in monorepo, typescript compiler will handle any error
         'import/no-unresolved': [2, { ignore: ['^@stack/'] }],
@@ -94,8 +96,13 @@ module.exports = {
         ],
         // Null and undefined have different intent in our code, especially for integration with prisma and trpc
         'unicorn/no-null': 'off',
-        'react/function-component-definition':
-          [2, { 'namedComponents': 'arrow-function', 'unnamedComponents': 'arrow-function' }],
+        'react/function-component-definition': [
+          2,
+          {
+            namedComponents: 'arrow-function',
+            unnamedComponents: 'arrow-function',
+          },
+        ],
         // We use typescript default values and types
         'react/require-default-props': 'off',
         'unicorn/prevent-abbreviations': [
