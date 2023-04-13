@@ -54,14 +54,3 @@ export const Small: Story = {
     description: 'Titre du message',
   },
 }
-
-export const Closable: Story = {
-  name: 'Alert fermable',
-  argTypes: { onClose: { action: 'closed' } },
-  args: {
-    closable: true,
-    type: 'info',
-    title: 'Titre du message',
-    description: "Cliquer sur la croix pour fermer l'alerte",
-  },
-}

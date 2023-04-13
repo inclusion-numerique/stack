@@ -1,10 +1,9 @@
-import React, { MouseEventHandler } from 'react'
-import { SinonStub } from 'cypress/types/sinon'
+import React from 'react'
 import Button from './Button'
 
 describe('<Button />', () => {
   it('should transfer click action', () => {
-    const onClick = cy.stub().as('onClick') as MouseEventHandler & SinonStub
+    const onClick = cy.stub().as('onClick')
 
     cy.mount(<Button label="yo" onClick={onClick} />)
 

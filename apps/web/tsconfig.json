@@ -6,6 +6,7 @@
         "name": "next"
       }
     ],
+    "esModuleInterop": true,
     "strictNullChecks": true,
     "module": "esnext",
     "types": ["cypress"],

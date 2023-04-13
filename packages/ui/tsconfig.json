@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "strictNullChecks": true,
+    "esModuleInterop": true,
     "module": "esnext",
     "types": ["cypress"],
     "paths": {
