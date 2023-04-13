@@ -9,7 +9,7 @@ export const projectSlug = 'stack'
 export const mainLiveUrl = 'https://stack.gouv.fr'
 export const repositoryUrl = 'https://github.com/inclusion-numerique/stack'
 
-export const cypressProjectId = '1bd26b'
+export const cypressProjectId = 'ns2oqz'
 
 export const databaseInstanceName = process.env.DATABASE_INSTANCE_NAME ?? ''
 export const containerNamespaceName = process.env.CONTAINER_NAMESPACE_NAME ?? ''
