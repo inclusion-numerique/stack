@@ -7,11 +7,10 @@ export const reset = () => {
 // eslint-disable-next-line unicorn/no-useless-promise-resolve-reject
 export const getValue = async () => Promise.resolve(value)
 
-export const updateValue = async (newValue: string) => {
+export const updateValue = (newValue: string) => {
   if (newValue) {
-    return new Promise((resolve) => {
       value = newValue
-      resolve(null)
-    })
   }
+
+  return Promise.resolve()
 }
