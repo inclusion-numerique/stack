@@ -94,6 +94,8 @@ module.exports = {
         ],
         // Null and undefined have different intent in our code, especially for integration with prisma and trpc
         'unicorn/no-null': 'off',
+        'react/function-component-definition':
+          [2, { 'namedComponents': 'arrow-function', 'unnamedComponents': 'arrow-function' }],
         // We use typescript default values and types
         'react/require-default-props': 'off',
         'unicorn/prevent-abbreviations': [

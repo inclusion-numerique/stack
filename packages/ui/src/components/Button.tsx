@@ -22,7 +22,7 @@ type IconOnlyProps = {
   iconPosition: never
 }
 
-function Button({
+const Button = ({
                   className,
                   priority = 'primary',
                   icon,
@@ -33,7 +33,7 @@ function Button({
                 }: UiComponentProps &
   Omit<HTMLProps<HTMLButtonElement>, 'size' | 'type' | 'title'|'label'> &
   CommonProps &
-  (ButtonProps | IconOnlyProps)) {
+  (ButtonProps | IconOnlyProps)) => {
 
   const title = 'title' in rest ? rest.title : undefined
   const label = 'label' in rest ? rest.label : undefined
