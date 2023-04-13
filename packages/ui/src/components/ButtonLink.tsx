@@ -1,11 +1,9 @@
-import React, { HTMLProps, ReactNode } from 'react'
+import React, { HTMLProps } from 'react'
 import classNames from 'classnames'
 import Link, { LinkProps } from 'next/link'
 import { UiComponentProps } from '../utils/uiComponentProps'
 
 type ButtonLinkProps = {
-  href: string
-  children: ReactNode
   icon?: string
   iconPosition?: 'left' | 'right'
   priority?: 'primary' | 'secondary' | 'tertiary' | 'tertiary-no-outline'
