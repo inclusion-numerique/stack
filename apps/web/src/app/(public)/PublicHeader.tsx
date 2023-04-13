@@ -30,6 +30,7 @@ const PublicHeader = () => (
                   aria-controls="modal-menu-mobile"
                   aria-haspopup="menu"
                   title="Menu"
+                  type="button"
                   className="fr-btn--menu fr-btn"
                   data-fr-js-modal-button="true"
                 >
@@ -86,6 +87,7 @@ const PublicHeader = () => (
         <button
           aria-controls="modal-menu-mobile"
           className="fr-btn--close fr-btn"
+          type="button"
         >
           Fermer
         </button>
