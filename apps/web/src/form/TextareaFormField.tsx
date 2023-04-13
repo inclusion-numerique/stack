@@ -5,7 +5,7 @@ import { FieldPath } from 'react-hook-form/dist/types/path'
 import TextareaAutosize from 'react-textarea-autosize'
 
 // View design options here https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/champ-de-saisie
-export function TextareaFormField<T extends FieldValues>({
+export const TextareaFormField = <T extends FieldValues>({
   label,
   path,
   control,
@@ -19,7 +19,7 @@ export function TextareaFormField<T extends FieldValues>({
   label?: string
   hint?: string
   placeholder?: string
-}) {
+}) => {
   const id = `input-form-field__${path}`
 
   return (

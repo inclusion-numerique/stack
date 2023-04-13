@@ -6,7 +6,7 @@ import { AuthCard } from '@stack/web/app/(public)/connexion/AuthCard'
 import { Breadcrumbs } from '@stack/web/components/Breadcrumbs'
 import Link from 'next/link'
 
-function SignoutPage() {
+const SignoutPage = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const onLogout = async () => {

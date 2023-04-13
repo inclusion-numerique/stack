@@ -2,8 +2,7 @@ import { Spinner } from '@stack/web/ui/Spinner'
 import { Breadcrumbs } from '@stack/web/components/Breadcrumbs'
 import { AuthCard } from '@stack/web/app/(public)/connexion/AuthCard'
 
-function AuthLoading() {
-  return (
+const AuthLoading = () => (
     <>
       <Breadcrumbs currentPage="Connexion" />
       <AuthCard>
@@ -22,6 +21,5 @@ function AuthLoading() {
       </AuthCard>
     </>
   )
-}
 
 export default AuthLoading

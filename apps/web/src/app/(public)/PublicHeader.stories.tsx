@@ -1,4 +1,3 @@
-import React from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import PublicHeader from '@stack/web/app/(public)/PublicHeader'
 

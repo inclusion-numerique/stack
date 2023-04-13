@@ -3,7 +3,7 @@ import { Control, Controller, FieldValues } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
 
 // View design options here https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/champ-de-saisie
-export function InputFormField<T extends FieldValues>({
+export const InputFormField = <T extends FieldValues>({
   label,
   path,
   control,
@@ -27,7 +27,7 @@ export function InputFormField<T extends FieldValues>({
   placeholder?: string
   multiple?: boolean
   ['data-testid']?: string
-}) {
+}) => {
   const id = `input-form-field__${path}`
 
   return (

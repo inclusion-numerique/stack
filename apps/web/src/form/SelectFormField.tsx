@@ -5,7 +5,7 @@ import { addAsterisk } from '@stack/web/form/addAsterisk'
 import { Options } from '@stack/web/utils/options'
 
 // View design options here https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/liste-deroulante/
-export function SelectFormField<T extends FieldValues>({
+export const SelectFormField = <T extends FieldValues>({
   label,
   errors,
   register,
@@ -25,7 +25,7 @@ export function SelectFormField<T extends FieldValues>({
   defaultOption?: boolean
   hint?: string
   placeholder?: string
-}) {
+}) => {
   // We do not use language errors as record object, we cast to string
   const error = 'todo'
   const id = `input-form-field__${path}`

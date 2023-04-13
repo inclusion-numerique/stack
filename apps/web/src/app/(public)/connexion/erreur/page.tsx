@@ -11,7 +11,7 @@ const errorMessage = (error?: string): string | undefined => {
   return 'Une erreur est survenue lors de la connexion. Veuillez réessayer.'
 }
 
-const ErrorPage = async ({
+const ErrorPage = ({
   searchParams: { error } = {},
 }: {
   searchParams?: { error?: string }
@@ -29,7 +29,7 @@ const ErrorPage = async ({
 
       <ul className="fr-btns-group fr-mt-12v">
         <li>
-          <Link href="connexion/login" target="_self" className="fr-btn">
+          <Link href="/connexion/login" target="_self" className="fr-btn">
             Retour
           </Link>
         </li>

@@ -14,8 +14,7 @@ const signinErrorMessage = (error?: string): string | undefined => {
   return 'Erreur de connexion, veuillez réessayer.'
 }
 
-export function SigninPanel({ error }: { error?: string }) {
-  return (
+export const SigninPanel = ({ error }: { error?: string }) => (
     <AuthCard>
       <h2 className={`fr-mb-12v ${styles.signinTitle}`}>
         Se connecter à <br />
@@ -47,4 +46,3 @@ export function SigninPanel({ error }: { error?: string }) {
       </p>
     </AuthCard>
   )
-}

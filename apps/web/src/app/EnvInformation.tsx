@@ -1,6 +1,6 @@
 import { ServerWebAppConfig, PublicWebAppConfig } from '@stack/web/webAppConfig'
 
-export function EnvInformation() {
+export const EnvInformation = () => {
   const branch = ServerWebAppConfig.Branch
   const { isMain } = ServerWebAppConfig
 

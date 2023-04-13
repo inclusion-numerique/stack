@@ -3,7 +3,7 @@ import { FieldPath } from 'react-hook-form/dist/types/path'
 import { Options } from '@stack/web/utils/options'
 
 // View design options here https://www.systeme-de-design.gouv.fr/elements-d-interface/composants/boutons-radio/
-export function RadioFormField<T extends FieldValues>({
+export const RadioFormField = <T extends FieldValues>({
   label,
   path,
   options,
@@ -17,7 +17,7 @@ export function RadioFormField<T extends FieldValues>({
   disabled?: boolean
   label?: string
   hint?: string
-}) {
+}) => {
   const id = `input-form-field__${path}`
 
   return (

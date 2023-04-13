@@ -3,8 +3,7 @@
 import { PublicWebAppConfig } from '@stack/web/webAppConfig'
 import { PropsWithChildren } from 'react'
 
-export function ServerError() {
-  return (
+export const ServerError = () => (
     <GenericError
       title="Erreur inattendue"
       subtitle="Erreur 500"
@@ -15,10 +14,8 @@ export function ServerError() {
       Si vous avez besoin d&apos;une aide immédiate, merci de nous contacter.
     </GenericError>
   )
-}
 
-export function NotFoundError() {
-  return (
+export const NotFoundError = () => (
     <GenericError
       title="Page non trouvée"
       subtitle="Erreur 404"
@@ -31,10 +28,8 @@ export function NotFoundError() {
       d’accueil.
     </GenericError>
   )
-}
 
-export function UnauthorizedError() {
-  return (
+export const UnauthorizedError = () => (
     <GenericError
       title="Accès refusé"
       subtitle="Erreur 403"
@@ -44,9 +39,8 @@ export function UnauthorizedError() {
       qu&apos;elle est correcte.
     </GenericError>
   )
-}
 
-export function GenericError({
+export const GenericError = ({
   title,
   subtitle,
   lead,
@@ -55,8 +49,7 @@ export function GenericError({
   title: string
   subtitle: string
   lead: string
-}>) {
-  return (
+}>) => (
     <main role="main" id="content">
       <div className="fr-container">
         <div className="fr-my-7w fr-mt-md-12w fr-mb-md-10w fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
@@ -118,4 +111,3 @@ export function GenericError({
       </div>
     </main>
   )
-}
