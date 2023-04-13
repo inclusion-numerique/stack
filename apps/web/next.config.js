@@ -1,5 +1,5 @@
-import { withSentryConfig } from '@sentry/nextjs'
-import packageJson from './package.json' assert { type: 'json' }
+const { withSentryConfig } = require('@sentry/nextjs')
+const packageJson = require('./package.json')
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -109,4 +109,4 @@ const sentryWebpackPluginOptions = {
   silent: true, // Suppresses all logs
 }
 
-export default withSentryConfig(nextConfig, sentryWebpackPluginOptions)
+module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions)
