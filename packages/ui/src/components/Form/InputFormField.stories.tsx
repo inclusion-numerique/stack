@@ -104,6 +104,16 @@ export const Hint: Story = {
   },
 }
 
+export const Textarea: Story = {
+  name: 'Zone de text',
+  render: (args) => <Template {...args} path="name" />,
+  args: {
+    label: 'Label',
+    type: 'textarea',
+    rows: 5,
+  },
+}
+
 export const Icon: Story = {
   name: 'Avec icone',
   render: (args) => <Template {...args} path="name" />,
