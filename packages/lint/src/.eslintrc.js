@@ -132,5 +132,17 @@ module.exports = {
         ],
       },
     },
+    {
+      files: '**/*.cy.@(ts|tsx)',
+      parserOptions: {
+        // eslint-disable-next-line no-path-concat, unicorn/prefer-module
+        project: `${__dirname}/../../../tsconfig.eslint.cy.json`,
+      },
+      plugins: ['cypress'],
+      extends: ['plugin:cypress/recommended'],
+      rules: {
+        'jest/expect-expect': 'off',
+      },
+    },
   ],
 }
