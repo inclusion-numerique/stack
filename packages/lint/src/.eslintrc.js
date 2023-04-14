@@ -78,6 +78,7 @@ module.exports = {
         // This rule is unreliable in monorepos and typescript compiler will help on bad imports
         'import/no-extraneous-dependencies': 'off',
         '@typescript-eslint/unbound-method': 'off',
+        '@typescript-eslint/no-misused-promises': 'off',
         'unicorn/no-array-callback-reference': 'off',
         'import/prefer-default-export': 'off',
         'react/jsx-props-no-spreading': [
@@ -116,8 +117,10 @@ module.exports = {
               param: true,
               Params: true,
               params: true,
-              ref: true,
+              Env: true,
               env: true,
+              ref: true,
+              res: true,
             },
           },
         ],

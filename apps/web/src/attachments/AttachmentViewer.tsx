@@ -9,7 +9,6 @@ export const AttachmentViewer = ({
   name,
 }: {
   key: string
-  type: string
   name: string
 }) => {
   const [assetUrl, setAssetUrl] = useState<string | null>(null)

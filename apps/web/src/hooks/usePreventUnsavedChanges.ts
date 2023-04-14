@@ -10,16 +10,18 @@ export const usePreventUnsavedChanges = <T extends FieldValues>({
   formState: FormState<T>
 }) => {
   useEffect(() => {
-    if (!isBrowser) {
+    if (isBrowser) {
       return
     }
     const confirmLeave = (event: BeforeUnloadEvent) => {
       if (isDirty) {
+        // eslint-disable-next-line no-param-reassign
         event.returnValue = 'Your unsaved changes will be lost'
       }
     }
     window.addEventListener('beforeunload', confirmLeave)
 
+    // eslint-disable-next-line consistent-return
     return () => {
       window.removeEventListener('beforeunload', confirmLeave)
     }

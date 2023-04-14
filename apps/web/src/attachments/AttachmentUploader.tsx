@@ -2,7 +2,7 @@
 
 /* eslint react/jsx-props-no-spreading: 0 */
 
-import { FileError, FileRejection, useDropzone } from 'react-dropzone'
+import { FileError, useDropzone } from 'react-dropzone'
 import { useState } from 'react'
 import axios from 'axios'
 import { Spinner } from '@stack/web/ui/Spinner'
@@ -25,10 +25,7 @@ const AttachmentUploader = ({
 }) => {
   const [files, setFiles] = useState<UploadingFileInfo[]>([])
 
-  const onDrop = async (
-    acceptedFiles: File[],
-    fileRejections: FileRejection[],
-  ) => {
+  const onDrop = async (acceptedFiles: File[]) => {
     const addedFiles = acceptedFiles.map(
       (file): UploadingFileInfo => ({ file, status: 'pending' }),
     )

@@ -33,7 +33,12 @@ export const Verify = () => {
         Vous pouvez fermer cet onglet de navigation.
         <br />
         En cas de problème ou de questions, merci de contacter{' '}
-        <a href={`mailto:${PublicWebAppConfig.contactEmail}`}>
+        <a
+          href={
+            PublicWebAppConfig.contactEmail &&
+            `mailto:${PublicWebAppConfig.contactEmail}`
+          }
+        >
           {PublicWebAppConfig.contactEmail}
         </a>
         .

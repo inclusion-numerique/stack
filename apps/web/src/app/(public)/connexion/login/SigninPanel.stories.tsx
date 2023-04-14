@@ -1,4 +1,3 @@
-import React from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import { SigninPanel } from '@stack/web/app/(public)/connexion/login/SigninPanel'
 

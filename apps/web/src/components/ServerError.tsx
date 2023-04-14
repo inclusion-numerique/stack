@@ -3,43 +3,6 @@
 import { PublicWebAppConfig } from '@stack/web/webAppConfig'
 import { PropsWithChildren } from 'react'
 
-export const ServerError = () => (
-  <GenericError
-    title="Erreur inattendue"
-    subtitle="Erreur 500"
-    lead="Désolé, le service rencontre un problème, nous travaillons pour le résoudre le plus rapidement possible."
-  >
-    Essayez de rafraichir la page ou bien ressayez plus tard.
-    <br />
-    Si vous avez besoin d&apos;une aide immédiate, merci de nous contacter.
-  </GenericError>
-)
-
-export const NotFoundError = () => (
-  <GenericError
-    title="Page non trouvée"
-    subtitle="Erreur 404"
-    lead="La page que vous cherchez est introuvable. Excusez-nous pour la gène occasionnée."
-  >
-    Si vous avez tapé l&apos;adresse web dans le navigateur, vérifiez
-    qu&apos;elle est correcte. La page n’est peut-être plus disponible.
-    <br />
-    Dans ce cas, pour continuer votre visite vous pouvez consulter notre page
-    d’accueil.
-  </GenericError>
-)
-
-export const UnauthorizedError = () => (
-  <GenericError
-    title="Accès refusé"
-    subtitle="Erreur 403"
-    lead="Vous n'avez pas accès à cette page."
-  >
-    Si vous avez tapé l&apos;adresse web dans le navigateur, vérifiez
-    qu&apos;elle est correcte.
-  </GenericError>
-)
-
 export const GenericError = ({
   title,
   subtitle,
@@ -67,7 +30,10 @@ export const GenericError = ({
             <li>
               <a
                 className="fr-btn fr-btn--secondary"
-                href={`mailto:${PublicWebAppConfig.contactEmail}`}
+                href={
+                  PublicWebAppConfig.contactEmail &&
+                  `mailto:${PublicWebAppConfig.contactEmail}`
+                }
               >
                 Contactez-nous
               </a>
@@ -110,4 +76,41 @@ export const GenericError = ({
       </div>
     </div>
   </main>
+)
+
+export const ServerError = () => (
+  <GenericError
+    title="Erreur inattendue"
+    subtitle="Erreur 500"
+    lead="Désolé, le service rencontre un problème, nous travaillons pour le résoudre le plus rapidement possible."
+  >
+    Essayez de rafraichir la page ou bien ressayez plus tard.
+    <br />
+    Si vous avez besoin d&apos;une aide immédiate, merci de nous contacter.
+  </GenericError>
+)
+
+export const NotFoundError = () => (
+  <GenericError
+    title="Page non trouvée"
+    subtitle="Erreur 404"
+    lead="La page que vous cherchez est introuvable. Excusez-nous pour la gène occasionnée."
+  >
+    Si vous avez tapé l&apos;adresse web dans le navigateur, vérifiez
+    qu&apos;elle est correcte. La page n’est peut-être plus disponible.
+    <br />
+    Dans ce cas, pour continuer votre visite vous pouvez consulter notre page
+    d’accueil.
+  </GenericError>
+)
+
+export const UnauthorizedError = () => (
+  <GenericError
+    title="Accès refusé"
+    subtitle="Erreur 403"
+    lead="Vous n'avez pas accès à cette page."
+  >
+    Si vous avez tapé l&apos;adresse web dans le navigateur, vérifiez
+    qu&apos;elle est correcte.
+  </GenericError>
 )

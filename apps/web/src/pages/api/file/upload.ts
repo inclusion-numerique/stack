@@ -13,8 +13,8 @@ const upload = async (
   }
 
   try {
-    // Get info from body
-    const { name, type, directory } = request.body
+    // TODO: use zod
+    const { name, type, directory } = request.body as Record<string, string>
 
     const { url, key } = await createSignedUploadUrl({
       name,
@@ -23,11 +23,11 @@ const upload = async (
       bucket: ServerWebAppConfig.S3.documentsBucket,
     })
 
-    response.status(200).json({ url, key })
+    return response.status(200).json({ url, key })
   } catch (error) {
     // TODO SENTRY
     console.error(error)
-    response.status(400).json({ error: error as string })
+    return response.status(400).json({ error: error as string })
   }
 }
 export default upload

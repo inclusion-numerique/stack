@@ -40,7 +40,12 @@ export const SigninPanel = ({ error }: { error?: string }) => (
       la connexion a ce service. <br />
       <br />
       En cas de problèmes ou questions merci de contacter{' '}
-      <a href={`mailto:${PublicWebAppConfig.contactEmail}`}>
+      <a
+        href={
+          PublicWebAppConfig.contactEmail &&
+          `mailto:${PublicWebAppConfig.contactEmail}`
+        }
+      >
         {PublicWebAppConfig.contactEmail}
       </a>
     </p>

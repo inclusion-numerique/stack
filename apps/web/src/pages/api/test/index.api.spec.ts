@@ -1,4 +1,5 @@
 import { testAxios, testAxiosWithCatch } from '@stack/test/testAxios'
+import { ZodError } from 'zod'
 
 describe('api/test e2e test', () => {
   beforeEach(async () => {
@@ -22,7 +23,7 @@ describe('api/test e2e test', () => {
     })
 
     test('Should return 400 on invalid value sent', async () => {
-      const response = await testAxiosWithCatch.put('/test', {
+      const response = await testAxiosWithCatch.put<ZodError>('/test', {
         notTheName: 'Jane dane',
       })
       expect(response.status).toEqual(400)

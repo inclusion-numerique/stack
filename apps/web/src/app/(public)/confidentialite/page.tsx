@@ -30,7 +30,12 @@ const ConfidentialityPage = () => (
         <p>
           Pour toute question ou demande relative à vos droits, vous pouvez nous
           contacter à l&apos;adresse&nbsp;
-          <a href={`mailto:${PublicWebAppConfig.contactEmail}`}>
+          <a
+            href={
+              PublicWebAppConfig.contactEmail &&
+              `mailto:${PublicWebAppConfig.contactEmail}`
+            }
+          >
             {PublicWebAppConfig.contactEmail}
           </a>
           .
@@ -315,6 +320,7 @@ const ConfidentialityPage = () => (
 
         <div className="fr-mb-3w" id="piwik-consent">
           <iframe
+            title="Matomo"
             style={{ border: 0, height: 200, width: 600 }}
             src="https://matomo.incubateur.anct.gouv.fr/index.php?module=CoreAdminHome&action=optOut&language=en&backgroundColor=&fontColor=&fontSize=16px&fontFamily=Helvetica"
           />
@@ -431,7 +437,12 @@ const ConfidentialityPage = () => (
         <p>
           Pour toute demande, vous pouvez écrire un email à l’équipe La France
           des solutions&nbsp;:{' '}
-          <a href={`mailto:${PublicWebAppConfig.contactEmail}`}>
+          <a
+            href={
+              PublicWebAppConfig.contactEmail &&
+              `mailto:${PublicWebAppConfig.contactEmail}`
+            }
+          >
             {PublicWebAppConfig.contactEmail}
           </a>
           .

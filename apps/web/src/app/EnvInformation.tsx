@@ -1,8 +1,7 @@
 import { ServerWebAppConfig, PublicWebAppConfig } from '@stack/web/webAppConfig'
 
 export const EnvInformation = () => {
-  const branch = ServerWebAppConfig.Branch
-  const { isMain } = ServerWebAppConfig
+  const { isMain, Chromatic: chromatic, Branch: branch } = ServerWebAppConfig
 
   // Branch can be empty on dev env
   if (isMain || !branch) {
@@ -13,7 +12,7 @@ export const EnvInformation = () => {
     `is:pr head:${branch}`,
   )}`
 
-  const storybookLink = `https://${branch}--${ServerWebAppConfig.Chromatic.appId}.chromatic.com`
+  const storybookLink = `https://${branch}--${chromatic.appId}.chromatic.com`
 
   return (
     <div id="environment-information" className="fr-notice fr-notice--info">

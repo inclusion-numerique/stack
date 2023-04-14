@@ -5,21 +5,13 @@ import type { Adapter } from 'next-auth/adapters'
 const prismaAdapter = PrismaAdapter(prismaClient)
 
 // ⚠️ Keycloak returns non standard fields that are expected to be ignored by the client
-const nonStandardKeycloakFieldsToIgnore = [
-  'refresh_expires_in',
-  'not-before-policy',
-]
-
 const removeNonStandardFields = <T extends Record<string, unknown>>(
   data: T,
-): T => {
-  for (const key of nonStandardKeycloakFieldsToIgnore) {
-    if (key in data) {
-      delete data[key]
-    }
-  }
-  return data
-}
+): T => ({
+  ...data,
+  refresh_expires_in: undefined,
+  'not-before-policy': undefined,
+})
 
 export const nextAuthAdapter: Adapter = {
   ...prismaAdapter,

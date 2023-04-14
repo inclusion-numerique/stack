@@ -39,7 +39,12 @@ const AccessibilityStatementPage = () => (
     <ul className="basic-information feedback h-card">
       <li>
         E-mail&nbsp;:{' '}
-        <a href={`mailto:${PublicWebAppConfig.contactEmail}`}>
+        <a
+          href={
+            PublicWebAppConfig.contactEmail &&
+            `mailto:${PublicWebAppConfig.contactEmail}`
+          }
+        >
           {PublicWebAppConfig.contactEmail}
         </a>
       </li>

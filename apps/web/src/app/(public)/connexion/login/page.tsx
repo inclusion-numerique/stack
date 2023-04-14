@@ -12,7 +12,6 @@ const SigninPage = async ({
   const user = await getSessionUser()
   if (user) {
     redirect(getServerUrl('/'))
-    return
   }
 
   return (

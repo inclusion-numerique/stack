@@ -10,19 +10,19 @@ const get = async (request: NextApiRequest, res: NextApiResponse) => {
   }
 
   try {
-    // Get info from body
-    const { key } = request.body
+    // TODO: use zod
+    const { key } = request.body as Record<string, string>
 
     const { url } = await createSignedGetUrl({
       key,
       bucket: ServerWebAppConfig.S3.documentsBucket,
     })
 
-    res.status(200).json({ url })
+    return res.status(200).json({ url })
   } catch (error) {
     // TODO SENTRY
     console.error(error)
-    res.status(400).json({ error: error as string })
+    return res.status(400).json({ error: error as string })
   }
 }
 export default get
