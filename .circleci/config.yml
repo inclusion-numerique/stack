@@ -55,6 +55,10 @@ parameters:
     default: e2e
   trigger_workflow:
     type: string
+    # Can be one of the following:
+    ## web_app_deployment
+    ## web_app_preview_deletion
+    ## project_stack_deployment
     default: "web_app_deployment"
   # Name of the environment to scrap
   preview_deletion_branch:
@@ -63,42 +67,6 @@ parameters:
 
 workflows:
   version: 2
-  nightly_web_app_deployment:
-    triggers: # use the triggers key to indicate a scheduled build
-      - schedule:
-          cron: "0 2 * * *"
-          filters:
-            branches:
-              only:
-                - main
-                - dev
-    when:
-      equal: [ web_app_deployment, << pipeline.parameters.trigger_workflow >> ]
-    jobs:
-      - prepare_workspace_dependencies
-      - prepare_web_prod_dependencies
-      - lint:
-          requires:
-            - prepare_workspace_dependencies
-      - test:
-          requires:
-            - prepare_workspace_dependencies
-      - test_components:
-          requires:
-            - prepare_workspace_dependencies
-      - build_web:
-          requires:
-            - prepare_workspace_dependencies
-            - prepare_web_prod_dependencies
-      - test_e2e:
-          requires:
-            - build_web
-      - deploy_web:
-          requires:
-            - lint
-            - test
-            - test_components
-            - test_e2e
   web_app_deployment:
     when:
       equal: [ web_app_deployment, << pipeline.parameters.trigger_workflow >> ]
@@ -142,11 +110,8 @@ workflows:
 #            - test_web_e2e
 
   project_infrastructure_deployment:
-    # This workflow exclusively runs on the infra branch
     when:
-      and:
-        - equal: [ infra, << pipeline.git.branch >> ]
-        - not: << pipeline.parameters.preview_deletion_branch >>
+      - equal: [ project_stack_deployment, << pipeline.parameters.trigger_workflow >> ]
     jobs:
       - prepare_workspace_dependencies
       - lint_and_test_cdk_package:
@@ -165,7 +130,7 @@ workflows:
             - approve_infra_deployment
 
   web_app_preview_deletion:
-    # This workflow exclusively runs on the infra branch, with target env to destroy as parameter
+    # This workflow exclusively runs on the dev branch, with target env to destroy as parameter
     # It should never run with main as a parameter
     when:
       and:
