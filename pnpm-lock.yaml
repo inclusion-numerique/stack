@@ -753,6 +753,9 @@ importers:
       '@gouvfr/dsfr':
         specifier: ^1.9.0
         version: 1.9.0
+      '@hookform/resolvers':
+        specifier: ^3.0.1
+        version: 3.0.1(react-hook-form@7.43.9)
       classnames:
         specifier: ^2.3.2
         version: 2.3.2
@@ -765,6 +768,12 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      react-hook-form:
+        specifier: ^7.43.9
+        version: 7.43.9(react@18.2.0)
+      zod:
+        specifier: ^3.21.4
+        version: 3.21.4
     devDependencies:
       '@stack/storybook':
         specifier: '*'

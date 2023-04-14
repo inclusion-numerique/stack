@@ -111,6 +111,7 @@ module.exports = {
             allowList: {
               Props: true,
               props: true,
+              args: true,
             },
           },
         ],

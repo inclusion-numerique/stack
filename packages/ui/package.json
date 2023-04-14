@@ -17,10 +17,13 @@
   },
   "dependencies": {
     "@gouvfr/dsfr": "^1.9.0",
+    "@hookform/resolvers": "^3.0.1",
     "classnames": "^2.3.2",
     "next": "^13.3.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.9",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@stack/storybook": "*",
