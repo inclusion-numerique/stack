@@ -32,16 +32,10 @@ const Template = ({
 
   useOnDiff(form, () => {
     if (path === 'email' || path === 'email2') {
-      form.setValue(
-        path,
-        form.formState.defaultValues
-          ? (form.formState.defaultValues[path] as string)
-          : '',
-        {
-          shouldTouch: true,
-          shouldValidate: true,
-        },
-      )
+      form.setValue(path, form.getValues(path), {
+        shouldTouch: true,
+        shouldValidate: true,
+      })
     }
   })
 
