@@ -10,6 +10,11 @@ Project is hosted by Scaleway, provisioning is done via Terraform with CDK.
 - Add relevant users to the projects with full access on project resources (and secret manager)
 - Create an IAM Application with with full access on project resources (and secret manager) with credentials to use in CI / CD deployments
 - Add your domain name, and another preview domain name, and validate it using DNS
+- Change the project variables in packages/config/src/config.ts
+- (optional) Create a Sentry project and set the DSN in your .env.dist and a secret token in your .env
+- (optional) Create a Matomo project and set the host and siteId in .env.dist 
+- (optional) Create Chromatic project and set the tokens in .env.dist and .env
+- (optional) Create a Cypress cloud project and set the tokens in packages/config/src/config.ts and .env
 - Add secrets to the Secret manager (you will find them documented in .env.dist), with "web" or "project" tags, depending on which stack is using it.
 - Create terraform backend object storage bucket to be able to use cdk with name `${projectSlug}-terraform-state`
 

@@ -6,7 +6,7 @@ import { arrayFromEnvironmentVariable } from './arrayFromEnvironmentVariable'
 
 export const projectTitle = 'Stack'
 export const projectSlug = 'stack'
-export const mainLiveUrl = 'https://stack.gouv.fr'
+export const mainLiveUrl = 'https://stack.incubateur.anct.gouv.fr'
 export const repositoryUrl = 'https://github.com/inclusion-numerique/stack'
 
 export const cypressProjectId = 'ns2oqz'

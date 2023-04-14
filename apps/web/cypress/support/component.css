@@ -1,0 +1,7 @@
+/* app.css overrides for cypress component testing */
+html,
+body,
+body > div:not(#environment-information) {
+    min-height: initial !important;
+    height: initial;
+}

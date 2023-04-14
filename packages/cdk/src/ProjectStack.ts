@@ -15,7 +15,9 @@ import {
   mainDomain,
   nextTelemetryDisabled,
   previewDomain,
-  publicContactEmail, publicMatomoHost, publicMatomoSiteId,
+  publicContactEmail,
+  publicMatomoHost,
+  publicMatomoSiteId,
   publicSentryDsn,
   region,
   sentryOrg,
@@ -91,14 +93,13 @@ export class ProjectStack extends TerraformStack {
       subdomain: '',
     })
 
-    const previewDomainZone = new DataScalewayDomainZone(
-      this,
-      'previewDomainZone',
-      {
-        domain: previewDomain,
-        subdomain: '',
-      },
-    )
+    const previewDomainZone =
+      mainDomain === previewDomain
+        ? mainDomain
+        : new DataScalewayDomainZone(this, 'previewDomainZone', {
+            domain: previewDomain,
+            subdomain: '',
+          })
 
     // If preview domain or email from domain differ, create different zones for those
     const emailDomainZone = mainDomainZone
@@ -245,20 +246,22 @@ export class ProjectStack extends TerraformStack {
       ttl: 1800,
     })
     // Preview domain DNS Records
-    new DomainRecord(this, 'preview_ns0', {
-      dnsZone: previewDomainZone.domain,
-      type: 'NS',
-      name: '',
-      data: 'ns0.dom.scw.cloud.',
-      ttl: 1800,
-    })
-    new DomainRecord(this, 'preview_ns1', {
-      dnsZone: previewDomainZone.domain,
-      type: 'NS',
-      name: '',
-      data: 'ns1.dom.scw.cloud.',
-      ttl: 1800,
-    })
+    if (previewDomain !== mainDomain) {
+      new DomainRecord(this, 'preview_ns0', {
+        dnsZone: previewDomainZone.domain,
+        type: 'NS',
+        name: '',
+        data: 'ns0.dom.scw.cloud.',
+        ttl: 1800,
+      })
+      new DomainRecord(this, 'preview_ns1', {
+        dnsZone: previewDomainZone.domain,
+        type: 'NS',
+        name: '',
+        data: 'ns1.dom.scw.cloud.',
+        ttl: 1800,
+      })
+    }
 
     // Email domain DNS Records
     new DomainRecord(this, 'spf', {

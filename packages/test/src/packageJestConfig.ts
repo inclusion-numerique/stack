@@ -59,7 +59,7 @@ export const packageJestConfig = ({
       '^@stack/cli/(.*)$': '<rootDir>/../../apps/cli/src/$1',
       '^@stack/cdk/(.*)$': '<rootDir>/../../packages/cdk/src/$1',
       '^@stack/config/(.*)$': '<rootDir>/../../packages/config/src/$1',
-      '^@stack/e2e/(.*)$': '<rootDir>/../../packages/e2e/src/$1',
+      '^@stack/ui/(.*)$': '<rootDir>/../../packages/ui/src/$1',
       '^@stack/emails/(.*)$': '<rootDir>/../../packages/emails/src/$1',
       '^@stack/lint/(.*)$': '<rootDir>/../../packages/lint/src/$1',
       '^@stack/storybook/(.*)$': '<rootDir>/../../packages/storybook/src/$1',

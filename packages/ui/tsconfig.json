@@ -10,7 +10,6 @@
       "@stack/web/*": ["../../apps/web/src/*"],
       "@stack/cdk/*": ["../../packages/cdk/src/*"],
       "@stack/config/*": ["../../packages/config/src/*"],
-      "@stack/e2e/*": ["../../packages/e2e/src/*"],
       "@stack/emails/*": ["../../packages/emails/src/*"],
       "@stack/lint/*": ["../../packages/lint/src/*"],
       "@stack/scaleway/*": ["../../packages/cdk/.gen/providers/scaleway/*"],

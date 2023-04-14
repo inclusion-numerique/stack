@@ -19,6 +19,11 @@ executors:
       - image: cimg/postgres:14.0
         environment:
           POSTGRES_USER: postgres
+  node-browsers:
+    docker:
+      - image: cimg/node:18.15.0-browsers
+        environment:
+          TZ: 'UTC'
   node-e2e:
     docker:
       - image: cimg/node:18.15.0-browsers
@@ -106,9 +111,6 @@ workflows:
       - test:
           requires:
             - prepare_workspace_dependencies
-      - test_components:
-          requires:
-            - prepare_workspace_dependencies
       - build_web:
           requires:
             - prepare_workspace_dependencies
@@ -118,17 +120,26 @@ workflows:
           requires:
             - prepare_workspace_dependencies
 
-      - test_e2e:
+      - test_web_components:
+          requires:
+            - prepare_workspace_dependencies
+
+      - test_ui_components:
+          requires:
+            - prepare_workspace_dependencies
+
+      - test_web_e2e:
           requires:
             - build_web
 
-      - deploy_web:
-          requires:
-            - lint
-            - test
-            - test_components
-            - chromatic
-            - test_e2e
+#      - deploy_web:
+#          requires:
+#            - lint
+#            - test
+#            - chromatic
+#            - test_web_components
+#            - test_ui_components
+#            - test_web_e2e
 
   project_infrastructure_deployment:
     # This workflow exclusively runs on the infra branch
@@ -191,11 +202,11 @@ jobs:
             - ./apps/cli/node_modules
             - ./packages/cdk/node_modules
             - ./packages/config/node_modules
-            - ./packages/e2e/node_modules
             - ./packages/emails/node_modules
             - ./packages/lint/node_modules
             - ./packages/storybook/node_modules
             - ./packages/test/node_modules
+            - ./packages/ui/node_modules
             - /home/circleci/.cache/Cypress
 
   prepare_web_prod_dependencies:
@@ -351,8 +362,8 @@ jobs:
           name: 'Build storybook and deploy on chromatic'
           command: pnpm --silent -F @stack/storybook chromatic
 
-  test_components:
-    executor: node-e2e
+  test_web_components:
+    executor: node-browsers
     resource_class: large
     parallelism: 1
     steps:
@@ -367,9 +378,24 @@ jobs:
       - add_dotenv_vars_to_bash_env
       - run:
           name: 'Run Cypress component testing'
-          command: pnpm --silent -F @stack/web cy run --component --record
+          command: pnpm --silent -F @stack/web cy run --component --record --parallel
 
-  test_e2e:
+  test_ui_components:
+    executor: node-browsers
+    resource_class: large
+    parallelism: 1
+    steps:
+      - checkout
+      - install_pnpm
+      - install_dependencies
+      - create_dotenv_file
+      - add_secrets_to_dotenv_file
+      - add_dotenv_vars_to_bash_env
+      - run:
+          name: 'Run Cypress component testing'
+          command: pnpm --silent -F @stack/ui cy run --component --record --parallel
+
+  test_web_e2e:
     executor: node-e2e
     resource_class: large
     parallelism: 1
@@ -383,12 +409,6 @@ jobs:
           command: pnpm --silent -F @stack/web prisma:generate
       - add_secrets_to_dotenv_file
       - run:
-          name: 'Install playwright'
-          # This will be instantly resolved from global store thanks to custom image playwright setup
-          command: |
-            pnpm --silent -F @stack/e2e install
-            pnpx playwright install
-      - run:
           name: 'Create CI database schema'
           command: |
             DATABASE_URL=$CI_DATABASE_URL pnpm --silent -F @stack/web prisma db push --skip-generate --accept-data-loss
@@ -401,16 +421,10 @@ jobs:
             DATABASE_URL=$CI_DATABASE_URL
             pnpm --silent -F @stack/web start
       - run:
-          name: 'Run e2e test'
+          name: 'Run cypress e2e tests'
           command: |
             DATABASE_URL=$CI_DATABASE_URL
-            pnpm --silent -F @stack/web e2e
-      - run:
-          name: 'Run playwright'
-          command: |
-            SHARD="$((${CIRCLE_NODE_INDEX}+1))"
-            DATABASE_URL=$CI_DATABASE_URL
-            pnpm --silent -F @stack/e2e playwright test --shard=${SHARD}/${CIRCLE_NODE_TOTAL}
+            pnpm --silent -F @stack/web cy run --record --parallel
 
   deploy_web:
     executor: node
