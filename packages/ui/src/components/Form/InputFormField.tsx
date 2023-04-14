@@ -13,6 +13,7 @@ export type InputFormFieldProps<T extends FieldValues> = {
   type?: Exclude<HTMLInputTypeAttribute, 'checkbox'>
   placeholder?: string
   valid?: string
+  icon?: string
 }
 
 const InputFormField = <T extends FieldValues>({
@@ -23,8 +24,10 @@ const InputFormField = <T extends FieldValues>({
   type = 'text',
   hint,
   disabled,
+  className,
   'data-testid': dataTestId,
   valid,
+  icon,
 }: UiComponentProps & InputFormFieldProps<T>) => {
   const id = `input-form-field__${path}`
 
@@ -45,30 +48,35 @@ const InputFormField = <T extends FieldValues>({
 
         return (
           <div
-            className={classNames('fr-input-group', {
-              'fr-input-group--error': error,
-              'fr-input-group--disabled': disabled,
-              'fr-input-group--valid': isTouched && !invalid,
-            })}
+            className={classNames(
+              'fr-input-group',
+              {
+                'fr-input-group--error': error,
+                'fr-input-group--disabled': disabled,
+                'fr-input-group--valid': isTouched && !invalid,
+              },
+              className,
+            )}
           >
             <label className="fr-label" htmlFor={id}>
               {label}
               {hint && <span className="fr-hint-text">{hint}</span>}
             </label>
-
-            <input
-              data-testid={dataTestId}
-              className="fr-input"
-              aria-describedby={ariaDescribedBy}
-              disabled={disabled}
-              type={type}
-              id={id}
-              placeholder={placeholder}
-              onBlur={onBlur}
-              onChange={onChange}
-              value={value ?? ''}
-              ref={ref}
-            />
+            <div className={icon ? `fr-input-wrap ${icon}` : ''}>
+              <input
+                data-testid={dataTestId}
+                className="fr-input"
+                aria-describedby={ariaDescribedBy}
+                disabled={disabled}
+                type={type}
+                id={id}
+                placeholder={placeholder}
+                onBlur={onBlur}
+                onChange={onChange}
+                value={value ?? ''}
+                ref={ref}
+              />
+            </div>
             {error && (
               <p id={`${id}__error`} className="fr-error-text">
                 {error.message}

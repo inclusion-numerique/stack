@@ -74,3 +74,10 @@ export const Hint: Story = {
     />
   ),
 }
+
+export const Icon: Story = {
+  name: 'Avec icone',
+  render: () => (
+    <Template label="Label" path="name" icon="fr-icon-alert-line" />
+  ),
+}
