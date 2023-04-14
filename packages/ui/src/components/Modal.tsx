@@ -9,6 +9,7 @@ type ModalProps = {
   children: ReactNode
   size?: 'sm' | 'md' | 'lg'
   buttons?: React.ReactElement<typeof Button>[]
+  open?: boolean
 }
 
 const sizes = {
@@ -24,6 +25,7 @@ const Modal = ({
   children,
   size = 'md',
   buttons,
+  open,
 }: UiComponentProps & ModalProps) => {
   const id = `fr-modal-${modalId || 1}`
   return (
@@ -31,12 +33,17 @@ const Modal = ({
       <button
         type="button"
         className="fr-btn"
-        data-fr-opened="false"
+        data-fr-opened={open || 'false'}
         aria-controls={id}
       >
         {buttonLabel}
       </button>
-      <dialog aria-labelledby={`title-${id}`} id={id} className="fr-modal">
+      <dialog
+        aria-labelledby={`title-${id}`}
+        id={id}
+        className="fr-modal"
+        open={open}
+      >
         <div className="fr-container fr-container--fluid fr-container-md">
           <div className="fr-grid-row fr-grid-row--center">
             <div className={sizes[size]}>

@@ -17,6 +17,7 @@ export const Default: Story = {
   args: {
     buttonLabel: 'Ouvrir la modal',
     title: 'Titre de la modal',
+    open: true,
     children: (
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas varius
@@ -42,6 +43,7 @@ export const Actions: Story = {
       <Button label="Bouton primaire" key="1" />,
       <Button label="Bouton secondaire" priority="secondary" key="2" />,
     ],
+    open: true,
     children: (
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas varius
@@ -64,6 +66,7 @@ export const Size: Story = {
     buttonLabel: 'Ouvrir la modal',
     title: 'Titre de la modal',
     size: 'sm',
+    open: true,
     children: (
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas varius
