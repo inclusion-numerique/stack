@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod'
 import { Meta, StoryObj } from '@storybook/react'
+import { useOnDiff } from '@stack/web/hooks/useOnDiff'
 import InputFormField, { InputFormFieldProps } from './InputFormField'
 
 const objectFormValidation = z
@@ -14,9 +15,10 @@ const objectFormValidation = z
   .strict()
 type ObjectFormData = z.infer<typeof objectFormValidation>
 
-const Template = (
-  args: Omit<InputFormFieldProps<ObjectFormData>, 'control'>,
-) => {
+const Template = ({
+  path,
+  ...args
+}: Omit<InputFormFieldProps<ObjectFormData>, 'control'>) => {
   const form = useForm<ObjectFormData>({
     resolver: zodResolver(objectFormValidation),
     reValidateMode: 'onChange',
@@ -28,9 +30,24 @@ const Template = (
     },
   })
 
+  useOnDiff(form, () => {
+    if (path === 'email' || path === 'email2') {
+      form.setValue(
+        path,
+        form.formState.defaultValues
+          ? (form.formState.defaultValues[path] as string)
+          : '',
+        {
+          shouldTouch: true,
+          shouldValidate: true,
+        },
+      )
+    }
+  })
+
   return (
     <form>
-      <InputFormField control={form.control} {...args} />
+      <InputFormField control={form.control} path={path} {...args} />
     </form>
   )
 }
@@ -46,38 +63,52 @@ type Story = StoryObj<typeof InputFormField>
 
 export const Default: Story = {
   name: 'Etat par défaut',
-  render: () => <Template label="Label" path="name" />,
+  render: (args) => <Template {...args} path="name" />,
+  args: {
+    label: 'Label',
+  },
 }
 
 export const Success: Story = {
   name: 'Etat succès',
-  render: () => <Template label="Label" path="email" valid="Email valide" />,
+  render: (args) => <Template {...args} path="email" />,
+  args: {
+    label: 'Label',
+    valid: 'Email valide',
+  },
 }
 
 export const Error: Story = {
   name: 'Etat erreur',
-  render: () => <Template label="Label" path="email2" />,
+  render: (args) => <Template {...args} path="email2" />,
+  args: {
+    label: 'Label',
+  },
 }
 
 export const Disabled: Story = {
   name: 'Etat désactivé',
-  render: () => <Template label="Label" path="name" disabled />,
+  render: (args) => <Template {...args} path="name" disabled />,
+  args: {
+    label: 'Label',
+    disabled: true,
+  },
 }
 
 export const Hint: Story = {
   name: "Avec texte d'aide",
-  render: () => (
-    <Template
-      label="Label"
-      path="name"
-      hint="texte de description additionnel"
-    />
-  ),
+  render: (args) => <Template {...args} path="name" />,
+  args: {
+    label: 'Label',
+    hint: 'texte de description additionnel',
+  },
 }
 
 export const Icon: Story = {
   name: 'Avec icone',
-  render: () => (
-    <Template label="Label" path="name" icon="fr-icon-alert-line" />
-  ),
+  render: (args) => <Template {...args} path="name" />,
+  args: {
+    label: 'Label',
+    icon: 'fr-icon-alert-line',
+  },
 }
