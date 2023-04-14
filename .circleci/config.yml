@@ -76,7 +76,10 @@ workflows:
       - lint:
           requires:
             - prepare_workspace_dependencies
-      - test:
+      - test_packages:
+          requires:
+            - prepare_workspace_dependencies
+      - test_web:
           requires:
             - prepare_workspace_dependencies
       - build_web:
@@ -103,7 +106,8 @@ workflows:
 #      - deploy_web:
 #          requires:
 #            - lint
-#            - test
+#            - test_packages
+#            - test_web
 #            - chromatic
 #            - test_web_components
 #            - test_ui_components
@@ -240,7 +244,21 @@ jobs:
           name: 'Test cdk'
           command: pnpm -F @stack/cdk test
 
-  test:
+  test_packages:
+    executor: node
+    resource_class: large
+    steps:
+      - checkout
+      - install_dependencies
+      - create_dotenv_file
+      - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @stack/web prisma:generate
+      - run:
+          name: 'Test all packages except @stack/web'
+          command: pnpm --silent -F '!@stack/web' test
+
+  test_web:
     executor: node
     resource_class: large
     steps:
