@@ -47,7 +47,7 @@ const Template = ({
 }
 
 const meta: Meta<typeof InputFormField> = {
-  title: 'DSFR Component/Input Form Field',
+  title: 'DSFR Component/Form/Input',
   component: InputFormField,
 }
 
@@ -99,7 +99,7 @@ export const Hint: Story = {
 }
 
 export const Textarea: Story = {
-  name: 'Zone de text',
+  name: 'Zone de texte',
   render: (args) => <Template {...args} path="name" />,
   args: {
     label: 'Label',

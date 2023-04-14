@@ -4,8 +4,8 @@ import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod'
 import { Meta, StoryObj } from '@storybook/react'
 import { useOnDiff } from '@stack/web/hooks/useOnDiff'
-import RadioFormField, { RadioFormFieldProps } from './RadioFormField'
-import { RadioOption } from './utils/options'
+import SelectFormField, { SelectFormFieldProps } from './SelectFormField'
+import { SelectOption } from './utils/options'
 
 const objectFormValidation = z
   .object({
@@ -19,7 +19,7 @@ type ObjectFormData = z.infer<typeof objectFormValidation>
 const Template = ({
   path,
   ...args
-}: Omit<RadioFormFieldProps<ObjectFormData>, 'control'>) => {
+}: Omit<SelectFormFieldProps<ObjectFormData>, 'control'>) => {
   const form = useForm<ObjectFormData>({
     resolver: zodResolver(objectFormValidation),
     reValidateMode: 'onChange',
@@ -37,21 +37,27 @@ const Template = ({
 
   return (
     <form>
-      <RadioFormField control={form.control} path={path} {...args} />
+      <SelectFormField control={form.control} path={path} {...args} />
     </form>
   )
 }
 
-const meta: Meta<typeof RadioFormField> = {
-  title: 'DSFR Component/Form/Radio',
-  component: RadioFormField,
+const meta: Meta<typeof SelectFormField> = {
+  title: 'DSFR Component/Form/Select',
+  component: SelectFormField,
 }
 
 export default meta
 
-type Story = StoryObj<typeof RadioFormField>
+type Story = StoryObj<typeof SelectFormField>
 
-const options: RadioOption[] = [
+const options: SelectOption[] = [
+  {
+    name: 'Selectionnez une option',
+    value: '',
+    disabled: true,
+    hidden: true,
+  },
   {
     name: 'Choix 1',
     value: 'choice-1',
@@ -67,43 +73,11 @@ const options: RadioOption[] = [
 ]
 
 export const Default: Story = {
-  name: 'Liste verticale',
+  name: 'Liste déroulante',
   render: (args) => <Template {...args} path="choice" />,
   args: {
     label: 'Label',
     options,
-  },
-}
-
-export const Inline: Story = {
-  name: 'Liste horizontale',
-  render: (args) => <Template {...args} path="choice" />,
-  args: {
-    label: 'Label',
-    options,
-    inline: true,
-  },
-}
-
-export const Hint: Story = {
-  name: "Liste avec texte d'aide",
-  render: (args) => <Template {...args} path="choice" />,
-  args: {
-    label: 'Label',
-    options,
-    hint: 'Texte de description additionnel',
-  },
-}
-
-export const Hints: Story = {
-  name: "Liste avec textes d'aide",
-  render: (args) => <Template {...args} path="choice" />,
-  args: {
-    label: 'Label',
-    options: options.map((option) => ({
-      ...option,
-      hint: `Aide pour ${option.name}`,
-    })),
   },
 }
 
@@ -117,12 +91,12 @@ export const Error: Story = {
 }
 
 export const Success: Story = {
-  name: 'État succès',
+  name: 'État de succès',
   render: (args) => <Template {...args} path="choiceSuccess" />,
   args: {
     label: 'Label',
-    options,
     valid: 'Choix valide',
+    options,
   },
 }
 
@@ -131,17 +105,17 @@ export const Disabled: Story = {
   render: (args) => <Template {...args} path="choice" />,
   args: {
     label: 'Label',
-    options,
     disabled: true,
+    options,
   },
 }
 
-export const Tailles: Story = {
-  name: 'Petite radio',
+export const Hint: Story = {
+  name: "Liste avec texte d'aide",
   render: (args) => <Template {...args} path="choice" />,
   args: {
     label: 'Label',
+    hint: 'Texte de description additionnel',
     options,
-    small: true,
   },
 }
