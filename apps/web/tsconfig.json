@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "strictNullChecks": true,
     "module": "esnext",
-    "types": ["cypress"],
+    "types": ["cypress", "jest", "node"],
     "paths": {
       "@stack/cli/*": ["../../apps/cli/src/*"],
       "@stack/web/*": ["src/*"],
