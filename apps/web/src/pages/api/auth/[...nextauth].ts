@@ -34,6 +34,7 @@ export const authOptions: NextAuthOptions = {
       )
     },
     session: ({ session, user }) => {
+      // eslint-disable-next-line no-param-reassign
       session.user.id = user.id
       return session
     },

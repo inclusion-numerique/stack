@@ -1,21 +1,20 @@
 import Link from 'next/link'
-import type { Route } from 'next'
 import classNames from 'classnames'
 
-export type BreadCrumbParent<T extends string> = {
+export type BreadCrumbParent = {
   title: string
-  path: Route<T>
+  path: string
 }
-export type BreadCrumbParents<T extends string> = BreadCrumbParent<T>[]
+export type BreadCrumbParents = BreadCrumbParent[]
 
-export const Breadcrumbs = <T extends string>({
+export const Breadcrumbs = ({
   currentPage,
   parents = [],
   hideRoot,
   className,
 }: {
   currentPage: string
-  parents?: BreadCrumbParents<T>
+  parents?: BreadCrumbParents
   hideRoot?: boolean
   className?: string
 }) => (
