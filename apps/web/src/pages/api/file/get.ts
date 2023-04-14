@@ -4,14 +4,14 @@ import { ServerWebAppConfig } from '@stack/web/webAppConfig'
 
 export type AttachmentGetApiResponse = { url: string }
 
-const get = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== 'POST') {
+const get = async (request: NextApiRequest, res: NextApiResponse) => {
+  if (request.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
   try {
     // Get info from body
-    const { key } = req.body
+    const { key } = request.body
 
     const { url } = await createSignedGetUrl({
       key,

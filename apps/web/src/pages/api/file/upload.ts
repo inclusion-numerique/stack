@@ -5,16 +5,16 @@ import { ServerWebAppConfig } from '@stack/web/webAppConfig'
 export type AttachmentUploadApiResponse = { url: string; key: string }
 
 const upload = async (
-  req: NextApiRequest,
+  request: NextApiRequest,
   res: NextApiResponse<AttachmentUploadApiResponse | { error: string }>,
 ) => {
-  if (req.method !== 'POST') {
+  if (request.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
   try {
     // Get info from body
-    const { name, type, directory } = req.body
+    const { name, type, directory } = request.body
 
     const { url, key } = await createSignedUploadUrl({
       name,

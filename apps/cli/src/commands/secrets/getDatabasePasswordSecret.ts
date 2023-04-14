@@ -17,7 +17,7 @@ export const getDatabasePasswordSecret = new Command()
   .action(async (namespace) => {
     const secretName = databasePasswordSecretName(namespace)
 
-    const { secrets } = await listSecrets({ tags: ['database'] })
+    const { secrets } = await listSecrets()
     const { id } = findSecretByName(secrets, secretName)
     const value = await configGetSecretValue({ id })
 

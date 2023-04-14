@@ -4,7 +4,7 @@ import { createContext } from '@stack/web/server/rpc/rpcContext'
 const t = initTRPC.context<typeof createContext>().create()
 
 export const appRouter = t.router({
-  testReset: t.procedure.mutation( () => {
+  testReset: t.procedure.mutation(() => {
     if (process.env.CI !== 'true') {
       throw new Error('Not allowed to reset state')
     }

@@ -1,4 +1,3 @@
-/* eslint vars-on-top 0 */
 import { PrismaClient } from '@prisma/client'
 
 // See https://www.prisma.io/docs/guides/database/troubleshooting-orm/help-articles/nextjs-prisma-client-dev-practices

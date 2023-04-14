@@ -77,9 +77,9 @@ const AttachmentUploader = ({
     maxFiles: 10,
     preventDropOnDocument: true,
     disabled: false, // TODO When uploading?
-    onError: (err: Error) => {
+    onError: (error: Error) => {
       // TODO SENTRY
-      console.error(err)
+      console.error(error)
     },
     validator,
   })

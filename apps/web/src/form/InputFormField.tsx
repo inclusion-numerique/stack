@@ -13,8 +13,8 @@ export const InputFormField = <T extends FieldValues>({
   disabled,
   multiple,
   'data-testid': dataTestId,
-  onBlur: onBlurProp,
-  onKeypress: onKeypressProp,
+  onBlur: onBlurProperty,
+  onKeypress: onKeypressProperty,
 }: {
   control: Control<T>
   path: FieldPath<T>
@@ -57,8 +57,8 @@ export const InputFormField = <T extends FieldValues>({
             type={type}
             id={id}
             placeholder={placeholder}
-            onBlur={onBlurProp ?? onBlur}
-            onKeyPress={onKeypressProp}
+            onBlur={onBlurProperty ?? onBlur}
+            onKeyPress={onKeypressProperty}
             onChange={onChange}
             value={value ?? ''}
             ref={ref}

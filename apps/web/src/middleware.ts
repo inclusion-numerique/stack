@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { ServerWebAppConfig } from '@stack/web/webAppConfig'
 
 const nodeEnvironment = process.env.NODE_ENV
-const isProd = nodeEnvironment === 'production'
+const isProduction = nodeEnvironment === 'production'
 
 const contentSecurityPolicy = `
   default-src 'self' https://matomo.incubateur.anct.gouv.fr https://sentry.incubateur.net;
@@ -20,7 +20,7 @@ const contentSecurityPolicy = `
   frame-ancestors 'self' https://matomo.incubateur.anct.gouv.fr;
   form-action 'self';
   base-uri 'self';
-  ${isProd ? 'upgrade-insecure-requests true;' : ''}
+  ${isProduction ? 'upgrade-insecure-requests true;' : ''}
 `
   .replace(/\s{2,}/g, ' ')
   .trim()
@@ -38,7 +38,7 @@ const middleware = (request: NextRequest) => {
    * But they keep applying this redirect in recommended SSL configs: https://ssl-config.mozilla.org/
    */
   if (
-    isProd &&
+    isProduction &&
     // We redirect if protocol is not secure https
     (forwardedProto === 'http' ||
       // If we have a base url defined and the host is different

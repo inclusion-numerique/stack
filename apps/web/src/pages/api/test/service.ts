@@ -9,7 +9,7 @@ export const getValue = async () => Promise.resolve(value)
 
 export const updateValue = (newValue: string) => {
   if (newValue) {
-      value = newValue
+    value = newValue
   }
 
   return Promise.resolve()

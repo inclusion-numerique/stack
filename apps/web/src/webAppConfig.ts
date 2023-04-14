@@ -65,5 +65,5 @@ export const PublicWebAppConfig = {
   Matomo: {
     host: process.env.NEXT_PUBLIC_MATOMO_HOST ?? '',
     siteId: process.env.NEXT_PUBLIC_MATOMO_SITE_ID ?? '',
-  }
+  },
 }

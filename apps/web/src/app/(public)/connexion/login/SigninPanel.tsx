@@ -15,34 +15,34 @@ const signinErrorMessage = (error?: string): string | undefined => {
 }
 
 export const SigninPanel = ({ error }: { error?: string }) => (
-    <AuthCard>
-      <h2 className={`fr-mb-12v ${styles.signinTitle}`}>
-        Se connecter à <br />
-        {PublicWebAppConfig.projectTitle}
-      </h2>
+  <AuthCard>
+    <h2 className={`fr-mb-12v ${styles.signinTitle}`}>
+      Se connecter à <br />
+      {PublicWebAppConfig.projectTitle}
+    </h2>
 
-      {error ? (
-        <div className="fr-alert fr-alert--error fr-alert--sm fr-mb-6v">
-          <p>{signinErrorMessage(error)}</p>
-        </div>
-      ) : null}
-
-      <div>
-        <EmailSigninForm />
+    {error ? (
+      <div className="fr-alert fr-alert--error fr-alert--sm fr-mb-6v">
+        <p>{signinErrorMessage(error)}</p>
       </div>
-      <hr className="fr-mt-6v" />
-      <p className="fr-mt-6v fr-text--bold">
-        Espace réservé aux agents de l&apos;ANCT et du Ministère de la
-        Transition écologique et de la Cohésion des territoires
-      </p>
-      <p>
-        Veuillez vous assurer que vous utilisez votre adresse professionnelle
-        pour la connexion a ce service. <br />
-        <br />
-        En cas de problèmes ou questions merci de contacter{' '}
-        <a href={`mailto:${PublicWebAppConfig.contactEmail}`}>
-          {PublicWebAppConfig.contactEmail}
-        </a>
-      </p>
-    </AuthCard>
-  )
+    ) : null}
+
+    <div>
+      <EmailSigninForm />
+    </div>
+    <hr className="fr-mt-6v" />
+    <p className="fr-mt-6v fr-text--bold">
+      Espace réservé aux agents de l&apos;ANCT et du Ministère de la Transition
+      écologique et de la Cohésion des territoires
+    </p>
+    <p>
+      Veuillez vous assurer que vous utilisez votre adresse professionnelle pour
+      la connexion a ce service. <br />
+      <br />
+      En cas de problèmes ou questions merci de contacter{' '}
+      <a href={`mailto:${PublicWebAppConfig.contactEmail}`}>
+        {PublicWebAppConfig.contactEmail}
+      </a>
+    </p>
+  </AuthCard>
+)

@@ -4,8 +4,8 @@ import { objectFormValidation } from './type'
 
 const get = async () => getValue()
 
-const put = async (req: NextApiRequest, res: NextApiResponse) => {
-  const body = objectFormValidation.safeParse(req.body)
+const put = async (request: NextApiRequest, res: NextApiResponse) => {
+  const body = objectFormValidation.safeParse(request.body)
   if (!body.success) {
     return res.status(400).json(body.error)
   }
@@ -14,15 +14,15 @@ const put = async (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(200).send('OK')
 }
 
-const test = async (req: NextApiRequest, res: NextApiResponse) => {
+const test = async (request: NextApiRequest, res: NextApiResponse) => {
   try {
-    if (req.method === 'GET') {
+    if (request.method === 'GET') {
       const name = await get()
       return res.status(200).json(name)
     }
 
-    if (req.method === 'PUT') {
-      await put(req, res)
+    if (request.method === 'PUT') {
+      await put(request, res)
       return
     }
 
