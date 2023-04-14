@@ -20,9 +20,9 @@ Project is hosted by Scaleway, provisioning is done via Terraform with CDK.
 
 ### Project Stack
 
-Project stack will deploy only on a pipeline triggered from the "infra" branch and will provision resources shared between all services of this project.
+Project stack will deploy only on a CI pipeline triggered manually and will provision resources shared between all services of this project.
 
-- First, deploy the project stack by triggering a ci workflow on "infra branch".
+- First, deploy the project stack by triggering a ci workflow manually and adding the parameter "trigger_workflow" with value "project_stack_deployment"
 - Cancel other workflows until project infrastructure is deployed
 - When project infrastructure is deployed, manually validate the transactional email domain in scaleway console to verify the domain
 

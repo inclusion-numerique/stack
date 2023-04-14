@@ -1,5 +1,5 @@
 // eslint-disable-next-line unicorn/prevent-abbreviations
-import { Argument, Command } from '@commander-js/extra-typings'
+import { Command } from '@commander-js/extra-typings'
 import { listSecrets } from '@stack/config/secrets/listSecrets'
 import { output } from '@stack/cli/output'
 import { getSecretValue } from '@stack/config/secrets/getSecretValue'
@@ -11,9 +11,8 @@ import { appendEnvVariablesToDotEnvFile } from '@stack/cli/dotEnvFile'
 // eslint-disable-next-line unicorn/prevent-abbreviations
 export const createDotEnvFromSecrets = new Command()
   .command('dotenv:from-secrets')
-  .addArgument(new Argument('<tags>', 'Tags (project, web, ci, dev'))
-  .action(async (tags) => {
-    const list = await listSecrets({ tags: tags.split(',') })
+  .action(async () => {
+    const list = await listSecrets()
 
     const environmentVariables = await Promise.all(
       list.secrets.map(async ({ name, id }) => {
@@ -23,9 +22,7 @@ export const createDotEnvFromSecrets = new Command()
     )
 
     await appendEnvVariablesToDotEnvFile({
-      comment: `Secrets variables with tag${
-        tags.length === 1 ? '' : 's'
-      } "${tags}"`,
+      comment: 'Secrets variables',
       environmentVariables,
     })
 

@@ -1,6 +1,6 @@
 import { secretClient } from '@stack/config/secrets/secretClient'
 
-export const listSecrets = ({ tags }: { tags?: string[] } = {}) =>
+export const listSecrets = () =>
   secretClient
     .get<{
       secrets: {
@@ -17,8 +17,6 @@ export const listSecrets = ({ tags }: { tags?: string[] } = {}) =>
       }[]
     }>('/', {
       params: {
-        // FIX ME does not work for multiple tags and not documented by Scaleway API
-        tags: tags?.join(', '),
         page_size: 100,
       },
     })

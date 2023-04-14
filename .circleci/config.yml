@@ -572,17 +572,9 @@ commands:
   add_secrets_to_dotenv_file:
     steps:
       - run:
-          name: "Add ci secrets to .env"
+          name: "Add secrets to .env"
           command: |
-            SCW_ACCESS_KEY=$CI_SCW_ACCESS_KEY SCW_SECRET_KEY=$CI_SCW_SECRET_KEY pnpm --silent cli dotenv:from-secrets ci
-      - run:
-          name: "Add project secrets to .env"
-          command: |
-            pnpm --silent cli dotenv:from-secrets project
-      - run:
-          name: "Add web secrets to .env"
-          command: |
-            pnpm --silent cli dotenv:from-secrets web
+            SCW_ACCESS_KEY=$CI_SCW_ACCESS_KEY SCW_SECRET_KEY=$CI_SCW_SECRET_KEY pnpm --silent cli dotenv:from-secrets
 
   setup_next_public_env:
     steps:
