@@ -1,6 +1,6 @@
-import React, { HTMLProps } from 'react'
+import React, { ComponentProps, forwardRef } from 'react'
 import classNames from 'classnames'
-import Link, { LinkProps } from 'next/link'
+import Link from 'next/link'
 import { UiComponentProps } from '../utils/uiComponentProps'
 
 type ButtonLinkProps = {
@@ -10,33 +10,40 @@ type ButtonLinkProps = {
   size?: 'sm' | 'md' | 'lg'
 }
 
-const ButtonLink = ({
-  className,
-  priority = 'primary',
-  icon,
-  iconPosition,
-  size = 'md',
-  children,
-  ...rest
-}: UiComponentProps &
-  ButtonLinkProps &
-  LinkProps &
-  Omit<HTMLProps<HTMLAnchorElement>, 'size' | 'ref'>) => (
-  <Link
-    className={classNames(
-      'fr-btn',
-      {
-        [`fr-btn--${priority}`]: priority !== 'primary',
-        [`fr-btn--icon-${iconPosition || 'left'}`]: icon,
-        [`fr-btn--${size}`]: size !== 'md',
-      },
-      icon,
+const ButtonLink = forwardRef<
+  HTMLAnchorElement,
+  UiComponentProps & ButtonLinkProps & ComponentProps<typeof Link>
+>(
+  (
+    {
       className,
-    )}
-    {...rest}
-  >
-    {children}
-  </Link>
+      priority = 'primary',
+      icon,
+      iconPosition,
+      size = 'md',
+      children,
+      ...rest
+    },
+    ref,
+  ) => (
+    <Link
+      ref={ref}
+      className={classNames(
+        'fr-btn',
+        {
+          [`fr-btn--${priority}`]: priority !== 'primary',
+          [`fr-btn--icon-${iconPosition || 'left'}`]: icon,
+          [`fr-btn--${size}`]: size !== 'md',
+        },
+        icon,
+        className,
+      )}
+      {...rest}
+    >
+      {children}
+    </Link>
+  ),
 )
+ButtonLink.displayName = 'ButtonLink'
 
 export default ButtonLink

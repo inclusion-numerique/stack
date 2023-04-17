@@ -1,6 +1,6 @@
-import React, { HTMLProps } from 'react'
+import React, { ComponentProps, forwardRef } from 'react'
 import classNames from 'classnames'
-import Link, { LinkProps } from 'next/link'
+import Link from 'next/link'
 import { UiComponentProps } from '../utils/uiComponentProps'
 
 type CommonProps = {
@@ -19,33 +19,41 @@ type SimpleDSFRLinkProps = {
   iconPosition?: 'right' | 'left'
 }
 
-const DSFRLink = ({
-  className,
-  simple,
-  children,
-  icon,
-  iconPosition = 'right',
-  size,
-  ...rest
-}: UiComponentProps &
-  CommonProps &
-  (DSFRLinkProps | SimpleDSFRLinkProps) &
-  LinkProps &
-  Omit<HTMLProps<HTMLAnchorElement>, 'size' | 'ref'>) => (
-  <Link
-    className={classNames(
-      {
-        'fr-link': simple,
-        [`fr-link--icon-${iconPosition}`]: icon,
-        [`fr-link--${size || ''}`]: size,
-      },
-      icon,
+const DSFRLink = forwardRef<
+  HTMLAnchorElement,
+  UiComponentProps &
+    CommonProps &
+    (DSFRLinkProps | SimpleDSFRLinkProps) &
+    ComponentProps<typeof Link>
+>(
+  (
+    {
       className,
-    )}
-    {...rest}
-  >
-    {children}
-  </Link>
+      simple,
+      children,
+      icon,
+      iconPosition = 'right',
+      size,
+      ...rest
+    },
+    ref,
+  ) => (
+    <Link
+      ref={ref}
+      className={classNames(
+        {
+          'fr-link': simple,
+          [`fr-link--icon-${iconPosition}`]: icon,
+          [`fr-link--${size || ''}`]: size,
+        },
+        icon,
+        className,
+      )}
+      {...rest}
+    >
+      {children}
+    </Link>
+  ),
 )
 
 export default DSFRLink
