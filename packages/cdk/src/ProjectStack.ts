@@ -105,7 +105,7 @@ export class ProjectStack extends TerraformStack {
             subdomain: previewSubdomain,
           })
 
-    // If preview domain or email from domain differ, create different zones for those
+    // If email domain differ, create different zone
     const emailDomainZone = mainDomainZone
 
     const transactionalEmailDomain = new TemDomain(
@@ -237,14 +237,14 @@ export class ProjectStack extends TerraformStack {
 
     // Main domain DNS Records
     new DomainRecord(this, 'main_ns0', {
-      dnsZone: mainDomainZone.domain,
+      dnsZone: mainDomainZone.id,
       type: 'NS',
       name: '',
       data: 'ns0.dom.scw.cloud.',
       ttl: 1800,
     })
     new DomainRecord(this, 'main_ns1', {
-      dnsZone: mainDomainZone.domain,
+      dnsZone: mainDomainZone.id,
       type: 'NS',
       name: '',
       data: 'ns1.dom.scw.cloud.',
@@ -253,14 +253,14 @@ export class ProjectStack extends TerraformStack {
     // Preview domain DNS Records
     if (previewDomain !== mainDomain) {
       new DomainRecord(this, 'preview_ns0', {
-        dnsZone: previewDomainZone.domain,
+        dnsZone: previewDomainZone.id,
         type: 'NS',
         name: '',
         data: 'ns0.dom.scw.cloud.',
         ttl: 1800,
       })
       new DomainRecord(this, 'preview_ns1', {
-        dnsZone: previewDomainZone.domain,
+        dnsZone: previewDomainZone.id,
         type: 'NS',
         name: '',
         data: 'ns1.dom.scw.cloud.',
@@ -270,7 +270,7 @@ export class ProjectStack extends TerraformStack {
 
     // Email domain DNS Records
     new DomainRecord(this, 'spf', {
-      dnsZone: emailDomainZone.domain,
+      dnsZone: emailDomainZone.id,
       type: 'TXT',
       name: '',
       data: `v=spf1 ${transactionalEmailDomain.spfConfig} -all`,
@@ -278,14 +278,14 @@ export class ProjectStack extends TerraformStack {
     })
     // MX is recommended for improved deverability
     new DomainRecord(this, 'mx', {
-      dnsZone: emailDomainZone.domain,
+      dnsZone: emailDomainZone.id,
       type: 'MX',
       name: '',
       data: '1 incubateur.anct.gouv.fr.',
       ttl: 3600,
     })
     new DomainRecord(this, 'dkim', {
-      dnsZone: emailDomainZone.domain,
+      dnsZone: emailDomainZone.id,
       type: 'TXT',
       name: `${transactionalEmailDomain.projectId}._domainkey`,
       data: transactionalEmailDomain.dkimConfig,

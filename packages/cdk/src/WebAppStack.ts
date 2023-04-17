@@ -21,7 +21,11 @@ import {
   containerNamespaceName,
   databaseInstanceName,
   mainDomain,
+  mainRootDomain,
+  mainSubdomain,
   previewDomain,
+  previewRootDomain,
+  previewSubdomain,
   projectSlug,
   projectTitle,
   region,
@@ -194,14 +198,15 @@ export class WebAppStack extends TerraformStack {
       deploy: true,
     })
 
-    const rootZone = new DataScalewayDomainZone(this, 'dnsZone', {
-      domain: isMain ? mainDomain : previewDomain,
+    const domainZone = new DataScalewayDomainZone(this, 'dnsZone', {
+      domain: isMain ? mainRootDomain : previewRootDomain,
+      subdomain: isMain ? mainSubdomain : previewSubdomain,
     })
 
     const webDnsRecordConfig: DomainRecordConfig = subdomain
       ? {
           type: 'CNAME',
-          dnsZone: rootZone.domain,
+          dnsZone: domainZone.id,
           name: subdomain,
           data: `${container.domainName}.`,
           ttl: 60 * 5,
@@ -209,7 +214,7 @@ export class WebAppStack extends TerraformStack {
       : {
           // Root domain record cannot be CNAME
           type: 'ALIAS',
-          dnsZone: rootZone.domain,
+          dnsZone: domainZone.id,
           name: '',
           data: `${container.domainName}.`,
           ttl: 60 * 5,
