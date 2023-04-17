@@ -14,8 +14,17 @@ export const cypressProjectId = 'ns2oqz'
 export const databaseInstanceName = process.env.DATABASE_INSTANCE_NAME ?? ''
 export const containerNamespaceName = process.env.CONTAINER_NAMESPACE_NAME ?? ''
 export const region = process.env.SCW_DEFAULT_REGION ?? ''
-export const mainDomain = process.env.MAIN_DOMAIN ?? ''
-export const previewDomain = process.env.PREVIEW_DOMAIN ?? ''
+export const mainRootDomain = process.env.MAIN_ROOT_DOMAIN ?? ''
+export const previewRootDomain = process.env.PREVIEW_ROOT_DOMAIN ?? ''
+export const mainSubdomain = process.env.MAIN_SUBDOMAIN ?? ''
+export const previewSubdomain = process.env.PREVIEW_SUBDOMAIN ?? ''
+
+export const mainDomain = mainSubdomain
+  ? `${mainSubdomain}.${mainRootDomain}`
+  : mainRootDomain
+export const previewDomain = previewSubdomain
+  ? `${previewSubdomain}.${previewRootDomain}`
+  : previewRootDomain
 export const chromaticAppId = process.env.CHROMATIC_APP_ID ?? ''
 export const publicContactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? ''
 export const publicSentryDsn = process.env.NEXT_PUBLIC_SENTRY_DSN ?? ''

@@ -13,8 +13,12 @@ import {
   containerNamespaceName,
   databaseInstanceName,
   mainDomain,
+  mainRootDomain,
+  mainSubdomain,
   nextTelemetryDisabled,
   previewDomain,
+  previewRootDomain,
+  previewSubdomain,
   publicContactEmail,
   publicMatomoHost,
   publicMatomoSiteId,
@@ -89,16 +93,16 @@ export class ProjectStack extends TerraformStack {
     terraformBackend(this, 'project')
 
     const mainDomainZone = new DataScalewayDomainZone(this, 'mainDomainZone', {
-      domain: mainDomain,
-      subdomain: '',
+      domain: mainRootDomain,
+      subdomain: mainSubdomain,
     })
 
     const previewDomainZone =
       mainDomain === previewDomain
         ? mainDomainZone
         : new DataScalewayDomainZone(this, 'previewDomainZone', {
-            domain: previewDomain,
-            subdomain: '',
+            domain: previewRootDomain,
+            subdomain: previewSubdomain,
           })
 
     // If preview domain or email from domain differ, create different zones for those
