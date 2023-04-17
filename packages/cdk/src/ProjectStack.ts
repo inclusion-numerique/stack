@@ -35,9 +35,9 @@ import { ObjectBucket } from '@stack/scaleway/object-bucket'
 import { RegistryNamespace } from '@stack/scaleway/registry-namespace'
 import { Cockpit } from '@stack/scaleway/cockpit'
 import { DataScalewayDomainZone } from '@stack/scaleway/data-scaleway-domain-zone'
-import { DataScalewayTemDomain } from '@stack/scaleway/data-scaleway-tem-domain'
 import { CockpitGrafanaUser } from '@stack/scaleway/cockpit-grafana-user'
 import { CockpitToken } from '@stack/scaleway/cockpit-token'
+import { TemDomain } from '@stack/scaleway/tem-domain'
 
 export const projectStackVariables = [
   'SCW_DEFAULT_ORGANIZATION_ID',
@@ -108,10 +108,11 @@ export class ProjectStack extends TerraformStack {
     // If preview domain or email from domain differ, create different zones for those
     const emailDomainZone = mainDomainZone
 
-    const transactionalEmailDomain = new DataScalewayTemDomain(
+    const transactionalEmailDomain = new TemDomain(
       this,
       'transactionalEmailDomain',
       {
+        acceptTos: true,
         name: environmentVariables.EMAIL_FROM_DOMAIN.value,
       },
     )

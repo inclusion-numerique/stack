@@ -15,7 +15,7 @@ export interface DataScalewayAccountSshKeyConfig extends cdktf.TerraformMetaArgu
   */
   readonly id?: string;
   /**
-  * The name of the SSH key
+  * The name of the iam SSH key
   * 
   * Docs at Terraform Registry: {@link https://www.terraform.io/docs/providers/scaleway/d/account_ssh_key#name DataScalewayAccountSshKey#name}
   */
@@ -54,8 +54,8 @@ export class DataScalewayAccountSshKey extends cdktf.TerraformDataSource {
       terraformResourceType: 'scaleway_account_ssh_key',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.13.1',
-        providerVersionConstraint: '>= 2.13.1'
+        providerVersion: '2.16.3',
+        providerVersionConstraint: '>= 2.16.3'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -73,6 +73,21 @@ export class DataScalewayAccountSshKey extends cdktf.TerraformDataSource {
   // ==========
   // ATTRIBUTES
   // ==========
+
+  // created_at - computed: true, optional: false, required: false
+  public get createdAt() {
+    return this.getStringAttribute('created_at');
+  }
+
+  // disabled - computed: true, optional: false, required: false
+  public get disabled() {
+    return this.getBooleanAttribute('disabled');
+  }
+
+  // fingerprint - computed: true, optional: false, required: false
+  public get fingerprint() {
+    return this.getStringAttribute('fingerprint');
+  }
 
   // id - computed: true, optional: true, required: false
   private _id?: string; 
@@ -135,6 +150,11 @@ export class DataScalewayAccountSshKey extends cdktf.TerraformDataSource {
   // Temporarily expose input value. Use with caution.
   public get sshKeyIdInput() {
     return this._sshKeyId;
+  }
+
+  // updated_at - computed: true, optional: false, required: false
+  public get updatedAt() {
+    return this.getStringAttribute('updated_at');
   }
 
   // =========

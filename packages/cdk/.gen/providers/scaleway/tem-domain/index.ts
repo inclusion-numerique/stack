@@ -8,6 +8,12 @@ import * as cdktf from 'cdktf';
 
 export interface TemDomainConfig extends cdktf.TerraformMetaArguments {
   /**
+  * Accept the Scaleway Terms of Service
+  * 
+  * Docs at Terraform Registry: {@link https://www.terraform.io/docs/providers/scaleway/r/tem_domain#accept_tos TemDomain#accept_tos}
+  */
+  readonly acceptTos: boolean | cdktf.IResolvable;
+  /**
   * Docs at Terraform Registry: {@link https://www.terraform.io/docs/providers/scaleway/r/tem_domain#id TemDomain#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
@@ -168,8 +174,8 @@ export class TemDomain extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_tem_domain',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.13.1',
-        providerVersionConstraint: '>= 2.13.1'
+        providerVersion: '2.16.3',
+        providerVersionConstraint: '>= 2.16.3'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -179,6 +185,7 @@ export class TemDomain extends cdktf.TerraformResource {
       connection: config.connection,
       forEach: config.forEach
     });
+    this._acceptTos = config.acceptTos;
     this._id = config.id;
     this._name = config.name;
     this._projectId = config.projectId;
@@ -189,6 +196,19 @@ export class TemDomain extends cdktf.TerraformResource {
   // ==========
   // ATTRIBUTES
   // ==========
+
+  // accept_tos - computed: false, optional: false, required: true
+  private _acceptTos?: boolean | cdktf.IResolvable; 
+  public get acceptTos() {
+    return this.getBooleanAttribute('accept_tos');
+  }
+  public set acceptTos(value: boolean | cdktf.IResolvable) {
+    this._acceptTos = value;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get acceptTosInput() {
+    return this._acceptTos;
+  }
 
   // created_at - computed: true, optional: false, required: false
   public get createdAt() {
@@ -313,6 +333,7 @@ export class TemDomain extends cdktf.TerraformResource {
 
   protected synthesizeAttributes(): { [name: string]: any } {
     return {
+      accept_tos: cdktf.booleanToTerraform(this._acceptTos),
       id: cdktf.stringToTerraform(this._id),
       name: cdktf.stringToTerraform(this._name),
       project_id: cdktf.stringToTerraform(this._projectId),

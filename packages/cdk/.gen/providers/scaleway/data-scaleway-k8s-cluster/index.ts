@@ -416,8 +416,8 @@ export class DataScalewayK8SCluster extends cdktf.TerraformDataSource {
       terraformResourceType: 'scaleway_k8s_cluster',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.13.1',
-        providerVersionConstraint: '>= 2.13.1'
+        providerVersion: '2.16.3',
+        providerVersionConstraint: '>= 2.16.3'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -547,6 +547,11 @@ export class DataScalewayK8SCluster extends cdktf.TerraformDataSource {
   // organization_id - computed: true, optional: false, required: false
   public get organizationId() {
     return this.getStringAttribute('organization_id');
+  }
+
+  // private_network_id - computed: true, optional: false, required: false
+  public get privateNetworkId() {
+    return this.getStringAttribute('private_network_id');
   }
 
   // project_id - computed: true, optional: false, required: false

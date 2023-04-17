@@ -89,8 +89,8 @@ export class ScalewayProvider extends cdktf.TerraformProvider {
       terraformResourceType: 'scaleway',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.13.1',
-        providerVersionConstraint: '>= 2.13.1'
+        providerVersion: '2.16.3',
+        providerVersionConstraint: '>= 2.16.3'
       },
       terraformProviderSource: 'scaleway/scaleway'
     });

@@ -147,8 +147,8 @@ export class SecretVersion extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_secret_version',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.13.1',
-        providerVersionConstraint: '>= 2.13.1'
+        providerVersion: '2.16.3',
+        providerVersionConstraint: '>= 2.16.3'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -238,7 +238,7 @@ export class SecretVersion extends cdktf.TerraformResource {
 
   // revision - computed: true, optional: false, required: false
   public get revision() {
-    return this.getNumberAttribute('revision');
+    return this.getStringAttribute('revision');
   }
 
   // secret_id - computed: false, optional: false, required: true

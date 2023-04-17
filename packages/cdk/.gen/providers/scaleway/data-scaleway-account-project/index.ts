@@ -60,8 +60,8 @@ export class DataScalewayAccountProject extends cdktf.TerraformDataSource {
       terraformResourceType: 'scaleway_account_project',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.13.1',
-        providerVersionConstraint: '>= 2.13.1'
+        providerVersion: '2.16.3',
+        providerVersionConstraint: '>= 2.16.3'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -139,7 +139,7 @@ export class DataScalewayAccountProject extends cdktf.TerraformDataSource {
     return this._organizationId;
   }
 
-  // project_id - computed: false, optional: true, required: false
+  // project_id - computed: true, optional: true, required: false
   private _projectId?: string; 
   public get projectId() {
     return this.getStringAttribute('project_id');

@@ -78,8 +78,8 @@ export class DataScalewayRegistryImage extends cdktf.TerraformDataSource {
       terraformResourceType: 'scaleway_registry_image',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.13.1',
-        providerVersionConstraint: '>= 2.13.1'
+        providerVersion: '2.16.3',
+        providerVersionConstraint: '>= 2.16.3'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,

@@ -57,6 +57,12 @@ export interface K8SClusterConfig extends cdktf.TerraformMetaArguments {
   */
   readonly name: string;
   /**
+  * The ID of the cluster's private network
+  * 
+  * Docs at Terraform Registry: {@link https://www.terraform.io/docs/providers/scaleway/r/k8s_cluster#private_network_id K8SCluster#private_network_id}
+  */
+  readonly privateNetworkId?: string;
+  /**
   * The project_id you want to attach the resource to
   * 
   * Docs at Terraform Registry: {@link https://www.terraform.io/docs/providers/scaleway/r/k8s_cluster#project_id K8SCluster#project_id}
@@ -1079,8 +1085,8 @@ export class K8SCluster extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_k8s_cluster',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.13.1',
-        providerVersionConstraint: '>= 2.13.1'
+        providerVersion: '2.16.3',
+        providerVersionConstraint: '>= 2.16.3'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -1098,6 +1104,7 @@ export class K8SCluster extends cdktf.TerraformResource {
     this._featureGates = config.featureGates;
     this._id = config.id;
     this._name = config.name;
+    this._privateNetworkId = config.privateNetworkId;
     this._projectId = config.projectId;
     this._region = config.region;
     this._tags = config.tags;
@@ -1251,6 +1258,22 @@ export class K8SCluster extends cdktf.TerraformResource {
   // organization_id - computed: true, optional: false, required: false
   public get organizationId() {
     return this.getStringAttribute('organization_id');
+  }
+
+  // private_network_id - computed: true, optional: true, required: false
+  private _privateNetworkId?: string; 
+  public get privateNetworkId() {
+    return this.getStringAttribute('private_network_id');
+  }
+  public set privateNetworkId(value: string) {
+    this._privateNetworkId = value;
+  }
+  public resetPrivateNetworkId() {
+    this._privateNetworkId = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get privateNetworkIdInput() {
+    return this._privateNetworkId;
   }
 
   // project_id - computed: true, optional: true, required: false
@@ -1428,6 +1451,7 @@ export class K8SCluster extends cdktf.TerraformResource {
       feature_gates: cdktf.listMapper(cdktf.stringToTerraform, false)(this._featureGates),
       id: cdktf.stringToTerraform(this._id),
       name: cdktf.stringToTerraform(this._name),
+      private_network_id: cdktf.stringToTerraform(this._privateNetworkId),
       project_id: cdktf.stringToTerraform(this._projectId),
       region: cdktf.stringToTerraform(this._region),
       tags: cdktf.listMapper(cdktf.stringToTerraform, false)(this._tags),

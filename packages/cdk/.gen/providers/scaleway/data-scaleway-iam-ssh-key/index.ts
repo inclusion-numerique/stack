@@ -6,9 +6,9 @@ import * as cdktf from 'cdktf';
 
 // Configuration
 
-export interface DataScalewayIasdehKeyConfig extends cdktf.TerraformMetaArguments {
+export interface DataScalewayIamSshKeyConfig extends cdktf.TerraformMetaArguments {
   /**
-  * Docs at Terraform Registry: {@link https://www.terraform.io/docs/providers/scaleway/d/iam_ssh_key#id DataScalewayIasdehKey#id}
+  * Docs at Terraform Registry: {@link https://www.terraform.io/docs/providers/scaleway/d/iam_ssh_key#id DataScalewayIamSshKey#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -17,13 +17,13 @@ export interface DataScalewayIasdehKeyConfig extends cdktf.TerraformMetaArgument
   /**
   * The name of the iam SSH key
   * 
-  * Docs at Terraform Registry: {@link https://www.terraform.io/docs/providers/scaleway/d/iam_ssh_key#name DataScalewayIasdehKey#name}
+  * Docs at Terraform Registry: {@link https://www.terraform.io/docs/providers/scaleway/d/iam_ssh_key#name DataScalewayIamSshKey#name}
   */
   readonly name?: string;
   /**
   * The ID of the SSH key
   * 
-  * Docs at Terraform Registry: {@link https://www.terraform.io/docs/providers/scaleway/d/iam_ssh_key#ssh_key_id DataScalewayIasdehKey#ssh_key_id}
+  * Docs at Terraform Registry: {@link https://www.terraform.io/docs/providers/scaleway/d/iam_ssh_key#ssh_key_id DataScalewayIamSshKey#ssh_key_id}
   */
   readonly sshKeyId?: string;
 }
@@ -31,7 +31,7 @@ export interface DataScalewayIasdehKeyConfig extends cdktf.TerraformMetaArgument
 /**
 * Represents a {@link https://www.terraform.io/docs/providers/scaleway/d/iam_ssh_key scaleway_iam_ssh_key}
 */
-export class DataScalewayIasdehKey extends cdktf.TerraformDataSource {
+export class DataScalewayIamSshKey extends cdktf.TerraformDataSource {
 
   // =================
   // STATIC PROPERTIES
@@ -47,15 +47,15 @@ export class DataScalewayIasdehKey extends cdktf.TerraformDataSource {
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
-  * @param options DataScalewayIasdehKeyConfig = {}
+  * @param options DataScalewayIamSshKeyConfig = {}
   */
-  public constructor(scope: Construct, id: string, config: DataScalewayIasdehKeyConfig = {}) {
+  public constructor(scope: Construct, id: string, config: DataScalewayIamSshKeyConfig = {}) {
     super(scope, id, {
       terraformResourceType: 'scaleway_iam_ssh_key',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.13.1',
-        providerVersionConstraint: '>= 2.13.1'
+        providerVersion: '2.16.3',
+        providerVersionConstraint: '>= 2.16.3'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,

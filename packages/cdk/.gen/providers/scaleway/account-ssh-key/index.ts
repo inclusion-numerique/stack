@@ -8,6 +8,12 @@ import * as cdktf from 'cdktf';
 
 export interface AccountSshKeyConfig extends cdktf.TerraformMetaArguments {
   /**
+  * The SSH key status
+  * 
+  * Docs at Terraform Registry: {@link https://www.terraform.io/docs/providers/scaleway/r/account_ssh_key#disabled AccountSshKey#disabled}
+  */
+  readonly disabled?: boolean | cdktf.IResolvable;
+  /**
   * Docs at Terraform Registry: {@link https://www.terraform.io/docs/providers/scaleway/r/account_ssh_key#id AccountSshKey#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
@@ -15,7 +21,7 @@ export interface AccountSshKeyConfig extends cdktf.TerraformMetaArguments {
   */
   readonly id?: string;
   /**
-  * The name of the SSH key
+  * The name of the iam SSH key
   * 
   * Docs at Terraform Registry: {@link https://www.terraform.io/docs/providers/scaleway/r/account_ssh_key#name AccountSshKey#name}
   */
@@ -32,87 +38,6 @@ export interface AccountSshKeyConfig extends cdktf.TerraformMetaArguments {
   * Docs at Terraform Registry: {@link https://www.terraform.io/docs/providers/scaleway/r/account_ssh_key#public_key AccountSshKey#public_key}
   */
   readonly publicKey: string;
-  /**
-  * timeouts block
-  * 
-  * Docs at Terraform Registry: {@link https://www.terraform.io/docs/providers/scaleway/r/account_ssh_key#timeouts AccountSshKey#timeouts}
-  */
-  readonly timeouts?: AccountSshKeyTimeouts;
-}
-export interface AccountSshKeyTimeouts {
-  /**
-  * Docs at Terraform Registry: {@link https://www.terraform.io/docs/providers/scaleway/r/account_ssh_key#default AccountSshKey#default}
-  */
-  readonly default?: string;
-}
-
-export function accountSshKeyTimeoutsToTerraform(struct?: AccountSshKeyTimeoutsOutputReference | AccountSshKeyTimeouts | cdktf.IResolvable): any {
-  if (!cdktf.canInspect(struct) || cdktf.Tokenization.isResolvable(struct)) { return struct; }
-  if (cdktf.isComplexElement(struct)) {
-    throw new Error("A complex element was used as configuration, this is not supported: https://cdk.tf/complex-object-as-configuration");
-  }
-  return {
-    default: cdktf.stringToTerraform(struct!.default),
-  }
-}
-
-export class AccountSshKeyTimeoutsOutputReference extends cdktf.ComplexObject {
-  private isEmptyObject = false;
-  private resolvableValue?: cdktf.IResolvable;
-
-  /**
-  * @param terraformResource The parent resource
-  * @param terraformAttribute The attribute on the parent resource this class is referencing
-  */
-  public constructor(terraformResource: cdktf.IInterpolatingParent, terraformAttribute: string) {
-    super(terraformResource, terraformAttribute, false, 0);
-  }
-
-  public get internalValue(): AccountSshKeyTimeouts | cdktf.IResolvable | undefined {
-    if (this.resolvableValue) {
-      return this.resolvableValue;
-    }
-    let hasAnyValues = this.isEmptyObject;
-    const internalValueResult: any = {};
-    if (this._default !== undefined) {
-      hasAnyValues = true;
-      internalValueResult.default = this._default;
-    }
-    return hasAnyValues ? internalValueResult : undefined;
-  }
-
-  public set internalValue(value: AccountSshKeyTimeouts | cdktf.IResolvable | undefined) {
-    if (value === undefined) {
-      this.isEmptyObject = false;
-      this.resolvableValue = undefined;
-      this._default = undefined;
-    }
-    else if (cdktf.Tokenization.isResolvable(value)) {
-      this.isEmptyObject = false;
-      this.resolvableValue = value;
-    }
-    else {
-      this.isEmptyObject = Object.keys(value).length === 0;
-      this.resolvableValue = undefined;
-      this._default = value.default;
-    }
-  }
-
-  // default - computed: false, optional: true, required: false
-  private _default?: string; 
-  public get default() {
-    return this.getStringAttribute('default');
-  }
-  public set default(value: string) {
-    this._default = value;
-  }
-  public resetDefault() {
-    this._default = undefined;
-  }
-  // Temporarily expose input value. Use with caution.
-  public get defaultInput() {
-    return this._default;
-  }
 }
 
 /**
@@ -141,8 +66,8 @@ export class AccountSshKey extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_account_ssh_key',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.13.1',
-        providerVersionConstraint: '>= 2.13.1'
+        providerVersion: '2.16.3',
+        providerVersionConstraint: '>= 2.16.3'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -152,16 +77,42 @@ export class AccountSshKey extends cdktf.TerraformResource {
       connection: config.connection,
       forEach: config.forEach
     });
+    this._disabled = config.disabled;
     this._id = config.id;
     this._name = config.name;
     this._projectId = config.projectId;
     this._publicKey = config.publicKey;
-    this._timeouts.internalValue = config.timeouts;
   }
 
   // ==========
   // ATTRIBUTES
   // ==========
+
+  // created_at - computed: true, optional: false, required: false
+  public get createdAt() {
+    return this.getStringAttribute('created_at');
+  }
+
+  // disabled - computed: false, optional: true, required: false
+  private _disabled?: boolean | cdktf.IResolvable; 
+  public get disabled() {
+    return this.getBooleanAttribute('disabled');
+  }
+  public set disabled(value: boolean | cdktf.IResolvable) {
+    this._disabled = value;
+  }
+  public resetDisabled() {
+    this._disabled = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get disabledInput() {
+    return this._disabled;
+  }
+
+  // fingerprint - computed: true, optional: false, required: false
+  public get fingerprint() {
+    return this.getStringAttribute('fingerprint');
+  }
 
   // id - computed: true, optional: true, required: false
   private _id?: string; 
@@ -179,7 +130,7 @@ export class AccountSshKey extends cdktf.TerraformResource {
     return this._id;
   }
 
-  // name - computed: false, optional: true, required: false
+  // name - computed: true, optional: true, required: false
   private _name?: string; 
   public get name() {
     return this.getStringAttribute('name');
@@ -229,20 +180,9 @@ export class AccountSshKey extends cdktf.TerraformResource {
     return this._publicKey;
   }
 
-  // timeouts - computed: false, optional: true, required: false
-  private _timeouts = new AccountSshKeyTimeoutsOutputReference(this, "timeouts");
-  public get timeouts() {
-    return this._timeouts;
-  }
-  public putTimeouts(value: AccountSshKeyTimeouts) {
-    this._timeouts.internalValue = value;
-  }
-  public resetTimeouts() {
-    this._timeouts.internalValue = undefined;
-  }
-  // Temporarily expose input value. Use with caution.
-  public get timeoutsInput() {
-    return this._timeouts.internalValue;
+  // updated_at - computed: true, optional: false, required: false
+  public get updatedAt() {
+    return this.getStringAttribute('updated_at');
   }
 
   // =========
@@ -251,11 +191,11 @@ export class AccountSshKey extends cdktf.TerraformResource {
 
   protected synthesizeAttributes(): { [name: string]: any } {
     return {
+      disabled: cdktf.booleanToTerraform(this._disabled),
       id: cdktf.stringToTerraform(this._id),
       name: cdktf.stringToTerraform(this._name),
       project_id: cdktf.stringToTerraform(this._projectId),
       public_key: cdktf.stringToTerraform(this._publicKey),
-      timeouts: accountSshKeyTimeoutsToTerraform(this._timeouts.internalValue),
     };
   }
 }
