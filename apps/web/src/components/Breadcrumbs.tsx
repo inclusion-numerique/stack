@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import classNames from 'classnames'
+import { Route } from 'next'
 
 export type BreadCrumbParent = {
   title: string
@@ -43,7 +44,7 @@ export const Breadcrumbs = ({
         {parents.map(({ title, path }) => (
           <li key={path}>
             {/* TODO actually type BreadcrumbParent with a valid Route */}
-            <Link className="fr-breadcrumb__link" href={path}>
+            <Link className="fr-breadcrumb__link" href={path as Route}>
               {title}
             </Link>
           </li>
