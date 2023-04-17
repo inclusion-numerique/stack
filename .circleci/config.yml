@@ -223,26 +223,17 @@ jobs:
       - checkout
       - install_dependencies
       - run:
-          name: 'Prisma generate'
-          command: pnpm --silent -F @stack/web prisma:generate
-      - run:
           name: 'Monorepo manypkg check'
           command: pnpm manypkg check
       - run:
-          name: 'Tsc'
-          command: pnpm tsc
+          name: 'Tsc config and cdk packages'
+          command: pnpm -F @stack/config -F @stack/cdk tsc
       - run:
-          name: 'Lint config'
-          command: pnpm -F @stack/config lint
+          name: 'Lint config and cdk packages'
+          command: pnpm -F @stack/config -F @stack/cdk lint
       - run:
-          name: 'Lint cdk'
-          command: pnpm -F @stack/cdk lint
-      - run:
-          name: 'Test config'
-          command: pnpm -F @stack/config test
-      - run:
-          name: 'Test cdk'
-          command: pnpm -F @stack/cdk test
+          name: 'Test config and cdk packages'
+          command: pnpm -F @stack/config -F @stack/cdk test
 
   test_packages:
     executor: node
@@ -251,9 +242,6 @@ jobs:
       - checkout
       - install_dependencies
       - create_dotenv_file
-      - run:
-          name: 'Prisma generate'
-          command: pnpm --silent -F @stack/web prisma:generate
       - run:
           name: 'Test all packages except @stack/web'
           command: pnpm --silent -F '!@stack/web' test
@@ -265,9 +253,6 @@ jobs:
       - checkout
       - install_dependencies
       - create_dotenv_file
-      - run:
-          name: 'Prisma generate'
-          command: pnpm --silent -F @stack/web prisma:generate
       - run:
           name: 'Test @stack/web'
           command: pnpm --silent -F @stack/web test

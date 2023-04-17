@@ -1,5 +1,7 @@
+.next/*
+!.next/types/
+
 public/dsfr
 build-storybook.log
-dist/
 cypress/videos
 cypress/screenshots
