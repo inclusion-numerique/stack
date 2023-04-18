@@ -345,6 +345,9 @@ jobs:
       - add_secrets_to_dotenv_file
       - add_dotenv_vars_to_bash_env
       - run:
+          name: 'Install DSFR'
+          command: pnpm --silent -F @stack/web setup:dsfr
+      - run:
           name: 'Run Cypress component testing'
           command: pnpm --silent -F @stack/web cy run --component --record --parallel
 
@@ -359,6 +362,9 @@ jobs:
       - create_dotenv_file
       - add_secrets_to_dotenv_file
       - add_dotenv_vars_to_bash_env
+      - run:
+          name: 'Install DSFR'
+          command: pnpm --silent -F @stack/ui setup:dsfr
       - run:
           name: 'Run Cypress component testing'
           command: pnpm --silent -F @stack/ui cy run --component --record --parallel
