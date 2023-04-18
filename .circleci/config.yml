@@ -103,15 +103,15 @@ workflows:
           requires:
             - build_web
 
-#      - deploy_web:
-#          requires:
-#            - lint
-#            - test_packages
-#            - test_web
-#            - chromatic
-#            - test_web_components
-#            - test_ui_components
-#            - test_web_e2e
+      - deploy_web:
+          requires:
+            - lint
+            - test_packages
+            - test_web
+            - chromatic
+            - test_web_components
+            - test_ui_components
+            - test_web_e2e
 
   project_infrastructure_deployment:
     when:
@@ -349,12 +349,12 @@ jobs:
           command: pnpm --silent -F @stack/web setup:dsfr
       - run:
           name: 'Run Cypress component testing'
-          command: pnpm --silent -F @stack/web cy run --component --record --parallel
+          command: pnpm --silent -F @stack/web cy run --component --record --parallel --group apps/web
 
   test_ui_components:
     executor: node-browsers
     resource_class: large
-    parallelism: 1
+    parallelism: 2
     steps:
       - checkout
       - install_pnpm
@@ -367,7 +367,7 @@ jobs:
           command: pnpm --silent -F @stack/ui setup:dsfr
       - run:
           name: 'Run Cypress component testing'
-          command: pnpm --silent -F @stack/ui cy run --component --record --parallel
+          command: pnpm --silent -F @stack/ui cy run --component --record --parallel --group packages/ui
 
   test_web_e2e:
     executor: node-e2e
