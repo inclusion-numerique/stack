@@ -280,12 +280,14 @@ jobs:
           name: 'Create CI database schema'
           command: |
             DATABASE_URL=$CI_DATABASE_URL pnpm --silent -F @stack/web prisma db push --skip-generate --accept-data-loss
+      - restore_cache:
+          keys:
+            - << pipeline.parameters.cache_version >>-next-{{ checksum "<< pipeline.parameters.lockfile >>" }}
       - run:
           name: 'Build next app'
           command: DATABASE_URL=$CI_DATABASE_URL pnpm --silent -F @stack/web build
-      # Save next build cache to the workspace cache
       - save_cache:
-          key: << pipeline.parameters.cache_version >>-pnpm-{{ checksum "<< pipeline.parameters.lockfile >>" }}
+          key: << pipeline.parameters.cache_version >>-next-{{ checksum "<< pipeline.parameters.lockfile >>" }}
           paths:
             - ./apps/web/.next/cache
       - run:
