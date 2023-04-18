@@ -311,6 +311,7 @@ jobs:
           key: << pipeline.id >>-web-build
           paths:
             - ./apps/web/.next
+            - ./apps/web/public
 
   chromatic:
     executor: node
