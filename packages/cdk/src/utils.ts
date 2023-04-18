@@ -41,6 +41,8 @@ export const shortenNamespace = (namespace: string, length: number) =>
     .slice(0, length)
     // Remove trailing hyphen
     .replace(/-$/, '')
+    // Remove trailing underscore
+    .replace(/_$/, '')
 
 export const createPreviewSubdomain = (
   namespace: string,

@@ -7,7 +7,7 @@ describe('databasePasswordSecretName', () => {
     const secretName = databasePasswordSecretName(namespace)
 
     expect(secretName).toEqual(
-      'DATABASE_PASSWORD_a-secret-namespace-with-numbers',
+      'DATABASE_PASSWORD_A_SECRET_NAMESPACE_WITH_NUMBERS',
     )
   })
 })

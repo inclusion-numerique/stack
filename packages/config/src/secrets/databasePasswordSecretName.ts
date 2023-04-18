@@ -5,10 +5,12 @@ export const databasePasswordSecretName = (namespace: string) =>
     namespace
       // Secrets name should not include digits
       .replace(/\d/g, '')
-      // When digits are removed, there might be multiple dashes in a row
-      .replace(/--+/g, '-')
-      // Remove prefix hyphen
-      .replace(/^-/, ''),
+      // Secrets name should not include dashes
+      .replace(/-/g, '_')
+      // When digits are removed, there might be multiple underscores in a row
+      .replace(/__+/g, '_')
+      // Remove prefix underscore
+      .replace(/^_/, ''),
     // Shorten namespace will remove trailing hyphen
     32,
-  )}`
+  ).toUpperCase()}`
