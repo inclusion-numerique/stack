@@ -27,6 +27,7 @@
     "prisma:pull": "pnpm --silent with-env prisma db pull",
     "prisma": "pnpm --silent with-env prisma",
     "cy:component": "cypress run --component",
+    "cy": "cypress",
     "cy:e2e": "cypress run",
     "cy:open": "cypress open"
   },
