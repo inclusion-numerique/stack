@@ -382,6 +382,7 @@ jobs:
           name: 'Prisma generate'
           command: pnpm --silent -F @stack/web prisma:generate
       - add_secrets_to_dotenv_file
+      - add_dotenv_vars_to_bash_env
       - run:
           name: 'Create CI database schema'
           command: |
