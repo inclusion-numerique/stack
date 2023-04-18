@@ -283,6 +283,11 @@ jobs:
       - run:
           name: 'Build next app'
           command: DATABASE_URL=$CI_DATABASE_URL pnpm --silent -F @stack/web build
+      # Save next build cache to the workspace cache
+      - save_cache:
+          key: << pipeline.parameters.cache_version >>-pnpm-{{ checksum "<< pipeline.parameters.lockfile >>" }}
+          paths:
+            - ./apps/web/.next/cache
       - run:
           name: 'Clear dependencies to install only prod dependencies'
           command: |
