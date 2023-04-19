@@ -162,7 +162,7 @@ export class WebAppStack extends TerraformStack {
       databaseInstance.endpointIp,
       databaseInstance.endpointPort,
       databaseName,
-    ])
+    ]) as string
 
     // Changing the name will recreate a new container
     // The names fails with max length so we shorten it

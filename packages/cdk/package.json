@@ -23,7 +23,7 @@
   "dependencies": {
     "cdktf": "^0.16.0",
     "cdktf-cli": "^0.16.0",
-    "constructs": "^10.2.0",
+    "constructs": "^10.2.1",
     "dotenv": "^16.0.3",
     "dotenv-cli": "^7.2.1",
     "git-rev-sync": "^3.0.2"
