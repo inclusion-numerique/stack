@@ -27,7 +27,7 @@
     "db:stop": "docker-compose -f ./docker-compose.dev.yml down",
     "prisma:generate": "pnpm -F web prisma:generate",
     "prisma:migrate": "pnpm -F web prisma migrate deploy",
-    "prisma:seed": "pnpm cli fixtures:load",
+    "prisma:seed": "pnpm -F fixtures prisma:seed",
     "docker:build:web": "docker buildx build --platform linux/amd64 -t rg.fr-par.scw.cloud/mec-web/mec-web-dev:latest -f docker/web/Dockerfile .",
     "docker:build:web:debug": "DOCKER_BUILDKIT=0 docker build -t mec-web/mec-web-dev:debug -f docker/web/Dockerfile ."
   },

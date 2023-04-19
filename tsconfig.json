@@ -26,6 +26,7 @@
       "@stack/storybook/*": ["packages/storybook/src/*"],
       "@stack/ui/*": ["packages/ui/src/*"],
       "@stack/test/*": ["packages/test/src/*"]
+      "@stack/fixtures/*": ["packages/fixtures/src/*"],
     },
     "typeRoots": [
       "./node_modules/@types",
