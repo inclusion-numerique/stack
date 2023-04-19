@@ -177,6 +177,10 @@ jobs:
             - ./packages/test/node_modules
             - ./packages/ui/node_modules
             - /home/circleci/.cache/Cypress
+      - save_cache:
+          key: << pipeline.parameters.cache_version >>-cypress-{{ checksum "<< pipeline.parameters.lockfile >>" }}
+          paths:
+            - /home/circleci/.cache/Cypress
 
   prepare_web_prod_dependencies:
     executor: node
@@ -346,6 +350,9 @@ jobs:
       - checkout
       - install_pnpm
       - install_dependencies
+      - restore_cache:
+          keys:
+            - << pipeline.parameters.cache_version >>-cypress-{{ checksum "<< pipeline.parameters.lockfile >>" }}
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
@@ -367,6 +374,9 @@ jobs:
       - checkout
       - install_pnpm
       - install_dependencies
+      - restore_cache:
+          keys:
+            - << pipeline.parameters.cache_version >>-cypress-{{ checksum "<< pipeline.parameters.lockfile >>" }}
       - create_dotenv_file
       - add_secrets_to_dotenv_file
       - add_dotenv_vars_to_bash_env
@@ -385,6 +395,9 @@ jobs:
       - checkout
       - install_pnpm
       - install_dependencies
+      - restore_cache:
+          keys:
+            - << pipeline.parameters.cache_version >>-cypress-{{ checksum "<< pipeline.parameters.lockfile >>" }}
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
