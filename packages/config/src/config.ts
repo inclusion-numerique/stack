@@ -9,7 +9,7 @@ export const projectSlug = 'la-base'
 export const mainLiveUrl = 'https://la-base.incubateur.anct.gouv.fr'
 export const repositoryUrl = 'https://github.com/inclusion-numerique/la-base'
 
-export const cypressProjectId = 'ns2oqz'
+export const cypressProjectId = 'ppk369'
 
 export const databaseInstanceName = process.env.DATABASE_INSTANCE_NAME ?? ''
 export const containerNamespaceName = process.env.CONTAINER_NAMESPACE_NAME ?? ''
