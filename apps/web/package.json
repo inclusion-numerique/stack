@@ -1,5 +1,5 @@
 {
-  "name": "@stack/web",
+  "name": "@lb/web",
   "version": "0.1.0",
   "license": "AGPL-3.0-or-later",
   "scripts": {
@@ -45,8 +45,8 @@
     "@react-spring/web": "^9.7.2",
     "@sentry/browser": "^7.48.0",
     "@sentry/nextjs": "^7.48.0",
-    "@stack/emails": "*",
-    "@stack/storybook": "*",
+    "@lb/emails": "*",
+    "@lb/storybook": "*",
     "@tanstack/react-query": "^4.29.3",
     "@trpc/client": "^10.20.0",
     "@trpc/react-query": "^10.20.0",
@@ -99,7 +99,7 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.3.0",
-    "@stack/test": "*",
+    "@lb/test": "*",
     "@storybook/jest": "^0.1.0",
     "@storybook/react": "^7.0.6",
     "@storybook/testing-library": "^0.1.0",

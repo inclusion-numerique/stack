@@ -1,4 +1,4 @@
-import { PublicWebAppConfig } from '@stack/web/webAppConfig'
+import { PublicWebAppConfig } from '@lb/web/webAppConfig'
 
 const ConfidentialityPage = () => (
   <div className="fr-container landing-main-container fr-my-8w">
@@ -195,7 +195,7 @@ const ConfidentialityPage = () => (
                 <td>envoi régulier ( mensuel) d’une lettre d’info</td>
                 <td>envoi d’emails</td>
                 <td>
-                  demande adressée à l’équipe Stack, en vue d’une réponse
+                  demande adressée à l’équipe La Base, en vue d’une réponse
                   personnalisée
                 </td>
               </tr>

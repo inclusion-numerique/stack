@@ -192,7 +192,7 @@ jobs:
       - run:
           name: 'Install dependencies'
           command: |
-            pnpm install -F @stack/web --prod --node-linker=hoisted --frozen-lockfile
+            pnpm install -F @lb/web --prod --node-linker=hoisted --frozen-lockfile
       - save_cache:
           key: << pipeline.parameters.cache_version >>-web-prod-{{ checksum "<< pipeline.parameters.lockfile >>" }}
           paths:
@@ -207,7 +207,7 @@ jobs:
       - install_dependencies
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @stack/web prisma:generate
+          command: pnpm --silent -F @lb/web prisma:generate
       - run:
           name: 'Monorepo manypkg check'
           command: pnpm manypkg check
@@ -230,13 +230,13 @@ jobs:
           command: pnpm manypkg check
       - run:
           name: 'Tsc config and cdk packages'
-          command: pnpm -F @stack/config -F @stack/cdk tsc
+          command: pnpm -F @lb/config -F @lb/cdk tsc
       - run:
           name: 'Lint config and cdk packages'
-          command: pnpm -F @stack/config -F @stack/cdk lint
+          command: pnpm -F @lb/config -F @lb/cdk lint
       - run:
           name: 'Test config and cdk packages'
-          command: pnpm -F @stack/config -F @stack/cdk test
+          command: pnpm -F @lb/config -F @lb/cdk test
 
   test_packages:
     executor: node
@@ -246,8 +246,8 @@ jobs:
       - install_dependencies
       - create_dotenv_file
       - run:
-          name: 'Test all packages except @stack/web'
-          command: pnpm --silent -F '!@stack/web' test
+          name: 'Test all packages except @lb/web'
+          command: pnpm --silent -F '!@lb/web' test
 
   test_web:
     executor: node
@@ -257,8 +257,8 @@ jobs:
       - install_dependencies
       - create_dotenv_file
       - run:
-          name: 'Test @stack/web'
-          command: pnpm --silent -F @stack/web test
+          name: 'Test @lb/web'
+          command: pnpm --silent -F @lb/web test
 
   build_web:
     executor: node-postgres
@@ -271,24 +271,24 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @stack/web prisma:generate
+          command: pnpm --silent -F @lb/web prisma:generate
       - add_secrets_to_dotenv_file
       - add_dotenv_vars_to_bash_env
       - setup_docker_web_env
       - setup_next_public_env
       - run:
           name: 'Install DSFR'
-          command: pnpm --silent -F @stack/web setup:dsfr
+          command: pnpm --silent -F @lb/web setup:dsfr
       - run:
           name: 'Create CI database schema'
           command: |
-            DATABASE_URL=$CI_DATABASE_URL pnpm --silent -F @stack/web prisma db push --skip-generate --accept-data-loss
+            DATABASE_URL=$CI_DATABASE_URL pnpm --silent -F @lb/web prisma db push --skip-generate --accept-data-loss
       - restore_cache:
           keys:
             - << pipeline.parameters.cache_version >>-next-{{ checksum "<< pipeline.parameters.lockfile >>" }}
       - run:
           name: 'Build next app'
-          command: DATABASE_URL=$CI_DATABASE_URL pnpm --silent -F @stack/web build
+          command: DATABASE_URL=$CI_DATABASE_URL pnpm --silent -F @lb/web build
       - save_cache:
           key: << pipeline.parameters.cache_version >>-next-{{ checksum "<< pipeline.parameters.lockfile >>" }}
           paths:
@@ -303,7 +303,7 @@ jobs:
             - << pipeline.parameters.cache_version >>-web-prod-{{ checksum "<< pipeline.parameters.lockfile >>" }}
       - run:
           name: 'Re-generate Prisma after cleaning dependencies'
-          command: pnpm --silent -F @stack/web prisma:generate
+          command: pnpm --silent -F @lb/web prisma:generate
       - run:
           name: 'Cleanup build'
           command: |
@@ -332,14 +332,14 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @stack/web prisma:generate
+          command: pnpm --silent -F @lb/web prisma:generate
       - add_secrets_to_dotenv_file
       - run:
           name: 'Setup DSFR'
-          command: pnpm --silent -F @stack/web setup:dsfr
+          command: pnpm --silent -F @lb/web setup:dsfr
       - run:
           name: 'Build storybook and deploy on chromatic'
-          command: pnpm --silent -F @stack/storybook chromatic
+          command: pnpm --silent -F @lb/storybook chromatic
 
   test_web_components:
     executor: node-browsers
@@ -355,15 +355,15 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @stack/web prisma:generate
+          command: pnpm --silent -F @lb/web prisma:generate
       - add_secrets_to_dotenv_file
       - add_dotenv_vars_to_bash_env
       - run:
           name: 'Install DSFR'
-          command: pnpm --silent -F @stack/web setup:dsfr
+          command: pnpm --silent -F @lb/web setup:dsfr
       - run:
           name: 'Run Cypress component testing'
-          command: pnpm --silent -F @stack/web cy run --component --record --parallel --group web/components
+          command: pnpm --silent -F @lb/web cy run --component --record --parallel --group web/components
 
   test_ui_components:
     executor: node-browsers
@@ -381,10 +381,10 @@ jobs:
       - add_dotenv_vars_to_bash_env
       - run:
           name: 'Install DSFR'
-          command: pnpm --silent -F @stack/ui setup:dsfr
+          command: pnpm --silent -F @lb/ui setup:dsfr
       - run:
           name: 'Run Cypress component testing'
-          command: pnpm --silent -F @stack/ui cy run --component --record --parallel --group ui/components
+          command: pnpm --silent -F @lb/ui cy run --component --record --parallel --group ui/components
 
   test_web_e2e:
     executor: node-e2e
@@ -400,13 +400,13 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @stack/web prisma:generate
+          command: pnpm --silent -F @lb/web prisma:generate
       - add_secrets_to_dotenv_file
       - add_dotenv_vars_to_bash_env
       - run:
           name: 'Create CI database schema'
           command: |
-            DATABASE_URL=$CI_DATABASE_URL pnpm --silent -F @stack/web prisma db push --skip-generate --accept-data-loss
+            DATABASE_URL=$CI_DATABASE_URL pnpm --silent -F @lb/web prisma db push --skip-generate --accept-data-loss
       - restore_cache:
           key: << pipeline.id >>-web-build
       - run:
@@ -414,12 +414,12 @@ jobs:
           background: true
           command: |
             DATABASE_URL=$CI_DATABASE_URL
-            pnpm --silent -F @stack/web start
+            pnpm --silent -F @lb/web start
       - run:
           name: 'Run cypress e2e tests'
           command: |
             DATABASE_URL=$CI_DATABASE_URL
-            pnpm --silent -F @stack/web cy run --record --parallel --group web/e2e
+            pnpm --silent -F @lb/web cy run --record --parallel --group web/e2e
 
   deploy_web:
     executor: node
@@ -430,7 +430,7 @@ jobs:
       - install_dependencies
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @stack/web prisma:generate
+          command: pnpm --silent -F @lb/web prisma:generate
       - add_secrets_to_dotenv_file
       - add_dotenv_vars_to_bash_env
       - setup_docker_web_env
@@ -447,7 +447,7 @@ jobs:
       - run:
           name: 'Generate Prisma client for this platform'
           command: |
-            pnpm --silent -F @stack/web prisma:generate
+            pnpm --silent -F @lb/web prisma:generate
       - queue/until_front_of_line:
           time: '3'
       - run:
@@ -462,7 +462,7 @@ jobs:
       - run:
           name: 'Deploy web app stack'
           command: |
-            pnpm --silent -F @stack/cdk cdktf deploy web --var-file .tfvars.json --auto-approve --outputs-file=cdk.out.json --outputs-file-include-sensitive-outputs
+            pnpm --silent -F @lb/cdk cdktf deploy web --var-file .tfvars.json --auto-approve --outputs-file=cdk.out.json --outputs-file-include-sensitive-outputs
       - run:
           name: 'Create .env file from deployment outputs'
           command: |
@@ -474,7 +474,7 @@ jobs:
       - run:
           name: 'Migrate database'
           command: |
-            pnpm --silent -F @stack/web prisma db push --skip-generate --accept-data-loss
+            pnpm --silent -F @lb/web prisma db push --skip-generate --accept-data-loss
       - run:
           name: Set deployment status to data loading
           command: pnpm --silent cli github:deployment:update $DEPLOYMENT_ID in_progress -d 'Loading data' -l https://app.circleci.com/pipelines/workflows/$CIRCLE_WORKFLOW_ID
@@ -500,7 +500,7 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @stack/web prisma:generate
+          command: pnpm --silent -F @lb/web prisma:generate
       - add_secrets_to_dotenv_file
       - run:
           name: "Create terraform variables file from environment variables"
@@ -509,7 +509,7 @@ jobs:
       - run:
           name: 'Compute diff'
           command: |
-            pnpm --silent -F @stack/cdk cdktf diff project --var-file .tfvars.json
+            pnpm --silent -F @lb/cdk cdktf diff project --var-file .tfvars.json
             
 
   project_infrastructure_deployment:
@@ -522,7 +522,7 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @stack/web prisma:generate
+          command: pnpm --silent -F @lb/web prisma:generate
       - add_secrets_to_dotenv_file
       - run:
           name: "Create terraform variables file from environment variables"
@@ -531,7 +531,7 @@ jobs:
       - run:
           name: 'Deploy project infrastructure stack'
           command: |
-            pnpm --silent -F @stack/cdk cdktf deploy project --var-file .tfvars.json --auto-approve --outputs-file=cdk.out.json --outputs-file-include-sensitive-outputs
+            pnpm --silent -F @lb/cdk cdktf deploy project --var-file .tfvars.json --auto-approve --outputs-file=cdk.out.json --outputs-file-include-sensitive-outputs
 
   web_app_preview_deletion:
     executor: node
@@ -543,7 +543,7 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @stack/web prisma:generate
+          command: pnpm --silent -F @lb/web prisma:generate
       - add_secrets_to_dotenv_file
       - run:
           name: "Create terraform variables file from environment variables"
@@ -564,7 +564,7 @@ jobs:
       - run:
           name: 'Destroy stack'
           command: |
-            CDK_FORCE_BRANCH='<< pipeline.parameters.preview_deletion_branch >>' pnpm --silent -F @stack/cdk cdktf destroy web --auto-approve --var-file .tfvars.json
+            CDK_FORCE_BRANCH='<< pipeline.parameters.preview_deletion_branch >>' pnpm --silent -F @lb/cdk cdktf destroy web --auto-approve --var-file .tfvars.json
       - run:
           name: Deactivate Github deployments
           command: pnpm --silent cli github:deployment:deactivate << pipeline.parameters.preview_deletion_branch >>

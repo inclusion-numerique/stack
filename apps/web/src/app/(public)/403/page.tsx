@@ -1,4 +1,4 @@
-import { UnauthorizedError } from '@stack/web/components/ServerError'
+import { UnauthorizedError } from '@lb/web/components/ServerError'
 
 const Error403Page = () => <UnauthorizedError />
 

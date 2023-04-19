@@ -3,25 +3,25 @@ version: '3.8'
 services:
   db:
     image: postgres:12.14-alpine
-    container_name: stack_pg
+    container_name: la-base_pg
     environment:
-      - POSTGRES_DB=stack
-      - POSTGRES_USER=stack
+      - POSTGRES_DB=la-base
+      - POSTGRES_USER=la-base
       - POSTGRES_PASSWORD=password
     ports:
       - '5433:5432'
     volumes:
-      - stack-pgdata:/var/lib/postgresql/data
+      - la-base-pgdata:/var/lib/postgresql/data
     networks:
-      - stack-network
+      - la-base-network
     restart: always
 
 volumes:
-  stack-pgdata:
-    name: stack_pgdata
+  la-base-pgdata:
+    name: la-base_pgdata
 
 networks:
-  stack-network:
+  la-base-network:
     external: false
-    name: stack-network
+    name: la-base-network
 

@@ -1,7 +1,7 @@
 import { Command } from '@commander-js/extra-typings'
-import { computeBranchNamespace } from '@stack/cdk/utils'
-import { getOctokit, owner, repo } from '@stack/cli/github'
-import { output } from '@stack/cli/output'
+import { computeBranchNamespace } from '@lb/cdk/utils'
+import { getOctokit, owner, repo } from '@lb/cli/github'
+import { output } from '@lb/cli/output'
 
 export const deactivateGithubDeployment = new Command()
   .command('github:deployment:deactivate')

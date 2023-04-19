@@ -1,8 +1,8 @@
 // eslint-disable-next-line unicorn/prevent-abbreviations
-import { getCdkOutput } from '@stack/cdk/getCdkOutput'
+import { getCdkOutput } from '@lb/cdk/getCdkOutput'
 import { Argument, Command } from '@commander-js/extra-typings'
-import { appendEnvVariablesToDotEnvFile } from '@stack/cli/dotEnvFile'
-import { output } from '@stack/cli/output'
+import { appendEnvVariablesToDotEnvFile } from '@lb/cli/dotEnvFile'
+import { output } from '@lb/cli/output'
 
 const stacks = ['web', 'project']
 

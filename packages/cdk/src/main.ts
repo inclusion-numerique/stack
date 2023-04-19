@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { App } from 'cdktf'
-import { WebAppStack } from '@stack/cdk/WebAppStack'
-import { ProjectStack } from '@stack/cdk/ProjectStack'
+import { WebAppStack } from '@lb/cdk/WebAppStack'
+import { ProjectStack } from '@lb/cdk/ProjectStack'
 import { getBranch } from './utils'
 
 const app = new App()

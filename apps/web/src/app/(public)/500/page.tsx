@@ -1,4 +1,4 @@
-import { ServerError } from '@stack/web/components/ServerError'
+import { ServerError } from '@lb/web/components/ServerError'
 
 const Error500Page = () => <ServerError />
 

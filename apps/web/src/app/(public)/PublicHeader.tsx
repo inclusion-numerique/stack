@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { PublicHeaderNav } from '@stack/web/app/(public)/PublicHeaderNav'
+import { PublicHeaderNav } from '@lb/web/app/(public)/PublicHeaderNav'
 
 const PublicHeader = () => (
   <header role="banner" className="fr-header">

@@ -1,3 +1,3 @@
-import { dateFormatter } from '@stack/web/utils/formatDate'
+import { dateFormatter } from '@lb/web/utils/formatDate'
 
 export const dateAsIsoDay = dateFormatter('yyyy-MM-dd')

@@ -1,10 +1,10 @@
 import { resolve } from 'node:path'
 import axios from 'axios'
-import { ServerWebAppConfig } from '@stack/web/webAppConfig'
+import { ServerWebAppConfig } from '@lb/web/webAppConfig'
 import {
   createSignedGetUrl,
   createSignedUploadUrl,
-} from '@stack/web/server/createSignedUrl'
+} from '@lb/web/server/createSignedUrl'
 import { createReadStream } from 'node:fs'
 
 describe.skip('createSignedUrl', () => {

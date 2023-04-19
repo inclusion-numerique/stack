@@ -54,7 +54,7 @@ const nextConfig = {
   // FIXME standalone does not support app directory for now
   // output: 'standalone',
   reactStrictMode: true,
-  transpilePackages: ['@stack/emails'],
+  transpilePackages: ['@lb/emails'],
   experimental: {
     typedRoutes: true,
     appDir: true,

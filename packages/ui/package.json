@@ -1,5 +1,5 @@
 {
-  "name": "@stack/ui",
+  "name": "@lb/ui",
   "version": "0.1.0",
   "license": "AGPL-3.0-or-later",
   "private": true,
@@ -26,8 +26,8 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@stack/storybook": "*",
-    "@stack/test": "*",
+    "@lb/storybook": "*",
+    "@lb/test": "*",
     "@storybook/jest": "^0.1.0",
     "@storybook/react": "^7.0.6",
     "@storybook/testing-library": "^0.1.0",

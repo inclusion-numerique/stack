@@ -1,7 +1,7 @@
 // eslint-disable-next-line unicorn/prevent-abbreviations
 import 'tsconfig-paths/register'
 import { Argument, Command } from '@commander-js/extra-typings'
-import { appendEnvVariablesToDotEnvFile } from '@stack/cli/dotEnvFile'
+import { appendEnvVariablesToDotEnvFile } from '@lb/cli/dotEnvFile'
 
 // eslint-disable-next-line unicorn/prevent-abbreviations
 export const addNextPublicVariablesToDotEnv = new Command()

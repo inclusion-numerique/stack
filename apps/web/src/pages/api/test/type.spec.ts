@@ -1,8 +1,8 @@
 import {
   ObjectFormData,
   objectFormValidation,
-} from '@stack/web/pages/api/test/type'
-import { expectZodValidationToFail } from '@stack/test/zodValidationTest'
+} from '@lb/web/pages/api/test/type'
+import { expectZodValidationToFail } from '@lb/test/zodValidationTest'
 
 const validObject: ObjectFormData = { name: 'John Doe' }
 

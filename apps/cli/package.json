@@ -1,5 +1,5 @@
 {
-  "name": "@stack/cli",
+  "name": "@lb/cli",
   "version": "0.1.0",
   "license": "AGPL-3.0-or-later",
   "private": true,
@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@commander-js/extra-typings": "^10.0.3",
-    "@stack/cdk": "*",
-    "@stack/web": "*",
+    "@lb/cdk": "*",
+    "@lb/web": "*",
     "axios": "^1.3.5",
     "axios-retry": "^3.4.0",
     "commander": "^10.0.1",

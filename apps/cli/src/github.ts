@@ -1,7 +1,7 @@
 import { Octokit } from 'octokit'
 
 export const owner = 'inclusion-numerique'
-export const repo = 'stack'
+export const repo = 'la-base'
 
 let octokit: Octokit
 

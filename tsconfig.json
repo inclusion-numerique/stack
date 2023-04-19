@@ -16,16 +16,16 @@
     "baseUrl": ".",
     "types": ["node", "jest"],
     "paths": {
-      "@stack/cli/*": ["apps/cli/src/*"],
-      "@stack/web/*": ["apps/web/src/*"],
-      "@stack/cdk/*": ["packages/cdk/src/*"],
-      "@stack/config/*": ["packages/config/src/*"],
-      "@stack/emails/*": ["packages/emails/src/*"],
-      "@stack/lint/*": ["packages/lint/src/*"],
-      "@stack/scaleway/*": ["packages/cdk/.gen/providers/scaleway/*"],
-      "@stack/storybook/*": ["packages/storybook/src/*"],
-      "@stack/ui/*": ["packages/ui/src/*"],
-      "@stack/test/*": ["packages/test/src/*"]
+      "@lb/cli/*": ["apps/cli/src/*"],
+      "@lb/web/*": ["apps/web/src/*"],
+      "@lb/cdk/*": ["packages/cdk/src/*"],
+      "@lb/config/*": ["packages/config/src/*"],
+      "@lb/emails/*": ["packages/emails/src/*"],
+      "@lb/lint/*": ["packages/lint/src/*"],
+      "@lb/scaleway/*": ["packages/cdk/.gen/providers/scaleway/*"],
+      "@lb/storybook/*": ["packages/storybook/src/*"],
+      "@lb/ui/*": ["packages/ui/src/*"],
+      "@lb/test/*": ["packages/test/src/*"]
     },
     "typeRoots": [
       "./node_modules/@types",

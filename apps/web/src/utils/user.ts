@@ -1,4 +1,4 @@
-import { SessionUser } from '@stack/web/auth/sessionUser'
+import { SessionUser } from '@lb/web/auth/sessionUser'
 
 export const getUserDisplayName = (
   user: Pick<SessionUser, 'firstName' | 'lastName' | 'email' | 'name'>,

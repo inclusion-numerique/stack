@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
-import { outputPrefix } from '@stack/cdk/output'
+import { outputPrefix } from '@lb/cdk/output'
 
 export type WebCdkOutput = {
   webBaseUrl: string

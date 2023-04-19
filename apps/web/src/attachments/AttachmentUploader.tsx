@@ -5,8 +5,8 @@
 import { FileError, useDropzone } from 'react-dropzone'
 import { useState } from 'react'
 import axios from 'axios'
-import { Spinner } from '@stack/web/ui/Spinner'
-import { AttachmentUploadApiResponse } from '@stack/web/pages/api/file/upload'
+import { Spinner } from '@lb/web/ui/Spinner'
+import { AttachmentUploadApiResponse } from '@lb/web/pages/api/file/upload'
 
 type UploadingFileInfo = {
   file: File

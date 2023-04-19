@@ -1,4 +1,4 @@
-import { projectId, secretClient } from '@stack/config/secrets/secretClient'
+import { projectId, secretClient } from '@lb/config/secrets/secretClient'
 
 export const createSecret = async ({
   name,

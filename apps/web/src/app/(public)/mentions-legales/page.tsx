@@ -1,4 +1,4 @@
-import { PublicWebAppConfig } from '@stack/web/webAppConfig'
+import { PublicWebAppConfig } from '@lb/web/webAppConfig'
 
 const LegalPage = () => (
   <div className="fr-container landing-main-container fr-my-8w">

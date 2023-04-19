@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Cookies from 'js-cookie'
-import InputFormField from '@stack/ui/components/Form/InputFormField'
+import InputFormField from '@lb/ui/components/Form/InputFormField'
 
 const SigninFormValidation = z.object({
   email: z

@@ -74,7 +74,7 @@ module.exports = {
         'prettier/prettier': 'error',
         'no-continue': 'off',
         // Module resolve leads to false negatives in monorepo, typescript compiler will handle any error
-        'import/no-unresolved': [2, { ignore: ['^@stack/'] }],
+        'import/no-unresolved': [2, { ignore: ['^@lb/'] }],
         // This rule is unreliable in monorepos and typescript compiler will help on bad imports
         'import/no-extraneous-dependencies': 'off',
         '@typescript-eslint/unbound-method': 'off',

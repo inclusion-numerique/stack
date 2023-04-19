@@ -26,10 +26,10 @@ importers:
       '@commander-js/extra-typings':
         specifier: ^10.0.3
         version: 10.0.3(commander@10.0.1)
-      '@stack/cdk':
+      '@lb/cdk':
         specifier: '*'
         version: link:../../packages/cdk
-      '@stack/web':
+      '@lb/web':
         specifier: '*'
         version: link:../web
       axios:
@@ -132,10 +132,10 @@ importers:
       '@sentry/nextjs':
         specifier: ^7.48.0
         version: 7.48.0(encoding@0.1.13)(next@13.3.0)(react@18.2.0)(webpack@5.78.0)
-      '@stack/emails':
+      '@lb/emails':
         specifier: '*'
         version: link:../../packages/emails
-      '@stack/storybook':
+      '@lb/storybook':
         specifier: '*'
         version: link:../../packages/storybook
       '@tanstack/react-query':
@@ -289,7 +289,7 @@ importers:
       '@next/bundle-analyzer':
         specifier: ^13.3.0
         version: 13.3.0
-      '@stack/test':
+      '@lb/test':
         specifier: '*'
         version: link:../../packages/test
       '@storybook/jest':
@@ -763,10 +763,10 @@ importers:
         specifier: ^3.21.4
         version: 3.21.4
     devDependencies:
-      '@stack/storybook':
+      '@lb/storybook':
         specifier: '*'
         version: link:../storybook
-      '@stack/test':
+      '@lb/test':
         specifier: '*'
         version: link:../test
       '@storybook/jest':

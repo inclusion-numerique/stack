@@ -1,9 +1,9 @@
 import { Argument, Command } from '@commander-js/extra-typings'
-import { output } from '@stack/cli/output'
-import { listSecrets } from '@stack/config/secrets/listSecrets'
-import { databasePasswordSecretName } from '@stack/config/secrets/databasePasswordSecretName'
-import { createSecret } from '@stack/config/secrets/createSecret'
-import { generateDatabasePassword } from '@stack/config/secrets/generateDatabasePassword'
+import { output } from '@lb/cli/output'
+import { listSecrets } from '@lb/config/secrets/listSecrets'
+import { databasePasswordSecretName } from '@lb/config/secrets/databasePasswordSecretName'
+import { createSecret } from '@lb/config/secrets/createSecret'
+import { generateDatabasePassword } from '@lb/config/secrets/generateDatabasePassword'
 
 /**
  * This command outputs available secrets names

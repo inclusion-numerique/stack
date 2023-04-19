@@ -1,6 +1,6 @@
-import { PublicWebAppConfig } from '@stack/web/webAppConfig'
-import { Breadcrumbs } from '@stack/web/components/Breadcrumbs'
-import { AuthCard } from '@stack/web/app/(public)/connexion/AuthCard'
+import { PublicWebAppConfig } from '@lb/web/webAppConfig'
+import { Breadcrumbs } from '@lb/web/components/Breadcrumbs'
+import { AuthCard } from '@lb/web/app/(public)/connexion/AuthCard'
 import Link from 'next/link'
 
 const errorMessage = (error?: string): string | undefined => {

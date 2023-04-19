@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Spinner } from '@stack/web/ui/Spinner'
+import { Spinner } from '@lb/web/ui/Spinner'
 import axios from 'axios'
-import { AttachmentUploadApiResponse } from '@stack/web/pages/api/file/upload'
+import { AttachmentUploadApiResponse } from '@lb/web/pages/api/file/upload'
 import * as Sentry from '@sentry/nextjs'
 
 export const AttachmentViewer = ({

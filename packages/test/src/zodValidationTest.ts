@@ -1,4 +1,4 @@
-import { objectFormValidation } from '@stack/web/pages/api/test/type'
+import { objectFormValidation } from '@lb/web/pages/api/test/type'
 
 export const normalizeZodErrorForTestExpect = (
   errors: { path: (string | number)[]; message: string }[],

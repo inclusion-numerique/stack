@@ -1,4 +1,4 @@
-import { isBrowser } from '@stack/web/utils/isBrowser'
+import { isBrowser } from '@lb/web/utils/isBrowser'
 
 export const getServerBaseUrl = () => {
   if (isBrowser) {

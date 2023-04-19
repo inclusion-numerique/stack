@@ -13,9 +13,9 @@ import {
   MjmlTitle,
   renderToMjml,
 } from '@luma-team/mjml-react'
-import { emailAssetUrl } from '@stack/emails/emailAssetUrl'
+import { emailAssetUrl } from '@lb/emails/emailAssetUrl'
 import { MjmlAll, MjmlAttributes, MjmlFont, MjmlSpacer } from 'mjml-react'
-import { PublicWebAppConfig } from '@stack/web/webAppConfig'
+import { PublicWebAppConfig } from '@lb/web/webAppConfig'
 
 const brandColor = '#000091'
 const backgroundColor = '#F6F6F6'

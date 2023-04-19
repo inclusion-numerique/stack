@@ -1,7 +1,7 @@
 import 'client-only'
 import { FormState } from 'react-hook-form/dist/types/form'
 import { useEffect } from 'react'
-import { isBrowser } from '@stack/web/utils/isBrowser'
+import { isBrowser } from '@lb/web/utils/isBrowser'
 import { FieldValues } from 'react-hook-form'
 
 export const usePreventUnsavedChanges = <T extends FieldValues>({
