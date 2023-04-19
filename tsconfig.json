@@ -22,6 +22,7 @@
       "@lb/config/*": ["packages/config/src/*"],
       "@lb/emails/*": ["packages/emails/src/*"],
       "@lb/lint/*": ["packages/lint/src/*"],
+      "@lb/migration/*": ["packages/migration/src/*"],
       "@lb/scaleway/*": ["packages/cdk/.gen/providers/scaleway/*"],
       "@lb/storybook/*": ["packages/storybook/src/*"],
       "@lb/ui/*": ["packages/ui/src/*"],

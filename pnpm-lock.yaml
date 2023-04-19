@@ -117,6 +117,12 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.1.0
         version: 3.1.0(react-hook-form@7.43.9)
+      '@lb/emails':
+        specifier: '*'
+        version: link:../../packages/emails
+      '@lb/storybook':
+        specifier: '*'
+        version: link:../../packages/storybook
       '@next-auth/prisma-adapter':
         specifier: ^1.0.6
         version: 1.0.6(@prisma/client@4.13.0)(next-auth@4.22.1)
@@ -132,12 +138,6 @@ importers:
       '@sentry/nextjs':
         specifier: ^7.48.0
         version: 7.48.0(encoding@0.1.13)(next@13.3.0)(react@18.2.0)(webpack@5.78.0)
-      '@lb/emails':
-        specifier: '*'
-        version: link:../../packages/emails
-      '@lb/storybook':
-        specifier: '*'
-        version: link:../../packages/storybook
       '@tanstack/react-query':
         specifier: ^4.29.3
         version: 4.29.3(react-dom@18.2.0)(react@18.2.0)
@@ -286,12 +286,12 @@ importers:
         specifier: ^4.3.7
         version: 4.3.7(react@18.2.0)
     devDependencies:
-      '@next/bundle-analyzer':
-        specifier: ^13.3.0
-        version: 13.3.0
       '@lb/test':
         specifier: '*'
         version: link:../../packages/test
+      '@next/bundle-analyzer':
+        specifier: ^13.3.0
+        version: 13.3.0
       '@storybook/jest':
         specifier: ^0.1.0
         version: 0.1.0
@@ -595,6 +595,79 @@ importers:
       stylelint-config-standard:
         specifier: ^33.0.0
         version: 33.0.0(stylelint@15.5.0)
+      typescript:
+        specifier: ^5.0.4
+        version: 5.0.4
+
+  packages/migration:
+    dependencies:
+      '@aws-sdk/client-s3':
+        specifier: ^3.315.0
+        version: 3.315.0
+      '@prisma/client':
+        specifier: ^4.13.0
+        version: 4.13.0(prisma@4.13.0)
+      axios:
+        specifier: ^1.3.5
+        version: 1.3.5
+      copy:
+        specifier: ^0.3.2
+        version: 0.3.2
+      date-fns:
+        specifier: ^2.29.3
+        version: 2.29.3
+      dotenv:
+        specifier: ^16.0.3
+        version: 16.0.3
+      dotenv-cli:
+        specifier: ^7.2.1
+        version: 7.2.1
+      env-var:
+        specifier: ^7.3.0
+        version: 7.3.0
+      form-data:
+        specifier: ^4.0.0
+        version: 4.0.0
+      html-minifier:
+        specifier: ^4.0.0
+        version: 4.0.0
+      node-html-parser:
+        specifier: ^6.1.5
+        version: 6.1.5
+      prisma:
+        specifier: ^4.13.0
+        version: 4.13.0
+      undici:
+        specifier: ^5.21.2
+        version: 5.21.2
+      uuid:
+        specifier: ^9.0.0
+        version: 9.0.0
+      zod:
+        specifier: ^3.21.4
+        version: 3.21.4
+    devDependencies:
+      '@lb/test':
+        specifier: '*'
+        version: link:../test
+      '@types/jest':
+        specifier: ^29.5.0
+        version: 29.5.0
+      '@types/node':
+        specifier: ^18.15.11
+        version: 18.15.11
+      '@types/uuid':
+        specifier: ^9.0.1
+        version: 9.0.1
+      eslint:
+        specifier: ^8.38.0
+        version: 8.38.0
+      jest:
+        specifier: ^29.5.0
+        version: 29.5.0(@types/node@16.18.23)(ts-node@10.9.1)
+      jest-mock:
+        specifier: ^29.5.0
+        version: 29.5.0
       typescript:
         specifier: ^5.0.4
         version: 5.0.4
@@ -1871,7 +1944,6 @@ packages:
       '@jridgewell/gen-mapping': 0.3.2
       '@jridgewell/trace-mapping': 0.3.17
       jsesc: 2.5.2
-    dev: false
 
   /@babel/helper-annotate-as-pure@7.18.6:
     resolution: {integrity: sha512-duORpUiYrEpzKIop6iNbjnwKLAKnJ47csTyRACyEmWj0QdUrm5aqNJGHSSEQSUAvNW0ojX0dOmK9dZduvkfeXA==}
@@ -9644,7 +9716,7 @@ packages:
       extend-shallow: 2.0.1
       file-contents: 0.3.2
       glob-parent: 2.0.0
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       has-glob: 0.1.1
       is-absolute: 0.2.6
       lazy-cache: 2.0.2
@@ -10451,7 +10523,7 @@ packages:
     dependencies:
       semver: 7.5.0
       shelljs: 0.8.5
-      typescript: 5.1.0-dev.20230418
+      typescript: 5.1.0-dev.20230419
     dev: false
 
   /duplexer3@0.1.5:
@@ -12321,10 +12393,6 @@ packages:
 
   /graceful-fs@4.1.15:
     resolution: {integrity: sha512-6uHUhOPEBgQ24HM+r6b/QwWfZq+yiFcipKFrOFiBEnWdy5sdzYoi+pJeQaPI5qOLRFqWmAXUPQNsielzdLoecA==}
-    dev: false
-
-  /graceful-fs@4.2.10:
-    resolution: {integrity: sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==}
     dev: false
 
   /graceful-fs@4.2.11:
@@ -14285,7 +14353,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@babel/core': 7.21.3
-      '@babel/generator': 7.21.3
+      '@babel/generator': 7.21.4
       '@babel/plugin-syntax-jsx': 7.18.6(@babel/core@7.21.3)
       '@babel/plugin-syntax-typescript': 7.20.0(@babel/core@7.21.3)
       '@babel/traverse': 7.21.3(supports-color@5.5.0)
@@ -20197,8 +20265,8 @@ packages:
     engines: {node: '>=12.20'}
     hasBin: true
 
-  /typescript@5.1.0-dev.20230418:
-    resolution: {integrity: sha512-BfA/KV0xddF8ZCAQZxZ0FoS8p+nWKXVaa5fctXW6WNGfcYF04cXlLB6F6uf3uCVbd0iad4YdHchz3KR0722QLg==}
+  /typescript@5.1.0-dev.20230419:
+    resolution: {integrity: sha512-J8QfDyJDC/8fpA7fzlVBx4zSR+dGVd6afEpu6nEtplA98lcW3NHA7v9KcQ0AJ8SZGoCDLIl+8BVfiI/CkFS2fg==}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: false
