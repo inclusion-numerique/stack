@@ -176,7 +176,6 @@ jobs:
             - ./packages/storybook/node_modules
             - ./packages/test/node_modules
             - ./packages/ui/node_modules
-            - /home/circleci/.cache/Cypress
       - save_cache:
           key: << pipeline.parameters.cache_version >>-cypress-{{ checksum "<< pipeline.parameters.lockfile >>" }}
           paths:
