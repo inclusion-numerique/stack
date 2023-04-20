@@ -19,6 +19,7 @@
     "typescript": "^5.0.4"
   },
   "devDependencies": {
-    "commander": "^10.0.1"
+    "commander": "^10.0.1",
+    "jest": "^29.5.0"
   }
 }
