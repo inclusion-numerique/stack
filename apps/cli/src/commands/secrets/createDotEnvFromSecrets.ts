@@ -1,9 +1,9 @@
 // eslint-disable-next-line unicorn/prevent-abbreviations
 import { Command } from '@commander-js/extra-typings'
-import { listSecrets } from '@stack/config/secrets/listSecrets'
-import { output } from '@stack/cli/output'
-import { getSecretValue } from '@stack/config/secrets/getSecretValue'
-import { appendEnvVariablesToDotEnvFile } from '@stack/cli/dotEnvFile'
+import { listSecrets } from '@app/config/secrets/listSecrets'
+import { output } from '@app/cli/output'
+import { getSecretValue } from '@app/config/secrets/getSecretValue'
+import { appendEnvVariablesToDotEnvFile } from '@app/cli/dotEnvFile'
 
 /**
  * This command fetches secrets from Secret Vault using scaleway keys and put them into .env

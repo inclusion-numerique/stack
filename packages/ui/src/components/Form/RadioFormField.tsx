@@ -2,7 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import { Control, Controller, FieldValues } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
-import { UiComponentProps } from '@stack/ui/utils/uiComponentProps'
+import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
 import { RadioOption } from './utils/options'
 
 export type RadioFormFieldProps<T extends FieldValues> = {

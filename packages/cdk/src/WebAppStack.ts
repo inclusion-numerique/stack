@@ -1,22 +1,22 @@
 import { Fn, TerraformStack } from 'cdktf'
 import { Construct } from 'constructs'
-import { ScalewayProvider } from '@stack/scaleway/provider'
-import { RdbDatabase } from '@stack/scaleway/rdb-database'
-import { DataScalewayRdbInstance } from '@stack/scaleway/data-scaleway-rdb-instance'
-import { RdbUser } from '@stack/scaleway/rdb-user'
-import { RdbPrivilege } from '@stack/scaleway/rdb-privilege'
-import { DataScalewayContainerNamespace } from '@stack/scaleway/data-scaleway-container-namespace'
-import { Container } from '@stack/scaleway/container'
-import { WebCdkOutput } from '@stack/cdk/getCdkOutput'
-import { DataScalewayDomainZone } from '@stack/scaleway/data-scaleway-domain-zone'
-import { DomainRecord, DomainRecordConfig } from '@stack/scaleway/domain-record'
-import { ContainerDomain } from '@stack/scaleway/container-domain'
+import { ScalewayProvider } from '@app/scaleway/provider'
+import { RdbDatabase } from '@app/scaleway/rdb-database'
+import { DataScalewayRdbInstance } from '@app/scaleway/data-scaleway-rdb-instance'
+import { RdbUser } from '@app/scaleway/rdb-user'
+import { RdbPrivilege } from '@app/scaleway/rdb-privilege'
+import { DataScalewayContainerNamespace } from '@app/scaleway/data-scaleway-container-namespace'
+import { Container } from '@app/scaleway/container'
+import { WebCdkOutput } from '@app/cdk/getCdkOutput'
+import { DataScalewayDomainZone } from '@app/scaleway/data-scaleway-domain-zone'
+import { DomainRecord, DomainRecordConfig } from '@app/scaleway/domain-record'
+import { ContainerDomain } from '@app/scaleway/container-domain'
 import {
   computeBranchNamespace,
   createPreviewSubdomain,
   namespacer,
-} from '@stack/cdk/utils'
-import { ObjectBucket } from '@stack/scaleway/object-bucket'
+} from '@app/cdk/utils'
+import { ObjectBucket } from '@app/scaleway/object-bucket'
 import {
   containerNamespaceName,
   databaseInstanceName,
@@ -29,10 +29,10 @@ import {
   projectSlug,
   projectTitle,
   region,
-} from '@stack/config/config'
-import { environmentVariablesFromList } from '@stack/cdk/environmentVariable'
-import { createOutput } from '@stack/cdk/output'
-import { terraformBackend } from '@stack/cdk/terraformBackend'
+} from '@app/config/config'
+import { environmentVariablesFromList } from '@app/cdk/environmentVariable'
+import { createOutput } from '@app/cdk/output'
+import { terraformBackend } from '@app/cdk/terraformBackend'
 
 export const webAppStackVariables = [
   'WEB_CONTAINER_IMAGE',

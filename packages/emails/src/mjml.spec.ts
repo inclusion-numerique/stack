@@ -1,4 +1,4 @@
-import { compileMjml } from '@stack/emails/mjml'
+import { compileMjml } from '@app/emails/mjml'
 
 describe('mjml', () => {
   it('Compiles mjml templates', () => {

@@ -1,8 +1,8 @@
-import { getServerUrl } from '@stack/web/utils/baseUrl'
-import { getSessionUser } from '@stack/web/auth/getSessionUser'
+import { getServerUrl } from '@app/web/utils/baseUrl'
+import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { redirect } from 'next/navigation'
-import { Breadcrumbs } from '@stack/web/components/Breadcrumbs'
-import { SigninPanel } from '@stack/web/app/(public)/connexion/login/SigninPanel'
+import { Breadcrumbs } from '@app/web/components/Breadcrumbs'
+import { SigninPanel } from '@app/web/app/(public)/connexion/login/SigninPanel'
 
 const SigninPage = async ({
   searchParams: { error } = {},

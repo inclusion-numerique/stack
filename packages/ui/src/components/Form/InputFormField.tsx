@@ -1,4 +1,4 @@
-import { UiComponentProps } from '@stack/ui/utils/uiComponentProps'
+import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
 import classNames from 'classnames'
 import React, { HTMLInputTypeAttribute, HTMLProps } from 'react'
 import { Control, Controller, FieldValues } from 'react-hook-form'

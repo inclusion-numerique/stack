@@ -1,4 +1,4 @@
-import { ServerWebAppConfig } from '@stack/web/webAppConfig'
+import { ServerWebAppConfig } from '@app/web/webAppConfig'
 
 // Disallow indexing of preview environments
 export const GET = () =>
