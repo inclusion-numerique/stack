@@ -1,5 +1,6 @@
 import { fr } from '@codegouvfr/react-dsfr'
 import Alert from '@codegouvfr/react-dsfr/Alert'
+import { ExampleClientComponent } from '@stack/web/app/(public)/ExampleClientComponent'
 
 const HomePage = () => (
   <div className="fr-container">
@@ -9,6 +10,7 @@ const HomePage = () => (
       title="Stack"
       description="Ceci est une page de démonstration"
     />
+    <ExampleClientComponent />
   </div>
 )
 
