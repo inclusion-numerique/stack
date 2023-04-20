@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { createSignedGetUrl } from '@stack/web/server/createSignedUrl'
-import { ServerWebAppConfig } from '@stack/web/webAppConfig'
+import { createSignedGetUrl } from '@app/web/server/createSignedUrl'
+import { ServerWebAppConfig } from '@app/web/webAppConfig'
 
 export type AttachmentGetApiResponse = { url: string }
 

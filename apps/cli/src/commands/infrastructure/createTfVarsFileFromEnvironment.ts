@@ -2,15 +2,15 @@
 import { Argument, Command } from '@commander-js/extra-typings'
 import { resolve } from 'node:path'
 import { writeFile } from 'node:fs/promises'
-import { output } from '@stack/cli/output'
+import { output } from '@app/cli/output'
 import {
   projectStackSensitiveVariables,
   projectStackVariables,
-} from '@stack/cdk/ProjectStack'
+} from '@app/cdk/ProjectStack'
 import {
   webAppStackSensitiveVariables,
   webAppStackVariables,
-} from '@stack/cdk/WebAppStack'
+} from '@app/cdk/WebAppStack'
 
 // See https://developer.hashicorp.com/terraform/language/values/variables#variable-definitions-tfvars-files
 // eslint-disable-next-line unicorn/prevent-abbreviations

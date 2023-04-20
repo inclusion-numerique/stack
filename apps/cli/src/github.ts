@@ -1,7 +1,7 @@
 import { Octokit } from 'octokit'
 
 export const owner = 'inclusion-numerique'
-export const repo = 'stack'
+export const repo = process.env.NEXT_PUBLIC_APP_SLUG || ''
 
 let octokit: Octokit
 

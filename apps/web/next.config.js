@@ -45,16 +45,16 @@ const alwaysBundledPackages = new Set(['next', 'server-only'])
 const externalServerPackagesForFasterDevUx =
   process.env.NODE_ENV === 'development'
     ? [
-      ...Object.keys(packageJson.dependencies),
-      ...Object.keys(packageJson.devDependencies),
-    ].filter((packageName) => !alwaysBundledPackages.has(packageName))
+        ...Object.keys(packageJson.dependencies),
+        ...Object.keys(packageJson.devDependencies),
+      ].filter((packageName) => !alwaysBundledPackages.has(packageName))
     : []
 
 const nextConfig = {
   // FIXME standalone does not support app directory for now
   // output: 'standalone',
   reactStrictMode: true,
-  transpilePackages: ['@stack/emails'],
+  transpilePackages: ['@app/emails'],
   experimental: {
     typedRoutes: true,
     appDir: true,

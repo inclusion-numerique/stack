@@ -1,4 +1,4 @@
-import { NotFoundError } from '@stack/web/components/ServerError'
+import { NotFoundError } from '@app/web/components/ServerError'
 
 const Error404Page = () => <NotFoundError />
 

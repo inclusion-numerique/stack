@@ -1,4 +1,4 @@
-import ClosableAlert from '@stack/ui/components/ClosableAlert'
+import ClosableAlert from '@app/ui/components/ClosableAlert'
 
 const HomePage = () => (
   <div className="fr-container">

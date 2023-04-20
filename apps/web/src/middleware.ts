@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { ServerWebAppConfig } from '@stack/web/webAppConfig'
+import { ServerWebAppConfig } from '@app/web/webAppConfig'
 
 const nodeEnvironment = process.env.NODE_ENV
 const isProduction = nodeEnvironment === 'production'

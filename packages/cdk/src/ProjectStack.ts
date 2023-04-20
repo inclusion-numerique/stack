@@ -1,11 +1,11 @@
 import { TerraformStack } from 'cdktf'
 import { Construct } from 'constructs'
-import { ProjectCdkOutput } from '@stack/cdk/getCdkOutput'
-import { environmentVariablesFromList } from '@stack/cdk/environmentVariable'
-import { createOutput } from '@stack/cdk/output'
-import { ScalewayProvider } from '@stack/scaleway/provider'
-import { RdbInstance } from '@stack/scaleway/rdb-instance'
-import { ContainerNamespace } from '@stack/scaleway/container-namespace'
+import { ProjectCdkOutput } from '@app/cdk/getCdkOutput'
+import { environmentVariablesFromList } from '@app/cdk/environmentVariable'
+import { createOutput } from '@app/cdk/output'
+import { ScalewayProvider } from '@app/scaleway/provider'
+import { RdbInstance } from '@app/scaleway/rdb-instance'
+import { ContainerNamespace } from '@app/scaleway/container-namespace'
 import {
   chromaticAppId,
   cockpitGrafanaEditors,
@@ -28,16 +28,16 @@ import {
   sentryProject,
   sentryUrl,
   smtpPort,
-} from '@stack/config/config'
-import { DomainRecord } from '@stack/scaleway/domain-record'
-import { terraformBackend } from '@stack/cdk/terraformBackend'
-import { ObjectBucket } from '@stack/scaleway/object-bucket'
-import { RegistryNamespace } from '@stack/scaleway/registry-namespace'
-import { Cockpit } from '@stack/scaleway/cockpit'
-import { DataScalewayDomainZone } from '@stack/scaleway/data-scaleway-domain-zone'
-import { CockpitGrafanaUser } from '@stack/scaleway/cockpit-grafana-user'
-import { CockpitToken } from '@stack/scaleway/cockpit-token'
-import { TemDomain } from '@stack/scaleway/tem-domain'
+} from '@app/config/config'
+import { DomainRecord } from '@app/scaleway/domain-record'
+import { terraformBackend } from '@app/cdk/terraformBackend'
+import { ObjectBucket } from '@app/scaleway/object-bucket'
+import { RegistryNamespace } from '@app/scaleway/registry-namespace'
+import { Cockpit } from '@app/scaleway/cockpit'
+import { DataScalewayDomainZone } from '@app/scaleway/data-scaleway-domain-zone'
+import { CockpitGrafanaUser } from '@app/scaleway/cockpit-grafana-user'
+import { CockpitToken } from '@app/scaleway/cockpit-token'
+import { TemDomain } from '@app/scaleway/tem-domain'
 
 export const projectStackVariables = [
   'SCW_DEFAULT_ORGANIZATION_ID',

@@ -1,6 +1,6 @@
-import { PublicWebAppConfig } from '@stack/web/webAppConfig'
-import { EmailSigninForm } from '@stack/web/app/(public)/connexion/EmailSigninForm'
-import { AuthCard } from '@stack/web/app/(public)/connexion/AuthCard'
+import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import { EmailSigninForm } from '@app/web/app/(public)/connexion/EmailSigninForm'
+import { AuthCard } from '@app/web/app/(public)/connexion/AuthCard'
 import styles from './SigninPanel.module.css'
 
 const signinErrorMessage = (error?: string): string | undefined => {

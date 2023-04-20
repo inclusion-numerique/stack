@@ -2,8 +2,8 @@
 
 import { signOut } from 'next-auth/react'
 import { useState } from 'react'
-import { AuthCard } from '@stack/web/app/(public)/connexion/AuthCard'
-import { Breadcrumbs } from '@stack/web/components/Breadcrumbs'
+import { AuthCard } from '@app/web/app/(public)/connexion/AuthCard'
+import { Breadcrumbs } from '@app/web/components/Breadcrumbs'
 import Link from 'next/link'
 
 const SignoutPage = () => {

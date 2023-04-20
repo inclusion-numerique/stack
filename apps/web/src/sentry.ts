@@ -1,4 +1,4 @@
-import { PublicWebAppConfig } from '@stack/web/webAppConfig'
+import { PublicWebAppConfig } from '@app/web/webAppConfig'
 import * as Sentry from '@sentry/nextjs'
 
 export const initializeSentry = () => {

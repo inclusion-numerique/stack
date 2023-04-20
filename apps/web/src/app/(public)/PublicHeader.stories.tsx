@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import PublicHeader from '@stack/web/app/(public)/PublicHeader'
+import PublicHeader from '@app/web/app/(public)/PublicHeader'
 
 export default {
   title: 'PublicHeader',

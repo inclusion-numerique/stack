@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { PublicHeaderNav } from '@stack/web/app/(public)/PublicHeaderNav'
+import { PublicHeaderNav } from '@app/web/app/(public)/PublicHeaderNav'
 
 const PublicHeader = () => (
   <header role="banner" className="fr-header">
@@ -9,7 +9,12 @@ const PublicHeader = () => (
           <div className="fr-header__brand fr-enlarge-link">
             <div className="fr-header__brand-top">
               <div className="fr-header__logo">
-                <Link href="/" aria-current="page" target="_self" title="Stack">
+                <Link
+                  href="/"
+                  aria-current="page"
+                  target="_self"
+                  title={process.env.NEXT_PUBLIC_APP_NAME}
+                >
                   <p className="fr-logo">
                     Ministère
                     <br />
@@ -39,8 +44,13 @@ const PublicHeader = () => (
               </div>
             </div>
             <div className="fr-header__service">
-              <Link href="/" aria-current="page" target="_self" title="Stack">
-                <h2>Stack</h2>
+              <Link
+                href="/"
+                aria-current="page"
+                target="_self"
+                title={process.env.NEXT_PUBLIC_APP_NAME}
+              >
+                <h2>{process.env.NEXT_PUBLIC_APP_NAME}</h2>
               </Link>
             </div>
           </div>

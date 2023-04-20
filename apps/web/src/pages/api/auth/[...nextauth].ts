@@ -1,9 +1,9 @@
-import '@stack/web/auth/nextAuthSetup'
+import '@app/web/auth/nextAuthSetup'
 import EmailProvider from 'next-auth/providers/email'
 import NextAuth, { NextAuthOptions } from 'next-auth'
-import { ServerWebAppConfig } from '@stack/web/webAppConfig'
-import { sendVerificationRequest } from '@stack/web/auth/sendVerificationRequest'
-import { nextAuthAdapter } from '@stack/web/auth/nextAuthAdapter'
+import { ServerWebAppConfig } from '@app/web/webAppConfig'
+import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
+import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
 
 const whitelistedSigninEmailDomains = [
   '@anct.gouv.fr',

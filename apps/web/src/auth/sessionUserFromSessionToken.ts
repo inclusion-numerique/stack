@@ -1,6 +1,6 @@
-import { prismaClient } from '@stack/web/prismaClient'
-import { SessionUser } from '@stack/web/auth/sessionUser'
-import { serialize } from '@stack/web/utils/serialization'
+import { prismaClient } from '@app/web/prismaClient'
+import { SessionUser } from '@app/web/auth/sessionUser'
+import { serialize } from '@app/web/utils/serialization'
 
 export const sessionUserFromSessionToken = async (
   sessionToken: string | null,

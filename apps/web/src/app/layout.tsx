@@ -1,12 +1,12 @@
-import '@stack/web/app/app.css'
+import '@app/web/app/app.css'
 import { PropsWithChildren } from 'react'
-import { PublicWebAppConfig } from '@stack/web/webAppConfig'
+import { PublicWebAppConfig } from '@app/web/webAppConfig'
 import { Metadata } from 'next'
-import { Dsfr } from '@stack/web/app/Dsfr'
-import { Matomo } from '@stack/web/app/Matomo'
-import { PreloadResources } from '@stack/web/app/PreloadResources'
-import { EnvInformation } from '@stack/web/app/EnvInformation'
-import { getServerBaseUrl } from '@stack/web/utils/baseUrl'
+import { Dsfr } from '@app/web/app/Dsfr'
+import { Matomo } from '@app/web/app/Matomo'
+import { PreloadResources } from '@app/web/app/PreloadResources'
+import { EnvInformation } from '@app/web/app/EnvInformation'
+import { getServerBaseUrl } from '@app/web/utils/baseUrl'
 
 export const generateMetadata = (): Metadata => ({
   metadataBase: new URL(getServerBaseUrl()),

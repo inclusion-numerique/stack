@@ -1,4 +1,4 @@
-import { databasePasswordSecretName } from '@stack/config/secrets/databasePasswordSecretName'
+import { databasePasswordSecretName } from '@app/config/secrets/databasePasswordSecretName'
 
 describe('databasePasswordSecretName', () => {
   it('should return a secret name', () => {

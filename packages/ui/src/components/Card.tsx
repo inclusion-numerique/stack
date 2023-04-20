@@ -1,5 +1,5 @@
 import React, { HTMLProps, ReactNode } from 'react'
-import { UiComponentProps } from '@stack/ui/utils/uiComponentProps'
+import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
 import classNames from 'classnames'
 
 type CardProps = {
