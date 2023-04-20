@@ -1,4 +1,4 @@
-import { dateAsDayAndTime } from '@stack/web/utils/dateAsDayAndTime'
+import { dateAsDayAndTime } from '@app/web/utils/dateAsDayAndTime'
 
 describe('dateAsDayAndTime', () => {
   it('formats date', () => {

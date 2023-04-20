@@ -1,5 +1,5 @@
 .next/*
-!.next/types/
+!.next/types/link.d.ts
 
 public/dsfr
 build-storybook.log

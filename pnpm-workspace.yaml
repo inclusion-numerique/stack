@@ -8,3 +8,4 @@ packages:
   - packages/ui
   - packages/storybook
   - packages/test
+  - packages/fixtures

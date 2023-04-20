@@ -1,4 +1,4 @@
-import { testAxios, testAxiosWithCatch } from '@stack/test/testAxios'
+import { testAxios, testAxiosWithCatch } from '@app/test/testAxios'
 import { ZodError } from 'zod'
 
 describe('api/test e2e test', () => {

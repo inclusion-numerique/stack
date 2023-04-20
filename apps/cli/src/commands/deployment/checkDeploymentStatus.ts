@@ -1,7 +1,7 @@
 import { Command } from '@commander-js/extra-typings'
-import { output } from '@stack/cli/output'
+import { output } from '@app/cli/output'
 import axios from 'axios'
-import { projectTitle } from '@stack/config/config'
+import { projectTitle } from '@app/config/config'
 import axiosRetry from 'axios-retry'
 
 export const checkDeploymentStatus = new Command()

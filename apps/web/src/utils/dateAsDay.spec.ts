@@ -1,4 +1,4 @@
-import { dateAsDay } from '@stack/web/utils/dateAsDay'
+import { dateAsDay } from '@app/web/utils/dateAsDay'
 
 describe('dateAsDay', () => {
   it('formats date', () => {

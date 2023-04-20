@@ -1,4 +1,4 @@
-import { formatInteger } from '@stack/web/utils/formatInteger'
+import { formatInteger } from '@app/web/utils/formatInteger'
 
 describe('formatInteger', () => {
   it('formats integer smaller than 1000', () => {

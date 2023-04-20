@@ -50,6 +50,8 @@
     "NODE_ENV",
     "PORT",
     "APP",
+    "NEXT_PUBLIC_APP_NAME",
+    "NEXT_PUBLIC_APP_SLUG",
     "GITHUB_TOKEN",
     "PRODUCTION_URL",
     "PRODUCTION_APP",

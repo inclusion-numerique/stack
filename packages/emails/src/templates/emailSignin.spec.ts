@@ -1,4 +1,4 @@
-import { emailSignin } from '@stack/emails/templates/emailSignin'
+import { emailSignin } from '@app/emails/templates/emailSignin'
 import { createMjmlTemplateOutput } from '../outputTemplateHtml'
 
 describe('Template: emailSignin', () => {

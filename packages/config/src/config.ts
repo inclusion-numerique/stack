@@ -4,10 +4,10 @@
  */
 import { arrayFromEnvironmentVariable } from './arrayFromEnvironmentVariable'
 
-export const projectTitle = 'Stack'
-export const projectSlug = 'stack'
-export const mainLiveUrl = 'https://stack.incubateur.anct.gouv.fr'
-export const repositoryUrl = 'https://github.com/inclusion-numerique/stack'
+export const projectTitle = process.env.NEXT_PUBLIC_APP_NAME || ''
+export const projectSlug = process.env.NEXT_PUBLIC_APP_SLUG || ''
+export const mainLiveUrl = `https://${projectSlug}.incubateur.anct.gouv.fr`
+export const repositoryUrl = `https://github.com/inclusion-numerique/${projectSlug}`
 
 export const cypressProjectId = 'ns2oqz'
 

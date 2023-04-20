@@ -1,4 +1,4 @@
-import { secretClient } from '@stack/config/secrets/secretClient'
+import { secretClient } from '@app/config/secrets/secretClient'
 
 export const listSecrets = () =>
   secretClient

@@ -1,5 +1,5 @@
 {
-  "name": "@stack/cdk",
+  "name": "@app/cdk",
   "version": "0.1.0",
   "license": "AGPL-3.0-or-later",
   "scripts": {
@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@types/git-rev-sync": "^2.0.0",
-    "@types/node": "^18.15.11",
+    "@types/node": "^18.15.12",
     "eslint": "^8.38.0",
     "jest": "^29.5.0",
     "ts-node": "^10.9.1",

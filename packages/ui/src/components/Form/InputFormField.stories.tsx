@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod'
 import { Meta, StoryObj } from '@storybook/react'
-import { useOnDiff } from '@stack/web/hooks/useOnDiff'
+import { useOnDiff } from '@app/web/hooks/useOnDiff'
 import InputFormField, { InputFormFieldProps } from './InputFormField'
 
 const objectFormValidation = z
