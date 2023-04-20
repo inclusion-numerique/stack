@@ -1,11 +1,14 @@
-import ClosableAlert from '@stack/ui/components/ClosableAlert'
-import Button from '@codegouvfr/react-dsfr/Button'
+import { fr } from '@codegouvfr/react-dsfr'
+import Alert from '@codegouvfr/react-dsfr/Alert'
 
 const HomePage = () => (
   <div className="fr-container">
-    <h2>Yo</h2>
-    <Button>Bonjour</Button>
-    <ClosableAlert type="info" description="Une desc" title="Bonjour" />
+    <h2 className={fr.cx('fr-mt-8v')}>Bien le bonjour</h2>
+    <Alert
+      severity="info"
+      title="Stack"
+      description="Ceci est une page de démonstration"
+    />
   </div>
 )
 

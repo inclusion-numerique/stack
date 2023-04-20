@@ -41,14 +41,17 @@ const modularizeImports = {
  * For faster dev UX, server dependencies do not need to be bundled.
  * Except those that are expected to be bundled for compilation features.
  */
-const alwaysBundledPackages = new Set(['next', 'server-only'])
-const externalServerPackagesForFasterDevUx =
-  process.env.NODE_ENV === 'development'
-    ? [
+const alwaysBundledPackages = new Set([
+  'next',
+  'server-only',
+  '@codegouvfr/react-dsfr',
+])
+const externalServerPackagesForFasterDevUx = isDev
+  ? [
       ...Object.keys(packageJson.dependencies),
       ...Object.keys(packageJson.devDependencies),
     ].filter((packageName) => !alwaysBundledPackages.has(packageName))
-    : []
+  : []
 
 const nextConfig = {
   // FIXME standalone does not support app directory for now

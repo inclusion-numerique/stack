@@ -109,8 +109,8 @@ importers:
         specifier: ^3.315.0
         version: 3.315.0
       '@codegouvfr/react-dsfr':
-        specifier: ^0.48.1
-        version: 0.48.1(react@18.2.0)
+        specifier: ^0.48.2
+        version: 0.48.2(react@18.2.0)
       '@gouvfr/dsfr':
         specifier: ^1.9.2
         version: 1.9.2
@@ -738,6 +738,9 @@ importers:
 
   packages/ui:
     dependencies:
+      '@codegouvfr/react-dsfr':
+        specifier: ^0.48.2
+        version: 0.48.2(react@18.2.0)
       '@gouvfr/dsfr':
         specifier: ^1.9.2
         version: 1.9.2
@@ -3300,8 +3303,8 @@ packages:
       - ts-node
     dev: false
 
-  /@codegouvfr/react-dsfr@0.48.1(react@18.2.0):
-    resolution: {integrity: sha512-KEK+0u133H3XOJjeQyoM3K16tIpBpcFklQwi6zVi35NQ4CHLA4Mxdu0LAnxoJOcXvJp5YvRWp/g0wAUaQ8eG5w==}
+  /@codegouvfr/react-dsfr@0.48.2(react@18.2.0):
+    resolution: {integrity: sha512-X7NP09Zq81J4RNulLUR5Oi/bidjqLrrDih3RFMBD4PUuP4VniHxZpYIDL8YtSJzb8jo3L04q69mh6nDD1A4Wsg==}
     hasBin: true
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -10451,7 +10454,7 @@ packages:
     dependencies:
       semver: 7.5.0
       shelljs: 0.8.5
-      typescript: 5.1.0-dev.20230418
+      typescript: 5.1.0-dev.20230419
     dev: false
 
   /duplexer3@0.1.5:
@@ -20197,8 +20200,8 @@ packages:
     engines: {node: '>=12.20'}
     hasBin: true
 
-  /typescript@5.1.0-dev.20230418:
-    resolution: {integrity: sha512-BfA/KV0xddF8ZCAQZxZ0FoS8p+nWKXVaa5fctXW6WNGfcYF04cXlLB6F6uf3uCVbd0iad4YdHchz3KR0722QLg==}
+  /typescript@5.1.0-dev.20230419:
+    resolution: {integrity: sha512-J8QfDyJDC/8fpA7fzlVBx4zSR+dGVd6afEpu6nEtplA98lcW3NHA7v9KcQ0AJ8SZGoCDLIl+8BVfiI/CkFS2fg==}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: false
