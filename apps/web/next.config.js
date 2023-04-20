@@ -1,7 +1,10 @@
 const { withSentryConfig } = require('@sentry/nextjs')
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
 const packageJson = require('./package.json')
 
-const isDev = process.env.NODE_ENV === 'development'
+const isDevelopment = process.env.NODE_ENV === 'development'
 
 // Some packages export a lot of modules in a single index file. To avoid them being compiled
 // next has added native support for modularize import transform
@@ -12,31 +15,6 @@ const modularizeImports = {
   'chart.js': { transform: 'chart.js/{{member}}' },
 }
 
-// https://webpack.js.org/concepts/plugins/
-// class DebugCompiledModulesPlugin {
-//   apply(compiler) {
-//     console.log('DebugCompiledModulesPlugin apply called')
-//     // https://webpack.js.org/api/compiler-hooks/
-//     compiler.hooks.compilation.tap(
-//       'DebugCompiledModulesPlugin',
-//       (compilation) => {
-//         // https://webpack.js.org/api/compilation-object/
-//         compilation.hooks.optimizeChunkAssets.tap(
-//           'DebugCompiledModulesPlugin',
-//           (chunk) => {
-//             // console.log('CHUNK', chunk.id)
-//             // explore chunk
-//             // chunk.getModules().forEach((module) => {
-//             //   console.log('MOD', module.resource, module.request, module.path)
-//             //   explore modules
-//             // })
-//           },
-//         )
-//       },
-//     )
-//   }
-// }
-
 /**
  * For faster dev UX, server dependencies do not need to be bundled.
  * Except those that are expected to be bundled for compilation features.
@@ -46,7 +24,7 @@ const alwaysBundledPackages = new Set([
   'server-only',
   '@codegouvfr/react-dsfr',
 ])
-const externalServerPackagesForFasterDevUx = isDev
+const externalServerPackagesForFasterDevelopmentUx = isDevelopment
   ? [
       ...Object.keys(packageJson.dependencies),
       ...Object.keys(packageJson.devDependencies),
@@ -66,7 +44,7 @@ const nextConfig = {
       'nanoid',
       'mjml',
       'mjml-core',
-      ...externalServerPackagesForFasterDevUx,
+      ...externalServerPackagesForFasterDevelopmentUx,
     ],
   },
   modularizeImports,
@@ -87,10 +65,6 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   webpack: (config, { isServer }) => {
-    if (isDev) {
-      // config.plugins.push(new DebugCompiledModulesPlugin())
-    }
-
     if (!isServer) {
       // Client bundling
       return config
@@ -112,4 +86,6 @@ const sentryWebpackPluginOptions = {
   silent: true, // Suppresses all logs
 }
 
-module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions)
+module.exports = withBundleAnalyzer(
+  withSentryConfig(nextConfig, sentryWebpackPluginOptions),
+)
