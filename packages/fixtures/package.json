@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "prisma:seed": "ts-node -r tsconfig-paths/register src/seeds.ts -c"
+    "prisma:seed": "ts-node -r tsconfig-paths/register src/seeds.ts -c",
+    "lint": "eslint src",
+    "tsc": "tsc --noEmit",
+    "test": "jest --passWithNoTests"
   },
   "engines": {
     "node": "^18.15"
