@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker'
-import { prismaClient } from '@stack/web/prismaClient'
+import { prismaClient } from '@app/web/prismaClient'
 
 const BASE_NUMBER = 10
 

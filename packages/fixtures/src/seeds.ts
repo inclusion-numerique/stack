@@ -1,5 +1,5 @@
 import { program, InvalidArgumentError } from 'commander'
-import { prismaClient } from '@stack/web/prismaClient'
+import { prismaClient } from '@app/web/prismaClient'
 import { users } from './users'
 
 function myParseInt(value: string) {
