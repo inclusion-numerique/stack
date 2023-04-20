@@ -1,6 +1,6 @@
 import { fr } from '@codegouvfr/react-dsfr'
 import Alert from '@codegouvfr/react-dsfr/Alert'
-import { ExampleClientComponent } from '@stack/web/app/(public)/ExampleClientComponent'
+import { ExampleClientComponent } from '@app/web/app/(public)/ExampleClientComponent'
 
 const HomePage = () => (
   <div className="fr-container">
