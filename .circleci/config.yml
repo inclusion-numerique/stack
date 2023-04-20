@@ -162,6 +162,9 @@ jobs:
       - run:
           name: 'Fetch dependencies'
           command: pnpm install --virtual-store-dir << pipeline.parameters.virtual_store_dir >> --frozen-lockfile
+      - run:
+          name: 'Monorepo manypkg check'
+          command: pnpm manypkg check
       - save_cache:
           key: << pipeline.parameters.cache_version >>-pnpm-{{ checksum "<< pipeline.parameters.lockfile >>" }}
           paths:
@@ -194,6 +197,9 @@ jobs:
           name: 'Install dependencies'
           command: |
             pnpm install -F @app/web --prod --node-linker=hoisted --frozen-lockfile
+      - run:
+          name: 'Monorepo manypkg check'
+          command: pnpm manypkg check
       - save_cache:
           key: << pipeline.parameters.cache_version >>-web-prod-{{ checksum "<< pipeline.parameters.lockfile >>" }}
           paths:
@@ -210,9 +216,6 @@ jobs:
           name: 'Prisma generate'
           command: pnpm --silent -F @app/web prisma:generate
       - run:
-          name: 'Monorepo manypkg check'
-          command: pnpm manypkg check
-      - run:
           name: 'Tsc'
           command: pnpm tsc
       - run:
@@ -226,9 +229,6 @@ jobs:
     steps:
       - checkout
       - install_dependencies
-      - run:
-          name: 'Monorepo manypkg check'
-          command: pnpm manypkg check
       - run:
           name: 'Tsc config and cdk packages'
           command: pnpm -F @app/config -F @app/cdk tsc
