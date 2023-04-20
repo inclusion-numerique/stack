@@ -79,6 +79,8 @@ module.exports = {
         'import/no-extraneous-dependencies': 'off',
         '@typescript-eslint/unbound-method': 'off',
         '@typescript-eslint/no-misused-promises': 'off',
+        // We want to make sure anyone ask the question, should i await this promise ?
+        '@typescript-eslint/no-floating-promises': 'warn',
         'unicorn/no-array-callback-reference': 'off',
         'import/prefer-default-export': 'off',
         'react/jsx-props-no-spreading': [
