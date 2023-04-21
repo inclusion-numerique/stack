@@ -37,7 +37,7 @@ executors:
 parameters:
   cache_version:
     type: string
-    default: '2023-04-21-01'
+    default: '2023-04-21-02'
   virtual_store_dir:
     type: string
     default: './.pnpm'
@@ -196,7 +196,7 @@ jobs:
       - run:
           name: 'Install dependencies'
           command: |
-            pnpm install -F @app/web --prod --node-linker=hoisted --frozen-lockfile
+            pnpm install -F @app/web --prod --frozen-lockfile
       - run:
           name: 'Monorepo manypkg check'
           command: pnpm manypkg check
