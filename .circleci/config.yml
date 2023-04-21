@@ -37,7 +37,7 @@ executors:
 parameters:
   cache_version:
     type: string
-    default: '2023-04-21-02'
+    default: '2023-04-21-04'
   virtual_store_dir:
     type: string
     default: './.pnpm'
@@ -180,6 +180,7 @@ jobs:
             - ./packages/test/node_modules
             - ./packages/ui/node_modules
             - ./packages/fixtures/node_modules
+            - ./packages/migration/node_modules
       - save_cache:
           key: << pipeline.parameters.cache_version >>-cypress-{{ checksum "<< pipeline.parameters.lockfile >>" }}
           paths:
