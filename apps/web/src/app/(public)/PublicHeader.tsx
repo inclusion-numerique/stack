@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { PublicHeaderNav } from '@app/web/app/(public)/PublicHeaderNav'
+import { menu } from './menu'
 
 const PublicHeader = () => (
   <header role="banner" className="fr-header">
@@ -103,15 +104,17 @@ const PublicHeader = () => (
         </button>
         <div className="fr-header__menu-links">
           <ul className="fr-btns-group">
-            <li>
-              <Link
-                className="fr-btn"
-                href="/"
-                aria-controls="modal-menu-mobile"
-              >
-                Accueil
-              </Link>
-            </li>
+            {menu.map((item) => (
+              <li key={item.name}>
+                <Link
+                  className="fr-btn"
+                  href={item.href}
+                  aria-controls="modal-menu-mobile"
+                >
+                  {item.name}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
