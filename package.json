@@ -1,6 +1,6 @@
 {
-  "name": "my-app",
-  "description": "My App - Monorepo",
+  "name": "la-base",
+  "description": "la Base - Monorepo",
   "version": "0.1.0",
   "license": "AGPL-3.0-or-later",
   "private": true,
@@ -22,7 +22,7 @@
     "scw": "pnpm with-env scw",
     "manypkg": "manypkg",
     "start:web": "npm -w @app/web start",
-    "db:reset": "pnpm db:stop && docker volume rm my-app_pgdata && pnpm db:start && pnpm prisma:generate && pnpm prisma:migrate",
+    "db:reset": "pnpm db:stop && docker volume rm la-base_pgdata && pnpm db:start && pnpm prisma:generate && pnpm prisma:migrate",
     "db:start": "docker-compose -f ./docker-compose.dev.yml up --build -d",
     "db:stop": "docker-compose -f ./docker-compose.dev.yml down",
     "prisma:generate": "pnpm -F web prisma:generate",
