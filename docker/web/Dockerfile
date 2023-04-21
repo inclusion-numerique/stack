@@ -9,23 +9,23 @@ ENV NODE_ENV production
 
 # App will have structure :
 # /node_modules -> Root dependencies
-# /web
-#   /node_modules -> apps/web dependencies
-#   /.next -> next build
-#   /src
-#   /public
-#   /...other stuff
+# /apps/web
+#      /node_modules -> apps/web dependencies
+#      /.next -> next build
+#      /src
+#      /public
+#      /...other stuff
 
 # Copy root workspace dependencies
 COPY node_modules ./node_modules
 
 # Copy apps/web
-COPY apps/web ./web
+COPY apps/web ./apps/web
 
 EXPOSE $PORT
 
-WORKDIR /app/web
+WORKDIR /app/apps/web
 
 ENTRYPOINT ["dumb-init", "--"]
 
-CMD ["../node_modules/.bin/next", "start"]
+CMD ["node_modules/.bin/next", "start"]

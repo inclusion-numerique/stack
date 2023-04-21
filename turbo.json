@@ -33,6 +33,7 @@
     }
   },
   "globalEnv": [
+    "ANALYZE",
     "CI",
     "CHROMATIC_APP_ID",
     "DATABASE_URL",

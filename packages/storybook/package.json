@@ -28,7 +28,6 @@
     "@storybook/jest": "^0.1.0",
     "@storybook/nextjs": "^7.0.6",
     "@storybook/react": "^7.0.6",
-    "@storybook/test-runner": "^0.10.0",
     "@storybook/testing-library": "^0.1.0",
     "chromatic": "^6.17.3",
     "dotenv": "^16.0.3",
