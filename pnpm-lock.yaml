@@ -114,12 +114,6 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.1.0
         version: 3.1.0(react-hook-form@7.43.9)
-      '@lb/emails':
-        specifier: '*'
-        version: link:../../packages/emails
-      '@lb/storybook':
-        specifier: '*'
-        version: link:../../packages/storybook
       '@next-auth/prisma-adapter':
         specifier: ^1.0.6
         version: 1.0.6(@prisma/client@4.13.0)(next-auth@4.22.1)
@@ -286,12 +280,6 @@ importers:
         specifier: ^4.3.7
         version: 4.3.7(react@18.2.0)
     devDependencies:
-      '@app/test':
-        specifier: '*'
-        version: link:../../packages/test
-      '@next/bundle-analyzer':
-        specifier: ^13.3.0
-        version: 13.3.0
       '@storybook/jest':
         specifier: ^0.1.0
         version: 0.1.0
@@ -672,15 +660,15 @@ importers:
         specifier: ^3.21.4
         version: 3.21.4
     devDependencies:
-      '@lb/test':
+      '@app/test':
         specifier: '*'
         version: link:../test
       '@types/jest':
-        specifier: ^29.5.0
-        version: 29.5.0
+        specifier: ^29.5.1
+        version: 29.5.1
       '@types/node':
-        specifier: ^18.15.11
-        version: 18.15.11
+        specifier: ^18.15.12
+        version: 18.15.12
       '@types/uuid':
         specifier: ^9.0.1
         version: 9.0.1
@@ -689,7 +677,7 @@ importers:
         version: 8.38.0
       jest:
         specifier: ^29.5.0
-        version: 29.5.0(@types/node@16.18.23)(ts-node@10.9.1)
+        version: 29.5.0(@types/node@18.15.12)
       jest-mock:
         specifier: ^29.5.0
         version: 29.5.0
@@ -1945,15 +1933,6 @@ packages:
       eslint-visitor-keys: 2.1.0
       semver: 6.3.0
     dev: true
-
-  /@babel/generator@7.21.3:
-    resolution: {integrity: sha512-QS3iR1GYC/YGUnW7IdggFeN5c1poPUurnGttOV/bZgPGV+izC/D8HnD6DLwod0fsatNyVn1G3EVWMYIF0nHbeA==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/types': 7.21.4
-      '@jridgewell/gen-mapping': 0.3.2
-      '@jridgewell/trace-mapping': 0.3.17
-      jsesc: 2.5.2
 
   /@babel/generator@7.21.4:
     resolution: {integrity: sha512-NieM3pVIYW2SwGzKoqfPrQsf4xGs9M9AIG3ThppsSRmO+m7eQhmI6amajKMUeIO37wFfsvnvcxQFx6x6iqxDnA==}
@@ -10127,7 +10106,7 @@ packages:
     dependencies:
       semver: 7.5.0
       shelljs: 0.8.5
-      typescript: 5.1.0-dev.20230419
+      typescript: 5.1.0-dev.20230421
     dev: false
 
   /duplexer3@0.1.5:
@@ -19348,8 +19327,8 @@ packages:
     engines: {node: '>=12.20'}
     hasBin: true
 
-  /typescript@5.1.0-dev.20230419:
-    resolution: {integrity: sha512-J8QfDyJDC/8fpA7fzlVBx4zSR+dGVd6afEpu6nEtplA98lcW3NHA7v9KcQ0AJ8SZGoCDLIl+8BVfiI/CkFS2fg==}
+  /typescript@5.1.0-dev.20230421:
+    resolution: {integrity: sha512-/1iQqWMPGKPeLDDo7yRXIf7b1pisezXm0gvVI9t4UrtD6j3itaV/WzB7CNWJjhi4oElPFjkY1KzDOqqsTZD+TQ==}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: false

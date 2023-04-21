@@ -27,6 +27,7 @@
       "@app/ui/*": ["packages/ui/src/*"],
       "@app/test/*": ["packages/test/src/*"],
       "@app/fixtures/*": ["packages/fixtures/src/*"],
+      "@app/migration/*": ["packages/migration/src/*"]
     },
     "typeRoots": [
       "./node_modules/@types",
