@@ -5,6 +5,7 @@ packages:
   - packages/config
   - packages/emails
   - packages/lint
+  - packages/migration
   - packages/ui
   - packages/storybook
   - packages/test

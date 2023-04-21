@@ -12,6 +12,7 @@
     "packages/config/src",
     "packages/emails/src",
     "packages/lint/src",
+    "packages/migration/src",
     "packages/storybook/.storybook/**/*",
     "packages/storybook/src",
     "packages/fixtures/src",
