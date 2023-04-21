@@ -9,7 +9,7 @@ export const projectSlug = process.env.NEXT_PUBLIC_APP_SLUG || ''
 export const mainLiveUrl = `https://${projectSlug}.incubateur.anct.gouv.fr`
 export const repositoryUrl = `https://github.com/inclusion-numerique/${projectSlug}`
 
-export const cypressProjectId = 'ns2oqz'
+export const cypressProjectId = 'ppk369'
 
 export const databaseInstanceName = process.env.DATABASE_INSTANCE_NAME ?? ''
 export const containerNamespaceName = process.env.CONTAINER_NAMESPACE_NAME ?? ''
