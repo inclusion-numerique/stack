@@ -55,6 +55,16 @@ module.exports = {
         // eslint-disable-next-line no-path-concat, unicorn/prefer-module
         project: `${__dirname}/../../../tsconfig.eslint.json`,
       },
+      settings: {
+        'import/resolver': {
+          'eslint-import-resolver-custom-alias': {
+            alias: {
+              '@prisma/migration-client': `${__dirname}/../../../packages/migration/prisma/migration-client`,
+            },
+            extensions: ['.ts'],
+          },
+        },
+      },
       plugins: ['@typescript-eslint', 'import', 'prettier'],
       extends: [
         'turbo',
