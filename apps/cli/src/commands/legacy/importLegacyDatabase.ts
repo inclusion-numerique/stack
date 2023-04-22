@@ -4,7 +4,7 @@ import {
   ListObjectsV2Command,
   S3Client,
 } from '@aws-sdk/client-s3'
-import { output } from '@lb/cli/output'
+import { output } from '@app/cli/output'
 import { resolve as pathResolve } from 'node:path'
 import { createWriteStream, existsSync, mkdirSync } from 'node:fs'
 import { exec as callbackExec } from 'node:child_process'

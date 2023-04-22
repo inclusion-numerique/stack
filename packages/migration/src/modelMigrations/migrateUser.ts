@@ -1,5 +1,5 @@
-import { migrationPrismaClient } from '@lb/migration/migrationPrismaClient'
-import { FindManyItemType } from '@lb/migration/utils/findManyItemType'
+import { migrationPrismaClient } from '@app/migration/migrationPrismaClient'
+import { FindManyItemType } from '@app/migration/utils/findManyItemType'
 import { v4 } from 'uuid'
 import { Prisma } from '@prisma/client'
 import TransactionClient = Prisma.TransactionClient

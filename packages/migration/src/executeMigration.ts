@@ -1,8 +1,8 @@
 import {
   getLegacyUsers,
   migrateUser,
-} from '@lb/migration/modelMigrations/migrateUser'
-import { prismaClient } from '@lb/web/prismaClient'
+} from '@app/migration/modelMigrations/migrateUser'
+import { prismaClient } from '@app/web/prismaClient'
 
 export const executeMigration = async () => {
   const legacyUsers = await getLegacyUsers()

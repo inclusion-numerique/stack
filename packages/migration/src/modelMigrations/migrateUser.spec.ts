@@ -1,4 +1,4 @@
-import { migrateUser } from '@lb/migration/modelMigrations/migrateUser'
+import { migrateUser } from '@app/migration/modelMigrations/migrateUser'
 
 jest.mock('uuid', () => ({ v4: () => '0000' }))
 

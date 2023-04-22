@@ -1,5 +1,5 @@
 {
-  "name": "@lb/migration",
+  "name": "@app/migration",
   "version": "0.1.0",
   "license": "AGPL-3.0-or-later",
   "private": true,
@@ -36,7 +36,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@lb/test": "*",
+    "@app/test": "*",
     "@types/jest": "^29.5.0",
     "@types/node": "^18.15.11",
     "@types/uuid": "^9.0.1",
