@@ -1,39 +1,42 @@
-import { migrateUser } from '@app/migration/modelMigrations/migrateUser'
+import {
+  LegacyUser,
+  migrateUser,
+} from '@app/migration/modelMigrations/migrateUser'
+import { createMockPrisma } from '@app/migration/test/createPrismaMock'
+import { mockReset } from 'jest-mock-extended'
 
 jest.mock('uuid', () => ({ v4: () => '0000' }))
 
 describe('migrateUser', () => {
-  const transactionMock = {
-    user: {
-      upsert: jest.fn(),
-    },
-  }
+  const mockTransaction = createMockPrisma()
 
   beforeEach(() => {
-    transactionMock.user.upsert.mockReset()
+    mockReset(mockTransaction)
   })
 
   it('should migrate a user', async () => {
+    const legacyUser = {
+      first_name: 'A',
+      email: 'a.a@a.a',
+      last_name: 'A',
+      is_active: true,
+      id: BigInt(8),
+      is_admin: false,
+      is_superuser: false,
+      password: 'oui',
+      created: new Date('2020-02-02'),
+      modified: new Date('2020-02-02'),
+      last_login: null,
+      cnfs_id: null,
+      cnfs_id_organization: null,
+    } satisfies LegacyUser
+
     await migrateUser({
-      transaction: transactionMock,
-      legacyUser: {
-        first_name: 'A',
-        email: 'a.a@a.a',
-        last_name: 'A',
-        is_active: true,
-        id: BigInt(8),
-        is_admin: false,
-        is_superuser: false,
-        password: 'oui',
-        created: new Date('2020-02-02'),
-        modified: new Date('2020-02-02'),
-        last_login: null,
-        cnfs_id: null,
-        cnfs_id_organization: null,
-      },
+      transaction: mockTransaction,
+      legacyUser,
     })
 
-    expect(transactionMock.user.upsert).toHaveBeenCalledOnceWith({
+    expect(mockTransaction.user.upsert).toHaveBeenCalledOnceWith({
       where: {
         legacyId: 8,
       },
@@ -42,6 +45,8 @@ describe('migrateUser', () => {
         firstName: 'A',
         lastName: 'A',
         name: 'A A',
+        updated: legacyUser.modified,
+        created: legacyUser.created,
       },
       create: {
         email: 'a.a@a.a',
@@ -50,9 +55,12 @@ describe('migrateUser', () => {
         lastName: 'A',
         legacyId: 8,
         name: 'A A',
+        updated: legacyUser.modified,
+        created: legacyUser.created,
       },
       select: {
         id: true,
+        legacyId: true,
       },
     })
   })

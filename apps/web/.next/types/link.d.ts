@@ -30,29 +30,7 @@ declare namespace __next_route_internal_types__ {
   type StaticRoutes = 
     | `/`
     | `/401`
-    | `/403`
-    | `/500`
-    | `/404`
-    | `/confidentialite`
-    | `/connexion/erreur`
-    | `/connexion/login`
-    | `/connexion/logout`
-    | `/connexion/verification`
-    | `/accessibilite`
-    | `/mentions-legales`
-    | `/robots.txt`
-    | `/api/health`
-    | `/api/file/get`
-    | `/api/file/upload`
-    | `/api/test/index.api.spec`
-    | `/api/test/service.spec`
-    | `/api/test`
-    | `/api/test/service`
-    | `/api/test/type.spec`
-    | `/api/test/type`
-  type DynamicRoutes<T extends string = string> = 
-    | `/api/auth/${CatchAllSlug<T>}`
-    | `/api/trpc/${SafeSlug<T>}`
+  type DynamicRoutes<T extends string = string> = never
 
   type RouteImpl<T> = 
     | StaticRoutes

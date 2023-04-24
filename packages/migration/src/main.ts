@@ -13,6 +13,8 @@ executeMigration()
     console.log(`- duration : ${(result.time / 1000).toFixed(2)}s`)
     console.log('Migrated models :')
     console.log(`- ${result.result.migratedUsers.length} users`)
+    console.log(`- ${result.result.migratedBases.length} bases`)
+    console.log(`- ${result.result.migratedResources.length} resources`)
   })
   // eslint-disable-next-line unicorn/prefer-top-level-await
   .catch(async (error) => {
