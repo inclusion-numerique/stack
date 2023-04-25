@@ -15,7 +15,7 @@ describe('migrateResource', () => {
     mockReset(mockTransaction)
   })
 
-  it('should migrate a resource', async () => {
+  it('should migrate a resource without any content', async () => {
     const legacyResource = {
       id: 1238n,
       title:
@@ -61,33 +61,35 @@ describe('migrateResource', () => {
     })
 
     expect(mockTransaction.resource.upsert).toHaveBeenCalledOnceWith({
-      where: {
-        legacyId: 129,
-      },
-      update: {
-        description:
-          "proposition de jeu type memory pour l'animation d'atelier de manière dé-connecté",
-        ownerId: '0000',
-        slug: 'test-slug',
-        title: legacyResource.title,
-        created: legacyResource.created,
-        updated: legacyResource.modified,
-      },
       create: {
+        baseId: 'aaaa',
+        createdById: '0000',
         description:
-          "proposition de jeu type memory pour l'animation d'atelier de manière dé-connecté",
+          "L'Annuaire des Collectivités est un service public numérique développé par l'Incubateur des Territoires ANCT permettant aux communes de disposer d'une interface web centralisant des informations fiables et utiles pour le citoyens : horaires d'ouverture de la mairie, liens vers les démarches administratives (acte de naissance, renouvellement de CNU), présentation des élus...",
         id: '0000',
-        legacyId: 129,
-        ownerId: '0000',
+        legacyId: 1238,
         slug: 'test-slug',
         title: legacyResource.title,
         created: legacyResource.created,
         updated: legacyResource.modified,
       },
       select: {
+        createdBy: true,
         id: true,
         legacyId: true,
-        ownerId: true,
+      },
+      update: {
+        baseId: 'aaaa',
+        createdById: '0000',
+        description:
+          "L'Annuaire des Collectivités est un service public numérique développé par l'Incubateur des Territoires ANCT permettant aux communes de disposer d'une interface web centralisant des informations fiables et utiles pour le citoyens : horaires d'ouverture de la mairie, liens vers les démarches administratives (acte de naissance, renouvellement de CNU), présentation des élus...",
+        slug: 'test-slug',
+        title: legacyResource.title,
+        created: legacyResource.created,
+        updated: legacyResource.modified,
+      },
+      where: {
+        legacyId: 1238,
       },
     })
 
@@ -96,4 +98,6 @@ describe('migrateResource', () => {
       id: '0000',
     })
   })
+
+  // TODO test with content
 })

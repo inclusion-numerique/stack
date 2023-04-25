@@ -7,7 +7,9 @@ export type MigrateContentInput = {
   legacyResource: LegacyResource
   resource: Pick<Resource, 'id'>
   transaction: Prisma.TransactionClient
-  legacyContent: LegacyResource['main_contentblock'][number]
+  legacyContent:
+    | LegacyResource['main_contentsection'][number]['main_contentblock'][number]
+    | LegacyResource['main_contentsection'][number]
   order: number
 }
 
@@ -23,15 +25,56 @@ export const migrateContent = async ({
 }: MigrateContentInput) => {
   const legacyId = Number(legacyContent.id)
 
-  const type: CreateContentData['type'] = legacyContent.main_textcontent
-    ? 'Text'
-    : legacyContent.main_linkcontent || legacyContent.main_linkedresourcecontent
-    ? 'Link'
-    : legacyContent.main_filecontent
-    ? 'File'
-    : 'SectionTitle'
+  const type: CreateContentData['type'] | null =
+    // We migrate sections as SectionTitle
+    'main_contentblock' in legacyContent
+      ? 'SectionTitle'
+      : // Other contents are migrated as Text, Link or File
+      legacyContent.main_textcontent
+      ? 'Text'
+      : legacyContent.main_linkcontent ||
+        legacyContent.main_linkedresourcecontent
+      ? 'Link'
+      : legacyContent.main_filecontent
+      ? 'File'
+      : null
 
-  // TODO SectionTitle here is not correct how to determine if it is one ?
+  if (!type) {
+    throw new Error('Could not determine content type')
+  }
+
+  const typeData: Partial<CreateContentData> = {
+    // All relevant contents have a title
+    title: legacyContent.title,
+  }
+
+  // We migrate sections as SectionTitle
+  if ('main_contentblock' in legacyContent) {
+    typeData.type = 'SectionTitle'
+  } else if (legacyContent.main_textcontent) {
+    typeData.type = 'Text'
+    typeData.text = legacyContent.main_textcontent.text
+  } else if (legacyContent.main_linkcontent) {
+    typeData.type = 'Link'
+    // TODO QUESTION What is target_image in a main_link content
+    typeData.url = legacyContent.main_linkcontent.link
+    typeData.showPreview = legacyContent.main_linkcontent.with_preview
+    typeData.caption = legacyContent.main_linkcontent.target_description
+    // TODO We should have a system to scrap link previews automaticaly
+  } else if (legacyContent.main_linkedresourcecontent) {
+    typeData.type = 'Link'
+    // TODO Seems wierd to migrate resources links like this
+    typeData.url = `/legacy-content/${
+      legacyContent.main_linkedresourcecontent.linked_resource_id?.toString() ??
+      'missing'
+    }`
+    typeData.showPreview = true
+  } else if (legacyContent.main_filecontent) {
+    typeData.type = 'File'
+    typeData.file = legacyContent.main_filecontent.file
+  }
+
+  // TODO Add data depending on type
 
   const data = {
     id: v4(),

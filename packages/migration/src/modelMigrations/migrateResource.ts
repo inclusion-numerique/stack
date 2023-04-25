@@ -4,55 +4,42 @@ import type { Prisma } from '@prisma/client'
 import { LegacyToNewIdHelper } from '@app/migration/legacyToNewIdHelper'
 import { prismaClient } from '@app/web/prismaClient'
 import { v4 } from 'uuid'
+import { SlugToLegacyIdMap } from '@app/migration/utils/computeSlugAndUpdateExistingSlugs'
 import { migrateContent } from '@app/migration/modelMigrations/migrateContent'
 
 export const getLegacyResources = () =>
   migrationPrismaClient.main_resource.findMany({
     include: {
       main_basesection_resources: true,
-      main_contentsection: true,
-      main_contentblock: {
+      // Each content seems to be inside a section. With a null title if at the "root", or with a "title" if inside a section
+      main_contentsection: {
+        orderBy: { order: 'asc' },
         include: {
-          main_filecontent: true,
-          main_linkcontent: true,
-          main_linkedresourcecontent: true,
-          main_textcontent: true,
-          main_contentsection: {
+          main_contentblock: {
+            orderBy: { order: 'asc' },
             include: {
-              main_contentblock: {
-                include: {
-                  main_contentsection: {
-                    include: {
-                      main_contentblock: {
-                        include: {
-                          main_contentsection: {
-                            include: {
-                              main_contentblock: {
-                                include: {
-                                  main_contentsection: true,
-                                },
-                              },
-                            },
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
+              main_filecontent: true,
+              main_linkcontent: true,
+              main_linkedresourcecontent: true,
+              main_textcontent: true,
             },
           },
         },
       },
+      // TODO Do not know if this is useful
+      main_contentblock: true,
     },
   })
 
 export type LegacyResource = FindManyItemType<typeof getLegacyResources>
 
-export const getExistingResourceSlugs = () =>
+export const getExistingResourceSlugs = (): Promise<SlugToLegacyIdMap> =>
   prismaClient.resource
-    .findMany({ select: { slug: true } })
-    .then((resources) => new Set(resources.map((resource) => resource.slug)))
+    .findMany({ select: { slug: true, legacyId: true } })
+    .then(
+      (resources) =>
+        new Map(resources.map(({ slug, legacyId }) => [slug, legacyId])),
+    )
 
 export type MigrateResourceInput = {
   legacyResource: LegacyResource
@@ -76,10 +63,13 @@ export const migrateResource = async ({
   const legacyId = Number(legacyResource.id)
 
   if (debugLegacyResourceId === legacyId) {
-    console.log('DEBUG RESOURCE')
+    console.log('=== START DEBUG RESOURCE ===')
     console.log('Resource', legacyResource)
-    console.log('Sections', legacyResource.main_contentsection)
-    console.log('Blocks', legacyResource.main_contentblock)
+    console.log('Sections')
+    for (const section of legacyResource.main_contentsection) {
+      console.log(section)
+    }
+    console.log('=== END DEBUG RESOURCE ===')
   }
 
   const data = {
@@ -107,18 +97,28 @@ export const migrateResource = async ({
 
   // Instead of merging the content blocks, we delete all the existing ones and recreate them
   await transaction.content.deleteMany({ where: { resource: { legacyId } } })
+
+  const orderedLegacyResourcesOrSectionTitle =
+    legacyResource.main_contentsection.flatMap((legacySection) => {
+      if (legacySection.title === null) {
+        // This is a section without title, it is at the "root" level of the resource
+        return legacySection.main_contentblock
+      }
+
+      // This is a legacy section with a title, we flatten the structure in the new app and the section becomes a content
+      return [legacySection, ...legacySection.main_contentblock]
+    })
+
   await Promise.all(
-    legacyResource.main_contentblock
-      .sort((a, b) => Number(a.order) - Number(b.order))
-      .map((legacyContent, index) =>
-        migrateContent({
-          legacyResource,
-          resource,
-          legacyContent,
-          transaction,
-          order: index,
-        }),
-      ),
+    orderedLegacyResourcesOrSectionTitle.map((legacyContent, index) =>
+      migrateContent({
+        legacyResource,
+        resource,
+        legacyContent,
+        transaction,
+        order: index,
+      }),
+    ),
   )
 
   return resource

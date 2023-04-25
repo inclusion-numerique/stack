@@ -99,6 +99,7 @@ model Resource {
   created  DateTime  @default(now())
   updated  DateTime  @default(now())
   contents Content[]
+  linkedBy Content[] @relation(name: "contentLinkedResource")
 }
 
 enum ContentType {
@@ -106,6 +107,7 @@ enum ContentType {
   File
   Image
   Link
+  ResourceLink
   Text
 }
 
@@ -137,9 +139,17 @@ model Content {
   showPreview Boolean?
   url         String?
 
+  // ResourceLink
+  linkedResource   Resource? @relation(name: "contentLinkedResource", fields: [linkedResourceId], references: [id])
+  linkedResourceId String?   @db.Uuid
+  linkedContent    Content?  @relation(name: "contentLinkedContent", fields: [linkedContentId], references: [id])
+  linkedContentId  String?   @db.Uuid
+
   // Text
   text String?
 
   created DateTime @default(now())
   updated DateTime @default(now())
+
+  linkedBy Content[] @relation(name: "contentLinkedContent")
 }

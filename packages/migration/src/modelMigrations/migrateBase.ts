@@ -4,15 +4,18 @@ import { v4 } from 'uuid'
 import type { Prisma } from '@prisma/client'
 import { LegacyToNewIdHelper } from '@app/migration/legacyToNewIdHelper'
 import { prismaClient } from '@app/web/prismaClient'
+import { SlugToLegacyIdMap } from '@app/migration/utils/computeSlugAndUpdateExistingSlugs'
 
 export const getLegacyBases = () => migrationPrismaClient.main_base.findMany()
 
 export type LegacyBase = FindManyItemType<typeof getLegacyBases>
 
-export const getExistingBaseSlugs = () =>
+export const getExistingBaseSlugs = (): Promise<SlugToLegacyIdMap> =>
   prismaClient.base
-    .findMany({ select: { slug: true } })
-    .then((bases) => new Set(bases.map((base) => base.slug)))
+    .findMany({ select: { slug: true, legacyId: true } })
+    .then(
+      (bases) => new Map(bases.map(({ slug, legacyId }) => [slug, legacyId])),
+    )
 
 export type MigrateBaseInput = {
   legacyBase: LegacyBase
