@@ -118,9 +118,10 @@ export const executeMigration = async () => {
         } => !!content.legacyLinkedResourceId,
       ),
     )
+
     const updatedResourceLinks = await Promise.all(
       resourceLinkContents.map((content) =>
-        prismaClient.content.update({
+        transaction.content.update({
           where: { id: content.id },
           data: {
             linkedResourceId: resourceIdFromLegacyId(

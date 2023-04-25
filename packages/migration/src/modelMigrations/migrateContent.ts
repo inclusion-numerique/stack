@@ -5,7 +5,7 @@ import { Resource } from '@prisma/client'
 
 export type MigrateContentInput = {
   legacyResource: LegacyResource
-  resource: Pick<Resource, 'id'>
+  resource: Pick<Resource, 'id' | 'legacyId'>
   transaction: Prisma.TransactionClient
   legacyContent:
     | LegacyResource['main_contentsection'][number]['main_contentblock'][number]
@@ -27,6 +27,7 @@ export const migrateContent = async ({
 
   const commonData = {
     id: v4(),
+    legacyResourceId: resource.legacyId,
     legacyId,
     resourceId: resource.id,
     order,
