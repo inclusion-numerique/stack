@@ -14,13 +14,13 @@ describe.skip('createSignedUrl', () => {
 
       const { url } = await createSignedGetUrl({
         key,
-        bucket: ServerWebAppConfig.S3.documentsBucket,
+        bucket: ServerWebAppConfig.S3.uploadsBucket,
       })
 
       expect(url).toBeString()
       expect(url).toStartWith('https://')
       expect(url).toInclude('test/small-test-image.png')
-      expect(url).toInclude(ServerWebAppConfig.S3.documentsBucket)
+      expect(url).toInclude(ServerWebAppConfig.S3.uploadsBucket)
       expect(url).toInclude(key)
 
       // Try with system lib, should always work if url is correct
@@ -37,7 +37,7 @@ describe.skip('createSignedUrl', () => {
 
       const { url, key } = await createSignedUploadUrl({
         directory: `test/${Date.now()}`,
-        bucket: ServerWebAppConfig.S3.documentsBucket,
+        bucket: ServerWebAppConfig.S3.uploadsBucket,
         name: fileName,
         type,
       })
@@ -46,7 +46,7 @@ describe.skip('createSignedUrl', () => {
       expect(key).toInclude(fileName)
       expect(url).toBeString()
       expect(url).toStartWith('https://')
-      expect(url).toInclude(ServerWebAppConfig.S3.documentsBucket)
+      expect(url).toInclude(ServerWebAppConfig.S3.uploadsBucket)
       expect(url).toInclude(fileName)
 
       const { status } = await axios.put(url, {

@@ -15,7 +15,7 @@ const get = async (request: NextApiRequest, res: NextApiResponse) => {
 
     const { url } = await createSignedGetUrl({
       key,
-      bucket: ServerWebAppConfig.S3.documentsBucket,
+      bucket: ServerWebAppConfig.S3.uploadsBucket,
     })
 
     return res.status(200).json({ url })
