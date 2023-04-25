@@ -15,6 +15,7 @@ executors:
       - image: cimg/node:18.15.0
         environment:
           TZ: 'UTC'
+          CI_PG_ADMIN_URL: postgresql://postgres@localhost
           CI_DATABASE_URL: postgresql://postgres@localhost/test
       - image: cimg/postgres:14.0
         environment:
@@ -473,7 +474,8 @@ jobs:
       - run:
           name: 'Restore latest legacy database dump'
           command: |
-            MIGRATION_DATABASE_URL=$CI_DATABASE_URL 
+            psql $CI_PG_ADMIN_URL -c 'CREATE DATABASE test;'
+            echo "MIGRATION_DATABASE_URL=$CI_DATABASE_URL" >> .env
             pnpm --silent -F cli cli legacy:import-database
 
       - queue/until_front_of_line:
@@ -519,7 +521,6 @@ jobs:
       - run:
           name: 'Execute migration from legacy data'
           command: |
-            MIGRATION_DATABASE_URL=$CI_DATABASE_URL 
             pnpm --silent -F @app/migration execute
       - run:
           name: Check that deployed container status is ok
