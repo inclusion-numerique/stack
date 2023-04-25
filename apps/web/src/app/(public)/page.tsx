@@ -1,16 +1,11 @@
 import { fr } from '@codegouvfr/react-dsfr'
-import Alert from '@codegouvfr/react-dsfr/Alert'
-import { ExampleClientComponent } from '@app/web/app/(public)/ExampleClientComponent'
+import { PublicWebAppConfig } from '@app/web/webAppConfig'
 
 const HomePage = () => (
   <div className="fr-container">
-    <h2 className={fr.cx('fr-mt-8v')}>Bien le bonjour</h2>
-    <Alert
-      severity="info"
-      title="Stack"
-      description="Ceci est une page de démonstration"
-    />
-    <ExampleClientComponent />
+    <h2 className={fr.cx('fr-mt-8v')}>
+      Bienvenue sur {PublicWebAppConfig.projectTitle}
+    </h2>
   </div>
 )
 

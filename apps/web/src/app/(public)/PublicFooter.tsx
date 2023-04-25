@@ -12,15 +12,9 @@ const PublicFooter = () => (
               className="fr-footer__brand-link"
             >
               <p className="fr-logo fr-logo--sm">
-                Ministère
+                République
                 <br />
-                de la transition
-                <br />
-                écologique
-                <br />
-                et de la cohésion
-                <br />
-                des territoires
+                Française
               </p>
             </a>
           </div>
@@ -89,14 +83,6 @@ const PublicFooter = () => (
           <li className="fr-footer__bottom-item">
             <a className="fr-footer__bottom-link" href="/confidentialite">
               Politique de confidentialité
-            </a>
-          </li>
-          <li className="fr-footer__bottom-item">
-            <a
-              className="fr-footer__bottom-link fr-link--icon-left fr-icon-user-setting-line"
-              href="/connexion/login"
-            >
-              Espace ANCT
             </a>
           </li>
           <li className="fr-footer__bottom-item">
