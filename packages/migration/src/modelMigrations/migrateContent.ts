@@ -25,67 +25,59 @@ export const migrateContent = async ({
 }: MigrateContentInput) => {
   const legacyId = Number(legacyContent.id)
 
-  const type: CreateContentData['type'] | null =
-    // We migrate sections as SectionTitle
-    'main_contentblock' in legacyContent
-      ? 'SectionTitle'
-      : // Other contents are migrated as Text, Link or File
-      legacyContent.main_textcontent
-      ? 'Text'
-      : legacyContent.main_linkcontent ||
-        legacyContent.main_linkedresourcecontent
-      ? 'Link'
-      : legacyContent.main_filecontent
-      ? 'File'
-      : null
-
-  if (!type) {
-    throw new Error('Could not determine content type')
-  }
-
-  const typeData: Partial<CreateContentData> = {
-    // All relevant contents have a title
-    title: legacyContent.title,
-  }
-
-  // We migrate sections as SectionTitle
-  if ('main_contentblock' in legacyContent) {
-    typeData.type = 'SectionTitle'
-  } else if (legacyContent.main_textcontent) {
-    typeData.type = 'Text'
-    typeData.text = legacyContent.main_textcontent.text
-  } else if (legacyContent.main_linkcontent) {
-    typeData.type = 'Link'
-    // TODO QUESTION What is target_image in a main_link content
-    typeData.url = legacyContent.main_linkcontent.link
-    typeData.showPreview = legacyContent.main_linkcontent.with_preview
-    typeData.caption = legacyContent.main_linkcontent.target_description
-    // TODO We should have a system to scrap link previews automaticaly
-  } else if (legacyContent.main_linkedresourcecontent) {
-    typeData.type = 'Link'
-    // TODO Seems wierd to migrate resources links like this
-    typeData.url = `/legacy-content/${
-      legacyContent.main_linkedresourcecontent.linked_resource_id?.toString() ??
-      'missing'
-    }`
-    typeData.showPreview = true
-  } else if (legacyContent.main_filecontent) {
-    typeData.type = 'File'
-    typeData.file = legacyContent.main_filecontent.file
-  }
-
-  // TODO Add data depending on type
-
-  const data = {
+  const commonData = {
     id: v4(),
     legacyId,
     resourceId: resource.id,
     order,
-    type,
+    // All relevant contents have a title
     title: legacyContent.title,
     created: legacyContent.created,
     updated: legacyContent.modified,
-  } satisfies CreateContentData
+  } satisfies Partial<CreateContentData>
+
+  let data: CreateContentData
+
+  // We migrate sections as SectionTitle
+  if ('main_contentblock' in legacyContent) {
+    data = { ...commonData, type: 'SectionTitle' }
+  } else if (legacyContent.main_textcontent) {
+    data = {
+      ...commonData,
+      type: 'Text',
+      text: legacyContent.main_textcontent.text,
+    }
+  } else if (legacyContent.main_linkcontent) {
+    data = {
+      ...commonData,
+      type: 'Link',
+      url: legacyContent.main_linkcontent.link,
+      showPreview: legacyContent.main_linkcontent.with_preview,
+      caption: legacyContent.main_linkcontent.target_description,
+    }
+    // TODO Add link preview data ?
+    // TODO We should have a system to scrap link previews periodically
+  } else if (legacyContent.main_linkedresourcecontent) {
+    const legacyLinkedResourceId =
+      legacyContent.main_linkedresourcecontent.linked_resource_id
+    if (!legacyLinkedResourceId) {
+      throw new Error('Legacy content linked resource id is missing')
+    }
+    data = {
+      ...commonData,
+      type: 'ResourceLink',
+      legacyLinkedResourceId: Number(legacyLinkedResourceId),
+    }
+  } else if (legacyContent.main_filecontent) {
+    data = {
+      ...commonData,
+      type: 'File',
+      file: legacyContent.main_filecontent.file,
+    }
+    // TODO Missing info here
+  } else {
+    throw new Error('Could not determine content type')
+  }
 
   const content = await transaction.content.create({
     data,

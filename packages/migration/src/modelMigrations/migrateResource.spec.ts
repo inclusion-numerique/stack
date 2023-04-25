@@ -94,8 +94,11 @@ describe('migrateResource', () => {
     })
 
     expect(result).toEqual({
-      legacyId: 129,
-      id: '0000',
+      resource: {
+        legacyId: 129,
+        id: '0000',
+      },
+      contents: [],
     })
   })
 

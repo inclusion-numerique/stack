@@ -140,16 +140,13 @@ model Content {
   url         String?
 
   // ResourceLink
-  linkedResource   Resource? @relation(name: "contentLinkedResource", fields: [linkedResourceId], references: [id])
-  linkedResourceId String?   @db.Uuid
-  linkedContent    Content?  @relation(name: "contentLinkedContent", fields: [linkedContentId], references: [id])
-  linkedContentId  String?   @db.Uuid
+  linkedResource         Resource? @relation(name: "contentLinkedResource", fields: [linkedResourceId], references: [id])
+  linkedResourceId       String?   @db.Uuid
+  legacyLinkedResourceId Int?
 
   // Text
   text String?
 
   created DateTime @default(now())
   updated DateTime @default(now())
-
-  linkedBy Content[] @relation(name: "contentLinkedContent")
 }

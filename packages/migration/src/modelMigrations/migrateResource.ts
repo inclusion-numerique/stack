@@ -109,7 +109,7 @@ export const migrateResource = async ({
       return [legacySection, ...legacySection.main_contentblock]
     })
 
-  await Promise.all(
+  const contents = await Promise.all(
     orderedLegacyResourcesOrSectionTitle.map((legacyContent, index) =>
       migrateContent({
         legacyResource,
@@ -121,5 +121,5 @@ export const migrateResource = async ({
     ),
   )
 
-  return resource
+  return { resource, contents }
 }
