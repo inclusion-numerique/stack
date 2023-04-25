@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { ServerWebAppConfig } from '@app/web/webAppConfig'
 
 const nodeEnvironment = process.env.NODE_ENV
+const isCI = !!process.env.CI
 const isProduction = nodeEnvironment === 'production'
 
 const contentSecurityPolicy = `
@@ -39,6 +40,7 @@ const middleware = (request: NextRequest) => {
    */
   if (
     isProduction &&
+    !isCI &&
     // We redirect if protocol is not secure https
     (forwardedProto === 'http' ||
       // If we have a base url defined and the host is different
