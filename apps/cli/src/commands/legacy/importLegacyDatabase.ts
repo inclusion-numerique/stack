@@ -68,6 +68,8 @@ export const importLegacyDatabase = new Command()
   .command('legacy:import-database')
   .action(async () => {
     const s3Client = new S3Client({
+      // Region is required but not used for this host
+      region: 'region',
       credentials: {
         accessKeyId: process.env.LEGACY_DB_S3_ACCESS_KEY ?? '',
         secretAccessKey: process.env.LEGACY_DB_S3_SECRET_KEY ?? '',
