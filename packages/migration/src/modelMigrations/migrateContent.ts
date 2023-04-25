@@ -25,10 +25,14 @@ export const migrateContent = async ({
 }: MigrateContentInput) => {
   const legacyId = Number(legacyContent.id)
 
+  const legacyIdsData =
+    'main_contentblock' in legacyContent
+      ? { legacySectionId: legacyId }
+      : { legacyContentId: legacyId }
+
   const commonData = {
     id: v4(),
-    legacyResourceId: resource.legacyId,
-    legacyId,
+    ...legacyIdsData,
     resourceId: resource.id,
     order,
     // All relevant contents have a title

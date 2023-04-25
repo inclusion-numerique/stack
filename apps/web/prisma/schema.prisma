@@ -114,9 +114,9 @@ enum ContentType {
 model Content {
   id String @id @default(uuid()) @db.Uuid
 
-  // Legacy content blocks can have duplicated ids (reused between resource)
-  legacyId         Int?
-  legacyResourceId Int?
+  // Legacy content can be imported from content blocks or sections
+  legacyContentId Int? @unique
+  legacySectionId Int? @unique
 
   order Int
 
@@ -153,6 +153,4 @@ model Content {
 
   created DateTime @default(now())
   updated DateTime @default(now())
-
-  @@unique([legacyId, legacyResourceId])
 }
