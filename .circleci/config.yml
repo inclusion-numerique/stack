@@ -468,14 +468,20 @@ jobs:
 
       # Prepare migration from Legacy database
       - run:
+          name: 'Create migration database'
+          command: |
+            psql $CI_PG_ADMIN_URL -c 'CREATE DATABASE test;'
+      - run:
+          name: 'Add migration database in env'
+          command: |
+            echo "export MIGRATION_DATABASE_URL=$CI_DATABASE_URL" >> ${BASH_ENV}
+      - run:
           name: 'Generate Prisma migration client'
           command: |
             pnpm --silent -F @app/migration prisma generate
       - run:
           name: 'Restore latest legacy database dump'
           command: |
-            psql $CI_PG_ADMIN_URL -c 'CREATE DATABASE test;'
-            echo "MIGRATION_DATABASE_URL=$CI_DATABASE_URL" >> .env
             pnpm --silent -F cli cli legacy:import-database
 
       - queue/until_front_of_line:
