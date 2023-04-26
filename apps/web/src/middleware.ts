@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { ServerWebAppConfig } from '@app/web/webAppConfig'
 
 const nodeEnvironment = process.env.NODE_ENV
+const isCI = !!process.env.CI
 const isProduction = nodeEnvironment === 'production'
 
 const contentSecurityPolicy = `
@@ -12,7 +13,7 @@ const contentSecurityPolicy = `
   img-src 'self' data:;
   frame-src https://www.youtube-nocookie.com/;
   object-src 'none';
-  connect-src 'self' https://${ServerWebAppConfig.S3.documentsBucket}.${
+  connect-src 'self' https://${ServerWebAppConfig.S3.uploadsBucket}.${
   ServerWebAppConfig.S3.host
 } https://matomo.incubateur.anct.gouv.fr https://sentry.incubateur.net https://openmaptiles.geo.data.gouv.fr https://openmaptiles.github.io https://aides-territoires.beta.gouv.fr;
   worker-src 'self' blob:;
@@ -39,6 +40,7 @@ const middleware = (request: NextRequest) => {
    */
   if (
     isProduction &&
+    !isCI &&
     // We redirect if protocol is not secure https
     (forwardedProto === 'http' ||
       // If we have a base url defined and the host is different

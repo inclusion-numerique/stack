@@ -22,12 +22,13 @@
       "@app/config/*": ["packages/config/src/*"],
       "@app/emails/*": ["packages/emails/src/*"],
       "@app/lint/*": ["packages/lint/src/*"],
+      "@app/fixtures/*": ["packages/fixtures/src/*"],
+      "@app/migration/*": ["packages/migration/src/*"],
       "@app/scaleway/*": ["packages/cdk/.gen/providers/scaleway/*"],
       "@app/storybook/*": ["packages/storybook/src/*"],
       "@app/ui/*": ["packages/ui/src/*"],
       "@app/test/*": ["packages/test/src/*"],
-      "@app/fixtures/*": ["packages/fixtures/src/*"],
-      "@app/migration/*": ["packages/migration/src/*"]
+      "@prisma/migration-client": ["packages/migration/prisma/migration-client"]
     },
     "typeRoots": [
       "./node_modules/@types",

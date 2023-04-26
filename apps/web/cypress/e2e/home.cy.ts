@@ -1,7 +1,10 @@
 describe('homepage', () => {
   it('renders', () => {
     cy.visit('/')
-    cy.get('.fr-header__brand h2').should('contain', 'Stack')
+    cy.get('.fr-header__brand p').should(
+      'contain',
+      'Les Bases du numérique d’intérêt général',
+    )
     cy.get('.fr-nav__link')
       .first()
       .should('contain', 'Accueil')

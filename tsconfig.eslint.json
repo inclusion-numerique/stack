@@ -13,12 +13,13 @@
     "packages/emails/src",
     "packages/lint/src",
     "packages/migration/src",
+    "packages/migration/prisma/migration-client/index.d.ts",
     "packages/storybook/.storybook/**/*",
     "packages/storybook/src",
     "packages/fixtures/src",
     "packages/test/src",
     "packages/ui/src",
-    "./packages/test/src/jest.setup.ts",
-    "./packages/test/node_modules/jest-extended/types/index.d.ts",
+    "packages/test/src/jest.setup.ts",
+    "packages/test/node_modules/jest-extended/types/index.d.ts",
   ]
 }

@@ -41,6 +41,7 @@ model Session {
 
 model User {
   id            String    @id @default(uuid()) @db.Uuid
+  legacyId      Int?      @unique
   firstName     String?
   lastName      String?
   name          String?
@@ -53,8 +54,10 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  created DateTime @default(now())
-  updated DateTime @default(now())
+  created          DateTime   @default(now())
+  updated          DateTime   @default(now())
+  ownedBases       Base[]
+  createdResources Resource[]
 }
 
 model VerificationToken {
@@ -63,4 +66,91 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Base {
+  id          String  @id @default(uuid()) @db.Uuid
+  legacyId    Int?    @unique
+  title       String
+  slug        String  @unique
+  description String?
+  owner       User    @relation(fields: [ownerId], references: [id])
+  ownerId     String  @db.Uuid
+
+  created   DateTime   @default(now())
+  updated   DateTime   @default(now())
+  resources Resource[]
+}
+
+model Resource {
+  id       String @id @default(uuid()) @db.Uuid
+  legacyId Int?   @unique
+  title    String
+  slug     String @unique
+
+  description String
+
+  createdBy   User   @relation(fields: [createdById], references: [id])
+  createdById String @db.Uuid
+
+  base   Base?   @relation(fields: [baseId], references: [id])
+  baseId String? @db.Uuid
+
+  created  DateTime  @default(now())
+  updated  DateTime  @default(now())
+  contents Content[]
+  linkedBy Content[] @relation(name: "contentLinkedResource")
+}
+
+enum ContentType {
+  SectionTitle
+  File
+  Image
+  Link
+  ResourceLink
+  Text
+}
+
+model Content {
+  id String @id @default(uuid()) @db.Uuid
+
+  // Legacy content can be imported from content blocks or sections
+  legacyContentId Int? @unique
+  legacySectionId Int? @unique
+
+  order Int
+
+  resource   Resource @relation(fields: [resourceId], references: [id])
+  resourceId String   @db.Uuid
+
+  // Data of this model depend on the type
+  type ContentType
+
+  // SectionTitle | File | Image | Link
+  title String?
+
+  // File | Image | Link
+  caption String?
+
+  // Image
+  altText String?
+  image   String?
+
+  // File
+  file String?
+
+  // Link
+  showPreview Boolean?
+  url         String?
+
+  // ResourceLink
+  linkedResource         Resource? @relation(name: "contentLinkedResource", fields: [linkedResourceId], references: [id])
+  linkedResourceId       String?   @db.Uuid
+  legacyLinkedResourceId Int?
+
+  // Text
+  text String?
+
+  created DateTime @default(now())
+  updated DateTime @default(now())
 }

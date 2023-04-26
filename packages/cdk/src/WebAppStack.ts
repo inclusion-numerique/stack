@@ -126,8 +126,8 @@ export class WebAppStack extends TerraformStack {
       dependsOn: [database, rdbDatabaseUser],
     })
 
-    const documentsBucket = new ObjectBucket(this, 'documents', {
-      name: namespaced(`${projectSlug}-documents`),
+    const uploadsBucket = new ObjectBucket(this, 'uploads', {
+      name: namespaced(`${projectSlug}-uploads`),
       corsRule: [
         {
           allowedHeaders: ['*'],
@@ -139,8 +139,8 @@ export class WebAppStack extends TerraformStack {
       ],
     })
 
-    output('documentsBucketName', documentsBucket.name)
-    output('documentsBucketEndpoint', documentsBucket.endpoint)
+    output('uploadsBucketName', uploadsBucket.name)
+    output('uploadsBucketEndpoint', uploadsBucket.endpoint)
 
     const containerNamespace = new DataScalewayContainerNamespace(
       this,
@@ -179,7 +179,7 @@ export class WebAppStack extends TerraformStack {
         EMAIL_FROM_ADDRESS: emailFromAddress,
         EMAIL_FROM_NAME: emailFromName,
         STACK_WEB_IMAGE: environmentVariables.WEB_CONTAINER_IMAGE.value,
-        DOCUMENTS_BUCKET: documentsBucket.name,
+        UPLOADS_BUCKET: uploadsBucket.name,
         BASE_URL: hostname,
         BRANCH: branch,
         NAMESPACE: namespace,

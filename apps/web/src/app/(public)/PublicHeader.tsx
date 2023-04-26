@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { PublicHeaderNav } from '@app/web/app/(public)/PublicHeaderNav'
+import { PublicWebAppConfig } from '@app/web/webAppConfig'
 
 const PublicHeader = () => (
   <header role="banner" className="fr-header">
@@ -15,17 +16,13 @@ const PublicHeader = () => (
                   target="_self"
                   title={process.env.NEXT_PUBLIC_APP_NAME}
                 >
-                  <p className="fr-logo">
-                    Ministère
-                    <br />
-                    de la transition
-                    <br />
-                    écologique
-                    <br />
-                    et de la cohésion
-                    <br />
-                    des territoires
-                  </p>
+                  <picture>
+                    <img
+                      style={{ verticalAlign: 'middle', height: 26 }}
+                      src="/images/logo.svg"
+                      alt="Logo"
+                    />
+                  </picture>
                 </Link>
               </div>
               <div className="fr-header__navbar">
@@ -43,34 +40,18 @@ const PublicHeader = () => (
                 </button>
               </div>
             </div>
-            <div className="fr-header__service">
+            <div className="fr-header__service fr-pl-0">
               <Link
                 href="/"
                 aria-current="page"
                 target="_self"
-                title={process.env.NEXT_PUBLIC_APP_NAME}
+                title={PublicWebAppConfig.projectTitle}
               >
-                <h2>{process.env.NEXT_PUBLIC_APP_NAME}</h2>
+                <p className="fr-text--medium">
+                  {PublicWebAppConfig.projectTitle}
+                </p>
               </Link>
             </div>
-          </div>
-          <div
-            className="fr-header__tools fr-hidden fr-unhidden-lg"
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-            }}
-          >
-            <picture>
-              <img
-                alt="Logo de l'Agence Nationale de la Cohésion des Territoires"
-                src="/images/logo-anct.svg"
-                className="fr-p-2v fr-ml-4w"
-                height={80}
-              />
-            </picture>
           </div>
         </div>
       </div>

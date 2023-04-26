@@ -15,6 +15,7 @@ executors:
       - image: cimg/node:18.15.0
         environment:
           TZ: 'UTC'
+          CI_PG_ADMIN_URL: postgresql://postgres@localhost
           CI_DATABASE_URL: postgresql://postgres@localhost/test
       - image: cimg/postgres:14.0
         environment:
@@ -215,7 +216,10 @@ jobs:
       - install_dependencies
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
+      - run:
+          name: 'Prisma (migration) generate'
+          command: pnpm --silent -F @app/migration prisma generate
       - run:
           name: 'Tsc'
           command: pnpm tsc
@@ -248,6 +252,12 @@ jobs:
       - install_dependencies
       - create_dotenv_file
       - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @app/web prisma generate
+      - run:
+          name: 'Prisma (migration) generate'
+          command: pnpm --silent -F @app/migration prisma generate
+      - run:
           name: 'Test all packages except @app/web'
           command: pnpm --silent -F '!@app/web' test
 
@@ -259,11 +269,14 @@ jobs:
       - install_dependencies
       - create_dotenv_file
       - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @app/web prisma generate
+      - run:
           name: 'Test @app/web'
           command: pnpm --silent -F @app/web test
 
   build_web:
-    executor: node-postgres
+    executor: node
     resource_class: large
     steps:
       - checkout
@@ -273,7 +286,7 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - add_dotenv_vars_to_bash_env
       - setup_docker_web_env
@@ -281,10 +294,6 @@ jobs:
       - run:
           name: 'Install DSFR'
           command: pnpm --silent -F @app/web setup:dsfr
-      - run:
-          name: 'Create CI database schema'
-          command: |
-            DATABASE_URL=$CI_DATABASE_URL pnpm --silent -F @app/web prisma db push --skip-generate --accept-data-loss
       - restore_cache:
           keys:
             - << pipeline.parameters.cache_version >>-next-{{ checksum "<< pipeline.parameters.lockfile >>" }}
@@ -305,7 +314,7 @@ jobs:
             - << pipeline.parameters.cache_version >>-web-prod-{{ checksum "<< pipeline.parameters.lockfile >>" }}
       - run:
           name: 'Re-generate Prisma after cleaning dependencies'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - run:
           name: 'Cleanup build'
           command: |
@@ -334,7 +343,7 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - run:
           name: 'Setup DSFR'
@@ -357,7 +366,7 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - add_dotenv_vars_to_bash_env
       - run:
@@ -402,13 +411,19 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - add_dotenv_vars_to_bash_env
       - run:
           name: 'Create CI database schema'
           command: |
-            DATABASE_URL=$CI_DATABASE_URL pnpm --silent -F @app/web prisma db push --skip-generate --accept-data-loss
+            DATABASE_URL=$CI_DATABASE_URL
+            pnpm --silent -F @app/web prisma db push --skip-generate --accept-data-loss
+      - run:
+          name: 'Load fixtures'
+          command: |
+            DATABASE_URL=$CI_DATABASE_URL 
+            pnpm --silent -F @app/fixtures load
       - restore_cache:
           key: << pipeline.id >>-web-build
       - run:
@@ -424,7 +439,7 @@ jobs:
             pnpm --silent -F @app/web cy run --record --parallel --group web/e2e
 
   deploy_web:
-    executor: node
+    executor: node-postgres
     resource_class: large
     steps:
       - checkout
@@ -432,7 +447,7 @@ jobs:
       - install_dependencies
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - add_dotenv_vars_to_bash_env
       - setup_docker_web_env
@@ -449,7 +464,26 @@ jobs:
       - run:
           name: 'Generate Prisma client for this platform'
           command: |
-            pnpm --silent -F @app/web prisma:generate
+            pnpm --silent -F @app/web prisma generate
+
+      # Prepare migration from Legacy database
+      - run:
+          name: 'Create migration database'
+          command: |
+            psql $CI_PG_ADMIN_URL -c 'CREATE DATABASE test;'
+      - run:
+          name: 'Add migration database in env'
+          command: |
+            echo "export MIGRATION_DATABASE_URL=$CI_DATABASE_URL" >> ${BASH_ENV}
+      - run:
+          name: 'Generate Prisma migration client'
+          command: |
+            pnpm --silent -F @app/migration prisma generate
+      - run:
+          name: 'Restore latest legacy database dump'
+          command: |
+            pnpm --silent -F cli cli legacy:import-database
+
       - queue/until_front_of_line:
           time: '3'
       - run:
@@ -480,6 +514,20 @@ jobs:
       - run:
           name: Set deployment status to data loading
           command: pnpm --silent cli github:deployment:update $DEPLOYMENT_ID in_progress -d 'Loading data' -l https://app.circleci.com/pipelines/workflows/$CIRCLE_WORKFLOW_ID
+      - when:
+          condition:
+            and:
+              - not:
+                  equal: [ main, << pipeline.git.branch >> ]
+          steps:
+            - run:
+                name: 'Load fixtures on preview envs'
+                command: |
+                  pnpm --silent -F @app/fixtures load
+      - run:
+          name: 'Execute migration from legacy data'
+          command: |
+            pnpm --silent -F @app/migration execute
       - run:
           name: Check that deployed container status is ok
           command: |
@@ -502,7 +550,7 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - run:
           name: "Create terraform variables file from environment variables"
@@ -524,7 +572,7 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - run:
           name: "Create terraform variables file from environment variables"
@@ -545,7 +593,7 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - run:
           name: "Create terraform variables file from environment variables"

@@ -20,7 +20,7 @@ const upload = async (
       name,
       type,
       directory,
-      bucket: ServerWebAppConfig.S3.documentsBucket,
+      bucket: ServerWebAppConfig.S3.uploadsBucket,
     })
 
     return response.status(200).json({ url, key })
