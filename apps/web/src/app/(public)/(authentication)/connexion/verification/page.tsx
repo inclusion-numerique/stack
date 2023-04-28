@@ -12,7 +12,10 @@ const VerifyPage = async () => {
 
   return (
     <>
-      <Breadcrumbs currentPage="Connexion" />
+      <Breadcrumbs
+        currentPage="Vérification"
+        parents={[{ label: 'Connexion', linkProps: { href: '/connexion' } }]}
+      />
       <Verify />
     </>
   )

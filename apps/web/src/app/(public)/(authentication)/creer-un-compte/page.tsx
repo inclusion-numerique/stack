@@ -17,7 +17,7 @@ const SigninPage = async ({
 
   return (
     <>
-      <Breadcrumbs currentPage="Connexion" />
+      <Breadcrumbs currentPage="Créer un compte" />
       <AuthCard>
         <h2>TODO</h2>
         {error ? (
