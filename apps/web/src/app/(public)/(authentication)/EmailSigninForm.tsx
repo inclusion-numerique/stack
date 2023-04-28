@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Cookies from 'js-cookie'
+import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 
 const SigninFormValidation = z.object({
@@ -39,20 +40,19 @@ export const EmailSigninForm = ({ error }: { error?: string }) => {
         control={form.control}
         path="email"
         label="Email"
-        hint="Format attendu : nom@domaine.fr"
+        type="email"
         disabled={disabled}
       />
-      <ul className="fr-btns-group fr-btns-group--icon-left">
-        <li>
-          <button
-            disabled={disabled}
-            type="submit"
-            className="fr-btn fr-icon-user-setting-line"
-          >
-            Se connecter
-          </button>
-        </li>
-      </ul>
+      <ButtonsGroup
+        buttons={[
+          {
+            disabled,
+            iconId: 'fr-icon-user-setting-line',
+            children: 'Se connecter',
+            type: 'submit',
+          },
+        ]}
+      />
     </form>
   )
 }
