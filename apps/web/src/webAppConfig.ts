@@ -44,6 +44,9 @@ export const ServerWebAppConfig = {
     alertManagerUrl: process.env.COCKPIT_ALERT_MANAGER_URL ?? '',
     grafanaUrl: process.env.COCKPIT_GRAFANA_URL ?? '',
   },
+  InclusionConnect: {
+    clientSecret: process.env.INCLUSION_CONNECT_CLIENT_SECRET ?? '',
+  },
 }
 
 /**
@@ -58,6 +61,10 @@ export const PublicWebAppConfig = {
   disableLinkPrefetch:
     NodeEnvironment === 'development' &&
     process.env.NEXT_PUBLIC_DEVELOPMENT_DISABLE_LINK_PREFETCH === 'true',
+  InclusionConnect: {
+    issuer: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_ISSUER ?? '',
+    clientId: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID ?? '',
+  },
   Sentry: {
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN ?? '',
     environment: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT ?? 'local',

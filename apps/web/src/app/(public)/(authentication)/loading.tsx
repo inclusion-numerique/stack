@@ -1,6 +1,6 @@
 import { Spinner } from '@app/web/ui/Spinner'
 import { Breadcrumbs } from '@app/web/components/Breadcrumbs'
-import { AuthCard } from '@app/web/app/(public)/connexion/AuthCard'
+import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 
 const AuthLoading = () => (
   <>
