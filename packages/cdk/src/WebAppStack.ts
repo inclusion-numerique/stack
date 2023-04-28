@@ -38,11 +38,17 @@ export const webAppStackVariables = [
   'WEB_CONTAINER_IMAGE',
   'SCW_DEFAULT_ORGANIZATION_ID',
   'SCW_PROJECT_ID',
+  'INCLUSION_CONNECT_PREVIEW_ISSUER',
+  'INCLUSION_CONNECT_MAIN_ISSUER',
+  'INCLUSION_CONNECT_PREVIEW_CLIENT_ID',
+  'INCLUSION_CONNECT_MAIN_CLIENT_ID',
 ] as const
 export const webAppStackSensitiveVariables = [
   'SCW_ACCESS_KEY',
   'SCW_SECRET_KEY',
   'DATABASE_PASSWORD',
+  'INCLUSION_CONNECT_PREVIEW_CLIENT_SECRET',
+  'INCLUSION_CONNECT_MAIN_CLIENT_SECRET',
 ] as const
 
 /**
@@ -186,9 +192,20 @@ export class WebAppStack extends TerraformStack {
         // This env variable is reserved at the level of container namespace. We inject it here even if its shared.
         SCW_DEFAULT_REGION: region,
         NEXT_PUBLIC_SENTRY_ENVIRONMENT: namespace,
+        NEXT_PUBLIC_INCLUSION_CONNECT_ISSUER: isMain
+          ? environmentVariables.INCLUSION_CONNECT_MAIN_ISSUER.value
+          : environmentVariables.INCLUSION_CONNECT_PREVIEW_ISSUER.value,
+        NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID: isMain
+          ? environmentVariables.INCLUSION_CONNECT_MAIN_CLIENT_ID.value
+          : environmentVariables.INCLUSION_CONNECT_PREVIEW_CLIENT_ID.value,
       },
       secretEnvironmentVariables: {
         DATABASE_URL: databaseUrl,
+        INCLUSION_CONNECT_CLIENT_SECRET: isMain
+          ? sensitiveEnvironmentVariables.INCLUSION_CONNECT_MAIN_CLIENT_SECRET
+              .value
+          : sensitiveEnvironmentVariables
+              .INCLUSION_CONNECT_PREVIEW_CLIENT_SECRET.value,
       },
       name: containerName,
       minScale: isMain ? 2 : namespace === 'dev' ? 1 : 0,
