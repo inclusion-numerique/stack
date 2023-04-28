@@ -14,15 +14,9 @@ const PublicHeader = () => {
     <Header
       brandTop={
         <>
-          Ministère
+          République
           <br />
-          de la transition
-          <br />
-          écologique
-          <br />
-          et de la cohésion
-          <br />
-          des territoires
+          Française
         </>
       }
       homeLinkProps={{
