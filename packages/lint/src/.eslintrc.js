@@ -70,6 +70,7 @@ module.exports = {
         'prettier',
       ],
       rules: {
+        'no-irregular-whitespace': 'off',
         'no-restricted-syntax': 'off',
         'prettier/prettier': 'error',
         'no-continue': 'off',
