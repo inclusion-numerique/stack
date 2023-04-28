@@ -1,6 +1,6 @@
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
 import { Breadcrumbs } from '@app/web/components/Breadcrumbs'
-import { AuthCard } from '@app/web/app/(public)/connexion/AuthCard'
+import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import Link from 'next/link'
 
 const errorMessage = (error?: string): string | undefined => {
@@ -29,7 +29,7 @@ const ErrorPage = ({
 
       <ul className="fr-btns-group fr-mt-12v">
         <li>
-          <Link href="/connexion/login" target="_self" className="fr-btn">
+          <Link href="/connexion" target="_self" className="fr-btn">
             Retour
           </Link>
         </li>
