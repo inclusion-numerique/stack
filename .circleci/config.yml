@@ -418,11 +418,9 @@ jobs:
             echo "SMTP_USERNAME=mailuser" >> .env
             echo "SMTP_PASSWORD=mailpassword" >> .env
             echo "SMTP_SERVER=localhost" >> .env
-            echo "SMTP_SERVER=localhost" >> .env
-            echo "NEXT_PUBLIC_INCLUSION_CONNECT_ISSUER=$INCLUSION_CONNECT_LOCAL_ISSUER" >> .env
-            echo "NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID=$INCLUSION_CONNECT_LOCAL_CLIENT_ID" >> .env
-            echo "INCLUSION_CONNECT_CLIENT_SECRET=$INCLUSION_CONNECT_LOCAL_CLIENT_SECRET" >> .env
-      - add_dotenv_vars_to_bash_env
+            echo 'NEXT_PUBLIC_INCLUSION_CONNECT_ISSUER=$INCLUSION_CONNECT_LOCAL_ISSUER' >> .env
+            echo 'NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID=$INCLUSION_CONNECT_LOCAL_CLIENT_ID' >> .env
+            echo 'INCLUSION_CONNECT_CLIENT_SECRET=$INCLUSION_CONNECT_LOCAL_CLIENT_SECRET' >> .env
       - run:
           name: 'Create CI database schema'
           command: |
