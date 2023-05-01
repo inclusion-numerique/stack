@@ -30,13 +30,13 @@ executors:
         environment:
           TZ: 'UTC'
           CI_DATABASE_URL: postgresql://postgres@localhost/test
-      - image: maildev/maildev
+      - image: maildev/maildev:latest
         environment:
           MAILDEV_INCOMING_USER: mailuser
           MAILDEV_INCOMING_PASS: mailpassword
-        ports:
-          - "1080:1080"
-          - "1025:1025"
+#        ports:
+#          - "1080:1080"
+#          - "1025:1025"
       - image: cimg/postgres:14.0
         environment:
           POSTGRES_USER: postgres
@@ -433,7 +433,7 @@ jobs:
           name: Running next server
           background: true
           command: |
-            pnpm --silent -F @app/web start
+            pnpm --silent -F @app/web with-env next start
       - run:
           name: 'Run cypress e2e tests'
           command: |
