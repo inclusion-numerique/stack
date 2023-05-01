@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
-import { Breadcrumbs } from '@app/web/components/Breadcrumbs'
+import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { getServerUrl } from '@app/web/utils/baseUrl'
 import { Verify } from '@app/web/app/(public)/(authentication)/connexion/verification/Verify'
 

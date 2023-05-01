@@ -1,14 +1,12 @@
 'use client'
 
 import Header from '@codegouvfr/react-dsfr/Header'
-import * as navigation from 'next/navigation'
+import { usePathname } from 'next/navigation'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import { menu } from './menu'
 
-const PublicHeader = () => {
-  const pathname =
-    // TODO This is an error in typings of next/navigation in 13.2, remove this casting when next fix this
-    (navigation as unknown as { usePathname: () => string }).usePathname() ??
-    '/'
+const PublicHeader = ({ user }: { user?: SessionUser | null }) => {
+  const pathname = usePathname() ?? '/'
 
   return (
     <Header
@@ -28,6 +26,19 @@ const PublicHeader = () => {
         alt: "Logo de l'Agence Nationale de la Cohésion des Territoires",
         orientation: 'horizontal',
       }}
+      quickAccessItems={[
+        user
+          ? {
+              text: user.name,
+              iconId: 'fr-icon-logout-box-r-line',
+              linkProps: { href: '/deconnexion' },
+            }
+          : {
+              text: 'Se connecter',
+              iconId: 'fr-icon-user-line',
+              linkProps: { href: '/connexion' },
+            },
+      ]}
       navigation={menu.map((item) => ({
         text: item.text,
         linkProps: {

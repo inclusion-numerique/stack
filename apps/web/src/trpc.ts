@@ -1,5 +1,5 @@
 import 'client-only'
-import { AppRouter } from '@app/web/server/rpc/rpcRouter'
 import { createTRPCReact } from '@trpc/react-query'
+import type { AppRouter } from '@app/web/server/rpc/appRouter'
 
 export const trpc = createTRPCReact<AppRouter>()

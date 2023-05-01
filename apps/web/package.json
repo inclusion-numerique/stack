@@ -19,18 +19,8 @@
     "e2e": "jest -c jest.e2e.config.ts",
     "with-env": "dotenv -e ../../.env --",
     "with-remote-env": "dotenv -e ../../.env.remote -e ../../.env --",
-    "prisma:dev": "pnpm --silent with-env prisma studio --port 5556",
-    "prisma:db:push": "pnpm --silent with-env prisma db push --skip-generate",
-    "prisma:remote:db:push": "pnpm --silent with-remote-env prisma db push --skip-generate",
-    "prisma:migrate:dev": "pnpm --silent with-env prisma migrate dev",
-    "prisma:generate": "prisma generate",
-    "prisma:format": "prisma format",
-    "prisma:pull": "pnpm --silent with-env prisma db pull",
     "prisma": "pnpm --silent with-env prisma",
-    "cy:component": "cypress run --component",
-    "cy": "cypress",
-    "cy:e2e": "cypress run",
-    "cy:open": "cypress open"
+    "cy": "pnpm --silent with-env cypress"
   },
   "engines": {
     "node": "^18.15"
@@ -99,9 +89,11 @@
     "zustand": "^4.3.7"
   },
   "devDependencies": {
+    "@keycloak/keycloak-admin-client": "^21.1.1",
     "@storybook/jest": "^0.1.0",
     "@storybook/react": "^7.0.7",
     "@storybook/testing-library": "^0.1.0",
+    "@testing-library/cypress": "^9.0.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@types/file-saver": "^2.0.5",
     "@types/js-cookie": "^3.0.3",
@@ -129,6 +121,7 @@
     "react-is": "^18.2.0",
     "require-from-string": "^2.0.2",
     "style-loader": "^3.3.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.0.4"
   }
 }

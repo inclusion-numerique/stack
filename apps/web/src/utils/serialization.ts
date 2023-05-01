@@ -1,31 +1,29 @@
-// TODO this is temporary, for serialization of objects with date to client components
-// Later this will be handled by middleware with superjson, like in old next js serverSideProps
-// This should also handle partial, and automate this with generic function would be better
+import superjson from 'superjson'
+import { SuperJSONResult } from 'superjson/dist/types'
+import { Decimal } from 'decimal.js'
 
-type Serialized<T> = {
-  [P in keyof T]: T[P] extends Date
-    ? string
-    : T[P] extends Date | null
-    ? string | null
-    : Serialized<T[P]>
-}
-// TODO handle nested arrays
-export const serialize = <T extends { [k: string]: unknown }>(
-  object: T,
-): Serialized<T> =>
-  Object.fromEntries(
-    Object.entries(object).map(([key, value]) => {
-      if (value instanceof Date) {
-        return [key, value.toISOString()]
-      }
-      if (
-        value !== null &&
-        !Array.isArray(value) &&
-        typeof value === 'object'
-      ) {
-        return [key, serialize(value as { [k: string]: unknown })]
-      }
+superjson.registerCustom<Decimal, string>(
+  {
+    isApplicable: (v): v is Decimal => Decimal.isDecimal(v),
+    serialize: (v) => v.toJSON(),
+    deserialize: (v) => new Decimal(v),
+  },
+  'decimal.js',
+)
 
-      return [key, value]
-    }),
-  ) as Serialized<T>
+/** ⚠️ When serializing server data to pass to client components it becomes available to the browser.
+ * Always check what is included in the data you serialize before passing it to a client component.
+ */
+
+// Helper type to obfuscate serialized data
+// We need the unused <T> to carry the type on deserialization.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export type Serialized<T> = { __serialized: symbol }
+
+export const serialize = <T>(data: T): Serialized<T> =>
+  superjson.serialize(data) as never as Serialized<T>
+
+export const deserialize = <T>(data: Serialized<T>): T =>
+  superjson.deserialize(data as never as SuperJSONResult)
+
+export const transformer = { serialize, deserialize }
