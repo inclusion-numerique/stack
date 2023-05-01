@@ -30,6 +30,13 @@ executors:
         environment:
           TZ: 'UTC'
           CI_DATABASE_URL: postgresql://postgres@localhost/test
+      - image: maildev/maildev
+        environment:
+          MAILDEV_INCOMING_USER: mailuser
+          MAILDEV_INCOMING_PASS: mailpassword
+        ports:
+          - "1080:1080"
+          - "1025:1025"
       - image: cimg/postgres:14.0
         environment:
           POSTGRES_USER: postgres
@@ -402,23 +409,34 @@ jobs:
           name: 'Prisma generate'
           command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
+      - run:
+          name: 'Add e2e vars to .env'
+          command: |
+            echo "DATABASE_URL=$CI_DATABASE_URL" >> .env
+            echo "SMTP_SERVER=localhost" >> .env
+            echo "SMTP_PORT=1025" >> .env
+            echo "SMTP_USERNAME=mailuser" >> .env
+            echo "SMTP_PASSWORD=mailpassword" >> .env
+            echo "SMTP_SERVER=localhost" >> .env
+            echo "SMTP_SERVER=localhost" >> .env
+            echo "NEXT_PUBLIC_INCLUSION_CONNECT_ISSUER=$INCLUSION_CONNECT_LOCAL_ISSUER" >> .env
+            echo "NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID=$INCLUSION_CONNECT_LOCAL_CLIENT_ID" >> .env
+            echo "INCLUSION_CONNECT_CLIENT_SECRET=$INCLUSION_CONNECT_LOCAL_CLIENT_SECRET" >> .env
       - add_dotenv_vars_to_bash_env
       - run:
           name: 'Create CI database schema'
           command: |
-            DATABASE_URL=$CI_DATABASE_URL pnpm --silent -F @app/web prisma db push --skip-generate --accept-data-loss
+            pnpm --silent -F @app/web prisma db push --skip-generate --accept-data-loss
       - restore_cache:
           key: << pipeline.id >>-web-build
       - run:
           name: Running next server
           background: true
           command: |
-            DATABASE_URL=$CI_DATABASE_URL
             pnpm --silent -F @app/web start
       - run:
           name: 'Run cypress e2e tests'
           command: |
-            DATABASE_URL=$CI_DATABASE_URL
             pnpm --silent -F @app/web cy run --record --parallel --group web/e2e
 
   deploy_web:
