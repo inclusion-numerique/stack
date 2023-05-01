@@ -213,7 +213,7 @@ jobs:
       - install_dependencies
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - run:
           name: 'Tsc'
           command: pnpm tsc
@@ -271,7 +271,7 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - add_dotenv_vars_to_bash_env
       - setup_docker_web_env
@@ -303,7 +303,7 @@ jobs:
             - << pipeline.parameters.cache_version >>-web-prod-{{ checksum "<< pipeline.parameters.lockfile >>" }}
       - run:
           name: 'Re-generate Prisma after cleaning dependencies'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - run:
           name: 'Cleanup build'
           command: |
@@ -332,7 +332,7 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - run:
           name: 'Setup DSFR'
@@ -355,7 +355,7 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - add_dotenv_vars_to_bash_env
       - run:
@@ -400,7 +400,7 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - add_dotenv_vars_to_bash_env
       - run:
@@ -430,7 +430,7 @@ jobs:
       - install_dependencies
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - add_dotenv_vars_to_bash_env
       - setup_docker_web_env
@@ -447,7 +447,7 @@ jobs:
       - run:
           name: 'Generate Prisma client for this platform'
           command: |
-            pnpm --silent -F @app/web prisma:generate
+            pnpm --silent -F @app/web prisma generate
       - queue/until_front_of_line:
           time: '3'
       - run:
@@ -500,7 +500,7 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - run:
           name: "Create terraform variables file from environment variables"
@@ -522,7 +522,7 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - run:
           name: "Create terraform variables file from environment variables"
@@ -543,7 +543,7 @@ jobs:
       - create_dotenv_file
       - run:
           name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma:generate
+          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - run:
           name: "Create terraform variables file from environment variables"
