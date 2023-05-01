@@ -1,11 +1,18 @@
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
-import { EmailSigninForm } from '@app/web/app/(public)/(authentication)/EmailSigninForm'
+import { EmailSigninForm } from '@app/web/app/(public)/(authentication)/connexion/EmailSigninForm'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { InclusionConnectSigninButton } from '@app/web/app/(public)/(authentication)/connexion/InclusionConnectSigninButton'
 import { signinErrorMessage } from '@app/web/app/(public)/(authentication)/authenticationErrorMessage'
+import { Route } from 'next'
 
-export const SigninPanel = ({ error }: { error?: string }) => (
+const SigninPanel = ({
+  error,
+  callbackUrl,
+}: {
+  error?: string
+  callbackUrl: Route
+}) => (
   <AuthCard>
     <h4>Connexion à {PublicWebAppConfig.projectTitle}</h4>
     {error ? (
@@ -14,19 +21,15 @@ export const SigninPanel = ({ error }: { error?: string }) => (
       </div>
     ) : null}
 
-    <div className="fr-mb-6v">
-      <h5>Se connecter avec InclusionConnect</h5>
-      <div className="fr-connect-group">
-        <InclusionConnectSigninButton />
-      </div>
+    <h5>Se connecter avec InclusionConnect</h5>
+    <div className="fr-connect-group">
+      <InclusionConnectSigninButton callbackUrl={callbackUrl} />
     </div>
-    <p className="fr-hr-or">ou</p>
+    <p className="fr-hr-or fr-mt-6v">ou</p>
     <h5>Se connecter avec son email</h5>
-    <div>
-      <EmailSigninForm />
-    </div>
-    <hr />
-    <h5>Vous n’avez pas de compte ?</h5>
+    <EmailSigninForm callbackUrl={callbackUrl} />
+    <hr className="fr-mt-6v" />
+    <h5 className="fr-mt-4v">Vous n’avez pas de compte ?</h5>
     <ButtonsGroup
       buttons={[
         {
@@ -38,3 +41,5 @@ export const SigninPanel = ({ error }: { error?: string }) => (
     />
   </AuthCard>
 )
+
+export default SigninPanel

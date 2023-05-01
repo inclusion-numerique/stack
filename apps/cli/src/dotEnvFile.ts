@@ -39,7 +39,7 @@ export const appendEnvVariablesToDotEnvFile = async ({
 `
 
   const variablesText = environmentVariables
-    .map(({ name, value }) => `${name}=${value}`)
+    .map(({ name, value }) => `${name}="${value}"`)
     .join('\n')
 
   return appendTextToDotEnvFile(`${banner}\n${variablesText}\n${footer}`)

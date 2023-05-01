@@ -1,5 +1,5 @@
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
-import { Breadcrumbs } from '@app/web/components/Breadcrumbs'
+import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import Link from 'next/link'
 
@@ -17,7 +17,10 @@ const ErrorPage = ({
   searchParams?: { error?: string }
 }) => (
   <>
-    <Breadcrumbs currentPage="Connexion" />
+    <Breadcrumbs
+      currentPage="Erreur"
+      parents={[{ label: 'Connexion', linkProps: { href: '/connexion' } }]}
+    />
     <AuthCard>
       <h2 style={{ textAlign: 'center' }} className="fr-mb-12v">
         Connexion à {PublicWebAppConfig.projectTitle}

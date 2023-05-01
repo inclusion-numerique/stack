@@ -22,12 +22,9 @@
     "scw": "pnpm with-env scw",
     "manypkg": "manypkg",
     "start:web": "npm -w @app/web start",
-    "db:reset": "pnpm db:stop && docker volume rm my-app_pgdata && pnpm db:start && pnpm prisma:generate && pnpm prisma:migrate",
+    "db:reset": "pnpm db:stop && docker volume rm my-app_pgdata && pnpm db:start && pnpm prisma generate && pnpm prisma:migrate",
     "db:start": "docker-compose -f ./docker-compose.dev.yml up --build -d",
     "db:stop": "docker-compose -f ./docker-compose.dev.yml down",
-    "prisma:generate": "pnpm -F web prisma:generate",
-    "prisma:migrate": "pnpm -F web prisma migrate deploy",
-    "prisma:seed": "pnpm -F fixtures prisma:seed",
     "docker:build:web": "docker buildx build --platform linux/amd64 -t rg.fr-par.scw.cloud/mec-web/mec-web-dev:latest -f docker/web/Dockerfile .",
     "docker:build:web:debug": "DOCKER_BUILDKIT=0 docker build -t mec-web/mec-web-dev:debug -f docker/web/Dockerfile ."
   },

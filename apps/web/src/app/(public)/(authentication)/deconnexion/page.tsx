@@ -3,12 +3,11 @@
 import { signOut } from 'next-auth/react'
 import { useState } from 'react'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
-import { Breadcrumbs } from '@app/web/components/Breadcrumbs'
+import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import Link from 'next/link'
 
 const SignoutPage = () => {
   const [isLoading, setIsLoading] = useState(false)
-
   const onLogout = async () => {
     setIsLoading(true)
     await signOut({ redirect: true, callbackUrl: '/' })

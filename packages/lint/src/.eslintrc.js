@@ -74,6 +74,8 @@ module.exports = {
         'no-restricted-syntax': 'off',
         'prettier/prettier': 'error',
         'no-continue': 'off',
+        // Typescript compiler will avoid errors based on inconsistent returns
+        'consistent-return': 'off',
         // Module resolve leads to false negatives in monorepo, typescript compiler will handle any error
         'import/no-unresolved': [2, { ignore: ['^@app/'] }],
         // This rule is unreliable in monorepos and typescript compiler will help on bad imports
@@ -148,6 +150,11 @@ module.exports = {
       extends: ['plugin:cypress/recommended'],
       rules: {
         'jest/expect-expect': 'off',
+        // Cypress syntax uses then() for chainable elements
+        'promise/catch-or-return': 'off',
+        'promise/always-return': 'off',
+        // We need to pass undefined to some custom commands
+        'unicorn/no-useless-undefined': 'off',
       },
     },
   ],

@@ -8,7 +8,7 @@ export type BreadcrumbParent = {
 }
 export type BreadcrumbParents = BreadcrumbParent[]
 
-export const Breadcrumbs = ({
+const Breadcrumbs = ({
   currentPage,
   parents = [],
 }: {
@@ -23,3 +23,5 @@ export const Breadcrumbs = ({
     segments={parents}
   />
 )
+
+export default Breadcrumbs
