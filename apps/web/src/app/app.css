@@ -32,7 +32,7 @@ textarea {
 
 
   .fr-header__menu-links{
-    &:after {
+    &::after {
       margin-top: 0;
     }
   }

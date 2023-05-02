@@ -3,7 +3,7 @@ import { createTestUser } from '../support/helpers'
 describe("Page d'accueil", () => {
   it("La page d'accueil s'affiche correctement, avec les styles du DSFR", () => {
     cy.visit('/')
-    cy.get('.fr-header__brand p').should(
+    cy.get('.fr-header__operator a').should(
       'contain',
       'Les Bases du numérique d’intérêt général',
     )

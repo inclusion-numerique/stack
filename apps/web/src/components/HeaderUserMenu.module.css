@@ -7,6 +7,7 @@
   > ul {
     border-top: var(--slim-grey-border);
     padding: 0 !important;
+
     a {
       color: var(--blue-france-sun-113-625);
       font-weight: 500;
