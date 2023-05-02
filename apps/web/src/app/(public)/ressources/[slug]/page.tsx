@@ -1,7 +1,7 @@
 import React from 'react'
 import { notFound } from 'next/navigation'
 import { getResource } from '@app/web/server/resources'
-import { Breadcrumbs } from '@app/web/components/Breadcrumbs'
+import Breadcrumbs from '@app/web/components/Breadcrumbs'
 
 export const revalidate = 0
 

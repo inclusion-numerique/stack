@@ -56,7 +56,7 @@ export const HeaderUserMenu = ({
                   Mes bases
                 </p>
               </li>
-              {bases.map(({ slug, title }, index) => (
+              {bases.map(({ slug, title }) => (
                 <li key={slug}>
                   <Link
                     className="fr-nav__link"

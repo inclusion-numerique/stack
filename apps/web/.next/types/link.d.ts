@@ -38,8 +38,8 @@ declare namespace __next_route_internal_types__ {
     | `/403`
     | `/404`
     | `/500`
-    | `/confidentialite`
     | `/accessibilite`
+    | `/confidentialite`
     | `/ressources`
     | `/mentions-legales`
     | `/robots.txt`
@@ -49,9 +49,9 @@ declare namespace __next_route_internal_types__ {
     | `/api/test/index.api.spec`
     | `/api/test`
     | `/api/test/service.spec`
+    | `/api/test/type.spec`
     | `/api/test/service`
     | `/api/test/type`
-    | `/api/test/type.spec`
   type DynamicRoutes<T extends string = string> = 
     | `/ressources/${SafeSlug<T>}`
     | `/api/auth/${CatchAllSlug<T>}`

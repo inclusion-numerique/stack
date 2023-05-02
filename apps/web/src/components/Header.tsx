@@ -6,9 +6,9 @@ import { HeaderUserMenu } from '@app/web/components/HeaderUserMenu'
 
 const Header = ({
   user,
-  backLink,
+  backLink: _backLink,
 }: {
-  user?: SessionUser
+  user?: SessionUser | null
   backLink?: Route
 }) => (
   <header role="banner" className="fr-header">
@@ -16,6 +16,7 @@ const Header = ({
       <div className="fr-container">
         <div className="fr-header__body-row">
           <div className="fr-header__brand fr-enlarge-link">
+            {/* TODO Replace brand by back link button if in props */}
             <div className="fr-header__brand-top">
               <div className="fr-header__logo">
                 <Link

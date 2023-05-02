@@ -17,6 +17,7 @@ export const getSessionUserFromSessionToken = async (
       user: {
         select: {
           id: true,
+          legacyId: true,
           email: true,
           firstName: true,
           lastName: true,

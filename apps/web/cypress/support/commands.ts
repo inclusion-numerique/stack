@@ -60,6 +60,10 @@ Cypress.Commands.add(
   },
 )
 
+Cypress.Commands.add('dsfrShouldBeStarted', () => {
+  cy.get('html').should('have.attr', 'data-fr-js', 'true')
+})
+
 //
 declare global {
   namespace Cypress {
@@ -76,6 +80,7 @@ declare global {
         name: string
       }): Chainable<void>
       signin(user: { email: string }): Chainable<void>
+      dsfrShouldBeStarted(): Chainable<void>
 
       //       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
       //       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
