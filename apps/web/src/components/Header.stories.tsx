@@ -1,12 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react'
-import PublicHeader from '@app/web/app/(public)/PublicHeader'
+import Header from '@app/web/components/Header'
 
 export default {
-  title: 'PublicHeader',
-  component: PublicHeader,
-} as Meta<typeof PublicHeader>
+  title: 'Header',
+  component: Header,
+} as Meta<typeof Header>
 
-type Story = StoryObj<typeof PublicHeader>
+type Story = StoryObj<typeof Header>
 
 export const Desktop: Story = {}
 export const Mobile: Story = {

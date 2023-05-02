@@ -104,6 +104,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
       .contains(inclusionConnectUser.firstName)
       .contains(inclusionConnectUser.lastName)
       .click()
+    cy.get('#header-user-menu').contains('Se déconnecter').click()
     cy.url().should('equal', appUrl('/deconnexion'))
     cy.contains('Êtes-vous sur de vouloir vous déconnecter ?')
     cy.contains('Se déconnecter').click()
@@ -157,6 +158,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.log('Check that the user can logout')
 
     cy.get('.fr-header__tools').contains(firstName).contains(lastName).click()
+    cy.get('#header-user-menu').contains('Se déconnecter').click()
     cy.url().should('equal', appUrl('/deconnexion'))
     cy.contains('Êtes-vous sur de vouloir vous déconnecter ?')
     cy.contains('Se déconnecter').click()
