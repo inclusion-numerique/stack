@@ -40,19 +40,21 @@ declare namespace __next_route_internal_types__ {
     | `/500`
     | `/accessibilite`
     | `/confidentialite`
-    | `/ressources`
     | `/mentions-legales`
+    | `/bases`
+    | `/ressources`
     | `/robots.txt`
     | `/api/health`
     | `/api/file/get`
     | `/api/file/upload`
-    | `/api/test/index.api.spec`
     | `/api/test`
-    | `/api/test/service.spec`
-    | `/api/test/type.spec`
+    | `/api/test/index.api.spec`
     | `/api/test/service`
     | `/api/test/type`
+    | `/api/test/type.spec`
+    | `/api/test/service.spec`
   type DynamicRoutes<T extends string = string> = 
+    | `/bases/${SafeSlug<T>}`
     | `/ressources/${SafeSlug<T>}`
     | `/api/auth/${CatchAllSlug<T>}`
     | `/api/trpc/${SafeSlug<T>}`

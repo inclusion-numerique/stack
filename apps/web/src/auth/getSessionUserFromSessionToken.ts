@@ -29,6 +29,12 @@ export const getSessionUserFromSessionToken = async (
           description: true,
           created: true,
           updated: true,
+          ownedBases: {
+            select: {
+              slug: true,
+              title: true,
+            },
+          },
         },
       },
     },

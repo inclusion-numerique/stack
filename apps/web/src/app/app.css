@@ -29,12 +29,23 @@ textarea {
 
 .fr-header {
   filter: none;
+
+
+  .fr-header__menu-links{
+    &:after {
+      margin-top: 0;
+    }
+  }
+
+  .fr-header__brand {
+    filter: none;
+    border-bottom: var(--slim-grey-border);
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+  }
+
 }
 
-.fr-header__brand {
-  filter: none;
-  border-bottom: var(--slim-grey-border);
-}
 
 @media (min-width: 62em) {
   /* lg */
@@ -48,9 +59,12 @@ textarea {
           inset 0 1px 0 0 var(--border-default-grey);
       }
     }
+
+    .fr-header__brand {
+      border-bottom: none;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
   }
 
-  .fr-header__brand {
-    border-bottom: none;
-  }
 }

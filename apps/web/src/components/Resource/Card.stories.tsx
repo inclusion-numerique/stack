@@ -1,15 +1,21 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { ResourceItem } from '@app/web/server/resources'
+import { ResourceListItem } from '@app/web/server/resources'
 import Card from './Card'
 
-const resource: ResourceItem = {
+const resource = {
   title:
     'Titre d’une ressource sur deux ligne très longues comme comme sur deux ligne très longues',
   slug: 'titre-d-une-ressource-sur-deux-ligne-très-longues-comme-comme-sur-deux-ligne-très-longues',
   description:
     'Lorem Ipsul Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum quam mauris sit lacinia turpis sed vitae vel. Venenatis in in neque interdum nec facilisi mauris nunc vitae turpis sed vitae vel. Venenatis adipiscing elit.',
   created: new Date('1998-07-12'),
-}
+  updated: new Date('2022-07-12'),
+  base: { title: 'Titre de la base', slug: 'titre-de-la-base' },
+  createdBy: {
+    id: '1',
+    name: 'Jean Biche',
+  },
+} satisfies ResourceListItem
 
 export default {
   title: 'Resource/Card',

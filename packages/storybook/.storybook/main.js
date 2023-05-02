@@ -25,6 +25,7 @@ module.exports = {
     '@storybook/addon-interactions',
     '@storybook/addon-jest',
     '@storybook/addon-a11y',
+    '@storybook/addon-viewport',
   ],
   framework: {
     name: '@storybook/nextjs',

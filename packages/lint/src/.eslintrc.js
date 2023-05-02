@@ -135,6 +135,7 @@ module.exports = {
               Env: true,
               env: true,
               ref: true,
+              Ref: true,
               res: true,
             },
           },

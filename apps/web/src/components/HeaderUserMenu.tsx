@@ -1,90 +1,150 @@
+'use client'
+
 import { SessionUser } from '@app/web/auth/sessionUser'
 import Link from 'next/link'
+import { KeyboardEvent, MouseEvent as ReactMouseEvent, useRef } from 'react'
+import { useOnClickOutside } from 'usehooks-ts'
+import classNames from 'classnames'
+import styles from './HeaderUserMenu.module.css'
 
 export const HeaderUserMenu = ({
-  user: { email, name },
+  user: { email, name, ownedBases },
 }: {
   user: SessionUser
 }) => {
-  // TODO load bases from database. From prisma or from trpc ?
-  const bases = [
-    { slug: 'base1', title: 'Base 01' },
-    { slug: 'base2', title: 'Base 02' },
-  ]
+  const bases = ownedBases
+
+  // The click outside default behavior from dsfr js do not work in this case 🤷‍
+  // So we have to use client component and hooks to handle the click outside
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const collapseRef = useRef<HTMLDivElement>(null)
+  const onClickOrEnterInsideDropdown = (
+    event: KeyboardEvent<HTMLDivElement> | ReactMouseEvent<HTMLDivElement>,
+  ) => {
+    // Close the dropdown if a link has been clicked
+    if (event.target instanceof HTMLAnchorElement) {
+      buttonRef.current?.click()
+    }
+  }
+  const onClickOutsideDropdown = (event: MouseEvent) => {
+    // Let the event propagate if clicked on the control button
+    if (event.target === buttonRef?.current) {
+      return
+    }
+
+    // Close the dropdown if open on outside click
+    if (buttonRef.current?.getAttribute('aria-expanded') !== 'true') {
+      return
+    }
+
+    buttonRef.current.click()
+  }
+  useOnClickOutside(collapseRef, onClickOutsideDropdown)
+
+  const menuContent = (
+    <ul className="fr-menu__list">
+      <li>
+        <span className="fr-nav__link fr-pt-4v fr-pb-2v">
+          <p className="fr-text--medium fr-text--sm">{name}</p>
+          <p className="fr-text--sm fr-text-default--grey">{email}</p>
+        </span>
+      </li>
+      <li>
+        <Link
+          className="fr-nav__link"
+          href="/"
+          style={{
+            boxShadow: 'none',
+            borderBottom: 'var(--slim-grey-border)',
+          }}
+        >
+          <span
+            className="fr-icon-user-setting-line fr-icon--sm fr-mr-1w"
+            style={{ color: 'var(--blue-france-sun-113-625)' }}
+          />
+          Voir mon profil
+        </Link>
+      </li>
+      {bases.length > 0 ? (
+        <>
+          <li>
+            <p
+              className="fr-text--sm fr-nav__link fr-text-default--grey fr-pb-2v"
+              style={{
+                boxShadow: 'none',
+              }}
+            >
+              Mes bases
+            </p>
+          </li>
+          {bases.map(({ slug, title }, index) => (
+            <li key={slug}>
+              <Link
+                className="fr-nav__link"
+                href={`/bases/${slug}`}
+                style={{
+                  boxShadow: 'none',
+                  borderBottom:
+                    index === bases.length - 1
+                      ? 'var(--slim-grey-border)'
+                      : undefined,
+                }}
+              >
+                <span
+                  className="fr-icon-home-4-line fr-icon--sm fr-mr-1w"
+                  style={{
+                    color: 'var(--blue-france-sun-113-625)',
+                  }}
+                />
+                {title}
+              </Link>
+            </li>
+          ))}
+        </>
+      ) : null}
+      <li>
+        <Link className="fr-nav__link" href="/deconnexion">
+          <span
+            className="fr-icon-logout-box-r-line fr-icon--sm fr-mr-1w"
+            style={{ color: 'var(--blue-france-sun-113-625)' }}
+          />
+          Se déconnecter
+        </Link>
+      </li>
+    </ul>
+  )
 
   /**
    * In mobile, the user menu is displayed in the menu modal.
    * In desktop, the user menu is a button + a dropdown.
    */
-
   return (
     <>
       <button
-        className="fr-nav__btn fr-btn "
+        className="fr-nav__btn fr-btn fr-hidden fr-unhidden-lg"
         type="button"
         aria-expanded="false"
         aria-controls="header-user-menu"
+        ref={buttonRef}
       >
         {name}
       </button>
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <div
-        className="fr-collapse fr-menu"
+        role="navigation"
+        className={classNames('fr-collapse', 'fr-menu', styles.collapse)}
         id="header-user-menu"
-        style={{ right: 0, left: 'auto' }}
+        ref={collapseRef}
+        onClick={onClickOrEnterInsideDropdown}
+        onKeyDown={onClickOrEnterInsideDropdown}
       >
-        <ul className="fr-menu__list">
-          <li>
-            <span className="fr-nav__link fr-py-4v">
-              <p className="fr-text--medium fr-text--sm">{name}</p>
-              <p className="fr-text--sm fr-text-default--grey">{email}</p>
-            </span>
-          </li>
-          <li>
-            <Link className="fr-nav__link" href="/">
-              {/* TODO css module for this file and class for icons */}
-              <span
-                className="fr-icon-user-setting-line fr-icon--sm fr-mr-1w"
-                style={{ color: 'var(--blue-france-sun-113-625)' }}
-              />
-              Voir mon profil
-            </Link>
-          </li>
-          {bases.length > 0 ? (
-            <>
-              <li>
-                <p className="fr-text--sm fr-nav__link  fr-text-default--grey">
-                  Mes bases
-                </p>
-              </li>
-              {bases.map(({ slug, title }) => (
-                <li key={slug}>
-                  <Link
-                    className="fr-nav__link"
-                    href="/"
-                    style={{ boxShadow: 'none' }}
-                  >
-                    <span
-                      className="fr-icon-home-4-line fr-icon--sm fr-mr-1w"
-                      style={{
-                        color: 'var(--blue-france-sun-113-625)',
-                      }}
-                    />
-                    {title}
-                  </Link>
-                </li>
-              ))}
-            </>
-          ) : null}
-          <li>
-            <Link className="fr-nav__link" href="/deconnexion">
-              <span
-                className="fr-icon-logout-box-r-line fr-icon--sm fr-mr-1w"
-                style={{ color: 'var(--blue-france-sun-113-625)' }}
-              />
-              Se déconnecter
-            </Link>
-          </li>
-        </ul>
+        {menuContent}
+      </div>
+      <div
+        role="navigation"
+        className={classNames('fr-hidden-lg', 'fr-px-1w', styles.mobile)}
+      >
+        {menuContent}
       </div>
     </>
   )

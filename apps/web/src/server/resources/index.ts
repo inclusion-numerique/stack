@@ -6,7 +6,20 @@ export const getResourcesList = async (take?: number, skip?: number) =>
       title: true,
       slug: true,
       created: true,
+      updated: true,
       description: true,
+      createdBy: {
+        select: {
+          name: true,
+          id: true,
+        },
+      },
+      base: {
+        select: {
+          title: true,
+          slug: true,
+        },
+      },
     },
     orderBy: [
       {
@@ -17,6 +30,11 @@ export const getResourcesList = async (take?: number, skip?: number) =>
     take,
   })
 
+export type ResourceListItem = Exclude<
+  Awaited<ReturnType<typeof getResourcesList>>,
+  null
+>[number]
+
 export const getResource = async (slug: string) =>
   prismaClient.resource.findUnique({
     select: {
@@ -26,10 +44,5 @@ export const getResource = async (slug: string) =>
       slug,
     },
   })
-
-export type ResourceItem = Exclude<
-  Awaited<ReturnType<typeof getResourcesList>>,
-  null
->[number]
 
 export type Resource = Exclude<Awaited<ReturnType<typeof getResource>>, null>

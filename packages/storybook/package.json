@@ -22,6 +22,7 @@
     "@storybook/addon-interactions": "^7.0.7",
     "@storybook/addon-jest": "^7.0.7",
     "@storybook/addon-links": "^7.0.7",
+    "@storybook/addon-viewport": "^7.0.7",
     "@storybook/addons": "^7.0.7",
     "@storybook/blocks": "^7.0.7",
     "@storybook/instrumenter": "^7.0.7",

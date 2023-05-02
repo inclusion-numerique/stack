@@ -3,6 +3,7 @@ import { PublicWebAppConfig } from '@app/web/webAppConfig'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { Route } from 'next'
 import { HeaderUserMenu } from '@app/web/components/HeaderUserMenu'
+import classNames from 'classnames'
 
 const Header = ({
   user,
@@ -16,37 +17,43 @@ const Header = ({
       <div className="fr-container">
         <div className="fr-header__body-row">
           <div className="fr-header__brand fr-enlarge-link">
-            {/* TODO Replace brand by back link button if in props */}
             <div className="fr-header__brand-top">
-              <div className="fr-header__logo">
+              {_backLink ? (
                 <Link
-                  href="/"
-                  aria-current="page"
-                  target="_self"
-                  title={PublicWebAppConfig.projectTitle}
-                  className="fr-text--medium"
+                  href={_backLink}
+                  className={classNames(
+                    'fr-btn',
+                    'fr-btn--sm',
+                    'fr-btn--tertiary-no-outline',
+                  )}
                 >
-                  <picture>
-                    <img
-                      style={{ verticalAlign: 'middle', height: 26 }}
-                      src="/images/logo.svg"
-                      alt="Logo"
-                    />
-                  </picture>
+                  <span className="fr-icon-arrow-left-line fr-icon--sm fr-mr-1w" />
+                  Retour
                 </Link>
-              </div>
-              <div className="fr-header__operator">
-                <Link
-                  href="/"
-                  aria-current="page"
-                  target="_self"
-                  title={PublicWebAppConfig.projectTitle}
-                >
-                  <p className="fr-text--medium">
-                    {PublicWebAppConfig.projectTitle}
-                  </p>
-                </Link>
-              </div>
+              ) : (
+                <>
+                  <div className="fr-header__logo">
+                    <Link
+                      href="/"
+                      title={PublicWebAppConfig.projectTitle}
+                      className="fr-text--medium"
+                    >
+                      <picture>
+                        <img
+                          style={{ verticalAlign: 'middle', height: 26 }}
+                          src="/images/logo.svg"
+                          alt="Logo"
+                        />
+                      </picture>
+                    </Link>
+                  </div>
+                  <div className="fr-header__operator">
+                    <Link href="/" className="fr-text--medium">
+                      {PublicWebAppConfig.projectTitle}
+                    </Link>
+                  </div>
+                </>
+              )}
               <div className="fr-header__navbar">
                 <button
                   id="fr-btn-menu-mobile"
@@ -67,7 +74,10 @@ const Header = ({
             <div className="fr-header__tools-links">
               <ul className="fr-btns-group">
                 <li>
-                  <Link href="/" className="fr-btn fr-icon-search-line">
+                  <Link
+                    href="/ressources"
+                    className="fr-btn fr-icon-search-line"
+                  >
                     Rechercher
                   </Link>
                 </li>
@@ -90,7 +100,7 @@ const Header = ({
                     }}
                   />
                 </li>
-                <li>
+                <li style={{ position: 'relative' }}>
                   {user ? (
                     <HeaderUserMenu user={user} />
                   ) : (

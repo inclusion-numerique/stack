@@ -1,4 +1,4 @@
-import { User } from '@prisma/client'
+import { Base, User } from '@prisma/client'
 
 // Serializable user interface
 export type SessionUser = Omit<
@@ -8,4 +8,5 @@ export type SessionUser = Omit<
   emailVerified: string | null
   created: string | null
   updated: string | null
+  ownedBases: Pick<Base, 'slug' | 'title'>[]
 }
