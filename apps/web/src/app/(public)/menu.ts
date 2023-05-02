@@ -1,10 +1,11 @@
 import { Route } from 'next'
 
 type MenuItem = {
-  name: string
+  text: string
   href: Route
 }
+
 export const menu: MenuItem[] = [
-  { name: 'Accueil', href: '/' },
+  { text: 'Accueil', href: '/' },
   { name: 'Ressources', href: '/ressources' },
 ]

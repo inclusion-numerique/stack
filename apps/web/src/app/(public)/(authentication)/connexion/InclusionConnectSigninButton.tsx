@@ -3,19 +3,22 @@
 import { signIn } from 'next-auth/react'
 import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
 import classNames from 'classnames'
+import { Route } from 'next'
 import styles from './InclusionConnectSigninButton.module.css'
 
 export const InclusionConnectSigninButton = ({
   className,
+  callbackUrl,
 }: {
   className?: string
+  callbackUrl: Route
 }) => (
   <div className={classNames(styles.inclusionConnectSection, className)}>
     <button
       type="button"
       className={`${styles.inclusionConnectBtn} fr-btn`}
       title="S'identifier avec InclusionConnect"
-      onClick={() => signIn(inclusionConnectProviderId)}
+      onClick={() => signIn(inclusionConnectProviderId, { callbackUrl })}
     >
       <span>
         Se connecter avec
@@ -24,7 +27,7 @@ export const InclusionConnectSigninButton = ({
     </button>
 
     <a
-      className="fr-link--sm"
+      className="fr-link fr-link--sm"
       href="https://plateforme-inclusion.notion.site/Un-compte-unique-pour-mes-services-num-riques-ded9135197654da590f5dde41d8bb68b"
       target="_blank"
       rel="noreferrer"

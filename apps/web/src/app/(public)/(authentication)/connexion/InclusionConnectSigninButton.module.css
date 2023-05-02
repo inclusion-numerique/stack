@@ -1,7 +1,7 @@
 .inclusionConnectSection {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 }
 
 /* button:not(:disabled) is required to override DSFR style */
@@ -20,7 +20,7 @@ button:not(:disabled).inclusionConnectBtn {
   background-color: var(--background-active-blue-france);
   background-image: url('/images/inclusion-connect.svg');
   background-repeat: no-repeat;
-  margin-bottom: 0.5rem;
+  margin-bottom: 12px;
   font-weight: 400;
 
   strong {

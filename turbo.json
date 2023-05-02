@@ -1,16 +1,16 @@
 {
   "$schema": "https://turborepo.org/schema.json",
   "pipeline": {
-    "prisma:generate": {
+    "prisma generate": {
       "inputs": ["prisma/schema.prisma"],
       "cache": true
     },
     "dev": {
-      "dependsOn": ["^prisma:generate"],
+      "dependsOn": ["^prisma generate"],
       "cache": false
     },
     "build": {
-      "dependsOn": ["^build", "^prisma:generate"],
+      "dependsOn": ["^build", "^prisma generate"],
       "outputs": [".next/**"],
       "cache": false
     },
@@ -83,6 +83,10 @@
     "NEXT_PUBLIC_MATOMO_HOST",
     "NEXT_PUBLIC_MATOMO_SITE_ID",
     "INCLUSION_CONNECT_CLIENT_SECRET",
+    "INCLUSION_CONNECT_KEYCLOAK_ADMIN_USER",
+    "INCLUSION_CONNECT_KEYCLOAK_ADMIN_PASSWORD",
+    "INCLUSION_CONNECT_TEST_USER_EMAIL",
+    "INCLUSION_CONNECT_TEST_USER_PASSWORD",
     "EMAIL_FROM_ADDRESS",
     "EMAIL_FROM_NAME",
     "SMTP_USERNAME",

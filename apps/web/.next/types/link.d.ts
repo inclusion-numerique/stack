@@ -28,30 +28,28 @@ declare namespace __next_route_internal_types__ {
     S extends `${string}${SearchOrHash}` ? never : S
 
   type StaticRoutes = 
-    | `/connexion/verification`
-    | `/connexion/erreur`
-    | `/connexion`
-    | `/deconnexion`
-    | `/creer-un-compte`
-    | `/401`
-    | `/403`
-    | `/404`
-    | `/500`
-    | `/accessibilite`
-    | `/confidentialite`
-    | `/`
-    | `/mentions-legales`
-    | `/ressources`
-    | `/robots.txt`
-    | `/api/file/get`
-    | `/api/health`
     | `/api/file/upload`
+    | `/api/health`
     | `/api/test/index.api.spec`
+    | `/api/test/service.spec`
     | `/api/test`
     | `/api/test/type.spec`
-    | `/api/test/service.spec`
+    | `/api/file/get`
+    | `/robots.txt`
+    | `/`
+    | `/401`
+    | `/403`
+    | `/500`
+    | `/accessibilite`
+    | `/404`
+    | `/confidentialite`
+    | `/mentions-legales`
+    | `/connexion`
+    | `/creer-un-compte`
+    | `/deconnexion`
+    | `/connexion/erreur`
+    | `/connexion/verification`
   type DynamicRoutes<T extends string = string> = 
-    | `/ressources/${SafeSlug<T>}`
     | `/api/auth/${CatchAllSlug<T>}`
     | `/api/trpc/${SafeSlug<T>}`
 
