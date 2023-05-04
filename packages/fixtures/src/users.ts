@@ -6,9 +6,9 @@ const BASE_NUMBER = 10
 export const users: (
   random?: number,
 ) => Exclude<
-  Parameters<typeof prismaClient.user.createMany>[0],
+  Parameters<typeof prismaClient.user.upsert>[0]['create'],
   undefined
->['data'] = (random) => {
+>[] = (random) => {
   if (random) {
     return Array.from({ length: random * BASE_NUMBER }, (_, index) => ({
       firstName: faker.name.firstName(),
@@ -29,7 +29,7 @@ export const users: (
       id: 'eecac657-f415-47e1-8087-c4508ea16191',
       firstName: 'Georges',
       lastName: 'Moustaki',
-      email: 'Georges@Moustaki.com',
+      email: 'georges@moustaki.com',
     },
   ]
 }
