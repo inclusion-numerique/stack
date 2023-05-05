@@ -511,6 +511,9 @@ importers:
 
   packages/fixtures:
     dependencies:
+      '@commander-js/extra-typings':
+        specifier: ^10.0.3
+        version: 10.0.3(commander@10.0.1)
       '@faker-js/faker':
         specifier: ^7.6.0
         version: 7.6.0
