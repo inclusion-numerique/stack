@@ -1,0 +1,23 @@
+.container {
+  z-index: 1;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border-top: var(--slim-grey-border);
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.block {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
