@@ -49,7 +49,6 @@ Cypress.Commands.add(
 
 Cypress.Commands.add('signin', ({ email }: { email: string }) =>
   cy.execute('createSession', { email }).then((session) => {
-    console.log('SESSION CREATED', session)
     cy.setCookie('next-auth.session-token', session.sessionToken)
     return cy.wrap(session.sessionToken)
   }),
@@ -72,6 +71,15 @@ Cypress.Commands.add('dsfrShouldBeStarted', () => {
   cy.get('html').should('have.attr', 'data-fr-js', 'true')
 })
 
+Cypress.Commands.add('dsfrModalsShouldBeBound', () => {
+  cy.get('dialog.fr-modal').each((modal) =>
+    cy.wrap(modal).should('have.attr', 'data-fr-js-modal', 'true'),
+  )
+})
+Cypress.Commands.add('testId', (testId: string) =>
+  cy.get(`[data-testid="${testId}"]`),
+)
+
 //
 declare global {
   namespace Cypress {
@@ -87,6 +95,8 @@ declare global {
       createResource(resource: CreateResourceInput): Chainable<void>
       signin(user: { email: string }): Chainable<string>
       dsfrShouldBeStarted(): Chainable<void>
+      dsfrModalsShouldBeBound(): Chainable<void>
+      testId(testId: string): Chainable<JQuery<HTMLElement>>
 
       //       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
       //       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
