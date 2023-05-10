@@ -20,6 +20,10 @@ importers:
       turbo-linux-arm64:
         specifier: ^1.9.3
         version: 1.9.3
+    devDependencies:
+      '@trivago/prettier-plugin-sort-imports':
+        specifier: ^4.1.1
+        version: 4.1.1(prettier@2.8.8)
 
   apps/cli:
     dependencies:
@@ -19479,6 +19483,7 @@ packages:
   /source-map@0.5.7:
     resolution: {integrity: sha512-LbrmJOMUSdEVxIKvdcJzQC+nQhe8FUZQTXQy6+I75skNgn3OoQ0DZA8YnFa7gp8tqtL3KPf1kmo0R5DoApeSGQ==}
     engines: {node: '>=0.10.0'}
+    dev: true
 
   /source-map@0.6.1:
     resolution: {integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==}

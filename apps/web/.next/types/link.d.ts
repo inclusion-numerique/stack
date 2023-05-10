@@ -37,20 +37,7 @@ declare namespace __next_route_internal_types__ {
     | `/api/test/type.spec`
     | `/robots.txt`
     | `/`
-    | `/(.)creer-une-ressource`
-    | `/401`
-    | `/403`
-    | `/404`
-    | `/accessibilite`
-    | `/500`
-    | `/bases`
-    | `/confidentialite`
-    | `/creer-une-ressource`
-    | `/mentions-legales`
-    | `/ressources`
     | `/connexion`
-    | `/creer-un-compte`
-    | `/deconnexion`
     | `/connexion/erreur`
     | `/connexion/verification`
   type DynamicRoutes<T extends string = string> =

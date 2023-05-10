@@ -1,17 +1,13 @@
-import '@app/web/app/app.css'
-import { PropsWithChildren, ReactNode } from 'react'
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, ReactNode } from 'react'
 import { setLink } from '@codegouvfr/react-dsfr/link'
 import { Dsfr } from '@app/web/app/Dsfr'
 import { EnvInformation } from '@app/web/app/EnvInformation'
 import { Matomo } from '@app/web/app/Matomo'
 import { PreloadResources } from '@app/web/app/PreloadResources'
-import { EnvInformation } from '@app/web/app/EnvInformation'
-import Link from 'next/link'
-import { setLink } from '@codegouvfr/react-dsfr/link'
+import '@app/web/app/app.css'
+import { PublicWebAppConfig } from '@app/web/webAppConfig'
 
 declare module '@codegouvfr/react-dsfr/link' {
   interface RegisterLink {
