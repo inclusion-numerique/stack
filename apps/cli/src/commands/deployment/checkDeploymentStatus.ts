@@ -1,8 +1,8 @@
+import axios from 'axios'
+import axiosRetry from 'axios-retry'
 import { Command } from '@commander-js/extra-typings'
 import { output } from '@app/cli/output'
-import axios from 'axios'
 import { projectTitle } from '@app/config/config'
-import axiosRetry from 'axios-retry'
 
 export const checkDeploymentStatus = new Command()
   .command('deployment:check-status')

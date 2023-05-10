@@ -1,6 +1,6 @@
 import { S3Backend } from 'cdktf'
-import { projectSlug } from '@app/config/config'
 import { Construct } from 'constructs'
+import { projectSlug } from '@app/config/config'
 
 export const terraformBackend = (scope: Construct, stack: string) =>
   new S3Backend(scope, {

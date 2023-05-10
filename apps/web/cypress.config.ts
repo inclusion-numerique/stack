@@ -1,5 +1,5 @@
-import 'tsconfig-paths/register'
 import { defineConfig } from 'cypress'
+import 'tsconfig-paths/register'
 import { cypressProjectId } from '../../packages/config/src/config'
 import { tasks } from './cypress/support/tasks'
 

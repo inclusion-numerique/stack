@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react'
-import PublicHeader from '@app/web/app/(public)/PublicHeader'
 import PublicFooter from '@app/web/app/(public)/PublicFooter'
+import PublicHeader from '@app/web/app/(public)/PublicHeader'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 
 const PublicLayout = async ({ children }: PropsWithChildren) => {

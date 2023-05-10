@@ -1,5 +1,5 @@
+import { MjmlAll, MjmlAttributes, MjmlFont, MjmlSpacer } from 'mjml-react'
 import React from 'react'
-
 import {
   Mjml,
   MjmlBody,
@@ -14,7 +14,6 @@ import {
   renderToMjml,
 } from '@luma-team/mjml-react'
 import { emailAssetUrl } from '@app/emails/emailAssetUrl'
-import { MjmlAll, MjmlAttributes, MjmlFont, MjmlSpacer } from 'mjml-react'
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
 
 const brandColor = '#000091'
