@@ -38,6 +38,13 @@ export const ServerWebAppConfig = {
     accessKey: process.env.SCW_ACCESS_KEY ?? '',
     secretKey: process.env.SCW_SECRET_KEY ?? '',
   },
+  LegacyS3: {
+    uploadsBucket: process.env.LEGACY_UPLOADS_S3_BUCKET ?? '',
+    host: process.env.LEGACY_UPLOADS_S3_HOST ?? '',
+    region: 'legacy',
+    accessKey: process.env.LEGACY_UPLOADS_S3_ACCESS_KEY ?? '',
+    secretKey: process.env.LEGACY_UPLOADS_S3_SECRET_KEY ?? '',
+  },
   Cockpit: {
     metricsUrl: process.env.COCKPIT_METRICS_URL ?? '',
     logsUrl: process.env.COCKPIT_LOGS_URL ?? '',
@@ -58,9 +65,6 @@ export const PublicWebAppConfig = {
   projectTitle,
   mainLiveUrl,
   repository: repositoryUrl,
-  disableLinkPrefetch:
-    NodeEnvironment === 'development' &&
-    process.env.NEXT_PUBLIC_DEVELOPMENT_DISABLE_LINK_PREFETCH === 'true',
   InclusionConnect: {
     issuer: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_ISSUER ?? '',
     clientId: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID ?? '',

@@ -2,6 +2,7 @@ const { withSentryConfig } = require('@sentry/nextjs')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
+const path = require('node:path')
 const packageJson = require('./package.json')
 
 const isDevelopment = process.env.NODE_ENV === 'development'
@@ -29,23 +30,32 @@ const externalServerPackagesForFasterDevelopmentUx = isDevelopment
       ...Object.keys(packageJson.dependencies),
       ...Object.keys(packageJson.devDependencies),
     ].filter((packageName) => !alwaysBundledPackages.has(packageName))
-  : []
+  : undefined
 
 const nextConfig = {
-  // FIXME standalone does not support app directory for now
-  // output: 'standalone',
+  output: 'standalone',
   reactStrictMode: true,
   transpilePackages: ['@app/emails'],
   experimental: {
     typedRoutes: true,
     appDir: true,
     // See https://beta.nextjs.org/docs/api-reference/next.config.js#servercomponentsexternalpackages
-    serverComponentsExternalPackages: [
-      'nanoid',
-      'mjml',
-      'mjml-core',
-      ...externalServerPackagesForFasterDevelopmentUx,
-    ],
+    serverComponentsExternalPackages:
+      externalServerPackagesForFasterDevelopmentUx,
+    // serverComponentsExternalPackages: [
+    //   'nanoid',
+    //   'mjml',
+    //   'mjml-core',
+    //   ...externalServerPackagesForFasterDevelopmentUx,
+    // ],
+    // This includes files from the monorepo base two directories up
+    outputFileTracingRoot: path.join(__dirname, '../../'),
+    // outputFileTracingExcludes: {
+    //   '/api/hello': ['./un-necessary-folder/**/*'],
+    // },
+    // outputFileTracingIncludes: {
+    //   '/api/another': ['./necessary-folder/**/*'],
+    // },
   },
   modularizeImports,
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
