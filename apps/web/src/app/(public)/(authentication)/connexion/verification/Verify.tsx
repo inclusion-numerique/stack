@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
+import { PublicWebAppConfig } from '@app/web/webAppConfig'
 
 export const Verify = () => {
   const email = cookies().get('email-signin')?.value

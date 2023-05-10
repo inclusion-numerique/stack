@@ -1,7 +1,7 @@
 'use client'
 
-import Header from '@codegouvfr/react-dsfr/Header'
 import { usePathname } from 'next/navigation'
+import Header from '@codegouvfr/react-dsfr/Header'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { menu } from './menu'
 

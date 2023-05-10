@@ -1,10 +1,10 @@
-import '@app/web/auth/nextAuthSetup'
+import NextAuth, { NextAuthOptions } from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
 import KeycloakProvider, { KeycloakProfile } from 'next-auth/providers/keycloak'
-import NextAuth, { NextAuthOptions } from 'next-auth'
-import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
-import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
 import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
+import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
+import '@app/web/auth/nextAuthSetup'
+import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
 import { PublicWebAppConfig, ServerWebAppConfig } from '@app/web/webAppConfig'
 
 export const authOptions: NextAuthOptions = {

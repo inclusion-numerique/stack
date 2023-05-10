@@ -1,8 +1,16 @@
 {
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
   "semi": false,
   "singleQuote": true,
   "trailingComma": "all",
   "bracketSpacing": true,
   "arrowParens": "always",
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "importOrder": [
+    "^@(?!app/)(?!prisma/)(.*)$",
+    "^@app/(.*)$",
+    "^@prisma/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSortSpecifiers": true
 }

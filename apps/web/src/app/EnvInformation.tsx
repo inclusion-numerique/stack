@@ -1,4 +1,4 @@
-import { ServerWebAppConfig, PublicWebAppConfig } from '@app/web/webAppConfig'
+import { PublicWebAppConfig, ServerWebAppConfig } from '@app/web/webAppConfig'
 
 export const EnvInformation = () => {
   const { isMain, Chromatic: chromatic, Branch: branch } = ServerWebAppConfig

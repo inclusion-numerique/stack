@@ -1,4 +1,4 @@
-import { initTRPC, TRPCError } from '@trpc/server'
+import { TRPCError, initTRPC } from '@trpc/server'
 import { AppContext } from '@app/web/server/rpc/createContext'
 import { transformer } from '@app/web/utils/serialization'
 

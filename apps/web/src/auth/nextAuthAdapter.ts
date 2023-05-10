@@ -1,6 +1,6 @@
+import type { Adapter } from 'next-auth/adapters'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { prismaClient } from '@app/web/prismaClient'
-import type { Adapter } from 'next-auth/adapters'
 
 const prismaAdapter = PrismaAdapter(prismaClient)
 

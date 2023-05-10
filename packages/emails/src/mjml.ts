@@ -1,4 +1,4 @@
-import { minify, Options } from 'html-minifier'
+import { Options, minify } from 'html-minifier'
 import mjml2html from 'mjml'
 
 const MINIFIER_OPTIONS: Options = {

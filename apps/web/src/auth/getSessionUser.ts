@@ -1,11 +1,11 @@
-import 'server-only'
 import { cookies } from 'next/headers'
-import { SessionUser } from '@app/web/auth/sessionUser'
+import 'server-only'
 import {
   secureSessionCookie,
   sessionCookie,
 } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
+import { SessionUser } from '@app/web/auth/sessionUser'
 
 export const getSessionToken = (): string | null => {
   const allCookies = cookies()

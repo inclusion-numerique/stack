@@ -1,9 +1,9 @@
 'use client'
 
-import { signIn } from 'next-auth/react'
-import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
 import classNames from 'classnames'
 import { Route } from 'next'
+import { signIn } from 'next-auth/react'
+import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
 import styles from './InclusionConnectSigninButton.module.css'
 
 export const InclusionConnectSigninButton = ({

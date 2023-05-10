@@ -1,5 +1,5 @@
-import { prismaClient } from '@app/web/prismaClient'
 import * as uuid from 'uuid'
+import { prismaClient } from '@app/web/prismaClient'
 
 export const createUser = async (user: {
   email: string
