@@ -1,5 +1,6 @@
 import { PropsWithChildren } from 'react'
 import PublicFooter from '@app/web/app/(public)/PublicFooter'
+import PublicHeader from '@app/web/app/(public)/PublicHeader'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Header from '@app/web/components/Header'
 

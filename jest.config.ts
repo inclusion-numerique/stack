@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv'
+
 dotenv.config({ path: '../..' })
 
 // Next config does not work with es modules

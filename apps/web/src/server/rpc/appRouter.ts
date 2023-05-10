@@ -1,4 +1,3 @@
-import { userRouter } from '@app/web/server/rpc/user/userRouter'
 import { router } from '@app/web/server/rpc/createRouter'
 import { resourceRouter } from '@app/web/server/rpc/resource/resourceRouter'
 

@@ -1,11 +1,11 @@
-import { getServerUrl } from '@app/web/utils/baseUrl'
-import { getSessionUser } from '@app/web/auth/getSessionUser'
-import { redirect } from 'next/navigation'
-import Breadcrumbs from '@app/web/components/Breadcrumbs'
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
-import Alert from '@codegouvfr/react-dsfr/Alert'
 import { Route } from 'next'
+import { redirect } from 'next/navigation'
+import Alert from '@codegouvfr/react-dsfr/Alert'
 import SignupPanel from '@app/web/app/(public)/(authentication)/creer-un-compte/SignupPanel'
+import { getSessionUser } from '@app/web/auth/getSessionUser'
+import Breadcrumbs from '@app/web/components/Breadcrumbs'
+import { getServerUrl } from '@app/web/utils/baseUrl'
+import { PublicWebAppConfig } from '@app/web/webAppConfig'
 
 const SigninPage = async ({
   searchParams: { error, email, raison, suivant } = {},

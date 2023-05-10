@@ -1,13 +1,13 @@
+import { create } from 'zustand'
+import { QueryClient } from '@tanstack/react-query'
 import {
   CreateTRPCClientOptions,
   httpBatchLink,
   loggerLink,
 } from '@trpc/client'
-import { create } from 'zustand'
-import { QueryClient } from '@tanstack/react-query'
 import { AppRouter } from '@app/web/server/rpc/appRouter'
-import { transformer } from '@app/web/utils/serialization'
 import { trpc } from '@app/web/trpc'
+import { transformer } from '@app/web/utils/serialization'
 
 const clientOptions: CreateTRPCClientOptions<AppRouter> = {
   links: [

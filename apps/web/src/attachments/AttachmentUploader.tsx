@@ -1,12 +1,11 @@
 'use client'
 
 /* eslint react/jsx-props-no-spreading: 0 */
-
-import { FileError, useDropzone } from 'react-dropzone'
-import { useState } from 'react'
 import axios from 'axios'
-import { Spinner } from '@app/web/ui/Spinner'
+import { useState } from 'react'
+import { FileError, useDropzone } from 'react-dropzone'
 import { AttachmentUploadApiResponse } from '@app/web/pages/api/file/upload'
+import { Spinner } from '@app/web/ui/Spinner'
 
 type UploadingFileInfo = {
   file: File

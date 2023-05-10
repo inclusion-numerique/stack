@@ -1,6 +1,5 @@
-import 'server-only'
 import { cookies } from 'next/headers'
-import { SessionUser } from '@app/web/auth/sessionUser'
+import 'server-only'
 import {
   secureSessionCookie,
   sessionCookie,

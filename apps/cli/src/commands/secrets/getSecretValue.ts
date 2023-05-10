@@ -1,8 +1,8 @@
 import { Argument, Command } from '@commander-js/extra-typings'
 import { output } from '@app/cli/output'
-import { listSecrets } from '@app/config/secrets/listSecrets'
 import { findSecretByName } from '@app/config/secrets/findSecretByName'
 import { getSecretValue as configGetSecretValue } from '@app/config/secrets/getSecretValue'
+import { listSecrets } from '@app/config/secrets/listSecrets'
 
 /**
  * This command outputs available secrets names

@@ -1,13 +1,13 @@
 'use client'
 
+import Cookies from 'js-cookie'
+import { Route } from 'next'
 import { signIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import Cookies from 'js-cookie'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
+import { zodResolver } from '@hookform/resolvers/zod'
 import InputFormField from '@app/ui/components/Form/InputFormField'
-import { Route } from 'next'
 
 const SigninFormValidation = z.object({
   email: z

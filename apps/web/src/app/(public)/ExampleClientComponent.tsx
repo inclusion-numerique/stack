@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { fr } from '@codegouvfr/react-dsfr'
+import Button from '@codegouvfr/react-dsfr/Button'
 
 export const ExampleClientComponent = () => {
   const [count, setCount] = useState(0)

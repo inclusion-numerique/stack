@@ -1,6 +1,6 @@
 // eslint-disable-next-line unicorn/prevent-abbreviations
-import { resolve } from 'node:path'
 import { appendFile } from 'node:fs/promises'
+import { resolve } from 'node:path'
 
 // eslint-disable-next-line unicorn/prevent-abbreviations
 export type DotEnvVariable = { name: string; value: string }
