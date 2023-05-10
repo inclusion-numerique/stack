@@ -1,9 +1,9 @@
-import React from 'react'
 import { notFound, redirect } from 'next/navigation'
-import Breadcrumbs from '@app/web/components/Breadcrumbs'
-import { getResource } from '@app/web/server/resources'
-import Edition from '@app/web/components/Resource/Edition/Edition'
+import React from 'react'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
+import Breadcrumbs from '@app/web/components/Breadcrumbs'
+import Edition from '@app/web/components/Resource/Edition/Edition'
+import { getResource } from '@app/web/server/resources'
 
 const ResourceEditionPage = async ({
   params,

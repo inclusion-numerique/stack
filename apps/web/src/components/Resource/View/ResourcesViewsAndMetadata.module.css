@@ -1,13 +1,11 @@
-
 .container {
   align-items: center;
-    display: flex;
-    gap: 8px;
-
+  display: flex;
+  gap: 8px;
 }
 
-.lastLeft{
-  flex-grow:1;
+.lastLeft {
+  flex-grow: 1;
 }
 
 .spanMdDisplay {

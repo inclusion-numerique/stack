@@ -1,11 +1,11 @@
-import { migrationPrismaClient } from '@app/migration/migrationPrismaClient'
-import { FindManyItemType } from '@app/migration/utils/findManyItemType'
+import { chunk } from 'lodash'
 import { v4 } from 'uuid'
+import { output } from '@app/cli/output'
+import { migrationPrismaClient } from '@app/migration/migrationPrismaClient'
+import { UpsertCreateType } from '@app/migration/utils/UpsertCreateType'
+import { FindManyItemType } from '@app/migration/utils/findManyItemType'
 import { LegacyIdMap } from '@app/migration/utils/legacyIdMap'
 import { prismaClient } from '@app/web/prismaClient'
-import { output } from '@app/cli/output'
-import { chunk } from 'lodash'
-import { UpsertCreateType } from '@app/migration/utils/UpsertCreateType'
 
 export const getLegacyUsers = () => migrationPrismaClient.main_user.findMany()
 

@@ -1,6 +1,6 @@
 import { executeMigration } from '@app/migration/executeMigration'
-import { prismaClient } from '@app/web/prismaClient'
 import { migrationPrismaClient } from '@app/migration/migrationPrismaClient'
+import { prismaClient } from '@app/web/prismaClient'
 
 const disconnect = () =>
   Promise.all([prismaClient.$disconnect(), migrationPrismaClient.$disconnect()])

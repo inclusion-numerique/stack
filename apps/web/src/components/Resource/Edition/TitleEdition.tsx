@@ -2,10 +2,10 @@
 
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import Button from '@codegouvfr/react-dsfr/Button'
-import { Resource } from '@app/web/server/resources'
+import { zodResolver } from '@hookform/resolvers/zod'
 import InputFormField from '@app/ui/components/Form/InputFormField'
+import { Resource } from '@app/web/server/resources'
 import {
   EditResourceTitle,
   editResourceTitleValidation,
@@ -14,9 +14,9 @@ import {
   resourceDescriptionMaxLength,
   resourceTitleMaxLength,
 } from '@app/web/server/rpc/resource/utils'
+import { ResourceModificationState } from '../enums/ResourceModificationState'
 import EditableContent from './EditableContent'
 import styles from './Edition.module.css'
-import { ResourceModificationState } from '../enums/ResourceModificationState'
 
 const titleInfo = (title: string | null) =>
   `${title?.length ?? 0}/${resourceTitleMaxLength} caractères`

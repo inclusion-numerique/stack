@@ -1,14 +1,14 @@
-import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
-import { prismaClient } from '@app/web/prismaClient'
 import { v4 } from 'uuid'
-import { createSlug } from '@app/web/utils/createSlug'
+import { prismaClient } from '@app/web/prismaClient'
+import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { createResourceValidation } from '@app/web/server/rpc/resource/createResource'
+import { createSlug } from '@app/web/utils/createSlug'
+import { getResourceSelect } from '../../resources'
+import { notFoundError } from '../trpcErrors'
 import {
   editResourceBaseValidation,
   editResourceTitleValidation,
 } from './editResource'
-import { notFoundError } from '../trpcErrors'
-import { getResourceSelect } from '../../resources'
 
 const createUniqueSlug = async (title: string) => {
   const slug = createSlug(title)

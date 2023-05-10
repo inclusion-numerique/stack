@@ -1,16 +1,16 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
-import { SessionUser } from '@app/web/auth/sessionUser'
+import { zodResolver } from '@hookform/resolvers/zod'
 import ResourceBaseRichRadio from '@app/web/app/@modal/(.)creer-une-ressource/ResourceBaseRichRadio'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import { Resource } from '@app/web/server/resources'
 import {
   EditResourceBase,
   editResourceBaseValidation,
 } from '@app/web/server/rpc/resource/editResource'
-import EditableContent from './EditableContent'
 import PublishedInInformation from '../PublishedInInformation'
+import EditableContent from './EditableContent'
 
 const { BaseModal, openBaseModal } = createModal({
   name: 'base',

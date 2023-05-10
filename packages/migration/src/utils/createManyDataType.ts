@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/migration-client'
+
 import Enumerable = Prisma.Enumerable
 import PrismaPromise = Prisma.PrismaPromise
 

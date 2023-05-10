@@ -1,26 +1,26 @@
-import { migrateUsers } from '@app/migration/modelMigrations/migrateUsers'
-import { prismaClient } from '@app/web/prismaClient'
+import {
+  createLegacyToNewIdHelper,
+  createLegacyToNewKeyHelper,
+} from '@app/migration/legacyToNewIdHelper'
 import {
   getExistingBases,
   getLegacyBases,
   migrateBase,
 } from '@app/migration/modelMigrations/migrateBase'
 import {
-  createLegacyToNewIdHelper,
-  createLegacyToNewKeyHelper,
-} from '@app/migration/legacyToNewIdHelper'
-import { computeSlugAndUpdateExistingSlugs } from '@app/migration/utils/computeSlugAndUpdateExistingSlugs'
+  getExistingImages,
+  getLegacyImages,
+  migrateImage,
+} from '@app/migration/modelMigrations/migrateImage'
 import {
   getExistingResourceSlugs,
   getLegacyResources,
   migrateResources,
 } from '@app/migration/modelMigrations/migrateResources'
-import {
-  getExistingImages,
-  getLegacyImages,
-  migrateImage,
-} from '@app/migration/modelMigrations/migrateImage'
 import { migrateUploads } from '@app/migration/modelMigrations/migrateUploads'
+import { migrateUsers } from '@app/migration/modelMigrations/migrateUsers'
+import { computeSlugAndUpdateExistingSlugs } from '@app/migration/utils/computeSlugAndUpdateExistingSlugs'
+import { prismaClient } from '@app/web/prismaClient'
 
 // eslint-disable-next-line no-console
 const output = console.log

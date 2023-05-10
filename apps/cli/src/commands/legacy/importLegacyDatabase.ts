@@ -1,14 +1,14 @@
-import { Command } from '@commander-js/extra-typings'
+import { exec as callbackExec } from 'node:child_process'
+import { createWriteStream, existsSync, mkdirSync } from 'node:fs'
+import { resolve as pathResolve } from 'node:path'
+import { promisify } from 'node:util'
 import {
   GetObjectCommand,
   ListObjectsV2Command,
   S3Client,
 } from '@aws-sdk/client-s3'
+import { Command } from '@commander-js/extra-typings'
 import { output } from '@app/cli/output'
-import { resolve as pathResolve } from 'node:path'
-import { createWriteStream, existsSync, mkdirSync } from 'node:fs'
-import { exec as callbackExec } from 'node:child_process'
-import { promisify } from 'node:util'
 
 const exec = promisify(callbackExec)
 

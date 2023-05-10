@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import { HeaderUserMenu } from '@app/web/components/HeaderUserMenu'
 import HeaderBackLink from '@app/web/components/HeaderBackLink'
+import { HeaderUserMenu } from '@app/web/components/HeaderUserMenu'
+import { PublicWebAppConfig } from '@app/web/webAppConfig'
 
 const Header = ({
   user,

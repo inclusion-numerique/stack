@@ -1,11 +1,11 @@
 import { cookies } from 'next/headers'
+import { cache } from 'react'
 import 'server-only'
 import {
   secureSessionCookie,
   sessionCookie,
 } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
-import { cache } from 'react'
 
 export const getSessionToken = (): string | null => {
   const allCookies = cookies()

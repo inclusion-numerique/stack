@@ -1,9 +1,9 @@
+import { mockReset } from 'jest-mock-extended'
 import {
   LegacyUser,
   transformUser,
 } from '@app/migration/modelMigrations/migrateUsers'
 import { createMockPrisma } from '@app/migration/test/createPrismaMock'
-import { mockReset } from 'jest-mock-extended'
 
 jest.mock('uuid', () => ({ v4: () => '0000' }))
 

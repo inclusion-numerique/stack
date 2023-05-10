@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import React, { useEffect, useRef, useState } from 'react'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import styles from './AddContentButton.module.css'
 

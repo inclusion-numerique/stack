@@ -1,7 +1,7 @@
-import React from 'react'
 import { notFound } from 'next/navigation'
-import Breadcrumbs from '@app/web/components/Breadcrumbs'
+import React from 'react'
 import { basePageQuery } from '@app/web/app/(public)/bases/[slug]/basePageQuery'
+import Breadcrumbs from '@app/web/components/Breadcrumbs'
 
 const BasePage = async ({ params }: { params: { slug: string } }) => {
   const base = await basePageQuery(decodeURI(params.slug))

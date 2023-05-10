@@ -1,5 +1,5 @@
-import React from 'react'
 import Link from 'next/link'
+import React from 'react'
 import { Resource, ResourceListItem } from '@app/web/server/resources'
 import styles from './PublishedInInformation.module.css'
 

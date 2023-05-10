@@ -1,10 +1,14 @@
 'use client'
 
-import LayoutModal from '@app/web/app/@modal/LayoutModal'
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { SessionUser } from '@app/web/auth/sessionUser'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import InputFormField from '@app/ui/components/Form/InputFormField'
+import ResourceBaseRichRadio from '@app/web/app/@modal/(.)creer-une-ressource/ResourceBaseRichRadio'
+import LayoutModal from '@app/web/app/@modal/LayoutModal'
+import { SessionUser } from '@app/web/auth/sessionUser'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import {
   CreateResource,
   createResourceValidation,
@@ -13,12 +17,8 @@ import {
   resourceDescriptionMaxLength,
   resourceTitleMaxLength,
 } from '@app/web/server/rpc/resource/utils'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { trpc } from '@app/web/trpc'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
-import InputFormField from '@app/ui/components/Form/InputFormField'
-import ResourceBaseRichRadio from '@app/web/app/@modal/(.)creer-une-ressource/ResourceBaseRichRadio'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
 
 const titleInfo = (title: string | null) =>
   `${title?.length ?? 0}/${resourceTitleMaxLength} caractères`

@@ -1,7 +1,7 @@
-import React from 'react'
 import classNames from 'classnames'
 import { Route } from 'next'
 import Link from 'next/link'
+import React from 'react'
 import styles from './IconLink.module.css'
 
 const IconLink = ({

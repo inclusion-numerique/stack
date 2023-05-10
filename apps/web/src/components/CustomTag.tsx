@@ -1,5 +1,5 @@
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
 import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
 import styles from './CustomTag.module.css'
 

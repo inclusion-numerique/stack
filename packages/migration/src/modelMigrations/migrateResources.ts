@@ -1,17 +1,17 @@
-import { migrationPrismaClient } from '@app/migration/migrationPrismaClient'
-import { FindManyItemType } from '@app/migration/utils/findManyItemType'
-import { LegacyToNewIdHelper } from '@app/migration/legacyToNewIdHelper'
-import { prismaClient } from '@app/web/prismaClient'
-import { v4 } from 'uuid'
-import {
-  computeSlugAndUpdateExistingSlugs,
-  SlugToLegacyIdMap,
-} from '@app/migration/utils/computeSlugAndUpdateExistingSlugs'
-import { transformContent } from '@app/migration/modelMigrations/transformContent'
-import { createSlug } from '@app/web/utils/createSlug'
-import { output } from '@app/cli/output'
 import { chunk } from 'lodash'
+import { v4 } from 'uuid'
+import { output } from '@app/cli/output'
+import { LegacyToNewIdHelper } from '@app/migration/legacyToNewIdHelper'
+import { migrationPrismaClient } from '@app/migration/migrationPrismaClient'
+import { transformContent } from '@app/migration/modelMigrations/transformContent'
 import { UpsertCreateType } from '@app/migration/utils/UpsertCreateType'
+import {
+  SlugToLegacyIdMap,
+  computeSlugAndUpdateExistingSlugs,
+} from '@app/migration/utils/computeSlugAndUpdateExistingSlugs'
+import { FindManyItemType } from '@app/migration/utils/findManyItemType'
+import { prismaClient } from '@app/web/prismaClient'
+import { createSlug } from '@app/web/utils/createSlug'
 
 export const getLegacyResources = () =>
   migrationPrismaClient.main_resource.findMany({

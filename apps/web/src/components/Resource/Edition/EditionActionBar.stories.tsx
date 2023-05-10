@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react'
-import EditionActionBar from './EditionActionBar'
-import { ResourcePublishedState } from '../enums/ResourcePublishedState'
 import { ResourceModificationState } from '../enums/ResourceModificationState'
+import { ResourcePublishedState } from '../enums/ResourcePublishedState'
+import EditionActionBar from './EditionActionBar'
 
 export default {
   title: 'Ressource/EditionActionBar',

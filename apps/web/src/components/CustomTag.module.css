@@ -1,6 +1,6 @@
 .green {
   color: var(--text-default-success);
-  background-color: var(--background-contrast-success)
+  background-color: var(--background-contrast-success);
 }
 
 .grey {

@@ -1,11 +1,11 @@
 import { Command, InvalidArgumentError } from '@commander-js/extra-typings'
 import { prismaClient } from '@app/web/prismaClient'
 import { Prisma } from '@prisma/client'
+import { bases } from './bases'
+import { resources } from './resources'
 import { users } from './users'
 
 import TransactionClient = Prisma.TransactionClient
-import { resources } from './resources'
-import { bases } from './bases'
 
 function myParseInt(value: string) {
   const parsedValue = Number.parseInt(value, 10)

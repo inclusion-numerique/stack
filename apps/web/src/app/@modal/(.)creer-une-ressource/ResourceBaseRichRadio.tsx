@@ -1,12 +1,12 @@
-import { SessionUser } from '@app/web/auth/sessionUser'
+import classNames from 'classnames'
+import React, { PropsWithChildren } from 'react'
 import { Control, Controller, FieldValues } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
-import classNames from 'classnames'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import {
   BasePrivacyTag,
   ProfilePrivacyTag,
 } from '@app/web/components/PrivacyTags'
-import React, { PropsWithChildren } from 'react'
 import styles from './ResourceBaseRichRadio.module.css'
 
 const ResourceBaseRichRadioElement = ({

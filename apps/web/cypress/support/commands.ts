@@ -1,13 +1,13 @@
 import '@testing-library/cypress/add-commands'
-import type { Tasks as CustomTasks } from './tasks'
-
-import Timeoutable = Cypress.Timeoutable
-import Loggable = Cypress.Loggable
 import type {
   CreateBaseInput,
   CreateResourceInput,
   CreateUserInput,
 } from '../e2e/authentication/user.tasks'
+import type { Tasks as CustomTasks } from './tasks'
+
+import Timeoutable = Cypress.Timeoutable
+import Loggable = Cypress.Loggable
 
 // ***********************************************
 // This example commands.ts shows you how to

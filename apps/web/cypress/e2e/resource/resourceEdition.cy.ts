@@ -1,7 +1,7 @@
 import {
   createTestBase,
-  createTestUser,
   createTestResource,
+  createTestUser,
 } from '../../support/helpers'
 
 const testDefaultState = () => {

@@ -1,12 +1,12 @@
-import React, { MouseEventHandler } from 'react'
 import classNames from 'classnames'
+import React, { MouseEventHandler } from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
-import styles from './EditionActionBar.module.css'
-import { ResourcePublishedState } from '../enums/ResourcePublishedState'
-import { ResourceModificationState } from '../enums/ResourceModificationState'
 import IconLink from '../../Icon/IconLink'
-import ResourcePublishedStateBadge from './ResourcePublishedStateBadge'
+import { ResourceModificationState } from '../enums/ResourceModificationState'
+import { ResourcePublishedState } from '../enums/ResourcePublishedState'
+import styles from './EditionActionBar.module.css'
 import ResourceModificationStateBadge from './ResourceModificationStateBadge'
+import ResourcePublishedStateBadge from './ResourcePublishedStateBadge'
 
 const EditionActionBar = ({
   publishedState,

@@ -1,6 +1,6 @@
 import React from 'react'
-import { ResourcePublishedState } from '../enums/ResourcePublishedState'
 import CustomTag, { TagColor } from '../../CustomTag'
+import { ResourcePublishedState } from '../enums/ResourcePublishedState'
 
 const informations: Record<
   ResourcePublishedState,

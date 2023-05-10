@@ -1,7 +1,7 @@
 import React, { ComponentProps } from 'react'
 import {
-  generateUploadedImageSourceSets,
   GenerateUploadedImageSourceSetsInput,
+  generateUploadedImageSourceSets,
 } from '@app/web/utils/responsiveImage'
 
 const ResponsiveUploadedImage = ({

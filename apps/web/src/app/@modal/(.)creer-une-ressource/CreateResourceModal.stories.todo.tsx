@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { testSessionUser } from '@app/web/test/testSessionUser'
 import CreateResourceModal from '@app/web/app/@modal/(.)creer-une-ressource/CreateResourceModal'
+import { testSessionUser } from '@app/web/test/testSessionUser'
 
 export default {
   title: 'CreateResourceModal',

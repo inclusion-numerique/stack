@@ -1,7 +1,7 @@
 import { v4 } from 'uuid'
-import type { Prisma } from '@prisma/client'
 import { LegacyToNewIdHelper } from '@app/migration/legacyToNewIdHelper'
 import { LegacyResource } from '@app/migration/modelMigrations/migrateResources'
+import type { Prisma } from '@prisma/client'
 
 type CreateContentData = Parameters<
   Prisma.TransactionClient['content']['create']

@@ -2,23 +2,23 @@
 
 import React, { useState } from 'react'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import { Resource } from '@app/web/server/resources'
-import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { Resource } from '@app/web/server/resources'
 import {
   EditResourceBase,
   EditResourceTitle,
 } from '@app/web/server/rpc/resource/editResource'
 import { resourceEditionValues } from '@app/web/server/rpc/resource/utils'
-import EditionActionBar from './EditionActionBar'
-import { ResourcePublishedState } from '../enums/ResourcePublishedState'
+import { trpc } from '@app/web/trpc'
 import Separator from '../../Separator/Separator'
 import { ResourceModificationState } from '../enums/ResourceModificationState'
-import EditableImage from './EditableImage'
+import { ResourcePublishedState } from '../enums/ResourcePublishedState'
 import AddContentButton from './AddContentButton'
-import TitleEdition from './TitleEdition'
-import styles from './Edition.module.css'
 import BaseEdition from './BaseEdition'
+import EditableImage from './EditableImage'
+import styles from './Edition.module.css'
+import EditionActionBar from './EditionActionBar'
+import TitleEdition from './TitleEdition'
 
 const hasChanged = (resource: Resource, updatedResource: Resource) =>
   Object.keys(resourceEditionValues).some(

@@ -1,10 +1,10 @@
-import { Resource } from '@app/web/server/resources'
 import React from 'react'
-import TextContent from '@app/web/components/Resource/View/TextContent'
-import SectionTitleContent from '@app/web/components/Resource/View/SectionTitleContent'
 import Alert from '@codegouvfr/react-dsfr/Alert'
 import ResourcesViewsAndMetadata from '@app/web/components/Resource/View/ResourcesViewsAndMetadata'
+import SectionTitleContent from '@app/web/components/Resource/View/SectionTitleContent'
+import TextContent from '@app/web/components/Resource/View/TextContent'
 import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
+import { Resource } from '@app/web/server/resources'
 import styles from './ResourceContents.module.css'
 
 const ResourceContents = ({

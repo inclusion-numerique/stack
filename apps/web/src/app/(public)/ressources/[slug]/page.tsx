@@ -1,10 +1,10 @@
-import React from 'react'
 import { notFound } from 'next/navigation'
-import { getResource } from '@app/web/server/resources'
+import React from 'react'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import PublishedInInformation from '@app/web/components/Resource/PublishedInInformation'
-import ResourceNavigation from '@app/web/components/Resource/View/ResourceNavigation'
 import ResourceContents from '@app/web/components/Resource/View/ResourceContents'
+import ResourceNavigation from '@app/web/components/Resource/View/ResourceNavigation'
+import { getResource } from '@app/web/server/resources'
 
 const RessourcePage = async ({ params }: { params: { slug: string } }) => {
   const resource = await getResource(decodeURI(params.slug))
