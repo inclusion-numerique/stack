@@ -65,6 +65,10 @@ export const transformResource = ({
 }) => {
   const legacyId = Number(legacyResource.id)
 
+  if (!legacyResource.creator_id) {
+    return { error: 'No creator', legacyResource }
+  }
+
   const data = {
     title: legacyResource.title,
     slug,
@@ -137,21 +141,41 @@ export const migrateResources = async ({
 }) => {
   const legacyResources = await getLegacyResources()
   output(`- Found ${legacyResources.length} resources to migrate`)
-  const resourcesOperationsData = legacyResources.map((legacyResource) => {
-    const slug = computeSlugAndUpdateExistingSlugs(
-      legacyResource,
-      existingResourceSlugs,
-    )
-    return transformResource({
-      slug,
-      legacyResource,
-      userIdFromLegacyId,
-      baseIdFromLegacyId,
-      imageIdFromLegacyId,
-      uploadKeyFromLegacyKey,
+  const resourcesOperationsData = legacyResources
+    .map((legacyResource) => {
+      const slug = computeSlugAndUpdateExistingSlugs(
+        legacyResource,
+        existingResourceSlugs,
+      )
+      const resourceOperationData = transformResource({
+        slug,
+        legacyResource,
+        userIdFromLegacyId,
+        baseIdFromLegacyId,
+        imageIdFromLegacyId,
+        uploadKeyFromLegacyKey,
+      })
+
+      if (resourceOperationData.error) {
+        output(
+          `-- ⚠️ Could not migrate resource ${legacyResource.id}: ${resourceOperationData.error}`,
+          legacyResource,
+        )
+      }
+      return resourceOperationData
     })
-  })
-  const chunkSize = 200
+    .filter(
+      (
+        data,
+      ): data is Exclude<
+        ReturnType<typeof transformResource>,
+        {
+          error: string
+          legacyResource: LegacyResource
+        }
+      > => !data.error,
+    )
+  const chunkSize = 50
   let migratedResourceCount = 0
   let migratedContentCount = 0
 
