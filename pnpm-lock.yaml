@@ -76,7 +76,7 @@ importers:
         specifier: ^4.14.194
         version: 4.14.194
       '@types/node':
-        specifier: ^18.16.7
+        specifier: ^18.16.6
         version: 18.16.7
       '@types/slug':
         specifier: ^5.0.3
@@ -313,7 +313,7 @@ importers:
         specifier: ^3.17.4
         version: 3.17.4
       undici:
-        specifier: ^5.22.0
+        specifier: ^5.22.1
         version: 5.22.1
       usehooks-ts:
         specifier: ^2.9.1
@@ -447,7 +447,7 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
       '@types/node':
-        specifier: ^18.16.7
+        specifier: ^18.16.6
         version: 18.16.7
       eslint:
         specifier: ^8.40.0
@@ -481,7 +481,7 @@ importers:
         version: 3.3.6
     devDependencies:
       '@types/node':
-        specifier: ^18.16.7
+        specifier: ^18.16.6
         version: 18.16.7
       eslint:
         specifier: ^8.40.0
