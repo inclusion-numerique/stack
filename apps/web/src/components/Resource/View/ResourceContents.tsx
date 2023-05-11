@@ -1,34 +1,13 @@
 import React from 'react'
-import Alert from '@codegouvfr/react-dsfr/Alert'
 import Badge from '@codegouvfr/react-dsfr/Badge'
 import Button from '@codegouvfr/react-dsfr/Button'
+import { getContent } from '@app/web/components/Resource/Contents/ViewContents'
 import ResourcesViewsAndMetadata from '@app/web/components/Resource/View/ResourcesViewsAndMetadata'
-import SectionTitleContent from '@app/web/components/Resource/View/SectionTitleContent'
-import TextContent from '@app/web/components/Resource/View/TextContent'
 import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
-import { Resource, ResourceContent } from '@app/web/server/resources'
+import { Resource } from '@app/web/server/resources'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import styles from './ResourceContents.module.css'
 import ResourceSideMenu from './ResourceSideMenu'
-
-const getContent = (content: ResourceContent) => {
-  switch (content.type) {
-    case 'Text': {
-      return <TextContent content={content} />
-    }
-    case 'SectionTitle': {
-      return <SectionTitleContent content={content} />
-    }
-    default: {
-      return (
-        <Alert
-          severity="info"
-          title={`Type de contenu ${content.type} en cours d'implémentation`}
-        />
-      )
-    }
-  }
-}
 
 const ResourceContents = ({
   resource: { title, description, contents, image, created, updated },
@@ -96,8 +75,10 @@ const ResourceContents = ({
           key={content.id}
           ref={contentRefs.current[index]}
           id={`section-${index + 1}`}
+          className={styles.content}
         >
           {getContent(content)}
+          <hr className="fr-mt-5w fr-mb-2w" />
         </div>
       ))}
     </>

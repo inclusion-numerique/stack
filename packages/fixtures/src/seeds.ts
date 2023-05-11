@@ -3,6 +3,7 @@ import { prismaClient } from '@app/web/prismaClient'
 import { Prisma } from '@prisma/client'
 import { bases, randomBases } from './bases'
 import { randomResources, resources } from './resources'
+import { randomResourcesContents } from './resourcesContents'
 import { randomUsers, users } from './users'
 
 import TransactionClient = Prisma.TransactionClient
@@ -42,6 +43,9 @@ const seed = async (transaction: TransactionClient, random?: number) => {
 
     const newResources = await randomResources(random)
     await transaction.resource.createMany({ data: newResources })
+
+    const newContents = await randomResourcesContents(random)
+    await transaction.content.createMany({ data: newContents })
   } else {
     await Promise.all(
       users.map((user) =>

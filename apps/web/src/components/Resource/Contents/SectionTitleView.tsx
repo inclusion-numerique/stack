@@ -1,10 +1,15 @@
 import { ResourceContent } from '@app/web/server/resources'
 import { createSlug } from '@app/web/utils/createSlug'
 
-const SectionTitleContent = ({
+const SectionTitleView = ({
   content: { title },
 }: {
   content: Pick<ResourceContent, 'title'>
-}) => (title ? <h1 id={createSlug(title)}>{title}</h1> : null)
+}) =>
+  title ? (
+    <h2 id={createSlug(title)} className="fr-mb-0">
+      {title}
+    </h2>
+  ) : null
 
-export default SectionTitleContent
+export default SectionTitleView
