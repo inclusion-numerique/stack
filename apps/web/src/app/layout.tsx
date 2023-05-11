@@ -7,7 +7,6 @@ import { EnvInformation } from '@app/web/app/EnvInformation'
 import { Matomo } from '@app/web/app/Matomo'
 import { PreloadResources } from '@app/web/app/PreloadResources'
 import '@app/web/app/app.css'
-import { getServerBaseUrl } from '@app/web/utils/baseUrl'
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
 
 declare module '@codegouvfr/react-dsfr/link' {
@@ -20,8 +19,7 @@ setLink({
   Link,
 })
 
-export const generateMetadata = (): Metadata => ({
-  metadataBase: new URL(getServerBaseUrl()),
+export const metadata: Metadata = {
   title: PublicWebAppConfig.projectTitle,
   themeColor: '#000091',
   icons: {
@@ -36,7 +34,7 @@ export const generateMetadata = (): Metadata => ({
   },
   description: PublicWebAppConfig.projectTitle,
   manifest: '/favicon/manifest.webmanifest',
-})
+}
 
 const RootLayout = ({ children }: PropsWithChildren) => {
   // Do we want to disable SSG for CSFR on this website ?

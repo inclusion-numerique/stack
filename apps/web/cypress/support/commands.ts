@@ -1,4 +1,5 @@
 import '@testing-library/cypress/add-commands'
+import type { CreateUserInput } from '../e2e/authentication/user.tasks'
 import type { Tasks as CustomTasks } from './tasks'
 
 import Timeoutable = Cypress.Timeoutable
@@ -42,28 +43,32 @@ Cypress.Commands.add(
   ) => cy.task(task, args, options),
 )
 
-Cypress.Commands.add('signin', ({ email }: { email: string }) => {
+Cypress.Commands.add('signin', ({ email }: { email: string }) =>
   cy.execute('createSession', { email }).then((session) => {
-    console.log('SESSION CREATED', session)
     cy.setCookie('next-auth.session-token', session.sessionToken)
-  })
-})
-Cypress.Commands.add(
-  'createUserAndSignin',
-  (user: {
-    email: string
-    firstName: string
-    lastName: string
-    name: string
-  }) => {
-    cy.task('createUser', user)
-    cy.signin(user)
-  },
+    return cy.wrap(session.sessionToken)
+  }),
 )
+Cypress.Commands.add('createUserAndSignin', (user: CreateUserInput) => {
+  cy.task('createUser', user)
+  return cy.signin(user)
+})
+Cypress.Commands.add('createUser', (user: CreateUserInput) => {
+  cy.task('createUser', user)
+})
 
 Cypress.Commands.add('dsfrShouldBeStarted', () => {
   cy.get('html').should('have.attr', 'data-fr-js', 'true')
 })
+
+Cypress.Commands.add('dsfrModalsShouldBeBound', () => {
+  cy.get('dialog.fr-modal').each((modal) =>
+    cy.wrap(modal).should('have.attr', 'data-fr-js-modal', 'true'),
+  )
+})
+Cypress.Commands.add('testId', (testId: string) =>
+  cy.get(`[data-testid="${testId}"]`),
+)
 
 //
 declare global {
@@ -74,14 +79,12 @@ declare global {
         args: Parameters<CustomTasks[T]>[0],
       ): Chainable<Awaited<ReturnType<CustomTasks[T]>>>
 
-      createUserAndSignin(user: {
-        email: string
-        firstName: string
-        lastName: string
-        name: string
-      }): Chainable<void>
-      signin(user: { email: string }): Chainable<void>
+      createUserAndSignin(user: CreateUserInput): Chainable<string>
+      createUser(user: CreateUserInput): Chainable<void>
+      signin(user: { email: string }): Chainable<string>
       dsfrShouldBeStarted(): Chainable<void>
+      dsfrModalsShouldBeBound(): Chainable<void>
+      testId(testId: string): Chainable<JQuery<HTMLElement>>
 
       //       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
       //       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
