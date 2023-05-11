@@ -15,7 +15,7 @@ const objectFormValidation = z
   .strict()
 type ObjectFormData = z.infer<typeof objectFormValidation>
 
-export const Template = ({
+const Template = ({
   path,
   ...args
 }: Omit<InputFormFieldProps<ObjectFormData>, 'control'>) => {
