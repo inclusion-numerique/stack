@@ -134,7 +134,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.visit('localhost:1080')
     cy.get('.email-list li a').first().click()
 
-    cy.get('.email-meta .subject').should('contain', 'Connexion à Les Bases')
+    cy.get('.email-meta .subject').should('contain', 'Connexion à Stack')
 
     // Cypress does not work well with iframes, we go to the html source of the email that is
     // included in the iframe preview of maildev ui
@@ -148,7 +148,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
 
     cy.log('Check mail contents')
     // We should not have the email html version in full
-    cy.contains('Connexion à Les Bases')
+    cy.contains('Connexion à Stack')
     cy.contains('Se connecter').click()
 
     // With a valid magic link we should be automatically redirected to homepage, logged in
