@@ -2,8 +2,8 @@
 
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createModal } from '@app/ui/components/overrides/Modal'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import ResourceBaseRichRadio from '@app/web/components/Resource/ResourceBaseRichRadio'
 import { Resource } from '@app/web/server/resources'
