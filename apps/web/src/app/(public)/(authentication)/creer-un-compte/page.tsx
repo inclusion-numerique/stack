@@ -7,13 +7,15 @@ import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { getServerUrl } from '@app/web/utils/baseUrl'
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
 
+export const revalidate = 0
 const SigninPage = async ({
-  searchParams: { error, email, raison } = {},
+  searchParams: { error, email, raison, suivant } = {},
 }: {
   searchParams?: {
     error?: string
     raison?: 'connexion-sans-compte'
     email?: string
+    suivant?: Route
   }
 }) => {
   const user = await getSessionUser()
@@ -21,8 +23,7 @@ const SigninPage = async ({
     redirect(getServerUrl('/'))
   }
 
-  // There will be different callback url e.g. for directly creating a resource
-  const callbackUrl: Route = '/'
+  const callbackUrl: Route = suivant ?? '/'
 
   return (
     <>

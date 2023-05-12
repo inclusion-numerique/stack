@@ -14,7 +14,7 @@
     "chromatic": "pnpm with-env chromatic --exit-zero-on-changes --exit-once-uploaded"
   },
   "engines": {
-    "node": "^18.15"
+    "node": "^18.16"
   },
   "dependencies": {
     "@storybook/addon-docs": "^7.0.10",
@@ -22,6 +22,7 @@
     "@storybook/addon-interactions": "^7.0.10",
     "@storybook/addon-jest": "^7.0.10",
     "@storybook/addon-links": "^7.0.10",
+    "@storybook/addon-viewport": "^7.0.10",
     "@storybook/addons": "^7.0.10",
     "@storybook/blocks": "^7.0.10",
     "@storybook/instrumenter": "^7.0.10",
@@ -38,7 +39,7 @@
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^7.0.10",
-    "@types/node": "^18.16.3",
+    "@types/node": "^18.16.6",
     "@types/react": "^18.2.6",
     "@types/react-dom": "^18.2.4",
     "@types/testing-library__jest-dom": "^5.14.5",

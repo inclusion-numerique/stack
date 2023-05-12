@@ -6,27 +6,28 @@ orbs:
 executors:
   node:
     docker:
-      - image: cimg/node:18.15.0
+      - image: cimg/node:18.16.0
         environment:
           TZ: 'UTC'
 
   node-postgres:
     docker:
-      - image: cimg/node:18.15.0
+      - image: cimg/node:18.16.0
         environment:
           TZ: 'UTC'
+          CI_PG_ADMIN_URL: postgresql://postgres@localhost
           CI_DATABASE_URL: postgresql://postgres@localhost/test
       - image: cimg/postgres:14.0
         environment:
           POSTGRES_USER: postgres
   node-browsers:
     docker:
-      - image: cimg/node:18.15.0-browsers
+      - image: cimg/node:18.16.0-browsers
         environment:
           TZ: 'UTC'
   node-e2e:
     docker:
-      - image: cimg/node:18.15.0-browsers
+      - image: cimg/node:18.16.0-browsers
         environment:
           TZ: 'UTC'
           CI_DATABASE_URL: postgresql://postgres@localhost/test
@@ -34,9 +35,6 @@ executors:
         environment:
           MAILDEV_INCOMING_USER: mailuser
           MAILDEV_INCOMING_PASS: mailpassword
-#        ports:
-#          - "1080:1080"
-#          - "1025:1025"
       - image: cimg/postgres:14.0
         environment:
           POSTGRES_USER: postgres
@@ -44,7 +42,7 @@ executors:
 parameters:
   cache_version:
     type: string
-    default: '2023-04-21-02'
+    default: '2023-05-09-02'
   virtual_store_dir:
     type: string
     default: './.pnpm'
@@ -68,6 +66,10 @@ parameters:
     ## project_stack_deployment
     default: "web_app_deployment"
   # Name of the environment to scrap
+  web_app_docker_registry:
+    # This is redundant with .env.dist but needed as jobs are way simpler to configure with this parameter
+    type: string
+    default: 'rg.fr-par.scw.cloud/stack-web-app'
   preview_deletion_branch:
     type: string
     default: ""
@@ -79,7 +81,6 @@ workflows:
       equal: [ web_app_deployment, << pipeline.parameters.trigger_workflow >> ]
     jobs:
       - prepare_workspace_dependencies
-      - prepare_web_prod_dependencies
       - lint:
           requires:
             - prepare_workspace_dependencies
@@ -92,7 +93,6 @@ workflows:
       - build_web:
           requires:
             - prepare_workspace_dependencies
-            - prepare_web_prod_dependencies
 
       - test_web_components:
           requires:
@@ -104,11 +104,12 @@ workflows:
 
       - test_web_e2e:
           requires:
-            - build_web
+            - prepare_workspace_dependencies
 
       - deploy_web:
           requires:
             - lint
+            - build_web
             - test_packages
             - test_web
             - test_web_components
@@ -177,6 +178,7 @@ jobs:
             - << pipeline.parameters.virtual_store_dir >>
             - ./node_modules
             - ./apps/web/node_modules
+            - ./apps/web/public/dsfr
             - ./apps/cli/node_modules
             - ./packages/cdk/node_modules
             - ./packages/config/node_modules
@@ -185,32 +187,12 @@ jobs:
             - ./packages/storybook/node_modules
             - ./packages/test/node_modules
             - ./packages/ui/node_modules
+            - ./packages/ui/public/dsfr
             - ./packages/fixtures/node_modules
       - save_cache:
           key: << pipeline.parameters.cache_version >>-cypress-{{ checksum "<< pipeline.parameters.lockfile >>" }}
           paths:
             - /home/circleci/.cache/Cypress
-
-  prepare_web_prod_dependencies:
-    executor: node
-    resource_class: large
-    steps:
-      - checkout
-      - skip/skip_unchanged:
-          paths: pnpm-lock.yaml
-      - install_pnpm
-      - run:
-          name: 'Install dependencies'
-          command: |
-            pnpm install -F @app/web --prod --frozen-lockfile
-      - run:
-          name: 'Monorepo manypkg check'
-          command: pnpm manypkg check
-      - save_cache:
-          key: << pipeline.parameters.cache_version >>-web-prod-{{ checksum "<< pipeline.parameters.lockfile >>" }}
-          paths:
-            - ./node_modules
-            - ./apps/web/node_modules
 
   lint:
     executor: node
@@ -253,6 +235,9 @@ jobs:
       - install_dependencies
       - create_dotenv_file
       - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @app/web prisma generate
+      - run:
           name: 'Test all packages except @app/web'
           command: pnpm --silent -F '!@app/web' test
 
@@ -264,11 +249,14 @@ jobs:
       - install_dependencies
       - create_dotenv_file
       - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @app/web prisma generate
+      - run:
           name: 'Test @app/web'
           command: pnpm --silent -F @app/web test
 
   build_web:
-    executor: node-postgres
+    executor: node
     resource_class: large
     steps:
       - checkout
@@ -280,42 +268,21 @@ jobs:
           name: 'Prisma generate'
           command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
-      - add_dotenv_vars_to_bash_env
       - setup_docker_web_env
-      - setup_next_public_env
       - run:
-          name: 'Install DSFR'
-          command: pnpm --silent -F @app/web setup:dsfr
-      - run:
-          name: 'Create CI database schema'
+          name: "Add NEXT_PUBLIC_* env to .env"
           command: |
-            DATABASE_URL=$CI_DATABASE_URL pnpm --silent -F @app/web prisma db push --skip-generate --accept-data-loss
+            pnpm --silent cli dotenv:add-next-public $NAMESPACE
       - restore_cache:
           keys:
             - << pipeline.parameters.cache_version >>-next-{{ checksum "<< pipeline.parameters.lockfile >>" }}
       - run:
           name: 'Build next app'
-          command: DATABASE_URL=$CI_DATABASE_URL pnpm --silent -F @app/web build
+          command: pnpm --silent -F @app/web build
       - save_cache:
           key: << pipeline.parameters.cache_version >>-next-{{ checksum "<< pipeline.parameters.lockfile >>" }}
           paths:
             - ./apps/web/.next/cache
-      - run:
-          name: 'Clear dependencies to install only prod dependencies'
-          command: |
-            rm -rf node_modules
-            rm -rf apps/web/node_modules
-      - restore_cache:
-          keys:
-            - << pipeline.parameters.cache_version >>-web-prod-{{ checksum "<< pipeline.parameters.lockfile >>" }}
-      - run:
-          name: 'Re-generate Prisma after cleaning dependencies'
-          command: pnpm --silent -F @app/web prisma generate
-      - run:
-          name: 'Cleanup build'
-          command: |
-            # standalone not needed for plain build
-            rm -rf apps/web/.next/standalone
       - run:
           name: 'Build docker image'
           command: DOCKER_BUILDKIT=1 docker build --progress=plain -t $IMAGE_BUILD_TAG -f docker/web/Dockerfile .
@@ -327,7 +294,8 @@ jobs:
       - save_cache:
           key: << pipeline.id >>-web-build
           paths:
-            - ./apps/web/.next
+            - ./apps/web/.next/standalone
+            - ./apps/web/.next/static
             - ./apps/web/public
 
   chromatic:
@@ -341,9 +309,6 @@ jobs:
           name: 'Prisma generate'
           command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
-      - run:
-          name: 'Setup DSFR'
-          command: pnpm --silent -F @app/web setup:dsfr
       - run:
           name: 'Build storybook and deploy on chromatic'
           command: pnpm --silent -F @app/storybook chromatic
@@ -364,10 +329,6 @@ jobs:
           name: 'Prisma generate'
           command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
-      - add_dotenv_vars_to_bash_env
-      - run:
-          name: 'Install DSFR'
-          command: pnpm --silent -F @app/web setup:dsfr
       - run:
           name: 'Run Cypress component testing'
           command: pnpm --silent -F @app/web cy run --component --record --parallel --group web/components
@@ -385,10 +346,6 @@ jobs:
             - << pipeline.parameters.cache_version >>-cypress-{{ checksum "<< pipeline.parameters.lockfile >>" }}
       - create_dotenv_file
       - add_secrets_to_dotenv_file
-      - add_dotenv_vars_to_bash_env
-      - run:
-          name: 'Install DSFR'
-          command: pnpm --silent -F @app/ui setup:dsfr
       - run:
           name: 'Run Cypress component testing'
           command: pnpm --silent -F @app/ui cy run --component --record --parallel --group ui/components
@@ -396,7 +353,7 @@ jobs:
   test_web_e2e:
     executor: node-e2e
     resource_class: large
-    parallelism: 1
+    parallelism: 2
     steps:
       - checkout
       - install_pnpm
@@ -405,10 +362,22 @@ jobs:
           keys:
             - << pipeline.parameters.cache_version >>-cypress-{{ checksum "<< pipeline.parameters.lockfile >>" }}
       - create_dotenv_file
+      - add_secrets_to_dotenv_file
       - run:
           name: 'Prisma generate'
           command: pnpm --silent -F @app/web prisma generate
-      - add_secrets_to_dotenv_file
+      - setup_docker_web_env
+      - run:
+          name: "Add NEXT_PUBLIC_* env to .env"
+          command: |
+            pnpm --silent cli dotenv:add-next-public --local $NAMESPACE
+      - restore_cache:
+          keys:
+            - << pipeline.parameters.cache_version >>-next-{{ checksum "<< pipeline.parameters.lockfile >>" }}
+      - run:
+          # We build in the e2e job, using --local NEXT_PUBLIC_* env variables as they are inlined at compile time
+          name: 'Build next app'
+          command: pnpm --silent -F @app/web build
       - run:
           name: 'Add e2e vars to .env'
           command: |
@@ -418,8 +387,6 @@ jobs:
             echo "SMTP_USERNAME=mailuser" >> .env
             echo "SMTP_PASSWORD=mailpassword" >> .env
             echo "SMTP_SERVER=localhost" >> .env
-            echo 'NEXT_PUBLIC_INCLUSION_CONNECT_ISSUER=$INCLUSION_CONNECT_LOCAL_ISSUER' >> .env
-            echo 'NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID=$INCLUSION_CONNECT_LOCAL_CLIENT_ID' >> .env
             echo 'INCLUSION_CONNECT_CLIENT_SECRET=$INCLUSION_CONNECT_LOCAL_CLIENT_SECRET' >> .env
       - run:
           name: 'Create CI database schema'
@@ -427,11 +394,17 @@ jobs:
             pnpm --silent -F @app/web prisma db push --skip-generate --accept-data-loss
       - restore_cache:
           key: << pipeline.id >>-web-build
+      - add_dotenv_vars_to_bash_env
       - run:
-          name: Running next server
+          name: Isolate built standalone application to correctly e2e test node_modules bundling and run
           background: true
+          # Reproducing Dockerfile COPY instructions to isolate built standalone application from project node_modules
           command: |
-            pnpm --silent -F @app/web with-env next start
+            mv apps/web/.next/standalone ~/dist
+            mv apps/web/public ~/dist/apps/web/public
+            mv apps/web/.next/static ~/dist/apps/web/.next/static
+            cd ~/dist
+            node apps/web/server.js
       - run:
           name: 'Run cypress e2e tests'
           command: |
@@ -448,7 +421,6 @@ jobs:
           name: 'Prisma generate'
           command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
-      - add_dotenv_vars_to_bash_env
       - setup_docker_web_env
       - run:
           name: 'Setup and export database password'
@@ -494,6 +466,20 @@ jobs:
       - run:
           name: Set deployment status to data loading
           command: pnpm --silent cli github:deployment:update $DEPLOYMENT_ID in_progress -d 'Loading data' -l https://app.circleci.com/pipelines/workflows/$CIRCLE_WORKFLOW_ID
+      - when:
+          condition:
+            and:
+              - not:
+                  equal: [ main, << pipeline.git.branch >> ]
+          steps:
+            - run:
+                name: 'Load fixtures on preview envs'
+                command: |
+                  pnpm --silent -F @app/fixtures load
+      - run:
+          name: 'Execute migration from legacy data'
+          command: |
+            pnpm --silent -F @app/migration execute
       - run:
           name: Check that deployed container status is ok
           command: |
@@ -590,14 +576,14 @@ commands:
     steps:
       - run:
           name: 'Install pnpm'
-          command: sudo corepack enable && corepack prepare pnpm@latest --activate
+          command: sudo npm install -g pnpm
 
   install_terraform:
     steps:
       - run:
           name: 'Install Terraform'
           command: |
-            wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+            wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
             echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
             sudo apt update && sudo apt install terraform
 
@@ -622,13 +608,6 @@ commands:
           command: |
             SCW_ACCESS_KEY=$CI_SCW_ACCESS_KEY SCW_SECRET_KEY=$CI_SCW_SECRET_KEY pnpm --silent cli dotenv:from-secrets
 
-  setup_next_public_env:
-    steps:
-      - run:
-          name: "Add NEXT_PUBLIC_* env to .env"
-          command: |
-            pnpm --silent cli dotenv:add-next-public $NAMESPACE
-
   add_dotenv_vars_to_bash_env:
     steps:
       - run:
@@ -641,7 +620,7 @@ commands:
       - run:
           name: "Set docker env vars"
           command: |
-            echo "export WEB_APP_DOCKER_REGISTRY='$WEB_APP_DOCKER_REGISTRY'" >> ${BASH_ENV}
+            echo "export WEB_APP_DOCKER_REGISTRY='<< pipeline.parameters.web_app_docker_registry >>'" >> ${BASH_ENV}
             echo "export BRANCH='<< pipeline.git.branch >>'" >> ${BASH_ENV}
             echo "export NAMESPACE=$(echo '<< pipeline.git.branch >>' | sed -e 's/\//-/g')" >> ${BASH_ENV}
             echo "export IMAGE_NAME=$(echo 'stack-web-<< pipeline.git.branch >>' | sed -e 's/\//-/g')" >> ${BASH_ENV}

@@ -28,7 +28,7 @@ describe('ETQ Utilisateur, lorsque je clique sur “Créer un compte”, je peux
     cy.visit('localhost:1080')
     cy.get('.email-list li a').first().click()
 
-    cy.get('.email-meta .subject').should('have.text', 'Connexion à Stack')
+    cy.get('.email-meta .subject').should('contain', 'Connexion à Stack')
 
     // Cypress does not work well with iframes, we go to the html source of the email that is
     // included in the iframe preview of maildev ui

@@ -22,11 +22,11 @@
       "@app/config/*": ["packages/config/src/*"],
       "@app/emails/*": ["packages/emails/src/*"],
       "@app/lint/*": ["packages/lint/src/*"],
+      "@app/fixtures/*": ["packages/fixtures/src/*"],
       "@app/scaleway/*": ["packages/cdk/.gen/providers/scaleway/*"],
       "@app/storybook/*": ["packages/storybook/src/*"],
       "@app/ui/*": ["packages/ui/src/*"],
       "@app/test/*": ["packages/test/src/*"],
-      "@app/fixtures/*": ["packages/fixtures/src/*"],
     },
     "typeRoots": [
       "./node_modules/@types",

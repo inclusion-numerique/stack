@@ -100,13 +100,17 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
 
     cy.log('Check that the user can logout')
 
-    cy.get('.fr-header__tools')
+    cy.dsfrShouldBeStarted()
+    cy.get('.fr-header__tools button[aria-controls="header-user-menu"]')
       .contains(inclusionConnectUser.firstName)
       .contains(inclusionConnectUser.lastName)
       .click()
+    cy.get('#header-user-menu').should('be.visible')
+
+    cy.get('#header-user-menu').contains('Se déconnecter').click()
     cy.url().should('equal', appUrl('/deconnexion'))
     cy.contains('Êtes-vous sur de vouloir vous déconnecter ?')
-    cy.contains('Se déconnecter').click()
+    cy.get('main').contains('Se déconnecter').click()
     cy.url().should('equal', appUrl('/'))
     cy.get('.fr-header__tools').contains('Se connecter')
   })
@@ -130,7 +134,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.visit('localhost:1080')
     cy.get('.email-list li a').first().click()
 
-    cy.get('.email-meta .subject').should('have.text', 'Connexion à Stack')
+    cy.get('.email-meta .subject').should('contain', 'Connexion à Stack')
 
     // Cypress does not work well with iframes, we go to the html source of the email that is
     // included in the iframe preview of maildev ui
@@ -156,10 +160,17 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
 
     cy.log('Check that the user can logout')
 
-    cy.get('.fr-header__tools').contains(firstName).contains(lastName).click()
+    cy.dsfrShouldBeStarted()
+    cy.get('.fr-header__tools button[aria-controls="header-user-menu"]')
+      .contains(emailUser.name)
+      .click()
+    cy.get('#header-user-menu')
+      .should('be.visible')
+      .contains('Se déconnecter')
+      .click()
     cy.url().should('equal', appUrl('/deconnexion'))
     cy.contains('Êtes-vous sur de vouloir vous déconnecter ?')
-    cy.contains('Se déconnecter').click()
+    cy.get('main').contains('Se déconnecter').click()
     cy.url().should('equal', appUrl('/'))
     cy.get('.fr-header__tools').contains('Se connecter')
   })

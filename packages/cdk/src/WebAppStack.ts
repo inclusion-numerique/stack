@@ -38,10 +38,6 @@ export const webAppStackVariables = [
   'WEB_CONTAINER_IMAGE',
   'SCW_DEFAULT_ORGANIZATION_ID',
   'SCW_PROJECT_ID',
-  'INCLUSION_CONNECT_PREVIEW_ISSUER',
-  'INCLUSION_CONNECT_MAIN_ISSUER',
-  'INCLUSION_CONNECT_PREVIEW_CLIENT_ID',
-  'INCLUSION_CONNECT_MAIN_CLIENT_ID',
 ] as const
 export const webAppStackSensitiveVariables = [
   'SCW_ACCESS_KEY',
@@ -132,8 +128,8 @@ export class WebAppStack extends TerraformStack {
       dependsOn: [database, rdbDatabaseUser],
     })
 
-    const documentsBucket = new ObjectBucket(this, 'documents', {
-      name: namespaced(`${projectSlug}-documents`),
+    const uploadsBucket = new ObjectBucket(this, 'uploads', {
+      name: namespaced(`${projectSlug}-uploads`),
       corsRule: [
         {
           allowedHeaders: ['*'],
@@ -145,8 +141,8 @@ export class WebAppStack extends TerraformStack {
       ],
     })
 
-    output('documentsBucketName', documentsBucket.name)
-    output('documentsBucketEndpoint', documentsBucket.endpoint)
+    output('uploadsBucketName', uploadsBucket.name)
+    output('uploadsBucketEndpoint', uploadsBucket.endpoint)
 
     const containerNamespace = new DataScalewayContainerNamespace(
       this,
@@ -185,19 +181,12 @@ export class WebAppStack extends TerraformStack {
         EMAIL_FROM_ADDRESS: emailFromAddress,
         EMAIL_FROM_NAME: emailFromName,
         STACK_WEB_IMAGE: environmentVariables.WEB_CONTAINER_IMAGE.value,
-        DOCUMENTS_BUCKET: documentsBucket.name,
+        UPLOADS_BUCKET: uploadsBucket.name,
         BASE_URL: hostname,
         BRANCH: branch,
         NAMESPACE: namespace,
         // This env variable is reserved at the level of container namespace. We inject it here even if its shared.
         SCW_DEFAULT_REGION: region,
-        NEXT_PUBLIC_SENTRY_ENVIRONMENT: namespace,
-        NEXT_PUBLIC_INCLUSION_CONNECT_ISSUER: isMain
-          ? environmentVariables.INCLUSION_CONNECT_MAIN_ISSUER.value
-          : environmentVariables.INCLUSION_CONNECT_PREVIEW_ISSUER.value,
-        NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID: isMain
-          ? environmentVariables.INCLUSION_CONNECT_MAIN_CLIENT_ID.value
-          : environmentVariables.INCLUSION_CONNECT_PREVIEW_CLIENT_ID.value,
       },
       secretEnvironmentVariables: {
         DATABASE_URL: databaseUrl,

@@ -8,19 +8,21 @@
     "test": "jest --passWithNoTests",
     "tsc": "tsc --noEmit",
     "postinstall": "pnpm --silent setup:dsfr",
+    "with-env": "dotenv -e ../../.env --",
     "setup:dsfr": "FROM=\"./node_modules/@gouvfr/dsfr/dist\"; TO=\"public/dsfr\"; if [ ! -d \"$FROM\" ]; then FROM=\"../../node_modules/@gouvfr/dsfr/dist\"; fi; mkdir -p $TO/utility && cp $FROM/dsfr.module.min.js $TO/ && cp $FROM/dsfr.module.min.js.map $TO/ && cp $FROM/dsfr.nomodule.min.js $TO/ && cp $FROM/dsfr.nomodule.min.js.map $TO/ && cp $FROM/dsfr.min.css $TO/ && cp $FROM/utility/utility.min.css $TO/utility/ && cp -R $FROM/icons $TO/ && cp -R $FROM/artwork $TO/ && cp -R $FROM/fonts $TO/",
-    "cy": "cypress",
-    "cy:open": "cypress open"
+    "cy": "pnpm --silent with-env cypress",
+    "cy:open": "pnpm --silent with-env cypress open"
   },
   "engines": {
-    "node": "^18.15"
+    "node": "^18.16"
   },
   "dependencies": {
     "@codegouvfr/react-dsfr": "^0.54.1",
     "@gouvfr/dsfr": "^1.9.2",
     "@hookform/resolvers": "^3.1.0",
     "classnames": "^2.3.2",
-    "next": "^13.4.1",
+    "dotenv": "^16.0.3",
+    "next": "^13.4.2-canary.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
@@ -32,7 +34,7 @@
     "@storybook/testing-library": "^0.1.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@types/jest": "^29.5.1",
-    "@types/node": "^18.16.3",
+    "@types/node": "^18.16.6",
     "@types/react": "^18.2.6",
     "@types/testing-library__jest-dom": "^5.14.5",
     "cypress": "^12.12.0",

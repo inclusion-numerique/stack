@@ -1,16 +1,11 @@
 import * as uuid from 'uuid'
 import { prismaClient } from '@app/web/prismaClient'
 
-export const createUser = async (user: {
-  email: string
-  firstName: string
-  lastName: string
-  name: string
-}) => {
-  const created = await prismaClient.user.create({ data: user })
-
-  return created
-}
+export type CreateUserInput = Parameters<
+  typeof prismaClient.user.create
+>[0]['data']
+export const createUser = async (user: CreateUserInput) =>
+  prismaClient.user.create({ data: user })
 
 export const deleteUser = async (user: { email: string }) => {
   const exists = await prismaClient.user.findUnique({
@@ -41,4 +36,14 @@ export const createSession = async ({ email }: { email: string }) => {
   })
 
   return created
+}
+export const deleteSession = async (sessionToken: string) => {
+  const exists = await prismaClient.session.findUnique({
+    where: { sessionToken },
+  })
+  if (!exists) {
+    return null
+  }
+  await prismaClient.session.delete({ where: { sessionToken } })
+  return null
 }

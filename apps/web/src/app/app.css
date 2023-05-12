@@ -1,6 +1,7 @@
 /* Import dsfr with url, outside of webpack build, as a static file */
 @import url('/dsfr/dsfr.min.css');
 @import url('/dsfr/utility/utility.min.css');
+@import url('https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css');
 
 /* Layout setup */
 html,
@@ -29,28 +30,28 @@ textarea {
 
 .fr-header {
   filter: none;
+
+  .fr-header__brand {
+    filter: none;
+    border-bottom: var(--slim-grey-border);
+  }
 }
 
-.fr-header__brand {
-  filter: none;
-  border-bottom: var(--slim-grey-border);
-}
-
-@media (width >= 62em) {
+@media (min-width: 62em) {
   /* lg */
   .fr-header {
-    .fr-header__menu {
-      box-shadow: inset 0 -1px 0 0 var(--border-default-grey),
-        inset 0 1px 0 0 var(--border-default-grey);
+    box-shadow: inset 0 -1px 0 0 var(--border-default-grey),
+      inset 0 1px 0 0 var(--border-default-grey);
 
+    .fr-header__menu {
       .fr-nav__link:hover {
         box-shadow: inset 0 -1px 0 0 var(--border-default-grey),
           inset 0 1px 0 0 var(--border-default-grey);
       }
     }
-  }
 
-  .fr-header__brand {
-    border-bottom: none;
+    .fr-header__brand {
+      border-bottom: none;
+    }
   }
 }

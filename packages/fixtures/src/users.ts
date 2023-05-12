@@ -11,6 +11,7 @@ export const users: Exclude<
     id: '99afd613-9d54-4110-9062-065c627eda8a',
     firstName: 'Edith',
     lastName: 'Piaf',
+    name: 'Edith Piaf',
     email: 'edith@piaf.com',
     emailVerified: new Date(),
   },
@@ -18,6 +19,7 @@ export const users: Exclude<
     id: 'eecac657-f415-47e1-8087-c4508ea16191',
     firstName: 'Georges',
     lastName: 'Moustaki',
+    name: 'Georges Moustaki',
     email: 'georges@moustaki.com',
   },
 ]
@@ -28,9 +30,15 @@ export const randomUsers: (
   Parameters<typeof prismaClient.user.create>[0]['data'],
   undefined
 >[] = (random) =>
-  Array.from({ length: random * BASE_NUMBER }, (_, index) => ({
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    email: faker.internet.email(),
-    emailVerified: index % 3 ? null : new Date(),
-  }))
+  Array.from({ length: random * BASE_NUMBER }, (_, index) => {
+    const firstName = faker.name.firstName()
+    const lastName = faker.name.lastName()
+
+    return {
+      firstName,
+      lastName,
+      name: `${firstName} ${lastName}`,
+      email: faker.internet.email(),
+      emailVerified: index % 3 ? null : new Date(),
+    }
+  })

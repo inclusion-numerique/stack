@@ -17,10 +17,6 @@ import {
   previewDomain,
   previewRootDomain,
   previewSubdomain,
-  publicContactEmail,
-  publicMatomoHost,
-  publicMatomoSiteId,
-  publicSentryDsn,
   region,
   sentryOrg,
   sentryProject,
@@ -43,7 +39,7 @@ export const projectStackVariables = [
   'SCW_DEFAULT_ORGANIZATION_ID',
   'SCW_PROJECT_ID',
   'EMAIL_FROM_DOMAIN',
-  'DOCUMENTS_BUCKET',
+  'UPLOADS_BUCKET',
   'WEB_APP_DOCKER_REGISTRY_NAME',
   'S3_HOST',
 ] as const
@@ -119,7 +115,7 @@ export class ProjectStack extends TerraformStack {
 
     // Uploads bucket for usage in integration testing and dev environments
     new ObjectBucket(this, 'devUploads', {
-      name: environmentVariables.DOCUMENTS_BUCKET.value,
+      name: environmentVariables.UPLOADS_BUCKET.value,
       corsRule: [
         {
           allowedHeaders: ['*'],
@@ -143,6 +139,17 @@ export class ProjectStack extends TerraformStack {
       backupScheduleRetention: 14,
       volumeType: 'bssd', // Block storage
       volumeSizeInGb: 15,
+      settings: {
+        // Custom max connections
+        max_connections: '500',
+
+        // Default values (if we define settings the are deleted)
+        effective_cache_size: '2700',
+        maintenance_work_mem: '300',
+        max_parallel_workers: '1',
+        max_parallel_workers_per_gather: '0',
+        work_mem: '8',
+      },
     })
 
     const cockpit = new Cockpit(this, 'cockpit', {})
@@ -195,10 +202,6 @@ export class ProjectStack extends TerraformStack {
       description: 'Web application containers',
       environmentVariables: {
         CHROMATIC_APP_ID: chromaticAppId,
-        NEXT_PUBLIC_CONTACT_EMAIL: publicContactEmail,
-        NEXT_PUBLIC_SENTRY_DSN: publicSentryDsn,
-        NEXT_PUBLIC_MATOMO_HOST: publicMatomoHost,
-        NEXT_PUBLIC_MATOMO_SITE_ID: publicMatomoSiteId,
         NEXT_TELEMETRY_DISABLED: nextTelemetryDisabled,
         SENTRY_ORG: sentryOrg,
         SENTRY_PROJECT: sentryProject,
