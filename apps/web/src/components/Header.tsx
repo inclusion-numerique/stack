@@ -3,6 +3,7 @@ import React from 'react'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import HeaderBackLink from '@app/web/components/HeaderBackLink'
 import { HeaderUserMenu } from '@app/web/components/HeaderUserMenu'
+import { PublicWebAppConfig } from '@app/web/webAppConfig'
 
 const Header = ({
   user,
@@ -21,20 +22,18 @@ const Header = ({
                 <HeaderBackLink />
               ) : (
                 <div className="fr-header__logo">
-                  <div className="fr-header__logo">
-                    <Link
-                      href="/"
-                      aria-current="page"
-                      target="_self"
-                      title={process.env.NEXT_PUBLIC_APP_NAME}
-                    >
-                      <p className="fr-logo">
-                        République
-                        <br />
-                        Française
-                      </p>
-                    </Link>
-                  </div>
+                  <Link
+                    href="/"
+                    aria-current="page"
+                    target="_self"
+                    title={process.env.NEXT_PUBLIC_APP_NAME}
+                  >
+                    <p className="fr-logo">
+                      République
+                      <br />
+                      Française
+                    </p>
+                  </Link>
                 </div>
               )}
               <div className="fr-header__navbar">
@@ -57,9 +56,11 @@ const Header = ({
                 href="/"
                 aria-current="page"
                 target="_self"
-                title={process.env.NEXT_PUBLIC_APP_NAME}
+                title={`Accueil - ${PublicWebAppConfig.projectTitle}`}
               >
-                <h2>{process.env.NEXT_PUBLIC_APP_NAME}</h2>
+                <p className="fr-header__service-title">
+                  {PublicWebAppConfig.projectTitle}
+                </p>
               </Link>
             </div>
           </div>

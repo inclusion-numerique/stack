@@ -31,17 +31,9 @@ textarea {
 .fr-header {
   filter: none;
 
-  .fr-header__menu-links {
-    &::after {
-      margin-top: 0;
-    }
-  }
-
   .fr-header__brand {
     filter: none;
     border-bottom: var(--slim-grey-border);
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
   }
 }
 
@@ -60,8 +52,6 @@ textarea {
 
     .fr-header__brand {
       border-bottom: none;
-      padding-top: 0;
-      padding-bottom: 0;
     }
   }
 }

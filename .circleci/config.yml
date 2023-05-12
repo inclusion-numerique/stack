@@ -69,7 +69,7 @@ parameters:
   web_app_docker_registry:
     # This is redundant with .env.dist but needed as jobs are way simpler to configure with this parameter
     type: string
-    default: 'rg.fr-par.scw.cloud/la-base-web-app'
+    default: 'rg.fr-par.scw.cloud/stack-web-app'
   preview_deletion_branch:
     type: string
     default: ""
