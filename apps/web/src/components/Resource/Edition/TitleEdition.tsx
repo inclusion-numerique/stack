@@ -1,20 +1,21 @@
 'use client'
 
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { useForm } from 'react-hook-form'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { zodResolver } from '@hookform/resolvers/zod'
 import InputFormField from '@app/ui/components/Form/InputFormField'
-import { Resource } from '@app/web/server/resources'
 import {
-  EditResourceTitle,
-  editResourceTitleValidation,
-} from '@app/web/server/rpc/resource/editResource'
+  EditTitleAndDescriptionCommand,
+  EditTitleAndDescriptionCommandValidation,
+} from '@app/web/server/resources/feature/EditTitleAndDescription'
+import { ResourceProjection } from '@app/web/server/resources/feature/createResourceProjection'
+import { ResourceMutationCommand } from '@app/web/server/resources/feature/features'
 import {
   resourceDescriptionMaxLength,
   resourceTitleMaxLength,
 } from '@app/web/server/rpc/resource/utils'
-import { ResourceModificationState } from '../enums/ResourceModificationState'
+import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import EditableContent from './EditableContent'
 import styles from './Edition.module.css'
 
@@ -25,43 +26,54 @@ const descriptionInfo = (description: string | null) =>
 
 const TitleEdition = ({
   resource,
-  setModificationState,
-  updateResource,
+  sendCommand,
+  setEditing,
+  editing,
 }: {
-  resource: Resource
-  setModificationState: Dispatch<
-    SetStateAction<ResourceModificationState | null>
-  >
-  updateResource: (data: EditResourceTitle) => Promise<void>
+  resource: ResourceProjection
+  sendCommand: (command: ResourceMutationCommand) => Promise<void>
+  editing: string | null
+  setEditing: Dispatch<SetStateAction<string | null>>
 }) => {
-  const [editionMode, setEditionMode] = useState(false)
+  const editionMode = editing === 'title'
 
   const {
     control,
     handleSubmit,
+    setError,
     formState: { isSubmitting },
-  } = useForm<EditResourceTitle>({
-    resolver: zodResolver(editResourceTitleValidation),
+    watch,
+  } = useForm<EditTitleAndDescriptionCommand>({
+    resolver: zodResolver(EditTitleAndDescriptionCommandValidation),
     mode: 'onChange',
     defaultValues: {
-      id: resource.id,
-      title: resource.title,
-      description: resource.description,
+      name: 'EditTitleAndDescription',
+      payload: {
+        resourceId: resource.id,
+        title: resource.title,
+        description: resource.description,
+      },
     },
   })
 
-  const onSubmit = async (data: EditResourceTitle) => {
-    setEditionMode(false)
-    await updateResource(data)
+  const onSubmit = async (data: EditTitleAndDescriptionCommand) => {
+    try {
+      await sendCommand(data)
+      setEditing(null)
+    } catch (error) {
+      applyZodValidationMutationErrorsToForm(error, setError)
+    }
   }
+
+  const title = watch('payload.title')
+  const description = watch('payload.description')
 
   return (
     <>
       <EditableContent
         showIcon={!editionMode}
         onEditClick={() => {
-          setModificationState(ResourceModificationState.MODIFIED)
-          setEditionMode(true)
+          setEditing('title')
         }}
         data-testid="edit-title-button"
       >
@@ -71,18 +83,18 @@ const TitleEdition = ({
         <form onSubmit={handleSubmit(onSubmit)}>
           <InputFormField
             control={control}
-            path="title"
+            path="payload.title"
             label="Titre de la ressource"
-            info={titleInfo}
+            info={titleInfo(title)}
             data-testid="edit-title-input"
           />
           <InputFormField
             control={control}
-            path="description"
+            path="payload.description"
             type="textarea"
             label="Description courte de la ressource"
             hint="Décrivez en quelques mots votre ressource (nature, objectifs...). Cette description apparaîtra aussi dans les résultats du moteur de recherche."
-            info={descriptionInfo}
+            info={descriptionInfo(description)}
             data-testid="edit-description-input"
           />
           <Button

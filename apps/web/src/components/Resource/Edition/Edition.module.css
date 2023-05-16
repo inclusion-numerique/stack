@@ -16,6 +16,7 @@
 
 .content {
   position: relative;
+
   &:hover {
     .contentHoverableAction {
       display: flex;

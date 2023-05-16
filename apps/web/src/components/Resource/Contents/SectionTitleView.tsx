@@ -1,4 +1,4 @@
-import { ResourceContent } from '@app/web/server/resources'
+import { ResourceContent } from '@app/web/server/resources/getResource'
 import { createSlug } from '@app/web/utils/createSlug'
 
 const SectionTitleView = ({

@@ -16,9 +16,10 @@ import ResourceBaseRichRadio from '@app/web/components/Resource/ResourceBaseRich
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { useDsfrModalIsBound } from '@app/web/hooks/useDsfrModalIsBound'
 import {
-  CreateResource,
-  createResourceValidation,
-} from '@app/web/server/rpc/resource/createResource'
+  CreateResourceCommand,
+  CreateResourceCommandClientPayloadValidation,
+} from '@app/web/server/resources/feature/CreateResource'
+import { CreateResource } from '@app/web/server/rpc/resource/createResource'
 import {
   resourceDescriptionMaxLength,
   resourceTitleMaxLength,
@@ -48,14 +49,14 @@ const CreateResourceFormModal = ({ user }: { user: SessionUser }) => {
     }
   }, [createResourceIsInSearchParams, modalIsBound])
 
-  const createResource = trpc.resource.create.useMutation()
+  const create = trpc.resource.create.useMutation()
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
     setError,
-  } = useForm<CreateResource>({
-    resolver: zodResolver(createResourceValidation),
+  } = useForm<CreateResourceCommand['payload']>({
+    resolver: zodResolver(CreateResourceCommandClientPayloadValidation),
     defaultValues: {
       baseId: null,
     },
@@ -85,8 +86,11 @@ const CreateResourceFormModal = ({ user }: { user: SessionUser }) => {
       return
     }
     try {
-      const created = await createResource.mutateAsync(data)
-      router.push(`/ressources/${created.slug}/editer`)
+      const created = await create.mutateAsync({
+        name: 'CreateResource',
+        payload: data,
+      })
+      router.push(`/ressources/${created.resource.slug}/editer`)
       closeCreateResourceModal()
     } catch (mutationError) {
       applyZodValidationMutationErrorsToForm(mutationError, setError)

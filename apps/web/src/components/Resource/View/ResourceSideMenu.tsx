@@ -1,7 +1,7 @@
 import { Route } from 'next'
 import React from 'react'
 import SideMenu from '@codegouvfr/react-dsfr/SideMenu'
-import { ResourceContent } from '@app/web/server/resources'
+import { ResourceContent } from '@app/web/server/resources/getResource'
 import styles from './ResourceSideMenu.module.css'
 
 const ResourceSideMenu = ({

@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "ResourceEventType" AS ENUM ('Created', 'Migrated', 'Published', 'TitleAndDescriptionEdited', 'BaseChanged', 'ContentAdded', 'ContentEdited', 'ContentRemoved', 'ContentReordered');
+
+-- CreateEnum
 CREATE TYPE "ContentType" AS ENUM ('SectionTitle', 'File', 'Image', 'Link', 'ResourceLink', 'Text');
 
 -- CreateTable
@@ -86,11 +89,25 @@ CREATE TABLE "resources" (
     "image_id" UUID,
     "description" TEXT NOT NULL,
     "created_by_id" UUID NOT NULL,
+    "published" TIMESTAMP(3),
     "base_id" UUID,
     "created" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "resources_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "resource_event" (
+    "id" UUID NOT NULL,
+    "type" "ResourceEventType" NOT NULL,
+    "data" JSONB NOT NULL,
+    "timestamp" TIMESTAMP(3) NOT NULL,
+    "sequence" INTEGER NOT NULL DEFAULT 0,
+    "resource_id" UUID NOT NULL,
+    "by_id" UUID,
+
+    CONSTRAINT "resource_event_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -226,6 +243,12 @@ ALTER TABLE "resources" ADD CONSTRAINT "resources_created_by_id_fkey" FOREIGN KE
 
 -- AddForeignKey
 ALTER TABLE "resources" ADD CONSTRAINT "resources_base_id_fkey" FOREIGN KEY ("base_id") REFERENCES "bases"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "resource_event" ADD CONSTRAINT "resource_event_resource_id_fkey" FOREIGN KEY ("resource_id") REFERENCES "resources"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "resource_event" ADD CONSTRAINT "resource_event_by_id_fkey" FOREIGN KEY ("by_id") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "contents" ADD CONSTRAINT "contents_resource_id_fkey" FOREIGN KEY ("resource_id") REFERENCES "resources"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

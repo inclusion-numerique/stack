@@ -1,6 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react'
 import View from '@app/web/components/Resource/View/View'
-import { Resource, ResourceContent } from '@app/web/server/resources'
+import {
+  Resource,
+  ResourceContent,
+} from '@app/web/server/resources/getResource'
 import { testSessionUser } from '@app/web/test/testSessionUser'
 
 const resource = {
@@ -12,11 +15,14 @@ const resource = {
     'Lorem Ipsul Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum quam mauris sit lacinia turpis sed vitae vel. Venenatis in in neque interdum nec facilisi mauris nunc vitae turpis sed vitae vel. Venenatis adipiscing elit.',
   created: new Date('1998-07-12'),
   updated: new Date('2022-07-12'),
+  baseId: '2',
   base: { id: '2', title: 'Titre de la base', slug: 'titre-de-la-base' },
+  createdById: '1',
   createdBy: {
     id: '1',
     name: 'Nom_utilisateur long long vraiment long tellement long que ca me soule !!!',
   },
+  imageId: null,
   image: null,
   contents: [
     {

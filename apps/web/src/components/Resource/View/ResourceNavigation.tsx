@@ -3,7 +3,7 @@ import { User } from 'next-auth'
 import Link from 'next/link'
 import React from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
-import { Resource } from '@app/web/server/resources'
+import { Resource } from '@app/web/server/resources/getResource'
 import styles from './ResourceNavigation.module.css'
 import ResourceSideMenu from './ResourceSideMenu'
 

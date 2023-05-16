@@ -1,97 +1,148 @@
 import { v4 } from 'uuid'
 import { prismaClient } from '@app/web/prismaClient'
-import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
-import { createResourceValidation } from '@app/web/server/rpc/resource/createResource'
-import { createSlug } from '@app/web/utils/createSlug'
-import { getResourceSelect } from '../../resources'
-import { notFoundError } from '../trpcErrors'
 import {
-  editResourceBaseValidation,
-  editResourceTitleValidation,
-} from './editResource'
-
-const createUniqueSlug = async (title: string) => {
-  const slug = createSlug(title)
-  const [existing, count] = await Promise.all([
-    prismaClient.resource.findUnique({ where: { slug }, select: { id: true } }),
-    prismaClient.resource.count(),
-  ])
-  return existing ? `${slug}-${count + 1}` : slug
-}
+  CreateResourceCommand,
+  CreateResourceCommandClientValidation,
+} from '@app/web/server/resources/feature/CreateResource'
+import {
+  ResourceCommandHandler,
+  ResourceCommandSecurityRule,
+} from '@app/web/server/resources/feature/ResourceCommandHandler'
+import {
+  applyCreationEvent,
+  applyMutationEvent,
+} from '@app/web/server/resources/feature/createResourceProjection'
+import {
+  HistoryEventsForResource,
+  MutationHistoryResourceEvent,
+  ResourceCommandSecurityRules,
+  ResourceCreationCommandHandlers,
+  ResourceMutationCommandHandlers,
+  ResourceMutationCommandsValidation,
+  executeSideEffect,
+} from '@app/web/server/resources/feature/features'
+import { getResourceFromEvents } from '@app/web/server/resources/getResourceFromEvents'
+import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
+import { forbiddenError, notFoundError } from '../trpcErrors'
 
 export const resourceRouter = router({
   create: protectedProcedure
-    .input(createResourceValidation)
-    .mutation(
-      async ({ input: { baseId, title, description }, ctx: { user } }) => {
-        const slug = await createUniqueSlug(title)
+    .input(CreateResourceCommandClientValidation)
+    .mutation(async ({ input, ctx: { user } }) => {
+      const command: CreateResourceCommand = {
+        ...input,
+        payload: { ...input.payload, resourceId: v4() },
+      }
 
-        return prismaClient.resource.create({
+      const securityCheck = await ResourceCommandSecurityRules[input.name](
+        command,
+        { user },
+      )
+      if (!securityCheck) {
+        throw forbiddenError()
+      }
+
+      const inputWithId = {
+        ...input,
+        payload: { ...input.payload, resourceId: v4() },
+      }
+
+      const handlerResult = await ResourceCreationCommandHandlers[input.name](
+        inputWithId,
+        {
+          user,
+        },
+      )
+      const [creationEvent, ...mutationEvents] = (
+        Array.isArray(handlerResult) ? handlerResult : [handlerResult]
+      ) as HistoryEventsForResource
+
+      let resource = applyCreationEvent(creationEvent)
+
+      await prismaClient.$transaction(async (transaction) => {
+        await executeSideEffect(creationEvent, resource, { transaction })
+
+        await transaction.resourceEvent.create({
           data: {
             id: v4(),
-            slug,
-            title,
-            titleDuplicationCheckSlug: createSlug(title),
-            description,
-            createdById: user.id,
-            baseId,
-          },
-          select: {
-            id: true,
-            slug: true,
+            resourceId: resource.id,
+            byId: user.id,
+            ...creationEvent,
           },
         })
-      },
-    ),
-  editTitle: protectedProcedure
-    .input(editResourceTitleValidation)
-    .mutation(async ({ input: { title, description, id } }) => {
-      const existingResource = await prismaClient.resource.findFirst({
-        where: { id },
-        select: {
-          createdById: true,
-        },
+        for (const event of mutationEvents) {
+          resource = applyMutationEvent(event, resource)
+
+          // eslint-disable-next-line no-await-in-loop
+          await transaction.resourceEvent.create({
+            data: {
+              id: v4(),
+              resourceId: resource.id,
+              byId: user.id,
+              ...event,
+            },
+          })
+          // eslint-disable-next-line no-await-in-loop
+          await executeSideEffect(event, resource, { transaction })
+        }
       })
 
-      // TODO manage createdById
-      if (!existingResource) {
-        throw notFoundError()
+      return {
+        resource,
+        events: [creationEvent, ...mutationEvents],
       }
-
-      return prismaClient.resource.update({
-        data: {
-          title,
-          description,
-        },
-        where: {
-          id,
-        },
-        select: getResourceSelect,
-      })
     }),
-  editBase: protectedProcedure
-    .input(editResourceBaseValidation)
-    .mutation(async ({ input: { baseId, id } }) => {
-      const existingResource = await prismaClient.resource.findFirst({
-        where: { id },
-        select: {
-          createdById: true,
-        },
-      })
+  mutate: protectedProcedure
+    .input(ResourceMutationCommandsValidation)
+    .mutation(async ({ input: command, ctx: { user } }) => {
+      const securityCheck = await (
+        ResourceCommandSecurityRules[
+          command.name
+        ] as ResourceCommandSecurityRule<typeof command>
+      )(command, { user })
+      if (!securityCheck) {
+        throw forbiddenError()
+      }
 
-      // TODO manage createdById
-      if (!existingResource) {
+      const { resourceId } = command.payload
+
+      const initialResource = await getResourceFromEvents({ id: resourceId })
+      if (!initialResource) {
         throw notFoundError()
       }
 
-      return prismaClient.resource.update({
-        data: {
-          baseId,
-        },
-        where: {
-          id,
-        },
-        select: getResourceSelect,
+      const handlerResult = await (
+        ResourceMutationCommandHandlers[command.name] as ResourceCommandHandler<
+          typeof command
+        >
+      )(command, { user })
+      const mutationEvents = (
+        Array.isArray(handlerResult) ? handlerResult : [handlerResult]
+      ) as MutationHistoryResourceEvent[]
+
+      let resource = initialResource
+
+      await prismaClient.$transaction(async (transaction) => {
+        for (const event of mutationEvents) {
+          resource = applyMutationEvent(event, resource)
+
+          // eslint-disable-next-line no-await-in-loop
+          await transaction.resourceEvent.create({
+            data: {
+              id: v4(),
+              resourceId: resource.id,
+              byId: user.id,
+              ...event,
+            },
+          })
+          // eslint-disable-next-line no-await-in-loop
+          await executeSideEffect(event, resource, { transaction })
+        }
       })
+
+      return {
+        resource,
+        events: mutationEvents,
+      }
     }),
 })

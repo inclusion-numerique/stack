@@ -46,8 +46,9 @@ declare namespace __next_route_internal_types__ {
     | `/bases/${SafeSlug<T>}`
     | `/ressources/${SafeSlug<T>}`
     | `/uploads/image/${SafeSlug<T>}`
-    | `/api/trpc/${SafeSlug<T>}`
+    | `/uploads/images/${SafeSlug<T>}`
     | `/api/auth/${CatchAllSlug<T>}`
+    | `/api/trpc/${SafeSlug<T>}`
 
   type RouteImpl<T> = 
     | StaticRoutes

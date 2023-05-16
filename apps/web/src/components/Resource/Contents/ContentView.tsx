@@ -1,10 +1,11 @@
 import Alert from '@codegouvfr/react-dsfr/Alert'
-import { ResourceContent } from '@app/web/server/resources'
+import { ContentProjection } from '@app/web/server/resources/feature/createResourceProjection'
 import SectionTitleView from './SectionTitleView'
 import TextView from './TextView'
 
-export const getContent = (content: ResourceContent) => {
-  switch (content.type) {
+const ContentView = ({ content }: { content: ContentProjection }) => {
+  const { type } = content
+  switch (type) {
     case 'Text': {
       return <TextView content={content} />
     }
@@ -15,9 +16,11 @@ export const getContent = (content: ResourceContent) => {
       return (
         <Alert
           severity="info"
-          title={`Type de contenu ${content.type} en cours d'implémentation`}
+          title={`Type de contenu ${type} en cours d'implémentation`}
         />
       )
     }
   }
 }
+
+export default ContentView

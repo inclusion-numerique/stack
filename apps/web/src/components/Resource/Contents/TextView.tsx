@@ -1,6 +1,6 @@
 import sanitizeHtml from 'sanitize-html'
 import { ContentSeparator } from '@app/web/components/Resource/View/ContentSeparator'
-import { ResourceContent } from '@app/web/server/resources'
+import { ResourceContent } from '@app/web/server/resources/getResource'
 
 const TextView = ({
   content: { text },

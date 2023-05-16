@@ -1,36 +1,36 @@
 import classNames from 'classnames'
 import React from 'react'
-import { ResourceModificationState } from '../enums/ResourceModificationState'
-import styles from './ResourceModificationStateBadge.module.css'
+import { ResourceEditionState } from '../enums/ResourceEditionState'
+import styles from './ResourceEditionStateBadge.module.css'
 
 const informations: Record<
-  ResourceModificationState,
+  ResourceEditionState,
   { label: string; icon: string }
 > = {
-  [ResourceModificationState.MODIFIED]: {
-    label: 'Modification en cours',
+  [ResourceEditionState.EDITING]: {
+    label: 'Edition en cours',
     icon: 'ri-loader-line',
   },
-  [ResourceModificationState.SAVING]: {
+  [ResourceEditionState.SAVING]: {
     label: 'Enregistrement...',
     icon: 'ri-loader-line',
   },
-  [ResourceModificationState.SAVED]: {
+  [ResourceEditionState.SAVED]: {
     label: 'Enregistré',
     icon: 'fr-icon--sm fr-mb-0 fr-icon-check-line',
   },
 }
 
-const ResourceModificationStateBadge = ({
+const ResourceEditionStateBadge = ({
   state,
 }: {
-  state: ResourceModificationState
+  state: ResourceEditionState
 }) => {
   const information = informations[state]
   return (
     <div
       className={classNames('fr-text--sm', 'fr-mb-0', styles.badge)}
-      data-testid="resource-modification-state"
+      data-testid="resource-edition-state"
     >
       <span className={classNames(styles.icon, information.icon)} />
       <span className="fr-text--medium">{information.label}</span>
@@ -38,4 +38,4 @@ const ResourceModificationStateBadge = ({
   )
 }
 
-export default ResourceModificationStateBadge
+export default ResourceEditionStateBadge

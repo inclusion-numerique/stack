@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { ResourceListItem } from '@app/web/server/resources'
+import { ResourceListItem } from '@app/web/server/resources/getResourcesList'
 import { testSessionUser } from '@app/web/test/testSessionUser'
 import Card from './Card'
 

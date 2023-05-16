@@ -1,10 +1,10 @@
 import React from 'react'
 import Badge from '@codegouvfr/react-dsfr/Badge'
 import Button from '@codegouvfr/react-dsfr/Button'
-import { getContent } from '@app/web/components/Resource/Contents/ViewContents'
+import ContentView from '@app/web/components/Resource/Contents/ContentView'
 import ResourcesViewsAndMetadata from '@app/web/components/Resource/View/ResourcesViewsAndMetadata'
 import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
-import { Resource } from '@app/web/server/resources'
+import { Resource } from '@app/web/server/resources/getResource'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import styles from './ResourceContents.module.css'
 import ResourceSideMenu from './ResourceSideMenu'
@@ -77,7 +77,7 @@ const ResourceContents = ({
           id={`section-${index + 1}`}
           className={styles.content}
         >
-          {getContent(content)}
+          <ContentView content={content} />
           <hr className="fr-mt-5w fr-mb-2w" />
         </div>
       ))}

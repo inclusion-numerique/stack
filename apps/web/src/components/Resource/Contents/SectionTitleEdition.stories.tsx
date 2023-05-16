@@ -1,10 +1,11 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Meta, StoryObj } from '@storybook/react'
+import { AddContentCommand } from '@app/web/server/resources/feature/AddContent'
 import {
-  EditResourceContent,
-  editResourceContentValidation,
-} from '@app/web/server/rpc/resource/editContent'
+  EditContentCommand,
+  EditContentCommandValidation,
+} from '@app/web/server/resources/feature/EditContent'
 import SectionTitleEdition from './SectionTitleEdition'
 
 export default {
@@ -15,18 +16,22 @@ export default {
 type Story = StoryObj<typeof SectionTitleEdition>
 
 const Template = () => {
-  const form = useForm<EditResourceContent>({
-    resolver: zodResolver(editResourceContentValidation),
+  const form = useForm<EditContentCommand | AddContentCommand>({
+    resolver: zodResolver(EditContentCommandValidation),
     reValidateMode: 'onChange',
     mode: 'all',
     defaultValues: {
-      title: 'Hello you',
+      name: 'EditContent',
+      payload: {
+        resourceId: 'resourceId',
+        title: 'Hello you',
+      },
     },
   })
 
   return (
     <form>
-      <SectionTitleEdition control={form.control} />
+      <SectionTitleEdition form={form} />
     </form>
   )
 }
