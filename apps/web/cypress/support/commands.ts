@@ -66,6 +66,11 @@ Cypress.Commands.add('dsfrModalsShouldBeBound', () => {
     cy.wrap(modal).should('have.attr', 'data-fr-js-modal', 'true'),
   )
 })
+Cypress.Commands.add('dsfrCollapsesShouldBeBound', () => {
+  cy.get('.fr-collapse').each((modal) =>
+    cy.wrap(modal).should('have.attr', 'data-fr-js-collapse', 'true'),
+  )
+})
 Cypress.Commands.add('testId', (testId: string) =>
   cy.get(`[data-testid="${testId}"]`),
 )
@@ -84,6 +89,7 @@ declare global {
       signin(user: { email: string }): Chainable<string>
       dsfrShouldBeStarted(): Chainable<void>
       dsfrModalsShouldBeBound(): Chainable<void>
+      dsfrCollapsesShouldBeBound(): Chainable<void>
       testId(testId: string): Chainable<JQuery<HTMLElement>>
 
       //       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
