@@ -37,8 +37,6 @@ const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@app/emails'],
   experimental: {
-    typedRoutes: true,
-    appDir: true,
     // See https://beta.nextjs.org/docs/api-reference/next.config.js#servercomponentsexternalpackages
     serverComponentsExternalPackages:
       externalServerPackagesForFasterDevelopmentUx,
