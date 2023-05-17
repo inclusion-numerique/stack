@@ -3,10 +3,10 @@ import React from 'react'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import View from '@app/web/components/Resource/View/View'
-import { getResource } from '@app/web/server/resources'
+import { getResource } from '@app/web/server/resources/getResource'
 
 const RessourcePage = async ({ params }: { params: { slug: string } }) => {
-  const resource = await getResource(decodeURI(params.slug))
+  const resource = await getResource({ slug: decodeURI(params.slug) })
   const user = await getSessionUser()
 
   if (!resource) {

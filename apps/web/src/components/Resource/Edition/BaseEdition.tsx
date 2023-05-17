@@ -6,11 +6,13 @@ import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import ResourceBaseRichRadio from '@app/web/components/Resource/ResourceBaseRichRadio'
-import { Resource } from '@app/web/server/resources'
 import {
-  EditResourceBase,
-  editResourceBaseValidation,
-} from '@app/web/server/rpc/resource/editResource'
+  ChangeBaseCommand,
+  ChangeBaseCommandValidation,
+} from '@app/web/server/resources/feature/ChangeBase'
+import type { ResourceMutationCommand } from '@app/web/server/resources/feature/features'
+import { ResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
+import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import PublishedInInformation from '../PublishedInInformation'
 import EditableContent from './EditableContent'
 
@@ -22,24 +24,35 @@ const { BaseModal, openBaseModal } = createModal({
 const BaseEdition = ({
   resource,
   user,
-  updateResource,
+  sendCommand,
 }: {
-  resource: Resource
+  resource: ResourceProjectionWithContext
   user: SessionUser
-  updateResource: (data: EditResourceBase) => Promise<void>
+  sendCommand: (command: ResourceMutationCommand) => Promise<void>
 }) => {
   const {
     control,
     handleSubmit,
+    setError,
     formState: { isSubmitting },
-  } = useForm<EditResourceBase>({
-    resolver: zodResolver(editResourceBaseValidation),
+  } = useForm<ChangeBaseCommand>({
+    resolver: zodResolver(ChangeBaseCommandValidation),
     defaultValues: {
-      id: resource.id,
-      baseId: resource.base?.id ?? null,
+      name: 'ChangeBase',
+      payload: {
+        resourceId: resource.id,
+        baseId: resource.baseId,
+      },
     },
   })
   const disabled = isSubmitting
+  const onSubmit = async (data: ChangeBaseCommand) => {
+    try {
+      await sendCommand(data)
+    } catch (error) {
+      applyZodValidationMutationErrorsToForm(error, setError)
+    }
+  }
 
   return (
     <EditableContent
@@ -47,8 +60,12 @@ const BaseEdition = ({
       onEditClick={openBaseModal}
       data-testid="edit-base-button"
     >
-      <PublishedInInformation resource={resource} />
-      <form onSubmit={handleSubmit(updateResource)}>
+      {!!resource.base && !!resource.createdBy && (
+        <PublishedInInformation
+          resource={{ base: resource.base, createdBy: resource.createdBy }}
+        />
+      )}
+      <form onSubmit={handleSubmit(onSubmit)}>
         <BaseModal
           title="Où souhaitez-vous ajouter cette ressource ?"
           buttons={[
@@ -71,7 +88,7 @@ const BaseEdition = ({
         >
           <ResourceBaseRichRadio
             control={control}
-            path="baseId"
+            path="payload.baseId"
             user={user}
             disabled={isSubmitting}
           />

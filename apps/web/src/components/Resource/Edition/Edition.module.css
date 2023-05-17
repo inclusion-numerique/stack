@@ -1,3 +1,31 @@
 .title {
+  margin-top: 16px;
   color: var(--grey-425-625);
+}
+
+.contentAction,
+.contentHoverableAction {
+  display: flex;
+  margin-top: 16px;
+  justify-content: space-between;
+}
+
+.contentHoverableAction {
+  display: none;
+}
+
+.content {
+  position: relative;
+
+  &:hover {
+    .contentHoverableAction {
+      display: flex;
+    }  
+  }
+}
+
+.dragButton {
+  position: absolute;
+  top: 0;
+  left: -48px;
 }

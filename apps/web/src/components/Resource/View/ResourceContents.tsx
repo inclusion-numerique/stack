@@ -1,34 +1,13 @@
 import React from 'react'
-import Alert from '@codegouvfr/react-dsfr/Alert'
 import Badge from '@codegouvfr/react-dsfr/Badge'
 import Button from '@codegouvfr/react-dsfr/Button'
+import ContentView from '@app/web/components/Resource/Contents/ContentView'
 import ResourcesViewsAndMetadata from '@app/web/components/Resource/View/ResourcesViewsAndMetadata'
-import SectionTitleContent from '@app/web/components/Resource/View/SectionTitleContent'
-import TextContent from '@app/web/components/Resource/View/TextContent'
 import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
-import { Resource, ResourceContent } from '@app/web/server/resources'
+import { Resource } from '@app/web/server/resources/getResource'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import styles from './ResourceContents.module.css'
 import ResourceSideMenu from './ResourceSideMenu'
-
-const getContent = (content: ResourceContent) => {
-  switch (content.type) {
-    case 'Text': {
-      return <TextContent content={content} />
-    }
-    case 'SectionTitle': {
-      return <SectionTitleContent content={content} />
-    }
-    default: {
-      return (
-        <Alert
-          severity="info"
-          title={`Type de contenu ${content.type} en cours d'implémentation`}
-        />
-      )
-    }
-  }
-}
 
 const ResourceContents = ({
   resource: { title, description, contents, image, created, updated },
@@ -36,7 +15,9 @@ const ResourceContents = ({
   visibleRefIndex,
 }: {
   resource: Resource
-  contentRefs: React.MutableRefObject<React.RefObject<HTMLDivElement>[]>
+  contentRefs: React.MutableRefObject<
+    Record<string, React.RefObject<HTMLDivElement>>
+  >
   visibleRefIndex: number | null
 }) => {
   const publishedDay = dateAsDay(created)
@@ -91,13 +72,15 @@ const ResourceContents = ({
         />
       </div>
       <hr className="fr-mt-6v fr-mb-2v" />
-      {contents.map((content, index) => (
+      {contents.map((content) => (
         <div
           key={content.id}
-          ref={contentRefs.current[index]}
-          id={`section-${index + 1}`}
+          ref={contentRefs.current[content.id]}
+          id={`section-${content.id}`}
+          className={styles.content}
         >
-          {getContent(content)}
+          <ContentView content={content} />
+          <hr className="fr-mt-5w fr-mb-2w" />
         </div>
       ))}
     </>

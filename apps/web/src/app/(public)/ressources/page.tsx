@@ -2,7 +2,7 @@ import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import ResourceCard from '@app/web/components/Resource/Card'
-import { getResourcesList } from '@app/web/server/resources'
+import { getResourcesList } from '@app/web/server/resources/getResourcesList'
 
 export const revalidate = 0
 

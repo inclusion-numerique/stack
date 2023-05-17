@@ -2,21 +2,21 @@ import classNames from 'classnames'
 import React, { MouseEventHandler } from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
 import IconLink from '../../Icon/IconLink'
-import { ResourceModificationState } from '../enums/ResourceModificationState'
+import { ResourceEditionState } from '../enums/ResourceEditionState'
 import { ResourcePublishedState } from '../enums/ResourcePublishedState'
 import styles from './EditionActionBar.module.css'
-import ResourceModificationStateBadge from './ResourceModificationStateBadge'
+import ResourceEditionStateBadge from './ResourceEditionStateBadge'
 import ResourcePublishedStateBadge from './ResourcePublishedStateBadge'
 
 const EditionActionBar = ({
   publishedState,
-  modificationState,
+  editionState,
   actionLabel,
   actionDisabled,
   action,
 }: {
   publishedState: ResourcePublishedState
-  modificationState: ResourceModificationState | null
+  editionState: ResourceEditionState | null
   actionLabel: string
   actionDisabled?: boolean
   action: MouseEventHandler<HTMLButtonElement>
@@ -25,9 +25,7 @@ const EditionActionBar = ({
     <div className={classNames('fr-container', styles.content)}>
       <div className={styles.block}>
         <ResourcePublishedStateBadge state={publishedState} />
-        {modificationState && (
-          <ResourceModificationStateBadge state={modificationState} />
-        )}
+        {editionState && <ResourceEditionStateBadge state={editionState} />}
       </div>
       <div className={styles.block}>
         <IconLink title="Supprimer" href="/" icon="fr-icon-delete-line" />

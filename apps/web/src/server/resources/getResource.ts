@@ -1,46 +1,5 @@
 import { prismaClient } from '@app/web/prismaClient'
 
-export const getResourcesList = async (take?: number, skip?: number) =>
-  prismaClient.resource.findMany({
-    select: {
-      title: true,
-      slug: true,
-      created: true,
-      updated: true,
-      description: true,
-      image: {
-        select: {
-          id: true,
-          altText: true,
-        },
-      },
-      createdBy: {
-        select: {
-          name: true,
-          id: true,
-        },
-      },
-      base: {
-        select: {
-          title: true,
-          slug: true,
-        },
-      },
-    },
-    orderBy: [
-      {
-        created: 'desc',
-      },
-    ],
-    skip,
-    take,
-  })
-
-export type ResourceListItem = Exclude<
-  Awaited<ReturnType<typeof getResourcesList>>,
-  null
->[number]
-
 export const getResourceSelect = {
   id: true,
   title: true,
@@ -49,12 +8,14 @@ export const getResourceSelect = {
   created: true,
   updated: true,
   isPublic: true,
+  createdById: true,
   createdBy: {
     select: {
       name: true,
       id: true,
     },
   },
+  baseId: true,
   base: {
     select: {
       id: true,
@@ -62,6 +23,7 @@ export const getResourceSelect = {
       slug: true,
     },
   },
+  imageId: true,
   image: {
     select: {
       id: true,
@@ -74,12 +36,14 @@ export const getResourceSelect = {
       title: true,
       type: true,
       caption: true,
+      imageId: true,
       image: {
         select: {
           id: true,
           altText: true,
         },
       },
+      fileKey: true,
       file: {
         select: {
           mimeType: true,
@@ -89,6 +53,7 @@ export const getResourceSelect = {
       },
       showPreview: true,
       url: true,
+      linkedResourceId: true,
       linkedResource: {
         select: {
           slug: true,
@@ -102,12 +67,10 @@ export const getResourceSelect = {
   },
 } satisfies Parameters<typeof prismaClient.resource.findUnique>[0]['select']
 
-export const getResource = async (slug: string) =>
+export const getResource = async (where: { slug: string } | { id: string }) =>
   prismaClient.resource.findUnique({
     select: getResourceSelect,
-    where: {
-      slug,
-    },
+    where,
   })
 
 export type Resource = Exclude<Awaited<ReturnType<typeof getResource>>, null>

@@ -3,7 +3,8 @@ import React from 'react'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import Edition from '@app/web/components/Resource/Edition/Edition'
-import { getResource } from '@app/web/server/resources'
+import { getResource } from '@app/web/server/resources/getResource'
+import { getResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
 
 const ResourceEditionPage = async ({
   params,
@@ -15,8 +16,12 @@ const ResourceEditionPage = async ({
     redirect(`/connexion?suivant=/ressources/${params.slug}/editer`)
   }
 
-  const resource = await getResource(decodeURI(params.slug))
-  if (!resource) {
+  const [resource, draftResource] = await Promise.all([
+    getResource({ slug: decodeURI(params.slug) }),
+    getResourceProjectionWithContext({ slug: decodeURI(params.slug) }),
+  ])
+
+  if (!resource || !draftResource) {
     notFound()
   }
 
@@ -30,7 +35,7 @@ const ResourceEditionPage = async ({
           ]}
         />
       </div>
-      <Edition resource={resource} user={user} />
+      <Edition resource={resource} draftResource={draftResource} user={user} />
     </>
   )
 }

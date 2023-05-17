@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { ResourceModificationState } from '../enums/ResourceModificationState'
+import { ResourceEditionState } from '../enums/ResourceEditionState'
 import { ResourcePublishedState } from '../enums/ResourcePublishedState'
 import EditionActionBar from './EditionActionBar'
 
@@ -8,8 +8,8 @@ export default {
   component: EditionActionBar,
   argTypes: {
     action: { action: 'clicked' },
-    modificationState: {
-      options: [...Object.values(ResourceModificationState), null],
+    editionState: {
+      options: [...Object.values(ResourceEditionState), null],
       control: { type: 'radio' },
     },
   },
@@ -30,16 +30,16 @@ export const NewContent: Story = {
   name: 'Nouveau contenu ajouté',
   args: {
     publishedState: ResourcePublishedState.DRAFT,
-    modificationState: ResourceModificationState.SAVED,
+    editionState: ResourceEditionState.SAVED,
     actionLabel: 'Publier la ressource',
   },
 }
 
-export const Modification: Story = {
-  name: "Modification d'une ressource déjà publiée",
+export const Edition: Story = {
+  name: "Edition d'une ressource déjà publiée",
   args: {
     publishedState: ResourcePublishedState.PUBLIC,
-    modificationState: ResourceModificationState.MODIFIED,
-    actionLabel: 'Publier les modifications',
+    editionState: ResourceEditionState.EDITING,
+    actionLabel: 'Publier les editions',
   },
 }

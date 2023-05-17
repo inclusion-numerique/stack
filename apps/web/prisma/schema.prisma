@@ -59,11 +59,12 @@ model User {
   sessions      Session[]
   isPublic      Boolean   @default(false) @map("is_public")
 
-  created          DateTime   @default(now())
-  updated          DateTime   @default(now())
+  created          DateTime        @default(now())
+  updated          DateTime        @default(now())
   ownedBases       Base[]
   createdResources Resource[]
   uploads          Upload[]
+  ResourceEvent    ResourceEvent[]
 
   @@map("users")
 }
@@ -117,15 +118,47 @@ model Resource {
   createdBy   User   @relation(fields: [createdById], references: [id])
   createdById String @map("created_by_id") @db.Uuid
 
+  published DateTime?
+
   base   Base?   @relation(fields: [baseId], references: [id])
   baseId String? @map("base_id") @db.Uuid
 
-  created  DateTime  @default(now())
-  updated  DateTime  @default(now())
+  created  DateTime        @default(now())
+  updated  DateTime        @default(now())
   contents Content[]
-  linkedBy Content[] @relation(name: "contentLinkedResource")
+  linkedBy Content[]       @relation(name: "contentLinkedResource")
+  events   ResourceEvent[]
 
   @@map("resources")
+}
+
+enum ResourceEventType {
+  Created
+  Migrated
+  Published
+  TitleAndDescriptionEdited
+  BaseChanged
+  ContentAdded
+  ContentEdited
+  ContentRemoved
+  ContentReordered
+}
+
+model ResourceEvent {
+  id   String            @id @default(uuid()) @db.Uuid
+  type ResourceEventType
+  data Json
+
+  // Used as the ordering for events
+  timestamp  DateTime
+  // If multiple events have to be dispatched with same timestamp, sequence is used to order them
+  sequence   Int      @default(0)
+  resource   Resource @relation(fields: [resourceId], references: [id])
+  resourceId String   @map("resource_id") @db.Uuid
+  by         User?    @relation(fields: [byId], references: [id])
+  byId       String?  @map("by_id") @db.Uuid
+
+  @@map("resource_events")
 }
 
 enum ContentType {

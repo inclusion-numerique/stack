@@ -1,7 +1,7 @@
 import { Route } from 'next'
 import React from 'react'
 import SideMenu from '@codegouvfr/react-dsfr/SideMenu'
-import { ResourceContent } from '@app/web/server/resources'
+import { ResourceContent } from '@app/web/server/resources/getResource'
 import styles from './ResourceSideMenu.module.css'
 
 const ResourceSideMenu = ({
@@ -18,11 +18,13 @@ const ResourceSideMenu = ({
       {
         text: 'Ressource',
         isActive: visibleRefIndex !== null && visibleRefIndex >= 0,
-        items: contents.map((content, index) => ({
-          text: `Section ${index + 1}`,
-          linkProps: { href: `#section-${index + 1}` as Route },
-          isActive: visibleRefIndex === index,
-        })),
+        items: contents
+          .filter((content) => content.type === 'SectionTitle')
+          .map((section, index) => ({
+            text: section.title,
+            linkProps: { href: `#section-${section.id}` as Route },
+            isActive: visibleRefIndex === index,
+          })),
       },
       {
         text: 'Informations',

@@ -6,7 +6,7 @@ import {
 
 const testDefaultState = () => {
   cy.testId('resource-published-state').should('have.text', 'Privée')
-  cy.testId('resource-modification-state').should('not.exist')
+  cy.testId('resource-edition-state').should('not.exist')
   cy.testId('publish-resource-button')
     .should('be.disabled')
     .should('have.text', 'Publier la ressource')
@@ -57,7 +57,7 @@ describe("Utilisateur connecté, lorsque j'édite une ressource, je peux éditer
     cy.testId('edit-title-input').should('exist')
     cy.testId('edit-description-input').should('exist')
     cy.testId('edit-validation-button').should('have.text', 'Valider').click()
-    cy.testId('resource-modification-state').should('not.exist')
+    cy.testId('resource-edition-state').should('not.exist')
 
     // Probably not needed
     cy.wait('@editTitleMutation')
@@ -74,7 +74,7 @@ describe("Utilisateur connecté, lorsque j'édite une ressource, je peux éditer
       'have.text',
       'Brouillon',
     )
-    cy.testId('resource-modification-state').should(
+    cy.testId('resource-edition-state').should(
       'have.text',
       'Enregistrement',
     )
@@ -84,7 +84,7 @@ describe("Utilisateur connecté, lorsque j'édite une ressource, je peux éditer
     cy.testId('edit-validation-button').should('not.exist')
     cy.contains('Titre modifié')
     cy.contains('Description modifiée')
-    cy.testId('resource-modification-state').should('have.text', 'Enregistré')
+    cy.testId('resource-edition-state').should('have.text', 'Enregistré')
 
     cy.testId('publish-resource-button').should('not.be.disabled').click()
 

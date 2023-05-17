@@ -1,8 +1,8 @@
 import sanitizeHtml from 'sanitize-html'
 import { ContentSeparator } from '@app/web/components/Resource/View/ContentSeparator'
-import { ResourceContent } from '@app/web/server/resources'
+import { ResourceContent } from '@app/web/server/resources/getResource'
 
-const TextContent = ({
+const TextView = ({
   content: { text },
 }: {
   content: Pick<ResourceContent, 'text'>
@@ -15,4 +15,4 @@ const TextContent = ({
     </>
   ) : null
 
-export default TextContent
+export default TextView

@@ -1,12 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react'
-import TextContent from '@app/web/components/Resource/View/TextContent'
+import TextView from './TextView'
 
 export default {
-  title: 'Content/Text/View',
-  component: TextContent,
-} as Meta<typeof TextContent>
+  title: 'Ressource/Content/Text/View',
+  component: TextView,
+} as Meta<typeof TextView>
 
-type Story = StoryObj<typeof TextContent>
+type Story = StoryObj<typeof TextView>
 
 export const Default: Story = {
   name: 'View',
