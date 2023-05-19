@@ -99,6 +99,22 @@ describe('AddContentCommandValidation', () => {
       expect(result.success).toEqual(true)
     })
 
+    it('sanitize text', () => {
+      const result = AddContentCommandValidation.safeParse({
+        ...validTextCommand,
+        payload: {
+          ...validTextCommand.payload,
+          text: '<body><b>Broken html</b>',
+        },
+      })
+      expect(result.success).toEqual(true)
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore: Success is true
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      expect(result.data.payload.text).toEqual('<b>Broken html</b>')
+    })
+
     textFailUseCases(validTextCommand).map(({ name, values, errors }) =>
       it(name, () =>
         expectZodValidationToFail(

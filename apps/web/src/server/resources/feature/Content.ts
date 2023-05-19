@@ -1,3 +1,4 @@
+import sanitizeHtml from 'sanitize-html'
 import z from 'zod'
 import { resourceTitleMaxLength } from '@app/web/server/rpc/resource/utils'
 
@@ -13,7 +14,8 @@ export const contentEditionValues = {
   text: z
     .string({ required_error: 'Veuillez renseigner le texte' })
     .trim()
-    .nonempty('Veuillez renseigner le texte'),
+    .nonempty('Veuillez renseigner le texte')
+    .transform((text) => sanitizeHtml(text)),
 }
 
 const SectionTitlePayloadCommandValidation = z.object({
