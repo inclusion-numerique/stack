@@ -23,9 +23,11 @@ const AddContent = ({
     setAdding(contentType)
   }
 
-  const onSendCommand = async (command: ResourceMutationCommand) => {
-    await sendCommand(command)
+  const onSendCommand: SendCommand = async (command) => {
+    const result = await sendCommand(command)
     setAdding(null)
+
+    return result
   }
 
   return adding ? (
