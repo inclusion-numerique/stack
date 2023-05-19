@@ -46,6 +46,7 @@ const ContentEdition = ({
             type="button"
           />
           <Button
+            data-testid="content-edition-button"
             priority="tertiary no outline"
             iconId="fr-icon-edit-line"
             type="button"

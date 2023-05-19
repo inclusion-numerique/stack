@@ -127,7 +127,10 @@ const ContentForm = ({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      data-testid={`content-${type}-edition-form`}
+    >
       {formContent}
       <div className={styles.contentAction}>
         {mode === 'edit' && (
@@ -140,6 +143,7 @@ const ContentForm = ({
           />
         )}
         <Button
+          data-testid="content-validation-button"
           priority="tertiary no outline"
           iconId="fr-icon-check-line"
           type="submit"
