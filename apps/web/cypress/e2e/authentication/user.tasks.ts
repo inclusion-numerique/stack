@@ -1,7 +1,17 @@
 import { v4 } from 'uuid'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import { prismaClient } from '@app/web/prismaClient'
-import { ContentAdded } from '@app/web/server/resources/feature/AddContent'
-import { ResourceCreated } from '@app/web/server/resources/feature/CreateResource'
+import {
+  ResourceCreationCommand,
+  ResourceMutationCommand,
+} from '@app/web/server/resources/feature/features'
+import { handleResourceCreationCommand } from '@app/web/server/resources/feature/handleResourceCreationCommand'
+import { handleResourceMutationCommand } from '@app/web/server/resources/feature/handleResourceMutationCommand'
+import {
+  Serialized,
+  deserialize,
+  serialize,
+} from '@app/web/utils/serialization'
 
 export type CreateUserInput = Parameters<
   typeof prismaClient.user.create
@@ -15,78 +25,33 @@ export type CreateBaseInput = Parameters<
 export const createBase = async (base: CreateBaseInput) =>
   prismaClient.base.create({ data: base })
 
-export type CreateResourceInput = Parameters<
-  typeof prismaClient.resource.create
->[0]['data'] & { createdById: string }
-export const createResource = async ({
-  createdById,
-  id,
-  ...resourceData
-}: CreateResourceInput) => {
-  const resourceId = id || v4()
-  const createdEvent: ResourceCreated = {
-    type: 'Created',
-    timestamp: resourceData.created
-      ? new Date(resourceData.created)
-      : new Date(),
-    data: {
-      __version: 1,
-      id: resourceId,
-      ...resourceData,
-      byId: createdById,
-      baseId: resourceData.baseId || null,
-    },
-  }
-  return prismaClient.resource.create({
-    data: {
-      id: resourceId,
-      ...resourceData,
-      createdById,
-      events: {
-        create: {
-          ...createdEvent,
-        },
-      },
-    },
+export type SendResourceCommandsInput = {
+  user: Pick<SessionUser, 'id'>
+  commands: [ResourceCreationCommand, ...ResourceMutationCommand[]]
+}
+export const sendResourceCommands = async (
+  input: Serialized<SendResourceCommandsInput>,
+) => {
+  const {
+    user,
+    commands: [createCommand, ...mutateCommands],
+  } = deserialize(input)
+  const { resource } = await handleResourceCreationCommand(createCommand, {
+    user,
   })
-}
 
-export type CreateResourceContentsInput = {
-  contents: ContentAdded[]
-  byId: string
-  resourceId: string
+  if (mutateCommands.length === 0) {
+    return serialize(resource)
+  }
+
+  let mutatedResource = resource
+  for (const command of mutateCommands) {
+    const result = await handleResourceMutationCommand(command, { user })
+    mutatedResource = result.resource
+  }
+
+  return serialize(mutatedResource)
 }
-export const createResourceContents = async ({
-  contents,
-  byId,
-  resourceId,
-}: CreateResourceContentsInput) =>
-  Promise.all(
-    contents.flatMap((content, index) => {
-      const contentId = content.data.id || v4()
-      const { __version, ...rest } = content.data
-      return [
-        prismaClient.resourceEvent.create({
-          data: {
-            id: contentId,
-            resourceId,
-            byId,
-            type: 'ContentAdded',
-            timestamp: new Date(content.timestamp),
-            data: content.data,
-          },
-        }),
-        prismaClient.content.create({
-          data: {
-            resource: { connect: { id: resourceId } },
-            created: new Date(content.timestamp),
-            order: index,
-            ...rest,
-          },
-        }),
-      ]
-    }),
-  )
 
 export const deleteUser = async (user: { email: string }) => {
   const exists = await prismaClient.user.findUnique({

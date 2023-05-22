@@ -13,12 +13,14 @@ const ContentEdition = ({
   sendCommand,
   resource,
   content,
+  'data-testid': dataTestId,
 }: {
   resource: ResourceProjectionWithContext
   editing: string | null
   setEditing: Dispatch<SetStateAction<string | null>>
   sendCommand: SendCommand
   content: ContentProjection
+  'data-testid'?: string
 }) => {
   const editionMode = editing === content.id
 
@@ -32,6 +34,7 @@ const ContentEdition = ({
           id: content.id,
         },
       })
+      setEditing(null)
     }
 
     return (
@@ -39,6 +42,7 @@ const ContentEdition = ({
         <ContentView content={content} />
         <div className={styles.contentHoverableAction}>
           <Button
+            data-testid={dataTestId ? `${dataTestId}_drag-button` : undefined}
             iconId={'ri-draggable' as never}
             title="Drag"
             priority="tertiary no outline"
@@ -46,7 +50,7 @@ const ContentEdition = ({
             type="button"
           />
           <Button
-            data-testid="content-edition-button"
+            data-testid={dataTestId ? `${dataTestId}_edit-button` : undefined}
             priority="tertiary no outline"
             iconId="fr-icon-edit-line"
             type="button"
@@ -58,6 +62,7 @@ const ContentEdition = ({
             Modifier
           </Button>
           <Button
+            data-testid={dataTestId ? `${dataTestId}_delete-button` : undefined}
             title="Supprimer le contenu"
             priority="tertiary no outline"
             iconId="fr-icon-delete-line"
@@ -74,6 +79,7 @@ const ContentEdition = ({
     <ContentForm
       type={content.type}
       mode="edit"
+      data-testid={dataTestId ? `${dataTestId}_form` : undefined}
       resource={resource}
       content={content}
       setEditing={setEditing}
