@@ -7,6 +7,6 @@ export const uploadedImageLoader: ImageLoader = ({
 }: {
   src: string
 }) =>
-  `/uploads/image/${src}.webp?${new URLSearchParams(
+  `/uploads/images/${src}.webp?${new URLSearchParams(
     removeNullAndUndefinedValues(params),
   ).toString()}`

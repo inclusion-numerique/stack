@@ -27,11 +27,11 @@ export const createSignedGetUrl = async ({
 export const createSignedUploadUrl = async ({
   directory,
   name,
-  type,
+  mimeType,
   bucket,
 }: {
   name: string
-  type: string
+  mimeType: string
   directory: string
   bucket: string
 }): Promise<{ url: string; key: string }> => {
@@ -43,7 +43,7 @@ export const createSignedUploadUrl = async ({
     new PutObjectCommand({
       Key: key,
       Bucket: bucket,
-      ContentType: type,
+      ContentType: mimeType,
     }),
     { expiresIn: 3600 },
   )
