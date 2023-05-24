@@ -1,7 +1,7 @@
 import React from 'react'
+import '@app/web/app/app.css'
 import { useRef } from '@storybook/addons'
 import { Preview } from '@storybook/react'
-import '@app/web/app/app.css'
 
 const loadDsfrJs = () => {
   const existing = document.querySelector('#dsfr-js')
