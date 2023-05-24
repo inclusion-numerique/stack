@@ -32,14 +32,14 @@ describe.skip('createSignedUrl', () => {
   describe('createSignedUploadUrl', () => {
     it('canCreateSignedUrl', async () => {
       const fileName = '2022-11-test.png'
-      const type = 'image/png'
+      const mimeType = 'image/png'
       const filePath = resolve(__dirname, '../../test/small-test-image.png')
 
       const { url, key } = await createSignedUploadUrl({
         directory: `test/${Date.now()}`,
         bucket: ServerWebAppConfig.S3.uploadsBucket,
         name: fileName,
-        type,
+        mimeType,
       })
 
       expect(key).toBeString()
