@@ -16,7 +16,7 @@ export const useDsfrModalIsBound = (dialogId: string) => {
     // eslint-disable-next-line unicorn/prefer-query-selector
     const element = document.getElementById(dialogId)
     if (!element) {
-      throw new Error(`Modal ${dialogId} is not present in the DOM`)
+      return false
     }
     observer = new MutationObserver((records) => {
       // There should be only one record
