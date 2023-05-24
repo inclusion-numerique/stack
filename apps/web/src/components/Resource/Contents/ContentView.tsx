@@ -1,5 +1,6 @@
 import Alert from '@codegouvfr/react-dsfr/Alert'
 import { ContentProjection } from '@app/web/server/resources/feature/createResourceProjection'
+import LinkView from './LinkView'
 import SectionTitleView from './SectionTitleView'
 import TextView from './TextView'
 
@@ -11,6 +12,9 @@ const ContentView = ({ content }: { content: ContentProjection }) => {
     }
     case 'SectionTitle': {
       return <SectionTitleView content={content} />
+    }
+    case 'Link': {
+      return <LinkView content={content} />
     }
     default: {
       return (

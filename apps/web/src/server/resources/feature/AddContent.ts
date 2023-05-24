@@ -19,6 +19,12 @@ export type ContentAddedV1 = {
   // TODO add the other content types
   title?: string
   text?: string
+  caption?: string
+  url?: string
+  showPreview?: boolean
+  linkDescription?: string
+  linkTitle?: string
+  linkImageUrl?: string
 }
 
 export type ContentAdded = {

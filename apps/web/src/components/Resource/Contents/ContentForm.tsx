@@ -19,8 +19,12 @@ import {
   ContentProjection,
   ResourceProjection,
 } from '@app/web/server/resources/feature/createResourceProjection'
+import { trpc } from '@app/web/trpc'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { removeNullAndUndefinedValues } from '@app/web/utils/removeNullAndUndefinedValues'
+import { ContentType } from '@prisma/client'
+import { withTrpc } from '../../trpc/withTrpc'
+import LinkEdition from './LinkEdition'
 import TextEdition from './TextEdition'
 
 const ContentForm = ({
@@ -118,6 +122,16 @@ const ContentForm = ({
       formContent = <TextEdition form={form} />
       break
     }
+    case 'Link': {
+      const showPreview = form.getValues('payload.showPreview')
+      const urlValid = !form.getFieldState('payload.url').invalid
+      const metaData =
+        showPreview && urlValid
+          ? trpc.metaData.get.useQuery({ url: form.getValues('payload.url') })
+          : null
+      formContent = <LinkEdition form={form} metaData={metaData} />
+      break
+    }
     default: {
       formContent = (
         <Alert
@@ -165,4 +179,4 @@ const ContentForm = ({
   )
 }
 
-export default ContentForm
+export default withTrpc(ContentForm)
