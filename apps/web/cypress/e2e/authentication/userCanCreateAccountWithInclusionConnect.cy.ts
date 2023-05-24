@@ -49,7 +49,6 @@ describe('ETQ Utilisateur, lorsque je clique sur “créer un compte”, je peux
 
     // Inclusion connect has frontend uncaught exceptions
     Cypress.on('uncaught:exception', () => false)
-
     cy.get('input[name="password"]').type(`${password}{enter}`)
 
     // Cookies are lost in redirect (Cypress issue)
