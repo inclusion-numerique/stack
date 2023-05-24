@@ -87,6 +87,9 @@ export const onMigrated: ResourceEventSideEffect<ResourceMigrated> = async (
     select: { id: true },
   })
   if (existing) {
+    await transaction.resourceEvent.deleteMany({
+      where: { resourceId: existing.id },
+    })
     await transaction.resource.delete({
       where: {
         legacyId,
