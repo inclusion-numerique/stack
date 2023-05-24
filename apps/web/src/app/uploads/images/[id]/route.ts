@@ -36,6 +36,7 @@ export const GET = async (request: NextRequest) => {
       cropHeight: true,
       upload: {
         select: {
+          legacyKey: true,
           mimeType: true,
         },
       },

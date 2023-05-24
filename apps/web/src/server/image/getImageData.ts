@@ -5,10 +5,11 @@ import {
   PutObjectCommand,
 } from '@aws-sdk/client-s3'
 import * as Sentry from '@sentry/nextjs'
+import { legacyS3Client } from '@app/web/server/s3/legacyS3'
 import { s3 } from '@app/web/server/s3/s3'
 import { imageCropToRegion, isImageCropped } from '@app/web/utils/imageCrop'
 import { ServerWebAppConfig } from '@app/web/webAppConfig'
-import { Image } from '@prisma/client'
+import { Image, Upload } from '@prisma/client'
 
 const computeImageVersionCacheKey = ({
   id,
@@ -28,7 +29,7 @@ export const getImageData = async ({
   image: Pick<
     Image,
     'id' | 'uploadKey' | 'cropWidth' | 'cropTop' | 'cropLeft' | 'cropHeight'
-  >
+  > & { upload: Pick<Upload, 'legacyKey'> }
   quality: number
   width?: number
 }): Promise<Buffer | ReadableStream> => {
@@ -58,12 +59,19 @@ export const getImageData = async ({
   }
 
   // Image is not cached, we need to compute it for given quality and width
-  const originalImageObject = await s3.send(
-    new GetObjectCommand({
-      Bucket: ServerWebAppConfig.S3.uploadsBucket,
-      Key: image.uploadKey,
-    }),
-  )
+  const originalImageObject = image.upload.legacyKey
+    ? await legacyS3Client.send(
+        new GetObjectCommand({
+          Bucket: ServerWebAppConfig.LegacyS3.uploadsBucket,
+          Key: image.upload.legacyKey,
+        }),
+      )
+    : await s3.send(
+        new GetObjectCommand({
+          Bucket: ServerWebAppConfig.S3.uploadsBucket,
+          Key: image.uploadKey,
+        }),
+      )
 
   if (!originalImageObject.Body) {
     throw new Error('Image not found')
