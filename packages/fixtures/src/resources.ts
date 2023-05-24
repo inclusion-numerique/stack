@@ -10,7 +10,11 @@ import { ContentTypeValues } from '@app/web/utils/prismaEnums'
 import { Prisma } from '@prisma/client'
 
 const BASE_NUMBER = 10
-const managedTypes = [ContentTypeValues.SectionTitle, ContentTypeValues.Text]
+const managedTypes = [
+  ContentTypeValues.SectionTitle,
+  ContentTypeValues.Text,
+  ContentTypeValues.Link,
+]
 
 export const resources: Exclude<
   Parameters<typeof prismaClient.resource.upsert>[0]['create'],
@@ -139,6 +143,27 @@ const getRandomResourceContentEvent = (id: string, type: ContentTypeValues) => {
         id,
         __version: 1 as const,
         text: faker.lorem.words({ min: 2, max: 10 }),
+      }
+    }
+    case 'Link': {
+      const showPreview = faker.datatype.boolean()
+      return {
+        id,
+        __version: 1 as const,
+        title: faker.lorem.words({ min: 2, max: 5 }),
+        caption: faker.lorem.words({ min: 2, max: 10 }),
+        url: faker.internet.url(),
+        ...(showPreview
+          ? {
+              showPreview: true,
+              linkTitle: faker.lorem.words({ min: 2, max: 5 }),
+              linkDescription: faker.lorem.words({ min: 2, max: 10 }),
+            }
+          : {
+              showPreview: false,
+              linkTitle: undefined,
+              linkDescription: undefined,
+            }),
       }
     }
     default: {

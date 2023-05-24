@@ -1,6 +1,7 @@
 import { expectZodValidationToFail } from '@app/test/zodValidationTest'
 import { AddContentCommand, AddContentCommandValidation } from './AddContent'
 import {
+  linkFailUseCases,
   sectionTitleFailUseCases,
   textFailUseCases,
 } from './Content.spec.config'
@@ -20,6 +21,18 @@ const validTextCommand: AddContentCommand = {
     resourceId: '8e32fcd3-b3fe-496f-8825-a6779393c94a',
     type: 'Text',
     text: "Jusqu'au bout des chemins de fortune",
+  },
+}
+
+const validLinkCommand: AddContentCommand = {
+  name: 'AddContent',
+  payload: {
+    resourceId: '8e32fcd3-b3fe-496f-8825-a6779393c94a',
+    type: 'Link',
+    title: 'Obsolète',
+    url: 'https://www.youtube.com/watch?v=DMDVaaVrAMo',
+    caption:
+      "Naguère les concierges étaient en vogue Désormais on les a remplacées par des digicodes Dans ma ville il n'y avait pas de parcmètres Je voyais des ouvriers manger des sandwiches à l'omelette",
   },
 }
 
@@ -120,6 +133,52 @@ describe('AddContentCommandValidation', () => {
         expectZodValidationToFail(
           AddContentCommandValidation,
           validTextCommand,
+          values,
+          errors,
+        ),
+      ),
+    )
+  })
+
+  describe('Link', () => {
+    it('allows valid value', () => {
+      const result = AddContentCommandValidation.safeParse(validLinkCommand)
+      expect(result.success).toEqual(true)
+    })
+
+    it('allows link with preview without data', () => {
+      const result = AddContentCommandValidation.safeParse({
+        ...validLinkCommand,
+        showPreview: true,
+      })
+      expect(result.success).toEqual(true)
+    })
+
+    it('allows link with preview with data', () => {
+      const result = AddContentCommandValidation.safeParse({
+        ...validLinkCommand,
+        showPreview: true,
+        linkTitle: 'Mc Solaar',
+        linkDescription: 'Best chanson ever',
+      })
+      expect(result.success).toEqual(true)
+    })
+
+    it('allows link without preview with data', () => {
+      const result = AddContentCommandValidation.safeParse({
+        ...validLinkCommand,
+        showPreview: false,
+        linkTitle: 'Mc Solaar',
+        linkDescription: 'Best chanson ever',
+      })
+      expect(result.success).toEqual(true)
+    })
+
+    linkFailUseCases(validLinkCommand).map(({ name, values, errors }) =>
+      it(name, () =>
+        expectZodValidationToFail(
+          AddContentCommandValidation,
+          validLinkCommand,
           values,
           errors,
         ),
