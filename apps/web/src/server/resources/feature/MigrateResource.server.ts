@@ -96,6 +96,7 @@ export const onMigrated: ResourceEventSideEffect<ResourceMigrated> = async (
   await transaction.resource.create({
     data: {
       id,
+      legacyId,
       createdById: byId,
       ...rest,
       contents: {
