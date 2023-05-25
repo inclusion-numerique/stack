@@ -8,7 +8,7 @@ export const revalidate = 0
 
 const Ressources = async () => {
   const user = await getSessionUser()
-  const resources = await getResourcesList(50)
+  const resources = await getResourcesList({ user, take: 30, skip: 0 })
 
   return (
     <div className="fr-pb-20v">

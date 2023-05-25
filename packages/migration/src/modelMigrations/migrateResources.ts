@@ -90,9 +90,9 @@ export const transformResource = ({
       ? imageIdFromLegacyId(Number(legacyResource.profile_image_id))
       : null,
     contents: [] as MigrateResourceCommand['payload']['contents'],
-    // TODO what rule for this ?
-    isPublic: true,
-    published: legacyResource.modified,
+    isPublic: legacyResource.state === 'public',
+    published:
+      legacyResource.state === 'draft' ? null : legacyResource.modified,
   } satisfies MigrateResourceCommand['payload']
 
   const orderedLegacyResourcesOrSectionTitle =

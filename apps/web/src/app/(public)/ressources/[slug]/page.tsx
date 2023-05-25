@@ -3,6 +3,7 @@ import React from 'react'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import View from '@app/web/components/Resource/View/View'
+import { canViewResource } from '@app/web/security/securityRules'
 import { getResource } from '@app/web/server/resources/getResource'
 
 const RessourcePage = async ({ params }: { params: { slug: string } }) => {
@@ -10,6 +11,10 @@ const RessourcePage = async ({ params }: { params: { slug: string } }) => {
   const user = await getSessionUser()
 
   if (!resource) {
+    notFound()
+  }
+
+  if (user && !canViewResource(user, resource)) {
     notFound()
   }
 

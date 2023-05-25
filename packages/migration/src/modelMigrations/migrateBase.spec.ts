@@ -76,6 +76,7 @@ describe('migrateBase', () => {
         title: legacyBase.title,
         created: legacyBase.created,
         updated: legacyBase.modified,
+        isPublic: false,
       },
       create: {
         description:
@@ -89,6 +90,7 @@ describe('migrateBase', () => {
         title: legacyBase.title,
         created: legacyBase.created,
         updated: legacyBase.modified,
+        isPublic: false,
       },
       select: {
         id: true,

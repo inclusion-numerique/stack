@@ -23,6 +23,7 @@ export const getResourceSelect = {
       id: true,
       title: true,
       slug: true,
+      isPublic: true,
     },
   },
   imageId: true,
