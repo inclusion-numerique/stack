@@ -37,6 +37,15 @@ import {
   handleEditContent,
 } from '@app/web/server/resources/feature/EditContent.server'
 import {
+  EditImageCommandValidation,
+  ImageEdited,
+} from '@app/web/server/resources/feature/EditImage'
+import {
+  applyImageEdited,
+  editImageSecurityRules,
+  handleEditImage,
+} from '@app/web/server/resources/feature/EditImage.server'
+import {
   EditTitleAndDescriptionCommandValidation,
   TitleAndDescriptionEdited,
 } from '@app/web/server/resources/feature/EditTitleAndDescription'
@@ -102,6 +111,7 @@ export const ResourceCreationCommandsValidation = z.discriminatedUnion('name', [
 ])
 export const ResourceMutationCommandsValidation = z.discriminatedUnion('name', [
   EditTitleAndDescriptionCommandValidation,
+  EditImageCommandValidation,
   ChangeBaseCommandValidation,
   AddContentCommandValidation,
   EditContentCommandValidation,
@@ -133,6 +143,7 @@ export const ResourceMutationCommandHandlers: {
   >
 } = {
   EditTitleAndDescription: handleEditTitleAndDescription,
+  EditImage: handleEditImage,
   ChangeBase: handleChangeBase,
   AddContent: handleAddContent,
   EditContent: handleEditContent,
@@ -148,6 +159,7 @@ export const ResourceCommandSecurityRules: {
   CreateResource: createResourceSecurityRules,
   MigrateResource: migrateResourceSecurityRules,
   EditTitleAndDescription: editTitleAndDescriptionSecurityRules,
+  EditImage: editImageSecurityRules,
   ChangeBase: changeBaseSecurityRules,
   AddContent: addContentSecurityRules,
   EditContent: editContentSecurityRules,
@@ -165,6 +177,7 @@ export type HistoryResourceEvent =
   | ResourceMigrated
   | BaseChanged
   | TitleAndDescriptionEdited
+  | ImageEdited
   | ContentAdded
   | ContentEdited
   | ContentRemoved
@@ -195,6 +208,7 @@ export const MutationEventAppliers: {
   >
 } = {
   TitleAndDescriptionEdited: applyTitleAndDescriptionEdited,
+  ImageEdited: applyImageEdited,
   ContentAdded: applyContentAdded,
   ContentEdited: applyContentEdited,
   ContentRemoved: applyContentRemoved,

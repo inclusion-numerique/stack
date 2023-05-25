@@ -73,7 +73,7 @@ const Header = ({
           </div>
           <div className="fr-header__tools">
             <div className="fr-header__tools-links">
-              <ul className="fr-btns-group">
+              <ul className="fr-btns-group fr-btns-group--sm fr-btns-group--icon-left">
                 <li>
                   <Link
                     href="/ressources"
