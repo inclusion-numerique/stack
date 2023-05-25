@@ -14,7 +14,7 @@ export const uploadRouter = router({
     .input(
       z.object({
         file: fileValidation({
-          maxSizeInBytes: 5_000_000,
+          maxSizeInBytes: 20_000_000,
         }),
       }),
     )

@@ -121,7 +121,7 @@ export const HeaderUserMenu = ({
   return (
     <>
       <button
-        className="fr-nav__btn fr-btn fr-hidden fr-unhidden-lg"
+        className="fr-nav__btn fr-btn fr-btn--sm fr-hidden fr-unhidden-lg"
         type="button"
         aria-expanded="false"
         aria-controls="header-user-menu"

@@ -64,7 +64,7 @@ describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
       expectActionBarStatusWithDraftEdits()
     })
 
-    describe('Je peux éditer la base, titre, description', () => {
+    describe('Je peux éditer la base, titre, description et image', () => {
       /**
        * US
        *  - https://www.notion.so/Utilisateur-qui-dite-une-ressource-je-peux-modifier-les-infos-de-ma-ressource-403c0e6f96c246be8875f4ecb2da5a63
@@ -123,6 +123,46 @@ describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
         cy.contains('Description modifiée')
         cy.testId('resource-edition-state').should('have.text', 'Enregistré')
         cy.testId('resource-published-state').should('have.text', 'Brouillon')
+      })
+
+      it.only("Acceptation 3 - Edition de l'image", () => {
+        // Je vois un call to action pour editer l'image
+        cy.testId('edit-image-cancel').should('not.exist')
+        cy.testId('edit-image-submit').should('not.exist')
+        cy.testId('resource-image').should('not.exist')
+        cy.testId('resource-image-placeholder').should('exist')
+
+        // Je selectionne un fichier
+        cy.testId('resource-image-file-field').selectFile(
+          'cypress/fixtures/test_1px_image.png',
+        )
+
+        // Je peux annuler
+        cy.testId('edit-image-submit').should('exist')
+        cy.testId('edit-image-cancel').click()
+
+        cy.testId('resource-image-file-field').should('have.value', '')
+
+        cy.testId('edit-image-cancel').should('not.exist')
+        cy.testId('edit-image-submit').should('not.exist')
+
+        // Je peux soumettre un fichier
+        cy.testId('resource-image-file-field').selectFile(
+          'cypress/fixtures/test_1px_image.png',
+        )
+
+        cy.testId('edit-image-submit').click()
+        cy.wait('@mutation')
+
+        // Je vois l'image
+        cy.testId('resource-image-placeholder').should('not.exist')
+        cy.testId('resource-image').should('exist')
+
+        cy.testId('edit-image-cancel').should('not.exist')
+        cy.testId('edit-image-submit').should('not.exist')
+
+        // Le champ est disponible pour modifier l'image
+        cy.testId('resource-image-file-field').should('have.value', '')
       })
     })
 
