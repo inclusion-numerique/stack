@@ -122,33 +122,6 @@ const ResourceImageEdition = ({
     return () => subscription.unsubscribe()
   }, [watch, isEditingImage, setEditing])
 
-  const actionButtons = isEditingImage ? (
-    <ButtonsGroup
-      inlineLayoutWhen="md and up"
-      className="fr-mt-8v"
-      buttonsSize="small"
-      buttons={[
-        {
-          disabled,
-          priority: 'tertiary',
-          iconId: 'fr-icon-close-line',
-          children: 'Annuler',
-          type: 'button',
-          onClick: onCancel,
-          nativeButtonProps: { 'data-testid': 'edit-image-cancel' },
-        },
-        {
-          disabled,
-          priority: 'tertiary',
-          iconId: 'fr-icon-check-line',
-          children: 'Valider',
-          type: 'submit',
-          nativeButtonProps: { 'data-testid': 'edit-image-submit' },
-        },
-      ]}
-    />
-  ) : null
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className={image ? styles.container : styles.emptyContainer}>
@@ -190,7 +163,32 @@ const ResourceImageEdition = ({
             />
           </div>
         </div>
-        {actionButtons}
+        {isEditingImage && (
+          <ButtonsGroup
+            inlineLayoutWhen="md and up"
+            className="fr-mt-8v"
+            buttonsSize="small"
+            buttons={[
+              {
+                disabled,
+                priority: 'tertiary',
+                iconId: 'fr-icon-close-line',
+                children: 'Annuler',
+                type: 'button',
+                onClick: onCancel,
+                nativeButtonProps: { 'data-testid': 'edit-image-cancel' },
+              },
+              {
+                disabled,
+                priority: 'tertiary',
+                iconId: 'fr-icon-check-line',
+                children: 'Valider',
+                type: 'submit',
+                nativeButtonProps: { 'data-testid': 'edit-image-submit' },
+              },
+            ]}
+          />
+        )}
       </div>
     </form>
   )
