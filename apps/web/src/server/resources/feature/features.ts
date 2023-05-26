@@ -75,6 +75,15 @@ import {
   removeContentSecurityRules,
 } from '@app/web/server/resources/feature/RemoveContent.server'
 import {
+  ContentReordered,
+  ReorderContentCommandValidation,
+} from '@app/web/server/resources/feature/ReorderContent'
+import {
+  applyContentReordered,
+  handleReorderContent,
+  reorderContentSecurityRules,
+} from '@app/web/server/resources/feature/ReorderContent.server'
+import {
   ResourceCommandSecurityRule,
   ResourceCreationCommandHandler,
   ResourceMutationCommandHandler,
@@ -105,6 +114,7 @@ export const ResourceMutationCommandsValidation = z.discriminatedUnion('name', [
   ChangeBaseCommandValidation,
   AddContentCommandValidation,
   EditContentCommandValidation,
+  ReorderContentCommandValidation,
   RemoveContentCommandValidation,
   PublishCommandValidation,
 ])
@@ -136,6 +146,7 @@ export const ResourceMutationCommandHandlers: {
   ChangeBase: handleChangeBase,
   AddContent: handleAddContent,
   EditContent: handleEditContent,
+  ReorderContent: handleReorderContent,
   RemoveContent: handleRemoveContent,
   Publish: handlePublish,
 }
@@ -151,6 +162,7 @@ export const ResourceCommandSecurityRules: {
   ChangeBase: changeBaseSecurityRules,
   AddContent: addContentSecurityRules,
   EditContent: editContentSecurityRules,
+  ReorderContent: reorderContentSecurityRules,
   RemoveContent: removeContentSecurityRules,
   Publish: publishSecurityRules,
 }
@@ -167,6 +179,7 @@ export type HistoryResourceEvent =
   | TitleAndDescriptionEdited
   | ContentAdded
   | ContentEdited
+  | ContentReordered
   | ContentRemoved
   | ResourcePublished
 
@@ -197,6 +210,7 @@ export const MutationEventAppliers: {
   TitleAndDescriptionEdited: applyTitleAndDescriptionEdited,
   ContentAdded: applyContentAdded,
   ContentEdited: applyContentEdited,
+  ContentReordered: applyContentReordered,
   ContentRemoved: applyContentRemoved,
   BaseChanged: applyBaseChanged,
   Published: applyResourcePublished,

@@ -6,6 +6,7 @@ import ResourcesViewsAndMetadata from '@app/web/components/Resource/View/Resourc
 import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
 import { Resource } from '@app/web/server/resources/getResource'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
+import { getResourceSectionIdAttribute } from '@app/web/components/Resource/View/getResourceSectionIdAttribute'
 import styles from './ResourceContents.module.css'
 import ResourceSideMenu from './ResourceSideMenu'
 
@@ -72,11 +73,11 @@ const ResourceContents = ({
         />
       </div>
       <hr className="fr-mt-6v fr-mb-2v" />
-      {contents.map((content) => (
+      {contents.map((content, index) => (
         <div
           key={content.id}
           ref={contentRefs.current[content.id]}
-          id={`section-${content.id}`}
+          id={`section-${getResourceSectionIdAttribute(content, index)}`}
           className={styles.content}
         >
           <ContentView content={content} />

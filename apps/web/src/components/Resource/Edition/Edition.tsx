@@ -1,9 +1,11 @@
 'use client'
 
+import classNames from 'classnames'
 import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import AddContent from '@app/web/components/Resource/Edition/AddContent'
-import ContentEdition from '@app/web/components/Resource/Edition/ContentEdition'
+import ContentListEdition from '@app/web/components/Resource/Edition/ContentListEdition'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { ResourceMutationCommand } from '@app/web/server/resources/feature/features'
 import { Resource } from '@app/web/server/resources/getResource'
@@ -33,6 +35,8 @@ const Edition = ({
   draftResource: ResourceProjectionWithContext
   user: SessionUser
 }) => {
+  const router = useRouter()
+
   // Content or resource data currently being edited
   // Determines which component is in edition mode, and other component cannot switch to edit mode
   const [editing, setEditing] = useState<string | null>(null)
@@ -91,13 +95,14 @@ const Edition = ({
   const onPublish = async () => {
     try {
       // TODO this will first navigate to a "Publication" page for additional input
-      await sendCommand({
+      const result = await sendCommand({
         name: 'Publish',
         payload: {
           resourceId: resource.id,
           isPublic: true,
         },
       })
+      router.push(`/ressources/${result.resource.slug}`)
     } catch (error) {
       console.error('Could not publish resource', error)
       // TODO Have a nice error and handle edge cases server side
@@ -108,14 +113,14 @@ const Edition = ({
 
   return (
     <>
-      <div className="fr-container fr-pb-30v">
+      <div className={classNames('fr-container', styles.container)}>
         <BaseEdition
           resource={updatedDraftResource}
           user={user}
           sendCommand={sendCommand}
         />
-        <hr className="fr-my-4w" />
-        <div className="fr-mb-5w">
+        <hr className="fr-mt-6v fr-pb-8v fr-mb-0" />
+        <div className="fr-mb-8v">
           <EditableImage />
         </div>
         <TitleEdition
@@ -125,31 +130,17 @@ const Edition = ({
           setEditing={setEditing}
         />
         <hr className="fr-mt-4w" />
-        <div className={styles.title}>Contenu de la ressource</div>
-        <hr className="fr-mt-4w fr-mb-2w" />
-        {updatedDraftResource.contents.map((content, index) => {
-          const testId = `content-edition_${content.type}-${index}`
-          return (
-            <div
-              key={content.id}
-              data-testid={testId}
-              id={`content-${index + 1}`}
-              className={styles.content}
-            >
-              <ContentEdition
-                data-testid={testId}
-                content={content}
-                resource={draftResource}
-                sendCommand={sendCommand}
-                editing={editing}
-                setEditing={setEditing}
-              />
-              <hr className="fr-mt-5w fr-mb-2w" />
-            </div>
-          )
-        })}
-        <AddContent
+        <p className={styles.title}>Contenu de la ressource</p>
+        <ContentListEdition
+          contents={updatedDraftResource.contents}
           resource={draftResource}
+          sendCommand={sendCommand}
+          editionState={editionState}
+          editing={editing}
+          setEditing={setEditing}
+        />
+        <AddContent
+          resource={updatedDraftResource}
           sendCommand={sendCommand}
           editing={editing}
           setEditing={setEditing}
