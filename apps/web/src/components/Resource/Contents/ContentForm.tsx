@@ -30,12 +30,14 @@ const ContentForm = ({
   mode,
   type,
   'data-testid': dataTestId,
+  onDelete,
 }: {
   type: ContentType
   resource: ResourceProjection
   setEditing: Dispatch<SetStateAction<string | null>>
   sendCommand: SendCommand
   'data-testid'?: string
+  onDelete: () => void | Promise<void>
 } & (
   | { mode: 'add'; content?: undefined }
   | { mode: 'edit'; content: ContentProjection }
@@ -83,23 +85,6 @@ const ContentForm = ({
     }
   }
 
-  const onDelete = async () => {
-    if (mode === 'add') {
-      setEditing(null)
-      return
-    }
-    try {
-      await sendCommand({
-        name: 'RemoveContent',
-        payload: { resourceId: resource.id, id: content.id },
-      })
-      setEditing(null)
-    } catch (error) {
-      console.error(error)
-      // TODO handle deletion error (no internet / already deleted)
-    }
-  }
-
   let formContent: ReactNode
   switch (type) {
     case 'SectionTitle': {
@@ -125,39 +110,32 @@ const ContentForm = ({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} data-testid={dataTestId}>
-      {formContent}
-      <div className={styles.contentAction}>
-        {mode === 'edit' && (
+    <div className={styles.contentFormContainer}>
+      <form onSubmit={handleSubmit(onSubmit)} data-testid={dataTestId}>
+        {formContent}
+        <div className={styles.contentAction}>
           <Button
-            type="button"
-            iconId={'ri-draggable' as never}
-            title="Drag"
+            data-testid={dataTestId && `${dataTestId}__submit`}
             priority="tertiary no outline"
-            className={styles.dragButton}
+            iconId="fr-icon-check-line"
+            type="submit"
+            size="small"
+            disabled={isSubmitting}
+          >
+            Valider
+          </Button>
+          <Button
+            data-testid={dataTestId && `${dataTestId}__delete`}
+            type="button"
+            title="Supprimer le contenu"
+            priority="tertiary no outline"
+            iconId="fr-icon-delete-line"
+            size="small"
+            onClick={onDelete}
           />
-        )}
-        <Button
-          data-testid={dataTestId && `${dataTestId}__submit`}
-          priority="tertiary no outline"
-          iconId="fr-icon-check-line"
-          type="submit"
-          size="small"
-          disabled={isSubmitting}
-        >
-          Valider
-        </Button>
-        <Button
-          data-testid={dataTestId && `${dataTestId}__delete`}
-          type="button"
-          title="Supprimer le contenu"
-          priority="tertiary no outline"
-          iconId="fr-icon-delete-line"
-          size="small"
-          onClick={onDelete}
-        />
-      </div>
-    </form>
+        </div>
+      </form>
+    </div>
   )
 }
 

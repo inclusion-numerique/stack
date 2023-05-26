@@ -4,6 +4,7 @@ import ContentForm from '@app/web/components/Resource/Contents/ContentForm'
 import ContentView from '@app/web/components/Resource/Contents/ContentView'
 import type { SendCommand } from '@app/web/components/Resource/Edition/Edition'
 import styles from '@app/web/components/Resource/Edition/Edition.module.css'
+import { ResourceEditionState } from '@app/web/components/Resource/enums/ResourceEditionState'
 import { ContentProjection } from '@app/web/server/resources/feature/createResourceProjection'
 import { ResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
 
@@ -14,6 +15,8 @@ const ContentEdition = ({
   resource,
   content,
   'data-testid': dataTestId,
+  editionState,
+  onDelete,
 }: {
   resource: ResourceProjectionWithContext
   editing: string | null
@@ -21,39 +24,23 @@ const ContentEdition = ({
   sendCommand: SendCommand
   content: ContentProjection
   'data-testid'?: string
+  editionState: ResourceEditionState
+  onDelete: () => void | Promise<void>
 }) => {
   const editionMode = editing === content.id
 
   if (!editionMode) {
-    const onDelete = async () => {
-      await sendCommand({
-        name: 'RemoveContent',
-        payload: {
-          resourceId: resource.id,
-          id: content.id,
-        },
-      })
-      setEditing(null)
-    }
-
     return (
-      <>
+      <div className={styles.contentEdition}>
         <ContentView content={content} />
         <div className={styles.contentHoverableAction}>
-          <Button
-            data-testid={dataTestId ? `${dataTestId}_drag-button` : undefined}
-            iconId={'ri-draggable' as never}
-            title="Drag"
-            priority="tertiary no outline"
-            className={styles.dragButton}
-            type="button"
-          />
           <Button
             data-testid={dataTestId ? `${dataTestId}_edit-button` : undefined}
             priority="tertiary no outline"
             iconId="fr-icon-edit-line"
             type="button"
             size="small"
+            disabled={editionState !== ResourceEditionState.SAVED}
             onClick={() => {
               setEditing(content.id)
             }}
@@ -66,24 +53,28 @@ const ContentEdition = ({
             priority="tertiary no outline"
             iconId="fr-icon-delete-line"
             size="small"
+            disabled={editionState !== ResourceEditionState.SAVED}
             type="button"
             onClick={onDelete}
           />
         </div>
-      </>
+      </div>
     )
   }
 
   return (
-    <ContentForm
-      type={content.type}
-      mode="edit"
-      data-testid={dataTestId ? `${dataTestId}_form` : undefined}
-      resource={resource}
-      content={content}
-      setEditing={setEditing}
-      sendCommand={sendCommand}
-    />
+    <div className={styles.contentEdition}>
+      <ContentForm
+        type={content.type}
+        mode="edit"
+        data-testid={dataTestId ? `${dataTestId}_form` : undefined}
+        resource={resource}
+        content={content}
+        setEditing={setEditing}
+        sendCommand={sendCommand}
+        onDelete={onDelete}
+      />
+    </div>
   )
 }
 

@@ -20,6 +20,10 @@ const AddContent = ({
     setEditing(`add-${contentType}`)
   }
 
+  const onDelete = () => {
+    setEditing(null)
+  }
+
   const isAddingContentType =
     !!editing && editing.startsWith('add-')
       ? (editing?.split('-')[1] as ContentType)
@@ -33,6 +37,7 @@ const AddContent = ({
       resource={resource}
       setEditing={setEditing}
       sendCommand={sendCommand}
+      onDelete={onDelete}
     />
   ) : (
     <AddContentButton

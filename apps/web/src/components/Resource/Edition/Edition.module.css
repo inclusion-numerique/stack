@@ -1,12 +1,30 @@
+.container {
+  /* We need 4px on each side to allow overflow-x to not crop the outline of selected buttons */
+  max-width: var(--edition-container-max-width);
+
+  /* Enough room for the add button absolute collapsible choices to be displayable inside the container */
+  padding-bottom: 360px;
+}
+
 .title {
-  margin-top: 16px;
+  margin-top: 8px;
+  margin-bottom: 12px;
   color: var(--grey-425-625);
+}
+
+.contentList {
+  list-style: none;
+  margin: 32px 0;
+
+  &:empty {
+    margin: 0;
+  }
 }
 
 .contentAction,
 .contentHoverableAction {
   display: flex;
-  margin-top: 16px;
+  margin-top: 12px;
   justify-content: space-between;
 }
 
@@ -15,10 +33,50 @@
   pointer-events: none;
 }
 
+.dragButton {
+  position: absolute;
+  opacity: 1 !important;
+  pointer-events: none;
+  cursor: grab;
+  top: 12px;
+
+  /* 4px on the left to allow space for focus-visible outline */
+  left: 4px;
+  padding:4px 6px;
+
+  &:active{
+    cursor: grabbing;
+  }
+
+  &::before {
+    line-height: 20px;
+    font-size: 20px;
+  }
+}
+
 .content {
   position: relative;
 
-  &:hover {
+  /* Hide content during exit "shrink" animation */
+  overflow-y:hidden;
+
+  /**
+    Negative left margin + padding is for the hover drag handle (+ outline) to be inside the content div
+    -1px bottom margin is to hide the double-border between .contentEdition but keeping it for drag animation
+    Same thing on the right to allow the outline of focused button to be visible
+   */
+  margin: 0 -4px -1px -60px;
+  padding: 0 4px 0 44px;
+
+  /* Force background to hide background contents while dragging */
+  background: white;
+
+  &:hover, &:focus-within {
+    .dragButton {
+      opacity: 1 !important;
+      pointer-events: initial;
+    }
+
     .contentHoverableAction {
       opacity: 1;
       pointer-events: initial;
@@ -26,8 +84,8 @@
   }
 }
 
-.dragButton {
-  position: absolute;
-  top: 0;
-  left: -48px;
+.contentEdition {
+  border-bottom: var(--slim-grey-border);
+  border-top: var(--slim-grey-border);
+  padding: 16px 0;
 }
