@@ -17,6 +17,7 @@ textarea {
 
 :root {
   --slim-grey-border: 1px solid var(--border-default-grey);
+  --edition-container-max-width: 636px;
 }
 
 /* Extensions of DSFR */

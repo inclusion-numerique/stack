@@ -5,6 +5,7 @@ import React, { useRef, useState } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { ContentType } from '@prisma/client'
+import classNames from 'classnames'
 import styles from './AddContentButton.module.css'
 
 const contents = [
@@ -83,10 +84,20 @@ const AddContentButton = ({
               className={styles.content}
             >
               <Image src={content.image} width={24} height={24} alt="" />
-              <span className="fr-text--sm fr-mb-0">
-                {content.label} {content.description && ' · '}
+              <span className="fr-text--sm fr-text--medium fr-mb-0">
+                {content.label}
               </span>
-              {content.description && (
+              {!!content.description && (
+                <span
+                  className={classNames(
+                    'fr-text--sm fr-text--medium fr-mb-0',
+                    styles.dotSeparator,
+                  )}
+                >
+                  {' · '}
+                </span>
+              )}
+              {!!content.description && (
                 <span className="fr-text--xs fr-mb-0">
                   {content.description}
                 </span>

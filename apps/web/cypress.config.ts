@@ -21,6 +21,7 @@ export default defineConfig({
       // implement node event listeners here
       on('task', tasks)
     },
+    scrollBehavior: 'center',
     env: {
       INCLUSION_CONNECT_TEST_USER_EMAIL:
         process.env.INCLUSION_CONNECT_TEST_USER_EMAIL,

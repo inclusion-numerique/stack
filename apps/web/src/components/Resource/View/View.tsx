@@ -108,7 +108,7 @@ const View = ({
             visibleRefIndex={visibleRefIndex}
           />
         </div>
-        <div className="fr-col-12 fr-col-lg-8">
+        <div className="fr-col-12 fr-col-lg-8" id="contenu">
           <ResourceContents
             resource={resource}
             contentRefs={contentRefs}

@@ -81,7 +81,7 @@ export const createTestResourceCommands = ({
         type: 'Link',
         title: 'Vous avez vu mon lien',
         url: 'https://www.imdb.com/title/tt0357111/',
-        showPreview: true,
+        showPreview: false,
         caption: 'Il est beau hein !',
       },
     },
