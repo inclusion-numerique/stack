@@ -13,16 +13,9 @@ export const SignedOut: Story = {
   name: 'Utilisateur non connecté',
 }
 
-export const SignedInNoBases: Story = {
-  name: 'Utilisateur connecté - Sans bases',
+export const SignedIn: Story = {
+  name: 'Utilisateur connecté',
   args: { user: testSessionUser },
-}
-
-export const SignedInWithBases: Story = {
-  name: 'Utilisateur connecté - Avec bases',
-  args: {
-    user: testSessionUser,
-  },
 }
 
 /* TODO: components not working, issue with storybook and next/navigation
