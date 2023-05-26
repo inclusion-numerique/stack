@@ -31,9 +31,27 @@ textarea {
 .fr-header {
   filter: none;
 
+  /* Custom user menu */
+  .fr-header__menu-links {
+    &::after {
+      margin-top: 0;
+    }
+
+    .fr-btn {
+      margin-bottom: 0;
+      justify-content: flex-start !important;
+      padding: 12px 0 !important;
+      font-size: 16px !important;
+      line-height: 24px !important;
+      border-top: var(--slim-grey-border) !important;
+    }
+  }
+
   .fr-header__brand {
     filter: none;
     border-bottom: var(--slim-grey-border);
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
   }
 }
 
@@ -52,6 +70,8 @@ textarea {
 
     .fr-header__brand {
       border-bottom: none;
+      padding-top: 0;
+      padding-bottom: 0;
     }
   }
 }
