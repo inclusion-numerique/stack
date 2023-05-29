@@ -1,13 +1,39 @@
+import { SessionUser } from '@app/web/auth/sessionUser'
 import { prismaClient } from '@app/web/prismaClient'
 
-export const getResourcesList = async (take?: number, skip?: number) =>
-  prismaClient.resource.findMany({
+export const getResourcesList = async ({
+  take,
+  user,
+  skip,
+}: {
+  take?: number
+  skip?: number
+  user?: Pick<SessionUser, 'id'> | null
+}) => {
+  const whereResourceIsPublic = {
+    isPublic: true,
+    base: { isPublic: true },
+  }
+
+  const where = user
+    ? {
+        OR: [
+          whereResourceIsPublic,
+          // Public or created by user
+          { createdById: user.id },
+        ],
+      }
+    : whereResourceIsPublic
+
+  return prismaClient.resource.findMany({
+    where,
     select: {
       title: true,
       slug: true,
       created: true,
       updated: true,
       description: true,
+      isPublic: true,
       image: {
         select: {
           id: true,
@@ -24,6 +50,7 @@ export const getResourcesList = async (take?: number, skip?: number) =>
         select: {
           title: true,
           slug: true,
+          isPublic: true,
         },
       },
     },
@@ -35,6 +62,7 @@ export const getResourcesList = async (take?: number, skip?: number) =>
     skip,
     take,
   })
+}
 
 export type ResourceListItem = Exclude<
   Awaited<ReturnType<typeof getResourcesList>>,

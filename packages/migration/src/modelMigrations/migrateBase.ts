@@ -64,6 +64,7 @@ export const migrateBase = async ({
       : null,
     created: legacyBase.created,
     updated: legacyBase.modified,
+    isPublic: legacyBase.state === 'public',
   } satisfies Parameters<typeof transaction.base.upsert>[0]['update']
 
   return transaction.base.upsert({
