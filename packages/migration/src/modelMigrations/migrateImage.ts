@@ -1,9 +1,9 @@
 import { v4 } from 'uuid'
+import { prismaClient } from '@app/web/prismaClient'
+import type { Prisma } from '@prisma/client'
 import { migrationPrismaClient } from '@app/migration/migrationPrismaClient'
 import { FindManyItemType } from '@app/migration/utils/findManyItemType'
 import { LegacyIdMap } from '@app/migration/utils/legacyIdMap'
-import { prismaClient } from '@app/web/prismaClient'
-import type { Prisma } from '@prisma/client'
 
 export const getLegacyImages = async () => {
   // Legacy dataset has images in the resizableimage table

@@ -1,6 +1,6 @@
+import { Base } from '@prisma/client'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { Resource } from '@app/web/server/resources/getResource'
-import { Base } from '@prisma/client'
 
 export const canViewResource = (
   user: Pick<SessionUser, 'id'>,

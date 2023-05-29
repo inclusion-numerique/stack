@@ -11,7 +11,8 @@ const resource = {
     'Lorem Ipsul Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum quam mauris sit lacinia turpis sed vitae vel. Venenatis in in neque interdum nec facilisi mauris nunc vitae turpis sed vitae vel. Venenatis adipiscing elit.',
   created: new Date('1998-07-12'),
   updated: new Date('2022-07-12'),
-  base: { title: 'Titre de la base', slug: 'titre-de-la-base' },
+  base: { title: 'Titre de la base', slug: 'titre-de-la-base', isPublic: true },
+  isPublic: true,
   createdBy: {
     id: '1',
     name: 'Jean Biche',

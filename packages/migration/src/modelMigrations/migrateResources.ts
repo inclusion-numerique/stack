@@ -1,19 +1,19 @@
+import { output } from '@app/cli/output'
+import { prismaClient } from '@app/web/prismaClient'
+import type { MigrateResourceCommand } from '@app/web/server/resources/feature/MigrateResource'
+import type { ResourceProjection } from '@app/web/server/resources/feature/createResourceProjection'
+import { handleResourceCreationCommand } from '@app/web/server/resources/feature/handleResourceCreationCommand'
+import { createSlug } from '@app/web/utils/createSlug'
 import { chunk } from 'lodash'
 import { v4 } from 'uuid'
-import { output } from '@app/cli/output'
-import { LegacyToNewIdHelper } from '@app/migration/legacyToNewIdHelper'
-import { migrationPrismaClient } from '@app/migration/migrationPrismaClient'
-import { transformContent } from '@app/migration/modelMigrations/transformContent'
+import type { FindManyItemType } from '@app/migration/utils/findManyItemType'
 import {
   SlugToLegacyIdMap,
   computeSlugAndUpdateExistingSlugs,
 } from '@app/migration/utils/computeSlugAndUpdateExistingSlugs'
-import { FindManyItemType } from '@app/migration/utils/findManyItemType'
-import { prismaClient } from '@app/web/prismaClient'
-import { MigrateResourceCommand } from '@app/web/server/resources/feature/MigrateResource'
-import { ResourceProjection } from '@app/web/server/resources/feature/createResourceProjection'
-import { handleResourceCreationCommand } from '@app/web/server/resources/feature/handleResourceCreationCommand'
-import { createSlug } from '@app/web/utils/createSlug'
+import { transformContent } from '@app/migration/modelMigrations/transformContent'
+import { migrationPrismaClient } from '@app/migration/migrationPrismaClient'
+import type { LegacyToNewIdHelper } from '@app/migration/legacyToNewIdHelper'
 
 export const getLegacyResources = () =>
   migrationPrismaClient.main_resource.findMany({

@@ -1,3 +1,4 @@
+import { prismaClient } from '@app/web/prismaClient'
 import {
   createLegacyToNewIdHelper,
   createLegacyToNewKeyHelper,
@@ -20,7 +21,6 @@ import {
 import { migrateUploads } from '@app/migration/modelMigrations/migrateUploads'
 import { migrateUsers } from '@app/migration/modelMigrations/migrateUsers'
 import { computeSlugAndUpdateExistingSlugs } from '@app/migration/utils/computeSlugAndUpdateExistingSlugs'
-import { prismaClient } from '@app/web/prismaClient'
 
 // eslint-disable-next-line no-console
 const output = console.log

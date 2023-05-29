@@ -1,7 +1,7 @@
 /* Import dsfr with url, outside of webpack build, as a static file */
 @import url('/dsfr/dsfr.min.css');
 @import url('/dsfr/utility/utility.min.css');
-@import url('https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css');
+@import url('https://cdn.jsdelivr.net/npm/remixicon@3.3.0/fonts/remixicon.css');
 
 /* Layout setup */
 html,
@@ -43,7 +43,7 @@ textarea {
       padding: 8px 16px !important;
       font-size: 0.875rem !important;
     }
-    
+
     .icon-only {
       padding: 8px 12px !important;
     }

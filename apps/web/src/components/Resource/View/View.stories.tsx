@@ -1,6 +1,6 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import View from '@app/web/components/Resource/View/View'
-import {
+import type {
   Resource,
   ResourceContent,
 } from '@app/web/server/resources/getResource'
@@ -18,7 +18,12 @@ const resource = {
   updated: new Date('2022-07-12'),
   published: new Date('2022-07-12'),
   baseId: '2',
-  base: { id: '2', title: 'Titre de la base', slug: 'titre-de-la-base' },
+  base: {
+    id: '2',
+    title: 'Titre de la base',
+    slug: 'titre-de-la-base',
+    isPublic: true,
+  },
   createdById: '1',
   createdBy: {
     id: '1',

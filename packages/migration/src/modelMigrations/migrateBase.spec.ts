@@ -1,11 +1,11 @@
 import { mockReset } from 'jest-mock-extended'
+import { createSlug } from '@app/web/utils/createSlug'
 import { createLegacyToNewIdHelper } from '@app/migration/legacyToNewIdHelper'
 import {
   LegacyBase,
   migrateBase,
 } from '@app/migration/modelMigrations/migrateBase'
 import { createMockPrisma } from '@app/migration/test/createPrismaMock'
-import { createSlug } from '@app/web/utils/createSlug'
 
 jest.mock('uuid', () => ({ v4: () => '0000' }))
 

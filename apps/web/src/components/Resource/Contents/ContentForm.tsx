@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import Alert from '@codegouvfr/react-dsfr/Alert'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { ContentType } from '@prisma/client'
 import SectionTitleEdition from '@app/web/components/Resource/Contents/SectionTitleEdition'
 import type { SendCommand } from '@app/web/components/Resource/Edition/Edition'
 import styles from '@app/web/components/Resource/Edition/Edition.module.css'
@@ -20,7 +21,6 @@ import {
 } from '@app/web/server/resources/feature/createResourceProjection'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { removeNullAndUndefinedValues } from '@app/web/utils/removeNullAndUndefinedValues'
-import { ContentType } from '@prisma/client'
 import TextEdition from './TextEdition'
 
 const ContentForm = ({

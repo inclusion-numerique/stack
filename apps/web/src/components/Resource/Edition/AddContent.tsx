@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction } from 'react'
+import { ContentType } from '@prisma/client'
 import ContentForm from '@app/web/components/Resource/Contents/ContentForm'
 import AddContentButton from '@app/web/components/Resource/Edition/AddContentButton'
 import type { SendCommand } from '@app/web/components/Resource/Edition/Edition'
 import { ResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
-import { ContentType } from '@prisma/client'
 
 const AddContent = ({
   resource,

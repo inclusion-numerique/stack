@@ -1,12 +1,12 @@
 import { v4 } from 'uuid'
+import { prismaClient } from '@app/web/prismaClient'
+import { createSlug } from '@app/web/utils/createSlug'
+import type { Prisma } from '@prisma/client'
 import { LegacyToNewIdHelper } from '@app/migration/legacyToNewIdHelper'
 import { migrationPrismaClient } from '@app/migration/migrationPrismaClient'
 import { SlugToLegacyIdMap } from '@app/migration/utils/computeSlugAndUpdateExistingSlugs'
 import { FindManyItemType } from '@app/migration/utils/findManyItemType'
 import { LegacyIdMap } from '@app/migration/utils/legacyIdMap'
-import { prismaClient } from '@app/web/prismaClient'
-import { createSlug } from '@app/web/utils/createSlug'
-import type { Prisma } from '@prisma/client'
 
 export const getLegacyBases = () => migrationPrismaClient.main_base.findMany()
 

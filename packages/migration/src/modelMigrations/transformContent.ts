@@ -1,7 +1,7 @@
 import { v4 } from 'uuid'
-import { LegacyToNewIdHelper } from '@app/migration/legacyToNewIdHelper'
-import { LegacyResource } from '@app/migration/modelMigrations/migrateResources'
-import { MigrateResourceCommand } from '@app/web/server/resources/feature/MigrateResource'
+import type { MigrateResourceCommand } from '@app/web/server/resources/feature/MigrateResource'
+import type { LegacyToNewIdHelper } from '@app/migration/legacyToNewIdHelper'
+import type { LegacyResource } from '@app/migration/modelMigrations/migrateResources'
 
 type TransformContentResult =
   MigrateResourceCommand['payload']['contents'][number]

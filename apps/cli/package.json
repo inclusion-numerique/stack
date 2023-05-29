@@ -14,17 +14,17 @@
     "node": "^18.16"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.338.0",
+    "@aws-sdk/client-s3": "^3.341.0",
     "@commander-js/extra-typings": "^10.0.3",
     "axios": "^1.4.0",
     "axios-retry": "^3.5.0",
     "commander": "^10.0.1",
-    "csv-parse": "^5.3.10",
+    "csv-parse": "^5.4.0",
     "csv-stringify": "^6.4.0",
     "dotenv": "^16.0.3",
     "form-data": "^4.0.0",
     "lodash": "^4.17.21",
-    "octokit": "^2.0.18",
+    "octokit": "^2.0.19",
     "picocolors": "^1.0.0",
     "slug": "^8.2.2",
     "ts-node": "^10.9.1",
@@ -33,7 +33,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.194",
+    "@types/lodash": "^4.14.195",
     "@types/node": "^18.16.14",
     "@types/slug": "^5.0.3",
     "eslint": "^8.41.0",

@@ -1,5 +1,5 @@
-import { computeSlugAndUpdateExistingSlugs } from '@app/migration/utils/computeSlugAndUpdateExistingSlugs'
 import * as createSlugModule from '@app/web/utils/createSlug'
+import { computeSlugAndUpdateExistingSlugs } from '@app/migration/utils/computeSlugAndUpdateExistingSlugs'
 
 describe('computeSlugAndUpdateExistingSlugs', () => {
   const createSlugSpy = jest.spyOn(createSlugModule, 'createSlug')

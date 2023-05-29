@@ -64,6 +64,8 @@ module.exports = {
             },
             extensions: ['.ts'],
           },
+          typescript: 'true',
+          node: 'true',
         },
       },
       plugins: ['@typescript-eslint', 'import', 'prettier'],
@@ -82,12 +84,6 @@ module.exports = {
         'plugin:unicorn/recommended',
         'prettier',
       ],
-      settings: {
-        'import/resolver': {
-          typescript: 'true',
-          node: 'true',
-        },
-      },
       rules: {
         'no-irregular-whitespace': 'off',
         'no-restricted-syntax': 'off',

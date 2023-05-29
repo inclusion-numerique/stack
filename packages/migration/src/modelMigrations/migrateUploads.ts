@@ -2,10 +2,10 @@ import { chunk } from 'lodash'
 import mime from 'mime-types'
 import { ListObjectsV2Command } from '@aws-sdk/client-s3'
 import { output } from '@app/cli/output'
-import { UpsertCreateType } from '@app/migration/utils/UpsertCreateType'
 import { prismaClient } from '@app/web/prismaClient'
 import { legacyS3Client } from '@app/web/server/s3/legacyS3'
 import { ServerWebAppConfig } from '@app/web/webAppConfig'
+import { UpsertCreateType } from '@app/migration/utils/UpsertCreateType'
 
 // There is ~4500 files uploaded dated 2023-05-07
 // There is also ~4000 cropped images of low quality that we will discard
