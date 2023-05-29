@@ -26,6 +26,18 @@ textarea {
 
 /* DSFR Overrides and custom theming */
 
+/* Modal in mobile view */
+
+@media (max-width: 767px) {
+  .fr-modal__header {
+    display: none;
+  }
+
+  .fr-modal__footer {
+    border-top: var(--slim-grey-border);
+  }
+}
+
 /* Remove header dropshadow */
 
 .fr-header {
