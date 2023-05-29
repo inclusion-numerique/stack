@@ -4,11 +4,12 @@ import Image from 'next/image'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
+import * as Sentry from '@sentry/nextjs'
 import { zodResolver } from '@hookform/resolvers/zod'
 import FileFormField from '@app/ui/components/Form/FileFormField'
 import { fileValidation } from '@app/ui/components/Form/utils/fileValidation.client'
 import { formatByteSize } from '@app/ui/utils/formatByteSize'
+import Button from '@codegouvfr/react-dsfr/Button'
 import type { SendCommand } from '@app/web/components/Resource/Edition/Edition'
 import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
 import { useFileUpload } from '@app/web/hooks/useFileUpload'
@@ -101,22 +102,42 @@ const ResourceImageEdition = ({
     setUploadProgressInfo('')
   }
 
+  const onDelete = async () => {
+    // 1. Set edition state to avoid other operations while deleting
+
+    setEditing('image')
+
+    // 2. We send the edition command without image id
+    await sendCommand({
+      name: 'EditImage',
+      payload: {
+        imageId: null,
+        resourceId: id,
+      },
+    })
+
+    // 3. We reset the form
+    if (isEditingImage) {
+      setEditing(null)
+    }
+    reset()
+    setUploadProgressInfo('')
+  }
+
   const fileFieldHint = `Taille maximale : ${formatByteSize(
     imageMaxSize,
   )}. Formats
               supportés : ${imageAllowedExtensions.join(', ')}.`
   const disabled = isSubmitting || isEditingAnotherContent
 
-  const onCancel = () => {
-    reset()
-    setEditing(null)
-  }
-
-  // Notify edition page that we are editing image when user is chosing a different image
+  // Form is automatically submited without user validation on image file change
   useEffect(() => {
     const subscription = watch((value) => {
       if (value.file && !isEditingImage) {
         setEditing('image')
+        handleSubmit(onSubmit)().catch((error) => {
+          Sentry.captureException(error)
+        })
       }
     })
     return () => subscription.unsubscribe()
@@ -125,70 +146,52 @@ const ResourceImageEdition = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className={image ? styles.container : styles.emptyContainer}>
-        <div className={styles.imageAndInput}>
-          {image ? (
-            <ResponsiveUploadedImage
-              id={image.id}
-              alt={image.altText ?? ''}
-              data-testid="resource-image"
-              breakpoints={[
-                { media: '(max-width: 320px)', width: 320 - 32 },
-                { media: '(max-width: 576px)', width: 576 - 32 },
-                { media: '(max-width: 768px)', width: 768 - 32 },
-                { media: '(min-width: 768px)', width: 800 },
-              ]}
-            />
-          ) : (
-            <Image
-              src="/images/image-placeholder.svg"
-              alt="Image vide"
-              data-testid="resource-image-placeholder"
-              width={40}
-              height={40}
-            />
-          )}
-          <div>
-            <FileFormField
-              label={
-                image
-                  ? "Remplacer l'image"
-                  : 'Ajouter une image de présentation pour attirer les visiteurs'
-              }
-              hint={fileFieldHint}
-              data-testid="resource-image-file-field"
-              control={control}
-              path="file"
-              disabled={disabled}
-              info={uploadProgressInfo}
-            />
-          </div>
-        </div>
-        {isEditingImage && (
-          <ButtonsGroup
-            inlineLayoutWhen="md and up"
-            className="fr-mt-8v"
-            buttonsSize="small"
-            buttons={[
-              {
-                disabled,
-                priority: 'tertiary',
-                iconId: 'fr-icon-close-line',
-                children: 'Annuler',
-                type: 'button',
-                onClick: onCancel,
-                nativeButtonProps: { 'data-testid': 'edit-image-cancel' },
-              },
-              {
-                disabled,
-                priority: 'tertiary',
-                iconId: 'fr-icon-check-line',
-                children: 'Valider',
-                type: 'submit',
-                nativeButtonProps: { 'data-testid': 'edit-image-submit' },
-              },
+        {image ? (
+          <ResponsiveUploadedImage
+            id={image.id}
+            alt={image.altText ?? ''}
+            data-testid="resource-image"
+            breakpoints={[
+              { media: '(max-width: 320px)', width: 320 - 32 },
+              { media: '(max-width: 576px)', width: 576 - 32 },
+              { media: '(max-width: 768px)', width: 768 - 32 },
+              { media: '(min-width: 768px)', width: 800 },
             ]}
           />
+        ) : (
+          <Image
+            src="/images/image-placeholder.svg"
+            alt="Image vide"
+            data-testid="resource-image-placeholder"
+            width={56}
+            height={56}
+          />
         )}
+        <div className={styles.inputContainer}>
+          <FileFormField
+            label={
+              image
+                ? "Remplacer l'image de présentation"
+                : 'Ajouter une image de présentation pour attirer les visiteurs'
+            }
+            hint={fileFieldHint}
+            data-testid="resource-image-file-field"
+            control={control}
+            path="file"
+            disabled={disabled}
+            info={uploadProgressInfo}
+          />
+          {!!image && (
+            <Button
+              iconId="fr-icon-delete-bin-line"
+              type="button"
+              size="small"
+              title="Supprimer l'image de présentation"
+              priority="tertiary no outline"
+              onClick={onDelete}
+            />
+          )}
+        </div>
       </div>
     </form>
   )
