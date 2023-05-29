@@ -1,6 +1,6 @@
-// app.css must be the first import for webpack css chunks to work properly
+// setup.ts must be the first import for webpack css chunks to work properly
 // eslint-disable-next-line import/order
-import '@app/web/app/app.css'
+import '@app/web/app/setup'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import React, { PropsWithChildren } from 'react'
