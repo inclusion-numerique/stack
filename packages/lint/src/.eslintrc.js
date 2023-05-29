@@ -11,6 +11,7 @@ module.exports = {
     'airbnb/base',
     'airbnb/hooks',
     'plugin:eslint-comments/recommended',
+    'plugin:import/recommended',
     'plugin:jest/recommended',
     'plugin:promise/recommended',
     'plugin:unicorn/recommended',
@@ -74,11 +75,19 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
         'plugin:eslint-comments/recommended',
+        'plugin:import/recommended',
+        'plugin:import/typescript',
         'plugin:jest/recommended',
         'plugin:promise/recommended',
         'plugin:unicorn/recommended',
         'prettier',
       ],
+      settings: {
+        'import/resolver': {
+          typescript: 'true',
+          node: 'true',
+        },
+      },
       rules: {
         'no-irregular-whitespace': 'off',
         'no-restricted-syntax': 'off',
@@ -86,8 +95,23 @@ module.exports = {
         'no-continue': 'off',
         // Typescript compiler will avoid errors based on inconsistent returns
         'consistent-return': 'off',
+        'import/order': [
+          'error',
+          {
+            pathGroups: [
+              {
+                pattern: '@app/**',
+                group: 'external',
+                position: 'after',
+              },
+            ],
+          },
+        ],
         // Module resolve leads to false negatives in monorepo, typescript compiler will handle any error
-        'import/no-unresolved': [2, { ignore: ['^@app/'] }],
+        'import/no-unresolved': [
+          2,
+          { ignore: ['^@app/', '^react-hook-form/dist'] },
+        ],
         // This rule is unreliable in monorepos and typescript compiler will help on bad imports
         'import/no-extraneous-dependencies': 'off',
         '@typescript-eslint/unbound-method': 'off',
