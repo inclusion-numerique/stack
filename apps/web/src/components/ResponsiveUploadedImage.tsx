@@ -1,4 +1,3 @@
-/* eslint react/jsx-props-no-spreading: off */
 import React, { ComponentProps } from 'react'
 import {
   GenerateUploadedImageSourceSetsInput,
@@ -18,6 +17,7 @@ const ResponsiveUploadedImage = ({
       {sources.map(({ media, srcSet }) => (
         <source key={media} media={media} srcSet={srcSet} />
       ))}
+      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
       <img srcSet={sources.at(-1)?.srcSet} {...imgProps} />
     </picture>
   )

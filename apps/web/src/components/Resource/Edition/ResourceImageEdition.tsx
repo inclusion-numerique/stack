@@ -73,19 +73,22 @@ const ResourceImageEdition = ({
   const onSubmit = async (data: ImageEditionFormData) => {
     // When the user submits a file, it has been validated client side by fileValidation()
 
-    // 1. We create a signed url and upload the file to the storage
+    // 1. We set edition state to avoid other operations while uploading
+    setEditing('image')
+
+    // 2. We create a signed url and upload the file to the storage
     const uploaded = await fileUpload.upload(data.file)
     if (!uploaded) {
       // Upload failed, error will be displayed from hooks states
       return
     }
 
-    // 2. We create an image based on the uploaded file
+    // 3. We create an image based on the uploaded file
     const imageCreationResult = await createImage.mutateAsync({
       file: uploaded,
     })
 
-    // 3. We send the edition command with the created image id
+    // 4. We send the edition command with the created image id
     await sendCommand({
       name: 'EditImage',
       payload: {
@@ -94,10 +97,8 @@ const ResourceImageEdition = ({
       },
     })
 
-    // 4. We reset the form
-    if (isEditingImage) {
-      setEditing(null)
-    }
+    // 5. We reset the form
+    setEditing(null)
     reset()
     setUploadProgressInfo('')
   }
@@ -117,9 +118,7 @@ const ResourceImageEdition = ({
     })
 
     // 3. We reset the form
-    if (isEditingImage) {
-      setEditing(null)
-    }
+    setEditing(null)
     reset()
     setUploadProgressInfo('')
   }
@@ -134,7 +133,6 @@ const ResourceImageEdition = ({
   useEffect(() => {
     const subscription = watch((value) => {
       if (value.file && !isEditingImage) {
-        setEditing('image')
         handleSubmit(onSubmit)().catch((error) => {
           Sentry.captureException(error)
         })
@@ -189,6 +187,9 @@ const ResourceImageEdition = ({
               title="Supprimer l'image de présentation"
               priority="tertiary no outline"
               onClick={onDelete}
+              nativeButtonProps={{
+                'data-testid': 'resource-image-delete',
+              }}
             />
           )}
         </div>
