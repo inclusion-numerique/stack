@@ -1,5 +1,5 @@
-import * as dotenv from 'dotenv'
 import { resolve } from 'node:path'
+import * as dotenv from 'dotenv'
 import { createNodeModulesTransformIgnorePattern } from './transformIgnore'
 
 // import meta does not work in jest env

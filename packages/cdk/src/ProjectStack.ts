@@ -1,9 +1,5 @@
 import { TerraformStack } from 'cdktf'
 import { Construct } from 'constructs'
-import { environmentVariablesFromList } from '@app/cdk/environmentVariable'
-import { ProjectCdkOutput } from '@app/cdk/getCdkOutput'
-import { createOutput } from '@app/cdk/output'
-import { terraformBackend } from '@app/cdk/terraformBackend'
 import {
   chromaticAppId,
   cockpitGrafanaEditors,
@@ -23,6 +19,10 @@ import {
   sentryUrl,
   smtpPort,
 } from '@app/config/config'
+import { environmentVariablesFromList } from '@app/cdk/environmentVariable'
+import { ProjectCdkOutput } from '@app/cdk/getCdkOutput'
+import { createOutput } from '@app/cdk/output'
+import { terraformBackend } from '@app/cdk/terraformBackend'
 import { Cockpit } from '@app/scaleway/cockpit'
 import { CockpitGrafanaUser } from '@app/scaleway/cockpit-grafana-user'
 import { CockpitToken } from '@app/scaleway/cockpit-token'

@@ -1,3 +1,6 @@
+// app.css must be the first import for webpack css chunks to work properly
+// eslint-disable-next-line import/order
+import '@app/web/app/app.css'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { PropsWithChildren } from 'react'
@@ -6,7 +9,6 @@ import { Dsfr } from '@app/web/app/Dsfr'
 import { EnvInformation } from '@app/web/app/EnvInformation'
 import { Matomo } from '@app/web/app/Matomo'
 import { PreloadResources } from '@app/web/app/PreloadResources'
-import '@app/web/app/app.css'
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
 
 declare module '@codegouvfr/react-dsfr/link' {
