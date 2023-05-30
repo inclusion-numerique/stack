@@ -1,20 +1,16 @@
 'use client'
 
-import { useEffect } from 'react'
 import { UseFormReturn } from 'react-hook-form'
-import { TRPCClientErrorLike } from '@trpc/client'
-import { UseTRPCQueryResult } from '@trpc/react-query/dist/shared'
-import { inferRouterOutputs } from '@trpc/server'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
 import InputFormField from '@app/ui/components/Form/InputFormField'
-import { AddContentCommand } from '@app/web/server/resources/feature/AddContent'
-import { EditContentCommand } from '@app/web/server/resources/feature/EditContent'
-import { AppRouter } from '@app/web/server/rpc/appRouter'
 import {
   linkCaptionMaxLength,
   linkTitleMaxLength,
 } from '@app/web/server/rpc/resource/utils'
-import LinkPreview from './LinkPreview'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { ContentPayload } from '@app/web/server/resources/feature/Content'
+import { Metadata } from '@app/web/server/rpc/metadata/getMetadataFromDocument'
+import DynamicLinkEditionPreview from '@app/web/components/Resource/Contents/DynamicLinkEditionPreview'
 
 const titleInfo = (title: string | null) =>
   `${title?.length ?? 0}/${linkTitleMaxLength} caractères`
@@ -22,66 +18,80 @@ const titleInfo = (title: string | null) =>
 const captionInfo = (caption: string | null) =>
   `${caption?.length ?? 0}/${linkCaptionMaxLength} caractères`
 
-export type LinkEditionProps = {
-  form: UseFormReturn<AddContentCommand | EditContentCommand>
-  metaData: UseTRPCQueryResult<
-    inferRouterOutputs<AppRouter>['metaData']['get'],
-    TRPCClientErrorLike<AppRouter>
-  > | null
-}
-
 const LinkEdition = ({
-  form: { control, watch, setValue, getValues },
-  metaData,
-}: LinkEditionProps) => {
-  const title = watch('payload.title')
-  const caption = watch('payload.caption')
+  form: { watch, setValue, getFieldState, control },
+}: {
+  form: UseFormReturn<ContentPayload>
+}) => {
+  const title = watch('title')
+  const caption = watch('caption')
+  const showPreview = watch('showPreview')
+  const url = watch('url')
+  const linkTitle = watch('linkTitle')
+  const linkDescription = watch('linkDescription')
+  const linkImageUrl = watch('linkImageUrl')
+  const urlValid = !!url && !getFieldState('url').invalid
 
-  useEffect(() => {
-    if (metaData && metaData.isSuccess) {
-      setValue('payload.linkDescription', metaData.data.description, {
-        shouldDirty: true,
-      })
-      setValue('payload.linkTitle', metaData.data.title, { shouldDirty: true })
-    }
-  }, [metaData, setValue])
+  console.log('FORM RENDER', {
+    title,
+    caption,
+    showPreview,
+    url,
+    linkTitle,
+    linkDescription,
+    linkImageUrl,
+    urlValid,
+  })
+
+  const onMetadataUpdate = (metadata: Metadata) => {
+    setValue('linkDescription', metadata.description, {
+      shouldDirty: true,
+    })
+    setValue('linkTitle', metadata.title, {
+      shouldDirty: true,
+    })
+    setValue('linkImageUrl', metadata.imageUrl, {
+      shouldDirty: true,
+    })
+  }
 
   return (
     <>
       <InputFormField
         data-testid="link-title-input"
         control={control}
-        path="payload.title"
+        path="title"
         label="Titre du lien"
         info={titleInfo(title)}
       />
       <InputFormField
         data-testid="link-url-input"
         control={control}
-        path="payload.url"
+        path="url"
         label="Copiez le lien de l'URL ici"
         placeholder="https://"
       />
       <CheckboxFormField
         data-testid="link-show-preview-radio"
         control={control}
-        path="payload.showPreview"
+        path="showPreview"
+        disabled={!urlValid}
         label="Afficher un aperçu visuel du lien"
       />
-      {metaData && metaData.isSuccess && (
-        <LinkPreview
-          content={{
-            linkTitle: metaData.data.title,
-            linkDescription: metaData.data.description,
-            url: getValues('payload.url'),
-          }}
+      {showPreview && urlValid && (
+        <DynamicLinkEditionPreview
+          url={url}
+          onUpdate={onMetadataUpdate}
+          title={linkTitle ?? null}
+          description={linkDescription ?? null}
+          imageUrl={linkImageUrl ?? null}
         />
       )}
       <InputFormField
         type="textarea"
         data-testid="link-caption-input"
         control={control}
-        path="payload.caption"
+        path="caption"
         label="Légende"
         info={captionInfo(caption)}
       />
@@ -89,4 +99,4 @@ const LinkEdition = ({
   )
 }
 
-export default LinkEdition
+export default withTrpc(LinkEdition)

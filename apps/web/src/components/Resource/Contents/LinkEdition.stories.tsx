@@ -1,12 +1,9 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Meta, StoryObj } from '@storybook/react'
-import { AddContentCommand } from '@app/web/server/resources/feature/AddContent'
-import {
-  EditContentCommand,
-  EditContentCommandValidation,
-} from '@app/web/server/resources/feature/EditContent'
-import LinkEdition, { LinkEditionProps } from './LinkEdition'
+import { EditContentCommandValidation } from '@app/web/server/resources/feature/EditContent'
+import { ContentPayload } from '@app/web/server/resources/feature/Content'
+import LinkEdition from './LinkEdition'
 
 export default {
   title: 'Ressource/Content/Link/Edition',
@@ -15,31 +12,24 @@ export default {
 
 type Story = StoryObj<typeof LinkEdition>
 
-const Template = ({ metaData }: Omit<LinkEditionProps, 'form'>) => {
-  const form = useForm<EditContentCommand | AddContentCommand>({
+const Template = () => {
+  const form = useForm<ContentPayload>({
     resolver: zodResolver(EditContentCommandValidation),
     reValidateMode: 'onChange',
     mode: 'all',
     defaultValues: {
-      name: 'EditContent',
-      payload: {
-        resourceId: 'resourceId',
-        title: 'Titre du lien',
-      },
+      title: 'Titre du lien',
     },
   })
 
   return (
     <form>
-      <LinkEdition form={form} metaData={metaData} />
+      <LinkEdition form={form} />
     </form>
   )
 }
 
 export const Default: Story = {
   name: 'Edition',
-  render: (args) => <Template {...args} />,
-  args: {
-    metaData: null,
-  },
+  render: () => <Template />,
 }

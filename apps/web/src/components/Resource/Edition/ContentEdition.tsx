@@ -26,7 +26,6 @@ const ContentEdition = ({
 
   if (!editionMode) {
     const onDelete = async () => {
-      // TODO: add confirmation modal
       await sendCommand({
         name: 'RemoveContent',
         payload: {

@@ -1,23 +1,44 @@
 import Link from 'next/link'
 import React from 'react'
-import { ResourceContent } from '@app/web/server/resources/getResource'
+import classNames from 'classnames'
+import { externalImageLoader } from '@app/web/utils/externalImageLoader'
 import styles from './LinkPreview.module.css'
 
 const LinkPreview = ({
-  content: { linkTitle, linkDescription, url },
+  title,
+  description,
+  url,
+  imageUrl,
 }: {
-  content: Pick<ResourceContent, 'linkTitle' | 'linkDescription' | 'url'>
-}) =>
-  url ? (
-    <Link href={url} target="_blank" className={styles.link}>
-      <div className={styles.preview} data-testid="link-preview">
-        <p className="fr-mb-8px">{linkTitle}</p>
-        <p className="fr-hint-text fr-mb-0">{linkDescription}</p>
-        <p className="fr-text--sm fr-mb-0">
-          <b>{url}</b>
-        </p>
+  title?: string | null
+  description?: string | null
+  url: string
+  imageUrl?: string | null
+}) => (
+  <Link href={url} target="_blank" className={styles.linkPreview}>
+    <div className={styles.contents} data-testid="link-preview">
+      {!!title && <p className="fr-text--bold">{title}</p>}
+      {!!description && <p className="fr-hint-text fr-mt-2v">{description}</p>}
+      <div className={classNames('fr-mt-2v', styles.urlContainer)}>
+        <span
+          className={classNames(
+            'fr-icon--sm fr-icon-link fr-mr-1w',
+            styles.icon,
+          )}
+        />
+        <p className={classNames('fr-mb-0', styles.url)}>{url}</p>
       </div>
-    </Link>
-  ) : null
+    </div>
+    {!!imageUrl && (
+      <picture>
+        <img
+          src={externalImageLoader({ src: imageUrl, width: 200 })}
+          className={styles.image}
+          alt={title ?? ''}
+        />
+      </picture>
+    )}
+  </Link>
+)
 
 export default LinkPreview
