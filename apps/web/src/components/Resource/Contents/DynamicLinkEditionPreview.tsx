@@ -20,7 +20,6 @@ const DynamicLinkEditionPreview = ({
     { url },
     {
       onSuccess: (metadata) => {
-        console.log('METADATA RESPONSE', metadata)
         if ('error' in metadata) {
           setMetadataError(
             "Impossible de récupérer l'aperçu du lien, veuillez vérifier que l'url est valide et accessible.",
