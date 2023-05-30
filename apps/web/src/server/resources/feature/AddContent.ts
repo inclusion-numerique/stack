@@ -22,9 +22,9 @@ export type ContentAddedV1 = {
   caption?: string
   url?: string
   showPreview?: boolean
-  linkDescription?: string
-  linkTitle?: string
-  linkImageUrl?: string
+  linkDescription?: string | null
+  linkTitle?: string | null
+  linkImageUrl?: string | null
 }
 
 export type ContentAdded = {

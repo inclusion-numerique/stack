@@ -5,7 +5,15 @@ import LinkPreview from './LinkPreview'
 import styles from './LinkView.module.css'
 
 const LinkView = ({
-  content: { title, caption, showPreview, url, linkTitle, linkDescription },
+  content: {
+    title,
+    caption,
+    showPreview,
+    url,
+    linkImageUrl,
+    linkTitle,
+    linkDescription,
+  },
 }: {
   content: Pick<
     ResourceContent,
@@ -15,12 +23,18 @@ const LinkView = ({
     | 'url'
     | 'linkTitle'
     | 'linkDescription'
+    | 'linkImageUrl'
   >
 }) => (
   <div data-testid="content-link">
     <h6 className="fr-mb-2w">{title}</h6>
-    {showPreview ? (
-      <LinkPreview content={{ linkTitle, linkDescription, url }} />
+    {showPreview && !!url ? (
+      <LinkPreview
+        url={url}
+        imageUrl={linkImageUrl}
+        title={linkTitle}
+        description={linkDescription}
+      />
     ) : (
       url && (
         <div className="fr-mb-2w">
