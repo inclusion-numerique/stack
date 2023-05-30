@@ -12,10 +12,10 @@ import { ContentPayload } from '@app/web/server/resources/feature/Content'
 import { Metadata } from '@app/web/server/rpc/metadata/getMetadataFromDocument'
 import DynamicLinkEditionPreview from '@app/web/components/Resource/Contents/DynamicLinkEditionPreview'
 
-const titleInfo = (title: string | null) =>
+const titleInfo = (title?: string | null) =>
   `${title?.length ?? 0}/${linkTitleMaxLength} caractères`
 
-const captionInfo = (caption: string | null) =>
+const captionInfo = (caption?: string | null) =>
   `${caption?.length ?? 0}/${linkCaptionMaxLength} caractères`
 
 const LinkEdition = ({
@@ -31,17 +31,6 @@ const LinkEdition = ({
   const linkDescription = watch('linkDescription')
   const linkImageUrl = watch('linkImageUrl')
   const urlValid = !!url && !getFieldState('url').invalid
-
-  console.log('FORM RENDER', {
-    title,
-    caption,
-    showPreview,
-    url,
-    linkTitle,
-    linkDescription,
-    linkImageUrl,
-    urlValid,
-  })
 
   const onMetadataUpdate = (metadata: Metadata) => {
     setValue('linkDescription', metadata.description, {
@@ -62,7 +51,7 @@ const LinkEdition = ({
         control={control}
         path="title"
         label="Titre du lien"
-        info={titleInfo(title)}
+        info={titleInfo}
       />
       <InputFormField
         data-testid="link-url-input"
@@ -93,7 +82,7 @@ const LinkEdition = ({
         control={control}
         path="caption"
         label="Légende"
-        info={captionInfo(caption)}
+        info={captionInfo}
       />
     </>
   )
