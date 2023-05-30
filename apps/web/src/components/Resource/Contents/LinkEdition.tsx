@@ -23,8 +23,6 @@ const LinkEdition = ({
 }: {
   form: UseFormReturn<ContentPayload>
 }) => {
-  const title = watch('title')
-  const caption = watch('caption')
   const showPreview = watch('showPreview')
   const url = watch('url')
   const linkTitle = watch('linkTitle')
