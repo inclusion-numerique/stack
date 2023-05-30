@@ -1,0 +1,26 @@
+.buttons {
+  display: flex;
+  background-color: var(--background-contrast-grey);
+  padding: 0px 24px;
+  border-bottom: var(--slim-grey-border);
+}
+
+.button,
+.iconButton {
+  padding-top: 6px;
+  &:hover {
+    background-color: var(--background-contrast-grey-hover) !important;
+  }
+  &:active {
+    background-color: var(--background-contrast-grey-active) !important;
+  }
+}
+
+.active {
+  background-color: var(--background-contrast-grey-active) !important;
+}
+
+.separator {
+  border: 1px solid #929292;
+  margin: 4px;
+}

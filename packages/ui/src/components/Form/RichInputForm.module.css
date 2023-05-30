@@ -1,0 +1,11 @@
+.input {
+  background-color: var(--background-contrast-grey);
+
+  :global(.ProseMirror) {
+    padding: 16px;
+  }
+
+  :last-child {
+    margin-bottom: 0;
+  }
+}

@@ -1,5 +1,4 @@
 import sanitizeHtml from 'sanitize-html'
-import { ContentSeparator } from '@app/web/components/Resource/View/ContentSeparator'
 import { ResourceContent } from '@app/web/server/resources/getResource'
 
 const TextView = ({
@@ -7,12 +6,6 @@ const TextView = ({
 }: {
   content: Pick<ResourceContent, 'text'>
 }) =>
-  text ? (
-    <>
-      {/* TODO Sanitize when creating / updating Text content, not on render !  */}
-      <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }} />
-      <ContentSeparator />
-    </>
-  ) : null
+  text ? <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }} /> : null
 
 export default TextView
