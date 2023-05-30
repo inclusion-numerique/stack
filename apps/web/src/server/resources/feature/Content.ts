@@ -26,15 +26,20 @@ const SectionTitlePayloadCommandValidation = z.object({
   type: z.literal('SectionTitle'),
   title: contentEditionValues.title,
 })
+export type SectionTitlePayload = z.infer<
+  typeof SectionTitlePayloadCommandValidation
+>
 
 const TextPayloadCommandValidation = z.object({
   type: z.literal('Text'),
   text: contentEditionValues.text,
 })
+export type TextPayload = z.infer<typeof TextPayloadCommandValidation>
 
 const ImagePayloadCommandValidation = z.object({
   type: z.literal('Image'),
 })
+export type ImagePayload = z.infer<typeof ImagePayloadCommandValidation>
 
 const LinkPayloadCommandValidation = z.object({
   type: z.literal('Link'),
@@ -60,18 +65,23 @@ const LinkPayloadCommandValidation = z.object({
       `La légende ne doit pas dépasser ${linkCaptionMaxLength} caractères`,
     ),
   showPreview: z.boolean().optional(),
-  linkDescription: z.string().optional(),
-  linkTitle: z.string().optional(),
-  linkImageUrl: z.string().optional(),
+  linkDescription: z.string().nullish(),
+  linkTitle: z.string().nullish(),
+  linkImageUrl: z.string().nullish(),
 })
+export type LinkPayload = z.infer<typeof LinkPayloadCommandValidation>
 
 const ResourceLinkPayloadCommandValidation = z.object({
   type: z.literal('ResourceLink'),
 })
+export type ResourceLinkPayload = z.infer<
+  typeof ResourceLinkPayloadCommandValidation
+>
 
 const FilePayloadCommandValidation = z.object({
   type: z.literal('File'),
 })
+export type FilePayload = z.infer<typeof FilePayloadCommandValidation>
 
 export const ContentPayloadCommandValidation = z.discriminatedUnion('type', [
   SectionTitlePayloadCommandValidation,
@@ -81,3 +91,11 @@ export const ContentPayloadCommandValidation = z.discriminatedUnion('type', [
   ResourceLinkPayloadCommandValidation,
   FilePayloadCommandValidation,
 ])
+
+export type ContentPayload =
+  | SectionTitlePayload
+  | TextPayload
+  | LinkPayload
+  | ImagePayload
+  | ResourceLinkPayload
+  | FilePayload

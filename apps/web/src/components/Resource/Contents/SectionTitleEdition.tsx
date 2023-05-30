@@ -1,8 +1,7 @@
 import { UseFormReturn } from 'react-hook-form'
 import InputFormField from '@app/ui/components/Form/InputFormField'
-import { AddContentCommand } from '@app/web/server/resources/feature/AddContent'
-import { EditContentCommand } from '@app/web/server/resources/feature/EditContent'
 import { resourceSectionTitleMaxLength } from '@app/web/server/rpc/resource/utils'
+import { ContentPayload } from '@app/web/server/resources/feature/Content'
 
 const titleInfo = (title: string | null) =>
   `${title?.length ?? 0}/${resourceSectionTitleMaxLength} caractères`
@@ -10,14 +9,14 @@ const titleInfo = (title: string | null) =>
 const SectionTitleEdition = ({
   form: { control, watch },
 }: {
-  form: UseFormReturn<AddContentCommand | EditContentCommand>
+  form: UseFormReturn<ContentPayload>
 }) => {
-  const title = watch('payload.title')
+  const title = watch('title')
   return (
     <InputFormField
       data-testid="section-title-input"
       control={control}
-      path="payload.title"
+      path="title"
       label="Titre de la section"
       hint="Les titres de sections permettent de créer des ancres afin que les visiteurs se rendent directement sur une position précise de votre ressource."
       info={titleInfo(title)}
