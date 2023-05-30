@@ -1,12 +1,6 @@
 import classNames from 'classnames'
 import React, { HTMLInputTypeAttribute, HTMLProps } from 'react'
-import {
-  Control,
-  Controller,
-  FieldValues,
-  Path,
-  PathValue,
-} from 'react-hook-form'
+import { Control, Controller, FieldValues } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
 import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
 
@@ -19,7 +13,7 @@ type CommonProps<T extends FieldValues> = {
   placeholder?: string
   valid?: string
   icon?: string
-  info?: string | ((value: PathValue<T, Path<T>>) => string)
+  info?: string | ((value?: string | null) => string)
 }
 
 type InputProps = {
