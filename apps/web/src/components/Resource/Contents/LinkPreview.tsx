@@ -17,8 +17,12 @@ const LinkPreview = ({
 }) => (
   <Link href={url} target="_blank" className={styles.linkPreview}>
     <div className={styles.contents} data-testid="link-preview">
-      {!!title && <p className="fr-text--bold">{title}</p>}
-      {!!description && <p className="fr-hint-text fr-mt-2v">{description}</p>}
+      <div className={styles.titleAndDescription}>
+        {!!title && <p className="fr-text--bold">{title}</p>}
+        {!!description && (
+          <p className="fr-hint-text fr-mt-2v">{description}</p>
+        )}
+      </div>
       <div className={classNames('fr-mt-2v', styles.urlContainer)}>
         <span
           className={classNames(
