@@ -3,6 +3,12 @@
     line-height: 0;
     display: flex;
     padding: 0;
+    flex-direction: column-reverse;
+
+    @media (min-width: 576px) {
+        flex-direction: row;
+        justify-content: space-between;
+    }
 
     &::after {
         content: none;
@@ -18,18 +24,26 @@
 
 .contents {
     padding: 16px;
-    flex-grow: 1;
-
+    display: flex;
+    flex-direction: column;
     p {
         font-size: 12px;
         line-height: 16px;
         margin-bottom: 0;
+    }
+    @media (min-width: 576px) {
+        width: calc(100% -  200px);
     }
 }
 
 .urlContainer {
     display: flex;
     align-items: center;
+
+    &::before {
+        content: "";
+        flex: 1;
+    }
 }
 
 .icon {
@@ -40,6 +54,10 @@
 .url {
     color: var(--blue-france-sun-113-625);
     text-decoration: underline;
+    text-overflow: ellipsis;
+    display:block;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .imageContainer {
@@ -47,7 +65,10 @@
 }
 
 .image {
-    width: 200px;
+    width: 100%;
+    @media (min-width: 576px) {
+        width: 200px;
+    }
     flex-shrink: 0;
     height: 100%;
     object-fit: cover;
