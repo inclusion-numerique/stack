@@ -1,4 +1,7 @@
 import * as externalImageLoaderModule from '@app/web/utils/externalImageLoader'
+import * as uploadedImageLoader from '@app/web/utils/uploadedImageLoader'
+import { uploadedImageLoaderMock } from '@app/storybook/mocks/uploadedImageLoaderMock'
+import { externalImageLoaderMock } from '@app/storybook/mocks/externalImageLoaderMock'
 
 const mockModule = <T, E extends keyof T>(
   module: T,
@@ -16,6 +19,11 @@ export const setupMocks = () => {
   mockModule(
     externalImageLoaderModule,
     'externalImageLoader',
-    ({ src }: { src: string }) => src,
+    externalImageLoaderMock,
+  )
+  mockModule(
+    uploadedImageLoader,
+    'uploadedImageLoader',
+    uploadedImageLoaderMock,
   )
 }

@@ -26,13 +26,15 @@
     padding: 16px;
     display: flex;
     flex-direction: column;
+
     p {
         font-size: 12px;
         line-height: 16px;
         margin-bottom: 0;
     }
+
     @media (min-width: 576px) {
-        width: calc(100% -  200px);
+        width: calc(100% - 200px);
     }
 }
 
@@ -66,9 +68,11 @@
 
 .image {
     width: 100%;
+
     @media (min-width: 576px) {
         width: 200px;
     }
+
     flex-shrink: 0;
     height: 100%;
     object-fit: cover;
