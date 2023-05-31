@@ -1,1 +1,1 @@
-export const externalImageLoader = ({ src }: { src: string }) => src
+export const externalImageLoaderMock = ({ src }: { src: string }) => src
