@@ -4,22 +4,19 @@ import z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod'
 import { Meta, StoryObj } from '@storybook/react'
 import { useOnDiff } from '@app/web/hooks/useOnDiff'
-import SelectFormField, { SelectFormFieldProps } from './SelectFormField'
-import { SelectOption } from './utils/options'
+import CheckboxFormField, { CheckboxFormFieldProps } from './CheckboxFormField'
 
-const objectFormValidation = z
-  .object({
-    choice: z.enum(['choice-1', 'choice-2', 'choice-3']),
-    choiceError: z.enum(['choice-1', 'choice-2', 'choice-3']),
-    choiceSuccess: z.enum(['choice-1', 'choice-2', 'choice-3']),
-  })
-  .strict()
+const objectFormValidation = z.object({
+  choice: z.boolean(),
+  choiceSuccess: z.literal(true),
+  choiceError: z.boolean().nullish(),
+})
 type ObjectFormData = z.infer<typeof objectFormValidation>
 
 const Template = ({
   path,
   ...args
-}: Omit<SelectFormFieldProps<ObjectFormData>, 'control'>) => {
+}: Omit<CheckboxFormFieldProps<ObjectFormData>, 'control'>) => {
   const form = useForm<ObjectFormData>({
     resolver: zodResolver(objectFormValidation),
     reValidateMode: 'onChange',
@@ -27,7 +24,7 @@ const Template = ({
   })
 
   useOnDiff(form, () => {
-    form.setValue('choiceSuccess', 'choice-2', {
+    form.setValue('choiceSuccess', true, {
       shouldTouch: true,
       shouldDirty: true,
       shouldValidate: true,
@@ -37,47 +34,25 @@ const Template = ({
 
   return (
     <form>
-      <SelectFormField control={form.control} path={path} {...args} />
+      <CheckboxFormField control={form.control} path={path} {...args} />
     </form>
   )
 }
 
-const meta: Meta<typeof SelectFormField> = {
-  title: 'DSFR Component/Form/Select',
-  component: SelectFormField,
+const meta: Meta<typeof CheckboxFormField> = {
+  title: 'DSFR Component/Form/Checkbox',
+  component: CheckboxFormField,
 }
 
 export default meta
 
-type Story = StoryObj<typeof SelectFormField>
-
-const options: SelectOption[] = [
-  {
-    name: 'Selectionnez une option',
-    value: '',
-    disabled: true,
-    hidden: true,
-  },
-  {
-    name: 'Choix 1',
-    value: 'choice-1',
-  },
-  {
-    name: 'Choix 2',
-    value: 'choice-2',
-  },
-  {
-    name: 'Choix 3',
-    value: 'choice-3',
-  },
-]
+type Story = StoryObj<typeof CheckboxFormField>
 
 export const Default: Story = {
-  name: 'Liste déroulante',
+  name: 'Case à cocher',
   render: (args) => <Template {...args} path="choice" />,
   args: {
     label: 'Label',
-    options,
   },
 }
 
@@ -86,7 +61,6 @@ export const Error: Story = {
   render: (args) => <Template {...args} path="choiceError" />,
   args: {
     label: 'Label',
-    options,
   },
 }
 
@@ -96,7 +70,6 @@ export const Success: Story = {
   args: {
     label: 'Label',
     valid: 'Choix valide',
-    options,
   },
 }
 
@@ -106,16 +79,14 @@ export const Disabled: Story = {
   args: {
     label: 'Label',
     disabled: true,
-    options,
   },
 }
 
 export const Hint: Story = {
-  name: "Liste avec texte d'aide",
+  name: "Case à cocher avec texte d'aide",
   render: (args) => <Template {...args} path="choice" />,
   args: {
     label: 'Label',
     hint: 'Texte de description additionnel',
-    options,
   },
 }
