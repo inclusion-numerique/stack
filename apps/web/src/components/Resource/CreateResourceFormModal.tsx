@@ -28,9 +28,9 @@ import {
 import { trpc } from '@app/web/trpc'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 
-const titleInfo = (title: string | null) =>
+const titleInfo = (title?: string | null) =>
   `${title?.length ?? 0}/${resourceTitleMaxLength} caractères`
-const descriptionInfo = (description: string | null) =>
+const descriptionInfo = (description?: string | null) =>
   `${description?.length ?? 0}/${resourceDescriptionMaxLength} caractères`
 
 const defaultValues = {
