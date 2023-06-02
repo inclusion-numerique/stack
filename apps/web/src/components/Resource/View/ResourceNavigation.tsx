@@ -10,11 +10,9 @@ import ResourceSideMenu from './ResourceSideMenu'
 const ResourceNavigation = ({
   resource: { slug, contents },
   user,
-  visibleRefIndex,
 }: {
   resource: Resource
   user: User | null
-  visibleRefIndex: number | null
 }) => (
   <div className={styles.container}>
     <div className={styles.buttons}>
@@ -74,7 +72,7 @@ const ResourceNavigation = ({
       </Link>
     </div>
     <div className="fr-hidden fr-unhidden-md">
-      <ResourceSideMenu visibleRefIndex={visibleRefIndex} contents={contents} />
+      <ResourceSideMenu contents={contents} />
     </div>
   </div>
 )

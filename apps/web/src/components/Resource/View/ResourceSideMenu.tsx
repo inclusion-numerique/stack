@@ -1,47 +1,42 @@
+'use client'
+
 import React from 'react'
 import SideMenu from '@codegouvfr/react-dsfr/SideMenu'
 import { ResourceContent } from '@app/web/server/resources/getResource'
-import { getResourceSectionIdAttribute } from '@app/web/components/Resource/View/getResourceSectionIdAttribute'
+import { useResourceNavigation } from '@app/web/components/Resource/View/resourceSideMenu.hooks'
 import styles from './ResourceSideMenu.module.css'
 
-const ResourceSideMenu = ({
-  visibleRefIndex,
-  contents,
-}: {
-  visibleRefIndex: number | null
-  contents: ResourceContent[]
-}) => {
-  const sectionTitles = contents.filter(
-    (content) => content.type === 'SectionTitle',
-  )
+const ResourceSideMenu = ({ contents }: { contents: ResourceContent[] }) => {
+  const { navigationContents, active } = useResourceNavigation(contents)
+
   return (
     <SideMenu
       className={styles.sideMenu}
       burgerMenuButtonText="Contenus"
       items={[
-        sectionTitles.length > 0
+        navigationContents.length > 0
           ? {
               text: 'Ressource',
-              isActive: visibleRefIndex !== null && visibleRefIndex >= 0,
+              isActive: active !== 'informations',
               expandedByDefault: true,
-              items: sectionTitles.map((section, index) => ({
-                text: section.title,
+              items: navigationContents.map((content) => ({
+                text: content.title,
                 linkProps: {
-                  href: `#${getResourceSectionIdAttribute(section, index)}`,
+                  href: `#${content.navigation.id}`,
                 },
-                isActive: visibleRefIndex === index,
+                isActive: active === content.navigation.id,
               })),
             }
           : {
               text: 'Ressource',
-              isActive: visibleRefIndex !== null && visibleRefIndex >= 0,
+              isActive: active === 'contenu',
               linkProps: {
                 href: '#contenu',
               },
             },
         {
           text: 'Informations',
-          isActive: visibleRefIndex === -1,
+          isActive: active === 'informations',
           linkProps: {
             href: '#informations',
           },

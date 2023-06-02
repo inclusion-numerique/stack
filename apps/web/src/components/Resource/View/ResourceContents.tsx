@@ -12,14 +12,8 @@ import ResourceSideMenu from './ResourceSideMenu'
 
 const ResourceContents = ({
   resource: { title, description, contents, image, created, updated },
-  contentRefs,
-  visibleRefIndex,
 }: {
   resource: Resource
-  contentRefs: React.MutableRefObject<
-    Record<string, React.RefObject<HTMLDivElement>>
-  >
-  visibleRefIndex: number | null
 }) => {
   const publishedDay = dateAsDay(created)
   const updatedDay = dateAsDay(updated)
@@ -65,23 +59,17 @@ const ResourceContents = ({
         Très recommandée
       </Badge>
       <hr className="fr-hidden fr-unhidden-md fr-mt-4w" />
-      <ResourcesViewsAndMetadata />
+      <ResourcesViewsAndMetadata className="fr-pb-6v" />
       <div className="fr-hidden-md fr-my-4w">
-        <ResourceSideMenu
-          visibleRefIndex={visibleRefIndex}
-          contents={contents}
-        />
+        <ResourceSideMenu contents={contents} />
       </div>
-      <hr className="fr-mt-6v fr-mb-2v" />
       {contents.map((content, index) => (
         <div
           key={content.id}
-          ref={contentRefs.current[content.id]}
-          id={`section-${getResourceSectionIdAttribute(content, index)}`}
+          id={`${getResourceSectionIdAttribute(content, index)}`}
           className={styles.content}
         >
           <ContentView content={content} />
-          <hr className="fr-mt-5w fr-mb-2w" />
         </div>
       ))}
     </>

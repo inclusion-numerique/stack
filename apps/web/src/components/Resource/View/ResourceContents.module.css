@@ -16,3 +16,8 @@
 .image {
   width: 100%;
 }
+
+.content {
+  border-top: var(--slim-grey-border);
+  padding: 24px 0;
+}

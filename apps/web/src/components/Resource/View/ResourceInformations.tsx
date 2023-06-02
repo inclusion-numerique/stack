@@ -13,7 +13,9 @@ const publics = ['Public cible 1', 'Public cible 2']
 
 const ResourceInformations = () => (
   <>
-    <h6 id="informations">Informations sur la resource</h6>
+    <h6 id="informations" className={styles.title}>
+      Informations sur la resource
+    </h6>
     <p className="fr-text--sm fr-mb-1w">
       <b>Thématiques</b>
     </p>
