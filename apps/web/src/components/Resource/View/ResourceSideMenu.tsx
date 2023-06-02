@@ -14,25 +14,29 @@ const ResourceSideMenu = ({ contents }: { contents: ResourceContent[] }) => {
       className={styles.sideMenu}
       burgerMenuButtonText="Contenus"
       items={[
-        navigationContents.length > 0
+        navigationContents.length === 0
           ? {
+              // Only display one level item if there is no section title in resource contents
+              text: 'Ressource',
+              // Resource content is active by default
+              isActive: active === 'contenu' || !active,
+              linkProps: {
+                href: '#contenu',
+              },
+            }
+          : {
               text: 'Ressource',
               isActive: active !== 'informations',
               expandedByDefault: true,
-              items: navigationContents.map((content) => ({
+              items: navigationContents.map((content, index) => ({
                 text: content.title,
                 linkProps: {
                   href: `#${content.navigation.id}`,
                 },
-                isActive: active === content.navigation.id,
+                isActive:
+                  // First resource content is active by default
+                  (index === 0 && !active) || active === content.navigation.id,
               })),
-            }
-          : {
-              text: 'Ressource',
-              isActive: active === 'contenu',
-              linkProps: {
-                href: '#contenu',
-              },
             },
         {
           text: 'Informations',
