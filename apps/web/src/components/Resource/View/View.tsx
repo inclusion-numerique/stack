@@ -39,7 +39,7 @@ const View = ({
       </div>
     </div>
 
-    <div className="fr-grid-row fr-mt-8v">
+    <div className="fr-grid-row fr-mt-4v">
       <div className="fr-col-12 fr-col-lg-8">
         <hr />
       </div>

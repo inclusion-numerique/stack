@@ -59,9 +59,9 @@ const ResourceContents = ({
       <Badge className="fr-hidden-md fr-my-1w" small noIcon severity="success">
         Très recommandée
       </Badge>
-      <hr className="fr-hidden fr-unhidden-md fr-mt-4w" />
+      <hr className="fr-hidden fr-unhidden-md fr-mt-8v" />
       <ResourcesViewsAndMetadata className="fr-pb-6v" />
-      <div className="fr-hidden-md fr-my-4w">
+      <div className="fr-hidden-md fr-mb-8v">
         <ResourceSideMenu contents={contents} />
       </div>
       {contents.map((content, index) => (
