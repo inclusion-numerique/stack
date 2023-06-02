@@ -1,4 +1,8 @@
-import { cleanUpAndCreateTestResource } from './editionTestUtils'
+import {
+  cleanUpAndCreateTestResource,
+  startContentEdition,
+  submitValidContentEdition,
+} from './editionTestUtils'
 
 describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
   describe('Qui a déjà été modifiée, en brouillon', () => {
@@ -55,18 +59,9 @@ describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
       })
 
       it('Acceptation 2 - Je peux modifier un lien', () => {
-        cy.testId('content-edition_Link-2').should('exist')
-        cy.testId('content-edition_Link-2_form').should('not.exist')
-
-        cy.testId('content-edition_Link-2_edit-button').should('not.be.visible')
-
-        cy.testId('content-edition_Link-2').realHover()
-        cy.testId('content-edition_Link-2_edit-button').should('be.visible')
-        cy.testId('content-edition_Link-2_edit-button').click()
-        cy.removeHover()
+        startContentEdition('Link-2')
 
         cy.testId('content-link').should('not.exist')
-        cy.testId('content-edition_Link-2_form').should('exist')
         cy.testId('link-title-input').should(
           'have.value',
           'Vous avez vu mon lien',
@@ -84,15 +79,8 @@ describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
         cy.testId('link-url-input').type('3')
         cy.testId('link-caption-input').type('4')
 
-        cy.testId('content-edition_Link-2_form__submit').click()
+        submitValidContentEdition('Link-2')
 
-        cy.wait('@mutation')
-        cy.testId('resource-edition-state').should('have.text', 'Enregistré')
-        cy.testId('resource-published-state').should('have.text', 'Brouillon')
-
-        cy.testId('content-edition_Link-2_edit-button').should('not.be.visible')
-        cy.testId('content-edition_Link-2_form').should('not.exist')
-        cy.testId('content-edition_Link-2').should('exist')
         cy.testId('content-link').within(() => {
           cy.get('h6').should('have.text', 'Vous avez vu mon lien2')
           cy.testId('link-caption').should('have.text', 'Il est beau hein !4')

@@ -1,4 +1,8 @@
-import { cleanUpAndCreateTestResource } from './editionTestUtils'
+import {
+  cleanUpAndCreateTestResource,
+  startContentEdition,
+  submitValidContentEdition,
+} from './editionTestUtils'
 
 describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
   describe('Qui a déjà été modifiée, en brouillon', () => {
@@ -45,18 +49,7 @@ describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
       })
 
       it('Acceptation 2 - Je peux modifier un titre de section', () => {
-        cy.testId('content-edition_SectionTitle-0').should('exist')
-        cy.testId('content-edition_SectionTitle-0_form').should('not.exist')
-
-        cy.testId('content-edition_SectionTitle-0_edit-button').should(
-          'not.be.visible',
-        )
-        cy.testId('content-edition_SectionTitle-0').realHover()
-        cy.testId('content-edition_SectionTitle-0_edit-button').should(
-          'be.visible',
-        )
-        cy.testId('content-edition_SectionTitle-0_edit-button').click()
-        cy.removeHover()
+        startContentEdition('SectionTitle-0')
 
         cy.testId('content-section-title').should('not.exist')
         cy.testId('content-edition_SectionTitle-0_form').should('exist')
@@ -65,17 +58,10 @@ describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
           'Mon premier titre de section',
         )
         cy.testId('section-title-input').clear()
-        cy.testId('section-title-input').type("C'est que le début{enter}")
+        cy.testId('section-title-input').type("C'est que le début")
 
-        cy.wait('@mutation')
-        cy.testId('resource-edition-state').should('have.text', 'Enregistré')
-        cy.testId('resource-published-state').should('have.text', 'Brouillon')
+        submitValidContentEdition('SectionTitle-0')
 
-        cy.testId('content-edition_SectionTitle-0_edit-button').should(
-          'not.be.visible',
-        )
-        cy.testId('content-edition_SectionTitle-0_form').should('not.exist')
-        cy.testId('content-edition_SectionTitle-0').should('exist')
         cy.testId('content-section-title').should(
           'have.text',
           "C'est que le début",

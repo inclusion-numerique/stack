@@ -1,4 +1,8 @@
-import { cleanUpAndCreateTestResource } from './editionTestUtils'
+import {
+  cleanUpAndCreateTestResource,
+  startContentEdition,
+  submitValidContentEdition,
+} from './editionTestUtils'
 
 describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
   describe('Qui a déjà été modifiée, en brouillon', () => {
@@ -40,7 +44,7 @@ describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
         cy.testId('add-content_form').should('not.exist')
         cy.testId('content-edition_Text-3').should('exist')
 
-        cy.testId('content-edition_Text-3').within(($div) => {
+        cy.testId('content-edition_Text-3').within(() => {
           cy.get('h2').should('have.text', 'Babysitting blues...')
           cy.get('h3').should(
             'have.text',
@@ -50,15 +54,7 @@ describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
       })
 
       it('Acceptation 2 - Je peux modifier un texte', () => {
-        cy.testId('content-edition_Text-1').should('exist')
-        cy.testId('content-edition_Text-1_form').should('not.exist')
-
-        cy.testId('content-edition_Text-1_edit-button').should('not.be.visible')
-
-        cy.testId('content-edition_Text-1').realHover()
-        cy.testId('content-edition_Text-1_edit-button').should('be.visible')
-        cy.testId('content-edition_Text-1_edit-button').click()
-        cy.removeHover()
+        startContentEdition('Text-1')
 
         cy.testId('content-text').should('not.exist')
         cy.testId('content-edition_Text-1_form').should('exist')
@@ -68,15 +64,8 @@ describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
         )
         cy.testId('Titre 4-button').click()
 
-        cy.testId('content-edition_Text-1_form__submit').click()
-        cy.wait('@mutation')
+        submitValidContentEdition('Text-1')
 
-        cy.testId('resource-edition-state').should('have.text', 'Enregistré')
-        cy.testId('resource-published-state').should('have.text', 'Brouillon')
-
-        cy.testId('content-edition_Text-1_edit-button').should('not.be.visible')
-        cy.testId('content-edition_Text-1_form').should('not.exist')
-        cy.testId('content-edition_Text-1').should('exist')
         cy.testId('content-edition_Text-1').within(() => {
           cy.get('h4').should(
             'have.text',
