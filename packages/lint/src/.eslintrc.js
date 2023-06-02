@@ -44,6 +44,13 @@ module.exports = {
         },
       },
     ],
+    'jest/expect-expect': [
+      'error',
+      {
+        assertFunctionNames: ['expect', 'expectZodValidationToFail'],
+        additionalTestBlockFunctions: [],
+      },
+    ],
   },
   parserOptions: {
     sourceType: 'module',
@@ -57,6 +64,9 @@ module.exports = {
         project: `${__dirname}/../../../tsconfig.eslint.json`,
       },
       settings: {
+        react: {
+          version: '18.2',
+        },
         'import/resolver': {
           'eslint-import-resolver-custom-alias': {
             alias: {
