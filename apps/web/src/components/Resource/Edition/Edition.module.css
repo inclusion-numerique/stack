@@ -1,6 +1,7 @@
 .container {
-  /* We need 4px on each side to allow overflow-x to not crop the outline of selected buttons */
-  max-width: var(--edition-container-max-width);
+  max-width: calc(var(--edition-container-max-width));
+  padding-left: var(--edition-container-x-padding);
+  padding-right: var(--edition-container-x-padding);
 
   /* Enough room for the add button absolute collapsible choices to be displayable inside the container */
   padding-bottom: 360px;
@@ -35,7 +36,7 @@
 
 .dragButton {
   position: absolute;
-  opacity: 1 !important;
+  opacity: 0 !important;
   pointer-events: none;
   cursor: grab;
   top: 12px;
