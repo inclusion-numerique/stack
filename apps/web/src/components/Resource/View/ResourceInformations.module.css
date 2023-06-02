@@ -1,3 +1,8 @@
+.title {
+  border-top: var(--slim-grey-border);
+  padding-top: 24px;
+}
+
 .tags {
   display: flex;
   flex-flow: row wrap;
