@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import React from 'react'
 import Badge from '@codegouvfr/react-dsfr/Badge'
 import Button from '@codegouvfr/react-dsfr/Button'
@@ -49,7 +50,7 @@ const ResourceContents = ({
         <ResponsiveUploadedImage
           id={image.id}
           alt={image.altText ?? ''}
-          className={styles.image}
+          className={classNames('fr-mb-4w', styles.image)}
           breakpoints={[
             { media: '(max-width: 320px)', width: 320 - 32 },
             { media: '(max-width: 576px)', width: 576 - 32 },

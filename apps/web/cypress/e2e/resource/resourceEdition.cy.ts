@@ -64,7 +64,7 @@ describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
       expectActionBarStatusWithDraftEdits()
     })
 
-    describe('Je peux éditer la base, titre, description', () => {
+    describe('Je peux éditer la base, titre, description et image', () => {
       /**
        * US
        *  - https://www.notion.so/Utilisateur-qui-dite-une-ressource-je-peux-modifier-les-infos-de-ma-ressource-403c0e6f96c246be8875f4ecb2da5a63
@@ -123,6 +123,47 @@ describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
         cy.contains('Description modifiée')
         cy.testId('resource-edition-state').should('have.text', 'Enregistré')
         cy.testId('resource-published-state').should('have.text', 'Brouillon')
+      })
+
+      it("Acceptation 3 - Edition de l'image", () => {
+        cy.log("Je vois un call to action pour editer l'image")
+        cy.testId('resource-image').should('not.exist')
+        cy.testId('resource-image-delete').should('not.exist')
+
+        cy.testId('resource-image-placeholder').should('exist')
+
+        cy.log('Je selectionne un fichier')
+        cy.testId('resource-image-file-field').selectFile(
+          'cypress/fixtures/test_1px_image.png',
+        )
+
+        cy.log('Le fichier est uploadé et changé automatiquement')
+        cy.wait('@mutation')
+
+        cy.log("Je vois l'image")
+        cy.testId('resource-image-placeholder').should('not.exist')
+        cy.testId('resource-image').should('exist')
+        cy.testId('resource-image-file-field').should('have.value', '')
+        cy.testId('resource-image-delete').should('exist')
+
+        cy.log("Je change l'image")
+        cy.testId('resource-image-file-field').selectFile(
+          'cypress/fixtures/test_1px_image.png',
+        )
+
+        cy.log('Le fichier est changé automatiquement')
+        cy.wait('@mutation')
+
+        cy.log("Je peux supprimer l'image")
+        cy.testId('resource-image-delete').click()
+
+        cy.log("L'image est supprimée")
+        cy.wait('@mutation')
+        cy.testId('resource-image').should('not.exist')
+        cy.testId('resource-image-delete').should('not.exist')
+
+        cy.log("Le champ est disponible pour modifier l'image")
+        cy.testId('resource-image-file-field').should('have.value', '')
       })
     })
 

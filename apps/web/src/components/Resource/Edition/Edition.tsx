@@ -12,9 +12,9 @@ import { trpc } from '@app/web/trpc'
 import { ResourceEditionState } from '../enums/ResourceEditionState'
 import { ResourcePublishedState } from '../enums/ResourcePublishedState'
 import BaseEdition from './BaseEdition'
-import EditableImage from './EditableImage'
 import styles from './Edition.module.css'
 import EditionActionBar from './EditionActionBar'
+import ResourceImageEdition from './ResourceImageEdition'
 import TitleEdition from './TitleEdition'
 
 export type SendCommandResult = Awaited<
@@ -116,7 +116,12 @@ const Edition = ({
         />
         <hr className="fr-my-4w" />
         <div className="fr-mb-5w">
-          <EditableImage />
+          <ResourceImageEdition
+            resource={updatedDraftResource}
+            sendCommand={sendCommand}
+            editing={editing}
+            setEditing={setEditing}
+          />
         </div>
         <TitleEdition
           resource={updatedDraftResource}

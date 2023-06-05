@@ -16,18 +16,24 @@
   width: 100%;
   min-height: 100px;
   margin-bottom: 16px;
-  
-  img {
-    max-height: 200px;
-    max-width: 100%;
-  }
-  
+
   @media (min-width: 768px) {
     margin-bottom: 0;
     align-items: flex-start;
     flex-shrink: 0;
     width: 340px;
     min-width: 340px;
+  }
+
+  picture {
+    width: 100%;
+  }
+
+  img {
+    max-height: 120px;
+    width: 100%;
+    object-fit: contain;
+    display: block;
   }
 }
 
