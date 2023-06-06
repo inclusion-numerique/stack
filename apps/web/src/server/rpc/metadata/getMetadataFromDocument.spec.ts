@@ -4,10 +4,16 @@ describe('getMetadataFromDocument', () => {
   it('should return null values on empty document', () => {
     const document = `<!DOCTYPE html><p>Hello world</p>`
 
-    expect(getMetadataFromDocument(document)).toEqual({
+    expect(
+      getMetadataFromDocument(document, {
+        hasDefaultFavicon: true,
+        url: new URL('https://www.ecologie.gouv.fr/'),
+      }),
+    ).toEqual({
       title: null,
       description: null,
       imageUrl: null,
+      faviconUrl: 'https://www.ecologie.gouv.fr/favicon.ico',
     })
   })
 
@@ -44,12 +50,21 @@ describe('getMetadataFromDocument', () => {
 </html>
 `
 
-    expect(getMetadataFromDocument(document)).toEqual({
+    expect(
+      getMetadataFromDocument(document, {
+        hasDefaultFavicon: false,
+        url: new URL(
+          'https://www.ecologie.gouv.fr/random-page?stuff=1&yes=no#stuff',
+        ),
+      }),
+    ).toEqual({
       // Use og title instead of html title (that shows the specificities of page)
       title: 'Ministères Écologie Énergie Territoires',
       description:
         'Bienvenue sur le site des ministères Écologie Énergie Territoires : actualités, presse, organisation et politiques publiques !',
       imageUrl: null,
+      faviconUrl:
+        'https://www.ecologie.gouv.fr/themes/custom/meem/medias/favicon.png',
     })
   })
 
@@ -112,12 +127,18 @@ describe('getMetadataFromDocument', () => {
    </body>
 </html>`
 
-    expect(getMetadataFromDocument(document)).toEqual({
+    expect(
+      getMetadataFromDocument(document, {
+        hasDefaultFavicon: true,
+        url: new URL('https://github.com/random-page?stuff=1&yes=no#stuff'),
+      }),
+    ).toEqual({
       title: 'GitHub: Let’s build from here',
       description:
         'GitHub is where over 100 million developers shape the future of software, together. Contribute to the open source community, manage your Git repositories, review code like a pro, track bugs and features, power your CI/CD and DevOps workflows, and secure code before you commit it.',
       imageUrl:
         'https://github.githubassets.com/images/modules/site/social-cards/campaign-social.png',
+      faviconUrl: 'https://github.githubassets.com/favicons/favicon.svg',
     })
   })
 })

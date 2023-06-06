@@ -12,8 +12,20 @@ export const metadataRouter = router({
     .input(GetMetaDataValidation)
     .query(async ({ input: { url } }) => {
       try {
-        const { data } = await axios.get<string>(url)
-        return getMetadataFromDocument(data)
+        const urlObject = new URL(url)
+
+        const [document, hasDefaultFavicon] = await Promise.all([
+          axios.get<string>(url),
+          axios
+            .head(`${urlObject.protocol}//${urlObject.origin}/favicon.ico`)
+            .then(() => true)
+            .catch(() => false),
+        ])
+
+        return getMetadataFromDocument(document.data, {
+          url: urlObject,
+          hasDefaultFavicon,
+        })
       } catch (error) {
         if (!(error instanceof AxiosError)) {
           throw error

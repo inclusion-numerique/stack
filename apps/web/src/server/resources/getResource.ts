@@ -60,6 +60,7 @@ export const getResourceSelect = {
       linkDescription: true,
       linkTitle: true,
       linkImageUrl: true,
+      linkFaviconUrl: true,
       linkedResourceId: true,
       legacyLinkedResourceId: true,
       linkedResource: {

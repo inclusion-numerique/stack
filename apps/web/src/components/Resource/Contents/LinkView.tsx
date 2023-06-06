@@ -13,6 +13,7 @@ const LinkView = ({
     linkImageUrl,
     linkTitle,
     linkDescription,
+    linkFaviconUrl,
   },
 }: {
   content: Pick<
@@ -24,6 +25,7 @@ const LinkView = ({
     | 'linkTitle'
     | 'linkDescription'
     | 'linkImageUrl'
+    | 'linkFaviconUrl'
   >
 }) => (
   <div data-testid="content-link">
@@ -32,6 +34,7 @@ const LinkView = ({
       <LinkPreview
         url={url}
         imageUrl={linkImageUrl}
+        faviconUrl={linkFaviconUrl}
         title={linkTitle}
         description={linkDescription}
       />
@@ -51,7 +54,7 @@ const LinkView = ({
         </div>
       )
     )}
-    <p className="fr-text--sm" data-testid="link-caption">
+    <p className="fr-text--sm fr-mb-0" data-testid="link-caption">
       {caption}
     </p>
   </div>

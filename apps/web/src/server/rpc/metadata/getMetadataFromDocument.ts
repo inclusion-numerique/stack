@@ -41,13 +41,35 @@ const getImageUrl = (head: Cheerio<Element>) => {
   return ogImage.attr('content') ?? null
 }
 
-export const getMetadataFromDocument = (document: string) => {
+const getFaviconUrl = (head: Cheerio<Element>) => {
+  const ogImage = head.find('link[rel="icon"]')
+  return ogImage.attr('href') ?? null
+}
+
+const getAbsoluteUrl = (relativeOrAbsoluteUrl: string, baseUrl: URL) => {
+  if (relativeOrAbsoluteUrl.startsWith('http')) {
+    return relativeOrAbsoluteUrl
+  }
+
+  return `${baseUrl.protocol}//${baseUrl.hostname}${relativeOrAbsoluteUrl}`
+}
+
+export const getMetadataFromDocument = (
+  document: string,
+  { hasDefaultFavicon, url }: { url: URL; hasDefaultFavicon: boolean },
+) => {
   const head = load(document)('head')
+  const absoluteOrRelativePathToFavicon = getFaviconUrl(head)
 
   return {
     title: getTitle(head),
     description: getDescription(head),
     imageUrl: getImageUrl(head),
+    faviconUrl: absoluteOrRelativePathToFavicon
+      ? getAbsoluteUrl(absoluteOrRelativePathToFavicon, url)
+      : hasDefaultFavicon
+      ? `${url.protocol}//${url.hostname}/favicon.ico`
+      : null,
   }
 }
 

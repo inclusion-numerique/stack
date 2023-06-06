@@ -44,6 +44,12 @@
     align-items: center;
 }
 
+.favicon {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+}
+
 .icon {
     color: var(--blue-france-sun-113-625);
     margin: 0;

@@ -46,6 +46,7 @@ export const applyContentAdded: ResourceMutationEventApplier<ContentAdded> = (
       linkDescription: null,
       linkTitle: null,
       linkImageUrl: null,
+      linkFaviconUrl: null,
       order: resource.contents.length,
       ...rest,
     },

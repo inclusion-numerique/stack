@@ -28,6 +28,7 @@ const LinkEdition = ({
   const linkTitle = watch('linkTitle')
   const linkDescription = watch('linkDescription')
   const linkImageUrl = watch('linkImageUrl')
+  const linkFaviconUrl = watch('linkFaviconUrl')
   const urlValid = !!url && !getFieldState('url').invalid
 
   const onMetadataUpdate = (metadata: Metadata) => {
@@ -38,6 +39,9 @@ const LinkEdition = ({
       shouldDirty: true,
     })
     setValue('linkImageUrl', metadata.imageUrl, {
+      shouldDirty: true,
+    })
+    setValue('linkFaviconUrl', metadata.faviconUrl, {
       shouldDirty: true,
     })
   }
@@ -72,6 +76,7 @@ const LinkEdition = ({
           title={linkTitle ?? null}
           description={linkDescription ?? null}
           imageUrl={linkImageUrl ?? null}
+          faviconUrl={linkFaviconUrl ?? null}
         />
       )}
       <InputFormField

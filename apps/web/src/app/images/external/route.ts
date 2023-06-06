@@ -15,14 +15,26 @@ export const GET = async (request: NextRequest) => {
     return notFoundResponse()
   }
 
-  const { data } = await axios.get<ReadableStream>(source, {
-    responseType: 'stream',
-  })
+  const { headers, data, status, statusText } = await axios.get<ReadableStream>(
+    source,
+    {
+      responseType: 'stream',
+    },
+  )
+
+  if (!headers || !data) {
+    return new Response('', {
+      status,
+      statusText,
+    })
+  }
+
+  const contentType = headers['content-type'] as string
 
   return new Response(data, {
     status: 200,
     headers: {
-      'Content-Type': 'image/webp',
+      'Content-Type': contentType,
       'Cache-Control': 'public, max-age=31536000, immutable',
     },
   })

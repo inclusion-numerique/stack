@@ -31,6 +31,7 @@ export const MigrateResourceCommandValidation = z.object({
         linkDescription: z.string().nullable(),
         linkTitle: z.string().nullable(),
         linkImageUrl: z.string().nullable(),
+        linkFaviconUrl: z.string().nullable(),
         linkedResourceId: z.string().uuid().nullable(),
         legacyLinkedResourceId: z.number().nullable(),
         text: z.string().nullable(),
@@ -76,6 +77,7 @@ export type ResourceMigratedDataV1 = {
     linkDescription: string | null
     linkTitle: string | null
     linkImageUrl: string | null
+    linkFaviconUrl: string | null
     linkedResourceId: string | null
     legacyLinkedResourceId: number | null
     text: string | null

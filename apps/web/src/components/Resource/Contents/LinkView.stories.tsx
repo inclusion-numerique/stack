@@ -9,7 +9,7 @@ export default {
 type Story = StoryObj<typeof LinkView>
 
 export const WithImage: Story = {
-  name: 'Desktop - Avec image',
+  name: 'Desktop - Avec image et favicon',
   args: {
     content: {
       title: 'Titre du lien',
@@ -22,12 +22,13 @@ export const WithImage: Story = {
         "Faciliter l'accès à des formations d'initiation ou de perfectionnement aux outils et usages numériques Construire une politique locale d'inclusion",
       linkImageUrl:
         'https://www.gouvernement.fr/upload/media/content/0001/05/5818ce1507999816c8ef7cd961e48d6dc5446c51.jpeg',
+      linkFaviconUrl: 'https://www.gouvernement.fr/favicon.ico',
     },
   },
 }
 
 export const MobileWithImage: Story = {
-  name: 'Mobile - Avec image',
+  name: 'Mobile - Avec image et favicon',
   args: {
     content: {
       title: 'Titre du lien',
@@ -40,6 +41,7 @@ export const MobileWithImage: Story = {
         "Faciliter l'accès à des formations d'initiation ou de perfectionnement aux outils et usages numériques Construire une politique locale d'inclusion",
       linkImageUrl:
         'https://www.gouvernement.fr/upload/media/content/0001/05/5818ce1507999816c8ef7cd961e48d6dc5446c51.jpeg',
+      linkFaviconUrl: 'https://www.gouvernement.fr/favicon.ico',
     },
   },
   parameters: {
@@ -49,6 +51,7 @@ export const MobileWithImage: Story = {
     },
   },
 }
+
 export const WithoutImage: Story = {
   name: 'Desktop - Sans image',
   args: {
@@ -62,6 +65,7 @@ export const WithoutImage: Story = {
       linkDescription:
         "Faciliter l'accès à des formations d'initiation ou de perfectionnement aux outils et usages numériques Construire une politique locale d'inclusion",
       linkImageUrl: null,
+      linkFaviconUrl: null,
     },
   },
 }
@@ -79,6 +83,7 @@ export const MobileWithoutImage: Story = {
       linkDescription:
         "Faciliter l'accès à des formations d'initiation ou de perfectionnement aux outils et usages numériques Construire une politique locale d'inclusion",
       linkImageUrl: null,
+      linkFaviconUrl: null,
     },
   },
   parameters: {

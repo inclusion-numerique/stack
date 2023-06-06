@@ -68,6 +68,7 @@ const LinkPayloadCommandValidation = z.object({
   linkDescription: z.string().nullish(),
   linkTitle: z.string().nullish(),
   linkImageUrl: z.string().nullish(),
+  linkFaviconUrl: z.string().nullish(),
 })
 export type LinkPayload = z.infer<typeof LinkPayloadCommandValidation>
 

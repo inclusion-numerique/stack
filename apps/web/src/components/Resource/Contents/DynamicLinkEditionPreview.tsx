@@ -8,6 +8,7 @@ const DynamicLinkEditionPreview = ({
   url,
   onUpdate,
   imageUrl,
+  faviconUrl,
   title,
   description,
 }: {
@@ -33,7 +34,7 @@ const DynamicLinkEditionPreview = ({
   )
   if (isFetching) {
     return (
-      <p className="fr-info-text fr-mt-0 fr-mb-6v">
+      <p className="fr-info-text fr-mt-0 fr-mb-4v">
         Chargement de l&apos;aperçu...
       </p>
     )
@@ -41,7 +42,7 @@ const DynamicLinkEditionPreview = ({
 
   if (!!metadataError || isError) {
     return (
-      <p className="fr-error-text fr-mt-0 fr-mb-6v">
+      <p className="fr-error-text fr-mt-0 fr-mb-4v">
         {metadataError ?? error?.message}
       </p>
     )
@@ -52,6 +53,7 @@ const DynamicLinkEditionPreview = ({
       title={title}
       description={description}
       imageUrl={imageUrl}
+      faviconUrl={faviconUrl}
     />
   )
 }

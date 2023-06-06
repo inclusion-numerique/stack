@@ -25,6 +25,7 @@ export type ContentAddedV1 = {
   linkDescription?: string | null
   linkTitle?: string | null
   linkImageUrl?: string | null
+  linkFaviconUrl?: string | null
 }
 
 export type ContentAdded = {
