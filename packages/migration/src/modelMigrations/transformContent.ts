@@ -44,6 +44,7 @@ export const transformContent = ({
     linkDescription: null,
     linkTitle: null,
     linkImageUrl: null,
+    linkFaviconUrl: null,
     linkedResourceId: null,
     legacyLinkedResourceId: null,
     text: null,
