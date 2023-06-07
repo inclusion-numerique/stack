@@ -1,0 +1,10 @@
+.header {
+  margin: 56px 0 32px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  h2, 
+  span {
+    margin-bottom: 0;
+  }
+}

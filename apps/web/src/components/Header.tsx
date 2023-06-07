@@ -67,29 +67,15 @@ const Header = ({
           <div className="fr-header__tools">
             <div className="fr-header__tools-links">
               <ul className="fr-btns-group">
-                <li>
-                  <Link href="/" className="fr-btn" title="Aide">
-                    <span className="fr-icon-question-line fr-icon--sm" />
-                    <span className="fr-hidden-lg fr-ml-1w">Aide</span>
-                  </Link>
-                </li>
-                <li className="fr-hidden fr-unhidden-lg fr-px-1w fr-pb-5v fr-pt-1v">
-                  <span
-                    style={{
-                      height: '100%',
-                      borderLeft: '1px solid var(--border-default-grey)',
-                    }}
-                  />
-                </li>
                 <li style={{ position: 'relative' }}>
                   {user ? (
                     <HeaderUserMenu user={user} />
                   ) : (
                     <Link
-                      href="/connexion"
-                      className="fr-btn fr-icon-user-line"
+                      href="/connexion?suivant=/prefet"
+                      className="fr-btn fr-icon-user-setting-line"
                     >
-                      Se connecter
+                      Espace Préfet
                     </Link>
                   )}
                 </li>
