@@ -1,7 +1,7 @@
 version: '2'
 services:
   web:
-    container_name: my-app
+    container_name: inclusion_numerique
     image: ${DOCKER_COMPOSE_WEB_IMAGE}
     ports:
       - "3000:8080"
