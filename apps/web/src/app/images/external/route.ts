@@ -30,12 +30,13 @@ export const GET = async (request: NextRequest) => {
   }
 
   const contentType = headers['content-type'] as string
+  const cacheControl = headers['cache-control'] as string
 
   return new Response(data, {
     status: 200,
     headers: {
       'Content-Type': contentType,
-      'Cache-Control': 'public, max-age=31536000, immutable',
+      'Cache-Control': cacheControl || 'public, max-age=31536000, immutable',
     },
   })
 }
