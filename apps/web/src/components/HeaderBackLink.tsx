@@ -3,7 +3,7 @@
 import classNames from 'classnames'
 import { useRouter } from 'next/navigation'
 
-const HeaderBackLink = () => {
+const HeaderBackLink = ({ backLink }: { backLink: string }) => {
   const router = useRouter()
   return (
     <button
@@ -16,7 +16,7 @@ const HeaderBackLink = () => {
       onClick={router.back}
     >
       <span className="fr-icon-arrow-left-line fr-icon--sm fr-mr-1w" />
-      Retour
+      {backLink}
     </button>
   )
 }

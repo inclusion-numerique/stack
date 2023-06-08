@@ -1,0 +1,10 @@
+.mapContainer {
+  height: 100%;
+  flex: 1;
+}
+
+.map {
+  height: calc(100% - 40px);
+  width: 100%;
+}
+

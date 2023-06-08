@@ -11,7 +11,7 @@ const Header = ({
   prefet,
 }: {
   user?: SessionUser | null
-  backLink?: boolean
+  backLink?: string
   prefet?: boolean
 }) => {
   const baseLinkProps = prefet
@@ -29,7 +29,7 @@ const Header = ({
             <div className="fr-header__brand fr-enlarge-link">
               <div className="fr-header__brand-top">
                 {backLink ? (
-                  <HeaderBackLink />
+                  <HeaderBackLink backLink={backLink} />
                 ) : (
                   !prefet && (
                     <div className="fr-header__logo">
@@ -62,13 +62,15 @@ const Header = ({
                   </button>
                 </div>
               </div>
-              <div className="fr-header__service">
-                <Link aria-current="page" target="_self" {...baseLinkProps}>
-                  <p className="fr-header__service-title">
-                    {baseLinkProps.title}
-                  </p>
-                </Link>
-              </div>
+              {!backLink && (
+                <div className="fr-header__service">
+                  <Link aria-current="page" target="_self" {...baseLinkProps}>
+                    <p className="fr-header__service-title">
+                      {baseLinkProps.title}
+                    </p>
+                  </Link>
+                </div>
+              )}
             </div>
             <div className="fr-header__tools">
               <div className="fr-header__tools-links">

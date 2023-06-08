@@ -84,7 +84,7 @@ const DepartmentMap = () => {
             l’Inclusion Numérique sur votre territoire à l’aide de cette
             cartographie.
           </div>
-          <Link href="/todo" className="fr-btn">
+          <Link href="/prefet/cartographie" className="fr-btn">
             <span className="fr-icon-road-map-line fr-mr-1w" />
             Visualiser la cartographie
           </Link>

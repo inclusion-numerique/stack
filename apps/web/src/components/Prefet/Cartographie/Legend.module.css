@@ -1,0 +1,23 @@
+.container {
+  width: 465px;
+  border-right: var(--slim-grey-border);
+}
+
+.collapsed {
+  width: fit-content;
+}
+
+.collapseButton {
+  float: right;
+}
+
+.legend {
+  padding: 32px;
+  nav {
+    margin: 0 0 32px 0;
+  }
+}
+
+.legendTitle {
+  margin: 32px 0 4px 0;
+}

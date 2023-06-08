@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+  width: 100%;
+  background-color: white;
+  border-top: var(--slim-grey-border);
+
+  :global(.fr-toggle) {
+    width: calc(225px + 24px + 40px);
+    color: var(--text-title-blue-france);
+    padding: 8px 16px;
+    
+    label {
+      font-size: 14px;
+      &:after {
+        top: 8px;
+        right: 32px;
+      }
+    }
+  }
+}
+
+.legendImage {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
