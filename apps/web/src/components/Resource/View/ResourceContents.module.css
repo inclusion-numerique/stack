@@ -19,3 +19,8 @@
   object-fit: contain;
   display: block;
 }
+
+.content {
+  border-top: var(--slim-grey-border);
+  padding: 24px 0;
+}

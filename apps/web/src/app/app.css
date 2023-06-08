@@ -9,6 +9,13 @@ body,
 body > div:not(#environment-information) {
   min-height: 100% !important;
   height: 100%;
+  scroll-behavior: smooth;
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 textarea {
@@ -17,6 +24,11 @@ textarea {
 
 :root {
   --slim-grey-border: 1px solid var(--border-default-grey);
+  --edition-container-internal-width: 588px;
+
+  /* We need padding for the drag button absolute positioning on the left of the edition content list */
+  --edition-container-x-padding: 48px;
+  --edition-container-max-width: calc(var(--edition-container-internal-width) + var(--edition-container-x-padding) * 2);
 }
 
 /* Extensions of DSFR */

@@ -20,7 +20,21 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
       on('task', tasks)
+      on('before:browser:launch', (browser, launchOptions) => {
+        if (browser.family === 'firefox') {
+          launchOptions.preferences['ui.prefersReducedMotion'] = 1
+        }
+        if (browser.family === 'chromium') {
+          launchOptions.args.push('--force-prefers-reduced-motion')
+        }
+        // Electron does not supports that kind of options.
+        launchOptions.env.ELECTRON_EXTRA_LAUNCH_ARGS =
+          '--force-prefers-reduced-motion'
+
+        return launchOptions
+      })
     },
+    scrollBehavior: 'center',
     env: {
       INCLUSION_CONNECT_TEST_USER_EMAIL:
         process.env.INCLUSION_CONNECT_TEST_USER_EMAIL,
