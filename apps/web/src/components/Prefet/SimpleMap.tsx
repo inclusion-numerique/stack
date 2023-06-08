@@ -51,13 +51,20 @@ const SimpleMap = () => {
 
       map.current.addSource('departement', { type: 'geojson', data: ardennes })
       map.current.addLayer({
-        id: 'uploaded-polygons',
+        id: 'departement-fill',
         type: 'fill',
         source: 'departement',
         paint: {
           'fill-color': '#b1b6e6',
-          'fill-outline-color': '#000086',
-          'fill-opacity': 1,
+        },
+      })
+      map.current.addLayer({
+        id: 'departement-outline',
+        type: 'line',
+        source: 'departement',
+        paint: {
+          'line-color': '#000086',
+          'line-width': 2,
         },
       })
     })
