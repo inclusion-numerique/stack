@@ -16,7 +16,7 @@ const PrefetPage = ({ user }: { user: SessionUser }) => {
           Source : <Link href="#">Données & territoires</Link>
         </span>
       </div>
-      <div className="fr-grid-row fr-grid-row--gutters">
+      <div className="fr-grid-row fr-grid-row--gutters fr-mb-10w">
         <div className="fr-col-5">
           {data[0].boxes.map((box, index, array) => (
             <Box
@@ -31,12 +31,12 @@ const PrefetPage = ({ user }: { user: SessionUser }) => {
         </div>
       </div>
       {data.slice(1).map((values) => (
-        <div key={values.id} className="fr-mt-10w">
+        <div key={values.id} className="fr-mb-10w">
           <h2>{values.label}</h2>
           <div className="fr-grid-row fr-grid-row--gutters">
             {values.boxes.map((box) => (
-              <div className="fr-col-4">
-                <Box key={box.id} {...box} />
+              <div key={box.id} className="fr-col-4">
+                <Box fullHeight {...box} />
               </div>
             ))}
           </div>
