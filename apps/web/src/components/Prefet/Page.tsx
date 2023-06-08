@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import styles from './Page.module.css'
 import Box from './Box/Box'
-import SimpleMap from './SimpleMap'
+import DepartmentMap from './DepartmentMap'
 import { data } from './data'
 
 const PrefetPage = ({ user }: { user: SessionUser }) => {
@@ -27,7 +27,7 @@ const PrefetPage = ({ user }: { user: SessionUser }) => {
           ))}
         </div>
         <div className="fr-col-7">
-          <SimpleMap />
+          <DepartmentMap />
         </div>
       </div>
       {data.slice(1).map((values) => (

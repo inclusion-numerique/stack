@@ -7,9 +7,9 @@ import maplibregl, { Map, StyleSpecification } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import empty from './departements/empty.json'
 import ardennes from './departements/ardennes.json'
-import styles from './SimpleMap.module.css'
+import styles from './DepartmentMap.module.css'
 
-const SimpleMap = () => {
+const DepartmentMap = () => {
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<Map>()
 
@@ -94,4 +94,4 @@ const SimpleMap = () => {
   )
 }
 
-export default SimpleMap
+export default DepartmentMap
