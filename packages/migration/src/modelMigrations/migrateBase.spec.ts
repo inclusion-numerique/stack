@@ -62,7 +62,7 @@ describe('migrateBase', () => {
       ]),
     })
 
-    expect(mockTransaction.base.upsert).toHaveBeenCalledOnceWith({
+    expect(mockTransaction.base.upsert).toHaveBeenCalledExactlyOnceWith({
       where: {
         legacyId: 129,
       },

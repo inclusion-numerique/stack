@@ -16,7 +16,7 @@ describe('computeSlugAndUpdateExistingSlugs', () => {
       existingSlugs,
     )
     expect(result).toEqual('test')
-    expect(createSlugSpy).toHaveBeenCalledOnceWith('Title')
+    expect(createSlugSpy).toHaveBeenCalledExactlyOnceWith('Title')
   })
 
   it('should return the slug with legacyId if it is already used', () => {
@@ -29,7 +29,7 @@ describe('computeSlugAndUpdateExistingSlugs', () => {
       existingSlugs,
     )
     expect(result).toEqual('test-1')
-    expect(createSlugSpy).toHaveBeenCalledOnceWith('Title')
+    expect(createSlugSpy).toHaveBeenCalledExactlyOnceWith('Title')
   })
 
   it('should return the slug with timestamp if it is already used', () => {
@@ -44,7 +44,7 @@ describe('computeSlugAndUpdateExistingSlugs', () => {
       existingSlugs,
     )
     expect(result).toEqual('test-235922420')
-    expect(createSlugSpy).toHaveBeenCalledOnceWith('Title')
+    expect(createSlugSpy).toHaveBeenCalledExactlyOnceWith('Title')
   })
 
   it('should return the slug if it is used by the same item', () => {
@@ -59,6 +59,6 @@ describe('computeSlugAndUpdateExistingSlugs', () => {
       existingSlugs,
     )
     expect(result).toEqual('test-2')
-    expect(createSlugSpy).toHaveBeenCalledOnceWith('Title')
+    expect(createSlugSpy).toHaveBeenCalledExactlyOnceWith('Title')
   })
 })
