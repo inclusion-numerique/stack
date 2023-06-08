@@ -1,0 +1,4 @@
+.bloc {
+  border: var(--slim-grey-border);
+  padding: 32px;
+}

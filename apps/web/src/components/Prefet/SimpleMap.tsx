@@ -45,7 +45,7 @@ const SimpleMap = () => {
       )
 
       map.current.fitBounds(bounds, {
-        padding: { top: 25, right: 50, left: 50, bottom: 225 },
+        padding: { top: 50, right: 50, left: 50, bottom: 250 },
         animate: false,
       })
 

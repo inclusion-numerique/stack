@@ -19,22 +19,32 @@ type Category = {
   statistics: Statistic[]
 }
 
-export type Bloc = {
+export type StatisticBox = {
   id: string
   label: string
   value: number
   statistics: (SourcedStatistic | Category | Statistic)[]
 }
 
-export type Blocs = {
-  id?: string
-  label?: string
-  blocs: Bloc[]
+export type PercentageBox = {
+  id: string
+  label: string
+  updated: Date
+  source: string
+  statistics: Statistic[]
 }
 
-export const data: Blocs[] = [
+export type Box = StatisticBox | PercentageBox
+
+export type Boxs = {
+  id?: string
+  label?: string
+  boxes: Box[]
+}
+
+export const data: Boxs[] = [
   {
-    blocs: [
+    boxes: [
       {
         id: 'lieux-d-inclusion-numérique',
         label: "Lieux d'Inclusion Numérique",
@@ -134,7 +144,7 @@ export const data: Blocs[] = [
   {
     id: 'publics-accompagnés-dans-les-ardennes',
     label: 'Publics accompagnés dans les Ardennes',
-    blocs: [
+    boxes: [
       {
         id: 'usagers-accompagnés',
         label: 'Usagers accompagnés',
@@ -156,12 +166,38 @@ export const data: Blocs[] = [
           },
         ],
       },
+      {
+        id: 'âge-des-usagers',
+        label: 'Âge des usagers',
+        updated: new Date('2021-09-04'),
+        source: 'conseiller-numerique.gouv.fr',
+        statistics: [
+          { id: '60', label: '60 ans et plus', value: 20 },
+          { id: '30', label: '35-60 ans', value: 15 },
+          { id: '18', label: '18-35 ans', value: 5 },
+          { id: '12', label: '12-18 ans', value: 50 },
+          { id: '-12', label: 'Moins de 12 ans', value: 10 },
+        ],
+      },
+      {
+        id: 'status-des-usagers',
+        label: 'Status des usagers',
+        updated: new Date('2021-09-04'),
+        source: 'conseiller-numerique.gouv.fr',
+        statistics: [
+          { id: 'nr', label: 'Non renseigné', value: 20 },
+          { id: 'retraite', label: 'Retraité', value: 15 },
+          { id: 'en-emploi', label: 'En emploi', value: 5 },
+          { id: 'sans-emploi', label: 'Sans emploi', value: 50 },
+          { id: 'scolarisee', label: 'Scolarisé(e)', value: 10 },
+        ],
+      },
     ],
   },
   {
     id: 'accompagnements-dans-les-ardennes',
     label: 'Accompagnements dans les Ardennes',
-    blocs: [
+    boxes: [
       {
         id: 'accompagnement',
         label: 'Accompagnement',
@@ -181,6 +217,36 @@ export const data: Blocs[] = [
             updated: new Date('2021-09-04'),
             source: 'https://aidantsconnect.beta.gouv.fr/',
           },
+        ],
+      },
+      {
+        id: 'accompagnements-de-médiation-numérique',
+        label:
+          'Les 3 principaux thèmes d’accompagnements de médiation numérique',
+        updated: new Date('2021-09-04'),
+        source: 'conseiller-numerique.gouv.fr',
+        statistics: [
+          {
+            id: 'prise-en-main',
+            label: 'Prendre en main du matériel',
+            value: 40,
+          },
+          { id: 'naviguation', label: 'Naviguer sur internet', value: 8 },
+          { id: 'courriels', label: 'Courriels', value: 2 },
+          { id: 'autres', label: 'Autres thématiques', value: 50 },
+        ],
+      },
+      {
+        id: 'réaliser-des-démarches-en-lignes',
+        label:
+          'Les 3 principaux thèmes d’accompagnements pour réaliser des démarches en lignes',
+        updated: new Date('2021-09-04'),
+        source: 'conseiller-numerique.gouv.fr',
+        statistics: [
+          { id: 'social', label: 'Social', value: 22 },
+          { id: 'travail', label: 'Travail', value: 44 },
+          { id: 'argent', label: 'Argent', value: 12 },
+          { id: 'autres', label: 'Autres thématiques', value: 28 },
         ],
       },
     ],

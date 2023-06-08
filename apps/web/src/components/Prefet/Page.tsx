@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import styles from './Page.module.css'
-import Bloc from './StatisticsBloc'
+import Box from './Box/Box'
 import SimpleMap from './SimpleMap'
 import { data } from './data'
 
@@ -18,11 +18,11 @@ const PrefetPage = ({ user }: { user: SessionUser }) => {
       </div>
       <div className="fr-grid-row fr-grid-row--gutters">
         <div className="fr-col-5">
-          {data[0].blocs.map((bloc, index, array) => (
-            <Bloc
-              key={bloc.id}
+          {data[0].boxes.map((box, index, array) => (
+            <Box
+              key={box.id}
               className={index === array.length - 1 ? '' : 'fr-mb-3w'}
-              {...bloc}
+              {...box}
             />
           ))}
         </div>
@@ -33,9 +33,13 @@ const PrefetPage = ({ user }: { user: SessionUser }) => {
       {data.slice(1).map((values) => (
         <div key={values.id} className="fr-mt-10w">
           <h2>{values.label}</h2>
-          {values.blocs.map((bloc) => (
-            <Bloc key={bloc.id} {...bloc} />
-          ))}
+          <div className="fr-grid-row fr-grid-row--gutters">
+            {values.boxes.map((box) => (
+              <div className="fr-col-4">
+                <Box key={box.id} {...box} />
+              </div>
+            ))}
+          </div>
         </div>
       ))}
     </>
