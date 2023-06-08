@@ -19,7 +19,7 @@ const ResourceSideMenu = ({ contents }: { contents: ResourceContent[] }) => {
               // Only display one level item if there is no section title in resource contents
               text: 'Ressource',
               // Resource content is active by default
-              isActive: active === 'contenu' || !active,
+              isActive: active === 'contenu',
               linkProps: {
                 href: '#contenu',
               },
@@ -28,14 +28,12 @@ const ResourceSideMenu = ({ contents }: { contents: ResourceContent[] }) => {
               text: 'Ressource',
               isActive: active !== 'informations',
               expandedByDefault: true,
-              items: navigationContents.map((content, index) => ({
+              items: navigationContents.map((content) => ({
                 text: content.title,
                 linkProps: {
                   href: `#${content.navigation.id}`,
                 },
-                isActive:
-                  // First resource content is active by default
-                  (index === 0 && !active) || active === content.navigation.id,
+                isActive: active === content.navigation.id,
               })),
             },
         {

@@ -144,7 +144,11 @@ const ResourceImageEdition = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className={image ? styles.container : styles.emptyContainer}>
-        <div className={styles.imageContainer}>
+        <div
+          className={
+            image ? styles.imageContainer : styles.imagePlaceholderContainer
+          }
+        >
           {image ? (
             <ResponsiveUploadedImage
               id={image.id}
