@@ -2,6 +2,9 @@ import React from 'react'
 import '@app/web/app/app.css'
 import { useRef } from '@storybook/addons'
 import { Preview } from '@storybook/react'
+import { setupMocks } from '@app/storybook/mocks/storybookMocks'
+
+setupMocks()
 
 const loadDsfrJs = () => {
   const existing = document.querySelector('#dsfr-js')

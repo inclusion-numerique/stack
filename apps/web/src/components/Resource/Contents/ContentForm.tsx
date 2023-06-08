@@ -7,20 +7,19 @@ import { ContentType } from '@prisma/client'
 import SectionTitleEdition from '@app/web/components/Resource/Contents/SectionTitleEdition'
 import type { SendCommand } from '@app/web/components/Resource/Edition/Edition'
 import styles from '@app/web/components/Resource/Edition/Edition.module.css'
-import {
-  AddContentCommand,
-  AddContentCommandValidation,
-} from '@app/web/server/resources/feature/AddContent'
-import {
-  EditContentCommand,
-  EditContentCommandValidation,
-} from '@app/web/server/resources/feature/EditContent'
+import { AddContentCommand } from '@app/web/server/resources/feature/AddContent'
+import { EditContentCommand } from '@app/web/server/resources/feature/EditContent'
 import {
   ContentProjection,
   ResourceProjection,
 } from '@app/web/server/resources/feature/createResourceProjection'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { removeNullAndUndefinedValues } from '@app/web/utils/removeNullAndUndefinedValues'
+import {
+  ContentPayload,
+  ContentPayloadCommandValidation,
+} from '@app/web/server/resources/feature/Content'
+import LinkEdition from './LinkEdition'
 import TextEdition from './TextEdition'
 
 const ContentForm = ({
@@ -44,31 +43,14 @@ const ContentForm = ({
   if (mode === 'edit' && !content) {
     throw new Error('Content is required in edit mode')
   }
-  const form = useForm<AddContentCommand | EditContentCommand>(
-    mode === 'add'
-      ? {
-          resolver: zodResolver(AddContentCommandValidation),
-          mode: 'onChange',
-          defaultValues: {
-            name: 'AddContent',
-            payload: {
-              resourceId: resource.id,
-              type,
-            },
-          },
-        }
-      : {
-          resolver: zodResolver(EditContentCommandValidation),
-          mode: 'onChange',
-          defaultValues: {
-            name: 'EditContent',
-            payload: {
-              ...removeNullAndUndefinedValues(content),
-              resourceId: resource.id,
-            },
-          },
-        },
-  )
+  const form = useForm<ContentPayload>({
+    resolver: zodResolver(ContentPayloadCommandValidation),
+    mode: 'onChange',
+    defaultValues: {
+      type,
+      ...(content ? removeNullAndUndefinedValues(content) : null),
+    },
+  })
 
   const {
     handleSubmit,
@@ -76,14 +58,25 @@ const ContentForm = ({
     formState: { isSubmitting, isDirty },
   } = form
 
-  const onSubmit = async (data: AddContentCommand | EditContentCommand) => {
+  const onSubmit = async (data: ContentPayload) => {
     if (!isDirty) {
       // No change
       setEditing(null)
       return
     }
     try {
-      await sendCommand(data)
+      const command =
+        mode === 'add'
+          ? ({
+              name: 'AddContent',
+              payload: { resourceId: resource.id, ...data },
+            } satisfies AddContentCommand)
+          : ({
+              name: 'EditContent',
+              payload: { resourceId: resource.id, id: content.id, ...data },
+            } satisfies EditContentCommand)
+
+      await sendCommand(command)
       setEditing(null)
     } catch (error) {
       applyZodValidationMutationErrorsToForm(error, setError)
@@ -95,7 +88,6 @@ const ContentForm = ({
       setEditing(null)
       return
     }
-    // TODO add confirmation modal
     try {
       await sendCommand({
         name: 'RemoveContent',
@@ -116,6 +108,10 @@ const ContentForm = ({
     }
     case 'Text': {
       formContent = <TextEdition form={form} />
+      break
+    }
+    case 'Link': {
+      formContent = <LinkEdition form={form} />
       break
     }
     default: {

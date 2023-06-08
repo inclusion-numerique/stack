@@ -57,6 +57,10 @@ export const getResourceSelect = {
       order: true,
       showPreview: true,
       url: true,
+      linkDescription: true,
+      linkTitle: true,
+      linkImageUrl: true,
+      linkFaviconUrl: true,
       linkedResourceId: true,
       legacyLinkedResourceId: true,
       linkedResource: {

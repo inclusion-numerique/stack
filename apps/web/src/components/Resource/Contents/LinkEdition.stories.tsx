@@ -3,14 +3,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Meta, StoryObj } from '@storybook/react'
 import { EditContentCommandValidation } from '@app/web/server/resources/feature/EditContent'
 import { ContentPayload } from '@app/web/server/resources/feature/Content'
-import TextEdition from './TextEdition'
+import LinkEdition from './LinkEdition'
 
 export default {
-  title: 'Ressource/Content/Text/Edition',
-  component: TextEdition,
-} as Meta<typeof TextEdition>
+  title: 'Ressource/Content/Link/Edition',
+  component: LinkEdition,
+} as Meta<typeof LinkEdition>
 
-type Story = StoryObj<typeof TextEdition>
+type Story = StoryObj<typeof LinkEdition>
 
 const Template = () => {
   const form = useForm<ContentPayload>({
@@ -18,13 +18,13 @@ const Template = () => {
     reValidateMode: 'onChange',
     mode: 'all',
     defaultValues: {
-      text: `<h2>Edit me</h2><p><b>please...</b></p><p>ps: C'est pas encore fou pour <a href='https://tiptap.dev/api/marks/link' target='_blank'>les liens</a>`,
+      title: 'Titre du lien',
     },
   })
 
   return (
     <form>
-      <TextEdition form={form} />
+      <LinkEdition form={form} />
     </form>
   )
 }

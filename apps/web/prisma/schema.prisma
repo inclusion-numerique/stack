@@ -207,6 +207,7 @@ model Content {
   linkDescription String?
   linkTitle       String?
   linkImageUrl    String?
+  linkFaviconUrl  String?
 
   // ResourceLink
   linkedResource         Resource? @relation(name: "contentLinkedResource", fields: [linkedResourceId], references: [id])

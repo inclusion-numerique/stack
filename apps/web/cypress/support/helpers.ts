@@ -74,20 +74,16 @@ export const createTestResourceCommands = ({
         text: '<p>Mon premier paragraphe</p>',
       },
     },
-  ] satisfies [CreateResourceCommand, ...ResourceMutationCommand[]]
-}
-
-export const createTestResourceContents = () => {
-  return [
     {
-      type: 'ContentAdded',
-      timestamp: new Date(),
-      data: {
-        __version: 1,
-        id: v4(),
-        type: 'SectionTitle',
-        title: 'Et ca continue encore et encore...',
+      name: 'AddContent',
+      payload: {
+        resourceId,
+        type: 'Link',
+        title: 'Vous avez vu mon lien',
+        url: 'https://www.imdb.com/title/tt0357111/',
+        showPreview: true,
+        caption: 'Il est beau hein !',
       },
     },
-  ] satisfies ContentAdded[]
+  ] satisfies [CreateResourceCommand, ...ResourceMutationCommand[]]
 }

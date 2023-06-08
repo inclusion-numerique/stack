@@ -74,6 +74,10 @@ textarea {
   }
 }
 
+.fr-input-group:not(:last-child), .fr-select-group:not(:last-child) {
+  margin-bottom: 16px;
+}
+
 @media (min-width: 62em) {
   /* lg */
   .fr-header {

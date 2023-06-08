@@ -59,7 +59,7 @@ const CheckboxFormField = <T extends FieldValues>({
               }`}
               role="group"
             >
-              <div className="fr-fieldset__element">
+              <div className="fr-fieldset__element fr-mb-0">
                 <div
                   className={classNames('fr-checkbox-group', {
                     'fr-checkbox-group--sm': small,
