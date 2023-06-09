@@ -34,6 +34,7 @@ import { ScalewayProvider } from '@app/scaleway/provider'
 import { RdbInstance } from '@app/scaleway/rdb-instance'
 import { RegistryNamespace } from '@app/scaleway/registry-namespace'
 import { TemDomain } from '@app/scaleway/tem-domain'
+import { projectId } from '@app/config/secrets/secretClient'
 
 export const projectStackVariables = [
   'SCW_DEFAULT_ORGANIZATION_ID',
@@ -116,6 +117,7 @@ export class ProjectStack extends TerraformStack {
     // Uploads bucket for usage in integration testing and dev environments
     new ObjectBucket(this, 'devUploads', {
       name: environmentVariables.UPLOADS_BUCKET.value,
+      projectId,
       corsRule: [
         {
           allowedHeaders: ['*'],
