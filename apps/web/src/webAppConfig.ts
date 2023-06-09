@@ -44,9 +44,6 @@ export const ServerWebAppConfig = {
     alertManagerUrl: process.env.COCKPIT_ALERT_MANAGER_URL ?? '',
     grafanaUrl: process.env.COCKPIT_GRAFANA_URL ?? '',
   },
-  InclusionConnect: {
-    clientSecret: process.env.INCLUSION_CONNECT_CLIENT_SECRET ?? '',
-  },
 }
 
 /**

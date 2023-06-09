@@ -29,7 +29,6 @@ import { CockpitToken } from '@app/scaleway/cockpit-token'
 import { ContainerNamespace } from '@app/scaleway/container-namespace'
 import { DataScalewayDomainZone } from '@app/scaleway/data-scaleway-domain-zone'
 import { DomainRecord } from '@app/scaleway/domain-record'
-import { ObjectBucket } from '@app/scaleway/object-bucket'
 import { ScalewayProvider } from '@app/scaleway/provider'
 import { RdbInstance } from '@app/scaleway/rdb-instance'
 import { RegistryNamespace } from '@app/scaleway/registry-namespace'
@@ -114,19 +113,19 @@ export class ProjectStack extends TerraformStack {
     )
 
     // Uploads bucket for usage in integration testing and dev environments
-    new ObjectBucket(this, 'devUploads', {
-      name: environmentVariables.UPLOADS_BUCKET.value,
-      projectId: environmentVariables.SCW_PROJECT_ID.value,
-      corsRule: [
-        {
-          allowedHeaders: ['*'],
-          allowedMethods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
-          maxAgeSeconds: 3000,
-          exposeHeaders: ['Etag'],
-          allowedOrigins: ['http://localhost:3000', 'http://localhost'],
-        },
-      ],
-    })
+    // new ObjectBucket(this, 'devUploads', {
+    //   name: environmentVariables.UPLOADS_BUCKET.value,
+    //   projectId: environmentVariables.SCW_PROJECT_ID.value,
+    //   corsRule: [
+    //     {
+    //       allowedHeaders: ['*'],
+    //       allowedMethods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
+    //       maxAgeSeconds: 3000,
+    //       exposeHeaders: ['Etag'],
+    //       allowedOrigins: ['http://localhost:3000', 'http://localhost'],
+    //     },
+    //   ],
+    // })
 
     // https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/rdb_instance
     const database = new RdbInstance(this, 'database', {

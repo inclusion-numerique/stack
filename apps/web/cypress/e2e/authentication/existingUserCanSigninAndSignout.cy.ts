@@ -8,17 +8,6 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
 
   // Unique user for this test
   const emailUser = createTestUser()
-  // This user exists in inclusion connect, but not in our db
-  const inclusionConnectUser = {
-    email: Cypress.env('INCLUSION_CONNECT_TEST_USER_EMAIL') as string,
-    password: Cypress.env('INCLUSION_CONNECT_TEST_USER_PASSWORD') as string,
-    firstName: 'Test Bot',
-    lastName: 'Inclusion Numerique',
-  }
-
-  before(() => {
-    cy.execute('deleteUser', { email: inclusionConnectUser.email })
-  })
 
   it('Préliminaire - Les pages de connexions sont accessibles', () => {
     cy.visit('/')
@@ -62,67 +51,6 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     )
   })
 
-  it('Acceptation 1 - Connexion avec Inclusion Connect', () => {
-    cy.visit('/connexion')
-    // Cypress deletes some cookies on redirection between domains
-    // See https://github.com/cypress-io/cypress/issues/20476
-    // Also see https://docs.cypress.io/guides/guides/cross-origin-testing
-    // We need to intercept the request to our auth endpoint to memorize the cookies
-    // then intercept the request for our auth endpoint during callback to add the cookies back
-    let authenticationCookies: string[]
-
-    cy.intercept(/\/api\/auth\/signin\/inclusion-connect/, (request) => {
-      request.continue((response) => {
-        // Memorize our cookies
-        const responseCookies = response.headers['set-cookie']
-        authenticationCookies = Array.isArray(responseCookies)
-          ? responseCookies
-          : [responseCookies]
-      })
-    })
-
-    cy.get('button[title="S\'identifier avec InclusionConnect"]').click()
-    cy.url().should('contain', 'connect.inclusion.beta.gouv.fr/realms')
-
-    cy.intercept(/\/api\/auth\/callback/, (request) => {
-      // Add our cookies back
-      request.headers.cookie = authenticationCookies.join('; ')
-    })
-
-    cy.get('input[name="username"]').type(inclusionConnectUser.email)
-
-    // Inclusion connect has frontend uncaught exceptions
-    Cypress.on('uncaught:exception', () => false)
-    cy.get('input[name="password"]').type(
-      `${inclusionConnectUser.password}{enter}`,
-    )
-
-    // Cookies are lost in redirect (Cypress issue)
-    // https://github.com/cypress-io/cypress/issues/20476#issuecomment-1298486439
-
-    cy.url().should('equal', appUrl('/'))
-
-    cy.get('.fr-header__tools').should('not.contain', 'Se connecter')
-
-    cy.log('Check that the user can logout')
-
-    cy.dsfrShouldBeStarted()
-    cy.dsfrCollapsesShouldBeBound()
-    cy.get('.fr-header__tools button[aria-controls="header-user-menu"]')
-      .contains(inclusionConnectUser.firstName)
-      .contains(inclusionConnectUser.lastName)
-      .click()
-
-    cy.get('#header-user-menu').should('be.visible')
-
-    cy.get('#header-user-menu').contains('Se déconnecter').click()
-    cy.url().should('equal', appUrl('/deconnexion'))
-    cy.contains('Êtes-vous sur de vouloir vous déconnecter ?')
-    cy.get('main').contains('Se déconnecter').click()
-    cy.url().should('equal', appUrl('/'))
-    cy.get('.fr-header__tools').contains('Se connecter')
-  })
-
   it('Acceptation 2 - Connexion avec email', () => {
     cy.visit('/connexion')
     cy.execute('createUser', emailUser)
@@ -142,7 +70,10 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.visit('localhost:1080')
     cy.get('.email-list li a').first().click()
 
-    cy.get('.email-meta .subject').should('contain', 'Connexion à Stack')
+    cy.get('.email-meta .subject').should(
+      'contain',
+      'Connexion à Inclusion Numérique',
+    )
 
     // Cypress does not work well with iframes, we go to the html source of the email that is
     // included in the iframe preview of maildev ui
@@ -156,7 +87,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
 
     cy.log('Check mail contents')
     // We should not have the email html version in full
-    cy.contains('Connexion à Stack')
+    cy.contains('Connexion à Inclusion Numérique')
     cy.contains('Se connecter').click()
 
     // With a valid magic link we should be automatically redirected to homepage, logged in

@@ -3,7 +3,7 @@ import { createTestUser } from '../support/helpers'
 describe("Page d'accueil", () => {
   it("La page d'accueil s'affiche correctement, avec les styles du DSFR", () => {
     cy.visit('/')
-    cy.get('.fr-header__service a').should('contain', 'Stack')
+    cy.get('.fr-header__service a').should('contain', 'Inclusion Numérique')
     cy.get('.fr-header__tools .fr-btn')
       .should('contain', 'Se connecter')
       .should('have.css', 'color', 'rgb(0, 0, 145)')

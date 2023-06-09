@@ -1,11 +1,9 @@
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
-import KeycloakProvider, { KeycloakProfile } from 'next-auth/providers/keycloak'
-import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
 import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
 import '@app/web/auth/nextAuthSetup'
 import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
-import { PublicWebAppConfig, ServerWebAppConfig } from '@app/web/webAppConfig'
+import { ServerWebAppConfig } from '@app/web/webAppConfig'
 
 export const authOptions: NextAuthOptions = {
   adapter: nextAuthAdapter,
@@ -21,25 +19,6 @@ export const authOptions: NextAuthOptions = {
     EmailProvider({
       ...ServerWebAppConfig.Auth.Email,
       sendVerificationRequest,
-    }),
-    KeycloakProvider({
-      // Allow an email user to login with Inclusion Connect
-      allowDangerousEmailAccountLinking: true,
-      id: inclusionConnectProviderId,
-      name: 'Inclusion Connect',
-      clientId: PublicWebAppConfig.InclusionConnect.clientId,
-      clientSecret: ServerWebAppConfig.InclusionConnect.clientSecret,
-      // KeycloakProvider adds wellknown open id config path
-      issuer: PublicWebAppConfig.InclusionConnect.issuer,
-      profile: (profile: KeycloakProfile) => ({
-        id: profile.sub,
-        name: profile.name ?? profile.preferred_username,
-        firstName: profile.given_name,
-        lastName: profile.family_name,
-        email: profile.email,
-        image: profile.picture,
-        provider: inclusionConnectProviderId,
-      }),
     }),
   ],
   callbacks: {
