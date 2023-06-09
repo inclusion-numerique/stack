@@ -37,6 +37,7 @@ const IndiceNumerique = ({
         label="Indice de Fragilité Numérique"
         labelPosition="left"
         showCheckedHint={false}
+        defaultChecked
         onChange={(checked) => setViewIndiceFN(checked)}
       />
       {viewIndiceFN && (
@@ -49,7 +50,7 @@ const IndiceNumerique = ({
               width={162}
               height={17}
               src="/images/indice-fragilite-numerique.png"
-              alt=""
+              alt="Dégradé de couleur allant du bleu au marron"
             />
             <span className="fr-text--xs fr-hint-text fr-mb-0">
               10 : Fragile

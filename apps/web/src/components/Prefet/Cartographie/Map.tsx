@@ -1,16 +1,19 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import maplibregl, { Map as MapType } from 'maplibre-gl'
+import maplibregl, { GeoJSONFeature, Map as MapType } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import ardennes from '../departements/ardennes.json'
 import styles from './Map.module.css'
 import IndiceNumerique from './IndiceNumerique'
+import { addHoverState, communesLayer } from './MapUtils'
+import MapPopup from './MapPopup'
 
 const Map = () => {
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<MapType>()
   const [viewIndiceFN, setViewIndiceFN] = useState(true)
+  const [clicked, setClicked] = useState<GeoJSONFeature['properties'] | null>()
 
   useEffect(() => {
     if (map.current || !mapContainer.current) {
@@ -22,7 +25,7 @@ const Map = () => {
       style:
         'https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json',
       center: [5.4101, 50.0289],
-      zoom: 5,
+      zoom: 6,
     })
 
     map.current.on('load', () => {
@@ -30,19 +33,30 @@ const Map = () => {
         return
       }
 
-      /* map.current.addSource('communes', {
+      map.current.addSource('decoupage', {
         type: 'vector',
-        tiles: [`/api/communes/{z}/{x}/{y}`],
+        tiles: [
+          'https://openmaptiles.geo.data.gouv.fr/data/decoupage-administratif/{z}/{x}/{y}.pbf',
+        ],
       })
+      map.current.addLayer(communesLayer)
       map.current.addLayer({
-        id: 'communes-fill',
-        type: 'fill',
-        source: 'communes',
-        'source-layer': 'test',
+        id: 'epcis',
+        type: 'line',
+        source: 'decoupage',
+        'source-layer': 'epcis',
         paint: {
-          'fill-color': '#b1b6e6',
+          'line-color': 'blue',
         },
-      })*/
+      })
+
+      map.current.on('click', 'communes', (event) => {
+        if (event.features && event.features.length > 0) {
+          setClicked(event.features[0].properties)
+        }
+      })
+
+      addHoverState(map.current, 'communes')
 
       // TO CACHE ?
       const bounds = ardennes.features[0].geometry.coordinates[0].reduce(
@@ -56,8 +70,8 @@ const Map = () => {
       )
 
       map.current.fitBounds(bounds, {
-        padding: { top: 50, right: 50, left: 50, bottom: 250 },
         animate: false,
+        zoom: 8,
       })
 
       const navControl = new maplibregl.NavigationControl({
@@ -73,9 +87,23 @@ const Map = () => {
       map.current.addControl(scaleControl, 'bottom-left')
     })
   }, [])
+
+  useEffect(() => {
+    if (map.current && map.current.getLayer('communes')) {
+      map.current.setLayoutProperty(
+        'communes',
+        'visibility',
+        viewIndiceFN ? 'visible' : 'none',
+      )
+    }
+  }, [viewIndiceFN])
+
   return (
     <div className={styles.mapContainer}>
       <div ref={mapContainer} className={styles.map} />
+      {clicked && (
+        <MapPopup properties={clicked} close={() => setClicked(null)} />
+      )}
       <IndiceNumerique
         setViewIndiceFN={setViewIndiceFN}
         viewIndiceFN={viewIndiceFN}
