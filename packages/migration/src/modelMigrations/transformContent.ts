@@ -1,5 +1,6 @@
 import { v4 } from 'uuid'
 import type { MigrateResourceCommand } from '@app/web/server/resources/feature/MigrateResource'
+import { ResourceProjection } from '@app/web/server/resources/feature/createResourceProjection'
 import type { LegacyToNewIdHelper } from '@app/migration/legacyToNewIdHelper'
 import type { LegacyResource } from '@app/migration/modelMigrations/migrateResources'
 
@@ -11,6 +12,7 @@ export const transformContent = ({
   order,
   imageIdFromLegacyId,
   uploadKeyFromLegacyKey,
+  migratedResourcesByLegacyId,
 }: {
   imageIdFromLegacyId: LegacyToNewIdHelper
   uploadKeyFromLegacyKey: (legacyKey: string) => string
@@ -18,6 +20,7 @@ export const transformContent = ({
     | LegacyResource['main_contentsection'][number]['main_contentblock'][number]
     | LegacyResource['main_contentsection'][number]
   order: number
+  migratedResourcesByLegacyId: Map<number, ResourceProjection>
 }): TransformContentResult | null => {
   const legacyId = Number(legacyContent.id)
 
@@ -34,7 +37,7 @@ export const transformContent = ({
     title: legacyContent.title,
     created: legacyContent.created,
     updated: legacyContent.modified,
-    legacyContentId: null,
+    legacyContentId: Number(legacyContent.id),
     legacySectionId: null,
     caption: null,
     imageId: null,
@@ -45,17 +48,21 @@ export const transformContent = ({
     linkTitle: null,
     linkImageUrl: null,
     linkFaviconUrl: null,
-    linkedResourceId: null,
     legacyLinkedResourceId: null,
     text: null,
-  } as const satisfies Omit<TransformContentResult, 'type'>
+  } satisfies Omit<TransformContentResult, 'type'>
 
   // We migrate sections as SectionTitle
   if ('main_contentblock' in legacyContent) {
     if (!legacyContent.title?.trim()) {
       return null
     }
-    return { ...commonData, type: 'SectionTitle' }
+    return {
+      ...commonData,
+      legacyContentId: null,
+      legacySectionId: Number(legacyContent.id),
+      type: 'SectionTitle',
+    }
   }
   if (legacyContent.main_textcontent) {
     if (!legacyContent.main_textcontent.text?.trim()) {
@@ -71,11 +78,18 @@ export const transformContent = ({
     if (!legacyContent.main_linkcontent.link?.trim()) {
       return null
     }
+
+    const canShowPreview =
+      !!legacyContent.main_linkcontent.target_description ||
+      !!legacyContent.main_linkcontent.target_title ||
+      !!legacyContent.main_linkcontent.target_image
+
     return {
       ...commonData,
       type: 'Link',
       url: legacyContent.main_linkcontent.link,
-      showPreview: legacyContent.main_linkcontent.with_preview,
+      showPreview:
+        canShowPreview && legacyContent.main_linkcontent.with_preview,
       caption: legacyContent.main_linkcontent.target_description,
       linkDescription: legacyContent.main_linkcontent.target_description,
       linkTitle: legacyContent.main_linkcontent.target_title,
@@ -88,10 +102,23 @@ export const transformContent = ({
     if (!legacyLinkedResourceId) {
       throw new Error('Legacy content linked resource id is missing')
     }
+    const linkedResource = migratedResourcesByLegacyId.get(
+      Number(legacyLinkedResourceId),
+    )
+    if (!linkedResource) {
+      throw new Error(
+        `Legacy linked resource ${legacyLinkedResourceId} is missing`,
+      )
+    }
+
     return {
       ...commonData,
-      type: 'ResourceLink',
+      type: 'Link',
       legacyLinkedResourceId: Number(legacyLinkedResourceId),
+      showPreview: true,
+      linkTitle: linkedResource.title,
+      linkDescription: linkedResource.description,
+      url: `/ressources/${linkedResource.slug}`,
     }
   }
   if (legacyContent.main_filecontent) {

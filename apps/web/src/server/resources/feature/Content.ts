@@ -3,7 +3,7 @@ import z from 'zod'
 import {
   linkCaptionMaxLength,
   linkTitleMaxLength,
-  resourceTitleMaxLength,
+  resourceSectionTitleMaxLength,
 } from '@app/web/server/rpc/resource/utils'
 
 export const contentEditionValues = {
@@ -12,8 +12,8 @@ export const contentEditionValues = {
     .trim()
     .nonempty('Veuillez renseigner le titre')
     .max(
-      resourceTitleMaxLength,
-      `Le titre ne doit pas dépasser ${resourceTitleMaxLength} caractères`,
+      resourceSectionTitleMaxLength,
+      `Le titre ne doit pas dépasser ${resourceSectionTitleMaxLength} caractères`,
     ),
   text: z
     .string({ required_error: 'Veuillez renseigner le texte' })
@@ -59,11 +59,11 @@ const LinkPayloadCommandValidation = z.object({
   caption: z
     .string({ required_error: 'Veuillez renseigner la légende' })
     .trim()
-    .nonempty('Veuillez renseigner la légende')
     .max(
       linkCaptionMaxLength,
       `La légende ne doit pas dépasser ${linkCaptionMaxLength} caractères`,
-    ),
+    )
+    .nullish(),
   showPreview: z.boolean().optional(),
   linkDescription: z.string().nullish(),
   linkTitle: z.string().nullish(),
@@ -71,13 +71,6 @@ const LinkPayloadCommandValidation = z.object({
   linkFaviconUrl: z.string().nullish(),
 })
 export type LinkPayload = z.infer<typeof LinkPayloadCommandValidation>
-
-const ResourceLinkPayloadCommandValidation = z.object({
-  type: z.literal('ResourceLink'),
-})
-export type ResourceLinkPayload = z.infer<
-  typeof ResourceLinkPayloadCommandValidation
->
 
 const FilePayloadCommandValidation = z.object({
   type: z.literal('File'),
@@ -89,7 +82,6 @@ export const ContentPayloadCommandValidation = z.discriminatedUnion('type', [
   TextPayloadCommandValidation,
   ImagePayloadCommandValidation,
   LinkPayloadCommandValidation,
-  ResourceLinkPayloadCommandValidation,
   FilePayloadCommandValidation,
 ])
 
@@ -98,5 +90,4 @@ export type ContentPayload =
   | TextPayload
   | LinkPayload
   | ImagePayload
-  | ResourceLinkPayload
   | FilePayload
