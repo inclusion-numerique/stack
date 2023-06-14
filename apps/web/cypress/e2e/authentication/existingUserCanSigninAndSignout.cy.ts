@@ -11,12 +11,12 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
 
   it('Préliminaire - Les pages de connexions sont accessibles', () => {
     cy.visit('/')
-    cy.get('.fr-header__tools').contains('Se connecter').click()
-    cy.url().should('equal', appUrl('/connexion'))
+    cy.get('.fr-header__tools').contains('Espace Préfet').click()
+    cy.url().should('equal', appUrl('/connexion?suivant=/prefet'))
 
     cy.log('Check that the signup CTA is linked correctly')
     cy.contains('Se créer un compte').click()
-    cy.url().should('equal', appUrl('/creer-un-compte'))
+    cy.url().should('equal', appUrl('/creer-un-compte?suivant=/prefet'))
 
     cy.log('Check that the signin CTA is linked correctly')
     cy.findByRole('main')
@@ -112,6 +112,6 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.contains('Êtes-vous sur de vouloir vous déconnecter ?')
     cy.get('main').contains('Se déconnecter').click()
     cy.url().should('equal', appUrl('/'))
-    cy.get('.fr-header__tools').contains('Se connecter')
+    cy.get('.fr-header__tools').contains('Espace Préfet')
   })
 })
