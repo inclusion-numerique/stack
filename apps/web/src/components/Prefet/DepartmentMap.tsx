@@ -5,8 +5,9 @@ import Link from 'next/link'
 import classNames from 'classnames'
 import maplibregl, { Map, StyleSpecification } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import empty from './departements/empty.json'
-import ardennes from './departements/ardennes.json'
+import { ardennesBounds } from '@app/web/utils/map/geom'
+import ardennes from '@app/web/utils/map/departements/ardennes.json'
+import empty from '@app/web/utils/map/departements/empty.json'
 import styles from './DepartmentMap.module.css'
 
 const DepartmentMap = () => {
@@ -32,19 +33,7 @@ const DepartmentMap = () => {
       if (!map.current) {
         return
       }
-
-      // TO CACHE ?
-      const bounds = ardennes.features[0].geometry.coordinates[0].reduce(
-        function (bounds, coord) {
-          return bounds.extend(coord)
-        },
-        new maplibregl.LngLatBounds(
-          ardennes.features[0].geometry.coordinates[0][0],
-          ardennes.features[0].geometry.coordinates[0][1],
-        ),
-      )
-
-      map.current.fitBounds(bounds, {
+      map.current.fitBounds(ardennesBounds, {
         padding: { top: 50, right: 50, left: 50, bottom: 250 },
         animate: false,
       })

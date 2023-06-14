@@ -13,7 +13,7 @@ const PrefetPage = ({ user }: { user: SessionUser }) => {
       <div className={styles.header}>
         <h2>Déploiement de l&lsquo;inclusion Numérique sur votre territoire</h2>
         <span className="fr-text--xs">
-          Source : <Link href="#">Données & territoires</Link>
+          Source : <Link href="/">Données & territoires</Link>
         </span>
       </div>
       <div className="fr-grid-row fr-grid-row--gutters fr-mb-10w">

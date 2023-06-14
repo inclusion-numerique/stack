@@ -13,7 +13,8 @@
     
     label {
       font-size: 14px;
-      &:after {
+
+      &::after {
         top: 8px;
         right: 32px;
       }

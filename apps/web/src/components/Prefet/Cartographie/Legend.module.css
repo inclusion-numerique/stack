@@ -13,11 +13,12 @@
 
 .legend {
   padding: 32px;
+
   nav {
-    margin: 0 0 32px 0;
+    margin: 0 0 32px;
   }
 }
 
 .legendTitle {
-  margin: 32px 0 4px 0;
+  margin: 32px 0 4px;
 }

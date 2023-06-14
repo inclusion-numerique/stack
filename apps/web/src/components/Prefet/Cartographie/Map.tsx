@@ -3,11 +3,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import maplibregl, { GeoJSONFeature, Map as MapType } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import ardennes from '../departements/ardennes.json'
-import styles from './Map.module.css'
+import { ardennesBounds } from '@app/web/utils/map/geom'
 import IndiceNumerique from './IndiceNumerique'
 import { addHoverState, communesLayer } from './MapUtils'
 import MapPopup from './MapPopup'
+import styles from './Map.module.css'
 
 const Map = () => {
   const mapContainer = useRef<HTMLDivElement>(null)
@@ -58,18 +58,7 @@ const Map = () => {
 
       addHoverState(map.current, 'communes')
 
-      // TO CACHE ?
-      const bounds = ardennes.features[0].geometry.coordinates[0].reduce(
-        function (bounds, coord) {
-          return bounds.extend(coord)
-        },
-        new maplibregl.LngLatBounds(
-          ardennes.features[0].geometry.coordinates[0][0],
-          ardennes.features[0].geometry.coordinates[0][1],
-        ),
-      )
-
-      map.current.fitBounds(bounds, {
+      map.current.fitBounds(ardennesBounds, {
         animate: false,
         zoom: 8,
       })
