@@ -89,7 +89,7 @@ export class ProjectStack extends TerraformStack {
 
     const mainDomainZone = new DataScalewayDomainZone(this, 'mainDomainZone', {
       domain: mainRootDomain,
-      subdomain: mainSubdomain,
+      subdomain: mainSubdomain || undefined,
     })
 
     const previewDomainZone =
@@ -97,7 +97,7 @@ export class ProjectStack extends TerraformStack {
         ? mainDomainZone
         : new DataScalewayDomainZone(this, 'previewDomainZone', {
             domain: previewRootDomain,
-            subdomain: previewSubdomain,
+            subdomain: previewSubdomain || undefined,
           })
 
     // If email domain differ, create different zone
