@@ -1,10 +1,15 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "strictNullChecks": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "types": ["cypress", "jest", "node"],
+    "types": ["cypress", "jest", "node", "next"],
     "paths": {
       "@app/cli/*": ["../../apps/cli/src/*"],
       "@app/web/*": ["../../apps/web/src/*"],
