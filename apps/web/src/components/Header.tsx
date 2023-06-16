@@ -68,12 +68,12 @@ const Header = ({
             <div className="fr-header__tools-links">
               <ul className="fr-btns-group">
                 <li>
-                  <Link href="/" className="fr-btn" title="Aide">
+                  <Link href="/" className="fr-btn icon-only" title="Aide">
                     <span className="fr-icon-question-line fr-icon--sm" />
                     <span className="fr-hidden-lg fr-ml-1w">Aide</span>
                   </Link>
                 </li>
-                <li className="fr-hidden fr-unhidden-lg fr-px-1w fr-pb-5v fr-pt-1v">
+                <li className="fr-hidden fr-unhidden-lg fr-px-1w fr-py-1w">
                   <span
                     style={{
                       height: '100%',
