@@ -5,10 +5,12 @@ import ToggleSwitch from '@codegouvfr/react-dsfr/ToggleSwitch'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import styles from './IndiceNumerique.module.css'
 
-const { InformationModal, openInformationModal } = createModal({
-  name: 'information',
-  isOpenedByDefault: false,
-})
+const { Component: InformationModal, open: openInformationModal } = createModal(
+  {
+    id: 'information',
+    isOpenedByDefault: false,
+  },
+)
 
 const IndiceNumerique = ({
   setViewIndiceFN,
