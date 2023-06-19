@@ -1,3 +1,11 @@
+/*
+   Import order is not respected  (see https://github.com/vercel/next.js/issues/16630)
+   As a (desperate) workaround we import in this module as it is bundled first with app.css
+   Move these import accordingly if another global css module is added
+ */
+
+@import '../app/dsfr-import.css'; /* stylelint-disable-line import-notation */
+
 .green {
   color: var(--text-default-success);
   background-color: var(--background-contrast-success);

@@ -1,6 +1,5 @@
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
-import { useForm } from 'react-hook-form'
-import Alert from '@codegouvfr/react-dsfr/Alert'
+import { useForm, UseFormReturn } from 'react-hook-form'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ContentType } from '@prisma/client'
@@ -9,16 +8,16 @@ import type { SendCommand } from '@app/web/components/Resource/Edition/Edition'
 import styles from '@app/web/components/Resource/Edition/Edition.module.css'
 import { AddContentCommand } from '@app/web/server/resources/feature/AddContent'
 import { EditContentCommand } from '@app/web/server/resources/feature/EditContent'
-import {
-  ContentProjection,
-  ResourceProjection,
-} from '@app/web/server/resources/feature/createResourceProjection'
+import { ResourceProjection } from '@app/web/server/resources/feature/createResourceProjection'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { removeNullAndUndefinedValues } from '@app/web/utils/removeNullAndUndefinedValues'
+import ImageEdition from '@app/web/components/Resource/Contents/ImageEdition'
+import FileEdition from '@app/web/components/Resource/Contents/FileEdition'
 import {
-  ContentPayload,
-  ContentPayloadCommandValidation,
-} from '@app/web/server/resources/feature/Content'
+  ClientContentPayload,
+  ClientContentPayloadCommandValidation,
+} from '@app/web/server/resources/feature/Content.client'
+import { ContentProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
 import LinkEdition from './LinkEdition'
 import TextEdition from './TextEdition'
 
@@ -40,16 +39,18 @@ const ContentForm = ({
   onDelete: () => void | Promise<void>
 } & (
   | { mode: 'add'; content?: undefined }
-  | { mode: 'edit'; content: ContentProjection }
+  | { mode: 'edit'; content: ContentProjectionWithContext }
 )) => {
   if (mode === 'edit' && !content) {
     throw new Error('Content is required in edit mode')
   }
-  const form = useForm<ContentPayload>({
-    resolver: zodResolver(ContentPayloadCommandValidation),
+  const form = useForm<ClientContentPayload>({
+    resolver: zodResolver(ClientContentPayloadCommandValidation),
     mode: 'onChange',
     defaultValues: {
       type,
+      uploadFile: undefined,
+      imageUploadFile: undefined,
       ...(content ? removeNullAndUndefinedValues(content) : null),
     },
   })
@@ -60,22 +61,36 @@ const ContentForm = ({
     formState: { isSubmitting, isDirty },
   } = form
 
-  const onSubmit = async (data: ContentPayload) => {
+  const onSubmit = async (data: ClientContentPayload) => {
     if (!isDirty) {
       // No change
       setEditing(null)
       return
     }
+
+    const payloadData = { ...data }
+    if ('uploadFile' in payloadData) {
+      delete payloadData.uploadFile
+    }
+    if ('imageUploadFile' in payloadData) {
+      delete payloadData.imageUploadFile
+    }
+
+    const payload: AddContentCommand['payload'] = {
+      resourceId: resource.id,
+      ...payloadData,
+    }
+
     try {
       const command =
         mode === 'add'
           ? ({
               name: 'AddContent',
-              payload: { resourceId: resource.id, ...data },
+              payload,
             } satisfies AddContentCommand)
           : ({
               name: 'EditContent',
-              payload: { resourceId: resource.id, id: content.id, ...data },
+              payload: { id: content.id, ...payload },
             } satisfies EditContentCommand)
 
       await sendCommand(command)
@@ -99,13 +114,27 @@ const ContentForm = ({
       formContent = <LinkEdition form={form} />
       break
     }
-    default: {
+    case 'Image': {
       formContent = (
-        <Alert
-          severity="info"
-          title={`Formulaire de contenu ${type} en cours d'implémentation`}
+        <ImageEdition
+          form={form as UseFormReturn<ClientContentPayload & { type: 'Image' }>}
+          content={content}
         />
       )
+      break
+    }
+    case 'File': {
+      formContent = (
+        <FileEdition
+          form={form as UseFormReturn<ClientContentPayload & { type: 'File' }>}
+          content={content}
+        />
+      )
+      break
+    }
+    default: {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      throw new Error(`Invalid content type ${type}`)
     }
   }
 

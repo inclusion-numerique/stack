@@ -26,10 +26,14 @@ const PublishedAndUpdated = ({
   return (
     <div className={classNames('fr-text--xs fr-mb-0', className)}>
       <b className="fr-mr-1w">Publié le {dateAsDay(created)}</b>
-      <span className={styles.publishedAndUpdatedSeparator} />
-      <span className="fr-ml-1w">
-        {publishedDay !== updatedDay && ` Mis à jour le ${updatedDay}`}
-      </span>
+      {publishedDay !== updatedDay && (
+        <>
+          <span className={styles.publishedAndUpdatedSeparator} />
+          <span className="fr-ml-1w">
+            {publishedDay !== updatedDay && ` Mis à jour le ${updatedDay}`}
+          </span>
+        </>
+      )}
     </div>
   )
 }
@@ -71,7 +75,7 @@ const ResourceContents = ({
             { media: '(max-width: 320px)', width: 320 - 32 },
             { media: '(max-width: 576px)', width: 576 - 32 },
             { media: '(max-width: 768px)', width: 768 - 32 },
-            { media: '(min-width: 768px)', width: 800 },
+            { media: '(min-width: 768px)', width: 588 },
           ]}
         />
       </div>

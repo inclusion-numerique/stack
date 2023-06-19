@@ -10,7 +10,13 @@ export const getLegacyImages = async () => {
   // But also in the main_filecontent table (not resized images)
   // for image file types (marked with with_preview = true in the main_filecontent table)
   const resizableImages =
-    await migrationPrismaClient.main_resizableimage.findMany()
+    await migrationPrismaClient.main_resizableimage.findMany({
+      where: {
+        image: {
+          not: '',
+        },
+      },
+    })
   const fileContentImages =
     await migrationPrismaClient.main_filecontent.findMany({
       where: {
@@ -52,6 +58,11 @@ export type MigrateImageInput = {
   uploadKeyFromLegacyKey: (legacyKey: string) => string
 }
 
+/**
+ * We have some wierd legacy data with some negative crop values
+ */
+const between0and1 = (value: number) => Math.min(Math.max(value, 0), 1)
+
 export const migrateImage = async ({
   legacyImage,
   transaction,
@@ -68,10 +79,10 @@ export const migrateImage = async ({
           altText: legacyImage.image_alt,
         }
       : ({
-          cropHeight: legacyImage.relative_height,
-          cropWidth: legacyImage.relative_width,
-          cropTop: legacyImage.relative_top,
-          cropLeft: legacyImage.relative_left,
+          cropHeight: between0and1(legacyImage.relative_height),
+          cropWidth: between0and1(legacyImage.relative_width),
+          cropTop: between0and1(legacyImage.relative_top),
+          cropLeft: between0and1(legacyImage.relative_left),
           uploadKey: uploadKeyFromLegacyKey(legacyImage.image),
         } satisfies Parameters<typeof transaction.image.upsert>[0]['update'])
 

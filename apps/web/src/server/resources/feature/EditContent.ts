@@ -17,9 +17,12 @@ export type EditContentCommand = z.infer<typeof EditContentCommandValidation>
 export type ContentEditedV1 = {
   __version: 1
   id: string
-  title?: string
+  title?: string | null
   text?: string
   caption?: string | null
+  imageId?: string | null
+  imageAltText?: string | null
+  fileKey?: string | null
   url?: string
   showPreview?: boolean
   linkDescription?: string | null
