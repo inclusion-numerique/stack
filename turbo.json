@@ -2,16 +2,25 @@
   "$schema": "https://turborepo.org/schema.json",
   "pipeline": {
     "prisma generate": {
-      "inputs": ["prisma/schema.prisma"],
+      "inputs": [
+        "prisma/schema.prisma"
+      ],
       "cache": true
     },
     "dev": {
-      "dependsOn": ["^prisma generate"],
+      "dependsOn": [
+        "^prisma generate"
+      ],
       "cache": false
     },
     "build": {
-      "dependsOn": ["^build", "^prisma generate"],
-      "outputs": [".next/**"],
+      "dependsOn": [
+        "^build",
+        "^prisma generate"
+      ],
+      "outputs": [
+        ".next/**"
+      ],
       "cache": false
     },
     "lint": {
@@ -72,6 +81,9 @@
     "STACK_WEB_IMAGE",
     "NEXT_PUBLIC_INCLUSION_CONNECT_ISSUER",
     "NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID",
+    "NEXT_PUBLIC_MONCOMPTEPRO_CONNECT_ISSUER",
+    "NEXT_PUBLIC_MONCOMPTEPRO_CLIENT_ID",
+    "MONCOMPTEPRO_CLIENT_SECRET",
     "NEXT_PUBLIC_SENTRY_DSN",
     "NEXT_PUBLIC_SENTRY_ENVIRONMENT",
     "NEXT_PUBLIC_DEVELOPMENT_DISABLE_LINK_PREFETCH",

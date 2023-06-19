@@ -1,9 +1,37 @@
 import Link from 'next/link'
 import React from 'react'
+import DSFRHeader from '@codegouvfr/react-dsfr/Header'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import HeaderBackLink from '@app/web/components/HeaderBackLink'
 import { HeaderUserMenu } from '@app/web/components/HeaderUserMenu'
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
+
+type HeaderProps = {
+  user?: SessionUser | null
+  backLink?: boolean
+}
+
+const HeaderNew = ({ user, backLink }: HeaderProps) => (
+  <DSFRHeader
+    brandTop={`République
+    \n
+    Française`}
+    homeLinkProps={{ href: '/', title: 'titel' }}
+    quickAccessItems={[
+      user
+        ? {
+            buttonProps: {},
+            iconId: 'fr-icon-user-line',
+            text: <HeaderUserMenu user={user} />,
+          }
+        : {
+            linkProps: { href: '/connexion' },
+            iconId: 'fr-icon-user-line',
+            text: 'Se connecter',
+          },
+    ]}
+  />
+)
 
 const Header = ({
   user,
@@ -128,4 +156,4 @@ const Header = ({
   </header>
 )
 
-export default Header
+export default HeaderNew

@@ -47,6 +47,9 @@ export const ServerWebAppConfig = {
   InclusionConnect: {
     clientSecret: process.env.INCLUSION_CONNECT_CLIENT_SECRET ?? '',
   },
+  MonCompteProConnect: {
+    clientSecret: process.env.MONCOMPTEPRO_CLIENT_SECRET ?? '',
+  },
 }
 
 /**
@@ -61,6 +64,10 @@ export const PublicWebAppConfig = {
   InclusionConnect: {
     issuer: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_ISSUER ?? '',
     clientId: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID ?? '',
+  },
+  MonCompteProConnect: {
+    issuer: process.env.NEXT_PUBLIC_MONCOMPTEPRO_CONNECT_ISSUER ?? '',
+    clientId: process.env.NEXT_PUBLIC_MONCOMPTEPRO_CLIENT_ID ?? '',
   },
   Sentry: {
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN ?? '',
