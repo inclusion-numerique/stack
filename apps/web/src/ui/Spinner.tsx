@@ -1,5 +1,5 @@
-import styles from './Spinner.module.css'
 import classNames from 'classnames'
+import styles from './Spinner.module.css'
 
 console.log('STYLES', styles)
 

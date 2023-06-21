@@ -10,9 +10,6 @@
   align-items: center;
 }
 
-.spinner {
-}
-
 button.inclusionConnectBtn {
   background: none;
   display: inline-flex;
@@ -38,6 +35,11 @@ button.inclusionConnectBtn {
     color: var(--text-mention-grey);
   }
 
+  &:focus {
+    outline-offset: 2px;
+    outline: #0a76f6 2px solid;
+  }
+
   &:not(:disabled) {
     &:hover,
     &:active,
@@ -45,11 +47,6 @@ button.inclusionConnectBtn {
       border-color: var(--background-active-blue-france-active);
       background-color: var(--background-active-blue-france-active);
     }
-  }
-
-  &:focus {
-    outline-offset: 2px;
-    outline: #0a76f6 2px solid;
   }
 
   &:focus:not(:focus-visible) {

@@ -2,11 +2,11 @@
 
 import classNames from 'classnames'
 import { Route } from 'next'
-import styles from './InclusionConnectSigninButton.module.css'
 import { useState } from 'react'
+import { signIn } from 'next-auth/react'
 import { Spinner } from '@app/web/ui/Spinner'
 import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
-import { signIn } from 'next-auth/react'
+import styles from './InclusionConnectSigninButton.module.css'
 
 export const InclusionConnectSigninButton = ({
   className,
@@ -38,7 +38,7 @@ export const InclusionConnectSigninButton = ({
             S&apos;identifier&nbsp;avec <strong>InclusionConnect</strong>
           </span>
         </button>
-        {isLoading && <Spinner size="small" className={styles.spinner} />}
+        {isLoading && <Spinner size="small" />}
       </div>
 
       <a
