@@ -89,7 +89,7 @@ const Header = ({
                     <span className="fr-hidden-lg fr-ml-1w">Aide</span>
                   </Link>
                 </li>
-                <li className="fr-hidden fr-unhidden-lg fr-px-1w fr-pt-1w">
+                <li className="fr-hidden fr-unhidden-lg fr-px-1w fr-py-1w">
                   <span
                     style={{
                       height: '24px',
