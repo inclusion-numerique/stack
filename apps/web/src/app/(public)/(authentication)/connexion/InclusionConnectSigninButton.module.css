@@ -4,8 +4,16 @@
   align-items: flex-start;
 }
 
-/* button:not(:disabled) is required to override DSFR style */
-button:not(:disabled).inclusionConnectBtn {
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.spinner {
+}
+
+button.inclusionConnectBtn {
   background: none;
   display: inline-flex;
   align-items: center;
@@ -14,7 +22,7 @@ button:not(:disabled).inclusionConnectBtn {
   padding: 0.5rem 1rem 0.5rem 3.875rem;
   border-radius: 50rem;
   user-select: none;
-  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, color 0.15s ease-in-out;
   color: #fff;
   border: 0.25rem solid var(--background-active-blue-france);
   background-color: var(--background-active-blue-france);
@@ -22,16 +30,21 @@ button:not(:disabled).inclusionConnectBtn {
   background-repeat: no-repeat;
   margin-bottom: 12px;
   font-weight: 400;
+  margin-right: 16px;
 
-  strong {
-    display: block;
+  &.loading {
+    background-color: var(--background-contrast-grey);
+    border-color: var(--background-contrast-grey);
+    color: var(--text-mention-grey);
   }
 
-  &:hover,
-  &:active,
-  &:focus {
-    border-color: var(--background-active-blue-france-active);
-    background-color: var(--background-active-blue-france-active);
+  &:not(:disabled) {
+    &:hover,
+    &:active,
+    &:focus {
+      border-color: var(--background-active-blue-france-active);
+      background-color: var(--background-active-blue-france-active);
+    }
   }
 
   &:focus {
