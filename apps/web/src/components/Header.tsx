@@ -13,10 +13,14 @@ type HeaderProps = {
 
 const HeaderNew = ({ user, backLink }: HeaderProps) => (
   <DSFRHeader
-    brandTop={`République
-    \n
-    Française`}
-    homeLinkProps={{ href: '/', title: 'titel' }}
+    brandTop={
+      <>
+        République
+        <br />
+        Française
+      </>
+    }
+    homeLinkProps={{ href: '/', title: 'Accueil' }}
     quickAccessItems={[
       user
         ? {
