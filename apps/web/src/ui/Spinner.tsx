@@ -1,17 +1,28 @@
-'use client'
+import classNames from 'classnames'
+import styles from './Spinner.module.css'
 
-import { ThreeDots } from 'react-loader-spinner'
+console.log('STYLES', styles)
 
-const sizes = { sm: 20, md: 40, lg: 60 }
-const color = '#000091'
-
-export const Spinner = ({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) => (
-  <ThreeDots
-    height={sizes[size]}
-    width={sizes[size]}
-    radius={sizes[size] / 5}
-    color={color}
-    ariaLabel="chargement"
-    visible
-  />
+export const Spinner = ({
+  className,
+  size = 'medium',
+}: {
+  className?: string
+  size?: 'small' | 'medium' | 'large'
+}) => (
+  <picture>
+    <img
+      className={classNames(
+        styles.spinner,
+        {
+          [styles['spinner--sm']]: size === 'small',
+          [styles['spinner--md']]: size === 'medium',
+          [styles['spinner--lg']]: size === 'large',
+        },
+        className,
+      )}
+      src="/images/spinner.svg"
+      alt=""
+    />
+  </picture>
 )
