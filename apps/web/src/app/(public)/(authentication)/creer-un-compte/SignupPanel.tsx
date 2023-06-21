@@ -14,7 +14,7 @@ const SignupPanel = ({
   email?: string
   callbackUrl: Route
 }) => (
-  <AuthCard wide>
+  <AuthCard>
     {error ? (
       <div className="fr-alert fr-alert--error fr-alert--sm fr-mb-6v">
         <p>{signinErrorMessage(error)}</p>
