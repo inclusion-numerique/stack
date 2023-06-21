@@ -11,7 +11,7 @@ type HeaderProps = {
   backLink?: boolean
 }
 
-const HeaderNew = ({ user, backLink }: HeaderProps) => (
+const HeaderNew = ({ user, backLink: _backlink }: HeaderProps) => (
   <DSFRHeader
     brandTop={
       <>
@@ -37,6 +37,8 @@ const HeaderNew = ({ user, backLink }: HeaderProps) => (
   />
 )
 
+// TODO Remove this before merging
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Header = ({
   user,
   backLink,
