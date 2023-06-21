@@ -96,34 +96,32 @@ const SearchableSelect = <T extends string>({
   }, [filteredOptions, inputValue, allOptions, select, unselect])
 
   return (
-    <>
-      <div className={styles.input}>
-        <button
-          type="button"
-          title="Effacer la recherche"
-          className={styles.icon}
-          onClick={unselect}
-        >
-          <span
-            className={classNames({
-              'fr-icon-close-circle-fill': inputValue,
-              'fr-icon-search-line': !inputValue,
-              [styles.searchIcon]: !inputValue,
-            })}
-          />
-        </button>
-        <Input
-          label=""
-          className="fr-mb-0"
-          nativeInputProps={{
-            placeholder,
-            value: inputValue,
-            onChange: (event) => setInputValue(event.target.value),
-            onFocus: onInternalFocus,
-            onBlur: onInternalBlur,
-          }}
+    <div className={styles.input}>
+      <button
+        type="button"
+        title="Effacer la recherche"
+        className={styles.icon}
+        onClick={unselect}
+      >
+        <span
+          className={classNames({
+            'fr-icon-close-circle-fill': inputValue,
+            'fr-icon-search-line': !inputValue,
+            [styles.searchIcon]: !inputValue,
+          })}
         />
-      </div>
+      </button>
+      <Input
+        label=""
+        className="fr-mb-0"
+        nativeInputProps={{
+          placeholder,
+          value: inputValue,
+          onChange: (event) => setInputValue(event.target.value),
+          onFocus: onInternalFocus,
+          onBlur: onInternalBlur,
+        }}
+      />
       <div
         ref={optionsContainerRef}
         className={classNames(styles.options, {
@@ -162,7 +160,7 @@ const SearchableSelect = <T extends string>({
           />
         )}
       </div>
-    </>
+    </div>
   )
 }
 
