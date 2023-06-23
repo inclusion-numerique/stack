@@ -4,7 +4,7 @@
    Move these import accordingly if another global css module is added
  */
 
-@import '../app/dsfr-import.css'; /* stylelint-disable-line import-notation */
+/*@import '../app/dsfr-import.css';*/ /* stylelint-disable-line import-notation */
 
 .green {
   color: var(--text-default-success);

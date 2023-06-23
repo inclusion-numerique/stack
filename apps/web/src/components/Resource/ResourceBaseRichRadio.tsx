@@ -1,6 +1,12 @@
 import classNames from 'classnames'
 import React, { PropsWithChildren } from 'react'
-import { Control, Controller, FieldValues } from 'react-hook-form'
+import {
+  Control,
+  Controller,
+  FieldValues,
+  Path,
+  PathValue,
+} from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import {
@@ -9,7 +15,7 @@ import {
 } from '@app/web/components/PrivacyTags'
 import styles from './ResourceBaseRichRadio.module.css'
 
-const ResourceBaseRichRadioElement = ({
+const ResourceBaseRichRadioElement = <T extends FieldValues>({
   id,
   name,
   disabled,
@@ -23,7 +29,7 @@ const ResourceBaseRichRadioElement = ({
   disabled?: boolean
   radioValue: string | null
   value: string | null
-  onChange: (value: string | null) => void
+  onChange: (value: PathValue<T, Path<T>>) => void
 }>) => (
   <div className="fr-fieldset__element">
     <div
@@ -33,7 +39,7 @@ const ResourceBaseRichRadioElement = ({
         id={id}
         type="radio"
         onChange={() => {
-          onChange(radioValue)
+          onChange(radioValue as PathValue<T, Path<T>>)
         }}
         name={name}
         checked={value === radioValue}
@@ -47,11 +53,11 @@ const ResourceBaseRichRadioElement = ({
         onClick={() => {
           // XXX React dsfr seems to not trigger input event on a label click
           // Keyboard tab + space still works
-          onChange(value)
+          onChange(value as PathValue<T, Path<T>>)
         }}
         onKeyDown={(event) => {
           if (event.key === 'Enter') {
-            onChange(value)
+            onChange(value as PathValue<T, Path<T>>)
           }
         }}
       >

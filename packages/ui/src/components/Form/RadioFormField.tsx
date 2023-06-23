@@ -1,6 +1,12 @@
 import classNames from 'classnames'
 import React from 'react'
-import { Control, Controller, FieldValues } from 'react-hook-form'
+import {
+  Control,
+  Controller,
+  FieldValues,
+  Path,
+  PathValue,
+} from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
 import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
 import { RadioOption } from './utils/options'
@@ -90,7 +96,7 @@ const RadioFormField = <T extends FieldValues>({
                       onBlur={onBlur}
                       onChange={(event) => {
                         if (event.target.checked) {
-                          onChange(option.value)
+                          onChange(option.value as PathValue<T, Path<T>>)
                         }
                       }}
                       value={option.value}

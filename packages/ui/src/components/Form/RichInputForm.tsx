@@ -1,5 +1,11 @@
 import React from 'react'
-import { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form'
+import {
+  FieldPath,
+  FieldValues,
+  Path,
+  PathValue,
+  UseFormReturn,
+} from 'react-hook-form'
 import Link from '@tiptap/extension-link'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
@@ -23,13 +29,13 @@ const RichInputForm = <T extends FieldValues>({
   placeholder?: string
   disabled?: boolean
   ['data-testid']?: string
-  onChange: (text: string) => void
+  onChange: (text: PathValue<T, Path<T>>) => void
 }) => {
   const editor = useEditor({
     extensions: [StarterKit, Link],
     content: form.getValues(path),
     onUpdate: (event) => {
-      onChange(event.editor.getHTML())
+      onChange(event.editor.getHTML() as PathValue<T, Path<T>>)
     },
   })
 

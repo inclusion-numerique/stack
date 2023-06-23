@@ -95,6 +95,8 @@ module.exports = {
         'prettier',
       ],
       rules: {
+        // Turbo rules are throwing exception at the moment, re-enable after version update
+        'turbo/no-undeclared-env-vars': 'off',
         'no-irregular-whitespace': 'off',
         'no-restricted-syntax': 'off',
         'prettier/prettier': 'error',

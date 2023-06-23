@@ -87,7 +87,7 @@ const FileFormField = <T extends FieldValues>({
                 // We want to emit a File from this onchange instead of the field value (that is the default implementation)
                 const { files } = event.target
                 if (!files) {
-                  onChange('')
+                  onChange('' as PathValue<T, Path<T>>)
                   return
                 }
                 const file = files[0] ?? ''
@@ -95,7 +95,7 @@ const FileFormField = <T extends FieldValues>({
                   ;(file as File & { filename: string }).filename =
                     event.target.value
                 }
-                onChange(file)
+                onChange(file as PathValue<T, Path<T>>)
               }}
               value={inputValue}
               ref={ref}
