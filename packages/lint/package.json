@@ -9,26 +9,26 @@
     "tsc": "tsc --noEmit"
   },
   "engines": {
-    "node": "^18.16"
+    "node": "^20.3"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.21.8",
-    "@next/eslint-plugin-next": "^13.4.4",
-    "@types/node": "^18.16.6",
-    "@typescript-eslint/eslint-plugin": "^5.59.7",
-    "@typescript-eslint/parser": "^5.59.7",
-    "eslint": "^8.41.0",
+    "@babel/eslint-parser": "^7.22.5",
+    "@next/eslint-plugin-next": "^13.4.7",
+    "@types/node": "^20.3.1",
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
+    "@typescript-eslint/parser": "^5.60.0",
+    "eslint": "^8.43.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-config-next": "^13.4.4",
+    "eslint-config-next": "^13.4.7",
     "eslint-config-prettier": "^8.8.0",
-    "eslint-config-turbo": "^1.9.9",
+    "eslint-config-turbo": "^1.10.5",
     "eslint-formatter-pretty": "5.0.0",
     "eslint-formatter-summary": "^1.1.0",
     "eslint-plugin-cypress": "^2.13.3",
     "eslint-plugin-eslint-comments": "3.2.0",
     "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-jest": "27.2.1",
+    "eslint-plugin-jest": "27.2.2",
     "eslint-plugin-json": "^3.1.0",
     "eslint-plugin-jsx-a11y": "6.7.1",
     "eslint-plugin-prettier": "^4.2.1",
@@ -37,7 +37,7 @@
     "eslint-plugin-unicorn": "47.0.0",
     "jest": "^29.5.0",
     "prettier": "^2.8.8",
-    "stylelint": "^15.6.2",
+    "stylelint": "^15.9.0",
     "stylelint-config-standard": "^33.0.0",
     "typescript": "^5.0.4"
   }

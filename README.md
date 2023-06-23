@@ -106,7 +106,7 @@ git pull stack main
 git rebase main
 ```
 
-Ensuite créez une PR sur votre branche principale (dev par exemple) pour intégrer les changements de la branche `stack` dans votre projet.
+Ensuite créez une PR sur votre branche principale (`dev` par exemple) pour intégrer les changements de la branche `stack` dans votre projet.
 
 Cela vous permettra de faire une code review de l'integration des changements de ce dépôt dans votre projet pour valider les changements que vous souhaitez intégrer ou non, et de résoudre les conflits.
 
