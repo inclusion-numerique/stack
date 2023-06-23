@@ -15,7 +15,7 @@ Project is hosted by Scaleway, provisioning is done via Terraform with CDK.
 - (optional) Create a Matomo project and set the host and siteId in .env.dist
 - (optional) Create Chromatic project and set the tokens in .env.dist and .env
 - (optional) Create a Cypress cloud project and set the tokens in packages/config/src/config.ts and .env
-- Add secrets to the Secret manager (you will find them documented in .env.dist), with "web" or "project" tags, depending on which stack is using it.
+- Add secrets to the Secret manager (you will find them documented in .env.dist) and in `ProjectStack.ts::projectStackSensitiveVariables` and `WebAppStack.ts::webAppStackSensitiveVariables`.
 - Create terraform backend object storage bucket to be able to use cdk with name `${projectSlug}-terraform-state`
 
 ### Project Stack

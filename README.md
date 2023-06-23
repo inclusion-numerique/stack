@@ -50,19 +50,68 @@ Il contient les pages suivantes:
 
 ## Prérequis
 
-🏗️
+Le projet nécessite les outils suivants pour fonctionner :
+- Node 18
+- pnpm 6
+- postgresql ou Docker
+- Un compte Scaleway pour pouvoir déployer l'application
 
 ## Installation
 
-🏗️
+Pour commencer à utiliser le projet, il faut cloner le dépôt et installer les dépendances :
+
+```bash
+git clone git@github.com:inclusion-numerique/stack.git
+pnpm install
+cp .env.dist .env
+pnpm -F web dev 
+```
 
 ## Infrastructure ?
 
-🏗️
+Le package `cdk` contient les dépendances et le code nécéssaire pour déployer l'application sur Scaleway.️
+
+[Voir la documentation du package cdk pour plus de détails.](./packages/cdk/README.md)
+
+Il est possible de déployer l'application sur un autre cloud, ou sur un serveur en local, en modifiant le code du package `cdk` ou en créant votre propre pipeline de déploiement pour votre infrastructure.
 
 ## Utilisation
 
-🏗️
+
+### Développement de votre projet
+
+Votre projet part du clone de ce dépôt, et vous pouvez le modifier à votre guise.
+
+Si vous développez une nouvelle fonctionnalité que vous pensez utile à d'autres, nous vous encourageons à la partager en créant une pull request sur ce dépôt.
+
+### Récupérer les mises à jour de ce dépôt
+
+Stack est un dépôt de code source, et non un template, il est ammené à évoluer régulièrement.
+
+Certaines mises à jours / nouveaux composants peuvent vous int"resser. Certains changements peuvent au contraire être en conflit avec les votre, ou ne pas vous convenir. Cela sera géré dans un flow de merge classique.
+
+Pour récupérer les mises à jour de ce dépôt, il faut ajouter le dépôt comme remote de votre projet :
+
+```bash
+git remote add stack git@github.com:inclusion-numerique/stack.git 
+```
+
+Cela vous permettra de voir facilement les changements entre votre projet et le dépôt stack.
+
+Nous recommandons ensuite de créer dans votre projet une branche `stack` qui suivra la branche `main` de ce dépôt, et de la rebaser régulièrement sur la branche `main` de ce dépôt.
+
+```bash
+git checkout -b stack
+git pull stack main
+git rebase main
+```
+
+Ensuite créez une PR sur votre branche principale (dev par exemple) pour intégrer les changements de la branche `stack` dans votre projet.
+
+Cela vous permettra de faire une code review de l'integration des changements de ce dépôt dans votre projet pour valider les changements que vous souhaitez intégrer ou non, et de résoudre les conflits.
+
+Une fois cette PR mergée (utilisez bien un merge classique pour ne pas avoir à résoudre les conflits à nouveau). Vous avez intégré les changements de ce dépôt dans votre projet.
+
 
 ## Contribution
 
