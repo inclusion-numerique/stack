@@ -63,7 +63,7 @@ Pour commencer à utiliser le projet, il faut cloner le dépôt et installer les
 ```bash
 git clone git@github.com:inclusion-numerique/stack.git
 pnpm install
-pnpm postinstall
+pnpm project-postinstall
 cp .env.dist .env
 pnpm -F web dev 
 ```

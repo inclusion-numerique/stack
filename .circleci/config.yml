@@ -172,7 +172,10 @@ jobs:
       - run:
           # Postinstall failed on CI environments, seems like an issue with pnpm so we execute them separatly for now
           name: 'Execute postinstall separatly (temporary fix)'
-          command: pnpm postinstall
+          command: |
+            pnpm --silent -F web setup:dsfr 
+            pnpm --silent -F web prisma generate
+            pnpm --silent -F ui setup:dsfr
       - run:
           name: 'Monorepo manypkg check'
           command: pnpm manypkg check
