@@ -25,7 +25,7 @@
     "clean": {
       "cache": false
     },
-    "postinstall": {
+    "project-postinstall": {
       "cache": false
     },
     "//#clean": {

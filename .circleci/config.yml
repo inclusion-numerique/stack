@@ -168,7 +168,7 @@ jobs:
       - install_dependencies
       - run:
           name: 'Fetch dependencies'
-          command: pnpm install --virtual-store-dir << pipeline.parameters.virtual_store_dir >> --frozen-lockfile --ignore-scripts
+          command: pnpm install --virtual-store-dir << pipeline.parameters.virtual_store_dir >> --frozen-lockfile
       - run:
           # Postinstall failed on CI environments, seems like an issue with pnpm so we execute them separatly for now
           name: 'Execute postinstall separatly (temporary fix)'

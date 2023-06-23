@@ -18,7 +18,7 @@
     "lint": "turbo lint",
     "tsc": "turbo tsc",
     "test": "turbo test",
-    "postinstall": "turbo postinstall",
+    "postinstall": "turbo project-postinstall",
     "with-env": "dotenv --",
     "scw": "pnpm with-env scw",
     "manypkg": "manypkg",
