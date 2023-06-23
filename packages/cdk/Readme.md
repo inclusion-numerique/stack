@@ -4,19 +4,29 @@
 
 Project is hosted by Scaleway, provisioning is done via Terraform with CDK.
 
+- Terraform: https://www.terraform.io
+- CDK for Terraform: https://developer.hashicorp.com/terraform/cdktf
+- Scaleway terraform provider : https://registry.terraform.io/providers/scaleway/scaleway/latest/docs
+
 ### Manual operations
 
 - Create project on Scaleway
 - Add relevant users to the projects with full access on project resources (and secret manager)
 - Create an IAM Application with with full access on project resources (and secret manager) with credentials to use in CI / CD deployments
 - Add your domain name, and another preview domain name, and validate it using DNS
-- Change the project variables in packages/config/src/config.ts
+- Change the project variables in `packages/config/src/config.ts` and in `.env.dist` to reflect your project
 - (optional) Create a Sentry project and set the DSN in your .env.dist and a secret token in your .env
 - (optional) Create a Matomo project and set the host and siteId in .env.dist
 - (optional) Create Chromatic project and set the tokens in .env.dist and .env
 - (optional) Create a Cypress cloud project and set the tokens in packages/config/src/config.ts and .env
 - Add secrets to the Secret manager (you will find them documented in .env.dist) and in `ProjectStack.ts::projectStackSensitiveVariables` and `WebAppStack.ts::webAppStackSensitiveVariables`.
 - Create terraform backend object storage bucket to be able to use cdk with name `${projectSlug}-terraform-state`
+
+### Deployment
+
+Deployment is done via CircleCI, using the configuration in `.circleci/config.yml`.
+
+To enable CircleCI on your project, you need to create a project on CircleCI based on your repository.
 
 ### Project Stack
 

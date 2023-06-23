@@ -67,11 +67,11 @@ cp .env.dist .env
 pnpm -F web dev 
 ```
 
-## Infrastructure ?
+## Infrastructure
 
 Le package `cdk` contient les dépendances et le code nécéssaire pour déployer l'application sur Scaleway.️
 
-[Voir la documentation du package cdk pour plus de détails.](./packages/cdk/README.md)
+[Voir la documentation du package cdk pour plus de détails.](./packages/cdk/Readme.md)
 
 Il est possible de déployer l'application sur un autre cloud, ou sur un serveur en local, en modifiant le code du package `cdk` ou en créant votre propre pipeline de déploiement pour votre infrastructure.
 
@@ -88,7 +88,7 @@ Si vous développez une nouvelle fonctionnalité que vous pensez utile à d'autr
 
 Stack est un dépôt de code source, et non un template, il est ammené à évoluer régulièrement.
 
-Certaines mises à jours / nouveaux composants peuvent vous int"resser. Certains changements peuvent au contraire être en conflit avec les votre, ou ne pas vous convenir. Cela sera géré dans un flow de merge classique.
+Certaines mises à jours / nouveaux composants peuvent vous intéresser. Certains changements peuvent au contraire être en conflit avec les votre, ou ne pas vous convenir. Cela sera géré dans un flow de merge classique.
 
 Pour récupérer les mises à jour de ce dépôt, il faut ajouter le dépôt comme remote de votre projet :
 
