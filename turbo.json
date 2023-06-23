@@ -25,6 +25,9 @@
     "clean": {
       "cache": false
     },
+    "postinstall": {
+      "cache": false
+    },
     "//#clean": {
       "cache": false
     },
