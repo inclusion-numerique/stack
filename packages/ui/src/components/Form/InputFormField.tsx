@@ -82,6 +82,7 @@ const InputFormField = <T extends FieldValues>({
               data-testid={dataTestId}
               className="fr-input"
               aria-describedby={ariaDescribedBy}
+              aria-labelledby={`${id}__label`}
               disabled={disabled}
               type={type}
               id={id}
@@ -105,7 +106,11 @@ const InputFormField = <T extends FieldValues>({
               className,
             )}
           >
-            <label className="fr-label fr-mb-1v" htmlFor={id}>
+            <label
+              className="fr-label fr-mb-1v"
+              id={`${id}__label`}
+              htmlFor={id}
+            >
               {label}
               {hint && <span className="fr-hint-text">{hint}</span>}
             </label>

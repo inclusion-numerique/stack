@@ -3,26 +3,26 @@ import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import { Meta, StoryObj } from '@storybook/react'
 import { within } from '@storybook/testing-library'
 
-const { BaseModal, openBaseModal } = createModal({
-  name: 'base',
+const Modal = createModal({
+  id: 'modal',
   isOpenedByDefault: false,
 })
 
-const meta: Meta<typeof BaseModal> = {
+const meta: Meta<typeof Modal.Component> = {
   title: 'DSFR Component/Modal',
-  component: BaseModal,
+  component: Modal.Component,
 }
 
 export default meta
 
-type Story = StoryObj<typeof BaseModal>
+type Story = StoryObj<typeof Modal.Component>
 
 const Template = () => (
   <>
-    <button type="button" onClick={() => openBaseModal()}>
+    <button type="button" onClick={() => Modal.open()}>
       Open
     </button>
-    <BaseModal
+    <Modal.Component
       title=""
       buttons={[
         {
@@ -33,7 +33,7 @@ const Template = () => (
       ]}
     >
       Hello
-    </BaseModal>
+    </Modal.Component>
   </>
 )
 

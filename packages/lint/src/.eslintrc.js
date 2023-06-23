@@ -79,10 +79,16 @@ module.exports = {
         },
       },
       rules: {
+        // Turbo rule is failing for this version, temporary disable until they fix this
+        'turbo/no-undeclared-env-vars': 'off',
         'no-irregular-whitespace': 'off',
         'no-restricted-syntax': 'off',
         'prettier/prettier': 'error',
         'no-continue': 'off',
+        'jsx-a11y/control-has-associated-label': [
+          'error',
+          { ignoreElements: ['td'] },
+        ],
         // Typescript compiler will avoid errors based on inconsistent returns
         'consistent-return': 'off',
         'import/order': [

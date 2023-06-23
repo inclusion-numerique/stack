@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import React from 'react'
 import { Control, Controller, FieldValues } from 'react-hook-form'
-import { FieldPath } from 'react-hook-form/dist/types/path'
+import { FieldPath, Path, PathValue } from 'react-hook-form/dist/types/path'
 import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
 
 export type CheckboxFormFieldProps<T extends FieldValues> = {
@@ -72,12 +72,13 @@ const CheckboxFormField = <T extends FieldValues>({
                     disabled={disabled}
                     onBlur={onBlur}
                     onChange={(event) => {
-                      onChange(event.target.checked)
+                      onChange(event.target.checked as PathValue<T, Path<T>>)
                     }}
                     name={name}
                     ref={ref}
+                    aria-labelledby={`${id}__label`}
                   />
-                  <label className="fr-label" htmlFor={id}>
+                  <label id={`${id}__label`} className="fr-label" htmlFor={id}>
                     {label}
                     {hint && <span className="fr-hint-text">{hint}</span>}
                   </label>

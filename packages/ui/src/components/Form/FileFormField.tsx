@@ -65,7 +65,11 @@ const FileFormField = <T extends FieldValues>({
               className,
             )}
           >
-            <label className="fr-label fr-mb-1v" htmlFor={id}>
+            <label
+              className="fr-label fr-mb-1v"
+              id={`${id}__label`}
+              htmlFor={id}
+            >
               {label}
               {hint && <span className="fr-hint-text">{hint}</span>}
             </label>
@@ -74,6 +78,7 @@ const FileFormField = <T extends FieldValues>({
               className="fr-upload"
               type="file"
               aria-describedby={error ? `${id}__error` : undefined}
+              aria-labelledby={`${id}__label`}
               disabled={disabled}
               id={id}
               placeholder={placeholder}
@@ -84,7 +89,7 @@ const FileFormField = <T extends FieldValues>({
                 // We want to emit a File from this onchange instead of the field value (that is the default implementation)
                 const { files } = event.target
                 if (!files) {
-                  onChange('')
+                  onChange('' as PathValue<T, Path<T>>)
                   return
                 }
                 const file = files[0] ?? ''
@@ -92,7 +97,7 @@ const FileFormField = <T extends FieldValues>({
                   ;(file as File & { filename: string }).filename =
                     event.target.value
                 }
-                onChange(file)
+                onChange(file as PathValue<T, Path<T>>)
               }}
               value={inputValue}
               ref={ref}
