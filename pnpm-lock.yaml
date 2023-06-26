@@ -358,7 +358,7 @@ importers:
         version: 0.2.0
       '@testing-library/cypress':
         specifier: ^9.0.0
-        version: 9.0.0(cypress@12.15.0)
+        version: 9.0.0(cypress@12.14.0)
       '@testing-library/jest-dom':
         specifier: ^5.16.5
         version: 5.16.5
@@ -402,11 +402,11 @@ importers:
         specifier: ^6.8.1
         version: 6.8.1(webpack@5.88.0)
       cypress:
-        specifier: ^12.15.0
-        version: 12.15.0
+        specifier: 12.14.0
+        version: 12.14.0
       cypress-real-events:
         specifier: ^1.8.1
-        version: 1.8.1(cypress@12.15.0)
+        version: 1.8.1(cypress@12.14.0)
       eslint:
         specifier: ^8.43.0
         version: 8.43.0
@@ -1010,8 +1010,8 @@ importers:
         specifier: ^5.14.6
         version: 5.14.6
       cypress:
-        specifier: ^12.15.0
-        version: 12.15.0
+        specifier: 12.14.0
+        version: 12.14.0
       eslint:
         specifier: ^8.43.0
         version: 8.43.0
@@ -8580,7 +8580,7 @@ packages:
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
-  /@testing-library/cypress@9.0.0(cypress@12.15.0):
+  /@testing-library/cypress@9.0.0(cypress@12.14.0):
     resolution: {integrity: sha512-c1XiCGeHGGTWn0LAU12sFUfoX3qfId5gcSE2yHode+vsyHDWraxDPALjVnHd4/Fa3j4KBcc5k++Ccy6A9qnkMA==}
     engines: {node: '>=12', npm: '>=6'}
     peerDependencies:
@@ -8588,7 +8588,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.22.3
       '@testing-library/dom': 8.20.0
-      cypress: 12.15.0
+      cypress: 12.14.0
     dev: true
 
   /@testing-library/dom@8.20.0:
@@ -11977,16 +11977,16 @@ packages:
     resolution: {integrity: sha512-HQsw0QXiN5fdlO+R8/JzCZnR3Fqp8E87YVnhHlaPtNGJjt6ffbV0LpOkieIb1x6V1+xt878IYq77SpXHWAqKkA==}
     dev: false
 
-  /cypress-real-events@1.8.1(cypress@12.15.0):
+  /cypress-real-events@1.8.1(cypress@12.14.0):
     resolution: {integrity: sha512-8fFnA8EzS3EVbAmpSEUf3A8yZCmfU3IPOSGUDVFCdE1ke1gYL1A+gvXXV6HKUbTPRuvKKt2vpaMbUwYLpDRswQ==}
     peerDependencies:
       cypress: ^4.x || ^5.x || ^6.x || ^7.x || ^8.x || ^9.x || ^10.x || ^11.x || ^12.x
     dependencies:
-      cypress: 12.15.0
+      cypress: 12.14.0
     dev: true
 
-  /cypress@12.15.0:
-    resolution: {integrity: sha512-FqGbxsH+QgjStuTO9onXMIeF44eOrgVwPvlcvuzLIaePQMkl72YgBvpuHlBGRcrw3Q4SvqKfajN8iV5XWShAiQ==}
+  /cypress@12.14.0:
+    resolution: {integrity: sha512-HiLIXKXZaIT1RT7sw1sVPt+qKtis3uYNm6KwC4qoYjabwLKaqZlyS/P+uVvvlBNcHIwL/BC6nQZajpbUd7hOgQ==}
     engines: {node: ^14.0.0 || ^16.0.0 || >=18.0.0}
     hasBin: true
     requiresBuild: true
