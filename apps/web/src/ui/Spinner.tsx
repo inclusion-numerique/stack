@@ -1,8 +1,6 @@
 import classNames from 'classnames'
 import styles from './Spinner.module.css'
 
-console.log('STYLES', styles)
-
 export const Spinner = ({
   className,
   size = 'medium',
