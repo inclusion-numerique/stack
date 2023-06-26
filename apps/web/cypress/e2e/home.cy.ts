@@ -9,6 +9,11 @@ describe("Page d'accueil", () => {
       .should('have.css', 'color', 'rgb(0, 0, 145)')
   })
 
+  it('Les overrides DSFR de app.css sont visibles', () => {
+    cy.visit('/')
+    cy.get('.fr-header').should('have.css', 'filter', 'none')
+  })
+
   it("La page d'accueil affiche le statut de connexion de l'utilisateur", () => {
     const user = createTestUser()
     cy.createUserAndSignin(user)
