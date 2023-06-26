@@ -1,7 +1,3 @@
-/* Import order is not respected  (see https://github.com/vercel/next.js/issues/16630) */
-
-/* We (reluctantly) have to copy this import to the first css module to be bundled in the layout css chunk */
-
 @import '../app/dsfr-import.css';  /* stylelint-disable-line import-notation */
 
 /* Layout setup */
