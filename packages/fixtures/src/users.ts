@@ -61,6 +61,22 @@ export const users: Exclude<
     role: 'Demo',
     emailVerified: new Date(),
   },
+  {
+    id: '124843a6-7682-4234-b9b7-646f7ae09cfb',
+    firstName: 'Pierre-Louis',
+    lastName: 'Rolle',
+    email: 'pierre-louis.rolle@anct.gouv.fr',
+    role: 'Demo',
+    emailVerified: new Date(),
+  },
+  {
+    id: '33d9b439-2a7c-4fa7-bf68-36345ac9d9d2',
+    firstName: 'Léa',
+    lastName: 'Gislais',
+    email: 'lea.gislais@anct.gouv.fr',
+    role: 'Demo',
+    emailVerified: new Date(),
+  },
 ]
 
 export const randomUsers: (
