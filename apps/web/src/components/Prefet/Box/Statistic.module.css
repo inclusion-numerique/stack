@@ -18,3 +18,11 @@
 .marginBottom {
   margin-bottom: 4px;
 }
+
+.collapseButton {
+  display: inline;
+
+  &:hover {
+    background-color: transparent !important;
+  }
+}

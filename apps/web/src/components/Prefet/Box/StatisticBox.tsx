@@ -1,5 +1,5 @@
 import React from 'react'
-import { StatisticBox as StatisticBoxType } from '../data'
+import { StatisticBox as StatisticBoxType } from '../departementData'
 import Statistic from './Statistic'
 import styles from './StatisticBox.module.css'
 import Source from './Source'
@@ -16,12 +16,7 @@ const StatisticBox = ({ label, value, statistics }: StatisticBoxType) => (
       <div key={boxStatistic.id}>
         {'source' in boxStatistic ? (
           <div className={index === array.length - 1 ? '' : 'fr-mb-4w'}>
-            <Statistic
-              bold
-              key={boxStatistic.id}
-              label={boxStatistic.label}
-              value={boxStatistic.value}
-            />
+            <Statistic bold {...boxStatistic} />
             <Source date={boxStatistic.updated} source={boxStatistic.source} />
           </div>
         ) : (
@@ -30,23 +25,22 @@ const StatisticBox = ({ label, value, statistics }: StatisticBoxType) => (
               {boxStatistic.label && <b>{boxStatistic.label}</b>}
             </div>
             {boxStatistic.statistics &&
-              boxStatistic.statistics.map((statistic) => (
-                <Statistic
-                  withMarginBottom={index !== array.length - 1}
-                  key={statistic.id}
-                  label={statistic.label}
-                  value={statistic.value}
-                >
-                  {statistic.statistics &&
-                    statistic.statistics.map((subStatistic) => (
-                      <Statistic
-                        key={subStatistic.id}
-                        label={subStatistic.label}
-                        value={subStatistic.value}
-                      />
-                    ))}
-                </Statistic>
-              ))}
+              boxStatistic.statistics.map(
+                (statistic, statisticIndex, statisticArray) => (
+                  <Statistic
+                    key={statistic.id}
+                    withMarginBottom={
+                      statisticIndex !== statisticArray.length - 1
+                    }
+                    {...statistic}
+                  >
+                    {statistic.statistics &&
+                      statistic.statistics.map((subStatistic) => (
+                        <Statistic key={subStatistic.id} {...subStatistic} />
+                      ))}
+                  </Statistic>
+                ),
+              )}
           </>
         )}
       </div>

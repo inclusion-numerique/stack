@@ -50,21 +50,12 @@ export const HeaderUserMenu = ({
       <li>
         <Link
           className="fr-nav__link"
-          href="/"
+          href="/deconnexion"
           style={{
             boxShadow: 'none',
-            borderBottom: 'var(--slim-grey-border)',
+            borderTop: 'var(--slim-grey-border)',
           }}
         >
-          <span
-            className="fr-icon-user-setting-line fr-icon--sm fr-mr-1w"
-            style={{ color: 'var(--blue-france-sun-113-625)' }}
-          />
-          Voir mon profil
-        </Link>
-      </li>
-      <li>
-        <Link className="fr-nav__link" href="/deconnexion">
           <span
             className="fr-icon-logout-box-r-line fr-icon--sm fr-mr-1w"
             style={{ color: 'var(--blue-france-sun-113-625)' }}

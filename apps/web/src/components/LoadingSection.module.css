@@ -1,0 +1,22 @@
+.container {
+    flex: 1;
+    padding: 64px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    picture {
+    padding-top: 5px;
+}
+}
+
+.title {
+    margin: 0 0 0 16px;
+}

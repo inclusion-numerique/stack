@@ -1,18 +1,18 @@
-import dataGouvDepartments from './departements-region.json'
+import dataGouvDepartements from './departements-region.json'
 
-export type DataGouvDepartment = (typeof dataGouvDepartments)[number]
+export type DataGouvDepartement = (typeof dataGouvDepartements)[number]
 
-let departmentsIndex: Map<string, DataGouvDepartment>
+let departementsIndex: Map<string, DataGouvDepartement>
 
-export const getDataGouvDepartment = (departmentNumber: string) => {
-  if (!departmentsIndex) {
-    departmentsIndex = new Map(
-      dataGouvDepartments.map((dataGouvDepartment) => [
-        dataGouvDepartment.num_dep.toString(),
-        dataGouvDepartment,
+export const getDataGouvDepartement = (departementNumber: string) => {
+  if (!departementsIndex) {
+    departementsIndex = new Map(
+      dataGouvDepartements.map((dataGouvDepartement) => [
+        dataGouvDepartement.num_dep.toString(),
+        dataGouvDepartement,
       ]),
     )
   }
 
-  return departmentsIndex.get(departmentNumber)
+  return departementsIndex.get(departementNumber)
 }

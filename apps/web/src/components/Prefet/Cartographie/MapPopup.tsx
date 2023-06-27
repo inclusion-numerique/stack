@@ -1,15 +1,9 @@
 import React from 'react'
-import { GeoJSONFeature } from 'maplibre-gl'
 import Button from '@codegouvfr/react-dsfr/Button'
+import { City } from '@app/web/types/City'
 import styles from './MapPopup.module.css'
 
-const MapPopup = ({
-  properties,
-  close,
-}: {
-  properties: GeoJSONFeature['properties']
-  close: () => void
-}) => (
+const MapPopup = ({ city, close }: { city: City; close: () => void }) => (
   <div className={styles.popup}>
     <div className={styles.close}>
       <Button
@@ -22,7 +16,8 @@ const MapPopup = ({
         Fermer
       </Button>
     </div>
-    <h6>{properties.nom}</h6>
+    <h6>{city.nom}</h6>
+    <div>Commune de {city.population} hab.</div>
   </div>
 )
 

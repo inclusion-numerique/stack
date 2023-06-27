@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-import { Box as BoxType } from '../data'
+import { Box as BoxType } from '../departementData'
 import StatisticBox from './StatisticBox'
 import styles from './Box.module.css'
 import PercentageBox from './PercentageBox'

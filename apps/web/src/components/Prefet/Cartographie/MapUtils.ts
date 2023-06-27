@@ -1,62 +1,61 @@
-import { LayerSpecification, Map } from 'maplibre-gl'
+import { Map } from 'maplibre-gl'
 
-export const communesLayer: LayerSpecification = {
-  id: 'communes',
-  type: 'fill',
-  source: 'decoupage',
-  'source-layer': 'communes',
-  paint: {
-    'fill-outline-color': 'white',
-    'fill-opacity': [
-      'case',
-      ['boolean', ['feature-state', 'hover'], false],
-      1,
-      0.7,
-    ],
-    'fill-color': [
-      'case',
-      ['<', ['length', ['get', 'nom']], 3],
-      'red',
-      ['<', ['length', ['get', 'nom']], 5],
-      'yellow',
-      ['<', ['length', ['get', 'nom']], 7],
-      'blue',
-      ['<', ['length', ['get', 'nom']], 9],
-      'orange',
-      'green',
-    ],
-  },
-}
-
-let hoveredStateId: string | number | undefined
-const setHoveringState = (map: Map, layer: string, hover: boolean) => {
-  if (hoveredStateId) {
+const stateId: Record<string, string | number | undefined> = {}
+const setState = (
+  map: Map,
+  source: string,
+  layer: string | undefined,
+  stateKey: string,
+  key: string,
+  value: boolean,
+) => {
+  if (stateId[stateKey] !== undefined) {
     map.setFeatureState(
       {
-        source: 'decoupage',
-        id: hoveredStateId,
+        source,
+        id: stateId[stateKey],
         sourceLayer: layer,
       },
-      { hover },
+      { [key]: value },
     )
-    if (!hover) {
-      hoveredStateId = undefined
+    if (!value) {
+      stateId[stateKey] = undefined
     }
   }
 }
 
-export const addHoverState = (map: Map, layer: string) => {
-  map.on('mousemove', layer, (event) => {
+export const addSelectedState = (
+  map: Map,
+  layer: string,
+  selectedId?: string | number,
+) => {
+  setState(map, 'decoupage', layer, 'selected', 'selected', false)
+  if (selectedId) {
+    stateId.selected = selectedId
+    setState(map, 'decoupage', layer, 'selected', 'selected', true)
+  }
+}
+
+export const addHoverState = (
+  map: Map,
+  source: string,
+  id: string,
+  layer?: string,
+) => {
+  const key = `${source}-hover`
+  map.on('mousemove', id, (event) => {
     if (map && event.features && event.features.length > 0) {
-      setHoveringState(map, layer, false)
-      hoveredStateId = event.features[0].id
-      setHoveringState(map, layer, true)
+      // eslint-disable-next-line no-param-reassign
+      map.getCanvas().style.cursor = 'pointer'
+      setState(map, source, layer, key, 'hover', false)
+      stateId[key] = event.features[0].id
+      setState(map, source, layer, key, 'hover', true)
     }
   })
 
-  map.on('mouseleave', layer, (event) => {
-    if (map && event.features && event.features.length > 0) {
-      setHoveringState(map, layer, false)
+  map.on('mouseleave', id, () => {
+    if (map) {
+      setState(map, source, layer, key, 'hover', false)
     }
   })
 }

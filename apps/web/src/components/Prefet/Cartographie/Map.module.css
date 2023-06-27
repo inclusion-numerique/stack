@@ -9,3 +9,18 @@
   width: 100%;
 }
 
+.division {
+  border:none;
+}
+
+.popup {
+  :global(.maplibregl-popup-tip) {
+    border-top-color: transparent !important;
+  }
+
+  :global(.maplibregl-popup-content) {
+    padding: 8px;
+    border-bottom: 3px solid #000091;
+    margin-bottom: 8px;
+  }
+}

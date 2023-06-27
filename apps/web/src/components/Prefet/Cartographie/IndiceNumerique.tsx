@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction } from 'react'
-import Image from 'next/image'
 import Button from '@codegouvfr/react-dsfr/Button'
 import ToggleSwitch from '@codegouvfr/react-dsfr/ToggleSwitch'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import styles from './IndiceNumerique.module.css'
+import { ifnColors } from './Layers/ifn'
 
 const { Component: InformationModal, open: openInformationModal } = createModal(
   {
@@ -46,16 +46,23 @@ const IndiceNumerique = ({
         <>
           <div className={styles.legendImage}>
             <span className="fr-text--xs fr-hint-text fr-mb-0">
-              0 : Pas de risque
+              Risque faible
             </span>
-            <Image
-              width={162}
-              height={17}
-              src="/images/indice-fragilite-numerique.png"
-              alt="Dégradé de couleur allant du bleu au marron"
-            />
+            <div className={styles.boxes}>
+              {ifnColors.map((color, index) => (
+                <div
+                  key={color}
+                  className={styles.box}
+                  style={{ backgroundColor: color }}
+                >
+                  {index === 0 && '1'}
+                  {index === Math.ceil(ifnColors.length / 2) - 1 && '5'}
+                  {index === ifnColors.length - 1 && '10'}
+                </div>
+              ))}
+            </div>
             <span className="fr-text--xs fr-hint-text fr-mb-0">
-              10 : Fragile
+              Risque fort
             </span>
           </div>
           <Button

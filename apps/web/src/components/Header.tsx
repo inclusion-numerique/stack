@@ -8,10 +8,12 @@ import { PublicWebAppConfig } from '@app/web/webAppConfig'
 const Header = ({
   user,
   backLink,
+  backLinkHref,
   prefet,
 }: {
   user?: SessionUser | null
   backLink?: string
+  backLinkHref?: string
   prefet?: boolean
 }) => {
   const baseLinkProps = prefet
@@ -29,7 +31,7 @@ const Header = ({
             <div className="fr-header__brand fr-enlarge-link">
               <div className="fr-header__brand-top">
                 {backLink ? (
-                  <HeaderBackLink backLink={backLink} />
+                  <HeaderBackLink backLink={backLink} href={backLinkHref} />
                 ) : (
                   !prefet && (
                     <div className="fr-header__logo">

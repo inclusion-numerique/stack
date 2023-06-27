@@ -24,6 +24,8 @@ export const getSessionUserFromSessionToken = async (
           emailVerified: true,
           image: true,
           title: true,
+          role: true,
+          roleScope: true,
           location: true,
           description: true,
           created: true,

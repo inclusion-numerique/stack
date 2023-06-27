@@ -10,8 +10,11 @@ const PublicLayout = async ({ children }: PropsWithChildren) => {
       style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}
     >
       <Header user={user} prefet />
-      <div style={{ flex: 1 }}>
-        <div className="fr-container">{children}</div>
+      <div
+        className="fr-container"
+        style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
+      >
+        {children}
       </div>
       <PublicFooter />
     </div>

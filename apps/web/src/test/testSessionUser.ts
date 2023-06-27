@@ -6,6 +6,8 @@ export const testSessionUser = {
   firstName: 'Jean',
   lastName: 'Biche',
   name: 'Jean Biche',
+  role: 'Demo',
+  roleScope: null,
   updated: new Date('2023-05-05').toISOString(),
   created: new Date('2023-01-01').toISOString(),
   emailVerified: null,

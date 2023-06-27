@@ -1,15 +1,27 @@
 import { redirect } from 'next/navigation'
-import React from 'react'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
-import PrefetPage from '@app/web/components/Prefet/Page'
+import { hasAccessToDepartementDashboard } from '@app/web/security/securityRules'
 
-const Page = async () => {
+export const generateMetadata = async () => {
   const user = await getSessionUser()
   if (!user) {
-    redirect('/connexion?suivant=/prefet')
+    redirect(`/connexion?suivant=/prefet`)
+    return
   }
 
-  return <PrefetPage user={user} />
+  if (user.role === 'Prefect' && user.roleScope) {
+    redirect(`/prefet/${user.roleScope}`)
+    return
+  }
+
+  if (hasAccessToDepartementDashboard(user, '69')) {
+    redirect(`/prefet/69`)
+    return
+  }
+
+  redirect('/profil')
 }
+
+const Page = () => null
 
 export default Page

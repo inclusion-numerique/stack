@@ -1,5 +1,5 @@
 import React from 'react'
-import { PercentageBox as PercentageBoxType } from '../data'
+import { PercentageBox as PercentageBoxType } from '../departementData'
 import Percentage from './Percentage'
 import Source from './Source'
 import styles from './PercentageBox.module.css'

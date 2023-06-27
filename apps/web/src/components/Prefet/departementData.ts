@@ -1,7 +1,11 @@
-type Statistic = {
+import { DepartementGeoJson } from '@app/web/utils/map/departementGeoJson'
+import { fakeDelay } from '@app/web/utils/fakeDelay'
+
+export type Statistic = {
   id: string
   label: string
   value: number
+  collapsable?: boolean
   statistics?: Statistic[]
 }
 
@@ -36,114 +40,125 @@ export type PercentageBox = {
 
 export type Box = StatisticBox | PercentageBox
 
-export type Boxs = {
+export type Boxes = {
   id?: string
   label?: string
   boxes: Box[]
 }
 
-export const data: Boxs[] = [
-  {
-    boxes: [
+export const fetchDepartementDashboardData = async ({
+  name,
+}: Pick<DepartementGeoJson, 'code' | 'name'>) => {
+  await fakeDelay()
+
+  const inclusionLocations = {
+    id: 'lieux-d-inclusion-numérique',
+    label: "Lieux d'Inclusion Numérique",
+    value: 123,
+    statistics: [
       {
-        id: 'lieux-d-inclusion-numérique',
-        label: "Lieux d'Inclusion Numérique",
-        value: 123,
+        id: 'typologie-de-structures',
+        label: 'Typologie de structures',
         statistics: [
           {
-            id: 'typologie-de-structures',
-            label: 'Typologie de structures',
+            id: 'public',
+            label: 'Public',
+            value: 43,
+            collapsable: true,
             statistics: [
-              {
-                id: 'public',
-                label: 'Public',
-                value: 43,
-              },
-              {
-                id: 'Associations',
-                label: 'Associations',
-                value: 87,
-              },
-              {
-                id: 'Associations',
-                label: 'Autres acteurs privés',
-                value: 24,
-              },
+              { id: 'Commune', label: 'Commune', value: 12 },
+              { id: 'EPCI', label: 'EPCI', value: 10 },
+              { id: 'Departement', label: 'Departement', value: 2 },
+              { id: 'Autre', label: 'Autre', value: 11 },
             ],
           },
           {
-            id: 'labels',
-            label: 'Labels',
-            statistics: [
-              {
-                id: 'structures-accueillant-des-cnfs',
-                label: 'Structures accueillant des CNFS',
-                value: 12,
-              },
-              {
-                id: 'structures-labellisées-france-services',
-                label: 'Structures labellisées France Services',
-                value: 32,
-              },
-              {
-                id: 'structures-habilitées-aidants-connect',
-                label: 'Structures habilitées Aidants Connect',
-                value: 76,
-              },
-            ],
+            id: 'Associations',
+            label: 'Associations',
+            value: 87,
           },
           {
-            id: 'territoires-prioritaires',
-            label: 'Territoires prioritaires',
-            statistics: [
-              {
-                id: 'structures-en-quartier-prioritaire-de-la-ville-qpv',
-                label: 'Structures en quartier prioritaire de la ville (QPV)',
-                value: 12,
-              },
-              {
-                id: 'structures-en-zone-de-revitalisation-rurale-zrr',
-                label: 'Structures en zone de revitalisation rurale (ZRR)',
-                value: 32,
-              },
-            ],
+            id: 'Autres acteurs privés',
+            label: 'Autres acteurs privés',
+            value: 24,
           },
         ],
       },
       {
-        id: 'aidants-numériques-identifiés',
-        label: 'Aidants Numériques identifiés',
-        value: 123,
+        id: 'labels',
+        label: 'Labels',
         statistics: [
           {
-            id: 'conseillers',
-            statistics: [
-              {
-                id: 'conseillers-numériques',
-                label: 'Conseillers Numériques',
-                value: 43,
-                statistics: [
-                  {
-                    id: 'dont-conseillers-coordinateurs',
-                    label: 'dont Conseillers Coordinateurs',
-                    value: 2,
-                  },
-                ],
-              },
-              {
-                id: 'aidants-habilités-à-aidant-connect',
-                label: 'Aidants habilités à Aidant connect',
-                value: 12,
-              },
-            ],
+            id: 'structures-accueillant-des-cnfs',
+            label: 'Structures accueillant des CNFS',
+            value: 12,
+          },
+          {
+            id: 'structures-labellisées-france-services',
+            label: 'Structures labellisées France Services',
+            value: 32,
+          },
+          {
+            id: 'structures-habilitées-aidants-connect',
+            label: 'Structures habilitées Aidants Connect',
+            value: 76,
+          },
+        ],
+      },
+      {
+        id: 'territoires-prioritaires',
+        label: 'Territoires prioritaires',
+        statistics: [
+          {
+            id: 'structures-en-quartier-prioritaire-de-la-ville-qpv',
+            label: 'Structures en quartier prioritaire de la ville (QPV)',
+            value: 12,
+          },
+          {
+            id: 'structures-en-zone-de-revitalisation-rurale-zrr',
+            label: 'Structures en zone de revitalisation rurale (ZRR)',
+            value: 32,
           },
         ],
       },
     ],
-  },
-  {
-    id: 'publics-accompagnés-dans-les-ardennes',
-    label: 'Publics accompagnés dans les Ardennes',
+  } satisfies Box
+
+  const aidantConnectLocations = {
+    id: 'aidants-numériques-identifiés',
+    label: 'Aidants Numériques identifiés',
+    value: 123,
+    statistics: [
+      {
+        id: 'conseillers',
+        statistics: [
+          {
+            id: 'conseillers-numériques',
+            label: 'Conseillers Numériques',
+            value: 43,
+            statistics: [
+              {
+                id: 'dont-conseillers-coordinateurs',
+                label: 'dont Conseillers Coordinateurs',
+                value: 2,
+              },
+            ],
+          },
+          {
+            id: 'aidants-habilités-à-aidant-connect',
+            label: 'Aidants habilités à Aidant connect',
+            value: 12,
+          },
+        ],
+      },
+    ],
+  } satisfies Box
+
+  const main = { inclusionLocations, aidantConnectLocations }
+
+  const publicsAccompagnes = {
+    id: 'publics-accompagnés',
+    label: `Publics accompagnés - ${name}`,
     boxes: [
       {
         id: 'usagers-accompagnés',
@@ -162,7 +177,7 @@ export const data: Boxs[] = [
             label: 'Par des Aidants habilités à Aidants Connect',
             value: 12,
             updated: new Date('2021-09-04'),
-            source: 'https://aidantsconnect.beta.gouv.fr/',
+            source: 'aidantsconnect.beta.gouv.fr',
           },
         ],
       },
@@ -193,10 +208,11 @@ export const data: Boxs[] = [
         ],
       },
     ],
-  },
-  {
-    id: 'accompagnements-dans-les-ardennes',
-    label: 'Accompagnements dans les Ardennes',
+  } satisfies Boxes
+
+  const accompagnements = {
+    id: 'accompagnements',
+    label: `Accompagnements - ${name}`,
     boxes: [
       {
         id: 'accompagnement',
@@ -215,7 +231,7 @@ export const data: Boxs[] = [
             label: 'Accompagnements pour réaliser des démarches en lignes',
             value: 12,
             updated: new Date('2021-09-04'),
-            source: 'https://aidantsconnect.beta.gouv.fr/',
+            source: 'aidantsconnect.beta.gouv.fr',
           },
         ],
       },
@@ -241,7 +257,7 @@ export const data: Boxs[] = [
         label:
           'Les 3 principaux thèmes d’accompagnements pour réaliser des démarches en lignes',
         updated: new Date('2021-09-04'),
-        source: 'conseiller-numerique.gouv.fr',
+        source: 'aidantsconnect.beta.gouv.fr',
         statistics: [
           { id: 'social', label: 'Social', value: 22 },
           { id: 'travail', label: 'Travail', value: 44 },
@@ -250,5 +266,12 @@ export const data: Boxs[] = [
         ],
       },
     ],
-  },
-]
+  } satisfies Boxes
+
+  const detailed = { publicsAccompagnes, accompagnements }
+
+  return { main, detailed }
+}
+export type DepartementDashboardData = Awaited<
+  ReturnType<typeof fetchDepartementDashboardData>
+>

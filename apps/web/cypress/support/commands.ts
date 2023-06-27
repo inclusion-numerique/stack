@@ -1,4 +1,5 @@
 import '@testing-library/cypress/add-commands'
+import compareSnapshotCommand from 'cypress-visual-regression/dist/command'
 import type { CreateUserInput } from '../e2e/authentication/user.tasks'
 import type { Tasks as CustomTasks } from './tasks'
 
@@ -30,6 +31,8 @@ import Loggable = Cypress.Loggable
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+compareSnapshotCommand()
 
 /**
  * Adding superjson serialization and typescript typing to cy.task

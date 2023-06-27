@@ -28,3 +28,20 @@
   align-items: center;
   gap: 16px;
 }
+
+.boxes {
+  display: flex;
+  align-items: center;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 16px;
+  color: white;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: bold;
+}

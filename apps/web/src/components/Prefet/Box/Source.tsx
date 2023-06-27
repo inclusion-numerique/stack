@@ -17,7 +17,7 @@ const Source = ({
     </p>
     <p className="fr-hint-text fr-text--xs fr-my-0">
       Source :{' '}
-      <Link href={source} target="_blank">
+      <Link href={`https://${source}`} target="_blank">
         {source}
       </Link>
     </p>
