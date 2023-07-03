@@ -3,7 +3,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
 import maplibregl, {
-  LngLatLike,
   Map as MapType,
   MapGeoJSONFeature,
   MapMouseEvent,
@@ -12,6 +11,7 @@ import maplibregl, {
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { City } from '@app/web/types/City'
 import {
+  Structure,
   StructuresData,
   structureTypes,
 } from '@app/web/components/Prefet/structuresData'
@@ -54,11 +54,15 @@ const Map = ({
   selectedCity,
   onCitySelected,
   structuresData,
+  selectedStructure,
+  onStructureSelected,
 }: {
   departement: DepartementData
   structuresData: StructuresData
   selectedCity?: City | null
   onCitySelected: (city: string | null | undefined) => void
+  selectedStructure?: Structure | null
+  onStructureSelected: (structure: string | null | undefined) => void
 }) => {
   const { cities, epcis, bounds, code: departementCode } = departement
   const mapContainer = useRef<HTMLDivElement>(null)
@@ -66,10 +70,6 @@ const Map = ({
   const [viewIndiceFN, setViewIndiceFN] = useState(true)
   const [division, setDivision] = useState('EPCI')
   const clickedPoint = useRef<string>()
-  const [selectedStructure, setSelectedStructure] = useState<{
-    lngLat: LngLatLike
-    name: string
-  }>()
 
   const citiesByIndex: string[][] = useMemo(() => {
     const result: string[][] = ifnColors.map(() => [])
@@ -93,6 +93,14 @@ const Map = ({
     }
     return result
   }, [epcis])
+
+  const onMapPopupClose = () => {
+    if (map.current) {
+      addSelectedState(map.current, 'communes')
+    }
+    onCitySelected(null)
+    onStructureSelected(null)
+  }
 
   useEffect(() => {
     if (map.current || !mapContainer.current) {
@@ -156,6 +164,7 @@ const Map = ({
         cluster: true,
         clusterRadius: 25,
         clusterProperties: { count: ['+', 1] },
+        clusterMaxZoom: 11,
       })
       map.current.addLayer(structuresCircleLayer)
       map.current.addLayer(structuresClusterCircleLayer)
@@ -209,10 +218,19 @@ const Map = ({
     })
   }, [])
 
+  // Fly to selected city
   useEffect(() => {
+    if (selectedStructure) {
+      return
+    }
     if (map.current && map.current.isStyleLoaded()) {
       if (selectedCity) {
-        map.current.flyTo({ center: selectedCity.centre.coordinates, zoom: 11 })
+        map.current.flyTo({
+          center: selectedCity.centre.coordinates,
+          zoom: 11,
+          // TODO use window width minus left panel width to calculate this padding ?
+          padding: { left: 300 },
+        })
         map.current.setFilter('selectedCommunesFilled', [
           '==',
           ['get', 'nom'],
@@ -234,17 +252,33 @@ const Map = ({
         map.current.setFilter('selectedCommunesIFN', ['boolean', false])
       }
     }
-  }, [map, selectedCity])
+  }, [map, selectedCity, selectedStructure])
+
+  // Fly to selected structure
+  useEffect(() => {
+    if (selectedCity) {
+      return
+    }
+    if (map.current && map.current.isStyleLoaded() && selectedStructure) {
+      map.current.flyTo({
+        center: selectedStructure.geometry.coordinates,
+        zoom: 12.9,
+        // TODO use window width minus left panel width to calculate this padding ?
+        padding: { left: 300 },
+      })
+    }
+  }, [map, selectedCity, selectedStructure])
 
   // Add structure popup on hover
+  // TODO this is on click, it should be on hover
   useEffect(() => {
     if (map.current && selectedStructure) {
       const popup = new maplibregl.Popup({
         closeButton: false,
         className: styles.popup,
       })
-        .setLngLat(selectedStructure.lngLat)
-        .setHTML(`<b>${selectedStructure.name}</b>`)
+        .setLngLat(selectedStructure.geometry.coordinates)
+        .setHTML(`<b>${selectedStructure.properties.name}</b>`)
         .addTo(map.current)
       return () => {
         popup.remove()
@@ -334,11 +368,7 @@ const Map = ({
         },
       ) => {
         if (map.current && event.features && event.features.length > 0) {
-          setSelectedStructure({
-            lngLat: (event.features[0].geometry as GeoJSON.Point)
-              .coordinates as LngLatLike,
-            name: event.features[0].properties.name as string,
-          })
+          onStructureSelected(event.features[0].properties.id as string)
         }
         clickedPoint.current = event.lngLat.toString()
       }
@@ -390,7 +420,7 @@ const Map = ({
         map.current?.off('click', 'communesIFNFilled', onCommuneClick)
       }
     }
-  }, [map, onCitySelected])
+  }, [map, onCitySelected, onStructureSelected])
 
   return (
     <div className={styles.mapContainer}>
@@ -407,17 +437,11 @@ const Map = ({
           </div>
         </div>
       </div>
-      {selectedCity && (
-        <MapPopup
-          city={selectedCity}
-          close={() => {
-            if (map.current) {
-              addSelectedState(map.current, 'communes')
-            }
-            onCitySelected(null)
-          }}
-        />
-      )}
+      <MapPopup
+        city={selectedCity}
+        structure={selectedStructure}
+        close={onMapPopupClose}
+      />
       <IndiceNumerique
         setViewIndiceFN={setViewIndiceFN}
         viewIndiceFN={viewIndiceFN}

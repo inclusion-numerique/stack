@@ -311,7 +311,7 @@ export type DataInclusionStructure = {
    */
   thematiques: string[]
   // 'PE'
-  typologie: DataInclusionTypologie
+  typologie: DataInclusionTypologie | undefined
   // Cap comune e.g. 'BOURG-EN-BRESSE'
   commune: string
   // ⚠️ Pas code commune INSEE
@@ -323,8 +323,8 @@ export type DataInclusionStructure = {
   date_maj: string
   latitude: number
   longitude: number
-  site_web: string
-  horaires_ouverture: string
+  site_web: string | undefined
+  horaires_ouverture: string | undefined
   // 'conseiller-numerique'
   labels_nationaux: string[]
 }

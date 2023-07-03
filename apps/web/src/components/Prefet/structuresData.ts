@@ -1,5 +1,4 @@
 import { isPointInPolygon } from 'geolib'
-import axios from 'axios'
 import { DepartementGeoJson } from '@app/web/utils/map/departementGeoJson'
 
 import {
@@ -52,18 +51,6 @@ export type DoraStructuresResponse = {
   items: DoraStructure[]
 }
 
-// TODO, if useful map types (NULLABLE) to structure types:
-// ACI, ACIPHC, AFPA, AI, ASE, ASSO, ASSO_CHOMEUR, Autre, BIB, CAARUD, CADA, CAF, CAP_EMPLOI, CAVA, CC, CCAS, CCONS, CD, CHRS, CHU, CIAS, CIDFF, CITMET, CPH, CS, CSAPA, DEETS, DEPT, DIPLP, E2C, EA, EATT, EI, EITI, EPCI, EPIDE, ESS, ETTI, FAIS, GEIQ, HUDA, MDE, MDEF, MDPH, MDS, MJC, ML, MQ, MSA, MUNI, OACAS, ODC, OF, OIL, OPCS, PAD, PE, PENSION, PIJ_BIJ, PIMMS, PJJ, PLIE, PREF, PREVENTION, REG, RFS, RS_FJT, SCP, SPIP, TIERS_LIEUX, UDAF
-
-// Documentation: https://data-inclusion-api-staging.osc-secnum-fr1.scalingo.io/api/v0/docs#/Données/list_structures_endpoint_api_v0_structures_get
-export const getDoraStructuresData = async (
-  departement: DepartementGeoJson,
-) => {
-  const { data } = await axios.get<DoraStructuresResponse>(
-    'https://data-inclusion-api-staging.osc-secnum-fr1.scalingo.io/api/v0/structures?departement=69&size=1000',
-  )
-}
-
 export type Structure = {
   type: 'Feature'
   geometry: {
@@ -71,6 +58,7 @@ export type Structure = {
     coordinates: [number, number]
   }
   properties: {
+    id: string
     type: StructureType
     name: string
     adresse: string
@@ -89,7 +77,7 @@ export const getRandomStructures = (
   ]
 
   return Array.from({ length: 250 })
-    .map((): Structure => {
+    .map((_, index): Structure => {
       const type = randomStructureType()
       return {
         type: 'Feature',
@@ -99,6 +87,7 @@ export const getRandomStructures = (
         },
         properties: {
           type,
+          id: `random-${index}`,
           name: 'Nom de la structure',
           adresse: '',
           source: 'Données de démonstration',
@@ -122,13 +111,11 @@ export const getStructuresData = async (departement: DepartementGeoJson) => {
     ({ code_postal }) => code_postal.startsWith(departement.code),
   )
 
-  console.log('Nombre de structures inclusion', inclusionStructures.length)
-
   const structures = inclusionStructures.map((structure): Structure => {
     const type =
-      structure.typologie in DataInclusionTypologies
+      !!structure.typologie && structure.typologie in DataInclusionTypologies
         ? DataInclusionTypologies[structure.typologie].type
-        : 'public'
+        : 'private'
 
     return {
       type: 'Feature',
@@ -138,6 +125,7 @@ export const getStructuresData = async (departement: DepartementGeoJson) => {
       },
       properties: {
         type,
+        id: structure.id,
         name: structure.nom,
         adresse: structure.adresse,
         source: 'Data inclusion',

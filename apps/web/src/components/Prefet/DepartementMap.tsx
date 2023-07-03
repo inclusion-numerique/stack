@@ -48,8 +48,6 @@ const DepartementMap = ({
         animate: false,
       })
 
-      console.log('DEPARTEMENT', departement)
-
       map.current.addSource('departement', source)
       map.current.addLayer({
         id: 'departement-fill',

@@ -45,15 +45,6 @@ export type CartoCnfsLieuxMediationNumeriqueStructure = {
   date_maj: string
 }
 
-// ⚠️ typologie souvent manquante
-export const CartoInclusionLieuxMediation = {
-  schema: 'betagouv/data-inclusion-schema',
-  url: 'https://www.data.gouv.fr/fr/datasets/r/be3323ec-4662-4b3b-b90e-18cf5c97193d',
-  dataFile: 'structures-inclusion-20230628-data-inclusion-sans-doublons.json',
-}
-
-export type CartoInclusionLieuxMediationStructure = DataInclusionStructure
-
 /**
  * CNFS
  * https://www.data.gouv.fr/fr/datasets/conseiller-numerique-france-services-nombre-daccompagnements/

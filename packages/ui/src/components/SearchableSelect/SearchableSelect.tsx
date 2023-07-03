@@ -1,11 +1,4 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
 import Input from '@codegouvfr/react-dsfr/Input'
 import Options, { Option } from './Options'
@@ -25,11 +18,11 @@ const SearchableSelect = <T extends string>({
   noResultMessage,
   options,
   limit,
-  setSelected,
+  onSelect,
 }: {
   placeholder?: string
   noResultMessage?: string
-  setSelected: Dispatch<SetStateAction<string>>
+  onSelect: (value: string) => void
 } & (
   | { categories: Category<T>[]; options: undefined; limit: undefined }
   | {
@@ -63,15 +56,15 @@ const SearchableSelect = <T extends string>({
   const select = useCallback(
     (option: Option<T>) => {
       setInputValue(option.name)
-      setSelected(option.value)
+      onSelect(option.value)
     },
-    [setInputValue, setSelected],
+    [setInputValue, onSelect],
   )
 
   const unselect = useCallback(() => {
     setInputValue('')
-    setSelected('')
-  }, [setInputValue, setSelected])
+    onSelect('')
+  }, [setInputValue, onSelect])
 
   const onInternalFocus = useCallback(() => {
     unselect()
