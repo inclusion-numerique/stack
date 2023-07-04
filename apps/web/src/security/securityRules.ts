@@ -12,3 +12,11 @@ export const hasAccessToDepartementDashboard = (
   }
   return false
 }
+
+export const hasAccessToDataAnalysis = (user: Pick<SessionUser, 'role'>) => {
+  if (user.role === 'Administrator' || user.role === 'Demo') {
+    return true
+  }
+
+  return false
+}

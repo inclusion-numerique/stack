@@ -81,7 +81,10 @@ workflows:
       equal: [ web_app_deployment, << pipeline.parameters.trigger_workflow >> ]
     jobs:
       - prepare_workspace_dependencies
-      - lint:
+      - lint_packages:
+          requires:
+            - prepare_workspace_dependencies
+      - lint_web:
           requires:
             - prepare_workspace_dependencies
       - test_packages:
@@ -108,7 +111,8 @@ workflows:
 
       - deploy_web:
           requires:
-            - lint
+            - lint_packages
+            - lint_web
             - build_web
             - test_packages
             - test_web
@@ -194,7 +198,8 @@ jobs:
           paths:
             - /home/circleci/.cache/Cypress
 
-  lint:
+
+  lint_web:
     executor: node
     resource_class: large
     steps:
@@ -205,10 +210,27 @@ jobs:
           command: pnpm --silent -F @app/web prisma generate
       - run:
           name: 'Tsc'
-          command: pnpm tsc
+          command: pnpm -F '@app/web' tsc
       - run:
-          name: 'Lint'
-          command: pnpm lint
+          name: 'Lint @app/web'
+          command: pnpm --silent -F '@app/web' lint
+          no_output_timeout: 30m
+
+  lint_packages:
+    executor: node
+    resource_class: large
+    steps:
+      - checkout
+      - install_dependencies
+      - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @app/web prisma generate
+      - run:
+          name: 'Tsc'
+          command: pnpm -F '!@app/web' tsc
+      - run:
+          name: 'Lint all packages except @app/web'
+          command: pnpm --silent -F '!@app/web' lint
           no_output_timeout: 30m
 
   lint_and_test_cdk_package:
@@ -400,8 +422,8 @@ jobs:
           # Reproducing Dockerfile COPY instructions to isolate built standalone application from project node_modules
           command: |
             mv apps/web/.next/standalone ~/dist
-            mv apps/web/public ~/dist/apps/web/public
-            mv apps/web/.next/static ~/dist/apps/web/.next/static
+            cp -R apps/web/public ~/dist/apps/web/
+            mv apps/web/.next/static ~/dist/apps/web/.next/
             cd ~/dist
             node apps/web/server.js
       - run:

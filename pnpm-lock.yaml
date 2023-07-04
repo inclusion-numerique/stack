@@ -175,6 +175,9 @@ importers:
       copy:
         specifier: ^0.3.2
         version: 0.3.2
+      csv-parser:
+        specifier: ^3.0.0
+        version: 3.0.0
       csv-stringify:
         specifier: ^6.4.0
         version: 6.4.0
@@ -235,6 +238,9 @@ importers:
       nanoid:
         specifier: ^3.3.6
         version: 3.3.6
+      neat-csv:
+        specifier: ^7.0.0
+        version: 7.0.0
       next:
         specifier: ^13.4.5
         version: 13.4.5(@babel/core@7.21.8)(react-dom@18.2.0)(react@18.2.0)
@@ -9792,6 +9798,14 @@ packages:
     resolution: {integrity: sha512-JiQosUWiOFgp4hQn0an+SBoV9IKdqzhROM0iiN4LB7UpfJBlsSJlWl9nq4zGgxgMAzHJ6V4t29VAVD+3+2NJAg==}
     dev: false
 
+  /csv-parser@3.0.0:
+    resolution: {integrity: sha512-s6OYSXAK3IdKqYO33y09jhypG/bSDHPuyCme/IdEHfWpLf/jKcpitVFyOC6UemgGk8v7Q5u2XE0vvwmanxhGlQ==}
+    engines: {node: '>= 10'}
+    hasBin: true
+    dependencies:
+      minimist: 1.2.8
+    dev: false
+
   /csv-stringify@6.4.0:
     resolution: {integrity: sha512-HQsw0QXiN5fdlO+R8/JzCZnR3Fqp8E87YVnhHlaPtNGJjt6ffbV0LpOkieIb1x6V1+xt878IYq77SpXHWAqKkA==}
     dev: false
@@ -16236,6 +16250,14 @@ packages:
   /ncp@2.0.0:
     resolution: {integrity: sha512-zIdGUrPRFTUELUvr3Gmc7KZ2Sw/h1PiVM0Af/oHB6zgnV1ikqSfRk+TOufi79aHYCW3NiOXmr1BP5nWbzojLaA==}
     hasBin: true
+    dev: false
+
+  /neat-csv@7.0.0:
+    resolution: {integrity: sha512-ZmiKZNkdqb6hrBU3lDHm52vWXs6CuFPfw6ZoJZNnY7IIpfA1fxM0UPPi+iQpqQo82qcLbsZPwLkQ1cdrMDtwwA==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      csv-parser: 3.0.0
+      get-stream: 6.0.1
     dev: false
 
   /negotiator@0.6.3:

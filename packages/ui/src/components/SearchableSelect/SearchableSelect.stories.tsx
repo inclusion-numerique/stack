@@ -37,7 +37,7 @@ export const Default: Story = {
     ],
   },
   argTypes: {
-    setSelected: { action: 'selected' },
+    onSelect: { action: 'selected' },
   },
 }
 
@@ -100,6 +100,6 @@ export const Complex: Story = {
     ],
   },
   argTypes: {
-    setSelected: { action: 'selected' },
+    onSelect: { action: 'selected' },
   },
 }
