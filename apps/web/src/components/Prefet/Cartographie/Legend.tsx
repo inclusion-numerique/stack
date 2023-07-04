@@ -46,11 +46,20 @@ const Legend = ({
       },
       {
         name: 'Structures',
-        options: structuresData.structures.map((structure) => ({
-          name: structure.properties.name,
-          value: `structure#${structure.properties.id}`,
-          component: <LegendStructure structure={structure} />,
-        })),
+        options: structuresData.structures
+          // Filter out structures that are not geolocated as it would mess up flyTo()
+          .filter(
+            ({
+              geometry: {
+                coordinates: [latitude, longitude],
+              },
+            }) => latitude && longitude,
+          )
+          .map((structure) => ({
+            name: structure.properties.name,
+            value: `structure#${structure.properties.id}`,
+            component: <LegendStructure structure={structure} />,
+          })),
       },
     ],
     [cities, structuresData],

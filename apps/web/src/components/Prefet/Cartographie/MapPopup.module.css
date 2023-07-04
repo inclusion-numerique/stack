@@ -1,5 +1,6 @@
 .popup {
-  width: 449px;
+  width: 448px;
+  border-radius: 4px;
   position: absolute;
   top: 16px;
   left: 16px;

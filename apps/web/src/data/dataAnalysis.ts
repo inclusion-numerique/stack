@@ -28,6 +28,7 @@ export const debugDataInclusion = async () => {
   return {
     structures: dataInclusionStructures,
     ...dataInclusionInfo,
+    totalCount,
     analysis: [
       {
         title: 'Nombre de structures inclusion',
@@ -40,12 +41,12 @@ export const debugDataInclusion = async () => {
         stringify: valueToString,
       },
       {
-        title: 'Nombre de structures inclusion sans SIRET',
+        title: 'Nombre de structures inclusion sans SIRET ⚠️',
         value: totalMissingSiret,
         stringify: valueToString,
       },
       {
-        title: 'Nombre de structures inclusion sans SIRET (%)',
+        title: 'Nombre de structures inclusion sans SIRET (%) ⚠️',
         value: (totalMissingSiret / totalCount) * 100,
         stringify: valueToPercentage,
       },
@@ -58,6 +59,13 @@ export const debugDataInclusion = async () => {
         title: 'Nombre de structures inclusion doublon SIRET (%)',
         value: (totalDuplicatedSirets / totalCount) * 100,
         stringify: valueToPercentage,
+      },
+      {
+        title: 'Nombre de structures non géolocalisées ⚠️',
+        value: dataInclusionStructures.filter(
+          ({ latitude, longitude }) => !latitude || !longitude,
+        ).length,
+        stringify: valueToString,
       },
     ],
   }
@@ -130,7 +138,7 @@ export const debugCnfsStructures = async (
       },
       {
         title:
-          'Nombre de structures CNFS non referencée par SIRET dans data inclusion',
+          'Nombre de structures CNFS non referencée par SIRET dans data inclusion ⚠️',
         value: totalCount - withInclusionStructure.length,
         stringify: valueToString,
       },
@@ -206,7 +214,7 @@ export const debugAidantsConnectStructures = async (
       },
       {
         title:
-          'Nombre de structures AIDANTSCONNECT non referencée par SIRET dans data inclusion',
+          'Nombre de structures AIDANTSCONNECT non referencée par SIRET dans data inclusion ⚠️',
         value: totalCount - withInclusionStructure.length,
         stringify: valueToString,
       },

@@ -10,12 +10,12 @@ import maplibregl, {
 } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { City } from '@app/web/types/City'
-import {
+import type {
   Structure,
   StructuresData,
-  structureTypes,
 } from '@app/web/components/Prefet/structuresData'
 import { DepartementData } from '@app/web/utils/map/departement'
+import { structureTypes } from '@app/web/components/Prefet/structuresTypes'
 import IndiceNumerique from './IndiceNumerique'
 import { addHoverState, addSelectedState } from './MapUtils'
 import MapPopup from './MapPopup'
@@ -49,6 +49,8 @@ import { placesLayer } from './Layers/places'
 const getColorIndexFromIfn = (ifn: number) =>
   Math.floor(((ifn - 1) * ifnColors.length) / 10)
 
+const mapPopupWidthWithMargin = 448 + 16
+
 const Map = ({
   departement,
   selectedCity,
@@ -74,10 +76,10 @@ const Map = ({
   const citiesByIndex: string[][] = useMemo(() => {
     const result: string[][] = ifnColors.map(() => [])
     for (const city of cities) {
-      if (city.ifn === null || city.ifn === undefined) {
+      if (!city.ifnTotal) {
         continue
       }
-      result[getColorIndexFromIfn(city.ifn)].push(city.code)
+      result[getColorIndexFromIfn(city.ifnTotal)].push(city.code)
     }
 
     return result
@@ -228,8 +230,7 @@ const Map = ({
         map.current.flyTo({
           center: selectedCity.centre.coordinates,
           zoom: 11,
-          // TODO use window width minus left panel width to calculate this padding ?
-          padding: { left: 300 },
+          padding: { left: mapPopupWidthWithMargin },
         })
         map.current.setFilter('selectedCommunesFilled', [
           '==',
@@ -263,8 +264,7 @@ const Map = ({
       map.current.flyTo({
         center: selectedStructure.geometry.coordinates,
         zoom: 12.9,
-        // TODO use window width minus left panel width to calculate this padding ?
-        padding: { left: 300 },
+        padding: { left: mapPopupWidthWithMargin },
       })
     }
   }, [map, selectedCity, selectedStructure])

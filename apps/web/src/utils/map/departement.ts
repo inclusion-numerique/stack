@@ -4,9 +4,7 @@ import {
   DepartementGeoJson,
   getDepartementGeoJson,
 } from '@app/web/utils/map/departementGeoJson'
-import { City, EPCI, IFNResponse } from '@app/web/types/City'
-
-type GeoApiCity = Omit<City, 'ifn'>
+import type { City, EPCI, GeoApiCity, IFNResponse } from '@app/web/types/City'
 
 const fetchDepartementCities = (
   departementCode: string,
@@ -95,6 +93,20 @@ const getIfnFromMap = (
   return result
 }
 
+export const getStructuresDataForCity = () =>
+  // TODO Compute from structures map with city code
+  ({
+    structures: 0,
+    publicStructures: 0,
+    associationsStructures: 0,
+    privateStructures: 0,
+    structuresWithCnfs: 0,
+    structuresWithFranceServices: 0,
+    structuresWithAidantsConnect: 0,
+    structuresInQpv: 0,
+    structuresInZrr: 0,
+  })
+
 // TODO Memoize this
 const getSections = async (
   departement: string,
@@ -112,10 +124,35 @@ const getSections = async (
   ])
 
   return {
-    cities: cities.map((city) => ({
-      ...city,
-      ifn: getIfnFromMap(city.code, citiesIfn)?.score.total ?? null,
-    })),
+    cities: cities.map((city): City => {
+      const ifn = getIfnFromMap(city.code, citiesIfn)
+
+      const ifnData = ifn
+        ? {
+            ifnTotal: ifn.score.total,
+            ifnNo4gCoverageRate: ifn.score.no_4g_coverage_rate,
+            ifnNoThdCoverageRate: ifn.score.no_thd_coverage_rate,
+            ifnPovertyRate: ifn.score.poverty_rate,
+            ifnNscol15pRate: ifn.score.nscol15p_rate,
+            ifnOlder65Rate: ifn.score.older_65_rate,
+          }
+        : {
+            ifnTotal: null,
+            ifnNo4gCoverageRate: null,
+            ifnNoThdCoverageRate: null,
+            ifnPovertyRate: null,
+            ifnNscol15pRate: null,
+            ifnOlder65Rate: null,
+          }
+
+      const structuresData = getStructuresDataForCity()
+
+      return {
+        ...city,
+        ...ifnData,
+        ...structuresData,
+      }
+    }),
     epcis: epciCodes.map((epciCode) => ({
       code: epciCode,
       ifn: getIfnFromResponse(epciCode, epcisIfn)?.score.total ?? null,

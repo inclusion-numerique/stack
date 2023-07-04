@@ -1,15 +1,36 @@
 import { LngLatLike } from 'maplibre-gl'
 
-// from https://geo.api.gouv.fr/decoupage-administratif/communes
-// + ifn
-export type City = {
+export type GeoApiCity = {
   nom: string
   code: string
   codesPostaux: string[]
   codeEpci: string
   population: number
   centre: { type: 'Polygon'; coordinates: LngLatLike }
-  ifn: number | null
+}
+
+// from https://geo.api.gouv.fr/decoupage-administratif/communes
+// + ifn
+export type City = GeoApiCity & {
+  // These are the labels from IFN data to avoid renaming them
+  // ⚠️ Allow null while city codes for arrondissements are not in geo cities
+  ifnTotal: number | null
+  ifnNoThdCoverageRate: number | null
+  ifnNo4gCoverageRate: number | null
+  ifnPovertyRate: number | null
+  ifnOlder65Rate: number | null
+  ifnNscol15pRate: number | null
+
+  // Aggregated data from structures
+  structures: number
+  publicStructures: number
+  associationsStructures: number
+  privateStructures: number
+  structuresWithCnfs: number
+  structuresWithFranceServices: number
+  structuresWithAidantsConnect: number
+  structuresInQpv: number
+  structuresInZrr: number
 }
 
 export type EPCI = {
@@ -22,6 +43,11 @@ export type IFNResponse = Record<
   {
     score: {
       total: number
+      no_thd_coverage_rate: number
+      no_4g_coverage_rate: number
+      poverty_rate: number
+      older_65_rate: number
+      nscol15p_rate: number
     }
   }
 >

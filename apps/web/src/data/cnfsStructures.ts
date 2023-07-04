@@ -8,7 +8,12 @@ export const CnfsStructures = {
   dataFile: '20230405-3925-cnfs.csv',
 }
 
-type BooleanChelou = 'oui' | 'non' | 'Non défini'
+type BooleanChelou =
+  | 'oui'
+  | 'non'
+  | 'Non défini'
+  | 'non renseigné'
+  | 'sans objet'
 export const booleanChelouToBoolean = (value: BooleanChelou) => {
   switch (value) {
     case 'oui': {
@@ -17,7 +22,9 @@ export const booleanChelouToBoolean = (value: BooleanChelou) => {
     case 'non': {
       return false
     }
-    case 'Non défini': {
+    case 'Non défini':
+    case 'non renseigné':
+    case 'sans objet': {
       return null
     }
     default: {
@@ -39,7 +46,7 @@ export type CnfsStructure = {
   'Nombre de conseillers validés par le COSELEC': string
   // Date jj/mm/aaaa
   'Date de validation en comité de sélection': string
-  Type: 'privée' | 'TODO'
+  Type: 'privée' | 'publique'
   SIRET: string
   'Code département': string
   Adresse: string

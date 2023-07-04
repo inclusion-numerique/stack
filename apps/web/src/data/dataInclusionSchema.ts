@@ -316,15 +316,17 @@ export type DataInclusionStructure = {
   commune: string
   // ⚠️ Pas code commune INSEE
   code_postal: string
+  // Code commune INSEE
+  code_insee?: string
   adresse: string
   // 'Conseiller Numerique'
   source: string
   // Iso date
   date_maj: string
-  latitude: number
-  longitude: number
-  site_web: string | undefined
-  horaires_ouverture: string | undefined
+  latitude?: number
+  longitude?: number
+  site_web?: string
+  horaires_ouverture?: string
   // 'conseiller-numerique'
-  labels_nationaux: string[]
+  labels_nationaux?: string[]
 }

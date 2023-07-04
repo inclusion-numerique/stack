@@ -1,55 +1,20 @@
-import { isPointInPolygon } from 'geolib'
 import { DepartementGeoJson } from '@app/web/utils/map/departementGeoJson'
 
+import { DataInclusionTypologies } from '@app/web/data/dataInclusionSchema'
+import { getDataInclusionStructures } from '@app/web/data/dataInclusion'
 import {
-  DataInclusionStructure,
-  DataInclusionTypologies,
-} from '@app/web/data/dataInclusionSchema'
-import { fakeDelay } from '@app/web/utils/fakeDelay'
-import dataInclusionStructuresData from '../../../public/data/structures-inclusion-20230628-data-inclusion-sans-doublons.json'
-
-const dataInclusionStructures =
-  dataInclusionStructuresData as DataInclusionStructure[]
-
-export const structureTypes = ['associations', 'public', 'private'] as const
-export type StructureType = (typeof structureTypes)[number]
-
-const randomStructureType = (): StructureType =>
-  structureTypes[Math.floor(Math.random() * 100) % 3]
-
-export type DoraStructure = {
-  _di_geocodage_code_insee: null
-  _di_geocodage_score: null
-  id: '08f6fc15-bb98-4562-850b-507783c53ef0'
-  siret: '20005376700014'
-  rna: null
-  nom: 'REGION AUVERGNE-RHONE-ALPES'
-  commune: 'LYON CEDEX 02 CS 20033'
-  code_postal: '69269'
-  code_insee: '69382'
-  adresse: '1 ESP FRANCOIS MITTERRAND'
-  complement_adresse: null
-  longitude: 4.820_078
-  latitude: 45.740_575
-  typologie: null
-  telephone: null
-  courriel: null
-  site_web: null
-  presentation_resume: null
-  presentation_detail: null
-  source: 'dora'
-  date_maj: '2022-03-13'
-  antenne: false
-  lien_source: 'https://dora.fabrique.social.gouv.fr/structures/region-auvergne-rhon'
-  horaires_ouverture: null
-  accessibilite: null
-  labels_nationaux: []
-  labels_autres: []
-  thematiques: []
-}
-export type DoraStructuresResponse = {
-  items: DoraStructure[]
-}
+  booleanChelouToBoolean,
+  getCnfsStructures,
+  mapCnfsStructuresBySiret,
+} from '@app/web/data/cnfsStructures'
+import {
+  getAidantsConnectStructures,
+  mapAidantsConnectStructuresBySiret,
+  stringBooleanToBoolean,
+} from '@app/web/data/aidantsConnectStructures'
+import { isValidSiret } from '@app/web/data/siret'
+import { StructureType } from '@app/web/components/Prefet/structuresTypes'
+import { titleCase } from '@app/web/utils/titleCase'
 
 export type Structure = {
   type: 'Feature'
@@ -62,78 +27,177 @@ export type Structure = {
     type: StructureType
     name: string
     adresse: string
-    source: string
+    postalCode: string
+    city: string
+    updated: string
+    sourceLabel: string
+    sourceUrl: string
+
+    // Null indicates that the data is not available from the source
+    conseillersNumeriques: number | null
+    aidantsHabilitesAidantsConnect: number | null
+    cnfsLabel: boolean | null
+    franceServicesLabel: boolean | null
+    aidantsConnectLabel: boolean | null
+    inQpv: boolean | null
+    inZrr: boolean | null
   }
 }
 
-export const getRandomStructures = (
+export type StructuresData = { structures: Structure[] }
+
+const memoizedStructures = new Map<string, StructuresData>()
+
+export const getStructuresData = async (
   departement: DepartementGeoJson,
-): Structure[] => {
-  const [[minLat, minLng], [maxLat, maxLng]] = departement.bounds
+): Promise<StructuresData> => {
+  const memoized = memoizedStructures.get(departement.code)
+  if (memoized) {
+    return memoized
+  }
 
-  const randomCoordinates = (): [number, number] => [
-    Math.random() * (maxLat - minLat) + minLat,
-    Math.random() * (maxLng - minLng) + minLng,
-  ]
+  // TODO We will fetch all this from insitu graphql endpoint instead
+  const allDataInclusionStructures = await getDataInclusionStructures()
+  const allCnfsStructures = await getCnfsStructures()
+  const allAidantsConnectStructures = await getAidantsConnectStructures()
 
-  return Array.from({ length: 250 })
-    .map((_, index): Structure => {
-      const type = randomStructureType()
-      return {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: randomCoordinates(),
-        },
-        properties: {
-          type,
-          id: `random-${index}`,
-          name: 'Nom de la structure',
-          adresse: '',
-          source: 'Données de démonstration',
-        },
-      }
-    })
-    .filter((structure) =>
-      isPointInPolygon(
-        structure.geometry.coordinates,
-        departement.source.data.geometry.coordinates.flat() as [
-          number,
-          number,
-        ][],
-      ),
-    )
-}
-
-export const getStructuresData = async (departement: DepartementGeoJson) => {
-  await fakeDelay()
-  const inclusionStructures = dataInclusionStructures.filter(
-    ({ code_postal }) => code_postal.startsWith(departement.code),
+  const dataInclusionStructures = allDataInclusionStructures.filter(
+    ({ code_postal, code_insee }) =>
+      code_insee
+        ? code_insee.startsWith(departement.code)
+        : // TODO Some postal codes are NOT in the right department AND the vast majority of structures do not have the code_insee. We should map those special cases
+          code_postal.startsWith(departement.code),
   )
 
-  const structures = inclusionStructures.map((structure): Structure => {
+  const cnfsStructuresBySiret = mapCnfsStructuresBySiret(allCnfsStructures)
+  const aidantsConnectStructuresBySiret = mapAidantsConnectStructuresBySiret(
+    allAidantsConnectStructures,
+  )
+
+  // We use data inclusion as the base for the list of all structures
+  // Then add information from Cnfs and aidants connect sources
+  const structures = dataInclusionStructures.map((structure): Structure => {
     const type =
       !!structure.typologie && structure.typologie in DataInclusionTypologies
         ? DataInclusionTypologies[structure.typologie].type
         : 'private'
 
+    const cnfsStructure = isValidSiret(structure.siret)
+      ? cnfsStructuresBySiret.bySiret.get(structure.siret)
+      : undefined
+
+    // TODO Check that this is the best way to infer these data
+    const infoFromCnfsStructure = cnfsStructure
+      ? {
+          conseillersNumeriques: Number.parseFloat(
+            cnfsStructure['Nombre de conseillers validés par le COSELEC'],
+          ),
+          cnfsLabel: true,
+          franceServicesLabel: booleanChelouToBoolean(
+            cnfsStructure['France services'],
+          ),
+          inZrr: booleanChelouToBoolean(cnfsStructure.ZRR),
+          inQpv: booleanChelouToBoolean(cnfsStructure.QPV),
+        }
+      : {
+          conseillersNumeriques: null,
+          aidantsHabilitesAidantsConnect: null,
+          cnfsLabel: null,
+          franceServicesLabel: null,
+          inZrr: null,
+          inQpv: null,
+        }
+
+    const aidantsConnectStructure = isValidSiret(structure.siret)
+      ? aidantsConnectStructuresBySiret.bySiret.get(structure.siret)
+      : undefined
+
+    // TODO Check that this is the best way to infer these data
+    const infoFromAidantsConnectStructure = aidantsConnectStructure
+      ? {
+          // Maybe we can get the public/private type from Type Id also ?
+          aidantsConnectLabel: true,
+          franceServicesLabel: stringBooleanToBoolean(
+            aidantsConnectStructure['France Services Label'],
+          ),
+          // TODO We will need to use the data from the "real" insitu api to join a nd get the number of aidants
+          aidantsHabilitesAidantsConnect: null,
+        }
+      : {
+          aidantsConnectLabel: null,
+          aidantsHabilitesAidantsConnect: null,
+          franceServicesLabel: null,
+        }
+
     return {
       type: 'Feature',
       geometry: {
         type: 'Point',
-        coordinates: [structure.longitude, structure.latitude],
+        // E.G. MDM Felix Brun
+        // We keep those to aggregate them later,  but we don't use them for the m ap
+        coordinates: [structure.longitude ?? 0, structure.latitude ?? 0],
       },
       properties: {
-        type,
         id: structure.id,
-        name: structure.nom,
+        type,
+        name: titleCase(structure.nom),
         adresse: structure.adresse,
-        source: 'Data inclusion',
+        postalCode: structure.code_postal,
+        city: titleCase(structure.commune),
+        updated: structure.date_maj,
+        sourceLabel: 'Data inclusion',
+        sourceUrl: 'https://www.data.inclusion.beta.gouv.fr',
+        ...infoFromAidantsConnectStructure,
+        ...infoFromCnfsStructure,
       },
     }
   })
 
-  return { structures, inclusionStructures }
+  const result = { structures }
+  memoizedStructures.set(departement.code, result)
+  return result
 }
 
-export type StructuresData = Awaited<ReturnType<typeof getStructuresData>>
+// Keeping this in case it is useful for testing / storybook / e2e ..
+//
+// const randomStructureType = (): StructureType =>
+//   structureTypes[M ath.floor(Math.random() * 100) % 3]
+//
+// export con st getRandomStructures = (
+//   departement: DepartementGeoJ son,
+// ): Structure[] => {
+//   const [ [minLat, minLng], [maxLat, maxLng]] =  departement.bounds
+//
+//   const randomCoordinates = (): [number, number] => [
+//     Math.rand om() * (maxLat - minLat) + minLat,
+//     Math.random() * (maxLng - minLng) + minLng,
+//   ]
+//
+//   return  Array.from({ length: 250 })
+//     .map((_, index): Structure => {
+//       const type = randomStruct ureType()
+//       return {
+//          type: 'Feature',
+//         geometry: {
+//           type: 'Po int',
+//           coordinat es: randomCoordinates() ,
+//         },
+//         p roperties: {
+//           type,
+//           id : `random-${in dex}`,
+//           name: 'Nom de la structu re',
+//           adresse: '',
+//           source: 'Données de démonstration' ,
+//         },
+//       }
+//     })
+//     .filter((structure) =>
+//       isPointInPoly gon(
+//         struc ture.geometry.coordinates,
+//         departement.source. data.geometry.coordinates.flat() as [
+//           number,
+//           number,
+//         ][],
+//       ),
+//     )
+// }

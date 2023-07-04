@@ -63,6 +63,7 @@ const Page = async () => {
           </tbody>
         </table>
       </div>
+      <h3>Points d&apos;attention Data Inclusion</h3>
 
       <h2>Structures CNFS</h2>
       <p className="fr-hint-text">

@@ -8,7 +8,7 @@ export const AidantsConnectStructures = {
   dataFile: 'query_result_2023-07-03T14_09_41.253331972Z.csv',
 }
 
-type StringBoolean = 'true' | 'false'
+type StringBoolean = 'true' | 'false' | 'non renseigné'
 export const stringBooleanToBoolean = (value: StringBoolean) => {
   switch (value) {
     case 'true': {
@@ -16,6 +16,9 @@ export const stringBooleanToBoolean = (value: StringBoolean) => {
     }
     case 'false': {
       return false
+    }
+    case 'non renseigné': {
+      return null
     }
     default: {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions

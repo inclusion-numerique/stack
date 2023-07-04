@@ -1,6 +1,7 @@
 .container {
-  width: 465px;
+  width: 464px;
   border-right: var(--slim-grey-border);
+  flex-shrink: 0;
 }
 
 .collapsed {
