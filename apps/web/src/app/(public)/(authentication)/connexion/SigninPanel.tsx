@@ -17,47 +17,46 @@ const SigninPanel = ({
 }: {
   error?: string
   callbackUrl: Route
-}) => {
-  const ab = () => signIn(monCompteProConnectProviderId, { callbackUrl })
-  return (
-    <AuthCard>
-      <h4>Connexion à {PublicWebAppConfig.projectTitle}</h4>
-      {error ? (
-        <div className="fr-alert fr-alert--error fr-alert--sm fr-mb-6v">
-          <p>{signinErrorMessage(error)}</p>
-        </div>
-      ) : null}
+}) => (
+  <AuthCard>
+    <h4>Connexion à {PublicWebAppConfig.projectTitle}</h4>
+    {error ? (
+      <div className="fr-alert fr-alert--error fr-alert--sm fr-mb-6v">
+        <p>{signinErrorMessage(error)}</p>
+      </div>
+    ) : null}
 
-      <h5>Se connecter avec Mon Compte Pro</h5>
-      <div className="fr-connect-group">
-        <MonCompteProButton onClick={ab} />
-      </div>
-      <p className="fr-hr-or fr-mt-6v">ou</p>
-      <h5>Se connecter avec InclusionConnect</h5>
-      <div className="fr-connect-group">
-        <InclusionConnectSigninButton callbackUrl={callbackUrl} />
-      </div>
-      <p className="fr-hr-or fr-mt-6v">ou</p>
-      <h5>Se connecter avec son email</h5>
-      <EmailSigninForm callbackUrl={callbackUrl} />
-      <hr className="fr-mt-6v" />
-      <h5 className="fr-mt-4v">Vous n’avez pas de compte ?</h5>
-      <ButtonsGroup
-        buttons={[
-          {
-            children: 'Se créer un compte',
-            linkProps: {
-              href:
-                callbackUrl === '/'
-                  ? '/creer-un-compte'
-                  : `/creer-un-compte?suivant=${callbackUrl}`,
-            },
-            priority: 'secondary',
-          },
-        ]}
+    <h5>Se connecter avec Mon Compte Pro</h5>
+    <div className="fr-connect-group">
+      <MonCompteProButton
+        onClick={() => signIn(monCompteProConnectProviderId, { callbackUrl })}
       />
-    </AuthCard>
-  )
-}
+    </div>
+    <p className="fr-hr-or fr-mt-6v">ou</p>
+    <h5>Se connecter avec InclusionConnect</h5>
+    <div className="fr-connect-group">
+      <InclusionConnectSigninButton callbackUrl={callbackUrl} />
+    </div>
+    <p className="fr-hr-or fr-mt-6v">ou</p>
+    <h5>Se connecter avec son email</h5>
+    <EmailSigninForm callbackUrl={callbackUrl} />
+    <hr className="fr-mt-6v" />
+    <h5 className="fr-mt-4v">Vous n’avez pas de compte ?</h5>
+    <ButtonsGroup
+      buttons={[
+        {
+          children: 'Se créer un compte',
+          linkProps: {
+            href:
+              callbackUrl === '/'
+                ? '/creer-un-compte'
+                : `/creer-un-compte?suivant=${callbackUrl}`,
+          },
+          priority: 'secondary',
+        },
+      ]}
+    />
+  </AuthCard>
+)
 
 export default SigninPanel

@@ -9,7 +9,7 @@ import '@app/web/auth/nextAuthSetup'
 import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
 import { PublicWebAppConfig, ServerWebAppConfig } from '@app/web/webAppConfig'
 
-type MoncompteproProfile = {
+type MonCompteProProfile = {
   sub: string
   email: string
   email_verified: boolean
@@ -67,7 +67,7 @@ export const authOptions: NextAuthOptions = {
       userinfo: `${PublicWebAppConfig.MonCompteProConnect.issuer}/oauth/userinfo`,
       profile: async (profile: KeycloakProfile, tokens: TokenSet) =>
         axios
-          .get<MoncompteproProfile>(
+          .get<MonCompteProProfile>(
             `${PublicWebAppConfig.MonCompteProConnect.issuer}/oauth/userinfo`,
             {
               headers: { Authorization: `Bearer ${tokens.access_token || ''}` },
