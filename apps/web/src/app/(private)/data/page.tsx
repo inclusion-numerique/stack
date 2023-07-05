@@ -7,6 +7,7 @@ import {
   debugAidantsConnectStructures,
   debugCnfsStructures,
   debugDataInclusion,
+  valueToPercentage,
 } from '@app/web/data/dataAnalysis'
 import { CartoInclusionLieuxMediation } from '@app/web/data/dataInclusion'
 import { CnfsStructures } from '@app/web/data/cnfsStructures'
@@ -58,6 +59,11 @@ const Page = async () => {
                 <td style={{ textAlign: 'right' }}>
                   {row.stringify(row.value)}
                 </td>
+                <td style={{ textAlign: 'right' }}>
+                  {row.percentage
+                    ? valueToPercentage((100 * row.value) / row.percentage)
+                    : null}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -81,6 +87,11 @@ const Page = async () => {
                 <td style={{ textAlign: 'right' }}>
                   {row.stringify(row.value)}
                 </td>
+                <td style={{ textAlign: 'right' }}>
+                  {row.percentage
+                    ? valueToPercentage((100 * row.value) / row.percentage)
+                    : null}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -102,6 +113,11 @@ const Page = async () => {
                 <td>{row.title}</td>
                 <td style={{ textAlign: 'right' }}>
                   {row.stringify(row.value)}
+                </td>
+                <td style={{ textAlign: 'right' }}>
+                  {row.percentage
+                    ? valueToPercentage((100 * row.value) / row.percentage)
+                    : null}
                 </td>
               </tr>
             ))}

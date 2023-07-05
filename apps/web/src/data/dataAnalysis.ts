@@ -12,7 +12,7 @@ import {
 } from '@app/web/data/aidantsConnectStructures'
 
 const valueToString = (value: number) => value.toLocaleString('fr-FR')
-const valueToPercentage = (value: number) =>
+export const valueToPercentage = (value: number) =>
   `${value.toPrecision(2).toLocaleString()}%`
 
 export const debugDataInclusion = async () => {
@@ -22,7 +22,12 @@ export const debugDataInclusion = async () => {
   )
   const totalCount = dataInclusionStructures.length
   const totalCountWithSiret = dataInclusionInfo.bySiret.size
-  const totalDuplicatedSirets = dataInclusionInfo.duplicatedSirets.size
+
+  let totalDuplicatedSirets = 0
+  for (const duplicatedStructures of dataInclusionInfo.duplicatedSirets.values()) {
+    totalDuplicatedSirets += duplicatedStructures.length
+  }
+
   const totalMissingSiret = dataInclusionInfo.missingSiret.length
 
   return {
@@ -39,26 +44,19 @@ export const debugDataInclusion = async () => {
         title: 'Nombre de structures inclusion avec SIRET',
         value: totalCountWithSiret,
         stringify: valueToString,
+        percentage: totalCount,
       },
       {
         title: 'Nombre de structures inclusion sans SIRET ⚠️',
         value: totalMissingSiret,
         stringify: valueToString,
-      },
-      {
-        title: 'Nombre de structures inclusion sans SIRET (%) ⚠️',
-        value: (totalMissingSiret / totalCount) * 100,
-        stringify: valueToPercentage,
+        percentage: totalCount,
       },
       {
         title: 'Nombre de structures inclusion doublon SIRET',
         value: totalDuplicatedSirets,
         stringify: valueToString,
-      },
-      {
-        title: 'Nombre de structures inclusion doublon SIRET (%)',
-        value: (totalDuplicatedSirets / totalCount) * 100,
-        stringify: valueToPercentage,
+        percentage: totalCount,
       },
       {
         title: 'Nombre de structures non géolocalisées ⚠️',
@@ -66,6 +64,14 @@ export const debugDataInclusion = async () => {
           ({ latitude, longitude }) => !latitude || !longitude,
         ).length,
         stringify: valueToString,
+        percentage: totalCount,
+      },
+      {
+        title: 'Nombre de structures sans typologie ⚠️',
+        value: dataInclusionStructures.filter(({ typologie }) => !typologie)
+          .length,
+        stringify: valueToString,
+        percentage: totalCount,
       },
     ],
   }
@@ -80,7 +86,11 @@ export const debugCnfsStructures = async (
   const cnfsInfo = mapCnfsStructuresBySiret(cnfsStructures)
   const totalCount = cnfsStructures.length
   const totalCountWithSiret = cnfsInfo.bySiret.size
-  const totalDuplicatedSirets = cnfsInfo.duplicatedSirets.size
+
+  let totalDuplicatedSirets = 0
+  for (const duplicatedStructures of cnfsInfo.duplicatedSirets.values()) {
+    totalDuplicatedSirets += duplicatedStructures.length
+  }
   const totalMissingSiret = cnfsInfo.missingSiret.length
 
   const withInclusionStructure = [...cnfsInfo.bySiret.values()]
@@ -103,44 +113,33 @@ export const debugCnfsStructures = async (
         title: 'Nombre de structures CNFS avec SIRET',
         value: totalCountWithSiret,
         stringify: valueToString,
+        percentage: totalCount,
       },
       {
         title: 'Nombre de structures CNFS sans SIRET',
         value: totalMissingSiret,
         stringify: valueToString,
-      },
-      {
-        title: 'Nombre de structures CNFS sans SIRET (%)',
-        value: (totalMissingSiret / totalCount) * 100,
-        stringify: valueToPercentage,
+        percentage: totalCount,
       },
       {
         title: 'Nombre de structures CNFS doublon SIRET',
         value: totalDuplicatedSirets,
         stringify: valueToString,
-      },
-      {
-        title: 'Nombre de structures CNFS doublon SIRET (%)',
-        value: (totalDuplicatedSirets / totalCount) * 100,
-        stringify: valueToPercentage,
+        percentage: totalCount,
       },
       {
         title:
           'Nombre de structures CNFS référencée par SIRET dans data inclusion',
         value: withInclusionStructure.length,
         stringify: valueToString,
-      },
-      {
-        title:
-          'Nombre de structures CNFS référencée par SIRET dans data inclusion (%)',
-        value: (withInclusionStructure.length / totalCount) * 100,
-        stringify: valueToPercentage,
+        percentage: totalCount,
       },
       {
         title:
           'Nombre de structures CNFS non referencée par SIRET dans data inclusion ⚠️',
         value: totalCount - withInclusionStructure.length,
         stringify: valueToString,
+        percentage: totalCount,
       },
     ],
   }
@@ -156,7 +155,11 @@ export const debugAidantsConnectStructures = async (
 
   const totalCount = aidantsConnectStructures.length
   const totalCountWithSiret = aidantsConnectInfo.bySiret.size
-  const totalDuplicatedSirets = aidantsConnectInfo.duplicatedSirets.size
+
+  let totalDuplicatedSirets = 0
+  for (const duplicatedStructures of aidantsConnectInfo.duplicatedSirets.values()) {
+    totalDuplicatedSirets += duplicatedStructures.length
+  }
   const totalMissingSiret = aidantsConnectInfo.missingSiret.length
 
   const withInclusionStructure = [...aidantsConnectInfo.bySiret.values()]
@@ -179,44 +182,33 @@ export const debugAidantsConnectStructures = async (
         title: 'Nombre de structures AIDANTSCONNECT avec SIRET',
         value: totalCountWithSiret,
         stringify: valueToString,
+        percentage: totalCount,
       },
       {
         title: 'Nombre de structures AIDANTSCONNECT sans SIRET',
         value: totalMissingSiret,
         stringify: valueToString,
-      },
-      {
-        title: 'Nombre de structures AIDANTSCONNECT sans SIRET (%)',
-        value: (totalMissingSiret / totalCount) * 100,
-        stringify: valueToPercentage,
+        percentage: totalCount,
       },
       {
         title: 'Nombre de structures AIDANTSCONNECT doublon SIRET',
         value: totalDuplicatedSirets,
         stringify: valueToString,
-      },
-      {
-        title: 'Nombre de structures AIDANTSCONNECT doublon SIRET (%)',
-        value: (totalDuplicatedSirets / totalCount) * 100,
-        stringify: valueToPercentage,
+        percentage: totalCount,
       },
       {
         title:
           'Nombre de structures AIDANTSCONNECT référencée par SIRET dans data inclusion',
         value: withInclusionStructure.length,
         stringify: valueToString,
-      },
-      {
-        title:
-          'Nombre de structures AIDANTSCONNECT référencée par SIRET dans data inclusion (%)',
-        value: (withInclusionStructure.length / totalCount) * 100,
-        stringify: valueToPercentage,
+        percentage: totalCount,
       },
       {
         title:
           'Nombre de structures AIDANTSCONNECT non referencée par SIRET dans data inclusion ⚠️',
         value: totalCount - withInclusionStructure.length,
         stringify: valueToString,
+        percentage: totalCount,
       },
     ],
   }
