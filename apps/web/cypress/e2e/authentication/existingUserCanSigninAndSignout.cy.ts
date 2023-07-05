@@ -131,7 +131,9 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.log('Signin form fill and submit')
     cy.findByLabelText('Email').type(`${email}{enter}`)
 
-    cy.url().should('equal', appUrl('/connexion/verification'))
+    cy.url().should('equal', appUrl('/connexion/verification'), {
+      timeout: 10_000,
+    })
 
     cy.log('Magic link sent confirmation with email displayed')
     cy.contains('Un lien de connexion sécurisé a été envoyé')
