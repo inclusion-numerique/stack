@@ -38,10 +38,7 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
     })
 
     cy.get('button[title="S\'identifier avec InclusionConnect"]').click()
-    cy.url().should(
-      'eq',
-      'https://recette.connect.inclusion.beta.gouv.fr/accounts/login/',
-    )
+    cy.url().should('contain', 'connect.inclusion.beta.gouv.fr/realms')
 
     cy.intercept(/\/api\/auth\/callback/, (request) => {
       // Add our cookies back
