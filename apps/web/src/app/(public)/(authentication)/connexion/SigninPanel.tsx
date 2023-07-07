@@ -1,3 +1,5 @@
+'use client'
+
 import { Route } from 'next'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
