@@ -82,14 +82,17 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     })
 
     cy.get('button[title="S\'identifier avec InclusionConnect"]').click()
-    cy.url().should('contain', 'connect.inclusion.beta.gouv.fr/realms')
+    cy.url().should(
+      'eq',
+      'https://recette.connect.inclusion.beta.gouv.fr/accounts/login/',
+    )
 
     cy.intercept(/\/api\/auth\/callback/, (request) => {
       // Add our cookies back
       request.headers.cookie = authenticationCookies.join('; ')
     })
 
-    cy.get('input[name="username"]').type(inclusionConnectUser.email)
+    cy.get('input[name="email"]').type(inclusionConnectUser.email)
 
     // Inclusion connect has frontend uncaught exceptions
     Cypress.on('uncaught:exception', () => false)
@@ -185,4 +188,3 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.url().should('equal', appUrl('/'))
     cy.get('.fr-header__tools').contains('Se connecter')
   })
-})
