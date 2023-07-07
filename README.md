@@ -6,9 +6,11 @@ Stack est une application [Next.js](https://nextjs.org/docs) développée par le
 
 L'objectif de ce projet est de permettre une mise en ligne facile, rapide et respectant les critères de qualité de l'Incubateur des Territoires (sécurité, qualité de code, design, protection des données, respect de la confidentialité...).
 
-Il contient les pages suivantes: 
+Il contient les pages suivantes:
+
 - Accueil
-- Connexion par lien magique et par le Single Sign On [Inclusion Connect](https://inclusion.beta.gouv.fr/nos-services/inclusion-connect/) 
+- Connexion par lien magique
+- Connexion par les Single Sign On [Inclusion Connect](https://inclusion.beta.gouv.fr/nos-services/inclusion-connect/) et [Mon compte pro](https://moncomptepro.beta.gouv.fr/)
 - Page profil (🏗️ En cours)
 - Politique de confidentialité (🏗️ En cours)
 - Mentions légales (🏗️ En cours)
@@ -26,13 +28,13 @@ Il contient les pages suivantes:
 - [🛠️ Utilisation (🏗️ En cours)](#utilisation)
 - [🤝 Contribution (🏗️ En cours)](#contribution)
 - [📝 Licence](#licence)
-    
+
 ## Construit avec
 
 ### Langage & Framework
 
-- TypeScript 
-- Next.js 
+- TypeScript
+- Next.js
 
 ### Tests
 
@@ -41,7 +43,7 @@ Il contient les pages suivantes:
 - ESlint pour l'analyse statique
 - Prettier pour harmoniser la rédaction du code
 - Storybook pour documenter et visualiser les interfaces
-- Chromatic pour valider les interfaces 
+- Chromatic pour valider les interfaces
 
 ## Statistiques
 
@@ -55,6 +57,10 @@ Le projet nécessite les outils suivants pour fonctionner :
 - pnpm 6
 - postgresql ou Docker
 - Un compte Scaleway pour pouvoir déployer l'application
+
+### Mon compte pro
+
+=> Faire un demande de token OpenID pour votre service spécifiquement (procédure sur le site https://moncomptepro.beta.gouv.fr/partenaire)
 
 ## Installation
 
@@ -134,8 +140,6 @@ La branche main, ainsi que l'ensemble des branches de travail avec un préfixe v
 - Les utilisateurs de keybase peuvent signer leurs commits avec leur clé GPG sur Keybase
 
 #### Déployer
-
-
 
 ## Licence
 

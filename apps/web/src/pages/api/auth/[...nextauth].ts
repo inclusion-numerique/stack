@@ -1,13 +1,26 @@
-import NextAuth, { NextAuthOptions } from 'next-auth'
+import axios from 'axios'
+import NextAuth, { NextAuthOptions, TokenSet } from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
 import KeycloakProvider, { KeycloakProfile } from 'next-auth/providers/keycloak'
 import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
+import { monCompteProConnectProviderId } from '@app/web/auth/monCompteProConnect'
 import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
 import '@app/web/auth/nextAuthSetup'
 import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
 import { PublicWebAppConfig, ServerWebAppConfig } from '@app/web/webAppConfig'
 
+type MonCompteProProfile = {
+  sub: string
+  email: string
+  email_verified: boolean
+  family_name: string
+  given_name: string
+  updated_at: string
+  job: string
+}
+
 export const authOptions: NextAuthOptions = {
+  // debug: process.env.NODE_ENV !== 'production',
   adapter: nextAuthAdapter,
   pages: {
     signIn: '/connexion',
@@ -22,24 +35,111 @@ export const authOptions: NextAuthOptions = {
       ...ServerWebAppConfig.Auth.Email,
       sendVerificationRequest,
     }),
-    KeycloakProvider({
-      // Allow an email user to login with Inclusion Connect
-      allowDangerousEmailAccountLinking: true,
+    {
       id: inclusionConnectProviderId,
       name: 'Inclusion Connect',
+      type: 'oauth',
+      version: '2.0',
+      // Allow an email user to login with Inclusion Connect
+      allowDangerousEmailAccountLinking: true,
       clientId: PublicWebAppConfig.InclusionConnect.clientId,
       clientSecret: ServerWebAppConfig.InclusionConnect.clientSecret,
-      // KeycloakProvider adds wellknown open id config path
-      issuer: PublicWebAppConfig.InclusionConnect.issuer,
-      profile: (profile: KeycloakProfile) => ({
+      issuer: PublicWebAppConfig.InclusionConnect.iss,
+      authorization: {
+        url: `${PublicWebAppConfig.InclusionConnect.issuer}/protocol/openid-connect/auth`,
+        params: {
+          scope: 'openid profile email ',
+        },
+      },
+      token: {
+        request: async (context) => {
+          const body = {
+            grant_type: 'authorization_code',
+            client_id: PublicWebAppConfig.InclusionConnect.clientId,
+            client_secret: ServerWebAppConfig.InclusionConnect.clientSecret,
+            redirect_uri:
+              'http://localhost:3000/api/auth/callback/inclusion-connect',
+            code: context.params.code || 'undefined',
+          }
+          const data = new URLSearchParams(body).toString()
+          const r = await axios<{
+            access_token: string
+            expires_in: number
+            token_type: 'Bearer'
+            scope: string
+            refresh_token: string
+            id_token: string
+          }>({
+            method: 'POST',
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded',
+            },
+            data,
+            url: `${PublicWebAppConfig.InclusionConnect.issuer}/protocol/openid-connect/token`,
+          })
+          return { tokens: r.data }
+        },
+      },
+      userinfo: {
+        request: async ({ tokens }) => {
+          const r = await axios<{
+            sub: string
+            email: string
+            given_name: string
+            family_name: string
+          }>({
+            method: 'POST',
+            url: `${PublicWebAppConfig.InclusionConnect.issuer}/protocol/openid-connect/userinfo`,
+            headers: {
+              Authorization: tokens.access_token
+                ? `Bearer ${tokens.access_token}`
+                : '',
+            },
+          })
+          return r.data
+        },
+      },
+      profile: (profile: {
+        sub: string
+        email: string
+        given_name: string
+        family_name: string
+      }) => ({
         id: profile.sub,
-        name: profile.name ?? profile.preferred_username,
+        name: `${profile.given_name} ${profile.family_name}`,
         firstName: profile.given_name,
         lastName: profile.family_name,
         email: profile.email,
-        image: profile.picture,
         provider: inclusionConnectProviderId,
       }),
+    },
+    KeycloakProvider({
+      allowDangerousEmailAccountLinking: true,
+      id: monCompteProConnectProviderId,
+      name: 'Moncomptepro Connect',
+      clientId: PublicWebAppConfig.MonCompteProConnect.clientId,
+      clientSecret: ServerWebAppConfig.MonCompteProConnect.clientSecret,
+      authorization: { params: { scope: 'openid email profile' } },
+      // KeycloakProvider adds wellknown open id config path
+      issuer: PublicWebAppConfig.MonCompteProConnect.issuer,
+      userinfo: `${PublicWebAppConfig.MonCompteProConnect.issuer}/oauth/userinfo`,
+      profile: async (profile: KeycloakProfile, tokens: TokenSet) =>
+        axios
+          .get<MonCompteProProfile>(
+            `${PublicWebAppConfig.MonCompteProConnect.issuer}/oauth/userinfo`,
+            {
+              headers: { Authorization: `Bearer ${tokens.access_token || ''}` },
+            },
+          )
+          .then((response) => response.data)
+          .then((_profile) => ({
+            id: _profile.sub,
+            name: `${_profile.given_name} ${_profile.family_name}`,
+            firstName: _profile.given_name,
+            lastName: _profile.family_name,
+            email: _profile.email,
+            provider: monCompteProConnectProviderId,
+          })),
     }),
   ],
   callbacks: {

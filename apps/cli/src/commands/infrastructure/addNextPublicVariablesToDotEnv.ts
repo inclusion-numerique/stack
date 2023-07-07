@@ -26,6 +26,14 @@ export const addNextPublicVariablesToDotEnv = new Command()
           name: 'NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID',
           value: `$INCLUSION_CONNECT_${targetEnv.toUpperCase()}_CLIENT_ID`,
         },
+        {
+          name: 'NEXT_PUBLIC_MONCOMPTEPRO_ISSUER',
+          value: `$MONCOMPTEPRO_${targetEnv.toUpperCase()}_ISSUER`,
+        },
+        {
+          name: 'NEXT_PUBLIC_MONCOMPTEPRO_CLIENT_ID',
+          value: `$MONCOMPTEPRO_${targetEnv.toUpperCase()}_CLIENT_ID`,
+        },
       ],
     })
   })

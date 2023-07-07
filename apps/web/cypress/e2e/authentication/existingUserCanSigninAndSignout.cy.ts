@@ -16,8 +16,16 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     lastName: 'Inclusion Numerique',
   }
 
+  const monCompteProUser = {
+    email: Cypress.env('MON_COMPTE_PRO_TEST_USER_EMAIL') as string,
+    password: Cypress.env('MON_COMPTE_PRO_TEST_USER_PASSWORD') as string,
+    firstName: 'Test Bot',
+    lastName: 'Mon Compte Pro',
+  }
+
   before(() => {
     cy.execute('deleteUser', { email: inclusionConnectUser.email })
+    cy.execute('deleteUser', { email: monCompteProUser.email })
   })
 
   it('Préliminaire - Les pages de connexions sont accessibles', () => {
@@ -82,14 +90,17 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     })
 
     cy.get('button[title="S\'identifier avec InclusionConnect"]').click()
-    cy.url().should('contain', 'connect.inclusion.beta.gouv.fr/realms')
+    cy.url().should(
+      'eq',
+      'https://recette.connect.inclusion.beta.gouv.fr/accounts/login/',
+    )
 
     cy.intercept(/\/api\/auth\/callback/, (request) => {
       // Add our cookies back
       request.headers.cookie = authenticationCookies.join('; ')
     })
 
-    cy.get('input[name="username"]').type(inclusionConnectUser.email)
+    cy.get('input[name="email"]').type(inclusionConnectUser.email)
 
     // Inclusion connect has frontend uncaught exceptions
     Cypress.on('uncaught:exception', () => false)
@@ -131,7 +142,9 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.log('Signin form fill and submit')
     cy.findByLabelText('Email').type(`${email}{enter}`)
 
-    cy.url().should('equal', appUrl('/connexion/verification'))
+    cy.url().should('equal', appUrl('/connexion/verification'), {
+      timeout: 10_000,
+    })
 
     cy.log('Magic link sent confirmation with email displayed')
     cy.contains('Un lien de connexion sécurisé a été envoyé')
@@ -177,6 +190,61 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
       .should('be.visible')
       .contains('Se déconnecter')
       .click()
+    cy.url().should('equal', appUrl('/deconnexion'))
+    cy.contains('Êtes-vous sur de vouloir vous déconnecter ?')
+    cy.get('main').contains('Se déconnecter').click()
+    cy.url().should('equal', appUrl('/'))
+    cy.get('.fr-header__tools').contains('Se connecter')
+  })
+
+  it.skip('Acceptation 3 - Connexion avec Mon Compte Pro', () => {
+    cy.visit('/connexion')
+    // Cypress deletes some cookies on redirection between domains
+    // See https://github.com/cypress-io/cypress/issues/20476
+    // Also see https://docs.cypress.io/guides/guides/cross-origin-testing
+    // We need to intercept the request to our auth endpoint to memorize the cookies
+    // then intercept the request for our auth endpoint during callback to add the cookies back
+    let authenticationCookies: string[]
+
+    cy.intercept(/\/api\/auth\/signin\/moncomptepro/, (request) => {
+      request.continue((response) => {
+        // Memorize our cookies
+        const responseCookies = response.headers['set-cookie']
+        authenticationCookies = Array.isArray(responseCookies)
+          ? responseCookies
+          : [responseCookies]
+      })
+    })
+
+    cy.get('button[class="fr-btn fr-connect moncomptepro-button"]').click()
+    cy.url().should('contain', 'app-test.moncomptepro.beta.gouv.fr')
+
+    cy.intercept(/\/api\/auth\/callback/, (request) => {
+      // Add our cookies back
+      request.headers.cookie = authenticationCookies.join('; ')
+    })
+
+    cy.get('input[type="email"]').type(monCompteProUser.email)
+    cy.get('button[type="submit"]').click()
+
+    cy.get('input[name="password"]').type(`${monCompteProUser.password}{enter}`)
+
+    cy.url().should('equal', appUrl('/'))
+
+    cy.get('.fr-header__tools').should('not.contain', 'Se connecter')
+
+    cy.log('Check that the user can logout')
+
+    cy.dsfrShouldBeStarted()
+    cy.dsfrCollapsesShouldBeBound()
+    cy.get('.fr-header__tools button[aria-controls="header-user-menu"]')
+      .contains(monCompteProUser.firstName)
+      .contains(monCompteProUser.lastName)
+      .click()
+
+    cy.get('#header-user-menu').should('be.visible')
+
+    cy.get('#header-user-menu').contains('Se déconnecter').click()
     cy.url().should('equal', appUrl('/deconnexion'))
     cy.contains('Êtes-vous sur de vouloir vous déconnecter ?')
     cy.get('main').contains('Se déconnecter').click()
