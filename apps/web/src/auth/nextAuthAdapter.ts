@@ -1,7 +1,11 @@
 import type { Adapter, AdapterUser } from 'next-auth/adapters'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
 import { prismaClient } from '@app/web/prismaClient'
+import { createUserData } from '@app/web/security/createUserData'
+import {
+  monCompteProConnectProviderId,
+  MonCompteProProfile,
+} from './monCompteProConnect'
 
 const prismaAdapter = PrismaAdapter(prismaClient)
 
@@ -19,10 +23,19 @@ export const nextAuthAdapter: Adapter = {
   createUser: async (user) => {
     const { provider, ...rest } = user as Omit<AdapterUser, 'id'> & {
       // We pass the provider along from Keycloak provider to be able to detect if the user comes from Inclusion Connect
-      provider?: typeof inclusionConnectProviderId
+      provider?: typeof monCompteProConnectProviderId
     }
-    if (provider === inclusionConnectProviderId) {
-      return prismaAdapter.createUser({ ...rest, emailVerified: new Date() })
+
+    if (provider === monCompteProConnectProviderId) {
+      // TODO Types are not great ... We should maybe override AdapterUser ?
+      const userData = await createUserData(
+        rest as never as MonCompteProProfile,
+      )
+
+      return prismaAdapter.createUser({
+        ...userData,
+        emailVerified: new Date(),
+      })
     }
     return prismaAdapter.createUser(rest)
   },

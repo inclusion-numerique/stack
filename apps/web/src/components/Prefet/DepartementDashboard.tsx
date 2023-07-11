@@ -1,4 +1,5 @@
 import React from 'react'
+import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import { DepartementGeoJson } from '@app/web/utils/map/departementGeoJson'
 import { DepartementDashboardData } from '@app/web/components/Prefet/departementData'
 import MainStatistics from '@app/web/components/Prefet/DepartementDashboard/MainStatistics'
@@ -13,18 +14,31 @@ const DepartementDashboard = ({
   departement: DepartementGeoJson
   data: DepartementDashboardData
 }) => (
-  <div className="fr-pt-7w fr-pb-10w">
-    <DepartementDashboardHeader />
-    <div className="fr-grid-row fr-grid-row--gutters fr-mb-10w">
-      <div className="fr-col-5">
-        <MainStatistics departement={departement} data={data} />
+  <>
+    <Breadcrumb
+      currentPageLabel={departement.name}
+      segments={[
+        {
+          label: "Page d'accueil",
+          linkProps: {
+            href: '/',
+          },
+        },
+      ]}
+    />
+    <div className="fr-mt-4v fr-pb-20v">
+      <DepartementDashboardHeader />
+      <div className="fr-grid-row fr-grid-row--gutters fr-mb-10w">
+        <div className="fr-col-5">
+          <MainStatistics departement={departement} data={data} />
+        </div>
+        <div className="fr-col-7">
+          <DepartementMap departement={departement} />
+        </div>
       </div>
-      <div className="fr-col-7">
-        <DepartementMap departement={departement} />
-      </div>
+      <DetailedStatistics departement={departement} data={data} />
     </div>
-    <DetailedStatistics departement={departement} data={data} />
-  </div>
+  </>
 )
 
 export default DepartementDashboard

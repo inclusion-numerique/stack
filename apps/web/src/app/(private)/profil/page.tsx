@@ -1,6 +1,7 @@
 import React from 'react'
 import { redirect } from 'next/navigation'
 import Alert from '@codegouvfr/react-dsfr/Alert'
+import Link from 'next/link'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 
@@ -28,6 +29,9 @@ const Page = async () => {
         <Alert
           severity="info"
           title="Vous êtes connecté à Inclusion Numérique avec un rôle de démonstration vous permettant d'accéder à toutes les fonctionnalités"
+          description={
+            <Link href="/prefet/69">Accéder au tableau de bord Préfet</Link>
+          }
         />
       )
       break
@@ -37,6 +41,7 @@ const Page = async () => {
         <Alert
           severity="info"
           title="Vous êtes connecté à Inclusion Numérique avec un rôle 'préfecture' vous permettant d'accéder à toutes les fonctionnalités concernant votre département"
+          description={<Link href="/prefet">Accéder au tableau de bord</Link>}
         />
       )
       break
@@ -44,8 +49,9 @@ const Page = async () => {
     default: {
       roleNotice = (
         <Alert
-          severity="warning"
-          title="Votre compte n'est pas encore validé, veuillez vous rapprocher de votre référent"
+          severity="info"
+          title="Votre compte est en attente de validation"
+          description="Nous n'avons pas pu rattacher votre compte a une organisation autorisée. Veuillez vous rapprocher de votre référent pour plus d'informations."
         />
       )
     }

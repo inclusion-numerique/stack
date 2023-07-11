@@ -42,6 +42,8 @@ export const webAppStackSensitiveVariables = [
   'SCW_ACCESS_KEY',
   'SCW_SECRET_KEY',
   'DATABASE_PASSWORD',
+  'MONCOMPTEPRO_PREVIEW_CLIENT_SECRET',
+  'MONCOMPTEPRO_MAIN_CLIENT_SECRET',
 ] as const
 
 /**
@@ -186,6 +188,10 @@ export class WebAppStack extends TerraformStack {
       },
       secretEnvironmentVariables: {
         DATABASE_URL: databaseUrl,
+        MONCOMPTEPRO_CLIENT_SECRET: isMain
+          ? sensitiveEnvironmentVariables.MONCOMPTEPRO_MAIN_CLIENT_SECRET.value
+          : sensitiveEnvironmentVariables.MONCOMPTEPRO_PREVIEW_CLIENT_SECRET
+              .value,
       },
       name: containerName,
       minScale: isMain ? 2 : namespace === 'dev' ? 1 : 0,

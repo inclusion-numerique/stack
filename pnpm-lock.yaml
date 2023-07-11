@@ -113,8 +113,8 @@ importers:
         specifier: ^3.347.0
         version: 3.347.0
       '@codegouvfr/react-dsfr':
-        specifier: ^0.63.1
-        version: 0.63.1
+        specifier: ^0.66.6
+        version: 0.66.6
       '@gouvfr/dsfr':
         specifier: ^1.9.3
         version: 1.9.3
@@ -828,8 +828,8 @@ importers:
   packages/ui:
     dependencies:
       '@codegouvfr/react-dsfr':
-        specifier: ^0.63.1
-        version: 0.63.1
+        specifier: ^0.66.6
+        version: 0.66.6
       '@gouvfr/dsfr':
         specifier: ^1.9.3
         version: 1.9.3
@@ -3381,8 +3381,8 @@ packages:
       - supports-color
     dev: false
 
-  /@codegouvfr/react-dsfr@0.63.1:
-    resolution: {integrity: sha512-1N3bLaH5L4afWo3pS6gtYKDtzHH+pLG+kwapmZO4PPf8/kgB2W03fxTSYGja5YycTgqstto91Fdo6oa9xSQ8og==}
+  /@codegouvfr/react-dsfr@0.66.6:
+    resolution: {integrity: sha512-hCQlwBamnJzUYg02sVxTjvq1XjXpXBX01fLoldQu5mZhtvoiu0wpDb83Y5qH1u857ZmZplz+K4gzPoHf3ajALA==}
     hasBin: true
     dependencies:
       tsafe: 1.6.4
@@ -10374,7 +10374,7 @@ packages:
     dependencies:
       semver: 7.5.1
       shelljs: 0.8.5
-      typescript: 5.2.0-dev.20230616
+      typescript: 5.2.0-dev.20230705
     dev: false
 
   /duplexer2@0.1.4:
@@ -20450,8 +20450,8 @@ packages:
     engines: {node: '>=12.20'}
     hasBin: true
 
-  /typescript@5.2.0-dev.20230616:
-    resolution: {integrity: sha512-pprSaAXEPeobRjBGiyipvM7IXY4wSEHq5RiQS2BnDzYAXpfPi9jF5CRHg8QgWxm1KQlAy0JVLfsQI3rlHjDcEQ==}
+  /typescript@5.2.0-dev.20230705:
+    resolution: {integrity: sha512-eMgfQ/e5CgYYSaduGhDc2UiY2EzzgrBMfHyagjUP70jj4VDCmLlIp1EftT5AMiLvNc7PYNCeziRFY5fBZhD9uA==}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: false

@@ -2,7 +2,6 @@ import { Route } from 'next'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import { signinErrorMessage } from '@app/web/app/(public)/(authentication)/authenticationErrorMessage'
-import { InclusionConnectSigninButton } from '@app/web/app/(public)/(authentication)/connexion/InclusionConnectSigninButton'
 import EmailSignupForm from '@app/web/app/(public)/(authentication)/creer-un-compte/EmailSignupForm'
 
 const SignupPanel = ({
@@ -21,11 +20,6 @@ const SignupPanel = ({
       </div>
     ) : null}
 
-    <h5>Se créer un compte avec InclusionConnect</h5>
-    <div className="fr-connect-group">
-      <InclusionConnectSigninButton callbackUrl={callbackUrl} />
-    </div>
-    <p className="fr-hr-or fr-mt-6v">ou</p>
     <h5>Se créer un compte avec son email</h5>
     <EmailSignupForm callbackUrl={callbackUrl} email={email} />
     <hr className="fr-mt-6v" />

@@ -27,7 +27,7 @@ const StatisticBox = ({
               styles.headerDescription,
             )}
           >
-            recensés sur{' '}
+            Recensés sur&nbsp;
             <a href="/" target="_blank" rel="noopener noreferrer">
               La Cartographie Nationale
             </a>

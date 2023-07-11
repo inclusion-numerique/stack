@@ -68,12 +68,36 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
+  monCompteProOrganizations Json? @map("mon_compte_pro_organizations")
+
   created DateTime @default(now())
   updated DateTime @default(now())
 
   uploads Upload[]
 
+  organizations UserOrganization[] @relation(name: "user_organizations")
+
   @@map("users")
+}
+
+// From MonComptePro. We store them to easily debug / Monitor who has access to what
+model UserOrganization {
+  monCompteProId Int    @id @map("mon_compte_pro_id")
+  users          User[] @relation(name: "user_organizations")
+
+  // Raw data from Mon Compte Pro
+  is_collectivite_territoriale Boolean
+  is_external                  Boolean
+  is_service_public            Boolean
+  // e.g. 'Commune de les martres sur morge - Mairie'
+  label                        String
+  siret                        String
+
+  // Our data
+  prefectureCheckedAt     DateTime? @map("prefecture_checked_at")
+  isDepartementPrefecture String?   @map("is_departement_prefecture")
+
+  @@map("user_organizations")
 }
 
 model VerificationToken {
