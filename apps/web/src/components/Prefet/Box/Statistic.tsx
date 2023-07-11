@@ -15,22 +15,18 @@ const Statistic = ({
   children,
   collapsable,
   bold,
-  withMarginBottom,
+  isSubStatistic,
 }: StatisticProps & {
   children?:
     | React.ReactElement<StatisticProps>
     | React.ReactElement<StatisticProps>[]
-  withMarginBottom?: boolean
+  isSubStatistic?: boolean
 }) => {
   const [open, setOpen] = useState(false)
   const displayChildren = children && (!collapsable || open)
   return (
     <>
-      <div
-        className={classNames(styles.statistic, {
-          [styles.marginBottom]: withMarginBottom && !displayChildren,
-        })}
-      >
+      <div className={isSubStatistic ? styles.subStatistic : styles.statistic}>
         <span className="fr-text--sm fr-mb-0 fr-mr-2w">
           {bold ? <b>{label}</b> : label}
           {collapsable && (
@@ -44,16 +40,27 @@ const Statistic = ({
                 className={classNames(
                   'fr-icon--sm',
                   open
-                    ? 'fr-icon-arrow-down-s-line'
-                    : 'fr-icon-arrow-up-s-line',
+                    ? 'fr-icon-arrow-up-s-line'
+                    : 'fr-icon-arrow-down-s-line',
                 )}
               />
             </button>
           )}
         </span>
-        <b className="fr-text--sm fr-mb-0">{value}</b>
+        <span
+          className={classNames(
+            'fr-text--sm fr-mb-0',
+            !isSubStatistic && 'fr-text--bold',
+          )}
+        >
+          {value}
+        </span>
       </div>
-      {displayChildren && <div className="fr-ml-3w">{children}</div>}
+      {displayChildren && (
+        <div className={classNames('fr-ml-3w', styles.children)}>
+          {children}
+        </div>
+      )}
     </>
   )
 }

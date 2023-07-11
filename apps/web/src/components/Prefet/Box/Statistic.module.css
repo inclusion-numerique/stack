@@ -1,6 +1,19 @@
+.subStatistic {
+  margin-bottom: 2px;
+}
+
+.statistic {
+  margin-bottom: 4px;
+}
+
+.subStatistic,
 .statistic {
   display: flex;
   justify-content: space-between;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .label {
@@ -15,14 +28,14 @@
   margin-right: 16px;
 }
 
-.marginBottom {
-  margin-bottom: 4px;
-}
-
 .collapseButton {
   display: inline;
 
   &:hover {
     background-color: transparent !important;
   }
+}
+
+.children {
+  margin-bottom: 4px;
 }

@@ -28,6 +28,7 @@ export type StatisticBox = {
   label: string
   value: number
   statistics: (SourcedStatistic | Category | Statistic)[]
+  withDescription?: boolean
 }
 
 export type PercentageBox = {
@@ -43,6 +44,7 @@ export type Box = StatisticBox | PercentageBox
 export type Boxes = {
   id?: string
   label?: string
+  description?: string
   boxes: Box[]
 }
 
@@ -54,6 +56,7 @@ export const fetchDepartementDashboardData = async ({
   const inclusionLocations = {
     id: 'lieux-d-inclusion-numérique',
     label: "Lieux d'Inclusion Numérique",
+    withDescription: true,
     value: 123,
     statistics: [
       {
@@ -159,6 +162,7 @@ export const fetchDepartementDashboardData = async ({
   const publicsAccompagnes = {
     id: 'publics-accompagnés',
     label: `Publics accompagnés - ${name}`,
+    description: 'Description',
     boxes: [
       {
         id: 'usagers-accompagnés',
@@ -213,6 +217,7 @@ export const fetchDepartementDashboardData = async ({
   const accompagnements = {
     id: 'accompagnements',
     label: `Accompagnements - ${name}`,
+    description: 'Description',
     boxes: [
       {
         id: 'accompagnement',

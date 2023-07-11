@@ -6,9 +6,15 @@ import {
 } from '@app/web/components/Prefet/departementData'
 import Box from '@app/web/components/Prefet/Box/Box'
 
-const StatisticsWrapper = ({ id, label, boxes }: PropsWithChildren<Boxes>) => (
+const StatisticsWrapper = ({
+  id,
+  label,
+  boxes,
+  description,
+}: PropsWithChildren<Boxes>) => (
   <div key={id} className="fr-mb-10w">
-    <h2>{label}</h2>
+    <h2 className="fr-mb-2w">{label}</h2>
+    {description && <p className="fr-mb-4w">{description}</p>}
     <div className="fr-grid-row fr-grid-row--gutters">
       {boxes.map((box) => (
         <div key={box.id} className="fr-col-4">

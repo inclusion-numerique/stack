@@ -24,7 +24,7 @@ const setState = (
   }
 }
 
-export const addSelectedState = (
+export const setSelectedDecoupageState = (
   map: Map,
   layer: string,
   selectedId?: string | number,
@@ -33,6 +33,18 @@ export const addSelectedState = (
   if (selectedId) {
     stateId.selected = selectedId
     setState(map, 'decoupage', layer, 'selected', 'selected', true)
+  }
+}
+
+export const setSelectedStructureState = (
+  map: Map,
+  layer: string,
+  selectedId?: string | number,
+) => {
+  setState(map, 'structures', undefined, 'selected', 'selected', false)
+  if (selectedId) {
+    stateId.selected = selectedId
+    setState(map, 'structures', undefined, 'selected', 'selected', true)
   }
 }
 

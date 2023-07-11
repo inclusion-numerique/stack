@@ -8,6 +8,10 @@ import {
   StructuresData,
 } from '@app/web/components/Prefet/structuresData'
 import { DepartementData } from '@app/web/utils/map/departement'
+import {
+  applyStructureFilter,
+  StructureFilters,
+} from '@app/web/components/Prefet/Cartographie/structureFilters'
 import styles from './Page.module.css'
 import Legend from './Legend'
 import Map from './Map'
@@ -59,6 +63,17 @@ const Cartographie = ({
     router.prefetch(`/prefet/${code}`)
   }, [router, code])
 
+  const [filteredStructures, setFilteredStructures] = useState(
+    structuresData.structures,
+  )
+  const onFilter = (filters: StructureFilters) => {
+    setFilteredStructures(
+      structuresData.structures.filter((structure) =>
+        applyStructureFilter(structure, filters),
+      ),
+    )
+  }
+
   return (
     <div className={styles.container}>
       <Legend
@@ -69,6 +84,7 @@ const Cartographie = ({
         onCitySelected={onCitySelected}
         selectedStructure={selectedStructure}
         onStructureSelected={onStructureSelected}
+        onFilter={onFilter}
       />
       <Map
         departement={departement}
@@ -77,6 +93,7 @@ const Cartographie = ({
         onCitySelected={onCitySelected}
         selectedStructure={selectedStructure}
         onStructureSelected={onStructureSelected}
+        filteredStructures={filteredStructures}
       />
     </div>
   )

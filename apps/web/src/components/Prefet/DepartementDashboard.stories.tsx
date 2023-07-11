@@ -17,6 +17,7 @@ const getFakeData = ({
     id: 'lieux-d-inclusion-numérique',
     label: "Lieux d'Inclusion Numérique",
     value: 123,
+    withDescription: true,
     statistics: [
       {
         id: 'typologie-de-structures',
@@ -88,6 +89,7 @@ const getFakeData = ({
 
   const aidantConnectLocations = {
     id: 'aidants-numériques-identifiés',
+    withDescription: true,
     label: 'Aidants Numériques identifiés',
     value: 123,
     statistics: [
@@ -121,6 +123,7 @@ const getFakeData = ({
   const publicsAccompagnes = {
     id: 'publics-accompagnés',
     label: `Publics accompagnés - ${name}`,
+    description: 'Description',
     boxes: [
       {
         id: 'usagers-accompagnés',
@@ -175,6 +178,7 @@ const getFakeData = ({
   const accompagnements = {
     id: 'accompagnements',
     label: `Accompagnements - ${name}`,
+    description: 'Description',
     boxes: [
       {
         id: 'accompagnement',

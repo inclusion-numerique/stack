@@ -1,4 +1,5 @@
 import { LngLatLike } from 'maplibre-gl'
+import type { StructuresCount } from '@app/web/components/Prefet/Cartographie/countStructures'
 
 export type GeoApiCity = {
   nom: string
@@ -22,15 +23,10 @@ export type City = GeoApiCity & {
   ifnNscol15pRate: number | null
 
   // Aggregated data from structures
-  structures: number
-  publicStructures: number
-  associationsStructures: number
-  privateStructures: number
-  structuresWithCnfs: number
-  structuresWithFranceServices: number
-  structuresWithAidantsConnect: number
-  structuresInQpv: number
-  structuresInZrr: number
+  structuresCount: StructuresCount
+  aidants: number
+  conseillersNumeriques: number
+  habilitesAidantsConnect: number
 }
 
 export type EPCI = {

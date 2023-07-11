@@ -9,15 +9,28 @@ import maplibregl, {
   StyleSpecification,
 } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
+import {
+  FilterSpecification,
+  GeoJSONSourceSpecification,
+} from '@maplibre/maplibre-gl-style-spec'
 import { City } from '@app/web/types/City'
 import type {
   Structure,
   StructuresData,
 } from '@app/web/components/Prefet/structuresData'
 import { DepartementData } from '@app/web/utils/map/departement'
-import { structureTypes } from '@app/web/components/Prefet/structuresTypes'
+import {
+  structureTypeImage,
+  structureTypes,
+  structureTypeSelectedImage,
+} from '@app/web/components/Prefet/structuresTypes'
+import { Spinner } from '@app/web/ui/Spinner'
 import IndiceNumerique from './IndiceNumerique'
-import { addHoverState, addSelectedState } from './MapUtils'
+import {
+  addHoverState,
+  setSelectedDecoupageState,
+  setSelectedStructureState,
+} from './MapUtils'
 import MapPopup from './MapPopup'
 import styles from './Map.module.css'
 import { mapStyle } from './mapStyle'
@@ -42,6 +55,7 @@ import {
   structuresCircleLayer,
   structuresClusterCircleLayer,
   structuresClusterSymbolLayer,
+  structuresIconLayer,
 } from './Layers/structures'
 import { epciMaxZoom } from './Layers/common'
 import { placesLayer } from './Layers/places'
@@ -57,6 +71,7 @@ const Map = ({
   onCitySelected,
   structuresData,
   selectedStructure,
+  filteredStructures,
   onStructureSelected,
 }: {
   departement: DepartementData
@@ -64,6 +79,7 @@ const Map = ({
   selectedCity?: City | null
   onCitySelected: (city: string | null | undefined) => void
   selectedStructure?: Structure | null
+  filteredStructures: Structure[]
   onStructureSelected: (structure: string | null | undefined) => void
 }) => {
   const { cities, epcis, bounds, code: departementCode } = departement
@@ -72,6 +88,8 @@ const Map = ({
   const [viewIndiceFN, setViewIndiceFN] = useState(true)
   const [division, setDivision] = useState('EPCI')
   const clickedPoint = useRef<string>()
+  const [isMapLoaded, setIsMapLoaded] = useState(false)
+  const [isMapStyleLoaded, setIsMapStyleLoaded] = useState(false)
 
   const citiesByIndex: string[][] = useMemo(() => {
     const result: string[][] = ifnColors.map(() => [])
@@ -98,7 +116,8 @@ const Map = ({
 
   const onMapPopupClose = () => {
     if (map.current) {
-      addSelectedState(map.current, 'communes')
+      setSelectedDecoupageState(map.current, 'communes')
+      setSelectedStructureState(map.current, 'structureIconHover')
     }
     onCitySelected(null)
     onStructureSelected(null)
@@ -116,6 +135,10 @@ const Map = ({
       style: mapStyle as StyleSpecification,
       minZoom: 8,
       maxZoom: 12.9,
+    })
+
+    map.current.on('style.load', () => {
+      setIsMapStyleLoaded(true)
     })
 
     map.current.on('load', () => {
@@ -155,7 +178,6 @@ const Map = ({
       map.current.addLayer(epcisLayer(epciCodes))
 
       placesLayer.map((placeLayer) => map.current?.addLayer(placeLayer))
-
       map.current.addSource('structures', {
         type: 'geojson',
         generateId: true,
@@ -163,40 +185,46 @@ const Map = ({
           type: 'FeatureCollection',
           features: structuresData.structures,
         },
+        clusterMaxZoom: 11,
         cluster: true,
         clusterRadius: 25,
         clusterProperties: { count: ['+', 1] },
-        clusterMaxZoom: 11,
       })
+
+      for (const type of structureTypes) {
+        const structureImageFile = structureTypeImage[type]
+        const structureHoverImageFile = structureTypeSelectedImage[type]
+        map.current?.loadImage(structureImageFile, (error, image) => {
+          if (error) {
+            console.error('Could not load structure image', error)
+            return
+          }
+          if (map.current && image) {
+            map.current.addImage(`structure-${type}`, image)
+          }
+        })
+        map.current?.loadImage(structureHoverImageFile, (error, image) => {
+          if (error) {
+            console.error('Could not load structure hover image', error)
+            return
+          }
+          if (map.current && image) {
+            map.current.addImage(`structure-${type}-hover`, image)
+          }
+        })
+      }
+      map.current?.addLayer(structuresIconLayer)
+
       map.current.addLayer(structuresCircleLayer)
+
       map.current.addLayer(structuresClusterCircleLayer)
       map.current.addLayer(structuresClusterSymbolLayer)
-      for (const structureImageName of structureTypes) {
-        map.current.loadImage(
-          `/images/structure/${structureImageName}.png`,
-          (error, image) => {
-            if (map.current && image) {
-              map.current.addImage(structureImageName, image)
-              map.current.addLayer({
-                id: `structuresSymbol${structureImageName}`,
-                source: 'structures',
-                type: 'symbol',
-                layout: {
-                  'icon-allow-overlap': true,
-                  'icon-image': structureImageName,
-                },
-                filter: ['==', ['get', 'type'], structureImageName],
-              })
-            }
-          },
-        )
-      }
 
       addHoverState(map.current, 'decoupage', 'communesIFNFilled', 'communes')
       addHoverState(map.current, 'decoupage', 'communesFilled', 'communes')
       addHoverState(map.current, 'decoupage', 'epcisFilled', 'epcis')
       addHoverState(map.current, 'decoupage', 'epcisIFNFilled', 'epcis')
-      addHoverState(map.current, 'structures', 'structuresCircle')
+      addHoverState(map.current, 'structures', 'structureIconHover')
 
       const navControl = new maplibregl.NavigationControl({
         showZoom: true,
@@ -217,6 +245,8 @@ const Map = ({
 
         setDivision(map.current.getZoom() < epciMaxZoom ? 'EPCI' : 'Commune')
       })
+
+      setIsMapLoaded(true)
     })
   }, [])
 
@@ -356,7 +386,11 @@ const Map = ({
           event.features.length > 0 &&
           clickedPoint.current !== event.lngLat.toString()
         ) {
-          addSelectedState(map.current, 'communes', event.features[0].id)
+          setSelectedDecoupageState(
+            map.current,
+            'communes',
+            event.features[0].id,
+          )
           onCitySelected(event.features[0].properties.nom as string)
         }
         clickedPoint.current = event.lngLat.toString()
@@ -367,10 +401,21 @@ const Map = ({
           features?: MapGeoJSONFeature[] | undefined
         },
       ) => {
+        const structureFeature = event.features && event.features[0]
+        if (!structureFeature) {
+          return
+        }
         if (map.current && event.features && event.features.length > 0) {
           onStructureSelected(event.features[0].properties.id as string)
         }
         clickedPoint.current = event.lngLat.toString()
+        if (map.current) {
+          setSelectedStructureState(
+            map.current,
+            'structureIconHover',
+            structureFeature.id,
+          )
+        }
       }
       const onStructureClusterClick = (
         event: MapMouseEvent & {
@@ -379,7 +424,7 @@ const Map = ({
       ) => {
         if (map.current) {
           map.current.flyTo({
-            zoom: map.current.getZoom() + 1,
+            zoom: 12.9,
             center: event.lngLat,
           })
         }
@@ -398,6 +443,8 @@ const Map = ({
       }
 
       map.current.on('click', 'structuresCircle', onStructureClick)
+      map.current.on('click', 'structureIcon', onStructureClick)
+
       map.current.on(
         'click',
         'structuresClusterCircle',
@@ -421,6 +468,32 @@ const Map = ({
       }
     }
   }, [map, onCitySelected, onStructureSelected])
+
+  // Display structures depending on filters
+  useEffect(() => {
+    if (!isMapLoaded || !isMapStyleLoaded) {
+      return
+    }
+
+    // We cannot use setFilter() because of clusters
+    // See https://github.com/mapbox/mapbox-gl-js/issues/2613
+
+    const mapStyles = map.current?.getStyle()
+    if (!mapStyles) {
+      return
+    }
+
+    const selectedStructureFilter: FilterSpecification = [
+      'match',
+      ['get', 'id'],
+      filteredStructures.map((structure) => structure.properties.id),
+      true,
+      false,
+    ]
+    ;(mapStyles.sources.structures as GeoJSONSourceSpecification).filter =
+      selectedStructureFilter
+    map.current?.setStyle(mapStyles)
+  }, [structuresData, filteredStructures, isMapLoaded, isMapStyleLoaded])
 
   return (
     <div className={styles.mapContainer}>
@@ -446,6 +519,19 @@ const Map = ({
         setViewIndiceFN={setViewIndiceFN}
         viewIndiceFN={viewIndiceFN}
       />
+      <div
+        className={classNames(
+          styles.mapLoadingOverlay,
+          isMapStyleLoaded && isMapLoaded
+            ? styles.hiddenMapLoadingOverlay
+            : null,
+        )}
+      >
+        <div className={styles.mapLoader}>
+          <Spinner size="small" />{' '}
+          <p className="fr-mb-0 fr-ml-1w">Chargement</p>
+        </div>
+      </div>
     </div>
   )
 }

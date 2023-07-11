@@ -5,6 +5,8 @@ import {
   getDepartementGeoJson,
 } from '@app/web/utils/map/departementGeoJson'
 import type { City, EPCI, GeoApiCity, IFNResponse } from '@app/web/types/City'
+import { Structure } from '@app/web/components/Prefet/structuresData'
+import { countStructures } from '@app/web/components/Prefet/Cartographie/countStructures'
 
 const fetchDepartementCities = (
   departementCode: string,
@@ -93,23 +95,41 @@ const getIfnFromMap = (
   return result
 }
 
-export const getStructuresDataForCity = () =>
-  // TODO Compute from structures map with city code
-  ({
-    structures: 0,
-    publicStructures: 0,
-    associationsStructures: 0,
-    privateStructures: 0,
-    structuresWithCnfs: 0,
-    structuresWithFranceServices: 0,
-    structuresWithAidantsConnect: 0,
-    structuresInQpv: 0,
-    structuresInZrr: 0,
-  })
+export const getStructuresDataForCity = (
+  city: GeoApiCity,
+  structures: Structure[],
+) => {
+  // TODO This data and aggregated data will direclty come from the graphql API, not aggregated here
+  const cityStructures = structures.filter((structure) =>
+    city.codesPostaux.includes(structure.properties.postalCode),
+  )
+  const structuresCount = countStructures(cityStructures)
 
-// TODO Memoize this
+  let aidants = 0
+  let conseillersNumeriques = 0
+  let habilitesAidantsConnect = 0
+
+  for (const structure of cityStructures) {
+    // TODO: this is temporary for demo, one conseiller can work in X structures so use data from API
+    conseillersNumeriques += structure.properties.conseillersNumeriques ?? 0
+    aidants += structure.properties.conseillersNumeriques ?? 0
+
+    habilitesAidantsConnect +=
+      structure.properties.aidantsHabilitesAidantsConnect ?? 0
+    aidants += structure.properties.aidantsHabilitesAidantsConnect ?? 0
+  }
+
+  return {
+    structuresCount,
+    aidants,
+    conseillersNumeriques,
+    habilitesAidantsConnect,
+  }
+}
+
 const getSections = async (
   departement: string,
+  structures: Structure[],
 ): Promise<{
   cities: City[]
   epcis: EPCI[]
@@ -145,7 +165,7 @@ const getSections = async (
             ifnOlder65Rate: null,
           }
 
-      const structuresData = getStructuresDataForCity()
+      const structuresData = getStructuresDataForCity(city, structures)
 
       return {
         ...city,
@@ -164,16 +184,28 @@ export type DepartementData = DepartementGeoJson & {
   cities: City[]
   epcis: EPCI[]
 }
+
+const memoizedDepartementData = new Map<string, DepartementData | null>()
+
 export const getDepartementInformations = async (
   departement: string,
+  structures: Structure[],
 ): Promise<DepartementData | null> => {
-  const departementGeoJson = getDepartementGeoJson({ code: departement })
-  const sections = await getSections(departement)
+  const memoized = memoizedDepartementData.get(departement)
+  if (memoized) {
+    return memoized
+  }
 
-  return departementGeoJson
+  const departementGeoJson = getDepartementGeoJson({ code: departement })
+  const sections = await getSections(departement, structures)
+
+  const result = departementGeoJson
     ? {
         ...departementGeoJson,
         ...sections,
       }
     : null
+
+  memoizedDepartementData.set(departement, result)
+  return result
 }

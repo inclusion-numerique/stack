@@ -89,6 +89,15 @@ export const users: Exclude<
     emailVerified: new Date(),
   },
   {
+    id: 'de0dfd09-5958-4467-be86-b16002f9e00a',
+    firstName: 'Julia',
+    lastName: 'Herriot',
+    name: 'Julia Herriot',
+    email: 'julia.herriot@anct.gouv.fr',
+    role: 'Demo',
+    emailVerified: new Date(),
+  },
+  {
     id: '124843a6-7682-4234-b9b7-646f7ae09cfb',
     firstName: 'Pierre-Louis',
     lastName: 'Rolle',

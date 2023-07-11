@@ -5,33 +5,64 @@ import Cartographie from '@app/web/components/Prefet/Cartographie/Page'
 import { getDepartementInformations } from '@app/web/utils/map/departement'
 import { getStructuresData } from '@app/web/components/Prefet/structuresData'
 import { hasAccessToDepartementDashboard } from '@app/web/security/securityRules'
+import { getDepartementGeoJson } from '@app/web/utils/map/departementGeoJson'
+
+const getUserAndDepartement = async (departementCode: string) => {
+  const user = await getSessionUser()
+
+  if (!user) {
+    redirect(`/connexion?suivant=/prefet/${departementCode}/cartographie`)
+  }
+
+  // TODO security check
+  const departement = getDepartementGeoJson({ code: departementCode })
+
+  if (!departement) {
+    notFound()
+  }
+
+  if (!hasAccessToDepartementDashboard(user, departement.code)) {
+    redirect(`/profil`)
+  }
+
+  return { user, departement }
+}
+
+export const generateMetadata = async ({
+  params: { departementCode },
+}: {
+  params: { departementCode: string }
+}) => {
+  const { departement } = await getUserAndDepartement(departementCode)
+
+  return {
+    title: `${departement.name} - Cartographie`,
+  }
+}
 
 const Page = async ({
   params: { departementCode },
 }: {
   params: { departementCode: string }
 }) => {
-  const user = await getSessionUser()
+  const { departement } = await getUserAndDepartement(departementCode)
+  const structuresData = await getStructuresData(departement)
 
-  if (!user) {
-    redirect(`/connexion?suivant=/prefet/${departementCode}/cartographie`)
-    return null
-  }
-  const departement = await getDepartementInformations(departementCode)
+  const departementInformations = await getDepartementInformations(
+    departementCode,
+    structuresData.structures,
+  )
 
-  if (!departement) {
+  if (!departementInformations) {
     notFound()
     return null
   }
 
-  if (!hasAccessToDepartementDashboard(user, departement.code)) {
-    redirect(`/profil`)
-    return
-  }
-  const structuresData = await getStructuresData(departement)
-
   return (
-    <Cartographie departement={departement} structuresData={structuresData} />
+    <Cartographie
+      departement={departementInformations}
+      structuresData={structuresData}
+    />
   )
 }
 

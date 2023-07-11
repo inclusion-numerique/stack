@@ -1,27 +1,57 @@
 .mapContainer {
-  position: relative;
-  height: 100%;
-  flex: 1;
-  min-width: 800px;
+    position: relative;
+    height: 100%;
+    flex: 1;
+    min-width: 800px;
 }
 
 .map {
-  height: calc(100% - 40px);
-  width: 100%;
+    height: calc(100% - 40px);
+    width: 100%;
 }
 
 .division {
-  border:none;
+    border: none;
 }
 
 .popup {
-  :global(.maplibregl-popup-tip) {
-    border-top-color: transparent !important;
-  }
+    :global(.maplibregl-popup-tip) {
+        border-top-color: transparent !important;
+    }
 
-  :global(.maplibregl-popup-content) {
-    padding: 8px;
-    border-bottom: 3px solid #000091;
-    margin-bottom: 8px;
-  }
+    :global(.maplibregl-popup-content) {
+        padding: 8px;
+        border-bottom: 3px solid #000091;
+        margin-bottom: 8px;
+    }
+}
+
+.mapLoadingOverlay {
+    position: absolute;
+    opacity: 1;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: var(--info-950-100);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.hiddenMapLoadingOverlay {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.mapLoader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    picture {
+        padding-top: 5px;
+    }
 }

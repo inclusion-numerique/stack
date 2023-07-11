@@ -1,6 +1,7 @@
 .container {
   position: relative;
   height: 100%;
+  max-height: 822px;
 }
 
 .mapContainer {
@@ -36,4 +37,8 @@
 
 .blueIcon {
   color: var(--text-title-blue-france);
+}
+
+.source {
+  text-align: right;
 }

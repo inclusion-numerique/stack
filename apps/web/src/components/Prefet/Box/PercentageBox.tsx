@@ -26,9 +26,8 @@ const PercentageBox = ({
       ))}
     </div>
     <h6 className="fr-mb-2w">{label}</h6>
-    {statistics.slice(0, 5).map((statistic, index, array) => (
+    {statistics.slice(0, 5).map((statistic, index) => (
       <Percentage
-        withMarginBottom={index !== array.length - 1}
         color={colors[index]}
         label={statistic.label}
         value={statistic.value}

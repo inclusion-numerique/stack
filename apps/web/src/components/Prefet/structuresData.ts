@@ -1,20 +1,24 @@
 import { DepartementGeoJson } from '@app/web/utils/map/departementGeoJson'
-
 import { DataInclusionTypologies } from '@app/web/data/dataInclusionSchema'
 import { getDataInclusionStructures } from '@app/web/data/dataInclusion'
 import {
-  booleanChelouToBoolean,
-  getCnfsStructures,
-  mapCnfsStructuresBySiret,
-} from '@app/web/data/cnfsStructures'
-import {
   getAidantsConnectStructures,
   mapAidantsConnectStructuresBySiret,
-  stringBooleanToBoolean,
 } from '@app/web/data/aidantsConnectStructures'
 import { isValidSiret } from '@app/web/data/siret'
-import { StructureType } from '@app/web/components/Prefet/structuresTypes'
+import {
+  StructureSubtype,
+  StructureType,
+} from '@app/web/components/Prefet/structuresTypes'
 import { titleCase } from '@app/web/utils/titleCase'
+import {
+  getCnfsPermanences,
+  mapCnfsPermanencesById,
+} from '@app/web/data/cnfsPermanences'
+import {
+  countStructures,
+  StructuresCount,
+} from '@app/web/components/Prefet/Cartographie/countStructures'
 
 export type Structure = {
   type: 'Feature'
@@ -25,6 +29,8 @@ export type Structure = {
   properties: {
     id: string
     type: StructureType
+    // Only defined if "publique"
+    subtype: StructureSubtype | null
     name: string
     adresse: string
     postalCode: string
@@ -44,7 +50,7 @@ export type Structure = {
   }
 }
 
-export type StructuresData = { structures: Structure[] }
+export type StructuresData = { structures: Structure[]; count: StructuresCount }
 
 const memoizedStructures = new Map<string, StructuresData>()
 
@@ -58,7 +64,7 @@ export const getStructuresData = async (
 
   // TODO We will fetch all this from insitu graphql endpoint instead
   const allDataInclusionStructures = await getDataInclusionStructures()
-  const allCnfsStructures = await getCnfsStructures()
+  const allCnfsPermanences = await getCnfsPermanences()
   const allAidantsConnectStructures = await getAidantsConnectStructures()
 
   const dataInclusionStructures = allDataInclusionStructures.filter(
@@ -69,7 +75,7 @@ export const getStructuresData = async (
           code_postal.startsWith(departement.code),
   )
 
-  const cnfsStructuresBySiret = mapCnfsStructuresBySiret(allCnfsStructures)
+  const cnfsPermanencesById = mapCnfsPermanencesById(allCnfsPermanences)
   const aidantsConnectStructuresBySiret = mapAidantsConnectStructuresBySiret(
     allAidantsConnectStructures,
   )
@@ -77,36 +83,34 @@ export const getStructuresData = async (
   // We use data inclusion as the base for the list of all structures
   // Then add information from Cnfs and aidants connect sources
   const structures = dataInclusionStructures.map((structure): Structure => {
-    const type =
+    const dataInclusionTypologie =
       !!structure.typologie && structure.typologie in DataInclusionTypologies
-        ? DataInclusionTypologies[structure.typologie].type
-        : 'private'
+        ? DataInclusionTypologies[structure.typologie]
+        : null
 
-    const cnfsStructure = isValidSiret(structure.siret)
-      ? cnfsStructuresBySiret.bySiret.get(structure.siret)
+    const type = dataInclusionTypologie?.type ?? 'nonDefini'
+
+    const subtype =
+      dataInclusionTypologie && 'subtype' in dataInclusionTypologie
+        ? dataInclusionTypologie.subtype
+        : null
+
+    const cnfsPermanence = structure.cnfsPermanenceId
+      ? cnfsPermanencesById.byKey.get(structure.cnfsPermanenceId)
       : undefined
 
-    // TODO Check that this is the best way to infer these data
-    const infoFromCnfsStructure = cnfsStructure
+    const infoFromCnfsStructure = cnfsPermanence
       ? {
-          conseillersNumeriques: Number.parseFloat(
-            cnfsStructure['Nombre de conseillers validés par le COSELEC'],
-          ),
-          cnfsLabel: true,
-          franceServicesLabel: booleanChelouToBoolean(
-            cnfsStructure['France services'],
-          ),
-          inZrr: booleanChelouToBoolean(cnfsStructure.ZRR),
-          inQpv: booleanChelouToBoolean(cnfsStructure.QPV),
+          conseillersNumeriques: cnfsPermanence?.aidants?.length ?? 0,
         }
       : {
           conseillersNumeriques: null,
-          aidantsHabilitesAidantsConnect: null,
-          cnfsLabel: null,
-          franceServicesLabel: null,
-          inZrr: null,
-          inQpv: null,
         }
+
+    const missingInfo = {
+      inZrr: null,
+      inQpv: null,
+    }
 
     const aidantsConnectStructure = isValidSiret(structure.siret)
       ? aidantsConnectStructuresBySiret.bySiret.get(structure.siret)
@@ -115,31 +119,25 @@ export const getStructuresData = async (
     // TODO Check that this is the best way to infer these data
     const infoFromAidantsConnectStructure = aidantsConnectStructure
       ? {
-          // Maybe we can get the public/private type from Type Id also ?
-          aidantsConnectLabel: true,
-          franceServicesLabel: stringBooleanToBoolean(
-            aidantsConnectStructure['France Services Label'],
-          ),
           // TODO We will need to use the data from the "real" insitu api to join a nd get the number of aidants
           aidantsHabilitesAidantsConnect: null,
         }
       : {
-          aidantsConnectLabel: null,
           aidantsHabilitesAidantsConnect: null,
-          franceServicesLabel: null,
         }
 
     return {
       type: 'Feature',
       geometry: {
         type: 'Point',
-        // E.G. MDM Felix Brun
+        // E.G. MDM Felix Brun has missing coordinates
         // We keep those to aggregate them later,  but we don't use them for the m ap
         coordinates: [structure.longitude ?? 0, structure.latitude ?? 0],
       },
       properties: {
         id: structure.id,
         type,
+        subtype,
         name: titleCase(structure.nom),
         adresse: structure.adresse,
         postalCode: structure.code_postal,
@@ -147,13 +145,17 @@ export const getStructuresData = async (
         updated: structure.date_maj,
         sourceLabel: 'Data inclusion',
         sourceUrl: 'https://www.data.inclusion.beta.gouv.fr',
+        cnfsLabel: structure.conseillerNumeriqueLabel,
+        franceServicesLabel: structure.franceServicesLabel,
+        aidantsConnectLabel: structure.aidantsConnectLabel,
+        ...missingInfo,
         ...infoFromAidantsConnectStructure,
         ...infoFromCnfsStructure,
       },
     }
   })
 
-  const result = { structures }
+  const result = { structures, count: countStructures(structures) }
   memoizedStructures.set(departement.code, result)
   return result
 }

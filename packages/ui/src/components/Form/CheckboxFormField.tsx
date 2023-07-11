@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Control, Controller, FieldValues } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
 import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
@@ -8,10 +8,11 @@ export type CheckboxFormFieldProps<T extends FieldValues> = {
   control: Control<T>
   path: FieldPath<T>
   disabled?: boolean
-  label?: string
+  label?: string | ReactNode
   hint?: string
   valid?: string
   small?: boolean
+  onChange?: (value: boolean) => void
 }
 
 const CheckboxFormField = <T extends FieldValues>({
@@ -23,6 +24,7 @@ const CheckboxFormField = <T extends FieldValues>({
   valid,
   small,
   className,
+  onChange: onChangeProperty,
   'data-testid': dataTestId,
 }: UiComponentProps & CheckboxFormFieldProps<T>) => {
   const id = `input-form-field__${path}`
@@ -73,6 +75,9 @@ const CheckboxFormField = <T extends FieldValues>({
                     onBlur={onBlur}
                     onChange={(event) => {
                       onChange(event.target.checked)
+                      if (onChangeProperty) {
+                        onChangeProperty(event.target.checked)
+                      }
                     }}
                     name={name}
                     ref={ref}

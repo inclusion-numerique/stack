@@ -13,7 +13,7 @@ const DepartementDashboard = ({
   departement: DepartementGeoJson
   data: DepartementDashboardData
 }) => (
-  <>
+  <div className="fr-pt-7w fr-pb-10w">
     <DepartementDashboardHeader />
     <div className="fr-grid-row fr-grid-row--gutters fr-mb-10w">
       <div className="fr-col-5">
@@ -24,7 +24,7 @@ const DepartementDashboard = ({
       </div>
     </div>
     <DetailedStatistics departement={departement} data={data} />
-  </>
+  </div>
 )
 
 export default DepartementDashboard

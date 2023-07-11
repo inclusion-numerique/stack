@@ -6,16 +6,11 @@ import { fetchDepartementDashboardData } from '@app/web/components/Prefet/depart
 import DepartementDashboard from '@app/web/components/Prefet/DepartementDashboard'
 import { hasAccessToDepartementDashboard } from '@app/web/security/securityRules'
 
-const Page = async ({
-  params: { departementCode },
-}: {
-  params: { departementCode: string }
-}) => {
+const getUserAndDepartement = async (departementCode: string) => {
   const user = await getSessionUser()
 
   if (!user) {
     redirect(`/connexion?suivant=/prefet/${departementCode}`)
-    return
   }
 
   // TODO security check
@@ -23,13 +18,33 @@ const Page = async ({
 
   if (!departement) {
     notFound()
-    return
   }
 
   if (!hasAccessToDepartementDashboard(user, departement.code)) {
     redirect(`/profil`)
-    return
   }
+
+  return { user, departement }
+}
+
+export const generateMetadata = async ({
+  params: { departementCode },
+}: {
+  params: { departementCode: string }
+}) => {
+  const { departement } = await getUserAndDepartement(departementCode)
+
+  return {
+    title: `${departement.name} - Tableau de bord`,
+  }
+}
+
+const Page = async ({
+  params: { departementCode },
+}: {
+  params: { departementCode: string }
+}) => {
+  const { departement } = await getUserAndDepartement(departementCode)
 
   const data = await fetchDepartementDashboardData(departement)
 

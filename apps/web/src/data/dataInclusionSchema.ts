@@ -3,295 +3,330 @@
 export const DataInclusionTypologies = {
   ACI: {
     label: 'Structures porteuses d’ateliers et chantiers d’insertion (ACI)',
-    type: 'public',
+    type: 'association',
   },
   ACIPHC: {
     label: 'SIAE — Atelier chantier d’insertion premières heures en chantier',
-    type: 'public',
+    type: 'association',
   },
   AFPA: {
     label:
       'Agence nationale pour la formation professionnelle des adultes (AFPA)',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   AI: {
     label: 'Associations intermédiaires (AI)',
-    type: 'associations',
+    type: 'association',
   },
   ASE: {
     label: 'Aide sociale à l’enfance (ASE)',
-    type: 'public',
+    type: 'publique',
+    subtype: 'departement',
   },
   ASSO: {
     label: 'Associations',
-    type: 'associations',
+    type: 'association',
   },
   ASSO_CHOMEUR: {
     label: 'Associations de chômeurs',
-    type: 'associations',
+    type: 'association',
   },
   Autre: {
     label: 'Autre',
-    type: 'private',
+    type: 'privee',
   },
   BIB: {
     label: 'Bibliothèque / Médiathèque',
-    type: 'public',
+    type: 'publique',
+    subtype: 'commune',
   },
   CAARUD: {
     label:
       'CAARUD - Centre d’accueil et d’accompagnement à la réduction des risques pour usagers de drogues',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   CADA: {
     label: 'CADA - Centre d’accueil de demandeurs d’asile',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   CAF: {
     label: 'Caisse d’allocations familiales (CAF)',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   CAP_EMPLOI: {
     label: 'Cap emploi',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   CAVA: {
     label: 'Centres d’adaptation à la vie active (CAVA)',
-    type: 'public',
+    type: 'association',
   },
   CC: {
     label: 'Communautés de Commune',
-    type: 'public',
+    type: 'publique',
+    subtype: 'epci',
   },
   CCAS: {
     label: 'Centres communaux d’action sociale (CCAS)',
-    type: 'public',
+    type: 'publique',
+    subtype: 'commune',
   },
   CCONS: {
     label: 'Chambres consulaires (CCI, CMA, CA)',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   CD: {
     label: 'Conseils Départementaux (CD)',
-    type: 'public',
+    type: 'publique',
+    subtype: 'departement',
   },
   CHRS: {
     label: 'Centres d’hébergement et de réinsertion sociale (CHRS)',
-    type: 'public',
+    type: 'association',
   },
   CHU: {
     label: 'Centres d’hébergement d’urgence (CHU)',
-    type: 'public',
+    type: 'association',
   },
   CIAS: {
     label: 'Centres intercommunaux d’action sociale (CIAS)',
-    type: 'public',
+    type: 'publique',
+    subtype: 'epci',
   },
   CIDFF: {
     label:
       'Centres d’information sur les droits des femmes et des familles (CIDFF)',
-    type: 'public',
+    type: 'association',
   },
   CITMET: {
     label: 'Cité des métiers',
-    type: 'public',
+    type: 'association',
   },
   CPH: {
     label: 'Centres provisoires d’hébergement (CPH)',
-    type: 'public',
+    type: 'association',
   },
   CS: {
     label: 'Centre social',
-    type: 'public',
+    type: 'association',
   },
   CSAPA: {
     label:
       'CSAPA - Centre de soins, d’accompagnement et de prévention en addictologie',
-    type: 'public',
+    type: 'association',
   },
   DEETS: {
     label:
       'Directions de l’Economie, de l’Emploi, du Travail et des Solidarités (DEETS)',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   DEPT: {
     label: 'Services sociaux du Conseil départemental',
-    type: 'public',
+    type: 'publique',
+    subtype: 'departement',
   },
   DIPLP: {
     label:
       'Délégation interministérielles à la prévention et à la lutte contre la pauvreté',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   E2C: {
     label: 'E2C - École de la deuxième chance',
-    type: 'public',
+    type: 'association',
   },
   EA: {
     label: 'Entreprise adaptée (EA)',
-    type: 'private',
+    type: 'privee',
   },
   EATT: {
     label: 'Entreprise Adaptée (EATT)',
-    type: 'private',
+    type: 'privee',
   },
   EI: {
     label: 'Entreprises d’insertion (EI)',
-    type: 'private',
+    type: 'privee',
   },
   EITI: {
     label: 'Entreprises d’insertion par le travail indépendant (EITI)',
-    type: 'private',
+    type: 'privee',
   },
   EPCI: {
     label: 'Intercommunalité (EPCI)',
-    type: 'public',
+    type: 'publique',
+    subtype: 'epci',
   },
   EPIDE: {
     label: 'EPIDE - Établissement pour l’insertion dans l’emploi',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   ESS: {
     label: 'Entreprise de l’Économie Sociale et Solidaire',
-    type: 'private',
+    type: 'privee',
   },
   ETTI: {
     label: 'Entreprises de travail temporaire d’insertion (ETTI)',
-    type: 'private',
+    type: 'privee',
   },
   FAIS: {
     label: 'Fédérations d’acteurs de l’insertion et de la solidarité',
-    type: 'public',
+    type: 'association',
   },
   GEIQ: {
     label:
       'Groupements d’employeurs pour l’insertion et la qualification (GEIQ)',
-    type: 'private',
+    type: 'privee',
   },
   HUDA: {
     label: 'HUDA - Hébergement d’urgence pour demandeurs d’asile',
-    type: 'public',
+    type: 'association',
   },
   MDE: {
     label: 'Maison de l’emploi',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   MDEF: {
     label: 'Maison de l’emploi et de la formation',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   MDPH: {
     label: 'Maison Départementale des Personnes Handicapées',
-    type: 'public',
+    type: 'publique',
+    subtype: 'departement',
   },
   MDS: {
     label: 'Maison Départementale des Solidarités',
-    type: 'public',
+    type: 'publique',
+    subtype: 'departement',
   },
   MJC: {
     label: 'Maison des jeunes et de la culture',
-    type: 'public',
+    type: 'association',
   },
   ML: {
     label: 'Mission Locale',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   MQ: {
     label: 'Maison de quartier',
-    type: 'public',
+    type: 'association',
   },
   MSA: {
     label: 'Mutualité Sociale Agricole',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   MUNI: {
     label: 'Municipalités',
-    type: 'public',
+    type: 'publique',
+    subtype: 'commune',
   },
   OACAS: {
     label:
       'Structures agréées Organisme d’accueil communautaire et d’activité solidaire (OACAS)',
-    type: 'public',
+    type: 'association',
   },
   ODC: {
     label: 'Organisation délégataire d’un CD',
-    type: 'public',
+    type: 'publique',
+    subtype: 'departement',
   },
   OF: {
     label: 'Organisme de formations',
-    type: 'public',
+    type: 'privee',
   },
   OIL: {
     label: 'Opérateur d’intermédiation locative',
-    type: 'public',
+    type: 'association',
   },
   OPCS: {
     label: 'Organisation porteuse de la clause sociale',
-    type: 'public',
+    type: 'association',
   },
   PAD: {
     label: 'Point d’Accès au Droit',
-    type: 'public',
+    type: 'association',
   },
   PE: {
     label: 'Pôle emploi',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   PENSION: {
     label: 'Pension de famille / résidence accueil',
-    type: 'public',
+    type: 'association',
   },
   PIJ_BIJ: {
     label: 'Points et bureaux information jeunesse (PIJ/BIJ)',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   PIMMS: {
     label: 'Point Information Médiation Multi Services (PIMMS)',
-    type: 'public',
+    type: 'association',
   },
   PJJ: {
     label: 'Protection judiciaire de la jeunesse (PJJ)',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   PLIE: {
     label: 'Plans locaux pour l’insertion et l’emploi (PLIE)',
-    type: 'public',
+    type: 'publique',
+    subtype: 'departement',
   },
   PREF: {
     label: 'Préfecture, Sous-Préfecture',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   PREVENTION: {
     label: 'Service ou club de prévention',
-    type: 'public',
+    type: 'publique',
+    subtype: 'departement',
   },
   REG: {
     label: 'Région',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   RFS: {
     label: 'Réseau France Services',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   RS_FJT: {
     label: 'Résidence sociale / FJT - Foyer de Jeunes Travailleurs',
-    type: 'public',
+    type: 'association',
   },
   SCP: {
     label: 'Services et clubs de prévention',
-    type: 'public',
+    type: 'publique',
+    subtype: 'departement',
   },
   SPIP: {
     label: 'Services pénitentiaires d’insertion et de probation (SPIP)',
-    type: 'public',
+    type: 'publique',
+    subtype: 'autre',
   },
   TIERS_LIEUX: {
     label: 'Tiers lieu & coworking',
-    type: 'private',
+    type: 'privee',
   },
   UDAF: {
     label: 'Union Départementale d’Aide aux Familles (UDAF)',
-    type: 'public',
+    type: 'association',
   },
 } as const
 

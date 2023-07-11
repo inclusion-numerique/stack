@@ -7,6 +7,8 @@
   background-color: white;
   box-shadow: 0 4px 12px #00001229;
   padding: 24px;
+  max-height: calc(100% - 100px);
+  overflow-y: auto;
 
   h6 {
     margin-bottom: 4px;

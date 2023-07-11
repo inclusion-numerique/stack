@@ -2,6 +2,8 @@
   width: 464px;
   border-right: var(--slim-grey-border);
   flex-shrink: 0;
+  max-height: 100%;
+  overflow-y: auto;
 }
 
 .collapsed {
@@ -22,4 +24,36 @@
 
 .legendTitle {
   margin: 32px 0 4px;
+}
+
+.filters {
+  label {
+    font-size: 14px;
+  }
+
+  :global .fr-fieldset {
+    margin-bottom: 4px;
+  }
+
+  :global .fr-fieldset__element {
+    margin-bottom: 0;
+  }
+}
+
+.legendCheckboxLabel {
+    display: flex;
+    align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
+  > :last-child{
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+.labelSubtypeCount{
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    margin-left: 8px !important;
 }
