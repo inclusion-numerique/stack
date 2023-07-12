@@ -1,0 +1,10 @@
+query getDepartement($code: ID!) {
+    departement(code: $code) {
+        code
+        libelle
+        indicateurs {
+            __typename
+
+        }
+    }
+}
