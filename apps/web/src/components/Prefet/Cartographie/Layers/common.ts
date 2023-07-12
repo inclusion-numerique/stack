@@ -11,7 +11,11 @@ export const communes = (
   source: 'decoupage',
   'source-layer': 'communes',
   minzoom: epciMaxZoom,
-  filter: ['==', ['get', 'departement'], departementCode],
+  filter: [
+    'all',
+    ['==', ['get', 'departement'], departementCode],
+    ['!=', ['get', 'plm'], true],
+  ],
 })
 
 export const epcis: Omit<

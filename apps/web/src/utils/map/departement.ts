@@ -7,6 +7,7 @@ import {
 import type { City, EPCI, GeoApiCity, IFNResponse } from '@app/web/types/City'
 import { Structure } from '@app/web/components/Prefet/structuresData'
 import { countStructures } from '@app/web/components/Prefet/Cartographie/countStructures'
+import { districts } from './districts'
 
 const fetchDepartementCities = (
   departementCode: string,
@@ -15,7 +16,18 @@ const fetchDepartementCities = (
     .get<GeoApiCity[]>(
       `https://geo.api.gouv.fr/departements/${departementCode}/communes?fields=centre,population,codesPostaux,codeEpci`,
     )
-    .then(({ data }) => data)
+    .then(({ data }) =>
+      data.flatMap((city) => {
+        const district = districts[city.nom.toLowerCase()]
+        if (district) {
+          return district.map((d) => ({
+            ...city,
+            ...d,
+          }))
+        }
+        return [city]
+      }),
+    )
 
 const getCitiesEpciCodes = (cities: GeoApiCity[]): string[] => {
   const epciCodes = new Set<string>()

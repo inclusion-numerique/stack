@@ -7,7 +7,7 @@ export type GeoApiCity = {
   codesPostaux: string[]
   codeEpci: string
   population: number
-  centre: { type: 'Polygon'; coordinates: LngLatLike }
+  centre: { type: 'Polygon' | 'Point'; coordinates: LngLatLike }
 }
 
 // from https://geo.api.gouv.fr/decoupage-administratif/communes
