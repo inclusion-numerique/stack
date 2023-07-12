@@ -41,14 +41,8 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
       ),
     )
 
-    cy.contains('Se créer un compte avec son email')
-
-    cy.log(
-      'Create account using email. It should be pre-completed after failed login attempt',
-    )
-    cy.get('input[id="input-form-field__email"]').should(
-      'have.value',
-      emailUser.email,
+    cy.contains(
+      'Le service Inclusion Numérique est uniquement accessible aux agents publics autorisé',
     )
   })
   it('Acceptation 2 - Connexion avec email', () => {
