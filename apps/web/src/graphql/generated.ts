@@ -109,10 +109,15 @@ export type Producer = {
 
 export type Query = {
   __typename?: 'Query'
+  commune: Maille
   departement: Maille
   indicateurs: Array<DefinitionIndicateur>
   mailles: Mailles
   region: Maille
+}
+
+export type QueryCommuneArgs = {
+  code: Scalars['ID']['input']
 }
 
 export type QueryDepartementArgs = {
@@ -121,6 +126,28 @@ export type QueryDepartementArgs = {
 
 export type QueryRegionArgs = {
   code: Scalars['ID']['input']
+}
+
+export type MedNumCommuneQueryVariables = Exact<{ [key: string]: never }>
+
+export type MedNumCommuneQuery = {
+  __typename?: 'Query'
+  commune: {
+    __typename?: 'Maille'
+    libelle: string
+    indicateurs: {
+      __typename?: 'Indicateurs'
+      indicateur: {
+        __typename?: 'IndicateurCalcule'
+        valeur?: unknown | null
+        valeursMaillesSuperieures: unknown
+        metadata: {
+          __typename?: 'DefinitionIndicateur'
+          description?: string | null
+        }
+      }
+    }
+  }
 }
 
 export type GetDepartementQueryVariables = Exact<{
@@ -137,6 +164,94 @@ export type GetDepartementQuery = {
   }
 }
 
+export const MedNumCommuneDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'MedNumCommune' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'commune' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'code' },
+                value: { kind: 'StringValue', value: '75056', block: false },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'libelle' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'indicateurs' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'indicateur' },
+                        arguments: [
+                          {
+                            kind: 'Argument',
+                            name: { kind: 'Name', value: 'identifiant' },
+                            value: {
+                              kind: 'StringValue',
+                              value: 'lieux-de-mediation-numerique',
+                              block: false,
+                            },
+                          },
+                        ],
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'valeur' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: {
+                                kind: 'Name',
+                                value: 'valeursMaillesSuperieures',
+                              },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'metadata' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  {
+                                    kind: 'Field',
+                                    name: {
+                                      kind: 'Name',
+                                      value: 'description',
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<MedNumCommuneQuery, MedNumCommuneQueryVariables>
 export const GetDepartementDocument = {
   kind: 'Document',
   definitions: [

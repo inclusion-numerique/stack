@@ -1,0 +1,13 @@
+query MedNumCommune {
+    commune(code:  "75056") {
+        libelle
+        indicateurs {
+            indicateur(identifiant: "lieux-de-mediation-numerique") {
+                valeursMaillesSuperieures
+                metadata {
+                    description
+                }
+            }
+        }
+    }
+}

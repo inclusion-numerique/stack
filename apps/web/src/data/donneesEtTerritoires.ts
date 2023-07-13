@@ -6,8 +6,11 @@ import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import {
   GetDepartementQuery,
   GetDepartementQueryVariables,
+  MedNumCommuneQuery,
+  MedNumCommuneQueryVariables,
 } from '@app/web/graphql/generated'
 import getDepartementData from '../graphql/getDepartementData.graphql'
+import getCityData from '../graphql/getCityData.graphql'
 
 const endpoint = 'https://fiches.incubateur.anct.gouv.fr/indicateurs/graphql'
 
@@ -24,6 +27,11 @@ export const getDepartementDataQuery: TypedDocumentNode<
   GetDepartementQuery,
   GetDepartementQueryVariables
 > = getDepartementData
+
+export const getCityDataQuery: TypedDocumentNode<
+  MedNumCommuneQuery,
+  MedNumCommuneQueryVariables
+> = getCityData
 
 let client: GraphQLClient
 

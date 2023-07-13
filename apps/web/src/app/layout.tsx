@@ -24,7 +24,7 @@ setLink({
 })
 
 export const metadata: Metadata = {
-  title: PublicWebAppConfig.projectTitle,
+  title: "Les données de l'Inclusion Numérique",
   themeColor: '#000091',
   icons: {
     icon: '/favicon.ico',
