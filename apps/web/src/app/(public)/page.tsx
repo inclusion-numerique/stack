@@ -60,7 +60,7 @@ const HomePage = () => (
     </div>
     <div className="fr-col-12 fr-mt-8v">
       <Quote
-        text="La Plateforme de Cohésion Numérique offre un panorama sans précédent de notre territoire. Elle nous permet de prioriser efficacement nos initiatives et d'agir où l'action est le plus nécessaire."
+        text="La Plateforme de l'Inclusion Numérique offre un panorama sans précédent de notre territoire. Elle nous permet de prioriser efficacement nos initiatives et d'agir où l'action est le plus nécessaire."
         imageUrl="/images/prefet/prefet-a.png"
         author="Sophie Martin, Préfète de Mont-Royal"
       />
@@ -70,7 +70,7 @@ const HomePage = () => (
         author="Jean Dupont, Préfet de Saint-Claire"
       />
       <Quote
-        text="En rendant les données accessibles à tous les acteurs territoriaux, la Plateforme de Cohésion Numérique favorise une véritable collaboration. C'est un pas en avant considérable pour notre gouvernance locale."
+        text="En rendant les données accessibles à tous les acteurs territoriaux, la Plateforme de l'Inclusion Numérique favorise une véritable collaboration. C'est un pas en avant considérable pour notre gouvernance locale."
         imageUrl="/images/prefet/prefet-c.png"
         author="Claire Dubois, Préfète de Verdania"
       />
