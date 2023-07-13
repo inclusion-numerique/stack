@@ -2,8 +2,8 @@ import React, { Dispatch, SetStateAction } from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
 import ToggleSwitch from '@codegouvfr/react-dsfr/ToggleSwitch'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
+import { ifnFillColors } from '@app/web/components/Prefet/Cartographie/Layers/ifn'
 import styles from './IndiceNumerique.module.css'
-import { ifnColors } from './Layers/ifn'
 
 const { Component: InformationModal, open: openInformationModal } = createModal(
   {
@@ -49,15 +49,15 @@ const IndiceNumerique = ({
               Risque faible
             </span>
             <div className={styles.boxes}>
-              {ifnColors.map((color, index) => (
+              {ifnFillColors.map((color, index) => (
                 <div
                   key={color}
                   className={styles.box}
                   style={{ backgroundColor: color }}
                 >
                   {index === 0 && '1'}
-                  {index === Math.ceil(ifnColors.length / 2) - 1 && '5'}
-                  {index === ifnColors.length - 1 && '10'}
+                  {index === Math.ceil(ifnFillColors.length / 2) - 1 && '5'}
+                  {index === ifnFillColors.length - 1 && '10'}
                 </div>
               ))}
             </div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import classNames from 'classnames'
 import { City } from '@app/web/types/City'
-import { formatIfnScore } from '@app/web/components/Prefet/Cartographie/Layers/ifn'
+import { formatIfnScore } from '@app/web/data/ifnData'
 import styles from './CityDetails.module.css'
 
 const CityDetails = ({
@@ -112,7 +112,7 @@ const CityDetails = ({
           </button>
 
           {publicStructuresDetailOpen && (
-            <div className="fr-pl-5w">
+            <div className="fr-pl-7v">
               <div className={classNames(styles.row, 'fr-mb-1v')}>
                 <p className="fr-text--sm">Commune</p>
                 <p className="fr-text--sm">

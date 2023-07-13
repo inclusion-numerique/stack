@@ -1,10 +1,10 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint  @typescript-eslint/ban-ts-comment: 0 */
 
 import { LayerSpecification } from 'maplibre-gl'
+import { isHoveredCondition } from '@app/web/components/Prefet/Cartographie/Layers/layersUtils'
 import { communes, epcis } from './common'
 
-export const ifnColors = [
+export const ifnFillColors = [
   'rgb(74, 107, 174)',
   'rgb(95, 142, 199)',
   'rgb(170, 196, 230)',
@@ -14,54 +14,46 @@ export const ifnColors = [
   'rgb(217, 92, 94)',
 ]
 
-export const epcisIFNLayer = (
+export const ifnBorderColors = [
+  'rgb(74, 107, 174)',
+  'rgb(95, 142, 199)',
+  'rgb(170, 196, 230)',
+  'rgb(208, 195, 224)',
+  'rgb(235, 181, 189)',
+  'rgb(221, 116, 128)',
+  'rgb(217, 92, 94)',
+]
+
+export const ifnEpcisBorderLayer = (
   epcisByIndex: string[][],
   epcisCode: string[],
 ): LayerSpecification => ({
   ...epcis,
-  id: 'epcisIFN',
+  id: 'ifnEpcisBorder',
   type: 'line',
   filter: ['in', ['get', 'code'], ['literal', epcisCode]],
   paint: {
-    'line-opacity': [
-      'case',
-      ['any', ['boolean', ['feature-state', 'hover'], false]],
-      1,
-      0,
-    ],
-    'line-width': 3,
-    'line-color': [
-      'case',
-      ['any', ['boolean', ['feature-state', 'hover'], false]],
-      [
-        'case',
-        // @ts-ignore: cannot type properly
-        ...ifnColors.flatMap((color, index) => [
-          ['in', ['get', 'code'], ['literal', epcisByIndex[index]]],
-          color,
-        ]),
-        // @ts-ignore: cannot type properly
-        'grey',
-      ],
-      'white',
-    ],
+    'line-opacity': 1,
+    'line-width': 1,
+    'line-color': 'white',
   },
 })
 
-export const epcisIFNFilledLayer = (
+export const ifnHoverEpcisBorderLayer = (
   epcisByIndex: string[][],
   epcisCode: string[],
 ): LayerSpecification => ({
   ...epcis,
-  id: 'epcisIFNFilled',
-  type: 'fill',
+  id: 'ifnHoverEpcisBorder',
+  type: 'line',
   filter: ['in', ['get', 'code'], ['literal', epcisCode]],
   paint: {
-    'fill-opacity': 0.7,
-    'fill-color': [
+    'line-opacity': ['case', isHoveredCondition, 1, 0],
+    'line-width': 3,
+    'line-color': [
       'case',
       // @ts-ignore: cannot type properly
-      ...ifnColors.flatMap((color, index) => [
+      ...ifnBorderColors.flatMap((color, index) => [
         ['in', ['get', 'code'], ['literal', epcisByIndex[index]]],
         color,
       ]),
@@ -71,43 +63,44 @@ export const epcisIFNFilledLayer = (
   },
 })
 
-export const communesIFNLayer = ({
-  citiesByIndex,
-  departementCode,
-}: {
-  departementCode: string
-  citiesByIndex: string[][]
-}): LayerSpecification => ({
-  ...communes(departementCode),
-  id: 'communesIFN',
-  type: 'line',
+export const ifnEpcisFillLayer = (
+  epcisByIndex: string[][],
+  epcisCode: string[],
+): LayerSpecification => ({
+  ...epcis,
+  id: 'ifnEpcisFill',
+  type: 'fill',
+  filter: ['in', ['get', 'code'], ['literal', epcisCode]],
   paint: {
-    'line-opacity': [
+    'fill-opacity': 0.5,
+    'fill-color': [
       'case',
-      ['any', ['boolean', ['feature-state', 'hover'], false]],
-      1,
-      0,
-    ],
-    'line-width': 3,
-    'line-color': [
-      'case',
-      ['any', ['boolean', ['feature-state', 'hover'], false]],
-      [
-        'case',
-        // @ts-ignore: cannot type properly
-        ...ifnColors.flatMap((color, index) => [
-          ['in', ['get', 'code'], ['literal', citiesByIndex[index]]],
-          color,
-        ]),
-        // @ts-ignore: cannot type properly
-        'grey',
-      ],
-      'white',
+      // @ts-ignore: cannot type properly
+      ...ifnFillColors.flatMap((color, index) => [
+        ['in', ['get', 'code'], ['literal', epcisByIndex[index]]],
+        color,
+      ]),
+      // @ts-ignore: cannot type properly
+      'grey',
     ],
   },
 })
 
-export const communesIFNFilledLayer = ({
+export const ifnCommunesBorderLayer = ({
+  departementCode,
+}: {
+  departementCode: string
+}): LayerSpecification => ({
+  ...communes(departementCode),
+  id: 'ifnCommunesBorder',
+  type: 'line',
+  paint: {
+    'line-width': 1,
+    'line-color': ['case', isHoveredCondition, 'transparent', 'white'],
+  },
+})
+
+export const ifnCommunesFillLayer = ({
   citiesByIndex,
   departementCode,
 }: {
@@ -115,14 +108,14 @@ export const communesIFNFilledLayer = ({
   citiesByIndex: string[][]
 }): LayerSpecification => ({
   ...communes(departementCode),
-  id: 'communesIFNFilled',
+  id: 'ifnCommunesFill',
   type: 'fill',
   paint: {
-    'fill-opacity': 0.7,
+    'fill-opacity': 0.5,
     'fill-color': [
       'case',
       // @ts-ignore: cannot type properly
-      ...ifnColors.flatMap((color, index) => [
+      ...ifnFillColors.flatMap((color, index) => [
         ['in', ['get', 'code'], ['literal', citiesByIndex[index]]],
         color,
       ]),
@@ -132,7 +125,7 @@ export const communesIFNFilledLayer = ({
   },
 })
 
-export const selectedCommunesIFNLayer = ({
+export const ifnHoverCommunesBorderLayer = ({
   citiesByIndex,
   departementCode,
 }: {
@@ -140,14 +133,40 @@ export const selectedCommunesIFNLayer = ({
   citiesByIndex: string[][]
 }): LayerSpecification => ({
   ...communes(departementCode),
-  id: 'selectedCommunesIFN',
+  id: 'ifnHoverCommunesBorder',
+  type: 'line',
+  paint: {
+    'line-opacity': ['case', isHoveredCondition, 1, 0],
+    'line-width': 3,
+    'line-color': [
+      'case',
+      // @ts-ignore: cannot type properly
+      ...ifnBorderColors.flatMap((color, index) => [
+        ['in', ['get', 'code'], ['literal', citiesByIndex[index]]],
+        color,
+      ]),
+      // @ts-ignore: cannot type properly
+      'grey',
+    ],
+  },
+})
+
+export const ifnSelectedCommunesBorderLayer = ({
+  citiesByIndex,
+  departementCode,
+}: {
+  departementCode: string
+  citiesByIndex: string[][]
+}): LayerSpecification => ({
+  ...communes(departementCode),
+  id: 'ifnSelectedCommunesBorder',
   type: 'line',
   paint: {
     'line-width': 3,
     'line-color': [
       'case',
       // @ts-ignore: cannot type properly
-      ...ifnColors.flatMap((color, index) => [
+      ...ifnBorderColors.flatMap((color, index) => [
         ['in', ['get', 'code'], ['literal', citiesByIndex[index]]],
         color,
       ]),
@@ -157,11 +176,3 @@ export const selectedCommunesIFNLayer = ({
   },
   filter: ['boolean', false],
 })
-
-export const formatIfnScore = (score: number | null): string => {
-  if (score === null) {
-    return ''
-  }
-  const fixed = Number.parseFloat(score.toFixed(1))
-  return `${Number.isInteger(fixed) ? fixed.toString() : fixed.toFixed(1)}/10`
-}

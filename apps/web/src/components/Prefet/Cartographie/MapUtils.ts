@@ -55,6 +55,8 @@ export const addHoverState = (
   layer?: string,
 ) => {
   const key = `${source}-hover`
+  setState(map, source, layer, key, 'hover', false)
+
   map.on('mousemove', id, (event) => {
     if (map && event.features && event.features.length > 0) {
       // eslint-disable-next-line no-param-reassign
