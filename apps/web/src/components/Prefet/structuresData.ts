@@ -29,6 +29,8 @@ export type Structure = {
   properties: {
     id: string
     type: StructureType
+    lng: number
+    lat: number
     // Only defined if "publique"
     subtype: StructureSubtype | null
     name: string
@@ -138,6 +140,8 @@ export const getStructuresData = async (
         id: structure.id,
         type,
         subtype,
+        lng: structure.longitude ?? 0,
+        lat: structure.latitude ?? 0,
         name: titleCase(structure.nom),
         adresse: structure.adresse,
         postalCode: structure.code_postal,

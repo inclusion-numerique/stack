@@ -7,6 +7,7 @@ import maplibregl, {
   MapGeoJSONFeature,
   MapMouseEvent,
   StyleSpecification,
+  Popup,
 } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import {
@@ -85,6 +86,7 @@ const Map = ({
   onStructureSelected: (structure: string | null | undefined) => void
 }) => {
   const { cities, epcis, bounds, code: departementCode } = departement
+  const structurePopup = useRef<Popup | null>(null)
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<MapType>()
   const [viewIndiceFN, setViewIndiceFN] = useState(true)
@@ -219,8 +221,7 @@ const Map = ({
           }
         })
       }
-      map.current?.addLayer(structuresIconLayer)
-
+      map.current.addLayer(structuresIconLayer)
       map.current.addLayer(structuresCircleLayer)
 
       map.current.addLayer(structuresClusterCircleLayer)
@@ -304,23 +305,6 @@ const Map = ({
       })
     }
   }, [map, selectedCity, selectedStructure])
-
-  // Add structure popup on hover
-  // TODO this is on click, it should be on hover
-  useEffect(() => {
-    if (map.current && selectedStructure) {
-      const popup = new maplibregl.Popup({
-        closeButton: false,
-        className: styles.popup,
-      })
-        .setLngLat(selectedStructure.geometry.coordinates)
-        .setHTML(`<b>${selectedStructure.properties.name}</b>`)
-        .addTo(map.current)
-      return () => {
-        popup.remove()
-      }
-    }
-  }, [map, selectedStructure])
 
   useEffect(() => {
     if (map.current && map.current.isStyleLoaded()) {
@@ -410,6 +394,36 @@ const Map = ({
         clickedPoint.current = event.lngLat.toString()
       }
 
+      const onStructureHover = (
+        event: MapMouseEvent & {
+          features?: MapGeoJSONFeature[] | undefined
+        },
+      ) => {
+        if (map.current && event.features && event.features.length > 0) {
+          if (structurePopup.current) {
+            structurePopup.current.remove()
+            structurePopup.current = null
+          }
+          structurePopup.current = new maplibregl.Popup({
+            closeButton: false,
+            className: styles.popup,
+          })
+            .setLngLat([
+              event.features[0].properties.lng as number,
+              event.features[0].properties.lat as number,
+            ])
+            .setHTML(`<b>${event.features[0].properties.name as string}</b>`)
+            .addTo(map.current)
+        }
+      }
+
+      const onStructureUnhover = () => {
+        if (structurePopup.current) {
+          structurePopup.current.remove()
+          structurePopup.current = null
+        }
+      }
+
       const onStructureClick = (
         event: MapMouseEvent & {
           features?: MapGeoJSONFeature[] | undefined
@@ -456,6 +470,9 @@ const Map = ({
         clickedPoint.current = event.lngLat.toString()
       }
 
+      map.current.on('mousemove', 'structureIcon', onStructureHover)
+      map.current.on('mouseleave', 'structureIcon', onStructureUnhover)
+
       map.current.on('click', 'structuresCircle', onStructureClick)
       map.current.on('click', 'structureIcon', onStructureClick)
 
@@ -469,6 +486,9 @@ const Map = ({
       map.current.on('click', 'communesFilled', onCommuneClick)
       map.current.on('click', 'communesIFNFilled', onCommuneClick)
       return () => {
+        map.current?.off('mousemove', 'structureIcon', onStructureHover)
+        map.current?.off('mouseleave', 'structureIcon', onStructureUnhover)
+
         map.current?.off('click', 'structuresCircle', onStructureClick)
         map.current?.off(
           'click',
@@ -528,6 +548,7 @@ const Map = ({
         city={selectedCity}
         structure={selectedStructure}
         close={onMapPopupClose}
+        viewIndiceFN={viewIndiceFN}
       />
       <IndiceNumerique
         setViewIndiceFN={setViewIndiceFN}

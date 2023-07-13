@@ -90,6 +90,7 @@ const Legend = ({
           value: `city#${city.nom}`,
           component: <LegendCity city={city} />,
         })),
+        limit: 4,
       },
       {
         name: 'Structures',
@@ -107,6 +108,7 @@ const Legend = ({
             value: `structure#${structure.properties.id}`,
             component: <LegendStructure structure={structure} />,
           })),
+        limit: 4,
       },
     ],
     [cities, structuresData],

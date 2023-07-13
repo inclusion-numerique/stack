@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react'
+import Link from 'next/link'
 import Button from '@codegouvfr/react-dsfr/Button'
 import ToggleSwitch from '@codegouvfr/react-dsfr/ToggleSwitch'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
@@ -21,17 +22,22 @@ const IndiceNumerique = ({
 }) => (
   <>
     <InformationModal title="L’indice de Fragilité Numérique">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl, duis ac
-      egestas donec tincidunt lorem. Sodales risus amet nisl sed. Vitae bibendum
-      et penatibus a eget ipsum mattis pharetra. Diam molestie vitae, diam, sed
-      tincidunt facilisi. Arcu faucibus mattis varius pretium. Duis ullamcorper
-      malesuada massa ipsum sit. Ornare donec sit lobortis nullam dictum
-      ullamcorper ac. Congue erat lorem quam amet sagittis egestas lorem. Arcu,
-      nisl, massa eu, a nulla fusce egestas vitae. Mi tortor, penatibus auctor
-      in nisl enim velit pellentesque. Consectetur urna, eleifend non congue
-      dolor adipiscing nec. Ipsum laoreet dui facilisis pellentesque lacus. In
-      bibendum molestie phasellus vel, consequat commodo dolor. Quis ipsum elit
-      nec at amet, tincidunt.
+      L’indice de fragilité numérique révèle les territoires où la population
+      est le plus à risque d’exclusion.
+      <br />
+      De nombreux facteurs sont à l’origine de l’exclusion numérique. Ils sont
+      regroupés en quatre axes qui constituent les principales causes de
+      l’exclusion numérique. Au sein de chaque axe, on retrouve plusieurs
+      variables utilisées pour le calcul.
+      <br />
+      <br />
+      <Link
+        href="https://fragilite-numerique.fr/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        https://fragilite-numerique.fr/
+      </Link>
     </InformationModal>
     <div className={styles.container}>
       <ToggleSwitch
