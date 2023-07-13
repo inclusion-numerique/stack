@@ -14,6 +14,16 @@ export const ifnColors = [
   'rgb(217, 92, 94)',
 ]
 
+export const infHoverColors = [
+  'rgb(74, 107, 174)',
+  'rgb(95, 142, 199)',
+  'rgb(170, 196, 230)',
+  '#D0C3E0',
+  'rgb(235, 181, 189)',
+  'rgb(221, 116, 128)',
+  'rgb(217, 92, 94)',
+]
+
 export const epcisIFNLayer = (
   epcisByIndex: string[][],
   epcisCode: string[],
@@ -23,27 +33,40 @@ export const epcisIFNLayer = (
   type: 'line',
   filter: ['in', ['get', 'code'], ['literal', epcisCode]],
   paint: {
-    'line-opacity': [
+    'line-width': [
       'case',
       ['any', ['boolean', ['feature-state', 'hover'], false]],
+      0,
       1,
+    ],
+    'line-color': 'white',
+  },
+})
+
+export const epcisIFNHoverLayer = (
+  epcisByIndex: string[][],
+  epcisCode: string[],
+): LayerSpecification => ({
+  ...epcis,
+  id: 'epcisIFNHover',
+  type: 'line',
+  filter: ['in', ['get', 'code'], ['literal', epcisCode]],
+  paint: {
+    'line-width': [
+      'case',
+      ['any', ['boolean', ['feature-state', 'hover'], false]],
+      3,
       0,
     ],
-    'line-width': 3,
     'line-color': [
       'case',
-      ['any', ['boolean', ['feature-state', 'hover'], false]],
-      [
-        'case',
-        // @ts-ignore: cannot type properly
-        ...ifnColors.flatMap((color, index) => [
-          ['in', ['get', 'code'], ['literal', epcisByIndex[index]]],
-          color,
-        ]),
-        // @ts-ignore: cannot type properly
-        'grey',
-      ],
-      'white',
+      // @ts-ignore: cannot type properly
+      ...infHoverColors.flatMap((color, index) => [
+        ['in', ['get', 'code'], ['literal', epcisByIndex[index]]],
+        color,
+      ]),
+      // @ts-ignore: cannot type properly
+      'grey',
     ],
   },
 })
@@ -72,6 +95,26 @@ export const epcisIFNFilledLayer = (
 })
 
 export const communesIFNLayer = ({
+  departementCode,
+}: {
+  departementCode: string
+}): LayerSpecification => ({
+  ...communes(departementCode),
+  id: 'communesIFN',
+  type: 'line',
+  paint: {
+    'line-opacity': [
+      'case',
+      ['any', ['boolean', ['feature-state', 'hover'], false]],
+      0,
+      1,
+    ],
+    'line-width': 1,
+    'line-color': 'white',
+  },
+})
+
+export const communesIFNHoverLayer = ({
   citiesByIndex,
   departementCode,
 }: {
@@ -79,7 +122,7 @@ export const communesIFNLayer = ({
   citiesByIndex: string[][]
 }): LayerSpecification => ({
   ...communes(departementCode),
-  id: 'communesIFN',
+  id: 'communesIFNHover',
   type: 'line',
   paint: {
     'line-opacity': [
@@ -91,18 +134,13 @@ export const communesIFNLayer = ({
     'line-width': 3,
     'line-color': [
       'case',
-      ['any', ['boolean', ['feature-state', 'hover'], false]],
-      [
-        'case',
-        // @ts-ignore: cannot type properly
-        ...ifnColors.flatMap((color, index) => [
-          ['in', ['get', 'code'], ['literal', citiesByIndex[index]]],
-          color,
-        ]),
-        // @ts-ignore: cannot type properly
-        'grey',
-      ],
-      'white',
+      // @ts-ignore: cannot type properly
+      ...infHoverColors.flatMap((color, index) => [
+        ['in', ['get', 'code'], ['literal', citiesByIndex[index]]],
+        color,
+      ]),
+      // @ts-ignore: cannot type properly
+      'grey',
     ],
   },
 })

@@ -36,8 +36,10 @@ import styles from './Map.module.css'
 import { mapStyle } from './mapStyle'
 import {
   communesIFNFilledLayer,
+  communesIFNHoverLayer,
   communesIFNLayer,
   epcisIFNFilledLayer,
+  epcisIFNHoverLayer,
   epcisIFNLayer,
   ifnColors,
   selectedCommunesIFNLayer,
@@ -161,12 +163,16 @@ const Map = ({
       map.current.addLayer(
         communesIFNFilledLayer({ departementCode, citiesByIndex }),
       )
-      map.current.addLayer(communesIFNLayer({ departementCode, citiesByIndex }))
+      map.current.addLayer(communesIFNLayer({ departementCode }))
+      map.current.addLayer(
+        communesIFNHoverLayer({ departementCode, citiesByIndex }),
+      )
       map.current.addLayer(
         selectedCommunesIFNLayer({ departementCode, citiesByIndex }),
       )
       map.current.addLayer(epcisIFNFilledLayer(epcisByIndex, epciCodes))
       map.current.addLayer(epcisIFNLayer(epcisByIndex, epciCodes))
+      map.current.addLayer(epcisIFNHoverLayer(epcisByIndex, epciCodes))
 
       map.current.addLayer(departementLayer(departementCode))
       map.current.addLayer(communesFilledLayer(departementCode))
@@ -326,11 +332,17 @@ const Map = ({
         )
         map.current.setLayoutProperty('communesIFN', 'visibility', 'visible')
         map.current.setLayoutProperty(
+          'communesIFNHover',
+          'visibility',
+          'visible',
+        )
+        map.current.setLayoutProperty(
           'selectedCommunesIFN',
           'visibility',
           'visible',
         )
         map.current.setLayoutProperty('epcisIFN', 'visibility', 'visible')
+        map.current.setLayoutProperty('epcisIFNHover', 'visibility', 'visible')
         map.current.setLayoutProperty('epcisIFNFilled', 'visibility', 'visible')
 
         map.current.setLayoutProperty('communes', 'visibility', 'none')
@@ -346,12 +358,14 @@ const Map = ({
       } else {
         map.current.setLayoutProperty('communesIFNFilled', 'visibility', 'none')
         map.current.setLayoutProperty('communesIFN', 'visibility', 'none')
+        map.current.setLayoutProperty('communesIFNHover', 'visibility', 'none')
         map.current.setLayoutProperty(
           'selectedCommunesIFN',
           'visibility',
           'none',
         )
         map.current.setLayoutProperty('epcisIFN', 'visibility', 'none')
+        map.current.setLayoutProperty('epcisIFNHover', 'visibility', 'none')
         map.current.setLayoutProperty('epcisIFNFilled', 'visibility', 'none')
 
         map.current.setLayoutProperty('communes', 'visibility', 'visible')
