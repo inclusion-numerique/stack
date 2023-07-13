@@ -123,7 +123,7 @@ const getFakeData = ({
   const publicsAccompagnes = {
     id: 'publics-accompagnés',
     label: `Publics accompagnés - ${name}`,
-    description: 'Description',
+    description: 'Données factices',
     boxes: [
       {
         id: 'usagers-accompagnés',
@@ -178,7 +178,7 @@ const getFakeData = ({
   const accompagnements = {
     id: 'accompagnements',
     label: `Accompagnements - ${name}`,
-    description: 'Description',
+    description: 'Données factices',
     boxes: [
       {
         id: 'accompagnement',

@@ -162,7 +162,7 @@ export const fetchDepartementDashboardData = async ({
   const publicsAccompagnes = {
     id: 'publics-accompagnés',
     label: `Publics accompagnés - ${name}`,
-    description: 'Description',
+    description: 'Données factices',
     boxes: [
       {
         id: 'usagers-accompagnés',
@@ -217,7 +217,7 @@ export const fetchDepartementDashboardData = async ({
   const accompagnements = {
     id: 'accompagnements',
     label: `Accompagnements - ${name}`,
-    description: 'Description',
+    description: 'Données factices',
     boxes: [
       {
         id: 'accompagnement',
