@@ -36,6 +36,8 @@ export type Structure = {
     name: string
     adresse: string
     postalCode: string
+    // Code Insee
+    cityCode: string | null
     city: string
     updated: string
     sourceLabel: string
@@ -70,11 +72,7 @@ export const getStructuresData = async (
   const allAidantsConnectStructures = await getAidantsConnectStructures()
 
   const dataInclusionStructures = allDataInclusionStructures.filter(
-    ({ code_postal, code_insee }) =>
-      code_insee
-        ? code_insee.startsWith(departement.code)
-        : // TODO Some postal codes are NOT in the right department AND the vast majority of structures do not have the code_insee. We should map those special cases
-          code_postal.startsWith(departement.code),
+    ({ code_departement }) => code_departement === departement.code,
   )
 
   const cnfsPermanencesById = mapCnfsPermanencesById(allCnfsPermanences)
@@ -145,6 +143,7 @@ export const getStructuresData = async (
         name: titleCase(structure.nom),
         adresse: structure.adresse,
         postalCode: structure.code_postal,
+        cityCode: structure.code_insee ?? null,
         city: titleCase(structure.commune),
         updated: structure.date_maj,
         sourceLabel: 'Data inclusion',

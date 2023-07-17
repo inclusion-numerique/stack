@@ -100,3 +100,11 @@ export const getDepartementGeoJson = (
 
   return result
 }
+
+export const getDepartementCodes = (): string[] => {
+  if (!departementsGeoJson) {
+    departementsGeoJson = constructIndexedDepartementGeoJson()
+  }
+
+  return [...departementsGeoJson.byCode.keys()]
+}

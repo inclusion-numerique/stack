@@ -112,8 +112,8 @@ export const getStructuresDataForCity = (
   structures: Structure[],
 ) => {
   // TODO This data and aggregated data will direclty come from the graphql API, not aggregated here
-  const cityStructures = structures.filter((structure) =>
-    city.codesPostaux.includes(structure.properties.postalCode),
+  const cityStructures = structures.filter(
+    (structure) => city.code === structure.properties.cityCode,
   )
   const structuresCount = countStructures(cityStructures)
 

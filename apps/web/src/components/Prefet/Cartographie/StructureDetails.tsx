@@ -1,8 +1,8 @@
 import React from 'react'
 import Link from 'next/link'
 import { Structure } from '@app/web/components/Prefet/structuresData'
-import { formatDate } from '@app/web/utils/formatDate'
 import { structureSubtypeLabel } from '@app/web/components/Prefet/structuresTypes'
+import { dateAsDay } from '@app/web/utils/dateAsDay'
 
 const StructureDetails = ({
   structure: {
@@ -10,6 +10,7 @@ const StructureDetails = ({
       name,
       adresse,
       postalCode,
+      cityCode,
       city,
       sourceLabel,
       sourceUrl,
@@ -43,8 +44,11 @@ const StructureDetails = ({
       <p className="fr-mb-1v">
         {adresse} {postalCode}&nbsp;{city}
       </p>
+      <p className="fr-hint-text fr-mb-0">
+        Code postal : {postalCode} - INSEE : {cityCode}
+      </p>
       <p className="fr-hint-text">
-        Mise à jour le {formatDate(new Date(updated), 'dd/MM/yy')} · Source :{' '}
+        Mise à jour le {dateAsDay(new Date(updated))} · Source :{' '}
         <Link href={sourceUrl} target="_blank">
           {sourceLabel}
         </Link>

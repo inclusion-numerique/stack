@@ -19,6 +19,8 @@ const CityDetails = ({
     aidants,
     conseillersNumeriques,
     habilitesAidantsConnect,
+    codesPostaux,
+    code,
   },
 }: {
   city: City
@@ -41,6 +43,10 @@ const CityDetails = ({
     <>
       <h6 className="fr-mt-1v">{nom}</h6>
       <p>Commune de {population} hab.</p>
+      <p className="fr-hint-text fr-mb-0">
+        {codesPostaux.length === 1 ? `Code postal` : `Code postaux`} : 
+        {codesPostaux.join(', ')} - INSEE : {code}
+      </p>
       <p className="fr-hint-text">
         Source :{' '}
         <Link

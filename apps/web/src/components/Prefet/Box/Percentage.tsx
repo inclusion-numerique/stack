@@ -1,4 +1,5 @@
 import React from 'react'
+import { numberToPercentage } from '@app/web/utils/formatNumber'
 import styles from './Statistic.module.css'
 
 type PercentageProps = {
@@ -12,7 +13,7 @@ const Percentage = ({ value, label, color }: PercentageProps) => (
       <div className={styles.circle} style={{ backgroundColor: color }} />
       <span className="fr-text--sm fr-mb-0 fr-mr-2w">{label}</span>
     </div>
-    <b className="fr-text--sm fr-mb-0">{value}%</b>
+    <b className="fr-text--sm fr-mb-0">{numberToPercentage(value)}</b>
   </div>
 )
 

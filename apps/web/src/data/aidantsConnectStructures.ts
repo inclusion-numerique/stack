@@ -3,22 +3,69 @@ import neatCsv from 'neat-csv'
 import { getDataFilePath } from '@app/web/data/dataFiles'
 import { mapStructuresBySiret } from '@app/web/data/siret'
 
-export const AidantsConnectStructures = {
-  url: 'https://metabase.aidantsconnect.beta.gouv.fr/question#eyJkYXRhc2V0X3F1ZXJ5Ijp7ImRhdGFiYXNlIjozLCJxdWVyeSI6eyJzb3VyY2UtdGFibGUiOjMzLCJvcmRlci1ieSI6W1siZGVzYyIsWyJmaWVsZCIsNDc1LG51bGxdXV19LCJ0eXBlIjoicXVlcnkifSwiZGlzcGxheSI6InRhYmxlIiwidmlzdWFsaXphdGlvbl9zZXR0aW5ncyI6eyJ0YWJsZS5jb2x1bW5fd2lkdGhzIjpbbnVsbCxudWxsLDI2NF19LCJvcmlnaW5hbF9jYXJkX2lkIjpudWxsfQ==',
-  dataFile: 'query_result_2023-07-03T14_09_41.253331972Z.csv',
+type AidantsConnectCsvRow = {
+  id: string
+  name: string
+  isActive: StringBoolean
+  cityCode: string
+  address: string
+  zipCode: string
+  siret: string
+  isFranceServices: StringBoolean
+  aidants: string
+  usagersUniques: string
+  demarches: string
+  dArgent: string
+  dEtranger: string
+  dFamille: string
+  dJustice: string
+  dLoisirs: string
+  dPapier: string
+  dSocial: string
+  dTransport: string
+  dTravail: string
+  dLogement: string
 }
 
-type StringBoolean = 'true' | 'false' | 'non renseigné'
+export const AidantsConnectStructures = {
+  url: 'https://metabase.aidantsconnect.beta.gouv.fr/',
+  dataFile: 'liste_des_structures_avec_leurs_stats_2023-07-13T15 51 45.csv',
+  // Headers are not pretty from metabase export, we redefine them here
+  // Check with csv file when updating file
+  headers: [
+    'id',
+    'name',
+    'isActive',
+    'cityCode',
+    'address',
+    'zipCode',
+    'siret',
+    'isFranceServices',
+    'aidants',
+    'usagersUniques',
+    'demarches',
+    'dArgent',
+    'dEtranger',
+    'dFamille',
+    'dJustice',
+    'dLoisirs',
+    'dPapier',
+    'dSocial',
+    'dTransport',
+    'dTravail',
+    'dLogement',
+  ] satisfies (keyof AidantsConnectCsvRow)[],
+  updated: '2021-07-13',
+}
+
+type StringBoolean = 'TRUE' | 'FALSE'
 export const stringBooleanToBoolean = (value: StringBoolean) => {
   switch (value) {
-    case 'true': {
+    case 'TRUE': {
       return true
     }
-    case 'false': {
+    case 'FALSE': {
       return false
-    }
-    case 'non renseigné': {
-      return null
     }
     default: {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -28,31 +75,89 @@ export const stringBooleanToBoolean = (value: StringBoolean) => {
 }
 
 export type AidantsConnectStructure = {
-  ID: string
-  Name: string
-  Siret: string
-  Address: string
-  'Zip Code': string
-  // TODO Type a mapper ?
-  'Type ID': string
-  'Data Pass ID': string
-  'Is Active': StringBoolean
-  City: string
-  'City Insee Code': string
-  'Department Insee Code': string
-  'Is Experiment': StringBoolean
-  'France Services Label': StringBoolean
-  'France Services Number': string
-  UUID: '39adeae1-a7e3-4b35-9088-8213f8c74afc'
+  id: string
+  name: string
+  isActive: boolean
+  cityCode: string | null
+  address: string
+  zipCode: string
+  siret: string
+  isFranceServices: boolean
+  aidants: string
+  usagersUniques: string
+  demarches: {
+    total: number
+    argent: number
+    etranger: number
+    famille: number
+    justice: number
+    loisirs: number
+    papier: number
+    social: number
+    transport: number
+    travail: number
+    logement: number
+  }
+}
+
+const toNumber = (value: string) => {
+  if (!value) {
+    return 0
+  }
+  return Number.parseInt(value, 10)
 }
 
 export const getAidantsConnectStructures = async () => {
-  const data = await neatCsv(
+  const data: AidantsConnectCsvRow[] = await neatCsv(
     createReadStream(getDataFilePath(AidantsConnectStructures.dataFile)),
+    {
+      // Headers are not pretty from metabase export, we redefine them here
+      // Keep in sync with csv file
+      headers: AidantsConnectStructures.headers,
+      separator: ';',
+      skipLines: 1,
+    },
   )
-  return data as AidantsConnectStructure[]
+
+  return data.map(
+    ({
+      cityCode,
+      isActive,
+      isFranceServices,
+      demarches,
+      dArgent,
+      dEtranger,
+      dFamille,
+      dJustice,
+      dLoisirs,
+      dPapier,
+      dSocial,
+      dTransport,
+      dTravail,
+      dLogement,
+      ...rest
+    }): AidantsConnectStructure => ({
+      ...rest,
+      cityCode: cityCode || null,
+      isActive: stringBooleanToBoolean(isActive),
+      isFranceServices: stringBooleanToBoolean(isFranceServices),
+      demarches: {
+        total: toNumber(demarches),
+        argent: toNumber(dArgent),
+        etranger: toNumber(dEtranger),
+        famille: toNumber(dFamille),
+        justice: toNumber(dJustice),
+        loisirs: toNumber(dLoisirs),
+        papier: toNumber(dPapier),
+        social: toNumber(dSocial),
+        transport: toNumber(dTransport),
+        travail: toNumber(dTravail),
+        logement: toNumber(dLogement),
+      },
+    }),
+  )
 }
 
 export const mapAidantsConnectStructuresBySiret = (
   structures: AidantsConnectStructure[],
-) => mapStructuresBySiret(structures, 'Siret')
+) => mapStructuresBySiret(structures, 'siret')

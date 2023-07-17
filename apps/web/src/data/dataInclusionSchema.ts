@@ -353,6 +353,7 @@ export type DataInclusionStructure = {
   code_postal: string
   // Code commune INSEE
   code_insee?: string
+  code_departement: string
   adresse: string
   // 'Conseiller Numerique'
   source: string

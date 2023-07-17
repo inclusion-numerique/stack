@@ -17,10 +17,7 @@ import {
   getCnfsPermanences,
   mapCnfsPermanencesBySiret,
 } from '@app/web/data/cnfsPermanences'
-
-const valueToString = (value: number) => value.toLocaleString('fr-FR')
-export const valueToPercentage = (value: number) =>
-  `${value.toPrecision(2).toLocaleString()}%`
+import { numberToString } from '@app/web/utils/formatNumber'
 
 export const debugDataInclusion = async () => {
   const dataInclusionStructures = await getDataInclusionStructures()
@@ -55,24 +52,24 @@ export const debugDataInclusion = async () => {
       {
         title: 'Nombre de structures inclusion',
         value: totalCount,
-        stringify: valueToString,
+        stringify: numberToString,
       },
       {
         title: 'Nombre de structures inclusion avec SIRET',
         value: totalCountWithSiret,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title: 'Nombre de structures inclusion sans SIRET ⚠️',
         value: totalMissingSiret,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title: 'Nombre de structures inclusion doublon SIRET',
         value: totalDuplicatedSirets,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
@@ -80,21 +77,21 @@ export const debugDataInclusion = async () => {
         value: dataInclusionStructures.filter(
           ({ latitude, longitude }) => !latitude || !longitude,
         ).length,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title: 'Nombre de structures sans typologie ⚠️',
         value: dataInclusionStructures.filter(({ typologie }) => !typologie)
           .length,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title: 'Nombre de structures sans code INSEE ⚠️',
         value: dataInclusionStructures.filter(({ code_insee }) => !code_insee)
           .length,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
     ],
@@ -135,44 +132,44 @@ export const debugCnfsStructures = async (
       {
         title: 'Nombre de structures CNFS',
         value: totalCount,
-        stringify: valueToString,
+        stringify: numberToString,
       },
       {
         title: 'Nombre de structures CNFS avec SIRET',
         value: totalCountWithSiret,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title: 'Nombre de structures CNFS sans SIRET',
         value: totalMissingSiret,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title: '↳ Dont nombre de structures CNFS avec SIRET "000000000000"',
         value: totalSiretZero,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title: 'Nombre de structures CNFS doublon SIRET',
         value: totalDuplicatedSirets,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title:
           'Nombre de structures CNFS référencée par SIRET dans data inclusion',
         value: withInclusionStructureSiret.length,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title:
           'Nombre de structures CNFS non referencée par SIRET dans data inclusion ⚠️',
         value: totalCount - withInclusionStructureSiret.length,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
     ],
@@ -245,69 +242,69 @@ export const debugCnfsPermanences = async (
       {
         title: 'Nombre de permanences CNFS',
         value: totalCount,
-        stringify: valueToString,
+        stringify: numberToString,
       },
       {
         title: 'Nombre de permanences CNFS avec SIRET',
         value: totalCountWithSiret,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title: 'Nombre de permanences CNFS sans SIRET',
         value: totalMissingSiret,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title: '↳ Dont nombre de permanences CNFS avec SIRET "000000000000"',
         value: totalSiretZero,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title: 'Nombre de permanences CNFS doublon SIRET',
         value: totalDuplicatedSirets,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title:
           'Nombre de permanences CNFS référencée par SIRET dans data inclusion',
         value: withInclusionStructureSiret.length,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title:
           'Nombre de permanences CNFS non referencée par SIRET dans data inclusion ⚠️',
         value: totalCount - withInclusionStructureSiret.length,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title:
           'Nombre de permanences CNFS référencée par ID composite dans data inclusion',
         value: withInclusionPermanenceId.length,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title:
           'Nombre de permanences CNFS non referencée par  ID composite dans data inclusion ⚠️',
         value: totalCount - withInclusionPermanenceId.length,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title: "Nombre d'aidants CNFS",
         value: uniqueAidants.size,
-        stringify: valueToString,
+        stringify: numberToString,
       },
       {
         title: 'Nombre de permanences sans aidants CNFS',
         value: permanenceWithoutAidants,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
     ],
@@ -333,7 +330,7 @@ export const debugAidantsConnectStructures = async (
   const withInclusionStructure = [...aidantsConnectInfo.bySiret.values()]
     .map((structure) => ({
       structure,
-      dataInclusionStructure: dataInclusionDebug.bySiret.get(structure.Siret),
+      dataInclusionStructure: dataInclusionDebug.bySiret.get(structure.siret),
     }))
     .filter(({ dataInclusionStructure }) => dataInclusionStructure)
 
@@ -341,7 +338,7 @@ export const debugAidantsConnectStructures = async (
     .map((structure) => ({
       structure,
       dataInclusionStructure:
-        dataInclusionDebug.byAidantsConnectStructureId.byKey.get(structure.ID),
+        dataInclusionDebug.byAidantsConnectStructureId.byKey.get(structure.id),
     }))
     .filter(({ dataInclusionStructure }) => dataInclusionStructure)
 
@@ -349,7 +346,7 @@ export const debugAidantsConnectStructures = async (
     .map((structure) => ({
       structure,
       dataInclusionStructure:
-        dataInclusionDebug.byAidantsConnectStructureId.byKey.get(structure.ID),
+        dataInclusionDebug.byAidantsConnectStructureId.byKey.get(structure.id),
     }))
     .filter(({ dataInclusionStructure }) => !dataInclusionStructure)
 
@@ -361,52 +358,52 @@ export const debugAidantsConnectStructures = async (
       {
         title: 'Nombre de structures AIDANTSCONNECT',
         value: totalCount,
-        stringify: valueToString,
+        stringify: numberToString,
       },
       {
         title: 'Nombre de structures AIDANTSCONNECT avec SIRET',
         value: totalCountWithSiret,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title: 'Nombre de structures AIDANTSCONNECT sans SIRET',
         value: totalMissingSiret,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title: 'Nombre de structures AIDANTSCONNECT doublon SIRET',
         value: totalDuplicatedSirets,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title:
           'Nombre de structures AIDANTSCONNECT référencée par SIRET dans data inclusion',
         value: withInclusionStructure.length,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title:
           'Nombre de structures AIDANTSCONNECT non referencée par SIRET dans data inclusion ⚠️',
         value: totalCount - withInclusionStructure.length,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title:
           'Nombre de structures AIDANTSCONNECT référencée par ID composite dans data inclusion',
         value: withInclusionStructureId.length,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
       {
         title:
           'Nombre de structures AIDANTSCONNECT  non referencée par  ID composite dans data inclusion ⚠️',
         value: totalCount - withInclusionStructureId.length,
-        stringify: valueToString,
+        stringify: numberToString,
         percentage: totalCount,
       },
     ],
