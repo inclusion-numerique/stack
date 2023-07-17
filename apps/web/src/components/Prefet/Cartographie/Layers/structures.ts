@@ -71,7 +71,7 @@ export const structuresClusterSymbolLayer: LayerSpecification = {
   filter: ['==', 'cluster', true],
   layout: {
     'text-field': ['get', 'count'],
-    'text-size': 18,
+    'text-size': 16,
     'text-allow-overlap': true,
   },
   paint: {

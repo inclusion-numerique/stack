@@ -78,24 +78,26 @@ const DepartementMap = ({
             className={styles.map}
             data-testid="departement-map"
           />
-        </div>
-        <h4 className={styles.departement}>{departement.name}</h4>
-        <div className={styles.actionBox}>
-          <span className={classNames(styles.blueIcon, 'fr-icon-info-fill')} />
-          <div>
-            <div className="fr-text--sm fr-mb-2w">
-              Découvrez le déploiement à l’échelle communale des acteurs de
-              l’Inclusion Numérique sur votre territoire à l’aide de cette
-              cartographie.
+          <h4 className={styles.departement}>{departement.name}</h4>
+          <div className={styles.actionBox}>
+            <span
+              className={classNames(styles.blueIcon, 'fr-icon-info-fill')}
+            />
+            <div>
+              <div className="fr-text--sm fr-mb-2w">
+                Découvrez le déploiement à l’échelle communale des acteurs de
+                l’Inclusion Numérique sur votre territoire à l’aide de cette
+                cartographie.
+              </div>
+              <Link
+                href={`/prefet/${code}/cartographie`}
+                className="fr-btn"
+                data-testid="cartographie-button"
+              >
+                <span className="fr-icon-road-map-line fr-mr-1w" />
+                Visualiser la cartographie
+              </Link>
             </div>
-            <Link
-              href={`/prefet/${code}/cartographie`}
-              className="fr-btn"
-              data-testid="cartographie-button"
-            >
-              <span className="fr-icon-road-map-line fr-mr-1w" />
-              Visualiser la cartographie
-            </Link>
           </div>
         </div>
       </div>

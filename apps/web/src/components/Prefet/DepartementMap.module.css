@@ -1,11 +1,14 @@
 .container {
   position: relative;
   height: 100%;
-  max-height: 822px;
+  background-color: #E8EDFF;
+
 }
 
 .mapContainer {
   height: 100%;
+  max-height: 890px;
+  position: relative;
 }
 
 .map {

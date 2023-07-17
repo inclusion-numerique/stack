@@ -265,9 +265,10 @@ const Map = ({
     }
     if (map.current && map.current.isStyleLoaded()) {
       if (selectedCity) {
+        const currentZoom = map.current.getZoom()
         map.current.flyTo({
           center: selectedCity.centre.coordinates,
-          zoom: 11,
+          zoom: Math.max(epciMaxZoom, currentZoom),
           padding: { left: mapPopupWidthWithMargin },
         })
         map.current.setFilter('baseSelectedCommunesFill', [
