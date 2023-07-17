@@ -3,26 +3,17 @@ import {
   LayerSpecification,
   LineLayerSpecification,
 } from 'maplibre-gl'
+import { isHoveredCondition } from '@app/web/components/Prefet/Cartographie/Layers/layersUtils'
 import { communes, epcis } from './common'
 
-export const lineLayer: LineLayerSpecification['paint'] = {
+export const greyLinePaint: LineLayerSpecification['paint'] = {
   'line-color': '#161616',
-  'line-opacity': [
-    'case',
-    ['any', ['boolean', ['feature-state', 'hover'], false]],
-    1,
-    0.2,
-  ],
+  'line-opacity': ['case', isHoveredCondition, 1, 0.2],
 }
 
-export const fillLayer: FillLayerSpecification['paint'] = {
+export const greyFillPaint: FillLayerSpecification['paint'] = {
   'fill-color': '#161616',
-  'fill-opacity': [
-    'case',
-    ['boolean', ['feature-state', 'hover'], false],
-    0.08,
-    0,
-  ],
+  'fill-opacity': ['case', isHoveredCondition, 0.08, 0],
 }
 export const departementLayer = (
   departementCode: string,
@@ -35,58 +26,64 @@ export const departementLayer = (
   paint: { 'line-color': '#161616', 'line-width': 2 },
 })
 
-export const epcisLayer = (epcisCode: string[]): LayerSpecification => ({
+export const baseEpcisBorderLayer = (
+  epcisCode: string[],
+): LayerSpecification => ({
   ...epcis,
-  id: 'epcis',
+  id: 'baseEpcis',
   type: 'line',
-  paint: lineLayer,
+  paint: greyLinePaint,
   filter: ['in', ['get', 'code'], ['literal', epcisCode]],
   layout: { visibility: 'none' },
 })
 
-export const epcisFilledLayer = (epcisCode: string[]): LayerSpecification => ({
+export const baseEpcisFillLayer = (
+  epcisCode: string[],
+): LayerSpecification => ({
   ...epcis,
-  id: 'epcisFilled',
+  id: 'baseEpcisFill',
   type: 'fill',
-  paint: fillLayer,
+  paint: greyFillPaint,
   filter: ['in', ['get', 'code'], ['literal', epcisCode]],
   layout: { visibility: 'none' },
 })
 
-export const communesLayer = (departementCode: string): LayerSpecification => ({
+export const baseCommunesBorderLayer = (
+  departementCode: string,
+): LayerSpecification => ({
   ...communes(departementCode),
-  id: 'communes',
+  id: 'baseCommunesBorder',
   type: 'line',
-  paint: lineLayer,
+  paint: greyLinePaint,
   layout: { visibility: 'none' },
 })
 
-export const communesFilledLayer = (
+export const baseCommunesFillLayer = (
   departementCode: string,
 ): LayerSpecification => ({
   ...communes(departementCode),
-  id: 'communesFilled',
+  id: 'baseCommunesFill',
   type: 'fill',
-  paint: fillLayer,
+  paint: greyFillPaint,
   layout: { visibility: 'none' },
 })
 
-export const selectedCommunesLayer = (
+export const baseSelectedCommunesBorderLayer = (
   departementCode: string,
 ): LayerSpecification => ({
   ...communes(departementCode),
-  id: 'selectedCommunes',
+  id: 'baseSelectedCommunesBorder',
   type: 'line',
   paint: { 'line-color': '#161616' },
   filter: ['boolean', false],
   layout: { visibility: 'none' },
 })
 
-export const selectedCommunesFilledLayer = (
+export const baseSelectedCommunesFillLayer = (
   departementCode: string,
 ): LayerSpecification => ({
   ...communes(departementCode),
-  id: 'selectedCommunesFilled',
+  id: 'baseSelectedCommunesFill',
   type: 'fill',
   paint: { 'fill-color': '#161616', 'fill-opacity': 0.08 },
   filter: ['boolean', false],

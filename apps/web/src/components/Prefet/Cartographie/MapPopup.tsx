@@ -10,12 +10,10 @@ const MapPopup = ({
   city,
   structure,
   close,
-  viewIndiceFN,
 }: {
   city: City | null | undefined
   structure: Structure | null | undefined
   close: () => void
-  viewIndiceFN: boolean
 }) => {
   if (!city && !structure) {
     return null
@@ -34,7 +32,7 @@ const MapPopup = ({
           Fermer
         </Button>
       </div>
-      {!!city && <CityDetails city={city} viewIndiceFN={viewIndiceFN} />}
+      {!!city && <CityDetails city={city} />}
       {!!structure && <StructureDetails structure={structure} />}
     </div>
   )

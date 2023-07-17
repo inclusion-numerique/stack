@@ -1,4 +1,8 @@
 import { LayerSpecification } from 'maplibre-gl'
+import {
+  isHoveredCondition,
+  isSelectedCondition,
+} from '@app/web/components/Prefet/Cartographie/Layers/layersUtils'
 
 export const structuresIconLayer: LayerSpecification = {
   id: 'structureIcon',
@@ -24,26 +28,8 @@ export const structuresIconLayer: LayerSpecification = {
     ],
   },
 }
-//
-// export const structuresCircleLayer: LayerSpecification = {
-//   id: 'structuresCircle',
-//   source: 'structures',
-//   type: 'circle',
-//   filter: ['all', ['!=', 'cluster', true]],
-//   paint: {
-//     'circle-color': 'transparent',
-//     'circle-stroke-color': 'white',
-//     'circle-stroke-width': [
-//       'case',
-//       ['boolean', ['feature-state', 'hover'], false],
-//       3,
-//       0,
-//     ],
-//     'circle-radius': 13,
-//   },
-// }
 
-export const structuresCircleLayer: LayerSpecification = {
+export const structuresIconHoverLayer: LayerSpecification = {
   id: 'structureIconHover',
   source: 'structures',
   type: 'symbol',
@@ -67,13 +53,11 @@ export const structuresCircleLayer: LayerSpecification = {
     ],
   },
   paint: {
+    'icon-halo-color': 'red',
+    'icon-halo-width': 10,
     'icon-opacity': [
       'case',
-      [
-        'any',
-        ['boolean', ['feature-state', 'hover'], false],
-        ['boolean', ['feature-state', 'selected'], false],
-      ],
+      ['any', isHoveredCondition, isSelectedCondition],
       1,
       0,
     ],

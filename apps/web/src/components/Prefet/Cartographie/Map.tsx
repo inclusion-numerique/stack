@@ -36,26 +36,26 @@ import MapPopup from './MapPopup'
 import styles from './Map.module.css'
 import { mapStyle } from './mapStyle'
 import {
-  communesIFNFilledLayer,
-  communesIFNHoverLayer,
-  communesIFNLayer,
-  epcisIFNFilledLayer,
-  epcisIFNHoverLayer,
-  epcisIFNLayer,
-  ifnColors,
-  selectedCommunesIFNLayer,
+  ifnCommunesFillLayer,
+  ifnCommunesBorderLayer,
+  ifnEpcisFillLayer,
+  ifnEpcisBorderLayer,
+  ifnSelectedCommunesBorderLayer,
+  ifnFillColors,
+  ifnHoverCommunesBorderLayer,
+  ifnHoverEpcisBorderLayer,
 } from './Layers/ifn'
 import {
-  communesFilledLayer,
-  communesLayer,
+  baseCommunesFillLayer,
+  baseCommunesBorderLayer,
   departementLayer,
-  epcisFilledLayer,
-  epcisLayer,
-  selectedCommunesFilledLayer,
-  selectedCommunesLayer,
+  baseEpcisFillLayer,
+  baseEpcisBorderLayer,
+  baseSelectedCommunesFillLayer,
+  baseSelectedCommunesBorderLayer,
 } from './Layers/sections'
 import {
-  structuresCircleLayer,
+  structuresIconHoverLayer,
   structuresClusterCircleLayer,
   structuresClusterSymbolLayer,
   structuresIconLayer,
@@ -64,7 +64,7 @@ import { epciMaxZoom } from './Layers/common'
 import { placesLayer } from './Layers/places'
 
 const getColorIndexFromIfn = (ifn: number) =>
-  Math.floor(((ifn - 1) * ifnColors.length) / 10)
+  Math.floor(((ifn - 1) * ifnFillColors.length) / 10)
 
 const mapPopupWidthWithMargin = 448 + 16
 
@@ -96,7 +96,7 @@ const Map = ({
   const [isMapStyleLoaded, setIsMapStyleLoaded] = useState(false)
 
   const citiesByIndex: string[][] = useMemo(() => {
-    const result: string[][] = ifnColors.map(() => [])
+    const result: string[][] = ifnFillColors.map(() => [])
     for (const city of cities) {
       if (!city.ifnTotal) {
         continue
@@ -108,7 +108,7 @@ const Map = ({
   }, [cities])
 
   const epcisByIndex: string[][] = useMemo(() => {
-    const result: string[][] = ifnColors.map(() => [])
+    const result: string[][] = ifnFillColors.map(() => [])
     for (const epci of epcis) {
       if (epci.ifn === null || epci.ifn === undefined) {
         continue
@@ -120,7 +120,7 @@ const Map = ({
 
   const onMapPopupClose = () => {
     if (map.current) {
-      setSelectedDecoupageState(map.current, 'communes')
+      setSelectedDecoupageState(map.current, 'baseCommunesBorder')
       setSelectedStructureState(map.current, 'structureIconHover')
     }
     onCitySelected(null)
@@ -163,27 +163,27 @@ const Map = ({
 
       const epciCodes = epcis.map((epci) => epci.code)
       map.current.addLayer(
-        communesIFNFilledLayer({ departementCode, citiesByIndex }),
+        ifnCommunesFillLayer({ departementCode, citiesByIndex }),
       )
-      map.current.addLayer(communesIFNLayer({ departementCode }))
+      map.current.addLayer(ifnCommunesBorderLayer({ departementCode }))
       map.current.addLayer(
-        communesIFNHoverLayer({ departementCode, citiesByIndex }),
+        ifnSelectedCommunesBorderLayer({ departementCode, citiesByIndex }),
       )
       map.current.addLayer(
-        selectedCommunesIFNLayer({ departementCode, citiesByIndex }),
+        ifnHoverCommunesBorderLayer({ departementCode, citiesByIndex }),
       )
-      map.current.addLayer(epcisIFNFilledLayer(epcisByIndex, epciCodes))
-      map.current.addLayer(epcisIFNLayer(epcisByIndex, epciCodes))
-      map.current.addLayer(epcisIFNHoverLayer(epcisByIndex, epciCodes))
+      map.current.addLayer(ifnEpcisFillLayer(epcisByIndex, epciCodes))
+      map.current.addLayer(ifnEpcisBorderLayer(epcisByIndex, epciCodes))
+      map.current.addLayer(ifnHoverEpcisBorderLayer(epcisByIndex, epciCodes))
 
       map.current.addLayer(departementLayer(departementCode))
-      map.current.addLayer(communesFilledLayer(departementCode))
-      map.current.addLayer(communesLayer(departementCode))
-      map.current.addLayer(selectedCommunesFilledLayer(departementCode))
-      map.current.addLayer(selectedCommunesLayer(departementCode))
+      map.current.addLayer(baseCommunesFillLayer(departementCode))
+      map.current.addLayer(baseCommunesBorderLayer(departementCode))
+      map.current.addLayer(baseSelectedCommunesFillLayer(departementCode))
+      map.current.addLayer(baseSelectedCommunesBorderLayer(departementCode))
 
-      map.current.addLayer(epcisFilledLayer(epciCodes))
-      map.current.addLayer(epcisLayer(epciCodes))
+      map.current.addLayer(baseEpcisFillLayer(epciCodes))
+      map.current.addLayer(baseEpcisBorderLayer(epciCodes))
 
       placesLayer.map((placeLayer) => map.current?.addLayer(placeLayer))
       map.current.addSource('structures', {
@@ -221,16 +221,17 @@ const Map = ({
           }
         })
       }
-      map.current.addLayer(structuresIconLayer)
-      map.current.addLayer(structuresCircleLayer)
+      map.current?.addLayer(structuresIconLayer)
+
+      map.current.addLayer(structuresIconHoverLayer)
 
       map.current.addLayer(structuresClusterCircleLayer)
       map.current.addLayer(structuresClusterSymbolLayer)
 
-      addHoverState(map.current, 'decoupage', 'communesIFNFilled', 'communes')
-      addHoverState(map.current, 'decoupage', 'communesFilled', 'communes')
-      addHoverState(map.current, 'decoupage', 'epcisFilled', 'epcis')
-      addHoverState(map.current, 'decoupage', 'epcisIFNFilled', 'epcis')
+      addHoverState(map.current, 'decoupage', 'ifnCommunesFill', 'communes')
+      addHoverState(map.current, 'decoupage', 'baseCommunesFill', 'communes')
+      addHoverState(map.current, 'decoupage', 'baseEpcisFill', 'epcis')
+      addHoverState(map.current, 'decoupage', 'ifnEpcisFill', 'epcis')
       addHoverState(map.current, 'structures', 'structureIconHover')
 
       const navControl = new maplibregl.NavigationControl({
@@ -269,25 +270,25 @@ const Map = ({
           zoom: 11,
           padding: { left: mapPopupWidthWithMargin },
         })
-        map.current.setFilter('selectedCommunesFilled', [
+        map.current.setFilter('baseSelectedCommunesFill', [
           '==',
           ['get', 'nom'],
           selectedCity.nom,
         ])
-        map.current.setFilter('selectedCommunes', [
+        map.current.setFilter('baseSelectedCommunesBorder', [
           '==',
           ['get', 'nom'],
           selectedCity.nom,
         ])
-        map.current.setFilter('selectedCommunesIFN', [
+        map.current.setFilter('ifnSelectedCommunesBorder', [
           '==',
           ['get', 'nom'],
           selectedCity.nom,
         ])
       } else {
-        map.current.setFilter('selectedCommunesFilled', ['boolean', false])
-        map.current.setFilter('selectedCommunes', ['boolean', false])
-        map.current.setFilter('selectedCommunesIFN', ['boolean', false])
+        map.current.setFilter('baseSelectedCommunesFill', ['boolean', false])
+        map.current.setFilter('baseSelectedCommunesBorder', ['boolean', false])
+        map.current.setFilter('ifnSelectedCommunesBorder', ['boolean', false])
       }
     }
   }, [map, selectedCity, selectedStructure])
@@ -310,62 +311,101 @@ const Map = ({
     if (map.current && map.current.isStyleLoaded()) {
       if (viewIndiceFN) {
         map.current.setLayoutProperty(
-          'communesIFNFilled',
-          'visibility',
-          'visible',
-        )
-        map.current.setLayoutProperty('communesIFN', 'visibility', 'visible')
-        map.current.setLayoutProperty(
-          'communesIFNHover',
+          'ifnCommunesFill',
           'visibility',
           'visible',
         )
         map.current.setLayoutProperty(
-          'selectedCommunesIFN',
+          'ifnCommunesBorder',
           'visibility',
           'visible',
         )
-        map.current.setLayoutProperty('epcisIFN', 'visibility', 'visible')
-        map.current.setLayoutProperty('epcisIFNHover', 'visibility', 'visible')
-        map.current.setLayoutProperty('epcisIFNFilled', 'visibility', 'visible')
+        map.current.setLayoutProperty(
+          'ifnHoverCommunesBorder',
+          'visibility',
+          'visible',
+        )
+        map.current.setLayoutProperty(
+          'ifnSelectedCommunesBorder',
+          'visibility',
+          'visible',
+        )
+        map.current.setLayoutProperty('ifnEpcisBorder', 'visibility', 'visible')
+        map.current.setLayoutProperty(
+          'ifnHoverEpcisBorder',
+          'visibility',
+          'visible',
+        )
 
-        map.current.setLayoutProperty('communes', 'visibility', 'none')
-        map.current.setLayoutProperty('communesFilled', 'visibility', 'none')
-        map.current.setLayoutProperty('selectedCommunes', 'visibility', 'none')
+        map.current.setLayoutProperty('ifnEpcisFill', 'visibility', 'visible')
+
         map.current.setLayoutProperty(
-          'selectedCommunesFilled',
+          'baseCommunesBorder',
           'visibility',
           'none',
         )
-        map.current.setLayoutProperty('epcis', 'visibility', 'none')
-        map.current.setLayoutProperty('epcisFilled', 'visibility', 'none')
+        map.current.setLayoutProperty('baseCommunesFill', 'visibility', 'none')
+        map.current.setLayoutProperty(
+          'baseSelectedCommunesBorder',
+          'visibility',
+          'none',
+        )
+        map.current.setLayoutProperty(
+          'baseSelectedCommunesFill',
+          'visibility',
+          'none',
+        )
+        map.current.setLayoutProperty('baseEpcis', 'visibility', 'none')
+        map.current.setLayoutProperty('baseEpcisFill', 'visibility', 'none')
       } else {
-        map.current.setLayoutProperty('communesIFNFilled', 'visibility', 'none')
-        map.current.setLayoutProperty('communesIFN', 'visibility', 'none')
-        map.current.setLayoutProperty('communesIFNHover', 'visibility', 'none')
+        map.current.setLayoutProperty('ifnCommunesFill', 'visibility', 'none')
+        map.current.setLayoutProperty('ifnCommunesBorder', 'visibility', 'none')
         map.current.setLayoutProperty(
-          'selectedCommunesIFN',
+          'ifnSelectedCommunesBorder',
           'visibility',
           'none',
         )
-        map.current.setLayoutProperty('epcisIFN', 'visibility', 'none')
-        map.current.setLayoutProperty('epcisIFNHover', 'visibility', 'none')
-        map.current.setLayoutProperty('epcisIFNFilled', 'visibility', 'none')
+        map.current.setLayoutProperty(
+          'ifnHoverCommunesBorder',
+          'visibility',
+          'none',
+        )
+        map.current.setLayoutProperty('ifnEpcisBorder', 'visibility', 'none')
+        map.current.setLayoutProperty(
+          'ifnHoverEpcisBorder',
+          'visibility',
+          'none',
+        )
 
-        map.current.setLayoutProperty('communes', 'visibility', 'visible')
-        map.current.setLayoutProperty('communesFilled', 'visibility', 'visible')
+        map.current.setLayoutProperty('ifnEpcisFill', 'visibility', 'none')
+
         map.current.setLayoutProperty(
-          'selectedCommunes',
+          'baseCommunesBorder',
           'visibility',
           'visible',
         )
         map.current.setLayoutProperty(
-          'selectedCommunesFilled',
+          'baseCommunesFill',
           'visibility',
           'visible',
         )
-        map.current.setLayoutProperty('epcis', 'visibility', 'visible')
-        map.current.setLayoutProperty('epcisFilled', 'visibility', 'visible')
+        map.current.setLayoutProperty(
+          'ifnHoverCommunesBorderLayer',
+          'visibility',
+          'none',
+        )
+        map.current.setLayoutProperty(
+          'baseSelectedCommunesBorder',
+          'visibility',
+          'visible',
+        )
+        map.current.setLayoutProperty(
+          'baseSelectedCommunesFill',
+          'visibility',
+          'visible',
+        )
+        map.current.setLayoutProperty('baseEpcis', 'visibility', 'visible')
+        map.current.setLayoutProperty('baseEpcisFill', 'visibility', 'visible')
       }
     }
   }, [map, viewIndiceFN])
@@ -386,7 +426,7 @@ const Map = ({
         ) {
           setSelectedDecoupageState(
             map.current,
-            'communes',
+            'baseCommunesBorder',
             event.features[0].id,
           )
           onCitySelected(event.features[0].properties.nom as string)
@@ -481,10 +521,10 @@ const Map = ({
         'structuresClusterCircle',
         onStructureClusterClick,
       )
-      map.current.on('click', 'epcisFilled', onEPCIClick)
-      map.current.on('click', 'epcisIFNFilled', onEPCIClick)
-      map.current.on('click', 'communesFilled', onCommuneClick)
-      map.current.on('click', 'communesIFNFilled', onCommuneClick)
+      map.current.on('click', 'baseEpcisFill', onEPCIClick)
+      map.current.on('click', 'ifnEpcisFill', onEPCIClick)
+      map.current.on('click', 'baseCommunesFill', onCommuneClick)
+      map.current.on('click', 'ifnCommunesFill', onCommuneClick)
       return () => {
         map.current?.off('mousemove', 'structureIcon', onStructureHover)
         map.current?.off('mouseleave', 'structureIcon', onStructureUnhover)
@@ -495,10 +535,10 @@ const Map = ({
           'structuresClusterCircle',
           onStructureClusterClick,
         )
-        map.current?.off('click', 'epcisFilled', onEPCIClick)
-        map.current?.off('click', 'epcisIFNFilled', onEPCIClick)
-        map.current?.off('click', 'communesFilled', onCommuneClick)
-        map.current?.off('click', 'communesIFNFilled', onCommuneClick)
+        map.current?.off('click', 'baseEpcisFill', onEPCIClick)
+        map.current?.off('click', 'ifnEpcisFill', onEPCIClick)
+        map.current?.off('click', 'baseCommunesFill', onCommuneClick)
+        map.current?.off('click', 'ifnCommunesFill', onCommuneClick)
       }
     }
   }, [map, onCitySelected, onStructureSelected])
@@ -548,7 +588,6 @@ const Map = ({
         city={selectedCity}
         structure={selectedStructure}
         close={onMapPopupClose}
-        viewIndiceFN={viewIndiceFN}
       />
       <IndiceNumerique
         setViewIndiceFN={setViewIndiceFN}
