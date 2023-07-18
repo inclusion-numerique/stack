@@ -113,6 +113,14 @@ export const users: Exclude<
     role: 'Demo',
     emailVerified: new Date(),
   },
+  {
+    id: 'a5e05571-9fdb-4adc-8abb-ef3beecb0a16',
+    firstName: 'Marine',
+    lastName: 'Jouan',
+    email: 'marine.jouan@anct.gouv.fr',
+    role: 'Demo',
+    emailVerified: new Date(),
+  },
 ]
 
 export const randomUsers: (
