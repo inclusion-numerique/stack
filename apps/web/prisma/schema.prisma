@@ -368,7 +368,11 @@ model CraConseillerNumeriqueParDepartement {
   codeDepartement String      @id @unique @map("code_repartement")
   departement     Departement @relation(fields: [codeDepartement], references: [code])
 
-  participants Int
+  // Nombre de participants uniques
+  usagers Int
+
+  // Nombre d'accompagnements réalisés
+  accompagnements Int
 
   ageMoins12ans Int @map("age_moins_12_ans")
   age12a18ans   Int @map("age_12_a_18_ans")

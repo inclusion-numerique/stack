@@ -53,7 +53,8 @@ export const themesSet = new Set<Theme>(themes)
 
 export type ReducedConumCras = {
   departement: string
-  participants: number
+  usagers: number
+  accompagnements: number
   themes: { [key in ThemeKey]?: number }
   statut: {
     etudiant: number

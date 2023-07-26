@@ -14,7 +14,7 @@ import {
 const crasCsvFile = path.resolve(
   __dirname,
   '../../../../../var',
-  'cras_2023-07-18T10_02_32.583468Z.csv',
+  'cras_2023-07-26T08_53_21.237230614Z.csv',
 )
 
 type CrasCsvRow = {
@@ -22,21 +22,20 @@ type CrasCsvRow = {
   ConseillerId: string
   DateAccompagnement: string
   NomCommune: string
+  Statut: '{:etudiant 0, :sansEmploi 0, :enEmploi 0, :retraite 1, :heterogene 0}'
   CodePostal: string
-  NbParticipants: string
   Accompagnement: '{:individuel 0, :atelier 0, :redirection 0}'
   Themes: '["autre"]'
-  Statut: '{:etudiant 0, :sansEmploi 0, :enEmploi 0, :retraite 1, :heterogene 0}'
   Activite: string
   Moins12ans: string
   De12a18ans: string
   De18a35ans: string
   De35a60ans: string
   Plus60ans: string
+  NbParticipants: string
+  NbParticipantsRecurrents: string
   Duree: '30-60'
-  Canal: 'rattachement'
-  CreatedAt: string
-  UpdatedAt: ''
+  Canal: 'rattachement' | 'distance' | 'domicile' | 'autre'
   PermanenceId: ''
   StructureId: string
 }
@@ -91,6 +90,7 @@ const transformDict = (mongoDict: string) => {
 const preprocessData = ({
   CodePostal,
   NbParticipants,
+  NbParticipantsRecurrents,
   Accompagnement,
   Themes,
   Statut,
@@ -113,7 +113,11 @@ const preprocessData = ({
   return {
     departement: getDepartementCodeFromPostalCode(cleanCodePostal),
     codePostal: CodePostal,
-    nParticipants: Number.parseInt(NbParticipants, 10),
+    nAccompagnements: Number.parseInt(NbParticipants, 10),
+    nParticipantsRecurrents: Number.parseInt(
+      NbParticipantsRecurrents || '0',
+      10,
+    ),
     themes: JSON.parse(Themes.replaceAll('" "', '", "')) as string[],
     statut: transformDict(Statut),
     accompagnement: transformDict(Accompagnement),
@@ -138,8 +142,8 @@ const reduceData = (mapped: Preprocessed[]): ReducedResult => {
     if (!reduced) {
       reduced = {
         departement: data.departement,
-        participants: 0,
-
+        usagers: 0,
+        accompagnements: 0,
         themes: {},
         statut: {
           etudiant: 0,
@@ -168,7 +172,12 @@ const reduceData = (mapped: Preprocessed[]): ReducedResult => {
       result.set(data.departement, reduced)
     }
 
-    reduced.participants += data.nParticipants
+    reduced.accompagnements += data.nAccompagnements
+    reduced.usagers += Math.max(
+      // We have CRAs whith more recurrents than participants...
+      data.nAccompagnements - data.nParticipantsRecurrents,
+      0,
+    )
     for (const maybeTheme of data.themes) {
       const theme = maybeTheme as Theme
 

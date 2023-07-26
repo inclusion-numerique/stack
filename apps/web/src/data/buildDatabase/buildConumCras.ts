@@ -30,7 +30,8 @@ export const buildConumCras = async ({
     data.push({
       codeDepartement: cras.departement,
 
-      participants: cras.participants,
+      usagers: cras.usagers,
+      accompagnements: cras.accompagnements,
 
       ageMoins12ans: cras.moins12ans,
       age12a18ans: cras.de12a18ans,

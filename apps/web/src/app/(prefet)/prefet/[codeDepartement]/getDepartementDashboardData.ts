@@ -278,13 +278,13 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
         id: 'usagers-accompagnés',
         label: 'Usagers accompagnés',
         value:
-          (conumCras?.participants ?? 0) +
+          (conumCras?.usagers ?? 0) +
           structuresCount.aidantsConnect.usagersUniques,
         statistics: [
           {
             id: 'par-des-conseillers-numériques',
             label: 'Par des Conseillers Numériques',
-            value: conumCras?.participants ?? 0,
+            value: conumCras?.usagers ?? 0,
             updated: new Date(ConumCras.updated),
             source: 'conseiller-numerique.gouv.fr',
           },
@@ -377,13 +377,13 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
         id: 'accompagnement',
         label: 'Accompagnement',
         value:
-          (conumCras?.participants ?? 0) +
+          (conumCras?.accompagnements ?? 0) +
           structuresCount.aidantsConnect.totalDemarches,
         statistics: [
           {
             id: 'accompagnements-de-médiation-numérique',
             label: 'Accompagnements de médiation numérique',
-            value: conumCras?.participants ?? 0,
+            value: conumCras?.accompagnements ?? 0,
             updated: new Date(ConumCras.updated),
             source: 'conseiller-numerique.gouv.fr',
           },
