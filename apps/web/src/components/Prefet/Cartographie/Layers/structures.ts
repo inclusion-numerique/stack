@@ -73,6 +73,7 @@ export const structuresClusterSymbolLayer: LayerSpecification = {
     'text-field': ['get', 'count'],
     'text-size': 16,
     'text-allow-overlap': true,
+    'text-font': ['Noto Sans Bold'],
   },
   paint: {
     'text-color': 'white',

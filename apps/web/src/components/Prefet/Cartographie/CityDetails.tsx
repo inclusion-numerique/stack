@@ -1,29 +1,15 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import classNames from 'classnames'
-import { City } from '@app/web/types/City'
 import { formatIfnScore } from '@app/web/data/ifnData'
+import { numberToString } from '@app/web/utils/formatNumber'
+import { DepartementCartographieDataCommune } from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
 import styles from './CityDetails.module.css'
 
 const CityDetails = ({
-  city: {
-    nom,
-    population,
-    structuresCount,
-    ifnTotal,
-    ifnOlder65Rate,
-    ifnNscol15pRate,
-    ifnPovertyRate,
-    ifnNo4gCoverageRate,
-    ifnNoThdCoverageRate,
-    aidants,
-    conseillersNumeriques,
-    habilitesAidantsConnect,
-    codesPostaux,
-    code,
-  },
+  commune: { nom, population, count, ifn, codesPostaux, code },
 }: {
-  city: City
+  commune: DepartementCartographieDataCommune
 }) => {
   // TODO Proper button element for click on title
   const [structuresDetailOpen, setStructuresDetailOpen] = useState(false)
@@ -42,13 +28,13 @@ const CityDetails = ({
   return (
     <>
       <h6 className="fr-mt-1v">{nom}</h6>
-      <p>Commune de {population} hab.</p>
+      <p className="fr-mb-1v">Commune de {population} hab.</p>
       <p className="fr-hint-text fr-mb-0">
-        {codesPostaux.length === 1 ? `Code postal` : `Code postaux`} : 
-        {codesPostaux.join(', ')} - INSEE : {code}
+        {codesPostaux.length === 1 ? `Code postal` : `Code postaux`} :
+        {codesPostaux.join(', ')} - INSEE : {code}
       </p>
       <p className="fr-hint-text">
-        Source :{' '}
+        Source&nbsp;:{' '}
         <Link
           href="https://geo.api.gouv.fr/decoupage-administratif/communes"
           target="_blank"
@@ -77,7 +63,7 @@ const CityDetails = ({
               )}
             />
           </h6>
-          <h6 className="fr-mt-1v">{structuresCount.total}</h6>
+          <h6 className="fr-mt-1v">{count.structures.total}</h6>
         </div>
       </button>
       {structuresDetailOpen && (
@@ -112,7 +98,7 @@ const CityDetails = ({
                 />
               </p>
               <p className=" fr-text--bold">
-                {structuresCount.typologie.publique}
+                {numberToString(count.structures.type.publique)}
               </p>
             </div>
           </button>
@@ -122,22 +108,26 @@ const CityDetails = ({
               <div className={classNames(styles.row, 'fr-mb-1v')}>
                 <p className="fr-text--sm">Commune</p>
                 <p className="fr-text--sm">
-                  {structuresCount.typologie.commune}
+                  {numberToString(count.structures.sousTypePublic.commune)}
                 </p>
               </div>
               <div className={classNames(styles.row, 'fr-mb-1v')}>
                 <p className="fr-text--sm">EPCI</p>
-                <p className="fr-text--sm">{structuresCount.typologie.epci}</p>
+                <p className="fr-text--sm">
+                  {count.structures.sousTypePublic.epci}
+                </p>
               </div>
               <div className={classNames(styles.row, 'fr-mb-1v')}>
                 <p className="fr-text--sm">Département</p>
                 <p className="fr-text--sm">
-                  {structuresCount.typologie.departement}
+                  {numberToString(count.structures.sousTypePublic.departement)}
                 </p>
               </div>
               <div className={classNames(styles.row, 'fr-mb-1v')}>
                 <p className="fr-text--sm">Autre</p>
-                <p className="fr-text--sm">{structuresCount.typologie.autre}</p>
+                <p className="fr-text--sm">
+                  {numberToString(count.structures.sousTypePublic.autre)}
+                </p>
               </div>
             </div>
           )}
@@ -148,7 +138,7 @@ const CityDetails = ({
               Associations
             </p>
             <p className=" fr-text--bold">
-              {structuresCount.typologie.association}
+              {numberToString(count.structures.type.association)}
             </p>
           </div>
           <div className={classNames(styles.row, 'fr-mb-1v')}>
@@ -156,7 +146,9 @@ const CityDetails = ({
               <span className="fr-icon-building-fill fr-mr-1w fr-icon--sm" />{' '}
               Autre acteurs privés
             </p>
-            <p className=" fr-text--bold">{structuresCount.typologie.privee}</p>
+            <p className=" fr-text--bold">
+              {numberToString(count.structures.type.privee)}
+            </p>
           </div>
           <div className={classNames(styles.row, 'fr-mb-1v')}>
             <p className="fr-text--sm">
@@ -164,7 +156,7 @@ const CityDetails = ({
               Non défini
             </p>
             <p className=" fr-text--bold">
-              {structuresCount.typologie.nonDefini}
+              {numberToString(count.structures.type.nonDefini)}
             </p>
           </div>
           <div className={styles.row}>
@@ -177,7 +169,7 @@ const CityDetails = ({
               Structures accueillant un Conseiller Numérique
             </p>
             <p className=" fr-text--bold">
-              {structuresCount.labels.conseillerNumerique}
+              {numberToString(count.structures.label.conseillerNumerique)}
             </p>
           </div>
           <div className={classNames(styles.row, 'fr-mb-1v')}>
@@ -185,13 +177,13 @@ const CityDetails = ({
               Structures labellisées France Services
             </p>
             <p className=" fr-text--bold">
-              {structuresCount.labels.franceServices}
+              {numberToString(count.structures.label.franceServices)}
             </p>
           </div>
           <div className={classNames(styles.row, 'fr-mb-1v')}>
             <p className="fr-text--sm">Structures habilitées Aidants Connect</p>
             <p className=" fr-text--bold">
-              {structuresCount.labels.aidantConnect}
+              {numberToString(count.structures.label.aidantsConnect)}
             </p>
           </div>
           <div className={styles.row}>
@@ -204,7 +196,7 @@ const CityDetails = ({
               Structures en quartier prioritaire de la ville (QPV)
             </p>
             <p className=" fr-text--bold">
-              {structuresCount.territoiresPrioritaires.qpv}
+              {numberToString(count.structures.territoire.qpv)}
             </p>
           </div>
           <div className={classNames(styles.row, 'fr-mb-1v')}>
@@ -212,7 +204,7 @@ const CityDetails = ({
               Structures en zone de revitalisation rurale (ZRR)
             </p>
             <p className=" fr-text--bold">
-              {structuresCount.territoiresPrioritaires.zrr}
+              {numberToString(count.structures.territoire.zrr)}
             </p>
           </div>
         </div>
@@ -224,10 +216,10 @@ const CityDetails = ({
           Indicateurs de fragilité numérique
         </p>
         <p className="fr-text--lg fr-text--bold fr-mb-3v">
-          {formatIfnScore(ifnTotal)}
+          {ifn?.total ? formatIfnScore(ifn.total) : 'Non disponible'}
         </p>
       </div>
-      {ifnTotal === null ? (
+      {ifn === null ? (
         <p className="fr-text--sm">Indisponible</p>
       ) : (
         <>
@@ -236,26 +228,26 @@ const CityDetails = ({
               Taux de non-couverture Très-Haut-Débit
             </p>
             <p className=" fr-text--bold">
-              {formatIfnScore(ifnNoThdCoverageRate)}
+              {formatIfnScore(ifn.noThdCoverageRate)}
             </p>
           </div>
           <div className={classNames(styles.row, 'fr-mb-1v')}>
             <p className="fr-text--sm">Taux de non-couverture 4G</p>
             <p className=" fr-text--bold">
-              {formatIfnScore(ifnNo4gCoverageRate)}
+              {formatIfnScore(ifn.no4gCoverageRate)}
             </p>
           </div>
           <div className={classNames(styles.row, 'fr-mb-1v')}>
             <p className="fr-text--sm">Part des 65 ans et plus</p>
-            <p className=" fr-text--bold">{formatIfnScore(ifnOlder65Rate)}</p>
+            <p className=" fr-text--bold">{formatIfnScore(ifn.older65Rate)}</p>
           </div>
           <div className={classNames(styles.row, 'fr-mb-1v')}>
             <p className="fr-text--sm">Part des pas ou peu diplômés</p>
-            <p className=" fr-text--bold">{formatIfnScore(ifnNscol15pRate)}</p>
+            <p className=" fr-text--bold">{formatIfnScore(ifn.nscol15pRate)}</p>
           </div>
           <div className={classNames(styles.row, 'fr-mb-1v')}>
             <p className="fr-text--sm">Taux de pauvreté</p>
-            <p className=" fr-text--bold">{formatIfnScore(ifnPovertyRate)}</p>
+            <p className=" fr-text--bold">{formatIfnScore(ifn.povertyRate)}</p>
           </div>
         </>
       )}
@@ -264,15 +256,19 @@ const CityDetails = ({
         <p className="fr-text--lg fr-text--bold fr-mb-3v">
           Aidants Numériques identifiés
         </p>
-        <p className="fr-text--lg fr-text--bold fr-mb-3v">{aidants}</p>
+        <p className="fr-text--lg fr-text--bold fr-mb-3v">
+          {numberToString(count.aidantsConnect + count.conseillersNumeriques)}
+        </p>
       </div>
       <div className={classNames(styles.row, 'fr-mb-1v')}>
         <p className="fr-text--sm">Conseillers Numériques</p>
-        <p className=" fr-text--bold">{conseillersNumeriques}</p>
+        <p className=" fr-text--bold">
+          {numberToString(count.conseillersNumeriques)}
+        </p>
       </div>
       <div className={classNames(styles.row, 'fr-mb-1v')}>
         <p className="fr-text--sm">Aidants habilités à Aidants Connect</p>
-        <p className=" fr-text--bold">{habilitesAidantsConnect}</p>
+        <p className=" fr-text--bold">{numberToString(count.aidantsConnect)}</p>
       </div>
     </>
   )

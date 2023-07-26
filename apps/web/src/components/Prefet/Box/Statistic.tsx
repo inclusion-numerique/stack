@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react'
 import classNames from 'classnames'
-import { Statistic as StatisticType } from '../departementData'
+import { numberToString } from '@app/web/utils/formatNumber'
+import type { StatisticData as StatisticType } from '@app/web/app/(prefet)/prefet/[codeDepartement]/getDepartementDashboardData'
 import styles from './Statistic.module.css'
 
 type StatisticProps = {
@@ -36,12 +37,19 @@ const Statistic = ({
               onClick={() => setOpen(!open)}
               className={styles.collapseButton}
             >
+              {/* Conditional class name makes the icon flicker, we try using visibility instead */}
               <span
                 className={classNames(
                   'fr-icon--sm',
-                  open
-                    ? 'fr-icon-arrow-up-s-line'
-                    : 'fr-icon-arrow-down-s-line',
+                  'fr-icon-arrow-up-s-line',
+                  !open && 'fr-hidden',
+                )}
+              />
+              <span
+                className={classNames(
+                  'fr-icon--sm',
+                  'fr-icon-arrow-down-s-line',
+                  open && 'fr-hidden',
                 )}
               />
             </button>
@@ -53,7 +61,7 @@ const Statistic = ({
             !isSubStatistic && 'fr-text--bold',
           )}
         >
-          {value}
+          {numberToString(value)}
         </span>
       </div>
       {displayChildren && (

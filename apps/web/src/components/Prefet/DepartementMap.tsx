@@ -6,16 +6,16 @@ import classNames from 'classnames'
 import maplibregl, { Map } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { useRouter } from 'next/navigation'
-import { DepartementGeoJson } from '@app/web/utils/map/departementGeoJson'
 import { emptyStyleSpecification } from '@app/web/utils/map/emptyStyleSpecification'
+import { DepartementGeoFeatures } from '@app/web/data/departements'
 import styles from './DepartementMap.module.css'
 
 const DepartementMap = ({
   departement,
 }: {
-  departement: DepartementGeoJson
+  departement: DepartementGeoFeatures
 }) => {
-  const { code, source, bounds } = departement
+  const { code, source, nom, bounds } = departement
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<Map>()
   const router = useRouter()
@@ -78,26 +78,24 @@ const DepartementMap = ({
             className={styles.map}
             data-testid="departement-map"
           />
-          <h4 className={styles.departement}>{departement.name}</h4>
-          <div className={styles.actionBox}>
-            <span
-              className={classNames(styles.blueIcon, 'fr-icon-info-fill')}
-            />
-            <div>
-              <div className="fr-text--sm fr-mb-2w">
-                Découvrez le déploiement à l’échelle communale des acteurs de
-                l’Inclusion Numérique sur votre territoire à l’aide de cette
-                cartographie.
-              </div>
-              <Link
-                href={`/prefet/${code}/cartographie`}
-                className="fr-btn"
-                data-testid="cartographie-button"
-              >
-                <span className="fr-icon-road-map-line fr-mr-1w" />
-                Visualiser la cartographie
-              </Link>
+          <h4 className={styles.departement}>{nom}</h4>
+        </div>
+        <div className={styles.actionBox}>
+          <span className={classNames(styles.blueIcon, 'fr-icon-info-fill')} />
+          <div>
+            <div className="fr-text--sm fr-mb-2w">
+              Découvrez le déploiement à l’échelle communale des acteurs de
+              l’Inclusion Numérique sur votre territoire à l’aide de cette
+              cartographie.
             </div>
+            <Link
+              href={`/prefet/${code}/cartographie`}
+              className="fr-btn"
+              data-testid="cartographie-button"
+            >
+              <span className="fr-icon-road-map-line fr-mr-1w" />
+              Visualiser la cartographie
+            </Link>
           </div>
         </div>
       </div>

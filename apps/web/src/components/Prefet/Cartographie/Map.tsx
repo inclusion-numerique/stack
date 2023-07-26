@@ -6,58 +6,57 @@ import maplibregl, {
   Map as MapType,
   MapGeoJSONFeature,
   MapMouseEvent,
-  StyleSpecification,
   Popup,
+  StyleSpecification,
 } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import {
   FilterSpecification,
   GeoJSONSourceSpecification,
 } from '@maplibre/maplibre-gl-style-spec'
-import { City } from '@app/web/types/City'
-import type {
-  Structure,
-  StructuresData,
-} from '@app/web/components/Prefet/structuresData'
-import { DepartementData } from '@app/web/utils/map/departement'
 import {
   structureTypeImage,
   structureTypes,
   structureTypeSelectedImage,
 } from '@app/web/components/Prefet/structuresTypes'
 import { Spinner } from '@app/web/ui/Spinner'
+import {
+  DepartementCartographieData,
+  DepartementCartographieDataCommune,
+  DepartementCartographieDataStructure,
+} from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
 import IndiceNumerique from './IndiceNumerique'
 import {
   addHoverState,
   setSelectedDecoupageState,
-  setSelectedStructureState,
+  setStructureSelectedState,
 } from './MapUtils'
 import MapPopup from './MapPopup'
 import styles from './Map.module.css'
 import { mapStyle } from './mapStyle'
 import {
-  ifnCommunesFillLayer,
   ifnCommunesBorderLayer,
-  ifnEpcisFillLayer,
+  ifnCommunesFillLayer,
   ifnEpcisBorderLayer,
-  ifnSelectedCommunesBorderLayer,
+  ifnEpcisFillLayer,
   ifnFillColors,
   ifnHoverCommunesBorderLayer,
   ifnHoverEpcisBorderLayer,
+  ifnSelectedCommunesBorderLayer,
 } from './Layers/ifn'
 import {
-  baseCommunesFillLayer,
   baseCommunesBorderLayer,
-  departementLayer,
-  baseEpcisFillLayer,
+  baseCommunesFillLayer,
   baseEpcisBorderLayer,
-  baseSelectedCommunesFillLayer,
+  baseEpcisFillLayer,
   baseSelectedCommunesBorderLayer,
+  baseSelectedCommunesFillLayer,
+  departementLayer,
 } from './Layers/sections'
 import {
-  structuresIconHoverLayer,
   structuresClusterCircleLayer,
   structuresClusterSymbolLayer,
+  structuresIconHoverLayer,
   structuresIconLayer,
 } from './Layers/structures'
 import { epciMaxZoom } from './Layers/common'
@@ -70,22 +69,27 @@ const mapPopupWidthWithMargin = 448 + 16
 
 const Map = ({
   departement,
-  selectedCity,
-  onCitySelected,
-  structuresData,
+  selectedCommune,
+  onCommuneSelected,
+  structures,
+  communes,
+  epcis,
   selectedStructure,
   filteredStructures,
   onStructureSelected,
 }: {
-  departement: DepartementData
-  structuresData: StructuresData
-  selectedCity?: City | null
-  onCitySelected: (city: string | null | undefined) => void
-  selectedStructure?: Structure | null
-  filteredStructures: Structure[]
+  departement: DepartementCartographieData['departement']
+  epcis: DepartementCartographieData['epcis']
+  structures: DepartementCartographieDataStructure[]
+  communes: DepartementCartographieDataCommune[]
+  selectedCommune?: DepartementCartographieDataCommune | null
+  onCommuneSelected: (commune: string | null | undefined) => void
+  selectedStructure?: DepartementCartographieDataStructure | null
+  filteredStructures: DepartementCartographieDataStructure[]
+  // Argument is the map auto generated id (sequencial) of structure
   onStructureSelected: (structure: string | null | undefined) => void
 }) => {
-  const { cities, epcis, bounds, code: departementCode } = departement
+  const { bounds, code: departementCode } = departement
   const structurePopup = useRef<Popup | null>(null)
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<MapType>()
@@ -97,23 +101,23 @@ const Map = ({
 
   const citiesByIndex: string[][] = useMemo(() => {
     const result: string[][] = ifnFillColors.map(() => [])
-    for (const city of cities) {
-      if (!city.ifnTotal) {
+    for (const commune of communes) {
+      if (!commune.ifn?.total) {
         continue
       }
-      result[getColorIndexFromIfn(city.ifnTotal)].push(city.code)
+      result[getColorIndexFromIfn(commune.ifn.total)].push(commune.code)
     }
 
     return result
-  }, [cities])
+  }, [communes])
 
   const epcisByIndex: string[][] = useMemo(() => {
     const result: string[][] = ifnFillColors.map(() => [])
     for (const epci of epcis) {
-      if (epci.ifn === null || epci.ifn === undefined) {
+      if (!epci.ifn?.total) {
         continue
       }
-      result[getColorIndexFromIfn(epci.ifn)].push(epci.code)
+      result[getColorIndexFromIfn(epci.ifn?.total)].push(epci.code)
     }
     return result
   }, [epcis])
@@ -121,9 +125,9 @@ const Map = ({
   const onMapPopupClose = () => {
     if (map.current) {
       setSelectedDecoupageState(map.current, 'baseCommunesBorder')
-      setSelectedStructureState(map.current, 'structureIconHover')
+      setStructureSelectedState(map.current, null)
     }
-    onCitySelected(null)
+    onCommuneSelected(null)
     onStructureSelected(null)
   }
 
@@ -188,10 +192,10 @@ const Map = ({
       placesLayer.map((placeLayer) => map.current?.addLayer(placeLayer))
       map.current.addSource('structures', {
         type: 'geojson',
-        generateId: true,
+        promoteId: 'id',
         data: {
           type: 'FeatureCollection',
-          features: structuresData.structures,
+          features: structures,
         },
         clusterMaxZoom: 11,
         cluster: true,
@@ -199,31 +203,58 @@ const Map = ({
         clusterProperties: { count: ['+', 1] },
       })
 
-      for (const type of structureTypes) {
-        const structureImageFile = structureTypeImage[type]
-        const structureHoverImageFile = structureTypeSelectedImage[type]
-        map.current?.loadImage(structureImageFile, (error, image) => {
-          if (error) {
-            console.error('Could not load structure image', error)
+      // Load images, THEN add structure layers to avoid missing image error in UI
+      new Promise((resolve) => {
+        if (!map.current) {
+          // Do not hang on edge cases
+          resolve(null)
+          return
+        }
+        let imagesToLoad = structureTypes.length * 2
+        for (const type of structureTypes) {
+          const structureImageFile = structureTypeImage[type]
+          const structureHoverImageFile = structureTypeSelectedImage[type]
+          if (!map.current) {
+            imagesToLoad -= 1
             return
           }
-          if (map.current && image) {
-            map.current.addImage(`structure-${type}`, image)
-          }
+          // eslint-disable-next-line @typescript-eslint/no-loop-func
+          map.current.loadImage(structureImageFile, (error, image) => {
+            if (error) {
+              console.error('Could not load structure image', error)
+              return
+            }
+            if (map.current && image) {
+              map.current.addImage(`structure-${type}`, image)
+            }
+            imagesToLoad -= 1
+            if (imagesToLoad === 0) resolve(null)
+          })
+          // eslint-disable-next-line @typescript-eslint/no-loop-func
+          map.current.loadImage(structureHoverImageFile, (error, image) => {
+            if (error) {
+              console.error('Could not load structure hover image', error)
+              return
+            }
+            if (map.current && image) {
+              map.current.addImage(`structure-${type}-hover`, image)
+            }
+            imagesToLoad -= 1
+            if (imagesToLoad === 0) resolve(null)
+          })
+        }
+      })
+        .catch((error) => {
+          console.error('Could not load structure images', error)
         })
-        map.current?.loadImage(structureHoverImageFile, (error, image) => {
-          if (error) {
-            console.error('Could not load structure hover image', error)
-            return
-          }
-          if (map.current && image) {
-            map.current.addImage(`structure-${type}-hover`, image)
-          }
+        .then(() => {
+          map.current?.addLayer(structuresIconLayer)
+          map.current?.addLayer(structuresIconHoverLayer)
+          return null
         })
-      }
-      map.current?.addLayer(structuresIconLayer)
-
-      map.current.addLayer(structuresIconHoverLayer)
+        .catch((error) => {
+          console.error('Could not load structure layers', error)
+        })
 
       map.current.addLayer(structuresClusterCircleLayer)
       map.current.addLayer(structuresClusterSymbolLayer)
@@ -258,33 +289,33 @@ const Map = ({
     })
   }, [])
 
-  // Fly to selected city
+  // Fly to selected commune
   useEffect(() => {
     if (selectedStructure) {
       return
     }
     if (map.current && map.current.isStyleLoaded()) {
-      if (selectedCity) {
+      if (selectedCommune) {
         const currentZoom = map.current.getZoom()
         map.current.flyTo({
-          center: selectedCity.centre.coordinates,
+          center: selectedCommune.centre.coordinates as [number, number],
           zoom: Math.max(epciMaxZoom, currentZoom),
           padding: { left: mapPopupWidthWithMargin },
         })
         map.current.setFilter('baseSelectedCommunesFill', [
           '==',
           ['get', 'nom'],
-          selectedCity.nom,
+          selectedCommune.nom,
         ])
         map.current.setFilter('baseSelectedCommunesBorder', [
           '==',
           ['get', 'nom'],
-          selectedCity.nom,
+          selectedCommune.nom,
         ])
         map.current.setFilter('ifnSelectedCommunesBorder', [
           '==',
           ['get', 'nom'],
-          selectedCity.nom,
+          selectedCommune.nom,
         ])
       } else {
         map.current.setFilter('baseSelectedCommunesFill', ['boolean', false])
@@ -292,12 +323,13 @@ const Map = ({
         map.current.setFilter('ifnSelectedCommunesBorder', ['boolean', false])
       }
     }
-  }, [map, selectedCity, selectedStructure])
+  }, [map, selectedCommune, selectedStructure])
 
-  // Fly to selected structure
+  // Fly to and update selected style to selected structure
   useEffect(() => {
-    if (selectedCity) {
-      return
+    if (map.current && selectedStructure) {
+      setStructureSelectedState(map.current, selectedStructure.properties.id)
+      setSelectedDecoupageState(map.current, 'baseCommunesBorder')
     }
     if (map.current && map.current.isStyleLoaded() && selectedStructure) {
       map.current.flyTo({
@@ -305,8 +337,9 @@ const Map = ({
         zoom: 12.9,
         padding: { left: mapPopupWidthWithMargin },
       })
+      console.log('Set selected structure state')
     }
-  }, [map, selectedCity, selectedStructure])
+  }, [map, selectedStructure])
 
   useEffect(() => {
     if (map.current && map.current.isStyleLoaded()) {
@@ -391,7 +424,7 @@ const Map = ({
           'visible',
         )
         map.current.setLayoutProperty(
-          'ifnHoverCommunesBorderLayer',
+          'ifnHoverCommunesBorder',
           'visibility',
           'none',
         )
@@ -430,7 +463,9 @@ const Map = ({
             'baseCommunesBorder',
             event.features[0].id,
           )
-          onCitySelected(event.features[0].properties.nom as string)
+          onCommuneSelected(
+            event.features[0]?.properties.code as string | undefined,
+          )
         }
         clickedPoint.current = event.lngLat.toString()
       }
@@ -449,11 +484,15 @@ const Map = ({
             closeButton: false,
             className: styles.popup,
           })
-            .setLngLat([
-              event.features[0].properties.lng as number,
-              event.features[0].properties.lat as number,
-            ])
-            .setHTML(`<b>${event.features[0].properties.name as string}</b>`)
+            .setLngLat(
+              (
+                event.features[0].geometry as {
+                  type: 'Point'
+                  coordinates: [number, number]
+                }
+              ).coordinates,
+            )
+            .setHTML(`<b>${event.features[0]?.properties.nom as string}</b>`)
             .addTo(map.current)
         }
       }
@@ -474,17 +513,11 @@ const Map = ({
         if (!structureFeature) {
           return
         }
+
         if (map.current && event.features && event.features.length > 0) {
-          onStructureSelected(event.features[0].properties.id as string)
+          onStructureSelected(event.features[0].id as string)
         }
         clickedPoint.current = event.lngLat.toString()
-        if (map.current) {
-          setSelectedStructureState(
-            map.current,
-            'structureIconHover',
-            structureFeature.id,
-          )
-        }
       }
       const onStructureClusterClick = (
         event: MapMouseEvent & {
@@ -542,7 +575,7 @@ const Map = ({
         map.current?.off('click', 'ifnCommunesFill', onCommuneClick)
       }
     }
-  }, [map, onCitySelected, onStructureSelected])
+  }, [map, onCommuneSelected, onStructureSelected])
 
   // Display structures depending on filters
   useEffect(() => {
@@ -568,7 +601,7 @@ const Map = ({
     ;(mapStyles.sources.structures as GeoJSONSourceSpecification).filter =
       selectedStructureFilter
     map.current?.setStyle(mapStyles)
-  }, [structuresData, filteredStructures, isMapLoaded, isMapStyleLoaded])
+  }, [structures, filteredStructures, isMapLoaded, isMapStyleLoaded])
 
   return (
     <div className={styles.mapContainer}>
@@ -586,7 +619,7 @@ const Map = ({
         </div>
       </div>
       <MapPopup
-        city={selectedCity}
+        commune={selectedCommune}
         structure={selectedStructure}
         close={onMapPopupClose}
       />

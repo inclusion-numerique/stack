@@ -8,13 +8,13 @@ import SearchableSelect from '@app/ui/components/SearchableSelect/SearchableSele
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
-import { City } from '@app/web/types/City'
-import {
-  Structure,
-  StructuresData,
-} from '@app/web/components/Prefet/structuresData'
 import LegendStructure from '@app/web/components/Prefet/Cartographie/LegendStructure'
 import { StructureFilters } from '@app/web/components/Prefet/Cartographie/structureFilters'
+import {
+  DepartementCartographieDataCommune,
+  DepartementCartographieDataCount,
+  DepartementCartographieDataStructure,
+} from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
 import styles from './Legend.module.css'
 import LegendCity from './LegendCity'
 
@@ -34,21 +34,23 @@ const LegendCheckboxLabel = ({
 )
 
 const Legend = ({
-  cities,
+  communes,
   departement,
-  structuresData,
+  structures,
   onStructureSelected,
-  selectedCity: _selectedCity,
-  onCitySelected,
+  selectedCommune: _selectedCommune,
+  onCommuneSelected,
   selectedStructure: _selectedStructure,
   onFilter,
+  count,
 }: {
-  departement: { name: string; code: string }
-  cities: City[]
-  structuresData: StructuresData
-  selectedCity?: City | null
-  onCitySelected: (city: string | null | undefined) => void
-  selectedStructure?: Structure | null
+  count: DepartementCartographieDataCount
+  departement: { nom: string; code: string }
+  communes: DepartementCartographieDataCommune[]
+  structures: DepartementCartographieDataStructure[]
+  selectedCommune?: DepartementCartographieDataCommune | null
+  onCommuneSelected: (commune: string | null | undefined) => void
+  selectedStructure?: DepartementCartographieDataStructure | null
   onStructureSelected: (structure: string | null | undefined) => void
   onFilter: (filters: StructureFilters) => void
 }) => {
@@ -85,16 +87,16 @@ const Legend = ({
     () => [
       {
         name: 'Communes',
-        options: cities.map((city) => ({
-          name: `${city.nom} ${city.codesPostaux.join(' ')}`,
-          value: `city#${city.nom}`,
-          component: <LegendCity city={city} />,
+        options: communes.map((commune) => ({
+          name: `${commune.nom} ${commune.codesPostaux.join(' ')}`,
+          value: `commune#${commune.code}`,
+          component: <LegendCity commune={commune} />,
         })),
         limit: 4,
       },
       {
         name: 'Structures',
-        options: structuresData.structures
+        options: structures
           // Filter out structures that are not geolocated as it would mess up flyTo()
           .filter(
             ({
@@ -104,25 +106,25 @@ const Legend = ({
             }) => latitude && longitude,
           )
           .map((structure) => ({
-            name: structure.properties.name,
+            name: structure.properties.nom,
             value: `structure#${structure.properties.id}`,
             component: <LegendStructure structure={structure} />,
           })),
         limit: 4,
       },
     ],
-    [cities, structuresData],
+    [communes, structures],
   )
 
   const onSelect = (value: string) => {
     if (value === '') {
-      onCitySelected(null)
+      onCommuneSelected(null)
       onStructureSelected(null)
       return
     }
-    if (value.startsWith('city#')) {
-      const cleanValue = value.replace(/^city#/, '')
-      onCitySelected(cleanValue)
+    if (value.startsWith('commune#')) {
+      const cleanValue = value.replace(/^commune#/, '')
+      onCommuneSelected(cleanValue)
       return
     }
 
@@ -221,7 +223,7 @@ const Legend = ({
                 },
               },
               {
-                label: departement.name,
+                label: departement.nom,
                 linkProps: {
                   href: `/prefet/${departement.code}`,
                 },
@@ -265,7 +267,7 @@ const Legend = ({
                       Public
                     </>
                   }
-                  count={structuresData.count.typologie.publique}
+                  count={count.type.publique}
                 />
               }
             />
@@ -279,7 +281,7 @@ const Legend = ({
                 label={
                   <LegendCheckboxLabel
                     label="Commune"
-                    count={structuresData.count.typologie.commune}
+                    count={count.sousTypePublic.commune}
                     subtype
                   />
                 }
@@ -293,7 +295,7 @@ const Legend = ({
                 label={
                   <LegendCheckboxLabel
                     label="EPCI"
-                    count={structuresData.count.typologie.epci}
+                    count={count.sousTypePublic.epci}
                     subtype
                   />
                 }
@@ -307,7 +309,7 @@ const Legend = ({
                 label={
                   <LegendCheckboxLabel
                     label="Département"
-                    count={structuresData.count.typologie.departement}
+                    count={count.sousTypePublic.departement}
                     subtype
                   />
                 }
@@ -321,7 +323,7 @@ const Legend = ({
                 label={
                   <LegendCheckboxLabel
                     label="Autre"
-                    count={structuresData.count.typologie.autre}
+                    count={count.sousTypePublic.autre}
                     subtype
                   />
                 }
@@ -339,7 +341,7 @@ const Legend = ({
                       Associations
                     </>
                   }
-                  count={structuresData.count.typologie.association}
+                  count={count.type.association}
                 />
               }
             />
@@ -355,7 +357,7 @@ const Legend = ({
                       Autres acteurs privés
                     </>
                   }
-                  count={structuresData.count.typologie.privee}
+                  count={count.type.privee}
                 />
               }
             />
@@ -371,7 +373,7 @@ const Legend = ({
                       Non défini
                     </>
                   }
-                  count={structuresData.count.typologie.nonDefini}
+                  count={count.type.nonDefini}
                 />
               }
             />
@@ -385,7 +387,7 @@ const Legend = ({
               label={
                 <LegendCheckboxLabel
                   label="Structures accueillant un Conseiller Numérique"
-                  count={structuresData.count.labels.conseillerNumerique}
+                  count={count.label.conseillerNumerique}
                 />
               }
             />
@@ -396,7 +398,7 @@ const Legend = ({
               label={
                 <LegendCheckboxLabel
                   label="Structures labellisées France Services"
-                  count={structuresData.count.labels.franceServices}
+                  count={count.label.franceServices}
                 />
               }
             />
@@ -407,7 +409,7 @@ const Legend = ({
               label={
                 <LegendCheckboxLabel
                   label="Structures habilitées Aidants Connect"
-                  count={structuresData.count.labels.aidantConnect}
+                  count={count.label.aidantsConnect}
                 />
               }
             />
@@ -416,10 +418,7 @@ const Legend = ({
               small
               path="labels.aucun"
               label={
-                <LegendCheckboxLabel
-                  label="Aucun"
-                  count={structuresData.count.labels.aucun}
-                />
+                <LegendCheckboxLabel label="Aucun" count={count.label.aucun} />
               }
             />
             <p className="fr-text--lg fr-text--bold fr-mt-6v fr-mb-3v">
@@ -432,7 +431,7 @@ const Legend = ({
               label={
                 <LegendCheckboxLabel
                   label="Structures en quartier prioritaire de la ville (QPV)"
-                  count={structuresData.count.territoiresPrioritaires.qpv}
+                  count={count.territoire.qpv}
                 />
               }
             />
@@ -443,7 +442,7 @@ const Legend = ({
               label={
                 <LegendCheckboxLabel
                   label="Structures en zone de revitalisation rurale (ZRR)"
-                  count={structuresData.count.territoiresPrioritaires.zrr}
+                  count={count.territoire.zrr}
                 />
               }
             />
@@ -454,7 +453,7 @@ const Legend = ({
               label={
                 <LegendCheckboxLabel
                   label="Aucun"
-                  count={structuresData.count.territoiresPrioritaires.aucun}
+                  count={count.territoire.nonDefini}
                 />
               }
             />

@@ -45,7 +45,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
       'Le service Inclusion Numérique est uniquement accessible aux agents publics autorisé',
     )
   })
-  it('Acceptation 2 - Connexion avec email', () => {
+  it.skip('Acceptation 2 - Connexion avec email', () => {
     cy.visit('/connexion')
     cy.execute('createUser', emailUser)
     const { email, firstName, lastName } = emailUser

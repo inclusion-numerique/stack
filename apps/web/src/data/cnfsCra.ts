@@ -1,8 +1,6 @@
 import { createReadStream } from 'node:fs'
 import neatCsv from 'neat-csv'
 import { getDataFilePath } from '@app/web/data/dataFiles'
-import { getDepartementCodes } from '@app/web/utils/map/departementGeoJson'
-import { getDepartementCodeFromPostalCode } from '@app/web/data/getDepartementCodeFromPostalCode'
 
 type ConumCraCsvRow = {
   codePostal: string
@@ -116,48 +114,4 @@ export const getConumCrasByCodePostal = async () => {
         }
       },
     )
-}
-
-export const getConumCrasByDepartement = async () => {
-  const departementCodes = getDepartementCodes()
-
-  const byDepartement = Object.fromEntries(
-    departementCodes.map((code): [string, ConumCraSummary] => [
-      code,
-      {
-        moins12ans: 0,
-        de12a18ans: 0,
-        de18a35ans: 0,
-        de35a60ans: 0,
-        plus60ans: 0,
-        enEmploi: 0,
-        sansEmploi: 0,
-        etudiant: 0,
-        retraite: 0,
-        heterogene: 0,
-      },
-    ]),
-  )
-
-  const byCodePostal = await getConumCrasByCodePostal()
-
-  for (const cra of byCodePostal) {
-    const departementCode = getDepartementCodeFromPostalCode(cra.codePostal)
-    const departement = byDepartement[departementCode]
-    if (!departement) {
-      throw new Error(`Departement ${departementCode} not found`)
-    }
-    departement.moins12ans += cra.moins12ans
-    departement.de12a18ans += cra.de12a18ans
-    departement.de18a35ans += cra.de18a35ans
-    departement.de35a60ans += cra.de35a60ans
-    departement.plus60ans += cra.plus60ans
-    departement.enEmploi += cra.enEmploi
-    departement.sansEmploi += cra.sansEmploi
-    departement.etudiant += cra.etudiant
-    departement.retraite += cra.retraite
-    departement.heterogene += cra.heterogene
-  }
-
-  return byDepartement
 }

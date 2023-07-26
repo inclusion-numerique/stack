@@ -1,4 +1,4 @@
-import { Structure } from '@app/web/components/Prefet/structuresData'
+import { DepartementCartographieDataStructure } from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
 
 export type StructureFilters = {
   typologie: {
@@ -27,17 +27,17 @@ export type StructureFilters = {
 }
 
 export const applyStructureFilter = (
-  structure: Structure,
+  structure: DepartementCartographieDataStructure,
   { territoiresPrioritaires, labels, typologie }: StructureFilters,
 ) => {
   const {
     type,
-    subtype,
-    cnfsLabel,
-    aidantsConnectLabel,
-    franceServicesLabel,
-    inZrr,
-    inQpv,
+    sousTypePublic,
+    labelAidantsConnect,
+    labelFranceServices,
+    labelConseillersNumerique,
+    zrr,
+    qpv,
   } = structure.properties
 
   // Filtering out main type
@@ -54,47 +54,47 @@ export const applyStructureFilter = (
 
   if (type === 'publique') {
     // Public type all have a subtype, we only consider the subtypes
-    if (subtype === 'commune' && !typologie.commune) {
+    if (sousTypePublic === 'commune' && !typologie.commune) {
       return false
     }
-    if (subtype === 'epci' && !typologie.epci) {
+    if (sousTypePublic === 'epci' && !typologie.epci) {
       return false
     }
-    if (subtype === 'departement' && !typologie.departement) {
+    if (sousTypePublic === 'departement' && !typologie.departement) {
       return false
     }
-    if (subtype === 'autre' && !typologie.autre) {
+    if (sousTypePublic === 'autre' && !typologie.autre) {
       return false
     }
   }
 
   // Filtering out labels
-  if (cnfsLabel && !labels.conseillerNumerique) {
+  if (labelConseillersNumerique && !labels.conseillerNumerique) {
     return false
   }
-  if (aidantsConnectLabel && !labels.aidantConnect) {
+  if (labelAidantsConnect && !labels.aidantConnect) {
     return false
   }
-  if (franceServicesLabel && !labels.franceServices) {
+  if (labelFranceServices && !labels.franceServices) {
     return false
   }
   if (
-    !cnfsLabel &&
-    !aidantsConnectLabel &&
-    !franceServicesLabel &&
+    !labelConseillersNumerique &&
+    !labelAidantsConnect &&
+    !labelFranceServices &&
     !labels.aucun
   ) {
     return false
   }
 
   // Filtering out territoires prioritaires
-  if (inZrr && !territoiresPrioritaires.zrr) {
+  if (zrr && !territoiresPrioritaires.zrr) {
     return false
   }
-  if (inQpv && !territoiresPrioritaires.qpv) {
+  if (qpv && !territoiresPrioritaires.qpv) {
     return false
   }
-  if (!inZrr && !inQpv && !territoiresPrioritaires.aucun) {
+  if (!zrr && !qpv && !territoiresPrioritaires.aucun) {
     return false
   }
 

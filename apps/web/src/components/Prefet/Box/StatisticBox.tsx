@@ -1,6 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
-import { StatisticBox as StatisticBoxType } from '../departementData'
+import { numberToString } from '@app/web/utils/formatNumber'
+import type { StatisticBoxData as StatisticBoxType } from '@app/web/app/(prefet)/prefet/[codeDepartement]/getDepartementDashboardData'
 import Statistic from './Statistic'
 import styles from './StatisticBox.module.css'
 import Source from './Source'
@@ -15,7 +16,7 @@ const StatisticBox = ({
     {label && (
       <div className={styles.header}>
         <div className={styles.headerTitle}>
-          <h3>{value}</h3>
+          <h3>{numberToString(value)}</h3>
           <h6>{label}</h6>
         </div>
         {withDescription && (
@@ -44,9 +45,9 @@ const StatisticBox = ({
           </div>
         ) : (
           <>
-            <div className="fr-text--lg fr-mt-3w fr-mb-2w">
-              {boxStatistic.label && <b>{boxStatistic.label}</b>}
-            </div>
+            <p className="fr-text--lg fr-mt-3w fr-mb-2w fr-text--bold">
+              {boxStatistic.label}
+            </p>
             {boxStatistic.statistics &&
               boxStatistic.statistics.map((statistic) => (
                 <Statistic key={statistic.id} {...statistic}>

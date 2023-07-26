@@ -1,33 +1,30 @@
 import React from 'react'
 import Link from 'next/link'
-import { Structure } from '@app/web/components/Prefet/structuresData'
 import { structureSubtypeLabel } from '@app/web/components/Prefet/structuresTypes'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
+import { DepartementCartographieDataStructure } from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
 
 const StructureDetails = ({
   structure: {
     properties: {
-      name,
+      nom,
       adresse,
-      postalCode,
-      cityCode,
-      city,
-      sourceLabel,
-      sourceUrl,
-      updated,
+      codePostal,
+      codeCommune,
+      commune,
       conseillersNumeriques,
-      aidantsHabilitesAidantsConnect,
+      aidantsConnect,
       type,
-      subtype,
-      cnfsLabel,
-      aidantsConnectLabel,
-      franceServicesLabel,
-      inZrr,
-      inQpv,
+      sousTypePublic,
+      labelAidantsConnect,
+      labelConseillersNumerique,
+      labelFranceServices,
+      zrr,
+      qpv,
     },
   },
 }: {
-  structure: Structure
+  structure: DepartementCartographieDataStructure
 }) => {
   const typeString =
     type === 'association'
@@ -36,33 +33,39 @@ const StructureDetails = ({
       ? 'publique'
       : 'privée'
 
-  const subtypeString = subtype ? structureSubtypeLabel[subtype] : null
+  const subtypeString = sousTypePublic
+    ? structureSubtypeLabel[
+        sousTypePublic as keyof typeof structureSubtypeLabel
+      ]
+    : null
 
   return (
     <>
-      <h6 className="fr-mt-1v">{name}</h6>
+      <h6 className="fr-mt-1v">{nom}</h6>
       <p className="fr-mb-1v">
-        {adresse} {postalCode}&nbsp;{city}
+        {adresse} {codePostal}&nbsp;{commune}
       </p>
       <p className="fr-hint-text fr-mb-0">
-        Code postal : {postalCode} - INSEE : {cityCode}
+        Code postal : {codePostal} - INSEE : {codeCommune || 'non disponible'}
       </p>
       <p className="fr-hint-text">
-        Mise à jour le {dateAsDay(new Date(updated))} · Source :{' '}
-        <Link href={sourceUrl} target="_blank">
-          {sourceLabel}
+        Mise à jour le {dateAsDay(new Date('2023-07-21'))} · Source :{' '}
+        <Link
+          href="https://cartographie.societenumerique.gouv.fr/"
+          target="_blank"
+        >
+          Cartographie Nationale
         </Link>
       </p>
       <hr className="fr-mt-6v" />
       <p className="fr-text--lg fr-text--bold fr-mb-2v">
-        {conseillersNumeriques ?? 0} Conseiller
+        {conseillersNumeriques} Conseiller
         {conseillersNumeriques === 1 ? '' : 's'} Numérique
         {conseillersNumeriques === 1 ? '' : 's'}
       </p>
       <p className="fr-text--lg fr-text--bold">
-        {aidantsHabilitesAidantsConnect ?? 0} Aidant
-        {aidantsHabilitesAidantsConnect === 1 ? '' : 's'} habilité Aidants
-        Connect
+        {aidantsConnect} Aidant
+        {aidantsConnect === 1 ? '' : 's'} habilité Aidants Connect
       </p>
       <hr className="fr-mt-6v" />
       <p className="fr-text--lg fr-text--bold fr-mb-3v">
@@ -77,28 +80,30 @@ const StructureDetails = ({
         </p>
       )}
       <p className="fr-text--lg fr-text--bold fr-mb-3v">Labels</p>
-      {!cnfsLabel && !aidantsConnectLabel && !franceServicesLabel && (
-        <p className="fr-mb-1v">Aucun</p>
+      {!labelConseillersNumerique &&
+        !labelAidantsConnect &&
+        !labelFranceServices && <p className="fr-mb-1v">Aucun</p>}
+      {labelConseillersNumerique && (
+        <p className="fr-mb-1v">Structures accueillant des CNFS</p>
       )}
-      {cnfsLabel && <p className="fr-mb-1v">Structures accueillant des CNFS</p>}
-      {aidantsConnectLabel && (
+      {labelAidantsConnect && (
         <p className="fr-mb-1v">Structures labellisées Aidants Connect</p>
       )}
-      {franceServicesLabel && (
+      {labelFranceServices && (
         <p className="fr-mb-1v">Structures labellisées France Services</p>
       )}
-      {inZrr ||
-        (inQpv && (
+      {zrr ||
+        (qpv && (
           <>
             <p className="fr-text--lg fr-text--bold fr-mt-6v fr-mb-3v">
               Territoires prioritaires
             </p>
-            {inQpv && (
+            {qpv && (
               <p className="fr-mb-1v">
                 Structures en quartier prioritaire de la ville (QPV)
               </p>
             )}
-            {inZrr && (
+            {zrr && (
               <p className="fr-mb-1v">
                 Structures en zone de revitalisation rurale (ZRR)
               </p>

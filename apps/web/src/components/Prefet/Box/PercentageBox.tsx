@@ -1,5 +1,5 @@
 import React from 'react'
-import { PercentageBox as PercentageBoxType } from '../departementData'
+import { PercentageBoxData } from '@app/web/app/(prefet)/prefet/[codeDepartement]/getDepartementDashboardData'
 import Percentage from './Percentage'
 import Source from './Source'
 import styles from './PercentageBox.module.css'
@@ -11,7 +11,7 @@ const PercentageBox = ({
   statistics,
   updated,
   source,
-}: PercentageBoxType) => (
+}: PercentageBoxData) => (
   <>
     <div className={styles.percentages}>
       {statistics.slice(0, 5).map((statistic, index) => (

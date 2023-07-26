@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch", "jsonProtocol"]
+  previewFeatures = ["fullTextSearch", "jsonProtocol", "postgresqlExtensions", "extendedIndexes"]
   binaryTargets   = ["native", "debian-openssl-1.1.x"]
 }
 
@@ -159,4 +159,304 @@ model Upload {
   image Image?
 
   @@map("uploads")
+}
+
+model Region {
+  // INSEE
+  code         String        @id
+  nom          String
+  departements Departement[]
+
+  @@map("regions")
+}
+
+model Epci {
+  // INSEE
+  code       String    @id
+  nom        String
+  communes   Commune[]
+  geometry   Json?
+  population Int
+  ifn        IfnEpci?
+
+  @@map("epcis")
+}
+
+model Departement {
+  // INSEE
+  code                             String                                @id
+  nom                              String
+  codeRegion                       String?                               @map("code_region")
+  region                           Region?                               @relation(fields: [codeRegion], references: [code])
+  communes                         Commune[]
+  geometry                         Json
+  // north east [[lat,long], southwest [lat,long]]
+  bounds                           Json
+  structuresCartographieNationale  StructureCartographieNationale[]
+  craConseillerNumerique           CraConseillerNumeriqueParDepartement?
+  coordinateursConseillerNumerique CoordinateurConseillerNumerique[]
+
+  @@map("departements")
+}
+
+model Commune {
+  code         String         @id
+  nom          String
+  codesPostaux CodesPostaux[]
+
+  codeDepartement String?      @map("code_departement")
+  departement     Departement? @relation(fields: [codeDepartement], references: [code])
+
+  population Int
+
+  codeEpci String? @map("code_epci")
+  epci     Epci?   @relation(fields: [codeEpci], references: [code])
+
+  latitude  Float?
+  longitude Float?
+
+  geometry Json?
+
+  structuresCartographieNationale StructureCartographieNationale[]
+  ifn                             IfnCommune?
+
+  @@index([codeDepartement])
+  @@index([codeEpci])
+  @@map("communes")
+}
+
+// Explicit many to many table between Commune and CodePostal
+model CodesPostaux {
+  code       String
+  codePostal CodePostal @relation(fields: [code], references: [code])
+
+  codeCommune String  @map("code_commune")
+  commune     Commune @relation(fields: [codeCommune], references: [code], onDelete: Cascade)
+
+  @@id([code, codeCommune])
+  @@map("code_postaux")
+}
+
+// Normalized for easier search with o(1) instead of string[] in Communes
+model CodePostal {
+  code         String         @id
+  codesPostaux CodesPostaux[]
+
+  @@map("code_postal")
+}
+
+model StructureCartographieNationale {
+  id    String @id
+  nom   String
+  siret String
+
+  type           String
+  sousTypePublic String?
+
+  // Bad data in, bad data out. Missing communes are frequent
+  codeCommune String?  @map("code_commune")
+  commune     Commune? @relation(fields: [codeCommune], references: [code])
+
+  // As data is really bad, as a fallback we need to store the departement code when postal code / name has a typo and no codeCommune is found
+  codeDepartement String?      @map("code_repartement")
+  departement     Departement? @relation(fields: [codeDepartement], references: [code])
+
+  adresse String
+
+  // This is not clean. Only used for displaying address. Use Commune relation for strict data.
+  codePostal String @map("code_postal")
+  source     String
+
+  updatedAt DateTime @map("updated_at")
+
+  latitude  Float?
+  longitude Float?
+
+  labelConseillersNumerique Boolean
+  labelFranceServices       Boolean
+  labelAidantsConnect       Boolean
+
+  structureAidantsConnect StructureAidantsConnect?
+
+  permanenceConseillerNumerique PermanenceConseillerNumerique?
+
+  // If we have detected an error in the data (e.g. invalid postal code / commune name) we store the error here
+  errors Json?
+
+  @@map("structures_cartographie_nationale")
+}
+
+model StructureAidantsConnect {
+  id String @id
+
+  structureCartographieNationaleId String?                         @unique @map("structure_cartographie_nationale_id")
+  structureCartographieNationale   StructureCartographieNationale? @relation(fields: [structureCartographieNationaleId], references: [id])
+
+  isActive Boolean
+
+  aidants        Int
+  usagersUniques Int
+
+  totalDemarches Int
+
+  // Nombre de démarches (smaller names for easier data transfer)
+  argent    Int
+  etranger  Int
+  famille   Int
+  justice   Int
+  loisirs   Int
+  papier    Int
+  social    Int
+  transport Int
+  travail   Int
+  logement  Int
+
+  // If we have detected an error in the data (e.g. not found in carto nationale) we store the error here
+  errors Json?
+
+  @@index([structureCartographieNationaleId])
+  @@map("structures_aidants_connect")
+}
+
+model PermanenceConseillerNumerique {
+  id String @id
+
+  structureCartographieNationaleId String?                           @unique @map("structure_cartographie_nationale_id")
+  structureCartographieNationale   StructureCartographieNationale?   @relation(fields: [structureCartographieNationaleId], references: [id])
+  enPermanence                     ConseillerNumeriqueEnPermanence[]
+
+  // If we have detected an error in the data (e.g. not found in carto nationale) we store the error here
+  errors Json?
+
+  @@index([structureCartographieNationaleId])
+  @@map("permanences_conseiller_numerique")
+}
+
+// Explicit many to many table between PermanenceConseillerNumerique and ConseillerNumerique
+model ConseillerNumeriqueEnPermanence {
+  permanenceId String                        @map("permanence_id")
+  permanence   PermanenceConseillerNumerique @relation(fields: [permanenceId], references: [id])
+
+  conseillerNumeriqueId String              @map("conseiller_numerique_id")
+  conseillerNumerique   ConseillerNumerique @relation(fields: [conseillerNumeriqueId], references: [id])
+
+  @@id([permanenceId, conseillerNumeriqueId])
+  @@index([conseillerNumeriqueId])
+  @@index([permanenceId])
+  @@map("conseillers_numeriques_en_permanence")
+}
+
+model CoordinateurConseillerNumerique {
+  id                               String      @id
+  codeDepartement                  String      @map("code_departement")
+  departement                      Departement @relation(fields: [codeDepartement], references: [code])
+  conseillersNumeriquesCoordonnees Int         @map("conseillers_numeriques_coordonnees")
+  structuresCoordonnees            Int         @map("structures_coordonnees")
+
+  @@map("coordinateur_conseiller_numerique")
+}
+
+model ConseillerNumerique {
+  id String @id
+
+  enPermanence ConseillerNumeriqueEnPermanence[]
+
+  @@map("conseiller_numerique")
+}
+
+model CraConseillerNumeriqueParDepartement {
+  codeDepartement String      @id @unique @map("code_repartement")
+  departement     Departement @relation(fields: [codeDepartement], references: [code])
+
+  participants Int
+
+  ageMoins12ans Int @map("age_moins_12_ans")
+  age12a18ans   Int @map("age_12_a_18_ans")
+  age18a35ans   Int @map("age_18_a_35_ans")
+  age35a60ans   Int @map("age_35_a_60_ans")
+  agePlus60ans  Int @map("age_plus_60_ans")
+
+  statutEtudiant   Int @map("statut_etudiant")
+  statutSansEmploi Int @map("statut_sans_emploi")
+  statutEnEmploi   Int @map("statut_en_emploi")
+  statutRetraite   Int @map("statut_retraite")
+  statutHeterogene Int @map("statut_heterogene")
+
+  accompagnementIndividuel  Int @map("accompagnement_individuel")
+  accompagnementAtelier     Int @map("accompagnement_atelier")
+  accompagnementRedirection Int @map("accompagnement_redirection")
+
+  activiteCollectif  Int @map("activite_collectif")
+  activitePonctuel   Int @map("activite_ponctuel")
+  activiteIndividuel Int @map("activite_individuel")
+
+  themeAutre                  Int @map("theme_autre")
+  themeEquipementInformatique Int @map("theme_equipement_informatique")
+  themeDemarcheEnLigne        Int @map("theme_demarche_en_ligne")
+  themeSmartphone             Int @map("theme_smartphone")
+  themeCourriel               Int @map("theme_courriel")
+  themeInternet               Int @map("theme_internet")
+  themeVocabulaire            Int @map("theme_vocabulaire")
+  themeTraitementTexte        Int @map("theme_traitement_texte")
+  themeContenusNumeriques     Int @map("theme_contenus_numeriques")
+  themeTrouverEmploi          Int @map("theme_trouver_emploi")
+  themeEchanger               Int @map("theme_echanger")
+  themeTpePme                 Int @map("theme_tpe_pme")
+  themeAccompagnerEnfant      Int @map("theme_accompagner_enfant")
+  themeSecurite               Int @map("theme_securite")
+  themeFraudeEtHarcelement    Int @map("theme_fraude_et_harcelement")
+  themeSante                  Int @map("theme_sante")
+  themeDiagnostic             Int @map("theme_diagnostic")
+  themeBudget                 Int @map("theme_budget")
+  themeScolaire               Int @map("theme_scolaire")
+
+  @@map("cra_conseiller_numerique_par_departement")
+}
+
+model IfnEpci {
+  codeEpci String @id @unique @map("code_epci")
+  epci     Epci   @relation(fields: [codeEpci], references: [code], onDelete: Cascade)
+
+  total Float
+
+  // Non couverture 4G
+  no4gCoverageRate Float @map("no_4g_coverage_rate")
+
+  // Non couverture fibre
+  noThdCoverageRate Float @map("no_thd_coverage_rate")
+
+  // Taux de pauvreté
+  povertyRate Float @map("poverty_rate")
+
+  // Taux de personnes âgées de 65 ans ou plus
+  older65Rate Float @map("older_65_rate")
+
+  // Taux de personnes sans diplôme
+  nscol15pRate Float @map("nscol15p_rate")
+
+  @@map("ifn_epci")
+}
+
+model IfnCommune {
+  codeCommune String  @id @unique @map("code_commune")
+  commune     Commune @relation(fields: [codeCommune], references: [code], onDelete: Cascade)
+
+  total Float
+
+  // Non couverture 4G
+  no4gCoverageRate Float @map("no_4g_coverage_rate")
+
+  // Non couverture fibre
+  noThdCoverageRate Float @map("no_thd_coverage_rate")
+
+  // Taux de pauvreté
+  povertyRate Float @map("poverty_rate")
+
+  // Taux de personnes âgées de 65 ans ou plus
+  older65Rate Float @map("older_65_rate")
+
+  // Taux de personnes sans diplôme
+  nscol15pRate Float @map("nscol15p_rate")
+
+  @@map("ifn_commune")
 }

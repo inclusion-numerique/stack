@@ -1,10 +1,14 @@
 import React from 'react'
-import { City } from '@app/web/types/City'
+import { DepartementCartographieDataCommune } from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
 import styles from './LegendCity.module.css'
 
-const LegendCity = ({ city }: { city: City }) => (
+const LegendCity = ({
+  commune,
+}: {
+  commune: DepartementCartographieDataCommune
+}) => (
   <div className={styles.city}>
-    {city.nom} {city.codesPostaux.join(' ')}
+    {commune.nom} {commune.codesPostaux.join(' ')}
   </div>
 )
 

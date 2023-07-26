@@ -1,21 +1,23 @@
 import React from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
-import { City } from '@app/web/types/City'
-import { Structure } from '@app/web/components/Prefet/structuresData'
 import CityDetails from '@app/web/components/Prefet/Cartographie/CityDetails'
 import StructureDetails from '@app/web/components/Prefet/Cartographie/StructureDetails'
+import {
+  DepartementCartographieDataCommune,
+  DepartementCartographieDataStructure,
+} from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
 import styles from './MapPopup.module.css'
 
 const MapPopup = ({
-  city,
+  commune,
   structure,
   close,
 }: {
-  city: City | null | undefined
-  structure: Structure | null | undefined
+  commune: DepartementCartographieDataCommune | null | undefined
+  structure: DepartementCartographieDataStructure | null | undefined
   close: () => void
 }) => {
-  if (!city && !structure) {
+  if (!commune && !structure) {
     return null
   }
 
@@ -32,7 +34,7 @@ const MapPopup = ({
           Fermer
         </Button>
       </div>
-      {!!city && <CityDetails city={city} />}
+      {!!commune && <CityDetails commune={commune} />}
       {!!structure && <StructureDetails structure={structure} />}
     </div>
   )

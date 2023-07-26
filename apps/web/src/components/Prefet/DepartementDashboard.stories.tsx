@@ -1,18 +1,16 @@
 import { Meta, StoryObj } from '@storybook/react'
 import DepartementDashboard from '@app/web/components/Prefet/DepartementDashboard'
+import { DepartementGeoFeatures } from '@app/web/data/departements'
+import { getDepartementGeoJson } from '@app/web/test/testDepartementData'
 import {
-  DepartementGeoJson,
-  getDepartementGeoJson,
-} from '@app/web/utils/map/departementGeoJson'
-import {
-  Box,
-  Boxes,
+  BoxData,
+  BoxesData,
   DepartementDashboardData,
-} from '@app/web/components/Prefet/departementData'
+} from '@app/web/app/(prefet)/prefet/[codeDepartement]/getDepartementDashboardData'
 
-const getFakeData = ({
-  name,
-}: Pick<DepartementGeoJson, 'code' | 'name'>): DepartementDashboardData => {
+const getFakeData = (
+  departement: DepartementGeoFeatures,
+): DepartementDashboardData => {
   const inclusionLocations = {
     id: 'lieux-d-inclusion-numérique',
     label: "Lieux d'Inclusion Numérique",
@@ -85,7 +83,7 @@ const getFakeData = ({
         ],
       },
     ],
-  } satisfies Box
+  } satisfies BoxData
 
   const aidantConnectLocations = {
     id: 'aidants-numériques-identifiés',
@@ -116,13 +114,13 @@ const getFakeData = ({
         ],
       },
     ],
-  } satisfies Box
+  } satisfies BoxData
 
   const main = { inclusionLocations, aidantConnectLocations }
 
   const publicsAccompagnes = {
     id: 'publics-accompagnés',
-    label: `Publics accompagnés - ${name}`,
+    label: `Publics accompagnés`,
     description: 'Données factices',
     boxes: [
       {
@@ -173,11 +171,11 @@ const getFakeData = ({
         ],
       },
     ],
-  } satisfies Boxes
+  } satisfies BoxesData
 
   const accompagnements = {
     id: 'accompagnements',
-    label: `Accompagnements - ${name}`,
+    label: `Accompagnements`,
     description: 'Données factices',
     boxes: [
       {
@@ -232,11 +230,11 @@ const getFakeData = ({
         ],
       },
     ],
-  } satisfies Boxes
+  } satisfies BoxesData
 
   const detailed = { publicsAccompagnes, accompagnements }
 
-  return { main, detailed }
+  return { main, detailed, departement }
 }
 
 export default {
@@ -253,9 +251,9 @@ const [rhone, paris] = [
 if (!rhone || !paris) throw new Error('Departement not found')
 
 export const Rhône: Story = {
-  args: { departement: rhone, data: getFakeData(rhone) },
+  args: { data: getFakeData(rhone) },
 }
 
 export const Paris: Story = {
-  args: { departement: paris, data: getFakeData(paris) },
+  args: { data: getFakeData(paris) },
 }

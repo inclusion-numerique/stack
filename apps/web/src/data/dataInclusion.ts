@@ -1,11 +1,10 @@
 import { readFile } from 'node:fs/promises'
-import { createReadStream } from 'node:fs'
-import neatCsv from 'neat-csv'
 import { DataInclusionStructure } from '@app/web/data/dataInclusionSchema'
 import { getDataFilePath } from '@app/web/data/dataFiles'
 import { mapStructuresBySiret } from '@app/web/data/siret'
 import { mapStructuresByKey } from '@app/web/data/mapByKey'
 import { getDepartementCodeFromPostalCode } from '@app/web/data/getDepartementCodeFromPostalCode'
+import { extractMetadataFromId } from '@app/web/data/buildDatabase/buildStructuresCartographieNationale'
 
 export const CartoInclusionLieuxMediation = {
   schema: 'betagouv/data-inclusion-schema',
@@ -13,8 +12,6 @@ export const CartoInclusionLieuxMediation = {
   downloadUrl:
     'https://www.data.gouv.fr/fr/datasets/r/be3323ec-4662-4b3b-b90e-18cf5c97193d',
   dataFile: 'structures-inclusion-20230717-data-inclusion-sans-doublons.json',
-  csvWithInseeCode:
-    'structures-inclusion-20230717-data-inclusion-sans-doublons.code-insee.csv',
 }
 
 export type CartoInclusionLieuxMediationStructure = DataInclusionStructure & {
@@ -24,53 +21,20 @@ export type CartoInclusionLieuxMediationStructure = DataInclusionStructure & {
   franceServicesLabel: boolean
   aidantsConnectLabel: boolean
 }
-
-/**
- * E.g. "mediation-numerique-conseiller-numerique-62ab017b8255a806e299c725-mediation-numerique"
- */
-const cnfsIdExtract = /conseiller-numerique-([\dA-Fa-f]{3,})/
-
-/**
- * E.g. "aidants-connect-1539|numi-conseiller-numerique-63d784fce6d6a806f256657a|numinumiconseiller-numerique-63d784fce6d6a806f256657a"
- */
-const aidantsConnectIdExtract = /aidants-connect-([\dA-Fa-f]*)/
-
-export const extractMetadataFromId = (id: string) => {
-  const cnfsPermanenceIdMatch = id.match(cnfsIdExtract)
-  const cnfsPermanenceId = cnfsPermanenceIdMatch
-    ? cnfsPermanenceIdMatch[1]
-    : undefined
-
-  const aidantsConnectStructureIdMatch = id.match(aidantsConnectIdExtract)
-  const aidantsConnectStructureId = aidantsConnectStructureIdMatch
-    ? aidantsConnectStructureIdMatch[1]
-    : undefined
-  return {
-    cnfsPermanenceId,
-    aidantsConnectStructureId,
-  }
-}
-
 export const refineDataInclusionStructure = (
   structure: DataInclusionStructure,
-  idToInseeCode: Map<string, string>,
-): CartoInclusionLieuxMediationStructure => {
-  const codeInseeFromMap =
-    structure.code_insee || idToInseeCode.get(structure.id)
-
-  return {
-    ...structure,
-    ...extractMetadataFromId(structure.id),
-    code_departement: getDepartementCodeFromPostalCode(structure.code_postal),
-    code_insee: codeInseeFromMap,
-    conseillerNumeriqueLabel:
-      structure.labels_nationaux?.includes('conseiller-numerique') ?? false,
-    franceServicesLabel:
-      structure.labels_nationaux?.includes('france-service') ?? false,
-    aidantsConnectLabel:
-      structure.labels_nationaux?.includes('aidants-connect') ?? false,
-  }
-}
+): CartoInclusionLieuxMediationStructure => ({
+  ...structure,
+  ...extractMetadataFromId(structure.id),
+  code_departement: getDepartementCodeFromPostalCode(structure.code_postal),
+  code_insee: structure.code_insee,
+  conseillerNumeriqueLabel:
+    structure.labels_nationaux?.includes('conseiller-numerique') ?? false,
+  franceServicesLabel:
+    structure.labels_nationaux?.includes('france-service') ?? false,
+  aidantsConnectLabel:
+    structure.labels_nationaux?.includes('aidants-connect') ?? false,
+})
 
 export const getDataInclusionStructures = async () => {
   const data = await readFile(
@@ -79,38 +43,7 @@ export const getDataInclusionStructures = async () => {
   )
   const structures = JSON.parse(data) as DataInclusionStructure[]
 
-  const csvWithInseeCode: {
-    id: string
-    result_citycode: string
-  }[] = await neatCsv(
-    createReadStream(
-      getDataFilePath(CartoInclusionLieuxMediation.csvWithInseeCode),
-    ),
-    {
-      // Headers are not pretty from metabase export, we redefine them here
-      // Keep in sync with csv file
-      mapValues: ({ header, index, value }) => {
-        if (index === 0) {
-          return value as string
-        }
-        if (header === 'id' || header === 'result_citycode') {
-          return value as string
-        }
-      },
-      separator: ';',
-    },
-  )
-
-  const idToInseeCode = new Map(
-    csvWithInseeCode.map(
-      ({ id, result_citycode }) =>
-        [id, result_citycode.padStart(5, '0')] as [string, string],
-    ),
-  )
-
-  return structures.map((structure) =>
-    refineDataInclusionStructure(structure, idToInseeCode),
-  )
+  return structures.map((structure) => refineDataInclusionStructure(structure))
 }
 
 export const mapDataInclusionStructuresBySiret = (

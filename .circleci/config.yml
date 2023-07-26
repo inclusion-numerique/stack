@@ -42,7 +42,7 @@ executors:
 parameters:
   cache_version:
     type: string
-    default: '2023-05-17-01'
+    default: '2023-07-20-01'
   virtual_store_dir:
     type: string
     default: './.pnpm'
@@ -169,7 +169,7 @@ jobs:
       - checkout
       - skip/skip_unchanged:
           paths: pnpm-lock.yaml
-      - install_dependencies
+      - restore_dependencies_cache
       - run:
           name: 'Fetch dependencies'
           command: pnpm install --virtual-store-dir << pipeline.parameters.virtual_store_dir >> --frozen-lockfile
@@ -206,9 +206,6 @@ jobs:
       - checkout
       - install_dependencies
       - run:
-          name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma generate
-      - run:
           name: 'Tsc'
           command: pnpm -F '@app/web' tsc
       - run:
@@ -222,9 +219,6 @@ jobs:
     steps:
       - checkout
       - install_dependencies
-      - run:
-          name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma generate
       - run:
           name: 'Tsc'
           command: pnpm -F '!@app/web' tsc
@@ -257,9 +251,6 @@ jobs:
       - install_dependencies
       - create_dotenv_file
       - run:
-          name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma generate
-      - run:
           name: 'Test all packages except @app/web'
           command: pnpm --silent -F '!@app/web' test
 
@@ -270,9 +261,6 @@ jobs:
       - checkout
       - install_dependencies
       - create_dotenv_file
-      - run:
-          name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma generate
       - run:
           name: 'Test @app/web'
           command: pnpm --silent -F @app/web test
@@ -286,9 +274,6 @@ jobs:
           docker_layer_caching: true
       - install_dependencies
       - create_dotenv_file
-      - run:
-          name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - setup_docker_web_env
       - run:
@@ -327,9 +312,6 @@ jobs:
       - checkout
       - install_dependencies
       - create_dotenv_file
-      - run:
-          name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - run:
           name: 'Build storybook and deploy on chromatic'
@@ -347,9 +329,6 @@ jobs:
           keys:
             - << pipeline.parameters.cache_version >>-cypress-{{ checksum "<< pipeline.parameters.lockfile >>" }}
       - create_dotenv_file
-      - run:
-          name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - run:
           name: 'Run Cypress component testing'
@@ -385,9 +364,6 @@ jobs:
             - << pipeline.parameters.cache_version >>-cypress-{{ checksum "<< pipeline.parameters.lockfile >>" }}
       - create_dotenv_file
       - add_secrets_to_dotenv_file
-      - run:
-          name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma generate
       - setup_docker_web_env
       - run:
           name: "Add NEXT_PUBLIC_* env to .env"
@@ -438,9 +414,6 @@ jobs:
       - checkout
       - create_dotenv_file
       - install_dependencies
-      - run:
-          name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - setup_docker_web_env
       - run:
@@ -498,13 +471,13 @@ jobs:
                 command: |
                   pnpm --silent -F @app/fixtures load
       - run:
-          name: 'Execute migration from legacy data'
-          command: |
-            pnpm --silent -F @app/migration execute
-      - run:
           name: Check that deployed container status is ok
           command: |
             pnpm --silent cli deployment:check-status https://$WEB_BASE_URL
+      - run:
+          name: Build dataset
+          command: |
+            pnpm --silent cli deployment:build-data https://$WEB_BASE_URL
       - run:
           name: Set deployment status to success
           command: pnpm --silent cli github:deployment:update $DEPLOYMENT_ID success -d 'Deploy successful' -u https://$WEB_BASE_URL -l https://app.circleci.com/pipelines/workflows/$CIRCLE_WORKFLOW_ID
@@ -521,9 +494,6 @@ jobs:
       - install_dependencies
       - install_terraform
       - create_dotenv_file
-      - run:
-          name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - run:
           name: "Create terraform variables file from environment variables"
@@ -543,9 +513,6 @@ jobs:
       - install_dependencies
       - install_terraform
       - create_dotenv_file
-      - run:
-          name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - run:
           name: "Create terraform variables file from environment variables"
@@ -564,9 +531,6 @@ jobs:
       - install_dependencies
       - install_terraform
       - create_dotenv_file
-      - run:
-          name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma generate
       - add_secrets_to_dotenv_file
       - run:
           name: "Create terraform variables file from environment variables"
@@ -608,12 +572,19 @@ commands:
             echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
             sudo apt update && sudo apt install terraform
 
-  install_dependencies:
+  restore_dependencies_cache:
     steps:
       - install_pnpm
       - restore_cache:
           keys:
             - << pipeline.parameters.cache_version >>-pnpm-{{ checksum "<< pipeline.parameters.lockfile >>" }}
+
+  install_dependencies:
+    steps:
+      - restore_dependencies_cache
+      - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @app/web prisma generate
 
   create_dotenv_file:
     steps:

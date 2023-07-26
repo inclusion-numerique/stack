@@ -36,15 +36,35 @@ export const setSelectedDecoupageState = (
   }
 }
 
-export const setSelectedStructureState = (
+let selectedStructureStateId: string | null = null
+export const setStructureSelectedState = (
   map: Map,
-  layer: string,
-  selectedId?: string | number,
+  selectedStructureId: string | null,
 ) => {
-  setState(map, 'structures', undefined, 'selected', 'selected', false)
-  if (selectedId) {
-    stateId.selected = selectedId
-    setState(map, 'structures', undefined, 'selected', 'selected', true)
+  if (selectedStructureStateId !== null) {
+    // Deselect the previously selected feature
+    map.setFeatureState(
+      {
+        source: 'structures',
+        // sourceLayer: 'structureIconHover',
+        id: selectedStructureStateId,
+      },
+      { selected: false },
+    )
+  }
+
+  // Update the selected feature
+  selectedStructureStateId = selectedStructureId
+
+  if (selectedStructureId) {
+    map.setFeatureState(
+      {
+        source: 'structures',
+        // sourceLayer: 'structureIconHover',
+        id: selectedStructureId,
+      },
+      { selected: true },
+    )
   }
 }
 

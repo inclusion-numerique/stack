@@ -5,7 +5,7 @@ import { mapStructuresByKey } from '@app/web/data/mapByKey'
 
 export const CnfsPermanences = {
   url: 'https://api.conseiller-numerique.gouv.fr/permanences',
-  dataFile: 'cnfs_permanences.json',
+  dataFile: '2023-07-20 - conum - permanences.json',
 }
 
 export type CnfsAidant = {

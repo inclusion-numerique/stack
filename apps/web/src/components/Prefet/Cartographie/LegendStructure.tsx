@@ -1,9 +1,11 @@
 import React from 'react'
-import { Structure } from '@app/web/components/Prefet/structuresData'
+import { DepartementCartographieDataStructure } from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
 import styles from './LegendStructure.module.css'
 
-const LegendStructure = ({ structure }: { structure: Structure }) => (
-  <div className={styles.structure}>{structure.properties.name}</div>
-)
+const LegendStructure = ({
+  structure,
+}: {
+  structure: DepartementCartographieDataStructure
+}) => <div className={styles.structure}>{structure.properties.nom}</div>
 
 export default LegendStructure

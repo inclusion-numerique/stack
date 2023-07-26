@@ -2,101 +2,119 @@
 
 import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { City } from '@app/web/types/City'
-import {
-  Structure,
-  StructuresData,
-} from '@app/web/components/Prefet/structuresData'
-import { DepartementData } from '@app/web/utils/map/departement'
 import {
   applyStructureFilter,
   StructureFilters,
 } from '@app/web/components/Prefet/Cartographie/structureFilters'
+import {
+  DepartementCartographieData,
+  DepartementCartographieDataCommune,
+  DepartementCartographieDataStructure,
+} from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
 import styles from './Page.module.css'
 import Legend from './Legend'
 import Map from './Map'
 
-const Cartographie = ({
-  departement,
-  structuresData,
+const CartographiePage = ({
+  data: { departement, structures, count, communes, epcis },
 }: {
-  departement: DepartementData
-  structuresData: StructuresData
+  data: DepartementCartographieData
 }) => {
-  const [selectedCity, setSelectedCity] = useState<City | null | undefined>()
-  const [selectedStructure, setSelectedStructure] = useState<
-    Structure | null | undefined
-  >()
-
-  const { cities, code } = departement
   const router = useRouter()
 
-  const onCitySelected = useCallback(
-    (city: string | undefined | null) => {
-      if (city) {
-        setSelectedStructure(null)
-        setSelectedCity(cities.find((c) => c.nom === city))
-      } else {
-        setSelectedCity(null)
-      }
-    },
-    [cities],
-  )
+  const [selectedCommune, setSelectedCommune] = useState<
+    DepartementCartographieDataCommune | null | undefined
+  >()
+  const [selectedStructure, setSelectedStructure] = useState<
+    DepartementCartographieDataStructure | null | undefined
+  >()
+  const [filteredStructures, setFilteredStructures] = useState(structures)
+  const [filteredOutSelectedStructure, setFilteredOutSelectedStructure] =
+    useState<DepartementCartographieDataStructure | null | undefined>()
 
-  const onStructureSelected = useCallback(
-    (structure: string | undefined | null) => {
-      if (structure) {
-        setSelectedCity(null)
-        setSelectedStructure(
-          structuresData.structures.find(
-            (item) => item.properties.id === structure,
-          ),
-        )
-      } else {
-        setSelectedStructure(null)
-      }
-    },
-    [cities],
-  )
-
-  useEffect(() => {
-    router.prefetch(`/prefet/${code}`)
-  }, [router, code])
-
-  const [filteredStructures, setFilteredStructures] = useState(
-    structuresData.structures,
-  )
   const onFilter = (filters: StructureFilters) => {
     setFilteredStructures(
-      structuresData.structures.filter((structure) =>
+      structures.filter((structure) =>
         applyStructureFilter(structure, filters),
       ),
     )
   }
 
+  const onCommuneSelected = useCallback(
+    (codeCommune: string | undefined | null) => {
+      if (codeCommune) {
+        setSelectedStructure(null)
+        setFilteredOutSelectedStructure(null)
+        setSelectedCommune(communes.find((c) => c.code === codeCommune))
+      } else {
+        setSelectedCommune(null)
+      }
+    },
+    [communes],
+  )
+
+  const onStructureSelected = useCallback(
+    (structure: string | undefined | null) => {
+      if (structure) {
+        setSelectedCommune(null)
+        const found = filteredStructures.find(
+          (item) => item.properties.id === structure,
+        )
+        if (found) {
+          setSelectedStructure(found)
+          setFilteredOutSelectedStructure(null)
+        } else {
+          // Selected commune (e.g. from search in Legend.tsx) is not in filtered structures
+          // We add it to filtered structure so it is displayed while selected
+          const filteredOutStructure = structures.find(
+            (item) => item.properties.id === structure,
+          )
+          setSelectedStructure(filteredOutStructure)
+          setFilteredOutSelectedStructure(filteredOutStructure)
+        }
+      } else {
+        setSelectedStructure(null)
+        setFilteredOutSelectedStructure(null)
+      }
+    },
+    [filteredStructures, structures],
+  )
+
+  // Prefetch dashboard page
+  useEffect(() => {
+    router.prefetch(`/prefet/${departement.code}`)
+  }, [router, departement.code])
+
   return (
     <div className={styles.container}>
       <Legend
-        cities={cities}
+        count={count}
+        structures={structures}
+        communes={communes}
         departement={departement}
-        structuresData={structuresData}
-        selectedCity={selectedCity}
-        onCitySelected={onCitySelected}
+        selectedCommune={selectedCommune}
+        onCommuneSelected={onCommuneSelected}
         selectedStructure={selectedStructure}
         onStructureSelected={onStructureSelected}
         onFilter={onFilter}
       />
       <Map
         departement={departement}
-        structuresData={structuresData}
-        selectedCity={selectedCity}
-        onCitySelected={onCitySelected}
+        communes={communes}
+        epcis={epcis}
+        structures={structures}
+        selectedCommune={selectedCommune}
+        onCommuneSelected={onCommuneSelected}
         selectedStructure={selectedStructure}
         onStructureSelected={onStructureSelected}
-        filteredStructures={filteredStructures}
+        filteredStructures={
+          filteredOutSelectedStructure
+            ? [...filteredStructures, filteredOutSelectedStructure]
+            : filteredStructures
+        }
       />
     </div>
   )
 }
 
-export default Cartographie
+export default CartographiePage

@@ -1,79 +1,81 @@
-import type { Structure } from '@app/web/components/Prefet/structuresData'
+/* eslint no-plusplus: 0 */
 
-export const countStructures = (structures: Structure[]) => {
-  const result = {
+import { AidantsConnectDemarcheLabels } from '@app/web/data/aidantsConnectStructures'
+import type { DepartementDashboardStructureItem } from '@app/web/app/(prefet)/prefet/[codeDepartement]/getDepartementDashboardData'
+import type { DepartementCartographieStructureItem } from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
+
+export const countStructuresForCartographieSummary = (
+  structures: Pick<
+    DepartementCartographieStructureItem,
+    | 'type'
+    | 'sousTypePublic'
+    | 'labelFranceServices'
+    | 'labelAidantsConnect'
+    | 'labelConseillersNumerique'
+  >[],
+) => {
+  const count = {
     total: 0,
-    typologie: {
+    type: {
       publique: 0,
       association: 0,
       privee: 0,
       nonDefini: 0,
-
-      // Subtypes of public
+    },
+    sousTypePublic: {
       commune: 0,
       epci: 0,
       departement: 0,
       autre: 0,
     },
-    labels: {
+    label: {
       conseillerNumerique: 0,
       franceServices: 0,
-      aidantConnect: 0,
+      aidantsConnect: 0,
       aucun: 0,
     },
-    territoiresPrioritaires: {
+    territoire: {
       qpv: 0,
       zrr: 0,
-      aucun: 0,
+      nonDefini: 0,
     },
   }
-
-  for (const {
-    properties: {
-      type,
-      subtype,
-      inZrr,
-      inQpv,
-      cnfsLabel,
-      aidantsConnectLabel,
-      franceServicesLabel,
-    },
-  } of structures) {
-    result.total += 1
-    switch (type) {
+  for (const structure of structures) {
+    count.total += 1
+    switch (structure.type) {
       case 'publique': {
-        result.typologie.publique += 1
+        count.type.publique += 1
         break
       }
       case 'privee': {
-        result.typologie.privee += 1
+        count.type.privee += 1
         break
       }
       case 'association': {
-        result.typologie.association += 1
+        count.type.association += 1
         break
       }
       default: {
-        result.typologie.nonDefini += 1
+        count.type.nonDefini += 1
         break
       }
     }
 
-    switch (subtype) {
+    switch (structure.sousTypePublic) {
       case 'commune': {
-        result.typologie.commune += 1
+        count.sousTypePublic.commune += 1
         break
       }
       case 'epci': {
-        result.typologie.epci += 1
+        count.sousTypePublic.epci += 1
         break
       }
       case 'departement': {
-        result.typologie.departement += 1
+        count.sousTypePublic.departement += 1
         break
       }
       case 'autre': {
-        result.typologie.autre += 1
+        count.sousTypePublic.autre += 1
         break
       }
       default: {
@@ -81,29 +83,135 @@ export const countStructures = (structures: Structure[]) => {
       }
     }
 
-    if (inZrr) {
-      result.territoiresPrioritaires.zrr += 1
+    // TODO ZRR and QPV are not in the data
+    count.territoire.nonDefini++
+
+    if (structure.labelConseillersNumerique) {
+      count.label.conseillerNumerique += 1
     }
-    if (inQpv) {
-      result.territoiresPrioritaires.qpv += 1
+    if (structure.labelFranceServices) {
+      count.label.franceServices += 1
     }
-    if (!inZrr && !inQpv) {
-      result.territoiresPrioritaires.aucun += 1
+    if (structure.labelAidantsConnect) {
+      count.label.aidantsConnect += 1
     }
-    if (cnfsLabel) {
-      result.labels.conseillerNumerique += 1
-    }
-    if (aidantsConnectLabel) {
-      result.labels.aidantConnect += 1
-    }
-    if (franceServicesLabel) {
-      result.labels.franceServices += 1
-    }
-    if (!cnfsLabel && !aidantsConnectLabel && !franceServicesLabel) {
-      result.labels.aucun += 1
+
+    if (
+      !structure.labelConseillersNumerique &&
+      !structure.labelFranceServices &&
+      !structure.labelAidantsConnect
+    ) {
+      count.label.aucun += 1
     }
   }
-  return result
+
+  return count
 }
 
-export type StructuresCount = ReturnType<typeof countStructures>
+export type StructuresCountForCartographieSummary = ReturnType<
+  typeof countStructuresForCartographieSummary
+>
+
+export const countStructuresForCommuneSummary = (
+  structures: DepartementCartographieStructureItem[],
+) => {
+  const count = {
+    structures: countStructuresForCartographieSummary(structures),
+    aidantsConnect: 0,
+    conseillersNumeriques: 0,
+  }
+
+  for (const structure of structures) {
+    count.aidantsConnect += structure.structureAidantsConnect?.aidants ?? 0
+    count.conseillersNumeriques +=
+      // eslint-disable-next-line no-underscore-dangle
+      structure.permanenceConseillerNumerique?._count?.enPermanence ?? 0
+  }
+
+  return count
+}
+
+export type StructuresCountForCommuneSummary = ReturnType<
+  typeof countStructuresForCommuneSummary
+>
+
+export const countStructuresForDepartementDashboard = (
+  structures: DepartementDashboardStructureItem[],
+) => {
+  const count = {
+    structures: countStructuresForCartographieSummary(structures),
+    aidantsConnect: {
+      aidants: 0,
+      usagersUniques: 0,
+      totalDemarches: 0,
+      demarches: {
+        argent: 0,
+        etranger: 0,
+        famille: 0,
+        justice: 0,
+        loisirs: 0,
+        papier: 0,
+        social: 0,
+        transport: 0,
+        travail: 0,
+        logement: 0,
+      },
+      top3AndOther: [] as { label: string; count: number }[],
+    },
+  }
+
+  for (const structure of structures) {
+    count.aidantsConnect.aidants +=
+      structure.structureAidantsConnect?.aidants ?? 0
+
+    count.aidantsConnect.totalDemarches +=
+      structure.structureAidantsConnect?.totalDemarches ?? 0
+
+    count.aidantsConnect.usagersUniques +=
+      structure.structureAidantsConnect?.usagersUniques ?? 0
+
+    for (const demarcheType of Object.keys(count.aidantsConnect.demarches)) {
+      if (!structure.structureAidantsConnect) {
+        continue
+      }
+      count.aidantsConnect.demarches[
+        demarcheType as keyof typeof count.aidantsConnect.demarches
+      ] +=
+        structure.structureAidantsConnect[
+          demarcheType as keyof typeof count.aidantsConnect.demarches
+        ]
+    }
+
+    // Counting and computing top 3 themes
+    const demarcheTypesArray: { label: string; count: number }[] = []
+    for (const demarcheType of Object.keys(count.aidantsConnect.demarches)) {
+      demarcheTypesArray.push({
+        label:
+          AidantsConnectDemarcheLabels[
+            demarcheType as keyof typeof AidantsConnectDemarcheLabels
+          ],
+        count:
+          count.aidantsConnect.demarches[
+            demarcheType as keyof typeof count.aidantsConnect.demarches
+          ],
+      })
+    }
+    demarcheTypesArray.sort((a, b) => b.count - a.count)
+    const top3 = demarcheTypesArray.slice(0, 3)
+    const rest = demarcheTypesArray.slice(3)
+    const totalRest = rest.reduce(
+      (accumulator, current) => accumulator + current.count,
+      0,
+    )
+    count.aidantsConnect.top3AndOther = [
+      ...top3,
+      { label: 'Autres thématiques', count: totalRest },
+    ]
+  }
+
+  return count
+}
+
+export type StructuresCountForDepartementDashboard = ReturnType<
+  typeof countStructuresForDepartementDashboard
+>
