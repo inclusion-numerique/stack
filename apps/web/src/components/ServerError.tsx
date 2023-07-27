@@ -24,7 +24,7 @@ export const GenericError = ({
           <ul className="fr-btns-group fr-btns-group--inline-md">
             <li>
               <a className="fr-btn" href="/">
-                Page d&apos;accueil
+                Page d’accueil
               </a>
             </li>
             <li>
@@ -86,7 +86,7 @@ export const ServerError = () => (
   >
     Essayez de rafraichir la page ou bien ressayez plus tard.
     <br />
-    Si vous avez besoin d&apos;une aide immédiate, merci de nous contacter.
+    Si vous avez besoin d’une aide immédiate, merci de nous contacter.
   </GenericError>
 )
 
@@ -96,8 +96,8 @@ export const NotFoundError = () => (
     subtitle="Erreur 404"
     lead="La page que vous cherchez est introuvable. Excusez-nous pour la gène occasionnée."
   >
-    Si vous avez tapé l&apos;adresse web dans le navigateur, vérifiez
-    qu&apos;elle est correcte. La page n’est peut-être plus disponible.
+    Si vous avez tapé l’adresse web dans le navigateur, vérifiez qu’elle est
+    correcte. La page n’est peut-être plus disponible.
     <br />
     Dans ce cas, pour continuer votre visite vous pouvez consulter notre page
     d’accueil.
@@ -110,7 +110,7 @@ export const UnauthorizedError = () => (
     subtitle="Erreur 403"
     lead="Vous n'avez pas accès à cette page."
   >
-    Si vous avez tapé l&apos;adresse web dans le navigateur, vérifiez
-    qu&apos;elle est correcte.
+    Si vous avez tapé l’adresse web dans le navigateur, vérifiez qu’elle est
+    correcte.
   </GenericError>
 )

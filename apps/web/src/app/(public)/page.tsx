@@ -11,17 +11,16 @@ const HomePage = () => (
         className={classNames('fr-container', styles.section, styles.hero)}
       >
         <h1 className="fr-text-title--blue-france">
-          L&apos;outil de diagnostic de l&apos;inclusion numérique pour les
-          territoires
+          L’outil de diagnostic de l’inclusion numérique pour les territoires
         </h1>
         <p className="fr-text--bold fr-text--lg">
-          porté par l&apos;Agence nationale de la cohésion des territoires
+          porté par l’Agence nationale de la cohésion des territoires
         </p>
         <p className="fr-text--lg">
           Cet outil doit permettre, dans le cadre du déploiement de{' '}
           <strong>la feuille de route France Numérique Ensemble</strong>, de
-          faciliter la réalisation des diagnostics ainsi que l&apos;élaboration
-          des priorités et engagements des feuilles de routes territoriales.
+          faciliter la réalisation des diagnostics ainsi que l’élaboration des
+          priorités et engagements des feuilles de routes territoriales.
         </p>
       </section>
     </div>
@@ -43,24 +42,24 @@ const HomePage = () => (
           </div>
           <div className="fr-col-12 fr-col-md-6  fr-text--lg">
             <h2 className="fr-mt-8v fr-mt-md-0 ">
-              Les données utiles pour comprendre l&apos;inclusion numérique sur
-              votre territoire
+              Les données utiles pour comprendre l’inclusion numérique sur votre
+              territoire
             </h2>
 
             <p className="fr-mb-3v fr-mt-8v  fr-text--lg">
-              Retrouvez via cet outil des données à jour, à l&apos;échelle de
-              votre département, concernant&nbsp;:
+              Retrouvez via cet outil des données à jour, à l’échelle de votre
+              département, concernant&nbsp;:
             </p>
             <ul>
               <li className="fr-mb-3v">
-                Le déploiement des dispositifs d&apos;inclusion numérique portés
-                par le programme{' '}
+                Le déploiement des dispositifs d’inclusion numérique portés par
+                le programme{' '}
                 <a
                   href="https://societenumerique.gouv.fr/"
                   title="Site internet du programme Société Numérique de l'ANCT"
                   target="_blank"
                 >
-                  Société Numérique de l&apos;ANCT
+                  Société Numérique de l’ANCT
                 </a>
                 .
               </li>
@@ -116,15 +115,14 @@ const HomePage = () => (
           </div>
           <div className="fr-col-12 fr-col-md-6">
             <h2 className="fr-mt-8v fr-mt-md-0">
-              Participer à l&apos;élaboration des feuilles de routes
-              territoriales
+              Participer à l’élaboration des feuilles de routes territoriales
             </h2>
 
             <p className="fr-mb-2v fr-mt-8v fr-text--lg">
               <strong>En tant que collectivité ou acteur territorial</strong>,
               vous êtes invité à manifester votre souhait de participer à
-              l&apos;élaboration des feuilles de route France Numérique Ensemble
-              sur votre territoire. En tant que Conseil Régional, Conseil
+              l’élaboration des feuilles de route France Numérique Ensemble sur
+              votre territoire. En tant que Conseil Régional, Conseil
               Département ou EPCI, vous pouvez également porter une feuille de
               route.
             </p>
@@ -143,7 +141,7 @@ const HomePage = () => (
             <div className={styles.card}>
               <div className={styles.cardHeader}>
                 <span className={styles.roundNumber}>1</span>
-                <h3>D&apos;ici au 30 septembre 2023</h3>
+                <h3>D’ici au 30 septembre 2023</h3>
               </div>
               <hr />
               <h6>
@@ -158,12 +156,12 @@ const HomePage = () => (
               <p>
                 Prenez connaissance des communes les plus exposées à des
                 situations de vulnérabilités numériques de leurs population et
-                la couverture existante en matière d&apos;aide et de médiation
+                la couverture existante en matière d’aide et de médiation
                 numérique.
                 <br />-<br />
                 Invitez les collectivités locales et leurs groupements à
-                s&apos;impliquer dans l&apos;élaboration des feuilles de route
-                France Numérique Ensemble via le formulaire en ligne.
+                s’impliquer dans l’élaboration des feuilles de route France
+                Numérique Ensemble via le formulaire en ligne.
               </p>
               <h6>
                 <span
@@ -176,9 +174,9 @@ const HomePage = () => (
               </h6>
               <p>
                 Remplissez le formulaire en ligne pour signaler votre souhait
-                d&apos;être associé à l&apos;élaboration et au portage
-                d&apos;une feuille de route territoriale France Numérique
-                Ensemble, en mobilisant largement vos partenaires envisagés.
+                d’être associé à l’élaboration et au portage d’une feuille de
+                route territoriale France Numérique Ensemble, en mobilisant
+                largement vos partenaires envisagés.
               </p>
               <Button linkProps={{ href: '/gouvernance' }} className="fr-mt-8v">
                 Accéder au formulaire
@@ -200,9 +198,9 @@ const HomePage = () => (
                 Pour les services préfectoraux
               </h6>
               <p>
-                Enrichi au fil de l&apos;eau, le diagnostic territorial peut
-                être partagé avec les acteurs locaux et discuté dans le cadre
-                des différentes réunions locales partenariales.
+                Enrichi au fil de l’eau, le diagnostic territorial peut être
+                partagé avec les acteurs locaux et discuté dans le cadre des
+                différentes réunions locales partenariales.
               </p>
               <h6>
                 <span
@@ -215,9 +213,9 @@ const HomePage = () => (
               </h6>
               <p>
                 Mobilisez-vous dans le cadre des concertations locales afin
-                d&apos;affiner le diagnostic quantitatif et de définir, aux
-                côtés des services préfectoraux, le périmètre de gouvernance le
-                plus adapté à votre territoire.
+                d’affiner le diagnostic quantitatif et de définir, aux côtés des
+                services préfectoraux, le périmètre de gouvernance le plus
+                adapté à votre territoire.
               </p>
             </div>
             <div className={styles.card}>

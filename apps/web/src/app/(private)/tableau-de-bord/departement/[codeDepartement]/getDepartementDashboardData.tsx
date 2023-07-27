@@ -5,10 +5,12 @@ import { countStructuresForDepartementDashboard } from '@app/web/components/Pref
 import { getTopCrasTypes } from '@app/web/components/Prefet/Cartographie/getTopCrasTypes'
 import { getDepartementGeoFeatures } from '@app/web/data/departements'
 import { createWhereStructureInDepartement } from '@app/web/data/query/whereStructureInDepartement'
+import type { DepartementDashboardInfoButtonsId } from '@app/web/components/Prefet/DepartementDashboardInfoModals'
 
 export type StatisticData = {
   id: string
   label: string
+  info?: DepartementDashboardInfoButtonsId
   value: number
   collapsable?: boolean
   statistics?: StatisticData[]
@@ -237,6 +239,7 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
           {
             id: 'dont Conseillers Coordinateurs',
             label: 'dont Conseillers Coordinateurs',
+            info: 'coordinateursConseillerNumerique',
             // eslint-disable-next-line no-underscore-dangle
             value: departement._count.coordinateursConseillerNumerique,
           },
@@ -363,7 +366,7 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
     ],
   } satisfies BoxesData
 
-  const top3CraThemes = getTopCrasTypes(conumCras)
+  const top4CraThemes = getTopCrasTypes(conumCras)
 
   const accompagnements = {
     id: 'accompagnements',
@@ -395,22 +398,22 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
       {
         id: 'accompagnements-de-médiation-numérique',
         label:
-          'Les 3 principaux thèmes d’accompagnements de médiation numérique',
+          'Les 4 principaux thèmes d’accompagnements de médiation numérique',
         updated: new Date(ConumCras.updated),
         source: 'conseiller-numerique.gouv.fr',
-        statistics: top3CraThemes.top3.map(({ label, count }) => ({
+        statistics: top4CraThemes.top4.map(({ label, count }) => ({
           id: label,
           label,
-          value: (100 * count) / top3CraThemes.total,
+          value: (100 * count) / top4CraThemes.total,
         })),
       },
       {
         id: 'réaliser-des-démarches-en-lignes',
         label:
-          'Les 3 principaux thèmes d’accompagnements pour réaliser des démarches en lignes',
+          'Les 4 principaux thèmes d’accompagnements pour réaliser des démarches en lignes',
         updated: new Date('2021-09-04'),
         source: 'aidantsconnect.beta.gouv.fr',
-        statistics: structuresCount.aidantsConnect.top3AndOther.map(
+        statistics: structuresCount.aidantsConnect.top4AndOther.map(
           ({ label, count }) => ({
             id: label,
             label,

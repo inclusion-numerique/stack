@@ -6,12 +6,10 @@ import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import { ifnFillColors } from '@app/web/components/Prefet/Cartographie/Layers/ifn'
 import styles from './IndiceNumerique.module.css'
 
-const { Component: InformationModal, open: openInformationModal } = createModal(
-  {
-    id: 'information',
-    isOpenedByDefault: false,
-  },
-)
+const InformationModal = createModal({
+  id: 'indice-numerique-information',
+  isOpenedByDefault: false,
+})
 
 const IndiceNumerique = ({
   setViewIndiceFN,
@@ -21,18 +19,18 @@ const IndiceNumerique = ({
   viewIndiceFN: boolean
 }) => (
   <>
-    <InformationModal title="L'indice de Fragilité Numérique">
-      L&apos;indice de fragilité numérique révèle les territoires où la
-      population est le plus à risque d’exclusion. De nombreux facteurs sont à
-      l’origine de l’exclusion numérique. Ils sont regroupés en quatre axes qui
-      constituent les principales causes de l’exclusion numérique. Au sein de
-      chaque axe, on retrouve plusieurs variables utilisées pour le calcul.
+    <InformationModal.Component title="L'indice de Fragilité Numérique">
+      L’indice de fragilité numérique révèle les territoires où la population
+      est le plus à risque d’exclusion. De nombreux facteurs sont à l’origine de
+      l’exclusion numérique. Ils sont regroupés en quatre axes qui constituent
+      les principales causes de l’exclusion numérique. Au sein de chaque axe, on
+      retrouve plusieurs variables utilisées pour le calcul.
       <br />
       <br />
-      L&apos;indice de fragilité numérique n’intègre pas de rapport ou de
-      pondération par rapport à la taille de la population communale. La densité
-      de lieux de médiation numérique en zone urbaine doit pouvoir être mise en
-      regard de la population.
+      L’indice de fragilité numérique n’intègre pas de rapport ou de pondération
+      par rapport à la taille de la population communale. La densité de lieux de
+      médiation numérique en zone urbaine doit pouvoir être mise en regard de la
+      population.
       <br />
       <br />
       <Link
@@ -42,7 +40,7 @@ const IndiceNumerique = ({
       >
         https://fragilite-numerique.fr
       </Link>
-    </InformationModal>
+    </InformationModal.Component>
     <div className={styles.container}>
       <ToggleSwitch
         inputTitle="Voir l'indice de Fragilité Numérique"
@@ -80,7 +78,8 @@ const IndiceNumerique = ({
             iconId="fr-icon-information-line"
             iconPosition="right"
             size="small"
-            onClick={openInformationModal}
+            onClick={InformationModal.open}
+            type="button"
           >
             Informations
           </Button>

@@ -20,14 +20,12 @@ export const Verify = () => {
       </h2>
       <p style={{ textAlign: 'center' }}>
         {email ? (
-          <>
-            Un lien de connexion sécurisé a été envoyé à l&apos;adresse {email}.
-          </>
+          <>Un lien de connexion sécurisé a été envoyé à l’adresse {email}.</>
         ) : (
           <>Un lien de connexion sécurisé vous a été envoyé par&nbsp;email.</>
         )}
         <br />
-        Veuillez l&apos;utiliser pour vous connecter.
+        Veuillez l’utiliser pour vous connecter.
       </p>
       <p className="fr-text--sm fr-mb-0" style={{ textAlign: 'center' }}>
         Vous pouvez fermer cet onglet de navigation.

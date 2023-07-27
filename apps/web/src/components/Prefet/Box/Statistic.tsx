@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import classNames from 'classnames'
 import { numberToString } from '@app/web/utils/formatNumber'
 import type { StatisticData } from '@app/web/app/(private)/tableau-de-bord/departement/[codeDepartement]/getDepartementDashboardData'
+import { DepartementDashboardInfoButtons } from '@app/web/components/Prefet/DepartementDashboardInfoModals'
 import styles from './Statistic.module.css'
 
 type StatisticProps = {
@@ -16,6 +17,7 @@ const Statistic = ({
   children,
   collapsable,
   bold,
+  info,
   isSubStatistic,
 }: StatisticProps & {
   children?:
@@ -25,11 +27,20 @@ const Statistic = ({
 }) => {
   const [open, setOpen] = useState(false)
   const displayChildren = children && (!collapsable || open)
+  const InfoComponent = info ? DepartementDashboardInfoButtons[info] : null
   return (
     <>
       <div className={isSubStatistic ? styles.subStatistic : styles.statistic}>
-        <span className="fr-text--sm fr-mb-0 fr-mr-2w">
+        <span
+          className={classNames('fr-text--sm fr-mb-0 fr-mr-2w', styles.label)}
+        >
           {bold ? <b>{label}</b> : label}
+          {InfoComponent ? (
+            <>
+              &nbsp;
+              <InfoComponent />
+            </>
+          ) : null}
           {collapsable && (
             <button
               type="button"

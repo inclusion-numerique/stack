@@ -8,6 +8,7 @@ import SearchableSelect from '@app/ui/components/SearchableSelect/SearchableSele
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
+import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import {
   DepartementCartographieDataCommune,
   DepartementCartographieDataCount,
@@ -15,8 +16,19 @@ import {
 } from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
 import LegendStructure from '@app/web/components/Prefet/Cartographie/LegendStructure'
 import { StructureFilters } from '@app/web/components/Prefet/Cartographie/structureFilters'
+import InfoButton from '@app/web/components/InfoButton'
 import styles from './Legend.module.css'
 import LegendCity from './LegendCity'
+
+const StructuresInformationModal = createModal({
+  id: 'structures-information',
+  isOpenedByDefault: false,
+})
+
+const TerritoiresPrioritairesInformationModal = createModal({
+  id: 'territoires-prioritaires-information',
+  isOpenedByDefault: false,
+})
 
 const LegendCheckboxLabel = ({
   label,
@@ -194,273 +206,315 @@ const Legend = ({
   }
 
   return (
-    <div
-      className={classNames(styles.container, {
-        [styles.collapsed]: legendCollapsed,
-      })}
-    >
-      <Button
-        className={styles.collapseButton}
-        iconId={
-          legendCollapsed
-            ? 'fr-icon-arrow-right-s-line-double'
-            : 'fr-icon-arrow-left-s-line-double'
-        }
-        title="Réduire la légende"
-        onClick={() => setLegendCollapsed(!legendCollapsed)}
-        priority="tertiary no outline"
-        size="small"
-      />
-      {!legendCollapsed && (
-        <div className={styles.legend}>
-          <Breadcrumb
-            currentPageLabel="Cartographie"
-            segments={[
-              {
-                label: "Page d'accueil",
-                linkProps: {
-                  href: '/',
+    <>
+      <StructuresInformationModal.Component title="Lieux d’inclusion numérique">
+        <p>
+          Les données relatives aux lieux de médiation numérique sont issues de
+          la{' '}
+          <Link
+            href="https://cartographie.societenumerique.gouv.fr/"
+            target="_blank"
+          >
+            Cartographie Nationale
+          </Link>
+          . Si des structures n’apparaissent pas, elles peuvent se référencer
+          via{' '}
+          <Link href="https://dora.inclusion.beta.gouv.fr" target="_blank">
+            Dora
+          </Link>
+          .
+        </p>
+      </StructuresInformationModal.Component>
+      <TerritoiresPrioritairesInformationModal.Component title="Territoires prioritaires">
+        <p>
+          La maille communale retenue dans cette représentation limite la juste
+          prise en compte des difficultés propres aux QPV. La représentation à
+          l’IRIS proposée par la Mednum permet de mieux appréhender la
+          vulnérabilité numérique des populations résidant dans ces territoires.
+        </p>
+      </TerritoiresPrioritairesInformationModal.Component>
+      <div
+        className={classNames(styles.container, {
+          [styles.collapsed]: legendCollapsed,
+        })}
+      >
+        <Button
+          className={styles.collapseButton}
+          iconId={
+            legendCollapsed
+              ? 'fr-icon-arrow-right-s-line-double'
+              : 'fr-icon-arrow-left-s-line-double'
+          }
+          title="Réduire la légende"
+          onClick={() => setLegendCollapsed(!legendCollapsed)}
+          priority="tertiary no outline"
+          size="small"
+          type="button"
+        />
+        {!legendCollapsed && (
+          <div className={styles.legend}>
+            <Breadcrumb
+              currentPageLabel="Cartographie"
+              segments={[
+                {
+                  label: "Page d'accueil",
+                  linkProps: {
+                    href: '/',
+                  },
                 },
-              },
-              {
-                label: 'Tableau de bord',
-                linkProps: {
-                  href: `/tableau-de-bord/departement/${departement.code}`,
+                {
+                  label: 'Tableau de bord',
+                  linkProps: {
+                    href: `/tableau-de-bord/departement/${departement.code}`,
+                  },
                 },
-              },
-            ]}
-          />
-          <SearchableSelect
-            placeholder="Rechercher une commune ou une structure"
-            onSelect={onSelect}
-            categories={categories}
-            options={undefined}
-            limit={undefined}
-          />
-          <h6 className={styles.legendTitle}>
-            Lieux d&apos;inclusion numérique
-          </h6>
-          <p className="fr-text--xs fr-hint-text fr-mb-3w">
-            Source :{' '}
-            <Link
-              href="https://donnees.incubateur.anct.gouv.fr"
-              target="_blank"
-            >
-              Données et territoires
-            </Link>
-          </p>
-          <form className={styles.filters} onSubmit={() => {}}>
-            <p className="fr-text--lg fr-text--bold fr-mb-3v">
-              Typologie des lieux d&apos;inclusion numérique
+              ]}
+            />
+            <SearchableSelect
+              placeholder="Rechercher une commune ou une structure"
+              onSelect={onSelect}
+              categories={categories}
+              options={undefined}
+              limit={undefined}
+            />
+            <h6 className={styles.legendTitle}>
+              Lieux d’inclusion numérique{' '}
+              <InfoButton
+                iconId="fr-icon-information-line"
+                title="Informations sur les lieux d'inclusion numérique"
+                onClick={StructuresInformationModal.open}
+              />
+            </h6>
+            <p className="fr-text--xs fr-hint-text fr-mb-3w">
+              Source :{' '}
+              <Link
+                href="https://donnees.incubateur.anct.gouv.fr"
+                target="_blank"
+              >
+                Données et territoires
+              </Link>
             </p>
-            <CheckboxFormField
-              key={programmaticallyCheckedKeys.publique}
-              control={filterForm.control}
-              small
-              path="typologie.publique"
-              onChange={onPubliqueChange}
-              label={
-                <LegendCheckboxLabel
-                  label={
-                    <>
-                      <span className="fr-icon-government-fill fr-icon--sm fr-text-title--blue-france fr-mr-1w" />
-                      Public
-                    </>
-                  }
-                  count={count.type.publique}
-                />
-              }
-            />
-            <div className="fr-pl-3w">
+            <form className={styles.filters} onSubmit={() => {}}>
+              <p className="fr-text--lg fr-text--bold fr-mb-3v">
+                Typologie des lieux d’inclusion numérique
+              </p>
               <CheckboxFormField
-                key={programmaticallyCheckedKeys.commune}
+                key={programmaticallyCheckedKeys.publique}
                 control={filterForm.control}
                 small
-                path="typologie.commune"
-                onChange={onSubtypeChange}
+                path="typologie.publique"
+                onChange={onPubliqueChange}
                 label={
                   <LegendCheckboxLabel
-                    label="Commune"
-                    count={count.sousTypePublic.commune}
-                    subtype
+                    label={
+                      <>
+                        <span className="fr-icon-government-fill fr-icon--sm fr-text-title--blue-france fr-mr-1w" />
+                        Public
+                      </>
+                    }
+                    count={count.type.publique}
+                  />
+                }
+              />
+              <div className="fr-pl-3w">
+                <CheckboxFormField
+                  key={programmaticallyCheckedKeys.commune}
+                  control={filterForm.control}
+                  small
+                  path="typologie.commune"
+                  onChange={onSubtypeChange}
+                  label={
+                    <LegendCheckboxLabel
+                      label="Commune"
+                      count={count.sousTypePublic.commune}
+                      subtype
+                    />
+                  }
+                />
+                <CheckboxFormField
+                  key={programmaticallyCheckedKeys.epci}
+                  control={filterForm.control}
+                  small
+                  path="typologie.epci"
+                  onChange={onSubtypeChange}
+                  label={
+                    <LegendCheckboxLabel
+                      label="EPCI"
+                      count={count.sousTypePublic.epci}
+                      subtype
+                    />
+                  }
+                />
+                <CheckboxFormField
+                  key={programmaticallyCheckedKeys.departement}
+                  control={filterForm.control}
+                  small
+                  path="typologie.departement"
+                  onChange={onSubtypeChange}
+                  label={
+                    <LegendCheckboxLabel
+                      label="Département"
+                      count={count.sousTypePublic.departement}
+                      subtype
+                    />
+                  }
+                />
+                <CheckboxFormField
+                  key={programmaticallyCheckedKeys.autre}
+                  control={filterForm.control}
+                  small
+                  path="typologie.autre"
+                  onChange={onSubtypeChange}
+                  label={
+                    <LegendCheckboxLabel
+                      label="Autre"
+                      count={count.sousTypePublic.autre}
+                      subtype
+                    />
+                  }
+                />
+              </div>
+              <CheckboxFormField
+                control={filterForm.control}
+                small
+                path="typologie.association"
+                label={
+                  <LegendCheckboxLabel
+                    label={
+                      <>
+                        <span className="fr-icon-team-fill fr-icon--sm fr-text-title--blue-france fr-mr-1w" />
+                        Associations
+                      </>
+                    }
+                    count={count.type.association}
                   />
                 }
               />
               <CheckboxFormField
-                key={programmaticallyCheckedKeys.epci}
                 control={filterForm.control}
                 small
-                path="typologie.epci"
-                onChange={onSubtypeChange}
+                path="typologie.privee"
                 label={
                   <LegendCheckboxLabel
-                    label="EPCI"
-                    count={count.sousTypePublic.epci}
-                    subtype
+                    label={
+                      <>
+                        <span className="fr-icon-building-fill fr-icon--sm fr-text-title--blue-france fr-mr-1w" />
+                        Autres acteurs privés
+                      </>
+                    }
+                    count={count.type.privee}
                   />
                 }
               />
               <CheckboxFormField
-                key={programmaticallyCheckedKeys.departement}
                 control={filterForm.control}
                 small
-                path="typologie.departement"
-                onChange={onSubtypeChange}
+                path="typologie.nonDefini"
                 label={
                   <LegendCheckboxLabel
-                    label="Département"
-                    count={count.sousTypePublic.departement}
-                    subtype
+                    label={
+                      <>
+                        <span className="fr-icon-map-pin-2-fill fr-icon--sm fr-text-title--blue-france fr-mr-1w" />
+                        Non défini
+                      </>
+                    }
+                    count={count.type.nonDefini}
+                  />
+                }
+              />
+              <p className="fr-text--lg fr-text--bold fr-mt-6v fr-mb-3v">
+                Labels
+              </p>
+              <CheckboxFormField
+                control={filterForm.control}
+                small
+                path="labels.conseillerNumerique"
+                label={
+                  <LegendCheckboxLabel
+                    label="Lieux accueillant des conseillers numérique"
+                    count={count.label.conseillerNumerique}
                   />
                 }
               />
               <CheckboxFormField
-                key={programmaticallyCheckedKeys.autre}
                 control={filterForm.control}
                 small
-                path="typologie.autre"
-                onChange={onSubtypeChange}
+                path="labels.franceServices"
                 label={
                   <LegendCheckboxLabel
-                    label="Autre"
-                    count={count.sousTypePublic.autre}
-                    subtype
+                    label="Points d’accueil numérique labellisés France Services"
+                    count={count.label.franceServices}
                   />
                 }
               />
-            </div>
-            <CheckboxFormField
-              control={filterForm.control}
-              small
-              path="typologie.association"
-              label={
-                <LegendCheckboxLabel
-                  label={
-                    <>
-                      <span className="fr-icon-team-fill fr-icon--sm fr-text-title--blue-france fr-mr-1w" />
-                      Associations
-                    </>
-                  }
-                  count={count.type.association}
+              <CheckboxFormField
+                control={filterForm.control}
+                small
+                path="labels.aidantConnect"
+                label={
+                  <LegendCheckboxLabel
+                    label="Points d’accueil habilités Aidants Connect"
+                    count={count.label.aidantsConnect}
+                  />
+                }
+              />
+              <CheckboxFormField
+                control={filterForm.control}
+                small
+                path="labels.aucun"
+                label={
+                  <LegendCheckboxLabel
+                    label="Aucun"
+                    count={count.label.aucun}
+                  />
+                }
+              />
+              <p className="fr-text--lg fr-text--bold fr-mt-6v fr-mb-3v">
+                Territoires prioritaires{' '}
+                <InfoButton
+                  iconId="fr-icon-information-line"
+                  title="Informations sur les territoires prioritaires"
+                  onClick={TerritoiresPrioritairesInformationModal.open}
                 />
-              }
-            />
-            <CheckboxFormField
-              control={filterForm.control}
-              small
-              path="typologie.privee"
-              label={
-                <LegendCheckboxLabel
-                  label={
-                    <>
-                      <span className="fr-icon-building-fill fr-icon--sm fr-text-title--blue-france fr-mr-1w" />
-                      Autres acteurs privés
-                    </>
-                  }
-                  count={count.type.privee}
-                />
-              }
-            />
-            <CheckboxFormField
-              control={filterForm.control}
-              small
-              path="typologie.nonDefini"
-              label={
-                <LegendCheckboxLabel
-                  label={
-                    <>
-                      <span className="fr-icon-map-pin-2-fill fr-icon--sm fr-text-title--blue-france fr-mr-1w" />
-                      Non défini
-                    </>
-                  }
-                  count={count.type.nonDefini}
-                />
-              }
-            />
-            <p className="fr-text--lg fr-text--bold fr-mt-6v fr-mb-3v">
-              Labels
-            </p>
-            <CheckboxFormField
-              control={filterForm.control}
-              small
-              path="labels.conseillerNumerique"
-              label={
-                <LegendCheckboxLabel
-                  label="Lieux accueillant des conseillers numérique"
-                  count={count.label.conseillerNumerique}
-                />
-              }
-            />
-            <CheckboxFormField
-              control={filterForm.control}
-              small
-              path="labels.franceServices"
-              label={
-                <LegendCheckboxLabel
-                  label="Points d’accueil numérique labellisés France Services"
-                  count={count.label.franceServices}
-                />
-              }
-            />
-            <CheckboxFormField
-              control={filterForm.control}
-              small
-              path="labels.aidantConnect"
-              label={
-                <LegendCheckboxLabel
-                  label="Points d’accueil habilités Aidants Connect"
-                  count={count.label.aidantsConnect}
-                />
-              }
-            />
-            <CheckboxFormField
-              control={filterForm.control}
-              small
-              path="labels.aucun"
-              label={
-                <LegendCheckboxLabel label="Aucun" count={count.label.aucun} />
-              }
-            />
-            <p className="fr-text--lg fr-text--bold fr-mt-6v fr-mb-3v">
-              Territoires prioritaires
-            </p>
-            <CheckboxFormField
-              control={filterForm.control}
-              small
-              path="territoiresPrioritaires.qpv"
-              label={
-                <LegendCheckboxLabel
-                  label="Lieux situés en quartier prioritaire de la ville (QPV)"
-                  count={count.territoire.qpv}
-                />
-              }
-            />
-            <CheckboxFormField
-              control={filterForm.control}
-              small
-              path="territoiresPrioritaires.zrr"
-              label={
-                <LegendCheckboxLabel
-                  label="Lieux situés en zone de revitalisation rurale (ZRR)"
-                  count={count.territoire.zrr}
-                />
-              }
-            />
-            <CheckboxFormField
-              control={filterForm.control}
-              small
-              path="territoiresPrioritaires.aucun"
-              label={
-                <LegendCheckboxLabel
-                  label="Aucun"
-                  count={count.territoire.nonDefini}
-                />
-              }
-            />
-          </form>
-        </div>
-      )}
-    </div>
+              </p>
+              <CheckboxFormField
+                control={filterForm.control}
+                small
+                path="territoiresPrioritaires.qpv"
+                label={
+                  <LegendCheckboxLabel
+                    label="Lieux situés en quartier prioritaire de la ville (QPV)"
+                    count={count.territoire.qpv}
+                  />
+                }
+              />
+              <CheckboxFormField
+                control={filterForm.control}
+                small
+                path="territoiresPrioritaires.zrr"
+                label={
+                  <LegendCheckboxLabel
+                    label="Lieux situés en zone de revitalisation rurale (ZRR)"
+                    count={count.territoire.zrr}
+                  />
+                }
+              />
+              <CheckboxFormField
+                control={filterForm.control}
+                small
+                path="territoiresPrioritaires.aucun"
+                label={
+                  <LegendCheckboxLabel
+                    label="Aucun"
+                    count={count.territoire.nonDefini}
+                  />
+                }
+              />
+            </form>
+          </div>
+        )}
+      </div>
+    </>
   )
 }
 

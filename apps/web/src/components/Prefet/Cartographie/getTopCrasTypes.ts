@@ -26,7 +26,7 @@ export const getTopCrasTypes = (
   cras?: CraConseillerNumeriqueParDepartement | null,
 ) => {
   if (!cras) {
-    return { top3: [], total: 0 }
+    return { top4: [], total: 0 }
   }
 
   const typesArray: { label: string; count: number }[] = []
@@ -39,14 +39,14 @@ export const getTopCrasTypes = (
     total += cras[theme as keyof typeof craThemes]
   }
   typesArray.sort((a, b) => b.count - a.count)
-  const top3 = typesArray.slice(0, 3)
-  const rest = typesArray.slice(3)
+  const top4 = typesArray.slice(0, 4)
+  const rest = typesArray.slice(4)
   const totalRest = rest.reduce(
     (accumulator, current) => accumulator + current.count,
     0,
   )
   return {
-    top3: [...top3, { label: 'Autres thématiques', count: totalRest }],
+    top4: [...top4, { label: 'Autres thématiques', count: totalRest }],
     total,
   }
 }

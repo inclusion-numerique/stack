@@ -156,7 +156,7 @@ export const countStructuresForDepartementDashboard = (
         travail: 0,
         logement: 0,
       },
-      top3AndOther: [] as { label: string; count: number }[],
+      top4AndOther: [] as { label: string; count: number }[],
     },
   }
 
@@ -197,14 +197,14 @@ export const countStructuresForDepartementDashboard = (
       })
     }
     demarcheTypesArray.sort((a, b) => b.count - a.count)
-    const top3 = demarcheTypesArray.slice(0, 3)
-    const rest = demarcheTypesArray.slice(3)
+    const top4 = demarcheTypesArray.slice(0, 4)
+    const rest = demarcheTypesArray.slice(4)
     const totalRest = rest.reduce(
       (accumulator, current) => accumulator + current.count,
       0,
     )
-    count.aidantsConnect.top3AndOther = [
-      ...top3,
+    count.aidantsConnect.top4AndOther = [
+      ...top4,
       { label: 'Autres thématiques', count: totalRest },
     ]
   }

@@ -52,7 +52,7 @@ const CityDetails = ({
       >
         <div className={styles.row}>
           <h6 className="fr-mt-1v">
-            Lieux d&apos;inclusion numérique
+            Lieux d’inclusion numérique
             <span
               className={classNames(
                 'fr-icon',

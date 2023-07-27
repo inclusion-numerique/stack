@@ -50,7 +50,7 @@ const epci = {
   title: 'EPCI & groupement de communes',
   cta: 'Portez une feuille de route ou participez à l’élaboration des feuilles de routes territoriales.',
   description:
-    'En tant qu&apos;EPCI, vous pouvez portez une feuille de route ou participer à l’élaboration des feuilles de routes territoriales qui seront proposées.<br/><br/>' +
+    'En tant qu’EPCI, vous pouvez portez une feuille de route ou participer à l’élaboration des feuilles de routes territoriales qui seront proposées.<br/><br/>' +
     'Retrouvez ci-dessous les informations qui vous seront demandées&nbsp;:',
   blocs: conseilRegional.blocs,
 } satisfies GouvernancePersona
@@ -60,7 +60,7 @@ const commune = {
   title: 'Commune',
   cta: "Participez à l’élaboration des feuilles de routes territoriales. Vous serez sollicités à l'occasion des concertations territoriales.",
   description:
-    'En tant que commune, vous pouvez participer à l&apos;élaboration des feuilles de routes territoriales.<br/><br/>' +
+    'En tant que commune, vous pouvez participer à l’élaboration des feuilles de routes territoriales.<br/><br/>' +
     'Retrouvez ci-dessous les informations qui vous seront demandées&nbsp;:',
   blocs: [conseilRegional.blocs[1]],
 } satisfies GouvernancePersona

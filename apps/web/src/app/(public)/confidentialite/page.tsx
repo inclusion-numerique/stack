@@ -14,23 +14,23 @@ const ConfidentialityPage = () => (
         <p>
           Seules sont recueillies les données expressément nécessaires au bon
           fonctionnement du service et au respect des obligations légales de
-          l&apos;éditeur.
+          l’éditeur.
         </p>
 
         <p>
           Les seules données recueillies sont celles fournies directement par
-          les usagers dans le contexte de l&apos;utilisation du service.
+          les usagers dans le contexte de l’utilisation du service.
         </p>
 
         <p>
           Conformément à la Loi Informatique et Liberté du 06/01/78, vous
-          disposez d&apos;un droit d&apos;accès et de rectification des
-          informations nominatives vous concernant.
+          disposez d’un droit d’accès et de rectification des informations
+          nominatives vous concernant.
         </p>
 
         <p>
           Pour toute question ou demande relative à vos droits, vous pouvez nous
-          contacter à l&apos;adresse&nbsp;
+          contacter à l’adresse&nbsp;
           <a
             href={
               PublicWebAppConfig.contactEmail &&
@@ -44,7 +44,7 @@ const ConfidentialityPage = () => (
 
         <p>
           Si vous souhaitez faire supprimer les données vous concernant, cela
-          aura potentiellement pour impact l&apos;impossibilité pour nous de
+          aura potentiellement pour impact l’impossibilité pour nous de
           continuer à vous fournir les services proposés par ce site.
         </p>
 
@@ -68,15 +68,15 @@ const ConfidentialityPage = () => (
 
         <p>
           Vos données ne sont pas transférées vers des états en dehors de
-          l&apos;Union Européenne.
+          l’Union Européenne.
         </p>
 
         <h2>Sous-traitants</h2>
 
         <p>
           Certaines des données sont envoyées à des sous-traitants pour réaliser
-          certaines missions. Le responsable de traitement s&apos;est assuré de
-          la mise en œuvre par ses sous-traitants de garanties adéquates et du
+          certaines missions. Le responsable de traitement s’est assuré de la
+          mise en œuvre par ses sous-traitants de garanties adéquates et du
           respect de conditions strictes de confidentialité, d’usage et de
           protection des données.
         </p>
@@ -111,7 +111,7 @@ const ConfidentialityPage = () => (
                 <th>Traitement réalisé</th>
                 <td>Hébergement du site</td>
                 <td>
-                  Envoi de mails et lettres d&apos;information aux utilisateurs
+                  Envoi de mails et lettres d’information aux utilisateurs
                 </td>
               </tr>
               <tr>
@@ -137,10 +137,10 @@ const ConfidentialityPage = () => (
 
         <p>
           Les données sont également transférées sur les serveurs de notre
-          prestataire en charge de l&apos;envoi de la newsletter : Sendinblue,
+          prestataire en charge de l’envoi de la newsletter : Sendinblue,
           Société par actions simplifiée au capital de 137.531 euros,
           immatriculée au RCS de Paris sous le numéro 498 019 298 et dont le
-          siège social est situé 55 rue d&apos;Amsterdam, 75008 Paris, France.
+          siège social est situé 55 rue d’Amsterdam, 75008 Paris, France.
         </p>
 
         <h2>Durée de conservation</h2>
@@ -148,25 +148,24 @@ const ConfidentialityPage = () => (
         <p>
           Vous pouvez vous désincrire de la newsletter soit en nous envoyant un
           email, soit en utilisant les liens de désinscription présents dans nos
-          emails d&apos;alerte ou newsletter, ou directement dans le formulaire
-          d&apos;édition du profil, rubrique &ldquo;Mon compte&rdquo;.
+          emails d’alerte ou newsletter, ou directement dans le formulaire
+          d’édition du profil, rubrique &ldquo;Mon compte&rdquo;.
         </p>
 
         <p>
-          Vos coordonnées sont conservées jusqu&apos;à un an après votre
-          dernière action sur le site, (dernière connexion à condition de
-          n&apos;avoir aucune aide en cours de validité, envoi d&apos;un
-          message, etc), ou un an suite à votre demande d’effacement des données
-          ou demande de désinscription.
+          Vos coordonnées sont conservées jusqu’à un an après votre dernière
+          action sur le site, (dernière connexion à condition de n’avoir aucune
+          aide en cours de validité, envoi d’un message, etc), ou un an suite à
+          votre demande d’effacement des données ou demande de désinscription.
         </p>
 
         <h2>Finalités du traitement</h2>
 
         <p>
           La finalité du traitement de données réalisé par Aides-territoires est
-          de faciliter la connaissance et l&apos;accès aux aides financières et
-          en ingénierie pour permettre aux collectivités et acteurs du
-          territoire de réaliser leurs projets.
+          de faciliter la connaissance et l’accès aux aides financières et en
+          ingénierie pour permettre aux collectivités et acteurs du territoire
+          de réaliser leurs projets.
         </p>
 
         <h2>Liste des traitements</h2>
@@ -203,20 +202,20 @@ const ConfidentialityPage = () => (
               <tr>
                 <th>Durée de conservation</th>
                 <td>
-                  Vos coordonnées sont conservées jusqu&apos;à un an après votre
+                  Vos coordonnées sont conservées jusqu’à un an après votre
                   dernière action sur le site ou demande de suppression
                 </td>
                 <td>
-                  Vos coordonnées sont conservées jusqu&apos;à un an après une
+                  Vos coordonnées sont conservées jusqu’à un an après une
                   demande de désinscription à la newsletter
                 </td>
                 <td>
-                  Vos coordonnées sont conservées jusqu&apos;à un an après votre
+                  Vos coordonnées sont conservées jusqu’à un an après votre
                   dernière action sur le site ou demande de suppression
                 </td>
                 <td>
-                  Vos coordonnées sont conservées jusqu&apos;à un an après
-                  l’envoi de votre message
+                  Vos coordonnées sont conservées jusqu’à un an après l’envoi de
+                  votre message
                 </td>
               </tr>
               <tr>
@@ -265,7 +264,7 @@ const ConfidentialityPage = () => (
           </table>
         </div>
 
-        <h2>Suivi d&apos;audience et vie privée</h2>
+        <h2>Suivi d’audience et vie privée</h2>
 
         <h3>Cookies et consentement</h3>
 
@@ -315,7 +314,7 @@ const ConfidentialityPage = () => (
         <p />
 
         <p>
-          Vous pouvez choisir de ne pas transmettre d&apos;informations à
+          Vous pouvez choisir de ne pas transmettre d’informations à
           Matomo&nbsp;:
         </p>
 
@@ -337,8 +336,7 @@ const ConfidentialityPage = () => (
 
         <p>
           Pour aller plus loin, vous pouvez consulter les fiches proposées par
-          la Commission Nationale de l&apos;Informatique et des Libertés (CNIL)
-          :
+          la Commission Nationale de l’Informatique et des Libertés (CNIL) :
         </p>
         <ul>
           <li>
@@ -407,12 +405,11 @@ const ConfidentialityPage = () => (
           </li>
           <li>
             Mesures de protection des logiciels&nbsp;: les mises à jour et les
-            mesures de protection sont assurées par l&apos;hébergeur
-            Scalingo&nbsp;;
+            mesures de protection sont assurées par l’hébergeur Scalingo&nbsp;;
           </li>
           <li>
             Sauvegarde des données&nbsp;: les sauvegardes sont assurées par
-            l&apos;hébergeur Scalingo&nbsp;;
+            l’hébergeur Scalingo&nbsp;;
           </li>
           <li>
             Chiffrement des données&nbsp;: site uniquement accessible en HTTPS.
@@ -432,7 +429,7 @@ const ConfidentialityPage = () => (
           </li>
           <li>Droit à la limitation&nbsp;;</li>
           <li>Droit de rectification des données&nbsp;;</li>
-          <li>Droit d&apos;opposition.</li>
+          <li>Droit d’opposition.</li>
         </ul>
 
         <p>
