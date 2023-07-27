@@ -1,81 +1,246 @@
 import Button from '@codegouvfr/react-dsfr/Button'
-import Image from 'next/image'
-import Quote from '@codegouvfr/react-dsfr/Quote'
+import classNames from 'classnames'
 import styles from './Home.module.css'
 
 export const revalidate = 0
 
 const HomePage = () => (
-  <div className="fr-grid-row  fr-grid-row--gutters fr-mt-14v fr-pb-14v">
-    <div className="fr-col-12 fr-col-md-7">
-      <h1>France Numérique Ensemble</h1>
-      <h3 className="fr-mt-12v">Œuvrer Ensemble pour un Numérique Inclusif</h3>
-      <p className="fr-mt-12v">
-        L’ANCT, dans le cadre de la feuille de route France Numérique Ensemble
-        issue du Conseil National de la Refondation, vise à soutenir les acteurs
-        territoriaux en fournissant des outils de diagnostic quantitatif et en
-        développant des stratégies d’inclusion numérique.
-      </p>
-
-      <p className="fr-mb-2v">Principales fonctionnalités&nbsp;:</p>
-      <ul className="fr-mb-4v">
-        <li>
-          Accéder à une analyse détaillée par département sur l’inclusion
-          numérique, permettant d’identifier les défis spécifiques à chaque
-          territoire.
-        </li>
-        <li>
-          Collaborer à l’identification des priorités et des engagements
-          territoriaux, facilitant la mise en œuvre des actions locales.
-        </li>
-        <li>
-          Participer à un effort commun pour renforcer l’inclusion numérique et
-          améliorer l’accès aux services publics pour tous.
-        </li>
-      </ul>
-      <p>
-        Initialement dédié aux services préfectoraux, ce site sera
-        progressivement étendu à tous les acteurs territoriaux pour la
-        coordination de la mise en œuvre de la feuille de route France Numérique
-        Ensemble.
-      </p>
-      <Button
-        className="fr-mt-12v"
-        linkProps={{ href: '/tableau-de-bord/departement' }}
-        iconPosition="left"
-        iconId="fr-icon-account-circle-line"
-        data-testid="prefet-button"
+  <>
+    <div className="fr-background-alt--blue-france fr-py-20v">
+      <section
+        className={classNames('fr-container', styles.section, styles.hero)}
       >
-        Se connecter à l&apos;Espace Préfet
-      </Button>
+        <h1 className="fr-text-title--blue-france">
+          L&apos;outil de diagnostic de l&apos;inclusion numérique pour les
+          territoires
+        </h1>
+        <p className="fr-text--bold fr-text--lg">
+          porté par l&apos;Agence nationale de la cohésion des territoires
+        </p>
+        <p className="fr-text--lg">
+          Cet outil doit permettre, dans le cadre du déploiement de{' '}
+          <strong>la feuille de route France Numérique Ensemble</strong>, de
+          faciliter la réalisation des diagnostics ainsi que l&apos;élaboration
+          des priorités et engagements des feuilles de routes territoriales.
+        </p>
+      </section>
     </div>
-    <div className="fr-col-12 fr-col-md-5">
-      <Image
-        src="/images/home.png"
-        alt="Accueil"
-        className={styles.homeImage}
-        width={972}
-        height={1032}
-      />
+    <div className="fr-py-20v">
+      <section className={classNames('fr-container', styles.section)}>
+        <div className={classNames('fr-grid-row', styles.rowReverse)}>
+          <div
+            className={classNames(
+              'fr-col-12 fr-col-md-5 fr-col-offset-md-1',
+              styles.homeImageContainer,
+            )}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/home-map.svg"
+              alt=""
+              className={styles.homeImage}
+            />
+          </div>
+          <div className="fr-col-12 fr-col-md-6  fr-text--lg">
+            <h2 className="fr-mt-8v fr-mt-md-0 ">
+              Les données utiles pour comprendre l&apos;inclusion numérique sur
+              votre territoire
+            </h2>
+
+            <p className="fr-mb-3v fr-mt-8v  fr-text--lg">
+              Retrouvez via cet outil des données à jour, à l&apos;échelle de
+              votre département, concernant&nbsp;:
+            </p>
+            <ul>
+              <li className="fr-mb-3v">
+                Le déploiement des dispositifs d&apos;inclusion numérique portés
+                par le programme{' '}
+                <a
+                  href="https://societenumerique.gouv.fr/"
+                  title="Site internet du programme Société Numérique de l'ANCT"
+                  target="_blank"
+                >
+                  Société Numérique de l&apos;ANCT
+                </a>
+                .
+              </li>
+              <li className="fr-mb-2v">
+                Les données relatives aux lieux de médiation numérique tels que
+                référencés sur la{' '}
+                <a
+                  href="https://cartographie.societenumerique.gouv.fr/cartographie"
+                  title="Site internet de la cartographie nationale de la médiation numérique"
+                  target="_blank"
+                >
+                  Cartographie Nationale
+                </a>
+                .
+              </li>
+              <li className="fr-mb-2v">
+                Des données statistiques territoriales révélatrices des{' '}
+                <a
+                  href="https://lamednum.coop/actions/indice-de-fragilite-numerique/"
+                  title="Site internet de la Mednum - fragilité numérique"
+                  target="_blank"
+                >
+                  fragilités numériques
+                </a>{' '}
+                des populations.
+              </li>
+            </ul>
+            <Button
+              linkProps={{ href: '/tableau-de-bord' }}
+              className="fr-mt-8v"
+            >
+              Accéder au tableau de bord
+            </Button>
+          </div>
+        </div>
+      </section>
     </div>
-    <div className="fr-col-12 fr-mt-8v">
-      <Quote
-        text="La Plateforme de l'Inclusion Numérique offre un panorama sans précédent de notre territoire. Elle nous permet de prioriser efficacement nos initiatives et d'agir où l'action est le plus nécessaire."
-        imageUrl="/images/prefet/prefet-a.png"
-        author="Sophie Martin, Préfète de Mont-Royal"
-      />
-      <Quote
-        text="Ce qui est remarquable avec cette plateforme, c'est sa capacité à fournir des données actualisées et pertinentes. C'est un outil inestimable pour planifier et suivre le progrès de l'inclusion numérique."
-        imageUrl="/images/prefet/prefet-b.png"
-        author="Jean Dupont, Préfet de Saint-Claire"
-      />
-      <Quote
-        text="En rendant les données accessibles à tous les acteurs territoriaux, la Plateforme de l'Inclusion Numérique favorise une véritable collaboration. C'est un pas en avant considérable pour notre gouvernance locale."
-        imageUrl="/images/prefet/prefet-c.png"
-        author="Claire Dubois, Préfète de Verdania"
-      />
+    <div className="fr-py-20v fr-background-alt--blue-france ">
+      <section className={classNames('fr-container', styles.section)}>
+        <div className="fr-grid-row">
+          <div
+            className={classNames(
+              'fr-col-12 fr-col-md-5 fr-col-offset-md-1--right',
+              styles.homeImageContainer,
+            )}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/home-collectivites.svg"
+              alt=""
+              className={styles.homeImage}
+            />
+          </div>
+          <div className="fr-col-12 fr-col-md-6">
+            <h2 className="fr-mt-8v fr-mt-md-0">
+              Participer à l&apos;élaboration des feuilles de routes
+              territoriales
+            </h2>
+
+            <p className="fr-mb-2v fr-mt-8v fr-text--lg">
+              <strong>En tant que collectivité ou acteur territorial</strong>,
+              vous êtes invité à manifester votre souhait de participer à
+              l&apos;élaboration des feuilles de route France Numérique Ensemble
+              sur votre territoire. En tant que Conseil Régional, Conseil
+              Département ou EPCI, vous pouvez également porter une feuille de
+              route.
+            </p>
+            <Button linkProps={{ href: '/gouvernance' }} className="fr-mt-8v">
+              Accéder au formulaire
+            </Button>
+          </div>
+        </div>
+      </section>
     </div>
-  </div>
+    <div className="fr-py-20v">
+      <section className={classNames('fr-container', styles.section)}>
+        <div className="fr-grid-row">
+          <div className={classNames('fr-col-12', styles.homeCardsContainer)}>
+            <h2>Quand et comment utiliser cet outil&nbsp;?</h2>
+            <div className={styles.card}>
+              <div className={styles.cardHeader}>
+                <span className={styles.roundNumber}>1</span>
+                <h3>D&apos;ici au 30 septembre 2023</h3>
+              </div>
+              <hr />
+              <h6>
+                <span
+                  className={classNames(
+                    'fr-icon-government-line',
+                    styles.cardSubtitleIcon,
+                  )}
+                />
+                Pour les services préfectoraux
+              </h6>
+              <p>
+                Prenez connaissance des communes les plus exposées à des
+                situations de vulnérabilités numériques de leurs population et
+                la couverture existante en matière d&apos;aide et de médiation
+                numérique.
+                <br />-<br />
+                Invitez les collectivités locales et leurs groupements à
+                s&apos;impliquer dans l&apos;élaboration des feuilles de route
+                France Numérique Ensemble via le formulaire en ligne.
+              </p>
+              <h6>
+                <span
+                  className={classNames(
+                    'fr-icon-map-pin-user-line',
+                    styles.cardSubtitleIcon,
+                  )}
+                />
+                Pour les collectivités & acteurs territoriaux
+              </h6>
+              <p>
+                Remplissez le formulaire en ligne pour signaler votre souhait
+                d&apos;être associé à l&apos;élaboration et au portage
+                d&apos;une feuille de route territoriale France Numérique
+                Ensemble, en mobilisant largement vos partenaires envisagés.
+              </p>
+              <Button linkProps={{ href: '/gouvernance' }} className="fr-mt-8v">
+                Accéder au formulaire
+              </Button>
+            </div>
+            <div className={styles.card}>
+              <div className={styles.cardHeader}>
+                <span className={styles.roundNumber}>2</span>
+                <h3>Entre octobre et décembre 2023</h3>
+              </div>
+              <hr />
+              <h6>
+                <span
+                  className={classNames(
+                    'fr-icon-government-line',
+                    styles.cardSubtitleIcon,
+                  )}
+                />
+                Pour les services préfectoraux
+              </h6>
+              <p>
+                Enrichi au fil de l&apos;eau, le diagnostic territorial peut
+                être partagé avec les acteurs locaux et discuté dans le cadre
+                des différentes réunions locales partenariales.
+              </p>
+              <h6>
+                <span
+                  className={classNames(
+                    'fr-icon-map-pin-user-line',
+                    styles.cardSubtitleIcon,
+                  )}
+                />
+                Pour les collectivités & acteurs territoriaux
+              </h6>
+              <p>
+                Mobilisez-vous dans le cadre des concertations locales afin
+                d&apos;affiner le diagnostic quantitatif et de définir, aux
+                côtés des services préfectoraux, le périmètre de gouvernance le
+                plus adapté à votre territoire.
+              </p>
+            </div>
+            <div className={styles.card}>
+              <div className={styles.cardHeader}>
+                <span className={styles.roundNumber}>3</span>
+                <h3>À partir de janvier 2024</h3>
+              </div>
+              <hr />
+              <h6>
+                Pour les services préfectoraux, les collectivités & acteurs
+                territoriaux
+              </h6>
+              <p>
+                Le diagnostic territorial doit vous permettre de fixer,
+                collectivement les valeurs cibles des différents indicateurs
+                locaux France Numérique Ensemble.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </>
 )
 
 export default HomePage

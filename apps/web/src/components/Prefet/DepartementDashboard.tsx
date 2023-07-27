@@ -7,7 +7,7 @@ import type { DepartementDashboardData } from '@app/web/app/(private)/tableau-de
 import DepartementMap from './DepartementMap'
 
 const DepartementDashboard = ({ data }: { data: DepartementDashboardData }) => (
-  <>
+  <div className="fr-container">
     <Breadcrumb
       currentPageLabel="Tableau de bord"
       segments={[
@@ -31,7 +31,7 @@ const DepartementDashboard = ({ data }: { data: DepartementDashboardData }) => (
       </div>
       <DetailedStatistics data={data} />
     </div>
-  </>
+  </div>
 )
 
 export default DepartementDashboard

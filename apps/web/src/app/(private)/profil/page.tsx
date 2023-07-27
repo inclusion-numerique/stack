@@ -64,11 +64,11 @@ const Page = async () => {
   }
 
   return (
-    <>
+    <div className="fr-container">
       <Breadcrumbs currentPage="Profil" />
       <h1>Mon profil</h1>
       {roleNotice}
-    </>
+    </div>
   )
 }
 

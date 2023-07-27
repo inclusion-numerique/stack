@@ -2,7 +2,7 @@ import { PublicWebAppConfig } from '@app/web/webAppConfig'
 
 export const revalidate = 0
 const ConfidentialityPage = () => (
-  <div className="fr-container landing-main-container fr-my-8w">
+  <div className="fr-container fr-my-8w">
     <div className="fr-grid-row fr-grid-row--center">
       <div className="fr-col-md-8">
         <h1>Politique de confidentialité</h1>

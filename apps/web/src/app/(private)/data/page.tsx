@@ -54,7 +54,7 @@ const Page = async () => {
   )
 
   return (
-    <>
+    <div className="fr-container">
       <Breadcrumbs currentPage="Analyses des données" />
 
       <h1>Analyses des données</h1>
@@ -276,7 +276,7 @@ const Page = async () => {
           </table>
         </div>
       </Accordion>
-    </>
+    </div>
   )
 }
 
