@@ -3,14 +3,14 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {
-  applyStructureFilter,
-  StructureFilters,
-} from '@app/web/components/Prefet/Cartographie/structureFilters'
-import {
   DepartementCartographieData,
   DepartementCartographieDataCommune,
   DepartementCartographieDataStructure,
-} from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
+} from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
+import {
+  applyStructureFilter,
+  StructureFilters,
+} from '@app/web/components/Prefet/Cartographie/structureFilters'
 import styles from './Page.module.css'
 import Legend from './Legend'
 import Map from './Map'
@@ -82,7 +82,7 @@ const CartographiePage = ({
 
   // Prefetch dashboard page
   useEffect(() => {
-    router.prefetch(`/prefet/${departement.code}`)
+    router.prefetch(`/tableau-de-bord/departement/${departement.code}`)
   }, [router, departement.code])
 
   return (

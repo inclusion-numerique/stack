@@ -15,16 +15,16 @@ import {
   GeoJSONSourceSpecification,
 } from '@maplibre/maplibre-gl-style-spec'
 import {
+  DepartementCartographieData,
+  DepartementCartographieDataCommune,
+  DepartementCartographieDataStructure,
+} from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
+import {
   structureTypeImage,
   structureTypes,
   structureTypeSelectedImage,
 } from '@app/web/components/Prefet/structuresTypes'
 import { Spinner } from '@app/web/ui/Spinner'
-import {
-  DepartementCartographieData,
-  DepartementCartographieDataCommune,
-  DepartementCartographieDataStructure,
-} from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
 import IndiceNumerique from './IndiceNumerique'
 import {
   addHoverState,

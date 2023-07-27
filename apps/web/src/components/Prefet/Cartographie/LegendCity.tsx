@@ -1,5 +1,5 @@
 import React from 'react'
-import { DepartementCartographieDataCommune } from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
+import { DepartementCartographieDataCommune } from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
 import styles from './LegendCity.module.css'
 
 const LegendCity = ({

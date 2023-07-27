@@ -28,9 +28,9 @@ const PublicLayout = async ({
     >
       <Header
         user={user}
-        prefet
+        fullWidth
         backLink={`Retour au tableau de bord ${department.nom}`}
-        backLinkHref={`/prefet/${department.code}`}
+        backLinkHref={`/tableau-de-bord/departement/${department.code}`}
       />
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         {children}

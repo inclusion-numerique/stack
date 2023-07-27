@@ -22,8 +22,8 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
 
   it('Préliminaire - Les pages de connexions sont accessibles', () => {
     cy.visit('/')
-    cy.get('.fr-header__tools').contains('Espace Préfet').click()
-    cy.url().should('equal', appUrl('/connexion?suivant=/prefet'))
+    cy.get('.fr-header__tools').contains('Se connecter').click()
+    cy.url().should('equal', appUrl('/connexion'))
   })
 
   it('Acceptation 0 - La connexion redirige vers la création de compte pour un nouvel utilisateur', () => {
@@ -42,7 +42,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     )
 
     cy.contains(
-      'Le service Inclusion Numérique est uniquement accessible aux agents publics autorisé',
+      'Le service France Numérique Ensemble est uniquement accessible aux agents publics autorisé',
     )
   })
   it.skip('Acceptation 2 - Connexion avec email', () => {
@@ -68,7 +68,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
 
     cy.get('.email-meta .subject').should(
       'contain',
-      'Connexion à Inclusion Numérique',
+      'Connexion à France Numérique Ensemble',
     )
 
     // Cypress does not work well with iframes, we go to the html source of the email that is
@@ -83,7 +83,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
 
     cy.log('Check mail contents')
     // We should not have the email html version in full
-    cy.contains('Connexion à Inclusion Numérique')
+    cy.contains('Connexion à France Numérique Ensemble')
     cy.contains('Se connecter').click()
 
     // With a valid magic link we should be automatically redirected to homepage, logged in
@@ -108,7 +108,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.contains('Êtes-vous sur de vouloir vous déconnecter ?')
     cy.get('main').contains('Se déconnecter').click()
     cy.url().should('equal', appUrl('/'))
-    cy.get('.fr-header__tools').contains('Espace Préfet')
+    cy.get('.fr-header__tools').contains('Se connecter')
   })
 
   it.skip('Acceptation 3 - Connexion avec Mon Compte Pro', () => {

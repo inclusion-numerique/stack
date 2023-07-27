@@ -26,6 +26,14 @@ textarea {
 
 /* DSFR Overrides and custom theming */
 
+/* Vertically align checkbox input in center of its label */
+
+.fr-checkbox-group {
+  > input[type='checkbox']  + label::before {
+    top: calc(50% - 12px);
+  }
+}
+
 /* Remove header dropshadow */
 
 .fr-header {
@@ -43,7 +51,7 @@ textarea {
       padding: 8px 16px !important;
       font-size: 0.875rem !important;
     }
-    
+
     .icon-only {
       padding: 8px 12px !important;
     }

@@ -8,13 +8,13 @@ import SearchableSelect from '@app/ui/components/SearchableSelect/SearchableSele
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
-import LegendStructure from '@app/web/components/Prefet/Cartographie/LegendStructure'
-import { StructureFilters } from '@app/web/components/Prefet/Cartographie/structureFilters'
 import {
   DepartementCartographieDataCommune,
   DepartementCartographieDataCount,
   DepartementCartographieDataStructure,
-} from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
+} from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
+import LegendStructure from '@app/web/components/Prefet/Cartographie/LegendStructure'
+import { StructureFilters } from '@app/web/components/Prefet/Cartographie/structureFilters'
 import styles from './Legend.module.css'
 import LegendCity from './LegendCity'
 
@@ -223,9 +223,9 @@ const Legend = ({
                 },
               },
               {
-                label: departement.nom,
+                label: 'Tableau de bord',
                 linkProps: {
-                  href: `/prefet/${departement.code}`,
+                  href: `/tableau-de-bord/departement/${departement.code}`,
                 },
               },
             ]}
@@ -238,7 +238,7 @@ const Legend = ({
             limit={undefined}
           />
           <h6 className={styles.legendTitle}>
-            Les acteurs de l&lsquo;Inclusion Numérique
+            Lieux d&apos;inclusion numérique
           </h6>
           <p className="fr-text--xs fr-hint-text fr-mb-3w">
             Source :{' '}
@@ -251,7 +251,7 @@ const Legend = ({
           </p>
           <form className={styles.filters} onSubmit={() => {}}>
             <p className="fr-text--lg fr-text--bold fr-mb-3v">
-              Typologie de structures
+              Typologie des lieux d&apos;inclusion numérique
             </p>
             <CheckboxFormField
               key={programmaticallyCheckedKeys.publique}
@@ -386,7 +386,7 @@ const Legend = ({
               path="labels.conseillerNumerique"
               label={
                 <LegendCheckboxLabel
-                  label="Structures accueillant un Conseiller Numérique"
+                  label="Lieux accueillant des conseillers numérique"
                   count={count.label.conseillerNumerique}
                 />
               }
@@ -397,7 +397,7 @@ const Legend = ({
               path="labels.franceServices"
               label={
                 <LegendCheckboxLabel
-                  label="Structures labellisées France Services"
+                  label="Points d’accueil numérique labellisés France Services"
                   count={count.label.franceServices}
                 />
               }
@@ -408,7 +408,7 @@ const Legend = ({
               path="labels.aidantConnect"
               label={
                 <LegendCheckboxLabel
-                  label="Structures habilitées Aidants Connect"
+                  label="Points d’accueil habilités Aidants Connect"
                   count={count.label.aidantsConnect}
                 />
               }
@@ -430,7 +430,7 @@ const Legend = ({
               path="territoiresPrioritaires.qpv"
               label={
                 <LegendCheckboxLabel
-                  label="Structures en quartier prioritaire de la ville (QPV)"
+                  label="Lieux situés en quartier prioritaire de la ville (QPV)"
                   count={count.territoire.qpv}
                 />
               }
@@ -441,7 +441,7 @@ const Legend = ({
               path="territoiresPrioritaires.zrr"
               label={
                 <LegendCheckboxLabel
-                  label="Structures en zone de revitalisation rurale (ZRR)"
+                  label="Lieux situés en zone de revitalisation rurale (ZRR)"
                   count={count.territoire.zrr}
                 />
               }

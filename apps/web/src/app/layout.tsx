@@ -24,7 +24,7 @@ setLink({
 })
 
 export const metadata: Metadata = {
-  title: "Les données de l'Inclusion Numérique",
+  title: 'France Numérique Ensemble',
   themeColor: '#000091',
   icons: {
     icon: '/favicon.ico',

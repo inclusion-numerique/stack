@@ -44,13 +44,14 @@
 
 .legendCheckboxLabel {
     display: flex;
-    align-items: center;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
 
   > :last-child{
     font-size: 16px;
     font-weight: 600;
+    margin-left: 8px;
   }
 }
 

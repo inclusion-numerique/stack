@@ -10,7 +10,8 @@
 .statistic {
   display: flex;
   justify-content: space-between;
-  
+  align-items: center;
+
   &:last-child {
     margin-bottom: 0;
   }

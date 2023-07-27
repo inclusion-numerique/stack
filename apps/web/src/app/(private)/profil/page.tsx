@@ -2,13 +2,13 @@ import React from 'react'
 import { redirect } from 'next/navigation'
 import Alert from '@codegouvfr/react-dsfr/Alert'
 import Link from 'next/link'
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
+import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 
 const Page = async () => {
-  const user = await getAuthenticatedSessionUser()
+  const user = await getSessionUser()
   if (!user) {
-    redirect('/connexion')
+    redirect('/connexion?suivant=/profil')
   }
 
   let roleNotice: JSX.Element
@@ -18,7 +18,7 @@ const Page = async () => {
       roleNotice = (
         <Alert
           severity="info"
-          title="Vous êtes connecté à Inclusion Numérique avec un rôle administrateur"
+          title="Vous êtes connecté à France Numérique Ensemble avec un rôle administrateur"
         />
       )
       break
@@ -28,9 +28,11 @@ const Page = async () => {
       roleNotice = (
         <Alert
           severity="info"
-          title="Vous êtes connecté à Inclusion Numérique avec un rôle de démonstration vous permettant d'accéder à toutes les fonctionnalités"
+          title="Vous êtes connecté à France Numérique Ensemble avec un rôle de démonstration vous permettant d'accéder à toutes les fonctionnalités"
           description={
-            <Link href="/prefet/69">Accéder au tableau de bord Préfet</Link>
+            <Link href="/tableau-de-bord/departement/69">
+              Accéder au tableau de bord Préfet
+            </Link>
           }
         />
       )
@@ -40,8 +42,12 @@ const Page = async () => {
       roleNotice = (
         <Alert
           severity="info"
-          title="Vous êtes connecté à Inclusion Numérique avec un rôle 'préfecture' vous permettant d'accéder à toutes les fonctionnalités concernant votre département"
-          description={<Link href="/prefet">Accéder au tableau de bord</Link>}
+          title="Vous êtes connecté à France Numérique Ensemble avec un rôle 'préfecture' vous permettant d'accéder à toutes les fonctionnalités concernant votre département"
+          description={
+            <Link href="/tableau-de-bord/departement">
+              Accéder au tableau de bord
+            </Link>
+          }
         />
       )
       break

@@ -128,13 +128,13 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
 
   const inclusionLocations = {
     id: 'lieux-d-inclusion-numérique',
-    label: "Lieux d'Inclusion Numérique",
+    label: "Lieux d'inclusion numérique",
     withDescription: true,
     value: structuresCount.structures.total,
     statistics: [
       {
         id: 'typologie-de-structures',
-        label: 'Typologie de structures',
+        label: 'Typologie des lieux d’inclusion numérique',
         statistics: [
           {
             id: 'public',
@@ -171,7 +171,7 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
           },
           {
             id: 'Autres acteurs privés',
-            label: 'Autres acteurs privés',
+            label: 'Autre acteurs privés',
             value: structuresCount.structures.type.privee,
           },
           {
@@ -186,18 +186,18 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
         label: 'Labels',
         statistics: [
           {
-            id: 'structures-accueillant-des-cnfs',
-            label: 'Structures accueillant des Conseillers Numérique',
+            id: 'lieux-accueillant-des-conseillers-numerique',
+            label: 'Lieux accueillant des conseillers numérique',
             value: structuresCount.structures.label.conseillerNumerique,
           },
           {
-            id: 'structures-labellisées-france-services',
-            label: 'Structures labellisées France Services',
+            id: 'points-d-accueil-numerique-labellises-france-services',
+            label: 'Points d’accueil numérique labellisés France services',
             value: structuresCount.structures.label.franceServices,
           },
           {
-            id: 'structures-habilitées-aidants-connect',
-            label: 'Structures habilitées Aidants Connect',
+            id: 'points-d-accueil-habilites-aidants-connect',
+            label: 'Points d’accueil habilités Aidants Connect',
             value: structuresCount.structures.label.aidantsConnect,
           },
         ],
@@ -208,12 +208,12 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
         statistics: [
           {
             id: 'structures-en-quartier-prioritaire-de-la-ville-qpv',
-            label: 'Structures en quartier prioritaire de la ville (QPV)',
+            label: 'Lieux situés en quartier prioritaire de la ville (QPV)',
             value: structuresCount.structures.territoire.qpv,
           },
           {
             id: 'structures-en-zone-de-revitalisation-rurale-zrr',
-            label: 'Structures en zone de revitalisation rurale (ZRR)',
+            label: 'Lieux situés en zone de revitalisation rurale (ZRR)',
             value: structuresCount.structures.territoire.zrr,
           },
         ],
@@ -233,14 +233,12 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
             id: 'conseillers-numériques',
             label: 'Conseillers Numériques',
             value: conums,
-            statistics: [
-              {
-                id: 'dont-conseillers-coordinateurs',
-                label: 'dont Conseillers Coordinateurs',
-                // eslint-disable-next-line no-underscore-dangle
-                value: departement._count.coordinateursConseillerNumerique,
-              },
-            ],
+          },
+          {
+            id: 'dont Conseillers Coordinateurs',
+            label: 'dont Conseillers Coordinateurs',
+            // eslint-disable-next-line no-underscore-dangle
+            value: departement._count.coordinateursConseillerNumerique,
           },
           {
             id: 'aidants-habilités-à-aidant-connect',
@@ -272,7 +270,6 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
   const publicsAccompagnes = {
     id: 'publics-accompagnés',
     label: `Publics accompagnés`,
-    description: 'Données incomplètes',
     boxes: [
       {
         id: 'usagers-accompagnés',
@@ -371,7 +368,6 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
   const accompagnements = {
     id: 'accompagnements',
     label: `Accompagnements`,
-    description: 'Données incomplètes',
     boxes: [
       {
         id: 'accompagnement',

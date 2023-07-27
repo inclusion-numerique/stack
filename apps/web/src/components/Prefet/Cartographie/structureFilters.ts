@@ -1,4 +1,4 @@
-import { DepartementCartographieDataStructure } from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
+import { DepartementCartographieDataStructure } from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
 
 export type StructureFilters = {
   typologie: {

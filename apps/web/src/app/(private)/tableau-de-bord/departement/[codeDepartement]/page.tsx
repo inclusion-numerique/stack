@@ -1,10 +1,10 @@
 import { notFound, redirect } from 'next/navigation'
 import React from 'react'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
-import CartographiePage from '@app/web/components/Prefet/Cartographie/Page'
+import DepartementDashboard from '@app/web/components/Prefet/DepartementDashboard'
 import { hasAccessToDepartementDashboard } from '@app/web/security/securityRules'
 import { prismaClient } from '@app/web/prismaClient'
-import { getDepartementCartographieData } from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
+import { getDepartementDashboardData } from '@app/web/app/(private)/tableau-de-bord/departement/[codeDepartement]/getDepartementDashboardData'
 
 export const generateMetadata = async ({
   params: { codeDepartement },
@@ -14,7 +14,9 @@ export const generateMetadata = async ({
   const user = await getSessionUser()
 
   if (!user) {
-    redirect(`/connexion?suivant=/prefet/${codeDepartement}/cartographie`)
+    redirect(
+      `/connexion?suivant=/tableau-de-bord/departement/${codeDepartement}`,
+    )
   }
 
   const departement = await prismaClient.departement.findUnique({
@@ -23,7 +25,6 @@ export const generateMetadata = async ({
     },
     select: { code: true, nom: true },
   })
-
   if (!departement) {
     notFound()
   }
@@ -33,7 +34,7 @@ export const generateMetadata = async ({
   }
 
   return {
-    title: `${departement.nom} - Cartographie`,
+    title: `${departement.nom} - Tableau de bord`,
   }
 }
 
@@ -42,11 +43,10 @@ const Page = async ({
 }: {
   params: { codeDepartement: string }
 }) => {
-  // This will be passed client side. Be mindful of the size of the data.
   // Security has been checked in metadata
-  const data = await getDepartementCartographieData(codeDepartement)
+  const data = await getDepartementDashboardData(codeDepartement)
 
-  return <CartographiePage data={data} />
+  return <DepartementDashboard data={data} />
 }
 
 export default Page

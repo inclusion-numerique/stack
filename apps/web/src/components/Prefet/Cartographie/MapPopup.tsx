@@ -1,11 +1,11 @@
 import React from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
-import CityDetails from '@app/web/components/Prefet/Cartographie/CityDetails'
-import StructureDetails from '@app/web/components/Prefet/Cartographie/StructureDetails'
 import {
   DepartementCartographieDataCommune,
   DepartementCartographieDataStructure,
-} from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
+} from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
+import CityDetails from '@app/web/components/Prefet/Cartographie/CityDetails'
+import StructureDetails from '@app/web/components/Prefet/Cartographie/StructureDetails'
 import styles from './MapPopup.module.css'
 
 const MapPopup = ({

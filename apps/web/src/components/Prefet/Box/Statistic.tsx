@@ -3,12 +3,12 @@
 import React, { useState } from 'react'
 import classNames from 'classnames'
 import { numberToString } from '@app/web/utils/formatNumber'
-import type { StatisticData as StatisticType } from '@app/web/app/(prefet)/prefet/[codeDepartement]/getDepartementDashboardData'
+import type { StatisticData } from '@app/web/app/(private)/tableau-de-bord/departement/[codeDepartement]/getDepartementDashboardData'
 import styles from './Statistic.module.css'
 
 type StatisticProps = {
   bold?: boolean
-} & StatisticType
+} & StatisticData
 
 const Statistic = ({
   value,

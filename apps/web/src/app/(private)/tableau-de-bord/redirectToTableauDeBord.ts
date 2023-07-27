@@ -2,26 +2,24 @@ import { redirect } from 'next/navigation'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { hasAccessToDepartementDashboard } from '@app/web/security/securityRules'
 
-export const generateMetadata = async () => {
+export const redirectToTableauDeBord = async () => {
   const user = await getSessionUser()
   if (!user) {
-    redirect(`/connexion?suivant=/prefet`)
+    redirect(`/connexion?suivant=/tableau-de-bord`)
     return
   }
 
   if (user.role === 'Prefect' && user.roleScope) {
-    redirect(`/prefet/${user.roleScope}`)
+    redirect(`/tableau-de-bord/departement/${user.roleScope}`)
     return
   }
 
   if (hasAccessToDepartementDashboard(user, '69')) {
-    redirect(`/prefet/69`)
+    // Demonstration
+    redirect(`/tableau-de-bord/departement/69`)
     return
   }
 
+  // Logged in but no access to any dashboard
   redirect('/profil')
 }
-
-const Page = () => null
-
-export default Page

@@ -1,8 +1,8 @@
 import React from 'react'
 import Link from 'next/link'
+import { DepartementCartographieDataStructure } from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
 import { structureSubtypeLabel } from '@app/web/components/Prefet/structuresTypes'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
-import { DepartementCartographieDataStructure } from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
 
 const StructureDetails = ({
   structure: {
@@ -84,13 +84,15 @@ const StructureDetails = ({
         !labelAidantsConnect &&
         !labelFranceServices && <p className="fr-mb-1v">Aucun</p>}
       {labelConseillersNumerique && (
-        <p className="fr-mb-1v">Structures accueillant des CNFS</p>
+        <p className="fr-mb-1v">Lieux accueillant des conseillers numérique</p>
       )}
       {labelAidantsConnect && (
-        <p className="fr-mb-1v">Structures labellisées Aidants Connect</p>
+        <p className="fr-mb-1v">Points d’accueil habilités Aidants Connect</p>
       )}
       {labelFranceServices && (
-        <p className="fr-mb-1v">Structures labellisées France Services</p>
+        <p className="fr-mb-1v">
+          Points d’accueil numérique labellisés France Services
+        </p>
       )}
       {zrr ||
         (qpv && (
@@ -100,12 +102,12 @@ const StructureDetails = ({
             </p>
             {qpv && (
               <p className="fr-mb-1v">
-                Structures en quartier prioritaire de la ville (QPV)
+                Lieux situés en quartier prioritaire de la ville (QPV)
               </p>
             )}
             {zrr && (
               <p className="fr-mb-1v">
-                Structures en zone de revitalisation rurale (ZRR)
+                Lieux situés en zone de revitalisation rurale (ZRR)
               </p>
             )}
           </>

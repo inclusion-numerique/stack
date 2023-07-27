@@ -8,7 +8,7 @@ export const revalidate = 0
 const HomePage = () => (
   <div className="fr-grid-row  fr-grid-row--gutters fr-mt-14v fr-pb-14v">
     <div className="fr-col-12 fr-col-md-7">
-      <h1>Les données de l&apos;Inclusion Numérique</h1>
+      <h1>France Numérique Ensemble</h1>
       <h3 className="fr-mt-12v">Œuvrer Ensemble pour un Numérique Inclusif</h3>
       <p className="fr-mt-12v">
         L’ANCT, dans le cadre de la feuille de route France Numérique Ensemble
@@ -41,7 +41,7 @@ const HomePage = () => (
       </p>
       <Button
         className="fr-mt-12v"
-        linkProps={{ href: '/prefet' }}
+        linkProps={{ href: '/tableau-de-bord/departement' }}
         iconPosition="left"
         iconId="fr-icon-account-circle-line"
         data-testid="prefet-button"

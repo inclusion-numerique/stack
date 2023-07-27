@@ -21,22 +21,26 @@ const IndiceNumerique = ({
   viewIndiceFN: boolean
 }) => (
   <>
-    <InformationModal title="L’indice de Fragilité Numérique">
-      L’indice de fragilité numérique révèle les territoires où la population
-      est le plus à risque d’exclusion.
+    <InformationModal title="L'indice de Fragilité Numérique">
+      L&apos;indice de fragilité numérique révèle les territoires où la
+      population est le plus à risque d’exclusion. De nombreux facteurs sont à
+      l’origine de l’exclusion numérique. Ils sont regroupés en quatre axes qui
+      constituent les principales causes de l’exclusion numérique. Au sein de
+      chaque axe, on retrouve plusieurs variables utilisées pour le calcul.
       <br />
-      De nombreux facteurs sont à l’origine de l’exclusion numérique. Ils sont
-      regroupés en quatre axes qui constituent les principales causes de
-      l’exclusion numérique. Au sein de chaque axe, on retrouve plusieurs
-      variables utilisées pour le calcul.
+      <br />
+      L&apos;indice de fragilité numérique n’intègre pas de rapport ou de
+      pondération par rapport à la taille de la population communale. La densité
+      de lieux de médiation numérique en zone urbaine doit pouvoir être mise en
+      regard de la population.
       <br />
       <br />
       <Link
-        href="https://fragilite-numerique.fr/"
+        href="https://fragilite-numerique.fr"
         target="_blank"
         rel="noopener noreferrer"
       >
-        https://fragilite-numerique.fr/
+        https://fragilite-numerique.fr
       </Link>
     </InformationModal>
     <div className={styles.container}>

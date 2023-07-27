@@ -3,13 +3,13 @@ import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import MainStatistics from '@app/web/components/Prefet/DepartementDashboard/MainStatistics'
 import DetailedStatistics from '@app/web/components/Prefet/DepartementDashboard/DetailedStatistics'
 import DepartementDashboardHeader from '@app/web/components/Prefet/DepartementDashboardHeader'
-import { DepartementDashboardData } from '@app/web/app/(prefet)/prefet/[codeDepartement]/getDepartementDashboardData'
+import type { DepartementDashboardData } from '@app/web/app/(private)/tableau-de-bord/departement/[codeDepartement]/getDepartementDashboardData'
 import DepartementMap from './DepartementMap'
 
 const DepartementDashboard = ({ data }: { data: DepartementDashboardData }) => (
   <>
     <Breadcrumb
-      currentPageLabel={data.departement.nom}
+      currentPageLabel="Tableau de bord"
       segments={[
         {
           label: "Page d'accueil",
@@ -19,7 +19,7 @@ const DepartementDashboard = ({ data }: { data: DepartementDashboardData }) => (
         },
       ]}
     />
-    <div className="fr-mt-4v fr-pb-20v">
+    <div className="fr-mt-4v fr-pb-14v">
       <DepartementDashboardHeader />
       <div className="fr-grid-row fr-grid-row--gutters fr-mb-10w">
         <div className="fr-col-12 fr-col-md-5">

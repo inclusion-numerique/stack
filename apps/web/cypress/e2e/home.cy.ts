@@ -3,9 +3,12 @@ import { createTestUser } from '../support/helpers'
 describe("Page d'accueil", () => {
   it("La page d'accueil s'affiche correctement, avec les styles du DSFR", () => {
     cy.visit('/')
-    cy.get('.fr-header__service a').should('contain', 'Inclusion Numérique')
+    cy.get('.fr-header__service a').should(
+      'contain',
+      'France Numérique Ensemble',
+    )
     cy.get('.fr-header__tools .fr-btn')
-      .should('contain', 'Espace Préfet')
+      .should('contain', 'Se connecter')
       .should('have.css', 'color', 'rgb(0, 0, 145)')
   })
 
@@ -18,7 +21,7 @@ describe("Page d'accueil", () => {
     const user = createTestUser()
     cy.createUserAndSignin(user)
     cy.visit('/')
-    cy.get('.fr-header__tools').should('not.contain', 'Espace Préfet')
+    cy.get('.fr-header__tools').should('not.contain', 'Se connecter')
     cy.dsfrShouldBeStarted()
     cy.dsfrCollapsesShouldBeBound()
     cy.get('.fr-header__tools button[aria-controls="header-user-menu"]')
@@ -33,6 +36,6 @@ describe("Page d'accueil", () => {
       cy.execute('deleteSession', sessionToken)
     })
     cy.visit('/')
-    cy.get('.fr-header__tools').contains('Espace Préfet')
+    cy.get('.fr-header__tools').contains('Se connecter')
   })
 })

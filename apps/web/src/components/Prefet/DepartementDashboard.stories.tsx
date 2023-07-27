@@ -6,20 +6,20 @@ import {
   BoxData,
   BoxesData,
   DepartementDashboardData,
-} from '@app/web/app/(prefet)/prefet/[codeDepartement]/getDepartementDashboardData'
+} from '@app/web/app/(private)/tableau-de-bord/departement/[codeDepartement]/getDepartementDashboardData'
 
 const getFakeData = (
   departement: DepartementGeoFeatures,
 ): DepartementDashboardData => {
   const inclusionLocations = {
     id: 'lieux-d-inclusion-numérique',
-    label: "Lieux d'Inclusion Numérique",
+    label: "Lieux d'inclusion numérique",
     value: 123,
     withDescription: true,
     statistics: [
       {
         id: 'typologie-de-structures',
-        label: 'Typologie de structures',
+        label: 'Typologie',
         statistics: [
           {
             id: 'public',
@@ -72,12 +72,12 @@ const getFakeData = (
         statistics: [
           {
             id: 'structures-en-quartier-prioritaire-de-la-ville-qpv',
-            label: 'Structures en quartier prioritaire de la ville (QPV)',
+            label: 'Lieux situés en quartier prioritaire de la ville (QPV)',
             value: 12,
           },
           {
             id: 'structures-en-zone-de-revitalisation-rurale-zrr',
-            label: 'Structures en zone de revitalisation rurale (ZRR)',
+            label: 'Lieux situés en zone de revitalisation rurale (ZRR)',
             value: 32,
           },
         ],
@@ -98,13 +98,11 @@ const getFakeData = (
             id: 'conseillers-numériques',
             label: 'Conseillers Numériques',
             value: 43,
-            statistics: [
-              {
-                id: 'dont-conseillers-coordinateurs',
-                label: 'dont Conseillers Coordinateurs',
-                value: 2,
-              },
-            ],
+          },
+          {
+            id: 'dont-conseillers-coordinateurs',
+            label: 'dont Conseillers Coordinateurs',
+            value: 2,
           },
           {
             id: 'aidants-habilités-à-aidant-connect',

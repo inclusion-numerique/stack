@@ -1,6 +1,6 @@
 import React from 'react'
 import Box from '@app/web/components/Prefet/Box/Box'
-import { DepartementDashboardData } from '@app/web/app/(prefet)/prefet/[codeDepartement]/getDepartementDashboardData'
+import type { DepartementDashboardData } from '@app/web/app/(private)/tableau-de-bord/departement/[codeDepartement]/getDepartementDashboardData'
 
 const MainStatistics = ({
   data: {

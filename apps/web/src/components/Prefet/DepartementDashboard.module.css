@@ -1,6 +1,10 @@
 .header {
   margin-bottom: 32px;
 
+  h2 {
+    max-width: 790px;
+  }
+
   p {
     max-width: 894px;
   }

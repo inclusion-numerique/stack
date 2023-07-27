@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import classNames from 'classnames'
+import { DepartementCartographieDataCommune } from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
 import { formatIfnScore } from '@app/web/data/ifnData'
 import { numberToString } from '@app/web/utils/formatNumber'
-import { DepartementCartographieDataCommune } from '@app/web/app/(cartographie)/prefet/[codeDepartement]/cartographie/getDepartementCartographieData'
 import styles from './CityDetails.module.css'
 
 const CityDetails = ({
@@ -52,7 +52,7 @@ const CityDetails = ({
       >
         <div className={styles.row}>
           <h6 className="fr-mt-1v">
-            Lieux d&apos;Inclusion Numérique
+            Lieux d&apos;inclusion numérique
             <span
               className={classNames(
                 'fr-icon',
@@ -166,7 +166,7 @@ const CityDetails = ({
           </div>
           <div className={classNames(styles.row, 'fr-mb-1v')}>
             <p className="fr-text--sm">
-              Structures accueillant un Conseiller Numérique
+              Lieux accueillant des conseillers numérique
             </p>
             <p className=" fr-text--bold">
               {numberToString(count.structures.label.conseillerNumerique)}
@@ -174,14 +174,16 @@ const CityDetails = ({
           </div>
           <div className={classNames(styles.row, 'fr-mb-1v')}>
             <p className="fr-text--sm">
-              Structures labellisées France Services
+              Points d’accueil numérique labellisés France Services
             </p>
             <p className=" fr-text--bold">
               {numberToString(count.structures.label.franceServices)}
             </p>
           </div>
           <div className={classNames(styles.row, 'fr-mb-1v')}>
-            <p className="fr-text--sm">Structures habilitées Aidants Connect</p>
+            <p className="fr-text--sm">
+              Points d’accueil habilités Aidants Connect
+            </p>
             <p className=" fr-text--bold">
               {numberToString(count.structures.label.aidantsConnect)}
             </p>
@@ -193,7 +195,7 @@ const CityDetails = ({
           </div>
           <div className={classNames(styles.row, 'fr-mb-1v')}>
             <p className="fr-text--sm">
-              Structures en quartier prioritaire de la ville (QPV)
+              Lieux situés en quartier prioritaire de la ville (QPV)
             </p>
             <p className=" fr-text--bold">
               {numberToString(count.structures.territoire.qpv)}
@@ -201,7 +203,7 @@ const CityDetails = ({
           </div>
           <div className={classNames(styles.row, 'fr-mb-1v')}>
             <p className="fr-text--sm">
-              Structures en zone de revitalisation rurale (ZRR)
+              Lieux situés en zone de revitalisation rurale (ZRR)
             </p>
             <p className=" fr-text--bold">
               {numberToString(count.structures.territoire.zrr)}
@@ -254,7 +256,7 @@ const CityDetails = ({
       <hr className="fr-mt-6v" />
       <div className={styles.row}>
         <p className="fr-text--lg fr-text--bold fr-mb-3v">
-          Aidants Numériques identifiés
+          Aidants numériques identifiés
         </p>
         <p className="fr-text--lg fr-text--bold fr-mb-3v">
           {numberToString(count.aidantsConnect + count.conseillersNumeriques)}

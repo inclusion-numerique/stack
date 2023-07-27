@@ -1,0 +1,8 @@
+.headerContainer{
+    padding: 0 16px;
+
+    @media (min-width: 62em) {
+        /* lg */
+        padding: 0 32px 0 48px;
+    }
+}
