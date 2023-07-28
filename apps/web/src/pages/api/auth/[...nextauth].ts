@@ -4,7 +4,7 @@ import EmailProvider from 'next-auth/providers/email'
 import KeycloakProvider, { KeycloakProfile } from 'next-auth/providers/keycloak'
 import {
   monCompteProConnectProviderId,
-  MonCompteProProfile,
+  MonCompteProUserInfoOrganizationResponse,
 } from '@app/web/auth/monCompteProConnect'
 import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
 import '@app/web/auth/nextAuthSetup'
@@ -34,14 +34,14 @@ export const authOptions: NextAuthOptions = {
       clientId: PublicWebAppConfig.MonCompteProConnect.clientId,
       clientSecret: ServerWebAppConfig.MonCompteProConnect.clientSecret,
       authorization: {
-        params: { scope: 'openid email profile organizations' },
+        params: { scope: 'openid email profile organization' },
       },
       // KeycloakProvider adds wellknown open id config path
       issuer: PublicWebAppConfig.MonCompteProConnect.issuer,
       userinfo: `${PublicWebAppConfig.MonCompteProConnect.issuer}/oauth/userinfo`,
       profile: async (profile: KeycloakProfile, tokens: TokenSet) =>
         axios
-          .get<MonCompteProProfile>(
+          .get<MonCompteProUserInfoOrganizationResponse>(
             `${PublicWebAppConfig.MonCompteProConnect.issuer}/oauth/userinfo`,
             {
               headers: { Authorization: `Bearer ${tokens.access_token || ''}` },
@@ -54,7 +54,17 @@ export const authOptions: NextAuthOptions = {
             firstName: userData.given_name,
             lastName: userData.family_name,
             email: userData.email,
-            organizations: userData.organizations,
+            organizations: [
+              {
+                id: userData.siret,
+                is_collectivite_territoriale:
+                  userData.is_collectivite_territoriale,
+                is_external: userData.is_external,
+                is_service_public: userData.is_service_public,
+                label: userData.label,
+                siret: userData.siret,
+              },
+            ],
             provider: monCompteProConnectProviderId,
           })),
     }),

@@ -82,7 +82,7 @@ model User {
 
 // From MonComptePro. We store them to easily debug / Monitor who has access to what
 model UserOrganization {
-  monCompteProId Int    @id @map("mon_compte_pro_id")
+  monCompteProId String @id @map("mon_compte_pro_id")
   users          User[] @relation(name: "user_organizations")
 
   // Raw data from Mon Compte Pro

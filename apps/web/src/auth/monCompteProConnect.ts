@@ -1,7 +1,7 @@
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
 
 export type MonCompteProOrganization = {
-  id: number
+  id: string
   is_collectivite_territoriale: boolean
   is_external: boolean
   is_service_public: boolean
@@ -19,6 +19,21 @@ export type MonCompteProProfile = {
   updated_at: string
   job: string
   organizations: MonCompteProOrganization[]
+}
+
+// For scope "organization"
+export type MonCompteProUserInfoOrganizationResponse = Exclude<
+  MonCompteProProfile,
+  'organizations'
+> &
+  Exclude<MonCompteProOrganization, 'id'>
+
+// For scope "organizations"
+export type MonCompteProUserInfoOrganizationsResponse = Exclude<
+  MonCompteProProfile,
+  'organizations'
+> & {
+  organizations: (Exclude<MonCompteProOrganization, 'id'> & { id: number })[]
 }
 
 export const monCompteProConnectProviderId = 'moncomptepro'
