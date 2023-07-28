@@ -121,6 +121,14 @@ export const users: Exclude<
     role: 'Demo',
     emailVerified: new Date(),
   },
+  {
+    id: '63aa97b4-cd37-4487-8d27-e093bcb28a02',
+    firstName: 'Kevin',
+    lastName: 'Thuillier',
+    email: 'kevin.thuillier@numerique.gouv.fr',
+    role: 'Demo',
+    emailVerified: new Date(),
+  },
 ]
 
 export const randomUsers: (
