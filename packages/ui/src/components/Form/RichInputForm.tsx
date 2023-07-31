@@ -1,4 +1,6 @@
-import React from 'react'
+'use client'
+
+import React, { useState } from 'react'
 import {
   FieldPath,
   FieldValues,
@@ -6,11 +8,21 @@ import {
   PathValue,
   UseFormReturn,
 } from 'react-hook-form'
-import Link from '@tiptap/extension-link'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import { Link } from '@tiptap/extension-link'
+import RichInputFormLinkTooltip from '@app/ui/components/Form/RichInputFormLinkTooltip'
 import styles from './RichInputForm.module.css'
 import RichInputFormMenuBar from './RichInputFormMenuBar'
+
+const CustomLink = Link.extend({
+  addOptions() {
+    return {
+      ...this.parent?.(),
+      openOnClick: false,
+    }
+  },
+})
 
 const RichInputForm = <T extends FieldValues>({
   form,
@@ -32,15 +44,19 @@ const RichInputForm = <T extends FieldValues>({
   onChange: (text: PathValue<T, Path<T>>) => void
 }) => {
   const editor = useEditor({
-    extensions: [StarterKit, Link],
+    extensions: [StarterKit, CustomLink],
     content: form.getValues(path),
     onUpdate: (event) => {
       onChange(event.editor.getHTML() as PathValue<T, Path<T>>)
     },
   })
 
+  // Custom tooltip hover logic
+  const [hoveredLinkElement, setHoveredLinkElement] =
+    useState<HTMLAnchorElement | null>(null)
+
   return editor ? (
-    <>
+    <div className={styles.container}>
       <RichInputFormMenuBar editor={editor} />
       <EditorContent
         editor={editor}
@@ -48,10 +64,21 @@ const RichInputForm = <T extends FieldValues>({
         aria-describedby={ariaDescribedBy}
         disabled={disabled}
         id={id}
+        onMouseOver={(event) => {
+          if (event.target instanceof HTMLAnchorElement) {
+            setHoveredLinkElement(event.target)
+          }
+        }}
+        onMouseOut={(event) => {
+          if (event.target instanceof HTMLAnchorElement) {
+            setHoveredLinkElement(null)
+          }
+        }}
         placeholder={placeholder}
         data-testid={dataTestId}
       />
-    </>
+      <RichInputFormLinkTooltip element={hoveredLinkElement} />
+    </div>
   ) : null
 }
 
