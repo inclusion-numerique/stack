@@ -1,8 +1,9 @@
 'use client'
 
 import classNames from 'classnames'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Router from 'next/router'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import AddContent from '@app/web/components/Resource/Edition/AddContent'
 import ContentListEdition from '@app/web/components/Resource/Edition/ContentListEdition'
@@ -83,6 +84,45 @@ const Edition = ({
   const publishButtonLabel = isPublished
     ? 'Publier les modifications'
     : 'Publier la ressource'
+
+  // If the user has made an edit, we ask for confirmation before leaving page
+  const [askConfirmationBeforeLeaving, setAskConfirmationBeforeLeaving] =
+    useState(false)
+  // Edition state begins as "Saved", if an edit is made, it will change to another value
+  if (
+    !askConfirmationBeforeLeaving &&
+    editionState !== ResourceEditionState.SAVED
+  ) {
+    setAskConfirmationBeforeLeaving(true)
+  }
+  const confirmationText = `Souhaitez-vous quitter l'éditeur sans publier les modifications apportées à ${resource.title} ? Les modifications sont enregistrées, vous pouvez également les publier plus tard.`
+
+  useEffect(() => {
+    if (!askConfirmationBeforeLeaving) {
+      return
+    }
+    const nativeBrowserHandler = (event: BeforeUnloadEvent) => {
+      event.preventDefault()
+      return confirmationText
+    }
+
+    // TODO When implemented by next app router, show a modal instead of a browser confirm
+    const nextNavigationHandler = () => {
+      if (!window.confirm(confirmationText)) {
+        Router.events.emit('routeChangeError')
+        // eslint-disable-next-line @typescript-eslint/no-throw-literal
+        throw "Navigation annulée par l'utilisateur"
+      }
+    }
+
+    window.addEventListener('beforeunload', nativeBrowserHandler)
+    Router.events.on('beforeHistoryChange', nextNavigationHandler)
+
+    return () => {
+      window.removeEventListener('beforeunload', nativeBrowserHandler)
+      Router.events.off('beforeHistoryChange', nextNavigationHandler)
+    }
+  }, [askConfirmationBeforeLeaving])
 
   const sendCommand: SendCommand = async (command: ResourceMutationCommand) => {
     const result = await mutate.mutateAsync(command)
