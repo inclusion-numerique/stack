@@ -57,8 +57,7 @@ export const authOptions: NextAuthOptions = {
             grant_type: 'authorization_code',
             client_id: PublicWebAppConfig.InclusionConnect.clientId,
             client_secret: ServerWebAppConfig.InclusionConnect.clientSecret,
-            redirect_uri:
-              'http://localhost:3000/api/auth/callback/inclusion-connect',
+            redirect_uri: `${ServerWebAppConfig.Auth.url}/api/auth/callback/inclusion-connect`,
             code: context.params.code || 'undefined',
           }
           const data = new URLSearchParams(body).toString()
