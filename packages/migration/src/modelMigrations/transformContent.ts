@@ -107,9 +107,11 @@ export const transformContent = ({
       Number(legacyLinkedResourceId),
     )
     if (!linkedResource) {
-      throw new Error(
-        `Legacy linked resource ${legacyLinkedResourceId} is missing`,
+      console.warn(
+        `Legacy linked resource ${legacyLinkedResourceId}, referenced in legacy content ${legacyContent.id}, is missing. Skipping resource link.`,
       )
+
+      return null
     }
 
     return {
