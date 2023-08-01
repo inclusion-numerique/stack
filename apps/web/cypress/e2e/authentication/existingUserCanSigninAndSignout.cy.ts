@@ -167,7 +167,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.log('Check mail contents')
     // We should not have the email html version in full
     cy.contains('Connexion à Stack')
-    cy.contains('Se connecter').click()
+    cy.contains('Se connecter').invoke('attr', 'target', '_self').click()
 
     // With a valid magic link we should be automatically redirected to homepage, logged in
     cy.log('User should now be signed in')
