@@ -8,6 +8,7 @@ import {
   monCompteProConnectProviderId,
   MonCompteProUserInfoOrganizationResponse,
 } from '@app/web/auth/monCompteProConnect'
+import { monCompteProConnectProviderId } from '@app/web/auth/monCompteProConnect'
 import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
 import '@app/web/auth/nextAuthSetup'
 import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'

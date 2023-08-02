@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    align-items: center;
+
+    p {
+        margin-bottom: 0;
+    }
+
+    .loading {
+        :global .fr-btn.fr-connect.moncomptepro-button {
+            cursor: not-allowed;
+            background-color: var(--background-contrast-grey);
+            border-color: var(--background-contrast-grey);
+            color: var(--text-mention-grey);
+        }
+    }
+}
+
+.spinner {
+    margin-bottom: 36px;
+}

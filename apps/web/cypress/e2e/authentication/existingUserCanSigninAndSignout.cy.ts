@@ -16,6 +16,12 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     lastName: 'Mon Compte Pro',
   }
 
+  const monCompteProUser = {
+    email: Cypress.env('MON_COMPTE_PRO_TEST_USER_EMAIL') as string,
+    password: Cypress.env('MON_COMPTE_PRO_TEST_USER_PASSWORD') as string,
+    name: 'Jean User',
+  }
+
   before(() => {
     cy.execute('deleteUser', { email: monCompteProUser.email })
   })
@@ -23,6 +29,16 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
   it('Préliminaire - Les pages de connexions sont accessibles', () => {
     cy.visit('/')
     cy.get('.fr-header__tools').contains('Se connecter').click()
+    cy.url().should('equal', appUrl('/connexion'))
+
+    cy.log('Check that the signup CTA is linked correctly')
+    cy.contains('Créer un compte').click()
+    cy.url().should('equal', appUrl('/creer-un-compte'))
+
+    cy.log('Check that the signin CTA is linked correctly')
+    cy.findByRole('main')
+      .contains(/^Se connecter$/)
+      .click()
     cy.url().should('equal', appUrl('/connexion'))
   })
 
@@ -41,8 +57,14 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
       ),
     )
 
-    cy.contains(
-      'Le service Espace France Numérique Ensemble est uniquement accessible aux agents publics autorisé',
+    cy.contains('Se créer un compte avec son email')
+
+    cy.log(
+      'Create account using email. It should be pre-completed after failed login attempt',
+    )
+    cy.get('input[id="input-form-field__email"]').should(
+      'have.value',
+      emailUser.email,
     )
   })
   it.skip('Acceptation 2 - Connexion avec email', () => {
@@ -84,7 +106,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.log('Check mail contents')
     // We should not have the email html version in full
     cy.contains('Connexion à Espace France Numérique Ensemble')
-    cy.contains('Se connecter').click()
+    cy.contains('Se connecter').invoke('attr', 'target', '_self').click()
 
     // With a valid magic link we should be automatically redirected to homepage, logged in
     cy.log('User should now be signed in')
@@ -111,7 +133,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.get('.fr-header__tools').contains('Se connecter')
   })
 
-  it.skip('Acceptation 3 - Connexion avec Mon Compte Pro', () => {
+  it('Acceptation 3 - Connexion avec Mon Compte Pro', () => {
     cy.visit('/connexion')
     // Cypress deletes some cookies on redirection between domains
     // See https://github.com/cypress-io/cypress/issues/20476
@@ -130,7 +152,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
       })
     })
 
-    cy.get('button[class="fr-btn fr-connect moncomptepro-button"]').click()
+    cy.get('button.moncomptepro-button').click()
     cy.url().should('contain', 'app-test.moncomptepro.beta.gouv.fr')
 
     cy.intercept(/\/api\/auth\/callback/, (request) => {
@@ -152,8 +174,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.dsfrShouldBeStarted()
     cy.dsfrCollapsesShouldBeBound()
     cy.get('.fr-header__tools button[aria-controls="header-user-menu"]')
-      .contains(monCompteProUser.firstName)
-      .contains(monCompteProUser.lastName)
+      .contains(monCompteProUser.name)
       .click()
 
     cy.get('#header-user-menu').should('be.visible')

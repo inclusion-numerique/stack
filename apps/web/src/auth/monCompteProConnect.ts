@@ -39,13 +39,13 @@ export type MonCompteProUserInfoOrganizationsResponse = Exclude<
 export const monCompteProConnectProviderId = 'moncomptepro'
 
 export const getMonCompteProConnectLogoutUrl = (): string =>
-  `${PublicWebAppConfig.MonCompteProConnect.issuer}/protocol/openid-connect/logout`
+  `${PublicWebAppConfig.MonComptePro.issuer}/protocol/openid-connect/logout`
 
 export const getMonCompteProConnectProfilePageUrl = (): string =>
-  `${PublicWebAppConfig.MonCompteProConnect.issuer}`
+  `${PublicWebAppConfig.MonComptePro.issuer}`
 
 export const getMonCompteProConnectProfileIssuerUrl = (): string =>
-  `${PublicWebAppConfig.MonCompteProConnect.issuer}/.well-known/openid-configuration`
+  `${PublicWebAppConfig.MonComptePro.issuer}/.well-known/openid-configuration`
 
 export const getMonCompteProConnectChangePasswordUrl = (): string =>
-  `${PublicWebAppConfig.MonCompteProConnect.issuer}/login-actions/reset-credentials?client_id=monsuivisocial`
+  `${PublicWebAppConfig.MonComptePro.issuer}/login-actions/reset-credentials?client_id=monsuivisocial`
