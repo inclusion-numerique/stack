@@ -117,16 +117,16 @@ export const authOptions: NextAuthOptions = {
       allowDangerousEmailAccountLinking: true,
       id: monCompteProConnectProviderId,
       name: 'Moncomptepro Connect',
-      clientId: PublicWebAppConfig.MonCompteProConnect.clientId,
-      clientSecret: ServerWebAppConfig.MonCompteProConnect.clientSecret,
+      clientId: PublicWebAppConfig.MonComptePro.clientId,
+      clientSecret: ServerWebAppConfig.MonComptePro.clientSecret,
       authorization: { params: { scope: 'openid email profile' } },
       // KeycloakProvider adds wellknown open id config path
-      issuer: PublicWebAppConfig.MonCompteProConnect.issuer,
-      userinfo: `${PublicWebAppConfig.MonCompteProConnect.issuer}/oauth/userinfo`,
+      issuer: PublicWebAppConfig.MonComptePro.issuer,
+      userinfo: `${PublicWebAppConfig.MonComptePro.issuer}/oauth/userinfo`,
       profile: async (profile: KeycloakProfile, tokens: TokenSet) =>
         axios
           .get<MonCompteProProfile>(
-            `${PublicWebAppConfig.MonCompteProConnect.issuer}/oauth/userinfo`,
+            `${PublicWebAppConfig.MonComptePro.issuer}/oauth/userinfo`,
             {
               headers: { Authorization: `Bearer ${tokens.access_token || ''}` },
             },
