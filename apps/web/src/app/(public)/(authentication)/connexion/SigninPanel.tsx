@@ -3,7 +3,6 @@ import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import { signinErrorMessage } from '@app/web/app/(public)/(authentication)/authenticationErrorMessage'
 import { EmailSigninForm } from '@app/web/app/(public)/(authentication)/connexion/EmailSigninForm'
-import InclusionConnectSigninButton from '@app/web/app/(public)/(authentication)/connexion/InclusionConnectSigninButton'
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
 import MonCompteProSigninButton from '@app/web/app/(public)/(authentication)/connexion/MonCompteProSigninButton'
 
@@ -21,9 +20,9 @@ const SigninPanel = ({
         <p>{signinErrorMessage(error)}</p>
       </div>
     ) : null}
-    <h5>Se connecter avec InclusionConnect</h5>
+    <h5>Se connecter avec MonComptePro</h5>
     <div className="fr-connect-group">
-      <InclusionConnectSigninButton callbackUrl={callbackUrl} />
+      <MonCompteProSigninButton callbackUrl={callbackUrl} />
     </div>
     <p className="fr-hr-or fr-mt-6v">ou</p>
     <h5>Se connecter avec son email</h5>

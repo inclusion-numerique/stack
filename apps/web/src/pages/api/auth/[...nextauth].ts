@@ -8,7 +8,6 @@ import {
   monCompteProConnectProviderId,
   MonCompteProUserInfoOrganizationResponse,
 } from '@app/web/auth/monCompteProConnect'
-import { monCompteProConnectProviderId } from '@app/web/auth/monCompteProConnect'
 import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
 import '@app/web/auth/nextAuthSetup'
 import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
@@ -35,18 +34,18 @@ export const authOptions: NextAuthOptions = {
       allowDangerousEmailAccountLinking: true,
       id: monCompteProConnectProviderId,
       name: 'Moncomptepro Connect',
-      clientId: PublicWebAppConfig.MonCompteProConnect.clientId,
-      clientSecret: ServerWebAppConfig.MonCompteProConnect.clientSecret,
+      clientId: PublicWebAppConfig.MonComptePro.clientId,
+      clientSecret: ServerWebAppConfig.MonComptePro.clientSecret,
       authorization: {
         params: { scope: 'openid email profile organization' },
       },
       // KeycloakProvider adds wellknown open id config path
-      issuer: PublicWebAppConfig.MonCompteProConnect.issuer,
-      userinfo: `${PublicWebAppConfig.MonCompteProConnect.issuer}/oauth/userinfo`,
+      issuer: PublicWebAppConfig.MonComptePro.issuer,
+      userinfo: `${PublicWebAppConfig.MonComptePro.issuer}/oauth/userinfo`,
       profile: async (profile: KeycloakProfile, tokens: TokenSet) =>
         axios
           .get<MonCompteProUserInfoOrganizationResponse>(
-            `${PublicWebAppConfig.MonCompteProConnect.issuer}/oauth/userinfo`,
+            `${PublicWebAppConfig.MonComptePro.issuer}/oauth/userinfo`,
             {
               headers: { Authorization: `Bearer ${tokens.access_token || ''}` },
             },

@@ -13,9 +13,7 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
     cy.visit('/creer-un-compte')
 
     cy.log('Signup form fill and submit')
-    cy.findByLabelText('Email').type(email)
-    cy.findByLabelText('Prénom').type(firstName)
-    cy.findByLabelText('Nom').type(lastName).type('{enter}')
+    cy.findByLabelText('Email').type(email).type('{enter}')
 
     cy.url().should('equal', appUrl('/connexion/verification'), {
       timeout: 10_000,
@@ -30,7 +28,10 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
     cy.visit('localhost:1080')
     cy.get('.email-list li a').first().click()
 
-    cy.get('.email-meta .subject').should('contain', 'Connexion à Stack')
+    cy.get('.email-meta .subject').should(
+      'contain',
+      'Connexion à Espace France Numérique Ensemble',
+    )
 
     // Cypress does not work well with iframes, we go to the html source of the email that is
     // included in the iframe preview of maildev ui
@@ -44,13 +45,13 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
 
     cy.log('Check mail contents')
     // We should not have the email html version in full
-    cy.contains('Connexion à Stack')
+    cy.contains('Connexion à Espace France Numérique Ensemble')
     cy.contains('Se connecter').invoke('attr', 'target', '_self').click()
 
     // With a valid magic link we should be automatically redirected to homepage, logged in
     cy.log('User should now be signed in')
     cy.url().should('eq', appUrl('/'))
-    cy.get('.fr-header__tools').contains(firstName).contains(lastName)
+    cy.get('.fr-header__tools').contains(email)
 
     cy.get('.fr-header__tools').should('not.contain', 'Se connecter')
   })
@@ -59,9 +60,7 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
     cy.visit('/creer-un-compte')
 
     cy.log('Signup form fill and submit')
-    cy.findByLabelText('Email').type(email)
-    cy.findByLabelText('Prénom').type(firstName)
-    cy.findByLabelText('Nom').type(lastName).type('{enter}')
+    cy.findByLabelText('Email').type(email).type('{enter}')
 
     cy.url().should('equal', appUrl('/creer-un-compte'))
     cy.contains('Un compte existe déjà avec cet email')
