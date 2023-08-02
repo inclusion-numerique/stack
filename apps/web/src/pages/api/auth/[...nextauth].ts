@@ -8,6 +8,7 @@ import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
 import '@app/web/auth/nextAuthSetup'
 import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
 import { PublicWebAppConfig, ServerWebAppConfig } from '@app/web/webAppConfig'
+import { getServerUrl } from '@app/web/utils/baseUrl'
 
 type MonCompteProProfile = {
   sub: string
@@ -57,7 +58,7 @@ export const authOptions: NextAuthOptions = {
             grant_type: 'authorization_code',
             client_id: PublicWebAppConfig.InclusionConnect.clientId,
             client_secret: ServerWebAppConfig.InclusionConnect.clientSecret,
-            redirect_uri: `${ServerWebAppConfig.Auth.url}/api/auth/callback/inclusion-connect`,
+            redirect_uri: getServerUrl('/api/auth/callback/inclusion-connect'),
             code: context.params.code || 'undefined',
           }
           const data = new URLSearchParams(body).toString()

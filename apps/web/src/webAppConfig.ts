@@ -24,7 +24,6 @@ export const ServerWebAppConfig = {
     appId: process.env.CHROMATIC_APP_ID ?? '',
   },
   Auth: {
-    url: process.env.NEXTAUTH_URL ?? '',
     Email: {
       server: emailServer,
       from: `${process.env.EMAIL_FROM_NAME ?? ''} <${
