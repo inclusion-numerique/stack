@@ -193,7 +193,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.get('.fr-header__tools').contains('Se connecter')
   })
 
-  it.only('Acceptation 3 - Connexion avec Mon Compte Pro', () => {
+  it('Acceptation 3 - Connexion avec Mon Compte Pro', () => {
     cy.visit('/connexion')
     // Cypress deletes some cookies on redirection between domains
     // See https://github.com/cypress-io/cypress/issues/20476

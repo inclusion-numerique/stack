@@ -67,7 +67,7 @@ export const PublicWebAppConfig = {
     clientId: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID ?? '',
   },
   MonCompteProConnect: {
-    issuer: process.env.NEXT_PUBLIC_MONCOMPTEPRO_CONNECT_ISSUER ?? '',
+    issuer: process.env.NEXT_PUBLIC_MONCOMPTEPRO_ISSUER ?? '',
     clientId: process.env.NEXT_PUBLIC_MONCOMPTEPRO_CLIENT_ID ?? '',
   },
   Sentry: {
