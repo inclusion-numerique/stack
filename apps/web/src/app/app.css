@@ -101,6 +101,18 @@ textarea {
   margin-bottom: 16px;
 }
 
+.fr-btn--danger {
+  background-color: var(--background-flat-error);
+  
+  &:not(:disabled):hover {
+    background-color: var(--artwork-minor-red-marianne) !important;
+  }
+  
+  &:not(:disabled):focus {
+    background-color: var(--background-flat-error) !important;
+  }
+}
+
 @media (min-width: 62em) {
   /* lg */
   .fr-header {

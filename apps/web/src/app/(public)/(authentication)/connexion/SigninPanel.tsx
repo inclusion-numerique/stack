@@ -1,11 +1,9 @@
-'use client'
-
 import { Route } from 'next'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import { signinErrorMessage } from '@app/web/app/(public)/(authentication)/authenticationErrorMessage'
 import { EmailSigninForm } from '@app/web/app/(public)/(authentication)/connexion/EmailSigninForm'
-import { InclusionConnectSigninButton } from '@app/web/app/(public)/(authentication)/connexion/InclusionConnectSigninButton'
+import InclusionConnectSigninButton from '@app/web/app/(public)/(authentication)/connexion/InclusionConnectSigninButton'
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
 
 const SigninPanel = ({
@@ -22,7 +20,6 @@ const SigninPanel = ({
         <p>{signinErrorMessage(error)}</p>
       </div>
     ) : null}
-
     <h5>Se connecter avec InclusionConnect</h5>
     <div className="fr-connect-group">
       <InclusionConnectSigninButton callbackUrl={callbackUrl} />
@@ -35,7 +32,7 @@ const SigninPanel = ({
     <ButtonsGroup
       buttons={[
         {
-          children: 'Se créer un compte',
+          children: 'Créer un compte',
           linkProps: {
             href:
               callbackUrl === '/'
