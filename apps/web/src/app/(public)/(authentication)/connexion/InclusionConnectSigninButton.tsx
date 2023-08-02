@@ -8,7 +8,7 @@ import { Spinner } from '@app/web/ui/Spinner'
 import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
 import styles from './InclusionConnectSigninButton.module.css'
 
-export const InclusionConnectSigninButton = ({
+const InclusionConnectSigninButton = ({
   className,
   callbackUrl,
 }: {
@@ -46,10 +46,12 @@ export const InclusionConnectSigninButton = ({
         href="https://plateforme-inclusion.notion.site/Un-compte-unique-pour-mes-services-num-riques-ded9135197654da590f5dde41d8bb68b"
         target="_blank"
         rel="noreferrer"
-        title="Qu'est-ce qu'Inclusion Connect ? - nouvelle fenêtre"
+        title="Qu’est-ce qu'Inclusion Connect ? - nouvelle fenêtre"
       >
-        En savoir plus
+        Qu’est-ce qu’Inclusion Connect&nbsp;?
       </a>
     </div>
   )
 }
+
+export default InclusionConnectSigninButton

@@ -19,8 +19,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
   const monCompteProUser = {
     email: Cypress.env('MON_COMPTE_PRO_TEST_USER_EMAIL') as string,
     password: Cypress.env('MON_COMPTE_PRO_TEST_USER_PASSWORD') as string,
-    firstName: 'Test Bot',
-    lastName: 'Mon Compte Pro',
+    name: 'Jean User',
   }
 
   before(() => {
@@ -194,7 +193,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.get('.fr-header__tools').contains('Se connecter')
   })
 
-  it.skip('Acceptation 3 - Connexion avec Mon Compte Pro', () => {
+  it.only('Acceptation 3 - Connexion avec Mon Compte Pro', () => {
     cy.visit('/connexion')
     // Cypress deletes some cookies on redirection between domains
     // See https://github.com/cypress-io/cypress/issues/20476
@@ -213,7 +212,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
       })
     })
 
-    cy.get('button[class="fr-btn fr-connect moncomptepro-button"]').click()
+    cy.get('button.moncomptepro-button').click()
     cy.url().should('contain', 'app-test.moncomptepro.beta.gouv.fr')
 
     cy.intercept(/\/api\/auth\/callback/, (request) => {
@@ -235,8 +234,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.dsfrShouldBeStarted()
     cy.dsfrCollapsesShouldBeBound()
     cy.get('.fr-header__tools button[aria-controls="header-user-menu"]')
-      .contains(monCompteProUser.firstName)
-      .contains(monCompteProUser.lastName)
+      .contains(monCompteProUser.name)
       .click()
 
     cy.get('#header-user-menu').should('be.visible')

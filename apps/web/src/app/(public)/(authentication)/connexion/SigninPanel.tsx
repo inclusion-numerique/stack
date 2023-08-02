@@ -1,15 +1,11 @@
-'use client'
-
 import { Route } from 'next'
-import { signIn } from 'next-auth/react'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
-import MonCompteProButton from '@codegouvfr/react-dsfr/MonCompteProButton'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import { signinErrorMessage } from '@app/web/app/(public)/(authentication)/authenticationErrorMessage'
 import { EmailSigninForm } from '@app/web/app/(public)/(authentication)/connexion/EmailSigninForm'
-import { InclusionConnectSigninButton } from '@app/web/app/(public)/(authentication)/connexion/InclusionConnectSigninButton'
+import InclusionConnectSigninButton from '@app/web/app/(public)/(authentication)/connexion/InclusionConnectSigninButton'
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
-import { monCompteProConnectProviderId } from '@app/web/auth/monCompteProConnect'
+import MonCompteProSigninButton from '@app/web/app/(public)/(authentication)/connexion/MonCompteProSigninButton'
 
 const SigninPanel = ({
   error,
@@ -26,11 +22,9 @@ const SigninPanel = ({
       </div>
     ) : null}
 
-    <h5>Se connecter avec Mon Compte Pro</h5>
+    <h5>Se connecter avec MonComptePro</h5>
     <div className="fr-connect-group">
-      <MonCompteProButton
-        onClick={() => signIn(monCompteProConnectProviderId, { callbackUrl })}
-      />
+      <MonCompteProSigninButton callbackUrl={callbackUrl} />
     </div>
     <p className="fr-hr-or fr-mt-6v">ou</p>
     <h5>Se connecter avec InclusionConnect</h5>
@@ -45,7 +39,7 @@ const SigninPanel = ({
     <ButtonsGroup
       buttons={[
         {
-          children: 'Se créer un compte',
+          children: 'Créer un compte',
           linkProps: {
             href:
               callbackUrl === '/'
