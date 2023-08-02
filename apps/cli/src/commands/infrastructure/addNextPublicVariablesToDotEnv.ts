@@ -19,6 +19,10 @@ export const addNextPublicVariablesToDotEnv = new Command()
           ? { name: 'NEXT_PUBLIC_SENTRY_DSN', value: '' }
           : { name: 'NEXT_PUBLIC_SENTRY_ENVIRONMENT', value: namespace },
         {
+          name: 'NEXT_PUBLIC_INCLUSION_CONNECT_ISS',
+          value: `$INCLUSION_CONNECT_${targetEnv.toUpperCase()}_ISS`,
+        },
+        {
           name: 'NEXT_PUBLIC_INCLUSION_CONNECT_ISSUER',
           value: `$INCLUSION_CONNECT_${targetEnv.toUpperCase()}_ISSUER`,
         },
