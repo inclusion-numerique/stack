@@ -50,23 +50,27 @@ enum UserRole {
 }
 
 model User {
-  id            String    @id @default(uuid()) @db.Uuid
-  legacyId      Int?      @unique @map("legacy_id")
-  firstName     String?   @map("first_name")
-  lastName      String?   @map("last_name")
-  name          String?
-  email         String    @unique
-  emailVerified DateTime? @map("email_verified")
-  image         Image?    @relation(fields: [imageId], references: [id])
-  imageId       String?   @unique @map("image_id") @db.Uuid
-  location      String?
-  title         String?
-  description   String?
-  role          UserRole  @default(User)
-  // Scope of the user used for access control (e.g. prefects can only access their own county, it will be countyCode)
-  roleScope     String?
-  accounts      Account[]
-  sessions      Session[]
+  id                         String    @id @default(uuid()) @db.Uuid
+  legacyId                   Int?      @unique @map("legacy_id")
+  firstName                  String?   @map("first_name")
+  lastName                   String?   @map("last_name")
+  name                       String?
+  email                      String    @unique
+  emailVerified              DateTime? @map("email_verified")
+  image                      Image?    @relation(fields: [imageId], references: [id])
+  imageId                    String?   @unique @map("image_id") @db.Uuid
+  location                   String?
+  title                      String?
+  description                String?
+  role                       UserRole  @default(User)
+  // Scope of the user used for access control (e.g. prefects can only access their own departement, it will be their departementCode)
+  roleScope                  String?   @map("role_scope")
+  // If the user participates to a gouvernance form, this is the persona (commune, epci...) for the user
+  gouvernancePersona         String?   @map("gouvernance_persona")
+  // Track if the user has been sent a "welcome" email after a gouvernance signup
+  gouvernanceSignupEmailSent DateTime? @map("gouvernance_signup_email_sent")
+  accounts                   Account[]
+  sessions                   Session[]
 
   monCompteProOrganizations Json? @map("mon_compte_pro_organizations")
 
@@ -76,6 +80,11 @@ model User {
   uploads Upload[]
 
   organizations UserOrganization[] @relation(name: "user_organizations")
+
+  formulaireGouvernanceId String?                @map("formulaire_gouvernance_id") @db.Uuid
+  formulaireGouvernance   FormulaireGouvernance? @relation("formulaire_gouvernance_participant", fields: [formulaireGouvernanceId], references: [id])
+
+  formulairesGouvernanceCrees FormulaireGouvernance[] @relation("formulaire_gouvernance_createur")
 
   @@map("users")
 }
@@ -463,4 +472,19 @@ model IfnCommune {
   nscol15pRate Float @map("nscol15p_rate")
 
   @@map("ifn_commune")
+}
+
+model FormulaireGouvernance {
+  id                 String @id @default(uuid()) @db.Uuid
+  gouvernancePersona String @map("gouvernance_persona")
+
+  participants User[] @relation("formulaire_gouvernance_participant")
+
+  createurId String @map("createur_id") @db.Uuid
+  createur   User   @relation("formulaire_gouvernance_createur", fields: [createurId], references: [id])
+
+  modification DateTime @updatedAt
+  creation     DateTime @default(now())
+
+  @@map("formulaire_gouvernance")
 }

@@ -2,6 +2,8 @@ import axios from 'axios'
 import NextAuth, { NextAuthOptions, TokenSet } from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
 import KeycloakProvider, { KeycloakProfile } from 'next-auth/providers/keycloak'
+import Sentry from '@sentry/nextjs'
+import type { User } from '@prisma/client'
 import {
   monCompteProConnectProviderId,
   MonCompteProUserInfoOrganizationResponse,
@@ -10,6 +12,7 @@ import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
 import '@app/web/auth/nextAuthSetup'
 import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
 import { PublicWebAppConfig, ServerWebAppConfig } from '@app/web/webAppConfig'
+import { sendGouvernanceWelcomeEmailIfNeeded } from '@app/web/gouvernance/sendGouvernanceWelcomeEmail'
 
 export const authOptions: NextAuthOptions = {
   // debug: process.env.NODE_ENV !== 'production',
@@ -70,7 +73,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    signIn({ account, user }) {
+    signIn({ account, user, email }) {
       const isAllowedToSignIn =
         // KeyCloak is a type of oauth
         account?.type === 'oauth' ||
@@ -80,16 +83,29 @@ export const authOptions: NextAuthOptions = {
           'updated' in user &&
           !!user.updated)
 
-      if (isAllowedToSignIn) {
+      if (!isAllowedToSignIn) {
+        // Return a URL to redirect to (can also return false to prevent redirect)
+        return `/creer-un-compte?raison=connexion-sans-compte&email=${
+          user?.email ?? ''
+        }`
+      }
+
+      if (email?.verificationRequest) {
+        // This is NOT the final signin (sending an email to verify)
+        // Let the process continue
         return true
       }
-      // Return false to display a default error message
-      // return false
 
-      // Or you can return a URL to redirect to:
-      return `/creer-un-compte?raison=connexion-sans-compte&email=${
-        user?.email ?? ''
-      }`
+      // This is the final signin (after email verification)
+      sendGouvernanceWelcomeEmailIfNeeded({ user: user as User }).catch(
+        (error) => {
+          Sentry.captureException(error)
+        },
+      )
+
+      // If this is the first signin after a gouvernance signup, we will send a "welcome" email
+
+      return true
     },
     session: ({ session, user }) => {
       if (session.user) {

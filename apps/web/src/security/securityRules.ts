@@ -20,3 +20,24 @@ export const hasAccessToDataAnalysis = (user: Pick<SessionUser, 'role'>) => {
 
   return false
 }
+
+export const hasAccessToGouvernanceForm = (
+  user: Pick<SessionUser, 'role' | 'gouvernancePersona'>,
+) => {
+  if (user.role === 'Administrator' || user.role === 'Demo') {
+    return true
+  }
+  if (user.role === 'Prefect') {
+    return false
+  }
+  return true
+}
+
+export const hasAccessToGouvernanceFormDevelopmentPreview = (
+  user: Pick<SessionUser, 'role' | 'gouvernancePersona'>,
+) => {
+  if (user.role === 'Administrator' || user.role === 'Demo') {
+    return true
+  }
+  return false
+}

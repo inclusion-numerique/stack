@@ -24,7 +24,35 @@ textarea {
   font-weight: 500 !important;
 }
 
+.fr-container--narrow {
+  /* 588 + padding */
+  max-width: 620px;
+
+  @media (min-width: 62em) {
+    /* lg */
+    max-width: 636px;
+  }
+}
+
 /* DSFR Overrides and custom theming */
+
+/* Round notices */
+
+.fr-notice {
+  border-radius: 8px;
+
+  .fr-notice__body {
+    padding-right: 0;
+
+    &::before {
+      top: calc(50% - 12px);
+    }
+
+    .fr-notice__title {
+      font-weight: 500;
+    }
+  }
+}
 
 /* Vertically align checkbox input in center of its label */
 

@@ -1,0 +1,13 @@
+.topContainer {
+    max-width: 476px;
+    margin: 0 auto;
+
+    h2 {
+        max-width: 360px;
+        margin: 16px auto;
+    }
+
+    p {
+        margin-bottom: 16px;
+    }
+}

@@ -229,7 +229,7 @@ const HomePage = () => (
                 territoriaux
               </h6>
               <p>
-                Le diagnostic territorial doit vous permettre de fixer,
+                Le diagnostic territorial doit vous permettre de fixer
                 collectivement les valeurs cibles des différents indicateurs
                 locaux France Numérique Ensemble.
               </p>

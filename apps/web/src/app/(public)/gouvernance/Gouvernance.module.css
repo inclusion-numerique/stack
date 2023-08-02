@@ -1,6 +1,10 @@
-.homeImage {
-    max-width: 100%;
-    height: auto;
-    box-shadow: 0 4px 12px #00001229;
-    border-radius: 4px;
+.contentContainer {
+    padding-bottom: 120px;
+    max-width: 588px;
+    margin: 0 auto;
+
+    h1 {
+        font-size: 32px;
+        line-height: 40px;
+    }
 }

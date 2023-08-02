@@ -23,6 +23,12 @@ export const ServerWebAppConfig = {
   Chromatic: {
     appId: process.env.CHROMATIC_APP_ID ?? '',
   },
+  Smtp: {
+    connectionString: emailServer,
+    from: `${process.env.EMAIL_FROM_NAME ?? ''} <${
+      process.env.EMAIL_FROM_ADDRESS ?? ''
+    }>`,
+  },
   Auth: {
     Email: {
       server: emailServer,

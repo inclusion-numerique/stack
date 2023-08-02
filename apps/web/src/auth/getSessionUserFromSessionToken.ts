@@ -26,6 +26,7 @@ export const getSessionUserFromSessionToken = async (
           title: true,
           role: true,
           roleScope: true,
+          gouvernancePersona: true,
           location: true,
           description: true,
           created: true,

@@ -1,6 +1,7 @@
 import z from 'zod'
 import { prismaClient } from '@app/web/prismaClient'
 import { UserSignupValidation } from '@app/web/server/rpc/user/userSignup'
+import { existingAccountErrorMessage } from '@app/web/server/rpc/user/existingAccountErrorMessage'
 
 export const ServerUserSignupValidation = UserSignupValidation.extend({
   email: z
@@ -14,5 +15,5 @@ export const ServerUserSignupValidation = UserSignupValidation.extend({
         select: { id: true },
       })
       return !existing
-    }, 'Un compte existe déjà avec cet email'),
+    }, existingAccountErrorMessage),
 })

@@ -5,17 +5,15 @@ import Link from 'next/link'
 import { KeyboardEvent, MouseEvent as ReactMouseEvent, useRef } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import { getUserDisplayName } from '@app/web/utils/user'
 import styles from './HeaderUserMenu.module.css'
 
-export const HeaderUserMenu = ({
-  user: { email, name },
-}: {
-  user: SessionUser
-}) => {
+export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
   // The click outside default behavior from dsfr js do not work in this case 🤷‍
   // So we have to use client component and hooks to handle the click outside
   const buttonRef = useRef<HTMLButtonElement>(null)
   const collapseRef = useRef<HTMLDivElement>(null)
+  const displayName = getUserDisplayName(user)
   const onClickOrEnterInsideDropdown = (
     event: KeyboardEvent<HTMLDivElement> | ReactMouseEvent<HTMLDivElement>,
   ) => {
@@ -43,8 +41,10 @@ export const HeaderUserMenu = ({
     <ul className="fr-menu__list">
       <li>
         <span className="fr-nav__link fr-pt-4v fr-pb-2v">
-          <p className="fr-text--medium fr-text--sm">{name}</p>
-          <p className="fr-text--sm fr-text-default--grey">{email}</p>
+          {!!user.name && (
+            <p className="fr-text--medium fr-text--sm">{user.name}</p>
+          )}
+          <p className="fr-text--sm fr-text-default--grey">{user.email}</p>
         </span>
       </li>
       <li>
@@ -79,7 +79,7 @@ export const HeaderUserMenu = ({
         aria-controls="header-user-menu"
         ref={buttonRef}
       >
-        {name}
+        {displayName}
       </button>
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <div

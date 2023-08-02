@@ -62,7 +62,7 @@ export const createUserData = async (userInfo: MonCompteProProfile) => {
     ...userInfo,
     role: prefetOfDepartement ? 'Prefect' : 'User',
     roleScope: prefetOfDepartement,
-
+    gouvernancePersona: null,
     organizations: {
       connect: checkedOrganizations.map(({ monCompteProId }) => ({
         monCompteProId,

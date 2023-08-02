@@ -14,10 +14,10 @@ const SigninPage = async ({
 }) => {
   const user = await getSessionUser()
   if (user) {
-    redirect(getServerUrl(suivant ?? '/'))
+    redirect(getServerUrl(suivant ?? '/profil'))
   }
 
-  const callbackUrl = suivant ?? '/'
+  const callbackUrl = suivant ?? '/profil'
 
   return (
     <>

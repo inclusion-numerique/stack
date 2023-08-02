@@ -42,7 +42,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     )
 
     cy.contains(
-      'Le service France Numérique Ensemble est uniquement accessible aux agents publics autorisé',
+      'Le service Espace France Numérique Ensemble est uniquement accessible aux agents publics autorisé',
     )
   })
   it.skip('Acceptation 2 - Connexion avec email', () => {
@@ -68,7 +68,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
 
     cy.get('.email-meta .subject').should(
       'contain',
-      'Connexion à France Numérique Ensemble',
+      'Connexion à Espace France Numérique Ensemble',
     )
 
     // Cypress does not work well with iframes, we go to the html source of the email that is
@@ -83,7 +83,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
 
     cy.log('Check mail contents')
     // We should not have the email html version in full
-    cy.contains('Connexion à France Numérique Ensemble')
+    cy.contains('Connexion à Espace France Numérique Ensemble')
     cy.contains('Se connecter').click()
 
     // With a valid magic link we should be automatically redirected to homepage, logged in

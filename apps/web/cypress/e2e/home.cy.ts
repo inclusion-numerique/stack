@@ -5,7 +5,7 @@ describe("Page d'accueil", () => {
     cy.visit('/')
     cy.get('.fr-header__service a').should(
       'contain',
-      'France Numérique Ensemble',
+      'Espace France Numérique Ensemble',
     )
     cy.get('.fr-header__tools .fr-btn')
       .should('contain', 'Se connecter')

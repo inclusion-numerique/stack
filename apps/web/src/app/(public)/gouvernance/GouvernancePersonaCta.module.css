@@ -1,0 +1,33 @@
+.card {
+    border: var(--slim-grey-border);
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+    gap: 40px;
+    text-decoration: none;
+    justify-content: space-between;
+    background: none;
+}
+
+.iconContainer {
+    color: var(--text-title-blue-france);
+    padding: 0 8px;
+
+}
+
+.content {
+    h3 {
+        font-size: 22px;
+        line-height: 28px;
+        margin-bottom: 4px;
+        color: var(--text-title-blue-france);
+    }
+
+    p {
+        margin-bottom: 0;
+        font-size: 14px;
+        line-height: 24px;
+
+    }
+}

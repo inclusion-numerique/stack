@@ -337,7 +337,6 @@ const Map = ({
         zoom: 12.9,
         padding: { left: mapPopupWidthWithMargin },
       })
-      console.log('Set selected structure state')
     }
   }, [map, selectedStructure])
 

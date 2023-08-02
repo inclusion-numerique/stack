@@ -63,18 +63,6 @@ const EmailSignupForm = ({
         label="Email"
         disabled={disabled}
       />
-      <InputFormField
-        control={form.control}
-        path="firstName"
-        label="Prénom"
-        disabled={disabled}
-      />
-      <InputFormField
-        control={form.control}
-        path="lastName"
-        label="Nom"
-        disabled={disabled}
-      />
       <ButtonsGroup
         className="fr-mt-12v"
         buttons={[

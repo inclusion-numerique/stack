@@ -1,0 +1,49 @@
+.contentContainer {
+    padding-bottom: 120px;
+    max-width: 588px;
+    margin: 0 auto;
+
+    h1 {
+        font-size: 32px;
+        line-height: 40px;
+    }
+}
+
+.card {
+    padding: 16px;
+    margin-top: 32px;
+    border: var(--slim-grey-border);
+
+    @media (min-width: 768px) {
+        padding: 32px;
+    }
+
+    h1 {
+        font-size: 32px;
+        line-height: 40px;
+        color: var(--text-title-blue-france);
+    }
+
+    hr {
+        margin: 32px 0;
+        padding: 1px 0;
+    }
+
+    h2 {
+        margin-bottom: 16px;
+        font-size: 28px;
+        line-height: 36px;
+    }
+}
+
+.bloc {
+    h2 {
+        font-size: 20px;
+        line-height: 28px;
+        margin-bottom: 16px;
+    }
+
+    li {
+        margin-top: 8px;
+    }
+}

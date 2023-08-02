@@ -1,5 +1,17 @@
+// Url friendly unique identifier
+export const gouvernancePersonaIds = [
+  'conseil-regional',
+  'conseil-departemental',
+  'epci',
+  'commune',
+  'structure',
+] as const
+
+export type GouvernancePersonaId = (typeof gouvernancePersonaIds)[number]
+
 export type GouvernancePersona = {
-  slug: string
+  // Url friendly unique identifier
+  id: GouvernancePersonaId
   title: string
   cta: string
   description: string
@@ -10,7 +22,7 @@ export type GouvernancePersona = {
 }
 
 const conseilRegional = {
-  slug: 'conseil-regional',
+  id: 'conseil-regional',
   title: 'Conseil régional',
   cta: 'Portez une feuille de route ou participez à l’élaboration des feuilles de routes territoriales.',
   description:
@@ -36,7 +48,7 @@ const conseilRegional = {
 } satisfies GouvernancePersona
 
 const conseilDepartemental = {
-  slug: 'conseil-departemental',
+  id: 'conseil-departemental' as const,
   title: 'Conseil départemental',
   cta: 'Portez une feuille de route ou participez à l’élaboration des feuilles de routes territoriales.',
   description:
@@ -46,7 +58,7 @@ const conseilDepartemental = {
 } satisfies GouvernancePersona
 
 const epci = {
-  slug: 'epci',
+  id: 'epci' as const,
   title: 'EPCI & groupement de communes',
   cta: 'Portez une feuille de route ou participez à l’élaboration des feuilles de routes territoriales.',
   description:
@@ -56,7 +68,7 @@ const epci = {
 } satisfies GouvernancePersona
 
 const commune = {
-  slug: 'commune',
+  id: 'commune' as const,
   title: 'Commune',
   cta: "Participez à l’élaboration des feuilles de routes territoriales. Vous serez sollicités à l'occasion des concertations territoriales.",
   description:
@@ -66,7 +78,7 @@ const commune = {
 } satisfies GouvernancePersona
 
 const structure = {
-  slug: 'structure',
+  id: 'structure' as const,
   title:
     'Autre personne morale publique ou privée (associations, opérateurs de services publics, entreprises)',
   cta: "Participez à l’élaboration des feuilles de routes territoriales. Vous serez sollicités à l'occasion des concertations territoriales.",
@@ -76,12 +88,12 @@ const structure = {
   blocs: [conseilRegional.blocs[1]],
 } satisfies GouvernancePersona
 
-export const gouvernancePersonas = {
-  conseilRegional,
-  conseilDepartemental,
+export const gouvernancePersonas: {
+  [id in GouvernancePersonaId]: GouvernancePersona
+} = {
+  'conseil-regional': conseilRegional,
+  'conseil-departemental': conseilDepartemental,
   epci,
   commune,
   structure,
 }
-export type GouvernancePersonaType =
-  (typeof gouvernancePersonas)[keyof typeof gouvernancePersonas]['slug']

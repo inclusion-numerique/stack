@@ -8,7 +8,7 @@ export const revalidate = 0
 const VerifyPage = async () => {
   const user = await getSessionUser()
   if (user) {
-    redirect(getServerUrl('/'))
+    redirect(getServerUrl('/profil'))
   }
 
   return (

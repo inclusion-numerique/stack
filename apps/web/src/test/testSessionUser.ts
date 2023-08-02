@@ -11,4 +11,5 @@ export const testSessionUser = {
   updated: new Date('2023-05-05').toISOString(),
   created: new Date('2023-01-01').toISOString(),
   emailVerified: null,
+  gouvernancePersona: null,
 } satisfies SessionUser
