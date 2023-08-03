@@ -30,6 +30,7 @@ const MapPopup = ({
           iconPosition="right"
           size="small"
           onClick={close}
+          data-testid="map-popup-close-button"
         >
           Fermer
         </Button>

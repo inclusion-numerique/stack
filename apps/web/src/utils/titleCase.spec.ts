@@ -6,4 +6,10 @@ describe('titleCase', () => {
       'Léon-Jacques Sans Àccents Étonnants Lùô',
     )
   })
+
+  it('should work with apostrophes', () => {
+    expect(titleCase("Mairie d'Arcachon l'hiver")).toEqual(
+      "Mairie d'Arcachon l'Hiver",
+    )
+  })
 })

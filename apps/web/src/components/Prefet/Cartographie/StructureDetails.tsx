@@ -41,7 +41,9 @@ const StructureDetails = ({
 
   return (
     <>
-      <h6 className="fr-mt-1v">{nom}</h6>
+      <h6 data-testid="structure-details-title" className="fr-mt-1v">
+        {nom}
+      </h6>
       <p className="fr-mb-1v">
         {adresse} {codePostal}&nbsp;{commune}
       </p>

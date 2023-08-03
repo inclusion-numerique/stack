@@ -48,4 +48,4 @@ export const getMonCompteProConnectProfileIssuerUrl = (): string =>
   `${PublicWebAppConfig.MonComptePro.issuer}/.well-known/openid-configuration`
 
 export const getMonCompteProConnectChangePasswordUrl = (): string =>
-  `${PublicWebAppConfig.MonComptePro.issuer}/login-actions/reset-credentials?client_id=monsuivisocial`
+  `${PublicWebAppConfig.MonComptePro.issuer}/login-actions/reset-credentials`

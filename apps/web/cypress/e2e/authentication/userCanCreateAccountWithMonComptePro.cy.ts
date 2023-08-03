@@ -46,8 +46,6 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
     Cypress.on('uncaught:exception', () => false)
     cy.get('input[name="password"]').type(`${password}{enter}`)
 
-    cy.get('#submit-join-organization-default').click()
-
     // Cookies are lost in redirect (Cypress issue)
     // https://github.com/cypress-io/cypress/issues/20476#issuecomment-1298486439
 

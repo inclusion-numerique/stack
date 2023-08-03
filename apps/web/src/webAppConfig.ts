@@ -50,9 +50,6 @@ export const ServerWebAppConfig = {
     alertManagerUrl: process.env.COCKPIT_ALERT_MANAGER_URL ?? '',
     grafanaUrl: process.env.COCKPIT_GRAFANA_URL ?? '',
   },
-  MonCompteProConnect: {
-    clientSecret: process.env.MONCOMPTEPRO_CLIENT_SECRET ?? '',
-  },
   MonComptePro: {
     clientSecret: process.env.MONCOMPTEPRO_CLIENT_SECRET ?? '',
   },
@@ -67,11 +64,6 @@ export const PublicWebAppConfig = {
   projectTitle,
   mainLiveUrl,
   repository: repositoryUrl,
-  InclusionConnect: {
-    iss: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_ISS ?? '',
-    issuer: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_ISSUER ?? '',
-    clientId: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID ?? '',
-  },
   MonComptePro: {
     issuer: process.env.NEXT_PUBLIC_MONCOMPTEPRO_ISSUER ?? '',
     clientId: process.env.NEXT_PUBLIC_MONCOMPTEPRO_CLIENT_ID ?? '',

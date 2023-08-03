@@ -634,7 +634,7 @@ const Map = ({
             : null,
         )}
       >
-        <div className={styles.mapLoader}>
+        <div className={styles.mapLoader} data-testid="map-loader">
           <Spinner size="small" />{' '}
           <p className="fr-mb-0 fr-ml-1w">Chargement</p>
         </div>

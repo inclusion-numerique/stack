@@ -1,6 +1,6 @@
 import { prismaClient } from '@app/web/prismaClient'
 
-export const deleteAllData = async () => {
+export const deleteAllData = async (options?: { keepTables?: string[] }) => {
   const tables = await prismaClient.$queryRaw<
     { table_name: string }[]
   >`SELECT table_name
@@ -13,6 +13,7 @@ export const deleteAllData = async () => {
   await prismaClient.$queryRawUnsafe(
     `TRUNCATE TABLE "${tables
       .map(({ table_name }) => table_name)
+      .filter((table) => !options?.keepTables?.includes(table))
       .join('", "')}" CASCADE`,
   )
 

@@ -76,7 +76,7 @@ const Page = async () => {
           />
           <Link
             className="fr-link fr-mt-4v"
-            href="/tableau-de-bord/departement/69"
+            href={`/tableau-de-bord/departement/${user.roleScope ?? ''}`}
           >
             Accéder au tableau de bord de votre département
           </Link>
