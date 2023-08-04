@@ -3,6 +3,7 @@ import {
   createUser,
   deleteSession,
   deleteUser,
+  updateUser,
 } from '../e2e/authentication/user.tasks'
 import { deleteAllData } from '../e2e/deleteAllData'
 
@@ -11,6 +12,7 @@ import { deleteAllData } from '../e2e/deleteAllData'
  */
 export const tasks = {
   createUser,
+  updateUser,
   deleteUser,
   createSession,
   deleteSession,

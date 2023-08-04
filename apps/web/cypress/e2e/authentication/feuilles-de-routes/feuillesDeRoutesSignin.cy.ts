@@ -93,15 +93,22 @@ describe('ETQ Visiteur qui souhaite se connecter en Collectivité, je peux me co
     const user = createTestUser({
       id: userId,
       gouvernancePersona: 'epci',
-      formulaireGouvernance: {
-        create: {
-          gouvernancePersona: 'epci',
-          id: v4(),
-          createurId: userId,
+    })
+    cy.createUser(user)
+    cy.updateUser({
+      where: {
+        id: userId,
+      },
+      data: {
+        formulaireGouvernance: {
+          create: {
+            gouvernancePersona: 'epci',
+            id: v4(),
+            createurId: userId,
+          },
         },
       },
     })
-    cy.createUser(user)
     cy.visit('/connexion?role=collectivite')
     signinWithEmail(user)
     cy.url().should(
@@ -146,15 +153,22 @@ describe('ETQ Visiteur qui souhaite se connecter en Collectivité, je peux me co
       email: monCompteProUser.email,
       name: monCompteProUser.name,
       emailVerified: new Date().toISOString(),
-      formulaireGouvernance: {
-        create: {
-          gouvernancePersona: 'commune',
-          id: v4(),
-          createurId: userId,
+    })
+    cy.createUser(user)
+    cy.updateUser({
+      where: {
+        id: userId,
+      },
+      data: {
+        formulaireGouvernance: {
+          create: {
+            gouvernancePersona: 'commune',
+            id: v4(),
+            createurId: userId,
+          },
         },
       },
     })
-    cy.createUser(user)
     cy.visit('/connexion?role=collectivite')
     signinWithMonComptePro(monCompteProUser)
     cy.url().should(

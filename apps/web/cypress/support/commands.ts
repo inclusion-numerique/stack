@@ -1,6 +1,9 @@
 import '@testing-library/cypress/add-commands'
 import compareSnapshotCommand from 'cypress-visual-regression/dist/command'
-import type { CreateUserInput } from '../e2e/authentication/user.tasks'
+import type {
+  CreateUserInput,
+  UpdateUserInput,
+} from '../e2e/authentication/user.tasks'
 import type { Tasks as CustomTasks } from './tasks'
 
 import Timeoutable = Cypress.Timeoutable
@@ -59,6 +62,9 @@ Cypress.Commands.add('createUserAndSignin', (user: CreateUserInput) => {
 Cypress.Commands.add('createUser', (user: CreateUserInput) => {
   cy.task('createUser', user)
 })
+Cypress.Commands.add('updateUser', (user: UpdateUserInput) => {
+  cy.task('updateUser', user)
+})
 
 Cypress.Commands.add('dsfrShouldBeStarted', () => {
   cy.get('html').should('have.attr', 'data-fr-js', 'true')
@@ -89,6 +95,7 @@ declare global {
 
       createUserAndSignin(user: CreateUserInput): Chainable<string>
       createUser(user: CreateUserInput): Chainable<void>
+      updateUser(user: UpdateUserInput): Chainable<void>
       signin(user: { email: string }): Chainable<string>
       dsfrShouldBeStarted(): Chainable<void>
       dsfrModalsShouldBeBound(): Chainable<void>
