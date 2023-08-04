@@ -11,7 +11,8 @@ const TableauDeBordCtaModal = createModal({
 
 const TableauDeBordCtaButton = () => {
   const router = useRouter()
-  const onConfirm = () => router.push('/connexion?role=prefecture')
+  const onConfirm = () =>
+    router.push('/connexion?role=prefecture&suivant=/tableau-de-bord')
   return (
     <>
       <Button

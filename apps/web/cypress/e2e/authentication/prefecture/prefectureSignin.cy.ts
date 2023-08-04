@@ -36,7 +36,10 @@ describe('ETQ Visiteur qui souhaite se connecter en Préfecture, je peux me conn
     cy.findByRole('dialog').as('modal')
     cy.get('@modal').contains('J’ai compris').click()
 
-    cy.url().should('equal', appUrl('/connexion?role=prefecture'))
+    cy.url().should(
+      'equal',
+      appUrl('/connexion?role=prefecture&suivant=/tableau-de-bord'),
+    )
 
     cy.contains('Préfecture')
     cy.contains('Se connecter ')
