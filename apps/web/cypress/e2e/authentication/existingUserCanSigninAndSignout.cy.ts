@@ -158,6 +158,13 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
 
     cy.get('input[name="password"]').type(`${monCompteProUser.password}{enter}`)
 
+    // Sometimes MCP asks for organization, sometimes not (depending on this test user state independent of the test)
+    cy.url().then((url) => {
+      if (url.includes('moncomptepro.beta.gouv.fr/users/accept-organization')) {
+        cy.get('#submit-join-organization-default').click()
+      }
+    })
+
     cy.url().should('equal', appUrl('/profil'))
 
     cy.get('.fr-header__tools').should('not.contain', 'Se connecter')

@@ -46,6 +46,13 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
     Cypress.on('uncaught:exception', () => false)
     cy.get('input[name="password"]').type(`${password}{enter}`)
 
+    // Sometimes MCP asks for organization, sometimes not (depending on this test user state independent of the test)
+    cy.url().then((url) => {
+      if (url.includes('moncomptepro.beta.gouv.fr/users/accept-organization')) {
+        cy.get('#submit-join-organization-default').click()
+      }
+    })
+
     // Cookies are lost in redirect (Cypress issue)
     // https://github.com/cypress-io/cypress/issues/20476#issuecomment-1298486439
 
