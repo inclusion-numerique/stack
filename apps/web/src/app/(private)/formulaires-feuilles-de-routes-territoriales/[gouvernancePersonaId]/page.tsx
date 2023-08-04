@@ -16,6 +16,7 @@ import {
 } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import ContainerCard from '@app/web/components/ContainerCard'
+import { prismaClient } from '@app/web/prismaClient'
 
 export const generateMetadata = async ({
   params: { gouvernancePersonaId },
@@ -59,6 +60,29 @@ const Page = async ({
 }) => {
   const persona = gouvernancePersonas[gouvernancePersonaId]
   const user = await getAuthenticatedSessionUser()
+  const formulaireGouvernance =
+    await prismaClient.formulaireGouvernance.findFirst({
+      where: {
+        participants: {
+          some: {
+            id: user.id,
+          },
+        },
+      },
+      select: {
+        id: true,
+        gouvernancePersona: true,
+      },
+    })
+
+  if (
+    !formulaireGouvernance ||
+    formulaireGouvernance.gouvernancePersona !== user.gouvernancePersona
+  ) {
+    // User has a current form on another persona
+    redirect('/formulaires-feuilles-de-routes-territoriales')
+    return null
+  }
 
   const canAccessDevelopmentPreview =
     hasAccessToGouvernanceFormDevelopmentPreview(user)

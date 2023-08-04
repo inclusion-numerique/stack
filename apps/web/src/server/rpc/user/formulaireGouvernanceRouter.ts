@@ -27,6 +27,12 @@ export const formulaireGouvernanceRouter = router({
         select: sessionUserSelect,
       })
 
+      if (user.gouvernancePersona === gouvernancePersonaId) {
+        // Do not send same email to user
+        return updatedUser
+      }
+
+      // Send welcome email with new persona
       sendGouvernanceWelcomeEmail({
         user: {
           ...updatedUser,
