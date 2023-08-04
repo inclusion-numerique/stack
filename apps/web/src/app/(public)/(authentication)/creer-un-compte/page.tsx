@@ -23,7 +23,7 @@ const SigninPage = async ({
     redirect(getServerUrl('/'))
   }
 
-  const callbackUrl: Route = suivant ?? '/'
+  const callbackUrl: Route = suivant ?? '/profil'
 
   return (
     <>

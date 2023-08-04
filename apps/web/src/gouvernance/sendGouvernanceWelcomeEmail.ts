@@ -13,7 +13,7 @@ import { prismaClient } from '@app/web/prismaClient'
 export const sendGouvernanceWelcomeEmail = async ({
   user,
 }: {
-  user: User & { gouvernancePersona: GouvernancePersonaId }
+  user: { id: string; email: string; gouvernancePersona: GouvernancePersonaId }
 }): Promise<true> => {
   const transport = createTransport(ServerWebAppConfig.Smtp.connectionString)
   const gouvernancePersona = gouvernancePersonas[user.gouvernancePersona]

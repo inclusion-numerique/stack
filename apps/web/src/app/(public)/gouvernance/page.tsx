@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { gouvernancePersonas } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
-import GouvernancePersonaCta from '@app/web/app/(public)/gouvernance/GouvernancePersonaCta'
+import LinkCard from '@app/web/ui/LinkCard'
 import styles from './Gouvernance.module.css'
 
 export const revalidate = 0
@@ -38,7 +38,12 @@ const GouvernanceCtaPage = () => (
         informations qui vous seront demandées :
       </p>
       {Object.values(gouvernancePersonas).map((gouvernance) => (
-        <GouvernancePersonaCta gouvernance={gouvernance} key={gouvernance.id} />
+        <LinkCard
+          title={gouvernance.title}
+          text={gouvernance.cta}
+          href={`/gouvernance/${gouvernance.id}`}
+          key={gouvernance.id}
+        />
       ))}
     </div>
   </>

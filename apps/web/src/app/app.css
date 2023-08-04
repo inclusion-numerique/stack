@@ -34,6 +34,12 @@ textarea {
   }
 }
 
+.fr-narrow {
+  max-width: 588px;
+  margin-right: auto;
+    margin-left: auto;
+}
+
 /* DSFR Overrides and custom theming */
 
 /* Round notices */
@@ -100,11 +106,11 @@ textarea {
 
 .fr-btn--danger {
   background-color: var(--background-flat-error);
-  
+
   &:not(:disabled):hover {
     background-color: var(--artwork-minor-red-marianne) !important;
   }
-  
+
   &:not(:disabled):focus {
     background-color: var(--background-flat-error) !important;
   }

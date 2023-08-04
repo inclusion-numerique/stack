@@ -21,6 +21,10 @@ const SignupPanel = ({
       </div>
     ) : null}
     <h5>Se créer un compte avec MonComptePro</h5>
+    <p className="fr-text--sm">
+      Professionnel du privé ou du public&nbsp;: MonComptePro vous identifie et
+      vous donne accès aux démarches et services de l’État.
+    </p>
     <div className="fr-connect-group">
       <MonCompteProSigninButton callbackUrl={callbackUrl} />
     </div>

@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation'
 import React from 'react'
-import Notice from '@codegouvfr/react-dsfr/Notice'
 import {
   getAuthenticatedSessionUser,
   getSessionUser,
@@ -8,8 +7,12 @@ import {
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { hasAccessToGouvernanceForm } from '@app/web/security/securityRules'
 import { prismaClient } from '@app/web/prismaClient'
-import { gouvernancePersonaIds } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
+import {
+  GouvernancePersonaId,
+  gouvernancePersonaIds,
+} from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import ContainerCard from '@app/web/components/ContainerCard'
+import ChoseGouvernancePersonaForm from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/ChoseGouvernancePersonaForm'
 
 export const generateMetadata = async () => {
   const user = await getSessionUser()
@@ -80,7 +83,7 @@ const Page = async ({
           choices: [
             formulaireGouvernance.gouvernancePersona,
             user.gouvernancePersona,
-          ],
+          ] as GouvernancePersonaId[],
         }
       : {
           isMismatch: false,
@@ -113,21 +116,14 @@ const Page = async ({
         ) : (
           <p>
             Pour participer aux feuilles de routes territoriales, veuillez
-            choisir le type de collectivité ou d’acteur territorial qui vous
-            correspond.
+            choisir le type de collectivité ou d’acteur territorial que vous
+            représentez.
             <br />
             <br />
             Quel formulaire souhaitez-vous compléter&nbsp;?
           </p>
         )}
-        <form>
-          <Notice title="🚧 En cours de développement 🚧" />
-          <ul>
-            {choices.map((choice) => (
-              <li key={choice}>{choice}</li>
-            ))}
-          </ul>
-        </form>
+        <ChoseGouvernancePersonaForm choices={choices} />
       </ContainerCard>
     </div>
   )

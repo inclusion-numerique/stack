@@ -56,7 +56,7 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
     // Cookies are lost in redirect (Cypress issue)
     // https://github.com/cypress-io/cypress/issues/20476#issuecomment-1298486439
 
-    cy.url().should('equal', appUrl('/'))
+    cy.url().should('equal', appUrl('/profil'))
     cy.get('.fr-header__tools').contains(name)
 
     cy.get('.fr-header__tools').should('not.contain', 'Se connecter')

@@ -1,5 +1,6 @@
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
+import TableauDeBordCtaButton from '@app/web/app/(public)/TableauDeBordCtaButton'
 import styles from './Home.module.css'
 
 export const revalidate = 0
@@ -87,12 +88,7 @@ const HomePage = () => (
                 des populations.
               </li>
             </ul>
-            <Button
-              linkProps={{ href: '/tableau-de-bord' }}
-              className="fr-mt-8v"
-            >
-              Accéder au tableau de bord
-            </Button>
+            <TableauDeBordCtaButton />
           </div>
         </div>
       </section>
