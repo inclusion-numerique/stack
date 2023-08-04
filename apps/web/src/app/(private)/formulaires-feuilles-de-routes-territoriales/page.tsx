@@ -36,9 +36,9 @@ export const generateMetadata = async () => {
  *  - Set the gouvernance persona if the user has no persona
  */
 const Page = async ({
-  params: { changer },
+  searchParams: { changer } = {},
 }: {
-  params: { changer: string }
+  searchParams?: { changer?: string }
 }) => {
   const user = await getAuthenticatedSessionUser()
 
@@ -74,20 +74,20 @@ const Page = async ({
   // -- If the user has no persona or form, we ask him to choose one
   // -- This will change the user persona AND create a new Formulaire if needed
 
-  const { isMismatch, choices } =
+  const { isMismatch, availableChoices } =
     !!user.gouvernancePersona &&
     !!formulaireGouvernance &&
     formulaireGouvernance.gouvernancePersona !== user.gouvernancePersona
       ? {
           isMismatch: true,
-          choices: [
+          availableChoices: [
             formulaireGouvernance.gouvernancePersona,
             user.gouvernancePersona,
           ] as GouvernancePersonaId[],
         }
       : {
           isMismatch: false,
-          choices: gouvernancePersonaIds,
+          availableChoices: gouvernancePersonaIds,
         }
 
   return (
@@ -123,7 +123,7 @@ const Page = async ({
             Quel formulaire souhaitez-vous compléter&nbsp;?
           </p>
         )}
-        <ChoseGouvernancePersonaForm choices={choices} />
+        <ChoseGouvernancePersonaForm availableChoices={availableChoices} />
       </ContainerCard>
     </div>
   )

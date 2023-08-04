@@ -1,4 +1,8 @@
+import { v4 } from 'uuid'
 import { appUrl, createTestUser } from '../../../support/helpers'
+import { checkGouvernanceWelcomeEmailReceived } from '../../checkGouvernanceWelcomeEmailReceived'
+import { goToMostRecentEmailReceived } from '../../goToMostRecentEmailReceived'
+import { signinWithMonComptePro } from '../signinWithMonComptePro'
 
 const signinWithEmail = ({ email }: { email: string }) => {
   cy.log('Signin form fill and submit')
@@ -12,24 +16,8 @@ const signinWithEmail = ({ email }: { email: string }) => {
   cy.contains('Un lien de connexion sécurisé a été envoyé')
   cy.contains(email)
 
-  cy.log('Go check emails in maildev server')
-  // Go to maildev server to checkout the email and get the magic link
-  cy.visit('localhost:1080')
-  cy.get('.email-list li a').first().click()
-
-  cy.get('.email-meta .subject').should(
-    'contain',
-    'Connexion à Espace France Numérique Ensemble',
-  )
-
-  // Cypress does not work well with iframes, we go to the html source of the email that is
-  // included in the iframe preview of maildev ui
-  cy.url().then((url) => {
-    const emailPath = url.split('#').at(-1)
-    if (!emailPath) {
-      throw new Error('Could not find email content path from maildev url')
-    }
-    cy.visit(`localhost:1080${emailPath}/html`)
+  goToMostRecentEmailReceived({
+    subjectInclude: 'Connexion à Espace France Numérique Ensemble',
   })
 
   cy.log('Check mail contents')
@@ -53,7 +41,7 @@ describe('ETQ Visiteur qui souhaite se connecter en Collectivité, je peux me co
   }
 
   beforeEach(() => {
-    cy.execute('deleteUser', { email: monCompteProUser.email })
+    cy.execute('deleteAllData', {})
   })
 
   it('Préliminaire 1 - Entrée par Se Connecter "Feuilles de route"', () => {
@@ -80,7 +68,7 @@ describe('ETQ Visiteur qui souhaite se connecter en Collectivité, je peux me co
     cy.contains('Créer un compte')
   })
 
-  it.only("Acceptation 1 - Connexion par email d'un compte existant sans persona de collectivité", () => {
+  it("Acceptation 1 - Connexion par email d'un compte existant sans persona de collectivité", () => {
     const user = createTestUser()
     cy.createUser(user)
     cy.visit('/connexion?role=collectivite')
@@ -89,113 +77,91 @@ describe('ETQ Visiteur qui souhaite se connecter en Collectivité, je peux me co
       'equal',
       appUrl('/formulaires-feuilles-de-routes-territoriales'),
     )
-    cy.contains('Conseil Régional').click()
+    cy.contains('Conseil régional').click()
+    cy.contains('Valider').click()
     cy.url().should(
       'equal',
       appUrl('/formulaires-feuilles-de-routes-territoriales/conseil-regional'),
     )
+    cy.contains('Votre inscription est confirmée')
+    checkGouvernanceWelcomeEmailReceived()
+    cy.contains('En tant que conseil régional')
   })
 
-  it('Acceptation 1 - MCP - La connexion MCP Redirige vers son profil', () => {
+  it("Acceptation 2 - Connexion par email d'un compte avec persona de collectivité", () => {
+    const userId = v4()
+    const user = createTestUser({
+      id: userId,
+      gouvernancePersona: 'epci',
+      formulaireGouvernance: {
+        create: {
+          gouvernancePersona: 'epci',
+          id: v4(),
+          createurId: userId,
+        },
+      },
+    })
+    cy.createUser(user)
+    cy.visit('/connexion?role=collectivite')
+    signinWithEmail(user)
+    cy.url().should(
+      'equal',
+      appUrl('/formulaires-feuilles-de-routes-territoriales/epci'),
+    )
+    cy.contains('Votre inscription est confirmée')
+  })
+
+  it("Acceptation 3 - Connexion par MCP d'un compte existant sans persona de collectivité", () => {
     cy.createUser({
       email: monCompteProUser.email,
       name: monCompteProUser.name,
+      emailVerified: new Date().toISOString(),
     })
-    cy.visit('/connexion?role=prefecture')
+    cy.visit('/connexion?role=collectivite')
 
-    // Cypress deletes some cookies on redirection between domains
-    // See https://github.com/cypress-io/cypress/issues/20476
-    // Also see https://docs.cypress.io/guides/guides/cross-origin-testing
-    // We need to intercept the request to our auth endpoint to memorize the cookies
-    // then intercept the request for our auth endpoint during callback to add the cookies back
-    let authenticationCookies: string[]
+    signinWithMonComptePro(monCompteProUser)
 
-    cy.intercept(/\/api\/auth\/signin\/moncomptepro/, (request) => {
-      request.continue((response) => {
-        // Memorize our cookies
-        const responseCookies = response.headers['set-cookie']
-        authenticationCookies = Array.isArray(responseCookies)
-          ? responseCookies
-          : [responseCookies]
-      })
-    })
-
-    cy.get('button.moncomptepro-button').click()
-    cy.url().should('contain', 'app-test.moncomptepro.beta.gouv.fr')
-
-    cy.intercept(/\/api\/auth\/callback/, (request) => {
-      // Add our cookies back
-      request.headers.cookie = authenticationCookies.join('; ')
-    })
-
-    cy.get('input[type="email"]').type(monCompteProUser.email)
-    cy.get('button[type="submit"]').click()
-
-    cy.get('input[name="password"]').type(`${monCompteProUser.password}{enter}`)
-
-    // Sometimes MCP asks for organization, sometimes not (depending on this test user state independent of the test)
-    cy.url().then((url) => {
-      if (url.includes('moncomptepro.beta.gouv.fr/users/accept-organization')) {
-        cy.get('#submit-join-organization-default').click()
-      }
-    })
-
-    cy.url().should('equal', appUrl('/tableau-de-bord/departement/34'))
-
-    cy.contains('Hérault')
-
-    cy.get('.fr-header__tools').should('not.contain', 'Se connecter')
-  })
-
-  it('Acceptation 2 - MCP - La connexion detecte PAS un prefet et le redirige sur son profil', () => {
-    cy.visit('/connexion?role=prefecture')
-
-    // Cypress deletes some cookies on redirection between domains
-    // See https://github.com/cypress-io/cypress/issues/20476
-    // Also see https://docs.cypress.io/guides/guides/cross-origin-testing
-    // We need to intercept the request to our auth endpoint to memorize the cookies
-    // then intercept the request for our auth endpoint during callback to add the cookies back
-    let authenticationCookies: string[]
-
-    cy.intercept(/\/api\/auth\/signin\/moncomptepro/, (request) => {
-      request.continue((response) => {
-        // Memorize our cookies
-        const responseCookies = response.headers['set-cookie']
-        authenticationCookies = Array.isArray(responseCookies)
-          ? responseCookies
-          : [responseCookies]
-      })
-    })
-
-    cy.get('button.moncomptepro-button').click()
-    cy.url().should('contain', 'app-test.moncomptepro.beta.gouv.fr')
-
-    cy.intercept(/\/api\/auth\/callback/, (request) => {
-      // Add our cookies back
-      request.headers.cookie = authenticationCookies.join('; ')
-    })
-
-    cy.get('input[type="email"]').type(monCompteProUser.email)
-    cy.get('button[type="submit"]').click()
-
-    cy.get('input[name="password"]').type(`${monCompteProUser.password}{enter}`)
-
-    // Sometimes MCP asks for organization, sometimes not (depending on this test user state independent of the test)
-    cy.url().then((url) => {
-      if (url.includes('moncomptepro.beta.gouv.fr/users/accept-organization')) {
-        cy.get('#submit-join-organization-default').click()
-      }
-    })
-
-    cy.url().should('equal', appUrl('/profil'))
-    cy.get('.fr-header__tools').should('not.contain', 'Se connecter')
-    cy.contains('Tableau de bord').should('not.exist')
-
-    cy.contains('Accéder aux formulaires').click()
     cy.url().should(
       'equal',
       appUrl('/formulaires-feuilles-de-routes-territoriales'),
     )
+
+    cy.contains('EPCI').click()
+    cy.contains('Valider').click()
+
+    cy.url().should(
+      'equal',
+      appUrl('/formulaires-feuilles-de-routes-territoriales/epci'),
+    )
+    cy.contains('Votre inscription est confirmée')
+    checkGouvernanceWelcomeEmailReceived()
+    cy.contains('En tant que epci')
+  })
+
+  it("Acceptation 4 - Connexion par MCP d'un compte avec persona de collectivité", () => {
+    const userId = v4()
+    const user = createTestUser({
+      id: userId,
+      gouvernancePersona: 'commune',
+      email: monCompteProUser.email,
+      name: monCompteProUser.name,
+      emailVerified: new Date().toISOString(),
+      formulaireGouvernance: {
+        create: {
+          gouvernancePersona: 'commune',
+          id: v4(),
+          createurId: userId,
+        },
+      },
+    })
+    cy.createUser(user)
+    cy.visit('/connexion?role=collectivite')
+    signinWithMonComptePro(monCompteProUser)
+    cy.url().should(
+      'equal',
+      appUrl('/formulaires-feuilles-de-routes-territoriales/commune'),
+    )
+    cy.contains('Votre inscription est confirmée')
   })
 
   it('Acceptation 5 - La connexion par email redirige vers la création de compte pour un nouvel utilisateur', () => {

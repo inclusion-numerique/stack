@@ -6,14 +6,66 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import ContainerCard from '@app/web/components/ContainerCard'
+import { prismaClient } from '@app/web/prismaClient'
+import {
+  GouvernancePersonaId,
+  gouvernancePersonas,
+} from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 
 const Page = async () => {
   const user = await getSessionUser()
   if (!user) {
     redirect('/connexion?suivant=/profil')
   }
+  const formulaireGouvernance =
+    await prismaClient.formulaireGouvernance.findFirst({
+      where: {
+        participants: {
+          some: {
+            id: user.id,
+          },
+        },
+      },
+      select: {
+        id: true,
+        gouvernancePersona: true,
+      },
+    })
+  const currentFormPersona = formulaireGouvernance
+    ? gouvernancePersonas[
+        formulaireGouvernance.gouvernancePersona as GouvernancePersonaId
+      ]
+    : null
 
   let roleNotice: JSX.Element
+
+  const demoFormAccess =
+    formulaireGouvernance && currentFormPersona ? (
+      <>
+        <Link
+          className="fr-link fr-mt-4v"
+          href={`/formulaires-feuilles-de-routes-territoriales/${formulaireGouvernance.gouvernancePersona}/formulaire`}
+        >
+          Reprendre mon formulaire de feuilles de route territoriales <br />
+          en tant que {currentFormPersona.title.toLowerCase()}
+        </Link>
+        <br />
+        <br />
+        <Link
+          className="fr-link fr-mt-4v"
+          href="/formulaires-feuilles-de-routes-territoriales?changer=1"
+        >
+          Commencer un nouveau formulaire de feuilles de route territoriales
+        </Link>
+      </>
+    ) : (
+      <Link
+        className="fr-link fr-mt-4v"
+        href="/formulaires-feuilles-de-routes-territoriales"
+      >
+        Accéder aux formulaires de feuilles de route territoriales
+      </Link>
+    )
 
   switch (user.role) {
     case 'Administrator': {
@@ -31,12 +83,7 @@ const Page = async () => {
           </Link>
           <br />
           <br />
-          <Link
-            className="fr-link fr-mt-4v"
-            href="/formulaires-feuilles-de-routes-territoriales?changer=1"
-          >
-            Accéder aux formulaires de feuilles de route territoriales
-          </Link>
+          {demoFormAccess}
         </>
       )
       break
@@ -57,12 +104,7 @@ const Page = async () => {
           </Link>
           <br />
           <br />
-          <Link
-            className="fr-link fr-mt-4v"
-            href="/formulaires-feuilles-de-routes-territoriales?changer=1"
-          >
-            Accéder aux formulaires de feuilles de route territoriales
-          </Link>
+          {demoFormAccess}
         </>
       )
       break

@@ -1,12 +1,8 @@
-import {
-  appUrl,
-  createTestUser,
-  dataTablesToKeep,
-} from 'cypress/support/helpers'
+import { appUrl, createTestUser } from 'cypress/support/helpers'
 
 describe("En tant que Préfet, j'ai accès aux données de mon département", () => {
   beforeEach(() => {
-    cy.execute('deleteAllData', { keepTables: dataTablesToKeep })
+    cy.execute('deleteAllData', {})
     const user = createTestUser({ role: 'Prefect', roleScope: '33' })
     cy.createUserAndSignin(user)
   })
