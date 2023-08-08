@@ -1,6 +1,5 @@
 import { Route } from 'next'
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
@@ -9,6 +8,7 @@ import LinkCard from '@app/web/ui/LinkCard'
 import MonCompteProSigninButton from '@app/web/app/(public)/(authentication)/connexion/MonCompteProSigninButton'
 import { EmailSigninForm } from '@app/web/app/(public)/(authentication)/connexion/EmailSigninForm'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
+import BackLink from '@app/web/components/BackLink'
 
 export const revalidate = 0
 
@@ -56,10 +56,7 @@ const SigninPage = async ({
       <>
         <Breadcrumbs currentPage="Connexion" />
         <div className="fr-container--narrow fr-mx-auto fr-my-20v">
-          <Link href="/" className="fr-link">
-            <span className="fr-icon-arrow-left-line fr-icon--sm" /> Retour à
-            l’accueil
-          </Link>
+          <BackLink href="/" label="Retour à l’accueil" />
           {error ? (
             <div className="fr-alert fr-alert--error fr-alert--sm fr-mb-6v">
               <p>{signinErrorMessage(error)}</p>
@@ -95,9 +92,7 @@ const SigninPage = async ({
           currentPage="Préfecture"
         />
         <div className="fr-narrow">
-          <Link href="/connexion" className="fr-link">
-            <span className="fr-icon-arrow-left-line fr-icon--sm" /> Retour
-          </Link>
+          <BackLink href="/connexion" />
         </div>
         <AuthCard className="fr-mt-12v">
           <h4>Pour accéder au tableau de bord des préfectures</h4>
@@ -130,9 +125,7 @@ const SigninPage = async ({
         currentPage="Feuilles de routes territoriales"
       />
       <div className="fr-narrow">
-        <Link href="/connexion" className="fr-link">
-          <span className="fr-icon-arrow-left-line fr-icon--sm" /> Retour
-        </Link>
+        <BackLink href="/connexion" />
       </div>
       <AuthCard className="fr-mt-12v">
         <h4>

@@ -506,6 +506,19 @@ model FormulaireGouvernance {
 
   intention IntentionFormulaireGouvernance? @map("intention")
 
+  // Pour un formulaire avec l'intention "porter" une feuille de route, on conserve les timestamp de validation de chaque étapes :
+  // Etape 1
+  etapeInformationsParticipant DateTime? @map("etape_informations_participant")
+  // Etape 2
+  etapePerimetre               DateTime? @map("etape_perimetre")
+  // Etape 3
+  etapeContacts                DateTime? @map("etape_contacts")
+  // Etape 4
+  etapeStructures              DateTime? @map("etape_structures")
+  // L'étape 5 est l'envoi du formulaire
+  // Cette étape est commune avec les formulaire avec l'intention "participer"
+  confirmeEtEnvoye             DateTime? @map("confirme_et_envoye")
+
   // Formulaire renseigné par un Conseil régional
   regionCode String? @map("region_code")
   region     Region? @relation(fields: [regionCode], references: [code])

@@ -11,6 +11,7 @@ export type SessionUser = Pick<
   | 'role'
   | 'roleScope'
   | 'gouvernancePersona'
+  | 'formulaireGouvernanceId'
 > & {
   emailVerified: string | null
   created: string | null

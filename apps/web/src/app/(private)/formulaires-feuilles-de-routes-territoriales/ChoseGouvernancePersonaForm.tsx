@@ -21,8 +21,10 @@ import { withTrpc } from '@app/web/components/trpc/withTrpc'
 
 const ChoseGouvernancePersonaForm = ({
   availableChoices,
+  initialPersona,
 }: {
   availableChoices: readonly GouvernancePersonaId[]
+  initialPersona?: GouvernancePersonaId | null
 }) => {
   const form = useForm<ChooseGouvernancePersonaData>({
     resolver: zodResolver(ChooseGouvernancePersonaValidation),
@@ -33,10 +35,13 @@ const ChoseGouvernancePersonaForm = ({
   const choose = trpc.formulaireGouvernance.choosePersona.useMutation()
 
   const onSubmit = async (data: ChooseGouvernancePersonaData) => {
-    try {
-      await choose.mutateAsync(data)
-    } catch (mutationError) {
-      applyZodValidationMutationErrorsToForm(mutationError, form.setError)
+    // Ensure no-op on same persona chosen
+    if (initialPersona !== data.gouvernancePersonaId) {
+      try {
+        await choose.mutateAsync(data)
+      } catch (mutationError) {
+        applyZodValidationMutationErrorsToForm(mutationError, form.setError)
+      }
     }
 
     router.push(

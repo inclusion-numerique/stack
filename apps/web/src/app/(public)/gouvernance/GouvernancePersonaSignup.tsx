@@ -1,10 +1,10 @@
-import Link from 'next/link'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import { GouvernancePersona } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import GouvernanceSignupForm from '@app/web/app/(public)/gouvernance/GouvernanceSignupForm'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { asyncComponent } from '@app/web/utils/asyncComponent'
+import BackLink from '@app/web/components/BackLink'
 import styles from './GouvernancePersonaSignup.module.css'
 
 const GouvernancePersonaSignup = async ({
@@ -29,9 +29,7 @@ const GouvernancePersonaSignup = async ({
         />
       </div>
       <div className={styles.contentContainer}>
-        <Link href="/gouvernance" className="fr-link">
-          <span className="fr-icon-arrow-left-line fr-icon--sm" /> Retour
-        </Link>
+        <BackLink href="/gouvernance" />
         <div className={styles.card}>
           <h1>{title}</h1>
           <p

@@ -126,7 +126,15 @@ const Page = async ({
             Quel formulaire souhaitez-vous compléter&nbsp;?
           </p>
         )}
-        <ChoseGouvernancePersonaForm availableChoices={availableChoices} />
+        <ChoseGouvernancePersonaForm
+          initialPersona={
+            formulaireGouvernance?.gouvernancePersona as
+              | GouvernancePersonaId
+              | null
+              | undefined
+          }
+          availableChoices={availableChoices}
+        />
       </ContainerCard>
     </div>
   )

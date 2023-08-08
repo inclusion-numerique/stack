@@ -1,3 +1,4 @@
+import type { Prisma } from '@prisma/client'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { prismaClient } from '@app/web/prismaClient'
 
@@ -13,11 +14,12 @@ export const sessionUserSelect = {
   role: true,
   roleScope: true,
   gouvernancePersona: true,
+  formulaireGouvernanceId: true,
   location: true,
   description: true,
   created: true,
   updated: true,
-} as const
+} as const satisfies Prisma.UserSelect
 
 export const getSessionUserFromSessionToken = async (
   sessionToken: string | null,

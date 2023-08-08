@@ -66,3 +66,13 @@ export const hasAccessToGouvernanceFormDevelopmentPreview = (
   }
   return false
 }
+
+export const canUpdateFormulaireGouvernance = (
+  user: Pick<SessionUser, 'role' | 'formulaireGouvernanceId'>,
+  formulaireGouvernanceId: string,
+) => {
+  if (user.role === 'Administrator') {
+    return true
+  }
+  return user.formulaireGouvernanceId === formulaireGouvernanceId
+}

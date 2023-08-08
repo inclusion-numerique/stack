@@ -1,0 +1,12 @@
+.card {
+    border: var(--slim-grey-border);
+    padding: 24px 16px;
+    text-decoration: none;
+    background: none;
+    width: 100%;
+
+    @media (min-width: 36em) {
+        /* media sm */
+        padding: 32px;
+    }
+}
