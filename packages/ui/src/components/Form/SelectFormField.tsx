@@ -1,18 +1,20 @@
 import classNames from 'classnames'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Control, Controller, FieldValues } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
 import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
+import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 import { SelectOption } from './utils/options'
 
 export type SelectFormFieldProps<T extends FieldValues> = {
-  label: string
+  label: ReactNode
   path: FieldPath<T>
   control: Control<T>
   options: SelectOption[]
   disabled?: boolean
   hint?: string
   valid?: string
+  asterisk?: boolean
 }
 
 const SelectFormField = <T extends FieldValues>({
@@ -23,6 +25,7 @@ const SelectFormField = <T extends FieldValues>({
   options,
   disabled,
   valid,
+  asterisk,
 }: UiComponentProps & SelectFormFieldProps<T>) => {
   const id = `input-form-field__${path}`
 
@@ -50,7 +53,7 @@ const SelectFormField = <T extends FieldValues>({
             })}
           >
             <label className="fr-label" htmlFor={id}>
-              {label}
+              {label} {asterisk && <RedAsterisk />}
               {hint ? <span className="fr-hint-text">{hint}</span> : null}
             </label>
             <select

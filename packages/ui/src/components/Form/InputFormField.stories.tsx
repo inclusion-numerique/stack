@@ -67,6 +67,14 @@ export const Default: Story = {
   },
 }
 
+export const AvecAsterisque: Story = {
+  render: (args) => <Template {...args} path="name" />,
+  args: {
+    label: 'Label',
+    asterisk: true,
+  },
+}
+
 export const Success: Story = {
   name: 'Etat succès',
   render: (args) => <Template {...args} path="email" />,

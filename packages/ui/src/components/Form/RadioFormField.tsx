@@ -1,8 +1,9 @@
 import classNames from 'classnames'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Control, Controller, FieldValues } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
 import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
+import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 import { RadioOption } from './utils/options'
 
 export type RadioFormFieldProps<T extends FieldValues> = {
@@ -10,11 +11,12 @@ export type RadioFormFieldProps<T extends FieldValues> = {
   path: FieldPath<T>
   options: RadioOption[]
   disabled?: boolean
-  label?: string
+  label?: ReactNode
   hint?: string
   inline?: boolean
   valid?: string
   small?: boolean
+  asterisk?: boolean
 }
 
 const RadioFormField = <T extends FieldValues>({
@@ -28,6 +30,7 @@ const RadioFormField = <T extends FieldValues>({
   valid,
   small,
   className,
+  asterisk,
   'data-testid': dataTestId,
 }: UiComponentProps & RadioFormFieldProps<T>) => {
   const id = `input-form-field__${path}`
@@ -68,7 +71,7 @@ const RadioFormField = <T extends FieldValues>({
                 className="fr-fieldset__legend fr-fieldset__legend--regular"
                 id={`${id}__legend`}
               >
-                {label}
+                {label} {asterisk && <RedAsterisk />}
                 {hint ? <span className="fr-hint-text">{hint}</span> : null}
               </legend>
               {options.map((option, index) => (
