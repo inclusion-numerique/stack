@@ -34,6 +34,8 @@ const listStructures = (codeDepartement: string) =>
       labelAidantsConnect: true,
       labelFranceServices: true,
       labelConseillersNumerique: true,
+      zrr: true,
+      qpv: true,
       structureAidantsConnect: {
         select: {
           aidants: true,
@@ -178,6 +180,8 @@ const computeDepartementCartographieData = async (codeDepartement: string) => {
     labelConseillersNumerique,
     labelAidantsConnect,
     labelFranceServices,
+    zrr,
+    qpv,
   } of structures) {
     const commune = codeCommune ? communesByCode.get(codeCommune) : null
     if (!commune || !longitude || !latitude) {
@@ -204,9 +208,8 @@ const computeDepartementCartographieData = async (codeDepartement: string) => {
       labelFranceServices,
       labelAidantsConnect,
 
-      // TODO Add QPV this to the schema
-      zrr: false,
-      qpv: false,
+      zrr,
+      qpv,
     }
 
     structureFeatures.push({

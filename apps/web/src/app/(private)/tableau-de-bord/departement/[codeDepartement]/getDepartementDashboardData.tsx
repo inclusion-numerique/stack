@@ -68,6 +68,8 @@ const listStructures = (codeDepartement: string) =>
       labelFranceServices: true,
       labelConseillersNumerique: true,
       structureAidantsConnect: true,
+      zrr: true,
+      qpv: true,
     },
   })
 
@@ -108,6 +110,8 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
         labelFranceServices: true,
         labelConseillersNumerique: true,
         structureAidantsConnect: true,
+        zrr: true,
+        qpv: true,
       },
     }),
     prismaClient.craConseillerNumeriqueParDepartement.findUnique({
@@ -373,8 +377,8 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
     label: `Accompagnements`,
     boxes: [
       {
-        id: 'accompagnement',
-        label: 'Accompagnement',
+        id: 'accompagnements',
+        label: 'Accompagnements',
         value:
           (conumCras?.accompagnements ?? 0) +
           structuresCount.aidantsConnect.totalDemarches,

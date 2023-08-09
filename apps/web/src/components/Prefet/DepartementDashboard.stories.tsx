@@ -177,8 +177,8 @@ const getFakeData = (
     description: 'Données factices',
     boxes: [
       {
-        id: 'accompagnement',
-        label: 'Accompagnement',
+        id: 'accompagnements',
+        label: 'Accompagnements',
         value: 123,
         statistics: [
           {

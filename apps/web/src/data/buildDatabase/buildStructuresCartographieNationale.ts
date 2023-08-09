@@ -36,6 +36,11 @@ export const extractMetadataFromId = (id: string) => {
   }
 }
 
+export const extractZrrAndQpv = (structure: DataInclusionStructure) => ({
+  zrr: !!structure.labels_autres?.includes('ZRR'),
+  qpv: !!structure.labels_autres?.includes('QPV'),
+})
+
 export const buildStructuresCartographieNationale = async ({
   communes,
 }: {
@@ -103,6 +108,8 @@ export const buildStructuresCartographieNationale = async ({
       errors.codeCommune = `Code commune non trouvé pour ${structure.commune} ${structure.code_postal}`
     }
 
+    const { zrr, qpv } = extractZrrAndQpv(structure)
+
     data.push({
       id: structure.id,
       nom: titleCase(structure.nom),
@@ -123,6 +130,8 @@ export const buildStructuresCartographieNationale = async ({
         structure.labels_nationaux?.includes('france-service') ?? false,
       labelAidantsConnect:
         structure.labels_nationaux?.includes('aidants-connect') ?? false,
+      zrr,
+      qpv,
       errors,
     })
   }

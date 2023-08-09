@@ -17,16 +17,15 @@ import {
 import LegendStructure from '@app/web/components/Prefet/Cartographie/LegendStructure'
 import { StructureFilters } from '@app/web/components/Prefet/Cartographie/structureFilters'
 import InfoButton from '@app/web/components/InfoButton'
+import {
+  TerritoiresPrioritairesInformationModal,
+  TerritoiresPrioritairesInformationModalContent,
+} from '@app/web/components/Prefet/TerritoiresPrioritairesInformationModal'
 import styles from './Legend.module.css'
 import LegendCity from './LegendCity'
 
 const StructuresInformationModal = createModal({
   id: 'structures-information',
-  isOpenedByDefault: false,
-})
-
-const TerritoiresPrioritairesInformationModal = createModal({
-  id: 'territoires-prioritaires-information',
   isOpenedByDefault: false,
 })
 
@@ -225,14 +224,7 @@ const Legend = ({
           .
         </p>
       </StructuresInformationModal.Component>
-      <TerritoiresPrioritairesInformationModal.Component title="Territoires prioritaires">
-        <p>
-          La maille communale retenue dans cette représentation limite la juste
-          prise en compte des difficultés propres aux QPV. La représentation à
-          l’IRIS proposée par la Mednum permet de mieux appréhender la
-          vulnérabilité numérique des populations résidant dans ces territoires.
-        </p>
-      </TerritoiresPrioritairesInformationModal.Component>
+      <TerritoiresPrioritairesInformationModalContent />
       <div
         className={classNames(styles.container, {
           [styles.collapsed]: legendCollapsed,
@@ -506,7 +498,7 @@ const Legend = ({
                 label={
                   <LegendCheckboxLabel
                     label="Aucun"
-                    count={count.territoire.nonDefini}
+                    count={count.territoire.aucun}
                   />
                 }
               />

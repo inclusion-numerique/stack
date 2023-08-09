@@ -12,6 +12,8 @@ export const countStructuresForCartographieSummary = (
     | 'labelFranceServices'
     | 'labelAidantsConnect'
     | 'labelConseillersNumerique'
+    | 'zrr'
+    | 'qpv'
   >[],
 ) => {
   const count = {
@@ -37,7 +39,7 @@ export const countStructuresForCartographieSummary = (
     territoire: {
       qpv: 0,
       zrr: 0,
-      nonDefini: 0,
+      aucun: 0,
     },
   }
   for (const structure of structures) {
@@ -83,8 +85,15 @@ export const countStructuresForCartographieSummary = (
       }
     }
 
-    // TODO ZRR and QPV are not in the data
-    count.territoire.nonDefini++
+    if (!structure.zrr && !structure.qpv) {
+      count.territoire.aucun++
+    }
+    if (structure.zrr) {
+      count.territoire.zrr += 1
+    }
+    if (structure.qpv) {
+      count.territoire.qpv += 1
+    }
 
     if (structure.labelConseillersNumerique) {
       count.label.conseillerNumerique += 1

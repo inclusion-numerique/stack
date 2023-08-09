@@ -285,6 +285,9 @@ model StructureCartographieNationale {
   labelFranceServices       Boolean
   labelAidantsConnect       Boolean
 
+  zrr Boolean
+  qpv Boolean
+
   structureAidantsConnect StructureAidantsConnect?
 
   permanenceConseillerNumerique PermanenceConseillerNumerique?

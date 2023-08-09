@@ -365,4 +365,5 @@ export type DataInclusionStructure = {
   horaires_ouverture?: string
   // 'conseiller-numerique'
   labels_nationaux?: string[]
+  labels_autres?: string[]
 }

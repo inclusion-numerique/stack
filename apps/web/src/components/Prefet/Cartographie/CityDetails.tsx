@@ -4,6 +4,8 @@ import classNames from 'classnames'
 import { DepartementCartographieDataCommune } from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
 import { formatIfnScore } from '@app/web/data/ifnData'
 import { numberToString } from '@app/web/utils/formatNumber'
+import InfoButton from '@app/web/components/InfoButton'
+import { TerritoiresPrioritairesInformationModal } from '@app/web/components/Prefet/TerritoiresPrioritairesInformationModal'
 import styles from './CityDetails.module.css'
 
 const CityDetails = ({
@@ -192,7 +194,12 @@ const CityDetails = ({
           </div>
           <div className={styles.row}>
             <p className="fr-text--lg fr-mt-6v fr-text--bold fr-mb-3v">
-              Territoires prioritaires
+              Territoires prioritaires{' '}
+              <InfoButton
+                iconId="fr-icon-information-line"
+                title="Informations sur les territoires prioritaires"
+                onClick={TerritoiresPrioritairesInformationModal.open}
+              />
             </p>
           </div>
           <div className={classNames(styles.row, 'fr-mb-1v')}>
