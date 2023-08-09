@@ -11,14 +11,6 @@ export default meta
 
 type Story = StoryObj<typeof Button>
 
-export const IconeGauche: Story = {
-  render: () => (
-    <Button className="fr-btn--loading" iconId="fr-icon-arrow-right-line">
-      Enregistrer
-    </Button>
-  ),
-}
-
 export const DisabledIconeGauche: Story = {
   render: () => (
     <Button
@@ -33,6 +25,98 @@ export const DisabledIconeGauche: Story = {
   args: {
     children: 'Enregistrer',
   },
+}
+
+export const DisabledIconeDroiteSecondary: Story = {
+  render: () => (
+    <Button
+      disabled
+      className="fr-btn--loading"
+      iconPosition="right"
+      iconId="fr-icon-arrow-right-line"
+      priority="secondary"
+    >
+      Enregistrer
+    </Button>
+  ),
+}
+
+export const IconeSeulementTertiaryDisabled: Story = {
+  render: () => (
+    <Button
+      className="fr-btn--loading"
+      title="Enregistrer"
+      iconId="fr-icon-arrow-right-line"
+      priority="tertiary"
+      disabled
+    />
+  ),
+}
+
+export const SansIconeDisabled: Story = {
+  render: () => (
+    <Button className="fr-btn--loading" disabled>
+      Enregistrer
+    </Button>
+  ),
+}
+
+export const SansIconeDisabledDanger: Story = {
+  render: () => (
+    <Button className="fr-btn--loading  fr-btn--danger" disabled>
+      Enregistrer
+    </Button>
+  ),
+}
+
+export const SansIconeSmallTexteLongDisabled: Story = {
+  render: () => (
+    <Button className="fr-btn--loading" size="small" disabled>
+      Un très long texte de bouton
+    </Button>
+  ),
+}
+
+export const SansIconeSmallSecondaryDisabled: Story = {
+  render: () => (
+    <Button
+      className="fr-btn--loading"
+      size="small"
+      priority="secondary"
+      disabled
+    >
+      Enregistrer
+    </Button>
+  ),
+}
+
+export const SansIconeLargeTertiaryDisabled: Story = {
+  render: () => (
+    <Button
+      className="fr-btn--loading"
+      size="large"
+      priority="tertiary"
+      disabled
+    >
+      Enregistrer
+    </Button>
+  ),
+}
+
+export const SansIconeTertiaryNoOutlineDisabled: Story = {
+  render: () => (
+    <Button className="fr-btn--loading" priority="tertiary no outline" disabled>
+      Enregistrer
+    </Button>
+  ),
+}
+
+export const IconeGauche: Story = {
+  render: () => (
+    <Button className="fr-btn--loading" iconId="fr-icon-arrow-right-line">
+      Enregistrer
+    </Button>
+  ),
 }
 
 export const IconeGaucheSmall: Story = {
@@ -53,20 +137,6 @@ export const IconeDroiteSecondary: Story = {
       className="fr-btn--loading"
       iconId="fr-icon-arrow-right-line"
       iconPosition="right"
-      priority="secondary"
-    >
-      Enregistrer
-    </Button>
-  ),
-}
-
-export const DisabledIconeDroiteSecondary: Story = {
-  render: () => (
-    <Button
-      disabled
-      className="fr-btn--loading"
-      iconPosition="right"
-      iconId="fr-icon-arrow-right-line"
       priority="secondary"
     >
       Enregistrer
@@ -98,28 +168,8 @@ export const IconeSeulementTertiary: Story = {
   ),
 }
 
-export const IconeSeulementTertiaryDisabled: Story = {
-  render: () => (
-    <Button
-      className="fr-btn--loading"
-      title="Enregistrer"
-      iconId="fr-icon-arrow-right-line"
-      priority="tertiary"
-      disabled
-    />
-  ),
-}
-
 export const SansIcone: Story = {
   render: () => <Button className="fr-btn--loading">Enregistrer</Button>,
-}
-
-export const SansIconeDisabled: Story = {
-  render: () => (
-    <Button className="fr-btn--loading" disabled>
-      Enregistrer
-    </Button>
-  ),
 }
 
 export const SansIconeDanger: Story = {
@@ -128,30 +178,9 @@ export const SansIconeDanger: Story = {
   ),
 }
 
-export const SansIconeDisabledDanger: Story = {
-  render: () => (
-    <Button className="fr-btn--loading  fr-btn--danger" disabled>
-      Enregistrer
-    </Button>
-  ),
-}
-
 export const SansIconeSmallSecondary: Story = {
   render: () => (
     <Button className="fr-btn--loading" size="small" priority="secondary">
-      Enregistrer
-    </Button>
-  ),
-}
-
-export const SansIconeSmallSecondaryDisabled: Story = {
-  render: () => (
-    <Button
-      className="fr-btn--loading"
-      size="small"
-      priority="secondary"
-      disabled
-    >
       Enregistrer
     </Button>
   ),
@@ -165,30 +194,9 @@ export const SansIconeLargeTertiary: Story = {
   ),
 }
 
-export const SansIconeLargeTertiaryDisabled: Story = {
-  render: () => (
-    <Button
-      className="fr-btn--loading"
-      size="large"
-      priority="tertiary"
-      disabled
-    >
-      Enregistrer
-    </Button>
-  ),
-}
-
 export const SansIconeTertiaryNoOutline: Story = {
   render: () => (
     <Button className="fr-btn--loading" priority="tertiary no outline">
-      Enregistrer
-    </Button>
-  ),
-}
-
-export const SansIconeTertiaryNoOutlineDisabled: Story = {
-  render: () => (
-    <Button className="fr-btn--loading" priority="tertiary no outline" disabled>
       Enregistrer
     </Button>
   ),

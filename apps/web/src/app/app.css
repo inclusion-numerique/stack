@@ -152,6 +152,11 @@ textarea {
       &::after {
         color: var(--text-action-high-blue-france);
       }
+      &:disabled {
+        &::after {
+          color: var(--text-disabled-grey);
+        }
+      }
     }
   }
 }
