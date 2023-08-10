@@ -1,19 +1,21 @@
 import classNames from 'classnames'
-import React, { HTMLInputTypeAttribute, HTMLProps } from 'react'
+import React, { HTMLInputTypeAttribute, HTMLProps, ReactNode } from 'react'
 import { Control, Controller, FieldValues } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
 import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
+import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 
 type CommonProps<T extends FieldValues> = {
   control: Control<T>
   path: FieldPath<T>
   disabled?: boolean
-  label?: string
+  label?: ReactNode
   hint?: string
   placeholder?: string
   valid?: string
   icon?: string
   info?: string | ((value?: string | null) => string)
+  asterisk?: boolean
 }
 
 type InputProps = {
@@ -43,6 +45,7 @@ const InputFormField = <T extends FieldValues>({
   valid,
   icon,
   info,
+  asterisk,
   ...rest
 }: UiComponentProps & InputFormFieldProps<T>) => {
   const id = `input-form-field__${path}`
@@ -106,7 +109,7 @@ const InputFormField = <T extends FieldValues>({
             )}
           >
             <label className="fr-label fr-mb-1v" htmlFor={id}>
-              {label}
+              {label} {asterisk && <RedAsterisk />}
               {hint && <span className="fr-hint-text">{hint}</span>}
             </label>
             {icon ? (

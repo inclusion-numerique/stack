@@ -3,16 +3,18 @@ import React, { ReactNode } from 'react'
 import { Control, Controller, FieldValues } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
 import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
+import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 
 export type CheckboxFormFieldProps<T extends FieldValues> = {
   control: Control<T>
   path: FieldPath<T>
   disabled?: boolean
-  label?: string | ReactNode
+  label?: ReactNode
   hint?: string
   valid?: string
   small?: boolean
   onChange?: (value: boolean) => void
+  asterisk?: boolean
 }
 
 const CheckboxFormField = <T extends FieldValues>({
@@ -23,6 +25,7 @@ const CheckboxFormField = <T extends FieldValues>({
   disabled,
   valid,
   small,
+  asterisk,
   className,
   onChange: onChangeProperty,
   'data-testid': dataTestId,
@@ -83,7 +86,7 @@ const CheckboxFormField = <T extends FieldValues>({
                     ref={ref}
                   />
                   <label className="fr-label" htmlFor={id}>
-                    {label}
+                    {label} {asterisk && <RedAsterisk />}
                     {hint && <span className="fr-hint-text">{hint}</span>}
                   </label>
                 </div>
