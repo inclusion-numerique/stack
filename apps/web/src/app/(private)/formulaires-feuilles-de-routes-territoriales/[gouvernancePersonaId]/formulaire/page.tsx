@@ -8,6 +8,7 @@ import {
 import {
   GouvernancePersonaId,
   gouvernancePersonas,
+  personaCanChooseIntention,
 } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { prismaClient } from '@app/web/prismaClient'
@@ -52,16 +53,6 @@ export const generateMetadata = async ({
     title: `Formulaires feuilles de routes territoriales`,
   }
 }
-
-const personaThatCanChooseIntention = new Set<GouvernancePersonaId>([
-  'epci',
-  'conseil-departemental',
-  'conseil-regional',
-])
-
-const personaCanChooseIntention = (
-  gouvernancePersonaId: GouvernancePersonaId,
-) => personaThatCanChooseIntention.has(gouvernancePersonaId)
 
 /**
  * Cette page permet de choisir l'intention du formulaire de gouvernance (porter ou participer)

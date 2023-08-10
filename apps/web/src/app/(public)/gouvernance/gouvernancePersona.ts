@@ -13,6 +13,7 @@ export type GouvernancePersona = {
   // Url friendly unique identifier
   id: GouvernancePersonaId
   title: string
+  shortTitle?: string
   cta: string
   description: string
   blocs: {
@@ -81,6 +82,7 @@ const structure = {
   id: 'structure' as const,
   title:
     'Autre personne morale publique ou privée (associations, opérateurs de services publics, entreprises)',
+  shortTitle: 'Personne morale publique ou privée',
   cta: "Participez à l’élaboration des feuilles de routes territoriales. Vous serez sollicités à l'occasion des concertations territoriales.",
   description:
     "En tant que personne morale publique ou privée, vous pouvez participer à l’élaboration des feuilles de routes territoriales. Vous serez sollicités à l'occasion des concertations territoriales.<br/><br/>" +
@@ -97,3 +99,13 @@ export const gouvernancePersonas: {
   commune,
   structure,
 }
+
+const personaThatCanChooseIntention = new Set<GouvernancePersonaId>([
+  'epci',
+  'conseil-departemental',
+  'conseil-regional',
+])
+
+export const personaCanChooseIntention = (
+  gouvernancePersonaId: GouvernancePersonaId,
+) => personaThatCanChooseIntention.has(gouvernancePersonaId)

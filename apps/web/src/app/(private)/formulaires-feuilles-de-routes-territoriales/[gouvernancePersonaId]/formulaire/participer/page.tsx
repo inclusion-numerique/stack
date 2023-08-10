@@ -11,11 +11,14 @@ import {
 import {
   GouvernancePersonaId,
   gouvernancePersonas,
+  personaCanChooseIntention,
 } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { linkToFormulaireGouvernancePorter } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/etapeFormulaireGouvernance'
 import { getFormulaireGouvernanceForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
 import Participer from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/formulaire/participer/Participer'
+import { prismaClient } from '@app/web/prismaClient'
+import { OptionTuple } from '@app/web/utils/options'
 
 export const generateMetadata = async ({
   params: { gouvernancePersonaId },
@@ -82,30 +85,91 @@ const Page = async ({
     return null
   }
 
+  const [optionsRegions, optionsDepartements, optionsEpcis] = await Promise.all(
+    [
+      prismaClient.region
+        .findMany({
+          select: {
+            code: true,
+            nom: true,
+          },
+          orderBy: {
+            nom: 'asc',
+          },
+        })
+        .then((regions) =>
+          regions.map(({ code, nom }): OptionTuple => [code, nom]),
+        ),
+      prismaClient.departement
+        .findMany({
+          select: {
+            code: true,
+            nom: true,
+          },
+          orderBy: {
+            code: 'asc',
+          },
+        })
+        .then((regions) =>
+          regions.map(
+            ({ code, nom }): OptionTuple => [code, `${code} · ${nom}`],
+          ),
+        ),
+      prismaClient.epci
+        .findMany({
+          select: {
+            code: true,
+            nom: true,
+          },
+          orderBy: {
+            nom: 'asc',
+          },
+        })
+        .then((regions) =>
+          regions.map(({ code, nom }): OptionTuple => [code, nom]),
+        ),
+    ],
+  )
+
   return (
     <>
       <div className="fr-container">
-        <Breadcrumbs
-          currentPage="Participer à l’élaboration des feuilles de routes territoriales"
-          parents={[
-            {
-              label: 'Formulaires feuilles de routes territoriales',
-              linkProps: { href: '/gouvernance' },
-            },
-            {
-              label: persona.title,
-              linkProps: {
-                href: `/formulaires-feuilles-de-routes-territoriales/${gouvernancePersonaId}`,
+        {personaCanChooseIntention(formulaireGouvernance.gouvernancePersona) ? (
+          <Breadcrumbs
+            currentPage="Participer à l’élaboration des feuilles de routes territoriales"
+            parents={[
+              {
+                label: 'Formulaires feuilles de routes territoriales',
+                linkProps: { href: '/gouvernance' },
               },
-            },
-          ]}
-        />
+              {
+                label: persona.shortTitle ?? persona.title,
+                linkProps: {
+                  href: `/formulaires-feuilles-de-routes-territoriales/${gouvernancePersonaId}`,
+                },
+              },
+            ]}
+          />
+        ) : (
+          <Breadcrumbs
+            currentPage={persona.shortTitle ?? persona.title}
+            parents={[
+              {
+                label: 'Formulaires feuilles de routes territoriales',
+                linkProps: { href: '/gouvernance' },
+              },
+            ]}
+          />
+        )}
       </div>
 
       <div className="fr-container fr-container--narrow">
         <Participer
           persona={persona}
           formulaireGouvernance={formulaireGouvernance}
+          optionsRegions={optionsRegions}
+          optionsDepartements={optionsDepartements}
+          optionsEpcis={optionsEpcis}
         />
       </div>
     </>

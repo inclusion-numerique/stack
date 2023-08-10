@@ -54,6 +54,12 @@ hr.separator--8v{
 
 /* DSFR Overrides and custom theming */
 
+/* Form input spacing */
+
+.fr-input-group, .fr-select-group, .fr-input-group:not(:last-child), .fr-select-group:not(:last-child) {
+  margin-bottom: 16px;
+}
+
 /* Round notices */
 
 .fr-notice {

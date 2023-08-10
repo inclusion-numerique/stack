@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/nextjs'
 import { v4 } from 'uuid'
+import type { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { ChooseGouvernancePersonaValidation } from '@app/web/gouvernance/ChooseGouvernancePersona'
@@ -8,6 +9,150 @@ import { sendGouvernanceWelcomeEmail } from '@app/web/gouvernance/sendGouvernanc
 import { ChooseIntentionValidation } from '@app/web/gouvernance/ChooseIntention'
 import { canUpdateFormulaireGouvernance } from '@app/web/security/securityRules'
 import { forbiddenError } from '@app/web/server/rpc/trpcErrors'
+import {
+  ParticiperData,
+  ParticiperValidation,
+} from '@app/web/gouvernance/Participer'
+import { ContactFormulaireGouvernanceData } from '@app/web/gouvernance/Contact'
+
+const upsertDataFromContact = (
+  formulaireGouvernanceId: string,
+  input: ContactFormulaireGouvernanceData,
+) => ({
+  formulaireGouvernanceId,
+  nom: input.nom.trim(),
+  prenom: input.prenom.trim(),
+  fonction: input.fonction.trim(),
+  email: input.email.trim(),
+})
+
+const contactOperation = (
+  formulaireGouvernanceId: string,
+  input: ContactFormulaireGouvernanceData | null,
+) =>
+  input === null
+    ? { delete: true }
+    : {
+        upsert: {
+          create: upsertDataFromContact(formulaireGouvernanceId, input),
+          update: upsertDataFromContact(formulaireGouvernanceId, input),
+        },
+      }
+
+const dataFromParticiperInput = (
+  input: ParticiperData,
+): Prisma.FormulaireGouvernanceUpdateInput => {
+  if (input.gouvernancePersona === 'structure') {
+    return {
+      nomStructure: input.nomStructure.trim(),
+      siretStructure: input.siretStructure.trim(),
+      departementCode: input.codeDepartement,
+      contactStructure: {
+        upsert: {
+          create: upsertDataFromContact(
+            input.formulaireGouvernanceId,
+            input.contactStructure,
+          ),
+          update: upsertDataFromContact(
+            input.formulaireGouvernanceId,
+            input.contactStructure,
+          ),
+        },
+      },
+      // Clean unwanted data (safety as the state of the form is out of this function scope)
+      etapeInformationsParticipant: null,
+      etapePerimetre: null,
+      etapeContacts: null,
+      etapeStructures: null,
+      regionCode: null,
+      communeCode: null,
+      epciCode: null,
+      schemaOuGouvernanceLocale: null,
+      contactPolitique: {
+        delete: true,
+      },
+      contactTechnique: {
+        delete: true,
+      },
+      epcisParticipantes: {
+        deleteMany: {},
+      },
+      communesParticipantes: {
+        deleteMany: {},
+      },
+      structuresParticipantes: {
+        deleteMany: {},
+      },
+    }
+  }
+
+  const commonParticiperCollectiviteData = {
+    // Clean unwanted data (safety as the state of the form is out of this function scope)
+    etapeInformationsParticipant: null,
+    etapePerimetre: null,
+    etapeContacts: null,
+    etapeStructures: null,
+    nomStructure: null,
+    siretStructure: null,
+    contactStructure: {
+      delete: true,
+    },
+    contactTechnique: contactOperation(input.contactTechnique),
+    contactPolitique: contactOperation(input.contactPolitique),
+    epcisParticipantes: {
+      deleteMany: {},
+    },
+    communesParticipantes: {
+      deleteMany: {},
+    },
+    structuresParticipantes: {
+      deleteMany: {},
+    },
+  }
+
+  switch (input.gouvernancePersona) {
+    case 'commune': {
+      return {
+        ...commonParticiperCollectiviteData,
+        regionCode: null,
+        epciCode: null,
+        departementCode: null,
+        communeCode: input.codeCommune,
+      }
+    }
+    case 'epci': {
+      return {
+        ...commonParticiperCollectiviteData,
+        regionCode: null,
+        epciCode: input.codeEpci,
+        departementCode: null,
+        communeCode: null,
+      }
+    }
+    case 'conseil-departemental': {
+      return {
+        ...commonParticiperCollectiviteData,
+        regionCode: null,
+        epciCode: null,
+        departementCode: input.codeDepartement,
+        communeCode: null,
+      }
+    }
+    case 'conseil-regional': {
+      return {
+        ...commonParticiperCollectiviteData,
+        regionCode: input.codeRegion,
+        epciCode: null,
+        departementCode: null,
+        communeCode: null,
+      }
+    }
+
+    default: {
+      throw new Error('Invalid form persona')
+    }
+  }
+}
 
 export const formulaireGouvernanceRouter = router({
   choosePersona: protectedProcedure
@@ -75,4 +220,30 @@ export const formulaireGouvernanceRouter = router({
         return updatedFormulaireGouvernance
       },
     ),
+  participer: protectedProcedure
+    .input(ParticiperValidation)
+    .mutation(async ({ input, ctx: { user } }) => {
+      console.log('PARTICIPER INPUT', input)
+      if (
+        !canUpdateFormulaireGouvernance(user, input.formulaireGouvernanceId)
+      ) {
+        throw forbiddenError()
+      }
+      const updatedFormulaireGouvernance =
+        await prismaClient.formulaireGouvernance.update({
+          where: { id: input.formulaireGouvernanceId },
+          data: {
+            intention: 'Participer',
+            confirmeEtEnvoye: new Date(),
+            ...dataFromParticiperInput(input),
+          },
+          select: {
+            id: true,
+            intention: true,
+            gouvernancePersona: true,
+          },
+        })
+
+      return updatedFormulaireGouvernance
+    }),
 })
