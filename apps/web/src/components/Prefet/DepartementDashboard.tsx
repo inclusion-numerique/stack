@@ -4,6 +4,7 @@ import MainStatistics from '@app/web/components/Prefet/DepartementDashboard/Main
 import DetailedStatistics from '@app/web/components/Prefet/DepartementDashboard/DetailedStatistics'
 import DepartementDashboardHeader from '@app/web/components/Prefet/DepartementDashboardHeader'
 import type { DepartementDashboardData } from '@app/web/app/(private)/tableau-de-bord/departement/[codeDepartement]/getDepartementDashboardData'
+import ErrorBoundary from '@app/web/components/ErrorBoundary'
 import DepartementMap from './DepartementMap'
 
 const DepartementDashboard = ({ data }: { data: DepartementDashboardData }) => (
@@ -26,7 +27,9 @@ const DepartementDashboard = ({ data }: { data: DepartementDashboardData }) => (
           <MainStatistics data={data} />
         </div>
         <div className="fr-col-12 fr-col-md-7">
-          <DepartementMap departement={data.departement} />
+          <ErrorBoundary>
+            <DepartementMap departement={data.departement} />
+          </ErrorBoundary>
         </div>
       </div>
       <DetailedStatistics data={data} />

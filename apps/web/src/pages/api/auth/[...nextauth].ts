@@ -2,7 +2,7 @@ import axios from 'axios'
 import NextAuth, { NextAuthOptions, TokenSet } from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
 import KeycloakProvider, { KeycloakProfile } from 'next-auth/providers/keycloak'
-import Sentry from '@sentry/nextjs'
+import * as Sentry from '@sentry/nextjs'
 import type { User } from '@prisma/client'
 import {
   monCompteProConnectProviderId,

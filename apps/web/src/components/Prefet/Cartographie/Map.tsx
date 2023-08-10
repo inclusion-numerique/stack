@@ -14,6 +14,7 @@ import {
   FilterSpecification,
   GeoJSONSourceSpecification,
 } from '@maplibre/maplibre-gl-style-spec'
+import * as Sentry from '@sentry/nextjs'
 import {
   DepartementCartographieData,
   DepartementCartographieDataCommune,
@@ -154,137 +155,141 @@ const Map = ({
         return
       }
 
-      // Zoom to departement bounds
-      map.current.fitBounds(bounds, { padding: 20, animate: false })
+      try {
+        // Zoom to departement bounds
+        map.current.fitBounds(bounds, { padding: 20, animate: false })
 
-      // Add source for cities and epcis
-      map.current.addSource('decoupage', {
-        type: 'vector',
-        tiles: [
-          'https://openmaptiles.geo.data.gouv.fr/data/decoupage-administratif/{z}/{x}/{y}.pbf',
-        ],
-      })
+        // Add source for cities and epcis
+        map.current.addSource('decoupage', {
+          type: 'vector',
+          tiles: [
+            'https://openmaptiles.geo.data.gouv.fr/data/decoupage-administratif/{z}/{x}/{y}.pbf',
+          ],
+        })
 
-      const epciCodes = epcis.map((epci) => epci.code)
-      map.current.addLayer(
-        ifnCommunesFillLayer({ departementCode, citiesByIndex }),
-      )
-      map.current.addLayer(ifnCommunesBorderLayer({ departementCode }))
-      map.current.addLayer(
-        ifnSelectedCommunesBorderLayer({ departementCode, citiesByIndex }),
-      )
-      map.current.addLayer(
-        ifnHoverCommunesBorderLayer({ departementCode, citiesByIndex }),
-      )
-      map.current.addLayer(ifnEpcisFillLayer(epcisByIndex, epciCodes))
-      map.current.addLayer(ifnEpcisBorderLayer(epcisByIndex, epciCodes))
-      map.current.addLayer(ifnHoverEpcisBorderLayer(epcisByIndex, epciCodes))
+        const epciCodes = epcis.map((epci) => epci.code)
+        map.current.addLayer(
+          ifnCommunesFillLayer({ departementCode, citiesByIndex }),
+        )
+        map.current.addLayer(ifnCommunesBorderLayer({ departementCode }))
+        map.current.addLayer(
+          ifnSelectedCommunesBorderLayer({ departementCode, citiesByIndex }),
+        )
+        map.current.addLayer(
+          ifnHoverCommunesBorderLayer({ departementCode, citiesByIndex }),
+        )
+        map.current.addLayer(ifnEpcisFillLayer(epcisByIndex, epciCodes))
+        map.current.addLayer(ifnEpcisBorderLayer(epcisByIndex, epciCodes))
+        map.current.addLayer(ifnHoverEpcisBorderLayer(epcisByIndex, epciCodes))
 
-      map.current.addLayer(departementLayer(departementCode))
-      map.current.addLayer(baseCommunesFillLayer(departementCode))
-      map.current.addLayer(baseCommunesBorderLayer(departementCode))
-      map.current.addLayer(baseSelectedCommunesFillLayer(departementCode))
-      map.current.addLayer(baseSelectedCommunesBorderLayer(departementCode))
+        map.current.addLayer(departementLayer(departementCode))
+        map.current.addLayer(baseCommunesFillLayer(departementCode))
+        map.current.addLayer(baseCommunesBorderLayer(departementCode))
+        map.current.addLayer(baseSelectedCommunesFillLayer(departementCode))
+        map.current.addLayer(baseSelectedCommunesBorderLayer(departementCode))
 
-      map.current.addLayer(baseEpcisFillLayer(epciCodes))
-      map.current.addLayer(baseEpcisBorderLayer(epciCodes))
+        map.current.addLayer(baseEpcisFillLayer(epciCodes))
+        map.current.addLayer(baseEpcisBorderLayer(epciCodes))
 
-      placesLayer.map((placeLayer) => map.current?.addLayer(placeLayer))
-      map.current.addSource('structures', {
-        type: 'geojson',
-        promoteId: 'id',
-        data: {
-          type: 'FeatureCollection',
-          features: structures,
-        },
-        clusterMaxZoom: 11,
-        cluster: true,
-        clusterRadius: 25,
-        clusterProperties: { count: ['+', 1] },
-      })
+        placesLayer.map((placeLayer) => map.current?.addLayer(placeLayer))
+        map.current.addSource('structures', {
+          type: 'geojson',
+          promoteId: 'id',
+          data: {
+            type: 'FeatureCollection',
+            features: structures,
+          },
+          clusterMaxZoom: 11,
+          cluster: true,
+          clusterRadius: 25,
+          clusterProperties: { count: ['+', 1] },
+        })
 
-      // Load images, THEN add structure layers to avoid missing image error in UI
-      new Promise((resolve) => {
-        if (!map.current) {
-          // Do not hang on edge cases
-          resolve(null)
-          return
-        }
-        let imagesToLoad = structureTypes.length * 2
-        for (const type of structureTypes) {
-          const structureImageFile = structureTypeImage[type]
-          const structureHoverImageFile = structureTypeSelectedImage[type]
+        // Load images, THEN add structure layers to avoid missing image error in UI
+        new Promise((resolve) => {
           if (!map.current) {
-            imagesToLoad -= 1
+            // Do not hang on edge cases
+            resolve(null)
             return
           }
-          // eslint-disable-next-line @typescript-eslint/no-loop-func
-          map.current.loadImage(structureImageFile, (error, image) => {
-            if (error) {
-              console.error('Could not load structure image', error)
+          let imagesToLoad = structureTypes.length * 2
+          for (const type of structureTypes) {
+            const structureImageFile = structureTypeImage[type]
+            const structureHoverImageFile = structureTypeSelectedImage[type]
+            if (!map.current) {
+              imagesToLoad -= 1
               return
             }
-            if (map.current && image) {
-              map.current.addImage(`structure-${type}`, image)
-            }
-            imagesToLoad -= 1
-            if (imagesToLoad === 0) resolve(null)
+            // eslint-disable-next-line @typescript-eslint/no-loop-func
+            map.current.loadImage(structureImageFile, (error, image) => {
+              if (error) {
+                console.error('Could not load structure image', error)
+                return
+              }
+              if (map.current && image) {
+                map.current.addImage(`structure-${type}`, image)
+              }
+              imagesToLoad -= 1
+              if (imagesToLoad === 0) resolve(null)
+            })
+            // eslint-disable-next-line @typescript-eslint/no-loop-func
+            map.current.loadImage(structureHoverImageFile, (error, image) => {
+              if (error) {
+                console.error('Could not load structure hover image', error)
+                return
+              }
+              if (map.current && image) {
+                map.current.addImage(`structure-${type}-hover`, image)
+              }
+              imagesToLoad -= 1
+              if (imagesToLoad === 0) resolve(null)
+            })
+          }
+        })
+          .catch((error) => {
+            console.error('Could not load structure images', error)
           })
-          // eslint-disable-next-line @typescript-eslint/no-loop-func
-          map.current.loadImage(structureHoverImageFile, (error, image) => {
-            if (error) {
-              console.error('Could not load structure hover image', error)
-              return
-            }
-            if (map.current && image) {
-              map.current.addImage(`structure-${type}-hover`, image)
-            }
-            imagesToLoad -= 1
-            if (imagesToLoad === 0) resolve(null)
+          .then(() => {
+            map.current?.addLayer(structuresIconLayer)
+            map.current?.addLayer(structuresIconHoverLayer)
+            return null
           })
-        }
-      })
-        .catch((error) => {
-          console.error('Could not load structure images', error)
+          .catch((error) => {
+            console.error('Could not load structure layers', error)
+          })
+
+        map.current.addLayer(structuresClusterCircleLayer)
+        map.current.addLayer(structuresClusterSymbolLayer)
+
+        addHoverState(map.current, 'decoupage', 'ifnCommunesFill', 'communes')
+        addHoverState(map.current, 'decoupage', 'baseCommunesFill', 'communes')
+        addHoverState(map.current, 'decoupage', 'baseEpcisFill', 'epcis')
+        addHoverState(map.current, 'decoupage', 'ifnEpcisFill', 'epcis')
+        addHoverState(map.current, 'structures', 'structureIconHover')
+
+        const navControl = new maplibregl.NavigationControl({
+          showZoom: true,
+          showCompass: false,
         })
-        .then(() => {
-          map.current?.addLayer(structuresIconLayer)
-          map.current?.addLayer(structuresIconHoverLayer)
-          return null
+        map.current.addControl(navControl, 'top-right')
+
+        const scaleControl = new maplibregl.ScaleControl({
+          maxWidth: 100,
+          unit: 'metric',
         })
-        .catch((error) => {
-          console.error('Could not load structure layers', error)
+        map.current.addControl(scaleControl, 'bottom-left')
+
+        map.current.on('zoom', () => {
+          if (!map.current) {
+            return
+          }
+
+          setDivision(map.current.getZoom() < epciMaxZoom ? 'EPCI' : 'Commune')
         })
-
-      map.current.addLayer(structuresClusterCircleLayer)
-      map.current.addLayer(structuresClusterSymbolLayer)
-
-      addHoverState(map.current, 'decoupage', 'ifnCommunesFill', 'communes')
-      addHoverState(map.current, 'decoupage', 'baseCommunesFill', 'communes')
-      addHoverState(map.current, 'decoupage', 'baseEpcisFill', 'epcis')
-      addHoverState(map.current, 'decoupage', 'ifnEpcisFill', 'epcis')
-      addHoverState(map.current, 'structures', 'structureIconHover')
-
-      const navControl = new maplibregl.NavigationControl({
-        showZoom: true,
-        showCompass: false,
-      })
-      map.current.addControl(navControl, 'top-right')
-
-      const scaleControl = new maplibregl.ScaleControl({
-        maxWidth: 100,
-        unit: 'metric',
-      })
-      map.current.addControl(scaleControl, 'bottom-left')
-
-      map.current.on('zoom', () => {
-        if (!map.current) {
-          return
-        }
-
-        setDivision(map.current.getZoom() < epciMaxZoom ? 'EPCI' : 'Commune')
-      })
-
+      } catch (error) {
+        console.error('Could not load map', error)
+        Sentry.captureException(error)
+      }
       setIsMapLoaded(true)
     })
   }, [])

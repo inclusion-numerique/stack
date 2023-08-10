@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import maplibregl, { Map } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { useRouter } from 'next/navigation'
+import * as Sentry from '@sentry/nextjs'
 import { emptyStyleSpecification } from '@app/web/utils/map/emptyStyleSpecification'
 import { DepartementGeoFeatures } from '@app/web/data/departements'
 import styles from './DepartementMap.module.css'
@@ -43,29 +44,35 @@ const DepartementMap = ({
       if (!map.current) {
         return
       }
-      map.current.fitBounds(bounds, {
-        padding: { top: 50, right: 50, left: 50, bottom: 250 },
-        animate: false,
-      })
 
-      map.current.addSource('departement', source)
-      map.current.addLayer({
-        id: 'departement-fill',
-        type: 'fill',
-        source: 'departement',
-        paint: {
-          'fill-color': '#b1b6e6',
-        },
-      })
-      map.current.addLayer({
-        id: 'departement-outline',
-        type: 'line',
-        source: 'departement',
-        paint: {
-          'line-color': '#000086',
-          'line-width': 2,
-        },
-      })
+      try {
+        map.current.fitBounds(bounds, {
+          padding: { top: 50, right: 50, left: 50, bottom: 250 },
+          animate: false,
+        })
+
+        map.current.addSource('departement', source)
+        map.current.addLayer({
+          id: 'departement-fill',
+          type: 'fill',
+          source: 'departement',
+          paint: {
+            'fill-color': '#b1b6e6',
+          },
+        })
+        map.current.addLayer({
+          id: 'departement-outline',
+          type: 'line',
+          source: 'departement',
+          paint: {
+            'line-color': '#000086',
+            'line-width': 2,
+          },
+        })
+      } catch (error) {
+        Sentry.captureException(error)
+        console.error('Error while adding malibre source and layers', error)
+      }
     })
   }, [])
 

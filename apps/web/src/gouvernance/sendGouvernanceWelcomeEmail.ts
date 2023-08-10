@@ -2,7 +2,7 @@ import type { User } from '@prisma/client'
 import { createTransport } from 'nodemailer'
 import { compileMjml } from '@app/emails/mjml'
 import { gouvernanceWelcome } from '@app/emails/templates/gouvernanceWelcome'
-import Sentry from '@sentry/nextjs'
+import * as Sentry from '@sentry/nextjs'
 import { ServerWebAppConfig } from '@app/web/webAppConfig'
 import {
   GouvernancePersonaId,

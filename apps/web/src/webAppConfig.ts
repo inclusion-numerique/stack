@@ -60,7 +60,7 @@ export const ServerWebAppConfig = {
  */
 
 export const PublicWebAppConfig = {
-  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL,
+  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? '',
   projectTitle,
   mainLiveUrl,
   repository: repositoryUrl,

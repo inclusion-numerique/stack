@@ -15,9 +15,7 @@ export const addNextPublicVariablesToDotEnv = new Command()
     await appendEnvVariablesToDotEnvFile({
       comment: 'Next public environment needed at build time',
       environmentVariables: [
-        targetEnv === 'local'
-          ? { name: 'NEXT_PUBLIC_SENTRY_DSN', value: '' }
-          : { name: 'NEXT_PUBLIC_SENTRY_ENVIRONMENT', value: namespace },
+        { name: 'NEXT_PUBLIC_SENTRY_ENVIRONMENT', value: namespace },
         {
           name: 'NEXT_PUBLIC_MONCOMPTEPRO_ISSUER',
           value: `$MONCOMPTEPRO_${targetEnv.toUpperCase()}_ISSUER`,

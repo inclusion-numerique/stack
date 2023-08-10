@@ -1,4 +1,4 @@
-import Sentry from '@sentry/nextjs'
+import * as Sentry from '@sentry/nextjs'
 import { v4 } from 'uuid'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'

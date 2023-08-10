@@ -11,6 +11,7 @@ import {
   applyStructureFilter,
   StructureFilters,
 } from '@app/web/components/Prefet/Cartographie/structureFilters'
+import ErrorBoundary from '@app/web/components/ErrorBoundary'
 import styles from './Page.module.css'
 import Legend from './Legend'
 import Map from './Map'
@@ -98,21 +99,23 @@ const CartographiePage = ({
         onStructureSelected={onStructureSelected}
         onFilter={onFilter}
       />
-      <Map
-        departement={departement}
-        communes={communes}
-        epcis={epcis}
-        structures={structures}
-        selectedCommune={selectedCommune}
-        onCommuneSelected={onCommuneSelected}
-        selectedStructure={selectedStructure}
-        onStructureSelected={onStructureSelected}
-        filteredStructures={
-          filteredOutSelectedStructure
-            ? [...filteredStructures, filteredOutSelectedStructure]
-            : filteredStructures
-        }
-      />
+      <ErrorBoundary>
+        <Map
+          departement={departement}
+          communes={communes}
+          epcis={epcis}
+          structures={structures}
+          selectedCommune={selectedCommune}
+          onCommuneSelected={onCommuneSelected}
+          selectedStructure={selectedStructure}
+          onStructureSelected={onStructureSelected}
+          filteredStructures={
+            filteredOutSelectedStructure
+              ? [...filteredStructures, filteredOutSelectedStructure]
+              : filteredStructures
+          }
+        />
+      </ErrorBoundary>
     </div>
   )
 }

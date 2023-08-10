@@ -1,3 +1,3 @@
 import { initializeSentry } from './src/sentry'
 
-initializeSentry()
+initializeSentry({ replay: true })
