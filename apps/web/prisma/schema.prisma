@@ -285,8 +285,8 @@ model StructureCartographieNationale {
   labelFranceServices       Boolean
   labelAidantsConnect       Boolean
 
-  zrr Boolean
-  qpv Boolean
+  zrr Boolean @default(false)
+  qpv Boolean @default(false)
 
   structureAidantsConnect StructureAidantsConnect?
 
