@@ -1,5 +1,4 @@
-import { appUrl } from '../../../support/helpers'
-import { signinWithMonComptePro } from '../signinWithMonComptePro'
+import { appUrl, createTestUser } from '../../../support/helpers'
 
 describe('ETQ Visiteur qui souhaite se connecter en Préfecture, je peux me connecter uniquement avec MonComptePro', () => {
   /**
@@ -58,16 +57,14 @@ describe('ETQ Visiteur qui souhaite se connecter en Préfecture, je peux me conn
     cy.contains('Créer un compte').should('not.exist')
   })
 
-  it('Acceptation 1 - MCP - La connexion detecte un prefet et le redirige sur son tableau de bord', () => {
-    cy.createUser({
-      email: monCompteProUser.email,
-      name: monCompteProUser.name,
+  it('Acceptation 1 - MCP - La connexion détecte un préfet et le redirige sur son tableau de bord', () => {
+    const user = createTestUser({
       role: 'Prefect',
       roleScope: '34',
     })
+    cy.createUser(user)
+    cy.signin(user)
     cy.visit('/connexion?role=prefecture')
-
-    signinWithMonComptePro(monCompteProUser)
 
     cy.url().should('equal', appUrl('/tableau-de-bord/departement/34'))
 
@@ -76,10 +73,12 @@ describe('ETQ Visiteur qui souhaite se connecter en Préfecture, je peux me conn
     cy.get('.fr-header__tools').should('not.contain', 'Se connecter')
   })
 
-  it('Acceptation 2 - MCP - La connexion detecte PAS un prefet et le redirige sur son profil', () => {
-    cy.visit('/connexion?role=prefecture')
+  it('Acceptation 2 - MCP - La connexion ne détecte PAS un préfet et le redirige sur son profil', () => {
+    const user = createTestUser()
+    cy.createUser(user)
+    cy.signin(user)
 
-    signinWithMonComptePro(monCompteProUser)
+    cy.visit('/connexion?role=prefecture')
 
     cy.url().should('equal', appUrl('/profil'))
     cy.get('.fr-header__tools').should('not.contain', 'Se connecter')

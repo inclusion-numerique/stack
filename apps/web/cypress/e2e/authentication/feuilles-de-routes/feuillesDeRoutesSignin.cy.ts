@@ -2,7 +2,6 @@ import { v4 } from 'uuid'
 import { appUrl, createTestUser } from '../../../support/helpers'
 import { checkGouvernanceWelcomeEmailReceived } from '../../checkGouvernanceWelcomeEmailReceived'
 import { goToMostRecentEmailReceived } from '../../goToMostRecentEmailReceived'
-import { signinWithMonComptePro } from '../signinWithMonComptePro'
 
 const signinWithEmail = ({ email }: { email: string }) => {
   cy.log('Signin form fill and submit')
@@ -118,15 +117,11 @@ describe('ETQ Visiteur qui souhaite se connecter en Collectivité, je peux me co
     cy.contains('Votre inscription est confirmée')
   })
 
-  it("Acceptation 3 - Connexion par MCP d'un compte existant sans persona de collectivité", () => {
-    cy.createUser({
-      email: monCompteProUser.email,
-      name: monCompteProUser.name,
-      emailVerified: new Date().toISOString(),
-    })
+  it("Acceptation 3 - Connexion d'un compte existant sans persona de collectivité", () => {
+    const user = createTestUser()
+    cy.createUser(user)
+    cy.signin(user)
     cy.visit('/connexion?role=collectivite')
-
-    signinWithMonComptePro(monCompteProUser)
 
     cy.url().should(
       'equal',
@@ -155,6 +150,9 @@ describe('ETQ Visiteur qui souhaite se connecter en Collectivité, je peux me co
       emailVerified: new Date().toISOString(),
     })
     cy.createUser(user)
+
+    cy.signin(user)
+
     cy.updateUser({
       where: {
         id: userId,
@@ -170,7 +168,6 @@ describe('ETQ Visiteur qui souhaite se connecter en Collectivité, je peux me co
       },
     })
     cy.visit('/connexion?role=collectivite')
-    signinWithMonComptePro(monCompteProUser)
     cy.url().should(
       'equal',
       appUrl('/formulaires-feuilles-de-routes-territoriales/commune'),

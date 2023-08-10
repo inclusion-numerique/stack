@@ -4,7 +4,6 @@ import Link from 'next/link'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
-import { getServerUrl } from '@app/web/utils/baseUrl'
 import { signinErrorMessage } from '@app/web/app/(public)/(authentication)/authenticationErrorMessage'
 import LinkCard from '@app/web/ui/LinkCard'
 import MonCompteProSigninButton from '@app/web/app/(public)/(authentication)/connexion/MonCompteProSigninButton'
@@ -23,8 +22,23 @@ const SigninPage = async ({
   }
 }) => {
   const user = await getSessionUser()
+
   if (user) {
-    redirect(getServerUrl(suivant ?? '/profil'))
+    if (role === 'prefecture') {
+      if (user.role === 'Prefect') {
+        redirect(suivant ?? '/tableau-de-bord')
+        return null
+      }
+      redirect(suivant ?? '/profil')
+      return null
+    }
+
+    if (role === 'collectivite') {
+      redirect(suivant ?? '/formulaires-feuilles-de-routes-territoriales')
+      return null
+    }
+
+    redirect(suivant ?? '/profil')
   }
 
   const callbackUrl =
