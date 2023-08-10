@@ -2,10 +2,7 @@ import { notFound, redirect } from 'next/navigation'
 import React from 'react'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import Button from '@codegouvfr/react-dsfr/Button'
-import {
-  getAuthenticatedSessionUser,
-  getSessionUser,
-} from '@app/web/auth/getSessionUser'
+import { getSessionUser } from '@app/web/auth/getSessionUser'
 import {
   hasAccessToGouvernanceForm,
   hasAccessToGouvernanceFormDevelopmentPreview,
@@ -59,7 +56,14 @@ const Page = async ({
   params: { gouvernancePersonaId: GouvernancePersonaId }
 }) => {
   const persona = gouvernancePersonas[gouvernancePersonaId]
-  const user = await getAuthenticatedSessionUser()
+  const user = await getSessionUser()
+
+  if (!user) {
+    redirect(
+      `/connexion?suivant=/formulaires-feuilles-de-routes-territoriales/${gouvernancePersonaId}`,
+    )
+  }
+
   const formulaireGouvernance =
     await prismaClient.formulaireGouvernance.findFirst({
       where: {
