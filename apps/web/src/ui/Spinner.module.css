@@ -12,10 +12,18 @@
     }
 }
 
-
 .spinner {
-    display: inline-block;
+    display: block;
+    font-size:0;
+    mask-repeat: no-repeat;
+    mask-size: 100% 100%;
+    mask-image: url('/images/spinner.svg');
     animation: rotate-animation 1.2s infinite linear;
+    background: currentColor;
+}
+
+.inline {
+    display: inline-block;
 }
 
 .spinner--sm {

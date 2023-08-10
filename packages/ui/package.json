@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "lint": "eslint src",
+    "lint:style": "../../packages/lint/node_modules/.bin/stylelint \"src/**/*.css\"",
     "test": "jest --passWithNoTests",
     "tsc": "tsc --noEmit",
     "postinstall": "pnpm --silent setup:dsfr",
@@ -26,6 +27,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.44.2",
+    "react-select": "^5.7.4",
     "zod": "^3.21.4"
   },
   "devDependencies": {

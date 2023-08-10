@@ -27,7 +27,7 @@ const SelectFormField = <T extends FieldValues>({
   valid,
   asterisk,
 }: UiComponentProps & SelectFormFieldProps<T>) => {
-  const id = `input-form-field__${path}`
+  const id = `select-form-field__${path}`
 
   return (
     <Controller
