@@ -4,6 +4,8 @@ import PublicFooter from '@app/web/app/(public)/PublicFooter'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Header from '@app/web/components/Header'
 
+export const dynamic = 'force-dynamic'
+
 const PrivateLayout = async ({ children }: PropsWithChildren) => {
   const user = await getSessionUser()
   if (!user) {
