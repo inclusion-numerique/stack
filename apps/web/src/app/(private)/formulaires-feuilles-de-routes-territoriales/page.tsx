@@ -14,6 +14,8 @@ import {
 import ContainerCard from '@app/web/components/ContainerCard'
 import ChoseGouvernancePersonaForm from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/ChoseGouvernancePersonaForm'
 
+export const dynamic = 'force-dynamic'
+
 export const generateMetadata = async () => {
   const user = await getSessionUser()
 

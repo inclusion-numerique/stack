@@ -12,6 +12,8 @@ import {
   gouvernancePersonas,
 } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 
+export const dynamic = 'force-dynamic'
+
 const Page = async () => {
   const user = await getSessionUser()
   if (!user) {
