@@ -275,12 +275,12 @@ jobs:
             pnpm --silent cli dotenv:add-next-public $NAMESPACE
       - restore_cache:
           keys:
-            - << pipeline.parameters.cache_version >>-next-{{ checksum "<< pipeline.parameters.lockfile >>" }}
+            - << pipeline.parameters.cache_version >>-next-prod-{{ checksum "<< pipeline.parameters.lockfile >>" }}-{{ checksum "./.env" }}
       - run:
           name: 'Build next app'
           command: pnpm --silent -F @app/web build
       - save_cache:
-          key: << pipeline.parameters.cache_version >>-next-{{ checksum "<< pipeline.parameters.lockfile >>" }}
+          key: << pipeline.parameters.cache_version >>-next-prod-{{ checksum "<< pipeline.parameters.lockfile >>" }}-{{ checksum "./.env" }}
           paths:
             - ./apps/web/.next/cache
       - run:
@@ -373,11 +373,15 @@ jobs:
             pnpm --silent cli dotenv:add-next-public --local $NAMESPACE
       - restore_cache:
           keys:
-            - << pipeline.parameters.cache_version >>-next-{{ checksum "<< pipeline.parameters.lockfile >>" }}
+            - << pipeline.parameters.cache_version >>-next-e2e-{{ checksum "<< pipeline.parameters.lockfile >>" }}-{{ checksum "./.env" }}
       - run:
           # We build in the e2e job, using --local NEXT_PUBLIC_* env variables as they are inlined at compile time
           name: 'Build next app'
           command: pnpm --silent -F @app/web build
+      - save_cache:
+          key: << pipeline.parameters.cache_version >>-next-e2e-{{ checksum "<< pipeline.parameters.lockfile >>" }}-{{ checksum "./.env" }}
+          paths:
+            - ./apps/web/.next/cache
       - run:
           name: 'Add e2e vars to .env'
           command: |
