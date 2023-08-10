@@ -354,7 +354,7 @@ jobs:
   test_web_e2e:
     executor: node-e2e
     resource_class: large
-    parallelism: 2
+    parallelism: 4
     steps:
       - checkout
       - install_pnpm
