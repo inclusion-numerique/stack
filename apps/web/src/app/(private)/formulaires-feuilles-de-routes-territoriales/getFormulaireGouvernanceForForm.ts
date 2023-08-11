@@ -1,14 +1,22 @@
 import { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
 
-export const userCurrentFormulaireWhere = (userId: string) =>
+export const userCurrentFormulaireParams = (userId: string) =>
   ({
-    participants: {
-      some: {
-        id: userId,
+    where: {
+      participants: {
+        some: {
+          id: userId,
+        },
       },
     },
-  } satisfies Prisma.FormulaireGouvernanceWhereInput)
+    orderBy: {
+      creation: 'desc',
+    },
+  } satisfies {
+    where: Prisma.FormulaireGouvernanceWhereInput
+    orderBy: Prisma.FormulaireGouvernanceOrderByWithRelationAndSearchRelevanceInput
+  })
 
 export const getFormulaireGouvernanceForForm = ({
   userId,
@@ -16,7 +24,7 @@ export const getFormulaireGouvernanceForForm = ({
   userId: string
 }) =>
   prismaClient.formulaireGouvernance.findFirst({
-    where: userCurrentFormulaireWhere(userId),
+    ...userCurrentFormulaireParams(userId),
     include: {
       participants: {
         select: {

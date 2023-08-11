@@ -1,10 +1,9 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { DefaultValues } from 'react-hook-form/dist/types/form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/navigation'
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
 import InputFormField from '@app/ui/components/Form/InputFormField'
@@ -21,8 +20,12 @@ import {
 } from '@app/web/gouvernance/Participer'
 import { trpc } from '@app/web/trpc'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
-import WorkInProgressNotice from '@app/web/components/WorkInProgressNotice'
-import { OptionTuples, optionTuplesToOptions } from '@app/web/utils/options'
+import {
+  emptyOptionTuple,
+  OptionTuples,
+  optionTuplesToOptions,
+} from '@app/web/utils/options'
+import styles from './Participer.module.css'
 
 const defaultValuesFromData = (
   data: GouvernanceFormulaireForForm,
@@ -45,21 +48,75 @@ const defaultValuesFromData = (
     }
   }
 
-  throw new Error('WIP')
+  // TODO Factorize default values from contact
+  const contactPolitique = data.contactPolitique
+    ? {
+        nom: data.contactPolitique.nom ?? undefined,
+        prenom: data.contactPolitique.prenom ?? undefined,
+        email: data.contactPolitique.email ?? undefined,
+        fonction: data.contactPolitique.fonction ?? undefined,
+      }
+    : {}
+  const contactTechnique = data.contactTechnique
+    ? {
+        nom: data.contactTechnique.nom ?? undefined,
+        prenom: data.contactTechnique.prenom ?? undefined,
+        email: data.contactTechnique.email ?? undefined,
+        fonction: data.contactTechnique.fonction ?? undefined,
+      }
+    : undefined
+
+  if (data.gouvernancePersona === 'commune') {
+    return {
+      gouvernancePersona: 'commune',
+      formulaireGouvernanceId: data.id,
+      codeCommune: data.communeCode ?? undefined,
+      contactPolitique,
+      contactTechnique,
+    }
+  }
+  if (data.gouvernancePersona === 'epci') {
+    return {
+      gouvernancePersona: 'epci',
+      formulaireGouvernanceId: data.id,
+      codeEpci: data.epciCode ?? undefined,
+      contactPolitique,
+      contactTechnique,
+    }
+  }
+  if (data.gouvernancePersona === 'conseil-departemental') {
+    return {
+      gouvernancePersona: 'conseil-departemental',
+      formulaireGouvernanceId: data.id,
+      codeDepartement: data.departementCode ?? undefined,
+      contactPolitique,
+      contactTechnique,
+    }
+  }
+
+  if (data.gouvernancePersona === 'conseil-regional') {
+    return {
+      gouvernancePersona: 'conseil-regional',
+      formulaireGouvernanceId: data.id,
+      codeRegion: data.regionCode ?? undefined,
+      contactPolitique,
+      contactTechnique,
+    }
+  }
+
+  throw new Error('Could not create default values from persona')
 }
 
 const Participer = ({
   persona,
   formulaireGouvernance,
-  optionsRegions,
+  optionsRegions: _optionsRegions,
   optionsDepartements,
-  optionsEpci,
 }: {
   persona: GouvernancePersona
   formulaireGouvernance: GouvernanceFormulaireForForm
-  optionsRegions: OptionTuples[]
-  optionsDepartements: OptionTuples[]
-  optionsEpci: OptionTuples[]
+  optionsRegions: OptionTuples
+  optionsDepartements: OptionTuples
 }) => {
   console.log('PROPS FORM', formulaireGouvernance)
 
@@ -70,7 +127,6 @@ const Participer = ({
   console.log('DEFAULT VALUES', defaultValuesFromData(formulaireGouvernance))
 
   const mutation = trpc.formulaireGouvernance.participer.useMutation()
-  const router = useRouter()
 
   console.log('ERRORS', form.formState.errors)
 
@@ -82,21 +138,35 @@ const Participer = ({
       applyZodValidationMutationErrorsToForm(mutationError, form.setError)
     }
 
-    // TODO Confirm page
-    if (false) {
-      router.push(
-        `/formulaires-feuilles-de-routes-territoriales/${data.gouvernancePersonaId}`,
-      )
-    }
+    // TODO Redirect to Confirm page
   }
   const isLoading =
     form.formState.isSubmitting || form.formState.isSubmitSuccessful
   const disabled = isLoading
 
+  const [showContactTechnique, setShowContactTechnique] = useState(
+    !!form.getValues('contactTechnique'),
+  )
+
+  const addContactTechnique = () => {
+    setShowContactTechnique(true)
+    if (!form.getValues('contactTechnique')) {
+      form.setValue('contactTechnique', {
+        nom: '',
+        prenom: '',
+        email: '',
+        fonction: '',
+      })
+    }
+  }
+  const removeContactTechnique = () => {
+    form.setValue('contactTechnique', null)
+    setShowContactTechnique(false)
+  }
+
   return (
     <>
       <BackLink href="/formulaires-feuilles-de-routes-territoriales" />
-      <WorkInProgressNotice />
       <WhiteCard className="fr-mt-6v fr-mb-30v">
         <h2 className="fr-text-title--blue-france">
           Formulaire{' '}
@@ -119,20 +189,26 @@ const Participer = ({
                 control={form.control}
                 path="nomStructure"
                 label="Nom structure"
+                asterisk
                 disabled={disabled}
               />
               <InputFormField
                 control={form.control}
                 path="siretStructure"
                 label="SIRET structure"
+                asterisk
                 disabled={disabled}
               />
               <SelectFormField
                 control={form.control}
                 path="codeDepartement"
                 label="Département"
+                asterisk
                 disabled={disabled}
-                options={optionTuplesToOptions(optionsDepartements)}
+                options={optionTuplesToOptions([
+                  emptyOptionTuple,
+                  ...optionsDepartements,
+                ])}
               />
             </>
           ) : (
@@ -142,50 +218,130 @@ const Participer = ({
             </h5>
           )}
           <hr className="separator--10v" />
-          <h5>Contact politique</h5>
-          <pre>{formulaireGouvernance.id}</pre>
 
           {formulaireGouvernance.gouvernancePersona === 'structure' ? (
             <>
+              <h5>Contact de la structure</h5>
               <InputFormField
                 control={form.control}
                 path="contactStructure.nom"
                 label="Nom"
+                asterisk
                 disabled={disabled}
               />
               <InputFormField
                 control={form.control}
                 path="contactStructure.prenom"
                 label="Prénom"
+                asterisk
                 disabled={disabled}
               />
               <InputFormField
                 control={form.control}
                 path="contactStructure.fonction"
                 label="Fonction"
+                asterisk
                 disabled={disabled}
               />
               <InputFormField
                 control={form.control}
                 path="contactStructure.email"
                 label="Adresse e-mail"
+                asterisk
                 disabled={disabled}
               />
             </>
           ) : (
             <>
+              <h5>Contact politique</h5>
               <InputFormField
                 control={form.control}
-                path="contactStructure.nom"
-                label="TODO"
+                path="contactPolitique.nom"
+                label="Nom"
+                asterisk
                 disabled={disabled}
               />
               <InputFormField
                 control={form.control}
-                path="contactStructure.prenom"
-                label="TODO"
+                path="contactPolitique.prenom"
+                label="Prénom"
+                asterisk
                 disabled={disabled}
               />
+              <InputFormField
+                control={form.control}
+                path="contactPolitique.fonction"
+                label="Fonction"
+                asterisk
+                disabled={disabled}
+              />
+              <InputFormField
+                control={form.control}
+                path="contactPolitique.email"
+                label="Adresse e-mail"
+                asterisk
+                disabled={disabled}
+              />
+              <hr className="separator--10v" />
+
+              {showContactTechnique ? (
+                <>
+                  <div className={styles.contactTechniqueHeader}>
+                    <h5>Contact technique</h5>
+                    {showContactTechnique && (
+                      <Button
+                        type="button"
+                        className="fr-ml-1w"
+                        priority="secondary"
+                        iconId="fr-icon-delete-bin-line"
+                        iconPosition="right"
+                        onClick={removeContactTechnique}
+                      >
+                        Supprimer
+                      </Button>
+                    )}
+                  </div>
+                  <InputFormField
+                    control={form.control}
+                    path="contactTechnique.nom"
+                    label="Nom"
+                    asterisk
+                    disabled={disabled}
+                  />
+                  <InputFormField
+                    control={form.control}
+                    path="contactTechnique.prenom"
+                    label="Prénom"
+                    asterisk
+                    disabled={disabled}
+                  />
+                  <InputFormField
+                    control={form.control}
+                    path="contactTechnique.fonction"
+                    label="Fonction"
+                    asterisk
+                    disabled={disabled}
+                  />
+                  <InputFormField
+                    control={form.control}
+                    path="contactTechnique.email"
+                    label="Adresse e-mail"
+                    asterisk
+                    disabled={disabled}
+                  />
+                </>
+              ) : (
+                <div className="fr-btns-group fr-btns-group--icon-left">
+                  <Button
+                    type="button"
+                    priority="tertiary"
+                    iconId="fr-icon-add-line"
+                    onClick={addContactTechnique}
+                  >
+                    Ajouter un contact technique (facultatif)
+                  </Button>
+                </div>
+              )}
             </>
           )}
           <div className="fr-btns-group fr-mt-10v">

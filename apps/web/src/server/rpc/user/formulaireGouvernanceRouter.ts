@@ -28,37 +28,30 @@ const upsertDataFromContact = (
 
 const contactOperation = (
   formulaireGouvernanceId: string,
-  input: ContactFormulaireGouvernanceData | null,
+  input?: ContactFormulaireGouvernanceData | null,
 ) =>
-  input === null
-    ? { delete: true }
-    : {
+  input
+    ? {
         upsert: {
           create: upsertDataFromContact(formulaireGouvernanceId, input),
           update: upsertDataFromContact(formulaireGouvernanceId, input),
         },
       }
+    : { delete: true }
 
 const dataFromParticiperInput = (
   input: ParticiperData,
-): Prisma.FormulaireGouvernanceUpdateInput => {
+): Prisma.FormulaireGouvernanceUpdateInput &
+  Prisma.FormulaireGouvernanceUncheckedUpdateInput => {
   if (input.gouvernancePersona === 'structure') {
     return {
       nomStructure: input.nomStructure.trim(),
       siretStructure: input.siretStructure.trim(),
       departementCode: input.codeDepartement,
-      contactStructure: {
-        upsert: {
-          create: upsertDataFromContact(
-            input.formulaireGouvernanceId,
-            input.contactStructure,
-          ),
-          update: upsertDataFromContact(
-            input.formulaireGouvernanceId,
-            input.contactStructure,
-          ),
-        },
-      },
+      contactStructure: contactOperation(
+        input.formulaireGouvernanceId,
+        input.contactStructure,
+      ),
       // Clean unwanted data (safety as the state of the form is out of this function scope)
       etapeInformationsParticipant: null,
       etapePerimetre: null,
@@ -97,8 +90,14 @@ const dataFromParticiperInput = (
     contactStructure: {
       delete: true,
     },
-    contactTechnique: contactOperation(input.contactTechnique),
-    contactPolitique: contactOperation(input.contactPolitique),
+    contactTechnique: contactOperation(
+      input.formulaireGouvernanceId,
+      input.contactTechnique,
+    ),
+    contactPolitique: contactOperation(
+      input.formulaireGouvernanceId,
+      input.contactPolitique,
+    ),
     epcisParticipantes: {
       deleteMany: {},
     },
@@ -235,7 +234,9 @@ export const formulaireGouvernanceRouter = router({
           data: {
             intention: 'Participer',
             confirmeEtEnvoye: new Date(),
-            ...dataFromParticiperInput(input),
+            ...(dataFromParticiperInput(
+              input,
+            ) as Prisma.FormulaireGouvernanceUpdateInput),
           },
           select: {
             id: true,

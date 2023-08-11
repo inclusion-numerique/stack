@@ -100,12 +100,12 @@ export const gouvernancePersonas: {
   structure,
 }
 
-const personaThatCanChooseIntention = new Set<GouvernancePersonaId>([
+const personaQuiPeutPorterUneFeuilleDeRoute = new Set<GouvernancePersonaId>([
   'epci',
   'conseil-departemental',
   'conseil-regional',
 ])
 
-export const personaCanChooseIntention = (
+export const personaPeutPorterUneFeuilleDeRoute = (
   gouvernancePersonaId: GouvernancePersonaId,
-) => personaThatCanChooseIntention.has(gouvernancePersonaId)
+) => personaQuiPeutPorterUneFeuilleDeRoute.has(gouvernancePersonaId)

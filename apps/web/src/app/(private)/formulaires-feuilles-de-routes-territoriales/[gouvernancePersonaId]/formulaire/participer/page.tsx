@@ -11,7 +11,7 @@ import {
 import {
   GouvernancePersonaId,
   gouvernancePersonas,
-  personaCanChooseIntention,
+  personaPeutPorterUneFeuilleDeRoute,
 } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { linkToFormulaireGouvernancePorter } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/etapeFormulaireGouvernance'
@@ -85,56 +85,44 @@ const Page = async ({
     return null
   }
 
-  const [optionsRegions, optionsDepartements, optionsEpcis] = await Promise.all(
-    [
-      prismaClient.region
-        .findMany({
-          select: {
-            code: true,
-            nom: true,
-          },
-          orderBy: {
-            nom: 'asc',
-          },
-        })
-        .then((regions) =>
-          regions.map(({ code, nom }): OptionTuple => [code, nom]),
+  const [optionsRegions, optionsDepartements] = await Promise.all([
+    prismaClient.region
+      .findMany({
+        select: {
+          code: true,
+          nom: true,
+        },
+        orderBy: {
+          nom: 'asc',
+        },
+      })
+      .then((regions) =>
+        regions.map(({ code, nom }): OptionTuple => [code, nom]),
+      ),
+    prismaClient.departement
+      .findMany({
+        select: {
+          code: true,
+          nom: true,
+        },
+        orderBy: {
+          code: 'asc',
+        },
+      })
+      .then((departements) =>
+        departements.map(
+          ({ code, nom }): OptionTuple => [code, `${code} · ${nom}`],
         ),
-      prismaClient.departement
-        .findMany({
-          select: {
-            code: true,
-            nom: true,
-          },
-          orderBy: {
-            code: 'asc',
-          },
-        })
-        .then((regions) =>
-          regions.map(
-            ({ code, nom }): OptionTuple => [code, `${code} · ${nom}`],
-          ),
-        ),
-      prismaClient.epci
-        .findMany({
-          select: {
-            code: true,
-            nom: true,
-          },
-          orderBy: {
-            nom: 'asc',
-          },
-        })
-        .then((regions) =>
-          regions.map(({ code, nom }): OptionTuple => [code, nom]),
-        ),
-    ],
-  )
+      ),
+  ])
 
   return (
     <>
       <div className="fr-container">
-        {personaCanChooseIntention(formulaireGouvernance.gouvernancePersona) ? (
+        {personaPeutPorterUneFeuilleDeRoute(
+          // TODO Breadcrumbs from helper fonctions
+          formulaireGouvernance.gouvernancePersona as GouvernancePersonaId,
+        ) ? (
           <Breadcrumbs
             currentPage="Participer à l’élaboration des feuilles de routes territoriales"
             parents={[
@@ -169,7 +157,6 @@ const Page = async ({
           formulaireGouvernance={formulaireGouvernance}
           optionsRegions={optionsRegions}
           optionsDepartements={optionsDepartements}
-          optionsEpcis={optionsEpcis}
         />
       </div>
     </>
