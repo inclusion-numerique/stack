@@ -3,6 +3,7 @@ import React from 'react'
 import * as Sentry from '@sentry/nextjs'
 import DebugClient from '@app/web/app/(public)/debug/DebugClient'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
+import ErrorBoundary from '@app/web/components/ErrorBoundary'
 
 export const dynamic = 'force-dynamic'
 
@@ -84,12 +85,14 @@ const Page = ({
 
         <h6>Gestion des erreurs navigateur</h6>
 
-        <DebugClient
-          throwOnServer={!!throwOnServer}
-          throwOnUseEffect={!!throwOnUseEffect}
-          throwOnFirstRender={!!throwOnFirstRender}
-          throwOnCallback={!!throwOnCallback}
-        />
+        <ErrorBoundary>
+          <DebugClient
+            throwOnServer={!!throwOnServer}
+            throwOnUseEffect={!!throwOnUseEffect}
+            throwOnFirstRender={!!throwOnFirstRender}
+            throwOnCallback={!!throwOnCallback}
+          />
+        </ErrorBoundary>
       </div>
     </>
   )
