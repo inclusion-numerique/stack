@@ -156,8 +156,8 @@ const getFakeData = (
         ],
       },
       {
-        id: 'status-des-usagers',
-        label: 'Status des usagers',
+        id: 'statut-des-usagers',
+        label: 'Statut des usagers',
         updated: new Date('2021-09-04'),
         source: 'conseiller-numerique.gouv.fr',
         statistics: [

@@ -335,8 +335,8 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
         ],
       },
       {
-        id: 'status-des-usagers',
-        label: 'Status des usagers',
+        id: 'statut-des-usagers',
+        label: 'Statut des usagers',
         updated: new Date(ConumCras.updated),
         source: 'conseiller-numerique.gouv.fr',
         statistics: [
