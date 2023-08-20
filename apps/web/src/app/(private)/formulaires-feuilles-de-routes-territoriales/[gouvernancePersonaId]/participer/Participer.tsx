@@ -120,15 +120,15 @@ const CollectivityCodeField = ({
   optionsRegions: OptionTuples
   optionsDepartements: OptionTuples
 }) => {
-  const label = (
+  const label = (title: string) => (
     <h5>
-      Renseignez votre {persona.title.toLocaleLowerCase('fr')} <RedAsterisk />
+      Renseignez votre {title} <RedAsterisk />
     </h5>
   )
   if (persona.id === 'conseil-regional') {
     return (
       <SelectFormField
-        label={label}
+        label={label('région')}
         control={form.control}
         options={optionTuplesToOptions([emptyOptionTuple, ...optionsRegions])}
         path="codeRegion"
@@ -139,7 +139,7 @@ const CollectivityCodeField = ({
   if (persona.id === 'conseil-departemental') {
     return (
       <SelectFormField
-        label={label}
+        label={label('département')}
         control={form.control}
         options={optionTuplesToOptions([
           emptyOptionTuple,
@@ -170,7 +170,7 @@ const CollectivityCodeField = ({
 
     return (
       <CustomSelectFormField
-        label={label}
+        label={label('EPCI')}
         control={form.control}
         path="codeEpci"
         loadOptions={loadOptions}
@@ -196,7 +196,7 @@ const CollectivityCodeField = ({
 
     return (
       <CustomSelectFormField
-        label={label}
+        label={label('commune')}
         control={form.control}
         path="codeCommune"
         loadOptions={loadOptions}
