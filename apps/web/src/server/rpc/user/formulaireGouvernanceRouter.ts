@@ -1,19 +1,30 @@
 import * as Sentry from '@sentry/nextjs'
 import { v4 } from 'uuid'
-import type { Prisma } from '@prisma/client'
+import type { Prisma, UserRole } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
-import { ChooseGouvernancePersonaValidation } from '@app/web/gouvernance/ChooseGouvernancePersona'
 import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
 import { sendGouvernanceWelcomeEmail } from '@app/web/gouvernance/sendGouvernanceWelcomeEmail'
-import { ChooseIntentionValidation } from '@app/web/gouvernance/ChooseIntention'
-import { canUpdateFormulaireGouvernance } from '@app/web/security/securityRules'
-import { forbiddenError } from '@app/web/server/rpc/trpcErrors'
+import {
+  canUpdateFormulaireGouvernance,
+  hasAccessToGouvernanceFormDevelopmentPreview,
+} from '@app/web/security/securityRules'
+import { forbiddenError, notFoundError } from '@app/web/server/rpc/trpcErrors'
 import {
   ParticiperData,
   ParticiperValidation,
 } from '@app/web/gouvernance/Participer'
 import { ContactFormulaireGouvernanceData } from '@app/web/gouvernance/Contact'
+import { ChoixDuFormulaireValidation } from '@app/web/gouvernance/ChoixDuFormulaire'
+import {
+  getFormulaireGouvernanceForForm,
+  GouvernanceFormulaireForForm,
+} from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
+import {
+  getEtapeFormulaire,
+  getInfoEtapeFormulaire,
+} from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/etapeFormulaireGouvernance'
+import { PorterOuParticiperValidation } from '@app/web/gouvernance/PorterOuParticiper'
 
 const upsertDataFromContact = (
   formulaireGouvernanceId: string,
@@ -28,7 +39,8 @@ const upsertDataFromContact = (
 
 const contactOperation = (
   formulaireGouvernanceId: string,
-  input?: ContactFormulaireGouvernanceData | null,
+  input: ContactFormulaireGouvernanceData | null | undefined,
+  existing: Record<string, unknown> | null,
 ) =>
   input
     ? {
@@ -37,49 +49,75 @@ const contactOperation = (
           update: upsertDataFromContact(formulaireGouvernanceId, input),
         },
       }
-    : { delete: true }
+    : existing
+    ? {
+        delete: true,
+      }
+    : undefined
 
 const dataFromParticiperInput = (
   input: ParticiperData,
-): Prisma.FormulaireGouvernanceUpdateInput &
-  Prisma.FormulaireGouvernanceUncheckedUpdateInput => {
+  formulaireGouvernance: GouvernanceFormulaireForForm,
+): Prisma.FormulaireGouvernanceUpdateInput => {
+  // Cleanup unwanted data
+
+  const formulaireGouvernanceId = formulaireGouvernance.id
+  const cleanup = {
+    structuresParticipantes:
+      formulaireGouvernance.structuresParticipantes.length > 0
+        ? { deleteMany: { formulaireGouvernanceId } }
+        : undefined,
+    epcisParticipantes:
+      formulaireGouvernance.epcisParticipantes.length > 0
+        ? { deleteMany: { formulaireGouvernanceId } }
+        : undefined,
+    communesParticipantes:
+      formulaireGouvernance.communesParticipantes.length > 0
+        ? { deleteMany: { formulaireGouvernanceId } }
+        : undefined,
+  }
+
   if (input.gouvernancePersona === 'structure') {
     return {
+      ...cleanup,
       nomStructure: input.nomStructure.trim(),
       siretStructure: input.siretStructure.trim(),
-      departementCode: input.codeDepartement,
+      departement: { connect: { code: input.codeDepartement } },
       contactStructure: contactOperation(
         input.formulaireGouvernanceId,
         input.contactStructure,
+        formulaireGouvernance.contactStructure,
+      ),
+      contactTechnique: contactOperation(
+        input.formulaireGouvernanceId,
+        null,
+        formulaireGouvernance.contactTechnique,
+      ),
+      contactPolitique: contactOperation(
+        input.formulaireGouvernanceId,
+        null,
+        formulaireGouvernance.contactPolitique,
       ),
       // Clean unwanted data (safety as the state of the form is out of this function scope)
       etapeInformationsParticipant: null,
       etapePerimetre: null,
       etapeContacts: null,
       etapeStructures: null,
-      regionCode: null,
-      communeCode: null,
-      epciCode: null,
+      region: {
+        disconnect: true,
+      },
+      commune: {
+        disconnect: true,
+      },
+      epci: {
+        disconnect: true,
+      },
       schemaOuGouvernanceLocale: null,
-      contactPolitique: {
-        delete: true,
-      },
-      contactTechnique: {
-        delete: true,
-      },
-      epcisParticipantes: {
-        deleteMany: {},
-      },
-      communesParticipantes: {
-        deleteMany: {},
-      },
-      structuresParticipantes: {
-        deleteMany: {},
-      },
     }
   }
 
   const commonParticiperCollectiviteData = {
+    ...cleanup,
     // Clean unwanted data (safety as the state of the form is out of this function scope)
     etapeInformationsParticipant: null,
     etapePerimetre: null,
@@ -87,63 +125,46 @@ const dataFromParticiperInput = (
     etapeStructures: null,
     nomStructure: null,
     siretStructure: null,
-    contactStructure: {
-      delete: true,
-    },
+    contactStructure: contactOperation(
+      formulaireGouvernance.id,
+      null,
+      formulaireGouvernance.contactStructure,
+    ),
     contactTechnique: contactOperation(
       input.formulaireGouvernanceId,
       input.contactTechnique,
+      formulaireGouvernance.contactTechnique,
     ),
     contactPolitique: contactOperation(
       input.formulaireGouvernanceId,
       input.contactPolitique,
+      formulaireGouvernance.contactPolitique,
     ),
-    epcisParticipantes: {
-      deleteMany: {},
-    },
-    communesParticipantes: {
-      deleteMany: {},
-    },
-    structuresParticipantes: {
-      deleteMany: {},
-    },
   }
 
   switch (input.gouvernancePersona) {
     case 'commune': {
       return {
         ...commonParticiperCollectiviteData,
-        regionCode: null,
-        epciCode: null,
-        departementCode: null,
-        communeCode: input.codeCommune,
+        commune: { connect: { code: input.codeCommune } },
       }
     }
     case 'epci': {
       return {
         ...commonParticiperCollectiviteData,
-        regionCode: null,
-        epciCode: input.codeEpci,
-        departementCode: null,
-        communeCode: null,
+        epci: { connect: { code: input.codeEpci } },
       }
     }
     case 'conseil-departemental': {
       return {
         ...commonParticiperCollectiviteData,
-        regionCode: null,
-        epciCode: null,
-        departementCode: input.codeDepartement,
-        communeCode: null,
+        departement: { connect: { code: input.codeDepartement } },
       }
     }
     case 'conseil-regional': {
       return {
         ...commonParticiperCollectiviteData,
-        regionCode: input.codeRegion,
-        epciCode: null,
-        departementCode: null,
-        communeCode: null,
+        region: { connect: { code: input.codeRegion } },
       }
     }
 
@@ -153,12 +174,78 @@ const dataFromParticiperInput = (
   }
 }
 
+const getNewFormulaireState = async ({
+  formulaireGouvernance,
+  user,
+}: {
+  formulaireGouvernance: { id: string }
+  user: { id: string; role: UserRole; gouvernancePersona: string | null }
+}) => {
+  const updatedFormulaireGouvernance =
+    await prismaClient.formulaireGouvernance.findUnique({
+      where: {
+        id: formulaireGouvernance.id,
+      },
+      select: {
+        id: true,
+        gouvernancePersona: true,
+        intention: true,
+        etapeContacts: true,
+        etapeStructures: true,
+        etapeInformationsParticipant: true,
+        etapePerimetre: true,
+        confirmeEtEnvoye: true,
+      },
+    })
+
+  if (!updatedFormulaireGouvernance) {
+    throw new Error('Formulaire not found')
+  }
+
+  const developmentPreview = hasAccessToGouvernanceFormDevelopmentPreview(user)
+  const etapeCourante = getEtapeFormulaire({
+    formulaireGouvernance: updatedFormulaireGouvernance,
+    developmentPreview,
+    user,
+  })
+  const etapeInfo = getInfoEtapeFormulaire({
+    formulaireGouvernance: updatedFormulaireGouvernance,
+    developmentPreview,
+    user,
+  })
+
+  return { updatedFormulaireGouvernance, etapeCourante, etapeInfo }
+}
+
 export const formulaireGouvernanceRouter = router({
-  choosePersona: protectedProcedure
-    .input(ChooseGouvernancePersonaValidation)
+  // Une mutation par étape du formulaire (cf etapeFormuliareGouvernance)
+  choixDuFormulaire: protectedProcedure
+    .input(ChoixDuFormulaireValidation)
     .mutation(async ({ input: { gouvernancePersonaId }, ctx: { user } }) => {
       const formulaireGouvernanceId = v4()
 
+      // Ensure no-op on same persona chosen
+      const existingFormulaire = await getFormulaireGouvernanceForForm({
+        userId: user.id,
+      })
+      if (existingFormulaire?.gouvernancePersona === gouvernancePersonaId) {
+        if (gouvernancePersonaId !== user.gouvernancePersona) {
+          // Only update user if needed, not the formulaire
+          await prismaClient.user.update({
+            where: { id: user.id },
+            data: {
+              gouvernancePersona: gouvernancePersonaId,
+            },
+            select: sessionUserSelect,
+          })
+        }
+
+        // Reuse the existing formulaire for same persona
+        return getNewFormulaireState({
+          formulaireGouvernance: existingFormulaire,
+          user,
+        })
+      }
       const updatedUser = await prismaClient.user.update({
         where: { id: user.id },
         data: {
@@ -176,7 +263,10 @@ export const formulaireGouvernanceRouter = router({
 
       if (user.gouvernancePersona === gouvernancePersonaId) {
         // Do not send same email to user
-        return updatedUser
+        return getNewFormulaireState({
+          formulaireGouvernance: { id: formulaireGouvernanceId },
+          user,
+        })
       }
 
       // Send welcome email with new persona
@@ -189,11 +279,13 @@ export const formulaireGouvernanceRouter = router({
         Sentry.captureException(error)
       })
 
-      return updatedUser
+      return getNewFormulaireState({
+        formulaireGouvernance: { id: formulaireGouvernanceId },
+        user,
+      })
     }),
-
-  chooseIntention: protectedProcedure
-    .input(ChooseIntentionValidation)
+  porterOuParticiper: protectedProcedure
+    .input(PorterOuParticiperValidation)
     .mutation(
       async ({
         input: { intention, formulaireGouvernanceId },
@@ -211,12 +303,13 @@ export const formulaireGouvernanceRouter = router({
             },
             select: {
               id: true,
-              intention: true,
-              gouvernancePersona: true,
             },
           })
 
-        return updatedFormulaireGouvernance
+        return getNewFormulaireState({
+          formulaireGouvernance: updatedFormulaireGouvernance,
+          user,
+        })
       },
     ),
   participer: protectedProcedure
@@ -228,23 +321,106 @@ export const formulaireGouvernanceRouter = router({
       ) {
         throw forbiddenError()
       }
-      const updatedFormulaireGouvernance =
-        await prismaClient.formulaireGouvernance.update({
+
+      const formulaireGouvernance = await getFormulaireGouvernanceForForm({
+        formulaireGouvernanceId: input.formulaireGouvernanceId,
+      })
+      if (!formulaireGouvernance) {
+        throw notFoundError()
+      }
+
+      const data = dataFromParticiperInput(input, formulaireGouvernance)
+      const formulaireGouvernanceId = formulaireGouvernance.id
+
+      console.log('PARTICIPER DATA', data)
+
+      // Remove participants contact for cleaning up data (safety as the state of the form is out of this function scope)
+      const deleteOperations: Prisma.PrismaPromise<unknown>[] = []
+      if (
+        formulaireGouvernance.structuresParticipantes.some(
+          (participant) => participant.contactId,
+        )
+      ) {
+        deleteOperations.push(
+          prismaClient.contactFormulaireGouvernance.deleteMany({
+            where: {
+              AND: [
+                {
+                  formulaireGouvernanceId,
+                },
+                {
+                  contactStructureParticipante: {
+                    isNot: null,
+                  },
+                },
+              ],
+            },
+          }),
+        )
+      }
+      if (
+        formulaireGouvernance.communesParticipantes.some(
+          (participant) => participant.contactId,
+        )
+      ) {
+        deleteOperations.push(
+          prismaClient.contactFormulaireGouvernance.deleteMany({
+            where: {
+              AND: [
+                {
+                  formulaireGouvernanceId,
+                },
+                {
+                  contactCommuneParticipante: {
+                    isNot: null,
+                  },
+                },
+              ],
+            },
+          }),
+        )
+      }
+      if (
+        formulaireGouvernance.epcisParticipantes.some(
+          (participant) => participant.contactId,
+        )
+      ) {
+        deleteOperations.push(
+          prismaClient.contactFormulaireGouvernance.deleteMany({
+            where: {
+              AND: [
+                {
+                  formulaireGouvernanceId,
+                },
+                {
+                  contactEpciParticipant: {
+                    isNot: null,
+                  },
+                },
+              ],
+            },
+          }),
+        )
+      }
+
+      const result = await prismaClient.$transaction([
+        ...deleteOperations,
+        prismaClient.formulaireGouvernance.update({
           where: { id: input.formulaireGouvernanceId },
           data: {
             intention: 'Participer',
             confirmeEtEnvoye: new Date(),
-            ...(dataFromParticiperInput(
-              input,
-            ) as Prisma.FormulaireGouvernanceUpdateInput),
+            ...data,
           },
           select: {
             id: true,
-            intention: true,
-            gouvernancePersona: true,
           },
-        })
+        }),
+      ])
 
-      return updatedFormulaireGouvernance
+      return getNewFormulaireState({
+        formulaireGouvernance: result.at(-1) as { id: string },
+        user,
+      })
     }),
 })

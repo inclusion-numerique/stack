@@ -1,13 +1,15 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, UseFormReturn } from 'react-hook-form'
 import { DefaultValues } from 'react-hook-form/dist/types/form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import SelectFormField from '@app/ui/components/Form/SelectFormField'
+import { useRouter } from 'next/navigation'
+import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
 import { GouvernancePersona } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
@@ -107,10 +109,109 @@ const defaultValuesFromData = (
   throw new Error('Could not create default values from persona')
 }
 
+const CollectivityCodeField = ({
+  form,
+  persona,
+  optionsRegions,
+  optionsDepartements,
+}: {
+  form: UseFormReturn<ParticiperData>
+  persona: GouvernancePersona
+  optionsRegions: OptionTuples
+  optionsDepartements: OptionTuples
+}) => {
+  const label = (
+    <h5>
+      Renseignez votre {persona.title.toLocaleLowerCase('fr')} <RedAsterisk />
+    </h5>
+  )
+  if (persona.id === 'conseil-regional') {
+    return (
+      <SelectFormField
+        label={label}
+        control={form.control}
+        options={optionTuplesToOptions([emptyOptionTuple, ...optionsRegions])}
+        path="codeRegion"
+      />
+    )
+  }
+
+  if (persona.id === 'conseil-departemental') {
+    return (
+      <SelectFormField
+        label={label}
+        control={form.control}
+        options={optionTuplesToOptions([
+          emptyOptionTuple,
+          ...optionsDepartements,
+        ])}
+        path="codeDepartement"
+      />
+    )
+  }
+
+  const { client: trpcClient } = trpc.useContext()
+
+  if (persona.id === 'epci') {
+    const loadOptions = async (search: string) => {
+      console.log('LOAD OPTIONS', search)
+      const result = await trpcClient.data.collectivitySearch.query({
+        epci: true,
+        commune: false,
+        query: search,
+      })
+      console.log('RESULT', result)
+
+      return result.map(({ code, nom }) => ({
+        label: nom,
+        value: code,
+      }))
+    }
+
+    return (
+      <CustomSelectFormField
+        label={label}
+        control={form.control}
+        path="codeEpci"
+        loadOptions={loadOptions}
+        cacheOptions
+      />
+    )
+  }
+  if (persona.id === 'commune') {
+    const loadOptions = async (search: string) => {
+      console.log('LOAD OPTIONS', search)
+      const result = await trpcClient.data.collectivitySearch.query({
+        epci: false,
+        commune: true,
+        query: search,
+        limit: 25,
+      })
+
+      return result.map(({ code, nom }) => ({
+        label: nom,
+        value: code,
+      }))
+    }
+
+    return (
+      <CustomSelectFormField
+        label={label}
+        control={form.control}
+        path="codeCommune"
+        loadOptions={loadOptions}
+        cacheOptions
+      />
+    )
+  }
+
+  throw new Error('Invalid persona for setting collectivity code')
+}
+
 const Participer = ({
   persona,
   formulaireGouvernance,
-  optionsRegions: _optionsRegions,
+  optionsRegions,
   optionsDepartements,
 }: {
   persona: GouvernancePersona
@@ -127,18 +228,18 @@ const Participer = ({
   console.log('DEFAULT VALUES', defaultValuesFromData(formulaireGouvernance))
 
   const mutation = trpc.formulaireGouvernance.participer.useMutation()
+  const router = useRouter()
 
   console.log('ERRORS', form.formState.errors)
 
   const onSubmit = async (data: ParticiperData) => {
     console.log('SUBMIT', data)
     try {
-      await mutation.mutateAsync(data)
+      const { etapeInfo } = await mutation.mutateAsync(data)
+      router.push(etapeInfo.absolutePath)
     } catch (mutationError) {
       applyZodValidationMutationErrorsToForm(mutationError, form.setError)
     }
-
-    // TODO Redirect to Confirm page
   }
   const isLoading =
     form.formState.isSubmitting || form.formState.isSubmitSuccessful
@@ -212,10 +313,12 @@ const Participer = ({
               />
             </>
           ) : (
-            <h5>
-              Renseignez votre {persona.title.toLocaleLowerCase('fr')}{' '}
-              <RedAsterisk />
-            </h5>
+            <CollectivityCodeField
+              form={form}
+              persona={persona}
+              optionsRegions={optionsRegions}
+              optionsDepartements={optionsDepartements}
+            />
           )}
           <hr className="separator--10v" />
 

@@ -4,14 +4,10 @@ import { useRouter } from 'next/navigation'
 import Alert from '@codegouvfr/react-dsfr/Alert'
 import classNames from 'classnames'
 import { useState } from 'react'
-import Sentry from '@sentry/nextjs'
+import * as Sentry from '@sentry/nextjs'
 import { GouvernancePersona } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import WhiteCard from '@app/web/ui/WhiteCard'
 import BackLink from '@app/web/components/BackLink'
-import {
-  linkToFormulaireGouvernanceParticiper,
-  linkToFormulaireGouvernancePorter,
-} from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/etapeFormulaireGouvernance'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import linkCardStyles from '@app/web/ui/LinkCard.module.css'
@@ -28,7 +24,7 @@ const ChoixIntention = ({
 
   const [chosen, setChosen] = useState<'Participer' | 'Porter'>()
 
-  const mutation = trpc.formulaireGouvernance.chooseIntention.useMutation()
+  const mutation = trpc.formulaireGouvernance.porterOuParticiper.useMutation()
   const onChoose = (intention: 'Participer' | 'Porter') => {
     setChosen(intention)
     mutation
@@ -36,13 +32,8 @@ const ChoixIntention = ({
         intention,
         formulaireGouvernanceId: formulaireGouvernance.id,
       })
-      .then(() => {
-        if (intention === 'Porter') {
-          router.push(linkToFormulaireGouvernancePorter(persona.id))
-        } else {
-          router.push(linkToFormulaireGouvernanceParticiper(persona.id))
-        }
-        return null
+      .then(({ etapeInfo }) => {
+        router.push(etapeInfo.absolutePath)
       })
       .catch((error) => {
         console.error(error)

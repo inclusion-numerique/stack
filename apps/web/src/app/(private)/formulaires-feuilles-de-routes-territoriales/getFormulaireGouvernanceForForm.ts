@@ -18,13 +18,26 @@ export const userCurrentFormulaireParams = (userId: string) =>
     orderBy: Prisma.FormulaireGouvernanceOrderByWithRelationAndSearchRelevanceInput
   })
 
-export const getFormulaireGouvernanceForForm = ({
-  userId,
-}: {
-  userId: string
-}) =>
-  prismaClient.formulaireGouvernance.findFirst({
-    ...userCurrentFormulaireParams(userId),
+export const getFormulaireGouvernanceForForm = (
+  params:
+    | {
+        userId: string
+      }
+    | {
+        formulaireGouvernanceId: string
+      },
+) => {
+  const { where, orderBy } =
+    'userId' in params
+      ? userCurrentFormulaireParams(params.userId)
+      : {
+          where: { id: params.formulaireGouvernanceId },
+          orderBy: undefined,
+        }
+
+  return prismaClient.formulaireGouvernance.findFirst({
+    where,
+    orderBy,
     include: {
       participants: {
         select: {
@@ -83,6 +96,7 @@ export const getFormulaireGouvernanceForForm = ({
       },
     },
   })
+}
 
 export type GouvernanceFormulaireForForm = Exclude<
   Awaited<ReturnType<typeof getFormulaireGouvernanceForForm>>,

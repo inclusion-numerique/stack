@@ -24,6 +24,10 @@ textarea {
   font-weight: 500 !important;
 }
 
+.fr-text--center {
+  text-align: center;
+}
+
 .fr-container--narrow {
   /* 588 + padding */
   max-width: 620px;
@@ -33,6 +37,7 @@ textarea {
     max-width: 636px;
   }
 }
+
 
 .fr-narrow {
   max-width: 588px;

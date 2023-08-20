@@ -7,6 +7,8 @@ import type { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formul
 export type EtapeFormulaireGouvernance =
   // Choix de la Persona
   | 'choix-du-formulaire'
+  // Pendant le développement, page finale, confirmation d'inscription. Sera supprimée
+  | 'confirmation-inscription'
   // Choix des 2 branches du formulaire si possible (Porter ou Participer)
   | 'porter-ou-participer'
   // Branche "Participer", 1 seule étape
@@ -22,6 +24,8 @@ export type EtapeFormulaireGouvernance =
 
 export const etapePathForEtapeFormulaireGouvernance = {
   'choix-du-formulaire': '/choix-du-formulaire',
+  'confirmation-inscription': (gouvernancePersona) =>
+    `/${gouvernancePersona}/confirmation-inscription`,
   'porter-ou-participer': (gouvernancePersona) =>
     `/${gouvernancePersona}/porter-ou-participer`,
   participer: (gouvernancePersona) => `/${gouvernancePersona}/participer`,
@@ -41,19 +45,6 @@ export const etapePathForEtapeFormulaireGouvernance = {
     | string
     | ((gouvernancePersonaId: GouvernancePersonaId) => string)
 }
-
-export const linkToFormulaireGouvernancePorter = (
-  personaId: GouvernancePersonaId,
-  etape?: EtapeFormulaireGouvernance,
-) =>
-  etape
-    ? `/formulaires-feuilles-de-routes-territoriales/${personaId}/formulaire/porter-une-feuille-de-route?etape=${etape}`
-    : `/formulaires-feuilles-de-routes-territoriales/${personaId}/formulaire/porter-une-feuille-de-route`
-
-export const linkToFormulaireGouvernanceParticiper = (
-  personaId: GouvernancePersonaId,
-) =>
-  `/formulaires-feuilles-de-routes-territoriales/${personaId}/formulaire/participer`
 
 /**
  * Un formulaire est un "tunnel" d'étapes.
@@ -100,74 +91,170 @@ export const getEtapeInfo = (
   }
 }
 
-export type GetEtapeInput = Pick<
-  GouvernanceFormulaireForForm,
-  | 'gouvernancePersona'
-  | 'intention'
-  | 'etapeContacts'
-  | 'etapeStructures'
-  | 'etapePerimetre'
-  | 'etapeInformationsParticipant'
-  | 'confirmeEtEnvoye'
->
+export type GetEtapeInput = {
+  formulaireGouvernance: Pick<
+    GouvernanceFormulaireForForm,
+    | 'gouvernancePersona'
+    | 'intention'
+    | 'etapeContacts'
+    | 'etapeStructures'
+    | 'etapePerimetre'
+    | 'etapeInformationsParticipant'
+    | 'confirmeEtEnvoye'
+  >
+  // Feature flag while developing
+  developmentPreview: boolean
+  user: {
+    gouvernancePersona: string | null
+  }
+}
+
+export type EtapeEnCours = {
+  etape: EtapeFormulaireGouvernance
+  retour: EtapeFormulaireGouvernance | null
+  breadcrumb: string[]
+  etapesAccessibles: EtapeFormulaireGouvernance[]
+}
 
 export const getEtapeFormulaire = ({
-  gouvernancePersona: gouvernancePersonaString,
-  etapeContacts,
-  etapePerimetre,
-  etapeStructures,
-  etapeInformationsParticipant,
-  intention,
-  confirmeEtEnvoye,
-}: GetEtapeInput): EtapeFormulaireGouvernance => {
+  formulaireGouvernance: {
+    gouvernancePersona: gouvernancePersonaString,
+    etapeContacts,
+    etapePerimetre,
+    etapeStructures,
+    etapeInformationsParticipant,
+    intention,
+    confirmeEtEnvoye,
+  },
+  developmentPreview,
+  user,
+}: GetEtapeInput): EtapeEnCours => {
   const gouvernancePersona = gouvernancePersonaString as GouvernancePersonaId
 
+  console.log('GET ETAPE', { gouvernancePersonaString, user })
   // La persona est choisie à l'inscription, mais si elle n'est pas choisie, on redirige vers la page de choix de persona
   // On peut aussi y arriver avec un query param ?changer=1 pour forcer le changement / recommencer un formulaire
   // On peut aussi y arriver si on s'inscrit avec une autre persona que notre persona en cours
-  if (!gouvernancePersona) {
-    return 'choix-du-formulaire'
+  if (!gouvernancePersona || gouvernancePersona !== user.gouvernancePersona) {
+    return {
+      etape: 'choix-du-formulaire',
+      retour: null,
+      breadcrumb: [],
+      etapesAccessibles: [],
+    }
+  }
+
+  // Pendant le développement, page finale, confirmation d'inscription. Sera supprimée
+  if (!developmentPreview) {
+    return {
+      etape: 'confirmation-inscription',
+      retour: null,
+      breadcrumb: [],
+      etapesAccessibles: ['choix-du-formulaire'],
+    }
   }
 
   // Le formulaire n'est plus modifiable une fois envoyé, c'est la seule page accessible
   if (confirmeEtEnvoye) {
-    return 'confirmation-formulaire-envoye'
+    return {
+      etape: 'confirmation-formulaire-envoye',
+      retour: null,
+      breadcrumb: [],
+      etapesAccessibles: [],
+    }
   }
 
   // Choix entre les 2 branches du formulaire (porter ou participer)
   // On peut choisir de porter ou participer si on est dans le cas d'une collectivité plus grande qu'une commune
-  if (!intention && personaPeutPorterUneFeuilleDeRoute(gouvernancePersona)) {
-    return 'porter-ou-participer'
+  const peutPorter = personaPeutPorterUneFeuilleDeRoute(gouvernancePersona)
+  if (!intention && peutPorter) {
+    return {
+      etape: 'porter-ou-participer',
+      retour: null,
+      breadcrumb: [],
+      etapesAccessibles: ['choix-du-formulaire'],
+    }
   }
 
   // Branche "Participer"
   // C'est la seule page de formulaire dans l'intention "Participer"
-  if (
-    !personaPeutPorterUneFeuilleDeRoute(gouvernancePersona) ||
-    intention === 'Participer'
-  ) {
-    return 'participer'
+  if (!peutPorter || intention === 'Participer') {
+    return {
+      etape: 'participer',
+      retour: null,
+      breadcrumb: [],
+      etapesAccessibles: peutPorter
+        ? ['choix-du-formulaire', 'porter-ou-participer']
+        : ['choix-du-formulaire'],
+    }
   }
 
   // Branche "Porter"
   if (!etapeInformationsParticipant) {
-    return 'informations-participant'
+    return {
+      etape: 'informations-participant',
+      retour: null,
+      breadcrumb: [],
+      etapesAccessibles: ['choix-du-formulaire', 'porter-ou-participer'],
+    }
   }
 
   if (!etapePerimetre) {
-    return 'perimetre-feuille-de-route'
+    return {
+      etape: 'perimetre-feuille-de-route',
+      retour: 'informations-participant',
+      breadcrumb: [],
+      etapesAccessibles: [
+        'choix-du-formulaire',
+        'porter-ou-participer',
+        'informations-participant',
+      ],
+    }
   }
 
   if (!etapeContacts) {
-    return 'contacts-collectivites'
+    return {
+      etape: 'contacts-collectivites',
+      retour: 'perimetre-feuille-de-route',
+      breadcrumb: [],
+      etapesAccessibles: [
+        'choix-du-formulaire',
+        'porter-ou-participer',
+        'informations-participant',
+        'perimetre-feuille-de-route',
+      ],
+    }
   }
 
   if (!etapeStructures) {
-    return 'autres-structures'
+    return {
+      etape: 'autres-structures',
+      retour: 'contacts-collectivites',
+      breadcrumb: [],
+      etapesAccessibles: [
+        'choix-du-formulaire',
+        'porter-ou-participer',
+        'informations-participant',
+        'perimetre-feuille-de-route',
+        'contacts-collectivites',
+      ],
+    }
   }
 
   if (!confirmeEtEnvoye) {
-    return 'recapitulatif'
+    return {
+      etape: 'recapitulatif',
+      retour: 'autres-structures',
+      breadcrumb: [],
+      etapesAccessibles: [
+        'choix-du-formulaire',
+        'porter-ou-participer',
+        'informations-participant',
+        'perimetre-feuille-de-route',
+        'contacts-collectivites',
+        'autres-structures',
+      ],
+    }
   }
 
   throw new Error("Impossible de trouver l'étape du formulaire")
@@ -175,6 +262,8 @@ export const getEtapeFormulaire = ({
 
 export const getInfoEtapeFormulaire = (input: GetEtapeInput) =>
   getEtapeInfo(
-    getEtapeFormulaire(input),
-    input.gouvernancePersona as GouvernancePersonaId | undefined,
+    getEtapeFormulaire(input).etape,
+    input.formulaireGouvernance.gouvernancePersona as
+      | GouvernancePersonaId
+      | undefined,
   )

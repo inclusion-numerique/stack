@@ -59,7 +59,7 @@ export const hasAccessToGouvernanceForm = (
 }
 
 export const hasAccessToGouvernanceFormDevelopmentPreview = (
-  user: Pick<SessionUser, 'role' | 'gouvernancePersona'>,
+  user: Pick<SessionUser, 'role'>,
 ) => {
   if (user.role === 'Administrator' || user.role === 'Demo') {
     return true
