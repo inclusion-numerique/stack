@@ -39,6 +39,21 @@ textarea {
 }
 
 
+.fr-container--medium {
+  /* 728 + padding */
+  max-width: 760px;
+
+  @media (min-width: 62em) {
+    /* lg */
+    max-width: 776px;
+  }
+}
+
+.formulaire-gouvernance-no-footer-margin-bottom {
+  margin-bottom: 200px;
+}
+
+
 .fr-narrow {
   max-width: 588px;
   margin-right: auto;

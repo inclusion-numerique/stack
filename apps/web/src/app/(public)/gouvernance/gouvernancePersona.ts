@@ -13,6 +13,8 @@ export type GouvernancePersona = {
   // Url friendly unique identifier
   id: GouvernancePersonaId
   title: string
+  // Pour selectionner dans une liste de collectivité
+  labelTitle: string
   shortTitle?: string
   cta: string
   description: string
@@ -25,6 +27,7 @@ export type GouvernancePersona = {
 const conseilRegional = {
   id: 'conseil-regional',
   title: 'Conseil régional',
+  labelTitle: 'région',
   cta: 'Portez une feuille de route ou participez à l’élaboration des feuilles de routes territoriales.',
   description:
     'En tant que Conseil régional, vous pouvez portez une feuille de route ou participer à l’élaboration des feuilles de routes territoriales qui seront proposées.<br/><br/>' +
@@ -51,6 +54,7 @@ const conseilRegional = {
 const conseilDepartemental = {
   id: 'conseil-departemental' as const,
   title: 'Conseil départemental',
+  labelTitle: 'département',
   cta: 'Portez une feuille de route ou participez à l’élaboration des feuilles de routes territoriales.',
   description:
     'En tant que Conseil départemental, vous pouvez portez une feuille de route ou participer à l’élaboration des feuilles de routes territoriales qui seront proposées.<br/><br/>' +
@@ -61,6 +65,7 @@ const conseilDepartemental = {
 const epci = {
   id: 'epci' as const,
   title: 'EPCI & groupement de communes',
+  labelTitle: 'EPCI',
   cta: 'Portez une feuille de route ou participez à l’élaboration des feuilles de routes territoriales.',
   description:
     'En tant qu’EPCI, vous pouvez portez une feuille de route ou participer à l’élaboration des feuilles de routes territoriales qui seront proposées.<br/><br/>' +
@@ -71,6 +76,7 @@ const epci = {
 const commune = {
   id: 'commune' as const,
   title: 'Commune',
+  labelTitle: 'commune',
   cta: "Participez à l’élaboration des feuilles de routes territoriales. Vous serez sollicités à l'occasion des concertations territoriales.",
   description:
     'En tant que commune, vous pouvez participer à l’élaboration des feuilles de routes territoriales.<br/><br/>' +
@@ -82,6 +88,7 @@ const structure = {
   id: 'structure' as const,
   title:
     'Autre personne morale publique ou privée (associations, opérateurs de services publics, entreprises)',
+  labelTitle: 'structure',
   shortTitle: 'Personne morale publique ou privée',
   cta: "Participez à l’élaboration des feuilles de routes territoriales. Vous serez sollicités à l'occasion des concertations territoriales.",
   description:

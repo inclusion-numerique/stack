@@ -56,6 +56,7 @@ export const userRouter = router({
           select: {
             id: true,
             email: true,
+            role: true,
             gouvernancePersona: true,
             formulaireGouvernanceId: true,
           },
@@ -72,6 +73,7 @@ export const userRouter = router({
                   id: formulaireId,
                   gouvernancePersona: gouvernancePersonaId,
                   createurId: user.id,
+                  demonstration: ['Administrator', 'Demo'].includes(user.role),
                 },
               },
             },

@@ -501,8 +501,12 @@ model FormulaireGouvernance {
   createurId String @map("createur_id") @db.Uuid
   createur   User   @relation("formulaire_gouvernance_createur", fields: [createurId], references: [id])
 
-  modification DateTime @updatedAt
-  creation     DateTime @default(now())
+  // Formulaire créé par un administrateur ou un compte de démonstration
+  demonstration Boolean
+
+  modification DateTime  @updatedAt
+  creation     DateTime  @default(now())
+  annulation   DateTime?
 
   intention IntentionFormulaireGouvernance? @map("intention")
 

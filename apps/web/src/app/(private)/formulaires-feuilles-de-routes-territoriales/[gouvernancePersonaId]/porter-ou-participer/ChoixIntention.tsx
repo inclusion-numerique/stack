@@ -34,6 +34,7 @@ const ChoixIntention = ({
       })
       .then(({ etapeInfo }) => {
         router.push(etapeInfo.absolutePath)
+        return null
       })
       .catch((error) => {
         console.error(error)

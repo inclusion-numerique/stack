@@ -1,15 +1,13 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useForm, UseFormReturn } from 'react-hook-form'
-import { DefaultValues } from 'react-hook-form/dist/types/form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import SelectFormField from '@app/ui/components/Form/SelectFormField'
 import { useRouter } from 'next/navigation'
-import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
 import { GouvernancePersona } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
@@ -27,186 +25,9 @@ import {
   OptionTuples,
   optionTuplesToOptions,
 } from '@app/web/utils/options'
+import { participerDefaultValuesFromData } from '@app/web/gouvernance/participerHelpers'
+import CollectiviteCodeField from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/participer/CollectiviteCodeField'
 import styles from './Participer.module.css'
-
-const defaultValuesFromData = (
-  data: GouvernanceFormulaireForForm,
-): DefaultValues<ParticiperData> => {
-  if (data.gouvernancePersona === 'structure') {
-    return {
-      gouvernancePersona: 'structure',
-      formulaireGouvernanceId: data.id,
-      codeDepartement: data.departementCode ?? undefined,
-      nomStructure: data.nomStructure ?? undefined,
-      siretStructure: data.siretStructure ?? undefined,
-      contactStructure: data.contactStructure
-        ? {
-            nom: data.contactStructure.nom ?? undefined,
-            prenom: data.contactStructure.prenom ?? undefined,
-            email: data.contactStructure.email ?? undefined,
-            fonction: data.contactStructure.fonction ?? undefined,
-          }
-        : {},
-    }
-  }
-
-  // TODO Factorize default values from contact
-  const contactPolitique = data.contactPolitique
-    ? {
-        nom: data.contactPolitique.nom ?? undefined,
-        prenom: data.contactPolitique.prenom ?? undefined,
-        email: data.contactPolitique.email ?? undefined,
-        fonction: data.contactPolitique.fonction ?? undefined,
-      }
-    : {}
-  const contactTechnique = data.contactTechnique
-    ? {
-        nom: data.contactTechnique.nom ?? undefined,
-        prenom: data.contactTechnique.prenom ?? undefined,
-        email: data.contactTechnique.email ?? undefined,
-        fonction: data.contactTechnique.fonction ?? undefined,
-      }
-    : undefined
-
-  if (data.gouvernancePersona === 'commune') {
-    return {
-      gouvernancePersona: 'commune',
-      formulaireGouvernanceId: data.id,
-      codeCommune: data.communeCode ?? undefined,
-      contactPolitique,
-      contactTechnique,
-    }
-  }
-  if (data.gouvernancePersona === 'epci') {
-    return {
-      gouvernancePersona: 'epci',
-      formulaireGouvernanceId: data.id,
-      codeEpci: data.epciCode ?? undefined,
-      contactPolitique,
-      contactTechnique,
-    }
-  }
-  if (data.gouvernancePersona === 'conseil-departemental') {
-    return {
-      gouvernancePersona: 'conseil-departemental',
-      formulaireGouvernanceId: data.id,
-      codeDepartement: data.departementCode ?? undefined,
-      contactPolitique,
-      contactTechnique,
-    }
-  }
-
-  if (data.gouvernancePersona === 'conseil-regional') {
-    return {
-      gouvernancePersona: 'conseil-regional',
-      formulaireGouvernanceId: data.id,
-      codeRegion: data.regionCode ?? undefined,
-      contactPolitique,
-      contactTechnique,
-    }
-  }
-
-  throw new Error('Could not create default values from persona')
-}
-
-const CollectivityCodeField = ({
-  form,
-  persona,
-  optionsRegions,
-  optionsDepartements,
-}: {
-  form: UseFormReturn<ParticiperData>
-  persona: GouvernancePersona
-  optionsRegions: OptionTuples
-  optionsDepartements: OptionTuples
-}) => {
-  const label = (title: string) => (
-    <h5>
-      Renseignez votre {title} <RedAsterisk />
-    </h5>
-  )
-  if (persona.id === 'conseil-regional') {
-    return (
-      <SelectFormField
-        label={label('région')}
-        control={form.control}
-        options={optionTuplesToOptions([emptyOptionTuple, ...optionsRegions])}
-        path="codeRegion"
-      />
-    )
-  }
-
-  if (persona.id === 'conseil-departemental') {
-    return (
-      <SelectFormField
-        label={label('département')}
-        control={form.control}
-        options={optionTuplesToOptions([
-          emptyOptionTuple,
-          ...optionsDepartements,
-        ])}
-        path="codeDepartement"
-      />
-    )
-  }
-
-  const { client: trpcClient } = trpc.useContext()
-
-  if (persona.id === 'epci') {
-    const loadOptions = async (search: string) => {
-      console.log('LOAD OPTIONS', search)
-      const result = await trpcClient.data.collectivitySearch.query({
-        epci: true,
-        commune: false,
-        query: search,
-      })
-      console.log('RESULT', result)
-
-      return result.map(({ code, nom }) => ({
-        label: nom,
-        value: code,
-      }))
-    }
-
-    return (
-      <CustomSelectFormField
-        label={label('EPCI')}
-        control={form.control}
-        path="codeEpci"
-        loadOptions={loadOptions}
-        cacheOptions
-      />
-    )
-  }
-  if (persona.id === 'commune') {
-    const loadOptions = async (search: string) => {
-      console.log('LOAD OPTIONS', search)
-      const result = await trpcClient.data.collectivitySearch.query({
-        epci: false,
-        commune: true,
-        query: search,
-        limit: 25,
-      })
-
-      return result.map(({ code, nom }) => ({
-        label: nom,
-        value: code,
-      }))
-    }
-
-    return (
-      <CustomSelectFormField
-        label={label('commune')}
-        control={form.control}
-        path="codeCommune"
-        loadOptions={loadOptions}
-        cacheOptions
-      />
-    )
-  }
-
-  throw new Error('Invalid persona for setting collectivity code')
-}
 
 const Participer = ({
   persona,
@@ -222,10 +43,13 @@ const Participer = ({
   console.log('PROPS FORM', formulaireGouvernance)
 
   const form = useForm<ParticiperData>({
-    defaultValues: defaultValuesFromData(formulaireGouvernance),
+    defaultValues: participerDefaultValuesFromData(formulaireGouvernance),
     resolver: zodResolver(ParticiperValidation),
   })
-  console.log('DEFAULT VALUES', defaultValuesFromData(formulaireGouvernance))
+  console.log(
+    'DEFAULT VALUES',
+    participerDefaultValuesFromData(formulaireGouvernance),
+  )
 
   const mutation = trpc.formulaireGouvernance.participer.useMutation()
   const router = useRouter()
@@ -313,7 +137,7 @@ const Participer = ({
               />
             </>
           ) : (
-            <CollectivityCodeField
+            <CollectiviteCodeField
               form={form}
               persona={persona}
               optionsRegions={optionsRegions}
