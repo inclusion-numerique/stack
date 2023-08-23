@@ -133,6 +133,15 @@ export const users: Exclude<
     role: 'Demo',
     emailVerified: new Date(),
   },
+  {
+    id: 'cec429c0-47c7-49f3-9200-66bd82b69347',
+    firstName: 'Célestin',
+    lastName: 'Leroux',
+    name: 'Célestin Leroux',
+    email: 'celestin.leroux@beta.gouv.fr',
+    role: 'Demo',
+    emailVerified: new Date(),
+  },
 ]
 
 export const randomUsers: (
