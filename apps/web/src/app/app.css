@@ -40,12 +40,12 @@ textarea {
 
 
 .fr-container--medium {
-  /* 728 + padding */
-  max-width: 760px;
+  /* 792 + padding */
+  max-width: 824px;
 
   @media (min-width: 62em) {
     /* lg */
-    max-width: 776px;
+    max-width: 840px;
   }
 }
 

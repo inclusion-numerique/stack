@@ -250,6 +250,28 @@ export const formulaireGouvernanceRouter = router({
           }),
         )
       }
+      if (
+        formulaireGouvernance.departementsParticipants.some(
+          (participant) => participant.contactId,
+        )
+      ) {
+        deleteOperations.push(
+          prismaClient.contactFormulaireGouvernance.deleteMany({
+            where: {
+              AND: [
+                {
+                  formulaireGouvernanceId,
+                },
+                {
+                  contactDepartementParticipant: {
+                    isNot: null,
+                  },
+                },
+              ],
+            },
+          }),
+        )
+      }
 
       const result = await prismaClient.$transaction([
         ...deleteOperations,

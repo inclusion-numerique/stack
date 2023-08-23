@@ -77,6 +77,12 @@ export const getFormulaireGouvernanceForForm = (
           contact: true,
         },
       },
+      departementsParticipants: {
+        include: {
+          departement: true,
+          contact: true,
+        },
+      },
       epcisParticipantes: {
         include: {
           epci: true,

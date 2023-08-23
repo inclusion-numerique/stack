@@ -197,18 +197,19 @@ model Epci {
 
 model Departement {
   // INSEE
-  code                             String                                @id
-  nom                              String
-  codeRegion                       String?                               @map("code_region")
-  region                           Region?                               @relation(fields: [codeRegion], references: [code])
-  communes                         Commune[]
-  geometry                         Json
+  code                                String                                        @id
+  nom                                 String
+  codeRegion                          String?                                       @map("code_region")
+  region                              Region?                                       @relation(fields: [codeRegion], references: [code])
+  communes                            Commune[]
+  geometry                            Json
   // north east [[lat,long], southwest [lat,long]]
-  bounds                           Json
-  structuresCartographieNationale  StructureCartographieNationale[]
-  craConseillerNumerique           CraConseillerNumeriqueParDepartement?
-  coordinateursConseillerNumerique CoordinateurConseillerNumerique[]
-  formulairesGouvernance           FormulaireGouvernance[]
+  bounds                              Json
+  structuresCartographieNationale     StructureCartographieNationale[]
+  craConseillerNumerique              CraConseillerNumeriqueParDepartement?
+  coordinateursConseillerNumerique    CoordinateurConseillerNumerique[]
+  formulairesGouvernance              FormulaireGouvernance[]
+  participationsFormulaireGouvernance DepartementParticipantFormulaireGouvernance[]
 
   @@map("departements")
 }
@@ -565,9 +566,10 @@ model FormulaireGouvernance {
   contacts ContactFormulaireGouvernance[]
 
   // Collectivités et structures participantes (intention "porter" une feuille de route)
-  epcisParticipantes      EpciParticipantFormulaireGouvernance[]
-  communesParticipantes   CommuneParticipanteFormulaireGouvernance[]
-  structuresParticipantes StructureParticipanteFormulaireGouvernance[]
+  departementsParticipants DepartementParticipantFormulaireGouvernance[]
+  epcisParticipantes       EpciParticipantFormulaireGouvernance[]
+  communesParticipantes    CommuneParticipanteFormulaireGouvernance[]
+  structuresParticipantes  StructureParticipanteFormulaireGouvernance[]
 
   @@map("formulaire_gouvernance")
 }
@@ -583,18 +585,39 @@ model ContactFormulaireGouvernance {
   fonction String
   email    String
 
-  contactTechnique             FormulaireGouvernance?                      @relation(name: "formulaire_contact_structure")
-  contactPolitique             FormulaireGouvernance?                      @relation(name: "formulaire_contact_politique")
-  contactStructure             FormulaireGouvernance?                      @relation(name: "formulaire_contact_technique")
-  contactEpciParticipant       EpciParticipantFormulaireGouvernance?       @relation(name: "formulaire_contact_epci_participante")
-  contactCommuneParticipante   CommuneParticipanteFormulaireGouvernance?   @relation(name: "formulaire_contact_commune_participante")
-  contactStructureParticipante StructureParticipanteFormulaireGouvernance? @relation(name: "formulaire_contact_structure_participante")
+  contactTechnique                              FormulaireGouvernance?                       @relation(name: "formulaire_contact_structure")
+  contactPolitique                              FormulaireGouvernance?                       @relation(name: "formulaire_contact_politique")
+  contactStructure                              FormulaireGouvernance?                       @relation(name: "formulaire_contact_technique")
+  contactDepartementParticipant                 DepartementParticipantFormulaireGouvernance? @relation(name: "formulaire_contact_departement_participante")
+  contactEpciParticipant                        EpciParticipantFormulaireGouvernance?        @relation(name: "formulaire_contact_epci_participante")
+  contactCommuneParticipante                    CommuneParticipanteFormulaireGouvernance?    @relation(name: "formulaire_contact_commune_participante")
+  contactStructureParticipante                  StructureParticipanteFormulaireGouvernance?  @relation(name: "formulaire_contact_structure_participante")
+  departementParticipantFormulaireGouvernanceId String?                                      @db.Uuid
 
   @@map("contact_formulaire_gouvernance")
 }
 
+model DepartementParticipantFormulaireGouvernance {
+  id String @id @default(uuid()) @db.Uuid
+
+  horsTerritoire Boolean @default(false) @map("hors_territoire")
+
+  formulaireGouvernanceId String                @map("formulaire_gouvernance_id") @db.Uuid
+  formulaireGouvernance   FormulaireGouvernance @relation(fields: [formulaireGouvernanceId], references: [id], onDelete: Cascade)
+
+  departementCode String      @map("departement_code")
+  departement     Departement @relation(fields: [departementCode], references: [code])
+
+  contactId String?                       @unique @map("contact_id") @db.Uuid
+  contact   ContactFormulaireGouvernance? @relation(name: "formulaire_contact_departement_participante", fields: [contactId], references: [id])
+
+  @@map("departement_participant_formulaire_gouvernance")
+}
+
 model EpciParticipantFormulaireGouvernance {
   id String @id @default(uuid()) @db.Uuid
+
+  horsTerritoire Boolean @default(false) @map("hors_territoire")
 
   formulaireGouvernanceId String                @map("formulaire_gouvernance_id") @db.Uuid
   formulaireGouvernance   FormulaireGouvernance @relation(fields: [formulaireGouvernanceId], references: [id], onDelete: Cascade)
@@ -611,11 +634,13 @@ model EpciParticipantFormulaireGouvernance {
 model CommuneParticipanteFormulaireGouvernance {
   id String @id @default(uuid()) @db.Uuid
 
+  horsTerritoire Boolean @default(false) @map("hors_territoire")
+
   formulaireGouvernanceId String                @map("formulaire_gouvernance_id") @db.Uuid
   formulaireGouvernance   FormulaireGouvernance @relation(fields: [formulaireGouvernanceId], references: [id], onDelete: Cascade)
 
-  communeCode String?  @map("commune_code")
-  commune     Commune? @relation(fields: [communeCode], references: [code])
+  communeCode String  @map("commune_code")
+  commune     Commune @relation(fields: [communeCode], references: [code])
 
   contactId String?                       @unique @map("contact_id") @db.Uuid
   contact   ContactFormulaireGouvernance? @relation(name: "formulaire_contact_commune_participante", fields: [contactId], references: [id])

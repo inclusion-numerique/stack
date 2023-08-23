@@ -11,6 +11,10 @@ export const participerPersistenceFromData = (
 
   const formulaireGouvernanceId = formulaireGouvernance.id
   const cleanup = {
+    departementsParticipants:
+      formulaireGouvernance.departementsParticipants.length > 0
+        ? { deleteMany: { formulaireGouvernanceId } }
+        : undefined,
     structuresParticipantes:
       formulaireGouvernance.structuresParticipantes.length > 0
         ? { deleteMany: { formulaireGouvernanceId } }

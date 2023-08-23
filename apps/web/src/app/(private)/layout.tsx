@@ -5,7 +5,7 @@ import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Header from '@app/web/components/Header'
 
 export const dynamic = 'force-dynamic'
-
+export const revalidate = 0
 const PrivateLayout = async ({ children }: PropsWithChildren) => {
   const user = await getSessionUser()
   if (!user) {

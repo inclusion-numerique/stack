@@ -13,7 +13,7 @@ import {
 } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 
 export const dynamic = 'force-dynamic'
-
+export const revalidate = 0
 const Page = async () => {
   const user = await getSessionUser()
   if (!user) {

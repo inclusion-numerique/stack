@@ -7,7 +7,7 @@ import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import ChoixIntention from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/porter-ou-participer/ChoixIntention'
 
 export const dynamic = 'force-dynamic'
-
+export const revalidate = 0
 export { pageFormulaireMetadata as metadata } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/pageFormulaireData'
 
 /**

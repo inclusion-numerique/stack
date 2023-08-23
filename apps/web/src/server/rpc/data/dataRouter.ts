@@ -10,18 +10,22 @@ const getSearchFromQueryString = (query: string) =>
 export const dataRouter = router({
   collectivitySearch: protectedProcedure
     .input(CollectivitySearchValidation)
-    .query(async ({ input: { commune, query, epci, limit } }) => {
+    .query(async ({ input: { commune, exclude, query, epci, limit } }) => {
       const search = getSearchFromQueryString(query)
-      console.log('SEACH COMMUNES', {
+      console.log('SEARCH COMMUNES', {
         commune,
         epci,
         query,
         limit,
         search,
+        exclude,
       })
       const communeResult = commune
         ? await prismaClient.commune.findMany({
             where: {
+              code: {
+                notIn: exclude,
+              },
               OR: [
                 {
                   nom: {
@@ -75,6 +79,9 @@ export const dataRouter = router({
       const epciResult = epci
         ? await prismaClient.epci.findMany({
             where: {
+              code: {
+                notIn: exclude,
+              },
               OR: [
                 {
                   nom: {

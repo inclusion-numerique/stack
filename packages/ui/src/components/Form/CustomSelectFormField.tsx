@@ -17,6 +17,9 @@ export type CustomSelectFormFieldProps<T extends FieldValues> = {
   hint?: string
   valid?: string
   asterisk?: boolean
+  transformOptionToValue?: (
+    option: { label: string; value: string } & Record<string, unknown>,
+  ) => T
 } & Omit<CustomSelectProps, 'onChange' | 'name' | 'onBlur'>
 
 export type CustomSelectOptions = CustomSelectProps['options']
@@ -46,6 +49,7 @@ const CustomSelectFormField = <T extends FieldValues>({
   disabled,
   valid,
   asterisk,
+  transformOptionToValue,
   ...customSelectProps
 }: UiComponentProps & CustomSelectFormFieldProps<T>) => {
   const id = `custom-select-form-field__${path}`
@@ -65,9 +69,13 @@ const CustomSelectFormField = <T extends FieldValues>({
           ariaDescribedBy = `${id}__valid`
         }
         const onChangeProperty: CustomSelectProps['onChange'] = (newValue) => {
-          const changeValue =
-            (newValue as null | { value: string })?.value ?? ''
-          onChange(changeValue)
+          console.log('NEw VALUE', newValue)
+          const changedValue = transformOptionToValue
+            ? transformOptionToValue(newValue as unknown as T)
+            : (newValue as null | { value: string })?.value ?? ''
+          console.log('CHANGED VALUE', changedValue)
+
+          onChange(changedValue)
         }
 
         const valueProperty = valuePropertyFromValue(value, options)
