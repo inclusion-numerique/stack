@@ -15,28 +15,15 @@ import styles from './CollectivitesHorsTerritoire.module.css'
 const CollectivitesHorsTerritoire = ({
   formulaireGouvernance,
   disabled,
+  excludedCodes,
 }: {
   formulaireGouvernance: GouvernanceFormulaireForForm
   disabled: boolean
+  excludedCodes: string[]
 }) => {
   // TODO Add a prop for exception to send to the backend
   // TODO Lift that up
   // TODO Put backend stuff in the hook
-
-  const excludedCodes = useMemo(
-    (): string[] => [
-      ...formulaireGouvernance.departementsParticipants
-        .filter(filterDansTerritoire)
-        .map(({ departementCode }) => departementCode),
-      ...formulaireGouvernance.epcisParticipantes
-        .filter(filterDansTerritoire)
-        .map(({ epciCode }) => epciCode),
-      ...formulaireGouvernance.communesParticipantes
-        .filter(filterDansTerritoire)
-        .map(({ communeCode }) => communeCode),
-    ],
-    [],
-  )
 
   const useAddCollectivityInput = useMemo(
     () => createAddCollectivityInputFromData(formulaireGouvernance),
@@ -50,7 +37,6 @@ const CollectivitesHorsTerritoire = ({
     editCollectivity,
     isPending,
   } = useAddCollectivity(useAddCollectivityInput)
-  const serach = 'TODO TRPC QUERY ETC...'
 
   return (
     <>

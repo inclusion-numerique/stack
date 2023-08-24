@@ -35,6 +35,17 @@ const PerimetreConseilRegional = ({
     [],
   )
 
+  // There is too much communes so we only exclude epcis and departements for now
+  const epciAndCommunesCodesDansTerritoire = useMemo(
+    () => [
+      ...perimetreOptions.map((options) => options.codeDepartement),
+      ...perimetreOptions.flatMap((options) =>
+        options.epcis.map(({ codeEpci }) => codeEpci),
+      ),
+    ],
+    [],
+  )
+
   const {
     selectedEpci,
     selectedCommunes,
@@ -99,6 +110,8 @@ const PerimetreConseilRegional = ({
       </form>
       <CollectivitesHorsTerritoire
         formulaireGouvernance={formulaireGouvernance}
+        disabled={disabled}
+        excludedCodes={epciAndCommunesCodesDansTerritoire}
       />
       <form>
         <ActionBar
