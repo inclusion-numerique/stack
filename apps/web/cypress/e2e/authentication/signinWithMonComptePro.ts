@@ -39,7 +39,7 @@ export const signinWithMonComptePro = ({
 
   // Sometimes MCP asks for organization, sometimes not (depending on this test user state independent of the test)
   cy.url().then((url) => {
-    if (url.includes('moncomptepro.beta.gouv.fr/users/accept-organization')) {
+    if (url.includes('moncomptepro.beta.gouv.fr/users/select-organization')) {
       cy.get('#submit-join-organization-default').click()
     }
   })
