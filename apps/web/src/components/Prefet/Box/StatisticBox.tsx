@@ -29,7 +29,12 @@ const StatisticBox = ({
             )}
           >
             Recensés sur&nbsp;
-            <a href="/" target="_blank" rel="noopener noreferrer">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://cartographie.societenumerique.gouv.fr/cartographie"
+              title="Site internet de la cartographie nationale de la médiation numérique"
+            >
               La Cartographie Nationale
             </a>
           </span>
