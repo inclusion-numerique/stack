@@ -23,6 +23,8 @@ export type IFNResponse = Record<
 
 const useApiForCommunes = false
 
+const ifnApiDomain = 'https://fragilite-numerique.fr'
+
 export const buildIfn = async ({
   communes,
   epcis,
@@ -68,7 +70,7 @@ export const buildIfn = async ({
     const communeScores = await Promise.all(
       chunk(communeCodes, 400).map(async (communeCodesChunk) => {
         const communeIfnsResponse = await axios.get<IFNResponse>(
-          `https://preprod.fragilite-numerique.tlscp.fr/api/scoring/city?${communeCodesChunk
+          `${ifnApiDomain}/api/scoring/city?${communeCodesChunk
             .map((commune) => `codes[]=${commune}`)
             .join(
               '&',
@@ -88,7 +90,7 @@ export const buildIfn = async ({
   const epciScores = await Promise.all(
     chunk(epciCodes, 100).map(async (epciCodesChunk) => {
       const epciIfnsResponse = await axios.get<IFNResponse>(
-        `https://preprod.fragilite-numerique.tlscp.fr/api/scoring/epci?${epciCodesChunk
+        `${ifnApiDomain}/api/scoring/epci?${epciCodesChunk
           .map((epci) => `codes[]=${epci}`)
           .join(
             '&',
