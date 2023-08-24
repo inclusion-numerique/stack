@@ -3,6 +3,9 @@ import Footer from '@codegouvfr/react-dsfr/Footer'
 const PublicFooter = () => (
   <Footer
     accessibility="non compliant"
+    accessibilityLinkProps={{
+      href: '/accessibilite',
+    }}
     brandTop={
       <>
         République
