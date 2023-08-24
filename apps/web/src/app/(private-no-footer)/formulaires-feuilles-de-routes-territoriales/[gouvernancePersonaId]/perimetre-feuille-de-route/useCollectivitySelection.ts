@@ -1,7 +1,5 @@
 import React, { useCallback, useState } from 'react'
 import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
-import { trpc } from '@app/web/trpc'
-import { AppRouter } from '@app/web/server/rpc/appRouter'
 import { UsePerimetreMutation } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/usePerimetreMutation'
 
 export type UseCollectivitySelectionInput = {

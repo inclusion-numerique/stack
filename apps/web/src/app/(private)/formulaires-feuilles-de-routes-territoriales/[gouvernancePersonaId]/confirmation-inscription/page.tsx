@@ -17,8 +17,10 @@ export { pageFormulaireMetadata as metadata } from '@app/web/app/(private)/formu
  * This page redirects to the current step of the form
  */
 const Page = async (props: PageFormulaireProps) => {
-  const { user, formulaireGouvernance, persona, developmentPreview } =
-    await getPageFormulaireData(props, 'confirmation-inscription')
+  const { user, persona, developmentPreview } = await getPageFormulaireData(
+    props,
+    'confirmation-inscription',
+  )
 
   return (
     <>

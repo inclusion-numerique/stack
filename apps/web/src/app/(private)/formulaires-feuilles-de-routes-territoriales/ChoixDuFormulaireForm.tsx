@@ -10,7 +10,6 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { trpc } from '@app/web/trpc'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { getEtapeInfo } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/etapeFormulaireGouvernance'
 import {
   GouvernancePersonaId,
   gouvernancePersonas,

@@ -12,8 +12,11 @@ import { identityFunction } from '@app/web/utils/identityFunction'
 type CollectiviteHorsTerritoireProps = {
   collectivite: CollectiviteHorsTerritoireType
   index: number
+  // eslint-disable-next-line react/no-unused-prop-types
   disabled: boolean
+  // eslint-disable-next-line react/no-unused-prop-types
   excludedCodes: string[]
+  // eslint-disable-next-line react/no-unused-prop-types
   isLoading: boolean
 } & Pick<
   UseCollectivitesHorsTerritoireReturn,

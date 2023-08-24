@@ -5,7 +5,10 @@ import { useRouter } from 'next/navigation'
 import Accordion from '@codegouvfr/react-dsfr/Accordion'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
-import { PerimetreDepartementWithInfoOptions } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/perimetreData'
+import {
+  PerimetreDepartementOptions,
+  PerimetreDepartementWithInfoOptions,
+} from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/perimetreData'
 import {
   createCollectivitySelectionInputFromData,
   useCollectivitySelection,
@@ -20,13 +23,15 @@ import {
 } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/useCollectivitesHorsTerritoire'
 import { sPluriel } from '@app/web/utils/sPluriel'
 
-const PerimetreConseilRegional = ({
+const PerimetreFeuilleDeRoute = ({
   perimetreOptions,
   formulaireGouvernance,
   nextEtapePath,
 }: {
   formulaireGouvernance: GouvernanceFormulaireForForm
-  perimetreOptions: PerimetreDepartementWithInfoOptions[]
+  perimetreOptions:
+    | PerimetreDepartementWithInfoOptions[]
+    | PerimetreDepartementOptions
   nextEtapePath: string
 }) => {
   const perimetreMutation =
@@ -40,14 +45,24 @@ const PerimetreConseilRegional = ({
     [],
   )
 
-  // There is too much communes so we only exclude epcis and departements for now
   const epciAndCommunesCodesDansTerritoire = useMemo(
-    () => [
-      ...perimetreOptions.map((options) => options.codeDepartement),
-      ...perimetreOptions.flatMap((options) =>
-        options.epcis.map(({ codeEpci }) => codeEpci),
-      ),
-    ],
+    () =>
+      Array.isArray(perimetreOptions)
+        ? // There is too much communes so we only exclude epcis and departements for now
+
+          [
+            ...perimetreOptions.map((options) => options.codeDepartement),
+            ...perimetreOptions.flatMap((options) =>
+              options.epcis.map(({ codeEpci }) => codeEpci),
+            ),
+          ]
+        : // For smaller scope we add the communes
+          [
+            ...perimetreOptions.epcis.map(({ codeEpci }) => codeEpci),
+            ...perimetreOptions.epcis.flatMap(({ communes }) =>
+              communes.map(([code]) => code),
+            ),
+          ],
     [],
   )
 
@@ -70,7 +85,7 @@ const PerimetreConseilRegional = ({
 
   const router = useRouter()
 
-  const onCheckboxesSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const onCheckboxesSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
   }
 
@@ -100,14 +115,17 @@ const PerimetreConseilRegional = ({
     event.preventDefault()
     setShowEtapeErrors(true)
     if (etapeError) {
+      return
     }
 
-    // try {
-    //   await mutation.mutateAsync(data)
-    //   router.push(nextEtapePath)
-    // } catch (mutationError) {
-    //   applyZodValidationMutationErrorsToForm(mutationError, form.setError)
-    // }
+    try {
+      await etapeMutation.mutateAsync({
+        formulaireGouvernanceId: formulaireGouvernance.id,
+      })
+      router.push(nextEtapePath)
+    } catch (mutationError) {
+      console.error(mutationError)
+    }
   }
   const isEtapeLoading = etapeMutation.isLoading || etapeMutation.isSuccess
   const disabled = isEtapeLoading
@@ -122,26 +140,38 @@ const PerimetreConseilRegional = ({
         sélectionner par communes.
       </p>
       <form onSubmit={onCheckboxesSubmit}>
-        <div className="fr-accordions-group">
-          {perimetreOptions.map((departementOptions) => (
-            <Accordion
-              label={`${departementOptions.nom} (${departementOptions.codeDepartement})`}
-              key={departementOptions.codeDepartement}
-            >
-              <PerimetreEpciCheckboxes
-                perimetreOptions={departementOptions}
-                initiallySelectedEpcis={selectionInput.initiallySelectedEpcis}
-                initiallySelectedCommunes={
-                  selectionInput.initiallySelectedCommunes
-                }
-                onEpciCheckboxChange={onEpciCheckboxChange}
-                onCommuneCheckboxChange={onCommuneCheckboxChange}
-                onSelectAllChange={onSelectAllChange}
-                disabled={disabled}
-              />
-            </Accordion>
-          ))}
-        </div>
+        {Array.isArray(perimetreOptions) ? (
+          <div className="fr-accordions-group">
+            {perimetreOptions.map((departementOptions) => (
+              <Accordion
+                label={`${departementOptions.nom} (${departementOptions.codeDepartement})`}
+                key={departementOptions.codeDepartement}
+              >
+                <PerimetreEpciCheckboxes
+                  perimetreOptions={departementOptions}
+                  initiallySelectedEpcis={selectionInput.initiallySelectedEpcis}
+                  initiallySelectedCommunes={
+                    selectionInput.initiallySelectedCommunes
+                  }
+                  onEpciCheckboxChange={onEpciCheckboxChange}
+                  onCommuneCheckboxChange={onCommuneCheckboxChange}
+                  onSelectAllChange={onSelectAllChange}
+                  disabled={disabled}
+                />
+              </Accordion>
+            ))}
+          </div>
+        ) : (
+          <PerimetreEpciCheckboxes
+            perimetreOptions={perimetreOptions}
+            initiallySelectedEpcis={selectionInput.initiallySelectedEpcis}
+            initiallySelectedCommunes={selectionInput.initiallySelectedCommunes}
+            onEpciCheckboxChange={onEpciCheckboxChange}
+            onCommuneCheckboxChange={onCommuneCheckboxChange}
+            onSelectAllChange={onSelectAllChange}
+            disabled={disabled}
+          />
+        )}
       </form>
       <CollectivitesHorsTerritoire
         disabled={disabled}
@@ -170,4 +200,4 @@ const PerimetreConseilRegional = ({
   )
 }
 
-export default withTrpc(PerimetreConseilRegional)
+export default withTrpc(PerimetreFeuilleDeRoute)

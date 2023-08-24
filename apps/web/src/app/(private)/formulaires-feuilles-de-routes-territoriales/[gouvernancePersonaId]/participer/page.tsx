@@ -20,8 +20,10 @@ export { pageFormulaireMetadata as metadata } from '@app/web/app/(private)/formu
  * This page redirects to the current step of the form
  */
 const Page = async (props: PageFormulaireProps) => {
-  const { etapeInfo, etapeCourante, persona, user, formulaireGouvernance } =
-    await getPageFormulaireData(props, 'participer')
+  const { persona, formulaireGouvernance } = await getPageFormulaireData(
+    props,
+    'participer',
+  )
 
   const [optionsRegions, optionsDepartements] = await Promise.all([
     prismaClient.region

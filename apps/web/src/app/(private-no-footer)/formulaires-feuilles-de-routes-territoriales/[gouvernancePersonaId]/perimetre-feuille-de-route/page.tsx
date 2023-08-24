@@ -9,15 +9,13 @@ import { prismaClient } from '@app/web/prismaClient'
 import BackLink from '@app/web/components/BackLink'
 import Progress from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/Progress'
 import { getEtapeInfo } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/etapeFormulaireGouvernance'
-import PerimetreConseilDepartemental from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/PerimetreConseilDepartemental'
-import PerimetreConseilRegional from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/PerimetreConseilRegional'
-import { GouvernancePersona } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
 import { asyncComponent } from '@app/web/utils/asyncComponent'
 import {
   getPerimetreDepartementOptions,
   getPerimetreRegionOptions,
 } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/perimetreData'
+import PerimetreFeuilleDeRoute from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/PerimetreFeuilleDeRoute'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -37,7 +35,7 @@ const PerimetreDepartementWrapper = asyncComponent(
       codeDepartement,
     ])
     return (
-      <PerimetreConseilDepartemental
+      <PerimetreFeuilleDeRoute
         formulaireGouvernance={formulaireGouvernance}
         nextEtapePath={nextEtapePath}
         perimetreOptions={departementPerimetreOptions}
@@ -77,7 +75,7 @@ const PerimetreEpciWrapper = asyncComponent(
       departements.map(({ code }) => code),
     )
     return (
-      <PerimetreConseilDepartemental
+      <PerimetreFeuilleDeRoute
         formulaireGouvernance={formulaireGouvernance}
         nextEtapePath={nextEtapePath}
         perimetreOptions={departementPerimetreOptions}
@@ -88,32 +86,23 @@ const PerimetreEpciWrapper = asyncComponent(
 
 const PerimetreRegionWrapper = asyncComponent(
   async ({
-    persona,
     formulaireGouvernance,
     nextEtapePath,
     codeRegion,
   }: {
-    persona: GouvernancePersona
     formulaireGouvernance: GouvernanceFormulaireForForm
     nextEtapePath: string
     codeRegion: string
   }) => {
-    const [region, departements] = await Promise.all([
-      prismaClient.region.findUniqueOrThrow({
-        where: {
-          code: codeRegion,
-        },
-      }),
-      prismaClient.departement.findMany({
-        where: {
-          codeRegion,
-        },
-        select: {
-          nom: true,
-          code: true,
-        },
-      }),
-    ])
+    const departements = await prismaClient.departement.findMany({
+      where: {
+        codeRegion,
+      },
+      select: {
+        nom: true,
+        code: true,
+      },
+    })
 
     if (departements.length === 0) {
       throw new Error(`No departements found for region ${codeRegion}`)
@@ -124,7 +113,7 @@ const PerimetreRegionWrapper = asyncComponent(
     )
 
     return (
-      <PerimetreConseilRegional
+      <PerimetreFeuilleDeRoute
         perimetreOptions={departementsPerimetreOptions}
         formulaireGouvernance={formulaireGouvernance}
         nextEtapePath={nextEtapePath}
@@ -137,7 +126,7 @@ const PerimetreRegionWrapper = asyncComponent(
  * This page redirects to the current step of the form
  */
 const Page = async (props: PageFormulaireProps) => {
-  const { user, formulaireGouvernance, persona } = await getPageFormulaireData(
+  const { formulaireGouvernance, persona } = await getPageFormulaireData(
     props,
     'perimetre-feuille-de-route',
   )
@@ -157,7 +146,6 @@ const Page = async (props: PageFormulaireProps) => {
       wrapper = (
         <PerimetreRegionWrapper
           formulaireGouvernance={formulaireGouvernance}
-          persona={persona}
           nextEtapePath={nextEtapeInfo.absolutePath}
           codeRegion={codeRegion}
         />

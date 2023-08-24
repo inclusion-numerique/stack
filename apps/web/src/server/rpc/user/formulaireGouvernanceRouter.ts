@@ -24,7 +24,6 @@ import { participerPersistenceFromData } from '@app/web/gouvernance/participerHe
 import { InformationsParticipantValidation } from '@app/web/gouvernance/InformationsParticipant'
 import { informationsParticipantsPersistenceFromData } from '@app/web/gouvernance/informationsParticipantHelpers.server'
 import { PerimetreFeuilleDeRouteValidation } from '@app/web/gouvernance/PerimetreFeuilleDeRoute'
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 
 const FormulaireGouvernanceIdValidation = z.object({
   formulaireGouvernanceId: z.string().uuid().nonempty(),
@@ -84,6 +83,16 @@ export const formulaireGouvernanceRouter = router({
       const existingFormulaire = await getFormulaireGouvernanceForForm({
         userId: user.id,
       })
+
+      if (existingFormulaire) {
+        await prismaClient.formulaireGouvernance.update({
+          where: { id: existingFormulaire.id },
+          data: {
+            annulation: new Date(),
+          },
+        })
+      }
+
       if (existingFormulaire?.gouvernancePersona === gouvernancePersonaId) {
         if (gouvernancePersonaId !== user.gouvernancePersona) {
           // Only update user if needed, not the formulaire

@@ -1,5 +1,5 @@
 import Accordion from '@codegouvfr/react-dsfr/Accordion'
-import React, { useRef } from 'react'
+import React from 'react'
 import {
   idForCommune,
   idForEpci,
@@ -124,4 +124,5 @@ const PerimetreEpciCheckboxes = React.memo(
     </div>
   ),
 )
+PerimetreEpciCheckboxes.displayName = 'PerimetreEpciCheckboxes'
 export default PerimetreEpciCheckboxes
