@@ -126,7 +126,6 @@ const PerimetreRegionWrapper = asyncComponent(
     return (
       <PerimetreConseilRegional
         perimetreOptions={departementsPerimetreOptions}
-        persona={persona}
         formulaireGouvernance={formulaireGouvernance}
         nextEtapePath={nextEtapePath}
       />

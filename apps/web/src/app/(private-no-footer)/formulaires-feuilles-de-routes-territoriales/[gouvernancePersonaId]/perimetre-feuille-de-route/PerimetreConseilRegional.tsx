@@ -1,22 +1,24 @@
 'use client'
 
-import React, { FormEvent, useMemo } from 'react'
+import React, { FormEvent, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Accordion from '@codegouvfr/react-dsfr/Accordion'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { GouvernancePersona } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
-import { OptionTuples } from '@app/web/utils/options'
 import { PerimetreDepartementWithInfoOptions } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/perimetreData'
 import {
   createCollectivitySelectionInputFromData,
   useCollectivitySelection,
-  UseCollectivitySelectionInput,
 } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/useCollectivitySelection'
 import { trpc } from '@app/web/trpc'
 import PerimetreEpciCheckboxes from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/PerimetreEpciCheckboxes'
 import CollectivitesHorsTerritoire from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/CollectivitesHorsTerritoire'
 import ActionBar from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/ActionBar'
+import {
+  createAddCollectivityInputFromData,
+  useCollectivitesHorsTerritoire,
+} from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/useCollectivitesHorsTerritoire'
+import { sPluriel } from '@app/web/utils/sPluriel'
 
 const PerimetreConseilRegional = ({
   perimetreOptions,
@@ -27,8 +29,11 @@ const PerimetreConseilRegional = ({
   perimetreOptions: PerimetreDepartementWithInfoOptions[]
   nextEtapePath: string
 }) => {
-  console.log('PROPS FORM', formulaireGouvernance)
-  console.log('OPTIONS', perimetreOptions)
+  const perimetreMutation =
+    trpc.formulaireGouvernance.perimetreFeuilleDeRoute.useMutation()
+
+  const etapeMutation =
+    trpc.formulaireGouvernance.etapePerimetreFeuilleDeRoute.useMutation()
 
   const selectionInput = useMemo(
     () => createCollectivitySelectionInputFromData(formulaireGouvernance),
@@ -52,31 +57,61 @@ const PerimetreConseilRegional = ({
     onCommuneCheckboxChange,
     onSelectAllChange,
     onEpciCheckboxChange,
-  } = useCollectivitySelection(selectionInput)
+  } = useCollectivitySelection(selectionInput, perimetreMutation)
 
-  const mutation =
-    trpc.formulaireGouvernance.informationsParticipant.useMutation()
+  const useAddCollectivityInput = useMemo(
+    () => createAddCollectivityInputFromData(formulaireGouvernance),
+    [],
+  )
+  const collectivitesHorsTerritoire = useCollectivitesHorsTerritoire(
+    useAddCollectivityInput,
+    perimetreMutation,
+  )
+
   const router = useRouter()
 
   const onCheckboxesSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
   }
 
+  const etapeError =
+    collectivitesHorsTerritoire.collectivitesHorsTerritoireEnCoursDeModification
+      ? "Vous devez valider ou supprimer les collectivités hors territoire en cours de modification avant de passer à l'étape suivante"
+      : selectedEpci.size === 0 &&
+        selectedCommunes.size === 0 &&
+        collectivitesHorsTerritoire.collectivitesHorsTerritoire.length === 0
+      ? "Vous devez sélectionner au moins une collectivité pour passer à l'étape suivante"
+      : null
+
+  const totalSelectedEpcis =
+    selectedEpci.size +
+    collectivitesHorsTerritoire.collectivitesHorsTerritoire.filter(
+      (collectivite) => collectivite.type === 'epci',
+    ).length
+  const totalSelectedCommunes =
+    selectedCommunes.size +
+    collectivitesHorsTerritoire.collectivitesHorsTerritoire.filter(
+      (collectivite) => collectivite.type === 'commune',
+    ).length
+
+  const [showEtapeErrors, setShowEtapeErrors] = useState(false)
+
   const onPageSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    console.log('ON PAGE SUBMIT')
-    console.log('SELECTED EPCIS', [...selectedEpci.values()])
-    console.log('SELECTED COMMUNES', [...selectedCommunes.values()])
+    event.preventDefault()
+    setShowEtapeErrors(true)
+    if (etapeError) {
+    }
 
     // try {
-    //   // TODO Transform type#code to arrays
     //   await mutation.mutateAsync(data)
     //   router.push(nextEtapePath)
     // } catch (mutationError) {
     //   applyZodValidationMutationErrorsToForm(mutationError, form.setError)
     // }
   }
-  const isLoading = mutation.isLoading || mutation.isSuccess
-  const disabled = isLoading
+  const isEtapeLoading = etapeMutation.isLoading || etapeMutation.isSuccess
+  const disabled = isEtapeLoading
+  const isAutoSaving = perimetreMutation.isLoading
 
   return (
     <>
@@ -109,22 +144,26 @@ const PerimetreConseilRegional = ({
         </div>
       </form>
       <CollectivitesHorsTerritoire
-        formulaireGouvernance={formulaireGouvernance}
         disabled={disabled}
         excludedCodes={epciAndCommunesCodesDansTerritoire}
+        collectivitesHorsTerritoire={collectivitesHorsTerritoire}
+        isLoading={perimetreMutation.isLoading}
       />
-      <form>
+      {showEtapeErrors && !!etapeError && (
+        <p className="fr-error-text">{etapeError}</p>
+      )}
+      <form onSubmit={onPageSubmit}>
         <ActionBar
-          loading={isLoading}
-          autoSaving={isLoading}
+          loading={isEtapeLoading}
+          autoSaving={isAutoSaving}
           formulaireGouvernanceId={formulaireGouvernance.id}
         >
-          <span className="fr-text--bold fr-mr-1v">{selectedEpci.size}</span>
-          EPCI{selectedEpci.size === 1 ? '' : 's'} -
+          <span className="fr-text--bold fr-mr-1v">{totalSelectedEpcis}</span>
+          EPCI{sPluriel(totalSelectedEpcis)} -
           <span className="fr-text--bold fr-mx-1v">
-            {selectedCommunes.size}
+            {totalSelectedCommunes}
           </span>
-          commune{selectedCommunes.size === 1 ? '' : 's'} sélectionés
+          commune{sPluriel(totalSelectedCommunes)} sélectionés
         </ActionBar>
       </form>
     </>

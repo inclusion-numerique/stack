@@ -274,3 +274,19 @@ hr.separator--8v{
     }
   }
 }
+
+/**
+ * Helpers
+ */
+.fr-flex {
+  display: flex;
+}
+.fr-align-items-center {
+    align-items: center;
+}
+.fr-justify-content-center {
+    justify-content: center;
+}
+.fr-justify-content-space-between {
+    justify-content: space-between;
+}

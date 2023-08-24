@@ -64,13 +64,11 @@ const CollectiviteCodeField = ({
 
   if (persona.id === 'epci') {
     const loadOptions = async (search: string) => {
-      console.log('LOAD OPTIONS', search)
       const result = await trpcClient.data.collectivitySearch.query({
         epci: true,
         commune: false,
         query: search,
       })
-      console.log('RESULT', result)
 
       return result.map(({ code, nom }) => ({
         label: nom,
@@ -90,7 +88,6 @@ const CollectiviteCodeField = ({
   }
   if (persona.id === 'commune') {
     const loadOptions = async (search: string) => {
-      console.log('LOAD OPTIONS', search)
       const result = await trpcClient.data.collectivitySearch.query({
         epci: false,
         commune: true,

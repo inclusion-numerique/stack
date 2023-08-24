@@ -57,7 +57,7 @@ const ActionBar = ({
               priority="secondary"
               type="button"
               onClick={CancelModal.open}
-              disabled={loading}
+              disabled={autoSaving || loading}
             >
               Annuler
             </Button>
@@ -66,6 +66,7 @@ const ActionBar = ({
               priority="primary"
               type="submit"
               className={loading ? 'fr-btn--loading' : undefined}
+              disabled={autoSaving}
             >
               Étape suivante
             </Button>

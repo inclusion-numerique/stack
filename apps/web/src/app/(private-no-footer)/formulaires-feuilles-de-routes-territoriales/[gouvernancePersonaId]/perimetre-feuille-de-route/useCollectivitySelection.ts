@@ -1,7 +1,11 @@
 import React, { useCallback, useState } from 'react'
 import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
+import { trpc } from '@app/web/trpc'
+import { AppRouter } from '@app/web/server/rpc/appRouter'
+import { UsePerimetreMutation } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/usePerimetreMutation'
 
 export type UseCollectivitySelectionInput = {
+  formulaireGouvernanceId: string
   initiallySelectedEpcis: Iterable<string>
   initiallySelectedCommunes: Iterable<string>
   initiallySelectedDepartements: Iterable<string>
@@ -35,10 +39,14 @@ const removeFromSet = (set: Set<string>, values: string | string[]) => {
 export const createCollectivitySelectionInputFromData = (
   data: Pick<
     GouvernanceFormulaireForForm,
-    'epcisParticipantes' | 'communesParticipantes' | 'departementsParticipants'
+    | 'id'
+    | 'epcisParticipantes'
+    | 'communesParticipantes'
+    | 'departementsParticipants'
   >,
 ) =>
   ({
+    formulaireGouvernanceId: data.id,
     initiallySelectedEpcis: new Set(
       data.epcisParticipantes.map(({ epciCode }) => epciCode),
     ),
@@ -52,11 +60,34 @@ export const createCollectivitySelectionInputFromData = (
     ),
   } satisfies UseCollectivitySelectionInput)
 
-export const useCollectivitySelection = ({
-  initiallySelectedEpcis,
-  initiallySelectedDepartements,
-  initiallySelectedCommunes,
-}: UseCollectivitySelectionInput) => {
+const codeToCollectivitePerimetre = (
+  code: string | string[],
+  type: 'commune' | 'epci' | 'departement',
+  horsTerritoire = false,
+) =>
+  Array.isArray(code)
+    ? code.map((codeItem) => ({
+        type,
+        code: codeItem,
+        horsTerritoire,
+      }))
+    : [
+        {
+          type,
+          code,
+          horsTerritoire,
+        },
+      ]
+
+export const useCollectivitySelection = (
+  {
+    formulaireGouvernanceId,
+    initiallySelectedEpcis,
+    initiallySelectedDepartements,
+    initiallySelectedCommunes,
+  }: UseCollectivitySelectionInput,
+  perimetreMutation: UsePerimetreMutation,
+) => {
   const [selectedEpci, setSelectedEpci] = useState(
     new Set<string>(initiallySelectedEpcis),
   )
@@ -70,12 +101,22 @@ export const useCollectivitySelection = ({
   const selectEpci = useCallback(
     (epciCode: string | string[]) => {
       setSelectedEpci((current) => addToSet(current, epciCode))
+      perimetreMutation.mutate({
+        formulaireGouvernanceId,
+        add: codeToCollectivitePerimetre(epciCode, 'epci'),
+        remove: [],
+      })
     },
     [setSelectedEpci],
   )
   const unselectEpci = useCallback(
     (epciCode: string | string[]) => {
       setSelectedEpci((current) => removeFromSet(current, epciCode))
+      perimetreMutation.mutate({
+        formulaireGouvernanceId,
+        add: [],
+        remove: codeToCollectivitePerimetre(epciCode, 'epci'),
+      })
     },
     [setSelectedEpci],
   )
@@ -83,12 +124,22 @@ export const useCollectivitySelection = ({
   const selectCommune = useCallback(
     (communeCode: string | string[]) => {
       setSelectedCommunes((current) => addToSet(current, communeCode))
+      perimetreMutation.mutate({
+        formulaireGouvernanceId,
+        add: codeToCollectivitePerimetre(communeCode, 'commune'),
+        remove: [],
+      })
     },
     [setSelectedCommunes],
   )
   const unselectCommune = useCallback(
     (communeCode: string | string[]) => {
       setSelectedCommunes((current) => removeFromSet(current, communeCode))
+      perimetreMutation.mutate({
+        formulaireGouvernanceId,
+        add: [],
+        remove: codeToCollectivitePerimetre(communeCode, 'commune'),
+      })
     },
     [setSelectedCommunes],
   )
@@ -96,6 +147,11 @@ export const useCollectivitySelection = ({
   const selectDepartement = useCallback(
     (departementCode: string | string[]) => {
       setSelectedDepartements((current) => addToSet(current, departementCode))
+      perimetreMutation.mutate({
+        formulaireGouvernanceId,
+        add: codeToCollectivitePerimetre(departementCode, 'departement'),
+        remove: [],
+      })
     },
     [setSelectedDepartements],
   )
@@ -104,6 +160,11 @@ export const useCollectivitySelection = ({
       setSelectedDepartements((current) =>
         removeFromSet(current, departementCode),
       )
+      perimetreMutation.mutate({
+        formulaireGouvernanceId,
+        add: [],
+        remove: codeToCollectivitePerimetre(departementCode, 'departement'),
+      })
     },
     [setSelectedDepartements],
   )
@@ -112,7 +173,6 @@ export const useCollectivitySelection = ({
     (event: React.ChangeEvent<HTMLInputElement>, epciId: string) => {
       const checkboxes: NodeListOf<HTMLInputElement> =
         document.querySelectorAll(`[data-epci="${epciId}"][data-commune]`)
-      console.log('Communes checkbox', checkboxes)
       const codes: string[] = []
       if (event.currentTarget.checked) {
         // Iterate over checkboxes and check them
@@ -124,7 +184,6 @@ export const useCollectivitySelection = ({
 
         return
       }
-      console.log('Deselect all', epciId)
       // Iterate over checkboxes and check them
       for (const checkbox of checkboxes) {
         checkbox.checked = false
@@ -142,11 +201,6 @@ export const useCollectivitySelection = ({
         return
       }
       unselectCommune(codeCommune)
-      console.log(
-        'CHECKBOX COMMUNE CHANGE',
-        event.currentTarget.checked,
-        codeCommune,
-      )
     },
     [selectCommune, unselectCommune],
   )
@@ -158,12 +212,12 @@ export const useCollectivitySelection = ({
         return
       }
       unselectEpci(codeEpci)
-      console.log('CHECKBOX EPCI CHANGE', event.currentTarget.checked, codeEpci)
     },
     [selectEpci, unselectEpci],
   )
 
   return {
+    perimetreMutation,
     selectedEpci,
     selectedCommunes,
     selectedDepartements,

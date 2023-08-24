@@ -12,14 +12,6 @@ export const dataRouter = router({
     .input(CollectivitySearchValidation)
     .query(async ({ input: { commune, exclude, query, epci, limit } }) => {
       const search = getSearchFromQueryString(query)
-      console.log('SEARCH COMMUNES', {
-        commune,
-        epci,
-        query,
-        limit,
-        search,
-        exclude,
-      })
       const communeResult = commune
         ? await prismaClient.commune.findMany({
             where: {
@@ -111,8 +103,6 @@ export const dataRouter = router({
             },
           })
         : []
-
-      console.log('SERCER RESULT', communeResult)
 
       return [
         ...epciResult.map((epciItem) => ({ type: 'epci', ...epciItem })),

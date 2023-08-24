@@ -40,24 +40,15 @@ const Participer = ({
   optionsRegions: OptionTuples
   optionsDepartements: OptionTuples
 }) => {
-  console.log('PROPS FORM', formulaireGouvernance)
-
   const form = useForm<ParticiperData>({
     defaultValues: participerDefaultValuesFromData(formulaireGouvernance),
     resolver: zodResolver(ParticiperValidation),
   })
-  console.log(
-    'DEFAULT VALUES',
-    participerDefaultValuesFromData(formulaireGouvernance),
-  )
 
   const mutation = trpc.formulaireGouvernance.participer.useMutation()
   const router = useRouter()
 
-  console.log('ERRORS', form.formState.errors)
-
   const onSubmit = async (data: ParticiperData) => {
-    console.log('SUBMIT', data)
     try {
       const { etapeInfo } = await mutation.mutateAsync(data)
       router.push(etapeInfo.absolutePath)

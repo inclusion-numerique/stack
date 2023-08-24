@@ -131,7 +131,6 @@ export const getEtapeFormulaire = ({
 }: GetEtapeInput): EtapeEnCours => {
   const gouvernancePersona = gouvernancePersonaString as GouvernancePersonaId
 
-  console.log('GET ETAPE', { gouvernancePersonaString, user })
   // La persona est choisie à l'inscription, mais si elle n'est pas choisie, on redirige vers la page de choix de persona
   // On peut aussi y arriver avec un query param ?changer=1 pour forcer le changement / recommencer un formulaire
   // On peut aussi y arriver si on s'inscrit avec une autre persona que notre persona en cours

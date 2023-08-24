@@ -9,7 +9,11 @@ import CustomSelect, {
   CustomSelectProps,
 } from '@app/ui/components/CustomSelect/CustomSelect'
 
-export type CustomSelectFormFieldProps<T extends FieldValues> = {
+export type CustomSelectFormFieldProps<
+  T extends FieldValues,
+  Option = { label: string; value: string },
+  V = unknown,
+> = Omit<CustomSelectProps<Option>, 'onChange' | 'name' | 'onBlur'> & {
   label: ReactNode
   path: FieldPath<T>
   control: Control<T>
@@ -17,19 +21,17 @@ export type CustomSelectFormFieldProps<T extends FieldValues> = {
   hint?: string
   valid?: string
   asterisk?: boolean
-  transformOptionToValue?: (
-    option: { label: string; value: string } & Record<string, unknown>,
-  ) => T
-} & Omit<CustomSelectProps, 'onChange' | 'name' | 'onBlur'>
+  transformOptionToValue?: (option: Option) => V
+}
 
 export type CustomSelectOptions = CustomSelectProps['options']
 
 /**
  * TODO For now only works with single value, not isMulti
  */
-const valuePropertyFromValue = (
+const valuePropertyFromValue = <Option = { label: string; value: string },>(
   value: string,
-  options: CustomSelectOptions,
+  options: Option[],
 ): PropsValue<{ label: string; value: string }> | undefined => {
   if (!options) {
     return
@@ -40,7 +42,10 @@ const valuePropertyFromValue = (
   ) as PropsValue<{ label: string; value: string }> | undefined
 }
 
-const CustomSelectFormField = <T extends FieldValues>({
+const CustomSelectFormField = <
+  T extends FieldValues,
+  Option = { label: string; value: string },
+>({
   label,
   path,
   control,
@@ -51,7 +56,7 @@ const CustomSelectFormField = <T extends FieldValues>({
   asterisk,
   transformOptionToValue,
   ...customSelectProps
-}: UiComponentProps & CustomSelectFormFieldProps<T>) => {
+}: UiComponentProps & CustomSelectFormFieldProps<T, Option>) => {
   const id = `custom-select-form-field__${path}`
 
   return (
@@ -68,17 +73,22 @@ const CustomSelectFormField = <T extends FieldValues>({
         } else if (valid && isDirty && !invalid) {
           ariaDescribedBy = `${id}__valid`
         }
-        const onChangeProperty: CustomSelectProps['onChange'] = (newValue) => {
+        const onChangeProperty: CustomSelectProps<Option>['onChange'] = (
+          newValue,
+        ) => {
           console.log('NEw VALUE', newValue)
           const changedValue = transformOptionToValue
-            ? transformOptionToValue(newValue as unknown as T)
+            ? transformOptionToValue(newValue as Option)
             : (newValue as null | { value: string })?.value ?? ''
           console.log('CHANGED VALUE', changedValue)
 
           onChange(changedValue)
         }
 
-        const valueProperty = valuePropertyFromValue(value, options)
+        const valueProperty = valuePropertyFromValue(
+          value,
+          options as Option[],
+        ) as PropsValue<Option> | undefined
 
         return (
           <div

@@ -29,9 +29,6 @@ const PerimetreConseilDepartemental = ({
   perimetreOptions: PerimetreDepartementOptions
   nextEtapePath: string
 }) => {
-  console.log('PROPS FORM', formulaireGouvernance)
-  console.log('OPTIONS', perimetreOptions)
-
   const selectionInput = useMemo(
     () => createCollectivitySelectionInputFromData(formulaireGouvernance),
     [],
@@ -50,16 +47,7 @@ const PerimetreConseilDepartemental = ({
   const router = useRouter()
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    console.log('SELECTED EPCIS', [...selectedEpci.values()])
-    console.log('SELECTED COMMUNES', [...selectedCommunes.values()])
     event.preventDefault()
-    // try {
-    //   // TODO Transform type#code to arrays
-    //   await mutation.mutateAsync(data)
-    //   router.push(nextEtapePath)
-    // } catch (mutationError) {
-    //   applyZodValidationMutationErrorsToForm(mutationError, form.setError)
-    // }
   }
   const isLoading = mutation.isLoading || mutation.isSuccess
   const disabled = isLoading

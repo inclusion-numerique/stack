@@ -1,105 +1,94 @@
 import Button from '@codegouvfr/react-dsfr/Button'
 import { useForm } from 'react-hook-form'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import {
-  AddedCollectivity,
-  UseAddCollectivityReturn,
-} from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/useAddCollectivity'
+import type {
+  CollectiviteHorsTerritoire as CollectiviteHorsTerritoireType,
+  UseCollectivitesHorsTerritoireReturn,
+} from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/useCollectivitesHorsTerritoire'
 import WhiteCard from '@app/web/ui/WhiteCard'
 import { trpc } from '@app/web/trpc'
+import { identityFunction } from '@app/web/utils/identityFunction'
 
 type CollectiviteHorsTerritoireProps = {
-  addedCollectivity: AddedCollectivity
+  collectivite: CollectiviteHorsTerritoireType
   index: number
   disabled: boolean
   excludedCodes: string[]
+  isLoading: boolean
 } & Pick<
-  UseAddCollectivityReturn,
-  'saveCollectivity' | 'removeCollectivity' | 'editCollectivity'
+  UseCollectivitesHorsTerritoireReturn,
+  | 'validerCollectiviteHorsTerritoire'
+  | 'supprimerCollectiviteHorsTerritoire'
+  | 'modifierCollectiviteHorsTerritoire'
 >
 
 const AddedCollectiviteHorsTerritoire = ({
-  addedCollectivity,
-  editCollectivity,
+  collectivite,
   index,
+  modifierCollectiviteHorsTerritoire,
 }: CollectiviteHorsTerritoireProps) => (
-  <WhiteCard>
-    <h2>{addedCollectivity.nom}</h2>
+  <WhiteCard className="fr-flex fr-align-items-center fr-justify-content-space-between fr-mb-6v">
+    <h5 className="fr-text-title--blue-france fr-my-0">{collectivite.nom}</h5>
     <Button
       type="button"
-      iconId="fr-icon-edit-fill"
+      priority="tertiary"
+      iconId="fr-icon-edit-line"
       title="Modifier la collectivité"
-      onClick={() => editCollectivity(index)}
+      onClick={() => modifierCollectiviteHorsTerritoire(index)}
     />
   </WhiteCard>
 )
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-const transformCollectiviteOption = ((option: {
-  label: string
-  value: string
-  type: 'commune' | 'epci'
-}) => option) as any
 const PendingCollectiviteHorsTerritoire = ({
-  removeCollectivity,
   index,
-  addedCollectivity,
+  collectivite,
   excludedCodes,
-  saveCollectivity,
+  supprimerCollectiviteHorsTerritoire,
+  validerCollectiviteHorsTerritoire,
 }: CollectiviteHorsTerritoireProps) => {
   const {
     control,
     handleSubmit,
     formState: { isLoading },
   } = useForm<{
-    code: {
+    collectivite: {
       label: string
       value: string
       type: 'commune' | 'epci' | 'departement'
     }
   }>({
     defaultValues: {
-      code: {
-        label: addedCollectivity.nom ?? undefined,
-        value: addedCollectivity.code ?? undefined,
-        type: addedCollectivity.type ?? undefined,
+      collectivite: {
+        label: collectivite.nom ?? undefined,
+        value: collectivite.code ?? undefined,
+        type: collectivite.type ?? undefined,
       },
     },
   })
 
   const onSubmit = ({
-    code,
+    collectivite: { label, value, type },
   }: {
-    code: {
+    collectivite: {
       label: string
       value: string
       type: 'commune' | 'epci' | 'departement'
     }
   }) => {
-    // TODO onchange should be object with type etc...
-    console.log('ON SUBMIT', { code })
-    console.log('Final value', {
-      type: code.type,
-      code: code.value,
-      nom: code.label,
-    })
-
-    saveCollectivity(index, {
-      type: code.type,
-      code: code.value,
-      nom: code.label,
+    validerCollectiviteHorsTerritoire(index, {
+      type,
+      code: value,
+      nom: label,
     })
   }
   const { client: trpcClient } = trpc.useContext()
 
   const loadOptions = async (search: string) => {
-    console.log('LOAD OPTIONS', search)
     const result = await trpcClient.data.collectivitySearch.query({
       epci: true,
       commune: true,
       query: search,
       exclude: excludedCodes,
     })
-    console.log('RESULT', result)
 
     return [
       {
@@ -128,21 +117,22 @@ const PendingCollectiviteHorsTerritoire = ({
   const disabled = isLoading
 
   return (
-    <WhiteCard>
+    <WhiteCard className="fr-mb-6v">
       <form onSubmit={handleSubmit(onSubmit)}>
         <h2>Ajouter une collectivité</h2>
         <CustomSelectFormField
           label="Rechercher la collectivité"
-          path="code"
+          path="collectivite"
           control={control}
           disabled={disabled}
           loadOptions={loadOptions}
-          transformOptionToValue={transformCollectiviteOption}
+          transformOptionToValue={identityFunction}
           defaultValue={
-            addedCollectivity.code && addedCollectivity.nom
+            collectivite.code && collectivite.nom && collectivite.type
               ? {
-                  value: addedCollectivity.code,
-                  label: addedCollectivity.nom,
+                  value: collectivite.code,
+                  label: collectivite.nom,
+                  type: collectivite.type,
                 }
               : undefined
           }
@@ -155,7 +145,14 @@ const PendingCollectiviteHorsTerritoire = ({
             iconId="fr-icon-delete-bin-line"
             disabled={disabled}
             className="fr-mr-1w"
-            onClick={() => removeCollectivity(index)}
+            onClick={() =>
+              supprimerCollectiviteHorsTerritoire(
+                index,
+                collectivite.code && collectivite.type
+                  ? { code: collectivite.code, type: collectivite.type }
+                  : undefined,
+              )
+            }
           >
             Supprimer
           </Button>
@@ -174,7 +171,11 @@ const PendingCollectiviteHorsTerritoire = ({
 }
 
 const CollectiviteHorsTerritoire = (props: CollectiviteHorsTerritoireProps) => {
-  if (props.addedCollectivity.state === 'added') {
+  const {
+    collectivite: { state },
+  } = props
+
+  if (state === 'added') {
     return <AddedCollectiviteHorsTerritoire {...props} />
   }
 

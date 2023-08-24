@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/nextjs'
 import { v4 } from 'uuid'
 import type { Prisma, UserRole } from '@prisma/client'
+import z from 'zod'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
@@ -22,6 +23,12 @@ import { AnnulerValidation } from '@app/web/gouvernance/Annuler'
 import { participerPersistenceFromData } from '@app/web/gouvernance/participerHelpers.server'
 import { InformationsParticipantValidation } from '@app/web/gouvernance/InformationsParticipant'
 import { informationsParticipantsPersistenceFromData } from '@app/web/gouvernance/informationsParticipantHelpers.server'
+import { PerimetreFeuilleDeRouteValidation } from '@app/web/gouvernance/PerimetreFeuilleDeRoute'
+import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+
+const FormulaireGouvernanceIdValidation = z.object({
+  formulaireGouvernanceId: z.string().uuid().nonempty(),
+})
 
 const getUpdatedFormulaireState = async ({
   formulaireGouvernance,
@@ -165,7 +172,6 @@ export const formulaireGouvernanceRouter = router({
   participer: protectedProcedure
     .input(ParticiperValidation)
     .mutation(async ({ input, ctx: { user } }) => {
-      console.log('PARTICIPER INPUT', input)
       if (
         !canUpdateFormulaireGouvernance(user, input.formulaireGouvernanceId)
       ) {
@@ -296,7 +302,6 @@ export const formulaireGouvernanceRouter = router({
   informationsParticipant: protectedProcedure
     .input(InformationsParticipantValidation)
     .mutation(async ({ input, ctx: { user } }) => {
-      console.log('InformationsParticipant INPUT', input)
       if (
         !canUpdateFormulaireGouvernance(user, input.formulaireGouvernanceId)
       ) {
@@ -352,5 +357,175 @@ export const formulaireGouvernanceRouter = router({
           },
         }),
       ])
+    }),
+  perimetreFeuilleDeRoute: protectedProcedure
+    .input(PerimetreFeuilleDeRouteValidation)
+    .mutation(
+      async ({
+        input: { formulaireGouvernanceId, add, remove },
+        ctx: { user },
+      }) => {
+        if (!canUpdateFormulaireGouvernance(user, formulaireGouvernanceId)) {
+          throw forbiddenError()
+        }
+
+        await prismaClient.$transaction(async (transaction) => {
+          const existingParticipants =
+            await transaction.formulaireGouvernance.findFirstOrThrow({
+              where: {
+                id: formulaireGouvernanceId,
+              },
+              select: {
+                epcisParticipantes: {
+                  select: {
+                    epciCode: true,
+                    horsTerritoire: true,
+                  },
+                },
+                communesParticipantes: {
+                  select: {
+                    communeCode: true,
+                    horsTerritoire: true,
+                  },
+                },
+                departementsParticipants: {
+                  select: {
+                    departementCode: true,
+                    horsTerritoire: true,
+                  },
+                },
+              },
+            })
+          const existingParticipantsCodes = new Set([
+            ...existingParticipants.departementsParticipants.map(
+              ({ departementCode }) => departementCode,
+            ),
+            ...existingParticipants.epcisParticipantes.map(
+              ({ epciCode }) => epciCode,
+            ),
+            ...existingParticipants.communesParticipantes.map(
+              ({ communeCode }) => communeCode,
+            ),
+          ])
+
+          const epcisToAdd = add
+            .filter(({ type }) => type === 'epci')
+            .filter(({ code }) => !existingParticipantsCodes.has(code))
+          const epcisToRemove = remove
+            .filter(({ type }) => type === 'epci')
+            .filter(({ code }) => existingParticipantsCodes.has(code))
+            .map(({ code }) => code)
+
+          const departementsToAdd = add
+            .filter(({ type }) => type === 'departement')
+            .filter(({ code }) => !existingParticipantsCodes.has(code))
+
+          const departementsToRemove = remove
+            .filter(({ type }) => type === 'departement')
+            .filter(({ code }) => existingParticipantsCodes.has(code))
+
+            .map(({ code }) => code)
+
+          const communesToAdd = add
+            .filter(({ type }) => type === 'commune')
+            .filter(({ code }) => !existingParticipantsCodes.has(code))
+
+          const communesToRemove = remove
+            .filter(({ type }) => type === 'commune')
+            .filter(({ code }) => existingParticipantsCodes.has(code))
+
+            .map(({ code }) => code)
+
+          if (epcisToRemove.length > 0) {
+            await transaction.epciParticipantFormulaireGouvernance.deleteMany({
+              where: {
+                formulaireGouvernanceId,
+                epciCode: {
+                  in: epcisToRemove,
+                },
+              },
+            })
+          }
+          if (communesToRemove.length > 0) {
+            await transaction.communeParticipanteFormulaireGouvernance.deleteMany(
+              {
+                where: {
+                  formulaireGouvernanceId,
+                  communeCode: {
+                    in: communesToRemove,
+                  },
+                },
+              },
+            )
+          }
+          if (departementsToRemove.length > 0) {
+            await transaction.departementParticipantFormulaireGouvernance.deleteMany(
+              {
+                where: {
+                  formulaireGouvernanceId,
+                  departementCode: {
+                    in: departementsToRemove,
+                  },
+                },
+              },
+            )
+          }
+          if (epcisToAdd.length > 0) {
+            await transaction.epciParticipantFormulaireGouvernance.createMany({
+              data: epcisToAdd.map((toAdd) => ({
+                formulaireGouvernanceId,
+                epciCode: toAdd.code,
+                horsTerritoire: toAdd.horsTerritoire,
+              })),
+            })
+          }
+          if (communesToAdd.length > 0) {
+            await transaction.communeParticipanteFormulaireGouvernance.createMany(
+              {
+                data: communesToAdd.map((toAdd) => ({
+                  formulaireGouvernanceId,
+                  communeCode: toAdd.code,
+                  horsTerritoire: toAdd.horsTerritoire,
+                })),
+              },
+            )
+          }
+          if (departementsToAdd.length > 0) {
+            await transaction.departementParticipantFormulaireGouvernance.createMany(
+              {
+                data: departementsToAdd.map((toAdd) => ({
+                  formulaireGouvernanceId,
+                  departementCode: toAdd.code,
+                  horsTerritoire: toAdd.horsTerritoire,
+                })),
+              },
+            )
+          }
+        })
+      },
+    ),
+
+  // L'étape est terminée, on passe à l'étape suivante
+  etapePerimetreFeuilleDeRoute: protectedProcedure
+    .input(FormulaireGouvernanceIdValidation)
+    .mutation(async ({ input: { formulaireGouvernanceId }, ctx: { user } }) => {
+      if (!canUpdateFormulaireGouvernance(user, formulaireGouvernanceId)) {
+        throw forbiddenError()
+      }
+      const result = await prismaClient.formulaireGouvernance.update({
+        where: {
+          id: formulaireGouvernanceId,
+        },
+        data: {
+          etapePerimetre: new Date(),
+        },
+        select: {
+          id: true,
+        },
+      })
+      return getUpdatedFormulaireState({
+        formulaireGouvernance: result,
+        user,
+      })
     }),
 })

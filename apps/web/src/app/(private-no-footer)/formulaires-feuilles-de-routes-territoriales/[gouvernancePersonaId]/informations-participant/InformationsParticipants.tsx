@@ -36,27 +36,18 @@ const InformationsParticipants = ({
   optionsDepartements: OptionTuples
   nextEtapePath: string
 }) => {
-  console.log('PROPS FORM', formulaireGouvernance)
-
   const form = useForm<InformationsParticipantData>({
     defaultValues: informationsParticipantDefaultValuesFromData(
       formulaireGouvernance,
     ),
     resolver: zodResolver(InformationsParticipantValidation),
   })
-  console.log(
-    'DEFAULT VALUES',
-    informationsParticipantDefaultValuesFromData(formulaireGouvernance),
-  )
 
   const mutation =
     trpc.formulaireGouvernance.informationsParticipant.useMutation()
   const router = useRouter()
 
-  console.log('ERRORS', form.formState.errors)
-
   const onSubmit = async (data: InformationsParticipantData) => {
-    console.log('SUBMIT', data)
     try {
       await mutation.mutateAsync(data)
       router.push(nextEtapePath)
