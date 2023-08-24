@@ -394,7 +394,7 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
             id: 'accompagnements-pour-réaliser-des-démarches-en-lignes',
             label: 'Accompagnements pour réaliser des démarches en lignes',
             value: structuresCount.aidantsConnect.totalDemarches,
-            updated: new Date('2021-09-04'),
+            updated: new Date('2023-08-04'),
             source: 'aidantsconnect.beta.gouv.fr',
           },
         ],
@@ -415,7 +415,7 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
         id: 'réaliser-des-démarches-en-lignes',
         label:
           'Les 4 principaux thèmes d’accompagnements pour réaliser des démarches en lignes',
-        updated: new Date('2021-09-04'),
+        updated: new Date('2023-08-04'),
         source: 'aidantsconnect.beta.gouv.fr',
         statistics: structuresCount.aidantsConnect.top4AndOther.map(
           ({ label, count }) => ({
