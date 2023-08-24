@@ -93,6 +93,7 @@ const CustomSelectFormField = <T extends FieldValues>({
               isDisabled={disabled}
               aria-describedby={ariaDescribedBy}
               inputId={id}
+              instanceId={customSelectProps.instanceId ?? id}
             />
             {error && (
               <p id={`${id}__error`} className="fr-error-text">

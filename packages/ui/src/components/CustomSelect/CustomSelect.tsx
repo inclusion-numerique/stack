@@ -65,7 +65,10 @@ const CustomSelect = <
   IsMulti extends boolean = false,
   Group extends GroupBase<Option> = GroupBase<Option>,
 >(
-  props: CustomSelectProps<Option, IsMulti, Group>,
+  props: CustomSelectProps<Option, IsMulti, Group> & {
+    // We require instanceId to avoid SSR id mismatch in react hydration
+    instanceId: number | string
+  },
 ) => {
   const classNames: CustomSelectProps<Option, IsMulti, Group>['classNames'] = {
     container: () => styles.container,
