@@ -24,6 +24,7 @@ import { participerPersistenceFromData } from '@app/web/gouvernance/participerHe
 import { InformationsParticipantValidation } from '@app/web/gouvernance/InformationsParticipant'
 import { informationsParticipantsPersistenceFromData } from '@app/web/gouvernance/informationsParticipantHelpers.server'
 import { PerimetreFeuilleDeRouteValidation } from '@app/web/gouvernance/PerimetreFeuilleDeRoute'
+import { ContactCollectiviteValidation } from '@app/web/gouvernance/ContactCollectivite'
 
 const FormulaireGouvernanceIdValidation = z.object({
   formulaireGouvernanceId: z.string().uuid().nonempty(),
@@ -516,6 +517,111 @@ export const formulaireGouvernanceRouter = router({
 
   // L'étape est terminée, on passe à l'étape suivante
   etapePerimetreFeuilleDeRoute: protectedProcedure
+    .input(FormulaireGouvernanceIdValidation)
+    .mutation(async ({ input: { formulaireGouvernanceId }, ctx: { user } }) => {
+      if (!canUpdateFormulaireGouvernance(user, formulaireGouvernanceId)) {
+        throw forbiddenError()
+      }
+      const result = await prismaClient.formulaireGouvernance.update({
+        where: {
+          id: formulaireGouvernanceId,
+        },
+        data: {
+          etapePerimetre: new Date(),
+        },
+        select: {
+          id: true,
+        },
+      })
+      return getUpdatedFormulaireState({
+        formulaireGouvernance: result,
+        user,
+      })
+    }),
+  contactCollectivite: protectedProcedure
+    .input(ContactCollectiviteValidation)
+    .mutation(
+      async ({
+        input: {
+          formulaireGouvernanceId,
+          type,
+          nom,
+          fonction,
+          prenom,
+          participantId,
+          email,
+        },
+        ctx: { user },
+      }) => {
+        if (!canUpdateFormulaireGouvernance(user, formulaireGouvernanceId)) {
+          throw forbiddenError()
+        }
+
+        const participantSearchParams = {
+          where: {
+            id: participantId,
+          },
+          select: {
+            id: true,
+            contactId: true,
+          },
+        }
+
+        const participant =
+          type === 'departement'
+            ? await prismaClient.departementParticipantFormulaireGouvernance.findUnique(
+                participantSearchParams,
+              )
+            : type === 'epci'
+            ? await prismaClient.epciParticipantFormulaireGouvernance.findUnique(
+                participantSearchParams,
+              )
+            : await prismaClient.communeParticipanteFormulaireGouvernance.findUnique(
+                participantSearchParams,
+              )
+
+        if (!participant) {
+          throw notFoundError()
+        }
+
+        await (participant.contactId
+          ? prismaClient.contactFormulaireGouvernance.update({
+              where: {
+                id: participant.contactId,
+              },
+              data: {
+                email,
+                fonction,
+                nom,
+                prenom,
+              },
+            })
+          : prismaClient.contactFormulaireGouvernance.create({
+              data: {
+                email,
+                fonction,
+                nom,
+                prenom,
+                [type === 'departement'
+                  ? 'contactDepartementParticipant'
+                  : type === 'epci'
+                  ? 'contactEpciParticipant'
+                  : 'contactCommuneParticipante']: {
+                  connect: {
+                    id: participant.id,
+                  },
+                },
+                formulaireGouvernance: {
+                  connect: {
+                    id: formulaireGouvernanceId,
+                  },
+                },
+              },
+            }))
+      },
+    ),
+  // L'étape est terminée, on passe à l'étape suivante
+  etapeConcactsCollectivites: protectedProcedure
     .input(FormulaireGouvernanceIdValidation)
     .mutation(async ({ input: { formulaireGouvernanceId }, ctx: { user } }) => {
       if (!canUpdateFormulaireGouvernance(user, formulaireGouvernanceId)) {

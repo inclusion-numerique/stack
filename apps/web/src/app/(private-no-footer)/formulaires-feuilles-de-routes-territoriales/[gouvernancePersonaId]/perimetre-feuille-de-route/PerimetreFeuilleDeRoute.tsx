@@ -23,6 +23,10 @@ import {
 } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/useCollectivitesHorsTerritoire'
 import { sPluriel } from '@app/web/utils/sPluriel'
 
+const onCheckboxesSubmit = (event: FormEvent<HTMLFormElement>) => {
+  event.preventDefault()
+}
+
 const PerimetreFeuilleDeRoute = ({
   perimetreOptions,
   formulaireGouvernance,
@@ -56,13 +60,12 @@ const PerimetreFeuilleDeRoute = ({
               options.epcis.map(({ codeEpci }) => codeEpci),
             ),
           ]
-        : // For smaller scope we add the communes
-          [
-            ...perimetreOptions.epcis.map(({ codeEpci }) => codeEpci),
-            ...perimetreOptions.epcis.flatMap(({ communes }) =>
-              communes.map(([code]) => code),
-            ),
-          ],
+        : // Same pb for smaller scopes
+
+          perimetreOptions.epcis.map(({ codeEpci }) => codeEpci),
+    // ...perimetreOptions.epcis.flatMap(({ communes }) =>
+    //   communes.map(([code]) => code),
+    // ),
     [],
   )
 
@@ -84,10 +87,6 @@ const PerimetreFeuilleDeRoute = ({
   )
 
   const router = useRouter()
-
-  const onCheckboxesSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-  }
 
   const etapeError =
     collectivitesHorsTerritoire.collectivitesHorsTerritoireEnCoursDeModification

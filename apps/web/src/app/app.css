@@ -281,12 +281,35 @@ hr.separator--8v{
 .fr-flex {
   display: flex;
 }
+
 .fr-align-items-center {
     align-items: center;
 }
+
+.fr-align-items-start {
+    align-items: flex-start;
+}
+
+.fr-align-items-end {
+    align-items: flex-end;
+}
+
+.fr-align-items-stretch {
+  align-items: stretch;
+}
+
 .fr-justify-content-center {
     justify-content: center;
 }
+
+.fr-justify-content-start {
+    justify-content: flex-start;
+}
+
+.fr-justify-content-end {
+    justify-content: flex-end;
+}
+
 .fr-justify-content-space-between {
     justify-content: space-between;
 }

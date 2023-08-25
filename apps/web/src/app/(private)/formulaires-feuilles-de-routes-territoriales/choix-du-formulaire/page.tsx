@@ -6,7 +6,7 @@ import {
   gouvernancePersonaIds,
 } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import ContainerCard from '@app/web/components/ContainerCard'
-import ChoseGouvernancePersonaForm from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/ChoixDuFormulaireForm'
+import ChoixDuFormulaireForm from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/ChoixDuFormulaireForm'
 import {
   getPageFormulaireData,
   PageFormulaireProps,
@@ -89,15 +89,7 @@ const Page = async (props: PageFormulaireProps<{ changer?: string }>) => {
             Quel formulaire souhaitez-vous compléter&nbsp;?
           </p>
         )}
-        <ChoseGouvernancePersonaForm
-          initialPersona={
-            formulaireGouvernance?.gouvernancePersona as
-              | GouvernancePersonaId
-              | null
-              | undefined
-          }
-          availableChoices={availableChoices}
-        />
+        <ChoixDuFormulaireForm availableChoices={availableChoices} />
       </ContainerCard>
     </div>
   )

@@ -585,14 +585,13 @@ model ContactFormulaireGouvernance {
   fonction String
   email    String
 
-  contactTechnique                              FormulaireGouvernance?                       @relation(name: "formulaire_contact_structure")
-  contactPolitique                              FormulaireGouvernance?                       @relation(name: "formulaire_contact_politique")
-  contactStructure                              FormulaireGouvernance?                       @relation(name: "formulaire_contact_technique")
-  contactDepartementParticipant                 DepartementParticipantFormulaireGouvernance? @relation(name: "formulaire_contact_departement_participante")
-  contactEpciParticipant                        EpciParticipantFormulaireGouvernance?        @relation(name: "formulaire_contact_epci_participante")
-  contactCommuneParticipante                    CommuneParticipanteFormulaireGouvernance?    @relation(name: "formulaire_contact_commune_participante")
-  contactStructureParticipante                  StructureParticipanteFormulaireGouvernance?  @relation(name: "formulaire_contact_structure_participante")
-  departementParticipantFormulaireGouvernanceId String?                                      @db.Uuid
+  contactTechnique              FormulaireGouvernance?                       @relation(name: "formulaire_contact_structure")
+  contactPolitique              FormulaireGouvernance?                       @relation(name: "formulaire_contact_politique")
+  contactStructure              FormulaireGouvernance?                       @relation(name: "formulaire_contact_technique")
+  contactDepartementParticipant DepartementParticipantFormulaireGouvernance? @relation(name: "formulaire_contact_departement_participante")
+  contactEpciParticipant        EpciParticipantFormulaireGouvernance?        @relation(name: "formulaire_contact_epci_participante")
+  contactCommuneParticipante    CommuneParticipanteFormulaireGouvernance?    @relation(name: "formulaire_contact_commune_participante")
+  contactStructureParticipante  StructureParticipanteFormulaireGouvernance?  @relation(name: "formulaire_contact_structure_participante")
 
   @@map("contact_formulaire_gouvernance")
 }

@@ -4,12 +4,10 @@ import {
   getPageFormulaireData,
   PageFormulaireProps,
 } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/pageFormulaireData'
-import InformationsParticipants from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/informations-participant/InformationsParticipants'
-import { prismaClient } from '@app/web/prismaClient'
-import { OptionTuple } from '@app/web/utils/options'
 import BackLink from '@app/web/components/BackLink'
 import Progress from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/Progress'
 import { getEtapeInfo } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/etapeFormulaireGouvernance'
+import ContactsCollectivites from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/contacts-collectivites/ContactsCollectivites'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -18,41 +16,10 @@ export { pageFormulaireMetadata as metadata } from '@app/web/app/(private)/formu
 const Page = async (props: PageFormulaireProps) => {
   const { formulaireGouvernance, persona } = await getPageFormulaireData(
     props,
-    'informations-participant',
+    'contacts-collectivites',
   )
 
-  const nextEtapeInfo = getEtapeInfo('perimetre-feuille-de-route', persona.id)
-
-  const [optionsRegions, optionsDepartements] = await Promise.all([
-    prismaClient.region
-      .findMany({
-        select: {
-          code: true,
-          nom: true,
-        },
-        orderBy: {
-          nom: 'asc',
-        },
-      })
-      .then((regions) =>
-        regions.map(({ code, nom }): OptionTuple => [code, nom]),
-      ),
-    prismaClient.departement
-      .findMany({
-        select: {
-          code: true,
-          nom: true,
-        },
-        orderBy: {
-          code: 'asc',
-        },
-      })
-      .then((departements) =>
-        departements.map(
-          ({ code, nom }): OptionTuple => [code, `${code} · ${nom}`],
-        ),
-      ),
-  ])
+  const nextEtapeInfo = getEtapeInfo('autres-structures', persona.id)
 
   return (
     <>
@@ -71,16 +38,19 @@ const Page = async (props: PageFormulaireProps) => {
         <BackLink href="/formulaires-feuilles-de-routes-territoriales" />
 
         <Progress
-          progression={1}
-          currentTitle={`Renseignez votre ${persona.labelTitle}`}
-          nextTitle="Périmètre de votre feuille de route"
+          progression={3}
+          currentTitle="Contacts des collectivités partenaires"
+          nextTitle="Autres structures impliquées"
         />
-
-        <InformationsParticipants
+        <h1 className="fr-text-title--blue-france fr-mb-2v">
+          Contacts des collectivités partenaires
+        </h1>
+        <p className="fr-text--lg fr-text-mention--grey fr-mb-2v">
+          Veuillez renseigner un contact pour chacune des collectivités
+          partenaires.
+        </p>
+        <ContactsCollectivites
           formulaireGouvernance={formulaireGouvernance}
-          persona={persona}
-          optionsRegions={optionsRegions}
-          optionsDepartements={optionsDepartements}
           nextEtapePath={nextEtapeInfo.absolutePath}
         />
       </div>

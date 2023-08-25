@@ -21,10 +21,8 @@ import {
 
 const ChoixDuFormulaireForm = ({
   availableChoices,
-  initialPersona,
 }: {
   availableChoices: readonly GouvernancePersonaId[]
-  initialPersona?: GouvernancePersonaId | null
 }) => {
   const form = useForm<ChoixDuFormulaireData>({
     resolver: zodResolver(ChoixDuFormulaireValidation),
