@@ -674,7 +674,8 @@ export const formulaireGouvernanceRouter = router({
         })
         return null
       }
-      const { formulaireGouvernanceId, contact, nom, participantId } = input
+      const { formulaireGouvernanceId, contact, nomStructure, participantId } =
+        input
 
       // If existing, update, else create
       if (participantId && existing) {
@@ -682,7 +683,7 @@ export const formulaireGouvernanceRouter = router({
           await prismaClient.structureParticipanteFormulaireGouvernance.update({
             where: { id: participantId },
             data: {
-              nomStructure: nom,
+              nomStructure,
               contact: {
                 upsert: {
                   create: {
@@ -694,6 +695,9 @@ export const formulaireGouvernanceRouter = router({
                   },
                 },
               },
+            },
+            select: {
+              id: true,
             },
           })
         return updated
@@ -707,30 +711,29 @@ export const formulaireGouvernanceRouter = router({
       const contactId = v4()
       const createdParticipantId = v4()
 
-      const [_createdContact, createdParticipant] =
-        await prismaClient.$transaction([
-          prismaClient.contactFormulaireGouvernance.create({
-            data: {
-              id: contactId,
-              formulaireGouvernanceId,
-              ...contact,
-            },
-            select: {
-              id: true,
-            },
-          }),
-          prismaClient.structureParticipanteFormulaireGouvernance.create({
-            data: {
-              id: createdParticipantId,
-              formulaireGouvernanceId,
-              nomStructure: nom,
-              contactId,
-            },
-            select: { id: true, contact: true },
-          }),
-        ])
+      const result = await prismaClient.$transaction([
+        prismaClient.contactFormulaireGouvernance.create({
+          data: {
+            id: contactId,
+            formulaireGouvernanceId,
+            ...contact,
+          },
+          select: {
+            id: true,
+          },
+        }),
+        prismaClient.structureParticipanteFormulaireGouvernance.create({
+          data: {
+            id: createdParticipantId,
+            formulaireGouvernanceId,
+            nomStructure,
+            contactId,
+          },
+          select: { id: true, contact: true },
+        }),
+      ])
 
-      return createdParticipant
+      return result[1]
     }),
   // L'étape est terminée, on passe à l'étape suivante
   etapeAutresStructures: protectedProcedure

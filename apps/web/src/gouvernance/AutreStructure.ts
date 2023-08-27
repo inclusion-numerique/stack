@@ -5,9 +5,13 @@ const EnregistrerAutreStructure = z.object({
   action: z.literal('enregistrer'),
   formulaireGouvernanceId: z.string().uuid(),
   participantId: z.string().uuid().nullish(),
-  nom: z.string(),
+  nomStructure: z.string(),
   contact: ContactFormulaireGouvernanceValidation,
 })
+
+export type EnregistrerAutreStructureData = z.infer<
+  typeof EnregistrerAutreStructure
+>
 
 const SupprimerAutreStructure = z.object({
   action: z.literal('supprimer'),

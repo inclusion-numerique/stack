@@ -45,7 +45,7 @@ const Page = async (props: PageFormulaireProps) => {
         <h1 className="fr-text-title--blue-france fr-mb-2v">
           Autres structures impliquées
         </h1>
-        <p className="fr-text--lg fr-text-mention--grey fr-mb-2v">
+        <p className="fr-text--lg fr-text-mention--grey fr-mb-12v">
           Renseignez ici les autres personnes morales publiques ou privées
           (associations, opérateurs de services publics, entreprises) qui vont
           faire partie de votre feuille de route.
