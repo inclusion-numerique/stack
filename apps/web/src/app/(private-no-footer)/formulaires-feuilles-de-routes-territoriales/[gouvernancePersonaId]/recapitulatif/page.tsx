@@ -16,10 +16,13 @@ export { pageFormulaireMetadata as metadata } from '@app/web/app/(private)/formu
 const Page = async (props: PageFormulaireProps) => {
   const { formulaireGouvernance, persona } = await getPageFormulaireData(
     props,
-    'autres-structures',
+    'recapitulatif',
   )
 
-  const nextEtapeInfo = getEtapeInfo('recapitulatif', persona.id)
+  const nextEtapeInfo = getEtapeInfo(
+    'confirmation-formulaire-envoye',
+    persona.id,
+  )
 
   return (
     <>
@@ -38,22 +41,25 @@ const Page = async (props: PageFormulaireProps) => {
         <BackLink href="/formulaires-feuilles-de-routes-territoriales" />
 
         <Progress
-          progression={4}
-          currentTitle="Autres structures impliquées"
-          nextTitle="Récapitulatif de votre feuille de route"
+          progression={5}
+          currentTitle="Récapitulatif de votre feuille de route"
         />
-        <h1 className="fr-text-title--blue-france fr-mb-2v">
-          Autres structures impliquées
+        <h1 className="fr-text-title--blue-france fr-mb-12v">
+          Récapitulatif de votre feuille de route
         </h1>
-        <p className="fr-text--lg fr-text-mention--grey fr-mb-12v">
-          Renseignez ici les autres personnes morales publiques ou privées
-          (associations, opérateurs de services publics, entreprises) qui vont
-          faire partie de votre feuille de route.
-        </p>
-        <AutresStructures
-          formulaireGouvernance={formulaireGouvernance}
-          nextEtapePath={nextEtapeInfo.absolutePath}
-        />
+        <h3 className="fr-text-title--blue-france fr-mb-2v">
+          Périmètre de votre feuille de route
+        </h3>
+        <p>TODO Liste des collectivites</p>
+        {formulaireGouvernance.structuresParticipantes.length > 0 && (
+          <>
+            <h3 className="fr-text-title--blue-france fr-mt-12v fr-mb-2v">
+              Autres structures impliquées
+            </h3>
+
+            <p>TODO Liste des structures</p>
+          </>
+        )}
       </div>
     </>
   )

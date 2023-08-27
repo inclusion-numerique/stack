@@ -14,7 +14,7 @@ const Progress = ({
 }: {
   progression: number
   currentTitle: string
-  nextTitle: string
+  nextTitle?: string
 }) => (
   <div className={styles.container}>
     <p className={styles.progressionInfo}>
@@ -32,9 +32,11 @@ const Progress = ({
         />
       ))}
     </div>
-    <p className={styles.nextInfo}>
-      <span className="fr-text--bold">Étape suivante&nbsp;:</span> {nextTitle}
-    </p>
+    {!!nextTitle && (
+      <p className={styles.nextInfo}>
+        <span className="fr-text--bold">Étape suivante&nbsp;:</span> {nextTitle}
+      </p>
+    )}
   </div>
 )
 
