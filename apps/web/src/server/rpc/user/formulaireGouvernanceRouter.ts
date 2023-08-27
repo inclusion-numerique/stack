@@ -25,6 +25,7 @@ import { InformationsParticipantValidation } from '@app/web/gouvernance/Informat
 import { informationsParticipantsPersistenceFromData } from '@app/web/gouvernance/informationsParticipantHelpers.server'
 import { PerimetreFeuilleDeRouteValidation } from '@app/web/gouvernance/PerimetreFeuilleDeRoute'
 import { ContactCollectiviteValidation } from '@app/web/gouvernance/ContactCollectivite'
+import { AutreStructureValidation } from '@app/web/gouvernance/AutreStructure'
 
 const FormulaireGouvernanceIdValidation = z.object({
   formulaireGouvernanceId: z.string().uuid().nonempty(),
@@ -632,7 +633,118 @@ export const formulaireGouvernanceRouter = router({
           id: formulaireGouvernanceId,
         },
         data: {
-          etapePerimetre: new Date(),
+          etapeContacts: new Date(),
+        },
+        select: {
+          id: true,
+        },
+      })
+      return getUpdatedFormulaireState({
+        formulaireGouvernance: result,
+        user,
+      })
+    }),
+  autreStructure: protectedProcedure
+    .input(AutreStructureValidation)
+    .mutation(async ({ input, ctx: { user } }) => {
+      if (
+        !canUpdateFormulaireGouvernance(user, input.formulaireGouvernanceId)
+      ) {
+        throw forbiddenError()
+      }
+
+      const existing = input.participantId
+        ? await prismaClient.structureParticipanteFormulaireGouvernance.findUnique(
+            {
+              where: { id: input.participantId },
+              select: {
+                id: true,
+              },
+            },
+          )
+        : null
+
+      if (input.action === 'supprimer') {
+        if (!existing) {
+          return null
+        }
+
+        await prismaClient.structureParticipanteFormulaireGouvernance.delete({
+          where: { id: input.participantId },
+        })
+        return null
+      }
+      const { formulaireGouvernanceId, contact, nom, participantId } = input
+
+      // If existing, update, else create
+      if (participantId && existing) {
+        const updated =
+          await prismaClient.structureParticipanteFormulaireGouvernance.update({
+            where: { id: participantId },
+            data: {
+              nomStructure: nom,
+              contact: {
+                upsert: {
+                  create: {
+                    formulaireGouvernanceId,
+                    ...contact,
+                  },
+                  update: {
+                    ...contact,
+                  },
+                },
+              },
+            },
+          })
+        return updated
+      }
+
+      if (participantId) {
+        // Trying to update deleted structure, edge case (multiple browser tabs), ignoring.
+        return null
+      }
+
+      const contactId = v4()
+      const createdParticipantId = v4()
+
+      const [_createdContact, createdParticipant] =
+        await prismaClient.$transaction([
+          prismaClient.contactFormulaireGouvernance.create({
+            data: {
+              id: contactId,
+              formulaireGouvernanceId,
+              ...contact,
+            },
+            select: {
+              id: true,
+            },
+          }),
+          prismaClient.structureParticipanteFormulaireGouvernance.create({
+            data: {
+              id: createdParticipantId,
+              formulaireGouvernanceId,
+              nomStructure: nom,
+              contactId,
+            },
+            select: { id: true, contact: true },
+          }),
+        ])
+
+      return createdParticipant
+    }),
+  // L'étape est terminée, on passe à l'étape suivante
+  etapeAutresStructures: protectedProcedure
+    .input(FormulaireGouvernanceIdValidation)
+    .mutation(async ({ input: { formulaireGouvernanceId }, ctx: { user } }) => {
+      if (!canUpdateFormulaireGouvernance(user, formulaireGouvernanceId)) {
+        throw forbiddenError()
+      }
+      const result = await prismaClient.formulaireGouvernance.update({
+        where: {
+          id: formulaireGouvernanceId,
+        },
+        data: {
+          etapeStructures: new Date(),
         },
         select: {
           id: true,
