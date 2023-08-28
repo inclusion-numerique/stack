@@ -1,5 +1,5 @@
 import React from 'react'
-import Breadcrumbs from './Breadcrumbs'
+import Breadcrumbs from '@app/web/components/Breadcrumbs'
 
 describe('<Breadcrumbs />', () => {
   it('should render a breadcrumbs with no parent', () => {

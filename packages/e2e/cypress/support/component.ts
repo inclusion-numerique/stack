@@ -1,8 +1,10 @@
 import { mount } from 'cypress/react18'
-import '../../public/dsfr/dsfr.module.min'
-import '../../src/app/app.css'
+import '../../../../apps/web/public/dsfr/dsfr.module.min'
+import '../../../../apps/web/src/app/app.css'
 import './commands'
 import './component.css'
+
+console.log('ADDING MOUNT COMMAND')
 
 declare global {
   namespace Cypress {

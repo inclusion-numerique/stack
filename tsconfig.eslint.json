@@ -1,5 +1,11 @@
 {
   "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "typeRoots": [
+      "./node_modules/@types",
+      "./packages/test/node_modules/@types"
+    ]
+  },
   "include": [
     ".eslintrc.js",
     "apps/cli/src",

@@ -1,0 +1,4 @@
+cypress/videos
+cypress/screenshots
+
+.next/

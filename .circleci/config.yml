@@ -6,13 +6,13 @@ orbs:
 executors:
   node:
     docker:
-      - image: cimg/node:18.16.0
+      - image: cimg/node:20.5.1
         environment:
           TZ: 'UTC'
 
   node-postgres:
     docker:
-      - image: cimg/node:18.16.0
+      - image: cimg/node:20.5.1
         environment:
           TZ: 'UTC'
           CI_PG_ADMIN_URL: postgresql://postgres@localhost
@@ -22,12 +22,12 @@ executors:
           POSTGRES_USER: postgres
   node-browsers:
     docker:
-      - image: cimg/node:18.16.0-browsers
+      - image: cimg/node:20.5.1-browsers
         environment:
           TZ: 'UTC'
   node-e2e:
     docker:
-      - image: cimg/node:18.16.0-browsers
+      - image: cimg/node:20.5.1-browsers
         environment:
           TZ: 'UTC'
           CI_DATABASE_URL: postgresql://postgres@localhost/test
@@ -94,11 +94,7 @@ workflows:
           requires:
             - prepare_workspace_dependencies
 
-      - test_web_components:
-          requires:
-            - prepare_workspace_dependencies
-
-      - test_ui_components:
+      - test_components:
           requires:
             - prepare_workspace_dependencies
 
@@ -112,8 +108,7 @@ workflows:
             - build_web
             - test_packages
             - test_web
-            - test_web_components
-            - test_ui_components
+            - test_components
             - test_web_e2e
 
       - chromatic:
@@ -313,7 +308,7 @@ jobs:
           name: 'Build storybook and deploy on chromatic'
           command: pnpm --silent -F @app/storybook chromatic
 
-  test_web_components:
+  test_components:
     executor: node-browsers
     resource_class: large
     parallelism: 1
@@ -331,24 +326,7 @@ jobs:
       - add_secrets_to_dotenv_file
       - run:
           name: 'Run Cypress component testing'
-          command: pnpm --silent -F @app/web cy run --component --record --parallel --group web/components
-
-  test_ui_components:
-    executor: node-browsers
-    resource_class: large
-    parallelism: 2
-    steps:
-      - checkout
-      - install_pnpm
-      - install_dependencies
-      - restore_cache:
-          keys:
-            - << pipeline.parameters.cache_version >>-cypress-{{ checksum "<< pipeline.parameters.lockfile >>" }}
-      - create_dotenv_file
-      - add_secrets_to_dotenv_file
-      - run:
-          name: 'Run Cypress component testing'
-          command: pnpm --silent -F @app/ui cy run --component --record --parallel --group ui/components
+          command: pnpm --silent -F @app/e2e cy run --component --record --parallel --group components
 
   test_web_e2e:
     executor: node-e2e
@@ -412,7 +390,7 @@ jobs:
       - run:
           name: 'Run cypress e2e tests'
           command: |
-            pnpm --silent -F @app/web cy run --record --parallel --group web/e2e
+            pnpm --silent -F @app/e2e cy run --record --parallel --group web/e2e
 
   deploy_web:
     executor: node

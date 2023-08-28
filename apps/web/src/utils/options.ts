@@ -8,4 +8,4 @@ export type Options<T extends string = string> = Option<T>[]
 export const labelsToOptions = <T extends string>(
   object: Record<T, string>,
 ): Options<T> =>
-  Object.entries(object).map(([value, name]) => ({ name, value } as Option<T>))
+  Object.entries(object).map(([value, name]) => ({ name, value }) as Option<T>)

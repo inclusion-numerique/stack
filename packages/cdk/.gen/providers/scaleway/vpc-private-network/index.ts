@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/vpc_private_network
+// https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/vpc_private_network
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -8,7 +8,7 @@ import * as cdktf from 'cdktf';
 
 export interface VpcPrivateNetworkConfig extends cdktf.TerraformMetaArguments {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/vpc_private_network#id VpcPrivateNetwork#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/vpc_private_network#id VpcPrivateNetwork#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -16,64 +16,64 @@ export interface VpcPrivateNetworkConfig extends cdktf.TerraformMetaArguments {
   readonly id?: string;
   /**
   * Defines whether the private network is Regional. By default, it will be Zonal
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/vpc_private_network#is_regional VpcPrivateNetwork#is_regional}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/vpc_private_network#is_regional VpcPrivateNetwork#is_regional}
   */
   readonly isRegional?: boolean | cdktf.IResolvable;
   /**
   * The name of the private network
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/vpc_private_network#name VpcPrivateNetwork#name}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/vpc_private_network#name VpcPrivateNetwork#name}
   */
   readonly name?: string;
   /**
   * The project_id you want to attach the resource to
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/vpc_private_network#project_id VpcPrivateNetwork#project_id}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/vpc_private_network#project_id VpcPrivateNetwork#project_id}
   */
   readonly projectId?: string;
   /**
   * The region you want to attach the resource to
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/vpc_private_network#region VpcPrivateNetwork#region}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/vpc_private_network#region VpcPrivateNetwork#region}
   */
   readonly region?: string;
   /**
   * The tags associated with private network
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/vpc_private_network#tags VpcPrivateNetwork#tags}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/vpc_private_network#tags VpcPrivateNetwork#tags}
   */
   readonly tags?: string[];
   /**
   * The VPC in which to create the private network
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/vpc_private_network#vpc_id VpcPrivateNetwork#vpc_id}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/vpc_private_network#vpc_id VpcPrivateNetwork#vpc_id}
   */
   readonly vpcId?: string;
   /**
   * The zone you want to attach the resource to
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/vpc_private_network#zone VpcPrivateNetwork#zone}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/vpc_private_network#zone VpcPrivateNetwork#zone}
   */
   readonly zone?: string;
   /**
   * ipv4_subnet block
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/vpc_private_network#ipv4_subnet VpcPrivateNetwork#ipv4_subnet}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/vpc_private_network#ipv4_subnet VpcPrivateNetwork#ipv4_subnet}
   */
   readonly ipv4Subnet?: VpcPrivateNetworkIpv4Subnet;
   /**
   * ipv6_subnets block
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/vpc_private_network#ipv6_subnets VpcPrivateNetwork#ipv6_subnets}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/vpc_private_network#ipv6_subnets VpcPrivateNetwork#ipv6_subnets}
   */
   readonly ipv6Subnets?: VpcPrivateNetworkIpv6Subnets[] | cdktf.IResolvable;
 }
 export interface VpcPrivateNetworkIpv4Subnet {
   /**
   * The subnet CIDR
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/vpc_private_network#subnet VpcPrivateNetwork#subnet}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/vpc_private_network#subnet VpcPrivateNetwork#subnet}
   */
   readonly subnet?: string;
 }
@@ -120,6 +120,11 @@ export class VpcPrivateNetworkIpv4SubnetOutputReference extends cdktf.ComplexObj
     }
   }
 
+  // address - computed: true, optional: false, required: false
+  public get address() {
+    return this.getStringAttribute('address');
+  }
+
   // created_at - computed: true, optional: false, required: false
   public get createdAt() {
     return this.getStringAttribute('created_at');
@@ -128,6 +133,11 @@ export class VpcPrivateNetworkIpv4SubnetOutputReference extends cdktf.ComplexObj
   // id - computed: true, optional: false, required: false
   public get id() {
     return this.getStringAttribute('id');
+  }
+
+  // prefix_length - computed: true, optional: false, required: false
+  public get prefixLength() {
+    return this.getNumberAttribute('prefix_length');
   }
 
   // subnet - computed: true, optional: true, required: false
@@ -146,6 +156,11 @@ export class VpcPrivateNetworkIpv4SubnetOutputReference extends cdktf.ComplexObj
     return this._subnet;
   }
 
+  // subnet_mask - computed: true, optional: false, required: false
+  public get subnetMask() {
+    return this.getStringAttribute('subnet_mask');
+  }
+
   // updated_at - computed: true, optional: false, required: false
   public get updatedAt() {
     return this.getStringAttribute('updated_at');
@@ -154,8 +169,8 @@ export class VpcPrivateNetworkIpv4SubnetOutputReference extends cdktf.ComplexObj
 export interface VpcPrivateNetworkIpv6Subnets {
   /**
   * The subnet CIDR
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/vpc_private_network#subnet VpcPrivateNetwork#subnet}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/vpc_private_network#subnet VpcPrivateNetwork#subnet}
   */
   readonly subnet?: string;
 }
@@ -214,6 +229,11 @@ export class VpcPrivateNetworkIpv6SubnetsOutputReference extends cdktf.ComplexOb
     }
   }
 
+  // address - computed: true, optional: false, required: false
+  public get address() {
+    return this.getStringAttribute('address');
+  }
+
   // created_at - computed: true, optional: false, required: false
   public get createdAt() {
     return this.getStringAttribute('created_at');
@@ -222,6 +242,11 @@ export class VpcPrivateNetworkIpv6SubnetsOutputReference extends cdktf.ComplexOb
   // id - computed: true, optional: false, required: false
   public get id() {
     return this.getStringAttribute('id');
+  }
+
+  // prefix_length - computed: true, optional: false, required: false
+  public get prefixLength() {
+    return this.getNumberAttribute('prefix_length');
   }
 
   // subnet - computed: true, optional: true, required: false
@@ -238,6 +263,11 @@ export class VpcPrivateNetworkIpv6SubnetsOutputReference extends cdktf.ComplexOb
   // Temporarily expose input value. Use with caution.
   public get subnetInput() {
     return this._subnet;
+  }
+
+  // subnet_mask - computed: true, optional: false, required: false
+  public get subnetMask() {
+    return this.getStringAttribute('subnet_mask');
   }
 
   // updated_at - computed: true, optional: false, required: false
@@ -267,7 +297,7 @@ export class VpcPrivateNetworkIpv6SubnetsList extends cdktf.ComplexList {
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/vpc_private_network scaleway_vpc_private_network}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/vpc_private_network scaleway_vpc_private_network}
 */
 export class VpcPrivateNetwork extends cdktf.TerraformResource {
 
@@ -281,7 +311,7 @@ export class VpcPrivateNetwork extends cdktf.TerraformResource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/vpc_private_network scaleway_vpc_private_network} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/vpc_private_network scaleway_vpc_private_network} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -292,8 +322,8 @@ export class VpcPrivateNetwork extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_vpc_private_network',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.21.0',
-        providerVersionConstraint: '>= 2.21.0'
+        providerVersion: '2.27.0',
+        providerVersionConstraint: '>= 2.27.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,

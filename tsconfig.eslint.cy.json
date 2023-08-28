@@ -8,6 +8,7 @@
     "apps/web/next-env.d.ts",
     "apps/web/.next/types/**/*.ts",
     "apps/web/nextAuth.d.ts",
+    "packages/e2e/**/*",
     "packages/cdk/src",
     "packages/config/src",
     "packages/emails/src",

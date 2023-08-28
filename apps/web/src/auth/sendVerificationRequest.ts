@@ -17,7 +17,7 @@ export const sendVerificationRequest = async ({
     console.log(`[AUTH] Magic link for ${identifier}: ${url}`)
   }
 
-  const transport = createTransport(provider.server)
+  const transport = createTransport(provider.server as string)
   const result = await transport.sendMail({
     to: identifier,
     from: provider.from,

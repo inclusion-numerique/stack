@@ -5,7 +5,7 @@
   "license": "AGPL-3.0-or-later",
   "private": true,
   "engines": {
-    "node": "^18.15"
+    "node": "^20.5"
   },
   "packageManager": "pnpm@7.25.1",
   "scripts": {
@@ -32,12 +32,12 @@
     "overrides": {}
   },
   "optionalDependencies": {
-    "turbo-linux-arm64": "^1.9.9"
+    "turbo-linux-arm64": "^1.10.13"
   },
   "dependencies": {
-    "@manypkg/cli": "^0.20.0",
-    "dotenv": "^16.0.3",
-    "dotenv-cli": "^7.2.1",
-    "turbo": "^1.9.9"
+    "@manypkg/cli": "^0.21.0",
+    "dotenv": "^16.3.1",
+    "dotenv-cli": "^7.3.0",
+    "turbo": "^1.10.13"
   }
 }
