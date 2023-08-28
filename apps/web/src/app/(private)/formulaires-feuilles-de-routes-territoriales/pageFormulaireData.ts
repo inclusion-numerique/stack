@@ -5,10 +5,7 @@ import {
   gouvernancePersonas,
 } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
-import {
-  hasAccessToGouvernanceForm,
-  hasAccessToGouvernanceFormDevelopmentPreview,
-} from '@app/web/security/securityRules'
+import { hasAccessToGouvernanceForm } from '@app/web/security/securityRules'
 import { getFormulaireGouvernanceForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
 import {
   EtapeFormulaireGouvernance,
@@ -76,15 +73,12 @@ export const getPageFormulaireData = async (
   const formulaireGouvernance = {
     ...formulaireGouvernanceData,
   }
-  const developmentPreview = hasAccessToGouvernanceFormDevelopmentPreview(user)
   const etapeCourante = getEtapeFormulaire({
     formulaireGouvernance,
-    developmentPreview,
     user,
   })
   const etapeInfo = getInfoEtapeFormulaire({
     formulaireGouvernance,
-    developmentPreview,
     user,
   })
 
@@ -105,7 +99,6 @@ export const getPageFormulaireData = async (
     user,
     persona,
     formulaireGouvernance,
-    developmentPreview,
     etapeCourante,
     etapeInfo,
   })
@@ -114,7 +107,6 @@ export const getPageFormulaireData = async (
     user,
     persona,
     formulaireGouvernance,
-    developmentPreview,
     etapeCourante,
     etapeInfo,
   }

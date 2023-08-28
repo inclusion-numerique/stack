@@ -4,10 +4,7 @@ import z from 'zod'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
-import {
-  canUpdateFormulaireGouvernance,
-  hasAccessToGouvernanceFormDevelopmentPreview,
-} from '@app/web/security/securityRules'
+import { canUpdateFormulaireGouvernance } from '@app/web/security/securityRules'
 import { forbiddenError, notFoundError } from '@app/web/server/rpc/trpcErrors'
 import { ParticiperValidation } from '@app/web/gouvernance/Participer'
 import { ChoixDuFormulaireValidation } from '@app/web/gouvernance/ChoixDuFormulaire'
@@ -57,15 +54,12 @@ const getUpdatedFormulaireState = async ({
     throw new Error('Formulaire not found')
   }
 
-  const developmentPreview = hasAccessToGouvernanceFormDevelopmentPreview(user)
   const etapeCourante = getEtapeFormulaire({
     formulaireGouvernance: updatedFormulaireGouvernance,
-    developmentPreview,
     user,
   })
   const etapeInfo = getInfoEtapeFormulaire({
     formulaireGouvernance: updatedFormulaireGouvernance,
-    developmentPreview,
     user,
   })
 

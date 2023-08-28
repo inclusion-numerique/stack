@@ -83,6 +83,13 @@ Cypress.Commands.add('dsfrCollapsesShouldBeBound', () => {
 Cypress.Commands.add('testId', (testId: string) =>
   cy.get(`[data-testid="${testId}"]`),
 )
+Cypress.Commands.add('acceptNextRedirectsException', () => {
+  Cypress.on('uncaught:exception', (error, runnable) => {
+    if (error.message.includes('NEXT_REDIRECT')) {
+      return false
+    }
+  })
+})
 
 //
 declare global {
@@ -101,6 +108,7 @@ declare global {
       dsfrModalsShouldBeBound(): Chainable<void>
       dsfrCollapsesShouldBeBound(): Chainable<void>
       testId(testId: string): Chainable<JQuery<HTMLElement>>
+      acceptNextRedirectsException(): Chainable<void>
 
       //       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
       //       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>

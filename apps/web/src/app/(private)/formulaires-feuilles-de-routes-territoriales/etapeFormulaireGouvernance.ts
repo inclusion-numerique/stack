@@ -7,8 +7,6 @@ import type { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formul
 export type EtapeFormulaireGouvernance =
   // Choix de la Persona
   | 'choix-du-formulaire'
-  // Pendant le développement, page finale, confirmation d'inscription. Sera supprimée
-  | 'confirmation-inscription'
   // Choix des 2 branches du formulaire si possible (Porter ou Participer)
   | 'porter-ou-participer'
   // Branche "Participer", 1 seule étape
@@ -24,8 +22,6 @@ export type EtapeFormulaireGouvernance =
 
 export const etapePathForEtapeFormulaireGouvernance = {
   'choix-du-formulaire': '/choix-du-formulaire',
-  'confirmation-inscription': (gouvernancePersona) =>
-    `/${gouvernancePersona}/confirmation-inscription`,
   'porter-ou-participer': (gouvernancePersona) =>
     `/${gouvernancePersona}/porter-ou-participer`,
   participer: (gouvernancePersona) => `/${gouvernancePersona}/participer`,
@@ -102,8 +98,6 @@ export type GetEtapeInput = {
     | 'etapeInformationsParticipant'
     | 'confirmeEtEnvoye'
   >
-  // Feature flag while developing
-  developmentPreview: boolean
   user: {
     gouvernancePersona: string | null
   }
@@ -126,7 +120,6 @@ export const getEtapeFormulaire = ({
     intention,
     confirmeEtEnvoye,
   },
-  developmentPreview,
   user,
 }: GetEtapeInput): EtapeEnCours => {
   const gouvernancePersona = gouvernancePersonaString as GouvernancePersonaId
@@ -140,16 +133,6 @@ export const getEtapeFormulaire = ({
       retour: null,
       breadcrumb: [],
       etapesAccessibles: [],
-    }
-  }
-
-  // Pendant le développement, page finale, confirmation d'inscription. Sera supprimée
-  if (!developmentPreview) {
-    return {
-      etape: 'confirmation-inscription',
-      retour: null,
-      breadcrumb: [],
-      etapesAccessibles: ['choix-du-formulaire'],
     }
   }
 

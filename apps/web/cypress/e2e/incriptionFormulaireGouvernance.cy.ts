@@ -1,6 +1,5 @@
 import { v4 } from 'uuid'
 import { appUrl, createTestUser } from '../support/helpers'
-import { checkGouvernanceWelcomeEmailReceived } from './checkGouvernanceWelcomeEmailReceived'
 import { goToMostRecentEmailReceived } from './goToMostRecentEmailReceived'
 
 const signinWithCtaEmail = ({ email }: { email: string }) => {
@@ -52,21 +51,20 @@ describe('ETQ Visiteur de la page gouvernance, je peux accéder au formulaire qu
     cy.url().should(
       'equal',
       appUrl(
-        '/formulaires-feuilles-de-routes-territoriales/conseil-departemental',
+        '/formulaires-feuilles-de-routes-territoriales/conseil-departemental/porter-ou-participer',
       ),
     )
 
-    cy.contains('Un mail de confirmation vous a été envoyé')
+    cy.contains('Conseil départemental')
 
-    checkGouvernanceWelcomeEmailReceived()
-    cy.contains('En tant que conseil départemental')
+    cy.contains('Portez une feuille de route ou participez')
   })
 
   it('Acceptation 2 - Inscription déjà réalisée, indempotent', () => {
     const userId = v4()
     const user = createTestUser({
       id: userId,
-      gouvernancePersona: 'epci',
+      gouvernancePersona: 'commune',
       emailVerified: new Date().toISOString(),
     })
     cy.createUser(user)
@@ -77,44 +75,7 @@ describe('ETQ Visiteur de la page gouvernance, je peux accéder au formulaire qu
       data: {
         formulaireGouvernance: {
           create: {
-            gouvernancePersona: 'epci',
-            id: v4(),
-            createurId: userId,
-            demonstration: false,
-          },
-        },
-      },
-    })
-    cy.visit('/gouvernance')
-    cy.get('a').contains('EPCI').click()
-    cy.url().should('equal', appUrl('/gouvernance/epci'))
-    cy.contains('EPCI')
-    signinWithCtaEmail({ email: user.email })
-
-    cy.url().should(
-      'equal',
-      appUrl('/formulaires-feuilles-de-routes-territoriales/epci'),
-    )
-
-    cy.contains('Un mail de confirmation vous a été envoyé')
-  })
-
-  it('Acceptation 3 - Inscription déjà réalisée avec une autre persona', () => {
-    const userId = v4()
-    const user = createTestUser({
-      id: userId,
-      gouvernancePersona: 'epci',
-      emailVerified: new Date().toISOString(),
-    })
-    cy.createUser(user)
-    cy.updateUser({
-      where: {
-        id: userId,
-      },
-      data: {
-        formulaireGouvernance: {
-          create: {
-            gouvernancePersona: 'epci',
+            gouvernancePersona: 'commune',
             id: v4(),
             createurId: userId,
             demonstration: false,
@@ -130,7 +91,48 @@ describe('ETQ Visiteur de la page gouvernance, je peux accéder au formulaire qu
 
     cy.url().should(
       'equal',
-      appUrl('/formulaires-feuilles-de-routes-territoriales'),
+      appUrl(
+        '/formulaires-feuilles-de-routes-territoriales/commune/participer',
+      ),
+    )
+
+    cy.contains('Formulaire commune')
+  })
+
+  it('Acceptation 3 - Inscription déjà réalisée avec une autre persona', () => {
+    const userId = v4()
+    const user = createTestUser({
+      id: userId,
+      gouvernancePersona: 'commune',
+      emailVerified: new Date().toISOString(),
+    })
+    cy.createUser(user)
+    cy.updateUser({
+      where: {
+        id: userId,
+      },
+      data: {
+        formulaireGouvernance: {
+          create: {
+            gouvernancePersona: 'commune',
+            id: v4(),
+            createurId: userId,
+            demonstration: false,
+          },
+        },
+      },
+    })
+    cy.visit('/gouvernance')
+    cy.get('a').contains('EPCI').click()
+    cy.url().should('equal', appUrl('/gouvernance/epci'))
+    cy.contains('EPCI')
+    signinWithCtaEmail({ email: user.email })
+
+    cy.url().should(
+      'equal',
+      appUrl(
+        '/formulaires-feuilles-de-routes-territoriales/choix-du-formulaire',
+      ),
     )
 
     cy.contains(
@@ -140,17 +142,76 @@ describe('ETQ Visiteur de la page gouvernance, je peux accéder au formulaire qu
     cy.get('label').contains('Conseil régional').should('not.exist')
     cy.get('label').contains('Conseil départemental').should('not.exist')
     cy.get('label').contains('structure').should('not.exist')
-    cy.get('label').contains('EPCI')
-    cy.get('label').contains('Commune').click()
+    cy.get('label').contains('Commune')
+    cy.get('label').contains('EPCI').click()
 
     cy.get('button').contains('Valider').click()
     cy.url().should(
       'equal',
-      appUrl('/formulaires-feuilles-de-routes-territoriales/commune'),
+      appUrl(
+        '/formulaires-feuilles-de-routes-territoriales/epci/porter-ou-participer',
+      ),
     )
-    cy.contains('Un mail de confirmation vous a été envoyé')
+    cy.contains('EPCI & groupement de communes')
 
-    checkGouvernanceWelcomeEmailReceived()
-    cy.contains('En tant que commune')
+    cy.contains('Portez une feuille de route ou participez')
+  })
+
+  it('Acceptation 3 - Inscription déjà réalisée avec une autre persona', () => {
+    const userId = v4()
+    const user = createTestUser({
+      id: userId,
+      gouvernancePersona: 'commune',
+      emailVerified: new Date().toISOString(),
+    })
+    cy.createUser(user)
+    cy.updateUser({
+      where: {
+        id: userId,
+      },
+      data: {
+        formulaireGouvernance: {
+          create: {
+            gouvernancePersona: 'commune',
+            id: v4(),
+            createurId: userId,
+            demonstration: false,
+          },
+        },
+      },
+    })
+    cy.visit('/gouvernance')
+    cy.get('a').contains('EPCI').click()
+    cy.url().should('equal', appUrl('/gouvernance/epci'))
+    cy.contains('EPCI')
+    signinWithCtaEmail({ email: user.email })
+
+    cy.url().should(
+      'equal',
+      appUrl(
+        '/formulaires-feuilles-de-routes-territoriales/choix-du-formulaire',
+      ),
+    )
+
+    cy.contains(
+      'vous vous êtes identifié comme étant un autre type de collectivité ou d’acteur territorial',
+    )
+
+    cy.get('label').contains('Conseil régional').should('not.exist')
+    cy.get('label').contains('Conseil départemental').should('not.exist')
+    cy.get('label').contains('structure').should('not.exist')
+    cy.get('label').contains('Commune')
+    cy.get('label').contains('EPCI').click()
+
+    cy.get('button').contains('Valider').click()
+    cy.url().should(
+      'equal',
+      appUrl(
+        '/formulaires-feuilles-de-routes-territoriales/epci/porter-ou-participer',
+      ),
+    )
+    cy.contains('EPCI & groupement de communes')
+
+    cy.contains('Portez une feuille de route ou participez')
   })
 })

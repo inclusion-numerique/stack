@@ -32,7 +32,7 @@ describe('ETQ Visiteur qui souhaite se connecter en Préfecture, je peux me conn
 
     cy.testId('tableau-de-bord-cta').click()
 
-    cy.findByRole('dialog').as('modal')
+    cy.get('#tableau-de-bord-cta-modal').as('modal')
     cy.get('@modal').contains('J’ai compris').click()
 
     cy.url().should(
@@ -85,9 +85,6 @@ describe('ETQ Visiteur qui souhaite se connecter en Préfecture, je peux me conn
     cy.contains('Tableau de bord').should('not.exist')
 
     cy.contains('Accéder aux formulaires').click()
-    cy.url().should(
-      'equal',
-      appUrl('/formulaires-feuilles-de-routes-territoriales'),
-    )
+    cy.url().should('equal', appUrl('/gouvernance'))
   })
 })
