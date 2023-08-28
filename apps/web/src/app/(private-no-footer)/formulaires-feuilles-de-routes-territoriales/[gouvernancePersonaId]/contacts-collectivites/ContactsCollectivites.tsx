@@ -104,7 +104,6 @@ const ContactsCollectivites = ({
               {etapeError}
             </p>
           )}
-
           <CheckboxFormField
             control={etapeForm.control}
             path="skip"

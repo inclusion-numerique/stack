@@ -40,7 +40,7 @@ const ChoixDuFormulaireForm = ({
       applyZodValidationMutationErrorsToForm(mutationError, form.setError)
     }
   }
-  const disabled =
+  const isLoading =
     form.formState.isSubmitting || form.formState.isSubmitSuccessful
 
   const options: RichRadioOption[] = availableChoices.map((choice) => {
@@ -55,13 +55,16 @@ const ChoixDuFormulaireForm = ({
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <RichRadioFormField
-        disabled={disabled}
+        disabled={isLoading}
         control={form.control}
         path="gouvernancePersonaId"
         options={options}
       />
       <div className="fr-btns-group">
-        <Button type="submit" disabled={disabled}>
+        <Button
+          type="submit"
+          className={isLoading ? 'fr-btn--loading' : undefined}
+        >
           Valider
         </Button>
       </div>

@@ -1,4 +1,5 @@
 import Notice from '@codegouvfr/react-dsfr/Notice'
+import React from 'react'
 import { GouvernancePersona } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import GouvernanceSignupForm from '@app/web/app/(public)/gouvernance/GouvernanceSignupForm'
@@ -48,11 +49,6 @@ const GouvernancePersonaSignup = async ({
               <hr />
             </div>
           ))}
-          <h2>Inscription au formulaire</h2>
-          <Notice
-            className="fr-my-4v"
-            title="Les formulaires à remplir sont en cours de construction. En renseignant votre mail, vous serez informé dès qu’ils seront disponibles."
-          />
           <GouvernanceSignupForm gouvernancePersonaId={id} user={user} />
         </div>
       </div>

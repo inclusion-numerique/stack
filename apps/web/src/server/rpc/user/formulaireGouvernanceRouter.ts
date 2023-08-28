@@ -5,7 +5,6 @@ import z from 'zod'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
-import { sendGouvernanceWelcomeEmail } from '@app/web/gouvernance/sendGouvernanceWelcomeEmail'
 import {
   canUpdateFormulaireGouvernance,
   hasAccessToGouvernanceFormDevelopmentPreview,
@@ -113,7 +112,7 @@ export const formulaireGouvernanceRouter = router({
           user,
         })
       }
-      const updatedUser = await prismaClient.user.update({
+      await prismaClient.user.update({
         where: { id: user.id },
         data: {
           gouvernancePersona: gouvernancePersonaId,
@@ -136,16 +135,6 @@ export const formulaireGouvernanceRouter = router({
           user,
         })
       }
-
-      // Send welcome email with new persona
-      sendGouvernanceWelcomeEmail({
-        user: {
-          ...updatedUser,
-          gouvernancePersona: gouvernancePersonaId,
-        },
-      }).catch((error) => {
-        Sentry.captureException(error)
-      })
 
       return getUpdatedFormulaireState({
         formulaireGouvernance: { id: formulaireGouvernanceId },

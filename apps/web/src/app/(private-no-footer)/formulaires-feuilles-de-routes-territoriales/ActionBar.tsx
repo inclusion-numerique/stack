@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import * as Sentry from '@sentry/nextjs'
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, ReactNode } from 'react'
 import { trpc } from '@app/web/trpc'
 import PersistenceStateBadge from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/PersistenceStateBadge'
 import styles from './ActionBar.module.css'
@@ -20,10 +20,12 @@ const ActionBar = ({
   loading,
   autoSaving,
   formulaireGouvernanceId,
+  skip,
 }: PropsWithChildren<{
   autoSaving: boolean
   formulaireGouvernanceId: string
   loading: boolean
+  skip?: ReactNode
 }>) => {
   const mutation = trpc.formulaireGouvernance.annuler.useMutation()
   const router = useRouter()
@@ -53,6 +55,19 @@ const ActionBar = ({
             <PersistenceStateBadge state={autoSaving ? 'saving' : 'saved'} />
           </div>
           <div className={styles.buttons}>
+            {!!skip && (
+              <Button
+                priority="tertiary no outline"
+                type="submit"
+                className={loading ? 'fr-btn--loading' : undefined}
+                disabled={autoSaving}
+                nativeButtonProps={{
+                  name: 'skip',
+                }}
+              >
+                {skip}
+              </Button>
+            )}
             <Button
               priority="secondary"
               type="button"
@@ -67,6 +82,9 @@ const ActionBar = ({
               type="submit"
               className={loading ? 'fr-btn--loading' : undefined}
               disabled={autoSaving}
+              nativeButtonProps={{
+                name: 'submit',
+              }}
             >
               Étape suivante
             </Button>

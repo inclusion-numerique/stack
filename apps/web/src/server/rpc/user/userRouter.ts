@@ -42,7 +42,6 @@ export const userRouter = router({
             name:
               firstName && lastName ? `${firstName} ${lastName}` : undefined,
             gouvernancePersona: gouvernancePersonaId,
-            gouvernanceSignupEmailSent: null,
           },
           create: {
             id: v4(),
