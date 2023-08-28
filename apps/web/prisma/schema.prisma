@@ -503,7 +503,7 @@ model FormulaireGouvernance {
   createur   User   @relation("formulaire_gouvernance_createur", fields: [createurId], references: [id])
 
   // Formulaire créé par un administrateur ou un compte de démonstration
-  demonstration Boolean
+  demonstration Boolean @default(false)
 
   modification DateTime  @updatedAt
   creation     DateTime  @default(now())
