@@ -1,4 +1,3 @@
-import Notice from '@codegouvfr/react-dsfr/Notice'
 import React from 'react'
 import { GouvernancePersona } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'

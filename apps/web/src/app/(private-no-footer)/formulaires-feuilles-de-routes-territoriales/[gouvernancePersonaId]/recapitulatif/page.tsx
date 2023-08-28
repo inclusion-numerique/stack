@@ -6,8 +6,6 @@ import {
 } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/pageFormulaireData'
 import BackLink from '@app/web/components/BackLink'
 import Progress from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/Progress'
-import { getEtapeInfo } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/etapeFormulaireGouvernance'
-import AutresStructures from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/autres-structures/AutresStructures'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -17,11 +15,6 @@ const Page = async (props: PageFormulaireProps) => {
   const { formulaireGouvernance, persona } = await getPageFormulaireData(
     props,
     'recapitulatif',
-  )
-
-  const nextEtapeInfo = getEtapeInfo(
-    'confirmation-formulaire-envoye',
-    persona.id,
   )
 
   return (

@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/nextjs'
 import { v4 } from 'uuid'
 import type { Prisma, UserRole } from '@prisma/client'
 import z from 'zod'
