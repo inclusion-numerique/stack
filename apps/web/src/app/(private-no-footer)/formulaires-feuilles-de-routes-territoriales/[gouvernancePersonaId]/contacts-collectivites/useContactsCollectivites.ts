@@ -78,11 +78,9 @@ export const useContactsCollectivites = ({
 
   const saveContact = useCallback(
     (participantId: string, data: ContactCollectiviteData) => {
-      console.log('SAVE CONTACT', data)
       setContactsCollectivites((previous) => {
         const newContacts = new Map(previous)
         const contact = newContacts.get(participantId)
-        console.log('SAVING? CHANGING STATE', contact)
         if (contact) {
           newContacts.set(participantId, {
             ...contact,
@@ -98,11 +96,9 @@ export const useContactsCollectivites = ({
   )
 
   const editContact = useCallback((participantId: string) => {
-    console.log('EDIT CONTACT', participantId)
     setContactsCollectivites((previous) => {
       const newContacts = new Map(previous)
       const contact = newContacts.get(participantId)
-      console.log('EDITING? CHANGING STATE', contact)
 
       if (contact) {
         newContacts.set(participantId, { ...contact, state: 'pending' })

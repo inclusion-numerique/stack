@@ -14,28 +14,25 @@ export const revalidate = 0
 export { pageFormulaireMetadata as metadata } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/pageFormulaireData'
 
 const Page = async (props: PageFormulaireProps) => {
-  const { formulaireGouvernance, persona } = await getPageFormulaireData(
-    props,
-    'autres-structures',
-  )
+  const { formulaireGouvernance, persona, breadcrumbs, retourHref } =
+    await getPageFormulaireData(props, 'autres-structures')
 
-  const nextEtapeInfo = getEtapeInfo('recapitulatif', persona.id)
+  if (!persona) {
+    throw new Error('autres structures page: persona is missing')
+  }
+
+  const nextEtapeInfo = getEtapeInfo({
+    etape: 'recapitulatif',
+    gouvernancePersonaId: persona.id,
+  })
 
   return (
     <>
       <div className="fr-container">
-        <Breadcrumbs
-          currentPage={persona.title}
-          parents={[
-            {
-              label: 'Formulaires feuilles de routes territoriales',
-              linkProps: { href: '/gouvernance' },
-            },
-          ]}
-        />
+        <Breadcrumbs {...breadcrumbs} />
       </div>
       <div className="fr-container fr-container--medium formulaire-gouvernance-no-footer-margin-bottom">
-        <BackLink href="/formulaires-feuilles-de-routes-territoriales" />
+        <BackLink href={retourHref} />
 
         <Progress
           progression={4}

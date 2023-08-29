@@ -16,12 +16,16 @@ export const revalidate = 0
 export { pageFormulaireMetadata as metadata } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/pageFormulaireData'
 
 const Page = async (props: PageFormulaireProps) => {
-  const { formulaireGouvernance, persona } = await getPageFormulaireData(
-    props,
-    'informations-participant',
-  )
+  const { formulaireGouvernance, persona, retourHref, breadcrumbs } =
+    await getPageFormulaireData(props, 'informations-participant')
 
-  const nextEtapeInfo = getEtapeInfo('perimetre-feuille-de-route', persona.id)
+  if (!persona) {
+    throw new Error('informations page: persona is missing')
+  }
+  const nextEtapeInfo = getEtapeInfo({
+    etape: 'perimetre-feuille-de-route',
+    gouvernancePersonaId: persona.id,
+  })
 
   const [optionsRegions, optionsDepartements] = await Promise.all([
     prismaClient.region
@@ -57,18 +61,10 @@ const Page = async (props: PageFormulaireProps) => {
   return (
     <>
       <div className="fr-container">
-        <Breadcrumbs
-          currentPage={persona.title}
-          parents={[
-            {
-              label: 'Formulaires feuilles de routes territoriales',
-              linkProps: { href: '/gouvernance' },
-            },
-          ]}
-        />
+        <Breadcrumbs {...breadcrumbs} />
       </div>
       <div className="fr-container fr-container--medium formulaire-gouvernance-no-footer-margin-bottom">
-        <BackLink href="/formulaires-feuilles-de-routes-territoriales" />
+        <BackLink href={retourHref} />
 
         <Progress
           progression={1}

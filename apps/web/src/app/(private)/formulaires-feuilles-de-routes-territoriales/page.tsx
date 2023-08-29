@@ -14,7 +14,7 @@ export { pageFormulaireMetadata as metadata } from '@app/web/app/(private)/formu
 const Page = async (props: PageFormulaireProps) => {
   const data = await getPageFormulaireData(props, null)
 
-  redirect(data.etapeInfo.absolutePath)
+  redirect(data.etapeCouranteInfo.absolutePath)
 }
 
 export default Page

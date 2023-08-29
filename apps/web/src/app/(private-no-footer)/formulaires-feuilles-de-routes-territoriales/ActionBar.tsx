@@ -21,11 +21,13 @@ const ActionBar = ({
   autoSaving,
   formulaireGouvernanceId,
   skip,
+  submitLabel,
 }: PropsWithChildren<{
   autoSaving: boolean
   formulaireGouvernanceId: string
   loading: boolean
   skip?: ReactNode
+  submitLabel?: string
 }>) => {
   const mutation = trpc.formulaireGouvernance.annuler.useMutation()
   const router = useRouter()
@@ -86,7 +88,7 @@ const ActionBar = ({
                 name: 'submit',
               }}
             >
-              Étape suivante
+              {submitLabel ?? 'Étape suivante'}
             </Button>
           </div>
         </div>

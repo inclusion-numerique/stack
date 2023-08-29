@@ -11,6 +11,7 @@ import {
   getPageFormulaireData,
   PageFormulaireProps,
 } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/pageFormulaireData'
+import BackLink from '@app/web/components/BackLink'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -22,18 +23,24 @@ export { pageFormulaireMetadata as metadata } from '@app/web/app/(private)/formu
  *  - Set the gouvernance persona if the user has no persona
  */
 const Page = async (props: PageFormulaireProps<{ changer?: string }>) => {
-  const { etapeInfo, etapeCourante, user, formulaireGouvernance } =
-    await getPageFormulaireData(props, 'choix-du-formulaire')
+  const {
+    etapeCouranteInfo,
+    breadcrumbs,
+    retourHref,
+    etapeCourante,
+    user,
+    formulaireGouvernance,
+  } = await getPageFormulaireData(props, 'choix-du-formulaire')
   const { changer } = props.searchParams ?? {}
 
   // The user has not changed his gouvernance persona and do not want to change it
   // We redirect to current step
   if (
-    etapeCourante.etape !== 'choix-du-formulaire' &&
+    etapeCourante !== 'choix-du-formulaire' &&
     formulaireGouvernance?.gouvernancePersona === user.gouvernancePersona &&
     changer === undefined
   ) {
-    redirect(etapeInfo.absolutePath)
+    redirect(etapeCouranteInfo.absolutePath)
   }
 
   // -- If there is a mismatch between the user persona and the form persona, we ask him to choose
@@ -57,17 +64,17 @@ const Page = async (props: PageFormulaireProps<{ changer?: string }>) => {
         }
 
   return (
-    <div className="fr-container">
-      <Breadcrumbs
-        parents={[
-          {
-            label: 'Formulaires feuilles de routes territoriales',
-            linkProps: { href: '/gouvernance' },
-          },
-        ]}
-        currentPage="Choix du formulaire"
-      />
-      <ContainerCard illustrationSrc="/dsfr/artwork/pictograms/system/information.svg">
+    <>
+      <div className="fr-container">
+        <Breadcrumbs {...breadcrumbs} />
+      </div>
+      <div className="fr-container fr-container--narrow">
+        <BackLink href={retourHref} />
+      </div>
+      <ContainerCard
+        className="fr-mt-8v"
+        illustrationSrc="/dsfr/artwork/pictograms/system/information.svg"
+      >
         <h2>Choix du formulaire à compléter</h2>
         {isMismatch ? (
           <p>
@@ -91,7 +98,7 @@ const Page = async (props: PageFormulaireProps<{ changer?: string }>) => {
         )}
         <ChoixDuFormulaireForm availableChoices={availableChoices} />
       </ContainerCard>
-    </div>
+    </>
   )
 }
 

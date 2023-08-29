@@ -5,6 +5,7 @@ import {
 } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/pageFormulaireData'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import ChoixIntention from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/porter-ou-participer/ChoixIntention'
+import BackLink from '@app/web/components/BackLink'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -14,10 +15,12 @@ export { pageFormulaireMetadata as metadata } from '@app/web/app/(private)/formu
  * Cette page permet de choisir l'intention du formulaire de gouvernance (porter ou participer)
  */
 const Page = async (props: PageFormulaireProps) => {
-  const { persona, formulaireGouvernance } = await getPageFormulaireData(
-    props,
-    'porter-ou-participer',
-  )
+  const { persona, formulaireGouvernance, retourHref } =
+    await getPageFormulaireData(props, 'porter-ou-participer')
+
+  if (!persona) {
+    throw new Error('porter-ou-participer: persona is missing')
+  }
 
   // If the form persona can have both intention "porter" and "participer", we make the user choose
   return (
@@ -34,6 +37,7 @@ const Page = async (props: PageFormulaireProps) => {
         />
       </div>
       <div className="fr-container fr-container--narrow">
+        <BackLink href={retourHref} />
         <ChoixIntention
           persona={persona}
           formulaireGouvernance={formulaireGouvernance}

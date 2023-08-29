@@ -126,12 +126,17 @@ const PerimetreRegionWrapper = asyncComponent(
  * This page redirects to the current step of the form
  */
 const Page = async (props: PageFormulaireProps) => {
-  const { formulaireGouvernance, persona } = await getPageFormulaireData(
-    props,
-    'perimetre-feuille-de-route',
-  )
+  const { formulaireGouvernance, persona, breadcrumbs, retourHref } =
+    await getPageFormulaireData(props, 'perimetre-feuille-de-route')
 
-  const nextEtapeInfo = getEtapeInfo('contacts-collectivites', persona.id)
+  if (!persona) {
+    throw new Error('perimetre page: persona is missing')
+  }
+
+  const nextEtapeInfo = getEtapeInfo({
+    etape: 'contacts-collectivites',
+    gouvernancePersonaId: persona.id,
+  })
 
   let wrapper: ReactNode = null
   switch (persona.id) {
@@ -194,18 +199,10 @@ const Page = async (props: PageFormulaireProps) => {
   return (
     <>
       <div className="fr-container">
-        <Breadcrumbs
-          currentPage={persona.title}
-          parents={[
-            {
-              label: 'Formulaires feuilles de routes territoriales',
-              linkProps: { href: '/gouvernance' },
-            },
-          ]}
-        />
+        <Breadcrumbs {...breadcrumbs} />
       </div>
       <div className="fr-container fr-container--medium formulaire-gouvernance-no-footer-margin-bottom">
-        <BackLink href="/formulaires-feuilles-de-routes-territoriales" />
+        <BackLink href={retourHref} />
         <Progress
           progression={2}
           currentTitle="Périmètre de votre feuille de route"

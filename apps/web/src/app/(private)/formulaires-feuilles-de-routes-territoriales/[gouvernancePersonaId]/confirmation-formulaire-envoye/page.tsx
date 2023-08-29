@@ -15,7 +15,7 @@ export { pageFormulaireMetadata as metadata } from '@app/web/app/(private)/formu
  * This page redirects to the current step of the form
  */
 const Page = async (props: PageFormulaireProps) => {
-  const { persona } = await getPageFormulaireData(
+  const { breadcrumbs } = await getPageFormulaireData(
     props,
     'confirmation-formulaire-envoye',
   )
@@ -23,15 +23,7 @@ const Page = async (props: PageFormulaireProps) => {
   return (
     <>
       <div className="fr-container">
-        <Breadcrumbs
-          currentPage={persona.title}
-          parents={[
-            {
-              label: 'Formulaires feuilles de routes territoriales',
-              linkProps: { href: '/gouvernance' },
-            },
-          ]}
-        />
+        <Breadcrumbs {...breadcrumbs} />
       </div>
       <ContainerCard
         illustrationSrc="/dsfr/artwork/pictograms/system/success.svg"

@@ -11,7 +11,6 @@ import { useRouter } from 'next/navigation'
 import { GouvernancePersona } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import BackLink from '@app/web/components/BackLink'
 import WhiteCard from '@app/web/ui/WhiteCard'
 import RedAsterisk from '@app/web/ui/RedAsterisk'
 import {
@@ -81,199 +80,196 @@ const Participer = ({
   }
 
   return (
-    <>
-      <BackLink href="/formulaires-feuilles-de-routes-territoriales" />
-      <WhiteCard className="fr-mt-6v fr-mb-30v">
-        <h2 className="fr-text-title--blue-france">
-          Formulaire{' '}
-          {(persona.shortTitle ?? persona.title).toLocaleLowerCase('fr')}
-        </h2>
-        <p className="fr-text--lg fr-my-4v">
-          Complétez ce formulaire pour participer à l’élaboration des feuilles
-          de routes territoriales de votre département. Vous serez sollicités à
-          l’occasion des concertations territoriales.
-        </p>
-        <p className="fr-text--sm fr-text--medium fr-my-4v">
-          Les champs avec <RedAsterisk /> sont obligatoires
-        </p>
-        <hr className="separator--10v" />
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          {formulaireGouvernance.gouvernancePersona === 'structure' ? (
-            <>
-              <h5>Informations sur la structure</h5>
-              <InputFormField
-                control={form.control}
-                path="nomStructure"
-                label="Nom structure"
-                asterisk
-                disabled={disabled}
-              />
-              <InputFormField
-                control={form.control}
-                path="siretStructure"
-                label="SIRET structure"
-                asterisk
-                disabled={disabled}
-              />
-              <SelectFormField
-                control={form.control}
-                path="codeDepartement"
-                label="Département"
-                asterisk
-                disabled={disabled}
-                options={optionTuplesToOptions([
-                  emptyOptionTuple,
-                  ...optionsDepartements,
-                ])}
-              />
-            </>
-          ) : (
-            <CollectiviteCodeField
-              form={form}
-              persona={persona}
-              optionsRegions={optionsRegions}
-              optionsDepartements={optionsDepartements}
-            />
-          )}
-          <hr className="separator--10v" />
-
-          {formulaireGouvernance.gouvernancePersona === 'structure' ? (
-            <>
-              <h5>Contact de la structure</h5>
-              <InputFormField
-                control={form.control}
-                path="contactStructure.nom"
-                label="Nom"
-                asterisk
-                disabled={disabled}
-              />
-              <InputFormField
-                control={form.control}
-                path="contactStructure.prenom"
-                label="Prénom"
-                asterisk
-                disabled={disabled}
-              />
-              <InputFormField
-                control={form.control}
-                path="contactStructure.fonction"
-                label="Fonction"
-                asterisk
-                disabled={disabled}
-              />
-              <InputFormField
-                control={form.control}
-                path="contactStructure.email"
-                label="Adresse e-mail"
-                asterisk
-                disabled={disabled}
-              />
-            </>
-          ) : (
-            <>
-              <h5>Contact politique</h5>
-              <InputFormField
-                control={form.control}
-                path="contactPolitique.nom"
-                label="Nom"
-                asterisk
-                disabled={disabled}
-              />
-              <InputFormField
-                control={form.control}
-                path="contactPolitique.prenom"
-                label="Prénom"
-                asterisk
-                disabled={disabled}
-              />
-              <InputFormField
-                control={form.control}
-                path="contactPolitique.fonction"
-                label="Fonction"
-                asterisk
-                disabled={disabled}
-              />
-              <InputFormField
-                control={form.control}
-                path="contactPolitique.email"
-                label="Adresse e-mail"
-                asterisk
-                disabled={disabled}
-              />
-              <hr className="separator--10v" />
-
-              {showContactTechnique ? (
-                <>
-                  <div className={styles.contactTechniqueHeader}>
-                    <h5>Contact technique</h5>
-                    {showContactTechnique && (
-                      <Button
-                        type="button"
-                        className="fr-ml-1w"
-                        priority="secondary"
-                        iconId="fr-icon-delete-bin-line"
-                        iconPosition="right"
-                        onClick={removeContactTechnique}
-                      >
-                        Supprimer
-                      </Button>
-                    )}
-                  </div>
-                  <InputFormField
-                    control={form.control}
-                    path="contactTechnique.nom"
-                    label="Nom"
-                    asterisk
-                    disabled={disabled}
-                  />
-                  <InputFormField
-                    control={form.control}
-                    path="contactTechnique.prenom"
-                    label="Prénom"
-                    asterisk
-                    disabled={disabled}
-                  />
-                  <InputFormField
-                    control={form.control}
-                    path="contactTechnique.fonction"
-                    label="Fonction"
-                    asterisk
-                    disabled={disabled}
-                  />
-                  <InputFormField
-                    control={form.control}
-                    path="contactTechnique.email"
-                    label="Adresse e-mail"
-                    asterisk
-                    disabled={disabled}
-                  />
-                </>
-              ) : (
-                <div className="fr-btns-group fr-btns-group--icon-left">
-                  <Button
-                    type="button"
-                    priority="tertiary"
-                    iconId="fr-icon-add-line"
-                    onClick={addContactTechnique}
-                  >
-                    Ajouter un contact technique (facultatif)
-                  </Button>
-                </div>
-              )}
-            </>
-          )}
-          <div className="fr-btns-group fr-mt-10v">
-            <Button
-              type="submit"
+    <WhiteCard className="fr-mt-6v fr-mb-30v">
+      <h2 className="fr-text-title--blue-france">
+        Formulaire{' '}
+        {(persona.shortTitle ?? persona.title).toLocaleLowerCase('fr')}
+      </h2>
+      <p className="fr-text--lg fr-my-4v">
+        Complétez ce formulaire pour participer à l’élaboration des feuilles de
+        routes territoriales de votre département. Vous serez sollicités à
+        l’occasion des concertations territoriales.
+      </p>
+      <p className="fr-text--sm fr-text--medium fr-my-4v">
+        Les champs avec <RedAsterisk /> sont obligatoires
+      </p>
+      <hr className="separator--10v" />
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        {formulaireGouvernance.gouvernancePersona === 'structure' ? (
+          <>
+            <h5>Informations sur la structure</h5>
+            <InputFormField
+              control={form.control}
+              path="nomStructure"
+              label="Nom structure"
+              asterisk
               disabled={disabled}
-              className={classNames(isLoading && 'fr-btn--loading')}
-            >
-              Confirmer et envoyer
-            </Button>
-          </div>
-        </form>
-      </WhiteCard>
-    </>
+            />
+            <InputFormField
+              control={form.control}
+              path="siretStructure"
+              label="SIRET structure"
+              asterisk
+              disabled={disabled}
+            />
+            <SelectFormField
+              control={form.control}
+              path="codeDepartement"
+              label="Département"
+              asterisk
+              disabled={disabled}
+              options={optionTuplesToOptions([
+                emptyOptionTuple,
+                ...optionsDepartements,
+              ])}
+            />
+          </>
+        ) : (
+          <CollectiviteCodeField
+            form={form}
+            persona={persona}
+            optionsRegions={optionsRegions}
+            optionsDepartements={optionsDepartements}
+          />
+        )}
+        <hr className="separator--10v" />
+
+        {formulaireGouvernance.gouvernancePersona === 'structure' ? (
+          <>
+            <h5>Contact de la structure</h5>
+            <InputFormField
+              control={form.control}
+              path="contactStructure.nom"
+              label="Nom"
+              asterisk
+              disabled={disabled}
+            />
+            <InputFormField
+              control={form.control}
+              path="contactStructure.prenom"
+              label="Prénom"
+              asterisk
+              disabled={disabled}
+            />
+            <InputFormField
+              control={form.control}
+              path="contactStructure.fonction"
+              label="Fonction"
+              asterisk
+              disabled={disabled}
+            />
+            <InputFormField
+              control={form.control}
+              path="contactStructure.email"
+              label="Adresse e-mail"
+              asterisk
+              disabled={disabled}
+            />
+          </>
+        ) : (
+          <>
+            <h5>Contact politique</h5>
+            <InputFormField
+              control={form.control}
+              path="contactPolitique.nom"
+              label="Nom"
+              asterisk
+              disabled={disabled}
+            />
+            <InputFormField
+              control={form.control}
+              path="contactPolitique.prenom"
+              label="Prénom"
+              asterisk
+              disabled={disabled}
+            />
+            <InputFormField
+              control={form.control}
+              path="contactPolitique.fonction"
+              label="Fonction"
+              asterisk
+              disabled={disabled}
+            />
+            <InputFormField
+              control={form.control}
+              path="contactPolitique.email"
+              label="Adresse e-mail"
+              asterisk
+              disabled={disabled}
+            />
+            <hr className="separator--10v" />
+
+            {showContactTechnique ? (
+              <>
+                <div className={styles.contactTechniqueHeader}>
+                  <h5>Contact technique</h5>
+                  {showContactTechnique && (
+                    <Button
+                      type="button"
+                      className="fr-ml-1w"
+                      priority="secondary"
+                      iconId="fr-icon-delete-bin-line"
+                      iconPosition="right"
+                      onClick={removeContactTechnique}
+                    >
+                      Supprimer
+                    </Button>
+                  )}
+                </div>
+                <InputFormField
+                  control={form.control}
+                  path="contactTechnique.nom"
+                  label="Nom"
+                  asterisk
+                  disabled={disabled}
+                />
+                <InputFormField
+                  control={form.control}
+                  path="contactTechnique.prenom"
+                  label="Prénom"
+                  asterisk
+                  disabled={disabled}
+                />
+                <InputFormField
+                  control={form.control}
+                  path="contactTechnique.fonction"
+                  label="Fonction"
+                  asterisk
+                  disabled={disabled}
+                />
+                <InputFormField
+                  control={form.control}
+                  path="contactTechnique.email"
+                  label="Adresse e-mail"
+                  asterisk
+                  disabled={disabled}
+                />
+              </>
+            ) : (
+              <div className="fr-btns-group fr-btns-group--icon-left">
+                <Button
+                  type="button"
+                  priority="tertiary"
+                  iconId="fr-icon-add-line"
+                  onClick={addContactTechnique}
+                >
+                  Ajouter un contact technique (facultatif)
+                </Button>
+              </div>
+            )}
+          </>
+        )}
+        <div className="fr-btns-group fr-mt-10v">
+          <Button
+            type="submit"
+            disabled={disabled}
+            className={classNames(isLoading && 'fr-btn--loading')}
+          >
+            Confirmer et envoyer
+          </Button>
+        </div>
+      </form>
+    </WhiteCard>
   )
 }
 

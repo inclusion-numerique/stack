@@ -7,7 +7,6 @@ import { useState } from 'react'
 import * as Sentry from '@sentry/nextjs'
 import { GouvernancePersona } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import WhiteCard from '@app/web/ui/WhiteCard'
-import BackLink from '@app/web/components/BackLink'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import linkCardStyles from '@app/web/ui/LinkCard.module.css'
@@ -18,7 +17,9 @@ const ChoixIntention = ({
   formulaireGouvernance,
 }: {
   persona: GouvernancePersona
-  formulaireGouvernance: { id: string }
+  formulaireGouvernance: {
+    id: string
+  }
 }) => {
   const router = useRouter()
 
@@ -46,8 +47,6 @@ const ChoixIntention = ({
 
   return (
     <>
-      {/* Le formulaire n'a pas "commencé", on peut retourner vers le choix de la persona */}
-      <BackLink href="/formulaires-feuilles-de-routes-territoriales?changer=1" />
       <WhiteCard className="fr-mt-8v">
         <h2 className="fr-text-title--blue-france">{persona.title}</h2>
         <p className="fr-text--lg fr-mb-0 fr-mt-4v">{persona.cta}</p>

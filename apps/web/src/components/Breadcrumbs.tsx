@@ -8,13 +8,12 @@ export type BreadcrumbParent = {
 }
 export type BreadcrumbParents = BreadcrumbParent[]
 
-const Breadcrumbs = ({
-  currentPage,
-  parents = [],
-}: {
+export type BreadcrumbsProps = {
   currentPage: string
   parents?: BreadcrumbParents
-}) => (
+}
+
+const Breadcrumbs = ({ currentPage, parents = [] }: BreadcrumbsProps) => (
   <Breadcrumb
     currentPageLabel={currentPage}
     homeLinkProps={{

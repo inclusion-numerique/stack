@@ -114,6 +114,10 @@ const PerimetreFeuilleDeRoute = ({
     event.preventDefault()
     setShowEtapeErrors(true)
     if (etapeError) {
+      setTimeout(() => {
+        // Scroll on next render
+        document.querySelector('#etape-error')?.scrollIntoView()
+      }, 0)
       return
     }
 
@@ -179,7 +183,9 @@ const PerimetreFeuilleDeRoute = ({
         isLoading={perimetreMutation.isLoading}
       />
       {showEtapeErrors && !!etapeError && (
-        <p className="fr-error-text">{etapeError}</p>
+        <p id="etape-error" className="fr-error-text">
+          {etapeError}
+        </p>
       )}
       <form onSubmit={onPageSubmit}>
         <ActionBar

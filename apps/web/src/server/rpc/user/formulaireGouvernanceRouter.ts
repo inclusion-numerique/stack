@@ -10,8 +10,8 @@ import { ParticiperValidation } from '@app/web/gouvernance/Participer'
 import { ChoixDuFormulaireValidation } from '@app/web/gouvernance/ChoixDuFormulaire'
 import { getFormulaireGouvernanceForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
 import {
-  getEtapeFormulaire,
-  getInfoEtapeFormulaire,
+  getEtapeEnCours,
+  getEtapeInfo,
 } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/etapeFormulaireGouvernance'
 import { PorterOuParticiperValidation } from '@app/web/gouvernance/PorterOuParticiper'
 import { AnnulerValidation } from '@app/web/gouvernance/Annuler'
@@ -21,6 +21,7 @@ import { informationsParticipantsPersistenceFromData } from '@app/web/gouvernanc
 import { PerimetreFeuilleDeRouteValidation } from '@app/web/gouvernance/PerimetreFeuilleDeRoute'
 import { ContactCollectiviteValidation } from '@app/web/gouvernance/ContactCollectivite'
 import { AutreStructureValidation } from '@app/web/gouvernance/AutreStructure'
+import { GouvernancePersonaId } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 
 const FormulaireGouvernanceIdValidation = z.object({
   formulaireGouvernanceId: z.string().uuid().nonempty(),
@@ -54,13 +55,14 @@ const getUpdatedFormulaireState = async ({
     throw new Error('Formulaire not found')
   }
 
-  const etapeCourante = getEtapeFormulaire({
+  const etapeCourante = getEtapeEnCours({
     formulaireGouvernance: updatedFormulaireGouvernance,
     user,
   })
-  const etapeInfo = getInfoEtapeFormulaire({
-    formulaireGouvernance: updatedFormulaireGouvernance,
-    user,
+  const etapeInfo = getEtapeInfo({
+    etape: etapeCourante,
+    gouvernancePersonaId:
+      updatedFormulaireGouvernance.gouvernancePersona as GouvernancePersonaId | null,
   })
 
   return { updatedFormulaireGouvernance, etapeCourante, etapeInfo }
@@ -730,6 +732,28 @@ export const formulaireGouvernanceRouter = router({
         },
         data: {
           etapeStructures: new Date(),
+        },
+        select: {
+          id: true,
+        },
+      })
+      return getUpdatedFormulaireState({
+        formulaireGouvernance: result,
+        user,
+      })
+    }),
+  recapitulatif: protectedProcedure
+    .input(FormulaireGouvernanceIdValidation)
+    .mutation(async ({ input: { formulaireGouvernanceId }, ctx: { user } }) => {
+      if (!canUpdateFormulaireGouvernance(user, formulaireGouvernanceId)) {
+        throw forbiddenError()
+      }
+      const result = await prismaClient.formulaireGouvernance.update({
+        where: {
+          id: formulaireGouvernanceId,
+        },
+        data: {
+          confirmeEtEnvoye: new Date(),
         },
         select: {
           id: true,
