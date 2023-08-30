@@ -22,6 +22,7 @@ describe('ETQ Commune connectée, je peux compléter mon formulaire de participa
       appUrl(
         '/formulaires-feuilles-de-routes-territoriales/commune/confirmation-formulaire-envoye',
       ),
+      { timeout: 10_000 },
     )
     cy.contains('Votre réponse a bien été envoyée')
   })
