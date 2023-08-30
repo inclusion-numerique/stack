@@ -19,6 +19,8 @@ describe('ETQ Commune connectée, je peux compléter mon formulaire de participa
     cy.contains('Confirmer et envoyer').click()
     cy.wait('@mutation')
 
+    cy.wait(15_000)
+
     cy.url().should(
       'equal',
       appUrl(
