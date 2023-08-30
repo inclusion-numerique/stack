@@ -50,6 +50,7 @@ const Participer = ({
   const onSubmit = async (data: ParticiperData) => {
     try {
       const { etapeInfo } = await mutation.mutateAsync(data)
+      router.refresh()
       router.push(etapeInfo.absolutePath)
     } catch (mutationError) {
       applyZodValidationMutationErrorsToForm(mutationError, form.setError)

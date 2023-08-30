@@ -125,6 +125,7 @@ const PerimetreFeuilleDeRoute = ({
       await etapeMutation.mutateAsync({
         formulaireGouvernanceId: formulaireGouvernance.id,
       })
+      router.refresh()
       router.push(nextEtapePath)
     } catch (mutationError) {
       console.error(mutationError)

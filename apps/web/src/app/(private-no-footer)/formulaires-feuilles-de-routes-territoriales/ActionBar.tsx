@@ -36,6 +36,7 @@ const ActionBar = ({
     mutation
       .mutateAsync({ formulaireGouvernanceId })
       .then(() => {
+        router.refresh()
         router.push('/')
         return null
       })

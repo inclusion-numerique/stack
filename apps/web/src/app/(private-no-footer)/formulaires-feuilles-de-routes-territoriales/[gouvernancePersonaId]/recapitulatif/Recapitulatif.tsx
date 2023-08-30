@@ -40,6 +40,7 @@ const Recapitulatif = ({
       await mutation.mutateAsync({
         formulaireGouvernanceId,
       })
+      router.refresh()
       router.push(nextEtapePath)
     } catch (mutationError) {
       console.error(mutationError)
