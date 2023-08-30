@@ -200,7 +200,7 @@ model Departement {
   code                                String                                        @id
   nom                                 String
   codeRegion                          String?                                       @map("code_region")
-  region                              Region?                                       @relation(fields: [codeRegion], references: [code])
+  region                              Region?                                       @relation(fields: [codeRegion], references: [code], onDelete: NoAction)
   communes                            Commune[]
   geometry                            Json
   // north east [[lat,long], southwest [lat,long]]
@@ -220,12 +220,12 @@ model Commune {
   codesPostaux CodesPostaux[]
 
   codeDepartement String?      @map("code_departement")
-  departement     Departement? @relation(fields: [codeDepartement], references: [code])
+  departement     Departement? @relation(fields: [codeDepartement], references: [code], onDelete: NoAction)
 
   population Int
 
   codeEpci String? @map("code_epci")
-  epci     Epci?   @relation(fields: [codeEpci], references: [code])
+  epci     Epci?   @relation(fields: [codeEpci], references: [code], onDelete: NoAction)
 
   latitude  Float?
   longitude Float?
@@ -245,7 +245,7 @@ model Commune {
 // Explicit many to many table between Commune and CodePostal
 model CodesPostaux {
   code       String
-  codePostal CodePostal @relation(fields: [code], references: [code])
+  codePostal CodePostal @relation(fields: [code], references: [code], onDelete: Cascade)
 
   codeCommune String  @map("code_commune")
   commune     Commune @relation(fields: [codeCommune], references: [code], onDelete: Cascade)
@@ -272,11 +272,11 @@ model StructureCartographieNationale {
 
   // Bad data in, bad data out. Missing communes are frequent
   codeCommune String?  @map("code_commune")
-  commune     Commune? @relation(fields: [codeCommune], references: [code])
+  commune     Commune? @relation(fields: [codeCommune], references: [code], onDelete: NoAction)
 
   // As data is really bad, as a fallback we need to store the departement code when postal code / name has a typo and no codeCommune is found
   codeDepartement String?      @map("code_repartement")
-  departement     Departement? @relation(fields: [codeDepartement], references: [code])
+  departement     Departement? @relation(fields: [codeDepartement], references: [code], onDelete: NoAction)
 
   adresse String
 
@@ -310,7 +310,7 @@ model StructureAidantsConnect {
   id String @id
 
   structureCartographieNationaleId String?                         @unique @map("structure_cartographie_nationale_id")
-  structureCartographieNationale   StructureCartographieNationale? @relation(fields: [structureCartographieNationaleId], references: [id])
+  structureCartographieNationale   StructureCartographieNationale? @relation(fields: [structureCartographieNationaleId], references: [id], onDelete: NoAction)
 
   isActive Boolean
 
@@ -342,7 +342,7 @@ model PermanenceConseillerNumerique {
   id String @id
 
   structureCartographieNationaleId String?                           @unique @map("structure_cartographie_nationale_id")
-  structureCartographieNationale   StructureCartographieNationale?   @relation(fields: [structureCartographieNationaleId], references: [id])
+  structureCartographieNationale   StructureCartographieNationale?   @relation(fields: [structureCartographieNationaleId], references: [id], onDelete: NoAction)
   enPermanence                     ConseillerNumeriqueEnPermanence[]
 
   // If we have detected an error in the data (e.g. not found in carto nationale) we store the error here
@@ -355,10 +355,10 @@ model PermanenceConseillerNumerique {
 // Explicit many to many table between PermanenceConseillerNumerique and ConseillerNumerique
 model ConseillerNumeriqueEnPermanence {
   permanenceId String                        @map("permanence_id")
-  permanence   PermanenceConseillerNumerique @relation(fields: [permanenceId], references: [id])
+  permanence   PermanenceConseillerNumerique @relation(fields: [permanenceId], references: [id], onDelete: NoAction)
 
   conseillerNumeriqueId String              @map("conseiller_numerique_id")
-  conseillerNumerique   ConseillerNumerique @relation(fields: [conseillerNumeriqueId], references: [id])
+  conseillerNumerique   ConseillerNumerique @relation(fields: [conseillerNumeriqueId], references: [id], onDelete: NoAction)
 
   @@id([permanenceId, conseillerNumeriqueId])
   @@index([conseillerNumeriqueId])
@@ -369,7 +369,7 @@ model ConseillerNumeriqueEnPermanence {
 model CoordinateurConseillerNumerique {
   id                               String      @id
   codeDepartement                  String      @map("code_departement")
-  departement                      Departement @relation(fields: [codeDepartement], references: [code])
+  departement                      Departement @relation(fields: [codeDepartement], references: [code], onDelete: NoAction)
   conseillersNumeriquesCoordonnees Int         @map("conseillers_numeriques_coordonnees")
   structuresCoordonnees            Int         @map("structures_coordonnees")
 
@@ -386,7 +386,7 @@ model ConseillerNumerique {
 
 model CraConseillerNumeriqueParDepartement {
   codeDepartement String      @id @unique @map("code_repartement")
-  departement     Departement @relation(fields: [codeDepartement], references: [code])
+  departement     Departement @relation(fields: [codeDepartement], references: [code], onDelete: NoAction)
 
   // Nombre de participants uniques
   usagers Int
@@ -439,7 +439,7 @@ model CraConseillerNumeriqueParDepartement {
 
 model IfnEpci {
   codeEpci String @id @unique @map("code_epci")
-  epci     Epci   @relation(fields: [codeEpci], references: [code], onDelete: Cascade)
+  epci     Epci   @relation(fields: [codeEpci], references: [code], onDelete: NoAction)
 
   total Float
 
@@ -463,7 +463,7 @@ model IfnEpci {
 
 model IfnCommune {
   codeCommune String  @id @unique @map("code_commune")
-  commune     Commune @relation(fields: [codeCommune], references: [code], onDelete: Cascade)
+  commune     Commune @relation(fields: [codeCommune], references: [code], onDelete: NoAction)
 
   total Float
 
@@ -526,20 +526,20 @@ model FormulaireGouvernance {
 
   // Formulaire renseigné par un Conseil régional
   regionCode String? @map("region_code")
-  region     Region? @relation(fields: [regionCode], references: [code])
+  region     Region? @relation(fields: [regionCode], references: [code], onDelete: NoAction)
 
   // Formulaire renseigné par un EPCI
   epciCode String? @map("epci_code")
-  epci     Epci?   @relation(fields: [epciCode], references: [code])
+  epci     Epci?   @relation(fields: [epciCode], references: [code], onDelete: NoAction)
 
   // Departement de la structure qui a renseigné le formulaire
   // OU Formulaire renseigné par un conseil departemental
   departementCode String?      @map("departement_code")
-  departement     Departement? @relation(fields: [departementCode], references: [code])
+  departement     Departement? @relation(fields: [departementCode], references: [code], onDelete: NoAction)
 
   // Formulaire renseigné par une commune
   communeCode String?  @map("commune_code")
-  commune     Commune? @relation(fields: [communeCode], references: [code])
+  commune     Commune? @relation(fields: [communeCode], references: [code], onDelete: NoAction)
 
   // Informations sur la structure qui a renseigné le formulaire
   // Présent lorsque le formulaire est renseigné par une structure
@@ -605,7 +605,7 @@ model DepartementParticipantFormulaireGouvernance {
   formulaireGouvernance   FormulaireGouvernance @relation(fields: [formulaireGouvernanceId], references: [id], onDelete: Cascade)
 
   departementCode String      @map("departement_code")
-  departement     Departement @relation(fields: [departementCode], references: [code])
+  departement     Departement @relation(fields: [departementCode], references: [code], onDelete: NoAction)
 
   contactId String?                       @unique @map("contact_id") @db.Uuid
   contact   ContactFormulaireGouvernance? @relation(name: "formulaire_contact_departement_participante", fields: [contactId], references: [id])
@@ -622,7 +622,7 @@ model EpciParticipantFormulaireGouvernance {
   formulaireGouvernance   FormulaireGouvernance @relation(fields: [formulaireGouvernanceId], references: [id], onDelete: Cascade)
 
   epciCode String @map("epci_code")
-  epci     Epci   @relation(fields: [epciCode], references: [code])
+  epci     Epci   @relation(fields: [epciCode], references: [code], onDelete: NoAction)
 
   contactId String?                       @unique @map("contact_id") @db.Uuid
   contact   ContactFormulaireGouvernance? @relation(name: "formulaire_contact_epci_participante", fields: [contactId], references: [id])
@@ -639,7 +639,7 @@ model CommuneParticipanteFormulaireGouvernance {
   formulaireGouvernance   FormulaireGouvernance @relation(fields: [formulaireGouvernanceId], references: [id], onDelete: Cascade)
 
   communeCode String  @map("commune_code")
-  commune     Commune @relation(fields: [communeCode], references: [code])
+  commune     Commune @relation(fields: [communeCode], references: [code], onDelete: NoAction)
 
   contactId String?                       @unique @map("contact_id") @db.Uuid
   contact   ContactFormulaireGouvernance? @relation(name: "formulaire_contact_commune_participante", fields: [contactId], references: [id])

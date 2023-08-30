@@ -4,11 +4,14 @@ import type { Prisma } from '@prisma/client'
 import { createCodePostalIndex } from '@app/web/data/getCommuneCode'
 import { BuildDepartementsOutput } from '@app/web/data/buildDatabase/buildDepartements'
 import { districts } from '@app/web/data/districts'
+import { DomainDataForDataIntegrity } from '@app/web/data/buildDatabase/getDomainDataForDataIntegrity'
 
 export const buildCommunes = async ({
   departements,
+  domainData,
 }: {
   departements: BuildDepartementsOutput
+  domainData: DomainDataForDataIntegrity
 }) => {
   output('-- Downloading from https://geo.api.gouv.fr...')
 
@@ -99,6 +102,36 @@ export const buildCommunes = async ({
   const uniqueCodesPostaux = [
     ...new Set<string>(codesPostaux.map(({ code }) => code)),
   ].map((code) => ({ code }))
+
+  output('-- Checking integrity...')
+  const communeCodes = new Set(communesData.map(({ code }) => code))
+  const missingCommuneCodesInFormulaires = domainData.formulaires.filter(
+    ({ communeCode }) => !!communeCode && !communeCodes.has(communeCode),
+  )
+
+  if (missingCommuneCodesInFormulaires.length > 0) {
+    console.warn(
+      `Missing commune codes in formulaires: ${missingCommuneCodesInFormulaires
+        .map(({ communeCode, id }) => `${id}: ${communeCode ?? 'null'}`)
+        .join(', ')}`,
+    )
+  }
+
+  const missingCommuneCodesInParticipants =
+    domainData.communesParticipantes.filter(
+      ({ communeCode }) => !communeCodes.has(communeCode),
+    )
+
+  if (missingCommuneCodesInParticipants.length > 0) {
+    console.warn(
+      `Missing commune codes in participants: ${missingCommuneCodesInParticipants
+        .map(
+          ({ communeCode, id, formulaireGouvernanceId }) =>
+            `${formulaireGouvernanceId} / ${id}: ${communeCode ?? 'null'}`,
+        )
+        .join(', ')}`,
+    )
+  }
 
   return {
     codes: new Set(communesData.map(({ code }) => code)),
