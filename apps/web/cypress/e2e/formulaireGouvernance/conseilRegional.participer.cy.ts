@@ -34,7 +34,9 @@ describe('ETQ Commune connectée, je peux compléter mon formulaire de participa
     cy.get('#input-form-field__contactTechnique\\.prenom').type(`Eddin`)
     cy.contains('Supprimer').click()
 
+    cy.intercept('/api/trpc/*').as('mutation')
     cy.contains('Confirmer et envoyer').click()
+    cy.wait('@mutation')
 
     cy.url().should(
       'equal',

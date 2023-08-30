@@ -15,14 +15,15 @@ describe('ETQ Commune connectée, je peux compléter mon formulaire de participa
     cy.findByLabelText('Fonction *').type(`Maire`)
     cy.findByLabelText('Adresse e-mail *').type(`nasreddin@test.com`)
 
+    cy.intercept('/api/trpc/*').as('mutation')
     cy.contains('Confirmer et envoyer').click()
+    cy.wait('@mutation')
 
     cy.url().should(
       'equal',
       appUrl(
         '/formulaires-feuilles-de-routes-territoriales/commune/confirmation-formulaire-envoye',
       ),
-      { timeout: 10_000 },
     )
     cy.contains('Votre réponse a bien été envoyée')
   })

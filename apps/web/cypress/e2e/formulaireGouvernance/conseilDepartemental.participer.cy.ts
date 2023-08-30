@@ -36,7 +36,9 @@ describe('ETQ Commune connectée, je peux compléter mon formulaire de participa
       'nasreddin@test.com',
     )
 
+    cy.intercept('/api/trpc/*').as('mutation')
     cy.contains('Confirmer et envoyer').click()
+    cy.wait('@mutation')
 
     cy.url().should(
       'equal',
