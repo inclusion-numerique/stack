@@ -7,7 +7,7 @@ import {
 } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { hasAccessToGouvernanceForm } from '@app/web/security/securityRules'
-import { getFormulaireGouvernanceForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
+import { getCurrentFormulaireGouvernanceForFormByUser } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
 import {
   EtapeFormulaireGouvernance,
   getEtapeEnCours,
@@ -60,9 +60,8 @@ export const getPageFormulaireData = async (
     redirect(`/profil`)
   }
 
-  const formulaireGouvernance = await getFormulaireGouvernanceForForm({
-    userId: user.id,
-  })
+  const formulaireGouvernance =
+    await getCurrentFormulaireGouvernanceForFormByUser(user.id)
 
   if (!formulaireGouvernance) {
     // Wrong persona or missing formulaire. We redirect to persona / form creation page

@@ -2,7 +2,7 @@ import {
   GouvernancePersonaId,
   personaPeutPorterUneFeuilleDeRoute,
 } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
-import type { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
+import type { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
 
 export type EtapeFormulaireGouvernance =
   // Choix de la Persona

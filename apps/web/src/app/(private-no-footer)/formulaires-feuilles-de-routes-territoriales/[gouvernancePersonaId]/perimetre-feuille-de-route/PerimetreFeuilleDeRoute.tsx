@@ -4,7 +4,7 @@ import React, { FormEvent, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Accordion from '@codegouvfr/react-dsfr/Accordion'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
+import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
 import {
   PerimetreDepartementOptions,
   PerimetreDepartementWithInfoOptions,

@@ -1,41 +1,14 @@
 import { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
 
-export const userCurrentFormulaireParams = (userId: string) =>
-  ({
-    where: {
-      participants: {
-        some: {
-          id: userId,
-        },
-      },
-    },
-    orderBy: {
-      creation: 'desc',
-    },
-  } satisfies {
-    where: Prisma.FormulaireGouvernanceWhereInput
-    orderBy: Prisma.FormulaireGouvernanceOrderByWithRelationAndSearchRelevanceInput
-  })
-
-export const getFormulaireGouvernanceForForm = (
-  params:
-    | {
-        userId: string
-      }
-    | {
-        formulaireGouvernanceId: string
-      },
-) => {
-  const { where, orderBy } =
-    'userId' in params
-      ? userCurrentFormulaireParams(params.userId)
-      : {
-          where: { id: params.formulaireGouvernanceId },
-          orderBy: undefined,
-        }
-
-  return prismaClient.formulaireGouvernance.findFirst({
+const getFormulaireGouvernanceForForm = ({
+  where,
+  orderBy,
+}: {
+  where: Prisma.FormulaireGouvernanceWhereInput
+  orderBy?: Prisma.FormulaireGouvernanceOrderByWithRelationAndSearchRelevanceInput
+}) =>
+  prismaClient.formulaireGouvernance.findFirst({
     where,
     orderBy,
     include: {
@@ -102,9 +75,36 @@ export const getFormulaireGouvernanceForForm = (
       },
     },
   })
-}
 
 export type GouvernanceFormulaireForForm = Exclude<
-  Awaited<ReturnType<typeof getFormulaireGouvernanceForForm>>,
+  Awaited<ReturnType<typeof getCurrentFormulaireGouvernanceForFormByUser>>,
   null
 >
+
+export const userCurrentFormulaireParams = (userId: string) =>
+  ({
+    where: {
+      participants: {
+        some: {
+          id: userId,
+        },
+      },
+      annulation: null,
+    },
+    orderBy: {
+      creation: 'desc',
+    },
+  } satisfies {
+    where: Prisma.FormulaireGouvernanceWhereInput
+    orderBy: Prisma.FormulaireGouvernanceOrderByWithRelationAndSearchRelevanceInput
+  })
+
+export const getCurrentFormulaireGouvernanceForFormByUser = (userId: string) =>
+  getFormulaireGouvernanceForForm(userCurrentFormulaireParams(userId))
+
+export const getFormulaireGouvernanceForFormById = (
+  formulaireGouvernanceId: string,
+) =>
+  getFormulaireGouvernanceForForm({
+    where: { id: formulaireGouvernanceId },
+  })

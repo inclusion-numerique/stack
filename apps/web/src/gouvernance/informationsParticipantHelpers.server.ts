@@ -1,5 +1,5 @@
 import type { Prisma } from '@prisma/client'
-import type { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
+import type { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
 import { contactOperation } from '@app/web/gouvernance/contactHelper.server'
 import { InformationsParticipantData } from '@app/web/gouvernance/InformationsParticipant'
 

@@ -8,7 +8,10 @@ import { canUpdateFormulaireGouvernance } from '@app/web/security/securityRules'
 import { forbiddenError, notFoundError } from '@app/web/server/rpc/trpcErrors'
 import { ParticiperValidation } from '@app/web/gouvernance/Participer'
 import { ChoixDuFormulaireValidation } from '@app/web/gouvernance/ChoixDuFormulaire'
-import { getFormulaireGouvernanceForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
+import {
+  getCurrentFormulaireGouvernanceForFormByUser,
+  getFormulaireGouvernanceForFormById,
+} from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
 import {
   getEtapeEnCours,
   getEtapeInfo,
@@ -76,9 +79,8 @@ export const formulaireGouvernanceRouter = router({
       const formulaireGouvernanceId = v4()
 
       // Ensure no-op on same persona chosen
-      const existingFormulaire = await getFormulaireGouvernanceForForm({
-        userId: user.id,
-      })
+      const existingFormulaire =
+        await getCurrentFormulaireGouvernanceForFormByUser(user.id)
 
       if (existingFormulaire) {
         await prismaClient.formulaireGouvernance.update({
@@ -173,9 +175,9 @@ export const formulaireGouvernanceRouter = router({
         throw forbiddenError()
       }
 
-      const formulaireGouvernance = await getFormulaireGouvernanceForForm({
-        formulaireGouvernanceId: input.formulaireGouvernanceId,
-      })
+      const formulaireGouvernance = await getFormulaireGouvernanceForFormById(
+        input.formulaireGouvernanceId,
+      )
       if (!formulaireGouvernance) {
         throw notFoundError()
       }
@@ -303,9 +305,9 @@ export const formulaireGouvernanceRouter = router({
         throw forbiddenError()
       }
 
-      const formulaireGouvernance = await getFormulaireGouvernanceForForm({
-        formulaireGouvernanceId: input.formulaireGouvernanceId,
-      })
+      const formulaireGouvernance = await getFormulaireGouvernanceForFormById(
+        input.formulaireGouvernanceId,
+      )
       if (!formulaireGouvernance) {
         throw notFoundError()
       }

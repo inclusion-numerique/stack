@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import * as Sentry from '@sentry/nextjs'
-import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
+import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
 import { UseAutreStructureMutation } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/autres-structures/useAutreStructureMutation'
 import { ContactFormulaireGouvernanceData } from '@app/web/gouvernance/Contact'
 

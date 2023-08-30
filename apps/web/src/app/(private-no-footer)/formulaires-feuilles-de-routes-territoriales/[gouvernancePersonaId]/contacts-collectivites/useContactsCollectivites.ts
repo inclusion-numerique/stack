@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getFormulaireGouvernanceForForm'
+import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
 import { ContactCollectiviteData } from '@app/web/gouvernance/ContactCollectivite'
 import { UseContactCollectiviteMutation } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/contacts-collectivites/useContactCollectiviteMutation'
 import { communeNameWithCodePostaux } from '@app/web/data/communeNameWithCodePostaux'
