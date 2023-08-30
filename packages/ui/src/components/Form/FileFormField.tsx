@@ -1,7 +1,7 @@
 'use client'
 
 import classNames from 'classnames'
-import React, { HTMLProps } from 'react'
+import React, { HTMLProps, ReactNode } from 'react'
 import {
   Control,
   Controller,
@@ -10,12 +10,13 @@ import {
   PathValue,
 } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
+import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 
 export type FileFormFieldProps<T extends FieldValues> = {
   control: Control<T>
   path: FieldPath<T>
   disabled?: boolean
-  label?: string
+  label?: ReactNode
   hint?: string
   placeholder?: string
   accept?: string
@@ -24,6 +25,7 @@ export type FileFormFieldProps<T extends FieldValues> = {
   error?: string
   info?: string | ((value: PathValue<T, Path<T>>) => string)
   'data-testid'?: string
+  asterisk?: boolean
 } & Omit<
   HTMLProps<HTMLInputElement>,
   'onChange' | 'type' | 'onBlur' | 'value' | 'ref' | 'id' | 'aria-describedby'
@@ -40,6 +42,7 @@ const FileFormField = <T extends FieldValues>({
   className,
   valid,
   info,
+  asterisk,
   error: errorProp,
   'data-testid': dataTestId,
 }: FileFormFieldProps<T>) => {
@@ -69,7 +72,7 @@ const FileFormField = <T extends FieldValues>({
             )}
           >
             <label className="fr-label fr-mb-1v" htmlFor={id}>
-              {label}
+              {label} {asterisk && <RedAsterisk />}
               {hint && <span className="fr-hint-text">{hint}</span>}
             </label>
 

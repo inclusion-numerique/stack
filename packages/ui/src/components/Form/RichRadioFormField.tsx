@@ -1,31 +1,24 @@
 import classNames from 'classnames'
 import React, { ReactNode } from 'react'
-import {
-  Control,
-  Controller,
-  FieldValues,
-  Path,
-  PathValue,
-} from 'react-hook-form'
+import { Control, Controller, FieldValues } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
 import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
-import { RadioOption } from './utils/options'
+import { RichRadioOption } from './utils/options'
 
-export type RadioFormFieldProps<T extends FieldValues> = {
+export type RichRadioFormFieldProps<T extends FieldValues> = {
   control: Control<T>
   path: FieldPath<T>
-  options: RadioOption[]
+  options: RichRadioOption[]
   disabled?: boolean
   label?: ReactNode
   hint?: string
   inline?: boolean
   valid?: string
-  small?: boolean
   asterisk?: boolean
 }
 
-const RadioFormField = <T extends FieldValues>({
+const RichRadioFormField = <T extends FieldValues>({
   label,
   path,
   options,
@@ -34,11 +27,10 @@ const RadioFormField = <T extends FieldValues>({
   disabled,
   inline,
   valid,
-  small,
   className,
   asterisk,
   'data-testid': dataTestId,
-}: UiComponentProps & RadioFormFieldProps<T>) => {
+}: UiComponentProps & RichRadioFormFieldProps<T>) => {
   const id = `input-form-field__${path}`
 
   return (
@@ -87,11 +79,7 @@ const RadioFormField = <T extends FieldValues>({
                     'fr-fieldset__element--inline': inline,
                   })}
                 >
-                  <div
-                    className={classNames('fr-radio-group', {
-                      'fr-radio-group--sm': small,
-                    })}
-                  >
+                  <div className={classNames('fr-radio-group fr-radio-rich')}>
                     <input
                       type="radio"
                       id={`${id}__${index}`}
@@ -99,7 +87,7 @@ const RadioFormField = <T extends FieldValues>({
                       onBlur={onBlur}
                       onChange={(event) => {
                         if (event.target.checked) {
-                          onChange(option.value as PathValue<T, Path<T>>)
+                          onChange(option.value)
                         }
                       }}
                       value={option.value}
@@ -112,6 +100,15 @@ const RadioFormField = <T extends FieldValues>({
                         <span className="fr-hint-text">{option.hint}</span>
                       )}
                     </label>
+                    {!!option.image && (
+                      <div className="fr-radio-rich__img">
+                        {typeof option.image === 'string' ? (
+                          <img src={option.image} alt={option.imageAlt ?? ''} />
+                        ) : (
+                          option.image
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -143,4 +140,4 @@ const RadioFormField = <T extends FieldValues>({
   )
 }
 
-export default RadioFormField
+export default RichRadioFormField

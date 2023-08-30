@@ -12,7 +12,7 @@ export default meta
 type Story = StoryObj<typeof Button>
 
 export const Default: Story = {
-  name: 'Boutton danger',
+  name: 'Bouton danger',
   render: (args) => <Button {...args} className="fr-btn--danger" />,
   args: {
     children: 'Danger',

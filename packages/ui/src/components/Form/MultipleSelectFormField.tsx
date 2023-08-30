@@ -1,6 +1,7 @@
-import React, { ChangeEventHandler, MouseEventHandler } from 'react'
+import React, { ChangeEventHandler, MouseEventHandler, ReactNode } from 'react'
 import { Control, Controller, FieldValues } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
+import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 import { SelectOption } from './utils/options'
 
 const OptionsList = ({ options }: { options: SelectOption[] }) => (
@@ -39,10 +40,10 @@ const OptionBadge = ({
 
 export type MultipleSelectFormFieldProps<T extends FieldValues> = {
   control: Control<T>
-  label?: string
+  label?: ReactNode
   path: FieldPath<T>
   disabled?: boolean
-  required?: boolean
+  asterisk?: boolean
   defaultOption?: boolean
   defaultOptionLabel?: string
   hint?: string
@@ -60,7 +61,7 @@ const MultipleSelectFormField = <T extends FieldValues>({
   hint,
   defaultOption,
   disabled,
-  required,
+  asterisk,
   defaultOptionLabel = 'Sélectionnez une option',
   badgeSize,
   options,
@@ -110,8 +111,7 @@ const MultipleSelectFormField = <T extends FieldValues>({
             }`}
           >
             <label className="fr-label" htmlFor={id}>
-              {label}
-              {required ? ' *' : null}
+              {label} {asterisk && <RedAsterisk />}
               {hint ? <span className="fr-hint-text">{hint}</span> : null}
             </label>
             <select

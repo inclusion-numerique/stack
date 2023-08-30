@@ -4,23 +4,22 @@ import styles from './Spinner.module.css'
 export const Spinner = ({
   className,
   size = 'medium',
+  inline,
 }: {
   className?: string
   size?: 'small' | 'medium' | 'large'
+  inline?: boolean
 }) => (
-  <picture>
-    <img
-      className={classNames(
-        styles.spinner,
-        {
-          [styles['spinner--sm']]: size === 'small',
-          [styles['spinner--md']]: size === 'medium',
-          [styles['spinner--lg']]: size === 'large',
-        },
-        className,
-      )}
-      src="/images/spinner.svg"
-      alt=""
-    />
-  </picture>
+  <span
+    className={classNames(
+      styles.spinner,
+      inline && styles.inline,
+      {
+        [styles['spinner--sm']]: size === 'small',
+        [styles['spinner--md']]: size === 'medium',
+        [styles['spinner--lg']]: size === 'large',
+      },
+      className,
+    )}
+  />
 )
