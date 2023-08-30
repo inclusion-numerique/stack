@@ -216,7 +216,7 @@ const Page = async (props: PageFormulaireProps) => {
           votre feuille de route de l’Inclusion Numérique.
         </p>
         <Notice
-          title="Pour chaque collectivité sélectionné, nous vous demanderons soit le contact de l’EPCI correspondante, soit un contact de la commune à compléter à la prochaine étape."
+          title="Vous devrez renseigner à l'étape suivante un contact pour chaque territoire sélectionné."
           className="fr-my-12v"
         />
         {wrapper}
