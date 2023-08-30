@@ -53,7 +53,12 @@ const Participer = ({
       router.refresh()
       router.push(etapeInfo.absolutePath)
     } catch (mutationError) {
-      applyZodValidationMutationErrorsToForm(mutationError, form.setError)
+      if (
+        !applyZodValidationMutationErrorsToForm(mutationError, form.setError)
+      ) {
+        // TODO Go over this kind of stuff and add Toast
+        throw mutationError
+      }
     }
   }
   const isLoading =
