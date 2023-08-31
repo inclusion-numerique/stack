@@ -118,7 +118,10 @@ const Page = async (props: PageFormulaireProps) => {
         <h3 className="fr-text-title--blue-france fr-mb-2v">
           Périmètre de votre feuille de route
         </h3>
-        <p className="fr-text--xl fr-mb-2v">
+        <p
+          className="fr-text--xl fr-mb-2v"
+          data-testid="recapitulatif-nombre-collectivites"
+        >
           Nombre de collectivités&nbsp;:&nbsp;
           <span className="fr-text--bold">{totalCollectivites}</span>
         </p>
@@ -161,7 +164,10 @@ const Page = async (props: PageFormulaireProps) => {
             <h3 className="fr-text-title--blue-france fr-mt-12v fr-mb-2v">
               Autres structures impliquées
             </h3>
-            <p className="fr-text--xl fr-mb-2v">
+            <p
+              className="fr-text--xl fr-mb-2v"
+              data-testid="recapitulatif-nombre-structures"
+            >
               Nombre de structures partenaires&nbsp;:&nbsp;
               <span className="fr-text--bold">
                 {formulaireGouvernance.structuresParticipantes.length}

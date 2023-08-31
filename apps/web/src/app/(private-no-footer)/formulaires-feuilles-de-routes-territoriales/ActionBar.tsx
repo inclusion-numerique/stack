@@ -53,14 +53,19 @@ const ActionBar = ({
       <div className={classNames(styles.container)}>
         <div className={classNames('fr-container', styles.content)}>
           <div className={styles.info}>
-            {children}
-            {!!children && <span className="fr-mx-1w fr-text--bold">·</span>}
+            {!!children && (
+              <>
+                <span data-testid="action-bar-info">{children}</span>
+                <span className="fr-mx-1w fr-text--bold">·</span>
+              </>
+            )}
             <PersistenceStateBadge state={autoSaving ? 'saving' : 'saved'} />
           </div>
           <div className={styles.buttons}>
             {!!skip && (
               <Button
                 priority="tertiary no outline"
+                data-testid="action-bar-skip"
                 type="submit"
                 className={loading ? 'fr-btn--loading' : undefined}
                 disabled={autoSaving}
@@ -74,6 +79,7 @@ const ActionBar = ({
             <Button
               priority="secondary"
               type="button"
+              data-testid="action-bar-cancel"
               onClick={CancelModal.open}
               disabled={autoSaving || loading}
             >
@@ -85,6 +91,7 @@ const ActionBar = ({
               type="submit"
               className={loading ? 'fr-btn--loading' : undefined}
               disabled={autoSaving}
+              data-testid="action-bar-submit"
               nativeButtonProps={{
                 name: 'submit',
               }}

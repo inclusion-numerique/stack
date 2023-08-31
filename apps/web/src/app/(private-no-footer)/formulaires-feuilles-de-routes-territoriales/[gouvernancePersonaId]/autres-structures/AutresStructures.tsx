@@ -108,7 +108,7 @@ const AutresStructures = ({
           loading={isEtapeLoading}
           autoSaving={isAutoSaving}
           formulaireGouvernanceId={formulaireGouvernance.id}
-          skip="Passer cette étape"
+          skip={autresStructures.size > 0 ? undefined : 'Passer cette étape'}
         >
           <span className="fr-text--bold fr-mr-1v">
             {autresStructures.size}

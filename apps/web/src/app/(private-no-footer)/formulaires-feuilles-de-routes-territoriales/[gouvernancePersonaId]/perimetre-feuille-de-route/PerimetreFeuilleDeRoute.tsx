@@ -1,8 +1,8 @@
 'use client'
 
-import React, { FormEvent, useMemo, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import React, { FormEvent, useMemo } from 'react'
 import Accordion from '@codegouvfr/react-dsfr/Accordion'
+import { useRouter } from 'next/navigation'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
 import {
@@ -16,12 +16,11 @@ import {
 import { trpc } from '@app/web/trpc'
 import PerimetreEpciCheckboxes from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/PerimetreEpciCheckboxes'
 import CollectivitesHorsTerritoire from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/CollectivitesHorsTerritoire'
-import ActionBar from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/ActionBar'
 import {
   createAddCollectivityInputFromData,
   useCollectivitesHorsTerritoire,
 } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/useCollectivitesHorsTerritoire'
-import { sPluriel } from '@app/web/utils/sPluriel'
+import PerimetreFeuilleDeRouteEtapeActionBar from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/PerimetreFeuilleDeRouteEtapeActionBar'
 
 const onCheckboxesSubmit = (event: FormEvent<HTMLFormElement>) => {
   event.preventDefault()
@@ -38,11 +37,15 @@ const PerimetreFeuilleDeRoute = ({
     | PerimetreDepartementOptions
   nextEtapePath: string
 }) => {
-  const perimetreMutation =
-    trpc.formulaireGouvernance.perimetreFeuilleDeRoute.useMutation()
+  const router = useRouter()
 
-  const etapeMutation =
-    trpc.formulaireGouvernance.etapePerimetreFeuilleDeRoute.useMutation()
+  const perimetreMutation =
+    trpc.formulaireGouvernance.perimetreFeuilleDeRoute.useMutation({
+      onSuccess: () => {
+        // Refresh router on success to update the page in client cache
+        router.refresh()
+      },
+    })
 
   const selectionInput = useMemo(
     () => createCollectivitySelectionInputFromData(formulaireGouvernance),
@@ -86,8 +89,6 @@ const PerimetreFeuilleDeRoute = ({
     perimetreMutation,
   )
 
-  const router = useRouter()
-
   const etapeError =
     collectivitesHorsTerritoire.collectivitesHorsTerritoireEnCoursDeModification
       ? "Vous devez valider ou supprimer les collectivités hors territoire en cours de modification avant de passer à l'étape suivante"
@@ -108,31 +109,7 @@ const PerimetreFeuilleDeRoute = ({
       (collectivite) => collectivite.type === 'commune',
     ).length
 
-  const [showEtapeErrors, setShowEtapeErrors] = useState(false)
-
-  const onPageSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setShowEtapeErrors(true)
-    if (etapeError) {
-      setTimeout(() => {
-        // Scroll on next render
-        document.querySelector('#etape-error')?.scrollIntoView()
-      }, 0)
-      return
-    }
-
-    try {
-      await etapeMutation.mutateAsync({
-        formulaireGouvernanceId: formulaireGouvernance.id,
-      })
-      router.refresh()
-      router.push(nextEtapePath)
-    } catch (mutationError) {
-      console.error(mutationError)
-    }
-  }
-  const isEtapeLoading = etapeMutation.isLoading || etapeMutation.isSuccess
-  const disabled = isEtapeLoading
+  const disabled = false
   const isAutoSaving = perimetreMutation.isLoading
 
   return (
@@ -183,25 +160,14 @@ const PerimetreFeuilleDeRoute = ({
         collectivitesHorsTerritoire={collectivitesHorsTerritoire}
         isLoading={perimetreMutation.isLoading}
       />
-      {showEtapeErrors && !!etapeError && (
-        <p id="etape-error" className="fr-error-text">
-          {etapeError}
-        </p>
-      )}
-      <form onSubmit={onPageSubmit}>
-        <ActionBar
-          loading={isEtapeLoading}
-          autoSaving={isAutoSaving}
-          formulaireGouvernanceId={formulaireGouvernance.id}
-        >
-          <span className="fr-text--bold fr-mr-1v">{totalSelectedEpcis}</span>
-          EPCI{sPluriel(totalSelectedEpcis)} -
-          <span className="fr-text--bold fr-mx-1v">
-            {totalSelectedCommunes}
-          </span>
-          commune{sPluriel(totalSelectedCommunes)} sélectionés
-        </ActionBar>
-      </form>
+      <PerimetreFeuilleDeRouteEtapeActionBar
+        nextEtapePath={nextEtapePath}
+        isAutoSaving={isAutoSaving}
+        etapeError={etapeError}
+        totalSelectedEpcis={totalSelectedEpcis}
+        totalSelectedCommunes={totalSelectedCommunes}
+        formulaireGouvernanceId={formulaireGouvernance.id}
+      />
     </>
   )
 }

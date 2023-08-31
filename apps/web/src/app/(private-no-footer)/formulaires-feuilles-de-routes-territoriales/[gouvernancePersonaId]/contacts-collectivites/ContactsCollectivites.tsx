@@ -13,6 +13,7 @@ import { sPluriel } from '@app/web/utils/sPluriel'
 import { useContactsCollectivites } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/contacts-collectivites/useContactsCollectivites'
 import ContactCollectiviteCard from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/contacts-collectivites/ContactCollectiviteCard'
 import WhiteCard from '@app/web/ui/WhiteCard'
+import { useContactCollectiviteMutation } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/contacts-collectivites/useContactCollectiviteMutation'
 
 const ContactsCollectivites = ({
   formulaireGouvernance,
@@ -21,8 +22,7 @@ const ContactsCollectivites = ({
   formulaireGouvernance: GouvernanceFormulaireForForm
   nextEtapePath: string
 }) => {
-  const contactCollectiviteMutation =
-    trpc.formulaireGouvernance.contactCollectivite.useMutation()
+  const contactCollectiviteMutation = useContactCollectiviteMutation()
 
   const etapeMutation =
     trpc.formulaireGouvernance.etapeConcactsCollectivites.useMutation()
@@ -41,7 +41,9 @@ const ContactsCollectivites = ({
 
   const router = useRouter()
 
-  const etapeForm = useForm<{ skip: boolean }>({
+  const etapeForm = useForm<{
+    skip: boolean
+  }>({
     defaultValues: {
       skip: false,
     },

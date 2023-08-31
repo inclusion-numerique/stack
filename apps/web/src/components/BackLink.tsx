@@ -7,7 +7,7 @@ const BackLink = ({
   href: string
   label?: string
 }) => (
-  <Link href={href} prefetch={false} className="fr-link">
+  <Link href={href} prefetch={false} className="fr-link" data-testid="backlink">
     <span className="fr-icon-arrow-left-line fr-icon--sm" /> {label}
   </Link>
 )
