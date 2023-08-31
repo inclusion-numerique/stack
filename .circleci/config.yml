@@ -386,11 +386,11 @@ jobs:
             mv apps/web/public ~/dist/apps/web/public
             mv apps/web/.next/static ~/dist/apps/web/.next/static
             cd ~/dist
-            node apps/web/server.js
+            HOSTNAME=localhost node apps/web/server.js
       - run:
           name: 'Run cypress e2e tests'
           command: |
-            pnpm --silent -F @app/e2e cy run --record --parallel --group web/e2e
+            pnpm --silent -F @app/web cy run --record --parallel --group web/e2e
 
   deploy_web:
     executor: node
