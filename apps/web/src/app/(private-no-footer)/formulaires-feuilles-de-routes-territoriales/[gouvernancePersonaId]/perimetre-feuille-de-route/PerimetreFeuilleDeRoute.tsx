@@ -127,6 +127,7 @@ const PerimetreFeuilleDeRoute = ({
               <Accordion
                 label={`${departementOptions.nom} (${departementOptions.codeDepartement})`}
                 key={departementOptions.codeDepartement}
+                data-testid={`accordion-departement-${departementOptions.codeDepartement}`}
               >
                 <PerimetreEpciCheckboxes
                   perimetreOptions={departementOptions}
