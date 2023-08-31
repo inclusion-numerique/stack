@@ -186,7 +186,7 @@ export class WebAppStack extends TerraformStack {
         // This env variable is reserved at the level of container namespace. We inject it here even if its shared.
         SCW_DEFAULT_REGION: region,
         // For next server to bind to localhost inside the container
-        HOSTNAME: 'localhost',
+        HOSTNAME: '',
       },
       secretEnvironmentVariables: {
         DATABASE_URL: databaseUrl,
