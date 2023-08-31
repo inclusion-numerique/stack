@@ -74,6 +74,9 @@ Cypress.Commands.add('dsfrCollapsesShouldBeBound', () => {
 Cypress.Commands.add('testId', (testId: string) =>
   cy.get(`[data-testid="${testId}"]`),
 )
+Cypress.Commands.add('appUrlShouldBe', (url: string) => {
+  cy.url().should('equal', appUrl(url))
+})
 
 //
 declare global {
@@ -91,6 +94,7 @@ declare global {
       dsfrModalsShouldBeBound(): Chainable<void>
       dsfrCollapsesShouldBeBound(): Chainable<void>
       testId(testId: string): Chainable<JQuery<HTMLElement>>
+      appUrlShouldBe(url: string): Chainable<void>
 
       //       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
       //       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
