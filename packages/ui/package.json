@@ -31,9 +31,9 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@storybook/jest": "^0.1.0",
-    "@storybook/react": "^7.0.20",
-    "@storybook/testing-library": "^0.1.0",
+    "@storybook/jest": "^0.2.2",
+    "@storybook/react": "^7.4.0",
+    "@storybook/testing-library": "^0.2.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@types/jest": "^29.5.2",
     "@types/node": "^18.16.18",
