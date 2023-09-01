@@ -22,7 +22,7 @@
     "prisma": "pnpm --silent with-env prisma",
     "cy": "pnpm --silent with-env cypress",
     "standalone:configure": "cp -R ./public ./.next/standalone/apps/web/ && cp -R ./.next/static ./.next/standalone/apps/web/.next/",
-    "standalone:start": "../../node_modules/.bin/dotenv -e ../../.env -- node ./.next/standalone/apps/web/server.js",
+    "standalone:start": "HOSTNAME=\"0.0.0.0\" ../../node_modules/.bin/dotenv -e ../../.env -- node ./.next/standalone/apps/web/server.js",
     "graphql:codegen": "graphql-codegen --config graphql.config.yml && eslint src/graphql/generated.ts --fix"
   },
   "engines": {
