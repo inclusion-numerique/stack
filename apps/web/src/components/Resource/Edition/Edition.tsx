@@ -4,6 +4,8 @@ import classNames from 'classnames'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Router from 'next/router'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import AddContent from '@app/web/components/Resource/Edition/AddContent'
 import ContentListEdition from '@app/web/components/Resource/Edition/ContentListEdition'
@@ -12,6 +14,10 @@ import { ResourceMutationCommand } from '@app/web/server/resources/feature/featu
 import { Resource } from '@app/web/server/resources/getResource'
 import { ResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
 import { trpc } from '@app/web/trpc'
+import {
+  PublishCommand,
+  PublishCommandValidation,
+} from '@app/web/server/resources/feature/PublishResource'
 import { ResourceEditionState } from '../enums/ResourceEditionState'
 import { ResourcePublishedState } from '../enums/ResourcePublishedState'
 import BaseEdition from './BaseEdition'
@@ -19,6 +25,7 @@ import styles from './Edition.module.css'
 import EditionActionBar from './EditionActionBar'
 import ResourceImageEdition from './ResourceImageEdition'
 import TitleEdition from './TitleEdition'
+import Publication from './Publication'
 
 export type SendCommandResult = Awaited<
   ReturnType<ReturnType<typeof trpc.resource.mutate.useMutation>['mutateAsync']>
@@ -27,14 +34,29 @@ export type SendCommand = (
   command: ResourceMutationCommand,
 ) => Promise<SendCommandResult>
 
+const isPublishable = (
+  publishState: boolean,
+  editionState: ResourceEditionState,
+  hasUnpublishedChanges: boolean,
+  publishMode?: boolean,
+) => {
+  if (publishMode) {
+    return publishState
+  }
+
+  return editionState === ResourceEditionState.SAVED && hasUnpublishedChanges
+}
+
 const Edition = ({
   resource,
   draftResource,
   user,
+  publishMode,
 }: {
   resource: Resource
   draftResource: ResourceProjectionWithContext
   user: SessionUser
+  publishMode?: boolean
 }) => {
   const router = useRouter()
 
@@ -70,10 +92,6 @@ const Edition = ({
         ? ResourceEditionState.SAVING
         : ResourceEditionState.SAVED
       : ResourceEditionState.EDITING
-
-  // Publish command is only available if publishedResource is older than updatedDraftResource
-  const canPublish =
-    editionState === ResourceEditionState.SAVED && hasUnpublishedChanges
 
   // If the user has made an edit, we ask for confirmation before leaving page
   const [askConfirmationBeforeLeaving, setAskConfirmationBeforeLeaving] =
@@ -121,25 +139,52 @@ const Edition = ({
     return result
   }
 
-  // eslint-disable-next-line unicorn/consistent-function-scoping
-  const onPublish = async () => {
-    try {
-      // TODO this will first navigate to a "Publication" page for additional input
-      const result = await sendCommand({
-        name: 'Publish',
-        payload: {
-          resourceId: resource.id,
-          isPublic: true,
-        },
-      })
-      router.push(`/ressources/${result.resource.slug}`, {
-        unstable_skipClientCache: true,
-      })
-    } catch (error) {
-      console.error('Could not publish resource', error)
-      // TODO Have a nice error and handle edge cases server side
-      // TODO for example a linked base or file or resource has been deleted since last publication
-      throw error
+  const defaultPublic = updatedDraftResource.base
+    ? updatedDraftResource.base.isPublic
+    : user.isPublic
+
+  const publicationForm = useForm<PublishCommand>({
+    resolver: zodResolver(PublishCommandValidation),
+    mode: 'all',
+    reValidateMode: 'onChange',
+    defaultValues: {
+      name: 'Publish',
+      payload: {
+        resourceId: resource.id,
+        isPublic: defaultPublic ? undefined : false,
+      },
+    },
+  })
+
+  // Publish command is only available if publishedResource is older than updatedDraftResource
+  const canPublish = isPublishable(
+    // TODO: should be formState.isValid => not refreshed...
+    publicationForm.formState.isValid,
+    editionState,
+    hasUnpublishedChanges,
+    publishMode,
+  )
+
+  const onPublish = () => {
+    if (publishMode) {
+      publicationForm.handleSubmit(async (data: PublishCommand) => {
+        try {
+          const result = await sendCommand(data)
+          router.push(
+            `/ressources/${result.resource.slug}?updated=${Date.now()}`,
+            {
+              unstable_skipClientCache: true,
+            },
+          )
+        } catch (error) {
+          console.error('Could not publish resource', error)
+          // TODO Have a nice error and handle edge cases server side
+          // TODO for example a linked base or file or resource has been deleted since last publication
+          throw error
+        }
+      })()
+    } else {
+      router.push(`/ressources/${resource.slug}/publier`)
     }
   }
 
@@ -168,44 +213,56 @@ const Edition = ({
   return (
     <>
       <div className={classNames('fr-container', styles.container)}>
-        <BaseEdition
-          resource={updatedDraftResource}
-          user={user}
-          sendCommand={sendCommand}
-        />
-        <hr className="fr-mt-6v fr-pb-8v fr-mb-0" />
-        <div className="fr-mb-8v">
-          <ResourceImageEdition
+        {publishMode ? (
+          <Publication
             resource={updatedDraftResource}
+            user={user}
             sendCommand={sendCommand}
-            editing={editing}
-            setEditing={setEditing}
+            form={publicationForm}
           />
-        </div>
-        <TitleEdition
-          resource={updatedDraftResource}
-          sendCommand={sendCommand}
-          editing={editing}
-          setEditing={setEditing}
-        />
-        <hr className="fr-mt-4w" />
-        <p className={styles.title}>Contenu de la ressource</p>
-        <ContentListEdition
-          contents={updatedDraftResource.contents}
-          resource={draftResource}
-          sendCommand={sendCommand}
-          editionState={editionState}
-          editing={editing}
-          setEditing={setEditing}
-        />
-        <AddContent
-          resource={updatedDraftResource}
-          sendCommand={sendCommand}
-          editing={editing}
-          setEditing={setEditing}
-        />
+        ) : (
+          <>
+            <BaseEdition
+              resource={updatedDraftResource}
+              user={user}
+              sendCommand={sendCommand}
+            />
+            <hr className="fr-mt-6v fr-pb-8v fr-mb-0" />
+            <div className="fr-mb-8v">
+              <ResourceImageEdition
+                resource={updatedDraftResource}
+                sendCommand={sendCommand}
+                editing={editing}
+                setEditing={setEditing}
+              />
+            </div>
+            <TitleEdition
+              resource={updatedDraftResource}
+              sendCommand={sendCommand}
+              editing={editing}
+              setEditing={setEditing}
+            />
+            <hr className="fr-mt-4w" />
+            <p className={styles.title}>Contenu de la ressource</p>
+            <ContentListEdition
+              contents={updatedDraftResource.contents}
+              resource={draftResource}
+              sendCommand={sendCommand}
+              editionState={editionState}
+              editing={editing}
+              setEditing={setEditing}
+            />
+            <AddContent
+              resource={updatedDraftResource}
+              sendCommand={sendCommand}
+              editing={editing}
+              setEditing={setEditing}
+            />
+          </>
+        )}
       </div>
       <EditionActionBar
+        publishMode={publishMode}
         publishedState={publishedState}
         editionState={editionState}
         canPublish={canPublish}

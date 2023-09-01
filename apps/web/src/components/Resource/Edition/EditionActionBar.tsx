@@ -21,6 +21,7 @@ const EditionActionBar = ({
   editionState,
   unPublishedEdits,
   canPublish,
+  publishMode,
   onPublish,
   onDelete,
 }: {
@@ -28,6 +29,7 @@ const EditionActionBar = ({
   editionState: ResourceEditionState
   unPublishedEdits: boolean
   canPublish: boolean
+  publishMode?: boolean
   onPublish: () => void
   onDelete: () => void
 }) => {
@@ -139,7 +141,9 @@ const EditionActionBar = ({
               onClick={onPublish}
               data-testid="publish-resource-button"
             >
-              {publishedState === ResourcePublishedState.DRAFT
+              {publishMode
+                ? 'Publier maintenant'
+                : publishedState === ResourcePublishedState.DRAFT
                 ? 'Publier la ressource'
                 : 'Publier les modifications'}
             </Button>
