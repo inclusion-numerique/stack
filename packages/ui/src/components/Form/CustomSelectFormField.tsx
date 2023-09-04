@@ -76,11 +76,9 @@ const CustomSelectFormField = <
         const onChangeProperty: CustomSelectProps<Option>['onChange'] = (
           newValue,
         ) => {
-          console.log('NEw VALUE', newValue)
           const changedValue = transformOptionToValue
             ? transformOptionToValue(newValue as Option)
             : (newValue as null | { value: string })?.value ?? ''
-          console.log('CHANGED VALUE', changedValue)
 
           onChange(changedValue)
         }
