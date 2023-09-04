@@ -51,7 +51,7 @@ parameters:
     default: './pnpm-lock.yaml'
   image:
     type: string
-    default: stack-web-<< pipeline.git.branch >> | sed -e 's/\//-/g'
+    default: inclusion-numerique-web-<< pipeline.git.branch >> | sed -e 's/\//-/g'
   deploy_version:
     type: string
     default: latest
@@ -69,7 +69,7 @@ parameters:
   web_app_docker_registry:
     # This is redundant with .env.dist but needed as jobs are way simpler to configure with this parameter
     type: string
-    default: 'rg.fr-par.scw.cloud/stack-web-app'
+    default: 'rg.fr-par.scw.cloud/inclusion-numerique-web-app'
   preview_deletion_branch:
     type: string
     default: ""
@@ -354,7 +354,7 @@ jobs:
   test_web_e2e:
     executor: node-e2e
     resource_class: large
-    parallelism: 4
+    parallelism: 2
     steps:
       - checkout
       - install_pnpm
@@ -392,7 +392,7 @@ jobs:
       - run:
           name: 'Create CI database schema'
           command: |
-            pnpm --silent -F @app/web prisma db push --skip-generate --accept-data-loss
+            pnpm --silent -F @app/web prisma migrate deploy
       - run:
           name: 'Build dataset'
           command: |
@@ -409,7 +409,7 @@ jobs:
             cp -R apps/web/public ~/dist/apps/web/
             mv apps/web/.next/static ~/dist/apps/web/.next/
             cd ~/dist
-            node apps/web/server.js
+            HOSTNAME=localhost node apps/web/server.js
       - run:
           name: 'Run cypress e2e tests'
           command: |
@@ -464,7 +464,7 @@ jobs:
       - run:
           name: 'Migrate database'
           command: |
-            pnpm --silent -F @app/web prisma db push --skip-generate --accept-data-loss
+            pnpm --silent -F @app/web prisma migrate deploy
       - run:
           name: Set deployment status to data loading
           command: pnpm --silent cli github:deployment:update $DEPLOYMENT_ID in_progress -d 'Loading data' -l https://app.circleci.com/pipelines/workflows/$CIRCLE_WORKFLOW_ID
@@ -623,7 +623,7 @@ commands:
             echo "export WEB_APP_DOCKER_REGISTRY='<< pipeline.parameters.web_app_docker_registry >>'" >> ${BASH_ENV}
             echo "export BRANCH='<< pipeline.git.branch >>'" >> ${BASH_ENV}
             echo "export NAMESPACE=$(echo '<< pipeline.git.branch >>' | sed -e 's/\//-/g')" >> ${BASH_ENV}
-            echo "export IMAGE_NAME=$(echo 'stack-web-<< pipeline.git.branch >>' | sed -e 's/\//-/g')" >> ${BASH_ENV}
+            echo "export IMAGE_NAME=$(echo 'inclusion-numerique-web-<< pipeline.git.branch >>' | sed -e 's/\//-/g')" >> ${BASH_ENV}
             echo "export IMAGE_BUILD_TAG=$(echo '$WEB_APP_DOCKER_REGISTRY/$IMAGE_NAME:<< pipeline.number >>')" >> ${BASH_ENV}
             echo "export IMAGE_DEPLOY_TAG=$(echo '$WEB_APP_DOCKER_REGISTRY/$IMAGE_NAME:<< pipeline.parameters.deploy_version >>')" >> ${BASH_ENV}
             echo "export IMAGE_E2E_TAG=$(echo '$WEB_APP_DOCKER_REGISTRY/$IMAGE_NAME:<< pipeline.parameters.e2e_version >>')" >> ${BASH_ENV}
