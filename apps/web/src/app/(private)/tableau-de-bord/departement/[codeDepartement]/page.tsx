@@ -2,7 +2,10 @@ import { notFound, redirect } from 'next/navigation'
 import React from 'react'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import DepartementDashboard from '@app/web/components/Prefet/DepartementDashboard'
-import { hasAccessToDepartementDashboard } from '@app/web/security/securityRules'
+import {
+  hasAccessToDepartementDashboard,
+  hasAccessToRegionDashboard,
+} from '@app/web/security/securityRules'
 import { prismaClient } from '@app/web/prismaClient'
 import { getDepartementDashboardData } from '@app/web/app/(private)/tableau-de-bord/departement/[codeDepartement]/getDepartementDashboardData'
 
@@ -11,26 +14,17 @@ export const generateMetadata = async ({
 }: {
   params: { codeDepartement: string }
 }) => {
-  const user = await getSessionUser()
-
-  if (!user) {
-    redirect(
-      `/connexion?suivant=/tableau-de-bord/departement/${codeDepartement}`,
-    )
-  }
-
   const departement = await prismaClient.departement.findUnique({
     where: {
       code: codeDepartement,
     },
-    select: { code: true, nom: true },
+    select: {
+      code: true,
+      nom: true,
+    },
   })
   if (!departement) {
     notFound()
-  }
-
-  if (!hasAccessToDepartementDashboard(user, departement.code)) {
-    redirect(`/profil`)
   }
 
   return {
@@ -45,7 +39,63 @@ const Page = async ({
 }) => {
   // Security has been checked in metadata
   const data = await getDepartementDashboardData(codeDepartement)
+  const user = await getSessionUser()
 
+  if (!user) {
+    redirect(
+      `/connexion?suivant=/tableau-de-bord/departement/${codeDepartement}`,
+    )
+  }
+
+  const departementWithRegion = await prismaClient.departement.findUnique({
+    where: {
+      code: codeDepartement,
+    },
+    select: {
+      code: true,
+      nom: true,
+      region: {
+        select: {
+          code: true,
+          nom: true,
+          departements: {
+            select: {
+              code: true,
+              nom: true,
+            },
+          },
+        },
+      },
+    },
+  })
+  if (!departementWithRegion) {
+    notFound()
+    return null
+  }
+  if (
+    !hasAccessToDepartementDashboard(user, {
+      regionCode: departementWithRegion.region?.code,
+      departementCode: departementWithRegion.code,
+    })
+  ) {
+    redirect(`/profil`)
+  }
+
+  if (
+    !!departementWithRegion.region?.code &&
+    hasAccessToRegionDashboard(user, departementWithRegion.region.code)
+  ) {
+    // User can switch between departements
+
+    return (
+      <DepartementDashboard
+        data={data}
+        regionOptions={departementWithRegion.region}
+      />
+    )
+  }
+
+  // User only has access to one departement
   return <DepartementDashboard data={data} />
 }
 

@@ -23,14 +23,19 @@ export const generateMetadata = async ({
     where: {
       code: codeDepartement,
     },
-    select: { code: true, nom: true },
+    select: { code: true, nom: true, codeRegion: true },
   })
 
   if (!departement) {
     notFound()
   }
 
-  if (!hasAccessToDepartementDashboard(user, departement.code)) {
+  if (
+    !hasAccessToDepartementDashboard(user, {
+      departementCode: departement.code,
+      regionCode: departement.codeRegion,
+    })
+  ) {
     redirect(`/profil`)
   }
 

@@ -60,7 +60,7 @@ export const createUserData = async (userInfo: MonCompteProProfile) => {
 
   return {
     ...userInfo,
-    role: prefetOfDepartement ? 'Prefect' : 'User',
+    role: prefetOfDepartement ? 'PrefectureDepartement' : 'User',
     roleScope: prefetOfDepartement,
     gouvernancePersona: null,
     organizations: {

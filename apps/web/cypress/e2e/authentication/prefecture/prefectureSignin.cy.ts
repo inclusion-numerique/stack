@@ -59,7 +59,7 @@ describe('ETQ Visiteur qui souhaite se connecter en Préfecture, je peux me conn
 
   it('Acceptation 1 - MCP - La connexion détecte un préfet et le redirige sur son tableau de bord', () => {
     const user = createTestUser({
-      role: 'Prefect',
+      role: 'PrefectureDepartement',
       roleScope: '34',
     })
     cy.createUser(user)

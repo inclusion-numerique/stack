@@ -9,12 +9,17 @@ export const redirectToTableauDeBord = async () => {
     return
   }
 
-  if (user.role === 'Prefect' && user.roleScope) {
+  if (user.role === 'PrefectureRegion' && user.roleScope) {
+    redirect(`/tableau-de-bord/region/${user.roleScope}`)
+    return
+  }
+
+  if (user.role === 'PrefectureDepartement' && user.roleScope) {
     redirect(`/tableau-de-bord/departement/${user.roleScope}`)
     return
   }
 
-  if (hasAccessToDepartementDashboard(user, '69')) {
+  if (hasAccessToDepartementDashboard(user, { departementCode: '69' })) {
     // Demonstration
     redirect(`/tableau-de-bord/departement/69`)
     return

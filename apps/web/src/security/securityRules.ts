@@ -1,14 +1,36 @@
 import { SessionUser } from '@app/web/auth/sessionUser'
 
-export const hasAccessToDepartementDashboard = (
+export const hasAccessToRegionDashboard = (
   user: Pick<SessionUser, 'role' | 'roleScope'>,
-  departementCode: string,
+  regionCode: string,
 ) => {
   if (user.role === 'Administrator' || user.role === 'Demo') {
     return true
   }
-  if (user.role === 'Prefect') {
+  if (user.role === 'PrefectureRegion') {
+    return user.roleScope === regionCode
+  }
+  return false
+}
+
+export const hasAccessToDepartementDashboard = (
+  user: Pick<SessionUser, 'role' | 'roleScope'>,
+  {
+    departementCode,
+    regionCode,
+  }: {
+    departementCode: string
+    regionCode?: string | null
+  },
+) => {
+  if (user.role === 'Administrator' || user.role === 'Demo') {
+    return true
+  }
+  if (user.role === 'PrefectureDepartement') {
     return user.roleScope === departementCode
+  }
+  if (user.role === 'PrefectureRegion') {
+    return !!regionCode && user.roleScope === regionCode
   }
   return false
 }
@@ -27,7 +49,10 @@ export const hasAccessToGouvernanceForm = (
   if (user.role === 'Administrator' || user.role === 'Demo') {
     return true
   }
-  if (user.role === 'Prefect') {
+  if (
+    user.role === 'PrefectureDepartement' ||
+    user.role === 'PrefectureRegion'
+  ) {
     return false
   }
   return true

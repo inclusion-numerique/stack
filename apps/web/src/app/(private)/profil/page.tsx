@@ -111,7 +111,7 @@ const Page = async () => {
       )
       break
     }
-    case 'Prefect': {
+    case 'PrefectureDepartement': {
       roleNotice = (
         <>
           <Notice
@@ -123,6 +123,23 @@ const Page = async () => {
             href={`/tableau-de-bord/departement/${user.roleScope ?? ''}`}
           >
             Accéder au tableau de bord de votre département
+          </Link>
+        </>
+      )
+      break
+    }
+    case 'PrefectureRegion': {
+      roleNotice = (
+        <>
+          <Notice
+            className="fr-mb-6v"
+            title="Vous êtes connecté à Espace France Numérique Ensemble avec un rôle 'préfecture' vous permettant d'accéder à toutes les fonctionnalités concernant votre région"
+          />
+          <Link
+            className="fr-link fr-mt-4v"
+            href={`/tableau-de-bord/region/${user.roleScope ?? ''}`}
+          >
+            Accéder au tableau de bord de votre région
           </Link>
         </>
       )

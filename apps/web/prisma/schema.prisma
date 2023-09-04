@@ -45,7 +45,8 @@ model Session {
 enum UserRole {
   Administrator
   Demo
-  Prefect
+  PrefectureDepartement
+  PrefectureRegion
   User
 }
 

@@ -25,7 +25,10 @@ const SigninPage = async ({
 
   if (user) {
     if (role === 'prefecture') {
-      if (user.role === 'Prefect') {
+      if (
+        user.role === 'PrefectureDepartement' ||
+        user.role === 'PrefectureRegion'
+      ) {
         redirect(suivant ?? '/tableau-de-bord')
         return null
       }

@@ -8,4 +8,8 @@
   p {
     max-width: 894px;
   }
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
 }

@@ -1,9 +1,12 @@
 import { appUrl, createTestUser } from 'cypress/support/helpers'
 
-describe("En tant que Préfet, j'ai accès aux données de mon département", () => {
+describe("En tant que préfecture de département, j'ai accès aux données de mon département", () => {
   beforeEach(() => {
     cy.execute('deleteAllData', {})
-    const user = createTestUser({ role: 'Prefect', roleScope: '33' })
+    const user = createTestUser({
+      role: 'PrefectureDepartement',
+      roleScope: '33',
+    })
     cy.createUserAndSignin(user)
   })
 

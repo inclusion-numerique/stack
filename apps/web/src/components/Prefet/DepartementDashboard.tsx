@@ -7,7 +7,22 @@ import type { DepartementDashboardData } from '@app/web/app/(private)/tableau-de
 import ErrorBoundary from '@app/web/components/ErrorBoundary'
 import DepartementMap from './DepartementMap'
 
-const DepartementDashboard = ({ data }: { data: DepartementDashboardData }) => (
+export type DepartementDashboardRegionOption = {
+  code: string
+  nom: string
+  departements: {
+    code: string
+    nom: string
+  }[]
+}
+
+const DepartementDashboard = ({
+  data,
+  regionOptions,
+}: {
+  data: DepartementDashboardData
+  regionOptions?: DepartementDashboardRegionOption
+}) => (
   <div className="fr-container">
     <Breadcrumb
       currentPageLabel="Tableau de bord"
@@ -21,7 +36,10 @@ const DepartementDashboard = ({ data }: { data: DepartementDashboardData }) => (
       ]}
     />
     <div className="fr-mt-4v fr-pb-14v">
-      <DepartementDashboardHeader />
+      <DepartementDashboardHeader
+        currentCodeDepartement={data.departement.code}
+        regionOptions={regionOptions}
+      />
       <div className="fr-grid-row fr-grid-row--gutters fr-mb-10w">
         <div className="fr-col-12 fr-col-md-5">
           <MainStatistics data={data} />
