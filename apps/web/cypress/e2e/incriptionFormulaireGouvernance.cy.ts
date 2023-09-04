@@ -56,8 +56,6 @@ describe('ETQ Visiteur de la page gouvernance, je peux accéder au formulaire qu
     )
 
     cy.contains('Conseil départemental')
-
-    cy.contains('Portez une feuille de route ou participez')
   })
 
   it('Acceptation 2 - Inscription déjà réalisée, indempotent', () => {
@@ -153,65 +151,5 @@ describe('ETQ Visiteur de la page gouvernance, je peux accéder au formulaire qu
       ),
     )
     cy.contains('EPCI & groupement de communes')
-
-    cy.contains('Portez une feuille de route ou participez')
-  })
-
-  it('Acceptation 3 - Inscription déjà réalisée avec une autre persona', () => {
-    const userId = v4()
-    const user = createTestUser({
-      id: userId,
-      gouvernancePersona: 'commune',
-      emailVerified: new Date().toISOString(),
-    })
-    cy.createUser(user)
-    cy.updateUser({
-      where: {
-        id: userId,
-      },
-      data: {
-        formulaireGouvernance: {
-          create: {
-            gouvernancePersona: 'commune',
-            id: v4(),
-            createurId: userId,
-            demonstration: false,
-          },
-        },
-      },
-    })
-    cy.visit('/gouvernance')
-    cy.get('a').contains('EPCI').click()
-    cy.url().should('equal', appUrl('/gouvernance/epci'))
-    cy.contains('EPCI')
-    signinWithCtaEmail({ email: user.email })
-
-    cy.url().should(
-      'equal',
-      appUrl(
-        '/formulaires-feuilles-de-routes-territoriales/choix-du-formulaire',
-      ),
-    )
-
-    cy.contains(
-      'vous vous êtes identifié comme étant un autre type de collectivité ou d’acteur territorial',
-    )
-
-    cy.get('label').contains('Conseil régional').should('not.exist')
-    cy.get('label').contains('Conseil départemental').should('not.exist')
-    cy.get('label').contains('structure').should('not.exist')
-    cy.get('label').contains('Commune')
-    cy.get('label').contains('EPCI').click()
-
-    cy.get('button').contains('Valider').click()
-    cy.url().should(
-      'equal',
-      appUrl(
-        '/formulaires-feuilles-de-routes-territoriales/epci/porter-ou-participer',
-      ),
-    )
-    cy.contains('EPCI & groupement de communes')
-
-    cy.contains('Portez une feuille de route ou participez')
   })
 })

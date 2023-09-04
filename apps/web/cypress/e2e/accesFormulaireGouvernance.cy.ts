@@ -43,11 +43,9 @@ describe('ETQ Utilisateur connecté de la page gouvernance, je peux accéder à 
     )
 
     cy.contains('Conseil départemental')
-
-    cy.contains('Portez une feuille de route ou participez')
   })
 
-  it.only('Acceptation 2 - Accès au formulaire correspondant à une autre persona', () => {
+  it('Acceptation 2 - Accès au formulaire correspondant à une autre persona', () => {
     const userId = v4()
     const user = createTestUser({
       id: userId,

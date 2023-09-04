@@ -31,7 +31,7 @@ describe('ETQ Structure connectée, je peux compléter mon formulaire de  partic
     cy.contains('Votre réponse a bien été envoyée')
   })
 
-  it('Acceptation 1 - Participer sans contact technique, sans SIRET', () => {
+  it('Acceptation 2 - Participer sans contact technique, sans SIRET', () => {
     createAndSigninUserForFormulaireGouvernance('structure')
     cy.visit(
       '/formulaires-feuilles-de-routes-territoriales/structure/participer',
@@ -40,7 +40,7 @@ describe('ETQ Structure connectée, je peux compléter mon formulaire de  partic
 
     cy.findByLabelText('Nom structure *').type('Technologie 2000')
     cy.findByLabelText('SIRET structure *').type('Je sais plus')
-    cy.findByLabelText('Je n’ai pas de SIRET').click()
+    cy.get('label').contains('Je n’ai pas de SIRET').click()
     cy.findByLabelText('Département *').select('69')
 
     cy.findByLabelText('Nom *').type(`Nasr`)
