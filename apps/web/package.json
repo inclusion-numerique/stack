@@ -116,7 +116,7 @@
     "undici": "^5.22.1",
     "usehooks-ts": "^2.9.1",
     "uuid": "^9.0.0",
-    "zod": "^3.21.4",
+    "zod": "^3.22.2",
     "zustand": "^4.3.8"
   },
   "devDependencies": {

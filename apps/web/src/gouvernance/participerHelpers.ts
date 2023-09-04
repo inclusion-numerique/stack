@@ -12,6 +12,7 @@ export const participerDefaultValuesFromData = (
       formulaireGouvernanceId: data.id,
       codeDepartement: data.departementCode ?? undefined,
       nomStructure: data.nomStructure ?? undefined,
+      pasDeSiret: false,
       siretStructure: data.siretStructure ?? undefined,
       contactStructure: contactDefaultValuesFromData(
         false,

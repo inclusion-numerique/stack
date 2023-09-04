@@ -79,8 +79,8 @@ importers:
         specifier: ^5.22.1
         version: 5.22.1
       zod:
-        specifier: ^3.21.4
-        version: 3.21.4
+        specifier: ^3.22.2
+        version: 3.22.2
     devDependencies:
       '@types/lodash':
         specifier: ^4.14.195
@@ -368,8 +368,8 @@ importers:
         specifier: ^9.0.0
         version: 9.0.0
       zod:
-        specifier: ^3.21.4
-        version: 3.21.4
+        specifier: ^3.22.2
+        version: 3.22.2
       zustand:
         specifier: ^4.3.8
         version: 4.3.8(react@18.2.0)
@@ -855,8 +855,8 @@ importers:
         specifier: ^5.0.4
         version: 5.0.4
       zod:
-        specifier: ^3.21.4
-        version: 3.21.4
+        specifier: ^3.22.2
+        version: 3.22.2
 
   packages/ui:
     dependencies:
@@ -891,8 +891,8 @@ importers:
         specifier: ^5.7.4
         version: 5.7.4(@types/react@18.2.12)(react-dom@18.2.0)(react@18.2.0)
       zod:
-        specifier: ^3.21.4
-        version: 3.21.4
+        specifier: ^3.22.2
+        version: 3.22.2
     devDependencies:
       '@storybook/jest':
         specifier: ^0.2.2
@@ -4299,7 +4299,7 @@ packages:
       jsii-rosetta: 5.0.8
       prettier: 2.8.8
       reserved-words: 0.1.2
-      zod: 3.21.4
+      zod: 3.22.2
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -13001,7 +13001,7 @@ packages:
     dependencies:
       semver: 7.5.1
       shelljs: 0.8.5
-      typescript: 5.3.0-dev.20230901
+      typescript: 5.3.0-dev.20230904
     dev: false
 
   /dset@3.1.2:
@@ -23636,8 +23636,8 @@ packages:
     engines: {node: '>=12.20'}
     hasBin: true
 
-  /typescript@5.3.0-dev.20230901:
-    resolution: {integrity: sha512-WF0nADzGdbBjQf948j5pSOko6uf7ax2KO1FqrPiX3RsQ99901TdBERuL5ivUu08KKOWV/+JyzUclUWIke5IwCw==}
+  /typescript@5.3.0-dev.20230904:
+    resolution: {integrity: sha512-07NPNxXTmtOd0G5DnbDHee7Yh7VT6R8HzBiBkzx/PsyDIiD2/a14pbmex5xiDRvoLyUNJvNG1S6p48f+Qk0FMQ==}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: false
@@ -24734,6 +24734,10 @@ packages:
 
   /zod@3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
+    dev: false
+
+  /zod@3.22.2:
+    resolution: {integrity: sha512-wvWkphh5WQsJbVk1tbx1l1Ly4yg+XecD+Mq280uBGt9wa5BKSWf4Mhp6GmrkPixhMxmabYY7RbzlwVP32pbGCg==}
 
   /zustand@4.3.8(react@18.2.0):
     resolution: {integrity: sha512-4h28KCkHg5ii/wcFFJ5Fp+k1J3gJoasaIbppdgZFO4BPJnsNxL0mQXBSFgOgAdCdBj35aDTPvdAJReTMntFPGg==}

@@ -33,7 +33,7 @@ export const participerPersistenceFromData = (
     return {
       ...cleanup,
       nomStructure: data.nomStructure.trim(),
-      siretStructure: data.siretStructure.trim(),
+      siretStructure: data.siretStructure?.trim() || null,
       departement: { connect: { code: data.codeDepartement } },
       contactStructure: contactOperation(
         data.formulaireGouvernanceId,

@@ -50,6 +50,7 @@ const GouvernanceSignupForm = ({
       return
     }
 
+    router.refresh()
     if (user) {
       router.push('/formulaires-feuilles-de-routes-territoriales')
     } else {

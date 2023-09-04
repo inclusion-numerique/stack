@@ -8,6 +8,7 @@ import classNames from 'classnames'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import SelectFormField from '@app/ui/components/Form/SelectFormField'
 import { useRouter } from 'next/navigation'
+import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
 import { GouvernancePersona } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
@@ -26,6 +27,7 @@ import {
 } from '@app/web/utils/options'
 import { participerDefaultValuesFromData } from '@app/web/gouvernance/participerHelpers'
 import CollectiviteCodeField from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/participer/CollectiviteCodeField'
+import SiretInputInfo from '@app/web/components/SiretInputInfo'
 import styles from './Participer.module.css'
 
 const Participer = ({
@@ -85,6 +87,15 @@ const Participer = ({
     setShowContactTechnique(false)
   }
 
+  const pasDeSiret = form.watch('pasDeSiret')
+  const siret = form.watch('siretStructure')
+  if (!!pasDeSiret && !!siret) {
+    // Bug for nested render, debounce this to execute on next render
+    setTimeout(() => {
+      form.setValue('siretStructure', '')
+    }, 0)
+  }
+
   return (
     <WhiteCard className="fr-mt-6v fr-mb-30v">
       <h2 className="fr-text-title--blue-france">
@@ -116,6 +127,13 @@ const Participer = ({
               path="siretStructure"
               label="SIRET structure"
               asterisk
+              disabled={disabled || !!pasDeSiret}
+              info={<SiretInputInfo />}
+            />
+            <CheckboxFormField
+              control={form.control}
+              label="Je n’ai pas de SIRET"
+              path="pasDeSiret"
               disabled={disabled}
             />
             <SelectFormField
