@@ -40,7 +40,7 @@ describe('ETQ Structure connectée, je peux compléter mon formulaire de  partic
 
     cy.findByLabelText('Nom structure *').type('Technologie 2000')
     cy.findByLabelText('SIRET structure *').type('Je sais plus')
-    cy.findByLabelText('Je n’ai pas de SIRET').check()
+    cy.findByLabelText('Je n’ai pas de SIRET').click()
     cy.findByLabelText('Département *').select('69')
 
     cy.findByLabelText('Nom *').type(`Nasr`)
