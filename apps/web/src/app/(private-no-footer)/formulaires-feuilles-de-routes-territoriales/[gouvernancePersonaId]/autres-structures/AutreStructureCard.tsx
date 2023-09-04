@@ -5,6 +5,8 @@ import {
   UseAutresStructuresReturn,
 } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/autres-structures/useAutresStructures'
 import AutreStructureForm from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/autres-structures/AutreStructureForm'
+import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
+import ContactInfo from '@app/web/components/Gouvernance/ContactInfo'
 
 const AutreStructureCard = ({
   structureKey,
@@ -51,14 +53,10 @@ const AutreStructureCard = ({
     ) : (
       <>
         <hr className="fr-mt-6v" />
-        <p className="fr-text-mention--grey fr-mb-0">
-          Contact de la structure&nbsp;:
-        </p>
-        <p className="fr-mb-0 fr-text--medium">
-          {autreStructure.contact.nom} {autreStructure.contact.prenom},{' '}
-          {autreStructure.contact.fonction} <br />
-          {autreStructure.contact.email}
-        </p>
+        <InfoLabelValue
+          label="Contact de la structure :"
+          value={<ContactInfo contact={autreStructure.contact} />}
+        />
       </>
     )}
   </WhiteCard>

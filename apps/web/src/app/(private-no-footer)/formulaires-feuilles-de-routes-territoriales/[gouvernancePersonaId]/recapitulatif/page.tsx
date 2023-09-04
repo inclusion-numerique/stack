@@ -12,6 +12,8 @@ import { communeNameWithCodePostaux } from '@app/web/data/communeNameWithCodePos
 import { GouvernancePersonaId } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import Recapitulatif from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/recapitulatif/Recapitulatif'
 import { getEtapeInfo } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/etapeFormulaireGouvernance'
+import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
+import ContactInfo from '@app/web/components/Gouvernance/ContactInfo'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -32,15 +34,10 @@ const InfoContact = ({
   structure?: boolean
 }) =>
   contact ? (
-    <>
-      <p className="fr-text-mention--grey fr-mb-0">
-        Contact de la {structure ? 'structure' : 'collectivité'}&nbsp;:
-      </p>
-      <p className="fr-mb-0 fr-text--medium">
-        {contact.nom} {contact.prenom}, {contact.fonction} <br />
-        {contact.email}
-      </p>
-    </>
+    <InfoLabelValue
+      label={`Contact de la ${structure ? 'structure' : 'collectivité'} :`}
+      value={<ContactInfo contact={contact} />}
+    />
   ) : (
     <>
       <div className="fr-flex">
@@ -100,6 +97,16 @@ const Page = async (props: PageFormulaireProps) => {
 
   const missingContacts = totalCollectivites - totalContacts
 
+  const participantName = formulaireGouvernance.region
+    ? formulaireGouvernance.region.nom
+    : formulaireGouvernance.departement
+    ? `${formulaireGouvernance.departement.nom} (${formulaireGouvernance.departement.code})`
+    : formulaireGouvernance.epci
+    ? formulaireGouvernance.epci.nom
+    : formulaireGouvernance.commune?.nom ??
+      formulaireGouvernance.nomStructure ??
+      null
+
   return (
     <>
       <div className="fr-container">
@@ -115,6 +122,49 @@ const Page = async (props: PageFormulaireProps) => {
         <h1 className="fr-text-title--blue-france fr-mb-12v">
           Récapitulatif de votre feuille de route
         </h1>
+
+        <h3 className="fr-text-title--blue-france fr-mb-2v">
+          Informations sur votre {persona.shortTitle ?? persona.title}
+        </h3>
+        <p className="fr-text--xl fr-mb-0">{participantName}</p>
+        <hr className="fr-pb-4v fr-mt-4v" />
+        {!!formulaireGouvernance.contactPolitique && (
+          <InfoLabelValue
+            label="Contact politique"
+            value={
+              <ContactInfo contact={formulaireGouvernance.contactPolitique} />
+            }
+            valueClassName="fr-mb-4v"
+          />
+        )}
+        {!!formulaireGouvernance.contactTechnique && (
+          <InfoLabelValue
+            label="Contact technique"
+            value={
+              <ContactInfo contact={formulaireGouvernance.contactTechnique} />
+            }
+            valueClassName="fr-mb-4v"
+          />
+        )}
+        {!!formulaireGouvernance.contactStructure && (
+          <InfoLabelValue
+            label="Contact structure"
+            value={
+              <ContactInfo contact={formulaireGouvernance.contactStructure} />
+            }
+            valueClassName="fr-mb-4v"
+          />
+        )}
+        {!!formulaireGouvernance.schemaOuGouvernanceLocale && (
+          <InfoLabelValue
+            label="Schéma ou gouvernance locale"
+            value={formulaireGouvernance.schemaOuGouvernanceLocale}
+            valueClassName="fr-mb-4v"
+          />
+        )}
+
+        <hr className="fr-pb-12v fr-mt-0" />
+
         <h3 className="fr-text-title--blue-france fr-mb-2v">
           Périmètre de votre feuille de route
         </h3>

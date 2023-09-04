@@ -5,6 +5,8 @@ import {
   UseContactsCollectivitesReturn,
 } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/contacts-collectivites/useContactsCollectivites'
 import WhiteCard from '@app/web/ui/WhiteCard'
+import ContactInfo from '@app/web/components/Gouvernance/ContactInfo'
+import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
 
 const ContactCollectiviteCard = ({
   contactCollectivite,
@@ -43,14 +45,10 @@ const ContactCollectiviteCard = ({
     ) : (
       <>
         <hr className="fr-mt-6v" />
-        <p className="fr-text-mention--grey fr-mb-0">
-          Contact de la collectivité&nbsp;:
-        </p>
-        <p className="fr-mb-0 fr-text--medium">
-          {contactCollectivite.data.nom} {contactCollectivite.data.prenom},{' '}
-          {contactCollectivite.data.fonction} <br />
-          {contactCollectivite.data.email}
-        </p>
+        <InfoLabelValue
+          label="Contact de la collectivité :"
+          value={<ContactInfo contact={contactCollectivite.data} />}
+        />
       </>
     )}
   </WhiteCard>
