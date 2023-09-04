@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
 import { UsePerimetreMutation } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/usePerimetreMutation'
+import { filterDansTerritoire } from '@app/web/gouvernance/perimetreFeuilleDeRouteHelpers'
 
 export type UseCollectivitySelectionInput = {
   formulaireGouvernanceId: string
@@ -46,15 +47,19 @@ export const createCollectivitySelectionInputFromData = (
   ({
     formulaireGouvernanceId: data.id,
     initiallySelectedEpcis: new Set(
-      data.epcisParticipantes.map(({ epciCode }) => epciCode),
+      data.epcisParticipantes
+        .filter(filterDansTerritoire)
+        .map(({ epciCode }) => epciCode),
     ),
     initiallySelectedCommunes: new Set(
-      data.communesParticipantes.map(({ communeCode }) => communeCode),
+      data.communesParticipantes
+        .filter(filterDansTerritoire)
+        .map(({ communeCode }) => communeCode),
     ),
     initiallySelectedDepartements: new Set(
-      data.departementsParticipants.map(
-        ({ departementCode }) => departementCode,
-      ),
+      data.departementsParticipants
+        .filter(filterDansTerritoire)
+        .map(({ departementCode }) => departementCode),
     ),
   } satisfies UseCollectivitySelectionInput)
 
