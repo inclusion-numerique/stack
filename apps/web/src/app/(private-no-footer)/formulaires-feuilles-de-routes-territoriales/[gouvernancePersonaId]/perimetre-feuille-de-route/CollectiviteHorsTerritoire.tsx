@@ -125,6 +125,7 @@ const PendingCollectiviteHorsTerritoire = ({
         <h2>Ajouter une collectivité</h2>
         <CustomSelectFormField
           label="Rechercher la collectivité"
+          placeholder="Rechercher"
           path="collectivite"
           control={control}
           disabled={disabled}

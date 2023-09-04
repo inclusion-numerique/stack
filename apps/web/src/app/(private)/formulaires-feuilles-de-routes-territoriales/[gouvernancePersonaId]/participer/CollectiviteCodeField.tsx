@@ -81,6 +81,7 @@ const CollectiviteCodeField = ({
         label={label}
         control={control}
         path="codeEpci"
+        placeholder="Rechercher votre EPCI"
         loadOptions={loadOptions}
         cacheOptions
       />
@@ -106,6 +107,7 @@ const CollectiviteCodeField = ({
         label={label}
         control={control}
         path="codeCommune"
+        placeholder="Rechercher votre commune"
         loadOptions={loadOptions}
         cacheOptions
       />
