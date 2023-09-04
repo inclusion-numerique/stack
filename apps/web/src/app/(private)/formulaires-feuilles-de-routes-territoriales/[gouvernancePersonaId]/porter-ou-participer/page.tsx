@@ -22,7 +22,17 @@ const Page = async (props: PageFormulaireProps) => {
     throw new Error('porter-ou-participer: persona is missing')
   }
 
-  // If the form persona can have both intention "porter" and "participer", we make the user choose
+  const personaSentenceIntro =
+    persona.id === 'conseil-regional'
+      ? 'En tant que conseil régional'
+      : persona.id === 'conseil-departemental'
+      ? 'En tant que conseil départemental'
+      : persona.id === 'epci'
+      ? 'En tant qu’EPCI ou groupement de communes'
+      : persona.id === 'commune'
+      ? 'En tant que commune'
+      : 'En tant que structure'
+
   return (
     <>
       <div className="fr-container">
@@ -38,10 +48,15 @@ const Page = async (props: PageFormulaireProps) => {
       </div>
       <div className="fr-container fr-container--narrow">
         <BackLink href={retourHref} />
-        <ChoixIntention
-          persona={persona}
-          formulaireGouvernance={formulaireGouvernance}
-        />
+        <h2 className="fr-text-title--blue-france fr-mt-8v fr-mb-4v">
+          {persona.title}
+        </h2>
+        <p className="fr-text--lg fr-mb-12v fr-mt-4v">
+          {personaSentenceIntro}, vous pouvez porter une feuille de route ou
+          participer à l’élaboration des feuilles de routes territoriales qui
+          seront proposées.
+        </p>
+        <ChoixIntention formulaireGouvernance={formulaireGouvernance} />
       </div>
     </>
   )

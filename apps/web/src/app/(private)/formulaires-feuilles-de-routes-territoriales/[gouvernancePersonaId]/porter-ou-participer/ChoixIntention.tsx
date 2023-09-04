@@ -5,18 +5,14 @@ import Alert from '@codegouvfr/react-dsfr/Alert'
 import classNames from 'classnames'
 import { useState } from 'react'
 import * as Sentry from '@sentry/nextjs'
-import { GouvernancePersona } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
-import WhiteCard from '@app/web/ui/WhiteCard'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import linkCardStyles from '@app/web/ui/LinkCard.module.css'
 import { Spinner } from '@app/web/ui/Spinner'
 
 const ChoixIntention = ({
-  persona,
   formulaireGouvernance,
 }: {
-  persona: GouvernancePersona
   formulaireGouvernance: {
     id: string
   }
@@ -47,10 +43,6 @@ const ChoixIntention = ({
 
   return (
     <>
-      <WhiteCard className="fr-mt-8v">
-        <h2 className="fr-text-title--blue-france">{persona.title}</h2>
-        <p className="fr-text--lg fr-mb-0 fr-mt-4v">{persona.cta}</p>
-      </WhiteCard>
       {mutation.isError && (
         <Alert
           className="fr-my-6v"
