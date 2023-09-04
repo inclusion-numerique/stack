@@ -96,24 +96,21 @@ const StructureDetails = ({
           Points d’accueil numérique labellisés France Services
         </p>
       )}
-      {zrr ||
-        (qpv && (
-          <>
-            <p className="fr-text--lg fr-text--bold fr-mt-6v fr-mb-3v">
-              Territoires prioritaires
-            </p>
-            {qpv && (
-              <p className="fr-mb-1v">
-                Lieux situés en quartier prioritaire de la ville (QPV)
-              </p>
-            )}
-            {zrr && (
-              <p className="fr-mb-1v">
-                Lieux situés en zone de revitalisation rurale (ZRR)
-              </p>
-            )}
-          </>
-        ))}
+      {(zrr || qpv) && (
+        <p className="fr-text--lg fr-text--bold fr-mt-6v fr-mb-3v">
+          Territoires prioritaires
+        </p>
+      )}
+      {qpv && (
+        <p className="fr-mb-1v">
+          Lieux situés en quartier prioritaire de la ville (QPV)
+        </p>
+      )}
+      {zrr && (
+        <p className="fr-mb-1v">
+          Lieux situés en zone de revitalisation rurale (ZRR)
+        </p>
+      )}
     </>
   )
 }
