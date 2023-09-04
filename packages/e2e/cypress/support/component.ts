@@ -4,8 +4,6 @@ import '../../../../apps/web/src/app/app.css'
 import './commands'
 import './component.css'
 
-console.log('ADDING MOUNT COMMAND')
-
 declare global {
   namespace Cypress {
     interface Chainable {
