@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import {
   FieldPath,
   FieldValues,
@@ -25,6 +25,8 @@ const CustomLink = Link.extend({
 })
 
 const RichInputForm = <T extends FieldValues>({
+  label,
+  hint,
   form,
   path,
   id,
@@ -34,6 +36,8 @@ const RichInputForm = <T extends FieldValues>({
   'data-testid': dataTestId,
   onChange,
 }: {
+  label?: ReactNode
+  hint?: ReactNode
   form: UseFormReturn<T>
   path: FieldPath<T>
   id: string
@@ -41,13 +45,15 @@ const RichInputForm = <T extends FieldValues>({
   placeholder?: string
   disabled?: boolean
   ['data-testid']?: string
-  onChange: (text: PathValue<T, Path<T>>) => void
+  onChange?: (text: PathValue<T, Path<T>>) => void
 }) => {
   const editor = useEditor({
     extensions: [StarterKit, CustomLink],
     content: form.getValues(path),
     onUpdate: (event) => {
-      onChange(event.editor.getHTML() as PathValue<T, Path<T>>)
+      if (onChange) {
+        onChange(event.editor.getHTML() as PathValue<T, Path<T>>)
+      }
     },
   })
 
@@ -55,31 +61,41 @@ const RichInputForm = <T extends FieldValues>({
   const [hoveredLinkElement, setHoveredLinkElement] =
     useState<HTMLAnchorElement | null>(null)
 
-  return editor ? (
-    <div className={styles.container}>
-      <RichInputFormMenuBar editor={editor} />
-      <EditorContent
-        editor={editor}
-        className={styles.input}
-        aria-describedby={ariaDescribedBy}
-        disabled={disabled}
-        id={id}
-        onMouseOver={(event) => {
-          if (event.target instanceof HTMLAnchorElement) {
-            setHoveredLinkElement(event.target)
-          }
-        }}
-        onMouseOut={(event) => {
-          if (event.target instanceof HTMLAnchorElement) {
-            setHoveredLinkElement(null)
-          }
-        }}
-        placeholder={placeholder}
-        data-testid={dataTestId}
-      />
-      <RichInputFormLinkTooltip element={hoveredLinkElement} />
-    </div>
-  ) : null
+  return (
+    <>
+      {label && (
+        <label className="fr-label fr-mb-1w" htmlFor={id}>
+          {label}
+          {hint && <span className="fr-mt-1v fr-hint-text">{hint}</span>}
+        </label>
+      )}
+      {editor ? (
+        <div className={styles.container}>
+          <RichInputFormMenuBar editor={editor} />
+          <EditorContent
+            editor={editor}
+            className={styles.input}
+            aria-describedby={ariaDescribedBy}
+            disabled={disabled}
+            id={id}
+            onMouseOver={(event) => {
+              if (event.target instanceof HTMLAnchorElement) {
+                setHoveredLinkElement(event.target)
+              }
+            }}
+            onMouseOut={(event) => {
+              if (event.target instanceof HTMLAnchorElement) {
+                setHoveredLinkElement(null)
+              }
+            }}
+            placeholder={placeholder}
+            data-testid={dataTestId}
+          />
+          <RichInputFormLinkTooltip element={hoveredLinkElement} />
+        </div>
+      ) : null}
+    </>
+  )
 }
 
 export default RichInputForm
