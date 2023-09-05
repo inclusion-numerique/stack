@@ -30,22 +30,22 @@ const conseilRegional = {
   labelTitle: 'région',
   cta: 'Portez une feuille de route ou participez à l’élaboration des feuilles de routes territoriales.',
   description:
-    'En tant que Conseil régional, vous pouvez portez une feuille de route ou participer à l’élaboration des feuilles de routes territoriales qui seront proposées.<br/><br/>' +
+    'En tant que Conseil régional, vous pouvez porter une feuille de route ou participer à l’élaboration des feuilles de routes territoriales qui seront proposées.<br/><br/>' +
     'Retrouvez ci-dessous les informations qui vous seront demandées&nbsp;:',
   blocs: [
     {
       title: 'Pour porter une feuille de route territoriale',
       items: [
-        'Il vous faudra définir le périmètre de votre feuille de route : Renseignez quels sont les EPCI & les communes que vous souhaitez intégrer à votre feuille de route de l’Inclusion Numérique. Pour chacun d’eux, nous vous demanderons de renseigner un contact (Nom, Prénom, Fonction & Adresse e-mail).',
-        'Vous pourrez également impliquer d’autres personnes morales publiques ou privées (associations, opérateurs de services publics, entreprises) à votre feuille de route. Nous vous demanderons d’indiquer le nom de la structure ainsi qu’un contact (Nom, Prénom, Fonction & Adresse e-mail).',
+        'Définissez le périmètre de votre feuille de route : Renseignez quels sont les EPCI & les communes que vous souhaitez intégrer à votre feuille de route de l’Inclusion Numérique. Pour chacun d’eux, nous vous demanderons de renseigner un contact (Nom, Prénom, Fonction & Adresse e-mail).',
+        'Vous pouvez également impliquer d’autres personnes morales publiques ou privées (associations, opérateurs de services publics, entreprises) à votre feuille de route. Nous vous demanderons d’indiquer le nom de la structure ainsi qu’un contact (Nom, Prénom, Fonction & Adresse e-mail).',
       ],
     },
     {
       title:
         'Pour participer à l’élaboration des feuilles de routes territoriales',
       items: [
-        'Il vous faudra renseigner un contact politique (Nom, Prénom, Fonction & Adresse e-mail)',
-        'Il vous faudra renseigner un contact technique (Nom, Prénom, Fonction & Adresse e-mail). ce second contact est facultatif.',
+        'Renseignez un contact politique (Nom, Prénom, Fonction & Adresse e-mail)',
+        'Renseignez un contact technique (Nom, Prénom, Fonction & Adresse e-mail). ce second contact est facultatif.',
       ],
     },
   ],
@@ -57,7 +57,7 @@ const conseilDepartemental = {
   labelTitle: 'département',
   cta: 'Portez une feuille de route ou participez à l’élaboration des feuilles de routes territoriales.',
   description:
-    'En tant que Conseil départemental, vous pouvez portez une feuille de route ou participer à l’élaboration des feuilles de routes territoriales qui seront proposées.<br/><br/>' +
+    'En tant que Conseil départemental, vous pouvez porter une feuille de route ou participer à l’élaboration des feuilles de routes territoriales qui seront proposées.<br/><br/>' +
     'Retrouvez ci-dessous les informations qui vous seront demandées&nbsp;:',
   blocs: conseilRegional.blocs,
 } satisfies GouvernancePersona
@@ -68,7 +68,7 @@ const epci = {
   labelTitle: 'EPCI',
   cta: 'Portez une feuille de route ou participez à l’élaboration des feuilles de routes territoriales.',
   description:
-    'En tant qu’EPCI, vous pouvez portez une feuille de route ou participer à l’élaboration des feuilles de routes territoriales qui seront proposées.<br/><br/>' +
+    'En tant qu’EPCI, vous pouvez porter une feuille de route ou participer à l’élaboration des feuilles de routes territoriales qui seront proposées.<br/><br/>' +
     'Retrouvez ci-dessous les informations qui vous seront demandées&nbsp;:',
   blocs: conseilRegional.blocs,
 } satisfies GouvernancePersona
