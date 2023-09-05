@@ -46,17 +46,14 @@ const Page = async () => {
       <>
         <Link
           className="fr-link fr-mt-4v"
-          href={`/formulaires-feuilles-de-routes-territoriales/${formulaireGouvernance.gouvernancePersona}/formulaire`}
+          href="/formulaires-feuilles-de-routes-territoriales"
         >
           Reprendre mon formulaire de feuilles de route territoriales <br />
           en tant que {currentFormPersona.title.toLowerCase()}
         </Link>
         <br />
         <br />
-        <Link
-          className="fr-link fr-mt-4v"
-          href="/formulaires-feuilles-de-routes-territoriales?changer=1"
-        >
+        <Link className="fr-link fr-mt-4v" href="/gouvernance">
           Commencer un nouveau formulaire de feuilles de route territoriales
         </Link>
       </>
