@@ -14,7 +14,7 @@ type CommonProps<T extends FieldValues> = {
   placeholder?: string
   valid?: string
   icon?: string
-  info?: string | ((value?: string | null) => string)
+  info?: ReactNode | ((value?: string | null) => ReactNode)
   asterisk?: boolean
 }
 
@@ -119,7 +119,7 @@ const InputFormField = <T extends FieldValues>({
             )}
             {info && (
               <p id={`${id}__info`} className="fr-hint-text fr-mt-1v fr-mb-0">
-                {typeof info === 'string' ? info : info(value)}
+                {typeof info === 'function' ? info(value) : info}
               </p>
             )}
             {error && (

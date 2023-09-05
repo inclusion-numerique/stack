@@ -1,6 +1,5 @@
 import { v4 } from 'uuid'
 import { appUrl, createTestUser } from '../../../support/helpers'
-import { checkGouvernanceWelcomeEmailReceived } from '../../checkGouvernanceWelcomeEmailReceived'
 import { goToMostRecentEmailReceived } from '../../goToMostRecentEmailReceived'
 
 const signinWithEmail = ({ email }: { email: string }) => {
@@ -72,19 +71,11 @@ describe('ETQ Visiteur qui souhaite se connecter en Collectivité, je peux me co
     cy.createUser(user)
     cy.visit('/connexion?role=collectivite')
     signinWithEmail(user)
-    cy.url().should(
-      'equal',
-      appUrl('/formulaires-feuilles-de-routes-territoriales'),
-    )
+    cy.url().should('equal', appUrl('/gouvernance'))
     cy.contains('Conseil régional').click()
-    cy.contains('Valider').click()
-    cy.url().should(
-      'equal',
-      appUrl('/formulaires-feuilles-de-routes-territoriales/conseil-regional'),
-    )
-    cy.contains('Votre inscription est confirmée')
-    checkGouvernanceWelcomeEmailReceived()
-    cy.contains('En tant que conseil régional')
+    cy.url().should('equal', appUrl('/gouvernance/conseil-regional'))
+    cy.contains('En tant que Conseil régional')
+    cy.contains('Accéder au formulaire')
   })
 
   it("Acceptation 2 - Connexion par email d'un compte avec persona de collectivité", () => {
@@ -104,6 +95,7 @@ describe('ETQ Visiteur qui souhaite se connecter en Collectivité, je peux me co
             gouvernancePersona: 'epci',
             id: v4(),
             createurId: userId,
+            demonstration: false,
           },
         },
       },
@@ -112,9 +104,11 @@ describe('ETQ Visiteur qui souhaite se connecter en Collectivité, je peux me co
     signinWithEmail(user)
     cy.url().should(
       'equal',
-      appUrl('/formulaires-feuilles-de-routes-territoriales/epci'),
+      appUrl(
+        '/formulaires-feuilles-de-routes-territoriales/epci/porter-ou-participer',
+      ),
     )
-    cy.contains('Votre inscription est confirmée')
+    cy.contains('EPCI')
   })
 
   it("Acceptation 3 - Connexion d'un compte existant sans persona de collectivité", () => {
@@ -123,21 +117,21 @@ describe('ETQ Visiteur qui souhaite se connecter en Collectivité, je peux me co
     cy.signin(user)
     cy.visit('/connexion?role=collectivite')
 
+    cy.url().should('equal', appUrl('/gouvernance'))
+
+    cy.get('a').contains('EPCI').click()
+
+    cy.url().should('equal', appUrl('/gouvernance/epci'))
+    cy.contains('Accéder au formulaire').click()
+
+    cy.acceptNextRedirectsException()
+
     cy.url().should(
       'equal',
-      appUrl('/formulaires-feuilles-de-routes-territoriales'),
+      appUrl(
+        '/formulaires-feuilles-de-routes-territoriales/epci/porter-ou-participer',
+      ),
     )
-
-    cy.contains('EPCI').click()
-    cy.contains('Valider').click()
-
-    cy.url().should(
-      'equal',
-      appUrl('/formulaires-feuilles-de-routes-territoriales/epci'),
-    )
-    cy.contains('Votre inscription est confirmée')
-    checkGouvernanceWelcomeEmailReceived()
-    cy.contains('En tant que epci')
   })
 
   it("Acceptation 4 - Connexion par MCP d'un compte avec persona de collectivité", () => {
@@ -163,6 +157,7 @@ describe('ETQ Visiteur qui souhaite se connecter en Collectivité, je peux me co
             gouvernancePersona: 'commune',
             id: v4(),
             createurId: userId,
+            demonstration: false,
           },
         },
       },
@@ -170,9 +165,11 @@ describe('ETQ Visiteur qui souhaite se connecter en Collectivité, je peux me co
     cy.visit('/connexion?role=collectivite')
     cy.url().should(
       'equal',
-      appUrl('/formulaires-feuilles-de-routes-territoriales/commune'),
+      appUrl(
+        '/formulaires-feuilles-de-routes-territoriales/commune/participer',
+      ),
     )
-    cy.contains('Votre inscription est confirmée')
+    cy.contains('Formulaire commune')
   })
 
   it('Acceptation 5 - La connexion par email redirige vers la création de compte pour un nouvel utilisateur', () => {

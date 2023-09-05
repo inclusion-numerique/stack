@@ -7,43 +7,41 @@ import { useRouter } from 'next/navigation'
 import { RichRadioOption } from '@app/ui/components/Form/utils/options'
 import RichRadioFormField from '@app/ui/components/Form/RichRadioFormField'
 import Button from '@codegouvfr/react-dsfr/Button'
+import { trpc } from '@app/web/trpc'
+import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import {
   GouvernancePersonaId,
   gouvernancePersonas,
 } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import {
-  ChooseGouvernancePersonaData,
-  ChooseGouvernancePersonaValidation,
-} from '@app/web/gouvernance/ChooseGouvernancePersona'
-import { trpc } from '@app/web/trpc'
-import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
+  ChoixDuFormulaireData,
+  ChoixDuFormulaireValidation,
+} from '@app/web/gouvernance/ChoixDuFormulaire'
 
-const ChoseGouvernancePersonaForm = ({
+const ChoixDuFormulaireForm = ({
   availableChoices,
 }: {
   availableChoices: readonly GouvernancePersonaId[]
 }) => {
-  const form = useForm<ChooseGouvernancePersonaData>({
-    resolver: zodResolver(ChooseGouvernancePersonaValidation),
+  const form = useForm<ChoixDuFormulaireData>({
+    resolver: zodResolver(ChoixDuFormulaireValidation),
   })
 
   const router = useRouter()
 
-  const choose = trpc.formulaireGouvernance.choosePersona.useMutation()
+  const mutation = trpc.formulaireGouvernance.choixDuFormulaire.useMutation()
 
-  const onSubmit = async (data: ChooseGouvernancePersonaData) => {
+  const onSubmit = async (data: ChoixDuFormulaireData) => {
     try {
-      await choose.mutateAsync(data)
+      const { etapeInfo } = await mutation.mutateAsync(data)
+      router.refresh()
+      router.push(etapeInfo.absolutePath)
     } catch (mutationError) {
       applyZodValidationMutationErrorsToForm(mutationError, form.setError)
     }
-
-    router.push(
-      `/formulaires-feuilles-de-routes-territoriales/${data.gouvernancePersonaId}`,
-    )
   }
-  const disabled =
+  const isLoading =
     form.formState.isSubmitting || form.formState.isSubmitSuccessful
 
   const options: RichRadioOption[] = availableChoices.map((choice) => {
@@ -58,13 +56,16 @@ const ChoseGouvernancePersonaForm = ({
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <RichRadioFormField
-        disabled={disabled}
+        disabled={isLoading}
         control={form.control}
         path="gouvernancePersonaId"
         options={options}
       />
       <div className="fr-btns-group">
-        <Button type="submit" disabled={disabled}>
+        <Button
+          type="submit"
+          className={isLoading ? 'fr-btn--loading' : undefined}
+        >
           Valider
         </Button>
       </div>
@@ -72,4 +73,4 @@ const ChoseGouvernancePersonaForm = ({
   )
 }
 
-export default withTrpc(ChoseGouvernancePersonaForm)
+export default withTrpc(ChoixDuFormulaireForm)

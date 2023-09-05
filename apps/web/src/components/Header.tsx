@@ -102,7 +102,11 @@ const Header = ({
           </div>
         </div>
       </div>
-      <div id="modal-menu-mobile" className="fr-header__menu fr-modal">
+      <dialog
+        aria-labelledby="modal-menu-mobile-title"
+        id="modal-menu-mobile"
+        className="fr-header__menu fr-modal"
+      >
         <div className="fr-container">
           <button
             aria-controls="modal-menu-mobile"
@@ -127,7 +131,7 @@ const Header = ({
             </ul>
           </div>
         </div>
-      </div>
+      </dialog>
     </header>
   )
 }

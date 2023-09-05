@@ -2,8 +2,6 @@ import axios from 'axios'
 import NextAuth, { NextAuthOptions, TokenSet } from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
 import KeycloakProvider, { KeycloakProfile } from 'next-auth/providers/keycloak'
-import * as Sentry from '@sentry/nextjs'
-import type { User } from '@prisma/client'
 import {
   monCompteProConnectProviderId,
   MonCompteProUserInfoOrganizationResponse,
@@ -12,7 +10,6 @@ import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
 import '@app/web/auth/nextAuthSetup'
 import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
 import { PublicWebAppConfig, ServerWebAppConfig } from '@app/web/webAppConfig'
-import { sendGouvernanceWelcomeEmailIfNeeded } from '@app/web/gouvernance/sendGouvernanceWelcomeEmail'
 
 export const authOptions: NextAuthOptions = {
   // debug: process.env.NODE_ENV !== 'production',
@@ -95,15 +92,6 @@ export const authOptions: NextAuthOptions = {
         // Let the process continue
         return true
       }
-
-      // This is the final signin (after email verification)
-      sendGouvernanceWelcomeEmailIfNeeded({ user: user as User }).catch(
-        (error) => {
-          Sentry.captureException(error)
-        },
-      )
-
-      // If this is the first signin after a gouvernance signup, we will send a "welcome" email
 
       return true
     },

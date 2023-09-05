@@ -1,0 +1,4 @@
+.redAsterisk{
+    color: var(--text-default-error);
+    font-weight: 400;
+}

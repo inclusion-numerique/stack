@@ -1,12 +1,10 @@
 import z from 'zod'
 import { gouvernancePersonaIds } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 
-export const ChooseGouvernancePersonaValidation = z.object({
+export const ChoixDuFormulaireValidation = z.object({
   gouvernancePersonaId: z.enum(gouvernancePersonaIds, {
     required_error: 'Veuillez choisir un formulaire',
   }),
 })
 
-export type ChooseGouvernancePersonaData = z.infer<
-  typeof ChooseGouvernancePersonaValidation
->
+export type ChoixDuFormulaireData = z.infer<typeof ChoixDuFormulaireValidation>

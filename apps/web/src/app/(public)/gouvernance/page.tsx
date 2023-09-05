@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { gouvernancePersonas } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import LinkCard from '@app/web/ui/LinkCard'
+import BackLink from '@app/web/components/BackLink'
 import styles from './Gouvernance.module.css'
 
 export const revalidate = 0
@@ -18,10 +18,7 @@ const GouvernanceCtaPage = () => (
       <Breadcrumbs currentPage="Formulaires feuilles de routes territoriales" />
     </div>
     <div className={styles.contentContainer}>
-      <Link href="/" className="fr-link">
-        <span className="fr-icon-arrow-left-line fr-icon--sm" /> Retour à
-        l’accueil
-      </Link>
+      <BackLink href="/" label="Retour à l’accueil" />
       <h1 className="fr-mt-8v">{metadata.title}</h1>
       <p className="fr-text--lg fr-mt-8v">
         Dans le cadre du déploiement de{' '}

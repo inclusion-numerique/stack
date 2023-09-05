@@ -1,0 +1,19 @@
+.epciAccordion {
+    hr {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        padding-bottom: 1px;
+    }
+
+    :global .fr-fieldset__element{
+        margin: 0;
+    }
+
+    :global .fr-fieldset {
+        margin: 0;
+
+        :global .fr-fieldset__element:not(:first-child){
+            margin: 20px 0 0;
+        }
+    }
+}

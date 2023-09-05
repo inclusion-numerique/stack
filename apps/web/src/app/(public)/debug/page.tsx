@@ -6,7 +6,7 @@ import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import ErrorBoundary from '@app/web/components/ErrorBoundary'
 
 export const dynamic = 'force-dynamic'
-
+export const revalidate = 0
 const ErrorButtonLink = ({ title, href }: { title: string; href: string }) => (
   <li>
     <Button

@@ -58,11 +58,21 @@ export const hasAccessToGouvernanceForm = (
   return true
 }
 
-export const hasAccessToGouvernanceFormDevelopmentPreview = (
-  user: Pick<SessionUser, 'role' | 'gouvernancePersona'>,
+export const hasAccessToDevelopmentPreview = (
+  user: Pick<SessionUser, 'role'>,
 ) => {
   if (user.role === 'Administrator' || user.role === 'Demo') {
     return true
   }
   return false
+}
+
+export const canUpdateFormulaireGouvernance = (
+  user: Pick<SessionUser, 'role' | 'formulaireGouvernanceId'>,
+  formulaireGouvernanceId: string,
+) => {
+  if (user.role === 'Administrator') {
+    return true
+  }
+  return user.formulaireGouvernanceId === formulaireGouvernanceId
 }

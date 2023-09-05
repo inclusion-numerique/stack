@@ -6,7 +6,6 @@ import { Meta, StoryObj } from '@storybook/react'
 import { useOnDiff } from '@app/web/hooks/useOnDiff'
 import CustomSelectFormField, {
   CustomSelectFormFieldProps,
-  CustomSelectOptions,
 } from '@app/ui/components/Form/CustomSelectFormField'
 
 const options = [
@@ -50,7 +49,7 @@ const options = [
     label: 'Yoga',
     value: 'yoga',
   },
-] satisfies CustomSelectOptions
+]
 
 const objectFormValidation = z
   .object({
@@ -61,12 +60,15 @@ const objectFormValidation = z
   .strict()
 type ObjectFormData = z.infer<typeof objectFormValidation>
 
-const Template = ({
+const Template = <Option = { label: string; value: string }, V = unknown>({
   path,
   storyAsyncSearch,
   storyAsyncSearchError,
   ...args
-}: Omit<CustomSelectFormFieldProps<ObjectFormData>, 'control'> & {
+}: Omit<
+  CustomSelectFormFieldProps<ObjectFormData, Option, V>,
+  'control' | 'options'
+> & {
   storyAsyncSearch?: boolean
   storyAsyncSearchError?: boolean
 }) => {
@@ -101,7 +103,7 @@ const Template = ({
 
         return options.filter((option) =>
           option.label.toLowerCase().includes(search.toLowerCase()),
-        )
+        ) as Option[]
       }
     : undefined
 

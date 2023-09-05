@@ -13,7 +13,7 @@ import {
 } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 
 export const dynamic = 'force-dynamic'
-
+export const revalidate = 0
 const Page = async () => {
   const user = await getSessionUser()
   if (!user) {
@@ -61,10 +61,7 @@ const Page = async () => {
         </Link>
       </>
     ) : (
-      <Link
-        className="fr-link fr-mt-4v"
-        href="/formulaires-feuilles-de-routes-territoriales"
-      >
+      <Link className="fr-link fr-mt-4v" href="/gouvernance">
         Accéder aux formulaires de feuilles de route territoriales
       </Link>
     )
@@ -147,10 +144,7 @@ const Page = async () => {
     }
     default: {
       roleNotice = (
-        <Link
-          className="fr-link fr-mt-4v"
-          href="/formulaires-feuilles-de-routes-territoriales"
-        >
+        <Link className="fr-link fr-mt-4v" href="/gouvernance">
           Accéder aux formulaires de feuilles de route territoriales
         </Link>
       )

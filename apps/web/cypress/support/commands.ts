@@ -8,6 +8,7 @@ import type { Tasks as CustomTasks } from './tasks'
 
 import Timeoutable = Cypress.Timeoutable
 import Loggable = Cypress.Loggable
+import { appUrl } from './helpers'
 
 // ***********************************************
 // This example commands.ts shows you how to
@@ -83,6 +84,16 @@ Cypress.Commands.add('dsfrCollapsesShouldBeBound', () => {
 Cypress.Commands.add('testId', (testId: string) =>
   cy.get(`[data-testid="${testId}"]`),
 )
+Cypress.Commands.add('acceptNextRedirectsException', () => {
+  Cypress.on('uncaught:exception', (error, runnable) => {
+    if (error.message.includes('NEXT_REDIRECT')) {
+      return false
+    }
+  })
+})
+Cypress.Commands.add('appUrlShouldBe', (url: string) => {
+  cy.url().should('equal', appUrl(url))
+})
 
 //
 declare global {
@@ -101,6 +112,8 @@ declare global {
       dsfrModalsShouldBeBound(): Chainable<void>
       dsfrCollapsesShouldBeBound(): Chainable<void>
       testId(testId: string): Chainable<JQuery<HTMLElement>>
+      acceptNextRedirectsException(): Chainable<void>
+      appUrlShouldBe(url: string): Chainable<void>
 
       //       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
       //       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>

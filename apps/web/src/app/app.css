@@ -24,6 +24,10 @@ textarea {
   font-weight: 500 !important;
 }
 
+.fr-text--center {
+  text-align: center;
+}
+
 .fr-container--narrow {
   /* 588 + padding */
   max-width: 620px;
@@ -34,13 +38,47 @@ textarea {
   }
 }
 
+
+.fr-container--medium {
+  /* 792 + padding */
+  max-width: 824px;
+
+  @media (min-width: 62em) {
+    /* lg */
+    max-width: 840px;
+  }
+}
+
+.formulaire-gouvernance-no-footer-margin-bottom {
+  margin-bottom: 200px;
+}
+
+
 .fr-narrow {
   max-width: 588px;
   margin-right: auto;
     margin-left: auto;
 }
 
+hr.separator--10v{
+  margin-top: 40px;
+  margin-bottom: 40px;
+  padding-bottom: 1px;
+}
+
+hr.separator--8v{
+  margin-top: 32px;
+  margin-bottom: 32px;
+  padding-bottom: 1px;
+}
+
 /* DSFR Overrides and custom theming */
+
+/* Form input spacing */
+
+.fr-input-group, .fr-select-group, .fr-input-group:not(:last-child), .fr-select-group:not(:last-child) {
+  margin-bottom: 16px;
+}
 
 /* Round notices */
 
@@ -235,4 +273,43 @@ textarea {
       box-shadow: none;
     }
   }
+}
+
+/**
+ * Helpers
+ */
+.fr-flex {
+  display: flex;
+}
+
+.fr-align-items-center {
+    align-items: center;
+}
+
+.fr-align-items-start {
+    align-items: flex-start;
+}
+
+.fr-align-items-end {
+    align-items: flex-end;
+}
+
+.fr-align-items-stretch {
+  align-items: stretch;
+}
+
+.fr-justify-content-center {
+    justify-content: center;
+}
+
+.fr-justify-content-start {
+    justify-content: flex-start;
+}
+
+.fr-justify-content-end {
+    justify-content: flex-end;
+}
+
+.fr-justify-content-space-between {
+    justify-content: space-between;
 }
