@@ -53,7 +53,7 @@ const ContactsCollectivites = ({
 
   const etapeError =
     !skip && pendingContacts
-      ? "Vous devez renseigner un contact pour chaque collectivité partenaire avant de passer à l'étape suivante"
+      ? 'Vous devez renseigner un contact pour chaque collectivité puis cliquer sur Enregistrer pour chacun d’eux avant de passer à l’étape suivante'
       : null
 
   const [showEtapeErrors, setShowEtapeErrors] = useState(false)
@@ -103,7 +103,7 @@ const ContactsCollectivites = ({
       <form onSubmit={onPageSubmit}>
         <WhiteCard className="fr-mt-6v">
           {showEtapeErrors && !!etapeError && (
-            <p id="etape-error" className="fr-error-text fr-mb-6v">
+            <p id="etape-error" className="fr-error-text fr-text--sm fr-mb-6v">
               {etapeError}
             </p>
           )}
