@@ -47,6 +47,24 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
           <p className="fr-text--sm fr-text-default--grey">{user.email}</p>
         </span>
       </li>
+      {!!user.formulaireGouvernanceId && (
+        <li>
+          <Link
+            className="fr-nav__link"
+            href="/formulaires-feuilles-de-routes-territoriales"
+            style={{
+              boxShadow: 'none',
+              borderTop: 'var(--slim-grey-border)',
+            }}
+          >
+            <span
+              className="fr-icon-edit-line fr-icon--sm fr-mr-1w"
+              style={{ color: 'var(--blue-france-sun-113-625)' }}
+            />
+            Reprendre mon formulaire
+          </Link>
+        </li>
+      )}
       <li>
         <Link
           className="fr-nav__link"
