@@ -83,7 +83,7 @@ const ActionBar = ({
               onClick={CancelModal.open}
               disabled={autoSaving || loading}
             >
-              Annuler
+              Effacer le formulaire
             </Button>
 
             <Button
@@ -103,7 +103,7 @@ const ActionBar = ({
       </div>
 
       <CancelModal.Component
-        title="Annuler la saisie du formulaire"
+        title="Effacer le formulaire"
         buttons={[
           {
             type: 'button',
@@ -115,14 +115,14 @@ const ActionBar = ({
           {
             type: 'button',
             priority: 'primary',
-            children: 'Quitter le formulaire',
+            children: 'Effacer le formulaire',
             onClick: onAnnulerFormulaire,
             className: cancelLoading ? 'fr-btn--loading' : undefined,
           },
         ]}
       >
-        Êtes-vous sur de vouloir annuler la saisie du formulaire&nbsp;? Toutes
-        les informations déjà complétées seront supprimés.
+        Êtes-vous sur de vouloir effacer les données du formulaire&nbsp;? Toutes
+        les informations déjà complétées seront supprimées.
       </CancelModal.Component>
     </>
   )
