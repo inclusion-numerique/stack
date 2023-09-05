@@ -9,6 +9,7 @@ import { getCommuneCode } from '@app/web/data/getCommuneCode'
 import { getDepartementCodeFromPostalCode } from '@app/web/data/getDepartementCodeFromPostalCode'
 import { titleCase } from '@app/web/utils/titleCase'
 import { BuildCommunesOutput } from '@app/web/data/buildDatabase/buildCommunes'
+import { transformStringToSearchableString } from '@app/web/search/transformStringToSearchableString'
 
 /**
  * E.g. "mediation-numerique-conseiller-numerique-62ab017b8255a806e299c725-mediation-numerique"
@@ -113,6 +114,7 @@ export const buildStructuresCartographieNationale = async ({
     data.push({
       id: structure.id,
       nom: titleCase(structure.nom),
+      searchable: transformStringToSearchableString(`${structure.nom}`),
       siret: structure.siret,
       type,
       sousTypePublic,

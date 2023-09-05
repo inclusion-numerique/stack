@@ -175,6 +175,7 @@ model Region {
   // INSEE
   code                   String                  @id
   nom                    String
+  searchable             String                  @map("searchable")
   departements           Departement[]
   formulairesGouvernance FormulaireGouvernance[]
 
@@ -185,6 +186,7 @@ model Epci {
   // INSEE
   code                                String                                 @id
   nom                                 String
+  searchable                          String                                 @map("searchable")
   communes                            Commune[]
   geometry                            Json?
   population                          Int
@@ -199,6 +201,7 @@ model Departement {
   // INSEE
   code                                String                                        @id
   nom                                 String
+  searchable                          String                                        @map("searchable")
   codeRegion                          String?                                       @map("code_region")
   region                              Region?                                       @relation(fields: [codeRegion], references: [code], onDelete: NoAction)
   communes                            Commune[]
@@ -217,6 +220,7 @@ model Departement {
 model Commune {
   code         String         @id
   nom          String
+  searchable   String         @map("searchable")
   codesPostaux CodesPostaux[]
 
   codeDepartement String?      @map("code_departement")
@@ -263,9 +267,10 @@ model CodePostal {
 }
 
 model StructureCartographieNationale {
-  id    String @id
-  nom   String
-  siret String
+  id         String @id
+  nom        String
+  searchable String @map("searchable")
+  siret      String
 
   type           String
   sousTypePublic String?

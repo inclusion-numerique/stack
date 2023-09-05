@@ -5,6 +5,7 @@ import { createCodePostalIndex } from '@app/web/data/getCommuneCode'
 import { BuildDepartementsOutput } from '@app/web/data/buildDatabase/buildDepartements'
 import { districts } from '@app/web/data/districts'
 import { DomainDataForDataIntegrity } from '@app/web/data/buildDatabase/getDomainDataForDataIntegrity'
+import { transformStringToSearchableString } from '@app/web/search/transformStringToSearchableString'
 
 export const buildCommunes = async ({
   departements,
@@ -65,6 +66,9 @@ export const buildCommunes = async ({
           codeEpci: commune.codeEpci,
           latitude: (arrondissement.centre.coordinates as [number, number])[0],
           longitude: (arrondissement.centre.coordinates as [number, number])[1],
+          searchable: transformStringToSearchableString(
+            `${arrondissement.nom}${arrondissement.codesPostaux[0]}`,
+          ),
         })
         codePostalIndex.add(arrondissement.codesPostaux[0], {
           code: arrondissement.code,
@@ -91,6 +95,9 @@ export const buildCommunes = async ({
     communesData.push({
       code: commune.code,
       nom: commune.nom,
+      searchable: transformStringToSearchableString(
+        `${commune.nom}${commune.codesPostaux.join('z')}`,
+      ),
       codeDepartement,
       population: commune.population ?? 0,
       codeEpci: commune.codeEpci,

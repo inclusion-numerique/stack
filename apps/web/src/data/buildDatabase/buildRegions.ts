@@ -2,6 +2,7 @@ import { output } from '@app/cli/output'
 import axios from 'axios'
 import type { Prisma } from '@prisma/client'
 import { DomainDataForDataIntegrity } from '@app/web/data/buildDatabase/getDomainDataForDataIntegrity'
+import { transformStringToSearchableString } from '@app/web/search/transformStringToSearchableString'
 
 export const buildRegions = async ({
   domainData,
@@ -20,6 +21,7 @@ export const buildRegions = async ({
     ({ code, nom }) => ({
       code,
       nom,
+      searchable: transformStringToSearchableString(nom),
     }),
   )
   output('-- Checking integrity...')

@@ -1,52 +1,40 @@
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { CollectivitySearchValidation } from '@app/web/server/rpc/data/CollectivitySearch'
+import { transformStringToSearchableString } from '@app/web/search/transformStringToSearchableString'
 
 const tsquerySpecialChars = /[!&()*:|]/g
 
+const getSearchQueryWords = (query: string) =>
+  query
+    .replaceAll(tsquerySpecialChars, ' ')
+    .trim()
+    .split(/\s+/)
+    .map(transformStringToSearchableString)
+
 const getSearchFromQueryString = (query: string) =>
-  query.replaceAll(tsquerySpecialChars, ' ').trim().split(/\s+/).join(' & ')
+  getSearchQueryWords(query).map(transformStringToSearchableString).join(' & ')
 
 export const dataRouter = router({
   collectivitySearch: protectedProcedure
     .input(CollectivitySearchValidation)
     .query(async ({ input: { commune, exclude, query, epci, limit } }) => {
       const search = getSearchFromQueryString(query)
+      const searchableCondition = getSearchQueryWords(query).map(
+        (contains) => ({ searchable: { contains } }),
+      )
+
       const communeResult = commune
         ? await prismaClient.commune.findMany({
             where: {
               code: {
                 notIn: exclude,
               },
-              OR: [
-                {
-                  nom: {
-                    search,
-                    mode: 'insensitive',
-                  },
-                },
-                {
-                  nom: {
-                    contains: query,
-                    mode: 'insensitive',
-                  },
-                },
-                {
-                  codesPostaux: {
-                    some: {
-                      codePostal: {
-                        code: {
-                          in: query.trim().split(/\s+/),
-                        },
-                      },
-                    },
-                  },
-                },
-              ],
+              AND: searchableCondition,
             },
             orderBy: {
               _relevance: {
-                fields: ['nom'],
+                fields: ['searchable'],
                 search,
                 sort: 'desc',
               },
@@ -74,24 +62,11 @@ export const dataRouter = router({
               code: {
                 notIn: exclude,
               },
-              OR: [
-                {
-                  nom: {
-                    search,
-                    mode: 'insensitive',
-                  },
-                },
-                {
-                  nom: {
-                    contains: query,
-                    mode: 'insensitive',
-                  },
-                },
-              ],
+              AND: searchableCondition,
             },
             orderBy: {
               _relevance: {
-                fields: ['nom'],
+                fields: ['searchable'],
                 search,
                 sort: 'desc',
               },

@@ -2,6 +2,7 @@ import { output } from '@app/cli/output'
 import axios from 'axios'
 import type { Prisma } from '@prisma/client'
 import { DomainDataForDataIntegrity } from '@app/web/data/buildDatabase/getDomainDataForDataIntegrity'
+import { transformStringToSearchableString } from '@app/web/search/transformStringToSearchableString'
 
 export const buildEpcis = async ({
   domainData,
@@ -20,6 +21,7 @@ export const buildEpcis = async ({
     ({ code, nom, population }) => ({
       code,
       nom,
+      searchable: transformStringToSearchableString(`${code}${nom}`),
       population,
     }),
   )

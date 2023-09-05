@@ -3,6 +3,7 @@ import axios from 'axios'
 import { getGeoDepartements } from '@app/web/data/geoDepartements'
 import { getBounds } from '@app/web/data/geometry'
 import { DomainDataForDataIntegrity } from '@app/web/data/buildDatabase/getDomainDataForDataIntegrity'
+import { transformStringToSearchableString } from '@app/web/search/transformStringToSearchableString'
 
 export const buildDepartements = async ({
   domainData,
@@ -35,8 +36,13 @@ export const buildDepartements = async ({
 
     const geoApiDepartement = byCode.get(code)
 
+    const searchable = transformStringToSearchableString(
+      `${code}${feature.properties.DDEP_L_LIB}`,
+    )
+
     if (geoApiDepartement) {
       return {
+        searchable,
         ...geoApiDepartement,
         geometry: feature.geometry,
         bounds,
@@ -44,6 +50,7 @@ export const buildDepartements = async ({
     }
 
     return {
+      searchable,
       code,
       nom: feature.properties.DDEP_L_LIB,
       codeRegion: null,
