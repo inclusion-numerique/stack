@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import * as Sentry from '@sentry/nextjs'
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
-import { PropsWithChildren, ReactNode } from 'react'
+import React, { PropsWithChildren, ReactNode } from 'react'
 import { trpc } from '@app/web/trpc'
 import PersistenceStateBadge from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/PersistenceStateBadge'
 import styles from './ActionBar.module.css'
@@ -13,6 +13,11 @@ import styles from './ActionBar.module.css'
 const CancelModal = createModal({
   isOpenedByDefault: false,
   id: 'cancel-formulaire-gouvernance',
+})
+
+const SavedInformationModal = createModal({
+  id: 'action-bar-saved-information',
+  isOpenedByDefault: false,
 })
 
 const ActionBar = ({
@@ -59,7 +64,10 @@ const ActionBar = ({
                 <span className="fr-mx-1w fr-text--bold">·</span>
               </>
             )}
-            <PersistenceStateBadge state={autoSaving ? 'saving' : 'saved'} />
+            <PersistenceStateBadge
+              state={autoSaving ? 'saving' : 'saved'}
+              openSavedInformationModal={SavedInformationModal.open}
+            />
           </div>
           <div className={styles.buttons}>
             {!!skip && (
@@ -101,7 +109,12 @@ const ActionBar = ({
           </div>
         </div>
       </div>
-
+      <SavedInformationModal.Component title="Enregistrement automatique">
+        <p>
+          Votre formulaire est enregistré automatiquement, vous pouvez quitter à
+          tout moment et revenir le compléter plus tard.
+        </p>
+      </SavedInformationModal.Component>
       <CancelModal.Component
         title="Effacer le formulaire"
         buttons={[
