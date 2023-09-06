@@ -6,6 +6,7 @@ import {
   getPageFormulaireData,
   PageFormulaireProps,
 } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/pageFormulaireData'
+import RecapitulatifSection from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/recapitulatif/RecapitulatifSection'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -15,10 +16,8 @@ export { pageFormulaireMetadata as metadata } from '@app/web/app/(private)/formu
  * This page redirects to the current step of the form
  */
 const Page = async (props: PageFormulaireProps) => {
-  const { breadcrumbs } = await getPageFormulaireData(
-    props,
-    'confirmation-formulaire-envoye',
-  )
+  const { breadcrumbs, formulaireGouvernance, persona } =
+    await getPageFormulaireData(props, 'confirmation-formulaire-envoye')
 
   return (
     <>
@@ -27,7 +26,7 @@ const Page = async (props: PageFormulaireProps) => {
       </div>
       <ContainerCard
         illustrationSrc="/dsfr/artwork/pictograms/system/success.svg"
-        className="fr-text--center"
+        className="fr-text--center fr-mb-12v"
       >
         <h2 className="fr-mb-4v">Votre réponse a bien été envoyée&nbsp;!</h2>
         <p className="fr-mb-0">
@@ -46,6 +45,17 @@ const Page = async (props: PageFormulaireProps) => {
           </Button>
         </div>
       </ContainerCard>
+      {!!persona && formulaireGouvernance.intention === 'Porter' && (
+        <div className=" fr-container fr-container--narrow fr-mb-20v">
+          <RecapitulatifSection
+            formulaireGouvernance={formulaireGouvernance}
+            persona={persona}
+            totalConcats={0}
+            missingContacts={0}
+            totalCollectivites={0}
+          />
+        </div>
+      )}
     </>
   )
 }

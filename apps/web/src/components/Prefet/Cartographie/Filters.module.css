@@ -1,0 +1,68 @@
+.container {
+    position: absolute;
+    top: 9px;
+    right: 46px;
+}
+
+.button {
+    background: white;
+    z-index: 1001;
+    border-radius: 4px;
+    box-shadow: 0px 4px 12px 0px rgba(0, 0, 18, 0.16);
+}
+
+.open {
+
+    .button {
+        background: var(--background-action-low-blue-france);
+    }
+
+    .filters{
+        display: initial;
+    }
+
+}
+
+.filters {
+    display: none;
+    position: absolute;
+    top: 46px;
+    right: 0;
+    margin-top: 2px;
+    background: white;
+    z-index: 1000;
+    text-wrap: none;
+    white-space: nowrap;
+    :global .fr-fieldset__element {
+        margin-bottom: 0;
+    }
+    :global .fr-fieldset {
+        margin-bottom: 0;
+        margin-top: 4px;
+    }
+    label {
+        font-size: 14px;
+        line-height: 24px;
+    }
+
+}
+
+.filtersTop {
+    padding: 16px;
+}
+
+.count {
+    margin-left: 8px;
+    background: var(--background-active-blue-france);
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 24px;
+    padding: 0 8px;
+    color: white;
+}
+
+.reset {
+    border-top: var(--slim-grey-border);
+    width: 100%;
+    padding: 12px 16px;
+}

@@ -103,12 +103,12 @@ const StructureDetails = ({
       )}
       {qpv && (
         <p className="fr-mb-1v">
-          Lieux situés en quartier prioritaire de la ville (QPV)
+          Structures en quartier prioritaire de la ville (QPV)
         </p>
       )}
       {zrr && (
         <p className="fr-mb-1v">
-          Lieux situés en zone de revitalisation rurale (ZRR)
+          Structures en zone de revitalisation rurale (ZRR)
         </p>
       )}
     </>

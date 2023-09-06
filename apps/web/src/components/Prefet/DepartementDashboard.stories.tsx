@@ -72,12 +72,12 @@ const getFakeData = (
         statistics: [
           {
             id: 'structures-en-quartier-prioritaire-de-la-ville-qpv',
-            label: 'Lieux situés en quartier prioritaire de la ville (QPV)',
+            label: 'Structures en quartier prioritaire de la ville (QPV)',
             value: 12,
           },
           {
             id: 'structures-en-zone-de-revitalisation-rurale-zrr',
-            label: 'Lieux situés en zone de revitalisation rurale (ZRR)',
+            label: 'Structures en zone de revitalisation rurale (ZRR)',
             value: 32,
           },
         ],

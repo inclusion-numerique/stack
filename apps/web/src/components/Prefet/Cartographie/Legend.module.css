@@ -42,11 +42,14 @@
   }
 }
 
-.legendCheckboxLabel {
-    display: flex;
+.structureLegendWithCount {
+  display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 24px;
 
   > :last-child{
     font-size: 16px;

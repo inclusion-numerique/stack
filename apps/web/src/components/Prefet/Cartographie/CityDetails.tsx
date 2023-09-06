@@ -204,7 +204,7 @@ const CityDetails = ({
           </div>
           <div className={classNames(styles.row, 'fr-mb-1v')}>
             <p className="fr-text--sm">
-              Lieux situés en quartier prioritaire de la ville (QPV)
+              Structures en quartier prioritaire de la ville (QPV)
             </p>
             <p className=" fr-text--bold">
               {numberToString(count.structures.territoire.qpv)}
@@ -212,7 +212,7 @@ const CityDetails = ({
           </div>
           <div className={classNames(styles.row, 'fr-mb-1v')}>
             <p className="fr-text--sm">
-              Lieux situés en zone de revitalisation rurale (ZRR)
+              Structures en zone de revitalisation rurale (ZRR)
             </p>
             <p className=" fr-text--bold">
               {numberToString(count.structures.territoire.zrr)}
