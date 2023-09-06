@@ -4,11 +4,12 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
 import ContactInfo from '@app/web/components/Gouvernance/ContactInfo'
 import { communeNameWithCodePostaux } from '@app/web/data/communeNameWithCodePostaux'
-import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
+import type { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
 import {
   GouvernancePersona,
   GouvernancePersonaId,
 } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
+import type { RecapitulatifCounts } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/recapitulatif/getRecapitulatifCounts'
 
 const InfoContact = ({
   contact,
@@ -59,15 +60,11 @@ const InfoContact = ({
 const RecapitulatifSection = ({
   formulaireGouvernance,
   persona,
-  totalContacts,
-  totalCollectivites,
-  missingContacts,
+  recapitulatifCounts: { missingContacts, totalCollectivites },
 }: {
   formulaireGouvernance: GouvernanceFormulaireForForm
   persona: GouvernancePersona
-  missingContacts: number
-  totalContacts: number
-  totalCollectivites: number
+  recapitulatifCounts: RecapitulatifCounts
 }) => {
   const participantName = formulaireGouvernance.region
     ? formulaireGouvernance.region.nom

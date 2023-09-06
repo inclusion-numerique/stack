@@ -7,6 +7,7 @@ import {
   PageFormulaireProps,
 } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/pageFormulaireData'
 import RecapitulatifSection from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/recapitulatif/RecapitulatifSection'
+import { getRecapitulatifCounts } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/recapitulatif/getRecapitulatifCounts'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -18,6 +19,8 @@ export { pageFormulaireMetadata as metadata } from '@app/web/app/(private)/formu
 const Page = async (props: PageFormulaireProps) => {
   const { breadcrumbs, formulaireGouvernance, persona } =
     await getPageFormulaireData(props, 'confirmation-formulaire-envoye')
+
+  const recapitulatifCounts = getRecapitulatifCounts(formulaireGouvernance)
 
   return (
     <>
@@ -50,9 +53,7 @@ const Page = async (props: PageFormulaireProps) => {
           <RecapitulatifSection
             formulaireGouvernance={formulaireGouvernance}
             persona={persona}
-            totalConcats={0}
-            missingContacts={0}
-            totalCollectivites={0}
+            recapitulatifCounts={recapitulatifCounts}
           />
         </div>
       )}

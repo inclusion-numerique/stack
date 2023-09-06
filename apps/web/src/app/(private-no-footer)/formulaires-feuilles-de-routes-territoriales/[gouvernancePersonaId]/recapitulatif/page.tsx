@@ -9,6 +9,7 @@ import Progress from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-r
 import Recapitulatif from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/recapitulatif/Recapitulatif'
 import { getEtapeInfo } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/etapeFormulaireGouvernance'
 import RecapitulatifSection from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/recapitulatif/RecapitulatifSection'
+import { getRecapitulatifCounts } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/recapitulatif/getRecapitulatifCounts'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -27,23 +28,7 @@ const Page = async (props: PageFormulaireProps) => {
     gouvernancePersonaId: persona.id,
   })
 
-  const totalCollectivites =
-    formulaireGouvernance.departementsParticipants.length +
-    formulaireGouvernance.epcisParticipantes.length +
-    formulaireGouvernance.communesParticipantes.length
-
-  const totalContacts =
-    formulaireGouvernance.departementsParticipants.filter(
-      (participant) => !!participant.contact,
-    ).length +
-    formulaireGouvernance.epcisParticipantes.filter(
-      (participant) => !!participant.contact,
-    ).length +
-    formulaireGouvernance.communesParticipantes.filter(
-      (participant) => !!participant.contact,
-    ).length
-
-  const missingContacts = totalCollectivites - totalContacts
+  const recapitulatifCounts = getRecapitulatifCounts(formulaireGouvernance)
 
   return (
     <>
@@ -60,13 +45,11 @@ const Page = async (props: PageFormulaireProps) => {
         <RecapitulatifSection
           persona={persona}
           formulaireGouvernance={formulaireGouvernance}
-          missingContacts={missingContacts}
-          totalConcats={totalContacts}
-          totalCollectivites={totalCollectivites}
+          recapitulatifCounts={recapitulatifCounts}
         />
 
         <Recapitulatif
-          missingContacts={missingContacts}
+          missingContacts={recapitulatifCounts.missingContacts}
           formulaireGouvernanceId={formulaireGouvernance.id}
           nextEtapePath={nextEtape.absolutePath}
         />
