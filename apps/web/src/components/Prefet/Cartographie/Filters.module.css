@@ -8,19 +8,7 @@
     background: white;
     z-index: 1001;
     border-radius: 4px;
-    box-shadow: 0px 4px 12px 0px rgba(0, 0, 18, 0.16);
-}
-
-.open {
-
-    .button {
-        background: var(--background-action-low-blue-france);
-    }
-
-    .filters{
-        display: initial;
-    }
-
+    box-shadow: 0 4px 12px 0 rgb(0 0 18 / 16%);
 }
 
 .filters {
@@ -33,19 +21,33 @@
     z-index: 1000;
     text-wrap: none;
     white-space: nowrap;
+
     :global .fr-fieldset__element {
         margin-bottom: 0;
     }
+
     :global .fr-fieldset {
         margin-bottom: 0;
         margin-top: 4px;
     }
+
     label {
         font-size: 14px;
         line-height: 24px;
     }
-
 }
+
+
+.open {
+    .button {
+        background: var(--background-action-low-blue-france);
+    }
+
+    .filters{
+        display: initial;
+    }
+}
+
 
 .filtersTop {
     padding: 16px;
