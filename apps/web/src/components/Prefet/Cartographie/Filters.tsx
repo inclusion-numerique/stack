@@ -72,24 +72,6 @@ const Filters = ({
     .flatMap((subtree) => Object.values(subtree))
     .filter(Boolean).length
 
-  /**
-   * There is a wierd integration bug with DSFR for managing the state of the checkbox
-   * For each checkbox that are controlled programmatically, we need to explicitly
-   * re-render using the key prop because the state is not updated otherwise IF the user
-   * has already interacted with the checkbox.
-   */
-  const programmaticallyCheckedKeys = {
-    publique: filterForm.watch('typologie.publique')
-      ? 'publiqueon'
-      : 'publiqueoff',
-    commune: filterForm.watch('typologie.commune') ? 'communeon' : 'communeoff',
-    epci: filterForm.watch('typologie.epci') ? 'epcion' : 'epcioff',
-    departement: filterForm.watch('typologie.departement')
-      ? 'departementon'
-      : 'departementoff',
-    autre: filterForm.watch('typologie.autre') ? 'autreon' : 'autreoff',
-  }
-
   // Check publique checkbox if all subtypes are checked
   // Uncheck publique checkbox if all subtypes are unchecked
   const onSubtypeChange = () => {
@@ -148,7 +130,6 @@ const Filters = ({
               Typologie des lieux d’inclusion numérique
             </p>
             <CheckboxFormField
-              key={programmaticallyCheckedKeys.publique}
               control={filterForm.control}
               small
               path="typologie.publique"
@@ -162,7 +143,6 @@ const Filters = ({
             />
             <div className="fr-pl-3w">
               <CheckboxFormField
-                key={programmaticallyCheckedKeys.commune}
                 control={filterForm.control}
                 small
                 path="typologie.commune"
@@ -170,7 +150,6 @@ const Filters = ({
                 label="Commune"
               />
               <CheckboxFormField
-                key={programmaticallyCheckedKeys.epci}
                 control={filterForm.control}
                 small
                 path="typologie.epci"
@@ -178,7 +157,6 @@ const Filters = ({
                 label="EPCI"
               />
               <CheckboxFormField
-                key={programmaticallyCheckedKeys.departement}
                 control={filterForm.control}
                 small
                 path="typologie.departement"
@@ -186,7 +164,6 @@ const Filters = ({
                 label="Département"
               />
               <CheckboxFormField
-                key={programmaticallyCheckedKeys.autre}
                 control={filterForm.control}
                 small
                 path="typologie.autre"
