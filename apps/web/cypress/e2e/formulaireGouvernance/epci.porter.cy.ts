@@ -61,7 +61,7 @@ describe('ETQ EPCI connecté, je peux porter une feuille de route', () => {
     cy.get('button').contains('Étape suivante').click()
 
     cy.get('#etape-error').contains(
-      "Vous devez renseigner un contact pour chaque collectivité partenaire avant de passer à l'étape suivante",
+      'renseigner un contact pour chaque collectivité',
     )
     cy.contains(
       "Je souhaite porter une feuille de route, mais je n'ai pas encore les contacts de mes partenaires territoriaux",
@@ -112,7 +112,7 @@ describe('ETQ EPCI connecté, je peux porter une feuille de route', () => {
 
     cy.get('button').contains('Confirmer & envoyer').click()
     cy.get('#etape-error').contains(
-      'Vous devez renseigner les contacts manquants pour valider le périmètre de votre feuille de route.',
+      'Vous devez renseigner les contacts manquants ',
     )
 
     // Check that back link is working

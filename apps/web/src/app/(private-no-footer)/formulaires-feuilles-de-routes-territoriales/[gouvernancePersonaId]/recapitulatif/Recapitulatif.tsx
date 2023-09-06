@@ -51,7 +51,7 @@ const Recapitulatif = ({
   return (
     <form onSubmit={onSubmit}>
       {showError && !!error && (
-        <p id="etape-error" className="fr-error-text fr-my-6v">
+        <p id="etape-error" className="fr-error-text fr-text--sm fr-my-6v">
           {error}
         </p>
       )}
