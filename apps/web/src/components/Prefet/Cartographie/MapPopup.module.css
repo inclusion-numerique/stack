@@ -9,6 +9,7 @@
   padding: 24px;
   max-height: calc(100% - 100px);
   overflow-y: auto;
+  z-index: 3000;
 
   h6 {
     margin-bottom: 4px;
