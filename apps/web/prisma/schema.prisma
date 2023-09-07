@@ -96,8 +96,8 @@ model Base {
   ownerId                   String  @map("owner_id") @db.Uuid
   isPublic                  Boolean @default(false) @map("is_public")
 
-  email         String
-  emailIsPublic Boolean @map("email_is_public")
+  email         String  @default("contact@contact.fr")
+  emailIsPublic Boolean @default(false) @map("email_is_public")
   website       String?
   facebook      String?
   twitter       String?
