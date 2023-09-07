@@ -1,23 +1,26 @@
 import Accordion from '@codegouvfr/react-dsfr/Accordion'
 import React from 'react'
-import {
-  idForCommune,
-  idForEpci,
-} from '@app/web/gouvernance/perimetreFeuilleDeRouteHelpers'
+import { idForEpci } from '@app/web/gouvernance/perimetreFeuilleDeRouteHelpers'
 import styles from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/PerimetreFeuilleDeRoute.module.css'
 import { PerimetreDepartementOptions } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/perimetreData'
+import PerimetreCommunesCheckboxes from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/PerimetreCommunesCheckboxes'
+import SelectedCollectivitiesCountBadge from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/SelectedCollectivitiesCountBadge'
 
 const PerimetreEpciCheckboxes = React.memo(
   ({
     initiallySelectedEpcis,
     initiallySelectedCommunes,
     onEpciCheckboxChange,
+    selectedEpcis,
+    selectedCommunes,
     onCommuneCheckboxChange,
     onSelectAllChange,
     disabled,
     perimetreOptions,
   }: {
     perimetreOptions: PerimetreDepartementOptions
+    selectedEpcis: Set<string>
+    selectedCommunes: Set<string>
     initiallySelectedEpcis: Set<string>
     initiallySelectedCommunes: Set<string>
     onEpciCheckboxChange: (
@@ -39,16 +42,26 @@ const PerimetreEpciCheckboxes = React.memo(
         const epciId = idForEpci(epci.codeEpci)
         const epciSelectAllId = `select-all#${epci.codeEpci}`
 
+        const epciSelectedCommunesCount = epci.communes.filter((commune) =>
+          selectedCommunes.has(commune[0]),
+        ).length
+
         return (
           <Accordion
             key={epci.codeEpci}
             className={styles.epciAccordion}
             label={
               <div className={styles.accordionTitleContainer}>
-                <p>{epci.nom}</p>
-                <p className="fr-text-mention--grey fr-text--xs fr-mb-0">
-                  Nombre de communes&nbsp;: {epci.nombreCommunes}
-                </p>
+                <span>
+                  <p>{epci.nom}</p>
+                  <p className="fr-text-mention--grey fr-text--xs fr-mb-0">
+                    Nombre de communes&nbsp;: {epci.nombreCommunes}
+                  </p>
+                </span>
+                <SelectedCollectivitiesCountBadge
+                  selectedCommunesCount={epciSelectedCommunesCount}
+                  selectedEpcisCount={selectedEpcis.has(epci.codeEpci) ? 1 : 0}
+                />
               </div>
             }
           >
@@ -91,32 +104,13 @@ const PerimetreEpciCheckboxes = React.memo(
                 </div>
               </div>
 
-              {epci.communes.map((commune) => {
-                const id = `dansTerritoire.${idForCommune(commune[0])}`
-                return (
-                  <div key={id} className="fr-fieldset__element">
-                    <div className="fr-checkbox-group fr-checkbox-group--sm">
-                      <input
-                        data-epci={epciId}
-                        data-commune={commune[0]}
-                        type="checkbox"
-                        disabled={disabled}
-                        id={id}
-                        name={id}
-                        onChange={(event) =>
-                          onCommuneCheckboxChange(event, commune[0])
-                        }
-                        defaultChecked={initiallySelectedCommunes.has(
-                          commune[0],
-                        )}
-                      />
-                      <label className="fr-label" htmlFor={id}>
-                        {commune[1]}
-                      </label>
-                    </div>
-                  </div>
-                )
-              })}
+              <PerimetreCommunesCheckboxes
+                communes={epci.communes}
+                epciId={epciId}
+                disabled={disabled}
+                onCommuneCheckboxChange={onCommuneCheckboxChange}
+                initiallySelectedCommunes={initiallySelectedCommunes}
+              />
             </fieldset>
           </Accordion>
         )

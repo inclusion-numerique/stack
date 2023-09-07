@@ -17,3 +17,11 @@
         }
     }
 }
+
+.accordionTitleContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-right: 16px;
+}

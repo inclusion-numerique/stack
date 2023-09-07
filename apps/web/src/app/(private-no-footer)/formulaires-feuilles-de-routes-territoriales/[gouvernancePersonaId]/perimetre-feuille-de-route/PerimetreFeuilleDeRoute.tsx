@@ -21,6 +21,8 @@ import {
   useCollectivitesHorsTerritoire,
 } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/useCollectivitesHorsTerritoire'
 import PerimetreFeuilleDeRouteEtapeActionBar from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/PerimetreFeuilleDeRouteEtapeActionBar'
+import SelectedCollectivitiesCountBadge from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/SelectedCollectivitiesCountBadge'
+import styles from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/perimetre-feuille-de-route/PerimetreFeuilleDeRoute.module.css'
 
 const onCheckboxesSubmit = (event: FormEvent<HTMLFormElement>) => {
   event.preventDefault()
@@ -123,29 +125,58 @@ const PerimetreFeuilleDeRoute = ({
       <form onSubmit={onCheckboxesSubmit}>
         {Array.isArray(perimetreOptions) ? (
           <div className="fr-accordions-group">
-            {perimetreOptions.map((departementOptions) => (
-              <Accordion
-                label={`${departementOptions.nom} (${departementOptions.codeDepartement})`}
-                key={departementOptions.codeDepartement}
-                data-testid={`accordion-departement-${departementOptions.codeDepartement}`}
-              >
-                <PerimetreEpciCheckboxes
-                  perimetreOptions={departementOptions}
-                  initiallySelectedEpcis={selectionInput.initiallySelectedEpcis}
-                  initiallySelectedCommunes={
-                    selectionInput.initiallySelectedCommunes
+            {perimetreOptions.map((departementOptions) => {
+              const selectedEpcisForDepartement = new Set(
+                departementOptions.epcis
+                  .filter(({ codeEpci }) => selectedEpci.has(codeEpci))
+                  .map(({ codeEpci }) => codeEpci),
+              )
+              const selectedCommunesCount = departementOptions.epcis.flatMap(
+                ({ communes }) =>
+                  communes.filter(([code]) => selectedCommunes.has(code)),
+              ).length
+
+              return (
+                <Accordion
+                  label={
+                    <div className={styles.accordionTitleContainer}>
+                      <span>
+                        {departementOptions.nom} (
+                        {departementOptions.codeDepartement})
+                      </span>
+                      <SelectedCollectivitiesCountBadge
+                        selectedEpcisCount={selectedEpcisForDepartement.size}
+                        selectedCommunesCount={selectedCommunesCount}
+                      />
+                    </div>
                   }
-                  onEpciCheckboxChange={onEpciCheckboxChange}
-                  onCommuneCheckboxChange={onCommuneCheckboxChange}
-                  onSelectAllChange={onSelectAllChange}
-                  disabled={disabled}
-                />
-              </Accordion>
-            ))}
+                  key={departementOptions.codeDepartement}
+                  data-testid={`accordion-departement-${departementOptions.codeDepartement}`}
+                >
+                  <PerimetreEpciCheckboxes
+                    perimetreOptions={departementOptions}
+                    selectedCommunes={selectedCommunes}
+                    selectedEpcis={selectedEpcisForDepartement}
+                    initiallySelectedEpcis={
+                      selectionInput.initiallySelectedEpcis
+                    }
+                    initiallySelectedCommunes={
+                      selectionInput.initiallySelectedCommunes
+                    }
+                    onEpciCheckboxChange={onEpciCheckboxChange}
+                    onCommuneCheckboxChange={onCommuneCheckboxChange}
+                    onSelectAllChange={onSelectAllChange}
+                    disabled={disabled}
+                  />
+                </Accordion>
+              )
+            })}
           </div>
         ) : (
           <PerimetreEpciCheckboxes
             perimetreOptions={perimetreOptions}
+            selectedCommunes={selectedCommunes}
+            selectedEpcis={selectedEpci}
             initiallySelectedEpcis={selectionInput.initiallySelectedEpcis}
             initiallySelectedCommunes={selectionInput.initiallySelectedCommunes}
             onEpciCheckboxChange={onEpciCheckboxChange}
