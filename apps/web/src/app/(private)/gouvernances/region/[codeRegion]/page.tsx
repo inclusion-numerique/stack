@@ -1,9 +1,14 @@
 import { notFound, redirect } from 'next/navigation'
 import React from 'react'
+import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { hasAccessToRegionDashboard } from '@app/web/security/securityRules'
 import { prismaClient } from '@app/web/prismaClient'
 import StatistiquesGouvernances from '@app/web/app/(private)/gouvernances/StatistiquesGouvernances'
+import {
+  getStatistiquesGouvernanceDepartement,
+  getStatistiquesGouvernanceRegion,
+} from '@app/web/app/(private)/gouvernances/getStatistiquesGouvernances'
 
 const Page = async ({
   params: { codeRegion },
@@ -36,7 +41,29 @@ const Page = async ({
     redirect(`/profil`)
   }
 
-  return <StatistiquesGouvernances region={region} />
+  const statistiquesGouvernance = await getStatistiquesGouvernanceRegion(
+    codeRegion,
+  )
+
+  return (
+    <div className="fr-container">
+      <Breadcrumb
+        currentPageLabel="Gouvernance"
+        segments={[
+          {
+            label: "Page d'accueil",
+            linkProps: {
+              href: '/',
+            },
+          },
+        ]}
+      />
+      <StatistiquesGouvernances
+        statistiquesGouvernance={statistiquesGouvernance}
+        codeRegion={codeRegion}
+      />
+    </div>
+  )
 }
 
 export default Page

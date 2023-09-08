@@ -4,6 +4,7 @@ import { Prisma } from '@prisma/client'
 import { randomUsers, users } from './users'
 
 import TransactionClient = Prisma.TransactionClient
+import { formulairesGouvernance } from '@app/fixtures/formulairesGouvernance'
 
 function myParseInt(value: string) {
   const parsedValue = Number.parseInt(value, 10)
@@ -45,6 +46,17 @@ const seed = async (transaction: TransactionClient, random?: number) => {
           }),
         ),
       ))
+
+  await Promise.all(
+    formulairesGouvernance().map((formulaire) =>
+      transaction.formulaireGouvernance.upsert({
+        where: { id: formulaire.id },
+        create: formulaire,
+        update: formulaire,
+        select: { id: true },
+      }),
+    ),
+  )
 }
 
 const main = async (eraseAllData: boolean, random?: number) => {

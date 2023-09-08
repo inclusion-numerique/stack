@@ -5,9 +5,9 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { hasAccessToDepartementDashboard } from '@app/web/security/securityRules'
 import { prismaClient } from '@app/web/prismaClient'
-import StatistiquesGouvernances from '@app/web/app/(private)/gouvernances/StatistiquesGouvernances'
-import { getStatistiquesGouvernanceDepartement } from '@app/web/app/(private)/gouvernances/getStatistiquesGouvernances'
 import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
+import CandidatsGouvernances from '@app/web/app/(private)/gouvernances/CandidatsGouvernances'
+import { getCandidatsGouvernanceDepartement } from '@app/web/app/(private)/gouvernances/getCandidatsGouvernances'
 
 export const generateMetadata = async ({
   params: { codeDepartement },
@@ -28,7 +28,7 @@ export const generateMetadata = async ({
   }
 
   return {
-    title: `${departement.nom} - Gouvernance`,
+    title: `${departement.nom} - Candidats à la gouvernance`,
   }
 }
 
@@ -77,57 +77,32 @@ const Page = async ({
     redirect(`/profil`)
   }
 
-  const statistiquesGouvernance = await getStatistiquesGouvernanceDepartement(
+  const candidatsGouvernance = await getCandidatsGouvernanceDepartement(
     codeDepartement,
   )
 
   return (
-    <div className="fr-container fr-pb-20v">
-      <Breadcrumb
-        currentPageLabel="Gouvernance"
-        segments={[
-          {
-            label: "Page d'accueil",
-            linkProps: {
-              href: '/',
+    <>
+      <div className="fr-container">
+        <Breadcrumb
+          currentPageLabel="Gouvernance"
+          segments={[
+            {
+              label: "Page d'accueil",
+              linkProps: {
+                href: '/',
+              },
             },
-          },
-        ]}
-      />
-      <StatistiquesGouvernances
-        codeDepartement={codeDepartement}
-        statistiquesGouvernance={statistiquesGouvernance}
-      />
-      <hr className="fr-separator-12v" />
-      <h3 className="fr-mb-12v">
-        Gouvernances et porteurs pressentis des feuilles de route locales France
-        Numérique Ensemble au sein de votre département
-      </h3>
-      <div className={styles.gouvernancesCtaCard}>
-        <span>
-          <div className="fr-badge fr-badge--warning">
-            renseigner avant le 15/10/2023
-          </div>
-          <p className="fr-mb-0 fr-mt-3v">
-            <strong>
-              Une ou plusieurs gouvernances se dessinent sur votre territoire.
-            </strong>
-            <br />
-            Faites remonter les porteurs de feuilles de route territoriale et
-            les périmètres des gouvernances pressenties.
-          </p>
-        </span>
-        <Button
-          iconId="fr-icon-add-line"
-          size="large"
-          linkProps={{
-            href: `/gouvernances/departement/${codeDepartement}/remonter-une-gouvernance-pressentie`,
-          }}
-        >
-          Remonter une gouvernance pressentie
-        </Button>
+          ]}
+        />
       </div>
-    </div>
+      <div className="fr-container fr-container--medium fr-pb-20v">
+        <CandidatsGouvernances
+          codeDepartement={codeDepartement}
+          candidatsGouvernance={candidatsGouvernance}
+        />
+      </div>
+    </>
   )
 }
 
