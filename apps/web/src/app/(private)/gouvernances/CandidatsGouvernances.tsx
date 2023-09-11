@@ -6,8 +6,6 @@ import type { CandidatsGouvernance } from '@app/web/app/(private)/gouvernances/g
 import BackLink from '@app/web/components/BackLink'
 import CandidatPorteurCard from '@app/web/app/(private)/gouvernances/CandidatPorteurCard'
 import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
-import { dateAsDay } from '@app/web/utils/dateAsDay'
-import PartenaireInfoAccordion from '@app/web/app/(private)/gouvernances/PartenaireInfoAccordion'
 import ParticipantInfoAccordion from '@app/web/app/(private)/gouvernances/ParticipantInfoAccordion'
 
 const CandidatsGouvernances = ({

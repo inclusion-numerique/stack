@@ -1,11 +1,9 @@
 import { notFound, redirect } from 'next/navigation'
 import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { hasAccessToDepartementDashboard } from '@app/web/security/securityRules'
 import { prismaClient } from '@app/web/prismaClient'
-import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
 import CandidatsGouvernances from '@app/web/app/(private)/gouvernances/CandidatsGouvernances'
 import { getCandidatsGouvernanceDepartement } from '@app/web/app/(private)/gouvernances/getCandidatsGouvernances'
 
