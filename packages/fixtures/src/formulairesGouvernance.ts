@@ -1,6 +1,6 @@
-import type { Prisma } from '@prisma/client'
+import { AppPrisma } from '@app/web/prisma'
 
-export const users: Prisma.UserCreateInput[] = [
+export const users: AppPrisma.UserCreateInput[] = [
   {
     id: '99afd613-9d54-4110-9062-065c627eda8a',
     firstName: 'Hugues',
@@ -395,7 +395,7 @@ export const formulairesGouvernance = () => {
         },
       ],
     },
-  } satisfies Prisma.FormulaireGouvernanceCreateInput
+  } satisfies AppPrisma.FormulaireGouvernanceCreateInput
 
   const girondePorteurVide = {
     id: 'b7496d9f-a9c8-46f5-8e83-d8724e84fd01',
@@ -409,7 +409,7 @@ export const formulairesGouvernance = () => {
       formulaireGouvernanceId: 'b7496d9f-a9c8-46f5-8e83-d8724e84fd01',
       ...contacts[5],
     }),
-  } satisfies Prisma.FormulaireGouvernanceCreateInput
+  } satisfies AppPrisma.FormulaireGouvernanceCreateInput
 
   const lyon6Participant = {
     id: '52d9386e-768f-4cad-8749-22b5751f6d35',
@@ -430,7 +430,7 @@ export const formulairesGouvernance = () => {
       formulaireGouvernanceId: '52d9386e-768f-4cad-8749-22b5751f6d35',
       ...contacts[7],
     }),
-  } satisfies Prisma.FormulaireGouvernanceCreateInput
+  } satisfies AppPrisma.FormulaireGouvernanceCreateInput
 
   const asso1Participant = {
     id: 'f4577ba2-6fc3-482f-b4ae-a2608df780e8',
@@ -445,7 +445,7 @@ export const formulairesGouvernance = () => {
       formulaireGouvernanceId: 'f4577ba2-6fc3-482f-b4ae-a2608df780e8',
       ...contacts[8],
     }),
-  } satisfies Prisma.FormulaireGouvernanceCreateInput
+  } satisfies AppPrisma.FormulaireGouvernanceCreateInput
 
   const asso2Participant = {
     id: 'd575dfd3-4230-41d2-9170-9d8c05bd1d18',
@@ -459,7 +459,7 @@ export const formulairesGouvernance = () => {
       formulaireGouvernanceId: 'd575dfd3-4230-41d2-9170-9d8c05bd1d18',
       ...contacts[9],
     }),
-  } satisfies Prisma.FormulaireGouvernanceCreateInput
+  } satisfies AppPrisma.FormulaireGouvernanceCreateInput
 
   return [
     rhonePorteurEpciParticipant,

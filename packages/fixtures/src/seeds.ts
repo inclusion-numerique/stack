@@ -1,10 +1,8 @@
 import { Command, InvalidArgumentError } from '@commander-js/extra-typings'
 import { prismaClient } from '@app/web/prismaClient'
-import { Prisma } from '@prisma/client'
-import { randomUsers, users } from './users'
-
-import TransactionClient = Prisma.TransactionClient
+import { AppPrisma } from '@app/web/prisma'
 import { formulairesGouvernance } from '@app/fixtures/formulairesGouvernance'
+import { randomUsers, users } from './users'
 
 function myParseInt(value: string) {
   const parsedValue = Number.parseInt(value, 10)
@@ -13,6 +11,8 @@ function myParseInt(value: string) {
   }
   return parsedValue
 }
+
+type TransactionClient = AppPrisma.TransactionClient
 
 const deleteAll = async (transaction: TransactionClient) => {
   const tables = await transaction.$queryRaw<

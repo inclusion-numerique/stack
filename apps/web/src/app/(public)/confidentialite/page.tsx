@@ -218,6 +218,7 @@ const ConfidentialityPage = () => (
                   votre message
                 </td>
               </tr>
+              {/* eslint-disable jsx-a11y/control-has-associated-label */}
               <tr>
                 <th>Prénom/nom</th>
                 <td>Oui</td>
@@ -260,6 +261,7 @@ const ConfidentialityPage = () => (
                 <td>Oui</td>
                 <td>Oui</td>
               </tr>
+              {/* eslint-enable jsx-a11y/control-has-associated-label */}
             </tbody>
           </table>
         </div>

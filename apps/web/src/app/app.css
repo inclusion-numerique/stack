@@ -323,10 +323,12 @@ hr.separator--8v{
   padding-bottom: 1px;
   margin: 16px 0;
 }
+
 .fr-separator-6v {
   padding-bottom: 1px;
   margin: 24px 0;
 }
+
 .fr-separator-8v {
   padding-bottom: 1px;
   margin: 32px 0;
@@ -336,10 +338,12 @@ hr.separator--8v{
   padding-bottom: 1px;
   margin: 40px 0;
 }
+
 .fr-separator-12v {
   padding-bottom: 1px;
   margin: 48px 0;
 }
+
 .fr-whitespace-nowrap {
   white-space: nowrap;
 }

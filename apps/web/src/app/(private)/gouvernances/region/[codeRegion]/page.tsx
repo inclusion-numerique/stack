@@ -5,10 +5,7 @@ import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { hasAccessToRegionDashboard } from '@app/web/security/securityRules'
 import { prismaClient } from '@app/web/prismaClient'
 import StatistiquesGouvernances from '@app/web/app/(private)/gouvernances/StatistiquesGouvernances'
-import {
-  getStatistiquesGouvernanceDepartement,
-  getStatistiquesGouvernanceRegion,
-} from '@app/web/app/(private)/gouvernances/getStatistiquesGouvernances'
+import { getStatistiquesGouvernanceRegion } from '@app/web/app/(private)/gouvernances/getStatistiquesGouvernances'
 
 const Page = async ({
   params: { codeRegion },
