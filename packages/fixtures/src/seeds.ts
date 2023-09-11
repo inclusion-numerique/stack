@@ -47,12 +47,30 @@ const seed = async (transaction: TransactionClient, random?: number) => {
         ),
       ))
 
+  // We need a first "pass" to create empty formulaire, to later be able to update them with related models
   await Promise.all(
     formulairesGouvernance().map((formulaire) =>
       transaction.formulaireGouvernance.upsert({
         where: { id: formulaire.id },
-        create: formulaire,
-        update: formulaire,
+        create: {
+          id: formulaire.id,
+          gouvernancePersona: formulaire.gouvernancePersona,
+          createur: formulaire.createur,
+        },
+        update: {
+          gouvernancePersona: formulaire.gouvernancePersona,
+        },
+        select: { id: true },
+      }),
+    ),
+  )
+
+  // Then we can update them with related models
+  await Promise.all(
+    formulairesGouvernance().map((formulaire) =>
+      transaction.formulaireGouvernance.update({
+        where: { id: formulaire.id },
+        data: formulaire,
         select: { id: true },
       }),
     ),

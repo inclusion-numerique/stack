@@ -44,7 +44,10 @@ const CandidatPorteurCard = ({
         </p>
       </div>
       <h4 className="fr-mt-6v fr-mb-4v">{title}</h4>
-      <Accordion label="Informations & contacts du porteur">
+      <Accordion
+        className={styles.detailsAccordion}
+        label="Informations & contacts du porteur"
+      >
         {!!porteur.schemaOuGouvernanceLocale && (
           <InfoLabelValue
             label="Implication dans un schéma ou une gouvernance locale relative à l'inclusion numérique"
@@ -52,26 +55,19 @@ const CandidatPorteurCard = ({
           />
         )}
         <InfoLabelValue
-          labelClassName={
-            porteur.schemaOuGouvernanceLocale ? 'fr-mt-4v' : undefined
-          }
           label="Typologie de la collectivité"
           value={persona.shortTitle ?? persona.title}
         />
         {!!porteur.contactPolitique && (
           <InfoLabelValue
-            labelClassName="fr-mt-4v"
             label="Contact politique de la collectivité"
             value={<ContactInfo contact={porteur.contactPolitique} />}
-            valueClassName="fr-mb-4v"
           />
         )}
         {!!porteur.contactTechnique && (
           <InfoLabelValue
-            labelClassName="fr-mt-4v"
             label="Contact technique de la collectivité"
             value={<ContactInfo contact={porteur.contactTechnique} />}
-            valueClassName="fr-mb-2v"
           />
         )}
       </Accordion>

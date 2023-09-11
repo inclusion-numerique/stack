@@ -6,7 +6,6 @@ export const formulairesTerminesWhere = {
   confirmeEtEnvoye: {
     not: null,
   },
-  intention: 'Porter',
 } satisfies Prisma.FormulaireGouvernanceWhereInput
 
 export const formulairesPorteurTerminesWhere = {
@@ -41,6 +40,13 @@ export const formulairesDansRegionWhere = (codeRegion: string) =>
           },
         },
       },
+      {
+        commune: {
+          departement: {
+            codeRegion,
+          },
+        },
+      },
     ],
   } satisfies Prisma.FormulaireGouvernanceWhereInput)
 
@@ -66,6 +72,11 @@ export const formulairesDansDepartementWhere = (codeDepartement: string) =>
               codeDepartement,
             },
           },
+        },
+      },
+      {
+        commune: {
+          codeDepartement,
         },
       },
     ],

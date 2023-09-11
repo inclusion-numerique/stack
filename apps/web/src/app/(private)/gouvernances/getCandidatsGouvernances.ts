@@ -23,6 +23,22 @@ const contactSelect = {
   },
 }
 
+const communeSelect = {
+  select: {
+    code: true,
+    nom: true,
+    codesPostaux: {
+      select: {
+        codePostal: {
+          select: {
+            code: true,
+          },
+        },
+      },
+    },
+  },
+}
+
 const candidatsGouvernancePorteurSelect = {
   id: true,
   schemaOuGouvernanceLocale: true,
@@ -50,21 +66,7 @@ const candidatsGouvernancePorteurSelect = {
   communesParticipantes: {
     select: {
       id: true,
-      commune: {
-        select: {
-          code: true,
-          nom: true,
-          codesPostaux: {
-            select: {
-              codePostal: {
-                select: {
-                  code: true,
-                },
-              },
-            },
-          },
-        },
-      },
+      commune: communeSelect,
       contact: contactSelect,
     },
   },
@@ -86,7 +88,7 @@ const candidatsGouvernanceParticipantSelect = {
   region: collectiviteSelect,
   departement: collectiviteSelect,
   epci: collectiviteSelect,
-  commune: collectiviteSelect,
+  commune: communeSelect,
   contactPolitique: contactSelect,
   contactTechnique: contactSelect,
   contactStructure: contactSelect,

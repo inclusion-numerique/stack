@@ -91,3 +91,11 @@
     justify-content: stretch;
     border: var(--slim-grey-border);
 }
+
+.detailsAccordion {
+    :global .fr-collapse {
+        > *:not(:first-child):nth-child(odd) {
+            margin-top: 16px;
+        }
+    }
+}

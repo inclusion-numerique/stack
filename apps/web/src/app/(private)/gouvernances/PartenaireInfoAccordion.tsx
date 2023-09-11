@@ -1,9 +1,10 @@
 import Accordion from '@codegouvfr/react-dsfr/Accordion'
 import React from 'react'
 import { CandidatsGouvernance } from '@app/web/app/(private)/gouvernances/getCandidatsGouvernances'
-import { communeNameWithCodePostaux } from '@app/web/data/communeNameWithCodePostaux'
 import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
 import ContactInfo from '@app/web/components/Gouvernance/ContactInfo'
+import { formulaireGouvernancePersonaName } from '@app/web/app/(private)/gouvernances/formulaireGouvernancePersonaName'
+import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
 
 export type Partenaire =
   | CandidatsGouvernance['porteurs'][number]['departementsParticipants'][number]
@@ -16,30 +17,27 @@ const PartenaireInfoAccordion = ({
 }: {
   partenaire: Partenaire
 }) => {
-  const label =
-    'departement' in partenaire
-      ? `${partenaire.departement.nom} (${partenaire.departement.code})`
-      : 'epci' in partenaire
-      ? partenaire.epci.nom
-      : 'commune' in partenaire
-      ? communeNameWithCodePostaux(partenaire.commune)
-      : 'nomStructure' in partenaire
-      ? partenaire.nomStructure
-      : ''
+  const label = formulaireGouvernancePersonaName(partenaire)
 
   const infoLabel =
     'nomStructure' in partenaire && !!partenaire.nomStructure
       ? 'Contact de la structure :'
       : 'Contact de la collectivité :'
 
-  return partenaire.contact ? (
-    <Accordion label={label}>
+  return (
+    <Accordion label={label} className={styles.detailsAccordion}>
       <InfoLabelValue
         label={infoLabel}
-        value={<ContactInfo contact={partenaire.contact} />}
+        value={
+          partenaire.contact ? (
+            <ContactInfo contact={partenaire.contact} />
+          ) : (
+            <p className="fr-error-text">Aucun contact renseigné</p>
+          )
+        }
       />
     </Accordion>
-  ) : null
+  )
 }
 
 export default PartenaireInfoAccordion
