@@ -1,5 +1,8 @@
 import z from 'zod'
-import { siretValidation } from '@app/web/validation/siretValidation'
+import {
+  requiredSiretValidation,
+  siretValidation,
+} from '@app/web/validation/siretValidation'
 import { Option } from '@app/web/utils/options'
 
 export type PerimetreGouvernancePressentie =
@@ -50,20 +53,37 @@ export const GouvernancePressentieValidation = z.object({
   id: z.string().uuid().nullish(),
 
   // Departement qui a remonté cette gouvernance préssentie
-  departementCode: z.string().nonempty(),
+  departementCode: z.string({
+    required_error:
+      'Veuillez renseigner le département qui a remonté cette gouvernance préssentie',
+  }),
 
-  perimetre: z.enum(['epci', 'departement', 'region', 'autre']),
+  perimetre: z.enum(['epci', 'departement', 'region', 'autre'], {
+    required_error: 'Veuillez renseigner le périmètre',
+  }),
 
   // This field has a value that has 2 information: type and code.
   // In the form {type}#{code}
   // For default values will be constructed with getPorteurCode() and server side will infer data from it with getInfoFromPorteurCode()
-  porteurCode: z.string({
-    required_error: 'Veuillez renseigner un porteur',
-  }),
+  porteurCode: z
+    .string({
+      required_error: 'Veuillez renseigner un porteur',
+    })
+    .nonempty({ message: 'Veuillez renseigner un porteur' }),
 
-  siretsRecruteursCoordinateurs: z.array(siretValidation).min(1),
+  siretsRecruteursCoordinateurs: z
+    .array(requiredSiretValidation, {
+      required_error: 'Veuillez renseigner au moins une collectivité/structure',
+    })
+    .min(1, {
+      message: 'Veuillez renseigner au moins une collectivité/structure',
+    }),
 
-  noteDeContexte: z.string().min(1),
+  noteDeContexte: z
+    .string({
+      required_error: 'Veuillez renseigner la note de contexte',
+    })
+    .nonempty({ message: 'Veuillez renseigner la note de contexte' }),
 })
 
 export type GouvernancePressentieData = z.infer<

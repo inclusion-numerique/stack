@@ -8,6 +8,10 @@ import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(priva
 import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/departement/generateDepartementMetadata'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { limiteModificationDesGouvernancesPressenties } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance-pressentie/gouvernancePressentieMetadata'
+import {
+  ajouterGouvernancePressentiePath,
+  gouvernanceHomePath,
+} from '@app/web/app/(private)/gouvernances/gouvernancePaths'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -48,8 +52,8 @@ const Page = async ({
       </h3>
       <div className={styles.gouvernancesCtaCard}>
         <span>
-          <div className="fr-badge fr-badge--warning">
-            renseigner avant le{' '}
+          <div className="fr-badge fr-badge--sm fr-badge--warning">
+            À renseigner avant le{' '}
             {dateAsDay(limiteModificationDesGouvernancesPressenties)}
           </div>
           <p className="fr-mb-0 fr-mt-3v">
@@ -65,7 +69,7 @@ const Page = async ({
           iconId="fr-icon-add-line"
           size="large"
           linkProps={{
-            href: `/gouvernances/departement/${codeDepartement}/remonter-une-gouvernance-pressentie`,
+            href: ajouterGouvernancePressentiePath({ codeDepartement }),
           }}
         >
           Remonter une gouvernance pressentie

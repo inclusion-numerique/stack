@@ -1,3 +1,5 @@
+'use client'
+
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Notice from '@codegouvfr/react-dsfr/Notice'
@@ -68,6 +70,7 @@ const GouvernancePressentieForm = ({
         <CustomSelectFormField
           label="Qui sera le porteur de la feuille de route ?"
           path="porteurCode"
+          asterisk
           control={control}
           options={optionsCollectivitesPorteur}
         />

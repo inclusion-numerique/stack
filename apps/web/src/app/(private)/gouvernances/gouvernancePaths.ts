@@ -30,3 +30,7 @@ export const gouvernanceContactsPath = (scope: GouvernanceScope) =>
 
 export const gouvernanceContactsDownloadPath = (scope: GouvernanceScope) =>
   `${gouvernanceContactsPath(scope)}/telecharger`
+
+export const ajouterGouvernancePressentiePath = (scope: {
+  codeDepartement: string
+}) => `${gouvernanceHomePath(scope)}/gouvernance-pressentie/ajouter`
