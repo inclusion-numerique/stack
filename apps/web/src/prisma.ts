@@ -9,4 +9,5 @@ export namespace AppPrisma {
   export type UserCreateInput = Prisma.UserCreateInput
   export type FormulaireGouvernanceCreateInput =
     Prisma.FormulaireGouvernanceCreateInput
+  export type GouvernanceCreateInput = Prisma.GouvernanceCreateInput
 }

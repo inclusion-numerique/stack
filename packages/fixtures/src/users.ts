@@ -1,12 +1,9 @@
 import { faker } from '@faker-js/faker'
-import { prismaClient } from '@app/web/prismaClient'
+import { AppPrisma } from '@app/web/prisma'
 
 const BASE_NUMBER = 10
 
-export const users: Exclude<
-  Parameters<typeof prismaClient.user.upsert>[0]['create'],
-  undefined
->[] = [
+export const users = [
   {
     id: '99afd613-9d54-4110-9062-065c627eda8a',
     firstName: 'Hugues',
@@ -142,14 +139,11 @@ export const users: Exclude<
     role: 'Demo',
     emailVerified: new Date(),
   },
-]
+] satisfies AppPrisma.UserCreateInput[]
 
-export const randomUsers: (
-  random: number,
-) => Exclude<
-  Parameters<typeof prismaClient.user.create>[0]['data'],
-  undefined
->[] = (random) =>
+export const randomUsers: (random: number) => AppPrisma.UserCreateInput[] = (
+  random,
+) =>
   Array.from({ length: random * BASE_NUMBER }, (_, index) => {
     const firstName = faker.name.firstName()
     const lastName = faker.name.lastName()

@@ -2,6 +2,7 @@ import { Command, InvalidArgumentError } from '@commander-js/extra-typings'
 import { prismaClient } from '@app/web/prismaClient'
 import { AppPrisma } from '@app/web/prisma'
 import { formulairesGouvernance } from '@app/fixtures/formulairesGouvernance'
+import { gouvernances } from '@app/fixtures/gouvernances'
 import { randomUsers, users } from './users'
 
 function myParseInt(value: string) {
@@ -76,6 +77,41 @@ const seed = async (transaction: TransactionClient, random?: number) => {
       transaction.formulaireGouvernance.update({
         where: { id: formulaire.id },
         data: formulaire,
+        select: { id: true },
+      }),
+    ),
+  )
+
+  console.log(`Creating gouvernances remontées (creation pass)`)
+
+  // We need a first "pass" to create empty formulaire, to later be able to update them with related models
+  await Promise.all(
+    gouvernances().map((gouvernance) =>
+      transaction.gouvernance.upsert({
+        where: { id: gouvernance.id },
+        create: {
+          id: gouvernance.id,
+          perimetre: gouvernance.perimetre,
+          createur: gouvernance.createur,
+          derniereModificationPar: gouvernance.derniereModificationPar,
+          departement: gouvernance.departement,
+          noteDeContexte: gouvernance.noteDeContexte,
+        },
+        update: {},
+        select: { id: true },
+      }),
+    ),
+  )
+
+  console.log(
+    `Creating /Users/h/dev/anct/inclusion-numerique/packages/fixtures/src/seeds.ts (data pass)`,
+  )
+  // Then we can update them with related models
+  await Promise.all(
+    gouvernances().map((gouvernance) =>
+      transaction.gouvernance.update({
+        where: { id: gouvernance.id },
+        data: gouvernance,
         select: { id: true },
       }),
     ),
