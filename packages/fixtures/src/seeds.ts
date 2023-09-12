@@ -34,6 +34,8 @@ const deleteAll = async (transaction: TransactionClient) => {
 }
 
 const seed = async (transaction: TransactionClient, random?: number) => {
+  console.log(`Creating users`)
+
   await (random
     ? transaction.user.createMany({ data: randomUsers(random) })
     : Promise.all(
@@ -46,6 +48,8 @@ const seed = async (transaction: TransactionClient, random?: number) => {
           }),
         ),
       ))
+
+  console.log(`Creating formulaires gouvernances (creation pass)`)
 
   // We need a first "pass" to create empty formulaire, to later be able to update them with related models
   await Promise.all(
@@ -65,6 +69,7 @@ const seed = async (transaction: TransactionClient, random?: number) => {
     ),
   )
 
+  console.log(`Creating formulaires gouvernances (data pass)`)
   // Then we can update them with related models
   await Promise.all(
     formulairesGouvernance().map((formulaire) =>
