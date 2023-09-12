@@ -6,6 +6,8 @@ import { getStatistiquesGouvernanceDepartement } from '@app/web/app/(private)/go
 import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/departement/generateDepartementMetadata'
+import { dateAsDay } from '@app/web/utils/dateAsDay'
+import { limiteModificationDesGouvernancesPressenties } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance-pressentie/gouvernancePressentieMetadata'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -47,7 +49,8 @@ const Page = async ({
       <div className={styles.gouvernancesCtaCard}>
         <span>
           <div className="fr-badge fr-badge--warning">
-            renseigner avant le 15/10/2023
+            renseigner avant le{' '}
+            {dateAsDay(limiteModificationDesGouvernancesPressenties)}
           </div>
           <p className="fr-mb-0 fr-mt-3v">
             <strong>
