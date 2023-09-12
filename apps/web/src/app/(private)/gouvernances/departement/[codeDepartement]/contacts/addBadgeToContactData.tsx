@@ -1,10 +1,10 @@
 import React from 'react'
+import classNames from 'classnames'
 import {
   badgeColors,
   badgeStrings,
   Columns,
 } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/contacts/gouvernanceContactsTable'
-import classNames from 'classnames'
 
 // Replace column n°3 (see headers documentation) with a badge
 export const addBadgeToContactData = (data: Columns) =>
@@ -19,6 +19,7 @@ export const addBadgeToContactData = (data: Columns) =>
           ? badgeColors.participant
           : null
       return (
+        // eslint-disable-next-line react/jsx-key
         <div className={classNames('fr-badge fr-badge--sm', colorClass)}>
           {row}
         </div>

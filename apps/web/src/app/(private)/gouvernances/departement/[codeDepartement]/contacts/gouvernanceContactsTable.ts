@@ -53,7 +53,19 @@ export const badgeColors = {
 export const contactToData = (
   contact: ContactsGouvernance[number],
 ): Columns => {
-  const { prenom, nom, fonction, email, formulaireGouvernance } = contact
+  const {
+    prenom,
+    nom,
+    fonction,
+    email,
+    formulaireGouvernance,
+    contactDepartementParticipant,
+    contactPolitique,
+    contactTechnique,
+    contactEpciParticipant,
+    contactStructureParticipante,
+    contactCommuneParticipante,
+  } = contact
 
   const dateDeDepot = dateAsDay(formulaireGouvernance.confirmeEtEnvoye)
   const nomEtPrenom = `${prenom} ${nom}`
@@ -63,10 +75,10 @@ export const contactToData = (
 
   // D'abord les cas ou c'est un contact suggéré par un porteur
 
-  if (contact.contactDepartementParticipant) {
+  if (contactDepartementParticipant) {
     return [
       dateDeDepot,
-      formulaireGouvernancePersonaName(contact.contactDepartementParticipant),
+      formulaireGouvernancePersonaName(contactDepartementParticipant),
       'Département',
       badgeStrings.suggere,
       formulaireOwner,
@@ -75,13 +87,13 @@ export const contactToData = (
       'Politique',
       email,
       null,
-      contact.contactDepartementParticipant.departement.code,
+      contactDepartementParticipant.departement.code,
     ]
   }
-  if (contact.contactEpciParticipant) {
+  if (contactEpciParticipant) {
     return [
       dateDeDepot,
-      formulaireGouvernancePersonaName(contact.contactEpciParticipant),
+      formulaireGouvernancePersonaName(contactEpciParticipant),
       'EPCI',
       badgeStrings.suggere,
       formulaireOwner,
@@ -90,13 +102,13 @@ export const contactToData = (
       null,
       email,
       null,
-      contact.contactEpciParticipant.epci.code,
+      contactEpciParticipant.epci.code,
     ]
   }
-  if (contact.contactCommuneParticipante) {
+  if (contactCommuneParticipante) {
     return [
       dateDeDepot,
-      formulaireGouvernancePersonaName(contact.contactCommuneParticipante),
+      formulaireGouvernancePersonaName(contactCommuneParticipante),
       'Commune',
 
       badgeStrings.suggere,
@@ -106,13 +118,13 @@ export const contactToData = (
       null,
       email,
       null,
-      contact.contactCommuneParticipante.commune.code,
+      contactCommuneParticipante.commune.code,
     ]
   }
-  if (contact.contactStructureParticipante) {
+  if (contactStructureParticipante) {
     return [
       dateDeDepot,
-      formulaireGouvernancePersonaName(contact.contactStructureParticipante),
+      formulaireGouvernancePersonaName(contactStructureParticipante),
       'Structure',
 
       badgeStrings.suggere,
@@ -139,9 +151,9 @@ export const contactToData = (
       ? badgeStrings.porteur
       : badgeStrings.participant
 
-  const typeDeContact = contact.contactPolitique
+  const typeDeContact = contactPolitique
     ? 'Politique'
-    : contact.contactTechnique
+    : contactTechnique
     ? 'Technique'
     : 'Structure'
 

@@ -1,4 +1,7 @@
 import React from 'react'
+import Table from '@codegouvfr/react-dsfr/Table'
+import Button from '@codegouvfr/react-dsfr/Button'
+import classNames from 'classnames'
 import type { ContactsGouvernance } from '@app/web/app/(private)/gouvernances/getContactsGouvernances'
 import BackLink from '@app/web/components/BackLink'
 import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
@@ -7,15 +10,12 @@ import {
   gouvernanceHomePath,
   GouvernanceScope,
 } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
-import Table from '@codegouvfr/react-dsfr/Table'
 import { sPluriel } from '@app/web/utils/sPluriel'
-import Button from '@codegouvfr/react-dsfr/Button'
 import {
   contactTableHeaders,
   contactToData,
 } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/contacts/gouvernanceContactsTable'
 import { addBadgeToContactData } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/contacts/addBadgeToContactData'
-import classNames from 'classnames'
 
 const ContactsGouvernances = ({
   contactsGouvernance,

@@ -1,11 +1,11 @@
+import { formatInTimeZone } from 'date-fns-tz'
+import { stringify } from 'csv-stringify'
 import {
   getContactsGouvernanceDepartement,
   getContactsGouvernanceNational,
   getContactsGouvernanceRegion,
 } from '@app/web/app/(private)/gouvernances/getContactsGouvernances'
 import { GouvernanceScope } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
-import { formatInTimeZone } from 'date-fns-tz'
-import { stringify } from 'csv-stringify'
 import {
   contactTableHeaders,
   contactToData,
@@ -39,17 +39,18 @@ export const telechargerContacts = async (scope: GouvernanceScope) => {
   })
 
   const readableStream = new ReadableStream({
-    async start(controller) {
-      stringifier.on('readable', function () {
-        let row
+    start(controller) {
+      stringifier.on('readable', () => {
+        let row: string
+        // eslint-disable-next-line no-cond-assign, @typescript-eslint/no-unsafe-assignment
         while ((row = stringifier.read()) !== null) {
           controller.enqueue(new Uint8Array(Buffer.from(row)))
         }
       })
-      stringifier.on('error', function (err) {
-        controller.error(err)
+      stringifier.on('error', (error) => {
+        controller.error(error)
       })
-      stringifier.on('finish', function () {
+      stringifier.on('finish', () => {
         controller.close()
       })
       stringifier.write(contactTableHeaders)

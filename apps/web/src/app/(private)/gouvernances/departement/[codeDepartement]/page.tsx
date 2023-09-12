@@ -1,13 +1,12 @@
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import Button from '@codegouvfr/react-dsfr/Button'
-import { getSessionUser } from '@app/web/auth/getSessionUser'
-import { hasAccessToDepartementDashboard } from '@app/web/security/securityRules'
 import { prismaClient } from '@app/web/prismaClient'
 import StatistiquesGouvernances from '@app/web/app/(private)/gouvernances/StatistiquesGouvernances'
 import { getStatistiquesGouvernanceDepartement } from '@app/web/app/(private)/gouvernances/getStatistiquesGouvernances'
 import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
+import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -39,45 +38,7 @@ const Page = async ({
 }: {
   params: { codeDepartement: string }
 }) => {
-  const user = await getSessionUser()
-
-  if (!user) {
-    redirect(`/connexion?suivant=/gouvernances/departement/${codeDepartement}`)
-  }
-
-  const departementWithRegion = await prismaClient.departement.findUnique({
-    where: {
-      code: codeDepartement,
-    },
-    select: {
-      code: true,
-      nom: true,
-      region: {
-        select: {
-          code: true,
-          nom: true,
-          departements: {
-            select: {
-              code: true,
-              nom: true,
-            },
-          },
-        },
-      },
-    },
-  })
-  if (!departementWithRegion) {
-    notFound()
-    return null
-  }
-  if (
-    !hasAccessToDepartementDashboard(user, {
-      regionCode: departementWithRegion.region?.code,
-      departementCode: departementWithRegion.code,
-    })
-  ) {
-    redirect(`/profil`)
-  }
+  await checkUserAccessToGouvernanceScopeOrNavigate({ codeDepartement })
 
   const statistiquesGouvernance = await getStatistiquesGouvernanceDepartement(
     codeDepartement,
