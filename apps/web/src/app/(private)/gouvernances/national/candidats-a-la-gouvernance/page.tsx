@@ -1,27 +1,20 @@
 import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import CandidatsGouvernances from '@app/web/app/(private)/gouvernances/CandidatsGouvernances'
-import { getCandidatsGouvernanceDepartement } from '@app/web/app/(private)/gouvernances/getCandidatsGouvernances'
+import { getCandidatsGouvernanceNational } from '@app/web/app/(private)/gouvernances/getCandidatsGouvernances'
 import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
-import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/departement/generateDepartementMetadata'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
-export const generateMetadata = generateDepartementMetadata(
-  'Candidats à la gouvernance',
-)
+export const generateMetadata = () => ({
+  title: `Candidats à la gouvernance - National`,
+})
 
-const Page = async ({
-  params: { codeDepartement },
-}: {
-  params: { codeDepartement: string }
-}) => {
-  await checkUserAccessToGouvernanceScopeOrNavigate({ codeDepartement })
+const Page = async () => {
+  await checkUserAccessToGouvernanceScopeOrNavigate({ national: true })
 
-  const candidatsGouvernance = await getCandidatsGouvernanceDepartement(
-    codeDepartement,
-  )
+  const candidatsGouvernance = await getCandidatsGouvernanceNational()
 
   return (
     <>
@@ -39,7 +32,7 @@ const Page = async ({
               label: 'Gouvernance',
               linkProps: {
                 href: gouvernanceHomePath({
-                  codeDepartement,
+                  national: true,
                 }),
               },
             },
@@ -48,7 +41,7 @@ const Page = async ({
       </div>
       <div className="fr-container fr-container--medium fr-pb-20v">
         <CandidatsGouvernances
-          codeDepartement={codeDepartement}
+          national
           candidatsGouvernance={candidatsGouvernance}
         />
       </div>

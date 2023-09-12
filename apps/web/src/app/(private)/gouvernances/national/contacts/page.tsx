@@ -1,25 +1,20 @@
 import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
-import { getContactsGouvernanceDepartement } from '@app/web/app/(private)/gouvernances/getContactsGouvernances'
+import { getContactsGouvernanceNational } from '@app/web/app/(private)/gouvernances/getContactsGouvernances'
 import ContactsGouvernances from '@app/web/app/(private)/gouvernances/ContactsGouvernances'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
-import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/departement/generateDepartementMetadata'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
-export const generateMetadata = generateDepartementMetadata('Contacts')
+export const generateMetadata = () => ({
+  title: `Contacts - National`,
+})
 
-const Page = async ({
-  params: { codeDepartement },
-}: {
-  params: { codeDepartement: string }
-}) => {
-  await checkUserAccessToGouvernanceScopeOrNavigate({ codeDepartement })
+const Page = async () => {
+  await checkUserAccessToGouvernanceScopeOrNavigate({ national: true })
 
-  const contactsGouvernance = await getContactsGouvernanceDepartement(
-    codeDepartement,
-  )
+  const contactsGouvernance = await getContactsGouvernanceNational()
 
   return (
     <>
@@ -36,16 +31,14 @@ const Page = async ({
             {
               label: 'Gouvernance',
               linkProps: {
-                href: gouvernanceHomePath({
-                  codeDepartement,
-                }),
+                href: gouvernanceHomePath({ national: true }),
               },
             },
           ]}
         />
       </div>
       <ContactsGouvernances
-        codeDepartement={codeDepartement}
+        national
         contactsGouvernance={contactsGouvernance}
       />
     </>

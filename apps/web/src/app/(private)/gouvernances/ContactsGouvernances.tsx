@@ -14,8 +14,8 @@ import { sPluriel } from '@app/web/utils/sPluriel'
 import {
   contactTableHeaders,
   contactToData,
-} from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/contacts/gouvernanceContactsTable'
-import { addBadgeToContactData } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/contacts/addBadgeToContactData'
+} from '@app/web/app/(private)/gouvernances//gouvernanceContactsTable'
+import { addBadgeToContactData } from '@app/web/app/(private)/gouvernances/addBadgeToContactData'
 
 const ContactsGouvernances = ({
   contactsGouvernance,

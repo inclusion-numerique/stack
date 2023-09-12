@@ -9,7 +9,7 @@ import { GouvernanceScope } from '@app/web/app/(private)/gouvernances/gouvernanc
 import {
   contactTableHeaders,
   contactToData,
-} from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/contacts/gouvernanceContactsTable'
+} from '@app/web/app/(private)/gouvernances/gouvernanceContactsTable'
 
 export const telechargerContacts = async (scope: GouvernanceScope) => {
   const { contacts, scopeKey } =

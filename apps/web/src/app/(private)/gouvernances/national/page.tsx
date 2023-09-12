@@ -1,11 +1,9 @@
-import { redirect } from 'next/navigation'
 import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
-import { getSessionUser } from '@app/web/auth/getSessionUser'
-import { hasAccessToNationalDashboard } from '@app/web/security/securityRules'
 import StatistiquesGouvernances from '@app/web/app/(private)/gouvernances/StatistiquesGouvernances'
 import { getStatistiquesGouvernanceNational } from '@app/web/app/(private)/gouvernances/getStatistiquesGouvernances'
 import WorkInProgressNotice from '@app/web/components/WorkInProgressNotice'
+import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 
 export const generateMetadata = () => ({
   title: `Gouvernance - National`,
@@ -14,15 +12,7 @@ export const generateMetadata = () => ({
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 const Page = async () => {
-  const user = await getSessionUser()
-
-  if (!user) {
-    redirect(`/connexion?suivant=/gouvernances/national`)
-  }
-
-  if (!hasAccessToNationalDashboard(user)) {
-    redirect(`/profil`)
-  }
+  await checkUserAccessToGouvernanceScopeOrNavigate({ national: true })
 
   const statistiquesGouvernance = await getStatistiquesGouvernanceNational()
 

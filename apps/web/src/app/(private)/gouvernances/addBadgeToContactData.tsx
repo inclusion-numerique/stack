@@ -4,7 +4,7 @@ import {
   badgeColors,
   badgeStrings,
   Columns,
-} from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/contacts/gouvernanceContactsTable'
+} from '@app/web/app/(private)/gouvernances/gouvernanceContactsTable'
 
 // Replace column n°3 (see headers documentation) with a badge
 export const addBadgeToContactData = (data: Columns) =>

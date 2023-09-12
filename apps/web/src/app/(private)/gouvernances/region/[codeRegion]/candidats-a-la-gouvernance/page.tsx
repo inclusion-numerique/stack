@@ -1,14 +1,16 @@
 import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
+import CandidatsGouvernances from '@app/web/app/(private)/gouvernances/CandidatsGouvernances'
+import { getCandidatsGouvernanceDepartement } from '@app/web/app/(private)/gouvernances/getCandidatsGouvernances'
 import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
-import { getContactsGouvernanceDepartement } from '@app/web/app/(private)/gouvernances/getContactsGouvernances'
-import ContactsGouvernances from '@app/web/app/(private)/gouvernances/ContactsGouvernances'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
-import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/departement/generateDepartementMetadata'
+import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/region/generateRegionMetadata'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
-export const generateMetadata = generateDepartementMetadata('Contacts')
+export const generateMetadata = generateDepartementMetadata(
+  'Candidats à la gouvernance',
+)
 
 const Page = async ({
   params: { codeDepartement },
@@ -17,7 +19,7 @@ const Page = async ({
 }) => {
   await checkUserAccessToGouvernanceScopeOrNavigate({ codeDepartement })
 
-  const contactsGouvernance = await getContactsGouvernanceDepartement(
+  const candidatsGouvernance = await getCandidatsGouvernanceDepartement(
     codeDepartement,
   )
 
@@ -25,7 +27,7 @@ const Page = async ({
     <>
       <div className="fr-container">
         <Breadcrumb
-          currentPageLabel="Contacts"
+          currentPageLabel="Candidats à la gouvernance"
           segments={[
             {
               label: "Page d'accueil",
@@ -44,10 +46,12 @@ const Page = async ({
           ]}
         />
       </div>
-      <ContactsGouvernances
-        codeDepartement={codeDepartement}
-        contactsGouvernance={contactsGouvernance}
-      />
+      <div className="fr-container fr-container--medium fr-pb-20v">
+        <CandidatsGouvernances
+          codeDepartement={codeDepartement}
+          candidatsGouvernance={candidatsGouvernance}
+        />
+      </div>
     </>
   )
 }

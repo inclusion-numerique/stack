@@ -4,7 +4,7 @@ import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvern
 import { getContactsGouvernanceDepartement } from '@app/web/app/(private)/gouvernances/getContactsGouvernances'
 import ContactsGouvernances from '@app/web/app/(private)/gouvernances/ContactsGouvernances'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
-import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/departement/generateDepartementMetadata'
+import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/region/generateRegionMetadata'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
