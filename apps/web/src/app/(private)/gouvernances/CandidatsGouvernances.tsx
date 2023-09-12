@@ -7,35 +7,21 @@ import BackLink from '@app/web/components/BackLink'
 import CandidatPorteurCard from '@app/web/app/(private)/gouvernances/CandidatPorteurCard'
 import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
 import ParticipantInfoAccordion from '@app/web/app/(private)/gouvernances/ParticipantInfoAccordion'
+import {
+  gouvernanceContactsPath,
+  gouvernanceHomePath,
+  GouvernanceScope,
+} from '@app/web/app/(private)/gouvernances/gouvernancePaths'
 
 const CandidatsGouvernances = ({
   candidatsGouvernance,
   ...scope
 }: {
   candidatsGouvernance: CandidatsGouvernance
-} & (
-  | {
-      codeDepartement: string
-      codeRegion?: undefined
-    }
-  | {
-      codeDepartement?: undefined
-      codeRegion: string
-    }
-)) => {
-  const backLink = scope.codeRegion
-    ? `/gouvernances/region/${scope.codeRegion}`
-    : `/gouvernances/departement/${
-        // Cannot be empty but typescript does not guess that from the union type
-        scope.codeDepartement ?? ''
-      }`
+} & GouvernanceScope) => {
+  const backLink = gouvernanceHomePath(scope)
 
-  const downloadContactsLink = scope.codeRegion
-    ? `/gouvernances/region/${scope.codeRegion}/contacts`
-    : `/gouvernances/departement/${
-        // Cannot be empty but typescript does not guess that from the union type
-        scope.codeDepartement ?? ''
-      }/contacts`
+  const downloadContactsLink = gouvernanceContactsPath(scope)
 
   const hasCandidats =
     candidatsGouvernance.porteurs.length +

@@ -9,6 +9,8 @@ import StatistiquesGouvernances from '@app/web/app/(private)/gouvernances/Statis
 import { getStatistiquesGouvernanceDepartement } from '@app/web/app/(private)/gouvernances/getStatistiquesGouvernances'
 import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 export const generateMetadata = async ({
   params: { codeDepartement },
 }: {

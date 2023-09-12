@@ -35,6 +35,26 @@ export const hasAccessToDepartementDashboard = (
   return false
 }
 
+export const canAddGouvernancePressentie = (
+  user: Pick<SessionUser, 'role' | 'roleScope'>,
+  {
+    departementCode,
+    regionCode,
+  }: {
+    departementCode: string
+    regionCode?: string | null
+  },
+) => hasAccessToDepartementDashboard(user, { departementCode, regionCode })
+
+export const hasAccessToNationalDashboard = (
+  user: Pick<SessionUser, 'role'>,
+) => {
+  if (user.role === 'Administrator' || user.role === 'Demo') {
+    return true
+  }
+  return false
+}
+
 export const hasAccessToDataAnalysis = (user: Pick<SessionUser, 'role'>) => {
   if (user.role === 'Administrator' || user.role === 'Demo') {
     return true

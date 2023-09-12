@@ -4,9 +4,9 @@ import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { hasAccessToDepartementDashboard } from '@app/web/security/securityRules'
 import { prismaClient } from '@app/web/prismaClient'
-import CandidatsGouvernances from '@app/web/app/(private)/gouvernances/CandidatsGouvernances'
-import { getCandidatsGouvernanceDepartement } from '@app/web/app/(private)/gouvernances/getCandidatsGouvernances'
 import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import { getContactsGouvernanceDepartement } from '@app/web/app/(private)/gouvernances/getContactsGouvernances'
+import ContactsGouvernances from '@app/web/app/(private)/gouvernances/ContactsGouvernances'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -29,7 +29,7 @@ export const generateMetadata = async ({
   }
 
   return {
-    title: `${departement.nom} - Candidats à la gouvernance`,
+    title: `${departement.nom} - Contacts`,
   }
 }
 
@@ -78,7 +78,7 @@ const Page = async ({
     redirect(`/profil`)
   }
 
-  const candidatsGouvernance = await getCandidatsGouvernanceDepartement(
+  const contactsGouvernance = await getContactsGouvernanceDepartement(
     codeDepartement,
   )
 
@@ -86,7 +86,7 @@ const Page = async ({
     <>
       <div className="fr-container">
         <Breadcrumb
-          currentPageLabel="Candidats à la gouvernance"
+          currentPageLabel="Contacts"
           segments={[
             {
               label: "Page d'accueil",
@@ -105,12 +105,10 @@ const Page = async ({
           ]}
         />
       </div>
-      <div className="fr-container fr-container--medium fr-pb-20v">
-        <CandidatsGouvernances
-          codeDepartement={codeDepartement}
-          candidatsGouvernance={candidatsGouvernance}
-        />
-      </div>
+      <ContactsGouvernances
+        codeDepartement={codeDepartement}
+        contactsGouvernance={contactsGouvernance}
+      />
     </>
   )
 }

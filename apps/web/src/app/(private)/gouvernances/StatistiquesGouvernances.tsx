@@ -2,44 +2,34 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
 import type { StatistiquesGouvernance } from '@app/web/app/(private)/gouvernances/getStatistiquesGouvernances'
 import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
+import {
+  gouvernanceCandidatsPath,
+  GouvernanceScope,
+} from '@app/web/app/(private)/gouvernances/gouvernancePaths'
 
 const StatistiquesGouvernances = ({
   statistiquesGouvernance,
   ...scope
 }: {
   statistiquesGouvernance: StatistiquesGouvernance
-} & (
-  | {
-      codeDepartement: string
-      codeRegion?: undefined
-    }
-  | {
-      codeDepartement?: undefined
-      codeRegion: string
-    }
-)) => (
+} & GouvernanceScope) => (
   <>
     <h1 className="fr-text-title--blue-france fr-mb-12v">
       Gouvernance de l’Inclusion Numérique
     </h1>
     <div className="fr-mb-12v fr-flex fr-align-items-center fr-justify-content-space-between">
       <h3 className={classNames('fr-mb-0', styles.statisticsTitle)}>
-        Les acteurs de votre territoire souhaitant porter ou participer à une
-        feuille de route locale France Numérique Ensemble.
+        Les acteurs{' '}
+        {scope.national ? 'au niveau national' : 'de votre territoire'}{' '}
+        souhaitant porter ou participer à une feuille de route locale France
+        Numérique Ensemble.
       </h3>
       <Button
         className="fr-ml-2w fr-flex-shrink-0"
         iconId="fr-icon-arrow-right-line"
         iconPosition="right"
         priority="secondary"
-        linkProps={{
-          href: scope.codeRegion
-            ? `/gouvernances/region/${scope.codeRegion}/candidats-a-la-gouvernance`
-            : `/gouvernances/departement/${
-                // Cannot be empty but typescript does not guess that from the union type
-                scope.codeDepartement ?? ''
-              }/candidats-a-la-gouvernance`,
-        }}
+        linkProps={{ href: gouvernanceCandidatsPath(scope) }}
       >
         Voir le détail
       </Button>

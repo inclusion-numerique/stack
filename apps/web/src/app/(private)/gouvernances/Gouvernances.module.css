@@ -99,3 +99,9 @@
         }
     }
 }
+
+.contactsTable{
+    th,td {
+        white-space: nowrap;
+    }
+}

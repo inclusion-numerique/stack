@@ -7,6 +7,8 @@ import { prismaClient } from '@app/web/prismaClient'
 import StatistiquesGouvernances from '@app/web/app/(private)/gouvernances/StatistiquesGouvernances'
 import { getStatistiquesGouvernanceRegion } from '@app/web/app/(private)/gouvernances/getStatistiquesGouvernances'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 const Page = async ({
   params: { codeRegion },
 }: {
