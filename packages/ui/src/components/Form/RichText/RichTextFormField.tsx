@@ -1,22 +1,24 @@
 'use client'
 
 import classNames from 'classnames'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Controller, FieldValues, UseFormReturn } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
 import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
+import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 import RichTextForm from './RichTextForm'
 
 export type RichTextFormFieldProps<T extends FieldValues> = {
   form: UseFormReturn<T>
   path: FieldPath<T>
   disabled?: boolean
-  label?: string
+  label?: ReactNode
   hint?: string
   placeholder?: string
   valid?: string
   icon?: string
   info?: string | ((value: string) => string)
+  asterisk?: boolean
 }
 
 const RichTextFormField = <T extends FieldValues>({
@@ -31,6 +33,7 @@ const RichTextFormField = <T extends FieldValues>({
   valid,
   icon,
   info,
+  asterisk,
 }: UiComponentProps & RichTextFormFieldProps<T>) => {
   const id = `input-form-field__${path}`
   return (
@@ -73,8 +76,8 @@ const RichTextFormField = <T extends FieldValues>({
               className,
             )}
           >
-            <label className="fr-label fr-mb-1v" htmlFor={id}>
-              {label}
+            <label className="fr-label fr-mb-2v" htmlFor={id}>
+              {label} {asterisk && <RedAsterisk />}
               {hint && <span className="fr-hint-text">{hint}</span>}
             </label>
             {icon ? (

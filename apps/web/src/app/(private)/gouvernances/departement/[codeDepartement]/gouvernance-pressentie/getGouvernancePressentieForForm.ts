@@ -8,7 +8,7 @@ const collectiviteSelect = {
   },
 }
 
-const gouvernanceSelect = {
+export const gouvernanceSelect = {
   id: true,
 
   createur: {

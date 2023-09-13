@@ -70,6 +70,7 @@
 }
 
 .gouvernancesCtaCard {
+    margin-top: 24px;
     margin-bottom: 120px;
     padding: 32px;
     display: flex;
@@ -103,5 +104,11 @@
 .contactsTable{
     th,td {
         white-space: nowrap;
+    }
+}
+
+.noteDeContexteContainer {
+    > p {
+        margin-bottom: 0
     }
 }

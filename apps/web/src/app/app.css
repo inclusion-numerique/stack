@@ -318,6 +318,54 @@ hr.separator--8v{
     flex-shrink: 0;
 }
 
+.fr-flex-nowrap {
+    flex-wrap: nowrap;
+}
+
+.fr-flex-wrap {
+    flex-wrap: wrap;
+}
+
+.fr-flex-gap-1v {
+    gap: 4px;
+}
+
+.fr-flex-gap-2v {
+    gap: 8px;
+}
+
+.fr-flex-gap-3v {
+    gap: 12px;
+}
+
+.fr-flex-gap-4v {
+    gap: 16px;
+}
+
+.fr-flex-gap-5v {
+    gap: 20px;
+}
+
+.fr-flex-gap-6v {
+    gap: 24px;
+}
+
+.fr-flex-gap-7v {
+    gap: 28px;
+}
+
+.fr-flex-gap-8v {
+    gap: 32px;
+}
+
+.fr-flex-gap-9v {
+    gap: 36px;
+}
+
+.fr-flex-gap-10v {
+    gap: 40px;
+}
+
 
 .fr-separator-4v {
   padding-bottom: 1px;

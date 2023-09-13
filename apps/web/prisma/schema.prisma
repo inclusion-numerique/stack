@@ -715,6 +715,8 @@ model Gouvernance {
   porteurSiretInformations InformationsSiret? @relation(fields: [porteurSiret], references: [siret], onDelete: NoAction)
 
   organisationsRecruteusesCoordinateurs OrganisationRecruteuseCoordinateurs[]
+
+  @@map("gouvernances")
 }
 
 model OrganisationRecruteuseCoordinateurs {
@@ -723,12 +725,16 @@ model OrganisationRecruteuseCoordinateurs {
   gouvernanceId String      @map("gouvernance_id") @db.Uuid
   gouvernance   Gouvernance @relation(fields: [gouvernanceId], references: [id], onDelete: Cascade)
 
-  siret             String             @map("siret")
-  siretInformations InformationsSiret? @relation(fields: [siret], references: [siret], onDelete: NoAction)
+  siret             String            @map("siret")
+  siretInformations InformationsSiret @relation(fields: [siret], references: [siret], onDelete: NoAction)
+
+  @@map("organisations_recruteuses_coordinateurs")
 }
 
 model InformationsSiret {
   siret                                 String                                @id
   gouvernancesPortees                   Gouvernance[]
   organisationsRecruteusesCoordinateurs OrganisationRecruteuseCoordinateurs[]
+
+  @@map("informations_siret")
 }

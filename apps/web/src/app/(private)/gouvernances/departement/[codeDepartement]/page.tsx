@@ -8,10 +8,9 @@ import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(priva
 import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/departement/generateDepartementMetadata'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { limiteModificationDesGouvernancesPressenties } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance-pressentie/gouvernancePressentieMetadata'
-import {
-  ajouterGouvernancePressentiePath,
-  gouvernanceHomePath,
-} from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import { ajouterGouvernancePressentiePath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import { getListeGouvernanceDepartement } from '@app/web/app/(private)/gouvernances/getListeGouvernances'
+import GouvernanceCard from '@app/web/app/(private)/gouvernances/GouvernanceCard'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -27,6 +26,8 @@ const Page = async ({
   const statistiquesGouvernance = await getStatistiquesGouvernanceDepartement(
     codeDepartement,
   )
+
+  const gouvernances = await getListeGouvernanceDepartement(codeDepartement)
 
   return (
     <div className="fr-container fr-pb-20v">
@@ -50,13 +51,18 @@ const Page = async ({
         Gouvernances et porteurs pressentis des feuilles de route locales France
         Numérique Ensemble au sein de votre département
       </h3>
+      {gouvernances.map((gouvernance) => (
+        <GouvernanceCard key={gouvernance.id} gouvernance={gouvernance} />
+      ))}
       <div className={styles.gouvernancesCtaCard}>
         <span>
-          <div className="fr-badge fr-badge--sm fr-badge--warning">
-            À renseigner avant le{' '}
-            {dateAsDay(limiteModificationDesGouvernancesPressenties)}
-          </div>
-          <p className="fr-mb-0 fr-mt-3v">
+          {gouvernances.length === 0 && (
+            <div className="fr-badge fr-badge--sm fr-badge--warning fr-mb-3v">
+              À renseigner avant le{' '}
+              {dateAsDay(limiteModificationDesGouvernancesPressenties)}
+            </div>
+          )}
+          <p className="fr-mb-0">
             <strong>
               Une ou plusieurs gouvernances se dessinent sur votre territoire.
             </strong>
@@ -68,6 +74,7 @@ const Page = async ({
         <Button
           iconId="fr-icon-add-line"
           size="large"
+          priority={gouvernances.length === 0 ? 'primary' : 'secondary'}
           linkProps={{
             href: ajouterGouvernancePressentiePath({ codeDepartement }),
           }}

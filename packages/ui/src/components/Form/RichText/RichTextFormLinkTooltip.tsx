@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import classNames from 'classnames'
 import { useOnDiff } from '@app/web/hooks/useOnDiff'
-import styles from './RichTextFormLinkTooltip.module.css'
+import styles from './RichTextLinkTooltip.module.css'
 
 const tooltipTopOffset = 40
 
