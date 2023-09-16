@@ -1,11 +1,11 @@
 import { AppPrisma } from '@app/web/prisma'
 import { users } from '@app/fixtures/users'
 
-const gouvernanceConnect = (id: string) => ({
-  connect: {
-    id,
-  },
-})
+// const gouvernanceConnect = (id: string) => ({
+//   connect: {
+//     id,
+//   },
+// })
 
 export const gouvernances = () => {
   const createur = { connect: { id: users[0].id } }
@@ -14,11 +14,11 @@ export const gouvernances = () => {
       code: '69',
     },
   }
-  const gironde = {
-    connect: {
-      code: '33',
-    },
-  }
+  // const gironde = {
+  //   connect: {
+  //     code: '33',
+  //   },
+  // }
 
   const metropoleDeLyon = {
     connect: {

@@ -52,7 +52,11 @@ const Page = async ({
         Numérique Ensemble au sein de votre département
       </h3>
       {gouvernances.map((gouvernance) => (
-        <GouvernanceCard key={gouvernance.id} gouvernance={gouvernance} />
+        <GouvernanceCard
+          key={gouvernance.id}
+          gouvernance={gouvernance}
+          canEdit
+        />
       ))}
       <div className={styles.gouvernancesCtaCard}>
         <span>

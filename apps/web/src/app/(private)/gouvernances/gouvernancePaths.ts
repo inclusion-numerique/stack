@@ -34,3 +34,16 @@ export const gouvernanceContactsDownloadPath = (scope: GouvernanceScope) =>
 export const ajouterGouvernancePressentiePath = (scope: {
   codeDepartement: string
 }) => `${gouvernanceHomePath(scope)}/gouvernance-pressentie/ajouter`
+export const imprimerGouvernancePressentiePath = (
+  scope: {
+    codeDepartement: string
+  },
+  id: string,
+) => `${gouvernanceHomePath(scope)}/gouvernance-pressentie/${id}/imprimer`
+
+export const modifierGouvernancePressentiePath = (
+  scope: {
+    codeDepartement: string
+  },
+  id: string,
+) => `${gouvernanceHomePath(scope)}/gouvernance-pressentie/${id}/modifier`

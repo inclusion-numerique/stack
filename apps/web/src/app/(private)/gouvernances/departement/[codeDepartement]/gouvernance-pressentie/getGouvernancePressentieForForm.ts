@@ -65,3 +65,8 @@ export const getGouvernancePressentieForForm = (id: string) =>
     },
     select: gouvernanceSelect,
   })
+
+export type GouvernancePressentieForForm = Exclude<
+  null,
+  Awaited<ReturnType<typeof getGouvernancePressentieForForm>>
+>

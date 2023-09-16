@@ -34,9 +34,11 @@ const emptyValues: DefaultValues<GouvernancePressentieData> = {
 }
 
 const GouvernancePressentieForm = ({
+  className,
   gouvernancePressentie,
   optionsCollectivitesPorteur,
 }: {
+  className?: string
   // If editing existing
   gouvernancePressentie?: DefaultValues<GouvernancePressentieData>
   optionsCollectivitesPorteur: {
@@ -95,8 +97,14 @@ const GouvernancePressentieForm = ({
   const isLoading =
     (formState.isSubmitting || formState.isSubmitSuccessful) && !mutation.error
 
+  const defaultPorteurValue = gouvernancePressentie?.porteurCode
+    ? Object.values(optionsCollectivitesPorteur)
+        .flatMap((group) => group.options)
+        .find((option) => option.value === gouvernancePressentie?.porteurCode)
+    : undefined
+
   return (
-    <WhiteCard>
+    <WhiteCard className={className}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <h3 className="fr-text-title--blue-france fr-mb-2v">
           Gouvernances et porteurs pressentis des feuilles de route au sein de
@@ -139,6 +147,7 @@ const GouvernancePressentieForm = ({
             options={optionsCollectivitesPorteur}
             placeholder="Rechercher la collectivité"
             disabled={isLoading}
+            defaultValue={defaultPorteurValue}
           />
         )}
         <hr className="fr-separator-10v" />

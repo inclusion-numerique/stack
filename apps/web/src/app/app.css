@@ -6,7 +6,7 @@
 /* Layout setup */
 html,
 body,
-body > div:not(#environment-information) {
+body > div:not(#environment-information, #print) {
   min-height: 100% !important;
   height: 100%;
 }
@@ -242,6 +242,14 @@ hr.separator--8v{
   }
 }
 
+
+.fr-nav__container{
+  >.fr-container {
+    padding-right:0;
+    padding-left: 0;
+  }
+}
+
 @media (min-width: 62em) {
   /* lg */
   .fr-header {
@@ -271,6 +279,15 @@ hr.separator--8v{
 
     .fr-menu__list {
       box-shadow: none;
+    }
+  }
+
+  .fr-nav__container{
+    border-top: var(--slim-grey-border);
+
+    >.fr-container {
+      padding-right: 1.5rem;
+      padding-left: 1.5rem;
     }
   }
 }
@@ -394,4 +411,10 @@ hr.separator--8v{
 
 .fr-whitespace-nowrap {
   white-space: nowrap;
+}
+
+.fr-hidden-print {
+  @media print {
+    display: none !important;
+  }
 }

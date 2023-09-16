@@ -7,9 +7,14 @@ import {
   GouvernancePressentieValidation,
 } from '@app/web/gouvernance/GouvernancePressentie'
 import { prismaClient } from '@app/web/prismaClient'
-import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
+import {
+  forbiddenError,
+  invalidError,
+  notFoundError,
+} from '@app/web/server/rpc/trpcErrors'
 import { canAddGouvernancePressentie } from '@app/web/security/securityRules'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import { GouvernanceIdValidation } from '@app/web/gouvernance/GouvernanceIdValidation'
 
 const checkSecurityForGouvernanceMutation = async (
   user: SessionUser,
@@ -218,4 +223,37 @@ export const gouvernanceRouter = router({
         }
       },
     ),
+  supprimer: protectedProcedure
+    .input(GouvernanceIdValidation)
+    .mutation(async ({ input: { gouvernanceId }, ctx: { user } }) => {
+      const gouvernance = await prismaClient.gouvernance.findUnique({
+        where: {
+          id: gouvernanceId,
+        },
+        select: {
+          id: true,
+          departementCode: true,
+        },
+      })
+
+      if (!gouvernance) {
+        throw notFoundError()
+      }
+
+      await checkSecurityForGouvernanceMutation(
+        user,
+        gouvernance.departementCode,
+      )
+
+      await prismaClient.gouvernance.update({
+        where: {
+          id: gouvernanceId,
+        },
+        data: {
+          supression: new Date(),
+          derniereModificationParId: user.id,
+          modification: new Date(),
+        },
+      })
+    }),
 })

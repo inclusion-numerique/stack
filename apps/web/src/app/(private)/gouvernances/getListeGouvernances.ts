@@ -17,6 +17,7 @@ export const gouvernancesDansDepartementWhere = (codeDepartement: string) =>
 const queryListe = (where?: Prisma.GouvernanceWhereInput) =>
   prismaClient.gouvernance.findMany({
     where: {
+      supression: null,
       ...where,
     },
     select: gouvernanceSelect,

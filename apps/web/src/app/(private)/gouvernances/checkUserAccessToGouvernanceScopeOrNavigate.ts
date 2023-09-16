@@ -17,7 +17,7 @@ export const checkUserAccessToGouvernanceScopeOrNavigate = async (
     user,
   })
 
-  if (check.notFound) {
+  if (!user || check.notFound) {
     notFound()
   }
 
@@ -28,4 +28,5 @@ export const checkUserAccessToGouvernanceScopeOrNavigate = async (
   if (!check.access) {
     notFound()
   }
+  return user
 }

@@ -6,45 +6,40 @@ import { ListeGouvernanceItem } from '@app/web/app/(private)/gouvernances/getLis
 import WhiteCard from '@app/web/ui/WhiteCard'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
-import { perimetreOptions } from '@app/web/gouvernance/GouvernancePressentie'
 import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
 import { limiteModificationDesGouvernancesPressenties } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance-pressentie/gouvernancePressentieMetadata'
-
-const nameOrEmail = ({ email, name }: { name: string | null; email: string }) =>
-  name || email
+import {
+  imprimerGouvernancePressentiePath,
+  modifierGouvernancePressentiePath,
+} from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import GouvernanceDeleteButton from '@app/web/app/(private)/gouvernances/GouvernanceDeleteButton'
+import { nameOrEmail } from '@app/web/utils/nameOrEmail'
+import {
+  getPerimetreString,
+  getPorteurString,
+} from '@app/web/app/(private)/gouvernances/gouvernanceHelpers'
 
 const GouvernanceCard = ({
-  gouvernance: {
-    creation,
-    modification,
-    createur,
-    derniereModificationPar,
-    porteurRegion,
-    porteurDepartement,
-    porteurEpci,
-    porteurSiretInformations,
-    perimetre,
-    organisationsRecruteusesCoordinateurs,
-    noteDeContexte,
-  },
+  gouvernance,
   canEdit,
 }: {
   gouvernance: ListeGouvernanceItem
   canEdit?: boolean
 }) => {
-  const porteurString = porteurRegion
-    ? `Conseil régional  · ${porteurRegion.nom}`
-    : porteurDepartement
-    ? `Conseil départemental  · ${porteurDepartement.nom} (${porteurDepartement.code})`
-    : porteurEpci
-    ? porteurEpci.nom
-    : porteurSiretInformations
-    ? porteurSiretInformations.siret
-    : 'Non renseigné'
+  const {
+    id,
+    creation,
+    modification,
+    createur,
+    departement: { code: codeDepartement },
+    derniereModificationPar,
+    organisationsRecruteusesCoordinateurs,
+    noteDeContexte,
+  } = gouvernance
 
-  const perimetreString =
-    perimetreOptions.find((option) => option.value === perimetre)?.name ||
-    'Non renseigné'
+  const porteurString = getPorteurString(gouvernance)
+  const perimetreString = getPerimetreString(gouvernance)
+
   return (
     <WhiteCard className="fr-mt-6v">
       <div className="fr-flex fr-align-items-start fr-justify-content-space-between fr-flex-gap-2v fr-flex-wrap">
@@ -61,17 +56,30 @@ const GouvernanceCard = ({
           </p>
         </div>
         <div className="fr-flex fr-flex-shrink-0 fr-flex-nowrap fr-flex-gap-2v">
-          <Button type="button" size="small" priority="secondary">
-            TODODOWNLOAD
+          <Button
+            priority="secondary"
+            iconId="fr-icon-printer-line"
+            linkProps={{
+              href: imprimerGouvernancePressentiePath({ codeDepartement }, id),
+            }}
+          >
+            Imprimer
           </Button>
           {canEdit && (
             <>
-              <Button type="button" size="small" priority="secondary">
-                TODOEDIT IF OK
+              <Button
+                priority="secondary"
+                iconId="fr-icon-edit-line"
+                linkProps={{
+                  href: modifierGouvernancePressentiePath(
+                    { codeDepartement },
+                    id,
+                  ),
+                }}
+              >
+                Modifier
               </Button>
-              <Button type="button" size="small" priority="tertiary">
-                TODODEL IF OK
-              </Button>
+              <GouvernanceDeleteButton gouvernanceId={id} />
             </>
           )}
         </div>

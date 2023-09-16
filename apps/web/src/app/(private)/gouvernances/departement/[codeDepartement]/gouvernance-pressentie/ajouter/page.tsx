@@ -5,6 +5,7 @@ import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances
 import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
 import GouvernancePressentieForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance-pressentie/GouvernancePressentieForm'
 import { getPorteurOptions } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance-pressentie/getPorteurOptions'
+import BackLink from '@app/web/components/BackLink'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -23,7 +24,7 @@ const Page = async ({
 
   return (
     <>
-      <div className="fr-container fr-pb-20v">
+      <div className="fr-container">
         <Breadcrumb
           currentPageLabel="Ajouter une gouvernance pressentie"
           segments={[
@@ -43,7 +44,9 @@ const Page = async ({
         />
       </div>
       <div className="fr-container fr-container--narrow fr-pb-10v fr-mb-20v">
+        <BackLink href={gouvernanceHomePath({ codeDepartement })} />
         <GouvernancePressentieForm
+          className="fr-mt-8v"
           gouvernancePressentie={{
             departementCode: codeDepartement,
           }}
