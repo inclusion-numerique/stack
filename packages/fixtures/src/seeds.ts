@@ -103,9 +103,7 @@ const seed = async (transaction: TransactionClient, random?: number) => {
     ),
   )
 
-  console.log(
-    `Creating /Users/h/dev/anct/inclusion-numerique/packages/fixtures/src/seeds.ts (data pass)`,
-  )
+  console.log(`Creating gouvernances remontées (data pass)`)
   // Then we can update them with related models
   await Promise.all(
     gouvernances().map((gouvernance) =>
