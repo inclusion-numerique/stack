@@ -93,6 +93,11 @@
     border: var(--slim-grey-border);
 }
 
+.alignWithAccordionChevron{
+    min-width: 48px;
+    text-align: center;
+}
+
 .detailsAccordion {
     :global .fr-collapse {
         > *:not(:first-child):nth-child(odd) {

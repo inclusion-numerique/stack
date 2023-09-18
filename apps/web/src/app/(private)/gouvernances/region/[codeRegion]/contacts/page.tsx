@@ -1,25 +1,25 @@
 import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
-import { getContactsGouvernanceDepartement } from '@app/web/app/(private)/gouvernances/getContactsGouvernances'
+import { getContactsGouvernanceRegion } from '@app/web/app/(private)/gouvernances/getContactsGouvernances'
 import ContactsGouvernances from '@app/web/app/(private)/gouvernances/ContactsGouvernances'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
-import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/region/generateRegionMetadata'
+import { generateRegionMetadata } from '@app/web/app/(private)/gouvernances/region/generateRegionMetadata'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
-export const generateMetadata = generateDepartementMetadata('Contacts')
+export const generateMetadata = generateRegionMetadata('Contacts')
 
 const Page = async ({
-  params: { codeDepartement },
+  params: { codeRegion },
 }: {
-  params: { codeDepartement: string }
+  params: {
+    codeRegion: string
+  }
 }) => {
-  await checkUserAccessToGouvernanceScopeOrNavigate({ codeDepartement })
+  await checkUserAccessToGouvernanceScopeOrNavigate({ codeRegion })
 
-  const contactsGouvernance = await getContactsGouvernanceDepartement(
-    codeDepartement,
-  )
+  const contactsGouvernance = await getContactsGouvernanceRegion(codeRegion)
 
   return (
     <>
@@ -37,7 +37,7 @@ const Page = async ({
               label: 'Gouvernance',
               linkProps: {
                 href: gouvernanceHomePath({
-                  codeDepartement,
+                  codeRegion,
                 }),
               },
             },
@@ -45,7 +45,7 @@ const Page = async ({
         />
       </div>
       <ContactsGouvernances
-        codeDepartement={codeDepartement}
+        codeRegion={codeRegion}
         contactsGouvernance={contactsGouvernance}
       />
     </>

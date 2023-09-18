@@ -5,6 +5,7 @@ import {
 import { prismaClient } from '@app/web/prismaClient'
 import {
   hasAccessToDepartementDashboard,
+  hasAccessToNationalDashboard,
   hasAccessToRegionDashboard,
 } from '@app/web/security/securityRules'
 import { SessionUser } from '@app/web/auth/sessionUser'
@@ -102,8 +103,21 @@ export const checkGouvernanceScopeAccess = async ({
     }
   }
 
+  if ('national' in scope && scope.national) {
+    if (!hasAccessToNationalDashboard(user)) {
+      return {
+        access: false,
+        redirect: '/profil',
+      }
+    }
+    return {
+      access: true,
+    }
+  }
+
+  // Invalid scope, should not happen
   return {
     access: false,
-    redirect: '/todo',
+    notFound: true,
   }
 }

@@ -1,27 +1,27 @@
 import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import CandidatsGouvernances from '@app/web/app/(private)/gouvernances/CandidatsGouvernances'
-import { getCandidatsGouvernanceDepartement } from '@app/web/app/(private)/gouvernances/getCandidatsGouvernances'
+import { getCandidatsGouvernanceRegion } from '@app/web/app/(private)/gouvernances/getCandidatsGouvernances'
 import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
-import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/region/generateRegionMetadata'
+import { generateRegionMetadata } from '@app/web/app/(private)/gouvernances/region/generateRegionMetadata'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
-export const generateMetadata = generateDepartementMetadata(
+export const generateMetadata = generateRegionMetadata(
   'Candidats à la gouvernance',
 )
 
 const Page = async ({
-  params: { codeDepartement },
+  params: { codeRegion },
 }: {
-  params: { codeDepartement: string }
+  params: {
+    codeRegion: string
+  }
 }) => {
-  await checkUserAccessToGouvernanceScopeOrNavigate({ codeDepartement })
+  await checkUserAccessToGouvernanceScopeOrNavigate({ codeRegion })
 
-  const candidatsGouvernance = await getCandidatsGouvernanceDepartement(
-    codeDepartement,
-  )
+  const candidatsGouvernance = await getCandidatsGouvernanceRegion(codeRegion)
 
   return (
     <>
@@ -39,7 +39,7 @@ const Page = async ({
               label: 'Gouvernance',
               linkProps: {
                 href: gouvernanceHomePath({
-                  codeDepartement,
+                  codeRegion,
                 }),
               },
             },
@@ -48,7 +48,7 @@ const Page = async ({
       </div>
       <div className="fr-container fr-container--medium fr-pb-20v">
         <CandidatsGouvernances
-          codeDepartement={codeDepartement}
+          codeRegion={codeRegion}
           candidatsGouvernance={candidatsGouvernance}
         />
       </div>

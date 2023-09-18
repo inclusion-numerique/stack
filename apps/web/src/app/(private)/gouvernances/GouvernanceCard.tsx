@@ -9,6 +9,7 @@ import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
 import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
 import { limiteModificationDesGouvernancesPressenties } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance-pressentie/gouvernancePressentieMetadata'
 import {
+  GouvernanceScope,
   imprimerGouvernancePressentiePath,
   modifierGouvernancePressentiePath,
 } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
@@ -22,19 +23,21 @@ import {
 const GouvernanceCard = ({
   gouvernance,
   canEdit,
+  scope,
 }: {
   gouvernance: ListeGouvernanceItem
   canEdit?: boolean
+  scope: GouvernanceScope
 }) => {
   const {
     id,
     creation,
     modification,
     createur,
-    departement: { code: codeDepartement },
     derniereModificationPar,
     organisationsRecruteusesCoordinateurs,
     noteDeContexte,
+    departement,
   } = gouvernance
 
   const porteurString = getPorteurString(gouvernance)
@@ -64,7 +67,7 @@ const GouvernanceCard = ({
             priority="secondary"
             iconId="fr-icon-printer-line"
             linkProps={{
-              href: imprimerGouvernancePressentiePath({ codeDepartement }, id),
+              href: imprimerGouvernancePressentiePath(scope, id),
             }}
           >
             Imprimer
@@ -75,10 +78,7 @@ const GouvernanceCard = ({
                 priority="secondary"
                 iconId="fr-icon-edit-line"
                 linkProps={{
-                  href: modifierGouvernancePressentiePath(
-                    { codeDepartement },
-                    id,
-                  ),
+                  href: modifierGouvernancePressentiePath(scope, id),
                 }}
               >
                 Modifier
@@ -88,6 +88,14 @@ const GouvernanceCard = ({
           )}
         </div>
       </div>
+      {/* Display departement if viewing this card from a higher scope than departement */}
+      {!scope.codeDepartement && (
+        <InfoLabelValue
+          label="Département"
+          value={`${departement.nom} (${departement.code})`}
+          labelClassName="fr-mt-6v"
+        />
+      )}
       <InfoLabelValue
         label="Périmètre de la gouvernance"
         value={perimetreString}

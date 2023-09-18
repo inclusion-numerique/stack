@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { prismaClient } from '@app/web/prismaClient'
 
-export const generateDepartementMetadata =
+export const generateRegionMetadata =
   (pageTitle: string) =>
   async ({ params: { codeRegion } }: { params: { codeRegion: string } }) => {
     const region = await prismaClient.region.findUnique({

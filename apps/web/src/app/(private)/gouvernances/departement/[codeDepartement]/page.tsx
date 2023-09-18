@@ -55,6 +55,7 @@ const Page = async ({
         <GouvernanceCard
           key={gouvernance.id}
           gouvernance={gouvernance}
+          scope={{ codeDepartement }}
           canEdit
         />
       ))}

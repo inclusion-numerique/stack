@@ -295,6 +295,10 @@ hr.separator--8v{
 /**
  * Helpers
  */
+.fr-width-full {
+    width: 100%;
+}
+
 .fr-flex {
   display: flex;
 }

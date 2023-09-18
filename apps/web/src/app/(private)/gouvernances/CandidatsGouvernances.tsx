@@ -2,6 +2,7 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import Link from 'next/link'
 import React from 'react'
+import classNames from 'classnames'
 import type { CandidatsGouvernance } from '@app/web/app/(private)/gouvernances/getCandidatsGouvernances'
 import BackLink from '@app/web/components/BackLink'
 import CandidatPorteurCard from '@app/web/app/(private)/gouvernances/CandidatPorteurCard'
@@ -87,7 +88,12 @@ const CandidatsGouvernances = ({
                 <div className="fr-badge fr-badge--blue-cumulus">
                   Collectivités qui souhaitent participer
                 </div>
-                <p className="fr-mb-0 fr-text--xl fr-text--bold">
+                <p
+                  className={classNames(
+                    'fr-mb-0 fr-text--xl fr-text--bold',
+                    styles.alignWithAccordionChevron,
+                  )}
+                >
                   {
                     candidatsGouvernance.souhaitentParticiper.collectivites
                       .length
@@ -110,7 +116,12 @@ const CandidatsGouvernances = ({
                 <div className="fr-badge fr-badge--blue-cumulus">
                   Autres structures qui souhaitent participer
                 </div>
-                <p className="fr-mb-0 fr-text--xl fr-text--bold">
+                <p
+                  className={classNames(
+                    'fr-mb-0 fr-text--xl fr-text--bold',
+                    styles.alignWithAccordionChevron,
+                  )}
+                >
                   {candidatsGouvernance.souhaitentParticiper.structures.length}
                 </p>
               </div>

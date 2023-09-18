@@ -29,7 +29,13 @@ export const gouvernanceSelect = {
   creation: true,
   modification: true,
 
-  departement: collectiviteSelect,
+  departement: {
+    select: {
+      code: true,
+      nom: true,
+      codeRegion: true,
+    },
+  },
 
   perimetre: true,
 
@@ -67,6 +73,6 @@ export const getGouvernancePressentieForForm = (id: string) =>
   })
 
 export type GouvernancePressentieForForm = Exclude<
-  null,
-  Awaited<ReturnType<typeof getGouvernancePressentieForForm>>
+  Awaited<ReturnType<typeof getGouvernancePressentieForForm>>,
+  null
 >

@@ -1,5 +1,6 @@
 import Accordion from '@codegouvfr/react-dsfr/Accordion'
 import React from 'react'
+import classNames from 'classnames'
 import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { CandidatsGouvernance } from '@app/web/app/(private)/gouvernances/getCandidatsGouvernances'
@@ -76,7 +77,12 @@ const CandidatPorteurCard = ({
         <div className="fr-badge fr-badge--purple-glycine">
           Collectivités partenaires suggérées
         </div>
-        <p className="fr-mb-0 fr-text--xl fr-text--bold">
+        <p
+          className={classNames(
+            'fr-mb-0 fr-text--xl fr-text--bold',
+            styles.alignWithAccordionChevron,
+          )}
+        >
           {collectivitesPartenaires.length}
         </p>
       </div>
@@ -89,7 +95,12 @@ const CandidatPorteurCard = ({
             <div className="fr-badge fr-badge--purple-glycine">
               Autres structures suggérées
             </div>
-            <p className="fr-mb-0 fr-text--xl fr-text--bold">
+            <p
+              className={classNames(
+                'fr-mb-0 fr-text--xl fr-text--bold',
+                styles.alignWithAccordionChevron,
+              )}
+            >
               {porteur.structuresParticipantes.length}
             </p>
           </div>
