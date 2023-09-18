@@ -39,6 +39,11 @@ const GouvernanceCard = ({
 
   const porteurString = getPorteurString(gouvernance)
   const perimetreString = getPerimetreString(gouvernance)
+  const creationMeta = `${dateAsDay(creation)} par ${nameOrEmail(createur)}`
+  const modificationMeta = `${dateAsDay(modification)} par ${nameOrEmail(
+    derniereModificationPar,
+  )}`
+  const displayModificationMeta = modificationMeta !== creationMeta
 
   return (
     <WhiteCard className="fr-mt-6v">
@@ -50,9 +55,8 @@ const GouvernanceCard = ({
           </Badge>
           <h5 className="fr-mb-2v">Gouvernance pressentie</h5>
           <p className="fr-mb-0 fr-text--sm">
-            Déposée le {dateAsDay(creation)} par {nameOrEmail(createur)} ·
-            Modifiée le {dateAsDay(modification)} par{' '}
-            {nameOrEmail(derniereModificationPar)}
+            Déposée le {creationMeta}
+            {displayModificationMeta && ` · Modifiée le ${modificationMeta}`}
           </p>
         </div>
         <div className="fr-flex fr-flex-shrink-0 fr-flex-nowrap fr-flex-gap-2v">
