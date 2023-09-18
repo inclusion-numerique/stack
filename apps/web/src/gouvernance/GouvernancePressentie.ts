@@ -44,8 +44,30 @@ export const perimetreOptions: Option<PerimetreGouvernancePressentie>[] = [
   },
 ]
 
-export const GouvernancePressentieValidation = z
-  .object({
+export const GouvernancePressentieValidation = z.intersection(
+  z
+    // We have to use an intersection so the perimetre/code refine is triggered at the same time as the other fields
+    .object({
+      perimetre: z.enum(['epci', 'departement', 'region', 'autre'], {
+        required_error: 'Veuillez renseigner le périmètre',
+      }),
+
+      // This field has a value that has 2 information: type and code.
+      // In the form {type}#{code}
+      // For default values will be constructed with getPorteurCode() and server side will infer data from it with getInfoFromPorteurCode()
+      porteurCode: z.string().nullish(),
+
+      porteurSiret: siretValidation.nullish(),
+    })
+    .refine((data) => !(data.perimetre === 'autre' && !data.porteurSiret), {
+      message: 'Veuillez renseigner un porteur',
+      path: ['porteurSiret'],
+    })
+    .refine((data) => !(data.perimetre !== 'autre' && !data.porteurCode), {
+      message: 'Veuillez renseigner un porteur',
+      path: ['porteurCode'],
+    }),
+  z.object({
     // Missing for creation, present for update
     id: z.string().uuid().nullish(),
 
@@ -54,18 +76,6 @@ export const GouvernancePressentieValidation = z
       required_error:
         'Veuillez renseigner le département qui a remonté cette gouvernance préssentie',
     }),
-
-    perimetre: z.enum(['epci', 'departement', 'region', 'autre'], {
-      required_error: 'Veuillez renseigner le périmètre',
-    }),
-
-    // This field has a value that has 2 information: type and code.
-    // In the form {type}#{code}
-    // For default values will be constructed with getPorteurCode() and server side will infer data from it with getInfoFromPorteurCode()
-    porteurCode: z.string().nullish(),
-
-    porteurSiret: siretValidation.nullish(),
-
     siretsRecruteursCoordinateurs: z
       .array(
         z.object({
@@ -81,15 +91,8 @@ export const GouvernancePressentieValidation = z
         required_error: 'Veuillez renseigner la note de contexte',
       })
       .nonempty({ message: 'Veuillez renseigner la note de contexte' }),
-  })
-  .refine((data) => {
-    //  If perimetre is 'autre', then porteurSiret is required
-    //  IF perimetre is not 'autre', then porteurCode is required
-    if (data.perimetre === 'autre') {
-      return !!data.porteurSiret
-    }
-    return !!data.porteurCode
-  }, 'Veuillez renseigner un porteur')
+  }),
+)
 
 export type GouvernancePressentieData = z.infer<
   typeof GouvernancePressentieValidation

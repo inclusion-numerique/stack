@@ -12,7 +12,6 @@ const UserNavigation = ({ user }: { user: SessionUser }) => {
     isActive: pathname?.startsWith(path) ?? false,
     linkProps: {
       href: path,
-      prefetch: false,
     },
   })
 
