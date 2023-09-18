@@ -84,7 +84,7 @@ const CandidatsGouvernances = ({
             0 && (
             <div className={styles.candidatCard}>
               <div className="fr-flex fr-justify-content-space-between fr-align-items-center  fr-mb-10v">
-                <div className="fr-badge fr-badge--blue-cumulus fr-badge--sm">
+                <div className="fr-badge fr-badge--blue-cumulus">
                   Collectivités qui souhaitent participer
                 </div>
                 <p className="fr-mb-0 fr-text--xl fr-text--bold">
@@ -107,7 +107,7 @@ const CandidatsGouvernances = ({
           {candidatsGouvernance.souhaitentParticiper.structures.length > 0 && (
             <div className={styles.candidatCard}>
               <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-mb-10v">
-                <div className="fr-badge fr-badge--blue-cumulus fr-badge--sm">
+                <div className="fr-badge fr-badge--blue-cumulus">
                   Autres structures qui souhaitent participer
                 </div>
                 <p className="fr-mb-0 fr-text--xl fr-text--bold">

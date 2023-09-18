@@ -36,7 +36,7 @@ const CandidatPorteurCard = ({
   return (
     <div className={styles.candidatCard}>
       <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
-        <div className="fr-badge fr-badge--yellow-tournesol fr-badge--sm">
+        <div className="fr-badge fr-badge--yellow-tournesol">
           Porteur d’une feuille de route
         </div>
         <p className="fr-mb-0">

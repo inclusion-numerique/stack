@@ -61,7 +61,7 @@ const Page = async ({
       <div className={styles.gouvernancesCtaCard}>
         <span>
           {gouvernances.length === 0 && (
-            <div className="fr-badge fr-badge--sm fr-badge--warning fr-mb-3v">
+            <div className="fr-badge fr-badge--warning fr-mb-3v">
               À renseigner avant le{' '}
               {dateAsDay(limiteModificationDesGouvernancesPressenties)}
             </div>
