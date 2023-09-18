@@ -117,19 +117,21 @@ const seed = async (transaction: TransactionClient, random?: number) => {
 }
 
 const main = async (eraseAllData: boolean, random?: number) => {
-  await prismaClient.$transaction(async (transaction) => {
-    if (eraseAllData) {
-      console.log('Erasing all data...')
-      await deleteAll(transaction)
-    }
+  // TODO This is for debugging purposes, remove in production
+  const transaction = prismaClient
+  // await prismaClient.$transaction(async (transaction) => {
+  if (eraseAllData) {
+    console.log('Erasing all data...')
+    await deleteAll(transaction)
+  }
 
-    console.log(
-      `Generating ${
-        random ? `${random} set of random` : 'non-random fixtures'
-      } data`,
-    )
-    await seed(transaction, random)
-  })
+  console.log(
+    `Generating ${
+      random ? `${random} set of random` : 'non-random fixtures'
+    } data`,
+  )
+  await seed(transaction, random)
+  // })
   console.log(`Fixtures loaded successfully`)
 }
 
