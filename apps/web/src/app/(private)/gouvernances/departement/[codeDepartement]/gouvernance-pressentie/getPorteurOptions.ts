@@ -27,15 +27,22 @@ export const getPorteurOptions = async (codeDepartement: string) => {
       nom: true,
     },
     where: {
-      communes: {
-        some: {
-          epci: {
-            code: {
-              in: epcis.map((epci) => epci.code),
+      OR: [
+        {
+          communes: {
+            some: {
+              epci: {
+                code: {
+                  in: epcis.map((epci) => epci.code),
+                },
+              },
             },
           },
         },
-      },
+        {
+          code: codeDepartement,
+        },
+      ],
     },
   })
 
