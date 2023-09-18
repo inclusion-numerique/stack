@@ -1,6 +1,7 @@
 import { Command, InvalidArgumentError } from '@commander-js/extra-typings'
 import { prismaClient } from '@app/web/prismaClient'
 import { AppPrisma } from '@app/web/prisma'
+import { runPromisesSequentially } from '@app/web/utils/runPromisesSequentially'
 import { formulairesGouvernance } from '@app/fixtures/formulairesGouvernance'
 import { gouvernances } from '@app/fixtures/gouvernances'
 import { randomUsers, users } from './users'
@@ -22,7 +23,7 @@ const deleteAll = async (transaction: TransactionClient) => {
     FROM information_schema.tables
     WHERE table_schema = 'public'
       AND table_type = 'BASE TABLE'
-      AND table_name != '_prisma_migrations' 
+      AND table_name != '_prisma_migrations'
       AND table_name != '_prisma_migrations_lock'`
 
   await transaction.$queryRawUnsafe(
@@ -39,7 +40,7 @@ const seed = async (transaction: TransactionClient, random?: number) => {
 
   await (random
     ? transaction.user.createMany({ data: randomUsers(random) })
-    : Promise.all(
+    : runPromisesSequentially(
         users.map((user) =>
           transaction.user.upsert({
             where: { id: user.id },
@@ -53,7 +54,7 @@ const seed = async (transaction: TransactionClient, random?: number) => {
   console.log(`Creating formulaires gouvernances (creation pass)`)
 
   // We need a first "pass" to create empty formulaire, to later be able to update them with related models
-  await Promise.all(
+  await runPromisesSequentially(
     formulairesGouvernance().map((formulaire) =>
       transaction.formulaireGouvernance.upsert({
         where: { id: formulaire.id },
@@ -72,7 +73,7 @@ const seed = async (transaction: TransactionClient, random?: number) => {
 
   console.log(`Creating formulaires gouvernances (data pass)`)
   // Then we can update them with related models
-  await Promise.all(
+  await runPromisesSequentially(
     formulairesGouvernance().map((formulaire) =>
       transaction.formulaireGouvernance.update({
         where: { id: formulaire.id },
@@ -85,7 +86,7 @@ const seed = async (transaction: TransactionClient, random?: number) => {
   console.log(`Creating gouvernances remontées (creation pass)`)
 
   // We need a first "pass" to create empty formulaire, to later be able to update them with related models
-  await Promise.all(
+  await runPromisesSequentially(
     gouvernances().map((gouvernance) =>
       transaction.gouvernance.upsert({
         where: { id: gouvernance.id },
@@ -105,7 +106,7 @@ const seed = async (transaction: TransactionClient, random?: number) => {
 
   console.log(`Creating gouvernances remontées (data pass)`)
   // Then we can update them with related models
-  await Promise.all(
+  await runPromisesSequentially(
     gouvernances().map((gouvernance) =>
       transaction.gouvernance.update({
         where: { id: gouvernance.id },
@@ -117,22 +118,21 @@ const seed = async (transaction: TransactionClient, random?: number) => {
 }
 
 const main = async (eraseAllData: boolean, random?: number) => {
-  // TODO This is for debugging purposes, remove in production
-  const transaction = prismaClient
-  // await prismaClient.$transaction(async (transaction) => {
-  if (eraseAllData) {
-    console.log('Erasing all data...')
-    await deleteAll(transaction)
-  }
+  await prismaClient.$transaction(async (transaction) => {
+    if (eraseAllData) {
+      console.log('Erasing all data...')
+      await deleteAll(transaction)
+    }
 
-  console.log(
-    `Generating ${
-      random ? `${random} set of random` : 'non-random fixtures'
-    } data`,
-  )
-  await seed(transaction, random)
-  // })
-  console.log(`Fixtures loaded successfully`)
+    console.log(
+      `Generating ${
+        random ? `${random} set of random` : 'non-random fixtures'
+      } data`,
+    )
+    await seed(transaction, random)
+    // })
+    console.log(`Fixtures loaded successfully`)
+  })
 }
 
 const program = new Command()
