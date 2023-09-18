@@ -1,8 +1,9 @@
 import { Prisma } from '@prisma/client'
+import { ServerWebAppConfig } from '@app/web/webAppConfig'
 
 export const formulairesTerminesWhere = {
   annulation: null,
-  demonstration: false,
+  demonstration: ServerWebAppConfig.isMain ? undefined : false,
   confirmeEtEnvoye: {
     not: null,
   },
