@@ -101,7 +101,7 @@ const Publication = ({
                     <Notice
                       data-testid="notice-private-profile"
                       className="fr-mx-2v fr-mt-4v fr-mb-4v"
-                      title="En publiant votre ressource dans un profil privée, vous ne pourrez pas la rendre publique."
+                      title="En publiant votre ressource dans un profil privé, vous ne pourrez pas la rendre publique."
                     />
                   )}
               <ResourceBaseRichRadioElement
