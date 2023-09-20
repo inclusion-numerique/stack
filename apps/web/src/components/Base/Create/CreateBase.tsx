@@ -63,7 +63,7 @@ const CreateBase = () => {
       <div className={classNames('fr-container', styles.container)}>
         <BaseSideMenu />
         <div>
-          <h1>Créer une base</h1>
+          <h1 className="fr-mb-6w">Créer une base</h1>
           <div
             className={classNames('fr-mt-3w', styles.card)}
             id="informations"

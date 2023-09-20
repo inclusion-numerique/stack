@@ -1,8 +1,10 @@
 import React from 'react'
+import classNames from 'classnames'
 import SideMenu from '@codegouvfr/react-dsfr/SideMenu'
+import styles from './SideMenu.module.css'
 
 const BaseSideMenu = () => (
-  <div className="fr-my-15w fr-hidden fr-unhidden-lg">
+  <div className={classNames(styles.container, 'fr-hidden', 'fr-unhidden-lg')}>
     <div>
       <SideMenu
         burgerMenuButtonText="Contenus"

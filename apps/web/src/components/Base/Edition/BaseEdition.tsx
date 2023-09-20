@@ -10,7 +10,7 @@ const BaseEdition = ({ base }: { base: BasePageData }) => (
   <div className={classNames('fr-container', styles.container)}>
     <SideMenu />
 
-    <div className={classNames('fr-mt-3w', baseStyles.card)} id="supprimer">
+    <div className={baseStyles.card} id="supprimer">
       <h5 className="fr-mb-1w">Supprimer la base</h5>
       <p className="fr-text--sm fr-hint-text fr-mb-0 wip">
         Texte explicatif sur la suppression des données ?

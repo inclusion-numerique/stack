@@ -14,7 +14,7 @@ const BaseCreationPage = async () => {
       <div className="fr-container">
         <Breadcrumbs currentPage="Créer une base" />
       </div>
-      <div className="fr-mt-6w">
+      <div className="fr-mt-1w">
         <CreateBase />
       </div>
     </>

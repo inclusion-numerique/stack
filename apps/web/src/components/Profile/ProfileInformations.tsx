@@ -9,16 +9,18 @@ const ProfileInformations = ({
   profile,
   resourcesCount,
   children,
-  withPictureModification,
+  editMode,
 }: {
   profile: ProfilePageData
   resourcesCount: number
-  withPictureModification?: boolean
+  editMode?: boolean
 } & PropsWithChildren) => (
-  <div className={styles.profileHeader}>
+  <div
+    className={editMode ? styles.profileEditionHeader : styles.profileHeader}
+  >
     <div className={styles.logos}>
       <div className={styles.logo} />
-      {withPictureModification && (
+      {editMode && (
         <Link href="/" className={styles.pictureModification}>
           <span className="fr-icon-camera-line" />
         </Link>

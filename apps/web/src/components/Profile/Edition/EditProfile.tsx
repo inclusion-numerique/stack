@@ -18,7 +18,7 @@ const EditProfile = ({
       <ProfileInformations
         profile={profile}
         resourcesCount={resourcesCount}
-        withPictureModification
+        editMode
       />
       <Visibility isPublic={profile.isPublic} />
     </div>
