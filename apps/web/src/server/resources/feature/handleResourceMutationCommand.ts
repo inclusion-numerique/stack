@@ -60,9 +60,14 @@ export const handleResourceMutationCommand = async (
         },
       })
     }
-  })
-  const resourceWithContext = await getResourceProjectionContext(resource)
 
+    await transaction.resource.update({
+      where: { id: resource.id },
+      data: { updated: resource.updated },
+    })
+  })
+
+  const resourceWithContext = await getResourceProjectionContext(resource)
   return {
     resource: resourceWithContext,
     events: mutationEvents,

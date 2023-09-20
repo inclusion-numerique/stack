@@ -34,10 +34,10 @@ const ResourceCard = ({
           title="Modifications non publiées"
         />
         <div className={styles.separator} />
-        <div>Mis à jour le {dateAsDay(resource.updated)}</div>
+        <div>Mis à jour le {dateAsDay(resource.published)}</div>
       </>
     ) : (
-      <div>Mis à jour le {dateAsDay(resource.updated)}</div>
+      <div>Mis à jour le {dateAsDay(resource.published)}</div>
     )
   ) : (
     <>
