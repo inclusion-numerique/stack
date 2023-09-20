@@ -153,7 +153,9 @@ const GouvernancePressentieForm = ({
           />
         )}
         <hr className="fr-separator-10v" />
-        <h6 className="fr-mb-4v">Périmètre de la gouvernance</h6>
+        <h6 className="fr-mb-4v">
+          Recrutement coordinateur Conseillers Numériques
+        </h6>
         <p className="fr-mb-8v">
           La phase de déploiement du dispositif Conseiller numérique laisse
           place à une phase de structuration où le diagnostic des besoins et
@@ -187,7 +189,6 @@ const GouvernancePressentieForm = ({
           Veuillez renseigner quelle collectivité/structure va recruter un
           coordinateur Conseillers Numériques au sein de la gouvernance :
         </p>
-        {/* TODO LIST WITH ADD / REMOVE */}
         {siretsRecruteursCoordinateursFields.fields.map((siretField, index) => (
           <InputFormField
             control={control}
