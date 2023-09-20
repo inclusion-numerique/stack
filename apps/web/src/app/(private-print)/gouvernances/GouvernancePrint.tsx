@@ -85,7 +85,7 @@ const GouvernancePrint = ({
           value={porteurString}
         />
         <InfoLabelValue
-          label="Recrutement coordinateur Conseillers Numériques"
+          label="SIRET collectivité/structure recruteuse d’un coordinateur Conseillers Numériques"
           labelClassName="fr-mt-6v"
           value={
             <>
