@@ -35,6 +35,9 @@ export const hasAccessToDepartementDashboard = (
   return false
 }
 
+export const hasAccessToAdministration = (user: Pick<SessionUser, 'role'>) =>
+  user.role === 'Administrator' || user.role === 'Demo'
+
 export const hasAccessToNationalStatistics = (
   user: Pick<SessionUser, 'role'>,
 ) => user.role === 'Administrator' || user.role === 'Demo'
