@@ -137,8 +137,18 @@ export const buildCommunes = async ({
 
   for (const commune of communesData) {
     const existing = domainData.communes.get(commune.code)
+    const communeCodePostaux =
+      communeCodePostauxByCommuneCode.get(commune.code)?.sort() ?? []
+
     if (!existing) {
       communesToCreate.push(commune)
+
+      codePostauxJoinToCreate.push(
+        ...communeCodePostaux.map((code) => ({
+          code,
+          codeCommune: commune.code,
+        })),
+      )
       continue
     }
 
@@ -156,8 +166,6 @@ export const buildCommunes = async ({
     const existingCodePostaux = existing.codesPostaux
       .map(({ codePostal: { code } }) => code)
       .sort()
-    const communeCodePostaux =
-      communeCodePostauxByCommuneCode.get(commune.code)?.sort() ?? []
 
     for (const existingCodeJoin of existingCodePostaux) {
       if (!communeCodePostaux.includes(existingCodeJoin)) {
@@ -202,9 +210,9 @@ export const buildCommunes = async ({
       codePostalToDelete.add(existing)
     }
   }
-  const codePostalToCreate = uniqueCodesPostaux.filter(
-    ({ code }) => !domainData.codePostaux.has(code),
-  )
+  const codePostalToCreate = [...uniqueCodesPostauxSet.values()]
+    .filter((code) => !domainData.codePostaux.has(code))
+    .map((code) => ({ code }))
 
   output('-- Checking integrity...')
   const communeCodes = new Set(communesData.map(({ code }) => code))

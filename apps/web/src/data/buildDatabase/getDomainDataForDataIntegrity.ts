@@ -90,11 +90,14 @@ export const getDomainDataForDataIntegrity = async () => {
     })
     .then((items) => arrayToMap(items, 'code'))
 
-  const codePostaux = new Set(
-    [...communes.values()].flatMap((commune) =>
-      commune.codesPostaux.map(({ codePostal }) => codePostal.code),
-    ),
-  )
+  // Query code postal separately to correct for inconsistencies
+  const codePostaux = await prismaClient.codePostal
+    .findMany({
+      select: {
+        code: true,
+      },
+    })
+    .then((items) => new Set(items.map(({ code }) => code)))
 
   return {
     formulaires,
