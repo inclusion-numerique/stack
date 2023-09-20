@@ -1,4 +1,5 @@
 import { prismaClient } from '@app/web/prismaClient'
+import { arrayToMap } from '@app/web/utils/arrayToMap'
 
 export const getDomainDataForDataIntegrity = async () => {
   const formulaires = await prismaClient.formulaireGouvernance.findMany({
@@ -34,12 +35,77 @@ export const getDomainDataForDataIntegrity = async () => {
         communeCode: true,
       },
     })
+  const regions = await prismaClient.region
+    .findMany({
+      select: {
+        code: true,
+        nom: true,
+        searchable: true,
+      },
+    })
+    .then((items) => arrayToMap(items, 'code'))
+
+  const departements = await prismaClient.departement
+    .findMany({
+      select: {
+        code: true,
+        nom: true,
+        codeRegion: true,
+        searchable: true,
+      },
+    })
+    .then((items) => arrayToMap(items, 'code'))
+
+  const epcis = await prismaClient.epci
+    .findMany({
+      select: {
+        code: true,
+        nom: true,
+        population: true,
+        searchable: true,
+      },
+    })
+    .then((items) => arrayToMap(items, 'code'))
+
+  const communes = await prismaClient.commune
+    .findMany({
+      select: {
+        code: true,
+        nom: true,
+        codeDepartement: true,
+        codeEpci: true,
+        searchable: true,
+        latitude: true,
+        longitude: true,
+        codesPostaux: {
+          select: {
+            codePostal: {
+              select: {
+                code: true,
+              },
+            },
+          },
+        },
+      },
+    })
+    .then((items) => arrayToMap(items, 'code'))
+
+  const codePostaux = new Set(
+    [...communes.values()].flatMap((commune) =>
+      commune.codesPostaux.map(({ codePostal }) => codePostal.code),
+    ),
+  )
 
   return {
     formulaires,
     departementsParticipants,
     epciParticipants,
     communesParticipantes,
+    regions,
+    departements,
+    epcis,
+    communes,
+    codePostaux,
   }
 }
 
