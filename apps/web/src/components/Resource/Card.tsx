@@ -26,7 +26,8 @@ const ResourceCard = ({
   const isContributor = user && user.id === resource.createdBy.id
 
   const dates = resource.published ? (
-    isContributor && resource.updated !== resource.published ? (
+    isContributor &&
+    resource.updated.getTime() !== resource.published.getTime() ? (
       <>
         <Notice
           className={styles.smallNotice}
