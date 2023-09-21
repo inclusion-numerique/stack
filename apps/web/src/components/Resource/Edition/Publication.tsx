@@ -184,6 +184,7 @@ const Publication = ({
           />
           <MultipleSelectFormField
             data-testid="indexation-support-types-select"
+            asterisk
             label="Type de support"
             hint={
               <>
@@ -205,6 +206,7 @@ const Publication = ({
           />
           <MultipleSelectFormField
             data-testid="indexation-targetAudiences-select"
+            asterisk
             label="Publics cibles"
             hint={
               <>

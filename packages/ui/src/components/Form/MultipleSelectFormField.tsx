@@ -1,4 +1,5 @@
 import React, { ChangeEventHandler, ReactNode } from 'react'
+import classNames from 'classnames'
 import { Control, Controller, FieldValues } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
@@ -56,7 +57,7 @@ const MultipleSelectFormField = <T extends FieldValues>({
       name={path}
       render={({
         field: { onChange, onBlur, value, name, ref },
-        fieldState: { invalid, isTouched, error },
+        fieldState: { error },
       }) => {
         // We will remove already selected options from the select options
         const valuesSet = new Set<string>(value ?? [])
@@ -87,11 +88,10 @@ const MultipleSelectFormField = <T extends FieldValues>({
 
         return (
           <div
-            className={`fr-select-group ${
-              error ? 'fr-select-group--error' : ''
-            } ${disabled ? 'fr-select-group--disabled' : ''} ${
-              isTouched && !invalid ? 'fr-select-group--valid' : ''
-            }`}
+            className={classNames('fr-select-group', {
+              'fr-select-group--disabled': disabled,
+              'fr-select-group--error': error,
+            })}
           >
             <label className="fr-label" htmlFor={id}>
               {label} {asterisk && <RedAsterisk />}
