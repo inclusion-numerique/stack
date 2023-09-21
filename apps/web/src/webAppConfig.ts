@@ -76,4 +76,7 @@ export const PublicWebAppConfig = {
     host: process.env.NEXT_PUBLIC_MATOMO_HOST ?? '',
     siteId: process.env.NEXT_PUBLIC_MATOMO_SITE_ID ?? '',
   },
+  Crisp: {
+    websiteId: process.env.NEXT_PUBLIC_CRISP_WEBSITE_ID ?? '',
+  },
 }

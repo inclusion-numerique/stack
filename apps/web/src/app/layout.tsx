@@ -12,6 +12,7 @@ import { EnvInformation } from '@app/web/app/EnvInformation'
 import { Matomo } from '@app/web/app/Matomo'
 import { PreloadResources } from '@app/web/app/PreloadResources'
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import Crisp from '@app/web/app/Crisp'
 
 declare module '@codegouvfr/react-dsfr/link' {
   interface RegisterLink {
@@ -50,6 +51,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
         <PreloadResources />
         <Dsfr nonce={nonce} />
         <Matomo nonce={nonce} />
+        <Crisp nonce={nonce} />
         <EnvInformation />
         {children}
       </body>

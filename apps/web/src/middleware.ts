@@ -7,7 +7,7 @@ const isProduction = nodeEnvironment === 'production'
 
 const contentSecurityPolicy = `
   default-src 'self' https://matomo.incubateur.anct.gouv.fr https://sentry.incubateur.net;
-  script-src 'self' https://matomo.incubateur.anct.gouv.fr 'unsafe-inline' 'unsafe-eval';
+  script-src 'self' https://matomo.incubateur.anct.gouv.fr https://client.crisp.chat 'unsafe-inline' 'unsafe-eval';
   script-src-attr 'none';
   style-src 'self' https: 'unsafe-inline';
   img-src 'self' data:;
