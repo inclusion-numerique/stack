@@ -16,7 +16,7 @@ const PrivateLayout = async ({ children }: PropsWithChildren) => {
     <div
       style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}
     >
-      <Header user={user} />
+      <Header user={user} mainNavigation />
       <div style={{ flex: 1 }}>{children}</div>
       <PublicFooter />
     </div>

@@ -1,0 +1,119 @@
+.statisticsTitle {
+    max-width: 894px;
+}
+
+
+.statisticsCardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: stretch;
+    margin-bottom: 40px;
+}
+
+.statisticsCard {
+    flex: 1 1 0;
+    border: var(--slim-grey-border);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+
+    hr {
+        margin-top: 24px;
+    }
+
+    > p {
+        flex: 1;
+    }
+}
+
+.statisticsLabelAndValue {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h6 {
+        margin-bottom: 0;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    p {
+        margin-bottom: 0;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 28px;
+    }
+
+    &:last-of-type {
+        margin-top: 8px;
+    }
+
+}
+
+.largeStatisticsLabelAndValue {
+    h6 {
+        font-size: 18px;
+        line-height: 28px;
+    }
+
+    p {
+        font-size: 28px;
+        line-height: 36px;
+    }
+}
+
+.gouvernancesTitle {
+    max-width: 894px;
+    margin-bottom: 48px;
+}
+
+.gouvernancesCtaCard {
+    margin-top: 24px;
+    margin-bottom: 120px;
+    padding: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+    border: var(--slim-grey-border);
+
+    p {
+        max-width: 658px;
+    }
+}
+
+.candidatCard {
+    margin-top: 24px;
+    padding: 32px 32px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    border: var(--slim-grey-border);
+}
+
+.alignWithAccordionChevron{
+    min-width: 48px;
+    text-align: center;
+}
+
+.detailsAccordion {
+    :global .fr-collapse {
+        > *:not(:first-child):nth-child(odd) {
+            margin-top: 16px;
+        }
+    }
+}
+
+.contactsTable{
+    th,td {
+        white-space: nowrap;
+    }
+}
+
+.noteDeContexteContainer {
+    > p {
+        margin-bottom: 0
+    }
+}

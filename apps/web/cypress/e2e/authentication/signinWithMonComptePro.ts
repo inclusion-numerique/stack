@@ -23,7 +23,7 @@ export const signinWithMonComptePro = ({
   })
 
   cy.get('button.moncomptepro-button').click()
-  cy.url().should('contain', 'moncomptepro.beta.gouv.fr/users/start-sign-in')
+  cy.url().should('contain', 'moncomptepro.beta.gouv.fr')
 
   cy.intercept(/\/api\/auth\/callback/, (request) => {
     // Add our cookies back

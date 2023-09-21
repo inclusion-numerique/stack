@@ -468,6 +468,10 @@ jobs:
       - run:
           name: Set deployment status to data loading
           command: pnpm --silent cli github:deployment:update $DEPLOYMENT_ID in_progress -d 'Loading data' -l https://app.circleci.com/pipelines/workflows/$CIRCLE_WORKFLOW_ID
+      - run:
+          name: Build dataset
+          command: |
+            pnpm --silent cli deployment:build-data https://$WEB_BASE_URL
       - when:
           condition:
             and:
@@ -482,10 +486,6 @@ jobs:
           name: Check that deployed container status is ok
           command: |
             pnpm --silent cli deployment:check-status https://$WEB_BASE_URL
-      - run:
-          name: Build dataset
-          command: |
-            pnpm --silent cli deployment:build-data https://$WEB_BASE_URL
       - run:
           name: Set deployment status to success
           command: pnpm --silent cli github:deployment:update $DEPLOYMENT_ID success -d 'Deploy successful' -u https://$WEB_BASE_URL -l https://app.circleci.com/pipelines/workflows/$CIRCLE_WORKFLOW_ID

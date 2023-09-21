@@ -63,6 +63,7 @@
     "csv-parser": "^3.0.0",
     "csv-stringify": "^6.4.0",
     "date-fns": "^2.30.0",
+    "date-fns-tz": "^2.0.0",
     "decimal.js": "^10.4.3",
     "deep-object-diff": "^1.1.9",
     "dotenv": "^16.1.4",
@@ -152,6 +153,6 @@
     "require-from-string": "^2.0.2",
     "style-loader": "^3.3.3",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.0.4"
+    "typescript": "5.0.*"
   }
 }

@@ -85,7 +85,9 @@ model User {
   formulaireGouvernanceId String?                @map("formulaire_gouvernance_id") @db.Uuid
   formulaireGouvernance   FormulaireGouvernance? @relation("formulaire_gouvernance_participant", fields: [formulaireGouvernanceId], references: [id])
 
-  formulairesGouvernanceCrees FormulaireGouvernance[] @relation("formulaire_gouvernance_createur")
+  formulairesGouvernanceCrees    FormulaireGouvernance[] @relation("formulaire_gouvernance_createur")
+  gouvernancesCrees              Gouvernance[]           @relation("gouvernance_createur")
+  gouvernancesModifieesEnDernier Gouvernance[]           @relation("gouvernance_derniere_modification_par")
 
   @@map("users")
 }
@@ -178,6 +180,7 @@ model Region {
   searchable             String                  @map("searchable")
   departements           Departement[]
   formulairesGouvernance FormulaireGouvernance[]
+  gouvernancesPortees    Gouvernance[]           @relation(name: "gouvernance_porteur_region")
 
   @@map("regions")
 }
@@ -193,6 +196,7 @@ model Epci {
   ifn                                 IfnEpci?
   formulairesGouvernance              FormulaireGouvernance[]
   participationsFormulaireGouvernance EpciParticipantFormulaireGouvernance[]
+  gouvernancesPortees                 Gouvernance[]                          @relation(name: "gouvernance_porteur_epci")
 
   @@map("epcis")
 }
@@ -213,6 +217,8 @@ model Departement {
   coordinateursConseillerNumerique    CoordinateurConseillerNumerique[]
   formulairesGouvernance              FormulaireGouvernance[]
   participationsFormulaireGouvernance DepartementParticipantFormulaireGouvernance[]
+  gouvernancesPortees                 Gouvernance[]                                 @relation(name: "gouvernance_porteur_departement")
+  gouvernancesRemontees               Gouvernance[]                                 @relation(name: "gouvernance_departement")
 
   @@map("departements")
 }
@@ -664,4 +670,71 @@ model StructureParticipanteFormulaireGouvernance {
   contact   ContactFormulaireGouvernance? @relation(name: "formulaire_contact_structure_participante", fields: [contactId], references: [id])
 
   @@map("structure_participante_formulaire_gouvernance")
+}
+
+enum PerimetreGouvernance {
+  epci
+  departement
+  region
+  autre
+
+  @@map("perimetre_gouvernance")
+}
+
+model Gouvernance {
+  id String @id @default(uuid()) @db.Uuid
+
+  createurId String @map("createur_id") @db.Uuid
+  createur   User   @relation("gouvernance_createur", fields: [createurId], references: [id])
+
+  derniereModificationParId String @map("derniere_modification_par_id") @db.Uuid
+  derniereModificationPar   User   @relation("gouvernance_derniere_modification_par", fields: [derniereModificationParId], references: [id])
+
+  modification DateTime  @updatedAt
+  creation     DateTime  @default(now())
+  supression   DateTime?
+
+  // Département qui a créé la gouvernance
+  departement     Departement @relation(name: "gouvernance_departement", fields: [departementCode], references: [code])
+  departementCode String
+
+  perimetre PerimetreGouvernance
+
+  noteDeContexte String
+
+  porteurRegionCode String? @map("porteur_region_code")
+  porteurRegion     Region? @relation(name: "gouvernance_porteur_region", fields: [porteurRegionCode], references: [code], onDelete: NoAction)
+
+  porteurDepartementCode String?      @map("porteur_departement_code")
+  porteurDepartement     Departement? @relation(name: "gouvernance_porteur_departement", fields: [porteurDepartementCode], references: [code], onDelete: NoAction)
+
+  porteurEpciCode String? @map("porteur_epci_code")
+  porteurEpci     Epci?   @relation(name: "gouvernance_porteur_epci", fields: [porteurEpciCode], references: [code], onDelete: NoAction)
+
+  porteurSiret             String?            @map("porteur_siret")
+  porteurSiretInformations InformationsSiret? @relation(fields: [porteurSiret], references: [siret], onDelete: NoAction)
+
+  organisationsRecruteusesCoordinateurs OrganisationRecruteuseCoordinateurs[]
+
+  @@map("gouvernances")
+}
+
+model OrganisationRecruteuseCoordinateurs {
+  id String @id @default(uuid()) @db.Uuid
+
+  gouvernanceId String      @map("gouvernance_id") @db.Uuid
+  gouvernance   Gouvernance @relation(fields: [gouvernanceId], references: [id], onDelete: Cascade)
+
+  siret             String            @map("siret")
+  siretInformations InformationsSiret @relation(fields: [siret], references: [siret], onDelete: NoAction)
+
+  @@map("organisations_recruteuses_coordinateurs")
+}
+
+model InformationsSiret {
+  siret                                 String                                @id
+  gouvernancesPortees                   Gouvernance[]
+  organisationsRecruteusesCoordinateurs OrganisationRecruteuseCoordinateurs[]
+
+  @@map("informations_siret")
 }

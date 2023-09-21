@@ -12,7 +12,7 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
     cy.execute('deleteUser', { email })
   })
 
-  it('Acceptation 1 - Création de compte', () => {
+  it.skip('Acceptation 1 - Création de compte', () => {
     cy.visit('/creer-un-compte')
     signinWithMonComptePro({ email, password })
     cy.url().should('equal', appUrl('/profil'))

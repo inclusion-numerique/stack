@@ -1,9 +1,11 @@
 import { output } from '@app/cli/output'
 import axios from 'axios'
+import { Prisma } from '@prisma/client'
 import { getGeoDepartements } from '@app/web/data/geoDepartements'
 import { getBounds } from '@app/web/data/geometry'
 import { DomainDataForDataIntegrity } from '@app/web/data/buildDatabase/getDomainDataForDataIntegrity'
 import { transformStringToSearchableString } from '@app/web/search/transformStringToSearchableString'
+import { arrayToMap } from '@app/web/utils/arrayToMap'
 
 export const buildDepartements = async ({
   domainData,
@@ -14,13 +16,11 @@ export const buildDepartements = async ({
 
   // We have 2 sources for departements:
   // INSEE (for metropolitan and dom) and Geo API (for non - dom)
-  const { data: geoApiDepartements } = await axios.get<
-    { code: string; nom: string; codeRegion: string }[]
-  >('https://geo.api.gouv.fr/departements?fields=code,nom,codeRegion,geometry')
-
-  const byCode = new Map(
-    geoApiDepartements.map((departement) => [departement.code, departement]),
-  )
+  const geoApiDepartements = await axios
+    .get<{ code: string; nom: string; codeRegion: string }[]>(
+      'https://geo.api.gouv.fr/departements?fields=code,nom,codeRegion,geometry',
+    )
+    .then(({ data }) => arrayToMap(data, 'code'))
 
   output('-- Getting geo data from json file ...')
 
@@ -34,7 +34,7 @@ export const buildDepartements = async ({
 
     const bounds = getBounds(feature.geometry.coordinates)
 
-    const geoApiDepartement = byCode.get(code)
+    const geoApiDepartement = geoApiDepartements.get(code)
 
     const searchable = transformStringToSearchableString(
       `${code}${feature.properties.DDEP_L_LIB}`,
@@ -59,11 +59,46 @@ export const buildDepartements = async ({
     }
   })
 
+  const dataByCode = arrayToMap(data, 'code')
+
+  // First we check if rows need to be deleted
+  const toDelete = new Set<string>()
+
+  for (const existing of domainData.departements.values()) {
+    if (!dataByCode.has(existing.code)) {
+      toDelete.add(existing.code)
+    }
+  }
+  const toCreate: Prisma.DepartementCreateManyInput[] = []
+  const toUpdate: Prisma.DepartementUpdateArgs[] = []
+
+  for (const departement of data) {
+    const existing = domainData.departements.get(departement.code)
+
+    if (!existing) {
+      toCreate.push(departement)
+      continue
+    }
+
+    if (
+      existing.code === departement.code &&
+      existing.nom === departement.nom &&
+      existing.codeRegion === departement.codeRegion
+    ) {
+      continue
+    }
+
+    toUpdate.push({
+      select: { code: true },
+      where: { code: departement.code },
+      data: departement,
+    })
+  }
+
   output('-- Checking integrity...')
-  const departementCodes = new Set(data.map(({ code }) => code))
   const missingDepartementCodesInFormulaires = domainData.formulaires.filter(
     ({ departementCode }) =>
-      !!departementCode && !departementCodes.has(departementCode),
+      !!departementCode && !geoApiDepartements.has(departementCode),
   )
 
   if (missingDepartementCodesInFormulaires.length > 0) {
@@ -77,7 +112,7 @@ export const buildDepartements = async ({
   const missingDepartementCodesInParticipants =
     domainData.departementsParticipants.filter(
       ({ departementCode }) =>
-        !!departementCode && !departementCodes.has(departementCode),
+        !!departementCode && !geoApiDepartements.has(departementCode),
     )
 
   if (missingDepartementCodesInParticipants.length > 0) {
@@ -91,7 +126,12 @@ export const buildDepartements = async ({
     )
   }
 
-  return { codes: new Set(data.map(({ code }) => code)), data }
+  return {
+    codes: new Set(data.map(({ code }) => code)),
+    toCreate,
+    toUpdate,
+    toDelete,
+  }
 }
 
 export type BuildDepartementsOutput = Awaited<

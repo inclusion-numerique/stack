@@ -62,7 +62,7 @@ export const buildDatabase = async () => {
     // Deferring constraints for this transaction
     prismaClient.$executeRaw`SET CONSTRAINTS ALL DEFERRED;`,
 
-    // Avoiding soft delete (first select all then delete where id in) with raw query
+    // Avoiding multiple delete queries (first select all then delete where id in) with raw query
     prismaClient.$executeRaw`DELETE FROM cra_conseiller_numerique_par_departement`,
     prismaClient.$executeRaw`DELETE FROM ifn_commune`,
     prismaClient.$executeRaw`DELETE FROM ifn_epci`,
@@ -72,20 +72,84 @@ export const buildDatabase = async () => {
     prismaClient.$executeRaw`DELETE FROM permanences_conseiller_numerique`,
     prismaClient.$executeRaw`DELETE FROM structures_aidants_connect`,
     prismaClient.$executeRaw`DELETE FROM structures_cartographie_nationale`,
-    prismaClient.$executeRaw`DELETE FROM code_postaux`,
-    prismaClient.$executeRaw`DELETE FROM code_postal`,
-    prismaClient.$executeRaw`DELETE FROM communes`,
-    prismaClient.$executeRaw`DELETE FROM epcis`,
-    prismaClient.$executeRaw`DELETE FROM departements`,
-    prismaClient.$executeRaw`DELETE FROM regions`,
+    prismaClient.codesPostaux.deleteMany({
+      where: {
+        OR: [...communes.codePostauxJoinToDelete.values()].map(
+          ({ code, codeCommune }) => ({
+            code,
+            codeCommune,
+          }),
+        ),
+      },
+    }),
+    prismaClient.codePostal.deleteMany({
+      where: {
+        code: {
+          in: [...communes.codePostalToDelete.values()],
+        },
+      },
+    }),
+    prismaClient.commune.deleteMany({
+      where: {
+        code: {
+          in: [...communes.communesToDelete.values()],
+        },
+      },
+    }),
+    prismaClient.epci.deleteMany({
+      where: {
+        code: {
+          in: [...epcis.toDelete.values()],
+        },
+      },
+    }),
+    prismaClient.departement.deleteMany({
+      where: {
+        code: {
+          in: [...departements.toDelete.values()],
+        },
+      },
+    }),
+    prismaClient.region.deleteMany({
+      where: {
+        code: {
+          in: [...regions.toDelete.values()],
+        },
+      },
+    }),
 
     // Recreating data from sources
-    prismaClient.region.createMany({ data: regions.data }),
-    prismaClient.departement.createMany({ data: departements.data }),
-    prismaClient.epci.createMany({ data: epcis.data }),
-    prismaClient.codePostal.createMany({ data: communes.codePostalData }),
-    prismaClient.commune.createMany({ data: communes.communesData }),
-    prismaClient.codesPostaux.createMany({ data: communes.codesPostauxData }),
+    prismaClient.region.createMany({
+      data: regions.toCreate,
+    }),
+    ...regions.toUpdate.map((toUpdate) => prismaClient.region.update(toUpdate)),
+
+    prismaClient.departement.createMany({
+      data: departements.toCreate,
+    }),
+    ...departements.toUpdate.map((toUpdate) =>
+      prismaClient.departement.update(toUpdate),
+    ),
+
+    prismaClient.epci.createMany({
+      data: epcis.toCreate,
+    }),
+    ...epcis.toUpdate.map((toUpdate) => prismaClient.epci.update(toUpdate)),
+
+    prismaClient.codePostal.createMany({
+      data: communes.codePostalToCreate,
+    }),
+
+    prismaClient.commune.createMany({
+      data: communes.communesToCreate,
+    }),
+    ...communes.communesToUpdate.map((toUpdate) =>
+      prismaClient.commune.update(toUpdate),
+    ),
+
+    prismaClient.codesPostaux.createMany({
+      data: communes.codePostauxJoinToCreate,
+    }),
     prismaClient.structureCartographieNationale.createMany({
       data: structuresCartographieNationale.data,
     }),

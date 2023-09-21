@@ -1,9 +1,10 @@
 import { Command, InvalidArgumentError } from '@commander-js/extra-typings'
 import { prismaClient } from '@app/web/prismaClient'
-import { Prisma } from '@prisma/client'
+import { AppPrisma } from '@app/web/prisma'
+import { runPromisesSequentially } from '@app/web/utils/runPromisesSequentially'
+import { formulairesGouvernance } from '@app/fixtures/formulairesGouvernance'
+import { gouvernances } from '@app/fixtures/gouvernances'
 import { randomUsers, users } from './users'
-
-import TransactionClient = Prisma.TransactionClient
 
 function myParseInt(value: string) {
   const parsedValue = Number.parseInt(value, 10)
@@ -13,6 +14,8 @@ function myParseInt(value: string) {
   return parsedValue
 }
 
+type TransactionClient = AppPrisma.TransactionClient
+
 const deleteAll = async (transaction: TransactionClient) => {
   const tables = await transaction.$queryRaw<
     { table_name: string }[]
@@ -20,7 +23,7 @@ const deleteAll = async (transaction: TransactionClient) => {
     FROM information_schema.tables
     WHERE table_schema = 'public'
       AND table_type = 'BASE TABLE'
-      AND table_name != '_prisma_migrations' 
+      AND table_name != '_prisma_migrations'
       AND table_name != '_prisma_migrations_lock'`
 
   await transaction.$queryRawUnsafe(
@@ -33,9 +36,11 @@ const deleteAll = async (transaction: TransactionClient) => {
 }
 
 const seed = async (transaction: TransactionClient, random?: number) => {
+  console.log(`Creating users`)
+
   await (random
     ? transaction.user.createMany({ data: randomUsers(random) })
-    : Promise.all(
+    : runPromisesSequentially(
         users.map((user) =>
           transaction.user.upsert({
             where: { id: user.id },
@@ -45,6 +50,71 @@ const seed = async (transaction: TransactionClient, random?: number) => {
           }),
         ),
       ))
+
+  console.log(`Creating formulaires gouvernances (creation pass)`)
+
+  // We need a first "pass" to create empty formulaire, to later be able to update them with related models
+  await runPromisesSequentially(
+    formulairesGouvernance().map((formulaire) =>
+      transaction.formulaireGouvernance.upsert({
+        where: { id: formulaire.id },
+        create: {
+          id: formulaire.id,
+          gouvernancePersona: formulaire.gouvernancePersona,
+          createur: formulaire.createur,
+        },
+        update: {
+          gouvernancePersona: formulaire.gouvernancePersona,
+        },
+        select: { id: true },
+      }),
+    ),
+  )
+
+  console.log(`Creating formulaires gouvernances (data pass)`)
+  // Then we can update them with related models
+  await runPromisesSequentially(
+    formulairesGouvernance().map((formulaire) =>
+      transaction.formulaireGouvernance.update({
+        where: { id: formulaire.id },
+        data: formulaire,
+        select: { id: true },
+      }),
+    ),
+  )
+
+  console.log(`Creating gouvernances remontées (creation pass)`)
+
+  // We need a first "pass" to create empty formulaire, to later be able to update them with related models
+  await runPromisesSequentially(
+    gouvernances().map((gouvernance) =>
+      transaction.gouvernance.upsert({
+        where: { id: gouvernance.id },
+        create: {
+          id: gouvernance.id,
+          perimetre: gouvernance.perimetre,
+          createur: gouvernance.createur,
+          derniereModificationPar: gouvernance.derniereModificationPar,
+          departement: gouvernance.departement,
+          noteDeContexte: gouvernance.noteDeContexte,
+        },
+        update: {},
+        select: { id: true },
+      }),
+    ),
+  )
+
+  console.log(`Creating gouvernances remontées (data pass)`)
+  // Then we can update them with related models
+  await runPromisesSequentially(
+    gouvernances().map((gouvernance) =>
+      transaction.gouvernance.update({
+        where: { id: gouvernance.id },
+        data: gouvernance,
+        select: { id: true },
+      }),
+    ),
+  )
 }
 
 const main = async (eraseAllData: boolean, random?: number) => {
@@ -60,8 +130,9 @@ const main = async (eraseAllData: boolean, random?: number) => {
       } data`,
     )
     await seed(transaction, random)
+    // })
+    console.log(`Fixtures loaded successfully`)
   })
-  console.log(`Fixtures loaded successfully`)
 }
 
 const program = new Command()

@@ -106,7 +106,7 @@ export const buildIfn = async ({
   const invalidIfnEpcis: typeof epciIfns = []
 
   for (const epciIfn of epciIfns) {
-    const codeEpci = epcis.codes.has(epciIfn.code) ? epciIfn.code : null
+    const codeEpci = epcis.epcis.has(epciIfn.code) ? epciIfn.code : null
 
     if (!codeEpci) {
       // Invalid data
