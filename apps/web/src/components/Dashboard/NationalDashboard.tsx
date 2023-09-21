@@ -1,6 +1,5 @@
 import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
-import MainStatistics from '@app/web/components/Dashboard/DepartementDashboard/MainStatistics'
 import DetailedStatistics from '@app/web/components/Dashboard/DepartementDashboard/DetailedStatistics'
 import DepartementDashboardHeader from '@app/web/components/Dashboard/DepartementDashboardHeader'
 import { NationalDashboardData } from '@app/web/app/(private)/tableau-de-bord/national/getNationalDashboardData'
