@@ -1,5 +1,6 @@
 import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
+import classNames from 'classnames'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import {
   getFormulairesEnCoursByDay,
@@ -7,6 +8,7 @@ import {
   getGouvernancesByDay,
 } from '@app/web/app/(private)/administration/administrationQueries'
 import WorkInProgressNotice from '@app/web/components/WorkInProgressNotice'
+import styles from './Administration.module.css'
 
 export const generateMetadata = () => ({
   title: `Administration`,
@@ -26,7 +28,12 @@ const Page = async () => {
   console.log(gouvernancesByDay)
 
   return (
-    <div className="fr-container fr-pb-20v">
+    <div
+      className={classNames(
+        'fr-container fr-flex fr-direction-column',
+        styles.pageContainer,
+      )}
+    >
       <Breadcrumb
         currentPageLabel="Administration"
         segments={[
@@ -38,16 +45,28 @@ const Page = async () => {
           },
         ]}
       />
+      <h3 className="fr-mb-6v fr-text-title--blue-france">Administration</h3>
       <WorkInProgressNotice />
-      <h3 className="fr-mb-12v fr-text-title--blue-france">
-        Statistiques nationales
-      </h3>
-      <h3 className="fr-mb-12v fr-text-title--blue-france">
-        Statistiques régionales
-      </h3>
-      <h3 className="fr-mb-12v fr-text-title--blue-france">
-        Statistiques départementales
-      </h3>
+      <div className={styles.metabaseContainer}>
+        <iframe
+          title="Statistiques d’utilisation du service"
+          src="https://metabase.inclusion-numerique.anct.gouv.fr/public/dashboard/38891b8c-dc4e-4e56-a42c-af27865722e4"
+          width="100%"
+          height="100%"
+          style={{
+            overflow: 'hidden',
+            overflowX: 'hidden',
+            overflowY: 'hidden',
+            height: '100%',
+            width: '100%',
+            position: 'absolute',
+            top: '0px',
+            left: '0px',
+            right: '0px',
+            bottom: '0px',
+          }}
+        />
+      </div>
     </div>
   )
 }

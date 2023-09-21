@@ -1,0 +1,11 @@
+
+.pageContainer {
+    min-height: 100%;
+}
+
+.metabaseContainer {
+    flex: 1;
+    position: relative;
+    min-height: 800px;
+    margin-bottom: 80px;
+}

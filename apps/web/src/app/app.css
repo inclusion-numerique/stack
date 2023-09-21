@@ -303,6 +303,18 @@ hr.separator--8v{
   display: flex;
 }
 
+.fr-direction-column {
+  flex-direction: column;
+}
+
+.fr-align-self-center {
+    align-self: center;
+}
+
+.fr-align-self-stretch {
+    align-self: stretch;
+}
+
 .fr-align-items-center {
     align-items: center;
 }

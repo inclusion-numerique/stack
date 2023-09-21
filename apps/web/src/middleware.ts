@@ -11,7 +11,7 @@ const contentSecurityPolicy = `
   script-src-attr 'none';
   style-src 'self' https: 'unsafe-inline';
   img-src 'self' data:;
-  frame-src https://www.youtube-nocookie.com/;
+  frame-src https://www.youtube-nocookie.com/  https://metabase.inclusion-numerique.anct.gouv.fr/;
   object-src 'none';
   connect-src 'self' ${
     ServerWebAppConfig.S3.uploadsBucket
@@ -20,7 +20,7 @@ const contentSecurityPolicy = `
   } https://matomo.incubateur.anct.gouv.fr https://sentry.incubateur.net https://openmaptiles.geo.data.gouv.fr https://openmaptiles.github.io https://aides-territoires.beta.gouv.fr https://openmaptiles.geo.data.gouv.fr https://wxs.ign.fr https://geo.api.gouv.fr;
   worker-src 'self' blob:;
   font-src 'self' https: data:;
-  frame-ancestors 'self' https://matomo.incubateur.anct.gouv.fr;
+  frame-ancestors 'self' https://matomo.incubateur.anct.gouv.fr https://metabase.inclusion-numerique.anct.gouv.fr;
   form-action 'self';
   base-uri 'self';
   ${isProduction ? 'upgrade-insecure-requests true;' : ''}
