@@ -11,9 +11,9 @@ import {
   applyStructureFilter,
   isFilterEmpty,
   StructureFilters,
-} from '@app/web/components/Prefet/Cartographie/structureFilters'
+} from '@app/web/components/Dashboard/Cartographie/structureFilters'
 import ErrorBoundary from '@app/web/components/ErrorBoundary'
-import Filters from '@app/web/components/Prefet/Cartographie/Filters'
+import Filters from '@app/web/components/Dashboard/Cartographie/Filters'
 import styles from './Page.module.css'
 import Legend from './Legend'
 import Map from './Map'

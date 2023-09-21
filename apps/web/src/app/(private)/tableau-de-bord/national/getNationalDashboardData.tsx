@@ -1,107 +1,85 @@
 /* eslint no-plusplus: 0 */
+import { CraConseillerNumeriqueParDepartement } from '@prisma/client'
 import { ConumCras } from '@app/web/data/cnfsCra'
 import { prismaClient } from '@app/web/prismaClient'
 import { countStructuresForDepartementDashboard } from '@app/web/components/Dashboard/Cartographie/countStructures'
 import { getTopCrasTypes } from '@app/web/components/Dashboard/Cartographie/getTopCrasTypes'
-import { getDepartementGeoFeatures } from '@app/web/data/departements'
-import { createWhereStructureInDepartement } from '@app/web/data/query/whereStructureInDepartement'
-import type { DepartementDashboardInfoButtonsId } from '@app/web/components/Dashboard/DepartementDashboardInfoModals'
+import {
+  BoxData,
+  BoxesData,
+} from '@app/web/app/(private)/tableau-de-bord/departement/[codeDepartement]/getDepartementDashboardData'
 
-export type StatisticData = {
-  id: string
-  label: string
-  info?: DepartementDashboardInfoButtonsId
-  value: number
-  collapsable?: boolean
-  statistics?: StatisticData[]
+let memoizedNationalData: NationalDashboardData | undefined
+
+const aggregateConumCras = (
+  conumCras: CraConseillerNumeriqueParDepartement[],
+): CraConseillerNumeriqueParDepartement => {
+  const summed: CraConseillerNumeriqueParDepartement = {
+    codeDepartement: '',
+    usagers: 0,
+    accompagnements: 0,
+    ageMoins12ans: 0,
+    age12a18ans: 0,
+    age18a35ans: 0,
+    age35a60ans: 0,
+    agePlus60ans: 0,
+    statutEtudiant: 0,
+    statutSansEmploi: 0,
+    statutEnEmploi: 0,
+    statutRetraite: 0,
+    statutHeterogene: 0,
+    accompagnementAtelier: 0,
+    accompagnementIndividuel: 0,
+    accompagnementRedirection: 0,
+    activiteCollectif: 0,
+    activiteIndividuel: 0,
+    activitePonctuel: 0,
+    themeAutre: 0,
+    themeEquipementInformatique: 0,
+    themeDemarcheEnLigne: 0,
+    themeSmartphone: 0,
+    themeCourriel: 0,
+    themeInternet: 0,
+    themeVocabulaire: 0,
+    themeTraitementTexte: 0,
+    themeContenusNumeriques: 0,
+    themeTrouverEmploi: 0,
+    themeEchanger: 0,
+    themeTpePme: 0,
+    themeAccompagnerEnfant: 0,
+    themeSecurite: 0,
+    themeFraudeEtHarcelement: 0,
+    themeSante: 0,
+    themeDiagnostic: 0,
+    themeBudget: 0,
+    themeScolaire: 0,
+  }
+  const keys = Object.keys(
+    summed,
+  ) as (keyof CraConseillerNumeriqueParDepartement)[]
+
+  for (const cra of conumCras) {
+    for (const key of keys) {
+      const value = cra[key]
+
+      if (typeof value !== 'number') {
+        continue
+      }
+      ;(summed[key] as number) += value
+    }
+  }
+  return summed
 }
 
-type SourcedStatistic = {
-  id: string
-  label: string
-  value: number
-  updated: Date
-  source: string
-}
-
-type Category = {
-  id: string
-  label?: string
-  statistics: StatisticData[]
-}
-
-export type StatisticBoxData = {
-  id: string
-  label: string
-  value: number
-  statistics: (SourcedStatistic | Category | StatisticData)[]
-  withDescription?: boolean
-}
-
-export type PercentageBoxData = {
-  id: string
-  label: string
-  updated: Date
-  source: string
-  statistics: StatisticData[]
-}
-
-export type BoxData = StatisticBoxData | PercentageBoxData
-
-export type BoxesData = {
-  id?: string
-  label?: string
-  description?: string
-  boxes: BoxData[]
-}
-
-const memoizedDepartementsData = new Map<string, DepartementDashboardData>()
-
-const listStructures = (codeDepartement: string) =>
-  prismaClient.structureCartographieNationale.findMany({
-    where: createWhereStructureInDepartement(codeDepartement),
-    select: {
-      id: true,
-      type: true,
-      sousTypePublic: true,
-      labelAidantsConnect: true,
-      labelFranceServices: true,
-      labelConseillersNumerique: true,
-      structureAidantsConnect: true,
-      zrr: true,
-      qpv: true,
-    },
-  })
-
-export type DepartementDashboardStructureItem = Awaited<
-  ReturnType<typeof listStructures>
->[number]
-
-const computeDepartementDashboardData = async (codeDepartement: string) => {
-  const whereInDepartement = createWhereStructureInDepartement(codeDepartement)
-
+const computeNationalDashboardData = async () => {
   /**
    * We are using basic prisma queries and counting programmatically to provide type safety.
    * It would be more performant and less verbose to use SQL COUNT with filters.
    * But the query would be less readable.
    */
-  const [departement, structures, conumCras, conums] = await Promise.all([
-    prismaClient.departement.findUniqueOrThrow({
-      where: { code: codeDepartement },
-      select: {
-        nom: true,
-        code: true,
-        geometry: true,
-        bounds: true,
-        _count: {
-          select: {
-            coordinateursConseillerNumerique: true,
-          },
-        },
-      },
-    }),
+  const [countCoconums, structures, conumCrasList, conums] = await Promise.all([
+    prismaClient.coordinateurConseillerNumerique.count(),
     prismaClient.structureCartographieNationale.findMany({
-      where: whereInDepartement,
       select: {
         id: true,
         type: true,
@@ -114,21 +92,12 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
         qpv: true,
       },
     }),
-    prismaClient.craConseillerNumeriqueParDepartement.findUnique({
-      where: { codeDepartement },
-    }),
-    prismaClient.conseillerNumerique.count({
-      where: {
-        enPermanence: {
-          some: {
-            permanence: {
-              structureCartographieNationale: whereInDepartement,
-            },
-          },
-        },
-      },
-    }),
+    prismaClient.craConseillerNumeriqueParDepartement.findMany({}),
+    prismaClient.conseillerNumerique.count(),
   ])
+
+  // Aggregate all conumCras
+  const conumCras = aggregateConumCras(conumCrasList)
 
   const structuresCount = countStructuresForDepartementDashboard(structures)
 
@@ -244,8 +213,7 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
             id: 'dont Conseillers Coordinateurs',
             label: 'dont Conseillers Coordinateurs',
             info: 'coordinateursConseillerNumerique',
-            // eslint-disable-next-line no-underscore-dangle
-            value: departement._count.coordinateursConseillerNumerique,
+            value: countCoconums,
           },
           {
             id: 'aidants-habilités-à-aidant-connect',
@@ -431,20 +399,19 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
 
   const detailed = { publicsAccompagnes, accompagnements }
 
-  return { main, detailed, departement: getDepartementGeoFeatures(departement) }
+  return { main, detailed }
 }
 
-export const getDepartementDashboardData = async (codeDepartement: string) => {
-  const memoized = memoizedDepartementsData.get(codeDepartement)
-  if (memoized) {
-    return memoized
+export const getNationalDashboardData = async () => {
+  if (memoizedNationalData) {
+    return memoizedNationalData
   }
 
-  const data = await computeDepartementDashboardData(codeDepartement)
-  memoizedDepartementsData.set(codeDepartement, data)
+  const data = await computeNationalDashboardData()
+  memoizedNationalData = data
   return data
 }
 
-export type DepartementDashboardData = Awaited<
-  ReturnType<typeof computeDepartementDashboardData>
+export type NationalDashboardData = Awaited<
+  ReturnType<typeof computeNationalDashboardData>
 >

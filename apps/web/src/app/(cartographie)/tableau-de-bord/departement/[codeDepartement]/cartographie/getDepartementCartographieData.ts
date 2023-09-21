@@ -4,7 +4,7 @@ import { titleCase } from '@app/web/utils/titleCase'
 import {
   countStructuresForCartographieSummary,
   countStructuresForCommuneSummary,
-} from '@app/web/components/Prefet/Cartographie/countStructures'
+} from '@app/web/components/Dashboard/Cartographie/countStructures'
 import { createWhereStructureInDepartement } from '@app/web/data/query/whereStructureInDepartement'
 
 type StructureFeature<T> = {

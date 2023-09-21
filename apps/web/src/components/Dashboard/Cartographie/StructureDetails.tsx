@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { DepartementCartographieDataStructure } from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
-import { structureSubtypeLabel } from '@app/web/components/Prefet/structuresTypes'
+import { structureSubtypeLabel } from '@app/web/components/Dashboard/structuresTypes'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 
 const StructureDetails = ({

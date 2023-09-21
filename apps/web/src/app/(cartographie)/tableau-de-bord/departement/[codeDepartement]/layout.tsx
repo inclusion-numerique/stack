@@ -5,7 +5,7 @@ import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Header from '@app/web/components/Header'
 import { prismaClient } from '@app/web/prismaClient'
 
-const PublicLayout = async ({
+const CartographieDepartementLayout = async ({
   children,
   params: { codeDepartement },
 }: PropsWithChildren<{
@@ -40,4 +40,4 @@ const PublicLayout = async ({
   )
 }
 
-export default PublicLayout
+export default CartographieDepartementLayout

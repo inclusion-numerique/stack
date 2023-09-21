@@ -4,7 +4,7 @@ import React, { useRef, useState } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
 import { useForm } from 'react-hook-form'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
-import { StructureFilters } from '@app/web/components/Prefet/Cartographie/structureFilters'
+import { StructureFilters } from '@app/web/components/Dashboard/Cartographie/structureFilters'
 import styles from './Filters.module.css'
 
 const closeOnClickOutside = false

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Button from '@codegouvfr/react-dsfr/Button'
 import ToggleSwitch from '@codegouvfr/react-dsfr/ToggleSwitch'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
-import { ifnFillColors } from '@app/web/components/Prefet/Cartographie/Layers/ifn'
+import { ifnFillColors } from '@app/web/components/Dashboard/Cartographie/Layers/ifn'
 import styles from './IndiceNumerique.module.css'
 
 const InformationModal = createModal({
