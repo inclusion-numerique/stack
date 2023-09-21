@@ -5,7 +5,7 @@ import { DepartementCartographieDataCommune } from '@app/web/app/(cartographie)/
 import { formatIfnScore } from '@app/web/data/ifnData'
 import { numberToString } from '@app/web/utils/formatNumber'
 import InfoButton from '@app/web/components/InfoButton'
-import { TerritoiresPrioritairesInformationModal } from '@app/web/components/Prefet/TerritoiresPrioritairesInformationModal'
+import { TerritoiresPrioritairesInformationModal } from '@app/web/components/Dashboard/TerritoiresPrioritairesInformationModal'
 import styles from './CityDetails.module.css'
 
 const CityDetails = ({

@@ -12,12 +12,12 @@ import {
   DepartementCartographieDataCount,
   DepartementCartographieDataStructure,
 } from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
-import LegendStructure from '@app/web/components/Prefet/Cartographie/LegendStructure'
+import LegendStructure from '@app/web/components/Dashboard/Cartographie/LegendStructure'
 import InfoButton from '@app/web/components/InfoButton'
 import {
   TerritoiresPrioritairesInformationModal,
   TerritoiresPrioritairesInformationModalContent,
-} from '@app/web/components/Prefet/TerritoiresPrioritairesInformationModal'
+} from '@app/web/components/Dashboard/TerritoiresPrioritairesInformationModal'
 import styles from './Legend.module.css'
 import LegendCity from './LegendCity'
 

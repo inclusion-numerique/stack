@@ -3,14 +3,14 @@
 import React, { ChangeEventHandler } from 'react'
 import classNames from 'classnames'
 import { useRouter } from 'next/navigation'
-import type { DepartementDashboardRegionOption } from '@app/web/components/Prefet/DepartementDashboard'
+import type { DepartementDashboardRegionOption } from '@app/web/components/Dashboard/DepartementDashboard'
 
 const DepartementSwitcher = ({
   regionOptions,
   currentCodeDepartement,
 }: {
   regionOptions: DepartementDashboardRegionOption
-  currentCodeDepartement: string
+  currentCodeDepartement?: string
 }) => {
   const id = `select-departement-switcher`
 

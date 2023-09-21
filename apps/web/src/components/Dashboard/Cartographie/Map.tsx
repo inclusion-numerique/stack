@@ -24,7 +24,7 @@ import {
   structureTypeImage,
   structureTypes,
   structureTypeSelectedImage,
-} from '@app/web/components/Prefet/structuresTypes'
+} from '@app/web/components/Dashboard/structuresTypes'
 import { Spinner } from '@app/web/ui/Spinner'
 import IndiceNumerique from './IndiceNumerique'
 import {

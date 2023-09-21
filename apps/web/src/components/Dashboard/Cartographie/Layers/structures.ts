@@ -2,7 +2,7 @@ import { LayerSpecification } from 'maplibre-gl'
 import {
   isHoveredCondition,
   isSelectedCondition,
-} from '@app/web/components/Prefet/Cartographie/Layers/layersUtils'
+} from '@app/web/components/Dashboard/Cartographie/Layers/layersUtils'
 
 export const structuresIconLayer: LayerSpecification = {
   id: 'structureIcon',

@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import DepartementDashboard from '@app/web/components/Prefet/DepartementDashboard'
+import DepartementDashboard from '@app/web/components/Dashboard/DepartementDashboard'
 import { DepartementGeoFeatures } from '@app/web/data/departements'
 import { getDepartementGeoJson } from '@app/web/test/testDepartementData'
 import {

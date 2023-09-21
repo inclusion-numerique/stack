@@ -1,7 +1,7 @@
 import { notFound, redirect } from 'next/navigation'
 import React from 'react'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
-import DepartementDashboard from '@app/web/components/Prefet/DepartementDashboard'
+import DepartementDashboard from '@app/web/components/Dashboard/DepartementDashboard'
 import {
   hasAccessToDepartementDashboard,
   hasAccessToRegionDashboard,

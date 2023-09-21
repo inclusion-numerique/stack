@@ -2,7 +2,7 @@ import { notFound, redirect } from 'next/navigation'
 import React from 'react'
 import { getDepartementCartographieData } from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
-import CartographiePage from '@app/web/components/Prefet/Cartographie/Page'
+import CartographiePage from '@app/web/components/Dashboard/Cartographie/Page'
 import { hasAccessToDepartementDashboard } from '@app/web/security/securityRules'
 import { prismaClient } from '@app/web/prismaClient'
 

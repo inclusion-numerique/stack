@@ -1,9 +1,10 @@
 import React, { PropsWithChildren } from 'react'
-import Box from '@app/web/components/Prefet/Box/Box'
+import Box from '@app/web/components/Dashboard/Box/Box'
 import {
   BoxesData,
   DepartementDashboardData,
 } from '@app/web/app/(private)/tableau-de-bord/departement/[codeDepartement]/getDepartementDashboardData'
+import { NationalDashboardData } from '@app/web/app/(private)/tableau-de-bord/national/getNationalDashboardData'
 
 const StatisticsWrapper = ({
   id,
@@ -29,7 +30,7 @@ const DetailedStatistics = ({
     detailed: { publicsAccompagnes, accompagnements },
   },
 }: {
-  data: DepartementDashboardData
+  data: DepartementDashboardData | NationalDashboardData
 }) => (
   <>
     <StatisticsWrapper {...publicsAccompagnes} />

@@ -3,7 +3,7 @@ import {
   LayerSpecification,
   LineLayerSpecification,
 } from 'maplibre-gl'
-import { isHoveredCondition } from '@app/web/components/Prefet/Cartographie/Layers/layersUtils'
+import { isHoveredCondition } from '@app/web/components/Dashboard/Cartographie/Layers/layersUtils'
 import { communes, epcis } from './common'
 
 export const greyLinePaint: LineLayerSpecification['paint'] = {

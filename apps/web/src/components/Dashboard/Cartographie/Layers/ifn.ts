@@ -1,7 +1,7 @@
 /* eslint  @typescript-eslint/ban-ts-comment: 0 */
 
 import { LayerSpecification } from 'maplibre-gl'
-import { isHoveredCondition } from '@app/web/components/Prefet/Cartographie/Layers/layersUtils'
+import { isHoveredCondition } from '@app/web/components/Dashboard/Cartographie/Layers/layersUtils'
 import { communes, epcis } from './common'
 
 export const ifnFillColors = [
