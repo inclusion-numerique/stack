@@ -4,7 +4,8 @@ import { PublicWebAppConfig } from '@app/web/webAppConfig'
 // The Next <Script> tag expect a nonce as Next directly inject the code from the script file in an inline <script> tag
 const Crisp = ({ nonce }: { nonce?: string }) =>
   process.env.NODE_ENV === 'production' &&
-  PublicWebAppConfig.Crisp.websiteId ? (
+  PublicWebAppConfig.Crisp.websiteId &&
+  PublicWebAppConfig.Crisp.enableChat ? (
     <Script
       id="crisp"
       nonce={nonce}

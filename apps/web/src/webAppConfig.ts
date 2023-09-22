@@ -77,6 +77,7 @@ export const PublicWebAppConfig = {
     siteId: process.env.NEXT_PUBLIC_MATOMO_SITE_ID ?? '',
   },
   Crisp: {
+    enableChat: false,
     websiteId: process.env.NEXT_PUBLIC_CRISP_WEBSITE_ID ?? '',
   },
 }
