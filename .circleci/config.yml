@@ -42,7 +42,7 @@ executors:
 parameters:
   cache_version:
     type: string
-    default: '2023-09-22-01'
+    default: '2023-09-22-02'
   virtual_store_dir:
     type: string
     default: './.pnpm'
@@ -177,6 +177,7 @@ jobs:
             - ./apps/cli/node_modules
             - ./packages/cdk/node_modules
             - ./packages/config/node_modules
+            - ./packages/e2e/node_modules
             - ./packages/emails/node_modules
             - ./packages/lint/node_modules
             - ./packages/storybook/node_modules
