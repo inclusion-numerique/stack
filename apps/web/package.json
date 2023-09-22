@@ -140,7 +140,7 @@
     "@types/testing-library__jest-dom": "^5.14.6",
     "@types/uuid": "^9.0.2",
     "css-loader": "^6.8.1",
-    "cypress": "^12.14.0",
+    "cypress": "^13.2.0",
     "cypress-visual-regression": "^3.0.0",
     "eslint": "^8.42.0",
     "graphql-tag": "^2.12.6",
