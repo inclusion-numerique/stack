@@ -38,9 +38,9 @@ Cypress.Commands.add(
   'execute',
   <T extends keyof CustomTasks>(
     task: T,
-    args: Parameters<CustomTasks[T]>[0],
+    parameters: Parameters<CustomTasks[T]>[0],
     options?: Partial<Loggable & Timeoutable>,
-  ) => cy.task(task, args, options),
+  ) => cy.task(task, parameters, options),
 )
 
 Cypress.Commands.add('signin', ({ email }: { email: string }) =>
@@ -62,14 +62,14 @@ Cypress.Commands.add('dsfrShouldBeStarted', () => {
 })
 
 Cypress.Commands.add('dsfrModalsShouldBeBound', () => {
-  cy.get('dialog.fr-modal').each((modal) =>
-    cy.wrap(modal).should('have.attr', 'data-fr-js-modal', 'true'),
-  )
+  cy.get('dialog.fr-modal').each((modal) => {
+    cy.wrap(modal).should('have.attr', 'data-fr-js-modal', 'true')
+  })
 })
 Cypress.Commands.add('dsfrCollapsesShouldBeBound', () => {
-  cy.get('.fr-collapse').each((modal) =>
-    cy.wrap(modal).should('have.attr', 'data-fr-js-collapse', 'true'),
-  )
+  cy.get('.fr-collapse').each((modal) => {
+    cy.wrap(modal).should('have.attr', 'data-fr-js-collapse', 'true')
+  })
 })
 Cypress.Commands.add('testId', (testId: string) =>
   cy.get(`[data-testid="${testId}"]`),
@@ -85,7 +85,7 @@ declare global {
     interface Chainable {
       execute<T extends keyof CustomTasks>(
         name: T,
-        args: Parameters<CustomTasks[T]>[0],
+        parameters: Parameters<CustomTasks[T]>[0],
       ): Chainable<Awaited<ReturnType<CustomTasks[T]>>>
 
       createUserAndSignin(user: CreateUserInput): Chainable<string>

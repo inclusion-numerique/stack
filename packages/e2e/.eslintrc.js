@@ -1,16 +1,18 @@
 module.exports = {
+  rules: {
+    'unicorn/prevent-abbreviations': [
+      'error',
+      {
+        allowList: {
+          Env: true,
+          env: true,
+          e2e: true,
+          E2e: true,
+        },
+      },
+    ],
+  },
   parserOptions: {
-    // eslint-disable-next-line no-path-concat, unicorn/prefer-module
-    project: `${__dirname}/../../tsconfig.eslint.cy.json`,
-    plugins: ['cypress'],
-    extends: ['plugin:cypress/recommended'],
-    rules: {
-      'jest/expect-expect': 'off',
-      // Cypress syntax uses then() for chainable elements
-      'promise/catch-or-return': 'off',
-      'promise/always-return': 'off',
-      // We need to pass undefined to some custom commands
-      'unicorn/no-useless-undefined': 'off',
-    },
+    project: 'tsconfig.json',
   },
 }

@@ -14,8 +14,8 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.22.15",
     "@next/eslint-plugin-next": "^13.5.2",
-    "@types/node": "^20.6.3",
     "@types/jest": "^29.5.5",
+    "@types/node": "^20.6.3",
     "@typescript-eslint/eslint-plugin": "^6.7.2",
     "@typescript-eslint/parser": "^6.7.2",
     "eslint": "^8.49.0",
@@ -41,5 +41,8 @@
     "stylelint": "^15.10.3",
     "stylelint-config-standard": "^34.0.0",
     "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "eslint-plugin-disable": "^2.0.3"
   }
 }

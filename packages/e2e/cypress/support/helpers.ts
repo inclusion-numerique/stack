@@ -12,4 +12,4 @@ export const createTestUser = () =>
     lastName: 'Biche',
     name: 'Jean Biche',
     emailVerified: new Date('2023-04-01'),
-  } satisfies CreateUserInput)
+  }) satisfies CreateUserInput
