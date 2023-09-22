@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/webhosting
+// https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/webhosting
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -10,11 +10,11 @@ export interface DataScalewayWebhostingConfig extends cdktf.TerraformMetaArgumen
   /**
   * The domain name of the hosting
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/webhosting#domain DataScalewayWebhosting#domain}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/webhosting#domain DataScalewayWebhosting#domain}
   */
   readonly domain?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/webhosting#id DataScalewayWebhosting#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/webhosting#id DataScalewayWebhosting#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -23,19 +23,19 @@ export interface DataScalewayWebhostingConfig extends cdktf.TerraformMetaArgumen
   /**
   * ID of organization the resource is associated to.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/webhosting#organization_id DataScalewayWebhosting#organization_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/webhosting#organization_id DataScalewayWebhosting#organization_id}
   */
   readonly organizationId?: string;
   /**
   * The project ID the resource is associated to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/webhosting#project_id DataScalewayWebhosting#project_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/webhosting#project_id DataScalewayWebhosting#project_id}
   */
   readonly projectId?: string;
   /**
   * The ID of the Webhosting
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/webhosting#webhosting_id DataScalewayWebhosting#webhosting_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/webhosting#webhosting_id DataScalewayWebhosting#webhosting_id}
   */
   readonly webhostingId?: string;
 }
@@ -179,7 +179,7 @@ export class DataScalewayWebhostingOptionsList extends cdktf.ComplexList {
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/webhosting scaleway_webhosting}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/webhosting scaleway_webhosting}
 */
 export class DataScalewayWebhosting extends cdktf.TerraformDataSource {
 
@@ -193,7 +193,7 @@ export class DataScalewayWebhosting extends cdktf.TerraformDataSource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/webhosting scaleway_webhosting} Data Source
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/webhosting scaleway_webhosting} Data Source
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -204,8 +204,8 @@ export class DataScalewayWebhosting extends cdktf.TerraformDataSource {
       terraformResourceType: 'scaleway_webhosting',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.27.0',
-        providerVersionConstraint: '>= 2.27.0'
+        providerVersion: '2.28.0',
+        providerVersionConstraint: '>= 2.28.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,

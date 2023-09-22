@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/ipam_ip
+// https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/ipam_ip
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -8,49 +8,49 @@ import * as cdktf from 'cdktf';
 
 export interface DataScalewayIpamIpConfig extends cdktf.TerraformMetaArguments {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/ipam_ip#id DataScalewayIpamIp#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/ipam_ip#id DataScalewayIpamIp#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
   */
   readonly id?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/ipam_ip#mac_address DataScalewayIpamIp#mac_address}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/ipam_ip#mac_address DataScalewayIpamIp#mac_address}
   */
   readonly macAddress?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/ipam_ip#private_network_id DataScalewayIpamIp#private_network_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/ipam_ip#private_network_id DataScalewayIpamIp#private_network_id}
   */
   readonly privateNetworkId?: string;
   /**
   * The region you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/ipam_ip#region DataScalewayIpamIp#region}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/ipam_ip#region DataScalewayIpamIp#region}
   */
   readonly region?: string;
   /**
   * IP Type (ipv4, ipv6)
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/ipam_ip#type DataScalewayIpamIp#type}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/ipam_ip#type DataScalewayIpamIp#type}
   */
   readonly type: string;
   /**
   * resource block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/ipam_ip#resource DataScalewayIpamIp#resource}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/ipam_ip#resource DataScalewayIpamIp#resource}
   */
   readonly resource?: DataScalewayIpamIpResource;
 }
 export interface DataScalewayIpamIpResource {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/ipam_ip#id DataScalewayIpamIp#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/ipam_ip#id DataScalewayIpamIp#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
   */
   readonly id?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/ipam_ip#type DataScalewayIpamIp#type}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/ipam_ip#type DataScalewayIpamIp#type}
   */
   readonly type?: string;
 }
@@ -138,7 +138,7 @@ export class DataScalewayIpamIpResourceOutputReference extends cdktf.ComplexObje
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/ipam_ip scaleway_ipam_ip}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/ipam_ip scaleway_ipam_ip}
 */
 export class DataScalewayIpamIp extends cdktf.TerraformDataSource {
 
@@ -152,7 +152,7 @@ export class DataScalewayIpamIp extends cdktf.TerraformDataSource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/ipam_ip scaleway_ipam_ip} Data Source
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/ipam_ip scaleway_ipam_ip} Data Source
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -163,8 +163,8 @@ export class DataScalewayIpamIp extends cdktf.TerraformDataSource {
       terraformResourceType: 'scaleway_ipam_ip',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.27.0',
-        providerVersionConstraint: '>= 2.27.0'
+        providerVersion: '2.28.0',
+        providerVersionConstraint: '>= 2.28.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,

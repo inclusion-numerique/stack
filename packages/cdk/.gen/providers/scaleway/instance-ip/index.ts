@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/instance_ip
+// https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/instance_ip
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -8,7 +8,7 @@ import * as cdktf from 'cdktf';
 
 export interface InstanceIpConfig extends cdktf.TerraformMetaArguments {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/instance_ip#id InstanceIp#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/instance_ip#id InstanceIp#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -17,31 +17,37 @@ export interface InstanceIpConfig extends cdktf.TerraformMetaArguments {
   /**
   * The project_id you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/instance_ip#project_id InstanceIp#project_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/instance_ip#project_id InstanceIp#project_id}
   */
   readonly projectId?: string;
   /**
   * The tags associated with the ip
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/instance_ip#tags InstanceIp#tags}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/instance_ip#tags InstanceIp#tags}
   */
   readonly tags?: string[];
   /**
+  * The type of instance IP
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/instance_ip#type InstanceIp#type}
+  */
+  readonly type?: string;
+  /**
   * The zone you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/instance_ip#zone InstanceIp#zone}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/instance_ip#zone InstanceIp#zone}
   */
   readonly zone?: string;
   /**
   * timeouts block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/instance_ip#timeouts InstanceIp#timeouts}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/instance_ip#timeouts InstanceIp#timeouts}
   */
   readonly timeouts?: InstanceIpTimeouts;
 }
 export interface InstanceIpTimeouts {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/instance_ip#default InstanceIp#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/instance_ip#default InstanceIp#default}
   */
   readonly default?: string;
 }
@@ -116,7 +122,7 @@ export class InstanceIpTimeoutsOutputReference extends cdktf.ComplexObject {
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/instance_ip scaleway_instance_ip}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/instance_ip scaleway_instance_ip}
 */
 export class InstanceIp extends cdktf.TerraformResource {
 
@@ -130,7 +136,7 @@ export class InstanceIp extends cdktf.TerraformResource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/instance_ip scaleway_instance_ip} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/instance_ip scaleway_instance_ip} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -141,8 +147,8 @@ export class InstanceIp extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_instance_ip',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.27.0',
-        providerVersionConstraint: '>= 2.27.0'
+        providerVersion: '2.28.0',
+        providerVersionConstraint: '>= 2.28.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -155,6 +161,7 @@ export class InstanceIp extends cdktf.TerraformResource {
     this._id = config.id;
     this._projectId = config.projectId;
     this._tags = config.tags;
+    this._type = config.type;
     this._zone = config.zone;
     this._timeouts.internalValue = config.timeouts;
   }
@@ -187,6 +194,11 @@ export class InstanceIp extends cdktf.TerraformResource {
   // organization_id - computed: true, optional: false, required: false
   public get organizationId() {
     return this.getStringAttribute('organization_id');
+  }
+
+  // prefix - computed: true, optional: false, required: false
+  public get prefix() {
+    return this.getStringAttribute('prefix');
   }
 
   // project_id - computed: true, optional: true, required: false
@@ -231,6 +243,22 @@ export class InstanceIp extends cdktf.TerraformResource {
     return this._tags;
   }
 
+  // type - computed: true, optional: true, required: false
+  private _type?: string; 
+  public get type() {
+    return this.getStringAttribute('type');
+  }
+  public set type(value: string) {
+    this._type = value;
+  }
+  public resetType() {
+    this._type = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get typeInput() {
+    return this._type;
+  }
+
   // zone - computed: true, optional: true, required: false
   private _zone?: string; 
   public get zone() {
@@ -272,6 +300,7 @@ export class InstanceIp extends cdktf.TerraformResource {
       id: cdktf.stringToTerraform(this._id),
       project_id: cdktf.stringToTerraform(this._projectId),
       tags: cdktf.listMapper(cdktf.stringToTerraform, false)(this._tags),
+      type: cdktf.stringToTerraform(this._type),
       zone: cdktf.stringToTerraform(this._zone),
       timeouts: instanceIpTimeoutsToTerraform(this._timeouts.internalValue),
     };

@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/instance_ip
+// https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/instance_ip
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -10,13 +10,13 @@ export interface DataScalewayInstanceIpConfig extends cdktf.TerraformMetaArgumen
   /**
   * The IP address
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/instance_ip#address DataScalewayInstanceIp#address}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/instance_ip#address DataScalewayInstanceIp#address}
   */
   readonly address?: string;
   /**
   * The ID of the IP address
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/instance_ip#id DataScalewayInstanceIp#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/instance_ip#id DataScalewayInstanceIp#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -25,7 +25,7 @@ export interface DataScalewayInstanceIpConfig extends cdktf.TerraformMetaArgumen
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/instance_ip scaleway_instance_ip}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/instance_ip scaleway_instance_ip}
 */
 export class DataScalewayInstanceIp extends cdktf.TerraformDataSource {
 
@@ -39,7 +39,7 @@ export class DataScalewayInstanceIp extends cdktf.TerraformDataSource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/data-sources/instance_ip scaleway_instance_ip} Data Source
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/instance_ip scaleway_instance_ip} Data Source
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -50,8 +50,8 @@ export class DataScalewayInstanceIp extends cdktf.TerraformDataSource {
       terraformResourceType: 'scaleway_instance_ip',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.27.0',
-        providerVersionConstraint: '>= 2.27.0'
+        providerVersion: '2.28.0',
+        providerVersionConstraint: '>= 2.28.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -106,6 +106,11 @@ export class DataScalewayInstanceIp extends cdktf.TerraformDataSource {
     return this.getStringAttribute('organization_id');
   }
 
+  // prefix - computed: true, optional: false, required: false
+  public get prefix() {
+    return this.getStringAttribute('prefix');
+  }
+
   // project_id - computed: true, optional: false, required: false
   public get projectId() {
     return this.getStringAttribute('project_id');
@@ -124,6 +129,11 @@ export class DataScalewayInstanceIp extends cdktf.TerraformDataSource {
   // tags - computed: true, optional: false, required: false
   public get tags() {
     return this.getListAttribute('tags');
+  }
+
+  // type - computed: true, optional: false, required: false
+  public get type() {
+    return this.getStringAttribute('type');
   }
 
   // zone - computed: true, optional: false, required: false

@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/iam_group_membership
+// https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/iam_group_membership
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -10,17 +10,17 @@ export interface IamGroupMembershipConfig extends cdktf.TerraformMetaArguments {
   /**
   * The ID of the user
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/iam_group_membership#application_id IamGroupMembership#application_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/iam_group_membership#application_id IamGroupMembership#application_id}
   */
   readonly applicationId?: string;
   /**
   * The ID of the group to add the user to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/iam_group_membership#group_id IamGroupMembership#group_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/iam_group_membership#group_id IamGroupMembership#group_id}
   */
   readonly groupId: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/iam_group_membership#id IamGroupMembership#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/iam_group_membership#id IamGroupMembership#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -29,13 +29,13 @@ export interface IamGroupMembershipConfig extends cdktf.TerraformMetaArguments {
   /**
   * The ID of the user
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/iam_group_membership#user_id IamGroupMembership#user_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/iam_group_membership#user_id IamGroupMembership#user_id}
   */
   readonly userId?: string;
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/iam_group_membership scaleway_iam_group_membership}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/iam_group_membership scaleway_iam_group_membership}
 */
 export class IamGroupMembership extends cdktf.TerraformResource {
 
@@ -49,7 +49,7 @@ export class IamGroupMembership extends cdktf.TerraformResource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.27.0/docs/resources/iam_group_membership scaleway_iam_group_membership} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/iam_group_membership scaleway_iam_group_membership} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -60,8 +60,8 @@ export class IamGroupMembership extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_iam_group_membership',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.27.0',
-        providerVersionConstraint: '>= 2.27.0'
+        providerVersion: '2.28.0',
+        providerVersionConstraint: '>= 2.28.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,

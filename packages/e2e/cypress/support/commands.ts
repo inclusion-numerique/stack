@@ -1,7 +1,7 @@
 import '@testing-library/cypress/add-commands'
+import { appUrl } from '@app/e2e/support/helpers'
 import type { CreateUserInput } from '../e2e/authentication/user.tasks'
 import type { Tasks as CustomTasks } from './tasks'
-
 import Timeoutable = Cypress.Timeoutable
 import Loggable = Cypress.Loggable
 
@@ -80,6 +80,7 @@ Cypress.Commands.add('appUrlShouldBe', (url: string) => {
 
 //
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       execute<T extends keyof CustomTasks>(
@@ -88,12 +89,19 @@ declare global {
       ): Chainable<Awaited<ReturnType<CustomTasks[T]>>>
 
       createUserAndSignin(user: CreateUserInput): Chainable<string>
+
       createUser(user: CreateUserInput): Chainable<void>
+
       signin(user: { email: string }): Chainable<string>
+
       dsfrShouldBeStarted(): Chainable<void>
+
       dsfrModalsShouldBeBound(): Chainable<void>
+
       dsfrCollapsesShouldBeBound(): Chainable<void>
+
       testId(testId: string): Chainable<JQuery<HTMLElement>>
+
       appUrlShouldBe(url: string): Chainable<void>
 
       //       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
