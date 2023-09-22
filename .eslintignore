@@ -1,5 +1,4 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-# ⚠️ Keep in sync with .eslintignore
+# ⚠️ Keep in sync with .gitignore
 
 var
 .turbo
@@ -67,4 +66,3 @@ packages/cdk/cdk.out.json
 # ui
 /packages/ui/.next
 /packages/ui/public/dsfr
-
