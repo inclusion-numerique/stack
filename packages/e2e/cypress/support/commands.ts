@@ -57,6 +57,15 @@ Cypress.Commands.add('createUser', (user: CreateUserInput) => {
   cy.task('createUser', user)
 })
 
+Cypress.Commands.add('dsfrStylesShouldBeLoaded', () => {
+  cy.get('body').should(
+    'have.css',
+    'font-family',
+    'Marianne, arial, sans-serif',
+  )
+  cy.get('body').should('have.css', 'color', 'rgb(58, 58, 58)')
+})
+
 Cypress.Commands.add('dsfrShouldBeStarted', () => {
   cy.get('html').should('have.attr', 'data-fr-js', 'true')
 })
@@ -93,6 +102,8 @@ declare global {
       createUser(user: CreateUserInput): Chainable<void>
 
       signin(user: { email: string }): Chainable<string>
+
+      dsfrStylesShouldBeLoaded(): Chainable<void>
 
       dsfrShouldBeStarted(): Chainable<void>
 

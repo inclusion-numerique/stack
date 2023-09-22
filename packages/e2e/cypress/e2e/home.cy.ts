@@ -3,6 +3,7 @@ import { createTestUser } from '../support/helpers'
 describe("Page d'accueil", () => {
   it("La page d'accueil s'affiche correctement, avec les styles du DSFR", () => {
     cy.visit('/')
+    cy.dsfrStylesShouldBeLoaded()
     cy.get('.fr-header__service a').should('contain', 'Stack')
     cy.get('.fr-header__tools .fr-btn')
       .should('contain', 'Se connecter')
@@ -11,6 +12,7 @@ describe("Page d'accueil", () => {
 
   it('Les overrides DSFR de app.css sont visibles', () => {
     cy.visit('/')
+    cy.dsfrStylesShouldBeLoaded()
     cy.get('.fr-header').should('have.css', 'filter', 'none')
   })
 
@@ -18,6 +20,7 @@ describe("Page d'accueil", () => {
     const user = createTestUser()
     cy.createUserAndSignin(user)
     cy.visit('/')
+    cy.dsfrStylesShouldBeLoaded()
     cy.get('.fr-header__tools').should('not.contain', 'Se connecter')
     cy.dsfrShouldBeStarted()
     cy.dsfrCollapsesShouldBeBound()
@@ -33,6 +36,7 @@ describe("Page d'accueil", () => {
       cy.execute('deleteSession', sessionToken)
     })
     cy.visit('/')
+    cy.dsfrStylesShouldBeLoaded()
     cy.get('.fr-header__tools').contains('Se connecter')
   })
 })
