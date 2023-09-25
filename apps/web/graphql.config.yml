@@ -13,7 +13,7 @@ generates:
       - typed-document-node
       - add:
             content: |
-              /* eslint unicorn/prevent-abbreviations: 0, @typescript-eslint/no-explicit-any:0 */
+              /* eslint unicorn/prevent-abbreviations: 0, @typescript-eslint/no-explicit-any:0, @typescript-eslint/no-redundant-type-constituents: 0 */
               
               /**
                 * ⚠️ DO NOT EDIT ⚠️

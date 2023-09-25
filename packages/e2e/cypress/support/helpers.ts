@@ -13,13 +13,13 @@ export const createTestUser = (data?: Partial<CreateUserInput>) =>
     name: 'Jean Biche',
     emailVerified: new Date('2023-04-01'),
     ...data,
-  } as CreateUserInput & {
+  }) as CreateUserInput & {
     id: string
     email: string
     firstName: string
     lastName: string
     name: string
-  })
+  }
 export const dataTablesToKeep = [
   'regions',
   'departements',

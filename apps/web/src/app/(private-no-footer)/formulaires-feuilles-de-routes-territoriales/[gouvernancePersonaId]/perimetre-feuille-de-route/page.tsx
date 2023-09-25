@@ -108,9 +108,8 @@ const PerimetreRegionWrapper = asyncComponent(
       throw new Error(`No departements found for region ${codeRegion}`)
     }
 
-    const departementsPerimetreOptions = await getPerimetreRegionOptions(
-      departements,
-    )
+    const departementsPerimetreOptions =
+      await getPerimetreRegionOptions(departements)
 
     return (
       <PerimetreFeuilleDeRoute

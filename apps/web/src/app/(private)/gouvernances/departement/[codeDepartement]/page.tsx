@@ -23,9 +23,8 @@ const Page = async ({
 }) => {
   await checkUserAccessToGouvernanceScopeOrNavigate({ codeDepartement })
 
-  const statistiquesGouvernance = await getStatistiquesGouvernanceDepartement(
-    codeDepartement,
-  )
+  const statistiquesGouvernance =
+    await getStatistiquesGouvernanceDepartement(codeDepartement)
 
   const gouvernances = await getListeGouvernanceDepartement(codeDepartement)
 

@@ -37,7 +37,7 @@ export const createAddCollectivityInputFromData = (
         code,
         nom,
       })),
-  } satisfies UseAddCollectivityInput)
+  }) satisfies UseAddCollectivityInput
 
 export type CollectiviteHorsTerritoire =
   | {

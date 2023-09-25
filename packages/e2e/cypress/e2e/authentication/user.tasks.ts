@@ -8,8 +8,8 @@ export const createUser = async (user: CreateUserInput) =>
   prismaClient.user.create({ data: user })
 
 export type UpdateUserInput = Parameters<typeof prismaClient.user.update>[0]
-export const updateUser = async (params: UpdateUserInput) =>
-  prismaClient.user.update(params)
+export const updateUser = async (parameters: UpdateUserInput) =>
+  prismaClient.user.update(parameters)
 
 export const deleteUser = async (user: { email: string }) => {
   const exists = await prismaClient.user.findUnique({

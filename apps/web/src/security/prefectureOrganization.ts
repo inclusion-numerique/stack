@@ -74,14 +74,14 @@ type RechercheEntrepriseResult = {
   annee_categorie_entreprise: string
   date_creation: string
   date_mise_a_jour: string
-  dirigeants: any[] // Remplacer 'any' par un type plus précis si possible
+  dirigeants: Record<string, string>[] // Remplacer par un type plus précis si possible
   etat_administratif: string
   nature_juridique: string
   section_activite_principale: string
   tranche_effectif_salarie: string
   annee_tranche_effectif_salarie: string
   statut_diffusion: string
-  matching_etablissements: any[] // Remplacer 'any' par un type plus précis si possible
+  matching_etablissements: Record<string, string>[] // Remplacer par un type plus précis si possible
   complements: Complements
 }
 type RechercheEntrepriseResponse = {

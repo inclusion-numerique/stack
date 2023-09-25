@@ -7,7 +7,7 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
    */
 
   // Unique user for this test
-  const { email, firstName, lastName } = createTestUser()
+  const { email } = createTestUser()
 
   it('Acceptation 1 - Création de compte', () => {
     cy.visit('/creer-un-compte')

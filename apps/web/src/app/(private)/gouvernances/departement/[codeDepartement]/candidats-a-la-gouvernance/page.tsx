@@ -19,9 +19,8 @@ const Page = async ({
 }) => {
   await checkUserAccessToGouvernanceScopeOrNavigate({ codeDepartement })
 
-  const candidatsGouvernance = await getCandidatsGouvernanceDepartement(
-    codeDepartement,
-  )
+  const candidatsGouvernance =
+    await getCandidatsGouvernanceDepartement(codeDepartement)
 
   return (
     <>
