@@ -26,7 +26,7 @@ export const buildDepartements = async ({
 
   const departementsGeometry = await getGeoDepartements()
 
-  output('-- Preparing data ...')
+  output(`-- Preparing data... (${departementsGeometry.features.length})`)
 
   // There is more departements geometry than geo api departements (e.g. dep 975)
   const data = departementsGeometry.features.map((feature) => {
@@ -94,6 +94,9 @@ export const buildDepartements = async ({
       data: departement,
     })
   }
+  output(
+    `-- ${toCreate.length} to create, ${toUpdate.length} to update, ${toDelete.size} to delete`,
+  )
 
   output('-- Checking integrity...')
   const missingDepartementCodesInFormulaires = domainData.formulaires.filter(

@@ -74,30 +74,6 @@ hr.separator--8v{
 
 /* DSFR Overrides and custom theming */
 
-/* Form input spacing */
-
-.fr-input-group, .fr-select-group, .fr-input-group:not(:last-child), .fr-select-group:not(:last-child) {
-  margin-bottom: 16px;
-}
-
-/* Round notices */
-
-.fr-notice {
-  border-radius: 8px;
-
-  .fr-notice__body {
-    padding-right: 0;
-
-    &::before {
-      top: calc(50% - 12px);
-    }
-
-    .fr-notice__title {
-      font-weight: 500;
-    }
-  }
-}
-
 /* Vertically align checkbox input in center of its label */
 
 .fr-checkbox-group {
@@ -140,6 +116,28 @@ hr.separator--8v{
     margin: 10px 0;
     padding: 0;
   }
+}
+
+/* Fix notice padding right bug and add border radius */
+.fr-notice {
+  border-radius: 8px;
+
+  .fr-notice__body {
+    padding-right: 0;
+
+    &::before {
+      top: calc(50% - 12px);
+    }
+
+    .fr-notice__title {
+      font-weight: 500;
+    }
+  }
+}
+
+/* Override input spacing */
+.fr-input-group, .fr-select-group {
+  margin-bottom: 16px;
 }
 
 .fr-btn--danger {
@@ -247,6 +245,18 @@ hr.separator--8v{
   >.fr-container {
     padding-right:0;
     padding-left: 0;
+  }
+}
+
+/* Tabs */
+
+/* Remove border */
+
+.fr-tabs {
+  box-shadow: unset;
+
+  &::before {
+    box-shadow: inset 0 1px 0 0 var(--border-default-grey);
   }
 }
 

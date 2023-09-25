@@ -49,7 +49,7 @@ export const formulairesDansRegionWhere = (codeRegion: string) =>
         },
       },
     ],
-  } satisfies Prisma.FormulaireGouvernanceWhereInput)
+  }) satisfies Prisma.FormulaireGouvernanceWhereInput
 
 export const formulairesDansDepartementWhere = (codeDepartement: string) =>
   ({
@@ -81,4 +81,4 @@ export const formulairesDansDepartementWhere = (codeDepartement: string) =>
         },
       },
     ],
-  } satisfies Prisma.FormulaireGouvernanceWhereInput)
+  }) satisfies Prisma.FormulaireGouvernanceWhereInput

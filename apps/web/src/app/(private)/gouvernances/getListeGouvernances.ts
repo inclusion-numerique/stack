@@ -7,12 +7,12 @@ export const gouvernancesDansRegionWhere = (codeRegion: string) =>
     departement: {
       codeRegion,
     },
-  } satisfies Prisma.GouvernanceWhereInput)
+  }) satisfies Prisma.GouvernanceWhereInput
 
 export const gouvernancesDansDepartementWhere = (codeDepartement: string) =>
   ({
     departementCode: codeDepartement,
-  } satisfies Prisma.GouvernanceWhereInput)
+  }) satisfies Prisma.GouvernanceWhereInput
 
 const queryListe = (where?: Prisma.GouvernanceWhereInput) =>
   prismaClient.gouvernance.findMany({

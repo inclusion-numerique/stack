@@ -61,7 +61,7 @@ export const createCollectivitySelectionInputFromData = (
         .filter(filterDansTerritoire)
         .map(({ departementCode }) => departementCode),
     ),
-  } satisfies UseCollectivitySelectionInput)
+  }) satisfies UseCollectivitySelectionInput
 
 const codeToCollectivitePerimetre = (
   code: string | string[],

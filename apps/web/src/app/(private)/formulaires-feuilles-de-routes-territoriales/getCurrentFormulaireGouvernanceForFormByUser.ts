@@ -94,10 +94,10 @@ export const userCurrentFormulaireParams = (userId: string) =>
     orderBy: {
       creation: 'desc',
     },
-  } satisfies {
+  }) satisfies {
     where: Prisma.FormulaireGouvernanceWhereInput
     orderBy: Prisma.FormulaireGouvernanceOrderByWithRelationAndSearchRelevanceInput
-  })
+  }
 
 export const getCurrentFormulaireGouvernanceForFormByUser = (userId: string) =>
   getFormulaireGouvernanceForForm(userCurrentFormulaireParams(userId))

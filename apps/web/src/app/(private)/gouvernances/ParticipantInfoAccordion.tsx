@@ -8,8 +8,7 @@ import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 
 export type Participant =
-  | CandidatsGouvernance['souhaitentParticiper']['collectivites'][number]
-  | CandidatsGouvernance['souhaitentParticiper']['structures'][number]
+  CandidatsGouvernance['souhaitentParticiper']['collectivites'][number]
 
 const ParticipantInfoAccordion = ({
   participant,

@@ -3,24 +3,26 @@
   "version": "0.1.0",
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "load": "dotenv -e ../../.env -- ts-node -r tsconfig-paths/register src/seeds.ts",
+    "load": "dotenv -e ../../.env -- ts-node -r tsconfig-paths/register src/seeds.ts -e",
     "lint": "eslint src",
     "tsc": "tsc --noEmit",
     "test": "jest --passWithNoTests"
   },
   "engines": {
-    "node": "^18.16"
+    "node": "^20.7"
   },
   "dependencies": {
-    "@commander-js/extra-typings": "^10.0.3",
-    "@faker-js/faker": "^8.0.2",
-    "@types/node": "^18.16.18",
-    "dotenv": "^16.1.4",
+    "@commander-js/extra-typings": "^11.0.0",
+    "@faker-js/faker": "^8.1.0",
+    "@prisma/client": "^5.3.1",
+    "dotenv": "^16.3.1",
     "ts-node": "^10.9.1",
-    "typescript": "5.0.*"
+    "typescript": "^5.2.2"
   },
   "devDependencies": {
-    "commander": "^10.0.1",
-    "jest": "^29.5.0"
+    "@types/jest": "^29.5.5",
+    "@types/node": "^20.6.5",
+    "commander": "^11.0.0",
+    "jest": "^29.7.0"
   }
 }

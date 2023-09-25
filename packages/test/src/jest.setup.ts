@@ -4,7 +4,7 @@ import 'jest-extended/all'
 import { resolve } from 'node:path'
 import { TextDecoder, TextEncoder } from 'node:util'
 import * as dotenv from 'dotenv'
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom'
 
 dotenv.config({
   // eslint-disable-next-line unicorn/prefer-module

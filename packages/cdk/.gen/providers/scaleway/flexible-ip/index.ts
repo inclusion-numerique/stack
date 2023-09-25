@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/flexible_ip
+// https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -9,73 +9,79 @@ import * as cdktf from 'cdktf';
 export interface FlexibleIpConfig extends cdktf.TerraformMetaArguments {
   /**
   * Description of the flexible IP
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/flexible_ip#description FlexibleIp#description}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip#description FlexibleIp#description}
   */
   readonly description?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/flexible_ip#id FlexibleIp#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip#id FlexibleIp#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
   */
   readonly id?: string;
   /**
+  * Defines whether the flexible IP has an IPv6 address
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip#is_ipv6 FlexibleIp#is_ipv6}
+  */
+  readonly isIpv6?: boolean | cdktf.IResolvable;
+  /**
   * The project_id you want to attach the resource to
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/flexible_ip#project_id FlexibleIp#project_id}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip#project_id FlexibleIp#project_id}
   */
   readonly projectId?: string;
   /**
   * The reverse DNS for this flexible IP
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/flexible_ip#reverse FlexibleIp#reverse}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip#reverse FlexibleIp#reverse}
   */
   readonly reverse?: string;
   /**
   * The baremetal server associated with this flexible IP
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/flexible_ip#server_id FlexibleIp#server_id}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip#server_id FlexibleIp#server_id}
   */
   readonly serverId?: string;
   /**
   * The tags associated with the flexible IP
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/flexible_ip#tags FlexibleIp#tags}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip#tags FlexibleIp#tags}
   */
   readonly tags?: string[];
   /**
   * The zone you want to attach the resource to
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/flexible_ip#zone FlexibleIp#zone}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip#zone FlexibleIp#zone}
   */
   readonly zone?: string;
   /**
   * timeouts block
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/flexible_ip#timeouts FlexibleIp#timeouts}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip#timeouts FlexibleIp#timeouts}
   */
   readonly timeouts?: FlexibleIpTimeouts;
 }
 export interface FlexibleIpTimeouts {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/flexible_ip#create FlexibleIp#create}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip#create FlexibleIp#create}
   */
   readonly create?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/flexible_ip#default FlexibleIp#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip#default FlexibleIp#default}
   */
   readonly default?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/flexible_ip#delete FlexibleIp#delete}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip#delete FlexibleIp#delete}
   */
   readonly delete?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/flexible_ip#read FlexibleIp#read}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip#read FlexibleIp#read}
   */
   readonly read?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/flexible_ip#update FlexibleIp#update}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip#update FlexibleIp#update}
   */
   readonly update?: string;
 }
@@ -242,7 +248,7 @@ export class FlexibleIpTimeoutsOutputReference extends cdktf.ComplexObject {
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/flexible_ip scaleway_flexible_ip}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip scaleway_flexible_ip}
 */
 export class FlexibleIp extends cdktf.TerraformResource {
 
@@ -256,7 +262,7 @@ export class FlexibleIp extends cdktf.TerraformResource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/resources/flexible_ip scaleway_flexible_ip} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip scaleway_flexible_ip} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -267,8 +273,8 @@ export class FlexibleIp extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_flexible_ip',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.21.0',
-        providerVersionConstraint: '>= 2.21.0'
+        providerVersion: '2.28.0',
+        providerVersionConstraint: '>= 2.28.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -280,6 +286,7 @@ export class FlexibleIp extends cdktf.TerraformResource {
     });
     this._description = config.description;
     this._id = config.id;
+    this._isIpv6 = config.isIpv6;
     this._projectId = config.projectId;
     this._reverse = config.reverse;
     this._serverId = config.serverId;
@@ -334,9 +341,20 @@ export class FlexibleIp extends cdktf.TerraformResource {
     return this.getStringAttribute('ip_address');
   }
 
-  // mac_address - computed: true, optional: false, required: false
-  public get macAddress() {
-    return this.getStringAttribute('mac_address');
+  // is_ipv6 - computed: false, optional: true, required: false
+  private _isIpv6?: boolean | cdktf.IResolvable; 
+  public get isIpv6() {
+    return this.getBooleanAttribute('is_ipv6');
+  }
+  public set isIpv6(value: boolean | cdktf.IResolvable) {
+    this._isIpv6 = value;
+  }
+  public resetIsIpv6() {
+    this._isIpv6 = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get isIpv6Input() {
+    return this._isIpv6;
   }
 
   // organization_id - computed: true, optional: false, required: false
@@ -390,6 +408,11 @@ export class FlexibleIp extends cdktf.TerraformResource {
   // Temporarily expose input value. Use with caution.
   public get serverIdInput() {
     return this._serverId;
+  }
+
+  // status - computed: true, optional: false, required: false
+  public get status() {
+    return this.getStringAttribute('status');
   }
 
   // tags - computed: false, optional: true, required: false
@@ -453,6 +476,7 @@ export class FlexibleIp extends cdktf.TerraformResource {
     return {
       description: cdktf.stringToTerraform(this._description),
       id: cdktf.stringToTerraform(this._id),
+      is_ipv6: cdktf.booleanToTerraform(this._isIpv6),
       project_id: cdktf.stringToTerraform(this._projectId),
       reverse: cdktf.stringToTerraform(this._reverse),
       server_id: cdktf.stringToTerraform(this._serverId),
