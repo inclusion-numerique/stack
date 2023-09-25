@@ -1,4 +1,4 @@
-import { appUrl, createTestUser } from 'cypress/support/helpers'
+import { appUrl, createTestUser } from '@app/e2e/support/helpers'
 
 describe("En tant que préfecture de département, j'ai accès aux données de mon département", () => {
   beforeEach(() => {
@@ -13,7 +13,7 @@ describe("En tant que préfecture de département, j'ai accès aux données de m
   it('Should access dashboard and see detailed map informations', () => {
     cy.log('Redirect to scoped dashboard')
     cy.visit(`/tableau-de-bord`)
-    cy.url().should('equal', appUrl('/tableau-de-bord/departement/33'))
+    cy.appUrlShouldBe('/tableau-de-bord/departement/33')
 
     cy.contains('Gironde')
 

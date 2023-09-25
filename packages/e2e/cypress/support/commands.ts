@@ -1,15 +1,12 @@
 import '@testing-library/cypress/add-commands'
-import compareSnapshotCommand from 'cypress-visual-regression/dist/command'
+import { appUrl } from '@app/e2e/support/helpers'
+import type { Tasks as CustomTasks } from '@app/e2e/support/tasks'
 import type {
   CreateUserInput,
   UpdateUserInput,
 } from '../e2e/authentication/user.tasks'
-import { appUrl } from '@app/e2e/support/helpers'
-import type { CreateUserInput } from '../e2e/authentication/user.tasks'
-import type { Tasks as CustomTasks } from './tasks'
 import Timeoutable = Cypress.Timeoutable
 import Loggable = Cypress.Loggable
-import { appUrl } from './helpers'
 
 // ***********************************************
 // This example commands.ts shows you how to
@@ -36,8 +33,6 @@ import { appUrl } from './helpers'
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-
-compareSnapshotCommand()
 
 /**
  * Adding superjson serialization and typescript typing to cy.task
@@ -95,10 +90,11 @@ Cypress.Commands.add('testId', (testId: string) =>
   cy.get(`[data-testid="${testId}"]`),
 )
 Cypress.Commands.add('acceptNextRedirectsException', () => {
-  Cypress.on('uncaught:exception', (error, runnable) => {
+  Cypress.on('uncaught:exception', (error) => {
     if (error.message.includes('NEXT_REDIRECT')) {
       return false
     }
+    return true
   })
 })
 Cypress.Commands.add('appUrlShouldBe', (url: string) => {

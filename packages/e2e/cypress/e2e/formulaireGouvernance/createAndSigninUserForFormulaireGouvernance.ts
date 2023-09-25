@@ -1,11 +1,15 @@
 import { v4 } from 'uuid'
-import { createTestUser } from '../../support/helpers'
 import type { GouvernancePersonaId } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
-import type { Prisma } from '@prisma/client'
+import { createTestUser } from '@app/e2e/support/helpers'
+import { prismaClient } from '@app/web/prismaClient'
 
 export const createAndSigninUserForFormulaireGouvernance = (
   persona: GouvernancePersonaId,
-  formulaireGouvernance?: Partial<Prisma.FormulaireGouvernanceCreateWithoutParticipantsInput>,
+  formulaireGouvernance?: Partial<
+    Parameters<
+      typeof prismaClient.user.update
+    >[0]['data']['formulaireGouvernance']
+  >,
 ) => {
   const userId = v4()
   const user = createTestUser({

@@ -1,4 +1,4 @@
-import { appUrl, createTestUser } from 'cypress/support/helpers'
+import { appUrl, createTestUser } from '@app/e2e/support/helpers'
 
 describe("En tant que préfecture de région, j'ai accès aux données de ma région", () => {
   beforeEach(() => {
