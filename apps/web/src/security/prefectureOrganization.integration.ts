@@ -74,46 +74,66 @@ describe('prefectureOrganization', () => {
       is_external: false,
     }
 
-    it('Detects a prefecture and gives info on its departement', async () => {
-      const result = await qualifyPrefectureOrganization(prefectureOrganization)
+    const apiTimeout = 15_000
 
-      expect(result).toEqual({
-        ...prefectureOrganization,
-        prefectureCheckedAt: now,
-        isDepartementPrefecture: '38',
-      })
-    })
+    it(
+      'Detects a prefecture and gives info on its departement',
+      async () => {
+        const result = await qualifyPrefectureOrganization(
+          prefectureOrganization,
+        )
 
-    it('Checks MonComptePro public flag before authorizing', async () => {
-      const result = await qualifyPrefectureOrganization(
-        prefectureOrganizationWithoutPublicService,
-      )
+        expect(result).toEqual({
+          ...prefectureOrganization,
+          prefectureCheckedAt: now,
+          isDepartementPrefecture: '38',
+        })
+      },
+      apiTimeout,
+    )
 
-      expect(result).toEqual({
-        ...prefectureOrganizationWithoutPublicService,
-        prefectureCheckedAt: now,
-        isDepartementPrefecture: undefined,
-      })
-    })
+    it(
+      'Checks MonComptePro public flag before authorizing',
+      async () => {
+        const result = await qualifyPrefectureOrganization(
+          prefectureOrganizationWithoutPublicService,
+        )
 
-    it('Do not authorized organizations with label not matching siren', async () => {
-      const result = await qualifyPrefectureOrganization(nonPrefectureSiret)
+        expect(result).toEqual({
+          ...prefectureOrganizationWithoutPublicService,
+          prefectureCheckedAt: now,
+          isDepartementPrefecture: undefined,
+        })
+      },
+      apiTimeout,
+    )
 
-      expect(result).toEqual({
-        ...nonPrefectureSiret,
-        prefectureCheckedAt: now,
-        isDepartementPrefecture: undefined,
-      })
-    })
+    it(
+      'Do not authorized organizations with label not matching siren',
+      async () => {
+        const result = await qualifyPrefectureOrganization(nonPrefectureSiret)
 
-    it('Do not authorized organizations with non prefecture label', async () => {
-      const result = await qualifyPrefectureOrganization(nonPrefectureLabel)
+        expect(result).toEqual({
+          ...nonPrefectureSiret,
+          prefectureCheckedAt: now,
+          isDepartementPrefecture: undefined,
+        })
+      },
+      apiTimeout,
+    )
 
-      expect(result).toEqual({
-        ...nonPrefectureLabel,
-        prefectureCheckedAt: now,
-        isDepartementPrefecture: undefined,
-      })
-    })
+    it(
+      'Do not authorized organizations with non prefecture label',
+      async () => {
+        const result = await qualifyPrefectureOrganization(nonPrefectureLabel)
+
+        expect(result).toEqual({
+          ...nonPrefectureLabel,
+          prefectureCheckedAt: now,
+          isDepartementPrefecture: undefined,
+        })
+      },
+      apiTimeout,
+    )
   })
 })

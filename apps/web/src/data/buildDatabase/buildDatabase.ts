@@ -12,7 +12,6 @@ import { buildCoordinateursConum } from '@app/web/data/buildDatabase/buildCoordi
 import { buildConumCras } from '@app/web/data/buildDatabase/buildConumCras'
 import { prismaClient } from '@app/web/prismaClient'
 import { getDomainDataForDataIntegrity } from '@app/web/data/buildDatabase/getDomainDataForDataIntegrity'
-import { ServerWebAppConfig } from '@app/web/webAppConfig'
 
 export const buildDatabase = async () => {
   output(
