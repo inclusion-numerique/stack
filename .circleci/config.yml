@@ -235,7 +235,7 @@ jobs:
           command: pnpm --silent -F @app/web prisma generate
       - run:
           name: 'Test all packages except @app/web'
-          command: pnpm --silent -F '!@app/web' test
+          command: pnpm -F '!@app/web' test
 
   test_web:
     executor: node

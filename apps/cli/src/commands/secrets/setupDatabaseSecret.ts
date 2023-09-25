@@ -6,7 +6,7 @@ import { listSecrets } from '@app/config/secrets/listSecrets'
 import { output } from '@app/cli/output'
 
 /**
- * This command outputs available secrets names
+ * This command creates the database secret for the namespace argument
  */
 export const setupDatabaseSecret = new Command()
   .command('secrets:database:setup')
