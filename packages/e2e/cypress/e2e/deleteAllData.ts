@@ -1,7 +1,10 @@
 import { prismaClient } from '@app/web/prismaClient'
 import { dataTablesToKeep } from '../support/helpers'
 
-export const deleteAllData = async () => {
+export const deleteAllData = async (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _emptyParametersNeededForTypesafety: Record<string, string>,
+) => {
   const tables = await prismaClient.$queryRaw<
     { table_name: string }[]
   >`SELECT table_name
