@@ -40,7 +40,7 @@ const RadioFormField = <T extends FieldValues>({
       control={control}
       name={path}
       render={({
-        field: { onChange, onBlur, name, ref },
+        field: { onChange, onBlur, name, ref, value },
         fieldState: { invalid, error, isDirty },
       }) => {
         let ariaLabelBy: string | undefined
@@ -87,6 +87,11 @@ const RadioFormField = <T extends FieldValues>({
                     })}
                   >
                     <input
+                      key={`${id}__input__${
+                        (value as string | boolean | undefined)?.toString() ??
+                        'undefined'
+                      }`}
+                      defaultChecked={value === option.value}
                       type="radio"
                       id={`${id}__${index}`}
                       disabled={disabled}

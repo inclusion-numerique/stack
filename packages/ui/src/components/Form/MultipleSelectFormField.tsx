@@ -89,8 +89,8 @@ const MultipleSelectFormField = <T extends FieldValues>({
           )
         }
 
-        const selectedOptions = options.filter((option) =>
-          (value as string[])?.includes(option.value),
+        const selectedOptions = options.filter(
+          (option) => (value as string[])?.includes(option.value),
         )
 
         // Remove value on badge click
