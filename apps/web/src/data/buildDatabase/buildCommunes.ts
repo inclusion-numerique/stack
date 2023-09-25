@@ -35,7 +35,7 @@ export const buildCommunes = async ({
     )
     .then(({ data }) => arrayToMap(data, 'code'))
 
-  output('-- Preparing data...')
+  output(`-- Preparing data... (${communesGeoWithoutDistricts.size})})`)
 
   const codesPostaux: { code: string; codeCommune: string }[] = []
 
@@ -213,6 +213,10 @@ export const buildCommunes = async ({
   const codePostalToCreate = [...uniqueCodesPostauxSet.values()]
     .filter((code) => !domainData.codePostaux.has(code))
     .map((code) => ({ code }))
+
+  output(
+    `-- ${communesToCreate.length} to create, ${communesToUpdate.length} to update, ${communesToDelete.size} to delete`,
+  )
 
   output('-- Checking integrity...')
   const communeCodes = new Set(communesData.map(({ code }) => code))

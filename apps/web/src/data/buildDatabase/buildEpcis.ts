@@ -18,7 +18,7 @@ export const buildEpcis = async ({
     )
     .then(({ data }) => arrayToMap(data, 'code'))
 
-  output('-- Preparing data...')
+  output(`-- Preparing data... (${epcis.size})})`)
 
   // First we check if rows need to be deleted
   const toDelete = new Set<string>()
@@ -64,6 +64,9 @@ export const buildEpcis = async ({
       },
     })
   }
+  output(
+    `-- ${toCreate.length} to create, ${toUpdate.length} to update, ${toDelete.size} to delete`,
+  )
 
   output('-- Checking integrity...')
   const missingEpciCodesInFormulaires = domainData.formulaires.filter(

@@ -1,3 +1,4 @@
+import { output } from '@app/cli/output'
 import { prismaClient } from '@app/web/prismaClient'
 import { arrayToMap } from '@app/web/utils/arrayToMap'
 
@@ -98,6 +99,10 @@ export const getDomainDataForDataIntegrity = async () => {
       },
     })
     .then((items) => new Set(items.map(({ code }) => code)))
+
+  output(
+    `-- ${formulaires.length} formulaires, ${departementsParticipants.length} departements participants, ${epciParticipants.length} epci participants, ${communesParticipantes.length} communes participantes, ${regions.size} regions, ${departements.size} departements, ${epcis.size} epcis, ${communes.size} communes, ${codePostaux.size} code postaux`,
+  )
 
   return {
     formulaires,
