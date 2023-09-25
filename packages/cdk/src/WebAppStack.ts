@@ -33,6 +33,14 @@ import { RdbDatabase } from '@app/scaleway/rdb-database'
 import { RdbPrivilege } from '@app/scaleway/rdb-privilege'
 import { RdbUser } from '@app/scaleway/rdb-user'
 
+// Sous-domaines réservés
+const forbiddenNamespaces = new Set([
+  // Custom domain name for metabase
+  'metabase',
+  // Crisp custom domain name
+  'support',
+])
+
 export const webAppStackVariables = [
   'WEB_CONTAINER_IMAGE',
   'SCW_DEFAULT_ORGANIZATION_ID',
@@ -55,6 +63,12 @@ export class WebAppStack extends TerraformStack {
     super(scope, 'web')
 
     const namespace = computeBranchNamespace(branch)
+
+    if (forbiddenNamespaces.has(namespace)) {
+      throw new Error(
+        `The namespace ${namespace} is reserved for another internal service. See WebAppStack::forbiddenNamespaces for more info.`,
+      )
+    }
 
     const namespaced = namespacer(namespace)
 

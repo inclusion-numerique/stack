@@ -54,6 +54,15 @@ export const projectStackSensitiveVariables = [
 ] as const
 
 /**
+ * TODO : Mettre à jour le cdk pour documentation, pour les ressources créées à la main
+ *  - Ajouter nom de domaine Crisp (support.inclusion-numerique.anct.gouv.fr)
+ *  - Ajouter db Metabase (deja existant)
+ *  - Ajouter container Metabase (deja existant)
+ *  - Ajouter nom de domaine metabase (metabase.inclusion-numerique.anct.gouv.fr)
+ *  - Ajouter le endpoint container Metabase avec le nom de domaine
+ */
+
+/**
  * This stack represents the resources shared by other project stacks
  * It aims to be deployed only once, and used by other stacks
  */
