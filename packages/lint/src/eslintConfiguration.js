@@ -102,6 +102,7 @@ module.exports = {
         'no-irregular-whitespace': 'off',
         'unicorn/no-null': 'off',
         'unicorn/no-array-callback-reference': 'off',
+        'no-continue': 'off',
         // Module resolve leads to false negatives in monorepo, typescript compiler will handle any error
         'import/no-unresolved': [
           2,
@@ -169,6 +170,7 @@ module.exports = {
             },
           },
         ],
+        'unicorn/no-array-reduce': 'off',
       },
     },
     // Jest test files
@@ -180,7 +182,9 @@ module.exports = {
         // Only add rules that are specific to jest here
         '@typescript-eslint/no-loop-func': 'off',
         'import/no-extraneous-dependencies': 'off',
+        'unicorn/no-null': 'off',
         'no-restricted-syntax': 'off',
+        'unicorn/prefer-module': 'off',
       },
     },
     // Typescript e2e package with cypress
