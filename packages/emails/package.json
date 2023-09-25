@@ -24,9 +24,9 @@
     "@types/jest": "^29.5.5",
     "@types/mjml": "^4.7.1",
     "@types/mjml-react": "^2.0.6",
-    "@types/node": "^20.6.3",
+    "@types/node": "^20.6.5",
     "@types/react": "^18.2.22",
-    "eslint": "^8.49.0",
+    "eslint": "^8.50.0",
     "jest": "^29.7.0",
     "typescript": "^5.2.2"
   }
