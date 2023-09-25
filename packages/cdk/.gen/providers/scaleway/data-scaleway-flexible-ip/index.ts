@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/data-sources/flexible_ip
+// https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/flexible_ip
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -9,12 +9,12 @@ import * as cdktf from 'cdktf';
 export interface DataScalewayFlexibleIpConfig extends cdktf.TerraformMetaArguments {
   /**
   * The ID of the IPv4 address
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/data-sources/flexible_ip#flexible_ip_id DataScalewayFlexibleIp#flexible_ip_id}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/flexible_ip#flexible_ip_id DataScalewayFlexibleIp#flexible_ip_id}
   */
   readonly flexibleIpId?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/data-sources/flexible_ip#id DataScalewayFlexibleIp#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/flexible_ip#id DataScalewayFlexibleIp#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -22,20 +22,20 @@ export interface DataScalewayFlexibleIpConfig extends cdktf.TerraformMetaArgumen
   readonly id?: string;
   /**
   * The IPv4 address
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/data-sources/flexible_ip#ip_address DataScalewayFlexibleIp#ip_address}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/flexible_ip#ip_address DataScalewayFlexibleIp#ip_address}
   */
   readonly ipAddress?: string;
   /**
   * The project_id you want to attach the resource to
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/data-sources/flexible_ip#project_id DataScalewayFlexibleIp#project_id}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/flexible_ip#project_id DataScalewayFlexibleIp#project_id}
   */
   readonly projectId?: string;
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/data-sources/flexible_ip scaleway_flexible_ip}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/flexible_ip scaleway_flexible_ip}
 */
 export class DataScalewayFlexibleIp extends cdktf.TerraformDataSource {
 
@@ -49,7 +49,7 @@ export class DataScalewayFlexibleIp extends cdktf.TerraformDataSource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/data-sources/flexible_ip scaleway_flexible_ip} Data Source
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/flexible_ip scaleway_flexible_ip} Data Source
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -60,8 +60,8 @@ export class DataScalewayFlexibleIp extends cdktf.TerraformDataSource {
       terraformResourceType: 'scaleway_flexible_ip',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.21.0',
-        providerVersionConstraint: '>= 2.21.0'
+        providerVersion: '2.28.0',
+        providerVersionConstraint: '>= 2.28.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -139,9 +139,9 @@ export class DataScalewayFlexibleIp extends cdktf.TerraformDataSource {
     return this._ipAddress;
   }
 
-  // mac_address - computed: true, optional: false, required: false
-  public get macAddress() {
-    return this.getStringAttribute('mac_address');
+  // is_ipv6 - computed: true, optional: false, required: false
+  public get isIpv6() {
+    return this.getBooleanAttribute('is_ipv6');
   }
 
   // organization_id - computed: true, optional: false, required: false
@@ -173,6 +173,11 @@ export class DataScalewayFlexibleIp extends cdktf.TerraformDataSource {
   // server_id - computed: true, optional: false, required: false
   public get serverId() {
     return this.getStringAttribute('server_id');
+  }
+
+  // status - computed: true, optional: false, required: false
+  public get status() {
+    return this.getStringAttribute('status');
   }
 
   // tags - computed: true, optional: false, required: false

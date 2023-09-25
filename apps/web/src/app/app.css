@@ -142,6 +142,22 @@ hr.separator--8v{
   }
 }
 
+/* Fix notice padding right bug and add border radius */
+.fr-notice {
+  border-radius: 8px;
+}
+
+.fr-notice__body{
+  padding-right: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Override input spacing */
+.fr-input-group, .fr-select-group {
+  margin-bottom: 16px;
+}
+
 .fr-btn--danger {
   background-color: var(--background-flat-error);
 
@@ -247,6 +263,18 @@ hr.separator--8v{
   >.fr-container {
     padding-right:0;
     padding-left: 0;
+  }
+}
+
+/* Tabs */
+
+/* Remove border */
+
+.fr-tabs {
+  box-shadow: unset;
+
+  &::before {
+    box-shadow: inset 0 1px 0 0 var(--border-default-grey);
   }
 }
 

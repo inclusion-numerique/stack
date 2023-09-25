@@ -9,12 +9,13 @@
     "strictNullChecks": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "types": ["cypress", "jest", "node", "next"],
+    "types": ["jest", "node", "next"],
     "paths": {
       "@app/cli/*": ["../../apps/cli/src/*"],
       "@app/web/*": ["../../apps/web/src/*"],
       "@app/cdk/*": ["../../packages/cdk/src/*"],
       "@app/config/*": ["../../packages/config/src/*"],
+      "@app/e2e/*": ["../../packages/e2e/cypress/*"],
       "@app/emails/*": ["../../packages/emails/src/*"],
       "@app/lint/*": ["../../packages/lint/src/*"],
       "@app/scaleway/*": ["../../packages/cdk/.gen/providers/scaleway/*"],
@@ -26,7 +27,6 @@
   },
   "include": [
     "node_modules/@types/testing-library__jest-dom/index.d.ts",
-    "cypress/**/*.ts",
     "src/**/*.ts",
     "src/**/*.tsx"
   ]

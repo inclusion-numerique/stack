@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/data-sources/lb_backend
+// https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/lb_backend
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -9,12 +9,12 @@ import * as cdktf from 'cdktf';
 export interface DataScalewayLbBackendConfig extends cdktf.TerraformMetaArguments {
   /**
   * The ID of the backend
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/data-sources/lb_backend#backend_id DataScalewayLbBackend#backend_id}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/lb_backend#backend_id DataScalewayLbBackend#backend_id}
   */
   readonly backendId?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/data-sources/lb_backend#id DataScalewayLbBackend#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/lb_backend#id DataScalewayLbBackend#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -22,14 +22,14 @@ export interface DataScalewayLbBackendConfig extends cdktf.TerraformMetaArgument
   readonly id?: string;
   /**
   * The load-balancer ID
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/data-sources/lb_backend#lb_id DataScalewayLbBackend#lb_id}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/lb_backend#lb_id DataScalewayLbBackend#lb_id}
   */
   readonly lbId?: string;
   /**
   * The name of the backend
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/data-sources/lb_backend#name DataScalewayLbBackend#name}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/lb_backend#name DataScalewayLbBackend#name}
   */
   readonly name?: string;
 }
@@ -257,7 +257,7 @@ export class DataScalewayLbBackendHealthCheckTcpList extends cdktf.ComplexList {
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/data-sources/lb_backend scaleway_lb_backend}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/lb_backend scaleway_lb_backend}
 */
 export class DataScalewayLbBackend extends cdktf.TerraformDataSource {
 
@@ -271,7 +271,7 @@ export class DataScalewayLbBackend extends cdktf.TerraformDataSource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.21.0/docs/data-sources/lb_backend scaleway_lb_backend} Data Source
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/lb_backend scaleway_lb_backend} Data Source
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -282,8 +282,8 @@ export class DataScalewayLbBackend extends cdktf.TerraformDataSource {
       terraformResourceType: 'scaleway_lb_backend',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.21.0',
-        providerVersionConstraint: '>= 2.21.0'
+        providerVersion: '2.28.0',
+        providerVersionConstraint: '>= 2.28.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -366,6 +366,11 @@ export class DataScalewayLbBackend extends cdktf.TerraformDataSource {
     return this.getNumberAttribute('health_check_port');
   }
 
+  // health_check_send_proxy - computed: true, optional: false, required: false
+  public get healthCheckSendProxy() {
+    return this.getBooleanAttribute('health_check_send_proxy');
+  }
+
   // health_check_tcp - computed: true, optional: false, required: false
   private _healthCheckTcp = new DataScalewayLbBackendHealthCheckTcpList(this, "health_check_tcp", false);
   public get healthCheckTcp() {
@@ -375,6 +380,11 @@ export class DataScalewayLbBackend extends cdktf.TerraformDataSource {
   // health_check_timeout - computed: true, optional: false, required: false
   public get healthCheckTimeout() {
     return this.getStringAttribute('health_check_timeout');
+  }
+
+  // health_check_transient_delay - computed: true, optional: false, required: false
+  public get healthCheckTransientDelay() {
+    return this.getStringAttribute('health_check_transient_delay');
   }
 
   // id - computed: true, optional: true, required: false
@@ -414,6 +424,16 @@ export class DataScalewayLbBackend extends cdktf.TerraformDataSource {
     return this._lbId;
   }
 
+  // max_connections - computed: true, optional: false, required: false
+  public get maxConnections() {
+    return this.getNumberAttribute('max_connections');
+  }
+
+  // max_retries - computed: true, optional: false, required: false
+  public get maxRetries() {
+    return this.getNumberAttribute('max_retries');
+  }
+
   // name - computed: false, optional: true, required: false
   private _name?: string; 
   public get name() {
@@ -438,6 +458,11 @@ export class DataScalewayLbBackend extends cdktf.TerraformDataSource {
   // proxy_protocol - computed: true, optional: false, required: false
   public get proxyProtocol() {
     return this.getStringAttribute('proxy_protocol');
+  }
+
+  // redispatch_attempt_count - computed: true, optional: false, required: false
+  public get redispatchAttemptCount() {
+    return this.getNumberAttribute('redispatch_attempt_count');
   }
 
   // send_proxy_v2 - computed: true, optional: false, required: false
@@ -468,6 +493,11 @@ export class DataScalewayLbBackend extends cdktf.TerraformDataSource {
   // timeout_connect - computed: true, optional: false, required: false
   public get timeoutConnect() {
     return this.getStringAttribute('timeout_connect');
+  }
+
+  // timeout_queue - computed: true, optional: false, required: false
+  public get timeoutQueue() {
+    return this.getStringAttribute('timeout_queue');
   }
 
   // timeout_server - computed: true, optional: false, required: false

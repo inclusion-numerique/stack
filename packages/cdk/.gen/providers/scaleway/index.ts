@@ -11,9 +11,11 @@ export * as containerCron from './container-cron';
 export * as containerDomain from './container-domain';
 export * as containerNamespace from './container-namespace';
 export * as containerToken from './container-token';
+export * as containerTrigger from './container-trigger';
 export * as domainRecord from './domain-record';
 export * as domainZone from './domain-zone';
 export * as flexibleIp from './flexible-ip';
+export * as flexibleIpMacAddress from './flexible-ip-mac-address';
 export * as functionResource from './function-resource';
 export * as functionCron from './function-cron';
 export * as functionDomain from './function-domain';
@@ -23,6 +25,7 @@ export * as functionTrigger from './function-trigger';
 export * as iamApiKey from './iam-api-key';
 export * as iamApplication from './iam-application';
 export * as iamGroup from './iam-group';
+export * as iamGroupMembership from './iam-group-membership';
 export * as iamPolicy from './iam-policy';
 export * as iamSshKey from './iam-ssh-key';
 export * as instanceImage from './instance-image';
@@ -79,6 +82,7 @@ export * as vpcPublicGatewayDhcpReservation from './vpc-public-gateway-dhcp-rese
 export * as vpcPublicGatewayIp from './vpc-public-gateway-ip';
 export * as vpcPublicGatewayIpReverseDns from './vpc-public-gateway-ip-reverse-dns';
 export * as vpcPublicGatewayPatRule from './vpc-public-gateway-pat-rule';
+export * as webhosting from './webhosting';
 export * as dataScalewayAccountProject from './data-scaleway-account-project';
 export * as dataScalewayAccountSshKey from './data-scaleway-account-ssh-key';
 export * as dataScalewayAvailabilityZones from './data-scaleway-availability-zones';
@@ -93,6 +97,7 @@ export * as dataScalewayContainerNamespace from './data-scaleway-container-names
 export * as dataScalewayDomainRecord from './data-scaleway-domain-record';
 export * as dataScalewayDomainZone from './data-scaleway-domain-zone';
 export * as dataScalewayFlexibleIp from './data-scaleway-flexible-ip';
+export * as dataScalewayFlexibleIps from './data-scaleway-flexible-ips';
 export * as dataScalewayFunction from './data-scaleway-function';
 export * as dataScalewayFunctionNamespace from './data-scaleway-function-namespace';
 export * as dataScalewayIamApplication from './data-scaleway-iam-application';
@@ -109,6 +114,7 @@ export * as dataScalewayInstanceSnapshot from './data-scaleway-instance-snapshot
 export * as dataScalewayInstanceVolume from './data-scaleway-instance-volume';
 export * as dataScalewayIotDevice from './data-scaleway-iot-device';
 export * as dataScalewayIotHub from './data-scaleway-iot-hub';
+export * as dataScalewayIpamIp from './data-scaleway-ipam-ip';
 export * as dataScalewayK8SCluster from './data-scaleway-k8s-cluster';
 export * as dataScalewayK8SPool from './data-scaleway-k8s-pool';
 export * as dataScalewayK8SVersion from './data-scaleway-k8s-version';
@@ -146,6 +152,8 @@ export * as dataScalewayVpcPublicGatewayDhcp from './data-scaleway-vpc-public-ga
 export * as dataScalewayVpcPublicGatewayDhcpReservation from './data-scaleway-vpc-public-gateway-dhcp-reservation';
 export * as dataScalewayVpcPublicGatewayIp from './data-scaleway-vpc-public-gateway-ip';
 export * as dataScalewayVpcPublicGatewayPatRule from './data-scaleway-vpc-public-gateway-pat-rule';
+export * as dataScalewayVpcs from './data-scaleway-vpcs';
+export * as dataScalewayWebhosting from './data-scaleway-webhosting';
 export * as dataScalewayWebhostingOffer from './data-scaleway-webhosting-offer';
 export * as provider from './provider';
 

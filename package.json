@@ -1,11 +1,11 @@
 {
-  "name": "inclusion_numerique",
-  "description": "Inclusion Numérique - Monorepo",
+  "name": "my-app",
+  "description": "My App - Monorepo",
   "version": "0.1.0",
   "license": "AGPL-3.0-or-later",
   "private": true,
   "engines": {
-    "node": "^18.15"
+    "node": "^20.7"
   },
   "packageManager": "pnpm@7.25.1",
   "scripts": {
@@ -22,7 +22,7 @@
     "scw": "pnpm with-env scw",
     "manypkg": "manypkg",
     "start:web": "npm -w @app/web start",
-    "db:reset": "pnpm db:stop && docker volume rm inclusion_numerique_pgdata && pnpm db:start && pnpm prisma generate && pnpm prisma:migrate",
+    "db:reset": "pnpm db:stop && docker volume rm my-app_pgdata && pnpm db:start && pnpm prisma generate && pnpm prisma:migrate",
     "db:start": "docker-compose -f ./docker-compose.dev.yml up --build -d",
     "db:stop": "docker-compose -f ./docker-compose.dev.yml down",
     "docker:build:web": "docker buildx build --platform linux/amd64 -t rg.fr-par.scw.cloud/mec-web/mec-web-dev:latest -f docker/web/Dockerfile .",
@@ -32,12 +32,12 @@
     "overrides": {}
   },
   "optionalDependencies": {
-    "turbo-linux-arm64": "^1.10.3"
+    "turbo-linux-arm64": "^1.10.14"
   },
   "dependencies": {
     "@manypkg/cli": "^0.21.0",
-    "dotenv": "^16.1.4",
-    "dotenv-cli": "^7.2.1",
-    "turbo": "^1.10.3"
+    "dotenv": "^16.3.1",
+    "dotenv-cli": "^7.3.0",
+    "turbo": "^1.10.14"
   }
 }
