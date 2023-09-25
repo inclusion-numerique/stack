@@ -315,7 +315,6 @@ jobs:
     parallelism: 1
     steps:
       - checkout
-      - install_pnpm
       - install_dependencies
       - restore_cache:
           keys:
@@ -335,7 +334,6 @@ jobs:
     parallelism: 2
     steps:
       - checkout
-      - install_pnpm
       - install_dependencies
       - restore_cache:
           keys:
