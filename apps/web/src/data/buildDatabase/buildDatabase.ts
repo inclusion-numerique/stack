@@ -1,3 +1,4 @@
+import * as process from 'node:process'
 import { output } from '@app/cli/output'
 import { buildRegions } from '@app/web/data/buildDatabase/buildRegions'
 import { buildDepartements } from '@app/web/data/buildDatabase/buildDepartements'
@@ -11,6 +12,7 @@ import { buildCoordinateursConum } from '@app/web/data/buildDatabase/buildCoordi
 import { buildConumCras } from '@app/web/data/buildDatabase/buildConumCras'
 import { prismaClient } from '@app/web/prismaClient'
 import { getDomainDataForDataIntegrity } from '@app/web/data/buildDatabase/getDomainDataForDataIntegrity'
+import { ServerWebAppConfig } from '@app/web/webAppConfig'
 
 export const buildDatabase = async () => {
   output(
@@ -57,6 +59,7 @@ export const buildDatabase = async () => {
 
   const transactionStart = Date.now()
   output('Starting transaction...')
+  console.log('ON', process.env.DATABASE_URL)
   // Executing transaction
   await prismaClient.$transaction([
     // Deferring constraints for this transaction

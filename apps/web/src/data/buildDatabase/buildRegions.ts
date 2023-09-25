@@ -20,7 +20,7 @@ export const buildRegions = async ({
     >('https://geo.api.gouv.fr/regions')
     .then(({ data }) => arrayToMap(data, 'code'))
 
-  output(`-- Preparing data... (${regions.size})})`)
+  output(`-- Preparing data... (${regions.size})`)
 
   // First we check if rows need to be deleted
   const toDelete = new Set<string>()

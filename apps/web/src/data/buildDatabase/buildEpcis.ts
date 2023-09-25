@@ -18,7 +18,7 @@ export const buildEpcis = async ({
     )
     .then(({ data }) => arrayToMap(data, 'code'))
 
-  output(`-- Preparing data... (${epcis.size})})`)
+  output(`-- Preparing data... (${epcis.size})`)
 
   // First we check if rows need to be deleted
   const toDelete = new Set<string>()

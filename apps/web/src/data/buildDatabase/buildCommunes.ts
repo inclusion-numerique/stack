@@ -35,7 +35,7 @@ export const buildCommunes = async ({
     )
     .then(({ data }) => arrayToMap(data, 'code'))
 
-  output(`-- Preparing data... (${communesGeoWithoutDistricts.size})})`)
+  output(`-- Preparing data... (${communesGeoWithoutDistricts.size})`)
 
   const codesPostaux: { code: string; codeCommune: string }[] = []
 

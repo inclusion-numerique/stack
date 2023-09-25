@@ -26,7 +26,7 @@ export const buildDepartements = async ({
 
   const departementsGeometry = await getGeoDepartements()
 
-  output(`-- Preparing data... (${departementsGeometry.features.length})})`)
+  output(`-- Preparing data... (${departementsGeometry.features.length})`)
 
   // There is more departements geometry than geo api departements (e.g. dep 975)
   const data = departementsGeometry.features.map((feature) => {
