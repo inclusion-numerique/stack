@@ -99,6 +99,7 @@ module.exports = {
         ],
         'unicorn/prefer-module': 'off',
         'no-restricted-syntax': 'off',
+        'no-irregular-whitespace': 'off',
         'unicorn/no-null': 'off',
         'unicorn/no-array-callback-reference': 'off',
         // Module resolve leads to false negatives in monorepo, typescript compiler will handle any error
@@ -172,11 +173,14 @@ module.exports = {
     },
     // Jest test files
     {
-      files: '**/*.(spec|integration).+(ts|tsx)',
+      files: '**/*.+(spec|integration).+(ts|tsx)',
       plugins: ['jest'],
       extends: [...typescriptExtends, 'plugin:jest/recommended'],
       rules: {
         // Only add rules that are specific to jest here
+        '@typescript-eslint/no-loop-func': 'off',
+        'import/no-extraneous-dependencies': 'off',
+        'no-restricted-syntax': 'off',
       },
     },
     // Typescript e2e package with cypress
