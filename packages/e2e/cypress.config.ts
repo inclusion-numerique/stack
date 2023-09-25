@@ -12,7 +12,8 @@ export default defineConfig({
       bundler: 'webpack',
     },
   },
-
+  video: true,
+  videoCompression: true,
   viewportWidth: 1024,
   viewportHeight: 768,
 
