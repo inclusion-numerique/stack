@@ -70,7 +70,7 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
   it('Acceptation 5 - Annulation de la création', () => {
     cy.visit('/bases/creer')
 
-    cy.wait(1000)
+    cy.dsfrCollapsesShouldBeBound()
     cy.findByRole('dialog').should('not.exist')
     cy.testId('cancel-button').click()
 

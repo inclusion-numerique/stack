@@ -117,6 +117,7 @@ describe('EditContentCommandValidation', () => {
 
     sectionTitleFailUseCases(validSectionTitleCommand).map(
       ({ name, values, errors }) =>
+        // eslint-disable-next-line jest/valid-title
         it(name, () =>
           expectZodValidationToFail(
             EditContentCommandValidation,
@@ -191,6 +192,7 @@ describe('EditContentCommandValidation', () => {
     })
 
     textFailUseCases(validTextCommand).map(({ name, values, errors }) =>
+      // eslint-disable-next-line jest/valid-title
       it(name, () =>
         expectZodValidationToFail(
           EditContentCommandValidation,
@@ -237,6 +239,7 @@ describe('EditContentCommandValidation', () => {
     })
 
     linkFailUseCases(validLinkCommand).map(({ name, values, errors }) =>
+      // eslint-disable-next-line jest/valid-title
       it(name, () =>
         expectZodValidationToFail(
           EditContentCommandValidation,

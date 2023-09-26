@@ -47,7 +47,7 @@ const InputFormField = <T extends FieldValues>({
   icon,
   info,
   asterisk,
-  error: errorProp,
+  error: errorProperty,
   ...rest
 }: UiComponentProps & InputFormFieldProps<T>) => {
   const id = `input-form-field__${path}`
@@ -124,12 +124,12 @@ const InputFormField = <T extends FieldValues>({
                 {typeof info === 'string' ? info : info(value)}
               </p>
             )}
-            {(error || errorProp) && (
+            {(error || errorProperty) && (
               <p
                 id={`${id}__error`}
                 className={classNames('fr-error-text', { 'fr-mt-1v': !!info })}
               >
-                {error?.message || errorProp || null}
+                {error?.message || errorProperty || null}
               </p>
             )}
             {valid && isTouched && !invalid && (

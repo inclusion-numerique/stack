@@ -1,16 +1,11 @@
 import { v4 } from 'uuid'
-import {
-  AddContentCommand,
-  ContentAdded,
-} from '@app/web/server/resources/feature/AddContent'
 import { CreateResourceCommand } from '@app/web/server/resources/feature/CreateResource'
 import { ResourceMutationCommand } from '@app/web/server/resources/feature/features'
+import { PublishCommand } from '@app/web/server/resources/feature/PublishResource'
 import {
   CreateBaseInput,
   CreateUserInput,
-  sendResourceCommands,
 } from '../e2e/authentication/user.tasks'
-import { PublishCommand } from '@app/web/server/resources/feature/PublishResource'
 
 export const appUrl = (path: string) =>
   `${Cypress.config().baseUrl}${encodeURI(path)}`
@@ -41,7 +36,7 @@ export const createTestBase = (ownerId: string, isPublic?: boolean) =>
     email: 'test@mail.fr',
     emailIsPublic: true,
     members: { create: [{ memberId: ownerId, isAdmin: true }] },
-  } satisfies CreateBaseInput)
+  }) satisfies CreateBaseInput
 
 export const createTestPublishResourceCommand = (
   resourceId: string,
@@ -58,16 +53,16 @@ export const createTestPublishResourceCommand = (
           targetAudiences: ['target-1'],
         }
       : { resourceId, isPublic: false },
-  } satisfies PublishCommand)
+  }) satisfies PublishCommand
 
 export const createTestResourceCommands = ({
   baseId,
-  resourceId: resourceIdParam,
+  resourceId: resourceIdParameter,
 }: {
   baseId?: string
   resourceId?: string
 }): [CreateResourceCommand, ...ResourceMutationCommand[]] => {
-  const resourceId = resourceIdParam || v4()
+  const resourceId = resourceIdParameter || v4()
   return [
     {
       name: 'CreateResource',

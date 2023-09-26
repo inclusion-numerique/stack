@@ -1,5 +1,4 @@
 import { v4 } from 'uuid'
-import { AddContentCommandValidation } from '@app/web/server/resources/feature/AddContent'
 import {
   createTestBase,
   createTestPublishResourceCommand,

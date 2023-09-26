@@ -204,7 +204,7 @@ declare global {
         testId: string,
         position: 'inside' | 'above' | 'below' | 'left' | 'right',
       ): Chainable<void>
-      state(type: string): Chainable<any>
+      state(type: string): Chainable<unknown>
 
       appUrlShouldBe(url: string): Chainable<void>
 

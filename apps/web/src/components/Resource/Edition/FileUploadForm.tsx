@@ -19,7 +19,7 @@ const FileUploadForm = <T extends FieldValues>({
   fileFieldHint,
   canDelete,
   control,
-  error: errorProp,
+  error: errorProperty,
   path,
 }: {
   label: string
@@ -89,7 +89,7 @@ const FileUploadForm = <T extends FieldValues>({
           control={control}
           path={path}
           disabled={disabled}
-          error={errorProp}
+          error={errorProperty}
         />
         {canDelete && (
           <Button

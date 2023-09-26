@@ -62,6 +62,7 @@ describe('migrateBase', () => {
       ]),
     })
 
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(mockTransaction.base.upsert).toHaveBeenCalledExactlyOnceWith({
       where: {
         legacyId: 129,

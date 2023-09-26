@@ -36,7 +36,7 @@ const baseSelect = (user: Pick<SessionUser, 'id'> | null) =>
       },
       orderBy: { accepted: 'desc' },
     },
-  } satisfies Prisma.BaseSelect)
+  }) satisfies Prisma.BaseSelect
 
 export const getBase = async (id: string, user: Pick<SessionUser, 'id'>) =>
   prismaClient.base.findFirst({

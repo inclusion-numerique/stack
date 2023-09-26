@@ -16,7 +16,7 @@ export const createTestUser = (publicProfile?: boolean) =>
     created: '2023-04-01',
     updated: '2023-04-01',
     ownedBases: [],
-  } satisfies SessionUser)
+  }) satisfies SessionUser
 
 export const createTestResource = (
   owner: SessionUser,
@@ -55,7 +55,7 @@ export const createTestResource = (
     supportTypes: ['support-1'],
     targetAudiences: ['target-1'],
     contents: [],
-  } satisfies Resource)
+  }) satisfies Resource
 
 export const createTestBase = (
   owner: SessionUser,

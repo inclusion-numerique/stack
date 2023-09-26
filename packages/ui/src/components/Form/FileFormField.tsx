@@ -43,7 +43,7 @@ const FileFormField = <T extends FieldValues>({
   valid,
   info,
   asterisk,
-  error: errorProp,
+  error: errorProperty,
   'data-testid': dataTestId,
 }: FileFormFieldProps<T>) => {
   const id = `file-form-field__${path}`
@@ -110,12 +110,12 @@ const FileFormField = <T extends FieldValues>({
                 {typeof info === 'string' ? info : info(value)}
               </p>
             )}
-            {(errorProp || error) && (
+            {(errorProperty || error) && (
               <p
                 id={`${id}__error`}
                 className={classNames('fr-error-text', { 'fr-mt-1v': !!info })}
               >
-                {error?.message || errorProp || null}
+                {error?.message || errorProperty || null}
               </p>
             )}
             {valid && isTouched && !invalid && (

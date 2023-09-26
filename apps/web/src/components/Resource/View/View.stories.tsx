@@ -93,7 +93,7 @@ const resource = (imageId: string | null) =>
       },
     ] as ResourceContent[],
     isPublic: true,
-  } satisfies Resource)
+  }) satisfies Resource
 
 const Template = (props: ComponentProps<typeof View>) => (
   <div className="fr-container fr-pt-4v">

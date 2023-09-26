@@ -46,6 +46,7 @@ export const sendResourceCommands = async (
 
   let mutatedResource = resource
   for (const command of mutateCommands) {
+    // eslint-disable-next-line no-await-in-loop
     const result = await handleResourceMutationCommand(command, { user })
     mutatedResource = result.resource
   }
