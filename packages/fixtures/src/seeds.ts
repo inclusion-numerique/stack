@@ -137,7 +137,7 @@ const main = async (eraseAllData: boolean, random?: number) => {
 }
 
 const program = new Command()
-  .option('-e, --erase-all-data', 'Erase all data', false)
+  .option('--erase-all-data', 'Erase all data', false)
   .option(
     '-r, --random [number]',
     'Number of random items to seed',
