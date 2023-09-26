@@ -198,6 +198,7 @@ module.exports = {
         'import/no-extraneous-dependencies': 'off',
         'unicorn/no-null': 'off',
         'import/prefer-default-export': 'off',
+        'no-restricted-syntax': 'off',
         // Cypress .then() syntax is helpful without these rules
         'promise/catch-or-return': 'off',
         'promise/always-return': 'off',
