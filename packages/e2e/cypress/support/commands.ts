@@ -10,10 +10,8 @@ import type {
   CreateBaseInput,
   CreateUserInput,
   SendResourceCommandsInput,
-} from '../e2e/authentication/user.tasks'
-import { sendResourceCommands } from '../e2e/authentication/user.tasks'
+} from '@app/e2e/e2e/authentication/user.tasks'
 import { appUrl } from '@app/e2e/support/helpers'
-import type { CreateUserInput } from '../e2e/authentication/user.tasks'
 import type { Tasks as CustomTasks } from './tasks'
 import Timeoutable = Cypress.Timeoutable
 import Loggable = Cypress.Loggable
@@ -122,24 +120,47 @@ Cypress.Commands.add(
     testId: string,
     position: 'inside' | 'above' | 'below' | 'left' | 'right',
   ) => {
-    cy.testId(testId).then(($el) => {
+    cy.testId(testId).then(($element) => {
       const height = Cypress.$(cy.state('window')).height()
       const width = Cypress.$(cy.state('window')).width()
-      const rect = $el[0].getBoundingClientRect()
+      const rect = $element[0].getBoundingClientRect()
 
-      if (position == 'inside') {
-        expect(rect.top + rect.height / 2).to.be.greaterThan(0)
-        expect(rect.top + rect.height / 2).to.be.lessThan(height)
-        expect(rect.left + rect.width / 2).to.be.greaterThan(0)
-        expect((rect.left, +(rect.width / 2))).to.be.lessThan(width)
-      } else if (position == 'above') {
-        expect(rect.top + rect.height / 2).to.be.lessThan(0)
-      } else if (position == 'below') {
-        expect(rect.top + rect.height / 2).to.be.greaterThan(height)
-      } else if (position == 'left') {
-        expect(rect.left + rect.width / 2).to.be.lessThan(0)
-      } else if (position == 'right') {
-        expect(rect.left + rect.width / 2).to.be.greaterThan(width)
+      expect(height).to.be.a('number', 'Window height not available')
+      expect(width).to.be.a('number', 'Window width not available')
+      if (!height || !width) {
+        return
+      }
+
+      switch (position) {
+        case 'inside': {
+          expect(rect.top + rect.height / 2).to.be.greaterThan(0)
+          expect(rect.top + rect.height / 2).to.be.lessThan(height)
+          expect(rect.left + rect.width / 2).to.be.greaterThan(0)
+          expect((rect.left, +(rect.width / 2))).to.be.lessThan(width)
+
+          break
+        }
+        case 'above': {
+          expect(rect.top + rect.height / 2).to.be.lessThan(0)
+
+          break
+        }
+        case 'below': {
+          expect(rect.top + rect.height / 2).to.be.greaterThan(height)
+
+          break
+        }
+        case 'left': {
+          expect(rect.left + rect.width / 2).to.be.lessThan(0)
+
+          break
+        }
+        case 'right': {
+          expect(rect.left + rect.width / 2).to.be.greaterThan(width)
+
+          break
+        }
+        default:
       }
     })
   },

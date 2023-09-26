@@ -1,5 +1,5 @@
+import { appUrl, createTestUser } from '@app/e2e/support/helpers'
 import { cleanUpAndCreateTestBase } from '../resource/edition/editionTestUtils'
-import { appUrl, createTestUser } from 'cypress/support/helpers'
 
 describe("Utilisateur connecté, je peux gerer les membres d'une base", () => {
   /**

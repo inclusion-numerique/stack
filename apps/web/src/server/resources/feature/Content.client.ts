@@ -30,7 +30,8 @@ export const ClientContentPayloadCommandValidation = z.discriminatedUnion(
     LinkPayloadCommandValidation,
     ClientFilePayloadCommandValidation,
   ],
-)
+) satisfies z.Schema
+
 export type ClientContentPayload = z.infer<
   typeof ClientContentPayloadCommandValidation
 >

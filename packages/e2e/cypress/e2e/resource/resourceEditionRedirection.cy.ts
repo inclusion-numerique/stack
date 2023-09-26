@@ -7,7 +7,7 @@ import {
 
 describe('ETQ Utilisateur non connecté, lorsque je veux éditer une ressource, on me redirige vers la page de connexion', () => {
   beforeEach(() => {
-    cy.execute('deleteAllData', undefined)
+    cy.execute('deleteAllData', {})
   })
 
   it('Acceptation 0 - Redirection vers connexion', () => {

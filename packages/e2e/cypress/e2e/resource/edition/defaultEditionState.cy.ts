@@ -7,7 +7,7 @@ import {
 describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
   describe("Qui n'a pas été modifiée après création", () => {
     beforeEach(() => {
-      cy.execute('deleteAllData', undefined)
+      cy.execute('deleteAllData', {})
       const user = createTestUser()
       const base = createTestBase(user.id)
       const [creationCommand] = createTestResourceCommands({ baseId: base.id })

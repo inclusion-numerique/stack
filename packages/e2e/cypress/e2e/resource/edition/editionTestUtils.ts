@@ -8,7 +8,7 @@ import {
 } from '../../../support/helpers'
 
 export const cleanUpAndCreateTestResource = (publicBase?: boolean) => {
-  cy.execute('deleteAllData', undefined)
+  cy.execute('deleteAllData', {})
   const user = createTestUser()
   const base = createTestBase(user.id, publicBase)
   const commands = createTestResourceCommands({ baseId: base.id })
@@ -27,7 +27,7 @@ export const cleanUpAndCreateTestPublishedResource = (
   publicBase?: boolean,
   publicResource?: boolean,
 ) => {
-  cy.execute('deleteAllData', undefined)
+  cy.execute('deleteAllData', {})
   const user = createTestUser()
   const base = createTestBase(user.id, publicBase)
   const id = v4()
@@ -49,7 +49,7 @@ export const cleanUpAndCreateTestPublishedResourceInProfile = (
   publicProfile?: boolean,
   publicResource?: boolean,
 ) => {
-  cy.execute('deleteAllData', undefined)
+  cy.execute('deleteAllData', {})
   const user = createTestUser(publicProfile)
   const id = v4()
   const commands = createTestResourceCommands({ resourceId: id })
@@ -65,7 +65,7 @@ export const cleanUpAndCreateTestPublishedResourceInProfile = (
 export const cleanUpAndCreateTestResourceInProfile = (
   publicProfile?: boolean,
 ) => {
-  cy.execute('deleteAllData', undefined)
+  cy.execute('deleteAllData', {})
   const user = createTestUser(publicProfile)
   const commands = createTestResourceCommands({})
 
@@ -79,7 +79,7 @@ export const cleanUpAndCreateTestResourceInProfile = (
 }
 
 export const cleanUp = (publicProfile?: boolean, userId?: string) => {
-  cy.execute('deleteAllData', undefined)
+  cy.execute('deleteAllData', {})
   const user = createTestUser(publicProfile, userId)
 
   cy.createUserAndSignin(user)
@@ -88,7 +88,7 @@ export const cleanUp = (publicProfile?: boolean, userId?: string) => {
 }
 
 export const cleanUpAndCreateTestBase = (publicBase?: boolean) => {
-  cy.execute('deleteAllData', undefined)
+  cy.execute('deleteAllData', {})
   const user = createTestUser()
   const base = createTestBase(user.id, publicBase)
 

@@ -1,5 +1,5 @@
+import { appUrl, createTestUser } from '@app/e2e/support/helpers'
 import { cleanUpAndCreateTestPublishedResource } from './edition/editionTestUtils'
-import { appUrl, createTestUser } from 'cypress/support/helpers'
 
 describe('Utilisateur sans droit, je ne peux ni voir et ni editer la ressource', () => {
   it('Acceptation 1 - Ressource publique', () => {

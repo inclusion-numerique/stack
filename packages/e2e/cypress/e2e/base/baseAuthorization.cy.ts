@@ -1,5 +1,5 @@
-import { cleanUpAndCreateTestBase } from '../resource/edition/editionTestUtils'
-import { appUrl, createTestUser } from 'cypress/support/helpers'
+import { appUrl, createTestUser } from '@app/e2e/support/helpers'
+import { cleanUpAndCreateTestBase } from '@app/e2e/e2e/resource/edition/editionTestUtils'
 
 describe('Utilisateur sans droit, je ne peux ni voir et ni editer la base', () => {
   it('Acceptation 1 - Base publique', () => {

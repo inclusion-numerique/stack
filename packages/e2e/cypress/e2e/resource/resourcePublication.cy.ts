@@ -1,8 +1,8 @@
+import { appUrl } from '@app/e2e/support/helpers'
 import {
   cleanUpAndCreateTestResource,
   cleanUpAndCreateTestResourceInProfile,
 } from './edition/editionTestUtils'
-import { appUrl } from 'cypress/support/helpers'
 
 describe('Utilisateur connecté, lorsque je créé une ressource, je peux renseigner la publier', () => {
   /**

@@ -1,5 +1,5 @@
+import { appUrl } from '@app/e2e/support/helpers'
 import { cleanUp } from '../resource/edition/editionTestUtils'
-import { appUrl } from 'cypress/support/helpers'
 
 describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses ressources', () => {
   /**

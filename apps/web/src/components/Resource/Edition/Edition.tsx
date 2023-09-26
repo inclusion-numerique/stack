@@ -170,11 +170,9 @@ const Edition = ({
       publicationForm.handleSubmit(async (data: PublishCommand) => {
         try {
           const result = await sendCommand(data)
+          router.refresh()
           router.push(
             `/ressources/${result.resource.slug}?updated=${Date.now()}`,
-            {
-              unstable_skipClientCache: true,
-            },
           )
         } catch (error) {
           console.error('Could not publish resource', error)

@@ -8,7 +8,7 @@
     "tsc": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --",
     "with-remote-env": "dotenv -e ../../.env.remote -e ../../.env --",
-    "cy": "pnpm --silent with-env cypress"
+    "cy": "ELECTRON_EXTRA_LAUNCH_ARGS=\"--force-prefers-reduced-motion\" pnpm --silent with-env cypress"
   },
   "engines": {
     "node": "^20.7"
@@ -16,6 +16,7 @@
   "dependencies": {
     "@cypress/react18": "^2.0.0",
     "cypress": "^13.2.0",
+    "cypress-real-events": "^1.10.3",
     "next": "^13.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

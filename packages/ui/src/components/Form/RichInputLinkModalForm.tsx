@@ -12,8 +12,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useModalVisibility } from '@app/web/hooks/useModalVisibility'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import z from 'zod'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import ReactDOM from 'react-dom'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 
@@ -40,8 +38,8 @@ const RichInputLinkValidation = z.object({
 export type RichInputLink = z.infer<typeof RichInputLinkValidation>
 
 const RichInputLinkModalForm = ({
-  onSubmit: onSubmitProp,
-  onCancel: onCancelProp,
+  onSubmit: onSubmitProperty,
+  onCancel: onCancelProperty,
   url,
 }: {
   onSubmit: (data: RichInputLink) => void
@@ -91,7 +89,7 @@ const RichInputLinkModalForm = ({
       if (isSubmitting) {
         return
       }
-      onSubmitProp(data)
+      onSubmitProperty(data)
     })(event)
   }
 
@@ -112,7 +110,7 @@ const RichInputLinkModalForm = ({
             doClosesModal: true,
             children: cancelLabel,
             type: 'button',
-            onClick: onCancelProp,
+            onClick: onCancelProperty,
             disabled,
           },
           {

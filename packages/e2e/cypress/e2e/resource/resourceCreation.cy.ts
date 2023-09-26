@@ -12,7 +12,7 @@ describe('Utilisateur connecté, lorsque je créé une ressource, je peux rensei
    */
 
   beforeEach(() => {
-    cy.execute('deleteAllData', undefined)
+    cy.execute('deleteAllData', {})
   })
 
   it('Acceptation 0 - Fermeture modale', () => {

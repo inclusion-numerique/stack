@@ -1,6 +1,6 @@
 import { v4 } from 'uuid'
+import { appUrl, createTestUser } from '@app/e2e/support/helpers'
 import { cleanUp } from '../resource/edition/editionTestUtils'
-import { appUrl, createTestUser } from 'cypress/support/helpers'
 
 describe('Utilisateur sans droit, je ne peux ni voir et ni editer le profil', () => {
   it('Acceptation 1 - Profile publique', () => {

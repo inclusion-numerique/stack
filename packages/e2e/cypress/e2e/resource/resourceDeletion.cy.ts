@@ -1,5 +1,5 @@
+import { appUrl } from '@app/e2e/support/helpers'
 import { cleanUpAndCreateTestResource } from './edition/editionTestUtils'
-import { appUrl } from 'cypress/support/helpers'
 
 describe("Utilisateur connecté, lorsque j'édite une ressource, je peux la supprimer", () => {
   beforeEach(() => {
@@ -26,7 +26,8 @@ describe("Utilisateur connecté, lorsque j'édite une ressource, je peux la supp
       failOnStatusCode: false,
     }).then((resp) => {
       expect(resp.status).to.eq(404)
-      expect(resp.redirectedToUrl).to.eq(undefined)
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      expect(resp.redirectedToUrl).to.be.undefined
     })
 
     cy.request({
@@ -35,7 +36,8 @@ describe("Utilisateur connecté, lorsque j'édite une ressource, je peux la supp
       failOnStatusCode: false,
     }).then((resp) => {
       expect(resp.status).to.eq(404)
-      expect(resp.redirectedToUrl).to.eq(undefined)
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      expect(resp.redirectedToUrl).to.be.undefined
     })
 
     cy.visit('/bases/conseiller-numérique-france-services-contributions')
