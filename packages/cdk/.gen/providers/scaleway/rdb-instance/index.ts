@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance
+// https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -9,36 +9,36 @@ import * as cdktf from 'cdktf';
 export interface RdbInstanceConfig extends cdktf.TerraformMetaArguments {
   /**
   * Boolean to store logical backups in the same region as the database instance
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#backup_same_region RdbInstance#backup_same_region}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#backup_same_region RdbInstance#backup_same_region}
   */
   readonly backupSameRegion?: boolean | cdktf.IResolvable;
   /**
   * Backup schedule frequency in hours
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#backup_schedule_frequency RdbInstance#backup_schedule_frequency}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#backup_schedule_frequency RdbInstance#backup_schedule_frequency}
   */
   readonly backupScheduleFrequency?: number;
   /**
   * Backup schedule retention in days
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#backup_schedule_retention RdbInstance#backup_schedule_retention}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#backup_schedule_retention RdbInstance#backup_schedule_retention}
   */
   readonly backupScheduleRetention?: number;
   /**
   * Disable automated backup for the database instance
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#disable_backup RdbInstance#disable_backup}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#disable_backup RdbInstance#disable_backup}
   */
   readonly disableBackup?: boolean | cdktf.IResolvable;
   /**
   * Database's engine version id
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#engine RdbInstance#engine}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#engine RdbInstance#engine}
   */
   readonly engine: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#id RdbInstance#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#id RdbInstance#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -46,86 +46,86 @@ export interface RdbInstanceConfig extends cdktf.TerraformMetaArguments {
   readonly id?: string;
   /**
   * Map of engine settings to be set at database initialisation.
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#init_settings RdbInstance#init_settings}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#init_settings RdbInstance#init_settings}
   */
   readonly initSettings?: { [key: string]: string };
   /**
   * Enable or disable high availability for the database instance
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#is_ha_cluster RdbInstance#is_ha_cluster}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#is_ha_cluster RdbInstance#is_ha_cluster}
   */
   readonly isHaCluster?: boolean | cdktf.IResolvable;
   /**
   * Name of the database instance
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#name RdbInstance#name}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#name RdbInstance#name}
   */
   readonly name?: string;
   /**
   * The type of database instance you want to create
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#node_type RdbInstance#node_type}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#node_type RdbInstance#node_type}
   */
   readonly nodeType: string;
   /**
   * Password for the first user of the database instance
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#password RdbInstance#password}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#password RdbInstance#password}
   */
   readonly password?: string;
   /**
   * The project_id you want to attach the resource to
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#project_id RdbInstance#project_id}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#project_id RdbInstance#project_id}
   */
   readonly projectId?: string;
   /**
   * The region you want to attach the resource to
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#region RdbInstance#region}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#region RdbInstance#region}
   */
   readonly region?: string;
   /**
   * Map of engine settings to be set on a running instance.
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#settings RdbInstance#settings}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#settings RdbInstance#settings}
   */
   readonly settings?: { [key: string]: string };
   /**
   * List of tags ["tag1", "tag2", ...] attached to a database instance
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#tags RdbInstance#tags}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#tags RdbInstance#tags}
   */
   readonly tags?: string[];
   /**
   * Identifier for the first user of the database instance
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#user_name RdbInstance#user_name}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#user_name RdbInstance#user_name}
   */
   readonly userName?: string;
   /**
   * Volume size (in GB) when volume_type is not lssd
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#volume_size_in_gb RdbInstance#volume_size_in_gb}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#volume_size_in_gb RdbInstance#volume_size_in_gb}
   */
   readonly volumeSizeInGb?: number;
   /**
   * Type of volume where data are stored
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#volume_type RdbInstance#volume_type}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#volume_type RdbInstance#volume_type}
   */
   readonly volumeType?: string;
   /**
   * private_network block
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#private_network RdbInstance#private_network}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#private_network RdbInstance#private_network}
   */
   readonly privateNetwork?: RdbInstancePrivateNetwork;
   /**
   * timeouts block
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#timeouts RdbInstance#timeouts}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#timeouts RdbInstance#timeouts}
   */
   readonly timeouts?: RdbInstanceTimeouts;
 }
@@ -289,51 +289,27 @@ export class RdbInstanceReadReplicasList extends cdktf.ComplexList {
 }
 export interface RdbInstancePrivateNetwork {
   /**
-  * The endpoint ID
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#endpoint_id RdbInstance#endpoint_id}
-  */
-  readonly endpointId?: string;
-  /**
-  * The hostname of your endpoint
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#hostname RdbInstance#hostname}
-  */
-  readonly hostname?: string;
-  /**
-  * The IP of your private service
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#ip RdbInstance#ip}
-  */
-  readonly ip?: string;
-  /**
-  * The IP network address within the private subnet
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#ip_net RdbInstance#ip_net}
+  * The IP with the given mask within the private subnet
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#ip_net RdbInstance#ip_net}
   */
   readonly ipNet?: string;
   /**
-  * The name of your private service
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#name RdbInstance#name}
-  */
-  readonly name?: string;
-  /**
   * The private network ID
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#pn_id RdbInstance#pn_id}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#pn_id RdbInstance#pn_id}
   */
   readonly pnId: string;
   /**
   * The port of your private service
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#port RdbInstance#port}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#port RdbInstance#port}
   */
   readonly port?: number;
   /**
   * The zone you want to attach the resource to
-  * 
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#zone RdbInstance#zone}
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#zone RdbInstance#zone}
   */
   readonly zone?: string;
 }
@@ -344,11 +320,7 @@ export function rdbInstancePrivateNetworkToTerraform(struct?: RdbInstancePrivate
     throw new Error("A complex element was used as configuration, this is not supported: https://cdk.tf/complex-object-as-configuration");
   }
   return {
-    endpoint_id: cdktf.stringToTerraform(struct!.endpointId),
-    hostname: cdktf.stringToTerraform(struct!.hostname),
-    ip: cdktf.stringToTerraform(struct!.ip),
     ip_net: cdktf.stringToTerraform(struct!.ipNet),
-    name: cdktf.stringToTerraform(struct!.name),
     pn_id: cdktf.stringToTerraform(struct!.pnId),
     port: cdktf.numberToTerraform(struct!.port),
     zone: cdktf.stringToTerraform(struct!.zone),
@@ -369,25 +341,9 @@ export class RdbInstancePrivateNetworkOutputReference extends cdktf.ComplexObjec
   public get internalValue(): RdbInstancePrivateNetwork | undefined {
     let hasAnyValues = this.isEmptyObject;
     const internalValueResult: any = {};
-    if (this._endpointId !== undefined) {
-      hasAnyValues = true;
-      internalValueResult.endpointId = this._endpointId;
-    }
-    if (this._hostname !== undefined) {
-      hasAnyValues = true;
-      internalValueResult.hostname = this._hostname;
-    }
-    if (this._ip !== undefined) {
-      hasAnyValues = true;
-      internalValueResult.ip = this._ip;
-    }
     if (this._ipNet !== undefined) {
       hasAnyValues = true;
       internalValueResult.ipNet = this._ipNet;
-    }
-    if (this._name !== undefined) {
-      hasAnyValues = true;
-      internalValueResult.name = this._name;
     }
     if (this._pnId !== undefined) {
       hasAnyValues = true;
@@ -407,74 +363,33 @@ export class RdbInstancePrivateNetworkOutputReference extends cdktf.ComplexObjec
   public set internalValue(value: RdbInstancePrivateNetwork | undefined) {
     if (value === undefined) {
       this.isEmptyObject = false;
-      this._endpointId = undefined;
-      this._hostname = undefined;
-      this._ip = undefined;
       this._ipNet = undefined;
-      this._name = undefined;
       this._pnId = undefined;
       this._port = undefined;
       this._zone = undefined;
     }
     else {
       this.isEmptyObject = Object.keys(value).length === 0;
-      this._endpointId = value.endpointId;
-      this._hostname = value.hostname;
-      this._ip = value.ip;
       this._ipNet = value.ipNet;
-      this._name = value.name;
       this._pnId = value.pnId;
       this._port = value.port;
       this._zone = value.zone;
     }
   }
 
-  // endpoint_id - computed: true, optional: true, required: false
-  private _endpointId?: string; 
+  // endpoint_id - computed: true, optional: false, required: false
   public get endpointId() {
     return this.getStringAttribute('endpoint_id');
   }
-  public set endpointId(value: string) {
-    this._endpointId = value;
-  }
-  public resetEndpointId() {
-    this._endpointId = undefined;
-  }
-  // Temporarily expose input value. Use with caution.
-  public get endpointIdInput() {
-    return this._endpointId;
-  }
 
-  // hostname - computed: true, optional: true, required: false
-  private _hostname?: string; 
+  // hostname - computed: true, optional: false, required: false
   public get hostname() {
     return this.getStringAttribute('hostname');
   }
-  public set hostname(value: string) {
-    this._hostname = value;
-  }
-  public resetHostname() {
-    this._hostname = undefined;
-  }
-  // Temporarily expose input value. Use with caution.
-  public get hostnameInput() {
-    return this._hostname;
-  }
 
-  // ip - computed: true, optional: true, required: false
-  private _ip?: string; 
+  // ip - computed: true, optional: false, required: false
   public get ip() {
     return this.getStringAttribute('ip');
-  }
-  public set ip(value: string) {
-    this._ip = value;
-  }
-  public resetIp() {
-    this._ip = undefined;
-  }
-  // Temporarily expose input value. Use with caution.
-  public get ipInput() {
-    return this._ip;
   }
 
   // ip_net - computed: true, optional: true, required: false
@@ -493,20 +408,9 @@ export class RdbInstancePrivateNetworkOutputReference extends cdktf.ComplexObjec
     return this._ipNet;
   }
 
-  // name - computed: true, optional: true, required: false
-  private _name?: string; 
+  // name - computed: true, optional: false, required: false
   public get name() {
     return this.getStringAttribute('name');
-  }
-  public set name(value: string) {
-    this._name = value;
-  }
-  public resetName() {
-    this._name = undefined;
-  }
-  // Temporarily expose input value. Use with caution.
-  public get nameInput() {
-    return this._name;
   }
 
   // pn_id - computed: false, optional: false, required: true
@@ -556,23 +460,23 @@ export class RdbInstancePrivateNetworkOutputReference extends cdktf.ComplexObjec
 }
 export interface RdbInstanceTimeouts {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#create RdbInstance#create}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#create RdbInstance#create}
   */
   readonly create?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#default RdbInstance#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#default RdbInstance#default}
   */
   readonly default?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#delete RdbInstance#delete}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#delete RdbInstance#delete}
   */
   readonly delete?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#read RdbInstance#read}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#read RdbInstance#read}
   */
   readonly read?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance#update RdbInstance#update}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance#update RdbInstance#update}
   */
   readonly update?: string;
 }
@@ -739,7 +643,7 @@ export class RdbInstanceTimeoutsOutputReference extends cdktf.ComplexObject {
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance scaleway_rdb_instance}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance scaleway_rdb_instance}
 */
 export class RdbInstance extends cdktf.TerraformResource {
 
@@ -753,7 +657,7 @@ export class RdbInstance extends cdktf.TerraformResource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.22.0/docs/resources/rdb_instance scaleway_rdb_instance} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/rdb_instance scaleway_rdb_instance} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -764,8 +668,8 @@ export class RdbInstance extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_rdb_instance',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.22.0',
-        providerVersionConstraint: '>= 2.22.0'
+        providerVersion: '2.28.0',
+        providerVersionConstraint: '>= 2.28.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,

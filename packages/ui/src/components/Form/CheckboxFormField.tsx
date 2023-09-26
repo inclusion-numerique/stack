@@ -75,6 +75,10 @@ const CheckboxFormField = <T extends FieldValues>({
                   })}
                 >
                   <input
+                    key={`${id}__input__${
+                      (value as string | boolean | undefined)?.toString() ??
+                      'undefined'
+                    }`}
                     type="checkbox"
                     data-testid={dataTestId}
                     id={id}

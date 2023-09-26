@@ -6,13 +6,13 @@ orbs:
 executors:
   node:
     docker:
-      - image: cimg/node:18.16.0
+      - image: cimg/node:20.7.0
         environment:
           TZ: 'UTC'
 
   node-postgres:
     docker:
-      - image: cimg/node:18.16.0
+      - image: cimg/node:20.7.0
         environment:
           TZ: 'UTC'
           CI_PG_ADMIN_URL: postgresql://postgres@localhost
@@ -22,12 +22,12 @@ executors:
           POSTGRES_USER: postgres
   node-browsers:
     docker:
-      - image: cimg/node:18.16.0-browsers
+      - image: cimg/node:20.7.0-browsers
         environment:
           TZ: 'UTC'
   node-e2e:
     docker:
-      - image: cimg/node:18.16.0-browsers
+      - image: cimg/node:20.7.0-browsers
         environment:
           TZ: 'UTC'
           CI_DATABASE_URL: postgresql://postgres@localhost/test
@@ -42,7 +42,7 @@ executors:
 parameters:
   cache_version:
     type: string
-    default: '2023-05-29-01'
+    default: '2023-09-22-02'
   virtual_store_dir:
     type: string
     default: './.pnpm'
@@ -97,11 +97,7 @@ workflows:
           requires:
             - prepare_workspace_dependencies
 
-      - test_web_components:
-          requires:
-            - prepare_workspace_dependencies
-
-      - test_ui_components:
+      - test_components:
           requires:
             - prepare_workspace_dependencies
 
@@ -116,8 +112,7 @@ workflows:
             - build_web
             - test_packages
             - test_web
-            - test_web_components
-            - test_ui_components
+            - test_components
             - test_web_e2e
 
       - chromatic:
@@ -186,6 +181,7 @@ jobs:
             - ./apps/cli/node_modules
             - ./packages/cdk/node_modules
             - ./packages/config/node_modules
+            - ./packages/e2e/node_modules
             - ./packages/emails/node_modules
             - ./packages/lint/node_modules
             - ./packages/storybook/node_modules
@@ -270,7 +266,7 @@ jobs:
           command: pnpm --silent -F @app/migration prisma generate
       - run:
           name: 'Test all packages except @app/web'
-          command: pnpm --silent -F '!@app/web' test
+          command: pnpm -F '!@app/web' test
 
   test_web:
     executor: node
@@ -344,13 +340,12 @@ jobs:
           name: 'Build storybook and deploy on chromatic'
           command: pnpm --silent -F @app/storybook chromatic
 
-  test_web_components:
+  test_components:
     executor: node-browsers
     resource_class: large
     parallelism: 1
     steps:
       - checkout
-      - install_pnpm
       - install_dependencies
       - restore_cache:
           keys:
@@ -362,24 +357,7 @@ jobs:
       - add_secrets_to_dotenv_file
       - run:
           name: 'Run Cypress component testing'
-          command: pnpm --silent -F @app/web cy run --component --record --parallel --group web/components
-
-  test_ui_components:
-    executor: node-browsers
-    resource_class: large
-    parallelism: 2
-    steps:
-      - checkout
-      - install_pnpm
-      - install_dependencies
-      - restore_cache:
-          keys:
-            - << pipeline.parameters.cache_version >>-cypress-{{ checksum "<< pipeline.parameters.lockfile >>" }}
-      - create_dotenv_file
-      - add_secrets_to_dotenv_file
-      - run:
-          name: 'Run Cypress component testing'
-          command: pnpm --silent -F @app/ui cy run --component --record --parallel --group ui/components
+          command: pnpm --silent -F @app/e2e cy run --component --record --parallel --group components
 
   test_web_e2e:
     executor: node-e2e
@@ -387,7 +365,6 @@ jobs:
     parallelism: 2
     steps:
       - checkout
-      - install_pnpm
       - install_dependencies
       - restore_cache:
           keys:
@@ -426,7 +403,7 @@ jobs:
       - run:
           name: 'Create CI database schema'
           command: |
-            pnpm --silent -F @app/web prisma db push --skip-generate --accept-data-loss
+            pnpm --silent -F @app/web prisma migrate deploy
       - restore_cache:
           key: << pipeline.id >>-web-build
       - add_dotenv_vars_to_bash_env
@@ -439,11 +416,11 @@ jobs:
             mv apps/web/public ~/dist/apps/web/public
             mv apps/web/.next/static ~/dist/apps/web/.next/static
             cd ~/dist
-            node apps/web/server.js
+            HOSTNAME=localhost node apps/web/server.js
       - run:
           name: 'Run cypress e2e tests'
           command: |
-            pnpm --silent -F @app/web cy run --record --parallel --group web/e2e
+            pnpm --silent -F @app/e2e cy run --record --parallel --group e2e
 
   deploy_web:
     executor: node-postgres
@@ -520,7 +497,7 @@ jobs:
       - run:
           name: 'Migrate database'
           command: |
-            pnpm --silent -F @app/web prisma db push --skip-generate --accept-data-loss
+            pnpm --silent -F @app/web prisma migrate deploy
       - run:
           name: Set deployment status to data loading
           command: pnpm --silent cli github:deployment:update $DEPLOYMENT_ID in_progress -d 'Loading data' -l https://app.circleci.com/pipelines/workflows/$CIRCLE_WORKFLOW_ID
@@ -534,10 +511,6 @@ jobs:
                 name: 'Load fixtures on preview envs'
                 command: |
                   pnpm --silent -F @app/fixtures load
-      - run:
-          name: 'Execute migration from legacy data'
-          command: |
-            pnpm --silent -F @app/migration execute
       - run:
           name: Check that deployed container status is ok
           command: |

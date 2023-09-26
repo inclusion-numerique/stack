@@ -3,7 +3,27 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
 import { prismaClient } from '@app/web/prismaClient'
 
-const prismaAdapter = PrismaAdapter(prismaClient)
+/**
+ * Ensuring that needed methods are defined when creating adapter
+ */
+const createAdapter = (): Adapter & {
+  createUser: Exclude<Adapter['createUser'], undefined>
+  deleteSession: Exclude<Adapter['deleteSession'], undefined>
+  linkAccount: Exclude<Adapter['linkAccount'], undefined>
+} => {
+  const prismaAdapter = PrismaAdapter(prismaClient)
+
+  const { createUser, deleteSession, linkAccount } = prismaAdapter
+
+  if (!createUser) throw new Error('prismaAdapter.createUser is undefined')
+  if (!deleteSession)
+    throw new Error('prismaAdapter.deleteSession is undefined')
+  if (!linkAccount) throw new Error('prismaAdapter.linkAccount is undefined')
+
+  return { ...prismaAdapter, createUser, deleteSession, linkAccount }
+}
+
+const prismaAdapter = createAdapter()
 
 // ⚠️ Keycloak returns non standard fields that are expected to be ignored by the client
 const removeNonStandardFields = <T extends Record<string, unknown>>(

@@ -20,6 +20,7 @@
       "@app/web/*": ["apps/web/src/*"],
       "@app/cdk/*": ["packages/cdk/src/*"],
       "@app/config/*": ["packages/config/src/*"],
+      "@app/e2e/*": ["packages/e2e/cypress/*"],
       "@app/emails/*": ["packages/emails/src/*"],
       "@app/lint/*": ["packages/lint/src/*"],
       "@app/fixtures/*": ["packages/fixtures/src/*"],
@@ -29,11 +30,7 @@
       "@app/ui/*": ["packages/ui/src/*"],
       "@app/test/*": ["packages/test/src/*"],
       "@prisma/migration-client": ["packages/migration/prisma/migration-client"]
-    },
-    "typeRoots": [
-      "./node_modules/@types",
-      "./packages/test/node_modules/@types"
-    ]
+    }
   },
   "include": ["./packages/test/src/jest.setup.ts"],
   "files": ["./packages/test/node_modules/jest-extended/types/index.d.ts"],

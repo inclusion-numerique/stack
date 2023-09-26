@@ -1,4 +1,4 @@
-FROM node:18.16-slim
+FROM node:20.7-slim
 
 WORKDIR /app
 
@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y openssl dumb-init
 ENV PORT 8080
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV HOSTNAME "0.0.0.0"
 
 # Copy Build
 # Build directory as same structure than monorepo
