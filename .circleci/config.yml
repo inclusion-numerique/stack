@@ -449,6 +449,10 @@ jobs:
           name: Build dataset
           command: |
             pnpm --silent cli deployment:build-data https://$WEB_BASE_URL
+      - run:
+          name: Debug env
+          command: |
+            env
       - when:
           condition:
             and:
