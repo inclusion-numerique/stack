@@ -8,9 +8,7 @@ import InputFormField from '@app/ui/components/Form/InputFormField'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import {
   CreateResourceModal,
-  closeCreateResourceModal,
   createResourceModalId,
-  openCreateResourceModal,
 } from '@app/web/components/Resource/CreateResourceModal'
 import ResourceBaseRichRadio from '@app/web/components/Resource/ResourceBaseRichRadio'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
@@ -59,7 +57,7 @@ const CreateResourceFormModal = ({ user }: { user: SessionUser }) => {
 
   useEffect(() => {
     if (createResourceIsInSearchParams && modalIsBound) {
-      openCreateResourceModal()
+      CreateResourceModal.open()
     }
   }, [createResourceIsInSearchParams, modalIsBound])
 
@@ -114,7 +112,7 @@ const CreateResourceFormModal = ({ user }: { user: SessionUser }) => {
         payload: data,
       })
       router.push(`/ressources/${created.resource.slug}/editer`)
-      closeCreateResourceModal()
+      CreateResourceModal.close()
     } catch (mutationError) {
       applyZodValidationMutationErrorsToForm(mutationError, setError)
       setStep(0)
@@ -126,7 +124,7 @@ const CreateResourceFormModal = ({ user }: { user: SessionUser }) => {
 
   return (
     <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
-      <CreateResourceModal
+      <CreateResourceModal.Component
         title={modalTitle}
         buttons={[
           {
@@ -175,7 +173,7 @@ const CreateResourceFormModal = ({ user }: { user: SessionUser }) => {
             disabled={disabled}
           />
         )}
-      </CreateResourceModal>
+      </CreateResourceModal.Component>
     </form>
   )
 }

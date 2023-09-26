@@ -25,7 +25,11 @@ export const useDsfrModalIsBound = (dialogId: string) => {
         setBound(false)
         return
       }
-      setBound(dialog.dataset.frJsModal === 'true')
+      // XXX There is a regression in dsfr, it worked without setTimeout but now, even with the bound dsfr-js attribute
+      // The open() function does not work immediately and we have to wait a bit
+      setTimeout(() => {
+        setBound(dialog.dataset.frJsModal === 'true')
+      }, 200)
     })
     observer.observe(element, {
       attributes: true,

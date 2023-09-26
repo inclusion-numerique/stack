@@ -3,18 +3,13 @@ import React from 'react'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import classNames from 'classnames'
 
-export const {
-  Component: CreateResourceModal,
-  open: openCreateResourceModal,
-  close: closeCreateResourceModal,
-  buttonProps: createResourceModalNativeButtonProps,
-} = createModal({
+export const CreateResourceModal = createModal({
   id: 'createResource',
   isOpenedByDefault: false,
 })
 
 export const createResourceModalId =
-  createResourceModalNativeButtonProps['aria-controls']
+  CreateResourceModal.buttonProps['aria-controls']
 
 export const CreateResourceButton = ({ className }: { className?: string }) => (
   <button
@@ -23,7 +18,7 @@ export const CreateResourceButton = ({ className }: { className?: string }) => (
       'fr-btn fr-btn--icon-left fr-icon-edit-box-line',
       className,
     )}
-    {...createResourceModalNativeButtonProps}
+    {...CreateResourceModal.buttonProps}
   >
     Créer une ressource
   </button>
