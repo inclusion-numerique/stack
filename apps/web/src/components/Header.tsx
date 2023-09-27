@@ -57,7 +57,7 @@ const Header = ({
               )}
               <div className="fr-header__navbar">
                 <button
-                  id="fr-btn-menu-mobile"
+                  id="header-mobile-menu-button"
                   data-fr-opened="false"
                   aria-controls="modal-menu-mobile"
                   aria-haspopup="menu"
@@ -115,7 +115,12 @@ const Header = ({
         </div>
       </div>
     </div>
-    <div id="modal-menu-mobile" className="fr-header__menu fr-modal">
+    <dialog
+      id="modal-menu-mobile"
+      className="fr-header__menu fr-modal"
+      title="Menu"
+      aria-labelledby="header-mobile-menu-button"
+    >
       <div className="fr-container">
         <button
           aria-controls="modal-menu-mobile"
@@ -140,7 +145,7 @@ const Header = ({
           </ul>
         </div>
       </div>
-    </div>
+    </dialog>
   </header>
 )
 
