@@ -99,7 +99,7 @@ const Header = ({
         </div>
       </div>
     </div>
-    <dialog
+    <div
       id="modal-menu-mobile"
       className="fr-header__menu fr-modal"
       title="Menu"
@@ -129,7 +129,7 @@ const Header = ({
           </ul>
         </div>
       </div>
-    </dialog>
+    </div>
   </header>
 )
 
