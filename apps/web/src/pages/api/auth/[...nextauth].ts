@@ -104,11 +104,6 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     signIn({ account, user }) {
-      console.log('AUTH PARAMS', {
-        ...ServerWebAppConfig.InclusionConnect,
-        ...PublicWebAppConfig.InclusionConnect,
-      })
-
       const isAllowedToSignIn =
         // KeyCloak is a type of oauth
         account?.type === 'oauth' ||
