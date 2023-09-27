@@ -83,7 +83,7 @@ importers:
         specifier: ^4.14.199
         version: 4.14.199
       '@types/node':
-        specifier: ^20.6.5
+        specifier: ^20.7.0
         version: 20.7.0
       '@types/slug':
         specifier: ^5.0.4
@@ -390,7 +390,7 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       '@types/node':
-        specifier: ^20.6.5
+        specifier: ^20.7.0
         version: 20.7.0
       '@types/nodemailer':
         specifier: ^6.4.11
@@ -481,7 +481,7 @@ importers:
         specifier: ^29.5.5
         version: 29.5.5
       '@types/node':
-        specifier: ^20.6.5
+        specifier: ^20.7.0
         version: 20.7.0
       eslint:
         specifier: ^8.50.0
@@ -518,7 +518,7 @@ importers:
         specifier: ^29.5.5
         version: 29.5.5
       '@types/node':
-        specifier: ^20.6.5
+        specifier: ^20.7.0
         version: 20.7.0
       eslint:
         specifier: ^8.50.0
@@ -567,7 +567,7 @@ importers:
         specifier: ^10.0.1
         version: 10.0.1(cypress@13.2.0)
       '@types/node':
-        specifier: ^20.6.5
+        specifier: ^20.7.0
         version: 20.7.0
       '@types/react':
         specifier: ^18.2.22
@@ -619,7 +619,7 @@ importers:
         specifier: ^2.0.6
         version: 2.0.6
       '@types/node':
-        specifier: ^20.6.5
+        specifier: ^20.7.0
         version: 20.7.0
       '@types/react':
         specifier: ^18.2.22
@@ -659,7 +659,7 @@ importers:
         specifier: ^29.5.5
         version: 29.5.5
       '@types/node':
-        specifier: ^20.6.5
+        specifier: ^20.7.0
         version: 20.7.0
       commander:
         specifier: ^11.0.0
@@ -684,7 +684,7 @@ importers:
         specifier: ^29.5.5
         version: 29.5.5
       '@types/node':
-        specifier: ^20.6.5
+        specifier: ^20.7.0
         version: 20.7.0
       '@typescript-eslint/eslint-plugin':
         specifier: ^6.7.2
@@ -932,7 +932,7 @@ importers:
         specifier: ^29.5.5
         version: 29.5.5
       '@types/node':
-        specifier: ^20.6.5
+        specifier: ^20.7.0
         version: 20.7.0
       '@types/react':
         specifier: ^18.2.22
@@ -975,7 +975,7 @@ importers:
         specifier: ^29.5.5
         version: 29.5.5
       '@types/node':
-        specifier: ^20.6.5
+        specifier: ^20.7.0
         version: 20.7.0
       eslint:
         specifier: ^8.50.0
@@ -1075,7 +1075,7 @@ importers:
         specifier: ^29.5.5
         version: 29.5.5
       '@types/node':
-        specifier: ^20.6.5
+        specifier: ^20.7.0
         version: 20.7.0
       '@types/react':
         specifier: ^18.2.22
@@ -12269,7 +12269,7 @@ packages:
     dependencies:
       semver: 7.5.4
       shelljs: 0.8.5
-      typescript: 5.3.0-dev.20230926
+      typescript: 5.3.0-dev.20230927
     dev: false
 
   /duplexer3@0.1.5:
@@ -23002,8 +23002,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  /typescript@5.3.0-dev.20230926:
-    resolution: {integrity: sha512-Di7UazUfEeXHROiWH/D24zvK848YbcJAvO3CKEoQK4d3WSNxkbqWW5ipmr8SF6srpZ1achwisBGUI1HFbttRZQ==}
+  /typescript@5.3.0-dev.20230927:
+    resolution: {integrity: sha512-FHoT/nbOZjlXfK1yYTtCVT6yOp7Y9Vab/8Do4KiEGl3jI6rxPD7d1ssB/5vlH4ZXZ//0DW96vsvp/OUyjxCqgA==}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: false
