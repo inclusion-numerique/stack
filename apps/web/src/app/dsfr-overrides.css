@@ -36,6 +36,13 @@
     }
 }
 
+.fr-nav__container{
+    >.fr-container {
+        padding-right:0;
+        padding-left: 0;
+    }
+}
+
 @media (min-width: 62em) {
     /* lg */
     .fr-header {
@@ -65,6 +72,15 @@
 
         .fr-menu__list {
             box-shadow: none;
+        }
+    }
+
+    .fr-nav__container{
+        border-top: var(--slim-grey-border);
+
+        >.fr-container {
+            padding-right: 1.5rem;
+            padding-left: 1.5rem;
         }
     }
 }
