@@ -19,6 +19,10 @@
     font-weight: 500 !important;
 }
 
+.fr-text--center {
+    text-align: center;
+}
+
 .fr-width-full {
     width: 100%;
 }
@@ -166,5 +170,25 @@
 .fr-hidden-print {
     @media print {
         display: none !important;
+    }
+}
+
+.fr-container--narrow {
+    /* 588 + padding */
+    max-width: 620px;
+
+    @media (min-width: 62em) {
+        /* lg */
+        max-width: 636px;
+    }
+}
+
+.fr-container--medium {
+    /* 792 + padding */
+    max-width: 824px;
+
+    @media (min-width: 62em) {
+        /* lg */
+        max-width: 840px;
     }
 }
