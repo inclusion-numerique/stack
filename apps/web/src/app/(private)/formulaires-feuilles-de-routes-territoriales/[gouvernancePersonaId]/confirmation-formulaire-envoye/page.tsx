@@ -8,6 +8,7 @@ import {
 } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/pageFormulaireData'
 import RecapitulatifSection from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/recapitulatif/RecapitulatifSection'
 import { getRecapitulatifCounts } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/recapitulatif/getRecapitulatifCounts'
+import RecommencerUnFormulaireButton from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/confirmation-formulaire-envoye/RecommencerUnFormulaireButton'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -46,10 +47,15 @@ const Page = async (props: PageFormulaireProps) => {
           >
             J’ai compris
           </Button>
+          {persona?.id === 'structure' && (
+            <RecommencerUnFormulaireButton
+              formulaireGouvernanceId={formulaireGouvernance.id}
+            />
+          )}
         </div>
       </ContainerCard>
       {!!persona && formulaireGouvernance.intention === 'Porter' && (
-        <div className=" fr-container fr-container--narrow fr-mb-20v">
+        <div className="fr-container fr-container--narrow fr-mb-20v">
           <RecapitulatifSection
             formulaireGouvernance={formulaireGouvernance}
             persona={persona}

@@ -766,4 +766,42 @@ export const formulaireGouvernanceRouter = router({
         user,
       })
     }),
+  recommencer: protectedProcedure
+    .input(FormulaireGouvernanceIdValidation)
+    .mutation(async ({ input: { formulaireGouvernanceId }, ctx: { user } }) => {
+      if (!canUpdateFormulaireGouvernance(user, formulaireGouvernanceId)) {
+        throw forbiddenError()
+      }
+      const formulaireGouvernance = await getFormulaireGouvernanceForFormById(
+        formulaireGouvernanceId,
+      )
+      if (!formulaireGouvernance) {
+        throw notFoundError()
+      }
+
+      // We copy the form metadata and update the user to the new form
+      const newFormulaireId = v4()
+      const [newFormulaire] = await prismaClient.$transaction([
+        prismaClient.formulaireGouvernance.create({
+          data: {
+            id: newFormulaireId,
+            gouvernancePersona: formulaireGouvernance.gouvernancePersona,
+            intention: formulaireGouvernance.intention,
+            createurId: user.id,
+            demonstration: formulaireGouvernance.demonstration,
+          },
+        }),
+        prismaClient.user.update({
+          where: { id: user.id },
+          data: {
+            formulaireGouvernanceId: newFormulaireId,
+          },
+        }),
+      ])
+
+      return getUpdatedFormulaireState({
+        formulaireGouvernance: newFormulaire,
+        user,
+      })
+    }),
 })

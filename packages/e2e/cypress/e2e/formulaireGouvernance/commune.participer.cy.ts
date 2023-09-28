@@ -26,5 +26,6 @@ describe('ETQ Commune connectée, je peux compléter mon formulaire de participa
       ),
     )
     cy.contains('Votre réponse a bien été envoyée')
+    cy.testId('recommencer-un-formulaire-button').should('not.exist')
   })
 })

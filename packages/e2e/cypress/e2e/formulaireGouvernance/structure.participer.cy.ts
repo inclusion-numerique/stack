@@ -59,5 +59,15 @@ describe('ETQ Structure connectée, je peux compléter mon formulaire de  partic
       ),
     )
     cy.contains('Votre réponse a bien été envoyée')
+
+    cy.intercept('/api/trpc/*').as('restart-mutation')
+
+    cy.testId('recommencer-un-formulaire-button').click()
+    cy.wait('@mutation')
+
+    cy.appUrlShouldBe(
+      '/formulaires-feuilles-de-routes-territoriales/structure/participer',
+    )
+    cy.contains('Formulaire personne morale publique ou privée')
   })
 })
