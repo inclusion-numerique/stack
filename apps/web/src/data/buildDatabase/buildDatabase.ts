@@ -201,8 +201,5 @@ export const buildDatabase = async () => {
   )
   output(`Transaction done in ${(Date.now() - transactionStart) / 1000}s`)
 
-  // Requerying data to ensure transaction is ok. It will output the counts
-  await getDomainDataForDataIntegrity()
-
   output('Done')
 }
