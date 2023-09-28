@@ -66,6 +66,19 @@ const nextConfig = {
       loader: 'graphql-tag/loader',
     })
 
+    // Disable bundling or public static css assets
+    // See dsfr-imports.css
+    config.module.rules.push({
+      test: /\.min.css$/,
+      use: [], // An empty set of loaders, effectively bypassing these files
+    })
+    // (this is not an array, this is a rule object)
+    // eslint-disable-next-line unicorn/no-array-push-push
+    config.module.rules.push({
+      test: /\.remixicon.css$/,
+      use: [], // An empty set of loaders, effectively bypassing these files
+    })
+
     if (!isServer) {
       // Client bundling
       return config

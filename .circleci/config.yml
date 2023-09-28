@@ -140,14 +140,14 @@ workflows:
             - approve_infra_deployment
 
   web_app_preview_deletion:
-    # This workflow exclusively runs on the dev branch, with target env to destroy as parameter
-    # It should never run with main as a parameter
+    # This workflow exclusively runs on the main branch, with target env to destroy as parameter
+    # It should never run with main or other protected branch as a parameter
     when:
       and:
         - not:
-            equal: [ main, << pipeline.git.branch >> ]
-        - not:
             equal: [ main, << pipeline.parameters.preview_deletion_branch >>]
+        - not:
+            equal: [ dev, << pipeline.parameters.preview_deletion_branch >>]
         - << pipeline.parameters.preview_deletion_branch >>
         - equal: [ web_app_preview_deletion, << pipeline.parameters.trigger_workflow >> ]
     jobs:

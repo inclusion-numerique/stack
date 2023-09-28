@@ -1,0 +1,170 @@
+/**
+ * Helpers
+ */
+
+:root {
+    --slim-grey-border: 1px solid var(--border-default-grey);
+}
+
+.wip {
+    background-color: #fc0
+}
+
+.wip-outline {
+    box-shadow: inset 0 0 0 2px #fc0 !important;
+}
+
+/* Extensions of DSFR */
+.fr-text--medium {
+    font-weight: 500 !important;
+}
+
+.fr-width-full {
+    width: 100%;
+}
+
+.fr-flex {
+    display: flex;
+}
+
+.fr-direction-column {
+    flex-direction: column;
+}
+
+.fr-align-self-center {
+    align-self: center;
+}
+
+.fr-align-self-stretch {
+    align-self: stretch;
+}
+
+.fr-align-items-center {
+    align-items: center;
+}
+
+.fr-align-items-start {
+    align-items: flex-start;
+}
+
+.fr-align-items-end {
+    align-items: flex-end;
+}
+
+.fr-align-items-stretch {
+    align-items: stretch;
+}
+
+.fr-justify-content-center {
+    justify-content: center;
+}
+
+.fr-justify-content-start {
+    justify-content: flex-start;
+}
+
+.fr-justify-content-end {
+    justify-content: flex-end;
+}
+
+.fr-justify-content-space-between {
+    justify-content: space-between;
+}
+
+.fr-flex-shrink-0{
+    flex-shrink: 0;
+}
+
+.fr-flex-nowrap {
+    flex-wrap: nowrap;
+}
+
+.fr-flex-wrap {
+    flex-wrap: wrap;
+}
+
+.fr-flex-gap-1v {
+    gap: 4px;
+}
+
+.fr-flex-gap-2v {
+    gap: 8px;
+}
+
+.fr-flex-gap-3v {
+    gap: 12px;
+}
+
+.fr-flex-gap-4v {
+    gap: 16px;
+}
+
+.fr-flex-gap-5v {
+    gap: 20px;
+}
+
+.fr-flex-gap-6v {
+    gap: 24px;
+}
+
+.fr-flex-gap-7v {
+    gap: 28px;
+}
+
+.fr-flex-gap-8v {
+    gap: 32px;
+}
+
+.fr-flex-gap-9v {
+    gap: 36px;
+}
+
+.fr-flex-gap-10v {
+    gap: 40px;
+}
+
+.fr-separator-1v {
+    padding-bottom: 1px;
+    margin: 8px 0;
+}
+
+.fr-separator-2v {
+    padding-bottom: 1px;
+    margin: 8px 0;
+}
+
+.fr-separator-4v {
+    padding-bottom: 1px;
+    margin: 16px 0;
+}
+
+.fr-separator-6v {
+    padding-bottom: 1px;
+    margin: 24px 0;
+}
+
+.fr-separator-8v {
+    padding-bottom: 1px;
+    margin: 32px 0;
+}
+
+.fr-separator-10v {
+    padding-bottom: 1px;
+    margin: 40px 0;
+}
+
+.fr-separator-12v {
+    padding-bottom: 1px;
+    margin: 48px 0;
+}
+
+
+.fr-whitespace-nowrap {
+    white-space: nowrap;
+}
+
+.fr-hidden-print {
+    @media print {
+        display: none !important;
+    }
+}
