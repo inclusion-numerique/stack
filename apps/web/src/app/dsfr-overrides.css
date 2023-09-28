@@ -104,6 +104,11 @@
     }
 }
 
+.fr-btn--no-after {
+    &::after {
+        display: none;
+    }
+}
 
 /* Buttons loading state */
 @keyframes spinner-rotate-animation {

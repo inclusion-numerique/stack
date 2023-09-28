@@ -87,6 +87,25 @@ const Header = ({
             >
               <div className="fr-header__tools-links">
                 <ul className="fr-btns-group">
+                  <li>
+                    <Link
+                      href={PublicWebAppConfig.supportUrl}
+                      target="_blank"
+                      className="fr-btn icon-only fr-btn--no-after"
+                      title="Aide"
+                    >
+                      <span className="fr-icon-question-line fr-icon--sm" />
+                      <span className="fr-hidden-lg fr-ml-1w">Aide</span>
+                    </Link>
+                  </li>
+                  <li className="fr-hidden fr-unhidden-lg fr-px-1w fr-py-1w">
+                    <span
+                      style={{
+                        height: '100%',
+                        borderLeft: '1px solid var(--border-default-grey)',
+                      }}
+                    />
+                  </li>
                   <li style={{ position: 'relative' }}>
                     {user ? (
                       <HeaderUserMenu user={user} />

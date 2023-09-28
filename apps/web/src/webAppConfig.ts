@@ -61,6 +61,7 @@ export const ServerWebAppConfig = {
 
 export const PublicWebAppConfig = {
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? '',
+  supportUrl: 'https://support.inclusion-numerique.anct.gouv.fr',
   projectTitle,
   mainLiveUrl,
   repository: repositoryUrl,

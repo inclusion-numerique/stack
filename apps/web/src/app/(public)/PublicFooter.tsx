@@ -1,4 +1,5 @@
 import Footer from '@codegouvfr/react-dsfr/Footer'
+import { PublicWebAppConfig } from '@app/web/webAppConfig'
 
 const PublicFooter = () => (
   <Footer
@@ -28,11 +29,13 @@ const PublicFooter = () => (
         linkProps: { href: '/confidentialite' },
       },
       {
+        text: 'FAQ & Support',
+        linkProps: { href: PublicWebAppConfig.supportUrl, target: '_blank' },
+      },
+      {
         text: 'Code source',
         linkProps: {
-          href: {
-            href: 'https://github.com/inclusion-numerique/projets-territoires',
-          },
+          href: 'https://github.com/inclusion-numerique/projets-territoires',
           target: '_blank',
           rel: 'noreferrer',
         },
