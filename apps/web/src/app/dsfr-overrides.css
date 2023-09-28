@@ -121,7 +121,7 @@
 }
 
 .fr-btn--no-after {
-    &:after {
+    &::after {
         display: none;
     }
 }
