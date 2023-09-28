@@ -19,3 +19,13 @@ body > div:not(#environment-information, #print) {
 textarea {
   resize: none;
 }
+
+.formulaire-gouvernance-no-footer-margin-bottom {
+  margin-bottom: 200px;
+}
+
+.fr-narrow {
+  max-width: 588px;
+  margin-right: auto;
+  margin-left: auto;
+}
