@@ -109,12 +109,18 @@ Cypress.Commands.add('dsfrShouldBeStarted', () => {
 
 Cypress.Commands.add('dsfrModalsShouldBeBound', () => {
   cy.get('dialog.fr-modal').each((modal) => {
+    // TODO There is a regression in the current version of dsfr where this is not sufficient and needs a timeout
     cy.wrap(modal).should('have.attr', 'data-fr-js-modal', 'true')
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(300)
   })
 })
 Cypress.Commands.add('dsfrCollapsesShouldBeBound', () => {
   cy.get('.fr-collapse').each((modal) => {
+    // TODO There is a regression in the current version of dsfr where this is not sufficient and needs a timeout
     cy.wrap(modal).should('have.attr', 'data-fr-js-collapse', 'true')
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(300)
   })
 })
 Cypress.Commands.add('testId', (testId: string) =>

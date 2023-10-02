@@ -61,7 +61,7 @@ describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
 
       cy.testId('resource-edition-button').click()
       cy.appUrlShouldBe(
-        '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
+        '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes/editer',
       )
       cy.testId('publish-resource-button').should(
         'have.text',

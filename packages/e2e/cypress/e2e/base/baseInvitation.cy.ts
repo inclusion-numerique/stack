@@ -78,7 +78,7 @@ describe("Utilisateur connecté, je peux gerer les membres d'une base", () => {
     cy.testId('profile-card').should('not.exist')
   })
 
-  it.only("Acceptation 2 - En tant qu'admin je peux changer le role d'un membre", () => {
+  it("Acceptation 2 - En tant qu'admin je peux changer le role d'un membre", () => {
     cleanUpAndCreateTestBase()
     const user = createTestUser({
       firstName: 'Alice',
