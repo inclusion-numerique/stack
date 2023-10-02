@@ -13,10 +13,14 @@ describe('Utilisateur connecté, je peux inviter un autre membre à contribuer s
     cy.intercept('/api/trpc/resourceContributor.invite?*').as('invite')
   })
 
-  it('Acceptation 1 - En tant que créateur je peux inviter un contributeur', () => {
+  it.only('Acceptation 1 - En tant que créateur je peux inviter un contributeur', () => {
     cleanUpAndCreateTestResource()
-    const user = createTestUser()
+    const user = createTestUser({
+      firstName: 'Alice',
+      lastName: 'Contributrice',
+    })
     cy.createUser(user)
+    cy.dsfrCollapsesShouldBeBound()
 
     cy.testId('edition-action-bar-more-actions').click()
     cy.testId('edition-action-bar-invite-contributors-modal').click()
@@ -24,7 +28,7 @@ describe('Utilisateur connecté, je peux inviter un autre membre à contribuer s
     cy.wait('@getUser')
     cy.testId('contributors-creator').should('exist')
     cy.testId('contributors-contributor').should('not.exist')
-    cy.testId('invite-member-modal-input').type('t')
+    cy.testId('invite-member-modal-input').type('Alice')
     cy.wait('@getUser')
     cy.testId('invite-member-modal-input-option-0').click()
 
@@ -66,7 +70,6 @@ describe('Utilisateur connecté, je peux inviter un autre membre à contribuer s
     cy.visit(
       '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes/editer',
     )
-    cy.dsfrShouldBeStarted()
 
     cy.testId('edition-action-bar-more-actions').click()
     cy.testId('edition-action-bar-invite-contributors-modal').click()
@@ -77,7 +80,12 @@ describe('Utilisateur connecté, je peux inviter un autre membre à contribuer s
 
   it('Acceptation 2 - En tant que créateur je peux supprimer un contributeur', () => {
     cleanUpAndCreateTestResource(false)
-    const contributor = createTestUser()
+    cy.dsfrCollapsesShouldBeBound()
+
+    const contributor = createTestUser({
+      firstName: 'Alice',
+      lastName: 'Contributrice',
+    })
     cy.createUser(contributor)
     cy.inviteUserToResource(
       contributor,

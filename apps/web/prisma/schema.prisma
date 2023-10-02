@@ -125,6 +125,7 @@ model BaseMembers {
 
   isAdmin Boolean @default(false) @map("is_admin")
 
+  added            DateTime  @default(now())
   accepted         DateTime?
   acceptationToken String?   @map("acceptation_token")
 
@@ -141,7 +142,7 @@ model ResourceContributors {
   resource   Resource @relation(fields: [resourceId], references: [id])
   resourceId String   @map("resource_id") @db.Uuid
 
-  added DateTime?
+  added DateTime @default(now())
 
   @@unique([contributorId, resourceId])
   @@map("resource_contributors")

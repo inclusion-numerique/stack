@@ -1,4 +1,5 @@
 import { v4 } from 'uuid'
+import type { CreateUserInput } from '@app/e2e/e2e/authentication/user.tasks'
 import {
   createTestBase,
   createTestPublishResourceCommand,
@@ -49,7 +50,7 @@ export const cleanUpAndCreateTestPublishedResourceInProfile = (
   publicResource?: boolean,
 ) => {
   cy.execute('deleteAllData', {})
-  const user = createTestUser(publicProfile)
+  const user = createTestUser({ isPublic: publicProfile })
   const id = v4()
   const commands = createTestResourceCommands({ resourceId: id })
   commands.push(createTestPublishResourceCommand(id, publicResource))
@@ -65,7 +66,7 @@ export const cleanUpAndCreateTestResourceInProfile = (
   publicProfile?: boolean,
 ) => {
   cy.execute('deleteAllData', {})
-  const user = createTestUser(publicProfile)
+  const user = createTestUser({ isPublic: publicProfile })
   const commands = createTestResourceCommands({})
 
   cy.createUserAndSignin(user)
@@ -77,9 +78,9 @@ export const cleanUpAndCreateTestResourceInProfile = (
   cy.dsfrShouldBeStarted()
 }
 
-export const cleanUp = (publicProfile?: boolean, userId?: string) => {
+export const cleanUp = (userData?: Partial<CreateUserInput>) => {
   cy.execute('deleteAllData', {})
-  const user = createTestUser(publicProfile, userId)
+  const user = createTestUser(userData)
 
   cy.createUserAndSignin(user)
   cy.visit('/')

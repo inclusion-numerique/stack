@@ -5,7 +5,7 @@ import { cleanUp } from '../resource/edition/editionTestUtils'
 describe('Utilisateur sans droit, je ne peux ni voir et ni editer le profil', () => {
   it('Acceptation 1 - Visiteur sur un profile publique', () => {
     const id = v4()
-    cleanUp(true, id)
+    cleanUp({ isPublic: true, id })
     cy.logout()
 
     cy.visit(`/profils/${id}`)
@@ -21,7 +21,7 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer le profil', ()
 
   it('Acceptation 2 - Visiteur sur un profile privé', () => {
     const id = v4()
-    cleanUp(false, id)
+    cleanUp({ isPublic: false, id })
     cy.logout()
 
     cy.visit(`/profils/${id}`)
@@ -37,9 +37,9 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer le profil', ()
 
   it('Acceptation 3 - Utilisateur connecté sur un profile publique', () => {
     const id = v4()
-    cleanUp(true, id)
+    cleanUp({ isPublic: true, id })
 
-    const user = createTestUser(true)
+    const user = createTestUser({ isPublic: true })
     cy.createUserAndSignin(user)
 
     cy.visit(`/profils/${id}`)
@@ -55,9 +55,9 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer le profil', ()
 
   it('Acceptation 4 - Utilisateur connecté sur un profile privé', () => {
     const id = v4()
-    cleanUp(false, id)
+    cleanUp({ isPublic: false, id })
 
-    const user = createTestUser(true)
+    const user = createTestUser({ isPublic: true })
     cy.createUserAndSignin(user)
 
     cy.visit(`/profils/${id}`)
@@ -73,7 +73,7 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer le profil', ()
 
   it('Acceptation 5 - Mon Profil', () => {
     const id = v4()
-    cleanUp(false, id)
+    cleanUp({ isPublic: false, id })
 
     cy.visit(`/profils/${id}`)
     cy.dsfrShouldBeStarted()

@@ -36,6 +36,9 @@ export const getResourceSelect = {
     select: {
       contributorId: true,
     },
+    orderBy: {
+      added: 'asc',
+    },
   },
   imageId: true,
   image: {

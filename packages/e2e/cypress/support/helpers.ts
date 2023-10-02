@@ -10,17 +10,23 @@ import {
 export const appUrl = (path: string) =>
   `${Cypress.config().baseUrl}${encodeURI(path)}`
 
-export const createTestUser = (publicProfile?: boolean, userId?: string) =>
+export const createTestUser = (data?: Partial<CreateUserInput>) =>
   ({
-    id: userId || v4(),
-    legacyId: null,
+    id: v4(),
     email: `test-${v4()}@example.com`,
     firstName: 'Jean',
     lastName: 'Biche',
-    name: 'Jean Biche',
+    name: `${data?.firstName || 'Jean'} ${data?.lastName || 'Biche'}`,
     emailVerified: new Date('2023-04-01'),
-    isPublic: publicProfile || false,
-  }) satisfies CreateUserInput
+    isPublic: false,
+    ...data,
+  }) as CreateUserInput & {
+    id: string
+    email: string
+    firstName: string
+    lastName: string
+    name: string
+  } satisfies CreateUserInput
 
 export const createTestBase = (
   ownerId: string,

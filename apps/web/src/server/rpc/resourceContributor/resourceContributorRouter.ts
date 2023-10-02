@@ -78,7 +78,6 @@ export const resourceContributorRouter = router({
             data: {
               resourceId: input.resourceId,
               contributorId,
-              added: new Date(),
             },
           })
 
