@@ -138,7 +138,7 @@ const HomePage = () => (
             <div className={styles.card}>
               <div className={styles.cardHeader}>
                 <span className={styles.roundNumber}>1</span>
-                <h3>D’ici au 30 septembre 2023</h3>
+                <h3>D’ici au 15 octobre 2023</h3>
               </div>
               <hr />
               <h6>
