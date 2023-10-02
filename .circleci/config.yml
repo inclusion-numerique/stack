@@ -512,6 +512,10 @@ jobs:
                 command: |
                   pnpm --silent -F @app/fixtures load
       - run:
+          name: 'Execute migration from legacy data'
+          command: |
+            pnpm --silent -F @app/migration execute
+      - run:
           name: Check that deployed container status is ok
           command: |
             pnpm --silent cli deployment:check-status https://$WEB_BASE_URL
