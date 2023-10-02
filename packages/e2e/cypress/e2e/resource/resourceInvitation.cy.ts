@@ -83,18 +83,20 @@ describe('Utilisateur connecté, je peux inviter un autre membre à contribuer s
   })
 
   it('Acceptation 2 - En tant que créateur je peux supprimer un contributeur', () => {
-    cleanUpAndCreateTestResource(false)
-    cy.dsfrCollapsesShouldBeBound()
-
     const contributor = createTestUser({
       firstName: 'Alice',
       lastName: 'Contributrice',
     })
-    cy.createUser(contributor)
-    cy.inviteUserToResource(
-      contributor,
-      'titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
-    )
+
+    cleanUpAndCreateTestResource(false, () => {
+      cy.createUser(contributor)
+      cy.inviteUserToResource(
+        contributor,
+        'titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
+      )
+    })
+
+    cy.dsfrCollapsesShouldBeBound()
 
     cy.testId('edition-action-bar-more-actions').click()
     cy.testId('edition-action-bar-invite-contributors-modal').click()

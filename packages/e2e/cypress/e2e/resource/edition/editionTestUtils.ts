@@ -7,7 +7,10 @@ import {
   createTestUser,
 } from '../../../support/helpers'
 
-export const cleanUpAndCreateTestResource = (publicBase?: boolean) => {
+export const cleanUpAndCreateTestResource = (
+  publicBase?: boolean,
+  additionalSetup?: () => void,
+) => {
   cy.execute('deleteAllData', {})
   const user = createTestUser()
   const base = createTestBase(user.id, publicBase)
@@ -16,6 +19,7 @@ export const cleanUpAndCreateTestResource = (publicBase?: boolean) => {
   cy.createUserAndSignin(user)
   cy.createBase(base)
   cy.sendResourceCommands({ user, commands }).then(({ slug }) => {
+    additionalSetup?.()
     cy.visit(`/ressources/${slug}/editer`)
   })
 

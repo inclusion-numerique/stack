@@ -44,9 +44,12 @@ const InviteContributors = ({
       resourceId: resource.id,
     })
 
+  console.log('Contributors', contributors)
+
   const onDelete = async (contributorId: string) => {
     try {
       await deleteMutate.mutateAsync({ resourceId: resource.id, contributorId })
+      router.refresh()
       await refetch()
     } catch {
       console.error('Something went wrong')
