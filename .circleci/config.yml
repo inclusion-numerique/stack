@@ -112,8 +112,8 @@ workflows:
             - build_web
             - test_packages
             - test_web
-#            - test_components
-#            - test_web_e2e
+            - test_components
+            - test_web_e2e
 
       - chromatic:
           requires:
