@@ -111,6 +111,7 @@ const CreateResourceFormModal = ({ user }: { user: SessionUser }) => {
         name: 'CreateResource',
         payload: data,
       })
+      router.refresh()
       router.push(`/ressources/${created.resource.slug}/editer`)
       CreateResourceModal.close()
     } catch (mutationError) {

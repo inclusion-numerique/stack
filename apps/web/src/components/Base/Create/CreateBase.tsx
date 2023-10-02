@@ -53,6 +53,7 @@ const CreateBase = () => {
   const onSubmit = async (data: CreateBaseCommand) => {
     try {
       const base = await mutate.mutateAsync(data)
+      router.refresh()
       router.push(`/bases/${base.slug}`)
     } catch (error) {
       applyZodValidationMutationErrorsToForm(error, setError)

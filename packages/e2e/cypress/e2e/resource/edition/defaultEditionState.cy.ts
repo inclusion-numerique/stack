@@ -55,19 +55,13 @@ describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
       )
 
       cy.testId('publish-resource-button').click()
-      cy.url().should(
-        'equal',
-        appUrl(
-          '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
-        ),
+      cy.appUrlShouldBe(
+        '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
       )
 
       cy.testId('resource-edition-button').click()
-      cy.url().should(
-        'equal',
-        appUrl(
-          '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
-        ),
+      cy.appUrlShouldBe(
+        '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
       )
       cy.testId('publish-resource-button').should(
         'have.text',

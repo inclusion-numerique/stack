@@ -28,6 +28,7 @@ const BaseEdition = ({ base }: { base: BasePageData }) => {
     closeDeleteModal()
     try {
       await mutate.mutateAsync({ id: base.id })
+      router.refresh()
       router.push('/')
     } catch (error) {
       console.error('Could not delete base', error)

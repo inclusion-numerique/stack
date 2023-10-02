@@ -36,7 +36,7 @@ const baseSelect = (user: Pick<SessionUser, 'id'> | null) =>
           select: profileSelect,
         },
       },
-      orderBy: { accepted: 'desc' },
+      orderBy: { accepted: 'asc' },
     },
   }) satisfies Prisma.BaseSelect
 

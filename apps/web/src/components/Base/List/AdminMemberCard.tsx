@@ -2,6 +2,7 @@
 
 import React, { ChangeEvent, useCallback, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { BaseMember } from '@app/web/server/bases/getBase'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import styles from '@app/web/components/Profile/Card/Card.module.css'
@@ -17,6 +18,7 @@ const AdminMemberCard = ({
 }) => {
   const [isAdmin, setIsAdmin] = useState(member.isAdmin)
   const mutate = trpc.baseMember.mutate.useMutation()
+  const router = useRouter()
 
   const onChange = useCallback(
     async (event: ChangeEvent<HTMLSelectElement>) => {
@@ -27,8 +29,9 @@ const AdminMemberCard = ({
         memberId: member.member.id,
         isAdmin: result,
       })
+      router.refresh()
     },
-    [mutate, member],
+    [mutate, member, router],
   )
 
   return (

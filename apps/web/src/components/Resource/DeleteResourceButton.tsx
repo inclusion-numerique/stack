@@ -26,7 +26,6 @@ const DeleteResourceButton = ({ resourceId }: { resourceId: string }) => {
           resourceId,
         },
       })
-
       router.refresh()
     } catch (error) {
       console.error('Could not delete resource', error)

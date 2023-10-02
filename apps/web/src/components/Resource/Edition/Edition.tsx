@@ -134,6 +134,7 @@ const Edition = ({
 
   const sendCommand: SendCommand = async (command: ResourceMutationCommand) => {
     const result = await mutate.mutateAsync(command)
+    router.refresh()
     setUpdatedDraftResource(result.resource)
 
     return result
