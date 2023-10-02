@@ -1,6 +1,8 @@
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
 
+export const dynamic = 'force-dynamic'
 export const revalidate = 0
+
 const LegalPage = () => (
   <div className="fr-container fr-my-8w">
     <h1>Mentions légales</h1>

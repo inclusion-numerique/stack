@@ -10,6 +10,7 @@ import { EmailSigninForm } from '@app/web/app/(public)/(authentication)/connexio
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import BackLink from '@app/web/components/BackLink'
 
+export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 const SigninPage = async ({

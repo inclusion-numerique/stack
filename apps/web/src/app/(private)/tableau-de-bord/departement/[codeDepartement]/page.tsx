@@ -9,6 +9,9 @@ import {
 import { prismaClient } from '@app/web/prismaClient'
 import { getDepartementDashboardData } from '@app/web/app/(private)/tableau-de-bord/departement/[codeDepartement]/getDepartementDashboardData'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export const generateMetadata = async ({
   params: { codeDepartement },
 }: {

@@ -6,6 +6,7 @@ import {
 } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import GouvernancePersonaSignup from '@app/web/app/(public)/gouvernance/GouvernancePersonaSignup'
 
+export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export const generateMetadata = ({

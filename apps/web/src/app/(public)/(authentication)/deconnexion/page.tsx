@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 
+export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 const SignoutPage = () => {

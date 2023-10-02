@@ -6,6 +6,7 @@ import LinkCard from '@app/web/ui/LinkCard'
 import BackLink from '@app/web/components/BackLink'
 import styles from './Gouvernance.module.css'
 
+export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export const metadata = {

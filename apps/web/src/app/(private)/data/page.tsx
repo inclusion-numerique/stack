@@ -22,6 +22,9 @@ import {
 } from '@app/web/data/donneesEtTerritoires'
 import { numberToPercentage } from '@app/web/utils/formatNumber'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export const generateMetadata = async () => {
   const user = await getSessionUser()
   if (!user) {

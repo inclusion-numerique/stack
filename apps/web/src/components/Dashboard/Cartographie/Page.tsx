@@ -18,6 +18,9 @@ import styles from './Page.module.css'
 import Legend from './Legend'
 import Map from './Map'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 const CartographiePage = ({
   data: { departement, structures, count, communes, epcis },
 }: {

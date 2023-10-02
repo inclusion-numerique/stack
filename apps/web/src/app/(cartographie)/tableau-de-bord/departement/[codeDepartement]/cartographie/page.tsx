@@ -6,6 +6,9 @@ import CartographiePage from '@app/web/components/Dashboard/Cartographie/Page'
 import { hasAccessToDepartementDashboard } from '@app/web/security/securityRules'
 import { prismaClient } from '@app/web/prismaClient'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export const generateMetadata = async ({
   params: { codeDepartement },
 }: {

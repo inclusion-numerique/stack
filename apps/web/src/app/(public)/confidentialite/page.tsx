@@ -1,7 +1,9 @@
 /* eslint jsx-a11y/control-has-associated-label: 0  */
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
 
+export const dynamic = 'force-dynamic'
 export const revalidate = 0
+
 const ConfidentialityPage = () => (
   <div className="fr-container fr-my-8w">
     <div className="fr-grid-row fr-grid-row--center">

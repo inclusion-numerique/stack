@@ -3,6 +3,9 @@ import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { hasAccessToRegionDashboard } from '@app/web/security/securityRules'
 import { prismaClient } from '@app/web/prismaClient'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 /**
  * Cette page redirige vers le bon dashboard département, pour une région donnée
  */

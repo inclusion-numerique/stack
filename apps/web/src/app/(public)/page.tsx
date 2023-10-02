@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import TableauDeBordCtaButton from '@app/web/app/(public)/TableauDeBordCtaButton'
 import styles from './Home.module.css'
 
+export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 const HomePage = () => (

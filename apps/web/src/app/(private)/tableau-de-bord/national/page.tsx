@@ -5,6 +5,9 @@ import { hasAccessToNationalDashboard } from '@app/web/security/securityRules'
 import { getNationalDashboardData } from '@app/web/app/(private)/tableau-de-bord/national/getNationalDashboardData'
 import NationalDashboard from '@app/web/components/Dashboard/NationalDashboard'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export const generateMetadata = () => ({
   title: `Tableau de bord - National`,
 })
