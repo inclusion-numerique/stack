@@ -15,18 +15,18 @@
   },
   "dependencies": {
     "@cypress/react18": "^2.0.0",
-    "cypress": "^13.2.0",
-    "next": "^13.5.2",
+    "cypress": "^13.3.0",
+    "next": "^13.5.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.46.2",
+    "react-hook-form": "^7.47.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@testing-library/cypress": "^10.0.1",
-    "@types/node": "^20.7.0",
-    "@types/react": "^18.2.22",
-    "@types/react-dom": "^18.2.7",
+    "@types/node": "^20.8.0",
+    "@types/react": "^18.2.24",
+    "@types/react-dom": "^18.2.8",
     "@types/uuid": "^9.0.4",
     "eslint": "^8.50.0",
     "typescript": "^5.2.2"

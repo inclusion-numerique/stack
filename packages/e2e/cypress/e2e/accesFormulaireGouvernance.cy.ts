@@ -88,4 +88,34 @@ describe('ETQ Utilisateur connecté de la page gouvernance, je peux accéder à 
     cy.contains('Conseil départemental')
     cy.contains('Commune')
   })
+
+  it('Acceptation 3 - Accès par un compte déjà connecté sans précédent formulaire', () => {
+    const userId = v4()
+    const user = createTestUser({
+      id: userId,
+      emailVerified: new Date().toISOString(),
+    })
+
+    cy.createUser(user)
+
+    cy.signin(user)
+
+    cy.acceptNextRedirectsException()
+
+    cy.visit('/formulaires-feuilles-de-routes-territoriales')
+
+    cy.appUrlShouldBe('/gouvernance')
+    cy.contains('Conseil régional').click()
+    cy.appUrlShouldBe('/gouvernance/conseil-regional')
+
+    cy.intercept('/api/trpc/*').as('mutation1')
+    cy.get('button').contains('Accéder au formulaire').click()
+    cy.wait('@mutation1')
+    cy.url().should(
+      'equal',
+      appUrl(
+        '/formulaires-feuilles-de-routes-territoriales/conseil-regional/porter-ou-participer',
+      ),
+    )
+  })
 })

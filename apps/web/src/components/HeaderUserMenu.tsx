@@ -52,6 +52,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
           <Link
             className="fr-nav__link"
             href="/formulaires-feuilles-de-routes-territoriales"
+            prefetch={false}
             style={{
               boxShadow: 'none',
               borderTop: 'var(--slim-grey-border)',
@@ -69,6 +70,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
         <Link
           className="fr-nav__link"
           href="/deconnexion"
+          prefetch={false}
           style={{
             boxShadow: 'none',
             borderTop: 'var(--slim-grey-border)',
