@@ -9,28 +9,23 @@ import GouvernancePersonaSignup from '@app/web/app/(public)/gouvernance/Gouverna
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-export const generateMetadata = ({
-  params: { gouvernancePersonaId },
-}: {
-  params: { gouvernancePersonaId: GouvernancePersonaId }
-}): Metadata => {
-  if (!(gouvernancePersonaId in gouvernancePersonas)) {
-    notFound()
-    return {}
-  }
-  return {
-    title: gouvernancePersonas[gouvernancePersonaId].title,
-  }
-}
+export const metadata = {
+  title: 'Participer à l’élaboration des feuilles de routes territoriales',
+} satisfies Metadata
 
 const CommuneGouvernanceSignupPage = ({
   params: { gouvernancePersonaId },
 }: {
   params: { gouvernancePersonaId: GouvernancePersonaId }
-}) => (
-  <GouvernancePersonaSignup
-    gouvernance={gouvernancePersonas[gouvernancePersonaId]}
-  />
-)
+}) => {
+  if (!(gouvernancePersonaId in gouvernancePersonas)) {
+    notFound()
+  }
+  return (
+    <GouvernancePersonaSignup
+      gouvernance={gouvernancePersonas[gouvernancePersonaId]}
+    />
+  )
+}
 
 export default CommuneGouvernanceSignupPage
