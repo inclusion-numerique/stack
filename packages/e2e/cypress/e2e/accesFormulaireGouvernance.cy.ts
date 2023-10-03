@@ -118,4 +118,43 @@ describe('ETQ Utilisateur connecté de la page gouvernance, je peux accéder à 
       ),
     )
   })
+
+  it('Acceptation 4 - Does not infinite loop on canceled form', () => {
+    const userId = v4()
+    const user = createTestUser({
+      id: userId,
+      emailVerified: new Date().toISOString(),
+      gouvernancePersona: 'conseil-regional',
+      formulaireGouvernance: {
+        create: {
+          createurId: userId,
+          gouvernancePersona: 'epci',
+          intention: 'Porter',
+          annulation: new Date(),
+        },
+      },
+    })
+
+    cy.createUser(user)
+
+    cy.signin(user)
+
+    cy.acceptNextRedirectsException()
+
+    cy.visit('/formulaires-feuilles-de-routes-territoriales')
+
+    cy.appUrlShouldBe('/gouvernance')
+    cy.contains('Conseil régional').click()
+    cy.appUrlShouldBe('/gouvernance/conseil-regional')
+
+    cy.intercept('/api/trpc/*').as('mutation1')
+    cy.get('button').contains('Accéder au formulaire').click()
+    cy.wait('@mutation1')
+    cy.url().should(
+      'equal',
+      appUrl(
+        '/formulaires-feuilles-de-routes-territoriales/conseil-regional/porter-ou-participer',
+      ),
+    )
+  })
 })

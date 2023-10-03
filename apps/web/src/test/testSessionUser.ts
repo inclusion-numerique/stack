@@ -12,5 +12,5 @@ export const testSessionUser = {
   created: new Date('2023-01-01').toISOString(),
   emailVerified: null,
   gouvernancePersona: null,
-  formulaireGouvernanceId: null,
+  formulaireGouvernance: null,
 } satisfies SessionUser

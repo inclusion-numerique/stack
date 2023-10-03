@@ -106,11 +106,11 @@ export const hasAccessToDevelopmentPreview = (
 }
 
 export const canUpdateFormulaireGouvernance = (
-  user: Pick<SessionUser, 'role' | 'formulaireGouvernanceId'>,
+  user: Pick<SessionUser, 'role' | 'formulaireGouvernance'>,
   formulaireGouvernanceId: string,
 ) => {
   if (user.role === 'Administrator') {
     return true
   }
-  return user.formulaireGouvernanceId === formulaireGouvernanceId
+  return user.formulaireGouvernance?.id === formulaireGouvernanceId
 }

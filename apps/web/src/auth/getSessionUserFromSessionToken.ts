@@ -14,7 +14,16 @@ export const sessionUserSelect = {
   role: true,
   roleScope: true,
   gouvernancePersona: true,
-  formulaireGouvernanceId: true,
+  // Only get current form if it was not canceled
+  formulaireGouvernance: {
+    where: {
+      annulation: null,
+    },
+    select: {
+      id: true,
+      gouvernancePersona: true,
+    },
+  },
   location: true,
   description: true,
   created: true,

@@ -3,6 +3,7 @@ import { prismaClient } from '@app/web/prismaClient'
 import { publicProcedure, router } from '@app/web/server/rpc/createRouter'
 import { ServerUserSignupValidation } from '@app/web/server/rpc/user/userSignup.server'
 import { UserGouvernanceSignupValidation } from '@app/web/server/rpc/user/userSignup'
+import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
 
 export const userRouter = router({
   signup: publicProcedure
@@ -52,17 +53,11 @@ export const userRouter = router({
             email,
             gouvernancePersona: gouvernancePersonaId,
           },
-          select: {
-            id: true,
-            email: true,
-            role: true,
-            gouvernancePersona: true,
-            formulaireGouvernanceId: true,
-          },
+          select: sessionUserSelect,
         })
 
-        // Create a formulaireGouvernance (as participant AND createur) if it does not exist (new signup)
-        if (!user.formulaireGouvernanceId) {
+        // Create a formulaireGouvernance (as participant AND createur) if it does not exist or cancelled (new signup)
+        if (!user.formulaireGouvernance) {
           const formulaireId = v4()
           await prismaClient.user.update({
             where: { id: user.id },

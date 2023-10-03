@@ -47,7 +47,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
           <p className="fr-text--sm fr-text-default--grey">{user.email}</p>
         </span>
       </li>
-      {!!user.formulaireGouvernanceId && (
+      {!!user.formulaireGouvernance && (
         <li>
           <Link
             className="fr-nav__link"
