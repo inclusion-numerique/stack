@@ -15,8 +15,8 @@ export interface FlexibleIpMacAddressConfig extends cdktf.TerraformMetaArguments
   readonly flexibleIpId: string;
   /**
   * The IDs of the flexible IPs on which to duplicate the virtual MAC
-
-**NOTE** : The flexible IPs need to be attached to the same server for the operation to work.
+  * 
+  * **NOTE** : The flexible IPs need to be attached to the same server for the operation to work.
   *
   * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip_mac_address#flexible_ip_ids_to_duplicate FlexibleIpMacAddress#flexible_ip_ids_to_duplicate}
   */

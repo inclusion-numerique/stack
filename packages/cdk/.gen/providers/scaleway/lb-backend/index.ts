@@ -9,9 +9,9 @@ import * as cdktf from 'cdktf';
 export interface LbBackendConfig extends cdktf.TerraformMetaArguments {
   /**
   * Scaleway S3 bucket website to be served in case all backend servers are down
-
-**NOTE** : Only the host part of the Scaleway S3 bucket website is expected.
-E.g. 'failover-website.s3-website.fr-par.scw.cloud' if your bucket website URL is 'https://failover-website.s3-website.fr-par.scw.cloud/'.
+  * 
+  * **NOTE** : Only the host part of the Scaleway S3 bucket website is expected.
+  * E.g. 'failover-website.s3-website.fr-par.scw.cloud' if your bucket website URL is 'https://failover-website.s3-website.fr-par.scw.cloud/'.
   *
   * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/lb_backend#failover_host LbBackend#failover_host}
   */

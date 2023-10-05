@@ -82,9 +82,9 @@ export interface BaremetalServerConfig extends cdktf.TerraformMetaArguments {
   readonly serviceUser?: string;
   /**
   * Array of SSH key IDs allowed to SSH to the server
-
-**NOTE** : If you are attempting to update your SSH key IDs, it will induce the reinstall of your server. 
-If this behaviour is wanted, please set 'reinstall_on_ssh_key_changes' argument to true.
+  * 
+  * **NOTE** : If you are attempting to update your SSH key IDs, it will induce the reinstall of your server. 
+  * If this behaviour is wanted, please set 'reinstall_on_ssh_key_changes' argument to true.
   *
   * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/baremetal_server#ssh_key_ids BaremetalServer#ssh_key_ids}
   */
