@@ -1,4 +1,4 @@
-import { S3Backend } from 'cdktf'
+import { S3Backend, S3BackendConfig } from 'cdktf'
 import { Construct } from 'constructs'
 import { projectSlug } from '@app/config/config'
 
@@ -11,4 +11,5 @@ export const terraformBackend = (scope: Construct, stack: string) =>
     skipCredentialsValidation: true,
     skipRegionValidation: true,
     skipMetadataApiCheck: true,
-  })
+    skipRequestingAccountId: true,
+  } as S3BackendConfig)
