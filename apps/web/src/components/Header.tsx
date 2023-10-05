@@ -91,11 +91,9 @@ const Header = ({
                     <Link
                       href={PublicWebAppConfig.supportUrl}
                       target="_blank"
-                      className="fr-btn icon-only fr-btn--no-after"
-                      title="Aide"
+                      className="fr-btn fr-icon-question-line fr-btn--no-after"
                     >
-                      <span className="fr-icon-question-line fr-icon--sm" />
-                      <span className="fr-hidden-lg fr-ml-1w">Aide</span>
+                      Foire&nbsp;aux&nbsp;questions
                     </Link>
                   </li>
                   <li className="fr-hidden fr-unhidden-lg fr-px-1w fr-py-1w">
