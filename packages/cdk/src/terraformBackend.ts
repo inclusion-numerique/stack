@@ -10,4 +10,5 @@ export const terraformBackend = (scope: Construct, stack: string) =>
     endpoint: 'https://s3.fr-par.scw.cloud',
     skipCredentialsValidation: true,
     skipRegionValidation: true,
+    skipMetadataApiCheck: true,
   })
