@@ -1,41 +1,43 @@
 import React from 'react'
 import SideMenu from '@codegouvfr/react-dsfr/SideMenu'
 
-const BaseSideMenu = () => (
-  <div className="fr-hidden fr-unhidden-lg">
-    <div>
-      <SideMenu
-        burgerMenuButtonText="Contenus"
-        sticky
-        items={[
-          {
-            text: <div className="wip">Informations de la base</div>,
-            linkProps: {
-              href: '#informations',
-            },
-          },
-          {
-            text: <div className="wip">Contacts</div>,
-            linkProps: {
-              href: '#contacts',
-            },
-          },
-          {
-            text: <div className="wip">Visibilité de la base</div>,
-            linkProps: {
-              href: '#visibilite',
-            },
-          },
-          {
-            text: 'Supprimer la base',
-            linkProps: {
-              href: '#supprimer',
-            },
-          },
-        ]}
-      />
+const BaseSideMenu = ({ isAdmin }: { isAdmin: boolean }) => {
+  const items = [
+    {
+      text: 'Informations de la base',
+      linkProps: {
+        href: '#informations',
+      },
+    },
+    {
+      text: 'Contacts',
+      linkProps: {
+        href: '#contacts',
+      },
+    },
+    {
+      text: 'Visibilité de la base',
+      linkProps: {
+        href: '#visibilite',
+      },
+    },
+  ]
+  if (isAdmin) {
+    items.push({
+      text: 'Supprimer la base',
+      linkProps: {
+        href: '#supprimer',
+      },
+    })
+  }
+
+  return (
+    <div className="fr-hidden fr-unhidden-lg">
+      <div>
+        <SideMenu burgerMenuButtonText="Contenus" sticky items={items} />
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 export default BaseSideMenu

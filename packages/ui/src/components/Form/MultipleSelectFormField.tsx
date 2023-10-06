@@ -72,8 +72,8 @@ const MultipleSelectFormField = <T extends FieldValues>({
           )
         }
 
-        const selectedOptions = options.filter(
-          (option) => (value as string[])?.includes(option.value),
+        const selectedOptions = options.filter((option) =>
+          valuesSet.has(option.value),
         )
 
         // Remove value on badge click
@@ -126,6 +126,7 @@ const MultipleSelectFormField = <T extends FieldValues>({
                   size={badgeSize}
                   onClick={() => onTagClick(option)}
                   className="fr-mb-2v"
+                  data-testid={`${dataTestId}-${option.value}`}
                 />
               ))}
             </div>

@@ -29,6 +29,7 @@ const Informations = ({ base }: { base: BasePageData }) => {
 
   return (
     <EditCard
+      id="informations"
       mutation={async (data) => {
         await mutate.mutateAsync({ id: base.id, data })
       }}

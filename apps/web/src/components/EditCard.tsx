@@ -7,9 +7,20 @@ import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { UpdateProfileCommand } from '../server/profiles/updateProfile'
 import { UpdateBaseCommand } from '../server/bases/updateBase'
+import { ChangeBaseCommand } from '../server/resources/feature/ChangeBase'
+import { ChangeVisibilityCommand } from '../server/resources/feature/ChangeVisibility'
+import { ChangeIndexationCommand } from '../server/resources/feature/ChangeIndexation'
 import Card from './Card'
 
-const EditCard = <T extends UpdateProfileCommand | UpdateBaseCommand>({
+const EditCard = <
+  T extends
+    | UpdateProfileCommand
+    | UpdateBaseCommand
+    | ChangeBaseCommand
+    | ChangeVisibilityCommand
+    | ChangeIndexationCommand,
+>({
+  id,
   className,
   title,
   description,
@@ -17,7 +28,9 @@ const EditCard = <T extends UpdateProfileCommand | UpdateBaseCommand>({
   view,
   form,
   mutation,
+  noRefresh,
 }: {
+  id?: string
   className?: string
   title: string
   description?: string
@@ -25,6 +38,7 @@ const EditCard = <T extends UpdateProfileCommand | UpdateBaseCommand>({
   view: ReactNode
   form: UseFormReturn<T>
   mutation: (data: T) => Promise<void>
+  noRefresh?: boolean
 }) => {
   const router = useRouter()
   const [editMode, setEditMode] = useState(false)
@@ -33,7 +47,9 @@ const EditCard = <T extends UpdateProfileCommand | UpdateBaseCommand>({
     try {
       await mutation(data)
       setEditMode(false)
-      router.refresh()
+      if (!noRefresh) {
+        router.refresh()
+      }
     } catch (error) {
       applyZodValidationMutationErrorsToForm(error, form.setError)
     }
@@ -41,6 +57,7 @@ const EditCard = <T extends UpdateProfileCommand | UpdateBaseCommand>({
 
   return (
     <Card
+      id={id}
       title={title}
       description={description}
       editMode={editMode}
