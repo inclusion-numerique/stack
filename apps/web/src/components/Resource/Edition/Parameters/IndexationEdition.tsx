@@ -6,6 +6,7 @@ import {
   targetAudiencesLimit,
   themesLimit,
 } from '@app/web/server/resources/feature/PublishResource'
+import { themeOptions } from '@app/web/themes/themes'
 
 const IndexationEdition = <T extends FieldValues>({
   control,
@@ -37,11 +38,7 @@ const IndexationEdition = <T extends FieldValues>({
       path={themesPath}
       defaultOption
       defaultOptionLabel="Selectionnez une thématique"
-      options={[
-        { name: 'Thématique 1', value: 'theme-1' },
-        { name: 'Thématique 2', value: 'theme-2' },
-        { name: 'Thématique 3', value: 'theme-3' },
-      ]}
+      options={themeOptions}
     />
     <MultipleSelectFormField
       data-testid="indexation-support-types-select"
@@ -81,9 +78,9 @@ const IndexationEdition = <T extends FieldValues>({
       defaultOption
       defaultOptionLabel="Selectionnez un public"
       options={[
-        { name: 'Target 1', value: 'target-1' },
-        { name: 'Target 2', value: 'target-2' },
-        { name: 'Target 3', value: 'target-3' },
+        { name: 'Public 1', value: 'target-1' },
+        { name: 'Public 2', value: 'target-2' },
+        { name: 'Public 3', value: 'target-3' },
       ]}
     />
   </>

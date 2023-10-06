@@ -67,7 +67,7 @@ export const createTestPublishResourceCommand = (
       ? {
           resourceId,
           isPublic: true,
-          themes: ['theme-1'],
+          themes: ['DemarchesEtServicesEnLigne'],
           supportTypes: ['support-1'],
           targetAudiences: ['target-1'],
         }

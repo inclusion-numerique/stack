@@ -27,7 +27,7 @@ describe('Utilisateur connecté, lorsque je créé une ressource, je peux rensei
     cy.testId('contributors-box').should('not.exist')
 
     cy.testId('publish-resource-button').should('be.disabled')
-    cy.testId('indexation-themes-select').select('theme-1')
+    cy.testId('indexation-themes-select').select('IntelligenceArtificielle')
     cy.testId('indexation-support-types-select').select('support-1')
     cy.testId('indexation-targetAudiences-select').select('target-1')
 
