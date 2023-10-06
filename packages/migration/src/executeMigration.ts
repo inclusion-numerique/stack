@@ -21,6 +21,8 @@ import {
 import { migrateUploads } from '@app/migration/modelMigrations/migrateUploads'
 import { migrateUsers } from '@app/migration/modelMigrations/migrateUsers'
 import { computeSlugAndUpdateExistingSlugs } from '@app/migration/utils/computeSlugAndUpdateExistingSlugs'
+import { migrateBaseMembers } from '@app/migration/modelMigrations/migrateBaseMembers'
+import { migrateResourceContributors } from '@app/migration/modelMigrations/migrateResourceContributors'
 
 // eslint-disable-next-line no-console
 const output = console.log
@@ -133,8 +135,29 @@ export const executeMigration = async () => {
     legacyResources,
   })
 
+  const resourceIdFromLegacyId = createLegacyToNewIdHelper(
+    migratedResources,
+    ({ legacyId }) => `Resource with legacyId ${legacyId} not found`,
+  )
+
   output(`- Migrated ${migratedResources.length} resources`)
   output(`- Migrated ${migratedContents.length} contents`)
+
+  const migratedBaseMembers = await migrateBaseMembers({
+    userIdFromLegacyId,
+    baseIdFromLegacyId,
+  })
+
+  output(`- Migrated ${migratedBaseMembers.length} base members`)
+
+  const migratedResourceContributors = await migrateResourceContributors({
+    userIdFromLegacyId,
+    resourceIdFromLegacyId,
+  })
+
+  output(
+    `- Migrated ${migratedResourceContributors.length} resource contributors`,
+  )
 
   const endModelMigrations = new Date()
   output(
