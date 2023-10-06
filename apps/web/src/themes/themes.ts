@@ -76,17 +76,20 @@ export const themeCategories: { [theme in Theme]: Category } = {
     'Communs & souveraineté',
 }
 
-export const categoryThemes = Object.fromEntries(
-  categories.map((category) => [
-    category,
-    [Object.entries(themeCategories)]
-      .filter(
-        ([_itemTheme, itemCategory]) =>
-          (itemCategory as unknown as Category) === category,
-      )
-      .map(([theme]) => theme),
-  ]),
-) as unknown as { [category in Category]: Theme[] }
+export const categoryThemes = (() => {
+  const index: { [category in Category]: Theme[] } = {
+    'Médiation & compétences numériques': [],
+    'Ecologie & soutenabilité': [],
+    'Culture numérique': [],
+    'Communs & souveraineté': [],
+  }
+
+  for (const [theme, category] of Object.entries(themeCategories)) {
+    index[category].push(theme as Theme)
+  }
+
+  return index
+})()
 
 export const themeOptions = Object.entries(themeLabels).map(
   ([value, name]) => ({
