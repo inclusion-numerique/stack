@@ -19,8 +19,10 @@ import { addBadgeToContactData } from '@app/web/app/(private)/gouvernances/addBa
 
 const ContactsGouvernances = ({
   contactsGouvernance,
+  scopeTitle,
   ...scope
 }: {
+  scopeTitle: string
   contactsGouvernance: ContactsGouvernance
 } & GouvernanceScope) => {
   const backLink = gouvernanceHomePath(scope)
@@ -32,7 +34,10 @@ const ContactsGouvernances = ({
       <div className="fr-container">
         <BackLink href={backLink} />
         <div className="fr-flex fr-align-items-center fr-justify-content-space-between">
-          <h3 className="fr-text-title--blue-france fr-my-6v">
+          <h2 className="fr-text-title--blue-france fr-mt-6v fr-mb-4v">
+            {scopeTitle}
+          </h2>
+          <h3 className="fr-text-title--blue-france fr-mb-6v">
             {contactsGouvernance.length} contact
             {sPluriel(contactsGouvernance.length)}{' '}
             {contactsGouvernance.length === 1 ? 'a' : 'ont'} été renseigné

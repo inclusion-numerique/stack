@@ -14,6 +14,7 @@ import {
   GouvernancePressentieData,
 } from '@app/web/gouvernance/GouvernancePressentie'
 import BackLink from '@app/web/components/BackLink'
+import { getGouvernanceScopeTitle } from '@app/web/app/(private)/gouvernances/gouvernanceScopeTitle'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -46,6 +47,7 @@ const Page = async ({
   }
 
   const optionsCollectivitesPorteur = await getPorteurOptions(codeDepartement)
+  const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
 
   const {
     id,
@@ -95,7 +97,7 @@ const Page = async ({
               },
             },
             {
-              label: 'Gouvernance',
+              label: `Gouvernance - ${scopeTitle}`,
               linkProps: {
                 href: gouvernanceHomePath({ codeDepartement }),
               },

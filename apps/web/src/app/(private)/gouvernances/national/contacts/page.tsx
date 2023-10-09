@@ -4,6 +4,7 @@ import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvern
 import { getContactsGouvernanceNational } from '@app/web/app/(private)/gouvernances/getContactsGouvernances'
 import ContactsGouvernances from '@app/web/app/(private)/gouvernances/ContactsGouvernances'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
+import { getGouvernanceScopeTitle } from '@app/web/app/(private)/gouvernances/gouvernanceScopeTitle'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -15,6 +16,7 @@ const Page = async () => {
   await checkUserAccessToGouvernanceScopeOrNavigate({ national: true })
 
   const contactsGouvernance = await getContactsGouvernanceNational()
+  const scopeTitle = await getGouvernanceScopeTitle({ national: true })
 
   return (
     <>
@@ -29,7 +31,7 @@ const Page = async () => {
               },
             },
             {
-              label: 'Gouvernance',
+              label: `Gouvernance - ${scopeTitle}`,
               linkProps: {
                 href: gouvernanceHomePath({ national: true }),
               },
@@ -40,6 +42,7 @@ const Page = async () => {
       <ContactsGouvernances
         national
         contactsGouvernance={contactsGouvernance}
+        scopeTitle={scopeTitle}
       />
     </>
   )

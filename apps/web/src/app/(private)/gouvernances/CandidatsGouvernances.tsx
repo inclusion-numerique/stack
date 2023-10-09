@@ -16,8 +16,10 @@ import {
 
 const CandidatsGouvernances = ({
   candidatsGouvernance,
+  scopeTitle,
   ...scope
 }: {
+  scopeTitle: string
   candidatsGouvernance: CandidatsGouvernance
 } & GouvernanceScope) => {
   const backLink = gouvernanceHomePath(scope)
@@ -33,7 +35,10 @@ const CandidatsGouvernances = ({
   return (
     <>
       <BackLink href={backLink} />
-      <h3 className="fr-text-title--blue-france fr-my-6v">
+      <h2 className="fr-text-title--blue-france fr-mt-6v fr-mb-4v">
+        {scopeTitle}
+      </h2>
+      <h3 className="fr-text-title--blue-france fr-mb-6v">
         Les acteurs de votre territoire souhaitant porter ou participer à une
         feuille de route locale France Numérique Ensemble.
       </h3>

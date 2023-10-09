@@ -4,6 +4,7 @@ import CandidatsGouvernances from '@app/web/app/(private)/gouvernances/Candidats
 import { getCandidatsGouvernanceNational } from '@app/web/app/(private)/gouvernances/getCandidatsGouvernances'
 import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
+import { getGouvernanceScopeTitle } from '@app/web/app/(private)/gouvernances/gouvernanceScopeTitle'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -15,6 +16,7 @@ const Page = async () => {
   await checkUserAccessToGouvernanceScopeOrNavigate({ national: true })
 
   const candidatsGouvernance = await getCandidatsGouvernanceNational()
+  const scopeTitle = await getGouvernanceScopeTitle({ national: true })
 
   return (
     <>
@@ -29,7 +31,7 @@ const Page = async () => {
               },
             },
             {
-              label: 'Gouvernance',
+              label: `Gouvernance - ${scopeTitle}`,
               linkProps: {
                 href: gouvernanceHomePath({
                   national: true,
@@ -41,6 +43,7 @@ const Page = async () => {
       </div>
       <div className="fr-container fr-container--medium fr-pb-20v">
         <CandidatsGouvernances
+          scopeTitle={scopeTitle}
           national
           candidatsGouvernance={candidatsGouvernance}
         />

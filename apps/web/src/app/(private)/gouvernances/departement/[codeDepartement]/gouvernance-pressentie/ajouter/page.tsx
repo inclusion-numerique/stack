@@ -6,6 +6,7 @@ import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvern
 import GouvernancePressentieForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance-pressentie/GouvernancePressentieForm'
 import { getPorteurOptions } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance-pressentie/getPorteurOptions'
 import BackLink from '@app/web/components/BackLink'
+import { getGouvernanceScopeTitle } from '@app/web/app/(private)/gouvernances/gouvernanceScopeTitle'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -21,6 +22,7 @@ const Page = async ({
   await checkUserAccessToGouvernanceScopeOrNavigate({ codeDepartement })
 
   const optionsCollectivitesPorteur = await getPorteurOptions(codeDepartement)
+  const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
 
   return (
     <>
@@ -35,7 +37,7 @@ const Page = async ({
               },
             },
             {
-              label: 'Gouvernance',
+              label: `Gouvernance - ${scopeTitle}`,
               linkProps: {
                 href: gouvernanceHomePath({ codeDepartement }),
               },

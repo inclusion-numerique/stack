@@ -9,14 +9,17 @@ import {
 
 const StatistiquesGouvernances = ({
   statistiquesGouvernance,
+  scopeTitle,
   ...scope
 }: {
+  scopeTitle: string
   statistiquesGouvernance: StatistiquesGouvernance
 } & GouvernanceScope) => (
   <>
-    <h1 className="fr-text-title--blue-france fr-mb-12v">
+    <h1 className="fr-text-title--blue-france fr-mb-4v">
       Gouvernance de l’Inclusion Numérique
     </h1>
+    <h2 className="fr-text-title--blue-france fr-mb-12v">{scopeTitle}</h2>
     <div className="fr-mb-12v fr-flex fr-align-items-center fr-justify-content-space-between">
       <h3 className={classNames('fr-mb-0', styles.statisticsTitle)}>
         Les acteurs{' '}

@@ -5,6 +5,7 @@ import { getContactsGouvernanceRegion } from '@app/web/app/(private)/gouvernance
 import ContactsGouvernances from '@app/web/app/(private)/gouvernances/ContactsGouvernances'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import { generateRegionMetadata } from '@app/web/app/(private)/gouvernances/region/generateRegionMetadata'
+import { getGouvernanceScopeTitle } from '@app/web/app/(private)/gouvernances/gouvernanceScopeTitle'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -20,6 +21,7 @@ const Page = async ({
   await checkUserAccessToGouvernanceScopeOrNavigate({ codeRegion })
 
   const contactsGouvernance = await getContactsGouvernanceRegion(codeRegion)
+  const scopeTitle = await getGouvernanceScopeTitle({ codeRegion })
 
   return (
     <>
@@ -34,7 +36,7 @@ const Page = async ({
               },
             },
             {
-              label: 'Gouvernance',
+              label: `Gouvernance - ${scopeTitle}`,
               linkProps: {
                 href: gouvernanceHomePath({
                   codeRegion,
@@ -45,6 +47,7 @@ const Page = async ({
         />
       </div>
       <ContactsGouvernances
+        scopeTitle={scopeTitle}
         codeRegion={codeRegion}
         contactsGouvernance={contactsGouvernance}
       />
