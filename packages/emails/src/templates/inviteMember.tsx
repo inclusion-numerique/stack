@@ -69,7 +69,7 @@ export const inviteMember = {
             </MjmlColumn>
             <MjmlColumn width="76%" verticalAlign="middle">
               <MjmlText fontWeight={500} fontSize="18px">
-                Les Bases du numérique d’intérêt général
+                La Base du numérique d’intérêt général
               </MjmlText>
             </MjmlColumn>
           </MjmlSection>
