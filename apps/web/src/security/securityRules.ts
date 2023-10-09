@@ -38,6 +38,16 @@ export const hasAccessToDepartementDashboard = (
 export const hasAccessToAdministration = (user: Pick<SessionUser, 'role'>) =>
   user.role === 'Administrator' || user.role === 'Demo'
 
+// Accès a la carto, dashboards, etc...
+export const hasAccessToDonneesDeLInclusionNumerique = (
+  user: Pick<SessionUser, 'role'>,
+) => user.role !== 'User'
+
+// Accès aux remontées de gouvernance
+export const hasAccessToRemonteesGouvernances = (
+  user: Pick<SessionUser, 'role'>,
+) => user.role !== 'User'
+
 export const hasAccessToNationalStatistics = (
   user: Pick<SessionUser, 'role'>,
 ) => user.role === 'Administrator' || user.role === 'Demo'

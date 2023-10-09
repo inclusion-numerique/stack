@@ -187,7 +187,13 @@ model Region {
 
 model Epci {
   // INSEE
-  code                                String                                 @id
+  code String @id
+
+  // Des groupes de communes (e.g. EPTs) sont inclus dans un autre EPCI
+  epciParentCode String? @map("epci_parent_code")
+  epciParent     Epci?   @relation(name: "epci_parent", fields: [epciParentCode], references: [code])
+  epcisEnfants   Epci[]  @relation(name: "epci_parent")
+
   nom                                 String
   searchable                          String                                 @map("searchable")
   communes                            Commune[]

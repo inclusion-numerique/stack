@@ -4,6 +4,7 @@ import type { Prisma } from '@prisma/client'
 import { DomainDataForDataIntegrity } from '@app/web/data/buildDatabase/getDomainDataForDataIntegrity'
 import { transformStringToSearchableString } from '@app/web/search/transformStringToSearchableString'
 import { arrayToMap } from '@app/web/utils/arrayToMap'
+import { epts } from '@app/web/data/buildDatabase/epts'
 
 export const buildEpcis = async ({
   domainData,
@@ -12,11 +13,12 @@ export const buildEpcis = async ({
 }) => {
   output('-- Downloading from https://geo.api.gouv.fr...')
 
-  const epcis = await axios
-    .get<{ nom: string; code: string; population: number }[]>(
-      'https://geo.api.gouv.fr/epcis?fields=nom,code,population',
-    )
-    .then(({ data }) => arrayToMap(data, 'code'))
+  const geoEpcis = await axios.get<
+    { nom: string; code: string; population: number }[]
+  >('https://geo.api.gouv.fr/epcis?fields=nom,code,population')
+
+  output('-- Add Epts to EPCI dataset...')
+  const epcis = arrayToMap([...geoEpcis.data, ...epts.values()], 'code')
 
   output(`-- Preparing data... (${epcis.size})`)
 
@@ -24,7 +26,8 @@ export const buildEpcis = async ({
   const toDelete = new Set<string>()
 
   for (const existing of domainData.epcis.values()) {
-    if (!epcis.has(existing.code)) {
+    // Do not delete special epcis (EPTs)
+    if (!epcis.has(existing.code) && !epts.has(existing.code)) {
       toDelete.add(existing.code)
     }
   }

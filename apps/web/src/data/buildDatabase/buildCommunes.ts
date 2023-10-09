@@ -7,6 +7,8 @@ import { districts } from '@app/web/data/districts'
 import { DomainDataForDataIntegrity } from '@app/web/data/buildDatabase/getDomainDataForDataIntegrity'
 import { transformStringToSearchableString } from '@app/web/search/transformStringToSearchableString'
 import { arrayToMap } from '@app/web/utils/arrayToMap'
+import { parseCsvFileWithMapper } from '@app/web/data/parseCsvFile'
+import { getDataFilePath } from '@app/web/data/dataFiles'
 
 export const buildCommunes = async ({
   departements,
@@ -34,6 +36,25 @@ export const buildCommunes = async ({
       'https://geo.api.gouv.fr/communes?fields=code,codeDepartement,centre,population,codesPostaux,codeEpci',
     )
     .then(({ data }) => arrayToMap(data, 'code'))
+
+  output('-- Get Epts communes mapping for EPCIs overrides...')
+  const communesEpt = await parseCsvFileWithMapper(
+    getDataFilePath('ept-communes.csv'),
+    (row: {
+      CODGEO: string
+      LIBGEO: string
+      EPT: string
+      LIBEPT: string
+      DEP: string
+    }) => ({
+      code: row.CODGEO,
+      nom: row.LIBGEO,
+      epciCode: row.EPT,
+    }),
+  )
+  const communesEptMap = new Map(
+    communesEpt.map(({ code, epciCode }) => [code, epciCode]),
+  )
 
   output(`-- Preparing data... (${communesGeoWithoutDistricts.size})`)
 
@@ -70,12 +91,15 @@ export const buildCommunes = async ({
           arrondissement.codesPostaux[0],
         ])
 
+        const codeEpci =
+          communesEptMap.get(arrondissement.code) ?? commune.codeEpci ?? null
+
         communesData.push({
           code: arrondissement.code,
           nom: arrondissement.nom,
           codeDepartement: commune.codeDepartement,
           population: arrondissement.population,
-          codeEpci: commune.codeEpci ?? null,
+          codeEpci,
           latitude: (arrondissement.centre.coordinates as [number, number])[0],
           longitude: (arrondissement.centre.coordinates as [number, number])[1],
           searchable: transformStringToSearchableString(
@@ -108,6 +132,8 @@ export const buildCommunes = async ({
 
       codePostalIndex.add(codePostal, indexInfo)
     }
+    const codeEpci =
+      communesEptMap.get(commune.code) ?? commune.codeEpci ?? null
 
     communesData.push({
       code: commune.code,
@@ -117,7 +143,7 @@ export const buildCommunes = async ({
       ),
       codeDepartement,
       population: commune.population ?? 0,
-      codeEpci: commune.codeEpci ?? null,
+      codeEpci,
       latitude: commune.centre.coordinates[0],
       longitude: commune.centre.coordinates[1],
     })
@@ -189,7 +215,6 @@ export const buildCommunes = async ({
       continue
     }
 
-    console.log('TO UPDATE', { commune, existing })
     communesToUpdate.push({
       select: { code: true },
       where: { code: commune.code },
