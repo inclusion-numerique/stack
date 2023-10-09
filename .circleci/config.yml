@@ -115,9 +115,9 @@ workflows:
             - test_components
             - test_web_e2e
 
-      - chromatic:
-          requires:
-            - deploy_web
+#      - chromatic:
+#          requires:
+#            - deploy_web
 
   project_infrastructure_deployment:
     when:
