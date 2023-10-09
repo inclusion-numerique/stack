@@ -2,6 +2,7 @@ import { v4 } from 'uuid'
 import { prismaClient } from '@app/web/prismaClient'
 import { createSlug } from '@app/web/utils/createSlug'
 import type { Prisma } from '@prisma/client'
+import { output } from '@app/cli/output'
 import { LegacyToNewIdHelper } from '@app/migration/legacyToNewIdHelper'
 import { migrationPrismaClient } from '@app/migration/migrationPrismaClient'
 import {
@@ -104,25 +105,62 @@ export const migrateBases = async ({
   existingBases,
   userIdFromLegacyId,
   imageIdFromLegacyId,
-}: MigrateBasesInput) =>
-  Promise.all(
-    legacyBases
-      // Filter out bases that will be migrated as profile only
-      .filter(
-        (legacyBase) =>
-          !legacyBasesIdsToTransformToProfile.has(Number(legacyBase.id)),
-      )
-      .map((legacyBase) => {
-        const slug = computeSlugAndUpdateExistingSlugs(
-          legacyBase,
-          existingBases.slugMap,
-        )
-        return migrateBase({
-          legacyBase,
-          transaction: prismaClient,
-          slug,
-          userIdFromLegacyId,
-          imageIdFromLegacyId,
-        })
-      }),
+}: MigrateBasesInput) => {
+  // Filter out bases that will be migrated as profile only
+  const legacyBasesNotTransformedToProfile = legacyBases.filter(
+    (legacyBase) =>
+      !legacyBasesIdsToTransformToProfile.has(Number(legacyBase.id)),
   )
+
+  const legacyBasesIdsNotTransformedToProfile = new Set(
+    legacyBasesNotTransformedToProfile.map((legacyBase) =>
+      Number(legacyBase.id),
+    ),
+  )
+
+  // Delete bases that exist and
+  // - Are not in the legacy bases list
+  // - Are in the list of bases to transform to profile
+  const basesToDelete = [...existingBases.idMap].filter(([legacyId]) => {
+    // Remove bases that will be migrated as profile only from migrations
+    if (legacyBasesIdsToTransformToProfile.has(Number(legacyId))) {
+      return true
+    }
+    // Remove bases that are not in the legacy bases list
+    if (!legacyBasesIdsNotTransformedToProfile.has(legacyId)) {
+      return true
+    }
+    return false
+  })
+
+  output(`-- Deleting ${basesToDelete.length} bases`)
+
+  // Execute delete operation
+  await prismaClient.base.deleteMany({
+    where: {
+      id: {
+        in: basesToDelete.map(([, newId]) => newId),
+      },
+    },
+  })
+
+  output(`-- Upserting ${legacyBasesNotTransformedToProfile.length} bases`)
+
+  // Create or update legacy bases
+  const upsertOperations = await Promise.all(
+    legacyBasesNotTransformedToProfile.map((legacyBase) => {
+      const slug = computeSlugAndUpdateExistingSlugs(
+        legacyBase,
+        existingBases.slugMap,
+      )
+      return migrateBase({
+        legacyBase,
+        transaction: prismaClient,
+        slug,
+        userIdFromLegacyId,
+        imageIdFromLegacyId,
+      })
+    }),
+  )
+  return upsertOperations
+}
