@@ -29,7 +29,7 @@ describe('Utilisateur connecté, je peux modifier mon profile', () => {
     cy.dsfrShouldBeStarted()
     cy.testId('profile-visibility').should(
       'have.text',
-      'Votre profil est public. Vous pouvez passez votre profil en privé si vous le souhaitez.',
+      'Votre profil est public. Vous pouvez passer votre profil en privé si vous le souhaitez.',
     )
 
     cy.testId('edit-card-button').eq(0).click()
@@ -40,7 +40,7 @@ describe('Utilisateur connecté, je peux modifier mon profile', () => {
 
     cy.testId('profile-visibility').should(
       'have.text',
-      'Votre profil est privé. Vous pouvez passez votre profil en public si vous le souhaitez.',
+      'Votre profil est privé. Vous pouvez passer votre profil en public si vous le souhaitez.',
     )
   })
 
@@ -68,7 +68,7 @@ describe('Utilisateur connecté, je peux modifier mon profile', () => {
 
     cy.testId('profile-visibility').should(
       'have.text',
-      'Votre profil est public. Vous pouvez passez votre profil en privé si vous le souhaitez.',
+      'Votre profil est public. Vous pouvez passer votre profil en privé si vous le souhaitez.',
     )
 
     cy.testId('edit-card-button').eq(0).click()
@@ -80,7 +80,7 @@ describe('Utilisateur connecté, je peux modifier mon profile', () => {
 
     cy.testId('profile-visibility').should(
       'have.text',
-      'Votre profil est privé. Vous pouvez passez votre profil en public si vous le souhaitez.',
+      'Votre profil est privé. Vous pouvez passer votre profil en public si vous le souhaitez.',
     )
 
     cy.visit(

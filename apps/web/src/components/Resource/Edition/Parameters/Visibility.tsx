@@ -56,8 +56,8 @@ const Visibility = ({
         <>
           <p className="fr-text--sm" data-testid="resource-visibility">
             {resource.isPublic
-              ? 'Votre ressource est publique. Vous pouvez passez votre ressource en privée si vous le souhaitez.'
-              : 'Votre ressource est privée. Vous pouvez passez votre ressource en publique si vous le souhaitez.'}
+              ? 'Votre ressource est publique. Vous pouvez passer votre ressource en privée si vous le souhaitez.'
+              : 'Votre ressource est privée. Vous pouvez passer votre ressource en publique si vous le souhaitez.'}
           </p>
           <ResourcePrivacyTag isPublic={resource.isPublic || false} />
         </>

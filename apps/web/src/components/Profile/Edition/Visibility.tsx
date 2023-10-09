@@ -167,8 +167,8 @@ const Visibility = ({
           <>
             <p className="fr-text--sm" data-testid="profile-visibility">
               {profile.isPublic
-                ? 'Votre profil est public. Vous pouvez passez votre profil en privé si vous le souhaitez.'
-                : 'Votre profil est privé. Vous pouvez passez votre profil en public si vous le souhaitez.'}
+                ? 'Votre profil est public. Vous pouvez passer votre profil en privé si vous le souhaitez.'
+                : 'Votre profil est privé. Vous pouvez passer votre profil en public si vous le souhaitez.'}
             </p>
             <ProfilePrivacyTag isPublic={profile.isPublic} />
           </>

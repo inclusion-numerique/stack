@@ -83,7 +83,7 @@ const Visibility = ({
           ]}
         >
           Votre base et l’ensemble des ressources et collections publiques lui
-          appartenant seront également privés et ne seront plus visible du
+          appartenant seront également privés et ne seront plus visibles du
           public, mis à part des éventuels contributeurs invités sur vos
           ressources.
         </PrivateModal>
@@ -171,8 +171,8 @@ const Visibility = ({
           <>
             <p className="fr-text--sm" data-testid="base-visibility">
               {base.isPublic
-                ? 'Votre base est publique. Vous pouvez passez votre base en privée si vous le souhaitez.'
-                : 'Votre base est privée. Vous pouvez passez votre base en publique si vous le souhaitez.'}
+                ? 'Votre base est publique. Vous pouvez passer votre base en privée si vous le souhaitez.'
+                : 'Votre base est privée. Vous pouvez passer votre base en publique si vous le souhaitez.'}
             </p>
             <BasePrivacyTag isPublic={base.isPublic} />
           </>

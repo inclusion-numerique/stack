@@ -126,7 +126,7 @@ describe('Utilisateur connecté, je peux modifier ma base', () => {
       cy.dsfrShouldBeStarted()
       cy.testId('base-visibility').should(
         'have.text',
-        'Votre base est publique. Vous pouvez passez votre base en privée si vous le souhaitez.',
+        'Votre base est publique. Vous pouvez passer votre base en privée si vous le souhaitez.',
       )
 
       cy.testId('edit-card-button').eq(2).click()
@@ -137,7 +137,7 @@ describe('Utilisateur connecté, je peux modifier ma base', () => {
 
       cy.testId('base-visibility').should(
         'have.text',
-        'Votre base est privée. Vous pouvez passez votre base en publique si vous le souhaitez.',
+        'Votre base est privée. Vous pouvez passer votre base en publique si vous le souhaitez.',
       )
     })
 
@@ -163,7 +163,7 @@ describe('Utilisateur connecté, je peux modifier ma base', () => {
 
       cy.testId('base-visibility').should(
         'have.text',
-        'Votre base est publique. Vous pouvez passez votre base en privée si vous le souhaitez.',
+        'Votre base est publique. Vous pouvez passer votre base en privée si vous le souhaitez.',
       )
 
       cy.testId('edit-card-button').eq(2).click()
@@ -176,7 +176,7 @@ describe('Utilisateur connecté, je peux modifier ma base', () => {
 
       cy.testId('base-visibility').should(
         'have.text',
-        'Votre base est publique. Vous pouvez passez votre base en privée si vous le souhaitez.',
+        'Votre base est publique. Vous pouvez passer votre base en privée si vous le souhaitez.',
       )
 
       cy.visit(
