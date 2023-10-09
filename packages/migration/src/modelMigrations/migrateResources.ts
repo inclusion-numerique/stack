@@ -14,7 +14,10 @@ import {
 import { transformContent } from '@app/migration/modelMigrations/transformContent'
 import { migrationPrismaClient } from '@app/migration/migrationPrismaClient'
 import type { LegacyToNewIdHelper } from '@app/migration/legacyToNewIdHelper'
-import { getThemesFromLegacyTags } from '@app/migration/modelMigrations/legacyResourcesThemeResourceMapping'
+import { getThemesFromLegacyTags } from '@app/migration/modelMigrations/legacyResourcesThemeMapping'
+import { legacyBasesIdsToTransformToProfile } from '@app/migration/modelMigrations/legacyBasesToTransformToProfile'
+import { getSupportTypeFromLegacyTags } from '@app/migration/modelMigrations/legacyResourcesSupportTypeMapping'
+import { getTargetAudienceFromLegacyTags } from '@app/migration/modelMigrations/legacyResourcesTargetAudienceMapping'
 
 export const getLegacyResources = async () => {
   const all = await migrationPrismaClient.main_resource.findMany({
@@ -38,6 +41,14 @@ export const getLegacyResources = async () => {
       main_resource_tags: {
         select: {
           tag_id: true,
+        },
+        where: {
+          main_tag: {
+            category_id: {
+              // Thématiques, Publics cibbles ,Types de support
+              in: [10, 1, 8],
+            },
+          },
         },
       },
       // TODO Do not know if this is useful
@@ -129,18 +140,35 @@ export const transformResource = ({
     return { error: 'No creator', legacyResource }
   }
 
+  // Some v1 base are "personal bases" that will be migrated as profile onlly resources
+  const legacyBaseId = legacyResource.root_base_id
+    ? Number(legacyResource.root_base_id)
+    : null
+
+  const baseId = legacyBaseId
+    ? // Remove base id foreign key if it is a base that will be migrated as profile only
+      legacyBasesIdsToTransformToProfile.has(legacyBaseId)
+      ? null
+      : // Use the new base id if it is a base that will be migrated as a base
+        baseIdFromLegacyId(legacyBaseId)
+    : null
+
   const payload = {
     resourceId: v4(),
     legacyId,
     title: legacyResource.title,
     slug,
     themes: getThemesFromLegacyTags(legacyResource.main_resource_tags),
+    supportTypes: getSupportTypeFromLegacyTags(
+      legacyResource.main_resource_tags,
+    ),
+    targetAudiences: getTargetAudienceFromLegacyTags(
+      legacyResource.main_resource_tags,
+    ),
     titleDuplicationCheckSlug: createSlug(legacyResource.title),
     description: legacyResource.description ?? '',
     byId: userIdFromLegacyId(Number(legacyResource.creator_id)),
-    baseId: legacyResource.root_base_id
-      ? baseIdFromLegacyId(Number(legacyResource.root_base_id))
-      : null,
+    baseId,
     created: legacyResource.created,
     updated: legacyResource.modified,
     imageId: legacyResource.profile_image_id
