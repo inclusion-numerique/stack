@@ -24,7 +24,7 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer la ressource',
     cy.testId('resource-view').should('exist')
     cy.testId('resource-edition-button').should(
       'have.text',
-      'Demander à contribuer',
+      'Demander à contribuer',
     )
     cy.testId('private-base-box').should('not.exist')
 
@@ -100,7 +100,7 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer la ressource',
     cy.testId('resource-view').should('exist')
     cy.testId('resource-edition-button').should(
       'have.text',
-      'Demander à contribuer',
+      'Demander à contribuer',
     )
     cy.testId('private-base-box').should('not.exist')
 
