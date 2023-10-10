@@ -13,12 +13,7 @@ const ProfileCard = ({ profile }: { profile: ProfileListItem }) => (
       {profile.name}
     </Link>
     <div className={styles.iconActions}>
-      <IconLink
-        title="Suivre"
-        href="/"
-        icon="fr-icon-user-heart-line"
-        small
-      />
+      <IconLink title="Suivre" href="/" icon="fr-icon-user-heart-line" small />
       <CopyLinkButton url={getServerUrl(`/profils/${profile.id}`, true)} />
     </div>
   </div>

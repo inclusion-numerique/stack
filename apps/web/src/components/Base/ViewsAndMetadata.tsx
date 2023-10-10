@@ -15,7 +15,7 @@ const ViewsAndMetadata = ({
   className?: string
   withBadge?: boolean
 }) => (
-//TODO Plural
+  // TODO Plural
   <div className={classNames(styles.container, 'fr-text--sm', className)}>
     <span className="fr-icon-eye-line fr-icon--sm" />
     <div>

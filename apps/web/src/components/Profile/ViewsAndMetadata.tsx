@@ -3,7 +3,7 @@ import React from 'react'
 import styles from './ViewsAndMetadata.module.css'
 
 const ViewsAndMetadata = ({ resourcesCount }: { resourcesCount: number }) => (
-//TODO Plural
+  // TODO Plural
 
   <div className={classNames(styles.container, 'fr-text--sm')}>
     <span className="fr-icon-file-text-line fr-icon--sm" />

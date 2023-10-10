@@ -35,17 +35,22 @@ const ResourceNavigation = ({
       ]}
     >
       <Link
-        className={isAdmin ? classNames(
-          'fr-btn',
-          'fr-btn--secondary',
-          'fr-btn--icon-left',
-          'fr-icon-edit-line',
-        ) : classNames(
-          'fr-btn',
-          'fr-btn--secondary',
-          'fr-btn--icon-left',
-          'fr-icon-edit-line', 'wip')}
-
+        className={
+          isAdmin
+            ? classNames(
+                'fr-btn',
+                'fr-btn--secondary',
+                'fr-btn--icon-left',
+                'fr-icon-edit-line',
+              )
+            : classNames(
+                'fr-btn',
+                'fr-btn--secondary',
+                'fr-btn--icon-left',
+                'fr-icon-edit-line',
+                'wip',
+              )
+        }
         href={isAdmin ? `/ressources/${resource.slug}/editer` : '/'}
       >
         {isAdmin ? 'Modifier' : 'Demander à contribuer'}
@@ -56,7 +61,7 @@ const ResourceNavigation = ({
           'fr-btn--secondary',
           'fr-btn--icon-left',
           'fr-icon-bookmark-line',
-          "wip"
+          'wip',
         )}
         href="/"
       >
@@ -68,7 +73,7 @@ const ResourceNavigation = ({
           'fr-btn--secondary',
           'fr-btn--icon-left',
           'fr-icon-equalizer-line',
-          "wip"
+          'wip',
         )}
         href="/"
       >
@@ -80,9 +85,8 @@ const ResourceNavigation = ({
           'fr-btn--secondary',
           'fr-btn--icon-left',
           'fr-icon-warning-line',
-          "wip"
+          'wip',
         )}
-
         href="/"
       >
         Signaler
@@ -92,19 +96,24 @@ const ResourceNavigation = ({
       <div className={styles.buttons}>
         <Link
           data-testid="resource-edition-button"
-          className={isAdmin ? classNames(
-            'fr-btn',
-            'fr-btn--secondary',
-            'fr-btn--icon-left',
-            'fr-icon-edit-line',
-            styles.button,
-          ): classNames(
-            'fr-btn',
-            'fr-btn--secondary',
-            'fr-btn--icon-left',
-            'fr-icon-edit-line',
-            styles.button, "wip"
-          )}
+          className={
+            isAdmin
+              ? classNames(
+                  'fr-btn',
+                  'fr-btn--secondary',
+                  'fr-btn--icon-left',
+                  'fr-icon-edit-line',
+                  styles.button,
+                )
+              : classNames(
+                  'fr-btn',
+                  'fr-btn--secondary',
+                  'fr-btn--icon-left',
+                  'fr-icon-edit-line',
+                  styles.button,
+                  'wip',
+                )
+          }
           href={isAdmin ? `/ressources/${resource.slug}/editer` : '/'}
         >
           {isAdmin ? 'Modifier' : 'Demander à contribuer'}
@@ -116,7 +125,7 @@ const ResourceNavigation = ({
             'fr-btn--icon-left',
             'fr-icon-bookmark-line',
             styles.alwaysVisibleButton,
-            "wip"
+            'wip',
           )}
           href="/"
         >
@@ -137,7 +146,7 @@ const ResourceNavigation = ({
             'fr-btn--icon-left',
             'fr-icon-equalizer-line',
             styles.button,
-            "wip"
+            'wip',
           )}
           href="/"
         >
@@ -150,7 +159,7 @@ const ResourceNavigation = ({
             'fr-btn--icon-left',
             'fr-icon-warning-line',
             styles.button,
-            "wip"
+            'wip',
           )}
           href="/"
         >

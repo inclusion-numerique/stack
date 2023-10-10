@@ -6,7 +6,6 @@ import { getDepartmentName } from '@app/web/utils/departments'
 import { getServerUrl } from '@app/web/utils/baseUrl'
 import { BasePrivacyTag } from '@app/web/components/PrivacyTags'
 import ViewsAndMetadata from '@app/web/components/Base/ViewsAndMetadata'
-import IconLink from '@app/web/components/Icon/IconLink'
 import CopyLinkButton from '@app/web/components/CopyLinkButton'
 import styles from './Card.module.css'
 

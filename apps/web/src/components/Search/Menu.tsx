@@ -15,7 +15,8 @@ const Menu = ({
   basesCount: number
   current: 'resources' | 'profiles' | 'bases'
 }) => (
-  //Todo Plural
+  // Todo Plural
+
   <div className={styles.menu}>
     <div className="fr-container">
       <nav className="fr-nav">

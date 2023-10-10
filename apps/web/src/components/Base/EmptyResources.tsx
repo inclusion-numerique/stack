@@ -26,7 +26,7 @@ const EmptyResources = ({ isMember }: { isMember: boolean }) => (
         </div>
       </>
     ) : (
-      'Revenez plus tard ou suivez cette base afin d\'être tenu informé de ses prochaines publications.'
+      "Revenez plus tard ou suivez cette base afin d'être tenu informé de ses prochaines publications."
     )}
   </EmptyBox>
 )

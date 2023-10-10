@@ -8,10 +8,10 @@ import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage
 import { Resource } from '@app/web/server/resources/getResource'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { getResourceSectionIdAttribute } from '@app/web/components/Resource/View/getResourceSectionIdAttribute'
-import styles from './ResourceContents.module.css'
-import ResourceSideMenu from './ResourceSideMenu'
 import CopyLinkButton from '@app/web/components/CopyLinkButton'
 import { getServerUrl } from '@app/web/utils/baseUrl'
+import styles from './ResourceContents.module.css'
+import ResourceSideMenu from './ResourceSideMenu'
 
 const PublishedAndUpdated = ({
   className,
@@ -57,8 +57,10 @@ const ResourceContents = ({ resource }: { resource: Resource }) => (
           size="small"
         />
 
-        <CopyLinkButton priority={"tertiary"} url={getServerUrl(`/ressources/${resource.slug}`, true)} />
-
+        <CopyLinkButton
+          priority="tertiary"
+          url={getServerUrl(`/ressources/${resource.slug}`, true)}
+        />
       </div>
     </div>
     {resource.image ? (
