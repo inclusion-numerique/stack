@@ -8,7 +8,7 @@ const Profiles = ({ profiles }: { profiles: ProfileListItem[] }) => (
   <div className={styles.container}>
     <div className={styles.header}>
       <p className="fr-text--lg fr-mb-0">
-        <b>{profiles.length} Créateurs</b>
+        <b>{profiles.length} Profils</b>
       </p>
       <div className={styles.select}>
         Trier par :

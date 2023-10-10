@@ -15,6 +15,7 @@ const ViewsAndMetadata = ({
   className?: string
   withBadge?: boolean
 }) => (
+//TODO Plural
   <div className={classNames(styles.container, 'fr-text--sm', className)}>
     <span className="fr-icon-eye-line fr-icon--sm" />
     <div>
@@ -36,7 +37,7 @@ const ViewsAndMetadata = ({
     <span className="fr-icon-user-heart-line fr-icon--sm" />
     <div>
       <b className="wip">45</b>
-      <span className={styles.spanMdDisplay}> Favoris</span>
+      <span className={styles.spanMdDisplay}> Suivi(e)s</span>
     </div>
     {withBadge && (
       <>

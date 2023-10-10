@@ -25,10 +25,10 @@ const BaseEdition = ({
       <Visibility base={base} className={isAdmin ? 'fr-mt-3w' : 'fr-my-3w'} />
       {isAdmin && (
         <Card
-          className="fr-my-3w wip"
+          className="fr-my-3w"
           id="supprimer"
           title="Supprimer la base"
-          description="Texte explicatif sur la suppression des données ?"
+          description="Cette action est irréversible et entraîne la suppression définitive de toutes les ressources de la Base. Utilisez cette fonction avec précaution."
         >
           <BaseDeletion base={base} />
         </Card>

@@ -115,7 +115,7 @@ const ResourceCard = ({
           ) : (
             <>
               <IconLink
-                title="Mettre en favoris"
+                title="Enregistrer"
                 href="/"
                 icon="fr-icon-bookmark-line"
                 small

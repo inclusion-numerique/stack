@@ -13,6 +13,7 @@ const Resources = ({
   resources: ResourceListItem[]
   user: SessionUser | null
 }) => (
+  //Todo Plural
   <div className={styles.container}>
     {resources.length > 0 && (
       <Filters

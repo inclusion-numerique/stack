@@ -10,6 +10,8 @@ import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { getResourceSectionIdAttribute } from '@app/web/components/Resource/View/getResourceSectionIdAttribute'
 import styles from './ResourceContents.module.css'
 import ResourceSideMenu from './ResourceSideMenu'
+import CopyLinkButton from '@app/web/components/CopyLinkButton'
+import { getServerUrl } from '@app/web/utils/baseUrl'
 
 const PublishedAndUpdated = ({
   className,
@@ -48,18 +50,15 @@ const ResourceContents = ({ resource }: { resource: Resource }) => (
       />
       <div className="fr-hidden fr-unhidden-md">
         <Button
-          className="fr-mr-1w"
+          className="fr-mr-1w wip"
           title="Télécharger la ressource"
           iconId="fr-icon-download-line"
           priority="tertiary"
           size="small"
         />
-        <Button
-          title="Partager la ressource"
-          iconId="fr-icon-links-line"
-          priority="tertiary"
-          size="small"
-        />
+
+        <CopyLinkButton priority={"tertiary"} url={getServerUrl(`/ressources/${resource.slug}`, true)} />
+
       </div>
     </div>
     {resource.image ? (

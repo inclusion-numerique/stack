@@ -34,10 +34,10 @@ const Parameters = ({
         <InviteContributors resource={resource} />
       </Card>
       <Card
-        className="fr-my-3w wip"
+        className="fr-my-3w"
         id="supprimer"
         title="Supprimer la ressource"
-        description="Texte explicatif sur la suppression des données ?"
+        description="Cette action est irréversible et entraîne la suppression définitive de de la ressource. Utilisez cette fonction avec précaution."
       >
         <Deletion resource={resource} />
       </Card>

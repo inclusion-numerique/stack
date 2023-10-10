@@ -33,12 +33,6 @@ const BaseCard = ({ base }: { base: BaseListItem }) => (
       <div className={styles.footer}>
         <ViewsAndMetadata base={base} />
         <div className={styles.icons}>
-          <IconLink
-            title="Mettre en favoris"
-            href="/"
-            icon="fr-icon-heart-line"
-            small
-          />
           <CopyLinkButton url={getServerUrl(`/bases/${base.slug}`, true)} />
         </div>
       </div>

@@ -14,9 +14,9 @@ const ProfileCard = ({ profile }: { profile: ProfileListItem }) => (
     </Link>
     <div className={styles.iconActions}>
       <IconLink
-        title="Mettre en favoris"
+        title="Suivre"
         href="/"
-        icon="fr-icon-heart-line"
+        icon="fr-icon-user-heart-line"
         small
       />
       <CopyLinkButton url={getServerUrl(`/profils/${profile.id}`, true)} />

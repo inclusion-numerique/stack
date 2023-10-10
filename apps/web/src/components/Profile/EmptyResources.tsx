@@ -26,7 +26,7 @@ const EmptyResources = ({ isConnectedUser }: { isConnectedUser: boolean }) => (
         </div>
       </>
     ) : (
-      'Revenez plus tard ou ajoutez ce profil à vos favoris afin de suivre ses prochaines publications.'
+      'Revenez plus tard ou suivez ce profil afin d\'être tenu informé de ses prochaines publications.'
     )}
   </EmptyBox>
 )

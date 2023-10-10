@@ -15,6 +15,7 @@ const Menu = ({
   basesCount: number
   current: 'resources' | 'profiles' | 'bases'
 }) => (
+  //Todo Plural
   <div className={styles.menu}>
     <div className="fr-container">
       <nav className="fr-nav">
@@ -43,7 +44,7 @@ const Menu = ({
               href={`/rechercher/createurs?q=${encodeURI(query || '')}`}
               aria-current={current === 'profiles' ? 'page' : undefined}
             >
-              Créateurs · <b>{profilesCount}</b>
+              Profils · <b>{profilesCount}</b>
             </Link>
           </li>
         </ul>

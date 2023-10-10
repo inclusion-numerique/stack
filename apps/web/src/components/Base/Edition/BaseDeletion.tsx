@@ -65,8 +65,10 @@ const BaseEdition = ({ base }: { base: BasePageData }) => {
         ]}
       >
         <p className="fr-mb-2w">
-          Êtes-vous sûr de vouloir supprimer votre base ?{' '}
-          <span className="wip">Lorem Ipsum</span>
+          Êtes-vous sûr de vouloir supprimer votre base ?
+        </p>
+        <p className="fr-text--bold">
+          Cette action est irréversible et entraîne la suppression définitive de toutes les ressources de la Base.
         </p>
         <Input
           label={`Écrivez “${base.title}” dans le champ ci-dessous`}
