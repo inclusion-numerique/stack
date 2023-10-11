@@ -17,7 +17,7 @@
   margin-bottom: 16px;
   background: var(--background-contrast-info) !important;
   display: block;
-  overflow:hidden;
+  overflow: hidden;
   aspect-ratio: 1.4;
 
   @media (min-width: 768px) {
@@ -67,7 +67,7 @@
   :global(.fr-notice__body) {
     padding-left: 16px;
 
-    &::before{
+    &::before {
       --icon-size: 12px;
     }
   }
@@ -118,7 +118,8 @@
   }
 }
 
-.title, .description {
+.title,
+.description {
   a {
     background: none;
   }

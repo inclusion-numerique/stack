@@ -3,7 +3,7 @@
   padding-left: 16px;
   padding-right: 16px;
 
-  @media(min-width: 768px) {
+  @media (min-width: 768px) {
     padding-left: var(--edition-container-x-padding);
     padding-right: var(--edition-container-x-padding);
   }
@@ -34,7 +34,7 @@
   justify-content: space-between;
 }
 
-.contentHoverableAction{
+.contentHoverableAction {
   opacity: 0;
   transition: opacity 200ms ease-in-out;
   pointer-events: none;
@@ -50,9 +50,9 @@
 
   /* 4px on the left to allow space for focus-visible outline */
   left: 4px;
-  padding:4px 6px;
+  padding: 4px 6px;
 
-  &:active{
+  &:active {
     cursor: grabbing;
   }
 
@@ -66,7 +66,7 @@
   position: relative;
 
   /* Hide content during exit "shrink" animation */
-  overflow-y:hidden;
+  overflow-y: hidden;
 
   /**
     Negative left margin + padding is for the hover drag handle (+ outline) to be inside the content div
@@ -79,7 +79,8 @@
   /* Force background to hide background contents while dragging */
   background: white;
 
-  &:hover, &:focus-within {
+  &:hover,
+  &:focus-within {
     .dragButton {
       opacity: 1 !important;
       pointer-events: initial;

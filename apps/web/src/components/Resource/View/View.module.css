@@ -29,7 +29,7 @@
     /* UI does not respects grid system */
     flex: 0 0 62%;
     max-width: 62%;
-    width: 62%
+    width: 62%;
   }
 }
 
@@ -41,15 +41,14 @@
     margin-left: 13.3%;
     flex: 0 0 24.7%;
     max-width: 24.7%;
-    width: 24.7%
+    width: 24.7%;
   }
 }
 
-
-.separatorRow{
+.separatorRow {
   margin-top: 16px;
   height: 1;
-  
+
   @media (min-width: 768px) {
     margin-top: 32px;
   }
@@ -59,7 +58,7 @@
   }
 }
 
-.separatorRowPadding{
+.separatorRowPadding {
   hr {
     padding-bottom: 16px;
 

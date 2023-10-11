@@ -3,8 +3,8 @@
   margin-right: 8px;
 }
 
-.urlContainer{
-  white-space:nowrap;
-  overflow-x:hidden;
+.urlContainer {
+  white-space: nowrap;
+  overflow-x: hidden;
   text-overflow: ellipsis;
 }

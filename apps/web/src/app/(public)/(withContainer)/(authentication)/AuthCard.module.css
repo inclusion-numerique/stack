@@ -1,17 +1,17 @@
 .card {
-    width: 100%;
-    max-width: 588px;
-    margin: 56px auto 120px;
-    background: var(--background-alt-grey);
-    padding: 56px 16px;
+  width: 100%;
+  max-width: 588px;
+  margin: 56px auto 120px;
+  background: var(--background-alt-grey);
+  padding: 56px 16px;
 
-    @media (min-width: 36em) {
-        /*! media sm */
-        padding: 56px 32px;
-    }
+  @media (min-width: 36em) {
+    /*! media sm */
+    padding: 56px 32px;
+  }
 }
 
 .inner {
-    margin: 0 auto;
-    max-width: 384px;
+  margin: 0 auto;
+  max-width: 384px;
 }

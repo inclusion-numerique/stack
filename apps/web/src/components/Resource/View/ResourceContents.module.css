@@ -4,7 +4,7 @@
   align-items: center;
 }
 
-.publishedAndUpdatedSeparator{
+.publishedAndUpdatedSeparator {
   margin-top: 6px;
   height: 8px;
   width: 0;
@@ -25,7 +25,7 @@
   width: 100%;
   background: var(--background-contrast-info);
   display: block;
-  overflow:hidden;
+  overflow: hidden;
   aspect-ratio: 1.4;
 
   @media (min-width: 768px) {
@@ -62,13 +62,13 @@
     padding-top: 16px;
     padding-bottom: 40px;
 
-    &:global(.is-first){
+    &:global(.is-first) {
       padding-top: 32px;
     }
   }
 }
 
-.viewsAndMetadata{
+.viewsAndMetadata {
   padding-bottom: 0;
 
   @media (min-width: 768px) {

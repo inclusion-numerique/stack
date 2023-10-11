@@ -1,17 +1,17 @@
 .container {
-    /* TODO Implement DSFR */
+  /* TODO Implement DSFR */
 }
 
 .control {
-    /* TODO Implement DSFR */
+  /* TODO Implement DSFR */
 }
 
 .loadingSpinnerContainer {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .noOptionsContainer {
-    text-align: left;
+  text-align: left;
 }

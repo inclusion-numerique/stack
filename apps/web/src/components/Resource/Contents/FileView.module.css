@@ -1,12 +1,11 @@
-
 .fileContainer {
-    border: var(--slim-grey-border);
-    display: flex;
-    align-items: center;
-    padding: 16px 24px;
-    margin-top: 16px;
+  border: var(--slim-grey-border);
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  margin-top: 16px;
 
-    @media (min-width: 768px) {
-        padding: 24px 32px;
-    }
+  @media (min-width: 768px) {
+    padding: 24px 32px;
+  }
 }

@@ -1,69 +1,67 @@
 .container {
-    width: 100%;
+  width: 100%;
 }
 
 .imageContainer {
-    width: 100%;
-    background: var(--background-contrast-info);
-    display: block;
+  width: 100%;
+  background: var(--background-contrast-info);
+  display: block;
 
-    img {
-        display: block;
-        width: 100%;
-    }
+  img {
+    display: block;
+    width: 100%;
+  }
 }
 
-
 .infoContainer {
-    margin-top: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    gap: 8px;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
 }
 
 .name {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
 }
 
 .icon {
-    color: var(--text-default-grey)
+  color: var(--text-default-grey);
 }
 
 .fullScreenLink {
-    background-image: none !important;
-    padding: 4px 12px;
+  background-image: none !important;
+  padding: 4px 12px;
 
-    &::after {
-        content: none !important;
-    }
+  &::after {
+    content: none !important;
+  }
 
-    &:hover {
-        background-color: rgb(0 0 0 / 5%) !important;
-    }
+  &:hover {
+    background-color: rgb(0 0 0 / 5%) !important;
+  }
 
-    img {
-        vertical-align: top;
-        margin-top: 4px;
-        height: 16px;
-    }
+  img {
+    vertical-align: top;
+    margin-top: 4px;
+    height: 16px;
+  }
 }
 
-
 .nameAndSize {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    /* no min width to force ellipsis */
-    min-width: 0;
+  /* no min width to force ellipsis */
+  min-width: 0;
 }
 
 .actions {
-    flex-shrink: 0;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
 }

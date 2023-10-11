@@ -2,7 +2,7 @@
   :global(.fr-modal__header) {
     display: none;
   }
-  
+
   :global(.fr-modal__content) {
     display: flex;
     flex-direction: column;

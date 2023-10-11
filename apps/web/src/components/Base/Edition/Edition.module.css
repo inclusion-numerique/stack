@@ -4,5 +4,5 @@
 
 .value {
   font-weight: 500;
-  color: var(--text-label-grey)
+  color: var(--text-label-grey);
 }

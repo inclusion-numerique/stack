@@ -20,7 +20,7 @@
   right: 8px;
   height: 100%;
   transform: translateY(calc(-50% + 6px));
-  
+
   select {
     appearance: auto;
     font-weight: 500 !important;

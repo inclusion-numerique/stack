@@ -46,10 +46,10 @@
   }
 }
 
-.dotSeparator{
-    display: none;
+.dotSeparator {
+  display: none;
 
-    @media (min-width: 576px) {
-        display: initial;
-    }
+  @media (min-width: 576px) {
+    display: initial;
+  }
 }

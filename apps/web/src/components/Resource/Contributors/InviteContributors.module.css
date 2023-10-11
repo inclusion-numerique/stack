@@ -10,12 +10,12 @@
 
 .contributors {
   padding: 16px 24px;
-  background-color: #E8EDFF;
+  background-color: #e8edff;
   border-radius: 8px;
   font-size: 14px;
 
   span {
-    color: #0063CB;
+    color: #0063cb;
     margin-right: 16px;
   }
 }
@@ -40,7 +40,7 @@
   height: 32px;
   width: 32px;
   border-radius: 50%;
-  background-color: #BFCCFB;
+  background-color: #bfccfb;
 }
 
 .creator {
