@@ -6,6 +6,6 @@
 .metabaseContainer {
     flex: 1;
     position: relative;
-    min-height: 800px;
+    min-height: 2000px;
     margin-bottom: 80px;
 }
