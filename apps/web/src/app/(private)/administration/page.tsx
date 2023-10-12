@@ -1,8 +1,8 @@
 import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import classNames from 'classnames'
+import Link from 'next/link'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
-import WorkInProgressNotice from '@app/web/components/WorkInProgressNotice'
 import styles from './Administration.module.css'
 
 export const generateMetadata = () => ({
@@ -11,11 +11,15 @@ export const generateMetadata = () => ({
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+
+const metabaseDashboardUrl =
+  'https://metabase.inclusion-numerique.anct.gouv.fr/public/dashboard/38891b8c-dc4e-4e56-a42c-af27865722e4'
+
 const Page = async () => {
   await checkUserAccessToGouvernanceScopeOrNavigate({ national: true })
 
   return (
-    <>
+    <div className="fr-width-full">
       <div
         className={classNames(
           'fr-container fr-flex fr-direction-column',
@@ -34,6 +38,13 @@ const Page = async () => {
           ]}
         />
         <h3 className="fr-mb-6v fr-text-title--blue-france">Administration</h3>
+
+        <h4>Statistiques</h4>
+        <div className="fr-mb-4v">
+          <Link href={metabaseDashboardUrl} target="_blank">
+            Voir sur Metabase
+          </Link>
+        </div>
       </div>
       <div className="fr-width-full">
         <div className={styles.metabaseContainer}>
@@ -57,7 +68,7 @@ const Page = async () => {
           />
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
