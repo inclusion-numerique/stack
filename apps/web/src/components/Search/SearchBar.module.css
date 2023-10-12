@@ -81,13 +81,3 @@
     background-color: var(--background-default-grey-hover) !important;
   }
 }
-
-.circle {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background-color: var(--background-contrast-info);
-  margin-right: 8px;
-  flex-shrink: 0;
-}
-

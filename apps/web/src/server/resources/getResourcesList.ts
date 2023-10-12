@@ -24,6 +24,14 @@ export const resourceListSelect = {
     select: {
       name: true,
       id: true,
+      firstName: true,
+      lastName: true,
+      image: {
+        select: {
+          id: true,
+          altText: true,
+        },
+      },
     },
   },
   base: {
@@ -31,6 +39,12 @@ export const resourceListSelect = {
       title: true,
       slug: true,
       isPublic: true,
+      image: {
+        select: {
+          id: true,
+          altText: true,
+        },
+      },
     },
   },
 } satisfies Parameters<typeof prismaClient.resource.findUnique>[0]['select']

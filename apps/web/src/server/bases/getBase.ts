@@ -22,6 +22,12 @@ const baseSelect = (user: Pick<SessionUser, 'id'> | null) =>
     website: true,
     isPublic: true,
     ownerId: true,
+    image: {
+      select: {
+        id: true,
+        altText: true,
+      },
+    },
     resources: {
       select: resourceListSelect,
       where: computeResourcesListWhereForUser(user),

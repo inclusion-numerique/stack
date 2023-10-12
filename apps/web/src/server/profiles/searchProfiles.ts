@@ -160,6 +160,12 @@ export const quickSearchProfiles = async (
       name: true,
       firstName: true,
       lastName: true,
+      image: {
+        select: {
+          id: true,
+          altText: true,
+        },
+      },
     },
   })
 

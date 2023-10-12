@@ -10,26 +10,54 @@ const privateValues = {
   icon: 'fr-icon-lock-line',
 }
 
-export const ProfilePrivacyTag = ({ isPublic }: { isPublic?: boolean }) =>
+export const ProfilePrivacyTag = ({
+  isPublic,
+  small,
+}: {
+  isPublic?: boolean
+  small?: boolean
+}) =>
   isPublic ? (
-    <CustomTag {...publicValues} label="Profil public" />
+    <CustomTag {...publicValues} small={small} label="Profil public" />
   ) : (
-    <CustomTag {...privateValues} label="Profil privé" />
+    <CustomTag {...privateValues} small={small} label="Profil privé" />
   )
 
-export const BasePrivacyTag = ({ isPublic }: { isPublic?: boolean }) =>
+export const BasePrivacyTag = ({
+  isPublic,
+  small,
+}: {
+  isPublic?: boolean
+  small?: boolean
+}) =>
   isPublic ? (
-    <CustomTag {...publicValues} label="Base publique" />
+    <CustomTag {...publicValues} small={small} label="Base publique" />
   ) : (
-    <CustomTag {...privateValues} label="Base privée" />
+    <CustomTag {...privateValues} small={small} label="Base privée" />
   )
 
-export const ResourcePrivacyTag = ({ isPublic }: { isPublic?: boolean }) =>
+export const ResourcePrivacyTag = ({
+  isPublic,
+  small,
+}: {
+  isPublic?: boolean
+  small?: boolean
+}) =>
   isPublic ? (
-    <CustomTag {...publicValues} label="Resource publique" />
+    <CustomTag {...publicValues} small={small} label="Resource publique" />
   ) : (
-    <CustomTag {...privateValues} label="Resource privée" />
+    <CustomTag {...privateValues} small={small} label="Resource privée" />
   )
 
-export const PrivacyTag = ({ isPublic }: { isPublic?: boolean }) =>
-  isPublic ? <CustomTag {...publicValues} /> : <CustomTag {...privateValues} />
+export const PrivacyTag = ({
+  isPublic,
+  small,
+}: {
+  isPublic?: boolean
+  small?: boolean
+}) =>
+  isPublic ? (
+    <CustomTag {...publicValues} small={small} />
+  ) : (
+    <CustomTag {...privateValues} small={small} />
+  )

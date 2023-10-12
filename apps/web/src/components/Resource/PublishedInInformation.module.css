@@ -3,12 +3,3 @@
   align-items: center;
   justify-content: space-between;
 }
-
-.circle {
-  width: 32px;
-  height: 32px;
-  background-color: #e8edff;
-  border-radius: 50%;
-  margin-right: 8px;
-  flex-shrink: 0;
-}

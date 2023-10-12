@@ -54,6 +54,12 @@ export const baseSelect = {
   isPublic: true,
   slug: true,
   department: true,
+  image: {
+    select: {
+      id: true,
+      altText: true,
+    },
+  },
   _count: {
     select: {
       resources: {

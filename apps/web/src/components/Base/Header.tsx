@@ -4,6 +4,7 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { FilteredBase } from '@app/web/server/bases/authorization'
 import { BasePageData } from '@app/web/server/bases/getBase'
 import { getServerUrl } from '@app/web/utils/baseUrl'
+import RoundImage from '@app/web/components/RoundImage'
 import Breadcrumbs from '../Breadcrumbs'
 import CopyLinkButton from '../CopyLinkButton'
 import styles from './Header.module.css'
@@ -20,7 +21,12 @@ const Header = ({
     <div className="fr-container">
       <Breadcrumbs currentPage={base.title} />
       <div className={styles.banner} />
-      <div className={styles.logo} />
+      <RoundImage
+        className={styles.logo}
+        size={128}
+        image={base.image}
+        borderWidth={2}
+      />
       <div className={styles.baseInfo}>
         <h2>{base.title}</h2>
         <ViewsAndMetadata base={base} withBadge />

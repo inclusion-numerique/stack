@@ -11,12 +11,14 @@ export enum TagColor {
 
 const CustomTag = ({
   label,
+  small,
   icon,
   color,
   'data-testid': dataTestId,
   className,
 }: UiComponentProps & {
   label?: string
+  small?: boolean
   icon: string
   color: TagColor
 }) => (
@@ -26,6 +28,7 @@ const CustomTag = ({
         'fr-tag': label,
         'fr-tag--icon-left': label,
         'fr-text--medium': label,
+        'fr-tag--sm': small,
         [styles.iconOnly]: !label,
       },
       styles.tag,
