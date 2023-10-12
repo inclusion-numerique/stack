@@ -32,13 +32,13 @@ export const legacyResourcesTargetAudienceMapping: {
   // 49,Adultes
   49: TargetAudience.Adultes,
   // 12,Adolescents (12-18 ans)
-  12: TargetAudience.Adolescents12_18,
+  12: TargetAudience.Adolescents_12_18,
   // 48,Jeunes adultes (18-25 ans)
-  48: TargetAudience.JeunesAdultes18_25,
+  48: TargetAudience.JeunesAdultes_18_25,
   // 52,Parents
   52: TargetAudience.Parents,
   // 11,Enfants (6-12 ans)
-  11: TargetAudience.Enfants6_12,
+  11: TargetAudience.Enfants_6_12,
   // 53,Personnes très éloignées du numérique
   53: TargetAudience.PersonnesTresEloigneesNumerique,
   // 55,Personnes en insertion professionnelle
@@ -52,7 +52,7 @@ export const legacyResourcesTargetAudienceMapping: {
   // 152,Personnes en perte d'autonomie
   152: TargetAudience.PersonnesPerteAutonomie,
   // 10,Jeunes enfants (<6 ans)
-  10: TargetAudience.JeunesEnfants6,
+  10: TargetAudience.JeunesEnfants_6,
   // 54,Réfugiés / demandeurs d'asile
   54: TargetAudience.RefugiesDemandeursAsile,
   // 629,Illettrisme
