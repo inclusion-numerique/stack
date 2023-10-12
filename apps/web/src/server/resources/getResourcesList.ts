@@ -1,6 +1,9 @@
-import type { Prisma, Theme } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
+import { Theme } from '@prisma/client'
+import { pascalCase } from 'change-case'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { prismaClient } from '@app/web/prismaClient'
+import { themeCategories } from '@app/web/themes/themes'
 
 export const resourceListSelect = {
   id: true,
@@ -11,7 +14,6 @@ export const resourceListSelect = {
   published: true,
   description: true,
   isPublic: true,
-  themes: true,
   image: {
     select: {
       id: true,
@@ -33,7 +35,7 @@ export const resourceListSelect = {
   },
 } satisfies Parameters<typeof prismaClient.resource.findUnique>[0]['select']
 
-export const getWhereResourcesList = (
+export const computeResourcesListWhereForUser = (
   user?: Pick<SessionUser, 'id'> | null,
   where: Prisma.ResourceWhereInput = {},
 ): Prisma.ResourceWhereInput => {
@@ -87,80 +89,39 @@ export const getWhereResourcesList = (
   }
 }
 
-const getWhereResourcesQuery = (
-  query?: string,
-  themes?: string[],
-): Prisma.ResourceWhereInput | undefined => {
-  const whereQuery: Prisma.ResourceWhereInput[] = []
-  if (query) {
-    whereQuery.push({
-      OR: [
-        { title: { contains: query, mode: 'insensitive' } },
-        { description: { contains: query, mode: 'insensitive' } },
-      ],
-    })
+export const getResourcesCountByTheme = async () => {
+  // theme is snake_case in database
+  const counts = await prismaClient.$queryRaw<
+    { theme: Theme; count: number }[]
+  >`
+      SELECT unnest(themes) AS theme, CAST(COUNT(*) AS integer) AS "count"
+      FROM resources
+      WHERE resources.is_public = true
+      GROUP BY theme
+      ORDER BY theme ASC;
+  `
+
+  // Initialize object with every theme (so that we have 0 for themes with no resources)
+  const result = Object.fromEntries(
+    Object.keys(themeCategories).map((theme) => [theme, 0]),
+  ) as { [theme in Theme]: number }
+
+  // Add the counts for each theme that have some resources
+  // Convert snake case from db to enum value
+  for (const { theme, count } of counts) {
+    result[pascalCase(theme) as Theme] = count
   }
 
-  if (themes) {
-    for (const theme of themes) {
-      whereQuery.push({ themes: { has: theme as Theme } })
-    }
-  }
-
-  return whereQuery.length > 0
-    ? {
-        AND: whereQuery,
-      }
-    : undefined
+  return result
 }
-
-export const getResourcesList = async ({
-  take,
-  user,
-  skip,
-  query,
-  themes,
-}: {
-  take?: number
-  skip?: number
-  user?: Pick<SessionUser, 'id'> | null
-  query?: string
-  themes?: string[]
-}) => {
-  const where = getWhereResourcesList(
-    user,
-    getWhereResourcesQuery(query, themes),
-  )
-
-  return prismaClient.resource.findMany({
-    where,
-    select: resourceListSelect,
-    orderBy: [
-      {
-        created: 'desc',
-      },
-    ],
-    skip,
-    take,
-  })
-}
-
-export const getResourcesCount = ({
-  user,
-  query,
-}: {
-  user?: Pick<SessionUser, 'id'> | null
-  query?: string
-}) =>
-  prismaClient.resource.count({
-    where: getWhereResourcesList(user, getWhereResourcesQuery(query)),
-  })
 
 export const getProfileResources = async (
   profileId: string,
   user: Pick<SessionUser, 'id'> | null,
 ) => {
-  const where = getWhereResourcesList(user, { createdById: profileId })
+  const where = computeResourcesListWhereForUser(user, {
+    createdById: profileId,
+  })
 
   return prismaClient.resource.findMany({
     where,
@@ -177,14 +138,15 @@ export const getProfileResourcesCount = async (
   profileId: string,
   user: Pick<SessionUser, 'id'> | null,
 ) => {
-  const where = getWhereResourcesList(user, { createdById: profileId })
+  const where = computeResourcesListWhereForUser(user, {
+    createdById: profileId,
+  })
 
   return prismaClient.resource.count({
     where,
   })
 }
 
-export type ResourceListItem = Exclude<
-  Awaited<ReturnType<typeof getResourcesList>>,
-  null
+export type ResourceListItem = Awaited<
+  ReturnType<typeof getProfileResources>
 >[number]

@@ -13,6 +13,7 @@ import {
   UpdateBaseInformationsCommand,
   UpdateBaseInformationsCommandValidation,
 } from '@app/web/server/bases/updateBase'
+import { getDepartmentName } from '@app/web/utils/departments'
 import BaseInformationsEdition from '../BaseInformationsEdition'
 import styles from './Edition.module.css'
 
@@ -45,13 +46,17 @@ const Informations = ({ base }: { base: BasePageData }) => {
           >
             {base.title}
           </div>
-          <div className={styles.label}>Département</div>
-          <div
-            className={classNames(styles.value, 'fr-mb-2w')}
-            data-testid="base-information-department"
-          >
-            {base.department}
-          </div>
+          {base.department && (
+            <>
+              <div className={styles.label}>Département</div>
+              <div
+                className={classNames(styles.value, 'fr-mb-2w')}
+                data-testid="base-information-department"
+              >
+                {getDepartmentName(base.department)}
+              </div>
+            </>
+          )}
           <div className={styles.label}>Description</div>
           <div
             className={styles.value}

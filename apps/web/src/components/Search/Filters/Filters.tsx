@@ -1,44 +1,43 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { OptionBadge } from '@app/ui/components/Form/OptionBadge'
 import { SelectOption } from '@app/ui/components/Form/utils/options'
+import {
+  SearchParams,
+  SearchTab,
+  searchUrl,
+} from '@app/web/server/search/searchQueryParams'
 import styles from './Filters.module.css'
-import Filter, { Category } from './Filter'
+import Filter, { Category, FilterKey } from './Filter'
+
+export type FiltersInitialValue = {
+  category: FilterKey
+  option: SelectOption
+}
 
 const Filters = ({
-  basePath,
-  query,
+  searchParams,
   className,
   label,
   categories,
   initialValues,
+  tab,
 }: {
-  basePath: string
-  query?: string
+  searchParams: SearchParams
   className?: string
+  tab: SearchTab
   label: string
   categories: Category[]
-  initialValues?: { category: string; option: SelectOption }[]
+  initialValues?: FiltersInitialValue[]
 }) => {
   const router = useRouter()
   const [selecteds, setSelecteds] = useState<
-    { category: string; option: SelectOption }[]
+    { category: FilterKey; option: SelectOption }[]
   >(initialValues || [])
 
-  useEffect(() => {
-    router.push(
-      `${basePath}?q=${query || ''}&${selecteds
-        .map((selected) => `${selected.category}=${selected.option.value}`)
-        .join('&')}`,
-      {
-        scroll: false,
-      },
-    )
-  }, [router, basePath, query, selecteds])
-
-  const onSelect = (option: SelectOption, category: string) => {
+  const onSelect = (option: SelectOption, category: FilterKey) => {
     setSelecteds([
       ...selecteds,
       {
@@ -46,13 +45,19 @@ const Filters = ({
         option,
       },
     ])
+    router.push(
+      searchUrl(tab, {
+        ...searchParams,
+        [category]: [...searchParams[category], option.value],
+      }),
+    )
   }
 
   const unselect = ({
     category,
     option,
   }: {
-    category: string
+    category: FilterKey
     option: SelectOption
   }) => {
     setSelecteds(
@@ -62,11 +67,19 @@ const Filters = ({
           selected.option.value !== option.value,
       ),
     )
+    router.push(
+      searchUrl(tab, {
+        ...searchParams,
+        [category]: searchParams[category].filter(
+          (value) => value !== option.value,
+        ),
+      }),
+    )
   }
 
   return (
     <div className={className}>
-      <p className="wip fr-mb-1w">{label}</p>
+      <p className="fr-mb-1w">{label}</p>
       <div className={styles.buttons}>
         {categories.map((category) => (
           <div key={category.id}>

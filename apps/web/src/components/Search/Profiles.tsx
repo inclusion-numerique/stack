@@ -1,19 +1,28 @@
 import React from 'react'
 import { ProfileListItem } from '@app/web/server/profiles/getProfilesList'
+import { sPluriel } from '@app/web/utils/sPluriel'
 import ProfileCard from '../Profile/Card/Card'
 import EmptyBox from '../EmptyBox'
 import styles from './Content.module.css'
 
-const Profiles = ({ profiles }: { profiles: ProfileListItem[] }) => (
-  <div className={styles.container}>
+const Profiles = ({
+  profiles,
+  totalCount,
+}: {
+  profiles: ProfileListItem[]
+  totalCount: number
+}) => (
+  <div>
     <div className={styles.header}>
       <p className="fr-text--lg fr-mb-0">
-        <b>{profiles.length} Profils</b>
+        <b>
+          {totalCount} Profil{sPluriel(totalCount)}
+        </b>
       </p>
       <div className={styles.select}>
         Trier par :
         <select>
-          <option>Les plus récentes</option>
+          <option>Les plus pertinents</option>
         </select>
       </div>
     </div>
