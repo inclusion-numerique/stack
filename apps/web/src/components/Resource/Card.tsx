@@ -89,9 +89,6 @@ const ResourceCard = ({
           </div>
         )}
       </Link>
-      <Badge className="fr-hidden-md fr-mt-1w" small noIcon severity="success">
-        Très recommandée
-      </Badge>
       <div className={styles.footer}>
         {resource.published && (
           <div className="fr-text--sm fr-mb-0">
