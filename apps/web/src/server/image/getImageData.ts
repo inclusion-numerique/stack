@@ -11,15 +11,40 @@ import { s3 } from '@app/web/server/s3/s3'
 import { imageCropToRegion, isImageCropped } from '@app/web/utils/imageCrop'
 import { ServerWebAppConfig } from '@app/web/webAppConfig'
 
+const computeCropKey = ({
+  cropTop,
+  cropHeight,
+  cropLeft,
+  cropWidth,
+}: {
+  cropTop: number
+  cropHeight: number
+  cropLeft: number
+  cropWidth: number
+}) =>
+  isImageCropped({ cropTop, cropHeight, cropLeft, cropWidth })
+    ? `${cropTop}_${cropHeight}_${cropLeft}_${cropWidth}`
+    : 'nocrop'
+
 const computeImageVersionCacheKey = ({
-  id,
+  image: { id, uploadKey, cropTop, cropHeight, cropLeft, cropWidth },
   quality,
   width,
 }: {
-  id: string
+  image: Pick<
+    Image,
+    'id' | 'uploadKey' | 'cropWidth' | 'cropTop' | 'cropLeft' | 'cropHeight'
+  >
   quality: number
   width?: number
-}) => `images/${id}/${width ?? 'original'}_${quality}.webp`
+}) =>
+  // Add the numbers cropTop, cropHeight, cropLeft, cropWidth as a unique string separted by _
+  `images/${id}/${uploadKey}_${computeCropKey({
+    cropTop,
+    cropHeight,
+    cropLeft,
+    cropWidth,
+  })}_${width ?? 'original'}_${quality}.webp`
 
 export const getImageData = async ({
   image,
@@ -34,7 +59,7 @@ export const getImageData = async ({
   width?: number
 }): Promise<Buffer | ReadableStream> => {
   const cachedImageKey = computeImageVersionCacheKey({
-    id: image.id,
+    image,
     quality,
     width,
   })
@@ -57,6 +82,8 @@ export const getImageData = async ({
     // Image is already cached
     return cachedImageObject.Body.transformToWebStream()
   }
+
+  const start = Date.now()
 
   // Image is not cached, we need to compute it for given quality and width
   const originalImageObject = image.upload.legacyKey
@@ -88,7 +115,6 @@ export const getImageData = async ({
     // TODO Tell sentry about it
     throw new Error('Invalid image file')
   }
-
   if (isImageCropped(image)) {
     sharpImage.extract(
       imageCropToRegion(image, {
@@ -115,6 +141,8 @@ export const getImageData = async ({
   ).catch((error) => {
     Sentry.captureException(error)
   })
+
+  console.info(`Processed image ${cachedImageKey} in ${Date.now() - start}ms`)
 
   return imageData
 }
