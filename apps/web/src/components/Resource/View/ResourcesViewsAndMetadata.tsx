@@ -1,6 +1,5 @@
 import classNames from 'classnames'
 import React from 'react'
-import Badge from '@codegouvfr/react-dsfr/Badge'
 import styles from './ResourcesViewsAndMetadata.module.css'
 
 const ResourcesViewsAndMetadata = ({ className }: { className?: string }) => (

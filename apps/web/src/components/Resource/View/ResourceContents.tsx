@@ -1,5 +1,4 @@
 import React from 'react'
-import Badge from '@codegouvfr/react-dsfr/Badge'
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
 import ContentView from '@app/web/components/Resource/Contents/ContentView'
