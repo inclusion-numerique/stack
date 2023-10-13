@@ -4,7 +4,7 @@ import { Resource } from '@app/web/server/resources/getResource'
 import { ResourceListItem } from '@app/web/server/resources/getResourcesList'
 import { FilteredResource } from '@app/web/server/resources/authorization'
 import RoundImage from '@app/web/components/RoundImage'
-import ProfileInitials from '@app/web/components/ProfileInitials'
+import RoundProfileImage from '@app/web/components/RoundProfileImage'
 
 const PublishedInInformation = ({
   resource: { createdBy, base },
@@ -30,17 +30,7 @@ const PublishedInInformation = ({
         </>
       ) : (
         <>
-          <RoundImage
-            className="fr-mr-1w"
-            image={createdBy.image}
-            fallback={
-              <ProfileInitials
-                size={12}
-                lastName={createdBy.lastName}
-                firstName={createdBy.firstName}
-              />
-            }
-          />
+          <RoundProfileImage className="fr-mr-1w" user={createdBy} />
           <span className="fr-text--xs fr-mb-0">
             Publié par {createdBy.name}
           </span>

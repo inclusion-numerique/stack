@@ -4,24 +4,13 @@ import IconLink from '@app/web/components/Icon/IconLink'
 import CopyLinkButton from '@app/web/components/CopyLinkButton'
 import { getServerUrl } from '@app/web/utils/baseUrl'
 import { ProfileListItem } from '@app/web/server/profiles/getProfilesList'
-import RoundImage from '@app/web/components/RoundImage'
-import ProfileInitials from '@app/web/components/ProfileInitials'
+import RoundProfileImage from '@app/web/components/RoundProfileImage'
 import styles from './Card.module.css'
 
 const ProfileCard = ({ profile }: { profile: ProfileListItem }) => (
   <div className={styles.container} data-testid="profile-card">
     <Link className={styles.content} href={`/profils/${profile.id}`}>
-      <RoundImage
-        image={profile.image}
-        size={48}
-        fallback={
-          <ProfileInitials
-            firstName={profile.firstName}
-            lastName={profile.lastName}
-            size={18}
-          />
-        }
-      />
+      <RoundProfileImage size={48} user={profile} />
       {profile.name}
     </Link>
     <div className={styles.iconActions}>

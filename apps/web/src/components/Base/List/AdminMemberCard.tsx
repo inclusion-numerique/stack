@@ -7,6 +7,7 @@ import { BaseMember } from '@app/web/server/bases/getBase'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import styles from '@app/web/components/Profile/Card/Card.module.css'
 import { trpc } from '@app/web/trpc'
+import RoundProfileImage from '@app/web/components/RoundProfileImage'
 import RemoveMemberButton from './RemoveMemberButton'
 
 const AdminMemberCard = ({
@@ -37,7 +38,7 @@ const AdminMemberCard = ({
   return (
     <div className={styles.container} data-testid="member-card-admin">
       <Link className={styles.content} href={`/profils/${member.member.id}`}>
-        <div className={styles.logo} />
+        <RoundProfileImage user={member.member} />
         {member.member.name}
       </Link>
       <div className={styles.actions}>

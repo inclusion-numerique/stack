@@ -5,6 +5,10 @@ export type SessionUser = Pick<
   User,
   'id' | 'firstName' | 'lastName' | 'name' | 'email' | 'isPublic' | 'legacyId'
 > & {
+  image: {
+    id: string
+    altText: string | null
+  } | null
   emailVerified: string | null
   created: string | null
   updated: string | null

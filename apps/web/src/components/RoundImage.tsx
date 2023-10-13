@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ComponentProps, ReactNode } from 'react'
 import classNames from 'classnames'
 import UploadedImage from '@app/web/components/UploadedImage'
 import styles from './RoundImage.module.css'
@@ -40,5 +40,7 @@ const RoundImage = ({
     {!image && !!fallback && fallback}
   </div>
 )
+
+export type RoundImageProps = ComponentProps<typeof RoundImage>
 
 export default RoundImage

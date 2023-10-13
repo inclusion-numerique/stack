@@ -15,6 +15,7 @@ import {
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { Resource } from '@app/web/server/resources/getResource'
 import { ResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
+import RoundProfileImage from '@app/web/components/RoundProfileImage'
 import InviteUsers from '../../InviteUsers'
 import styles from './InviteContributors.module.css'
 
@@ -115,7 +116,7 @@ const InviteContributors = ({
       {resource.createdBy && (
         <div className={classNames('fr-mt-2w', styles.contributor)}>
           <div className={styles.user} data-testid="contributors-creator">
-            <div className={styles.logo} />
+            <RoundProfileImage className="fr-mr-1w" user={resource.createdBy} />
             {resource.createdBy.name}
           </div>
           <div className={styles.creator}>Propriétaire</div>
@@ -129,7 +130,7 @@ const InviteContributors = ({
             data-testid="contributors-contributor"
           >
             <div className={styles.user}>
-              <div className={styles.logo} />
+              <RoundProfileImage className="fr-mr-1w" user={contributor} />
               {contributor.name}
             </div>
             <Button

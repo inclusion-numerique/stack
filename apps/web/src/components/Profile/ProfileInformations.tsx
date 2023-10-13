@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ProfilePageData } from '@app/web/server/profiles/getProfile'
 import { ProfilePrivacyTag } from '@app/web/components/PrivacyTags'
 import { FilteredProfile } from '@app/web/server/profiles/authorization'
+import RoundProfileImage from '@app/web/components/RoundProfileImage'
 import ViewsAndMetadata from './ViewsAndMetadata'
 import styles from './ProfileInformations.module.css'
 
@@ -19,8 +20,8 @@ const ProfileInformations = ({
   <div
     className={editMode ? styles.profileEditionHeader : styles.profileHeader}
   >
-    <div className={styles.logos}>
-      <div className={styles.logo} />
+    <div className={styles.profileImageContainer}>
+      <RoundProfileImage user={profile} size={128} borderWidth={1} />
       {editMode && (
         <Link href="/" className={styles.pictureModification}>
           <span className="fr-icon-camera-line" />

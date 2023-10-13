@@ -16,7 +16,7 @@ import {
 } from '@app/web/server/search/searchQueryParams'
 import { Spinner } from '@app/web/ui/Spinner'
 import RoundImage from '@app/web/components/RoundImage'
-import ProfileInitials from '@app/web/components/ProfileInitials'
+import RoundProfileImage from '@app/web/components/RoundProfileImage'
 import styles from './SearchBar.module.css'
 
 const SearchBar = ({
@@ -186,17 +186,10 @@ const SearchBar = ({
                         href={`/profils/${profile.id}`}
                         className={styles.profile}
                       >
-                        <RoundImage
+                        <RoundProfileImage
                           className="fr-mr-1w"
-                          image={profile.image}
+                          user={profile}
                           size={24}
-                          fallback={
-                            <ProfileInitials
-                              size={10}
-                              lastName={profile.lastName}
-                              firstName={profile.firstName}
-                            />
-                          }
                         />
                         {profile.name}
                       </Link>

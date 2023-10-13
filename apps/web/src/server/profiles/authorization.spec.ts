@@ -34,8 +34,11 @@ describe('Profile authorization', () => {
     const filteredProfile = {
       id: creator.id,
       name: creator.name,
+      firstName: creator.firstName,
+      lastName: creator.lastName,
       isPublic: creator.isPublic,
       email: creator.email,
+      image: null,
     }
 
     it('Creator can access', () => {

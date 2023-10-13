@@ -35,14 +35,6 @@
   align-items: center;
 }
 
-.logo {
-  margin-right: 10px;
-  height: 32px;
-  width: 32px;
-  border-radius: 50%;
-  background-color: #bfccfb;
-}
-
 .creator {
   color: var(--text-mention-grey);
 }

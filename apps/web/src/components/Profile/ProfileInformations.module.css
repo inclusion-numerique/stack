@@ -1,12 +1,5 @@
-.logos {
+.profileImageContainer {
   position: relative;
-}
-
-.logo {
-  border-radius: 50%;
-  height: 128px;
-  width: 128px;
-  background-color: #bfccfb;
 }
 
 .profileEditionHeader,

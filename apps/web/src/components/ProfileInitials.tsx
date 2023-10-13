@@ -20,7 +20,7 @@ const ProfileInitials = ({
 }: {
   firstName: string | null
   lastName: string | null
-  size: 10 | 12 | 18
+  size: number
 }) => (
   <span className={styles.initials} style={{ fontSize: size }}>
     {computeInitials(firstName, lastName)}

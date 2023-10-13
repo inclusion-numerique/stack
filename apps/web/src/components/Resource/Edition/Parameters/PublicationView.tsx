@@ -6,8 +6,8 @@ import {
   ProfilePrivacyTag,
 } from '@app/web/components/PrivacyTags'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import ProfileInitials from '@app/web/components/ProfileInitials'
 import RoundImage from '@app/web/components/RoundImage'
+import RoundProfileImage from '@app/web/components/RoundProfileImage'
 import styles from './PublicationView.module.css'
 
 const PublicationView = ({
@@ -29,17 +29,7 @@ const PublicationView = ({
     resource.createdBy && (
       <div className={styles.baseInfo}>
         <div className={styles.baseName}>
-          <RoundImage
-            className="fr-mr-1w"
-            image={resource.createdBy.image}
-            fallback={
-              <ProfileInitials
-                size={12}
-                lastName={resource.createdBy.lastName}
-                firstName={resource.createdBy.firstName}
-              />
-            }
-          />
+          <RoundProfileImage className="fr-mr-1w" user={resource.createdBy} />
           <span>Publié par {resource.createdBy.name}</span>
         </div>
         <ProfilePrivacyTag isPublic={user.isPublic} />

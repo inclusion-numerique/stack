@@ -3,7 +3,7 @@ import { ProfilePageData } from './getProfile'
 
 export type FilteredProfile = Pick<
   ProfilePageData,
-  'id' | 'name' | 'isPublic' | 'email'
+  'id' | 'name' | 'isPublic' | 'email' | 'firstName' | 'lastName' | 'image'
 >
 
 export const filterAccess = (
@@ -29,6 +29,9 @@ export const filterAccess = (
     profile: {
       id: profile.id,
       name: profile.name,
+      firstName: profile.firstName,
+      lastName: profile.lastName,
+      image: profile.image,
       isPublic: profile.isPublic,
       email: profile.email,
     },
