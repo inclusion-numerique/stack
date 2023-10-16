@@ -1,0 +1,31 @@
+
+.container {
+    padding: 80px 0 120px;
+    background-color: var(--background-alt-blue-france);
+}
+
+.cardsContainer {
+    display: flex;
+    gap: 24px;
+    flex-direction: column;
+    justify-content: stretch;
+
+    @media (min-width: 768px) {
+        flex-direction: row;
+    }
+}
+
+.card {
+    padding: 32px;
+    border: var(--slim-grey-border);
+    background: white;
+}
+
+.icon {
+    display: inline-block;
+    color: var(--blue-france-sun-113-625);
+    margin-bottom: 16px;
+    background: var(--background-contrast-info);
+    border-radius: 8px;
+    padding: 16px;
+}
