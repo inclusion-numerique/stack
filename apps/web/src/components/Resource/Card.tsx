@@ -2,7 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import { Route } from 'next'
 import Link from 'next/link'
-import Notice from '@codegouvfr/react-dsfr/Notice'
+import Badge from '@codegouvfr/react-dsfr/Badge'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import CopyLinkButton from '@app/web/components/CopyLinkButton'
 import ResourcesViewsAndMetadata from '@app/web/components/Resource/View/ResourcesViewsAndMetadata'
@@ -28,10 +28,9 @@ const ResourceCard = ({
     isContributor &&
     resource.updated.getTime() !== resource.published.getTime() ? (
       <>
-        <Notice
-          className={styles.smallNotice}
-          title="Modifications non publiées"
-        />
+        <Badge small severity="info">
+          Modifications non publiées
+        </Badge>
         <div className={styles.separator} />
         <div>Mis à jour le {dateAsDay(resource.published)}</div>
       </>

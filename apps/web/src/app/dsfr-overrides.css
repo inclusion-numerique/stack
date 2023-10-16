@@ -118,6 +118,10 @@
   }
 }
 
+.fr-badge {
+  text-transform: initial;
+}
+
 /* Override input spacing */
 .fr-input-group,
 .fr-select-group {
