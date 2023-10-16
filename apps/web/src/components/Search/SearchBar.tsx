@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useRouter, useSelectedLayoutSegments } from 'next/navigation'
 import Link from 'next/link'
 import Button from '@codegouvfr/react-dsfr/Button'
@@ -18,6 +18,28 @@ import { Spinner } from '@app/web/ui/Spinner'
 import RoundImage from '@app/web/components/RoundImage'
 import RoundProfileImage from '@app/web/components/RoundProfileImage'
 import styles from './SearchBar.module.css'
+
+const goToNextElement = (
+  elements: HTMLAnchorElement[],
+  currentIndex: number,
+) => {
+  if (currentIndex === -1 || currentIndex === elements.length - 1) {
+    elements[0]?.focus()
+  } else {
+    elements[currentIndex + 1]?.focus()
+  }
+}
+
+const goToPreviousElement = (
+  elements: HTMLAnchorElement[],
+  currentIndex: number,
+) => {
+  if (currentIndex <= 0) {
+    elements.at(-1)?.focus()
+  } else {
+    elements[currentIndex - 1]?.focus()
+  }
+}
 
 const SearchBar = ({
   searchParamsFromUrl,
@@ -91,11 +113,6 @@ const SearchBar = ({
     setQuickSearchOpen(false)
   })
 
-  const onViewAllResults = () => {
-    goToSearchPage(query)
-    setQuickSearchOpen(false)
-  }
-
   const quickSearchTotalCount = quickSearchResult
     ? quickSearchResult.resourcesCount +
       quickSearchResult.basesCount +
@@ -110,29 +127,67 @@ const SearchBar = ({
   const displayQuickSearchEmptyResults =
     !isFetching && quickSearchTotalCount === 0
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.code === 'ArrowDown' || event.code === 'ArrowUp') {
+        event.preventDefault()
+
+        const elements = [
+          ...(quickSearchContainerRef.current?.querySelectorAll(
+            '[role="option"]',
+          ) || []),
+        ] as HTMLAnchorElement[]
+
+        const focusedElement = document.activeElement
+
+        if (!focusedElement) {
+          return
+        }
+
+        const index = elements.indexOf(focusedElement as HTMLAnchorElement)
+
+        if (event.code === 'ArrowDown') {
+          goToNextElement(elements, index)
+        } else {
+          goToPreviousElement(elements, index)
+        }
+      } else if (event.code === 'Escape') {
+        setQuickSearchOpen(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
+
   return (
     <form onSubmit={onSubmit}>
-      <div
-        className={classNames(
-          'fr-search-bar fr-search-bar--lg',
-          styles.searchBar,
-        )}
-        role="search"
-      >
-        <input
-          ref={inputRef}
-          value={query}
-          onChange={onChange}
-          className="fr-input"
-          id="search"
-          type="search"
-          name="search"
-          placeholder="Rechercher une ressource, une base, un profil..."
-        />
+      <div className={classNames(styles.container)}>
+        <div
+          className={classNames('fr-search-bar fr-search-bar--lg')}
+          role="search"
+        >
+          <input
+            ref={inputRef}
+            value={query}
+            onChange={onChange}
+            className="fr-input"
+            id="search"
+            type="search"
+            name="search"
+            placeholder="Rechercher une ressource, une base, un profil..."
+          />
+
+          <Button type="submit">Rechercher</Button>
+        </div>
         {displayQuickSearch && (
           <div
             className={styles.resultsContainer}
             ref={quickSearchContainerRef}
+            role="listbox"
           >
             {displayQuickSearchLoader && (
               <div className={styles.loaderContainer}>
@@ -141,65 +196,74 @@ const SearchBar = ({
             )}
             {displayQuickSearchResults ? (
               <>
-                {quickSearchResult.resourcesCount > 0 && (
-                  <div className={styles.results}>
-                    <b className="fr-px-2w">Ressources</b>
-                    <hr className="fr-mt-3v fr-pb-1w fr-mx-2w" />
-                    {quickSearchResult.resources.map((resource) => (
-                      <Link
-                        key={resource.id}
-                        href={`/ressources/${resource.slug}`}
-                        className={styles.resource}
-                      >
-                        {resource.title}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-                {quickSearchResult.basesCount > 0 && (
-                  <div className={styles.results}>
-                    <b className="fr-px-2w">Bases</b>
-                    <hr className="fr-mt-3v fr-pb-1w fr-mx-2w" />
-                    {quickSearchResult.bases.map((base) => (
-                      <Link
-                        key={base.id}
-                        href={`/bases/${base.slug}`}
-                        className={styles.base}
-                      >
-                        <RoundImage
-                          className="fr-mr-1w"
-                          image={base.image}
-                          size={24}
-                        />
-                        <span>{base.title}</span>
-                      </Link>
-                    ))}
-                  </div>
-                )}
-                {quickSearchResult.profilesCount > 0 && (
-                  <div className={styles.results}>
-                    <b className="fr-px-2w">Profils</b>
-                    <hr className="fr-mt-3v fr-pb-1w fr-mx-2w" />
-                    {quickSearchResult.profiles.map((profile) => (
-                      <Link
-                        key={profile.id}
-                        href={`/profils/${profile.id}`}
-                        className={styles.profile}
-                      >
-                        <RoundProfileImage
-                          className="fr-mr-1w"
-                          user={profile}
-                          size={24}
-                        />
-                        {profile.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
+                <div className={styles.optionsContainer}>
+                  {quickSearchResult.resourcesCount > 0 && (
+                    <div className={styles.results}>
+                      <b>Ressources</b>
+                      {quickSearchResult.resources.map((resource) => (
+                        <Link
+                          role="option"
+                          key={resource.id}
+                          href={`/ressources/${resource.slug}`}
+                          className={styles.resource}
+                        >
+                          {resource.title}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                  {quickSearchResult.basesCount > 0 && (
+                    <div className={styles.results}>
+                      <b>Bases</b>
+                      {quickSearchResult.bases.map((base) => (
+                        <Link
+                          role="option"
+                          key={base.id}
+                          href={`/bases/${base.slug}`}
+                          className={styles.base}
+                        >
+                          <RoundImage
+                            className="fr-mr-1w"
+                            image={base.image}
+                            size={24}
+                          />
+                          <span>{base.title}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                  {quickSearchResult.profilesCount > 0 && (
+                    <div className={styles.results}>
+                      <b>Profils</b>
+                      {quickSearchResult.profiles.map((profile) => (
+                        <Link
+                          role="option"
+                          key={profile.id}
+                          href={`/profils/${profile.id}`}
+                          className={styles.profile}
+                        >
+                          <RoundProfileImage
+                            className="fr-mr-1w"
+                            user={profile}
+                            size={24}
+                          />
+                          {profile.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 <div className={styles.resultsFooter}>
                   <Button
-                    onClick={onViewAllResults}
-                    className="fr-m-0"
+                    linkProps={{
+                      role: 'option',
+                      href: searchUrl(tab, {
+                        ...defaultSearchParams,
+                        ...searchParams,
+                        query,
+                      }),
+                    }}
+                    className={styles.allResultsButton}
                     priority="secondary"
                   >
                     Voir tous les résultats ({quickSearchTotalCount})
@@ -212,7 +276,6 @@ const SearchBar = ({
             ) : null}
           </div>
         )}
-        <Button type="submit">Rechercher</Button>
       </div>
     </form>
   )
