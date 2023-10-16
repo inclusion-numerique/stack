@@ -182,6 +182,12 @@ export const quickSearchBases = async (
       id: true,
       title: true,
       slug: true,
+      image: {
+        select: {
+          id: true,
+          altText: true,
+        },
+      },
     },
   })
 

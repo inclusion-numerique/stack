@@ -1,5 +1,4 @@
 import React from 'react'
-import Badge from '@codegouvfr/react-dsfr/Badge'
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
 import ContentView from '@app/web/components/Resource/Contents/ContentView'
@@ -84,9 +83,6 @@ const ResourceContents = ({ resource }: { resource: Resource }) => (
     />
     <h3 className={classNames('fr-mb-2w', styles.title)}>{resource.title}</h3>
     <p className="fr-text--lg fr-mb-0">{resource.description}</p>
-    <Badge className="fr-hidden-md fr-my-1w" small noIcon severity="success">
-      Très recommandée
-    </Badge>
     <hr id="contenu" className="fr-hidden fr-unhidden-md fr-mt-8v" />
     <ResourcesViewsAndMetadata className={styles.viewsAndMetadata} />
     <div className="fr-hidden-md fr-mb-8v">

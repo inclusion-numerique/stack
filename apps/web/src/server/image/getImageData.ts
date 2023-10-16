@@ -1,4 +1,3 @@
-import sharp from 'sharp'
 import {
   GetObjectCommand,
   NoSuchKey,
@@ -8,18 +7,44 @@ import * as Sentry from '@sentry/nextjs'
 import { Image, Upload } from '@prisma/client'
 import { legacyS3Client } from '@app/web/server/s3/legacyS3'
 import { s3 } from '@app/web/server/s3/s3'
-import { imageCropToRegion, isImageCropped } from '@app/web/utils/imageCrop'
+import { isImageCropped } from '@app/web/utils/imageCrop'
 import { ServerWebAppConfig } from '@app/web/webAppConfig'
+import { processImage } from '@app/web/server/image/processImage'
+
+const computeCropKey = ({
+  cropTop,
+  cropHeight,
+  cropLeft,
+  cropWidth,
+}: {
+  cropTop: number
+  cropHeight: number
+  cropLeft: number
+  cropWidth: number
+}) =>
+  isImageCropped({ cropTop, cropHeight, cropLeft, cropWidth })
+    ? `${cropTop}_${cropHeight}_${cropLeft}_${cropWidth}`
+    : 'nocrop'
 
 const computeImageVersionCacheKey = ({
-  id,
+  image: { id, uploadKey, cropTop, cropHeight, cropLeft, cropWidth },
   quality,
   width,
 }: {
-  id: string
+  image: Pick<
+    Image,
+    'id' | 'uploadKey' | 'cropWidth' | 'cropTop' | 'cropLeft' | 'cropHeight'
+  >
   quality: number
   width?: number
-}) => `images/${id}/${width ?? 'original'}_${quality}.webp`
+}) =>
+  // Add the numbers cropTop, cropHeight, cropLeft, cropWidth as a unique string separted by _
+  `images/${id}/${uploadKey}_${computeCropKey({
+    cropTop,
+    cropHeight,
+    cropLeft,
+    cropWidth,
+  })}_${width ?? 'original'}_${quality}.webp`
 
 export const getImageData = async ({
   image,
@@ -34,7 +59,7 @@ export const getImageData = async ({
   width?: number
 }): Promise<Buffer | ReadableStream> => {
   const cachedImageKey = computeImageVersionCacheKey({
-    id: image.id,
+    image,
     quality,
     width,
   })
@@ -58,6 +83,8 @@ export const getImageData = async ({
     return cachedImageObject.Body.transformToWebStream()
   }
 
+  const start = Date.now()
+
   // Image is not cached, we need to compute it for given quality and width
   const originalImageObject = image.upload.legacyKey
     ? await legacyS3Client.send(
@@ -77,33 +104,23 @@ export const getImageData = async ({
     throw new Error('Image not found')
   }
 
-  const sharpImage = sharp(
-    await originalImageObject.Body.transformToByteArray(),
-  )
-  const { height: originalHeight, width: originalWidth } =
-    await sharpImage.metadata()
-
-  if (!originalHeight || !originalWidth) {
-    // This is an invalid image
-    // TODO Tell sentry about it
-    throw new Error('Invalid image file')
-  }
-
-  if (isImageCropped(image)) {
-    sharpImage.extract(
-      imageCropToRegion(image, {
-        height: originalHeight,
-        width: originalWidth,
-      }),
+  const imageData = await processImage({
+    originalImageBuffer: originalImageObject.Body,
+    image,
+    quality,
+    width,
+  }).catch((error) => {
+    const errorWithContext = new Error(
+      `Error processing image ${image.id} ${cachedImageKey}: ${
+        'message' in error
+          ? (error as { message: string }).message
+          : 'Unknown error'
+      }`,
     )
-  }
-
-  // Do not resize if image is smaller than requested target width
-  if (width && originalWidth > width) {
-    sharpImage.resize(width)
-  }
-
-  const imageData = await sharpImage.webp({ quality }).toBuffer()
+    Sentry.captureException(errorWithContext)
+    console.error(errorWithContext.message)
+    throw errorWithContext
+  })
 
   // Caching result in background for speeding up response time
   s3.send(
@@ -115,6 +132,8 @@ export const getImageData = async ({
   ).catch((error) => {
     Sentry.captureException(error)
   })
+
+  console.info(`Processed ${cachedImageKey} in ${Date.now() - start}ms`)
 
   return imageData
 }

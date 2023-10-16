@@ -15,6 +15,14 @@ export const resourceContributorRouter = router({
         select: {
           id: true,
           name: true,
+          firstName: true,
+          lastName: true,
+          image: {
+            select: {
+              id: true,
+              altText: true,
+            },
+          },
         },
         where: {
           resources: {

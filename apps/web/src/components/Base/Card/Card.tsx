@@ -7,11 +7,12 @@ import { getServerUrl } from '@app/web/utils/baseUrl'
 import { BasePrivacyTag } from '@app/web/components/PrivacyTags'
 import ViewsAndMetadata from '@app/web/components/Base/ViewsAndMetadata'
 import CopyLinkButton from '@app/web/components/CopyLinkButton'
+import RoundImage from '@app/web/components/RoundImage'
 import styles from './Card.module.css'
 
 const BaseCard = ({ base }: { base: BaseListItem }) => (
   <div className={styles.container} data-testid="base-card">
-    <div className={styles.logo} />
+    <RoundImage image={base.image} size={116} />
     <div className={styles.content}>
       <Link href={`/bases/${base.slug}`}>
         <div className={styles.header}>
@@ -24,7 +25,7 @@ const BaseCard = ({ base }: { base: BaseListItem }) => (
             </p>
           )}
           <div className={styles.badge}>
-            <BasePrivacyTag isPublic={base.isPublic} />
+            <BasePrivacyTag small isPublic={base.isPublic} />
           </div>
         </div>
         <h6 className="fr-my-2w">{base.title}</h6>

@@ -61,7 +61,8 @@ export type MigrateImageInput = {
 /**
  * We have some wierd legacy data with some negative crop values
  */
-const between0and1 = (value: number) => Math.min(Math.max(value, 0), 1)
+const normalizeCropBetween0and1 = (value: number) =>
+  Number.parseFloat(Math.min(Math.max(value, 0), 1).toFixed(4))
 
 export const migrateImage = async ({
   legacyImage,
@@ -79,10 +80,10 @@ export const migrateImage = async ({
           altText: legacyImage.image_alt,
         }
       : ({
-          cropHeight: between0and1(legacyImage.relative_height),
-          cropWidth: between0and1(legacyImage.relative_width),
-          cropTop: between0and1(legacyImage.relative_top),
-          cropLeft: between0and1(legacyImage.relative_left),
+          cropHeight: normalizeCropBetween0and1(legacyImage.relative_height),
+          cropWidth: normalizeCropBetween0and1(legacyImage.relative_width),
+          cropTop: normalizeCropBetween0and1(legacyImage.relative_top),
+          cropLeft: normalizeCropBetween0and1(legacyImage.relative_left),
           uploadKey: uploadKeyFromLegacyKey(legacyImage.image),
         } satisfies Parameters<typeof transaction.image.upsert>[0]['update'])
 

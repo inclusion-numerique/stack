@@ -5,6 +5,14 @@ import { prismaClient } from '@app/web/prismaClient'
 export const profileSelect = {
   id: true,
   name: true,
+  firstName: true,
+  lastName: true,
+  image: {
+    select: {
+      id: true,
+      altText: true,
+    },
+  },
 } satisfies Prisma.UserSelect
 
 export const getWhereProfilesList = (

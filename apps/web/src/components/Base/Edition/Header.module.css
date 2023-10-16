@@ -5,11 +5,6 @@
 }
 
 .logo {
-  border-radius: 50%;
-  height: 128px;
-  width: 128px;
-  border: solid 1px white;
-  background-color: #e8edff;
   margin: -64px auto 0;
 }
 

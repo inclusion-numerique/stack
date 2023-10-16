@@ -1,0 +1,46 @@
+import React, { ComponentProps, ReactNode } from 'react'
+import classNames from 'classnames'
+import UploadedImage from '@app/web/components/UploadedImage'
+import styles from './RoundImage.module.css'
+
+const RoundImage = ({
+  image,
+  size = 32,
+  borderWidth,
+  className,
+  fallback,
+}: {
+  image: { id: string; altText?: string | null } | null
+  size?: 24 | 32 | 48 | 116 | 128
+  borderWidth?: 1 | 2
+  className?: string
+  fallback?: ReactNode
+}) => (
+  <div
+    className={classNames(
+      styles.container,
+      size === 24 && styles.size24,
+      size === 32 && styles.size32,
+      size === 48 && styles.size48,
+      size === 116 && styles.size116,
+      size === 128 && styles.size128,
+      borderWidth === 1 && styles.borderWidth1,
+      borderWidth === 2 && styles.borderWidth2,
+      className,
+    )}
+  >
+    {!!image && (
+      <UploadedImage
+        src={image.id}
+        alt={image.altText ?? ''}
+        width={size - (borderWidth ?? 0)}
+        height={size - (borderWidth ?? 0)}
+      />
+    )}
+    {!image && !!fallback && fallback}
+  </div>
+)
+
+export type RoundImageProps = ComponentProps<typeof RoundImage>
+
+export default RoundImage

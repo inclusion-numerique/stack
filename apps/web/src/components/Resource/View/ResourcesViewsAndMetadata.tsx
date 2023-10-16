@@ -1,6 +1,5 @@
 import classNames from 'classnames'
 import React from 'react'
-import Badge from '@codegouvfr/react-dsfr/Badge'
 import styles from './ResourcesViewsAndMetadata.module.css'
 
 const ResourcesViewsAndMetadata = ({ className }: { className?: string }) => (
@@ -16,9 +15,6 @@ const ResourcesViewsAndMetadata = ({ className }: { className?: string }) => (
       <b className="wip">45</b>
       <span className={styles.spanMdDisplay}> Enregistrements</span>
     </div>
-    <Badge className="fr-hidden fr-unhidden-md" small noIcon severity="success">
-      Très recommandée
-    </Badge>
   </div>
 )
 export default ResourcesViewsAndMetadata

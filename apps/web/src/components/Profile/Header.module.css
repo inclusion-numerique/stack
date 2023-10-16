@@ -2,13 +2,6 @@
   background-color: var(--background-alt-blue-france);
 }
 
-.logo {
-  border-radius: 50%;
-  height: 128px;
-  width: 128px;
-  background-color: #bfccfb;
-}
-
 .profileHeader {
   display: flex;
   justify-content: center;

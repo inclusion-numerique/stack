@@ -17,11 +17,19 @@ const resource = {
   created: date,
   updated: date,
   published: date,
-  base: { title: 'Titre de la base', slug: 'titre-de-la-base', isPublic: true },
+  base: {
+    title: 'Titre de la base',
+    slug: 'titre-de-la-base',
+    isPublic: true,
+    image: null,
+  },
   isPublic: true,
   createdBy: {
     id: '1',
     name: 'Jean Biche',
+    firstName: 'Jean',
+    lastName: 'Biche',
+    image: null,
   },
   image: null,
 } satisfies ResourceListItem

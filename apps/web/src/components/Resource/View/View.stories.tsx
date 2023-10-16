@@ -26,12 +26,16 @@ const resource = (imageId: string | null) =>
       slug: 'titre-de-la-base',
       isPublic: true,
       members: [],
+      image: null,
     },
     createdById: '1',
     createdBy: {
       id: '1',
       name: 'Nom_utilisateur long long vraiment long tellement long que ca me soule !!!',
+      firstName: 'Prénom',
+      lastName: 'Nom',
       isPublic: true,
+      image: null,
     },
     imageId,
     image: imageId

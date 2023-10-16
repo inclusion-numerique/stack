@@ -2,7 +2,6 @@ import React from 'react'
 import classNames from 'classnames'
 import { Route } from 'next'
 import Link from 'next/link'
-import Badge from '@codegouvfr/react-dsfr/Badge'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import CopyLinkButton from '@app/web/components/CopyLinkButton'
@@ -89,9 +88,6 @@ const ResourceCard = ({
           </div>
         )}
       </Link>
-      <Badge className="fr-hidden-md fr-mt-1w" small noIcon severity="success">
-        Très recommandée
-      </Badge>
       <div className={styles.footer}>
         {resource.published && (
           <div className="fr-text--sm fr-mb-0">

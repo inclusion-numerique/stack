@@ -16,6 +16,14 @@ export const getResourceSelect = {
       name: true,
       id: true,
       isPublic: true,
+      firstName: true,
+      lastName: true,
+      image: {
+        select: {
+          id: true,
+          altText: true,
+        },
+      },
     },
   },
   baseId: true,
@@ -29,6 +37,12 @@ export const getResourceSelect = {
         select: {
           accepted: true,
           memberId: true,
+        },
+      },
+      image: {
+        select: {
+          id: true,
+          altText: true,
         },
       },
     },

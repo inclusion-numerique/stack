@@ -15,6 +15,8 @@ import {
   searchUrl,
 } from '@app/web/server/search/searchQueryParams'
 import { Spinner } from '@app/web/ui/Spinner'
+import RoundImage from '@app/web/components/RoundImage'
+import RoundProfileImage from '@app/web/components/RoundProfileImage'
 import styles from './SearchBar.module.css'
 
 const SearchBar = ({
@@ -164,7 +166,11 @@ const SearchBar = ({
                         href={`/bases/${base.slug}`}
                         className={styles.base}
                       >
-                        <div className={styles.circle} />
+                        <RoundImage
+                          className="fr-mr-1w"
+                          image={base.image}
+                          size={24}
+                        />
                         <span>{base.title}</span>
                       </Link>
                     ))}
@@ -180,7 +186,11 @@ const SearchBar = ({
                         href={`/profils/${profile.id}`}
                         className={styles.profile}
                       >
-                        <div className={styles.circle} />
+                        <RoundProfileImage
+                          className="fr-mr-1w"
+                          user={profile}
+                          size={24}
+                        />
                         {profile.name}
                       </Link>
                     ))}

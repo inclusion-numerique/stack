@@ -6,7 +6,14 @@ export const getMatchingProfils = async (
   resourceId?: string,
 ) =>
   prismaClient.user.findMany({
-    select: { id: true, name: true, email: true },
+    select: {
+      id: true,
+      name: true,
+      firstName: true,
+      lastName: true,
+      image: { select: { id: true, altText: true } },
+      email: true,
+    },
     where: {
       ...(baseId
         ? {
@@ -38,6 +45,8 @@ export const getProfilePageQuery = async (id: string) =>
       id: true,
       name: true,
       firstName: true,
+      lastName: true,
+      image: { select: { id: true, altText: true } },
       isPublic: true,
       email: true,
     },

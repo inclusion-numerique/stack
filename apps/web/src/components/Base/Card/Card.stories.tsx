@@ -8,6 +8,7 @@ const base = {
   slug: 'conseiller-numérique-france-services-contributions',
   isPublic: true,
   department: '08 - Ardennes',
+  image: null,
   _count: { resources: 8 },
 } satisfies BaseListItem
 
