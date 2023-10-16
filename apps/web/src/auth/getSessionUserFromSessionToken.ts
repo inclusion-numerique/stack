@@ -37,6 +37,49 @@ export const getSessionUserFromSessionToken = async (
               title: true,
               isPublic: true,
             },
+            where: {
+              deleted: null,
+            },
+          },
+          bases: {
+            select: {
+              isAdmin: true,
+              base: {
+                select: {
+                  id: true,
+                  slug: true,
+                  title: true,
+                  isPublic: true,
+                },
+              },
+            },
+            where: {
+              accepted: {
+                not: null,
+              },
+              base: {
+                deleted: null,
+              },
+            },
+          },
+          resources: {
+            select: {
+              resourceId: true,
+            },
+            where: {
+              resource: {
+                deleted: null,
+              },
+            },
+          },
+          createdResources: {
+            select: {
+              id: true,
+              slug: true,
+            },
+            where: {
+              deleted: null,
+            },
           },
         },
       },
