@@ -33,13 +33,13 @@ const Filters = ({
   initialValues?: FiltersInitialValue[]
 }) => {
   const router = useRouter()
-  const [selecteds, setSelecteds] = useState<
+  const [selected, setSelected] = useState<
     { category: FilterKey; option: SelectOption }[]
   >(initialValues || [])
 
   const onSelect = (option: SelectOption, category: FilterKey) => {
-    setSelecteds([
-      ...selecteds,
+    setSelected([
+      ...selected,
       {
         category,
         option,
@@ -53,18 +53,12 @@ const Filters = ({
     )
   }
 
-  const unselect = ({
-    category,
-    option,
-  }: {
-    category: FilterKey
-    option: SelectOption
-  }) => {
-    setSelecteds(
-      selecteds.filter(
-        (selected) =>
-          selected.category !== category ||
-          selected.option.value !== option.value,
+  const onUnselect = (option: SelectOption, category: FilterKey) => {
+    setSelected(
+      selected.filter(
+        (selectedItem) =>
+          selectedItem.category !== category ||
+          selectedItem.option.value !== option.value,
       ),
     )
     router.push(
@@ -83,18 +77,32 @@ const Filters = ({
       <div className={styles.buttons}>
         {categories.map((category) => (
           <div key={category.id}>
-            <Filter onSelect={onSelect} category={category} />
+            <Filter
+              selected={
+                new Set(
+                  selected
+                    .filter(
+                      (selectedItem) => selectedItem.category === category.id,
+                    )
+                    .map((selectedItem) => selectedItem.option.value),
+                )
+              }
+              onUnselect={onUnselect}
+              onSelect={onSelect}
+              category={category}
+            />
           </div>
         ))}
       </div>
-      {selecteds.length > 0 && (
+      {selected.length > 0 && (
         <div className={styles.selected}>
-          {selecteds.map((selected) => (
+          {selected.map((selectedItem) => (
             <OptionBadge
-              size="sm"
-              key={`${selected.option.value}-${selected.category}`}
-              option={selected.option}
-              onClick={() => unselect(selected)}
+              key={`${selectedItem.option.value}-${selectedItem.category}`}
+              option={selectedItem.option}
+              onClick={() =>
+                onUnselect(selectedItem.option, selectedItem.category)
+              }
             />
           ))}
         </div>

@@ -118,9 +118,9 @@ export const getDepartmentName = (departmentCode: string) => {
   return `${name} (${departmentCode})`
 }
 
-export const departmentsOptions = Object.keys(departments).map(
-  (departmentCode) => ({
+export const departmentsOptions = Object.keys(departments)
+  .map((departmentCode) => ({
     value: departmentCode,
     name: getDepartmentName(departmentCode),
-  }),
-)
+  }))
+  .sort((a, b) => a.value.localeCompare(b.value))
