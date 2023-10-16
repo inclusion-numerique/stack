@@ -17,6 +17,9 @@ export const createTestUser = (publicProfile?: boolean) =>
     created: '2023-04-01',
     updated: '2023-04-01',
     ownedBases: [],
+    bases: [],
+    createdResources: [],
+    resources: [],
   }) satisfies SessionUser
 
 export const createTestResource = (

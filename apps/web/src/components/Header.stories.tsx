@@ -25,8 +25,20 @@ export const SignedInWithBases: Story = {
       ...testSessionUser,
       ownedBases: [
         { id: 'a', title: 'Ma première base', slug: 'a', isPublic: true },
-        { id: 'b', title: 'Une autre base', slug: 'b', isPublic: false },
       ],
+      bases: [
+        {
+          isAdmin: true,
+          base: {
+            id: 'b',
+            title: 'Une autre base',
+            slug: 'b',
+            isPublic: false,
+          },
+        },
+      ],
+      createdResources: [],
+      resources: [],
     },
   },
 }

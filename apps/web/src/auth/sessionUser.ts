@@ -1,4 +1,10 @@
-import { Base, User } from '@prisma/client'
+import type {
+  Resource,
+  ResourceContributors,
+  Base,
+  User,
+  BaseMembers,
+} from '@prisma/client'
 
 // Serializable user interface
 export type SessionUser = Pick<
@@ -13,4 +19,9 @@ export type SessionUser = Pick<
   created: string | null
   updated: string | null
   ownedBases: Pick<Base, 'slug' | 'title' | 'id' | 'isPublic'>[]
+  bases: (Pick<BaseMembers, 'isAdmin'> & {
+    base: Pick<Base, 'slug' | 'title' | 'id' | 'isPublic'>
+  })[]
+  resources: Pick<ResourceContributors, 'resourceId'>[]
+  createdResources: Pick<Resource, 'id' | 'slug'>[]
 }

@@ -13,4 +13,7 @@ export const testSessionUser = {
   emailVerified: null,
   isPublic: false,
   ownedBases: [],
+  bases: [],
+  createdResources: [],
+  resources: [],
 } satisfies SessionUser

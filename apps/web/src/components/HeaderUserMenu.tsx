@@ -9,7 +9,7 @@ import { getUserDisplayName } from '@app/web/utils/user'
 import styles from './HeaderUserMenu.module.css'
 
 export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
-  const bases = user.ownedBases
+  const bases = [...user.ownedBases, ...user.bases.map(({ base }) => base)]
 
   // The click outside default behavior from dsfr js do not work in this case 🤷‍
   // So we have to use client component and hooks to handle the click outside
