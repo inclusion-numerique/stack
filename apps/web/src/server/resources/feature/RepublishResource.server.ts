@@ -43,6 +43,10 @@ export const onRepublished: ResourceEventSideEffect<
   await transaction.resource.update({
     where: { id: resource.id },
     data: {
+      title: resource.title,
+      imageId: resource.imageId,
+      description: resource.description,
+      baseId: resource.baseId,
       // Deleting and recreating contents
       contents: {
         deleteMany: {},
