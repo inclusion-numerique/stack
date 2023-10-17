@@ -17,13 +17,14 @@
 }
 
 .logo {
-  margin: -8px auto 0 auto ;
+  margin: -8px auto 0;
   position: relative;
   z-index: 1;
 
   @media (min-width: 320px){
     margin-top: -16px;
   }
+
   @media (min-width: 576px){
     margin-top: -46px;
   }
