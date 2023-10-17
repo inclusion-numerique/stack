@@ -8,8 +8,8 @@ import { prismaClient } from '@app/web/prismaClient'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { resourceListSelect } from '@app/web/server/resources/getResourcesList'
 import { orderItemsByIndexMap } from '@app/web/server/search/orderItemsByIndexMap'
-import { cleanSearchTerm } from '@app/web/server/search/cleanSearchTerm'
 import { enumArrayToSnakeCaseStringArray } from '@app/web/server/search/enumArrayToSnakeCaseStringArray'
+import { searchToTsQueryInput } from '@app/web/server/search/searchToTsQueryInput'
 
 /**
  * We are using advanced postgresql features not supported by Prisma for search.
@@ -26,7 +26,7 @@ export const countResources = async (
   >,
   user: Pick<SessionUser, 'id'> | null,
 ) => {
-  const searchTerm = cleanSearchTerm(searchParams.query)
+  const searchTerm = searchToTsQueryInput(searchParams.query)
   const userId = user?.id ?? null
 
   const result = await prismaClient.$queryRaw<{ count: number }[]>`
@@ -50,7 +50,7 @@ export const countResources = async (
         AND (
                   coalesce(${searchTerm}, '___empty___') = '___empty___'
               OR to_tsvector('french', unaccent(resources.title || ' ' || resources.description)) @@
-                 plainto_tsquery('french', unaccent(${searchTerm}))
+                 to_tsquery('french', unaccent(${searchTerm}))
           )
         AND (
           /* Authorization*/
@@ -99,7 +99,7 @@ export const rankResources = async (
   // To keep good dev ux, we first fetch the ids of the resources matching the search
   // Then we fetch the full resources with all the data from prisma to have good types
 
-  const searchTerm = cleanSearchTerm(searchParams.query)
+  const searchTerm = searchToTsQueryInput(searchParams.query)
   const userId = user?.id ?? null
   const searchResults = await prismaClient.$queryRaw<
     {
@@ -113,11 +113,11 @@ export const rankResources = async (
   >`
       SELECT resources.id,
              to_tsvector('french', unaccent(resources.title || ' ' || resources.description))::text AS document_tsv,
-             plainto_tsquery('french', unaccent(${searchTerm}))::text                               AS query,
+             to_tsquery('french', unaccent(${searchTerm}))::text                                    AS query,
              ts_rank(to_tsvector('french', unaccent(resources.title || ' ' || resources.description)),
-                     plainto_tsquery('french', unaccent(${searchTerm})))                            AS rank,
+                     to_tsquery('french', unaccent(${searchTerm})))                                 AS rank,
              ts_rank_cd(to_tsvector('french', unaccent(resources.title || ' ' || resources.description)),
-                        plainto_tsquery('french', unaccent(${searchTerm})))                         AS rank_cd
+                        to_tsquery('french', unaccent(${searchTerm})))                              AS rank_cd
       FROM resources
                /* Join user contributor only to have only one row per resource */
                /* Null will never match as contributor_id is not nullable */
@@ -138,7 +138,7 @@ export const rankResources = async (
         AND (
                   coalesce(${searchTerm}, '___empty___') = '___empty___'
               OR to_tsvector('french', unaccent(resources.title || ' ' || resources.description)) @@
-                 plainto_tsquery('french', unaccent(${searchTerm}))
+                 to_tsquery('french', unaccent(${searchTerm}))
           )
         AND (
           /* Authorization*/

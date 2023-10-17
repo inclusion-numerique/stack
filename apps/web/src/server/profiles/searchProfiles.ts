@@ -8,7 +8,7 @@ import {
 } from '@app/web/server/search/searchQueryParams'
 import { orderItemsByIndexMap } from '@app/web/server/search/orderItemsByIndexMap'
 import { profileSelect } from '@app/web/server/profiles/getProfilesList'
-import { cleanSearchTerm } from '@app/web/server/search/cleanSearchTerm'
+import { searchToTsQueryInput } from '@app/web/server/search/searchToTsQueryInput'
 
 /**
  * We are using advanced postgresql features not supported by Prisma for search.
@@ -16,15 +16,13 @@ import { cleanSearchTerm } from '@app/web/server/search/cleanSearchTerm'
  * Raw SQL queries are only in search function files.
  * ⚠️ Keep in sync with prisma where filters for user rights / visibility
  * ⚠️ We cannot reuse query fragments from prismaClient with raw sql without opting out of security features. Keep conditions in sync in the 2 functions.
- * ⚠️ If you make changes in the to_tsvector search, you have to update the index in the db using a manual migration
- *    ( see 20231010132236_search/migration.sql)
  */
 
 export const countProfiles = async (
   searchParams: Pick<SearchParams, 'query'>,
   user: Pick<SessionUser, 'id'> | null,
 ) => {
-  const searchTerm = cleanSearchTerm(searchParams.query)
+  const searchTerm = searchToTsQueryInput(searchParams.query)
   const userId = user?.id ?? null
 
   const result = await prismaClient.$queryRaw<{ count: number }[]>`
@@ -35,7 +33,7 @@ export const countProfiles = async (
               OR to_tsvector('french',
                              unaccent(coalesce(users.name, '') || ' ' || coalesce(users.location, '') || ' ' ||
                                       coalesce(users.title, '') || ' ' || coalesce(users.description, ''))) @@
-                 plainto_tsquery('french', unaccent(${searchTerm}))
+                 to_tsquery('french', unaccent(${searchTerm}))
           )
         AND (
           /* Authorization*/
@@ -57,7 +55,7 @@ export const rankProfiles = async (
   // To keep good dev ux, we first fetch the ids of the resources matching the search
   // Then we fetch the full resources with all the data from prisma to have good types
 
-  const searchTerm = cleanSearchTerm(searchParams.query)
+  const searchTerm = searchToTsQueryInput(searchParams.query)
   const userId = user?.id ?? null
   const searchResults = await prismaClient.$queryRaw<
     {
@@ -73,22 +71,22 @@ export const rankProfiles = async (
              to_tsvector('french', unaccent(coalesce(users.name, '') || ' ' || coalesce(users.location, '') || ' ' ||
                                             coalesce(users.title, '') || ' ' ||
                                             coalesce(users.description, '')))::text AS document_tsv,
-             plainto_tsquery('french', unaccent(${searchTerm}))::text               AS query,
+             to_tsquery('french', unaccent(${searchTerm}))::text                    AS query,
              ts_rank(to_tsvector('french',
                                  unaccent(coalesce(users.name, '') || ' ' || coalesce(users.location, '') || ' ' ||
                                           coalesce(users.title, '') || ' ' || coalesce(users.description, ''))),
-                     plainto_tsquery('french', unaccent(${searchTerm})))            AS rank,
+                     to_tsquery('french', unaccent(${searchTerm})))                 AS rank,
              ts_rank_cd(to_tsvector('french',
                                     unaccent(coalesce(users.name, '') || ' ' || coalesce(users.location, '') || ' ' ||
                                              coalesce(users.title, '') || ' ' || coalesce(users.description, ''))),
-                        plainto_tsquery('french', unaccent(${searchTerm})))         AS rank_cd
+                        to_tsquery('french', unaccent(${searchTerm})))              AS rank_cd
       FROM users
       WHERE (
                   coalesce(${searchTerm}, '___empty___') = '___empty___'
               OR to_tsvector('french',
                              unaccent(coalesce(users.name, '') || ' ' || coalesce(users.location, '') || ' ' ||
                                       coalesce(users.title, '') || ' ' || coalesce(users.description, ''))) @@
-                 plainto_tsquery('french', unaccent(${searchTerm}))
+                 to_tsquery('french', unaccent(${searchTerm}))
           )
         AND (
           /* Authorization*/
