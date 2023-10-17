@@ -69,6 +69,9 @@ export const migrateBase = async ({
     imageId: legacyBase.profile_image_id
       ? imageIdFromLegacyId(Number(legacyBase.profile_image_id))
       : null,
+    coverImageId: legacyBase.cover_image_id
+      ? imageIdFromLegacyId(Number(legacyBase.cover_image_id))
+      : null,
     created: legacyBase.created,
     updated: legacyBase.modified,
     isPublic: legacyBase.state === 'public',

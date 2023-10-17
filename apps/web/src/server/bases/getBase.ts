@@ -25,11 +25,13 @@ const baseSelect = (user: Pick<SessionUser, 'id'> | null) =>
     coverImage: {
       select: {
         id: true,
+        altText: true,
       },
     },
     image: {
       select: {
         id: true,
+        altText: true,
       },
     },
     resources: {
