@@ -272,7 +272,7 @@ const SearchBar = ({
               </>
             ) : null}
             {displayQuickSearchEmptyResults ? (
-              <>Aucun résultat pour votre recherche</>
+              <div className="fr-m-4v">Aucun résultat pour votre recherche</div>
             ) : null}
           </div>
         )}
