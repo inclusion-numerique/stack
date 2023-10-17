@@ -6,8 +6,8 @@ import { Theme } from '@prisma/client'
  */
 
 export const categories = [
-  'Médiation & compétences numériques',
-  'Ecologie & soutenabilité',
+  'Inclusion & compétences numériques',
+  'Numérique & environnement',
   'Culture numérique',
   'Communs & souveraineté',
 ] as const
@@ -50,19 +50,24 @@ export const themeLabels: { [theme in Theme]: string } = {
 
 export const themeCategories: { [theme in Theme]: Category } = {
   [Theme.DiagnosticDeCompetencesNumeriques]:
-    'Médiation & compétences numériques',
-  [Theme.DemarchesEtServicesEnLigne]: 'Médiation & compétences numériques',
-  [Theme.MaitriseDesOutilsNumeriques]: 'Médiation & compétences numériques',
-  [Theme.NavigationSurInternet]: 'Médiation & compétences numériques',
-  [Theme.UsageDuMaterielInformatique]: 'Médiation & compétences numériques',
-  [Theme.SobrieteNumerique]: 'Ecologie & soutenabilité',
-  [Theme.MaterielReconditionne]: 'Ecologie & soutenabilité',
-  [Theme.Mobilites]: 'Ecologie & soutenabilité',
-  [Theme.Accessibilite]: 'Culture numérique',
+    'Inclusion & compétences numériques',
+  [Theme.DemarchesEtServicesEnLigne]: 'Inclusion & compétences numériques',
+  [Theme.MaitriseDesOutilsNumeriques]: 'Inclusion & compétences numériques',
+  [Theme.NavigationSurInternet]: 'Inclusion & compétences numériques',
+  [Theme.UsageDuMaterielInformatique]: 'Inclusion & compétences numériques',
+  [Theme.Accessibilite]: 'Inclusion & compétences numériques',
+  [Theme.InclusionNumerique]: 'Inclusion & compétences numériques',
+  [Theme.SobrieteNumerique]: 'Numérique & environnement',
+  [Theme.MaterielReconditionne]: 'Numérique & environnement',
+  [Theme.Mobilites]: 'Numérique & environnement',
+  [Theme.EcoconceptionDeServicesNumeriques]: 'Numérique & environnement',
+  [Theme.UsagesResponsablesDuNumerique]: 'Numérique & environnement',
+  [Theme.NumeriqueAuServiceDeLenvironnement]: 'Numérique & environnement',
+  [Theme.TerritoiresConnectesEtDurables]: 'Numérique & environnement',
+
   [Theme.ActeursDuNumerique]: 'Culture numérique',
   [Theme.ArtsEtCulture]: 'Culture numérique',
   [Theme.CitoyenneteEtEngagement]: 'Culture numérique',
-  [Theme.InclusionNumerique]: 'Culture numérique',
   [Theme.Donnees]: 'Culture numérique',
   [Theme.CodeEtProgrammation]: 'Culture numérique',
   [Theme.CommunicationEnLigneEtReseauxSociaux]: 'Culture numérique',
@@ -83,8 +88,8 @@ export const themeCategories: { [theme in Theme]: Category } = {
 
 export const categoryThemes = (() => {
   const index: { [category in Category]: Theme[] } = {
-    'Médiation & compétences numériques': [],
-    'Ecologie & soutenabilité': [],
+    'Inclusion & compétences numériques': [],
+    'Numérique & environnement': [],
     'Culture numérique': [],
     'Communs & souveraineté': [],
   }
@@ -98,8 +103,8 @@ export const categoryThemes = (() => {
 
 export const categoryThemesOptions = (() => {
   const index: { [category in Category]: SelectOption[] } = {
-    'Médiation & compétences numériques': [],
-    'Ecologie & soutenabilité': [],
+    'Inclusion & compétences numériques': [],
+    'Numérique & environnement': [],
     'Culture numérique': [],
     'Communs & souveraineté': [],
   }

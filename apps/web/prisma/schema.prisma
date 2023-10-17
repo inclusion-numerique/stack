@@ -184,6 +184,10 @@ enum Theme {
   IntelligenceArtificielle                     @map("intelligence_artificielle")
   OpenSourceEtLicencesLibres                   @map("open_source_et_licences_libres")
   SouveraineteNumeriqueEtHebergementDesDonnees @map("souverainete_numerique_et_hebergement_des_donnees")
+  EcoconceptionDeServicesNumeriques            @map("ecoconception_de_services_numeriques")
+  UsagesResponsablesDuNumerique                @map("usages_responsables_du_numerique")
+  NumeriqueAuServiceDeLenvironnement           @map("numerique_au_service_de_lenvironnement")
+  TerritoiresConnectesEtDurables               @map("territoires_connectes_et_durables")
 
   @@map("theme")
 }
