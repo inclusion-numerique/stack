@@ -1,4 +1,12 @@
 import { TargetAudience } from '@prisma/client'
+import { SelectOption } from '@app/ui/components/Form/utils/options'
+
+export const targetAudienceCategories = [
+  'Acteurs du numérique d’intérêt général',
+  'Bénéficiaires',
+] as const
+
+export type TargetAudienceCategory = (typeof targetAudienceCategories)[number]
 
 // Create the same enum but sorted in alphabetical order
 export const targetAudienceLabels: {
@@ -39,9 +47,81 @@ export const targetAudienceLabels: {
   [TargetAudience.TousPublics]: 'Tous publics',
   [TargetAudience.TravailleursSociaux]: 'Travailleurs sociaux',
 }
+
+export const targetAudienceCategoriesMap: {
+  [targetAudience in TargetAudience]: TargetAudienceCategory
+} = {
+  [TargetAudience.AdministrationsEtablissementsPublics]:
+    'Acteurs du numérique d’intérêt général',
+  [TargetAudience.Adultes]: 'Bénéficiaires',
+  [TargetAudience.AidantsNumeriques]: 'Acteurs du numérique d’intérêt général',
+  [TargetAudience.Adolescents_12_18]: 'Bénéficiaires',
+  [TargetAudience.AutresProfessionnels]:
+    'Acteurs du numérique d’intérêt général',
+  [TargetAudience.AssociationsActeursEss]:
+    'Acteurs du numérique d’intérêt général',
+  [TargetAudience.CollectivitesTerritoriales]:
+    'Acteurs du numérique d’intérêt général',
+  [TargetAudience.Elus]: 'Acteurs du numérique d’intérêt général',
+  [TargetAudience.Enfants_6_12]: 'Bénéficiaires',
+  [TargetAudience.EnseignantsProfessionnelsFormation]:
+    'Acteurs du numérique d’intérêt général',
+  [TargetAudience.Entreprises]: 'Acteurs du numérique d’intérêt général',
+  [TargetAudience.JeunesAdultes_18_25]: 'Bénéficiaires',
+  [TargetAudience.JeunesEnfants_6]: 'Bénéficiaires',
+  [TargetAudience.MediateursNumeriques]:
+    'Acteurs du numérique d’intérêt général',
+  [TargetAudience.Particuliers]: 'Bénéficiaires',
+  [TargetAudience.Parents]: 'Bénéficiaires',
+  [TargetAudience.PersonneAllophone]: 'Bénéficiaires',
+  [TargetAudience.PersonneSituationHandicap]: 'Bénéficiaires',
+  [TargetAudience.PersonneSituationIlletrisme]: 'Bénéficiaires',
+  [TargetAudience.PersonnesEnInsertionSociale]: 'Bénéficiaires',
+  [TargetAudience.PersonnesInsertionProfessionnelle]: 'Bénéficiaires',
+  [TargetAudience.PersonnesPerteAutonomie]: 'Bénéficiaires',
+  [TargetAudience.PersonnesTresEloigneesNumerique]: 'Bénéficiaires',
+  [TargetAudience.RefugiesDemandeursAsile]: 'Bénéficiaires',
+  [TargetAudience.SeniorsPersonnesAgees]: 'Bénéficiaires',
+  [TargetAudience.TousPublics]: 'Bénéficiaires',
+  [TargetAudience.TravailleursSociaux]:
+    'Acteurs du numérique d’intérêt général',
+}
 export const targetAudienceOptions = Object.entries(targetAudienceLabels).map(
   ([value, name]) => ({
     value,
     name,
   }),
 )
+
+export const categoryTargetAudiences = (() => {
+  const index: { [category in TargetAudienceCategory]: TargetAudience[] } = {
+    'Acteurs du numérique d’intérêt général': [],
+    Bénéficiaires: [],
+  }
+
+  for (const [targetAudience, category] of Object.entries(
+    targetAudienceCategoriesMap,
+  )) {
+    index[category].push(targetAudience as TargetAudience)
+  }
+
+  return index
+})()
+
+export const categoryTargetAudiencesOptions = (() => {
+  const index: { [category in TargetAudienceCategory]: SelectOption[] } = {
+    'Acteurs du numérique d’intérêt général': [],
+    Bénéficiaires: [],
+  }
+
+  for (const [targetAudience, category] of Object.entries(
+    targetAudienceCategoriesMap,
+  )) {
+    index[category].push({
+      name: targetAudienceLabels[targetAudience as TargetAudience],
+      value: targetAudience as TargetAudience,
+    })
+  }
+
+  return index
+})()

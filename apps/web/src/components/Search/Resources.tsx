@@ -9,8 +9,8 @@ import {
   supportTypeOptions,
 } from '@app/web/themes/supportTypes'
 import {
+  categoryTargetAudiencesOptions,
   targetAudienceLabels,
-  targetAudienceOptions,
 } from '@app/web/themes/targetAudiences'
 import ResourceCard from '../Resource/Card'
 import EmptyBox from '../EmptyBox'
@@ -89,10 +89,10 @@ const Resources = ({
               options: supportTypeOptions,
             },
             {
-              multiple: false,
+              multiple: true,
               id: 'targetAudiences',
               label: 'Public cible',
-              options: targetAudienceOptions,
+              options: categoryTargetAudiencesOptions,
             },
           ]}
         />

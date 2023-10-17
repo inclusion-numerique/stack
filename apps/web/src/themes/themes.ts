@@ -37,6 +37,12 @@ export const themeLabels: { [theme in Theme]: string } = {
   [Theme.MaitriseDesOutilsNumeriques]: 'Maîtrise des outils numériques',
   [Theme.MaterielReconditionne]: 'Matériel reconditionné',
   [Theme.Mobilites]: 'Mobilités',
+  [Theme.EcoconceptionDeServicesNumeriques]:
+    'Écoconception de services numériques',
+  [Theme.UsagesResponsablesDuNumerique]: 'Usages responsables du numérique',
+  [Theme.NumeriqueAuServiceDeLEnvironnement]:
+    'Numérique au service de l’environnement',
+  [Theme.TerritoiresConnectesEtDurables]: 'Territoires connectés et durables',
   [Theme.NavigationSurInternet]: 'Navigation sur Internet',
   [Theme.NumeriqueEnSante]: 'Numérique en santé',
   [Theme.OpenSourceEtLicencesLibres]: 'Open source et licences libres',
@@ -62,9 +68,8 @@ export const themeCategories: { [theme in Theme]: Category } = {
   [Theme.Mobilites]: 'Numérique & environnement',
   [Theme.EcoconceptionDeServicesNumeriques]: 'Numérique & environnement',
   [Theme.UsagesResponsablesDuNumerique]: 'Numérique & environnement',
-  [Theme.NumeriqueAuServiceDeLenvironnement]: 'Numérique & environnement',
+  [Theme.NumeriqueAuServiceDeLEnvironnement]: 'Numérique & environnement',
   [Theme.TerritoiresConnectesEtDurables]: 'Numérique & environnement',
-
   [Theme.ActeursDuNumerique]: 'Culture numérique',
   [Theme.ArtsEtCulture]: 'Culture numérique',
   [Theme.CitoyenneteEtEngagement]: 'Culture numérique',
