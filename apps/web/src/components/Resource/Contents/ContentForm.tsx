@@ -51,6 +51,7 @@ const ContentForm = ({
       type,
       uploadFile: undefined,
       imageUploadFile: undefined,
+      text: type === 'Text' ? '' : undefined,
       ...(content ? removeNullAndUndefinedValues(content) : null),
     },
   })
@@ -101,6 +102,7 @@ const ContentForm = ({
   }
 
   let formContent: ReactNode
+
   switch (type) {
     case 'SectionTitle': {
       formContent = <SectionTitleEdition form={form} />

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import {
   FieldPath,
   FieldValues,
@@ -35,6 +35,7 @@ const RichInputForm = <T extends FieldValues>({
   disabled,
   'data-testid': dataTestId,
   onChange,
+  onBlur,
 }: {
   label?: ReactNode
   hint?: ReactNode
@@ -46,17 +47,35 @@ const RichInputForm = <T extends FieldValues>({
   disabled?: boolean
   ['data-testid']?: string
   onChange?: (text: PathValue<T, Path<T>>) => void
+  onBlur?: () => void
 }) => {
+  // First onUpdate call is triggered by the first render
+  // In a form context we don't want to trigger the onChange on first render
+  const firstRenderValue = useRef(form.getValues(path) ?? '')
+  const firstRenderUpdateDone = useRef(false)
+
   const editor = useEditor({
     extensions: [StarterKit, CustomLink],
-    content: form.getValues(path),
+    content: form.getValues(path) ?? '',
     onUpdate: (event) => {
       if (onChange) {
         const html = event.editor.getHTML()
         // An empty html still contains a paragraph
-        onChange((html === '<p></p>' ? '' : html) as PathValue<T, Path<T>>)
+        const value = (html === '<p></p>' ? '' : html) as PathValue<T, Path<T>>
+
+        // Mark first render update as done if the value has changed
+        if (
+          !firstRenderUpdateDone.current &&
+          firstRenderValue.current === value
+        ) {
+          return
+        }
+        firstRenderUpdateDone.current = true
+
+        onChange(value)
       }
     },
+    onBlur,
     editable: !disabled,
   })
 

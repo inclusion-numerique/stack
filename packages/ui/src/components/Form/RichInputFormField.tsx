@@ -32,13 +32,14 @@ const RichInputFormField = <T extends FieldValues>({
   icon,
   info,
 }: UiComponentProps & RichInputFormFieldProps<T>) => {
-  const id = `input-form-field__${path}`
+  const id = `rich-input-form-field__${path}`
+
   return (
     <Controller
       control={form.control}
       name={path}
       render={({
-        field: { value, onChange },
+        field: { value, onChange, onBlur },
         fieldState: { invalid, isTouched, error },
       }) => {
         let ariaDescribedBy: string | undefined
@@ -57,6 +58,7 @@ const RichInputFormField = <T extends FieldValues>({
             disabled={disabled}
             placeholder={placeholder}
             data-testid={dataTestId}
+            onBlur={onBlur}
             onChange={onChange}
           />
         )
