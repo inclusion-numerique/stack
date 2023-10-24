@@ -32,7 +32,10 @@ const Bases = ({
     {bases.length > 0 ? (
       bases.map((base) => <BaseCard key={base.slug} base={base} />)
     ) : (
-      <EmptyBox title="Aucun résultat pour votre recherche">
+      <EmptyBox
+        className="fr-mt-6v"
+        title="Aucun résultat pour votre recherche"
+      >
         Veuillez réessayer avec différents mots-clés.
       </EmptyBox>
     )}

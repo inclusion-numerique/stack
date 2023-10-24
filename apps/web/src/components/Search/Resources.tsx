@@ -37,7 +37,10 @@ const Resources = ({
         <ResourceCard key={resource.slug} resource={resource} user={user} />
       ))
     ) : (
-      <EmptyBox title="Aucun résultat pour votre recherche">
+      <EmptyBox
+        className="fr-mt-6v"
+        title="Aucun résultat pour votre recherche"
+      >
         Veuillez réessayer avec différents mots-clés.
       </EmptyBox>
     )}
