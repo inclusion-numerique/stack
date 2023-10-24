@@ -32,7 +32,7 @@ const SearchResults = ({
     searchUrl(tab, searchParams, { ...paginationParams, page: pageNumber })
 
   return (
-    <div className="fr-container fr-container--medium fr-mb-30v">
+    <>
       {children}
       {count > 0 && (
         <PaginationNav
@@ -42,7 +42,7 @@ const SearchResults = ({
           createPageLink={createPageLink}
         />
       )}
-    </div>
+    </>
   )
 }
 

@@ -2,35 +2,27 @@
 
 import React from 'react'
 import Link from 'next/link'
-import { useSelectedLayoutSegment } from 'next/navigation'
 import {
   defaultSearchParams,
   SearchParams,
-  searchTabFromString,
+  SearchTab,
   searchUrl,
 } from '@app/web/server/search/searchQueryParams'
+import { useSearchCounts } from '@app/web/app/(public)/rechercher/useSearchCounts'
 import styles from './Menu.module.css'
 
 // While loading put spaces instead of the count to minimize layout shifts
 const menuCount = (count: number | null) =>
   count === null ? '   ' : ` · ${count}`
 
-/**
- * Null means it's loading
- */
 const Menu = ({
+  activeTab,
   searchParams,
-  resourcesCount,
-  profilesCount,
-  basesCount,
 }: {
+  activeTab: SearchTab
   searchParams: SearchParams | null
-  resourcesCount: number | null
-  profilesCount: number | null
-  basesCount: number | null
 }) => {
-  // Todo Plural
-  const tab = searchTabFromString(useSelectedLayoutSegment())
+  const { resourcesCount, profilesCount, basesCount } = useSearchCounts()
 
   return (
     <div className={styles.menu}>
@@ -46,7 +38,9 @@ const Menu = ({
                 )}
                 aria-disabled={!searchParams}
                 aria-current={
-                  !!searchParams && tab === 'ressources' ? 'page' : undefined
+                  !!searchParams && activeTab === 'ressources'
+                    ? 'page'
+                    : undefined
                 }
               >
                 Ressources
@@ -59,7 +53,7 @@ const Menu = ({
                 href={searchUrl('bases', searchParams ?? defaultSearchParams)}
                 aria-disabled={!searchParams}
                 aria-current={
-                  !!searchParams && tab === 'bases' ? 'page' : undefined
+                  !!searchParams && activeTab === 'bases' ? 'page' : undefined
                 }
               >
                 Bases
@@ -72,7 +66,7 @@ const Menu = ({
                 href={searchUrl('profils', searchParams ?? defaultSearchParams)}
                 aria-disabled={!searchParams}
                 aria-current={
-                  !!searchParams && tab === 'profils' ? 'page' : undefined
+                  !!searchParams && activeTab === 'profils' ? 'page' : undefined
                 }
               >
                 Profils

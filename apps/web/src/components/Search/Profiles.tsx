@@ -12,7 +12,7 @@ const Profiles = ({
   profiles: ProfileListItem[]
   totalCount: number
 }) => (
-  <div>
+  <>
     <div className={styles.header}>
       <p className="fr-text--lg fr-mb-0">
         <b>
@@ -35,7 +35,7 @@ const Profiles = ({
         Veuillez réessayer avec différents mots-clés.
       </EmptyBox>
     )}
-  </div>
+  </>
 )
 
 export default Profiles

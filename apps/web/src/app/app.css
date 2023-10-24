@@ -1,6 +1,7 @@
 @import url('./dsfr-imports.css');
 @import url('./dsfr-overrides.css');
 @import url('./helpers.css');
+@import url('./skeleton.css');
 
 /* Layout setup */
 html,

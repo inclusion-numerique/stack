@@ -41,6 +41,8 @@ export const countSearchResults = async (
   }
 }
 
+export type SearchResultCounts = Awaited<ReturnType<typeof countSearchResults>>
+
 export const executeResourcesSearch = async (
   searchParams: SearchParams,
   paginationParams: PaginationParams,
