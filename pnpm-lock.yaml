@@ -146,14 +146,14 @@ importers:
         specifier: ^5.0.5
         version: 5.0.5(react-dom@18.2.0)(react@18.2.0)
       '@trpc/client':
-        specifier: ^10.43.0
-        version: 10.43.0(@trpc/server@10.43.0)
+        specifier: ^11.0.0-next.92
+        version: 11.0.0-next.92(@trpc/server@11.0.0-next.92)
       '@trpc/react-query':
-        specifier: ^10.43.0
-        version: 10.43.0(@tanstack/react-query@5.0.5)(@trpc/client@10.43.0)(@trpc/server@10.43.0)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^11.0.0-next.92
+        version: 11.0.0-next.92(@tanstack/react-query@5.0.5)(@trpc/client@11.0.0-next.92)(@trpc/server@11.0.0-next.92)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/server':
-        specifier: ^10.43.0
-        version: 10.43.0
+        specifier: ^11.0.0-next.92
+        version: 11.0.0-next.92
       aws-crt:
         specifier: ^1.18.2
         version: 1.18.2
@@ -7919,32 +7919,35 @@ packages:
     engines: {node: '>= 10'}
     dev: true
 
-  /@trpc/client@10.43.0(@trpc/server@10.43.0):
-    resolution: {integrity: sha512-8LbSpPHmIseb/Ke+GzL45y0itkKunGQWfxqHf2uy69RSRvER0vj+Gu67L8YD86FBgc/nsX/6GBuJiUet5lIDIw==}
+  /@trpc/client@11.0.0-next.92(@trpc/server@11.0.0-next.92):
+    resolution: {integrity: sha512-B1ZQTFzxMOiLrWInBy6jBI7xMe6u5kMCnOws7jtuYBkNiqpu1abySyAWS10ID6xuTHLGsG50VxBSlyPA7joR4Q==}
+    deprecated: bad publish
     peerDependencies:
-      '@trpc/server': 10.43.0
+      '@trpc/server': 11.0.0-next.92+06cebb01
     dependencies:
-      '@trpc/server': 10.43.0
+      '@trpc/server': 11.0.0-next.92
     dev: false
 
-  /@trpc/react-query@10.43.0(@tanstack/react-query@5.0.5)(@trpc/client@10.43.0)(@trpc/server@10.43.0)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-5+pBnnV9QqnwpO5Li9T60hXHylV1USEjFkRjrnd7mJul/t2dKxs5ouv+YDRnOJ36oD9wDki5lBGk2sOgFrzGUw==}
+  /@trpc/react-query@11.0.0-next.92(@tanstack/react-query@5.0.5)(@trpc/client@11.0.0-next.92)(@trpc/server@11.0.0-next.92)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-W6/AnO68p3MCQ7QnujYOnYnygHzwmmSW57rl4DcQqkLVrcADMdsKz7ZdrULFBasVi2azXMw2rj9kYvs8W2mwQg==}
+    deprecated: bad publish
     peerDependencies:
-      '@tanstack/react-query': ^4.18.0
-      '@trpc/client': 10.43.0
-      '@trpc/server': 10.43.0
+      '@tanstack/react-query': ^5.0.0
+      '@trpc/client': 11.0.0-next.92+06cebb01
+      '@trpc/server': 11.0.0-next.92+06cebb01
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
       '@tanstack/react-query': 5.0.5(react-dom@18.2.0)(react@18.2.0)
-      '@trpc/client': 10.43.0(@trpc/server@10.43.0)
-      '@trpc/server': 10.43.0
+      '@trpc/client': 11.0.0-next.92(@trpc/server@11.0.0-next.92)
+      '@trpc/server': 11.0.0-next.92
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@trpc/server@10.43.0:
-    resolution: {integrity: sha512-1/h9KCPkTNNmpN5VKfKO4kPcl/W4Y9VQla4YGg4pydSh/+4b//0IPfvk3Oz4tz/tvWyAUlBKkBVhD3GfDLcAQA==}
+  /@trpc/server@11.0.0-next.92:
+    resolution: {integrity: sha512-E1AqdZ7ml25JqWmmPFqp/hOJCqJggl0lPO9OJXxo57gXPYxRnMMdAkRohnvlhqEEHfWT5VtXqwvPUhXb4iaGOA==}
+    deprecated: bad publish
     dev: false
 
   /@tsconfig/node10@1.0.9:
@@ -11117,6 +11120,7 @@ packages:
 
   /debug@3.2.7(supports-color@8.1.1):
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
+    requiresBuild: true
     peerDependencies:
       supports-color: '*'
     peerDependenciesMeta:
