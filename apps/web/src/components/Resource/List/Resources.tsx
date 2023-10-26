@@ -3,6 +3,7 @@ import { Tabs } from '@codegouvfr/react-dsfr/Tabs'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { BaseResource } from '@app/web/server/bases/getBase'
 import { CreateResourceButton } from '@app/web/components/Resource/CreateResourceModal'
+import DeleteResourceDynamicModal from '@app/web/components/Resource/DeleteResource/DeleteResource'
 import ResourceCard from '../Card'
 import ResourceTab from './ResourceTab'
 import styles from './Resources.module.css'
@@ -85,6 +86,7 @@ const Resources = ({
           <ResourceCard key={resource.slug} resource={resource} user={user} />
         ))
       )}
+      {isConnectedUser && <DeleteResourceDynamicModal />}
     </div>
   )
 }

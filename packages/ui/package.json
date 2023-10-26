@@ -33,7 +33,8 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.46.2",
     "react-select": "^5.7.5",
-    "zod": "^3.22.2"
+    "zod": "^3.22.2",
+    "zustand": "^4.4.1"
   },
   "devDependencies": {
     "@storybook/jest": "^0.2.2",
