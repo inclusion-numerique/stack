@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger
+// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -10,17 +10,17 @@ export interface ContainerTriggerConfig extends cdktf.TerraformMetaArguments {
   /**
   * The ID of the container to create a trigger for
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger#container_id ContainerTrigger#container_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#container_id ContainerTrigger#container_id}
   */
   readonly containerId: string;
   /**
   * The trigger description
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger#description ContainerTrigger#description}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#description ContainerTrigger#description}
   */
   readonly description?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger#id ContainerTrigger#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#id ContainerTrigger#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -29,51 +29,208 @@ export interface ContainerTriggerConfig extends cdktf.TerraformMetaArguments {
   /**
   * The trigger name
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger#name ContainerTrigger#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#name ContainerTrigger#name}
   */
   readonly name?: string;
   /**
   * The region you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger#region ContainerTrigger#region}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#region ContainerTrigger#region}
   */
   readonly region?: string;
   /**
+  * nats block
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#nats ContainerTrigger#nats}
+  */
+  readonly nats?: ContainerTriggerNats;
+  /**
   * sqs block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger#sqs ContainerTrigger#sqs}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#sqs ContainerTrigger#sqs}
   */
   readonly sqs?: ContainerTriggerSqs;
   /**
   * timeouts block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger#timeouts ContainerTrigger#timeouts}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#timeouts ContainerTrigger#timeouts}
   */
   readonly timeouts?: ContainerTriggerTimeouts;
+}
+export interface ContainerTriggerNats {
+  /**
+  * ID of the mnq nats account
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#account_id ContainerTrigger#account_id}
+  */
+  readonly accountId?: string;
+  /**
+  * Project ID of the project where the mnq sqs exists, defaults to provider project_id
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#project_id ContainerTrigger#project_id}
+  */
+  readonly projectId?: string;
+  /**
+  * Region where the mnq sqs exists, defaults to function's region
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#region ContainerTrigger#region}
+  */
+  readonly region?: string;
+  /**
+  * Subject to listen to
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#subject ContainerTrigger#subject}
+  */
+  readonly subject: string;
+}
+
+export function containerTriggerNatsToTerraform(struct?: ContainerTriggerNatsOutputReference | ContainerTriggerNats): any {
+  if (!cdktf.canInspect(struct) || cdktf.Tokenization.isResolvable(struct)) { return struct; }
+  if (cdktf.isComplexElement(struct)) {
+    throw new Error("A complex element was used as configuration, this is not supported: https://cdk.tf/complex-object-as-configuration");
+  }
+  return {
+    account_id: cdktf.stringToTerraform(struct!.accountId),
+    project_id: cdktf.stringToTerraform(struct!.projectId),
+    region: cdktf.stringToTerraform(struct!.region),
+    subject: cdktf.stringToTerraform(struct!.subject),
+  }
+}
+
+export class ContainerTriggerNatsOutputReference extends cdktf.ComplexObject {
+  private isEmptyObject = false;
+
+  /**
+  * @param terraformResource The parent resource
+  * @param terraformAttribute The attribute on the parent resource this class is referencing
+  */
+  public constructor(terraformResource: cdktf.IInterpolatingParent, terraformAttribute: string) {
+    super(terraformResource, terraformAttribute, false, 0);
+  }
+
+  public get internalValue(): ContainerTriggerNats | undefined {
+    let hasAnyValues = this.isEmptyObject;
+    const internalValueResult: any = {};
+    if (this._accountId !== undefined) {
+      hasAnyValues = true;
+      internalValueResult.accountId = this._accountId;
+    }
+    if (this._projectId !== undefined) {
+      hasAnyValues = true;
+      internalValueResult.projectId = this._projectId;
+    }
+    if (this._region !== undefined) {
+      hasAnyValues = true;
+      internalValueResult.region = this._region;
+    }
+    if (this._subject !== undefined) {
+      hasAnyValues = true;
+      internalValueResult.subject = this._subject;
+    }
+    return hasAnyValues ? internalValueResult : undefined;
+  }
+
+  public set internalValue(value: ContainerTriggerNats | undefined) {
+    if (value === undefined) {
+      this.isEmptyObject = false;
+      this._accountId = undefined;
+      this._projectId = undefined;
+      this._region = undefined;
+      this._subject = undefined;
+    }
+    else {
+      this.isEmptyObject = Object.keys(value).length === 0;
+      this._accountId = value.accountId;
+      this._projectId = value.projectId;
+      this._region = value.region;
+      this._subject = value.subject;
+    }
+  }
+
+  // account_id - computed: false, optional: true, required: false
+  private _accountId?: string; 
+  public get accountId() {
+    return this.getStringAttribute('account_id');
+  }
+  public set accountId(value: string) {
+    this._accountId = value;
+  }
+  public resetAccountId() {
+    this._accountId = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get accountIdInput() {
+    return this._accountId;
+  }
+
+  // project_id - computed: true, optional: true, required: false
+  private _projectId?: string; 
+  public get projectId() {
+    return this.getStringAttribute('project_id');
+  }
+  public set projectId(value: string) {
+    this._projectId = value;
+  }
+  public resetProjectId() {
+    this._projectId = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get projectIdInput() {
+    return this._projectId;
+  }
+
+  // region - computed: true, optional: true, required: false
+  private _region?: string; 
+  public get region() {
+    return this.getStringAttribute('region');
+  }
+  public set region(value: string) {
+    this._region = value;
+  }
+  public resetRegion() {
+    this._region = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get regionInput() {
+    return this._region;
+  }
+
+  // subject - computed: false, optional: false, required: true
+  private _subject?: string; 
+  public get subject() {
+    return this.getStringAttribute('subject');
+  }
+  public set subject(value: string) {
+    this._subject = value;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get subjectInput() {
+    return this._subject;
+  }
 }
 export interface ContainerTriggerSqs {
   /**
   * ID of the mnq namespace
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger#namespace_id ContainerTrigger#namespace_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#namespace_id ContainerTrigger#namespace_id}
   */
-  readonly namespaceId: string;
+  readonly namespaceId?: string;
   /**
   * Project ID of the project where the mnq sqs exists, defaults to provider project_id
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger#project_id ContainerTrigger#project_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#project_id ContainerTrigger#project_id}
   */
   readonly projectId?: string;
   /**
   * Name of the queue
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger#queue ContainerTrigger#queue}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#queue ContainerTrigger#queue}
   */
   readonly queue: string;
   /**
   * Region where the mnq sqs exists, defaults to function's region
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger#region ContainerTrigger#region}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#region ContainerTrigger#region}
   */
   readonly region?: string;
 }
@@ -141,13 +298,16 @@ export class ContainerTriggerSqsOutputReference extends cdktf.ComplexObject {
     }
   }
 
-  // namespace_id - computed: false, optional: false, required: true
+  // namespace_id - computed: false, optional: true, required: false
   private _namespaceId?: string; 
   public get namespaceId() {
     return this.getStringAttribute('namespace_id');
   }
   public set namespaceId(value: string) {
     this._namespaceId = value;
+  }
+  public resetNamespaceId() {
+    this._namespaceId = undefined;
   }
   // Temporarily expose input value. Use with caution.
   public get namespaceIdInput() {
@@ -201,23 +361,23 @@ export class ContainerTriggerSqsOutputReference extends cdktf.ComplexObject {
 }
 export interface ContainerTriggerTimeouts {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger#create ContainerTrigger#create}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#create ContainerTrigger#create}
   */
   readonly create?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger#default ContainerTrigger#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#default ContainerTrigger#default}
   */
   readonly default?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger#delete ContainerTrigger#delete}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#delete ContainerTrigger#delete}
   */
   readonly delete?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger#read ContainerTrigger#read}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#read ContainerTrigger#read}
   */
   readonly read?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger#update ContainerTrigger#update}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#update ContainerTrigger#update}
   */
   readonly update?: string;
 }
@@ -384,7 +544,7 @@ export class ContainerTriggerTimeoutsOutputReference extends cdktf.ComplexObject
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger scaleway_container_trigger}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger scaleway_container_trigger}
 */
 export class ContainerTrigger extends cdktf.TerraformResource {
 
@@ -393,12 +553,26 @@ export class ContainerTrigger extends cdktf.TerraformResource {
   // =================
   public static readonly tfResourceType = "scaleway_container_trigger";
 
+  // ==============
+  // STATIC Methods
+  // ==============
+  /**
+  * Generates CDKTF code for importing a ContainerTrigger resource upon running "cdktf plan <stack-name>"
+  * @param scope The scope in which to define this construct
+  * @param importToId The construct id used in the generated config for the ContainerTrigger to import
+  * @param importFromId The id of the existing ContainerTrigger that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger#import import section} in the documentation of this resource for the id to use
+  * @param provider? Optional instance of the provider where the ContainerTrigger to import is found
+  */
+  public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
+        return new cdktf.ImportableResource(scope, importToId, { terraformResourceType: "scaleway_container_trigger", importId: importFromId, provider });
+      }
+
   // ===========
   // INITIALIZER
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/container_trigger scaleway_container_trigger} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/container_trigger scaleway_container_trigger} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -409,8 +583,8 @@ export class ContainerTrigger extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_container_trigger',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.28.0',
-        providerVersionConstraint: '>= 2.28.0'
+        providerVersion: '2.31.0',
+        providerVersionConstraint: '>= 2.31.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -425,6 +599,7 @@ export class ContainerTrigger extends cdktf.TerraformResource {
     this._id = config.id;
     this._name = config.name;
     this._region = config.region;
+    this._nats.internalValue = config.nats;
     this._sqs.internalValue = config.sqs;
     this._timeouts.internalValue = config.timeouts;
   }
@@ -510,6 +685,22 @@ export class ContainerTrigger extends cdktf.TerraformResource {
     return this._region;
   }
 
+  // nats - computed: false, optional: true, required: false
+  private _nats = new ContainerTriggerNatsOutputReference(this, "nats");
+  public get nats() {
+    return this._nats;
+  }
+  public putNats(value: ContainerTriggerNats) {
+    this._nats.internalValue = value;
+  }
+  public resetNats() {
+    this._nats.internalValue = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get natsInput() {
+    return this._nats.internalValue;
+  }
+
   // sqs - computed: false, optional: true, required: false
   private _sqs = new ContainerTriggerSqsOutputReference(this, "sqs");
   public get sqs() {
@@ -553,6 +744,7 @@ export class ContainerTrigger extends cdktf.TerraformResource {
       id: cdktf.stringToTerraform(this._id),
       name: cdktf.stringToTerraform(this._name),
       region: cdktf.stringToTerraform(this._region),
+      nats: containerTriggerNatsToTerraform(this._nats.internalValue),
       sqs: containerTriggerSqsToTerraform(this._sqs.internalValue),
       timeouts: containerTriggerTimeoutsToTerraform(this._timeouts.internalValue),
     };

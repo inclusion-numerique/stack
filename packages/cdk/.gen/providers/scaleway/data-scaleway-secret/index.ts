@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/secret
+// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/secret
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -8,7 +8,7 @@ import * as cdktf from 'cdktf';
 
 export interface DataScalewaySecretConfig extends cdktf.TerraformMetaArguments {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/secret#id DataScalewaySecret#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/secret#id DataScalewaySecret#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -17,37 +17,37 @@ export interface DataScalewaySecretConfig extends cdktf.TerraformMetaArguments {
   /**
   * The secret name
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/secret#name DataScalewaySecret#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/secret#name DataScalewaySecret#name}
   */
   readonly name?: string;
   /**
   * ID of organization the resource is associated to.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/secret#organization_id DataScalewaySecret#organization_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/secret#organization_id DataScalewaySecret#organization_id}
   */
   readonly organizationId?: string;
   /**
   * The project ID the resource is associated to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/secret#project_id DataScalewaySecret#project_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/secret#project_id DataScalewaySecret#project_id}
   */
   readonly projectId?: string;
   /**
   * The region you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/secret#region DataScalewaySecret#region}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/secret#region DataScalewaySecret#region}
   */
   readonly region?: string;
   /**
   * The ID of the secret
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/secret#secret_id DataScalewaySecret#secret_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/secret#secret_id DataScalewaySecret#secret_id}
   */
   readonly secretId?: string;
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/secret scaleway_secret}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/secret scaleway_secret}
 */
 export class DataScalewaySecret extends cdktf.TerraformDataSource {
 
@@ -56,12 +56,26 @@ export class DataScalewaySecret extends cdktf.TerraformDataSource {
   // =================
   public static readonly tfResourceType = "scaleway_secret";
 
+  // ==============
+  // STATIC Methods
+  // ==============
+  /**
+  * Generates CDKTF code for importing a DataScalewaySecret resource upon running "cdktf plan <stack-name>"
+  * @param scope The scope in which to define this construct
+  * @param importToId The construct id used in the generated config for the DataScalewaySecret to import
+  * @param importFromId The id of the existing DataScalewaySecret that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/secret#import import section} in the documentation of this resource for the id to use
+  * @param provider? Optional instance of the provider where the DataScalewaySecret to import is found
+  */
+  public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
+        return new cdktf.ImportableResource(scope, importToId, { terraformResourceType: "scaleway_secret", importId: importFromId, provider });
+      }
+
   // ===========
   // INITIALIZER
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/secret scaleway_secret} Data Source
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/secret scaleway_secret} Data Source
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -72,8 +86,8 @@ export class DataScalewaySecret extends cdktf.TerraformDataSource {
       terraformResourceType: 'scaleway_secret',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.28.0',
-        providerVersionConstraint: '>= 2.28.0'
+        providerVersion: '2.31.0',
+        providerVersionConstraint: '>= 2.31.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
