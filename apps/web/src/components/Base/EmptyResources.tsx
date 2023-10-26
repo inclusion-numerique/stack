@@ -8,7 +8,7 @@ const EmptyResources = ({ isMember }: { isMember: boolean }) => (
     title={
       isMember
         ? "Vous n'avez pas de ressources dans votre base."
-        : 'Aucunes ressources ne sont actuellement publiées sur cette base'
+        : `Aucune ressource n'est actuellement publiée sur cette base`
     }
   >
     {isMember ? (
