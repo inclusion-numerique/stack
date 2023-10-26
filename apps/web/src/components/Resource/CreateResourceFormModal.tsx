@@ -1,10 +1,12 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import InputFormField from '@app/ui/components/Form/InputFormField'
+import { useModalVisibility } from '@app/ui/hooks/useModalVisibility'
+import { useDsfrModalIsBound } from '@app/ui/hooks/useDsfrModalIsBound'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import {
   CreateResourceModal,
@@ -12,8 +14,6 @@ import {
 } from '@app/web/components/Resource/CreateResourceModal'
 import ResourceBaseRichRadio from '@app/web/components/Resource/ResourceBaseRichRadio'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { useDsfrModalIsBound } from '@app/web/hooks/useDsfrModalIsBound'
-import { useModalVisibility } from '@app/web/hooks/useModalVisibility'
 import {
   CreateResourceCommand,
   CreateResourceCommandClientPayloadValidation,
@@ -41,20 +41,12 @@ const CreateResourceFormModal = ({ user }: { user: SessionUser }) => {
   const [step, setStep] = useState(0)
   const router = useRouter()
 
-  // Forward ref do not work with modal, we have to make a workaround with form ref
-  // TODO Make an issue or contrib to react dsfr Modal component
-  const formRef = useRef<HTMLFormElement>(null)
-  const modalRef = useRef<HTMLDialogElement>()
-  if (!modalRef.current) {
-    // Will only execute while first form element render is done
-    modalRef.current = formRef.current?.querySelector('dialog') ?? undefined
-  }
-
   const createResourceIsInSearchParams =
     typeof useSearchParams()?.get('creer-une-ressource') === 'string'
 
   const modalIsBound = useDsfrModalIsBound(createResourceModalId)
 
+  // Auto open modal when create is in search params and the modal is bound
   useEffect(() => {
     if (createResourceIsInSearchParams && modalIsBound) {
       CreateResourceModal.open()
@@ -73,7 +65,7 @@ const CreateResourceFormModal = ({ user }: { user: SessionUser }) => {
     defaultValues,
   })
 
-  useModalVisibility(modalRef.current, {
+  useModalVisibility(createResourceModalId, {
     onClosed: () => {
       reset(defaultValues)
       setStep(0)
@@ -124,7 +116,7 @@ const CreateResourceFormModal = ({ user }: { user: SessionUser }) => {
   const disabled = isSubmitting
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <CreateResourceModal.Component
         title={modalTitle}
         buttons={[

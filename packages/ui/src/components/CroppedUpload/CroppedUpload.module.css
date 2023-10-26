@@ -17,28 +17,6 @@
     align-items: center;
 }
 
-.imageInformations {
-    display: flex;
-    min-width: 0;
-    gap: 8px;
-}
-
-.icon {
-    color: var(--blue-france-sun-113-625) !important;
-}
-
-.imageName {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.imageSize {
-    flex-shrink: 0;
-    color: var(--text-mention-grey);
-    text-wrap: nowrap;
-}
-
 .imageActions {
     flex-shrink: 0;
     display: flex;
@@ -66,6 +44,11 @@
     :global(.cropper-view-box) {
         outline-color: var(--background-alt-blue-france);
     }
+}
+
+.cropper {
+    min-height: 350px;
+    min-width: 250px;
 }
 
 .croppingRound {
