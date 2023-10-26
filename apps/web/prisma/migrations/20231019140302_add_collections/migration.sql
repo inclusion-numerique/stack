@@ -24,6 +24,6 @@ ALTER TABLE "collections" ADD CONSTRAINT "collections_owner_id_fkey" FOREIGN KEY
 -- AddForeignKey
 ALTER TABLE "collections" ADD CONSTRAINT "collections_base_id_fkey" FOREIGN KEY ("base_id") REFERENCES "bases"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
--- Insert defautl collections
-INSERT INTO "collections" (owner_id, title)
-SELECT id, 'Mes favoris' FROM "users";
+-- Insert favorites collections for each user
+INSERT INTO "collections" ("id", "owner_id", "title")
+SELECT uuid_generate_v4(), id, 'Mes favoris' FROM "users";
