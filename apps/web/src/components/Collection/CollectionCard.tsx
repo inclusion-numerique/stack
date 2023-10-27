@@ -14,7 +14,7 @@ const CollectionCard = ({ collection }: { collection: CollectionListItem }) => {
   const href = `/collections/${collection.id}`
 
   return (
-    <div className={styles.card}>
+    <div className={styles.card} data-testid="collection-card">
       <Link href={href}>
         <Images image={collection.image} resources={collection.resources} />
       </Link>
@@ -24,12 +24,12 @@ const CollectionCard = ({ collection }: { collection: CollectionListItem }) => {
             <RoundProfileImage user={collection.owner} />
             <Link
               className="fr-text--xs fr-link"
-              href={`/profiles/${collection.owner.id}`}
+              href={`/profils/${collection.owner.id}`}
             >
               {collection.owner.name}
             </Link>
           </div>
-          <Link href={href}>
+          <Link href={href} data-testid="collection-card-link">
             <h6 className={styles.title}>{collection.title}</h6>
             {collection.description && (
               <div

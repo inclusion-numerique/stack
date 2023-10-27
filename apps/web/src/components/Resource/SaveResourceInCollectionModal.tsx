@@ -63,6 +63,7 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
           type="button"
           className={styles.clickableContainer}
           onClick={() => setSelected('')}
+          data-testid="back-to-bases-button"
         >
           <div>
             <span
@@ -114,21 +115,28 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
               />
             ))
           ) : (
-            <div className={styles.emptyBase}>
+            <div
+              className={styles.emptyBase}
+              data-testid="base-without-collection"
+            >
               Vous n&lsquo;avez pas de collection dans votre base
             </div>
           )
         ) : (
           <>
             <SaveInBase user={user} onClick={() => setSelected('profil')} />
-            {user.bases.map(({ base }) => (
-              <SaveInBase
-                key={base.id}
-                user={user}
-                base={base}
-                onClick={() => setSelected(base.id)}
-              />
-            ))}
+            {user.bases
+              .sort(
+                (a, b) => b.base.collections.length - a.base.collections.length,
+              )
+              .map(({ base }) => (
+                <SaveInBase
+                  key={base.id}
+                  user={user}
+                  base={base}
+                  onClick={() => setSelected(base.id)}
+                />
+              ))}
           </>
         ))}
     </SaveResourceInCollectionDynamicModal.Component>
