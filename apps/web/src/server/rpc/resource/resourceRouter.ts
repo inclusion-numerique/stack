@@ -56,6 +56,7 @@ export const resourceRouter = router({
     .input(z.object({ resourceId: z.string(), collectionId: z.string() }))
     .mutation(
       async ({ input: { resourceId, collectionId }, ctx: { user } }) => {
+        // TODO mutialize security code
         const collection = await prismaClient.collection.findUnique({
           where: { id: collectionId },
           select: collectionSelect(user),
@@ -98,6 +99,49 @@ export const resourceRouter = router({
               },
             },
           },
+        })
+      },
+    ),
+  removeFromCollection: protectedProcedure
+    .input(z.object({ resourceId: z.string(), collectionId: z.string() }))
+    .mutation(
+      async ({ input: { resourceId, collectionId }, ctx: { user } }) => {
+        // TODO mutialize security code
+        const collection = await prismaClient.collection.findUnique({
+          where: { id: collectionId },
+          select: collectionSelect(user),
+        })
+
+        const resource = await prismaClient.resource.findUnique({
+          where: { id: resourceId },
+        })
+
+        if (!collection || !resource) {
+          throw notFoundError()
+        }
+
+        if (collection.baseId) {
+          const base = await prismaClient.base.findUnique({
+            where: { id: collection.baseId },
+            select: baseSelect(user),
+          })
+          if (!base) {
+            throw notFoundError()
+          }
+
+          const authorizations = filterBaseAccess(base, user)
+          if (!authorizations.authorized || !authorizations.isMember) {
+            throw forbiddenError()
+          }
+        } else {
+          const authorizations = filterCollectionAccess(collection, user)
+          if (!authorizations.authorized || !authorizations.isOwner) {
+            throw forbiddenError()
+          }
+        }
+
+        await prismaClient.collectionResource.delete({
+          where: { resourceId_collectionId: { collectionId, resourceId } },
         })
       },
     ),
