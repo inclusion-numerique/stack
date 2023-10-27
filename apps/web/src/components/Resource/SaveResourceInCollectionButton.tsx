@@ -4,18 +4,19 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import OpenSaveResourceInCollectionModalButton from '@app/web/components/Resource/OpenSaveResourceInCollectionModalButton'
 import { loginUrl } from '@app/web/security/login'
 
-const buttonProps = {
+const secondaryButtonProps = {
   priority: 'secondary',
-  iconId: 'fr-icon-bookmark-line',
   children: 'Enregistrer',
 } as const
 
 const buttonIconOnlyProps = {
-  title: buttonProps.children,
-  iconId: buttonProps.iconId,
+  title: secondaryButtonProps.children,
   size: 'small',
   priority: 'tertiary no outline',
 } as const
+
+const defaultIconId = 'fr-icon-bookmark-line' as const
+const alreadySavedIconId = 'fr-icon-bookmark-fill' as const
 
 const SaveResourceInCollectionButton = ({
   className,
@@ -29,19 +30,27 @@ const SaveResourceInCollectionButton = ({
   resource: { id: string; slug: string }
   iconOnly?: boolean
   'data-testid'?: string
-}) =>
-  user ? (
-    <OpenSaveResourceInCollectionModalButton
-      {...(iconOnly ? buttonIconOnlyProps : buttonProps)}
-      nativeButtonProps={{
-        'data-testid': dataTestid,
-      }}
-      className={className}
-      resourceId={resource.id}
-    />
-  ) : (
+}) => {
+  const alreadySaved = user?.collections.some((collection) =>
+    collection.resources.some(({ resourceId }) => resourceId === resource.id),
+  )
+  const buttonProps = {
+    iconId: alreadySaved ? alreadySavedIconId : defaultIconId,
+    ...(iconOnly ? buttonIconOnlyProps : secondaryButtonProps),
+  }
+
+  if (user) {
+    return (
+      <OpenSaveResourceInCollectionModalButton
+        {...buttonProps}
+        className={className}
+        resourceId={resource.id}
+      />
+    )
+  }
+  return (
     <Button
-      {...(iconOnly ? buttonIconOnlyProps : buttonProps)}
+      {...buttonProps}
       className={className}
       data-testid={dataTestid}
       linkProps={{
@@ -52,5 +61,6 @@ const SaveResourceInCollectionButton = ({
       }}
     />
   )
+}
 
 export default SaveResourceInCollectionButton
