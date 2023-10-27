@@ -14,7 +14,7 @@ const {
   close: closeDeleteModal,
   buttonProps: deleteModalNativeButtonProps,
 } = createModal({
-  id: 'delete',
+  id: 'delete-resource',
   isOpenedByDefault: false,
 })
 

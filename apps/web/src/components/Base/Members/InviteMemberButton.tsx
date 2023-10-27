@@ -23,7 +23,7 @@ const {
   buttonProps: inviteModalNativeButtonProps,
   close,
 } = createModal({
-  id: 'invite',
+  id: 'invite-member',
   isOpenedByDefault: false,
 })
 

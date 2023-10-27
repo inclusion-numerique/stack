@@ -7,6 +7,7 @@ import CroppedUpload from '@app/ui/components/CroppedUpload/CroppedUpload'
 import { CroppedImageType } from '@app/ui/components/CroppedUpload/utils'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import Images from '../Images'
+import styles from './ImageEdition.module.css'
 
 const collectionImageCropModal = createModal({
   id: 'collection-image-crop-modal',
@@ -56,13 +57,13 @@ const ImageEdition = <T extends { imageId?: string | null }>({
             <CroppedUpload
               modal={collectionImageCropModal}
               disabled={disabled}
-              ratio={2}
+              ratio={1.66}
               height={195}
               onChange={onChange}
               error={error?.message}
             />
           ) : (
-            <Images />
+            <Images className={styles.images} resources={[]} />
           )
         }
       />

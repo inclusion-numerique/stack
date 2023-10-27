@@ -6,7 +6,7 @@ describe("Page d'accueil", () => {
     cy.dsfrStylesShouldBeLoaded()
     cy.get('.fr-header__operator a').should(
       'contain',
-      'La Base du numérique d’intérêt général',
+      'Les Bases du numérique d’intérêt général',
     )
     cy.get('.fr-header__tools .fr-btn')
       .first()

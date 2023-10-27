@@ -4,6 +4,8 @@ import Image from 'next/image'
 import { CollectionPageData } from '@app/web/server/collections/getCollection'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { WithMinimalImageData } from '@app/web/server/image/imageTypes'
+import SaveResourceInCollectionModal from '@app/web/components/Resource/SaveResourceInCollectionModal'
+import DeleteResource from '@app/web/components/Resource/DeleteResource/DeleteResource'
 import PublishedInInformation from '../Resource/PublishedInInformation'
 import ResourceCard from '../Resource/Card'
 import styles from './View.module.css'
@@ -55,6 +57,8 @@ const View = ({
     {collection.resources.map((resource) => (
       <ResourceCard key={resource.id} resource={resource} user={user} />
     ))}
+    {!!user && <SaveResourceInCollectionModal user={user} />}
+    {!!user && <DeleteResource />}
   </div>
 )
 

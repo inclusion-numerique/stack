@@ -1,16 +1,16 @@
-import { Route } from 'next'
 import { redirect } from 'next/navigation'
 import SigninPanel from '@app/web/app/(public)/(withContainer)/(authentication)/connexion/SigninPanel'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { getServerUrl } from '@app/web/utils/baseUrl'
+import { LoginSearchParams } from '@app/web/security/login'
 
 export const revalidate = 0
 
 const SigninPage = async ({
-  searchParams: { error, suivant } = {},
+  searchParams: { error, suivant, intention } = {},
 }: {
-  searchParams?: { error?: string; suivant?: Route }
+  searchParams?: { error?: string } & LoginSearchParams
 }) => {
   const user = await getSessionUser()
   if (user) {
@@ -22,7 +22,7 @@ const SigninPage = async ({
   return (
     <>
       <Breadcrumbs currentPage="Connexion" />
-      <SigninPanel error={error} callbackUrl={callbackUrl} />
+      <SigninPanel intent={intention} error={error} callbackUrl={callbackUrl} />
     </>
   )
 }

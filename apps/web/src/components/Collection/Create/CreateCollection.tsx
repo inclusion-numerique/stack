@@ -29,7 +29,7 @@ const {
   close: closeCancelModal,
   buttonProps: cancelModalNativeButtonProps,
 } = createModal({
-  id: 'cancel',
+  id: 'create-collection-cancel',
   isOpenedByDefault: false,
 })
 

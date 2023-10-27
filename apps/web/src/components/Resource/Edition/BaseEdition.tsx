@@ -17,7 +17,7 @@ import PublishedInInformation from '../PublishedInInformation'
 import EditableContent from './EditableContent'
 
 const { Component: BaseModal, open: openBaseModal } = createModal({
-  id: 'base',
+  id: 'chose-resource-base',
   isOpenedByDefault: false,
 })
 

@@ -11,9 +11,12 @@
 
 .cards,
 .tabCards {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr; /* 1 column */
   gap: 24px;
+  @media (min-width: 48em) {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  }
 }
 
 .tabCards {

@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import { Resource } from '@app/web/server/resources/getResource'
 import { hasIndexation } from '@app/web/utils/indexation'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import SaveResourceInCollectionModal from '@app/web/components/Resource/SaveResourceInCollectionModal'
 import ResourceContents from './ResourceContents'
 import ResourceInformations from './ResourceInformations'
 import ResourceNavigation from './ResourceNavigation'
@@ -34,6 +35,7 @@ const View = ({
         )}
       </div>
     </div>
+    {!!user && <SaveResourceInCollectionModal user={user} />}
   </div>
 )
 

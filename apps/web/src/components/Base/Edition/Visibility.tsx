@@ -21,7 +21,7 @@ const {
   open: openPrivateModal,
   close: closePrivateModal,
 } = createModal({
-  id: 'private',
+  id: 'base-private-visibility',
   isOpenedByDefault: false,
 })
 

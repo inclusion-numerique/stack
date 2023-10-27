@@ -3,6 +3,7 @@
 import React, { useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import classNames from 'classnames'
+import { createDynamicModal } from '@app/ui/components/Modal/createDynamicModal'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
@@ -10,14 +11,19 @@ import SaveInCollection from './SaveInCollection'
 import SaveInBase from './SaveInBase'
 import styles from './SaveInBase.module.css'
 
-const SaveResourceInCollectionModal = ({
-  user,
-  resourceId,
-}: {
-  user: SessionUser
-  resourceId: string
-}) => {
+export const SaveResourceInCollectionDynamicModal = createDynamicModal({
+  id: 'save-resource-in-collection',
+  isOpenedByDefault: false,
+  initialState: {
+    resourceId: null as string | null,
+  },
+})
+
+const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
+  const { resourceId } = SaveResourceInCollectionDynamicModal.useState()
+
   const router = useRouter()
+
   const [isLoading, setIsLoading] = useState(false)
   const [selected, setSelected] = useState('')
   const selectedBase = useMemo<
@@ -30,19 +36,28 @@ const SaveResourceInCollectionModal = ({
     [user, selected],
   )
 
-  const saveMutation = trpc.resource.addToCollection.useMutation()
+  const mutation = trpc.resource.addToCollection.useMutation()
   const onSave = async (collectionId: string) => {
+    if (!resourceId) {
+      return
+    }
     setIsLoading(true)
-    await saveMutation.mutateAsync({
-      resourceId,
-      collectionId,
-    })
-    setIsLoading(false)
-    router.refresh()
+    try {
+      await mutation.mutateAsync({
+        resourceId,
+        collectionId,
+      })
+      setIsLoading(false)
+      router.refresh()
+    } catch (error) {
+      // TODO Sentry + toast ?
+      console.error(error)
+      throw error
+    }
   }
 
   return (
-    <>
+    <SaveResourceInCollectionDynamicModal.Component title="Ajouter à la collection">
       {selected && (
         <button
           type="button"
@@ -66,48 +81,57 @@ const SaveResourceInCollectionModal = ({
           </div>
         </button>
       )}
-      {selected === 'profil' || (!selected && user.bases.length === 0) ? (
-        <>
-          {user.collections.map((collection) => (
-            <SaveInCollection
-              isLoading={isLoading}
-              key={collection.id}
-              collection={collection}
-              resourceId={resourceId}
-              onClick={() => onSave(collection.id)}
-            />
-          ))}
-        </>
-      ) : selectedBase ? (
-        selectedBase.collections.length > 0 ? (
-          selectedBase.collections.map((collection) => (
-            <SaveInCollection
-              isLoading={isLoading}
-              key={collection.id}
-              collection={collection}
-              resourceId={resourceId}
-              onClick={() => onSave(collection.id)}
-            />
-          ))
-        ) : (
-          <div className={styles.emptyBase}>
-            Vous n&lsquo;avez pas de collection dans votre base
-          </div>
-        )
-      ) : (
-        <>
-          <SaveInBase user={user} onClick={() => setSelected('profil')} />
-          {user.bases.map(({ base }) => (
-            <SaveInBase
-              key={base.id}
-              user={user}
-              base={base}
-              onClick={() => setSelected(base.id)}
-            />
-          ))}
-        </>
+      {mutation.error && (
+        <p
+          className="fr-error-text"
+          data-testid="save-resource-in-collection-error"
+        >
+          {mutation.error.message}
+        </p>
       )}
-    </>
+      {!!resourceId &&
+        (selected === 'profil' || (!selected && user.bases.length === 0) ? (
+          <>
+            {user.collections.map((collection) => (
+              <SaveInCollection
+                isLoading={isLoading}
+                key={collection.id}
+                collection={collection}
+                resourceId={resourceId}
+                onClick={() => onSave(collection.id)}
+              />
+            ))}
+          </>
+        ) : selectedBase ? (
+          selectedBase.collections.length > 0 ? (
+            selectedBase.collections.map((collection) => (
+              <SaveInCollection
+                isLoading={isLoading}
+                key={collection.id}
+                collection={collection}
+                resourceId={resourceId}
+                onClick={() => onSave(collection.id)}
+              />
+            ))
+          ) : (
+            <div className={styles.emptyBase}>
+              Vous n&lsquo;avez pas de collection dans votre base
+            </div>
+          )
+        ) : (
+          <>
+            <SaveInBase user={user} onClick={() => setSelected('profil')} />
+            {user.bases.map(({ base }) => (
+              <SaveInBase
+                key={base.id}
+                user={user}
+                base={base}
+                onClick={() => setSelected(base.id)}
+              />
+            ))}
+          </>
+        ))}
+    </SaveResourceInCollectionDynamicModal.Component>
   )
 }
 

@@ -10,9 +10,14 @@ import CollectionMetaData from './CollectionMetaData'
 const CollectionCard = ({ collection }: { collection: CollectionListItem }) => {
   // eslint-disable-next-line no-underscore-dangle
   const resourcesCount = collection._count.resources
+
+  const href = `/collections/${collection.id}`
+
   return (
     <div className={styles.card}>
-      <Images image={collection.image} resources={collection.resources} />
+      <Link href={href}>
+        <Images image={collection.image} resources={collection.resources} />
+      </Link>
       <div className={styles.content}>
         <div>
           <div className={styles.owner}>
@@ -24,7 +29,7 @@ const CollectionCard = ({ collection }: { collection: CollectionListItem }) => {
               {collection.owner.name}
             </Link>
           </div>
-          <Link href={`/collections/${collection.id}`}>
+          <Link href={href}>
             <h6 className={styles.title}>{collection.title}</h6>
             {collection.description && (
               <div

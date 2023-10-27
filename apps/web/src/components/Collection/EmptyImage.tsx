@@ -1,24 +1,23 @@
 import React from 'react'
-import Image from 'next/image'
 import classNames from 'classnames'
-import styles from './EmptyImage.module.css'
+import styles from './Images.module.css'
 
-const sizes = {
-  small: { width: 20, height: 26 },
-  medium: { width: 34, height: 44 },
-}
-
-const EmptyImage = ({ size }: { size: 'small' | 'medium' }) => (
+const EmptyImage = ({
+  size,
+  position,
+}:
+  | { size: 'small'; position: 'top' | 'bottom' }
+  | { size: 'medium'; position?: undefined }) => (
   <div
-    className={classNames(styles.container, {
-      [styles.small]: size === 'small',
+    className={classNames(styles.emptyImageContainer, {
+      [styles.smallEmptyImage]: size === 'small',
+      [styles.mediumEmptyImage]: size === 'medium',
+      [styles.topEmptyImage]: position === 'top',
+      [styles.bottomEmptyImage]: position === 'bottom',
     })}
   >
-    <Image
-      src="/images/collection-resource.svg"
-      alt="Icone de fichier vide"
-      {...sizes[size]}
-    />
+    {/* eslint-disable-next-line @next/next/no-img-element */}
+    <img src="/images/collection-resource.svg" alt="" />
   </div>
 )
 

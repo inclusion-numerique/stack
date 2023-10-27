@@ -1,60 +1,94 @@
 import React from 'react'
-import Image from 'next/image'
+import classNames from 'classnames'
+import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
+import { resourceCardImageBreakpoints } from '@app/web/components/Resource/resourceCardImageBreakpoints'
 import styles from './Images.module.css'
 import EmptyImage from './EmptyImage'
 
+/**
+ * For now we reuse resource card breakpoints to minimize the number of image processed on the backend
+ * And also to minimize the number of images downloaded by the client (same size is not downloaded twice)
+ */
+const collectionMainImageBreakpoints = resourceCardImageBreakpoints
+
+const collectionBigImageBreakpoints = resourceCardImageBreakpoints
+
+const collectionSmallImageBreakpoints = resourceCardImageBreakpoints
+
 const Images = ({
+  className,
   image,
   resources,
 }: {
+  className?: string
   image?: { id: string; altText?: string | null } | null
-  resources?: { image: { id: string; altText: string | null } | null }[]
-}) =>
-  image ? (
-    <Image
-      src={`/images/${image.id}.webp`}
-      alt={image.altText || ''}
-      height={191}
-      width={382}
-    />
-  ) : (
-    <div className={styles.container}>
-      <div className={styles.images}>
-        {resources && resources[0] && resources[0].image ? (
-          <Image
-            src={`/images/${resources[0].image.id}.webp`}
-            alt={resources[0].image.altText || ''}
-            height={191}
-            width={191}
-          />
-        ) : (
-          <EmptyImage size="medium" />
-        )}
-      </div>
-      <div className={styles.images}>
-        {resources && resources[1] && resources[1].image ? (
-          <Image
-            src={`/images/${resources[1].image.id}.webp`}
-            alt={resources[1].image.altText || ''}
-            height={95.5}
-            width={191}
-          />
-        ) : (
-          <EmptyImage size="small" />
-        )}
+  resources: { image: { id: string; altText: string | null } | null }[]
+}) => {
+  // Display the collection main image if it exists
 
-        {resources && resources[2] && resources[2].image ? (
-          <Image
-            src={`/images/${resources[2].image.id}.webp`}
-            alt={resources[2].image.altText || ''}
-            height={95.5}
-            width={191}
-          />
-        ) : (
-          <EmptyImage size="small" />
-        )}
+  if (image) {
+    return (
+      <div className={classNames(styles.container, className)}>
+        <ResponsiveUploadedImage
+          id={image.id}
+          alt={image.altText ?? ''}
+          breakpoints={collectionMainImageBreakpoints}
+        />
+      </div>
+    )
+  }
+
+  // Get resources with images
+  const [bigImage, secondImage, thirdImage] = resources
+    .map((resource) => resource.image)
+    .filter(
+      (
+        resourceImage,
+      ): resourceImage is { id: string; altText: string | null } =>
+        !!resourceImage,
+    )
+
+  return (
+    <div className={classNames(styles.container, className)}>
+      <div className={styles.column}>
+        <div className={styles.firstImageContainer}>
+          {bigImage ? (
+            <ResponsiveUploadedImage
+              id={bigImage.id}
+              alt={bigImage.altText ?? ''}
+              breakpoints={collectionBigImageBreakpoints}
+            />
+          ) : (
+            <EmptyImage size="medium" />
+          )}
+        </div>
+      </div>
+      <div className={styles.column}>
+        <div className={styles.smallImageContainer}>
+          {secondImage ? (
+            <ResponsiveUploadedImage
+              id={secondImage.id}
+              alt={secondImage.altText ?? ''}
+              breakpoints={collectionSmallImageBreakpoints}
+            />
+          ) : (
+            <EmptyImage size="small" position="top" />
+          )}
+        </div>
+        <div className={styles.smallImageContainer}>
+          {thirdImage ? (
+            <ResponsiveUploadedImage
+              id={thirdImage.id}
+              alt={thirdImage.altText ?? ''}
+              breakpoints={collectionSmallImageBreakpoints}
+            />
+          ) : (
+            <EmptyImage size="small" position="bottom" />
+          )}
+        </div>
       </div>
     </div>
   )
+}
 
 export default Images

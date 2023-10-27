@@ -1,5 +1,6 @@
 import z from 'zod'
 import sanitizeHtml from 'sanitize-html'
+import { htmlToText } from '@app/web/utils/htmlToText'
 
 export const collectionTitleMaxLength = 100
 export const collectionDescriptionMaxLength = 100
@@ -16,9 +17,12 @@ export const CreateCollectionCommandValidation = z.object({
   description: z
     .string()
     .trim()
-    .max(
-      collectionDescriptionMaxLength,
-      `La description ne doit pas dépasser ${collectionDescriptionMaxLength} caractères`,
+    .refine(
+      (text) =>
+        !text || htmlToText(text).length <= collectionDescriptionMaxLength,
+      {
+        message: `La description ne doit pas dépasser ${collectionDescriptionMaxLength} caractères`,
+      },
     )
     .optional()
     .transform((text) => (text ? sanitizeHtml(text) : text)),

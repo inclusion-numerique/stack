@@ -3,6 +3,8 @@ import { ResourceListItem } from '@app/web/server/resources/getResourcesList'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { sPluriel } from '@app/web/utils/sPluriel'
 import { SearchParams } from '@app/web/server/search/searchQueryParams'
+import SaveResourceInCollectionModal from '@app/web/components/Resource/SaveResourceInCollectionModal'
+import DeleteResource from '@app/web/components/Resource/DeleteResource/DeleteResource'
 import ResourceCard from '../Resource/Card'
 import EmptyBox from '../EmptyBox'
 import styles from './Content.module.css'
@@ -44,6 +46,8 @@ const Resources = ({
         Veuillez réessayer avec différents mots-clés.
       </EmptyBox>
     )}
+    {!!user && <SaveResourceInCollectionModal user={user} />}
+    {!!user && <DeleteResource />}
   </>
 )
 

@@ -4,17 +4,19 @@ import { AuthCard } from '@app/web/app/(public)/(withContainer)/(authentication)
 import { signinErrorMessage } from '@app/web/app/(public)/(withContainer)/(authentication)/authenticationErrorMessage'
 import { EmailSigninForm } from '@app/web/app/(public)/(withContainer)/(authentication)/connexion/EmailSigninForm'
 import InclusionConnectSigninButton from '@app/web/app/(public)/(withContainer)/(authentication)/connexion/InclusionConnectSigninButton'
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import { getLoginTitle, LoginIntent } from '@app/web/security/login'
 
 const SigninPanel = ({
   error,
   callbackUrl,
+  intent,
 }: {
+  intent?: LoginIntent
   error?: string
   callbackUrl: Route
 }) => (
   <AuthCard>
-    <h4>Connexion à {PublicWebAppConfig.projectTitle}</h4>
+    <h4>{getLoginTitle(intent)}</h4>
     {error ? (
       <div className="fr-alert fr-alert--error fr-alert--sm fr-mb-6v">
         <p>{signinErrorMessage(error)}</p>

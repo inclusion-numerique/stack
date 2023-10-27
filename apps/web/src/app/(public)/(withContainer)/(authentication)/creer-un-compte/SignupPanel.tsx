@@ -20,7 +20,6 @@ const SignupPanel = ({
         <p>{signinErrorMessage(error)}</p>
       </div>
     ) : null}
-    <p className="fr-hr-or fr-mt-6v">ou</p>
     <h5>Se créer un compte avec InclusionConnect</h5>
     <div className="fr-connect-group">
       <InclusionConnectSigninButton callbackUrl={callbackUrl} />

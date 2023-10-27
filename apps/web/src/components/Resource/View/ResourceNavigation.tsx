@@ -59,11 +59,7 @@ const ResourceNavigation = ({
       >
         {isAdmin ? 'Modifier' : 'Demander à contribuer'}
       </Link>
-      <SaveResourceInCollectionButton
-        resourceId={resource.id}
-        id="mobile-modal"
-        user={user}
-      />
+      <SaveResourceInCollectionButton resource={resource} user={user} />
       <Link
         className={classNames(
           'fr-btn',
@@ -116,7 +112,7 @@ const ResourceNavigation = ({
           {isAdmin ? 'Modifier' : 'Demander à contribuer'}
         </Link>
         <SaveResourceInCollectionButton
-          resourceId={resource.id}
+          resource={resource}
           user={user}
           className={styles.button}
         />

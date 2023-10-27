@@ -23,5 +23,5 @@ export const deleteResourceModalProps = (onDelete: () => void): ModalProps => ({
     },
   ],
   children:
-    'Confirmez-vous la suppression de la ressource ? Tous les contenus de la ressource seront supprimés avec elle.',
+    'Confirmez-vous la suppression de la ressource ? Tous les contenus de la ressource seront supprimés avec elle.',
 })

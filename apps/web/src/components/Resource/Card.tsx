@@ -10,6 +10,8 @@ import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage
 import { ResourceListItem } from '@app/web/server/resources/getResourcesList'
 import { getServerUrl } from '@app/web/utils/baseUrl'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
+import SaveResourceInCollectionButton from '@app/web/components/Resource/SaveResourceInCollectionButton'
+import { resourceCardImageBreakpoints } from '@app/web/components/Resource/resourceCardImageBreakpoints'
 import IconLink from '../Icon/IconLink'
 import styles from './Card.module.css'
 import PublishedInInformation from './PublishedInInformation'
@@ -80,12 +82,7 @@ const ResourceCard = ({
             <ResponsiveUploadedImage
               id={resource.image.id}
               alt={resource.image.altText ?? ''}
-              breakpoints={[
-                { media: '(max-width: 320px)', width: 320 - 32 },
-                { media: '(max-width: 576px)', width: 576 - 32 },
-                { media: '(max-width: 768px)', width: 768 - 32 },
-                { media: '(min-width: 768px)', width: 180 },
-              ]}
+              breakpoints={resourceCardImageBreakpoints}
             />
           </div>
         )}
@@ -112,11 +109,10 @@ const ResourceCard = ({
             <DeleteResourceButton resourceId={resource.id} />
           ) : (
             <>
-              <IconLink
-                title="Enregistrer"
-                href="/"
-                icon="fr-icon-bookmark-line"
-                small
+              <SaveResourceInCollectionButton
+                user={user}
+                resource={resource}
+                iconOnly
               />
               <CopyLinkButton
                 url={getServerUrl(`/ressources/${resource.slug}`, true)}
