@@ -43,6 +43,9 @@ const SaveResourceInCollectionButton = ({
     return (
       <OpenSaveResourceInCollectionModalButton
         {...buttonProps}
+        nativeButtonProps={{
+          'data-testid': dataTestid,
+        }}
         className={className}
         resourceId={resource.id}
       />
