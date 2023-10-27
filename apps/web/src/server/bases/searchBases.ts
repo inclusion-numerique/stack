@@ -90,6 +90,10 @@ export const rankBases = async (
              to_tsquery('french', unaccent(${searchTerm}))::text                                AS query,
              ts_rank(to_tsvector('french', unaccent(bases.title || ' ' || coalesce(bases.description, ''))),
                      to_tsquery('french', unaccent(${searchTerm})))                             AS rank,
+             ts_rank(to_tsvector('french', unaccent(bases.title)),
+                     to_tsquery('french', unaccent(${searchTerm})))                             AS rank_title,
+             ts_rank(to_tsvector('french', unaccent(coalesce(bases.description, ''))),
+                     to_tsquery('french', unaccent(${searchTerm})))                             AS rank_description,
              ts_rank_cd(to_tsvector('french', unaccent(bases.title || ' ' || coalesce(bases.description, ''))),
                         to_tsquery('french', unaccent(${searchTerm})))                          AS rank_cd
       FROM bases
@@ -122,7 +126,7 @@ export const rankBases = async (
               OR bases.department = ANY (${searchParams.departements}::text[])
           )
       /* Order by updated desc to have most recent first on empty query */
-      ORDER BY rank DESC, bases.updated DESC
+      ORDER BY rank_title DESC, rank_description DESC, bases.updated DESC
       LIMIT ${paginationParams.perPage} OFFSET ${
         (paginationParams.page - 1) * paginationParams.perPage
       };
