@@ -59,7 +59,11 @@ const ResourceNavigation = ({
       >
         {isAdmin ? 'Modifier' : 'Demander à contribuer'}
       </Link>
-      <SaveResourceInCollectionButton resource={resource} user={user} />
+      <SaveResourceInCollectionButton
+        data-testid="save-resource-in-collection-button-mobile"
+        resource={resource}
+        user={user}
+      />
       <Link
         className={classNames(
           'fr-btn',
@@ -115,6 +119,7 @@ const ResourceNavigation = ({
           resource={resource}
           user={user}
           className={styles.button}
+          data-testid="save-resource-in-collection-button"
         />
         <Button
           size="large"

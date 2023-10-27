@@ -93,8 +93,8 @@ export const resourceRouter = router({
           where: { id: collectionId },
           data: {
             resources: {
-              connect: {
-                id: resourceId,
+              create: {
+                resourceId,
               },
             },
           },

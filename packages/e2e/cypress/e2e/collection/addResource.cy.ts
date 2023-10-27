@@ -19,7 +19,6 @@ describe('Utilisateur connecté, je peux gerer mes collections', () => {
 
     cy.testId('add-in-collection-button').click()
 
-    cy.testId('save-resource-in-collection-button').click()
     cy.wait('@mutation')
 
     cy.testId('add-in-collection-section').should('have.length', 1)
@@ -42,7 +41,6 @@ describe('Utilisateur connecté, je peux gerer mes collections', () => {
 
     cy.testId('add-in-collection-button').eq(1).click()
 
-    cy.testId('save-resource-in-collection-button').click()
     cy.wait('@mutation')
 
     cy.testId('add-in-collection-section').should('have.length', 2)
