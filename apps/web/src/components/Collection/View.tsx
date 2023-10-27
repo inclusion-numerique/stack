@@ -54,7 +54,7 @@ const View = ({
       withButtons
       priority="secondary"
     />
-    {collection.resources.map((resource) => (
+    {collection.resources.map(({ resource }) => (
       <ResourceCard key={resource.id} resource={resource} user={user} />
     ))}
     {!!user && <SaveResourceInCollectionModal user={user} />}

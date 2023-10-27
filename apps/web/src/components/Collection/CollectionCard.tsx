@@ -16,7 +16,10 @@ const CollectionCard = ({ collection }: { collection: CollectionListItem }) => {
   return (
     <div className={styles.card} data-testid="collection-card">
       <Link href={href}>
-        <Images image={collection.image} resources={collection.resources} />
+        <Images
+          image={collection.image}
+          resources={collection.resources.map(({ resource }) => resource)}
+        />
       </Link>
       <div className={styles.content}>
         <div>

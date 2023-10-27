@@ -53,7 +53,7 @@ export const createTestResource = (
     },
     createdById: owner.id,
     baseId: base ? base.id : null,
-    collection: null,
+    collections: [],
     base: base
       ? {
           id: base.id,

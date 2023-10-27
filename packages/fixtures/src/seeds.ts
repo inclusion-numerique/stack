@@ -85,7 +85,11 @@ const seed = async (transaction: TransactionClient, random?: number) => {
       resourcesInCollections.map(({ resourceId, collectionId }) =>
         transaction.resource.update({
           data: {
-            collectionId,
+            collections: {
+              create: {
+                collectionId,
+              },
+            },
           },
           where: { id: resourceId },
         }),

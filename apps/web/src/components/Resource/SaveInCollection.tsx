@@ -25,7 +25,9 @@ const SaveInCollection = ({
         />
       </div>
     </div>
-    {collection.resources.some((resource) => resource.id === resourceId) ? (
+    {collection.resources.some(
+      (collectionResource) => collectionResource.resourceId === resourceId,
+    ) ? (
       <Button
         disabled
         priority="secondary"

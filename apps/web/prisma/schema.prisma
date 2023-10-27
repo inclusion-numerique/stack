@@ -278,8 +278,7 @@ model Resource {
   contents     Content[]
   events       ResourceEvent[]
   contributors ResourceContributors[]
-  collection   Collection?            @relation(fields: [collectionId], references: [id])
-  collectionId String?                @db.Uuid
+  collections  CollectionResource[]
 
   @@index(themes, name: "resources_themes_idx", type: Gin)
   @@index(supportTypes, name: "resources_support_type_idx", type: Gin)
@@ -446,6 +445,22 @@ model Upload {
   @@map("uploads")
 }
 
+model CollectionResource {
+  id       String @id @default(uuid()) @db.Uuid
+  legacyId Int?   @unique @map("legacy_id")
+
+  resource   Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  resourceId String   @map("resource_id") @db.Uuid
+
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  collectionId String     @map("collection_id") @db.Uuid
+
+  added DateTime @default(now())
+
+  @@unique([resourceId, collectionId])
+  @@map("collection_resources")
+}
+
 model Collection {
   id       String @id @default(uuid()) @db.Uuid
   legacyId Int?   @unique @map("legacy_id")
@@ -467,7 +482,7 @@ model Collection {
   image   Image?  @relation(fields: [imageId], references: [id])
   imageId String? @unique @map("image_id") @db.Uuid
 
-  resources Resource[]
+  resources CollectionResource[]
 
   @@map("collections")
 }

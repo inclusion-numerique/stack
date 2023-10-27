@@ -28,12 +28,14 @@ export const getResourceSelect = (user: { id: string } | null) =>
       },
     },
     baseId: true,
-    collection: {
+    collections: {
       select: {
-        id: true,
+        collectionId: true,
       },
       where: {
-        ownerId: user?.id,
+        collection: {
+          ownerId: user?.id,
+        },
       },
     },
     base: {

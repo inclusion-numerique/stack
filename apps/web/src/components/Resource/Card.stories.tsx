@@ -33,7 +33,7 @@ const resource = {
     image: null,
   },
   image: null,
-  collection: null,
+  collections: [],
   contributors: [],
 } satisfies ResourceListItem
 const creatorUser = { ...testSessionUser, id: resource.createdBy.id }

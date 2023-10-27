@@ -70,12 +70,18 @@ export const collectionSelect = {
   // Resources only for image previews
   resources: {
     select: {
-      image: { select: { id: true, altText: true } },
+      resource: {
+        select: {
+          image: { select: { id: true, altText: true } },
+        },
+      },
     },
     where: {
-      deleted: null,
-      image: {
-        isNot: null,
+      resource: {
+        deleted: null,
+        image: {
+          isNot: null,
+        },
       },
     },
     take: 3,
@@ -84,7 +90,9 @@ export const collectionSelect = {
     select: {
       resources: {
         where: {
-          deleted: null,
+          resource: {
+            deleted: null,
+          },
         },
       },
     },

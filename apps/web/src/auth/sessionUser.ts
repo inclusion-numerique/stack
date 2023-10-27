@@ -1,10 +1,11 @@
 import type {
-  Resource,
-  ResourceContributors,
   Base,
-  User,
   BaseMembers,
   Collection,
+  CollectionResource,
+  Resource,
+  ResourceContributors,
+  User,
 } from '@prisma/client'
 
 // Serializable user interface
@@ -23,12 +24,12 @@ export type SessionUser = Pick<
   bases: (Pick<BaseMembers, 'isAdmin'> & {
     base: Pick<Base, 'slug' | 'title' | 'id' | 'isPublic'> & {
       collections: (Pick<Collection, 'id' | 'isPublic' | 'title'> & {
-        resources: Pick<Resource, 'id'>[]
+        resources: Pick<CollectionResource, 'resourceId'>[]
       })[]
     }
   })[]
   collections: (Pick<Collection, 'id' | 'isPublic' | 'title'> & {
-    resources: Pick<Resource, 'id'>[]
+    resources: Pick<CollectionResource, 'resourceId'>[]
   })[]
   resources: Pick<ResourceContributors, 'resourceId'>[]
   createdResources: Pick<Resource, 'id' | 'slug'>[]
