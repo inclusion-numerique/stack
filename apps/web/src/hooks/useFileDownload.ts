@@ -17,6 +17,6 @@ export const useFileDownload = () => {
   return {
     error: generateDownloadUrl.error,
     download,
-    isLoading: generateDownloadUrl.isLoading,
+    isLoading: generateDownloadUrl.isPending,
   }
 }

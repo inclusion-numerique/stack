@@ -79,7 +79,7 @@ const Edition = ({
   // Current edition state displayed in the action bar
   const editionState: ResourceEditionState =
     editing === null
-      ? mutate.isLoading
+      ? mutate.isPending
         ? ResourceEditionState.SAVING
         : ResourceEditionState.SAVED
       : ResourceEditionState.EDITING

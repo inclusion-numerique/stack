@@ -63,14 +63,14 @@ const Visibility = ({
               priority: 'secondary',
               doClosesModal: true,
               children: 'Annuler',
-              disabled: mutate.isLoading,
+              disabled: mutate.isPending,
               type: 'button',
             },
             {
               title: 'Continuer',
               children: 'Continuer',
               type: 'button',
-              disabled: mutate.isLoading,
+              disabled: mutate.isPending,
               nativeButtonProps: {
                 'data-testid': 'visibility-modal-continue-button',
               },

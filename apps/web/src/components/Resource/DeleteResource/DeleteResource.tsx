@@ -59,7 +59,7 @@ const DeleteResource = () => {
           nativeButtonProps: {
             className: classNames(
               'fr-btn--danger',
-              mutation.isLoading && 'fr-btn--loading',
+              mutation.isPending && 'fr-btn--loading',
             ),
             'data-testid': 'delete-resource-modal-submit',
           },
