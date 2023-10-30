@@ -1,5 +1,31 @@
+import type { Prisma } from '@prisma/client'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { prismaClient } from '@app/web/prismaClient'
+
+const userCollectionFragment = {
+  select: {
+    id: true,
+    isPublic: true,
+    title: true,
+    resources: {
+      select: { resourceId: true },
+      where: { resource: { deleted: null } },
+    },
+  },
+  where: { deleted: null },
+  orderBy: {
+    title: 'asc',
+  },
+} satisfies {
+  /**
+   * Select specific fields to fetch from the Collection
+   */
+  select: Prisma.CollectionSelect
+  where: Prisma.CollectionWhereInput
+  orderBy:
+    | Prisma.CollectionOrderByWithRelationAndSearchRelevanceInput
+    | Prisma.CollectionOrderByWithRelationAndSearchRelevanceInput[]
+}
 
 export const getSessionUserFromSessionToken = async (
   sessionToken: string | null,
@@ -36,6 +62,7 @@ export const getSessionUserFromSessionToken = async (
               slug: true,
               title: true,
               isPublic: true,
+              collections: userCollectionFragment,
             },
             where: {
               deleted: null,
@@ -50,18 +77,7 @@ export const getSessionUserFromSessionToken = async (
                   slug: true,
                   title: true,
                   isPublic: true,
-                  collections: {
-                    select: {
-                      id: true,
-                      isPublic: true,
-                      title: true,
-                      resources: {
-                        select: { resourceId: true },
-                        where: { resource: { deleted: null } },
-                      },
-                    },
-                    where: { deleted: null },
-                  },
+                  collections: userCollectionFragment,
                 },
               },
             },
@@ -74,23 +90,7 @@ export const getSessionUserFromSessionToken = async (
               },
             },
           },
-          collections: {
-            select: {
-              id: true,
-              isPublic: true,
-              title: true,
-              resources: {
-                select: { resourceId: true },
-                where: { resource: { deleted: null } },
-              },
-            },
-            where: { deleted: null },
-            orderBy: {
-              resources: {
-                _count: 'desc',
-              },
-            },
-          },
+          collections: userCollectionFragment,
           resources: {
             select: {
               resourceId: true,

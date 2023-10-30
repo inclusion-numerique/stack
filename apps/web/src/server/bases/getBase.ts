@@ -63,9 +63,7 @@ export const baseSelect = (user: Pick<SessionUser, 'id'> | null) =>
       select: collectionSelect,
       where: computeCollectionsListWhereForUser(user),
       orderBy: {
-        resources: {
-          _count: 'desc',
-        },
+        title: 'asc',
       },
     },
     members: {

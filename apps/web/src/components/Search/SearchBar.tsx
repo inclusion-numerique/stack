@@ -76,7 +76,7 @@ const SearchBar = ({
         query: debouncedQuery,
       },
       {
-        queryKey: ['search.quicksearch', { query: debouncedQuery }],
+        // queryKey: ['search.quicksearch', { query: debouncedQuery }],
         enabled: quicksearchQueryEnabled,
       },
     )

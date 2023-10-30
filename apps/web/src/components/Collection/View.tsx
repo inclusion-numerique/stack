@@ -1,11 +1,11 @@
 import React from 'react'
 import sanitizeHtml from 'sanitize-html'
-import Image from 'next/image'
 import { CollectionPageData } from '@app/web/server/collections/getCollection'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { WithMinimalImageData } from '@app/web/server/image/imageTypes'
 import SaveResourceInCollectionModal from '@app/web/components/Resource/SaveResourceInCollectionModal'
 import DeleteResource from '@app/web/components/Resource/DeleteResource/DeleteResource'
+import Images from '@app/web/components/Collection/Images'
 import PublishedInInformation from '../Resource/PublishedInInformation'
 import ResourceCard from '../Resource/Card'
 import styles from './View.module.css'
@@ -25,7 +25,13 @@ const View = ({
       <PublishedInInformation user={collection.owner} base={collection.base} />
     </div>
     <hr className="fr-mt-4w fr-pb-4w" />
-    <div className={styles.collection}>
+    <div className={styles.header}>
+      <div className={styles.imageContainer}>
+        <Images
+          resources={collection.resources.map(({ resource }) => resource)}
+          image={collection.image}
+        />
+      </div>
       <div>
         <h3>{collection.title}</h3>
         {collection.description && (
@@ -37,14 +43,6 @@ const View = ({
           />
         )}
       </div>
-      {collection.image && (
-        <Image
-          src={`/images/${collection.image.id}.webp`}
-          alt={collection.image.altText || ''}
-          width={240}
-          height={170}
-        />
-      )}
     </div>
     <hr className="fr-mt-4w fr-pb-1v" />
     <CollectionMetaData

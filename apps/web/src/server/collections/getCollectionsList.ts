@@ -108,9 +108,7 @@ export const getProfileCollections = async (
     select: collectionSelect,
     where,
     orderBy: {
-      resources: {
-        _count: 'desc',
-      },
+      title: 'asc',
     },
   })
 }

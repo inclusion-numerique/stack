@@ -35,7 +35,7 @@ const InviteUsers = ({
       resourceId,
     },
     {
-      queryKey: ['profile.getMatchingUsers', { filter, baseId, resourceId }],
+      // queryKey: ['profile.getMatchingUsers', { filter, baseId, resourceId }],
       enabled: !!filter,
     },
   )

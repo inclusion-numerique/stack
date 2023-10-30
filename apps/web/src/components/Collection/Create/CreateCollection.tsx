@@ -33,10 +33,13 @@ const {
   isOpenedByDefault: false,
 })
 
-const CreateCollection = () => {
+const CreateCollection = ({ base }: { base?: { id: string } | null }) => {
   const router = useRouter()
   const form = useForm<CreateCollectionCommand>({
     resolver: zodResolver(CreateCollectionCommandValidation),
+    defaultValues: {
+      baseId: base?.id,
+    },
   })
   const {
     handleSubmit,

@@ -1,14 +1,15 @@
 import React from 'react'
 import classNames from 'classnames'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import type { SessionUserBase } from '@app/web/bases/getBasesFromSessionUser'
 import styles from './SaveInBase.module.css'
 
-const SaveInBase = ({
+const SaveInNestedCollection = ({
   base,
   user,
   onClick,
 }: {
-  base?: SessionUser['bases'][number]['base']
+  base?: SessionUserBase
   user: SessionUser
   onClick: () => void
 }) => (
@@ -37,4 +38,4 @@ const SaveInBase = ({
   </button>
 )
 
-export default SaveInBase
+export default SaveInNestedCollection

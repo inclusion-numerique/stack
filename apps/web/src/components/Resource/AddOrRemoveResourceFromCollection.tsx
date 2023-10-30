@@ -4,16 +4,20 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import CollectionMetaData from '../Collection/CollectionMetaData'
 import styles from './SaveInBase.module.css'
 
-const SaveInCollection = ({
+const AddOrRemoveResourceFromCollection = ({
   collection,
   resourceId,
-  onClick,
-  isLoading,
+  onAdd,
+  onRemove,
+  disabled,
+  loading,
 }: {
   collection: SessionUser['collections'][number]
   resourceId: string
-  onClick: () => void
-  isLoading: boolean
+  onAdd: (collectionId: string) => void
+  onRemove: (collectionId: string) => void
+  loading?: boolean
+  disabled?: boolean
 }) => (
   <div className={styles.container} data-testid="add-in-collection-section">
     <div className={styles.content}>
@@ -29,8 +33,11 @@ const SaveInCollection = ({
       (collectionResource) => collectionResource.resourceId === resourceId,
     ) ? (
       <Button
-        disabled
-        priority="secondary"
+        priority="tertiary"
+        onClick={() => onRemove(collection.id)}
+        className={loading ? 'fr-btn--loading' : ''}
+        disabled={disabled}
+        iconPosition="right"
         iconId="fr-icon-check-line"
         nativeButtonProps={{
           'data-testid': 'added-in-collection-button',
@@ -41,9 +48,9 @@ const SaveInCollection = ({
     ) : (
       <Button
         priority="secondary"
-        onClick={onClick}
-        className={isLoading ? 'fr-btn--loading' : ''}
-        disabled={isLoading}
+        onClick={() => onAdd(collection.id)}
+        className={loading ? 'fr-btn--loading' : ''}
+        disabled={disabled}
         nativeButtonProps={{
           'data-testid': 'add-in-collection-button',
         }}
@@ -54,4 +61,4 @@ const SaveInCollection = ({
   </div>
 )
 
-export default SaveInCollection
+export default AddOrRemoveResourceFromCollection

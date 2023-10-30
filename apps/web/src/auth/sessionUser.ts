@@ -8,6 +8,20 @@ import type {
   User,
 } from '@prisma/client'
 
+type SessionUserCollectionFragment = Pick<
+  Collection,
+  'id' | 'isPublic' | 'title'
+> & {
+  resources: Pick<CollectionResource, 'resourceId'>[]
+}
+
+type SessionUserBaseFragment = Pick<
+  Base,
+  'slug' | 'title' | 'id' | 'isPublic'
+> & {
+  collections: SessionUserCollectionFragment[]
+}
+
 // Serializable user interface
 export type SessionUser = Pick<
   User,
@@ -20,17 +34,11 @@ export type SessionUser = Pick<
   emailVerified: string | null
   created: string | null
   updated: string | null
-  ownedBases: Pick<Base, 'slug' | 'title' | 'id' | 'isPublic'>[]
+  ownedBases: SessionUserBaseFragment[]
   bases: (Pick<BaseMembers, 'isAdmin'> & {
-    base: Pick<Base, 'slug' | 'title' | 'id' | 'isPublic'> & {
-      collections: (Pick<Collection, 'id' | 'isPublic' | 'title'> & {
-        resources: Pick<CollectionResource, 'resourceId'>[]
-      })[]
-    }
+    base: SessionUserBaseFragment
   })[]
-  collections: (Pick<Collection, 'id' | 'isPublic' | 'title'> & {
-    resources: Pick<CollectionResource, 'resourceId'>[]
-  })[]
+  collections: SessionUserCollectionFragment[]
   resources: Pick<ResourceContributors, 'resourceId'>[]
   createdResources: Pick<Resource, 'id' | 'slug'>[]
 }

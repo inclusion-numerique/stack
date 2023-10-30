@@ -7,8 +7,12 @@ import { createDynamicModal } from '@app/ui/components/Modal/createDynamicModal'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
-import SaveInCollection from './SaveInCollection'
-import SaveInBase from './SaveInBase'
+import {
+  getBasesFromSessionUser,
+  SessionUserBase,
+} from '@app/web/bases/getBasesFromSessionUser'
+import AddOrRemoveResourceFromCollection from './AddOrRemoveResourceFromCollection'
+import SaveInNestedCollection from './SaveInNestedCollection'
 import styles from './SaveInBase.module.css'
 
 export const SaveResourceInCollectionDynamicModal = createDynamicModal({
@@ -24,30 +28,33 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
 
   const router = useRouter()
 
-  const [isLoading, setIsLoading] = useState(false)
-  const [selected, setSelected] = useState('')
-  const selectedBase = useMemo<
-    SessionUser['bases'][number]['base'] | null | undefined
-  >(
-    () =>
-      selected
-        ? user.bases.find(({ base }) => base.id === selected)?.base
-        : null,
-    [user, selected],
+  const bases = getBasesFromSessionUser(user)
+
+  const [pendingMutationCollectionId, setPendingMutationCollectionId] =
+    useState<string | null>(null)
+
+  // "profil" or the base id of the nested collections selection
+  const [nested, setNested] = useState<null | string>(null)
+
+  // If nested is set to a base id, this is the selected base id
+  const selectedBase = useMemo<SessionUserBase | undefined>(
+    () => (nested ? bases.find((base) => base.id === nested) : undefined),
+    [bases, nested],
   )
 
-  const mutation = trpc.resource.addToCollection.useMutation()
-  const onSave = async (collectionId: string) => {
+  const addMutation = trpc.resource.addToCollection.useMutation()
+  const removeMutation = trpc.resource.removeFromCollection.useMutation()
+  const onAdd = async (collectionId: string) => {
     if (!resourceId) {
       return
     }
-    setIsLoading(true)
+    setPendingMutationCollectionId(collectionId)
     try {
-      await mutation.mutateAsync({
+      await addMutation.mutateAsync({
         resourceId,
         collectionId,
       })
-      setIsLoading(false)
+      setPendingMutationCollectionId(null)
       router.refresh()
     } catch (error) {
       // TODO Sentry + toast ?
@@ -56,13 +63,35 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
     }
   }
 
+  const onRemove = async (collectionId: string) => {
+    if (!resourceId) {
+      return
+    }
+    setPendingMutationCollectionId(collectionId)
+    try {
+      await removeMutation.mutateAsync({
+        resourceId,
+        collectionId,
+      })
+      setPendingMutationCollectionId(null)
+
+      router.refresh()
+    } catch (error) {
+      // TODO Sentry + toast ?
+      console.error(error)
+      throw error
+    }
+  }
+
+  console.log('RESOURCE MODAL', user)
+
   return (
     <SaveResourceInCollectionDynamicModal.Component title="Ajouter à la collection">
-      {selected && (
+      {nested && (
         <button
           type="button"
           className={styles.clickableContainer}
-          onClick={() => setSelected('')}
+          onClick={() => setNested('')}
           data-testid="back-to-bases-button"
         >
           <div>
@@ -82,36 +111,38 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
           </div>
         </button>
       )}
-      {mutation.error && (
+      {addMutation.error && (
         <p
           className="fr-error-text"
           data-testid="save-resource-in-collection-error"
         >
-          {mutation.error.message}
+          {addMutation.error.message}
         </p>
       )}
       {!!resourceId &&
-        (selected === 'profil' || (!selected && user.bases.length === 0) ? (
+        (nested === 'profil' || (!nested && bases.length === 0) ? (
           <>
             {user.collections.map((collection) => (
-              <SaveInCollection
-                isLoading={isLoading}
+              <AddOrRemoveResourceFromCollection
+                loading={pendingMutationCollectionId === collection.id}
                 key={collection.id}
                 collection={collection}
                 resourceId={resourceId}
-                onClick={() => onSave(collection.id)}
+                onAdd={onAdd}
+                onRemove={onRemove}
               />
             ))}
           </>
         ) : selectedBase ? (
           selectedBase.collections.length > 0 ? (
             selectedBase.collections.map((collection) => (
-              <SaveInCollection
-                isLoading={isLoading}
+              <AddOrRemoveResourceFromCollection
+                loading={pendingMutationCollectionId === collection.id}
                 key={collection.id}
                 collection={collection}
                 resourceId={resourceId}
-                onClick={() => onSave(collection.id)}
+                onAdd={onAdd}
+                onRemove={onRemove}
               />
             ))
           ) : (
@@ -124,19 +155,18 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
           )
         ) : (
           <>
-            <SaveInBase user={user} onClick={() => setSelected('profil')} />
-            {user.bases
-              .sort(
-                (a, b) => b.base.collections.length - a.base.collections.length,
-              )
-              .map(({ base }) => (
-                <SaveInBase
-                  key={base.id}
-                  user={user}
-                  base={base}
-                  onClick={() => setSelected(base.id)}
-                />
-              ))}
+            <SaveInNestedCollection
+              user={user}
+              onClick={() => setNested('profil')}
+            />
+            {bases.map((base) => (
+              <SaveInNestedCollection
+                key={base.id}
+                user={user}
+                base={base}
+                onClick={() => setNested(base.id)}
+              />
+            ))}
           </>
         ))}
     </SaveResourceInCollectionDynamicModal.Component>

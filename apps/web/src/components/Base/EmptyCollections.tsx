@@ -3,7 +3,13 @@ import Link from 'next/link'
 import EmptyBox from '../EmptyBox'
 import { CreateCollectionButton } from '../Collection/CreateCollectionButton'
 
-const EmptyCollections = ({ isMember }: { isMember: boolean }) => (
+const EmptyCollections = ({
+  isMember,
+  baseId,
+}: {
+  isMember: boolean
+  baseId?: string
+}) => (
   <EmptyBox
     title={
       isMember
@@ -21,7 +27,7 @@ const EmptyCollections = ({ isMember }: { isMember: boolean }) => (
           </Link>
         </div>
         <div data-testid="create-collection-button">
-          <CreateCollectionButton className="fr-mt-4w" />
+          <CreateCollectionButton className="fr-mt-4w" baseId={baseId} />
         </div>
       </>
     ) : (

@@ -20,7 +20,7 @@ const DynamicLinkEditionPreview = ({
   const { isFetching, isError, data, error } = trpc.metaData.get.useQuery(
     { url },
     {
-      queryKey: ['metaData.get', { url }],
+      // queryKey: ['metaData.get', { url }],
       enabled: !!url,
     },
   )

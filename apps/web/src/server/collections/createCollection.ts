@@ -27,6 +27,7 @@ export const CreateCollectionCommandValidation = z.object({
     .optional()
     .transform((text) => (text ? sanitizeHtml(text) : text)),
   imageId: z.string().uuid().nullable().optional(),
+  baseId: z.string().uuid().nullable().optional(),
   isPublic: z.boolean({
     required_error: 'Veuillez spécifier la visibilité de la collection',
   }),

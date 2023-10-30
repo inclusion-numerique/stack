@@ -30,7 +30,10 @@ const BaseCollectionsPage = async ({
       <Menu base={base} current="collections" />
       <div className="fr-container fr-mb-4w">
         {base.collections.length === 0 ? (
-          <EmptyCollections isMember={authorizations.isMember} />
+          <EmptyCollections
+            isMember={authorizations.isMember}
+            baseId={base.id}
+          />
         ) : (
           <Collections
             collections={base.collections}

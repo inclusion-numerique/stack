@@ -6,10 +6,11 @@ import { KeyboardEvent, MouseEvent as ReactMouseEvent, useRef } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { getUserDisplayName } from '@app/web/utils/user'
+import { getBasesFromSessionUser } from '@app/web/bases/getBasesFromSessionUser'
 import styles from './HeaderUserMenu.module.css'
 
 export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
-  const bases = [...user.ownedBases, ...user.bases.map(({ base }) => base)]
+  const bases = getBasesFromSessionUser(user)
 
   // The click outside default behavior from dsfr js do not work in this case 🤷‍
   // So we have to use client component and hooks to handle the click outside
