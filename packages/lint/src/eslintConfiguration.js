@@ -140,6 +140,7 @@ module.exports = {
         ],
         // We use typescript default values and types
         'react/require-default-props': 'off',
+        'react/react-in-jsx-scope': 'off',
         'unicorn/prevent-abbreviations': [
           'error',
           {

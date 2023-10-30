@@ -12,6 +12,7 @@ import { PreloadResources } from '@app/web/app/PreloadResources'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import CreateResourceFormModal from '@app/web/components/Resource/CreateResourceFormModal'
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import Toaster from '@app/ui/toast/Toaster'
 
 declare module '@codegouvfr/react-dsfr/link' {
   interface RegisterLink {
@@ -57,6 +58,7 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
         <EnvInformation />
         {children}
         {user ? <CreateResourceFormModal user={user} /> : null}
+        <Toaster />
       </body>
     </html>
   )

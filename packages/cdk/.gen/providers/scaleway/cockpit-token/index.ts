@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token
+// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -8,7 +8,7 @@ import * as cdktf from 'cdktf';
 
 export interface CockpitTokenConfig extends cdktf.TerraformMetaArguments {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token#id CockpitToken#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token#id CockpitToken#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -17,25 +17,25 @@ export interface CockpitTokenConfig extends cdktf.TerraformMetaArguments {
   /**
   * The name of the token
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token#name CockpitToken#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token#name CockpitToken#name}
   */
   readonly name: string;
   /**
   * The project_id you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token#project_id CockpitToken#project_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token#project_id CockpitToken#project_id}
   */
   readonly projectId?: string;
   /**
   * scopes block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token#scopes CockpitToken#scopes}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token#scopes CockpitToken#scopes}
   */
   readonly scopes?: CockpitTokenScopes;
   /**
   * timeouts block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token#timeouts CockpitToken#timeouts}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token#timeouts CockpitToken#timeouts}
   */
   readonly timeouts?: CockpitTokenTimeouts;
 }
@@ -43,43 +43,43 @@ export interface CockpitTokenScopes {
   /**
   * Query logs
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token#query_logs CockpitToken#query_logs}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token#query_logs CockpitToken#query_logs}
   */
   readonly queryLogs?: boolean | cdktf.IResolvable;
   /**
   * Query metrics
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token#query_metrics CockpitToken#query_metrics}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token#query_metrics CockpitToken#query_metrics}
   */
   readonly queryMetrics?: boolean | cdktf.IResolvable;
   /**
   * Setup alerts
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token#setup_alerts CockpitToken#setup_alerts}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token#setup_alerts CockpitToken#setup_alerts}
   */
   readonly setupAlerts?: boolean | cdktf.IResolvable;
   /**
   * Setup logs rules
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token#setup_logs_rules CockpitToken#setup_logs_rules}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token#setup_logs_rules CockpitToken#setup_logs_rules}
   */
   readonly setupLogsRules?: boolean | cdktf.IResolvable;
   /**
   * Setup metrics rules
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token#setup_metrics_rules CockpitToken#setup_metrics_rules}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token#setup_metrics_rules CockpitToken#setup_metrics_rules}
   */
   readonly setupMetricsRules?: boolean | cdktf.IResolvable;
   /**
   * Write logs
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token#write_logs CockpitToken#write_logs}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token#write_logs CockpitToken#write_logs}
   */
   readonly writeLogs?: boolean | cdktf.IResolvable;
   /**
   * Write metrics
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token#write_metrics CockpitToken#write_metrics}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token#write_metrics CockpitToken#write_metrics}
   */
   readonly writeMetrics?: boolean | cdktf.IResolvable;
 }
@@ -282,19 +282,19 @@ export class CockpitTokenScopesOutputReference extends cdktf.ComplexObject {
 }
 export interface CockpitTokenTimeouts {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token#create CockpitToken#create}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token#create CockpitToken#create}
   */
   readonly create?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token#default CockpitToken#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token#default CockpitToken#default}
   */
   readonly default?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token#delete CockpitToken#delete}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token#delete CockpitToken#delete}
   */
   readonly delete?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token#read CockpitToken#read}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token#read CockpitToken#read}
   */
   readonly read?: string;
 }
@@ -438,7 +438,7 @@ export class CockpitTokenTimeoutsOutputReference extends cdktf.ComplexObject {
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token scaleway_cockpit_token}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token scaleway_cockpit_token}
 */
 export class CockpitToken extends cdktf.TerraformResource {
 
@@ -447,12 +447,26 @@ export class CockpitToken extends cdktf.TerraformResource {
   // =================
   public static readonly tfResourceType = "scaleway_cockpit_token";
 
+  // ==============
+  // STATIC Methods
+  // ==============
+  /**
+  * Generates CDKTF code for importing a CockpitToken resource upon running "cdktf plan <stack-name>"
+  * @param scope The scope in which to define this construct
+  * @param importToId The construct id used in the generated config for the CockpitToken to import
+  * @param importFromId The id of the existing CockpitToken that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token#import import section} in the documentation of this resource for the id to use
+  * @param provider? Optional instance of the provider where the CockpitToken to import is found
+  */
+  public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
+        return new cdktf.ImportableResource(scope, importToId, { terraformResourceType: "scaleway_cockpit_token", importId: importFromId, provider });
+      }
+
   // ===========
   // INITIALIZER
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/cockpit_token scaleway_cockpit_token} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/cockpit_token scaleway_cockpit_token} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -463,8 +477,8 @@ export class CockpitToken extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_cockpit_token',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.28.0',
-        providerVersionConstraint: '>= 2.28.0'
+        providerVersion: '2.31.0',
+        providerVersionConstraint: '>= 2.31.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
