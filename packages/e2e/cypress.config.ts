@@ -1,6 +1,8 @@
 import { defineConfig } from 'cypress'
 import 'tsconfig-paths/register'
-import { cypressProjectId } from '../../packages/config/src/config'
+// eslint-disable-next-line import/no-relative-packages
+import { cypressProjectId } from '../config/src/config'
+// eslint-disable-next-line import/no-relative-packages
 import { tasks } from './cypress/support/tasks'
 
 export default defineConfig({
