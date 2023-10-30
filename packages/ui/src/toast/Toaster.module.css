@@ -1,0 +1,37 @@
+.toast {
+}
+
+.icon {
+}
+
+.action {
+
+}
+
+.info {
+    background:rgb( var(--background-contrast-info)/ 0.5);
+    .icon {
+        color: var(--info-425-625);
+    }
+}
+
+.warning {
+    background:rgb( var(--background-contrast-warning)/ 0.5);
+    .icon {
+        color: var(--warning-425-625);
+    }
+}
+
+.error {
+    background: rgb(var(--background-contrast-error)/ 0.5);
+    .icon {
+        color: var(--error-425-625);
+    }
+}
+
+.success{
+    background: rgb(var(--background-contrast-success) / 0.5);
+    .icon {
+        color: var(--success-425-625);
+    }
+}

@@ -12,6 +12,7 @@ import { EnvInformation } from '@app/web/app/EnvInformation'
 import { Matomo } from '@app/web/app/Matomo'
 import { PreloadResources } from '@app/web/app/PreloadResources'
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import Toaster from '@app/ui/toast/Toaster'
 
 declare module '@codegouvfr/react-dsfr/link' {
   interface RegisterLink {
@@ -52,6 +53,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
         <Matomo nonce={nonce} />
         <EnvInformation />
         {children}
+        <Toaster />
       </body>
     </html>
   )
