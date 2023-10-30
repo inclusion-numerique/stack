@@ -7,12 +7,12 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { PropsWithChildren } from 'react'
 import { setLink } from '@codegouvfr/react-dsfr/link'
+import Toaster from '@app/ui/toast/Toaster'
 import { Dsfr } from '@app/web/app/Dsfr'
 import { EnvInformation } from '@app/web/app/EnvInformation'
 import { Matomo } from '@app/web/app/Matomo'
 import { PreloadResources } from '@app/web/app/PreloadResources'
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
-import Toaster from '@app/ui/toast/Toaster'
 
 declare module '@codegouvfr/react-dsfr/link' {
   interface RegisterLink {
