@@ -2,7 +2,8 @@ import { v4 } from 'uuid'
 import {
   createTestPublishResourceCommand,
   createTestResourceCommands,
-} from '@app/e2e/support/helpers'
+} from '@app/e2e/support/given/givenResourceCommands'
+import { defaultTestBaseSlug } from '@app/e2e/support/given/givenBase'
 import {
   cleanUpAndCreateTestBase,
   cleanUpAndCreateTestPublishedResource,
@@ -20,9 +21,8 @@ describe('Utilisateur connecté, je peux modifier ma base', () => {
   describe('Modification des informations', () => {
     beforeEach(() => {
       cleanUpAndCreateTestBase()
-      cy.visit(
-        '/bases/conseiller-numérique-france-services-contributions/editer',
-      )
+      cy.visit(`/bases/${defaultTestBaseSlug}/editer`)
+
       cy.dsfrShouldBeStarted()
     })
 
@@ -120,9 +120,8 @@ describe('Utilisateur connecté, je peux modifier ma base', () => {
         cy.sendResourceCommands({ user, commands })
       })
 
-      cy.visit(
-        '/bases/conseiller-numérique-france-services-contributions/editer',
-      )
+      cy.visit(`/bases/${defaultTestBaseSlug}/editer`)
+
       cy.dsfrShouldBeStarted()
       cy.testId('base-visibility').should(
         'have.text',
@@ -156,9 +155,8 @@ describe('Utilisateur connecté, je peux modifier ma base', () => {
         'Ressource publique',
       )
 
-      cy.visit(
-        '/bases/conseiller-numérique-france-services-contributions/editer',
-      )
+      cy.visit(`/bases/${defaultTestBaseSlug}/editer`)
+
       cy.dsfrShouldBeStarted()
 
       cy.testId('base-visibility').should(

@@ -1,4 +1,4 @@
-import { createTestUser } from '../support/helpers'
+import { givenUser } from '@app/e2e/support/given/givenUser'
 
 describe("Page d'accueil", () => {
   it("La page d'accueil s'affiche correctement, avec les styles du DSFR", () => {
@@ -22,7 +22,7 @@ describe("Page d'accueil", () => {
   })
 
   it("La page d'accueil affiche le statut de connexion de l'utilisateur", () => {
-    const user = createTestUser()
+    const user = givenUser()
     cy.createUserAndSignin(user)
     cy.visit('/')
     cy.dsfrStylesShouldBeLoaded()
@@ -36,7 +36,7 @@ describe("Page d'accueil", () => {
   })
 
   it('Un utilisateur avec un token invalide peut accéder au site', () => {
-    const user = createTestUser()
+    const user = givenUser()
     cy.createUserAndSignin(user).then((sessionToken) => {
       cy.execute('deleteSession', sessionToken)
     })

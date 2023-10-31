@@ -1,4 +1,4 @@
-import { appUrl, createTestUser } from '../../support/helpers'
+import { givenUser } from '@app/e2e/support/given/givenUser'
 
 describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je peux créer un compte avec mon mail', () => {
   /**
@@ -7,7 +7,7 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
    */
 
   // Unique user for this test
-  const { email, firstName, lastName } = createTestUser()
+  const { email, firstName, lastName } = givenUser()
 
   it('Acceptation 1 - Création de compte', () => {
     cy.visit('/creer-un-compte')
@@ -17,7 +17,7 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
     cy.findByLabelText('Prénom').type(firstName)
     cy.findByLabelText('Nom').type(lastName).type('{enter}')
 
-    cy.url().should('equal', appUrl('/connexion/verification'), {
+    cy.appUrlShouldBe('/connexion/verification', {
       timeout: 10_000,
     })
 
@@ -49,7 +49,7 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
 
     // With a valid magic link we should be automatically redirected to homepage, logged in
     cy.log('User should now be signed in')
-    cy.url().should('eq', appUrl('/'))
+    cy.appUrlShouldBe('/')
     cy.get('.fr-header__tools').contains(firstName).contains(lastName)
 
     cy.get('.fr-header__tools').should('not.contain', 'Se connecter')
@@ -63,7 +63,7 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
     cy.findByLabelText('Prénom').type(firstName)
     cy.findByLabelText('Nom').type(lastName).type('{enter}')
 
-    cy.url().should('equal', appUrl('/creer-un-compte'))
+    cy.appUrlShouldBe('/creer-un-compte')
     cy.contains('Un compte existe déjà avec cet email')
   })
 })

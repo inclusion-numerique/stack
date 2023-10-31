@@ -1,3 +1,4 @@
+import { defaultTestBaseSlug } from '@app/e2e/support/given/givenBase'
 import { appUrl } from '../../support/helpers'
 import { cleanUpAndCreateTestBase } from '../resource/edition/editionTestUtils'
 
@@ -27,11 +28,11 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
     cy.get('@modal').find('button').contains('Continuer').click()
     cy.get('@modal').find('label').eq(1).click()
     cy.get('@modal').find('button').contains('Commencer').click()
-    cy.url().should('equal', appUrl(`/ressources/un-titre/editer`))
+    cy.appUrlShouldBe(`/ressources/un-titre/editer`)
     cy.get('@modal').should('not.exist')
 
     cy.log('Check new state')
-    cy.visit('/bases/conseiller-numérique-france-services-contributions')
+    cy.visit(`/bases/${defaultTestBaseSlug}`)
     cy.testId('base-resources').should('contain', 'Ressources · 1')
     cy.testId('base-resources').should('contain', 'Brouillons · 1')
     cy.testId('base-resources').should('contain', 'Publiées · 0')
@@ -70,13 +71,13 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
     cy.testId('section-title-input').type('Titre random')
     cy.testId('add-content_form__submit').click()
     cy.testId('publish-resource-button').click()
-    cy.url().should('equal', appUrl(`/ressources/un-titre/publier`))
+    cy.appUrlShouldBe(`/ressources/un-titre/publier`)
     cy.testId('visibility-radio-resource-private').click({ force: true })
     cy.testId('publish-resource-button').click()
     cy.url().should('contain', appUrl(`/ressources/un-titre`))
 
     cy.log('Check new state')
-    cy.visit('/bases/conseiller-numérique-france-services-contributions')
+    cy.visit(`/bases/${defaultTestBaseSlug}`)
     cy.testId('base-resources').should('contain', 'Ressources · 1')
     cy.testId('base-resources').should('contain', 'Brouillons · 0')
     cy.testId('base-resources').should('contain', 'Publiées · 0')
@@ -115,7 +116,7 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
     cy.url().should('contain', appUrl(`/ressources/un-titre`))
 
     cy.log('Check new state')
-    cy.visit('/bases/conseiller-numérique-france-services-contributions')
+    cy.visit(`/bases/${defaultTestBaseSlug}`)
     cy.testId('base-resources').should('contain', 'Ressources · 1')
     cy.testId('base-resources').should('contain', 'Brouillons · 0')
     cy.testId('base-resources').should('contain', 'Publiées · 1')

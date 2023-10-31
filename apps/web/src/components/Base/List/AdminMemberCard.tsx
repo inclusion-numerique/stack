@@ -12,10 +12,10 @@ import RemoveMemberButton from './RemoveMemberButton'
 
 const AdminMemberCard = ({
   member,
-  onlyAdmin,
+  canChangeAccessLevel,
 }: {
   member: BaseMember
-  onlyAdmin: boolean
+  canChangeAccessLevel: boolean
 }) => {
   const [isAdmin, setIsAdmin] = useState(member.isAdmin)
   const mutate = trpc.baseMember.mutate.useMutation()
@@ -42,7 +42,7 @@ const AdminMemberCard = ({
         {member.member.name}
       </Link>
       <div className={styles.actions}>
-        {onlyAdmin && isAdmin ? (
+        {!canChangeAccessLevel && isAdmin ? (
           <div className={styles.select}>Administrateur</div>
         ) : (
           <>

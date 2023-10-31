@@ -1,5 +1,3 @@
-import { appUrl } from '../../support/helpers'
-
 describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je peux créer un compte avec Inclusion Connect', () => {
   /**
    * US https://www.notion.so/ETQ-Utilisateur-lorsque-je-clique-sur-cr-er-un-compte-je-peux-cr-er-un-compte-avec-Inclusion-Con-8f21d24f2f7a4488850161f9a20676b4?pvs=4
@@ -54,7 +52,7 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
     // Cookies are lost in redirect (Cypress issue)
     // https://github.com/cypress-io/cypress/issues/20476#issuecomment-1298486439
 
-    cy.url().should('equal', appUrl('/'))
+    cy.appUrlShouldBe('/')
     cy.get('.fr-header__tools').contains(firstName).contains(lastName)
 
     cy.get('.fr-header__tools').should('not.contain', 'Se connecter')

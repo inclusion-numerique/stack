@@ -1,4 +1,7 @@
-import { appUrl } from '@app/e2e/support/helpers'
+import {
+  defaultTestBaseSlug,
+  defaultTestBaseTitle,
+} from '@app/e2e/support/given/givenBase'
 import { cleanUpAndCreateTestResource } from '../resource/edition/editionTestUtils'
 
 describe('Utilisateur connecté, je peux supprimer une base', () => {
@@ -10,7 +13,7 @@ describe('Utilisateur connecté, je peux supprimer une base', () => {
   beforeEach(() => {
     cleanUpAndCreateTestResource()
     cy.intercept('/api/trpc/base.delete?*').as('deleteMutation')
-    cy.visit('/bases/conseiller-numérique-france-services-contributions/editer')
+    cy.visit(`/bases/${defaultTestBaseSlug}/editer`)
     cy.dsfrShouldBeStarted()
   })
 
@@ -20,17 +23,18 @@ describe('Utilisateur connecté, je peux supprimer une base', () => {
     cy.testId('delete-base-button').click()
     cy.findByRole('dialog').should('exist')
 
+    const truncatedTitle = defaultTestBaseTitle.slice(0, -1)
+    const lastChar = defaultTestBaseTitle.slice(-1)
+
     cy.testId('modal-delete-button').should('be.disabled')
-    cy.testId('modal-input').type(
-      'Conseiller numérique France Services - contribution',
-    )
+    cy.testId('modal-input').type(truncatedTitle)
     cy.testId('modal-delete-button').should('be.disabled')
-    cy.testId('modal-input').type('s')
+    cy.testId('modal-input').type(lastChar)
     cy.testId('modal-delete-button').should('not.be.disabled')
     cy.testId('modal-delete-button').click()
 
     cy.wait('@deleteMutation')
-    cy.url().should('equal', appUrl('/'))
+    cy.appUrlShouldBe('/')
 
     cy.request({
       url: '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
@@ -43,7 +47,7 @@ describe('Utilisateur connecté, je peux supprimer une base', () => {
     })
 
     cy.request({
-      url: '/bases/conseiller-numérique-france-services-contributions',
+      url: `/bases/${defaultTestBaseSlug}`,
       followRedirect: false,
       failOnStatusCode: false,
     }).then((resp) => {
@@ -53,7 +57,7 @@ describe('Utilisateur connecté, je peux supprimer une base', () => {
     })
 
     cy.request({
-      url: '/bases/conseiller-numérique-france-services-contributions/editer',
+      url: `/bases/${defaultTestBaseSlug}/editer`,
       followRedirect: false,
       failOnStatusCode: false,
     }).then((resp) => {

@@ -1,4 +1,8 @@
-import { appUrl, createTestUser } from '@app/e2e/support/helpers'
+import { givenUser } from '@app/e2e/support/given/givenUser'
+import {
+  defaultTestBaseSlug,
+  defaultTestBaseTitle,
+} from '@app/e2e/support/given/givenBase'
 import {
   cleanUpAndCreateTestBase,
   cleanUpAndCreateTestBaseAsMember,
@@ -18,12 +22,10 @@ describe("Utilisateur connecté, je peux gerer les membres d'une base", () => {
 
   it("Acceptation 1 - En tant qu'admin je peux inviter un admin", () => {
     cleanUpAndCreateTestBase()
-    const user = createTestUser()
+    const user = givenUser()
     cy.createUser(user)
 
-    cy.visit(
-      '/bases/conseiller-numérique-france-services-contributions/membres',
-    )
+    cy.visit(`/bases/${defaultTestBaseSlug}/membres`)
     cy.testId('member-card-admin').should('have.length', 1)
     cy.dsfrShouldBeStarted()
     cy.testId('base-invite-member-button').click()
@@ -63,35 +65,27 @@ describe("Utilisateur connecté, je peux gerer les membres d'une base", () => {
     cy.log('Check mail contents')
     // We should not have the email html version in full
     cy.contains(
-      'Vous êtes invité par Jean Biche à rejoindre la base Conseiller numérique France Services - contributions.',
+      `Vous êtes invité par Jean Biche à rejoindre la base ${defaultTestBaseTitle}.`,
     )
     cy.contains('Accepter').invoke('attr', 'target', '_self').click()
-    cy.url().should(
-      'equal',
-      appUrl('/bases/conseiller-numérique-france-services-contributions'),
-    )
-    cy.visit(
-      '/bases/conseiller-numérique-france-services-contributions/membres',
-    )
+    cy.appUrlShouldBe(`/bases/${defaultTestBaseSlug}`)
+    cy.visit(`/bases/${defaultTestBaseSlug}/membres`)
+
     cy.testId('member-card-admin').should('have.length', 2)
     cy.testId('profile-card').should('not.exist')
   })
 
   it("Acceptation 2 - En tant qu'admin je peux changer le role d'un membre", () => {
     cleanUpAndCreateTestBase()
-    const user = createTestUser({
+    const user = givenUser({
       firstName: 'Alice',
       lastName: 'Membre',
     })
     cy.createUser(user)
-    cy.inviteUserToBase(
-      user,
-      'conseiller-numérique-france-services-contributions',
-    )
+    cy.inviteUserToBase(user, defaultTestBaseSlug)
 
-    cy.visit(
-      '/bases/conseiller-numérique-france-services-contributions/membres',
-    )
+    cy.visit(`/bases/${defaultTestBaseSlug}/membres`)
+
     cy.testId('member-card-admin').should('have.length', 2)
     cy.testId('remove-member-button').should('have.length', 1)
     cy.testId('member-card-role-select').should('have.value', 'member')
@@ -110,12 +104,11 @@ describe("Utilisateur connecté, je peux gerer les membres d'une base", () => {
 
   it('Acceptation 3 - En tant que membre je peux inviter un membre', () => {
     cleanUpAndCreateTestBaseAsMember()
-    const user = createTestUser()
+    const user = givenUser()
     cy.createUser(user)
 
-    cy.visit(
-      '/bases/conseiller-numérique-france-services-contributions/membres',
-    )
+    cy.visit(`/bases/${defaultTestBaseSlug}/membres`)
+
     cy.testId('profile-card').should('have.length', 2)
     cy.dsfrShouldBeStarted()
     cy.testId('base-invite-member-button').click()
@@ -154,16 +147,12 @@ describe("Utilisateur connecté, je peux gerer les membres d'une base", () => {
     cy.log('Check mail contents')
     // We should not have the email html version in full
     cy.contains(
-      'Vous êtes invité par Jean Biche à rejoindre la base Conseiller numérique France Services - contributions.',
+      `Vous êtes invité par Jean Biche à rejoindre la base ${defaultTestBaseTitle}.`,
     )
     cy.contains('Accepter').invoke('attr', 'target', '_self').click()
-    cy.url().should(
-      'equal',
-      appUrl('/bases/conseiller-numérique-france-services-contributions'),
-    )
-    cy.visit(
-      '/bases/conseiller-numérique-france-services-contributions/membres',
-    )
+    cy.appUrlShouldBe(`/bases/${defaultTestBaseSlug}`)
+    cy.visit(`/bases/${defaultTestBaseSlug}/membres`)
+
     cy.testId('member-card-admin').should('not.exist')
     cy.testId('profile-card').should('have.length', 3)
   })

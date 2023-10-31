@@ -1,4 +1,4 @@
-import { appUrl } from '@app/e2e/support/helpers'
+import { defaultTestBaseSlug } from '@app/e2e/support/given/givenBase'
 import { cleanUpAndCreateTestResource } from './edition/editionTestUtils'
 
 describe("Utilisateur connecté, lorsque j'édite une ressource, je peux la supprimer", () => {
@@ -17,7 +17,7 @@ describe("Utilisateur connecté, lorsque j'édite une ressource, je peux la supp
     cy.testId('edition-action-bar-delete').click()
     cy.wait('@mutation')
 
-    cy.url().should('equal', appUrl('/rechercher/tout/ressources'))
+    cy.appUrlShouldBe('/rechercher/tout/ressources')
     cy.testId('resource-card').should('not.exist')
 
     cy.request({
@@ -40,7 +40,7 @@ describe("Utilisateur connecté, lorsque j'édite une ressource, je peux la supp
       expect(resp.redirectedToUrl).to.be.undefined
     })
 
-    cy.visit('/bases/conseiller-numérique-france-services-contributions')
+    cy.visit(`/bases/${defaultTestBaseSlug}`)
     cy.testId('empty-box').should('exist')
 
     cy.get('#header-user-menu')

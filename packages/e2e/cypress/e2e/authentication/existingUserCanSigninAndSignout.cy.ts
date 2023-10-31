@@ -1,4 +1,4 @@
-import { appUrl, createTestUser } from '../../support/helpers'
+import { givenUser } from '@app/e2e/support/given/givenUser'
 
 describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter', () => {
   /**
@@ -7,7 +7,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
    */
 
   // Unique user for this test
-  const emailUser = createTestUser()
+  const emailUser = givenUser()
   // This user exists in inclusion connect, but not in our db
   const inclusionConnectUser = {
     email: Cypress.env('INCLUSION_CONNECT_TEST_USER_EMAIL') as string,
@@ -23,17 +23,17 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
   it('Préliminaire - Les pages de connexions sont accessibles', () => {
     cy.visit('/')
     cy.get('.fr-header__tools').contains('Se connecter').click()
-    cy.url().should('equal', appUrl('/connexion'))
+    cy.appUrlShouldBe('/connexion')
 
     cy.log('Check that the signup CTA is linked correctly')
     cy.contains('Créer un compte').click()
-    cy.url().should('equal', appUrl('/creer-un-compte'))
+    cy.appUrlShouldBe('/creer-un-compte')
 
     cy.log('Check that the signin CTA is linked correctly')
     cy.findByRole('main')
       .contains(/^Se connecter$/)
       .click()
-    cy.url().should('equal', appUrl('/connexion'))
+    cy.appUrlShouldBe('/connexion')
   })
 
   it('Acceptation 0 - La connexion redirige vers la création de compte pour un nouvel utilisateur', () => {
@@ -44,11 +44,8 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
       .should('have.length', 1)
       .type(`${emailUser.email}{enter}`)
 
-    cy.url().should(
-      'equal',
-      appUrl(
-        `/creer-un-compte?raison=connexion-sans-compte&email=${emailUser.email}`,
-      ),
+    cy.appUrlShouldBe(
+      `/creer-un-compte?raison=connexion-sans-compte&email=${emailUser.email}`,
     )
 
     cy.contains('Se créer un compte avec son email')
@@ -100,7 +97,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     // Cookies are lost in redirect (Cypress issue)
     // https://github.com/cypress-io/cypress/issues/20476#issuecomment-1298486439
 
-    cy.url().should('equal', appUrl('/'))
+    cy.appUrlShouldBe('/')
 
     cy.get('.fr-header__tools').should('not.contain', 'Se connecter')
 
@@ -116,10 +113,10 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.get('#header-user-menu').should('be.visible')
 
     cy.get('#header-user-menu').contains('Se déconnecter').click()
-    cy.url().should('equal', appUrl('/deconnexion'))
+    cy.appUrlShouldBe('/deconnexion')
     cy.contains('Êtes-vous sur de vouloir vous déconnecter ?')
     cy.get('main').contains('Se déconnecter').click()
-    cy.url().should('equal', appUrl('/'))
+    cy.appUrlShouldBe('/')
     cy.get('.fr-header__tools').contains('Se connecter')
   })
 
@@ -131,7 +128,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.log('Signin form fill and submit')
     cy.findByLabelText('Email').type(`${email}{enter}`)
 
-    cy.url().should('equal', appUrl('/connexion/verification'), {
+    cy.appUrlShouldBe('/connexion/verification', {
       timeout: 10_000,
     })
 
@@ -163,7 +160,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
 
     // With a valid magic link we should be automatically redirected to homepage, logged in
     cy.log('User should now be signed in')
-    cy.url().should('eq', appUrl('/'))
+    cy.appUrlShouldBe('/')
     cy.get('.fr-header__tools').contains(firstName).contains(lastName)
 
     cy.get('.fr-header__tools').should('not.contain', 'Se connecter')
@@ -179,10 +176,10 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
       .should('be.visible')
       .contains('Se déconnecter')
       .click()
-    cy.url().should('equal', appUrl('/deconnexion'))
+    cy.appUrlShouldBe('/deconnexion')
     cy.contains('Êtes-vous sur de vouloir vous déconnecter ?')
     cy.get('main').contains('Se déconnecter').click()
-    cy.url().should('equal', appUrl('/'))
+    cy.appUrlShouldBe('/')
     cy.get('.fr-header__tools').contains('Se connecter')
   })
 })

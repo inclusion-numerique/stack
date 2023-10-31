@@ -1,4 +1,4 @@
-import { appUrl, createTestUser } from '@app/e2e/support/helpers'
+import { givenUser } from '@app/e2e/support/given/givenUser'
 import { cleanUpAndCreateTestResource } from './edition/editionTestUtils'
 
 describe('Utilisateur connecté, je peux inviter un autre membre à contribuer sur ma ressource', () => {
@@ -15,7 +15,7 @@ describe('Utilisateur connecté, je peux inviter un autre membre à contribuer s
 
   it('Acceptation 1 - En tant que créateur je peux inviter un contributeur', () => {
     cleanUpAndCreateTestResource()
-    const user = createTestUser({
+    const user = givenUser({
       firstName: 'Alice',
       lastName: 'Contributrice',
     })
@@ -63,11 +63,8 @@ describe('Utilisateur connecté, je peux inviter un autre membre à contribuer s
       'Vous êtes invité par Jean Biche à contribuer à la ressource Titre d’une ressource sur deux ligne très longues comme comme sur deux lignes.',
     )
     cy.contains('Voir la ressource').invoke('attr', 'target', '_self').click()
-    cy.url().should(
-      'equal',
-      appUrl(
-        '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
-      ),
+    cy.appUrlShouldBe(
+      '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
     )
     cy.visit(
       '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes/editer',
@@ -82,7 +79,7 @@ describe('Utilisateur connecté, je peux inviter un autre membre à contribuer s
   })
 
   it('Acceptation 2 - En tant que créateur je peux supprimer un contributeur', () => {
-    const contributor = createTestUser({
+    const contributor = givenUser({
       firstName: 'Alice',
       lastName: 'Contributrice',
     })

@@ -1,5 +1,5 @@
 import { v4 } from 'uuid'
-import { appUrl, createTestUser } from '@app/e2e/support/helpers'
+import { givenUser } from '@app/e2e/support/given/givenUser'
 import { cleanUp } from '../resource/edition/editionTestUtils'
 
 describe('Utilisateur sans droit, je ne peux ni voir et ni editer le profil', () => {
@@ -16,10 +16,7 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer le profil', ()
     cy.testId('create-resource-button').should('not.exist')
 
     cy.visit(`/profils/${id}/modifier`)
-    cy.url().should(
-      'equal',
-      appUrl(`/connexion?suivant=/profils/${id}/modifier`),
-    )
+    cy.appUrlShouldBe(`/connexion?suivant=/profils/${id}/modifier`)
   })
 
   it('Acceptation 2 - Visiteur sur un profile privé', () => {
@@ -35,17 +32,14 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer le profil', ()
     cy.testId('create-resource-button').should('not.exist')
 
     cy.visit(`/profils/${id}/modifier`)
-    cy.url().should(
-      'equal',
-      appUrl(`/connexion?suivant=/profils/${id}/modifier`),
-    )
+    cy.appUrlShouldBe(`/connexion?suivant=/profils/${id}/modifier`)
   })
 
   it('Acceptation 3 - Utilisateur connecté sur un profile publique', () => {
     const id = v4()
     cleanUp({ isPublic: true, id })
 
-    const user = createTestUser({ isPublic: true })
+    const user = givenUser({ isPublic: true })
     cy.createUserAndSignin(user)
 
     cy.visit(`/profils/${id}`)
@@ -56,14 +50,14 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer le profil', ()
     cy.testId('create-resource-button').should('not.exist')
 
     cy.visit(`/profils/${id}/modifier`)
-    cy.url().should('equal', appUrl(`/profils/${id}`))
+    cy.appUrlShouldBe(`/profils/${id}`)
   })
 
   it('Acceptation 4 - Utilisateur connecté sur un profile privé', () => {
     const id = v4()
     cleanUp({ isPublic: false, id })
 
-    const user = createTestUser({ isPublic: true })
+    const user = givenUser({ isPublic: true })
     cy.createUserAndSignin(user)
 
     cy.visit(`/profils/${id}`)
@@ -74,7 +68,7 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer le profil', ()
     cy.testId('create-resource-button').should('not.exist')
 
     cy.visit(`/profils/${id}/modifier`)
-    cy.url().should('equal', appUrl(`/profils/${id}`))
+    cy.appUrlShouldBe(`/profils/${id}`)
   })
 
   it('Acceptation 5 - Mon Profil', () => {
@@ -89,6 +83,6 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer le profil', ()
     cy.testId('create-resource-button').should('exist')
 
     cy.visit(`/profils/${id}/modifier`)
-    cy.url().should('equal', appUrl(`/profils/${id}/modifier`))
+    cy.appUrlShouldBe(`/profils/${id}/modifier`)
   })
 })

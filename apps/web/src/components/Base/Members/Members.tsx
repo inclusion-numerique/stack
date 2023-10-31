@@ -14,7 +14,9 @@ const Members = ({
   isMember: boolean
   isAdmin: boolean
 }) => {
-  const onlyAdmin = base.members.filter((member) => member.isAdmin).length < 2
+  // Cannot change access level of admins if there is only one admin
+  const canChangeAccessLevelOfAdmins =
+    base.members.filter((member) => member.isAdmin).length > 1
 
   return (
     <div className={styles.container} data-testid="base-members">
@@ -27,7 +29,7 @@ const Members = ({
             <AdminMemberCard
               member={member}
               key={member.member.id}
-              onlyAdmin={onlyAdmin}
+              canChangeAccessLevel={canChangeAccessLevelOfAdmins}
             />
           ))
         : base.members.map((member) => (

@@ -1,4 +1,5 @@
-import { appUrl, createTestUser } from '@app/e2e/support/helpers'
+import { appUrl } from '@app/e2e/support/helpers'
+import { givenUser } from '@app/e2e/support/given/givenUser'
 import { cleanUp } from '../resource/edition/editionTestUtils'
 
 describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses ressources', () => {
@@ -19,14 +20,14 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
     cy.testId('bases-menu-button').click()
     cy.testId('create-base-button').click()
 
-    cy.url().should('equal', appUrl('/bases/creer'))
+    cy.appUrlShouldBe('/bases/creer')
   })
 
   it('Acceptation 2 - création de base via menu déroulant', () => {
     cy.get('.fr-header__tools button[aria-controls="header-user-menu"]').click()
     cy.get('#header-user-menu').contains('Créer une base').click()
 
-    cy.url().should('equal', appUrl('/bases/creer'))
+    cy.appUrlShouldBe('/bases/creer')
   })
 
   it('Acceptation 3 - tentative de création de base avec mauvaise validation', () => {
@@ -106,7 +107,7 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
     cy.intercept('/api/trpc/profile.getMatchingUsers?*').as('getUser')
 
     cy.visit('/bases/creer')
-    const user = createTestUser({ firstName: 'Leila', lastName: 'Huissoud' })
+    const user = givenUser({ firstName: 'Leila', lastName: 'Huissoud' })
     cy.createUser(user)
 
     cy.testId('base-title-input').type('Ma déclaration')
@@ -149,7 +150,7 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
       'Vous êtes invité par Jean Biche à rejoindre la base Ma déclaration.',
     )
     cy.contains('Accepter').invoke('attr', 'target', '_self').click()
-    cy.url().should('equal', appUrl('/bases/ma-declaration'))
+    cy.appUrlShouldBe('/bases/ma-declaration')
     cy.visit('/bases/ma-declaration/membres')
     cy.testId('profile-card').should('have.length', 2)
     cy.testId('member-card-admin').should('not.exist')

@@ -1,4 +1,4 @@
-import { createTestBase } from '@app/e2e/support/helpers'
+import { givenBase } from '@app/e2e/support/given/givenBase'
 import {
   cleanUpAndCreateTestPublishedResource,
   cleanUpAndCreateTestPublishedResourceInProfile,
@@ -12,6 +12,7 @@ describe('Utilisateur connecté, lorsque je modifie une ressource, je peux modif
 
   beforeEach(() => {
     cy.intercept('/api/trpc/resource.mutate?*').as('mutation')
+    cy.deleteAllData()
   })
 
   it('Acceptation 1 - Je peux changer la visibilité de ma ressource', () => {
@@ -90,7 +91,7 @@ describe('Utilisateur connecté, lorsque je modifie une ressource, je peux modif
       { isPublic: true },
       true,
       ({ user }) => {
-        const base = createTestBase(user.id)
+        const base = givenBase({ ownerId: user.id, isPublic: false })
         cy.createBase(base)
       },
     )
@@ -132,7 +133,7 @@ describe('Utilisateur connecté, lorsque je modifie une ressource, je peux modif
 
   it('Acceptation 3 - Si je passe la ressource dans une base privé, elle devient privée', () => {
     cleanUpAndCreateTestPublishedResource(true, true, ({ user }) => {
-      const base = createTestBase(user.id, false)
+      const base = givenBase({ ownerId: user.id, isPublic: false })
       cy.createBase({ ...base, slug: `${base.slug}-1` })
     })
     cy.testId('resource-edition-button').click()

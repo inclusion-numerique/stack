@@ -1,16 +1,14 @@
-import {
-  appUrl,
-  createTestBase,
-  createTestResourceCommands,
-  createTestUser,
-} from '../../../support/helpers'
+import { givenUser } from '@app/e2e/support/given/givenUser'
+import { givenBase } from '@app/e2e/support/given/givenBase'
+import { createTestResourceCommands } from '@app/e2e/support/given/givenResourceCommands'
+import { appUrl } from '../../../support/helpers'
 
 describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
   describe("Qui n'a pas été modifiée après création", () => {
     beforeEach(() => {
       cy.execute('deleteAllData', {})
-      const user = createTestUser()
-      const base = createTestBase(user.id)
+      const user = givenUser()
+      const base = givenBase({ ownerId: user.id, isPublic: false })
       const [creationCommand] = createTestResourceCommands({ baseId: base.id })
 
       cy.createUserAndSignin(user)

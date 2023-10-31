@@ -62,6 +62,10 @@ Cypress.Commands.add('signin', ({ email }: { email: string }) =>
   }),
 )
 
+Cypress.Commands.add('deleteAllData', () => {
+  cy.execute('deleteAllData', {})
+})
+
 Cypress.Commands.add('logout', () => cy.clearCookie('next-auth.session-token'))
 
 Cypress.Commands.add('createUserAndSignin', (user: CreateUserInput) => {
@@ -82,8 +86,8 @@ Cypress.Commands.add('createBase', (base: CreateBaseInput) => {
 })
 Cypress.Commands.add(
   'inviteUserToBase',
-  (user: CreateUserInput, base: string) => {
-    cy.task('inviteUserToBase', { user: user.id, slug: base })
+  (user: CreateUserInput, baseSlug: string) => {
+    cy.task('inviteUserToBase', { user: user.id, slug: baseSlug })
   },
 )
 Cypress.Commands.add(
@@ -190,8 +194,8 @@ Cypress.Commands.add(
     })
   },
 )
-Cypress.Commands.add('appUrlShouldBe', (url: string) => {
-  cy.url().should('equal', appUrl(url))
+Cypress.Commands.add('appUrlShouldBe', (url: string, options) => {
+  cy.url().should('equal', appUrl(url), options)
 })
 
 //
@@ -212,7 +216,7 @@ declare global {
 
       createBase(base: CreateBaseInput): Chainable<void>
 
-      inviteUserToBase(user: CreateUserInput, base: string): Chainable<void>
+      inviteUserToBase(user: CreateUserInput, baseSlug: string): Chainable<void>
 
       inviteUserToResource(
         user: CreateUserInput,
@@ -224,6 +228,8 @@ declare global {
       ): Chainable<ResourceProjection>
 
       signin(user: { email: string }): Chainable<string>
+
+      deleteAllData(): Chainable<null>
 
       logout(): Chainable<null>
 
@@ -246,7 +252,10 @@ declare global {
 
       state(type: string): Chainable<unknown>
 
-      appUrlShouldBe(url: string): Chainable<void>
+      appUrlShouldBe(
+        url: string,
+        options?: { timeout?: number },
+      ): Chainable<void>
 
       //       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
       //       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>

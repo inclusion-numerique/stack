@@ -1,9 +1,6 @@
-import {
-  appUrl,
-  createTestBase,
-  createTestResourceCommands,
-  createTestUser,
-} from '../../support/helpers'
+import { givenUser } from '@app/e2e/support/given/givenUser'
+import { givenBase } from '@app/e2e/support/given/givenBase'
+import { createTestResourceCommands } from '@app/e2e/support/given/givenResourceCommands'
 
 describe('ETQ Utilisateur non connecté, lorsque je veux éditer une ressource, on me redirige vers la page de connexion', () => {
   beforeEach(() => {
@@ -11,8 +8,8 @@ describe('ETQ Utilisateur non connecté, lorsque je veux éditer une ressource, 
   })
 
   it('Acceptation 0 - Redirection vers connexion', () => {
-    const user = createTestUser()
-    const base = createTestBase(user.id)
+    const user = givenUser()
+    const base = givenBase({ ownerId: user.id, isPublic: false })
 
     cy.createUser(user)
     cy.createBase(base)
@@ -23,10 +20,7 @@ describe('ETQ Utilisateur non connecté, lorsque je veux éditer une ressource, 
         cy.visit(`/ressources/${slug}/editer`)
         // Ignoring NEXT_REDIRECT error
         Cypress.on('uncaught:exception', () => false)
-        cy.url().should(
-          'equal',
-          appUrl(`/connexion?suivant=/ressources/${slug}/editer`),
-        )
+        cy.appUrlShouldBe(`/connexion?suivant=/ressources/${slug}/editer`)
       },
     )
   })

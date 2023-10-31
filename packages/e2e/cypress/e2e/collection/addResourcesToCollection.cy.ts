@@ -1,11 +1,12 @@
 import { cleanUpAndCreateTestCollectionAndResource } from '../resource/edition/editionTestUtils'
 
-describe('Utilisateur connecté, je peux gerer mes collections', () => {
+describe('Utilisateur connecté, je peux ajouter une ressource à une collection', () => {
   /**
    * US
    *  - https://www.notion.so/Board-de-suivi-2ebf61391d7740968b955c8fa7ffa16d?p=385282e0c7bd418599147759eb11feae&pm=s
    */
   beforeEach(() => {
+    cy.deleteAllData()
     cy.intercept('/api/trpc/resource.addToCollection?*').as('mutation')
   })
 
@@ -86,13 +87,13 @@ describe('Utilisateur connecté, je peux gerer mes collections', () => {
     cy.visit(`/bases/${ids.baseWithCollection}/collections`)
     cy.dsfrShouldBeStarted()
     cy.testId('collection-card-link').should('have.length', 2)
-    cy.testId('collection-card-link').eq(0).click()
+    cy.testId('collection-card-link').eq(1).click()
     cy.testId('resource-card').should('have.length', 1)
 
     cy.visit(`/bases/${ids.baseWithCollection}/collections`)
     cy.dsfrShouldBeStarted()
     cy.testId('collection-card-link').should('have.length', 2)
-    cy.testId('collection-card-link').eq(1).click()
+    cy.testId('collection-card-link').eq(0).click()
     cy.testId('resource-card').should('have.length', 0)
   })
 })

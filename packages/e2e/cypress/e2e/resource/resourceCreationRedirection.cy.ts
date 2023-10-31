@@ -1,4 +1,4 @@
-import { appUrl, createTestUser } from '../../support/helpers'
+import { givenUser } from '@app/e2e/support/given/givenUser'
 
 describe('ETQ Utilisateur non connecté, lorsque je veux créer une ressource, on me redirige vers la page de connexion', () => {
   /**
@@ -17,18 +17,18 @@ describe('ETQ Utilisateur non connecté, lorsque je veux créer une ressource, o
     Cypress.on('uncaught:exception', () => false)
     cy.get('.fr-header__tools').contains('Créer une ressource').click()
 
-    cy.url().should('equal', appUrl('/connexion?suivant=/?creer-une-ressource'))
+    cy.appUrlShouldBe('/connexion?suivant=/?creer-une-ressource')
   })
 
   it('Acceptation 1-4 - Redirection vers modale ouverte après connexion', () => {
-    cy.createUserAndSignin(createTestUser())
+    cy.createUserAndSignin(givenUser())
 
     // Ignoring NEXT_REDIRECT error
     Cypress.on('uncaught:exception', () => false)
 
     cy.visit('/connexion?suivant=/?creer-une-ressource')
 
-    cy.url().should('equal', appUrl('/?creer-une-ressource'))
+    cy.appUrlShouldBe('/?creer-une-ressource')
     cy.findByRole('dialog')
       .should('be.visible')
       .contains('Créer une nouvelle ressource')

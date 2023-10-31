@@ -2,7 +2,7 @@ import { v4 } from 'uuid'
 import {
   createTestPublishResourceCommand,
   createTestResourceCommands,
-} from '@app/e2e/support/helpers'
+} from '@app/e2e/support/given/givenResourceCommands'
 import { cleanUpAndCreateTestPublishedResourceInProfile } from '../resource/edition/editionTestUtils'
 
 describe('Utilisateur connecté, je peux modifier mon profile', () => {
