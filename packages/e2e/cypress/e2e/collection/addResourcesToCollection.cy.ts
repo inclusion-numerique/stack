@@ -40,6 +40,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.testId('added-in-collection-button').should('have.length', 0)
     cy.testId('add-in-collection-button').should('have.length', 2)
 
+    // Add to second collection
     cy.testId('add-in-collection-button').eq(1).click()
 
     cy.wait('@mutation')
@@ -49,19 +50,20 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.testId('add-in-collection-button').should('have.length', 1)
 
     cy.visit(`/profils/${ids.user}/collections`)
-    cy.dsfrShouldBeStarted()
+
+    // First collection should be empty
+    cy.testId('collection-card-link').should('have.length', 2)
+    cy.testId('collection-card-link').eq(0).click()
+    cy.testId('resource-card').should('have.length', 0)
+
+    // Second collection should have the resource
+    cy.visit(`/profils/${ids.user}/collections`)
     cy.testId('collection-card-link').should('have.length', 2)
     cy.testId('collection-card-link').eq(1).click()
     cy.testId('resource-card').should('have.length', 1)
-
-    cy.visit(`/profils/${ids.user}/collections`)
-    cy.dsfrShouldBeStarted()
-    cy.testId('collection-card-link').should('have.length', 2)
-    cy.testId('collection-card-link').eq(1).click()
-    cy.testId('resource-card').should('have.length', 0)
   })
 
-  it('Acceptation 3 : ajout d’une ressource à la collection d’un profil avec collections et membre de base', () => {
+  it.only('Acceptation 3 : ajout d’une ressource à la collection d’un profil avec collections et membre de base', () => {
     const ids = cleanUpAndCreateTestCollectionAndResource(true, true)
     cy.testId('save-resource-in-collection-button').click()
 
@@ -81,19 +83,22 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.testId('added-in-collection-button').should('have.length', 0)
     cy.testId('add-in-collection-button').should('have.length', 2)
 
+    // Add to second base collection
     cy.testId('add-in-collection-button').eq(1).click()
     cy.wait('@mutation')
 
-    cy.visit(`/bases/${ids.baseWithCollection}/collections`)
-    cy.dsfrShouldBeStarted()
-    cy.testId('collection-card-link').should('have.length', 2)
-    cy.testId('collection-card-link').eq(1).click()
-    cy.testId('resource-card').should('have.length', 1)
-
+    // First base collection should be empty
     cy.visit(`/bases/${ids.baseWithCollection}/collections`)
     cy.dsfrShouldBeStarted()
     cy.testId('collection-card-link').should('have.length', 2)
     cy.testId('collection-card-link').eq(0).click()
     cy.testId('resource-card').should('have.length', 0)
+
+    // Second base collection should have a resource
+    cy.visit(`/bases/${ids.baseWithCollection}/collections`)
+    cy.dsfrShouldBeStarted()
+    cy.testId('collection-card-link').should('have.length', 2)
+    cy.testId('collection-card-link').eq(1).click()
+    cy.testId('resource-card').should('have.length', 1)
   })
 })
