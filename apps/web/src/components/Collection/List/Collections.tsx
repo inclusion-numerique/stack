@@ -45,8 +45,12 @@ const Collections = ({
               ),
           },
           {
-            label: `Collections enregistrées · 0`,
-            iconId: 'fr-icon-bookmark-line',
+            label: (
+              <>
+                <span className="ri-bookmark-3-line fr-text--regular fr-mr-1w" />
+                Collections enregistrées · 0
+              </>
+            ),
             content: emptySavedBox,
           },
         ]}

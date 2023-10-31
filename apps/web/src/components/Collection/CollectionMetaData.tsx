@@ -54,8 +54,8 @@ const CollectionMetaData = ({
         )}
         <Button
           title="Marquer comme favoris"
-          iconId="fr-icon-bookmark-line"
           size="small"
+          iconId="ri-bookmark-3-line"
           priority={priority}
         />
         <CopyLinkButton
