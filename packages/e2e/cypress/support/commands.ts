@@ -2,17 +2,17 @@ import '@testing-library/cypress/add-commands'
 import { ResourceProjection } from '@app/web/server/resources/feature/createResourceProjection'
 import { ResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
 import {
-  Serialized,
   deserialize,
   serialize,
+  Serialized,
 } from '@app/web/utils/serialization'
 import type {
   CreateBaseInput,
-  CreateUserInput,
   CreateCollectionInput,
-  SendResourceCommandsInput,
+  CreateUserInput,
 } from '@app/e2e/e2e/authentication/user.tasks'
 import { appUrl } from '@app/e2e/support/helpers'
+import type { SendResourceCommandsInput } from '@app/e2e/e2e/resources.tasks'
 import type { Tasks as CustomTasks } from './tasks'
 import Timeoutable = Cypress.Timeoutable
 import Loggable = Cypress.Loggable
@@ -211,15 +211,20 @@ declare global {
       createCollection(collection: CreateCollectionInput): Chainable<void>
 
       createBase(base: CreateBaseInput): Chainable<void>
+
       inviteUserToBase(user: CreateUserInput, base: string): Chainable<void>
+
       inviteUserToResource(
         user: CreateUserInput,
         resource: string,
       ): Chainable<void>
+
       sendResourceCommands(
         input: SendResourceCommandsInput,
       ): Chainable<ResourceProjection>
+
       signin(user: { email: string }): Chainable<string>
+
       logout(): Chainable<null>
 
       dsfrStylesShouldBeLoaded(): Chainable<void>
@@ -231,11 +236,14 @@ declare global {
       dsfrCollapsesShouldBeBound(): Chainable<void>
 
       testId(testId: string): Chainable<JQuery<HTMLElement>>
+
       removeHover(): Chainable<JQuery<HTMLElement>>
+
       positionToViewport(
         testId: string,
         position: 'inside' | 'above' | 'below' | 'left' | 'right',
       ): Chainable<void>
+
       state(type: string): Chainable<unknown>
 
       appUrlShouldBe(url: string): Chainable<void>
