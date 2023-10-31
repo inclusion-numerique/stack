@@ -4,13 +4,10 @@ import React, { useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import classNames from 'classnames'
 import { createDynamicModal } from '@app/ui/components/Modal/createDynamicModal'
-import { SessionUser } from '@app/web/auth/sessionUser'
+import type { SessionUser, SessionUserBase } from '@app/web/auth/sessionUser'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
-import {
-  getBasesFromSessionUser,
-  SessionUserBase,
-} from '@app/web/bases/getBasesFromSessionUser'
+import { getBasesFromSessionUser } from '@app/web/bases/getBasesFromSessionUser'
 import AddOrRemoveResourceFromCollection from './AddOrRemoveResourceFromCollection'
 import SaveInNestedCollection from './SaveInNestedCollection'
 import styles from './SaveInBase.module.css'
