@@ -8,14 +8,14 @@ import type {
   User,
 } from '@prisma/client'
 
-type SessionUserCollectionFragment = Pick<
+export type SessionUserCollectionFragment = Pick<
   Collection,
   'id' | 'isPublic' | 'title'
 > & {
   resources: Pick<CollectionResource, 'resourceId'>[]
 }
 
-type SessionUserBaseFragment = Pick<
+export type SessionUserBase = Pick<
   Base,
   'slug' | 'title' | 'id' | 'isPublic'
 > & {
@@ -34,9 +34,9 @@ export type SessionUser = Pick<
   emailVerified: string | null
   created: string | null
   updated: string | null
-  ownedBases: SessionUserBaseFragment[]
+  ownedBases: SessionUserBase[]
   bases: (Pick<BaseMembers, 'isAdmin'> & {
-    base: SessionUserBaseFragment
+    base: SessionUserBase
   })[]
   collections: SessionUserCollectionFragment[]
   resources: Pick<ResourceContributors, 'resourceId'>[]

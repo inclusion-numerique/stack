@@ -1,8 +1,13 @@
-import { SessionUser } from '@app/web/auth/sessionUser'
+import { SessionUser, SessionUserBase } from '@app/web/auth/sessionUser'
 
-export const getBasesFromSessionUser = (user: SessionUser) => [
-  ...user.ownedBases,
-  ...user.bases.map(({ base }) => base),
-]
-
-export type SessionUserBase = ReturnType<typeof getBasesFromSessionUser>[number]
+// Dedupe based on base.id
+export const getBasesFromSessionUser = (user: SessionUser) =>
+  [...user.ownedBases, ...user.bases.map(({ base }) => base)].reduce(
+    (accumulator, base) => {
+      if (accumulator.some((b) => b.id === base.id)) {
+        return accumulator
+      }
+      return [...accumulator, base]
+    },
+    [] as SessionUserBase[],
+  )

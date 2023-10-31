@@ -50,7 +50,7 @@ describe('Utilisateur connecté, je peux gerer mes collections', () => {
     cy.visit(`/profils/${ids.user}/collections`)
     cy.dsfrShouldBeStarted()
     cy.testId('collection-card-link').should('have.length', 2)
-    cy.testId('collection-card-link').eq(0).click()
+    cy.testId('collection-card-link').eq(1).click()
     cy.testId('resource-card').should('have.length', 1)
 
     cy.visit(`/profils/${ids.user}/collections`)
@@ -66,14 +66,14 @@ describe('Utilisateur connecté, je peux gerer mes collections', () => {
 
     cy.testId('add-in-collection-bases').should('have.length', 3)
     cy.testId('back-to-bases-button').should('not.exist')
-    cy.testId('add-in-collection-bases').eq(2).click()
+    cy.testId('add-in-collection-bases').eq(1).click()
 
     cy.testId('base-without-collection').should('exist')
     cy.testId('add-in-collection-section').should('not.exist')
     cy.testId('back-to-bases-button').click()
 
     cy.testId('back-to-bases-button').should('not.exist')
-    cy.testId('add-in-collection-bases').eq(1).click()
+    cy.testId('add-in-collection-bases').eq(2).click()
 
     cy.testId('base-without-collection').should('not.exist')
     cy.testId('add-in-collection-section').should('have.length', 2)
