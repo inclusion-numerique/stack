@@ -107,7 +107,7 @@
     "sharp": "^0.32.6",
     "slugify": "^1.6.6",
     "smooth-scroll-into-view-if-needed": "^2.0.2",
-    "superjson": "^2.2.0",
+    "superjson": "1.13.3",
     "typescript-plugin-css-modules": "^5.0.2",
     "uglify-js": "^3.17.4",
     "undici": "^5.27.0",

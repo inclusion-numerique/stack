@@ -5,11 +5,11 @@ import {
   createUser,
   deleteSession,
   deleteUser,
-  sendResourceCommands,
   inviteUserToBase,
   inviteUserToResource,
-} from '../e2e/authentication/user.tasks'
-import { deleteAllData } from '../e2e/deleteAllData'
+} from '@app/e2e/e2e/authentication/user.tasks'
+import { deleteAllData } from '@app/e2e/e2e/deleteAllData'
+import { sendResourceCommands } from '@app/e2e/e2e/resources.tasks'
 
 /**
  * Export of custom tasks that can be run with cy.execute() type safe custom command

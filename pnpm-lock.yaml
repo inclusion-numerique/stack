@@ -344,8 +344,8 @@ importers:
         specifier: ^2.0.2
         version: 2.0.2
       superjson:
-        specifier: ^2.2.0
-        version: 2.2.0
+        specifier: 1.13.3
+        version: 1.13.3
       typescript-plugin-css-modules:
         specifier: ^5.0.2
         version: 5.0.2(typescript@5.2.2)
@@ -555,13 +555,13 @@ importers:
     dependencies:
       '@cypress/react18':
         specifier: ^2.0.0
-        version: 2.0.0(@types/react-dom@18.2.14)(@types/react@18.2.33)(cypress@13.3.3)(react-dom@18.2.0)(react@18.2.0)
+        version: 2.0.0(@types/react-dom@18.2.14)(@types/react@18.2.33)(cypress@13.2.0)(react-dom@18.2.0)(react@18.2.0)
       cypress:
-        specifier: ^13.3.3
-        version: 13.3.3
+        specifier: 13.2.0
+        version: 13.2.0
       cypress-real-events:
         specifier: ^1.10.3
-        version: 1.10.3(cypress@13.3.3)
+        version: 1.10.3(cypress@13.2.0)
       next:
         specifier: ^13.5.6
         version: 13.5.6(react-dom@18.2.0)(react@18.2.0)
@@ -580,7 +580,7 @@ importers:
     devDependencies:
       '@testing-library/cypress':
         specifier: ^10.0.1
-        version: 10.0.1(cypress@13.3.3)
+        version: 10.0.1(cypress@13.2.0)
       '@types/node':
         specifier: ^20.8.9
         version: 20.8.9
@@ -3951,7 +3951,7 @@ packages:
     dependencies:
       postcss-selector-parser: 6.0.13
 
-  /@cypress/react18@2.0.0(@types/react-dom@18.2.14)(@types/react@18.2.33)(cypress@13.3.3)(react-dom@18.2.0)(react@18.2.0):
+  /@cypress/react18@2.0.0(@types/react-dom@18.2.14)(@types/react@18.2.33)(cypress@13.2.0)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-I4iEzyPvSmADPUFT7fuihuo21zu5j5OdgB73KnuCI7VjFT6RaYnag8zBeSkXuwSBO1fbD4jeJWoDyPNLqwLspg==}
     peerDependencies:
       '@types/react': ^18
@@ -3965,7 +3965,7 @@ packages:
     dependencies:
       '@types/react': 18.2.33
       '@types/react-dom': 18.2.14
-      cypress: 13.3.3
+      cypress: 13.2.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -8190,7 +8190,7 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@testing-library/cypress@10.0.1(cypress@13.3.3):
+  /@testing-library/cypress@10.0.1(cypress@13.2.0):
     resolution: {integrity: sha512-e8uswjTZIBhaIXjzEcrQQ8nHRWHgZH7XBxKuIWxZ/T7FxfWhCR48nFhUX5nfPizjVOKSThEfOSv67jquc1ASkw==}
     engines: {node: '>=12', npm: '>=6'}
     peerDependencies:
@@ -8198,7 +8198,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.23.2
       '@testing-library/dom': 9.3.3
-      cypress: 13.3.3
+      cypress: 13.2.0
     dev: true
 
   /@testing-library/dom@9.3.3:
@@ -11692,16 +11692,16 @@ packages:
     resolution: {integrity: sha512-NDshLupGa7gp4UG4sSNIqwYJqgSwvds0SvENntxoVoVvTzXcrHvd5gG2MWpbRpSNvk59dlmIe1IwNvSxN4IVmg==}
     dev: false
 
-  /cypress-real-events@1.10.3(cypress@13.3.3):
+  /cypress-real-events@1.10.3(cypress@13.2.0):
     resolution: {integrity: sha512-YN3fn+CJIAM638sE6uMvv2/n3PsWowdd0rOiN6ZoyezNAMyENfuQHvccLKZpN+apGfQZYetCml6QXLYgDid2fg==}
     peerDependencies:
       cypress: ^4.x || ^5.x || ^6.x || ^7.x || ^8.x || ^9.x || ^10.x || ^11.x || ^12.x || ^13.x
     dependencies:
-      cypress: 13.3.3
+      cypress: 13.2.0
     dev: false
 
-  /cypress@13.3.3:
-    resolution: {integrity: sha512-mbdkojHhKB1xbrj7CrKWHi22uFx9P9vQFiR0sYDZZoK99OMp9/ZYN55TO5pjbXmV7xvCJ4JwBoADXjOJK8aCJw==}
+  /cypress@13.2.0:
+    resolution: {integrity: sha512-AvDQxBydE771GTq0TR4ZUBvv9m9ffXuB/ueEtpDF/6gOcvFR96amgwSJP16Yhqw6VhmwqspT5nAGzoxxB+D89g==}
     engines: {node: ^16.0.0 || ^18.0.0 || >=20.0.0}
     hasBin: true
     requiresBuild: true
@@ -12289,7 +12289,7 @@ packages:
     dependencies:
       semver: 7.5.4
       shelljs: 0.8.5
-      typescript: 5.3.0-dev.20231030
+      typescript: 5.3.0-dev.20231031
     dev: false
 
   /duplexer3@0.1.5:
@@ -22279,9 +22279,9 @@ packages:
       kdbush: 4.0.2
     dev: false
 
-  /superjson@2.2.0:
-    resolution: {integrity: sha512-vSr6kwT/LY3T1+JaZllIGFp5+qEYyCw/s6EMgR8TulTwRbKETuVIqN4RTurPBTU/HlEpP0ytN3srB2vjjeBRoQ==}
-    engines: {node: '>=16'}
+  /superjson@1.13.3:
+    resolution: {integrity: sha512-mJiVjfd2vokfDxsQPOwJ/PtanO87LhpYY88ubI5dUB1Ab58Txbyje3+jpm+/83R/fevaq/107NNhtYBLuoTrFg==}
+    engines: {node: '>=10'}
     dependencies:
       copy-anything: 3.0.5
     dev: false
@@ -23118,8 +23118,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  /typescript@5.3.0-dev.20231030:
-    resolution: {integrity: sha512-azWrF0lAiu8cBHNr6yq3RDkU/DtQScvT48ea3Ngq6oXJ/GPO0n96wCFSRQA5UbZlVVf3fAAqsUfvOdohRbrPVg==}
+  /typescript@5.3.0-dev.20231031:
+    resolution: {integrity: sha512-+w6szmOFr7GSWj/eNFgHdYqubMux9B5ao5LFoGdn712gbDYMpLwqLNkPLpJHD9chl/2wc/W96iSfALkZs7sVXQ==}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: false
