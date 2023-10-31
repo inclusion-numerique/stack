@@ -2,7 +2,7 @@ import React from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import CollectionMetaData from '../Collection/CollectionMetaData'
-import styles from './SaveInBase.module.css'
+import styles from './SaveResourceInCollectionModal.module.css'
 
 const AddOrRemoveResourceFromCollection = ({
   collection,

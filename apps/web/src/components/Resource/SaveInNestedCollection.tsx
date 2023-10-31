@@ -1,7 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import type { SessionUser, SessionUserBase } from '@app/web/auth/sessionUser'
-import styles from './SaveInBase.module.css'
+import styles from './SaveResourceInCollectionModal.module.css'
 
 const SaveInNestedCollection = ({
   base,
@@ -19,17 +19,18 @@ const SaveInNestedCollection = ({
     data-testid="add-in-collection-bases"
   >
     <div className={styles.content}>
-      <b>{base ? base.title : `${user.name} - Mes collections`}</b>
-      <div className={styles.collections}>
-        <div>
-          <span className="fr-icon-folder-2-line fr-icon--sm" />{' '}
-          {base ? base.collections.length : user.collections.length} Collections
-        </div>
+      <b className="fr-text-title--grey">
+        {base ? base.title : `${user.name} - Mes collections`}
+      </b>
+      <div className={classNames('fr-mt-2v', styles.collections)}>
+        <span className="fr-icon-folder-2-line fr-icon--sm" />{' '}
+        {base ? base.collections.length : user.collections.length} Collections
       </div>
     </div>
     <span
       className={classNames(
         'fr-icon-arrow-right-s-line',
+        'fr-mx-1w',
         'fr-icon--sm',
         styles.arrow,
       )}

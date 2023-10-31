@@ -8,9 +8,10 @@ import type { SessionUser, SessionUserBase } from '@app/web/auth/sessionUser'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import { getBasesFromSessionUser } from '@app/web/bases/getBasesFromSessionUser'
+import { createCollectionUrl } from '@app/web/collections/createCollectionUrl'
 import AddOrRemoveResourceFromCollection from './AddOrRemoveResourceFromCollection'
 import SaveInNestedCollection from './SaveInNestedCollection'
-import styles from './SaveInBase.module.css'
+import styles from './SaveResourceInCollectionModal.module.css'
 
 export const SaveResourceInCollectionDynamicModal = createDynamicModal({
   id: 'save-resource-in-collection',
@@ -80,14 +81,35 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
     }
   }
 
-  console.log('RESOURCE MODAL', user)
+  const showCreateCollectionButton = bases.length === 0 || !!nested
 
   return (
-    <SaveResourceInCollectionDynamicModal.Component title="Ajouter à la collection">
+    <SaveResourceInCollectionDynamicModal.Component
+      className={styles.modal}
+      title="Ajouter à une collection"
+      buttons={
+        showCreateCollectionButton
+          ? [
+              {
+                children: 'Créer une collection',
+                iconId: 'fr-icon-add-line',
+                priority: 'secondary',
+                className: styles.createCollectionButton,
+                linkProps: {
+                  href: createCollectionUrl({ baseId: selectedBase?.id }),
+                },
+              },
+            ]
+          : undefined
+      }
+    >
       {nested && (
         <button
           type="button"
-          className={styles.clickableContainer}
+          className={classNames(
+            styles.clickableContainer,
+            styles.backToBasesButton,
+          )}
           onClick={() => setNested('')}
           data-testid="back-to-bases-button"
         >
@@ -96,11 +118,11 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
               className={classNames(
                 'fr-icon-arrow-left-s-line',
                 'fr-icon--sm',
-                'fr-mr-1w',
+                'fr-mx-1w',
                 styles.arrow,
               )}
             />
-            <b>
+            <b className="fr-text-title--grey fr-ml-1w">
               {selectedBase
                 ? selectedBase.title
                 : `${user.name} - Mes collections`}

@@ -1,6 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import Button from '@codegouvfr/react-dsfr/Button'
+import { createCollectionUrl } from '@app/web/collections/createCollectionUrl'
 
 export const CreateCollectionButton = ({
   className,
@@ -12,7 +13,7 @@ export const CreateCollectionButton = ({
   <Button
     data-testid="create-collection-button"
     linkProps={{
-      href: baseId ? `/collections/creer?base=${baseId}` : '/collections/creer',
+      href: createCollectionUrl({ baseId }),
     }}
     className={classNames(className)}
   >
