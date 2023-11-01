@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip_mac_address
+// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/flexible_ip_mac_address
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -10,7 +10,7 @@ export interface FlexibleIpMacAddressConfig extends cdktf.TerraformMetaArguments
   /**
   * The ID of the flexible IP for which to generate a virtual MAC
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip_mac_address#flexible_ip_id FlexibleIpMacAddress#flexible_ip_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/flexible_ip_mac_address#flexible_ip_id FlexibleIpMacAddress#flexible_ip_id}
   */
   readonly flexibleIpId: string;
   /**
@@ -18,11 +18,11 @@ export interface FlexibleIpMacAddressConfig extends cdktf.TerraformMetaArguments
   * 
   * **NOTE** : The flexible IPs need to be attached to the same server for the operation to work.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip_mac_address#flexible_ip_ids_to_duplicate FlexibleIpMacAddress#flexible_ip_ids_to_duplicate}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/flexible_ip_mac_address#flexible_ip_ids_to_duplicate FlexibleIpMacAddress#flexible_ip_ids_to_duplicate}
   */
   readonly flexibleIpIdsToDuplicate?: string[];
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip_mac_address#id FlexibleIpMacAddress#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/flexible_ip_mac_address#id FlexibleIpMacAddress#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -31,41 +31,41 @@ export interface FlexibleIpMacAddressConfig extends cdktf.TerraformMetaArguments
   /**
   * The type of the virtual MAC
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip_mac_address#type FlexibleIpMacAddress#type}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/flexible_ip_mac_address#type FlexibleIpMacAddress#type}
   */
   readonly type: string;
   /**
   * The zone you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip_mac_address#zone FlexibleIpMacAddress#zone}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/flexible_ip_mac_address#zone FlexibleIpMacAddress#zone}
   */
   readonly zone?: string;
   /**
   * timeouts block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip_mac_address#timeouts FlexibleIpMacAddress#timeouts}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/flexible_ip_mac_address#timeouts FlexibleIpMacAddress#timeouts}
   */
   readonly timeouts?: FlexibleIpMacAddressTimeouts;
 }
 export interface FlexibleIpMacAddressTimeouts {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip_mac_address#create FlexibleIpMacAddress#create}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/flexible_ip_mac_address#create FlexibleIpMacAddress#create}
   */
   readonly create?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip_mac_address#default FlexibleIpMacAddress#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/flexible_ip_mac_address#default FlexibleIpMacAddress#default}
   */
   readonly default?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip_mac_address#delete FlexibleIpMacAddress#delete}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/flexible_ip_mac_address#delete FlexibleIpMacAddress#delete}
   */
   readonly delete?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip_mac_address#read FlexibleIpMacAddress#read}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/flexible_ip_mac_address#read FlexibleIpMacAddress#read}
   */
   readonly read?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip_mac_address#update FlexibleIpMacAddress#update}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/flexible_ip_mac_address#update FlexibleIpMacAddress#update}
   */
   readonly update?: string;
 }
@@ -232,7 +232,7 @@ export class FlexibleIpMacAddressTimeoutsOutputReference extends cdktf.ComplexOb
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip_mac_address scaleway_flexible_ip_mac_address}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/flexible_ip_mac_address scaleway_flexible_ip_mac_address}
 */
 export class FlexibleIpMacAddress extends cdktf.TerraformResource {
 
@@ -241,12 +241,26 @@ export class FlexibleIpMacAddress extends cdktf.TerraformResource {
   // =================
   public static readonly tfResourceType = "scaleway_flexible_ip_mac_address";
 
+  // ==============
+  // STATIC Methods
+  // ==============
+  /**
+  * Generates CDKTF code for importing a FlexibleIpMacAddress resource upon running "cdktf plan <stack-name>"
+  * @param scope The scope in which to define this construct
+  * @param importToId The construct id used in the generated config for the FlexibleIpMacAddress to import
+  * @param importFromId The id of the existing FlexibleIpMacAddress that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/flexible_ip_mac_address#import import section} in the documentation of this resource for the id to use
+  * @param provider? Optional instance of the provider where the FlexibleIpMacAddress to import is found
+  */
+  public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
+        return new cdktf.ImportableResource(scope, importToId, { terraformResourceType: "scaleway_flexible_ip_mac_address", importId: importFromId, provider });
+      }
+
   // ===========
   // INITIALIZER
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/flexible_ip_mac_address scaleway_flexible_ip_mac_address} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/flexible_ip_mac_address scaleway_flexible_ip_mac_address} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -257,8 +271,8 @@ export class FlexibleIpMacAddress extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_flexible_ip_mac_address',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.28.0',
-        providerVersionConstraint: '>= 2.28.0'
+        providerVersion: '2.31.0',
+        providerVersionConstraint: '>= 2.31.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,

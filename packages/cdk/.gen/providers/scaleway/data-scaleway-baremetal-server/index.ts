@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/baremetal_server
+// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/baremetal_server
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -8,7 +8,7 @@ import * as cdktf from 'cdktf';
 
 export interface DataScalewayBaremetalServerConfig extends cdktf.TerraformMetaArguments {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/baremetal_server#id DataScalewayBaremetalServer#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/baremetal_server#id DataScalewayBaremetalServer#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -17,19 +17,19 @@ export interface DataScalewayBaremetalServerConfig extends cdktf.TerraformMetaAr
   /**
   * Name of the server
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/baremetal_server#name DataScalewayBaremetalServer#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/baremetal_server#name DataScalewayBaremetalServer#name}
   */
   readonly name?: string;
   /**
   * The ID of the server
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/baremetal_server#server_id DataScalewayBaremetalServer#server_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/baremetal_server#server_id DataScalewayBaremetalServer#server_id}
   */
   readonly serverId?: string;
   /**
   * The zone you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/baremetal_server#zone DataScalewayBaremetalServer#zone}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/baremetal_server#zone DataScalewayBaremetalServer#zone}
   */
   readonly zone?: string;
 }
@@ -430,7 +430,7 @@ export class DataScalewayBaremetalServerPrivateNetworkList extends cdktf.Complex
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/baremetal_server scaleway_baremetal_server}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/baremetal_server scaleway_baremetal_server}
 */
 export class DataScalewayBaremetalServer extends cdktf.TerraformDataSource {
 
@@ -439,12 +439,26 @@ export class DataScalewayBaremetalServer extends cdktf.TerraformDataSource {
   // =================
   public static readonly tfResourceType = "scaleway_baremetal_server";
 
+  // ==============
+  // STATIC Methods
+  // ==============
+  /**
+  * Generates CDKTF code for importing a DataScalewayBaremetalServer resource upon running "cdktf plan <stack-name>"
+  * @param scope The scope in which to define this construct
+  * @param importToId The construct id used in the generated config for the DataScalewayBaremetalServer to import
+  * @param importFromId The id of the existing DataScalewayBaremetalServer that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/baremetal_server#import import section} in the documentation of this resource for the id to use
+  * @param provider? Optional instance of the provider where the DataScalewayBaremetalServer to import is found
+  */
+  public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
+        return new cdktf.ImportableResource(scope, importToId, { terraformResourceType: "scaleway_baremetal_server", importId: importFromId, provider });
+      }
+
   // ===========
   // INITIALIZER
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/baremetal_server scaleway_baremetal_server} Data Source
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/baremetal_server scaleway_baremetal_server} Data Source
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -455,8 +469,8 @@ export class DataScalewayBaremetalServer extends cdktf.TerraformDataSource {
       terraformResourceType: 'scaleway_baremetal_server',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.28.0',
-        providerVersionConstraint: '>= 2.28.0'
+        providerVersion: '2.31.0',
+        providerVersionConstraint: '>= 2.31.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
