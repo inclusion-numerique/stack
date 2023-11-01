@@ -48,22 +48,22 @@ export const GouvernancePressentieValidation = z.intersection(
   z
     // We have to use an intersection so the perimetre/code refine is triggered at the same time as the other fields
     .object({
-      perimetre: z.enum(['epci', 'departement', 'region', 'autre'], {
+      v1Perimetre: z.enum(['epci', 'departement', 'region', 'autre'], {
         required_error: 'Veuillez renseigner le périmètre',
       }),
 
       // This field has a value that has 2 information: type and code.
       // In the form {type}#{code}
       // For default values will be constructed with getPorteurCode() and server side will infer data from it with getInfoFromPorteurCode()
-      porteurCode: z.string().nullish(),
+      v1PorteurCode: z.string().nullish(),
 
-      porteurSiret: siretValidation.nullish(),
+      v1PorteurSiret: siretValidation.nullish(),
     })
-    .refine((data) => !(data.perimetre === 'autre' && !data.porteurSiret), {
+    .refine((data) => !(data.v1Perimetre === 'autre' && !data.v1PorteurSiret), {
       message: 'Veuillez renseigner un porteur',
       path: ['porteurSiret'],
     })
-    .refine((data) => !(data.perimetre !== 'autre' && !data.porteurCode), {
+    .refine((data) => !(data.v1Perimetre !== 'autre' && !data.v1PorteurCode), {
       message: 'Veuillez renseigner un porteur',
       path: ['porteurCode'],
     }),

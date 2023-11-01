@@ -52,30 +52,30 @@ const Page = async ({
   const {
     id,
     departement,
-    perimetre,
+    v1Perimetre,
     organisationsRecruteusesCoordinateurs,
     noteDeContexte,
-    porteurSiretInformations,
-    porteurRegion,
-    porteurDepartement,
-    porteurEpci,
+    v1PorteurSiretInformations,
+    v1PorteurRegion,
+    v1PorteurDepartement,
+    v1PorteurEpci,
   } = gouvernance
 
-  const porteurCode = porteurRegion
-    ? getPorteurCode('region', porteurRegion.code)
-    : porteurDepartement
-    ? getPorteurCode('departement', porteurDepartement.code)
-    : porteurEpci
-    ? getPorteurCode('epci', porteurEpci.code)
+  const v1PorteurCode = v1PorteurRegion
+    ? getPorteurCode('region', v1PorteurRegion.code)
+    : v1PorteurDepartement
+    ? getPorteurCode('departement', v1PorteurDepartement.code)
+    : v1PorteurEpci
+    ? getPorteurCode('epci', v1PorteurEpci.code)
     : undefined
 
   const gouvernancePressentie: DefaultValues<GouvernancePressentieData> = {
     id,
     departementCode: departement.code,
     noteDeContexte,
-    porteurSiret: porteurSiretInformations?.siret ?? undefined,
-    perimetre,
-    porteurCode: porteurCode ?? '',
+    v1PorteurSiret: v1PorteurSiretInformations?.siret ?? undefined,
+    v1Perimetre,
+    v1PorteurCode: v1PorteurCode ?? '',
     siretsRecruteursCoordinateurs:
       organisationsRecruteusesCoordinateurs.length === 0
         ? [{ siret: '' }]

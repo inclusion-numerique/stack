@@ -180,7 +180,7 @@ model Region {
   searchable             String                  @map("searchable")
   departements           Departement[]
   formulairesGouvernance FormulaireGouvernance[]
-  gouvernancesPortees    Gouvernance[]           @relation(name: "gouvernance_porteur_region")
+  gouvernancesPortees    Gouvernance[]           @relation(name: "v1_gouvernance_porteur_region")
 
   @@map("regions")
 }
@@ -202,7 +202,7 @@ model Epci {
   ifn                                 IfnEpci?
   formulairesGouvernance              FormulaireGouvernance[]
   participationsFormulaireGouvernance EpciParticipantFormulaireGouvernance[]
-  gouvernancesPortees                 Gouvernance[]                          @relation(name: "gouvernance_porteur_epci")
+  gouvernancesPortees                 Gouvernance[]                          @relation(name: "v1_gouvernance_porteur_epci")
 
   @@map("epcis")
 }
@@ -223,7 +223,7 @@ model Departement {
   coordinateursConseillerNumerique    CoordinateurConseillerNumerique[]
   formulairesGouvernance              FormulaireGouvernance[]
   participationsFormulaireGouvernance DepartementParticipantFormulaireGouvernance[]
-  gouvernancesPortees                 Gouvernance[]                                 @relation(name: "gouvernance_porteur_departement")
+  gouvernancesPortees                 Gouvernance[]                                 @relation(name: "v1_gouvernance_porteur_departement")
   gouvernancesRemontees               Gouvernance[]                                 @relation(name: "gouvernance_departement")
 
   @@map("departements")
@@ -696,29 +696,32 @@ model Gouvernance {
   derniereModificationParId String @map("derniere_modification_par_id") @db.Uuid
   derniereModificationPar   User   @relation("gouvernance_derniere_modification_par", fields: [derniereModificationParId], references: [id])
 
-  modification DateTime  @updatedAt
-  creation     DateTime  @default(now())
-  supression   DateTime?
+  modification  DateTime  @updatedAt
+  creation      DateTime  @default(now())
+  supression    DateTime?
+  v2Enregistree DateTime? @map("v2_enregistree")
 
   // Département qui a créé la gouvernance
   departement     Departement @relation(name: "gouvernance_departement", fields: [departementCode], references: [code])
   departementCode String
 
-  perimetre PerimetreGouvernance
+  // V1 Fields applied to "Gouvernance préssentie" Gouvernance version
+  // We keep them to have good default values for v2, and for safety in case we need to rollback or dig in old data
+  v1Perimetre PerimetreGouvernance @map("v1_perimetre")
 
   noteDeContexte String
 
-  porteurRegionCode String? @map("porteur_region_code")
-  porteurRegion     Region? @relation(name: "gouvernance_porteur_region", fields: [porteurRegionCode], references: [code], onDelete: NoAction)
+  v1PorteurRegionCode String? @map("v1_porteur_region_code")
+  v1PorteurRegion     Region? @relation(name: "v1_gouvernance_porteur_region", fields: [v1PorteurRegionCode], references: [code], onDelete: NoAction)
 
-  porteurDepartementCode String?      @map("porteur_departement_code")
-  porteurDepartement     Departement? @relation(name: "gouvernance_porteur_departement", fields: [porteurDepartementCode], references: [code], onDelete: NoAction)
+  v1PorteurDepartementCode String?      @map("v1_porteur_departement_code")
+  v1PorteurDepartement     Departement? @relation(name: "v1_gouvernance_porteur_departement", fields: [v1PorteurDepartementCode], references: [code], onDelete: NoAction)
 
-  porteurEpciCode String? @map("porteur_epci_code")
-  porteurEpci     Epci?   @relation(name: "gouvernance_porteur_epci", fields: [porteurEpciCode], references: [code], onDelete: NoAction)
+  v1PorteurEpciCode String? @map("v1_porteur_epci_code")
+  v1PorteurEpci     Epci?   @relation(name: "v1_gouvernance_porteur_epci", fields: [v1PorteurEpciCode], references: [code], onDelete: NoAction)
 
-  porteurSiret             String?            @map("porteur_siret")
-  porteurSiretInformations InformationsSiret? @relation(fields: [porteurSiret], references: [siret], onDelete: NoAction)
+  v1PorteurSiret             String?            @map("v1_porteur_siret")
+  v1PorteurSiretInformations InformationsSiret? @relation(fields: [v1PorteurSiret], references: [siret], onDelete: NoAction)
 
   organisationsRecruteusesCoordinateurs OrganisationRecruteuseCoordinateurs[]
 

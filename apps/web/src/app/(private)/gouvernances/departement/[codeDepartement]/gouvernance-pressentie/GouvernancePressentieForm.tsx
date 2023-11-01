@@ -29,7 +29,7 @@ import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvern
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 
 const emptyValues: DefaultValues<GouvernancePressentieData> = {
-  porteurCode: '',
+  v1PorteurCode: '',
   siretsRecruteursCoordinateurs: [{ siret: '' }],
 }
 
@@ -77,32 +77,32 @@ const GouvernancePressentieForm = ({
     }
   }
 
-  const perimetre = form.watch('perimetre')
-  const porteurCode = form.watch('porteurCode')
-  const porteurSiret = form.watch('porteurSiret')
-  const shouldProvidePorteurSiret = perimetre === 'autre'
+  const v1Perimetre = form.watch('v1Perimetre')
+  const v1PorteurCode = form.watch('v1PorteurCode')
+  const v1PorteurSiret = form.watch('v1PorteurSiret')
+  const shouldProvidePorteurSiret = v1Perimetre === 'autre'
 
   if (
     // We switch from SIRET to collectivity, reset the value for input to display ok
     shouldProvidePorteurSiret &&
-    !!porteurCode
+    !!v1PorteurCode
   ) {
     setTimeout(() => {
-      form.setValue('porteurCode', '')
+      form.setValue('v1PorteurCode', '')
     })
-  } else if (!shouldProvidePorteurSiret && !!porteurSiret) {
+  } else if (!shouldProvidePorteurSiret && !!v1PorteurSiret) {
     setTimeout(() => {
-      form.setValue('porteurSiret', '')
+      form.setValue('v1PorteurSiret', '')
     })
   }
 
   const isLoading =
     (formState.isSubmitting || formState.isSubmitSuccessful) && !mutation.error
 
-  const defaultPorteurValue = gouvernancePressentie?.porteurCode
+  const defaultPorteurValue = gouvernancePressentie?.v1PorteurCode
     ? Object.values(optionsCollectivitesPorteur)
         .flatMap((group) => group.options)
-        .find((option) => option.value === gouvernancePressentie?.porteurCode)
+        .find((option) => option.value === gouvernancePressentie?.v1PorteurCode)
     : undefined
 
   return (
@@ -126,7 +126,7 @@ const GouvernancePressentieForm = ({
           control={control}
           asterisk
           label="Quel est le périmètre géographique de la gouvernance ?"
-          path="perimetre"
+          path="v1Perimetre"
           options={perimetreOptions}
         />
         <hr className="fr-separator-10v" />
@@ -134,7 +134,7 @@ const GouvernancePressentieForm = ({
         {shouldProvidePorteurSiret ? (
           <InputFormField
             label="SIRET de la collectivité/structure"
-            path="porteurSiret"
+            path="v1PorteurSiret"
             asterisk
             control={control}
             info={<SiretInputInfo />}
@@ -143,7 +143,7 @@ const GouvernancePressentieForm = ({
         ) : (
           <CustomSelectFormField
             label="Qui sera le porteur de la feuille de route ?"
-            path="porteurCode"
+            path="v1PorteurCode"
             asterisk
             control={control}
             options={optionsCollectivitesPorteur}

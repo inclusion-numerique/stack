@@ -59,10 +59,10 @@ export const gouvernanceRouter = router({
         input: {
           id,
           siretsRecruteursCoordinateurs,
-          porteurCode,
+          v1PorteurCode,
           departementCode,
-          porteurSiret,
-          perimetre,
+          v1PorteurSiret,
+          v1Perimetre,
           noteDeContexte: dangerousHtmlFromNoteDeContexte,
         },
         ctx: { user },
@@ -117,27 +117,27 @@ export const gouvernanceRouter = router({
               id: user.id,
             },
           },
-          perimetre,
+          v1Perimetre,
           modification: new Date(),
           noteDeContexte,
         } satisfies Prisma.GouvernanceUpdateInput
 
-        const porteurSiretInformations =
-          perimetre === 'autre' && porteurSiret
+        const v1PorteurSiretInformations =
+          v1Perimetre === 'autre' && v1PorteurSiret
             ? {
                 connectOrCreate: {
                   where: {
-                    siret: porteurSiret,
+                    siret: v1PorteurSiret,
                   },
                   create: {
-                    siret: porteurSiret,
+                    siret: v1PorteurSiret,
                   },
                 },
               }
             : undefined
 
-        const porteurInfo = porteurCode
-          ? getInfoFromPorteurCode(porteurCode)
+        const porteurInfo = v1PorteurCode
+          ? getInfoFromPorteurCode(v1PorteurCode)
           : null
 
         const connectPorteurCode = porteurInfo
@@ -147,25 +147,26 @@ export const gouvernanceRouter = router({
               },
             }
           : undefined
-        const porteurRegion =
-          !!porteurCode && porteurInfo?.type === 'region'
+        const v1PorteurRegion =
+          !!v1PorteurCode && porteurInfo?.type === 'region'
             ? connectPorteurCode
             : undefined
-        const porteurDepartement =
-          !!porteurCode && porteurInfo?.type === 'departement'
+        const v1PorteurDepartement =
+          !!v1PorteurCode && porteurInfo?.type === 'departement'
             ? connectPorteurCode
             : undefined
-        const porteurEpci =
-          !!porteurCode && porteurInfo?.type === 'epci'
+        const v1PorteurEpci =
+          !!v1PorteurCode && porteurInfo?.type === 'epci'
             ? connectPorteurCode
             : undefined
 
         if (existing) {
           const data = {
-            porteurRegion: porteurRegion ?? disconnect,
-            porteurDepartement: porteurDepartement ?? disconnect,
-            porteurEpci: porteurEpci ?? disconnect,
-            porteurSiretInformations: porteurSiretInformations ?? disconnect,
+            v1PorteurRegion: v1PorteurRegion ?? disconnect,
+            v1PorteurDepartement: v1PorteurDepartement ?? disconnect,
+            v1PorteurEpci: v1PorteurEpci ?? disconnect,
+            v1PorteurSiretInformations:
+              v1PorteurSiretInformations ?? disconnect,
             ...commonData,
           } satisfies Prisma.GouvernanceUpdateInput
 
@@ -196,10 +197,10 @@ export const gouvernanceRouter = router({
                 code: departementCode,
               },
             },
-            porteurRegion,
-            porteurDepartement,
-            porteurEpci,
-            porteurSiretInformations,
+            v1PorteurRegion,
+            v1PorteurDepartement,
+            v1PorteurEpci,
+            v1PorteurSiretInformations,
             createur: {
               connect: {
                 id: user.id,

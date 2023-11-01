@@ -37,15 +37,15 @@ export const gouvernanceSelect = {
     },
   },
 
-  perimetre: true,
+  v1Perimetre: true,
 
   noteDeContexte: true,
 
-  porteurRegion: collectiviteSelect,
-  porteurDepartement: collectiviteSelect,
-  porteurEpci: collectiviteSelect,
+  v1PorteurRegion: collectiviteSelect,
+  v1PorteurDepartement: collectiviteSelect,
+  v1PorteurEpci: collectiviteSelect,
 
-  porteurSiretInformations: {
+  v1PorteurSiretInformations: {
     select: {
       siret: true,
     },
