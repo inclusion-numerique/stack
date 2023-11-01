@@ -46,7 +46,7 @@ const PerimetreFeuilleDeRouteEtapeActionBar = ({
       console.error(mutationError)
     }
   }
-  const isEtapeLoading = etapeMutation.isLoading || etapeMutation.isSuccess
+  const isEtapeLoading = etapeMutation.isPending || etapeMutation.isSuccess
 
   return (
     <>

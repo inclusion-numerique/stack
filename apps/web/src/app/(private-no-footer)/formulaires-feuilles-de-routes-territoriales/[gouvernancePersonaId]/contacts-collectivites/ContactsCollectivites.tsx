@@ -79,9 +79,9 @@ const ContactsCollectivites = ({
       console.error(mutationError)
     }
   }
-  const isEtapeLoading = etapeMutation.isLoading || etapeMutation.isSuccess
+  const isEtapeLoading = etapeMutation.isPending || etapeMutation.isSuccess
   const disabled = isEtapeLoading
-  const isAutoSaving = contactCollectiviteMutation.isLoading
+  const isAutoSaving = contactCollectiviteMutation.isPending
 
   return (
     <>

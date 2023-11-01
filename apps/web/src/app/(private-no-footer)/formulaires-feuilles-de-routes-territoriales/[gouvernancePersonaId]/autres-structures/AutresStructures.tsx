@@ -69,9 +69,9 @@ const AutresStructures = ({
       console.error(mutationError)
     }
   }
-  const isEtapeLoading = etapeMutation.isLoading || etapeMutation.isSuccess
+  const isEtapeLoading = etapeMutation.isPending || etapeMutation.isSuccess
   const disabled = isEtapeLoading
-  const isAutoSaving = autreStructureMutation.isLoading
+  const isAutoSaving = autreStructureMutation.isPending
 
   return (
     <>

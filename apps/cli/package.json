@@ -14,13 +14,13 @@
     "node": "^20.7"
   },
   "dependencies": {
-    "@commander-js/extra-typings": "^11.0.0",
-    "axios": "^1.5.1",
-    "axios-retry": "^3.8.0",
-    "commander": "^11.0.0",
-    "csv-parse": "^5.5.0",
+    "@commander-js/extra-typings": "^11.1.0",
+    "axios": "^1.6.0",
+    "axios-retry": "^3.8.1",
+    "commander": "^11.1.0",
+    "csv-parse": "^5.5.2",
     "csv-parser": "^3.0.0",
-    "csv-stringify": "^6.4.2",
+    "csv-stringify": "^6.4.4",
     "dotenv": "^16.3.1",
     "form-data": "^4.0.0",
     "lodash": "^4.17.21",
@@ -30,16 +30,16 @@
     "slug": "^8.2.3",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
-    "undici": "^5.25.3",
-    "zod": "^3.22.2"
+    "undici": "^5.27.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.199",
-    "@types/node": "^20.8.0",
-    "@types/slug": "^5.0.5",
-    "eslint": "^8.50.0",
+    "@types/lodash": "^4.14.200",
+    "@types/node": "^20.8.10",
+    "@types/slug": "^5.0.6",
+    "eslint": "^8.52.0",
     "jest": "^29.7.0",
-    "joi": "^17.10.2",
+    "joi": "^17.11.0",
     "typescript": "^5.2.2"
   }
 }

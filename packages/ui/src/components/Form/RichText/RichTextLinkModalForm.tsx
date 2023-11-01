@@ -1,31 +1,13 @@
 'use client'
 
-import React, {
-  FormEventHandler,
-  ReactNode,
-  ReactPortal,
-  useEffect,
-  useRef,
-} from 'react'
+import React, { FormEventHandler, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import z from 'zod'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import ReactDOM from 'react-dom'
+import { createPortal } from 'react-dom'
 import { useModalVisibility } from '@app/ui/hooks/useModalVisibility'
 import InputFormField from '@app/ui/components/Form/InputFormField'
-
-// React-dom types are broken at the moment !
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
-const { createPortal } = ReactDOM as {
-  createPortal: (
-    children: ReactNode,
-    container: Element | DocumentFragment,
-    key?: null | string,
-  ) => ReactPortal
-}
 
 export const RichTextLinkModal = createModal({
   id: 'rich-input-form-link-config',
@@ -60,13 +42,6 @@ const RichTextLinkModalForm = ({
         confirmLabel: 'Ajouter',
       }
 
-  // Forward ref do not work with modal, we have to make a workaround with form ref
-  const formRef = useRef<HTMLFormElement>(null)
-  const modalRef = useRef<HTMLDialogElement>()
-  if (!modalRef.current) {
-    // Will only execute while first form element render is done
-    modalRef.current = formRef.current?.querySelector('dialog') ?? undefined
-  }
   const {
     control,
     reset,
@@ -79,7 +54,7 @@ const RichTextLinkModalForm = ({
     },
   })
 
-  useModalVisibility(modalRef.current, {
+  useModalVisibility(RichTextLinkModal.id, {
     onClosed: () => {
       reset({ url: undefined })
     },
@@ -102,7 +77,7 @@ const RichTextLinkModalForm = ({
   const disabled = isSubmitting
 
   return createPortal(
-    <form ref={formRef} onSubmit={onSubmitHandler}>
+    <form onSubmit={onSubmitHandler}>
       <RichTextLinkModal.Component
         title={title}
         buttons={[
