@@ -32,8 +32,8 @@ export const gouvernances = () => {
     createur,
     derniereModificationPar: createur,
     departement: rhone,
-    perimetre: 'departement',
-    porteurEpci: metropoleDeLyon,
+    v1Perimetre: 'departement',
+    v1PorteurEpci: metropoleDeLyon,
     noteDeContexte: 'Un contexte avec plein de précisions utiles',
   } satisfies AppPrisma.GouvernanceCreateInput
 
