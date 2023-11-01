@@ -21,7 +21,7 @@ import {
 import WhiteCard from '@app/web/ui/WhiteCard'
 import RedAsterisk from '@app/web/ui/RedAsterisk'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
-import { limiteModificationDesGouvernancesPressenties } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance-pressentie/gouvernancePressentieMetadata'
+import { limiteModificationDesGouvernancesPressenties } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernancePressentieMetadata'
 import SiretInputInfo from '@app/web/components/SiretInputInfo'
 import { trpc } from '@app/web/trpc'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'

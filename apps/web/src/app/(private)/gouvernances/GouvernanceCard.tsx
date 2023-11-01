@@ -1,17 +1,16 @@
 import React from 'react'
 import Accordion from '@codegouvfr/react-dsfr/Accordion'
 import Button from '@codegouvfr/react-dsfr/Button'
-import Badge from '@codegouvfr/react-dsfr/Badge'
+import Notice from '@codegouvfr/react-dsfr/Notice'
 import { ListeGouvernanceItem } from '@app/web/app/(private)/gouvernances/getListeGouvernances'
 import WhiteCard from '@app/web/ui/WhiteCard'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
 import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
-import { limiteModificationDesGouvernancesPressenties } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance-pressentie/gouvernancePressentieMetadata'
 import {
   GouvernanceScope,
-  imprimerGouvernancePressentiePath,
-  modifierGouvernancePressentiePath,
+  imprimerGouvernancePath,
+  modifierGouvernancePath,
 } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
 import GouvernanceDeleteButton from '@app/web/app/(private)/gouvernances/GouvernanceDeleteButton'
 import { nameOrEmail } from '@app/web/utils/nameOrEmail'
@@ -38,6 +37,7 @@ const GouvernanceCard = ({
     organisationsRecruteusesCoordinateurs,
     noteDeContexte,
     departement,
+    v2Enregistree,
   } = gouvernance
 
   const porteurString = getPorteurString(gouvernance)
@@ -48,14 +48,13 @@ const GouvernanceCard = ({
   )}`
   const displayModificationMeta = modificationMeta !== creationMeta
 
+  const showEditButton = canEdit && !!v2Enregistree
+  const showCompleteCta = canEdit && !v2Enregistree
+
   return (
     <WhiteCard className="fr-mt-6v">
       <div className="fr-flex fr-align-items-start fr-justify-content-space-between fr-flex-gap-2v fr-flex-wrap">
         <div>
-          <Badge severity="info" className="fr-mb-2v">
-            Proposition modifiable jusqu’au{' '}
-            {dateAsDay(limiteModificationDesGouvernancesPressenties)}
-          </Badge>
           <h5 className="fr-mb-2v">Gouvernance pressentie</h5>
           <p className="fr-mb-0 fr-text--sm">
             Déposée le {creationMeta}
@@ -67,18 +66,18 @@ const GouvernanceCard = ({
             priority="secondary"
             iconId="fr-icon-printer-line"
             linkProps={{
-              href: imprimerGouvernancePressentiePath(scope, id),
+              href: imprimerGouvernancePath(scope, id),
             }}
           >
             Imprimer
           </Button>
-          {canEdit && (
+          {showEditButton && (
             <>
               <Button
                 priority="secondary"
                 iconId="fr-icon-edit-line"
                 linkProps={{
-                  href: modifierGouvernancePressentiePath(scope, id),
+                  href: modifierGouvernancePath(scope, id),
                 }}
               >
                 Modifier
@@ -133,6 +132,30 @@ const GouvernanceCard = ({
           className={styles.noteDeContexteContainer}
         />
       </Accordion>
+      {showCompleteCta && (
+        <Notice
+          className="fr-mt-6v"
+          title={
+            <span className="fr-flex fr-width-full fr-justify-content-space-between fr-align-items-center">
+              <span>
+                Nouvelle version du formulaire pour renseigner la gouvernance
+                sur votre territoire.
+                <br />À compléter avant le 31/12/2023
+              </span>
+              <Button
+                className="fr-ml-2w fr-flex-shrink-0"
+                iconId="fr-icon-edit-line"
+                iconPosition="right"
+                linkProps={{
+                  href: modifierGouvernancePath(scope, id),
+                }}
+              >
+                Compléter ma proposition
+              </Button>
+            </span>
+          }
+        />
+      )}
     </WhiteCard>
   )
 }

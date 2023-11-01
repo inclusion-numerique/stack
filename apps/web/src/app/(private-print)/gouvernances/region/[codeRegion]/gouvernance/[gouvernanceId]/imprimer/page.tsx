@@ -1,13 +1,13 @@
 import React from 'react'
 import { notFound } from 'next/navigation'
+import { getGouvernanceForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
-import { getGouvernancePressentieForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance-pressentie/getGouvernancePressentieForForm'
 import GouvernancePrint from '@app/web/app/(private-print)/gouvernances/GouvernancePrint'
 import { generateRegionMetadata } from '@app/web/app/(private)/gouvernances/region/generateRegionMetadata'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
-export const generateMetadata = generateRegionMetadata('Gouvernance pressentie')
+export const generateMetadata = generateRegionMetadata('Gouvernance')
 
 const Page = async ({
   params: { codeRegion, gouvernanceId },
@@ -16,7 +16,7 @@ const Page = async ({
 }) => {
   await checkUserAccessToGouvernanceScopeOrNavigate({ codeRegion })
 
-  const gouvernance = await getGouvernancePressentieForForm(gouvernanceId)
+  const gouvernance = await getGouvernanceForForm(gouvernanceId)
 
   if (!gouvernance) {
     notFound()

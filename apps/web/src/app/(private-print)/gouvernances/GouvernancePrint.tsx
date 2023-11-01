@@ -1,6 +1,7 @@
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import classNames from 'classnames'
 import React from 'react'
+import { GouvernanceForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import {
   getPerimetreString,
   getPorteurString,
@@ -16,13 +17,12 @@ import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { nameOrEmail } from '@app/web/utils/nameOrEmail'
 import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
 import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
-import { GouvernancePressentieForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance-pressentie/getGouvernancePressentieForForm'
 
 const GouvernancePrint = ({
   gouvernance,
   scope,
 }: {
-  gouvernance: GouvernancePressentieForForm
+  gouvernance: GouvernanceForForm
   scope: GouvernanceScope
 }) => {
   const {

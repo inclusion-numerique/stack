@@ -736,8 +736,9 @@ model Gouvernance {
   noteDeContexte                        String
   organisationsRecruteusesCoordinateurs OrganisationRecruteuseCoordinateurs[]
 
-  comites ComiteGouvernance[]
-  membres MembreGouvernance[]
+  comites         ComiteGouvernance[]
+  membres         MembreGouvernance[]
+  feuillesDeRoute FeuilleDeRoute[]
 
   // Besoins en ingenierie financiere
   besoinRh           Boolean @default(false) @map("besoin_rh")
@@ -767,9 +768,8 @@ model Gouvernance {
   besoinAppuiDemandeSubventionsComplexes           Boolean @default(false) @map("besoin_appui_demande_subventions_complexes")
   besoinAppuiDemandeSubventionsComplexesPrecisions String? @map("besoin_appui_demande_subventions_complexes_precisions")
 
-  besoinOutillage           Boolean          @default(false) @map("besoin_outillage")
-  besoinOutillagePrecisions String?          @map("besoin_outillage_precisions")
-  feuillesDeRoute           FeuilleDeRoute[]
+  besoinOutillage           Boolean @default(false) @map("besoin_outillage")
+  besoinOutillagePrecisions String? @map("besoin_outillage_precisions")
 
   @@map("gouvernances")
 }

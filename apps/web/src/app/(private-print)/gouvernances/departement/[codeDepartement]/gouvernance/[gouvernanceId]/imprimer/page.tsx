@@ -1,15 +1,13 @@
 import React from 'react'
 import { notFound } from 'next/navigation'
+import { getGouvernanceForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/departement/generateDepartementMetadata'
-import { getGouvernancePressentieForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance-pressentie/getGouvernancePressentieForForm'
 import GouvernancePrint from '@app/web/app/(private-print)/gouvernances/GouvernancePrint'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
-export const generateMetadata = generateDepartementMetadata(
-  'Gouvernance pressentie',
-)
+export const generateMetadata = generateDepartementMetadata('Gouvernance')
 
 const Page = async ({
   params: { codeDepartement, gouvernanceId },
@@ -18,7 +16,7 @@ const Page = async ({
 }) => {
   await checkUserAccessToGouvernanceScopeOrNavigate({ codeDepartement })
 
-  const gouvernance = await getGouvernancePressentieForForm(gouvernanceId)
+  const gouvernance = await getGouvernanceForForm(gouvernanceId)
 
   if (!gouvernance) {
     notFound()
