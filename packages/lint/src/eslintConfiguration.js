@@ -41,6 +41,7 @@ module.exports = {
     'no-restricted-syntax': 'off',
     'import/prefer-default-export': 'off',
     'unicorn/no-array-callback-reference': 'off',
+    'unicorn/prefer-query-selector': 'off',
     'no-continue': 'off',
     'prettier/prettier': 'error',
     'no-unused-vars': [
