@@ -103,6 +103,7 @@ module.exports = {
         'no-irregular-whitespace': 'off',
         'unicorn/no-null': 'off',
         'unicorn/no-array-callback-reference': 'off',
+        'unicorn/prefer-query-selector': 'off',
         'no-continue': 'off',
         // Module resolve leads to false negatives in monorepo, typescript compiler will handle any error
         'import/no-unresolved': [
