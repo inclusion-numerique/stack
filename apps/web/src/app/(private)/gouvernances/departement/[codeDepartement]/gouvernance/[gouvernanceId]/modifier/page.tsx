@@ -2,11 +2,11 @@ import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import { notFound } from 'next/navigation'
 import { DefaultValues } from 'react-hook-form/dist/types/form'
+import NavigationSideMenu from '@app/ui/components/NavigationSideMenu'
 import { getGouvernanceForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/departement/generateDepartementMetadata'
 import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
-import GouvernancePressentieForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/GouvernancePressentieForm'
 import { getPorteurOptions } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getPorteurOptions'
 import { canEditGouvernancePressentie } from '@app/web/security/securityRules'
 import {
@@ -15,6 +15,8 @@ import {
 } from '@app/web/gouvernance/GouvernancePressentie'
 import BackLink from '@app/web/components/BackLink'
 import { getGouvernanceScopeTitle } from '@app/web/app/(private)/gouvernances/gouvernanceScopeTitle'
+import GouvernanceForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/GouvernanceForm'
+import { gouvernanceFormSectionSideMenuItems } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -88,7 +90,7 @@ const Page = async ({
     <>
       <div className="fr-container">
         <Breadcrumb
-          currentPageLabel="Ajouter une gouvernance pressentie"
+          currentPageLabel="Compléter une gouvernance"
           segments={[
             {
               label: "Page d'accueil",
@@ -105,13 +107,25 @@ const Page = async ({
           ]}
         />
       </div>
-      <div className="fr-container fr-container--narrow fr-pb-10v fr-mb-20v">
-        <BackLink href={gouvernanceHomePath({ codeDepartement })} />
-        <GouvernancePressentieForm
-          className="fr-mt-8v"
-          gouvernancePressentie={gouvernancePressentie}
-          optionsCollectivitesPorteur={optionsCollectivitesPorteur}
-        />
+      <div className="fr-container fr-pb-10v fr-mb-20v">
+        <div className="fr-grid-row">
+          <div className="fr-col-3">
+            <NavigationSideMenu
+              items={gouvernanceFormSectionSideMenuItems}
+              burgerMenuButtonText="Sections"
+              contentId="gouvernance-form"
+              sticky
+            />
+          </div>
+          <div className="fr-col-6">
+            <BackLink href={gouvernanceHomePath({ codeDepartement })} />
+
+            <GouvernanceForm
+              gouvernance={gouvernancePressentie}
+              optionsCollectivitesPorteur={optionsCollectivitesPorteur}
+            />
+          </div>
+        </div>
       </div>
     </>
   )

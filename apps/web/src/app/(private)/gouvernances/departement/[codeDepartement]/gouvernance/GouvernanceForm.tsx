@@ -8,10 +8,11 @@ import Link from 'next/link'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { DefaultValues } from 'react-hook-form/dist/types/form'
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormField'
 import { useRouter } from 'next/navigation'
 import classNames from 'classnames'
+import Notice from '@codegouvfr/react-dsfr/Notice'
 import { perimetreOptions } from '@app/web/gouvernance/GouvernancePressentie'
 import WhiteCard from '@app/web/ui/WhiteCard'
 import RedAsterisk from '@app/web/ui/RedAsterisk'
@@ -24,11 +25,30 @@ import {
   GouvernanceData,
   GouvernanceValidation,
 } from '@app/web/gouvernance/Gouvernance'
+import { dateAsDay } from '@app/web/utils/dateAsDay'
+import { limiteModificationDesGouvernances } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceMetadata'
+import WorkInProgressNotice from '@app/web/components/WorkInProgressNotice'
+import { gouvernanceFormSections } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections'
+// import styles from './GouvernanceForm.module.css'
 
 const emptyValues: DefaultValues<GouvernanceData> = {
   v1PorteurCode: '',
   siretsRecruteursCoordinateurs: [{ siret: '' }],
 }
+
+const SectionCard = ({
+  title,
+  id,
+  children,
+}: PropsWithChildren<{ id: string; title: string }>) => (
+  // Padding is used for anchor navigation offset
+  <section id={id} className="fr-pt-6v">
+    <WhiteCard>
+      <h5>{title}</h5>
+      {children}
+    </WhiteCard>
+  </section>
+)
 
 const GouvernancePressentieForm = ({
   className,
@@ -103,144 +123,57 @@ const GouvernancePressentieForm = ({
     : undefined
 
   return (
-    <WhiteCard className={className}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <h3 className="fr-text-title--blue-france fr-mb-2v">Gouvernance</h3>
-        <p className="fr-text--sm fr-text--medium fr-mb-6v">
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div id="gouvernance-form" className={className}>
+        <h3 className="fr-text-title--blue-france fr-mt-6v">Gouvernance</h3>
+        <Notice
+          className="fr-mt-6v"
+          title={`Gouvernance modifiable jusqu’au ${dateAsDay(
+            limiteModificationDesGouvernances,
+          )}`}
+        />
+        <p className="fr-text--sm fr-text--medium fr-mt-6v fr-mb-4v">
           Les champs avec <RedAsterisk /> sont obligatoires
         </p>
-        <h6 className="fr-mb-4v">Périmètre de la gouvernance</h6>
-        <RadioFormField
-          control={control}
-          asterisk
-          label="Quel est le périmètre géographique de la gouvernance ?"
-          path="v1Perimetre"
-          options={perimetreOptions}
-        />
-        <hr className="fr-separator-10v" />
-        <h6 className="fr-mb-4v">Porteur de la feuille de route</h6>
-        {shouldProvidePorteurSiret ? (
-          <InputFormField
-            label="SIRET de la collectivité/structure"
-            path="v1PorteurSiret"
+        <SectionCard {...gouvernanceFormSections.contactDuSousPrefetReferent}>
+          <WorkInProgressNotice />
+        </SectionCard>
+        <SectionCard {...gouvernanceFormSections.coPorteursDeLaGouvernance}>
+          <WorkInProgressNotice />
+        </SectionCard>
+        <SectionCard {...gouvernanceFormSections.membresDeLaGouvernance}>
+          <WorkInProgressNotice />
+        </SectionCard>
+        <SectionCard {...gouvernanceFormSections.comitologie}>
+          <WorkInProgressNotice />
+        </SectionCard>
+        <SectionCard {...gouvernanceFormSections.feuillesDeRouteEtPorteurs}>
+          <WorkInProgressNotice />
+        </SectionCard>
+        <SectionCard
+          {...gouvernanceFormSections.coordinateurConseillerNumeriqueDeLaGouvernance}
+        >
+          <WorkInProgressNotice />
+        </SectionCard>
+        <SectionCard {...gouvernanceFormSections.besoinsEnIngenierieFinanciere}>
+          <WorkInProgressNotice />
+        </SectionCard>
+        <SectionCard {...gouvernanceFormSections.noteDeContexte}>
+          <RichTextFormField
+            form={form}
             asterisk
-            control={control}
-            info={<SiretInputInfo />}
+            path="noteDeContexte"
             disabled={isLoading}
+            label="Précisez, au sein d'une note qualitative, la gouvernance dans votre département et les éventuelles difficultés que vous rencontreriez dans les échanges avec les collectivités territoriales et leurs groupements"
           />
-        ) : (
-          <CustomSelectFormField
-            label="Qui sera le porteur de la feuille de route ?"
-            path="v1PorteurCode"
-            asterisk
-            control={control}
-            options={optionsCollectivitesPorteur}
-            placeholder="Rechercher la collectivité"
-            disabled={isLoading}
-            defaultValue={defaultPorteurValue}
-          />
-        )}
-        <hr className="fr-separator-10v" />
-        <h6 className="fr-mb-4v">
-          Recrutement coordinateur Conseillers Numériques
-        </h6>
-        <p className="fr-mb-8v">
-          La phase de déploiement du dispositif Conseiller numérique laisse
-          place à une phase de structuration où le diagnostic des besoins et
-          l’accompagnement des conseillers numériques au niveau local peut
-          permettre d’organiser l’action de la médiation numérique, et de
-          l’intégrer aux politiques publiques territoriales. C’est en ce sens
-          qu’un appel à candidatures à été lancé pour identifier des structures
-          souhaitant avoir une action de coordination de l’action des
-          conseillers numériques et des médiateurs numériques de leur territoire
-          :{' '}
-          <Link
-            href="https://societenumerique.gouv.fr/fr/actualite/appel-a-candidatures-conseillers-numeriques-coordinateurs/"
-            target="_blank"
-          >
-            https://societenumerique.gouv.fr/fr/actualite/appel-a-candidatures-conseillers-numeriques-coordinateurs/
-          </Link>
-          . Ces projets de coordination doivent s’articuler avec les projets de
-          gouvernances.
-          <br />
-          <br />
-          Par ailleurs, l’instruction des candidatures doit être faite sur la{' '}
-          <Link
-            href="https://admin.conseiller-numerique.gouv.fr/login?role=prefet"
-            target="_blank"
-          >
-            plateforme dédiée au dispositif Conseiller Numérique
-          </Link>{' '}
-          avant le 10 décembre 2023.
-          <br />
-          <br />
-          Veuillez renseigner quelle collectivité/structure va recruter un
-          coordinateur Conseillers Numériques au sein de la gouvernance :
-        </p>
-        {siretsRecruteursCoordinateursFields.fields.map((siretField, index) => (
-          <InputFormField
-            control={control}
-            key={siretField.id}
-            path={`siretsRecruteursCoordinateurs.${index}.siret`}
-            disabled={isLoading}
-            label={
-              index === 0 ? (
-                <>
-                  SIRET de la collectivité/structure <RedAsterisk />
-                </>
-              ) : (
-                <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
-                  <span>
-                    SIRET de la collectivité/structure <RedAsterisk />
-                  </span>
-                  <Button
-                    type="button"
-                    priority="tertiary no outline"
-                    size="small"
-                    iconId="fr-icon-delete-bin-line"
-                    onClick={() =>
-                      siretsRecruteursCoordinateursFields.remove(index)
-                    }
-                  >
-                    Supprimer
-                  </Button>
-                </div>
-              )
-            }
-            info={<SiretInputInfo />}
-            className="fr-mb-8v"
-          />
-        ))}
-        <div className="fr-btns-group fr-btns-group--icon-left">
-          <Button
-            type="button"
-            priority="secondary"
-            className="fr-mb-0"
-            iconId="fr-icon-add-line"
-            disabled={isLoading}
-            onClick={() =>
-              siretsRecruteursCoordinateursFields.append({ siret: '' })
-            }
-          >
-            Ajouter une collectivité/structure recruteuse
-          </Button>
-        </div>
+        </SectionCard>
 
-        <hr className="fr-separator-10v" />
-        <h6 className="fr-mb-4v">Note de contexte</h6>
-        <RichTextFormField
-          form={form}
-          asterisk
-          path="noteDeContexte"
-          disabled={isLoading}
-          label="Précisez, au sein d'une note qualitative, la gouvernance dans votre département et les éventuelles difficultés que vous rencontreriez dans les échanges avec les collectivités territoriales et leurs groupements"
-        />
         <div className="fr-btns-group fr-mt-10v">
           <Button
             type="submit"
             className={classNames(isLoading && 'fr-btn--loading')}
           >
-            Confirmer et envoyer
+            Enregistrer
           </Button>
         </div>
         {mutation.error && (
@@ -248,8 +181,140 @@ const GouvernancePressentieForm = ({
             Une erreur est survenue, veuillez réessayer.
           </p>
         )}
-      </form>
-    </WhiteCard>
+
+        <WhiteCard className="fr-mt-12v">
+          <h2>V1 Old form</h2>
+          <h6 className="fr-mb-4v">Périmètre de la gouvernance</h6>
+          <RadioFormField
+            control={control}
+            asterisk
+            label="Quel est le périmètre géographique de la gouvernance ?"
+            path="v1Perimetre"
+            options={perimetreOptions}
+          />
+          <hr className="fr-separator-10v" />
+          <h6 className="fr-mb-4v">Porteur de la feuille de route</h6>
+          {shouldProvidePorteurSiret ? (
+            <InputFormField
+              label="SIRET de la collectivité/structure"
+              path="v1PorteurSiret"
+              asterisk
+              control={control}
+              info={<SiretInputInfo />}
+              disabled={isLoading}
+            />
+          ) : (
+            <CustomSelectFormField
+              label="Qui sera le porteur de la feuille de route ?"
+              path="v1PorteurCode"
+              asterisk
+              control={control}
+              options={optionsCollectivitesPorteur}
+              placeholder="Rechercher la collectivité"
+              disabled={isLoading}
+              defaultValue={defaultPorteurValue}
+            />
+          )}
+          <hr className="fr-separator-10v" />
+          <h6 className="fr-mb-4v">
+            Recrutement coordinateur Conseillers Numériques
+          </h6>
+          <p className="fr-mb-8v">
+            La phase de déploiement du dispositif Conseiller numérique laisse
+            place à une phase de structuration où le diagnostic des besoins et
+            l’accompagnement des conseillers numériques au niveau local peut
+            permettre d’organiser l’action de la médiation numérique, et de
+            l’intégrer aux politiques publiques territoriales. C’est en ce sens
+            qu’un appel à candidatures à été lancé pour identifier des
+            structures souhaitant avoir une action de coordination de l’action
+            des conseillers numériques et des médiateurs numériques de leur
+            territoire :{' '}
+            <Link
+              href="https://societenumerique.gouv.fr/fr/actualite/appel-a-candidatures-conseillers-numeriques-coordinateurs/"
+              target="_blank"
+            >
+              https://societenumerique.gouv.fr/fr/actualite/appel-a-candidatures-conseillers-numeriques-coordinateurs/
+            </Link>
+            . Ces projets de coordination doivent s’articuler avec les projets
+            de gouvernances.
+            <br />
+            <br />
+            Par ailleurs, l’instruction des candidatures doit être faite sur la{' '}
+            <Link
+              href="https://admin.conseiller-numerique.gouv.fr/login?role=prefet"
+              target="_blank"
+            >
+              plateforme dédiée au dispositif Conseiller Numérique
+            </Link>{' '}
+            avant le 10 décembre 2023.
+            <br />
+            <br />
+            Veuillez renseigner quelle collectivité/structure va recruter un
+            coordinateur Conseillers Numériques au sein de la gouvernance :
+          </p>
+          {siretsRecruteursCoordinateursFields.fields.map(
+            (siretField, index) => (
+              <InputFormField
+                control={control}
+                key={siretField.id}
+                path={`siretsRecruteursCoordinateurs.${index}.siret`}
+                disabled={isLoading}
+                label={
+                  index === 0 ? (
+                    <>
+                      SIRET de la collectivité/structure <RedAsterisk />
+                    </>
+                  ) : (
+                    <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
+                      <span>
+                        SIRET de la collectivité/structure <RedAsterisk />
+                      </span>
+                      <Button
+                        type="button"
+                        priority="tertiary no outline"
+                        size="small"
+                        iconId="fr-icon-delete-bin-line"
+                        onClick={() =>
+                          siretsRecruteursCoordinateursFields.remove(index)
+                        }
+                      >
+                        Supprimer
+                      </Button>
+                    </div>
+                  )
+                }
+                info={<SiretInputInfo />}
+                className="fr-mb-8v"
+              />
+            ),
+          )}
+          <div className="fr-btns-group fr-btns-group--icon-left">
+            <Button
+              type="button"
+              priority="secondary"
+              className="fr-mb-0"
+              iconId="fr-icon-add-line"
+              disabled={isLoading}
+              onClick={() =>
+                siretsRecruteursCoordinateursFields.append({ siret: '' })
+              }
+            >
+              Ajouter une collectivité/structure recruteuse
+            </Button>
+          </div>
+
+          <hr className="fr-separator-10v" />
+          <h6 className="fr-mb-4v">Note de contexte</h6>
+          <RichTextFormField
+            form={form}
+            asterisk
+            path="noteDeContexte"
+            disabled={isLoading}
+            label="Précisez, au sein d'une note qualitative, la gouvernance dans votre département et les éventuelles difficultés que vous rencontreriez dans les échanges avec les collectivités territoriales et leurs groupements"
+          />
+        </WhiteCard>
+      </div>
+    </form>
   )
 }
 

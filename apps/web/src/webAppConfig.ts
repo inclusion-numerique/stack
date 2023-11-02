@@ -53,6 +53,16 @@ export const ServerWebAppConfig = {
   MonComptePro: {
     clientSecret: process.env.MONCOMPTEPRO_CLIENT_SECRET ?? '',
   },
+  ApiEntreprise: {
+    // Documentation
+    // https://api.gouv.fr/documentation/api-entreprise
+    // https://entreprise.api.gouv.fr/developpeurs
+    // We have access to these 3 APIs:
+    // https://entreprise.api.gouv.fr/catalogue/djepva/associations
+    // https://entreprise.api.gouv.fr/catalogue/insee/unites_legales
+    // https://entreprise.api.gouv.fr/catalogue/insee/unites_legales_diffusibles
+    token: process.env.API_ENTREPRISE_TOKEN ?? '',
+  },
 }
 
 /**

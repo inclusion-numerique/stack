@@ -1,0 +1,13 @@
+.sectionTitle {
+    /* Used for anchor navigation offset */
+
+    &::before {
+        content: '';
+        display: block;
+        position: relative;
+        pointer-events: none;
+        width: 0;
+        height: 4em;
+        margin-top: -4em
+    }
+}
