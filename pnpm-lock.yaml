@@ -598,7 +598,7 @@ importers:
     dependencies:
       '@luma-team/mjml-react':
         specifier: ^0.3.0-0
-        version: 0.3.0-0(react-dom@18.2.0)(react@18.2.0)
+        version: 0.3.0-0(react-dom@18.3.0-next-fecc288b7-20221025)(react@18.3.0-next-fecc288b7-20221025)
       html-minifier:
         specifier: ^4.0.0
         version: 4.0.0
@@ -607,13 +607,13 @@ importers:
         version: 4.14.1
       mjml-react:
         specifier: ^2.0.8
-        version: 2.0.8(mjml@4.14.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 2.0.8(mjml@4.14.1)(react-dom@18.3.0-next-fecc288b7-20221025)(react@18.3.0-next-fecc288b7-20221025)
       react:
-        specifier: ^18.2.0
-        version: 18.2.0
+        specifier: ^18.3.0-next
+        version: 18.3.0-next-fecc288b7-20221025
       react-dom:
-        specifier: ^18.2.0
-        version: 18.2.0(react@18.2.0)
+        specifier: ^18.3.0-next
+        version: 18.3.0-next-fecc288b7-20221025(react@18.3.0-next-fecc288b7-20221025)
     devDependencies:
       '@types/html-minifier':
         specifier: ^4.0.4
@@ -5164,6 +5164,17 @@ packages:
       color: 3.2.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@luma-team/mjml-react@0.3.0-0(react-dom@18.3.0-next-fecc288b7-20221025)(react@18.3.0-next-fecc288b7-20221025):
+    resolution: {integrity: sha512-6w4BTJ3RrPctWxPnfKXCP0hiUoTdOOUywZzHf4nuxdxb2aWCtE6i3wXkKYei0GIyxW1cdGJUHqlAFyki9HWNEg==}
+    peerDependencies:
+      react: ^17.0.0 || ^18.0.0
+      react-dom: ^17.0.0 || ^18.0.0
+    dependencies:
+      color: 3.2.1
+      react: 18.3.0-next-fecc288b7-20221025
+      react-dom: 18.3.0-next-fecc288b7-20221025(react@18.3.0-next-fecc288b7-20221025)
     dev: false
 
   /@manypkg/cli@0.21.0:
@@ -18876,6 +18887,22 @@ packages:
       react-reconciler: 0.26.2(react@18.2.0)
     dev: false
 
+  /mjml-react@2.0.8(mjml@4.14.1)(react-dom@18.3.0-next-fecc288b7-20221025)(react@18.3.0-next-fecc288b7-20221025):
+    resolution: {integrity: sha512-3wtHZZs1Y7e7Tl+ImojD/+aPE8Z0xshMww7MKSQlD9A1E/92amWQilGZN3T+WjWWaDueKcH2Gc1RJ72PLGSRGA==}
+    peerDependencies:
+      mjml: ^4.7.0
+      react: ^16.0.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.23.1
+      babel-runtime: 6.25.0
+      color: 3.2.1
+      mjml: 4.14.1
+      react: 18.3.0-next-fecc288b7-20221025
+      react-dom: 18.3.0-next-fecc288b7-20221025(react@18.3.0-next-fecc288b7-20221025)
+      react-reconciler: 0.26.2(react@18.3.0-next-fecc288b7-20221025)
+    dev: false
+
   /mjml-section@4.14.1:
     resolution: {integrity: sha512-Ik5pTUhpT3DOfB3hEmAWp8rZ0ilWtIivnL8XdUJRfgYE9D+MCRn+reIO+DAoJHxiQoI6gyeKkIP4B9OrQ7cHQw==}
     dependencies:
@@ -21535,6 +21562,18 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       react: 18.2.0
+      scheduler: 0.20.2
+    dev: false
+
+  /react-reconciler@0.26.2(react@18.3.0-next-fecc288b7-20221025):
+    resolution: {integrity: sha512-nK6kgY28HwrMNwDnMui3dvm3rCFjZrcGiuwLc5COUipBK5hWHLOxMJhSnSomirqWwjPBJKV1QcbkI0VJr7Gl1Q==}
+    engines: {node: '>=0.10.0'}
+    peerDependencies:
+      react: ^17.0.2
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      react: 18.3.0-next-fecc288b7-20221025
       scheduler: 0.20.2
     dev: false
 
