@@ -3,7 +3,7 @@
 // setup.ts must be the first import for webpack css chunks to work properly
 // eslint-disable-next-line import/order
 import '@app/web/app/setup'
-import { Metadata } from 'next'
+import { Metadata, Viewport } from 'next'
 import Link from 'next/link'
 import { PropsWithChildren } from 'react'
 import { setLink } from '@codegouvfr/react-dsfr/link'
@@ -27,7 +27,6 @@ setLink({
 
 export const metadata: Metadata = {
   title: 'France Numérique Ensemble',
-  themeColor: '#000091',
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon/favicon.ico',
@@ -40,6 +39,10 @@ export const metadata: Metadata = {
   },
   description: PublicWebAppConfig.projectTitle,
   manifest: '/favicon/manifest.webmanifest',
+}
+
+export const viewport: Viewport = {
+  themeColor: '#000091',
 }
 
 const RootLayout = ({ children }: PropsWithChildren) => {
