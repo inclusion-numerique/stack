@@ -71,8 +71,6 @@ export const useNavigationSideMenu = ({
             )
           }
 
-          console.table([...visibleElements.entries()])
-
           // Set first visible element as active
           for (const [id, isVisible] of visibleElements.entries()) {
             if (isVisible) {

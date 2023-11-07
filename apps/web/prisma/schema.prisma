@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch", "jsonProtocol", "postgresqlExtensions", "extendedIndexes", "fullTextIndex"]
+  previewFeatures = ["fullTextSearch", "postgresqlExtensions", "extendedIndexes", "fullTextIndex"]
   binaryTargets   = ["native", "debian-openssl-1.1.x"]
 }
 
@@ -182,7 +182,6 @@ model Region {
   formulairesGouvernance     FormulaireGouvernance[]
   gouvernancesPortees        Gouvernance[]           @relation(name: "v1_gouvernance_porteur_region")
   membresGouvernances        MembreGouvernance[]     @relation("membre_gouvernance_region")
-  porteurFeuillesDeRoutes    FeuilleDeRoute[]        @relation("feuille_de_route_porteur_region")
   perimetresFeuillesDeRoutes FeuilleDeRoute[]        @relation("feuille_de_route_perimetre_region")
 
   @@map("regions")
@@ -207,7 +206,6 @@ model Epci {
   participationsFormulaireGouvernance EpciParticipantFormulaireGouvernance[]
   gouvernancesPortees                 Gouvernance[]                          @relation(name: "v1_gouvernance_porteur_epci")
   membresGouvernances                 MembreGouvernance[]                    @relation("membre_gouvernance_epci")
-  porteurFeuillesDeRoutes             FeuilleDeRoute[]                       @relation("feuille_de_route_porteur_epci")
   perimetresFeuillesDeRoutes          PerimetreEpciFeuilleDeRoute[]          @relation("perimetre_epci_feuille_de_route")
 
   @@map("epcis")
@@ -232,7 +230,6 @@ model Departement {
   gouvernancesPortees                 Gouvernance[]                                 @relation(name: "v1_gouvernance_porteur_departement")
   gouvernancesRemontees               Gouvernance[]                                 @relation(name: "gouvernance_departement")
   membresGouvernances                 MembreGouvernance[]                           @relation("membre_gouvernance_departement")
-  porteurFeuillesDeRoutes             FeuilleDeRoute[]                              @relation("feuille_de_route_porteur_departement")
   perimetresFeuillesDeRoutes          FeuilleDeRoute[]                              @relation("feuille_de_route_perimetre_departement")
 
   @@map("departements")
@@ -597,6 +594,8 @@ model FormulaireGouvernance {
   communesParticipantes    CommuneParticipanteFormulaireGouvernance[]
   structuresParticipantes  StructureParticipanteFormulaireGouvernance[]
 
+  membresGouvernance MembreGouvernance[]
+
   @@map("formulaire_gouvernance")
 }
 
@@ -733,12 +732,20 @@ model Gouvernance {
 
   v2Enregistree DateTime? @map("v2_enregistree")
 
+  sousPrefetReferentPrenom String? @map("sous_prefet_referent_prenom")
+  sousPrefetReferentNom    String? @map("sous_prefet_referent_nom")
+  sousPrefetReferentEmail  String? @map("sous_prefet_referent_email")
+
   noteDeContexte                        String
   organisationsRecruteusesCoordinateurs OrganisationRecruteuseCoordinateurs[]
 
-  comites         ComiteGouvernance[]
-  membres         MembreGouvernance[]
+  pasDeCoporteurs Boolean? @map("pas_de_co_porteurs")
+
   feuillesDeRoute FeuilleDeRoute[]
+
+  membres MembreGouvernance[]
+
+  comites ComiteGouvernance[]
 
   // Besoins en ingenierie financiere
   besoinRh           Boolean @default(false) @map("besoin_rh")
@@ -774,6 +781,41 @@ model Gouvernance {
   @@map("gouvernances")
 }
 
+// Tout les participants à une gouvernance
+model MembreGouvernance {
+  id String @id @default(uuid()) @db.Uuid
+
+  gouvernanceId String      @map("gouvernance_id") @db.Uuid
+  gouvernance   Gouvernance @relation(fields: [gouvernanceId], references: [id], onDelete: Cascade)
+
+  // Ce membre est coporteur de la gouvernance
+  coporteur Boolean @default(false)
+
+  modification DateTime @updatedAt
+  creation     DateTime @default(now())
+
+  regionCode String? @map("region_code")
+  region     Region? @relation(name: "membre_gouvernance_region", fields: [regionCode], references: [code], onDelete: NoAction)
+
+  departementCode String?      @map("departement_code")
+  departement     Departement? @relation(name: "membre_gouvernance_departement", fields: [departementCode], references: [code], onDelete: NoAction)
+
+  epciCode String? @map("epci_code")
+  epci     Epci?   @relation(name: "membre_gouvernance_epci", fields: [epciCode], references: [code], onDelete: NoAction)
+
+  nomStructure String? @map("nom_structure")
+
+  siret             String?            @map("siret")
+  siretInformations InformationsSiret? @relation(name: "membre_gouvernance_siret", fields: [siret], references: [siret], onDelete: NoAction)
+
+  // Formulaire rempli par le porteur, surtout utile en cas de membre de type structure car une structure n'est pas modélisée en base
+  formulaireGouvernanceId String                 @map("formulaire_gouvernance_id") @db.Uuid
+  formulaireGouvernance   FormulaireGouvernance  @relation(fields: [formulaireGouvernanceId], references: [id], onDelete: Cascade)
+  feuillesDeRoutes        MembreFeuilleDeRoute[]
+
+  @@map("membre_gouvernance")
+}
+
 enum TypeContrat {
   Crte    @map("crte")
   Sdaasap @map("sdaasap")
@@ -782,6 +824,30 @@ enum TypeContrat {
   Autre   @map("autre")
 
   @@map("type_contrat")
+}
+
+enum RoleMembreFeuilleDeRoute {
+  Porteur @map("porteur")
+
+  @@map("role_membre_feuille_de_route")
+}
+
+model MembreFeuilleDeRoute {
+  id String @id @default(uuid()) @db.Uuid
+
+  modification DateTime @default(now()) @updatedAt
+  creation     DateTime @default(now())
+
+  feuilleDeRouteId String         @map("feuille_de_route_id") @db.Uuid
+  feuilleDeRoute   FeuilleDeRoute @relation(fields: [feuilleDeRouteId], references: [id], onDelete: Cascade)
+
+  membreId String            @map("membre_id") @db.Uuid
+  membre   MembreGouvernance @relation(fields: [membreId], references: [id], onDelete: NoAction)
+
+  role RoleMembreFeuilleDeRoute
+
+  @@unique([feuilleDeRouteId, membreId])
+  @@map("membre_feuille_de_route")
 }
 
 model FeuilleDeRoute {
@@ -799,19 +865,7 @@ model FeuilleDeRoute {
   typeContrat                 TypeContrat? @map("type_contrat")
   typeContratAutreDescription String?      @map("type_contrat_autre_description")
 
-  // Une feuille de route à un porteur
-  porteurRegionCode String? @map("porteur_region_code")
-  porteurRegion     Region? @relation(name: "feuille_de_route_porteur_region", fields: [porteurRegionCode], references: [code], onDelete: NoAction)
-
-  porteurDepartementCode String?      @map("porteur_departement_code")
-  porteurDepartement     Departement? @relation(name: "feuille_de_route_porteur_departement", fields: [porteurDepartementCode], references: [code], onDelete: NoAction)
-
-  porteurEpciCode String? @map("perimetre_epci_code")
-  porteurEpci     Epci?   @relation(name: "feuille_de_route_porteur_epci", fields: [porteurEpciCode], references: [code], onDelete: NoAction)
-
-  porteurNomStructure      String?            @map("porteur_nom_structure")
-  porteurSiret             String?            @map("porteur_siret")
-  porteurSiretInformations InformationsSiret? @relation(name: "feuille_de_route_porteur_siret", fields: [porteurSiret], references: [siret], onDelete: NoAction)
+  membres MembreFeuilleDeRoute[]
 
   // Périmètre peut etre region, departement, ou PLUSIEURS Epcis
   perimetreRegionCode String? @map("perimetre_region_code")
@@ -834,33 +888,8 @@ model PerimetreEpciFeuilleDeRoute {
   epciCode String @map("epci_code")
   epci     Epci   @relation(name: "perimetre_epci_feuille_de_route", fields: [epciCode], references: [code], onDelete: NoAction)
 
+  @@unique([feuilleDeRouteId, epciCode])
   @@map("perimetre_epci_feuille_de_route")
-}
-
-model MembreGouvernance {
-  id String @id @default(uuid()) @db.Uuid
-
-  gouvernanceId String      @map("gouvernance_id") @db.Uuid
-  gouvernance   Gouvernance @relation(fields: [gouvernanceId], references: [id], onDelete: Cascade)
-
-  modification DateTime @updatedAt
-  creation     DateTime @default(now())
-
-  regionCode String? @map("region_code")
-  region     Region? @relation(name: "membre_gouvernance_region", fields: [regionCode], references: [code], onDelete: NoAction)
-
-  departementCode String?      @map("departement_code")
-  departement     Departement? @relation(name: "membre_gouvernance_departement", fields: [departementCode], references: [code], onDelete: NoAction)
-
-  epciCode String? @map("epci_code")
-  epci     Epci?   @relation(name: "membre_gouvernance_epci", fields: [epciCode], references: [code], onDelete: NoAction)
-
-  nomStructure String? @map("nom_structure")
-
-  siret             String?            @map("siret")
-  siretInformations InformationsSiret? @relation(name: "membre_gouvernance_siret", fields: [siret], references: [siret], onDelete: NoAction)
-
-  @@map("membre_gouvernance")
 }
 
 enum TypeComite {
@@ -927,7 +956,6 @@ model InformationsSiret {
   gouvernancesPortees                   Gouvernance[]
   organisationsRecruteusesCoordinateurs OrganisationRecruteuseCoordinateurs[]
   membresGouvernances                   MembreGouvernance[]                   @relation("membre_gouvernance_siret")
-  porteurFeuillesDeRoutes               FeuilleDeRoute[]                      @relation("feuille_de_route_porteur_siret")
 
   @@map("informations_siret")
 }

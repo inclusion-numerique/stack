@@ -7,7 +7,6 @@ import { getGouvernanceForForm } from '@app/web/app/(private)/gouvernances/depar
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/departement/generateDepartementMetadata'
 import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
-import { getPorteurOptions } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getPorteurOptions'
 import { canEditGouvernancePressentie } from '@app/web/security/securityRules'
 import {
   getPorteurCode,
@@ -17,6 +16,7 @@ import BackLink from '@app/web/components/BackLink'
 import { getGouvernanceScopeTitle } from '@app/web/app/(private)/gouvernances/gouvernanceScopeTitle'
 import GouvernanceForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/GouvernanceForm'
 import { gouvernanceFormSectionSideMenuItems } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections'
+import { getMembresOptions } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getMembresOptions'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -48,7 +48,11 @@ const Page = async ({
     notFound()
   }
 
-  const optionsCollectivitesPorteur = await getPorteurOptions(codeDepartement)
+  const membreOptions = await getMembresOptions({
+    codeDepartement,
+    gouvernanceId,
+  })
+
   const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
 
   const {
@@ -122,7 +126,7 @@ const Page = async ({
 
             <GouvernanceForm
               gouvernance={gouvernancePressentie}
-              optionsCollectivitesPorteur={optionsCollectivitesPorteur}
+              membreOptions={membreOptions}
             />
           </div>
         </div>

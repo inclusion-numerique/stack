@@ -17,6 +17,17 @@ const siretInfoSelect = {
   },
 }
 
+const membreSelect = {
+  select: {
+    region: collectiviteSelect,
+    departement: collectiviteSelect,
+    epci: collectiviteSelect,
+    nomStructure: true,
+    siret: true,
+    siretInformations: siretInfoSelect,
+  },
+}
+
 export const gouvernanceListSelect = {
   id: true,
 
@@ -115,12 +126,12 @@ export const gouvernanceSelect = {
       typeContrat: true,
       typeContratAutreDescription: true,
 
-      porteurRegion: collectiviteSelect,
-      porteurDepartement: collectiviteSelect,
-      porteurEpci: collectiviteSelect,
-      porteurNomStructure: true,
-      porteurSiret: true,
-      porteurSiretInformations: siretInfoSelect,
+      membres: {
+        select: {
+          role: true,
+          membre: membreSelect,
+        },
+      },
 
       perimetreRegion: collectiviteSelect,
       perimetreDepartement: collectiviteSelect,

@@ -2,21 +2,17 @@
 
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import RadioFormField from '@app/ui/components/Form/RadioFormField'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import Link from 'next/link'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { DefaultValues } from 'react-hook-form/dist/types/form'
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, ReactNode } from 'react'
 import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormField'
 import { useRouter } from 'next/navigation'
 import classNames from 'classnames'
 import Notice from '@codegouvfr/react-dsfr/Notice'
-import { perimetreOptions } from '@app/web/gouvernance/GouvernancePressentie'
 import WhiteCard from '@app/web/ui/WhiteCard'
 import RedAsterisk from '@app/web/ui/RedAsterisk'
-import SiretInputInfo from '@app/web/components/SiretInputInfo'
 import { trpc } from '@app/web/trpc'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
@@ -29,39 +25,30 @@ import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { limiteModificationDesGouvernances } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceMetadata'
 import WorkInProgressNotice from '@app/web/components/WorkInProgressNotice'
 import { gouvernanceFormSections } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections'
+import CoporteursForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/CoporteursForm'
+import GouvernanceFormSectionCard from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/GouvernanceFormSectionCard'
+import { MembreOptions } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getMembresOptions'
+import MembresForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/MembresForm'
+import ComitologieForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/ComitologieForm' // import styles from './GouvernanceForm.module.css'
 // import styles from './GouvernanceForm.module.css'
 
 const emptyValues: DefaultValues<GouvernanceData> = {
-  v1PorteurCode: '',
   siretsRecruteursCoordinateurs: [{ siret: '' }],
+  comites: [],
+  feuillesDeRoute: [],
+  coporteurs: [],
+  membres: [],
 }
 
-const SectionCard = ({
-  title,
-  id,
-  children,
-}: PropsWithChildren<{ id: string; title: string }>) => (
-  // Padding is used for anchor navigation offset
-  <section id={id} className="fr-pt-6v">
-    <WhiteCard>
-      <h5>{title}</h5>
-      {children}
-    </WhiteCard>
-  </section>
-)
-
-const GouvernancePressentieForm = ({
+const GouvernanceForm = ({
   className,
   gouvernance,
-  optionsCollectivitesPorteur,
+  membreOptions,
 }: {
   className?: string
   // If editing existing
   gouvernance?: DefaultValues<GouvernanceData>
-  optionsCollectivitesPorteur: {
-    label: string
-    options: { label: string; value: string }[]
-  }[]
+  membreOptions: MembreOptions
 }) => {
   const form = useForm<GouvernanceData>({
     resolver: zodResolver(GouvernanceValidation),
@@ -115,12 +102,23 @@ const GouvernancePressentieForm = ({
 
   const isLoading =
     (formState.isSubmitting || formState.isSubmitSuccessful) && !mutation.error
+  //
+  // const defaultPorteurValue = gouvernance?.v1PorteurCode
+  //   ? Object.values(optionsCollectivitesPorteur)
+  //       .flatMap((group) => group.options)
+  //       .find((option) => option.value === gouvernance?.v1PorteurCode)
+  //   : undefined
 
-  const defaultPorteurValue = gouvernance?.v1PorteurCode
-    ? Object.values(optionsCollectivitesPorteur)
-        .flatMap((group) => group.options)
-        .find((option) => option.value === gouvernance?.v1PorteurCode)
-    : undefined
+  const {
+    fields: membresFields,
+    append: appendMembre,
+    remove: removeMembre,
+    update: updateMembre,
+  } = useFieldArray({
+    control,
+    name: 'membres',
+    keyName: 'id',
+  })
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -132,33 +130,68 @@ const GouvernancePressentieForm = ({
             limiteModificationDesGouvernances,
           )}`}
         />
-        <p className="fr-text--sm fr-text--medium fr-mt-6v fr-mb-4v">
+        <p className="fr-text--sm fr-text--medium fr-mt-6v fr-mb-0">
           Les champs avec <RedAsterisk /> sont obligatoires
         </p>
-        <SectionCard {...gouvernanceFormSections.contactDuSousPrefetReferent}>
+        <GouvernanceFormSectionCard
+          {...gouvernanceFormSections.contactDuSousPrefetReferent}
+        >
+          <InputFormField
+            label="Prénom"
+            path="sousPrefetReferentPrenom"
+            asterisk
+            control={control}
+            disabled={isLoading}
+          />
+          <InputFormField
+            label="Nom"
+            path="sousPrefetReferentNom"
+            asterisk
+            control={control}
+            disabled={isLoading}
+          />
+          <InputFormField
+            label="Adresse e-mail"
+            path="sousPrefetReferentEmail"
+            asterisk
+            control={control}
+            disabled={isLoading}
+          />
+        </GouvernanceFormSectionCard>
+        <CoporteursForm
+          form={form}
+          disabled={isLoading}
+          membresOptions={membreOptions}
+          membreFields={membresFields}
+          appendMembre={appendMembre}
+          removeMembre={removeMembre}
+          updateMembre={updateMembre}
+        />
+        <MembresForm
+          form={form}
+          disabled={isLoading}
+          membresOptions={membreOptions}
+          membreFields={membresFields}
+          appendMembre={appendMembre}
+          removeMembre={removeMembre}
+        />
+        <ComitologieForm form={form} disabled={isLoading} />
+        <GouvernanceFormSectionCard
+          {...gouvernanceFormSections.feuillesDeRouteEtPorteurs}
+        >
           <WorkInProgressNotice />
-        </SectionCard>
-        <SectionCard {...gouvernanceFormSections.coPorteursDeLaGouvernance}>
-          <WorkInProgressNotice />
-        </SectionCard>
-        <SectionCard {...gouvernanceFormSections.membresDeLaGouvernance}>
-          <WorkInProgressNotice />
-        </SectionCard>
-        <SectionCard {...gouvernanceFormSections.comitologie}>
-          <WorkInProgressNotice />
-        </SectionCard>
-        <SectionCard {...gouvernanceFormSections.feuillesDeRouteEtPorteurs}>
-          <WorkInProgressNotice />
-        </SectionCard>
-        <SectionCard
+        </GouvernanceFormSectionCard>
+        <GouvernanceFormSectionCard
           {...gouvernanceFormSections.coordinateurConseillerNumeriqueDeLaGouvernance}
         >
           <WorkInProgressNotice />
-        </SectionCard>
-        <SectionCard {...gouvernanceFormSections.besoinsEnIngenierieFinanciere}>
+        </GouvernanceFormSectionCard>
+        <GouvernanceFormSectionCard
+          {...gouvernanceFormSections.besoinsEnIngenierieFinanciere}
+        >
           <WorkInProgressNotice />
-        </SectionCard>
-        <SectionCard {...gouvernanceFormSections.noteDeContexte}>
+        </GouvernanceFormSectionCard>
+        <GouvernanceFormSectionCard {...gouvernanceFormSections.noteDeContexte}>
           <RichTextFormField
             form={form}
             asterisk
@@ -166,7 +199,7 @@ const GouvernancePressentieForm = ({
             disabled={isLoading}
             label="Précisez, au sein d'une note qualitative, la gouvernance dans votre département et les éventuelles difficultés que vous rencontreriez dans les échanges avec les collectivités territoriales et leurs groupements"
           />
-        </SectionCard>
+        </GouvernanceFormSectionCard>
 
         <div className="fr-btns-group fr-mt-10v">
           <Button
@@ -181,141 +214,9 @@ const GouvernancePressentieForm = ({
             Une erreur est survenue, veuillez réessayer.
           </p>
         )}
-
-        <WhiteCard className="fr-mt-12v">
-          <h2>V1 Old form</h2>
-          <h6 className="fr-mb-4v">Périmètre de la gouvernance</h6>
-          <RadioFormField
-            control={control}
-            asterisk
-            label="Quel est le périmètre géographique de la gouvernance ?"
-            path="v1Perimetre"
-            options={perimetreOptions}
-          />
-          <hr className="fr-separator-10v" />
-          <h6 className="fr-mb-4v">Porteur de la feuille de route</h6>
-          {shouldProvidePorteurSiret ? (
-            <InputFormField
-              label="SIRET de la collectivité/structure"
-              path="v1PorteurSiret"
-              asterisk
-              control={control}
-              info={<SiretInputInfo />}
-              disabled={isLoading}
-            />
-          ) : (
-            <CustomSelectFormField
-              label="Qui sera le porteur de la feuille de route ?"
-              path="v1PorteurCode"
-              asterisk
-              control={control}
-              options={optionsCollectivitesPorteur}
-              placeholder="Rechercher la collectivité"
-              disabled={isLoading}
-              defaultValue={defaultPorteurValue}
-            />
-          )}
-          <hr className="fr-separator-10v" />
-          <h6 className="fr-mb-4v">
-            Recrutement coordinateur Conseillers Numériques
-          </h6>
-          <p className="fr-mb-8v">
-            La phase de déploiement du dispositif Conseiller numérique laisse
-            place à une phase de structuration où le diagnostic des besoins et
-            l’accompagnement des conseillers numériques au niveau local peut
-            permettre d’organiser l’action de la médiation numérique, et de
-            l’intégrer aux politiques publiques territoriales. C’est en ce sens
-            qu’un appel à candidatures à été lancé pour identifier des
-            structures souhaitant avoir une action de coordination de l’action
-            des conseillers numériques et des médiateurs numériques de leur
-            territoire :{' '}
-            <Link
-              href="https://societenumerique.gouv.fr/fr/actualite/appel-a-candidatures-conseillers-numeriques-coordinateurs/"
-              target="_blank"
-            >
-              https://societenumerique.gouv.fr/fr/actualite/appel-a-candidatures-conseillers-numeriques-coordinateurs/
-            </Link>
-            . Ces projets de coordination doivent s’articuler avec les projets
-            de gouvernances.
-            <br />
-            <br />
-            Par ailleurs, l’instruction des candidatures doit être faite sur la{' '}
-            <Link
-              href="https://admin.conseiller-numerique.gouv.fr/login?role=prefet"
-              target="_blank"
-            >
-              plateforme dédiée au dispositif Conseiller Numérique
-            </Link>{' '}
-            avant le 10 décembre 2023.
-            <br />
-            <br />
-            Veuillez renseigner quelle collectivité/structure va recruter un
-            coordinateur Conseillers Numériques au sein de la gouvernance :
-          </p>
-          {siretsRecruteursCoordinateursFields.fields.map(
-            (siretField, index) => (
-              <InputFormField
-                control={control}
-                key={siretField.id}
-                path={`siretsRecruteursCoordinateurs.${index}.siret`}
-                disabled={isLoading}
-                label={
-                  index === 0 ? (
-                    <>
-                      SIRET de la collectivité/structure <RedAsterisk />
-                    </>
-                  ) : (
-                    <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
-                      <span>
-                        SIRET de la collectivité/structure <RedAsterisk />
-                      </span>
-                      <Button
-                        type="button"
-                        priority="tertiary no outline"
-                        size="small"
-                        iconId="fr-icon-delete-bin-line"
-                        onClick={() =>
-                          siretsRecruteursCoordinateursFields.remove(index)
-                        }
-                      >
-                        Supprimer
-                      </Button>
-                    </div>
-                  )
-                }
-                info={<SiretInputInfo />}
-                className="fr-mb-8v"
-              />
-            ),
-          )}
-          <div className="fr-btns-group fr-btns-group--icon-left">
-            <Button
-              type="button"
-              priority="secondary"
-              className="fr-mb-0"
-              iconId="fr-icon-add-line"
-              disabled={isLoading}
-              onClick={() =>
-                siretsRecruteursCoordinateursFields.append({ siret: '' })
-              }
-            >
-              Ajouter une collectivité/structure recruteuse
-            </Button>
-          </div>
-
-          <hr className="fr-separator-10v" />
-          <h6 className="fr-mb-4v">Note de contexte</h6>
-          <RichTextFormField
-            form={form}
-            asterisk
-            path="noteDeContexte"
-            disabled={isLoading}
-            label="Précisez, au sein d'une note qualitative, la gouvernance dans votre département et les éventuelles difficultés que vous rencontreriez dans les échanges avec les collectivités territoriales et leurs groupements"
-          />
-        </WhiteCard>
       </div>
     </form>
   )
 }
 
-export default withTrpc(GouvernancePressentieForm)
+export default withTrpc(GouvernanceForm)
