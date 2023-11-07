@@ -3,6 +3,7 @@ import { ZodRawShape } from 'zod/lib/types'
 import { FrequenceComite, TypeComite, TypeContrat } from '@prisma/client'
 import { requiredSiretValidation } from '@app/web/validation/siretValidation'
 import { GouvernanceFormSection } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections'
+import { ouiOuNonLabels } from '@app/web/gouvernance/gouvernanceWordingsAndOptions'
 
 export const MembreValidation = z.object({
   code: z.string(),
@@ -48,7 +49,7 @@ export const FeuilleDeRouteValidation = z
       required_error: 'Veuillez renseigner le périmètre de la feuille de route',
     }),
     perimetreEpciCodes: z.array(z.string()),
-    contratPreexistant: z.boolean(),
+    contratPreexistant: z.nativeEnum(ouiOuNonLabels),
     typeContrat: z.nativeEnum(TypeContrat).nullish(),
     typeContratAutrePrecisions: z.string().nullish(),
   })

@@ -17,6 +17,7 @@ import GouvernanceFormSectionCard from '@app/web/app/(private)/gouvernances/depa
 import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
 import {
   feuilleDeRoutePerimetreOptions,
+  ouiOuNonOptions,
   perimetreFeuilleDeRouteLabels,
   typeContratLabels,
   typeContratOptions,
@@ -199,10 +200,7 @@ const FeuillesDeRouteForm = ({
             asterisk
             control={addFeuilleDeRouteForm.control}
             path="contratPreexistant"
-            options={[
-              { value: 'oui', name: 'Oui' },
-              { value: 'non', name: 'Non' },
-            ]}
+            options={ouiOuNonOptions}
           />
           {showTypeContrat && (
             <RadioFormField

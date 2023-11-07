@@ -46,3 +46,12 @@ export const typeContratLabels: { [value in TypeContrat]: string } = {
 }
 
 export const typeContratOptions = labelsToOptions(typeContratLabels)
+
+export const ouiOuNonLabels = {
+  oui: 'Oui',
+  non: 'Non',
+} as const
+
+export type OuiOuNon = keyof typeof ouiOuNonLabels
+
+export const ouiOuNonOptions = labelsToOptions(ouiOuNonLabels)
