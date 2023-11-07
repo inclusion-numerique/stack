@@ -17,6 +17,7 @@ import { getGouvernanceScopeTitle } from '@app/web/app/(private)/gouvernances/go
 import GouvernanceForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/GouvernanceForm'
 import { gouvernanceFormSectionSideMenuItems } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections'
 import { getMembresOptions } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getMembresOptions'
+import { getPerimetreEpciOptions } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getPerimetreEpciOptions'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -48,12 +49,14 @@ const Page = async ({
     notFound()
   }
 
-  const membreOptions = await getMembresOptions({
-    codeDepartement,
-    gouvernanceId,
-  })
-
-  const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
+  const [membreOptions, scopeTitle, perimetreEpciOptions] = await Promise.all([
+    getMembresOptions({
+      codeDepartement,
+      gouvernanceId,
+    }),
+    getGouvernanceScopeTitle({ codeDepartement }),
+    getPerimetreEpciOptions(codeDepartement),
+  ])
 
   const {
     id,
@@ -113,7 +116,7 @@ const Page = async ({
       </div>
       <div className="fr-container fr-pb-10v fr-mb-20v">
         <div className="fr-grid-row">
-          <div className="fr-col-3">
+          <div className="fr-col-12 fr-col-md-4 fr-col-lg-3 fr-mb-8v">
             <NavigationSideMenu
               items={gouvernanceFormSectionSideMenuItems}
               burgerMenuButtonText="Sections"
@@ -121,12 +124,13 @@ const Page = async ({
               sticky
             />
           </div>
-          <div className="fr-col-6">
+          <div className="fr-col-12 fr-col-md-8 fr-col-lg-7 fr-col-xl-6">
             <BackLink href={gouvernanceHomePath({ codeDepartement })} />
 
             <GouvernanceForm
               gouvernance={gouvernancePressentie}
               membreOptions={membreOptions}
+              perimetreEpciOptions={perimetreEpciOptions}
             />
           </div>
         </div>

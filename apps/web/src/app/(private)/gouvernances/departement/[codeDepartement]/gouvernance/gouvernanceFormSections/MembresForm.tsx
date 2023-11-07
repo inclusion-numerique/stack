@@ -101,9 +101,10 @@ const MembresForm = ({
           >
             <span>{nom}</span>
             {coporteur ? (
-              <span className="fr-text--xs fr-my-0 fr-ml-3v">Co-porteur</span>
+              <span className="fr-text--xs fr-my-0 fr-ml-2v">Co-porteur</span>
             ) : (
               <Button
+                className="fr-ml-2w"
                 type="button"
                 priority="tertiary no outline"
                 size="small"
@@ -132,9 +133,10 @@ const MembresForm = ({
           >
             <span>{nom}</span>
             {coporteur ? (
-              <span className="fr-text--xs fr-my-0 fr-ml-3v">Co-porteur</span>
+              <span className="fr-text--xs fr-my-0 fr-ml-2v">Co-porteur</span>
             ) : (
               <Button
+                className="fr-ml-2w"
                 type="button"
                 priority="tertiary no outline"
                 size="small"

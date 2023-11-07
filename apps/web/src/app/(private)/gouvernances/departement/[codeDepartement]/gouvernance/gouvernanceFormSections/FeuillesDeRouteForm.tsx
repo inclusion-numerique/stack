@@ -6,6 +6,7 @@ import InputFormField from '@app/ui/components/Form/InputFormField'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TypeContrat } from '@prisma/client'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
+import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
 import { gouvernanceFormSections } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections'
 import {
   FeuilleDeRouteData,
@@ -34,11 +35,11 @@ const FeuillesDeRouteForm = ({
   disabled,
   membreFields,
   membresOptions,
-  possibleEpciPerimeterOptions,
+  perimetreEpciOptions,
 }: {
   form: UseFormReturn<GouvernanceData>
   membresOptions: MembreOptions
-  possibleEpciPerimeterOptions: Option[]
+  perimetreEpciOptions: Option[]
   membreFields: MembreData[]
   disabled?: boolean
 }) => {
@@ -64,6 +65,9 @@ const FeuillesDeRouteForm = ({
 
   const addFeuilleDeRouteForm = useForm<FeuilleDeRouteData>({
     resolver: zodResolver(FeuilleDeRouteValidation),
+    defaultValues: {
+      perimetreEpciCodes: [],
+    },
   })
 
   const onAddFeuilleDeRoute = () => {
@@ -101,12 +105,18 @@ const FeuillesDeRouteForm = ({
     addFeuilleDeRouteForm.watch('typeContrat') === TypeContrat.Autre &&
     showTypeContrat
 
+  const showEpciPerimeter =
+    addFeuilleDeRouteForm.watch('perimetreScope') === 'epci'
+
   const membreSelectOptions = filterMemberOptions(membresOptions, {
     onlyCodes: membreFields.map(({ code }) => code),
   })
 
   const porteur = addFeuilleDeRouteForm.watch('porteur')
   console.log('PORTEUR VALUE', porteur)
+  console.log('ERRORS', addFeuilleDeRouteForm.formState.errors)
+
+  console.log('EPCI CODES', addFeuilleDeRouteForm.watch('perimetreEpciCodes'))
 
   return (
     <GouvernanceFormSectionCard
@@ -114,20 +124,25 @@ const FeuillesDeRouteForm = ({
     >
       {/* eslint-disable-next-line no-return-assign */}
       {feuilleDeRouteFields.map(
-        ({ id, porteur, perimetreScope, typeContrat }, index) => (
+        (
+          { id, nom, porteur: fieldPorteur, perimetreScope, typeContrat },
+          index,
+        ) => (
           <div key={id}>
             <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
               <span>
                 <InfoLabelValue
-                  label={`FeuilleDeRoute ${index + 1}`}
+                  label={`FeuilleDeRoute ${index + 1} : ${nom}`}
                   value={
                     <>
-                      {porteur.nom}
+                      Porteur&nbsp;: {fieldPorteur.nom}
                       <br />
+                      Périmètre géographique&nbsp;:{' '}
                       {perimetreFeuilleDeRouteLabels[perimetreScope]}
                       {typeContrat ? (
                         <>
                           <br />
+                          Contrat préexistant&nbsp;:{' '}
                           {typeContratLabels[typeContrat]}
                         </>
                       ) : null}
@@ -140,6 +155,7 @@ const FeuillesDeRouteForm = ({
                 priority="tertiary no outline"
                 disabled={disabled}
                 size="small"
+                className="fr-ml-1w"
                 iconId="fr-icon-edit-line"
                 title="Modifier"
                 onClick={() => setEditingFeuilleDeRoute(index)}
@@ -180,7 +196,11 @@ const FeuillesDeRouteForm = ({
             onInputChange={(value) => {
               console.log('SELECT INPUT CHANGE', value)
             }}
-            transformOptionToValue={(option) => ({ ...option })}
+            transformOptionToValue={(option) => ({
+              code: option.value,
+              nom: option.stringLabel,
+              coporteur: false,
+            })}
             defaultValue={{
               // TODO
               value: '',
@@ -195,6 +215,15 @@ const FeuillesDeRouteForm = ({
             path="perimetreScope"
             options={feuilleDeRoutePerimetreOptions}
           />
+          {showEpciPerimeter && (
+            <CheckboxGroupFormField
+              label="Veuillez préciser l’EPCI ou les EPCI dans le cas d’un autre groupement de collectivités :"
+              asterisk
+              control={addFeuilleDeRouteForm.control}
+              path="perimetreEpciCodes"
+              options={perimetreEpciOptions}
+            />
+          )}
           <RadioFormField
             label="La feuille de route s’appuie-t-elle sur un contrat préexistant ?"
             asterisk

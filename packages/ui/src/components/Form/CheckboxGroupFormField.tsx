@@ -1,0 +1,160 @@
+import classNames from 'classnames'
+import React, { ReactNode } from 'react'
+import { Control, Controller, FieldValues } from 'react-hook-form'
+import { FieldPath } from 'react-hook-form/dist/types/path'
+import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
+import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
+import { RadioOption } from './utils/options'
+
+export type CheckboxGroupFormFieldProps<T extends FieldValues> = {
+  control: Control<T>
+  path: FieldPath<T>
+  options: RadioOption[]
+  disabled?: boolean
+  label?: ReactNode
+  hint?: string
+  inline?: boolean
+  valid?: string
+  small?: boolean
+  asterisk?: boolean
+}
+
+const CheckboxGroupFormField = <T extends FieldValues>({
+  label,
+  path,
+  options,
+  control,
+  hint,
+  disabled,
+  inline,
+  valid,
+  small,
+  className,
+  asterisk,
+  'data-testid': dataTestId,
+}: UiComponentProps & CheckboxGroupFormFieldProps<T>) => {
+  const id = `checkbox-group-form-field__${path}`
+
+  console.log('CHECKBOX GROUP OPTIONS', options)
+
+  return (
+    <Controller
+      control={control}
+      name={path}
+      render={({
+        field: { onChange, onBlur, name, ref, value },
+        fieldState: { invalid, error, isDirty },
+      }) => {
+        // Value is an array for checkbox groups
+        const valueAsArray: T[] = value || []
+
+        let ariaLabelBy: string | undefined
+        if (error) {
+          ariaLabelBy = `${id}__error`
+        } else if (valid && isDirty && !invalid) {
+          ariaLabelBy = `${id}__valid`
+        }
+
+        console.log('VALUE IN CONTROLLER', valueAsArray)
+
+        return (
+          <div className="fr-form-group" data-testid={dataTestId}>
+            <fieldset
+              className={classNames(
+                'fr-fieldset',
+                {
+                  'fr-fieldset--error': error,
+                  'fr-fieldset--disabled': disabled,
+                  'fr-fieldset--valid': valid && isDirty && !invalid,
+                },
+                className,
+              )}
+              aria-labelledby={`${id}__legend${
+                ariaLabelBy ? ` ${ariaLabelBy}` : ''
+              }`}
+              role="group"
+            >
+              <legend
+                className="fr-fieldset__legend fr-fieldset__legend--regular"
+                id={`${id}__legend`}
+              >
+                {label} {asterisk && <RedAsterisk />}
+                {hint ? <span className="fr-hint-text">{hint}</span> : null}
+              </legend>
+              {options.map((option, index) => (
+                <div
+                  key={option.value}
+                  className={classNames('fr-fieldset__element', {
+                    'fr-fieldset__element--inline': inline,
+                  })}
+                >
+                  <div
+                    className={classNames('fr-checkbox-group', {
+                      'fr-checkbox-group--sm': small,
+                    })}
+                  >
+                    <input
+                      defaultChecked={valueAsArray.includes(option.value)}
+                      key={`${id}__input__${option.value}__${
+                        valueAsArray.includes(option.value)
+                          ? 'checked'
+                          : 'unchecked'
+                      }`}
+                      type="checkbox"
+                      id={`${id}__${index}`}
+                      disabled={disabled}
+                      onBlur={onBlur}
+                      onChange={(event) => {
+                        const newValue = event.target.value
+                        if (event.target.checked) {
+                          // Add the value to the array if it's checked
+                          onChange([...valueAsArray, newValue])
+                        } else {
+                          // Remove the value from the array if it's unchecked
+                          onChange(
+                            valueAsArray.filter((item) => item !== newValue),
+                          )
+                        }
+                      }}
+                      value={option.value}
+                      name={name}
+                      ref={ref}
+                    />
+                    <label className="fr-label" htmlFor={`${id}__${index}`}>
+                      {option.name}
+                      {option.hint && (
+                        <span className="fr-hint-text">{option.hint}</span>
+                      )}
+                    </label>
+                  </div>
+                </div>
+              ))}
+              {error && (
+                <div
+                  className="fr-messages-group"
+                  id={`${id}__error`}
+                  aria-live="assertive"
+                >
+                  <p className="fr-message fr-message--error">
+                    {error.message}
+                  </p>
+                </div>
+              )}
+              {valid && isDirty && !invalid && (
+                <div
+                  className="fr-messages-group"
+                  id={`${id}__valid`}
+                  aria-live="assertive"
+                >
+                  <p className="fr-message fr-message--valid">{valid}</p>
+                </div>
+              )}
+            </fieldset>
+          </div>
+        )
+      }}
+    />
+  )
+}
+
+export default CheckboxGroupFormField

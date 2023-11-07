@@ -30,7 +30,8 @@ import GouvernanceFormSectionCard from '@app/web/app/(private)/gouvernances/depa
 import { MembreOptions } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getMembresOptions'
 import MembresForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/MembresForm'
 import ComitologieForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/ComitologieForm'
-import FeuillesDeRouteForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/FeuillesDeRouteForm' // import styles from './GouvernanceForm.module.css'
+import FeuillesDeRouteForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/FeuillesDeRouteForm'
+import { Option } from '@app/web/utils/options' // import styles from './GouvernanceForm.module.css'
 // import styles from './GouvernanceForm.module.css'
 
 const emptyValues: DefaultValues<GouvernanceData> = {
@@ -45,11 +46,13 @@ const GouvernanceForm = ({
   className,
   gouvernance,
   membreOptions,
+  perimetreEpciOptions,
 }: {
   className?: string
   // If editing existing
   gouvernance?: DefaultValues<GouvernanceData>
   membreOptions: MembreOptions
+  perimetreEpciOptions: Option[]
 }) => {
   const form = useForm<GouvernanceData>({
     resolver: zodResolver(GouvernanceValidation),
@@ -182,10 +185,7 @@ const GouvernanceForm = ({
           disabled={isLoading}
           membresOptions={membreOptions}
           membreFields={membresFields}
-          possibleEpciPerimeterOptions={
-            // TODO
-            []
-          }
+          perimetreEpciOptions={perimetreEpciOptions}
         />
         <GouvernanceFormSectionCard
           {...gouvernanceFormSections.coordinateurConseillerNumeriqueDeLaGouvernance}

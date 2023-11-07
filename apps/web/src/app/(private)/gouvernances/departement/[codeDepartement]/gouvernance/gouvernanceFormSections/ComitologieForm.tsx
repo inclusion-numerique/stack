@@ -88,6 +88,7 @@ const ComitologieForm = ({
               />
             </span>
             <Button
+              className="fr-ml-1w"
               type="button"
               priority="tertiary no outline"
               disabled={disabled}
