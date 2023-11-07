@@ -65,10 +65,9 @@ const CoporteursForm = ({
     setAddingCoporteur(false)
   }
 
-  const membreSelectOptions = filterMemberOptions(
-    membresOptions,
-    coporteurCodes,
-  )
+  const membreSelectOptions = filterMemberOptions(membresOptions, {
+    excludeCodes: coporteurCodes,
+  })
 
   console.log('COPO - Membres', membreFields)
   console.log('COPO - Coporteurs', coporteurCodes)

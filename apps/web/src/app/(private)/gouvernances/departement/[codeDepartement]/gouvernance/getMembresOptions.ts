@@ -233,11 +233,18 @@ export const getMembreOptionStringLabel = (
 
 export const filterMemberOptions = (
   options: MembreOptions,
-  excludeCodes: string[],
+  {
+    excludeCodes = [],
+    onlyCodes = null,
+  }: { excludeCodes?: string[]; onlyCodes?: string[] | null },
 ): MembreOptions =>
   options
     .map(({ label, options: subOptions }) => ({
       label,
-      options: subOptions.filter(({ value }) => !excludeCodes.includes(value)),
+      options: subOptions.filter(
+        ({ value }) =>
+          !excludeCodes.includes(value) &&
+          (!onlyCodes || onlyCodes.includes(value)),
+      ),
     }))
     .filter(({ options: subOptions }) => subOptions.length > 0)

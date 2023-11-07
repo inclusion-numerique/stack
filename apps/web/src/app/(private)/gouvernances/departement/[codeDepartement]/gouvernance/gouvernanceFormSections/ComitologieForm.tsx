@@ -47,7 +47,11 @@ const ComitologieForm = ({
 
   const onAddComite = () => {
     addComiteForm.handleSubmit((data) => {
-      appendComite(data)
+      appendComite({
+        ...data,
+        typeAutrePrecisions:
+          data.type === TypeComite.Autre ? data.typeAutrePrecisions : null,
+      })
 
       setAddingComite(false)
       addComiteForm.reset()

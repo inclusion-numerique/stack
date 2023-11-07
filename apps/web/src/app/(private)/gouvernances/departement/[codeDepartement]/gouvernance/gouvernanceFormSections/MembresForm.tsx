@@ -56,10 +56,9 @@ const MembresForm = ({
     ({ code }) => getActorFromPorteurCode(code).type === 'structure',
   )
 
-  const membreSelectOptions = filterMemberOptions(
-    membresOptions,
-    membreFields.map(({ code }) => code),
-  )
+  const membreSelectOptions = filterMemberOptions(membresOptions, {
+    excludeCodes: membreFields.map(({ code }) => code),
+  })
 
   console.log('MEMBRES - Membres', membreFields)
 

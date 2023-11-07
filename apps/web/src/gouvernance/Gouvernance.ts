@@ -2,10 +2,7 @@ import z, { ZodArray, ZodEffects, ZodObject } from 'zod'
 import { ZodRawShape } from 'zod/lib/types'
 import { FrequenceComite, TypeComite, TypeContrat } from '@prisma/client'
 import { requiredSiretValidation } from '@app/web/validation/siretValidation'
-import { Option } from '@app/web/utils/options'
 import { GouvernanceFormSection } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections'
-
-export type PerimetreGouvernance = 'epci' | 'departement' | 'region' | 'autre'
 
 export const MembreValidation = z.object({
   code: z.string(),
@@ -43,9 +40,10 @@ export const FeuilleDeRouteValidation = z
       required_error: 'Veuillez renseigner le nom de la feuille de route',
     }),
     // Actor code of the member that is the porteur of the feuille de route
-    porteur: MembreValidation.required({
-      required_error: 'Veuillez renseigner le porteur de la feuille de route',
-    }),
+    porteur: MembreValidation.refine(
+      (data) => !!data,
+      'Veuillez renseigner le porteur de la feuille de route',
+    ),
     perimetreScope: z.enum(['region', 'departement', 'epci'], {
       required_error: 'Veuillez renseigner le périmètre de la feuille de route',
     }),

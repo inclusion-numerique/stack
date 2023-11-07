@@ -1,14 +1,16 @@
-import { FrequenceComite, TypeComite } from '@prisma/client'
+import { FrequenceComite, TypeComite, TypeContrat } from '@prisma/client'
 import { labelsToOptions } from '@app/web/utils/options'
 
-export const feuilleDeRoutePerimetre = {
+export const perimetreFeuilleDeRouteLabels = {
   region: 'Régional',
   departement: 'Départemental',
   epci: 'EPCI ou groupement de communes',
 } as const
 
+export type PerimetreFeuilleDeRoute = keyof typeof perimetreFeuilleDeRouteLabels
+
 export const feuilleDeRoutePerimetreOptions = labelsToOptions(
-  feuilleDeRoutePerimetre,
+  perimetreFeuilleDeRouteLabels,
 )
 
 export const typeComite: { [value in TypeComite]: string } = {
@@ -34,3 +36,13 @@ export const frequenceComiteOptions = (() => {
     frequenceComite
   return labelsToOptions(availableOptions)
 })()
+
+export const typeContratLabels: { [value in TypeContrat]: string } = {
+  [TypeContrat.Crte]: 'CRTE',
+  [TypeContrat.Sdaasap]: 'SDAASaP',
+  [TypeContrat.Sdin]: 'SDIN',
+  [TypeContrat.Sdun]: 'SDUN',
+  [TypeContrat.Autre]: 'Autre',
+}
+
+export const typeContratOptions = labelsToOptions(typeContratLabels)

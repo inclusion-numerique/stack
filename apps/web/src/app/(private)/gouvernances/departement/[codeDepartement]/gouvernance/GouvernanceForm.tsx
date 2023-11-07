@@ -29,7 +29,8 @@ import CoporteursForm from '@app/web/app/(private)/gouvernances/departement/[cod
 import GouvernanceFormSectionCard from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/GouvernanceFormSectionCard'
 import { MembreOptions } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getMembresOptions'
 import MembresForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/MembresForm'
-import ComitologieForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/ComitologieForm' // import styles from './GouvernanceForm.module.css'
+import ComitologieForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/ComitologieForm'
+import FeuillesDeRouteForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/FeuillesDeRouteForm' // import styles from './GouvernanceForm.module.css'
 // import styles from './GouvernanceForm.module.css'
 
 const emptyValues: DefaultValues<GouvernanceData> = {
@@ -176,11 +177,16 @@ const GouvernanceForm = ({
           removeMembre={removeMembre}
         />
         <ComitologieForm form={form} disabled={isLoading} />
-        <GouvernanceFormSectionCard
-          {...gouvernanceFormSections.feuillesDeRouteEtPorteurs}
-        >
-          <WorkInProgressNotice />
-        </GouvernanceFormSectionCard>
+        <FeuillesDeRouteForm
+          form={form}
+          disabled={isLoading}
+          membresOptions={membreOptions}
+          membreFields={membresFields}
+          possibleEpciPerimeterOptions={
+            // TODO
+            []
+          }
+        />
         <GouvernanceFormSectionCard
           {...gouvernanceFormSections.coordinateurConseillerNumeriqueDeLaGouvernance}
         >
