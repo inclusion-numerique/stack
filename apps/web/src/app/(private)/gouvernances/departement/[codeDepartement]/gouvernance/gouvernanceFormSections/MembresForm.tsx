@@ -1,6 +1,6 @@
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import React from 'react'
-import { useFieldArray, useForm, UseFormReturn } from 'react-hook-form'
+import React, { RefObject } from 'react'
+import { useForm, UseFormReturn } from 'react-hook-form'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { gouvernanceFormSections } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections'
 import { GouvernanceData, MembreData } from '@app/web/gouvernance/Gouvernance'
@@ -11,7 +11,7 @@ import {
   MembreOptions,
 } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getMembresOptions'
 import FindMemberNotice from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/FindMemberNotice'
-import { getActorFromPorteurCode } from '@app/web/gouvernance/GouvernanceActor'
+import { getActorFromCode } from '@app/web/gouvernance/GouvernanceActor'
 import { sPluriel } from '@app/web/utils/sPluriel'
 
 const MembresForm = ({
@@ -21,6 +21,7 @@ const MembresForm = ({
   membreFields,
   removeMembre,
   appendMembre,
+  membresErrorRef,
 }: {
   form: UseFormReturn<GouvernanceData>
   disabled?: boolean
@@ -28,8 +29,11 @@ const MembresForm = ({
   membreFields: MembreData[]
   appendMembre: (membre: MembreData) => void
   removeMembre: (index: number) => void
+  membresErrorRef: RefObject<HTMLParagraphElement>
 }) => {
-  const { control } = form
+  const {
+    formState: { errors },
+  } = form
 
   const addMembreForm = useForm<{ code: string }>({
     defaultValues: {
@@ -50,17 +54,19 @@ const MembresForm = ({
   }
 
   const collectiviteMembres = membreFields.filter(
-    ({ code }) => getActorFromPorteurCode(code).type !== 'structure',
+    ({ code }) => getActorFromCode(code).type !== 'structure',
   )
   const structureMembres = membreFields.filter(
-    ({ code }) => getActorFromPorteurCode(code).type === 'structure',
+    ({ code }) => getActorFromCode(code).type === 'structure',
+  )
+
+  const membresPorteursFeuillesDeRoute = new Set(
+    form.watch('feuillesDeRoute').map(({ porteur: { code } }) => code),
   )
 
   const membreSelectOptions = filterMemberOptions(membresOptions, {
     excludeCodes: membreFields.map(({ code }) => code),
   })
-
-  console.log('MEMBRES - Membres', membreFields)
 
   return (
     <GouvernanceFormSectionCard
@@ -78,13 +84,17 @@ const MembresForm = ({
           console.log('SELECT INPUT CHANGE', value)
         }}
         onSelectChange={onMembreChange}
-        defaultValue={{
-          // TODO
-          value: '',
-          label: '',
-        }}
       />
       <FindMemberNotice className="fr-mb-8v" />
+      {!!errors.membres && (
+        <p
+          ref={membresErrorRef}
+          id="membres__error"
+          className="fr-error-text fr-mb-8v"
+        >
+          {errors.membres?.message}
+        </p>
+      )}
       <div className="fr-flex fr-width-full fr-justify-content-space-between">
         <p className="fr-text--xl fr-my-0 fr-text--bold">
           Collectivité{sPluriel(collectiviteMembres.length)}
@@ -94,7 +104,7 @@ const MembresForm = ({
         </p>
       </div>
       {membreFields.map(({ code, nom, coporteur }, index) =>
-        getActorFromPorteurCode(code).type === 'structure' ? null : (
+        getActorFromCode(code).type === 'structure' ? null : (
           <div
             key={code}
             className="fr-mt-4v fr-width-full fr-flex fr-justify-content-space-between fr-align-items-center"
@@ -102,6 +112,10 @@ const MembresForm = ({
             <span>{nom}</span>
             {coporteur ? (
               <span className="fr-text--xs fr-my-0 fr-ml-2v">Co-porteur</span>
+            ) : membresPorteursFeuillesDeRoute.has(code) ? (
+              <span className="fr-text--xs fr-my-0 fr-ml-2v">
+                Porteur feuille de route
+              </span>
             ) : (
               <Button
                 className="fr-ml-2w"
@@ -126,7 +140,7 @@ const MembresForm = ({
         </p>
       </div>
       {membreFields.map(({ code, nom, coporteur }, index) =>
-        getActorFromPorteurCode(code).type === 'structure' ? (
+        getActorFromCode(code).type === 'structure' ? (
           <div
             key={code}
             className="fr-mt-4v fr-width-full fr-flex fr-justify-content-space-between fr-align-items-center"

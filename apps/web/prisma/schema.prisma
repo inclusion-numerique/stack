@@ -714,7 +714,7 @@ model Gouvernance {
 
   // V1 Fields applied to "Gouvernance préssentie" Gouvernance version
   // We keep them to have good default values for v2, and for safety in case we need to rollback or dig in old data
-  v1Perimetre PerimetreGouvernance @map("v1_perimetre")
+  v1Perimetre PerimetreGouvernance? @map("v1_perimetre")
 
   v1PorteurRegionCode String? @map("v1_porteur_region_code")
   v1PorteurRegion     Region? @relation(name: "v1_gouvernance_porteur_region", fields: [v1PorteurRegionCode], references: [code], onDelete: NoAction)

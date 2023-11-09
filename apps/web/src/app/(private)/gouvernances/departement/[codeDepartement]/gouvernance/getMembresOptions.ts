@@ -11,6 +11,18 @@ const getIntention = (
     ? 'Porter'
     : 'Participer'
 
+const firstFormulaireGouvernancePorterOrParticiper = {
+  select: {
+    id: true,
+    intention: true,
+  },
+  where: formulairesTerminesWhere,
+  take: 1,
+  orderBy: {
+    intention: 'desc' as const,
+  },
+}
+
 export const getMembresOptions = async ({
   codeDepartement,
   gouvernanceId,
@@ -24,13 +36,7 @@ export const getMembresOptions = async ({
     select: {
       code: true,
       nom: true,
-      formulairesGouvernance: {
-        select: {
-          id: true,
-          intention: true,
-        },
-        where: formulairesTerminesWhere,
-      },
+      formulairesGouvernance: firstFormulaireGouvernancePorterOrParticiper,
       membresGouvernances: {
         select: {
           coporteur: true,
@@ -56,13 +62,7 @@ export const getMembresOptions = async ({
     select: {
       code: true,
       nom: true,
-      formulairesGouvernance: {
-        select: {
-          id: true,
-          intention: true,
-        },
-        where: formulairesTerminesWhere,
-      },
+      formulairesGouvernance: firstFormulaireGouvernancePorterOrParticiper,
       membresGouvernances: {
         select: {
           coporteur: true,
@@ -98,13 +98,7 @@ export const getMembresOptions = async ({
     select: {
       code: true,
       nom: true,
-      formulairesGouvernance: {
-        select: {
-          id: true,
-          intention: true,
-        },
-        where: formulairesTerminesWhere,
-      },
+      formulairesGouvernance: firstFormulaireGouvernancePorterOrParticiper,
       membresGouvernances: {
         select: {
           coporteur: true,
@@ -161,7 +155,7 @@ export const getMembresOptions = async ({
       value: getGouvernanceActorCode({
         type: 'region',
         code,
-        formulaireGouvernanceId: formulairesGouvernance.id,
+        formulaireGouvernanceId: formulairesGouvernance[0].id,
       }),
     }))
   const optionsDepartements = departements
@@ -175,7 +169,7 @@ export const getMembresOptions = async ({
       value: getGouvernanceActorCode({
         type: 'departement',
         code,
-        formulaireGouvernanceId: formulairesGouvernance.id,
+        formulaireGouvernanceId: formulairesGouvernance[0].id,
       }),
     }))
   const optionsEpcis = epcis
@@ -189,7 +183,7 @@ export const getMembresOptions = async ({
       value: getGouvernanceActorCode({
         type: 'epci',
         code,
-        formulaireGouvernanceId: formulairesGouvernance.id,
+        formulaireGouvernanceId: formulairesGouvernance[0].id,
       }),
     }))
 
@@ -197,13 +191,13 @@ export const getMembresOptions = async ({
   const optionsStructures = structures.map(
     ({ id, siretStructure, nomStructure, intention }) => ({
       label: generateGouvernanceSelectOptionLabelWithIntention({
-        label: nomStructure,
-        intention,
+        label: nomStructure || siretStructure || '',
+        intention: intention ?? 'Participer',
       }),
       stringLabel: nomStructure ?? siretStructure ?? id,
       value: getGouvernanceActorCode({
         type: 'structure',
-        code: siretStructure,
+        code: siretStructure || '',
         formulaireGouvernanceId: id,
       }),
     }),

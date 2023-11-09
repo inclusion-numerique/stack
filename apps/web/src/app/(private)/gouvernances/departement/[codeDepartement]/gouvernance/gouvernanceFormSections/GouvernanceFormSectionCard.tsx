@@ -17,8 +17,16 @@ const GouvernanceFormSectionCard = ({
   <section id={id} className="fr-pt-6v">
     <WhiteCard>
       <h5 className="fr-mb-2v">{title}</h5>
-      {info && <p className="fr-mt-2v">{info}</p>}
-      {details && <p className="fr-mt-4v">{details}</p>}
+      {info && (
+        <p className="fr-text--sm fr-text-mention--grey fr-mt-2v fr-mb-0">
+          {info}
+        </p>
+      )}
+      {details && (
+        <p className="fr-text--xs fr-text-mention--grey fr-mt-4v fr-mb-0">
+          {details}
+        </p>
+      )}
       <hr className="fr-separator-8v" />
       {children}
     </WhiteCard>

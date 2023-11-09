@@ -81,54 +81,57 @@ const CheckboxGroupFormField = <T extends FieldValues>({
                 {label} {asterisk && <RedAsterisk />}
                 {hint ? <span className="fr-hint-text">{hint}</span> : null}
               </legend>
-              {options.map((option, index) => (
-                <div
-                  key={option.value}
-                  className={classNames('fr-fieldset__element', {
-                    'fr-fieldset__element--inline': inline,
-                  })}
-                >
+              {options.map((option, index) => {
+                const optionValue = option.value as unknown as T
+                return (
                   <div
-                    className={classNames('fr-checkbox-group', {
-                      'fr-checkbox-group--sm': small,
+                    key={option.value}
+                    className={classNames('fr-fieldset__element', {
+                      'fr-fieldset__element--inline': inline,
                     })}
                   >
-                    <input
-                      defaultChecked={valueAsArray.includes(option.value)}
-                      key={`${id}__input__${option.value}__${
-                        valueAsArray.includes(option.value)
-                          ? 'checked'
-                          : 'unchecked'
-                      }`}
-                      type="checkbox"
-                      id={`${id}__${index}`}
-                      disabled={disabled}
-                      onBlur={onBlur}
-                      onChange={(event) => {
-                        const newValue = event.target.value
-                        if (event.target.checked) {
-                          // Add the value to the array if it's checked
-                          onChange([...valueAsArray, newValue])
-                        } else {
-                          // Remove the value from the array if it's unchecked
-                          onChange(
-                            valueAsArray.filter((item) => item !== newValue),
-                          )
-                        }
-                      }}
-                      value={option.value}
-                      name={name}
-                      ref={ref}
-                    />
-                    <label className="fr-label" htmlFor={`${id}__${index}`}>
-                      {option.name}
-                      {option.hint && (
-                        <span className="fr-hint-text">{option.hint}</span>
-                      )}
-                    </label>
+                    <div
+                      className={classNames('fr-checkbox-group', {
+                        'fr-checkbox-group--sm': small,
+                      })}
+                    >
+                      <input
+                        defaultChecked={valueAsArray.includes(optionValue)}
+                        key={`${id}__input__${option.value}__${
+                          valueAsArray.includes(optionValue)
+                            ? 'checked'
+                            : 'unchecked'
+                        }`}
+                        type="checkbox"
+                        id={`${id}__${index}`}
+                        disabled={disabled}
+                        onBlur={onBlur}
+                        onChange={(event) => {
+                          const newValue = event.target.value as unknown as T
+                          if (event.target.checked) {
+                            // Add the value to the array if it's checked
+                            onChange([...valueAsArray, newValue])
+                          } else {
+                            // Remove the value from the array if it's unchecked
+                            onChange(
+                              valueAsArray.filter((item) => item !== newValue),
+                            )
+                          }
+                        }}
+                        value={option.value}
+                        name={name}
+                        ref={ref}
+                      />
+                      <label className="fr-label" htmlFor={`${id}__${index}`}>
+                        {option.name}
+                        {option.hint && (
+                          <span className="fr-hint-text">{option.hint}</span>
+                        )}
+                      </label>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
               {error && (
                 <div
                   className="fr-messages-group"

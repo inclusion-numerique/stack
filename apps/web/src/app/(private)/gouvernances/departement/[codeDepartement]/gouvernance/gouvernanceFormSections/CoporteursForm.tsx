@@ -69,6 +69,10 @@ const CoporteursForm = ({
     excludeCodes: coporteurCodes,
   })
 
+  const membresPorteursFeuillesDeRoute = new Set(
+    form.watch('feuillesDeRoute').map(({ porteur: { code } }) => code),
+  )
+
   console.log('COPO - Membres', membreFields)
   console.log('COPO - Coporteurs', coporteurCodes)
 
@@ -89,14 +93,20 @@ const CoporteursForm = ({
                   value={nom}
                 />
               </span>
-              <Button
-                type="button"
-                priority="tertiary no outline"
-                size="small"
-                iconId="fr-icon-delete-bin-line"
-                title="Supprimer"
-                onClick={() => removeMembre(index)}
-              />
+              {membresPorteursFeuillesDeRoute.has(code) ? (
+                <span className="fr-text--xs fr-my-0 fr-ml-2v">
+                  Porteur feuille de route
+                </span>
+              ) : (
+                <Button
+                  type="button"
+                  priority="tertiary no outline"
+                  size="small"
+                  iconId="fr-icon-delete-bin-line"
+                  title="Supprimer"
+                  onClick={() => removeMembre(index)}
+                />
+              )}
             </div>
             <hr className="fr-separator-8v" />
           </div>
@@ -123,15 +133,11 @@ const CoporteursForm = ({
             options={membreSelectOptions}
             placeholder="Rechercher"
             disabled={disabled}
+            isClearable
             onInputChange={(value) => {
               console.log('SELECT INPUT CHANGE', value)
             }}
             onSelectChange={onCoporteurChange}
-            defaultValue={{
-              // TODO
-              value: '',
-              label: '',
-            }}
           />
           <FindMemberNotice />
         </>

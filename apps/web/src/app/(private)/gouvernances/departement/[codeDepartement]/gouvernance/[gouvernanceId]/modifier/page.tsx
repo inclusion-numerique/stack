@@ -1,23 +1,19 @@
 import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import { notFound } from 'next/navigation'
-import { DefaultValues } from 'react-hook-form/dist/types/form'
 import NavigationSideMenu from '@app/ui/components/NavigationSideMenu'
 import { getGouvernanceForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/departement/generateDepartementMetadata'
 import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
 import { canEditGouvernancePressentie } from '@app/web/security/securityRules'
-import {
-  getPorteurCode,
-  GouvernancePressentieData,
-} from '@app/web/gouvernance/GouvernancePressentie'
 import BackLink from '@app/web/components/BackLink'
 import { getGouvernanceScopeTitle } from '@app/web/app/(private)/gouvernances/gouvernanceScopeTitle'
 import GouvernanceForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/GouvernanceForm'
 import { gouvernanceFormSectionSideMenuItems } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections'
 import { getMembresOptions } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getMembresOptions'
 import { getPerimetreEpciOptions } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getPerimetreEpciOptions'
+import { getGouvernanceFormDefaultValues } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormDefaultValues'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -58,40 +54,7 @@ const Page = async ({
     getPerimetreEpciOptions(codeDepartement),
   ])
 
-  const {
-    id,
-    departement,
-    v1Perimetre,
-    organisationsRecruteusesCoordinateurs,
-    noteDeContexte,
-    v1PorteurSiretInformations,
-    v1PorteurRegion,
-    v1PorteurDepartement,
-    v1PorteurEpci,
-  } = gouvernance
-
-  const v1PorteurCode = v1PorteurRegion
-    ? getPorteurCode('region', v1PorteurRegion.code)
-    : v1PorteurDepartement
-    ? getPorteurCode('departement', v1PorteurDepartement.code)
-    : v1PorteurEpci
-    ? getPorteurCode('epci', v1PorteurEpci.code)
-    : undefined
-
-  const gouvernancePressentie: DefaultValues<GouvernancePressentieData> = {
-    id,
-    departementCode: departement.code,
-    noteDeContexte,
-    v1PorteurSiret: v1PorteurSiretInformations?.siret ?? undefined,
-    v1Perimetre,
-    v1PorteurCode: v1PorteurCode ?? '',
-    siretsRecruteursCoordinateurs:
-      organisationsRecruteusesCoordinateurs.length === 0
-        ? [{ siret: '' }]
-        : organisationsRecruteusesCoordinateurs.map(
-            ({ siretInformations: { siret } }) => ({ siret }),
-          ),
-  }
+  const defaultValues = getGouvernanceFormDefaultValues(gouvernance)
 
   return (
     <>
@@ -128,7 +91,9 @@ const Page = async ({
             <BackLink href={gouvernanceHomePath({ codeDepartement })} />
 
             <GouvernanceForm
-              gouvernance={gouvernancePressentie}
+              codeRegion={gouvernance.departement.codeRegion}
+              codeDepartement={codeDepartement}
+              defaultValues={defaultValues}
               membreOptions={membreOptions}
               perimetreEpciOptions={perimetreEpciOptions}
             />

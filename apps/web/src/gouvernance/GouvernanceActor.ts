@@ -1,3 +1,6 @@
+import type { GouvernanceForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
+import { MembreData } from '@app/web/gouvernance/Gouvernance'
+
 export type GouvernanceActorType =
   | 'region'
   | 'departement'
@@ -31,48 +34,83 @@ export const getGouvernanceActorCode = ({
 }: GouvernanceActor) =>
   [type, code || '', formulaireGouvernanceId].join(gouvernanceActorSeparator)
 
-export const getActorFromPorteurCode = (
-  porteurCode: string,
-): GouvernanceActor => {
-  const [type, code, formulaireGouvernanceId] = porteurCode.split(
+export const getActorFromCode = (actorCode: string): GouvernanceActor => {
+  const [type, code, formulaireGouvernanceId] = actorCode.split(
     gouvernanceActorSeparator,
   )
   return { type: type as GouvernanceActorType, code, formulaireGouvernanceId }
 }
 
-export const membreToActor = ({
-  epciCode,
-  regionCode,
-  departementCode,
-  siret,
-  formulaireGouvernanceId,
-}: {
-  regionCode?: string
-  departementCode?: string
-  epciCode?: string
-  siret?: string
-  formulaireGouvernanceId: string
-}): GouvernanceActor => {
-  if (regionCode) {
-    return { type: 'region', code: regionCode, formulaireGouvernanceId }
+export const getMembreModelDataFromActorCode = (actorCode: string) => {
+  const { code, formulaireGouvernanceId, type } = getActorFromCode(actorCode)
+
+  if (type === 'region') {
+    return { regionCode: code, formulaireGouvernanceId }
   }
-  if (departementCode) {
-    return {
-      type: 'departement',
-      code: departementCode,
-      formulaireGouvernanceId,
-    }
+  if (type === 'departement') {
+    return { departementCode: code, formulaireGouvernanceId }
   }
-  if (epciCode) {
-    return { type: 'epci', code: epciCode, formulaireGouvernanceId }
+  if (type === 'epci') {
+    return { epciCode: code, formulaireGouvernanceId }
   }
-  return { type: 'structure', code: siret || '', formulaireGouvernanceId }
+  return {
+    siret: code,
+    formulaireGouvernanceId,
+  }
 }
 
-export const membreToActorCode = (membre: {
-  regionCode?: string
-  departementCode?: string
-  epciCode?: string
-  siret?: string
-  formulaireGouvernanceId: string
-}) => getGouvernanceActorCode(membreToActor(membre))
+export const membreToFormMembre = (
+  formulaireGouvernanceId: string,
+  {
+    epci,
+    departement,
+    region,
+    nomStructure,
+    siretInformations,
+    coporteur,
+  }: GouvernanceForForm['membres'][number],
+): MembreData => {
+  if (region) {
+    return {
+      code: getGouvernanceActorCode({
+        type: 'region',
+        code: region.code,
+        formulaireGouvernanceId,
+      }),
+      coporteur,
+      nom: region.nom,
+    }
+  }
+  if (departement) {
+    return {
+      code: getGouvernanceActorCode({
+        type: 'departement',
+        code: departement.code,
+        formulaireGouvernanceId,
+      }),
+      coporteur,
+      nom: departement.nom,
+    }
+  }
+  if (epci) {
+    return {
+      code: getGouvernanceActorCode({
+        type: 'epci',
+        code: epci.code,
+        formulaireGouvernanceId,
+      }),
+      coporteur,
+      nom: epci.nom,
+    }
+  }
+  return {
+    code: getGouvernanceActorCode({
+      type: 'structure',
+      code: siretInformations?.siret || '',
+      formulaireGouvernanceId,
+    }),
+    coporteur,
+    nom:
+      siretInformations?.nom || nomStructure || siretInformations?.siret || '',
+  }
+}

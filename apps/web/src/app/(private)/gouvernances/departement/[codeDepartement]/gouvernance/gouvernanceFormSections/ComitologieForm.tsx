@@ -5,6 +5,7 @@ import { TypeComite } from '@prisma/client'
 import RadioFormField from '@app/ui/components/Form/RadioFormField'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { ReplaceUrlToAnchor } from '@app/ui/hooks/useReplaceUrlToAnchor'
 import { gouvernanceFormSections } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections'
 import {
   ComiteData,
@@ -23,11 +24,18 @@ import {
 const ComitologieForm = ({
   form,
   disabled,
+  replaceUrlToAnchor,
+  comitesErrorRef,
 }: {
   form: UseFormReturn<GouvernanceData>
   disabled?: boolean
+  replaceUrlToAnchor: ReplaceUrlToAnchor
+  comitesErrorRef: React.RefObject<HTMLParagraphElement>
 }) => {
-  const { control } = form
+  const {
+    control,
+    formState: { errors },
+  } = form
 
   const [addingComite, setAddingComite] = useState(false)
 
@@ -55,6 +63,7 @@ const ComitologieForm = ({
 
       setAddingComite(false)
       addComiteForm.reset()
+      replaceUrlToAnchor(gouvernanceFormSections.comitologie.id)
     })()
   }
 
@@ -151,6 +160,15 @@ const ComitologieForm = ({
             </Button>
           </div>
         </>
+      )}
+      {!!errors.comites && (
+        <p
+          ref={comitesErrorRef}
+          id="comites__error"
+          className="fr-error-text fr-mb-4v"
+        >
+          {errors.comites.message}
+        </p>
       )}
 
       {!addingComite && (

@@ -2,16 +2,15 @@
 
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { DefaultValues } from 'react-hook-form/dist/types/form'
-import React, { PropsWithChildren, ReactNode } from 'react'
+import React, { RefObject, useEffect, useRef } from 'react'
 import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormField'
 import { useRouter } from 'next/navigation'
 import classNames from 'classnames'
 import Notice from '@codegouvfr/react-dsfr/Notice'
-import WhiteCard from '@app/web/ui/WhiteCard'
+import { useReplaceUrlToAnchor } from '@app/ui/hooks/useReplaceUrlToAnchor' // import styles from './GouvernanceForm.module.css'
 import RedAsterisk from '@app/web/ui/RedAsterisk'
 import { trpc } from '@app/web/trpc'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
@@ -31,52 +30,83 @@ import { MembreOptions } from '@app/web/app/(private)/gouvernances/departement/[
 import MembresForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/MembresForm'
 import ComitologieForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/ComitologieForm'
 import FeuillesDeRouteForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/FeuillesDeRouteForm'
-import { Option } from '@app/web/utils/options' // import styles from './GouvernanceForm.module.css'
+import { Option } from '@app/web/utils/options'
+import CoordinateursConseillersNumeriqueForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/CoordinateursConseillersNumeriqueForm'
 // import styles from './GouvernanceForm.module.css'
 
-const emptyValues: DefaultValues<GouvernanceData> = {
-  siretsRecruteursCoordinateurs: [{ siret: '' }],
-  comites: [],
-  feuillesDeRoute: [],
-  coporteurs: [],
-  membres: [],
+const scrollToRef = (ref: RefObject<HTMLElement>) => {
+  ref.current?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  })
 }
 
 const GouvernanceForm = ({
+  codeDepartement,
+  codeRegion,
+  defaultValues,
   className,
-  gouvernance,
   membreOptions,
   perimetreEpciOptions,
 }: {
+  codeDepartement: string
+  codeRegion: string | null
+  defaultValues: DefaultValues<GouvernanceData>
   className?: string
   // If editing existing
-  gouvernance?: DefaultValues<GouvernanceData>
   membreOptions: MembreOptions
   perimetreEpciOptions: Option[]
 }) => {
   const form = useForm<GouvernanceData>({
     resolver: zodResolver(GouvernanceValidation),
-    defaultValues: { ...emptyValues, ...gouvernance },
+    defaultValues,
   })
-  const { control, setError, handleSubmit, formState } = form
-  const siretsRecruteursCoordinateursFields = useFieldArray({
+  const {
     control,
-    keyName: 'id',
-    name: 'siretsRecruteursCoordinateurs',
-  })
+    setError,
+    handleSubmit,
+    formState: { isSubmitting, isSubmitSuccessful, errors },
+  } = form
 
+  const replaceUrlToAnchor = useReplaceUrlToAnchor()
   const mutation = trpc.gouvernance.gouvernance.useMutation()
   const router = useRouter()
 
-  console.log('ERRORS', formState.errors)
+  // General errors (not linked to input) must have refs to trigger scroll on submit
+  const membresErrorRef = useRef<HTMLParagraphElement>(null)
+  const comitesErrorRef = useRef<HTMLParagraphElement>(null)
+  const feuillesDeRouteErrorRef = useRef<HTMLParagraphElement>(null)
+  const recruteursCoordinateursErrorRef = useRef<HTMLParagraphElement>(null)
+
+  // Scroll to first general error on submit
+  useEffect(() => {
+    if (errors.membres) {
+      scrollToRef(membresErrorRef)
+      return
+    }
+    if (errors.comites) {
+      scrollToRef(comitesErrorRef)
+      return
+    }
+    if (errors.feuillesDeRoute) {
+      scrollToRef(feuillesDeRouteErrorRef)
+      return
+    }
+    if (errors.recruteursCoordinateurs) {
+      scrollToRef(recruteursCoordinateursErrorRef)
+    }
+  }, [
+    errors.membres,
+    errors.comites,
+    errors.feuillesDeRoute,
+    errors.recruteursCoordinateurs,
+  ])
 
   const onSubmit = async (data: GouvernanceData) => {
     try {
       await mutation.mutateAsync(data)
       router.refresh()
-      router.push(
-        gouvernanceHomePath({ codeDepartement: data.departementCode }),
-      )
+      router.push(gouvernanceHomePath({ codeDepartement }))
     } catch (mutationError) {
       if (!applyZodValidationMutationErrorsToForm(mutationError, setError)) {
         // TODO Go over this kind of stuff and add Toast
@@ -85,33 +115,7 @@ const GouvernanceForm = ({
     }
   }
 
-  const v1Perimetre = form.watch('v1Perimetre')
-  const v1PorteurCode = form.watch('v1PorteurCode')
-  const v1PorteurSiret = form.watch('v1PorteurSiret')
-  const shouldProvidePorteurSiret = v1Perimetre === 'autre'
-
-  if (
-    // We switch from SIRET to collectivity, reset the value for input to display ok
-    shouldProvidePorteurSiret &&
-    !!v1PorteurCode
-  ) {
-    setTimeout(() => {
-      form.setValue('v1PorteurCode', '')
-    })
-  } else if (!shouldProvidePorteurSiret && !!v1PorteurSiret) {
-    setTimeout(() => {
-      form.setValue('v1PorteurSiret', '')
-    })
-  }
-
-  const isLoading =
-    (formState.isSubmitting || formState.isSubmitSuccessful) && !mutation.error
-  //
-  // const defaultPorteurValue = gouvernance?.v1PorteurCode
-  //   ? Object.values(optionsCollectivitesPorteur)
-  //       .flatMap((group) => group.options)
-  //       .find((option) => option.value === gouvernance?.v1PorteurCode)
-  //   : undefined
+  const isLoading = (isSubmitting || isSubmitSuccessful) && !mutation.error
 
   const {
     fields: membresFields,
@@ -123,6 +127,8 @@ const GouvernanceForm = ({
     name: 'membres',
     keyName: 'id',
   })
+
+  console.log('ERRORS', errors)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -178,20 +184,30 @@ const GouvernanceForm = ({
           membreFields={membresFields}
           appendMembre={appendMembre}
           removeMembre={removeMembre}
+          membresErrorRef={membresErrorRef}
         />
-        <ComitologieForm form={form} disabled={isLoading} />
+        <ComitologieForm
+          form={form}
+          disabled={isLoading}
+          replaceUrlToAnchor={replaceUrlToAnchor}
+          comitesErrorRef={comitesErrorRef}
+        />
         <FeuillesDeRouteForm
           form={form}
           disabled={isLoading}
           membresOptions={membreOptions}
           membreFields={membresFields}
+          appendMembre={appendMembre}
+          departementHasRegion={!!codeRegion}
           perimetreEpciOptions={perimetreEpciOptions}
+          replaceUrlToAnchor={replaceUrlToAnchor}
+          feuillesDeRouteErrorRef={feuillesDeRouteErrorRef}
         />
-        <GouvernanceFormSectionCard
-          {...gouvernanceFormSections.coordinateurConseillerNumeriqueDeLaGouvernance}
-        >
-          <WorkInProgressNotice />
-        </GouvernanceFormSectionCard>
+        <CoordinateursConseillersNumeriqueForm
+          form={form}
+          disabled={isLoading}
+          recruteursCoordinateursErrorRef={recruteursCoordinateursErrorRef}
+        />
         <GouvernanceFormSectionCard
           {...gouvernanceFormSections.besoinsEnIngenierieFinanciere}
         >

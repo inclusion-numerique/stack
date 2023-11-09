@@ -19,12 +19,16 @@ const siretInfoSelect = {
 
 const membreSelect = {
   select: {
+    id: true,
+    modification: true,
+    creation: true,
     region: collectiviteSelect,
     departement: collectiviteSelect,
     epci: collectiviteSelect,
     nomStructure: true,
     siret: true,
     siretInformations: siretInfoSelect,
+    coporteur: true,
   },
 }
 
@@ -100,21 +104,12 @@ export const gouvernanceSelect = {
   },
 
   membres: {
-    select: {
-      id: true,
-      modification: true,
-      creation: true,
-      region: collectiviteSelect,
-      departement: collectiviteSelect,
-      epci: collectiviteSelect,
-      nomStructure: true,
-      siret: true,
-      siretInformations: siretInfoSelect,
-    },
+    select: membreSelect.select,
     orderBy: {
       creation: 'asc',
     },
   },
+  pasDeCoporteurs: true,
 
   feuillesDeRoute: {
     select: {
@@ -148,6 +143,10 @@ export const gouvernanceSelect = {
       creation: 'asc',
     },
   },
+
+  sousPrefetReferentPrenom: true,
+  sousPrefetReferentNom: true,
+  sousPrefetReferentEmail: true,
 
   besoinRh: true,
   besoinRhPrecisions: true,

@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { TypeContrat } from '@prisma/client'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
+import { ReplaceUrlToAnchor } from '@app/ui/hooks/useReplaceUrlToAnchor'
 import { gouvernanceFormSections } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections'
 import {
   FeuilleDeRouteData,
@@ -23,10 +24,7 @@ import {
   typeContratLabels,
   typeContratOptions,
 } from '@app/web/gouvernance/gouvernanceWordingsAndOptions'
-import {
-  filterMemberOptions,
-  MembreOptions,
-} from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getMembresOptions'
+import { MembreOptions } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getMembresOptions'
 import { Option } from '@app/web/utils/options'
 import FindMemberNotice from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/FindMemberNotice'
 
@@ -34,16 +32,27 @@ const FeuillesDeRouteForm = ({
   form,
   disabled,
   membreFields,
+  appendMembre,
   membresOptions,
   perimetreEpciOptions,
+  replaceUrlToAnchor,
+  feuillesDeRouteErrorRef,
+  departementHasRegion,
 }: {
   form: UseFormReturn<GouvernanceData>
   membresOptions: MembreOptions
+  appendMembre: (membre: MembreData) => void
   perimetreEpciOptions: Option[]
   membreFields: MembreData[]
   disabled?: boolean
+  replaceUrlToAnchor: ReplaceUrlToAnchor
+  feuillesDeRouteErrorRef: React.RefObject<HTMLParagraphElement>
+  departementHasRegion: boolean
 }) => {
-  const { control } = form
+  const {
+    control,
+    formState: { errors },
+  } = form
 
   const [addingFeuilleDeRoute, setAddingFeuilleDeRoute] = useState(false)
 
@@ -76,9 +85,20 @@ const FeuillesDeRouteForm = ({
       // TODO remove type si non
       // TODO remove precision si non ou type !== autre
 
+      console.log('ON ADD Feuille de route', data)
+
       const cleanedData = {
         ...data,
       }
+
+      const existingMembre = membreFields.findIndex(
+        ({ code }) => code === data.porteur.code,
+      )
+
+      if (existingMembre === -1) {
+        appendMembre(data.porteur)
+      }
+
       if (addingFeuilleDeRoute) {
         appendFeuilleDeRoute(cleanedData)
         setAddingFeuilleDeRoute(false)
@@ -90,6 +110,7 @@ const FeuillesDeRouteForm = ({
       }
 
       addFeuilleDeRouteForm.reset()
+      replaceUrlToAnchor(gouvernanceFormSections.feuillesDeRouteEtPorteurs.id)
     })()
   }
 
@@ -108,15 +129,7 @@ const FeuillesDeRouteForm = ({
   const showEpciPerimeter =
     addFeuilleDeRouteForm.watch('perimetreScope') === 'epci'
 
-  const membreSelectOptions = filterMemberOptions(membresOptions, {
-    onlyCodes: membreFields.map(({ code }) => code),
-  })
-
-  const porteur = addFeuilleDeRouteForm.watch('porteur')
-  console.log('PORTEUR VALUE', porteur)
-  console.log('ERRORS', addFeuilleDeRouteForm.formState.errors)
-
-  console.log('EPCI CODES', addFeuilleDeRouteForm.watch('perimetreEpciCodes'))
+  const membreSelectOptions = membresOptions
 
   return (
     <GouvernanceFormSectionCard
@@ -132,7 +145,7 @@ const FeuillesDeRouteForm = ({
             <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
               <span>
                 <InfoLabelValue
-                  label={`FeuilleDeRoute ${index + 1} : ${nom}`}
+                  label={`Feuille de route ${index + 1} : ${nom}`}
                   value={
                     <>
                       Porteur&nbsp;: {fieldPorteur.nom}
@@ -150,26 +163,28 @@ const FeuillesDeRouteForm = ({
                   }
                 />
               </span>
-              <Button
-                type="button"
-                priority="tertiary no outline"
-                disabled={disabled}
-                size="small"
-                className="fr-ml-1w"
-                iconId="fr-icon-edit-line"
-                title="Modifier"
-                onClick={() => setEditingFeuilleDeRoute(index)}
-              />
-              <Button
-                className="fr-ml-1w"
-                type="button"
-                priority="tertiary no outline"
-                disabled={disabled}
-                size="small"
-                iconId="fr-icon-delete-bin-line"
-                title="Supprimer"
-                onClick={() => removeFeuilleDeRoute(index)}
-              />
+              <span>
+                <Button
+                  type="button"
+                  priority="tertiary no outline"
+                  disabled={disabled}
+                  size="small"
+                  className="fr-ml-1w"
+                  iconId="fr-icon-edit-line"
+                  title="Modifier"
+                  onClick={() => setEditingFeuilleDeRoute(index)}
+                />
+                <Button
+                  className="fr-ml-1w"
+                  type="button"
+                  priority="tertiary no outline"
+                  disabled={disabled}
+                  size="small"
+                  iconId="fr-icon-delete-bin-line"
+                  title="Supprimer"
+                  onClick={() => removeFeuilleDeRoute(index)}
+                />
+              </span>
             </div>
             <hr className="fr-separator-8v" />
           </div>
@@ -186,7 +201,7 @@ const FeuillesDeRouteForm = ({
             className="fr-mb-8v"
           />
           <CustomSelectFormField
-            label="Quelle collectivité/structure porte la feuille de route ?"
+            label="Quel membre de la gouvernance porte la feuille de route ?"
             asterisk
             control={addFeuilleDeRouteForm.control}
             path="porteur"
@@ -201,11 +216,6 @@ const FeuillesDeRouteForm = ({
               nom: option.stringLabel,
               coporteur: false,
             })}
-            defaultValue={{
-              // TODO
-              value: '',
-              label: '',
-            }}
           />
           <FindMemberNotice className="fr-mb-8v" />
           <RadioFormField
@@ -213,7 +223,10 @@ const FeuillesDeRouteForm = ({
             asterisk
             control={addFeuilleDeRouteForm.control}
             path="perimetreScope"
-            options={feuilleDeRoutePerimetreOptions}
+            options={feuilleDeRoutePerimetreOptions.filter(
+              // Departements without region can't have region perimeter
+              ({ value }) => value !== 'region' || departementHasRegion,
+            )}
           />
           {showEpciPerimeter && (
             <CheckboxGroupFormField
@@ -266,7 +279,15 @@ const FeuillesDeRouteForm = ({
           </div>
         </>
       )}
-
+      {!!errors.feuillesDeRoute && (
+        <p
+          ref={feuillesDeRouteErrorRef}
+          id="feuilles_de_route__error"
+          className="fr-error-text fr-mb-4v"
+        >
+          {errors.feuillesDeRoute.message}
+        </p>
+      )}
       {!addingFeuilleDeRoute && (
         <div className="fr-btns-group fr-mt-8v fr-mb-0 fr-btns-group--icon-left">
           <Button

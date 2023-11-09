@@ -3,7 +3,6 @@ import { ZodRawShape } from 'zod/lib/types'
 import { FrequenceComite, TypeComite, TypeContrat } from '@prisma/client'
 import { requiredSiretValidation } from '@app/web/validation/siretValidation'
 import { GouvernanceFormSection } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections'
-import { ouiOuNonLabels } from '@app/web/gouvernance/gouvernanceWordingsAndOptions'
 
 export const MembreValidation = z.object({
   code: z.string(),
@@ -119,7 +118,9 @@ const coporteursDeLaGouvernanceConstraints = {
 const membresDeLaGouvernanceConstraints = {
   gouvernanceId: z.string().uuid(),
   // Array of actor codes of selected members
-  membres: z.array(MembreValidation),
+  membres: z.array(MembreValidation).min(1, {
+    message: 'Veuillez renseigner les membres de la gouvernance',
+  }),
 }
 
 const comitologieConstraints = {
@@ -129,20 +130,23 @@ const comitologieConstraints = {
 
 const feuillesDeRouteEtPorteursConstraints = {
   gouvernanceId: z.string().uuid(),
-  feuillesDeRoute: z.array(FeuilleDeRouteValidation),
+  feuillesDeRoute: z.array(FeuilleDeRouteValidation).min(1, {
+    message: 'Veuillez renseigner au moins une feuille de route',
+  }),
 }
+
+export const SiretInfoValidation = z.object({
+  siret: requiredSiretValidation,
+  nom: z.string().nullish(),
+})
+
+export type SiretInfoData = z.infer<typeof SiretInfoValidation>
 
 const coordinateurConseillerNumeriqueDeLaGouvernanceConstraints = {
   gouvernanceId: z.string().uuid(),
-  siretsRecruteursCoordinateurs: z
-    .array(
-      z.object({
-        siret: requiredSiretValidation,
-      }),
-    )
-    .min(1, {
-      message: 'Veuillez renseigner au moins une collectivité/structure',
-    }),
+  recruteursCoordinateurs: z.array(SiretInfoValidation).min(1, {
+    message: 'Veuillez renseigner au moins une collectivité/structure',
+  }),
 }
 
 const besoinsEnIngenierieFinanciereConstraints = {
