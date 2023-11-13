@@ -16,7 +16,6 @@ export const getGouvernanceFormDefaultValues = (
 
   const {
     id: gouvernanceId,
-    v2Enregistree,
     sousPrefetReferentPrenom,
     sousPrefetReferentNom,
     sousPrefetReferentEmail,
@@ -84,39 +83,10 @@ export const getGouvernanceFormDefaultValues = (
       nom: siretInformations.nom ?? undefined,
     }))
 
-  // Besoins
-  // TODO
-  defaultValues.besoinRh = false
-  defaultValues.besoinRhPrecisions = undefined
-  defaultValues.besoinStrategieFneLocale = false
-  defaultValues.besoinStrategieFneLocalePrecisions = undefined
-  defaultValues.besoinFormationAgentsPublics = false
-  defaultValues.besoinFormationAgentsPublicsPrecisions = undefined
-  defaultValues.besoinFormationSalariesAssociatifs = false
-  defaultValues.besoinFormationSalariesAssociatifsPrecisions = undefined
-  defaultValues.besoinAccompagnementJuridique = false
-  defaultValues.besoinAccompagnementJuridiquePrecisions = undefined
-  defaultValues.besoinMontageEtPriseDeParticipation = false
-  defaultValues.besoinMontageEtPriseDeParticipationPrecisions = undefined
-  defaultValues.besoinAppuiQualiopisationStructuresPrivees = false
-  defaultValues.besoinAppuiQualiopisationStructuresPriveesPrecisions = undefined
-  defaultValues.besoinAppuiMontageFondsFinancementLocal = false
-  defaultValues.besoinAppuiMontageFondsFinancementLocalPrecisions = undefined
-  defaultValues.besoinAppuiDemandeSubventionsComplexes = false
-  defaultValues.besoinAppuiDemandeSubventionsComplexesPrecisions = undefined
-  defaultValues.besoinOutillage = false
-  defaultValues.besoinOutillagePrecisions = undefined
-
   // NoteDeContexte
   defaultValues.noteDeContexte = noteDeContexte ?? undefined
 
-  // TODO
-  // If v2 has never been saved, we need to fill the v1 fields
-  if (!v2Enregistree) {
-    defaultValues.feuillesDeRoute = [
-      // TODO
-    ]
-  }
+  console.log('DEFAULT VALUES')
 
   return defaultValues
 }

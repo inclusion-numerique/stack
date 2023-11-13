@@ -149,39 +149,6 @@ const coordinateurConseillerNumeriqueDeLaGouvernanceConstraints = {
   }),
 }
 
-const besoinsEnIngenierieFinanciereConstraints = {
-  gouvernanceId: z.string().uuid(),
-  besoinRh: z.boolean(),
-  besoinRhPrecisions: z.string().nullish(),
-
-  besoinStrategieFneLocale: z.boolean(),
-  besoinStrategieFneLocalePrecisions: z.string().nullish(),
-
-  besoinFormationAgentsPublics: z.boolean(),
-  besoinFormationAgentsPublicsPrecisions: z.string().nullish(),
-
-  besoinFormationSalariesAssociatifs: z.boolean(),
-  besoinFormationSalariesAssociatifsPrecisions: z.string().nullish(),
-
-  besoinAccompagnementJuridique: z.boolean(),
-  besoinAccompagnementJuridiquePrecisions: z.string().nullish(),
-
-  besoinMontageEtPriseDeParticipation: z.boolean(),
-  besoinMontageEtPriseDeParticipationPrecisions: z.string().nullish(),
-
-  besoinAppuiQualiopisationStructuresPrivees: z.boolean(),
-  besoinAppuiQualiopisationStructuresPriveesPrecisions: z.string().nullish(),
-
-  besoinAppuiMontageFondsFinancementLocal: z.boolean(),
-  besoinAppuiMontageFondsFinancementLocalPrecisions: z.string().nullish(),
-
-  besoinAppuiDemandeSubventionsComplexes: z.boolean(),
-  besoinAppuiDemandeSubventionsComplexesPrecisions: z.string().nullish(),
-
-  besoinOutillage: z.boolean(),
-  besoinOutillagePrecisions: z.string().nullish(),
-}
-
 const noteDeContextConstraints = {
   gouvernanceId: z.string().uuid(),
   noteDeContexte: z.string({
@@ -197,9 +164,6 @@ export const GouvernanceSectionValidations = {
   feuillesDeRouteEtPorteurs: z.object(feuillesDeRouteEtPorteursConstraints),
   coordinateurConseillerNumeriqueDeLaGouvernance: z.object(
     coordinateurConseillerNumeriqueDeLaGouvernanceConstraints,
-  ),
-  besoinsEnIngenierieFinanciere: z.object(
-    besoinsEnIngenierieFinanciereConstraints,
   ),
   noteDeContexte: z.object(noteDeContextConstraints),
 } satisfies {
@@ -227,9 +191,6 @@ export type FeuillesDeRouteEtPorteursData = z.infer<
 export type CoordinateurConseillerNumeriqueDeLaGouvernanceData = z.infer<
   typeof GouvernanceSectionValidations.coordinateurConseillerNumeriqueDeLaGouvernance
 >
-export type BesoinsEnIngenierieFinanciereData = z.infer<
-  typeof GouvernanceSectionValidations.besoinsEnIngenierieFinanciere
->
 export type NoteDeContexteData = z.infer<
   typeof GouvernanceSectionValidations.noteDeContexte
 >
@@ -250,7 +211,6 @@ export const GouvernanceValidation = z
     ...comitologieConstraints,
     ...feuillesDeRouteEtPorteursConstraints,
     ...coordinateurConseillerNumeriqueDeLaGouvernanceConstraints,
-    ...besoinsEnIngenierieFinanciereConstraints,
     ...noteDeContextConstraints,
   })
   // Coporteur Refinment

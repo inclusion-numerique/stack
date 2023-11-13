@@ -62,11 +62,6 @@ export const gouvernanceFormSections = {
       </>
     ),
   },
-  besoinsEnIngenierieFinanciere: {
-    id: 'besoins-en-ingenierie-financiere',
-    title: 'Besoins en ingénierie financière',
-    info: 'Renseignez les moyens vous permettant de vous outiller en ingénierie financière pour mener à bien votre feuille de route France Numérique Ensemble.',
-  },
   noteDeContexte: {
     id: 'note-de-contexte',
     title: 'Note de contexte',

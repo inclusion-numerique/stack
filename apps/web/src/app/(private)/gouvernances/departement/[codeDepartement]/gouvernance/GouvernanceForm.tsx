@@ -22,7 +22,6 @@ import {
 } from '@app/web/gouvernance/Gouvernance'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { limiteModificationDesGouvernances } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceMetadata'
-import WorkInProgressNotice from '@app/web/components/WorkInProgressNotice'
 import { gouvernanceFormSections } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections'
 import CoporteursForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/CoporteursForm'
 import GouvernanceFormSectionCard from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/GouvernanceFormSectionCard'
@@ -208,11 +207,6 @@ const GouvernanceForm = ({
           disabled={isLoading}
           recruteursCoordinateursErrorRef={recruteursCoordinateursErrorRef}
         />
-        <GouvernanceFormSectionCard
-          {...gouvernanceFormSections.besoinsEnIngenierieFinanciere}
-        >
-          <WorkInProgressNotice />
-        </GouvernanceFormSectionCard>
         <GouvernanceFormSectionCard {...gouvernanceFormSections.noteDeContexte}>
           <RichTextFormField
             form={form}

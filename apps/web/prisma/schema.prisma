@@ -85,9 +85,13 @@ model User {
   formulaireGouvernanceId String?                @map("formulaire_gouvernance_id") @db.Uuid
   formulaireGouvernance   FormulaireGouvernance? @relation("formulaire_gouvernance_participant", fields: [formulaireGouvernanceId], references: [id])
 
-  formulairesGouvernanceCrees    FormulaireGouvernance[] @relation("formulaire_gouvernance_createur")
-  gouvernancesCrees              Gouvernance[]           @relation("gouvernance_createur")
-  gouvernancesModifieesEnDernier Gouvernance[]           @relation("gouvernance_derniere_modification_par")
+  formulairesGouvernanceCrees FormulaireGouvernance[] @relation("formulaire_gouvernance_createur")
+
+  gouvernancesCrees              Gouvernance[] @relation("gouvernance_createur")
+  gouvernancesModifieesEnDernier Gouvernance[] @relation("gouvernance_derniere_modification_par")
+
+  besoinsEnIngenierieFinanciereCrees             BesoinsEnIngenierieFinanciere[] @relation("besoins_ingenierie_financiere_createur")
+  besoinsEnIngenierieFinanciereModifiesEnDernier BesoinsEnIngenierieFinanciere[] @relation("besoins_ingenierie_financiere_derniere_modification_par")
 
   @@map("users")
 }
@@ -747,41 +751,126 @@ model Gouvernance {
 
   comites ComiteGouvernance[]
 
-  // Besoins en ingenierie financiere
-  besoinRh           Boolean @default(false) @map("besoin_rh")
-  besoinRhPrecisions String? @map("besoin_rh_precisions")
-
-  besoinStrategieFneLocale           Boolean @default(false) @map("besoin_strategie_fne_locale")
-  besoinStrategieFneLocalePrecisions String? @map("besoin_strategie_fne_locale_precisions")
-
-  besoinFormationAgentsPublics           Boolean @default(false) @map("besoin_formation_agents_publics")
-  besoinFormationAgentsPublicsPrecisions String? @map("besoin_formation_agents_publics_precisions")
-
-  besoinFormationSalariesAssociatifs           Boolean @default(false) @map("besoin_formation_salaries_associatifs")
-  besoinFormationSalariesAssociatifsPrecisions String? @map("besoin_formation_salaries_associatifs_precisions")
-
-  besoinAccompagnementJuridique           Boolean @default(false) @map("besoin_accompagnement_juridique")
-  besoinAccompagnementJuridiquePrecisions String? @map("besoin_accompagnement_juridique_precisions")
-
-  besoinMontageEtPriseDeParticipation           Boolean @default(false) @map("besoin_montage_et_prise_de_participation")
-  besoinMontageEtPriseDeParticipationPrecisions String? @map("besoin_montage_et_prise_de_participation_precisions")
-
-  besoinAppuiQualiopisationStructuresPrivees           Boolean @default(false) @map("besoin_appui_qualiopisation_structures_privees")
-  besoinAppuiQualiopisationStructuresPriveesPrecisions String? @map("besoin_appui_qualiopisation_structures_privees_precisions")
-
-  besoinAppuiMontageFondsFinancementLocal           Boolean @default(false) @map("besoin_appui_montage_fonds_financement_local")
-  besoinAppuiMontageFondsFinancementLocalPrecisions String? @map("besoin_appui_montage_fonds_financement_local_precisions")
-
-  besoinAppuiDemandeSubventionsComplexes           Boolean @default(false) @map("besoin_appui_demande_subventions_complexes")
-  besoinAppuiDemandeSubventionsComplexesPrecisions String? @map("besoin_appui_demande_subventions_complexes_precisions")
-
-  besoinOutillage           Boolean @default(false) @map("besoin_outillage")
-  besoinOutillagePrecisions String? @map("besoin_outillage_precisions")
+  besoinsEnIngenierieFinanciereId String?                        @unique @map("besoins_en_ingenierie_financiere_id") @db.Uuid
+  besoinsEnIngenierieFinanciere   BesoinsEnIngenierieFinanciere? @relation(fields: [besoinsEnIngenierieFinanciereId], references: [id])
 
   @@map("gouvernances")
 }
 
-// Tout les participants à une gouvernance
+model BesoinsEnIngenierieFinanciere {
+  id String @id @default(uuid()) @db.Uuid
+
+  gouvernance Gouvernance?
+
+  createurId String @map("createur_id") @db.Uuid
+  createur   User   @relation("besoins_ingenierie_financiere_createur", fields: [createurId], references: [id])
+
+  derniereModificationParId String @map("derniere_modification_par_id") @db.Uuid
+  derniereModificationPar   User   @relation("besoins_ingenierie_financiere_derniere_modification_par", fields: [derniereModificationParId], references: [id])
+
+  modification        DateTime  @updatedAt
+  creation            DateTime  @default(now())
+  supression          DateTime?
+  texteIntroductionLu DateTime?
+
+  // Formaliser la feuille de route
+
+  faireUnDiagnosticTerritorial                   Boolean @default(false) @map("faire_un_diagnostic_territorial")
+  faireUnDiagnosticTerritorialEtp                Float?  @map("faire_un_diagnostic_territorial_etp")
+  faireUnDiagnosticTerritorialPrestation         Boolean @default(false) @map("faire_un_diagnostic_territorial_prestation")
+  faireUnDiagnosticTerritorialPrestationPriorite Int?    @map("faire_un_diagnostic_territorial_prestation_priorite")
+
+  coConstruireLaFeuilleDeRoute                   Boolean @default(false) @map("co_construire_la_feuille_de_route")
+  coConstruireLaFeuilleDeRouteEtp                Float?  @map("co_construire_la_feuille_de_route_etp")
+  coConstruireLaFeuilleDeRoutePrestation         Boolean @default(false) @map("co_construire_la_feuille_de_route_prestation")
+  coConstruireLaFeuilleDeRoutePrestationPriorite Int?    @map("co_construire_la_feuille_de_route_prestation_priorite")
+
+  redigerLaFeuilleDeRoute                   Boolean @default(false) @map("rediger_la_feuille_de_route")
+  redigerLaFeuilleDeRouteEtp                Float?  @map("rediger_la_feuille_de_route_etp")
+  redigerLaFeuilleDeRoutePrestation         Boolean @default(false) @map("rediger_la_feuille_de_route_prestation")
+  redigerLaFeuilleDeRoutePrestationPriorite Int?    @map("rediger_la_feuille_de_route_prestation_priorite")
+
+  creerUnVehiculeJuridique                   Boolean @default(false) @map("creer_un_vehicule_juridique")
+  creerUnVehiculeJuridiqueEtp                Float?  @map("creer_un_vehicule_juridique_etp")
+  creerUnVehiculeJuridiquePrestation         Boolean @default(false) @map("creer_un_vehicule_juridique_prestation")
+  creerUnVehiculeJuridiquePrestationPriorite Int?    @map("creer_un_vehicule_juridique_prestation_priorite")
+
+  formaliserLaFeuilleDeRouteAutre                   Boolean @default(false) @map("formaliser_la_feuille_de_route_autre")
+  formaliserLaFeuilleDeRouteAutrePrecisions         String? @map("formaliser_la_feuille_de_route_autre_precisions")
+  formaliserLaFeuilleDeRouteAutreEtp                Float?  @map("formaliser_la_feuille_de_route_autre_etp")
+  formaliserLaFeuilleDeRouteAutrePrestation         Boolean @default(false) @map("formaliser_la_feuille_de_route_autre_prestation")
+  formaliserLaFeuilleDeRouteAutrePrestationPriorite Int?    @map("formaliser_la_feuille_de_route_autre_prestation_priorite")
+
+  // Financer le déploiement de la feuille de route
+
+  structurerUnFondsLocal                   Boolean @default(false) @map("structurer_un_fonds_local")
+  structurerUnFondsLocalEtp                Float?  @map("structurer_un_fonds_local_etp")
+  structurerUnFondsLocalPrestation         Boolean @default(false) @map("structurer_un_fonds_local_prestation")
+  structurerUnFondsLocalPrestationPriorite Int?    @map("structurer_un_fonds_local_prestation_priorite")
+
+  monterDesDossiersDeSubvention                   Boolean @default(false) @map("monter_des_dossiers_de_subvention")
+  monterDesDossiersDeSubventionEtp                Float?  @map("monter_des_dossiers_de_subvention_etp")
+  monterDesDossiersDeSubventionPrestation         Boolean @default(false) @map("monter_des_dossiers_de_subvention_prestation")
+  monterDesDossiersDeSubventionPrestationPriorite Int?    @map("monter_des_dossiers_de_subvention_prestation_priorite")
+
+  animerEtMettreEnOeuvre                   Boolean @default(false) @map("animer_et_mettre_en_oeuvre")
+  animerEtMettreEnOeuvreEtp                Float?  @map("animer_et_mettre_en_oeuvre_etp")
+  animerEtMettreEnOeuvrePrestation         Boolean @default(false) @map("animer_et_mettre_en_oeuvre_prestation")
+  animerEtMettreEnOeuvrePrestationPriorite Int?    @map("animer_et_mettre_en_oeuvre_prestation_priorite")
+
+  financerLeDeploiementAutre                   Boolean @default(false) @map("financer_le_deploiement_autre")
+  financerLeDeploiementAutrePrecisions         String? @map("financer_le_deploiement_autre_precisions")
+  financerLeDeploiementAutreEtp                Float?  @map("financer_le_deploiement_autre_etp")
+  financerLeDeploiementAutrePrestation         Boolean @default(false) @map("financer_le_deploiement_autre_prestation")
+  financerLeDeploiementAutrePrestationPriorite Int?    @map("financer_le_deploiement_autre_prestation_priorite")
+
+  // Outiller les acteurs du territoire
+
+  structurerUneFiliereDeReconditionnement                   Boolean @default(false) @map("structurer_une_filiere_de_reconditionnement")
+  structurerUneFiliereDeReconditionnementEtp                Float?  @map("structurer_une_filiere_de_reconditionnement_etp")
+  structurerUneFiliereDeReconditionnementPrestation         Boolean @default(false) @map("structurer_une_filiere_de_reconditionnement_prestation")
+  structurerUneFiliereDeReconditionnementPrestationPriorite Int?    @map("structurer_une_filiere_de_reconditionnement_prestation_priorite")
+
+  collecterDesDonneesTerritoriales                   Boolean @default(false) @map("collecter_des_donnees_territoriales")
+  collecterDesDonneesTerritorialesEtp                Float?  @map("collecter_des_donnees_territoriales_etp")
+  collecterDesDonneesTerritorialesPrestation         Boolean @default(false) @map("collecter_des_donnees_territoriales_prestation")
+  collecterDesDonneesTerritorialesPrestationPriorite Int?    @map("collecter_des_donnees_territoriales_prestation_priorite")
+
+  sensibiliserLesActeurs                   Boolean @default(false) @map("sensibiliser_les_acteurs")
+  sensibiliserLesActeursEtp                Float?  @map("sensibiliser_les_acteurs_etp")
+  sensibiliserLesActeursPrestation         Boolean @default(false) @map("sensibiliser_les_acteurs_prestation")
+  sensibiliserLesActeursPrestationPriorite Int?    @map("sensibiliser_les_acteurs_prestation_priorite")
+
+  outillerLesActeursAutre                   Boolean @default(false) @map("outiller_les_acteurs_autre")
+  outillerLesActeursAutrePrecisions         String? @map("outiller_les_acteurs_autre_precisions")
+  outillerLesActeursAutreEtp                Float?  @map("outiller_les_acteurs_autre_etp")
+  outillerLesActeursAutrePrestation         Boolean @default(false) @map("outiller_les_acteurs_autre_prestation")
+  outillerLesActeursAutrePrestationPriorite Int?    @map("outiller_les_acteurs_autre_prestation_priorite")
+
+  // Former les professionnels à l’inclusion numérique
+
+  formerLesAgentsPublics         Boolean @default(false) @map("former_les_agents_publics")
+  formerLesAgentsPublicsNombre   Float?  @map("former_les_agents_publics_nombre")
+  formerLesAgentsPublicsPriorite Int?    @map("former_les_agents_publics_priorite")
+
+  formerLesSalariesAssociatifs         Boolean @default(false) @map("former_les_salaries_associatifs")
+  formerLesSalariesAssociatifsNombre   Float?  @map("former_les_salaries_associatifs_nombre")
+  formerLesSalariesAssociatifsPriorite Int?    @map("former_les_salaries_associatifs_priorite")
+
+  appuyerLaCertificationQualiopi         Boolean @default(false) @map("appuyer_la_certification_qualiopi")
+  appuyerLaCertificationQualiopiPriorite Int?    @map("appuyer_la_certification_qualiopi_priorite")
+
+  formerLesProfessionnelsAutre           Boolean @default(false) @map("former_les_professionnels_autre")
+  formerLesProfessionnelsAutrePrecisions String? @map("former_les_professionnels_autre_precisions")
+  formerLesProfessionnelsAutrePriorite   Int?    @map("former_les_professionnels_autre_priorite")
+
+  totalEtp         Float @map("total_etp")
+  totalEtpPriorite Int?  @map("total_etp_priorite")
+
+  @@map("besoins_en_ingenierie_financiere")
+}
+
+// Tous les participants à une gouvernance
 model MembreGouvernance {
   id String @id @default(uuid()) @db.Uuid
 

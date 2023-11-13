@@ -79,6 +79,23 @@ const FeuillesDeRouteForm = ({
     },
   })
 
+  const onEditFeuilleDeRoute = (index: number) => {
+    const item = feuilleDeRouteFields[index]
+
+    addFeuilleDeRouteForm.reset({
+      id: item.id,
+      nom: item.nom,
+      porteur: item.porteur,
+      contratPreexistant: item.contratPreexistant,
+      perimetreEpciCodes: item.perimetreEpciCodes,
+      typeContrat: item.typeContrat,
+      typeContratAutrePrecisions: item.typeContratAutrePrecisions,
+      perimetreScope: item.perimetreScope,
+    })
+
+    setEditingFeuilleDeRoute(index)
+  }
+
   const onAddFeuilleDeRoute = () => {
     addFeuilleDeRouteForm.handleSubmit((data) => {
       // TODO: oui / non en boolean
@@ -172,7 +189,7 @@ const FeuillesDeRouteForm = ({
                   className="fr-ml-1w"
                   iconId="fr-icon-edit-line"
                   title="Modifier"
-                  onClick={() => setEditingFeuilleDeRoute(index)}
+                  onClick={() => onEditFeuilleDeRoute(index)}
                 />
                 <Button
                   className="fr-ml-1w"
@@ -190,7 +207,7 @@ const FeuillesDeRouteForm = ({
           </div>
         ),
       )}
-      {addingFeuilleDeRoute && (
+      {(addingFeuilleDeRoute || editingFeuilleDeRoute !== null) && (
         <>
           <h6 className="fr-mb-8v">Ajout d’une feuille de route</h6>
           <InputFormField

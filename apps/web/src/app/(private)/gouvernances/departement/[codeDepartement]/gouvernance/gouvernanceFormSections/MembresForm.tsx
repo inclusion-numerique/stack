@@ -111,7 +111,9 @@ const MembresForm = ({
           >
             <span>{nom}</span>
             {coporteur ? (
-              <span className="fr-text--xs fr-my-0 fr-ml-2v">Co-porteur</span>
+              <span className="fr-text--xs fr-my-0 fr-ml-2v">
+                Co-porteur gouvernance
+              </span>
             ) : membresPorteursFeuillesDeRoute.has(code) ? (
               <span className="fr-text--xs fr-my-0 fr-ml-2v">
                 Porteur feuille de route

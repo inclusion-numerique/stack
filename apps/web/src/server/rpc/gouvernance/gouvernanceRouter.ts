@@ -268,13 +268,19 @@ export const gouvernanceRouter = router({
               continue
             }
             membreIdForCode.set(membreToUpdate.code, id)
+            const { type } = getActorFromCode(membreToUpdate.code)
 
             // eslint-disable-next-line no-await-in-loop
             await transaction.membreGouvernance.update({
               where: {
                 id,
               },
-              data: membreToUpdate,
+              data: {
+                gouvernanceId,
+                coporteur: membreToUpdate.coporteur ?? false,
+                ...getMembreModelDataFromActorCode(membreToUpdate.code),
+                nomStructure: type === 'structure' ? membreToUpdate.nom : null,
+              },
             })
           }
 

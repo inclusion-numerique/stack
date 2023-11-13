@@ -147,36 +147,6 @@ export const gouvernanceSelect = {
   sousPrefetReferentPrenom: true,
   sousPrefetReferentNom: true,
   sousPrefetReferentEmail: true,
-
-  besoinRh: true,
-  besoinRhPrecisions: true,
-
-  besoinStrategieFneLocale: true,
-  besoinStrategieFneLocalePrecisions: true,
-
-  besoinFormationAgentsPublics: true,
-  besoinFormationAgentsPublicsPrecisions: true,
-
-  besoinFormationSalariesAssociatifs: true,
-  besoinFormationSalariesAssociatifsPrecisions: true,
-
-  besoinAccompagnementJuridique: true,
-  besoinAccompagnementJuridiquePrecisions: true,
-
-  besoinMontageEtPriseDeParticipation: true,
-  besoinMontageEtPriseDeParticipationPrecisions: true,
-
-  besoinAppuiQualiopisationStructuresPrivees: true,
-  besoinAppuiQualiopisationStructuresPriveesPrecisions: true,
-
-  besoinAppuiMontageFondsFinancementLocal: true,
-  besoinAppuiMontageFondsFinancementLocalPrecisions: true,
-
-  besoinAppuiDemandeSubventionsComplexes: true,
-  besoinAppuiDemandeSubventionsComplexesPrecisions: true,
-
-  besoinOutillage: true,
-  besoinOutillagePrecisions: true,
 } satisfies Prisma.GouvernanceSelect
 
 export const getGouvernanceForForm = (id: string) =>
