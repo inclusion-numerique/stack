@@ -18,9 +18,14 @@ const firstFormulaireGouvernancePorterOrParticiper = {
   },
   where: formulairesTerminesWhere,
   take: 1,
-  orderBy: {
-    intention: 'desc' as const,
-  },
+  orderBy: [
+    {
+      intention: 'desc' as const,
+    },
+    {
+      modification: 'desc' as const,
+    },
+  ],
 }
 
 export const getMembresOptions = async ({

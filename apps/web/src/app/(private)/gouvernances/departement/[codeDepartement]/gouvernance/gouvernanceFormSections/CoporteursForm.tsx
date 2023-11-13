@@ -65,6 +65,21 @@ const CoporteursForm = ({
     setAddingCoporteur(false)
   }
 
+  const onDelete = ({
+    porteurFeuilleDeRoute,
+    index,
+  }: {
+    index: number
+    porteurFeuilleDeRoute: boolean
+  }) => {
+    if (porteurFeuilleDeRoute) {
+      // Only remove coporteur flag
+      updateMembre(index, { ...membreFields[index], coporteur: false })
+    } else {
+      removeMembre(index)
+    }
+  }
+
   const membreSelectOptions = filterMemberOptions(membresOptions, {
     excludeCodes: coporteurCodes,
   })
@@ -93,20 +108,20 @@ const CoporteursForm = ({
                   value={nom}
                 />
               </span>
-              {membresPorteursFeuillesDeRoute.has(code) ? (
-                <span className="fr-text--xs fr-my-0 fr-ml-2v">
-                  Porteur feuille de route
-                </span>
-              ) : (
-                <Button
-                  type="button"
-                  priority="tertiary no outline"
-                  size="small"
-                  iconId="fr-icon-delete-bin-line"
-                  title="Supprimer"
-                  onClick={() => removeMembre(index)}
-                />
-              )}
+              <Button
+                type="button"
+                priority="tertiary no outline"
+                size="small"
+                iconId="fr-icon-delete-bin-line"
+                title="Supprimer"
+                onClick={() =>
+                  onDelete({
+                    index,
+                    porteurFeuilleDeRoute:
+                      membresPorteursFeuillesDeRoute.has(code),
+                  })
+                }
+              />
             </div>
             <hr className="fr-separator-8v" />
           </div>

@@ -52,12 +52,12 @@ export const FeuilleDeRouteValidation = z
       required_error: 'Veuillez renseigner si un contrat préexiste',
     }),
     typeContrat: z.nativeEnum(TypeContrat).nullish(),
-    typeContratAutrePrecisions: z.string().nullish(),
+    typeContratAutreDescription: z.string().nullish(),
   })
   .refine(
-    // Refine so perimetreEpciCodes must have at least one element if perimetreScope is epci
+    // perimetreEpciCodes must have at least one element if perimetreScope is epci
     (data) =>
-      !(data.perimetreScope === 'epci' && data.perimetreEpciCodes.length === 0),
+      data.perimetreScope !== 'epci' || data.perimetreEpciCodes.length > 0,
     {
       message: 'Veuillez renseigner le périmètre de la feuille de route',
       path: ['perimetreEpciCodes'],
@@ -77,11 +77,11 @@ export const FeuilleDeRouteValidation = z
       !(
         data.contratPreexistant === 'oui' &&
         data.typeContrat === TypeContrat.Autre &&
-        !data.typeContratAutrePrecisions
+        !data.typeContratAutreDescription
       ),
     {
       message: 'Veuillez préciser le contrat préexistant',
-      path: ['typeContratAutrePrecisions'],
+      path: ['typeContratAutreDescription'],
     },
   )
 export type FeuilleDeRouteData = z.infer<typeof FeuilleDeRouteValidation>

@@ -55,6 +55,9 @@ export const getGouvernanceFormDefaultValues = (
       contratPreexistant,
       typeContrat,
       typeContratAutreDescription,
+      perimetreDepartement,
+      perimetreRegion,
+      perimetreEpcis,
       membres: membresFeuilleDeRoute,
     }) => {
       const membrePorteur = membresFeuilleDeRoute.find(
@@ -72,6 +75,15 @@ export const getGouvernanceFormDefaultValues = (
         typeContrat,
         typeContratAutreDescription,
         porteur,
+        perimetreScope: perimetreRegion
+          ? 'region'
+          : perimetreDepartement
+          ? 'departement'
+          : perimetreEpcis.length > 0
+          ? 'epci'
+          : undefined,
+
+        perimetreEpciCodes: perimetreEpcis.map(({ epci }) => epci.code),
       }
     },
   )

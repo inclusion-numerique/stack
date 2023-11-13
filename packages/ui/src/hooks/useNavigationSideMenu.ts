@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { SideMenuProps } from '@codegouvfr/react-dsfr/SideMenu'
 import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { isBrowser } from '@app/web/utils/isBrowser'
+
+const getIdFromItem = (item: SideMenuProps.Item): string | null =>
+  'linkProps' in item ? item.linkProps?.href?.toString().slice(1) ?? null : null
 
 /**
  * This will use all the link items with an href starting with # to compute the active item
@@ -15,7 +19,7 @@ export const useNavigationSideMenu = ({
   intersectionThreshold?: number
 }) => {
   const [contentElement, setContentElement] = useState<HTMLElement | null>(
-    document.getElementById(contentId),
+    isBrowser ? document.getElementById(contentId) : null,
   )
 
   // Need a use effect to get the element after first render
@@ -24,14 +28,7 @@ export const useNavigationSideMenu = ({
   }, [contentId])
 
   const navigableItemIds = useMemo(
-    () =>
-      items
-        .map((item): string | null =>
-          'linkProps' in item
-            ? item.linkProps?.href?.toString().slice(1) ?? null
-            : null,
-        )
-        .filter(isDefinedAndNotNull),
+    () => items.map(getIdFromItem).filter(isDefinedAndNotNull),
     [items],
   )
 
@@ -41,7 +38,9 @@ export const useNavigationSideMenu = ({
     [navigableItemIds],
   )
 
-  const [activeId, setActiveId] = useState<string | null>(null)
+  const [activeId, setActiveId] = useState<string | null>(
+    navigableItemIds[0] ?? null,
+  )
 
   useEffect(
     () => {

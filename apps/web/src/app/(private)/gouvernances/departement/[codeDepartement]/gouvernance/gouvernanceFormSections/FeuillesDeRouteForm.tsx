@@ -28,6 +28,10 @@ import { MembreOptions } from '@app/web/app/(private)/gouvernances/departement/[
 import { Option } from '@app/web/utils/options'
 import FindMemberNotice from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/FindMemberNotice'
 
+const defaultValues = {
+  perimetreEpciCodes: [],
+}
+
 const FeuillesDeRouteForm = ({
   form,
   disabled,
@@ -74,10 +78,9 @@ const FeuillesDeRouteForm = ({
 
   const addFeuilleDeRouteForm = useForm<FeuilleDeRouteData>({
     resolver: zodResolver(FeuilleDeRouteValidation),
-    defaultValues: {
-      perimetreEpciCodes: [],
-    },
+    defaultValues,
   })
+  console.log('feuillesDeRoute ERRORS', addFeuilleDeRouteForm.formState.errors)
 
   const onEditFeuilleDeRoute = (index: number) => {
     const item = feuilleDeRouteFields[index]
@@ -89,7 +92,7 @@ const FeuillesDeRouteForm = ({
       contratPreexistant: item.contratPreexistant,
       perimetreEpciCodes: item.perimetreEpciCodes,
       typeContrat: item.typeContrat,
-      typeContratAutrePrecisions: item.typeContratAutrePrecisions,
+      typeContratAutreDescription: item.typeContratAutreDescription,
       perimetreScope: item.perimetreScope,
     })
 
@@ -112,6 +115,12 @@ const FeuillesDeRouteForm = ({
         ({ code }) => code === data.porteur.code,
       )
 
+      console.log('CHECK IF EXISTING MEMBRE', {
+        membreFields,
+        selectData: data.porteur,
+        existingMembre,
+      })
+
       if (existingMembre === -1) {
         appendMembre(data.porteur)
       }
@@ -126,14 +135,15 @@ const FeuillesDeRouteForm = ({
         setEditingFeuilleDeRoute(null)
       }
 
-      addFeuilleDeRouteForm.reset()
+      addFeuilleDeRouteForm.reset(defaultValues)
       replaceUrlToAnchor(gouvernanceFormSections.feuillesDeRouteEtPorteurs.id)
     })()
   }
 
   const onCancel = () => {
     setAddingFeuilleDeRoute(false)
-    addFeuilleDeRouteForm.reset()
+    setEditingFeuilleDeRoute(null)
+    addFeuilleDeRouteForm.reset(defaultValues)
   }
 
   const showTypeContrat =
@@ -276,7 +286,7 @@ const FeuillesDeRouteForm = ({
               label="Précisez"
               asterisk
               control={addFeuilleDeRouteForm.control}
-              path="typeContratAutrePrecisions"
+              path="typeContratAutreDescription"
               className="fr-mb-8v"
             />
           )}

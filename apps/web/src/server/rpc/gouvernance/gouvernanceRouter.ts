@@ -332,7 +332,9 @@ export const gouvernanceRouter = router({
                   feuilleToCreate.contratPreexistant === 'oui',
                 typeContrat: feuilleToCreate.typeContrat,
                 typeContratAutreDescription:
-                  feuilleToCreate.typeContratAutrePrecisions,
+                  feuilleToCreate.typeContrat === 'Autre'
+                    ? feuilleToCreate.typeContratAutreDescription ?? null
+                    : null,
                 perimetreDepartementCode:
                   feuilleToCreate.perimetreScope === 'departement'
                     ? gouvernance.departement.code
@@ -341,6 +343,18 @@ export const gouvernanceRouter = router({
                   feuilleToCreate.perimetreScope === 'region'
                     ? gouvernance.departement.codeRegion ?? null
                     : null,
+                perimetreEpcis:
+                  feuilleToCreate.perimetreEpciCodes.length > 0
+                    ? {
+                        createMany: {
+                          data: feuilleToCreate.perimetreEpciCodes.map(
+                            (epciCode) => ({
+                              epciCode,
+                            }),
+                          ),
+                        },
+                      }
+                    : undefined,
                 membres: {
                   create: {
                     id: v4(),
@@ -353,6 +367,14 @@ export const gouvernanceRouter = router({
           }
 
           for (const feuilleToUpdate of feuillesDeRouteToUpdate) {
+            // Easier to delete and recreate than to merge
+            // eslint-disable-next-line no-await-in-loop
+            await transaction.perimetreEpciFeuilleDeRoute.deleteMany({
+              where: {
+                feuilleDeRouteId: feuilleToUpdate.id,
+              },
+            })
+
             const updatedFeuilleDeRoute =
               // eslint-disable-next-line no-await-in-loop
               await transaction.feuilleDeRoute.update({
@@ -360,9 +382,34 @@ export const gouvernanceRouter = router({
                   id: feuilleToUpdate.id,
                 },
                 data: {
-                  ...feuilleToUpdate,
+                  nom: feuilleToUpdate.nom,
                   contratPreexistant:
                     feuilleToUpdate.contratPreexistant === 'oui',
+                  typeContrat: feuilleToUpdate.typeContrat,
+                  typeContratAutreDescription:
+                    feuilleToUpdate.typeContrat === 'Autre'
+                      ? feuilleToUpdate.typeContratAutreDescription ?? null
+                      : null,
+                  perimetreDepartementCode:
+                    feuilleToUpdate.perimetreScope === 'departement'
+                      ? gouvernance.departement.code
+                      : null,
+                  perimetreRegionCode:
+                    feuilleToUpdate.perimetreScope === 'region'
+                      ? gouvernance.departement.codeRegion ?? null
+                      : null,
+                  perimetreEpcis:
+                    feuilleToUpdate.perimetreEpciCodes.length > 0
+                      ? {
+                          createMany: {
+                            data: feuilleToUpdate.perimetreEpciCodes.map(
+                              (epciCode) => ({
+                                epciCode,
+                              }),
+                            ),
+                          },
+                        }
+                      : undefined,
                 },
                 select: {
                   membres: {

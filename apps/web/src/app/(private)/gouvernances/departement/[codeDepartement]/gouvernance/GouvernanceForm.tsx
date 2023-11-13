@@ -77,6 +77,8 @@ const GouvernanceForm = ({
   const feuillesDeRouteErrorRef = useRef<HTMLParagraphElement>(null)
   const recruteursCoordinateursErrorRef = useRef<HTMLParagraphElement>(null)
 
+  console.log('DEFAULT VALUES', defaultValues)
+
   // Scroll to first general error on submit
   useEffect(() => {
     if (errors.membres) {
