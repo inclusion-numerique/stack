@@ -38,3 +38,14 @@ export const imprimerGouvernancePath = (scope: GouvernanceScope, id: string) =>
 
 export const modifierGouvernancePath = (scope: GouvernanceScope, id: string) =>
   `${gouvernanceHomePath(scope)}/gouvernance/${id}/modifier`
+
+export const modifierBesoinsIngenieriePath = (
+  scope: GouvernanceScope,
+  {
+    gouvernanceId,
+    step,
+  }: { gouvernanceId: string; step: 'intro' | 'selection' | 'priorisation' },
+) =>
+  `${gouvernanceHomePath(
+    scope,
+  )}/gouvernance/${gouvernanceId}/besoins-ingenierie/${step}`

@@ -4,7 +4,8 @@ import StatistiquesGouvernances from '@app/web/app/(private)/gouvernances/Statis
 import { getStatistiquesGouvernanceNational } from '@app/web/app/(private)/gouvernances/getStatistiquesGouvernances'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import { getGouvernanceScopeTitle } from '@app/web/app/(private)/gouvernances/gouvernanceScopeTitle'
-import GouvernanceList from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/GouvernanceList'
+import { getListeGouvernanceNational } from '@app/web/app/(private)/gouvernances/getListeGouvernances'
+import GouvernanceList from '@app/web/app/(private)/gouvernances/GouvernanceList'
 
 export const generateMetadata = () => ({
   title: `Gouvernance - National`,
@@ -17,6 +18,7 @@ const Page = async () => {
 
   const statistiquesGouvernance = await getStatistiquesGouvernanceNational()
   const scopeTitle = await getGouvernanceScopeTitle({ national: true })
+  const gouvernances = await getListeGouvernanceNational()
 
   return (
     <div className="fr-container fr-pb-20v">
@@ -37,7 +39,7 @@ const Page = async () => {
         scopeTitle={scopeTitle}
       />
       <hr className="fr-separator-12v" />
-      <GouvernanceList scope={{ national: true }} />
+      <GouvernanceList scope={{ national: true }} gouvernances={gouvernances} />
     </div>
   )
 }

@@ -31,6 +31,14 @@ describe('gouvernanceRouter', () => {
   afterAll(() => prismaClient.user.delete({ where: { id: givenUser.id } }))
 
   describe('createGouvernance', () => {
+    const gouvernancesToDelete: string[] = []
+
+    afterAll(() =>
+      prismaClient.gouvernance.deleteMany({
+        where: { id: { in: gouvernancesToDelete } },
+      }),
+    )
+
     // eslint-disable-next-line unicorn/consistent-function-scoping
     const executeCreateGouvernanceProcedure = (input: CreateGouvernanceData) =>
       gouvernanceRouter
@@ -41,6 +49,7 @@ describe('gouvernanceRouter', () => {
       const result = await executeCreateGouvernanceProcedure({
         departementCode: '69',
       })
+      gouvernancesToDelete.push(result.id)
 
       expect(result).toEqual({
         departementCode: '69',
@@ -49,7 +58,7 @@ describe('gouvernanceRouter', () => {
     })
   })
 
-  describe('gouvernance', () => {
+  describe('updateGouvernanceV2', () => {
     // eslint-disable-next-line unicorn/consistent-function-scoping
     const executeGouvernanceProcedure = (input: GouvernanceData) =>
       gouvernanceRouter
@@ -131,9 +140,9 @@ describe('gouvernanceRouter', () => {
 
       const result = await executeGouvernanceProcedure(input)
 
-      // date: expectDate
-
       expect(result).toEqual({
+        besoinsEnIngenierieFinanciere: null,
+
         comites: [
           {
             commentaire: '🗺️',

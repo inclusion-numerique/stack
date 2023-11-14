@@ -5,7 +5,8 @@ import { getStatistiquesGouvernanceDepartement } from '@app/web/app/(private)/go
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/departement/generateDepartementMetadata'
 import { getGouvernanceScopeTitle } from '@app/web/app/(private)/gouvernances/gouvernanceScopeTitle'
-import GouvernanceList from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/GouvernanceList'
+import { getListeGouvernanceDepartement } from '@app/web/app/(private)/gouvernances/getListeGouvernances'
+import GouvernanceList from '@app/web/app/(private)/gouvernances/GouvernanceList'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -22,6 +23,7 @@ const Page = async ({
     await getStatistiquesGouvernanceDepartement(codeDepartement)
 
   const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
+  const gouvernances = await getListeGouvernanceDepartement(codeDepartement)
 
   return (
     <div className="fr-container fr-pb-20v">
@@ -42,7 +44,10 @@ const Page = async ({
         scopeTitle={scopeTitle}
       />
       <hr className="fr-separator-12v" />
-      <GouvernanceList scope={{ codeDepartement }} />
+      <GouvernanceList
+        scope={{ codeDepartement }}
+        gouvernances={gouvernances}
+      />
     </div>
   )
 }

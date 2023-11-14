@@ -5,7 +5,8 @@ import { getStatistiquesGouvernanceRegion } from '@app/web/app/(private)/gouvern
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import { generateRegionMetadata } from '@app/web/app/(private)/gouvernances/region/generateRegionMetadata'
 import { getGouvernanceScopeTitle } from '@app/web/app/(private)/gouvernances/gouvernanceScopeTitle'
-import GouvernanceList from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/GouvernanceList'
+import { getListeGouvernanceRegion } from '@app/web/app/(private)/gouvernances/getListeGouvernances'
+import GouvernanceList from '@app/web/app/(private)/gouvernances/GouvernanceList'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -22,6 +23,7 @@ const Page = async ({
   const statistiquesGouvernance =
     await getStatistiquesGouvernanceRegion(codeRegion)
   const scopeTitle = await getGouvernanceScopeTitle({ codeRegion })
+  const gouvernances = await getListeGouvernanceRegion(codeRegion)
 
   return (
     <div className="fr-container fr-mb-20v">
@@ -42,7 +44,7 @@ const Page = async ({
         scopeTitle={scopeTitle}
       />
       <hr className="fr-separator-12v" />
-      <GouvernanceList scope={{ codeRegion }} />
+      <GouvernanceList scope={{ codeRegion }} gouvernances={gouvernances} />
     </div>
   )
 }

@@ -98,6 +98,7 @@ module.exports = {
             ],
           },
         ],
+        'no-underscore-dangle': 'off',
         'unicorn/prefer-module': 'off',
         'no-restricted-syntax': 'off',
         'no-irregular-whitespace': 'off',
