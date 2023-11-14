@@ -55,7 +55,11 @@ const GouvernanceCard = ({
     <WhiteCard className="fr-mt-6v">
       <div className="fr-flex fr-align-items-start fr-justify-content-space-between fr-flex-gap-2v fr-flex-wrap">
         <div>
-          <h5 className="fr-mb-2v">Gouvernance pressentie</h5>
+          <h5 className="fr-mb-2v">
+            {v2Enregistree
+              ? 'Proposition de gouvernance'
+              : 'Gouvernance pressentie'}
+          </h5>
           <p className="fr-mb-0 fr-text--sm">
             Déposée le {creationMeta}
             {displayModificationMeta && ` · Modifiée le ${modificationMeta}`}

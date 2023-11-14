@@ -23,7 +23,7 @@ const queryListe = (where?: Prisma.GouvernanceWhereInput) =>
     select: gouvernanceListSelect,
     orderBy: [
       {
-        v2Enregistree: 'desc',
+        v2Enregistree: 'asc',
       },
       {
         creation: 'desc',

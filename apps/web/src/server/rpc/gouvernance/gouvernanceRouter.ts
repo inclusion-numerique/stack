@@ -115,7 +115,7 @@ export const gouvernanceRouter = router({
 
       return gouvernance
     }),
-  gouvernance: protectedProcedure
+  updateGouvernanceV2: protectedProcedure
     .input(GouvernanceValidation)
     .mutation(async ({ input, ctx: { user } }) => {
       console.log('gouvernanceMutation', { input })
@@ -507,6 +507,7 @@ export const gouvernanceRouter = router({
               id: gouvernanceId,
             },
             data: {
+              v2Enregistree: gouvernance.v2Enregistree ? undefined : new Date(),
               derniereModificationParId: user.id,
               pasDeCoporteurs,
               sousPrefetReferentPrenom,

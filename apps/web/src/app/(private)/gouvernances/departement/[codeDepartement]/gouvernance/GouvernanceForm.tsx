@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation'
 import classNames from 'classnames'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import { useReplaceUrlToAnchor } from '@app/ui/hooks/useReplaceUrlToAnchor' // import styles from './GouvernanceForm.module.css'
+import { createToast } from '@app/ui/toast/createToast'
 import RedAsterisk from '@app/web/ui/RedAsterisk'
 import { trpc } from '@app/web/trpc'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
@@ -68,7 +69,7 @@ const GouvernanceForm = ({
   } = form
 
   const replaceUrlToAnchor = useReplaceUrlToAnchor()
-  const mutation = trpc.gouvernance.gouvernance.useMutation()
+  const mutation = trpc.gouvernance.updateGouvernanceV2.useMutation()
   const router = useRouter()
 
   // General errors (not linked to input) must have refs to trigger scroll on submit
@@ -105,8 +106,10 @@ const GouvernanceForm = ({
 
   const onSubmit = async (data: GouvernanceData) => {
     try {
+      console.log('DATA SUBMISSION', data)
       await mutation.mutateAsync(data)
       router.refresh()
+      createToast('success', 'La gouvernance a bien été enregistrée')
       router.push(gouvernanceHomePath({ codeDepartement }))
     } catch (mutationError) {
       if (!applyZodValidationMutationErrorsToForm(mutationError, setError)) {

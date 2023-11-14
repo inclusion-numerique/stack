@@ -71,6 +71,28 @@ export const gouvernanceListSelect = {
     },
   },
 
+  besoinsEnIngenierieFinanciere: {
+    select: {
+      id: true,
+      creation: true,
+      modification: true,
+      createur: {
+        select: {
+          id: true,
+          email: true,
+          name: true,
+        },
+      },
+      derniereModificationPar: {
+        select: {
+          id: true,
+          email: true,
+          name: true,
+        },
+      },
+    },
+  },
+
   // V1 Fields
   v1Perimetre: true,
 
