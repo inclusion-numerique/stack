@@ -35,8 +35,6 @@ const CheckboxGroupFormField = <T extends FieldValues>({
 }: UiComponentProps & CheckboxGroupFormFieldProps<T>) => {
   const id = `checkbox-group-form-field__${path}`
 
-  console.log('CHECKBOX GROUP OPTIONS', options)
-
   return (
     <Controller
       control={control}
@@ -54,8 +52,6 @@ const CheckboxGroupFormField = <T extends FieldValues>({
         } else if (valid && isDirty && !invalid) {
           ariaLabelBy = `${id}__valid`
         }
-
-        console.log('VALUE IN CONTROLLER', valueAsArray)
 
         return (
           <div className="fr-form-group" data-testid={dataTestId}>

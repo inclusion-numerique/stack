@@ -4,6 +4,7 @@ import { getGouvernanceFormDefaultValues } from '@app/web/app/(private)/gouverna
 describe('getGouvernanceFormDefaultValues', () => {
   it('transforms gouvernance to default values', () => {
     const gouvernanceForForm: GouvernanceForForm = {
+      besoinsEnIngenierieFinanciere: null,
       comites: [
         {
           commentaire: '🗺️',
