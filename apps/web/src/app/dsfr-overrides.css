@@ -136,7 +136,7 @@
 
 .fr-btn--no-after {
     &::after {
-        display: none;
+        display: none !important;
     }
 }
 
