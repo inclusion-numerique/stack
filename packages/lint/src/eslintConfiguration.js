@@ -30,7 +30,7 @@ const allowedAbbreviations = {
   Refs: true,
   res: true,
   varDirectory: true,
-  VarDirectory: true,
+  createVarDirectory: true,
 }
 
 // This will be exported from the root of the project
