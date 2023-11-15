@@ -15,6 +15,7 @@
     &::after {
       content: none;
     }
+
     cursor: text;
   }
 

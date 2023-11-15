@@ -3,7 +3,6 @@
     background: white;
     border: var(--slim-grey-border);
     filter: drop-shadow(var(--lifted-shadow));
-
     max-width: calc(min(100%, 360px));
     display: flex;
     align-items: center;
