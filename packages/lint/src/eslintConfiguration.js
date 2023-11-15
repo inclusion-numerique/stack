@@ -14,6 +14,25 @@ const typescriptExtends = [
   'prettier',
 ]
 
+const allowedAbbreviations = {
+  Props: true,
+  props: true,
+  args: true,
+  Param: true,
+  param: true,
+  Params: true,
+  params: true,
+  Env: true,
+  env: true,
+  ref: true,
+  Ref: true,
+  refs: true,
+  Refs: true,
+  res: true,
+  varDirectory: true,
+  VarDirectory: true,
+}
+
 // This will be exported from the root of the project
 // Paths are relative to the root of the project
 module.exports = {
@@ -61,6 +80,12 @@ module.exports = {
           camelCase: true,
           pascalCase: true,
         },
+      },
+    ],
+    'unicorn/prevent-abbreviations': [
+      'error',
+      {
+        allowList: allowedAbbreviations,
       },
     ],
   },
@@ -147,22 +172,7 @@ module.exports = {
         'unicorn/prevent-abbreviations': [
           'error',
           {
-            allowList: {
-              Props: true,
-              props: true,
-              args: true,
-              Param: true,
-              param: true,
-              Params: true,
-              params: true,
-              Env: true,
-              env: true,
-              ref: true,
-              Ref: true,
-              refs: true,
-              Refs: true,
-              res: true,
-            },
+            allowList: allowedAbbreviations,
           },
         ],
         'unicorn/filename-case': [
