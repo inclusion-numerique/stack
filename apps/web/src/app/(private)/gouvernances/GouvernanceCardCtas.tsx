@@ -1,6 +1,7 @@
 import React from 'react'
 import Badge from '@codegouvfr/react-dsfr/Badge'
 import Button from '@codegouvfr/react-dsfr/Button'
+import classNames from 'classnames'
 import { ListeGouvernanceItem } from '@app/web/app/(private)/gouvernances/getListeGouvernances'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import {
@@ -13,20 +14,16 @@ import { nameOrEmail } from '@app/web/utils/nameOrEmail'
 import styles from './GouvernanceList.module.css'
 
 const GouvernanceCardCtas = ({
+  firstCtaClassName,
   gouvernance,
   canEdit,
   canCreateInDepartementCode,
 }: {
+  firstCtaClassName?: string
   gouvernance?: ListeGouvernanceItem
   canEdit?: boolean
   canCreateInDepartementCode?: string
 }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const v1CreationMeta = gouvernance
-    ? `${dateAsDay(gouvernance.creation)} par ${nameOrEmail(
-        gouvernance.createur,
-      )}`
-    : null
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const v2CreationMeta = gouvernance?.v2Enregistree
     ? `${dateAsDay(gouvernance.v2Enregistree)} par ${nameOrEmail(
@@ -40,6 +37,7 @@ const GouvernanceCardCtas = ({
         gouvernance.besoinsEnIngenierieFinanciere.creation,
       )} par ${nameOrEmail(gouvernance.createur)}`
     : null
+
   const modificationMeta = gouvernance
     ? `${dateAsDay(gouvernance.modification)} par ${nameOrEmail(
         gouvernance.derniereModificationPar,
@@ -54,30 +52,38 @@ const GouvernanceCardCtas = ({
     : null
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const displayModificationMeta = modificationMeta !== v1CreationMeta
+  const displayModificationMeta = modificationMeta !== v2CreationMeta
+  const displayBesoinsModificationMeta =
+    besoinsModificationMeta !== besoinsCreationMeta
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const showEditButton = canEdit && !!gouvernance?.v2Enregistree
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const showCompleteCta = canEdit && !!gouvernance && !gouvernance.v2Enregistree
+  const isExistingGouvernance = !!gouvernance
+  const isV2 = !!gouvernance?.v2Enregistree
+  const hasCompletedBesoins = !!gouvernance?.besoinsEnIngenierieFinanciere
 
   return (
     <>
-      <div className={styles.cardCtaContainer}>
+      <div className={classNames(styles.cardCtaContainer, firstCtaClassName)}>
         <div className="fr-flex-grow-1">
-          <h4 className="fr-mb-2v">Gouvernance & feuilles de route</h4>
-          <p className="fr-mb-0">
-            Finalisez votre gouvernance et organisez les feuilles de routes
-            pressenties sur votre territoire.
-          </p>
+          <h4 className="fr-mb-0">Gouvernance & feuilles de route</h4>
+          {isV2 ? (
+            <p className="fr-mb-0 fr-text--sm fr-text-mention--grey">
+              Complétée le {v2CreationMeta}
+              {displayModificationMeta && ` · Modifiée le ${modificationMeta}`}
+            </p>
+          ) : canEdit ? (
+            <p className="fr-mb-0">
+              Finalisez votre gouvernance et organisez les feuilles de routes
+              pressenties sur votre territoire.
+            </p>
+          ) : null}
         </div>
-        {gouvernance?.v2Enregistree ? (
+        {isV2 ? (
           <Badge
             className="fr-my-4v fr-ml-md-6w fr-mr-md-3w"
             small
             severity="success"
           >
-            Complété
+            Complétée
           </Badge>
         ) : (
           <Badge
@@ -90,8 +96,8 @@ const GouvernanceCardCtas = ({
           </Badge>
         )}
         {canEdit &&
-          (gouvernance ? (
-            gouvernance.v2Enregistree ? (
+          (isExistingGouvernance ? (
+            isV2 ? (
               <Button
                 priority="secondary"
                 linkProps={{
@@ -129,21 +135,29 @@ const GouvernanceCardCtas = ({
       <hr className="fr-separator-8v" />
       <div className={styles.cardCtaContainer}>
         <div className="fr-flex-grow-1">
-          <h4 className="fr-mb-2v">Besoins en ingénierie financière</h4>
-          <p className="fr-mb-0">
-            Dans le cadre du développement de votre stratégie d’inclusion
-            numérique, de la structuration de votre gouvernance et de la mise en
-            en œuvre de vos feuilles de route territoriales, nous souhaitons
-            connaître vos besoins de financement.
-          </p>
+          <h4 className="fr-mb-0">Besoins en ingénierie financière</h4>
+          {hasCompletedBesoins ? (
+            <p className="fr-mb-0 fr-text--sm fr-text-mention--grey">
+              Complétés le {besoinsCreationMeta}
+              {displayBesoinsModificationMeta &&
+                ` · Modifiés le ${besoinsModificationMeta}`}
+            </p>
+          ) : canEdit ? (
+            <p className="fr-mb-0 fr-mt-2v">
+              Dans le cadre du développement de votre stratégie d’inclusion
+              numérique, de la structuration de votre gouvernance et de la mise
+              en en œuvre de vos feuilles de route territoriales, nous
+              souhaitons connaître vos besoins de financement.
+            </p>
+          ) : null}
         </div>
-        {gouvernance?.besoinsEnIngenierieFinanciere ? (
+        {hasCompletedBesoins ? (
           <Badge
             className="fr-my-4v fr-ml-md-6w fr-mr-md-3w"
             small
             severity="success"
           >
-            Complété
+            Complétés
           </Badge>
         ) : (
           <Badge
@@ -157,7 +171,7 @@ const GouvernanceCardCtas = ({
         )}
         {canEdit &&
           (gouvernance ? (
-            gouvernance.v2Enregistree ? (
+            hasCompletedBesoins ? (
               <Button
                 priority="secondary"
                 linkProps={{

@@ -5,6 +5,11 @@ import { ListeGouvernance } from '@app/web/app/(private)/gouvernances/getListeGo
 import WhiteCard from '@app/web/ui/WhiteCard'
 import GouvernanceCardCtas from '@app/web/app/(private)/gouvernances/GouvernanceCardCtas'
 import GouvernanceCard from '@app/web/app/(private)/gouvernances/GouvernanceCard'
+import { laOuLes } from '@app/web/utils/laOuLes'
+import { votreOuVos } from '@app/web/utils/votreOuVos'
+import { sPluriel } from '@app/web/utils/sPluriel'
+import { dateAsDay } from '@app/web/utils/dateAsDay'
+import { limiteModificationDesGouvernances } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceMetadata'
 
 const GouvernanceList = ({
   scope,
@@ -23,6 +28,8 @@ const GouvernanceList = ({
     ({ v2Enregistree }) => !!v2Enregistree,
   )
 
+  const showCtasOnPressenties = canEdit && gouvernancesProposees.length === 0
+
   return (
     <>
       {/* Empty state */}
@@ -31,7 +38,14 @@ const GouvernanceList = ({
           <h3 className="fr-mb-2v">
             Proposition de gouvernance sur votre territoire
           </h3>
-          <p>Aucune gouvernance pressentie n’a été remontée pour le moment.</p>
+          <p className="fr-mb-12v">
+            Aucune gouvernance n’a été remontée pour le moment.
+            <br />
+            <strong>
+              Elles pourront encore être déposées jusqu’au{' '}
+              {dateAsDay(limiteModificationDesGouvernances)}.
+            </strong>
+          </p>
         </>
       )}
 
@@ -41,7 +55,7 @@ const GouvernanceList = ({
           <h3 className="fr-mb-2v">
             Proposition de gouvernance sur votre territoire
           </h3>
-          <p>
+          <p className="fr-mb-12v">
             Renseignez la proposition de gouvernance finale sur votre
             territoire, les feuilles de route ainsi que vos besoins en
             ingénierie financière.
@@ -60,16 +74,26 @@ const GouvernanceList = ({
       {gouvernancesProposees.length > 0 && (
         <>
           <h3 className="fr-mb-2v">
-            Proposition de gouvernance sur votre territoire
+            Proposition{sPluriel(gouvernancesProposees.length)} de gouvernance
+            sur votre territoire
           </h3>
-          <p>
-            Retrouvez ci-dessous votre proposition de gouvernance finale sur
-            votre territoire.
+          <p className="fr-mb-12v">
+            Retrouvez ci-dessous {votreOuVos(gouvernancesProposees.length)}{' '}
+            proposition{sPluriel(gouvernancesProposees.length)} de gouvernance
+            finale{sPluriel(gouvernancesProposees.length)} sur votre territoire.
             <br />
-            <strong>
-              Vous pouvez encore la compléter et/ou la modifier jusqu’au
-              31/12/2023.
-            </strong>
+            {canEdit ? (
+              <strong>
+                Vous pouvez encore {laOuLes(gouvernancesProposees.length)}{' '}
+                compléter et/ou {laOuLes(gouvernancesProposees.length)} modifier
+                jusqu’au {dateAsDay(limiteModificationDesGouvernances)}.
+              </strong>
+            ) : (
+              <strong>
+                Elles pourront encore être déposées et/ou modifiées jusqu’au{' '}
+                {dateAsDay(limiteModificationDesGouvernances)}.
+              </strong>
+            )}
           </p>
           {gouvernancesProposees.map((gouvernance) => (
             <GouvernanceCard
@@ -118,21 +142,26 @@ const GouvernanceList = ({
                   </>
                 )
               }
-              className="fr-notice--warning"
+              className="fr-notice--warning fr-mt-6v fr-mb-12v"
             />
           ) : (
-            <p>
+            <p className="fr-mb-12v">
               Retrouvez ici vos précédentes propositions de gouvernances et
               porteurs pressentis.
             </p>
           )}
-          {gouvernancesPressenties.map((gouvernance) => (
+          {gouvernancesPressenties.map((gouvernance, index) => (
             <GouvernanceCard
               key={gouvernance.id}
               gouvernance={gouvernance}
+              titleIndex={
+                gouvernancesPressenties.length > 0
+                  ? `${index + 1}`.padStart(2, '0')
+                  : undefined
+              }
               scope={scope}
               canEdit={canEdit}
-              showCtas={gouvernancesProposees.length === 0}
+              showCtas={showCtasOnPressenties}
             />
           ))}
         </>

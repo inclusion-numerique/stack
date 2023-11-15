@@ -1,34 +1,38 @@
 import React from 'react'
 import Accordion from '@codegouvfr/react-dsfr/Accordion'
 import Button from '@codegouvfr/react-dsfr/Button'
+import EmptyValue from '@app/ui/components/EmptyValue'
+import Badge from '@codegouvfr/react-dsfr/Badge'
 import { ListeGouvernanceItem } from '@app/web/app/(private)/gouvernances/getListeGouvernances'
 import WhiteCard from '@app/web/ui/WhiteCard'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
 import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
 import {
+  detailGouvernancePath,
   GouvernanceScope,
   imprimerGouvernancePath,
-  modifierGouvernancePath,
 } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
-import GouvernanceDeleteButton from '@app/web/app/(private)/gouvernances/GouvernanceDeleteButton'
 import { nameOrEmail } from '@app/web/utils/nameOrEmail'
 import {
   getPerimetreString,
   getPorteurString,
 } from '@app/web/app/(private)/gouvernances/gouvernanceHelpers'
 import GouvernanceCardCtas from '@app/web/app/(private)/gouvernances/GouvernanceCardCtas'
+import { limiteModificationDesGouvernances } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceMetadata'
 
 const GouvernanceCard = ({
   gouvernance,
   canEdit,
   showCtas,
   scope,
+  titleIndex,
 }: {
   gouvernance: ListeGouvernanceItem
   canEdit?: boolean
   showCtas?: boolean
   scope: GouvernanceScope
+  titleIndex?: string
 }) => {
   const {
     id,
@@ -40,6 +44,7 @@ const GouvernanceCard = ({
     noteDeContexte,
     departement,
     v2Enregistree,
+    besoinsEnIngenierieFinanciere,
   } = gouvernance
 
   const isV2 = !!v2Enregistree
@@ -52,51 +57,58 @@ const GouvernanceCard = ({
   )}`
   const displayModificationMeta = modificationMeta !== creationMeta
 
-  const showEditButton = canEdit && isV2
-
   return (
     <WhiteCard className="fr-mt-6v">
-      <div className="fr-flex fr-align-items-start fr-justify-content-space-between fr-flex-gap-2v fr-flex-wrap">
+      <div className="fr-flex fr-align-items-center fr-justify-content-space-between fr-flex-gap-2v fr-flex-wrap">
         <div>
-          <h5 className="fr-mb-2v">
+          <h5 className="fr-mb-0">
+            {!scope.codeDepartement &&
+              `${departement.nom} (${departement.code}) · `}
             {v2Enregistree
               ? 'Proposition de gouvernance'
               : 'Gouvernance pressentie'}
+            {titleIndex && ` ${titleIndex}`}
             {/* Display departement if viewing this card from a higher scope than departement */}
-            {!scope.codeDepartement &&
-              ` · ${departement.nom} (${departement.code})`}
           </h5>
-          <p className="fr-mb-0 fr-text--sm">
-            Déposée le {creationMeta}
-            {displayModificationMeta && ` · Modifiée le ${modificationMeta}`}
-          </p>
+          {!v2Enregistree && (
+            <p className="fr-mb-0 fr-mt-2v fr-text--sm">
+              Déposée le {creationMeta}
+              {displayModificationMeta && ` · Modifiée le ${modificationMeta}`}
+            </p>
+          )}
+          {v2Enregistree && (
+            <Badge className="fr-mt-2v" severity="info" small>
+              Modifiable jusqu’au {dateAsDay(limiteModificationDesGouvernances)}
+            </Badge>
+          )}
         </div>
         <div className="fr-flex fr-flex-shrink-0 fr-flex-nowrap fr-flex-gap-2v">
-          <Button
-            priority="secondary"
-            iconId="fr-icon-printer-line"
-            linkProps={{
-              href: imprimerGouvernancePath(scope, id),
-            }}
-          >
-            Imprimer
-          </Button>
-          {showEditButton && (
-            <>
-              <Button
-                priority="secondary"
-                iconId="fr-icon-edit-line"
-                linkProps={{
-                  href: modifierGouvernancePath(scope, id),
-                }}
-              >
-                Modifier
-              </Button>
-              <GouvernanceDeleteButton gouvernanceId={id} />
-            </>
+          {isV2 ? (
+            <Button
+              priority={besoinsEnIngenierieFinanciere ? 'primary' : 'secondary'}
+              iconId="fr-icon-eye-line"
+              iconPosition="right"
+              linkProps={{
+                href: detailGouvernancePath(scope, id),
+              }}
+            >
+              Voir le détail
+            </Button>
+          ) : (
+            <Button
+              priority="secondary"
+              iconId="fr-icon-download-line"
+              iconPosition="right"
+              linkProps={{
+                href: imprimerGouvernancePath(scope, id),
+              }}
+            >
+              Télécharger en PDF
+            </Button>
           )}
         </div>
       </div>
+      {isV2 && <hr className="fr-width-full fr-separator-8v" />}
       {!v2Enregistree && (
         <>
           <InfoLabelValue
@@ -113,18 +125,23 @@ const GouvernanceCard = ({
             label="SIRET collectivité/structure recruteuse d’un coordinateur Conseillers Numériques"
             labelClassName="fr-mt-6v"
             value={
+              // eslint-disable-next-line react/jsx-no-useless-fragment
               <>
-                {organisationsRecruteusesCoordinateurs.map(
-                  ({ siretInformations: { siret } }, index) => (
-                    <span key={siret}>
-                      {siret}
-                      {index ===
-                      organisationsRecruteusesCoordinateurs.length -
-                        1 ? null : (
-                        <br />
-                      )}
-                    </span>
-                  ),
+                {organisationsRecruteusesCoordinateurs.length > 0 ? (
+                  organisationsRecruteusesCoordinateurs.map(
+                    ({ siretInformations: { siret } }, index) => (
+                      <span key={siret}>
+                        {siret}
+                        {index ===
+                        organisationsRecruteusesCoordinateurs.length -
+                          1 ? null : (
+                          <br />
+                        )}
+                      </span>
+                    ),
+                  )
+                ) : (
+                  <EmptyValue />
                 )}
               </>
             }
@@ -140,7 +157,11 @@ const GouvernanceCard = ({
         </>
       )}
       {showCtas && (
-        <GouvernanceCardCtas gouvernance={gouvernance} canEdit={canEdit} />
+        <GouvernanceCardCtas
+          firstCtaClassName="fr-mt-8v"
+          gouvernance={gouvernance}
+          canEdit={canEdit}
+        />
       )}
     </WhiteCard>
   )

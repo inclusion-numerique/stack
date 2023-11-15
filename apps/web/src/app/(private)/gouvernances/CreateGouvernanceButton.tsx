@@ -42,6 +42,9 @@ const CreateGouvernanceButton = ({
       onClick={onClick}
       iconPosition="right"
       iconId="fr-icon-arrow-right-line"
+      className={
+        mutation.isPending || mutation.isSuccess ? 'fr-btn--loading' : ''
+      }
     >
       Compléter
     </Button>

@@ -18,7 +18,7 @@ export default meta
 type Story = StoryObj<typeof Tabs>
 
 const Template = (props: ComponentProps<typeof GouvernanceList>) => (
-  <div className="fr-container fr-mb-20v">
+  <div className="fr-container fr-pb-30v">
     <GouvernanceList {...props} />
   </div>
 )
@@ -130,6 +130,10 @@ const gouvernancesProposees: ListeGouvernance = [
     noteDeContexte: '<p>Des phrases qui expliquent le contexte</p>',
     besoinsEnIngenierieFinanciere: {
       id: v4(),
+      creation: now,
+      modification: tomorrow,
+      createur: jeanDupont,
+      derniereModificationPar: jeanneBiche,
     } as unknown as ListeGouvernanceItem['besoinsEnIngenierieFinanciere'],
     v1Perimetre: 'region',
     v1PorteurRegion: {
@@ -192,16 +196,16 @@ export const Departemental2Types: Story = {
   render: () => (
     <Template
       scope={{ codeDepartement: '69' }}
-      gouvernances={[...gouvernancesPressenties, ...gouvernancesProposees]}
+      gouvernances={[...gouvernancesPressenties, gouvernancesProposees[0]]}
     />
   ),
 }
 
-export const DepartementalProposees: Story = {
+export const DepartementalProposee: Story = {
   render: () => (
     <Template
       scope={{ codeDepartement: '69' }}
-      gouvernances={gouvernancesProposees}
+      gouvernances={[gouvernancesProposees[1]]}
     />
   ),
 }
