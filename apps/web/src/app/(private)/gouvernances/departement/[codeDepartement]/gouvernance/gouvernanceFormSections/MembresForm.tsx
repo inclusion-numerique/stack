@@ -2,6 +2,7 @@ import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField
 import React, { RefObject } from 'react'
 import { useForm, UseFormReturn } from 'react-hook-form'
 import Button from '@codegouvfr/react-dsfr/Button'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { gouvernanceFormSections } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections'
 import { GouvernanceData, MembreData } from '@app/web/gouvernance/Gouvernance'
 import GouvernanceFormSectionCard from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/GouvernanceFormSectionCard'
@@ -12,7 +13,6 @@ import {
 } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getMembresOptions'
 import FindMemberNotice from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/FindMemberNotice'
 import { getActorFromCode } from '@app/web/gouvernance/GouvernanceActor'
-import { sPluriel } from '@app/web/utils/sPluriel'
 
 const MembresForm = ({
   form,

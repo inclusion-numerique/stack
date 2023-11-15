@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { sPluriel } from '@app/web/utils/sPluriel'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 
 const SelectedCollectivitiesCountBadge = ({
   selectedEpcisCount,

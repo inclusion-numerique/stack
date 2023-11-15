@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import ActionBar from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/ActionBar'
-import { sPluriel } from '@app/web/utils/sPluriel'
 import { trpc } from '@app/web/trpc'
 
 const PerimetreFeuilleDeRouteEtapeActionBar = ({
