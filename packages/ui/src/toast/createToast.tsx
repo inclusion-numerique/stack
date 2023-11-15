@@ -12,11 +12,17 @@ const icons: { [key in ToastPriority]: string } = {
   success: 'fr-icon-checkbox-circle-fill',
 }
 
-export const createToast = (
-  priority: ToastPriority,
-  message: string,
-  action?: ButtonProps,
-) => {
+export const createToast = ({
+  priority,
+  message,
+  action,
+  duration,
+}: {
+  priority: ToastPriority
+  message: string
+  action?: ButtonProps
+  duration?: number
+}) => {
   toast(
     action ? (
       <>
@@ -32,7 +38,8 @@ export const createToast = (
       message
     ),
     {
-      className: styles[priority],
+      duration,
+      className: classNames(styles.toast, styles[priority]),
       icon: <span className={classNames(styles.icon, icons[priority])} />,
     },
   )

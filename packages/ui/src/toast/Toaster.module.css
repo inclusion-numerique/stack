@@ -1,37 +1,59 @@
 .toast {
+    border-radius: 8px;
+    box-shadow: 0 8px 24px -6px rgb(0 0 36 / 12%);
+
+    > div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
 }
 
 .icon {
 }
 
 .action {
-
+    background: transparent !important;
+    color: inherit !important;
+    text-decoration: underline;
 }
 
 .info {
-    background:rgb( var(--background-contrast-info)/ 0.5);
+    background-color: var(--background-contrast-info);
+    --hover: var(--background-contrast-info-hover);
+    --active: var(--background-contrast-info-active);
+    color: var(--text-default-info);
     .icon {
-        color: var(--info-425-625);
+        color: var(--text-default-info);
     }
 }
 
 .warning {
-    background:rgb( var(--background-contrast-warning)/ 0.5);
+    background-color: var(--background-contrast-warning);
+    --hover: var(--background-contrast-warning-hover);
+    --active: var(--background-contrast-warning-active);
+    color: var(--text-default-warning);
     .icon {
-        color: var(--warning-425-625);
+        color: var(--text-default-warning);
     }
 }
-
 .error {
-    background: rgb(var(--background-contrast-error)/ 0.5);
+    background-color: var(--background-contrast-error);
+    --hover: var(--background-contrast-error-hover);
+    --active: var(--background-contrast-error-active);
+    color: var(--text-default-error);
     .icon {
-        color: var(--error-425-625);
+        color: var(--text-default-error);
     }
 }
 
-.success{
-    background: rgb(var(--background-contrast-success) / 0.5);
+.success {
+    background-color: var(--background-contrast-success);
+    --hover: var(--background-contrast-success-hover);
+    --active: var(--background-contrast-success-active);
+    color: var(--text-default-success);
     .icon {
-        color: var(--success-425-625);
+        color: var(--text-default-success);
     }
 }
