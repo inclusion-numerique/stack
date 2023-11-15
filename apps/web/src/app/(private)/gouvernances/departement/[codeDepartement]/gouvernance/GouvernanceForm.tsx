@@ -109,7 +109,10 @@ const GouvernanceForm = ({
       console.log('DATA SUBMISSION', data)
       await mutation.mutateAsync(data)
       router.refresh()
-      createToast('success', 'La gouvernance a bien été enregistrée')
+      createToast({
+        priority: 'success',
+        message: 'La gouvernance a bien été enregistrée',
+      })
       router.push(gouvernanceHomePath({ codeDepartement }))
     } catch (mutationError) {
       if (!applyZodValidationMutationErrorsToForm(mutationError, setError)) {

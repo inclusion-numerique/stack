@@ -165,11 +165,20 @@ export const DepartementalVide: Story = {
   ),
 }
 
-export const DepartementalPressenties: Story = {
+export const DepartementalPlusieursPressenties: Story = {
   render: () => (
     <Template
       scope={{ codeDepartement: '69' }}
       gouvernances={gouvernancesPressenties}
+    />
+  ),
+}
+
+export const DepartementalUnePressentie: Story = {
+  render: () => (
+    <Template
+      scope={{ codeDepartement: '69' }}
+      gouvernances={[gouvernancesPressenties[0]]}
     />
   ),
 }
