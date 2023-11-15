@@ -115,7 +115,6 @@
 
 .fr-notice--warning .fr-notice__body::before {
     mask-image: url("/dsfr/icons/system/fr--warning-fill.svg");
-    mask-image: url("/dsfr/icons/system/fr--warning-fill.svg");
     content: "";
 }
 
