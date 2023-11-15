@@ -89,6 +89,7 @@ const Page = async ({
             <BackLink href={gouvernanceHomePath({ codeDepartement })} />
 
             <GouvernanceForm
+              className="fr-pb-30v"
               codeRegion={gouvernance.departement.codeRegion}
               codeDepartement={codeDepartement}
               defaultValues={defaultValues}
