@@ -118,7 +118,7 @@ export const gouvernanceRouter = router({
   updateGouvernanceV2: protectedProcedure
     .input(GouvernanceValidation)
     .mutation(async ({ input, ctx: { user } }) => {
-      console.log('gouvernanceMutation', { input })
+      console.log('gouvernanceMutation', JSON.stringify(input, null, 2))
       const {
         gouvernanceId,
         recruteursCoordinateurs,
@@ -254,7 +254,7 @@ export const gouvernanceRouter = router({
                   id,
                   gouvernanceId,
                   coporteur: membre.coporteur ?? false,
-                  ...getMembreModelDataFromActorCode(membre.code),
+                  ...getMembreModelDataFromActorCode(membre.code, membre.nom),
                   nomStructure: type === 'structure' ? membre.nom : null,
                 }
               }),
@@ -278,7 +278,10 @@ export const gouvernanceRouter = router({
               data: {
                 gouvernanceId,
                 coporteur: membreToUpdate.coporteur ?? false,
-                ...getMembreModelDataFromActorCode(membreToUpdate.code),
+                ...getMembreModelDataFromActorCode(
+                  membreToUpdate.code,
+                  membreToUpdate.nom,
+                ),
                 nomStructure: type === 'structure' ? membreToUpdate.nom : null,
               },
             })

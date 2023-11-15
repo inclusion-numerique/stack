@@ -41,7 +41,10 @@ export const getActorFromCode = (actorCode: string): GouvernanceActor => {
   return { type: type as GouvernanceActorType, code, formulaireGouvernanceId }
 }
 
-export const getMembreModelDataFromActorCode = (actorCode: string) => {
+export const getMembreModelDataFromActorCode = (
+  actorCode: string,
+  nom: string,
+) => {
   const { code, formulaireGouvernanceId, type } = getActorFromCode(actorCode)
 
   if (type === 'region') {
@@ -54,7 +57,7 @@ export const getMembreModelDataFromActorCode = (actorCode: string) => {
     return { epciCode: code, formulaireGouvernanceId }
   }
   return {
-    siret: code,
+    siret: code || `__sans-siret__${nom}`,
     formulaireGouvernanceId,
   }
 }
