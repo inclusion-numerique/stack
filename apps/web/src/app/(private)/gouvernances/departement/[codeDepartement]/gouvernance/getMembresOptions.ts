@@ -2,7 +2,10 @@ import type Prisma from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
 import { formulairesTerminesWhere } from '@app/web/app/(private)/gouvernances/gouvernanceQueryHelpers'
 import { generateGouvernanceSelectOptionLabelWithIntention } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/GouvernanceSelectOptionLabelWithIntention'
-import { getGouvernanceActorCode } from '@app/web/gouvernance/GouvernanceActor'
+import {
+  getActorFromCode,
+  getGouvernanceActorCode,
+} from '@app/web/gouvernance/GouvernanceActor'
 
 const getIntention = (
   formulaires: { intention: Prisma.IntentionFormulaireGouvernance | null }[],
@@ -230,20 +233,45 @@ export const getMembreOptionStringLabel = (
     .flatMap(({ options: subOptions }) => subOptions)
     .find(({ value }) => value === code)?.stringLabel ?? ''
 
+// Edge case if different form by same epci / departement / region
+// So we do not check form ids for those types, but we do for structures without a siret
+const codeToFilterValue = (code: string) => {
+  const {
+    code: actorIdentifierCode,
+    formulaireGouvernanceId,
+    type,
+  } = getActorFromCode(code)
+  if (
+    type === 'structure' &&
+    (!actorIdentifierCode || actorIdentifierCode.startsWith('__sans-siret__'))
+  ) {
+    return `${type}_${formulaireGouvernanceId}`
+  }
+  return `${type}_${actorIdentifierCode}`
+}
+
 export const filterMemberOptions = (
   options: MembreOptions,
   {
     excludeCodes = [],
     onlyCodes = null,
   }: { excludeCodes?: string[]; onlyCodes?: string[] | null },
-): MembreOptions =>
-  options
+): MembreOptions => {
+  const excludeFilterValues = excludeCodes?.map(codeToFilterValue)
+  const onlyFilterValues = onlyCodes?.map(codeToFilterValue)
+
+  console.log('excludeFilterValues', excludeFilterValues)
+  console.log('onlyFilterValues', onlyFilterValues)
+
+  return options
     .map(({ label, options: subOptions }) => ({
       label,
       options: subOptions.filter(
         ({ value }) =>
-          !excludeCodes.includes(value) &&
-          (!onlyCodes || onlyCodes.includes(value)),
+          !excludeFilterValues.includes(codeToFilterValue(value)) &&
+          (!onlyFilterValues ||
+            onlyFilterValues.includes(codeToFilterValue(value))),
       ),
     }))
     .filter(({ options: subOptions }) => subOptions.length > 0)
+}

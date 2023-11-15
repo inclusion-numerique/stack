@@ -29,6 +29,7 @@ const membreSelect = {
     siret: true,
     siretInformations: siretInfoSelect,
     coporteur: true,
+    formulaireGouvernanceId: true,
   },
 }
 

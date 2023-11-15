@@ -213,12 +213,10 @@ export const GouvernanceValidation = z
     ...coordinateurConseillerNumeriqueDeLaGouvernanceConstraints,
     ...noteDeContextConstraints,
   })
-  // Coporteur Refinment
+  // There should be co porteur if checkbox is not checked
   .refine(
     (data) =>
-      !(
-        data.pasDeCoporteurs && !data.membres.some(({ coporteur }) => coporteur)
-      ),
+      !!data.pasDeCoporteurs || data.membres.some(({ coporteur }) => coporteur),
     {
       message: 'Veuillez renseigner les co-porteurs de la gouvernance',
       path: ['membres'],

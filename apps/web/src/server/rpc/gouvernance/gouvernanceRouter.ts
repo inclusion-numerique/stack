@@ -7,13 +7,7 @@ import {
   GouvernancePressentieValidation,
 } from '@app/web/gouvernance/GouvernancePressentie'
 import { prismaClient } from '@app/web/prismaClient'
-import {
-  forbiddenError,
-  invalidError,
-  notFoundError,
-} from '@app/web/server/rpc/trpcErrors'
-import { canAddGouvernancePressentie } from '@app/web/security/securityRules'
-import { SessionUser } from '@app/web/auth/sessionUser'
+import { invalidError, notFoundError } from '@app/web/server/rpc/trpcErrors'
 import { GouvernanceIdValidation } from '@app/web/gouvernance/GouvernanceIdValidation'
 import {
   CreateGouvernanceValidation,
@@ -21,78 +15,23 @@ import {
   SiretInfoData,
 } from '@app/web/gouvernance/Gouvernance'
 import { gouvernanceSelect } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
-import {
-  getActorFromCode,
-  getMembreModelDataFromActorCode,
-  membreToFormMembre,
-} from '@app/web/gouvernance/GouvernanceActor'
+import { getActorFromCode } from '@app/web/gouvernance/GouvernanceActor'
 import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 import { hasADefinedKey, hasANullishKey } from '@app/web/utils/hasADefinedKey'
-
-const checkSecurityForGouvernanceMutation = async (
-  user: SessionUser,
-  departementCode: string,
-) => {
-  const departementAndRegion = await prismaClient.departement.findUnique({
-    where: {
-      code: departementCode,
-    },
-    select: {
-      code: true,
-      region: {
-        select: {
-          code: true,
-        },
-      },
-    },
-  })
-
-  if (!departementAndRegion) {
-    throw invalidError('Département non trouvé')
-  }
-
-  if (
-    !canAddGouvernancePressentie(user, {
-      departementCode,
-      regionCode: departementAndRegion.region?.code,
-    })
-  ) {
-    throw forbiddenError(
-      'Vous ne pouvez pas ajouter de gouvernance pressentie pour ce département',
-    )
-  }
-}
-
-const getGouvernanceMutationContext = async ({
-  user,
-  gouvernanceId,
-}: {
-  gouvernanceId: string
-  user: SessionUser
-}) => {
-  const gouvernance = await prismaClient.gouvernance.findUnique({
-    where: {
-      id: gouvernanceId,
-    },
-    select: gouvernanceSelect,
-  })
-  if (!gouvernance) {
-    throw notFoundError()
-  }
-
-  await checkSecurityForGouvernanceMutation(user, gouvernance.departement.code)
-
-  return {
-    gouvernance,
-    membresFormData: new Map(
-      gouvernance.membres.map((membre) => {
-        const formData = membreToFormMembre(gouvernance.id, membre)
-
-        return [formData.code, { membre, formData }]
-      }),
-    ),
-  }
-}
+import {
+  createComites,
+  createFeuillesDeRoute,
+  createMembres,
+  createOrganisationsRecruteusesCoordinateurs,
+  deleteEntities,
+  deleteOrganisationsRecruteusesCoordinateurs,
+  getGouvernanceMutationContext,
+  updateComites,
+  updateFeuillesDeRoute,
+  updateMembres,
+  upsertSiretInformations,
+} from '@app/web/server/rpc/gouvernance/updateGouvernanceV2'
+import { checkSecurityForGouvernanceMutation } from '@app/web/server/rpc/gouvernance/gouvernanceSecurity'
 
 export const gouvernanceRouter = router({
   createGouvernance: protectedProcedure
@@ -142,46 +81,46 @@ export const gouvernanceRouter = router({
         (membre) => !membresFormData.has(membre.code),
       )
 
-      const siretInformationsToUpsert = [
+      // Logic to construct siretInformationsToUpsert
+      const siretInformationsToUpsert: SiretInfoData[] = [
         ...recruteursCoordinateurs.map(({ siret, nom }) => ({
           siret,
           nom,
         })),
         ...membres
           .map(({ code, nom }) => ({ nom, actor: getActorFromCode(code) }))
-          .filter(({ actor: { type } }) => type === 'structure')
-          .map(({ nom, actor: { code } }) => ({
-            siret: code || `__sans-siret__${nom}`,
+          .filter(({ actor }) => actor.type === 'structure')
+          .map(({ nom, actor }) => ({
+            siret: actor.code || `__sans-siret__${nom}`,
             nom,
           })),
-      ]
-        // Dedupe by siret
-        .reduce((accumulator, siretInformation) => {
-          if (
-            !accumulator.some(({ siret }) => siret === siretInformation.siret)
-          ) {
-            accumulator.push(siretInformation)
-          }
-          return accumulator
-        }, [] as SiretInfoData[])
-
-      console.log('SIRET INFO TO UPSER', siretInformationsToUpsert)
+      ].reduce<SiretInfoData[]>((accumulator, siretInformation) => {
+        if (
+          !accumulator.some(({ siret }) => siret === siretInformation.siret)
+        ) {
+          accumulator.push(siretInformation)
+        }
+        return accumulator
+      }, [])
 
       const membresToDelete = [...membresFormData.keys()]
         .filter((code) => !membres.some((membre) => membre.code === code))
         .map((code) => membresFormData.get(code)?.membre.id)
         .filter(isDefinedAndNotNull)
 
-      const membresToUpdate = membres.filter((membre) =>
-        membresFormData.has(membre.code),
+      const membresToUpdate = membres.filter(
+        (membre): membre is typeof membre & { id: string } =>
+          membresFormData.has(membre.code),
       )
 
+      // Logic to construct recruteursToDelete
       const recruteursToDelete =
         gouvernance.organisationsRecruteusesCoordinateurs
-          .filter(({ siretInformations }) =>
-            recruteursCoordinateurs.every(
-              ({ siret }) => siret !== siretInformations.siret,
-            ),
+          .filter(
+            ({ siretInformations }) =>
+              !recruteursCoordinateurs.some(
+                ({ siret }) => siret === siretInformations.siret,
+              ),
           )
           .map(({ id }) => id)
 
@@ -193,8 +132,7 @@ export const gouvernanceRouter = router({
           ),
       )
 
-      console.log('RECUREURS TO CREATE', recruteursToCreate)
-
+      // Logic to construct feuillesDeRouteToDelete
       const feuillesDeRouteToDelete = gouvernance.feuillesDeRoute
         .filter(
           ({ id }) => !feuillesDeRoute.some((feuille) => feuille.id === id),
@@ -208,6 +146,7 @@ export const gouvernanceRouter = router({
         hasADefinedKey('id'),
       )
 
+      // Logic to construct comitesToDelete
       const comitesToDelete = gouvernance.comites
         .filter(({ id }) => !comites.some((comite) => comite.id === id))
         .map(({ id }) => id)
@@ -217,302 +156,76 @@ export const gouvernanceRouter = router({
 
       const mutatedGouvernance = await prismaClient.$transaction(
         async (transaction) => {
-          for (const siretInformation of siretInformationsToUpsert) {
-            // eslint-disable-next-line no-await-in-loop
-            await transaction.informationsSiret.upsert({
-              where: {
-                siret: siretInformation.siret,
-              },
-              update: {
-                nom: siretInformation.nom,
-              },
-              create: {
-                siret: siretInformation.siret,
-                nom: siretInformation.nom,
-              },
-            })
-          }
+          // Upsert Siret Informations
+          await upsertSiretInformations(siretInformationsToUpsert, transaction)
 
-          // Delete removed membres
-          if (membresToDelete.length > 0) {
-            await transaction.membreGouvernance.deleteMany({
-              where: {
-                id: {
-                  in: membresToDelete,
-                },
-              },
-            })
-          }
+          // Create and Update Membres
+          const membreIdForCode = await createMembres(
+            membresToCreate,
+            gouvernanceId,
+            transaction,
+          )
+          await updateMembres(
+            membresToUpdate,
+            membresFormData,
+            gouvernanceId,
+            transaction,
+          )
 
-          const membreIdForCode = new Map<string, string>()
+          // Delete Entities
+          await deleteEntities(
+            membresToDelete,
+            'membreGouvernance',
+            transaction,
+          )
+          await deleteEntities(
+            recruteursToDelete,
+            'organisationRecruteuseCoordinateurs',
+            transaction,
+          )
+          await deleteEntities(
+            feuillesDeRouteToDelete,
+            'feuilleDeRoute',
+            transaction,
+          )
+          await deleteEntities(
+            comitesToDelete,
+            'comiteGouvernance',
+            transaction,
+          )
 
-          // Add membres
-          if (membresToCreate.length > 0) {
-            await transaction.membreGouvernance.createMany({
-              data: membresToCreate.map((membre) => {
-                const { type } = getActorFromCode(membre.code)
-                const id = v4()
+          // Create and Update Comites
+          await createComites(comitesToCreate, gouvernanceId, transaction)
+          await updateComites(comitesToUpdate, transaction)
 
-                membreIdForCode.set(membre.code, id)
-                return {
-                  id,
-                  gouvernanceId,
-                  coporteur: membre.coporteur ?? false,
-                  ...getMembreModelDataFromActorCode(membre.code, membre.nom),
-                  nomStructure: type === 'structure' ? membre.nom : null,
-                }
-              }),
-            })
-          }
+          await createOrganisationsRecruteusesCoordinateurs(
+            recruteursToCreate,
+            gouvernanceId,
+            transaction,
+          )
+          await deleteOrganisationsRecruteusesCoordinateurs(
+            recruteursToDelete,
+            transaction,
+          )
 
-          // Update membres
-          for (const membreToUpdate of membresToUpdate) {
-            const id = membresFormData.get(membreToUpdate.code)?.membre.id
-            if (!id) {
-              continue
-            }
-            membreIdForCode.set(membreToUpdate.code, id)
-            const { type } = getActorFromCode(membreToUpdate.code)
+          // Create and Update Feuilles de Route
+          await createFeuillesDeRoute(
+            feuillesDeRouteToCreate,
+            gouvernanceId,
+            membreIdForCode,
+            gouvernance,
+            transaction,
+          )
+          await updateFeuillesDeRoute(
+            feuillesDeRouteToUpdate,
+            membreIdForCode,
+            gouvernance,
+            transaction,
+          )
 
-            // eslint-disable-next-line no-await-in-loop
-            await transaction.membreGouvernance.update({
-              where: {
-                id,
-              },
-              data: {
-                gouvernanceId,
-                coporteur: membreToUpdate.coporteur ?? false,
-                ...getMembreModelDataFromActorCode(
-                  membreToUpdate.code,
-                  membreToUpdate.nom,
-                ),
-                nomStructure: type === 'structure' ? membreToUpdate.nom : null,
-              },
-            })
-          }
-
-          // Delete removed recruteurs
-          if (recruteursToDelete.length > 0) {
-            await transaction.organisationRecruteuseCoordinateurs.deleteMany({
-              where: {
-                id: {
-                  in: recruteursToDelete,
-                },
-              },
-            })
-          }
-
-          if (recruteursToCreate.length > 0) {
-            await transaction.organisationRecruteuseCoordinateurs.createMany({
-              data: recruteursToCreate.map(({ siret }) => ({
-                gouvernanceId,
-                siret,
-              })),
-            })
-          }
-
-          if (feuillesDeRouteToDelete.length > 0) {
-            await transaction.feuilleDeRoute.deleteMany({
-              where: {
-                id: {
-                  in: feuillesDeRouteToDelete,
-                },
-              },
-            })
-          }
-
-          // Create feuilles de routes
-          for (const feuilleToCreate of feuillesDeRouteToCreate) {
-            const porteurMembreId = membreIdForCode.get(
-              feuilleToCreate.porteur.code,
-            )
-            if (!porteurMembreId) {
-              return
-            }
-            // eslint-disable-next-line no-await-in-loop
-            await transaction.feuilleDeRoute.create({
-              data: {
-                id: v4(),
-                gouvernanceId,
-                nom: feuilleToCreate.nom,
-                contratPreexistant:
-                  feuilleToCreate.contratPreexistant === 'oui',
-                typeContrat: feuilleToCreate.typeContrat,
-                typeContratAutreDescription:
-                  feuilleToCreate.typeContrat === 'Autre'
-                    ? feuilleToCreate.typeContratAutreDescription ?? null
-                    : null,
-                perimetreDepartementCode:
-                  feuilleToCreate.perimetreScope === 'departement'
-                    ? gouvernance.departement.code
-                    : null,
-                perimetreRegionCode:
-                  feuilleToCreate.perimetreScope === 'region'
-                    ? gouvernance.departement.codeRegion ?? null
-                    : null,
-                perimetreEpcis:
-                  feuilleToCreate.perimetreEpciCodes.length > 0
-                    ? {
-                        createMany: {
-                          data: feuilleToCreate.perimetreEpciCodes.map(
-                            (epciCode) => ({
-                              epciCode,
-                            }),
-                          ),
-                        },
-                      }
-                    : undefined,
-                membres: {
-                  create: {
-                    id: v4(),
-                    role: 'Porteur',
-                    membreId: porteurMembreId,
-                  },
-                },
-              },
-            })
-          }
-
-          for (const feuilleToUpdate of feuillesDeRouteToUpdate) {
-            // Easier to delete and recreate than to merge
-            // eslint-disable-next-line no-await-in-loop
-            await transaction.perimetreEpciFeuilleDeRoute.deleteMany({
-              where: {
-                feuilleDeRouteId: feuilleToUpdate.id,
-              },
-            })
-
-            const updatedFeuilleDeRoute =
-              // eslint-disable-next-line no-await-in-loop
-              await transaction.feuilleDeRoute.update({
-                where: {
-                  id: feuilleToUpdate.id,
-                },
-                data: {
-                  nom: feuilleToUpdate.nom,
-                  contratPreexistant:
-                    feuilleToUpdate.contratPreexistant === 'oui',
-                  typeContrat: feuilleToUpdate.typeContrat,
-                  typeContratAutreDescription:
-                    feuilleToUpdate.typeContrat === 'Autre'
-                      ? feuilleToUpdate.typeContratAutreDescription ?? null
-                      : null,
-                  perimetreDepartementCode:
-                    feuilleToUpdate.perimetreScope === 'departement'
-                      ? gouvernance.departement.code
-                      : null,
-                  perimetreRegionCode:
-                    feuilleToUpdate.perimetreScope === 'region'
-                      ? gouvernance.departement.codeRegion ?? null
-                      : null,
-                  perimetreEpcis:
-                    feuilleToUpdate.perimetreEpciCodes.length > 0
-                      ? {
-                          createMany: {
-                            data: feuilleToUpdate.perimetreEpciCodes.map(
-                              (epciCode) => ({
-                                epciCode,
-                              }),
-                            ),
-                          },
-                        }
-                      : undefined,
-                },
-                select: {
-                  membres: {
-                    select: {
-                      id: true,
-                      role: true,
-                    },
-                  },
-                },
-              })
-
-            // Update membre porteur
-            const membrePorteur = updatedFeuilleDeRoute.membres.find(
-              ({ role }) => role === 'Porteur',
-            )
-
-            const membrePorteurId = membreIdForCode.get(
-              feuilleToUpdate.porteur.code,
-            )
-            if (!membrePorteur) {
-              continue
-            }
-
-            // eslint-disable-next-line no-await-in-loop
-            await transaction.membreFeuilleDeRoute.update({
-              where: {
-                id: membrePorteur.id,
-              },
-              data: {
-                membreId: membrePorteurId,
-              },
-            })
-          }
-
-          // Delete recruteurs
-          if (recruteursToDelete.length > 0) {
-            await transaction.organisationRecruteuseCoordinateurs.deleteMany({
-              where: {
-                id: {
-                  in: recruteursToDelete,
-                },
-              },
-            })
-          }
-
-          // Create recruteurs
-          if (recruteursToCreate.length > 0) {
-            await transaction.organisationRecruteuseCoordinateurs.createMany({
-              data: recruteursToCreate.map(({ siret }) => ({
-                id: v4(),
-                gouvernanceId,
-                siret,
-              })),
-            })
-          }
-
-          // Delete removed comites
-          if (comitesToDelete.length > 0) {
-            await transaction.comiteGouvernance.deleteMany({
-              where: {
-                id: {
-                  in: comitesToDelete,
-                },
-              },
-            })
-          }
-
-          // Add comites
-          if (comitesToCreate.length > 0) {
-            await transaction.comiteGouvernance.createMany({
-              data: comitesToCreate.map((comite) => ({
-                ...comite,
-                id: v4(),
-                gouvernanceId,
-              })),
-            })
-          }
-
-          // Update comites
-          for (const comiteToUpdate of comitesToUpdate) {
-            if (!comiteToUpdate.id) {
-              continue
-            }
-            // eslint-disable-next-line no-await-in-loop
-            await transaction.comiteGouvernance.update({
-              where: {
-                id: comiteToUpdate.id,
-              },
-              data: comiteToUpdate,
-            })
-          }
-
+          // Update gouvernance details
           const updatedGouvernance = await transaction.gouvernance.update({
-            where: {
-              id: gouvernanceId,
-            },
+            where: { id: gouvernanceId },
             data: {
               v2Enregistree: gouvernance.v2Enregistree ? undefined : new Date(),
               derniereModificationParId: user.id,

@@ -55,6 +55,7 @@ describe('getGouvernanceFormDefaultValues', () => {
                 region: null,
                 siret: null,
                 siretInformations: null,
+                formulaireGouvernanceId: '00052d98-f3c2-4478-9cee-6e9758cedc41',
               },
               role: 'Porteur',
             },
@@ -97,6 +98,7 @@ describe('getGouvernanceFormDefaultValues', () => {
           region: null,
           siret: null,
           siretInformations: null,
+          formulaireGouvernanceId: '00092b15-57e6-4559-b36f-508316429dd5',
         },
         {
           coporteur: false,
@@ -114,6 +116,7 @@ describe('getGouvernanceFormDefaultValues', () => {
             nom: 'Ca recrute dur',
             siret: '12345678901234',
           },
+          formulaireGouvernanceId: '00035111-44c5-493b-8bbe-3c3122231c20',
         },
         {
           coporteur: false,
@@ -129,6 +132,7 @@ describe('getGouvernanceFormDefaultValues', () => {
           region: null,
           siret: null,
           siretInformations: null,
+          formulaireGouvernanceId: '00052d98-f3c2-4478-9cee-6e9758cedc41',
         },
       ],
       modification: new Date('2023-11-14T07:59:36.362Z'),
@@ -183,7 +187,7 @@ describe('getGouvernanceFormDefaultValues', () => {
           perimetreEpciCodes: ['200046977', '200066587'],
           perimetreScope: 'epci',
           porteur: {
-            code: 'epci###200066587###b99f14b0-4a65-42be-8f87-84918013ff67',
+            code: 'epci###200066587###00052d98-f3c2-4478-9cee-6e9758cedc41',
             coporteur: false,
             nom: 'CC des Monts du Lyonnais',
           },
@@ -194,17 +198,17 @@ describe('getGouvernanceFormDefaultValues', () => {
       gouvernanceId: 'b99f14b0-4a65-42be-8f87-84918013ff67',
       membres: [
         {
-          code: 'epci###200046977###b99f14b0-4a65-42be-8f87-84918013ff67',
+          code: 'epci###200046977###00092b15-57e6-4559-b36f-508316429dd5',
           coporteur: true,
           nom: 'Métropole de Lyon',
         },
         {
-          code: 'structure###12345678901234###b99f14b0-4a65-42be-8f87-84918013ff67',
+          code: 'structure###12345678901234###00035111-44c5-493b-8bbe-3c3122231c20',
           coporteur: false,
           nom: 'Ca recrute dur',
         },
         {
-          code: 'epci###200066587###b99f14b0-4a65-42be-8f87-84918013ff67',
+          code: 'epci###200066587###00052d98-f3c2-4478-9cee-6e9758cedc41',
           coporteur: false,
           nom: 'CC des Monts du Lyonnais',
         },

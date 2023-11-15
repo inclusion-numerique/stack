@@ -15,7 +15,6 @@ export const getGouvernanceFormDefaultValues = (
   }
 
   const {
-    id: gouvernanceId,
     sousPrefetReferentPrenom,
     sousPrefetReferentNom,
     sousPrefetReferentEmail,
@@ -33,9 +32,7 @@ export const getGouvernanceFormDefaultValues = (
   defaultValues.sousPrefetReferentEmail = sousPrefetReferentEmail ?? undefined
 
   // Section coporteurs et membres
-  defaultValues.membres = membres.map((membre) =>
-    membreToFormMembre(gouvernanceId, membre),
-  )
+  defaultValues.membres = membres.map(membreToFormMembre)
   defaultValues.pasDeCoporteurs = pasDeCoporteurs ?? undefined
 
   // Comitologie
@@ -65,7 +62,7 @@ export const getGouvernanceFormDefaultValues = (
       )?.membre
 
       const porteur = membrePorteur
-        ? membreToFormMembre(gouvernanceId, membrePorteur)
+        ? membreToFormMembre(membrePorteur)
         : undefined
 
       return {

@@ -68,6 +68,10 @@ const MembresForm = ({
     excludeCodes: membreFields.map(({ code }) => code),
   })
 
+  console.log('ALL MEMBRES OPTIONS', membresOptions)
+  console.log('MEMBRE SELECT OPTIONS', membreSelectOptions)
+  console.log('MEMBRE FIELDS', membreFields)
+
   return (
     <GouvernanceFormSectionCard
       {...gouvernanceFormSections.membresDeLaGouvernance}

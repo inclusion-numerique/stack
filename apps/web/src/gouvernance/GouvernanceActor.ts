@@ -62,17 +62,15 @@ export const getMembreModelDataFromActorCode = (
   }
 }
 
-export const membreToFormMembre = (
-  formulaireGouvernanceId: string,
-  {
-    epci,
-    departement,
-    region,
-    nomStructure,
-    siretInformations,
-    coporteur,
-  }: GouvernanceForForm['membres'][number],
-): MembreData => {
+export const membreToFormMembre = ({
+  epci,
+  departement,
+  region,
+  nomStructure,
+  siretInformations,
+  coporteur,
+  formulaireGouvernanceId,
+}: GouvernanceForForm['membres'][number]): MembreData => {
   if (region) {
     return {
       code: getGouvernanceActorCode({
