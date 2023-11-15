@@ -165,6 +165,8 @@ export const gouvernanceRouter = router({
           return accumulator
         }, [] as SiretInfoData[])
 
+      console.log('SIRET INFO TO UPSER', siretInformationsToUpsert)
+
       const membresToDelete = [...membresFormData.keys()]
         .filter((code) => !membres.some((membre) => membre.code === code))
         .map((code) => membresFormData.get(code)?.membre.id)
@@ -190,6 +192,8 @@ export const gouvernanceRouter = router({
             ({ siretInformations }) => siretInformations.siret === siret,
           ),
       )
+
+      console.log('RECUREURS TO CREATE', recruteursToCreate)
 
       const feuillesDeRouteToDelete = gouvernance.feuillesDeRoute
         .filter(

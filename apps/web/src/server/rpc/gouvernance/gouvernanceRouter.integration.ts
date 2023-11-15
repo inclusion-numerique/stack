@@ -108,6 +108,11 @@ describe('gouvernanceRouter', () => {
             code: 'epci###200066587###b2431899-62ce-47ac-9e12-01c25527079b',
             coporteur: false,
           },
+          {
+            nom: 'Structure B',
+            code: 'structure######8eea8b99-7f4d-4826-9751-bc81aa2687f2',
+            coporteur: true,
+          },
         ],
         pasDeCoporteurs: false,
         noteDeContexte: 'Such context',
@@ -134,7 +139,8 @@ describe('gouvernanceRouter', () => {
           },
         ],
         recruteursCoordinateurs: [
-          { nom: 'Ca recrute dur', siret: '12345678901234' },
+          { nom: 'Ca recrute dur', siret: '11111111111111' },
+          { nom: undefined, siret: '33333333333333' },
         ],
       }
 
@@ -142,7 +148,6 @@ describe('gouvernanceRouter', () => {
 
       expect(result).toEqual({
         besoinsEnIngenierieFinanciere: null,
-
         comites: [
           {
             commentaire: '🗺️',
@@ -247,7 +252,7 @@ describe('gouvernanceRouter', () => {
             siretInformations: {
               creation: expectDate,
               modification: expectDate,
-              nom: 'Ca recrute dur',
+              nom: 'Structure A',
               siret: '12345678901234',
             },
           },
@@ -266,6 +271,23 @@ describe('gouvernanceRouter', () => {
             siret: null,
             siretInformations: null,
           },
+          {
+            coporteur: true,
+            creation: expectDate,
+            departement: null,
+            epci: null,
+            id: expectUuid,
+            modification: expectDate,
+            nomStructure: 'Structure B',
+            region: null,
+            siret: '__sans-siret__Structure B',
+            siretInformations: {
+              creation: expectDate,
+              modification: expectDate,
+              nom: 'Structure B',
+              siret: '__sans-siret__Structure B',
+            },
+          },
         ],
         modification: expectDate,
         noteDeContexte: 'Such context',
@@ -276,7 +298,7 @@ describe('gouvernanceRouter', () => {
               creation: expectDate,
               modification: expectDate,
               nom: 'Ca recrute dur',
-              siret: '12345678901234',
+              siret: '11111111111111',
             },
           },
           {
@@ -284,8 +306,8 @@ describe('gouvernanceRouter', () => {
             siretInformations: {
               creation: expectDate,
               modification: expectDate,
-              nom: 'Ca recrute dur',
-              siret: '12345678901234',
+              nom: null,
+              siret: '33333333333333',
             },
           },
         ],
