@@ -103,6 +103,20 @@
     }
 }
 
+/* Priority variations */
+.fr-notice--warning {
+    background: var(--background-contrast-warning);
+    --hover: var(--background-contrast-warning-hover);
+    --active: var(--background-contrast-warning-active);
+    color: var(--text-default-warning);
+}
+
+.fr-notice--warning .fr-notice__body::before {
+    -webkit-mask-image: url("/dsfr/icons/system/fr--warning-fill.svg");
+    mask-image: url("/dsfr/icons/system/fr--warning-fill.svg");
+    content: "";
+}
+
 /* Override input spacing */
 .fr-input-group, .fr-select-group {
     margin-bottom: 16px;
