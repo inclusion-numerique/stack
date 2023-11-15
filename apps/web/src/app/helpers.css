@@ -79,6 +79,10 @@
     flex-shrink: 0;
 }
 
+.fr-flex-grow-1 {
+    flex-grow: 1;
+}
+
 .fr-flex-nowrap {
     flex-wrap: nowrap;
 }

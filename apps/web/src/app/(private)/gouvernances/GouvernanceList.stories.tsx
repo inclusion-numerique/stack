@@ -2,7 +2,10 @@ import { Tabs } from '@codegouvfr/react-dsfr/Tabs'
 import React, { ComponentProps } from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import { v4 } from 'uuid'
-import { ListeGouvernance } from '@app/web/app/(private)/gouvernances/getListeGouvernances'
+import {
+  ListeGouvernance,
+  ListeGouvernanceItem,
+} from '@app/web/app/(private)/gouvernances/getListeGouvernances'
 import GouvernanceList from '@app/web/app/(private)/gouvernances/GouvernanceList'
 
 const meta: Meta<typeof GouvernanceList> = {
@@ -125,7 +128,9 @@ const gouvernancesProposees: ListeGouvernance = [
     },
     organisationsRecruteusesCoordinateurs: [],
     noteDeContexte: '<p>Des phrases qui expliquent le contexte</p>',
-    besoinsEnIngenierieFinanciere: null,
+    besoinsEnIngenierieFinanciere: {
+      id: v4(),
+    } as unknown as ListeGouvernanceItem['besoinsEnIngenierieFinanciere'],
     v1Perimetre: 'region',
     v1PorteurRegion: {
       nom: 'Auvergne-Rhône-Alpes',

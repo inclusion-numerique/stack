@@ -64,44 +64,71 @@ const GouvernanceCardCtas = ({
   return (
     <>
       <div className={styles.cardCtaContainer}>
-        <div>
+        <div className="fr-flex-grow-1">
           <h4 className="fr-mb-2v">Gouvernance & feuilles de route</h4>
           <p className="fr-mb-0">
             Finalisez votre gouvernance et organisez les feuilles de routes
             pressenties sur votre territoire.
           </p>
         </div>
-        <Badge
-          className="fr-my-4v fr-ml-md-6w fr-mr-md-3w"
-          small
-          severity="new"
-        >
-          À&nbsp;renseigner&nbsp;avant&nbsp;le&nbsp;
-          {dateAsDay(limiteModificationDesGouvernances)}
-        </Badge>
-        {gouvernance ? (
-          <Button
-            linkProps={{
-              href: modifierGouvernancePath(
-                { codeDepartement: gouvernance.departement.code },
-                gouvernance.id,
-              ),
-            }}
-            iconId="fr-icon-arrow-right-line"
-            iconPosition="right"
+        {gouvernance?.v2Enregistree ? (
+          <Badge
+            className="fr-my-4v fr-ml-md-6w fr-mr-md-3w"
+            small
+            severity="success"
           >
-            Compléter
-          </Button>
-        ) : canCreateInDepartementCode ? (
-          <CreateGouvernanceButton
-            codeDepartement={canCreateInDepartementCode}
-            nextAction="editGouvernance"
-          />
-        ) : null}
+            Complété
+          </Badge>
+        ) : (
+          <Badge
+            className="fr-my-4v fr-ml-md-6w fr-mr-md-3w"
+            small
+            severity="new"
+          >
+            À&nbsp;renseigner&nbsp;avant&nbsp;le&nbsp;
+            {dateAsDay(limiteModificationDesGouvernances)}
+          </Badge>
+        )}
+        {canEdit &&
+          (gouvernance ? (
+            gouvernance.v2Enregistree ? (
+              <Button
+                priority="secondary"
+                linkProps={{
+                  href: modifierGouvernancePath(
+                    { codeDepartement: gouvernance.departement.code },
+                    gouvernance.id,
+                  ),
+                }}
+                iconId="fr-icon-edit-line"
+                iconPosition="right"
+              >
+                Modifier
+              </Button>
+            ) : (
+              <Button
+                linkProps={{
+                  href: modifierGouvernancePath(
+                    { codeDepartement: gouvernance.departement.code },
+                    gouvernance.id,
+                  ),
+                }}
+                iconId="fr-icon-arrow-right-line"
+                iconPosition="right"
+              >
+                Compléter
+              </Button>
+            )
+          ) : canCreateInDepartementCode ? (
+            <CreateGouvernanceButton
+              codeDepartement={canCreateInDepartementCode}
+              nextAction="editGouvernance"
+            />
+          ) : null)}
       </div>
       <hr className="fr-separator-8v" />
       <div className={styles.cardCtaContainer}>
-        <div>
+        <div className="fr-flex-grow-1">
           <h4 className="fr-mb-2v">Besoins en ingénierie financière</h4>
           <p className="fr-mb-0">
             Dans le cadre du développement de votre stratégie d’inclusion
@@ -110,38 +137,70 @@ const GouvernanceCardCtas = ({
             connaître vos besoins de financement.
           </p>
         </div>
-        <Badge
-          className="fr-my-4v fr-ml-md-6w fr-mr-md-3w"
-          small
-          severity="new"
-        >
-          À&nbsp;renseigner&nbsp;avant&nbsp;le&nbsp;
-          {dateAsDay(limiteModificationDesGouvernances)}
-        </Badge>
-        {gouvernance ? (
-          <Button
-            linkProps={{
-              href: modifierBesoinsIngenieriePath(
-                { codeDepartement: gouvernance.departement.code },
-                {
-                  gouvernanceId: gouvernance.id,
-                  step: gouvernance.besoinsEnIngenierieFinanciere
-                    ? 'selection'
-                    : 'intro',
-                },
-              ),
-            }}
-            iconId="fr-icon-arrow-right-line"
-            iconPosition="right"
+        {gouvernance?.besoinsEnIngenierieFinanciere ? (
+          <Badge
+            className="fr-my-4v fr-ml-md-6w fr-mr-md-3w"
+            small
+            severity="success"
           >
-            Compléter
-          </Button>
-        ) : canCreateInDepartementCode ? (
-          <CreateGouvernanceButton
-            codeDepartement={canCreateInDepartementCode}
-            nextAction="editBesoinsIngenierie"
-          />
-        ) : null}
+            Complété
+          </Badge>
+        ) : (
+          <Badge
+            className="fr-my-4v fr-ml-md-6w fr-mr-md-3w"
+            small
+            severity="new"
+          >
+            À&nbsp;renseigner&nbsp;avant&nbsp;le&nbsp;
+            {dateAsDay(limiteModificationDesGouvernances)}
+          </Badge>
+        )}
+        {canEdit &&
+          (gouvernance ? (
+            gouvernance.v2Enregistree ? (
+              <Button
+                priority="secondary"
+                linkProps={{
+                  href: modifierBesoinsIngenieriePath(
+                    { codeDepartement: gouvernance.departement.code },
+                    {
+                      gouvernanceId: gouvernance.id,
+                      step: gouvernance.besoinsEnIngenierieFinanciere
+                        ? 'selection'
+                        : 'intro',
+                    },
+                  ),
+                }}
+                iconId="fr-icon-edit-line"
+                iconPosition="right"
+              >
+                Modifier
+              </Button>
+            ) : (
+              <Button
+                linkProps={{
+                  href: modifierBesoinsIngenieriePath(
+                    { codeDepartement: gouvernance.departement.code },
+                    {
+                      gouvernanceId: gouvernance.id,
+                      step: gouvernance.besoinsEnIngenierieFinanciere
+                        ? 'selection'
+                        : 'intro',
+                    },
+                  ),
+                }}
+                iconId="fr-icon-arrow-right-line"
+                iconPosition="right"
+              >
+                Compléter
+              </Button>
+            )
+          ) : canCreateInDepartementCode ? (
+            <CreateGouvernanceButton
+              codeDepartement={canCreateInDepartementCode}
+              nextAction="editBesoinsIngenierie"
+            />
+          ) : null)}
       </div>
     </>
   )

@@ -56,7 +56,7 @@ const GouvernanceList = ({
         </>
       )}
 
-      {/* Show v2 gouvernances if any */}
+      {/* Show v2 gouvernances if any. It can be only one but it is in the array of gouvernances */}
       {gouvernancesProposees.length > 0 && (
         <>
           <h3 className="fr-mb-2v">
@@ -77,6 +77,7 @@ const GouvernanceList = ({
               gouvernance={gouvernance}
               scope={scope}
               canEdit={canEdit}
+              showCtas
             />
           ))}
         </>
@@ -131,6 +132,7 @@ const GouvernanceList = ({
               gouvernance={gouvernance}
               scope={scope}
               canEdit={canEdit}
+              showCtas={gouvernancesProposees.length === 0}
             />
           ))}
         </>
