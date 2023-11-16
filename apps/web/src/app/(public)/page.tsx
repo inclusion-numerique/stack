@@ -195,9 +195,13 @@ const HomePage = () => (
                 Pour les services préfectoraux
               </h6>
               <p>
-                Enrichi au fil de l’eau, le diagnostic territorial peut être
-                partagé avec les acteurs locaux et discuté dans le cadre des
-                différentes réunions locales partenariales.
+                Organisez des concertations pour affiner le diagnostic
+                territorial, identifier des priorités d’action et mobiliser les
+                acteurs locaux sur la démarche France Numérique Ensemble. Faites
+                remonter avant le 31 décembre une structure de gouvernance
+                définitive, le nombre de feuilles de route sur votre territoire
+                et leur(s) porteurs(s), ainsi que vos besoins en ingénierie
+                financière.
               </p>
               <h6>
                 <span
@@ -210,9 +214,17 @@ const HomePage = () => (
               </h6>
               <p>
                 Mobilisez-vous dans le cadre des concertations locales afin
-                d’affiner le diagnostic quantitatif et de définir, aux côtés des
-                services préfectoraux, le périmètre de gouvernance le plus
-                adapté à votre territoire.
+                d'affiner le diagnostic quantitatif, de définir la structure de
+                gouvernance, de préciser le périmètre de feuilles de route
+                adapté à votre territoire, ainsi que vos besoins en ingénierie
+                financière. Signalez votre souhait de porter et/ou d'élaborer un
+                feuille de route territoriale via{' '}
+                <a
+                  href="/gouvernance"
+                  title="Formulaire de participation à l’élaboration des feuilles de routes territoriales"
+                >
+                  le formulaire en ligne.
+                </a>
               </p>
             </div>
             <div className={styles.card}>
@@ -226,9 +238,8 @@ const HomePage = () => (
                 territoriaux
               </h6>
               <p>
-                Le diagnostic territorial doit vous permettre de fixer
-                collectivement les valeurs cibles des différents indicateurs
-                locaux France Numérique Ensemble.
+                Élaborez collectivement les feuilles de route France Numérique
+                Ensemble de votre territoire et fixez des indicateurs locaux.
               </p>
             </div>
           </div>
