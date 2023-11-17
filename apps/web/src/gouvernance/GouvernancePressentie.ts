@@ -1,7 +1,7 @@
 import z from 'zod'
 import {
   requiredSiretValidation,
-  siretValidation,
+  optionalSiretValidation,
 } from '@app/web/validation/siretValidation'
 import { Option } from '@app/web/utils/options'
 
@@ -57,7 +57,7 @@ export const GouvernancePressentieValidation = z.intersection(
       // For default values will be constructed with getPorteurCode() and server side will infer data from it with getInfoFromPorteurCode()
       v1PorteurCode: z.string().nullish(),
 
-      v1PorteurSiret: siretValidation.nullish(),
+      v1PorteurSiret: optionalSiretValidation.nullish(),
     })
     .refine((data) => !(data.v1Perimetre === 'autre' && !data.v1PorteurSiret), {
       message: 'Veuillez renseigner un porteur',

@@ -343,6 +343,7 @@ export const formulairesGouvernance = () => {
     intention: 'Participer',
     confirmeEtEnvoye: new Date(),
     nomStructure: 'Association exemple A',
+    // Invalid siret
     siretStructure: '12345678901234',
     createur,
     departement: rhone,
@@ -357,11 +358,28 @@ export const formulairesGouvernance = () => {
     gouvernancePersona: 'structure',
     intention: 'Participer',
     confirmeEtEnvoye: new Date(),
+    // Missing siret
     nomStructure: 'Association exemple B',
     createur,
     departement: rhone,
     contactStructure: contactConnectOrCreate({
       formulaireGouvernanceId: 'd575dfd3-4230-41d2-9170-9d8c05bd1d18',
+      ...contacts[9],
+    }),
+  } satisfies AppPrisma.FormulaireGouvernanceCreateInput
+
+  const anctParticipant = {
+    id: 'b1e3ed0a-d1f7-40cf-b456-836cb5b8a0ba',
+    gouvernancePersona: 'structure',
+    intention: 'Participer',
+    confirmeEtEnvoye: new Date(),
+    nomStructure: 'ANCT',
+    // Real siret
+    siretStructure: '13002603200016',
+    createur,
+    departement: rhone,
+    contactStructure: contactConnectOrCreate({
+      formulaireGouvernanceId: 'b1e3ed0a-d1f7-40cf-b456-836cb5b8a0ba',
       ...contacts[9],
     }),
   } satisfies AppPrisma.FormulaireGouvernanceCreateInput
@@ -374,5 +392,6 @@ export const formulairesGouvernance = () => {
     lyonMetropoleParticipant,
     asso1Participant,
     asso2Participant,
+    anctParticipant,
   ]
 }

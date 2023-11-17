@@ -1034,13 +1034,33 @@ model OrganisationRecruteuseCoordinateurs {
   @@map("organisations_recruteuses_coordinateurs")
 }
 
+enum InformationSiretStatus {
+  Pending @map("pending")
+  Valid   @map("valid")
+  Invalid @map("invalid")
+
+  @@map("information_siret_status")
+}
+
 model InformationsSiret {
   siret String @id
 
+  // Raison sociale / Nom renseigné par l'utilisateur AVANT vérification
   nom String?
 
   modification DateTime @default(now()) @updatedAt
   creation     DateTime @default(now())
+
+  // Informations récupérées depuis l'API Entreprise
+  status                         InformationSiretStatus @default(Pending)
+  verification                   DateTime?
+  erreurVerification             String?                @map("erreur_verification")
+  siren                          String?
+  activitePrincipaleCode         String?                @map("activite_principale_code")
+  activitePrincipaleLibelle      String?                @map("activite_principale_libelle")
+  activitePrincipaleNomenclature String?                @map("activite_principale_nomenclature")
+  formeJuridiqueCode             String?                @map("forme_juridique_code")
+  formeJuridiqueLibelle          String?                @map("forme_juridique_libelle")
 
   gouvernancesPortees                   Gouvernance[]
   organisationsRecruteusesCoordinateurs OrganisationRecruteuseCoordinateurs[]

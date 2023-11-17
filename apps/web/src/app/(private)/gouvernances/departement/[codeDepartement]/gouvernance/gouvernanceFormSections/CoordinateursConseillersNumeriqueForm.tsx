@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useFieldArray, useForm, UseFormReturn } from 'react-hook-form'
 import Button from '@codegouvfr/react-dsfr/Button'
-import InputFormField from '@app/ui/components/Form/InputFormField'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { gouvernanceFormSections } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections'
 import {
@@ -11,7 +10,7 @@ import {
 } from '@app/web/gouvernance/Gouvernance'
 import GouvernanceFormSectionCard from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/GouvernanceFormSectionCard'
 import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
-import SiretInputInfo from '@app/web/components/SiretInputInfo'
+import SiretFormField from '@app/web/components/Siret/SiretFormField'
 
 const CoordinateursConseillersNumeriqueForm = ({
   form,
@@ -92,13 +91,12 @@ const CoordinateursConseillersNumeriqueForm = ({
           <h6 className="fr-mb-8v">
             Ajout d’une collectivité/structure recruteuse
           </h6>
-          <InputFormField
-            control={addRecruteurForm.control}
+          <SiretFormField
+            form={addRecruteurForm}
             path="siret"
             asterisk
             disabled={disabled}
             label="SIRET de la collectivité/structure"
-            info={<SiretInputInfo />}
           />
           <div className="fr-flex fr-width-full fr-justify-content-end">
             <Button type="button" onClick={onCancel} priority="secondary">
