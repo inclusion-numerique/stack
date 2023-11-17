@@ -129,9 +129,9 @@ const GouvernanceCard = ({
               <>
                 {organisationsRecruteusesCoordinateurs.length > 0 ? (
                   organisationsRecruteusesCoordinateurs.map(
-                    ({ siretInformations: { siret } }, index) => (
+                    ({ siretInformations: { siret, nom } }, index) => (
                       <span key={siret}>
-                        {siret}
+                        {nom || siret}
                         {index ===
                         organisationsRecruteusesCoordinateurs.length -
                           1 ? null : (
