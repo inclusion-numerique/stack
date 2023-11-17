@@ -3,13 +3,20 @@ import { prismaClient } from '@app/web/prismaClient'
 import { runPromisesInChunks } from '@app/web/utils/runPromisesInChunks'
 import { checkAndUpsertSiret } from '@app/web/server/siret/checkAndUpsertSiret'
 import { output } from '@app/cli/output'
+import {
+  configureDeploymentTarget,
+  DeploymentTargetOption,
+} from '@app/cli/deploymentTarget'
 
 export const siretVerification = new Command()
   .command('siret:verification')
+  .addOption(DeploymentTargetOption)
   .description(
     'Iterates over all "siret" model, check with API Entreprise their validity and update their status / data',
   )
-  .action(async () => {
+  .action(async (args) => {
+    await configureDeploymentTarget(args)
+
     const siretInformations = await prismaClient.informationsSiret.findMany({})
 
     const beforeCounts = {
