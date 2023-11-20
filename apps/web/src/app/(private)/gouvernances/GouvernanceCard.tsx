@@ -56,6 +56,8 @@ const GouvernanceCard = ({
     derniereModificationPar,
   )}`
   const displayModificationMeta = modificationMeta !== creationMeta
+  const hasCompletedBesoins =
+    !!besoinsEnIngenierieFinanciere?.selectionEnregistree
 
   return (
     <WhiteCard className="fr-mt-6v">
@@ -85,7 +87,7 @@ const GouvernanceCard = ({
         <div className="fr-flex fr-flex-shrink-0 fr-flex-nowrap fr-flex-gap-2v">
           {isV2 ? (
             <Button
-              priority={besoinsEnIngenierieFinanciere ? 'primary' : 'secondary'}
+              priority={hasCompletedBesoins ? 'primary' : 'secondary'}
               iconId="fr-icon-eye-line"
               iconPosition="right"
               linkProps={{

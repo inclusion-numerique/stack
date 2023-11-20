@@ -58,7 +58,8 @@ const GouvernanceCardCtas = ({
 
   const isExistingGouvernance = !!gouvernance
   const isV2 = !!gouvernance?.v2Enregistree
-  const hasCompletedBesoins = !!gouvernance?.besoinsEnIngenierieFinanciere
+  const hasCompletedBesoins =
+    !!gouvernance?.besoinsEnIngenierieFinanciere?.selectionEnregistree
 
   return (
     <>

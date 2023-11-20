@@ -6,6 +6,7 @@ import { userRouter } from '@app/web/server/rpc/user/userRouter'
 import { dataRouter } from '@app/web/server/rpc/data/dataRouter'
 import { gouvernanceRouter } from '@app/web/server/rpc/gouvernance/gouvernanceRouter'
 import { siretRouter } from '@app/web/server/rpc/data/siretRouter'
+import { besoinsIngenierieFinanciereRouter } from '@app/web/server/rpc/gouvernance/besoinsIngenierieFinanciereRouter'
 
 export const appRouter = router({
   user: userRouter,
@@ -13,6 +14,7 @@ export const appRouter = router({
   image: imageRouter,
   formulaireGouvernance: formulaireGouvernanceRouter,
   gouvernance: gouvernanceRouter,
+  besoinsIngenierieFinanciere: besoinsIngenierieFinanciereRouter,
   data: dataRouter,
   siret: siretRouter,
 })

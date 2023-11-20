@@ -768,10 +768,12 @@ model BesoinsEnIngenierieFinanciere {
   derniereModificationParId String @map("derniere_modification_par_id") @db.Uuid
   derniereModificationPar   User   @relation("besoins_ingenierie_financiere_derniere_modification_par", fields: [derniereModificationParId], references: [id])
 
-  modification        DateTime  @updatedAt
-  creation            DateTime  @default(now())
-  supression          DateTime?
-  texteIntroductionLu DateTime?
+  modification            DateTime  @updatedAt
+  creation                DateTime  @default(now())
+  supression              DateTime?
+  texteIntroductionLu     DateTime?
+  selectionEnregistree    DateTime?
+  priorisationEnregistree DateTime?
 
   // Formaliser la feuille de route
 

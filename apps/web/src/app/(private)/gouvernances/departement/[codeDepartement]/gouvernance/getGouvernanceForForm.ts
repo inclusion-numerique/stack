@@ -77,6 +77,8 @@ export const gouvernanceListSelect = {
       id: true,
       creation: true,
       modification: true,
+      selectionEnregistree: true,
+      priorisationEnregistree: true,
       createur: {
         select: {
           id: true,

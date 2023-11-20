@@ -134,6 +134,7 @@ const gouvernancesProposees: ListeGouvernance = [
       modification: tomorrow,
       createur: jeanDupont,
       derniereModificationPar: jeanneBiche,
+      selectionEnregistree: now,
     } as unknown as ListeGouvernanceItem['besoinsEnIngenierieFinanciere'],
     v1Perimetre: 'region',
     v1PorteurRegion: {

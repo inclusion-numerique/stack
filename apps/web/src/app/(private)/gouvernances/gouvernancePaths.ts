@@ -51,4 +51,4 @@ export const modifierBesoinsIngenieriePath = (
 ) =>
   `${gouvernanceHomePath(
     scope,
-  )}/gouvernance/${gouvernanceId}/besoins-ingenierie/${step}`
+  )}/gouvernance/${gouvernanceId}/besoins-ingenierie-financiere/${step}`
