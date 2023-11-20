@@ -139,8 +139,8 @@ describe('gouvernanceRouter', () => {
           },
         ],
         recruteursCoordinateurs: [
-          { nom: 'Ca recrute dur', siret: '11111111111111' },
-          { nom: 'Autre Entreprise', siret: '33333333333333' },
+          { nom: 'Ca recrute dur', siret: '13002603200081' },
+          { nom: 'Autre Entreprise', siret: '13002603200073' },
         ],
       }
 
@@ -303,7 +303,7 @@ describe('gouvernanceRouter', () => {
               creation: expectDate,
               modification: expectDate,
               nom: 'Ca recrute dur',
-              siret: '11111111111111',
+              siret: '13002603200081',
             },
           },
           {
@@ -312,7 +312,7 @@ describe('gouvernanceRouter', () => {
               creation: expectDate,
               modification: expectDate,
               nom: 'Autre Entreprise',
-              siret: '33333333333333',
+              siret: '13002603200073',
             },
           },
         ],

@@ -10,7 +10,7 @@ describe('ETQ Structure connectée, je peux compléter mon formulaire de  partic
     cy.contains('Formulaire personne morale publique ou privée')
 
     cy.findByLabelText('Nom structure *').type('Technologie 2000')
-    cy.findByLabelText('SIRET structure *').type('12345678912345')
+    cy.findByLabelText('SIRET structure *').type('13002603200081')
     cy.findByLabelText('Département *').select('69')
 
     cy.findByLabelText('Nom *').type(`Nasr`)
