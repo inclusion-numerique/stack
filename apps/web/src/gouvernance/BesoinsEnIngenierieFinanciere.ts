@@ -6,7 +6,7 @@ const BesoinStandard = z
   .object({
     besoin: z.boolean().default(false),
     rh: z.boolean().default(false),
-    etp: z.number().nullish(),
+    etp: z.number().positive('Veuillez préciser le nombre d’ETP').nullish(),
     prestation: z.boolean(),
   })
   // etp is required if rh is true
@@ -17,19 +17,26 @@ const BesoinStandard = z
       path: ['etp'],
     },
   )
+  .refine((data) => !data.besoin || !!data.rh || !!data.prestation, {
+    message: 'Veuillez préciser le type de besoin',
+    path: ['besoin'],
+  })
 export type BesoinStandardData = z.infer<typeof BesoinStandard>
 
 const BesoinAPreciser = z
   .object({
     besoin: z.boolean().default(false),
     rh: z.boolean().default(false),
-    etp: z.number().nullish(),
+    etp: z.number().positive('Veuillez préciser le nombre d’ETP').nullish(),
     prestation: z.boolean(),
     precisions: z.string().nullish(),
   })
   // etp is required if rh is true
   .refine(
-    (data) => (data.rh ? data.etp !== null && data.etp !== undefined : true),
+    (data) =>
+      data.rh
+        ? data.etp !== null && data.etp !== undefined && data.etp > 0
+        : true,
     {
       message: 'Veuillez préciser le nombre d’ETP',
       path: ['etp'],
@@ -38,6 +45,10 @@ const BesoinAPreciser = z
   .refine((data) => (data.besoin ? data.precisions : true), {
     message: 'Veuillez préciser le besoin',
     path: ['precisions'],
+  })
+  .refine((data) => !data.besoin || !!data.rh || !!data.prestation, {
+    message: 'Veuillez préciser le type de besoin',
+    path: ['besoin'],
   })
 export type BesoinAPreciserData = z.infer<typeof BesoinAPreciser>
 
@@ -72,10 +83,16 @@ export const BesoinsEnIngenierieFinanciereValidation = z
     outillerLesActeursAutre: BesoinAPreciser,
 
     formerLesAgentsPublics: z.boolean(),
-    formerLesAgentsPublicsNombre: z.number().nullish(),
+    formerLesAgentsPublicsNombre: z
+      .number()
+      .positive('Veuillez préciser le nombre de personnes à former')
+      .nullish(),
 
     formerLesSalariesAssociatifs: z.boolean(),
-    formerLesSalariesAssociatifsNombre: z.number().nullish(),
+    formerLesSalariesAssociatifsNombre: z
+      .number()
+      .positive('Veuillez préciser le nombre de personnes à former')
+      .nullish(),
 
     appuyerLaCertificationQualiopi: z.boolean(),
 
@@ -121,20 +138,25 @@ export type BesoinsEnIngenierieFinanciereData = z.infer<
 
 export const BesoinsEnIngenierieFinancierePrioriteValidation = z.object({
   gouvernanceId: z.string().uuid(),
-  // ONLY INCLUDE priorite fields from model above
-  faireUnDiagnosticTerritorialPriorite: z.number().int().nullish(),
-  coConstruireLaFeuilleDeRoutePriorite: z.number().int().nullish(),
-  redigerLaFeuilleDeRoutePriorite: z.number().int().nullish(),
-  creerUnVehiculeJuridiquePriorite: z.number().int().nullish(),
-  formaliserLaFeuilleDeRouteAutrePriorite: z.number().int().nullish(),
-  structurerUnFondsLocalPriorite: z.number().int().nullish(),
-  monterDesDossiersDeSubventionPriorite: z.number().int().nullish(),
-  animerEtMettreEnOeuvrePriorite: z.number().int().nullish(),
-  financerLeDeploiementAutrePriorite: z.number().int().nullish(),
-  structurerUneFiliereDeReconditionnementPriorite: z.number().int().nullish(),
-  collecterDesDonneesTerritorialesPriorite: z.number().int().nullish(),
-  sensibiliserLesActeursPriorite: z.number().int().nullish(),
-  outillerLesActeursAutrePriorite: z.number().int().nullish(),
+  faireUnDiagnosticTerritorialPrestationPriorite: z.number().int().nullish(),
+  coConstruireLaFeuilleDeRoutePrestationPriorite: z.number().int().nullish(),
+  redigerLaFeuilleDeRoutePrestationPriorite: z.number().int().nullish(),
+  creerUnVehiculeJuridiquePrestationPriorite: z.number().int().nullish(),
+  formaliserLaFeuilleDeRouteAutrePrestationPriorite: z.number().int().nullish(),
+  structurerUnFondsLocalPrestationPriorite: z.number().int().nullish(),
+  monterDesDossiersDeSubventionPrestationPriorite: z.number().int().nullish(),
+  animerEtMettreEnOeuvrePrestationPriorite: z.number().int().nullish(),
+  financerLeDeploiementAutrePrestationPriorite: z.number().int().nullish(),
+  structurerUneFiliereDeReconditionnementPrestationPriorite: z
+    .number()
+    .int()
+    .nullish(),
+  collecterDesDonneesTerritorialesPrestationPriorite: z
+    .number()
+    .int()
+    .nullish(),
+  sensibiliserLesActeursPrestationPriorite: z.number().int().nullish(),
+  outillerLesActeursAutrePrestationPriorite: z.number().int().nullish(),
   formerLesAgentsPublicsPriorite: z.number().int().nullish(),
   formerLesSalariesAssociatifsPriorite: z.number().int().nullish(),
   appuyerLaCertificationQualiopiPriorite: z.number().int().nullish(),

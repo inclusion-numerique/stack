@@ -7,7 +7,7 @@ import {
 } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/pageFormulaireData'
 import { prismaClient } from '@app/web/prismaClient'
 import BackLink from '@app/web/components/BackLink'
-import Progress from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/Progress'
+import ProgressFormulairesFeuillesDeRoute from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/ProgressFormulairesFeuillesDeRoute'
 import { getEtapeInfo } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/etapeFormulaireGouvernance'
 import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
 import { asyncComponent } from '@app/web/utils/asyncComponent'
@@ -202,7 +202,7 @@ const Page = async (props: PageFormulaireProps) => {
       </div>
       <div className="fr-container fr-container--medium formulaire-gouvernance-no-footer-margin-bottom">
         <BackLink href={retourHref} />
-        <Progress
+        <ProgressFormulairesFeuillesDeRoute
           progression={2}
           currentTitle="Périmètre de votre feuille de route"
           nextTitle="Contacts des collectivités partenaires"

@@ -96,6 +96,9 @@ export const besoinsIngenierieFinanciereRouter = router({
         },
       })
 
+      console.log('MUTATION', gouvernanceId)
+      console.log('MUTATION: Gouv', gouvernance)
+
       if (!gouvernance || !gouvernance.besoinsEnIngenierieFinanciere) {
         throw notFoundError()
       }
@@ -285,24 +288,24 @@ export const besoinsIngenierieFinanciereRouter = router({
     .mutation(async ({ input, ctx: { user } }) => {
       const {
         gouvernanceId,
-        coConstruireLaFeuilleDeRoutePriorite,
-        redigerLaFeuilleDeRoutePriorite,
-        formaliserLaFeuilleDeRouteAutrePriorite,
-        financerLeDeploiementAutrePriorite,
+        coConstruireLaFeuilleDeRoutePrestationPriorite,
+        redigerLaFeuilleDeRoutePrestationPriorite,
+        formaliserLaFeuilleDeRouteAutrePrestationPriorite,
+        financerLeDeploiementAutrePrestationPriorite,
         formerLesProfessionnelsAutrePriorite,
         formerLesAgentsPublicsPriorite,
         formerLesSalariesAssociatifsPriorite,
-        outillerLesActeursAutrePriorite,
-        sensibiliserLesActeursPriorite,
+        outillerLesActeursAutrePrestationPriorite,
+        sensibiliserLesActeursPrestationPriorite,
         appuyerLaCertificationQualiopiPriorite,
-        creerUnVehiculeJuridiquePriorite,
-        faireUnDiagnosticTerritorialPriorite,
-        collecterDesDonneesTerritorialesPriorite,
-        monterDesDossiersDeSubventionPriorite,
-        structurerUnFondsLocalPriorite,
-        structurerUneFiliereDeReconditionnementPriorite,
+        creerUnVehiculeJuridiquePrestationPriorite,
+        faireUnDiagnosticTerritorialPrestationPriorite,
+        collecterDesDonneesTerritorialesPrestationPriorite,
+        monterDesDossiersDeSubventionPrestationPriorite,
+        structurerUnFondsLocalPrestationPriorite,
+        structurerUneFiliereDeReconditionnementPrestationPriorite,
         totalEtpPriorite,
-        animerEtMettreEnOeuvrePriorite,
+        animerEtMettreEnOeuvrePrestationPriorite,
       } = input
 
       const gouvernance = await prismaClient.gouvernance.findUnique({
@@ -341,39 +344,39 @@ export const besoinsIngenierieFinanciereRouter = router({
 
         // Erase all priorites that are not in the input
         coConstruireLaFeuilleDeRoutePrestationPriorite:
-          coConstruireLaFeuilleDeRoutePriorite ?? null,
+          coConstruireLaFeuilleDeRoutePrestationPriorite ?? null,
         redigerLaFeuilleDeRoutePrestationPriorite:
-          redigerLaFeuilleDeRoutePriorite ?? null,
+          redigerLaFeuilleDeRoutePrestationPriorite ?? null,
         formaliserLaFeuilleDeRouteAutrePrestationPriorite:
-          formaliserLaFeuilleDeRouteAutrePriorite ?? null,
+          formaliserLaFeuilleDeRouteAutrePrestationPriorite ?? null,
         financerLeDeploiementAutrePrestationPriorite:
-          financerLeDeploiementAutrePriorite ?? null,
+          financerLeDeploiementAutrePrestationPriorite ?? null,
         formerLesProfessionnelsAutrePriorite:
           formerLesProfessionnelsAutrePriorite ?? null,
         formerLesAgentsPublicsPriorite: formerLesAgentsPublicsPriorite ?? null,
         formerLesSalariesAssociatifsPriorite:
           formerLesSalariesAssociatifsPriorite ?? null,
         outillerLesActeursAutrePrestationPriorite:
-          outillerLesActeursAutrePriorite ?? null,
+          outillerLesActeursAutrePrestationPriorite ?? null,
         sensibiliserLesActeursPrestationPriorite:
-          sensibiliserLesActeursPriorite ?? null,
+          sensibiliserLesActeursPrestationPriorite ?? null,
         appuyerLaCertificationQualiopiPriorite:
           appuyerLaCertificationQualiopiPriorite ?? null,
         creerUnVehiculeJuridiquePrestationPriorite:
-          creerUnVehiculeJuridiquePriorite ?? null,
+          creerUnVehiculeJuridiquePrestationPriorite ?? null,
         faireUnDiagnosticTerritorialPrestationPriorite:
-          faireUnDiagnosticTerritorialPriorite ?? null,
+          faireUnDiagnosticTerritorialPrestationPriorite ?? null,
         collecterDesDonneesTerritorialesPrestationPriorite:
-          collecterDesDonneesTerritorialesPriorite ?? null,
+          collecterDesDonneesTerritorialesPrestationPriorite ?? null,
         monterDesDossiersDeSubventionPrestationPriorite:
-          monterDesDossiersDeSubventionPriorite ?? null,
+          monterDesDossiersDeSubventionPrestationPriorite ?? null,
         structurerUnFondsLocalPrestationPriorite:
-          structurerUnFondsLocalPriorite ?? null,
+          structurerUnFondsLocalPrestationPriorite ?? null,
         structurerUneFiliereDeReconditionnementPrestationPriorite:
-          structurerUneFiliereDeReconditionnementPriorite ?? null,
+          structurerUneFiliereDeReconditionnementPrestationPriorite ?? null,
         totalEtpPriorite: totalEtpPriorite ?? null,
         animerEtMettreEnOeuvrePrestationPriorite:
-          animerEtMettreEnOeuvrePriorite ?? null,
+          animerEtMettreEnOeuvrePrestationPriorite ?? null,
       } satisfies Prisma.BesoinsEnIngenierieFinanciereUncheckedUpdateInput
 
       // TODO Sum ETPs

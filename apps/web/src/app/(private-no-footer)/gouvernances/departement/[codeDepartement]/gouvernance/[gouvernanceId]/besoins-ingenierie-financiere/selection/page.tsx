@@ -1,14 +1,17 @@
 import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import { notFound } from 'next/navigation'
-import { getGouvernanceForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
+import Progress from '@app/ui/components/Progress'
+import Notice from '@codegouvfr/react-dsfr/Notice'
+import { getBesoinsIngenierieFinanciereForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/departement/generateDepartementMetadata'
 import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
 import { canEditGouvernancePressentie } from '@app/web/security/securityRules'
 import BackLink from '@app/web/components/BackLink'
 import { getGouvernanceScopeTitle } from '@app/web/app/(private)/gouvernances/gouvernanceScopeTitle'
-import WhiteCard from '@app/web/ui/WhiteCard'
+import BesoinsIngenierieFinanciereSelectionForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/selection/BesoinsIngenierieFinanciereSelectionForm'
+import { getBesoinsEnIngenierieSelectionDefaultValues } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/besoinsEnIngenierieSelectionDefaultValues'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -23,13 +26,17 @@ const Page = async ({
     codeDepartement,
   })
 
+  console.log('HERE', user)
+
   if (
     !canEditGouvernancePressentie(user, { departementCode: codeDepartement })
   ) {
     notFound()
   }
 
-  const gouvernance = await getGouvernanceForForm(gouvernanceId)
+  const gouvernance = await getBesoinsIngenierieFinanciereForForm({
+    gouvernanceId,
+  })
 
   console.log('GOUVERNANCE', gouvernance)
 
@@ -41,13 +48,14 @@ const Page = async ({
   }
   const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
 
-  // const defaultValues = getGouvernanceFormDefaultValues(gouvernance)
+  const defaultValues =
+    getBesoinsEnIngenierieSelectionDefaultValues(gouvernance)
 
   return (
     <>
       <div className="fr-container">
         <Breadcrumb
-          currentPageLabel="Priorisation des besoins en ingénierie financière"
+          currentPageLabel="Sélection des besoins en ingénierie financière"
           segments={[
             {
               label: "Page d'accueil",
@@ -66,7 +74,30 @@ const Page = async ({
       </div>
       <div className="fr-container fr-container--narrow fr-pb-10v fr-mb-20v">
         <BackLink href={gouvernanceHomePath({ codeDepartement })} />
-        <WhiteCard className="fr-mt-12v">TODO</WhiteCard>
+
+        <Progress
+          className="fr-my-12v"
+          steps={2}
+          progression={1}
+          currentTitle="Sélectionnez vos besoins en ingénierie financière"
+          nextTitle="Priorisez vos besoins en ingénierie financière"
+        />
+        <h1 className="fr-text-title--blue-france fr-mb-2v">
+          Sélectionnez vos besoins en ingénierie financière
+        </h1>
+        <p className="fr-text--lg fr-text-mention--grey fr-mb-6v">
+          Sélectionnez vos besoins en ingénierie financière et pour chaque
+          besoin renseignez la typologie de financement qui pourrait
+          correspondre à votre besoin
+        </p>
+        <Notice
+          className="fr-my-6v"
+          title="À l’étape suivante, vous pourrez prioriser les besoins sélectionnés."
+        />
+        <BesoinsIngenierieFinanciereSelectionForm
+          defaultValue={defaultValues}
+          codeDepartement={codeDepartement}
+        />
       </div>
     </>
   )

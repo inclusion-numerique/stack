@@ -1,5 +1,10 @@
 import classNames from 'classnames'
-import React, { HTMLInputTypeAttribute, HTMLProps, ReactNode } from 'react'
+import type {
+  ChangeEventHandler,
+  HTMLInputTypeAttribute,
+  HTMLProps,
+  ReactNode,
+} from 'react'
 import { Control, Controller, FieldValues } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
 import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
@@ -20,6 +25,9 @@ type CommonProps<T extends FieldValues> = {
 
 type InputProps = {
   type?: Exclude<HTMLInputTypeAttribute, 'checkbox' | 'textarea'>
+  min?: number
+  max?: number
+  step?: number
 }
 
 type TextareaProps = {
@@ -65,6 +73,18 @@ const InputFormField = <T extends FieldValues>({
           ariaDescribedBy = `${id}__valid`
         }
 
+        const inputOnChange: ChangeEventHandler<HTMLInputElement> =
+          type === 'number'
+            ? (event) => {
+                const eventValue = event.target?.value
+                if (!eventValue || typeof eventValue !== 'string') {
+                  onChange(null)
+                  return
+                }
+                onChange(Number.parseFloat(eventValue))
+              }
+            : onChange
+
         const input =
           type === 'textarea' ? (
             <textarea
@@ -90,7 +110,7 @@ const InputFormField = <T extends FieldValues>({
               id={id}
               placeholder={placeholder}
               onBlur={onBlur}
-              onChange={onChange}
+              onChange={inputOnChange}
               value={value ?? ''}
               ref={ref}
             />

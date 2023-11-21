@@ -187,3 +187,30 @@ export type GouvernanceForForm = Exclude<
   Awaited<ReturnType<typeof getGouvernanceForForm>>,
   null
 >
+
+export const getBesoinsIngenierieFinanciereForForm = ({
+  gouvernanceId,
+}: {
+  gouvernanceId: string
+}) =>
+  prismaClient.gouvernance.findUnique({
+    where: {
+      id: gouvernanceId,
+      supression: null,
+    },
+    select: {
+      id: true,
+      departement: {
+        select: {
+          nom: true,
+          code: true,
+        },
+      },
+      besoinsEnIngenierieFinanciere: true,
+    },
+  })
+
+export type BesoinsIngenierieFinanciereForForm = Exclude<
+  Awaited<ReturnType<typeof getBesoinsIngenierieFinanciereForForm>>,
+  null
+>

@@ -23,6 +23,10 @@
     text-align: center;
 }
 
+.fr-text--break-all {
+    word-break: break-all;
+}
+
 .fr-width-full {
     width: 100%;
 }
