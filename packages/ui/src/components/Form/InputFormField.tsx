@@ -25,9 +25,9 @@ type CommonProps<T extends FieldValues> = {
 
 type InputProps = {
   type?: Exclude<HTMLInputTypeAttribute, 'checkbox' | 'textarea'>
-  min?: number
-  max?: number
-  step?: number
+  min?: number | string
+  max?: number | string
+  step?: number | string
 }
 
 type TextareaProps = {
@@ -113,6 +113,9 @@ const InputFormField = <T extends FieldValues>({
               onChange={inputOnChange}
               value={value ?? ''}
               ref={ref}
+              min={rest.min}
+              max={rest.max}
+              step={rest.step}
             />
           )
 
