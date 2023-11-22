@@ -40,7 +40,7 @@ const Page = async ({
 
   console.log('GOUVERNANCE', gouvernance)
 
-  if (!gouvernance) {
+  if (!gouvernance?.besoinsEnIngenierieFinanciere) {
     notFound()
   }
   if (gouvernance.departement.code !== codeDepartement) {
@@ -97,6 +97,9 @@ const Page = async ({
           important).
         </p>
         <BesoinsIngenierieFinancierePriorisationForm
+          besoinsEnIngenierieFinanciere={
+            gouvernance.besoinsEnIngenierieFinanciere
+          }
           defaultValue={defaultValues}
           codeDepartement={codeDepartement}
         />

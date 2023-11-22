@@ -60,8 +60,6 @@ const GouvernancePressentieForm = ({
   const mutation = trpc.gouvernance.gouvernancePressentie.useMutation()
   const router = useRouter()
 
-  console.log('ERRORS', formState.errors)
-
   const onSubmit = async (data: GouvernancePressentieData) => {
     try {
       await mutation.mutateAsync(data)

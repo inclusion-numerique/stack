@@ -210,7 +210,12 @@ export const getBesoinsIngenierieFinanciereForForm = ({
     },
   })
 
-export type BesoinsIngenierieFinanciereForForm = Exclude<
+export type GouvernanceWithBesoinsIngenierieFinanciereForForm = Exclude<
   Awaited<ReturnType<typeof getBesoinsIngenierieFinanciereForForm>>,
+  null
+>
+
+export type BesoinsIngenierieFinanciereForForm = Exclude<
+  GouvernanceWithBesoinsIngenierieFinanciereForForm['besoinsEnIngenierieFinanciere'],
   null
 >

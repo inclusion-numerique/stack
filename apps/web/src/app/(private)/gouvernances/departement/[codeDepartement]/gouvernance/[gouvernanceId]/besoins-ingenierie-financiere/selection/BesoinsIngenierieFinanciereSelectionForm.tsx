@@ -39,6 +39,7 @@ const BesoinsIngenierieFinanciereSelectionForm = ({
     console.log('SUBMIT', data)
 
     await mutation.mutateAsync(data)
+    router.refresh()
     router.push(
       modifierBesoinsIngenieriePath(
         { codeDepartement },

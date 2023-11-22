@@ -57,7 +57,7 @@ const GouvernanceCard = ({
   )}`
   const displayModificationMeta = modificationMeta !== creationMeta
   const hasCompletedBesoins =
-    !!besoinsEnIngenierieFinanciere?.selectionEnregistree
+    !!besoinsEnIngenierieFinanciere?.priorisationEnregistree
 
   return (
     <WhiteCard className="fr-mt-6v">

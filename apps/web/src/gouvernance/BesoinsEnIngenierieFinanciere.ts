@@ -138,30 +138,35 @@ export type BesoinsEnIngenierieFinanciereData = z.infer<
 
 export const BesoinsEnIngenierieFinancierePrioriteValidation = z.object({
   gouvernanceId: z.string().uuid(),
-  faireUnDiagnosticTerritorialPrestationPriorite: z.number().int().nullish(),
-  coConstruireLaFeuilleDeRoutePrestationPriorite: z.number().int().nullish(),
-  redigerLaFeuilleDeRoutePrestationPriorite: z.number().int().nullish(),
-  creerUnVehiculeJuridiquePrestationPriorite: z.number().int().nullish(),
-  formaliserLaFeuilleDeRouteAutrePrestationPriorite: z.number().int().nullish(),
-  structurerUnFondsLocalPrestationPriorite: z.number().int().nullish(),
-  monterDesDossiersDeSubventionPrestationPriorite: z.number().int().nullish(),
-  animerEtMettreEnOeuvrePrestationPriorite: z.number().int().nullish(),
-  financerLeDeploiementAutrePrestationPriorite: z.number().int().nullish(),
-  structurerUneFiliereDeReconditionnementPrestationPriorite: z
-    .number()
-    .int()
-    .nullish(),
-  collecterDesDonneesTerritorialesPrestationPriorite: z
-    .number()
-    .int()
-    .nullish(),
-  sensibiliserLesActeursPrestationPriorite: z.number().int().nullish(),
-  outillerLesActeursAutrePrestationPriorite: z.number().int().nullish(),
-  formerLesAgentsPublicsPriorite: z.number().int().nullish(),
-  formerLesSalariesAssociatifsPriorite: z.number().int().nullish(),
-  appuyerLaCertificationQualiopiPriorite: z.number().int().nullish(),
-  formerLesProfessionnelsAutrePriorite: z.number().int().nullish(),
-  totalEtpPriorite: z.number().int().nullish(),
+  priorites: z.object({
+    faireUnDiagnosticTerritorialPrestationPriorite: z.number().int().nullish(),
+    coConstruireLaFeuilleDeRoutePrestationPriorite: z.number().int().nullish(),
+    redigerLaFeuilleDeRoutePrestationPriorite: z.number().int().nullish(),
+    creerUnVehiculeJuridiquePrestationPriorite: z.number().int().nullish(),
+    formaliserLaFeuilleDeRouteAutrePrestationPriorite: z
+      .number()
+      .int()
+      .nullish(),
+    structurerUnFondsLocalPrestationPriorite: z.number().int().nullish(),
+    monterDesDossiersDeSubventionPrestationPriorite: z.number().int().nullish(),
+    animerEtMettreEnOeuvrePrestationPriorite: z.number().int().nullish(),
+    financerLeDeploiementAutrePrestationPriorite: z.number().int().nullish(),
+    structurerUneFiliereDeReconditionnementPrestationPriorite: z
+      .number()
+      .int()
+      .nullish(),
+    collecterDesDonneesTerritorialesPrestationPriorite: z
+      .number()
+      .int()
+      .nullish(),
+    sensibiliserLesActeursPrestationPriorite: z.number().int().nullish(),
+    outillerLesActeursAutrePrestationPriorite: z.number().int().nullish(),
+    formerLesAgentsPublicsPriorite: z.number().int().nullish(),
+    formerLesSalariesAssociatifsPriorite: z.number().int().nullish(),
+    appuyerLaCertificationQualiopiPriorite: z.number().int().nullish(),
+    formerLesProfessionnelsAutrePriorite: z.number().int().nullish(),
+    totalEtpPriorite: z.number().int().nullish(),
+  }),
 })
 
 export type BesoinsEnIngenierieFinancierePrioriteData = z.infer<

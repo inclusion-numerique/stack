@@ -31,6 +31,8 @@ const CreateBesoinsEnIngenierieFinanciereButton = ({
         { gouvernanceId, step: 'selection' },
       ),
     )
+
+    router.refresh()
   }
 
   return (

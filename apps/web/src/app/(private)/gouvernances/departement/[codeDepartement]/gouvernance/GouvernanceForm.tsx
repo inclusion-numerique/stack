@@ -78,8 +78,6 @@ const GouvernanceForm = ({
   const feuillesDeRouteErrorRef = useRef<HTMLParagraphElement>(null)
   const recruteursCoordinateursErrorRef = useRef<HTMLParagraphElement>(null)
 
-  console.log('DEFAULT VALUES', defaultValues)
-
   // Scroll to first general error on submit
   useEffect(() => {
     if (errors.membres) {
@@ -106,7 +104,6 @@ const GouvernanceForm = ({
 
   const onSubmit = async (data: GouvernanceData) => {
     try {
-      console.log('DATA SUBMISSION', data)
       await mutation.mutateAsync(data)
       router.refresh()
       createToast({
@@ -134,8 +131,6 @@ const GouvernanceForm = ({
     name: 'membres',
     keyName: 'id',
   })
-
-  console.log('ERRORS', errors)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

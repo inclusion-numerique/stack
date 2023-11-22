@@ -288,24 +288,26 @@ export const besoinsIngenierieFinanciereRouter = router({
     .mutation(async ({ input, ctx: { user } }) => {
       const {
         gouvernanceId,
-        coConstruireLaFeuilleDeRoutePrestationPriorite,
-        redigerLaFeuilleDeRoutePrestationPriorite,
-        formaliserLaFeuilleDeRouteAutrePrestationPriorite,
-        financerLeDeploiementAutrePrestationPriorite,
-        formerLesProfessionnelsAutrePriorite,
-        formerLesAgentsPublicsPriorite,
-        formerLesSalariesAssociatifsPriorite,
-        outillerLesActeursAutrePrestationPriorite,
-        sensibiliserLesActeursPrestationPriorite,
-        appuyerLaCertificationQualiopiPriorite,
-        creerUnVehiculeJuridiquePrestationPriorite,
-        faireUnDiagnosticTerritorialPrestationPriorite,
-        collecterDesDonneesTerritorialesPrestationPriorite,
-        monterDesDossiersDeSubventionPrestationPriorite,
-        structurerUnFondsLocalPrestationPriorite,
-        structurerUneFiliereDeReconditionnementPrestationPriorite,
-        totalEtpPriorite,
-        animerEtMettreEnOeuvrePrestationPriorite,
+        priorites: {
+          coConstruireLaFeuilleDeRoutePrestationPriorite,
+          redigerLaFeuilleDeRoutePrestationPriorite,
+          formaliserLaFeuilleDeRouteAutrePrestationPriorite,
+          financerLeDeploiementAutrePrestationPriorite,
+          formerLesProfessionnelsAutrePriorite,
+          formerLesAgentsPublicsPriorite,
+          formerLesSalariesAssociatifsPriorite,
+          outillerLesActeursAutrePrestationPriorite,
+          sensibiliserLesActeursPrestationPriorite,
+          appuyerLaCertificationQualiopiPriorite,
+          creerUnVehiculeJuridiquePrestationPriorite,
+          faireUnDiagnosticTerritorialPrestationPriorite,
+          collecterDesDonneesTerritorialesPrestationPriorite,
+          monterDesDossiersDeSubventionPrestationPriorite,
+          structurerUnFondsLocalPrestationPriorite,
+          structurerUneFiliereDeReconditionnementPrestationPriorite,
+          totalEtpPriorite,
+          animerEtMettreEnOeuvrePrestationPriorite,
+        },
       } = input
 
       const gouvernance = await prismaClient.gouvernance.findUnique({
@@ -378,8 +380,6 @@ export const besoinsIngenierieFinanciereRouter = router({
         animerEtMettreEnOeuvrePrestationPriorite:
           animerEtMettreEnOeuvrePrestationPriorite ?? null,
       } satisfies Prisma.BesoinsEnIngenierieFinanciereUncheckedUpdateInput
-
-      // TODO Sum ETPs
 
       const result = await prismaClient.besoinsEnIngenierieFinanciere.update({
         where: {

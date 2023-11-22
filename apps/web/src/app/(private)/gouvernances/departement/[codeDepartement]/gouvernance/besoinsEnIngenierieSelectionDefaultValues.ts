@@ -1,9 +1,9 @@
 import { DefaultValues } from 'react-hook-form/dist/types/form'
-import { BesoinsIngenierieFinanciereForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
+import { GouvernanceWithBesoinsIngenierieFinanciereForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { BesoinsEnIngenierieFinanciereData } from '@app/web/gouvernance/BesoinsEnIngenierieFinanciere'
 
 export const getBesoinsEnIngenierieSelectionDefaultValues = (
-  gouvernance: BesoinsIngenierieFinanciereForForm,
+  gouvernance: GouvernanceWithBesoinsIngenierieFinanciereForForm,
 ): DefaultValues<BesoinsEnIngenierieFinanciereData> & {
   gouvernanceId: string
 } => {
