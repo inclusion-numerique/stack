@@ -71,9 +71,10 @@ const BesoinForm = ({
             besoin === 'formaliserLaFeuilleDeRouteAutre' ||
             besoin === 'financerLeDeploiementAutre') && (
             <InputFormField
+              asterisk
               control={control}
               path={`${besoin}.precisions`}
-              label="Precisions"
+              label="Précisez votre besoin"
             />
           )}
         {besoinChecked && (
