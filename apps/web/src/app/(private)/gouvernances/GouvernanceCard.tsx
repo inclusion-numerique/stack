@@ -3,6 +3,7 @@ import Accordion from '@codegouvfr/react-dsfr/Accordion'
 import Button from '@codegouvfr/react-dsfr/Button'
 import EmptyValue from '@app/ui/components/EmptyValue'
 import Badge from '@codegouvfr/react-dsfr/Badge'
+import Notice from '@codegouvfr/react-dsfr/Notice'
 import { ListeGouvernanceItem } from '@app/web/app/(private)/gouvernances/getListeGouvernances'
 import WhiteCard from '@app/web/ui/WhiteCard'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
@@ -59,29 +60,39 @@ const GouvernanceCard = ({
   const hasCompletedBesoins =
     !!besoinsEnIngenierieFinanciere?.priorisationEnregistree
 
+  // Prefix by departement info if viewing this card from a higher scope than departement
+  const titlePrefix = scope.codeDepartement
+    ? ''
+    : `${departement.nom} (${departement.code}) · `
+
+  const titleMid = v2Enregistree
+    ? 'Proposition de gouvernance'
+    : 'Gouvernance pressentie'
+  const titleSuffix = titleIndex ? ` ${titleIndex}` : ''
+  const title = `${titlePrefix}${titleMid}${titleSuffix}`
+
   return (
     <WhiteCard className="fr-mt-6v">
       <div className="fr-flex fr-align-items-center fr-justify-content-space-between fr-flex-gap-2v fr-flex-wrap">
         <div>
-          <h5 className="fr-mb-0">
-            {!scope.codeDepartement &&
-              `${departement.nom} (${departement.code}) · `}
-            {v2Enregistree
-              ? 'Proposition de gouvernance'
-              : 'Gouvernance pressentie'}
-            {titleIndex && ` ${titleIndex}`}
-            {/* Display departement if viewing this card from a higher scope than departement */}
-          </h5>
+          <div className="fr-flex fr-align-items-center">
+            {v2Enregistree ? (
+              <h3 className="fr-mb-0">{title}</h3>
+            ) : (
+              <h5 className="fr-mb-0">{title}</h5>
+            )}
+            {(v2Enregistree || hasCompletedBesoins) && (
+              <Badge className="fr-mt-0 fr-ml-2w" severity="info" small>
+                Modifiable jusqu’au{' '}
+                {dateAsDay(limiteModificationDesGouvernances)}
+              </Badge>
+            )}
+          </div>
           {!v2Enregistree && (
             <p className="fr-mb-0 fr-mt-2v fr-text--sm">
               Déposée le {creationMeta}
               {displayModificationMeta && ` · Modifiée le ${modificationMeta}`}
             </p>
-          )}
-          {v2Enregistree && (
-            <Badge className="fr-mt-2v" severity="info" small>
-              Modifiable jusqu’au {dateAsDay(limiteModificationDesGouvernances)}
-            </Badge>
           )}
         </div>
         <div className="fr-flex fr-flex-shrink-0 fr-flex-nowrap fr-flex-gap-2v">
@@ -110,6 +121,14 @@ const GouvernanceCard = ({
           )}
         </div>
       </div>
+      {v2Enregistree && hasCompletedBesoins && (
+        <Notice
+          className="fr-my-8v"
+          title={`Votre proposition sera automatiquement envoyée à l’ANCT et aux membres de la gouvernance le ${dateAsDay(
+            limiteModificationDesGouvernances,
+          )}.`}
+        />
+      )}
       {isV2 && <hr className="fr-width-full fr-separator-8v" />}
       {!v2Enregistree && (
         <>

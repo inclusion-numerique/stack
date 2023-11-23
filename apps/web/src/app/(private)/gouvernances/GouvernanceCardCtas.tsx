@@ -65,7 +65,11 @@ const GouvernanceCardCtas = ({
     <>
       <div className={classNames(styles.cardCtaContainer, firstCtaClassName)}>
         <div className="fr-flex-grow-1">
-          <h4 className="fr-mb-0">Gouvernance & feuilles de route</h4>
+          {isV2 ? (
+            <h6 className="fr-mb-0">Gouvernance & feuilles de route</h6>
+          ) : (
+            <h4 className="fr-mb-0">Gouvernance & feuilles de route</h4>
+          )}
           {isV2 ? (
             <p className="fr-mb-0 fr-text--sm fr-text-mention--grey">
               Complétée le {v2CreationMeta}
@@ -136,7 +140,11 @@ const GouvernanceCardCtas = ({
       <hr className="fr-separator-8v" />
       <div className={styles.cardCtaContainer}>
         <div className="fr-flex-grow-1">
-          <h4 className="fr-mb-0">Besoins en ingénierie financière</h4>
+          {hasCompletedBesoins ? (
+            <h6 className="fr-mb-0">Besoins en ingénierie financière</h6>
+          ) : (
+            <h4 className="fr-mb-0">Besoins en ingénierie financière</h4>
+          )}
           {hasCompletedBesoins ? (
             <p className="fr-mb-0 fr-text--sm fr-text-mention--grey">
               Complétés le {besoinsCreationMeta}
