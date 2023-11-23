@@ -36,8 +36,10 @@ export const besoinsLabels = {
 } as const
 
 export const besoinsCategoriesLabels = {
-  formaliserLaFeuilleDeRoute: 'Formaliser la feuille de route',
-  financerLeDeploiement: 'Financer le déploiement',
-  formerLesProfessionnels: 'Former les professionnels',
-  outillerLesActeurs: 'Outiller les acteurs',
+  formaliserLaFeuilleDeRoute: 'Formalisation des feuilles de route',
+  financerLeDeploiement:
+    'Financement du déploiement de la/des feuille(s) de route',
+  formerLesProfessionnels:
+    'Formation des professionnels de l’inclusion numérique',
+  outillerLesActeurs: 'Outillage des acteurs de votre territoire',
 }

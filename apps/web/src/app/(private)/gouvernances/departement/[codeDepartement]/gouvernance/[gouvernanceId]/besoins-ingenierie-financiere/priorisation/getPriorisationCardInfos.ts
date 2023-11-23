@@ -62,7 +62,6 @@ export const getPriorisationCardInfos = ({
   }
   besoinsEnIngenierieFinanciere: BesoinsIngenierieFinanciereForForm
 }) => {
-  console.log('DEFAULT VALUES', defaultValue)
   const priorites = defaultValue.priorites ?? {}
 
   return Object.entries(priorites).map(([prioriteKey, priorite]) => {
@@ -81,19 +80,24 @@ export const getPriorisationCardInfos = ({
       }
     }
 
+    const isAutre =
+      typedKey.endsWith('AutrePriorite') ||
+      typedKey.endsWith('AutrePrestationPriorite')
+    const precisionKey = isAutre
+      ? typedKey
+          .replace(/PrestationPriorite$/, 'Precisions')
+          .replace(/Priorite$/, 'Precisions')
+      : null
+
+    // TODO Title and text for formations
+
     return {
       titre: 'Prestation de service',
       text: prioriteKeyLabels[typedKey],
       prioriteKey: typedKey,
       priorite,
-      autrePrecision: typedKey.endsWith('AutrePriorite')
-        ? (besoinsEnIngenierieFinanciere[
-            // Replace last chars of string Etp by Precisions
-            typedKey.replace(
-              /Priorite$/,
-              'Precisions',
-            ) as keyof typeof besoinsEnIngenierieFinanciere
-          ] as string)
+      autrePrecision: precisionKey
+        ? (besoinsEnIngenierieFinanciere[precisionKey] as string)
         : undefined,
     }
   })
