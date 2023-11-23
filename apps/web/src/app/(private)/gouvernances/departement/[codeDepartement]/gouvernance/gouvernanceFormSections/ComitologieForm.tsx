@@ -77,39 +77,44 @@ const ComitologieForm = ({
   return (
     <GouvernanceFormSectionCard {...gouvernanceFormSections.comitologie}>
       {/* eslint-disable-next-line no-return-assign */}
-      {comiteFields.map(({ id, type, frequence, commentaire }, index) => (
-        <div key={id}>
-          <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
-            <span>
-              <InfoLabelValue
-                label={`Comite ${index + 1}`}
-                value={
-                  <>
-                    {typeComite[type]} - {frequenceComite[frequence]}
-                    {commentaire ? (
-                      <>
-                        <br />
-                        {commentaire}
-                      </>
-                    ) : null}
-                  </>
-                }
+      {comiteFields.map(
+        ({ id, type, frequence, commentaire, typeAutrePrecisions }, index) => (
+          <div key={id}>
+            <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
+              <span>
+                <InfoLabelValue
+                  label={`Comite ${index + 1}`}
+                  value={
+                    <>
+                      {type === 'Autre'
+                        ? typeAutrePrecisions || 'Autre'
+                        : typeComite[type]}{' '}
+                      - {frequenceComite[frequence]}
+                      {commentaire ? (
+                        <>
+                          <br />
+                          {commentaire}
+                        </>
+                      ) : null}
+                    </>
+                  }
+                />
+              </span>
+              <Button
+                className="fr-ml-1w"
+                type="button"
+                priority="tertiary no outline"
+                disabled={disabled}
+                size="small"
+                iconId="fr-icon-delete-bin-line"
+                title="Supprimer"
+                onClick={() => removeComite(index)}
               />
-            </span>
-            <Button
-              className="fr-ml-1w"
-              type="button"
-              priority="tertiary no outline"
-              disabled={disabled}
-              size="small"
-              iconId="fr-icon-delete-bin-line"
-              title="Supprimer"
-              onClick={() => removeComite(index)}
-            />
+            </div>
+            <hr className="fr-separator-8v" />
           </div>
-          <hr className="fr-separator-8v" />
-        </div>
-      ))}
+        ),
+      )}
       {addingComite && (
         <>
           <h6 className="fr-mb-8v">Ajout d’un comité</h6>
