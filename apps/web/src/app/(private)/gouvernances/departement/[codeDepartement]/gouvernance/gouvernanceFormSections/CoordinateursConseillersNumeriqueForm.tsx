@@ -57,35 +57,51 @@ const CoordinateursConseillersNumeriqueForm = ({
     setAddingRecruteur(false)
     addRecruteurForm.reset()
   }
-
+  console.log('ERRORS', errors)
   return (
     <GouvernanceFormSectionCard
       {...gouvernanceFormSections.coordinateurConseillerNumeriqueDeLaGouvernance}
     >
       {/* eslint-disable-next-line no-return-assign */}
-      {recruteurFields.map(({ id, nom, siret }, index) => (
-        <div key={id}>
-          <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
-            <span>
-              <InfoLabelValue
-                label={`Collectivité/structure recruteuse ${index + 1}`}
-                value={nom || siret}
+      {recruteurFields.map(({ id, nom, siret }, index) => {
+        const recruteurError = errors.recruteursCoordinateurs?.[index]
+        const errorMessage =
+          recruteurError?.message ||
+          recruteurError?.siret?.message ||
+          recruteurError?.nom?.message
+
+        return (
+          <div key={id}>
+            <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
+              <span>
+                <InfoLabelValue
+                  label={`Collectivité/structure recruteuse ${index + 1}`}
+                  value={nom || siret}
+                />
+                {!!errorMessage && (
+                  <p
+                    id={`recruteurs_coordinateurs_${index}__error`}
+                    className="fr-error-text fr-mb-0 fr-mt-1v"
+                  >
+                    {errorMessage}
+                  </p>
+                )}
+              </span>
+              <Button
+                className="fr-ml-1w"
+                type="button"
+                priority="tertiary no outline"
+                disabled={disabled}
+                size="small"
+                iconId="fr-icon-delete-bin-line"
+                title="Supprimer"
+                onClick={() => removeRecruteur(index)}
               />
-            </span>
-            <Button
-              className="fr-ml-1w"
-              type="button"
-              priority="tertiary no outline"
-              disabled={disabled}
-              size="small"
-              iconId="fr-icon-delete-bin-line"
-              title="Supprimer"
-              onClick={() => removeRecruteur(index)}
-            />
+            </div>
+            <hr className="fr-separator-8v" />
           </div>
-          <hr className="fr-separator-8v" />
-        </div>
-      ))}
+        )
+      })}
       {addingRecruteur && (
         <>
           <h6 className="fr-mb-8v">
@@ -115,7 +131,7 @@ const CoordinateursConseillersNumeriqueForm = ({
         </>
       )}
 
-      {!!errors.recruteursCoordinateurs && (
+      {!!errors.recruteursCoordinateurs?.message && (
         <p
           ref={recruteursCoordinateursErrorRef}
           id="recruteurs_coordinateurs__error"

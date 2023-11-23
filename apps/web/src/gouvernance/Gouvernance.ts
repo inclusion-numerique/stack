@@ -36,9 +36,7 @@ export type ComiteData = z.infer<typeof ComiteValidation>
 export const FeuilleDeRouteValidation = z
   .object({
     id: z.string().uuid().nullish(),
-    nom: z.string({
-      required_error: 'Veuillez renseigner le nom de la feuille de route',
-    }),
+    nom: z.string().min(1, 'Veuillez renseigner le nom de la feuille de route'),
     // Actor code of the member that is the porteur of the feuille de route
     porteur: MembreValidation.refine(
       (data) => !!data,
@@ -94,16 +92,15 @@ export type FeuilleDeRouteData = z.infer<typeof FeuilleDeRouteValidation>
 
 const contactDuSousPrefetReferentConstraints = {
   gouvernanceId: z.string().uuid(),
-  sousPrefetReferentPrenom: z.string({
-    required_error: 'Veuillez renseigner le prénom du sous-préfet référent',
-  }),
-  sousPrefetReferentNom: z.string({
-    required_error: 'Veuillez renseigner le nom du sous-préfet référent',
-  }),
+  sousPrefetReferentPrenom: z
+    .string()
+    .min(1, 'Veuillez renseigner le prénom du sous-préfet référent'),
+  sousPrefetReferentNom: z
+    .string()
+    .min(1, 'Veuillez renseigner le nom du sous-préfet référent'),
   sousPrefetReferentEmail: z
-    .string({
-      required_error: 'Veuillez renseigner l’email du sous-préfet référent',
-    })
+    .string()
+    .min(1, 'Veuillez renseigner l’email du sous-préfet référent')
     .email('Veuillez renseigner un email valide'),
 }
 
@@ -152,9 +149,7 @@ const coordinateurConseillerNumeriqueDeLaGouvernanceConstraints = {
 
 const noteDeContextConstraints = {
   gouvernanceId: z.string().uuid(),
-  noteDeContexte: z.string({
-    required_error: 'Veuillez renseigner la note de contexte',
-  }),
+  noteDeContexte: z.string().min(1, 'Veuillez renseigner la note de contexte'),
 }
 
 export const GouvernanceSectionValidations = {
@@ -197,9 +192,7 @@ export type NoteDeContexteData = z.infer<
 >
 
 export const CreateGouvernanceValidation = z.object({
-  departementCode: z.string({
-    required_error: 'Veuillez renseigner le département',
-  }),
+  departementCode: z.string().min(1, 'Veuillez renseigner le département'),
 })
 export type CreateGouvernanceData = z.infer<typeof CreateGouvernanceValidation>
 
@@ -220,7 +213,7 @@ export const GouvernanceValidation = z
       !!data.pasDeCoporteurs || data.membres.some(({ coporteur }) => coporteur),
     {
       message: 'Veuillez renseigner les co-porteurs de la gouvernance',
-      path: ['membres'],
+      path: ['pasDeCoporteurs'],
     },
   )
 
