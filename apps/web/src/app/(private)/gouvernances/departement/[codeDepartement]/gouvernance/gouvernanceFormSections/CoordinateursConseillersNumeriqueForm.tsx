@@ -57,7 +57,7 @@ const CoordinateursConseillersNumeriqueForm = ({
     setAddingRecruteur(false)
     addRecruteurForm.reset()
   }
-  console.log('ERRORS', errors)
+
   return (
     <GouvernanceFormSectionCard
       {...gouvernanceFormSections.coordinateurConseillerNumeriqueDeLaGouvernance}

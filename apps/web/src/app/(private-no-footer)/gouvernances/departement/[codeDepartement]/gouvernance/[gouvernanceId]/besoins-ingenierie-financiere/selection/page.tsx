@@ -26,8 +26,6 @@ const Page = async ({
     codeDepartement,
   })
 
-  console.log('HERE', user)
-
   if (
     !canEditGouvernancePressentie(user, { departementCode: codeDepartement })
   ) {
@@ -37,8 +35,6 @@ const Page = async ({
   const gouvernance = await getBesoinsIngenierieFinanciereForForm({
     gouvernanceId,
   })
-
-  console.log('GOUVERNANCE', gouvernance)
 
   if (!gouvernance) {
     notFound()

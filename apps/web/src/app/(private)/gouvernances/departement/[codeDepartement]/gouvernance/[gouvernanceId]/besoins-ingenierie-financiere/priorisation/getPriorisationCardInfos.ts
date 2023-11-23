@@ -4,6 +4,7 @@ import { BesoinsIngenierieFinanciereForForm } from '@app/web/app/(private)/gouve
 import {
   besoinsCategoriesLabels,
   besoinsLabels,
+  formationsLabels,
 } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/besoinsLabels'
 import { getEtpDetails } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/besoinsEtps'
 import { numberToString } from '@app/web/utils/formatNumber'
@@ -84,21 +85,50 @@ export const getPriorisationCardInfos = ({
       typedKey.endsWith('AutrePriorite') ||
       typedKey.endsWith('AutrePrestationPriorite')
     const precisionKey = isAutre
-      ? typedKey
+      ? (typedKey
           .replace(/PrestationPriorite$/, 'Precisions')
-          .replace(/Priorite$/, 'Precisions')
+          .replace(
+            /Priorite$/,
+            'Precisions',
+          ) as keyof BesoinsIngenierieFinanciereForForm)
       : null
 
-    // TODO Title and text for formations
+    const isFormation =
+      typedKey === 'formerLesSalariesAssociatifsPriorite' ||
+      typedKey === 'formerLesAgentsPublicsPriorite'
+
+    if (!isFormation) {
+      return {
+        titre: 'Prestation de service',
+        text: prioriteKeyLabels[typedKey],
+        prioriteKey: typedKey,
+        priorite,
+        autrePrecision: precisionKey
+          ? (besoinsEnIngenierieFinanciere[precisionKey] as string)
+          : undefined,
+      }
+    }
+
+    // Formation
+    const formationCountKey = typedKey.replace(/Priorite$/, 'Nombre') as
+      | 'formerLesSalariesAssociatifsNombre'
+      | 'formerLesAgentsPublicsNombre'
+
+    const formationLabelKey = typedKey.replace(/Priorite$/, '') as
+      | 'formerLesSalariesAssociatifs'
+      | 'formerLesAgentsPublics'
+
+    const count = besoinsEnIngenierieFinanciere[formationCountKey]
+
+    const text = `Estimation du nombre de personnes à former : ${numberToString(
+      count ?? 0,
+    )}`
 
     return {
-      titre: 'Prestation de service',
-      text: prioriteKeyLabels[typedKey],
+      titre: formationsLabels[formationLabelKey],
+      text,
       prioriteKey: typedKey,
       priorite,
-      autrePrecision: precisionKey
-        ? (besoinsEnIngenierieFinanciere[precisionKey] as string)
-        : undefined,
     }
   })
 }

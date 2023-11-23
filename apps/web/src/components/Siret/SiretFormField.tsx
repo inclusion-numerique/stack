@@ -35,8 +35,7 @@ const SiretFormField = ({
 
   const checkSiretMutation = trpc.siret.upsertSiret.useMutation()
 
-  const { isError, isPending, isSuccess, data, error, mutateAsync } =
-    checkSiretMutation
+  const { isPending, mutateAsync } = checkSiretMutation
 
   useEffect(() => {
     if (!requiredSiretValidation.safeParse(siret).success) {
@@ -79,23 +78,9 @@ const SiretFormField = ({
       })
   }, [mutateAsync, siret])
 
-  console.log('INPUT FORM STATE', form.formState.errors)
-
-  console.log('SIRET VERIF', {
-    isError,
-    isPending,
-    isSuccess,
-    data,
-    error,
-  })
-
   const siretError = form.formState.errors.siret
   // Error is fetched from check API
   const nomError = form.formState.errors.nom
-
-  console.log('SIRET ERROR', siretError)
-  console.log('NOM ERROR', nomError)
-  console.log('FORM VALUES', siret, nom)
 
   // Info depends of the state of the values and of the state of the check
   // Show loading if check is pending or if check is done and there is no error on SIRET but there is an error on NOM that should be set by check mutation

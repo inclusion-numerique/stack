@@ -57,7 +57,6 @@ export const gouvernanceRouter = router({
   updateGouvernanceV2: protectedProcedure
     .input(GouvernanceValidation)
     .mutation(async ({ input, ctx: { user } }) => {
-      console.log('gouvernanceMutation', JSON.stringify(input, null, 2))
       const {
         gouvernanceId,
         recruteursCoordinateurs,

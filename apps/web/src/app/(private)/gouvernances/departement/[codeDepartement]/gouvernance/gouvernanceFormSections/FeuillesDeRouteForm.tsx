@@ -80,7 +80,6 @@ const FeuillesDeRouteForm = ({
     resolver: zodResolver(FeuilleDeRouteValidation),
     defaultValues,
   })
-  console.log('feuillesDeRoute ERRORS', addFeuilleDeRouteForm.formState.errors)
 
   const onEditFeuilleDeRoute = (index: number) => {
     const item = feuilleDeRouteFields[index]
@@ -101,12 +100,6 @@ const FeuillesDeRouteForm = ({
 
   const onAddFeuilleDeRoute = () => {
     addFeuilleDeRouteForm.handleSubmit((data) => {
-      // TODO: oui / non en boolean
-      // TODO remove type si non
-      // TODO remove precision si non ou type !== autre
-
-      console.log('ON ADD Feuille de route', data)
-
       const cleanedData = {
         ...data,
       }
@@ -114,12 +107,6 @@ const FeuillesDeRouteForm = ({
       const existingMembre = membreFields.findIndex(
         ({ code }) => code === data.porteur.code,
       )
-
-      console.log('CHECK IF EXISTING MEMBRE', {
-        membreFields,
-        selectData: data.porteur,
-        existingMembre,
-      })
 
       if (existingMembre === -1) {
         appendMembre(data.porteur)
@@ -235,9 +222,6 @@ const FeuillesDeRouteForm = ({
             options={membreSelectOptions}
             placeholder="Rechercher"
             disabled={disabled}
-            onInputChange={(value) => {
-              console.log('SELECT INPUT CHANGE', value)
-            }}
             transformOptionToValue={(option) => ({
               code: option.value,
               nom: option.stringLabel,

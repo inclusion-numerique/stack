@@ -38,8 +38,6 @@ const Page = async ({
     gouvernanceId,
   })
 
-  console.log('GOUVERNANCE', gouvernance)
-
   if (!gouvernance?.besoinsEnIngenierieFinanciere) {
     notFound()
   }

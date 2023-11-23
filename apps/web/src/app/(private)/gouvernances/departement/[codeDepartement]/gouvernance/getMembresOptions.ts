@@ -260,9 +260,6 @@ export const filterMemberOptions = (
   const excludeFilterValues = excludeCodes?.map(codeToFilterValue)
   const onlyFilterValues = onlyCodes?.map(codeToFilterValue)
 
-  console.log('excludeFilterValues', excludeFilterValues)
-  console.log('onlyFilterValues', onlyFilterValues)
-
   return options
     .map(({ label, options: subOptions }) => ({
       label,

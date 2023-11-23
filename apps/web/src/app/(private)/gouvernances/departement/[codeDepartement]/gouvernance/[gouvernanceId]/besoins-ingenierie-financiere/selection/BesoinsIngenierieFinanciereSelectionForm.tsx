@@ -36,8 +36,6 @@ const BesoinsIngenierieFinanciereSelectionForm = ({
   const router = useRouter()
 
   const onSubmit = async (data: BesoinsEnIngenierieFinanciereData) => {
-    console.log('SUBMIT', data)
-
     await mutation.mutateAsync(data)
     router.refresh()
     router.push(
@@ -54,9 +52,6 @@ const BesoinsIngenierieFinanciereSelectionForm = ({
   const onCancel = () => {
     form.reset(defaultValue)
   }
-
-  console.log('VALUES', form.getValues())
-  console.log('ERRORS', form.formState.errors)
 
   const loading = mutation.isPending || mutation.isSuccess
 

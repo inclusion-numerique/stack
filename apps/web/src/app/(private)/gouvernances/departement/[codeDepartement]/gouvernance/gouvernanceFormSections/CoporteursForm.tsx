@@ -88,9 +88,6 @@ const CoporteursForm = ({
     form.watch('feuillesDeRoute').map(({ porteur: { code } }) => code),
   )
 
-  console.log('COPO - Membres', membreFields)
-  console.log('COPO - Coporteurs', coporteurCodes)
-
   let coporteurListIndex = 0
 
   return (
@@ -149,9 +146,6 @@ const CoporteursForm = ({
             placeholder="Rechercher"
             disabled={disabled}
             isClearable
-            onInputChange={(value) => {
-              console.log('SELECT INPUT CHANGE', value)
-            }}
             onSelectChange={onCoporteurChange}
           />
           <FindMemberNotice />

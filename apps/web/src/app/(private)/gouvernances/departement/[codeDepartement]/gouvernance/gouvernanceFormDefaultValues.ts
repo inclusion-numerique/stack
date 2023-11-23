@@ -95,7 +95,5 @@ export const getGouvernanceFormDefaultValues = (
   // NoteDeContexte
   defaultValues.noteDeContexte = noteDeContexte ?? undefined
 
-  console.log('DEFAULT VALUES')
-
   return defaultValues
 }

@@ -93,11 +93,6 @@ const BesoinsIngenierieFinancierePriorisationForm = ({
     // Swap the card with the previous one
     for (const [oldPriority, newOrderedCard] of Object.entries(orderedCards)) {
       if (Number.parseInt(oldPriority, 10) === fromPriority - 1) {
-        console.log(
-          'SWAPPING DOWN',
-          `priorites.${newOrderedCard.prioriteKey}`,
-          fromPriority,
-        )
         form.setValue(
           `priorites.${
             newOrderedCard.prioriteKey as 'faireUnDiagnosticTerritorialPrestationPriorite'
@@ -108,11 +103,6 @@ const BesoinsIngenierieFinancierePriorisationForm = ({
       }
 
       if (Number.parseInt(oldPriority, 10) === fromPriority) {
-        console.log(
-          'SWAPPING UP',
-          `priorites.${newOrderedCard.prioriteKey}`,
-          fromPriority - 1,
-        )
         form.setValue(
           `priorites.${
             newOrderedCard.prioriteKey as 'faireUnDiagnosticTerritorialPrestationPriorite'
@@ -125,16 +115,9 @@ const BesoinsIngenierieFinancierePriorisationForm = ({
   }
 
   const onPriorityKeyDown = (priorityKey: string, fromPriority: number) => {
-    console.log('PUTING PRIORITY DOWN', priorityKey)
-
     // Swap the card with the next one
     for (const [oldPriority, newOrderedCard] of Object.entries(orderedCards)) {
       if (Number.parseInt(oldPriority, 10) === fromPriority + 1) {
-        console.log(
-          'SWAPPING UP',
-          `priorites.${newOrderedCard.prioriteKey}`,
-          fromPriority,
-        )
         form.setValue(
           `priorites.${
             newOrderedCard.prioriteKey as 'faireUnDiagnosticTerritorialPrestationPriorite'
@@ -145,11 +128,6 @@ const BesoinsIngenierieFinancierePriorisationForm = ({
       }
 
       if (Number.parseInt(oldPriority, 10) === fromPriority) {
-        console.log(
-          'SWAPPING DOWN',
-          `priorites.${newOrderedCard.prioriteKey}`,
-          fromPriority + 1,
-        )
         form.setValue(
           `priorites.${
             newOrderedCard.prioriteKey as 'faireUnDiagnosticTerritorialPrestationPriorite'

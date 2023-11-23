@@ -96,9 +96,6 @@ export const besoinsIngenierieFinanciereRouter = router({
         },
       })
 
-      console.log('MUTATION', gouvernanceId)
-      console.log('MUTATION: Gouv', gouvernance)
-
       if (!gouvernance || !gouvernance.besoinsEnIngenierieFinanciere) {
         throw notFoundError()
       }
