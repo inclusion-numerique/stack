@@ -37,7 +37,7 @@ export const imprimerGouvernancePath = (scope: GouvernanceScope, id: string) =>
   `${gouvernanceHomePath(scope)}/gouvernance/${id}/imprimer`
 
 export const detailGouvernancePath = (scope: GouvernanceScope, id: string) =>
-  `${gouvernanceHomePath(scope)}/gouvernance/${id}/detail`
+  `${gouvernanceHomePath(scope)}/gouvernance/${id}`
 
 export const modifierGouvernancePath = (scope: GouvernanceScope, id: string) =>
   `${gouvernanceHomePath(scope)}/gouvernance/${id}/modifier`
