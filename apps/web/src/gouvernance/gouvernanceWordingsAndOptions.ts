@@ -30,6 +30,14 @@ export const frequenceComite: { [value in FrequenceComite]: string } = {
   [FrequenceComite.Autre]: 'Autre',
 }
 
+export const frequenceComiteMasculin: { [value in FrequenceComite]: string } = {
+  [FrequenceComite.Mensuelle]: 'Mensuel',
+  [FrequenceComite.Trimestrielle]: 'Trimestriel',
+  [FrequenceComite.Semestrielle]: 'Semestriel',
+  [FrequenceComite.Annuelle]: 'Annuel',
+  [FrequenceComite.Autre]: 'Autre',
+}
+
 export const frequenceComiteOptions = (() => {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { [FrequenceComite.Autre]: _autre, ...availableOptions } =

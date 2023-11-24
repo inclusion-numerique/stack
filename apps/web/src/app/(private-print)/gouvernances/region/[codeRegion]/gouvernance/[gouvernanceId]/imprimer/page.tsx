@@ -4,6 +4,7 @@ import { getGouvernanceForForm } from '@app/web/app/(private)/gouvernances/depar
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import GouvernancePrint from '@app/web/app/(private-print)/gouvernances/GouvernancePrint'
 import { generateRegionMetadata } from '@app/web/app/(private)/gouvernances/region/generateRegionMetadata'
+import { getBesoinsEnIngenierieFinanciereForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getBesoinsIngenierieFinanciereForForm'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -17,6 +18,7 @@ const Page = async ({
   await checkUserAccessToGouvernanceScopeOrNavigate({ codeRegion })
 
   const gouvernance = await getGouvernanceForForm(gouvernanceId)
+  const besoins = await getBesoinsEnIngenierieFinanciereForForm(gouvernanceId)
 
   if (!gouvernance) {
     notFound()
@@ -25,7 +27,13 @@ const Page = async ({
     notFound()
   }
 
-  return <GouvernancePrint gouvernance={gouvernance} scope={{ codeRegion }} />
+  return (
+    <GouvernancePrint
+      besoins={besoins}
+      gouvernance={gouvernance}
+      scope={{ codeRegion }}
+    />
+  )
 }
 
 export default Page

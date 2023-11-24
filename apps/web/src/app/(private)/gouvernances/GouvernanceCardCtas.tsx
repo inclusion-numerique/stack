@@ -24,14 +24,12 @@ const GouvernanceCardCtas = ({
   canEdit?: boolean
   canCreateInDepartementCode?: string
 }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const v2CreationMeta = gouvernance?.v2Enregistree
     ? `${dateAsDay(gouvernance.v2Enregistree)} par ${nameOrEmail(
         gouvernance.createur,
       )}`
     : null
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const besoinsCreationMeta = gouvernance?.besoinsEnIngenierieFinanciere
     ? `${dateAsDay(
         gouvernance.besoinsEnIngenierieFinanciere.creation,
@@ -44,14 +42,12 @@ const GouvernanceCardCtas = ({
       )}`
     : null
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const besoinsModificationMeta = gouvernance?.besoinsEnIngenierieFinanciere
     ? `${dateAsDay(
         gouvernance.besoinsEnIngenierieFinanciere.modification,
       )} par ${nameOrEmail(gouvernance.derniereModificationPar)}`
     : null
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const displayModificationMeta = modificationMeta !== v2CreationMeta
   const displayBesoinsModificationMeta =
     besoinsModificationMeta !== besoinsCreationMeta

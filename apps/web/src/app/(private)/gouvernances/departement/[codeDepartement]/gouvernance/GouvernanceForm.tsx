@@ -10,7 +10,7 @@ import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormFiel
 import { useRouter } from 'next/navigation'
 import classNames from 'classnames'
 import Notice from '@codegouvfr/react-dsfr/Notice'
-import { useReplaceUrlToAnchor } from '@app/ui/hooks/useReplaceUrlToAnchor' // import styles from './GouvernanceForm.module.css'
+import { useReplaceUrlToAnchor } from '@app/ui/hooks/useReplaceUrlToAnchor'
 import { createToast } from '@app/ui/toast/createToast'
 import RedAsterisk from '@app/web/ui/RedAsterisk'
 import { trpc } from '@app/web/trpc'
@@ -32,7 +32,6 @@ import ComitologieForm from '@app/web/app/(private)/gouvernances/departement/[co
 import FeuillesDeRouteForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/FeuillesDeRouteForm'
 import { Option } from '@app/web/utils/options'
 import CoordinateursConseillersNumeriqueForm from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/CoordinateursConseillersNumeriqueForm'
-// import styles from './GouvernanceForm.module.css'
 
 const scrollToRef = (ref: RefObject<HTMLElement>) => {
   ref.current?.scrollIntoView({

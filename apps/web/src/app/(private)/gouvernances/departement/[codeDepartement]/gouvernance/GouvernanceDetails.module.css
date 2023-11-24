@@ -1,0 +1,32 @@
+.print {
+    * {
+        border-top: none !important;
+        border-bottom: none !important;
+        border-left: none !important;
+        border-right: none !important;
+    }
+
+    hr {
+        display: none;
+        margin-bottom: 0 !important;
+        opacity: 0;
+    }
+
+    h1 {
+        font-size: 14px !important;
+    }
+
+    h5 {
+        font-size: 12px !important;
+        margin-bottom: 0 !important;
+    }
+
+    div, p {
+        font-size: 10px !important;
+    }
+
+    .box {
+        padding: 0 !important;
+    }
+}
+

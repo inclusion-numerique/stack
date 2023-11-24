@@ -15,7 +15,7 @@ import {
 import GouvernanceFormSectionCard from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/GouvernanceFormSectionCard'
 import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
 import {
-  frequenceComite,
+  frequenceComiteMasculin,
   frequenceComiteOptions,
   typeComite,
   typeComiteOptions,
@@ -89,7 +89,7 @@ const ComitologieForm = ({
                       {type === 'Autre'
                         ? typeAutrePrecisions || 'Autre'
                         : typeComite[type]}{' '}
-                      - {frequenceComite[frequence]}
+                      - {frequenceComiteMasculin[frequence]}
                       {commentaire ? (
                         <>
                           <br />

@@ -16,7 +16,7 @@ const BesoinCardContent = ({
       <p className="fr-text--lg fr-mb-0 fr-text--bold">{titre}</p>
       <Badge
         small
-        className="fr-badge--blue-cumulus fr-flex-shrink-0 fr-ml-10v"
+        className="fr-hidden-print fr-badge--blue-cumulus fr-flex-shrink-0 fr-ml-10v"
       >
         Priorité {index + 1}
       </Badge>

@@ -200,3 +200,7 @@
         max-width: 840px;
     }
 }
+
+.fr-color-inherit {
+    color: inherit;
+}
