@@ -15,12 +15,29 @@ export type GouvernanceScope =
       national: true
     }
 
-export const gouvernanceHomePath = (scope: GouvernanceScope) =>
-  scope.codeRegion
-    ? `/gouvernances/region/${scope.codeRegion}`
+export type GouvernanceHomeSearchParams = {
+  'gouvernance-completee'?: string
+}
+export const gouvernanceCompletedSearchParam = 'gouvernance-completee'
+
+export const gouvernanceHomePath = (
+  scope: GouvernanceScope,
+  { gouvernanceCompleted }: { gouvernanceCompleted?: boolean } = {},
+) => {
+  const queryParams = new URLSearchParams()
+  if (gouvernanceCompleted) {
+    queryParams.set(gouvernanceCompletedSearchParam, '1')
+  }
+
+  const queryParamsString = queryParams.toString()
+  const queryParamsPart = queryParamsString ? `?${queryParamsString}` : ''
+
+  return scope.codeRegion
+    ? `/gouvernances/region/${scope.codeRegion}${queryParamsPart}`
     : scope.codeDepartement
-    ? `/gouvernances/departement/${scope.codeDepartement}`
-    : `/gouvernances/national`
+    ? `/gouvernances/departement/${scope.codeDepartement}${queryParamsPart}`
+    : `/gouvernances/national${queryParamsPart}`
+}
 
 export const gouvernanceCandidatsPath = (scope: GouvernanceScope) =>
   `${gouvernanceHomePath(scope)}/candidats-a-la-gouvernance`

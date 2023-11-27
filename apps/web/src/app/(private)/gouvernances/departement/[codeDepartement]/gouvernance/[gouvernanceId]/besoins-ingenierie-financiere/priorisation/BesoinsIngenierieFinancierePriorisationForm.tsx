@@ -24,11 +24,13 @@ const BesoinsIngenierieFinancierePriorisationForm = ({
   codeDepartement,
   defaultValue,
   besoinsEnIngenierieFinanciere,
+  v2Enregistree,
 }: {
   codeDepartement: string
   defaultValue: DefaultValues<BesoinsEnIngenierieFinancierePrioriteData> & {
     gouvernanceId: string
   }
+  v2Enregistree?: boolean
   besoinsEnIngenierieFinanciere: BesoinsIngenierieFinanciereForForm
 }) => {
   const mutation = trpc.besoinsIngenierieFinanciere.priorisation.useMutation()
@@ -57,7 +59,15 @@ const BesoinsIngenierieFinancierePriorisationForm = ({
       priority: 'success',
       message: 'Vos besoins en ingénierie financière ont bien été enregistrés',
     })
-    router.push(gouvernanceHomePath({ codeDepartement }))
+    // Open the modal on redirect if everything is completed for the first time
+    const firstTimeAllCompleted =
+      v2Enregistree && !besoinsEnIngenierieFinanciere.priorisationEnregistree
+    router.push(
+      gouvernanceHomePath(
+        { codeDepartement },
+        { gouvernanceCompleted: firstTimeAllCompleted },
+      ),
+    )
   }
 
   const onCancel = () => {

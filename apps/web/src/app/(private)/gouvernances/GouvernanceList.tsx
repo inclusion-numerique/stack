@@ -10,6 +10,7 @@ import GouvernanceCardCtas from '@app/web/app/(private)/gouvernances/Gouvernance
 import GouvernanceCard from '@app/web/app/(private)/gouvernances/GouvernanceCard'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { limiteModificationDesGouvernances } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceMetadata'
+import GouvernanceCompletedModal from '@app/web/app/(private)/gouvernances/GouvernanceCompletedModal'
 
 const GouvernanceList = ({
   scope,
@@ -166,6 +167,7 @@ const GouvernanceList = ({
           ))}
         </>
       )}
+      <GouvernanceCompletedModal />
     </>
   )
 }

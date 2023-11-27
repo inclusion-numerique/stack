@@ -100,6 +100,7 @@ const Page = async ({
           }
           defaultValue={defaultValues}
           codeDepartement={codeDepartement}
+          v2Enregistree={!!gouvernance.v2Enregistree}
         />
       </div>
     </>

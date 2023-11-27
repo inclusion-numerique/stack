@@ -47,14 +47,18 @@ const GouvernanceForm = ({
   className,
   membreOptions,
   perimetreEpciOptions,
+  priorisationBesoinsEnregistree,
+  v2Enregistree,
 }: {
   codeDepartement: string
   codeRegion: string | null
   defaultValues: DefaultValues<GouvernanceData>
   className?: string
+  priorisationBesoinsEnregistree?: boolean
   // If editing existing
   membreOptions: MembreOptions
   perimetreEpciOptions: Option[]
+  v2Enregistree?: boolean
 }) => {
   const form = useForm<GouvernanceData>({
     resolver: zodResolver(GouvernanceValidation),
@@ -109,7 +113,15 @@ const GouvernanceForm = ({
         priority: 'success',
         message: 'La gouvernance a bien été enregistrée',
       })
-      router.push(gouvernanceHomePath({ codeDepartement }))
+      // Open the modal on redirect if everything is completed for the first time
+      const firstTimeAllCompleted =
+        !v2Enregistree && priorisationBesoinsEnregistree
+      router.push(
+        gouvernanceHomePath(
+          { codeDepartement },
+          { gouvernanceCompleted: firstTimeAllCompleted },
+        ),
+      )
     } catch (mutationError) {
       if (!applyZodValidationMutationErrorsToForm(mutationError, setError)) {
         // TODO Go over this kind of stuff and add Toast

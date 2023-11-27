@@ -95,6 +95,11 @@ const Page = async ({
               defaultValues={defaultValues}
               membreOptions={membreOptions}
               perimetreEpciOptions={perimetreEpciOptions}
+              v2Enregistree={!!gouvernance.v2Enregistree}
+              priorisationBesoinsEnregistree={
+                !!gouvernance.besoinsEnIngenierieFinanciere
+                  ?.priorisationEnregistree
+              }
             />
           </div>
         </div>

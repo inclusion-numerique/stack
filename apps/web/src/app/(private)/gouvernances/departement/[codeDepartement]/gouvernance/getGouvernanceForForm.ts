@@ -200,6 +200,7 @@ export const getBesoinsIngenierieFinanciereForForm = ({
     },
     select: {
       id: true,
+      v2Enregistree: true,
       departement: {
         select: {
           nom: true,
