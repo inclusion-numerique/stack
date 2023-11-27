@@ -35,7 +35,11 @@ const CoporteursForm = ({
 
   const [addingCoporteur, setAddingCoporteur] = useState(false)
 
-  const addCoporteurForm = useForm<{ code: string }>({})
+  const addCoporteurForm = useForm<{ code: string }>({
+    defaultValues: {
+      code: '',
+    },
+  })
 
   const coporteurCodes = membreFields
     .filter(({ coporteur }) => coporteur)

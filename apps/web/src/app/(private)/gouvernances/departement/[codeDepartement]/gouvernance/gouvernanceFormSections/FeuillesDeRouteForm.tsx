@@ -154,59 +154,64 @@ const FeuillesDeRouteForm = ({
         (
           { id, nom, porteur: fieldPorteur, perimetreScope, typeContrat },
           index,
-        ) => (
-          <div key={id}>
-            <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
-              <span>
-                <InfoLabelValue
-                  label={`Feuille de route ${index + 1} : ${nom}`}
-                  value={
-                    <>
-                      Porteur&nbsp;: {fieldPorteur.nom}
-                      <br />
-                      Périmètre géographique&nbsp;:{' '}
-                      {perimetreFeuilleDeRouteLabels[perimetreScope]}
-                      {typeContrat ? (
-                        <>
-                          <br />
-                          Contrat préexistant&nbsp;:{' '}
-                          {typeContratLabels[typeContrat]}
-                        </>
-                      ) : null}
-                    </>
-                  }
-                />
-              </span>
-              <span>
-                <Button
-                  type="button"
-                  priority="tertiary no outline"
-                  disabled={disabled}
-                  size="small"
-                  className="fr-ml-1w"
-                  iconId="fr-icon-edit-line"
-                  title="Modifier"
-                  onClick={() => onEditFeuilleDeRoute(index)}
-                />
-                <Button
-                  className="fr-ml-1w"
-                  type="button"
-                  priority="tertiary no outline"
-                  disabled={disabled}
-                  size="small"
-                  iconId="fr-icon-delete-bin-line"
-                  title="Supprimer"
-                  onClick={() => removeFeuilleDeRoute(index)}
-                />
-              </span>
+        ) =>
+          editingFeuilleDeRoute === index ? null : (
+            <div key={id}>
+              <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
+                <span>
+                  <InfoLabelValue
+                    label={`Feuille de route ${index + 1} : ${nom}`}
+                    value={
+                      <>
+                        Porteur&nbsp;: {fieldPorteur.nom}
+                        <br />
+                        Périmètre géographique&nbsp;:{' '}
+                        {perimetreFeuilleDeRouteLabels[perimetreScope]}
+                        {typeContrat ? (
+                          <>
+                            <br />
+                            Contrat préexistant&nbsp;:{' '}
+                            {typeContratLabels[typeContrat]}
+                          </>
+                        ) : null}
+                      </>
+                    }
+                  />
+                </span>
+                <span>
+                  <Button
+                    type="button"
+                    priority="tertiary no outline"
+                    disabled={disabled}
+                    size="small"
+                    className="fr-ml-1w"
+                    iconId="fr-icon-edit-line"
+                    title="Modifier"
+                    onClick={() => onEditFeuilleDeRoute(index)}
+                  />
+                  <Button
+                    className="fr-ml-1w"
+                    type="button"
+                    priority="tertiary no outline"
+                    disabled={disabled}
+                    size="small"
+                    iconId="fr-icon-delete-bin-line"
+                    title="Supprimer"
+                    onClick={() => removeFeuilleDeRoute(index)}
+                  />
+                </span>
+              </div>
+              <hr className="fr-separator-8v" />
             </div>
-            <hr className="fr-separator-8v" />
-          </div>
-        ),
+          ),
       )}
       {(addingFeuilleDeRoute || editingFeuilleDeRoute !== null) && (
         <>
-          <h6 className="fr-mb-8v">Ajout d’une feuille de route</h6>
+          <h6 className="fr-mb-8v">
+            {editingFeuilleDeRoute === null
+              ? 'Ajout d’une feuille de route'
+              : 'Mofifier la feuille de route'}
+          </h6>
           <InputFormField
             label="Quel est le nom de la feuille de route ?"
             asterisk
@@ -285,7 +290,7 @@ const FeuillesDeRouteForm = ({
               iconId="fr-icon-check-line"
               iconPosition="right"
             >
-              Ajouter
+              {editingFeuilleDeRoute === null ? 'Ajouter' : 'Modifier'}
             </Button>
           </div>
         </>
