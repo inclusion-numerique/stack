@@ -39,6 +39,10 @@
     flex-direction: column;
 }
 
+.fr-direction-column-reverse {
+    flex-direction: column-reverse;
+}
+
 .fr-align-self-center {
     align-self: center;
 }

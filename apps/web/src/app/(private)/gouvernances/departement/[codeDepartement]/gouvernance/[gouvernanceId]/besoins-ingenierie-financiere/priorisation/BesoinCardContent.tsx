@@ -7,16 +7,28 @@ import styles from './BesoinPriorisationCard.module.css'
 const BesoinCardContent = ({
   index,
   card: { text, titre, autrePrecision, etpDetails },
+  print,
 }: {
   index: number
   card: PriorisationCardInfo
+  print?: boolean
 }) => (
   <div className={styles.content}>
-    <div className={classNames('fr-mb-2v', styles.header)}>
+    {print && index !== 0 && <hr className="fr-separator-4v print-separator" />}
+    <div
+      className={classNames(
+        'fr-mb-2v',
+        styles.header,
+        print && 'fr-direction-column-reverse',
+      )}
+    >
       <p className="fr-text--lg fr-mb-0 fr-text--bold">{titre}</p>
       <Badge
         small
-        className="fr-hidden-print fr-badge--blue-cumulus fr-flex-shrink-0 fr-ml-10v"
+        className={classNames(
+          'fr-badge--blue-cumulus fr-flex-shrink-0',
+          print ? '' : 'fr-ml-10v',
+        )}
       >
         Priorité {index + 1}
       </Badge>

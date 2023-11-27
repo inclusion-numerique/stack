@@ -110,9 +110,7 @@ const GouvernanceDetails = async ({
     )
   }
 
-  const titlePrefix = scope.codeDepartement
-    ? ''
-    : `${departement.nom} (${departement.code}) · `
+  const titleDepartement = `${departement.nom} (${departement.code})`
 
   const besoinCardInfos = besoins
     ? getPriorisationCardInfos({
@@ -176,10 +174,18 @@ const GouvernanceDetails = async ({
               <BackLink href={gouvernanceHomePath(scope)} />
               {print && <PrintButton />}
             </div>
-            <h1 className="fr-mb-2v fr-mt-6v fr-text-title--blue-france">
-              {titlePrefix}Proposition de gouvernance
+            <h1 className="fr-mb-2v   fr-mt-6v fr-text-title--blue-france">
+              Proposition de gouvernance
             </h1>
-            <p className="fr-mb-0 fr-text--sm fr-text-mention--grey">
+            <h2 className="fr-mb-2v fr-text-title--blue-france">
+              {titleDepartement}
+            </h2>
+            <p
+              className={classNames(
+                print ? 'fr-mb-6v' : 'fr-mb-0',
+                'fr-text--sm fr-text-mention--grey',
+              )}
+            >
               Déposée le {creationMeta}
               {displayModificationMeta && ` · Modifiée le ${modificationMeta}`}
             </p>
@@ -302,16 +308,18 @@ const GouvernanceDetails = async ({
                 {collectiviteMembres.length > 0 && (
                   <>
                     <hr className="fr-separator-8v" />
-                    <div className="fr-flex fr-width-full fr-justify-content-space-between">
-                      <p className="fr-text--xl fr-my-0 fr-text--bold">
-                        Collectivité{sPluriel(collectiviteMembres.length)}
-                      </p>
-                      <p className="fr-text--xl fr-ml-1w fr-my-0 fr-text--bold">
-                        {collectiviteMembres.length}
-                      </p>
-                    </div>
+                    <p className="fr-text--xl fr-my-0 fr-text--bold">
+                      Collectivité{sPluriel(collectiviteMembres.length)}&nbsp;:{' '}
+                      {collectiviteMembres.length}
+                    </p>
                     {collectiviteMembres.map(({ nom, code }) => (
-                      <p className="fr-mt-4v fr-mb-0" key={code}>
+                      <p
+                        className={classNames(
+                          print ? 'fr-mt-0' : 'fr-mt-4v',
+                          ' fr-mb-0',
+                        )}
+                        key={code}
+                      >
                         {nom}
                       </p>
                     ))}
@@ -320,16 +328,18 @@ const GouvernanceDetails = async ({
                 {structureMembres.length > 0 && (
                   <>
                     <hr className="fr-separator-8v" />
-                    <div className="fr-flex fr-width-full fr-justify-content-space-between">
-                      <p className="fr-text--xl fr-my-0 fr-text--bold">
-                        Structure{sPluriel(structureMembres.length)}
-                      </p>
-                      <p className="fr-text--xl  fr-ml-1w fr-my-0 fr-text--bold">
-                        {structureMembres.length}
-                      </p>
-                    </div>
+                    <p className="fr-text--xl fr-my-0 fr-text--bold">
+                      Structure{sPluriel(structureMembres.length)}&nbsp;:{' '}
+                      {structureMembres.length}
+                    </p>
                     {structureMembres.map(({ nom, code }) => (
-                      <p className="fr-mt-4v fr-mb-0" key={code}>
+                      <p
+                        className={classNames(
+                          print ? 'fr-mt-0' : 'fr-mt-4v',
+                          ' fr-mb-0',
+                        )}
+                        key={code}
+                      >
                         {nom}
                       </p>
                     ))}
@@ -533,7 +543,11 @@ const GouvernanceDetails = async ({
                       key={card.prioriteKey}
                       className={classNames(styles.card)}
                     >
-                      <BesoinCardContent index={index} card={card} />
+                      <BesoinCardContent
+                        print={print}
+                        index={index}
+                        card={card}
+                      />
                     </div>
                   </>
                 ))}
