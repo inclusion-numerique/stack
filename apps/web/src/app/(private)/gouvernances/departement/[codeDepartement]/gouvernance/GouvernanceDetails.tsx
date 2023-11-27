@@ -155,6 +155,7 @@ const GouvernanceDetails = async ({
       <div
         className={classNames(
           'fr-container fr-pb-10v fr-mb-20v',
+          print && 'fr-container--narrow',
           print && styles.print,
         )}
       >
@@ -263,7 +264,12 @@ const GouvernanceDetails = async ({
                   {gouvernanceFormSections.contactDuSousPrefetReferent.title}
                 </h5>
                 <hr className="fr-separator-8v" />
-                <p className="fr-mb-2v fr-text--medium">
+                <p
+                  className={classNames(
+                    print ? 'fr-mb-0' : 'fr-mb-2v',
+                    'fr-text--medium',
+                  )}
+                >
                   {sousPrefetReferentPrenom} {sousPrefetReferentNom}
                   <br />
                   {sousPrefetReferentEmail}
@@ -294,6 +300,7 @@ const GouvernanceDetails = async ({
                       key={code}
                       label={`Co-porteur ${index + 1}`}
                       value={nom}
+                      labelClassName={print ? 'fr-mt-2v' : ''}
                     />
                   </>
                 ))}
@@ -308,14 +315,19 @@ const GouvernanceDetails = async ({
                 {collectiviteMembres.length > 0 && (
                   <>
                     <hr className="fr-separator-8v" />
-                    <p className="fr-text--xl fr-my-0 fr-text--bold">
+                    <p
+                      className={classNames(
+                        print ? 'fr-my-2v' : 'fr-my-0',
+                        'fr-text--xl fr-text--bold',
+                      )}
+                    >
                       Collectivité{sPluriel(collectiviteMembres.length)}&nbsp;:{' '}
                       {collectiviteMembres.length}
                     </p>
                     {collectiviteMembres.map(({ nom, code }) => (
                       <p
                         className={classNames(
-                          print ? 'fr-mt-0' : 'fr-mt-4v',
+                          print ? 'fr-mt-05v' : 'fr-mt-4v',
                           ' fr-mb-0',
                         )}
                         key={code}
@@ -328,14 +340,19 @@ const GouvernanceDetails = async ({
                 {structureMembres.length > 0 && (
                   <>
                     <hr className="fr-separator-8v" />
-                    <p className="fr-text--xl fr-my-0 fr-text--bold">
+                    <p
+                      className={classNames(
+                        print ? 'fr-my-2v' : 'fr-my-0',
+                        'fr-text--xl fr-text--bold',
+                      )}
+                    >
                       Structure{sPluriel(structureMembres.length)}&nbsp;:{' '}
                       {structureMembres.length}
                     </p>
                     {structureMembres.map(({ nom, code }) => (
                       <p
                         className={classNames(
-                          print ? 'fr-mt-0' : 'fr-mt-4v',
+                          print ? 'fr-mt-05v' : 'fr-mt-4v',
                           ' fr-mb-0',
                         )}
                         key={code}
@@ -372,6 +389,7 @@ const GouvernanceDetails = async ({
                       <InfoLabelValue
                         key={comiteId}
                         label={`Comite ${index + 1}`}
+                        labelClassName={print ? 'fr-mt-2v' : ''}
                         value={
                           <>
                             {type === 'Autre'
@@ -447,6 +465,7 @@ const GouvernanceDetails = async ({
                         <InfoLabelValue
                           key={feuilleDeRouteId}
                           label={`Feuille de route ${index + 1} : ${nom}`}
+                          labelClassName={print ? 'fr-mt-2v' : ''}
                           value={
                             <>
                               Porteur&nbsp;: {porteurNom}
@@ -493,6 +512,7 @@ const GouvernanceDetails = async ({
                       <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
                         <span>
                           <InfoLabelValue
+                            labelClassName={print ? 'fr-mt-2v' : ''}
                             label={`Collectivité/structure recruteuse ${
                               index + 1
                             }`}

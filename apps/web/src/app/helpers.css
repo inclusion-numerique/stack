@@ -31,6 +31,10 @@
     width: 100%;
 }
 
+.fr-mt-05v {
+    margin-top: 2px;
+}
+
 .fr-flex {
     display: flex;
 }
