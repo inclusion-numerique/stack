@@ -69,6 +69,7 @@ const GouvernanceDetails = async ({
     sousPrefetReferentPrenom,
     sousPrefetReferentEmail,
     sousPrefetReferentNom,
+    departement,
   } = gouvernance
 
   const scopeTitle = await getGouvernanceScopeTitle(scope)
@@ -108,6 +109,10 @@ const GouvernanceDetails = async ({
       </>
     )
   }
+
+  const titlePrefix = scope.codeDepartement
+    ? ''
+    : `${departement.nom} (${departement.code}) · `
 
   const besoinCardInfos = besoins
     ? getPriorisationCardInfos({
@@ -172,7 +177,7 @@ const GouvernanceDetails = async ({
               {print && <PrintButton />}
             </div>
             <h1 className="fr-mb-2v fr-mt-6v fr-text-title--blue-france">
-              Proposition de gouvernance
+              {titlePrefix}Proposition de gouvernance
             </h1>
             <p className="fr-mb-0 fr-text--sm fr-text-mention--grey">
               Déposée le {creationMeta}
@@ -267,6 +272,15 @@ const GouvernanceDetails = async ({
                 <h5>
                   {gouvernanceFormSections.coporteursDeLaGouvernance.title}
                 </h5>
+                {coporteursMembres.length === 0 && (
+                  <>
+                    <hr className="fr-separator-8v" />
+                    <p>
+                      Pas de collectivité co-porteuse identifiée, la préfecture
+                      sera l’unique porteuse de la gouvernance
+                    </p>
+                  </>
+                )}
                 {coporteursMembres.map(({ nom, code }, index) => (
                   <>
                     <hr key={`${code}_separator`} className="fr-separator-8v" />
