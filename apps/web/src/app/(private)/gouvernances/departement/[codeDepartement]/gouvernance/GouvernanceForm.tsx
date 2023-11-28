@@ -224,10 +224,8 @@ const GouvernanceForm = ({
         <GouvernanceFormSectionCard {...gouvernanceFormSections.noteDeContexte}>
           <RichTextFormField
             form={form}
-            asterisk
             path="noteDeContexte"
             disabled={isLoading}
-            label="Précisez, au sein d'une note qualitative, la gouvernance dans votre département et les éventuelles difficultés que vous rencontreriez dans les échanges avec les collectivités territoriales et leurs groupements"
           />
         </GouvernanceFormSectionCard>
 

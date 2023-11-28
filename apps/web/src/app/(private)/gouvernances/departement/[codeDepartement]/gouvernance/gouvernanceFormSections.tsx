@@ -1,6 +1,7 @@
 import type { SideMenuProps } from '@codegouvfr/react-dsfr/SideMenu'
 import Link from 'next/link'
 import React from 'react'
+import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 
 export const gouvernanceFormSections = {
   contactDuSousPrefetReferent: {
@@ -65,7 +66,13 @@ export const gouvernanceFormSections = {
   noteDeContexte: {
     id: 'note-de-contexte',
     title: 'Note de contexte',
-    info: "Précisez, au sein d'une note qualitative, les spécificités de votre démarche, les éventuelles difficultés que vous rencontrez, ou tout autre élément que vous souhaitez porter à notre connaissance.",
+    info: (
+      <>
+        Précisez, au sein d’une note qualitative, les spécificités de votre
+        démarche, les éventuelles difficultés que vous rencontrez, ou tout autre
+        élément que vous souhaitez porter à notre connaissance. <RedAsterisk />
+      </>
+    ),
   },
 }
 
