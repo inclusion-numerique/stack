@@ -19,6 +19,7 @@ import BesoinPriorisationCard from '@app/web/app/(private)/gouvernances/departem
 import { BesoinsIngenierieFinanciereForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { getPriorisationCardInfos } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/priorisation/getPriorisationCardInfos'
 import { getPrioritesFromFormValues } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/priorisation/getPrioritesFromFormValues'
+import { useEraseBesoinsIngenierieFinanciere } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/useEraseBesoinsIngenierieFinanciere'
 
 const BesoinsIngenierieFinancierePriorisationForm = ({
   codeDepartement,
@@ -69,12 +70,16 @@ const BesoinsIngenierieFinancierePriorisationForm = ({
       ),
     )
   }
+  const { onCancel, eraseMutation } = useEraseBesoinsIngenierieFinanciere({
+    codeDepartement,
+    gouvernanceId: defaultValue.gouvernanceId,
+  })
 
-  const onCancel = () => {
-    form.reset(defaultValue)
-  }
-
-  const loading = mutation.isPending || mutation.isSuccess
+  const loading =
+    mutation.isPending ||
+    mutation.isSuccess ||
+    eraseMutation.isPending ||
+    eraseMutation.isSuccess
 
   const cards = cardInfos.sort((a, b) => a.priorite ?? 0 - (b.priorite ?? 0))
 

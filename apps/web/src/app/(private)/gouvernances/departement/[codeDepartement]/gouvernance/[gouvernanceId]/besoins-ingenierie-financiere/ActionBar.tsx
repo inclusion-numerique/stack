@@ -41,7 +41,7 @@ const ActionBar = ({
                 onClick={CancelModal.open}
                 disabled={loading}
               >
-                Annuler les modifications
+                Effacer le formulaire
               </Button>
             )}
 
@@ -62,7 +62,7 @@ const ActionBar = ({
 
       {canCancel && (
         <CancelModal.Component
-          title="Annuler les modifications"
+          title="Effacer le formulaire"
           buttons={[
             {
               type: 'button',
@@ -74,14 +74,15 @@ const ActionBar = ({
             {
               type: 'button',
               priority: 'primary',
-              children: 'Annuler les modifications',
+              children: 'Effacer le formulaire',
+              doClosesModal: false,
               onClick: onCancel,
               className: loading ? 'fr-btn--loading' : undefined,
             },
           ]}
         >
-          Êtes-vous sur de vouloir annuler les modifications du
-          formulaire&nbsp;? Les champs seront réinitialisés.
+          Êtes-vous sur de vouloir effacer les données des besoins en ingénierie
+          financière&nbsp;? Cette action est irréversible.
         </CancelModal.Component>
       )}
     </>

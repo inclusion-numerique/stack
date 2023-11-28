@@ -386,4 +386,51 @@ export const besoinsIngenierieFinanciereRouter = router({
       })
       return result
     }),
+  erase: protectedProcedure
+    .input(GouvernanceIdValidation)
+    .mutation(async ({ input: { gouvernanceId }, ctx: { user } }) => {
+      const gouvernance = await prismaClient.gouvernance.findUnique({
+        where: {
+          id: gouvernanceId,
+        },
+        select: {
+          id: true,
+          departementCode: true,
+          besoinsEnIngenierieFinanciereId: true,
+        },
+      })
+
+      if (!gouvernance) {
+        throw notFoundError()
+      }
+
+      await checkSecurityForGouvernanceMutation(
+        user,
+        gouvernance.departementCode,
+      )
+
+      if (!gouvernance.besoinsEnIngenierieFinanciereId) {
+        throw invalidError('Besoins en ingénierie financière non créés')
+      }
+
+      await prismaClient.besoinsEnIngenierieFinanciere.delete({
+        where: {
+          id: gouvernance.besoinsEnIngenierieFinanciereId,
+        },
+      })
+
+      // Recreate empty besoin to skip intro (like create)
+      const result = await prismaClient.besoinsEnIngenierieFinanciere.create({
+        data: {
+          id: v4(),
+          gouvernance: { connect: { id: gouvernance.id } },
+          createurId: user.id,
+          derniereModificationParId: user.id,
+          totalEtp: 0,
+          texteIntroductionLu: new Date(),
+        },
+      })
+
+      return result
+    }),
 })

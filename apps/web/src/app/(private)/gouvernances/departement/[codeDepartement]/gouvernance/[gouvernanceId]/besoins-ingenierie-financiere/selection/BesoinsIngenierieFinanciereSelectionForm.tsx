@@ -16,6 +16,7 @@ import WhiteCard from '@app/web/ui/WhiteCard'
 import ActionBar from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/ActionBar'
 import { trpc } from '@app/web/trpc'
 import { modifierBesoinsIngenieriePath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import { useEraseBesoinsIngenierieFinanciere } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/useEraseBesoinsIngenierieFinanciere'
 
 const BesoinsIngenierieFinanciereSelectionForm = ({
   codeDepartement,
@@ -49,11 +50,16 @@ const BesoinsIngenierieFinanciereSelectionForm = ({
     )
   }
 
-  const onCancel = () => {
-    form.reset(defaultValue)
-  }
+  const { onCancel, eraseMutation } = useEraseBesoinsIngenierieFinanciere({
+    codeDepartement,
+    gouvernanceId: defaultValue.gouvernanceId,
+  })
 
-  const loading = mutation.isPending || mutation.isSuccess
+  const loading =
+    mutation.isPending ||
+    mutation.isSuccess ||
+    eraseMutation.isPending ||
+    eraseMutation.isSuccess
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
