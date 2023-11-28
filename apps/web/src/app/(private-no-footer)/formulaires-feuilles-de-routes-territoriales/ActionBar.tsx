@@ -51,7 +51,7 @@ const ActionBar = ({
       })
   }
 
-  const cancelLoading = mutation.isLoading || mutation.isSuccess
+  const cancelLoading = mutation.isPending || mutation.isSuccess
 
   return (
     <>

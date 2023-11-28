@@ -93,6 +93,9 @@ workflows:
       - test_web:
           requires:
             - prepare_workspace_dependencies
+      - test_web_integration:
+          requires:
+            - prepare_workspace_dependencies
       - build_web:
           requires:
             - prepare_workspace_dependencies
@@ -112,6 +115,7 @@ workflows:
             - build_web
             - test_packages
             - test_web
+            - test_web_integration
             - test_components
             - test_web_e2e
 
@@ -391,6 +395,49 @@ jobs:
           name: 'Run cypress e2e tests'
           command: |
             pnpm --silent -F @app/e2e cy run --record --parallel --group e2e
+
+  test_web_integration:
+    executor: node-e2e
+    resource_class: large
+    parallelism: 2
+    steps:
+      - checkout
+      - install_dependencies
+      - create_dotenv_file
+      - add_secrets_to_dotenv_file
+      - setup_docker_web_env
+      - run:
+          name: "Add NEXT_PUBLIC_* env to .env"
+          command: |
+            pnpm --silent cli dotenv:add-next-public --local $NAMESPACE
+      - run:
+          name: 'Add e2e vars to .env'
+          command: |
+            echo "DATABASE_URL=$CI_DATABASE_URL" >> .env
+            echo "SMTP_SERVER=localhost" >> .env
+            echo "SMTP_PORT=1025" >> .env
+            echo "SMTP_USERNAME=mailuser" >> .env
+            echo "SMTP_PASSWORD=mailpassword" >> .env
+            echo "SMTP_SERVER=localhost" >> .env
+      - run:
+          name: 'Create CI database schema'
+          command: |
+            pnpm --silent -F @app/web prisma migrate deploy
+      - run:
+          name: 'Build dataset'
+          command: |
+            pnpm cli data:build
+      - run:
+          name: 'Load fixtures'
+          command: |
+            pnpm -F @app/fixtures load
+      - restore_cache:
+          key: << pipeline.id >>-web-build
+      - add_dotenv_vars_to_bash_env
+      - run:
+          name: 'Run web integrations jest test'
+          command: |
+            pnpm --silent -F @app/web test:integration
 
   deploy_web:
     executor: node

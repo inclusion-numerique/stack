@@ -2,29 +2,29 @@ import { perimetreOptions } from '@app/web/gouvernance/GouvernancePressentie'
 import { ListeGouvernanceItem } from '@app/web/app/(private)/gouvernances/getListeGouvernances'
 
 export const getPorteurString = ({
-  porteurRegion,
-  porteurDepartement,
-  porteurEpci,
-  porteurSiretInformations,
+  v1PorteurRegion,
+  v1PorteurDepartement,
+  v1PorteurEpci,
+  v1PorteurSiretInformations,
 }: Pick<
   ListeGouvernanceItem,
-  | 'porteurRegion'
-  | 'porteurDepartement'
-  | 'porteurEpci'
-  | 'porteurSiretInformations'
+  | 'v1PorteurRegion'
+  | 'v1PorteurDepartement'
+  | 'v1PorteurEpci'
+  | 'v1PorteurSiretInformations'
 >) =>
-  porteurRegion
-    ? `Conseil régional  · ${porteurRegion.nom}`
-    : porteurDepartement
-    ? `Conseil départemental  · ${porteurDepartement.nom} (${porteurDepartement.code})`
-    : porteurEpci
-    ? porteurEpci.nom
-    : porteurSiretInformations
-    ? porteurSiretInformations.siret
+  v1PorteurRegion
+    ? `Conseil régional  · ${v1PorteurRegion.nom}`
+    : v1PorteurDepartement
+    ? `Conseil départemental  · ${v1PorteurDepartement.nom} (${v1PorteurDepartement.code})`
+    : v1PorteurEpci
+    ? v1PorteurEpci.nom
+    : v1PorteurSiretInformations
+    ? v1PorteurSiretInformations.siret
     : 'Non renseigné'
 
 export const getPerimetreString = ({
-  perimetre,
-}: Pick<ListeGouvernanceItem, 'perimetre'>) =>
-  perimetreOptions.find((option) => option.value === perimetre)?.name ||
+  v1Perimetre,
+}: Pick<ListeGouvernanceItem, 'v1Perimetre'>) =>
+  perimetreOptions.find((option) => option.value === v1Perimetre)?.name ||
   'Non renseigné'

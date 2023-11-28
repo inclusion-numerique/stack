@@ -39,7 +39,7 @@ const ChoixIntention = ({
       })
   }
 
-  const disabled = mutation.isLoading || mutation.isSuccess
+  const disabled = mutation.isPending || mutation.isSuccess
 
   return (
     <>

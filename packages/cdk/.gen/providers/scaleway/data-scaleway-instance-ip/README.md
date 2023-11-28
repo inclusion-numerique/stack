@@ -1,3 +1,3 @@
 # `data_scaleway_instance_ip`
 
-Refer to the Terraform Registory for docs: [`data_scaleway_instance_ip`](https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/instance_ip).
+Refer to the Terraform Registory for docs: [`data_scaleway_instance_ip`](https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/instance_ip).

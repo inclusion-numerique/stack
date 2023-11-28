@@ -274,6 +274,48 @@ export const formulairesGouvernance = () => {
     }),
   } satisfies AppPrisma.FormulaireGouvernanceCreateInput
 
+  const lyonMetropoleParticipant = {
+    id: '3fe83e62-5471-4305-99f1-ca398f8378a3',
+    gouvernancePersona: 'epci',
+    intention: 'Participer',
+    confirmeEtEnvoye: new Date(),
+    createur,
+    epci: {
+      connect: {
+        code: '200046977',
+      },
+    },
+    contactPolitique: contactConnectOrCreate({
+      formulaireGouvernanceId: '52d9386e-768f-4cad-8749-22b5751f6d35',
+      ...contacts[6],
+    }),
+    contactTechnique: contactConnectOrCreate({
+      formulaireGouvernanceId: '52d9386e-768f-4cad-8749-22b5751f6d35',
+      ...contacts[7],
+    }),
+  } satisfies AppPrisma.FormulaireGouvernanceCreateInput
+
+  const montsDuLyonnaisPorter = {
+    id: 'b2431899-62ce-47ac-9e12-01c25527079b',
+    gouvernancePersona: 'epci',
+    intention: 'Porter',
+    confirmeEtEnvoye: new Date(),
+    createur,
+    epci: {
+      connect: {
+        code: '200066587',
+      },
+    },
+    contactPolitique: contactConnectOrCreate({
+      formulaireGouvernanceId: '52d9386e-768f-4cad-8749-22b5751f6d35',
+      ...contacts[6],
+    }),
+    contactTechnique: contactConnectOrCreate({
+      formulaireGouvernanceId: '52d9386e-768f-4cad-8749-22b5751f6d35',
+      ...contacts[7],
+    }),
+  } satisfies AppPrisma.FormulaireGouvernanceCreateInput
+
   const lyon6Participant = {
     id: '52d9386e-768f-4cad-8749-22b5751f6d35',
     gouvernancePersona: 'commune',
@@ -301,6 +343,7 @@ export const formulairesGouvernance = () => {
     intention: 'Participer',
     confirmeEtEnvoye: new Date(),
     nomStructure: 'Association exemple A',
+    // Invalid siret
     siretStructure: '12345678901234',
     createur,
     departement: rhone,
@@ -315,6 +358,7 @@ export const formulairesGouvernance = () => {
     gouvernancePersona: 'structure',
     intention: 'Participer',
     confirmeEtEnvoye: new Date(),
+    // Missing siret
     nomStructure: 'Association exemple B',
     createur,
     departement: rhone,
@@ -324,11 +368,30 @@ export const formulairesGouvernance = () => {
     }),
   } satisfies AppPrisma.FormulaireGouvernanceCreateInput
 
+  const anctParticipant = {
+    id: 'b1e3ed0a-d1f7-40cf-b456-836cb5b8a0ba',
+    gouvernancePersona: 'structure',
+    intention: 'Participer',
+    confirmeEtEnvoye: new Date(),
+    nomStructure: 'ANCT',
+    // Real siret
+    siretStructure: '13002603200016',
+    createur,
+    departement: rhone,
+    contactStructure: contactConnectOrCreate({
+      formulaireGouvernanceId: 'b1e3ed0a-d1f7-40cf-b456-836cb5b8a0ba',
+      ...contacts[9],
+    }),
+  } satisfies AppPrisma.FormulaireGouvernanceCreateInput
+
   return [
     rhonePorteurEpciParticipant,
     girondePorteurVide,
     lyon6Participant,
+    montsDuLyonnaisPorter,
+    lyonMetropoleParticipant,
     asso1Participant,
     asso2Participant,
+    anctParticipant,
   ]
 }

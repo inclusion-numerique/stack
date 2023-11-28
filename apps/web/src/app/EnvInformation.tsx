@@ -15,7 +15,10 @@ export const EnvInformation = () => {
   const storybookLink = `https://${branch}--${chromatic.appId}.chromatic.com`
 
   return (
-    <div id="environment-information" className="fr-notice fr-notice--info">
+    <div
+      id="environment-information"
+      className="fr-notice fr-notice--info fr-hidden-print"
+    >
       <div className="fr-container">
         <div className="fr-notice__body">
           <p className="fr-notice__title">

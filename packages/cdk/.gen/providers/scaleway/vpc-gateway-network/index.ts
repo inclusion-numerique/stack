@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/vpc_gateway_network
+// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -10,35 +10,35 @@ export interface VpcGatewayNetworkConfig extends cdktf.TerraformMetaArguments {
   /**
   * Remove DHCP config on this network on destroy
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/vpc_gateway_network#cleanup_dhcp VpcGatewayNetwork#cleanup_dhcp}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network#cleanup_dhcp VpcGatewayNetwork#cleanup_dhcp}
   */
   readonly cleanupDhcp?: boolean | cdktf.IResolvable;
   /**
   * The ID of the public gateway DHCP config
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/vpc_gateway_network#dhcp_id VpcGatewayNetwork#dhcp_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network#dhcp_id VpcGatewayNetwork#dhcp_id}
   */
   readonly dhcpId?: string;
   /**
   * Enable DHCP config on this network
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/vpc_gateway_network#enable_dhcp VpcGatewayNetwork#enable_dhcp}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network#enable_dhcp VpcGatewayNetwork#enable_dhcp}
   */
   readonly enableDhcp?: boolean | cdktf.IResolvable;
   /**
   * Enable masquerade on this network
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/vpc_gateway_network#enable_masquerade VpcGatewayNetwork#enable_masquerade}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network#enable_masquerade VpcGatewayNetwork#enable_masquerade}
   */
   readonly enableMasquerade?: boolean | cdktf.IResolvable;
   /**
   * The ID of the public gateway where connect to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/vpc_gateway_network#gateway_id VpcGatewayNetwork#gateway_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network#gateway_id VpcGatewayNetwork#gateway_id}
   */
   readonly gatewayId: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/vpc_gateway_network#id VpcGatewayNetwork#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network#id VpcGatewayNetwork#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -47,47 +47,152 @@ export interface VpcGatewayNetworkConfig extends cdktf.TerraformMetaArguments {
   /**
   * The ID of the private network where connect to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/vpc_gateway_network#private_network_id VpcGatewayNetwork#private_network_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network#private_network_id VpcGatewayNetwork#private_network_id}
   */
   readonly privateNetworkId: string;
   /**
   * The static IP address in CIDR on this network
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/vpc_gateway_network#static_address VpcGatewayNetwork#static_address}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network#static_address VpcGatewayNetwork#static_address}
   */
   readonly staticAddress?: string;
   /**
   * The zone you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/vpc_gateway_network#zone VpcGatewayNetwork#zone}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network#zone VpcGatewayNetwork#zone}
   */
   readonly zone?: string;
   /**
+  * ipam_config block
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network#ipam_config VpcGatewayNetwork#ipam_config}
+  */
+  readonly ipamConfig?: VpcGatewayNetworkIpamConfig[] | cdktf.IResolvable;
+  /**
   * timeouts block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/vpc_gateway_network#timeouts VpcGatewayNetwork#timeouts}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network#timeouts VpcGatewayNetwork#timeouts}
   */
   readonly timeouts?: VpcGatewayNetworkTimeouts;
 }
+export interface VpcGatewayNetworkIpamConfig {
+  /**
+  * Defines whether the default route is enabled on that Gateway Network
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network#push_default_route VpcGatewayNetwork#push_default_route}
+  */
+  readonly pushDefaultRoute?: boolean | cdktf.IResolvable;
+}
+
+export function vpcGatewayNetworkIpamConfigToTerraform(struct?: VpcGatewayNetworkIpamConfig | cdktf.IResolvable): any {
+  if (!cdktf.canInspect(struct) || cdktf.Tokenization.isResolvable(struct)) { return struct; }
+  if (cdktf.isComplexElement(struct)) {
+    throw new Error("A complex element was used as configuration, this is not supported: https://cdk.tf/complex-object-as-configuration");
+  }
+  return {
+    push_default_route: cdktf.booleanToTerraform(struct!.pushDefaultRoute),
+  }
+}
+
+export class VpcGatewayNetworkIpamConfigOutputReference extends cdktf.ComplexObject {
+  private isEmptyObject = false;
+  private resolvableValue?: cdktf.IResolvable;
+
+  /**
+  * @param terraformResource The parent resource
+  * @param terraformAttribute The attribute on the parent resource this class is referencing
+  * @param complexObjectIndex the index of this item in the list
+  * @param complexObjectIsFromSet whether the list is wrapping a set (will add tolist() to be able to access an item via an index)
+  */
+  public constructor(terraformResource: cdktf.IInterpolatingParent, terraformAttribute: string, complexObjectIndex: number, complexObjectIsFromSet: boolean) {
+    super(terraformResource, terraformAttribute, complexObjectIsFromSet, complexObjectIndex);
+  }
+
+  public get internalValue(): VpcGatewayNetworkIpamConfig | cdktf.IResolvable | undefined {
+    if (this.resolvableValue) {
+      return this.resolvableValue;
+    }
+    let hasAnyValues = this.isEmptyObject;
+    const internalValueResult: any = {};
+    if (this._pushDefaultRoute !== undefined) {
+      hasAnyValues = true;
+      internalValueResult.pushDefaultRoute = this._pushDefaultRoute;
+    }
+    return hasAnyValues ? internalValueResult : undefined;
+  }
+
+  public set internalValue(value: VpcGatewayNetworkIpamConfig | cdktf.IResolvable | undefined) {
+    if (value === undefined) {
+      this.isEmptyObject = false;
+      this.resolvableValue = undefined;
+      this._pushDefaultRoute = undefined;
+    }
+    else if (cdktf.Tokenization.isResolvable(value)) {
+      this.isEmptyObject = false;
+      this.resolvableValue = value;
+    }
+    else {
+      this.isEmptyObject = Object.keys(value).length === 0;
+      this.resolvableValue = undefined;
+      this._pushDefaultRoute = value.pushDefaultRoute;
+    }
+  }
+
+  // push_default_route - computed: false, optional: true, required: false
+  private _pushDefaultRoute?: boolean | cdktf.IResolvable; 
+  public get pushDefaultRoute() {
+    return this.getBooleanAttribute('push_default_route');
+  }
+  public set pushDefaultRoute(value: boolean | cdktf.IResolvable) {
+    this._pushDefaultRoute = value;
+  }
+  public resetPushDefaultRoute() {
+    this._pushDefaultRoute = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get pushDefaultRouteInput() {
+    return this._pushDefaultRoute;
+  }
+}
+
+export class VpcGatewayNetworkIpamConfigList extends cdktf.ComplexList {
+  public internalValue? : VpcGatewayNetworkIpamConfig[] | cdktf.IResolvable
+
+  /**
+  * @param terraformResource The parent resource
+  * @param terraformAttribute The attribute on the parent resource this class is referencing
+  * @param wrapsSet whether the list is wrapping a set (will add tolist() to be able to access an item via an index)
+  */
+  constructor(protected terraformResource: cdktf.IInterpolatingParent, protected terraformAttribute: string, protected wrapsSet: boolean) {
+    super(terraformResource, terraformAttribute, wrapsSet)
+  }
+
+  /**
+  * @param index the index of the item to return
+  */
+  public get(index: number): VpcGatewayNetworkIpamConfigOutputReference {
+    return new VpcGatewayNetworkIpamConfigOutputReference(this.terraformResource, this.terraformAttribute, index, this.wrapsSet);
+  }
+}
 export interface VpcGatewayNetworkTimeouts {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/vpc_gateway_network#create VpcGatewayNetwork#create}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network#create VpcGatewayNetwork#create}
   */
   readonly create?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/vpc_gateway_network#default VpcGatewayNetwork#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network#default VpcGatewayNetwork#default}
   */
   readonly default?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/vpc_gateway_network#delete VpcGatewayNetwork#delete}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network#delete VpcGatewayNetwork#delete}
   */
   readonly delete?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/vpc_gateway_network#read VpcGatewayNetwork#read}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network#read VpcGatewayNetwork#read}
   */
   readonly read?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/vpc_gateway_network#update VpcGatewayNetwork#update}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network#update VpcGatewayNetwork#update}
   */
   readonly update?: string;
 }
@@ -254,7 +359,7 @@ export class VpcGatewayNetworkTimeoutsOutputReference extends cdktf.ComplexObjec
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/vpc_gateway_network scaleway_vpc_gateway_network}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network scaleway_vpc_gateway_network}
 */
 export class VpcGatewayNetwork extends cdktf.TerraformResource {
 
@@ -263,12 +368,26 @@ export class VpcGatewayNetwork extends cdktf.TerraformResource {
   // =================
   public static readonly tfResourceType = "scaleway_vpc_gateway_network";
 
+  // ==============
+  // STATIC Methods
+  // ==============
+  /**
+  * Generates CDKTF code for importing a VpcGatewayNetwork resource upon running "cdktf plan <stack-name>"
+  * @param scope The scope in which to define this construct
+  * @param importToId The construct id used in the generated config for the VpcGatewayNetwork to import
+  * @param importFromId The id of the existing VpcGatewayNetwork that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network#import import section} in the documentation of this resource for the id to use
+  * @param provider? Optional instance of the provider where the VpcGatewayNetwork to import is found
+  */
+  public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
+        return new cdktf.ImportableResource(scope, importToId, { terraformResourceType: "scaleway_vpc_gateway_network", importId: importFromId, provider });
+      }
+
   // ===========
   // INITIALIZER
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/resources/vpc_gateway_network scaleway_vpc_gateway_network} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/vpc_gateway_network scaleway_vpc_gateway_network} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -279,8 +398,8 @@ export class VpcGatewayNetwork extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_vpc_gateway_network',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.28.0',
-        providerVersionConstraint: '>= 2.28.0'
+        providerVersion: '2.31.0',
+        providerVersionConstraint: '>= 2.31.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -299,6 +418,7 @@ export class VpcGatewayNetwork extends cdktf.TerraformResource {
     this._privateNetworkId = config.privateNetworkId;
     this._staticAddress = config.staticAddress;
     this._zone = config.zone;
+    this._ipamConfig.internalValue = config.ipamConfig;
     this._timeouts.internalValue = config.timeouts;
   }
 
@@ -422,7 +542,7 @@ export class VpcGatewayNetwork extends cdktf.TerraformResource {
     return this._privateNetworkId;
   }
 
-  // static_address - computed: false, optional: true, required: false
+  // static_address - computed: true, optional: true, required: false
   private _staticAddress?: string; 
   public get staticAddress() {
     return this.getStringAttribute('static_address');
@@ -436,6 +556,11 @@ export class VpcGatewayNetwork extends cdktf.TerraformResource {
   // Temporarily expose input value. Use with caution.
   public get staticAddressInput() {
     return this._staticAddress;
+  }
+
+  // status - computed: true, optional: false, required: false
+  public get status() {
+    return this.getStringAttribute('status');
   }
 
   // updated_at - computed: true, optional: false, required: false
@@ -457,6 +582,22 @@ export class VpcGatewayNetwork extends cdktf.TerraformResource {
   // Temporarily expose input value. Use with caution.
   public get zoneInput() {
     return this._zone;
+  }
+
+  // ipam_config - computed: false, optional: true, required: false
+  private _ipamConfig = new VpcGatewayNetworkIpamConfigList(this, "ipam_config", false);
+  public get ipamConfig() {
+    return this._ipamConfig;
+  }
+  public putIpamConfig(value: VpcGatewayNetworkIpamConfig[] | cdktf.IResolvable) {
+    this._ipamConfig.internalValue = value;
+  }
+  public resetIpamConfig() {
+    this._ipamConfig.internalValue = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get ipamConfigInput() {
+    return this._ipamConfig.internalValue;
   }
 
   // timeouts - computed: false, optional: true, required: false
@@ -490,6 +631,7 @@ export class VpcGatewayNetwork extends cdktf.TerraformResource {
       private_network_id: cdktf.stringToTerraform(this._privateNetworkId),
       static_address: cdktf.stringToTerraform(this._staticAddress),
       zone: cdktf.stringToTerraform(this._zone),
+      ipam_config: cdktf.listMapper(vpcGatewayNetworkIpamConfigToTerraform, true)(this._ipamConfig.internalValue),
       timeouts: vpcGatewayNetworkTimeoutsToTerraform(this._timeouts.internalValue),
     };
   }

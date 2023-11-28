@@ -112,7 +112,7 @@ const PerimetreFeuilleDeRoute = ({
     ).length
 
   const disabled = false
-  const isAutoSaving = perimetreMutation.isLoading
+  const isAutoSaving = perimetreMutation.isPending
 
   return (
     <>
@@ -190,7 +190,7 @@ const PerimetreFeuilleDeRoute = ({
         disabled={disabled}
         excludedCodes={epciAndCommunesCodesDansTerritoire}
         collectivitesHorsTerritoire={collectivitesHorsTerritoire}
-        isLoading={perimetreMutation.isLoading}
+        isLoading={perimetreMutation.isPending}
       />
       <PerimetreFeuilleDeRouteEtapeActionBar
         nextEtapePath={nextEtapePath}

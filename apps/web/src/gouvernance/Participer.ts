@@ -1,6 +1,6 @@
 import z from 'zod'
 import { ContactFormulaireGouvernanceValidation } from '@app/web/gouvernance/Contact'
-import { siretValidation } from '@app/web/validation/siretValidation'
+import { optionalSiretValidation } from '@app/web/validation/siretValidation'
 
 export const ParticiperCollectiviteValidation = z.object({
   formulaireGouvernanceId: z.string().uuid().nonempty(),
@@ -18,7 +18,7 @@ export const ParticiperStructureValidation = z.object({
   nomStructure: z.string({
     required_error: 'Veuillez renseigner le nom de la structure',
   }),
-  siretStructure: siretValidation.nullish(),
+  siretStructure: optionalSiretValidation.nullish(),
   pasDeSiret: z.boolean().nullish(),
   codeDepartement: z.string({
     required_error: 'Veuillez renseigner le département',

@@ -46,7 +46,7 @@ const Recapitulatif = ({
       console.error(mutationError)
     }
   }
-  const isLoading = mutation.isLoading || mutation.isSuccess
+  const isLoading = mutation.isPending || mutation.isSuccess
 
   return (
     <form onSubmit={onSubmit}>

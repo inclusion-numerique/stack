@@ -23,8 +23,16 @@
     text-align: center;
 }
 
+.fr-text--break-all {
+    word-break: break-all;
+}
+
 .fr-width-full {
     width: 100%;
+}
+
+.fr-mt-05v {
+    margin-top: 2px;
 }
 
 .fr-flex {
@@ -33,6 +41,10 @@
 
 .fr-direction-column {
     flex-direction: column;
+}
+
+.fr-direction-column-reverse {
+    flex-direction: column-reverse;
 }
 
 .fr-align-self-center {
@@ -77,6 +89,10 @@
 
 .fr-flex-shrink-0{
     flex-shrink: 0;
+}
+
+.fr-flex-grow-1 {
+    flex-grow: 1;
 }
 
 .fr-flex-nowrap {
@@ -191,4 +207,8 @@
         /* lg */
         max-width: 840px;
     }
+}
+
+.fr-color-inherit {
+    color: inherit;
 }

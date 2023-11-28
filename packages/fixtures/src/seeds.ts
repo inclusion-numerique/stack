@@ -92,7 +92,7 @@ const seed = async (transaction: TransactionClient, random?: number) => {
         where: { id: gouvernance.id },
         create: {
           id: gouvernance.id,
-          perimetre: gouvernance.perimetre,
+          v1Perimetre: gouvernance.v1Perimetre,
           createur: gouvernance.createur,
           derniereModificationPar: gouvernance.derniereModificationPar,
           departement: gouvernance.departement,

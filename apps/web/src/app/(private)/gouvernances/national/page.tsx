@@ -3,9 +3,9 @@ import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import StatistiquesGouvernances from '@app/web/app/(private)/gouvernances/StatistiquesGouvernances'
 import { getStatistiquesGouvernanceNational } from '@app/web/app/(private)/gouvernances/getStatistiquesGouvernances'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
-import { getListeGouvernanceNational } from '@app/web/app/(private)/gouvernances/getListeGouvernances'
-import GouvernanceCard from '@app/web/app/(private)/gouvernances/GouvernanceCard'
 import { getGouvernanceScopeTitle } from '@app/web/app/(private)/gouvernances/gouvernanceScopeTitle'
+import { getListeGouvernanceNational } from '@app/web/app/(private)/gouvernances/getListeGouvernances'
+import GouvernanceList from '@app/web/app/(private)/gouvernances/GouvernanceList'
 
 export const generateMetadata = () => ({
   title: `Gouvernance - National`,
@@ -17,8 +17,8 @@ const Page = async () => {
   await checkUserAccessToGouvernanceScopeOrNavigate({ national: true })
 
   const statistiquesGouvernance = await getStatistiquesGouvernanceNational()
-  const gouvernances = await getListeGouvernanceNational()
   const scopeTitle = await getGouvernanceScopeTitle({ national: true })
+  const gouvernances = await getListeGouvernanceNational()
 
   return (
     <div className="fr-container fr-pb-20v">
@@ -39,20 +39,7 @@ const Page = async () => {
         scopeTitle={scopeTitle}
       />
       <hr className="fr-separator-12v" />
-      <h3 className="fr-mb-12v">
-        Gouvernances et porteurs pressentis des feuilles de route locales France
-        Numérique Ensemble au niveau national
-      </h3>
-      {gouvernances.length === 0 && (
-        <p>Aucune gouvernance pressentie n’a été remontée pour le moment</p>
-      )}
-      {gouvernances.map((gouvernance) => (
-        <GouvernanceCard
-          key={gouvernance.id}
-          gouvernance={gouvernance}
-          scope={{ national: true }}
-        />
-      ))}
+      <GouvernanceList scope={{ national: true }} gouvernances={gouvernances} />
     </div>
   )
 }

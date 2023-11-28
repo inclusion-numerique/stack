@@ -110,6 +110,7 @@ const Template = <Option = { label: string; value: string }, V = unknown>({
   return (
     <form
       onSubmit={form.handleSubmit((data) => {
+        // eslint-disable-next-line no-console
         console.info('Form submited', data)
       })}
     >

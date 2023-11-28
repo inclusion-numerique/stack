@@ -1,6 +1,6 @@
 import type { Prisma } from '@prisma/client'
+import { gouvernanceListSelect } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { prismaClient } from '@app/web/prismaClient'
-import { gouvernanceSelect } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance-pressentie/getGouvernancePressentieForForm'
 
 export const gouvernancesDansRegionWhere = (codeRegion: string) =>
   ({
@@ -20,10 +20,15 @@ const queryListe = (where?: Prisma.GouvernanceWhereInput) =>
       supression: null,
       ...where,
     },
-    select: gouvernanceSelect,
-    orderBy: {
-      creation: 'desc',
-    },
+    select: gouvernanceListSelect,
+    orderBy: [
+      {
+        v2Enregistree: 'asc',
+      },
+      {
+        creation: 'desc',
+      },
+    ],
   })
 
 export type ListeGouvernance = Awaited<ReturnType<typeof queryListe>>

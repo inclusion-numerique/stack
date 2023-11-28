@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch", "jsonProtocol", "postgresqlExtensions", "extendedIndexes", "fullTextIndex"]
+  previewFeatures = ["fullTextSearch", "postgresqlExtensions", "fullTextIndex"]
   binaryTargets   = ["native", "debian-openssl-1.1.x"]
 }
 
@@ -85,9 +85,13 @@ model User {
   formulaireGouvernanceId String?                @map("formulaire_gouvernance_id") @db.Uuid
   formulaireGouvernance   FormulaireGouvernance? @relation("formulaire_gouvernance_participant", fields: [formulaireGouvernanceId], references: [id])
 
-  formulairesGouvernanceCrees    FormulaireGouvernance[] @relation("formulaire_gouvernance_createur")
-  gouvernancesCrees              Gouvernance[]           @relation("gouvernance_createur")
-  gouvernancesModifieesEnDernier Gouvernance[]           @relation("gouvernance_derniere_modification_par")
+  formulairesGouvernanceCrees FormulaireGouvernance[] @relation("formulaire_gouvernance_createur")
+
+  gouvernancesCrees              Gouvernance[] @relation("gouvernance_createur")
+  gouvernancesModifieesEnDernier Gouvernance[] @relation("gouvernance_derniere_modification_par")
+
+  besoinsEnIngenierieFinanciereCrees             BesoinsEnIngenierieFinanciere[] @relation("besoins_ingenierie_financiere_createur")
+  besoinsEnIngenierieFinanciereModifiesEnDernier BesoinsEnIngenierieFinanciere[] @relation("besoins_ingenierie_financiere_derniere_modification_par")
 
   @@map("users")
 }
@@ -175,12 +179,14 @@ model Upload {
 
 model Region {
   // INSEE
-  code                   String                  @id
-  nom                    String
-  searchable             String                  @map("searchable")
-  departements           Departement[]
-  formulairesGouvernance FormulaireGouvernance[]
-  gouvernancesPortees    Gouvernance[]           @relation(name: "gouvernance_porteur_region")
+  code                       String                  @id
+  nom                        String
+  searchable                 String                  @map("searchable")
+  departements               Departement[]
+  formulairesGouvernance     FormulaireGouvernance[]
+  gouvernancesPortees        Gouvernance[]           @relation(name: "v1_gouvernance_porteur_region")
+  membresGouvernances        MembreGouvernance[]     @relation("membre_gouvernance_region")
+  perimetresFeuillesDeRoutes FeuilleDeRoute[]        @relation("feuille_de_route_perimetre_region")
 
   @@map("regions")
 }
@@ -202,7 +208,9 @@ model Epci {
   ifn                                 IfnEpci?
   formulairesGouvernance              FormulaireGouvernance[]
   participationsFormulaireGouvernance EpciParticipantFormulaireGouvernance[]
-  gouvernancesPortees                 Gouvernance[]                          @relation(name: "gouvernance_porteur_epci")
+  gouvernancesPortees                 Gouvernance[]                          @relation(name: "v1_gouvernance_porteur_epci")
+  membresGouvernances                 MembreGouvernance[]                    @relation("membre_gouvernance_epci")
+  perimetresFeuillesDeRoutes          PerimetreEpciFeuilleDeRoute[]          @relation("perimetre_epci_feuille_de_route")
 
   @@map("epcis")
 }
@@ -223,8 +231,10 @@ model Departement {
   coordinateursConseillerNumerique    CoordinateurConseillerNumerique[]
   formulairesGouvernance              FormulaireGouvernance[]
   participationsFormulaireGouvernance DepartementParticipantFormulaireGouvernance[]
-  gouvernancesPortees                 Gouvernance[]                                 @relation(name: "gouvernance_porteur_departement")
+  gouvernancesPortees                 Gouvernance[]                                 @relation(name: "v1_gouvernance_porteur_departement")
   gouvernancesRemontees               Gouvernance[]                                 @relation(name: "gouvernance_departement")
+  membresGouvernances                 MembreGouvernance[]                           @relation("membre_gouvernance_departement")
+  perimetresFeuillesDeRoutes          FeuilleDeRoute[]                              @relation("feuille_de_route_perimetre_departement")
 
   @@map("departements")
 }
@@ -588,6 +598,8 @@ model FormulaireGouvernance {
   communesParticipantes    CommuneParticipanteFormulaireGouvernance[]
   structuresParticipantes  StructureParticipanteFormulaireGouvernance[]
 
+  membresGouvernance MembreGouvernance[]
+
   @@map("formulaire_gouvernance")
 }
 
@@ -704,29 +716,316 @@ model Gouvernance {
   departement     Departement @relation(name: "gouvernance_departement", fields: [departementCode], references: [code])
   departementCode String
 
-  perimetre PerimetreGouvernance
+  // V1 Fields applied to "Gouvernance préssentie" Gouvernance version
+  // We keep them to have good default values for v2, and for safety in case we need to rollback or dig in old data
+  v1Perimetre PerimetreGouvernance? @map("v1_perimetre")
 
-  noteDeContexte String
+  v1PorteurRegionCode String? @map("v1_porteur_region_code")
+  v1PorteurRegion     Region? @relation(name: "v1_gouvernance_porteur_region", fields: [v1PorteurRegionCode], references: [code], onDelete: NoAction)
 
-  porteurRegionCode String? @map("porteur_region_code")
-  porteurRegion     Region? @relation(name: "gouvernance_porteur_region", fields: [porteurRegionCode], references: [code], onDelete: NoAction)
+  v1PorteurDepartementCode String?      @map("v1_porteur_departement_code")
+  v1PorteurDepartement     Departement? @relation(name: "v1_gouvernance_porteur_departement", fields: [v1PorteurDepartementCode], references: [code], onDelete: NoAction)
 
-  porteurDepartementCode String?      @map("porteur_departement_code")
-  porteurDepartement     Departement? @relation(name: "gouvernance_porteur_departement", fields: [porteurDepartementCode], references: [code], onDelete: NoAction)
+  v1PorteurEpciCode String? @map("v1_porteur_epci_code")
+  v1PorteurEpci     Epci?   @relation(name: "v1_gouvernance_porteur_epci", fields: [v1PorteurEpciCode], references: [code], onDelete: NoAction)
 
-  porteurEpciCode String? @map("porteur_epci_code")
-  porteurEpci     Epci?   @relation(name: "gouvernance_porteur_epci", fields: [porteurEpciCode], references: [code], onDelete: NoAction)
+  v1PorteurSiret             String?            @map("v1_porteur_siret")
+  v1PorteurSiretInformations InformationsSiret? @relation(fields: [v1PorteurSiret], references: [siret], onDelete: NoAction)
 
-  porteurSiret             String?            @map("porteur_siret")
-  porteurSiretInformations InformationsSiret? @relation(fields: [porteurSiret], references: [siret], onDelete: NoAction)
+  // V2 Fields
 
+  v2Enregistree DateTime? @map("v2_enregistree")
+
+  sousPrefetReferentPrenom String? @map("sous_prefet_referent_prenom")
+  sousPrefetReferentNom    String? @map("sous_prefet_referent_nom")
+  sousPrefetReferentEmail  String? @map("sous_prefet_referent_email")
+
+  noteDeContexte                        String
   organisationsRecruteusesCoordinateurs OrganisationRecruteuseCoordinateurs[]
+
+  pasDeCoporteurs Boolean? @map("pas_de_co_porteurs")
+
+  feuillesDeRoute FeuilleDeRoute[]
+
+  membres MembreGouvernance[]
+
+  comites ComiteGouvernance[]
+
+  besoinsEnIngenierieFinanciereId String?                        @unique @map("besoins_en_ingenierie_financiere_id") @db.Uuid
+  besoinsEnIngenierieFinanciere   BesoinsEnIngenierieFinanciere? @relation(fields: [besoinsEnIngenierieFinanciereId], references: [id])
 
   @@map("gouvernances")
 }
 
+model BesoinsEnIngenierieFinanciere {
+  id String @id @default(uuid()) @db.Uuid
+
+  gouvernance Gouvernance?
+
+  createurId String @map("createur_id") @db.Uuid
+  createur   User   @relation("besoins_ingenierie_financiere_createur", fields: [createurId], references: [id])
+
+  derniereModificationParId String @map("derniere_modification_par_id") @db.Uuid
+  derniereModificationPar   User   @relation("besoins_ingenierie_financiere_derniere_modification_par", fields: [derniereModificationParId], references: [id])
+
+  modification            DateTime  @updatedAt
+  creation                DateTime  @default(now())
+  supression              DateTime?
+  texteIntroductionLu     DateTime?
+  selectionEnregistree    DateTime?
+  priorisationEnregistree DateTime?
+
+  // Formaliser la feuille de route
+
+  faireUnDiagnosticTerritorial                   Boolean @default(false) @map("faire_un_diagnostic_territorial")
+  faireUnDiagnosticTerritorialEtp                Float?  @map("faire_un_diagnostic_territorial_etp")
+  faireUnDiagnosticTerritorialPrestation         Boolean @default(false) @map("faire_un_diagnostic_territorial_prestation")
+  faireUnDiagnosticTerritorialPrestationPriorite Int?    @map("faire_un_diagnostic_territorial_prestation_priorite")
+
+  coConstruireLaFeuilleDeRoute                   Boolean @default(false) @map("co_construire_la_feuille_de_route")
+  coConstruireLaFeuilleDeRouteEtp                Float?  @map("co_construire_la_feuille_de_route_etp")
+  coConstruireLaFeuilleDeRoutePrestation         Boolean @default(false) @map("co_construire_la_feuille_de_route_prestation")
+  coConstruireLaFeuilleDeRoutePrestationPriorite Int?    @map("co_construire_la_feuille_de_route_prestation_priorite")
+
+  redigerLaFeuilleDeRoute                   Boolean @default(false) @map("rediger_la_feuille_de_route")
+  redigerLaFeuilleDeRouteEtp                Float?  @map("rediger_la_feuille_de_route_etp")
+  redigerLaFeuilleDeRoutePrestation         Boolean @default(false) @map("rediger_la_feuille_de_route_prestation")
+  redigerLaFeuilleDeRoutePrestationPriorite Int?    @map("rediger_la_feuille_de_route_prestation_priorite")
+
+  creerUnVehiculeJuridique                   Boolean @default(false) @map("creer_un_vehicule_juridique")
+  creerUnVehiculeJuridiqueEtp                Float?  @map("creer_un_vehicule_juridique_etp")
+  creerUnVehiculeJuridiquePrestation         Boolean @default(false) @map("creer_un_vehicule_juridique_prestation")
+  creerUnVehiculeJuridiquePrestationPriorite Int?    @map("creer_un_vehicule_juridique_prestation_priorite")
+
+  formaliserLaFeuilleDeRouteAutre                   Boolean @default(false) @map("formaliser_la_feuille_de_route_autre")
+  formaliserLaFeuilleDeRouteAutrePrecisions         String? @map("formaliser_la_feuille_de_route_autre_precisions")
+  formaliserLaFeuilleDeRouteAutreEtp                Float?  @map("formaliser_la_feuille_de_route_autre_etp")
+  formaliserLaFeuilleDeRouteAutrePrestation         Boolean @default(false) @map("formaliser_la_feuille_de_route_autre_prestation")
+  formaliserLaFeuilleDeRouteAutrePrestationPriorite Int?    @map("formaliser_la_feuille_de_route_autre_prestation_priorite")
+
+  // Financer le déploiement de la feuille de route
+
+  structurerUnFondsLocal                   Boolean @default(false) @map("structurer_un_fonds_local")
+  structurerUnFondsLocalEtp                Float?  @map("structurer_un_fonds_local_etp")
+  structurerUnFondsLocalPrestation         Boolean @default(false) @map("structurer_un_fonds_local_prestation")
+  structurerUnFondsLocalPrestationPriorite Int?    @map("structurer_un_fonds_local_prestation_priorite")
+
+  monterDesDossiersDeSubvention                   Boolean @default(false) @map("monter_des_dossiers_de_subvention")
+  monterDesDossiersDeSubventionEtp                Float?  @map("monter_des_dossiers_de_subvention_etp")
+  monterDesDossiersDeSubventionPrestation         Boolean @default(false) @map("monter_des_dossiers_de_subvention_prestation")
+  monterDesDossiersDeSubventionPrestationPriorite Int?    @map("monter_des_dossiers_de_subvention_prestation_priorite")
+
+  animerEtMettreEnOeuvre                   Boolean @default(false) @map("animer_et_mettre_en_oeuvre")
+  animerEtMettreEnOeuvreEtp                Float?  @map("animer_et_mettre_en_oeuvre_etp")
+  animerEtMettreEnOeuvrePrestation         Boolean @default(false) @map("animer_et_mettre_en_oeuvre_prestation")
+  animerEtMettreEnOeuvrePrestationPriorite Int?    @map("animer_et_mettre_en_oeuvre_prestation_priorite")
+
+  financerLeDeploiementAutre                   Boolean @default(false) @map("financer_le_deploiement_autre")
+  financerLeDeploiementAutrePrecisions         String? @map("financer_le_deploiement_autre_precisions")
+  financerLeDeploiementAutreEtp                Float?  @map("financer_le_deploiement_autre_etp")
+  financerLeDeploiementAutrePrestation         Boolean @default(false) @map("financer_le_deploiement_autre_prestation")
+  financerLeDeploiementAutrePrestationPriorite Int?    @map("financer_le_deploiement_autre_prestation_priorite")
+
+  // Outiller les acteurs du territoire
+
+  structurerUneFiliereDeReconditionnement                   Boolean @default(false) @map("structurer_une_filiere_de_reconditionnement")
+  structurerUneFiliereDeReconditionnementEtp                Float?  @map("structurer_une_filiere_de_reconditionnement_etp")
+  structurerUneFiliereDeReconditionnementPrestation         Boolean @default(false) @map("structurer_une_filiere_de_reconditionnement_prestation")
+  structurerUneFiliereDeReconditionnementPrestationPriorite Int?    @map("structurer_une_filiere_de_reconditionnement_prestation_priorite")
+
+  collecterDesDonneesTerritoriales                   Boolean @default(false) @map("collecter_des_donnees_territoriales")
+  collecterDesDonneesTerritorialesEtp                Float?  @map("collecter_des_donnees_territoriales_etp")
+  collecterDesDonneesTerritorialesPrestation         Boolean @default(false) @map("collecter_des_donnees_territoriales_prestation")
+  collecterDesDonneesTerritorialesPrestationPriorite Int?    @map("collecter_des_donnees_territoriales_prestation_priorite")
+
+  sensibiliserLesActeurs                   Boolean @default(false) @map("sensibiliser_les_acteurs")
+  sensibiliserLesActeursEtp                Float?  @map("sensibiliser_les_acteurs_etp")
+  sensibiliserLesActeursPrestation         Boolean @default(false) @map("sensibiliser_les_acteurs_prestation")
+  sensibiliserLesActeursPrestationPriorite Int?    @map("sensibiliser_les_acteurs_prestation_priorite")
+
+  outillerLesActeursAutre                   Boolean @default(false) @map("outiller_les_acteurs_autre")
+  outillerLesActeursAutrePrecisions         String? @map("outiller_les_acteurs_autre_precisions")
+  outillerLesActeursAutreEtp                Float?  @map("outiller_les_acteurs_autre_etp")
+  outillerLesActeursAutrePrestation         Boolean @default(false) @map("outiller_les_acteurs_autre_prestation")
+  outillerLesActeursAutrePrestationPriorite Int?    @map("outiller_les_acteurs_autre_prestation_priorite")
+
+  // Former les professionnels à l’inclusion numérique
+
+  formerLesAgentsPublics         Boolean @default(false) @map("former_les_agents_publics")
+  formerLesAgentsPublicsNombre   Float?  @map("former_les_agents_publics_nombre")
+  formerLesAgentsPublicsPriorite Int?    @map("former_les_agents_publics_priorite")
+
+  formerLesSalariesAssociatifs         Boolean @default(false) @map("former_les_salaries_associatifs")
+  formerLesSalariesAssociatifsNombre   Float?  @map("former_les_salaries_associatifs_nombre")
+  formerLesSalariesAssociatifsPriorite Int?    @map("former_les_salaries_associatifs_priorite")
+
+  appuyerLaCertificationQualiopi         Boolean @default(false) @map("appuyer_la_certification_qualiopi")
+  appuyerLaCertificationQualiopiPriorite Int?    @map("appuyer_la_certification_qualiopi_priorite")
+
+  formerLesProfessionnelsAutre           Boolean @default(false) @map("former_les_professionnels_autre")
+  formerLesProfessionnelsAutrePrecisions String? @map("former_les_professionnels_autre_precisions")
+  formerLesProfessionnelsAutrePriorite   Int?    @map("former_les_professionnels_autre_priorite")
+
+  totalEtp         Float @map("total_etp")
+  totalEtpPriorite Int?  @map("total_etp_priorite")
+
+  @@map("besoins_en_ingenierie_financiere")
+}
+
+// Tous les participants à une gouvernance
+model MembreGouvernance {
+  id String @id @default(uuid()) @db.Uuid
+
+  gouvernanceId String      @map("gouvernance_id") @db.Uuid
+  gouvernance   Gouvernance @relation(fields: [gouvernanceId], references: [id], onDelete: Cascade)
+
+  // Ce membre est coporteur de la gouvernance
+  coporteur Boolean @default(false)
+
+  modification DateTime @updatedAt
+  creation     DateTime @default(now())
+
+  regionCode String? @map("region_code")
+  region     Region? @relation(name: "membre_gouvernance_region", fields: [regionCode], references: [code], onDelete: NoAction)
+
+  departementCode String?      @map("departement_code")
+  departement     Departement? @relation(name: "membre_gouvernance_departement", fields: [departementCode], references: [code], onDelete: NoAction)
+
+  epciCode String? @map("epci_code")
+  epci     Epci?   @relation(name: "membre_gouvernance_epci", fields: [epciCode], references: [code], onDelete: NoAction)
+
+  nomStructure String? @map("nom_structure")
+
+  siret             String?            @map("siret")
+  siretInformations InformationsSiret? @relation(name: "membre_gouvernance_siret", fields: [siret], references: [siret], onDelete: NoAction)
+
+  // Formulaire rempli par le porteur, surtout utile en cas de membre de type structure car une structure n'est pas modélisée en base
+  formulaireGouvernanceId String                 @map("formulaire_gouvernance_id") @db.Uuid
+  formulaireGouvernance   FormulaireGouvernance  @relation(fields: [formulaireGouvernanceId], references: [id], onDelete: Cascade)
+  feuillesDeRoutes        MembreFeuilleDeRoute[]
+
+  @@map("membre_gouvernance")
+}
+
+enum TypeContrat {
+  Crte    @map("crte")
+  Sdaasap @map("sdaasap")
+  Sdin    @map("sdin")
+  Sdun    @map("sdun")
+  Autre   @map("autre")
+
+  @@map("type_contrat")
+}
+
+enum RoleMembreFeuilleDeRoute {
+  Porteur @map("porteur")
+
+  @@map("role_membre_feuille_de_route")
+}
+
+model MembreFeuilleDeRoute {
+  id String @id @default(uuid()) @db.Uuid
+
+  modification DateTime @default(now()) @updatedAt
+  creation     DateTime @default(now())
+
+  feuilleDeRouteId String         @map("feuille_de_route_id") @db.Uuid
+  feuilleDeRoute   FeuilleDeRoute @relation(fields: [feuilleDeRouteId], references: [id], onDelete: Cascade)
+
+  membreId String            @map("membre_id") @db.Uuid
+  membre   MembreGouvernance @relation(fields: [membreId], references: [id], onDelete: NoAction)
+
+  role RoleMembreFeuilleDeRoute
+
+  @@unique([feuilleDeRouteId, membreId])
+  @@map("membre_feuille_de_route")
+}
+
+model FeuilleDeRoute {
+  id String @id @default(uuid()) @db.Uuid
+
+  gouvernanceId String      @map("gouvernance_id") @db.Uuid
+  gouvernance   Gouvernance @relation(fields: [gouvernanceId], references: [id], onDelete: Cascade)
+
+  modification DateTime @updatedAt
+  creation     DateTime @default(now())
+
+  nom String
+
+  contratPreexistant          Boolean      @default(false) @map("contrat_preexistant")
+  typeContrat                 TypeContrat? @map("type_contrat")
+  typeContratAutreDescription String?      @map("type_contrat_autre_description")
+
+  membres MembreFeuilleDeRoute[]
+
+  // Périmètre peut etre region, departement, ou PLUSIEURS Epcis
+  perimetreRegionCode String? @map("perimetre_region_code")
+  perimetreRegion     Region? @relation(name: "feuille_de_route_perimetre_region", fields: [perimetreRegionCode], references: [code], onDelete: NoAction)
+
+  perimetreDepartementCode String?      @map("perimetre_departement_code")
+  perimetreDepartement     Departement? @relation(name: "feuille_de_route_perimetre_departement", fields: [perimetreDepartementCode], references: [code], onDelete: NoAction)
+
+  perimetreEpcis PerimetreEpciFeuilleDeRoute[]
+
+  @@map("feuille_de_route")
+}
+
+model PerimetreEpciFeuilleDeRoute {
+  id String @id @default(uuid()) @db.Uuid
+
+  feuilleDeRouteId String         @map("feuille_de_route_id") @db.Uuid
+  feuilleDeRoute   FeuilleDeRoute @relation(fields: [feuilleDeRouteId], references: [id], onDelete: Cascade)
+
+  epciCode String @map("epci_code")
+  epci     Epci   @relation(name: "perimetre_epci_feuille_de_route", fields: [epciCode], references: [code], onDelete: NoAction)
+
+  @@unique([feuilleDeRouteId, epciCode])
+  @@map("perimetre_epci_feuille_de_route")
+}
+
+enum TypeComite {
+  Strategique @map("strategique")
+  Technique   @map("technique")
+  Consultatif @map("consultatif")
+  Autre       @map("autre")
+
+  @@map("type_comite")
+}
+
+enum FrequenceComite {
+  Mensuelle     @map("mensuelle")
+  Trimestrielle @map("trimestrielle")
+  Semestrielle  @map("semestrielle")
+  Annuelle      @map("annuelle")
+  Autre         @map("autre")
+
+  @@map("frequence_comite")
+}
+
+model ComiteGouvernance {
+  id String @id @default(uuid()) @db.Uuid
+
+  gouvernanceId String      @map("gouvernance_id") @db.Uuid
+  gouvernance   Gouvernance @relation(fields: [gouvernanceId], references: [id], onDelete: Cascade)
+
+  modification DateTime @updatedAt
+  creation     DateTime @default(now())
+
+  type                TypeComite @map("type")
+  typeAutrePrecisions String?    @map("type_autre_precisions")
+
+  frequence FrequenceComite @map("frequence")
+
+  commentaire String?
+
+  @@map("comite_gouvernance")
+}
+
 model OrganisationRecruteuseCoordinateurs {
   id String @id @default(uuid()) @db.Uuid
+
+  modification DateTime @default(now()) @updatedAt
+  creation     DateTime @default(now())
 
   gouvernanceId String      @map("gouvernance_id") @db.Uuid
   gouvernance   Gouvernance @relation(fields: [gouvernanceId], references: [id], onDelete: Cascade)
@@ -737,10 +1036,37 @@ model OrganisationRecruteuseCoordinateurs {
   @@map("organisations_recruteuses_coordinateurs")
 }
 
+enum InformationSiretStatus {
+  Pending @map("pending")
+  Valid   @map("valid")
+  Invalid @map("invalid")
+
+  @@map("information_siret_status")
+}
+
 model InformationsSiret {
-  siret                                 String                                @id
+  siret String @id
+
+  // Raison sociale / Nom renseigné par l'utilisateur AVANT vérification
+  nom String?
+
+  modification DateTime @default(now()) @updatedAt
+  creation     DateTime @default(now())
+
+  // Informations récupérées depuis l'API Entreprise
+  status                         InformationSiretStatus @default(Pending)
+  verification                   DateTime?
+  erreurVerification             String?                @map("erreur_verification")
+  siren                          String?
+  activitePrincipaleCode         String?                @map("activite_principale_code")
+  activitePrincipaleLibelle      String?                @map("activite_principale_libelle")
+  activitePrincipaleNomenclature String?                @map("activite_principale_nomenclature")
+  formeJuridiqueCode             String?                @map("forme_juridique_code")
+  formeJuridiqueLibelle          String?                @map("forme_juridique_libelle")
+
   gouvernancesPortees                   Gouvernance[]
   organisationsRecruteusesCoordinateurs OrganisationRecruteuseCoordinateurs[]
+  membresGouvernances                   MembreGouvernance[]                   @relation("membre_gouvernance_siret")
 
   @@map("informations_siret")
 }

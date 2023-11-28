@@ -22,6 +22,8 @@ export type CustomSelectFormFieldProps<
   valid?: string
   asterisk?: boolean
   transformOptionToValue?: (option: Option) => V
+  renderOption?: (option: Option) => ReactNode
+  onSelectChange?: CustomSelectProps<Option>['onChange']
 }
 
 export type CustomSelectOptions = CustomSelectProps['options']
@@ -55,6 +57,7 @@ const CustomSelectFormField = <
   valid,
   asterisk,
   transformOptionToValue,
+  onSelectChange,
   ...customSelectProps
 }: UiComponentProps & CustomSelectFormFieldProps<T, Option>) => {
   const id = `custom-select-form-field__${path}`
@@ -75,7 +78,9 @@ const CustomSelectFormField = <
         }
         const onChangeProperty: CustomSelectProps<Option>['onChange'] = (
           newValue,
+          meta,
         ) => {
+          onSelectChange?.(newValue, meta)
           const changedValue = transformOptionToValue
             ? transformOptionToValue(newValue as Option)
             : (newValue as null | { value: string })?.value ?? ''

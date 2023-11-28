@@ -3,11 +3,11 @@
 import React, { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Button from '@codegouvfr/react-dsfr/Button'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import ActionBar from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/ActionBar'
 import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
-import { sPluriel } from '@app/web/utils/sPluriel'
 import { useAutresStructures } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/autres-structures/useAutresStructures'
 import { useAutreStructureMutation } from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/autres-structures/useAutreStructureMutation'
 import AutreStructureCard from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/autres-structures/AutreStructureCard'
@@ -69,9 +69,9 @@ const AutresStructures = ({
       console.error(mutationError)
     }
   }
-  const isEtapeLoading = etapeMutation.isLoading || etapeMutation.isSuccess
+  const isEtapeLoading = etapeMutation.isPending || etapeMutation.isSuccess
   const disabled = isEtapeLoading
-  const isAutoSaving = autreStructureMutation.isLoading
+  const isAutoSaving = autreStructureMutation.isPending
 
   return (
     <>

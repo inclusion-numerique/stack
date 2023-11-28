@@ -5,7 +5,7 @@ import {
   PageFormulaireProps,
 } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/pageFormulaireData'
 import BackLink from '@app/web/components/BackLink'
-import Progress from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/Progress'
+import ProgressFormulairesFeuillesDeRoute from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/ProgressFormulairesFeuillesDeRoute'
 import { getEtapeInfo } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/etapeFormulaireGouvernance'
 import AutresStructures from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/autres-structures/AutresStructures'
 
@@ -34,7 +34,7 @@ const Page = async (props: PageFormulaireProps) => {
       <div className="fr-container fr-container--medium formulaire-gouvernance-no-footer-margin-bottom">
         <BackLink href={retourHref} />
 
-        <Progress
+        <ProgressFormulairesFeuillesDeRoute
           progression={4}
           currentTitle="Autres structures impliquées"
           nextTitle="Récapitulatif de votre feuille de route"

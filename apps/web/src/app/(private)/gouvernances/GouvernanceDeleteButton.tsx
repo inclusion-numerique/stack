@@ -36,7 +36,7 @@ const GouvernanceDeleteButton = ({
       })
   }
 
-  const isLoading = mutation.isLoading || mutation.isSuccess
+  const isLoading = mutation.isPending || mutation.isSuccess
 
   return (
     <>

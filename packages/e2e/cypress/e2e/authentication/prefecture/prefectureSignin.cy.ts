@@ -23,7 +23,7 @@ describe('ETQ Visiteur qui souhaite se connecter en Préfecture, je peux me conn
     cy.contains('Vous travaillez en préfecture').click()
     cy.url().should('equal', appUrl('/connexion?role=prefecture'))
 
-    cy.contains('Préfecture')
+    cy.contains('Pour accéder au tableau de bord des préfectures')
   })
 
   it('Préliminaire 2 -Entrée par CTA landing', () => {

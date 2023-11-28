@@ -7,51 +7,243 @@ import {
   GouvernancePressentieValidation,
 } from '@app/web/gouvernance/GouvernancePressentie'
 import { prismaClient } from '@app/web/prismaClient'
-import {
-  forbiddenError,
-  invalidError,
-  notFoundError,
-} from '@app/web/server/rpc/trpcErrors'
-import { canAddGouvernancePressentie } from '@app/web/security/securityRules'
-import { SessionUser } from '@app/web/auth/sessionUser'
+import { invalidError, notFoundError } from '@app/web/server/rpc/trpcErrors'
 import { GouvernanceIdValidation } from '@app/web/gouvernance/GouvernanceIdValidation'
-
-const checkSecurityForGouvernanceMutation = async (
-  user: SessionUser,
-  departementCode: string,
-) => {
-  const departementAndRegion = await prismaClient.departement.findUnique({
-    where: {
-      code: departementCode,
-    },
-    select: {
-      code: true,
-      region: {
-        select: {
-          code: true,
-        },
-      },
-    },
-  })
-
-  if (!departementAndRegion) {
-    throw invalidError('Département non trouvé')
-  }
-
-  if (
-    !canAddGouvernancePressentie(user, {
-      departementCode,
-      regionCode: departementAndRegion.region?.code,
-    })
-  ) {
-    throw forbiddenError(
-      'Vous ne pouvez pas ajouter de gouvernance pressentie pour ce département',
-    )
-  }
-}
+import {
+  CreateGouvernanceValidation,
+  GouvernanceValidation,
+  SiretInfoData,
+} from '@app/web/gouvernance/Gouvernance'
+import { gouvernanceSelect } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
+import { getActorFromCode } from '@app/web/gouvernance/GouvernanceActor'
+import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { hasADefinedKey, hasANullishKey } from '@app/web/utils/hasADefinedKey'
+import {
+  createComites,
+  createFeuillesDeRoute,
+  createMembres,
+  createOrganisationsRecruteusesCoordinateurs,
+  deleteEntities,
+  deleteOrganisationsRecruteusesCoordinateurs,
+  getGouvernanceMutationContext,
+  updateComites,
+  updateFeuillesDeRoute,
+  updateMembres,
+  upsertSiretInformations,
+} from '@app/web/server/rpc/gouvernance/updateGouvernanceV2'
+import { checkSecurityForGouvernanceMutation } from '@app/web/server/rpc/gouvernance/gouvernanceSecurity'
 
 export const gouvernanceRouter = router({
-  // Une mutation par étape du formulaire (cf etapeFormuliareGouvernance)
+  createGouvernance: protectedProcedure
+    .input(CreateGouvernanceValidation)
+    .mutation(async ({ input: { departementCode }, ctx: { user } }) => {
+      await checkSecurityForGouvernanceMutation(user, departementCode)
+
+      const gouvernance = await prismaClient.gouvernance.create({
+        data: {
+          departementCode,
+          createurId: user.id,
+          derniereModificationParId: user.id,
+          noteDeContexte: '',
+        },
+        select: {
+          id: true,
+          departementCode: true,
+        },
+      })
+
+      return gouvernance
+    }),
+  updateGouvernanceV2: protectedProcedure
+    .input(GouvernanceValidation)
+    .mutation(async ({ input, ctx: { user } }) => {
+      const {
+        gouvernanceId,
+        recruteursCoordinateurs,
+        membres,
+        noteDeContexte,
+        pasDeCoporteurs,
+        feuillesDeRoute,
+        comites,
+        sousPrefetReferentEmail,
+        sousPrefetReferentPrenom,
+        sousPrefetReferentNom,
+      } = input
+
+      const { gouvernance, membresFormData } =
+        await getGouvernanceMutationContext({
+          user,
+          gouvernanceId,
+        })
+
+      const membresToCreate = membres.filter(
+        (membre) => !membresFormData.has(membre.code),
+      )
+
+      // Logic to construct siretInformationsToUpsert
+      const siretInformationsToUpsert: SiretInfoData[] = [
+        ...recruteursCoordinateurs.map(({ siret, nom }) => ({
+          siret,
+          nom,
+        })),
+        ...membres
+          .map(({ code, nom }) => ({ nom, actor: getActorFromCode(code) }))
+          .filter(({ actor }) => actor.type === 'structure')
+          .map(({ nom, actor }) => ({
+            siret: actor.code || `__sans-siret__${nom}`,
+            nom,
+          })),
+      ].reduce<SiretInfoData[]>((accumulator, siretInformation) => {
+        if (
+          !accumulator.some(({ siret }) => siret === siretInformation.siret)
+        ) {
+          accumulator.push(siretInformation)
+        }
+        return accumulator
+      }, [])
+
+      const membresToDelete = [...membresFormData.keys()]
+        .filter((code) => !membres.some((membre) => membre.code === code))
+        .map((code) => membresFormData.get(code)?.membre.id)
+        .filter(isDefinedAndNotNull)
+
+      const membresToUpdate = membres.filter(
+        (membre): membre is typeof membre & { id: string } =>
+          membresFormData.has(membre.code),
+      )
+
+      // Logic to construct recruteursToDelete
+      const recruteursToDelete =
+        gouvernance.organisationsRecruteusesCoordinateurs
+          .filter(
+            ({ siretInformations }) =>
+              !recruteursCoordinateurs.some(
+                ({ siret }) => siret === siretInformations.siret,
+              ),
+          )
+          .map(({ id }) => id)
+
+      // Recruteurs that are on input but not in gouvernance
+      const recruteursToCreate = recruteursCoordinateurs.filter(
+        ({ siret }) =>
+          !gouvernance.organisationsRecruteusesCoordinateurs.some(
+            ({ siretInformations }) => siretInformations.siret === siret,
+          ),
+      )
+
+      // Logic to construct feuillesDeRouteToDelete
+      const feuillesDeRouteToDelete = gouvernance.feuillesDeRoute
+        .filter(
+          ({ id }) => !feuillesDeRoute.some((feuille) => feuille.id === id),
+        )
+        .map(({ id }) => id)
+
+      const feuillesDeRouteToCreate = feuillesDeRoute.filter(
+        hasANullishKey('id'),
+      )
+      const feuillesDeRouteToUpdate = feuillesDeRoute.filter(
+        hasADefinedKey('id'),
+      )
+
+      // Logic to construct comitesToDelete
+      const comitesToDelete = gouvernance.comites
+        .filter(({ id }) => !comites.some((comite) => comite.id === id))
+        .map(({ id }) => id)
+
+      const comitesToCreate = comites.filter(hasANullishKey('id'))
+      const comitesToUpdate = comites.filter(hasADefinedKey('id'))
+
+      const mutatedGouvernance = await prismaClient.$transaction(
+        async (transaction) => {
+          // Upsert Siret Informations
+          await upsertSiretInformations(siretInformationsToUpsert, transaction)
+
+          // Create and Update Membres
+          const membreIdForCode = await createMembres(
+            membresToCreate,
+            gouvernanceId,
+            transaction,
+          )
+          await updateMembres(
+            membresToUpdate,
+            membresFormData,
+            gouvernanceId,
+            transaction,
+          )
+
+          // Delete Entities
+          await deleteEntities(
+            membresToDelete,
+            'membreGouvernance',
+            transaction,
+          )
+          await deleteEntities(
+            recruteursToDelete,
+            'organisationRecruteuseCoordinateurs',
+            transaction,
+          )
+          await deleteEntities(
+            feuillesDeRouteToDelete,
+            'feuilleDeRoute',
+            transaction,
+          )
+          await deleteEntities(
+            comitesToDelete,
+            'comiteGouvernance',
+            transaction,
+          )
+
+          // Create and Update Comites
+          await createComites(comitesToCreate, gouvernanceId, transaction)
+          await updateComites(comitesToUpdate, transaction)
+
+          await createOrganisationsRecruteusesCoordinateurs(
+            recruteursToCreate,
+            gouvernanceId,
+            transaction,
+          )
+          await deleteOrganisationsRecruteusesCoordinateurs(
+            recruteursToDelete,
+            transaction,
+          )
+
+          // Create and Update Feuilles de Route
+          await createFeuillesDeRoute(
+            feuillesDeRouteToCreate,
+            gouvernanceId,
+            membreIdForCode,
+            gouvernance,
+            transaction,
+          )
+          await updateFeuillesDeRoute(
+            feuillesDeRouteToUpdate,
+            membreIdForCode,
+            gouvernance,
+            transaction,
+          )
+
+          // Update gouvernance details
+          const updatedGouvernance = await transaction.gouvernance.update({
+            where: { id: gouvernanceId },
+            data: {
+              v2Enregistree: gouvernance.v2Enregistree ? undefined : new Date(),
+              derniereModificationParId: user.id,
+              pasDeCoporteurs,
+              sousPrefetReferentPrenom,
+              sousPrefetReferentNom,
+              sousPrefetReferentEmail,
+              noteDeContexte,
+            },
+            select: gouvernanceSelect,
+          })
+
+          return updatedGouvernance
+        },
+      )
+
+      return mutatedGouvernance
+    }),
+
   gouvernancePressentie: protectedProcedure
     .input(GouvernancePressentieValidation)
     .mutation(
@@ -59,10 +251,10 @@ export const gouvernanceRouter = router({
         input: {
           id,
           siretsRecruteursCoordinateurs,
-          porteurCode,
+          v1PorteurCode,
           departementCode,
-          porteurSiret,
-          perimetre,
+          v1PorteurSiret,
+          v1Perimetre,
           noteDeContexte: dangerousHtmlFromNoteDeContexte,
         },
         ctx: { user },
@@ -117,27 +309,27 @@ export const gouvernanceRouter = router({
               id: user.id,
             },
           },
-          perimetre,
+          v1Perimetre,
           modification: new Date(),
           noteDeContexte,
         } satisfies Prisma.GouvernanceUpdateInput
 
-        const porteurSiretInformations =
-          perimetre === 'autre' && porteurSiret
+        const v1PorteurSiretInformations =
+          v1Perimetre === 'autre' && v1PorteurSiret
             ? {
                 connectOrCreate: {
                   where: {
-                    siret: porteurSiret,
+                    siret: v1PorteurSiret,
                   },
                   create: {
-                    siret: porteurSiret,
+                    siret: v1PorteurSiret,
                   },
                 },
               }
             : undefined
 
-        const porteurInfo = porteurCode
-          ? getInfoFromPorteurCode(porteurCode)
+        const porteurInfo = v1PorteurCode
+          ? getInfoFromPorteurCode(v1PorteurCode)
           : null
 
         const connectPorteurCode = porteurInfo
@@ -147,25 +339,26 @@ export const gouvernanceRouter = router({
               },
             }
           : undefined
-        const porteurRegion =
-          !!porteurCode && porteurInfo?.type === 'region'
+        const v1PorteurRegion =
+          !!v1PorteurCode && porteurInfo?.type === 'region'
             ? connectPorteurCode
             : undefined
-        const porteurDepartement =
-          !!porteurCode && porteurInfo?.type === 'departement'
+        const v1PorteurDepartement =
+          !!v1PorteurCode && porteurInfo?.type === 'departement'
             ? connectPorteurCode
             : undefined
-        const porteurEpci =
-          !!porteurCode && porteurInfo?.type === 'epci'
+        const v1PorteurEpci =
+          !!v1PorteurCode && porteurInfo?.type === 'epci'
             ? connectPorteurCode
             : undefined
 
         if (existing) {
           const data = {
-            porteurRegion: porteurRegion ?? disconnect,
-            porteurDepartement: porteurDepartement ?? disconnect,
-            porteurEpci: porteurEpci ?? disconnect,
-            porteurSiretInformations: porteurSiretInformations ?? disconnect,
+            v1PorteurRegion: v1PorteurRegion ?? disconnect,
+            v1PorteurDepartement: v1PorteurDepartement ?? disconnect,
+            v1PorteurEpci: v1PorteurEpci ?? disconnect,
+            v1PorteurSiretInformations:
+              v1PorteurSiretInformations ?? disconnect,
             ...commonData,
           } satisfies Prisma.GouvernanceUpdateInput
 
@@ -196,10 +389,10 @@ export const gouvernanceRouter = router({
                 code: departementCode,
               },
             },
-            porteurRegion,
-            porteurDepartement,
-            porteurEpci,
-            porteurSiretInformations,
+            v1PorteurRegion,
+            v1PorteurDepartement,
+            v1PorteurEpci,
+            v1PorteurSiretInformations,
             createur: {
               connect: {
                 id: user.id,

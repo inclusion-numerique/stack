@@ -8,27 +8,27 @@
     "tsc": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --",
     "with-remote-env": "dotenv -e ../../.env.remote -e ../../.env --",
-    "cy": "pnpm --silent with-env cypress"
+    "cy": "ELECTRON_EXTRA_LAUNCH_ARGS=\"--force-prefers-reduced-motion\" pnpm --silent with-env cypress"
   },
   "engines": {
     "node": "^20.7"
   },
   "dependencies": {
     "@cypress/react18": "^2.0.0",
-    "cypress": "^13.3.0",
-    "next": "^13.5.3",
+    "cypress": "^13.4.0",
+    "next": "^13.5.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.47.0",
+    "react-hook-form": "^7.48.2",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@testing-library/cypress": "^10.0.1",
-    "@types/node": "^20.8.0",
-    "@types/react": "^18.2.24",
-    "@types/react-dom": "^18.2.8",
-    "@types/uuid": "^9.0.4",
-    "eslint": "^8.50.0",
+    "@types/node": "^20.8.10",
+    "@types/react": "^18.2.35",
+    "@types/react-dom": "^18.2.14",
+    "@types/uuid": "^9.0.6",
+    "eslint": "^8.53.0",
     "typescript": "^5.2.2"
   }
 }

@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/instance_security_group
+// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/instance_security_group
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -8,7 +8,7 @@ import * as cdktf from 'cdktf';
 
 export interface DataScalewayInstanceSecurityGroupConfig extends cdktf.TerraformMetaArguments {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/instance_security_group#id DataScalewayInstanceSecurityGroup#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/instance_security_group#id DataScalewayInstanceSecurityGroup#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -17,19 +17,19 @@ export interface DataScalewayInstanceSecurityGroupConfig extends cdktf.Terraform
   /**
   * The name of the security group
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/instance_security_group#name DataScalewayInstanceSecurityGroup#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/instance_security_group#name DataScalewayInstanceSecurityGroup#name}
   */
   readonly name?: string;
   /**
   * The ID of the security group
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/instance_security_group#security_group_id DataScalewayInstanceSecurityGroup#security_group_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/instance_security_group#security_group_id DataScalewayInstanceSecurityGroup#security_group_id}
   */
   readonly securityGroupId?: string;
   /**
   * The zone you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/instance_security_group#zone DataScalewayInstanceSecurityGroup#zone}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/instance_security_group#zone DataScalewayInstanceSecurityGroup#zone}
   */
   readonly zone?: string;
 }
@@ -213,7 +213,7 @@ export class DataScalewayInstanceSecurityGroupOutboundRuleList extends cdktf.Com
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/instance_security_group scaleway_instance_security_group}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/instance_security_group scaleway_instance_security_group}
 */
 export class DataScalewayInstanceSecurityGroup extends cdktf.TerraformDataSource {
 
@@ -222,12 +222,26 @@ export class DataScalewayInstanceSecurityGroup extends cdktf.TerraformDataSource
   // =================
   public static readonly tfResourceType = "scaleway_instance_security_group";
 
+  // ==============
+  // STATIC Methods
+  // ==============
+  /**
+  * Generates CDKTF code for importing a DataScalewayInstanceSecurityGroup resource upon running "cdktf plan <stack-name>"
+  * @param scope The scope in which to define this construct
+  * @param importToId The construct id used in the generated config for the DataScalewayInstanceSecurityGroup to import
+  * @param importFromId The id of the existing DataScalewayInstanceSecurityGroup that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/instance_security_group#import import section} in the documentation of this resource for the id to use
+  * @param provider? Optional instance of the provider where the DataScalewayInstanceSecurityGroup to import is found
+  */
+  public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
+        return new cdktf.ImportableResource(scope, importToId, { terraformResourceType: "scaleway_instance_security_group", importId: importFromId, provider });
+      }
+
   // ===========
   // INITIALIZER
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.28.0/docs/data-sources/instance_security_group scaleway_instance_security_group} Data Source
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/instance_security_group scaleway_instance_security_group} Data Source
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -238,8 +252,8 @@ export class DataScalewayInstanceSecurityGroup extends cdktf.TerraformDataSource
       terraformResourceType: 'scaleway_instance_security_group',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.28.0',
-        providerVersionConstraint: '>= 2.28.0'
+        providerVersion: '2.31.0',
+        providerVersionConstraint: '>= 2.31.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,

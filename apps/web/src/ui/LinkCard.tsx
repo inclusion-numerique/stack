@@ -10,7 +10,7 @@ const LinkCard = ({
   title: string
   text: string
 }) => (
-  <Link href={href} className={styles.card}>
+  <Link href={href} prefetch={false} className={styles.card}>
     <div className={styles.content}>
       <h3>{title}</h3>
       <p>{text}</p>

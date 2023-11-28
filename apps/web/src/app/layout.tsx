@@ -7,6 +7,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { PropsWithChildren } from 'react'
 import { setLink } from '@codegouvfr/react-dsfr/link'
+import Toaster from '@app/ui/toast/Toaster'
 import { Dsfr } from '@app/web/app/Dsfr'
 import { EnvInformation } from '@app/web/app/EnvInformation'
 import { Matomo } from '@app/web/app/Matomo'
@@ -54,6 +55,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
         <Crisp nonce={nonce} />
         <EnvInformation />
         {children}
+        <Toaster />
       </body>
     </html>
   )
