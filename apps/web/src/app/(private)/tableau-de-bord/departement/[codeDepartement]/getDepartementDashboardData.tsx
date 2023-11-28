@@ -1,11 +1,11 @@
 /* eslint no-plusplus: 0 */
-import { ConumCras } from '@app/web/data/cnfsCra'
 import { prismaClient } from '@app/web/prismaClient'
 import { countStructuresForDepartementDashboard } from '@app/web/components/Dashboard/Cartographie/countStructures'
 import { getTopCrasTypes } from '@app/web/components/Dashboard/Cartographie/getTopCrasTypes'
 import { getDepartementGeoFeatures } from '@app/web/data/departements'
 import { createWhereStructureInDepartement } from '@app/web/data/query/whereStructureInDepartement'
 import type { DepartementDashboardInfoButtonsId } from '@app/web/components/Dashboard/DepartementDashboardInfoModals'
+import { conumCrasUpdatedDate } from '@app/web/data/conumCras'
 
 export type StatisticData = {
   id: string
@@ -289,14 +289,14 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
             id: 'par-des-conseillers-numériques',
             label: 'Par des Conseillers Numériques',
             value: conumCras?.usagers ?? 0,
-            updated: new Date(ConumCras.updated),
+            updated: conumCrasUpdatedDate,
             source: 'conseiller-numerique.gouv.fr',
           },
           {
             id: 'par-des-aidants-habilités-à-aidants-connect',
             label: 'Par des Aidants habilités à Aidants Connect',
             value: structuresCount.aidantsConnect.usagersUniques,
-            updated: new Date(ConumCras.updated),
+            updated: conumCrasUpdatedDate,
             source: 'aidantsconnect.beta.gouv.fr',
           },
         ],
@@ -304,7 +304,7 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
       {
         id: 'âge-des-usagers',
         label: 'Âge des usagers',
-        updated: new Date(ConumCras.updated),
+        updated: conumCrasUpdatedDate,
         source: 'conseiller-numerique.gouv.fr',
         statistics: [
           {
@@ -337,7 +337,7 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
       {
         id: 'statut-des-usagers',
         label: 'Statut des usagers',
-        updated: new Date(ConumCras.updated),
+        updated: conumCrasUpdatedDate,
         source: 'conseiller-numerique.gouv.fr',
         statistics: [
           {
@@ -387,14 +387,14 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
             id: 'accompagnements-de-médiation-numérique',
             label: 'Accompagnements de médiation numérique',
             value: conumCras?.accompagnements ?? 0,
-            updated: new Date(ConumCras.updated),
+            updated: conumCrasUpdatedDate,
             source: 'conseiller-numerique.gouv.fr',
           },
           {
             id: 'accompagnements-pour-réaliser-des-démarches-en-lignes',
             label: 'Accompagnements pour réaliser des démarches en lignes',
             value: structuresCount.aidantsConnect.totalDemarches,
-            updated: new Date('2023-08-04'),
+            updated: new Date('2023-11-28'),
             source: 'aidantsconnect.beta.gouv.fr',
           },
         ],
@@ -403,7 +403,7 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
         id: 'accompagnements-de-médiation-numérique',
         label:
           'Les 4 principaux thèmes d’accompagnements de médiation numérique',
-        updated: new Date(ConumCras.updated),
+        updated: conumCrasUpdatedDate,
         source: 'conseiller-numerique.gouv.fr',
         statistics: top4CraThemes.top4.map(({ label, count }) => ({
           id: label,
@@ -415,7 +415,7 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
         id: 'réaliser-des-démarches-en-lignes',
         label:
           'Les 4 principaux thèmes d’accompagnements pour réaliser des démarches en lignes',
-        updated: new Date('2023-08-04'),
+        updated: new Date('2023-11-28'),
         source: 'aidantsconnect.beta.gouv.fr',
         statistics: structuresCount.aidantsConnect.top4AndOther.map(
           ({ label, count }) => ({

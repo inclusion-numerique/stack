@@ -51,7 +51,7 @@ const StructureDetails = ({
         Code postal : {codePostal} - INSEE : {codeCommune || 'non disponible'}
       </p>
       <p className="fr-hint-text">
-        Mise à jour le {dateAsDay(new Date('2023-07-21'))} · Source :{' '}
+        Mise à jour le {dateAsDay(new Date('2023-11-28'))} · Source :{' '}
         <Link
           href="https://cartographie.societenumerique.gouv.fr/"
           target="_blank"

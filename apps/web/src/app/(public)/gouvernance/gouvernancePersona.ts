@@ -36,7 +36,7 @@ const conseilRegional = {
     {
       title: 'Pour porter une feuille de route territoriale',
       items: [
-        'Définissez le périmètre de votre feuille de route : Renseignez quels sont les EPCI & les communes que vous souhaitez intégrer à votre feuille de route de l’Inclusion Numérique. Pour chacun d’eux, nous vous demanderons de renseigner un contact (Nom, Prénom, Fonction & Adresse e-mail).',
+        'Définissez le périmètre de votre feuille de route : Renseignez quels sont les EPCI & les communes que vous souhaitez intégrer à votre feuille de route de l’Inclusion Numérique. Pour chacun d’eux, nous vous demanderons de renseigner un contact (Nom, Prénom, Fonction & Adresse e-mail).',
         'Vous pouvez également impliquer d’autres personnes morales publiques ou privées (associations, opérateurs de services publics, entreprises) à votre feuille de route. Nous vous demanderons d’indiquer le nom de la structure ainsi qu’un contact (Nom, Prénom, Fonction & Adresse e-mail).',
       ],
     },

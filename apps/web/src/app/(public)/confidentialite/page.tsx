@@ -140,7 +140,7 @@ const ConfidentialityPage = () => (
 
         <p>
           Les données sont également transférées sur les serveurs de notre
-          prestataire en charge de l’envoi de la newsletter : Sendinblue,
+          prestataire en charge de l’envoi de la newsletter&nbsp;: Sendinblue,
           Société par actions simplifiée au capital de 137.531 euros,
           immatriculée au RCS de Paris sous le numéro 498 019 298 et dont le
           siège social est situé 55 rue d’Amsterdam, 75008 Paris, France.
