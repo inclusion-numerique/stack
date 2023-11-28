@@ -10,12 +10,22 @@ import {
   themeKeys,
   themesSet,
 } from '@app/web/data/conumCras'
+import { runPromisesSequentiallyUsingFactory } from '@app/web/utils/runPromisesSequentially'
 
-const crasCsvFile = path.resolve(
-  __dirname,
-  '../../../../../var',
-  'cras_2023-07-26T08_53_21.237230614Z.csv',
-)
+/**
+ * To fetch cras data, export from metabase using 6 month period
+ * https://metabase.conseiller-numerique.gouv.fr/question#eyJkYXRhc2V0X3F1ZXJ5Ijp7InR5cGUiOiJxdWVyeSIsInF1ZXJ5Ijp7InNvdXJjZS10YWJsZSI6MTUyLCJmaWVsZHMiOltbImZpZWxkIiwzMTI4LG51bGxdLFsiZmllbGQiLDMxMjYsbnVsbF0sWyJmaWVsZCIsMzEzMyxudWxsXSxbImZpZWxkIiwzMTM3LG51bGxdLFsiZmllbGQiLDMxMzIsbnVsbF0sWyJmaWVsZCIsMzEzNSxudWxsXSxbImZpZWxkIiwzMTMwLG51bGxdLFsiZmllbGQiLDMxMzYsbnVsbF0sWyJmaWVsZCIsMzQ4MCxudWxsXSxbImZpZWxkIiwzNDc4LG51bGxdLFsiZmllbGQiLDM0NzksbnVsbF0sWyJmaWVsZCIsMzQ3NixudWxsXSxbImZpZWxkIiwzNDc3LG51bGxdLFsiZmllbGQiLDMxMjksbnVsbF0sWyJmaWVsZCIsNDQ0NSxudWxsXSxbImZpZWxkIiwzMTM4LG51bGxdLFsiZmllbGQiLDMxMzQsbnVsbF0sWyJmaWVsZCIsNDQ0MyxudWxsXSxbImZpZWxkIiw0NDQyLG51bGxdXSwiZmlsdGVyIjpbImFuZCIsWyJiZXR3ZWVuIixbImZpZWxkIiwzMTI3LG51bGxdLCIyMDIzLTA3LTAxIiwiMjAyMy0xMi0zMSJdXX0sImRhdGFiYXNlIjo5fSwiZGlzcGxheSI6InRhYmxlIiwiZGlzcGxheUlzTG9ja2VkIjp0cnVlLCJwYXJhbWV0ZXJzIjpudWxsLCJ2aXN1YWxpemF0aW9uX3NldHRpbmdzIjp7InRhYmxlLmNvbHVtbnMiOlt7Im5hbWUiOiJfaWQiLCJmaWVsZFJlZiI6WyJmaWVsZCIsMzEyOCxudWxsXSwiZW5hYmxlZCI6dHJ1ZX0seyJuYW1lIjoiY29uc2VpbGxlcklkIiwiZmllbGRSZWYiOlsiZmllbGQiLDMxMjYsbnVsbF0sImVuYWJsZWQiOnRydWV9LHsibmFtZSI6ImNyYS5ub21Db21tdW5lIiwiZmllbGRSZWYiOlsiZmllbGQiLDMxMzMsbnVsbF0sImVuYWJsZWQiOnRydWV9LHsibmFtZSI6ImNyYS5zdGF0dXQiLCJmaWVsZFJlZiI6WyJmaWVsZCIsMzEzNyxudWxsXSwiZW5hYmxlZCI6dHJ1ZX0seyJuYW1lIjoiY3JhLmNvZGVQb3N0YWwiLCJmaWVsZFJlZiI6WyJmaWVsZCIsMzEzMixudWxsXSwiZW5hYmxlZCI6dHJ1ZX0seyJuYW1lIjoiY3JhLmFjY29tcGFnbmVtZW50IiwiZmllbGRSZWYiOlsiZmllbGQiLDMxMzUsbnVsbF0sImVuYWJsZWQiOnRydWV9LHsibmFtZSI6ImNyYS50aGVtZXMiLCJmaWVsZFJlZiI6WyJmaWVsZCIsMzEzMCxudWxsXSwiZW5hYmxlZCI6dHJ1ZX0seyJuYW1lIjoiY3JhLmFjdGl2aXRlIiwiZmllbGRSZWYiOlsiZmllbGQiLDMxMzYsbnVsbF0sImVuYWJsZWQiOnRydWV9LHsibmFtZSI6ImNyYS5hZ2UubW9pbnMxMmFucyIsImZpZWxkUmVmIjpbImZpZWxkIiwzNDgwLG51bGxdLCJlbmFibGVkIjp0cnVlfSx7Im5hbWUiOiJjcmEuYWdlLmRlMTJhMThhbnMiLCJmaWVsZFJlZiI6WyJmaWVsZCIsMzQ3OCxudWxsXSwiZW5hYmxlZCI6dHJ1ZX0seyJuYW1lIjoiY3JhLmFnZS5kZTE4YTM1YW5zIiwiZmllbGRSZWYiOlsiZmllbGQiLDM0NzksbnVsbF0sImVuYWJsZWQiOnRydWV9LHsibmFtZSI6ImNyYS5hZ2UuZGUzNWE2MGFucyIsImZpZWxkUmVmIjpbImZpZWxkIiwzNDc2LG51bGxdLCJlbmFibGVkIjp0cnVlfSx7Im5hbWUiOiJjcmEuYWdlLnBsdXM2MGFucyIsImZpZWxkUmVmIjpbImZpZWxkIiwzNDc3LG51bGxdLCJlbmFibGVkIjp0cnVlfSx7Im5hbWUiOiJjcmEubmJQYXJ0aWNpcGFudHMiLCJmaWVsZFJlZiI6WyJmaWVsZCIsMzEyOSxudWxsXSwiZW5hYmxlZCI6dHJ1ZX0seyJuYW1lIjoiY3JhLm5iUGFydGljaXBhbnRzUmVjdXJyZW50cyIsImZpZWxkUmVmIjpbImZpZWxkIiw0NDQ1LG51bGxdLCJlbmFibGVkIjp0cnVlfSx7Im5hbWUiOiJjcmEuZHVyZWUiLCJmaWVsZFJlZiI6WyJmaWVsZCIsMzEzOCxudWxsXSwiZW5hYmxlZCI6dHJ1ZX0seyJuYW1lIjoiY3JhLmNhbmFsIiwiZmllbGRSZWYiOlsiZmllbGQiLDMxMzQsbnVsbF0sImVuYWJsZWQiOnRydWV9LHsibmFtZSI6InBlcm1hbmVuY2VJZCIsImZpZWxkUmVmIjpbImZpZWxkIiw0NDQzLG51bGxdLCJlbmFibGVkIjp0cnVlfSx7Im5hbWUiOiJzdHJ1Y3R1cmVJZCIsImZpZWxkUmVmIjpbImZpZWxkIiw0NDQyLG51bGxdLCJlbmFibGVkIjp0cnVlfV0sInRhYmxlLnBpdm90X2NvbHVtbiI6ImNyYS5hY2NvbXBhZ25lbWVudCIsInRhYmxlLmNlbGxfY29sdW1uIjoiY3JhLmFnZS5tb2luczEyYW5zIn0sIm9yaWdpbmFsX2NhcmRfaWQiOjE2N30=
+ *
+ * File are too big for git, so you have to download them manually and put them in var folder
+ * Ask Hugues for the files or download them from metabase
+ */
+
+const crasCsvFiles = [
+  'cras_2021_query_result_2023-11-28T13_25_05.391635249Z.csv',
+  'cras_2022_query_result_2023-11-28T09_39_06.259497991Z.csv',
+  'cras_2023_S1_query_result_2023-11-28T13_19_17.179274441Z.csv',
+  'cras_2023_S2_query_result_2023-11-28T13_24_55.575510099Z.csv',
+].map((file) => path.resolve(__dirname, '../../../../../var', file))
 
 type CrasCsvRow = {
   ID: string
@@ -211,10 +221,13 @@ const reduceData = (mapped: Preprocessed[]): ReducedResult => {
 export const reduceCras = new Command()
   .command('data:reduce-cras')
   .action(async () => {
-    const unfilteredRows = await parseCsvFileWithMapper(
-      crasCsvFile,
-      preprocessData,
+    const unfilteredRowsResults = await runPromisesSequentiallyUsingFactory(
+      crasCsvFiles.map(
+        (file) => () => parseCsvFileWithMapper(file, preprocessData),
+      ),
     )
+    const unfilteredRows = unfilteredRowsResults.flat()
+
     const rows = unfilteredRows.filter(
       (row): row is Preprocessed => row !== null,
     )

@@ -8,6 +8,10 @@ export const buildConumCras = async ({
 }: {
   departements: BuildDepartementsOutput
 }) => {
+  /**
+   * To update the data, see apps/cli/src/data/reduceCras.ts to download raw data and process it
+   */
+
   output(
     '-- Getting data from local json (from preprocessed cli data:reduce-cras)...',
   )

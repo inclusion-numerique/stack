@@ -14,6 +14,10 @@ export const buildIfn = async ({
 }) => {
   output('-- Getting data from epci csv...')
 
+  /**
+   * API use is clunky, for now we use the csv files provided by the team
+   */
+
   // name,division,code,no_thd_coverage_rate,no_4g_coverage_rate,poverty_rate,older_65_rate,nscol15p_rate,total
 
   const epciIfns = await parseCsvFileWithMapper(
