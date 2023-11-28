@@ -214,10 +214,10 @@ const HomePage = () => (
               </h6>
               <p>
                 Mobilisez-vous dans le cadre des concertations locales afin
-                d'affiner le diagnostic quantitatif, de définir la structure de
+                d’affiner le diagnostic quantitatif, de définir la structure de
                 gouvernance, de préciser le périmètre de feuilles de route
                 adapté à votre territoire, ainsi que vos besoins en ingénierie
-                financière. Signalez votre souhait de porter et/ou d'élaborer un
+                financière. Signalez votre souhait de porter et/ou d’élaborer un
                 feuille de route territoriale via{' '}
                 <a
                   href="/gouvernance"
