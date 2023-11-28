@@ -31,7 +31,7 @@ export const gouvernanceFormSections = {
   },
   coordinateurConseillerNumeriqueDeLaGouvernance: {
     id: 'coordinateur-conseiller-numerique-de-la-gouvernance',
-    title: 'Coordinateur Conseiller Numérique de la gouvernance',
+    title: 'Coordinateur Conseiller Numérique',
     info: (
       <>
         La phase de déploiement du dispositif Conseiller numérique laisse place

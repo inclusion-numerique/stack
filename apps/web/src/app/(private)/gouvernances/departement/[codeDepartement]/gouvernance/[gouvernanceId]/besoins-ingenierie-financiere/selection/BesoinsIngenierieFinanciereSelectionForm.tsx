@@ -81,7 +81,7 @@ const BesoinsIngenierieFinanciereSelectionForm = ({
         <BesoinForm form={form} besoin="animerEtMettreEnOeuvre" />
         <BesoinForm form={form} besoin="financerLeDeploiementAutre" />
         <p className="fr-text--bold">
-          Besoin relatifs à l’outillage des acteurs de votre territoire
+          Besoins relatifs à l’outillage des acteurs de votre territoire
         </p>
         <BesoinForm
           form={form}

@@ -8,7 +8,7 @@ export const simpleBesoinsLabels = {
   structurerUnFondsLocal:
     'Structurer un fonds local pour l’inclusion numérique',
   monterDesDossiersDeSubvention:
-    'Monter de dossiers de subvention complexes (ex : FSE)',
+    'Monter des dossiers de subvention complexes (ex : FSE)',
   animerEtMettreEnOeuvre:
     'Animer et mettre en œuvre la gouvernance et la feuille de route',
   financerLeDeploiementAutre: 'Autre',
