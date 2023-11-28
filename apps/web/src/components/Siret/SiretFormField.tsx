@@ -63,6 +63,7 @@ const SiretFormField = ({
 
         form.setValue('siret', result.siret)
         form.setValue('nom', result.nom ?? result.siret)
+        form.clearErrors('nom')
 
         return result
       })
@@ -84,14 +85,22 @@ const SiretFormField = ({
 
   // Info depends of the state of the values and of the state of the check
   // Show loading if check is pending or if check is done and there is no error on SIRET but there is an error on NOM that should be set by check mutation
-  const showLoadingInfo = isPending || (!siretError && nomError)
+  const showLoadingInfo = isPending
   // Show value if everything is ok
   const showValueInfo = !!siret && !!nom && !siretError && !nomError
 
   const info = showLoadingInfo ? (
-    <span className="fr-flex fr-align-items-center  fr-mt-2v ">
-      <Spinner size="small" className="fr-mr-1v" /> Vérification du SIRET...
-    </span>
+    <>
+      <span className="fr-flex fr-align-items-center  fr-mt-2v ">
+        <Spinner size="small" className="fr-mr-1v" /> Vérification du SIRET...
+      </span>
+      {/* nomError is present if verification is not done yet */}
+      {!!nomError && (
+        <span className="fr-mt-1v fr-text-default--error fr-mb-0">
+          {nomError.message}
+        </span>
+      )}
+    </>
   ) : // Siret and Nom are valid, show the value
   showValueInfo ? (
     <span className="fr-flex fr-direction-column fr-align-items-start fr-justify-content-center fr-mt-2v fr-text-action-high--blue-france">

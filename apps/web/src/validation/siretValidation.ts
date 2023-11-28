@@ -2,10 +2,9 @@ import z from 'zod'
 import { checkLuhnIntegrity } from '@app/web/utils/checkLuhnIntegrity'
 
 const baseSiretValidation = z
-  .string({
-    required_error: 'Veuillez renseigner le SIRET',
-  })
+  .string()
   .trim()
+  .min(1, 'Veuillez renseigner le SIRET')
   .regex(/^\d{14}$/, {
     message: 'Le SIRET doit être composé de 14 chiffres',
   })

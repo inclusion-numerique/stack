@@ -135,7 +135,7 @@ const feuillesDeRouteEtPorteursConstraints = {
 export const SiretInfoValidation = z.object({
   siret: requiredSiretValidation,
   // Nom will comme from SIRET Check API. If it is not defined, means the SIRET is loading or invalid
-  nom: z.string(),
+  nom: z.string().min(1, 'SIRET en cours de vérification'),
 })
 
 export type SiretInfoData = z.infer<typeof SiretInfoValidation>
