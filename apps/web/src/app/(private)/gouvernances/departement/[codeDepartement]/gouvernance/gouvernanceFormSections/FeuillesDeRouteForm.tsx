@@ -47,7 +47,7 @@ const FeuillesDeRouteForm = ({
   membresOptions: MembreOptions
   appendMembre: (membre: MembreData) => void
   perimetreEpciOptions: Option[]
-  membreFields: MembreData[]
+  membreFields: (MembreData & { _formKey: string })[]
   disabled?: boolean
   replaceUrlToAnchor: ReplaceUrlToAnchor
   feuillesDeRouteErrorRef: React.RefObject<HTMLParagraphElement>
@@ -73,7 +73,7 @@ const FeuillesDeRouteForm = ({
   } = useFieldArray({
     control,
     name: 'feuillesDeRoute',
-    keyName: 'id',
+    keyName: '_formKey',
   })
 
   const addFeuilleDeRouteForm = useForm<FeuilleDeRouteData>({
@@ -98,7 +98,7 @@ const FeuillesDeRouteForm = ({
     setEditingFeuilleDeRoute(index)
   }
 
-  const onAddFeuilleDeRoute = () => {
+  const onSaveFeuilleDeRoute = () => {
     addFeuilleDeRouteForm.handleSubmit((data) => {
       const cleanedData = {
         ...data,
@@ -152,11 +152,11 @@ const FeuillesDeRouteForm = ({
       {/* eslint-disable-next-line no-return-assign */}
       {feuilleDeRouteFields.map(
         (
-          { id, nom, porteur: fieldPorteur, perimetreScope, typeContrat },
+          { _formKey, nom, porteur: fieldPorteur, perimetreScope, typeContrat },
           index,
         ) =>
           editingFeuilleDeRoute === index ? null : (
-            <div key={id}>
+            <div key={_formKey}>
               <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
                 <span>
                   <InfoLabelValue
@@ -286,7 +286,7 @@ const FeuillesDeRouteForm = ({
             <Button
               type="button"
               className="fr-ml-2w"
-              onClick={onAddFeuilleDeRoute}
+              onClick={onSaveFeuilleDeRoute}
               iconId="fr-icon-check-line"
               iconPosition="right"
             >

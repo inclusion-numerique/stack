@@ -5,6 +5,7 @@ export type GouvernanceActorType =
   | 'region'
   | 'departement'
   | 'epci'
+  | 'commune'
   | 'structure'
 
 /**
@@ -56,6 +57,9 @@ export const getMembreModelDataFromActorCode = (
   if (type === 'epci') {
     return { epciCode: code, formulaireGouvernanceId }
   }
+  if (type === 'commune') {
+    return { communeCode: code, formulaireGouvernanceId }
+  }
   return {
     siret: code || `__sans-siret__${nom}`,
     formulaireGouvernanceId,
@@ -66,6 +70,7 @@ export const membreToFormMembre = ({
   epci,
   departement,
   region,
+  commune,
   nomStructure,
   siretInformations,
   coporteur,
@@ -102,6 +107,17 @@ export const membreToFormMembre = ({
       }),
       coporteur,
       nom: epci.nom,
+    }
+  }
+  if (commune) {
+    return {
+      code: getGouvernanceActorCode({
+        type: 'commune',
+        code: commune.code,
+        formulaireGouvernanceId,
+      }),
+      coporteur,
+      nom: commune.nom,
     }
   }
   return {

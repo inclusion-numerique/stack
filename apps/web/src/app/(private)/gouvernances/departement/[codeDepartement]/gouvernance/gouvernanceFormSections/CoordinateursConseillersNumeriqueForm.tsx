@@ -35,7 +35,7 @@ const CoordinateursConseillersNumeriqueForm = ({
   } = useFieldArray({
     control,
     name: 'recruteursCoordinateurs',
-    keyName: 'id',
+    keyName: '_formKey',
   })
 
   const addRecruteurForm = useForm<SiretInfoData>({
@@ -63,7 +63,7 @@ const CoordinateursConseillersNumeriqueForm = ({
       {...gouvernanceFormSections.coordinateurConseillerNumeriqueDeLaGouvernance}
     >
       {/* eslint-disable-next-line no-return-assign */}
-      {recruteurFields.map(({ id, nom, siret }, index) => {
+      {recruteurFields.map(({ _formKey, nom, siret }, index) => {
         const recruteurError = errors.recruteursCoordinateurs?.[index]
         const errorMessage =
           recruteurError?.message ||
@@ -71,7 +71,7 @@ const CoordinateursConseillersNumeriqueForm = ({
           recruteurError?.nom?.message
 
         return (
-          <div key={id}>
+          <div key={_formKey}>
             <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
               <span>
                 <InfoLabelValue

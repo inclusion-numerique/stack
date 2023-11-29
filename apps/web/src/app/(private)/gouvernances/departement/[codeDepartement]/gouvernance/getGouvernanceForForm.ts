@@ -25,6 +25,7 @@ const membreSelect = {
     region: collectiviteSelect,
     departement: collectiviteSelect,
     epci: collectiviteSelect,
+    commune: collectiviteSelect,
     nomStructure: true,
     siret: true,
     siretInformations: siretInfoSelect,

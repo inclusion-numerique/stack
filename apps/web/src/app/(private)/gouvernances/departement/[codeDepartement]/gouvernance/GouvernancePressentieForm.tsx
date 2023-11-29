@@ -53,7 +53,7 @@ const GouvernancePressentieForm = ({
   const { control, setError, handleSubmit, formState } = form
   const siretsRecruteursCoordinateursFields = useFieldArray({
     control,
-    keyName: 'id',
+    keyName: '_formKey',
     name: 'siretsRecruteursCoordinateurs',
   })
 
@@ -190,7 +190,7 @@ const GouvernancePressentieForm = ({
         {siretsRecruteursCoordinateursFields.fields.map((siretField, index) => (
           <InputFormField
             control={control}
-            key={siretField.id}
+            key={siretField._formKey}
             path={`siretsRecruteursCoordinateurs.${index}.siret`}
             disabled={isLoading}
             label={

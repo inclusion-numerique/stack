@@ -262,6 +262,7 @@ model Commune {
   ifn                                 IfnCommune?
   formulairesGouvernance              FormulaireGouvernance[]
   participationsFormulaireGouvernance CommuneParticipanteFormulaireGouvernance[]
+  membresGouvernances                 MembreGouvernance[]                        @relation("membre_gouvernance_commune")
 
   @@index([codeDepartement])
   @@index([codeEpci])
@@ -890,6 +891,9 @@ model MembreGouvernance {
 
   departementCode String?      @map("departement_code")
   departement     Departement? @relation(name: "membre_gouvernance_departement", fields: [departementCode], references: [code], onDelete: NoAction)
+
+  communeCode String?  @map("commune_code")
+  commune     Commune? @relation(name: "membre_gouvernance_commune", fields: [communeCode], references: [code], onDelete: NoAction)
 
   epciCode String? @map("epci_code")
   epci     Epci?   @relation(name: "membre_gouvernance_epci", fields: [epciCode], references: [code], onDelete: NoAction)

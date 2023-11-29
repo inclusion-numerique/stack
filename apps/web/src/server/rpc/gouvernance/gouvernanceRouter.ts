@@ -159,11 +159,17 @@ export const gouvernanceRouter = router({
           await upsertSiretInformations(siretInformationsToUpsert, transaction)
 
           // Create and Update Membres
-          const membreIdForCode = await createMembres(
+          const createdMembreIdsForCode = await createMembres(
             membresToCreate,
             gouvernanceId,
             transaction,
           )
+          const membreIdForCode = new Map<string, string>([
+            ...[...membresFormData.entries()].map(
+              ([code, { membre }]): [string, string] => [code, membre.id],
+            ),
+            ...createdMembreIdsForCode.entries(),
+          ])
           await updateMembres(
             membresToUpdate,
             membresFormData,

@@ -38,6 +38,27 @@ export const getMembresOptions = async ({
   codeDepartement: string
   gouvernanceId: string
 }) => {
+  const communes = await prismaClient.commune.findMany({
+    select: {
+      code: true,
+      nom: true,
+      formulairesGouvernance: firstFormulaireGouvernancePorterOrParticiper,
+      membresGouvernances: {
+        select: {
+          coporteur: true,
+        },
+        where: {
+          gouvernanceId,
+        },
+      },
+    },
+    where: {
+      departement: {
+        code: codeDepartement,
+      },
+    },
+  })
+
   // Epcis can be in multiple departements / Regions so they are the base for region / departement scopes.
 
   const epcis = await prismaClient.epci.findMany({
@@ -195,6 +216,21 @@ export const getMembresOptions = async ({
       }),
     }))
 
+  const optionsCommunes = communes
+    .filter(({ formulairesGouvernance }) => formulairesGouvernance.length > 0)
+    .map(({ code, nom, formulairesGouvernance }) => ({
+      label: generateGouvernanceSelectOptionLabelWithIntention({
+        label: nom,
+        intention: getIntention(formulairesGouvernance),
+      }),
+      stringLabel: nom,
+      value: getGouvernanceActorCode({
+        type: 'commune',
+        code,
+        formulaireGouvernanceId: formulairesGouvernance[0].id,
+      }),
+    }))
+
   // TODO dedupe par siret + departement
   const optionsStructures = structures.map(
     ({ id, siretStructure, nomStructure, intention }) => ({
@@ -215,6 +251,7 @@ export const getMembresOptions = async ({
     { label: 'Conseil régional', options: optionsRegions },
     { label: 'Conseil départemental', options: optionsDepartements },
     { label: 'EPCI', options: optionsEpcis },
+    { label: 'Commune', options: optionsCommunes },
     { label: 'Autres', options: optionsStructures },
   ].filter(({ options }) => options.length > 0)
 }

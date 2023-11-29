@@ -26,7 +26,7 @@ const CoporteursForm = ({
   form: UseFormReturn<GouvernanceData>
   disabled?: boolean
   membresOptions: MembreOptions
-  membreFields: MembreData[]
+  membreFields: (MembreData & { _formKey: string })[]
   appendMembre: (membre: MembreData) => void
   removeMembre: (index: number) => void
   updateMembre: (index: number, membre: MembreData) => void

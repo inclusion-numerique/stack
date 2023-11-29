@@ -134,6 +134,12 @@ export const formulairesGouvernance = () => {
     },
   }
 
+  const communeLyon2 = {
+    connect: {
+      code: '69382',
+    },
+  }
+
   const rhonePorteurEpciParticipantId = '8eea8b99-7f4d-4826-9751-bc81aa2687f2'
   const rhonePorteurEpciParticipant = {
     id: rhonePorteurEpciParticipantId,
@@ -274,6 +280,20 @@ export const formulairesGouvernance = () => {
     }),
   } satisfies AppPrisma.FormulaireGouvernanceCreateInput
 
+  const lyon2PorteurVide = {
+    id: 'f0be4b0f-9a21-412b-b8da-6a14548c8624',
+    gouvernancePersona: 'commune',
+    intention: 'Porter',
+    confirmeEtEnvoye: new Date(),
+    createur,
+    commune: communeLyon2,
+    participants,
+    contactPolitique: contactConnectOrCreate({
+      formulaireGouvernanceId: 'f0be4b0f-9a21-412b-b8da-6a14548c8624',
+      ...contacts[10],
+    }),
+  } satisfies AppPrisma.FormulaireGouvernanceCreateInput
+
   const lyonMetropoleParticipant = {
     id: '3fe83e62-5471-4305-99f1-ca398f8378a3',
     gouvernancePersona: 'epci',
@@ -380,13 +400,14 @@ export const formulairesGouvernance = () => {
     departement: rhone,
     contactStructure: contactConnectOrCreate({
       formulaireGouvernanceId: 'b1e3ed0a-d1f7-40cf-b456-836cb5b8a0ba',
-      ...contacts[9],
+      ...contacts[10],
     }),
   } satisfies AppPrisma.FormulaireGouvernanceCreateInput
 
   return [
     rhonePorteurEpciParticipant,
     girondePorteurVide,
+    lyon2PorteurVide,
     lyon6Participant,
     montsDuLyonnaisPorter,
     lyonMetropoleParticipant,

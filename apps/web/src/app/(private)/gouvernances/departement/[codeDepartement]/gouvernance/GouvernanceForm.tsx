@@ -140,7 +140,7 @@ const GouvernanceForm = ({
   } = useFieldArray({
     control,
     name: 'membres',
-    keyName: 'id',
+    keyName: '_formKey',
   })
 
   return (

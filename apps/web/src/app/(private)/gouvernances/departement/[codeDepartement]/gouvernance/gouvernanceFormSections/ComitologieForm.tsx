@@ -46,7 +46,7 @@ const ComitologieForm = ({
   } = useFieldArray({
     control,
     name: 'comites',
-    keyName: 'id',
+    keyName: '_formKey',
   })
 
   const addComiteForm = useForm<ComiteData>({
@@ -78,8 +78,11 @@ const ComitologieForm = ({
     <GouvernanceFormSectionCard {...gouvernanceFormSections.comitologie}>
       {/* eslint-disable-next-line no-return-assign */}
       {comiteFields.map(
-        ({ id, type, frequence, commentaire, typeAutrePrecisions }, index) => (
-          <div key={id}>
+        (
+          { _formKey, type, frequence, commentaire, typeAutrePrecisions },
+          index,
+        ) => (
+          <div key={_formKey}>
             <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
               <span>
                 <InfoLabelValue

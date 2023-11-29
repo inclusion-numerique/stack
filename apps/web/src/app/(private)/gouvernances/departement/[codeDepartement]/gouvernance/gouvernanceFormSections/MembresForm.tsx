@@ -26,7 +26,7 @@ const MembresForm = ({
   form: UseFormReturn<GouvernanceData>
   disabled?: boolean
   membresOptions: MembreOptions
-  membreFields: MembreData[]
+  membreFields: (MembreData & { _formKey: string })[]
   appendMembre: (membre: MembreData) => void
   removeMembre: (index: number) => void
   membresErrorRef: RefObject<HTMLParagraphElement>
@@ -100,10 +100,10 @@ const MembresForm = ({
           {collectiviteMembres.length}
         </p>
       </div>
-      {membreFields.map(({ code, nom, coporteur }, index) =>
+      {membreFields.map(({ _formKey, code, nom, coporteur }, index) =>
         getActorFromCode(code).type === 'structure' ? null : (
           <div
-            key={code}
+            key={_formKey}
             className="fr-mt-4v fr-width-full fr-flex fr-justify-content-space-between fr-align-items-center"
           >
             <span>{nom}</span>
