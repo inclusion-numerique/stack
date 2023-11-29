@@ -122,6 +122,21 @@
   text-transform: initial;
 }
 
+/* Priority variations */
+.fr-notice--warning {
+    background: var(--background-contrast-warning);
+
+    --hover: var(--background-contrast-warning-hover);
+    --active: var(--background-contrast-warning-active);
+
+    color: var(--text-default-warning);
+}
+
+.fr-notice--warning .fr-notice__body::before {
+    mask-image: url("/dsfr/icons/system/fr--warning-fill.svg");
+    content: "";
+}
+
 /* Override input spacing */
 .fr-input-group,
 .fr-select-group {
@@ -132,6 +147,11 @@
 .fr-hint-text {
   margin-top: 4px !important;
   font-weight: 400;
+}
+
+.fr-input-group:not(:last-child),
+.fr-select-group:not(:last-child) {
+    margin-bottom: 16px;
 }
 
 .fr-btn--danger {
@@ -148,7 +168,7 @@
 
 .fr-btn--no-after {
   &::after {
-    display: none;
+    display: none !important;
   }
 }
 

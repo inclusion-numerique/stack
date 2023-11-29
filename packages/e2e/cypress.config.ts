@@ -1,8 +1,6 @@
 import { defineConfig } from 'cypress'
 import 'tsconfig-paths/register'
-// eslint-disable-next-line import/no-relative-packages
-import { cypressProjectId } from '../config/src/config'
-// eslint-disable-next-line import/no-relative-packages
+import { cypressProjectId } from '../../packages/config/src/config'
 import { tasks } from './cypress/support/tasks'
 
 export default defineConfig({
@@ -21,23 +19,23 @@ export default defineConfig({
 
   e2e: {
     setupNodeEvents(on, config) {
-      // implement node event listeners here
       on('task', tasks)
       on('before:browser:launch', (browser, launchOptions) => {
         if (browser.family === 'firefox') {
+          // eslint-disable-next-line no-param-reassign
           launchOptions.preferences['ui.prefersReducedMotion'] = 1
         }
         if (browser.family === 'chromium') {
           launchOptions.args.push('--force-prefers-reduced-motion')
         }
         // Electron does not supports that kind of options.
+        // eslint-disable-next-line no-param-reassign
         launchOptions.env.ELECTRON_EXTRA_LAUNCH_ARGS =
           '--force-prefers-reduced-motion'
 
         return launchOptions
       })
     },
-    scrollBehavior: 'center',
     env: {
       INCLUSION_CONNECT_TEST_USER_EMAIL:
         process.env.INCLUSION_CONNECT_TEST_USER_EMAIL,
