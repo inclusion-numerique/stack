@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form'
 import classNames from 'classnames'
 import sanitizeHtml from 'sanitize-html'
 import { zodResolver } from '@hookform/resolvers/zod'
+import MaybeEmptyValue from '@app/ui/components/MaybeEmptyValue'
+import EmptyValue from '@app/ui/components/EmptyValue'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import EditCard from '@app/web/components/EditCard'
@@ -14,8 +16,6 @@ import {
   UpdateBaseInformationsCommandValidation,
 } from '@app/web/server/bases/updateBase'
 import { getDepartmentName } from '@app/web/utils/departments'
-import MaybeEmptyValue from '@app/web/components/MaybeEmptyValue'
-import EmptyValue from '@app/web/components/EmptyValue'
 import BaseInformationsEdition from '../BaseInformationsEdition'
 import styles from './Edition.module.css'
 

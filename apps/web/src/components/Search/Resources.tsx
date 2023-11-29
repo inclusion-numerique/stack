@@ -1,7 +1,7 @@
 import React from 'react'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { ResourceListItem } from '@app/web/server/resources/getResourcesList'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import { sPluriel } from '@app/web/utils/sPluriel'
 import { SearchParams } from '@app/web/server/search/searchQueryParams'
 import SaveResourceInCollectionModal from '@app/web/components/Resource/SaveResourceInCollectionModal'
 import DeleteResource from '@app/web/components/Resource/DeleteResource/DeleteResource'

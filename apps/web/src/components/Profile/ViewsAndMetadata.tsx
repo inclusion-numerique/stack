@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import React from 'react'
-import { sPluriel } from '@app/web/utils/sPluriel'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import styles from './ViewsAndMetadata.module.css'
 
 const ViewsAndMetadata = ({ resourcesCount }: { resourcesCount: number }) => (

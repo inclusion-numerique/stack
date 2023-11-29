@@ -1,6 +1,6 @@
 import React from 'react'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { ProfileListItem } from '@app/web/server/profiles/getProfilesList'
-import { sPluriel } from '@app/web/utils/sPluriel'
 import ProfileCard from '../Profile/Card/Card'
 import EmptyBox from '../EmptyBox'
 import styles from './Content.module.css'

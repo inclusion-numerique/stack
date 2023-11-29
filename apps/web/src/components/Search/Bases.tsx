@@ -1,6 +1,6 @@
 import React from 'react'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { BaseListItem } from '@app/web/server/bases/getBasesList'
-import { sPluriel } from '@app/web/utils/sPluriel'
 import { SearchParams } from '@app/web/server/search/searchQueryParams'
 import BaseCard from '../Base/Card/Card'
 import EmptyBox from '../EmptyBox'

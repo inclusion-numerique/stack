@@ -4,6 +4,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import classNames from 'classnames'
 import { zodResolver } from '@hookform/resolvers/zod'
+import MaybeEmptyValue from '@app/ui/components/MaybeEmptyValue'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import EditCard from '@app/web/components/EditCard'
@@ -12,7 +13,6 @@ import {
   UpdateBaseContactsCommand,
   UpdateBaseContactsCommandValidation,
 } from '@app/web/server/bases/updateBase'
-import MaybeEmptyValue from '@app/web/components/MaybeEmptyValue'
 import BaseContactsEdition from '../BaseContactsEdition'
 import editionStyles from './Edition.module.css'
 import styles from './Contacts.module.css'

@@ -2,8 +2,8 @@ import Accordion from '@codegouvfr/react-dsfr/Accordion'
 import Link from 'next/link'
 import classNames from 'classnames'
 import type { Theme } from '@prisma/client'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { getHomeCategoriesCount } from '@app/web/app/(public)/getHomeCategoriesCount'
-import { sPluriel } from '@app/web/utils/sPluriel'
 import {
   defaultSearchParams,
   searchUrl,
