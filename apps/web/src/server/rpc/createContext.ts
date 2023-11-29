@@ -1,17 +1,22 @@
-import { inferAsyncReturnType } from '@trpc/server'
-import { CreateNextContextOptions } from '@trpc/server/src/adapters/next'
+import type { FetchCreateContextFnOptions } from '@trpc/server/src/adapters/fetch/types'
+import cookie from 'cookie'
 import { getSessionTokenFromCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
 
-export const createContext = async ({ req, res }: CreateNextContextOptions) => {
-  const sessionToken = getSessionTokenFromCookies(req.cookies)
+export const createContext = async ({
+  req,
+  resHeaders,
+  info,
+}: FetchCreateContextFnOptions) => {
+  const cookies = cookie.parse(req.headers.get('cookie') || '')
+  const sessionToken = getSessionTokenFromCookies(cookies)
 
   if (!sessionToken) {
-    return { req, res, user: null }
+    return { req, user: null, resHeaders, info }
   }
   const user = await getSessionUserFromSessionToken(sessionToken)
 
-  return { req, res, user }
+  return { req, user, resHeaders, info }
 }
 
-export type AppContext = inferAsyncReturnType<typeof createContext>
+export type AppContext = Awaited<ReturnType<typeof createContext>>

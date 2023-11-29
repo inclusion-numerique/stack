@@ -8,7 +8,7 @@ import { Image, Upload } from '@prisma/client'
 import { legacyS3Client } from '@app/web/server/s3/legacyS3'
 import { s3 } from '@app/web/server/s3/s3'
 import { isImageCropped } from '@app/web/utils/imageCrop'
-import { ServerWebAppConfig } from '@app/web/webAppConfig'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { processImage } from '@app/web/server/image/processImage'
 
 const computeCropKey = ({

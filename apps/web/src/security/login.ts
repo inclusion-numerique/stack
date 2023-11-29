@@ -1,4 +1,4 @@
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export const loginIntents = ['enregistrer-ressource-dans-collection'] as const
 

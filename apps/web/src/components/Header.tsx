@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import HeaderBackLink from '@app/web/components/HeaderBackLink'
 import { HeaderUserMenu } from '@app/web/components/HeaderUserMenu'
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import {
   defaultSearchParams,
   searchUrl,

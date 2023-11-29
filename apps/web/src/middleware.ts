@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { ServerWebAppConfig } from '@app/web/webAppConfig'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 
 const nodeEnvironment = process.env.NODE_ENV
 const isCI = !!process.env.CI

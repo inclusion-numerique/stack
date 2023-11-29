@@ -5,7 +5,7 @@ import SignupPanel from '@app/web/app/(public)/(withContainer)/(authentication)/
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { getServerUrl } from '@app/web/utils/baseUrl'
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export const revalidate = 0
 const SigninPage = async ({

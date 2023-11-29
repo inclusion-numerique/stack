@@ -11,6 +11,11 @@
   "engines": {
     "node": "^20.7"
   },
+  "overrides": {
+    "mjml-react": {
+      "react": "*"
+    }
+  },
   "dependencies": {
     "@luma-team/mjml-react": "^0.3.0-0",
     "html-minifier": "^4.0.0",

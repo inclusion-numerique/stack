@@ -1,15 +1,10 @@
-import { mainLiveUrl, projectTitle, repositoryUrl } from '@app/config/config'
-
-const NodeEnvironment = process.env.NODE_ENV
-
-/**
- * Necessary environment variables for web app are listed here.
- */
+import 'server-only'
 
 /**
  * Only use ServerWebAppConfig on server side
  * It contains secrets that must not be sent to the client
  */
+const NodeEnvironment = process.env.NODE_ENV
 
 const emailServer = `smtp://${process.env.SMTP_USERNAME ?? ''}:${
   process.env.SMTP_PASSWORD ?? ''
@@ -17,12 +12,7 @@ const emailServer = `smtp://${process.env.SMTP_USERNAME ?? ''}:${
 
 export const ServerWebAppConfig = {
   NodeEnv: NodeEnvironment,
-  Branch: process.env.BRANCH ?? '',
   Namespace: process.env.NAMESPACE ?? '',
-  isMain: process.env.BRANCH === 'main',
-  Chromatic: {
-    appId: process.env.CHROMATIC_APP_ID ?? '',
-  },
   Email: {
     server: emailServer,
     from: `${process.env.EMAIL_FROM_NAME ?? ''} <${
@@ -51,29 +41,5 @@ export const ServerWebAppConfig = {
   },
   InclusionConnect: {
     clientSecret: process.env.INCLUSION_CONNECT_CLIENT_SECRET ?? '',
-  },
-}
-
-/**
- * Public config can be used on client side or server side
- */
-
-export const PublicWebAppConfig = {
-  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL,
-  projectTitle,
-  mainLiveUrl,
-  repository: repositoryUrl,
-  InclusionConnect: {
-    iss: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_ISS ?? '',
-    issuer: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_ISSUER ?? '',
-    clientId: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID ?? '',
-  },
-  Sentry: {
-    dsn: process.env.NEXT_PUBLIC_SENTRY_DSN ?? '',
-    environment: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT ?? 'local',
-  },
-  Matomo: {
-    host: process.env.NEXT_PUBLIC_MATOMO_HOST ?? '',
-    siteId: process.env.NEXT_PUBLIC_MATOMO_SITE_ID ?? '',
   },
 }

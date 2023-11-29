@@ -68,8 +68,8 @@ export const getMetadataFromDocument = (
     faviconUrl: absoluteOrRelativePathToFavicon
       ? getAbsoluteUrl(absoluteOrRelativePathToFavicon, url)
       : hasDefaultFavicon
-      ? `${url.protocol}//${url.hostname}/favicon.ico`
-      : null,
+        ? `${url.protocol}//${url.hostname}/favicon.ico`
+        : null,
   }
 }
 

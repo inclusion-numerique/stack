@@ -2,7 +2,7 @@ import { createTransport } from 'nodemailer'
 import { compileMjml } from '@app/emails/mjml'
 import { inviteContributor } from '@app/emails/templates/inviteContributor'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import { ServerWebAppConfig } from '@app/web/webAppConfig'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { Resource } from '../../resources/getResource'
 
 export const sendNewContributorEmail = async ({

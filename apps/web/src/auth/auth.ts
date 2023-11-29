@@ -1,13 +1,14 @@
-import NextAuth, { NextAuthOptions } from 'next-auth'
+import NextAuth from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
 import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
-import '@app/web/auth/nextAuthSetup'
-import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
 import { InclusionConnectProvider } from '@app/web/auth/InclusionConnectProvider'
 
-export const authOptions: NextAuthOptions = {
-  // debug: process.env.NODE_ENV !== 'production',
+export const {
+  handlers: { GET, POST },
+  auth,
+} = NextAuth({
   adapter: nextAuthAdapter,
   pages: {
     signIn: '/connexion',
@@ -38,13 +39,14 @@ export const authOptions: NextAuthOptions = {
       if (isAllowedToSignIn) {
         return true
       }
+      // TODO TEST THIS
       // Return false to display a default error message
-      // return false
+      return false
 
       // Or you can return a URL to redirect to:
-      return `/creer-un-compte?raison=connexion-sans-compte&email=${
-        user?.email ?? ''
-      }`
+      // return `/creer-un-compte?raison=connexion-sans-compte&email=${
+      //   user?.email ?? ''
+      // }`
     },
     session: ({ session, user }) => {
       if (session.user) {
@@ -54,6 +56,4 @@ export const authOptions: NextAuthOptions = {
       return session
     },
   },
-}
-
-export default NextAuth(authOptions)
+})

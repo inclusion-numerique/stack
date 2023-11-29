@@ -4,7 +4,7 @@ import { ListObjectsV2Command } from '@aws-sdk/client-s3'
 import { output } from '@app/cli/output'
 import { prismaClient } from '@app/web/prismaClient'
 import { legacyS3Client } from '@app/web/server/s3/legacyS3'
-import { ServerWebAppConfig } from '@app/web/webAppConfig'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { UpsertCreateType } from '@app/migration/utils/UpsertCreateType'
 
 // There is ~4500 files uploaded dated 2023-05-07

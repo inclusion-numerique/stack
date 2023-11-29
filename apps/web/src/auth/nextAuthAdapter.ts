@@ -1,5 +1,5 @@
-import type { Adapter, AdapterUser } from 'next-auth/adapters'
-import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import type { Adapter, AdapterUser } from '@auth/core/adapters'
+import { PrismaAdapter } from '@auth/prisma-adapter'
 import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
 import { prismaClient } from '@app/web/prismaClient'
 

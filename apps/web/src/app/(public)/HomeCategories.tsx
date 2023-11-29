@@ -3,6 +3,7 @@ import Link from 'next/link'
 import classNames from 'classnames'
 import type { Theme } from '@prisma/client'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
+import { headers } from 'next/headers'
 import { getHomeCategoriesCount } from '@app/web/app/(public)/getHomeCategoriesCount'
 import {
   defaultSearchParams,
@@ -19,7 +20,7 @@ const themeSearchResultHref = (theme: Theme) =>
 
 const HomeCategories = async () => {
   const categoriesCount = await getHomeCategoriesCount()
-
+  console.log('HOME', headers())
   return (
     <div className="fr-container fr-pt-20v fr-pb-30v">
       <div className="fr-text--center">

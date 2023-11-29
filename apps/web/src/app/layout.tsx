@@ -12,7 +12,7 @@ import { Matomo } from '@app/web/app/Matomo'
 import { PreloadResources } from '@app/web/app/PreloadResources'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import CreateResourceFormModal from '@app/web/components/Resource/CreateResourceFormModal'
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 declare module '@codegouvfr/react-dsfr/link' {
   interface RegisterLink {

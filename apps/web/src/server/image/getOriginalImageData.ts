@@ -1,7 +1,7 @@
 import { GetObjectCommand } from '@aws-sdk/client-s3'
 import { Image, Upload } from '@prisma/client'
 import { legacyS3Client } from '@app/web/server/s3/legacyS3'
-import { ServerWebAppConfig } from '@app/web/webAppConfig'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { s3 } from '@app/web/server/s3/s3'
 
 export const getOriginalImageData = async ({

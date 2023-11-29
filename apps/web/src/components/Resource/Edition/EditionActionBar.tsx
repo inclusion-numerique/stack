@@ -169,8 +169,8 @@ const EditionActionBar = ({
               {publishMode
                 ? 'Publier maintenant'
                 : publishedState === ResourcePublishedState.DRAFT
-                ? 'Publier la ressource'
-                : 'Publier les modifications'}
+                  ? 'Publier la ressource'
+                  : 'Publier les modifications'}
             </Button>
           </div>
         </div>

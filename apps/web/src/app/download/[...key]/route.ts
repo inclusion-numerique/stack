@@ -2,7 +2,7 @@ import { GetObjectCommand } from '@aws-sdk/client-s3'
 import { NextRequest } from 'next/server'
 import { prismaClient } from '@app/web/prismaClient'
 import { legacyS3Client } from '@app/web/server/s3/legacyS3'
-import { ServerWebAppConfig } from '@app/web/webAppConfig'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { s3 } from '@app/web/server/s3/s3'
 
 const notFoundResponse = () =>

@@ -11,7 +11,7 @@ import {
   router,
 } from '@app/web/server/rpc/createRouter'
 import { notFoundError } from '@app/web/server/rpc/trpcErrors'
-import { ServerWebAppConfig } from '@app/web/webAppConfig'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { createLegacySignedUrl } from '@app/web/server/createLegacySignedUrl'
 
 export const uploadRouter = router({
