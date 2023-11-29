@@ -76,5 +76,8 @@ export const packageJestConfig = ({
       ...testPathIgnorePatterns,
     ],
     testEnvironment: 'node',
+    testEnvironmentOptions: {
+      customExportConditions: ['react-server', 'node', 'node-addons'],
+    },
   }
 }

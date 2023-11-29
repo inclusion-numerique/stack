@@ -5,6 +5,9 @@ import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
 import { InclusionConnectProvider } from '@app/web/auth/InclusionConnectProvider'
 
+/**
+ * Will be used for next-auth v5 beta
+ */
 export const {
   handlers: { GET, POST },
   auth,
@@ -56,4 +59,4 @@ export const {
       return session
     },
   },
-})
+}) as unknown as never

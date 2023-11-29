@@ -9,8 +9,8 @@ export const addNextPublicVariablesToDotEnv = new Command()
     const targetEnv: 'local' | 'main' | 'preview' = local
       ? 'local'
       : namespace === 'main'
-      ? 'main'
-      : 'preview'
+        ? 'main'
+        : 'preview'
 
     await appendEnvVariablesToDotEnvFile({
       comment: 'Next public environment needed at build time',

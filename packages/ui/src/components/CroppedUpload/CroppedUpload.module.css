@@ -1,7 +1,7 @@
 .imageContainer {
     display: block;
     overflow: hidden;
-    margin: 0 auto 16px auto;
+    margin: 0 auto 16px;
 }
 
 .round {
@@ -52,7 +52,6 @@
 }
 
 .croppingRound {
-
     :global(.cropper-view-box),
     :global(.cropper-face) {
         border-radius: 50%;

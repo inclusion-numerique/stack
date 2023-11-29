@@ -35,8 +35,6 @@ const cachedGetSessionUserFromSessionToken = cache(
 export const getSessionUser = async (): Promise<SessionUser | null> => {
   const sessionToken = getSessionToken()
 
-  console.log('GET USER', { sessionToken })
-
   if (!sessionToken) {
     return null
   }

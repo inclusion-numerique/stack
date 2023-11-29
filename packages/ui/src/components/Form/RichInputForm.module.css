@@ -30,7 +30,6 @@
 }
 
 .small {
-
   :global(.ProseMirror) {
     min-height: 64px;
   }
