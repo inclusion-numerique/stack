@@ -33,9 +33,21 @@ const GouvernanceCompletedModal = () => {
         { children: 'J’ai compris', type: 'button', doClosesModal: true },
       ]}
     >
-      Votre proposition sera automatiquement envoyée à l’ANCT et aux membres de
-      la gouvernance le {dateAsDay(limiteModificationDesGouvernances)}. Merci
-      d’avoir complété les formulaires.
+      Merci pour vos efforts de concertation. Votre proposition sera
+      automatiquement envoyée à l’ANCT et aux membres de la gouvernance le{' '}
+      {dateAsDay(limiteModificationDesGouvernances)}. Vous pouvez continuer à y
+      apporter des modifications jusqu’à cette date. L’ANCT reviendra vers vous
+      début 2024 pour&nbsp;:
+      <ul>
+        <li>
+          vous apporter des réponses relatives à votre expression de
+          besoins&nbsp;;
+        </li>
+        <li>
+          vous demander des précisions sur votre gouvernance si elle ne répond
+          pas aux critères établis par la circulaire du 28 juillet 2023.
+        </li>
+      </ul>
     </Component>
   )
 }
