@@ -35,8 +35,24 @@
     margin-top: 2px;
 }
 
+.fr-mb-negative-1v {
+    margin-bottom: -4px;
+}
+
+.fr-mb-negative-2v{
+    margin-bottom: -8px;
+}
+
 .fr-flex {
     display: flex;
+}
+
+.fr-block {
+    display: block;
+}
+
+.fr-inline-block {
+    display: inline-block;
 }
 
 .fr-direction-column {

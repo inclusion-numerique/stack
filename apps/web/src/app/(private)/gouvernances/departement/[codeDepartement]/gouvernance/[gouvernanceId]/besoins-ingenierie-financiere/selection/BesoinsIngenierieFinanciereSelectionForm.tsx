@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { DefaultValues } from 'react-hook-form/dist/types/form'
 import React from 'react'
 import { useRouter } from 'next/navigation'
+import Button from '@codegouvfr/react-dsfr/Button'
 import {
   BesoinsEnIngenierieFinanciereData,
   BesoinsEnIngenierieFinanciereValidation,
@@ -93,6 +94,23 @@ const BesoinsIngenierieFinanciereSelectionForm = ({
         <p className="fr-text--bold">
           Besoins relatifs à la formation des professionnels de l’inclusion
           numérique
+          <Button
+            type="button"
+            className="fr-inline-block fr-ml-1w fr-btn--tooltip fr-mb-negative-2v"
+            id="besoins-formation-tooltip"
+            aria-describedby="besoins-formation-tooltip_tooltip"
+          >
+            Information contextuelle
+          </Button>
+          <span
+            className="fr-tooltip fr-placement fr-text--regular"
+            id="besoins-formation-tooltip_tooltip"
+            role="tooltip"
+            aria-hidden="true"
+          >
+            Posture de l’aidant, accompagner les publics, orienter vers les
+            acteurs des territoires, Aidants Connect…
+          </span>
         </p>
         <BesoinsFormationForm form={form} besoin="formerLesAgentsPublics" />
         <BesoinsFormationForm

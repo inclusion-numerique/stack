@@ -1,6 +1,7 @@
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
 import { UseFormReturn } from 'react-hook-form'
 import InputFormField from '@app/ui/components/Form/InputFormField'
+import Button from '@codegouvfr/react-dsfr/Button'
 import { BesoinsEnIngenierieFinanciereData } from '@app/web/gouvernance/BesoinsEnIngenierieFinanciere'
 import { besoinsLabels } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/besoinsLabels'
 
@@ -78,13 +79,32 @@ const BesoinForm = ({
             />
           )}
         {besoinChecked && (
-          <CheckboxFormField
-            className="fr-mb-0"
-            control={control}
-            path={`${besoin}.rh`}
-            label="Ressource humaine"
-            small
-          />
+          <div className="fr-flex fr-align-items-center fr-mb-3v">
+            <CheckboxFormField
+              className="fr-mb-0"
+              fieldsetElementClassName="fr-mb-0"
+              control={control}
+              path={`${besoin}.rh`}
+              label="Ressource humaine"
+              small
+            />
+            <Button
+              type="button"
+              className="fr-ml-1w fr-btn--tooltip"
+              id={`rh-tooltip-${besoin}`}
+              aria-describedby={`rh-tooltip-${besoin}_tooltip`}
+            >
+              Information contextuelle
+            </Button>
+            <span
+              className="fr-tooltip fr-placement"
+              id={`rh-tooltip-${besoin}_tooltip`}
+              role="tooltip"
+              aria-hidden="true"
+            >
+              Internalisée par un membre de la gouvernance hors Etat
+            </span>
+          </div>
         )}
         {besoinChecked && rhChecked && (
           <InputFormField

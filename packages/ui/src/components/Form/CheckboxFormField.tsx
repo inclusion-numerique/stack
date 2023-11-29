@@ -15,6 +15,7 @@ export type CheckboxFormFieldProps<T extends FieldValues> = {
   small?: boolean
   onChange?: (value: boolean) => void
   asterisk?: boolean
+  fieldsetElementClassName?: string
 }
 
 const CheckboxFormField = <T extends FieldValues>({
@@ -27,6 +28,7 @@ const CheckboxFormField = <T extends FieldValues>({
   small,
   asterisk,
   className,
+  fieldsetElementClassName,
   onChange: onChangeProperty,
   'data-testid': dataTestId,
 }: UiComponentProps & CheckboxFormFieldProps<T>) => {
@@ -64,7 +66,12 @@ const CheckboxFormField = <T extends FieldValues>({
               }`}
               role="group"
             >
-              <div className="fr-fieldset__element">
+              <div
+                className={classNames(
+                  'fr-fieldset__element',
+                  fieldsetElementClassName,
+                )}
+              >
                 <div
                   className={classNames('fr-checkbox-group', {
                     'fr-checkbox-group--sm': small,
