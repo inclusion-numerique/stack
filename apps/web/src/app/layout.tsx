@@ -26,6 +26,7 @@ setLink({
 
 export const metadata: Metadata = {
   title: PublicWebAppConfig.projectTitle,
+  robots: PublicWebAppConfig.isMain ? 'index, follow' : 'noindex, nofollow',
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon/favicon.ico',
