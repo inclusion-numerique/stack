@@ -40,7 +40,7 @@ export const InclusionConnectProvider = () =>
     clientSecret: ServerWebAppConfig.InclusionConnect.clientSecret,
     issuer,
     authorization: {
-      // url: `${PublicWebAppConfig.InclusionConnect.issuer}/protocol/openid-connect/auth`,
+      url: `${issuer}/auth/authorize`,
       params: {
         scope: 'openid profile email ',
       },

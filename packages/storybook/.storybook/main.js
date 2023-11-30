@@ -56,9 +56,8 @@ module.exports = {
   webpackFinal: async (config) => {
     for (const mockableImport of mockable) {
       // eslint-disable-next-line no-param-reassign
-      config.resolve.alias[
-        mockableImport
-      ] = `${storybookMocksDirectory}/emptyMock`
+      config.resolve.alias[mockableImport] =
+        `${storybookMocksDirectory}/emptyMock`
     }
     return config
   },
