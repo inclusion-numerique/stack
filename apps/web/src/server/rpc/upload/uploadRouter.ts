@@ -7,7 +7,7 @@ import {
 } from '@app/web/server/createSignedUrl'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { forbiddenError, notFoundError } from '@app/web/server/rpc/trpcErrors'
-import { ServerWebAppConfig } from '@app/web/webAppConfig'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 
 export const uploadRouter = router({
   create: protectedProcedure

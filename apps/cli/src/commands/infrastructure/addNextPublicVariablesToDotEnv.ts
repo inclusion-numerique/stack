@@ -23,12 +23,8 @@ export const addNextPublicVariablesToDotEnv = new Command()
           value: `$INCLUSION_CONNECT_${targetEnv.toUpperCase()}_ISS`,
         },
         {
-          name: 'NEXT_PUBLIC_INCLUSION_CONNECT_ISSUER',
-          value: `$INCLUSION_CONNECT_${targetEnv.toUpperCase()}_ISSUER`,
-        },
-        {
-          name: 'NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID',
-          value: `$INCLUSION_CONNECT_${targetEnv.toUpperCase()}_CLIENT_ID`,
+          name: 'NEXT_PUBLIC_INCLUSION_CONNECT_HOSTNAME',
+          value: `$INCLUSION_CONNECT_${targetEnv.toUpperCase()}_HOSTNAME`,
         },
         {
           name: 'NEXT_PUBLIC_MONCOMPTEPRO_ISSUER',

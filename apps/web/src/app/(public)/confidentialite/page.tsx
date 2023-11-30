@@ -1,5 +1,5 @@
 /* eslint jsx-a11y/control-has-associated-label: 0  */
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export const revalidate = 0
 const ConfidentialityPage = () => (

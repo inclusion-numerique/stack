@@ -1,5 +1,5 @@
 import { S3Client } from '@aws-sdk/client-s3'
-import { ServerWebAppConfig } from '@app/web/webAppConfig'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 
 export const s3 = new S3Client({
   credentials: {

@@ -8,7 +8,7 @@ import * as Sentry from '@sentry/nextjs'
 import { Image } from '@prisma/client'
 import { s3 } from '@app/web/server/s3/s3'
 import { imageCropToRegion, isImageCropped } from '@app/web/utils/imageCrop'
-import { ServerWebAppConfig } from '@app/web/webAppConfig'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 
 const computeImageVersionCacheKey = ({
   id,

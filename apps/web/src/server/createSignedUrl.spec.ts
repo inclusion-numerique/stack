@@ -5,7 +5,7 @@ import {
   createSignedGetUrl,
   createSignedUploadUrl,
 } from '@app/web/server/createSignedUrl'
-import { ServerWebAppConfig } from '@app/web/webAppConfig'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 
 describe.skip('createSignedUrl', () => {
   describe('createSignedGetUrl', () => {

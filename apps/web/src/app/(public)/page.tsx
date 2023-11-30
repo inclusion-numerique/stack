@@ -1,5 +1,5 @@
 import { fr } from '@codegouvfr/react-dsfr'
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export const revalidate = 0
 
