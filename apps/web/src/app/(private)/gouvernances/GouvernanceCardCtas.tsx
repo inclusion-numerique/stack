@@ -184,9 +184,7 @@ const GouvernanceCardCtas = ({
                     { codeDepartement: gouvernance.departement.code },
                     {
                       gouvernanceId: gouvernance.id,
-                      step: gouvernance.besoinsEnIngenierieFinanciere
-                        ? 'selection'
-                        : 'intro',
+                      step: 'intro',
                     },
                   ),
                 }}
@@ -202,9 +200,7 @@ const GouvernanceCardCtas = ({
                     { codeDepartement: gouvernance.departement.code },
                     {
                       gouvernanceId: gouvernance.id,
-                      step: gouvernance.besoinsEnIngenierieFinanciere
-                        ? 'selection'
-                        : 'intro',
+                      step: 'intro',
                     },
                   ),
                 }}

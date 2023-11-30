@@ -6,7 +6,10 @@ import Notice from '@codegouvfr/react-dsfr/Notice'
 import { getBesoinsIngenierieFinanciereForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/departement/generateDepartementMetadata'
-import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import {
+  gouvernanceHomePath,
+  modifierBesoinsIngenieriePath,
+} from '@app/web/app/(private)/gouvernances/gouvernancePaths'
 import { canEditGouvernancePressentie } from '@app/web/security/securityRules'
 import BackLink from '@app/web/components/BackLink'
 import { getGouvernanceScopeTitle } from '@app/web/app/(private)/gouvernances/gouvernanceScopeTitle'
@@ -69,7 +72,15 @@ const Page = async ({
         />
       </div>
       <div className="fr-container fr-container--narrow fr-pb-10v fr-mb-20v">
-        <BackLink href={gouvernanceHomePath({ codeDepartement })} />
+        <BackLink
+          href={modifierBesoinsIngenieriePath(
+            { codeDepartement },
+            {
+              step: 'intro',
+              gouvernanceId,
+            },
+          )}
+        />
 
         <Progress
           className="fr-my-12v"

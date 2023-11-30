@@ -1,6 +1,7 @@
 import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
+import Button from '@codegouvfr/react-dsfr/Button'
 import { getGouvernanceForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/departement/generateDepartementMetadata'
@@ -42,16 +43,6 @@ const Page = async ({
     notFound()
   }
   const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
-
-  // Only show intro if besoin has not been created
-  if (gouvernance.besoinsEnIngenierieFinanciere) {
-    redirect(
-      modifierBesoinsIngenieriePath(
-        { codeDepartement },
-        { gouvernanceId, step: 'selection' },
-      ),
-    )
-  }
 
   return (
     <>
@@ -115,11 +106,26 @@ const Page = async ({
           </p>
 
           <div className="fr-btns-group fr-btns-group--icon-right fr-mb-0 fr-mt-8v">
-            <CreateBesoinsEnIngenierieFinanciereButton
-              codeDepartement={codeDepartement}
-              gouvernanceId={gouvernanceId}
-              className="fr-my-0"
-            />
+            {gouvernance.besoinsEnIngenierieFinanciere ? (
+              <Button
+                linkProps={{
+                  href: modifierBesoinsIngenieriePath(
+                    { codeDepartement },
+                    { gouvernanceId, step: 'selection' },
+                  ),
+                }}
+                iconPosition="right"
+                iconId="fr-icon-arrow-right-line"
+              >
+                Renseigner les besoins de ma gouvernance
+              </Button>
+            ) : (
+              <CreateBesoinsEnIngenierieFinanciereButton
+                codeDepartement={codeDepartement}
+                gouvernanceId={gouvernanceId}
+                className="fr-my-0"
+              />
+            )}
           </div>
         </WhiteCard>
       </div>
