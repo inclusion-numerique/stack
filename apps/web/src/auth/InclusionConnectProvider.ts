@@ -1,4 +1,3 @@
-import type { OIDCConfig } from '@auth/core/providers'
 import axios from 'axios'
 import { OAuthConfig } from 'next-auth/providers'
 import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
@@ -14,19 +13,6 @@ export type InclusionConnectProfile = {
   given_name: string
   family_name: string
 }
-
-/**
- * Will be for next-auth v5 beta
- */
-export const BetaInclusionConnectProvider = () =>
-  ({
-    id: inclusionConnectProviderId,
-    name: 'Inclusion Connect',
-    type: 'oidc',
-    issuer,
-    clientId: PublicWebAppConfig.InclusionConnect.clientId,
-    clientSecret: ServerWebAppConfig.InclusionConnect.clientSecret,
-  }) satisfies OIDCConfig<InclusionConnectProfile>
 
 export const InclusionConnectProvider = () =>
   ({
