@@ -1,9 +1,9 @@
 import { Route } from 'next'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
-import { AuthCard } from '@app/web/app/(public)/(withContainer)/(authentication)/AuthCard'
-import { signinErrorMessage } from '@app/web/app/(public)/(withContainer)/(authentication)/authenticationErrorMessage'
-import { EmailSigninForm } from '@app/web/app/(public)/(withContainer)/(authentication)/connexion/EmailSigninForm'
-import InclusionConnectSigninButton from '@app/web/app/(public)/(withContainer)/(authentication)/connexion/InclusionConnectSigninButton'
+import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
+import { signinErrorMessage } from '@app/web/app/(public)/(authentication)/authenticationErrorMessage'
+import { EmailSigninForm } from '@app/web/app/(public)/(authentication)/connexion/EmailSigninForm'
+import InclusionConnectSigninButton from '@app/web/app/(public)/(authentication)/connexion/InclusionConnectSigninButton'
 import { getLoginTitle, LoginIntent } from '@app/web/security/login'
 
 const SigninPanel = ({

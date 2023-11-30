@@ -23,7 +23,7 @@ const RessourcePage = async ({ params }: { params: { slug: string } }) => {
 
   const authorizations = filterAccess(resource, user)
   return (
-    <>
+    <div className="fr-container">
       <Breadcrumbs
         currentPage={authorizations.resource.title}
         parents={[
@@ -46,7 +46,7 @@ const RessourcePage = async ({ params }: { params: { slug: string } }) => {
           <PrivateBox type="Ressource" />
         </>
       )}
-    </>
+    </div>
   )
 }
 

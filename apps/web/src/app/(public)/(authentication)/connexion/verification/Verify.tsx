@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers'
-import { AuthCard } from '@app/web/app/(public)/(withContainer)/(authentication)/AuthCard'
+import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export const Verify = () => {
