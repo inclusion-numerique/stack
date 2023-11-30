@@ -1,6 +1,8 @@
-import { MjmlAll, MjmlAttributes, MjmlFont, MjmlSpacer } from 'mjml-react'
-import React from 'react'
 import {
+  MjmlAll,
+  MjmlAttributes,
+  MjmlFont,
+  MjmlSpacer,
   Mjml,
   MjmlBody,
   MjmlButton,
@@ -12,8 +14,10 @@ import {
   MjmlSection,
   MjmlText,
   MjmlTitle,
-  renderToMjml,
-} from '@luma-team/mjml-react'
+} from '@faire/mjml-react'
+import React from 'react'
+import { renderToMjml } from '@faire/mjml-react/utils/renderToMjml'
+
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { emailAssetUrl } from '@app/emails/emailAssetUrl'
 
@@ -45,10 +49,10 @@ export const inviteContributor = {
               borderRadius={0}
               fontSize="16px"
               lineHeight="24px"
-              fontWeight={400}
+              fontWeight="400"
               innerPadding="8px 16px"
             />
-            <MjmlText fontSize="16px" lineHeight="24px" fontWeight={400} />
+            <MjmlText fontSize="16px" lineHeight="24px" fontWeight="400" />
           </MjmlAttributes>
           <MjmlTitle>{`Invitation à la ressource ${resourceTitle}`}</MjmlTitle>
           <MjmlPreview>
@@ -68,7 +72,7 @@ export const inviteContributor = {
               />
             </MjmlColumn>
             <MjmlColumn width="76%" verticalAlign="middle">
-              <MjmlText fontWeight={500} fontSize="18px">
+              <MjmlText fontWeight="500" fontSize="18px">
                 Les Bases du numérique d’intérêt général
               </MjmlText>
             </MjmlColumn>
@@ -84,7 +88,7 @@ export const inviteContributor = {
           </MjmlSection>
           <MjmlSection paddingTop={0}>
             <MjmlColumn>
-              <MjmlText fontWeight={700} fontSize="20px" color="#3A3A3A">
+              <MjmlText fontWeight="700" fontSize="20px" color="#3A3A3A">
                 Bonjour,
                 <br />
                 <br />
@@ -92,7 +96,7 @@ export const inviteContributor = {
                 {resourceTitle}.
               </MjmlText>
               <MjmlSpacer height="32px" />
-              <MjmlText fontWeight={400} fontSize="16px" color="#3A3A3A">
+              <MjmlText fontWeight="400" fontSize="16px" color="#3A3A3A">
                 Cette invitation à contribuer à cette ressource vous permet :
                 <br />
                 <br />
@@ -111,14 +115,14 @@ export const inviteContributor = {
           <MjmlSection backgroundColor={backgroundColor} />
           <MjmlSection>
             <MjmlColumn>
-              <MjmlText fontWeight={700} fontSize="28px" color={brandColor}>
+              <MjmlText fontWeight="700" fontSize="28px" color={brandColor}>
                 La base, c&lsquo;est quoi ?
               </MjmlText>
             </MjmlColumn>
           </MjmlSection>
           <MjmlSection>
             <MjmlColumn>
-              <MjmlText fontSize="18px" fontWeight={400} color="#3A3A3A">
+              <MjmlText fontSize="18px" fontWeight="400" color="#3A3A3A">
                 La plateforme collaborative qui permet de partager toutes les
                 ressources & communs numériques au service de l’intérêt général.
               </MjmlText>

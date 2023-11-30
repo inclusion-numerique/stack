@@ -1,6 +1,8 @@
-import { MjmlAll, MjmlAttributes, MjmlFont, MjmlSpacer } from 'mjml-react'
-import React from 'react'
 import {
+  MjmlAll,
+  MjmlAttributes,
+  MjmlFont,
+  MjmlSpacer,
   Mjml,
   MjmlBody,
   MjmlButton,
@@ -11,8 +13,10 @@ import {
   MjmlSection,
   MjmlText,
   MjmlTitle,
-  renderToMjml,
-} from '@luma-team/mjml-react'
+} from '@faire/mjml-react'
+import React from 'react'
+import { renderToMjml } from '@faire/mjml-react/utils/renderToMjml'
+
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { emailAssetUrl } from '@app/emails/emailAssetUrl'
 
@@ -36,10 +40,10 @@ export const emailSignin = {
               borderRadius={0}
               fontSize="16px"
               lineHeight="24px"
-              fontWeight={400}
+              fontWeight="400"
               innerPadding="8px 16px"
             />
-            <MjmlText fontSize="16px" lineHeight="24px" fontWeight={400} />
+            <MjmlText fontSize="16px" lineHeight="24px" fontWeight="400" />
           </MjmlAttributes>
           <MjmlTitle>{`Connexion à ${PublicWebAppConfig.projectTitle}`}</MjmlTitle>
           <MjmlPreview>
@@ -69,7 +73,7 @@ export const emailSignin = {
           </MjmlSection>
           <MjmlSection paddingTop={0}>
             <MjmlColumn>
-              <MjmlText fontWeight={600} fontSize="28px" color={brandColor}>
+              <MjmlText fontWeight="600" fontSize="28px" color={brandColor}>
                 Connexion à {PublicWebAppConfig.projectTitle}
               </MjmlText>
               <MjmlSpacer height="16px" />

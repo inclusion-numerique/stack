@@ -16,30 +16,15 @@ const modularizeImports = {
   'chart.js': { transform: 'chart.js/{{member}}' },
 }
 
-/**
- * For faster dev UX, server dependencies do not need to be bundled.
- * Except those that are expected to be bundled for compilation features.
- */
-const alwaysBundledPackages = new Set([
-  'next',
-  'server-only',
-  '@codegouvfr/react-dsfr',
-])
-const externalServerPackagesForFasterDevelopmentUx = isDevelopment
-  ? [
-      ...Object.keys(packageJson.dependencies),
-      ...Object.keys(packageJson.devDependencies),
-    ].filter((packageName) => !alwaysBundledPackages.has(packageName))
-  : undefined
+const serverComponentsExternalPackages = ['html-minifier']
 
 const nextConfig = {
   output: 'standalone',
   reactStrictMode: true,
   transpilePackages: ['@app/emails'],
   experimental: {
-    // See https://beta.nextjs.org/docs/api-reference/next.config.js#servercomponentsexternalpackages
-    serverComponentsExternalPackages:
-      externalServerPackagesForFasterDevelopmentUx,
+    // See https://nextjs.org/docs/app/api-reference/next-config-js/serverComponentsExternalPackages
+    serverComponentsExternalPackages,
     // This includes files from the monorepo base two directories up
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
@@ -51,6 +36,9 @@ const nextConfig = {
     tunnelRoute: '/monitoring',
     widenClientFileUpload: true,
     hideSourceMaps: true,
+    // Source map generation + upload
+    disableServerWebpackPlugin: true,
+    disableClientWebpackPlugin: true,
   },
   eslint: {
     // Lints are checked in other parts of the build process
