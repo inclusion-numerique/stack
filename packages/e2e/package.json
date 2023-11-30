@@ -17,8 +17,8 @@
     "@cypress/react18": "^2.0.0",
     "cypress": "^13.3.3",
     "next": "^14.0.1",
-    "react": "^18.3.0-next",
-    "react-dom": "^18.3.0-next",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-hook-form": "^7.47.0",
     "uuid": "^9.0.1"
   },
