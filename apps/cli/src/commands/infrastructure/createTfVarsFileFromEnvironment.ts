@@ -22,8 +22,8 @@ export const createTfVarsFileFromEnvironment = new Command()
       stack === 'web'
         ? [...webAppStackVariables, ...webAppStackSensitiveVariables]
         : stack === 'project'
-        ? [...projectStackVariables, ...projectStackSensitiveVariables]
-        : null
+          ? [...projectStackVariables, ...projectStackSensitiveVariables]
+          : null
 
     if (!variableNames) {
       throw new Error('Invalid stack argument')
