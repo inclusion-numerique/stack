@@ -117,6 +117,13 @@ export const formulairesGouvernance = () => {
   const participants = {
     connect: [{ id: users[0].id }],
   }
+
+  const regionAura = {
+    connect: {
+      code: '84',
+    },
+  }
+
   const rhone = {
     connect: {
       code: '69',
@@ -280,6 +287,20 @@ export const formulairesGouvernance = () => {
     }),
   } satisfies AppPrisma.FormulaireGouvernanceCreateInput
 
+  const regionAuraPorteurVide = {
+    id: '91342515-7c84-44ae-9aa2-18c56e42cde2',
+    gouvernancePersona: 'conseil-regional',
+    intention: 'Porter',
+    confirmeEtEnvoye: new Date(),
+    createur,
+    region: regionAura,
+    participants,
+    contactPolitique: contactConnectOrCreate({
+      formulaireGouvernanceId: '91342515-7c84-44ae-9aa2-18c56e42cde2',
+      ...contacts[5],
+    }),
+  } satisfies AppPrisma.FormulaireGouvernanceCreateInput
+
   const lyon2PorteurVide = {
     id: 'f0be4b0f-9a21-412b-b8da-6a14548c8624',
     gouvernancePersona: 'commune',
@@ -407,6 +428,7 @@ export const formulairesGouvernance = () => {
   return [
     rhonePorteurEpciParticipant,
     girondePorteurVide,
+    regionAuraPorteurVide,
     lyon2PorteurVide,
     lyon6Participant,
     montsDuLyonnaisPorter,

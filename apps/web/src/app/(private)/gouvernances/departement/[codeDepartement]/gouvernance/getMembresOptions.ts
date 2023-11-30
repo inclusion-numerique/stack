@@ -86,7 +86,7 @@ export const getMembresOptions = async ({
     },
   })
 
-  // All departements that have a commune in the epcis except the one we are in
+  // All departements that have a commune in the epcis
   const departements = await prismaClient.departement.findMany({
     select: {
       code: true,
@@ -102,7 +102,6 @@ export const getMembresOptions = async ({
       },
     },
     where: {
-      code: { not: codeDepartement },
       OR: [
         {
           communes: {
@@ -172,6 +171,9 @@ export const getMembresOptions = async ({
       },
     },
   })
+
+  console.log('DEPARTEMENTS', departements)
+  console.log('REGIONS', regions)
 
   const optionsRegions = regions
     .filter(({ formulairesGouvernance }) => formulairesGouvernance.length > 0)
