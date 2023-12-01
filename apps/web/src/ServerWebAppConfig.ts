@@ -1,4 +1,5 @@
-import 'server-only'
+// TODO Enable server-only when next-auth (v5) is in app router
+// import 'server-only'
 
 /**
  * Only use ServerWebAppConfig on server side
