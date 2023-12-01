@@ -18,9 +18,12 @@ export const cropperDataToImageCrop = ({
 })
 
 export const cropperToImageCrop = (cropper?: Cropper) => {
-  const imageData = cropper?.getImageData()
+  if (!cropper) {
+    return defaultCropValues
+  }
+  const imageData = cropper.getImageData()
 
-  if (!imageData?.naturalWidth) {
+  if (!imageData.naturalWidth) {
     return defaultCropValues
   }
 
