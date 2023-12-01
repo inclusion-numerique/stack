@@ -22,6 +22,7 @@ import {
 } from '@app/web/server/bases/updateBase'
 import { useFileUpload } from '@app/web/hooks/useFileUpload'
 import { getZodValidationMutationError } from '@app/web/utils/getZodValidationMutationError'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import BaseInformationsEdition from '../BaseInformationsEdition'
 import BaseContactsEdition from '../BaseContactsEdition'
 import Card from '../../Card'
@@ -49,12 +50,13 @@ const addCoverImageCropModal = createModal({
   isOpenedByDefault: false,
 })
 
-const CreateBase = () => {
+const CreateBase = ({ user }: { user: SessionUser }) => {
   const router = useRouter()
   const form = useForm<CreateBaseCommand>({
     resolver: zodResolver(CreateBaseCommandValidation),
     defaultValues: {
       emailIsPublic: true,
+      email: user.email,
     },
   })
   const {
