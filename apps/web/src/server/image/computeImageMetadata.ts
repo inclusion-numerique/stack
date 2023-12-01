@@ -23,7 +23,6 @@ export const computeImageMetadata = async ({
   if (!object.Body) {
     throw new Error('Image file not found')
   }
-
   const sharpImage = sharp(await object.Body.transformToByteArray())
   const { height: originalHeight, width: originalWidth } =
     await sharpImage.metadata()

@@ -17,13 +17,18 @@ export const cropperDataToImageCrop = ({
   cropLeft: normalize(data.x, imageData.naturalWidth),
 })
 
-export const cropperToImageCrop = (cropper?: Cropper) =>
-  cropper
-    ? cropperDataToImageCrop({
-        imageData: cropper.getImageData(),
-        data: cropper.getData(),
-      })
-    : defaultCropValues
+export const cropperToImageCrop = (cropper?: Cropper) => {
+  const imageData = cropper?.getImageData()
+
+  if (!imageData?.naturalWidth) {
+    return defaultCropValues
+  }
+
+  return cropperDataToImageCrop({
+    imageData,
+    data: cropper.getData(),
+  })
+}
 
 export type ImageCropData = {
   originalHeight: number
