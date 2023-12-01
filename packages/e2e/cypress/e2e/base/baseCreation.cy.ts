@@ -42,10 +42,6 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
       'have.text',
       'Veuillez renseigner le nom de la base',
     )
-    cy.get('[id=input-form-field__email__error]').should(
-      'have.text',
-      'Veuillez renseigner une adresse e-mail',
-    )
     cy.get('[id=input-form-field__isPublic__error]').should(
       'have.text',
       'Veuillez spécifier la visibilité de la base',
@@ -57,7 +53,6 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
     cy.visit('/bases/creer')
 
     cy.testId('base-title-input').type('Ma déclaration')
-    cy.testId('base-email-input').type('france@gall.fr')
     cy.testId('visibility-radio-base-public').click({ force: true })
     cy.testId('create-button').click()
 
@@ -90,7 +85,6 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
     cy.visit('/bases/creer')
 
     cy.testId('base-title-input').type('Ma déclaration')
-    cy.testId('base-email-input').type('france@gall.fr')
     cy.testId('visibility-radio-base-public').click({ force: true })
 
     cy.testId('invite-member-modal-input').type('t{enter}')
@@ -111,7 +105,6 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
     cy.createUser(user)
 
     cy.testId('base-title-input').type('Ma déclaration')
-    cy.testId('base-email-input').type('france@gall.fr')
     cy.testId('visibility-radio-base-public').click({ force: true })
 
     cy.testId('invite-member-modal-input').type('huissoud')
