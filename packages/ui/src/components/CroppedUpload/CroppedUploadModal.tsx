@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ReactNode, useRef, useState } from 'react'
+import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import { Controller, FieldValues, Path, UseFormReturn } from 'react-hook-form'
 import { trpc } from '@app/web/trpc'
 import { useFileUpload } from '@app/web/hooks/useFileUpload'
@@ -9,6 +9,7 @@ import { ReactCropperElement } from 'react-cropper'
 import { createPortal } from 'react-dom'
 import { ImageForForm } from '@app/web/server/image/imageTypes'
 import { defaultCropValues } from '@app/web/server/image/defaultCropValues'
+import { isBrowser } from '@app/web/utils/isBrowser'
 import { CreateModalReturn } from '@app/ui/utils/modalTypes'
 import { useModalVisibility } from '@app/ui/hooks/useModalVisibility'
 import { cropperDataToImageCrop } from '@app/ui/components/CroppedUpload/cropperToImageCrop'
@@ -123,6 +124,21 @@ const CroppedUploadModal = <T extends FieldValues>({
     },
   })
 
+  // There is a wierd rendering bug with react-dsfr Modal control button diff between server side and client rendering (content " " vs "" on server)
+  // This is due to createPortal maybe...
+  // So we only render on the browser after first paint
+
+  const [shouldRender, setShouldRender] = useState(false)
+
+  useEffect(() => {
+    setShouldRender(isBrowser)
+  }, [])
+
+  if (!shouldRender) {
+    return null
+  }
+
+  // Create portal to be able to use a form with submit inside the modal which is probably inside another form
   return createPortal(
     <Controller
       control={form.control}
