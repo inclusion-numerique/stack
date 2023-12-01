@@ -1,5 +1,5 @@
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
-import create from 'zustand'
+import { create } from 'zustand'
 
 type DynamicModalState<T> = {
   state: T
