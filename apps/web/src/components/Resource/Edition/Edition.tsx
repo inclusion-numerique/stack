@@ -155,6 +155,9 @@ const Edition = ({
           const result = await sendCommand(data)
           router.refresh()
           router.push(`/ressources/${result.resource.slug}`)
+          // Wierd cache behavior without refreshing a second time
+          // TODO check if this is still needed after next update (this is tested e2e)
+          router.refresh()
         } catch (error) {
           console.error('Could not publish resource', error)
           // TODO Have a nice error and handle edge cases server side

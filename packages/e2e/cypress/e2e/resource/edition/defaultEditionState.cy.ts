@@ -1,6 +1,7 @@
 import { givenUser } from '@app/e2e/support/given/givenUser'
 import { givenBase } from '@app/e2e/support/given/givenBase'
 import { createTestResourceCommands } from '@app/e2e/support/given/givenResourceCommands'
+import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { appUrl } from '../../../support/helpers'
 
 describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
@@ -57,6 +58,7 @@ describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
         '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
       )
 
+      cy.contains(`Publié le ${dateAsDay(new Date())}`)
       cy.testId('resource-edition-button').click()
       cy.appUrlShouldBe(
         '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes/editer',
