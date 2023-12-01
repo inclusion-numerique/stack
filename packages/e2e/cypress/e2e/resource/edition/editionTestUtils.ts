@@ -175,7 +175,7 @@ export const startContentEdition = (contentId: string) => {
   // TODO Firefox does NOT support realHover() event. Start edition with keyboard navigation (accessibility feature)
   cy.testId(`content-edition_${contentId}`).realHover()
   cy.testId(`content-edition_${contentId}_edit-button`).should('be.visible')
-  cy.testId(`content-edition_${contentId}_edit-button`).click()
+  cy.testId(`content-edition_${contentId}_edit-button`).click({ force: true })
   cy.removeHover()
   cy.testId(`content-edition_${contentId}_form`).should('exist')
 }

@@ -63,7 +63,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.testId('resource-card').should('have.length', 1)
   })
 
-  it.only('Acceptation 3 : ajout d’une ressource à la collection d’un profil avec collections et membre de base', () => {
+  it('Acceptation 3 : ajout d’une ressource à la collection d’un profil avec collections et membre de base', () => {
     const ids = cleanUpAndCreateTestCollectionAndResource(true, true)
     cy.testId('save-resource-in-collection-button').click()
 
