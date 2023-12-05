@@ -20,10 +20,9 @@ export const registerResourceViewServerAction = async ({
     select: { id: true },
   })
   if (existingView) {
-    console.log('Already visited', visitHash, resourceId)
     return
   }
-  const view = await prismaClient.resourceView.create({
+  await prismaClient.resourceView.create({
     data: {
       id: v4(),
       hash: visitHash,
@@ -35,8 +34,6 @@ export const registerResourceViewServerAction = async ({
       id: true,
     },
   })
-
-  console.log('VISITED', view)
 }
 
 export const nonBlockingRegisterResourceViewServerAction = ({
