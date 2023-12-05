@@ -94,7 +94,7 @@ const ResourceCard = ({
       <div className={styles.footer}>
         {resource.published && (
           <div className="fr-text--sm fr-mb-0">
-            <ResourcesViewsAndMetadata />
+            <ResourcesViewsAndMetadata resource={resource} />
           </div>
         )}
         <div

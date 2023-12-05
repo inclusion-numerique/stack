@@ -73,6 +73,11 @@ export const resourceListSelect = (user: { id: string } | null) =>
         },
       },
     },
+    _count: {
+      select: {
+        collections: true,
+      },
+    },
   }) satisfies Parameters<typeof prismaClient.resource.findUnique>[0]['select']
 
 export const computeResourcesListWhereForUser = (

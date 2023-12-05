@@ -60,6 +60,9 @@ export const applyResourceCreated: ResourceCreationEventApplier<
   targetAudiences: [],
   contributors: [],
   collections: [],
+  _count: {
+    collections: 0,
+  },
 })
 
 export const onCreated: ResourceEventSideEffect<ResourceCreated> = async (

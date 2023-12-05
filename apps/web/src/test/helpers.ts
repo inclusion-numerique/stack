@@ -75,6 +75,9 @@ export const createTestResource = (
           },
         ]
       : [],
+    _count: {
+      collections: 2,
+    },
   }) satisfies Resource | BasePageData['resources'][number]
 
 export const createTestBase = (

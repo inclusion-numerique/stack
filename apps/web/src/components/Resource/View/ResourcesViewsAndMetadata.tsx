@@ -1,9 +1,16 @@
 import classNames from 'classnames'
 import React from 'react'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
+import { ResourceListItem } from '@app/web/server/resources/getResourcesList'
 import styles from './ResourcesViewsAndMetadata.module.css'
 
-const ResourcesViewsAndMetadata = ({ className }: { className?: string }) => (
+const ResourcesViewsAndMetadata = ({
+  className,
+  resource,
+}: {
+  className?: string
+  resource: ResourceListItem
+}) => (
   <div className={classNames(styles.container, 'fr-text--sm', className)}>
     <span className="fr-icon-eye-line fr-icon--sm" />
     <div>
@@ -13,10 +20,10 @@ const ResourcesViewsAndMetadata = ({ className }: { className?: string }) => (
     <div>·</div>
     <span className="fr-icon-bookmark-line fr-icon--sm" />
     <div className={styles.lastLeft}>
-      <b className="wip">45</b>
+      <b>{resource._count.collections}</b>
       <span className={styles.spanMdDisplay}>
         {' '}
-        Enregistrement{sPluriel(45)}
+        Enregistrement{sPluriel(resource._count.collections)}
       </span>
     </div>
   </div>

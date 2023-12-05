@@ -119,6 +119,11 @@ export const getResourceSelect = (user: { id: string } | null) =>
       },
       orderBy: { order: 'asc' },
     },
+    _count: {
+      select: {
+        collections: true,
+      },
+    },
   }) satisfies Parameters<typeof prismaClient.resource.findUnique>[0]['select']
 
 export const getResource = async (
