@@ -10,8 +10,6 @@ describe("Les visites d'une ressource sont comptées", () => {
 
     cy.log('Je peux voir la ressource')
     cy.dsfrShouldBeStarted()
-    cy.testId('resource-views-count').should('have.text', '0')
-    cy.reload()
     // Visit counts for non connected users
     cy.testId('resource-views-count').should('have.text', '1')
     cy.getCookie('visit-hash').should('exist')
@@ -21,7 +19,7 @@ describe("Les visites d'une ressource sont comptées", () => {
     cy.getCookie('visit-hash').should('exist')
   })
 
-  it('Acceptation 3 - Utilisateur connecté sur une ressource publique', () => {
+  it('Acceptation 2 - Utilisateur connecté sur une ressource publique', () => {
     Cypress.Cookies.debug(true)
 
     cleanUpAndCreateTestPublishedResource(true, true)
@@ -32,8 +30,6 @@ describe("Les visites d'une ressource sont comptées", () => {
     cy.logout()
 
     cy.log('Je peux voir la ressource')
-    cy.dsfrShouldBeStarted()
-    cy.testId('resource-views-count').should('have.text', '0')
     // Visit counts for non connected users
     cy.testId('resource-views-count').should('have.text', '1')
     cy.getCookie('visit-hash').should('exist')
