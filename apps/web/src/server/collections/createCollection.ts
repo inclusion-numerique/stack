@@ -9,7 +9,7 @@ export const CreateCollectionCommandValidation = z.object({
   title: z
     .string({ required_error: 'Veuillez renseigner le nom de la collection' })
     .trim()
-    .nonempty('Veuillez renseigner le nom de la collection')
+    .min(1, 'Veuillez renseigner le nom de la collection')
     .max(
       collectionTitleMaxLength,
       `Le titre ne doit pas dépasser ${collectionTitleMaxLength} caractères`,
@@ -26,11 +26,13 @@ export const CreateCollectionCommandValidation = z.object({
     )
     .optional()
     .transform((text) => (text ? sanitizeHtml(text) : text)),
-  imageId: z.string().uuid().nullable().optional(),
-  baseId: z.string().uuid().nullable().optional(),
+  imageId: z.string().uuid().nullish(),
+  baseId: z.string().uuid().nullish(),
   isPublic: z.boolean({
     required_error: 'Veuillez spécifier la visibilité de la collection',
   }),
+  // Resource to add to the collection upon creation
+  addResourceId: z.string().uuid().nullish(),
 })
 
 export type CreateCollectionCommand = z.infer<

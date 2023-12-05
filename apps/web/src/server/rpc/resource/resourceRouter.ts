@@ -64,6 +64,10 @@ export const resourceRouter = router({
 
         const resource = await prismaClient.resource.findUnique({
           where: { id: resourceId },
+          select: {
+            id: true,
+            title: true,
+          },
         })
 
         if (!collection || !resource) {
@@ -90,7 +94,7 @@ export const resourceRouter = router({
           }
         }
 
-        await prismaClient.collection.update({
+        const resultCollection = await prismaClient.collection.update({
           where: { id: collectionId },
           data: {
             resources: {
@@ -99,7 +103,16 @@ export const resourceRouter = router({
               },
             },
           },
+          select: {
+            id: true,
+            title: true,
+          },
         })
+
+        return {
+          resource,
+          collection: resultCollection,
+        }
       },
     ),
   removeFromCollection: protectedProcedure
@@ -114,6 +127,10 @@ export const resourceRouter = router({
 
         const resource = await prismaClient.resource.findUnique({
           where: { id: resourceId },
+          select: {
+            id: true,
+            title: true,
+          },
         })
 
         if (!collection || !resource) {
@@ -140,9 +157,23 @@ export const resourceRouter = router({
           }
         }
 
-        await prismaClient.collectionResource.delete({
+        const resultCollection = await prismaClient.collectionResource.delete({
           where: { resourceId_collectionId: { collectionId, resourceId } },
+          select: {
+            id: true,
+            collection: {
+              select: {
+                id: true,
+                title: true,
+              },
+            },
+          },
         })
+
+        return {
+          resource,
+          collection: resultCollection,
+        }
       },
     ),
 })

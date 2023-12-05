@@ -9,7 +9,7 @@ import {
 } from '@app/web/server/collections/createCollection'
 import { htmlToText } from '@app/web/utils/htmlToText'
 
-const titleInfo = (title?: string | null) =>
+export const titleInfo = (title?: string | null) =>
   `${title?.length ?? 0}/${collectionTitleMaxLength} caractères`
 const descriptionInfo = (description?: string | null) =>
   `${

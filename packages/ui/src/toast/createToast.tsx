@@ -1,6 +1,7 @@
 import { toast } from 'react-hot-toast'
 import classNames from 'classnames'
 import Button, { ButtonProps } from '@codegouvfr/react-dsfr/Button'
+import { JSX } from 'react'
 import styles from './Toaster.module.css'
 
 export type ToastPriority = 'info' | 'warning' | 'error' | 'success'
@@ -19,7 +20,7 @@ export const createToast = ({
   duration,
 }: {
   priority: ToastPriority
-  message: string
+  message: JSX.Element | string | null
   action?: ButtonProps
   duration?: number
 }) => {

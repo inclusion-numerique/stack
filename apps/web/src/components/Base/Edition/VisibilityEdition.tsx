@@ -1,16 +1,21 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Control, Controller, Path } from 'react-hook-form'
+import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 import ResourceBaseRichRadioElement from '../../Resource/ResourceBaseRichRadioElement'
 import { PrivacyTag } from '../../PrivacyTags'
 
 const VisibilityEdition = <T extends { isPublic: boolean }>({
   control,
   disabled,
+  model,
   label,
+  asterisk,
 }: {
   control: Control<T>
   disabled?: boolean
-  label: 'Base' | 'Collection'
+  model: 'Base' | 'Collection'
+  label?: ReactNode
+  asterisk?: boolean
 }) => (
   <Controller
     control={control}
@@ -21,10 +26,18 @@ const VisibilityEdition = <T extends { isPublic: boolean }>({
         id="radio-rich"
         aria-labelledby="radio-rich-legend radio-rich-messages"
       >
+        {!!label && (
+          <legend
+            id="radio-rich-legend"
+            className="fr-label fr-mb-2v fr-ml-1-5v"
+          >
+            {label} {asterisk && <RedAsterisk />}
+          </legend>
+        )}
         <ResourceBaseRichRadioElement
-          id={`radio-${label.toLowerCase()}-public`}
+          id={`radio-${model.toLowerCase()}-public`}
           disabled={disabled}
-          data-testid={`visibility-radio-${label.toLowerCase()}-public`}
+          data-testid={`visibility-radio-${model.toLowerCase()}-public`}
           name={name}
           value={
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -37,7 +50,7 @@ const VisibilityEdition = <T extends { isPublic: boolean }>({
           }}
         >
           <div className="fr-mr-1w">
-            {label} publique
+            {model} publique
             <p className="fr-text--xs fr-hint-text fr-mb-0">
               Visible par tous les visiteurs.
             </p>
@@ -45,9 +58,9 @@ const VisibilityEdition = <T extends { isPublic: boolean }>({
           <PrivacyTag isPublic />
         </ResourceBaseRichRadioElement>
         <ResourceBaseRichRadioElement
-          id={`radio-${label.toLowerCase()}-private`}
+          id={`radio-${model.toLowerCase()}-private`}
           disabled={disabled}
-          data-testid={`visibility-radio-${label.toLowerCase()}-private`}
+          data-testid={`visibility-radio-${model.toLowerCase()}-private`}
           name={name}
           value={
             value === undefined || value === null ? null : value.toString()
@@ -58,7 +71,7 @@ const VisibilityEdition = <T extends { isPublic: boolean }>({
           }}
         >
           <div className="fr-mr-1w">
-            {label} privée
+            {model} privée
             <p className="fr-text--xs fr-hint-text fr-mb-0">
               Accessible uniquement aux membres et aux administrateurs que vous
               inviterez.

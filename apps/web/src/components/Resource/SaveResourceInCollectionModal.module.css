@@ -46,7 +46,7 @@
     border-radius: 8px;
 }
 
-.modal {
+.modal:has(.createCollectionButton) {
     :global .fr-modal__footer {
         border-top: var(--slim-grey-border);
 

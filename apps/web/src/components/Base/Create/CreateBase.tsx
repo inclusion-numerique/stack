@@ -173,7 +173,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
             description="Choisissez la visibilité de votre base. Vous pourrez modifier sa visibilité à tout moment."
           >
             <VisibilityEdition
-              label="Base"
+              model="Base"
               control={control}
               disabled={isSubmitting}
             />

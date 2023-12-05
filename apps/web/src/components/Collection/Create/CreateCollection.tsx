@@ -126,7 +126,7 @@ const CreateCollection = ({ base }: { base?: { id: string } | null }) => {
             description="Choisissez la visibilité de votre collection."
           >
             <VisibilityEdition
-              label="Collection"
+              model="Collection"
               control={control}
               disabled={isSubmitting}
             />

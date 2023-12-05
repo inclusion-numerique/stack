@@ -1,14 +1,27 @@
 'use client'
 
-import React, { useMemo, useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import classNames from 'classnames'
 import { createDynamicModal } from '@app/ui/components/Modal/createDynamicModal'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { createToast } from '@app/ui/toast/createToast'
+import InputFormField from '@app/ui/components/Form/InputFormField'
+import Notice from '@codegouvfr/react-dsfr/Notice'
+import RawModal from '@app/ui/components/Modal/RawModal'
+import { useModalVisibility } from '@app/ui/hooks/useModalVisibility'
 import type { SessionUser, SessionUserBase } from '@app/web/auth/sessionUser'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import { getBasesFromSessionUser } from '@app/web/bases/getBasesFromSessionUser'
-import { createCollectionUrl } from '@app/web/collections/createCollectionUrl'
+import {
+  CreateCollectionCommand,
+  CreateCollectionCommandValidation,
+} from '@app/web/server/collections/createCollection'
+import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
+import { titleInfo } from '@app/web/components/Collection/Edition/CollectionInformationsEdition'
+import VisibilityEdition from '@app/web/components/Base/Edition/VisibilityEdition'
 import AddOrRemoveResourceFromCollection from './AddOrRemoveResourceFromCollection'
 import SaveInNestedCollection from './SaveInNestedCollection'
 import styles from './SaveResourceInCollectionModal.module.css'
@@ -21,6 +34,13 @@ export const SaveResourceInCollectionDynamicModal = createDynamicModal({
   },
 })
 
+/**
+ * This modal is used to save a resource in a collection
+ * and to quickly create a collection.
+ *
+ * The title and buttons of the modal must be top level, component is too complex
+ * and could be broken down in multiple hooks and components for the different "steps" of the modal.
+ */
 const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
   const { resourceId } = SaveResourceInCollectionDynamicModal.useState()
 
@@ -28,32 +48,144 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
 
   const bases = getBasesFromSessionUser(user)
 
+  // User can create a collection in a base or in his profile from this modal
+  const createCollectionMutation = trpc.collection.create.useMutation()
+
+  const isUserPublic = user.isPublic
+
+  const createCollectionForm = useForm<CreateCollectionCommand>({
+    resolver: zodResolver(CreateCollectionCommandValidation),
+    defaultValues: {
+      // Let the user chose the visibility only if possible
+      isPublic: isUserPublic ? undefined : false,
+    },
+  })
+
+  const createCollectionFormReset = createCollectionForm.reset
+
+  // If the user has no base, collections are limited to the profile
+  const profileOnly = bases.length === 0
+
+  // If the user has bases, he can see collections from the profiles (or bases)
+  const [inProfileDirectory, setInProfileDirectory] = useState(false)
+
+  const viewProfileDirectory = () => {
+    setInProfileDirectory(true)
+    createCollectionForm.reset({
+      addResourceId: resourceId,
+      isPublic: user.isPublic ? undefined : false,
+      baseId: null,
+      title: '',
+    })
+  }
+
+  // The base if navigating in a base directory
+  const [inBaseDirectory, setInBaseDirectory] =
+    useState<SessionUserBase | null>(null)
+
+  const viewBaseDirectory = (baseId: string) => {
+    const selectedBase = bases.find((base) => base.id === baseId)
+    if (!selectedBase) {
+      return
+    }
+    setInBaseDirectory(selectedBase)
+    createCollectionForm.reset({
+      addResourceId: resourceId,
+      isPublic: selectedBase.isPublic ? undefined : false,
+      baseId: selectedBase.id,
+      title: '',
+    })
+  }
+
+  const goBackFromDirectory = () => {
+    setInBaseDirectory(null)
+    setInProfileDirectory(false)
+    createCollectionForm.reset({
+      addResourceId: resourceId,
+      isPublic: user.isPublic ? undefined : false,
+      baseId: undefined,
+      title: '',
+    })
+  }
+
+  const [inCollectionCreation, setInCollectionCreation] = useState(false)
+
+  const viewCollectionCreation = (baseId?: string) => {
+    createCollectionForm.reset({
+      addResourceId: resourceId,
+      isPublic: user.isPublic ? undefined : false,
+      baseId,
+      title: '',
+    })
+    setInCollectionCreation(true)
+  }
+
+  const cancelCollectionCreation = () => {
+    setInCollectionCreation(false)
+  }
+
+  /**
+   * Reset modal state when the resource changes
+   */
+  useEffect(() => {
+    createCollectionFormReset({
+      addResourceId: resourceId,
+      isPublic: isUserPublic ? undefined : false,
+      baseId: null,
+      title: '',
+    })
+    setInBaseDirectory(null)
+    setInProfileDirectory(false)
+    setInCollectionCreation(false)
+  }, [resourceId, createCollectionFormReset, isUserPublic])
+
+  /**
+   * Reset modal state on modal close
+   */
+  useModalVisibility(SaveResourceInCollectionDynamicModal.id, {
+    onClosed: () => {
+      createCollectionFormReset({
+        addResourceId: resourceId,
+        isPublic: isUserPublic ? undefined : false,
+        baseId: null,
+        title: '',
+      })
+      setInBaseDirectory(null)
+      setInProfileDirectory(false)
+      setInCollectionCreation(false)
+    },
+  })
+
+  // Used to display which collection is in "loading" state when adding or removing to/from a collection
   const [pendingMutationCollectionId, setPendingMutationCollectionId] =
     useState<string | null>(null)
 
-  // "profil" or the base id of the nested collections selection
-  const [nested, setNested] = useState<null | string>(null)
+  const addToCollectionMutation = trpc.resource.addToCollection.useMutation()
+  const removeFromCollectionMutation =
+    trpc.resource.removeFromCollection.useMutation()
 
-  // If nested is set to a base id, this is the selected base id
-  const selectedBase = useMemo<SessionUserBase | undefined>(
-    () => (nested ? bases.find((base) => base.id === nested) : undefined),
-    [bases, nested],
-  )
-
-  const addMutation = trpc.resource.addToCollection.useMutation()
-  const removeMutation = trpc.resource.removeFromCollection.useMutation()
-  const onAdd = async (collectionId: string) => {
+  const onAddToCollection = async (collectionId: string) => {
     if (!resourceId) {
       return
     }
     setPendingMutationCollectionId(collectionId)
     try {
-      await addMutation.mutateAsync({
+      const result = await addToCollectionMutation.mutateAsync({
         resourceId,
         collectionId,
       })
       setPendingMutationCollectionId(null)
       router.refresh()
+      createToast({
+        priority: 'success',
+        message: (
+          <>
+            Ajoutée à la collection{' '}
+            <strong className="fr-ml-1v">{result.collection.title}</strong>
+          </>
+        ),
+      })
+      SaveResourceInCollectionDynamicModal.close()
     } catch (error) {
       // TODO Sentry + toast ?
       console.error(error)
@@ -61,19 +193,31 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
     }
   }
 
-  const onRemove = async (collectionId: string) => {
+  const onRemoveFromCollection = async (collectionId: string) => {
     if (!resourceId) {
       return
     }
     setPendingMutationCollectionId(collectionId)
     try {
-      await removeMutation.mutateAsync({
+      const result = await removeFromCollectionMutation.mutateAsync({
         resourceId,
         collectionId,
       })
       setPendingMutationCollectionId(null)
-
       router.refresh()
+      createToast({
+        priority: 'success',
+        message: (
+          <>
+            Retirée de la collection{' '}
+            <strong className="fr-ml-1v">
+              {result.collection.collection.title}
+            </strong>
+          </>
+        ),
+      })
+
+      SaveResourceInCollectionDynamicModal.close()
     } catch (error) {
       // TODO Sentry + toast ?
       console.error(error)
@@ -81,114 +225,263 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
     }
   }
 
-  const showCreateCollectionButton = bases.length === 0 || !!nested
+  const onCreateCollection = async (data: CreateCollectionCommand) => {
+    try {
+      const collection = await createCollectionMutation.mutateAsync(data)
+
+      createToast({
+        priority: 'success',
+        message: (
+          <>
+            Ajoutée à la nouvelle collection{' '}
+            <strong className="fr-ml-1v">{collection.title}</strong>
+          </>
+        ),
+      })
+
+      router.refresh()
+      SaveResourceInCollectionDynamicModal.close()
+
+      // There is a bug here where useModalVisibility onClose do not trigger :(
+      // Here is a setTimeout hack to fix it
+      setTimeout(() => {
+        createCollectionFormReset({
+          addResourceId: resourceId,
+          isPublic: isUserPublic ? undefined : false,
+          baseId: null,
+          title: '',
+        })
+        setInBaseDirectory(null)
+        setInProfileDirectory(false)
+        setInCollectionCreation(false)
+      }, 800)
+    } catch (error) {
+      applyZodValidationMutationErrorsToForm(
+        error,
+        createCollectionForm.setError,
+      )
+      // TODO Sentry + toast ?
+      console.error(error)
+      throw error
+    }
+  }
+
+  const showCreateCollectionButton =
+    !inCollectionCreation &&
+    (profileOnly || !!inBaseDirectory || inProfileDirectory)
+
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.stopPropagation()
+    event.preventDefault()
+    if (inCollectionCreation) {
+      createCollectionForm.handleSubmit(onCreateCollection)()
+    }
+  }
+
+  const collectionCannotBePublic = inBaseDirectory
+    ? !inBaseDirectory.isPublic
+    : !user.isPublic
+
+  const creationLoading =
+    createCollectionForm.formState.isSubmitting ||
+    createCollectionForm.formState.isSubmitSuccessful
 
   return (
-    <SaveResourceInCollectionDynamicModal.Component
-      className={styles.modal}
-      title="Ajouter à une collection"
-      buttons={
-        showCreateCollectionButton
-          ? [
-              {
-                children: 'Créer une collection',
-                iconId: 'fr-icon-add-line',
-                priority: 'secondary',
-                className: styles.createCollectionButton,
-                linkProps: {
-                  href: createCollectionUrl({ baseId: selectedBase?.id }),
+    <form onSubmit={onSubmit}>
+      <RawModal
+        className={styles.modal}
+        title={
+          inCollectionCreation
+            ? 'Ajouter à une nouvelle collection'
+            : 'Ajouter à une collection'
+        }
+        id={SaveResourceInCollectionDynamicModal.id}
+        buttons={
+          inCollectionCreation
+            ? [
+                {
+                  children: 'Enregistrer',
+                  priority: 'primary',
+                  type: 'submit',
+                  doClosesModal: false,
+                  className: creationLoading ? 'fr-btn--loading' : undefined,
+                  nativeButtonProps: {
+                    key: 'save-collection',
+                  },
                 },
-              },
-            ]
-          : undefined
-      }
-    >
-      {nested && (
-        <button
-          type="button"
-          className={classNames(
-            styles.clickableContainer,
-            styles.backToBasesButton,
-          )}
-          onClick={() => setNested('')}
-          data-testid="back-to-bases-button"
-        >
-          <div>
-            <span
-              className={classNames(
-                'fr-icon-arrow-left-s-line',
-                'fr-icon--sm',
-                'fr-mx-1w',
-                styles.arrow,
-              )}
-            />
-            <b className="fr-text-title--grey fr-ml-1w">
-              {selectedBase
-                ? selectedBase.title
-                : `${user.name} - Mes collections`}
-            </b>
-          </div>
-        </button>
-      )}
-      {addMutation.error && (
-        <p
-          className="fr-error-text"
-          data-testid="save-resource-in-collection-error"
-        >
-          {addMutation.error.message}
-        </p>
-      )}
-      {!!resourceId &&
-        (nested === 'profil' || (!nested && bases.length === 0) ? (
-          <>
-            {user.collections.map((collection) => (
-              <AddOrRemoveResourceFromCollection
-                loading={pendingMutationCollectionId === collection.id}
-                key={collection.id}
-                collection={collection}
-                resourceId={resourceId}
-                onAdd={onAdd}
-                onRemove={onRemove}
+                {
+                  children: 'Précédent',
+                  priority: 'secondary',
+                  type: 'button',
+                  onClick: cancelCollectionCreation,
+                  doClosesModal: false,
+                  nativeButtonProps: {
+                    key: 'cancel-collection',
+                  },
+                },
+              ]
+            : showCreateCollectionButton
+              ? [
+                  {
+                    children: 'Créer une collection',
+                    type: 'button',
+                    priority: 'secondary',
+                    iconId: 'fr-icon-add-line',
+                    doClosesModal: false,
+                    className: styles.createCollectionButton,
+                    onClick: () => viewCollectionCreation(inBaseDirectory?.id),
+                    nativeButtonProps: {
+                      key: 'view-collection-creation',
+                    },
+                  },
+                ]
+              : undefined
+        }
+      >
+        {/* Navigation if in directory */}
+        {!inCollectionCreation && (inProfileDirectory || !!inBaseDirectory) && (
+          <button
+            type="button"
+            className={classNames(
+              styles.clickableContainer,
+              styles.backToBasesButton,
+            )}
+            onClick={goBackFromDirectory}
+            data-testid="back-to-bases-button"
+          >
+            <div>
+              <span
+                className={classNames(
+                  'fr-icon-arrow-left-s-line',
+                  'fr-icon--sm',
+                  'fr-mx-1w',
+                  styles.arrow,
+                )}
               />
-            ))}
-          </>
-        ) : selectedBase ? (
-          selectedBase.collections.length > 0 ? (
-            selectedBase.collections.map((collection) => (
-              <AddOrRemoveResourceFromCollection
-                loading={pendingMutationCollectionId === collection.id}
-                key={collection.id}
-                collection={collection}
-                resourceId={resourceId}
-                onAdd={onAdd}
-                onRemove={onRemove}
-              />
-            ))
-          ) : (
-            <div
-              className={styles.emptyBase}
-              data-testid="base-without-collection"
-            >
-              Vous n&lsquo;avez pas de collection dans votre base
+              <b className="fr-text-title--grey fr-ml-1w">
+                {inBaseDirectory
+                  ? inBaseDirectory.title
+                  : `${user.name} - Mes collections`}
+              </b>
             </div>
-          )
-        ) : (
-          <>
-            <SaveInNestedCollection
-              user={user}
-              onClick={() => setNested('profil')}
-            />
-            {bases.map((base) => (
-              <SaveInNestedCollection
-                key={base.id}
-                user={user}
-                base={base}
-                onClick={() => setNested(base.id)}
+          </button>
+        )}
+        {/* Add/remove mutation error */}
+        {!inCollectionCreation &&
+          (addToCollectionMutation.error ||
+            removeFromCollectionMutation.error) && (
+            <p
+              className="fr-error-text"
+              data-testid="save-resource-in-collection-error"
+            >
+              {addToCollectionMutation.error?.message ??
+                removeFromCollectionMutation.error?.message}
+            </p>
+          )}
+        {!!resourceId &&
+          (inCollectionCreation ? (
+            <>
+              <p>
+                Les champs avec une astérisque sont obligatoires. Vous pourrez
+                modifier ces informations plus tard.
+              </p>
+
+              <InputFormField
+                data-testid="collection-title-input"
+                control={createCollectionForm.control}
+                path="title"
+                label="Nom de la collection"
+                disabled={createCollectionForm.formState.isSubmitting}
+                asterisk
+                info={titleInfo}
               />
-            ))}
-          </>
-        ))}
-    </SaveResourceInCollectionDynamicModal.Component>
+              {/* Display info if cannot be public */}
+              {collectionCannotBePublic ? (
+                <Notice
+                  title={
+                    inBaseDirectory ? (
+                      <>
+                        <span className="fr-text--bold">Base privée</span>
+                        <br />
+                        <span className="fr-text--regular">
+                          La collection sera accessible uniquement aux membres
+                          et aux administrateurs de votre base.
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="fr-text--bold">Profil privé</span>
+                        <br />
+                        <span className="fr-text--regular">
+                          Votre collection sera visible uniquement par vous.
+                        </span>
+                      </>
+                    )
+                  }
+                />
+              ) : (
+                <VisibilityEdition
+                  label="Visibilité de la collection"
+                  asterisk
+                  control={createCollectionForm.control}
+                  model="Collection"
+                  disabled={createCollectionForm.formState.isSubmitting}
+                />
+              )}
+            </>
+          ) : inProfileDirectory || profileOnly ? (
+            <>
+              {user.collections.map((collection) => (
+                <AddOrRemoveResourceFromCollection
+                  loading={pendingMutationCollectionId === collection.id}
+                  key={collection.id}
+                  collection={collection}
+                  resourceId={resourceId}
+                  onAdd={onAddToCollection}
+                  onRemove={onRemoveFromCollection}
+                />
+              ))}
+            </>
+          ) : inBaseDirectory ? (
+            inBaseDirectory.collections.length > 0 ? (
+              inBaseDirectory.collections.map((collection) => (
+                <AddOrRemoveResourceFromCollection
+                  loading={pendingMutationCollectionId === collection.id}
+                  key={collection.id}
+                  collection={collection}
+                  resourceId={resourceId}
+                  onAdd={onAddToCollection}
+                  onRemove={onRemoveFromCollection}
+                />
+              ))
+            ) : (
+              <div
+                className={styles.emptyBase}
+                data-testid="base-without-collection"
+              >
+                Vous n&lsquo;avez pas de collection dans votre base
+              </div>
+            )
+          ) : (
+            <>
+              <SaveInNestedCollection
+                user={user}
+                onClick={viewProfileDirectory}
+              />
+              {bases.map((base) => (
+                <SaveInNestedCollection
+                  key={base.id}
+                  user={user}
+                  base={base}
+                  onClick={() => {
+                    viewBaseDirectory(base.id)
+                  }}
+                />
+              ))}
+            </>
+          ))}
+      </RawModal>
+    </form>
   )
 }
 
