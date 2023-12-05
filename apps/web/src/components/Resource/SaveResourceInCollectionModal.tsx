@@ -467,6 +467,14 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
               <SaveInNestedCollection
                 user={user}
                 onClick={viewProfileDirectory}
+                alreadyInCollections={
+                  user.collections.filter(({ resources }) =>
+                    resources.some(
+                      (collectionResource) =>
+                        collectionResource.resourceId === resourceId,
+                    ),
+                  ).length
+                }
               />
               {bases.map((base) => (
                 <SaveInNestedCollection
@@ -476,6 +484,14 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
                   onClick={() => {
                     viewBaseDirectory(base.id)
                   }}
+                  alreadyInCollections={
+                    base.collections.filter(({ resources }) =>
+                      resources.some(
+                        (collectionResource) =>
+                          collectionResource.resourceId === resourceId,
+                      ),
+                    ).length
+                  }
                 />
               ))}
             </>

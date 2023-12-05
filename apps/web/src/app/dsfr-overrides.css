@@ -276,6 +276,14 @@
 
 /* Modals */
 
+.fr-modal {
+  .fr-modal__header {
+    .fr-btn.fr-btn--close {
+      font-weight: 400;
+    }
+  }
+}
+
 /* With overflow */
 
 .overflowModal {
