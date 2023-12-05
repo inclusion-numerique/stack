@@ -3,24 +3,28 @@ import { cleanUpAndCreateTestPublishedResource } from '../edition/editionTestUti
 
 describe("Les visites d'une ressource sont comptées", () => {
   it.only('Acceptation 1 - Visiteur non connecté', () => {
+    Cypress.Cookies.debug(true)
+
     cleanUpAndCreateTestPublishedResource(true, true)
     cy.logout()
 
     cy.log('Je peux voir la ressource')
-    cy.visit(
-      '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes/',
-    )
     cy.dsfrShouldBeStarted()
+    cy.testId('resource-views-count').should('have.text', '0')
+    cy.reload()
     // Visit counts for non connected users
     cy.testId('resource-views-count').should('have.text', '1')
+    cy.getCookie('visit-hash').should('exist')
     cy.reload()
     // Visit only counted once
     cy.testId('resource-views-count').should('have.text', '1')
+    cy.getCookie('visit-hash').should('exist')
   })
 
   it('Acceptation 3 - Utilisateur connecté sur une ressource publique', () => {
-    cleanUpAndCreateTestPublishedResource(true, true)
+    Cypress.Cookies.debug(true)
 
+    cleanUpAndCreateTestPublishedResource(true, true)
     const user = givenUser()
     cy.createUserAndSignin(user)
 
@@ -28,14 +32,14 @@ describe("Les visites d'une ressource sont comptées", () => {
     cy.logout()
 
     cy.log('Je peux voir la ressource')
-    cy.visit(
-      '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes/',
-    )
     cy.dsfrShouldBeStarted()
+    cy.testId('resource-views-count').should('have.text', '0')
     // Visit counts for non connected users
     cy.testId('resource-views-count').should('have.text', '1')
+    cy.getCookie('visit-hash').should('exist')
     cy.reload()
     // Visit only counted once
     cy.testId('resource-views-count').should('have.text', '1')
+    cy.getCookie('visit-hash').should('exist')
   })
 })

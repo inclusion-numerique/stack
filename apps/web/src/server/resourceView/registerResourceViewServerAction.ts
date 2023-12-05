@@ -13,7 +13,6 @@ export const registerResourceViewServerAction = async ({
   userId?: string
 }) => {
   const visitHash = getOrCreateVisitHashFromCookies()
-  console.log('REGISTERING', { visitHash })
 
   const existingView = await prismaClient.resourceView.findFirst({
     where: { hash: visitHash, resourceId },
