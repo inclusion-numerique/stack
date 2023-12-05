@@ -58,7 +58,7 @@ describe("Utilisateur connecté, lorsque j'édite une ressource", () => {
         '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
       )
 
-      cy.contains(`Publié le ${dateAsDay(new Date())}`)
+      cy.contains(`Publiée le ${dateAsDay(new Date())}`)
       cy.testId('resource-edition-button').click()
       cy.appUrlShouldBe(
         '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes/editer',
