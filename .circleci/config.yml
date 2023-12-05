@@ -385,7 +385,7 @@ jobs:
             mv apps/web/public ~/dist/apps/web/public
             mv apps/web/.next/static ~/dist/apps/web/.next/static
             cd ~/dist
-            HOSTNAME=localhost node apps/web/server.js
+            NODE_TLS_REJECT_UNAUTHORIZED="0" HOSTNAME=localhost node apps/web/server.js
       - run:
           name: 'Run cypress e2e tests'
           command: |
