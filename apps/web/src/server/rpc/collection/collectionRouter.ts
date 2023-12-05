@@ -8,6 +8,7 @@ export const collectionRouter = router({
     .input(CreateCollectionCommandValidation)
     .mutation(
       async ({ input: { addResourceId, ...collectionData }, ctx: { user } }) =>
+        // TODO Security on baseId
         prismaClient.collection.create({
           data: {
             ...collectionData,

@@ -38,6 +38,7 @@ const BaseCollectionsPage = async ({
           <Collections
             collections={base.collections}
             withCreation={authorizations.isMember}
+            baseId={base.id}
             withTabs
             collectionsLabel="Collections de la base"
             emptyBox={

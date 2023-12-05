@@ -12,6 +12,7 @@ const Collections = ({
   collectionsLabel,
   emptyBox,
   emptySavedBox,
+  baseId,
 }: {
   collections: CollectionListItem[]
   withCreation: boolean
@@ -19,11 +20,14 @@ const Collections = ({
   collectionsLabel: string
   emptyBox?: ReactNode
   emptySavedBox: ReactNode
+  baseId?: string
 }) => (
   <div className={styles.container} data-testid="collections-list">
     <div className={styles.header}>
       <h3 className="fr-mb-0">Collections · {collections.length}</h3>
-      {withCreation && <CreateCollectionButton className="fr-btn--secondary" />}
+      {withCreation && (
+        <CreateCollectionButton className="fr-btn--secondary" baseId={baseId} />
+      )}
     </div>
     {withTabs ? (
       <Tabs

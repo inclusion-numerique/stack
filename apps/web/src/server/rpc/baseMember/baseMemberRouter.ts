@@ -57,7 +57,7 @@ export const baseMemberRouter = router({
             email: member.email,
           })
             // TODO: a sentry here would be nice
-            .catch(() => console.log('Email non envoyé'))
+            .catch(() => console.error('Email non envoyé'))
         }
       }
     }),

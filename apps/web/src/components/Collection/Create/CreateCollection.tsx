@@ -94,6 +94,8 @@ const CreateCollection = ({ base }: { base?: { id: string } | null }) => {
     }
   }
 
+  const isLoading = isSubmitting || mutate.isPending || mutate.isSuccess
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className={classNames('fr-container', styles.container)}>
@@ -115,7 +117,7 @@ const CreateCollection = ({ base }: { base?: { id: string } | null }) => {
           >
             <ImageEdition
               control={control}
-              disabled={isSubmitting}
+              disabled={isLoading}
               onChange={setImage}
             />
           </Card>
@@ -128,7 +130,7 @@ const CreateCollection = ({ base }: { base?: { id: string } | null }) => {
             <VisibilityEdition
               model="Collection"
               control={control}
-              disabled={isSubmitting}
+              disabled={isLoading}
             />
           </Card>
         </div>
@@ -144,7 +146,7 @@ const CreateCollection = ({ base }: { base?: { id: string } | null }) => {
         <Button
           data-testid="create-button"
           type="submit"
-          className={classNames(isSubmitting && 'fr-btn--loading')}
+          className={classNames(isLoading && 'fr-btn--loading')}
         >
           Créer la collection
         </Button>
