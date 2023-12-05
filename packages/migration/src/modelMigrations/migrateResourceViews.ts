@@ -2,7 +2,7 @@ import { prismaClient } from '@app/web/prismaClient'
 import { output } from '@app/cli/output'
 import { chunk } from 'lodash'
 import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
-import { createResourceViewHash } from '@app/web/server/resourceView/createResourceViewHash'
+import { createVisitHash } from '@app/web/server/visitHash/createVisitHash'
 import { migrationPrismaClient } from '@app/migration/migrationPrismaClient'
 import { FindManyItemType } from '@app/migration/utils/findManyItemType'
 import { LegacyToNewIdHelper } from '@app/migration/legacyToNewIdHelper'
@@ -36,7 +36,7 @@ export const transformResourceView = ({
   legacyResourceView: LegacyResourceView
   resourceIdFromLegacyId: LegacyToNewIdHelper
 }) => {
-  const newHash = createResourceViewHash(
+  const newHash = createVisitHash(
     `${legacyResourceView.ip_hash}#${
       legacyResourceView.date.toISOString().split('T')[0]
     }`,
