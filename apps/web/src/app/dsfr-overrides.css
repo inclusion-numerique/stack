@@ -245,3 +245,13 @@
         box-shadow: inset 0 1px 0 0 var(--border-default-grey);
     }
 }
+
+/* Modals */
+
+.fr-modal {
+    .fr-modal__header {
+        .fr-btn.fr-btn--close {
+            font-weight: 400;
+        }
+    }
+}
