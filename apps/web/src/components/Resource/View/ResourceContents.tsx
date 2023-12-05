@@ -9,6 +9,7 @@ import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { getResourceSectionIdAttribute } from '@app/web/components/Resource/View/getResourceSectionIdAttribute'
 import CopyLinkButton from '@app/web/components/CopyLinkButton'
 import { getServerUrl } from '@app/web/utils/baseUrl'
+import RegisterResourceView from '@app/web/components/Resource/View/RegisterResourceView'
 import styles from './ResourceContents.module.css'
 import ResourceSideMenu from './ResourceSideMenu'
 
@@ -26,7 +27,7 @@ const PublishedAndUpdated = ({
 
   return (
     <div className={classNames('fr-text--xs fr-mb-0', className)}>
-      <b className="fr-mr-1w">Publié le {dateAsDay(created)}</b>
+      <b className="fr-mr-1w">Publiée le {dateAsDay(created)}</b>
       {publishedDay !== updatedDay && (
         <>
           <span className={styles.publishedAndUpdatedSeparator} />
@@ -39,7 +40,13 @@ const PublishedAndUpdated = ({
   )
 }
 
-const ResourceContents = ({ resource }: { resource: Resource }) => (
+const ResourceContents = ({
+  resource,
+  userId,
+}: {
+  resource: Resource
+  userId?: string
+}) => (
   <>
     <div className={styles.dateInformations}>
       <PublishedAndUpdated
@@ -100,6 +107,7 @@ const ResourceContents = ({ resource }: { resource: Resource }) => (
         <ContentView content={content} />
       </div>
     ))}
+    <RegisterResourceView resourceId={resource.id} userId={userId} />
   </>
 )
 

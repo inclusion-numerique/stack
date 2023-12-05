@@ -68,6 +68,7 @@ model User {
   bases            BaseMembers[]
   resources        ResourceContributors[]
   collections      Collection[]
+  resourceViews    ResourceView[]
 
   @@map("users")
 }
@@ -116,6 +117,7 @@ model Base {
   members     BaseMembers[]
   collections Collection[]
 
+  @@index([ownerId])
   @@map("bases")
 }
 
@@ -137,6 +139,8 @@ model BaseMembers {
   acceptationToken String?   @map("acceptation_token")
 
   @@unique([memberId, baseId])
+  @@index([baseId])
+  @@index([memberId])
   @@map("base_members")
 }
 
@@ -154,6 +158,8 @@ model ResourceContributors {
   added DateTime @default(now())
 
   @@unique([contributorId, resourceId])
+  @@index([resourceId])
+  @@index([contributorId])
   @@map("resource_contributors")
 }
 
@@ -279,7 +285,10 @@ model Resource {
   events       ResourceEvent[]
   contributors ResourceContributors[]
   collections  CollectionResource[]
+  views        ResourceView[]
 
+  @@index([baseId])
+  @@index([createdById])
   @@index(themes, name: "resources_themes_idx", type: Gin)
   @@index(supportTypes, name: "resources_support_type_idx", type: Gin)
   @@index(targetAudiences, name: "resources_target_audiences_idx", type: Gin)
@@ -319,6 +328,7 @@ model ResourceEvent {
   by         User?    @relation(fields: [byId], references: [id])
   byId       String?  @map("by_id") @db.Uuid
 
+  @@index([resourceId])
   @@map("resource_events")
 }
 
@@ -381,6 +391,7 @@ model Content {
   created DateTime @default(now())
   updated DateTime @default(now())
 
+  @@index([resourceId])
   @@map("contents")
 }
 
@@ -458,7 +469,29 @@ model CollectionResource {
   added DateTime @default(now())
 
   @@unique([resourceId, collectionId])
+  @@index([resourceId])
+  @@index([collectionId])
   @@map("collection_resources")
+}
+
+model ResourceView {
+  id   String @id @default(uuid()) @db.Uuid
+  hash String
+
+  legacyId Int? @unique @map("legacy_id")
+
+  resource   Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  resourceId String   @map("resource_id") @db.Uuid
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String? @map("user_id") @db.Uuid
+
+  timestamp DateTime @default(now())
+
+  @@index([hash])
+  @@index([userId])
+  @@index([resourceId])
+  @@map("resource_views")
 }
 
 model Collection {
@@ -484,5 +517,7 @@ model Collection {
 
   resources CollectionResource[]
 
+  @@index([baseId])
+  @@index([ownerId])
   @@map("collections")
 }

@@ -23,6 +23,7 @@ import { migrateUsers } from '@app/migration/modelMigrations/migrateUsers'
 import { migrateBaseMembers } from '@app/migration/modelMigrations/migrateBaseMembers'
 import { migrateResourceContributors } from '@app/migration/modelMigrations/migrateResourceContributors'
 import { updateBaseAndProfileVisibility } from '@app/migration/modelMigrations/updateBaseAndProfileVisibility'
+import { migrateResourceViews } from '@app/migration/modelMigrations/migrateResourceViews'
 
 // eslint-disable-next-line no-console
 const output = console.log
@@ -135,6 +136,13 @@ export const executeMigration = async () => {
 
   output(`- Migrated ${migratedResources.length} resources`)
   output(`- Migrated ${migratedContents.length} contents`)
+
+  output(`- Migrating resource views...`)
+  const migratedResourceViews = await migrateResourceViews({
+    resourceIdFromLegacyId,
+  })
+
+  output(`- Migrated ${migratedResourceViews.length} resource views`)
 
   output(`- Migrating base members...`)
   const migratedBaseMembers = await migrateBaseMembers({

@@ -103,6 +103,7 @@ const resource = (imageId: string | null) =>
     collections: [],
     _count: {
       collections: 0,
+      views: 0,
     },
   }) satisfies Resource
 

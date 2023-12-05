@@ -77,6 +77,7 @@ export const createTestResource = (
       : [],
     _count: {
       collections: 2,
+      views: 4,
     },
   }) satisfies Resource | BasePageData['resources'][number]
 

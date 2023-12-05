@@ -14,13 +14,18 @@ const ResourcesViewsAndMetadata = ({
   <div className={classNames(styles.container, 'fr-text--sm', className)}>
     <span className="fr-icon-eye-line fr-icon--sm" />
     <div>
-      <b className="wip">45</b>
-      <span className={styles.spanMdDisplay}> Vue{sPluriel(45)}</span>
+      <b data-testid="resource-views-count">{resource._count.views}</b>
+      <span className={styles.spanMdDisplay}>
+        {' '}
+        Vue{sPluriel(resource._count.views)}
+      </span>
     </div>
     <div>·</div>
     <span className="fr-icon-bookmark-line fr-icon--sm" />
     <div className={styles.lastLeft}>
-      <b>{resource._count.collections}</b>
+      <b data-testid="resource-collections-count">
+        {resource._count.collections}
+      </b>
       <span className={styles.spanMdDisplay}>
         {' '}
         Enregistrement{sPluriel(resource._count.collections)}

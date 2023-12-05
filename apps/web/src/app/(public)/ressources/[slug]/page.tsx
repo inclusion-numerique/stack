@@ -22,6 +22,7 @@ const RessourcePage = async ({ params }: { params: { slug: string } }) => {
   }
 
   const authorizations = filterAccess(resource, user)
+
   return (
     <div className="fr-container">
       <Breadcrumbs

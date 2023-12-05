@@ -94,6 +94,7 @@ export const applyResourceMigrated: ResourceCreationEventApplier<
   collections: [],
   _count: {
     collections: 0,
+    views: 0,
   },
 })
 

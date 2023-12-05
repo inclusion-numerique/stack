@@ -37,6 +37,7 @@ const resource = {
   contributors: [],
   _count: {
     collections: 0,
+    views: 0,
   },
 } satisfies ResourceListItem
 const creatorUser = { ...testSessionUser, id: resource.createdBy.id }
