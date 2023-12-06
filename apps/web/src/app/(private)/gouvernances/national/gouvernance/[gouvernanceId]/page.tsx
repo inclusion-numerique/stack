@@ -2,13 +2,14 @@ import React from 'react'
 import { notFound } from 'next/navigation'
 import { getGouvernanceForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
-import { generateRegionMetadata } from '@app/web/app/(private)/gouvernances/region/generateRegionMetadata'
 import GouvernanceDetails from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/GouvernanceDetails'
 import { getBesoinsEnIngenierieFinanciereForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getBesoinsIngenierieFinanciereForForm'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
-export const generateMetadata = generateRegionMetadata('Gouvernance')
+export const generateMetadata = () => ({
+  title: `Gouvernance - National`,
+})
 
 const Page = async ({
   params: { gouvernanceId },
