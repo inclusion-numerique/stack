@@ -3,9 +3,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
 const path = require('node:path')
-const packageJson = require('./package.json')
-
-const isDevelopment = process.env.NODE_ENV === 'development'
 
 // Some packages export a lot of modules in a single index file. To avoid them being compiled
 // next has added native support for modularize import transform
