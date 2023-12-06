@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { zodResolver } from '@hookform/resolvers/zod'
 import InputFormField from '@app/ui/components/Form/InputFormField'
-import { loadingClass } from '@app/ui/utils/buttonLoadingClassname'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import {
   UserSignup,
@@ -80,7 +80,7 @@ const EmailSignupForm = ({
         className="fr-mt-12v"
         buttons={[
           {
-            ...loadingClass(isLoading),
+            ...buttonLoadingClassname(isLoading),
             children: 'Valider',
             type: 'submit',
           },
