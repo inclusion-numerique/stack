@@ -102,22 +102,33 @@ const RawModal = ({
                         .reverse()
                         .map(
                           ({ doClosesModal = true, ...buttonProps }, index) => {
-                            if (doClosesModal) {
-                              if (
-                                'linkProps' in buttonProps &&
-                                buttonProps.linkProps
-                              ) {
-                                // eslint-disable-next-line no-param-reassign
-                                buttonProps.linkProps = {
-                                  ...buttonProps.linkProps,
-                                  'aria-controls': id,
-                                }
-                              } else {
-                                // eslint-disable-next-line no-param-reassign
-                                buttonProps.nativeButtonProps = {
-                                  ...buttonProps.nativeButtonProps,
-                                  'aria-controls': id,
-                                }
+                            // There is a bug with safari where tabindex has to be explicitely defined for
+                            // the buttons to be focusable
+
+                            if (
+                              'linkProps' in buttonProps &&
+                              buttonProps.linkProps
+                            ) {
+                              // eslint-disable-next-line no-param-reassign
+                              buttonProps.linkProps = {
+                                tabIndex: 0,
+                                ...(doClosesModal
+                                  ? {
+                                      'aria-controls': id,
+                                    }
+                                  : null),
+                                ...buttonProps.linkProps,
+                              }
+                            } else {
+                              // eslint-disable-next-line no-param-reassign
+                              buttonProps.nativeButtonProps = {
+                                tabIndex: 0,
+                                ...(doClosesModal
+                                  ? {
+                                      'aria-controls': id,
+                                    }
+                                  : null),
+                                ...buttonProps.nativeButtonProps,
                               }
                             }
 

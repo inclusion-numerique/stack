@@ -10,7 +10,7 @@
 
 .contributors {
   padding: 16px 24px;
-  background-color: #e8edff;
+  background-color: var(--info-950-100);
   border-radius: 8px;
   font-size: 14px;
 

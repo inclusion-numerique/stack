@@ -41,6 +41,7 @@ const AddOrRemoveResourceFromCollection = ({
         iconId="fr-icon-check-line"
         type="button"
         nativeButtonProps={{
+          tabIndex: 1,
           'data-testid': 'added-in-collection-button',
         }}
       >
@@ -54,6 +55,7 @@ const AddOrRemoveResourceFromCollection = ({
         disabled={disabled}
         type="button"
         nativeButtonProps={{
+          tabIndex: 1,
           'data-testid': 'add-in-collection-button',
         }}
       >

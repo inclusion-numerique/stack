@@ -300,16 +300,6 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
           inCollectionCreation
             ? [
                 {
-                  children: 'Enregistrer',
-                  priority: 'primary',
-                  type: 'submit',
-                  doClosesModal: false,
-                  className: creationLoading ? 'fr-btn--loading' : undefined,
-                  nativeButtonProps: {
-                    key: 'save-collection',
-                  },
-                },
-                {
                   children: 'Précédent',
                   priority: 'secondary',
                   type: 'button',
@@ -317,6 +307,16 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
                   doClosesModal: false,
                   nativeButtonProps: {
                     key: 'cancel-collection',
+                  },
+                },
+                {
+                  children: 'Enregistrer',
+                  priority: 'primary',
+                  type: 'submit',
+                  doClosesModal: false,
+                  className: creationLoading ? 'fr-btn--loading' : undefined,
+                  nativeButtonProps: {
+                    key: 'save-collection',
                   },
                 },
               ]
