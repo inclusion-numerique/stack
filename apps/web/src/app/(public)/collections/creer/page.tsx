@@ -36,7 +36,7 @@ const CollectionCreationPage = async ({
         <Breadcrumbs currentPage="Créer une collection" />
       </div>
       <div className="fr-mt-1w">
-        <CreateCollection base={base} />
+        <CreateCollection user={user} base={base} />
       </div>
     </>
   )
