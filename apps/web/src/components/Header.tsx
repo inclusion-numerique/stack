@@ -9,6 +9,11 @@ import {
   searchUrl,
 } from '@app/web/server/search/searchQueryParams'
 
+import LesBasesSvgLogo from '@app/web/components/LesBasesSvgLogo'
+import Logo from '../../public/images/logo.svg'
+
+console.log('LOGO IMPORTED', Logo)
+
 const createResourceConnectionLink = (
   <Link
     href="/connexion?suivant=/?creer-une-ressource"
@@ -43,13 +48,9 @@ const Header = ({
                       title={PublicWebAppConfig.projectTitle}
                       className="fr-text--medium"
                     >
-                      <picture>
-                        <img
-                          style={{ verticalAlign: 'top', height: 24 }}
-                          src="/images/logo.svg"
-                          alt="Logo"
-                        />
-                      </picture>
+                      <LesBasesSvgLogo
+                        style={{ verticalAlign: 'top', height: 24 }}
+                      />
                     </Link>
                   </div>
                   <div className="fr-header__operator">
