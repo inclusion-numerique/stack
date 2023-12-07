@@ -3,12 +3,14 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import classNames from 'classnames'
-import { Controller, UseFormReturn, useForm } from 'react-hook-form'
+import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import CroppedUpload from '@app/ui/components/CroppedUpload/CroppedUpload'
 import { CroppedImageType } from '@app/ui/components/CroppedUpload/utils'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import { createToast } from '@app/ui/toast/createToast'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
@@ -62,7 +64,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
   const {
     handleSubmit,
     setError,
-    formState: { isSubmitting },
+    formState: { isSubmitting, isSubmitSuccessful },
     control,
   } = form
 
@@ -77,6 +79,8 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
   const createImage = trpc.image.create.useMutation()
 
   const mutate = trpc.base.create.useMutation()
+
+  const isLoading = isSubmitting || isSubmitSuccessful
 
   const uploadImage = async (
     image: CroppedImageType,
@@ -132,6 +136,15 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
       })
       router.refresh()
       router.push(`/bases/${base.slug}`)
+      createToast({
+        priority: 'success',
+        message: (
+          <>
+            Votre base <strong className="fr-mx-1v">{base.title}</strong> a bien
+            été créée
+          </>
+        ),
+      })
     } catch (error) {
       applyZodValidationMutationErrorsToForm(error, setError)
     }
@@ -175,7 +188,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
             <VisibilityEdition
               model="Base"
               control={control}
-              disabled={isSubmitting}
+              disabled={isLoading}
             />
           </Card>
 
@@ -189,7 +202,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
               name="members"
               render={({ field: { onChange }, fieldState: { error } }) => (
                 <InviteUsers
-                  disabled={isSubmitting}
+                  disabled={isLoading}
                   label="Ajouter un membre"
                   setEmailsError={setEmailsError}
                   error={error}
@@ -215,7 +228,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
                   label="Image de la base"
                   height={522 / 4.8}
                   modal={addImageCropModal}
-                  disabled={isSubmitting}
+                  disabled={isLoading}
                   error={error ? error.message : undefined}
                   onChange={setProfilePicture}
                 />
@@ -232,7 +245,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
                   height={522 / 4.8}
                   modal={addCoverImageCropModal}
                   onChange={setCoverImage}
-                  disabled={isSubmitting}
+                  disabled={isLoading}
                   error={error ? error.message : undefined}
                 />
               )}
@@ -251,7 +264,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
         <Button
           data-testid="create-button"
           type="submit"
-          className={classNames(isSubmitting && 'fr-btn--loading')}
+          {...buttonLoadingClassname(isLoading)}
         >
           Créer la base
         </Button>
