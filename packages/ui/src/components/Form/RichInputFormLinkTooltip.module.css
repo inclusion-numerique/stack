@@ -1,6 +1,6 @@
 .tooltip {
   position: absolute;
-  background: white;
+  background: var(--background-default-grey);
   border: var(--slim-grey-border);
   filter: drop-shadow(var(--lifted-shadow));
   max-width: calc(min(100%, 360px));

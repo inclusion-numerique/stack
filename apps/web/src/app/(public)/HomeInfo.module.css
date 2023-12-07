@@ -18,7 +18,7 @@
 .card {
     padding: 32px;
     border: var(--slim-grey-border);
-    background: white;
+    background: var(--background-default-grey);
 }
 
 .icon {

@@ -6,7 +6,7 @@
   position: absolute;
   background-color: black;
   font-size: 11px;
-  color: white;
+  color: var(--background-default-grey);
   padding: 2px 4px;
   border-radius: 4px;
   top: -24px;

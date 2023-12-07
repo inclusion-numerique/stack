@@ -14,7 +14,7 @@
   top: 48px;
   z-index: 1;
   box-shadow: 0 12px 32px -8px rgb(0 0 36 / 12%);
-  background-color: white;
+  background-color: var(--background-default-grey);
   max-width: 588px;
   margin: auto;
   text-align: left;

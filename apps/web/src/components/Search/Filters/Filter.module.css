@@ -35,7 +35,7 @@
   z-index: 1;
   left: 0;
   min-width: 100%;
-  background-color: white;
+  background-color: var(--background-default-grey);
   box-shadow: 0 12px 32px -8px rgb(0 0 36 / 12%);
 }
 

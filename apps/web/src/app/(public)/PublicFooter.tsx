@@ -1,4 +1,5 @@
 import Footer from '@codegouvfr/react-dsfr/Footer'
+import SwitchTheme from '@app/web/app/(public)/SwitchTheme'
 
 const PublicFooter = () => (
   <Footer
@@ -34,6 +35,7 @@ const PublicFooter = () => (
           rel: 'noreferrer',
         },
       },
+      <SwitchTheme key="switch-theme" />,
     ]}
   />
 )

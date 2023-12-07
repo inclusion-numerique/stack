@@ -4,7 +4,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: white;
+  background-color: var(--background-default-grey);
   border-top: var(--slim-grey-border);
 }
 
@@ -32,7 +32,7 @@
 
   /* left: calc(-100% + 58px) !important; */
   right: 0;
-  background: white;
+  background: var(--background-default-grey);
   border-top: 1px solid var(--border-open-blue-france);
   border-bottom: 1px solid var(--border-open-blue-france);
   box-shadow: var(--big-smooth-shadow);

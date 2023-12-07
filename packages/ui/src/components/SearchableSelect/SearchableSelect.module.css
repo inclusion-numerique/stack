@@ -21,7 +21,7 @@
   position: absolute;
   width: 100%;
   display: none;
-  background-color: white;
+  background-color: var(--background-default-grey);
   border-top: var(--slim-grey-border);
   box-shadow: 0 12px 32px -8px rgb(0 0 36 / 12%);
   max-height: 400px;

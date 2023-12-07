@@ -1,4 +1,4 @@
 .button {
   border-radius: 50%;
-  background-color: white;
+  background-color: var(--background-default-grey);
 }

@@ -10,7 +10,7 @@
   position: absolute;
   cursor: pointer;
   z-index: 2;
-  background-color: white;
+  background-color: var(--background-default-grey);
   width: 100%;
   border-right: var(--slim-grey-border);
   border-left: var(--slim-grey-border);
