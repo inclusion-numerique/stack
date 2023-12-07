@@ -20,7 +20,11 @@ const PublicationView = ({
   resource.base ? (
     <div className={styles.baseInfo}>
       <div className={styles.baseName}>
-        <RoundImage className="fr-mr-1w" image={resource.base.image} />
+        <RoundImage
+          radius="quarter"
+          className="fr-mr-1w"
+          image={resource.base.image}
+        />
         <span>{resource.base.title}</span>
       </div>
       <BasePrivacyTag isPublic={resource.base.isPublic} />

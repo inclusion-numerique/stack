@@ -3,7 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 import { Resource } from '@app/web/server/resources/getResource'
 import { FilteredResource } from '@app/web/server/resources/authorization'
-import PublishedInInformation from '../PublishedInInformation'
+import OwnershipInformation from '@app/web/components/OwnershipInformation'
 import ResourcePublicStateBadge from './ResourcePublicStateBadge'
 import styles from './View.module.css'
 
@@ -16,7 +16,11 @@ const ViewHeader = ({
 }) => (
   <div className="fr-grid-row">
     <div className={classNames(styles.leftColumn)}>
-      <PublishedInInformation user={resource.createdBy} base={resource.base} />
+      <OwnershipInformation
+        user={resource.createdBy}
+        base={resource.base}
+        attributionWording="resource"
+      />
     </div>
     <div className={styles.headerSeparator}>
       <hr />

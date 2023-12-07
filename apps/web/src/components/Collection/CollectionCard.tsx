@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import sanitizeHtml from 'sanitize-html'
 import { CollectionListItem } from '@app/web/server/collections/getCollectionsList'
-import RoundProfileImage from '../RoundProfileImage'
+import OwnershipInformation from '@app/web/components/OwnershipInformation'
 import styles from './CollectionCard.module.css'
 import Images from './Images'
 import CollectionMetaData from './CollectionMetaData'
@@ -23,15 +23,12 @@ const CollectionCard = ({ collection }: { collection: CollectionListItem }) => {
       </Link>
       <div className={styles.content}>
         <div>
-          <div className={styles.owner}>
-            <RoundProfileImage user={collection.owner} />
-            <Link
-              className="fr-text--xs fr-link"
-              href={`/profils/${collection.owner.id}`}
-            >
-              {collection.owner.name}
-            </Link>
-          </div>
+          <OwnershipInformation
+            className="fr-mb-4v"
+            base={collection.base}
+            user={collection.owner}
+            attributionWording="none"
+          />
           <Link href={href} data-testid="collection-card-link">
             <h6 className={styles.title}>{collection.title}</h6>
             {collection.description && (

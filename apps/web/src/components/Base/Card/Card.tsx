@@ -12,7 +12,7 @@ import styles from './Card.module.css'
 
 const BaseCard = ({ base }: { base: BaseListItem }) => (
   <div className={styles.container} data-testid="base-card">
-    <RoundImage image={base.image} size={116} />
+    <RoundImage radius="quarter" image={base.image} size={116} />
     <div className={styles.content}>
       <Link href={`/bases/${base.slug}`}>
         <div className={styles.header}>

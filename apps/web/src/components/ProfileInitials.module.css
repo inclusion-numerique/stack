@@ -3,9 +3,9 @@
     align-items: center;
     justify-content: center;
     font-size: 1.5em;
-    color: var(--grey-1000-50);
+    color: var(--blue-ecume-sun-247-moon-675);
     background-color: var(--blue-ecume-850-200);
-    font-weight: 700;
+    font-weight: 400;
     height: 100%;
     width: 100%;
 }

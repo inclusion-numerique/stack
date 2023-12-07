@@ -12,9 +12,9 @@ import { getServerUrl } from '@app/web/utils/baseUrl'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import SaveResourceInCollectionButton from '@app/web/components/Resource/SaveResourceInCollectionButton'
 import { resourceCardImageBreakpoints } from '@app/web/components/Resource/resourceCardImageBreakpoints'
+import OwnershipInformation from '@app/web/components/OwnershipInformation'
 import IconLink from '../Icon/IconLink'
 import styles from './Card.module.css'
-import PublishedInInformation from './PublishedInInformation'
 import DeleteResourceButton from './DeleteResourceButton'
 
 const ResourceCard = ({
@@ -54,9 +54,10 @@ const ResourceCard = ({
   return (
     <div className={styles.container} data-testid="resource-card">
       <div className={styles.header}>
-        <PublishedInInformation
+        <OwnershipInformation
           user={resource.createdBy}
           base={resource.base}
+          attributionWording="none"
         />
         <div className="fr-hidden fr-unhidden-md fr-text--xs fr-mb-0">
           {dates}

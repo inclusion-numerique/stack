@@ -67,6 +67,14 @@ export const collectionSelect = {
       image: { select: { altText: true, id: true } },
     },
   },
+  base: {
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      image: { select: { altText: true, id: true } },
+    },
+  },
   // Resources only for image previews
   resources: {
     select: {

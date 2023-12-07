@@ -227,6 +227,7 @@ const SearchBar = ({
                             className="fr-mr-1w"
                             image={base.image}
                             size={24}
+                            radius="quarter"
                           />
                           <span>{base.title}</span>
                         </Link>

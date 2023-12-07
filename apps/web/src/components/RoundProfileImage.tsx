@@ -9,7 +9,7 @@ const fontSizeByPictureSize: {
   32: 12,
   48: 18,
   116: 42,
-  128: 52,
+  128: 48,
 }
 
 const RoundProfileImage = ({

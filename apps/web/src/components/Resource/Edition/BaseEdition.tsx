@@ -13,7 +13,7 @@ import {
 } from '@app/web/server/resources/feature/ChangeBase'
 import { ResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
-import PublishedInInformation from '../PublishedInInformation'
+import OwnershipInformation from '@app/web/components/OwnershipInformation'
 import EditableContent from './EditableContent'
 
 const { Component: BaseModal, open: openBaseModal } = createModal({
@@ -71,9 +71,10 @@ const BaseEdition = ({
     >
       {children ||
         (!!resource.createdBy && (
-          <PublishedInInformation
+          <OwnershipInformation
             user={resource.createdBy}
             base={resource.base}
+            attributionWording="resource"
           />
         ))}
       <form onSubmit={handleSubmit(onSubmit)}>

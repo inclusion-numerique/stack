@@ -1,29 +1,52 @@
 import Link from 'next/link'
 import React from 'react'
 import { User } from '@prisma/client'
+import classNames from 'classnames'
 import RoundImage, { RoundImageProps } from '@app/web/components/RoundImage'
 import RoundProfileImage from '@app/web/components/RoundProfileImage'
 import { BasePageData } from '@app/web/server/bases/getBase'
 import { WithMinimalImageData } from '@app/web/server/image/imageTypes'
 
-const PublishedInInformation = ({
+const attributionWordings = {
+  resource: {
+    base: 'Dans la base ',
+    user: 'Publié par ',
+  },
+  collection: {
+    base: 'Collection de la base ',
+    user: 'Collection de ',
+  },
+  none: {
+    base: '',
+    user: '',
+  },
+}
+
+const OwnershipInformation = ({
   user,
   base,
+  className,
+  attributionWording,
 }: {
   user: Pick<User, 'firstName' | 'lastName' | 'name' | 'id'> & {
     image: RoundImageProps['image']
   }
   base: (Pick<BasePageData, 'slug' | 'title'> & WithMinimalImageData) | null
+  className?: string
+  attributionWording: 'resource' | 'collection' | 'none'
 }) => {
   const image = base ? base.image : user.image
 
+  const attribution =
+    attributionWordings[attributionWording][base ? 'base' : 'user']
+
   return (
-    <div className="fr-grid-row fr-grid-row--middle">
+    <div className={classNames('fr-grid-row fr-grid-row--middle', className)}>
       {base ? (
         <>
-          <RoundImage className="fr-mr-1w" image={image} />
+          <RoundImage radius="quarter" className="fr-mr-1w" image={image} />
           <span className="fr-text--xs fr-mb-0">
-            Dans la base{' '}
+            {attribution}
             <Link href={`/bases/${base.slug}`} className="fr-link fr-text--xs">
               {base.title}
             </Link>
@@ -33,7 +56,7 @@ const PublishedInInformation = ({
         <>
           <RoundProfileImage className="fr-mr-1w" user={user} />
           <span className="fr-text--xs fr-mb-0">
-            Publié par{' '}
+            {attribution}
             <Link href={`/profils/${user.id}`} className="fr-link fr-text--xs">
               {user.name}
             </Link>
@@ -44,4 +67,4 @@ const PublishedInInformation = ({
   )
 }
 
-export default PublishedInInformation
+export default OwnershipInformation

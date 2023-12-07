@@ -6,7 +6,7 @@ import { WithMinimalImageData } from '@app/web/server/image/imageTypes'
 import SaveResourceInCollectionModal from '@app/web/components/Resource/SaveResourceInCollectionModal'
 import DeleteResource from '@app/web/components/Resource/DeleteResource/DeleteResource'
 import Images from '@app/web/components/Collection/Images'
-import PublishedInInformation from '../Resource/PublishedInInformation'
+import OwnershipInformation from '@app/web/components/OwnershipInformation'
 import ResourceCard from '../Resource/Card'
 import styles from './View.module.css'
 import CollectionMetaData from './CollectionMetaData'
@@ -22,7 +22,11 @@ const View = ({
 }) => (
   <div className={styles.container}>
     <div className="fr-mb-4w">
-      <PublishedInInformation user={collection.owner} base={collection.base} />
+      <OwnershipInformation
+        user={collection.owner}
+        base={collection.base}
+        attributionWording="collection"
+      />
     </div>
     <hr className="fr-mt-4w fr-pb-4w" />
     <div className={styles.header}>

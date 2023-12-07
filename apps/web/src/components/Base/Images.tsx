@@ -38,6 +38,7 @@ const Images = (
       </div>
       <div className={styles.logoContainer}>
         <RoundImage
+          radius="quarter"
           className={styles.logo}
           size={128}
           image={base.image}
