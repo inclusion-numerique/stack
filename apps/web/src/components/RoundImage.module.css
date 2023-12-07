@@ -40,11 +40,11 @@
 .borderWidth1{
     width: calc(var(--size) - 2px);
     height: calc(var(--size) - 2px);
-    border: 1px solid #FFF;
+    border: 1px solid var(--grey-1000-50);
 }
 
 .borderWidth2{
     width: calc(var(--size) - 4px);
     height: calc(var(--size) - 4px);
-    border: 2px solid #FFF;
+    border: 2px solid var(--grey-1000-50);
 }

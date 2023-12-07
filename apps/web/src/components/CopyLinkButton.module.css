@@ -4,7 +4,7 @@
 
 .copiedHover {
   position: absolute;
-  background-color: black;
+  background-color: var(--grey-50-1000);
   font-size: 11px;
   color: var(--background-default-grey);
   padding: 2px 4px;
