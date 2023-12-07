@@ -10,9 +10,6 @@ import {
 } from '@app/web/server/search/searchQueryParams'
 
 import LesBasesSvgLogo from '@app/web/components/LesBasesSvgLogo'
-import Logo from '../../public/images/logo.svg'
-
-console.log('LOGO IMPORTED', Logo)
 
 const createResourceConnectionLink = (
   <Link
