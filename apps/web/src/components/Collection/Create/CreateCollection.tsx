@@ -102,6 +102,8 @@ const CreateCollection = ({
       })
       router.refresh()
       router.push(`/collections/${collection.id}`)
+      // TODO: Wierd refreshes not working create e2e for this (collection appearing in base / collection page) and remove second refresh
+      router.refresh()
     } catch (error) {
       applyZodValidationMutationErrorsToForm(error, setError)
     }
