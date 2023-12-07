@@ -1,30 +1,31 @@
-'use client'
-
+import { SideMenuProps } from '@codegouvfr/react-dsfr/SideMenu'
 import React from 'react'
-import SideMenu from '@codegouvfr/react-dsfr/SideMenu'
-import useHash from '@app/ui/hooks/hash'
-import { sideMenuHashItem } from '@app/ui/utils/sideMenuHashItem'
+import NavigationSideMenu from '@app/ui/components/NavigationSideMenu'
 
-const collectionMenuItems = (hash?: string) => [
-  sideMenuHashItem(hash)('Informations de la collection', 'informations', true),
-  sideMenuHashItem(hash)('Aperçu de la collection', 'apercu'),
-  sideMenuHashItem(hash)('Visibilité de la collection', 'visibilite'),
-  sideMenuHashItem(hash)('Supprimer la collection', 'supprimer'),
+const gouvernanceFormSections = [
+  { id: 'informations', title: 'Informations de la collection' },
+  { id: 'apercu', title: 'Aperçu de la collection' },
+  { id: 'visibilite', title: 'Visibilité de la collection' },
+  { id: 'supprimer', title: 'Supprimer la collection' },
 ]
 
-const CollectionSideMenu = () => {
-  const hash = useHash()
-  return (
-    <div className="fr-hidden fr-unhidden-lg">
-      <div>
-        <SideMenu
-          burgerMenuButtonText="Contenus"
-          sticky
-          items={collectionMenuItems(hash)}
-        />
-      </div>
+const gouvernanceFormSectionSideMenuItems: SideMenuProps.Item[] =
+  gouvernanceFormSections.map(({ id, title }) => ({
+    text: title,
+    linkProps: { href: `#${id}` },
+  }))
+
+const CollectionSideMenu = () => (
+  <div className="fr-hidden fr-unhidden-lg">
+    <div>
+      <NavigationSideMenu
+        items={gouvernanceFormSectionSideMenuItems}
+        burgerMenuButtonText="Sections"
+        contentId="gouvernance-form"
+        sticky
+      />
     </div>
-  )
-}
+  </div>
+)
 
 export default CollectionSideMenu
