@@ -7,7 +7,6 @@ import { prismaClient } from '@app/web/prismaClient'
 import { handleResourceCreationCommand } from '@app/web/server/resources/feature/handleResourceCreationCommand'
 import { handleResourceMutationCommand } from '@app/web/server/resources/feature/handleResourceMutationCommand'
 import { createTestIdTitleAndSlug } from '@app/web/test/createTestIdTitleAndSlug'
-import { expect } from '@storybook/jest'
 
 describe('profileRouter', () => {
   // Helper function to easily test procedures

@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import * as Sentry from '@sentry/nextjs'
 import { prismaClient } from '@app/web/prismaClient'
 import { filterAccess } from '@app/web/server/resources/authorization'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
@@ -96,7 +97,10 @@ export const resourceContributorRouter = router({
             resource,
           })
             // TODO: a sentry here would be nice
-            .catch(() => console.log('Email non envoyé'))
+            .catch((error) => {
+              Sentry.captureException(error)
+              console.error('Email non envoyé')
+            })
         }
       }
     }),
