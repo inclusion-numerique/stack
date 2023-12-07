@@ -46,7 +46,11 @@ const Header = ({
                       className="fr-text--medium"
                     >
                       <LesBasesSvgLogo
-                        style={{ verticalAlign: 'top', height: 24 }}
+                        style={{
+                          verticalAlign: 'top',
+                          height: 24,
+                          width: 36.5,
+                        }}
                       />
                     </Link>
                   </div>
