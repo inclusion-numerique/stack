@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import { CroppedImageType } from '@app/ui/components/CroppedUpload/utils'
+import Notice from '@codegouvfr/react-dsfr/Notice'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
@@ -17,6 +18,7 @@ import {
   CreateCollectionCommand,
   CreateCollectionCommandValidation,
 } from '@app/web/server/collections/createCollection'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import Card from '../../Card'
 import CollectionInformationsEdition from '../Edition/CollectionInformationsEdition'
 import VisibilityEdition from '../../Base/Edition/VisibilityEdition'
@@ -33,12 +35,23 @@ const {
   isOpenedByDefault: false,
 })
 
-const CreateCollection = ({ base }: { base?: { id: string } | null }) => {
+const CreateCollection = ({
+  base,
+  user,
+}: {
+  user: SessionUser
+  base?: { id: string; isPublic: boolean } | null
+}) => {
+  // User cannot create a public collection on a private base or profile
+  const collectionCannotBePublic = base ? !base.isPublic : !user.isPublic
+
   const router = useRouter()
   const form = useForm<CreateCollectionCommand>({
     resolver: zodResolver(CreateCollectionCommandValidation),
     defaultValues: {
       baseId: base?.id,
+      // Set isPublic to false if collection cannot be public as the user cannot chose
+      isPublic: collectionCannotBePublic ? false : undefined,
     },
   })
   const {
@@ -127,11 +140,37 @@ const CreateCollection = ({ base }: { base?: { id: string } | null }) => {
             id="visibilite"
             description="Choisissez la visibilité de votre collection."
           >
-            <VisibilityEdition
-              model="Collection"
-              control={control}
-              disabled={isLoading}
-            />
+            {/* Display info if cannot be public */}
+            {collectionCannotBePublic ? (
+              <Notice
+                title={
+                  base ? (
+                    <>
+                      <span className="fr-text--bold">Base privée</span>
+                      <br />
+                      <span className="fr-text--regular">
+                        La collection sera accessible uniquement aux membres et
+                        aux administrateurs de votre base.
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="fr-text--bold">Profil privé</span>
+                      <br />
+                      <span className="fr-text--regular">
+                        Votre collection sera visible uniquement par vous.
+                      </span>
+                    </>
+                  )
+                }
+              />
+            ) : (
+              <VisibilityEdition
+                model="Collection"
+                control={control}
+                disabled={isLoading}
+              />
+            )}
           </Card>
         </div>
       </div>
