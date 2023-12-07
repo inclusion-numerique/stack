@@ -1,5 +1,6 @@
 import { Argument, Command, Option } from '@commander-js/extra-typings'
 import { appendEnvVariablesToDotEnvFile } from '@app/cli/dotEnvFile'
+import { output } from '@app/cli/output'
 
 export const addNextPublicVariablesToDotEnv = new Command()
   .command('dotenv:add-next-public')
@@ -11,6 +12,8 @@ export const addNextPublicVariablesToDotEnv = new Command()
       : namespace === 'main'
         ? 'main'
         : 'preview'
+
+    output(`Adding next public variables to .env for "${targetEnv}" target`)
 
     await appendEnvVariablesToDotEnvFile({
       comment: 'Next public environment needed at build time',
