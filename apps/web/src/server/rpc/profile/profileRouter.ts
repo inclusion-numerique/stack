@@ -26,14 +26,21 @@ export const profileRouter = router({
     .input(UpdateProfileVisibilityCommandValidation)
     .mutation(async ({ input, ctx: { user } }) => {
       if (input.isPublic === false) {
+        // All public resources not in a base must be made private
         const resources = await prismaClient.resource.findMany({
           select: { id: true },
           where: { createdById: user.id, baseId: null, isPublic: true },
         })
 
-        return prismaClient.$transaction(async (transaction) =>
-          Promise.all([
-            ...resources.map((resource) =>
+        // All public collections not in a base must be made private
+        const collections = await prismaClient.collection.findMany({
+          select: { id: true },
+          where: { ownerId: user.id, baseId: null, isPublic: true },
+        })
+
+        return prismaClient.$transaction(async (transaction) => {
+          await Promise.all(
+            resources.map((resource) =>
               handleResourceMutationCommand(
                 {
                   name: 'ChangeVisibility',
@@ -43,9 +50,22 @@ export const profileRouter = router({
                 transaction,
               ),
             ),
-            transaction.user.update({ where: { id: user.id }, data: input }),
-          ]),
-        )
+          )
+
+          await Promise.all(
+            collections.map((collection) =>
+              transaction.collection.update({
+                where: { id: collection.id },
+                data: { isPublic: false },
+              }),
+            ),
+          )
+
+          return transaction.user.update({
+            where: { id: user.id },
+            data: input,
+          })
+        })
       }
       return prismaClient.user.update({ where: { id: user.id }, data: input })
     }),

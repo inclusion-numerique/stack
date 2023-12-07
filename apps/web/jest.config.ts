@@ -7,5 +7,4 @@ export default packageJestConfig({
     'utils/generateContentSecurityPolicyScriptNonce.ts$',
     'utils/somethingElse.ts$',
   ],
-  customExportConditions: [],
 })
