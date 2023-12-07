@@ -1,5 +1,5 @@
 .container {
-  background-color: #f5f5fe;
+  background-color: var(--blue-france-975-75);
   border-radius: 8px;
   padding: 48px;
   display: flex;
