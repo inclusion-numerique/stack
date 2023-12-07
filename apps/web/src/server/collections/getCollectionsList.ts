@@ -34,6 +34,7 @@ const getWhereCollectionsProfileList = (
 ) =>
   computeCollectionsListWhereForUser(user, {
     ownerId: profileId,
+    baseId: null,
   })
 
 export const getProfileCollectionsCount = async (
