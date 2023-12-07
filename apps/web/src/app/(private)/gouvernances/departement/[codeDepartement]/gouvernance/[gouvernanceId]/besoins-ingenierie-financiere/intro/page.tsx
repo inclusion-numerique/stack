@@ -91,8 +91,8 @@ const Page = async ({
             Les items proposés peuvent correspondre à différents stades
             d’avancement de mise en place des feuilles de route. Vous pouvez
             ajouter un item qui ne figure pas dans la liste en cliquant sur
-            “autre”. Nous vous invitons à indiquer vos besoins par ordre de
-            priorité.
+            “autre”. Dans une seconde étape du formulaire, il vous sera demandé
+            de prioriser les besoins sélectionnés.
             <br />
             <br />
             Cette remontée a vocation à recenser les besoins de l’ensemble des
@@ -102,7 +102,7 @@ const Page = async ({
             propositions de financement dès janvier 2024. Les modalités de
             financement ne sont donc pas encore connues. A noter que les
             réponses ne constituent pas engagement de votre part, et{' '}
-            <strong>sont modifiables jusqu’au 31 décembre 2023.</strong>
+            <strong>sont modifiables jusqu’au 31 janvier 2024.</strong>
           </p>
 
           <div className="fr-btns-group fr-btns-group--icon-right fr-mb-0 fr-mt-8v">
