@@ -10,7 +10,7 @@ export const testSessionUser = {
   legacyId: null,
   updated: new Date('2023-05-05').toISOString(),
   created: new Date('2023-01-01').toISOString(),
-  emailVerified: null,
+  emailVerified: new Date('2023-01-01').toISOString(),
   isPublic: false,
   ownedBases: [],
   bases: [],

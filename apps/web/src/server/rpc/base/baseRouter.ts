@@ -67,14 +67,20 @@ export const baseRouter = router({
     .input(UpdateBaseCommandValidation)
     .mutation(async ({ input, ctx: { user } }) => {
       if ('isPublic' in input.data && input.data.isPublic === false) {
+        // All public resources must be made private
         const resources = await prismaClient.resource.findMany({
           select: { id: true },
           where: { baseId: input.id, isPublic: true },
         })
+        // All public collections must be made private
+        const collections = await prismaClient.collection.findMany({
+          select: { id: true },
+          where: { baseId: input.id, isPublic: true },
+        })
 
-        return prismaClient.$transaction(async (transaction) =>
-          Promise.all([
-            ...resources.map((resource) =>
+        return prismaClient.$transaction(async (transaction) => {
+          await Promise.all(
+            resources.map((resource) =>
               handleResourceMutationCommand(
                 {
                   name: 'ChangeVisibility',
@@ -84,12 +90,22 @@ export const baseRouter = router({
                 transaction,
               ),
             ),
-            transaction.base.update({
-              where: { id: input.id },
-              data: input.data,
-            }),
-          ]),
-        )
+          )
+
+          await Promise.all(
+            collections.map((collection) =>
+              transaction.collection.update({
+                where: { id: collection.id },
+                data: { isPublic: false },
+              }),
+            ),
+          )
+
+          return transaction.base.update({
+            where: { id: input.id },
+            data: input.data,
+          })
+        })
       }
       return prismaClient.base.update({
         where: { id: input.id },
