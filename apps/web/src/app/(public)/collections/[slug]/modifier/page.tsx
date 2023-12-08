@@ -4,6 +4,7 @@ import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import CollectionEdition from '@app/web/components/Collection/Edition/CollectionEdition'
 import { getCollection } from '@app/web/server/collections/getCollection'
+import { basePageQuery } from '../../../../../server/bases/getBase'
 
 const CollectionEditionPage = async ({
   params,
@@ -12,6 +13,11 @@ const CollectionEditionPage = async ({
 }) => {
   const user = await getSessionUser()
   const collection = await getCollection(decodeURI(params.slug), user)
+
+  const base =
+    collection?.base?.slug == null
+      ? null
+      : await basePageQuery(collection.base.slug, user)
 
   if (!collection || !user) {
     notFound()
@@ -37,7 +43,7 @@ const CollectionEditionPage = async ({
         currentPage="Éditer la collection"
       />
       <div className="fr-mt-6w fr-mb-4w">
-        <CollectionEdition collection={collection} />
+        <CollectionEdition collection={collection} base={base} />
       </div>
     </div>
   )

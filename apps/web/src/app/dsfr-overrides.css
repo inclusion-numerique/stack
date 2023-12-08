@@ -1,5 +1,27 @@
 /* DSFR Overrides and custom theming */
 
+/* Card variants */
+
+.fr-card {
+  &.fr-card--editable {
+    .fr-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .fr-card__title {
+        order: 0;
+        padding: 0.5rem 0;
+      }
+    }
+  }
+
+  .fr-card__separator {
+    border-bottom: 1px solid var(--border-default-grey);
+    padding: 2rem 0;
+  }
+}
+
 /* Remove header dropshadow */
 
 .fr-header {
@@ -124,17 +146,17 @@
 
 /* Priority variations */
 .fr-notice--warning {
-    background: var(--background-contrast-warning);
+  background: var(--background-contrast-warning);
 
-    --hover: var(--background-contrast-warning-hover);
-    --active: var(--background-contrast-warning-active);
+  --hover: var(--background-contrast-warning-hover);
+  --active: var(--background-contrast-warning-active);
 
-    color: var(--text-default-warning);
+  color: var(--text-default-warning);
 }
 
 .fr-notice--warning .fr-notice__body::before {
-    mask-image: url("/dsfr/icons/system/fr--warning-fill.svg");
-    content: "";
+  mask-image: url('/dsfr/icons/system/fr--warning-fill.svg');
+  content: '';
 }
 
 /* Override input spacing */
@@ -156,6 +178,7 @@
 
 .fr-btn--danger {
   background-color: var(--background-flat-error);
+  color: var(--text-inverted-error);
 
   &:not(:disabled):hover {
     background-color: var(--artwork-minor-red-marianne) !important;

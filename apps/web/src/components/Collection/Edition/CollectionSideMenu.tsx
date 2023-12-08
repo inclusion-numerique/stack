@@ -1,5 +1,5 @@
-import { SideMenuProps } from '@codegouvfr/react-dsfr/SideMenu'
 import React from 'react'
+import { SideMenuProps } from '@codegouvfr/react-dsfr/SideMenu'
 import NavigationSideMenu from '@app/ui/components/NavigationSideMenu'
 
 const gouvernanceFormSections = [
@@ -16,7 +16,7 @@ const gouvernanceFormSectionSideMenuItems: SideMenuProps.Item[] =
   }))
 
 const CollectionSideMenu = () => (
-  <div className="fr-hidden fr-unhidden-lg">
+  <div className="fr-hidden fr-unhidden-lg fr-mt-12w">
     <div>
       <NavigationSideMenu
         items={gouvernanceFormSectionSideMenuItems}

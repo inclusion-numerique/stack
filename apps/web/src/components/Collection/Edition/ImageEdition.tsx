@@ -27,9 +27,27 @@ const ImageEdition = <T extends { imageId?: string | null }>({
 
   return (
     <div>
+      <Controller
+        control={control}
+        name={'imageId' as Path<T>}
+        render={({ fieldState: { error } }) =>
+          imageType === 'image' ? (
+            <CroppedUpload
+              modal={collectionImageCropModal}
+              disabled={disabled}
+              ratio={1.66}
+              height={195}
+              onChange={onChange}
+              error={error?.message}
+            />
+          ) : (
+            <Images className={styles.images} resources={[]} />
+          )
+        }
+      />
       <RadioButtons
         disabled={disabled}
-        className="fr-mb-2w"
+        className="fr-mt-3w"
         legend="L’aperçu de votre collection"
         orientation="horizontal"
         options={[
@@ -48,24 +66,6 @@ const ImageEdition = <T extends { imageId?: string | null }>({
             },
           },
         ]}
-      />
-      <Controller
-        control={control}
-        name={'imageId' as Path<T>}
-        render={({ fieldState: { error } }) =>
-          imageType === 'image' ? (
-            <CroppedUpload
-              modal={collectionImageCropModal}
-              disabled={disabled}
-              ratio={1.66}
-              height={195}
-              onChange={onChange}
-              error={error?.message}
-            />
-          ) : (
-            <Images className={styles.images} resources={[]} />
-          )
-        }
       />
     </div>
   )
