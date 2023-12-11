@@ -195,3 +195,28 @@
         max-width: 840px;
     }
 }
+
+
+.fr-border--slim-grey {
+    border: var(--slim-grey-border);
+}
+
+.fr-border-radius--4 {
+    border-radius: 4px;
+}
+
+.fr-border-radius--8 {
+    border-radius: 8px;
+}
+
+.fr-border-radius--16 {
+    border-radius: 16px;
+}
+
+.fr-border-radius--32 {
+    border-radius: 32px;
+}
+
+.fr-border-radius--64 {
+    border-radius: 64px;
+}

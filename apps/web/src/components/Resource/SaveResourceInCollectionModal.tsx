@@ -210,9 +210,7 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
         message: (
           <>
             Retirée de la collection{' '}
-            <strong className="fr-ml-1v">
-              {result.collection.collection.title}
-            </strong>
+            <strong className="fr-ml-1v">{result.collection.title}</strong>
           </>
         ),
       })
@@ -433,6 +431,7 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
             <>
               {user.collections.map((collection) => (
                 <AddOrRemoveResourceFromCollection
+                  user={user}
                   loading={pendingMutationCollectionId === collection.id}
                   key={collection.id}
                   collection={collection}
@@ -446,6 +445,7 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
             inBaseDirectory.collections.length > 0 ? (
               inBaseDirectory.collections.map((collection) => (
                 <AddOrRemoveResourceFromCollection
+                  user={user}
                   loading={pendingMutationCollectionId === collection.id}
                   key={collection.id}
                   collection={collection}

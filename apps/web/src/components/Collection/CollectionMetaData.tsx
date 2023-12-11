@@ -1,20 +1,24 @@
 import React from 'react'
-import Button, { ButtonProps } from '@codegouvfr/react-dsfr/Button'
+import { ButtonProps } from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
 import Link from 'next/link'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { getServerUrl } from '@app/web/utils/baseUrl'
+import SaveCollectionButton from '@app/web/components/Collection/SaveCollectionButton'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import { PrivacyTag } from '../PrivacyTags'
 import CopyLinkButton from '../CopyLinkButton'
 import styles from './CollectionMetaData.module.css'
 
 const CollectionMetaData = ({
+  user,
   collection,
   count,
   priority,
   isOwner,
   withButtons,
 }: {
+  user: SessionUser | null
   collection: { isPublic: boolean; id: string }
   priority?: ButtonProps.Common['priority']
   count: number
@@ -52,12 +56,7 @@ const CollectionMetaData = ({
             Modifier
           </Link>
         )}
-        <Button
-          title="Marquer comme favoris"
-          size="small"
-          iconId="ri-bookmark-3-line"
-          priority={priority}
-        />
+        <SaveCollectionButton user={user} collection={collection} iconOnly />
         <CopyLinkButton
           url={getServerUrl(`/collections/${collection.id}`, true)}
           priority={priority}

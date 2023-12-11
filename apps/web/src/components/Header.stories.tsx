@@ -30,6 +30,7 @@ export const SignedInWithBases: Story = {
           slug: 'a',
           isPublic: true,
           collections: [],
+          savedCollections: [],
         },
       ],
       bases: [
@@ -41,6 +42,7 @@ export const SignedInWithBases: Story = {
             slug: 'b',
             isPublic: false,
             collections: [],
+            savedCollections: [],
           },
         },
       ],

@@ -2,8 +2,49 @@ import { v4 } from 'uuid'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { CreateCollectionCommandValidation } from '@app/web/server/collections/createCollection'
+import { SaveCollectionValidation } from '@app/web/server/collections/SaveCollection'
+import { forbiddenError } from '@app/web/server/rpc/trpcErrors'
 
 export const collectionRouter = router({
+  save: protectedProcedure
+    .input(SaveCollectionValidation)
+    .mutation(
+      ({ input: { collectionId, savedById, baseId }, ctx: { user } }) => {
+        // TODO Security based on collection visibility for the ctx user
+
+        if (savedById !== user.id) {
+          throw forbiddenError()
+        }
+
+        return prismaClient.savedCollection.create({
+          data: { collectionId, savedById, baseId },
+          select: {
+            id: true,
+            base: {
+              select: {
+                id: true,
+                title: true,
+              },
+            },
+          },
+        })
+      },
+    ),
+  unsave: protectedProcedure
+    .input(SaveCollectionValidation)
+    .mutation(
+      async ({ input: { collectionId, savedById, baseId }, ctx: { user } }) => {
+        // TODO Security based on collection visibility for the ctx user
+
+        if (savedById !== user.id) {
+          throw forbiddenError()
+        }
+
+        return prismaClient.savedCollection.deleteMany({
+          where: { collectionId, savedById, baseId },
+        })
+      },
+    ),
   create: protectedProcedure
     .input(CreateCollectionCommandValidation)
     .mutation(

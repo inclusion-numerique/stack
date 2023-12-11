@@ -36,7 +36,7 @@ const ProfileBasesPage = async ({ params }: { params: { slug: string } }) => {
       <Menu
         profile={authorizations.profile}
         resourcesCount={resourcesCount}
-        collectionsCount={collectionsCount}
+        collectionsCount={collectionsCount.total}
         basesCount={bases.length}
         currentPage="/bases"
         isConnectedUser={authorizations.isUser}

@@ -5,6 +5,7 @@ import CollectionMetaData from '../Collection/CollectionMetaData'
 import styles from './SaveResourceInCollectionModal.module.css'
 
 const AddOrRemoveResourceFromCollection = ({
+  user,
   collection,
   resourceId,
   onAdd,
@@ -12,6 +13,7 @@ const AddOrRemoveResourceFromCollection = ({
   disabled,
   loading,
 }: {
+  user: SessionUser | null
   collection: SessionUser['collections'][number]
   resourceId: string
   onAdd: (collectionId: string) => void
@@ -24,6 +26,7 @@ const AddOrRemoveResourceFromCollection = ({
       <b>{collection.title}</b>
       <div className={styles.collections}>
         <CollectionMetaData
+          user={user}
           collection={collection}
           count={collection.resources.length}
         />

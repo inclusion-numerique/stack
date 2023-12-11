@@ -21,6 +21,7 @@ export const createTestUser = (publicProfile?: boolean) =>
     createdResources: [],
     resources: [],
     collections: [],
+    savedCollections: [],
   }) satisfies SessionUser
 
 export const createTestResource = (
@@ -107,6 +108,7 @@ export const createTestBase = (
     image: null,
     coverImage: null,
     collections: [],
+    savedCollections: [],
     members: [
       ...admins.map((admin) => ({
         baseId: id,

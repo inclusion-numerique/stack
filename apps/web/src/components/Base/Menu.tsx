@@ -29,7 +29,8 @@ const Menu = ({
               href={`/bases/${base.slug}/collections`}
               aria-current={current === 'collections' ? 'page' : undefined}
             >
-              Collections · <b>{base.collections.length}</b>
+              Collections ·{' '}
+              <b>{base.collections.length + base.savedCollections.length}</b>
             </Link>
           </li>
           <li className="fr-nav__item">

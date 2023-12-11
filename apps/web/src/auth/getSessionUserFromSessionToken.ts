@@ -12,19 +12,60 @@ const userCollectionFragment = {
       where: { resource: { deleted: null } },
     },
   },
-  where: { deleted: null },
+  where: { deleted: null, baseId: null },
   orderBy: {
     title: 'asc',
   },
 } satisfies {
-  /**
-   * Select specific fields to fetch from the Collection
-   */
   select: Prisma.CollectionSelect
   where: Prisma.CollectionWhereInput
   orderBy:
     | Prisma.CollectionOrderByWithRelationAndSearchRelevanceInput
     | Prisma.CollectionOrderByWithRelationAndSearchRelevanceInput[]
+}
+
+const baseCollectionFragment = {
+  select: {
+    id: true,
+    isPublic: true,
+    title: true,
+    resources: {
+      select: { resourceId: true },
+      where: { resource: { deleted: null } },
+    },
+  },
+  where: { deleted: null },
+  orderBy: {
+    title: 'asc',
+  },
+} satisfies {
+  select: Prisma.CollectionSelect
+  where: Prisma.CollectionWhereInput
+  orderBy:
+    | Prisma.CollectionOrderByWithRelationAndSearchRelevanceInput
+    | Prisma.CollectionOrderByWithRelationAndSearchRelevanceInput[]
+}
+
+const userSavedCollectionFragment = {
+  select: {
+    id: true,
+    collectionId: true,
+    baseId: true,
+  },
+  where: { baseId: null },
+} satisfies {
+  select: Prisma.SavedCollectionSelect
+  where: Prisma.SavedCollectionWhereInput
+}
+
+const baseSavedCollectionFragment = {
+  select: {
+    id: true,
+    collectionId: true,
+    baseId: true,
+  },
+} satisfies {
+  select: Prisma.SavedCollectionSelect
 }
 
 export const getSessionUserFromSessionToken = async (
@@ -62,7 +103,8 @@ export const getSessionUserFromSessionToken = async (
               slug: true,
               title: true,
               isPublic: true,
-              collections: userCollectionFragment,
+              collections: baseCollectionFragment,
+              savedCollections: baseSavedCollectionFragment,
             },
             where: {
               deleted: null,
@@ -77,7 +119,8 @@ export const getSessionUserFromSessionToken = async (
                   slug: true,
                   title: true,
                   isPublic: true,
-                  collections: userCollectionFragment,
+                  collections: baseCollectionFragment,
+                  savedCollections: baseSavedCollectionFragment,
                 },
               },
             },
@@ -91,6 +134,7 @@ export const getSessionUserFromSessionToken = async (
             },
           },
           collections: userCollectionFragment,
+          savedCollections: userSavedCollectionFragment,
           resources: {
             select: {
               resourceId: true,

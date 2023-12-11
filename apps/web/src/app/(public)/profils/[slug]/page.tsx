@@ -38,7 +38,7 @@ const ProfilePage = async ({ params }: { params: { slug: string } }) => {
         resourcesCount={resources.length}
         isConnectedUser={authorizations.isUser}
         basesCount={basesCount}
-        collectionsCount={collectionsCount}
+        collectionsCount={collectionsCount.total}
         currentPage="/"
       />
       <div className="fr-container fr-mb-4w">

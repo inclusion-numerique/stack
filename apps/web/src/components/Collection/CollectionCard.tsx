@@ -3,11 +3,18 @@ import Link from 'next/link'
 import sanitizeHtml from 'sanitize-html'
 import { CollectionListItem } from '@app/web/server/collections/getCollectionsList'
 import OwnershipInformation from '@app/web/components/OwnershipInformation'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import styles from './CollectionCard.module.css'
 import Images from './Images'
 import CollectionMetaData from './CollectionMetaData'
 
-const CollectionCard = ({ collection }: { collection: CollectionListItem }) => {
+const CollectionCard = ({
+  collection,
+  user,
+}: {
+  collection: CollectionListItem
+  user: SessionUser | null
+}) => {
   // eslint-disable-next-line no-underscore-dangle
   const resourcesCount = collection._count.resources
 
@@ -42,6 +49,7 @@ const CollectionCard = ({ collection }: { collection: CollectionListItem }) => {
           </Link>
         </div>
         <CollectionMetaData
+          user={user}
           collection={collection}
           count={resourcesCount}
           priority="tertiary no outline"

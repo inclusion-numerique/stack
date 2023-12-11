@@ -28,7 +28,7 @@ export const computeCollectionsListWhereForUser = (
   }
 }
 
-const getWhereCollectionsProfileList = (
+export const getWhereCollectionsProfileList = (
   profileId: string,
   user?: Pick<SessionUser, 'id'> | null,
 ) =>
@@ -43,9 +43,20 @@ export const getProfileCollectionsCount = async (
 ) => {
   const where = getWhereCollectionsProfileList(profileId, user)
 
-  return prismaClient.collection.count({
+  const collections = await prismaClient.collection.count({
     where,
   })
+  const savedCollections = await prismaClient.savedCollection.count({
+    where: {
+      collection: where,
+    },
+  })
+
+  return {
+    collections,
+    savedCollections,
+    total: collections + savedCollections,
+  }
 }
 
 export const collectionSelect = {
@@ -117,7 +128,7 @@ export const getProfileCollections = async (
     select: collectionSelect,
     where,
     orderBy: {
-      title: 'asc',
+      created: 'desc',
     },
   })
 }

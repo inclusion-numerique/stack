@@ -69,7 +69,8 @@ model User {
   resources        ResourceContributors[]
   collections      Collection[]
   resourceViews    ResourceView[]
-  ResourceReport   ResourceReport[]
+  savedCollections SavedCollection[]
+  sentResourceReports   ResourceReport[]
 
   @@map("users")
 }
@@ -111,12 +112,13 @@ model Base {
   twitter       String?
   linkedin      String?
 
-  created     DateTime      @default(now())
-  updated     DateTime      @default(now())
-  deleted     DateTime?
-  resources   Resource[]
-  members     BaseMembers[]
-  collections Collection[]
+  created          DateTime          @default(now())
+  updated          DateTime          @default(now())
+  deleted          DateTime?
+  resources        Resource[]
+  members          BaseMembers[]
+  collections      Collection[]
+  savedCollections SavedCollection[]
 
   @@index([ownerId])
   @@map("bases")
@@ -506,6 +508,7 @@ model Collection {
   isFavorites Boolean @default(false) @map("is_favorites")
 
   created DateTime  @default(now())
+  updated DateTime  @default(now())
   deleted DateTime?
 
   owner   User   @relation(fields: [ownerId], references: [id])
@@ -517,11 +520,35 @@ model Collection {
   image   Image?  @relation(fields: [imageId], references: [id])
   imageId String? @unique @map("image_id") @db.Uuid
 
-  resources CollectionResource[]
+  resources       CollectionResource[]
+  savedCollection SavedCollection[]
 
   @@index([baseId])
   @@index([ownerId])
   @@map("collections")
+}
+
+model SavedCollection {
+  id       String @id @default(uuid()) @db.Uuid
+  legacyId Int?   @unique @map("legacy_id")
+
+  savedBy   User   @relation(fields: [savedById], references: [id])
+  savedById String @map("saved_by_id") @db.Uuid
+
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  collectionId String     @map("collection_id") @db.Uuid
+
+  // If saved in a base, we keep the user in savedBy but the info for
+  // where to consider it is in baseId
+  base   Base?   @relation(fields: [baseId], references: [id])
+  baseId String? @map("base_id") @db.Uuid
+
+  saved DateTime @default(now())
+
+  @@index([savedById])
+  @@index([collectionId])
+  @@index([baseId])
+  @@map("saved_collection")
 }
 
 enum ResourceReportReason {

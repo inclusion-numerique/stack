@@ -14,12 +14,6 @@ export type InclusionConnectProfile = {
   family_name: string
 }
 
-console.log('LOCAL INCLUSION CONNECT DEBUG', {
-  clientId: PublicWebAppConfig.InclusionConnect.clientId,
-  clientSecret: ServerWebAppConfig.InclusionConnect.clientSecret,
-  issuer,
-})
-
 export const InclusionConnectProvider = () =>
   ({
     id: inclusionConnectProviderId,

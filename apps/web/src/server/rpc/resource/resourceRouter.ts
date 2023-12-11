@@ -97,6 +97,7 @@ export const resourceRouter = router({
         const resultCollection = await prismaClient.collection.update({
           where: { id: collectionId },
           data: {
+            updated: new Date(),
             resources: {
               create: {
                 resourceId,
@@ -157,16 +158,21 @@ export const resourceRouter = router({
           }
         }
 
-        const resultCollection = await prismaClient.collectionResource.delete({
-          where: { resourceId_collectionId: { collectionId, resourceId } },
-          select: {
-            id: true,
-            collection: {
-              select: {
-                id: true,
-                title: true,
+        const resultCollection = await prismaClient.collection.update({
+          where: {
+            id: collectionId,
+          },
+          data: {
+            updated: new Date(),
+            resources: {
+              delete: {
+                resourceId_collectionId: { collectionId, resourceId },
               },
             },
+          },
+          select: {
+            id: true,
+            title: true,
           },
         })
 

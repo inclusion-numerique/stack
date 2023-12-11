@@ -1,6 +1,9 @@
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
-export const loginIntents = ['enregistrer-ressource-dans-collection'] as const
+export const loginIntents = [
+  'enregistrer-ressource-dans-collection',
+  'enregistrer-collection',
+] as const
 
 export type LoginIntent = (typeof loginIntents)[number]
 export const loginUrl = ({
@@ -29,6 +32,7 @@ export const defaultLoginTitle = `Connexion à ${PublicWebAppConfig.projectTitle
 export const loginTitles: { [intent in LoginIntent]: string } = {
   'enregistrer-ressource-dans-collection':
     'Connectez vous pour enregistrer une ressource dans une collection',
+  'enregistrer-collection': 'Connectez vous pour enregistrer une collection',
 }
 
 export const getLoginTitle = (intent?: string | string[] | null) => {

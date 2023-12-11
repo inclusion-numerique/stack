@@ -36,7 +36,11 @@ const BaseCollectionsPage = async ({
           />
         ) : (
           <Collections
+            user={user}
             collections={base.collections}
+            savedCollections={base.savedCollections.map(
+              ({ collection }) => collection,
+            )}
             withCreation={authorizations.isMember}
             baseId={base.id}
             withTabs
@@ -55,8 +59,8 @@ const BaseCollectionsPage = async ({
             emptySavedBox={
               authorizations.isMember ? (
                 <EmptyBox title="Vous n’avez pas enregistré de collections dans cette base.">
-                  Enregistrez la liste de quelqu&lsquo;un d&lsquo;autre et elle
-                  apparaîtra ici.
+                  Enregistrez la collection de quelqu&lsquo;un d&lsquo;autre et
+                  elle apparaîtra ici.
                 </EmptyBox>
               ) : (
                 <EmptyBox title="Pas de collections enregistrées dans cette base." />

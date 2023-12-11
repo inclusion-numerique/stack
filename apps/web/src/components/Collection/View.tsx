@@ -7,6 +7,7 @@ import SaveResourceInCollectionModal from '@app/web/components/Resource/SaveReso
 import DeleteResource from '@app/web/components/Resource/DeleteResource/DeleteResource'
 import Images from '@app/web/components/Collection/Images'
 import OwnershipInformation from '@app/web/components/OwnershipInformation'
+import SaveCollectionModal from '@app/web/components/Collection/SaveCollectionModal'
 import ResourceCard from '../Resource/Card'
 import styles from './View.module.css'
 import CollectionMetaData from './CollectionMetaData'
@@ -50,6 +51,7 @@ const View = ({
     </div>
     <hr className="fr-mt-4w fr-pb-1v" />
     <CollectionMetaData
+      user={user}
       collection={collection}
       count={collection.resources.length}
       isOwner={isOwner}
@@ -60,6 +62,7 @@ const View = ({
       <ResourceCard key={resource.id} resource={resource} user={user} />
     ))}
     {!!user && <SaveResourceInCollectionModal user={user} />}
+    {!!user && <SaveCollectionModal user={user} />}
     {!!user && <DeleteResource />}
   </div>
 )
