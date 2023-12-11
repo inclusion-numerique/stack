@@ -142,17 +142,22 @@ const SaveCollectionModal = ({ user }: { user: SessionUser }) => {
         />
       )}
       {!!collectionId &&
-        bases.map((base) => (
-          <SaveCollection
-            collectionId={collectionId}
-            key={base.id}
-            user={user}
-            loading={pendingMutationItemId === base.id}
-            base={base}
-            onAdd={onSave}
-            onRemove={onUnsave}
-          />
-        ))}
+        bases
+          // Cannot save a collection from a base in the same base
+          .filter(
+            (base) => !base.collections.some(({ id }) => id === collectionId),
+          )
+          .map((base) => (
+            <SaveCollection
+              collectionId={collectionId}
+              key={base.id}
+              user={user}
+              loading={pendingMutationItemId === base.id}
+              base={base}
+              onAdd={onSave}
+              onRemove={onUnsave}
+            />
+          ))}
       {collectionOwnedByUser && hasNoBases && (
         <div className="fr-border--slim-grey fr-border-radius--8 fr-text-mention--grey fr-p-8v fr-width-full fr-text--center fr-width-full">
           <p className="fr-text--md">
