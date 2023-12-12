@@ -87,18 +87,18 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.testId('add-in-collection-button').eq(1).click()
     cy.wait('@mutation')
 
-    // First base collection should be empty
+    // First base collection should have a resource
     cy.visit(`/bases/${ids.baseWithCollection}/collections`)
     cy.dsfrShouldBeStarted()
     cy.testId('collection-card-link').should('have.length', 2)
     cy.testId('collection-card-link').eq(0).click()
-    cy.testId('resource-card').should('have.length', 0)
+    cy.testId('resource-card').should('have.length', 1)
 
-    // Second base collection should have a resource
+    // Second base collection should be empty
     cy.visit(`/bases/${ids.baseWithCollection}/collections`)
     cy.dsfrShouldBeStarted()
     cy.testId('collection-card-link').should('have.length', 2)
     cy.testId('collection-card-link').eq(1).click()
-    cy.testId('resource-card').should('have.length', 1)
+    cy.testId('resource-card').should('have.length', 0)
   })
 })
