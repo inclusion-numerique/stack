@@ -461,8 +461,9 @@ model Upload {
 }
 
 model CollectionResource {
-  id       String @id @default(uuid()) @db.Uuid
-  legacyId Int?   @unique @map("legacy_id")
+  id                      String @id @default(uuid()) @db.Uuid
+  legacyId                Int?   @unique @map("legacy_id")
+  legacyPinnedResourcesId Int?   @unique @map("legacy_pinned_resources_id")
 
   resource   Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
   resourceId String   @map("resource_id") @db.Uuid
@@ -499,8 +500,10 @@ model ResourceView {
 }
 
 model Collection {
-  id       String @id @default(uuid()) @db.Uuid
-  legacyId Int?   @unique @map("legacy_id")
+  id                          String @id @default(uuid()) @db.Uuid
+  legacyId                    Int?   @unique @map("legacy_id")
+  // Legacy free floating "pinned resources" have been migrated into a collection
+  legacyPinnedResourcesBaseId Int?   @unique @map("legacy_pinned_resources_base_id")
 
   title       String
   description String?

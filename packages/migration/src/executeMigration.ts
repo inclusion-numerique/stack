@@ -24,6 +24,12 @@ import { migrateBaseMembers } from '@app/migration/modelMigrations/migrateBaseMe
 import { migrateResourceContributors } from '@app/migration/modelMigrations/migrateResourceContributors'
 import { updateBaseAndProfileVisibility } from '@app/migration/modelMigrations/updateBaseAndProfileVisibility'
 import { migrateResourceViews } from '@app/migration/modelMigrations/migrateResourceViews'
+import {
+  getLegacyCollections,
+  migrateCollections,
+} from '@app/migration/modelMigrations/migrateCollections'
+import { updateCollectionVisibility } from '@app/migration/modelMigrations/updateCollectionVisibility'
+import { getLegacyBaseOwnerFromLegacyBaseId } from '@app/migration/modelMigrations/getLegacyBaseOwnerFromLegacyBaseId'
 
 // eslint-disable-next-line no-console
 const output = console.log
@@ -56,6 +62,20 @@ export const executeMigration = async () => {
   output(`- Found ${legacyImages.length} images to migrate`)
   const existingImages = await getExistingImages()
   output(`- Found ${existingImages.idMap.size} already migrated images`)
+
+  const legacyCollections = await getLegacyCollections()
+  output(
+    `- Found ${legacyCollections.collections.length} collections to migrate`,
+  )
+  output(
+    `- Found ${legacyCollections.pinnedCollections.length} pinned collections to migrate`,
+  )
+  output(
+    `- Found ${legacyCollections.pinnedResources.length} pinned resources to migrate`,
+  )
+  output(
+    `- Found ${legacyCollections.legacyBasesWithPinnedResources.size} bases with pinned resources`,
+  )
 
   const endFetchContext = new Date()
   output(`⏱️ Context fetching took ${formatDuration(start, endFetchContext)}`)
@@ -118,6 +138,9 @@ export const executeMigration = async () => {
     ({ legacyId }) => `Base with legacyId ${legacyId} not found`,
   )
 
+  const legacyBaseOwnerFromLegacyBaseId =
+    await getLegacyBaseOwnerFromLegacyBaseId()
+
   output(`- Migrating resources...`)
 
   const { migratedResources, migratedContents } = await migrateResources({
@@ -127,6 +150,7 @@ export const executeMigration = async () => {
     uploadKeyFromLegacyKey,
     existingResourceSlugs,
     legacyResources,
+    legacyBaseOwnerFromLegacyBaseId,
   })
 
   const resourceIdFromLegacyId = createLegacyToNewIdHelper(
@@ -162,11 +186,26 @@ export const executeMigration = async () => {
     `- Migrated ${migratedResourceContributors.length} resource contributors`,
   )
 
+  output(`- Migrating collections...`)
+  const migratedCollections = await migrateCollections({
+    userIdFromLegacyId,
+    resourceIdFromLegacyId,
+    legacyCollections,
+    imageIdFromLegacyId,
+    baseIdFromLegacyId,
+    transaction: prismaClient,
+    legacyBaseOwnerFromLegacyBaseId,
+  })
+  output(`- Migrated ${migratedCollections.collections.length} collections`)
+
   output(`- Updating base and profile visibility for public resources...`)
   const updatedVisibility = await updateBaseAndProfileVisibility()
   output('- Updated visibility for:')
   output(`  - ${updatedVisibility.updatedBases.count} bases`)
   output(`  - ${updatedVisibility.updatedProfiles.count} profiles`)
+
+  output(`- Updating collection visibility for public bases and profiles...`)
+  await updateCollectionVisibility()
 
   const endModelMigrations = new Date()
   output(

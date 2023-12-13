@@ -18,6 +18,7 @@ import { getThemesFromLegacyTags } from '@app/migration/modelMigrations/legacyRe
 import { legacyBasesIdsToTransformToProfile } from '@app/migration/modelMigrations/legacyBasesToTransformToProfile'
 import { getSupportTypeFromLegacyTags } from '@app/migration/modelMigrations/legacyResourcesSupportTypeMapping'
 import { getTargetAudienceFromLegacyTags } from '@app/migration/modelMigrations/legacyResourcesTargetAudienceMapping'
+import { LegacyBaseOwnerFromLegacyBaseId } from '@app/migration/modelMigrations/getLegacyBaseOwnerFromLegacyBaseId'
 
 export const getLegacyResources = async () => {
   const all = await migrationPrismaClient.main_resource.findMany({
@@ -122,6 +123,7 @@ export const transformResource = ({
   imageIdFromLegacyId,
   uploadKeyFromLegacyKey,
   migratedResourcesByLegacyId,
+  legacyBaseOwnerFromLegacyBaseId,
 }: {
   legacyResource: LegacyResource
   userIdFromLegacyId: LegacyToNewIdHelper
@@ -131,12 +133,20 @@ export const transformResource = ({
   migratedResourcesByLegacyId: Map<number, ResourceProjection>
   // Deduplicated slug
   slug: string
+  legacyBaseOwnerFromLegacyBaseId: LegacyBaseOwnerFromLegacyBaseId
 }):
   | MigrateResourceCommand
   | { error: string; legacyResource: LegacyResource } => {
   const legacyId = Number(legacyResource.id)
 
-  if (!legacyResource.creator_id) {
+  // Get the creator from base owner if missing in legacy data (only 4 or 5 resources in this case)
+  const legacyById =
+    legacyResource.creator_id ||
+    (legacyResource.root_base_id
+      ? legacyBaseOwnerFromLegacyBaseId(legacyResource.root_base_id)
+      : null)
+
+  if (!legacyById) {
     return { error: 'No creator', legacyResource }
   }
 
@@ -167,7 +177,7 @@ export const transformResource = ({
     ),
     titleDuplicationCheckSlug: createSlug(legacyResource.title),
     description: legacyResource.description ?? '',
-    byId: userIdFromLegacyId(Number(legacyResource.creator_id)),
+    byId: userIdFromLegacyId(Number(legacyById)),
     baseId,
     created: legacyResource.created,
     updated: legacyResource.modified,
@@ -221,6 +231,7 @@ export const migrateResources = async ({
   uploadKeyFromLegacyKey,
   existingResourceSlugs,
   legacyResources,
+  legacyBaseOwnerFromLegacyBaseId,
 }: {
   userIdFromLegacyId: LegacyToNewIdHelper
   baseIdFromLegacyId: LegacyToNewIdHelper
@@ -228,6 +239,7 @@ export const migrateResources = async ({
   uploadKeyFromLegacyKey: (legacyKey: string) => string
   existingResourceSlugs: SlugToLegacyIdMap
   legacyResources: LegacyResource[]
+  legacyBaseOwnerFromLegacyBaseId: LegacyBaseOwnerFromLegacyBaseId
 }) => {
   output(`- Found ${legacyResources.length} resources to migrate`)
   const migratedResourcesByLegacyId = new Map<number, ResourceProjection>()
@@ -245,6 +257,7 @@ export const migrateResources = async ({
       imageIdFromLegacyId,
       uploadKeyFromLegacyKey,
       migratedResourcesByLegacyId,
+      legacyBaseOwnerFromLegacyBaseId,
     })
 
     if ('error' in command) {

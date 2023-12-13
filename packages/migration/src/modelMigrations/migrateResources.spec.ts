@@ -90,6 +90,7 @@ describe('migrateResource', () => {
         { legacyId: 740, id: 'bbbb' },
       ]),
       migratedResourcesByLegacyId: new Map(),
+      legacyBaseOwnerFromLegacyBaseId: () => legacyResource.creator_id,
     })
 
     expect(result).toEqual({

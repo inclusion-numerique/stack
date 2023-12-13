@@ -85,7 +85,7 @@ export const migrateResourceViews = async ({
       }),
     )
     .filter(isDefinedAndNotNull)
-  const chunkSize = 200
+  const chunkSize = 1000
   let migratedResourceViewCount = 0
   const upserted = await Promise.all(
     chunk(resourceViewsData, chunkSize).map((resourceViewChunk) =>
