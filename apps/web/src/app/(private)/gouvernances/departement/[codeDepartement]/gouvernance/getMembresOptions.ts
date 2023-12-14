@@ -1,4 +1,4 @@
-import type Prisma from '@prisma/client'
+import { Prisma, IntentionFormulaireGouvernance } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
 import { formulairesTerminesWhere } from '@app/web/app/(private)/gouvernances/gouvernanceQueryHelpers'
 import { generateGouvernanceSelectOptionLabelWithIntention } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/GouvernanceSelectOptionLabelWithIntention'
@@ -6,20 +6,30 @@ import {
   getActorFromCode,
   getGouvernanceActorCode,
 } from '@app/web/gouvernance/GouvernanceActor'
+import { GouvernancePersonaId } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 
 const getIntention = (
-  formulaires: { intention: Prisma.IntentionFormulaireGouvernance | null }[],
-): Prisma.IntentionFormulaireGouvernance =>
+  formulaires: { intention: IntentionFormulaireGouvernance | null }[],
+): IntentionFormulaireGouvernance =>
   formulaires.some(({ intention }) => intention === 'Porter')
     ? 'Porter'
     : 'Participer'
 
-const firstFormulaireGouvernancePorterOrParticiper = {
+const firstFormulaireGouvernancePorterOrParticiper = (
+  persona: GouvernancePersonaId,
+) => ({
   select: {
     id: true,
     intention: true,
   },
-  where: formulairesTerminesWhere,
+  where: {
+    AND: [
+      formulairesTerminesWhere,
+      {
+        gouvernancePersona: persona,
+      },
+    ],
+  } satisfies Prisma.FormulaireGouvernanceWhereInput,
   take: 1,
   orderBy: [
     {
@@ -29,7 +39,7 @@ const firstFormulaireGouvernancePorterOrParticiper = {
       modification: 'desc' as const,
     },
   ],
-}
+})
 
 export const getMembresOptions = async ({
   codeDepartement,
@@ -42,7 +52,8 @@ export const getMembresOptions = async ({
     select: {
       code: true,
       nom: true,
-      formulairesGouvernance: firstFormulaireGouvernancePorterOrParticiper,
+      formulairesGouvernance:
+        firstFormulaireGouvernancePorterOrParticiper('commune'),
       membresGouvernances: {
         select: {
           coporteur: true,
@@ -65,7 +76,8 @@ export const getMembresOptions = async ({
     select: {
       code: true,
       nom: true,
-      formulairesGouvernance: firstFormulaireGouvernancePorterOrParticiper,
+      formulairesGouvernance:
+        firstFormulaireGouvernancePorterOrParticiper('epci'),
       membresGouvernances: {
         select: {
           coporteur: true,
@@ -91,7 +103,9 @@ export const getMembresOptions = async ({
     select: {
       code: true,
       nom: true,
-      formulairesGouvernance: firstFormulaireGouvernancePorterOrParticiper,
+      formulairesGouvernance: firstFormulaireGouvernancePorterOrParticiper(
+        'conseil-departemental',
+      ),
       membresGouvernances: {
         select: {
           coporteur: true,
@@ -126,7 +140,8 @@ export const getMembresOptions = async ({
     select: {
       code: true,
       nom: true,
-      formulairesGouvernance: firstFormulaireGouvernancePorterOrParticiper,
+      formulairesGouvernance:
+        firstFormulaireGouvernancePorterOrParticiper('conseil-regional'),
       membresGouvernances: {
         select: {
           coporteur: true,
@@ -172,9 +187,6 @@ export const getMembresOptions = async ({
     },
   })
 
-  console.log('DEPARTEMENTS', departements)
-  console.log('REGIONS', regions)
-
   const optionsRegions = regions
     .filter(({ formulairesGouvernance }) => formulairesGouvernance.length > 0)
     .map(({ code, nom, formulairesGouvernance }) => ({
@@ -190,6 +202,7 @@ export const getMembresOptions = async ({
       }),
     }))
   const optionsDepartements = departements
+    // Formulaires persona structure has a departement code we need to filter them
     .filter(({ formulairesGouvernance }) => formulairesGouvernance.length > 0)
     .map(({ code, nom, formulairesGouvernance }) => ({
       label: generateGouvernanceSelectOptionLabelWithIntention({
