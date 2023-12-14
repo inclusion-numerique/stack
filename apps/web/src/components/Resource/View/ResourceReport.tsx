@@ -29,6 +29,8 @@ const ResourceReport = ({ resourceId }: { resourceId: string }) => {
       resolver: zodResolver(ResourceReportValidation),
     })
 
+  const mutation = trpc.report.resource.useMutation()
+
   useModalVisibility(ResourceReportModal.id, {
     onClosed: () => {
       reset({
@@ -37,8 +39,6 @@ const ResourceReport = ({ resourceId }: { resourceId: string }) => {
       mutation.reset()
     },
   })
-
-  const mutation = trpc.report.reportResource.useMutation()
 
   const onSubmit = async (data: ResourceReportData) => {
     try {

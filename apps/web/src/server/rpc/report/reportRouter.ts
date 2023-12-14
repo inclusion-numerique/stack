@@ -5,7 +5,7 @@ import { ResourceReportValidation } from '@app/web/resources/resourceReport'
 import { sendResourceReportModeratorEmail } from '@app/web/server/report/sendResourceReportModeratorEmail'
 
 export const reportRouter = router({
-  reportResource: protectedProcedure
+  resource: protectedProcedure
     .input(ResourceReportValidation)
     .mutation(
       async ({ input: { resourceId, reason, comment }, ctx: { user } }) => {

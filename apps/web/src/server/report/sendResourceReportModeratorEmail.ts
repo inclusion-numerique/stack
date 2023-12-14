@@ -25,8 +25,8 @@ export const sendResourceReportModeratorEmail = async ({
     subject: `Signalement de ressource`,
     html: `
 <html>
-  <body>
-    <h2>Signalement de ressource</h2>
+  <body style='font-family:Marianne, Helvetica, Arial, sans-serif;'>
+    <h2 style='color:#000091;'>Signalement de ressource</h2>
     <p>Une ressource a été signalée par un utilisateur.</p>
     <ul>
       <li>Signalé le&nbsp;: ${dateAsDayAndTime(report.created)} UTC</li>
