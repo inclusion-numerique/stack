@@ -1,32 +1,30 @@
 'use client'
 
-import React, { ReactElement, ReactNode, useState } from 'react'
+import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
-
-const EditableCardEditing = ({ children }: { children: ReactNode }) => children
-
-EditableCardEditing.type = 'EditableCardEditing'
-
-const EditableCardPreview = ({ children }: { children: ReactNode }) => children
-
-EditableCardPreview.type = 'EditableCardEditing'
 
 const EditableCard = ({
   id,
   title,
+  preview,
+  editing,
+  editModeState,
   buttons = [],
-  children = [],
 }: {
   id: string
-  title: string
-  buttons?: { children: ReactNode }[]
-  children: ReactElement[]
+  title: ReactNode
+  preview: ReactNode
+  editing: ReactNode
+  editModeState: [boolean, Dispatch<SetStateAction<boolean>>]
+  buttons?: {
+    children: ReactNode
+    form?: string
+    type?: 'button' | 'submit' | 'reset'
+    onClick?: () => void
+  }[]
 }) => {
-  const preview = children.find(({ type }) => type === EditableCardPreview)
-  const editing = children.find(({ type }) => type === EditableCardEditing)
-
-  const [isEditMode, setEditMode] = useState(false)
+  const [isEditMode, setEditMode] = editModeState
 
   const toggleEditMode = () => setEditMode(!isEditMode)
 
@@ -61,6 +59,7 @@ const EditableCard = ({
               buttons={[
                 {
                   children: 'Annuler',
+                  type: 'button',
                   priority: 'secondary',
                   onClick: toggleEditMode,
                 },
@@ -73,9 +72,5 @@ const EditableCard = ({
     </div>
   )
 }
-
-EditableCard.Editing = EditableCardEditing
-
-EditableCard.Preview = EditableCardPreview
 
 export default EditableCard

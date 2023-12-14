@@ -6,7 +6,7 @@ const CustomCard = ({
   children,
 }: {
   id: string
-  title: string
+  title: ReactNode
   children: ReactNode
 }) => (
   <div className="fr-card fr-card--editable">

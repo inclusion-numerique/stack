@@ -4,6 +4,7 @@ import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { CreateCollectionCommandValidation } from '@app/web/server/collections/createCollection'
 import { SaveCollectionValidation } from '@app/web/server/collections/SaveCollection'
 import { forbiddenError } from '@app/web/server/rpc/trpcErrors'
+import { UpdateCollectionInformationsCommandValidation } from '@app/web/server/collections/updateCollection'
 
 export const collectionRouter = router({
   save: protectedProcedure
@@ -67,5 +68,13 @@ export const collectionRouter = router({
               : undefined,
           },
         }),
+    ),
+  updateInformations: protectedProcedure
+    .input(UpdateCollectionInformationsCommandValidation)
+    .mutation(async ({ input: { id, ...informations } }) =>
+      prismaClient.collection.update({
+        where: { id },
+        data: informations,
+      }),
     ),
 })

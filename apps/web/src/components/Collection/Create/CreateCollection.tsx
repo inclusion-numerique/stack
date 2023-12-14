@@ -20,9 +20,9 @@ import {
 } from '@app/web/server/collections/createCollection'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import Card from '../../Card'
-import CollectionInformationsEdition from '../Edition/CollectionInformationsEdition'
 import BaseVisibilityEdition from '../../Base/Edition/BaseVisibilityEdition'
 import ImageEdition from '../Edition/ImageEdition'
+import CollectionInformationsEdition from './CollectionInformationsEdition'
 import CollectionSideMenu from './SideMenu'
 import styles from './CreateCollection.module.css'
 
