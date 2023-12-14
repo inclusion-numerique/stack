@@ -69,6 +69,7 @@ model User {
   resources        ResourceContributors[]
   collections      Collection[]
   resourceViews    ResourceView[]
+  ResourceReport   ResourceReport[]
 
   @@map("users")
 }
@@ -279,13 +280,14 @@ model Resource {
   base   Base?   @relation(fields: [baseId], references: [id])
   baseId String? @map("base_id") @db.Uuid
 
-  created      DateTime               @default(now())
-  updated      DateTime               @default(now())
-  contents     Content[]
-  events       ResourceEvent[]
-  contributors ResourceContributors[]
-  collections  CollectionResource[]
-  views        ResourceView[]
+  created        DateTime               @default(now())
+  updated        DateTime               @default(now())
+  contents       Content[]
+  events         ResourceEvent[]
+  contributors   ResourceContributors[]
+  collections    CollectionResource[]
+  views          ResourceView[]
+  ResourceReport ResourceReport[]
 
   @@index([baseId])
   @@index([createdById])
@@ -520,4 +522,38 @@ model Collection {
   @@index([baseId])
   @@index([ownerId])
   @@map("collections")
+}
+
+enum ResourceReportReason {
+  // Le contenu est inapproprié
+  Inappropriate @map("inappropriate")
+  // Le contenu est obsolète
+  Outdated      @map("outdated")
+  // Il y a des erreurs
+  Errors        @map("errors")
+  // C’est le doublon d’une autre ressource
+  Duplicate     @map("duplicate")
+
+  @@map("resource_report_reason")
+}
+
+// Signalement de ressource
+model ResourceReport {
+  id String @id @default(uuid()) @db.Uuid
+
+  resource   Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  resourceId String   @map("resource_id") @db.Uuid
+
+  sentBy   User?   @relation(fields: [sentById], references: [id])
+  sentById String? @map("sent_by_id") @db.Uuid
+
+  reason ResourceReportReason
+
+  comment String
+
+  created DateTime @default(now())
+
+  @@index([resourceId])
+  @@index([sentById])
+  @@map("resource_reports")
 }
