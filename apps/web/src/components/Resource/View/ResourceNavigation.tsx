@@ -5,6 +5,7 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import { Resource } from '@app/web/server/resources/getResource'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import ResourceReportButton from '@app/web/components/Resource/View/ResourceReportButton'
 import SaveResourceInCollectionButton from '../SaveResourceInCollectionButton'
 import styles from './ResourceNavigation.module.css'
 import ResourceSideMenu from './ResourceSideMenu'
@@ -76,18 +77,7 @@ const ResourceNavigation = ({
       >
         Évaluer
       </Link>
-      <Link
-        className={classNames(
-          'fr-btn',
-          'fr-btn--secondary',
-          'fr-btn--icon-left',
-          'fr-icon-warning-line',
-          'wip',
-        )}
-        href="/"
-      >
-        Signaler
-      </Link>
+      {!!user && <ResourceReportButton />}
     </ResourceNavigationModal>
     <div className={styles.container}>
       <div className={styles.buttons}>
@@ -142,19 +132,9 @@ const ResourceNavigation = ({
         >
           Évaluer
         </Link>
-        <Link
-          className={classNames(
-            'fr-btn',
-            'fr-btn--tertiary',
-            'fr-btn--icon-left',
-            'fr-icon-warning-line',
-            styles.button,
-            'wip',
-          )}
-          href="/"
-        >
-          Signaler
-        </Link>
+        {!!user && (
+          <ResourceReportButton className={styles.button} priority="tertiary" />
+        )}
       </div>
       <div className="fr-hidden fr-unhidden-md">
         <ResourceSideMenu resource={resource} />

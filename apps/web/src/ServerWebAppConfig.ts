@@ -43,4 +43,11 @@ export const ServerWebAppConfig = {
   InclusionConnect: {
     clientSecret: process.env.INCLUSION_CONNECT_CLIENT_SECRET ?? '',
   },
+  ReportModerator: {
+    email: process.env.REPORT_MODERATOR_EMAIL ?? '',
+    name: process.env.REPORT_MODERATOR_NAME ?? '',
+    to: `${process.env.REPORT_MODERATOR_NAME ?? ''} <${
+      process.env.REPORT_MODERATOR_EMAIL ?? ''
+    }>`,
+  },
 }

@@ -10,6 +10,7 @@ import { uploadRouter } from '@app/web/server/rpc/upload/uploadRouter'
 import { userRouter } from '@app/web/server/rpc/user/userRouter'
 import { metadataRouter } from '@app/web/server/rpc/metadata/metadataRouter'
 import { searchRouter } from '@app/web/server/rpc/search/searchRouter'
+import { reportRouter } from '@app/web/server/rpc/report/reportRouter'
 
 export const appRouter = router({
   user: userRouter,
@@ -23,6 +24,7 @@ export const appRouter = router({
   upload: uploadRouter,
   image: imageRouter,
   search: searchRouter,
+  report: reportRouter,
 })
 
 // export type definition of API

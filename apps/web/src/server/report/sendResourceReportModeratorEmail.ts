@@ -1,0 +1,60 @@
+import { Resource, ResourceReport, User } from '@prisma/client'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { emailTransport } from '@app/web/server/email/emailTransport'
+import { throwOnSendMailFailure } from '@app/web/server/email/throwOnSendMailFailure'
+import { resourceReportReasonLabels } from '@app/web/resources/resourceReport'
+import { getServerUrl } from '@app/web/utils/baseUrl'
+import { dateAsDayAndTime } from '@app/web/utils/dateAsDayAndTime'
+
+export const sendResourceReportModeratorEmail = async ({
+  report,
+  resource,
+  sentBy,
+}: {
+  resource: Pick<Resource, 'slug' | 'title'>
+  sentBy: Pick<User, 'id' | 'name' | 'email'> | null
+  report: Pick<ResourceReport, 'created' | 'reason' | 'comment'>
+}) => {
+  const resourceUrl = getServerUrl(`/ressources/${resource.slug}`)
+
+  const authorProfileUrl = sentBy ? getServerUrl(`/profils/${sentBy.id}`) : null
+
+  const result = await emailTransport.sendMail({
+    to: ServerWebAppConfig.ReportModerator.to,
+    from: ServerWebAppConfig.Email.from,
+    subject: `Signalement de ressource`,
+    html: `
+<html>
+  <body>
+    <h2>Signalement de ressource</h2>
+    <p>Une ressource a été signalée par un utilisateur.</p>
+    <ul>
+      <li>Signalé le&nbsp;: ${dateAsDayAndTime(report.created)} UTC</li>
+      <li>Raison&nbsp;: ${resourceReportReasonLabels[report.reason]}</li>
+      <li>Description&nbsp;: ${report.comment}</li>
+    </ul>
+    <h3>Ressource</h3>
+    <ul>
+      <li>Titre&nbsp;: ${resource.title}</li>
+      <li>Lien&nbsp;: <a href='${resourceUrl}'>${resourceUrl}</a></li>
+    </ul>
+    ${
+      sentBy
+        ? `
+          <h3>Auteur du signalement</h3>
+          <ul>
+            <li>Nom&nbsp;: ${sentBy.name ?? 'Non renseigné'}</li>
+            <li>Email&nbsp;: ${sentBy.email}</li>
+            <li>Lien du profil&nbsp;: <a href='${authorProfileUrl}'>${authorProfileUrl}</a></li>
+          </ul>`
+        : `
+          <h3>Le signalement est anonyme</h3>`
+    }
+    
+  </body>
+</html>
+    `,
+  })
+
+  throwOnSendMailFailure(result)
+}

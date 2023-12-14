@@ -38,6 +38,10 @@ export const webAppStackVariables = [
   'WEB_CONTAINER_IMAGE',
   'SCW_DEFAULT_ORGANIZATION_ID',
   'SCW_PROJECT_ID',
+  'REPORT_MODERATOR_EMAIL_PREVIEW',
+  'REPORT_MODERATOR_EMAIL_MAIN',
+  'REPORT_MODERATOR_NAME_PREVIEW',
+  'REPORT_MODERATOR_NAME_MAIN',
 ] as const
 export const webAppStackSensitiveVariables = [
   'SCW_ACCESS_KEY',
@@ -187,6 +191,12 @@ export class WebAppStack extends TerraformStack {
         NAMESPACE: namespace,
         // This env variable is reserved at the level of container namespace. We inject it here even if its shared.
         SCW_DEFAULT_REGION: region,
+        REPORT_MODERATOR_EMAIL: isMain
+          ? environmentVariables.REPORT_MODERATOR_EMAIL_MAIN.value
+          : environmentVariables.REPORT_MODERATOR_EMAIL_PREVIEW.value,
+        REPORT_MODERATOR_NAME: isMain
+          ? environmentVariables.REPORT_MODERATOR_NAME_MAIN.value
+          : environmentVariables.REPORT_MODERATOR_NAME_PREVIEW.value,
       },
       secretEnvironmentVariables: {
         DATABASE_URL: databaseUrl,
