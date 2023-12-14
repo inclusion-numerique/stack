@@ -15,9 +15,9 @@
   },
   "dependencies": {
     "@cypress/react18": "^2.0.0",
-    "cypress": "13.2.0",
+    "cypress": "13.6.1",
     "cypress-real-events": "^1.10.3",
-    "next": "^14.0.3",
+    "next": "^14.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.47.0",
