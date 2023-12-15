@@ -204,11 +204,9 @@ describe('Utilisateur connecté, lorsque je modifie une ressource, je peux modif
       '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
     )
 
-    cy.testId('resource-indexation-Thématiques-Acteurs du numérique').should(
-      'exist',
-    )
-    cy.testId('resource-indexation-Type de support-Tutoriel').should('exist')
-    cy.testId('resource-indexation-Publics cibles-Adultes').should('exist')
+    cy.testId('resource-indexation-themes-ActeursDuNumerique').should('exist')
+    cy.testId('resource-indexation-supportTypes-Tutoriel').should('exist')
+    cy.testId('resource-indexation-targetAudiences-Adultes').should('exist')
   })
 
   it('Acceptation 5 - Je peux changer supprimer ma ressource', () => {
