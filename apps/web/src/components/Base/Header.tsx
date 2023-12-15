@@ -45,14 +45,6 @@ const Header = ({
                 Contacter
               </Link>
             )}
-            <Button
-              iconId="fr-icon-warning-line"
-              size="small"
-              priority="secondary"
-              className="wip"
-            >
-              Signaler
-            </Button>
             <CopyLinkButton
               url={getServerUrl(`/bases/${base.slug}`, true)}
               priority="secondary"

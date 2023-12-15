@@ -43,14 +43,6 @@ const Header = ({
             >
               Contacter
             </Link>
-            <Button
-              iconId="fr-icon-warning-line"
-              size="small"
-              priority="secondary"
-              className="wip"
-            >
-              Signaler
-            </Button>
             <CopyLinkButton
               url={getServerUrl(`/profils/${profile.id}`, true)}
               priority="secondary"
