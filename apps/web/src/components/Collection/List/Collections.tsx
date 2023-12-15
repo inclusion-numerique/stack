@@ -11,7 +11,6 @@ const Collections = ({
   collections,
   savedCollections,
   withCreation,
-  withTabs,
   collectionsLabel,
   emptyBox,
   emptySavedBox,
@@ -22,7 +21,6 @@ const Collections = ({
   collections: CollectionListItem[]
   savedCollections: CollectionListItem[]
   withCreation: boolean
-  withTabs: boolean
   collectionsLabel: string
   emptyBox?: ReactNode
   emptySavedBox: ReactNode
@@ -38,61 +36,49 @@ const Collections = ({
       )}
     </div>
 
-    {withTabs ? (
-      <Tabs
-        tabs={[
-          {
-            label: `${collectionsLabel} · ${collections.length}`,
-            content:
-              collections.length > 0 ? (
-                <div className={styles.tabCards}>
-                  {collections.map((collection) => (
-                    <CollectionCard
-                      user={user}
-                      collection={collection}
-                      key={collection.id}
-                    />
-                  ))}
-                </div>
-              ) : (
-                emptyBox
-              ),
-          },
-          {
-            label: (
-              <>
-                <span className="ri-bookmark-3-line fr-text--regular fr-mr-1w" />
-                Collections enregistrées · {savedCollections.length}
-              </>
+    <Tabs
+      tabs={[
+        {
+          label: `${collectionsLabel} · ${collections.length}`,
+          content:
+            collections.length > 0 ? (
+              <div className={styles.tabCards}>
+                {collections.map((collection) => (
+                  <CollectionCard
+                    user={user}
+                    collection={collection}
+                    key={collection.id}
+                  />
+                ))}
+              </div>
+            ) : (
+              emptyBox
             ),
-            content:
-              savedCollections.length > 0 ? (
-                <div className={styles.tabCards}>
-                  {savedCollections.map((collection) => (
-                    <CollectionCard
-                      user={user}
-                      collection={collection}
-                      key={collection.id}
-                    />
-                  ))}
-                </div>
-              ) : (
-                emptySavedBox
-              ),
-          },
-        ]}
-      />
-    ) : (
-      <div className={styles.cards}>
-        {collections.map((collection) => (
-          <CollectionCard
-            user={user}
-            collection={collection}
-            key={collection.id}
-          />
-        ))}
-      </div>
-    )}
+        },
+        {
+          label: (
+            <>
+              <span className="ri-bookmark-3-line fr-text--regular fr-mr-1w" />
+              Collections enregistrées · {savedCollections.length}
+            </>
+          ),
+          content:
+            savedCollections.length > 0 ? (
+              <div className={styles.tabCards}>
+                {savedCollections.map((collection) => (
+                  <CollectionCard
+                    user={user}
+                    collection={collection}
+                    key={collection.id}
+                  />
+                ))}
+              </div>
+            ) : (
+              emptySavedBox
+            ),
+        },
+      ]}
+    />
     {!!user && <SaveCollectionModal user={user} />}
   </div>
 )

@@ -43,7 +43,6 @@ const BaseCollectionsPage = async ({
             )}
             withCreation={authorizations.isMember}
             baseId={base.id}
-            withTabs
             collectionsLabel="Collections de la base"
             emptyBox={
               authorizations.isMember ? (

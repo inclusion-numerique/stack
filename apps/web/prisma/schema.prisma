@@ -59,18 +59,18 @@ model User {
   sessions      Session[]
   isPublic      Boolean   @default(false) @map("is_public")
 
-  created          DateTime               @default(now())
-  updated          DateTime               @default(now())
-  ownedBases       Base[]
-  createdResources Resource[]
-  uploads          Upload[]
-  resourceEvent    ResourceEvent[]
-  bases            BaseMembers[]
-  resources        ResourceContributors[]
-  collections      Collection[]
-  resourceViews    ResourceView[]
-  savedCollections SavedCollection[]
-  sentResourceReports   ResourceReport[]
+  created             DateTime               @default(now())
+  updated             DateTime               @default(now())
+  ownedBases          Base[]
+  createdResources    Resource[]
+  uploads             Upload[]
+  resourceEvent       ResourceEvent[]
+  bases               BaseMembers[]
+  resources           ResourceContributors[]
+  collections         Collection[]
+  resourceViews       ResourceView[]
+  savedCollections    SavedCollection[]
+  sentResourceReports ResourceReport[]
 
   @@map("users")
 }
@@ -282,14 +282,14 @@ model Resource {
   base   Base?   @relation(fields: [baseId], references: [id])
   baseId String? @map("base_id") @db.Uuid
 
-  created        DateTime               @default(now())
-  updated        DateTime               @default(now())
-  contents       Content[]
-  events         ResourceEvent[]
-  contributors   ResourceContributors[]
-  collections    CollectionResource[]
-  views          ResourceView[]
-  ResourceReport ResourceReport[]
+  created      DateTime               @default(now())
+  updated      DateTime               @default(now())
+  contents     Content[]
+  events       ResourceEvent[]
+  contributors ResourceContributors[]
+  collections  CollectionResource[]
+  views        ResourceView[]
+  reports      ResourceReport[]
 
   @@index([baseId])
   @@index([createdById])

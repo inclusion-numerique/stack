@@ -52,7 +52,6 @@ const ProfileBasesPage = async ({ params }: { params: { slug: string } }) => {
             ({ collection }) => collection,
           )}
           withCreation={authorizations.isUser}
-          withTabs={authorizations.isUser}
           collectionsLabel="Mes collections"
           emptySavedBox={
             <EmptyBox title="Vous n’avez pas enregistré de collections.">
