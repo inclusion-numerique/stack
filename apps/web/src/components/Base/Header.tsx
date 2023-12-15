@@ -49,6 +49,7 @@ const Header = ({
               iconId="fr-icon-warning-line"
               size="small"
               priority="secondary"
+              className="wip"
             >
               Signaler
             </Button>
