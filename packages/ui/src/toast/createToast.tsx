@@ -27,7 +27,7 @@ export const createToast = ({
   toast(
     action ? (
       <>
-        {message}{' '}
+        <span>{message}</span>
         <Button
           className={classNames('fr-ml-1w', styles.action)}
           priority="tertiary no outline"
@@ -36,7 +36,7 @@ export const createToast = ({
         />
       </>
     ) : (
-      message
+      <span>{message}</span>
     ),
     {
       duration,
