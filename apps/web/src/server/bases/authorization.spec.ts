@@ -79,7 +79,11 @@ describe('Base authorization', () => {
       email: privateBase.email,
       image: null,
       coverImage: null,
-      _count: { resources: privateBase.resources.length },
+      _count: {
+        // eslint-disable-next-line no-underscore-dangle
+        followedBy: privateBase._count.followedBy,
+        resources: privateBase.resources.length,
+      },
     }
 
     it('Admin can access', () => {

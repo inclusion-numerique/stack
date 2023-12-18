@@ -29,7 +29,7 @@ describe('Profile authorization', () => {
   })
 
   describe('Private profile', () => {
-    const creator = createTestProfile(true)
+    const creator = createTestProfile(false)
     const creatorAsUser = { ...createTestUser(), ...creator }
     const otherUser = createTestUser()
 
@@ -41,6 +41,9 @@ describe('Profile authorization', () => {
       isPublic: creator.isPublic,
       email: creator.email,
       image: null,
+      _count: {
+        followedBy: 0,
+      },
     }
 
     it('Creator can access', () => {
