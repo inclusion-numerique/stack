@@ -188,7 +188,10 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
       cy.contains(base.title)
       cy.findAllByRole('button', { name: /enregistrer/i })
         .eq(1)
-        .click()
+        .click({
+          // This is out of viewport in ci so we need to force the click
+          force: true,
+        })
       cy.wait('@saveCollection')
     })
     cy.findByRole('dialog').should('not.exist')
