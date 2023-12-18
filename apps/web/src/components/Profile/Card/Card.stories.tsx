@@ -9,6 +9,7 @@ const profile = {
   image: null,
   firstName: 'Jean',
   lastName: 'Biche',
+  followedBy: [],
 } satisfies ProfileListItem
 
 export default {

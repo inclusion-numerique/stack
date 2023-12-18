@@ -3,7 +3,14 @@ import { ProfilePageData } from './getProfile'
 
 export type FilteredProfile = Pick<
   ProfilePageData,
-  'id' | 'name' | 'isPublic' | 'email' | 'firstName' | 'lastName' | 'image'
+  | 'id'
+  | 'name'
+  | 'isPublic'
+  | 'email'
+  | 'firstName'
+  | 'lastName'
+  | 'image'
+  | '_count'
 >
 
 export const filterAccess = (
@@ -34,6 +41,9 @@ export const filterAccess = (
       image: profile.image,
       isPublic: profile.isPublic,
       email: profile.email,
+      _count: {
+        followedBy: profile._count.followedBy,
+      },
     },
   }
 }

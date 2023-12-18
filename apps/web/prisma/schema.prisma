@@ -123,7 +123,7 @@ model Base {
   members          BaseMembers[]
   collections      Collection[]
   savedCollections SavedCollection[]
-  follows          BaseFollow[]
+  followedBy       BaseFollow[]
 
   @@index([ownerId])
   @@map("bases")

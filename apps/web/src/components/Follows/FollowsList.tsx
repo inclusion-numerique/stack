@@ -48,14 +48,18 @@ const FollowsList = ({
     </EmptyBox>
   ) : (
     <>
-      <h6>
+      <h3>
+        Mes suivi{sPluriel(baseFollows.length + profileFollows.length)} ·{' '}
+        {baseFollows.length + profileFollows.length}
+      </h3>
+      <h6 className="fr-mb-4v fr-mt-12v">
         {baseFollows.length} base{sPluriel(baseFollows.length)}
       </h6>
       {baseFollows.map(({ base }) => (
         <BaseCard user={user} base={base} key={base.id} />
       ))}
 
-      <h6>
+      <h6 className="fr-mb-4v fr-mt-12v">
         {profileFollows.length} profil{sPluriel(profileFollows.length)}
       </h6>
       {profileFollows.map(({ profile }) => (

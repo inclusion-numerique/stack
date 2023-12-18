@@ -50,16 +50,14 @@ export const getProfileFollowsCount = async (profileId: string) => {
   }
 }
 
-export const baseFollowSelect = {
-  id: true,
-  followed: true,
-  base: { select: baseSelect },
-} satisfies Prisma.BaseFollowSelect
-
-export const getProfileBaseFollows = async (profileId: string) => {
+export const getProfileBaseFollows = (profileId: string) => {
   const where = computeBaseFollowsListWhereForUser({ id: profileId })
   return prismaClient.baseFollow.findMany({
-    select: baseFollowSelect,
+    select: {
+      id: true,
+      followed: true,
+      base: { select: baseSelect({ id: profileId }) },
+    },
     where,
     orderBy: {
       followed: 'desc',
@@ -72,16 +70,14 @@ export type BaseFollowListItem = Exclude<
   null
 >[number]
 
-export const profileFollowSelect = {
-  id: true,
-  followed: true,
-  profile: { select: profileSelect },
-} satisfies Prisma.ProfileFollowSelect
-
-export const getProfileProfileFollows = async (profileId: string) => {
+export const getProfileProfileFollows = (profileId: string) => {
   const where = computeProfileFollowsListWhereForUser({ id: profileId })
   return prismaClient.profileFollow.findMany({
-    select: profileFollowSelect,
+    select: {
+      id: true,
+      followed: true,
+      profile: { select: profileSelect({ id: profileId }) },
+    },
     where,
     orderBy: {
       followed: 'desc',

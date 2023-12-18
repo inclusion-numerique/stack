@@ -16,7 +16,7 @@ import { getProfileFollowsCount } from '@app/web/server/follows/getFollowsList'
 
 const ProfileBasesPage = async ({ params }: { params: { slug: string } }) => {
   const user = await getSessionUser()
-  const profile = await getProfilePageQuery(decodeURI(params.slug))
+  const profile = await getProfilePageQuery(decodeURI(params.slug), user)
   if (!profile) {
     notFound()
   }

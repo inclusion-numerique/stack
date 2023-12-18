@@ -13,7 +13,7 @@ const ProfilEditionPage = async ({ params }: { params: { slug: string } }) => {
     redirect(`/connexion?suivant=/profils/${params.slug}/modifier`)
   }
 
-  const profile = await getProfilePageQuery(decodeURI(params.slug))
+  const profile = await getProfilePageQuery(decodeURI(params.slug), user)
   if (!profile) {
     notFound()
   }

@@ -1,9 +1,10 @@
-import { createTestUser } from '@app/web/test/helpers'
+import { createTestProfile, createTestUser } from '@app/web/test/helpers'
 import { filterAccess } from './authorization'
 
 describe('Profile authorization', () => {
   describe('Public profile', () => {
-    const creator = createTestUser(true)
+    const creator = createTestProfile(true)
+    const creatorAsUser = { ...createTestUser(), ...creator }
     const otherUser = createTestUser()
 
     it('Anyone can access', () => {
@@ -13,7 +14,7 @@ describe('Profile authorization', () => {
     })
 
     it('Creator is a member', () => {
-      const authorizations = filterAccess(creator, creator)
+      const authorizations = filterAccess(creator, creatorAsUser)
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore authorization should be true
       expect(authorizations.isUser).toBe(true)
@@ -28,7 +29,8 @@ describe('Profile authorization', () => {
   })
 
   describe('Private profile', () => {
-    const creator = createTestUser()
+    const creator = createTestProfile(true)
+    const creatorAsUser = { ...createTestUser(), ...creator }
     const otherUser = createTestUser()
 
     const filteredProfile = {
@@ -42,7 +44,7 @@ describe('Profile authorization', () => {
     }
 
     it('Creator can access', () => {
-      const authorizations = filterAccess(creator, creator)
+      const authorizations = filterAccess(creator, creatorAsUser)
       expect(authorizations.authorized).toBe(true)
       expect(authorizations.profile).toEqual(creator)
     })
@@ -57,7 +59,7 @@ describe('Profile authorization', () => {
     })
 
     it('Creator is a member', () => {
-      const authorizations = filterAccess(creator, creator)
+      const authorizations = filterAccess(creator, creatorAsUser)
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore authorization should be true
       expect(authorizations.isUser).toBe(true)

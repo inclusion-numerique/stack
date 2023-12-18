@@ -2,18 +2,27 @@ import { Prisma } from '@prisma/client'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { prismaClient } from '@app/web/prismaClient'
 
-export const profileSelect = {
-  id: true,
-  name: true,
-  firstName: true,
-  lastName: true,
-  image: {
-    select: {
-      id: true,
-      altText: true,
+export const profileSelect = (user: { id: string } | null) =>
+  ({
+    id: true,
+    name: true,
+    firstName: true,
+    lastName: true,
+    image: {
+      select: {
+        id: true,
+        altText: true,
+      },
     },
-  },
-} satisfies Prisma.UserSelect
+    followedBy: {
+      where: {
+        followerId: user?.id,
+      },
+      select: {
+        id: true,
+      },
+    },
+  }) satisfies Prisma.UserSelect
 
 export const getWhereProfilesList = (
   user?: Pick<SessionUser, 'id'> | null,
@@ -63,7 +72,7 @@ export const getProfiles = async ({
 }) => {
   const where = getWhereProfilesList(user, getWhereProfilesQuery(query))
   return prismaClient.user.findMany({
-    select: profileSelect,
+    select: profileSelect(user ?? null),
     where,
     take,
     skip,

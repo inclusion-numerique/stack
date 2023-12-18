@@ -48,7 +48,10 @@ export const filterAccess = (
       image: base.image,
       coverImage: base.coverImage,
       email: base.emailIsPublic ? base.email : '',
-      _count: { resources: base.resources.length },
+      _count: {
+        resources: base.resources.length,
+        followedBy: base._count.followedBy,
+      },
     },
   }
 }

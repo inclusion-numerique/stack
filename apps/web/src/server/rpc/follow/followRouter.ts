@@ -6,11 +6,11 @@ import {
 } from '@app/web/follows/follows'
 
 export const followRouter = router({
-  base: protectedProcedure
+  followBase: protectedProcedure
     .input(BaseFollowValidation)
-    .mutation(async ({ input: { baseId }, ctx: { user } }) => {
+    .mutation(async ({ input: { baseId }, ctx: { user } }) =>
       // TODO Security check on base visibility
-      const follow = await prismaClient.baseFollow.create({
+      prismaClient.baseFollow.create({
         data: {
           baseId,
           followerId: user.id,
@@ -18,16 +18,13 @@ export const followRouter = router({
         select: {
           id: true,
         },
-      })
-
-      return follow
-    }),
-
-  profile: protectedProcedure
+      }),
+    ),
+  followProfile: protectedProcedure
     .input(ProfileFollowValidation)
-    .mutation(async ({ input: { profileId }, ctx: { user } }) => {
+    .mutation(async ({ input: { profileId }, ctx: { user } }) =>
       // TODO Security check on profile visibility
-      const follow = await prismaClient.profileFollow.create({
+      prismaClient.profileFollow.create({
         data: {
           profileId,
           followerId: user.id,
@@ -35,8 +32,32 @@ export const followRouter = router({
         select: {
           id: true,
         },
-      })
-
-      return follow
-    }),
+      }),
+    ),
+  unfollowBase: protectedProcedure
+    .input(BaseFollowValidation)
+    .mutation(async ({ input: { baseId }, ctx: { user } }) =>
+      // TODO Security check on base visibility
+      prismaClient.baseFollow.delete({
+        where: {
+          baseId_followerId: {
+            baseId,
+            followerId: user.id,
+          },
+        },
+      }),
+    ),
+  unfollowProfile: protectedProcedure
+    .input(ProfileFollowValidation)
+    .mutation(async ({ input: { profileId }, ctx: { user } }) =>
+      // TODO Security check on profile visibility
+      prismaClient.profileFollow.delete({
+        where: {
+          profileId_followerId: {
+            profileId,
+            followerId: user.id,
+          },
+        },
+      }),
+    ),
 })

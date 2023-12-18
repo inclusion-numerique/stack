@@ -27,7 +27,10 @@ const ProfileInformations = ({
     <div>
       <h2>{profile.name}</h2>
       <ProfilePrivacyTag isPublic={profile.isPublic} />
-      <ViewsAndMetadata resourcesCount={resourcesCount} />
+      <ViewsAndMetadata
+        resourcesCount={resourcesCount}
+        followedByCount={profile._count.followedBy}
+      />
       {children}
     </div>
   </div>

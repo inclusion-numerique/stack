@@ -1,4 +1,5 @@
 import { v4 } from 'uuid'
+import { ProfilePageData } from '@app/web/server/profiles/getProfile'
 import { SessionUser } from '../auth/sessionUser'
 import { BasePageData } from '../server/bases/getBase'
 import { Resource } from '../server/resources/getResource'
@@ -23,6 +24,21 @@ export const createTestUser = (publicProfile?: boolean) =>
     collections: [],
     savedCollections: [],
   }) satisfies SessionUser
+
+export const createTestProfile = (publicProfile?: boolean) =>
+  ({
+    id: v4(),
+    email: `test-${v4()}@example.com`,
+    firstName: 'Jean',
+    lastName: 'Biche',
+    name: 'Jean Biche',
+    image: null,
+    isPublic: publicProfile || false,
+    followedBy: [],
+    _count: {
+      followedBy: 0,
+    },
+  }) satisfies ProfilePageData
 
 export const createTestResource = (
   owner: SessionUser,
@@ -119,6 +135,7 @@ export const createTestBase = (
           firstName: admin.firstName,
           lastName: admin.lastName,
           image: null,
+          followedBy: [],
         },
         accepted: new Date(),
         isAdmin: true,
@@ -132,11 +149,15 @@ export const createTestBase = (
           firstName: member.firstName,
           lastName: member.lastName,
           image: null,
+          followedBy: [],
         },
         accepted: new Date(),
         isAdmin: false,
       })),
     ],
+    _count: {
+      followedBy: 0,
+    },
   } satisfies BasePageData
   return {
     ...base,

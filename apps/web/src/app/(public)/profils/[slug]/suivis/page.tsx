@@ -18,7 +18,7 @@ import FollowsList from '@app/web/components/Follows/FollowsList'
 
 const ProfileSuivisPage = async ({ params }: { params: { slug: string } }) => {
   const user = await getSessionUser()
-  const profile = await getProfilePageQuery(decodeURI(params.slug))
+  const profile = await getProfilePageQuery(decodeURI(params.slug), user)
   if (!profile) {
     notFound()
   }
@@ -63,10 +63,10 @@ const ProfileSuivisPage = async ({ params }: { params: { slug: string } }) => {
         collectionsCount={collectionsCount.total}
         basesCount={basesCount}
         followsCount={followsCount?.total ?? null}
-        currentPage="/collections"
+        currentPage="/suivis"
         isConnectedUser={authorizations.isUser}
       />
-      <div className="fr-container  fr-container--medium fr-mb-4w">
+      <div className="fr-container  fr-container--medium fr-mb-50v">
         <FollowsList
           user={user}
           profileFollows={profileFollows}
