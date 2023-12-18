@@ -21,7 +21,9 @@ const BaseDetailsPage = async ({ params }: { params: { slug: string } }) => {
     <>
       <Header base={base} isMember={authorizations.isMember} />
       <Menu base={base} current="a-propos" />
-      <Details base={base} />
+      <div className="fr-container fr-container--medium">
+        <Details base={base} />
+      </div>
     </>
   ) : (
     <>

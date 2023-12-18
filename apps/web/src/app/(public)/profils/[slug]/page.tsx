@@ -11,6 +11,7 @@ import EmptyResources from '@app/web/components/Profile/EmptyResources'
 import Resources from '@app/web/components/Resource/List/Resources'
 import { filterAccess } from '@app/web/server/profiles/authorization'
 import PrivateBox from '@app/web/components/PrivateBox'
+import { getProfileFollowsCount } from '@app/web/server/follows/getFollowsList'
 
 const ProfilePage = async ({ params }: { params: { slug: string } }) => {
   const user = await getSessionUser()
@@ -19,11 +20,15 @@ const ProfilePage = async ({ params }: { params: { slug: string } }) => {
     notFound()
   }
 
-  const [resources, basesCount, collectionsCount] = await Promise.all([
-    getProfileResources(profile.id, user),
-    getProfileBasesCount(profile.id, user),
-    getProfileCollectionsCount(profile.id, user),
-  ])
+  const [resources, basesCount, collectionsCount, followsCount] =
+    await Promise.all([
+      getProfileResources(profile.id, user),
+      getProfileBasesCount(profile.id, user),
+      getProfileCollectionsCount(profile.id, user),
+      user && user.id === profile.id
+        ? getProfileFollowsCount(profile.id)
+        : null,
+    ])
 
   const authorizations = filterAccess(profile, user)
   return authorizations.authorized ? (
@@ -39,9 +44,10 @@ const ProfilePage = async ({ params }: { params: { slug: string } }) => {
         isConnectedUser={authorizations.isUser}
         basesCount={basesCount}
         collectionsCount={collectionsCount.total}
+        followsCount={followsCount?.total ?? null}
         currentPage="/"
       />
-      <div className="fr-container fr-mb-4w">
+      <div className="fr-container fr-container--medium fr-mb-4w">
         {resources.length === 0 ? (
           <EmptyResources isConnectedUser={authorizations.isUser} />
         ) : (

@@ -8,6 +8,7 @@ const Menu = ({
   resourcesCount,
   basesCount,
   collectionsCount,
+  followsCount,
   currentPage,
   isConnectedUser,
 }: {
@@ -15,6 +16,8 @@ const Menu = ({
   resourcesCount: number
   basesCount: number
   collectionsCount: number
+  // Null if non accessible / hidden
+  followsCount: number | null
   currentPage: string
   isConnectedUser: boolean
 }) => (
@@ -54,6 +57,19 @@ const Menu = ({
               {isConnectedUser ? 'Mes bases' : 'Bases'} · <b>{basesCount}</b>
             </Link>
           </li>
+          {followsCount !== null && (
+            <li className="fr-nav__item">
+              <Link
+                data-testid="follows-menu-button"
+                className="fr-nav__link fr-link--md"
+                href={`/profils/${profile.id}/suivis`}
+                aria-current={currentPage === '/suivis' ? 'page' : undefined}
+              >
+                {isConnectedUser ? 'Mes suivis' : 'Suivis'} ·{' '}
+                <b>{followsCount}</b>
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
     </div>

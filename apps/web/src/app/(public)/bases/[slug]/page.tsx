@@ -22,7 +22,7 @@ const BasePage = async ({ params }: { params: { slug: string } }) => {
     <>
       <Header base={authorizations.base} isMember={authorizations.isMember} />
       <Menu base={authorizations.base} current="resources" />
-      <div className="fr-container fr-mb-4w">
+      <div className="fr-container fr-container--medium fr-mb-4w">
         {authorizations.base.resources.length === 0 ? (
           <EmptyResources isMember={authorizations.isMember} />
         ) : (

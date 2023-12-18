@@ -21,7 +21,7 @@ const View = ({
   user: SessionUser | null
   isOwner: boolean
 }) => (
-  <div className={styles.container}>
+  <div className="fr-width-full">
     <div className="fr-mb-4w">
       <OwnershipInformation
         user={collection.owner}

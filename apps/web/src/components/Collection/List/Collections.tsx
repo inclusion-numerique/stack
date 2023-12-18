@@ -26,7 +26,7 @@ const Collections = ({
   emptySavedBox: ReactNode
   baseId?: string
 }) => (
-  <div className={styles.container} data-testid="collections-list">
+  <div data-testid="collections-list">
     <div className={styles.header}>
       <h3 className="fr-mb-0">
         Collections · {collections.length + savedCollections.length}

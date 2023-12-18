@@ -33,7 +33,12 @@ const Members = ({
             />
           ))
         : base.members.map((member) => (
-            <ProfileCard profile={member.member} key={member.member.id} />
+            <ProfileCard
+              profile={member.member}
+              key={member.member.id}
+              user={null}
+              canFollow={false}
+            />
           ))}
     </div>
   )

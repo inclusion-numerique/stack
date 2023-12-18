@@ -48,7 +48,7 @@ const ProfilesSearchResultPage = async ({
         paginationParams={paginationParams}
         count={profilesCount}
       >
-        <Profiles profiles={profiles} totalCount={profilesCount} />
+        <Profiles user={user} profiles={profiles} totalCount={profilesCount} />
       </SearchResults>
     </>
   )

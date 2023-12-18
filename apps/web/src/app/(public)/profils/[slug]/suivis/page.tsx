@@ -1,38 +1,52 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import React from 'react'
 import Header from '@app/web/components/Profile/Header'
 import Menu from '@app/web/components/Profile/Menu'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { getProfilePageQuery } from '@app/web/server/profiles/getProfile'
 import { getProfileResourcesCount } from '@app/web/server/resources/getResourcesList'
-import { getProfileCollections } from '@app/web/server/collections/getCollectionsList'
+import { getProfileCollectionsCount } from '@app/web/server/collections/getCollectionsList'
 import { getProfileBasesCount } from '@app/web/server/bases/getBasesList'
 import { filterAccess } from '@app/web/server/profiles/authorization'
 import PrivateBox from '@app/web/components/PrivateBox'
-import Collections from '@app/web/components/Collection/List/Collections'
-import EmptyBox from '@app/web/components/EmptyBox'
-import { getProfileSavedCollections } from '@app/web/server/collections/getSavedCollectionsList'
-import { getProfileFollowsCount } from '@app/web/server/follows/getFollowsList'
+import {
+  getProfileBaseFollows,
+  getProfileFollowsCount,
+  getProfileProfileFollows,
+} from '@app/web/server/follows/getFollowsList'
+import FollowsList from '@app/web/components/Follows/FollowsList'
 
-const ProfileBasesPage = async ({ params }: { params: { slug: string } }) => {
+const ProfileSuivisPage = async ({ params }: { params: { slug: string } }) => {
   const user = await getSessionUser()
   const profile = await getProfilePageQuery(decodeURI(params.slug))
   if (!profile) {
     notFound()
   }
 
+  // logged out user must logged in to see the page
+  if (!user) {
+    redirect(`/connexion?suivant=/profils/${params.slug}/suivis`)
+  }
+
+  // logged in user must be the same as the profile
+  if (user?.id !== profile.id) {
+    redirect(`/profils/${params.slug}`)
+  }
+
   const [
     resourcesCount,
     basesCount,
-    collections,
-    savedCollections,
+    collectionsCount,
     followsCount,
+    baseFollows,
+    profileFollows,
   ] = await Promise.all([
     getProfileResourcesCount(profile.id, user),
     getProfileBasesCount(profile.id, user),
-    getProfileCollections(profile.id, user),
-    getProfileSavedCollections(profile.id, user),
+    getProfileCollectionsCount(profile.id, user),
     user && user.id === profile.id ? getProfileFollowsCount(profile.id) : null,
+    getProfileBaseFollows(profile.id),
+    getProfileProfileFollows(profile.id),
   ])
 
   const authorizations = filterAccess(profile, user)
@@ -46,27 +60,17 @@ const ProfileBasesPage = async ({ params }: { params: { slug: string } }) => {
       <Menu
         profile={authorizations.profile}
         resourcesCount={resourcesCount}
-        collectionsCount={collections.length + savedCollections.length}
+        collectionsCount={collectionsCount.total}
         basesCount={basesCount}
         followsCount={followsCount?.total ?? null}
         currentPage="/collections"
         isConnectedUser={authorizations.isUser}
       />
       <div className="fr-container  fr-container--medium fr-mb-4w">
-        <Collections
+        <FollowsList
           user={user}
-          collections={collections}
-          savedCollections={savedCollections.map(
-            ({ collection }) => collection,
-          )}
-          withCreation={authorizations.isUser}
-          collectionsLabel="Mes collections"
-          emptySavedBox={
-            <EmptyBox title="Vous n’avez pas enregistré de collections.">
-              Enregistrez la collection de quelqu&lsquo;un d&lsquo;autre et elle
-              apparaîtra ici.
-            </EmptyBox>
-          }
+          profileFollows={profileFollows}
+          baseFollows={baseFollows}
         />
       </div>
     </>
@@ -81,4 +85,4 @@ const ProfileBasesPage = async ({ params }: { params: { slug: string } }) => {
   )
 }
 
-export default ProfileBasesPage
+export default ProfileSuivisPage
