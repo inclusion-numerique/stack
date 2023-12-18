@@ -59,7 +59,10 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     // Second collection should have the resource
     cy.visit(`/profils/${ids.user}/collections`)
     cy.testId('collection-card-link').should('have.length', 2)
-    cy.testId('collection-card-link').eq(1).click()
+    cy.testId('collection-card-link').eq(1).click({
+      // This is out of viewport in ci so we need to force the click
+      force: true,
+    })
     cy.testId('resource-card').should('have.length', 1)
   })
 
