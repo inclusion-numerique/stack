@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import {
+  isLegacyRequest,
+  redirectLegacyPathToCurrentUrl,
+} from '@app/web/legacyRedirection/legacyRedirection'
 
 const nodeEnvironment = process.env.NODE_ENV
 const isCI = !!process.env.CI
@@ -91,6 +95,16 @@ const middleware = (request: NextRequest) => {
       httpsBase,
       requestUrl,
     })
+  }
+
+  /**
+   * Old domain requests redirect to new paths
+   */
+  if (isLegacyRequest({ requestHost })) {
+    const httpsBase = `https://${baseUrl ?? ''}`
+    const requestUrl = new URL(request.url)
+
+    return redirectLegacyPathToCurrentUrl({ httpsBase, requestUrl })
   }
 
   /**

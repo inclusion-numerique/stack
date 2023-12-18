@@ -44,6 +44,7 @@ export const projectStackVariables = [
   'S3_HOST',
   'LEGACY_UPLOADS_S3_HOST',
   'LEGACY_UPLOADS_S3_BUCKET',
+  'LEGACY_HOSTNAME',
 ] as const
 
 export const projectStackSensitiveVariables = [
@@ -222,6 +223,7 @@ export class ProjectStack extends TerraformStack {
           environmentVariables.LEGACY_UPLOADS_S3_HOST.value,
         LEGACY_UPLOADS_S3_BUCKET:
           environmentVariables.LEGACY_UPLOADS_S3_BUCKET.value,
+        LEGACY_HOSTNAME: environmentVariables.LEGACY_HOSTNAME.value,
         NODE_ENV: 'production',
         TZ: 'utc',
       },
