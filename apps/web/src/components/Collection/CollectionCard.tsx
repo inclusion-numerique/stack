@@ -53,7 +53,7 @@ const CollectionCard = ({
           collection={collection}
           count={resourcesCount}
           priority="tertiary no outline"
-          withButtons
+          context="card"
         />
       </div>
     </div>

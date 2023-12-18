@@ -5,17 +5,16 @@ import { loginUrl } from '@app/web/security/login'
 import OpenSaveCollectionModalButton from '@app/web/components/Collection/OpenSaveCollectionModalButton'
 import { getBasesFromSessionUser } from '@app/web/bases/getBasesFromSessionUser'
 
-const secondaryButtonProps = {
+const viewButtonProps = {
+  title: 'Enregistrer la collection',
+  size: 'small',
   priority: 'secondary',
-  children: 'Enregistrer',
 } as const
 
-const buttonIconOnlyProps = {
-  title: secondaryButtonProps.children,
-  size: 'small',
+const cardButtonProps = {
+  ...viewButtonProps,
   priority: 'tertiary no outline',
 } as const
-
 const defaultIconId = 'ri-bookmark-3-line' as const
 const alreadySavedIconId = 'ri-bookmark-3-fill' as const
 
@@ -23,14 +22,14 @@ const SaveCollectionButton = ({
   className,
   user,
   collection,
-  iconOnly,
   'data-testid': dataTestid,
+  context,
 }: {
   className?: string
   user: SessionUser | null
   collection: { id: string; isPublic: boolean }
-  iconOnly?: boolean
   'data-testid'?: string
+  context: 'card' | 'view'
 }) => {
   const alreadySavedInProfile = !!user?.savedCollections.some(
     (savedCollection) => savedCollection.collectionId === collection.id,
@@ -47,8 +46,8 @@ const SaveCollectionButton = ({
   const alreadySaved = alreadySavedInProfile || alreadySavedInBases
 
   const buttonProps = {
+    ...(context === 'card' ? cardButtonProps : viewButtonProps),
     iconId: alreadySaved ? alreadySavedIconId : defaultIconId,
-    ...(iconOnly ? buttonIconOnlyProps : secondaryButtonProps),
   }
 
   if (user) {

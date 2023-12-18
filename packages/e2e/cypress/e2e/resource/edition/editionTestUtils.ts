@@ -279,7 +279,7 @@ export const cleanUpAndCreateTestCollectionAndResource = (
       givenCollection({
         ownerId: user.id,
         isPublic: true,
-        title: 'Collection sur mon profil',
+        title: 'Collection sur mon profil avec un titre long',
       }),
       givenCollection({
         ownerId: otherUser.id,

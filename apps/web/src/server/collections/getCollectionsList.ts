@@ -20,6 +20,21 @@ export const computeCollectionsListWhereForUser = (
               whereCollectionIsPublic,
               // Created by user
               { ownerId: user.id },
+              // In base owned by user
+              { base: { ownerId: user.id } },
+              // In base where user is active member
+              {
+                base: {
+                  members: {
+                    some: {
+                      accepted: {
+                        not: null,
+                      },
+                      memberId: user.id,
+                    },
+                  },
+                },
+              },
             ],
           }
         : whereCollectionIsPublic,

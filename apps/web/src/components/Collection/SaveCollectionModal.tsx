@@ -72,8 +72,7 @@ const SaveCollectionModal = ({ user }: { user: SessionUser }) => {
             <>Enregistrée dans votre profil</>
           ) : (
             <>
-              Enregistrée dans la base{' '}
-              <strong className="fr-ml-1v">{result.base?.title}</strong>
+              Enregistrée dans la base <strong>{result.base?.title}</strong>
             </>
           ),
       })
@@ -159,13 +158,13 @@ const SaveCollectionModal = ({ user }: { user: SessionUser }) => {
             />
           ))}
       {collectionOwnedByUser && hasNoBases && (
-        <div className="fr-border--slim-grey fr-border-radius--8 fr-text-mention--grey fr-p-8v fr-width-full fr-text--center fr-width-full">
-          <p className="fr-text--md">
-            Actuellement, vous n’êtes pas membre d’une base
+        <div className="fr-border--slim-grey fr-border-radius--8 fr-text-mention--grey fr-p-8v fr-mt-8v fr-width-full fr-text--center fr-width-full">
+          <p className="fr-text--md fr-text--bold fr-mb-2v">
+            Actuellement, vous n’êtes pas membre d’une base.
           </p>
-          <p className="fr-text--sm">
+          <p className="fr-text--sm fr-mb-0">
             Vous pourrez enregistrer vos collections dans une base lorsque vous
-            aurez créé ou serez membre d’une base
+            aurez créé ou serez membre d’une base.
           </p>
         </div>
       )}

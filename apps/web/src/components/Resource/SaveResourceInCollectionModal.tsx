@@ -180,8 +180,7 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
         priority: 'success',
         message: (
           <>
-            Ajoutée à la collection{' '}
-            <strong className="fr-ml-1v">{result.collection.title}</strong>
+            Ajoutée à la collection <strong>{result.collection.title}</strong>
           </>
         ),
       })
@@ -209,8 +208,7 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
         priority: 'success',
         message: (
           <>
-            Retirée de la collection{' '}
-            <strong className="fr-ml-1v">{result.collection.title}</strong>
+            Retirée de la collection <strong>{result.collection.title}</strong>
           </>
         ),
       })
@@ -231,8 +229,7 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
         priority: 'success',
         message: (
           <>
-            Ajoutée à la nouvelle collection{' '}
-            <strong className="fr-ml-1v">{collection.title}</strong>
+            Ajoutée à la nouvelle collection <strong>{collection.title}</strong>
           </>
         ),
       })

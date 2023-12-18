@@ -29,6 +29,7 @@ const AddOrRemoveResourceFromCollection = ({
           user={user}
           collection={collection}
           count={collection.resources.length}
+          context="collectionModal"
         />
       </div>
     </div>

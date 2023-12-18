@@ -71,7 +71,7 @@ const RawModal = ({
                   <button
                     className="fr-btn--close fr-btn"
                     title={closeTitle}
-                    aria-controls="save-resource-in-collection"
+                    aria-controls={id}
                     type="button"
                     data-fr-js-modal-button="true"
                   >

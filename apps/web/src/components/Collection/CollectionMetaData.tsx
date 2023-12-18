@@ -16,54 +16,61 @@ const CollectionMetaData = ({
   count,
   priority,
   isOwner,
-  withButtons,
+  context,
 }: {
   user: SessionUser | null
   collection: { isPublic: boolean; id: string }
   priority?: ButtonProps.Common['priority']
   count: number
   isOwner?: boolean
-  withButtons?: boolean
-}) => (
-  <div className={styles.container}>
-    <div className={styles.informations}>
-      <span className="fr-icon-file-text-line fr-icon--sm" />
-      <span>
-        <b>{count}</b> Ressource{sPluriel(count)}
-      </span>
-      <span>•</span>
-      <PrivacyTag
-        isPublic={collection.isPublic}
-        small
-        label={collection.isPublic ? 'Publique' : 'Privée'}
-      />
-    </div>
-    {withButtons && (
-      <div className={styles.buttons}>
-        {isOwner && (
-          <Link
-            href="/"
-            className={classNames(
-              'fr-btn',
-              'fr-btn--sm',
-              `fr-btn--${
-                priority ? priority.replace(' ', '-') : 'tertiary-no-outline'
-              }`,
-              'fr-icon-edit-line',
-              'fr-btn--icon-right',
-            )}
-          >
-            Modifier
-          </Link>
-        )}
-        <SaveCollectionButton user={user} collection={collection} iconOnly />
-        <CopyLinkButton
-          url={getServerUrl(`/collections/${collection.id}`, true)}
-          priority={priority}
+  context: 'card' | 'view' | 'collectionModal'
+}) => {
+  const withButtons = context === 'card' || context === 'view'
+  return (
+    <div className={styles.container}>
+      <div className={styles.informations}>
+        <span className="fr-icon-file-text-line fr-icon--sm" />
+        <span>
+          <b>{count}</b> Ressource{sPluriel(count)}
+        </span>
+        <span>•</span>
+        <PrivacyTag
+          isPublic={collection.isPublic}
+          small
+          label={collection.isPublic ? 'Publique' : 'Privée'}
         />
       </div>
-    )}
-  </div>
-)
+      {withButtons && (
+        <div className={styles.buttons}>
+          {isOwner && (
+            <Link
+              href="/"
+              className={classNames(
+                'fr-btn',
+                'fr-btn--sm',
+                `fr-btn--${
+                  priority ? priority.replace(' ', '-') : 'tertiary-no-outline'
+                }`,
+                'fr-icon-edit-line',
+                'fr-btn--icon-right',
+              )}
+            >
+              Modifier
+            </Link>
+          )}
+          <SaveCollectionButton
+            user={user}
+            collection={collection}
+            context={context}
+          />
+          <CopyLinkButton
+            url={getServerUrl(`/collections/${collection.id}`, true)}
+            priority={priority}
+          />
+        </div>
+      )}
+    </div>
+  )
+}
 
 export default CollectionMetaData

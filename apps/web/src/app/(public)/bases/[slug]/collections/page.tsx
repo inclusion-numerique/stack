@@ -4,7 +4,6 @@ import { basePageQuery } from '@app/web/server/bases/getBase'
 import Header from '@app/web/components/Base/Header'
 import Menu from '@app/web/components/Base/Menu'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
-import EmptyCollections from '@app/web/components/Base/EmptyCollections'
 import { filterAccess } from '@app/web/server/bases/authorization'
 import PrivateBox from '@app/web/components/PrivateBox'
 import Collections from '@app/web/components/Collection/List/Collections'
@@ -17,6 +16,7 @@ const BaseCollectionsPage = async ({
   params: { slug: string }
 }) => {
   const user = await getSessionUser()
+
   const base = await basePageQuery(decodeURI(params.slug), user)
 
   if (!base) {
@@ -29,44 +29,37 @@ const BaseCollectionsPage = async ({
       <Header base={base} isMember={authorizations.isMember} />
       <Menu base={base} current="collections" />
       <div className="fr-container fr-mb-4w">
-        {base.collections.length === 0 ? (
-          <EmptyCollections
-            isMember={authorizations.isMember}
-            baseId={base.id}
-          />
-        ) : (
-          <Collections
-            user={user}
-            collections={base.collections}
-            savedCollections={base.savedCollections.map(
-              ({ collection }) => collection,
-            )}
-            withCreation={authorizations.isMember}
-            baseId={base.id}
-            collectionsLabel="Collections de la base"
-            emptyBox={
-              authorizations.isMember ? (
-                <EmptyBox title="Vous n’avez pas de collections dans cette base.">
-                  <div data-testid="create-resource-button">
-                    <CreateCollectionButton />
-                  </div>
-                </EmptyBox>
-              ) : (
-                <EmptyBox title="Pas de collections enregistrées dans cette base." />
-              )
-            }
-            emptySavedBox={
-              authorizations.isMember ? (
-                <EmptyBox title="Vous n’avez pas enregistré de collections dans cette base.">
-                  Enregistrez la collection de quelqu&lsquo;un d&lsquo;autre et
-                  elle apparaîtra ici.
-                </EmptyBox>
-              ) : (
-                <EmptyBox title="Pas de collections enregistrées dans cette base." />
-              )
-            }
-          />
-        )}
+        <Collections
+          user={user}
+          collections={base.collections}
+          savedCollections={base.savedCollections.map(
+            ({ collection }) => collection,
+          )}
+          withCreation={authorizations.isMember}
+          baseId={base.id}
+          collectionsLabel="Collections de la base"
+          emptyBox={
+            authorizations.isMember ? (
+              <EmptyBox title="Vous n’avez pas de collections dans cette base.">
+                <div data-testid="create-resource-button">
+                  <CreateCollectionButton />
+                </div>
+              </EmptyBox>
+            ) : (
+              <EmptyBox title="Pas de collections enregistrées dans cette base." />
+            )
+          }
+          emptySavedBox={
+            authorizations.isMember ? (
+              <EmptyBox title="Vous n’avez pas enregistré de collections dans cette base.">
+                Enregistrez la collection de quelqu&lsquo;un d&lsquo;autre et
+                elle apparaîtra ici.
+              </EmptyBox>
+            ) : (
+              <EmptyBox title="Pas de collections enregistrées dans cette base." />
+            )
+          }
+        />
       </div>
     </>
   ) : (

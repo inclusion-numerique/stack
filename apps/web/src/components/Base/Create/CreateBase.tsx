@@ -140,8 +140,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
         priority: 'success',
         message: (
           <>
-            Votre base <strong className="fr-mx-1v">{base.title}</strong> a bien
-            été créée
+            Votre base <strong>{base.title}</strong> a bien été créée
           </>
         ),
       })

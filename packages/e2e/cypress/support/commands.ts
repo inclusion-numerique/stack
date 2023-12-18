@@ -142,6 +142,10 @@ Cypress.Commands.add('removeHover', () =>
   cy.get('body').realHover({ position: 'topLeft' }),
 )
 
+Cypress.Commands.add('getToast', (contains: string | RegExp) =>
+  cy.findAllByRole('status').contains(contains),
+)
+
 // From https://github.com/cypress-io/cypress/issues/877
 Cypress.Commands.add(
   'positionToViewport',
@@ -244,6 +248,8 @@ declare global {
       testId(testId: string): Chainable<JQuery<HTMLElement>>
 
       removeHover(): Chainable<JQuery<HTMLElement>>
+
+      getToast(contains: string | RegExp): Chainable<JQuery<HTMLElement>>
 
       positionToViewport(
         testId: string,

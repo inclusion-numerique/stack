@@ -55,8 +55,8 @@ const View = ({
       collection={collection}
       count={collection.resources.length}
       isOwner={isOwner}
-      withButtons
       priority="secondary"
+      context="view"
     />
     {collection.resources.map(({ resource }) => (
       <ResourceCard key={resource.id} resource={resource} user={user} />
