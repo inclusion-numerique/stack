@@ -250,7 +250,10 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     )
     cy.contains('Collections enregistrées · 0')
     cy.findByRole('tab', { name: /collections enregistrées/i }).should(
-      'be.active',
+      'have.attr',
+      'aria-selected',
+      'true',
     )
+    cy.contains(collection.title).should('not.exist')
   })
 })

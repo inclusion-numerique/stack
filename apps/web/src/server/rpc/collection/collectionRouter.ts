@@ -32,19 +32,21 @@ export const collectionRouter = router({
     ),
   unsave: protectedProcedure
     .input(SaveCollectionValidation)
-    .mutation(
-      async ({ input: { collectionId, savedById, baseId }, ctx: { user } }) => {
-        // TODO Security based on collection visibility for the ctx user
+    .mutation(async ({ input: { collectionId, savedById, baseId } }) => {
+      // TODO Security based on collection visibility and base membership for (the ctx user
+      // TODO If collection is saved in a base, then the user must be a member of that base
 
-        if (savedById !== user.id) {
-          throw forbiddenError()
-        }
-
+      if (baseId) {
         return prismaClient.savedCollection.deleteMany({
-          where: { collectionId, savedById, baseId },
+          where: { collectionId, baseId },
         })
-      },
-    ),
+      }
+
+      // Collection is saved in profile
+      return prismaClient.savedCollection.deleteMany({
+        where: { collectionId, savedById, baseId: null },
+      })
+    }),
   create: protectedProcedure
     .input(CreateCollectionCommandValidation)
     .mutation(
