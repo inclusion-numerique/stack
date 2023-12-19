@@ -23,7 +23,9 @@ const ProfileCard = ({
       {profile.name}
     </Link>
     <div className={styles.iconActions}>
-      {canFollow ? <FollowButton profile={profile} user={user} /> : null}
+      {canFollow && profile.id !== user?.id ? (
+        <FollowButton profile={profile} user={user} />
+      ) : null}
       <CopyLinkButton url={getServerUrl(`/profils/${profile.id}`, true)} />
     </div>
   </div>
