@@ -50,6 +50,10 @@ const redirectToHttps = ({
   const path = `${requestUrl.pathname}${requestUrl.search}`
   const redirectTo = `${httpsBase}${path}`
 
+  console.info(
+    `HTTP protocol - redirecting to ${httpsBase}${requestUrl.pathname}${requestUrl.search}`,
+  )
+
   return NextResponse.redirect(redirectTo, { status: 308 })
 }
 
@@ -64,12 +68,18 @@ const shouldRedirectToBaseDomain = ({
 const redirectToBaseDomain = ({
   httpsBase,
   requestUrl,
+  requestHost,
 }: {
   httpsBase: string
   requestUrl: URL
+  requestHost: string | null
 }) => {
   const path = `${requestUrl.pathname}${requestUrl.search}`
   const redirectTo = `${httpsBase}${path}`
+
+  console.info(
+    `Secondary domain request ${requestHost} - Redirecting to base domain ${redirectTo}`,
+  )
 
   return NextResponse.redirect(redirectTo, { status: 308 })
 }
@@ -117,6 +127,7 @@ const middleware = (request: NextRequest) => {
     return redirectToBaseDomain({
       httpsBase,
       requestUrl,
+      requestHost,
     })
   }
 
