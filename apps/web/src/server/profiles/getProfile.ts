@@ -40,7 +40,10 @@ export const getMatchingProfils = async (
     take: 5,
   })
 
-export const getProfilePageQuery = async (id: string) =>
+export const getProfilePageQuery = async (
+  id: string,
+  user: { id: string } | null,
+) =>
   prismaClient.user.findUnique({
     select: {
       id: true,
@@ -61,8 +64,21 @@ export const getProfilePageQuery = async (id: string) =>
           },
         },
       },
+      followedBy: {
+        where: {
+          followerId: user?.id,
+        },
+        select: {
+          id: true,
+        },
+      },
       isPublic: true,
       email: true,
+      _count: {
+        select: {
+          followedBy: true,
+        },
+      },
     },
     where: { id },
   })

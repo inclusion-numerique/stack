@@ -58,6 +58,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   isPublic      Boolean   @default(false) @map("is_public")
+  deleted       DateTime?
 
   created             DateTime               @default(now())
   updated             DateTime               @default(now())
@@ -71,6 +72,9 @@ model User {
   resourceViews       ResourceView[]
   savedCollections    SavedCollection[]
   sentResourceReports ResourceReport[]
+  baseFollows         BaseFollow[]
+  profileFollows      ProfileFollow[]        @relation(name: "profile_follow_follower")
+  followedBy          ProfileFollow[]        @relation(name: "profile_follow_followed")
 
   @@map("users")
 }
@@ -119,6 +123,7 @@ model Base {
   members          BaseMembers[]
   collections      Collection[]
   savedCollections SavedCollection[]
+  followedBy       BaseFollow[]
 
   @@index([ownerId])
   @@map("bases")
@@ -586,4 +591,40 @@ model ResourceReport {
   @@index([resourceId])
   @@index([sentById])
   @@map("resource_reports")
+}
+
+model BaseFollow {
+  id       String @id @default(uuid()) @db.Uuid
+  legacyId Int?   @unique @map("legacy_id")
+
+  base   Base   @relation(fields: [baseId], references: [id], onDelete: Cascade)
+  baseId String @map("base_id") @db.Uuid
+
+  follower   User   @relation(fields: [followerId], references: [id])
+  followerId String @map("follower_id") @db.Uuid
+
+  followed DateTime @default(now())
+
+  @@unique([baseId, followerId])
+  @@index([baseId])
+  @@index([followerId])
+  @@map("base_follows")
+}
+
+model ProfileFollow {
+  id       String @id @default(uuid()) @db.Uuid
+  legacyId Int?   @unique @map("legacy_id")
+
+  profile   User   @relation(name: "profile_follow_followed", fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String @map("profile_id") @db.Uuid
+
+  follower   User   @relation(name: "profile_follow_follower", fields: [followerId], references: [id])
+  followerId String @map("follower_id") @db.Uuid
+
+  followed DateTime @default(now())
+
+  @@unique([profileId, followerId])
+  @@index([profileId])
+  @@index([followerId])
+  @@map("profile_follows")
 }

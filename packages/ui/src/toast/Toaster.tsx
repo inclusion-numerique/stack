@@ -9,7 +9,7 @@ const Toaster = () => (
     reverseOrder={false}
     gutter={8}
     toastOptions={{
-      duration: 10_000,
+      duration: 6000,
     }}
   />
 )

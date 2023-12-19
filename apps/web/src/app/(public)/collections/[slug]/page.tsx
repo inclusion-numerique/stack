@@ -16,7 +16,7 @@ const CollectionPage = async ({ params }: { params: { slug: string } }) => {
 
   const authorizations = filterAccess(collection, user)
   return authorizations.authorized ? (
-    <div className="fr-container fr-my-4w">
+    <div className="fr-container fr-container--medium fr-my-4w">
       <View
         collection={collection}
         user={user}

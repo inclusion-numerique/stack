@@ -3,7 +3,13 @@ import React from 'react'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import styles from './ViewsAndMetadata.module.css'
 
-const ViewsAndMetadata = ({ resourcesCount }: { resourcesCount: number }) => (
+const ViewsAndMetadata = ({
+  resourcesCount,
+  followedByCount,
+}: {
+  resourcesCount: number
+  followedByCount: number
+}) => (
   <div className={classNames(styles.container, 'fr-text--sm')}>
     <span className="fr-icon-file-text-line fr-icon--sm" />
     <div>
@@ -16,8 +22,11 @@ const ViewsAndMetadata = ({ resourcesCount }: { resourcesCount: number }) => (
     <div>·</div>
     <span className="fr-icon-user-heart-line fr-icon--sm" />
     <div>
-      <b className="wip">45</b>
-      <span className={styles.spanMdDisplay}> Suivi{sPluriel(45)}</span>
+      <b>{followedByCount}</b>
+      <span className={styles.spanMdDisplay}>
+        {' '}
+        Suivi{sPluriel(followedByCount)}
+      </span>
     </div>
   </div>
 )

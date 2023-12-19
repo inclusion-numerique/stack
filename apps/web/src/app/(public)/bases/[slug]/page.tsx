@@ -20,9 +20,13 @@ const BasePage = async ({ params }: { params: { slug: string } }) => {
   const authorizations = filterAccess(base, user)
   return authorizations.authorized ? (
     <>
-      <Header base={authorizations.base} isMember={authorizations.isMember} />
+      <Header
+        base={authorizations.base}
+        user={user}
+        isMember={authorizations.isMember}
+      />
       <Menu base={authorizations.base} current="resources" />
-      <div className="fr-container fr-mb-4w">
+      <div className="fr-container fr-container--medium fr-mb-4w">
         {authorizations.base.resources.length === 0 ? (
           <EmptyResources isMember={authorizations.isMember} />
         ) : (
@@ -36,7 +40,7 @@ const BasePage = async ({ params }: { params: { slug: string } }) => {
     </>
   ) : (
     <>
-      <Header base={authorizations.base} />
+      <Header base={authorizations.base} user={user} />
       <PrivateBox type="Base" />
     </>
   )

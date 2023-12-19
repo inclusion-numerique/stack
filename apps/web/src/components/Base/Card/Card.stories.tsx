@@ -11,7 +11,8 @@ const base = {
   department: '08 - Ardennes',
   image: null,
   coverImage: null,
-  _count: { resources: 8 },
+  followedBy: [],
+  _count: { resources: 8, followedBy: 4 },
 } satisfies BaseListItem
 
 export default {

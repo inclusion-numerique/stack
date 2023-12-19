@@ -1,6 +1,10 @@
 import React from 'react'
 import Link from 'next/link'
 import EmptyBox from '@app/web/components/EmptyBox'
+import {
+  defaultSearchParams,
+  searchUrl,
+} from '@app/web/server/search/searchQueryParams'
 import { CreateBaseButton } from '../CreateBaseButton'
 
 const EmptyBases = ({ isConnectedUser }: { isConnectedUser: boolean }) => (
@@ -24,7 +28,7 @@ const EmptyBases = ({ isConnectedUser }: { isConnectedUser: boolean }) => (
           <CreateBaseButton className="fr-btn--secondary" />
           <Link
             className="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-search-line fr-ml-2w"
-            href="/bases"
+            href={searchUrl('bases', defaultSearchParams)}
           >
             Explorer les bases
           </Link>

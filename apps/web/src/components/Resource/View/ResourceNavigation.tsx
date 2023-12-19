@@ -65,18 +65,6 @@ const ResourceNavigation = ({
         resource={resource}
         user={user}
       />
-      <Link
-        className={classNames(
-          'fr-btn',
-          'fr-btn--secondary',
-          'fr-btn--icon-left',
-          'fr-icon-equalizer-line',
-          'wip',
-        )}
-        href="/"
-      >
-        Évaluer
-      </Link>
       {!!user && <ResourceReportButton />}
     </ResourceNavigationModal>
     <div className={styles.container}>
@@ -119,19 +107,6 @@ const ResourceNavigation = ({
           iconId="fr-icon-more-fill"
           {...resourceNavigationModalNativeButtonProps}
         />
-        <Link
-          className={classNames(
-            'fr-btn',
-            'fr-btn--tertiary',
-            'fr-btn--icon-left',
-            'fr-icon-equalizer-line',
-            styles.button,
-            'wip',
-          )}
-          href="/"
-        >
-          Évaluer
-        </Link>
         {!!user && (
           <ResourceReportButton className={styles.button} priority="tertiary" />
         )}

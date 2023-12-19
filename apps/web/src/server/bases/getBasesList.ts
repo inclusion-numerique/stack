@@ -62,32 +62,42 @@ export const getProfileBasesCount = async (
   })
 }
 
-export const baseSelect = {
-  id: true,
-  title: true,
-  isPublic: true,
-  slug: true,
-  department: true,
-  image: {
-    select: {
-      id: true,
-    },
-  },
-  coverImage: {
-    select: {
-      id: true,
-    },
-  },
-  _count: {
-    select: {
-      resources: {
-        where: {
-          deleted: null,
-        },
+export const baseSelect = (user: { id: string } | null) =>
+  ({
+    id: true,
+    title: true,
+    isPublic: true,
+    slug: true,
+    department: true,
+    image: {
+      select: {
+        id: true,
       },
     },
-  },
-} satisfies Prisma.BaseSelect
+    coverImage: {
+      select: {
+        id: true,
+      },
+    },
+    followedBy: {
+      select: {
+        id: true,
+      },
+      where: {
+        followerId: user?.id,
+      },
+    },
+    _count: {
+      select: {
+        resources: {
+          where: {
+            deleted: null,
+          },
+        },
+        followedBy: true,
+      },
+    },
+  }) satisfies Prisma.BaseSelect
 
 export const getProfileBases = async (
   profileId: string,
@@ -95,7 +105,7 @@ export const getProfileBases = async (
 ) => {
   const where = getWhereBasesProfileList(profileId, user)
   return prismaClient.base.findMany({
-    select: baseSelect,
+    select: baseSelect(user),
     where,
   })
 }
@@ -113,7 +123,7 @@ export const getBases = async ({
 }) => {
   const where = getWhereBasesList(user, getWhereBasesQuery(query))
   return prismaClient.base.findMany({
-    select: baseSelect,
+    select: baseSelect(user ?? null),
     where,
     take,
     skip,

@@ -15,6 +15,15 @@
 }
 
 /* Extensions of DSFR */
+
+.fr-pb-50v {
+    padding-bottom: 200px;
+}
+
+.fr-mb-50v {
+    margin-bottom: 200px;
+}
+
 .fr-text--medium {
     font-weight: 500 !important;
 }

@@ -6,7 +6,7 @@ import { getDepartmentName } from '@app/web/utils/departments'
 import styles from './Details.module.css'
 
 const Details = ({ base }: { base: BasePageData }) => (
-  <div className={styles.container}>
+  <div className="fr-width-full">
     <div className={styles.header}>
       <h3 className="fr-mb-0">À propos</h3>
     </div>

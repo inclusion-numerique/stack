@@ -21,13 +21,17 @@ const CopyLinkButton = ({
   const [copied, setCopied] = useState(false)
   const onCopy = () => {
     setCopied(true)
-    setTimeout(() => setCopied(false), 1000)
+    setTimeout(() => setCopied(false), 2000)
     navigator.clipboard.writeText(url).catch()
   }
 
   return (
     <div className={styles.container}>
-      {copied && <span className={styles.copiedHover}>Copié</span>}
+      {copied && (
+        <span className={styles.copiedHover}>
+          Lien copié dans le presse-papier
+        </span>
+      )}
       {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
       <button
         className={classNames(

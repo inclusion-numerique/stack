@@ -8,9 +8,17 @@ import { BasePrivacyTag } from '@app/web/components/PrivacyTags'
 import ViewsAndMetadata from '@app/web/components/Base/ViewsAndMetadata'
 import CopyLinkButton from '@app/web/components/CopyLinkButton'
 import RoundImage from '@app/web/components/RoundImage'
+import { SessionUser } from '@app/web/auth/sessionUser'
+import { FollowButton } from '@app/web/components/Follows/FollowButton'
 import styles from './Card.module.css'
 
-const BaseCard = ({ base }: { base: BaseListItem }) => (
+const BaseCard = ({
+  base,
+  user,
+}: {
+  base: BaseListItem
+  user: SessionUser | null
+}) => (
   <div className={styles.container} data-testid="base-card">
     <RoundImage radius="quarter" image={base.image} size={116} />
     <div className={styles.content}>
@@ -24,15 +32,18 @@ const BaseCard = ({ base }: { base: BaseListItem }) => (
               {getDepartmentName(base.department)}
             </p>
           )}
-          <div className={styles.badge}>
-            <BasePrivacyTag small isPublic={base.isPublic} />
-          </div>
+          {!base.isPublic && (
+            <div className={styles.badge}>
+              <BasePrivacyTag small isPublic={base.isPublic} />
+            </div>
+          )}
         </div>
         <h6 className="fr-my-2w">{base.title}</h6>
       </Link>
       <div className={styles.footer}>
         <ViewsAndMetadata base={base} />
         <div className={styles.icons}>
+          <FollowButton base={base} user={user} />
           <CopyLinkButton url={getServerUrl(`/bases/${base.slug}`, true)} />
         </div>
       </div>

@@ -32,7 +32,7 @@ const Resources = ({
   )
 
   return (
-    <div className={styles.container} data-testid="base-resources">
+    <div data-testid="base-resources">
       <div className={styles.header}>
         <h3 className="fr-mb-0">Ressources · {resources.length}</h3>
         {isConnectedUser && (

@@ -129,7 +129,7 @@ export const searchProfiles = async (
         in: searchResults.map(({ id }) => id),
       },
     },
-    select: profileSelect,
+    select: profileSelect(user),
   })
 
   return orderItemsByIndexMap(unsortedUsers, resultIndexById)

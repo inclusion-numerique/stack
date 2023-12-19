@@ -2,6 +2,7 @@ import React from 'react'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { BaseListItem } from '@app/web/server/bases/getBasesList'
 import { SearchParams } from '@app/web/server/search/searchQueryParams'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import BaseCard from '../Base/Card/Card'
 import EmptyBox from '../EmptyBox'
 import styles from './Content.module.css'
@@ -10,10 +11,12 @@ const Bases = ({
   bases,
   totalCount,
   searchParams: _willBeUsedForSorting,
+  user,
 }: {
   bases: BaseListItem[]
   totalCount: number
   searchParams: SearchParams
+  user: SessionUser | null
 }) => (
   <>
     <div className={styles.header}>
@@ -30,7 +33,7 @@ const Bases = ({
       </div>
     </div>
     {bases.length > 0 ? (
-      bases.map((base) => <BaseCard key={base.slug} base={base} />)
+      bases.map((base) => <BaseCard key={base.slug} user={user} base={base} />)
     ) : (
       <EmptyBox
         className="fr-mt-6v"

@@ -49,6 +49,7 @@ const BasesSearchResultPage = async ({
         count={basesCount}
       >
         <Bases
+          user={user}
           bases={bases}
           searchParams={searchParams}
           totalCount={basesCount}

@@ -17,12 +17,6 @@ const ViewsAndMetadata = ({
   withBadge?: boolean
 }) => (
   <div className={classNames(styles.container, 'fr-text--sm', className)}>
-    <span className="fr-icon-eye-line fr-icon--sm" />
-    <div>
-      <b className="wip">45</b>
-      <span className={styles.spanMdDisplay}> Vue{sPluriel(45)}</span>
-    </div>
-    <div>·</div>
     <span className="fr-icon-file-text-line fr-icon--sm" />
     <div>
       <b>
@@ -36,10 +30,13 @@ const ViewsAndMetadata = ({
     <div>·</div>
     <span className="fr-icon-user-heart-line fr-icon--sm" />
     <div>
-      <b className="wip">45</b>
-      <span className={styles.spanMdDisplay}> Suivi{sPluriel(45)}</span>
+      <b>{base._count.followedBy}</b>
+      <span className={styles.spanMdDisplay}>
+        {' '}
+        Suivi{sPluriel(base._count.followedBy)}
+      </span>
     </div>
-    {withBadge && (
+    {withBadge && !base.isPublic && (
       <>
         <div>·</div>
         <BasePrivacyTag isPublic={base.isPublic} />

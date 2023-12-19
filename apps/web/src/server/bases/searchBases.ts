@@ -159,7 +159,7 @@ export const searchBases = async (
         in: searchResults.map(({ id }) => id),
       },
     },
-    select: baseSelect,
+    select: baseSelect(user),
   })
 
   return orderItemsByIndexMap(unsortedBases, resultIndexById)

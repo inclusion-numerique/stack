@@ -1,5 +1,4 @@
 import React from 'react'
-import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
 import ContentView from '@app/web/components/Resource/Contents/ContentView'
 import ResourcesViewsAndMetadata from '@app/web/components/Resource/View/ResourcesViewsAndMetadata'
@@ -55,14 +54,6 @@ const ResourceContents = ({
         className="fr-hidden fr-unhidden-lg"
       />
       <div className="fr-hidden fr-unhidden-md">
-        <Button
-          className="fr-mr-1w wip"
-          title="Télécharger la ressource"
-          iconId="fr-icon-download-line"
-          priority="tertiary"
-          size="small"
-        />
-
         <CopyLinkButton
           priority="tertiary"
           url={getServerUrl(`/ressources/${resource.slug}`, true)}

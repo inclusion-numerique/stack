@@ -7,8 +7,8 @@ import {
   resourceListSelect,
 } from '../resources/getResourcesList'
 import {
-  computeCollectionsListWhereForUser,
   collectionSelect,
+  computeCollectionsListWhereForUser,
 } from '../collections/getCollectionsList'
 import { profileSelect } from '../profiles/getProfilesList'
 
@@ -55,6 +55,14 @@ export const baseSelect = (user: Pick<SessionUser, 'id'> | null) =>
         },
       },
     },
+    followedBy: {
+      where: {
+        followerId: user?.id,
+      },
+      select: {
+        id: true,
+      },
+    },
     resources: {
       select: resourceListSelect(user),
       where: computeResourcesListWhereForUser(user),
@@ -84,10 +92,15 @@ export const baseSelect = (user: Pick<SessionUser, 'id'> | null) =>
         memberId: true,
         accepted: true,
         member: {
-          select: profileSelect,
+          select: profileSelect(user),
         },
       },
       orderBy: { added: 'asc' },
+    },
+    _count: {
+      select: {
+        followedBy: true,
+      },
     },
   }) satisfies Prisma.BaseSelect
 

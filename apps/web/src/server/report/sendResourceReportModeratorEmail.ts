@@ -24,7 +24,7 @@ export const sendResourceReportModeratorEmail = async ({
     from: ServerWebAppConfig.Email.from,
     subject: `Signalement de ressource`,
     html: `
-<html>
+<html lang="fr">
   <body style='font-family:Marianne, Helvetica, Arial, sans-serif;'>
     <h2 style='color:#000091;'>Signalement de ressource</h2>
     <p>Une ressource a été signalée par un utilisateur.</p>
