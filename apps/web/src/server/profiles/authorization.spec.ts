@@ -41,6 +41,7 @@ describe('Profile authorization', () => {
       isPublic: creator.isPublic,
       email: creator.email,
       image: null,
+      followedBy: [],
       _count: {
         followedBy: 0,
       },
@@ -57,7 +58,7 @@ describe('Profile authorization', () => {
       expect(authorizations.authorized).toBe(false)
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore authorization should be true
-      expect(authorizations.isUser).toBe(undefined)
+      expect(authorizations.isUser).toBe(false)
       expect(authorizations.profile).toEqual(filteredProfile)
     })
 

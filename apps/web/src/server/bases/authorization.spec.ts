@@ -79,6 +79,7 @@ describe('Base authorization', () => {
       email: privateBase.email,
       image: null,
       coverImage: null,
+      followedBy: [],
       _count: {
         // eslint-disable-next-line no-underscore-dangle
         followedBy: privateBase._count.followedBy,
