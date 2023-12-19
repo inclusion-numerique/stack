@@ -608,10 +608,12 @@ model BaseFollow {
   @@unique([baseId, followerId])
   @@index([baseId])
   @@index([followerId])
+  @@map("base_follows")
 }
 
 model ProfileFollow {
-  id String @id @default(uuid()) @db.Uuid
+  id       String @id @default(uuid()) @db.Uuid
+  legacyId Int?   @unique @map("legacy_id")
 
   profile   User   @relation(name: "profile_follow_followed", fields: [profileId], references: [id], onDelete: Cascade)
   profileId String @map("profile_id") @db.Uuid
@@ -624,4 +626,5 @@ model ProfileFollow {
   @@unique([profileId, followerId])
   @@index([profileId])
   @@index([followerId])
+  @@map("profile_follows")
 }

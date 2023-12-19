@@ -30,6 +30,10 @@ import {
 } from '@app/migration/modelMigrations/migrateCollections'
 import { updateCollectionVisibility } from '@app/migration/modelMigrations/updateCollectionVisibility'
 import { getLegacyBaseOwnerFromLegacyBaseId } from '@app/migration/modelMigrations/getLegacyBaseOwnerFromLegacyBaseId'
+import {
+  getLegacyFollows,
+  migrateFollows,
+} from '@app/migration/modelMigrations/migrateFollows'
 
 // eslint-disable-next-line no-console
 const output = console.log
@@ -76,6 +80,9 @@ export const executeMigration = async () => {
   output(
     `- Found ${legacyCollections.legacyBasesWithPinnedResources.size} bases with pinned resources`,
   )
+
+  const legacyFollows = await getLegacyFollows()
+  output(`- Found ${legacyFollows.length} follows to migrate`)
 
   const endFetchContext = new Date()
   output(`⏱️ Context fetching took ${formatDuration(start, endFetchContext)}`)
@@ -197,6 +204,17 @@ export const executeMigration = async () => {
     legacyBaseOwnerFromLegacyBaseId,
   })
   output(`- Migrated ${migratedCollections.collections.length} collections`)
+
+  output(`- Migrating follows...`)
+  const migratedFollows = await migrateFollows({
+    legacyFollows,
+    userIdFromLegacyId,
+    baseIdFromLegacyId,
+    transaction: prismaClient,
+    legacyBaseOwnerFromLegacyBaseId,
+  })
+
+  output(`- Migrated ${migratedFollows.follows.length} follows`)
 
   output(`- Updating base and profile visibility for public resources...`)
   const updatedVisibility = await updateBaseAndProfileVisibility()
