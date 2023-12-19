@@ -6,8 +6,9 @@ import { getProfileResources } from '@app/web/server/resources/getResourcesList'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import ProfilEdition from '@app/web/components/Profile/Edition/ProfileEdition'
 import { filterAccess } from '@app/web/server/profiles/authorization'
+import { ProfilRouteParams } from '@app/web/app/(public)/profils/[slug]/profilRouteParams'
 
-const ProfilEditionPage = async ({ params }: { params: { slug: string } }) => {
+const ProfilEditionPage = async ({ params }: ProfilRouteParams) => {
   const user = await getSessionUser()
   if (!user) {
     redirect(`/connexion?suivant=/profils/${params.slug}/modifier`)

@@ -1,12 +1,23 @@
-import Button, { ButtonProps } from '@codegouvfr/react-dsfr/Button'
+import Button from '@codegouvfr/react-dsfr/Button'
 import { BaseListItem } from '@app/web/server/bases/getBasesList'
 import { ProfileListItem } from '@app/web/server/profiles/getProfilesList'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { loginUrl } from '@app/web/security/login'
 import ClientFollowButton from '@app/web/components/Follows/ClientFollowButton'
+import {
+  followBaseButtonProps,
+  followBaseIconOnlyButtonProps,
+  followProfileButtonProps,
+  followProfileIconOnlyButtonProps,
+} from '@app/web/components/Follows/followButtonProps'
+import { BasePageData } from '@app/web/server/bases/getBase'
+import { FilteredBase } from '@app/web/server/bases/authorization'
 
-export type FollowButtonProps = { user: SessionUser | null } & (
-  | { base: BaseListItem; profile?: undefined }
+export type FollowButtonProps = {
+  user: SessionUser | null
+  iconOnly?: boolean
+} & (
+  | { base: BaseListItem | BasePageData | FilteredBase; profile?: undefined }
   | {
       profile: ProfileListItem
       base?: undefined
@@ -14,32 +25,39 @@ export type FollowButtonProps = { user: SessionUser | null } & (
 )
 
 export const FollowButton = (props: FollowButtonProps) => {
-  const { profile, base, user } = props
+  const { profile, base, user, iconOnly } = props
 
   if (!profile && !base) {
     return null
   }
 
-  const buttonProps: ButtonProps.IconOnly = {
-    title: `Suivre ${profile ? 'le profil' : 'la base'}`,
-    iconId: 'fr-icon-user-heart-line',
-  }
-
-  console.log('IS USER', user, 'PROFILE', profile, 'BASE', base)
   if (user) {
-    // Only load client logic for logged in user
-    return <ClientFollowButton {...props} buttonProps={buttonProps} />
+    // Only load client logic for button with feature for logged in user
+    return <ClientFollowButton {...props} />
   }
 
   const href = loginUrl({
     intent: 'suivre-une-base-ou-un-profil',
   })
 
+  // Server component version
+
+  if (base) {
+    return (
+      <Button
+        {...(iconOnly ? followBaseIconOnlyButtonProps : followBaseButtonProps)}
+        linkProps={{
+          href,
+        }}
+      />
+    )
+  }
+
   return (
     <Button
-      {...buttonProps}
-      size="small"
-      priority="tertiary no outline"
+      {...(iconOnly
+        ? followProfileIconOnlyButtonProps
+        : followProfileButtonProps)}
       linkProps={{
         href,
       }}

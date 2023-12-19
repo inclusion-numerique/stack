@@ -9,6 +9,16 @@ import type { FollowButtonProps } from '@app/web/components/Follows/FollowButton
 import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { isFollowedBy } from '@app/web/follows/isFollowedBy'
+import {
+  followBaseButtonProps,
+  followBaseIconOnlyButtonProps,
+  followProfileButtonProps,
+  followProfileIconOnlyButtonProps,
+  unfollowBaseButtonProps,
+  unfollowBaseIconOnlyButtonProps,
+  unfollowProfileButtonProps,
+  unfollowProfileIconOnlyButtonProps,
+} from '@app/web/components/Follows/followButtonProps'
 
 /**
  * Only load client follow button for logged in user (see FollowButton)
@@ -17,8 +27,8 @@ const ClientFollowButton = ({
   base,
   profile,
   user,
-  buttonProps,
-}: FollowButtonProps & { buttonProps: ButtonProps.IconOnly }) => {
+  iconOnly,
+}: FollowButtonProps) => {
   const followBaseMutation = trpc.follow.followBase.useMutation()
   const followProfileMutation = trpc.follow.followProfile.useMutation()
   const unfollowBaseMutation = trpc.follow.unfollowBase.useMutation()
@@ -30,6 +40,21 @@ const ClientFollowButton = ({
 
   const router = useRouter()
 
+  const buttonProps = base
+    ? iconOnly
+      ? isFollowing
+        ? unfollowBaseIconOnlyButtonProps
+        : followBaseIconOnlyButtonProps
+      : isFollowing
+        ? unfollowBaseButtonProps
+        : followBaseButtonProps
+    : iconOnly
+      ? isFollowing
+        ? unfollowProfileIconOnlyButtonProps
+        : followProfileIconOnlyButtonProps
+      : isFollowing
+        ? unfollowProfileButtonProps
+        : followProfileButtonProps
   /**
    * Sorry for the mess, I hesitated between creating 4 buttons, or composition but went with a single file instead...
    */
@@ -117,10 +142,6 @@ const ClientFollowButton = ({
     ? 'fr-icon-user-heart-fill'
     : 'fr-icon-user-heart-line'
 
-  const title = isFollowing
-    ? buttonProps.title
-    : `Ne plus suivre ${profile ? 'le profil' : 'la base'}`
-
   console.log({
     base,
     profile,
@@ -130,12 +151,8 @@ const ClientFollowButton = ({
 
   return (
     <Button
-      size="small"
-      priority="tertiary no outline"
-      {...buttonProps}
+      {...(buttonProps as ButtonProps.IconOnly)}
       {...buttonLoadingClassname(isLoading)}
-      iconId={iconId}
-      title={title}
       type="button"
       onClick={onFollow}
     />

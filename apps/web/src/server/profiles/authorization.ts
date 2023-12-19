@@ -10,6 +10,7 @@ export type FilteredProfile = Pick<
   | 'firstName'
   | 'lastName'
   | 'image'
+  | 'followedBy'
   | '_count'
 >
 
@@ -24,6 +25,7 @@ export const filterAccess = (
     }
   | {
       authorized: false
+      isUser: false
       profile: FilteredProfile
     } => {
   const isUser = !!user && user.id === profile.id
@@ -33,6 +35,7 @@ export const filterAccess = (
 
   return {
     authorized: false,
+    isUser: false,
     profile: {
       id: profile.id,
       name: profile.name,
@@ -41,6 +44,7 @@ export const filterAccess = (
       image: profile.image,
       isPublic: profile.isPublic,
       email: profile.email,
+      followedBy: profile.followedBy,
       _count: {
         followedBy: profile._count.followedBy,
       },

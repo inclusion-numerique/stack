@@ -19,7 +19,7 @@ const BaseDetailsPage = async ({ params }: { params: { slug: string } }) => {
   const authorizations = filterAccess(base, user)
   return authorizations.authorized ? (
     <>
-      <Header base={base} isMember={authorizations.isMember} />
+      <Header base={base} isMember={authorizations.isMember} user={user} />
       <Menu base={base} current="a-propos" />
       <div className="fr-container fr-container--medium">
         <Details base={base} />
@@ -27,7 +27,7 @@ const BaseDetailsPage = async ({ params }: { params: { slug: string } }) => {
     </>
   ) : (
     <>
-      <Header base={authorizations.base} />
+      <Header base={authorizations.base} user={user} />
       <PrivateBox type="Base" />
     </>
   )

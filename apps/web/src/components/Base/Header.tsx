@@ -1,9 +1,10 @@
 import React from 'react'
 import Link from 'next/link'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { FilteredBase } from '@app/web/server/bases/authorization'
 import { BasePageData } from '@app/web/server/bases/getBase'
 import { getServerUrl } from '@app/web/utils/baseUrl'
+import { SessionUser } from '@app/web/auth/sessionUser'
+import { FollowButton } from '@app/web/components/Follows/FollowButton'
 import Breadcrumbs from '../Breadcrumbs'
 import CopyLinkButton from '../CopyLinkButton'
 import ViewsAndMetadata from './ViewsAndMetadata'
@@ -13,9 +14,11 @@ import Images from './Images'
 const Header = ({
   base,
   isMember,
+  user,
 }: {
   base: FilteredBase | BasePageData
   isMember?: boolean
+  user: SessionUser | null
 }) => (
   <div className={styles.container}>
     <div className="fr-container">
@@ -34,9 +37,7 @@ const Header = ({
           </Link>
         ) : (
           <div className={styles.buttons}>
-            <Button iconId="fr-icon-user-heart-line" size="small">
-              Suivre
-            </Button>
+            <FollowButton user={user} base={base} />
             {base.email && (
               <Link
                 className="fr-btn--sm fr-btn fr-btn--secondary fr-icon-mail-line fr-btn--icon-left"

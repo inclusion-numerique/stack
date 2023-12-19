@@ -32,9 +32,11 @@ const BaseCard = ({
               {getDepartmentName(base.department)}
             </p>
           )}
-          <div className={styles.badge}>
-            <BasePrivacyTag small isPublic={base.isPublic} />
-          </div>
+          {!base.isPublic && (
+            <div className={styles.badge}>
+              <BasePrivacyTag small isPublic={base.isPublic} />
+            </div>
+          )}
         </div>
         <h6 className="fr-my-2w">{base.title}</h6>
       </Link>

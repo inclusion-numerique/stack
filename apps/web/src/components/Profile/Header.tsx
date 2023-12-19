@@ -1,10 +1,11 @@
 import React from 'react'
 import Link from 'next/link'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { ProfilePageData } from '@app/web/server/profiles/getProfile'
 import { FilteredProfile } from '@app/web/server/profiles/authorization'
 import { getServerUrl } from '@app/web/utils/baseUrl'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
+import { FollowButton } from '@app/web/components/Follows/FollowButton'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import CopyLinkButton from '../CopyLinkButton'
 import styles from './Header.module.css'
 import ProfileInformations from './ProfileInformations'
@@ -13,10 +14,12 @@ const Header = ({
   profile,
   isConnectedUser,
   resourcesCount,
+  user,
 }: {
   profile: ProfilePageData | FilteredProfile
   isConnectedUser?: boolean
   resourcesCount: number
+  user: SessionUser | null
 }) => (
   <div className={styles.container}>
     <div className="fr-container">
@@ -34,9 +37,7 @@ const Header = ({
           </Link>
         ) : (
           <div className={styles.buttons}>
-            <Button iconId="fr-icon-user-heart-line" size="small">
-              Suivre
-            </Button>
+            <FollowButton user={user} profile={profile} />
             <Link
               className="fr-btn--sm fr-btn fr-btn--secondary fr-icon-mail-line fr-btn--icon-left"
               href={`mailto:${profile.email}`}

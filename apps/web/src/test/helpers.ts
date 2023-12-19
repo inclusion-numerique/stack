@@ -125,6 +125,7 @@ export const createTestBase = (
     coverImage: null,
     collections: [],
     savedCollections: [],
+    followedBy: [],
     members: [
       ...admins.map((admin) => ({
         baseId: id,

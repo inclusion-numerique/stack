@@ -55,14 +55,6 @@ const ResourceContents = ({
         className="fr-hidden fr-unhidden-lg"
       />
       <div className="fr-hidden fr-unhidden-md">
-        <Button
-          className="fr-mr-1w wip"
-          title="Télécharger la ressource"
-          iconId="fr-icon-download-line"
-          priority="tertiary"
-          size="small"
-        />
-
         <CopyLinkButton
           priority="tertiary"
           url={getServerUrl(`/ressources/${resource.slug}`, true)}
