@@ -3,6 +3,8 @@
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { useState } from 'react'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import Button from '@codegouvfr/react-dsfr/Button'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 
@@ -23,14 +25,13 @@ const SignoutPage = () => {
         <p>Êtes-vous sur de vouloir vous déconnecter&nbsp;?</p>
         <ul className="fr-btns-group">
           <li>
-            <button
+            <Button
               type="button"
-              className="fr-btn"
-              disabled={isLoading}
               onClick={onLogout}
+              {...buttonLoadingClassname(isLoading)}
             >
               Se déconnecter
-            </button>
+            </Button>
           </li>
         </ul>
         <div className="fr-grid-row fr-grid-row--center">
