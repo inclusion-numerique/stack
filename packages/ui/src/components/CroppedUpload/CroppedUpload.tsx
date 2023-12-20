@@ -31,7 +31,7 @@ const CroppedUpload = ({
   label?: string
   height: number
   ratio: number
-  round?: boolean
+  round?: boolean | 'quarter'
   onChange: (data?: CroppedImageType) => void
   disabled?: boolean
   error?: string

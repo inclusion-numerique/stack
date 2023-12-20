@@ -20,7 +20,7 @@ const params = {
   image: {
     ratio: 1,
     height: 128,
-    round: true,
+    round: 'quarter' as const,
     buttonClassName: styles.editImage,
     label: 'Image de la base',
     title: 'Modifier l’image de la base',

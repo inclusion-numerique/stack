@@ -74,7 +74,7 @@ const CroppedImage = ({
   label?: string
   height: number
   ratio: number
-  round?: boolean
+  round?: boolean | 'quarter'
   disabled?: boolean
   error?: string
   croppedBox?: Cropper.Data
@@ -92,7 +92,8 @@ const CroppedImage = ({
       <>
         <div
           className={classNames(styles.imageContainer, {
-            [styles.round]: round,
+            [styles.round]: round === true,
+            [styles.roundQuarter]: round === 'quarter',
           })}
           style={{ height, width: height * ratio }}
         >
@@ -144,7 +145,8 @@ const CroppedImage = ({
       emptyChildren && (
         <div
           className={classNames(styles.imageContainer, {
-            [styles.round]: round,
+            [styles.round]: round === true,
+            [styles.roundQuarter]: round === 'quarter',
           })}
           style={{ height, width: height * ratio }}
         >

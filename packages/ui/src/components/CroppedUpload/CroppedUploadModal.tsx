@@ -37,7 +37,7 @@ const CroppedUploadModal = <T extends FieldValues>({
   label?: string
   height: number
   ratio: number
-  round?: boolean
+  round?: boolean | 'quarter'
   onChange: (imageId: string | null) => void
   emptyChildren?: ReactNode
   image?: ImageForForm | null

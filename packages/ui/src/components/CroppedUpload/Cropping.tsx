@@ -64,7 +64,7 @@ const Cropping = ({
   initialImageCropData,
 }: {
   ratio: number
-  round?: boolean
+  round?: boolean | 'quarter'
   imageSource: string
   image?: ImageForForm | null
   imageToUpload: ImageWithName | null
@@ -86,7 +86,8 @@ const Cropping = ({
       Faire glisser l&lsquo;image pour l&lsquo;ajuster
       <div
         className={classNames(styles.cropping, {
-          [styles.croppingRound]: round,
+          [styles.croppingRound]: round === true,
+          [styles.croppingRoundQuarter]: round === 'quarter',
         })}
       >
         <Cropper

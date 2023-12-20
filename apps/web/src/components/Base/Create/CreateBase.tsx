@@ -59,6 +59,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
     defaultValues: {
       emailIsPublic: true,
       email: user.email,
+      isPublic: true,
     },
   })
   const {
@@ -223,7 +224,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
               render={({ fieldState: { error } }) => (
                 <CroppedUpload
                   ratio={1}
-                  round
+                  round="quarter"
                   label="Image de la base"
                   height={522 / 4.8}
                   modal={addImageCropModal}

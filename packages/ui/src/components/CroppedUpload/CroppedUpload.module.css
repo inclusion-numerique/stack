@@ -9,6 +9,11 @@
     border-radius: 50%;
 }
 
+.roundQuarter {
+    width: 128px;
+    border-radius: 12.5%;
+}
+
 .existingImage {
     display: flex;
     margin-bottom: 16px;
@@ -63,6 +68,13 @@
     :global(.point-se),
     :global(.point-sw) {
         display: none;
+    }
+}
+
+.croppingRoundQuarter {
+    :global(.cropper-view-box),
+    :global(.cropper-face) {
+        border-radius: 25%;
     }
 }
 
