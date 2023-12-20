@@ -42,10 +42,8 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
       'have.text',
       'Veuillez renseigner le nom de la base',
     )
-    cy.get('[id=input-form-field__isPublic__error]').should(
-      'have.text',
-      'Veuillez spécifier la visibilité de la base',
-    )
+    // Default value is selected by default
+    cy.get('[id=input-form-field__isPublic__error]').should('not.exist')
   })
 
   it('Acceptation 4 - Création de base valide', () => {
