@@ -100,6 +100,17 @@ export const executeMigration = async () => {
     ({ legacyId }) => `User with legacyId ${legacyId} not found`,
   )
 
+  const userEmailsByLegacyId = new Map(
+    migratedUsers.map((user) => [user.legacyId, user.email]),
+  )
+  const userEmailFromLegacyId = (legacyId: number) => {
+    const email = userEmailsByLegacyId.get(legacyId)
+    if (!email) {
+      throw new Error(`User with legacyId ${legacyId} not found`)
+    }
+    return email
+  }
+
   output(`- Migrating uploads...`)
 
   const migratedUploads = await migrateUploads()
@@ -134,6 +145,7 @@ export const executeMigration = async () => {
     legacyBases,
     existingBases,
     userIdFromLegacyId,
+    userEmailFromLegacyId,
     imageIdFromLegacyId,
     transaction: prismaClient,
   })

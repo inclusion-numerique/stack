@@ -47,6 +47,7 @@ export type MigrateBaseInput = {
   legacyBase: LegacyBase
   transaction: Prisma.TransactionClient
   userIdFromLegacyId: LegacyToNewIdHelper
+  userEmailFromLegacyId: LegacyToNewIdHelper
   imageIdFromLegacyId: LegacyToNewIdHelper
   // Deduplicated slug
   slug: string
@@ -57,9 +58,15 @@ export const migrateBase = async ({
   slug,
   transaction,
   userIdFromLegacyId,
+  userEmailFromLegacyId,
   imageIdFromLegacyId,
 }: MigrateBaseInput) => {
   const legacyId = Number(legacyBase.id)
+
+  const hasEmail = !!legacyBase.contact
+  const email =
+    legacyBase.contact || userEmailFromLegacyId(Number(legacyBase.owner_id))
+
   const data = {
     ownerId: userIdFromLegacyId(Number(legacyBase.owner_id)),
     title: legacyBase.title,
@@ -75,8 +82,8 @@ export const migrateBase = async ({
     created: legacyBase.created,
     updated: legacyBase.modified,
     isPublic: legacyBase.state === 'public',
-    email: legacyBase.contact || 'contact@contact.fr',
-    emailIsPublic: true,
+    email,
+    emailIsPublic: hasEmail,
     facebook: legacyBase.social_media_facebook,
     linkedin: legacyBase.social_media_linkedin,
     twitter: legacyBase.social_media_twitter,
@@ -101,12 +108,14 @@ export type MigrateBasesInput = {
   transaction: Prisma.TransactionClient
   userIdFromLegacyId: LegacyToNewIdHelper
   imageIdFromLegacyId: LegacyToNewIdHelper
+  userEmailFromLegacyId: LegacyToNewIdHelper
 }
 
 export const migrateBases = async ({
   legacyBases,
   existingBases,
   userIdFromLegacyId,
+  userEmailFromLegacyId,
   imageIdFromLegacyId,
 }: MigrateBasesInput) => {
   // Filter out bases that will be migrated as profile only
@@ -161,6 +170,7 @@ export const migrateBases = async ({
         transaction: prismaClient,
         slug,
         userIdFromLegacyId,
+        userEmailFromLegacyId,
         imageIdFromLegacyId,
       })
     }),

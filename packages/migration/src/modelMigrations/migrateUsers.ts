@@ -121,7 +121,7 @@ export const migrateUsers = async () => {
                 : { legacyId: user.legacyId },
               create: user,
               update: user,
-              select: { id: true, legacyId: true },
+              select: { id: true, legacyId: true, email: true },
             })
           }),
         )

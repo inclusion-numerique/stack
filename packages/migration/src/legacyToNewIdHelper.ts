@@ -36,7 +36,8 @@ export const createLegacyToNewKeyHelper = <
   const keysMap = new Map(
     data
       .filter(
-        (item): item is T & { legacyKey: string } => item.legacyKey !== null,
+        (item): item is T & { legacyKey: string | number } =>
+          item.legacyKey !== null,
       )
       .map(({ legacyKey, key }) => [legacyKey, key]),
   )
