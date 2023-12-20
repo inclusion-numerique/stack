@@ -12,6 +12,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
 
   it('Acceptation 1 : ajout d’une ressource à la collection d’un profil sans collection et non membre de base', () => {
     const ids = cleanUpAndCreateTestCollectionAndResource()
+    cy.dsfrModalsShouldBeBound()
     cy.testId('save-resource-in-collection-button').click()
 
     cy.testId('add-in-collection-section').should('have.length', 1)
@@ -34,6 +35,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
 
   it('Acceptation 2 : ajout d’une ressource à la collection d’un profil avec collections et non membre de base', () => {
     const ids = cleanUpAndCreateTestCollectionAndResource(true)
+    cy.dsfrModalsShouldBeBound()
     cy.testId('save-resource-in-collection-button').click()
 
     cy.testId('add-in-collection-section').should('have.length', 2)
@@ -68,6 +70,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
 
   it('Acceptation 3 : ajout d’une ressource à la collection d’un profil avec collections et membre de base', () => {
     const ids = cleanUpAndCreateTestCollectionAndResource(true, true)
+    cy.dsfrModalsShouldBeBound()
     cy.testId('save-resource-in-collection-button').click()
 
     cy.testId('add-in-collection-bases').should('have.length', 3)
