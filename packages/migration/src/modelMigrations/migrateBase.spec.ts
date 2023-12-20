@@ -60,6 +60,9 @@ describe('migrateBase', () => {
       imageIdFromLegacyId: createLegacyToNewIdHelper([
         { legacyId: Number(legacyBase.profile_image_id), id: '1111' },
       ]),
+      userEmailFromLegacyId: createLegacyToNewIdHelper([
+        { legacyId: Number(legacyBase.owner_id), id: 'a@a.a' },
+      ]),
     })
 
     // eslint-disable-next-line @typescript-eslint/unbound-method
