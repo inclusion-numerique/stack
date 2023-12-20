@@ -104,10 +104,10 @@ describe('Base authorization', () => {
       expect(authorizations.authorized).toBe(false)
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore authorization should be true
-      expect(authorizations.isMember).toBe(undefined)
+      expect(authorizations.isMember).toBe(false)
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore authorization should be true
-      expect(authorizations.isAdmin).toBe(undefined)
+      expect(authorizations.isAdmin).toBe(false)
       expect(authorizations.base).toEqual(filteredBase)
     })
 

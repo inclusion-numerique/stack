@@ -15,34 +15,41 @@ const ViewsAndMetadata = ({
   base: BasePageData | BaseListItem | FilteredBase
   className?: string
   withBadge?: boolean
-}) => (
-  <div className={classNames(styles.container, 'fr-text--sm', className)}>
-    <span className="fr-icon-file-text-line fr-icon--sm" />
-    <div>
-      <b>
-        {(base as BasePageData).resources
-          ? (base as BasePageData).resources.length
-          : // eslint-disable-next-line no-underscore-dangle
-            (base as BaseListItem | FilteredBase)._count.resources}
-      </b>
-      <span className={styles.spanMdDisplay}> Ressources</span>
+}) => {
+  // TODO clean count method from separated query ?
+  const resourcesCount =
+    'resources' in base
+      ? base.resources.length
+      : // eslint-disable-next-line no-underscore-dangle
+        base._count.resources
+
+  return (
+    <div className={classNames(styles.container, 'fr-text--sm', className)}>
+      <span className="fr-icon-file-text-line fr-icon--sm" />
+      <div>
+        <b>{resourcesCount}</b>
+        <span className={styles.spanMdDisplay}>
+          {' '}
+          Ressource{sPluriel(resourcesCount)}
+        </span>
+      </div>
+      <div>·</div>
+      <span className="fr-icon-user-heart-line fr-icon--sm" />
+      <div>
+        <b>{base._count.followedBy}</b>
+        <span className={styles.spanMdDisplay}>
+          {' '}
+          Suivi{sPluriel(base._count.followedBy)}
+        </span>
+      </div>
+      {withBadge && !base.isPublic && (
+        <>
+          <div>·</div>
+          <BasePrivacyTag isPublic={base.isPublic} />
+        </>
+      )}
     </div>
-    <div>·</div>
-    <span className="fr-icon-user-heart-line fr-icon--sm" />
-    <div>
-      <b>{base._count.followedBy}</b>
-      <span className={styles.spanMdDisplay}>
-        {' '}
-        Suivi{sPluriel(base._count.followedBy)}
-      </span>
-    </div>
-    {withBadge && !base.isPublic && (
-      <>
-        <div>·</div>
-        <BasePrivacyTag isPublic={base.isPublic} />
-      </>
-    )}
-  </div>
-)
+  )
+}
 
 export default ViewsAndMetadata

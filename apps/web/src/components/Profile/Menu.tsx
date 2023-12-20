@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import type { ProfilePageData } from '@app/web/server/profiles/getProfile'
@@ -18,6 +18,27 @@ const getCurrentTabFromPath = (path: string): ProfileTab => {
         ? 'suivis'
         : 'ressources'
 }
+
+const MenuItem = ({
+  tab,
+  href,
+  currentTab,
+  children,
+}: PropsWithChildren<{
+  tab: ProfileTab
+  href: string
+  currentTab: ProfileTab
+}>) => (
+  <li className="fr-nav__item">
+    <Link
+      className="fr-nav__link fr-link--md"
+      href={href}
+      aria-current={currentTab === tab ? 'page' : undefined}
+    >
+      {children}
+    </Link>
+  </li>
+)
 
 const Menu = ({
   profile,
@@ -42,49 +63,37 @@ const Menu = ({
       <div className="fr-container">
         <nav className="fr-nav">
           <ul className="fr-nav__list">
-            <li className="fr-nav__item">
-              <Link
-                data-testid="ressources-menu-button"
-                className="fr-nav__link fr-link--md"
-                href={`/profils/${profile.id}`}
-                aria-current={currentTab === 'ressources' ? 'page' : undefined}
-              >
-                {isConnectedUser ? 'Mes ressources' : 'Ressources'} ·{' '}
-                <b>{resourcesCount}</b>
-              </Link>
-            </li>
-            <li className="fr-nav__item">
-              <Link
-                data-testid="collections-menu-button"
-                className="fr-nav__link fr-link--md"
-                href={`/profils/${profile.id}/collections`}
-                aria-current={currentTab === 'collections' ? 'page' : undefined}
-              >
-                {isConnectedUser ? 'Mes collections' : 'Collections'} ·{' '}
-                <b>{collectionsCount}</b>
-              </Link>
-            </li>
-            <li className="fr-nav__item">
-              <Link
-                data-testid="bases-menu-button"
-                className="fr-nav__link fr-link--md"
-                href={`/profils/${profile.id}/bases`}
-                aria-current={currentTab === 'bases' ? 'page' : undefined}
-              >
-                {isConnectedUser ? 'Mes bases' : 'Bases'} · <b>{basesCount}</b>
-              </Link>
-            </li>
-            <li className="fr-nav__item">
-              <Link
-                data-testid="follows-menu-button"
-                className="fr-nav__link fr-link--md"
-                href={`/profils/${profile.id}/suivis`}
-                aria-current={currentTab === 'suivis' ? 'page' : undefined}
-              >
-                {isConnectedUser ? 'Mes suivis' : 'Suivis'} ·{' '}
-                <b>{followsCount}</b>
-              </Link>
-            </li>
+            <MenuItem
+              tab="ressources"
+              currentTab={currentTab}
+              href={`/profils/${profile.id}`}
+            >
+              {isConnectedUser ? 'Mes ressources' : 'Ressources'} ·{' '}
+              <b>{resourcesCount}</b>
+            </MenuItem>
+            <MenuItem
+              tab="collections"
+              currentTab={currentTab}
+              href={`/profils/${profile.id}/collections`}
+            >
+              {isConnectedUser ? 'Mes collections' : 'Collections'} ·{' '}
+              <b>{collectionsCount}</b>
+            </MenuItem>
+            <MenuItem
+              tab="bases"
+              currentTab={currentTab}
+              href={`/profils/${profile.id}/bases`}
+            >
+              {isConnectedUser ? 'Mes bases' : 'Bases'} · <b>{basesCount}</b>
+            </MenuItem>
+            <MenuItem
+              tab="suivis"
+              currentTab={currentTab}
+              href={`/profils/${profile.id}/suivis`}
+            >
+              {isConnectedUser ? 'Mes suivis' : 'Suivis'} ·{' '}
+              <b>{followsCount}</b>
+            </MenuItem>
           </ul>
         </nav>
       </div>

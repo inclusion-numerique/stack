@@ -28,6 +28,8 @@ export const filterAccess = (
   | {
       authorized: false
       base: FilteredBase
+      isMember: false
+      isAdmin: false
     } => {
   const baseMember =
     user && base.members.find((member) => member.member.id === user.id)
@@ -47,6 +49,8 @@ export const filterAccess = (
 
   return {
     authorized: false,
+    isAdmin: false,
+    isMember: false,
     base: {
       id: base.id,
       slug: base.slug,
