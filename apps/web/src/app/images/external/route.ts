@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server'
 import axios from 'axios'
+import * as Sentry from '@sentry/nextjs'
 
 const notFoundResponse = () =>
   new Response('', {
@@ -15,28 +16,31 @@ export const GET = async (request: NextRequest) => {
     return notFoundResponse()
   }
 
-  const { headers, data, status, statusText } = await axios.get<ReadableStream>(
-    source,
-    {
-      responseType: 'stream',
-    },
-  )
+  try {
+    const { headers, data, status, statusText } =
+      await axios.get<ReadableStream>(source, {
+        responseType: 'stream',
+      })
 
-  if (!headers || !data) {
-    return new Response('', {
-      status,
-      statusText,
+    if (!headers || !data) {
+      return new Response('', {
+        status,
+        statusText,
+      })
+    }
+
+    const contentType = headers['content-type'] as string
+    const cacheControl = headers['cache-control'] as string
+
+    return new Response(data, {
+      status: 200,
+      headers: {
+        'Content-Type': contentType,
+        'Cache-Control': cacheControl || 'public, max-age=31536000, immutable',
+      },
     })
+  } catch (error) {
+    Sentry.captureException(error)
+    return notFoundResponse()
   }
-
-  const contentType = headers['content-type'] as string
-  const cacheControl = headers['cache-control'] as string
-
-  return new Response(data, {
-    status: 200,
-    headers: {
-      'Content-Type': contentType,
-      'Cache-Control': cacheControl || 'public, max-age=31536000, immutable',
-    },
-  })
 }
