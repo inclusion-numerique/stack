@@ -2,7 +2,7 @@ import React from 'react'
 import { FilteredBase } from '@app/web/server/bases/authorization'
 import { BasePageData } from '@app/web/server/bases/getBase'
 import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
-import RoundImage from '../RoundImage'
+import BaseImage from '@app/web/components/BaseImage'
 import styles from './Images.module.css'
 import ImageEdition from './Edition/ImageEdition'
 
@@ -37,11 +37,10 @@ const Images = (
         {editMode && <ImageEdition base={base} type="coverImage" />}
       </div>
       <div className={styles.logoContainer}>
-        <RoundImage
-          radius="quarter"
+        <BaseImage
           className={styles.logo}
           size={128}
-          image={base.image}
+          base={base}
           borderWidth={2}
         />
         {editMode && <ImageEdition base={base} type="image" />}

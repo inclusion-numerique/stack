@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { mobileStory } from '@app/storybook/storyHelper'
-import { BaseListItem } from '@app/web/server/bases/getBasesList'
+import type { BaseListItem } from '@app/web/server/bases/getBasesList'
 import BaseCard from './Card'
 
 const base = {

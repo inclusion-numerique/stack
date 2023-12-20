@@ -35,6 +35,7 @@ export const collectionSelect = (user: Pick<SessionUser, 'id'> | null) =>
     baseId: true,
     base: {
       select: {
+        id: true,
         title: true,
         slug: true,
         image: {

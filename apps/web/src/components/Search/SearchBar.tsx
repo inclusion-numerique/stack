@@ -15,8 +15,8 @@ import {
   searchUrl,
 } from '@app/web/server/search/searchQueryParams'
 import { Spinner } from '@app/web/ui/Spinner'
-import RoundImage from '@app/web/components/RoundImage'
 import RoundProfileImage from '@app/web/components/RoundProfileImage'
+import BaseImage from '@app/web/components/BaseImage'
 import styles from './SearchBar.module.css'
 
 const goToNextElement = (
@@ -223,11 +223,10 @@ const SearchBar = ({
                           href={`/bases/${base.slug}`}
                           className={styles.base}
                         >
-                          <RoundImage
+                          <BaseImage
                             className="fr-mr-1w"
-                            image={base.image}
+                            base={base}
                             size={24}
-                            radius="quarter"
                           />
                           <span>{base.title}</span>
                         </Link>

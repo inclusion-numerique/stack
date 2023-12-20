@@ -45,6 +45,7 @@ export const resourceListSelect = (user: { id: string } | null) =>
     },
     base: {
       select: {
+        id: true,
         title: true,
         slug: true,
         isPublic: true,

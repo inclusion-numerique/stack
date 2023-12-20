@@ -2,10 +2,11 @@ import Link from 'next/link'
 import React from 'react'
 import { User } from '@prisma/client'
 import classNames from 'classnames'
-import RoundImage, { RoundImageProps } from '@app/web/components/RoundImage'
+import { RoundImageProps } from '@app/web/components/RoundImage'
 import RoundProfileImage from '@app/web/components/RoundProfileImage'
 import { BasePageData } from '@app/web/server/bases/getBase'
 import { WithMinimalImageData } from '@app/web/server/image/imageTypes'
+import BaseImage from '@app/web/components/BaseImage'
 
 const attributionWordings = {
   resource: {
@@ -31,12 +32,12 @@ const OwnershipInformation = ({
   user: Pick<User, 'firstName' | 'lastName' | 'name' | 'id'> & {
     image: RoundImageProps['image']
   }
-  base: (Pick<BasePageData, 'slug' | 'title'> & WithMinimalImageData) | null
+  base:
+    | (Pick<BasePageData, 'slug' | 'title' | 'id'> & WithMinimalImageData)
+    | null
   className?: string
   attributionWording: 'resource' | 'collection' | 'none'
 }) => {
-  const image = base ? base.image : user.image
-
   const attribution =
     attributionWordings[attributionWording][base ? 'base' : 'user']
 
@@ -44,7 +45,7 @@ const OwnershipInformation = ({
     <div className={classNames('fr-grid-row fr-grid-row--middle', className)}>
       {base ? (
         <>
-          <RoundImage radius="quarter" className="fr-mr-1w" image={image} />
+          <BaseImage className="fr-mr-1w" base={base} />
           <span className="fr-text--xs fr-mb-0">
             {attribution}
             <Link href={`/bases/${base.slug}`} className="fr-link fr-text--xs">

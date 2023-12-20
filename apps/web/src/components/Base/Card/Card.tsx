@@ -7,9 +7,9 @@ import { getServerUrl } from '@app/web/utils/baseUrl'
 import { BasePrivacyTag } from '@app/web/components/PrivacyTags'
 import ViewsAndMetadata from '@app/web/components/Base/ViewsAndMetadata'
 import CopyLinkButton from '@app/web/components/CopyLinkButton'
-import RoundImage from '@app/web/components/RoundImage'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { FollowButton } from '@app/web/components/Follows/FollowButton'
+import BaseImage from '@app/web/components/BaseImage'
 import styles from './Card.module.css'
 
 const BaseCard = ({
@@ -20,7 +20,7 @@ const BaseCard = ({
   user: SessionUser | null
 }) => (
   <div className={styles.container} data-testid="base-card">
-    <RoundImage radius="quarter" image={base.image} size={116} />
+    <BaseImage base={base} size={96} />
     <div className={styles.content}>
       <Link href={`/bases/${base.slug}`}>
         <div className={styles.header}>

@@ -6,8 +6,8 @@ import {
   ProfilePrivacyTag,
 } from '@app/web/components/PrivacyTags'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import RoundImage from '@app/web/components/RoundImage'
 import RoundProfileImage from '@app/web/components/RoundProfileImage'
+import BaseImage from '@app/web/components/BaseImage'
 import styles from './PublicationView.module.css'
 
 const PublicationView = ({
@@ -20,11 +20,7 @@ const PublicationView = ({
   resource.base ? (
     <div className={styles.baseInfo}>
       <div className={styles.baseName}>
-        <RoundImage
-          radius="quarter"
-          className="fr-mr-1w"
-          image={resource.base.image}
-        />
+        <BaseImage className="fr-mr-1w" base={resource.base} />
         <span>{resource.base.title}</span>
       </div>
       <BasePrivacyTag isPublic={resource.base.isPublic} />

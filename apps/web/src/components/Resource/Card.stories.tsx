@@ -18,6 +18,7 @@ const resource = {
   updated: date,
   published: date,
   base: {
+    id: 'base-id',
     title: 'Titre de la base',
     slug: 'titre-de-la-base',
     isPublic: true,
