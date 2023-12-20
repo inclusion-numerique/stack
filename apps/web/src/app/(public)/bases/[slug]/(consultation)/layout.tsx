@@ -14,14 +14,22 @@ const BaseLayout = async ({
   if (!authorizations.authorized) {
     return (
       <>
-        <Header base={authorizations.base} user={user} />
+        <Header
+          base={authorizations.base}
+          isMember={authorizations.isMember}
+          user={user}
+        />
         <PrivateBox type="Base" />
       </>
     )
   }
   return (
     <>
-      <Header base={authorizations.base} user={user} />
+      <Header
+        base={authorizations.base}
+        isMember={authorizations.isMember}
+        user={user}
+      />
       <Menu base={authorizations.base} />
       <div className="fr-container fr-container--medium fr-mb-50v">
         {children}
