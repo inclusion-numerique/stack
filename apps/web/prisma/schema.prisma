@@ -75,6 +75,7 @@ model User {
   baseFollows         BaseFollow[]
   profileFollows      ProfileFollow[]        @relation(name: "profile_follow_follower")
   followedBy          ProfileFollow[]        @relation(name: "profile_follow_followed")
+  searches            SearchExecution[]
 
   @@map("users")
 }
@@ -627,4 +628,41 @@ model ProfileFollow {
   @@index([profileId])
   @@index([followerId])
   @@map("profile_follows")
+}
+
+enum SearchType {
+  Quicksearch @map("quicksearch")
+  Resources   @map("resources")
+  Bases       @map("bases")
+  Profiles    @map("profiles")
+}
+
+model SearchExecution {
+  id String @id @default(uuid()) @db.Uuid
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String? @map("user_id") @db.Uuid
+
+  type SearchType
+
+  query String
+
+  timestamp DateTime @default(now())
+
+  duration Int
+
+  results Int
+
+  themes          Theme[]          @default([])
+  supportTypes    SupportType[]    @default([]) @map("support_types")
+  targetAudiences TargetAudience[] @default([]) @map("target_audiences")
+  departments     String[]         @default([])
+
+  page    Int
+  perPage Int @map("per_page")
+
+  sorting String
+
+  @@index([userId])
+  @@map("search_executions")
 }

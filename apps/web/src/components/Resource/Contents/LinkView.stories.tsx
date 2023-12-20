@@ -33,7 +33,7 @@ export const AvecImageEtFavicon: Story = {
         'Cras gravida dolor volutpat orci eleifend, sit amet lacinia mi egestas. Vivamus non lorem vitae justo rhoncus tincidunt. Nulla pulvinar nisi vitae odio elementum, nec sollicitudin dui dapibus.',
       linkTitle: 'Programme Société Numérique - Societé Numérique',
       linkDescription:
-        "Faciliter l'accès à des formations d'initiation ou de perfectionnement aux outils et usages numériques Construire une politique locale d'inclusion",
+        "Faciliter l'accès à des formations d’initiation ou de perfectionnement aux outils et usages numériques Construire une politique locale d'inclusion",
       linkImageUrl:
         'https://www.gouvernement.fr/upload/media/content/0001/05/5818ce1507999816c8ef7cd961e48d6dc5446c51.jpeg',
       linkFaviconUrl: 'https://www.gouvernement.fr/favicon.ico',

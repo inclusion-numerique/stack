@@ -8,7 +8,7 @@ export const targetAudiencesLimit = 5
 export const indexationCommand = {
   themes: z
     .array(z.nativeEnum(Theme), {
-      required_error: "Merci d'ajouter au moins une thématique",
+      required_error: 'Merci d’ajouter au moins une thématique',
     })
     .max(
       themesLimit,
@@ -16,7 +16,7 @@ export const indexationCommand = {
     ),
   supportTypes: z
     .array(z.nativeEnum(SupportType), {
-      required_error: "Merci d'ajouter au moins un type de support",
+      required_error: 'Merci d’ajouter au moins un type de support',
     })
     .max(
       supportTypesLimit,
@@ -24,7 +24,7 @@ export const indexationCommand = {
     ),
   targetAudiences: z
     .array(z.nativeEnum(TargetAudience), {
-      required_error: "Merci d'ajouter au moins un public visé",
+      required_error: 'Merci d’ajouter au moins un public visé',
     })
     .max(
       targetAudiencesLimit,
@@ -42,15 +42,15 @@ export const PublishCommandValidation = z.object({
         isPublic: z.literal(true),
         themes: indexationCommand.themes.min(
           1,
-          "Merci d'ajouter au moins une thématique",
+          'Merci d’ajouter au moins une thématique',
         ),
         supportTypes: indexationCommand.supportTypes.min(
           1,
-          "Merci d'ajouter au moins un type de support",
+          'Merci d’ajouter au moins un type de support',
         ),
         targetAudiences: indexationCommand.targetAudiences.min(
           1,
-          "Merci d'ajouter au moins un public visé",
+          'Merci d’ajouter au moins un public visé',
         ),
       }),
       z.object({

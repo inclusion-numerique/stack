@@ -102,7 +102,7 @@ const ResourceNavigation = ({
         <Button
           size="large"
           className="fr-hidden-md"
-          title="Plus d'action"
+          title="Plus d’action"
           priority="tertiary no outline"
           iconId="fr-icon-more-fill"
           {...resourceNavigationModalNativeButtonProps}

@@ -27,17 +27,10 @@ const BasesSearchResultPage = async ({
   const searchParams = searchParamsFromSegment(params?.searchSegment)
   const paginationParams = sanitizeUrlPaginationParams(urlPaginationParams)
 
-  const [{ bases, basesCount, duration }, tabCounts] = await Promise.all([
+  const [{ bases, basesCount }, tabCounts] = await Promise.all([
     executeBasesSearch(searchParams, paginationParams, user),
     countSearchResults(searchParams, user),
   ])
-
-  console.info(
-    'Bases search execution',
-    duration,
-    searchParams,
-    paginationParams,
-  )
 
   return (
     <>

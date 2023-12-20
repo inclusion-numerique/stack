@@ -90,7 +90,7 @@ const EditionActionBar = ({
               <Button
                 ref={buttonRef}
                 type="button"
-                title="Voir plus d'options"
+                title="Voir plus d’options"
                 priority="tertiary no outline"
                 iconId="fr-icon-more-line"
                 nativeButtonProps={{

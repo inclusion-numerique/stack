@@ -12,7 +12,7 @@ const EmptyBases = ({ isConnectedUser }: { isConnectedUser: boolean }) => (
     title={
       isConnectedUser
         ? 'Actuellement, vous n’êtes pas membre d’une base.'
-        : "Ce profil n'est membre d'aucune base"
+        : "Ce profil n'est membre d’aucune base."
     }
   >
     {isConnectedUser ? (
@@ -21,10 +21,7 @@ const EmptyBases = ({ isConnectedUser }: { isConnectedUser: boolean }) => (
         & contribuer à des ressources dans une démarche collaborative. Vous
         pouvez créer votre propre base ou rejoindre une base existante en vous
         faisant inviter par un administrateur de cette base.
-        <Link href="/" className="fr-link wip">
-          En savoir plus
-        </Link>
-        <div className="fr-mt-4w">
+        <div className="fr-mt-8v">
           <CreateBaseButton className="fr-btn--secondary" />
           <Link
             className="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-search-line fr-ml-2w"
@@ -35,7 +32,16 @@ const EmptyBases = ({ isConnectedUser }: { isConnectedUser: boolean }) => (
         </div>
       </>
     ) : (
-      `Revenez plus tard ou suivez ce profil afin d'être tenu informé de ses prochaines publications.`
+      <>
+        Une base est une communauté d’utilisateurs qui souhaitent créer, publier
+        & contribuer à des ressources dans une démarche collaborative.
+        <Link
+          className="fr-mt-8v fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-search-line"
+          href={searchUrl('bases', defaultSearchParams)}
+        >
+          Explorer les bases
+        </Link>
+      </>
     )}
   </EmptyBox>
 )

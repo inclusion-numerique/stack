@@ -27,17 +27,10 @@ const ProfilesSearchResultPage = async ({
   const searchParams = searchParamsFromSegment(params?.searchSegment)
   const paginationParams = sanitizeUrlPaginationParams(urlPaginationParams)
 
-  const [{ profiles, profilesCount, duration }, tabCounts] = await Promise.all([
+  const [{ profiles, profilesCount }, tabCounts] = await Promise.all([
     executeProfilesSearch(searchParams, paginationParams, user),
     countSearchResults(searchParams, user),
   ])
-
-  console.info(
-    'Profiles search execution',
-    duration,
-    searchParams,
-    paginationParams,
-  )
 
   return (
     <>

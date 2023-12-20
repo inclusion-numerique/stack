@@ -19,6 +19,7 @@ import {
   PaginationParams,
   SearchParams,
 } from '@app/web/server/search/searchQueryParams'
+import { backgroundLogSearchExecution } from '@app/web/server/search/logSearchExecution'
 
 export const countSearchResults = async (
   searchParams: SearchParams,
@@ -56,6 +57,15 @@ export const executeResourcesSearch = async (
   ])
   const end = Date.now()
 
+  backgroundLogSearchExecution({
+    searchParams,
+    paginationParams,
+    user,
+    type: 'Resources',
+    results: resourcesCount,
+    duration: end - start,
+  })
+
   return {
     resourcesCount,
     resources,
@@ -76,6 +86,15 @@ export const executeBasesSearch = async (
   ])
   const end = Date.now()
 
+  backgroundLogSearchExecution({
+    searchParams,
+    paginationParams,
+    user,
+    type: 'Bases',
+    results: basesCount,
+    duration: end - start,
+  })
+
   return {
     basesCount,
     bases,
@@ -95,6 +114,15 @@ export const executeProfilesSearch = async (
     searchProfiles(searchParams, paginationParams, user),
   ])
   const end = Date.now()
+
+  backgroundLogSearchExecution({
+    searchParams,
+    paginationParams,
+    user,
+    type: 'Profiles',
+    results: profilesCount,
+    duration: end - start,
+  })
 
   return {
     profilesCount,
@@ -131,6 +159,19 @@ export const executeQuickSearch = async (
     quickSearchProfiles(query, user),
   ])
   const end = Date.now()
+
+  backgroundLogSearchExecution({
+    searchParams: quickSearchParams,
+    paginationParams: {
+      page: 1,
+      perPage: 3,
+      sort: 'pertinence',
+    },
+    user,
+    type: 'Quicksearch',
+    results: resourcesCount + basesCount + profilesCount,
+    duration: end - start,
+  })
 
   return {
     resourcesCount,

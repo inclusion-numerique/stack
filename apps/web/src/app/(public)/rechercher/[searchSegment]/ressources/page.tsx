@@ -29,18 +29,10 @@ const ResourcesSearchResultPage = async ({
   const searchParams = searchParamsFromSegment(params?.searchSegment)
   const paginationParams = sanitizeUrlPaginationParams(urlPaginationParams)
 
-  const [{ resources, resourcesCount, duration }, tabCounts] =
-    await Promise.all([
-      executeResourcesSearch(searchParams, paginationParams, user),
-      countSearchResults(searchParams, user),
-    ])
-
-  console.info(
-    'Resources search execution',
-    duration,
-    searchParams,
-    paginationParams,
-  )
+  const [{ resources, resourcesCount }, tabCounts] = await Promise.all([
+    executeResourcesSearch(searchParams, paginationParams, user),
+    countSearchResults(searchParams, user),
+  ])
 
   return (
     <>
