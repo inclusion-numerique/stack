@@ -30,6 +30,7 @@ const MenuItem = ({
       className="fr-nav__link fr-link--md"
       href={href}
       aria-current={currentTab === tab ? 'page' : undefined}
+      data-testid={`${tab}-menu-button`}
     >
       {children}
     </Link>
