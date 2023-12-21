@@ -21,7 +21,7 @@ const CollectionCard = ({
   const href = `/collections/${collection.id}`
 
   return (
-    <div className={styles.card} data-testid="collection-card">
+    <article className={styles.card} data-testid="collection-card">
       <Link href={href}>
         <Images
           image={collection.image}
@@ -56,7 +56,7 @@ const CollectionCard = ({
           context="card"
         />
       </div>
-    </div>
+    </article>
   )
 }
 

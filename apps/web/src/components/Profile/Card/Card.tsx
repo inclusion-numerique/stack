@@ -17,7 +17,7 @@ const ProfileCard = ({
   user: SessionUser | null
   canFollow?: boolean
 }) => (
-  <div className={styles.container} data-testid="profile-card">
+  <article className={styles.container} data-testid="profile-card">
     <Link className={styles.content} href={`/profils/${profile.id}`}>
       <RoundProfileImage size={48} user={profile} />
       {profile.name}
@@ -28,7 +28,7 @@ const ProfileCard = ({
       ) : null}
       <CopyLinkButton url={getServerUrl(`/profils/${profile.id}`, true)} />
     </div>
-  </div>
+  </article>
 )
 
 export default ProfileCard

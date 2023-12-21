@@ -11,10 +11,12 @@ const ViewsAndMetadata = ({
   base,
   className,
   withBadge,
+  smallBadge,
 }: {
   base: BasePageData | BaseListItem | FilteredBase
   className?: string
   withBadge?: boolean
+  smallBadge?: boolean
 }) => {
   // TODO clean count method from separated query ?
   const resourcesCount =
@@ -42,10 +44,10 @@ const ViewsAndMetadata = ({
           Suivi{sPluriel(base._count.followedBy)}
         </span>
       </div>
-      {withBadge && !base.isPublic && (
+      {withBadge && (
         <>
           <div>·</div>
-          <BasePrivacyTag isPublic={base.isPublic} />
+          <BasePrivacyTag small={smallBadge} isPublic={base.isPublic} />
         </>
       )}
     </div>

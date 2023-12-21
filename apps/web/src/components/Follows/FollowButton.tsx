@@ -1,3 +1,4 @@
+import type { ButtonProps } from '@codegouvfr/react-dsfr/Button'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { BaseListItem } from '@app/web/server/bases/getBasesList'
 import { ProfileListItem } from '@app/web/server/profiles/getProfilesList'
@@ -16,6 +17,7 @@ import { FilteredBase } from '@app/web/server/bases/authorization'
 export type FollowButtonProps = {
   user: SessionUser | null
   iconOnly?: boolean
+  followPriority?: ButtonProps['priority']
 } & (
   | { base: BaseListItem | BasePageData | FilteredBase; profile?: undefined }
   | {
@@ -25,7 +27,7 @@ export type FollowButtonProps = {
 )
 
 export const FollowButton = (props: FollowButtonProps) => {
-  const { profile, base, user, iconOnly } = props
+  const { profile, base, user, iconOnly, followPriority } = props
 
   if (!profile && !base) {
     return null
@@ -43,9 +45,15 @@ export const FollowButton = (props: FollowButtonProps) => {
   // Server component version
 
   if (base) {
+    const buttonProps = iconOnly
+      ? followBaseIconOnlyButtonProps
+      : followBaseButtonProps
+
     return (
       <Button
-        {...(iconOnly ? followBaseIconOnlyButtonProps : followBaseButtonProps)}
+        {...(followPriority
+          ? buttonProps
+          : { ...buttonProps, priority: followPriority })}
         linkProps={{
           href,
         }}
@@ -53,11 +61,15 @@ export const FollowButton = (props: FollowButtonProps) => {
     )
   }
 
+  const buttonProps = iconOnly
+    ? followProfileIconOnlyButtonProps
+    : followProfileButtonProps
+
   return (
     <Button
-      {...(iconOnly
-        ? followProfileIconOnlyButtonProps
-        : followProfileButtonProps)}
+      {...(followPriority
+        ? buttonProps
+        : { ...buttonProps, priority: followPriority })}
       linkProps={{
         href,
       }}

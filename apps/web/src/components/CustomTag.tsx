@@ -27,7 +27,7 @@ const CustomTag = ({
       {
         'fr-tag': label,
         'fr-tag--icon-left': label,
-        'fr-text--medium': label,
+        'fr-text--medium': !small,
         'fr-tag--sm': small,
         [styles.iconOnly]: !label,
       },

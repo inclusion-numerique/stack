@@ -52,7 +52,7 @@ const ResourceCard = ({
   )
 
   return (
-    <div className={styles.container} data-testid="resource-card">
+    <article className={styles.container} data-testid="resource-card">
       <div className={styles.header}>
         <OwnershipInformation
           user={resource.createdBy}
@@ -126,7 +126,7 @@ const ResourceCard = ({
           )}
         </div>
       </div>
-    </div>
+    </article>
   )
 }
 

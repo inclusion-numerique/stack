@@ -1,29 +1,49 @@
 .container {
-  padding: 24px 32px;
+  padding: 24px 0;
   display: flex;
-  gap: 32px;
-  align-items: center;
-  border: var(--slim-grey-border);
+  gap: 12px;
+  border-bottom: var(--slim-grey-border);
   background-image: none;
+  flex-direction: column;
 
-  &:not(:first-of-type) {
-    margin-top: 24px;
+  &:first-of-type {
+    border-top: var(--slim-grey-border);
   }
+
+    @media (min-width: 576px) {
+      gap: 24px;
+        flex-direction: row;
+      align-items: center;
+    }
+}
+
+.imageLink{
+  background: transparent !important;
 }
 
 .content {
   flex: 1;
 }
 
-.footer,
-.header {
+.midContent{
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column-reverse;
+
+  @media (min-width: 576px) {
+    flex-direction: column;
+  }
 }
 
-.header {
-  color: var(--text-mention-grey);
+.exerpt {
+    max-height: 72px;
+
+  /* Standard ellipsis does not work on multiline */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background-image: none;
 }
 
 .badge {

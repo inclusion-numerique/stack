@@ -28,6 +28,7 @@ const ClientFollowButton = ({
   profile,
   user,
   iconOnly,
+  followPriority,
 }: FollowButtonProps) => {
   const followBaseMutation = trpc.follow.followBase.useMutation()
   const followProfileMutation = trpc.follow.followProfile.useMutation()
@@ -55,6 +56,12 @@ const ClientFollowButton = ({
       : isFollowing
         ? unfollowProfileButtonProps
         : followProfileButtonProps
+
+  const buttonPropsWithPriority =
+    followPriority && !isFollowing
+      ? { ...buttonProps, priority: followPriority }
+      : buttonProps
+
   /**
    * Sorry for the mess, I hesitated between creating 4 buttons, or composition but went with a single file instead...
    */
@@ -151,7 +158,7 @@ const ClientFollowButton = ({
 
   return (
     <Button
-      {...(buttonProps as ButtonProps.IconOnly)}
+      {...(buttonPropsWithPriority as ButtonProps.IconOnly)}
       {...buttonLoadingClassname(isLoading)}
       type="button"
       onClick={onFollow}
