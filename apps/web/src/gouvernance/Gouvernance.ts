@@ -36,12 +36,14 @@ export type ComiteData = z.infer<typeof ComiteValidation>
 export const FeuilleDeRouteValidation = z
   .object({
     id: z.string().uuid().nullish(),
-    nom: z.string().min(1, 'Veuillez renseigner le nom de la feuille de route'),
+    nom: z
+      .string({
+        required_error: 'Veuillez renseigner le nom de la feuille de route',
+      })
+      .min(1, 'Veuillez renseigner le nom de la feuille de route'),
     // Actor code of the member that is the porteur of the feuille de route
-    porteur: MembreValidation.refine(
-      (data) => !!data,
-      'Veuillez renseigner le porteur de la feuille de route',
-    ),
+    porteur: MembreValidation.nullish(),
+    pasDePorteur: z.boolean().nullish(),
     perimetreScope: z.enum(['region', 'departement', 'epci'], {
       required_error: 'Veuillez renseigner le périmètre de la feuille de route',
     }),
@@ -51,6 +53,11 @@ export const FeuilleDeRouteValidation = z
     }),
     typeContrat: z.nativeEnum(TypeContrat).nullish(),
     typeContratAutreDescription: z.string().nullish(),
+  })
+  // Should have a member if pasDePorteur is not checked
+  .refine((data) => !!data.pasDePorteur || !!data.porteur, {
+    message: 'Veuillez renseigner le porteur de la feuille de route',
+    path: ['porteur'],
   })
   .refine(
     // perimetreEpciCodes must have at least one element if perimetreScope is epci

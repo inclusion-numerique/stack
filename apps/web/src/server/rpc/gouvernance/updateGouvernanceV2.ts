@@ -217,8 +217,9 @@ export const createFeuillesDeRoute = async (
   transaction: Prisma.TransactionClient,
 ): Promise<void> => {
   for (const feuilleToCreate of feuillesDeRouteToCreate) {
-    const porteurMembreId = membreIdForCode.get(feuilleToCreate.porteur.code)
-    if (!porteurMembreId) continue
+    const porteurMembreId = feuilleToCreate.porteur
+      ? membreIdForCode.get(feuilleToCreate.porteur.code)
+      : undefined
 
     // eslint-disable-next-line no-await-in-loop
     await transaction.feuilleDeRoute.create({
@@ -250,13 +251,15 @@ export const createFeuillesDeRoute = async (
                 },
               }
             : undefined,
-        membres: {
-          create: {
-            id: v4(),
-            role: 'Porteur',
-            membreId: porteurMembreId,
-          },
-        },
+        membres: porteurMembreId
+          ? {
+              create: {
+                id: v4(),
+                role: 'Porteur',
+                membreId: porteurMembreId,
+              },
+            }
+          : undefined,
       },
     })
   }
@@ -270,12 +273,19 @@ export const updateFeuillesDeRoute = async (
   transaction: Prisma.TransactionClient,
 ): Promise<void> => {
   for (const feuilleToUpdate of feuillesDeRouteToUpdate) {
-    const porteurMembreId = membreIdForCode.get(feuilleToUpdate.porteur.code)
-    if (!porteurMembreId) continue
+    const porteurMembreId = feuilleToUpdate.porteur
+      ? membreIdForCode.get(feuilleToUpdate.porteur.code)
+      : undefined
 
     // Delete and recreate perimetreEpcis
     // eslint-disable-next-line no-await-in-loop
     await transaction.perimetreEpciFeuilleDeRoute.deleteMany({
+      where: { feuilleDeRouteId: feuilleToUpdate.id },
+    })
+
+    // Delete and recreate membres
+    // eslint-disable-next-line no-await-in-loop
+    await transaction.membreFeuilleDeRoute.deleteMany({
       where: { feuilleDeRouteId: feuilleToUpdate.id },
     })
 
@@ -308,6 +318,15 @@ export const updateFeuillesDeRoute = async (
                 },
               }
             : undefined,
+        membres: porteurMembreId
+          ? {
+              create: {
+                id: v4(),
+                role: 'Porteur',
+                membreId: porteurMembreId,
+              },
+            }
+          : undefined,
       },
       select: {
         membres: {

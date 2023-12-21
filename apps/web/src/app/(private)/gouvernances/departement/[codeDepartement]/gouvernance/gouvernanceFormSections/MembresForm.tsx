@@ -13,6 +13,7 @@ import {
 } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getMembresOptions'
 import FindMemberNotice from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/FindMemberNotice'
 import { getActorFromCode } from '@app/web/gouvernance/GouvernanceActor'
+import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 
 const MembresForm = ({
   form,
@@ -61,7 +62,10 @@ const MembresForm = ({
   )
 
   const membresPorteursFeuillesDeRoute = new Set(
-    form.watch('feuillesDeRoute').map(({ porteur: { code } }) => code),
+    form
+      .watch('feuillesDeRoute')
+      .map(({ porteur }) => porteur?.code)
+      .filter(isDefinedAndNotNull),
   )
 
   const membreSelectOptions = filterMemberOptions(membresOptions, {

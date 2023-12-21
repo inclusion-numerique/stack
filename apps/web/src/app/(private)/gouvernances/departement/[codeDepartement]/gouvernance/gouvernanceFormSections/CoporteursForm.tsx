@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useForm, UseFormReturn } from 'react-hook-form'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
 import Button from '@codegouvfr/react-dsfr/Button'
+import Notice from '@codegouvfr/react-dsfr/Notice'
 import { gouvernanceFormSections } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections'
 import { GouvernanceData, MembreData } from '@app/web/gouvernance/Gouvernance'
 import GouvernanceFormSectionCard from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections/GouvernanceFormSectionCard'
@@ -13,6 +14,7 @@ import {
 } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getMembresOptions'
 import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
 import FindMemberNotice from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/FindMemberNotice'
+import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 
 const CoporteursForm = ({
   form,
@@ -88,9 +90,24 @@ const CoporteursForm = ({
     excludeCodes: coporteurCodes,
   })
 
+  const feuillesDeRoutes = form.watch('feuillesDeRoute')
   const membresPorteursFeuillesDeRoute = new Set(
-    form.watch('feuillesDeRoute').map(({ porteur: { code } }) => code),
+    feuillesDeRoutes
+      .map(({ porteur }) => porteur?.code)
+      .filter(isDefinedAndNotNull),
   )
+
+  /**
+   * Pas de porteur de gouvernance, pas de porteur de feuille de route
+   * Si on essaye d’ajouter un membre à la gouvernance, message d’erreur ‘vous ne pouvez pas ajouter de porteur de gouvernance sans porteur de feuille de feuille de route”
+   */
+  const hasFeuilleDeRoutePorteeSeulementParPrefecture = feuillesDeRoutes.some(
+    ({ porteur }) => !porteur,
+  )
+  const hasNoCoporteurs = coporteurCodes.length === 0
+  const cannotAddCoporteur =
+    hasNoCoporteurs && hasFeuilleDeRoutePorteeSeulementParPrefecture
+  const pasDeCoporteurs = !!form.watch('pasDeCoporteurs')
 
   let coporteurListIndex = 0
 
@@ -164,15 +181,18 @@ const CoporteursForm = ({
               iconId="fr-icon-add-line"
               className="fr-my-0"
               priority="secondary"
+              disabled={disabled || cannotAddCoporteur}
               onClick={() => setAddingCoporteur(true)}
             >
               Ajouter un co-porteur
             </Button>
           </div>
-          {coporteurCodes.length === 0 && (
+          <Notice title="Vous ne pouvez pas ajouter de porteur de gouvernance sans porteur de feuille de feuille de route" />
+          {hasNoCoporteurs && (
             <CheckboxFormField
               control={control}
               path="pasDeCoporteurs"
+              disabled={disabled || (pasDeCoporteurs && cannotAddCoporteur)}
               className="fr-mt-8v fr-mb-0"
               label={
                 <>

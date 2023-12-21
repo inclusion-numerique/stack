@@ -437,7 +437,7 @@ const GouvernanceDetails = async ({
                     )?.membre
                     const porteurNom = membrePorteur
                       ? membreToFormMembre(membrePorteur).nom
-                      : ''
+                      : 'Portée par la préfecture'
                     const perimetreScope = perimetreDepartement
                       ? 'departement'
                       : perimetreEpcis

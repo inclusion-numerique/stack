@@ -8,6 +8,7 @@ import { TypeContrat } from '@prisma/client'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
 import { ReplaceUrlToAnchor } from '@app/ui/hooks/useReplaceUrlToAnchor'
+import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
 import { gouvernanceFormSections } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceFormSections'
 import {
   FeuilleDeRouteData,
@@ -98,18 +99,26 @@ const FeuillesDeRouteForm = ({
     setEditingFeuilleDeRoute(index)
   }
 
+  /**
+   * Ajouter une option “Porté seulement par la préfecture” seulement si “pas de co-porteur” coché en porteur de gouvernance
+   */
+  const pasDeCoporteurs = !!form.watch('pasDeCoporteurs')
+
   const onSaveFeuilleDeRoute = () => {
     addFeuilleDeRouteForm.handleSubmit((data) => {
       const cleanedData = {
         ...data,
       }
 
-      const existingMembre = membreFields.findIndex(
-        ({ code }) => code === data.porteur.code,
-      )
+      if (data.porteur) {
+        // Create member from porteur if it doesn't exist
+        const existingMembre = membreFields.findIndex(
+          ({ code }) => code === data.porteur?.code,
+        )
 
-      if (existingMembre === -1) {
-        appendMembre(data.porteur)
+        if (existingMembre === -1) {
+          appendMembre(data.porteur)
+        }
       }
 
       if (addingFeuilleDeRoute) {
@@ -163,7 +172,8 @@ const FeuillesDeRouteForm = ({
                     label={`Feuille de route ${index + 1} : ${nom}`}
                     value={
                       <>
-                        Porteur&nbsp;: {fieldPorteur.nom}
+                        Porteur&nbsp;:{' '}
+                        {fieldPorteur?.nom ?? 'Portée par la préfecture'}
                         <br />
                         Périmètre géographique&nbsp;:{' '}
                         {perimetreFeuilleDeRouteLabels[perimetreScope]}
@@ -233,6 +243,14 @@ const FeuillesDeRouteForm = ({
               coporteur: false,
             })}
           />
+          {pasDeCoporteurs && (
+            <CheckboxFormField
+              label="Porté seulement par la préfecture"
+              control={addFeuilleDeRouteForm.control}
+              path="pasDePorteur"
+              disabled={disabled}
+            />
+          )}
           <FindMemberNotice className="fr-mb-8v" />
           <RadioFormField
             label="Quel est le périmètre géographique de la feuille de route ?"
@@ -304,7 +322,7 @@ const FeuillesDeRouteForm = ({
           {errors.feuillesDeRoute.message}
         </p>
       )}
-      {!addingFeuilleDeRoute && (
+      {!addingFeuilleDeRoute && !editingFeuilleDeRoute && (
         <div className="fr-btns-group fr-mt-8v fr-mb-0 fr-btns-group--icon-left">
           <Button
             type="button"
