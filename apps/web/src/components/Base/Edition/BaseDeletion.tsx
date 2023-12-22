@@ -47,7 +47,8 @@ const BaseEdition = ({ base }: { base: BasePageData }) => {
         Supprimer la base
       </Button>
       <ConfirmDeleteModal
-        title="Êtes-vous sûr de vouloir supprimer votre base ?"
+        title="Supprimer la base"
+        message="Êtes-vous sûr de vouloir supprimer votre base ?"
         description="Cette action est irréversible et entraîne la suppression définitive de
           toutes les ressources de la Base."
         confirmText={base.title}

@@ -4,6 +4,7 @@ import { ModalProps } from '@codegouvfr/react-dsfr/Modal'
 
 export const ConfirmDeleteModal = ({
   title,
+  message,
   description,
   confirmText,
   Component: DeleteModal,
@@ -11,6 +12,7 @@ export const ConfirmDeleteModal = ({
   onDelete,
 }: {
   title: ReactNode
+  message?: ReactNode
   description?: ReactNode
   confirmText: string
   Component: (props: ModalProps) => ReactElement
@@ -21,7 +23,7 @@ export const ConfirmDeleteModal = ({
 
   return (
     <DeleteModal
-      title="Supprimer la collection"
+      title={title}
       buttons={[
         {
           children: 'Annuler',
@@ -39,7 +41,7 @@ export const ConfirmDeleteModal = ({
         },
       ]}
     >
-      <p className="fr-mb-2w">{title}</p>
+      {message && <p className="fr-mb-2w">{message}</p>}
       {description && <p className="fr-text--bold">{description}</p>}
       <Input
         label={`Écrivez “${confirmText}” dans le champ ci-dessous`}

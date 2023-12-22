@@ -58,7 +58,8 @@ const CollectionDeletion = ({
         Supprimer la collection
       </Button>
       <ConfirmDeleteModal
-        title="Êtes-vous sûr de vouloir supprimer votre collection ?"
+        title="Supprimer la collection"
+        message="Êtes-vous sûr de vouloir supprimer votre collection ?"
         description="Cette action est irréversible et entraîne la suppression définitive de
           toutes les ressources de la Collection."
         confirmText={collection.title}
