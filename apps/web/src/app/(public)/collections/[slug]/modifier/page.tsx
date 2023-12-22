@@ -14,11 +14,6 @@ const CollectionEditionPage = async ({
   const user = await getSessionUser()
   const collection = await getCollection(decodeURI(params.slug), user)
 
-  // const base =
-  //   collection?.base?.slug == null
-  //     ? null
-  //     : await basePageQuery(collection.base.slug, user)
-
   if (!collection || !user) {
     notFound()
   }

@@ -1,4 +1,5 @@
 import { v4 } from 'uuid'
+import z from 'zod'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { CreateCollectionCommandValidation } from '@app/web/server/collections/createCollection'
@@ -97,4 +98,16 @@ export const collectionRouter = router({
         data: { isPublic },
       }),
     ),
+  delete: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      const timestamp = new Date()
+      return prismaClient.collection.update({
+        where: { id: input.id },
+        data: {
+          deleted: timestamp,
+          updated: timestamp,
+        },
+      })
+    }),
 })
