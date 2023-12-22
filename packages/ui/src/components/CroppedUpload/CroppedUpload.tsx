@@ -90,42 +90,50 @@ const CroppedUpload = ({
     }
   }
 
+  // For SSR compatibility, we have to render the form + modal only on the browser after first render
+  // This is because we need the portal to be rendered outside of any parent form and this is not a server side feature
+  const [clientRendered, setClientRendered] = useState(false)
+  useEffect(() => {
+    setClientRendered(true)
+  }, [setClientRendered])
+
   return (
     <>
-      {createPortal(
-        // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
-        <form ref={formRef} onSubmit={onCropSubmit} onKeyUp={onFormKeyUp}>
-          <modal.Component
-            title="Recadrer l’image"
-            buttons={[
-              {
-                type: 'button',
-                title: 'Annuler',
-                priority: 'secondary',
-                children: 'Annuler',
-                doClosesModal: true,
-              },
-              {
-                type: 'submit',
-                title: 'Valider',
-                children: 'Valider',
-              },
-            ]}
-          >
-            {!!imageSource && (
-              <Cropping
-                cropperRef={cropperRef}
-                imageSource={imageSource}
-                imageToUpload={imageToUpload}
-                ratio={ratio}
-                round={round}
-                image={image}
-              />
-            )}
-          </modal.Component>
-        </form>,
-        document.body,
-      )}
+      {clientRendered &&
+        createPortal(
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+          <form ref={formRef} onSubmit={onCropSubmit} onKeyUp={onFormKeyUp}>
+            <modal.Component
+              title="Recadrer l’image"
+              buttons={[
+                {
+                  type: 'button',
+                  title: 'Annuler',
+                  priority: 'secondary',
+                  children: 'Annuler',
+                  doClosesModal: true,
+                },
+                {
+                  type: 'submit',
+                  title: 'Valider',
+                  children: 'Valider',
+                },
+              ]}
+            >
+              {!!imageSource && (
+                <Cropping
+                  cropperRef={cropperRef}
+                  imageSource={imageSource}
+                  imageToUpload={imageToUpload}
+                  ratio={ratio}
+                  round={round}
+                  image={image}
+                />
+              )}
+            </modal.Component>
+          </form>,
+          document.body,
+        )}
       <CroppedImage
         label={label}
         height={height}
