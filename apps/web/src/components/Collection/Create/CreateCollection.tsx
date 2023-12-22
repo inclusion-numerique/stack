@@ -12,13 +12,12 @@ import Notice from '@codegouvfr/react-dsfr/Notice'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
-import { useFileUpload } from '@app/web/hooks/useFileUpload'
-import { getZodValidationMutationError } from '@app/web/utils/getZodValidationMutationError'
 import {
   CreateCollectionCommand,
   CreateCollectionCommandValidation,
 } from '@app/web/server/collections/createCollection'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import { useImageUpload } from '../../../hooks/useImageUpload'
 import Card from '../../Card'
 import BaseVisibilityEdition from '../../Base/Edition/BaseVisibilityEdition'
 import ImageEdition from '../Edition/ImageEdition'
@@ -63,40 +62,13 @@ const CreateCollection = ({
 
   const [image, setImage] = useState<CroppedImageType>()
 
-  // File upload hooks for storage
-  const imageUpload = useFileUpload()
-
-  // Image creation mutation
-  const createImage = trpc.image.create.useMutation()
-
   const mutate = trpc.collection.create.useMutation()
 
-  const uploadImage = async (imagetoUpload: CroppedImageType) => {
-    try {
-      if (!imagetoUpload?.file) return
-
-      const uploaded = await imageUpload.upload(imagetoUpload.file)
-      if ('error' in uploaded) {
-        setError('imageId', { message: uploaded.error })
-        return null
-      }
-
-      return await createImage.mutateAsync({
-        ...imagetoUpload,
-        file: uploaded,
-      })
-    } catch (error) {
-      const zodError = getZodValidationMutationError(error)
-      if (zodError && zodError.length > 0) {
-        setError('imageId', { message: zodError[0].message })
-      }
-      return null
-    }
-  }
+  const uploadImage = useImageUpload(form)
 
   const onSubmit = async (data: CreateCollectionCommand) => {
     try {
-      const imageUploaded = image ? await uploadImage(image) : null
+      const imageUploaded = image ? await uploadImage(image, 'imageId') : null
 
       const collection = await mutate.mutateAsync({
         ...data,

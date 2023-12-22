@@ -22,10 +22,9 @@ import {
   UpdateBaseContactsCommand,
   UpdateBaseInformationsCommand,
 } from '@app/web/server/bases/updateBase'
-import { useFileUpload } from '@app/web/hooks/useFileUpload'
-import { getZodValidationMutationError } from '@app/web/utils/getZodValidationMutationError'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import CreateBaseSideMenu from '@app/web/components/Base/Create/CreateBaseSideMenu'
+import { useImageUpload } from '../../../hooks/useImageUpload'
 import BaseInformationsEdition from '../BaseInformationsEdition'
 import BaseContactsEdition from '../BaseContactsEdition'
 import Card from '../../Card'
@@ -74,41 +73,11 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
   const [profilePicture, setProfilePicture] = useState<CroppedImageType>()
   const [coverImage, setCoverImage] = useState<CroppedImageType>()
 
-  // File upload hooks for storage
-  const imageUpload = useFileUpload()
-
-  // Image creation mutation
-  const createImage = trpc.image.create.useMutation()
-
   const mutate = trpc.base.create.useMutation()
 
+  const uploadImage = useImageUpload(form)
+
   const isLoading = isSubmitting || isSubmitSuccessful
-
-  const uploadImage = async (
-    image: CroppedImageType,
-    type: 'imageId' | 'coverImageId',
-  ) => {
-    try {
-      if (!image?.file) return
-
-      const uploaded = await imageUpload.upload(image.file)
-      if ('error' in uploaded) {
-        setError(type, { message: uploaded.error })
-        return null
-      }
-
-      return await createImage.mutateAsync({
-        ...image,
-        file: uploaded,
-      })
-    } catch (error) {
-      const zodError = getZodValidationMutationError(error)
-      if (zodError && zodError.length > 0) {
-        setError(type, { message: zodError[0].message })
-      }
-      return null
-    }
-  }
 
   const onSubmit = async (data: CreateBaseCommand) => {
     if (emailErrors) {
