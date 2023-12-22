@@ -73,6 +73,8 @@ const CreateCollection = ({
 
   const uploadImage = async (imagetoUpload: CroppedImageType) => {
     try {
+      if (!imagetoUpload?.file) return
+
       const uploaded = await imageUpload.upload(imagetoUpload.file)
       if ('error' in uploaded) {
         setError('imageId', { message: uploaded.error })

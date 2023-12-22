@@ -6,8 +6,8 @@ import RadioButtons from '@codegouvfr/react-dsfr/RadioButtons'
 import CroppedUpload from '@app/ui/components/CroppedUpload/CroppedUpload'
 import { CroppedImageType } from '@app/ui/components/CroppedUpload/utils'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
+import { ImageForForm } from '@app/web/server/image/imageTypes'
 import Images from '../Images'
-import styles from './ImageEdition.module.css'
 
 const collectionImageCropModal = createModal({
   id: 'collection-image-crop-modal',
@@ -18,12 +18,18 @@ const ImageEdition = <T extends { imageId?: string | null }>({
   control,
   disabled,
   onChange,
+  defaultImageType = 'resources',
+  image,
 }: {
   control: Control<T>
   disabled: boolean
   onChange: (data?: CroppedImageType) => void
+  defaultImageType?: 'image' | 'resources'
+  image?: ImageForForm | null
 }) => {
-  const [imageType, setImageType] = useState<'resources' | 'image'>('resources')
+  const [imageType, setImageType] = useState<'resources' | 'image'>(
+    defaultImageType,
+  )
 
   return (
     <div>
@@ -33,6 +39,7 @@ const ImageEdition = <T extends { imageId?: string | null }>({
         render={({ fieldState: { error } }) =>
           imageType === 'image' ? (
             <CroppedUpload
+              image={image}
               modal={collectionImageCropModal}
               disabled={disabled}
               ratio={1.66}
@@ -41,7 +48,7 @@ const ImageEdition = <T extends { imageId?: string | null }>({
               error={error?.message}
             />
           ) : (
-            <Images className={styles.images} resources={[]} />
+            <Images resources={[]} />
           )
         }
       />
@@ -55,14 +62,19 @@ const ImageEdition = <T extends { imageId?: string | null }>({
             label: 'Aperçu des ressources',
             nativeInputProps: {
               checked: imageType === 'resources',
-              onChange: () => setImageType('resources'),
+              onChange: () => {
+                onChange({ id: undefined })
+                setImageType('resources')
+              },
             },
           },
           {
             label: 'Importer un visuel',
             nativeInputProps: {
               checked: imageType === 'image',
-              onChange: () => setImageType('image'),
+              onChange: () => {
+                setImageType('image')
+              },
             },
           },
         ]}

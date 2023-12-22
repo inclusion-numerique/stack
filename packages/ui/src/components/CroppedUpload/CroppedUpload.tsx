@@ -41,14 +41,13 @@ const CroppedUpload = ({
 
   const [imageBox, setImageBox] = useState<Cropper.ImageData>()
   const [croppedBox, setCroppedBox] = useState<Cropper.Data>()
-  const [croppedBoxData, setCroppedBoxData] = useState<Cropper.CropBoxData>()
-  const [canvasData, setCanvasData] = useState<Cropper.CanvasData>()
+  const [, setCroppedBoxData] = useState<Cropper.CropBoxData>()
+  const [, setCanvasData] = useState<Cropper.CanvasData>()
   const [imageToUpload, setImageToUpload] = useState<ImageWithName | null>(null)
   const [imageSource, setImageSource] = useState(
     image ? `/images/${image.id}.original` : '',
   )
 
-  // TODO edition
   useEffect(() => {
     if (imageToUpload) {
       onChange({
@@ -56,7 +55,10 @@ const CroppedUpload = ({
         ...cropperToImageCrop(cropperRef.current?.cropper),
       })
     } else {
-      onChange()
+      onChange({
+        id: image?.id,
+        ...cropperToImageCrop(cropperRef.current?.cropper),
+      })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageToUpload, imageBox, croppedBox])
@@ -90,28 +92,27 @@ const CroppedUpload = ({
 
   return (
     <>
-      {imageSource &&
-        imageToUpload &&
-        createPortal(
-          // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
-          <form ref={formRef} onSubmit={onCropSubmit} onKeyUp={onFormKeyUp}>
-            <modal.Component
-              title="Recadrer l’image"
-              buttons={[
-                {
-                  type: 'button',
-                  title: 'Annuler',
-                  priority: 'secondary',
-                  children: 'Annuler',
-                  doClosesModal: true,
-                },
-                {
-                  type: 'submit',
-                  title: 'Valider',
-                  children: 'Valider',
-                },
-              ]}
-            >
+      {createPortal(
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+        <form ref={formRef} onSubmit={onCropSubmit} onKeyUp={onFormKeyUp}>
+          <modal.Component
+            title="Recadrer l’image"
+            buttons={[
+              {
+                type: 'button',
+                title: 'Annuler',
+                priority: 'secondary',
+                children: 'Annuler',
+                doClosesModal: true,
+              },
+              {
+                type: 'submit',
+                title: 'Valider',
+                children: 'Valider',
+              },
+            ]}
+          >
+            {!!imageSource && (
               <Cropping
                 cropperRef={cropperRef}
                 imageSource={imageSource}
@@ -120,10 +121,11 @@ const CroppedUpload = ({
                 round={round}
                 image={image}
               />
-            </modal.Component>
-          </form>,
-          document.body,
-        )}
+            )}
+          </modal.Component>
+        </form>,
+        document.body,
+      )}
       <CroppedImage
         label={label}
         height={height}
@@ -136,16 +138,11 @@ const CroppedUpload = ({
         imageBox={imageBox}
         imageSource={imageSource}
         imageToUpload={imageToUpload}
-        onCrop={() => {
-          modal.open()
-          if (cropperRef.current && croppedBoxData && canvasData) {
-            // cropperRef.current.cropper.setCropBoxData(croppedBoxData)
-            // cropperRef.current.cropper.setCanvasData(canvasData)
-          }
-        }}
+        onCrop={modal.open}
         onRemove={() => {
           setImageSource('')
           setImageToUpload(null)
+          onChange({ id: undefined })
         }}
         onUpload={(file: ImageWithName) => {
           setImageToUpload(file)

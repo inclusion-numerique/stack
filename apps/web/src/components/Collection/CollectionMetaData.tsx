@@ -44,7 +44,7 @@ const CollectionMetaData = ({
         <div className={styles.buttons}>
           {isOwner && (
             <Link
-              href="/"
+              href={`./${collection.id}/modifier`}
               className={classNames(
                 'fr-btn',
                 'fr-btn--sm',

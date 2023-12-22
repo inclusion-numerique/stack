@@ -38,6 +38,15 @@ export const UpdateCollectionInformationsCommandValidation = z.object({
   description: descriptionValidation,
 })
 
+export const UpdateCollectionImageCommandValidation = z.object({
+  id: z.string({ required_error: "Veuillez renseigner l'id de la collection" }),
+  imageId: z.string().uuid().nullish(),
+})
+
 export type UpdateCollectionInformationsCommand = z.infer<
   typeof UpdateCollectionInformationsCommandValidation
+>
+
+export type UpdateCollectionImageCommand = z.infer<
+  typeof UpdateCollectionImageCommandValidation
 >

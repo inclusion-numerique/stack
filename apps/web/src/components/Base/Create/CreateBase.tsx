@@ -89,6 +89,8 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
     type: 'imageId' | 'coverImageId',
   ) => {
     try {
+      if (!image?.file) return
+
       const uploaded = await imageUpload.upload(image.file)
       if ('error' in uploaded) {
         setError(type, { message: uploaded.error })
