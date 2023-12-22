@@ -128,7 +128,7 @@
   "devDependencies": {
     "@keycloak/keycloak-admin-client": "^22.0.5",
     "@storybook/jest": "^0.2.3",
-    "@storybook/react": "^7.5.2",
+    "@storybook/react": "^7.6.6",
     "@storybook/testing-library": "^0.2.2",
     "@testing-library/jest-dom": "^6.1.4",
     "@types/change-case": "^2.3.1",
