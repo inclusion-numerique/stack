@@ -7,6 +7,7 @@ import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 const EditableCard = ({
   id,
   title,
+  subtitle,
   preview,
   editing,
   editModeState,
@@ -14,6 +15,7 @@ const EditableCard = ({
 }: {
   id: string
   title: ReactNode
+  subtitle?: ReactNode
   preview: ReactNode
   editing: ReactNode
   editModeState: [boolean, Dispatch<SetStateAction<boolean>>]
@@ -32,9 +34,12 @@ const EditableCard = ({
     <div className="fr-card fr-card--editable">
       <div className="fr-card__body">
         <div className="fr-card__header fr-card__separator">
-          <h2 id={id} className="fr-card__title">
-            {title}
-          </h2>
+          <div>
+            <h2 id={id} className="fr-card__title">
+              {title}
+            </h2>
+            {subtitle}
+          </div>
           {!isEditMode && (
             <Button
               data-testid="edit-card-button"

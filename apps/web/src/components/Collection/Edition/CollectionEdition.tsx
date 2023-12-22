@@ -5,6 +5,7 @@ import CustomCard from '@app/web/components/CustomCard'
 import CollectionImageEdition from './CollectionImageEdition'
 import CollectionInformationsEdition from './CollectionInformationsEdition'
 import CollectionSideMenu from './CollectionSideMenu'
+import CollectionVisibilityEdition from './CollectionVisibilityEdition'
 
 const CollectionEdition = ({
   collection, // base,
@@ -24,24 +25,7 @@ const CollectionEdition = ({
           <CollectionImageEdition collection={collection} />
         </div>
         <div className="fr-col-12">
-          {/* <EditableCard */}
-          {/*  id="visibilite" */}
-          {/*  title="Visibilité de la collection" */}
-          {/*  preview={ */}
-          {/*    <> */}
-          {/*      <p> */}
-          {/*        Votre collection est publique. Vous pouvez passer votre */}
-          {/*        collection en privé si vous le souhaitez. */}
-          {/*      </p> */}
-          {/*      <CustomTag */}
-          {/*        color={TagColor.GREEN} */}
-          {/*        icon="fr-icon-earth-fill" */}
-          {/*        label="Base publique" */}
-          {/*      /> */}
-          {/*    </> */}
-          {/*  } */}
-          {/*  editing="TODO" */}
-          {/* /> */}
+          <CollectionVisibilityEdition collection={collection} />
         </div>
         <div className="fr-col-12">
           <CustomCard id="supprimer" title="Supprimer la collection">

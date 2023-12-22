@@ -6,6 +6,10 @@ import {
   collectionTitleMaxLength,
 } from './collectionConstraints'
 
+export const collectionIdValidation = z.string({
+  required_error: "Veuillez renseigner l'id de la collection",
+})
+
 export const titleValidation = z
   .string({ required_error: 'Veuillez renseigner le nom de la collection' })
   .trim()
@@ -33,14 +37,19 @@ export const isPublicValidation = z.boolean({
 })
 
 export const UpdateCollectionInformationsCommandValidation = z.object({
-  id: z.string({ required_error: "Veuillez renseigner l'id de la collection" }),
+  id: collectionIdValidation,
   title: titleValidation,
   description: descriptionValidation,
 })
 
 export const UpdateCollectionImageCommandValidation = z.object({
-  id: z.string({ required_error: "Veuillez renseigner l'id de la collection" }),
+  id: collectionIdValidation,
   imageId: z.string().uuid().nullish(),
+})
+
+export const UpdateCollectionVisibilityCommandValidation = z.object({
+  id: collectionIdValidation,
+  isPublic: isPublicValidation,
 })
 
 export type UpdateCollectionInformationsCommand = z.infer<
@@ -49,4 +58,8 @@ export type UpdateCollectionInformationsCommand = z.infer<
 
 export type UpdateCollectionImageCommand = z.infer<
   typeof UpdateCollectionImageCommandValidation
+>
+
+export type UpdateCollectionVisibilityCommand = z.infer<
+  typeof UpdateCollectionVisibilityCommandValidation
 >

@@ -11,6 +11,7 @@ import EditableCard from './EditableCard'
 const EditableCardForm = <T extends FieldValues>({
   id,
   title,
+  subtitle,
   preview,
   editing,
   form,
@@ -19,6 +20,7 @@ const EditableCardForm = <T extends FieldValues>({
 }: {
   id: string
   title: ReactNode
+  subtitle?: ReactNode
   preview: ReactNode
   editing: ReactNode
   form: UseFormReturn<T>
@@ -49,6 +51,7 @@ const EditableCardForm = <T extends FieldValues>({
     <EditableCard
       id={id}
       title={title}
+      subtitle={subtitle}
       editModeState={[isEditMode, setEditMode]}
       preview={preview}
       editing={

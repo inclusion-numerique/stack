@@ -7,6 +7,7 @@ import { forbiddenError } from '@app/web/server/rpc/trpcErrors'
 import {
   UpdateCollectionImageCommandValidation,
   UpdateCollectionInformationsCommandValidation,
+  UpdateCollectionVisibilityCommandValidation,
 } from '@app/web/server/collections/updateCollection'
 
 export const collectionRouter = router({
@@ -86,6 +87,14 @@ export const collectionRouter = router({
       prismaClient.collection.update({
         where: { id },
         data: { imageId },
+      }),
+    ),
+  updateVisibility: protectedProcedure
+    .input(UpdateCollectionVisibilityCommandValidation)
+    .mutation(async ({ input: { id, isPublic } }) =>
+      prismaClient.collection.update({
+        where: { id },
+        data: { isPublic },
       }),
     ),
 })
