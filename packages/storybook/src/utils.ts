@@ -5,7 +5,7 @@ export const withinDSFR = async (canvasElement: HTMLElement) => {
   const html = document.querySelectorAll('html')[0]
 
   await waitFor(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-floating-promises
     expect(html).toHaveAttribute('data-fr-js', 'true')
   })
   return within(canvasElement)

@@ -12,15 +12,9 @@ const dotenvVariables = () => {
   return parse(readFileSync(dotenvFile))
 }
 
-const storybookMocksDirectory = resolve(__dirname, '../src/mocks')
-const mockable = [
-  '@app/web/utils/externalImageLoader',
-  '@app/web/utils/uploadedImageLoader',
-]
 // See https://github.com/storybookjs/storybook/blob/111edc3929eb8afff1b58285b0b9c49dd493ae85/code/frameworks/nextjs/README.md
 module.exports = {
   stories: [
-    '../../../apps/web/src/**/*.mdx',
     '../../../apps/web/src/**/*.stories.@(js|jsx|ts|tsx)',
     '../../../packages/ui/src/**/*.stories.@(js|jsx|ts|tsx)',
   ],
@@ -53,12 +47,4 @@ module.exports = {
     ...config,
     ...dotenvVariables(),
   }),
-  webpackFinal: async (config) => {
-    for (const mockableImport of mockable) {
-      // eslint-disable-next-line no-param-reassign
-      config.resolve.alias[mockableImport] =
-        `${storybookMocksDirectory}/emptyMock`
-    }
-    return config
-  },
 }

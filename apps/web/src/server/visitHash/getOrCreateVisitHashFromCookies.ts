@@ -1,8 +1,6 @@
 import { cookies } from 'next/headers'
-import {
-  createVisitHash,
-  visitDuration,
-} from '@app/web/server/visitHash/createVisitHash'
+import { createVisitHash } from '@app/web/server/visitHash/createVisitHash'
+import { visitDuration } from '@app/web/server/visitHash/visitDuration'
 
 export const getOrCreateVisitHashFromCookies = () => {
   const nextCookies = cookies()
