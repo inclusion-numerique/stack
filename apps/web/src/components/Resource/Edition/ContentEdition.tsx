@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
-import styles from '@app/web/components/Resource/Edition/Edition.module.css'
+import styles from '@app/web/components/Resource/Edition/ResourceEdition.module.css'
 import ResourceContentForm from '@app/web/components/Resource/Contents/ResourceContentForm'
 import ResourceContentView from '@app/web/components/Resource/Contents/ResourceContentView'
 import type { SendCommand } from '@app/web/components/Resource/Edition/ResourceEdition'

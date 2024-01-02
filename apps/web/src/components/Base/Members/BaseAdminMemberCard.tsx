@@ -3,7 +3,7 @@
 import React, { ChangeEvent, useCallback, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import styles from '@app/web/components/Profile/Card/Card.module.css'
+import styles from '@app/web/components/Profile/Card/ProfileCard.module.css'
 import { BaseMember } from '@app/web/server/bases/getBase'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'

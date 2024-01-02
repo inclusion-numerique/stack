@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 import { Reorder, useDragControls } from 'framer-motion'
 import Button from '@codegouvfr/react-dsfr/Button'
-import styles from '@app/web/components/Resource/Edition/Edition.module.css'
+import styles from '@app/web/components/Resource/Edition/ResourceEdition.module.css'
 import type {
   ContentProjectionWithContext,
   ResourceProjectionWithContext,
