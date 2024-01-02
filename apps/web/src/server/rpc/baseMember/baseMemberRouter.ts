@@ -1,12 +1,17 @@
 import z from 'zod'
 import { v4 } from 'uuid'
+import * as Sentry from '@sentry/nextjs'
 import { prismaClient } from '@app/web/prismaClient'
 import { getBase } from '@app/web/server/bases/getBase'
 import { filterAccess } from '@app/web/server/bases/authorization'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
-import { forbiddenError, notFoundError, invalidError } from '../trpcErrors'
-import { InviteMemberCommandValidation } from '../../baseMembers/inviteMember'
-import { sendInviteMemberEmail } from './invitationEmail'
+import { InviteMemberCommandValidation } from '@app/web/server/baseMembers/inviteMember'
+import {
+  forbiddenError,
+  invalidError,
+  notFoundError,
+} from '@app/web/server/rpc/trpcErrors'
+import { sendInviteMemberEmail } from '@app/web/server/rpc/baseMember/invitationEmail'
 
 export const baseMemberRouter = router({
   invite: protectedProcedure
@@ -55,9 +60,7 @@ export const baseMemberRouter = router({
             from: user,
             url: `/bases/${base.slug}/invitations/accepter/${acceptationToken}`,
             email: member.email,
-          })
-            // TODO: a sentry here would be nice
-            .catch(() => console.error('Email non envoyé'))
+          }).catch((error) => Sentry.captureException(error))
         }
       }
     }),

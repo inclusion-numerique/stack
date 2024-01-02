@@ -1,5 +1,4 @@
 import React from 'react'
-import sanitizeHtml from 'sanitize-html'
 import { CollectionPageData } from '@app/web/server/collections/getCollection'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { WithMinimalImageData } from '@app/web/server/image/imageTypes'
@@ -43,7 +42,7 @@ const CollectionView = ({
           <div
             className="fr-text--lg fr-mb-0"
             dangerouslySetInnerHTML={{
-              __html: sanitizeHtml(collection.description),
+              __html: collection.description,
             }}
           />
         )}

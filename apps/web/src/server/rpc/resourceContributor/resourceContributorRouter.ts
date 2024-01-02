@@ -99,7 +99,6 @@ export const resourceContributorRouter = router({
             // TODO: a sentry here would be nice
             .catch((error) => {
               Sentry.captureException(error)
-              console.error('Email non envoyé')
             })
         }
       }

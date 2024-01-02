@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import sanitizeHtml from 'sanitize-html'
 import { zodResolver } from '@hookform/resolvers/zod'
 import MaybeEmptyValue from '@app/ui/components/MaybeEmptyValue'
 import EmptyValue from '@app/ui/components/EmptyValue'
@@ -63,7 +62,7 @@ const BaseEditionInformation = ({ base }: { base: BasePageData }) => {
               className="fr-text-mention--grey fr-text--medium"
               data-testid="base-information-description"
               dangerouslySetInnerHTML={{
-                __html: sanitizeHtml(base.description),
+                __html: base.description,
               }}
             />
           ) : (

@@ -10,6 +10,7 @@ import { s3 } from '@app/web/server/s3/s3'
 import { isImageCropped } from '@app/web/utils/imageCrop'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { processImage } from '@app/web/server/image/processImage'
+import { output } from '@app/web/utils/output'
 
 const computeCropKey = ({
   cropTop,
@@ -118,7 +119,7 @@ export const getImageData = async ({
       }`,
     )
     Sentry.captureException(errorWithContext)
-    console.error(errorWithContext.message)
+    output.error(errorWithContext.message)
     throw errorWithContext
   })
 
@@ -133,7 +134,7 @@ export const getImageData = async ({
     Sentry.captureException(error)
   })
 
-  console.info(`Processed ${cachedImageKey} in ${Date.now() - start}ms`)
+  output.info(`Processed ${cachedImageKey} in ${Date.now() - start}ms`)
 
   return imageData
 }

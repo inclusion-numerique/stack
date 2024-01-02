@@ -1,6 +1,5 @@
 import React from 'react'
 import Link from 'next/link'
-import sanitizeHtml from 'sanitize-html'
 import { CollectionListItem } from '@app/web/server/collections/getCollectionsList'
 import OwnershipInformation from '@app/web/components/OwnershipInformation'
 import { SessionUser } from '@app/web/auth/sessionUser'
@@ -42,7 +41,7 @@ const CollectionCard = ({
               <div
                 className="fr-text--sm fr-mb-0"
                 dangerouslySetInnerHTML={{
-                  __html: sanitizeHtml(collection.description),
+                  __html: collection.description,
                 }}
               />
             )}

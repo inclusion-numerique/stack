@@ -11,6 +11,7 @@ import InputFormField from '@app/ui/components/Form/InputFormField'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import RawModal from '@app/ui/components/Modal/RawModal'
 import { useModalVisibility } from '@app/ui/hooks/useModalVisibility'
+import * as Sentry from '@sentry/nextjs'
 import type { SessionUser, SessionUserBase } from '@app/web/auth/sessionUser'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
@@ -186,8 +187,11 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
       })
       SaveResourceInCollectionDynamicModal.close()
     } catch (error) {
-      // TODO Sentry + toast ?
-      console.error(error)
+      createToast({
+        priority: 'error',
+        message: 'Une erreur est survenue lors de l’ajout à la collection',
+      })
+      Sentry.captureException(error)
       throw error
     }
   }
@@ -215,8 +219,11 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
 
       SaveResourceInCollectionDynamicModal.close()
     } catch (error) {
-      // TODO Sentry + toast ?
-      console.error(error)
+      createToast({
+        priority: 'error',
+        message: 'Une erreur est survenue lors du retrait de la collection',
+      })
+      Sentry.captureException(error)
       throw error
     }
   }
@@ -251,12 +258,21 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
         setInCollectionCreation(false)
       }, 800)
     } catch (error) {
-      applyZodValidationMutationErrorsToForm(
-        error,
-        createCollectionForm.setError,
-      )
-      // TODO Sentry + toast ?
-      console.error(error)
+      if (
+        applyZodValidationMutationErrorsToForm(
+          error,
+          createCollectionForm.setError,
+        )
+      ) {
+        return
+      }
+
+      createToast({
+        priority: 'error',
+        message: 'Une erreur est survenue lors de la création de la collection',
+      })
+      Sentry.captureException(error)
+
       throw error
     }
   }
@@ -269,7 +285,11 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
     event.stopPropagation()
     event.preventDefault()
     if (inCollectionCreation) {
-      createCollectionForm.handleSubmit(onCreateCollection)()
+      createCollectionForm
+        .handleSubmit(onCreateCollection)()
+        .catch(() => {
+          // Error is caught in the onSubmit
+        })
     }
   }
 

@@ -1,6 +1,5 @@
 import React from 'react'
 import Link from 'next/link'
-import sanitizeHtml from 'sanitize-html'
 import { BasePageData } from '@app/web/server/bases/getBase'
 import { getDepartmentName } from '@app/web/utils/departments'
 import styles from './BaseDetails.module.css'
@@ -18,7 +17,7 @@ const BaseDetails = ({ base }: { base: BasePageData }) => (
           <p className={styles.subtitle}>Description</p>
           <div
             dangerouslySetInnerHTML={{
-              __html: sanitizeHtml(base.description || 'Pas de description'),
+              __html: base.description || 'Pas de description',
             }}
           />
         </div>

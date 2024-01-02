@@ -4,6 +4,8 @@ import classNames from 'classnames'
 import { Route } from 'next'
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
+import { createToast } from '@app/ui/toast/createToast'
+import * as Sentry from '@sentry/nextjs'
 import { Spinner } from '@app/web/ui/Spinner'
 import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
 import styles from './InclusionConnectSigninButton.module.css'
@@ -18,7 +20,14 @@ const InclusionConnectSigninButton = ({
   const [isLoading, setIsLoading] = useState(false)
   const onClick = () => {
     setIsLoading(true)
-    signIn(inclusionConnectProviderId, { callbackUrl })
+    signIn(inclusionConnectProviderId, { callbackUrl }).catch((error) => {
+      createToast({
+        priority: 'error',
+        message:
+          'Une erreur est survenue lors de la connexion avec InclusionConnect',
+      })
+      Sentry.captureException(error)
+    })
   }
   return (
     <div className={classNames(styles.inclusionConnectSection, className)}>
