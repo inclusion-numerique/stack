@@ -1,8 +1,8 @@
 import React from 'react'
 import classNames from 'classnames'
-import { Route } from 'next'
 import Link from 'next/link'
 import Badge from '@codegouvfr/react-dsfr/Badge'
+import Button from '@codegouvfr/react-dsfr/Button'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import CopyLinkButton from '@app/web/components/CopyLinkButton'
 import ResourcesViewsAndMetadata from '@app/web/components/Resource/View/ResourcesViewsAndMetadata'
@@ -13,7 +13,6 @@ import { dateAsDay } from '@app/web/utils/dateAsDay'
 import SaveResourceInCollectionButton from '@app/web/components/Resource/SaveResourceInCollectionButton'
 import { resourceCardImageBreakpoints } from '@app/web/components/Resource/resourceCardImageBreakpoints'
 import OwnershipInformation from '@app/web/components/OwnershipInformation'
-import IconLink from '../Icon/IconLink'
 import styles from './Card.module.css'
 import DeleteResourceButton from './DeleteResourceButton'
 
@@ -102,12 +101,14 @@ const ResourceCard = ({
           className={classNames(styles.footerRight, 'fr-text--sm', 'fr-mb-0')}
         >
           {isContributor && (
-            <IconLink
+            <Button
               data-testid="resource-card-edit-link"
               title="Editer"
-              href={`/ressources/${resource.slug}/editer` as Route}
-              icon="fr-icon-edit-line"
-              small
+              iconId="fr-icon-edit-line"
+              size="small"
+              linkProps={{
+                href: `/ressources/${resource.slug}/editer`,
+              }}
             />
           )}
           {resource.published === null ? (
