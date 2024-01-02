@@ -1,7 +1,7 @@
 import React from 'react'
 import SideMenu from '@codegouvfr/react-dsfr/SideMenu'
 
-const BaseSideMenu = ({ isAdmin }: { isAdmin: boolean }) => {
+const BaseEditionSideMenu = ({ isAdmin }: { isAdmin: boolean }) => {
   const items = [
     {
       text: 'Informations de la base',
@@ -40,4 +40,4 @@ const BaseSideMenu = ({ isAdmin }: { isAdmin: boolean }) => {
   )
 }
 
-export default BaseSideMenu
+export default BaseEditionSideMenu

@@ -3,7 +3,7 @@ import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import SearchBar from '@app/web/components/Search/SearchBar'
 import styles from './Header.module.css'
 
-const Header = () => (
+const SearchHeader = () => (
   <div className={styles.container}>
     <div className="fr-container">
       <Breadcrumbs currentPage="Rechercher" />
@@ -14,4 +14,4 @@ const Header = () => (
   </div>
 )
 
-export default Header
+export default SearchHeader

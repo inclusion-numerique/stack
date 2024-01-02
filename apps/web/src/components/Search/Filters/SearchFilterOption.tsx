@@ -1,9 +1,9 @@
 import React from 'react'
 import { SelectOption } from '@app/ui/components/Form/utils/options'
 import classNames from 'classnames'
-import styles from './Filter.module.css'
+import styles from './SearchFilter.module.css'
 
-const FilterOption = ({
+const SearchFilterOption = ({
   option,
   onSelect,
   selected,
@@ -33,4 +33,4 @@ const FilterOption = ({
   </>
 )
 
-export default FilterOption
+export default SearchFilterOption

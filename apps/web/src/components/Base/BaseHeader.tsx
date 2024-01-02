@@ -7,11 +7,11 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import { FollowButton } from '@app/web/components/Follows/FollowButton'
 import Breadcrumbs from '../Breadcrumbs'
 import CopyLinkButton from '../CopyLinkButton'
-import ViewsAndMetadata from './ViewsAndMetadata'
-import styles from './Header.module.css'
-import Images from './Images'
+import BaseViewsAndMetadata from './BaseViewsAndMetadata'
+import styles from './BaseHeader.module.css'
+import BaseImages from './BaseImages'
 
-const Header = ({
+const BaseHeader = ({
   base,
   isMember,
   user,
@@ -23,10 +23,10 @@ const Header = ({
   <div className={styles.container}>
     <div className="fr-container">
       <Breadcrumbs currentPage={base.title} />
-      <Images base={base} />
+      <BaseImages base={base} />
       <div className={styles.baseInfo}>
         <h2>{base.title}</h2>
-        <ViewsAndMetadata base={base} withBadge />
+        <BaseViewsAndMetadata base={base} withBadge />
         {isMember ? (
           <Link
             data-testid="base-edition-button"
@@ -59,4 +59,4 @@ const Header = ({
   </div>
 )
 
-export default Header
+export default BaseHeader

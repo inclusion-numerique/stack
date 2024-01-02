@@ -15,7 +15,7 @@ import styles from './Menu.module.css'
 const menuCount = (count: number | null) =>
   count === null ? '   ' : ` · ${count}`
 
-const Menu = ({
+const SearchMenu = ({
   activeTab,
   searchParams,
 }: {
@@ -80,4 +80,4 @@ const Menu = ({
   )
 }
 
-export default Menu
+export default SearchMenu

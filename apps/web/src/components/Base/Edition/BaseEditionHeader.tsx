@@ -1,10 +1,10 @@
 import React from 'react'
 import { BasePageData } from '@app/web/server/bases/getBase'
 import Breadcrumbs from '../../Breadcrumbs'
-import Images from '../Images'
-import styles from './Header.module.css'
+import BaseImages from '../BaseImages'
+import styles from './BaseEditionHeader.module.css'
 
-const Header = ({ base }: { base: BasePageData }) => (
+const BaseEditionHeader = ({ base }: { base: BasePageData }) => (
   <div className="fr-container">
     <Breadcrumbs
       parents={[
@@ -17,11 +17,11 @@ const Header = ({ base }: { base: BasePageData }) => (
       ]}
       currentPage="Modifier la base"
     />
-    <Images base={base} editMode />
+    <BaseImages base={base} editMode />
     <div className={styles.baseInfo}>
       <h2 className="fr-mb-0">{base.title}</h2>
     </div>
   </div>
 )
 
-export default Header
+export default BaseEditionHeader

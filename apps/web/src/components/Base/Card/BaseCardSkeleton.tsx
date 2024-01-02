@@ -1,7 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
-import cardStyles from './Card.module.css'
-import styles from './Skeleton.module.css'
+import cardStyles from './BaseCard.module.css'
+import styles from './BaseCardSkeleton.module.css'
 
 const BaseSkeleton = () => (
   <div

@@ -1,9 +1,9 @@
 import React from 'react'
 import classNames from 'classnames'
 import SideMenu from '@codegouvfr/react-dsfr/SideMenu'
-import styles from './SideMenu.module.css'
+import styles from './CreateBaseSideMenu.module.css'
 
-const BaseSideMenu = () => (
+const CreateBaseSideMenu = () => (
   <div className={classNames(styles.container, 'fr-hidden', 'fr-unhidden-lg')}>
     <div>
       <SideMenu
@@ -46,4 +46,4 @@ const BaseSideMenu = () => (
   </div>
 )
 
-export default BaseSideMenu
+export default CreateBaseSideMenu

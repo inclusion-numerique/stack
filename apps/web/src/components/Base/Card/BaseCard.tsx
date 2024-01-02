@@ -3,11 +3,11 @@ import Link from 'next/link'
 import classNames from 'classnames'
 import { BaseListItem } from '@app/web/server/bases/getBasesList'
 import { getDepartmentName } from '@app/web/utils/departments'
-import ViewsAndMetadata from '@app/web/components/Base/ViewsAndMetadata'
+import BaseViewsAndMetadata from '@app/web/components/Base/BaseViewsAndMetadata'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { FollowButton } from '@app/web/components/Follows/FollowButton'
 import BaseImage from '@app/web/components/BaseImage'
-import styles from './Card.module.css'
+import styles from './BaseCard.module.css'
 
 const baseDescriptionExcerpt = (description: string) => {
   // description is html, we only want the first 800 characters
@@ -56,7 +56,7 @@ const BaseCard = ({
           </p>
         )}
       </div>
-      <ViewsAndMetadata
+      <BaseViewsAndMetadata
         className="fr-mt-3v fr-mt-md-4v fr-text-mention--grey"
         base={base}
         withBadge={!base.isPublic}

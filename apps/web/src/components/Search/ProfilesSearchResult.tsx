@@ -6,7 +6,7 @@ import ProfileCard from '../Profile/Card/Card'
 import EmptyBox from '../EmptyBox'
 import styles from './Content.module.css'
 
-const Profiles = ({
+const ProfilesSearchResult = ({
   profiles,
   totalCount,
   user,
@@ -41,4 +41,4 @@ const Profiles = ({
   </>
 )
 
-export default Profiles
+export default ProfilesSearchResult

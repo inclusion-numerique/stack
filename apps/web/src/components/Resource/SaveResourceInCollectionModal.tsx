@@ -21,7 +21,7 @@ import {
 } from '@app/web/server/collections/createCollection'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { titleInfo } from '@app/web/components/Collection/Edition/CollectionInformationsEdition'
-import VisibilityEdition from '@app/web/components/Base/Edition/VisibilityEdition'
+import BaseVisibilityEdition from '@app/web/components/Base/Edition/BaseVisibilityEdition'
 import AddOrRemoveResourceFromCollection from './AddOrRemoveResourceFromCollection'
 import SaveInNestedCollection from './SaveInNestedCollection'
 import styles from './SaveResourceInCollectionModal.module.css'
@@ -415,7 +415,7 @@ const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
                   }
                 />
               ) : (
-                <VisibilityEdition
+                <BaseVisibilityEdition
                   label="Visibilité de la collection"
                   asterisk
                   control={createCollectionForm.control}

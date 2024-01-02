@@ -9,15 +9,15 @@ import {
   SearchTab,
   searchUrl,
 } from '@app/web/server/search/searchQueryParams'
-import styles from './Filters.module.css'
-import Filter, { Category, FilterKey } from './Filter'
+import styles from './SearchFilters.module.css'
+import SearchFilter, { Category, FilterKey } from './SearchFilter'
 
 export type FiltersInitialValue = {
   category: FilterKey
   option: SelectOption
 }
 
-const Filters = ({
+const SearchFilters = ({
   searchParams,
   className,
   label,
@@ -77,7 +77,7 @@ const Filters = ({
       <div className={styles.buttons}>
         {categories.map((category) => (
           <div key={category.id}>
-            <Filter
+            <SearchFilter
               selected={
                 new Set(
                   selected
@@ -111,4 +111,4 @@ const Filters = ({
   )
 }
 
-export default Filters
+export default SearchFilters

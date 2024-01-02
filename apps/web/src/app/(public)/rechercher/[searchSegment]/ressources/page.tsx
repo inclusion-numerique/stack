@@ -10,7 +10,7 @@ import {
   countSearchResults,
   executeResourcesSearch,
 } from '@app/web/server/search/executeSearch'
-import Resources from '@app/web/components/Search/Resources'
+import ResourcesSearchResults from '@app/web/components/Search/ResourcesSearchResults'
 import SynchronizeTabCounts from '@app/web/app/(public)/rechercher/[searchSegment]/SynchronizeTabCounts'
 
 export const dynamic = 'force-dynamic'
@@ -43,7 +43,7 @@ const ResourcesSearchResultPage = async ({
         paginationParams={paginationParams}
         count={resourcesCount}
       >
-        <Resources
+        <ResourcesSearchResults
           searchParams={searchParams}
           resources={resources}
           user={user}

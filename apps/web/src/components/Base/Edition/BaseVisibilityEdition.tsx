@@ -4,7 +4,7 @@ import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 import ResourceBaseRichRadioElement from '../../Resource/ResourceBaseRichRadioElement'
 import { PrivacyTag } from '../../PrivacyTags'
 
-const VisibilityEdition = <T extends { isPublic: boolean }>({
+const BaseVisibilityEdition = <T extends { isPublic: boolean }>({
   control,
   disabled,
   model,
@@ -89,4 +89,4 @@ const VisibilityEdition = <T extends { isPublic: boolean }>({
   />
 )
 
-export default VisibilityEdition
+export default BaseVisibilityEdition

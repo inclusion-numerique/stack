@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import classNames from 'classnames'
 import sanitizeHtml from 'sanitize-html'
 import { zodResolver } from '@hookform/resolvers/zod'
 import MaybeEmptyValue from '@app/ui/components/MaybeEmptyValue'
@@ -17,9 +16,8 @@ import {
 } from '@app/web/server/bases/updateBase'
 import { getDepartmentName } from '@app/web/utils/departments'
 import BaseInformationsEdition from '../BaseInformationsEdition'
-import styles from './Edition.module.css'
 
-const Informations = ({ base }: { base: BasePageData }) => {
+const BaseEditionInformation = ({ base }: { base: BasePageData }) => {
   const form = useForm<UpdateBaseInformationsCommand>({
     resolver: zodResolver(UpdateBaseInformationsCommandValidation),
     defaultValues: {
@@ -41,17 +39,17 @@ const Informations = ({ base }: { base: BasePageData }) => {
       edition={<BaseInformationsEdition form={form} />}
       view={
         <>
-          <div className={styles.label}>Nom de la base</div>
+          <div className="fr-text-mention--grey">Nom de la base</div>
           <div
-            className={classNames(styles.value, 'fr-mb-2w')}
+            className="fr-text-mention--grey fr-text--medium fr-mb-2w"
             data-testid="base-information-title"
           >
             {base.title}
           </div>
           <>
-            <div className={styles.label}>Département</div>
+            <div className="fr-text-mention--grey">Département</div>
             <div
-              className={classNames(styles.value, 'fr-mb-2w')}
+              className="fr-text-mention--grey fr-text--medium fr-mb-2w"
               data-testid="base-information-department"
             >
               <MaybeEmptyValue
@@ -59,10 +57,10 @@ const Informations = ({ base }: { base: BasePageData }) => {
               />
             </div>
           </>
-          <div className={styles.label}>Description</div>
+          <div className="fr-text-mention--grey">Description</div>
           {base.description ? (
             <div
-              className={styles.value}
+              className="fr-text-mention--grey fr-text--medium"
               data-testid="base-information-description"
               dangerouslySetInnerHTML={{
                 __html: sanitizeHtml(base.description),
@@ -70,7 +68,7 @@ const Informations = ({ base }: { base: BasePageData }) => {
             />
           ) : (
             <div
-              className={styles.value}
+              className="fr-text-mention--grey"
               data-testid="base-information-description"
             >
               <EmptyValue />
@@ -82,4 +80,4 @@ const Informations = ({ base }: { base: BasePageData }) => {
   )
 }
 
-export default withTrpc(Informations)
+export default withTrpc(BaseEditionInformation)

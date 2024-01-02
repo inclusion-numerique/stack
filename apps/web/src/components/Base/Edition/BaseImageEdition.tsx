@@ -14,7 +14,7 @@ import {
   UpdateBaseImageCommandValidation,
 } from '@app/web/server/bases/updateBase'
 import EditImageButton from '../../EditImageButton'
-import styles from './ImageEdition.module.css'
+import styles from './BaseImageEdition.module.css'
 
 const params = {
   image: {
@@ -45,7 +45,7 @@ const params = {
   },
 }
 
-const ImageEdition = ({
+const BaseImageEdition = ({
   base,
   type,
 }: {
@@ -103,4 +103,4 @@ const ImageEdition = ({
   )
 }
 
-export default withTrpc(ImageEdition)
+export default withTrpc(BaseImageEdition)

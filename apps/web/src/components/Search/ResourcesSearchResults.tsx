@@ -9,7 +9,7 @@ import ResourceCard from '../Resource/Card'
 import EmptyBox from '../EmptyBox'
 import styles from './Content.module.css'
 
-const Resources = ({
+const ResourcesSearchResults = ({
   totalCount,
   resources,
   user,
@@ -51,4 +51,4 @@ const Resources = ({
   </>
 )
 
-export default Resources
+export default ResourcesSearchResults

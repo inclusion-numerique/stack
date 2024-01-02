@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 import { searchParamsFromSegment } from '@app/web/server/search/searchQueryParams'
-import Menu from '@app/web/components/Search/Menu'
-import Filters from '@app/web/components/Search/Filters/Filters'
+import SearchMenu from '@app/web/components/Search/SearchMenu'
+import SearchFilters from '@app/web/components/Search/Filters/SearchFilters'
 import {
   departmentsOptions,
   getDepartmentName,
@@ -22,9 +22,9 @@ const BasesSearchLayout = ({
 
   return (
     <>
-      <Menu activeTab="bases" searchParams={searchParams} />
+      <SearchMenu activeTab="bases" searchParams={searchParams} />
       <div className="fr-container fr-container--medium fr-mb-30v">
-        <Filters
+        <SearchFilters
           initialValues={searchParams.departements.map((departementCode) => ({
             category: 'departements',
             option: {

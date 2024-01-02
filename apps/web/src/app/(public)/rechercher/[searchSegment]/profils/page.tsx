@@ -10,7 +10,7 @@ import {
   countSearchResults,
   executeProfilesSearch,
 } from '@app/web/server/search/executeSearch'
-import Profiles from '@app/web/components/Search/Profiles'
+import ProfilesSearchResult from '@app/web/components/Search/ProfilesSearchResult'
 import SynchronizeTabCounts from '@app/web/app/(public)/rechercher/[searchSegment]/SynchronizeTabCounts'
 
 export const dynamic = 'force-dynamic'
@@ -41,7 +41,11 @@ const ProfilesSearchResultPage = async ({
         paginationParams={paginationParams}
         count={profilesCount}
       >
-        <Profiles user={user} profiles={profiles} totalCount={profilesCount} />
+        <ProfilesSearchResult
+          user={user}
+          profiles={profiles}
+          totalCount={profilesCount}
+        />
       </SearchResults>
     </>
   )

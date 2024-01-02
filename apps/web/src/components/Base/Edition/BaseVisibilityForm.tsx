@@ -14,7 +14,7 @@ import {
   UpdateBaseVisibilityCommandValidation,
 } from '@app/web/server/bases/updateBase'
 import { BasePageData } from '@app/web/server/bases/getBase'
-import VisibilityEdition from './VisibilityEdition'
+import BaseVisibilityEdition from './BaseVisibilityEdition'
 
 const {
   Component: PrivateModal,
@@ -25,7 +25,7 @@ const {
   isOpenedByDefault: false,
 })
 
-const Visibility = ({
+const BaseVisibilityForm = ({
   base,
   className,
 }: {
@@ -104,7 +104,7 @@ const Visibility = ({
         title="Visibilité de la base"
         description="Choisissez la visibilité de votre base."
         form={form}
-        edition={<VisibilityEdition control={form.control} model="Base" />}
+        edition={<BaseVisibilityEdition control={form.control} model="Base" />}
         view={
           <>
             <p className="fr-text--sm" data-testid="base-visibility">
@@ -120,4 +120,4 @@ const Visibility = ({
   )
 }
 
-export default withTrpc(Visibility)
+export default withTrpc(BaseVisibilityForm)

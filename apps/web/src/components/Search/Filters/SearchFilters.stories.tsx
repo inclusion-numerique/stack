@@ -1,15 +1,15 @@
 import { Meta, StoryObj } from '@storybook/react'
-import Filters from '@app/web/components/Search/Filters/Filters'
+import SearchFilters from '@app/web/components/Search/Filters/SearchFilters'
 import { categoryThemesOptions } from '@app/web/themes/themes'
 import { supportTypeOptions } from '@app/web/themes/supportTypes'
 import { targetAudienceOptions } from '@app/web/themes/targetAudiences'
 
 export default {
   title: 'component/Filters',
-  component: Filters,
-} as Meta<typeof Filters>
+  component: SearchFilters,
+} as Meta<typeof SearchFilters>
 
-type Story = StoryObj<typeof Filters>
+type Story = StoryObj<typeof SearchFilters>
 
 export const Default: Story = {
   name: 'Multiple fitre',

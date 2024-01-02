@@ -1,13 +1,13 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { mobileStory } from '@app/storybook/storyHelper'
-import Skeleton from './Skeleton'
+import BaseCardSkeleton from './BaseCardSkeleton'
 
 export default {
   title: 'Base/Skeleton',
-  component: Skeleton,
-} as Meta<typeof Skeleton>
+  component: BaseCardSkeleton,
+} as Meta<typeof BaseCardSkeleton>
 
-type Story = StoryObj<typeof Skeleton>
+type Story = StoryObj<typeof BaseCardSkeleton>
 
 export const Desktop: Story = {
   args: {},

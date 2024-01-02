@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { mobileStory } from '@app/storybook/storyHelper'
 import type { BaseListItem } from '@app/web/server/bases/getBasesList'
-import BaseCard from './Card'
+import BaseCard from './BaseCard'
 
 const base = {
   id: 'f41d4215-aee5-4b39-95c9-60484df15de9',

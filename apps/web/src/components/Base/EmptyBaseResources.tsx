@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { CreateResourceButton } from '../Resource/CreateResourceModal'
 import EmptyBox from '../EmptyBox'
 
-const EmptyResources = ({ isMember }: { isMember: boolean }) => (
+const EmptyBaseResources = ({ isMember }: { isMember: boolean }) => (
   <EmptyBox
     title={
       isMember
@@ -31,4 +31,4 @@ const EmptyResources = ({ isMember }: { isMember: boolean }) => (
   </EmptyBox>
 )
 
-export default EmptyResources
+export default EmptyBaseResources

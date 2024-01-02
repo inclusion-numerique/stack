@@ -21,7 +21,7 @@ import {
 import { SessionUser } from '@app/web/auth/sessionUser'
 import Card from '../../Card'
 import CollectionInformationsEdition from '../Edition/CollectionInformationsEdition'
-import VisibilityEdition from '../../Base/Edition/VisibilityEdition'
+import BaseVisibilityEdition from '../../Base/Edition/BaseVisibilityEdition'
 import ImageEdition from '../Edition/ImageEdition'
 import CollectionSideMenu from './SideMenu'
 import styles from './CreateCollection.module.css'
@@ -167,7 +167,7 @@ const CreateCollection = ({
                 }
               />
             ) : (
-              <VisibilityEdition
+              <BaseVisibilityEdition
                 model="Collection"
                 control={control}
                 disabled={isLoading}

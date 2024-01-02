@@ -3,8 +3,8 @@ import { useOnClickOutside } from 'usehooks-ts'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { SelectOption } from '@app/ui/components/Form/utils/options'
 import classNames from 'classnames'
-import FilterOption from './FilterOption'
-import styles from './Filter.module.css'
+import SearchFilterOption from './SearchFilterOption'
+import styles from './SearchFilter.module.css'
 
 // Synced with SearchParams
 export type FilterKey =
@@ -22,7 +22,7 @@ export type Category =
       options: { [key in string]: SelectOption[] }
     }
 
-const Filter = ({
+const SearchFilter = ({
   category,
   onSelect,
   onUnselect,
@@ -86,7 +86,7 @@ const Filter = ({
                     <hr key={`${key}_separator`} className={styles.separator} />
                     {currentCategory &&
                       options.map((option) => (
-                        <FilterOption
+                        <SearchFilterOption
                           key={option.value}
                           option={option}
                           selected={selected.has(option.value)}
@@ -100,7 +100,7 @@ const Filter = ({
                 )
               })
             : category.options.map((option) => (
-                <FilterOption
+                <SearchFilterOption
                   key={option.value}
                   option={option}
                   selected={selected.has(option.value)}
@@ -116,4 +116,4 @@ const Filter = ({
   )
 }
 
-export default Filter
+export default SearchFilter

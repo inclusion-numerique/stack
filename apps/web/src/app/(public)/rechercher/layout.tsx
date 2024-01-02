@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react'
-import Header from '@app/web/components/Search/Header'
+import SearchHeader from '@app/web/components/Search/SearchHeader'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -11,7 +11,7 @@ export const revalidate = 0
  */
 const SearchLayout = ({ children }: PropsWithChildren) => (
   <>
-    <Header />
+    <SearchHeader />
     {children}
   </>
 )

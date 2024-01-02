@@ -1,13 +1,13 @@
 import React from 'react'
 import classNames from 'classnames'
 import { BasePageData } from '@app/web/server/bases/getBase'
-import Card from '../../Card'
+import BaseEditionSideMenu from '@app/web/components/Base/Edition/BaseEditionSideMenu'
+import BaseEditionInformation from '@app/web/components/Base/Edition/BaseEditionInformation'
+import BaseEditionContacts from '@app/web/components/Base/Edition/BaseEditionContacts'
+import BaseVisibilityForm from '@app/web/components/Base/Edition/BaseVisibilityForm'
+import BaseDeletion from '@app/web/components/Base/Edition/BaseDeletion'
+import Card from '@app/web/components/Card'
 import baseStyles from '../Create/CreateBase.module.css'
-import SideMenu from './SideMenu'
-import BaseDeletion from './BaseDeletion'
-import Informations from './Informations'
-import Visibility from './Visibility'
-import Contacts from './Contacts'
 import styles from './BaseEdition.module.css'
 
 const BaseEdition = ({
@@ -18,11 +18,14 @@ const BaseEdition = ({
   isAdmin: boolean
 }) => (
   <div className={classNames('fr-container', styles.container)}>
-    <SideMenu isAdmin={isAdmin} />
+    <BaseEditionSideMenu isAdmin={isAdmin} />
     <div className={baseStyles.cards}>
-      <Informations base={base} />
-      <Contacts base={base} />
-      <Visibility base={base} className={isAdmin ? 'fr-mt-3w' : 'fr-my-3w'} />
+      <BaseEditionInformation base={base} />
+      <BaseEditionContacts base={base} />
+      <BaseVisibilityForm
+        base={base}
+        className={isAdmin ? 'fr-mt-3w' : 'fr-my-3w'}
+      />
       {isAdmin && (
         <Card
           className="fr-my-3w"

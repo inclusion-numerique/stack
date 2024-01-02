@@ -1,5 +1,5 @@
 import React from 'react'
-import EmptyResources from '@app/web/components/Base/EmptyResources'
+import EmptyBaseResources from '@app/web/components/Base/EmptyBaseResources'
 import Resources from '@app/web/components/Resource/List/Resources'
 import { getBasePageContext } from '@app/web/app/(public)/bases/[slug]/(consultation)/getBasePageContext'
 
@@ -10,7 +10,7 @@ const BaseResourcesPage = async ({ params }: { params: { slug: string } }) => {
   const { resources } = base
 
   return resources.length === 0 ? (
-    <EmptyResources isMember={authorizations.isMember} />
+    <EmptyBaseResources isMember={authorizations.isMember} />
   ) : (
     <Resources
       resources={resources}

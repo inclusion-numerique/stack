@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import { searchParamsFromSegment } from '@app/web/server/search/searchQueryParams'
-import Menu from '@app/web/components/Search/Menu'
+import SearchMenu from '@app/web/components/Search/SearchMenu'
 import { categoryThemesOptions, themeLabels } from '@app/web/themes/themes'
 import {
   supportTypeLabels,
@@ -10,9 +10,9 @@ import {
   categoryTargetAudiencesOptions,
   targetAudienceLabels,
 } from '@app/web/themes/targetAudiences'
-import Filters, {
+import SearchFilters, {
   FiltersInitialValue,
-} from '@app/web/components/Search/Filters/Filters'
+} from '@app/web/components/Search/Filters/SearchFilters'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -62,9 +62,9 @@ const ResourcesSearchLayout = ({
 
   return (
     <>
-      <Menu activeTab="ressources" searchParams={searchParams} />
+      <SearchMenu activeTab="ressources" searchParams={searchParams} />
       <div className="fr-container fr-container--medium fr-mb-30v">
-        <Filters
+        <SearchFilters
           className="fr-mb-6w"
           label="Affiner la recherche"
           tab="ressources"

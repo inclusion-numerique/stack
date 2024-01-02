@@ -1,6 +1,6 @@
 import React from 'react'
 import { defaultPaginationParams } from '@app/web/server/search/searchQueryParams'
-import Skeleton from '@app/web/components/Base/Card/Skeleton'
+import BaseCardSkeleton from '@app/web/components/Base/Card/BaseCardSkeleton'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -15,7 +15,7 @@ const ResultContentLoading = () => (
     </div>
     {Array.from({ length: skeletons }).map((_, index) => (
       // eslint-disable-next-line react/no-array-index-key
-      <Skeleton key={index} />
+      <BaseCardSkeleton key={index} />
     ))}
   </>
 )

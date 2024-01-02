@@ -7,7 +7,7 @@ import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import { BaseMember } from '@app/web/server/bases/getBase'
 
-const RemoveMemberButton = ({ member }: { member: BaseMember }) => {
+const RemoveBaseMemberButton = ({ member }: { member: BaseMember }) => {
   const mutate = trpc.baseMember.remove.useMutation()
   const router = useRouter()
 
@@ -35,4 +35,4 @@ const RemoveMemberButton = ({ member }: { member: BaseMember }) => {
   )
 }
 
-export default withTrpc(RemoveMemberButton)
+export default withTrpc(RemoveBaseMemberButton)

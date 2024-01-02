@@ -5,9 +5,9 @@ import { BasePageData } from '@app/web/server/bases/getBase'
 import { BaseListItem } from '@app/web/server/bases/getBasesList'
 import { BasePrivacyTag } from '@app/web/components/PrivacyTags'
 import { FilteredBase } from '@app/web/server/bases/authorization'
-import styles from './ViewsAndMetadata.module.css'
+import styles from './BaseViewsAndMetadata.module.css'
 
-const ViewsAndMetadata = ({
+const BaseViewsAndMetadata = ({
   base,
   className,
   withBadge,
@@ -54,4 +54,4 @@ const ViewsAndMetadata = ({
   )
 }
 
-export default ViewsAndMetadata
+export default BaseViewsAndMetadata

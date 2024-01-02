@@ -1,11 +1,11 @@
 import React from 'react'
 import { BasePageData } from '@app/web/server/bases/getBase'
 import ProfileCard from '@app/web/components/Profile/Card/Card'
-import AdminMemberCard from '../List/AdminMemberCard'
-import InviteMemberButton from './InviteMemberButton'
-import styles from './Members.module.css'
+import BaseAdminMemberCard from '@app/web/components/Base/Members/BaseAdminMemberCard'
+import InviteMemberButton from './InviteBaseMemberButton'
+import styles from './BaseMembers.module.css'
 
-const Members = ({
+const BaseMembers = ({
   base,
   isMember,
   isAdmin,
@@ -26,7 +26,7 @@ const Members = ({
       </div>
       {isAdmin
         ? base.members.map((member) => (
-            <AdminMemberCard
+            <BaseAdminMemberCard
               member={member}
               key={member.member.id}
               canChangeAccessLevel={canChangeAccessLevelOfAdmins}
@@ -44,4 +44,4 @@ const Members = ({
   )
 }
 
-export default Members
+export default BaseMembers

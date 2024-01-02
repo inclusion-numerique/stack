@@ -2,8 +2,8 @@ import React, { PropsWithChildren } from 'react'
 import PrivateBox from '@app/web/components/PrivateBox'
 import { BaseRouteParams } from '@app/web/app/(public)/bases/[slug]/baseRouteParams'
 import { getBasePageContext } from '@app/web/app/(public)/bases/[slug]/(consultation)/getBasePageContext'
-import Header from '@app/web/components/Base/Header'
-import Menu from '@app/web/components/Base/Menu'
+import BaseHeader from '@app/web/components/Base/BaseHeader'
+import BaseMenu from '@app/web/components/Base/BaseMenu'
 
 const BaseLayout = async ({
   params,
@@ -14,7 +14,7 @@ const BaseLayout = async ({
   if (!authorizations.authorized) {
     return (
       <>
-        <Header
+        <BaseHeader
           base={authorizations.base}
           isMember={authorizations.isMember}
           user={user}
@@ -25,12 +25,12 @@ const BaseLayout = async ({
   }
   return (
     <>
-      <Header
+      <BaseHeader
         base={authorizations.base}
         isMember={authorizations.isMember}
         user={user}
       />
-      <Menu base={authorizations.base} />
+      <BaseMenu base={authorizations.base} />
       <div className="fr-container fr-container--medium fr-mb-50v">
         {children}
       </div>

@@ -2,7 +2,7 @@ import { notFound, redirect } from 'next/navigation'
 import React from 'react'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { basePageQuery } from '@app/web/server/bases/getBase'
-import Header from '@app/web/components/Base/Edition/Header'
+import BaseEditionHeader from '@app/web/components/Base/Edition/BaseEditionHeader'
 import BaseEdition from '@app/web/components/Base/Edition/BaseEdition'
 import { filterAccess } from '@app/web/server/bases/authorization'
 
@@ -24,7 +24,7 @@ const BaseEditionPage = async ({ params }: { params: { slug: string } }) => {
 
   return (
     <>
-      <Header base={base} />
+      <BaseEditionHeader base={base} />
       <BaseEdition base={base} isAdmin={authorizations.isAdmin} />
     </>
   )

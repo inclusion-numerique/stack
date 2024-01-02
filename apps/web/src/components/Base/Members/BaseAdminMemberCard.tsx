@@ -8,9 +8,9 @@ import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import styles from '@app/web/components/Profile/Card/Card.module.css'
 import { trpc } from '@app/web/trpc'
 import RoundProfileImage from '@app/web/components/RoundProfileImage'
-import RemoveMemberButton from './RemoveMemberButton'
+import RemoveBaseMemberButton from '@app/web/components/Base/Members/RemoveBaseMemberButton'
 
-const AdminMemberCard = ({
+const BaseAdminMemberCard = ({
   member,
   canChangeAccessLevel,
 }: {
@@ -55,7 +55,7 @@ const AdminMemberCard = ({
               <option value="admin">Administrateur</option>
               <option value="member">Membre</option>
             </select>
-            <RemoveMemberButton member={member} />
+            <RemoveBaseMemberButton member={member} />
           </>
         )}
       </div>
@@ -63,4 +63,4 @@ const AdminMemberCard = ({
   )
 }
 
-export default withTrpc(AdminMemberCard)
+export default withTrpc(BaseAdminMemberCard)

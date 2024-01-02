@@ -16,7 +16,7 @@ import {
   InviteMemberCommandValidation,
 } from '@app/web/server/baseMembers/inviteMember'
 import InviteUsers from '../../InviteUsers'
-import styles from './InviteMemberButton.module.css'
+import styles from './InviteBaseMemberButton.module.css'
 
 const {
   Component: InviteModal,
@@ -27,7 +27,7 @@ const {
   isOpenedByDefault: false,
 })
 
-const InviteMemberButton = ({
+const InviteBaseMemberButton = ({
   base,
   isAdmin,
 }: {
@@ -153,4 +153,4 @@ const InviteMemberButton = ({
   )
 }
 
-export default withTrpc(InviteMemberButton)
+export default withTrpc(InviteBaseMemberButton)

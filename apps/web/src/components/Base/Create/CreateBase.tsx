@@ -25,12 +25,12 @@ import {
 import { useFileUpload } from '@app/web/hooks/useFileUpload'
 import { getZodValidationMutationError } from '@app/web/utils/getZodValidationMutationError'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import CreateBaseSideMenu from '@app/web/components/Base/Create/CreateBaseSideMenu'
 import BaseInformationsEdition from '../BaseInformationsEdition'
 import BaseContactsEdition from '../BaseContactsEdition'
 import Card from '../../Card'
-import VisibilityEdition from '../Edition/VisibilityEdition'
+import BaseVisibilityEdition from '../Edition/BaseVisibilityEdition'
 import InviteUsers from '../../InviteUsers'
-import BaseSideMenu from './SideMenu'
 import styles from './CreateBase.module.css'
 
 const {
@@ -153,7 +153,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className={classNames('fr-container', styles.container)}>
-        <BaseSideMenu />
+        <CreateBaseSideMenu />
         <div>
           <h1 className="fr-mb-6w">Créer une base</h1>
           <Card
@@ -185,7 +185,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
             id="visibilite"
             description="Choisissez la visibilité de votre base. Vous pourrez modifier sa visibilité à tout moment."
           >
-            <VisibilityEdition
+            <BaseVisibilityEdition
               model="Base"
               control={control}
               disabled={isLoading}

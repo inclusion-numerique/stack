@@ -1,7 +1,7 @@
 import React from 'react'
 import { BaseListItem } from '@app/web/server/bases/getBasesList'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import BaseCard from '../Card/Card'
+import BaseCard from '@app/web/components/Base/Card/BaseCard'
 import { CreateBaseButton } from '../CreateBaseButton'
 import styles from './Bases.module.css'
 

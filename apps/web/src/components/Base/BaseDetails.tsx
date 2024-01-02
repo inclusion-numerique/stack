@@ -3,9 +3,9 @@ import Link from 'next/link'
 import sanitizeHtml from 'sanitize-html'
 import { BasePageData } from '@app/web/server/bases/getBase'
 import { getDepartmentName } from '@app/web/utils/departments'
-import styles from './Details.module.css'
+import styles from './BaseDetails.module.css'
 
-const Details = ({ base }: { base: BasePageData }) => (
+const BaseDetails = ({ base }: { base: BasePageData }) => (
   <div className="fr-width-full">
     <div className={styles.header}>
       <h3 className="fr-mb-0">À propos</h3>
@@ -75,4 +75,4 @@ const Details = ({ base }: { base: BasePageData }) => (
   </div>
 )
 
-export default Details
+export default BaseDetails

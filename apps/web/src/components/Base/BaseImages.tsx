@@ -3,10 +3,10 @@ import { FilteredBase } from '@app/web/server/bases/authorization'
 import { BasePageData } from '@app/web/server/bases/getBase'
 import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
 import BaseImage from '@app/web/components/BaseImage'
-import styles from './Images.module.css'
-import ImageEdition from './Edition/ImageEdition'
+import styles from './BaseImages.module.css'
+import ImageEdition from './Edition/BaseImageEdition'
 
-const Images = (
+const BaseImages = (
   props:
     | {
         base: BasePageData
@@ -49,4 +49,4 @@ const Images = (
   )
 }
 
-export default Images
+export default BaseImages

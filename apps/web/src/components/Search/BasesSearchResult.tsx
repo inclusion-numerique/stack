@@ -3,11 +3,11 @@ import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { BaseListItem } from '@app/web/server/bases/getBasesList'
 import { SearchParams } from '@app/web/server/search/searchQueryParams'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import BaseCard from '../Base/Card/Card'
+import BaseCard from '../Base/Card/BaseCard'
 import EmptyBox from '../EmptyBox'
 import styles from './Content.module.css'
 
-const Bases = ({
+const BasesSearchResult = ({
   bases,
   totalCount,
   searchParams: _willBeUsedForSorting,
@@ -45,4 +45,4 @@ const Bases = ({
   </>
 )
 
-export default Bases
+export default BasesSearchResult

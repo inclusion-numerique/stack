@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { BasePageData } from '@app/web/server/bases/getBase'
 import { BaseTab } from '@app/web/app/(public)/bases/[slug]/(consultation)/BaseTab'
-import styles from './Menu.module.css'
+import styles from './BaseMenu.module.css'
 
 const getCurrentTabFromPath = (path: string): BaseTab => {
   const lastSegment = path?.split('/').at(-1) ?? ''
@@ -37,7 +37,7 @@ const MenuItem = ({
   </li>
 )
 
-const Menu = ({ base }: { base: BasePageData }) => {
+const BaseMenu = ({ base }: { base: BasePageData }) => {
   const path = usePathname()
   const currentTab = getCurrentTabFromPath(path ?? '')
 
@@ -82,4 +82,4 @@ const Menu = ({ base }: { base: BasePageData }) => {
   )
 }
 
-export default Menu
+export default BaseMenu
