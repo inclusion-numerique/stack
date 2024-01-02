@@ -2,9 +2,9 @@ import React from 'react'
 import { ProfilePageData } from '@app/web/server/profiles/getProfile'
 import { ResourceListItem } from '@app/web/server/resources/getResourcesList'
 import ProfileInformations from '../ProfileInformations'
-import ProfileSideMenu from './SideMenu'
+import ProfileSideMenu from './ProfileEditionSideMenu'
 import styles from './ProfileEdition.module.css'
-import Visibility from './Visibility'
+import Visibility from './ProfileVisibilityForm'
 
 const ProfileEdition = ({
   profile,

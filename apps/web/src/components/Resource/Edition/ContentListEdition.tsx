@@ -1,7 +1,7 @@
 import { AnimatePresence, Reorder } from 'framer-motion'
 import React, { Dispatch, SetStateAction, useRef, useState } from 'react'
-import type { SendCommand } from '@app/web/components/Resource/Edition/Edition'
 import styles from '@app/web/components/Resource/Edition/Edition.module.css'
+import type { SendCommand } from '@app/web/components/Resource/Edition/ResourceEdition'
 import type { ResourceEditionState } from '@app/web/components/Resource/enums/ResourceEditionState'
 import { useOnDiff } from '@app/web/hooks/useOnDiff'
 import type {

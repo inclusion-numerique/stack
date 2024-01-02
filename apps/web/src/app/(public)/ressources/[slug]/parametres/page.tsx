@@ -4,7 +4,7 @@ import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { getResource } from '@app/web/server/resources/getResource'
 import { filterAccess } from '@app/web/server/resources/authorization'
-import Parameters from '@app/web/components/Resource/Edition/Parameters/Parameters'
+import ResourceParameters from '@app/web/components/Resource/Edition/Parameters/ResourceParameters'
 import {
   defaultSearchParams,
   searchUrl,
@@ -49,7 +49,7 @@ const ResourceParametersPage = async ({
       </div>
 
       <div className="fr-mt-1w fr-mb-4w">
-        <Parameters resource={resource} user={user} />
+        <ResourceParameters resource={resource} user={user} />
       </div>
     </>
   )

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import classNames from 'classnames'
 import { BaseListItem } from '@app/web/server/bases/getBasesList'
 import { getDepartmentName } from '@app/web/utils/departments'
-import BaseViewsAndMetadata from '@app/web/components/Base/BaseViewsAndMetadata'
+import BaseMetadata from '@app/web/components/Base/BaseMetadata'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { FollowButton } from '@app/web/components/Follows/FollowButton'
 import BaseImage from '@app/web/components/BaseImage'
@@ -56,7 +56,7 @@ const BaseCard = ({
           </p>
         )}
       </div>
-      <BaseViewsAndMetadata
+      <BaseMetadata
         className="fr-mt-3v fr-mt-md-4v fr-text-mention--grey"
         base={base}
         withBadge={!base.isPublic}

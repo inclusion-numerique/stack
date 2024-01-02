@@ -4,7 +4,7 @@ import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { getResource } from '@app/web/server/resources/getResource'
 import { getResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
-import Edition from '@app/web/components/Resource/Edition/Edition'
+import Edition from '@app/web/components/Resource/Edition/ResourceEdition'
 import { filterAccess } from '@app/web/server/resources/authorization'
 import {
   defaultSearchParams,

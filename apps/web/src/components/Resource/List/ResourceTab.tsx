@@ -1,7 +1,7 @@
 import React from 'react'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { BaseResource } from '@app/web/server/bases/getBase'
-import ResourceCard from '@app/web/components/Resource/Card'
+import ResourceCard from '@app/web/components/Resource/ResourceCard'
 import styles from './ResourceTab.module.css'
 
 const ResourceTab = ({

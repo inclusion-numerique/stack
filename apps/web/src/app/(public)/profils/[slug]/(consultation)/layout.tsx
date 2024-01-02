@@ -1,10 +1,10 @@
 import React, { PropsWithChildren } from 'react'
-import Header from '@app/web/components/Profile/Header'
+import ProfileHeader from '@app/web/components/Profile/ProfileHeader'
 import PrivateBox from '@app/web/components/PrivateBox'
 import { ProfilRouteParams } from '@app/web/app/(public)/profils/[slug]/profilRouteParams'
 import { getProfilePageContext } from '@app/web/app/(public)/profils/[slug]/(consultation)/getProfilePageContext'
 import { getProfilePageCounts } from '@app/web/app/(public)/profils/[slug]/(consultation)/getProfilePageCounts'
-import Menu from '@app/web/components/Profile/Menu'
+import ProfileMenu from '@app/web/components/Profile/ProfileMenu'
 
 const ProfileLayout = async ({
   params,
@@ -19,7 +19,7 @@ const ProfileLayout = async ({
   if (!authorizations.authorized) {
     return (
       <>
-        <Header
+        <ProfileHeader
           profile={authorizations.profile}
           resourcesCount={resourcesCount}
           user={user}
@@ -30,13 +30,13 @@ const ProfileLayout = async ({
   }
   return (
     <>
-      <Header
+      <ProfileHeader
         profile={authorizations.profile}
         isConnectedUser={authorizations.isUser}
         resourcesCount={resourcesCount}
         user={user}
       />
-      <Menu
+      <ProfileMenu
         profile={authorizations.profile}
         resourcesCount={resourcesCount}
         isConnectedUser={authorizations.isUser}

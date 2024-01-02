@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-import ContentView from '@app/web/components/Resource/Contents/ContentView'
+import ResourceContentView from '@app/web/components/Resource/Contents/ResourceContentView'
 import ResourcesViewsAndMetadata from '@app/web/components/Resource/View/ResourcesViewsAndMetadata'
 import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
 import { Resource } from '@app/web/server/resources/getResource'
@@ -95,7 +95,7 @@ const ResourceContents = ({
         id={`${getResourceSectionIdAttribute(content, index)}`}
         className={classNames(styles.content, index === 0 && 'is-first')}
       >
-        <ContentView content={content} />
+        <ResourceContentView content={content} />
       </div>
     ))}
     <RegisterResourceView resourceId={resource.id} userId={userId} />

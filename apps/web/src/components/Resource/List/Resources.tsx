@@ -5,8 +5,8 @@ import { BaseResource } from '@app/web/server/bases/getBase'
 import { CreateResourceButton } from '@app/web/components/Resource/CreateResourceModal'
 import DeleteResource from '@app/web/components/Resource/DeleteResource/DeleteResource'
 import SaveResourceInCollectionModal from '@app/web/components/Resource/SaveResourceInCollectionModal'
-import ResourceCard from '../Card'
-import ResourceTab from './ResourceTab'
+import ResourceTab from '@app/web/components/Resource/List/ResourceTab'
+import ResourceCard from '@app/web/components/Resource/ResourceCard'
 import styles from './Resources.module.css'
 
 const Resources = ({

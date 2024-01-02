@@ -4,7 +4,7 @@ import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { filterAccess } from '@app/web/server/collections/authorization'
 import PrivateBox from '@app/web/components/PrivateBox'
 import { getCollection } from '@app/web/server/collections/getCollection'
-import View from '@app/web/components/Collection/View'
+import CollectionView from '@app/web/components/Collection/CollectionView'
 
 const CollectionPage = async ({ params }: { params: { slug: string } }) => {
   const user = await getSessionUser()
@@ -17,7 +17,7 @@ const CollectionPage = async ({ params }: { params: { slug: string } }) => {
   const authorizations = filterAccess(collection, user)
   return authorizations.authorized ? (
     <div className="fr-container fr-container--medium fr-my-4w">
-      <View
+      <CollectionView
         collection={collection}
         user={user}
         isOwner={authorizations.isOwner}

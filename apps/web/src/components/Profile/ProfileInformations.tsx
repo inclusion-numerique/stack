@@ -3,9 +3,9 @@ import { ProfilePageData } from '@app/web/server/profiles/getProfile'
 import { ProfilePrivacyTag } from '@app/web/components/PrivacyTags'
 import { FilteredProfile } from '@app/web/server/profiles/authorization'
 import RoundProfileImage from '@app/web/components/RoundProfileImage'
-import ViewsAndMetadata from './ViewsAndMetadata'
+import ProfileMetadata from './ProfileMetadata'
 import styles from './ProfileInformations.module.css'
-import ImageEdition from './Edition/ImageEdition'
+import ImageEdition from './Edition/ProfileImageEdition'
 
 const ProfileInformations = ({
   profile,
@@ -27,7 +27,7 @@ const ProfileInformations = ({
     <div>
       <h2>{profile.name}</h2>
       <ProfilePrivacyTag isPublic={profile.isPublic} />
-      <ViewsAndMetadata
+      <ProfileMetadata
         resourcesCount={resourcesCount}
         followedByCount={profile._count.followedBy}
       />

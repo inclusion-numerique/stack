@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
-import ContentForm from '@app/web/components/Resource/Contents/ContentForm'
-import ContentView from '@app/web/components/Resource/Contents/ContentView'
-import type { SendCommand } from '@app/web/components/Resource/Edition/Edition'
 import styles from '@app/web/components/Resource/Edition/Edition.module.css'
+import ResourceContentForm from '@app/web/components/Resource/Contents/ResourceContentForm'
+import ResourceContentView from '@app/web/components/Resource/Contents/ResourceContentView'
+import type { SendCommand } from '@app/web/components/Resource/Edition/ResourceEdition'
 import { ResourceEditionState } from '@app/web/components/Resource/enums/ResourceEditionState'
 import {
   ContentProjectionWithContext,
@@ -34,7 +34,7 @@ const ContentEdition = ({
   if (!editionMode) {
     return (
       <div className={styles.contentEdition}>
-        <ContentView content={content} />
+        <ResourceContentView content={content} />
         <div className={styles.contentHoverableAction}>
           <Button
             data-testid={dataTestId ? `${dataTestId}_edit-button` : undefined}
@@ -66,7 +66,7 @@ const ContentEdition = ({
 
   return (
     <div className={styles.contentEdition}>
-      <ContentForm
+      <ResourceContentForm
         type={content.type}
         mode="edit"
         data-testid={dataTestId ? `${dataTestId}_form` : undefined}

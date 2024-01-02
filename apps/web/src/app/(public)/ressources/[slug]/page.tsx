@@ -2,12 +2,12 @@ import { notFound } from 'next/navigation'
 import React from 'react'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
-import View from '@app/web/components/Resource/View/View'
+import ResourceView from '@app/web/components/Resource/View/ResourceView'
 import { getResource } from '@app/web/server/resources/getResource'
 import { filterAccess } from '@app/web/server/resources/authorization'
-import ViewHeader from '@app/web/components/Resource/View/ViewHeader'
+import ResourceViewHeader from '@app/web/components/Resource/View/ResourceViewHeader'
 import PrivateBox from '@app/web/components/PrivateBox'
-import ViewSeparators from '@app/web/components/Resource/View/ViewSeparators'
+import ResourceViewSeparators from '@app/web/components/Resource/View/ResourceViewSeparators'
 import {
   defaultSearchParams,
   searchUrl,
@@ -35,15 +35,15 @@ const RessourcePage = async ({ params }: { params: { slug: string } }) => {
         ]}
       />
       {authorizations.authorized ? (
-        <View
+        <ResourceView
           user={user}
           resource={authorizations.resource}
           isAdmin={authorizations.isAdmin}
         />
       ) : (
         <>
-          <ViewHeader resource={authorizations.resource} />
-          <ViewSeparators onlyLeft withoutPadding />
+          <ResourceViewHeader resource={authorizations.resource} />
+          <ResourceViewSeparators onlyLeft withoutPadding />
           <PrivateBox type="Ressource" />
         </>
       )}

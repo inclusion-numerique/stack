@@ -1,8 +1,8 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import { ContentType } from '@prisma/client'
-import ContentForm from '@app/web/components/Resource/Contents/ContentForm'
+import ResourceContentForm from '@app/web/components/Resource/Contents/ResourceContentForm'
 import AddContentButton from '@app/web/components/Resource/Edition/AddContentButton'
-import type { SendCommand } from '@app/web/components/Resource/Edition/Edition'
+import type { SendCommand } from '@app/web/components/Resource/Edition/ResourceEdition'
 import { ResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
 
 const AddContent = ({
@@ -30,7 +30,7 @@ const AddContent = ({
       : null
 
   return isAddingContentType ? (
-    <ContentForm
+    <ResourceContentForm
       type={isAddingContentType}
       data-testid="add-content_form"
       mode="add"

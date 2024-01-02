@@ -5,7 +5,7 @@ import { SearchParams } from '@app/web/server/search/searchQueryParams'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import BaseCard from '../Base/Card/BaseCard'
 import EmptyBox from '../EmptyBox'
-import styles from './Content.module.css'
+import styles from './SearchContents.module.css'
 
 const BasesSearchResult = ({
   bases,

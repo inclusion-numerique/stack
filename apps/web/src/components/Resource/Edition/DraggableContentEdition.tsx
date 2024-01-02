@@ -7,13 +7,13 @@ import React, {
 } from 'react'
 import { Reorder, useDragControls } from 'framer-motion'
 import Button from '@codegouvfr/react-dsfr/Button'
+import styles from '@app/web/components/Resource/Edition/Edition.module.css'
 import type {
   ContentProjectionWithContext,
   ResourceProjectionWithContext,
 } from '@app/web/server/resources/getResourceFromEvents'
-import type { SendCommand } from '@app/web/components/Resource/Edition/Edition'
+import type { SendCommand } from '@app/web/components/Resource/Edition/ResourceEdition'
 import { ResourceEditionState } from '@app/web/components/Resource/enums/ResourceEditionState'
-import styles from '@app/web/components/Resource/Edition/Edition.module.css'
 import ContentEdition from '@app/web/components/Resource/Edition/ContentEdition'
 
 /**

@@ -7,7 +7,7 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import { FollowButton } from '@app/web/components/Follows/FollowButton'
 import Breadcrumbs from '../Breadcrumbs'
 import CopyLinkButton from '../CopyLinkButton'
-import BaseViewsAndMetadata from './BaseViewsAndMetadata'
+import BaseMetadata from './BaseMetadata'
 import styles from './BaseHeader.module.css'
 import BaseImages from './BaseImages'
 
@@ -26,7 +26,7 @@ const BaseHeader = ({
       <BaseImages base={base} />
       <div className={styles.baseInfo}>
         <h2>{base.title}</h2>
-        <BaseViewsAndMetadata base={base} withBadge />
+        <BaseMetadata base={base} withBadge />
         {isMember ? (
           <Link
             data-testid="base-edition-button"

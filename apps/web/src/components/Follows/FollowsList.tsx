@@ -10,7 +10,7 @@ import {
   defaultSearchParams,
   searchUrl,
 } from '@app/web/server/search/searchQueryParams'
-import ProfileCard from '@app/web/components/Profile/Card/Card'
+import ProfileCard from '@app/web/components/Profile/Card/ProfileCard'
 import BaseCard from '@app/web/components/Base/Card/BaseCard'
 import { SessionUser } from '@app/web/auth/sessionUser'
 

@@ -5,9 +5,9 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import { SearchParams } from '@app/web/server/search/searchQueryParams'
 import SaveResourceInCollectionModal from '@app/web/components/Resource/SaveResourceInCollectionModal'
 import DeleteResource from '@app/web/components/Resource/DeleteResource/DeleteResource'
-import ResourceCard from '../Resource/Card'
-import EmptyBox from '../EmptyBox'
-import styles from './Content.module.css'
+import ResourceCard from '@app/web/components/Resource/ResourceCard'
+import EmptyBox from '@app/web/components/EmptyBox'
+import styles from './SearchContents.module.css'
 
 const ResourcesSearchResults = ({
   totalCount,

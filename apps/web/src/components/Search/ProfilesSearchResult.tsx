@@ -2,9 +2,9 @@ import React from 'react'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { ProfileListItem } from '@app/web/server/profiles/getProfilesList'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import ProfileCard from '../Profile/Card/Card'
-import EmptyBox from '../EmptyBox'
-import styles from './Content.module.css'
+import ProfileCard from '@app/web/components/Profile/Card/ProfileCard'
+import EmptyBox from '@app/web/components/EmptyBox'
+import styles from './SearchContents.module.css'
 
 const ProfilesSearchResult = ({
   profiles,
