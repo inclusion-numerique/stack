@@ -5,24 +5,27 @@ import { simpleBesoinsLabels } from '@app/web/app/(private)/gouvernances/departe
 import { getPrioritesFromFormValues } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/priorisation/getPrioritesFromFormValues'
 
 export const getBesoinsEnIngenieriePriorisationDefaultValues = (
-  gouvernance: GouvernanceWithBesoinsIngenierieFinanciereForForm,
-): DefaultValues<BesoinsEnIngenierieFinancierePrioriteData> & {
+  gouvernance: Pick<
+    GouvernanceWithBesoinsIngenierieFinanciereForForm,
+    'besoinsEnIngenierieFinanciere' | 'id'
+  >,
+): {
+  priorites: BesoinsEnIngenierieFinancierePrioriteData['priorites']
   gouvernanceId: string
 } => {
-  if (!gouvernance?.besoinsEnIngenierieFinanciere) {
-    return { gouvernanceId: gouvernance.id }
-  }
-  const data = gouvernance.besoinsEnIngenierieFinanciere
+  const data = gouvernance?.besoinsEnIngenierieFinanciere
 
   // We put -1 as a priority for missing ones, then we iterate and give them a priority starting with 0
-
-  const getPrioriteDefaultValue = (key: keyof typeof simpleBesoinsLabels) => {
-    if (!data[`${key}Prestation`]) {
-      // Prestation is not needed
-      return
-    }
-    return data[`${key}PrestationPriorite`] ?? -1
-  }
+  const getPrioriteDefaultValue = data
+    ? (key: keyof typeof simpleBesoinsLabels) => {
+        if (!data[`${key}Prestation`]) {
+          // Prestation is not needed
+          return
+        }
+        return data[`${key}PrestationPriorite`] ?? -1
+      }
+    : // All priorities are -1 if no data
+      () => -1
 
   const priorites = {
     faireUnDiagnosticTerritorialPrestationPriorite: getPrioriteDefaultValue(
@@ -63,20 +66,19 @@ export const getBesoinsEnIngenieriePriorisationDefaultValues = (
     outillerLesActeursAutrePrestationPriorite: getPrioriteDefaultValue(
       'outillerLesActeursAutre',
     ),
-    formerLesAgentsPublicsPriorite: data.formerLesAgentsPublics
+    formerLesAgentsPublicsPriorite: data?.formerLesAgentsPublics
       ? data.formerLesAgentsPublicsPriorite ?? -1
       : undefined,
-    formerLesSalariesAssociatifsPriorite: data.formerLesSalariesAssociatifs
+    formerLesSalariesAssociatifsPriorite: data?.formerLesSalariesAssociatifs
       ? data.formerLesSalariesAssociatifsPriorite ?? -1
       : undefined,
-    appuyerLaCertificationQualiopiPriorite: data.appuyerLaCertificationQualiopi
+    appuyerLaCertificationQualiopiPriorite: data?.appuyerLaCertificationQualiopi
       ? data.appuyerLaCertificationQualiopiPriorite ?? -1
       : undefined,
-    formerLesProfessionnelsAutrePriorite: data.formerLesProfessionnelsAutre
+    formerLesProfessionnelsAutrePriorite: data?.formerLesProfessionnelsAutre
       ? data.formerLesProfessionnelsAutrePriorite ?? -1
       : undefined,
-    totalEtpPriorite:
-      data.totalEtp > 0 ? data.totalEtpPriorite ?? -1 : undefined,
+    totalEtpPriorite: data?.totalEtp ? data.totalEtpPriorite ?? -1 : undefined,
   } satisfies DefaultValues<BesoinsEnIngenierieFinancierePrioriteData>['priorites']
 
   const defaultValues = {

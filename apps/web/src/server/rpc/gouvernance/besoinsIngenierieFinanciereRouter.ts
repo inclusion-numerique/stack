@@ -9,6 +9,7 @@ import {
   BesoinsEnIngenierieFinancierePrioriteValidation,
   BesoinsEnIngenierieFinanciereValidation,
 } from '@app/web/gouvernance/BesoinsEnIngenierieFinanciere'
+import { getBesoinsEnIngenieriePriorisationDefaultValues } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/besoinsEnIngenieriePriorisationDefaultValues'
 
 export const besoinsIngenierieFinanciereRouter = router({
   create: protectedProcedure
@@ -107,10 +108,7 @@ export const besoinsIngenierieFinanciereRouter = router({
 
       const data = {
         derniereModificationParId: user.id,
-        selectionEnregistree: gouvernance.besoinsEnIngenierieFinanciere
-          .selectionEnregistree
-          ? undefined
-          : new Date(),
+        selectionEnregistree: new Date(),
         totalEtp: 0,
 
         // Formaliser la feuille de route
@@ -271,13 +269,32 @@ export const besoinsIngenierieFinanciereRouter = router({
         }
       }
 
-      const result = await prismaClient.besoinsEnIngenierieFinanciere.update({
-        where: {
-          id: gouvernance.besoinsEnIngenierieFinanciere.id,
-        },
-        data,
-      })
-      return result
+      const updatedBesoins =
+        await prismaClient.besoinsEnIngenierieFinanciere.update({
+          where: {
+            id: gouvernance.besoinsEnIngenierieFinanciere.id,
+          },
+          data,
+        })
+
+      // Update priority values for new besoins
+
+      const defaultPrioriteValues =
+        getBesoinsEnIngenieriePriorisationDefaultValues({
+          id: gouvernance.id,
+          besoinsEnIngenierieFinanciere: updatedBesoins,
+        })
+
+      const { priorites } = defaultPrioriteValues
+
+      const updatedBesoinsWithMissingPriorities =
+        await prismaClient.besoinsEnIngenierieFinanciere.update({
+          where: {
+            id: updatedBesoins.id,
+          },
+          data: priorites,
+        })
+      return updatedBesoinsWithMissingPriorities
     }),
 
   priorisation: protectedProcedure
