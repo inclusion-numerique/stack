@@ -353,10 +353,7 @@ export const besoinsIngenierieFinanciereRouter = router({
 
       const data = {
         derniereModificationParId: user.id,
-        priorisationEnregistree: gouvernance.besoinsEnIngenierieFinanciere
-          .priorisationEnregistree
-          ? undefined
-          : new Date(),
+        priorisationEnregistree: new Date(),
 
         // Erase all priorites that are not in the input
         coConstruireLaFeuilleDeRoutePrestationPriorite:
