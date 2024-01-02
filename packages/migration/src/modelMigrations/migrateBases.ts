@@ -12,6 +12,7 @@ import {
 import { FindManyItemType } from '@app/migration/utils/findManyItemType'
 import { LegacyIdMap } from '@app/migration/utils/legacyIdMap'
 import { legacyBasesIdsToTransformToProfile } from '@app/migration/modelMigrations/legacyBasesToTransformToProfile'
+import { sanitizeLegacyHtml } from '@app/migration/sanitizeLegacyHtml'
 
 export const getLegacyBases = () => migrationPrismaClient.main_base.findMany()
 
@@ -70,7 +71,9 @@ export const migrateBase = async ({
   const data = {
     ownerId: userIdFromLegacyId(Number(legacyBase.owner_id)),
     title: legacyBase.title,
-    description: legacyBase.description,
+    description: legacyBase.description
+      ? sanitizeLegacyHtml(legacyBase.description)
+      : null,
     slug,
     titleDuplicationCheckSlug: createSlug(legacyBase.title),
     imageId: legacyBase.profile_image_id

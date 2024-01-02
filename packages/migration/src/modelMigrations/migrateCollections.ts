@@ -9,6 +9,7 @@ import {
 import { migrationPrismaClient } from '@app/migration/migrationPrismaClient'
 import { legacyBasesIdsToTransformToProfile } from '@app/migration/modelMigrations/legacyBasesToTransformToProfile'
 import { LegacyBaseOwnerFromLegacyBaseId } from '@app/migration/modelMigrations/getLegacyBaseOwnerFromLegacyBaseId'
+import { sanitizeLegacyHtml } from '@app/migration/sanitizeLegacyHtml'
 
 export const getLegacyCollections = async () => {
   const collections = await migrationPrismaClient.main_collection.findMany({
@@ -194,7 +195,7 @@ export const migrateCollection = async ({
   const data = {
     legacyId,
     title: legacyCollection.name,
-    description: legacyCollection.description,
+    description: sanitizeLegacyHtml(legacyCollection.description),
     ownerId,
     baseId,
     imageId: legacyCollection.profile_image_id

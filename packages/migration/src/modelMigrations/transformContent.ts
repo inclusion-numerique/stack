@@ -3,6 +3,7 @@ import type { MigrateResourceCommand } from '@app/web/server/resources/feature/M
 import { ResourceProjection } from '@app/web/server/resources/feature/createResourceProjection'
 import type { LegacyToNewIdHelper } from '@app/migration/legacyToNewIdHelper'
 import type { LegacyResource } from '@app/migration/modelMigrations/migrateResources'
+import { sanitizeLegacyHtml } from '@app/migration/sanitizeLegacyHtml'
 
 type TransformContentResult =
   MigrateResourceCommand['payload']['contents'][number]
@@ -72,7 +73,7 @@ export const transformContent = ({
     return {
       ...commonData,
       type: 'Text',
-      text: legacyContent.main_textcontent.text,
+      text: sanitizeLegacyHtml(legacyContent.main_textcontent.text),
     }
   }
   if (legacyContent.main_linkcontent) {
