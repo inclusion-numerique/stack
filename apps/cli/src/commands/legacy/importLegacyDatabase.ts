@@ -83,8 +83,8 @@ export const importLegacyDatabase = new Command()
     const backups = await s3Client.send(
       new ListObjectsV2Command({
         Bucket: bucket,
-        // We expect to be fully migrated by 2024 🤓
-        Prefix: '2023',
+        // We expect to be fully migrated by 2025 🤓
+        Prefix: '2024',
         MaxKeys: 365,
       }),
     )
