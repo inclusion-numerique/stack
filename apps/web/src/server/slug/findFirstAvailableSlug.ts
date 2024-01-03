@@ -16,7 +16,7 @@ export const findFirstAvailableSlug = async (
         )
       SELECT i.slug
       FROM input i
-      LEFT JOIN bases a USING (slug)
+      LEFT JOIN "${table}" a USING (slug)
       WHERE a.slug IS NULL -- doesn't exist yet.
       UNION ALL
       ( -- parentheses required
