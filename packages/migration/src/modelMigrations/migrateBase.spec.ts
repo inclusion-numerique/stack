@@ -42,6 +42,12 @@ describe('migrateBase', () => {
       visit_count: 14,
       show_latest_additions: true,
       bookmarked_count: 6,
+      main_base_tags: [
+        { main_tag: { category_id: 1n, name: 'tag1' } },
+        {
+          main_tag: { category_id: 6n, name: 'Département : Puy-de-Dôme (63)' },
+        },
+      ],
     } satisfies LegacyBase
 
     mockTransaction.base.upsert.mockResolvedValueOnce({
@@ -81,6 +87,7 @@ describe('migrateBase', () => {
         title: legacyBase.title,
         created: legacyBase.created,
         updated: legacyBase.modified,
+        department: '63',
         email: 'a@a.a',
         emailIsPublic: true,
         isPublic: false,
@@ -102,6 +109,7 @@ describe('migrateBase', () => {
         title: legacyBase.title,
         created: legacyBase.created,
         updated: legacyBase.modified,
+        department: '63',
         email: 'a@a.a',
         emailIsPublic: true,
         isPublic: false,

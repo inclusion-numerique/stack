@@ -29,6 +29,12 @@ describe('migrateUser', () => {
       last_login: null,
       cnfs_id: null,
       cnfs_id_organization: null,
+      main_user_tags: [
+        { main_tag: { category_id: 1n, name: 'tag1' } },
+        {
+          main_tag: { category_id: 6n, name: 'Département : Puy-de-Dôme (63)' },
+        },
+      ],
     } satisfies LegacyUser
 
     expect(
@@ -44,6 +50,7 @@ describe('migrateUser', () => {
       lastName: 'A',
       legacyId: 8,
       name: 'A A',
+      department: '63',
       updated: legacyUser.modified,
       created: legacyUser.created,
       emailVerified: legacyUser.created,

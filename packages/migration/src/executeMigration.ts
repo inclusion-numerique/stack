@@ -34,6 +34,7 @@ import {
   getLegacyFollows,
   migrateFollows,
 } from '@app/migration/modelMigrations/migrateFollows'
+import { applyLegacyBaseInfoToProfile } from '@app/migration/modelMigrations/applyLegacyBaseInfoToProfile'
 
 // eslint-disable-next-line no-console
 const output = console.log
@@ -159,6 +160,14 @@ export const executeMigration = async () => {
 
   const legacyBaseOwnerFromLegacyBaseId =
     await getLegacyBaseOwnerFromLegacyBaseId()
+
+  output(`- Applying legacy base info to transformed profiles...`)
+
+  await applyLegacyBaseInfoToProfile({
+    legacyBaseOwnerFromLegacyBaseId,
+    userIdFromLegacyId,
+    imageIdFromLegacyId,
+  })
 
   output(`- Migrating resources...`)
 

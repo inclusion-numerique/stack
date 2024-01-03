@@ -6,8 +6,20 @@ import { migrationPrismaClient } from '@app/migration/migrationPrismaClient'
 import { UpsertCreateType } from '@app/migration/utils/UpsertCreateType'
 import { FindManyItemType } from '@app/migration/utils/findManyItemType'
 import { LegacyIdMap } from '@app/migration/utils/legacyIdMap'
+import { getDepartmentFromTags } from '@app/migration/modelMigrations/getDepartmentFromTags'
 
-export const getLegacyUsers = () => migrationPrismaClient.main_user.findMany()
+export const getLegacyUsers = () =>
+  migrationPrismaClient.main_user.findMany({
+    include: {
+      main_user_tags: {
+        select: {
+          main_tag: {
+            select: { category_id: true, name: true },
+          },
+        },
+      },
+    },
+  })
 
 export type LegacyUser = FindManyItemType<typeof getLegacyUsers>
 
@@ -70,6 +82,9 @@ export const transformUser = ({
     updated: legacyUser.modified,
     emailVerified: legacyUser.is_active ? legacyUser.created : null,
     legacyId,
+    department: getDepartmentFromTags(
+      legacyUser.main_user_tags.map(({ main_tag }) => main_tag),
+    ),
     collections: existingUser?.collections.length
       ? undefined
       : {

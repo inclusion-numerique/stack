@@ -13,8 +13,28 @@ import { FindManyItemType } from '@app/migration/utils/findManyItemType'
 import { LegacyIdMap } from '@app/migration/utils/legacyIdMap'
 import { legacyBasesIdsToTransformToProfile } from '@app/migration/modelMigrations/legacyBasesToTransformToProfile'
 import { sanitizeLegacyHtml } from '@app/migration/sanitizeLegacyHtml'
+import {
+  departmentTagCategory,
+  getDepartmentFromTags,
+} from '@app/migration/modelMigrations/getDepartmentFromTags'
 
-export const getLegacyBases = () => migrationPrismaClient.main_base.findMany()
+export const getLegacyBases = () =>
+  migrationPrismaClient.main_base.findMany({
+    include: {
+      main_base_tags: {
+        select: {
+          main_tag: {
+            select: { category_id: true, name: true },
+          },
+        },
+        where: {
+          main_tag: {
+            category_id: departmentTagCategory,
+          },
+        },
+      },
+    },
+  })
 
 export type LegacyBase = FindManyItemType<typeof getLegacyBases>
 
@@ -91,6 +111,9 @@ export const migrateBase = async ({
     linkedin: legacyBase.social_media_linkedin,
     twitter: legacyBase.social_media_twitter,
     website: legacyBase.website,
+    department: getDepartmentFromTags(
+      legacyBase.main_base_tags.map(({ main_tag }) => main_tag),
+    ),
   } satisfies Parameters<typeof transaction.base.upsert>[0]['update']
 
   return transaction.base.upsert({

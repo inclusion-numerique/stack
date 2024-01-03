@@ -1,7 +1,7 @@
 import { chunk } from 'lodash'
 import mime from 'mime-types'
 import { ListObjectsV2Command } from '@aws-sdk/client-s3'
-import { output } from '@app/cli/output'
+import { output } from '@app/web/utils/output'
 import { prismaClient } from '@app/web/prismaClient'
 import { legacyS3Client } from '@app/web/server/s3/legacyS3'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
@@ -47,7 +47,7 @@ export const getLegacyUploads = async () => {
   for (const object of withoutCroppedImages) {
     totalSize += object.Size
   }
-  console.log(
+  output.log(
     `- Total size of legacy uploaded files: ${(totalSize / 1_000_000).toFixed(
       0,
     )}MB`,
@@ -97,9 +97,9 @@ export const transformUpload = ({
 
 export const migrateUploads = async () => {
   const legacyUploads = await getLegacyUploads()
-  output(`- Found ${legacyUploads.length} uploads to migrate`)
+  output.log(`- Found ${legacyUploads.length} uploads to migrate`)
   const existingUploads = await getExistingUploads()
-  output(`- Found ${existingUploads.keyMap.size} already migrated uploads`)
+  output.log(`- Found ${existingUploads.keyMap.size} already migrated uploads`)
   const uploadsData = legacyUploads.map((legacyUpload) =>
     transformUpload({
       legacyUpload,
@@ -122,7 +122,7 @@ export const migrateUploads = async () => {
         )
         .then((uploads) => {
           migratedUploadCount += uploads.length
-          output(
+          output.log(
             `-- ${migratedUploadCount} ${(
               (migratedUploadCount * 100) /
               legacyUploads.length
