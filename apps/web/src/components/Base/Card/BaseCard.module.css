@@ -1,5 +1,5 @@
 .container {
-  padding: 24px 0;
+  padding: 24px 0 32px;
   display: flex;
   gap: 12px;
   border-bottom: var(--slim-grey-border);
@@ -11,6 +11,7 @@
   }
 
     @media (min-width: 576px) {
+      padding: 24px 0;
       gap: 24px;
         flex-direction: row;
       align-items: center;

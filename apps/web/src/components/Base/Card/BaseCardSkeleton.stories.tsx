@@ -9,8 +9,16 @@ export default {
 
 type Story = StoryObj<typeof BaseCardSkeleton>
 
-export const Desktop: Story = {
+export const Full: Story = {
   args: {},
 }
 
-export const Mobile = mobileStory(Desktop)
+export const FullMobile = mobileStory(Full)
+
+export const Compact: Story = {
+  args: {
+    compact: true,
+  },
+}
+
+export const CompactMobile = mobileStory(Compact)

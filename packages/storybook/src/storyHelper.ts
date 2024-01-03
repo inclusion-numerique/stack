@@ -19,3 +19,23 @@ export const mobileStory = <T>(story: StoryObj<T>): StoryObj<T> => {
     parameters: mobileStoryParams,
   }
 }
+
+export const mediumContainerStoryParameters = {
+  chromatic: { viewports: [792] },
+  layout: 'fullscreen',
+  viewport: {
+    defaultViewport: 'mediumContainer',
+  },
+} as const
+
+export const mediumContainerStory = <T>(story: StoryObj<T>): StoryObj<T> => {
+  const mediumContainerStoryParams = {
+    ...story.parameters,
+    ...mediumContainerStoryParameters,
+  }
+
+  return {
+    ...story,
+    parameters: mediumContainerStoryParams,
+  }
+}

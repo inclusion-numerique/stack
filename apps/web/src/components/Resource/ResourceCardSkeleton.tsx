@@ -9,7 +9,7 @@ const ResourceSkeleton = () => (
     data-testid="resource-skeleton"
   >
     <div className={styles.header}>
-      <span className="skeleton-round skeleton-round--32" />
+      <span className="skeleton-round skeleton--32" />
       <span className="skeleton-rectangle skeleton-rectangle--120 fr-ml-1w" />
     </div>
     <div className={classNames(cardStyles.content, styles.content)}>

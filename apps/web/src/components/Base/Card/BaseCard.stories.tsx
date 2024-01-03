@@ -1,14 +1,15 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { mobileStory } from '@app/storybook/storyHelper'
+import { mediumContainerStory, mobileStory } from '@app/storybook/storyHelper'
 import type { BaseListItem } from '@app/web/server/bases/getBasesList'
+import { testSessionUser } from '@app/web/test/testSessionUser'
 import BaseCard from './BaseCard'
 
 const base = {
   id: 'f41d4215-aee5-4b39-95c9-60484df15de9',
   title: 'Conseiller numérique France Services - contributions',
   slug: 'conseiller-numérique-france-services-contributions',
-  isPublic: true,
-  department: '08 - Ardennes',
+  isPublic: false,
+  department: '08',
   description:
     '<h1>HTML Ipsum Presents</h1>\n' +
     '\n' +
@@ -37,7 +38,9 @@ const base = {
     '\t\t\t\t  height: 80px;\n' +
     '\t\t\t\t}\n' +
     '\t\t\t\t</code></pre>',
-  image: null,
+  image: {
+    id: 'portrait.webp',
+  },
   coverImage: null,
   followedBy: [],
   _count: { resources: 8, followedBy: 4 },
@@ -50,6 +53,55 @@ export default {
 
 type Story = StoryObj<typeof BaseCard>
 
-export const Desktop: Story = { args: { base } }
+const CompleteStory: Story = { args: { base } }
 
-export const Mobile = mobileStory(Desktop)
+export const Complete = mediumContainerStory(CompleteStory)
+
+export const CompleteMobile = mobileStory(CompleteStory)
+
+const SansImageStory: Story = {
+  args: {
+    base: {
+      ...base,
+      image: null,
+      department: null,
+      followedBy: [{ id: testSessionUser.id }],
+    },
+    user: testSessionUser,
+  },
+}
+
+export const SansImage = mediumContainerStory(SansImageStory)
+
+export const SansImageMobile = mobileStory(SansImageStory)
+
+const SansDescriptionStory: Story = {
+  args: { base: { ...base, description: null, isPublic: true } },
+}
+
+export const SansDescription = mediumContainerStory(SansDescriptionStory)
+
+export const SansDescriptionMobile = mobileStory(SansDescriptionStory)
+
+const SansInfosStory: Story = {
+  args: { base: { ...base, description: null, department: null } },
+}
+
+export const SansInfos = mediumContainerStory(SansInfosStory)
+
+export const SansInfosMobile = mobileStory(SansInfosStory)
+
+const CompactStory = {
+  args: {
+    base: {
+      ...base,
+      followedBy: [{ id: testSessionUser.id }],
+    },
+    user: testSessionUser,
+    compact: true,
+  },
+}
+
+export const Compact = mediumContainerStory(CompactStory)
+
+export const CompactMobile = mobileStory(CompactStory)

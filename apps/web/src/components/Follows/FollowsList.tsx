@@ -56,7 +56,7 @@ const FollowsList = ({
         {baseFollows.length} base{sPluriel(baseFollows.length)}
       </h6>
       {baseFollows.map(({ base }) => (
-        <BaseCard user={user} base={base} key={base.id} />
+        <BaseCard user={user} base={base} key={base.id} compact />
       ))}
 
       <h6 className="fr-mb-4v fr-mt-12v">

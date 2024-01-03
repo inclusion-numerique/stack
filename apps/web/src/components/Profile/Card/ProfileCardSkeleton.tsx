@@ -9,7 +9,7 @@ const ProfileCardSkeleton = () => (
     data-testid="profile-skeleton"
   >
     <div className={cardStyles.content}>
-      <div className="skeleton-round skeleton-round--48" />
+      <div className="skeleton-round skeleton--48" />
       <div className="fr-width-full">
         <div className="skeleton-rectangle skeleton-rectangle--120" />
         <div className="fr-mt-4v skeleton-rectangle skeleton-rectangle--240" />

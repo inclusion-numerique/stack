@@ -130,7 +130,6 @@ const ClientFollowButton = ({
       }
       router.refresh()
     } catch (error) {
-      console.error(error)
       Sentry.captureException(error)
       createToast({
         priority: 'error',
@@ -144,17 +143,6 @@ const ClientFollowButton = ({
     followProfileMutation.isPending ||
     unfollowBaseMutation.isPending ||
     unfollowProfileMutation.isPending
-
-  const iconId = isFollowing
-    ? 'fr-icon-user-heart-fill'
-    : 'fr-icon-user-heart-line'
-
-  console.log({
-    base,
-    profile,
-    isFollowing,
-    iconId,
-  })
 
   return (
     <Button

@@ -45,15 +45,17 @@ export const FollowButton = (props: FollowButtonProps) => {
   // Server component version
 
   if (base) {
-    const buttonProps = iconOnly
+    const initialButtonProps = iconOnly
       ? followBaseIconOnlyButtonProps
       : followBaseButtonProps
 
+    const buttonProps = followPriority
+      ? { ...initialButtonProps, priority: followPriority }
+      : initialButtonProps
+
     return (
       <Button
-        {...(followPriority
-          ? buttonProps
-          : { ...buttonProps, priority: followPriority })}
+        {...buttonProps}
         linkProps={{
           href,
         }}
@@ -61,15 +63,17 @@ export const FollowButton = (props: FollowButtonProps) => {
     )
   }
 
-  const buttonProps = iconOnly
+  const initialButtonProps = iconOnly
     ? followProfileIconOnlyButtonProps
     : followProfileButtonProps
 
+  const buttonProps = followPriority
+    ? { ...initialButtonProps, priority: followPriority }
+    : initialButtonProps
+
   return (
     <Button
-      {...(followPriority
-        ? buttonProps
-        : { ...buttonProps, priority: followPriority })}
+      {...buttonProps}
       linkProps={{
         href,
       }}

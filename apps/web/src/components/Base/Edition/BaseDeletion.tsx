@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Button from '@codegouvfr/react-dsfr/Button'
 import Input from '@codegouvfr/react-dsfr/Input'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
+import { createToast } from '@app/ui/toast/createToast'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import { BasePageData } from '@app/web/server/bases/getBase'
@@ -30,10 +31,12 @@ const BaseEdition = ({ base }: { base: BasePageData }) => {
       await mutate.mutateAsync({ id: base.id })
       router.refresh()
       router.push('/')
-    } catch (error) {
-      console.error('Could not delete base', error)
-      // TODO Have a nice error and handle edge cases server side
-      throw error
+    } catch {
+      createToast({
+        priority: 'error',
+        message: 'Une erreur est survenue lors de la suppression de la base',
+      })
+      mutate.reset()
     }
   }
   return (

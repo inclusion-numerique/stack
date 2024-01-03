@@ -1,5 +1,6 @@
 import z from 'zod'
 import { v4 } from 'uuid'
+import * as Sentry from '@sentry/nextjs'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { CreateBaseCommandValidation } from '@app/web/server/bases/createBase'
@@ -57,9 +58,7 @@ export const baseRouter = router({
             email: member.email,
           }),
         ),
-      ])
-        // TODO: a sentry here would be nice
-        .catch(() => console.log('Email non envoyé'))
+      ]).catch((error) => Sentry.captureException(error))
 
       return base
     }),

@@ -37,7 +37,11 @@ const ProfileHeader = ({
           </Link>
         ) : (
           <div className={styles.buttons}>
-            <FollowButton user={user} profile={profile} />
+            <FollowButton
+              user={user}
+              profile={profile}
+              followPriority="primary"
+            />
             <Link
               className="fr-btn--sm fr-btn fr-btn--secondary fr-icon-mail-line fr-btn--icon-left"
               href={`mailto:${profile.email}`}

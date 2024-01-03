@@ -15,11 +15,17 @@ const BaseDetails = ({ base }: { base: BasePageData }) => (
         <h6>Informations</h6>
         <div>
           <p className={styles.subtitle}>Description</p>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: base.description || 'Pas de description',
-            }}
-          />
+          {base.description ? (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: base.description,
+              }}
+            />
+          ) : (
+            <div>
+              <p>Pas de description</p>
+            </div>
+          )}
         </div>
         {base.department && (
           <div className="fr-mt-3w">

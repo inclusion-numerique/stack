@@ -7,6 +7,7 @@ const TextContentView = ({
   content: Pick<ResourceContent, 'text'>
 }) =>
   text ? (
+    // eslint-disable-next-line react/no-danger
     <div className={styles.text} dangerouslySetInnerHTML={{ __html: text }} />
   ) : null
 

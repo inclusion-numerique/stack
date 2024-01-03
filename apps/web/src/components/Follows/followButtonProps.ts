@@ -3,7 +3,7 @@ import type { ButtonProps } from '@codegouvfr/react-dsfr/Button'
 export const followBaseButtonProps = {
   iconId: 'fr-icon-user-heart-line',
   children: 'Suivre',
-  priority: 'primary' as ButtonProps['priority'],
+  priority: 'secondary' as ButtonProps['priority'],
   size: 'small',
 } as const
 
@@ -33,7 +33,7 @@ export const unfollowBaseIconOnlyButtonProps = {
 export const followProfileButtonProps = {
   iconId: 'fr-icon-user-heart-line',
   children: 'Suivre',
-  priority: 'primary' as ButtonProps['priority'],
+  priority: 'secondary' as ButtonProps['priority'],
   size: 'small',
 } as const
 

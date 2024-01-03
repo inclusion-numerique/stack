@@ -4,6 +4,7 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
+import { createToast } from '@app/ui/toast/createToast'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import { Resource } from '@app/web/server/resources/getResource'
@@ -33,11 +34,13 @@ const ResourceDeletion = ({ resource }: { resource: Resource }) => {
       closeDeleteModal()
       router.refresh()
       router.push('/')
-    } catch (error) {
-      console.error('Could not delete resource', error)
-      // TODO Have a nice error and handle edge cases server side
-      // TODO for example a linked base or file or resource has been deleted since last publication
-      throw error
+    } catch {
+      createToast({
+        priority: 'error',
+        message:
+          'Une erreur est survenue lors de la suppression de la ressource',
+      })
+      mutate.reset()
     }
   }
 

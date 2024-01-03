@@ -37,7 +37,7 @@ const BaseHeader = ({
           </Link>
         ) : (
           <div className={styles.buttons}>
-            <FollowButton user={user} base={base} />
+            <FollowButton followPriority="primary" user={user} base={base} />
             {base.email && (
               <Link
                 className="fr-btn--sm fr-btn fr-btn--secondary fr-icon-mail-line fr-btn--icon-left"

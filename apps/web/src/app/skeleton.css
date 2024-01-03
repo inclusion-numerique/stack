@@ -41,17 +41,30 @@
     border-radius: 50%;
 }
 
-.skeleton-round--32 {
+.skeleton-half {
+    border-radius: 25%;
+}
+
+.skeleton-quarter {
+    border-radius: 12.5%;
+}
+
+.skeleton--32 {
     height: 32px;
     width: 32px;
 }
 
-.skeleton-round--48 {
+.skeleton--48 {
     height: 48px;
     width: 48px;
 }
 
-.skeleton-round--116 {
+.skeleton--96 {
+    height: 96px;
+    width: 96px;
+}
+
+.skeleton--116 {
     height: 116px;
     width: 116px;
 }
@@ -64,7 +77,9 @@
 
 .skeleton-background,
 .skeleton-rectangle,
-.skeleton-round {
+.skeleton-round,
+.skeleton-half,
+.skeleton-quarter {
     position: relative;
     overflow: hidden;
     background-color: var(--skeleton-grey);
@@ -72,7 +87,9 @@
 
 .skeleton-background::after,
 .skeleton-rectangle::after,
-.skeleton-round::after {
+.skeleton-round::after,
+.skeleton-half::after,
+.skeleton-quarter::after{
     content: '';
     position: absolute;
     inset: 0;
