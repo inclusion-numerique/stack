@@ -68,7 +68,7 @@ describe('Utilisateur connecté, lorsque je créé une ressource, je peux rensei
     cy.testId('contributors-box').within(() => {
       cy.testId('contributors-creator').should('exist')
       cy.testId('contributors-contributor').should('not.exist')
-      cy.testId('invite-member-modal-input').type('t')
+      cy.testId('invite-member-modal-input').type('jean')
       cy.wait('@getUser')
       cy.testId('invite-member-modal-input-option-0').click()
       cy.testId('invite-member-modal-button').click()

@@ -107,12 +107,21 @@ const MultipleSearchableSelect = ({
       select(filteredOptions[0])
     } else if (inputValue) {
       onInputChange('')
-      setInternalSelection([
+      const newSelection = [
         ...internalSelection,
         { name: inputValue, value: inputValue, invalid: true },
-      ])
+      ]
+      setInternalSelection(newSelection)
+      onSelectProperty(newSelection)
     }
-  }, [filteredOptions, inputValue, select, onInputChange, internalSelection])
+  }, [
+    filteredOptions,
+    inputValue,
+    select,
+    onInputChange,
+    internalSelection,
+    onSelectProperty,
+  ])
 
   const id = 'multiple-searchable-select'
   return (

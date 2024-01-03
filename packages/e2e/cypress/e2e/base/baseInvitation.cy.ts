@@ -29,7 +29,7 @@ describe("Utilisateur connecté, je peux gerer les membres d'une base", () => {
     cy.testId('member-card-admin').should('have.length', 1)
     cy.dsfrShouldBeStarted()
     cy.testId('base-invite-member-button').click()
-    cy.testId('invite-member-modal-input').type('t')
+    cy.testId('invite-member-modal-input').type('jean')
     cy.wait('@getUser')
     cy.testId('invite-member-modal-input-option-0').click()
 
@@ -112,7 +112,7 @@ describe("Utilisateur connecté, je peux gerer les membres d'une base", () => {
     cy.testId('profile-card').should('have.length', 2)
     cy.dsfrShouldBeStarted()
     cy.testId('base-invite-member-button').click()
-    cy.testId('invite-member-modal-input').type('t')
+    cy.testId('invite-member-modal-input').type('jean')
     cy.wait('@getUser')
     cy.testId('invite-member-modal-input-option-0').click()
     cy.testId('base-invite-member-role-member').should('exist')

@@ -49,8 +49,8 @@ const InviteUsers = ({
 
   const onSelect = useCallback(
     (selections: SelectOptionValid[]) => {
-      setEmailsError(selections.some((selection) => selection.invalid))
       onChange(selections.map((selection) => selection.value))
+      setEmailsError(selections.some((selection) => selection.invalid))
     },
     [setEmailsError, onChange],
   )
