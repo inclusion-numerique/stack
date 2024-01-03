@@ -19,6 +19,7 @@ const EditCard = <
     | ChangeBaseCommand
     | ChangeVisibilityCommand
     | ChangeIndexationCommand,
+  V = unknown,
 >({
   id,
   className,
@@ -37,7 +38,7 @@ const EditCard = <
   edition: ReactNode
   view: ReactNode
   form: UseFormReturn<T>
-  mutation: (data: T) => Promise<void>
+  mutation: (data: T) => Promise<V>
   noRefresh?: boolean
 }) => {
   const router = useRouter()

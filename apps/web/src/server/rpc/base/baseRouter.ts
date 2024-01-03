@@ -8,16 +8,19 @@ import {
   UpdateBaseCommandValidation,
   UpdateBaseImageCommandValidation,
 } from '@app/web/server/bases/updateBase'
+import { createAvailableSlug } from '@app/web/server/slug/createAvailableSlug'
+import { invalidError } from '@app/web/server/rpc/trpcErrors'
+import { createSlug } from '@app/web/utils/createSlug'
+import { findFirstAvailableSlug } from '@app/web/server/slug/findFirstAvailableSlug'
 import { handleResourceMutationCommand } from '../../resources/feature/handleResourceMutationCommand'
 import { sendInviteMemberEmail } from '../baseMember/invitationEmail'
-import { createUniqueSlug } from './createUniqueSlug'
 
 // TODO - Check user permission
 export const baseRouter = router({
   create: protectedProcedure
     .input(CreateBaseCommandValidation)
     .mutation(async ({ input, ctx: { user } }) => {
-      const slug = await createUniqueSlug(input.title)
+      const slug = await createAvailableSlug(input.title, 'bases')
 
       const members = await prismaClient.user.findMany({
         select: { id: true, email: true },
@@ -65,6 +68,28 @@ export const baseRouter = router({
   mutate: protectedProcedure
     .input(UpdateBaseCommandValidation)
     .mutation(async ({ input, ctx: { user } }) => {
+      const base = await prismaClient.base.findUnique({
+        where: { id: input.id },
+        select: { slug: true },
+      })
+      // TODO Check security
+      if (!base) {
+        throw invalidError('Base not found')
+      }
+
+      /**
+       * We update the slug if the title has changed
+       */
+      const beforeSlug = base.slug
+      const afterSlug =
+        'title' in input.data ? createSlug(input.data.title) : null
+      const slugHasChanged = afterSlug && beforeSlug !== afterSlug
+
+      // To leave slug unchanged, set to undefined for prisma data
+      const slug = slugHasChanged
+        ? await findFirstAvailableSlug(afterSlug, 'bases')
+        : undefined
+
       if ('isPublic' in input.data && input.data.isPublic === false) {
         // All public resources must be made private
         const resources = await prismaClient.resource.findMany({
@@ -102,13 +127,13 @@ export const baseRouter = router({
 
           return transaction.base.update({
             where: { id: input.id },
-            data: input.data,
+            data: { ...input.data, slug },
           })
         })
       }
       return prismaClient.base.update({
         where: { id: input.id },
-        data: input.data,
+        data: { ...input.data, slug },
       })
     }),
   delete: protectedProcedure

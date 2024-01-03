@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import MaybeEmptyValue from '@app/ui/components/MaybeEmptyValue'
 import EmptyValue from '@app/ui/components/EmptyValue'
+import { useRouter } from 'next/navigation'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import EditCard from '@app/web/components/EditCard'
@@ -26,13 +27,17 @@ const BaseEditionInformation = ({ base }: { base: BasePageData }) => {
     },
   })
   const mutate = trpc.base.mutate.useMutation()
+  const router = useRouter()
 
   return (
     <EditCard
       id="informations"
       mutation={async (data) => {
-        await mutate.mutateAsync({ id: base.id, data })
+        const result = await mutate.mutateAsync({ id: base.id, data })
+        router.push(`/bases/${result.slug}/editer`)
+        router.refresh()
       }}
+      noRefresh
       form={form}
       title="Informations de la base"
       edition={<BaseInformationsEdition form={form} />}

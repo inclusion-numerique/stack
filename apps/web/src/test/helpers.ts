@@ -11,6 +11,7 @@ export const createTestUser = (publicProfile?: boolean) =>
     email: `test-${v4()}@example.com`,
     firstName: 'Jean',
     lastName: 'Biche',
+    slug: 'jean-biche',
     name: 'Jean Biche',
     image: null,
     emailVerified: '2023-04-01',
@@ -32,6 +33,7 @@ export const createTestProfile = (publicProfile?: boolean) =>
     firstName: 'Jean',
     lastName: 'Biche',
     name: 'Jean Biche',
+    slug: 'jean-biche',
     image: null,
     isPublic: publicProfile || false,
     followedBy: [],
@@ -132,6 +134,7 @@ export const createTestBase = (
         memberId: admin.id,
         member: {
           id: admin.id,
+          slug: admin.slug,
           name: admin.name,
           firstName: admin.firstName,
           lastName: admin.lastName,
@@ -146,6 +149,7 @@ export const createTestBase = (
         memberId: member.id,
         member: {
           id: member.id,
+          slug: member.slug,
           name: member.name,
           firstName: member.firstName,
           lastName: member.lastName,

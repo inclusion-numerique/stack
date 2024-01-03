@@ -1,13 +1,4 @@
-import React, {
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { ReactNode, useCallback, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
 import Options from '@app/ui/components/SearchableSelect/Options'
 import { SelectOption } from '@app/ui/components/Form/utils/options'
@@ -25,8 +16,8 @@ const MultipleSearchableSelect = ({
   noResultMessage,
   options,
   limit,
-  setSelecteds,
-  setInput,
+  onSelect: onSelectProperty,
+  onInputChange: onInputChangeProperty,
   filter,
   className,
   label,
@@ -37,8 +28,8 @@ const MultipleSearchableSelect = ({
 }: {
   placeholder?: string
   noResultMessage?: string
-  setSelecteds: (values: SelectOptionValid[]) => void
-  setInput?: Dispatch<SetStateAction<string>>
+  onSelect: (values: SelectOptionValid[]) => void
+  onInputChange?: (input: string) => void
   filter?: (option: SelectOption) => boolean
   className?: string
   label?: ReactNode
@@ -49,7 +40,7 @@ const MultipleSearchableSelect = ({
   'data-testid'?: string
   disabled?: boolean
 }) => {
-  const [internalSelecteds, setInternalSelecteds] = useState<
+  const [internalSelection, setInternalSelection] = useState<
     SelectOptionValid[]
   >([])
   const [inputValue, setInputValue] = useState('')
@@ -60,9 +51,9 @@ const MultipleSearchableSelect = ({
   const allOptions = useMemo(
     () =>
       options.filter((option) =>
-        internalSelecteds.every((selected) => selected.value !== option.value),
+        internalSelection.every((selected) => selected.value !== option.value),
       ),
-    [options, internalSelecteds],
+    [options, internalSelection],
   )
 
   const filteredOptions = useMemo(
@@ -77,32 +68,34 @@ const MultipleSearchableSelect = ({
     [filter, inputValue, allOptions],
   )
 
-  useEffect(() => {
-    setSelecteds([...internalSelecteds])
-  }, [internalSelecteds, setSelecteds])
-
-  useEffect(() => {
-    if (setInput) {
-      setInput(inputValue)
-    }
-  }, [setInput, inputValue])
+  const onInputChange = useCallback(
+    (input: string) => {
+      setInputValue(input)
+      onInputChangeProperty?.(input)
+    },
+    [setInputValue, onInputChangeProperty],
+  )
 
   const select = useCallback(
     (option: SelectOption) => {
-      setInputValue('')
-      setInternalSelecteds([...internalSelecteds, option])
+      const newSelection = [...internalSelection, option]
+      onInputChange('')
+      setInternalSelection(newSelection)
+      onSelectProperty(newSelection)
     },
-    [setInputValue, setInternalSelecteds, internalSelecteds],
+    [internalSelection, onInputChange, onSelectProperty],
   )
 
   const unselect = useCallback(
     (option: SelectOption) => {
-      setInputValue('')
-      setInternalSelecteds(
-        internalSelecteds.filter((selected) => selected.value !== option.value),
+      const newSelection = internalSelection.filter(
+        (selected) => selected.value !== option.value,
       )
+      onInputChange('')
+      setInternalSelection(newSelection)
+      onSelectProperty(newSelection)
     },
-    [setInputValue, setInternalSelecteds, internalSelecteds],
+    [internalSelection, onInputChange, onSelectProperty],
   )
 
   const onInternalFocus = useCallback(() => {
@@ -113,13 +106,13 @@ const MultipleSearchableSelect = ({
     if (filteredOptions.length === 1 && !filteredOptions[0].disabled) {
       select(filteredOptions[0])
     } else if (inputValue) {
-      setInputValue('')
-      setInternalSelecteds([
-        ...internalSelecteds,
+      onInputChange('')
+      setInternalSelection([
+        ...internalSelection,
         { name: inputValue, value: inputValue, invalid: true },
       ])
     }
-  }, [filteredOptions, select, inputValue, internalSelecteds])
+  }, [filteredOptions, inputValue, select, onInputChange, internalSelection])
 
   const id = 'multiple-searchable-select'
   return (
@@ -136,7 +129,7 @@ const MultipleSearchableSelect = ({
             styles.inputContainer,
           )}
         >
-          {internalSelecteds.map((selected) => (
+          {internalSelection.map((selected) => (
             <OptionBadge
               key={selected.value}
               option={selected}
@@ -152,13 +145,15 @@ const MultipleSearchableSelect = ({
             className={classNames('fr-input', styles.internalInput, {
               'fr-input-group--disabled': disabled,
             })}
-            placeholder={internalSelecteds.length > 0 ? '' : placeholder}
+            placeholder={internalSelection.length > 0 ? '' : placeholder}
             value={inputValue}
-            onChange={(event) => setInputValue(event.target.value)}
+            onChange={(event) => {
+              onInputChange(event.target.value)
+            }}
             onFocus={onInternalFocus}
             onBlur={() => {
               setShowOptions(false)
-              setInputValue('')
+              onInputChange('')
             }}
             onKeyDown={(event) => {
               if (inputValue && event.key === 'Enter') {

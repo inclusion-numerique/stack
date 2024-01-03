@@ -5,6 +5,7 @@ import { prismaClient } from '@app/web/prismaClient'
 const userCollectionFragment = {
   select: {
     id: true,
+    slug: true,
     isPublic: true,
     title: true,
     resources: {
@@ -29,6 +30,7 @@ const baseCollectionFragment = {
     id: true,
     isPublic: true,
     title: true,
+    slug: true,
     resources: {
       select: { resourceId: true },
       where: { resource: { deleted: null } },
@@ -84,6 +86,7 @@ export const getSessionUserFromSessionToken = async (
       user: {
         select: {
           id: true,
+          slug: true,
           legacyId: true,
           email: true,
           firstName: true,

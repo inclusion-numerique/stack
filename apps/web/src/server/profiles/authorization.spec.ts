@@ -38,6 +38,7 @@ describe('Profile authorization', () => {
       name: creator.name,
       firstName: creator.firstName,
       lastName: creator.lastName,
+      slug: creator.slug,
       isPublic: creator.isPublic,
       email: creator.email,
       image: null,

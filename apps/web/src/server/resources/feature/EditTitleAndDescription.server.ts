@@ -7,18 +7,34 @@ import {
   ResourceMutationCommandHandler,
 } from '@app/web/server/resources/feature/ResourceCommandHandler'
 import { ResourceMutationEventApplier } from '@app/web/server/resources/feature/ResourceEventApplier'
+import { createSlug } from '@app/web/utils/createSlug'
+import { findFirstAvailableSlug } from '@app/web/server/slug/findFirstAvailableSlug'
 
 export const handleEditTitleAndDescription: ResourceMutationCommandHandler<
   EditTitleAndDescriptionCommand,
   TitleAndDescriptionEdited
-> = ({ payload: { resourceId: _, ...rest } }) => ({
-  type: 'TitleAndDescriptionEdited',
-  timestamp: new Date(),
-  data: {
-    __version: 1,
-    ...rest,
-  },
-})
+> = async (
+  { payload: { resourceId: _, ...rest } },
+  { resource: { slug: beforeSlug } },
+) => {
+  const afterSlug = createSlug(rest.title)
+  const slugHasChanged = !!afterSlug && beforeSlug !== afterSlug
+
+  // To leave slug unchanged, set to undefined for prisma data
+  const slug = slugHasChanged
+    ? await findFirstAvailableSlug(afterSlug, 'bases')
+    : undefined
+
+  return {
+    type: 'TitleAndDescriptionEdited',
+    timestamp: new Date(),
+    data: {
+      __version: 1,
+      ...rest,
+      slug,
+    },
+  }
+}
 
 export const editTitleAndDescriptionSecurityRules: ResourceCommandSecurityRule<
   EditTitleAndDescriptionCommand
@@ -31,4 +47,5 @@ export const applyTitleAndDescriptionEdited: ResourceMutationEventApplier<
   title: event.data.title,
   description: event.data.description,
   updated: event.timestamp,
+  slug: event.data.slug ?? resource.slug,
 })

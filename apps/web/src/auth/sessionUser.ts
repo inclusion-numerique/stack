@@ -11,7 +11,7 @@ import type {
 
 export type SessionUserCollectionFragment = Pick<
   Collection,
-  'id' | 'isPublic' | 'title'
+  'id' | 'isPublic' | 'title' | 'slug'
 > & {
   resources: Pick<CollectionResource, 'resourceId'>[]
 }
@@ -32,7 +32,14 @@ export type SessionUserSavedCollectionFragment = Pick<
 // Serializable user interface
 export type SessionUser = Pick<
   User,
-  'id' | 'firstName' | 'lastName' | 'name' | 'email' | 'isPublic' | 'legacyId'
+  | 'id'
+  | 'slug'
+  | 'firstName'
+  | 'lastName'
+  | 'name'
+  | 'email'
+  | 'isPublic'
+  | 'legacyId'
 > & {
   image: {
     id: string

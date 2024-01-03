@@ -1,45 +1,6 @@
 import { prismaClient } from '@app/web/prismaClient'
 import { imageCropSelect } from '@app/web/server/image/imageCropSelect'
 
-export const getMatchingProfils = async (
-  filter: string,
-  baseId?: string,
-  resourceId?: string,
-) =>
-  prismaClient.user.findMany({
-    select: {
-      id: true,
-      name: true,
-      firstName: true,
-      lastName: true,
-      image: { select: { id: true, altText: true } },
-      email: true,
-    },
-    where: {
-      ...(baseId
-        ? {
-            bases: {
-              none: { baseId },
-            },
-          }
-        : {}),
-      ...(resourceId
-        ? {
-            resources: {
-              none: { resourceId },
-            },
-          }
-        : {}),
-      OR: [
-        { firstName: { contains: filter, mode: 'insensitive' } },
-        { lastName: { contains: filter, mode: 'insensitive' } },
-        { name: { contains: filter, mode: 'insensitive' } },
-        { email: { contains: filter, mode: 'insensitive' } },
-      ],
-    },
-    take: 5,
-  })
-
 export const getProfilePageQuery = async (
   id: string,
   user: { id: string } | null,
@@ -47,6 +8,7 @@ export const getProfilePageQuery = async (
   prismaClient.user.findUnique({
     select: {
       id: true,
+      slug: true,
       name: true,
       firstName: true,
       lastName: true,
@@ -82,11 +44,6 @@ export const getProfilePageQuery = async (
     },
     where: { id },
   })
-
-export type MatchingProfil = Exclude<
-  Awaited<ReturnType<typeof getMatchingProfils>>,
-  null
->[number]
 
 export type ProfilePageData = Exclude<
   Awaited<ReturnType<typeof getProfilePageQuery>>,

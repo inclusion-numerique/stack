@@ -1,4 +1,3 @@
-import { createUniqueSlug } from '@app/web/server/resources/createUniqueSlug'
 import {
   CreateResourceCommand,
   ResourceCreated,
@@ -10,12 +9,13 @@ import {
 import { ResourceCreationEventApplier } from '@app/web/server/resources/feature/ResourceEventApplier'
 import { ResourceEventSideEffect } from '@app/web/server/resources/feature/ResourceEventSideEffect'
 import { createSlug } from '@app/web/utils/createSlug'
+import { createAvailableSlug } from '@app/web/server/slug/createAvailableSlug'
 
 export const handleCreateResource: ResourceCreationCommandHandler<
   CreateResourceCommand,
   ResourceCreated
 > = async ({ payload }, { user }) => {
-  const slug = await createUniqueSlug(payload.title)
+  const slug = await createAvailableSlug(payload.title, 'resources')
   const { resourceId, ...rest } = payload
 
   if (!user) {

@@ -10,6 +10,7 @@ const profile = {
   firstName: 'Jean',
   lastName: 'Biche',
   followedBy: [],
+  slug: 'jean-biche',
 } satisfies ProfileListItem
 
 export default {

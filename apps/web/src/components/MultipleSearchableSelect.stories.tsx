@@ -24,6 +24,6 @@ export const Default: Story = {
     ],
   },
   argTypes: {
-    setSelecteds: { action: 'selected' },
+    onSelect: { action: 'selected' },
   },
 }

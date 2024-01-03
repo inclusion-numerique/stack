@@ -4,6 +4,7 @@ import { ProfilePageData } from './getProfile'
 export type FilteredProfile = Pick<
   ProfilePageData,
   | 'id'
+  | 'slug'
   | 'name'
   | 'isPublic'
   | 'email'
@@ -38,6 +39,7 @@ export const filterAccess = (
     isUser: false,
     profile: {
       id: profile.id,
+      slug: profile.slug,
       name: profile.name,
       firstName: profile.firstName,
       lastName: profile.lastName,

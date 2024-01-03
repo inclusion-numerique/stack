@@ -60,6 +60,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
       emailIsPublic: true,
       email: user.email,
       isPublic: true,
+      members: [],
     },
   })
   const {
@@ -146,7 +147,17 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
         ),
       })
     } catch (error) {
-      applyZodValidationMutationErrorsToForm(error, setError)
+      if (applyZodValidationMutationErrorsToForm(error, setError)) {
+        return
+      }
+      createToast({
+        priority: 'error',
+        message: 'Une erreur est survenue lors de la création de la base',
+      })
+      mutate.reset()
+      setTimeout(() => {
+        form.reset(data)
+      })
     }
   }
 

@@ -8,6 +8,7 @@ export const profileSelect = (user: { id: string } | null) =>
     name: true,
     firstName: true,
     lastName: true,
+    slug: true,
     image: {
       select: {
         id: true,

@@ -7,6 +7,7 @@ export const getPersistedResource = (id: string) =>
     where: { id },
     select: {
       id: true,
+      slug: true,
       title: true,
       published: true,
       created: true,

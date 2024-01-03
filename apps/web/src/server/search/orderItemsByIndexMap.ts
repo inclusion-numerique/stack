@@ -1,10 +1,12 @@
+import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+
 export const orderItemsByIndexMap = <T extends { id: string }>(
   items: T[],
   indexMap: Map<string, number>,
 ): T[] => {
   // Sort the items using resultIndexById as their new index
   const sortedItems = Array.from<T>({
-    length: items.length,
+    length: indexMap.size,
   })
 
   for (const item of items) {
@@ -15,5 +17,6 @@ export const orderItemsByIndexMap = <T extends { id: string }>(
     sortedItems[sortedIndex] = item
   }
 
-  return sortedItems
+  // If the items size is not complete, some items will be undefined
+  return sortedItems.filter(isDefinedAndNotNull)
 }

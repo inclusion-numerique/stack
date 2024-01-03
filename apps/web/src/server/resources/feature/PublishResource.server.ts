@@ -1,4 +1,3 @@
-import { createUniqueSlug } from '@app/web/server/resources/createUniqueSlug'
 import type {
   PublishCommand,
   ResourcePublished,
@@ -11,6 +10,7 @@ import type { ResourceMutationEventApplier } from '@app/web/server/resources/fea
 import type { ResourceEventSideEffect } from '@app/web/server/resources/feature/ResourceEventSideEffect'
 import { sortContents } from '@app/web/server/resources/sortContents'
 import { createSlug } from '@app/web/utils/createSlug'
+import { findFirstAvailableSlug } from '@app/web/server/slug/findFirstAvailableSlug'
 
 export const handlePublish: ResourceMutationCommandHandler<
   PublishCommand,
@@ -19,13 +19,18 @@ export const handlePublish: ResourceMutationCommandHandler<
   { payload: { resourceId: _, ...rest } },
   { resource, persistedResource },
 ) => {
-  const { slug, titleDuplicationCheckSlug } =
-    persistedResource.title === resource.title
-      ? { slug: undefined, titleDuplicationCheckSlug: undefined }
-      : {
-          slug: await createUniqueSlug(resource.title, resource.id),
-          titleDuplicationCheckSlug: createSlug(resource.title),
-        }
+  const beforeSlug = persistedResource.slug
+  const afterSlug = createSlug(resource.title)
+
+  const slugHasChanged = !!afterSlug && beforeSlug !== afterSlug
+
+  const { slug, titleDuplicationCheckSlug } = slugHasChanged
+    ? {
+        slug: await findFirstAvailableSlug(afterSlug, 'resources'),
+        titleDuplicationCheckSlug: afterSlug,
+      }
+    : { slug: undefined, titleDuplicationCheckSlug: undefined }
+
   return {
     type: 'Published',
     timestamp: new Date(),

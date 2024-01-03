@@ -10,6 +10,7 @@ export const collectionSelect = (user: Pick<SessionUser, 'id'> | null) =>
   ({
     id: true,
     title: true,
+    slug: true,
     description: true,
     isPublic: true,
     image: {

@@ -1,8 +1,15 @@
 'use client'
 
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
 import { FieldError } from 'react-hook-form'
 import { SelectOptionValid } from '@app/ui/components/Form/OptionBadge'
+import { createToast } from '@app/ui/toast/createToast'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import InviteMemberCard from './InviteUserCard'
@@ -25,20 +32,38 @@ const InviteUsers = ({
   resourceId?: string
   disabled?: boolean
 }) => {
-  const [filter, setFilter] = useState('')
+  const [userSearchQuery, setUserSearchQuery] = useState('')
 
-  // TODO : debounce
-  const { data: users } = trpc.profile.getMatchingUsers.useQuery(
-    {
-      filter,
-      baseId,
-      resourceId,
+  const { data: users, error: mutationError } =
+    trpc.profile.getMatchingUsers.useQuery(
+      {
+        query: userSearchQuery,
+        notInBaseId: baseId,
+        notInResourceId: resourceId,
+      },
+      {
+        // queryKey: ['profile.getMatchingUsers', { filter, baseId, resourceId }],
+        enabled: !!userSearchQuery,
+      },
+    )
+
+  const onSelect = useCallback(
+    (selections: SelectOptionValid[]) => {
+      setEmailsError(selections.some((selection) => selection.invalid))
+      onChange(selections.map((selection) => selection.value))
     },
-    {
-      // queryKey: ['profile.getMatchingUsers', { filter, baseId, resourceId }],
-      enabled: !!filter,
-    },
+    [setEmailsError, onChange],
   )
+
+  useEffect(() => {
+    if (mutationError) {
+      createToast({
+        priority: 'error',
+        message:
+          'Une erreur est survenue lors de la recherche des utilisateurs',
+      })
+    }
+  }, [mutationError])
 
   return (
     <>
@@ -47,16 +72,12 @@ const InviteUsers = ({
         data-testid="invite-member-modal-input"
         label={label}
         placeholder="Adresse email, nom de profil"
-        setSelecteds={(selections: SelectOptionValid[]) => {
-          setEmailsError(selections.some((selection) => selection.invalid))
-          onChange(selections.map((selection) => selection.value))
-        }}
-        filter={() => true}
-        setInput={setFilter}
+        onSelect={onSelect}
+        onInputChange={setUserSearchQuery}
         options={
           users
             ? users.map((user) => ({
-                name: user.email,
+                name: user.name ?? '',
                 value: user.id,
                 component: <InviteMemberCard user={user} />,
               }))

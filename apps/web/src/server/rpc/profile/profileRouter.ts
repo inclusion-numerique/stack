@@ -5,21 +5,25 @@ import {
   UpdateProfileImageCommandValidation,
   UpdateProfileVisibilityCommandValidation,
 } from '@app/web/server/profiles/updateProfile'
-import { getMatchingProfils } from '@app/web/server/profiles/getProfile'
+import { searchMember } from '@app/web/server/profiles/searchMember'
 import { handleResourceMutationCommand } from '../../resources/feature/handleResourceMutationCommand'
 
 export const profileRouter = router({
   getMatchingUsers: protectedProcedure
     .input(
       z.object({
-        filter: z.string(),
-        baseId: z.string().optional(),
-        resourceId: z.string().optional(),
+        query: z.string(),
+        notInBaseId: z.string().optional(),
+        notInResourceId: z.string().optional(),
       }),
     )
-    .query(async ({ input }) =>
-      input.filter
-        ? getMatchingProfils(input.filter, input.baseId, input.resourceId)
+    .query(async ({ input: { query, notInBaseId, notInResourceId } }) =>
+      query.length > 1
+        ? searchMember({
+            query,
+            notInBaseId,
+            notInResourceId,
+          })
         : [],
     ),
   mutate: protectedProcedure

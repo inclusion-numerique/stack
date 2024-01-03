@@ -77,6 +77,7 @@ export const getProfileCollectionsCount = async (
 export const collectionSelect = {
   id: true,
   title: true,
+  slug: true,
   description: true,
   isPublic: true,
   image: {

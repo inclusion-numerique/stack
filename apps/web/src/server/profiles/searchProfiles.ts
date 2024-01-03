@@ -29,7 +29,7 @@ export const countProfiles = async (
       SELECT count(*)::integer as count
       FROM users
       WHERE (
-                  coalesce(${searchTerm}, '___empty___') = '___empty___'
+          coalesce(${searchTerm}, '___empty___') = '___empty___'
               OR to_tsvector('french',
                              unaccent(coalesce(users.name, '') || ' ' || coalesce(users.location, '') || ' ' ||
                                       coalesce(users.title, '') || ' ' || coalesce(users.description, ''))) @@
@@ -38,7 +38,7 @@ export const countProfiles = async (
         AND (
           /* Authorization*/
           /* User is public  */
-                  users.is_public = true
+          users.is_public = true
               /* User is private and user is self */
               OR users.id = ${userId}::uuid
           )
@@ -82,7 +82,7 @@ export const rankProfiles = async (
                         to_tsquery('french', unaccent(${searchTerm})))              AS rank_cd
       FROM users
       WHERE (
-                  coalesce(${searchTerm}, '___empty___') = '___empty___'
+          coalesce(${searchTerm}, '___empty___') = '___empty___'
               OR to_tsvector('french',
                              unaccent(coalesce(users.name, '') || ' ' || coalesce(users.location, '') || ' ' ||
                                       coalesce(users.title, '') || ' ' || coalesce(users.description, ''))) @@
@@ -91,7 +91,7 @@ export const rankProfiles = async (
         AND (
           /* Authorization*/
           /* User is public  */
-                  users.is_public = true
+          users.is_public = true
               /* User is private and user is self */
               OR users.id = ${userId}::uuid
           )

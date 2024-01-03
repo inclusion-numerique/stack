@@ -6,6 +6,7 @@ export const testSessionUser = {
   firstName: 'Jean',
   lastName: 'Biche',
   name: 'Jean Biche',
+  slug: 'jean-biche',
   image: null,
   legacyId: null,
   updated: new Date('2023-05-05').toISOString(),
