@@ -6,18 +6,23 @@ import { createSlug } from '@app/web/utils/createSlug'
 const slugHash = v4().split('-')[0]
 
 // Unique per givenUser
-let slugSuffix = 1
+let slugSuffix = 0
 
 export const givenUser = (data?: Partial<CreateUserInput>) => {
-  const name = `${data?.firstName || 'Jean'} ${data?.lastName || 'Biche'}`
+  const firstName = data?.firstName || 'Jean'
+  const lastName = data?.lastName || 'Biche'
+  const name = `${firstName} ${lastName}`
+  slugSuffix += 1
+  const slug = `${createSlug(name)}-${slugHash}-${slugSuffix}`
+
   return {
     id: v4(),
-    email: `test-${v4()}@example.com`,
-    firstName: 'Jean',
-    lastName: 'Biche',
+    email: `${slug}@lesbases.anct.gouv.fr`,
+    firstName,
+    lastName,
     name,
     // eslint-disable-next-line no-plusplus
-    slug: `${createSlug(name)}-${slugHash}-${slugSuffix++}`,
+    slug,
     emailVerified: new Date('2023-04-01'),
     isPublic: false,
     collections: {
