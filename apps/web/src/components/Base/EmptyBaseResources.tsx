@@ -1,5 +1,4 @@
 import React from 'react'
-import Link from 'next/link'
 import { CreateResourceButton } from '../Resource/CreateResourceModal'
 import EmptyBox from '../EmptyBox'
 
@@ -16,10 +15,7 @@ const EmptyBaseResources = ({ isMember }: { isMember: boolean }) => (
         <div>
           Présentez, valorisez & publiez vos ressources afin qu’elles soient
           diffusées <br />
-          auprès d’un large public.{' '}
-          <Link href="/" className="fr-link wip">
-            En savoir plus
-          </Link>
+          auprès d’un large public.
         </div>
         <div data-testid="create-resource-button">
           <CreateResourceButton className="fr-mt-4w" />

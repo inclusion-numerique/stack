@@ -4,6 +4,7 @@ import { v4 } from 'uuid'
 import * as Sentry from '@sentry/nextjs'
 import { prismaClient } from '@app/web/prismaClient'
 import { getOrCreateVisitHashFromCookies } from '@app/web/server/visitHash/getOrCreateVisitHashFromCookies'
+import { output } from '@app/web/utils/output'
 
 export const registerResourceViewServerAction = async ({
   resourceId,
@@ -43,7 +44,7 @@ export const nonBlockingRegisterResourceViewServerAction = ({
   userId?: string
 }) => {
   registerResourceViewServerAction({ resourceId, userId }).catch((error) => {
-    console.error('Error registering resource view', error)
+    output.error('Error registering resource view', error)
     Sentry.captureException(error)
   })
 }

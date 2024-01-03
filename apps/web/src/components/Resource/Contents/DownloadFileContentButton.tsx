@@ -1,6 +1,8 @@
 'use client'
 
 import Button, { ButtonProps } from '@codegouvfr/react-dsfr/Button'
+import { createToast } from '@app/ui/toast/createToast'
+import * as Sentry from '@sentry/nextjs'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { useFileDownload } from '@app/web/hooks/useFileDownload'
 
@@ -17,7 +19,11 @@ const DownloadFileContentButton = ({
 
   const onClick = () => {
     fileDownload.download(fileKey, filename).catch((error) => {
-      console.error('Error downloading file', error)
+      Sentry.captureException(error)
+      createToast({
+        priority: 'error',
+        message: 'Une erreur est survenue lors du téléchargement du fichier',
+      })
     })
   }
 

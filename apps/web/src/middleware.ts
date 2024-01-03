@@ -4,6 +4,7 @@ import {
   isLegacyRequest,
   redirectLegacyPathToCurrentUrl,
 } from '@app/web/legacyRedirection/legacyRedirection'
+import { output } from '@app/web/utils/output'
 
 const nodeEnvironment = process.env.NODE_ENV
 const isCI = !!process.env.CI
@@ -50,7 +51,7 @@ const redirectToHttps = ({
   const path = `${requestUrl.pathname}${requestUrl.search}`
   const redirectTo = `${httpsBase}${path}`
 
-  console.info(
+  output.info(
     `HTTP protocol - redirecting to ${httpsBase}${requestUrl.pathname}${requestUrl.search}`,
   )
 
@@ -77,7 +78,7 @@ const redirectToBaseDomain = ({
   const path = `${requestUrl.pathname}${requestUrl.search}`
   const redirectTo = `${httpsBase}${path}`
 
-  console.info(
+  output.info(
     `Secondary domain request ${requestHost} - Redirecting to base domain ${redirectTo}`,
   )
 

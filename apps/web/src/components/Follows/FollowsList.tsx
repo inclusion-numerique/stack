@@ -28,9 +28,6 @@ const FollowsList = ({
       Retrouvez vos bases et vos profils préféré(e)s ici en les suivant. Et
       prochainement, vous pourrez voir l’ensemble des ressources qu’ils auront
       publiés sur votre fil d’actualité personnalisé.
-      <Link href="/" className="fr-link wip">
-        En savoir plus
-      </Link>
       <div className="fr-mt-4w">
         <Link
           className="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-search-line fr-ml-2w"

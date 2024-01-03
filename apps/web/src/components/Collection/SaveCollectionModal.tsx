@@ -77,10 +77,12 @@ const SaveCollectionModal = ({ user }: { user: SessionUser }) => {
           ),
       })
       SaveCollectionDynamicModal.close()
-    } catch (error) {
-      // TODO Sentry + toast ?
-      console.error(error)
-      throw error
+    } catch {
+      createToast({
+        priority: 'error',
+        message: 'Une erreur est survenue',
+      })
+      saveCollectionMutation.reset()
     }
   }
 
@@ -106,10 +108,12 @@ const SaveCollectionModal = ({ user }: { user: SessionUser }) => {
       })
 
       SaveCollectionDynamicModal.close()
-    } catch (error) {
-      // TODO Sentry + toast ?
-      console.error(error)
-      throw error
+    } catch {
+      createToast({
+        priority: 'error',
+        message: 'Une erreur est survenue',
+      })
+      unsaveCollectionMutation.reset()
     }
   }
 

@@ -79,7 +79,7 @@ const MultipleSearchableSelect = ({
 
   useEffect(() => {
     setSelecteds([...internalSelecteds])
-  }, [internalSelecteds])
+  }, [internalSelecteds, setSelecteds])
 
   useEffect(() => {
     if (setInput) {
