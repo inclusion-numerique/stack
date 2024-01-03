@@ -23,6 +23,7 @@ describe("Page d'accueil", () => {
 
   it("La page d'accueil affiche le statut de connexion de l'utilisateur", () => {
     const user = givenUser()
+    console.log('GIVEN', user)
     cy.createUserAndSignin(user)
     cy.visit('/')
     cy.dsfrStylesShouldBeLoaded()
@@ -37,6 +38,8 @@ describe("Page d'accueil", () => {
 
   it('Un utilisateur avec un token invalide peut accéder au site', () => {
     const user = givenUser()
+    console.log('GIVEN2', user)
+
     cy.createUserAndSignin(user).then((sessionToken) => {
       cy.execute('deleteSession', sessionToken)
     })
