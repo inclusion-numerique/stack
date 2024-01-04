@@ -37,6 +37,7 @@ const seed = async (transaction: Prisma.TransactionClient) => {
       }),
     ),
   )
+
   await Promise.all(
     bases.map((base) =>
       transaction.base.upsert({
@@ -46,15 +47,7 @@ const seed = async (transaction: Prisma.TransactionClient) => {
       }),
     ),
   )
-  await Promise.all(
-    resources.map((resource) =>
-      transaction.resource.upsert({
-        where: { id: resource.id },
-        create: resource,
-        update: resource,
-      }),
-    ),
-  )
+
   await Promise.all(
     resources.map((resource) =>
       transaction.resource.upsert({
