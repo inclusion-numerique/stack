@@ -5,7 +5,6 @@ import { UseFormReturn } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
-import { UpdateProfileCommand } from '../server/profiles/updateProfile'
 import { UpdateBaseCommand } from '../server/bases/updateBase'
 import { ChangeBaseCommand } from '../server/resources/feature/ChangeBase'
 import { ChangeVisibilityCommand } from '../server/resources/feature/ChangeVisibility'
@@ -14,7 +13,6 @@ import Card from './Card'
 
 const EditCard = <
   T extends
-    | UpdateProfileCommand
     | UpdateBaseCommand
     | ChangeBaseCommand
     | ChangeVisibilityCommand

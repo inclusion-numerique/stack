@@ -3,6 +3,7 @@ import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import {
   UpdateProfileImageCommandValidation,
+  UpdateProfileInformationsCommandValidation,
   UpdateProfileVisibilityCommandValidation,
 } from '@app/web/server/profiles/updateProfile'
 import { searchMember } from '@app/web/server/profiles/searchMember'
@@ -73,6 +74,17 @@ export const profileRouter = router({
       }
       return prismaClient.user.update({ where: { id: user.id }, data: input })
     }),
+  updateInformations: protectedProcedure
+    .input(UpdateProfileInformationsCommandValidation)
+    .mutation(async ({ input: informations, ctx: { user } }) =>
+      prismaClient.user.update({
+        where: { id: user.id },
+        data: {
+          ...informations,
+          name: `${informations.firstName} ${informations.lastName}`,
+        },
+      }),
+    ),
   updateImage: protectedProcedure
     .input(UpdateProfileImageCommandValidation)
     .mutation(async ({ input, ctx: { user } }) =>

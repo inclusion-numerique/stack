@@ -32,6 +32,8 @@ export const createTestProfile = (publicProfile?: boolean) =>
     email: `test-${v4()}@example.com`,
     firstName: 'Jean',
     lastName: 'Biche',
+    department: '10',
+    description: "C'est Jean Biche",
     name: 'Jean Biche',
     slug: 'jean-biche',
     image: null,

@@ -32,7 +32,7 @@ describe('Utilisateur connecté, je peux modifier mon profile', () => {
       'Votre profil est public. Vous pouvez passer votre profil en privé si vous le souhaitez.',
     )
 
-    cy.testId('edit-card-button').eq(0).click()
+    cy.testId('visibilite-edit-card-button').eq(0).click()
 
     cy.testId('visibility-radio-profile-private').click({ force: true })
     cy.testId('editable-card-form-save-button').click()
@@ -71,7 +71,7 @@ describe('Utilisateur connecté, je peux modifier mon profile', () => {
       'Votre profil est public. Vous pouvez passer votre profil en privé si vous le souhaitez.',
     )
 
-    cy.testId('edit-card-button').eq(0).click()
+    cy.testId('visibilite-edit-card-button').eq(0).click()
     cy.testId('visibility-radio-profile-private').click({ force: true })
     cy.testId('editable-card-form-save-button').click()
 

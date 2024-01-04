@@ -49,7 +49,7 @@ const EditableCard = ({
           </div>
           {!isEditMode && (
             <Button
-              data-testid="edit-card-button"
+              data-testid={`${id}-edit-card-button`}
               priority="secondary"
               iconId="fr-icon-edit-line"
               title="Modifier"
