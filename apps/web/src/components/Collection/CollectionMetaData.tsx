@@ -27,7 +27,7 @@ const CollectionMetaData = ({
 }) => {
   const withButtons = context === 'card' || context === 'view'
   return (
-    <div className={styles.container}>
+    <div className="fr-flex fr-justify-content-space-between fr-my-3w">
       <div className={styles.informations}>
         <span className="fr-icon-file-text-line fr-icon--sm" />
         <span>
