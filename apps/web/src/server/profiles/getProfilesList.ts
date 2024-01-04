@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { prismaClient } from '@app/web/prismaClient'
 
-export const profileSelect = (user: { id: string } | null) =>
+export const profileListSelect = (user: { id: string } | null) =>
   ({
     id: true,
     name: true,
@@ -21,6 +21,52 @@ export const profileSelect = (user: { id: string } | null) =>
       },
       select: {
         id: true,
+      },
+    },
+    // This is not ideal, but to avoid subqueries or manual sql, we use events to
+    // count resources contributed by the user
+    // Then a function is used to compute the count in memory
+    // See countProfileResources()
+    resourceEvent: {
+      distinct: ['resourceId'],
+      select: {
+        resourceId: true,
+      },
+      where: {
+        resource: {
+          deleted: null,
+        },
+      },
+    },
+    createdResources: {
+      select: {
+        id: true,
+      },
+      where: {
+        deleted: null,
+        isPublic: true,
+        published: {
+          not: null,
+        },
+      },
+    },
+    resources: {
+      select: {
+        id: true,
+      },
+      where: {
+        resource: {
+          deleted: null,
+          isPublic: true,
+          published: {
+            not: null,
+          },
+        },
+      },
+    },
+    _count: {
+      select: {
+        followedBy: true,
       },
     },
   }) satisfies Prisma.UserSelect
@@ -73,7 +119,7 @@ export const getProfiles = async ({
 }) => {
   const where = getWhereProfilesList(user, getWhereProfilesQuery(query))
   return prismaClient.user.findMany({
-    select: profileSelect(user ?? null),
+    select: profileListSelect(user ?? null),
     where,
     take,
     skip,

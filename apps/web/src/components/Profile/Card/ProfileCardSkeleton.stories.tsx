@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { mobileStory } from '@app/storybook/storyHelper'
+import { mediumContainerStory, mobileStory } from '@app/storybook/storyHelper'
 import ProfileCardSkeleton from './ProfileCardSkeleton'
 
 export default {
@@ -9,8 +9,8 @@ export default {
 
 type Story = StoryObj<typeof ProfileCardSkeleton>
 
-export const Desktop: Story = {
-  args: {},
-}
+const StoryArguments: Story = { args: {} }
 
-export const Mobile = mobileStory(Desktop)
+export const Desktop = mediumContainerStory(StoryArguments)
+
+export const Mobile = mobileStory(StoryArguments)

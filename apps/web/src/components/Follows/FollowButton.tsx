@@ -21,7 +21,7 @@ export type FollowButtonProps = {
 } & (
   | { base: BaseListItem | BasePageData | FilteredBase; profile?: undefined }
   | {
-      profile: ProfileListItem
+      profile: Pick<ProfileListItem, 'id' | 'followedBy' | 'name'>
       base?: undefined
     }
 )

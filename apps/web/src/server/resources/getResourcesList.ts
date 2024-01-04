@@ -130,9 +130,13 @@ export const computeResourcesListWhereForUser = (
     ],
   }
 
+  const resourceNotDeleted: Prisma.ResourceWhereInput = {
+    deleted: null,
+  }
+
   return {
     deleted: null,
-    AND: [authorizationWhere, baseNotDeleted, where],
+    AND: [authorizationWhere, resourceNotDeleted, baseNotDeleted, where],
   }
 }
 

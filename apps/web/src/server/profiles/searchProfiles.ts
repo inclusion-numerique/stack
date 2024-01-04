@@ -7,7 +7,7 @@ import {
   SearchParams,
 } from '@app/web/server/search/searchQueryParams'
 import { orderItemsByIndexMap } from '@app/web/server/search/orderItemsByIndexMap'
-import { profileSelect } from '@app/web/server/profiles/getProfilesList'
+import { profileListSelect } from '@app/web/server/profiles/getProfilesList'
 import { searchToTsQueryInput } from '@app/web/server/search/searchToTsQueryInput'
 
 /**
@@ -129,7 +129,7 @@ export const searchProfiles = async (
         in: searchResults.map(({ id }) => id),
       },
     },
-    select: profileSelect(user),
+    select: profileListSelect(user),
   })
 
   return orderItemsByIndexMap(unsortedUsers, resultIndexById)

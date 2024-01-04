@@ -2,7 +2,7 @@ import type { Prisma } from '@prisma/client'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { prismaClient } from '@app/web/prismaClient'
 import { baseSelect } from '@app/web/server/bases/getBasesList'
-import { profileSelect } from '@app/web/server/profiles/getProfilesList'
+import { profileListSelect } from '@app/web/server/profiles/getProfilesList'
 
 export const computeBaseFollowsListWhereForUser = (
   user: Pick<SessionUser, 'id'>,
@@ -76,7 +76,7 @@ export const getProfileProfileFollows = (profileId: string) => {
     select: {
       id: true,
       followed: true,
-      profile: { select: profileSelect({ id: profileId }) },
+      profile: { select: profileListSelect({ id: profileId }) },
     },
     where,
     orderBy: {
