@@ -4,6 +4,7 @@ import type { Prisma } from '@prisma/client'
 import { output } from '@app/web/utils/output'
 import { collections } from '@app/fixtures/collections'
 import { resourceContributors } from '@app/fixtures/resourceContributors'
+import { baseMembers } from '@app/fixtures/baseMembers'
 import { bases } from './bases'
 import { resources } from './resources'
 import { users } from './users'
@@ -44,6 +45,16 @@ const seed = async (transaction: Prisma.TransactionClient) => {
         where: { id: base.id },
         create: base,
         update: base,
+      }),
+    ),
+  )
+
+  await Promise.all(
+    baseMembers.map((baseMember) =>
+      transaction.baseMembers.upsert({
+        where: { id: baseMember.id },
+        create: baseMember,
+        update: baseMember,
       }),
     ),
   )
