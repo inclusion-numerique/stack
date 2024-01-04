@@ -30,7 +30,7 @@
       "@app/ui/*": ["packages/ui/src/*"],
       "@app/test/*": ["packages/test/src/*"],
       "@prisma/migration-client": ["packages/migration/prisma/migration-client"],
-      "@prisma/client": ["apps/web/.prisma/client"]
+      "@prisma/client": ["apps/web/node_modules/.prisma/client"]
     }
   },
   "include": ["./packages/test/src/jest.setup.ts"],
