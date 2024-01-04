@@ -10,8 +10,8 @@ export const resourceLongue = {
     'titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
   description:
     'Lorem Ipsul Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum quam mauris sit lacinia turpis sed vitae vel. Venenatis in in neque interdum nec facilisi mauris nunc vitae...',
-  createdById: '99afd613-9d54-4110-9062-065c627eda8a',
-  baseId: 'cb08cddb-1657-49ac-a2f9-d9212b428690',
+  createdBy: { connect: { id: '99afd613-9d54-4110-9062-065c627eda8a' } },
+  base: { connect: { id: 'cb08cddb-1657-49ac-a2f9-d9212b428690' } },
   events: {
     connectOrCreate: {
       where: {
@@ -48,7 +48,7 @@ export const resource10Raisons = {
   titleDuplicationCheckSlug:
     '10-raisons-de-venir-sur-la-base-la-deuxième-va-vous-laisser-sans-voix',
   description: 'TODO...',
-  createdById: 'eecac657-f415-47e1-8087-c4508ea16191',
+  createdBy: { connect: { id: 'eecac657-f415-47e1-8087-c4508ea16191' } },
   events: {
     connectOrCreate: {
       where: {
@@ -82,7 +82,7 @@ export const resourceTests = {
   slug: 'tester-c-est-pour-les-devs-qui-écrivent-des-bugs',
   titleDuplicationCheckSlug: 'tester-c-est-pour-les-devs-qui-écrivent-des-bugs',
   description: 'TODO...',
-  createdById: 'eecac657-f415-47e1-8087-c4508ea16191',
+  createdBy: { connect: { id: 'eecac657-f415-47e1-8087-c4508ea16191' } },
   events: {
     connectOrCreate: {
       where: {
