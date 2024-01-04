@@ -91,18 +91,19 @@ const seed = async (transaction: Prisma.TransactionClient) => {
 }
 
 const main = async (eraseAllData: boolean) => {
-  await prismaClient.$transaction(
-    async (transaction) => {
-      if (eraseAllData) {
-        output.log('Erasing all data...')
-        await deleteAll(transaction)
-      }
+  // Transaction fails in CI, using prismaClient for now
+  // await prismaClient.$transaction(
+  //   async (transaction) => {
+  if (eraseAllData) {
+    output.log('Erasing all data...')
+    await deleteAll(prismaClient)
+  }
 
-      output.log(`Generating fixtures data`)
-      await seed(transaction)
-    },
-    { maxWait: 60_000 },
-  )
+  output.log(`Generating fixtures data`)
+  await seed(prismaClient)
+  // },
+  // { maxWait: 60_000 },
+  // )
   output.log(`Fixtures loaded successfully`)
 }
 
