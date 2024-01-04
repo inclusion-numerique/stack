@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import { CroppedImageType } from '@app/ui/components/CroppedUpload/utils'
+import { createToast } from '@app/ui/toast/createToast'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
@@ -78,6 +79,15 @@ const CreateCollection = ({
       router.push(`/collections/${collection.id}`)
       // TODO: Wierd refreshes not working create e2e for this (collection appearing in base / collection page) and remove second refresh
       router.refresh()
+      createToast({
+        priority: 'success',
+        message: (
+          <>
+            Votre collection <strong>{collection.title}</strong> a bien été
+            créée
+          </>
+        ),
+      })
     } catch (error) {
       applyZodValidationMutationErrorsToForm(error, setError)
     }

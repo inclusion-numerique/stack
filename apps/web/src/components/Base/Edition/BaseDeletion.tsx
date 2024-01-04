@@ -29,6 +29,14 @@ const BaseEdition = ({ base }: { base: BasePageData }) => {
       await mutate.mutateAsync({ id: base.id })
       router.refresh()
       router.push(`/profils/${base.ownerId}/bases`)
+      createToast({
+        priority: 'success',
+        message: (
+          <>
+            Votre base <strong>{base.title}</strong> a bien été supprimée
+          </>
+        ),
+      })
     } catch {
       createToast({
         priority: 'error',

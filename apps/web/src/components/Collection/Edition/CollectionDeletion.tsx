@@ -34,6 +34,15 @@ const CollectionDeletion = ({
       await mutate.mutateAsync({ id: collection.id })
       router.refresh()
       router.push(`/profils/${collection.owner.id}/collections`)
+      createToast({
+        priority: 'success',
+        message: (
+          <>
+            Votre collection <strong>{collection.title}</strong> a bien été
+            supprimée
+          </>
+        ),
+      })
     } catch (error) {
       console.error('Could not delete collection', error)
       createToast({
