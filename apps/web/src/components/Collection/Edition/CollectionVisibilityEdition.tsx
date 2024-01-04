@@ -11,7 +11,7 @@ import {
   UpdateCollectionVisibilityCommandValidation,
 } from '@app/web/server/collections/updateCollection'
 import { trpc } from '@app/web/trpc'
-import VisibilityEdition from '../../Base/Edition/VisibilityEdition'
+import BaseVisibilityEdition from '@app/web/components/Base/Edition/BaseVisibilityEdition'
 import CustomTag, { TagColor } from '../../CustomTag'
 
 const CollectionVisibilityEdition = ({
@@ -70,7 +70,7 @@ const CollectionVisibilityEdition = ({
         )
       }
       editing={
-        <VisibilityEdition
+        <BaseVisibilityEdition
           model="Collection"
           control={form.control}
           disabled={isLoading}

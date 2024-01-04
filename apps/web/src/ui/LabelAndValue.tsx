@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import sanitizeHtml from 'sanitize-html'
-import styles from '../components/Base/Edition/Edition.module.css'
+import styles from '../components/Base/Edition/BaseEdition.module.css'
 
 export const LabelAndValue = ({
   value,
