@@ -1,30 +1,22 @@
 import type { Prisma } from '@prisma/client'
 
-export const edith = {
+export const jmSansRien = {
   id: '99afd613-9d54-4110-9062-065c627eda8a',
-  firstName: 'Edith',
-  lastName: 'Piaf',
-  name: 'Edith Piaf',
-  email: 'edith@piaf.com',
+  firstName: 'Jean-Michel',
+  lastName: 'Sans Rien',
+  name: 'Jean-Michel Sans Rien',
+  email: 'user.les.bases+sans+rien@gmail.com',
   emailVerified: new Date(),
   isPublic: true,
 } satisfies Prisma.UserCreateManyInput
 
-export const joe = {
+export const jmAvecTout = {
   id: 'f1826416-af31-402c-9d92-379d4ea7509e',
-  firstName: 'Joe',
-  lastName: 'Dassin',
-  name: 'Joe Dassin',
-  email: 'joe@dassin.com',
+  firstName: 'Jean-Michel',
+  lastName: 'Avec Tout',
+  name: 'Jean-Michel Avec Tout',
+  email: 'user.les.bases+avec+tout@gmail.com',
   emailVerified: new Date(),
 } satisfies Prisma.UserCreateManyInput
 
-export const georges = {
-  id: 'eecac657-f415-47e1-8087-c4508ea16191',
-  firstName: 'Georges',
-  lastName: 'Moustaki',
-  name: 'Georges Moustaki',
-  email: 'georges@moustaki.com',
-} satisfies Prisma.UserCreateManyInput
-
-export const users = [edith, joe, georges]
+export const users = [jmAvecTout, jmSansRien]
