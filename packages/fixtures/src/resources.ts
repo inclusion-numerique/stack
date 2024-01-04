@@ -60,7 +60,7 @@ export const resourcePubliqueDansBase = {
         id: '7f7f637b-ca0e-4dce-b190-121e7ed579c3',
       },
       create: {
-        id: resourcePubliqueDansBaseConstant.id,
+        id: '7f7f637b-ca0e-4dce-b190-121e7ed579c3',
         byId: jmAvecTout.id,
         type: 'Created',
         timestamp: new Date('2021-01-01T00:00:00.000Z'),
@@ -105,7 +105,7 @@ export const resourcePriveeDansBase = {
         id: '0e4fefb6-baef-4b34-a95b-af93375d3179',
       },
       create: {
-        id: resourcePriveeDansBaseConstant.id,
+        id: '0e4fefb6-baef-4b34-a95b-af93375d3179',
         byId: jmAvecTout.id,
         type: 'Created',
         timestamp: new Date('2021-01-01T00:00:00.000Z'),
@@ -148,7 +148,7 @@ export const resourceBrouillonDansBase = {
         id: 'ad6f2e35-1269-4887-88e2-37ad29800a18',
       },
       create: {
-        id: resourceBrouillonDansBaseConstant.id,
+        id: 'ad6f2e35-1269-4887-88e2-37ad29800a18',
         byId: jmAvecTout.id,
         type: 'Created',
         timestamp: new Date('2021-01-01T00:00:00.000Z'),
