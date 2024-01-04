@@ -18,6 +18,11 @@ describe('Utilisateur connecté, je peux supprimer une base', () => {
   })
 
   it('Acceptation 1 - le créateur de la base peut la supprimer', () => {
+    const { user } = cleanUpAndCreateTestResource()
+    cy.intercept('/api/trpc/base.delete?*').as('deleteMutation')
+    cy.visit(`/bases/${defaultTestBaseSlug}/editer`)
+    cy.dsfrShouldBeStarted()
+
     cy.findByRole('dialog').should('not.exist')
 
     cy.testId('delete-base-button').click()
@@ -34,7 +39,7 @@ describe('Utilisateur connecté, je peux supprimer une base', () => {
     cy.testId('modal-delete-button').click()
 
     cy.wait('@deleteMutation')
-    cy.appUrlShouldBe('/')
+    cy.appUrlShouldBe(`/profils/${user.id}/bases`)
 
     cy.request({
       url: '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',

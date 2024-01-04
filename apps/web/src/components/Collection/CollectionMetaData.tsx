@@ -27,7 +27,7 @@ const CollectionMetaData = ({
 }) => {
   const withButtons = context === 'card' || context === 'view'
   return (
-    <div className={styles.container}>
+    <div className="fr-flex fr-justify-content-space-between fr-my-3w">
       <div className={styles.informations}>
         <span className="fr-icon-file-text-line fr-icon--sm" />
         <span>
@@ -44,7 +44,7 @@ const CollectionMetaData = ({
         <div className={styles.buttons}>
           {isOwner && (
             <Link
-              href="/"
+              href={`./${collection.id}/modifier`}
               className={classNames(
                 'fr-btn',
                 'fr-btn--sm',

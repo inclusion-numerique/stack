@@ -32,6 +32,8 @@ export const cleanUpAndCreateTestResource = (
 
   cy.intercept('/api/trpc/resource.mutate?*').as('mutation')
   cy.dsfrShouldBeStarted()
+
+  return { user }
 }
 
 export const cleanUpAndCreateTestPublishedResource = (

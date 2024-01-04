@@ -41,14 +41,13 @@ const CroppedUpload = ({
 
   const [imageBox, setImageBox] = useState<Cropper.ImageData>()
   const [croppedBox, setCroppedBox] = useState<Cropper.Data>()
-  const [croppedBoxData, setCroppedBoxData] = useState<Cropper.CropBoxData>()
-  const [canvasData, setCanvasData] = useState<Cropper.CanvasData>()
+  const [, setCroppedBoxData] = useState<Cropper.CropBoxData>()
+  const [, setCanvasData] = useState<Cropper.CanvasData>()
   const [imageToUpload, setImageToUpload] = useState<ImageWithName | null>(null)
   const [imageSource, setImageSource] = useState(
     image ? `/images/${image.id}.original` : '',
   )
 
-  // TODO edition
   useEffect(() => {
     if (imageToUpload) {
       onChange({
@@ -56,7 +55,10 @@ const CroppedUpload = ({
         ...cropperToImageCrop(cropperRef.current?.cropper),
       })
     } else {
-      onChange()
+      onChange({
+        id: image?.id,
+        ...cropperToImageCrop(cropperRef.current?.cropper),
+      })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageToUpload, imageBox, croppedBox])
@@ -88,10 +90,16 @@ const CroppedUpload = ({
     }
   }
 
+  // For SSR compatibility, we have to render the form + modal only on the browser after first render
+  // This is because we need the portal to be rendered outside of any parent form and this is not a server side feature
+  const [clientRendered, setClientRendered] = useState(false)
+  useEffect(() => {
+    setClientRendered(true)
+  }, [setClientRendered])
+
   return (
     <>
-      {imageSource &&
-        imageToUpload &&
+      {clientRendered &&
         createPortal(
           // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
           <form ref={formRef} onSubmit={onCropSubmit} onKeyUp={onFormKeyUp}>
@@ -112,14 +120,16 @@ const CroppedUpload = ({
                 },
               ]}
             >
-              <Cropping
-                cropperRef={cropperRef}
-                imageSource={imageSource}
-                imageToUpload={imageToUpload}
-                ratio={ratio}
-                round={round}
-                image={image}
-              />
+              {!!imageSource && (
+                <Cropping
+                  cropperRef={cropperRef}
+                  imageSource={imageSource}
+                  imageToUpload={imageToUpload}
+                  ratio={ratio}
+                  round={round}
+                  image={image}
+                />
+              )}
             </modal.Component>
           </form>,
           document.body,
@@ -136,16 +146,11 @@ const CroppedUpload = ({
         imageBox={imageBox}
         imageSource={imageSource}
         imageToUpload={imageToUpload}
-        onCrop={() => {
-          modal.open()
-          if (cropperRef.current && croppedBoxData && canvasData) {
-            // cropperRef.current.cropper.setCropBoxData(croppedBoxData)
-            // cropperRef.current.cropper.setCanvasData(canvasData)
-          }
-        }}
+        onCrop={modal.open}
         onRemove={() => {
           setImageSource('')
           setImageToUpload(null)
+          onChange({ id: undefined })
         }}
         onUpload={(file: ImageWithName) => {
           setImageToUpload(file)

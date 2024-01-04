@@ -1,9 +1,15 @@
 import { v4 } from 'uuid'
+import z from 'zod'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { CreateCollectionCommandValidation } from '@app/web/server/collections/createCollection'
 import { SaveCollectionValidation } from '@app/web/server/collections/SaveCollection'
 import { forbiddenError } from '@app/web/server/rpc/trpcErrors'
+import {
+  UpdateCollectionImageCommandValidation,
+  UpdateCollectionInformationsCommandValidation,
+  UpdateCollectionVisibilityCommandValidation,
+} from '@app/web/server/collections/updateCollection'
 
 export const collectionRouter = router({
   save: protectedProcedure
@@ -68,4 +74,40 @@ export const collectionRouter = router({
           },
         }),
     ),
+  updateInformations: protectedProcedure
+    .input(UpdateCollectionInformationsCommandValidation)
+    .mutation(async ({ input: { id, ...informations } }) =>
+      prismaClient.collection.update({
+        where: { id },
+        data: informations,
+      }),
+    ),
+  updateImage: protectedProcedure
+    .input(UpdateCollectionImageCommandValidation)
+    .mutation(async ({ input: { id, imageId } }) =>
+      prismaClient.collection.update({
+        where: { id },
+        data: { imageId },
+      }),
+    ),
+  updateVisibility: protectedProcedure
+    .input(UpdateCollectionVisibilityCommandValidation)
+    .mutation(async ({ input: { id, isPublic } }) =>
+      prismaClient.collection.update({
+        where: { id },
+        data: { isPublic },
+      }),
+    ),
+  delete: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      const timestamp = new Date()
+      return prismaClient.collection.update({
+        where: { id: input.id },
+        data: {
+          deleted: timestamp,
+          updated: timestamp,
+        },
+      })
+    }),
 })

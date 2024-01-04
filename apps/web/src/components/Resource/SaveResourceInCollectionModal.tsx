@@ -21,11 +21,14 @@ import {
   CreateCollectionCommandValidation,
 } from '@app/web/server/collections/createCollection'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
-import { titleInfo } from '@app/web/components/Collection/Edition/CollectionInformationsEdition'
 import BaseVisibilityEdition from '@app/web/components/Base/Edition/BaseVisibilityEdition'
+import { collectionTitleMaxLength } from '../../server/collections/collectionConstraints'
 import AddOrRemoveResourceFromCollection from './AddOrRemoveResourceFromCollection'
 import SaveInNestedCollection from './SaveInNestedCollection'
 import styles from './SaveResourceInCollectionModal.module.css'
+
+const titleInfo = (title?: string | null) =>
+  `${title?.length ?? 0}/${collectionTitleMaxLength} caractères`
 
 export const SaveResourceInCollectionDynamicModal = createDynamicModal({
   id: 'save-resource-in-collection',
