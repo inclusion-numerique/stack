@@ -64,6 +64,9 @@ const EditableCardForm = <T extends FieldValues>({
           children: 'Enregistrer',
           type: 'submit',
           form: `${id}-form`,
+          nativeButtonProps: {
+            'data-testid': 'editable-card-form-save-button',
+          },
           ...buttonLoadingClassname(isLoading),
         },
         ...buttons,

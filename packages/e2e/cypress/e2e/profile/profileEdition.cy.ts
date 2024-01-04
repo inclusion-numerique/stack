@@ -35,7 +35,7 @@ describe('Utilisateur connecté, je peux modifier mon profile', () => {
     cy.testId('edit-card-button').eq(0).click()
 
     cy.testId('visibility-radio-profile-private').click({ force: true })
-    cy.testId('edit-card-save-button').click()
+    cy.testId('editable-card-form-save-button').click()
     cy.wait('@mutation')
 
     cy.testId('profile-visibility').should(
@@ -73,7 +73,7 @@ describe('Utilisateur connecté, je peux modifier mon profile', () => {
 
     cy.testId('edit-card-button').eq(0).click()
     cy.testId('visibility-radio-profile-private').click({ force: true })
-    cy.testId('edit-card-save-button').click()
+    cy.testId('editable-card-form-save-button').click()
 
     cy.testId('visibility-modal-continue-button').click()
     cy.wait('@mutation')
