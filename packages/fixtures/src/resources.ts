@@ -5,7 +5,7 @@ export const resourceLongue = {
   id: 'cb08cddb-1657-49ac-a2f9-d9212b428690',
   title:
     'Titre d’une ressource sur deux ligne très longues comme comme sur deux lignes',
-  slug: 'titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
+  slug: 'titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes-seed',
   titleDuplicationCheckSlug:
     'titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
   description:
