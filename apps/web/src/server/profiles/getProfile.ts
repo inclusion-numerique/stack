@@ -12,6 +12,8 @@ export const getProfilePageQuery = async (
       name: true,
       firstName: true,
       lastName: true,
+      department: true,
+      description: true,
       image: {
         select: {
           id: true,

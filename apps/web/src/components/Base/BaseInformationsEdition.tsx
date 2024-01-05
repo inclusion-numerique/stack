@@ -28,11 +28,7 @@ const BaseInformationsEdition = ({
       path="department"
       label="Département"
       options={[
-        {
-          name: 'Selectionner une option',
-          value: '',
-          disabled: true,
-        },
+        { name: 'Selectionner une option', value: '', disabled: true },
         ...departmentsOptions,
       ]}
     />

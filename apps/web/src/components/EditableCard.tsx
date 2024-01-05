@@ -1,6 +1,11 @@
 'use client'
 
-import React, { Dispatch, ReactNode, SetStateAction } from 'react'
+import React, {
+  type ComponentProps,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+} from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 
@@ -24,6 +29,8 @@ const EditableCard = ({
     form?: string
     type?: 'button' | 'submit' | 'reset'
     onClick?: () => void
+    nativeButtonProps?: ComponentProps<'button'> &
+      Record<`data-${string}`, string | boolean | null | undefined>
   }[]
 }) => {
   const [isEditMode, setEditMode] = editModeState
@@ -42,7 +49,7 @@ const EditableCard = ({
           </div>
           {!isEditMode && (
             <Button
-              data-testid="edit-card-button"
+              data-testid={`${id}-edit-card-button`}
               priority="secondary"
               iconId="fr-icon-edit-line"
               title="Modifier"
