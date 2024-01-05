@@ -42,7 +42,7 @@ executors:
 parameters:
   cache_version:
     type: string
-    default: '2023-09-22-02'
+    default: '2024-01-04-01'
   virtual_store_dir:
     type: string
     default: './.pnpm'
@@ -429,7 +429,6 @@ jobs:
   test_web_integration:
     executor: node-e2e
     resource_class: large
-    parallelism: 2
     steps:
       - checkout
       - install_dependencies

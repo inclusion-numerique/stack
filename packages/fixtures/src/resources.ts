@@ -1,332 +1,329 @@
-import { faker } from '@faker-js/faker'
-import { prismaClient } from '@app/web/prismaClient'
-import {
-  ResourceCreated,
-  ResourceCreatedDataV1,
-} from '@app/web/server/resources/feature/CreateResource'
-import { MutationHistoryResourceEvent } from '@app/web/server/resources/feature/features'
-import { createSlug } from '@app/web/utils/createSlug'
-import { ContentTypeValues } from '@app/web/utils/prismaEnums'
-import { themeLabels } from '@app/web/themes/themes'
-import { targetAudienceLabels } from '@app/web/themes/targetAudiences'
-import { supportTypeLabels } from '@app/web/themes/supportTypes'
-import { Prisma, Theme, TargetAudience, SupportType } from '@prisma/client'
+import { ResourceCreatedDataV1 } from '@app/web/server/resources/feature/CreateResource'
+import type { Prisma } from '@prisma/client'
+import { jmAvecTout } from '@app/fixtures/users'
+import { baseFixtureAvecTout } from '@app/fixtures/bases'
 
-const BASE_NUMBER = 100
-const managedTypes = [
-  ContentTypeValues.SectionTitle,
-  ContentTypeValues.Text,
-  ContentTypeValues.Link,
-]
-
-export const resources: Exclude<
-  Parameters<typeof prismaClient.resource.upsert>[0]['create'],
-  undefined
->[] = [
-  {
-    id: 'cb08cddb-1657-49ac-a2f9-d9212b428690',
-    title:
-      'Titre d’une ressource sur deux ligne très longues comme comme sur deux lignes',
-    slug: 'titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
-    titleDuplicationCheckSlug:
-      'titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
-    description:
-      'Lorem Ipsul Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum quam mauris sit lacinia turpis sed vitae vel. Venenatis in in neque interdum nec facilisi mauris nunc vitae...',
-    createdById: '99afd613-9d54-4110-9062-065c627eda8a',
-    baseId: 'cb08cddb-1657-49ac-a2f9-d9212b428690',
-    events: {
-      connectOrCreate: {
-        where: {
-          id: '7f7f637b-ca0e-4dce-b190-121e7ed579c3',
-        },
-        create: {
-          id: '7f7f637b-ca0e-4dce-b190-121e7ed579c3',
-          byId: '99afd613-9d54-4110-9062-065c627eda8a',
-          type: 'Created',
-          timestamp: new Date('2021-01-01T00:00:00.000Z'),
-          data: {
-            __version: 1,
-            byId: 'cb08cddb-1657-49ac-a2f9-d9212b428690',
-            title:
-              'Titre d’une ressource sur deux ligne très longues comme comme sur deux lignes',
-            description:
-              'Lorem Ipsul Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum quam mauris sit lacinia turpis sed vitae vel. Venenatis in in neque interdum nec facilisi mauris nunc vitae...',
-            slug: 'titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
-            titleDuplicationCheckSlug:
-              'titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
-            baseId: 'cb08cddb-1657-49ac-a2f9-d9212b428690',
-            id: 'cb08cddb-1657-49ac-a2f9-d9212b428690',
-          } satisfies ResourceCreatedDataV1,
-        },
-      },
-    },
-  },
-  {
-    id: 'ebb35a9a-e3f9-4622-ad60-d71f81d95ebd',
-    title:
-      '10 raisons de venir sur la base, la deuxième va vous laisser sans voix !',
-    slug: '10-raisons-de-venir-sur-la-base-la-deuxième-va-vous-laisser-sans-voix',
-    titleDuplicationCheckSlug:
-      '10-raisons-de-venir-sur-la-base-la-deuxième-va-vous-laisser-sans-voix',
-    description: 'TODO...',
-    createdById: 'eecac657-f415-47e1-8087-c4508ea16191',
-    events: {
-      connectOrCreate: {
-        where: {
-          id: '0e4fefb6-baef-4b34-a95b-af93375d3179',
-        },
-        create: {
-          id: '0e4fefb6-baef-4b34-a95b-af93375d3179',
-          byId: 'eecac657-f415-47e1-8087-c4508ea16191',
-          type: 'Created',
-          timestamp: new Date('2021-01-01T00:00:00.000Z'),
-          data: {
-            __version: 1,
-            id: 'ebb35a9a-e3f9-4622-ad60-d71f81d95ebd',
-            byId: 'cb08cddb-1657-49ac-a2f9-d9212b428690',
-            title:
-              '10 raisons de venir sur la base, la deuxième va vous laisser sans voix !',
-            description: 'TODO...',
-            slug: '10-raisons-de-venir-sur-la-base-la-deuxième-va-vous-laisser-sans-voix',
-            titleDuplicationCheckSlug:
-              '10-raisons-de-venir-sur-la-base-la-deuxième-va-vous-laisser-sans-voix',
-            baseId: null,
-          } satisfies ResourceCreatedDataV1,
-        },
-      },
-    },
-  },
-  {
-    id: '35eef26e-cc63-4adb-a761-eb44cef48361',
-    title: "Tester c'est pour les devs qui écrivent des bugs...",
-    slug: 'tester-c-est-pour-les-devs-qui-écrivent-des-bugs',
-    titleDuplicationCheckSlug:
-      'tester-c-est-pour-les-devs-qui-écrivent-des-bugs',
-    description: 'TODO...',
-    createdById: 'eecac657-f415-47e1-8087-c4508ea16191',
-    events: {
-      connectOrCreate: {
-        where: {
-          id: 'ad6f2e35-1269-4887-88e2-37ad29800a18',
-        },
-        create: {
-          id: 'ad6f2e35-1269-4887-88e2-37ad29800a18',
-          byId: 'eecac657-f415-47e1-8087-c4508ea16191',
-          type: 'Created',
-          timestamp: new Date('2021-01-01T00:00:00.000Z'),
-          data: {
-            __version: 1,
-            id: '35eef26e-cc63-4adb-a761-eb44cef48361',
-            byId: 'cb08cddb-1657-49ac-a2f9-d9212b428690',
-            title:
-              '10 raisons de venir sur la base, la deuxième va vous laisser sans voix !',
-            description: 'TODO...',
-            slug: 'tester-c-est-pour-les-devs-qui-écrivent-des-bugs',
-            titleDuplicationCheckSlug:
-              'tester-c-est-pour-les-devs-qui-écrivent-des-bugs',
-            baseId: null,
-          } satisfies ResourceCreatedDataV1,
-        },
-      },
-    },
-  },
-]
-
-const getRandomResourceContentEvent = (id: string, type: ContentTypeValues) => {
-  switch (type) {
-    case 'SectionTitle': {
-      return {
-        id,
-        __version: 1 as const,
-        title: faker.lorem.words({ min: 2, max: 10 }),
-      }
-    }
-    case 'Text': {
-      return {
-        id,
-        __version: 1 as const,
-        text: faker.lorem.words({ min: 2, max: 10 }),
-      }
-    }
-    case 'Link': {
-      const showPreview = faker.datatype.boolean()
-      return {
-        id,
-        __version: 1 as const,
-        title: faker.lorem.words({ min: 2, max: 5 }),
-        caption: faker.lorem.words({ min: 2, max: 10 }),
-        url: faker.internet.url(),
-        ...(showPreview
-          ? {
-              showPreview: true,
-              linkTitle: faker.lorem.words({ min: 2, max: 5 }),
-              linkDescription: faker.lorem.words({ min: 2, max: 10 }),
-            }
-          : {
-              showPreview: false,
-              linkTitle: undefined,
-              linkDescription: undefined,
-            }),
-      }
-    }
-    default: {
-      throw new Error('Type not managed yet')
-    }
-  }
+const resourcePubliqueDansBaseConstant = {
+  id: 'd4c3a9c8-01e4-4e46-a3f4-8dab0a3723b2',
+  title:
+    'Ressource publique dans une base avec un titre sur deux ligne très longues comme comme sur deux lignes',
+  slug: 'ressource-publique-dans-une-base-avec-un-titre-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
+  titleDuplicationCheckSlug:
+    'ressource-publique-dans-une-base-avec-un-titre-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
+  description:
+    'Lorem Ipsul Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum quam mauris sit lacinia turpis sed vitae vel. Venenatis in in neque interdum nec facilisi mauris nunc vitae...',
 }
 
-export const randomResourcesEvents: (
-  transaction: Prisma.TransactionClient,
-  random: number,
-) => Promise<
-  [
-    ResourceCreated & { resourceId: string },
-    ...(MutationHistoryResourceEvent & { resourceId: string })[],
-  ][]
-> = async (transaction, random) => {
-  const [users, bases] = await Promise.all([
-    transaction.user.findMany({ select: { id: true } }),
-    transaction.base.findMany({
-      select: { id: true },
-    }),
-  ])
+const resourcePriveeDansBaseConstant = {
+  id: 'ebb35a9a-e3f9-4622-ad60-d71f81d95ebd',
+  title:
+    'Ressource privée dans une base avec un titre sur deux ligne très longues comme comme sur deux lignes',
+  slug: 'ressource-privee-dans-une-base-avec-un-titre-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
+  titleDuplicationCheckSlug:
+    'ressource-privee-dans-une-base-avec-un-titre-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
+  description:
+    'Lorem Ipsul Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum quam mauris sit lacinia turpis sed vitae vel. Venenatis in in neque interdum nec facilisi mauris nunc vitae...',
+}
 
-  return Array.from({ length: random * BASE_NUMBER }).map(() => {
-    const creationDate = faker.date.past()
-    const title = faker.lorem.words({ min: 2, max: 10 })
-    const description = faker.lorem.paragraph()
-    const slug = createSlug(title)
-    const resourceId = faker.string.uuid()
+const resourceBrouillonDansBaseConstant = {
+  id: '35eef26e-cc63-4adb-a761-eb44cef48361',
+  title:
+    'Ressource brouillon dans une base avec un titre sur deux ligne très longues comme comme sur deux lignes',
+  slug: 'ressource-brouillon-dans-une-base-avec-un-titre-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
+  titleDuplicationCheckSlug:
+    'ressource-brouillon-dans-une-base-avec-un-titre-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
+  description:
+    'Lorem Ipsul Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum quam mauris sit lacinia turpis sed vitae vel. Venenatis in in neque interdum nec facilisi mauris nunc vitae...',
+}
 
-    const baseChangedEvents = Array.from({
-      length: random * Math.random() * 5,
-    }).map(() => ({
-      id: faker.string.uuid(),
-      resourceId,
-      byId: faker.helpers.arrayElement(users).id,
-      type: 'BaseChanged' as const,
-      timestamp: faker.date.between({ from: creationDate, to: new Date() }),
-      data: {
-        __version: 1 as const,
-        baseId: faker.helpers.arrayElement(bases).id,
+const resourcePubliqueDansProfilConstant = {
+  id: 'ff179fd3-1686-4361-adc8-85074b4fbaa2',
+  title:
+    'Ressource publique dans un profil avec un titre sur deux ligne très longues comme comme sur deux lignes',
+  slug: 'ressource-publique-dans-un-profil-avec-un-titre-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
+  titleDuplicationCheckSlug:
+    'ressource-publique-dans-un-profil-avec-un-titre-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
+  description:
+    'Lorem Ipsul Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum quam mauris sit lacinia turpis sed vitae vel. Venenatis in in neque interdum nec facilisi mauris nunc vitae...',
+}
+
+const resourcePriveeDansProfilConstant = {
+  id: '8c9e35d2-72d4-4f2f-89b8-d4482e02a42a',
+  title:
+    'Ressource privée dans un profil avec un titre sur deux ligne très longues comme comme sur deux lignes',
+  slug: 'ressource-privee-dans-un-profil-avec-un-titre-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
+  titleDuplicationCheckSlug:
+    'ressource-privee-dans-un-profil-avec-un-titre-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
+  description:
+    'Lorem Ipsul Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum quam mauris sit lacinia turpis sed vitae vel. Venenatis in in neque interdum nec facilisi mauris nunc vitae...',
+}
+
+// same for resourceBrouillonDansProfilConstant
+const resourceBrouillonDansProfilConstant = {
+  id: '3f90aecd-7e43-4ac8-9b36-2e4fd71cb6d7',
+  title:
+    'Ressource brouillon dans un profil avec un titre sur deux ligne très longues comme comme sur deux lignes',
+  slug: 'ressource-brouillon-dans-un-profil-avec-un-titre-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
+  titleDuplicationCheckSlug:
+    'ressource-brouillon-dans-un-profil-avec-un-titre-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
+  description:
+    'Lorem Ipsul Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum quam mauris sit lacinia turpis sed vitae vel. Venenatis in in neque interdum nec facilisi mauris nunc vitae...',
+}
+
+export const resourcePubliqueDansBase = {
+  id: resourcePubliqueDansBaseConstant.id,
+  title: resourcePubliqueDansBaseConstant.title,
+  slug: resourcePubliqueDansBaseConstant.slug,
+  titleDuplicationCheckSlug:
+    resourcePubliqueDansBaseConstant.titleDuplicationCheckSlug,
+  description: resourcePubliqueDansBaseConstant.description,
+  createdBy: {
+    connect: {
+      id: jmAvecTout.id,
+    },
+  },
+  base: {
+    connect: {
+      id: baseFixtureAvecTout.id,
+    },
+  },
+  isPublic: true,
+  events: {
+    connectOrCreate: {
+      where: {
+        id: 'cf501b49-6581-49a2-be24-fa3d59b88a6e',
       },
-    }))
-
-    const titleAndDescriptionEditedEvents = Array.from({
-      length: random * Math.random() * 5,
-    }).map(() => ({
-      id: faker.string.uuid(),
-      resourceId,
-      byId: faker.helpers.arrayElement(users).id,
-      type: 'TitleAndDescriptionEdited' as const,
-      timestamp: faker.date.between({ from: creationDate, to: new Date() }),
-      data: {
-        __version: 1 as const,
-        title: faker.lorem.words({ min: 2, max: 10 }),
-        description: faker.lorem.paragraph(),
-      },
-    }))
-
-    const contentsEvents = Array.from(
-      { length: Math.random() * 10 * random },
-      () => {
-        const type = faker.helpers.arrayElement(managedTypes)
-        const contentId = faker.string.uuid()
-        const contentCreationDate = faker.date.between({
-          from: creationDate,
-          to: new Date(),
-        })
-
-        const editionEvents = Array.from(
-          { length: Math.random() * 2 * random },
-          () => ({
-            id: faker.string.uuid(),
-            resourceId,
-            byId: faker.helpers.arrayElement(users).id,
-            type: 'ContentEdited' as const,
-            timestamp: faker.date.between({
-              from: contentCreationDate,
-              to: new Date(),
-            }),
-            data: getRandomResourceContentEvent(contentId, type),
-          }),
-        )
-
-        return [
-          {
-            id: faker.string.uuid(),
-            resourceId,
-            byId: faker.helpers.arrayElement(users).id,
-            type: 'ContentAdded' as const,
-            timestamp: contentCreationDate,
-            data: { ...getRandomResourceContentEvent(contentId, type), type },
-          },
-          ...editionEvents,
-        ]
-      },
-    )
-
-    const deletionEvent = {
-      id: faker.string.uuid(),
-      resourceId,
-      byId: faker.helpers.arrayElement(users).id,
-      type: 'Deleted' as const,
-      timestamp: faker.date.future(),
-      data: {
-        __version: 1 as const,
-      },
-    }
-
-    const isPublic = faker.datatype.boolean()
-    const publicationEvent = {
-      id: faker.string.uuid(),
-      resourceId,
-      byId: faker.helpers.arrayElement(users).id,
-      type: 'Published' as const,
-      timestamp: faker.date.future(),
-      data: isPublic
-        ? {
-            __version: 2 as const,
-            isPublic,
-            themes: faker.helpers.arrayElements(
-              Object.keys(themeLabels),
-            ) as Theme[],
-            supportTypes: faker.helpers.arrayElements(
-              Object.keys(supportTypeLabels),
-            ) as SupportType[],
-            targetAudiences: faker.helpers.arrayElements(
-              Object.keys(targetAudienceLabels),
-            ) as TargetAudience[],
-          }
-        : {
-            __version: 2 as const,
-            isPublic,
-          },
-    }
-
-    return [
-      {
-        id: faker.string.uuid(),
-        resourceId,
-        byId: faker.helpers.arrayElement(users).id,
-        type: 'Created' as const,
-        timestamp: creationDate,
+      create: {
+        id: 'cf501b49-6581-49a2-be24-fa3d59b88a6e',
+        byId: jmAvecTout.id,
+        type: 'Created',
+        timestamp: new Date('2021-01-01T00:00:00.000Z'),
         data: {
-          __version: 1 as const,
-          id: resourceId,
-          byId: faker.helpers.arrayElement(users).id,
-          title,
-          description,
-          slug,
-          titleDuplicationCheckSlug: slug,
-          baseId: null,
+          __version: 1,
+          byId: jmAvecTout.id,
+          title: resourcePubliqueDansBaseConstant.title,
+          description: resourcePubliqueDansBaseConstant.description,
+          slug: resourcePubliqueDansBaseConstant.slug,
+          titleDuplicationCheckSlug:
+            resourcePubliqueDansBaseConstant.titleDuplicationCheckSlug,
+          baseId: baseFixtureAvecTout.id,
+          id: resourcePubliqueDansBaseConstant.id,
         } satisfies ResourceCreatedDataV1,
       },
-      ...baseChangedEvents,
-      ...titleAndDescriptionEditedEvents,
-      ...contentsEvents.flat(),
-      ...(Math.random() > 0.05 ? [publicationEvent] : []),
-      ...(Math.random() > 0.95 ? [deletionEvent] : []),
-    ]
-  })
-}
+    },
+  },
+} satisfies Prisma.ResourceCreateInput
+
+export const resourcePriveeDansBase = {
+  id: resourcePriveeDansBaseConstant.id,
+  title: resourcePriveeDansBaseConstant.title,
+  slug: resourcePriveeDansBaseConstant.slug,
+  titleDuplicationCheckSlug:
+    resourcePriveeDansBaseConstant.titleDuplicationCheckSlug,
+  description: resourcePriveeDansBaseConstant.description,
+  createdBy: {
+    connect: {
+      id: jmAvecTout.id,
+    },
+  },
+  base: {
+    connect: {
+      id: baseFixtureAvecTout.id,
+    },
+  },
+  isPublic: false,
+
+  events: {
+    connectOrCreate: {
+      where: {
+        id: '0e4fefb6-baef-4b34-a95b-af93375d3179',
+      },
+      create: {
+        id: '0e4fefb6-baef-4b34-a95b-af93375d3179',
+        byId: jmAvecTout.id,
+        type: 'Created',
+        timestamp: new Date('2021-01-01T00:00:00.000Z'),
+        data: {
+          __version: 1,
+          byId: jmAvecTout.id,
+          title: resourcePriveeDansBaseConstant.title,
+          description: resourcePriveeDansBaseConstant.description,
+          slug: resourcePriveeDansBaseConstant.slug,
+          titleDuplicationCheckSlug:
+            resourcePriveeDansBaseConstant.titleDuplicationCheckSlug,
+          baseId: baseFixtureAvecTout.id,
+          id: resourcePriveeDansBaseConstant.id,
+        } satisfies ResourceCreatedDataV1,
+      },
+    },
+  },
+} satisfies Prisma.ResourceCreateInput
+
+export const resourceBrouillonDansBase = {
+  id: resourceBrouillonDansBaseConstant.id,
+  title: resourceBrouillonDansBaseConstant.title,
+  slug: resourceBrouillonDansBaseConstant.slug,
+  titleDuplicationCheckSlug:
+    resourceBrouillonDansBaseConstant.titleDuplicationCheckSlug,
+  description: resourceBrouillonDansBaseConstant.description,
+  createdBy: {
+    connect: {
+      id: jmAvecTout.id,
+    },
+  },
+  base: {
+    connect: {
+      id: baseFixtureAvecTout.id,
+    },
+  },
+  events: {
+    connectOrCreate: {
+      where: {
+        id: 'ad6f2e35-1269-4887-88e2-37ad29800a18',
+      },
+      create: {
+        id: 'ad6f2e35-1269-4887-88e2-37ad29800a18',
+        byId: jmAvecTout.id,
+        type: 'Created',
+        timestamp: new Date('2021-01-01T00:00:00.000Z'),
+        data: {
+          __version: 1,
+          byId: jmAvecTout.id,
+          title: resourceBrouillonDansBaseConstant.title,
+          description: resourceBrouillonDansBaseConstant.description,
+          slug: resourceBrouillonDansBaseConstant.slug,
+          titleDuplicationCheckSlug:
+            resourceBrouillonDansBaseConstant.titleDuplicationCheckSlug,
+          baseId: baseFixtureAvecTout.id,
+          id: resourceBrouillonDansBaseConstant.id,
+        } satisfies ResourceCreatedDataV1,
+      },
+    },
+  },
+} satisfies Prisma.ResourceCreateInput
+
+export const resourcePubliqueDansProfil = {
+  id: resourcePubliqueDansProfilConstant.id,
+  title: resourcePubliqueDansProfilConstant.title,
+  slug: resourcePubliqueDansProfilConstant.slug,
+  titleDuplicationCheckSlug:
+    resourcePubliqueDansProfilConstant.titleDuplicationCheckSlug,
+  description: resourcePubliqueDansProfilConstant.description,
+  createdBy: {
+    connect: {
+      id: jmAvecTout.id,
+    },
+  },
+  isPublic: true,
+
+  events: {
+    connectOrCreate: {
+      where: {
+        id: '4f67a21d-8e6a-4fc3-b947-3156e321f23b',
+      },
+      create: {
+        id: '4f67a21d-8e6a-4fc3-b947-3156e321f23b',
+        byId: jmAvecTout.id,
+        type: 'Created',
+        timestamp: new Date('2021-01-01T00:00:00.000Z'),
+        data: {
+          __version: 1,
+          byId: jmAvecTout.id,
+          title: resourcePubliqueDansProfilConstant.title,
+          description: resourcePubliqueDansProfilConstant.description,
+          slug: resourcePubliqueDansProfilConstant.slug,
+          titleDuplicationCheckSlug:
+            resourcePubliqueDansProfilConstant.titleDuplicationCheckSlug,
+          baseId: null,
+          id: resourcePubliqueDansProfilConstant.id,
+        } satisfies ResourceCreatedDataV1,
+      },
+    },
+  },
+} satisfies Prisma.ResourceCreateInput
+
+export const resourcePriveeDansProfil = {
+  id: resourcePriveeDansProfilConstant.id,
+  title: resourcePriveeDansProfilConstant.title,
+  slug: resourcePriveeDansProfilConstant.slug,
+  titleDuplicationCheckSlug:
+    resourcePriveeDansProfilConstant.titleDuplicationCheckSlug,
+  description: resourcePriveeDansProfilConstant.description,
+  createdBy: {
+    connect: {
+      id: jmAvecTout.id,
+    },
+  },
+  isPublic: true,
+  events: {
+    connectOrCreate: {
+      where: {
+        id: '6a7b8c9d-1e2f-4a8c-bb12-3d8f9a0e5c81',
+      },
+      create: {
+        id: '6a7b8c9d-1e2f-4a8c-bb12-3d8f9a0e5c81',
+        byId: jmAvecTout.id,
+        type: 'Created',
+        timestamp: new Date('2021-01-01T00:00:00.000Z'),
+        data: {
+          __version: 1,
+          byId: jmAvecTout.id,
+          title: resourcePriveeDansProfilConstant.title,
+          description: resourcePriveeDansProfilConstant.description,
+          slug: resourcePriveeDansProfilConstant.slug,
+          titleDuplicationCheckSlug:
+            resourcePriveeDansProfilConstant.titleDuplicationCheckSlug,
+          baseId: null,
+          id: resourcePriveeDansProfilConstant.id,
+        } satisfies ResourceCreatedDataV1,
+      },
+    },
+  },
+} satisfies Prisma.ResourceCreateInput
+
+export const resourceBrouillonDansProfil = {
+  id: resourceBrouillonDansProfilConstant.id,
+  title: resourceBrouillonDansProfilConstant.title,
+  slug: resourceBrouillonDansProfilConstant.slug,
+  titleDuplicationCheckSlug:
+    resourceBrouillonDansProfilConstant.titleDuplicationCheckSlug,
+  description: resourceBrouillonDansProfilConstant.description,
+  createdBy: {
+    connect: {
+      id: jmAvecTout.id,
+    },
+  },
+  events: {
+    connectOrCreate: {
+      where: {
+        id: '7b165f63-4e5b-4c1c-9e7c-3d2df9d73564',
+      },
+      create: {
+        id: '7b165f63-4e5b-4c1c-9e7c-3d2df9d73564',
+        byId: jmAvecTout.id,
+        type: 'Created',
+        timestamp: new Date('2021-01-01T00:00:00.000Z'),
+        data: {
+          __version: 1,
+          byId: jmAvecTout.id,
+          title: resourceBrouillonDansProfilConstant.title,
+          description: resourceBrouillonDansProfilConstant.description,
+          slug: resourceBrouillonDansProfilConstant.slug,
+          titleDuplicationCheckSlug:
+            resourceBrouillonDansProfilConstant.titleDuplicationCheckSlug,
+          baseId: null,
+          id: resourceBrouillonDansProfilConstant.id,
+        } satisfies ResourceCreatedDataV1,
+      },
+    },
+  },
+} satisfies Prisma.ResourceCreateInput
+
+export const resources = [
+  resourcePubliqueDansBase,
+  resourcePriveeDansBase,
+  resourceBrouillonDansBase,
+  resourcePubliqueDansProfil,
+  resourcePriveeDansProfil,
+  resourceBrouillonDansProfil,
+]

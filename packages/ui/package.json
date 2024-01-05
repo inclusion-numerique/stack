@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@storybook/jest": "^0.2.3",
-    "@storybook/react": "^7.6.6",
+    "@storybook/react": "^7.6.7",
     "@storybook/testing-library": "^0.2.2",
     "@testing-library/jest-dom": "^6.1.4",
     "@types/jest": "^29.5.6",
