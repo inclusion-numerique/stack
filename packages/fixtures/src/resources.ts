@@ -37,7 +37,7 @@ const resourceBrouillonDansBaseConstant = {
 }
 
 const resourcePubliqueDansProfilConstant = {
-  id: 'd4c3a9c8-01e4-4e46-a3f4-8dab0a3723b2',
+  id: 'ff179fd3-1686-4361-adc8-85074b4fbaa2',
   title:
     'Ressource publique dans un profil avec un titre sur deux ligne très longues comme comme sur deux lignes',
   slug: 'ressource-publique-dans-un-profil-avec-un-titre-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
@@ -91,10 +91,10 @@ export const resourcePubliqueDansBase = {
   events: {
     connectOrCreate: {
       where: {
-        id: '7f7f637b-ca0e-4dce-b190-121e7ed579c3',
+        id: 'cf501b49-6581-49a2-be24-fa3d59b88a6e',
       },
       create: {
-        id: '7f7f637b-ca0e-4dce-b190-121e7ed579c3',
+        id: 'cf501b49-6581-49a2-be24-fa3d59b88a6e',
         byId: jmAvecTout.id,
         type: 'Created',
         timestamp: new Date('2021-01-01T00:00:00.000Z'),
