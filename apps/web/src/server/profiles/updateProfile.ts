@@ -39,13 +39,16 @@ const descriptionValidation = z
   .optional()
   .transform((text) => (text ? sanitizeHtml(text) : text))
 
+const emailIsPublicValidation = z.boolean()
+
+const siteValidation = z.union([
+  z.literal(''),
+  z.string().trim().url('Veuillez renseigner une URL valide'),
+])
+
 export const UpdateProfileImageCommandValidation = z.object({
   imageId: z.string().uuid().nullable(),
 })
-
-export type UpdateProfileImageCommand = z.infer<
-  typeof UpdateProfileImageCommandValidation
->
 
 export const UpdateProfileInformationsCommandValidation = z.object({
   lastName: lastNameValidation,
@@ -54,14 +57,30 @@ export const UpdateProfileInformationsCommandValidation = z.object({
   description: descriptionValidation,
 })
 
+export const UpdateProfileContactsCommandValidation = z.object({
+  emailIsPublic: emailIsPublicValidation,
+  website: siteValidation,
+  facebook: siteValidation,
+  twitter: siteValidation,
+  linkedin: siteValidation,
+})
+
 export const UpdateProfileVisibilityCommandValidation = z.object({
   isPublic: z.boolean({
     required_error: 'Veuillez spécifier la visibilité du profil',
   }),
 })
 
+export type UpdateProfileImageCommand = z.infer<
+  typeof UpdateProfileImageCommandValidation
+>
+
 export type UpdateProfileInformationsCommand = z.infer<
   typeof UpdateProfileInformationsCommandValidation
+>
+
+export type UpdateProfileContactsCommand = z.infer<
+  typeof UpdateProfileContactsCommandValidation
 >
 
 export type UpdateProfileVisibilityCommand = z.infer<

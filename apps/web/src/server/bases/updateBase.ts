@@ -24,7 +24,7 @@ export const emailValidation = z
 export const emailIsPublicValidation = z.boolean()
 export const siteValidation = z
   .string()
-  .url('Veuiller renseigner une URL valide')
+  .url('Veuillez renseigner une URL valide')
   .trim()
   .optional()
 

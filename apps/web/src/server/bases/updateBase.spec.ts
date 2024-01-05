@@ -229,7 +229,7 @@ describe('UpdateBaseContactsCommand', () => {
       [
         {
           path: ['website'],
-          message: 'Veuiller renseigner une URL valide',
+          message: 'Veuillez renseigner une URL valide',
         },
       ],
     )
@@ -245,7 +245,7 @@ describe('UpdateBaseContactsCommand', () => {
       [
         {
           path: ['facebook'],
-          message: 'Veuiller renseigner une URL valide',
+          message: 'Veuillez renseigner une URL valide',
         },
       ],
     )
@@ -261,7 +261,7 @@ describe('UpdateBaseContactsCommand', () => {
       [
         {
           path: ['twitter'],
-          message: 'Veuiller renseigner une URL valide',
+          message: 'Veuillez renseigner une URL valide',
         },
       ],
     )
@@ -277,7 +277,7 @@ describe('UpdateBaseContactsCommand', () => {
       [
         {
           path: ['linkedin'],
-          message: 'Veuiller renseigner une URL valide',
+          message: 'Veuillez renseigner une URL valide',
         },
       ],
     )

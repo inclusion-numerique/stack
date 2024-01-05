@@ -72,7 +72,7 @@ const ProfileInformationsEdition = ({
             inline={false}
             as="div"
           >
-            Nom Prénom
+            Prénom Nom
           </LabelAndValue>
           <LabelAndValue
             className="fr-mb-2w"

@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import {
+  UpdateProfileContactsCommandValidation,
   UpdateProfileImageCommandValidation,
   UpdateProfileInformationsCommandValidation,
   UpdateProfileVisibilityCommandValidation,
@@ -82,6 +83,19 @@ export const profileRouter = router({
         data: {
           ...informations,
           name: `${informations.firstName} ${informations.lastName}`,
+        },
+      }),
+    ),
+  updateContacts: protectedProcedure
+    .input(UpdateProfileContactsCommandValidation)
+    .mutation(async ({ input: contacts, ctx: { user } }) =>
+      prismaClient.user.update({
+        where: { id: user.id },
+        data: {
+          website: contacts.website === '' ? null : contacts.website,
+          facebook: contacts.facebook === '' ? null : contacts.facebook,
+          twitter: contacts.twitter === '' ? null : contacts.twitter,
+          linkedin: contacts.linkedin === '' ? null : contacts.linkedin,
         },
       }),
     ),
