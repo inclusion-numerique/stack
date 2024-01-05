@@ -136,7 +136,8 @@ export const transformContent = ({
       ? {
           ...commonData,
           type: 'Image',
-          imageId: imageIdFromLegacyId(Number(id)),
+          // Image migrated from content have ids starting at 100000 to prevent collisions
+          imageId: imageIdFromLegacyId(Number(id) + 100_000),
         }
       : {
           ...commonData,

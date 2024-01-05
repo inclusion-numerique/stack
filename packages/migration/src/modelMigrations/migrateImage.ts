@@ -105,7 +105,8 @@ export const migrateImage = async ({
 }: MigrateImageInput) => {
   const legacyId =
     'contentblock_ptr_id' in legacyImage
-      ? Number(legacyImage.contentblock_ptr_id)
+      ? // Legacy images from content block have legacyId starting at 100_000 to avoid collision with main_resizableimage
+        Number(legacyImage.contentblock_ptr_id) + 100_000
       : Number(legacyImage.id)
   const data =
     'contentblock_ptr_id' in legacyImage
