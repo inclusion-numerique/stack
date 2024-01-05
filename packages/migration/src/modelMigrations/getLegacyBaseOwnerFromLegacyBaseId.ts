@@ -26,6 +26,7 @@ ${bases
     ({ id, owner_id }) =>
       owner_id !== null && legacyBasesIdsToTransformToProfile.has(Number(id)),
   )
+  .sort((a, b) => Number(a.id) - Number(b.id))
   .map(({ id, owner_id }) => `  [${Number(id)}, ${Number(owner_id)}]`)
   .join(',\n')},
 ])
