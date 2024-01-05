@@ -1,6 +1,7 @@
 import { v4 } from 'uuid'
 import { prismaClient } from '@app/web/prismaClient'
 import type { Prisma } from '@prisma/client'
+import { defaultCropValues } from '@app/web/server/image/defaultCropValues'
 import { migrationPrismaClient } from '@app/migration/migrationPrismaClient'
 import { FindManyItemType } from '@app/migration/utils/findManyItemType'
 import { LegacyIdMap } from '@app/migration/utils/legacyIdMap'
@@ -64,6 +65,39 @@ export type MigrateImageInput = {
 const normalizeCropBetween0and1 = (value: number) =>
   Number.parseFloat(Math.min(Math.max(value, 0), 1).toFixed(4))
 
+const cropFromLegacyImage = ({
+  relative_top,
+  relative_width,
+  relative_left,
+  relative_height,
+}: {
+  relative_top: number
+  relative_left: number
+  relative_height: number
+  relative_width: number
+}) => {
+  const cropTop = normalizeCropBetween0and1(relative_top)
+  const cropLeft = normalizeCropBetween0and1(relative_left)
+  const cropHeight = normalizeCropBetween0and1(relative_height)
+  const cropWidth = normalizeCropBetween0and1(relative_width)
+
+  // Do not crop images that have legacy invalid data
+  const isValidCrop =
+    // We have some wierd legacy data fully cropped (no pixel remaining)
+    cropTop < 1 &&
+    cropLeft < 1 &&
+    // Crop height cannot be greater than 1 - crop top
+    cropTop + cropHeight <= 1 &&
+    // Crop width cannot be greater than 1 - crop left
+    cropLeft + cropWidth <= 1
+
+  if (!isValidCrop) {
+    return defaultCropValues
+  }
+
+  return { cropTop, cropLeft, cropHeight, cropWidth }
+}
+
 export const migrateImage = async ({
   legacyImage,
   transaction,
@@ -80,10 +114,7 @@ export const migrateImage = async ({
           altText: legacyImage.image_alt,
         }
       : ({
-          cropHeight: normalizeCropBetween0and1(legacyImage.relative_height),
-          cropWidth: normalizeCropBetween0and1(legacyImage.relative_width),
-          cropTop: normalizeCropBetween0and1(legacyImage.relative_top),
-          cropLeft: normalizeCropBetween0and1(legacyImage.relative_left),
+          ...cropFromLegacyImage(legacyImage),
           uploadKey: uploadKeyFromLegacyKey(legacyImage.image),
         } satisfies Parameters<typeof transaction.image.upsert>[0]['update'])
 
