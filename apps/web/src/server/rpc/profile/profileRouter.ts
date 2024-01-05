@@ -11,7 +11,52 @@ import { searchMember } from '@app/web/server/profiles/searchMember'
 import { invalidError } from '@app/web/server/rpc/trpcErrors'
 import { createSlug } from '@app/web/utils/createSlug'
 import { findFirstAvailableSlug } from '@app/web/server/slug/findFirstAvailableSlug'
-import { handleResourceMutationCommand } from '../../resources/feature/handleResourceMutationCommand'
+import { handleResourceMutationCommand } from '@app/web/server/resources/feature/handleResourceMutationCommand'
+
+const deletedUser = (id: string, timestamp: Date) => ({
+  firstName: null,
+  lastName: null,
+  name: 'Profil supprimé',
+  email: `utilisateur-supprimé+${id}@lesbases.anct.gouv.fr`,
+  emailIsPublic: false,
+  website: null,
+  facebook: null,
+  twitter: null,
+  linkedin: null,
+  imageId: null,
+  location: null,
+  title: null,
+  description: null,
+  department: null,
+  isPublic: false,
+  deleted: timestamp,
+  updated: timestamp,
+})
+
+const resourcesToDelete = () => ({
+  where: {
+    contributors: { none: {} },
+    deleted: null,
+  },
+})
+
+const basesToDelete = (memberId: string) => ({
+  where: {
+    members: { every: { memberId } },
+    deleted: null,
+  },
+})
+
+const collectionsToDelete = () => ({
+  where: {
+    savedCollection: { none: {} },
+    deleted: null,
+  },
+})
+
+const softDelete = (timestamp: Date) => ({
+  data: { deleted: timestamp, updated: timestamp },
+})
 
 export const profileRouter = router({
   searchProfileForMember: protectedProcedure
@@ -136,4 +181,33 @@ export const profileRouter = router({
         data: { imageId: input.imageId },
       }),
     ),
+  delete: protectedProcedure.mutation(
+    async ({
+      ctx: {
+        user: { id },
+      },
+    }) => {
+      const timestamp = new Date()
+
+      await prismaClient.resource.updateMany({
+        ...resourcesToDelete(),
+        ...softDelete(timestamp),
+      })
+
+      await prismaClient.base.updateMany({
+        ...basesToDelete(id),
+        ...softDelete(timestamp),
+      })
+
+      await prismaClient.collection.updateMany({
+        ...collectionsToDelete(),
+        ...softDelete(timestamp),
+      })
+
+      return prismaClient.user.update({
+        where: { id },
+        data: deletedUser(id, timestamp),
+      })
+    },
+  ),
 })

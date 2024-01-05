@@ -1,12 +1,14 @@
 import React, { ReactElement, ReactNode, useState } from 'react'
 import Input from '@codegouvfr/react-dsfr/Input'
 import { ModalProps } from '@codegouvfr/react-dsfr/Modal'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 
 export const ConfirmDeleteModal = ({
   title,
   message,
   description,
   confirmText,
+  isLoading = false,
   Component: DeleteModal,
   onClose,
   onDelete,
@@ -15,6 +17,7 @@ export const ConfirmDeleteModal = ({
   message?: ReactNode
   description?: ReactNode
   confirmText: string
+  isLoading?: boolean
   Component: (props: ModalProps) => ReactElement
   onClose: () => void
   onDelete: () => void
@@ -28,11 +31,12 @@ export const ConfirmDeleteModal = ({
         {
           children: 'Annuler',
           priority: 'secondary',
+          disabled: isLoading,
           onClick: onClose,
         },
         {
           children: 'Supprimer',
-          className: 'fr-btn--danger',
+          ...buttonLoadingClassname(isLoading, 'fr-btn--danger'),
           onClick: onDelete,
           disabled: validationInput !== confirmText,
           nativeButtonProps: {

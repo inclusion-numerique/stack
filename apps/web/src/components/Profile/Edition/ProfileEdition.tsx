@@ -2,10 +2,11 @@ import React from 'react'
 import { ProfilePageData } from '@app/web/server/profiles/getProfile'
 import { ResourceListItem } from '@app/web/server/resources/getResourcesList'
 import ProfileInformations from '../ProfileInformations'
-import ProfileContactsEdition from './ProfileContactsEdition'
 import ProfileSideMenu from './ProfileEditionSideMenu'
+import ProfileContactsEdition from './ProfileContactsEdition'
 import ProfileInformationsEdition from './ProfileInformationsEdition'
 import ProfileVisibilityEdition from './ProfileVisibilityForm'
+import ProfileDeletion from './ProfileDeletion'
 
 const ProfileEdition = ({
   profile,
@@ -36,6 +37,9 @@ const ProfileEdition = ({
           </div>
           <div className="fr-col-12">
             <ProfileVisibilityEdition profile={profile} resources={resources} />
+          </div>
+          <div className="fr-col-12">
+            <ProfileDeletion />
           </div>
         </div>
       </div>
