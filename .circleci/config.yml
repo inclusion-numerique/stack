@@ -399,7 +399,6 @@ jobs:
   test_web_integration:
     executor: node-e2e
     resource_class: large
-    parallelism: 2
     steps:
       - checkout
       - install_dependencies
