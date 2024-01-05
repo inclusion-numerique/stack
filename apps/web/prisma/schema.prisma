@@ -49,8 +49,15 @@ model User {
   firstName     String?   @map("first_name")
   lastName      String?   @map("last_name")
   name          String?
+
   email         String    @unique
   emailVerified DateTime? @map("email_verified")
+  emailIsPublic Boolean @default(false) @map("email_is_public")
+  website       String?
+  facebook      String?
+  twitter       String?
+  linkedin      String?
+
   image         Image?    @relation(fields: [imageId], references: [id])
   imageId       String?   @unique @map("image_id") @db.Uuid
   location      String?

@@ -4,6 +4,7 @@ import styles from '../components/Base/Edition/BaseEdition.module.css'
 
 export const LabelAndValue = ({
   value,
+  prefix,
   inline = true,
   isHtml = false,
   as: Component = 'li',
@@ -11,6 +12,7 @@ export const LabelAndValue = ({
   children,
 }: PropsWithChildren<{
   value: string | null | number | undefined
+  prefix?: string
   inline?: boolean
   isHtml?: boolean
   className?: string
@@ -23,12 +25,15 @@ export const LabelAndValue = ({
     <Component className={className}>
       {inline ? <>{children}&nbsp;:&nbsp;</> : <div>{children}</div>}
       {isHtml ? (
-        <strong>{value}</strong>
+        <strong>
+          {prefix}
+          {value}
+        </strong>
       ) : (
         <strong
           className={styles.value}
           dangerouslySetInnerHTML={{
-            __html: sanitizeHtml(value.toString() ?? ''),
+            __html: sanitizeHtml([prefix, value.toString()].join('')),
           }}
         />
       )}

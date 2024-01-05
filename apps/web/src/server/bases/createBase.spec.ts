@@ -196,7 +196,7 @@ describe('CreateBaseCommand', () => {
       [
         {
           path: ['website'],
-          message: 'Veuiller renseigner une URL valide',
+          message: 'Veuillez renseigner une URL valide',
         },
       ],
     )
@@ -212,7 +212,7 @@ describe('CreateBaseCommand', () => {
       [
         {
           path: ['facebook'],
-          message: 'Veuiller renseigner une URL valide',
+          message: 'Veuillez renseigner une URL valide',
         },
       ],
     )
@@ -228,7 +228,7 @@ describe('CreateBaseCommand', () => {
       [
         {
           path: ['twitter'],
-          message: 'Veuiller renseigner une URL valide',
+          message: 'Veuillez renseigner une URL valide',
         },
       ],
     )
@@ -244,7 +244,7 @@ describe('CreateBaseCommand', () => {
       [
         {
           path: ['linkedin'],
-          message: 'Veuiller renseigner une URL valide',
+          message: 'Veuillez renseigner une URL valide',
         },
       ],
     )

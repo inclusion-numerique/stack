@@ -11,5 +11,13 @@ module.exports = {
         assertFunctionNames: ['expect', 'expectZodValidationToFail'],
       },
     ],
+    'jsx-a11y/label-has-associated-control': [
+      'error',
+      {
+        required: {
+          some: ['nesting', 'id'],
+        },
+      },
+    ],
   },
 }

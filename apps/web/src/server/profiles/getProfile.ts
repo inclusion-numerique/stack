@@ -38,6 +38,11 @@ export const getProfilePageQuery = async (
       },
       isPublic: true,
       email: true,
+      emailIsPublic: true,
+      website: true,
+      facebook: true,
+      twitter: true,
+      linkedin: true,
       _count: {
         select: {
           followedBy: true,
