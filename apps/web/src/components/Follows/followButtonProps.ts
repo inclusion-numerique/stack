@@ -38,9 +38,9 @@ export const followProfileButtonProps = {
 } as const
 
 export const unfollowProfileButtonProps = {
-  iconId: 'fr-icon-user-heart-fill',
+  iconId: undefined,
   children: 'Ne plus suivre',
-  priority: 'secondary' as ButtonProps['priority'],
+  priority: 'tertiary' as ButtonProps['priority'],
   size: 'small',
 }
 

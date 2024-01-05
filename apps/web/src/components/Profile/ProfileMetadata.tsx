@@ -6,11 +6,13 @@ import styles from './ProfileMetadata.module.css'
 const ProfileMetadata = ({
   resourcesCount,
   followedByCount,
+  className,
 }: {
   resourcesCount: number
   followedByCount: number
+  className?: string
 }) => (
-  <div className={classNames(styles.container, 'fr-text--sm')}>
+  <div className={classNames(styles.container, 'fr-text--sm', className)}>
     <span className="fr-icon-file-text-line fr-icon--sm" />
     <div>
       <b>{resourcesCount}</b>

@@ -10,7 +10,7 @@ import {
   collectionSelect,
   computeCollectionsListWhereForUser,
 } from '../collections/getCollectionsList'
-import { profileSelect } from '../profiles/getProfilesList'
+import { profileListSelect } from '../profiles/getProfilesList'
 
 export const baseSelect = (user: Pick<SessionUser, 'id'> | null) =>
   ({
@@ -92,7 +92,7 @@ export const baseSelect = (user: Pick<SessionUser, 'id'> | null) =>
         memberId: true,
         accepted: true,
         member: {
-          select: profileSelect(user),
+          select: profileListSelect(user),
         },
       },
       orderBy: { added: 'asc' },
