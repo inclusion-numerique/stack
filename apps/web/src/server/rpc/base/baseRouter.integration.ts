@@ -7,6 +7,7 @@ import { prismaClient } from '@app/web/prismaClient'
 import { handleResourceCreationCommand } from '@app/web/server/resources/feature/handleResourceCreationCommand'
 import { handleResourceMutationCommand } from '@app/web/server/resources/feature/handleResourceMutationCommand'
 import { createTestIdTitleAndSlug } from '@app/web/test/createTestIdTitleAndSlug'
+import { createAvailableSlug } from '@app/web/server/slug/createAvailableSlug'
 
 describe('baseRouter', () => {
   // Helper function to easily test procedures
@@ -18,6 +19,7 @@ describe('baseRouter', () => {
     id: givenUserId,
     email: givenUserEmail,
   }
+  const givenUserSlug = `test+${givenUserId}`
 
   const basesToDelete: string[] = []
   const collectionsToDelete: string[] = []
@@ -28,6 +30,7 @@ describe('baseRouter', () => {
       data: {
         id: givenUserId,
         email: givenUserEmail,
+        slug: givenUserSlug,
       },
     })
   })
@@ -115,12 +118,20 @@ describe('baseRouter', () => {
                   {
                     id: givenPublicCollection.id,
                     title: givenPublicCollection.title,
+                    slug: await createAvailableSlug(
+                      givenPublicCollection.slug,
+                      'collections',
+                    ),
                     ownerId: givenUserId,
                     isPublic: true,
                   },
                   {
                     id: givenPrivateCollection.id,
                     title: givenPrivateCollection.title,
+                    slug: await createAvailableSlug(
+                      givenPrivateCollection.slug,
+                      'collections',
+                    ),
                     ownerId: givenUserId,
                     isPublic: false,
                   },
