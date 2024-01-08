@@ -20,9 +20,9 @@ numbered_collections AS (
 UPDATE "collections"
 SET "slug" =
         CASE
-            WHEN numbered_collections."is_favorites" THEN users_slug."slug" || '-' || LOWER(REGEXP_REPLACE("title", '[^a-zA-Z0-9]+', '-', 'g')) || '-' || numbered_collections.rn
+            WHEN numbered_collections."is_favorites" THEN users_slug."slug" || '-' || LOWER(REGEXP_REPLACE(numbered_collections."title", '[^a-zA-Z0-9]+', '-', 'g')) || '-' || numbered_collections.rn
             WHEN numbered_collections."title" = 'Ressources enregistrées' THEN users_slug."slug" || '-ressources-enregistrees-' || numbered_collections.rn
-            ELSE LOWER(REGEXP_REPLACE("title", '[^a-zA-Z0-9]+', '-', 'g')) || '-' || numbered_collections.rn
+            ELSE LOWER(REGEXP_REPLACE(numbered_collections."title", '[^a-zA-Z0-9]+', '-', 'g')) || '-' || numbered_collections.rn
             END
 FROM users_slug, numbered_collections
 WHERE "collections"."id" = numbered_collections."id" AND "collections"."owner_id" = users_slug."id";
