@@ -117,7 +117,7 @@ export const users = [
     firstName: 'Pierre-Louis',
     lastName: 'Rolle',
     name: 'Pierre-Louis Rolle',
-    email: 'pierre-louis.rolle@anct.gouv.fr',
+    email: 'pierre-louis.rolle@numerique.gouv.fr',
     role: 'Demo',
     emailVerified: new Date(),
   },
