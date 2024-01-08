@@ -7,7 +7,7 @@ import { cleanUpAndCreateTestPublishedResourceInProfile } from '../resource/edit
 
 describe('Utilisateur connecté, je peux modifier mon profile', () => {
   beforeEach(() => {
-    cy.intercept('/api/trpc/profile.mutate?*').as('mutation')
+    cy.intercept('/api/trpc/profile.updateVisibility?*').as('mutation')
   })
 
   it('Acceptation 1 - Modification de la visibilité', () => {
