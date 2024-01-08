@@ -71,11 +71,11 @@ const mapLegacyPath = async (url: URL) => {
         where: {
           legacyId: migratedToLegacyProfileId,
         },
-        select: { id: true },
+        select: { id: true, slug: true },
       })
 
       if (migratedProfileFromBase) {
-        return `/profils/${migratedProfileFromBase.id}`
+        return `/profils/${migratedProfileFromBase.slug}`
       }
 
       return '/profils'
