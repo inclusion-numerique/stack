@@ -12,7 +12,7 @@ describe('computeSlugAndUpdateExistingSlugs', () => {
   it('should return the slug if it is not already used', () => {
     const existingSlugs = new Map<string, number>([['this', 1]])
     const result = computeSlugAndUpdateExistingSlugs(
-      { title: 'Title', id: 1n, created: new Date() },
+      { title: 'Title', id: 1n },
       existingSlugs,
     )
     expect(result).toEqual('test')
@@ -25,7 +25,7 @@ describe('computeSlugAndUpdateExistingSlugs', () => {
       ['test', null],
     ])
     const result = computeSlugAndUpdateExistingSlugs(
-      { title: 'Title', id: 1n, created: new Date() },
+      { title: 'Title', id: 1n },
       existingSlugs,
     )
     expect(result).toEqual('test-1')
@@ -37,13 +37,15 @@ describe('computeSlugAndUpdateExistingSlugs', () => {
       ['this', 0],
       ['test', null],
       ['test-1', 2],
+      ['test-2', null],
+      ['test-3', 5],
+      ['test-5', null],
     ])
-    const created = new Date('2022-12-31T23:59:22.420Z')
     const result = computeSlugAndUpdateExistingSlugs(
-      { title: 'Title', id: 1n, created },
+      { title: 'Title', id: 1n },
       existingSlugs,
     )
-    expect(result).toEqual('test-235922420')
+    expect(result).toEqual('test-4')
     expect(createSlugSpy).toHaveBeenCalledExactlyOnceWith('Title')
   })
 
@@ -51,11 +53,11 @@ describe('computeSlugAndUpdateExistingSlugs', () => {
     const existingSlugs = new Map<string, number | null>([
       ['this', 0],
       ['test', null],
+      ['test-1', null],
       ['test-2', 2],
     ])
-    const created = new Date('2022-12-31T23:59:22.420Z')
     const result = computeSlugAndUpdateExistingSlugs(
-      { title: 'Title', id: 2n, created },
+      { title: 'Title', id: 2n },
       existingSlugs,
     )
     expect(result).toEqual('test-2')

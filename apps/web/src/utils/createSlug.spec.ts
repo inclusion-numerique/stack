@@ -10,6 +10,6 @@ describe('createSlug', () => {
       createSlug(
         'Exemple de titre avec des caractères spéciaux genre ", \', ’, &, @, #, 🧠; / (4_20) ',
       ),
-    ).toEqual('exemple-de-titre-avec-des-caracteres-speciaux-genre-et-@-(4_20)')
+    ).toEqual('exemple-de-titre-avec-des-caracteres-speciaux-genre-et-4_20')
   })
 })

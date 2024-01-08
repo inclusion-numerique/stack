@@ -10,6 +10,10 @@ import { migrationPrismaClient } from '@app/migration/migrationPrismaClient'
 import { legacyBasesIdsToTransformToProfile } from '@app/migration/modelMigrations/legacyBasesToTransformToProfile'
 import { LegacyBaseOwnerFromLegacyBaseId } from '@app/migration/modelMigrations/getLegacyBaseOwnerFromLegacyBaseId'
 import { sanitizeLegacyHtml } from '@app/migration/sanitizeLegacyHtml'
+import {
+  computeSlugAndUpdateExistingSlugs,
+  SlugToLegacyIdMap,
+} from '@app/migration/utils/computeSlugAndUpdateExistingSlugs'
 
 export const getLegacyCollections = async () => {
   const collections = await migrationPrismaClient.main_collection.findMany({
@@ -86,6 +90,7 @@ export const getExistingCollections = async () => {
       id: true,
       legacyId: true,
       isFavorites: true,
+      slug: true,
       legacyPinnedResourcesBaseId: true,
       resources: {
         select: {
@@ -150,11 +155,22 @@ export const getExistingCollections = async () => {
       .map(({ id, legacyId }) => [legacyId, id]),
   )
 
+  const slugMap = new Map<string, number | null>(
+    collections
+      .filter(
+        (
+          collection,
+        ): collection is (typeof collections)[0] & { slug: string } =>
+          !!collection.slug,
+      )
+      .map(({ slug, legacyId }) => [slug, legacyId]),
+  )
+
   const pinnedCollections = collections.filter(
     (collection) => !!collection.legacyPinnedResourcesBaseId,
   )
 
-  return { idMap, pinnedCollections, collections, savedCollections }
+  return { idMap, pinnedCollections, collections, savedCollections, slugMap }
 }
 
 export type ExistingCollections = Awaited<
@@ -168,6 +184,7 @@ export type MigrateCollectionInput = {
   imageIdFromLegacyId: LegacyToNewIdHelper
   baseIdFromLegacyId: LegacyToNewIdHelper
   legacyBaseOwnerFromLegacyBaseId: LegacyBaseOwnerFromLegacyBaseId
+  existingSlugs: SlugToLegacyIdMap
 }
 
 export const migrateCollection = async ({
@@ -177,6 +194,7 @@ export const migrateCollection = async ({
   imageIdFromLegacyId,
   baseIdFromLegacyId,
   legacyBaseOwnerFromLegacyBaseId,
+  existingSlugs,
 }: MigrateCollectionInput) => {
   const legacyId = Number(legacyCollection.id)
 
@@ -192,9 +210,17 @@ export const migrateCollection = async ({
     ? null
     : baseIdFromLegacyId(Number(legacyCollection.base_id))
 
+  const title = legacyCollection.name.trim()
+
+  const slug = computeSlugAndUpdateExistingSlugs(
+    { title: title || 'collection', id: legacyCollection.id },
+    existingSlugs,
+  )
+
   const data = {
     legacyId,
-    title: legacyCollection.name,
+    slug,
+    title,
     description: sanitizeLegacyHtml(legacyCollection.description),
     ownerId,
     baseId,
@@ -305,6 +331,7 @@ export const migrateCollections = async ({
         imageIdFromLegacyId,
         baseIdFromLegacyId,
         legacyBaseOwnerFromLegacyBaseId,
+        existingSlugs: existingCollections.slugMap,
       }),
     ),
   )

@@ -4,12 +4,15 @@ import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { CreateCollectionCommandValidation } from '@app/web/server/collections/createCollection'
 import { SaveCollectionValidation } from '@app/web/server/collections/SaveCollection'
-import { forbiddenError } from '@app/web/server/rpc/trpcErrors'
+import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
 import {
   UpdateCollectionImageCommandValidation,
   UpdateCollectionInformationsCommandValidation,
   UpdateCollectionVisibilityCommandValidation,
 } from '@app/web/server/collections/updateCollection'
+import { createAvailableSlug } from '@app/web/server/slug/createAvailableSlug'
+import { createSlug } from '@app/web/utils/createSlug'
+import { findFirstAvailableSlug } from '@app/web/server/slug/findFirstAvailableSlug'
 
 export const collectionRouter = router({
   save: protectedProcedure
@@ -56,11 +59,21 @@ export const collectionRouter = router({
   create: protectedProcedure
     .input(CreateCollectionCommandValidation)
     .mutation(
-      async ({ input: { addResourceId, ...collectionData }, ctx: { user } }) =>
+      async ({
+        input: { addResourceId, ...collectionData },
+        ctx: { user },
+      }) => {
         // TODO Security on baseId
-        prismaClient.collection.create({
+
+        const slug = await createAvailableSlug(
+          collectionData.title,
+          'collections',
+        )
+
+        return prismaClient.collection.create({
           data: {
             ...collectionData,
+            slug,
             ownerId: user.id,
             resources: addResourceId
               ? {
@@ -72,16 +85,36 @@ export const collectionRouter = router({
                 }
               : undefined,
           },
-        }),
+        })
+      },
     ),
   updateInformations: protectedProcedure
     .input(UpdateCollectionInformationsCommandValidation)
-    .mutation(async ({ input: { id, ...informations } }) =>
-      prismaClient.collection.update({
+    .mutation(async ({ input: { id, ...informations } }) => {
+      // TODO Security check and mutualise security for all update mutations
+
+      const collection = await prismaClient.collection.findUnique({
+        where: { id, deleted: null },
+        select: { slug: true },
+      })
+
+      if (!collection) {
+        throw invalidError('Collection not found')
+      }
+
+      const afterSlug = createSlug(informations.title)
+
+      // Get new slug if it has changed
+      const slug =
+        collection.slug === afterSlug
+          ? undefined
+          : await findFirstAvailableSlug(afterSlug, 'collections')
+
+      return prismaClient.collection.update({
         where: { id },
-        data: informations,
-      }),
-    ),
+        data: { ...informations, slug },
+      })
+    }),
   updateImage: protectedProcedure
     .input(UpdateCollectionImageCommandValidation)
     .mutation(async ({ input: { id, imageId } }) =>

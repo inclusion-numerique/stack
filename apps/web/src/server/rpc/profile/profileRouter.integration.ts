@@ -68,12 +68,12 @@ describe('profileRouter', () => {
     })
   })
 
-  describe('mutate', () => {
+  describe('updateVisibility', () => {
     // eslint-disable-next-line unicorn/consistent-function-scoping
     const executeMutateProcedure = (input: UpdateProfileVisibilityCommand) =>
       profileRouter
         .createCaller(createTestContext({ user: givenUser }))
-        .mutate(input)
+        .updateVisibility(input)
 
     it('should change visibility to private for owned resource and collections that are not in a base without touching models in a base', async () => {
       // Given a public profile with public and private collections and resources

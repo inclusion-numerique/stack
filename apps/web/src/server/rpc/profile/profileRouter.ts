@@ -8,6 +8,9 @@ import {
   UpdateProfileVisibilityCommandValidation,
 } from '@app/web/server/profiles/updateProfile'
 import { searchMember } from '@app/web/server/profiles/searchMember'
+import { invalidError } from '@app/web/server/rpc/trpcErrors'
+import { createSlug } from '@app/web/utils/createSlug'
+import { findFirstAvailableSlug } from '@app/web/server/slug/findFirstAvailableSlug'
 import { handleResourceMutationCommand } from '../../resources/feature/handleResourceMutationCommand'
 
 export const profileRouter = router({
@@ -28,7 +31,7 @@ export const profileRouter = router({
           })
         : [],
     ),
-  mutate: protectedProcedure
+  updateVisibility: protectedProcedure
     .input(UpdateProfileVisibilityCommandValidation)
     .mutation(async ({ input, ctx: { user } }) => {
       if (input.isPublic === false) {
@@ -77,15 +80,41 @@ export const profileRouter = router({
     }),
   updateInformations: protectedProcedure
     .input(UpdateProfileInformationsCommandValidation)
-    .mutation(async ({ input: informations, ctx: { user } }) =>
-      prismaClient.user.update({
+    .mutation(async ({ input: informations, ctx: { user } }) => {
+      // TODO security check
+      const profile = await prismaClient.user.findUnique({
+        where: { id: user.id, deleted: null },
+        select: { slug: true },
+      })
+
+      if (!profile) {
+        throw invalidError('User not found')
+      }
+
+      const firstName = informations.firstName?.trim() || null
+      const lastName = informations.lastName?.trim() || null
+      const name = `${firstName ?? ''} ${lastName ?? ''}`.trim() || null
+      const slugTitle = name || 'utilisateur'
+
+      const afterSlug = createSlug(slugTitle)
+
+      // Get new slug if it has changed
+      const slug =
+        user.slug === afterSlug
+          ? undefined
+          : await findFirstAvailableSlug(afterSlug, 'users')
+
+      return prismaClient.user.update({
         where: { id: user.id },
         data: {
           ...informations,
-          name: `${informations.firstName} ${informations.lastName}`,
+          firstName,
+          lastName,
+          name,
+          slug,
         },
-      }),
-    ),
+      })
+    }),
   updateContacts: protectedProcedure
     .input(UpdateProfileContactsCommandValidation)
     .mutation(async ({ input: contacts, ctx: { user } }) =>

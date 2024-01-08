@@ -29,6 +29,7 @@ export const givenUser = (data?: Partial<CreateUserInput>) => {
       create: {
         id: v4(),
         title: 'Mes favoris',
+        slug: `${slug}-favoris`,
         isFavorites: true,
       },
     },

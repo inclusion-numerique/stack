@@ -2,6 +2,7 @@ import type { Adapter, AdapterUser } from '@auth/core/adapters'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
 import { prismaClient } from '@app/web/prismaClient'
+import { createAvailableSlug } from '@app/web/server/slug/createAvailableSlug'
 
 /**
  * Ensuring that needed methods are defined when creating adapter
@@ -41,10 +42,18 @@ export const nextAuthAdapter: Adapter = {
       // We pass the provider along from Keycloak provider to be able to detect if the user comes from Inclusion Connect
       provider?: typeof inclusionConnectProviderId
     }
+
+    const slug = await createAvailableSlug(rest.name || 'utilisateur', 'users')
+
+    const info = { ...rest, slug }
+
     if (provider === inclusionConnectProviderId) {
-      return prismaAdapter.createUser({ ...rest, emailVerified: new Date() })
+      return prismaAdapter.createUser({
+        ...info,
+        emailVerified: new Date(),
+      })
     }
-    return prismaAdapter.createUser(rest)
+    return prismaAdapter.createUser(info)
   },
   // Better handle case of missing session when deleting. It should not crash auth process.
   deleteSession: async (sessionToken) => {
