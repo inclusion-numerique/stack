@@ -67,7 +67,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
       cy.contains('Vous n’avez pas enregistré de collections.')
 
       cy.log('Visitor should be able to save a collection')
-      cy.visit(`/collections/${collection.id}`)
+      cy.visit(`/collections/${collection.slug}`)
       cy.dsfrModalsShouldBeBound()
 
       cy.findAllByTitle(/enregistrer la collection/i)
@@ -88,7 +88,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
       cy.contains('Collection sur mon profil avec un titre long')
 
       cy.log('Visitor should be able to unsave a collection')
-      cy.visit(`/collections/${collection.id}`)
+      cy.visit(`/collections/${collection.slug}`)
       cy.dsfrModalsShouldBeBound()
       cy.findAllByTitle(/enregistrer la collection/i)
         .first()
@@ -129,7 +129,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.createBase(base)
 
     cy.log('Visitor should be able to save a collection in its base')
-    cy.visit(`/collections/${collection.id}`)
+    cy.visit(`/collections/${collection.slug}`)
     cy.dsfrModalsShouldBeBound()
 
     cy.findAllByTitle(/enregistrer la collection/i)
@@ -178,7 +178,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.createCollection(collection)
     cy.createBase(base)
 
-    cy.visit(`/collections/${collection.id}`)
+    cy.visit(`/collections/${collection.slug}`)
     cy.dsfrModalsShouldBeBound()
 
     cy.findAllByTitle(/enregistrer la collection/i)

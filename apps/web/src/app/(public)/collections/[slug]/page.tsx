@@ -10,7 +10,7 @@ import CollectionView from '@app/web/components/Collection/CollectionView'
 
 const CollectionPage = async ({ params }: { params: { slug: string } }) => {
   const user = await getSessionUser()
-  const collection = await getCollection(decodeURI(params.slug), user)
+  const collection = await getCollection({ slug: decodeURI(params.slug) }, user)
 
   if (!collection) {
     notFound()

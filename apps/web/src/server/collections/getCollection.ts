@@ -63,12 +63,15 @@ export const collectionSelect = (user: Pick<SessionUser, 'id'> | null) =>
   }) satisfies Prisma.CollectionSelect
 
 export const getCollection = async (
-  id: string,
+  {
+    slug,
+    id,
+  }: { slug: string; id?: undefined } | { slug?: undefined; id: string },
   user: Pick<SessionUser, 'id'> | null,
 ) =>
   prismaClient.collection.findFirst({
     select: collectionSelect(user),
-    where: { id, deleted: null },
+    where: { id, slug, deleted: null },
   })
 
 export type CollectionPageData = Exclude<

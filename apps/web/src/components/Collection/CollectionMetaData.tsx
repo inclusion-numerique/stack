@@ -19,7 +19,7 @@ const CollectionMetaData = ({
   context,
 }: {
   user: SessionUser | null
-  collection: { isPublic: boolean; id: string }
+  collection: { isPublic: boolean; id: string; slug: string }
   priority?: ButtonProps.Common['priority']
   count: number
   isOwner?: boolean
@@ -44,7 +44,7 @@ const CollectionMetaData = ({
         <div className={styles.buttons}>
           {isOwner && (
             <Link
-              href={`./${collection.id}/modifier`}
+              href={`./${collection.slug}/modifier`}
               className={classNames(
                 'fr-btn',
                 'fr-btn--sm',
@@ -64,7 +64,7 @@ const CollectionMetaData = ({
             context={context}
           />
           <CopyLinkButton
-            url={getServerUrl(`/collections/${collection.id}`, true)}
+            url={getServerUrl(`/collections/${collection.slug}`, true)}
             priority={priority}
           />
         </div>
