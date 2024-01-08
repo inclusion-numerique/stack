@@ -166,11 +166,32 @@ export const getExistingCollections = async () => {
       .map(({ slug, legacyId }) => [slug, legacyId]),
   )
 
+  const pinnedSlugMap = new Map<string, number | null>(
+    collections
+      .filter(
+        (
+          collection,
+        ): collection is (typeof collections)[0] & { slug: string } =>
+          !!collection.slug,
+      )
+      .map(({ slug, legacyPinnedResourcesBaseId }) => [
+        slug,
+        legacyPinnedResourcesBaseId,
+      ]),
+  )
+
   const pinnedCollections = collections.filter(
     (collection) => !!collection.legacyPinnedResourcesBaseId,
   )
 
-  return { idMap, pinnedCollections, collections, savedCollections, slugMap }
+  return {
+    idMap,
+    pinnedCollections,
+    collections,
+    savedCollections,
+    slugMap,
+    pinnedSlugMap,
+  }
 }
 
 export type ExistingCollections = Awaited<
@@ -520,6 +541,14 @@ export const migrateCollections = async ({
           })),
         }
 
+        const slug = computeSlugAndUpdateExistingSlugs(
+          {
+            title: collection.title,
+            id: BigInt(collection.legacyPinnedResourcesBaseId),
+          },
+          existingCollections.pinnedSlugMap,
+        )
+
         // Create the pinned collections
         const pinnedCollections = await transaction.collection.upsert({
           where: {
@@ -528,6 +557,7 @@ export const migrateCollections = async ({
           create: {
             id: v4(),
             ...collection,
+            slug,
             resources: {
               createMany: collectionResourcesCreateMany,
             },

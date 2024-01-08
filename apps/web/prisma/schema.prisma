@@ -43,31 +43,31 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(uuid()) @db.Uuid
-  slug          String?   @unique
-  legacyId      Int?      @unique @map("legacy_id")
-  firstName     String?   @map("first_name")
-  lastName      String?   @map("last_name")
-  name          String?
+  id        String  @id @default(uuid()) @db.Uuid
+  slug      String  @unique
+  legacyId  Int?    @unique @map("legacy_id")
+  firstName String? @map("first_name")
+  lastName  String? @map("last_name")
+  name      String?
 
   email         String    @unique
   emailVerified DateTime? @map("email_verified")
-  emailIsPublic Boolean @default(false) @map("email_is_public")
+  emailIsPublic Boolean   @default(false) @map("email_is_public")
   website       String?
   facebook      String?
   twitter       String?
   linkedin      String?
 
-  image         Image?    @relation(fields: [imageId], references: [id])
-  imageId       String?   @unique @map("image_id") @db.Uuid
-  location      String?
-  title         String?
-  description   String?
-  department    String?
-  accounts      Account[]
-  sessions      Session[]
-  isPublic      Boolean   @default(false) @map("is_public")
-  deleted       DateTime?
+  image       Image?    @relation(fields: [imageId], references: [id])
+  imageId     String?   @unique @map("image_id") @db.Uuid
+  location    String?
+  title       String?
+  description String?
+  department  String?
+  accounts    Account[]
+  sessions    Session[]
+  isPublic    Boolean   @default(false) @map("is_public")
+  deleted     DateTime?
 
   created             DateTime               @default(now())
   updated             DateTime               @default(now())
@@ -520,7 +520,7 @@ model Collection {
   // Legacy free floating "pinned resources" have been migrated into a collection
   legacyPinnedResourcesBaseId Int?   @unique @map("legacy_pinned_resources_base_id")
 
-  slug        String? @unique
+  slug        String  @unique
   title       String
   description String?
   isPublic    Boolean @default(false) @map("is_public")

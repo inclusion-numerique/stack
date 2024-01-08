@@ -1,5 +1,6 @@
 import { v4 } from 'uuid'
 import { CreateCollectionInput } from '@app/e2e/e2e/authentication/user.tasks'
+import { createSlug } from '@app/web/utils/createSlug'
 
 export const defaultTestCollectionTitle =
   '10 ressources qui vont changer votre vie'
@@ -12,6 +13,7 @@ export const givenCollection = (
   ({
     id: data.id ?? v4(),
     title: data.title ?? defaultTestCollectionTitle,
+    slug: createSlug(data.title ?? defaultTestCollectionTitle),
     description: data.description ?? defaultTestCollectionDescription,
     ...data,
   }) satisfies CreateCollectionInput
