@@ -96,12 +96,13 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
   })
 
   it('Acceptation 7 - Création de base avec membres', () => {
-    cy.intercept('/api/trpc/profile.getMatchingUsers?*').as('getUser')
+    cy.intercept('/api/trpc/profile.searchProfileForMember?*').as('getUser')
 
     cy.visit('/bases/creer')
     const user = givenUser({ firstName: 'Leila', lastName: 'Huissoud' })
     cy.createUser(user)
 
+    cy.dsfrModalsShouldBeBound()
     cy.testId('base-title-input').type('Ma déclaration')
     cy.testId('visibility-radio-base-public').click({ force: true })
 

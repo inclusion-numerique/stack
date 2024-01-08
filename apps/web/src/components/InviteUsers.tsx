@@ -35,14 +35,14 @@ const InviteUsers = ({
   const [userSearchQuery, setUserSearchQuery] = useState('')
 
   const { data: users, error: mutationError } =
-    trpc.profile.getMatchingUsers.useQuery(
+    trpc.profile.searchProfileForMember.useQuery(
       {
         query: userSearchQuery,
         notInBaseId: baseId,
         notInResourceId: resourceId,
       },
       {
-        // queryKey: ['profile.getMatchingUsers', { filter, baseId, resourceId }],
+        // queryKey: ['profile.searchProfileForMember', { filter, baseId, resourceId }],
         enabled: !!userSearchQuery,
       },
     )

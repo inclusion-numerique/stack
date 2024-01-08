@@ -14,7 +14,7 @@ import { findFirstAvailableSlug } from '@app/web/server/slug/findFirstAvailableS
 import { handleResourceMutationCommand } from '../../resources/feature/handleResourceMutationCommand'
 
 export const profileRouter = router({
-  getMatchingUsers: protectedProcedure
+  searchProfileForMember: protectedProcedure
     .input(
       z.object({
         query: z.string(),
