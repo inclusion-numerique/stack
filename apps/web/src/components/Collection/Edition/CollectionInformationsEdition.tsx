@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import RichInputFormField from '@app/ui/components/Form/RichInputFormField'
+import { useRouter } from 'next/navigation'
 import {
   collectionDescriptionMaxLength,
   collectionTitleMaxLength,
@@ -43,9 +44,11 @@ const CollectionInformationsEdition = ({
   })
 
   const mutate = trpc.collection.updateInformations.useMutation()
+  const router = useRouter()
 
   const handleSave = async (data: UpdateCollectionInformationsCommand) => {
-    await mutate.mutateAsync(data)
+    const updated = await mutate.mutateAsync(data)
+    router.push(`/collections/${updated.slug}/modifier`)
   }
 
   return (

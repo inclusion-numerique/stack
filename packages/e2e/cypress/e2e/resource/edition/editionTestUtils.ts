@@ -307,5 +307,5 @@ export const cleanUpAndCreateTestCollectionAndResource = (
     cy.visit(`/ressources/${slug}`)
   })
   cy.dsfrShouldBeStarted()
-  return ids
+  return { ids, user }
 }

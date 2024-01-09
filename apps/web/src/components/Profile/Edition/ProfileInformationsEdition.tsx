@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import RichInputFormField from '@app/ui/components/Form/RichInputFormField'
+import { useRouter } from 'next/navigation'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import { ProfilePageData } from '@app/web/server/profiles/getProfile'
@@ -52,10 +53,13 @@ const ProfileInformationsEdition = ({
     },
   })
 
-  const mutate = trpc.profile.updateInformations.useMutation()
+  const mutation = trpc.profile.updateInformations.useMutation()
+
+  const router = useRouter()
 
   const handleSave = async (data: UpdateProfileInformationsCommand) => {
-    await mutate.mutateAsync(data)
+    const updated = await mutation.mutateAsync(data)
+    router.push(`/profils/${updated.slug}`)
   }
 
   return (

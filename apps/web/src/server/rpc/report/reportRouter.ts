@@ -29,6 +29,7 @@ export const reportRouter = router({
               select: {
                 id: true,
                 name: true,
+                slug: true,
                 email: true,
               },
             },

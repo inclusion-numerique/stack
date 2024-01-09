@@ -73,6 +73,7 @@ export const createTestResource = (
       isPublic: owner.isPublic,
       name: owner.name,
       id: owner.id,
+      slug: owner.slug,
       lastName: owner.lastName,
       firstName: owner.firstName,
       image: null,
@@ -120,7 +121,7 @@ export const createTestBase = (
     slug: 'conseiller-numérique-france-services-contributions',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas cursus ante non laoreet dictum. Sed tempus ultrices arcu ut auctor. Phasellus porta sapien varius dapibus porttitor. Fusce porttitor molestie nisi, a maximus augue tempus a. Praesent ut dictum risus. Mauris hendrerit luctus massa. Aenean felis turpis, facilisis eget porttitor at, tempor ut quam.',
-    ownerId: owner.id,
+    owner: { id: owner.id, slug: owner.slug },
     isPublic: isPublic || false,
     email: 'test@mail.fr',
     emailIsPublic: true,

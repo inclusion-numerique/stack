@@ -16,7 +16,7 @@ describe("Utilisateur connecté, je peux gerer les membres d'une base", () => {
    */
 
   beforeEach(() => {
-    cy.intercept('/api/trpc/profile.getMatchingUsers?*').as('getUser')
+    cy.intercept('/api/trpc/profile.searchProfileForMember?*').as('getUser')
     cy.intercept('/api/trpc/baseMember.invite?*').as('invite')
   })
 

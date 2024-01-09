@@ -31,7 +31,8 @@ const resource = (imageId: string | null) =>
     createdById: '1',
     createdBy: {
       id: '1',
-      name: 'Nom_utilisateur long long vraiment long tellement long que ca me soule !!!',
+      name: 'Nom_utilisateur long long vraiment long tellement long',
+      slug: 'nom_utilisateur_long_long_vraiment_long_tellement_long',
       firstName: 'Prénom',
       lastName: 'Nom',
       isPublic: true,

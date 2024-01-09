@@ -37,7 +37,7 @@ const BaseAdminMemberCard = ({
 
   return (
     <div className={styles.container} data-testid="member-card-admin">
-      <Link className={styles.content} href={`/profils/${member.member.id}`}>
+      <Link className={styles.content} href={`/profils/${member.member.slug}`}>
         <RoundProfileImage user={member.member} />
         {member.member.name}
       </Link>

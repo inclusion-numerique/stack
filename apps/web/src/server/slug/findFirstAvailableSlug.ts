@@ -5,7 +5,7 @@ import { prismaClient } from '@app/web/prismaClient'
  */
 export const findFirstAvailableSlug = async (
   slug: string,
-  table: 'bases' | 'resources' | 'profiles' | 'collections',
+  table: 'bases' | 'resources' | 'users' | 'collections',
 ) => {
   const suffixedSlug = `${slug}-`
 

@@ -48,7 +48,7 @@ describe('Utilisateur connecté, lorsque je créé une ressource, je peux rensei
   it('Acceptation 2 - Resource privée dans une base publique', () => {
     cleanUpAndCreateTestResource(true)
 
-    cy.intercept('/api/trpc/profile.getMatchingUsers?*').as('getUser')
+    cy.intercept('/api/trpc/profile.searchProfileForMember?*').as('getUser')
     cy.intercept('/api/trpc/resourceContributor.delete?*').as('delete')
     cy.intercept('/api/trpc/resourceContributor.invite?*').as('invite')
 

@@ -46,10 +46,10 @@ describe('Utilisateur connecté, je peux suivre une base', () => {
 
     cy.findByRole('button', { name: /ne plus suivre/i }).should('exist')
 
-    cy.visit(`/profils/${visitor.id}`)
+    cy.visit(`/profils/${visitor.slug}`)
 
     cy.log('Visitor should see that it has one followed base')
-    cy.visit(`/profils/${visitor.id}`)
+    cy.visit(`/profils/${visitor.slug}`)
     cy.findByRole('link', { name: /mes suivis · 1/i }).click()
     cy.contains(/1 base/i)
     cy.contains(base.title)
@@ -64,7 +64,7 @@ describe('Utilisateur connecté, je peux suivre une base', () => {
     cy.findByRole('button', { name: /suivre/i }).should('exist')
 
     cy.log('Visitor should see that it has no followed base')
-    cy.visit(`/profils/${visitor.id}`)
+    cy.visit(`/profils/${visitor.slug}`)
     cy.findByRole('link', { name: /mes suivis · 0/i }).click()
     cy.contains(base.title).should('not.exist')
   })
@@ -89,10 +89,10 @@ describe('Utilisateur connecté, je peux suivre une base', () => {
 
     cy.findByRole('button', { name: /ne plus suivre/i }).should('exist')
 
-    cy.visit(`/profils/${visitor.id}`)
+    cy.visit(`/profils/${visitor.slug}`)
 
     cy.log('Visitor should see that it has one followed base')
-    cy.visit(`/profils/${visitor.id}`)
+    cy.visit(`/profils/${visitor.slug}`)
     cy.findByRole('link', { name: /mes suivis · 1/i }).click()
     cy.contains(/1 base/i)
     cy.contains(base.title)
@@ -107,7 +107,7 @@ describe('Utilisateur connecté, je peux suivre une base', () => {
     cy.findByRole('button', { name: /suivre/i }).should('exist')
 
     cy.log('Visitor should see that it has no followed base')
-    cy.visit(`/profils/${visitor.id}`)
+    cy.visit(`/profils/${visitor.slug}`)
     cy.findByRole('link', { name: /mes suivis · 0/i }).click()
     cy.contains(base.title).should('not.exist')
   })

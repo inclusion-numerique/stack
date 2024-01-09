@@ -2,7 +2,10 @@ import { prismaClient } from '@app/web/prismaClient'
 import { imageCropSelect } from '@app/web/server/image/imageCropSelect'
 
 export const getProfilePageQuery = async (
-  id: string,
+  {
+    id,
+    slug,
+  }: { id: string; slug?: undefined } | { id?: undefined; slug: string },
   user: { id: string } | null,
 ) =>
   prismaClient.user.findUnique({
@@ -49,7 +52,7 @@ export const getProfilePageQuery = async (
         },
       },
     },
-    where: { id },
+    where: { id, slug, deleted: null },
   })
 
 export type ProfilePageData = Exclude<

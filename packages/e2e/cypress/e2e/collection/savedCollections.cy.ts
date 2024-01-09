@@ -27,7 +27,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.createUserAndSignin(user)
     cy.createCollection(collection)
 
-    cy.visit(`/profils/${user.id}/collections`)
+    cy.visit(`/profils/${user.slug}/collections`)
     cy.dsfrModalsShouldBeBound()
 
     cy.findAllByTitle(/enregistrer la collection/i)
@@ -61,13 +61,13 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
       cy.createCollection(collection)
 
       cy.log('Visitor should see that it has no saved collections')
-      cy.visit(`/profils/${visitor.id}/collections`)
+      cy.visit(`/profils/${visitor.slug}/collections`)
       cy.contains('Collections enregistrées · 0')
       cy.findByRole('tab', { name: /collections enregistrées/i }).click()
       cy.contains('Vous n’avez pas enregistré de collections.')
 
       cy.log('Visitor should be able to save a collection')
-      cy.visit(`/collections/${collection.id}`)
+      cy.visit(`/collections/${collection.slug}`)
       cy.dsfrModalsShouldBeBound()
 
       cy.findAllByTitle(/enregistrer la collection/i)
@@ -82,13 +82,13 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
       cy.getToast(/enregistrée dans votre profil/i)
 
       cy.log('Visitor should see that it has one saved collection')
-      cy.visit(`/profils/${visitor.id}/collections`)
+      cy.visit(`/profils/${visitor.slug}/collections`)
       cy.contains('Collections enregistrées · 1')
       cy.findByRole('tab', { name: /collections enregistrées/i }).click()
       cy.contains('Collection sur mon profil avec un titre long')
 
       cy.log('Visitor should be able to unsave a collection')
-      cy.visit(`/collections/${collection.id}`)
+      cy.visit(`/collections/${collection.slug}`)
       cy.dsfrModalsShouldBeBound()
       cy.findAllByTitle(/enregistrer la collection/i)
         .first()
@@ -103,7 +103,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
       )
 
       cy.log('Visitor should see that it has no saved collections')
-      cy.visit(`/profils/${visitor.id}/collections`)
+      cy.visit(`/profils/${visitor.slug}/collections`)
       cy.contains('Collections enregistrées · 0')
       cy.findByRole('tab', { name: /collections enregistrées/i }).click()
       cy.contains('Vous n’avez pas enregistré de collections.')
@@ -129,7 +129,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.createBase(base)
 
     cy.log('Visitor should be able to save a collection in its base')
-    cy.visit(`/collections/${collection.id}`)
+    cy.visit(`/collections/${collection.slug}`)
     cy.dsfrModalsShouldBeBound()
 
     cy.findAllByTitle(/enregistrer la collection/i)
@@ -148,7 +148,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     )
 
     cy.log('Visitor should not see the saved collection in his profile')
-    cy.visit(`/profils/${creator.id}/collections`)
+    cy.visit(`/profils/${creator.slug}/collections`)
     cy.contains('Collections enregistrées · 0')
     cy.findByRole('tab', { name: /collections enregistrées/i }).click()
     cy.contains('Vous n’avez pas enregistré de collections.')
@@ -178,7 +178,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.createCollection(collection)
     cy.createBase(base)
 
-    cy.visit(`/collections/${collection.id}`)
+    cy.visit(`/collections/${collection.slug}`)
     cy.dsfrModalsShouldBeBound()
 
     cy.findAllByTitle(/enregistrer la collection/i)

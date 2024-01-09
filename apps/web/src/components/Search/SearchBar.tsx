@@ -240,7 +240,7 @@ const SearchBar = ({
                         <Link
                           role="option"
                           key={profile.id}
-                          href={`/profils/${profile.id}`}
+                          href={`/profils/${profile.slug}`}
                           className={styles.profile}
                         >
                           <RoundProfileImage

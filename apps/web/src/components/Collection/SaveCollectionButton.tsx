@@ -27,7 +27,7 @@ const SaveCollectionButton = ({
 }: {
   className?: string
   user: SessionUser | null
-  collection: { id: string; isPublic: boolean }
+  collection: { id: string; isPublic: boolean; slug: string }
   'data-testid'?: string
   context: 'card' | 'view'
 }) => {
@@ -70,7 +70,7 @@ const SaveCollectionButton = ({
       linkProps={{
         href: loginUrl({
           intent: 'enregistrer-collection',
-          next: `/collections/${collection.id}`,
+          next: `/collections/${collection.slug}`,
         }),
       }}
     />

@@ -12,7 +12,7 @@ const CollectionEditionPage = async ({
 }) => {
   // TODO comment "security check" , we will do a security pass everywhere in a few weeks
   const user = await getSessionUser()
-  const collection = await getCollection(decodeURI(params.slug), user)
+  const collection = await getCollection({ slug: decodeURI(params.slug) }, user)
 
   if (!collection || !user) {
     notFound()
@@ -24,11 +24,11 @@ const CollectionEditionPage = async ({
         parents={[
           {
             label: 'Mon profil',
-            linkProps: { href: `/profils/${user.id}` },
+            linkProps: { href: `/profils/${user.slug}` },
           },
           {
             label: 'Mes collections',
-            linkProps: { href: `/profils/${user.id}/collections` },
+            linkProps: { href: `/profils/${user.slug}/collections` },
           },
           {
             label: collection.title,

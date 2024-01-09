@@ -6,6 +6,7 @@ const favoritesCollections = users.map(
     ({
       id: user.id,
       title: 'Mes favoris',
+      slug: `${user.slug}-favoris`,
       ownerId: user.id,
       isPublic: false,
       isFavorites: true,

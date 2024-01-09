@@ -35,7 +35,7 @@ const ResourceViewHeader = ({
         <p className={classNames('fr-text--xs', 'fr-mb-0', styles.user)}>
           Créé par{' '}
           <Link
-            href={`/profils/${resource.createdBy.id}`}
+            href={`/profils/${resource.createdBy.slug}`}
             className="fr-text--xs fr-link"
           >
             {resource.createdBy.name}

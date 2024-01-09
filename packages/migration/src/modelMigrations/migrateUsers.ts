@@ -7,6 +7,10 @@ import { UpsertCreateType } from '@app/migration/utils/UpsertCreateType'
 import { FindManyItemType } from '@app/migration/utils/findManyItemType'
 import { LegacyIdMap } from '@app/migration/utils/legacyIdMap'
 import { getDepartmentFromTags } from '@app/migration/modelMigrations/getDepartmentFromTags'
+import {
+  computeSlugAndUpdateExistingSlugs,
+  SlugToLegacyIdMap,
+} from '@app/migration/utils/computeSlugAndUpdateExistingSlugs'
 
 export const getLegacyUsers = () =>
   migrationPrismaClient.main_user.findMany({
@@ -29,6 +33,7 @@ export const getExistingUsers = async () => {
       legacyId: true,
       id: true,
       email: true,
+      slug: true,
       collections: {
         select: {
           id: true,
@@ -53,7 +58,17 @@ export const getExistingUsers = async () => {
     users.map(({ id, email }) => [email, id]),
   )
 
-  return { idMap, emailMap, users }
+  const slugMap = new Map<string, number | null>(
+    users
+      .map(({ slug, legacyId }) => ({ slug, legacyId }))
+      .filter(
+        (user): user is { slug: string; legacyId: number | null } =>
+          !!user.slug,
+      )
+      .map(({ slug, legacyId }) => [slug, legacyId]),
+  )
+
+  return { idMap, emailMap, users, slugMap }
 }
 
 type ExistingUsers = Awaited<ReturnType<typeof getExistingUsers>>
@@ -62,22 +77,36 @@ export const transformUser = ({
   legacyUser,
   emailMap,
   existingUser,
+  existingSlugs,
 }: {
   legacyUser: LegacyUser
   emailMap: Map<string, string>
   existingUser: ExistingUsers['users'][number] | undefined
+  existingSlugs: SlugToLegacyIdMap
 }) => {
   const legacyId = Number(legacyUser.id)
 
   // We manage the edge case of a new user created in new app with same email as not yet migrated legacy user
   const existingIdFromEmail = emailMap.get(legacyUser.email)
 
+  const firstName = legacyUser.first_name?.trim() || null
+  const lastName = legacyUser.last_name?.trim() || null
+  const name = `${firstName ?? ''} ${lastName ?? ''}`.trim() || null
+
+  const slugTitle = name || 'utilisateur'
+
+  const slug = computeSlugAndUpdateExistingSlugs(
+    { title: slugTitle, id: legacyUser.id },
+    existingSlugs,
+  )
+
   const data = {
     id: existingIdFromEmail ?? v4(),
     email: legacyUser.email,
-    firstName: legacyUser.first_name,
-    lastName: legacyUser.last_name,
-    name: `${legacyUser.first_name} ${legacyUser.last_name}`.trim(),
+    firstName,
+    lastName,
+    name,
+    slug,
     created: legacyUser.created,
     updated: legacyUser.modified,
     emailVerified: legacyUser.is_active ? legacyUser.created : null,
@@ -91,6 +120,7 @@ export const transformUser = ({
           create: {
             title: 'Mes favoris',
             isFavorites: true,
+            slug: `${slug}-favoris`,
           },
         },
   } satisfies UpsertCreateType<typeof prismaClient.user.upsert>
@@ -117,6 +147,7 @@ export const migrateUsers = async () => {
       existingUser: existingUserId
         ? existingUsersById.get(existingUserId)
         : undefined,
+      existingSlugs: existingUsers.slugMap,
     })
   })
 

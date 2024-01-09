@@ -7,6 +7,7 @@ import { prismaClient } from '@app/web/prismaClient'
 import { handleResourceCreationCommand } from '@app/web/server/resources/feature/handleResourceCreationCommand'
 import { handleResourceMutationCommand } from '@app/web/server/resources/feature/handleResourceMutationCommand'
 import { createTestIdTitleAndSlug } from '@app/web/test/createTestIdTitleAndSlug'
+import { createAvailableSlug } from '@app/web/server/slug/createAvailableSlug'
 
 describe('profileRouter', () => {
   // Helper function to easily test procedures
@@ -18,6 +19,7 @@ describe('profileRouter', () => {
     id: givenUserId,
     email: givenUserEmail,
   }
+  const givenUserSlug = `test+${givenUserId}`
 
   const basesToDelete: string[] = []
   const collectionsToDelete: string[] = []
@@ -28,6 +30,7 @@ describe('profileRouter', () => {
       data: {
         id: givenUserId,
         email: givenUserEmail,
+        slug: givenUserSlug,
       },
     })
   })
@@ -68,12 +71,12 @@ describe('profileRouter', () => {
     })
   })
 
-  describe('mutate', () => {
+  describe('updateVisibility', () => {
     // eslint-disable-next-line unicorn/consistent-function-scoping
     const executeMutateProcedure = (input: UpdateProfileVisibilityCommand) =>
       profileRouter
         .createCaller(createTestContext({ user: givenUser }))
-        .mutate(input)
+        .updateVisibility(input)
 
     it('should change visibility to private for owned resource and collections that are not in a base without touching models in a base', async () => {
       // Given a public profile with public and private collections and resources
@@ -119,6 +122,10 @@ describe('profileRouter', () => {
                 {
                   id: givenPublicCollectionInBase.id,
                   title: givenPublicCollectionInBase.title,
+                  slug: await createAvailableSlug(
+                    givenPublicCollectionInBase.title,
+                    'bases',
+                  ),
                   ownerId: givenUserId,
                   isPublic: true,
                 },
@@ -133,12 +140,20 @@ describe('profileRouter', () => {
           {
             id: givenPublicCollection.id,
             title: givenPublicCollection.title,
+            slug: await createAvailableSlug(
+              givenPublicCollection.title,
+              'collections',
+            ),
             ownerId: givenUserId,
             isPublic: true,
           },
           {
             id: givenPrivateCollection.id,
             title: givenPrivateCollection.title,
+            slug: await createAvailableSlug(
+              givenPrivateCollection.title,
+              'collections',
+            ),
             ownerId: givenUserId,
             isPublic: false,
           },

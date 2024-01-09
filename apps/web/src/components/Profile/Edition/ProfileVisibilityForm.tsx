@@ -44,7 +44,7 @@ const ProfileVisibilityForm = ({
       isPublic: profile.isPublic,
     },
   })
-  const mutate = trpc.profile.mutate.useMutation()
+  const mutate = trpc.profile.updateVisibility.useMutation()
   const isLoading = form.formState.isSubmitting || mutate.isPending
   const hasPublicResources = resources.some((resource) => resource.isPublic)
 

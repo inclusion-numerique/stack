@@ -42,6 +42,7 @@ describe('migrateUser', () => {
         legacyUser,
         emailMap: new Map(),
         existingUser: undefined,
+        existingSlugs: new Map(),
       }),
     ).toEqual({
       email: 'a.a@a.a',
@@ -50,6 +51,7 @@ describe('migrateUser', () => {
       lastName: 'A',
       legacyId: 8,
       name: 'A A',
+      slug: 'a-a',
       department: '63',
       updated: legacyUser.modified,
       created: legacyUser.created,
@@ -57,6 +59,7 @@ describe('migrateUser', () => {
       collections: {
         create: {
           title: 'Mes favoris',
+          slug: 'a-a-favoris',
           isFavorites: true,
         },
       },

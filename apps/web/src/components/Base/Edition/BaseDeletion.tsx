@@ -28,7 +28,7 @@ const BaseEdition = ({ base }: { base: BasePageData }) => {
     try {
       await mutate.mutateAsync({ id: base.id })
       router.refresh()
-      router.push(`/profils/${base.ownerId}/bases`)
+      router.push(`/profils/${base.owner.slug}/bases`)
       createToast({
         priority: 'success',
         message: (

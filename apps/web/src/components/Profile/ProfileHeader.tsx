@@ -31,7 +31,7 @@ const ProfileHeader = ({
           <Link
             data-testid="profile-edition-button"
             className="fr-mt-2w fr-btn fr-btn--secondary fr-icon-edit-line fr-btn--icon-left"
-            href={`/profils/${profile.id}/modifier`}
+            href={`/profils/${profile.slug}/modifier`}
           >
             Modifier le profil
           </Link>
@@ -49,7 +49,7 @@ const ProfileHeader = ({
               Contacter
             </Link>
             <CopyLinkButton
-              url={getServerUrl(`/profils/${profile.id}`, true)}
+              url={getServerUrl(`/profils/${profile.slug}`, true)}
               priority="secondary"
             >
               Partager

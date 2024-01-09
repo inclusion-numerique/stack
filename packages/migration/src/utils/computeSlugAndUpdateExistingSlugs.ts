@@ -3,42 +3,28 @@ import { createSlug } from '@app/web/utils/createSlug'
 export type SlugToLegacyIdMap = Map<string, number | null>
 
 export const computeSlugAndUpdateExistingSlugs = (
-  { title, id, created }: { title: string; id: bigint; created: Date },
+  { title, id }: { title: string; id: bigint },
   existingSlugs: SlugToLegacyIdMap,
 ) => {
   const baseSlug = createSlug(title)
 
-  const possibleSlugs = [
-    baseSlug,
-    `${baseSlug}-${id.toString(10)}`,
-    `${baseSlug}-${created.getHours()}${created.getMinutes()}${created.getSeconds()}${created.getMilliseconds()}`,
-  ]
+  for (let iteration = 0; iteration <= existingSlugs.size + 1; iteration += 1) {
+    const slug = iteration === 0 ? baseSlug : `${baseSlug}-${iteration}`
+    const usedForItemId = existingSlugs.get(slug)
 
-  for (const slug of possibleSlugs) {
-    const existing = existingSlugs.get(slug)
-    if (existing === null) {
-      // This slug is already used by another non migrated item
-      continue
-    }
-    const numberId = Number(id)
-
-    // There is no item with this slug
-    if (existing === undefined) {
-      existingSlugs.set(slug, numberId)
+    // If the slug is not used, we can use it
+    if (usedForItemId === undefined) {
+      existingSlugs.set(slug, Number(id))
       return slug
     }
 
-    if (existing === numberId) {
-      // This slug is already used by the current item, we can use it
+    // If the slug is used by the same item, we can use it
+    if (usedForItemId === Number(id)) {
       return slug
     }
 
-    // This slug is already used by another item, we cannot use it
+    // The slug is already used (another id or null (non migrated item)), we try another suffix
   }
 
-  throw new Error(
-    `Could not find a slug generation strategy without duplicates for "${title}": ${possibleSlugs.join(
-      ', ',
-    )}`,
-  )
+  throw new Error('Could not generate slug')
 }

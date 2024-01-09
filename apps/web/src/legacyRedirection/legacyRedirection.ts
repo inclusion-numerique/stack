@@ -50,8 +50,8 @@ const mapLegacyPath = async (url: URL) => {
           legacyId: Number.parseInt(collectionParam, 10),
         },
         select: {
-          // TODO use slug when migrated to slug
           id: true,
+          slug: true,
         },
       })
 
@@ -59,8 +59,7 @@ const mapLegacyPath = async (url: URL) => {
         return '/collections'
       }
 
-      // TODO use slug when migrated to slug
-      return `/collections/${collection.id}`
+      return `/collections/${collection.slug}`
     }
 
     const legacyBaseId = Number.parseInt(path.split('/')[2], 10)
@@ -72,11 +71,11 @@ const mapLegacyPath = async (url: URL) => {
         where: {
           legacyId: migratedToLegacyProfileId,
         },
-        select: { id: true },
+        select: { id: true, slug: true },
       })
 
       if (migratedProfileFromBase) {
-        return `/profils/${migratedProfileFromBase.id}`
+        return `/profils/${migratedProfileFromBase.slug}`
       }
 
       return '/profils'

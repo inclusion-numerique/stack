@@ -29,7 +29,7 @@ const OwnershipInformation = ({
   className,
   attributionWording,
 }: {
-  user: Pick<User, 'firstName' | 'lastName' | 'name' | 'id'> & {
+  user: Pick<User, 'firstName' | 'lastName' | 'name' | 'slug' | 'id'> & {
     image: RoundImageProps['image']
   }
   base:
@@ -58,7 +58,10 @@ const OwnershipInformation = ({
           <RoundProfileImage className="fr-mr-1w" user={user} />
           <span className="fr-text--xs fr-mb-0">
             {attribution}
-            <Link href={`/profils/${user.id}`} className="fr-link fr-text--xs">
+            <Link
+              href={`/profils/${user.slug}`}
+              className="fr-link fr-text--xs"
+            >
               {user.name}
             </Link>
           </span>

@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { createDynamicModal } from '@app/ui/components/Modal/createDynamicModal'
 import classNames from 'classnames'
 import React from 'react'
+import { createToast } from '@app/ui/toast/createToast'
 import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 
@@ -33,9 +34,13 @@ const DeleteResource = () => {
         },
       })
       router.refresh()
-    } catch (error) {
-      console.error(error)
-      throw error
+    } catch {
+      createToast({
+        priority: 'error',
+        message:
+          'Une erreur est survenue lors de la suppression de la ressource',
+      })
+      mutation.reset()
     }
   }
 

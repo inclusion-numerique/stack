@@ -17,7 +17,7 @@ const CollectionCard = ({
   // eslint-disable-next-line no-underscore-dangle
   const resourcesCount = collection._count.resources
 
-  const href = `/collections/${collection.id}`
+  const href = `/collections/${collection.slug}`
 
   return (
     <article className={styles.card} data-testid="collection-card">

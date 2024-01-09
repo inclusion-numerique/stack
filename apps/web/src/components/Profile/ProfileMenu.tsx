@@ -67,7 +67,7 @@ const ProfileMenu = ({
             <MenuItem
               tab="ressources"
               currentTab={currentTab}
-              href={`/profils/${profile.id}`}
+              href={`/profils/${profile.slug}`}
             >
               {isConnectedUser ? 'Mes ressources' : 'Ressources'} ·{' '}
               <b>{resourcesCount}</b>
@@ -75,7 +75,7 @@ const ProfileMenu = ({
             <MenuItem
               tab="collections"
               currentTab={currentTab}
-              href={`/profils/${profile.id}/collections`}
+              href={`/profils/${profile.slug}/collections`}
             >
               {isConnectedUser ? 'Mes collections' : 'Collections'} ·{' '}
               <b>{collectionsCount}</b>
@@ -83,14 +83,14 @@ const ProfileMenu = ({
             <MenuItem
               tab="bases"
               currentTab={currentTab}
-              href={`/profils/${profile.id}/bases`}
+              href={`/profils/${profile.slug}/bases`}
             >
               {isConnectedUser ? 'Mes bases' : 'Bases'} · <b>{basesCount}</b>
             </MenuItem>
             <MenuItem
               tab="suivis"
               currentTab={currentTab}
-              href={`/profils/${profile.id}/suivis`}
+              href={`/profils/${profile.slug}/suivis`}
             >
               {isConnectedUser ? 'Mes suivis' : 'Suivis'} ·{' '}
               <b>{followsCount}</b>

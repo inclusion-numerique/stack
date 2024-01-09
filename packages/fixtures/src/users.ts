@@ -5,6 +5,7 @@ export const jmSansRien = {
   firstName: 'Jean-Michel',
   lastName: 'Sans Rien',
   name: 'Jean-Michel Sans Rien',
+  slug: 'jean-michel-sans-rien',
   email: 'user.les.bases+sans+rien@gmail.com',
   emailVerified: new Date(),
   isPublic: true,
@@ -15,6 +16,7 @@ export const jmAvecTout = {
   firstName: 'Jean-Michel',
   lastName: 'Avec Tout',
   name: 'Jean-Michel Avec Tout',
+  slug: 'jean-michel-avec-tout',
   email: 'user.les.bases+avec+tout@gmail.com',
   emailVerified: new Date(),
 } satisfies Prisma.UserCreateManyInput

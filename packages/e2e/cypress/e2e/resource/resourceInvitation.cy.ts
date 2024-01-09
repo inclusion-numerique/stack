@@ -8,7 +8,7 @@ describe('Utilisateur connecté, je peux inviter un autre membre à contribuer s
    */
 
   beforeEach(() => {
-    cy.intercept('/api/trpc/profile.getMatchingUsers?*').as('getUser')
+    cy.intercept('/api/trpc/profile.searchProfileForMember?*').as('getUser')
     cy.intercept('/api/trpc/resourceContributor.delete?*').as('delete')
     cy.intercept('/api/trpc/resourceContributor.invite?*').as('invite')
   })

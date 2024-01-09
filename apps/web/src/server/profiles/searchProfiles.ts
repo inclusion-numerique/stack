@@ -156,6 +156,7 @@ export const quickSearchProfiles = async (
     select: {
       id: true,
       name: true,
+      slug: true,
       firstName: true,
       lastName: true,
       image: {
