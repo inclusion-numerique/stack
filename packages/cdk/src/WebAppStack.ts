@@ -106,7 +106,7 @@ export class WebAppStack extends TerraformStack {
     output('databasePort', databaseInstance.endpointPort)
 
     const databaseName = namespaced(projectSlug)
-    const databaseUser = isMain ? `${projectSlug}-main` : `${projectSlug}-dev`
+    const databaseUser = namespaced(projectSlug)
     const databasePasswordVariable =
       sensitiveEnvironmentVariables.DATABASE_PASSWORD
 
