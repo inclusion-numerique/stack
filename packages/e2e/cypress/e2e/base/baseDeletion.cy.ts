@@ -39,7 +39,7 @@ describe('Utilisateur connecté, je peux supprimer une base', () => {
     cy.testId('modal-delete-button').click()
 
     cy.wait('@deleteMutation')
-    cy.appUrlShouldBe(`/profils/${user.id}/bases`)
+    cy.appUrlShouldBe(`/profils/${user.slug}/bases`)
 
     cy.request({
       url: '/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',

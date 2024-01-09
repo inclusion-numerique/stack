@@ -14,7 +14,7 @@ describe('Utilisateur connecté, je vois que je n’ai pas de suivis', () => {
     cy.createUserAndSignin(visitor)
 
     cy.log('Visitor should see that it has no follows')
-    cy.visit(`/profils/${visitor.id}/collections`)
+    cy.visit(`/profils/${visitor.slug}/collections`)
     cy.findByRole('link', { name: /mes suivis · 0/i }).click()
     cy.contains('Vous ne suivez pas de base ni de profil.')
     cy.findByRole('link', { name: /explorer les bases/i }).should('exist')

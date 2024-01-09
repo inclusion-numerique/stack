@@ -11,7 +11,9 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
   })
 
   it('Acceptation 1 : ajout d’une ressource à la collection d’un profil sans collection et non membre de base', () => {
-    const ids = cleanUpAndCreateTestCollectionAndResource()
+    const {
+      user: { slug },
+    } = cleanUpAndCreateTestCollectionAndResource()
     cy.dsfrModalsShouldBeBound()
     cy.testId('save-resource-in-collection-button').click()
 
@@ -27,14 +29,16 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.testId('added-in-collection-button').should('have.length', 1)
     cy.testId('add-in-collection-button').should('have.length', 0)
 
-    cy.visit(`/profils/${ids.user}/collections`)
+    cy.visit(`/profils/${slug}/collections`)
     cy.testId('collection-card-link').click()
 
     cy.testId('resource-card').should('have.length', 1)
   })
 
   it('Acceptation 2 : ajout d’une ressource à la collection d’un profil avec collections et non membre de base', () => {
-    const ids = cleanUpAndCreateTestCollectionAndResource(true)
+    const {
+      user: { slug },
+    } = cleanUpAndCreateTestCollectionAndResource()
     cy.dsfrModalsShouldBeBound()
     cy.testId('save-resource-in-collection-button').click()
 
@@ -51,7 +55,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.testId('added-in-collection-button').should('have.length', 1)
     cy.testId('add-in-collection-button').should('have.length', 1)
 
-    cy.visit(`/profils/${ids.user}/collections`)
+    cy.visit(`/profils/${slug}/collections`)
 
     // First collection should be empty
     cy.testId('collection-card-link').should('have.length', 2)
@@ -59,7 +63,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.testId('resource-card').should('have.length', 0)
 
     // Second collection should have the resource
-    cy.visit(`/profils/${ids.user}/collections`)
+    cy.visit(`/profils/${slug}/collections`)
     cy.testId('collection-card-link').should('have.length', 2)
     cy.testId('collection-card-link').eq(1).click({
       // This is out of viewport in ci so we need to force the click
@@ -69,7 +73,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
   })
 
   it('Acceptation 3 : ajout d’une ressource à la collection d’un profil avec collections et membre de base', () => {
-    const ids = cleanUpAndCreateTestCollectionAndResource(true, true)
+    const { ids } = cleanUpAndCreateTestCollectionAndResource()
     cy.dsfrModalsShouldBeBound()
     cy.testId('save-resource-in-collection-button').click()
 

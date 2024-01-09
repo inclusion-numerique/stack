@@ -11,9 +11,10 @@ describe('Utilisateur connecté, je peux modifier mon profile', () => {
   })
 
   it('Acceptation 1 - Modification de la visibilité', () => {
-    const id = v4()
-    cleanUpAndCreateTestPublishedResourceInProfile(
-      { isPublic: true, id },
+    const {
+      user: { slug },
+    } = cleanUpAndCreateTestPublishedResourceInProfile(
+      { isPublic: true },
       false,
       ({ user }) => {
         const resourceId = v4()
@@ -25,7 +26,7 @@ describe('Utilisateur connecté, je peux modifier mon profile', () => {
       },
     )
 
-    cy.visit(`/profils/${id}/modifier`)
+    cy.visit(`/profils/${slug}/modifier`)
     cy.dsfrShouldBeStarted()
     cy.testId('profile-visibility').should(
       'have.text',
@@ -45,9 +46,10 @@ describe('Utilisateur connecté, je peux modifier mon profile', () => {
   })
 
   it('Acceptation 2 - Modification de la visibilité avec ressource publique', () => {
-    const id = v4()
-    cleanUpAndCreateTestPublishedResourceInProfile(
-      { isPublic: true, id },
+    const {
+      user: { slug },
+    } = cleanUpAndCreateTestPublishedResourceInProfile(
+      { isPublic: true },
       true,
       ({ user }) => {
         const resourceId = v4()
@@ -63,7 +65,7 @@ describe('Utilisateur connecté, je peux modifier mon profile', () => {
       'Ressource publique',
     )
 
-    cy.visit(`/profils/${id}/modifier`)
+    cy.visit(`/profils/${slug}/modifier`)
     cy.dsfrShouldBeStarted()
 
     cy.testId('profile-visibility').should(

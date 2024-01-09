@@ -21,7 +21,7 @@ describe('Utilisateur connecté, je peux suivre un profil', () => {
     cy.createUser(creator)
     cy.createUser(profile)
 
-    cy.visit(`/profils/${profile.id}`)
+    cy.visit(`/profils/${profile.slug}`)
 
     cy.findByRole('link', { name: /suivre/i }).click()
 
@@ -39,7 +39,7 @@ describe('Utilisateur connecté, je peux suivre un profil', () => {
     cy.createUser(profile)
     cy.createUserAndSignin(visitor)
 
-    cy.visit(`/profils/${profile.id}`)
+    cy.visit(`/profils/${profile.slug}`)
 
     cy.findByRole('button', { name: /suivre/i }).click()
 
@@ -49,16 +49,16 @@ describe('Utilisateur connecté, je peux suivre un profil', () => {
 
     cy.findByRole('button', { name: /ne plus suivre/i }).should('exist')
 
-    cy.visit(`/profils/${visitor.id}`)
+    cy.visit(`/profils/${visitor.slug}`)
 
     cy.log('Visitor should see that it has one followed profile')
-    cy.visit(`/profils/${visitor.id}`)
+    cy.visit(`/profils/${visitor.slug}`)
     cy.findByRole('link', { name: /mes suivis · 1/i }).click()
     cy.contains(/1 profil/i)
     cy.contains(profile.name)
 
     cy.log('Visitor should be able to unfollow')
-    cy.visit(`/profils/${profile.id}`)
+    cy.visit(`/profils/${profile.slug}`)
     cy.findByRole('button', { name: /ne plus suivre/i }).click()
     cy.wait('@unfollowProfile')
     cy.getToast(new RegExp(`Vous ne suivez plus ${profile.name}`, 'i')).should(
@@ -67,7 +67,7 @@ describe('Utilisateur connecté, je peux suivre un profil', () => {
     cy.findByRole('button', { name: /suivre/i }).should('exist')
 
     cy.log('Visitor should see that it has no followed profile')
-    cy.visit(`/profils/${visitor.id}`)
+    cy.visit(`/profils/${visitor.slug}`)
     cy.findByRole('link', { name: /mes suivis · 0/i }).click()
     cy.contains(profile.name).should('not.exist')
   })
@@ -98,10 +98,10 @@ describe('Utilisateur connecté, je peux suivre un profil', () => {
 
     cy.findByRole('button', { name: /ne plus suivre/i }).should('exist')
 
-    cy.visit(`/profils/${visitor.id}`)
+    cy.visit(`/profils/${visitor.slug}`)
 
     cy.log('Visitor should see that it has one followed profile')
-    cy.visit(`/profils/${visitor.id}`)
+    cy.visit(`/profils/${visitor.slug}`)
     cy.findByRole('link', { name: /mes suivis · 1/i }).click()
     cy.contains(/1 profil/i)
     cy.contains(profile.name)
@@ -116,7 +116,7 @@ describe('Utilisateur connecté, je peux suivre un profil', () => {
     cy.findByRole('button', { name: /suivre/i }).should('exist')
 
     cy.log('Visitor should see that it has no followed profile')
-    cy.visit(`/profils/${visitor.id}`)
+    cy.visit(`/profils/${visitor.slug}`)
     cy.findByRole('link', { name: /mes suivis · 0/i }).click()
     cy.contains(profile.name).should('not.exist')
   })
