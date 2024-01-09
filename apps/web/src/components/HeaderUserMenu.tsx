@@ -53,7 +53,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
       <li>
         <Link
           className="fr-nav__link"
-          href={`/profils/${user.id}`}
+          href={`/profils/${user.slug}`}
           style={{
             boxShadow: 'none',
             borderBottom: 'var(--slim-grey-border)',

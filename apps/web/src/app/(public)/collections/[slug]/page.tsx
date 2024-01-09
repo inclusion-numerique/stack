@@ -24,11 +24,11 @@ const CollectionPage = async ({ params }: { params: { slug: string } }) => {
           parents={[
             {
               label: 'Mon profil',
-              linkProps: { href: `/profils/${user.id}` },
+              linkProps: { href: `/profils/${user.slug}` },
             },
             {
               label: 'Mes collections',
-              linkProps: { href: `/profils/${user.id}/collections` },
+              linkProps: { href: `/profils/${user.slug}/collections` },
             },
           ]}
           currentPage={collection.title}
@@ -38,7 +38,7 @@ const CollectionPage = async ({ params }: { params: { slug: string } }) => {
         {user && (
           <div className="fr-mb-4w">
             <Link
-              href={`/profils/${user.id}/collections`}
+              href={`/profils/${user.slug}/collections`}
               className="fr-link fr-mb-4w"
             >
               <span className="fr-icon-arrow-left-line fr-icon--sm fr-mr-1w" />

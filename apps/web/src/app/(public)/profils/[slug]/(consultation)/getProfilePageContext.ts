@@ -7,7 +7,11 @@ import { filterAccess } from '@app/web/server/profiles/authorization'
 // Context is cached per request https://beta.nextjs.org/docs/data-fetching/caching#per-request-caching
 export const getProfilePageContext = cache(async (profileSlug: string) => {
   const user = await getSessionUser()
-  const profile = await getProfilePageQuery(decodeURI(profileSlug), user)
+
+  const profile = await getProfilePageQuery(
+    { slug: decodeURI(profileSlug) },
+    user,
+  )
   if (!profile) {
     notFound()
   }

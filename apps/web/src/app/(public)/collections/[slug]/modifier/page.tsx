@@ -24,11 +24,11 @@ const CollectionEditionPage = async ({
         parents={[
           {
             label: 'Mon profil',
-            linkProps: { href: `/profils/${user.id}` },
+            linkProps: { href: `/profils/${user.slug}` },
           },
           {
             label: 'Mes collections',
-            linkProps: { href: `/profils/${user.id}/collections` },
+            linkProps: { href: `/profils/${user.slug}/collections` },
           },
           {
             label: collection.title,

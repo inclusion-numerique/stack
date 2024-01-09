@@ -28,6 +28,7 @@ const resource = {
   isPublic: true,
   createdBy: {
     id: '1',
+    slug: 'jean-biche',
     name: 'Jean Biche',
     firstName: 'Jean',
     lastName: 'Biche',

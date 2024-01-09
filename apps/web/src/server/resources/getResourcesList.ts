@@ -25,6 +25,7 @@ export const resourceListSelect = (user: { id: string } | null) =>
       select: {
         name: true,
         id: true,
+        slug: true,
         firstName: true,
         lastName: true,
         image: {

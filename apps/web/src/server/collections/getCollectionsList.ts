@@ -89,6 +89,7 @@ export const collectionSelect = {
   owner: {
     select: {
       id: true,
+      slug: true,
       name: true,
       firstName: true,
       lastName: true,

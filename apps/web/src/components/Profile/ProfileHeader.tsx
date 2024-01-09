@@ -49,7 +49,7 @@ const ProfileHeader = ({
               Contacter
             </Link>
             <CopyLinkButton
-              url={getServerUrl(`/profils/${profile.id}`, true)}
+              url={getServerUrl(`/profils/${profile.slug}`, true)}
               priority="secondary"
             >
               Partager

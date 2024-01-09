@@ -20,7 +20,7 @@ const ProfileCard = ({
 }) => (
   <article className={styles.container} data-testid="profile-card">
     <div className={styles.content}>
-      <Link className={styles.link} href={`/profils/${profile.id}`}>
+      <Link className={styles.link} href={`/profils/${profile.slug}`}>
         <RoundProfileImage size={48} user={profile} />
       </Link>
       <div className={styles.info}>
@@ -29,7 +29,7 @@ const ProfileCard = ({
             styles.link,
             'fr-text--medium fr-text--bold fr-mb-0',
           )}
-          href={`/profils/${profile.id}`}
+          href={`/profils/${profile.slug}`}
         >
           {profile.name}
         </Link>

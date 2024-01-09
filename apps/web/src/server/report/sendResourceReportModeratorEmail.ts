@@ -12,12 +12,14 @@ export const sendResourceReportModeratorEmail = async ({
   sentBy,
 }: {
   resource: Pick<Resource, 'slug' | 'title'>
-  sentBy: Pick<User, 'id' | 'name' | 'email'> | null
+  sentBy: Pick<User, 'id' | 'name' | 'email' | 'slug'> | null
   report: Pick<ResourceReport, 'created' | 'reason' | 'comment'>
 }) => {
   const resourceUrl = getServerUrl(`/ressources/${resource.slug}`)
 
-  const authorProfileUrl = sentBy ? getServerUrl(`/profils/${sentBy.id}`) : null
+  const authorProfileUrl = sentBy
+    ? getServerUrl(`/profils/${sentBy.slug}`)
+    : null
 
   const result = await emailTransport.sendMail({
     to: ServerWebAppConfig.ReportModerator.to,
