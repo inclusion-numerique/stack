@@ -429,6 +429,7 @@ const GouvernanceDetails = async ({
                       typeContratAutreDescription,
                       perimetreDepartement,
                       perimetreEpcis,
+                      perimetreRegion,
                     },
                     index,
                   ) => {
@@ -438,23 +439,24 @@ const GouvernanceDetails = async ({
                     const porteurNom = membrePorteur
                       ? membreToFormMembre(membrePorteur).nom
                       : 'Portée par la préfecture'
-                    const perimetreScope = perimetreDepartement
+                    const perimetreScope = perimetreRegion
+                      ? 'region'
+                      : perimetreDepartement
                       ? 'departement'
-                      : perimetreEpcis
-                      ? 'epci'
-                      : 'region'
+                      : 'epci'
                     const perimetreTitle =
                       perimetreFeuilleDeRouteLabels[perimetreScope]
 
-                    const perimetreEpciInfo = perimetreEpcis ? (
-                      <>
-                        {perimetreEpcis.map(({ epci }) => (
-                          <span key={epci.code}>
-                            <br /> - {epci.nom}
-                          </span>
-                        ))}
-                      </>
-                    ) : null
+                    const perimetreEpciInfo =
+                      perimetreScope === 'epci' ? (
+                        <>
+                          {perimetreEpcis.map(({ epci }) => (
+                            <span key={epci.code}>
+                              <br /> - {epci.nom}
+                            </span>
+                          ))}
+                        </>
+                      ) : null
 
                     return (
                       <>

@@ -242,6 +242,7 @@ export const createFeuillesDeRoute = async (
             ? gouvernance.departement.codeRegion ?? null
             : null,
         perimetreEpcis:
+          feuilleToCreate.perimetreScope === 'epci' &&
           feuilleToCreate.perimetreEpciCodes.length > 0
             ? {
                 createMany: {
@@ -309,6 +310,7 @@ export const updateFeuillesDeRoute = async (
             ? gouvernance.departement.codeRegion ?? null
             : null,
         perimetreEpcis:
+          feuilleToUpdate.perimetreScope === 'epci' &&
           feuilleToUpdate.perimetreEpciCodes.length > 0
             ? {
                 createMany: {
@@ -317,7 +319,9 @@ export const updateFeuillesDeRoute = async (
                   })),
                 },
               }
-            : undefined,
+            : {
+                deleteMany: {},
+              },
         membres: porteurMembreId
           ? {
               create: {
