@@ -94,7 +94,7 @@ export const profileRouter = router({
       const firstName = informations.firstName?.trim() || null
       const lastName = informations.lastName?.trim() || null
       const name = `${firstName ?? ''} ${lastName ?? ''}`.trim() || null
-      const slugTitle = name || 'utilisateur'
+      const slugTitle = name || 'p'
 
       const afterSlug = createSlug(slugTitle)
 

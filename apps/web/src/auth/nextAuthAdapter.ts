@@ -43,7 +43,7 @@ export const nextAuthAdapter: Adapter = {
       provider?: typeof inclusionConnectProviderId
     }
 
-    const slug = await createAvailableSlug(rest.name || 'utilisateur', 'users')
+    const slug = await createAvailableSlug(rest.name || 'p', 'users')
 
     const info = { ...rest, slug }
 

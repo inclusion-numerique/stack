@@ -93,7 +93,7 @@ export const transformUser = ({
   const lastName = legacyUser.last_name?.trim() || null
   const name = `${firstName ?? ''} ${lastName ?? ''}`.trim() || null
 
-  const slugTitle = name || 'utilisateur'
+  const slugTitle = name || 'p'
 
   const slug = computeSlugAndUpdateExistingSlugs(
     { title: slugTitle, id: legacyUser.id },
