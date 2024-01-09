@@ -14,7 +14,14 @@ export const buildCoordinateursConum = async () => {
 
   const data: Prisma.CoordinateurConseillerNumeriqueCreateManyInput[] = []
 
+  // There is duplicated coordinateurs
+  const ids = new Set<string>()
+
   for (const coordinateur of coordinateurs) {
+    if (ids.has(coordinateur.id)) {
+      continue
+    }
+    ids.add(coordinateur.id)
     data.push({
       codeDepartement: getDepartementCodeFromPostalCode(
         coordinateur.codePostal,
