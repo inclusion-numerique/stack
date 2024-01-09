@@ -38,7 +38,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
   it('Acceptation 2 : ajout d’une ressource à la collection d’un profil avec collections et non membre de base', () => {
     const {
       user: { slug },
-    } = cleanUpAndCreateTestCollectionAndResource()
+    } = cleanUpAndCreateTestCollectionAndResource(true)
     cy.dsfrModalsShouldBeBound()
     cy.testId('save-resource-in-collection-button').click()
 
@@ -73,7 +73,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
   })
 
   it('Acceptation 3 : ajout d’une ressource à la collection d’un profil avec collections et membre de base', () => {
-    const { ids } = cleanUpAndCreateTestCollectionAndResource()
+    const { ids } = cleanUpAndCreateTestCollectionAndResource(true, true)
     cy.dsfrModalsShouldBeBound()
     cy.testId('save-resource-in-collection-button').click()
 

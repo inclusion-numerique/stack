@@ -22,7 +22,7 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer le profil', ()
   it('Acceptation 2 - Visiteur sur un profile privé', () => {
     const {
       user: { slug },
-    } = cleanUp({ isPublic: true })
+    } = cleanUp({ isPublic: false })
     cy.logout()
 
     cy.visit(`/profils/${slug}`)
@@ -58,7 +58,7 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer le profil', ()
   it('Acceptation 4 - Utilisateur connecté sur un profile privé', () => {
     const {
       user: { slug },
-    } = cleanUp({ isPublic: true })
+    } = cleanUp({ isPublic: false })
 
     const user = givenUser({ isPublic: true })
     cy.createUserAndSignin(user)
