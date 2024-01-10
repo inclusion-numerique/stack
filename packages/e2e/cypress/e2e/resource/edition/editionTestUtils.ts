@@ -36,17 +36,25 @@ export const cleanUpAndCreateTestResource = (
   return { user }
 }
 
-export const cleanUpAndCreateTestPublishedResource = (
-  publicBase?: boolean,
-  publicResource?: boolean,
+export const cleanUpAndCreateTestPublishedResource = ({
+  publicBase,
+  publicResource,
+  visitResourcePage,
+  additionalSetup,
+  signinAsResourceOwner,
+}: {
+  visitResourcePage?: boolean
+  publicBase?: boolean
+  publicResource?: boolean
+  signinAsResourceOwner?: boolean
   additionalSetup?: ({
     user,
     base,
   }: {
     user: Pick<SessionUser, 'id'>
     base: CreateBaseInput
-  }) => void,
-) => {
+  }) => void
+}) => {
   cy.execute('deleteAllData', {})
   const user = givenUser()
   const base = givenBase({ ownerId: user.id, isPublic: !!publicBase })
@@ -57,13 +65,19 @@ export const cleanUpAndCreateTestPublishedResource = (
   })
   commands.push(createTestPublishResourceCommand(resourceId, publicResource))
 
-  cy.createUserAndSignin(user)
+  if (signinAsResourceOwner) {
+    cy.createUserAndSignin(user)
+  } else {
+    cy.createUser(user)
+  }
   cy.createBase(base)
   cy.sendResourceCommands({ user, commands }).then(({ slug }) => {
     additionalSetup?.({ user, base })
-    cy.visit(`/ressources/${slug}`)
+    if (visitResourcePage) {
+      cy.visit(`/ressources/${slug}`)
+      cy.dsfrShouldBeStarted()
+    }
   })
-  cy.dsfrShouldBeStarted()
 
   return { user, base, commands, resourceId }
 }

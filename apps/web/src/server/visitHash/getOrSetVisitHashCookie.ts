@@ -17,7 +17,7 @@ export const getOrSetVisitHashCookie = () => {
 
   cookieStore.set({
     name: visitHashCookie,
-    value: createVisitHash(),
+    value: newVisitHash,
     httpOnly: true,
     path: '/',
     // Expires in 2 hours

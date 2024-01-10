@@ -110,14 +110,18 @@ describe('Utilisateur connecté, je peux modifier ma base', () => {
 
   describe('Modification de la visibilité', () => {
     it('Acceptation 5 - Modification de la visibilité', () => {
-      cleanUpAndCreateTestPublishedResource(true, false, ({ base, user }) => {
-        const id = v4()
-        const commands = createTestResourceCommands({
-          baseId: base.id,
-          resourceId: id,
-        })
-        commands.push(createTestPublishResourceCommand(id, false))
-        cy.sendResourceCommands({ user, commands })
+      cleanUpAndCreateTestPublishedResource({
+        signinAsResourceOwner: true,
+        publicBase: true,
+        additionalSetup: ({ base, user }) => {
+          const id = v4()
+          const commands = createTestResourceCommands({
+            baseId: base.id,
+            resourceId: id,
+          })
+          commands.push(createTestPublishResourceCommand(id, false))
+          cy.sendResourceCommands({ user, commands })
+        },
       })
 
       cy.visit(`/bases/${defaultTestBaseSlug}/editer`)
@@ -141,14 +145,20 @@ describe('Utilisateur connecté, je peux modifier ma base', () => {
     })
 
     it('Acceptation 6 - Modification de la visibilité avec ressource publique', () => {
-      cleanUpAndCreateTestPublishedResource(true, true, ({ base, user }) => {
-        const id = v4()
-        const commands = createTestResourceCommands({
-          baseId: base.id,
-          resourceId: id,
-        })
-        commands.push(createTestPublishResourceCommand(id, false))
-        cy.sendResourceCommands({ user, commands })
+      cleanUpAndCreateTestPublishedResource({
+        signinAsResourceOwner: true,
+        publicBase: true,
+        publicResource: true,
+        visitResourcePage: true,
+        additionalSetup: ({ base, user }) => {
+          const id = v4()
+          const commands = createTestResourceCommands({
+            baseId: base.id,
+            resourceId: id,
+          })
+          commands.push(createTestPublishResourceCommand(id, false))
+          cy.sendResourceCommands({ user, commands })
+        },
       })
       cy.testId('resource-public-state-badge').should(
         'have.text',

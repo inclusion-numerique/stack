@@ -12,7 +12,13 @@ import {
 
 describe('Utilisateur sans droit, je ne peux ni voir et ni editer la ressource', () => {
   it('Acceptation 1 - Visiteur sur une ressource publique', () => {
-    cleanUpAndCreateTestPublishedResource(true, true)
+    cleanUpAndCreateTestPublishedResource({
+      publicBase: true,
+      publicResource: true,
+      signinAsResourceOwner: true,
+      visitResourcePage: true,
+    })
+
     cy.logout()
 
     cy.log('Je peux voir la ressource')
@@ -45,7 +51,11 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer la ressource',
   })
 
   it('Acceptation 2 - Visiteur sur une ressource privée', () => {
-    cleanUpAndCreateTestPublishedResource(true, false)
+    cleanUpAndCreateTestPublishedResource({
+      publicBase: true,
+      signinAsResourceOwner: true,
+      visitResourcePage: true,
+    })
     cy.logout()
 
     cy.log('Je peux voir la ressource')
@@ -74,7 +84,12 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer la ressource',
   })
 
   it('Acceptation 3 - Utilisateur connecté sur une ressource publique', () => {
-    cleanUpAndCreateTestPublishedResource(true, true)
+    cleanUpAndCreateTestPublishedResource({
+      publicBase: true,
+      publicResource: true,
+      signinAsResourceOwner: true,
+      visitResourcePage: true,
+    })
 
     const user = givenUser()
     cy.createUserAndSignin(user)
@@ -109,7 +124,11 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer la ressource',
   })
 
   it('Acceptation 4 - Utilisateur connecté sur une ressource privée', () => {
-    cleanUpAndCreateTestPublishedResource(true, false)
+    cleanUpAndCreateTestPublishedResource({
+      publicBase: true,
+      signinAsResourceOwner: true,
+      visitResourcePage: true,
+    })
 
     const user = givenUser()
     cy.createUserAndSignin(user)
@@ -140,7 +159,12 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer la ressource',
   })
 
   it('Acceptation 5 - Créateur', () => {
-    cleanUpAndCreateTestPublishedResource(true, false)
+    cleanUpAndCreateTestPublishedResource({
+      publicBase: true,
+      publicResource: false,
+      signinAsResourceOwner: true,
+      visitResourcePage: true,
+    })
 
     cy.log('Je peux voir la ressource')
     cy.testId('resource-view').should('exist')
@@ -203,7 +227,12 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer la ressource',
   })
 
   it('Acceptation 7 - Contributeur', () => {
-    cleanUpAndCreateTestPublishedResource(true, false)
+    cleanUpAndCreateTestPublishedResource({
+      publicBase: true,
+      publicResource: false,
+      signinAsResourceOwner: true,
+      visitResourcePage: true,
+    })
     const contributor = givenUser()
     cy.createUser(contributor)
     cy.inviteUserToResource(
