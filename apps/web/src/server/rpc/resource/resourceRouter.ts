@@ -11,17 +11,13 @@ import {
 } from '@app/web/server/resources/feature/features'
 import { handleResourceCreationCommand } from '@app/web/server/resources/feature/handleResourceCreationCommand'
 import { handleResourceMutationCommand } from '@app/web/server/resources/feature/handleResourceMutationCommand'
-import {
-  protectedProcedure,
-  publicProcedure,
-  router,
-} from '@app/web/server/rpc/createRouter'
+import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { forbiddenError, notFoundError } from '@app/web/server/rpc/trpcErrors'
 import { prismaClient } from '@app/web/prismaClient'
+import { collectionSelect } from '@app/web/server/collections/getCollection'
+import { baseSelect } from '@app/web/server/bases/getBase'
 import { filterAccess as filterCollectionAccess } from '../../collections/authorization'
 import { filterAccess as filterBaseAccess } from '../../bases/authorization'
-import { collectionSelect } from '../../collections/getCollection'
-import { baseSelect } from '../../bases/getBase'
 
 export const resourceRouter = router({
   create: protectedProcedure
@@ -186,35 +182,4 @@ export const resourceRouter = router({
         }
       },
     ),
-  registerView: publicProcedure
-    .input(z.object({ resourceId: z.string().uuid() }))
-    .mutation(async ({ input: { resourceId }, ctx: { user, req } }) => {
-      const visitHashCookie = req.headers
-
-      const visitHash = 'todo'
-
-      if (!visitHashCookie) {
-        return
-      }
-
-      const existingView = await prismaClient.resourceView.findFirst({
-        where: { hash: visitHash, resourceId },
-        select: { id: true },
-      })
-      if (existingView) {
-        return
-      }
-      await prismaClient.resourceView.create({
-        data: {
-          id: v4(),
-          hash: visitHash,
-          userId: user?.id ?? null,
-          resourceId,
-          timestamp: new Date(),
-        },
-        select: {
-          id: true,
-        },
-      })
-    }),
 })

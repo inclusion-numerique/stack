@@ -92,7 +92,7 @@ const ResourceContents = ({ resource }: { resource: Resource }) => (
         <ResourceContentView content={content} />
       </div>
     ))}
-    <RegisterResourceView resourceId={resource.id} />
+    <RegisterResourceView resourceSlug={resource.slug} />
   </>
 )
 

@@ -11,10 +11,14 @@ describe("Les visites d'une ressource sont comptées", () => {
     cy.log('Je peux voir la ressource')
     cy.dsfrShouldBeStarted()
     // Visit counts for non connected users
+    cy.testId('resource-views-count').should('have.text', '0')
+    cy.getCookie('visit-hash').should('exist')
+
+    // Visit only counted once
+    cy.reload()
     cy.testId('resource-views-count').should('have.text', '1')
     cy.getCookie('visit-hash').should('exist')
     cy.reload()
-    // Visit only counted once
     cy.testId('resource-views-count').should('have.text', '1')
     cy.getCookie('visit-hash').should('exist')
   })
@@ -31,10 +35,14 @@ describe("Les visites d'une ressource sont comptées", () => {
 
     cy.log('Je peux voir la ressource')
     // Visit counts for non connected users
+    cy.testId('resource-views-count').should('have.text', '0')
+    cy.getCookie('visit-hash').should('exist')
+
+    // Visit only counted once
+    cy.reload()
     cy.testId('resource-views-count').should('have.text', '1')
     cy.getCookie('visit-hash').should('exist')
     cy.reload()
-    // Visit only counted once
     cy.testId('resource-views-count').should('have.text', '1')
     cy.getCookie('visit-hash').should('exist')
   })

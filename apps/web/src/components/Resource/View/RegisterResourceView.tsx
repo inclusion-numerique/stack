@@ -1,20 +1,25 @@
 'use client'
 
-import { useEffect } from 'react'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { trpc } from '@app/web/trpc'
+import { useEffect, useRef } from 'react'
 
 /**
- * Client component that triger registerResourceView
+ * Client component that trigger registerResourceView
  */
-const RegisterResourceView = ({ resourceId }: { resourceId: string }) => {
-  const { mutate } = trpc.resource.registerView.useMutation()
-
+const RegisterResourceView = ({ resourceSlug }: { resourceSlug: string }) => {
+  // Useful for dev mode where useEffect is called twice
+  const registered = useRef<string>()
   useEffect(() => {
-    mutate({ resourceId })
-  }, [resourceId, mutate])
+    if (registered.current === resourceSlug) {
+      return
+    }
+    registered.current = resourceSlug
+
+    // We don't care if the request fails, we'll get a Sentry error from api route handler
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    fetch(`/ressources/${resourceSlug}/register-view`, { method: 'POST' })
+  }, [resourceSlug])
 
   return null
 }
 
-export default withTrpc(RegisterResourceView)
+export default RegisterResourceView
