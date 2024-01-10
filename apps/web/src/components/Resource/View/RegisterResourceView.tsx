@@ -1,26 +1,20 @@
 'use client'
 
 import { useEffect } from 'react'
-import { nonBlockingRegisterResourceViewServerAction } from '@app/web/server/resourceView/registerResourceViewServerAction'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { trpc } from '@app/web/trpc'
 
 /**
- * Client component that triger server action registerResourceView()
- * @constructor
+ * Client component that triger registerResourceView
  */
-const RegisterResourceView = ({
-  resourceId,
-  userId,
-}: {
-  resourceId: string
-  userId?: string
-}) => {
+const RegisterResourceView = ({ resourceId }: { resourceId: string }) => {
+  const { mutate } = trpc.resource.registerView.useMutation()
+
   useEffect(() => {
-    nonBlockingRegisterResourceViewServerAction({
-      resourceId,
-      userId,
-    })
-  })
+    mutate({ resourceId })
+  }, [resourceId, mutate])
+
   return null
 }
 
-export default RegisterResourceView
+export default withTrpc(RegisterResourceView)

@@ -1,5 +1,4 @@
 import z from 'zod'
-import { ContentType } from '@prisma/client'
 
 export const contentTitleMaxLength = 50
 export const contentCaptionMaxLength = 280
@@ -27,5 +26,3 @@ export const resourceEditionValues = {
     ),
   baseId: z.string().nullable(),
 }
-
-export const test = Object.values(ContentType)

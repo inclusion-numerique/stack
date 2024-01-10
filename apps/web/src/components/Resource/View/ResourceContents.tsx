@@ -39,13 +39,7 @@ const PublishedAndUpdated = ({
   )
 }
 
-const ResourceContents = ({
-  resource,
-  userId,
-}: {
-  resource: Resource
-  userId?: string
-}) => (
+const ResourceContents = ({ resource }: { resource: Resource }) => (
   <>
     <div className={styles.dateInformations}>
       <PublishedAndUpdated
@@ -98,7 +92,7 @@ const ResourceContents = ({
         <ResourceContentView content={content} />
       </div>
     ))}
-    <RegisterResourceView resourceId={resource.id} userId={userId} />
+    <RegisterResourceView resourceId={resource.id} />
   </>
 )
 

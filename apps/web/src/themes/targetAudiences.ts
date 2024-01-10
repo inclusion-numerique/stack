@@ -1,4 +1,4 @@
-import { TargetAudience } from '@prisma/client'
+import type { TargetAudience } from '@prisma/client'
 import { SelectOption } from '@app/ui/components/Form/utils/options'
 
 export const targetAudienceCategories = [
@@ -12,79 +12,68 @@ export type TargetAudienceCategory = (typeof targetAudienceCategories)[number]
 export const targetAudienceLabels: {
   [targetAudience in TargetAudience]: string
 } = {
-  [TargetAudience.AdministrationsEtablissementsPublics]:
+  AdministrationsEtablissementsPublics:
     'Administrations & établissements publics',
-  [TargetAudience.Adultes]: 'Adultes',
-  [TargetAudience.AidantsNumeriques]: 'Aidants numériques',
-  [TargetAudience.Adolescents_12_18]: 'Adolescents (12-18 ans)',
-  [TargetAudience.AutresProfessionnels]: 'Autres professionnels',
-  [TargetAudience.AssociationsActeursEss]: 'Associations & acteurs de l’ESS',
-  [TargetAudience.CollectivitesTerritoriales]: 'Collectivités territoriales',
-  [TargetAudience.Elus]: 'Élus',
-  [TargetAudience.Enfants_6_12]: 'Enfants (6-12 ans)',
-  [TargetAudience.EnseignantsProfessionnelsFormation]:
+  Adultes: 'Adultes',
+  AidantsNumeriques: 'Aidants numériques',
+  Adolescents_12_18: 'Adolescents (12-18 ans)',
+  AutresProfessionnels: 'Autres professionnels',
+  AssociationsActeursEss: 'Associations & acteurs de l’ESS',
+  CollectivitesTerritoriales: 'Collectivités territoriales',
+  Elus: 'Élus',
+  Enfants_6_12: 'Enfants (6-12 ans)',
+  EnseignantsProfessionnelsFormation:
     'Enseignants & professionnels de la formation',
-  [TargetAudience.Entreprises]: 'Entreprises',
-  [TargetAudience.JeunesAdultes_18_25]: 'Jeunes adultes (18-25 ans)',
-  [TargetAudience.JeunesEnfants_6]: 'Jeunes enfants (<6 ans)',
-  [TargetAudience.MediateursNumeriques]: 'Médiateurs numériques',
-  [TargetAudience.Particuliers]: 'Particuliers',
-  [TargetAudience.Parents]: 'Parents',
-  [TargetAudience.PersonneAllophone]: 'Personne allophone',
-  [TargetAudience.PersonneSituationHandicap]:
-    'Personne en situation de handicap',
-  [TargetAudience.PersonneSituationIlletrisme]:
-    'Personne en situation d’illetrisme',
-  [TargetAudience.PersonnesEnInsertionSociale]:
-    'Personnes en insertion sociale',
-  [TargetAudience.PersonnesInsertionProfessionnelle]:
-    'Personnes en insertion professionnelle',
-  [TargetAudience.PersonnesPerteAutonomie]: 'Personnes en perte d’autonomie',
-  [TargetAudience.PersonnesTresEloigneesNumerique]:
-    'Personnes très éloignées du numérique',
-  [TargetAudience.RefugiesDemandeursAsile]: 'Réfugiés/demandeurs d’asile',
-  [TargetAudience.SeniorsPersonnesAgees]: 'Seniors & personnes âgées',
-  [TargetAudience.TousPublics]: 'Tous publics',
-  [TargetAudience.TravailleursSociaux]: 'Travailleurs sociaux',
+  Entreprises: 'Entreprises',
+  JeunesAdultes_18_25: 'Jeunes adultes (18-25 ans)',
+  JeunesEnfants_6: 'Jeunes enfants (<6 ans)',
+  MediateursNumeriques: 'Médiateurs numériques',
+  Particuliers: 'Particuliers',
+  Parents: 'Parents',
+  PersonneAllophone: 'Personne allophone',
+  PersonneSituationHandicap: 'Personne en situation de handicap',
+  PersonneSituationIlletrisme: 'Personne en situation d’illetrisme',
+  PersonnesEnInsertionSociale: 'Personnes en insertion sociale',
+  PersonnesInsertionProfessionnelle: 'Personnes en insertion professionnelle',
+  PersonnesPerteAutonomie: 'Personnes en perte d’autonomie',
+  PersonnesTresEloigneesNumerique: 'Personnes très éloignées du numérique',
+  RefugiesDemandeursAsile: 'Réfugiés/demandeurs d’asile',
+  SeniorsPersonnesAgees: 'Seniors & personnes âgées',
+  TousPublics: 'Tous publics',
+  TravailleursSociaux: 'Travailleurs sociaux',
 }
 
 export const targetAudienceCategoriesMap: {
   [targetAudience in TargetAudience]: TargetAudienceCategory
 } = {
-  [TargetAudience.AdministrationsEtablissementsPublics]:
+  AdministrationsEtablissementsPublics:
     'Acteurs du numérique d’intérêt général',
-  [TargetAudience.Adultes]: 'Bénéficiaires',
-  [TargetAudience.AidantsNumeriques]: 'Acteurs du numérique d’intérêt général',
-  [TargetAudience.Adolescents_12_18]: 'Bénéficiaires',
-  [TargetAudience.AutresProfessionnels]:
-    'Acteurs du numérique d’intérêt général',
-  [TargetAudience.AssociationsActeursEss]:
-    'Acteurs du numérique d’intérêt général',
-  [TargetAudience.CollectivitesTerritoriales]:
-    'Acteurs du numérique d’intérêt général',
-  [TargetAudience.Elus]: 'Acteurs du numérique d’intérêt général',
-  [TargetAudience.Enfants_6_12]: 'Bénéficiaires',
-  [TargetAudience.EnseignantsProfessionnelsFormation]:
-    'Acteurs du numérique d’intérêt général',
-  [TargetAudience.Entreprises]: 'Acteurs du numérique d’intérêt général',
-  [TargetAudience.JeunesAdultes_18_25]: 'Bénéficiaires',
-  [TargetAudience.JeunesEnfants_6]: 'Bénéficiaires',
-  [TargetAudience.MediateursNumeriques]:
-    'Acteurs du numérique d’intérêt général',
-  [TargetAudience.Particuliers]: 'Bénéficiaires',
-  [TargetAudience.Parents]: 'Bénéficiaires',
-  [TargetAudience.PersonneAllophone]: 'Bénéficiaires',
-  [TargetAudience.PersonneSituationHandicap]: 'Bénéficiaires',
-  [TargetAudience.PersonneSituationIlletrisme]: 'Bénéficiaires',
-  [TargetAudience.PersonnesEnInsertionSociale]: 'Bénéficiaires',
-  [TargetAudience.PersonnesInsertionProfessionnelle]: 'Bénéficiaires',
-  [TargetAudience.PersonnesPerteAutonomie]: 'Bénéficiaires',
-  [TargetAudience.PersonnesTresEloigneesNumerique]: 'Bénéficiaires',
-  [TargetAudience.RefugiesDemandeursAsile]: 'Bénéficiaires',
-  [TargetAudience.SeniorsPersonnesAgees]: 'Bénéficiaires',
-  [TargetAudience.TousPublics]: 'Bénéficiaires',
-  [TargetAudience.TravailleursSociaux]:
-    'Acteurs du numérique d’intérêt général',
+  Adultes: 'Bénéficiaires',
+  AidantsNumeriques: 'Acteurs du numérique d’intérêt général',
+  Adolescents_12_18: 'Bénéficiaires',
+  AutresProfessionnels: 'Acteurs du numérique d’intérêt général',
+  AssociationsActeursEss: 'Acteurs du numérique d’intérêt général',
+  CollectivitesTerritoriales: 'Acteurs du numérique d’intérêt général',
+  Elus: 'Acteurs du numérique d’intérêt général',
+  Enfants_6_12: 'Bénéficiaires',
+  EnseignantsProfessionnelsFormation: 'Acteurs du numérique d’intérêt général',
+  Entreprises: 'Acteurs du numérique d’intérêt général',
+  JeunesAdultes_18_25: 'Bénéficiaires',
+  JeunesEnfants_6: 'Bénéficiaires',
+  MediateursNumeriques: 'Acteurs du numérique d’intérêt général',
+  Particuliers: 'Bénéficiaires',
+  Parents: 'Bénéficiaires',
+  PersonneAllophone: 'Bénéficiaires',
+  PersonneSituationHandicap: 'Bénéficiaires',
+  PersonneSituationIlletrisme: 'Bénéficiaires',
+  PersonnesEnInsertionSociale: 'Bénéficiaires',
+  PersonnesInsertionProfessionnelle: 'Bénéficiaires',
+  PersonnesPerteAutonomie: 'Bénéficiaires',
+  PersonnesTresEloigneesNumerique: 'Bénéficiaires',
+  RefugiesDemandeursAsile: 'Bénéficiaires',
+  SeniorsPersonnesAgees: 'Bénéficiaires',
+  TousPublics: 'Bénéficiaires',
+  TravailleursSociaux: 'Acteurs du numérique d’intérêt général',
 }
 export const targetAudienceOptions = Object.entries(targetAudienceLabels).map(
   ([value, name]) => ({

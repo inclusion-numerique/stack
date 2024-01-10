@@ -1,22 +1,22 @@
-import { SupportType } from '@prisma/client'
+import type { SupportType } from '@prisma/client'
 
 export const supportTypeLabels: {
   [supportType in SupportType]: string
 } = {
-  [SupportType.Annuaire]: 'Annuaire',
-  [SupportType.Article]: 'Article',
-  [SupportType.BoiteOutils]: 'Boite à outils',
-  [SupportType.Cartographie]: 'Cartographie',
-  [SupportType.Infographie]: 'Infographie',
-  [SupportType.Jeu]: 'Jeu',
-  [SupportType.Logiciel]: 'Logiciel / Application',
-  [SupportType.Methodologie]: 'Méthodologie',
-  [SupportType.ModeleNotice]: 'Modèle - Notice',
-  [SupportType.Questionnaire]: 'Questionnaire',
-  [SupportType.SiteWeb]: 'Site Web',
-  [SupportType.SupportPedagogique]: 'Support pédagogique',
-  [SupportType.Tutoriel]: 'Tutoriel',
-  [SupportType.Video]: 'Vidéo',
+  Annuaire: 'Annuaire',
+  Article: 'Article',
+  BoiteOutils: 'Boite à outils',
+  Cartographie: 'Cartographie',
+  Infographie: 'Infographie',
+  Jeu: 'Jeu',
+  Logiciel: 'Logiciel / Application',
+  Methodologie: 'Méthodologie',
+  ModeleNotice: 'Modèle - Notice',
+  Questionnaire: 'Questionnaire',
+  SiteWeb: 'Site Web',
+  SupportPedagogique: 'Support pédagogique',
+  Tutoriel: 'Tutoriel',
+  Video: 'Vidéo',
 }
 
 export const supportTypeOptions = Object.entries(supportTypeLabels).map(

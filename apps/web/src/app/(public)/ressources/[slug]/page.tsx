@@ -12,6 +12,7 @@ import {
   defaultSearchParams,
   searchUrl,
 } from '@app/web/server/search/searchQueryParams'
+import { setVisitHashCookie } from '@app/web/server/visitHash/setVisitHashCookie'
 
 const RessourcePage = async ({ params }: { params: { slug: string } }) => {
   const user = await getSessionUser()
@@ -20,6 +21,8 @@ const RessourcePage = async ({ params }: { params: { slug: string } }) => {
   if (!resource) {
     notFound()
   }
+
+  setVisitHashCookie()
 
   const authorizations = filterAccess(resource, user)
 

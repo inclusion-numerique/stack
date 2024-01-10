@@ -1,15 +1,19 @@
-import { ResourceReportReason } from '@prisma/client'
+import type { ResourceReportReason } from '@prisma/client'
 import z from 'zod'
 import { labelsToOptions } from '@app/web/utils/options'
 
 export const resourceReportReasonLabels: {
   [key in ResourceReportReason]: string
 } = {
-  [ResourceReportReason.Inappropriate]: 'Le contenu est inapproprié',
-  [ResourceReportReason.Outdated]: 'Le contenu est obsolète',
-  [ResourceReportReason.Errors]: 'Il y a des erreurs',
-  [ResourceReportReason.Duplicate]: 'C’est le doublon d’une autre ressource',
+  Inappropriate: 'Le contenu est inapproprié',
+  Outdated: 'Le contenu est obsolète',
+  Errors: 'Il y a des erreurs',
+  Duplicate: 'C’est le doublon d’une autre ressource',
 }
+
+const resourceReportReasons = Object.keys(resourceReportReasonLabels) as [
+  keyof typeof resourceReportReasonLabels,
+]
 
 export const resourceReportReasonOptions = labelsToOptions(
   resourceReportReasonLabels,
@@ -17,7 +21,7 @@ export const resourceReportReasonOptions = labelsToOptions(
 
 export const ResourceReportValidation = z.object({
   resourceId: z.string().uuid(),
-  reason: z.nativeEnum(ResourceReportReason, {
+  reason: z.enum(resourceReportReasons, {
     required_error: 'Veuillez renseigner un motif',
   }),
   comment: z.string().min(1, 'Veuillez renseigner une description'),

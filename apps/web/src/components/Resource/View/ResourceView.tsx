@@ -30,7 +30,7 @@ const ResourceView = ({
         <ResourceNavigation user={user} resource={resource} isAdmin={isAdmin} />
       </div>
       <div className={classNames(styles.leftColumn)} id="contents-container">
-        <ResourceContents resource={resource} userId={user?.id} />
+        <ResourceContents resource={resource} />
         {(resource.isPublic || hasIndexation(resource)) && (
           <ResourceInformations resource={resource} />
         )}
