@@ -51,8 +51,8 @@ export const UpdateProfileImageCommandValidation = z.object({
 })
 
 export const UpdateProfileInformationsCommandValidation = z.object({
-  lastName: lastNameValidation,
   firstName: firstNameValidation,
+  lastName: lastNameValidation,
   department: departmentValidation,
   description: descriptionValidation,
 })

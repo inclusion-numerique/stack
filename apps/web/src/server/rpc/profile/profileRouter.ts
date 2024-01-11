@@ -166,6 +166,7 @@ export const profileRouter = router({
       prismaClient.user.update({
         where: { id: user.id },
         data: {
+          emailIsPublic: contacts.emailIsPublic,
           website: contacts.website === '' ? null : contacts.website,
           facebook: contacts.facebook === '' ? null : contacts.facebook,
           twitter: contacts.twitter === '' ? null : contacts.twitter,
