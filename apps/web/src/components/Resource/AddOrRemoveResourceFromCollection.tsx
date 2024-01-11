@@ -25,12 +25,18 @@ const AddOrRemoveResourceFromCollection = ({
     <div className={styles.content}>
       <b>{collection.title}</b>
       <div className={styles.collections}>
-        <CollectionMetaData
-          user={user}
-          collection={collection}
-          count={collection.resources.length}
-          context="collectionModal"
-        />
+        {collection.slug && (
+          <CollectionMetaData
+            user={user}
+            collection={{
+              id: collection.id,
+              slug: collection.slug,
+              isPublic: collection.isPublic,
+            }}
+            count={collection.resources.length}
+            context="collectionModal"
+          />
+        )}
       </div>
     </div>
     {collection.resources.some(

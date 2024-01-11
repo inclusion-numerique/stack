@@ -27,7 +27,7 @@ const SaveCollectionButton = ({
 }: {
   className?: string
   user: SessionUser | null
-  collection: { id: string; isPublic: boolean; slug: string }
+  collection: { id: string; slug: string }
   'data-testid'?: string
   context: 'card' | 'view'
 }) => {

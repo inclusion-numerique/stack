@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { useRouter } from 'next/navigation'
+import { signOut } from 'next-auth/react'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import { createToast } from '@app/ui/toast/createToast'
@@ -20,18 +20,12 @@ const {
 })
 
 const ProfileDeletion = () => {
-  const router = useRouter()
   const mutation = trpc.profile.delete.useMutation()
 
   const handleDeleteProfile = async () => {
     try {
       await mutation.mutateAsync()
-      router.refresh()
-      router.push('/')
-      createToast({
-        priority: 'success',
-        message: 'Votre profil a bien été supprimé',
-      })
+      await signOut({ redirect: true, callbackUrl: '/profil-supprime' })
     } catch (error) {
       console.error('Could not delete profile', error)
       createToast({

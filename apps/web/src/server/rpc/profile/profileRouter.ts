@@ -206,7 +206,11 @@ export const profileRouter = router({
 
       return prismaClient.user.update({
         where: { id },
-        data: deletedUser(id, timestamp),
+        data: {
+          ...deletedUser(id, timestamp),
+          accounts: { deleteMany: {} },
+          sessions: { deleteMany: {} },
+        },
       })
     },
   ),

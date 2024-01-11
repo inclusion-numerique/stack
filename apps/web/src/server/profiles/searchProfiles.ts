@@ -42,6 +42,9 @@ export const countProfiles = async (
               /* User is private and user is self */
               OR users.id = ${userId}::uuid
           )
+        AND (
+          users.deleted IS NULL
+        )
   `
 
   return result[0]?.count ?? 0
@@ -95,6 +98,9 @@ export const rankProfiles = async (
               /* User is private and user is self */
               OR users.id = ${userId}::uuid
           )
+        AND (
+          users.deleted IS NULL
+        )
       /* Order by updated desc to have most recent first on empty query */
       ORDER BY rank DESC, users.updated DESC
       LIMIT ${paginationParams.perPage} OFFSET ${

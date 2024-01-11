@@ -49,14 +49,20 @@ const CollectionView = ({
       </div>
     </div>
     <hr className="fr-mt-4w fr-pb-1v" />
-    <CollectionMetaData
-      user={user}
-      collection={collection}
-      count={collection.resources.length}
-      isOwner={isOwner}
-      priority="secondary"
-      context="view"
-    />
+    {collection.slug && (
+      <CollectionMetaData
+        user={user}
+        collection={{
+          id: collection.id,
+          slug: collection.slug,
+          isPublic: collection.isPublic,
+        }}
+        count={collection.resources.length}
+        isOwner={isOwner}
+        priority="secondary"
+        context="view"
+      />
+    )}
     {collection.resources.map(({ resource }) => (
       <ResourceCard key={resource.id} resource={resource} user={user} />
     ))}

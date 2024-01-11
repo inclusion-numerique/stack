@@ -47,13 +47,19 @@ const CollectionCard = ({
             )}
           </Link>
         </div>
-        <CollectionMetaData
-          user={user}
-          collection={collection}
-          count={resourcesCount}
-          priority="tertiary no outline"
-          context="card"
-        />
+        {collection.slug && (
+          <CollectionMetaData
+            user={user}
+            collection={{
+              id: collection.id,
+              slug: collection.slug,
+              isPublic: collection.isPublic,
+            }}
+            count={resourcesCount}
+            priority="tertiary no outline"
+            context="card"
+          />
+        )}
       </div>
     </article>
   )
