@@ -229,3 +229,10 @@
 .fr-border-radius--64 {
     border-radius: 64px;
 }
+
+/* No underline when not hovered */
+.fr-link--underline-on-hover {
+    &:not(:hover){
+        background-image: none !important;
+    }
+}

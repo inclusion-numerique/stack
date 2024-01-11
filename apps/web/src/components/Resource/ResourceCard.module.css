@@ -1,9 +1,14 @@
 .container {
   padding-top: 16px;
-  border-top: var(--slim-grey-border);
+  padding-bottom: 32px;
+  border-bottom: var(--slim-grey-border);
 
-  &:not(:first-of-type) {
-    margin-top: 24px;
+  &:first-of-type {
+    border-top: var(--slim-grey-border);
+  }
+
+  @media (min-width: 576px) {
+    padding-bottom: 48px;
   }
 }
 
@@ -80,6 +85,18 @@
 .dates {
   display: flex;
 }
+
+.unpublishedInfosContainer {
+  flex-direction: column;
+  gap: 8px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+
 
 .footer {
   display: flex;

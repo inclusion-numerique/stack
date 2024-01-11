@@ -4,25 +4,68 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import OpenSaveResourceInCollectionModalButton from '@app/web/components/Resource/OpenSaveResourceInCollectionModalButton'
 import { loginUrl } from '@app/web/security/login'
 
+const defaultIconId = 'fr-icon-bookmark-line' as const
+const alreadySavedIconId = 'fr-icon-bookmark-fill' as const
+
 const secondaryButtonProps = {
+  iconId: defaultIconId,
   priority: 'secondary',
   children: 'Enregistrer',
+  size: 'medium',
 } as const
 
+const alreadySavedSecondaryButtonProps = {
+  ...secondaryButtonProps,
+  iconId: alreadySavedIconId,
+  children: 'Enregistrée',
+}
+
+const cardButtonProps = {
+  iconId: defaultIconId,
+  size: 'small',
+  iconPosition: 'right',
+  children: 'Enregistrer',
+  priority: 'tertiary no outline',
+} as const
+
+const alreadySavedCardButtonProps = {
+  ...cardButtonProps,
+  iconId: alreadySavedIconId,
+  children: 'Enregistrée',
+}
+
 const buttonIconOnlyProps = {
+  iconId: defaultIconId,
   title: secondaryButtonProps.children,
   size: 'small',
   priority: 'tertiary no outline',
 } as const
 
-const defaultIconId = 'fr-icon-bookmark-line' as const
-const alreadySavedIconId = 'fr-icon-bookmark-fill' as const
+const alreadySavedButtonIconOnlyProps = {
+  ...buttonIconOnlyProps,
+  iconId: alreadySavedIconId,
+}
+
+const getButtonProps = (
+  alreadySaved?: boolean,
+  variant?: 'icon-only' | 'card',
+) => {
+  if (variant === 'icon-only') {
+    return alreadySaved ? alreadySavedButtonIconOnlyProps : buttonIconOnlyProps
+  }
+
+  if (variant === 'card') {
+    return alreadySaved ? alreadySavedCardButtonProps : cardButtonProps
+  }
+
+  return alreadySaved ? alreadySavedSecondaryButtonProps : secondaryButtonProps
+}
 
 const SaveResourceInCollectionButton = ({
   className,
   user,
   resource,
-  iconOnly,
+  variant,
   'data-testid': dataTestid,
 }: {
   className?: string
@@ -30,14 +73,12 @@ const SaveResourceInCollectionButton = ({
   resource: { id: string; slug: string }
   iconOnly?: boolean
   'data-testid'?: string
+  variant?: 'card' | 'icon-only'
 }) => {
   const alreadySaved = user?.collections.some((collection) =>
     collection.resources.some(({ resourceId }) => resourceId === resource.id),
   )
-  const buttonProps = {
-    iconId: alreadySaved ? alreadySavedIconId : defaultIconId,
-    ...(iconOnly ? buttonIconOnlyProps : secondaryButtonProps),
-  }
+  const buttonProps = getButtonProps(alreadySaved, variant)
 
   if (user) {
     return (

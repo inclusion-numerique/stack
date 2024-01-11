@@ -4,11 +4,9 @@ import Link from 'next/link'
 import Badge from '@codegouvfr/react-dsfr/Badge'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import CopyLinkButton from '@app/web/components/CopyLinkButton'
 import ResourcesViewsAndMetadata from '@app/web/components/Resource/View/ResourcesViewsAndMetadata'
 import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
 import { ResourceListItem } from '@app/web/server/resources/getResourcesList'
-import { getServerUrl } from '@app/web/utils/baseUrl'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import SaveResourceInCollectionButton from '@app/web/components/Resource/SaveResourceInCollectionButton'
 import { resourceCardImageBreakpoints } from '@app/web/components/Resource/resourceCardImageBreakpoints'
@@ -25,26 +23,32 @@ const ResourceCard = ({
 }) => {
   const isContributor = user && user.id === resource.createdBy.id
 
-  const dates = resource.published ? (
+  const hasUnpublishedModifications =
+    resource.published &&
     isContributor &&
-    resource.updated.getTime() !== resource.published.getTime() ? (
+    resource.updated.getTime() !== resource.published.getTime()
+
+  const dates = resource.published ? (
+    hasUnpublishedModifications ? (
       <>
         <Badge small severity="info">
           Modifications non publiées
         </Badge>
-        <div className={styles.separator} />
-        <div>Mis à jour le {dateAsDay(resource.published)}</div>
+        <div
+          className={classNames(styles.separator, 'fr-hidden fr-unhidden-md')}
+        />
+        <div>Mise à jour le {dateAsDay(resource.published)}</div>
       </>
     ) : (
-      <div>Mis à jour le {dateAsDay(resource.published)}</div>
+      <div>Mise à jour le {dateAsDay(resource.published)}</div>
     )
   ) : (
     <>
-      <div>Créé le {dateAsDay(resource.created)}</div>
+      <div>Créée le {dateAsDay(resource.created)}</div>
       {dateAsDay(resource.created) !== dateAsDay(resource.updated) && (
         <>
           <div className={styles.separator} />
-          <div>Modifié le {dateAsDay(resource.updated)}</div>
+          <div>Modifiée le {dateAsDay(resource.updated)}</div>
         </>
       )}
     </>
@@ -71,6 +75,7 @@ const ResourceCard = ({
           <div
             className={classNames(
               styles.dates,
+              hasUnpublishedModifications && styles.unpublishedInfosContainer,
               'fr-hidden-md fr-text--xs fr-mb-1w',
             )}
           >
@@ -101,29 +106,36 @@ const ResourceCard = ({
           className={classNames(styles.footerRight, 'fr-text--sm', 'fr-mb-0')}
         >
           {isContributor && (
-            <Button
-              data-testid="resource-card-edit-link"
-              title="Editer"
-              iconId="fr-icon-edit-line"
-              size="small"
-              linkProps={{
-                href: `/ressources/${resource.slug}/editer`,
-              }}
-            />
-          )}
-          {resource.published === null ? (
-            <DeleteResourceButton resourceId={resource.id} />
-          ) : (
             <>
-              <SaveResourceInCollectionButton
-                user={user}
-                resource={resource}
-                iconOnly
-              />
-              <CopyLinkButton
-                url={getServerUrl(`/ressources/${resource.slug}`, true)}
-              />
+              <Button
+                data-testid="resource-card-edit-link"
+                iconId="fr-icon-edit-line"
+                size="small"
+                priority="tertiary no outline"
+                linkProps={{
+                  href: `/ressources/${resource.slug}/editer`,
+                }}
+                iconPosition="right"
+              >
+                Modifier
+              </Button>
+              {resource.published === null ? (
+                <DeleteResourceButton resourceId={resource.id} />
+              ) : (
+                <SaveResourceInCollectionButton
+                  user={user}
+                  resource={resource}
+                  variant="icon-only"
+                />
+              )}
             </>
+          )}
+          {!isContributor && (
+            <SaveResourceInCollectionButton
+              user={user}
+              resource={resource}
+              variant="card"
+            />
           )}
         </div>
       </div>

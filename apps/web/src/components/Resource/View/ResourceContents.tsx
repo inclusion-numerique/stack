@@ -31,7 +31,7 @@ const PublishedAndUpdated = ({
         <>
           <span className={styles.publishedAndUpdatedSeparator} />
           <span className="fr-ml-1w">
-            {publishedDay !== updatedDay && ` Mis à jour le ${updatedDay}`}
+            {publishedDay !== updatedDay && ` Mise à jour le ${updatedDay}`}
           </span>
         </>
       )}
