@@ -9,24 +9,14 @@ const ResourceSkeleton = () => (
     data-testid="resource-skeleton"
   >
     <div className={styles.header}>
-      <span className="skeleton-round skeleton--32" />
+      <span className="skeleton-quarter skeleton--32" />
       <span className="skeleton-rectangle skeleton-rectangle--120 fr-ml-1w" />
     </div>
     <div className={classNames(cardStyles.content, styles.content)}>
       <div className={cardStyles.textAndDescription}>
-        <div
-          className={classNames(
-            'fr-mb-3v skeleton-rectangle skeleton-rectangle--480',
-          )}
-        />
-        <div
-          className={classNames(
-            'fr-mb-3v skeleton-rectangle skeleton-rectangle--400',
-          )}
-        />
-        <div
-          className={classNames('skeleton-rectangle skeleton-rectangle--400')}
-        />
+        <div className="fr-mb-3v skeleton-rectangle skeleton-rectangle--480" />
+        <div className="fr-mb-3v skeleton-rectangle skeleton-rectangle--400" />
+        <div className="skeleton-rectangle skeleton-rectangle--400" />
       </div>
       <div
         className={classNames(
