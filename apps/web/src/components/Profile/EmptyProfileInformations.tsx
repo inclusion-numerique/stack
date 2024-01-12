@@ -1,7 +1,5 @@
-import classNames from 'classnames'
-import Link from 'next/link'
 import React from 'react'
-import { CreateResourceButton } from '../Resource/CreateResourceModal'
+import Link from 'next/link'
 import EmptyBox from '../EmptyBox'
 
 const EmptyProfileInformations = ({
