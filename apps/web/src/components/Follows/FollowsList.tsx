@@ -24,7 +24,7 @@ const FollowsList = ({
   user: SessionUser | null
 }) =>
   baseFollows.length === 0 && profileFollows.length === 0 ? (
-    <EmptyBox title="Vous ne suivez pas de base ni de profil.">
+    <EmptyBox title="Vous ne suivez pas de base ni de profil">
       Retrouvez vos bases et vos profils préféré(e)s ici en les suivant. Et
       prochainement, vous pourrez voir l’ensemble des ressources qu’ils auront
       publiés sur votre fil d’actualité personnalisé.
