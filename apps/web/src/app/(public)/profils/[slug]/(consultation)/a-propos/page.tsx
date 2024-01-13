@@ -1,9 +1,8 @@
 import React from 'react'
-import sanitizeHtml from 'sanitize-html'
-import { ProfilePageData } from '@app/web/server/profiles/getProfile'
-import { getDepartmentName } from '@app/web/utils/departments'
 import ExternalLink from '@app/ui/components/ExternalLink'
 import BlockWithLabel from '@app/ui/components/BlockWithLabel'
+import { ProfilePageData } from '@app/web/server/profiles/getProfile'
+import { getDepartmentName } from '@app/web/utils/departments'
 import type { ProfilRouteParams } from '@app/web/app/(public)/profils/[slug]/profilRouteParams'
 import { getProfilePageContext } from '@app/web/app/(public)/profils/[slug]/(consultation)/getProfilePageContext'
 import EmptyProfileInformations from '@app/web/components/Profile/EmptyProfileInformations'
@@ -35,22 +34,17 @@ const AProposPage = async ({ params }: ProfilRouteParams) => {
             <BlockWithLabel
               label="Description"
               canDisplay={profile.description}
-              mapTo={(description: string) => (
+            >
+              {!!profile.description && (
                 <span
                   dangerouslySetInnerHTML={{
-                    __html: sanitizeHtml(description),
+                    __html: profile.description,
                   }}
-                ></span>
+                />
               )}
-            >
-              {profile.description}
             </BlockWithLabel>
-            <BlockWithLabel
-              label="Département"
-              canDisplay={profile.department}
-              mapTo={getDepartmentName}
-            >
-              {profile.department}
+            <BlockWithLabel label="Département" canDisplay={profile.department}>
+              {!!profile.department && getDepartmentName(profile.department)}
             </BlockWithLabel>
           </div>
         )}
