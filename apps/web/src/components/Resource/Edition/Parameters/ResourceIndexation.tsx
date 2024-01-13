@@ -51,7 +51,13 @@ const ResourceIndexation = ({ resource }: { resource: Resource }) => {
       }
       view={
         hasIndexation(resource) ? (
-          <ResourceIndexationView resource={resource} withDescription />
+          <ResourceIndexationView
+            resource={resource}
+            withDescription
+            supportTypes
+            targetAudiences
+            themes
+          />
         ) : (
           <Notice
             data-testid="resource-empty-indexation"

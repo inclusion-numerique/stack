@@ -22,6 +22,12 @@
   }
 }
 
+/* Tags */
+
+.fr-tag--sm {
+  line-height: 1rem;
+}
+
 /* Remove header dropshadow */
 
 .fr-header {

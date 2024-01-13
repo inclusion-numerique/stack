@@ -7,7 +7,10 @@ import { useResourceNavigation } from '@app/web/components/Resource/View/resourc
 import { hasIndexation } from '@app/web/utils/indexation'
 import styles from './ResourceSideMenu.module.css'
 
-const ResourceSideMenu = ({ resource }: { resource: Resource }) => {
+/**
+ * Dropdown navigation menu only visible in mobile layout
+ */
+const ResourceMobileNavigation = ({ resource }: { resource: Resource }) => {
   const { navigationContents, active } = useResourceNavigation(
     resource.contents,
   )
@@ -56,4 +59,4 @@ const ResourceSideMenu = ({ resource }: { resource: Resource }) => {
   )
 }
 
-export default ResourceSideMenu
+export default ResourceMobileNavigation

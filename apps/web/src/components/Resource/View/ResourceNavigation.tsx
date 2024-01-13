@@ -8,7 +8,7 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import ResourceReportButton from '@app/web/components/Resource/View/ResourceReportButton'
 import SaveResourceInCollectionButton from '../SaveResourceInCollectionButton'
 import styles from './ResourceNavigation.module.css'
-import ResourceSideMenu from './ResourceSideMenu'
+import ResourceMobileNavigation from './ResourceMobileNavigation'
 
 const {
   Component: ResourceNavigationModal,
@@ -112,7 +112,7 @@ const ResourceNavigation = ({
         )}
       </div>
       <div className="fr-hidden fr-unhidden-md">
-        <ResourceSideMenu resource={resource} />
+        <ResourceMobileNavigation resource={resource} />
       </div>
     </div>
   </>

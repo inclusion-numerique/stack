@@ -8,7 +8,15 @@ const ResourceInformations = ({ resource }: { resource: Resource }) => (
     <h6 id="informations" className={styles.title}>
       Informations sur la resource
     </h6>
-    <ResourceIndexationView resource={resource} withLink />
+    <ResourceIndexationView
+      resource={resource}
+      withLink
+      supportTypes
+      targetAudiences
+      themes
+      titleClassName="fr-text--sm fr-text--medium"
+      tagsClassName="fr-mt-1v"
+    />
   </>
 )
 

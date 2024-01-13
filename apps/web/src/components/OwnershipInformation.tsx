@@ -10,8 +10,8 @@ import BaseImage from '@app/web/components/BaseImage'
 
 const attributionWordings = {
   resource: {
-    base: 'Dans la base ',
-    user: 'Publié par ',
+    base: 'Publiée dans la base ',
+    user: 'Publiée par ',
   },
   collection: {
     base: 'Collection de la base ',

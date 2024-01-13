@@ -42,8 +42,13 @@ const resource = (imageId: string | null) =>
     image: imageId
       ? { id: imageId, altText: "C'est beau la Nouvelle Zélande" }
       : null,
-    themes: [],
-    targetAudiences: [],
+    themes: [
+      'Accessibilite',
+      'ArtsEtCulture',
+      'CommunicationEnLigneEtReseauxSociaux',
+      'TerritoiresConnectesEtDurables',
+    ],
+    targetAudiences: ['AutresProfessionnels'],
     supportTypes: [],
     contributors: [],
     contents: [

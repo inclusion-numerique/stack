@@ -16,8 +16,15 @@ const informations = {
 
 const ResourcePublicStateBadge = ({
   isPublic,
+  small,
 }: {
   isPublic: boolean | null
-}) => <CustomTag {...(isPublic ? informations.public : informations.private)} />
+  small?: boolean
+}) => (
+  <CustomTag
+    {...(isPublic ? informations.public : informations.private)}
+    small={small}
+  />
+)
 
 export default ResourcePublicStateBadge

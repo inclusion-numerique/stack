@@ -11,43 +11,29 @@
   }
 }
 
-.container {
-  max-width: 948px;
-  margin: 0 auto;
-  padding-top: 0;
-  padding-bottom: 16px;
-
-  @media (min-width: 768px) {
-    padding-top: 16px;
-  }
-}
-
 .leftColumn {
   width: 100%;
 
   @media (min-width: 768px) {
-    /* UI does not respects grid system */
-    flex: 0 0 62%;
-    max-width: 62%;
-    width: 62%;
+    /* 192 width + 24 padding */
+    max-width: 216px;
+    padding-right: 24px;
   }
 }
 
-.rightColumn {
+.contentColumn {
   width: 100%;
 
   @media (min-width: 768px) {
     /* UI does not respects grid system */
-    margin-left: 13.3%;
-    flex: 0 0 24.7%;
-    max-width: 24.7%;
-    width: 24.7%;
+    max-width: 588px;
+    margin: 0 auto;
   }
 }
 
 .separatorRow {
   margin-top: 16px;
-  height: 1;
+  height: 1px;
 
   @media (min-width: 768px) {
     margin-top: 32px;
