@@ -1,7 +1,4 @@
 import React from 'react'
-import classNames from 'classnames'
-import cardStyles from './ResourceCard.module.css'
-import styles from './ResourceCardSkeleton.module.css'
 
 const CollectionCardSkeleton = () => (
   <div className="fr-border--slim-grey fr-flex fr-direction-column fr-mb-1v">
