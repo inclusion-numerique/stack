@@ -204,7 +204,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.contains(collection.title)
   })
 
-  it.only('Acceptation 5 : retirer une collection enregistrée dans une base dont je suis membre', () => {
+  it('Acceptation 5 : retirer une collection enregistrée dans une base dont je suis membre', () => {
     const creator = givenUser()
     const visitor = givenUser({
       firstName: 'Michel',
