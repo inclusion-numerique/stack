@@ -6,7 +6,6 @@ import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage
 import { Resource } from '@app/web/server/resources/getResource'
 import { getResourceSectionIdAttribute } from '@app/web/components/Resource/View/getResourceSectionIdAttribute'
 import RegisterResourceView from '@app/web/components/Resource/View/RegisterResourceView'
-import ResourceDates from '@app/web/components/Resource/View/ResourceDates'
 import ResourceActions from '@app/web/components/Resource/View/ResourceActions'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import ResourceMobileNavigation from '@app/web/components/Resource/View/ResourceMobileNavigation'
@@ -36,18 +35,13 @@ const ResourceContents = ({
         />
       </div>
     ) : null}
-    <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-mb-6v">
-      <ResourceDates
-        created={resource.created}
-        updated={resource.updated}
-        className={classNames('fr-hidden-lg', !!resource.image && 'fr-mt-4v')}
-      />
-    </div>
-    <h3 className={classNames('fr-mb-2w', styles.title)}>{resource.title}</h3>
-    <p className="fr-text--lg fr-mb-0">{resource.description}</p>
+    <h3 className="fr-mt-4v fr-mb-0 fr-mt-md-8v">{resource.title}</h3>
+    <p className="fr-text--lg fr-mt-2v fr-mt-md-3v fr-mb-0">
+      {resource.description}
+    </p>
     <ResourcesViewsAndMetadata
       resource={resource}
-      className={classNames(styles.viewsAndMetadata, 'fr-mt-6v')}
+      className="fr-my-4v fr-my-md-6v"
     />
     <ResourceActions resource={resource} user={user} isAdmin={isAdmin} />
     <div className="fr-hidden-md fr-mb-0">

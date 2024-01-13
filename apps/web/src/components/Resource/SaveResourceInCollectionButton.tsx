@@ -11,7 +11,7 @@ const secondaryButtonProps = {
   iconId: defaultIconId,
   priority: 'secondary',
   children: 'Enregistrer',
-  size: 'medium',
+  size: 'small',
 } as const
 
 const alreadySavedSecondaryButtonProps = {

@@ -24,26 +24,21 @@ const ResourceView = ({
   <div className="fr-grid-row fr-pb-20v" data-testid="resource-view">
     <div className="fr-col-12 fr-col-md-4 fr-col-lg-3 fr-hidden fr-unhidden-md">
       <div className={styles.leftColumn}>
-        <ResourceDesktopNavigation
-          user={user}
-          resource={resource}
-          isAdmin={isAdmin}
-        />
+        <ResourceDesktopNavigation resource={resource} />
       </div>
     </div>
-    <div className="fr-col-12 fr-col-md-7 fr-col-md-6">
+    <div className="fr-col-12 fr-col-md-7 fr-col-md-6 fr-pb-20v">
       <div className={styles.contentColumn}>
         <OwnershipInformation
           user={resource.createdBy}
           base={resource.base}
           attributionWording="resource"
         />
-        <hr className="fr-separator-6v" />
-        <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-mb-6v">
+        <hr className="fr-separator-4v fr-separator-md-6v" />
+        <div className="fr-flex fr-direction-column fr-direction-md-row fr-justify-content-space-between fr-align-items-start fr-align-items-md-center fr-flex-gap-3v fr-mb-4v fr-mb-md-6v">
           <ResourceDates
             created={resource.created}
             updated={resource.updated}
-            className="fr-hidden fr-unhidden-lg"
           />
           {isAdmin && (
             <ResourcePublicStateBadge small isPublic={resource.isPublic} />
@@ -55,7 +50,7 @@ const ResourceView = ({
         )}
       </div>
       {!!user && <SaveResourceInCollectionModal user={user} />}
-      {!!user && <ResourceReport resourceId={resource.id} />}
+      <ResourceReport resourceId={resource.id} />
     </div>
   </div>
 )

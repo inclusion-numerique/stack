@@ -13,14 +13,6 @@
   margin-right: -2px;
 }
 
-.title {
-  margin-top: 8px;
-
-  @media (min-width: 768px) {
-    margin-top: 32px;
-  }
-}
-
 .imageContainer {
   width: 100%;
   background: var(--background-contrast-info);
@@ -64,15 +56,8 @@
 
 
   }
+
   &:global(.is-first) {
     padding-top: 32px;
-  }
-}
-
-.viewsAndMetadata {
-  padding-bottom: 0;
-
-  @media (min-width: 768px) {
-    padding-bottom: 24px;
   }
 }

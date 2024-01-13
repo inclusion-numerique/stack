@@ -1,15 +1,6 @@
 .sideMenu {
-  margin-top: 32px;
-  margin-bottom: 32px;
-
-  @media (min-width: 768px) {
-    margin-top: 48px;
-    margin-bottom: 0;
-    padding-right: 0;
-
     :global(.fr-sidemenu__inner) {
-      box-shadow: unset;
-      padding-right: 0;
+        box-shadow: unset;
+        padding-right: 0;
     }
-  }
 }
