@@ -6,7 +6,7 @@ const LoadingProfilePage = () => (
     <div className="fr-mb-6w fr-flex fr-justify-content-space-between">
       <h3 className="fr-mb-0">Ressources</h3>
     </div>
-    {Array.from({ length: 3 }).map((_, index) => (
+    {Array.from({ length: 8 }).map((_, index) => (
       <ResourceCardSkeleton key={index} />
     ))}
   </div>
