@@ -40,6 +40,14 @@
     width: 100%;
 }
 
+.fr-position-relative {
+    position: relative;
+}
+
+.fr-position-absolute {
+    position: absolute;
+}
+
 .fr-flex {
     display: flex;
 }

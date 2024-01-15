@@ -44,20 +44,3 @@
   object-fit: contain;
   display: block;
 }
-
-.content {
-  padding-top: 16px;
-  padding-bottom: 16px;
-
-  @media (min-width: 768px) {
-    padding-top: 16px;
-    padding-bottom: 16px;
-
-
-
-  }
-
-  &:global(.is-first) {
-    padding-top: 32px;
-  }
-}

@@ -4,21 +4,26 @@ import ResourceContentView from '@app/web/components/Resource/Contents/ResourceC
 import ResourcesViewsAndMetadata from '@app/web/components/Resource/View/ResourcesViewsAndMetadata'
 import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
 import { Resource } from '@app/web/server/resources/getResource'
-import { getResourceSectionIdAttribute } from '@app/web/components/Resource/View/getResourceSectionIdAttribute'
 import RegisterResourceView from '@app/web/components/Resource/View/RegisterResourceView'
 import ResourceActions from '@app/web/components/Resource/View/ResourceActions'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import ResourceMobileNavigation from '@app/web/components/Resource/View/ResourceMobileNavigation'
+import type { ResourceNavigationData } from '@app/web/components/Resource/View/getResourceNavigationData'
+import { WithAnchorIdAndHref } from '@app/web/components/Resource/View/addAnchorIdsToResourceContents'
 import styles from './ResourceContents.module.css'
 
 const ResourceContents = ({
   resource,
   user,
   isAdmin,
+  navigationData,
+  contentsWithAnchor,
 }: {
   resource: Resource
   user: SessionUser | null
   isAdmin: boolean
+  navigationData: ResourceNavigationData
+  contentsWithAnchor: WithAnchorIdAndHref<Resource['contents'][number]>[]
 }) => (
   <>
     {resource.image ? (
@@ -44,14 +49,12 @@ const ResourceContents = ({
       className="fr-my-4v fr-my-md-6v"
     />
     <ResourceActions resource={resource} user={user} isAdmin={isAdmin} />
-    <div className="fr-hidden-md fr-mb-0">
-      <ResourceMobileNavigation resource={resource} />
-    </div>
-    {resource.contents.map((content, index) => (
+    <ResourceMobileNavigation navigationData={navigationData} />
+    {contentsWithAnchor.map((content, index) => (
       <div
         key={content.id}
-        id={`${getResourceSectionIdAttribute(content, index)}`}
-        className={classNames(styles.content, index === 0 && 'is-first')}
+        id={content.anchorId}
+        className={classNames('fr-py-4v', index === 0 && 'fr-pt-6v')}
       >
         <ResourceContentView content={content} />
       </div>

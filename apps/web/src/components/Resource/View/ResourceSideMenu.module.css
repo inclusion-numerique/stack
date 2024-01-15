@@ -1,6 +1,0 @@
-.sideMenu {
-    :global(.fr-sidemenu__inner) {
-        box-shadow: unset;
-        padding-right: 0;
-    }
-}

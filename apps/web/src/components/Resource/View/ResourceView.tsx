@@ -8,6 +8,8 @@ import OwnershipInformation from '@app/web/components/OwnershipInformation'
 import ResourceDates from '@app/web/components/Resource/View/ResourceDates'
 import ResourcePublicStateBadge from '@app/web/components/Resource/View/ResourcePublicStateBadge'
 import ResourceDesktopNavigation from '@app/web/components/Resource/View/ResourceDesktopNavigation'
+import { getResourceNavigationData } from '@app/web/components/Resource/View/getResourceNavigationData'
+import { addAnchorIdsToResourceContents } from '@app/web/components/Resource/View/addAnchorIdsToResourceContents'
 import ResourceContents from './ResourceContents'
 import ResourceInformations from './ResourceInformations'
 import styles from './ResourceView.module.css'
@@ -20,39 +22,58 @@ const ResourceView = ({
   resource: Resource
   user: SessionUser | null
   isAdmin: boolean
-}) => (
-  <div className="fr-grid-row fr-pb-20v" data-testid="resource-view">
-    <div className="fr-col-12 fr-col-md-4 fr-col-lg-3 fr-hidden fr-unhidden-md">
-      <div className={styles.leftColumn}>
-        <ResourceDesktopNavigation resource={resource} />
-      </div>
-    </div>
-    <div className="fr-col-12 fr-col-md-7 fr-col-md-6 fr-pb-20v">
-      <div className={styles.contentColumn}>
-        <OwnershipInformation
-          user={resource.createdBy}
-          base={resource.base}
-          attributionWording="resource"
-        />
-        <hr className="fr-separator-4v fr-separator-md-6v" />
-        <div className="fr-flex fr-direction-column fr-direction-md-row fr-justify-content-space-between fr-align-items-start fr-align-items-md-center fr-flex-gap-3v fr-mb-4v fr-mb-md-6v">
-          <ResourceDates
-            created={resource.created}
-            updated={resource.updated}
+}) => {
+  const hasInformationSection = resource.isPublic || hasIndexation(resource)
+  const contentsWithAnchor = addAnchorIdsToResourceContents(resource.contents)
+  const navigationData = getResourceNavigationData({
+    title: resource.title,
+    contentsWithAnchor,
+    hasInformationSection,
+  })
+
+  return (
+    <div className="fr-grid-row fr-pb-20v" data-testid="resource-view">
+      <div className="fr-col-12 fr-col-md-4 fr-col-lg-3 fr-hidden fr-unhidden-md">
+        <div className={styles.leftColumn}>
+          <ResourceDesktopNavigation
+            resource={resource}
+            navigationData={navigationData}
           />
-          {isAdmin && (
-            <ResourcePublicStateBadge small isPublic={resource.isPublic} />
+        </div>
+      </div>
+      <div className="fr-col-12 fr-col-md-7 fr-col-md-6 fr-pb-20v">
+        <div className={styles.contentColumn}>
+          <OwnershipInformation
+            user={resource.createdBy}
+            base={resource.base}
+            attributionWording="resource"
+          />
+          <hr className="fr-separator-4v fr-separator-md-6v" />
+          <div className="fr-flex fr-direction-column fr-direction-md-row fr-justify-content-space-between fr-align-items-start fr-align-items-md-center fr-flex-gap-3v fr-mb-4v fr-mb-md-6v">
+            <ResourceDates
+              created={resource.created}
+              updated={resource.updated}
+            />
+            {isAdmin && (
+              <ResourcePublicStateBadge small isPublic={resource.isPublic} />
+            )}
+          </div>
+          <ResourceContents
+            navigationData={navigationData}
+            contentsWithAnchor={contentsWithAnchor}
+            resource={resource}
+            user={user}
+            isAdmin={isAdmin}
+          />
+          {(resource.isPublic || hasIndexation(resource)) && (
+            <ResourceInformations resource={resource} />
           )}
         </div>
-        <ResourceContents resource={resource} user={user} isAdmin={isAdmin} />
-        {(resource.isPublic || hasIndexation(resource)) && (
-          <ResourceInformations resource={resource} />
-        )}
+        {!!user && <SaveResourceInCollectionModal user={user} />}
+        <ResourceReport resourceId={resource.id} />
       </div>
-      {!!user && <SaveResourceInCollectionModal user={user} />}
-      <ResourceReport resourceId={resource.id} />
     </div>
-  </div>
-)
+  )
+}
 
 export default ResourceView
