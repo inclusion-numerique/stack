@@ -84,10 +84,16 @@ export const transformUpload = ({
 }: {
   legacyUpload: LegacyUpload
 }) => {
+  // Most of legacy keys are like 52241307-a50_name.png
+  // We "humanize" names by removing the uuid prefix in these cases
+  const startsWithUuid = legacyUpload.Key.match(/^[\da-f]{8}-[\da-f]{3}_/)
+
+  const name = startsWithUuid ? legacyUpload.Key.slice(13) : legacyUpload.Key
+
   const data = {
     key: `legacy/${legacyUpload.Key}`,
     legacyKey: legacyUpload.Key,
-    name: legacyUpload.Key,
+    name,
     mimeType: mime.lookup(legacyUpload.Key) || 'application/octet-stream',
     size: legacyUpload.Size,
   } satisfies UpsertCreateType<typeof prismaClient.upload.upsert>
