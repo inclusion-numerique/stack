@@ -24,10 +24,7 @@ const ResourceViewHeader = ({
     <div className={styles.headerSeparator}>
       <hr />
     </div>
-    <div
-      className={classNames(styles.rightColumn)}
-      data-testid="resource-public-state-badge"
-    >
+    <div className={classNames(styles.rightColumn)}>
       {isAdmin && <ResourcePublicStateBadge isPublic={resource.isPublic} />}
     </div>
   </div>

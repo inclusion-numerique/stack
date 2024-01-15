@@ -22,6 +22,7 @@ const ResourcePublicStateBadge = ({
   small?: boolean
 }) => (
   <CustomTag
+    data-testid="resource-public-state-badge"
     {...(isPublic ? informations.public : informations.private)}
     small={small}
   />

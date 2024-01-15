@@ -21,7 +21,7 @@ describe('Utilisateur connecté, lorsque je modifie une ressource, je peux modif
       signinAsResourceOwner: true,
       visitResourcePage: true,
     })
-    cy.testId('resource-edition-button').click()
+    cy.testId('resource-edition-button').filter(':visible').click()
 
     cy.testId('edition-action-bar-more-actions').click()
     cy.testId('edition-action-bar-parameters-modal').click()
@@ -58,7 +58,7 @@ describe('Utilisateur connecté, lorsque je modifie une ressource, je peux modif
       visitResourcePage: true,
     })
 
-    cy.testId('resource-edition-button').click()
+    cy.testId('resource-edition-button').filter(':visible').click()
 
     cy.testId('edition-action-bar-more-actions').click()
     cy.testId('edition-action-bar-parameters-modal').click()
@@ -105,7 +105,7 @@ describe('Utilisateur connecté, lorsque je modifie une ressource, je peux modif
         cy.createBase(base)
       },
     )
-    cy.testId('resource-edition-button').click()
+    cy.testId('resource-edition-button').filter(':visible').click()
 
     cy.testId('edition-action-bar-more-actions').click()
     cy.testId('edition-action-bar-parameters-modal').click()
@@ -153,7 +153,7 @@ describe('Utilisateur connecté, lorsque je modifie une ressource, je peux modif
       },
     })
 
-    cy.testId('resource-edition-button').click()
+    cy.testId('resource-edition-button').filter(':visible').click()
 
     cy.testId('edition-action-bar-more-actions').click()
     cy.testId('edition-action-bar-parameters-modal').click()
@@ -189,14 +189,14 @@ describe('Utilisateur connecté, lorsque je modifie une ressource, je peux modif
     )
   })
 
-  it("Acceptation 4 - Je peux changer l'indexation de ma ressource", () => {
+  it('Acceptation 4 - Je peux changer l’indexation de ma ressource', () => {
     cleanUpAndCreateTestPublishedResource({
       publicBase: true,
       publicResource: true,
       signinAsResourceOwner: true,
       visitResourcePage: true,
     })
-    cy.testId('resource-edition-button').click()
+    cy.testId('resource-edition-button').filter(':visible').click()
 
     cy.testId('edition-action-bar-more-actions').click()
     cy.testId('edition-action-bar-parameters-modal').click()
@@ -238,7 +238,7 @@ describe('Utilisateur connecté, lorsque je modifie une ressource, je peux modif
       visitResourcePage: true,
     })
 
-    cy.testId('resource-edition-button').click()
+    cy.testId('resource-edition-button').filter(':visible').click()
 
     cy.testId('edition-action-bar-more-actions').click()
     cy.testId('edition-action-bar-parameters-modal').click()
