@@ -14,6 +14,7 @@ const ResourceReportButton = ({
     iconId="fr-icon-warning-line"
     priority={priority}
     className={className}
+    size="small"
     onClick={ResourceReportModal.open}
   >
     Signaler

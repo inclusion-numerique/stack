@@ -84,7 +84,7 @@ const ResourceActions = ({
               Modifier
             </Button>
           )}
-          {/* We cannot put save in collection inside a modal (modal inception) so we display icon-only in mobile */}
+          {/* We display icon-only in mobile */}
           {canSaveInCollection && (
             <SaveResourceInCollectionButton
               resource={resource}
@@ -142,19 +142,6 @@ const ResourceActions = ({
           },
         ]}
       >
-        {canEdit && (
-          <Button
-            data-testid="resource-edition-button"
-            priority="secondary"
-            size="small"
-            iconId="fr-icon-edit-line"
-            linkProps={{
-              href: `/ressources/${resource.slug}/editer`,
-            }}
-          >
-            Modifier
-          </Button>
-        )}
         {!isPublished && canEdit && (
           <DeleteResourceButton resourceId={resource.id} />
         )}
