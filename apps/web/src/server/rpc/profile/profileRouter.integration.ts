@@ -1,8 +1,13 @@
+import { expect } from '@storybook/jest'
 import { v4 } from 'uuid'
 import { testSessionUser } from '@app/web/test/testSessionUser'
 import { profileRouter } from '@app/web/server/rpc/profile/profileRouter'
 import { createTestContext } from '@app/web/test/createTestContext'
-import { UpdateProfileVisibilityCommand } from '@app/web/server/profiles/updateProfile'
+import {
+  UpdateProfileContactsCommand,
+  UpdateProfileInformationsCommand,
+  UpdateProfileVisibilityCommand,
+} from '@app/web/server/profiles/updateProfile'
 import { prismaClient } from '@app/web/prismaClient'
 import { handleResourceCreationCommand } from '@app/web/server/resources/feature/handleResourceCreationCommand'
 import { handleResourceMutationCommand } from '@app/web/server/resources/feature/handleResourceMutationCommand'
@@ -24,6 +29,23 @@ describe('profileRouter', () => {
   const basesToDelete: string[] = []
   const collectionsToDelete: string[] = []
   const resourcesToDelete: string[] = []
+
+  const executeUpdateProfilInformationsProcedure = (
+    input: UpdateProfileInformationsCommand,
+  ) =>
+    profileRouter
+      .createCaller(createTestContext({ user: givenUser }))
+      .updateInformations(input)
+
+  const executeUpdateProfilContactsProcedure = (
+    input: UpdateProfileContactsCommand,
+  ) =>
+    profileRouter
+      .createCaller(createTestContext({ user: givenUser }))
+      .updateContacts(input)
+
+  const executeDeleteProfilProcedure = () =>
+    profileRouter.createCaller(createTestContext({ user: givenUser })).delete()
 
   beforeAll(async () => {
     await prismaClient.user.create({
@@ -172,6 +194,7 @@ describe('profileRouter', () => {
         },
         { user: givenUser },
       )
+
       await handleResourceMutationCommand(
         {
           name: 'ChangeVisibility',
@@ -197,6 +220,7 @@ describe('profileRouter', () => {
         },
         { user: givenUser },
       )
+
       await handleResourceMutationCommand(
         {
           name: 'ChangeVisibility',
@@ -209,6 +233,7 @@ describe('profileRouter', () => {
           user: givenUser,
         },
       )
+
       await handleResourceCreationCommand(
         {
           name: 'CreateResource',
@@ -221,6 +246,7 @@ describe('profileRouter', () => {
         },
         { user: givenUser },
       )
+
       await handleResourceMutationCommand(
         {
           name: 'ChangeVisibility',
@@ -233,6 +259,7 @@ describe('profileRouter', () => {
           user: givenUser,
         },
       )
+
       await handleResourceCreationCommand(
         {
           name: 'CreateResource',
@@ -294,15 +321,117 @@ describe('profileRouter', () => {
         }),
       ])
 
-      expect(profile.isPublic).toBeFalse()
-      expect(base.isPublic).toBeTrue()
-      expect(publicCollectionInBase.isPublic).toBeTrue()
-      expect(publicCollection.isPublic).toBeFalse()
-      expect(privateCollection.isPublic).toBeFalse()
-      expect(publicResourceInBase.isPublic).toBeTrue()
-      expect(publicResource.isPublic).toBeFalse()
-      expect(privateResource.isPublic).toBeFalse()
-      expect(draftResource.isPublic).toBeNull()
+      await expect(profile.isPublic).toBeFalse()
+      await expect(base.isPublic).toBeTrue()
+      await expect(publicCollectionInBase.isPublic).toBeTrue()
+      await expect(publicCollection.isPublic).toBeFalse()
+      await expect(privateCollection.isPublic).toBeFalse()
+      await expect(publicResourceInBase.isPublic).toBeTrue()
+      await expect(publicResource.isPublic).toBeFalse()
+      await expect(privateResource.isPublic).toBeFalse()
+      await expect(draftResource.isPublic).toBeNull()
+    })
+  })
+
+  describe('updateInformations', (): void => {
+    it('should change profil firstname, lastname, departement and description', async (): Promise<void> => {
+      await executeUpdateProfilInformationsProcedure({
+        firstName: 'John',
+        lastName: 'Doe',
+        department: '24',
+        description: 'This is John Doe',
+      })
+
+      const user = await prismaClient.user.findUniqueOrThrow({
+        where: { id: givenUserId },
+      })
+
+      await expect(user.firstName).toBe('John')
+      await expect(user.lastName).toBe('Doe')
+      await expect(user.name).toBe('John Doe')
+      await expect(user.department).toBe('24')
+      await expect(user.description).toBe('This is John Doe')
+    })
+  })
+
+  describe('updateContacts', (): void => {
+    it('should change profil contact informations', async (): Promise<void> => {
+      await executeUpdateProfilContactsProcedure({
+        emailIsPublic: true,
+        website: 'https://www.john-doe.com',
+        facebook: 'https://www.facebook.com/john-doe',
+        twitter: 'https://twitter.com/JDoe',
+        linkedin: 'https://www.linkedin.com/in/john-doe',
+      })
+
+      const user = await prismaClient.user.findUniqueOrThrow({
+        where: { id: givenUserId },
+      })
+
+      await expect(user.emailIsPublic).toBe(true)
+      await expect(user.website).toBe('https://www.john-doe.com')
+      await expect(user.facebook).toBe('https://www.facebook.com/john-doe')
+      await expect(user.twitter).toBe('https://twitter.com/JDoe')
+      await expect(user.linkedin).toBe('https://www.linkedin.com/in/john-doe')
+    })
+  })
+
+  describe('delete', (): void => {
+    it('should delete user profil', async (): Promise<void> => {
+      await executeUpdateProfilInformationsProcedure({
+        firstName: 'John',
+        lastName: 'Doe',
+        department: '24',
+        description: 'This is John Doe',
+      })
+
+      await executeUpdateProfilContactsProcedure({
+        emailIsPublic: true,
+        website: 'https://www.john-doe.com',
+        facebook: 'https://www.facebook.com/john-doe',
+        twitter: 'https://twitter.com/JDoe',
+        linkedin: 'https://www.linkedin.com/in/john-doe',
+      })
+
+      await executeDeleteProfilProcedure()
+
+      const user = await prismaClient.user.findUniqueOrThrow({
+        where: { id: givenUserId },
+      })
+
+      const bases = await prismaClient.base.findMany({
+        where: { ownerId: givenUserId },
+      })
+
+      const resources = await prismaClient.resource.findMany({
+        where: { contributors: { none: {} } },
+      })
+
+      const collections = await prismaClient.collection.findMany({
+        where: { savedCollection: { none: {} } },
+      })
+
+      await expect(user.email).toBe(
+        `utilisateur-supprimé+${givenUserId}@lesbases.anct.gouv.fr`,
+      )
+      await expect(user.firstName).toBeNull()
+      await expect(user.lastName).toBeNull()
+      await expect(user.name).toBe('Profil supprimé')
+      await expect(user.department).toBeNull()
+      await expect(user.description).toBeNull()
+      await expect(user.emailIsPublic).toBeFalse()
+      await expect(user.website).toBeNull()
+      await expect(user.facebook).toBeNull()
+      await expect(user.twitter).toBeNull()
+      await expect(user.linkedin).toBeNull()
+      await expect(user.deleted).not.toBeNull()
+      await expect(bases.every((base) => base.deleted != null)).toBe(true)
+      await expect(
+        resources.every((resource) => resource.deleted != null),
+      ).toBe(true)
+      await expect(
+        collections.every((collection) => collection.deleted != null),
+      ).toBe(true)
     })
   })
 })

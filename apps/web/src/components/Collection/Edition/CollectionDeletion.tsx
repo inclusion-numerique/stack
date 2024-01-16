@@ -26,12 +26,11 @@ const CollectionDeletion = ({
   collection: CollectionPageData
 }) => {
   const router = useRouter()
-  const mutate = trpc.collection.delete.useMutation()
+  const mutation = trpc.collection.delete.useMutation()
 
   const handleDeleteCollection = async () => {
-    closeDeleteModal()
     try {
-      await mutate.mutateAsync({ id: collection.id })
+      await mutation.mutateAsync({ id: collection.id })
       router.refresh()
       router.push(`/profils/${collection.owner.slug}/collections`)
       createToast({
@@ -50,6 +49,8 @@ const CollectionDeletion = ({
         message:
           'Une erreur est survenue pendant la suppression, merci de réessayer ultérieurement',
       })
+    } finally {
+      closeDeleteModal()
     }
   }
 
@@ -72,6 +73,7 @@ const CollectionDeletion = ({
         description="Cette action est irréversible et entraîne la suppression définitive de
           toutes les ressources de la Collection."
         confirmText={collection.title}
+        isLoading={mutation.isPending}
         Component={DeleteModal}
         onClose={closeDeleteModal}
         onDelete={handleDeleteCollection}
