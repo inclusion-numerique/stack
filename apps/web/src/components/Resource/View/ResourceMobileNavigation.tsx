@@ -13,7 +13,7 @@ const ResourceMobileNavigation = ({
   navigationData: ResourceNavigationData
 }) => {
   if (!navigationData) {
-    return null
+    return <hr className="fr-hidden-md fr-separator-1px" />
   }
 
   return (

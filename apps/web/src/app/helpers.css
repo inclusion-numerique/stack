@@ -260,6 +260,10 @@
     }
 }
 
+.fr-separator-1px {
+    padding-bottom: 1px;
+}
+
 .fr-separator-1v {
     padding-bottom: 1px;
     margin: 8px 0;
