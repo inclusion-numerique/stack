@@ -11,10 +11,16 @@ const ResourcesViewsAndMetadata = ({
   className?: string
   resource: ResourceListItem
 }) => (
-  <div className={classNames(styles.container, 'fr-text--sm', className)}>
+  <div
+    className={classNames(
+      styles.container,
+      'fr-text--sm fr-text--medium fr-text-mention--grey',
+      className,
+    )}
+  >
     <span className="fr-icon-eye-line fr-icon--sm" />
     <div>
-      <b data-testid="resource-views-count">{resource._count.views}</b>
+      <span data-testid="resource-views-count">{resource._count.views}</span>
       <span className={styles.spanMdDisplay}>
         {' '}
         Vue{sPluriel(resource._count.views)}
@@ -23,9 +29,9 @@ const ResourcesViewsAndMetadata = ({
     <div>·</div>
     <span className="fr-icon-bookmark-line fr-icon--sm" />
     <div className={styles.lastLeft}>
-      <b data-testid="resource-collections-count">
+      <span data-testid="resource-collections-count">
         {resource._count.collections}
-      </b>
+      </span>
       <span className={styles.spanMdDisplay}>
         {' '}
         Enregistrement{sPluriel(resource._count.collections)}

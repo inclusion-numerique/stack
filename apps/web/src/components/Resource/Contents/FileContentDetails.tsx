@@ -24,6 +24,7 @@ const FileContentDetails = ({
           'fr-text--medium fr-text--sm fr-mr-1w fr-mb-0',
           styles.name,
         )}
+        title={name}
       >
         {name}
       </span>

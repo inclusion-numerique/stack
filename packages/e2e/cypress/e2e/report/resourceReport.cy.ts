@@ -55,6 +55,8 @@ describe('Utilisateur connecté, je peux signaler une ressource', () => {
 
     cy.dsfrModalsShouldBeBound()
 
+    cy.findByRole('button', { name: /plus d’options/i }).click()
+
     cy.findByRole('button', { name: /signaler/i }).click()
 
     cy.findByRole('dialog').within(() => {

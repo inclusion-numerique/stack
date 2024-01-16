@@ -27,10 +27,7 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer la ressource',
     )
     cy.dsfrShouldBeStarted()
     cy.testId('resource-view').should('exist')
-    cy.testId('resource-edition-button').should(
-      'have.text',
-      'Demander à contribuer',
-    )
+    cy.testId('resource-edition-button').should('not.exist')
     cy.testId('private-base-box').should('not.exist')
 
     cy.log('Je ne peux pas editer la ressource')
@@ -100,10 +97,7 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer la ressource',
     )
     cy.dsfrShouldBeStarted()
     cy.testId('resource-view').should('exist')
-    cy.testId('resource-edition-button').should(
-      'have.text',
-      'Demander à contribuer',
-    )
+    cy.testId('resource-edition-button').should('not.exist')
     cy.testId('private-base-box').should('not.exist')
 
     cy.log('Je ne peux pas editer la ressource')
@@ -168,7 +162,9 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer la ressource',
 
     cy.log('Je peux voir la ressource')
     cy.testId('resource-view').should('exist')
-    cy.testId('resource-edition-button').should('have.text', 'Modifier')
+    cy.testId('resource-edition-button')
+      .filter(':visible')
+      .should('have.text', 'Modifier')
     cy.testId('private-base-box').should('not.exist')
 
     cy.log('Je peux editer la ressource')
@@ -210,7 +206,9 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer la ressource',
 
     cy.log('Je peux voir la ressource')
     cy.testId('resource-view').should('exist')
-    cy.testId('resource-edition-button').should('have.text', 'Modifier')
+    cy.testId('resource-edition-button')
+      .filter(':visible')
+      .should('have.text', 'Modifier')
     cy.testId('private-base-box').should('not.exist')
 
     cy.log('Je peux editer la ressource')
@@ -247,7 +245,9 @@ describe('Utilisateur sans droit, je ne peux ni voir et ni editer la ressource',
     cy.dsfrShouldBeStarted()
     cy.log('Je peux voir la ressource')
     cy.testId('resource-view').should('exist')
-    cy.testId('resource-edition-button').should('have.text', 'Modifier')
+    cy.testId('resource-edition-button')
+      .filter(':visible')
+      .should('have.text', 'Modifier')
     cy.testId('private-base-box').should('not.exist')
 
     cy.log('Je peux editer la ressource')

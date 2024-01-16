@@ -4,56 +4,28 @@ import ResourceContentView from '@app/web/components/Resource/Contents/ResourceC
 import ResourcesViewsAndMetadata from '@app/web/components/Resource/View/ResourcesViewsAndMetadata'
 import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
 import { Resource } from '@app/web/server/resources/getResource'
-import { dateAsDay } from '@app/web/utils/dateAsDay'
-import { getResourceSectionIdAttribute } from '@app/web/components/Resource/View/getResourceSectionIdAttribute'
-import CopyLinkButton from '@app/web/components/CopyLinkButton'
-import { getServerUrl } from '@app/web/utils/baseUrl'
 import RegisterResourceView from '@app/web/components/Resource/View/RegisterResourceView'
+import ResourceActions from '@app/web/components/Resource/View/ResourceActions'
+import { SessionUser } from '@app/web/auth/sessionUser'
+import ResourceMobileNavigation from '@app/web/components/Resource/View/ResourceMobileNavigation'
+import type { ResourceNavigationData } from '@app/web/components/Resource/View/getResourceNavigationData'
+import { WithAnchorIdAndHref } from '@app/web/components/Resource/View/addAnchorIdsToResourceContents'
 import styles from './ResourceContents.module.css'
-import ResourceSideMenu from './ResourceSideMenu'
 
-const PublishedAndUpdated = ({
-  className,
-  updated,
-  created,
+const ResourceContents = ({
+  resource,
+  user,
+  isAdmin,
+  navigationData,
+  contentsWithAnchor,
 }: {
-  className?: string
-  created: Date
-  updated: Date
-}) => {
-  const publishedDay = dateAsDay(created)
-  const updatedDay = dateAsDay(updated)
-
-  return (
-    <div className={classNames('fr-text--xs fr-mb-0', className)}>
-      <b className="fr-mr-1w">Publiée le {dateAsDay(created)}</b>
-      {publishedDay !== updatedDay && (
-        <>
-          <span className={styles.publishedAndUpdatedSeparator} />
-          <span className="fr-ml-1w">
-            {publishedDay !== updatedDay && ` Mis à jour le ${updatedDay}`}
-          </span>
-        </>
-      )}
-    </div>
-  )
-}
-
-const ResourceContents = ({ resource }: { resource: Resource }) => (
+  resource: Resource
+  user: SessionUser | null
+  isAdmin: boolean
+  navigationData: ResourceNavigationData
+  contentsWithAnchor: WithAnchorIdAndHref<Resource['contents'][number]>[]
+}) => (
   <>
-    <div className={styles.dateInformations}>
-      <PublishedAndUpdated
-        created={resource.created}
-        updated={resource.updated}
-        className="fr-hidden fr-unhidden-lg"
-      />
-      <div className="fr-hidden fr-unhidden-md">
-        <CopyLinkButton
-          priority="tertiary"
-          url={getServerUrl(`/ressources/${resource.slug}`, true)}
-        />
-      </div>
-    </div>
     {resource.image ? (
       <div className={styles.imageContainer}>
         <ResponsiveUploadedImage
@@ -68,26 +40,21 @@ const ResourceContents = ({ resource }: { resource: Resource }) => (
         />
       </div>
     ) : null}
-    <PublishedAndUpdated
-      created={resource.created}
-      updated={resource.updated}
-      className={classNames('fr-hidden-lg', !!resource.image && 'fr-mt-4v')}
-    />
-    <h3 className={classNames('fr-mb-2w', styles.title)}>{resource.title}</h3>
-    <p className="fr-text--lg fr-mb-0">{resource.description}</p>
-    <hr id="contenu" className="fr-hidden fr-unhidden-md fr-mt-8v" />
+    <h3 className="fr-mt-4v fr-mb-0 fr-mt-md-8v">{resource.title}</h3>
+    <p className="fr-text--lg fr-mt-2v fr-mt-md-3v fr-mb-0">
+      {resource.description}
+    </p>
     <ResourcesViewsAndMetadata
       resource={resource}
-      className={styles.viewsAndMetadata}
+      className="fr-my-4v fr-my-md-6v"
     />
-    <div className="fr-hidden-md fr-mb-8v">
-      <ResourceSideMenu resource={resource} />
-    </div>
-    {resource.contents.map((content, index) => (
+    <ResourceActions resource={resource} user={user} isAdmin={isAdmin} />
+    <ResourceMobileNavigation navigationData={navigationData} />
+    {contentsWithAnchor.map((content, index) => (
       <div
         key={content.id}
-        id={`${getResourceSectionIdAttribute(content, index)}`}
-        className={classNames(styles.content, index === 0 && 'is-first')}
+        id={content.anchorId}
+        className={classNames('fr-py-4v', index === 0 && 'fr-pt-6v')}
       >
         <ResourceContentView content={content} />
       </div>

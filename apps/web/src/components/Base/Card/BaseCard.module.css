@@ -3,7 +3,6 @@
   display: flex;
   gap: 12px;
   border-bottom: var(--slim-grey-border);
-  background-image: none;
   flex-direction: column;
 
   &:first-of-type {

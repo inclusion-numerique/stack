@@ -15,7 +15,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
       user: { slug },
     } = cleanUpAndCreateTestCollectionAndResource()
     cy.dsfrModalsShouldBeBound()
-    cy.testId('save-resource-in-collection-button').click()
+    cy.testId('save-resource-in-collection-button').filter(':visible').click()
 
     cy.testId('add-in-collection-section').should('have.length', 1)
     cy.testId('added-in-collection-button').should('have.length', 0)
@@ -40,7 +40,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
       user: { slug },
     } = cleanUpAndCreateTestCollectionAndResource(true)
     cy.dsfrModalsShouldBeBound()
-    cy.testId('save-resource-in-collection-button').click()
+    cy.testId('save-resource-in-collection-button').filter(':visible').click()
 
     cy.testId('add-in-collection-section').should('have.length', 2)
     cy.testId('added-in-collection-button').should('have.length', 0)
@@ -75,7 +75,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
   it('Acceptation 3 : ajout d’une ressource à la collection d’un profil avec collections et membre de base', () => {
     const { ids } = cleanUpAndCreateTestCollectionAndResource(true, true)
     cy.dsfrModalsShouldBeBound()
-    cy.testId('save-resource-in-collection-button').click()
+    cy.testId('save-resource-in-collection-button').filter(':visible').click()
 
     cy.testId('add-in-collection-bases').should('have.length', 3)
     cy.testId('back-to-bases-button').should('not.exist')

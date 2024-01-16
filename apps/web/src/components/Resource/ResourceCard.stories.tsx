@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { ComponentProps } from 'react'
 import { ResourcesListWrapper } from '@app/storybook/components/ResourcesListWrapper'
-import { mobileStory } from '@app/storybook/storyHelper'
+import { mediumContainerStory, mobileStory } from '@app/storybook/storyHelper'
 import { testSessionUser } from '@app/web/test/testSessionUser'
 import { ResourceListItem } from '@app/web/server/resources/getResourcesList'
 import ResourceCard from '@app/web/components/Resource/ResourceCard'
@@ -32,7 +32,7 @@ const resource = {
     name: 'Jean Biche',
     firstName: 'Jean',
     lastName: 'Biche',
-    image: null,
+    image: { id: 'portrait.webp', altText: 'Texte alternatif' },
   },
   image: null,
   collections: [],
@@ -61,7 +61,7 @@ const render = (props: ComponentProps<typeof ResourceCard>) => (
   <Template {...props} />
 )
 
-export const BrouillonSansImage: Story = {
+const BrouillonSansImageStory: Story = {
   args: {
     resource: { ...resource, published: null },
     user: creatorUser,
@@ -69,7 +69,10 @@ export const BrouillonSansImage: Story = {
   render,
 }
 
-export const BrouillonAvecImage: Story = {
+export const BrouillonSansImage = mediumContainerStory(BrouillonSansImageStory)
+export const BrouillonSansImageMobile = mobileStory(BrouillonSansImageStory)
+
+const BrouillonAvecImageStory: Story = {
   args: {
     resource: {
       ...resource,
@@ -81,15 +84,25 @@ export const BrouillonAvecImage: Story = {
   render,
 }
 
-export const BrouillonModifiéSansImage: Story = {
+export const BrouillonAvecImage = mediumContainerStory(BrouillonAvecImageStory)
+export const BrouillonAvecImageMobile = mobileStory(BrouillonAvecImageStory)
+
+const BrouillonModifiéSansImageStory: Story = {
   args: {
-    resource: { ...resource, updated: new Date(), published: null },
+    resource: { ...resource, updated: new Date(), published: null, base: null },
     user: creatorUser,
   },
   render,
 }
 
-export const BrouillonModifiéAvecImage: Story = {
+export const BrouillonModifiéSansImage = mediumContainerStory(
+  BrouillonModifiéSansImageStory,
+)
+export const BrouillonModifiéSansImageMobile = mobileStory(
+  BrouillonModifiéSansImageStory,
+)
+
+const BrouillonModifiéAvecImageStory: Story = {
   args: {
     resource: {
       ...resource,
@@ -102,7 +115,14 @@ export const BrouillonModifiéAvecImage: Story = {
   render,
 }
 
-export const SansImageVueContributeur: Story = {
+export const BrouillonModifiéAvecImage = mediumContainerStory(
+  BrouillonModifiéAvecImageStory,
+)
+export const BrouillonModifiéAvecImageMobile = mobileStory(
+  BrouillonModifiéAvecImageStory,
+)
+
+const SansImageVueContributeurStory: Story = {
   args: {
     resource,
     user: creatorUser,
@@ -110,7 +130,14 @@ export const SansImageVueContributeur: Story = {
   render,
 }
 
-export const AvecImageVueContributeur: Story = {
+export const SansImageVueContributeur = mediumContainerStory(
+  SansImageVueContributeurStory,
+)
+export const SansImageVueContributeurMobile = mobileStory(
+  SansImageVueContributeurStory,
+)
+
+const AvecImageVueContributeurStory: Story = {
   args: {
     resource: {
       ...resource,
@@ -121,7 +148,14 @@ export const AvecImageVueContributeur: Story = {
   render,
 }
 
-export const SansImageVueVisiteur: Story = {
+export const AvecImageVueContributeur = mediumContainerStory(
+  AvecImageVueContributeurStory,
+)
+export const AvecImageVueContributeurMobile = mobileStory(
+  AvecImageVueContributeurStory,
+)
+
+const SansImageVueVisiteurStory: Story = {
   args: {
     resource,
     user: testSessionUser,
@@ -129,7 +163,12 @@ export const SansImageVueVisiteur: Story = {
   render,
 }
 
-export const AvecImageVueVisiteur: Story = {
+export const SansImageVueVisiteur = mediumContainerStory(
+  SansImageVueVisiteurStory,
+)
+export const SansImageVueVisiteurMobile = mobileStory(SansImageVueVisiteurStory)
+
+const AvecImageVueVisiteurStory: Story = {
   args: {
     resource: {
       ...resource,
@@ -140,7 +179,12 @@ export const AvecImageVueVisiteur: Story = {
   render,
 }
 
-export const ModificationsNonPubliéesSansImageVueContributeur: Story = {
+export const AvecImageVueVisiteur = mediumContainerStory(
+  AvecImageVueVisiteurStory,
+)
+export const AvecImageVueVisiteurMobile = mobileStory(AvecImageVueVisiteurStory)
+
+const ModificationsNonPubliéesSansImageVueContributeurStory: Story = {
   args: {
     resource: { ...resource, updated: new Date() },
     user: creatorUser,
@@ -148,7 +192,12 @@ export const ModificationsNonPubliéesSansImageVueContributeur: Story = {
   render,
 }
 
-export const ModificationsNonPubliéesAvecImageVueContributeur: Story = {
+export const ModificationsNonPubliéesSansImageVueContributeur =
+  mediumContainerStory(ModificationsNonPubliéesSansImageVueContributeurStory)
+export const ModificationsNonPubliéesSansImageVueContributeurMobile =
+  mobileStory(ModificationsNonPubliéesSansImageVueContributeurStory)
+
+const ModificationsNonPubliéesAvecImageVueContributeurStory: Story = {
   args: {
     resource: {
       ...resource,
@@ -160,7 +209,7 @@ export const ModificationsNonPubliéesAvecImageVueContributeur: Story = {
   render,
 }
 
-export const AvecImageVueVisiteurMobile = mobileStory(AvecImageVueVisiteur)
-
+export const ModificationsNonPubliéesAvecImageVueContributeur =
+  mediumContainerStory(ModificationsNonPubliéesAvecImageVueContributeurStory)
 export const ModificationsNonPubliéesAvecImageVueContributeurMobile =
-  mobileStory(ModificationsNonPubliéesAvecImageVueContributeur)
+  mobileStory(ModificationsNonPubliéesAvecImageVueContributeurStory)

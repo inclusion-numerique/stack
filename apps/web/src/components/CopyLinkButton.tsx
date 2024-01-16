@@ -11,12 +11,14 @@ const CopyLinkButton = ({
   className,
   children,
   priority,
+  size = 'small',
 }: {
   url: string
   title?: string
   className?: string
   children?: ReactNode
   priority?: ButtonProps.Common['priority']
+  size?: 'medium' | 'small'
 }) => {
   const [copied, setCopied] = useState(false)
   const onCopy = () => {
@@ -36,7 +38,7 @@ const CopyLinkButton = ({
       <button
         className={classNames(
           'fr-btn',
-          'fr-btn--sm',
+          size === 'small' && 'fr-btn--sm',
           `fr-btn--${
             priority ? priority.replaceAll(' ', '-') : 'tertiary-no-outline'
           }`,

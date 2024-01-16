@@ -10,8 +10,8 @@ import BaseImage from '@app/web/components/BaseImage'
 
 const attributionWordings = {
   resource: {
-    base: 'Dans la base ',
-    user: 'Publié par ',
+    base: 'Publiée dans la base ',
+    user: 'Publiée par ',
   },
   collection: {
     base: 'Collection de la base ',
@@ -48,7 +48,10 @@ const OwnershipInformation = ({
           <BaseImage className="fr-mr-1w" base={base} />
           <span className="fr-text--xs fr-mb-0">
             {attribution}
-            <Link href={`/bases/${base.slug}`} className="fr-link fr-text--xs">
+            <Link
+              href={`/bases/${base.slug}`}
+              className="fr-link fr-text--xs fr-text-decoration--none fr-link--underline-on-hover"
+            >
               {base.title}
             </Link>
           </span>
@@ -60,7 +63,7 @@ const OwnershipInformation = ({
             {attribution}
             <Link
               href={`/profils/${user.slug}`}
-              className="fr-link fr-text--xs"
+              className="fr-link fr-text--xs fr-text-decoration--none fr-link--underline-on-hover"
             >
               {user.name}
             </Link>
