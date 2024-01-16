@@ -7,17 +7,16 @@ import type { ProfilePageData } from '@app/web/server/profiles/getProfile'
 import type { ProfileTab } from '@app/web/app/(public)/profils/[slug]/(consultation)/ProfileTab'
 import styles from './ProfileMenu.module.css'
 
-const getCurrentTabFromPath = (path: string): ProfileTab => {
-  const lastSegment = path?.split('/').at(-1) ?? ''
+const tabsMap: Map<string, ProfileTab> = new Map<string, ProfileTab>([
+  ['bases', 'bases'],
+  ['collections', 'collections'],
+  ['suivis', 'suivis'],
+  ['a-propos', 'a-propos'],
+  ['ressources', 'ressources'],
+])
 
-  return lastSegment === 'bases'
-    ? 'bases'
-    : lastSegment === 'collections'
-      ? 'collections'
-      : lastSegment === 'suivis'
-        ? 'suivis'
-        : 'ressources'
-}
+const getCurrentTabFromPath = (path: string): ProfileTab =>
+  tabsMap.get(path?.split('/').at(-1) ?? '') ?? 'ressources'
 
 const MenuItem = ({
   tab,
@@ -94,6 +93,13 @@ const ProfileMenu = ({
             >
               {isConnectedUser ? 'Mes suivis' : 'Suivis'} ·{' '}
               <b>{followsCount}</b>
+            </MenuItem>
+            <MenuItem
+              tab="a-propos"
+              currentTab={currentTab}
+              href={`/profils/${profile.slug}/a-propos`}
+            >
+              À propos
             </MenuItem>
           </ul>
         </nav>

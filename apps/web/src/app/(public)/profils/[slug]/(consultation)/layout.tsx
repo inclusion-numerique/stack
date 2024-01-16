@@ -14,7 +14,7 @@ const ProfileLayout = async ({
     params.slug,
   )
 
-  if (profile.slug == null) return
+  if (!profile.slug) return
 
   const { resourcesCount, followsCount, collectionsCount, basesCount } =
     await getProfilePageCounts(profile.slug)
