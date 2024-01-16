@@ -1,1 +1,6 @@
-export type ProfileTab = 'ressources' | 'bases' | 'collections' | 'suivis'
+export type ProfileTab =
+  | 'ressources'
+  | 'bases'
+  | 'collections'
+  | 'suivis'
+  | 'a-propos'

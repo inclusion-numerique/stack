@@ -6,8 +6,7 @@ import { getProfileSavedCollections } from '@app/web/server/collections/getSaved
 import type { ProfilRouteParams } from '@app/web/app/(public)/profils/[slug]/profilRouteParams'
 import { getProfilePageContext } from '@app/web/app/(public)/profils/[slug]/(consultation)/getProfilePageContext'
 
-const ProfileBasesPage = async ({ params }: ProfilRouteParams) => {
-  // Auth and profile has been checked in layout
+const ProfileCollectionsPage = async ({ params }: ProfilRouteParams) => {
   const { profile, user, authorizations } = await getProfilePageContext(
     params.slug,
   )
@@ -34,4 +33,4 @@ const ProfileBasesPage = async ({ params }: ProfilRouteParams) => {
   )
 }
 
-export default ProfileBasesPage
+export default ProfileCollectionsPage

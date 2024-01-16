@@ -449,6 +449,9 @@ jobs:
             echo "SMTP_PASSWORD=mailpassword" >> .env
             echo "SMTP_SERVER=localhost" >> .env
       - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @app/web prisma generate
+      - run:
           name: 'Create CI database schema'
           command: |
             pnpm --silent -F @app/web prisma migrate deploy
