@@ -37,7 +37,7 @@ describe('Utilisateur connecté, je peux signaler une ressource', () => {
     cy.findByRole('button', { name: /signaler/i }).should('not.exist')
   })
 
-  it.only('Acceptation 2 - Je peux signaler une resource, et le modérateur est prévenu', () => {
+  it('Acceptation 2 - Je peux signaler une resource, et le modérateur est prévenu', () => {
     const user = givenUser()
     const base = givenBase({ ownerId: user.id, isPublic: true })
     const resourceId = v4()
