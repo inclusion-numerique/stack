@@ -58,16 +58,17 @@ model User {
   twitter       String?
   linkedin      String?
 
-  image       Image?    @relation(fields: [imageId], references: [id])
-  imageId     String?   @unique @map("image_id") @db.Uuid
-  location    String?
-  title       String?
-  description String?
-  department  String?
-  accounts    Account[]
-  sessions    Session[]
-  isPublic    Boolean   @default(false) @map("is_public")
-  deleted     DateTime?
+  image               Image?    @relation(fields: [imageId], references: [id])
+  imageId             String?   @unique @map("image_id") @db.Uuid
+  location            String?
+  title               String?
+  description         String?
+  department          String?
+  accounts            Account[]
+  sessions            Session[]
+  isPublic            Boolean   @default(false) @map("is_public")
+  deleted             DateTime?
+  hasSeenV2Onboarding DateTime? @map("has_seen_v2_onboarding")
 
   created             DateTime               @default(now())
   updated             DateTime               @default(now())

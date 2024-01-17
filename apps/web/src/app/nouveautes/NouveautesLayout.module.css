@@ -1,0 +1,11 @@
+.container {
+    min-height: 100%;
+    overflow: auto;
+    display: flex;
+    position: relative;
+
+    @media (min-width: 48em) {
+        background: var(--blue-france-975-75);
+        padding: 0;
+    }
+}

@@ -100,6 +100,7 @@ export const getSessionUserFromSessionToken = async (
           created: true,
           updated: true,
           isPublic: true,
+          hasSeenV2Onboarding: true,
           ownedBases: {
             select: {
               id: true,
@@ -168,6 +169,7 @@ export const getSessionUserFromSessionToken = async (
 
   return {
     ...res.user,
+    hasSeenV2Onboarding: res.user.hasSeenV2Onboarding?.toISOString() ?? null,
     created: res.user.created.toISOString(),
     updated: res.user.updated.toISOString(),
     emailVerified: res.user.emailVerified?.toISOString() ?? null,

@@ -57,6 +57,11 @@ const SearchBar = ({
 
   const router = useRouter()
 
+  useEffect(() => {
+    // Prefetch default search route to avoid delay when user clicks on search button
+    router.prefetch('/rechercher/ressources/tout')
+  }, [])
+
   const inputRef = useRef<HTMLInputElement>(null)
   const quickSearchContainerRef = useRef<HTMLDivElement>(null)
 

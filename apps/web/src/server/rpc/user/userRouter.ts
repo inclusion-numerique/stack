@@ -1,6 +1,10 @@
 import { v4 } from 'uuid'
 import { prismaClient } from '@app/web/prismaClient'
-import { publicProcedure, router } from '@app/web/server/rpc/createRouter'
+import {
+  protectedProcedure,
+  publicProcedure,
+  router,
+} from '@app/web/server/rpc/createRouter'
 import { ServerUserSignupValidation } from '@app/web/server/rpc/user/userSignup.server'
 import { createAvailableSlug } from '@app/web/server/slug/createAvailableSlug'
 
@@ -50,4 +54,18 @@ export const userRouter = router({
         })
       },
     ),
+  markOnboardingV2AsSeen: protectedProcedure.mutation(({ ctx: { user } }) =>
+    prismaClient.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        hasSeenV2Onboarding: new Date(),
+      },
+      select: {
+        id: true,
+        hasSeenV2Onboarding: true,
+      },
+    }),
+  ),
 })

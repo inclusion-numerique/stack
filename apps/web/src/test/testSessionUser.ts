@@ -12,6 +12,7 @@ export const testSessionUser = {
   updated: new Date('2023-05-05').toISOString(),
   created: new Date('2023-01-01').toISOString(),
   emailVerified: new Date('2023-01-01').toISOString(),
+  hasSeenV2Onboarding: null,
   isPublic: false,
   ownedBases: [],
   bases: [],

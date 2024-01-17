@@ -53,6 +53,14 @@ const RootLayout = async ({ children }: PropsWithChildren) => {
   const nonce = undefined
   return (
     <html lang="fr" data-fr-theme="light" data-fr-scheme="light">
+      <head>
+        <link
+          rel="preload"
+          href="/images/spinner.svg"
+          as="image"
+          type="image/svg+xml"
+        />
+      </head>
       <body>
         <PreloadResources />
         <Dsfr nonce={nonce} />

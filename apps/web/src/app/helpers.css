@@ -100,10 +100,6 @@
     justify-content: space-between;
 }
 
-.fr-flex-shrink-0 {
-    flex-shrink: 0;
-}
-
 .fr-flex-nowrap {
     flex-wrap: nowrap;
 }
@@ -152,6 +148,29 @@
     gap: 40px;
 }
 
+.fr-flex-grow-0 {
+    flex-grow: 0;
+}
+
+.fr-flex-grow-1 {
+    flex-grow: 1;
+}
+
+.fr-flex-grow-2 {
+    flex-grow: 2;
+}
+
+.fr-flex-shrink-0 {
+    flex-shrink: 0;
+}
+
+.fr-flex-shrink-1 {
+    flex-shrink: 1;
+}
+
+.fr-flex-shrink-2 {
+    flex-shrink: 2;
+}
 
 /* md flex rules */
 @media (min-width: 48em) {
