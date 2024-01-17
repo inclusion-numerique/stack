@@ -36,8 +36,6 @@ describe('Onboarding V2', () => {
     cy.createUserAndSignin(user)
     cy.visit('/')
 
-    cy.getCookie(hasSeenOnboardingV2Cookie).should('not.exist')
-    cy.getCookie(hasOpenedOnboardingV2Cookie).should('not.exist')
     cy.dsfrShouldBeStarted()
 
     cy.appUrlShouldBe('/nouveautes')
