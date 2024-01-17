@@ -7,6 +7,7 @@ import { useOnClickOutside } from 'usehooks-ts'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { getUserDisplayName } from '@app/web/utils/user'
 import { getBasesFromSessionUser } from '@app/web/bases/getBasesFromSessionUser'
+import OpenOnboardingForMigratedUserThatHasNotSeenIt from '@app/web/app/nouveautes/OpenOnboardingForMigratedUserThatHasNotSeenIt'
 import styles from './HeaderUserMenu.module.css'
 
 export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
@@ -160,6 +161,9 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
       >
         {menuContent}
       </div>
+      {!user.hasSeenV2Onboarding && !!user.legacyId && (
+        <OpenOnboardingForMigratedUserThatHasNotSeenIt user={user} />
+      )}
     </>
   )
 }

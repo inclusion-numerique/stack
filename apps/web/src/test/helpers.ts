@@ -18,6 +18,7 @@ export const createTestUser = (publicProfile?: boolean) =>
     isPublic: publicProfile || false,
     created: '2023-04-01',
     updated: '2023-04-01',
+    hasSeenV2Onboarding: null,
     ownedBases: [],
     bases: [],
     createdResources: [],

@@ -48,6 +48,7 @@ export type SessionUser = Pick<
   emailVerified: string | null
   created: string | null
   updated: string | null
+  hasSeenV2Onboarding: string | null
   ownedBases: SessionUserBase[]
   bases: (Pick<BaseMembers, 'isAdmin'> & {
     base: SessionUserBase
