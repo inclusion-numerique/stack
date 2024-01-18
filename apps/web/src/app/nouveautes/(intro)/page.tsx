@@ -7,7 +7,7 @@ import CloseOnboardingButton from '@app/web/app/nouveautes/CloseOnboardingButton
 import styles from './OnboardingIntroPage.module.css'
 
 const OnboardingIntroPage = () => (
-  <div className="fr-flex-grow-1 fr-align-self-md-center">
+  <div className="fr-flex-grow-1 fr-flex fr-align-items-center fr-justify-content-center">
     <CloseOnboardingButton mdBackground="blue-france-975-75" />
     <div
       className={classNames(

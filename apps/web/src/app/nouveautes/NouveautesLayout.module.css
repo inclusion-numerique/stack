@@ -1,8 +1,8 @@
 .container {
-    min-height: 100%;
+    height: 100%;
     overflow-x: hidden;
-    display: flex;
     position: relative;
+    display: flex;
 
     @media (min-width: 48em) {
         background: var(--blue-france-975-75);

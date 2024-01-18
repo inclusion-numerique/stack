@@ -12,8 +12,8 @@
 }
 
 .logo {
-    width: 32px;
-    height: 32px;
+    width: 54px;
+    height: 54px;
 
     @media (min-width: 48em) {
         width: 64px;

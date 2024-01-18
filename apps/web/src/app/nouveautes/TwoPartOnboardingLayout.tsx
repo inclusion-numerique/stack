@@ -33,7 +33,7 @@ const TwoPartOnboardingLayout = ({
     title: string
     icon: string
     stepIndex: number
-    previousHref: string
+    previousHref?: string
   } & ( // If no nexthref is provided, this is the last step (and the button will be a "Terminer" button with mutation to register)
     | { nextHref: string; user?: undefined }
     | { nextHref?: undefined; user: SessionUser | null }
@@ -41,8 +41,11 @@ const TwoPartOnboardingLayout = ({
 >) => (
   <>
     <CloseOnboardingButton mdBackground={illustrationBackground} />
+    {/* Content is half left part */}
     <div className={styles.content}>
+      {/* Inner content to be allow to center it horizontally */}
       <div className={styles.innerContent}>
+        {/* Part that is scrollable */}
         <div className={styles.topContent}>
           <span className={classNames('fr-icon--lg', styles.icon, icon)} />
 
@@ -59,15 +62,18 @@ const TwoPartOnboardingLayout = ({
 
           {children}
         </div>
+        {/* Button are at the bottom to always be at same y */}
         <div className={styles.buttons}>
-          <Button
-            iconId="fr-icon-arrow-left-line"
-            title="Précédent"
-            priority="secondary"
-            linkProps={{
-              href: previousHref,
-            }}
-          />
+          {!!previousHref && (
+            <Button
+              iconId="fr-icon-arrow-left-line"
+              title="Précédent"
+              priority="secondary"
+              linkProps={{
+                href: previousHref,
+              }}
+            />
+          )}
           {nextHref ? (
             <Button
               iconId="fr-icon-arrow-right-line"

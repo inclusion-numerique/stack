@@ -9,7 +9,6 @@ const OnboardingProfilePage = () => (
     title="Créez, publiez & collectionnez des ressources directement via votre profil"
     icon="fr-icon-account-line"
     stepIndex={1}
-    previousHref="/nouveautes"
     nextHref="/nouveautes/editeur"
   >
     <ul>
