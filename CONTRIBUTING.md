@@ -4,6 +4,7 @@
 
 - 📦 [Prérequis](#prérequis)
 - 🚀 [Démarrage](#démarrage)
+- 🤝 [Procédures](#procédures)
 
 <h2 id="prérequis">📦 Prérequis</h2>
 
@@ -48,7 +49,7 @@ Créer le fichier `.env` contenant les variables d'environnement à partir de [.
 cp .env.dist .env
 ```
 
-### 5. Démarrer les services de mail et de base de donnée en local
+### 5. Démarrer les services de mail et de base de données en local
 
 #### Avec Docker
 
@@ -73,3 +74,25 @@ pnpm run dev
 ```
 
 Une fois ces étapes terminées, vous êtes prêt à commencer à travailler sur le projet ! 🎉
+
+<h2 id="procédures">🤝 Procédures</h2>
+
+### Branches
+
+- **Branches à jour** : Les branches doivent être créées à partir d'une version à jour de la branche de développement `dev`.
+- **Préfixes conventionnels** : Lors de la création de nouvelles branches, assurez-vous qu'elles sont préfixées par l'une des catégories suivantes : `build/`, `chore/`, `ci/`, `docs/`, `feat/`, `fix/`, `perf/`, `refactor/`, `revert/`, `style/` ou `test/`, en fonction de la nature des modifications. Consultez les [types de commits conventionnels](https://kapeli.com/cheat_sheets/Conventional_Commits.docset/Contents/Resources/Documents/index) pour en savoir plus sur ces catégories.
+
+### Commits
+
+- **Commits Conventionnels** : Les messages de commit doivent suivre la spécification [Commits Conventionnels](https://www.conventionalcommits.org/fr) pour être valides.
+
+### Création et publication d'une nouvelle fonctionnalité
+
+1. **Créez une nouvelle branche** : Utilisez `git checkout -b feat/nom-de-la-fonctionnalité-incroyable` pour créer une nouvelle branche pour vos modifications.
+2. **Commitez vos modifications** : Effectuez vos modifications et commitez-les avec un message descriptif. Par exemple, `git commit -m "feat: ajoute une fonctionnalité incroyable"`.
+3. **Publiez votre branche** : Poussez votre branche de fonctionnalité vers le dépôt distant avec `git push origin feat/nom-de-la-fonctionnalité-incroyable`.
+4. **Ouvrez une Pull-Request** : Une fois vos modifications poussées, ouvrez une Pull-Request vers la branche de développement. Indiquez des détails sur les modifications et demandez une revue des contributeurs.
+
+### Déploiement
+
+Lorsqu'une branche est fusionnée avec `main`, cela déclenche automatiquement la mise à jour en production.
