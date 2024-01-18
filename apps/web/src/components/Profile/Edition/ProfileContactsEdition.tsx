@@ -15,6 +15,9 @@ import {
 import EditableCardForm from '@app/web/components/EditableCardForm'
 import { LabelAndValue } from '@app/web/ui/LabelAndValue'
 
+const lastPartFromUrl = (url: string | null): string | undefined =>
+  url?.split('/').at(-1)
+
 const ProfileContactsEdition = ({ profile }: { profile: ProfilePageData }) => {
   const form = useForm<UpdateProfileContactsCommand>({
     resolver: zodResolver(UpdateProfileContactsCommandValidation),
@@ -42,7 +45,8 @@ const ProfileContactsEdition = ({ profile }: { profile: ProfilePageData }) => {
       preview={
         <div className="fr-grid-row">
           <LabelAndValue
-            className="fr-mb-2w fr-col-6"
+            className="fr-mb-2w fr-col-6 fr-text--break-all"
+            defaultValue="-"
             value={profile.email}
             inline={false}
             as="div"
@@ -50,7 +54,8 @@ const ProfileContactsEdition = ({ profile }: { profile: ProfilePageData }) => {
             Adresse mail
           </LabelAndValue>
           <LabelAndValue
-            className="fr-mb-2w fr-col-6"
+            className="fr-mb-2w fr-col-6 fr-text--break-all"
+            defaultValue="-"
             value={profile.website}
             inline={false}
             as="div"
@@ -58,27 +63,36 @@ const ProfileContactsEdition = ({ profile }: { profile: ProfilePageData }) => {
             Site internet
           </LabelAndValue>
           <LabelAndValue
-            className="fr-mb-2w fr-col-6"
-            prefix="@"
-            value={profile.facebook?.split('/').at(-1)}
+            className="fr-mb-2w fr-col-6 fr-text--break-all"
+            defaultValue="-"
+            value={
+              lastPartFromUrl(profile.facebook) &&
+              `@${lastPartFromUrl(profile.facebook)}`
+            }
             inline={false}
             as="div"
           >
             Facebook
           </LabelAndValue>
           <LabelAndValue
-            className="fr-mb-2w fr-col-6"
-            prefix="@"
-            value={profile.twitter?.split('/').at(-1)}
+            className="fr-mb-2w fr-col-6 fr-text--break-all"
+            defaultValue="-"
+            value={
+              lastPartFromUrl(profile.twitter) &&
+              `@${lastPartFromUrl(profile.twitter)}`
+            }
             inline={false}
             as="div"
           >
             X (Twitter)
           </LabelAndValue>
           <LabelAndValue
-            className="fr-mb-2w fr-col-6"
-            prefix="@"
-            value={profile.linkedin?.split('/').at(-1)}
+            className="fr-mb-2w fr-col-6 fr-text--break-all"
+            defaultValue="-"
+            value={
+              lastPartFromUrl(profile.linkedin) &&
+              `@${lastPartFromUrl(profile.linkedin)}`
+            }
             inline={false}
             as="div"
           >

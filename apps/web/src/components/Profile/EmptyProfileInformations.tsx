@@ -10,7 +10,7 @@ const EmptyProfileInformations = ({
   <EmptyBox
     title={
       isConnectedUser
-        ? 'Vous n’avez pas encore partagé vos d’informations sur votre profil'
+        ? 'Vous n’avez pas encore partagé vos informations sur votre profil'
         : 'Ce profil ne partage pas d’informations'
     }
   >
