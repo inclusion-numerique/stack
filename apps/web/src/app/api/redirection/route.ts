@@ -9,9 +9,26 @@ const handler = async (request: Request) => {
   const httpsBase = `https://${baseUrl ?? ''}`
   const requestUrl = new URL(request.url)
 
-  const migratedPath = await mapLegacyPath(requestUrl)
+  const originParam = requestUrl.searchParams.get('origin') ?? ''
+
+  let originUrl: URL
+
+  try {
+    originUrl = new URL(originParam)
+  } catch {
+    return new NextResponse(
+      JSON.stringify({ error: '"origin" query parameter must be a valid URL' }),
+      { status: 400 },
+    )
+  }
+
+  console.log('HTTPS BASE', httpsBase)
+
+  const migratedPath = await mapLegacyPath(originUrl)
 
   const redirectTo = `${httpsBase}${migratedPath}`
+
+  console.log('REDIRECTTO', redirectTo)
 
   // 301 permanent and post => get
   return NextResponse.redirect(redirectTo, { status: 301 })
