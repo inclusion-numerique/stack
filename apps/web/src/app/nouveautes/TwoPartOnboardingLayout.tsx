@@ -14,6 +14,7 @@ const TwoPartOnboardingLayout = ({
   illustrationSrc,
   illustrationLeft,
   illustrationTop,
+  illustrationRight,
   children,
   icon,
   nextHref,
@@ -25,8 +26,9 @@ const TwoPartOnboardingLayout = ({
   {
     illustrationBackground: 'blue-france-925-125' | 'blue-france-975-75'
     illustrationSrc: string
-    illustrationTop: number
-    illustrationLeft: number
+    illustrationTop: number | string
+    illustrationLeft: number | string
+    illustrationRight?: number | string
     // illustrationWidth: number
     title: string
     icon: string
@@ -96,6 +98,7 @@ const TwoPartOnboardingLayout = ({
       style={{
         paddingTop: illustrationTop,
         paddingLeft: illustrationLeft,
+        paddingRight: illustrationRight,
       }}
     >
       <img src={illustrationSrc} className={styles.illustration} alt="" />

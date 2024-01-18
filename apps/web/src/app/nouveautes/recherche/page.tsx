@@ -4,7 +4,8 @@ const OnboardingSearchPage = () => (
   <TwoPartOnboardingLayout
     illustrationSrc="/images/onboarding/onboarding_search.svg"
     illustrationTop={208}
-    illustrationLeft={80}
+    illustrationLeft="5.5%"
+    illustrationRight="5.5%"
     illustrationBackground="blue-france-925-125"
     title="Une recherche simplifiée"
     icon="fr-icon-search-line"

@@ -48,8 +48,6 @@ const Header = ({
                       <LesBasesSvgLogo
                         style={{
                           verticalAlign: 'top',
-                          height: 24,
-                          width: 36.5,
                         }}
                       />
                     </Link>

@@ -165,6 +165,20 @@
   content: '';
 }
 
+.fr-notice--new {
+  background: var(--background-contrast-yellow-moutarde);
+
+  --hover: var(--background-contrast-yellow-moutarde-hover);
+  --active: var(--background-contrast-yellow-moutarde-active);
+
+  color: var(--text-action-high-yellow-moutarde);
+}
+
+.fr-notice--new .fr-notice__body::before {
+  mask-image: url('/dsfr/icons/weather/flashlight-fill.svg');
+  content: '';
+}
+
 /* Override input spacing */
 .fr-input-group,
 .fr-select-group {

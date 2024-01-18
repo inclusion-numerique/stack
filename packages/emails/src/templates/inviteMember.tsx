@@ -160,7 +160,7 @@ export const inviteMember = {
             <MjmlColumn width="76%" verticalAlign="middle">
               <MjmlImage
                 align="left"
-                width={160}
+                width={200}
                 src={emailAssetUrl('/email/logo.svg')}
                 alt={PublicWebAppConfig.projectTitle}
               />

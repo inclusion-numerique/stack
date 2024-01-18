@@ -8,7 +8,8 @@ const OnboardingMobilePage = async () => {
     <TwoPartOnboardingLayout
       illustrationSrc="/images/onboarding/onboarding_mobile.svg"
       illustrationTop={128}
-      illustrationLeft={148}
+      illustrationLeft="12.5%"
+      illustrationRight="12.5%"
       illustrationBackground="blue-france-975-75"
       title="Consultez des ressources depuis votre mobile"
       icon="fr-icon-device-line"
@@ -16,15 +17,10 @@ const OnboardingMobilePage = async () => {
       previousHref="/nouveautes/thematiques"
       user={user}
     >
-      <ul>
-        <li>Créez et publiez directement vos ressources</li>
-        <li>Collectionnez des ressources</li>
-        <li>
-          Retrouvez les bases dont vous êtes membre pour collaborer à la
-          création de ressources
-        </li>
-        <li>Suivez les bases & les profils qui vous intéressent</li>
-      </ul>
+      <p>
+        La recherche, la consultation et l’enregistrement de ressources sont
+        maintenant disponibles sur les appareils mobiles&nbsp;!
+      </p>
     </TwoPartOnboardingLayout>
   )
 }
