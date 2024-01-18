@@ -16,7 +16,7 @@ import EditableCardForm from '@app/web/components/EditableCardForm'
 import { LabelAndValue } from '@app/web/ui/LabelAndValue'
 
 const lastPartFromUrl = (url: string | null): string | undefined =>
-  url?.split('/').at(-1)
+  url?.replace(/\/+$/, '').split('/').at(-1)
 
 const ProfileContactsEdition = ({ profile }: { profile: ProfilePageData }) => {
   const form = useForm<UpdateProfileContactsCommand>({
