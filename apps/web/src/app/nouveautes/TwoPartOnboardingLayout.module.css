@@ -38,7 +38,7 @@
 
 .illustrationContainer {
     flex: 1 0 50%;
-    overflow: show;
+    overflow: visible;
 }
 
 .illustration {
