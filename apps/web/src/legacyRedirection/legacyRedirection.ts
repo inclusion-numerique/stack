@@ -11,7 +11,7 @@ export const isLegacyRequest = ({
   requestHost: string | null
 }) => !!legacyHostname && requestHost === legacyHostname
 
-const mapLegacyPath = async (url: URL) => {
+export const mapLegacyPath = async (url: URL) => {
   const path = url.pathname
   const { searchParams } = url
 
