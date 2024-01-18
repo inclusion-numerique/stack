@@ -236,8 +236,8 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.contains('Collections enregistrées · 1')
     cy.findByRole('tab', { name: /collections enregistrées/i }).click()
     cy.contains(collection.title)
-    cy.findByTitle(/enregistrer la collection/i)
-      .first()
+    cy.findByRole('button', { name: /enregistrer la collection/i })
+      .filter(':visible')
       .click()
 
     cy.findByRole('dialog').within(() => {
