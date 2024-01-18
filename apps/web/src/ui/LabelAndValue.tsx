@@ -1,10 +1,10 @@
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, ReactNode } from 'react'
 import sanitizeHtml from 'sanitize-html'
 import styles from '../components/Base/Edition/BaseEdition.module.css'
 
 export const LabelAndValue = ({
   value,
-  prefix,
+  defaultValue = null,
   inline = true,
   isHtml = false,
   as: Component = 'li',
@@ -12,28 +12,30 @@ export const LabelAndValue = ({
   children,
 }: PropsWithChildren<{
   value: string | null | number | undefined
-  prefix?: string
+  defaultValue?: ReactNode
   inline?: boolean
   isHtml?: boolean
   className?: string
   as?: 'li' | 'div' | 'span'
 }>) => {
   if (value === null || value === undefined || value === '') {
-    return null
+    return defaultValue ? (
+      <Component className={className}>
+        {inline ? <>{children}&nbsp;:&nbsp;</> : <div>{children}</div>}
+        <strong>{defaultValue}</strong>
+      </Component>
+    ) : null
   }
   return (
     <Component className={className}>
       {inline ? <>{children}&nbsp;:&nbsp;</> : <div>{children}</div>}
       {isHtml ? (
-        <strong>
-          {prefix}
-          {value}
-        </strong>
+        <strong>{value}</strong>
       ) : (
         <strong
           className={styles.value}
           dangerouslySetInnerHTML={{
-            __html: sanitizeHtml([prefix, value.toString()].join('')),
+            __html: sanitizeHtml(value.toString()),
           }}
         />
       )}
