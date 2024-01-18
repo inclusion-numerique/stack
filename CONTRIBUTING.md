@@ -5,6 +5,7 @@
 - 📦 [Prérequis](#prérequis)
 - 🚀 [Démarrage](#démarrage)
 - 🤝 [Procédures](#procédures)
+- 🏗️ [Construit avec](#construit-avec)
 
 <h2 id="prérequis">📦 Prérequis</h2>
 
@@ -96,3 +97,30 @@ Une fois ces étapes terminées, vous êtes prêt à commencer à travailler sur
 ### Déploiement
 
 Lorsqu'une branche est fusionnée avec `main`, cela déclenche automatiquement la mise à jour en production.
+
+<h2 id="construit-avec">🏗️ Construit avec</h2>
+
+### Langages, frameworks et bibliothèques
+
+- [TypeScript](https://www.typescriptlang.org/) : Le langage de programmation utilisé ici, c'est un langage open source qui s'appuie sur JavaScript en ajoutant un typage statique.
+- [React](https://react.dev/) : Bibliothèque JavaScript qui permet de créer des interfaces utilisateurs interactives et prévisibles.
+- [React Hook Form](https://react-hook-form.com/) : Bibliothèque de construction de formulaires avec React.
+- [Next.js](https://nextjs.org/) : Framework full-stack pour construire des applications web avec React.
+- [Système de Design de l'État (dsfr)](https://www.systeme-de-design.gouv.fr/) : Ensemble de composants réutilisables répondant aux standards de l'état.
+- [React dsfr](https://github.com/codegouvfr/react-dsfr) : Surcouche de compatibilité React pour le Système de Design de l'État
+- [Remix Icon](https://remixicon.com/) : Collection d'icônes.
+- [Zod](https://zod.dev/) : Validation de schéma fondé sur TypeScript.
+- [tRPC](https://trpc.io/) : Intégrer des API stables en bénéficiant de l'inférence de Type de TypeScript.
+- [Prisma](https://www.prisma.io/) : ORM compatible avec TypeScript.
+- [mjml](https://mjml.io/) : Écrire des templates de mails avec React.
+- [NextAuth.js](https://next-auth.js.org/) : Adaptateur pour services d'authentification.
+
+### Outils
+
+- [Eslint](https://eslint.org/) : Analyseur statique de code pour JavaScript et TypeScript.
+- [Prettier](https://prettier.io/) : Formateur de code pour divers langages et syntaxes.
+- [Jest](https://jestjs.io/) : Environnement d'exécution des tests unitaires.
+- [Cypress](https://www.cypress.io) : Environnement d'exécution des tests de bout en bout et de tests de composants.
+- [Storybook](https://storybook.js.org) : Permet de créer, documenter et tester des composants UI.
+- [Sentry](https://sentry.io) : Plateforme de surveillance d'erreurs et de problèmes de performance.
+- [MailDev](https://maildev.github.io/maildev/) : Serveur local et interface web pour capter les mails envoyés pendant le développement.
