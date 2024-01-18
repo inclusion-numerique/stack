@@ -8,6 +8,10 @@ const Banner = () => (
   <div className={styles.container}>
     <div className="fr-container">
       <h1 className="fr-mb-4v">Les Bases du numérique d’intérêt général</h1>
+      <p className="fr-text--xl fr-mb-12v">
+        La plateforme collaborative de partage de ressources & communs
+        numériques à l’échelle nationale.
+      </p>
       <Notice
         className="fr-notice--new fr-my-10v fr-mx-auto"
         style={{ maxWidth: 640 }}
@@ -25,10 +29,6 @@ const Banner = () => (
           </span>
         }
       />
-      <p className="fr-text--xl fr-mb-12v">
-        La plateforme collaborative de partage de ressources & communs
-        numériques à l’échelle nationale.
-      </p>
       <SearchBar />
     </div>
   </div>
