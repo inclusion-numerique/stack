@@ -9,6 +9,7 @@ Ce [monorepo](https://en.wikipedia.org/wiki/Monorepo) fournit l'ensemble des pro
 
 - 🪧 [À propos](#à-propos)
 - 🌐 [Accès au service](#acces)
+- 🔗 [Liens utiles](#liens-utiles)
 - 📦 [Contenu](#contenu)
 - 🤗 [Contribution](#contribution)
 - 📝 [Licence](#licence)
@@ -16,6 +17,12 @@ Ce [monorepo](https://en.wikipedia.org/wiki/Monorepo) fournit l'ensemble des pro
 <h2 id="acces">🌐 Accès au service</h2>
 
 La plateforme est disponible en production sur : https://lesbases.anct.gouv.fr.
+
+<h2 id="liens-utiles">🔗 Liens utiles</h2>
+
+- [Notion](https://www.notion.so/Programme-inclusion-num-rique-de-l-Incubateur-des-Territoires-6eab8b90c1da4e5baf442e176b80588d)
+- [Figma](https://www.figma.com/files/team/1187779503722591734/P%C3%B4le-Inclusion-Num%C3%A9rique?fuid=886724371034466768)
+- [Storybook](https://643fe520a32f5159eae14dba-qsspfhuduj.chromatic.com)
 
 <h2 id="contenu">📦 Contenu</h2>
 
