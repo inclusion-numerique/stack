@@ -236,6 +236,7 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.contains('Collections enregistrées · 1')
     cy.findByRole('tab', { name: /collections enregistrées/i }).click()
     cy.contains(collection.title)
+    cy.findByTestId('collection-card').should('be.visible')
     cy.findByRole('button', { name: /enregistrer la collection/i })
       .filter(':visible')
       .click()
