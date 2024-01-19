@@ -53,7 +53,7 @@ export const Remplacement: Story = {
         id: '1',
         image: {
           altText: 'Text alternatif',
-          id: 'paysage.webp',
+          id: 'paysage',
         },
       }}
       editing=""

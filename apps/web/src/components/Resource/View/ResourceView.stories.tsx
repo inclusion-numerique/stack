@@ -111,7 +111,7 @@ const resource = (imageId: string | null) =>
       collections: 0,
       views: 0,
     },
-  }) satisfies Resource
+  } satisfies Resource)
 
 const Template = (props: ComponentProps<typeof ResourceView>) => (
   <div className="fr-container fr-pt-4v">
@@ -129,7 +129,7 @@ type Story = StoryObj<typeof ResourceView>
 export const AvecImage: Story = {
   render: (args) => <Template {...args} />,
   args: {
-    resource: resource('paysage.webp'),
+    resource: resource('paysage'),
   },
 }
 
@@ -147,7 +147,7 @@ export const SansImageMobile = mobileStory(SansImage)
 export const Contributeur: Story = {
   render: (args) => <Template {...args} />,
   args: {
-    resource: resource('portrait.webp'),
+    resource: resource('portrait'),
     isAdmin: true,
   },
 }

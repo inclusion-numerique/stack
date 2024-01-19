@@ -32,7 +32,7 @@ const resource = {
     name: 'Jean Biche',
     firstName: 'Jean',
     lastName: 'Biche',
-    image: { id: 'portrait.webp', altText: 'Texte alternatif' },
+    image: { id: 'portrait', altText: 'Texte alternatif' },
   },
   image: null,
   collections: [],
@@ -77,7 +77,7 @@ const BrouillonAvecImageStory: Story = {
     resource: {
       ...resource,
       published: null,
-      image: { id: 'portrait.webp', altText: 'Texte alternatif' },
+      image: { id: 'portrait', altText: 'Texte alternatif' },
     },
     user: creatorUser,
   },
@@ -108,7 +108,7 @@ const BrouillonModifiéAvecImageStory: Story = {
       ...resource,
       updated: new Date(),
       published: null,
-      image: { id: 'portrait.webp', altText: 'Texte alternatif' },
+      image: { id: 'portrait', altText: 'Texte alternatif' },
     },
     user: creatorUser,
   },
@@ -141,7 +141,7 @@ const AvecImageVueContributeurStory: Story = {
   args: {
     resource: {
       ...resource,
-      image: { id: 'portrait.webp', altText: 'Texte alternatif' },
+      image: { id: 'portrait', altText: 'Texte alternatif' },
     },
     user: creatorUser,
   },
@@ -172,7 +172,7 @@ const AvecImageVueVisiteurStory: Story = {
   args: {
     resource: {
       ...resource,
-      image: { id: 'portrait.webp', altText: 'Texte alternatif' },
+      image: { id: 'portrait', altText: 'Texte alternatif' },
     },
     user: testSessionUser,
   },
@@ -202,7 +202,7 @@ const ModificationsNonPubliéesAvecImageVueContributeurStory: Story = {
     resource: {
       ...resource,
       updated: new Date(),
-      image: { id: 'portrait.webp', altText: 'Texte alternatif' },
+      image: { id: 'portrait', altText: 'Texte alternatif' },
     },
     user: creatorUser,
   },

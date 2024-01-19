@@ -59,13 +59,13 @@ export const Remplacer: Story = {
     content: {
       imageAltText: 'Un paysage',
       image: {
-        id: 'paysage.webp',
+        id: 'paysage',
         altText: '',
         width: 3156,
         height: 1476,
         upload: {
-          name: 'paysage.webp',
-          key: 'paysage.webp',
+          name: 'paysage',
+          key: 'paysage',
         },
       },
     },

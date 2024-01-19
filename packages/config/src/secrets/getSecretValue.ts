@@ -11,7 +11,9 @@ export const getSecretValue = ({
   revision?: string
 }) =>
   secretClient
-    .get<{ secret_id: string; revision: string; data: string }>(
-      `/${id}/versions/${revision}/access`,
-    )
+    .get<{
+      secret_id: string
+      revision: string
+      data: string
+    }>(`/${id}/versions/${revision}/access`)
     .then(({ data }) => Buffer.from(data.data, 'base64').toString('utf8'))

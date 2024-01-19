@@ -46,6 +46,7 @@ build-storybook.log
 .idea
 
 storybook-static
+chromatic.log
 
 # next
 /apps/web/.next/

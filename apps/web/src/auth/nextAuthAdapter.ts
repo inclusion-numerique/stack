@@ -1,5 +1,7 @@
 import type { Adapter, AdapterUser } from '@auth/core/adapters'
 import { PrismaAdapter } from '@auth/prisma-adapter'
+import { v4 } from 'uuid'
+import type { NextAuthOptions } from 'next-auth'
 import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
 import { prismaClient } from '@app/web/prismaClient'
 import { createAvailableSlug } from '@app/web/server/slug/createAvailableSlug'
@@ -35,7 +37,7 @@ const removeNonStandardFields = <T extends Record<string, unknown>>(
   'not-before-policy': undefined,
 })
 
-export const nextAuthAdapter: Adapter = {
+export const nextAuthAdapter: NextAuthOptions['adapter'] = {
   ...prismaAdapter,
   createUser: async (user) => {
     const { provider, ...rest } = user as Omit<AdapterUser, 'id'> & {
@@ -45,7 +47,7 @@ export const nextAuthAdapter: Adapter = {
 
     const slug = await createAvailableSlug(rest.name || 'p', 'users')
 
-    const info = { ...rest, slug }
+    const info = { id: v4(), ...rest, slug }
 
     if (provider === inclusionConnectProviderId) {
       return prismaAdapter.createUser({

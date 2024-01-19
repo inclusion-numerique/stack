@@ -46,7 +46,7 @@ const AvecImageStory: Story = {
     profile: {
       ...profile,
       image: {
-        id: 'portrait.webp',
+        id: 'portrait',
         altText: 'Jean Biche',
       },
     },

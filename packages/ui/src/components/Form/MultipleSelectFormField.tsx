@@ -26,7 +26,6 @@ export type MultipleSelectFormFieldProps<T extends FieldValues> = {
   defaultOption?: boolean
   defaultOptionLabel?: string
   hint?: ReactNode
-  placeholder?: string
   badgeSize?: 'sm' | 'md'
   options: SelectOption[]
   limit?: number
@@ -37,7 +36,6 @@ const MultipleSelectFormField = <T extends FieldValues>({
   control,
   label,
   path,
-  placeholder,
   hint,
   defaultOption,
   disabled,
@@ -102,7 +100,6 @@ const MultipleSelectFormField = <T extends FieldValues>({
               className="fr-select fr-select--error"
               aria-describedby="text-select-error-desc-error"
               id={id}
-              placeholder={placeholder}
               disabled={disabled || !!(limit && value && value.length >= limit)}
               onBlur={onBlur}
               onChange={onSelectChange}

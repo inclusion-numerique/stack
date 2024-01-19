@@ -39,7 +39,7 @@ const base = {
     '\t\t\t\t}\n' +
     '\t\t\t\t</code></pre>',
   image: {
-    id: 'portrait.webp',
+    id: 'portrait',
   },
   coverImage: null,
   followedBy: [],

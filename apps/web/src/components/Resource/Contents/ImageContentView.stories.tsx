@@ -28,12 +28,12 @@ export const Paysage: Story = {
       title: 'Titre de l’image',
       imageAltText: 'Image de paysage',
       image: {
-        id: 'paysage.webp',
+        id: 'paysage',
         width: 3156,
         height: 1476,
         altText: '',
         upload: {
-          name: 'paysage.webp',
+          name: 'paysage',
           key: 'image-key',
         },
       },
@@ -52,12 +52,12 @@ export const Portrait: Story = {
       title: 'Titre de l’image',
       imageAltText: 'Image de paysage',
       image: {
-        id: 'portrait.webp',
+        id: 'portrait',
         width: 1920,
         height: 2880,
         altText: '',
         upload: {
-          name: 'portrait.webp',
+          name: 'portrait',
           key: 'image-key',
         },
       },
