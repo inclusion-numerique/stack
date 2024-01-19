@@ -257,8 +257,8 @@ importers:
         specifier: ^4.14.1
         version: 4.14.1(encoding@0.1.13)
       nanoid:
-        specifier: ^5.0.4
-        version: 5.0.4
+        specifier: ^3.3.7
+        version: 3.3.7
       next:
         specifier: ^14.0.4
         version: 14.0.4(@babel/core@7.23.5)(react-dom@18.2.0)(react@18.2.0)
@@ -553,8 +553,8 @@ importers:
         specifier: ^7.3.0
         version: 7.3.0
       nanoid:
-        specifier: ^5.0.4
-        version: 5.0.4
+        specifier: ^3.3.7
+        version: 3.3.7
     devDependencies:
       '@types/jest':
         specifier: ^29.5.11
@@ -11144,7 +11144,10 @@ packages:
     peerDependencies:
       constructs: ^10.0.25
     dependencies:
+      archiver: 5.3.2
       constructs: 10.1.167
+      json-stable-stringify: 1.1.0
+      semver: 7.5.4
     dev: false
     bundledDependencies:
       - archiver
@@ -11156,7 +11159,10 @@ packages:
     peerDependencies:
       constructs: ^10.0.25
     dependencies:
+      archiver: 5.3.2
       constructs: 10.3.0
+      json-stable-stringify: 1.1.0
+      semver: 7.5.4
     dev: false
     bundledDependencies:
       - archiver
@@ -12034,7 +12040,7 @@ packages:
       postcss-modules-values: 4.0.0(postcss@8.4.33)
       postcss-value-parser: 4.2.0
       semver: 7.5.4
-      webpack: 5.89.0(@swc/core@1.3.104)(esbuild@0.18.20)
+      webpack: 5.89.0(esbuild@0.18.20)(uglify-js@3.17.4)
 
   /css-prefers-color-scheme@9.0.0(postcss@8.4.33):
     resolution: {integrity: sha512-03QGAk/FXIRseDdLb7XAiu6gidQ0Nd8945xuM7VFVPpc6goJsG9uIO8xQjTxwbPdPIIV4o4AJoOJyt8gwDl67g==}
@@ -12723,7 +12729,7 @@ packages:
     dependencies:
       semver: 7.5.4
       shelljs: 0.8.5
-      typescript: 5.4.0-dev.20240118
+      typescript: 5.4.0-dev.20240119
     dev: false
 
   /duplexer3@0.1.5:
@@ -17035,7 +17041,6 @@ packages:
       isarray: 2.0.5
       jsonify: 0.0.1
       object-keys: 1.1.1
-    dev: true
 
   /json-stringify-pretty-compact@3.0.0:
     resolution: {integrity: sha512-Rc2suX5meI0S3bfdZuA7JMFBGkJ875ApfVyq2WHELjBiiG22My/l7/8zPpH/CfFVQHuVLd8NLR0nv6vi0BYYKA==}
@@ -17075,7 +17080,6 @@ packages:
 
   /jsonify@0.0.1:
     resolution: {integrity: sha512-2/Ki0GcmuqSrgFyelQq9M05y7PS0mEwuIzrf3f1fPqkVDVRvZrPZtVSMHxdgo8Aq0sxAOb/cr2aqqA3LeWHVPg==}
-    dev: true
 
   /jsonwebtoken@9.0.2:
     resolution: {integrity: sha512-PRp66vJ865SSqOlgqS8hujT5U4AOgMfhrwYIuIhfKaoSCZcirrmASQr8CX7cUg+RMih+hgznrjp99o+W4pJLHQ==}
@@ -18909,12 +18913,6 @@ packages:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
-
-  /nanoid@5.0.4:
-    resolution: {integrity: sha512-vAjmBf13gsmhXSgBrtIclinISzFFy22WwCYoyilZlsrRXNIHSwgFQ1bEdjRwMT3aoadeIF6HMuDRlOxzfXV8ig==}
-    engines: {node: ^18 || >=20}
-    hasBin: true
-    dev: false
 
   /napi-build-utils@1.0.2:
     resolution: {integrity: sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==}
@@ -22855,7 +22853,7 @@ packages:
     peerDependencies:
       webpack: ^5.0.0
     dependencies:
-      webpack: 5.89.0(@swc/core@1.3.104)(esbuild@0.18.20)
+      webpack: 5.89.0(esbuild@0.18.20)(uglify-js@3.17.4)
 
   /styled-components@6.1.8(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-PQ6Dn+QxlWyEGCKDS71NGsXoVLKfE1c3vApkvDYS5KAK+V8fNWGhbSUEo9Gg2iaID2tjLXegEW3bZDUGpofRWw==}
@@ -23263,7 +23261,6 @@ packages:
       terser: 5.24.0
       uglify-js: 3.17.4
       webpack: 5.89.0(esbuild@0.18.20)(uglify-js@3.17.4)
-    dev: false
 
   /terser@5.24.0:
     resolution: {integrity: sha512-ZpGR4Hy3+wBEzVEnHvstMvqpD/nABNelQn/z2r0fjVWGQsN3bpOLzQlqDxmb4CDZnXq5lpjnQ+mHQLAOpfM5iw==}
@@ -23885,8 +23882,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  /typescript@5.4.0-dev.20240118:
-    resolution: {integrity: sha512-TkIGY1JFa2/uWOcKuIuHroLZrOO6JDWSDCzVNDhgcKx8aSquBr7Ih9//PSsLZ0YkxkNOvvLySGxACPhUjweTEg==}
+  /typescript@5.4.0-dev.20240119:
+    resolution: {integrity: sha512-I+Uge2+WNFs91q42WVrqTwxmq3NQwQlrL0MLora9zXhizbsKIGApE7LGcEJIbG+0yk6gpDilGaDH1pU4VUAKzw==}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: false
@@ -24543,7 +24540,6 @@ packages:
       - '@swc/core'
       - esbuild
       - uglify-js
-    dev: false
 
   /whatwg-encoding@2.0.0:
     resolution: {integrity: sha512-p41ogyeMUrw3jWclHWTQg1k05DSVXPLcVxRTYsXUk+ZooOCZLcoYgPZ/HL/D/N+uQPOtcp1me1WhBEaX02mhWg==}

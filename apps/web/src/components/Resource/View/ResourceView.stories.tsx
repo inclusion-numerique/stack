@@ -111,7 +111,7 @@ const resource = (imageId: string | null) =>
       collections: 0,
       views: 0,
     },
-  } satisfies Resource)
+  }) satisfies Resource
 
 const Template = (props: ComponentProps<typeof ResourceView>) => (
   <div className="fr-container fr-pt-4v">
