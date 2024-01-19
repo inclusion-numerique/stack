@@ -1,4 +1,4 @@
-import type { Adapter, AdapterUser } from '@auth/core/adapters'
+import type { Adapter, AdapterUser, AdapterAccount } from '@auth/core/adapters'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { v4 } from 'uuid'
 import type { NextAuthOptions } from 'next-auth'
@@ -29,9 +29,7 @@ const createAdapter = (): Adapter & {
 const prismaAdapter = createAdapter()
 
 // ⚠️ Keycloak returns non standard fields that are expected to be ignored by the client
-const removeNonStandardFields = <T extends Record<string, unknown>>(
-  data: T,
-): T => ({
+const removeNonStandardFields = <T extends AdapterAccount>(data: T): T => ({
   ...data,
   refresh_expires_in: undefined,
   'not-before-policy': undefined,
@@ -77,5 +75,7 @@ export const nextAuthAdapter: NextAuthOptions['adapter'] = {
   },
   // Custom link acount
   linkAccount: (account) =>
-    prismaAdapter.linkAccount(removeNonStandardFields(account)),
+    prismaAdapter.linkAccount(
+      removeNonStandardFields(account as AdapterAccount),
+    ),
 }
