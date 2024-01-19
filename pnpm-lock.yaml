@@ -874,7 +874,7 @@ importers:
         version: 3.22.4
     devDependencies:
       '@app/test':
-        specifier: workspace:^
+        specifier: '*'
         version: link:../test
       '@types/jest':
         specifier: ^29.5.11
