@@ -14,16 +14,16 @@
   },
   "dependencies": {
     "@commander-js/extra-typings": "^11.1.0",
-    "@faker-js/faker": "^8.3.1",
-    "@prisma/client": "^5.8.1",
+    "@faker-js/faker": "^8.2.0",
+    "@prisma/client": "^5.7.1",
     "dotenv": "^16.3.1",
-    "prisma": "^5.8.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "prisma": "^5.7.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.11",
-    "@types/node": "^20.11.5",
+    "@types/jest": "^29.5.6",
+    "@types/node": "^20.8.9",
     "commander": "^11.1.0",
     "jest": "^29.7.0"
   }

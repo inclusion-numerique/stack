@@ -38,13 +38,13 @@ export default defineConfig({
     },
     env: {
       INCLUSION_CONNECT_TEST_USER_EMAIL:
-        process.env.INCLUSION_CONNECT_TEST_USER_EMAIL,
+      process.env.INCLUSION_CONNECT_TEST_USER_EMAIL,
       INCLUSION_CONNECT_TEST_USER_PASSWORD:
-        process.env.INCLUSION_CONNECT_TEST_USER_PASSWORD,
+      process.env.INCLUSION_CONNECT_TEST_USER_PASSWORD,
       MON_COMPTE_PRO_TEST_USER_EMAIL:
-        process.env.MON_COMPTE_PRO_TEST_USER_EMAIL,
+      process.env.MON_COMPTE_PRO_TEST_USER_EMAIL,
       MON_COMPTE_PRO_TEST_USER_PASSWORD:
-        process.env.MON_COMPTE_PRO_TEST_USER_PASSWORD,
+      process.env.MON_COMPTE_PRO_TEST_USER_PASSWORD,
     },
     baseUrl:
       process.env.CYPRESS_BASE_URL ??
