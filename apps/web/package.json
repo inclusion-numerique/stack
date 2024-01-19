@@ -63,7 +63,7 @@
     "cookie": "^0.6.0",
     "copy": "^0.3.2",
     "csv-stringify": "^6.4.4",
-    "date-fns": "^2.30.0",
+    "date-fns": "^3.2.0",
     "decimal.js": "^10.4.3",
     "deep-object-diff": "^1.1.9",
     "dotenv": "^16.3.1",
@@ -162,6 +162,6 @@
     "style-loader": "^3.3.3",
     "ts-jest": "^29.1.1",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.3"
   }
 }
