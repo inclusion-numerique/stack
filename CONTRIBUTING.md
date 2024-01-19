@@ -4,6 +4,7 @@
 
 - 📦 [Prérequis](#prérequis)
 - 🚀 [Démarrage](#démarrage)
+- 🛠️ [Scripts Disponibles](#scripts-disponibles)
 - 🤝 [Procédures](#procédures)
 - 🏗️ [Construit avec](#construit-avec)
 
@@ -55,26 +56,108 @@ cp .env.dist .env
 #### Avec Docker
 
 ```bash
-docker compose -f ./docker-compose.dev.yml -p la-base up -d
-```
-
-Puis pour arrêter :
-
-```bash
-docker compose -f ./docker-compose.dev.yml -p la-base down
+pnpm docker:start
 ```
 
 #### Sans Docker
 
 [//]: # TODO
 
-### 6. Démarrer le client next en local
+### 6. Générer le client prisma et initialiser la base de données
 
+```bash
+pnpm db:init
 ```
-pnpm run dev
+
+### 7. Démarrer le client next en local
+
+```bash
+pnpm start:web
 ```
 
 Une fois ces étapes terminées, vous êtes prêt à commencer à travailler sur le projet ! 🎉
+
+<h2 id="scripts-disponibles">🛠️ Scripts Disponibles</h2>
+
+Ces commandes sont essentielles pour le développement de l'application :
+
+### `pnpm start:web`
+
+Lance l'application `web` en local :
+
+- `web` est disponible sur http://localhost:3000
+
+### `pnpm dev`
+
+Lance les applications `web` et `storybook` en local :
+
+- `web` est disponible sur http://localhost:3000
+- `storybook` est disponible sur http://localhost:6006
+
+### `pnpm db:init`
+
+Génère le client prisma et initialise la base de données
+
+### `pnpm docker:start`
+
+Utilise Docker pour lancer les services de mail et de bases de données :
+
+- Le service d'interception des mails de l'application `MailDev` est disponible sur http://0.0.0.0:1080/
+- Par défault, la base est accessible sur `localhost`, port `5433`, avec l'utilisateur `la-base` et le mot de passe `password` : `postgresql://la-base:password@localhost:5433/la-base`
+- Par défault, la base (legacy) est accessible sur `localhost`, port `5435`, avec l'utilisateur `la-base` et le mot de passe `password` : `postgresql://la-base:password@localhost:5435/la-base-legacy`
+
+### `pnpm docker:stop`
+
+Utilise Docker pour arrêter les services de mail et de bases de données.
+
+### `pnpm docker:reset`
+
+Utilise Docker pour réinitialiser la base de données.
+
+### `pnpm fixtures:load`
+
+Charge un ensemble de données prédéfinies par les [fixtures](packages/fixtures) dans la base. Il faut que la base de données soit accessible avant de lancer cette commande. \
+Ces données donnent l'accès à deux utilisateurs de tests :
+
+- Jean-Michel Sans Rien : `user.les.bases+sans+rien@gmail.com`
+- Jean-Michel Avec Tout : `user.les.bases+avec+tout@gmail.com`
+
+Lorsqu'on se connecte avec le mail d'un utilisateur existant en dev, un "Magic link" qui permet de se connecter apparaît dans les sorties de la console du client next.js.
+
+### `pnpm prisma:generate-migration nom_de_la_migration`
+
+Pour modifier le schéma de base de données, il faut d'abord faire les modifications nécessaires dans le [schema.prisma](apps/web/prisma/schema.prisma). \
+Ensuite, il suffit d'exécuter la commande **avec le nom de la migration** pour générer le fichier de migration et l'appliquer sur le schéma de la base.
+
+### `pnpm build`
+
+Construit les applications `cli` et `web` :
+
+- Le build de web est généré dans le dossier [apps/web/.next](apps/web/.next)
+
+### `pnpm test`
+
+Lance l'exécution de tests avec Jest de l'ensemble des applications et packages du monorepo sauf `e2e` : `app/cli`, `app/web`, `packages/cdk`, `packages/config`, `packages/emails`, `packages/fixtures`, `packages/lint`, `packages/migration`, `packages/storybook`, `packages/test`, `packages/ui`
+
+### `pnpm test:integration`
+
+Lance l'exécution des tests d'intégration avec Jest. Dans le cas où Docker est utilisé, il faut qu'il soit lancé au préalable avec `pnpm docker: start`.
+
+### `pnpm test:e2e`
+
+Lance l'exécution des tests de bout en bout avec Cypress. Dans le cas où Docker est utilisé, il faut qu'il soit lancé au préalable avec `pnpm docker: start`.
+
+### `pnpm cli`
+
+Lance l'application `cli`, qui propose un ensemble de commandes pour effectuer des traitements liés au déploiement.
+
+### `pnpm clean`
+
+Supprime le dossier `node_modules` à la racine du monorepo.
+
+### `pnpm clean:workspaces`
+
+Supprime les dossiers `node_modules` de tous les projets contenus dans le monorepo.
 
 <h2 id="procédures">🤝 Procédures</h2>
 
@@ -112,7 +195,7 @@ Lorsqu'une branche est fusionnée avec `main`, cela déclenche automatiquement l
 - [Zod](https://zod.dev/) : Validation de schéma fondé sur TypeScript.
 - [tRPC](https://trpc.io/) : Intégrer des API stables en bénéficiant de l'inférence de Type de TypeScript.
 - [Prisma](https://www.prisma.io/) : ORM compatible avec TypeScript.
-- [mjml](https://mjml.io/) : Écrire des templates de mails avec React.
+- [mjml-react](https://github.com/Faire/mjml-react) : Écrire des templates de mails avec React et [mjml](https://mjml.io/)
 - [NextAuth.js](https://next-auth.js.org/) : Adaptateur pour services d'authentification.
 
 ### Outils

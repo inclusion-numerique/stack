@@ -37,16 +37,16 @@ Les `Applications` contiennent le code source des éléments propres au projet
 
 Les `Packages` contiennent des outils de support et des communs dont l'origine provient de la [stack](https://github.com/inclusion-numerique/stack).
 
-- [cdk](packages/cdk) : [Définition de l'infrastructure](packages/cdk/Readme.md) avec Terraform rédigé avec la version TypeScript du [CDKTF](https://developer.hashicorp.com/terraform/cdktf).
+- [cdk](packages/cdk) : [Définition de l'infrastructure](packages/cdk/Readme.md) avec Terraform rédigé avec la version TypeScript du [CDKTF](https://developer.hashicorp.com/terraform/cdktf) pour déployer l'application sur [Scaleway](https://www.scaleway.com).
 - [config](packages/config) : [Configuration des services](packages/config/Readme.md) utilisés lors de la génération, le déploiement et l'exécution via des variables d'environnement.
-- [e2e](packages/e2e) : Tests de bout en bout opérés par [Cypress](https://www.cypress.io/)
-- [emails](packages/emails) : Templates pour les emails utilisés par l'application
-- [fixtures](packages/fixtures) : Ensemble de données à insérer dans la base de données pour avoir un ensemble cohérent plutôt qu'un projet vide
+- [e2e](packages/e2e) : Tests de bout en bout opérés par [Cypress](https://www.cypress.io/).
+- [emails](packages/emails) : Templates pour les emails utilisés par l'application.
+- [fixtures](packages/fixtures) : Ensemble de données à insérer dans la base de données pour avoir un ensemble cohérent plutôt qu'un projet vide.
 - [lint](packages/lint) : Configuration des règles de syntaxes à respecter dans le projet.
 - [migration](packages/migration) : Ensemble de scripts de migration pour importer les données depuis la V1 de la base.
 - [storybook](packages/storybook) : Configuration de storybook, utilisé pour administrer une bibliothèque des composants disponibles dans l'application.
 - [test](packages/test) : Configuration de jest, utilisé pour les tests unitaires et les tests d'intégration.
-- [ui](packages/ui) : Composants et utilitaires génériques provenant de la [stack](https://github.com/inclusion-numerique/stack/tree/main/packages/ui)
+- [ui](packages/ui) : Composants et utilitaires génériques provenant de la [stack](https://github.com/inclusion-numerique/stack/tree/main/packages/ui).
 
 <h2 id="contribution">🤗 Contribution</h2>
 
