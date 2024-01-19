@@ -40,7 +40,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@app/test": "workspace:^",
+    "@app/test": "*",
     "@types/jest": "^29.5.11",
     "@types/lodash": "^4.14.202",
     "@types/mime-types": "^2.1.4",
