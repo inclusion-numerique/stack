@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import React, { ReactNode } from 'react'
+import Button from '@codegouvfr/react-dsfr/Button'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import HeaderBackLink from '@app/web/components/HeaderBackLink'
 import { HeaderUserMenu } from '@app/web/components/HeaderUserMenu'
@@ -10,7 +11,6 @@ import {
 } from '@app/web/server/search/searchQueryParams'
 
 import LesBasesSvgLogo from '@app/web/components/LesBasesSvgLogo'
-import Button from '@codegouvfr/react-dsfr/Button'
 
 const createResourceConnectionLink = (
   <Link
@@ -91,16 +91,16 @@ const Header = ({
                 </li>
                 <li>{createResource}</li>
                 {/* We do not have support featurees for now */}
-                {/*<li>*/}
-                {/*  <Button*/}
-                {/*    linkProps={{*/}
-                {/*      href: '/',*/}
-                {/*    }}*/}
-                {/*    iconId="fr-icon-question-line"*/}
-                {/*  >*/}
-                {/*    Aide*/}
-                {/*  </Button>*/}
-                {/*</li>*/}
+                {/* <li> */}
+                {/*  <Button */}
+                {/*    linkProps={{ */}
+                {/*      href: '/', */}
+                {/*    }} */}
+                {/*    iconId="fr-icon-question-line" */}
+                {/*  > */}
+                {/*    Aide */}
+                {/*  </Button> */}
+                {/* </li> */}
                 <li className="fr-hidden fr-unhidden-lg fr-px-1w fr-py-1w">
                   <span
                     style={{

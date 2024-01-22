@@ -5,6 +5,7 @@
 
 .mobile {
   padding: 0 !important;
+
   > ul {
     border-top: var(--slim-grey-border);
     padding: 0 !important;
