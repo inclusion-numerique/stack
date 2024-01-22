@@ -1,7 +1,6 @@
 /* eslint react/jsx-props-no-spreading: off */
 import React from 'react'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
-import classNames from 'classnames'
 import Button from '@codegouvfr/react-dsfr/Button'
 
 export const CreateResourceModal = createModal({

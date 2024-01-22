@@ -12,8 +12,8 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import { getUserDisplayName } from '@app/web/utils/user'
 import { getBasesFromSessionUser } from '@app/web/bases/getBasesFromSessionUser'
 import OpenOnboardingForMigratedUserThatHasNotSeenIt from '@app/web/app/nouveautes/OpenOnboardingForMigratedUserThatHasNotSeenIt'
-import styles from './HeaderUserMenu.module.css'
 import RoundProfileImage from '@app/web/components/RoundProfileImage'
+import styles from './HeaderUserMenu.module.css'
 
 export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
   const bases = getBasesFromSessionUser(user)
@@ -59,7 +59,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
         >
           <RoundProfileImage className="fr-mr-3v" user={user} />
           <span>
-            {!!user.name ? (
+            {user.name ? (
               <>
                 <p className="fr-text--bold fr-text--md fr-mb-0 fr-text-default--grey">
                   {user.name}
