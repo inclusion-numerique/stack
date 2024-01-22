@@ -45,7 +45,7 @@ const BaseDetails = ({ base }: { base: BasePageData }) => (
         {base.website && (
           <div className="fr-mt-2w">
             <p className={styles.subtitle}>Site internet</p>
-            <Link href={`mailto:${base.website}`} className="fr-link">
+            <Link href={base.website} className="fr-link">
               {base.website}
             </Link>
           </div>
