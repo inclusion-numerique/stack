@@ -1,13 +1,10 @@
-import Link from 'next/link'
 import React, { PropsWithChildren } from 'react'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Header from '@app/web/components/Header'
+import { CreateResourceButton } from '@app/web/components/Resource/CreateResourceModal'
 
 const EditorLayout = async ({ children }: PropsWithChildren) => {
   const user = await getSessionUser()
-  const createResourceHref = user
-    ? '/?creer-une-ressource'
-    : '/connexion?suivant=/?creer-une-ressource'
 
   return (
     <div
@@ -15,14 +12,7 @@ const EditorLayout = async ({ children }: PropsWithChildren) => {
     >
       <Header
         user={user}
-        createResource={
-          <Link
-            href={createResourceHref}
-            className="fr-btn fr-icon-edit-box-line"
-          >
-            Créer une ressource
-          </Link>
-        }
+        createResource={user ? <CreateResourceButton /> : undefined}
         backLink
       />
       <div style={{ flex: 1 }}>{children}</div>

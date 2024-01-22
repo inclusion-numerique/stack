@@ -33,8 +33,16 @@
 .fr-header {
   filter: none;
 
+  .fr-header__navbar {
+    margin-top: 8px;
+  }
+
   /* Custom user menu */
   .fr-header__tools-links {
+
+    /* We have to re-align top position as the buttons were to low, maybe caused by our "big" logo */
+    margin-top: -16px;
+
     &::after {
       margin-top: 0;
     }

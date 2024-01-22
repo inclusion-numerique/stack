@@ -10,6 +10,7 @@ import {
 } from '@app/web/server/search/searchQueryParams'
 
 import LesBasesSvgLogo from '@app/web/components/LesBasesSvgLogo'
+import Button from '@codegouvfr/react-dsfr/Button'
 
 const createResourceConnectionLink = (
   <Link
@@ -77,22 +78,29 @@ const Header = ({
           </div>
           <div className="fr-header__tools">
             <div className="fr-header__tools-links">
-              <ul className="fr-btns-group fr-btns-group--sm fr-btns-group--icon-left">
+              <ul className="fr-btns-group">
                 <li>
-                  <Link
-                    href={searchUrl('ressources', defaultSearchParams)}
-                    className="fr-btn fr-icon-search-line"
+                  <Button
+                    linkProps={{
+                      href: searchUrl('ressources', defaultSearchParams),
+                    }}
+                    iconId="fr-icon-search-line"
                   >
                     Rechercher
-                  </Link>
+                  </Button>
                 </li>
                 <li>{createResource}</li>
-                <li>
-                  <Link href="/" className="fr-btn icon-only" title="Aide">
-                    <span className="fr-icon-question-line fr-icon--sm" />
-                    <span className="fr-hidden-lg fr-ml-1w">Aide</span>
-                  </Link>
-                </li>
+                {/* We do not have support featurees for now */}
+                {/*<li>*/}
+                {/*  <Button*/}
+                {/*    linkProps={{*/}
+                {/*      href: '/',*/}
+                {/*    }}*/}
+                {/*    iconId="fr-icon-question-line"*/}
+                {/*  >*/}
+                {/*    Aide*/}
+                {/*  </Button>*/}
+                {/*</li>*/}
                 <li className="fr-hidden fr-unhidden-lg fr-px-1w fr-py-1w">
                   <span
                     style={{
@@ -105,12 +113,14 @@ const Header = ({
                   {user ? (
                     <HeaderUserMenu user={user} />
                   ) : (
-                    <Link
-                      href="/connexion"
-                      className="fr-btn fr-icon-user-line"
+                    <Button
+                      linkProps={{
+                        href: '/connexion',
+                      }}
+                      iconId="fr-icon-user-line"
                     >
                       Se connecter
-                    </Link>
+                    </Button>
                   )}
                 </li>
               </ul>

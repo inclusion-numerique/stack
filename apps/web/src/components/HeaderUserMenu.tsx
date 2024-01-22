@@ -2,13 +2,18 @@
 
 import classNames from 'classnames'
 import Link from 'next/link'
-import { KeyboardEvent, MouseEvent as ReactMouseEvent, useRef } from 'react'
+import React, {
+  KeyboardEvent,
+  MouseEvent as ReactMouseEvent,
+  useRef,
+} from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { getUserDisplayName } from '@app/web/utils/user'
 import { getBasesFromSessionUser } from '@app/web/bases/getBasesFromSessionUser'
 import OpenOnboardingForMigratedUserThatHasNotSeenIt from '@app/web/app/nouveautes/OpenOnboardingForMigratedUserThatHasNotSeenIt'
 import styles from './HeaderUserMenu.module.css'
+import RoundProfileImage from '@app/web/components/RoundProfileImage'
 
 export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
   const bases = getBasesFromSessionUser(user)
@@ -44,27 +49,32 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
   const menuContent = (
     <ul className="fr-menu__list">
       <li>
-        <span className="fr-nav__link fr-pt-4v fr-pb-2v">
-          {!!user.name && (
-            <p className="fr-text--medium fr-text--sm">{user.name}</p>
-          )}
-          <p className="fr-text--sm fr-text-default--grey">{user.email}</p>
-        </span>
-      </li>
-      <li>
         <Link
-          className="fr-nav__link"
+          className="fr-nav__link fr-flex fr-align-items-center"
           href={`/profils/${user.slug}`}
           style={{
             boxShadow: 'none',
             borderBottom: 'var(--slim-grey-border)',
           }}
         >
-          <span
-            className="fr-icon-user-setting-line fr-icon--sm fr-mr-1w"
-            style={{ color: 'var(--blue-france-sun-113-625)' }}
-          />
-          Voir mon profil
+          <RoundProfileImage className="fr-mr-3v" user={user} />
+          <span>
+            {!!user.name ? (
+              <>
+                <p className="fr-text--bold fr-text--md fr-mb-0 fr-text-default--grey">
+                  {user.name}
+                </p>
+                <p className="fr-text--sm fr-text-mention--grey fr-mb-0">
+                  {user.email}
+                </p>
+              </>
+            ) : (
+              <p className="fr-text--bold fr-text--md fr-mb-0">{user.email}</p>
+            )}
+            <span className="fr-text-title--blue-france fr-text--sm fr-mb-0">
+              Voir mon profil
+            </span>
+          </span>
         </Link>
       </li>
       {bases.length > 0 ? (
