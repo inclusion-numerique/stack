@@ -1,7 +1,6 @@
 import { v4 } from 'uuid'
 import { createSlug } from '@app/web/utils/createSlug'
 import { givenUser } from '@app/e2e/support/given/givenUser'
-import { givenBase } from '@app/e2e/support/given/givenBase'
 import { cleanUpAndCreateTestBaseAsMember } from '@app/e2e/e2e/resource/edition/editionTestUtils'
 
 describe('Utilisateur connecté, lorsque je créé une ressource, je peux renseigner le titre, description', () => {
