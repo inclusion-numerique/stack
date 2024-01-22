@@ -1,5 +1,4 @@
 .container {
-  border-top: var(--slim-grey-border);
   display: flex;
   flex-direction: column;
   border-bottom: var(--slim-grey-border);
