@@ -92,7 +92,7 @@ const Resources = ({
         />
       ) : (
         resources.map((resource) => (
-          <ResourceCard key={resource.slug} resource={resource} user={user} />
+          <ResourceCard key={resource.id} resource={resource} user={user} />
         ))
       )}
       {!!user && <SaveResourceInCollectionModal user={user} />}
