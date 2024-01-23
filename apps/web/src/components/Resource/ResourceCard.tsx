@@ -17,9 +17,11 @@ import DeleteResourceButton from './DeleteResourceButton'
 const ResourceCard = ({
   resource,
   user,
+  className,
 }: {
   resource: ResourceListItem
   user: SessionUser | null
+  className?: string
 }) => {
   const isContributor = user && user.id === resource.createdBy.id
 
@@ -55,7 +57,10 @@ const ResourceCard = ({
   )
 
   return (
-    <article className={styles.container} data-testid="resource-card">
+    <article
+      className={classNames(styles.container, className)}
+      data-testid="resource-card"
+    >
       <div className={styles.header}>
         <OwnershipInformation
           user={resource.createdBy}

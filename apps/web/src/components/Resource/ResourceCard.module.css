@@ -22,6 +22,10 @@
 .imageContainer {
   text-decoration: none;
   width: 100%;
+
+  /* 576px breakpoint - padding */
+  max-width: 544px;
+
   margin-bottom: 16px;
   background: var(--background-contrast-info) !important;
   display: block;
