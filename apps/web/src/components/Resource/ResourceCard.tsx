@@ -88,7 +88,7 @@ const ResourceCard = ({
           </div>
           <h6 className={styles.title}>{resource.title}</h6>
           <p className={classNames('fr-text--sm fr-mb-0', styles.description)}>
-            {resource.description}
+            {resource.excerpt}
           </p>
         </div>
         {!!resource.image && (

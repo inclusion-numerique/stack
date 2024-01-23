@@ -13,7 +13,7 @@ export const resourceListSelect = (user: { id: string } | null) =>
     created: true,
     updated: true,
     published: true,
-    description: true,
+    excerpt: true,
     isPublic: true,
     image: {
       select: {
