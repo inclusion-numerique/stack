@@ -58,7 +58,7 @@ const LayoutWithFooter = ({
               </MjmlText>
             </MjmlColumn>
           </MjmlSection>
-          <MjmlSection padding="24px 0">
+          <MjmlSection padding="8px 0">
             <MjmlColumn>
               <MjmlDivider
                 border-width="1px"

@@ -38,7 +38,7 @@ export const inviteMember = {
               <br />
               Vous êtes invité par {from} à rejoindre la base {baseTitle}.
             </MjmlText>
-            <MjmlSpacer height="32px" />
+            <MjmlSpacer height="16px" />
             <MjmlText fontWeight="400" fontSize="16px" color="#3A3A3A">
               En rejoignant cette base, vous pourrez :
               <br />
