@@ -1,4 +1,5 @@
 import React, { PropsWithChildren } from 'react'
+import type { Metadata } from 'next'
 import { searchParamsFromSegment } from '@app/web/server/search/searchQueryParams'
 import SearchMenu from '@app/web/components/Search/SearchMenu'
 import { categoryThemesOptions, themeLabels } from '@app/web/themes/themes'
@@ -17,6 +18,9 @@ import SearchFilters, {
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
+export const metadata: Metadata = {
+  title: 'Rechercher des ressources',
+}
 const ResourcesSearchLayout = ({
   children,
   params,

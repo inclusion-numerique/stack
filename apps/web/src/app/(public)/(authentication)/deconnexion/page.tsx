@@ -5,10 +5,15 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import Button from '@codegouvfr/react-dsfr/Button'
+import type { Metadata } from 'next'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 
 export const revalidate = 0
+
+export const metadata: Metadata = {
+  title: 'Déconnexion',
+}
 
 const SignoutPage = () => {
   const [isLoading, setIsLoading] = useState(false)

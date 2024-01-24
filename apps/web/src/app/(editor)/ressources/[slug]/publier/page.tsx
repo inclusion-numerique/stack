@@ -1,5 +1,6 @@
 import { notFound, redirect } from 'next/navigation'
 import React from 'react'
+import { Metadata } from 'next'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { getResource } from '@app/web/server/resources/getResource'
@@ -10,6 +11,10 @@ import {
   defaultSearchParams,
   searchUrl,
 } from '@app/web/server/search/searchQueryParams'
+
+export const metadata: Metadata = {
+  title: 'Publication de la ressource',
+}
 
 const ResourcePublicationPage = async ({
   params,

@@ -1,5 +1,6 @@
 import { notFound, redirect } from 'next/navigation'
 import React from 'react'
+import { Metadata } from 'next'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import Edition from '@app/web/components/Resource/Edition/ResourceEdition'
@@ -13,6 +14,10 @@ import {
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+
+export const metadata: Metadata = {
+  title: 'Éditeur de ressource',
+}
 
 const ResourceEditionPage = async ({
   params,

@@ -1,5 +1,6 @@
 import { notFound, redirect } from 'next/navigation'
 import React from 'react'
+import type { Metadata } from 'next'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { getResource } from '@app/web/server/resources/getResource'
@@ -9,6 +10,29 @@ import {
   defaultSearchParams,
   searchUrl,
 } from '@app/web/server/search/searchQueryParams'
+import { prismaClient } from '@app/web/prismaClient'
+
+export const generateMetadata = async ({
+  params: { slug },
+}: {
+  params: { slug: string }
+}): Promise<Metadata> => {
+  const resource = await prismaClient.resource.findUnique({
+    where: {
+      slug,
+    },
+    select: {
+      title: true,
+    },
+  })
+  if (!resource) {
+    notFound()
+  }
+
+  return {
+    title: `${resource.title} - Paramètres`,
+  }
+}
 
 const ResourceParametersPage = async ({
   params,

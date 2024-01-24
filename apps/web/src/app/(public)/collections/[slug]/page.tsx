@@ -1,11 +1,35 @@
 import { notFound } from 'next/navigation'
 import React from 'react'
+import type { Metadata } from 'next'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { filterAccess } from '@app/web/server/collections/authorization'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import PrivateBox from '@app/web/components/PrivateBox'
 import { getCollection } from '@app/web/server/collections/getCollection'
 import CollectionView from '@app/web/components/Collection/CollectionView'
+import { prismaClient } from '@app/web/prismaClient'
+
+export const generateMetadata = async ({
+  params: { slug },
+}: {
+  params: { slug: string }
+}): Promise<Metadata> => {
+  const collection = await prismaClient.collection.findUnique({
+    where: {
+      slug,
+    },
+    select: {
+      title: true,
+    },
+  })
+  if (!collection) {
+    notFound()
+  }
+
+  return {
+    title: collection.title,
+  }
+}
 
 const CollectionPage = async ({ params }: { params: { slug: string } }) => {
   const user = await getSessionUser()

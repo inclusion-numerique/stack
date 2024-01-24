@@ -1,9 +1,14 @@
 import React, { PropsWithChildren } from 'react'
+import type { Metadata } from 'next'
 import { searchParamsFromSegment } from '@app/web/server/search/searchQueryParams'
 import SearchMenu from '@app/web/components/Search/SearchMenu'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+
+export const metadata: Metadata = {
+  title: 'Rechercher des profils',
+}
 
 const ProfilesSearchLayout = ({
   children,

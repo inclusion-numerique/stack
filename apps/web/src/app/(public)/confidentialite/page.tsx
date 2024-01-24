@@ -1,7 +1,12 @@
 /* eslint jsx-a11y/control-has-associated-label: 0  */
+import type { Metadata } from 'next'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export const revalidate = 0
+export const metadata: Metadata = {
+  title: 'Politique de confidentialité',
+}
+
 const ConfidentialityPage = () => (
   <div className="fr-container landing-main-container fr-my-8w">
     <div className="fr-grid-row fr-grid-row--center">

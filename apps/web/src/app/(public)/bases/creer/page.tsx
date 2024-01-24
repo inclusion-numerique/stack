@@ -1,9 +1,13 @@
 import { redirect } from 'next/navigation'
 import React from 'react'
+import type { Metadata } from 'next'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import CreateBase from '@app/web/components/Base/Create/CreateBase'
 
+export const metadata: Metadata = {
+  title: 'Créer une base',
+}
 const BaseCreationPage = async () => {
   const user = await getSessionUser()
   if (!user) {

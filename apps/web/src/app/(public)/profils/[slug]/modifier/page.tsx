@@ -1,5 +1,6 @@
 import React from 'react'
 import { notFound, redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { getProfilePageQuery } from '@app/web/server/profiles/getProfile'
 import { getProfileResources } from '@app/web/server/resources/getResourcesList'
@@ -8,6 +9,9 @@ import ProfilEdition from '@app/web/components/Profile/Edition/ProfileEdition'
 import { filterAccess } from '@app/web/server/profiles/authorization'
 import { ProfilRouteParams } from '@app/web/app/(public)/profils/[slug]/profilRouteParams'
 
+export const metadata: Metadata = {
+  title: 'Modifier mon profil',
+}
 const ProfilEditionPage = async ({ params }: ProfilRouteParams) => {
   const user = await getSessionUser()
   if (!user) {

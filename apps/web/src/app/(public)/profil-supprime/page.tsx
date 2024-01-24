@@ -1,4 +1,10 @@
+import type { Metadata } from 'next'
+
 export const revalidate = 0
+export const metadata: Metadata = {
+  title: 'Profil supprimé',
+}
+
 const ProfilSupprimePage = () => (
   <div className="fr-container landing-main-container fr-my-8w">
     <h1>Profil supprimé</h1>

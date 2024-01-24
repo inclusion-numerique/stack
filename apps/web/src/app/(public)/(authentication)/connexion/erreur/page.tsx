@@ -1,9 +1,14 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export const revalidate = 0
+
+export const metadata: Metadata = {
+  title: 'Connexion',
+}
 
 const errorMessage = (error?: string): string | undefined => {
   if (error === 'Verification') {
