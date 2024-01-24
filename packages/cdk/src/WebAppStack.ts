@@ -165,8 +165,8 @@ export class WebAppStack extends TerraformStack {
     )
 
     const emailFromAddress = isMain
-      ? `bot@${mainDomain}`
-      : `bot+${namespace}@${mainDomain}`
+      ? `notifications@${mainDomain}`
+      : `notifications+${namespace}@${mainDomain}`
 
     const emailFromName = isMain
       ? projectTitle
