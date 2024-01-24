@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import React, { ReactNode } from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
-import classNames from 'classnames'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import HeaderBackLink from '@app/web/components/HeaderBackLink'
 import { HeaderUserMenu } from '@app/web/components/HeaderUserMenu'

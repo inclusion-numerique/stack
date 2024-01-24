@@ -51,7 +51,7 @@ const RatingButtonsFormField = <T extends FieldValues>({
       control={control}
       name={path}
       render={({
-        field: { onChange, name, ref, value },
+        field: { onChange, value },
         fieldState: { invalid, error, isDirty },
       }) => {
         let ariaLabelBy: string | undefined
@@ -94,7 +94,6 @@ const RatingButtonsFormField = <T extends FieldValues>({
                     type="button"
                     onClick={() => onChange(rating.value)}
                     disabled={disabled}
-                    name={name}
                     priority={value === rating.value ? 'primary' : 'tertiary'}
                   >
                     {rating.name}
