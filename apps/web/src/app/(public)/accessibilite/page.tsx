@@ -16,7 +16,7 @@ const AccessibilityStatementPage = () => (
       Cette déclaration d’accessibilité s’applique à{' '}
       <strong>{process.env.NEXT_PUBLIC_APP_NAME}</strong>{' '}
       <span>
-        (<span>https://{process.env.NEXT_PUBLIC_APP_SLUG}.gouv.fr</span>)
+        (<span>https://{process.env.NEXT_PUBLIC_APP_SLUG}.anct.gouv.fr</span>)
       </span>
       .
     </p>

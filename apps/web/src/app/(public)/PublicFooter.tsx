@@ -3,7 +3,8 @@ import SwitchTheme from '@app/web/app/(public)/SwitchTheme'
 
 const PublicFooter = () => (
   <Footer
-    accessibility="non compliant"
+    accessibility="partially compliant"
+    accessibilityLinkProps={{ href: '/accessibilite' }}
     brandTop={
       <>
         République
@@ -28,9 +29,7 @@ const PublicFooter = () => (
       {
         text: 'Code source',
         linkProps: {
-          href: {
-            href: 'https://github.com/inclusion-numerique/projets-territoires',
-          },
+          href: 'https://github.com/inclusion-numerique/la-base',
           target: '_blank',
           rel: 'noreferrer',
         },
