@@ -6,10 +6,6 @@
     background: var(--background-contrast-info) !important;
 }
 
-.column {
-    width: 50%;
-}
-
 .container, .imageContainer {
     img {
         object-fit: cover;
@@ -21,12 +17,22 @@
     }
 }
 
-.firstImageContainer {
+.imageContainer {
     height: 100%;
-}
 
-.smallImageContainer {
-    height: 50%;
+    &:first-child{
+        width: 55%;
+        border-right: 3px solid var(--background-default-grey);
+    }
+
+    &:nth-child(2){
+        width: 30%;
+        border-right: 3px solid var(--background-default-grey);
+    }
+
+    &:last-child{
+        width: 15%;
+    }
 }
 
 
