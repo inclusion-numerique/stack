@@ -3,7 +3,6 @@ import classNames from 'classnames'
 import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
 import { resourceCardImageBreakpoints } from '@app/web/components/Resource/resourceCardImageBreakpoints'
 import styles from './Images.module.css'
-import EmptyImage from './EmptyImage'
 
 /**
  * For now we reuse resource card breakpoints to minimize the number of image processed on the backend
@@ -43,14 +42,6 @@ const Images = ({
       ): resourceImage is { id: string; altText: string | null } =>
         !!resourceImage,
     )
-
-  if (!bigImage && !secondImage && !thirdImage) {
-    return (
-      <div className={classNames(styles.container, className)}>
-        <EmptyImage size="medium" />
-      </div>
-    )
-  }
 
   return (
     <div className={classNames(styles.container, className)}>
