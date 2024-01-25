@@ -49,7 +49,14 @@ export const countResources = async (
           /* Search term check */
         AND (
                   coalesce(${searchTerm}, '___empty___') = '___empty___'
-              OR to_tsvector('french', unaccent(resources.title || ' ' || resources.description)) @@
+              OR to_tsvector('french', unaccent(
+                                               resources.title || ' '
+                                                   || replace(array_to_string(resources.themes, ' '), '_', ' ') || ' '
+                                                   || replace(array_to_string(resources.target_audiences, ' '), '_', ' ') || ' '
+                                                   || replace(array_to_string(resources.support_types, ' '), '_', ' ') || ' '
+                                                   || resources.description || ' '
+
+                                       ) @@
                  to_tsquery('french', unaccent(${searchTerm}))
           )
         AND (
@@ -140,7 +147,14 @@ export const rankResources = async (
           /* TODO condition if query is empty ? */
         AND (
                   coalesce(${searchTerm}, '___empty___') = '___empty___'
-              OR to_tsvector('french', unaccent(resources.title || ' ' || resources.description)) @@
+              OR to_tsvector('french', unaccent(
+                                               resources.title || ' '
+                                                   || replace(array_to_string(resources.themes, ' '), '_', ' ') || ' '
+                                                   || replace(array_to_string(resources.target_audiences, ' '), '_', ' ') || ' '
+                                                   || replace(array_to_string(resources.support_types, ' '), '_', ' ') || ' '
+                                                   || resources.description || ' '
+
+                                       ) @@
                  to_tsquery('french', unaccent(${searchTerm}))
           )
         AND (
