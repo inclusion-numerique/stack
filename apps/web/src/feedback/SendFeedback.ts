@@ -34,21 +34,23 @@ export const SendFeedbackValidation = z.object({
   difficultyComment: z
     .string()
     .trim()
-    .nullish() // Empty string -> null
-    .transform((email) => email || null),
+    // Empty string -> null
+    .transform((email) => email || null)
+    .nullish(),
   comment: z
     .string()
     .trim()
-    .nullish() // Empty string -> null
-    .transform((email) => email || null),
+    // Empty string -> null
+    .transform((email) => email || null)
+    .nullish(),
   wantsToBeContacted: z
     .string()
     .email('Veuillez renseigner un email valide')
-    .nullish()
     // Accept empty string
     .or(z.literal(''))
     // Empty string -> null
-    .transform((email) => email || null),
+    .transform((email) => email || null)
+    .nullish(),
 })
 
 export type SendFeedbackData = z.infer<typeof SendFeedbackValidation>

@@ -29,9 +29,9 @@ export const siteValidation = z
   .url('Veuillez renseigner une URL valide')
   // Accept empty string
   .or(z.literal(''))
-  .nullish()
   // Empty string -> null
   .transform((url) => url || null)
+  .nullish()
 
 export const UpdateBaseInformationsCommandValidation = z.object({
   title: titleValidation,
