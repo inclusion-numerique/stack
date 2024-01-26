@@ -37,7 +37,8 @@ export const metadata: Metadata = {
       type: 'image/svg+xml',
     },
   },
-  description: PublicWebAppConfig.projectTitle,
+  description:
+    'La plateforme collaborative de partage de ressources & communs numériques: Inclusion, environnement, culture, sécurité.... Inspirez-vous, produisez, diffusez, contribuez.',
   manifest: '/favicon/manifest.webmanifest',
 }
 

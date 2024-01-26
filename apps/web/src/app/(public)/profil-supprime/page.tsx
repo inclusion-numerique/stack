@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 
 export const revalidate = 0
 export const metadata: Metadata = {
-  title: 'Profil supprimé',
+  title: metadataTitle('Profil supprimé'),
 }
 
 const ProfilSupprimePage = () => (

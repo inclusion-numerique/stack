@@ -7,9 +7,10 @@ import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { getServerUrl } from '@app/web/utils/baseUrl'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 
 export const metadata: Metadata = {
-  title: 'Créer un compte',
+  title: metadataTitle('Créer un compte'),
 }
 
 export const revalidate = 0

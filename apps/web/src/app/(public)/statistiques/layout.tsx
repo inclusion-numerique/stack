@@ -2,9 +2,10 @@ import React, { PropsWithChildren } from 'react'
 import { Metadata } from 'next'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 
 export const metadata: Metadata = {
-  title: 'Statistiques',
+  title: metadataTitle('Statistiques'),
 }
 
 const StatisticsLayout = ({ children }: PropsWithChildren) => (

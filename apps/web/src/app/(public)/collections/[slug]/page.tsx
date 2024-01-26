@@ -8,6 +8,7 @@ import PrivateBox from '@app/web/components/PrivateBox'
 import { getCollection } from '@app/web/server/collections/getCollection'
 import CollectionView from '@app/web/components/Collection/CollectionView'
 import { prismaClient } from '@app/web/prismaClient'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 
 export const generateMetadata = async ({
   params: { slug },
@@ -27,7 +28,7 @@ export const generateMetadata = async ({
   }
 
   return {
-    title: collection.title,
+    title: metadataTitle(collection.title),
   }
 }
 

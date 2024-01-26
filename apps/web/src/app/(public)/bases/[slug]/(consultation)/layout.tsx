@@ -7,6 +7,7 @@ import { getBasePageContext } from '@app/web/app/(public)/bases/[slug]/(consulta
 import BaseHeader from '@app/web/components/Base/BaseHeader'
 import BaseMenu from '@app/web/components/Base/BaseMenu'
 import { prismaClient } from '@app/web/prismaClient'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 
 export const generateMetadata = async ({
   params: { slug },
@@ -24,7 +25,7 @@ export const generateMetadata = async ({
   }
 
   return {
-    title: base.title,
+    title: metadataTitle(base.title),
   }
 }
 const BaseLayout = async ({

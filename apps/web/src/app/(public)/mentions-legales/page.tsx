@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 
 export const revalidate = 0
 
 export const metadata: Metadata = {
-  title: 'Mentions légales',
+  title: metadataTitle('Mentions légales'),
 }
 
 const LegalPage = () => (

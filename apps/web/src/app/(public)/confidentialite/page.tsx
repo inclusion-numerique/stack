@@ -1,10 +1,11 @@
 /* eslint jsx-a11y/control-has-associated-label: 0  */
 import type { Metadata } from 'next'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 
 export const revalidate = 0
 export const metadata: Metadata = {
-  title: 'Politique de confidentialité',
+  title: metadataTitle('Politique de confidentialité'),
 }
 
 const ConfidentialityPage = () => (

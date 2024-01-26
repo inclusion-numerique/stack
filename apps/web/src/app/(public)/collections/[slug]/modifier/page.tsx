@@ -6,6 +6,7 @@ import { getSessionUser } from '@app/web/auth/getSessionUser'
 import CollectionEdition from '@app/web/components/Collection/Edition/CollectionEdition'
 import { getCollection } from '@app/web/server/collections/getCollection'
 import { prismaClient } from '@app/web/prismaClient'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 
 export const generateMetadata = async ({
   params: { slug },
@@ -25,7 +26,7 @@ export const generateMetadata = async ({
   }
 
   return {
-    title: collection.title,
+    title: metadataTitle(collection.title),
   }
 }
 

@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 
 export const metadata: Metadata = {
-  title: 'Déclaration d’accessibilité',
+  title: metadataTitle('Déclaration d’accessibilité'),
 }
 export const revalidate = 0
 const AccessibilityStatementPage = () => (

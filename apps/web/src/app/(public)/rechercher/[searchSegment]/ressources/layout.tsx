@@ -14,12 +14,13 @@ import {
 import SearchFilters, {
   FiltersInitialValue,
 } from '@app/web/components/Search/Filters/SearchFilters'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export const metadata: Metadata = {
-  title: 'Rechercher des ressources',
+  title: metadataTitle('Rechercher des ressources'),
 }
 const ResourcesSearchLayout = ({
   children,

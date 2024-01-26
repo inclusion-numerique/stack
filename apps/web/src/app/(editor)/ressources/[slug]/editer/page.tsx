@@ -11,12 +11,13 @@ import {
   defaultSearchParams,
   searchUrl,
 } from '@app/web/server/search/searchQueryParams'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export const metadata: Metadata = {
-  title: 'Éditeur de ressource',
+  title: metadataTitle('Éditeur de ressource'),
 }
 
 const ResourceEditionPage = async ({

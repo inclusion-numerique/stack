@@ -11,9 +11,10 @@ import {
   defaultSearchParams,
   searchUrl,
 } from '@app/web/server/search/searchQueryParams'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 
 export const metadata: Metadata = {
-  title: 'Publication de la ressource',
+  title: metadataTitle('Publication de la ressource'),
 }
 
 const ResourcePublicationPage = async ({

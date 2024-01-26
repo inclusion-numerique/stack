@@ -8,9 +8,10 @@ import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import ProfilEdition from '@app/web/components/Profile/Edition/ProfileEdition'
 import { filterAccess } from '@app/web/server/profiles/authorization'
 import { ProfilRouteParams } from '@app/web/app/(public)/profils/[slug]/profilRouteParams'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 
 export const metadata: Metadata = {
-  title: 'Modifier mon profil',
+  title: metadataTitle('Modifier mon profil'),
 }
 const ProfilEditionPage = async ({ params }: ProfilRouteParams) => {
   const user = await getSessionUser()

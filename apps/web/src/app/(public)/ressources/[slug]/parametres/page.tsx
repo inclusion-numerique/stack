@@ -11,6 +11,7 @@ import {
   searchUrl,
 } from '@app/web/server/search/searchQueryParams'
 import { prismaClient } from '@app/web/prismaClient'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 
 export const generateMetadata = async ({
   params: { slug },
@@ -30,7 +31,7 @@ export const generateMetadata = async ({
   }
 
   return {
-    title: `${resource.title} - Paramètres`,
+    title: metadataTitle(`${resource.title} - Paramètres`),
   }
 }
 

@@ -8,6 +8,7 @@ import { getProfilePageContext } from '@app/web/app/(public)/profils/[slug]/(con
 import { getProfilePageCounts } from '@app/web/app/(public)/profils/[slug]/(consultation)/getProfilePageCounts'
 import ProfileMenu from '@app/web/components/Profile/ProfileMenu'
 import { prismaClient } from '@app/web/prismaClient'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 
 export const generateMetadata = async ({
   params: { slug },
@@ -25,7 +26,7 @@ export const generateMetadata = async ({
   }
 
   return {
-    title: profile.name || 'Profil',
+    title: metadataTitle(profile.name || 'Profil'),
   }
 }
 
