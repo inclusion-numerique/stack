@@ -3,7 +3,9 @@
  */
 
 :root {
-    --slim-grey-border: 1px solid var(--border-default-grey);
+  --slim-grey-border: 1px solid var(--border-default-grey);
+  --border-width: 1px;
+  --border-style: solid;
 }
 
 .wip {
@@ -463,4 +465,20 @@
 .fr-page-title {
     color: var(--blue-france-sun-113-625);
     margin-bottom: 3rem;
+}
+
+.fr-border--bottom {
+  border-bottom: var(--border-width) var(--border-style) var(--border-default-grey);
+}
+
+.fr-border--top {
+  border-top: var(--border-width) var(--border-style) var(--border-default-grey);
+}
+
+.fr-border--start {
+  border-left: var(--border-width) var(--border-style) var(--border-default-grey);
+}
+
+.fr-border--end {
+  border-right: var(--border-width) var(--border-style) var(--border-default-grey);
 }

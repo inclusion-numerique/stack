@@ -90,13 +90,13 @@ Ces commandes sont essentielles pour le développement de l'application :
 
 Lance l'application `web` en local :
 
-- `web` est disponible sur http://localhost:3000
+- `web` est disponible sur http://localhost:3001
 
 ### `pnpm dev`
 
 Lance les applications `web` et `storybook` en local :
 
-- `web` est disponible sur http://localhost:3000
+- `web` est disponible sur http://localhost:3001
 - `storybook` est disponible sur http://localhost:6006
 
 ### `pnpm db:init`
@@ -162,8 +162,6 @@ Supprime le dossier `node_modules` à la racine du monorepo.
 ### `pnpm clean:workspaces`
 
 Supprime les dossiers `node_modules` de tous les projets contenus dans le monorepo.
-
----
 
 <h2 id="utilisation">🧭 Utilisation</h2>
 

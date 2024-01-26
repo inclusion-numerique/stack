@@ -48,12 +48,9 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
       </li>
       <li>
         <Link
-          className="fr-nav__link"
+          className="fr-nav__link fr-border--bottom"
           href="/"
-          style={{
-            boxShadow: 'none',
-            borderBottom: 'var(--slim-grey-border)',
-          }}
+          style={{ boxShadow: 'none' }}
         >
           <span
             className="fr-icon-user-setting-line fr-icon--sm fr-mr-1w"
