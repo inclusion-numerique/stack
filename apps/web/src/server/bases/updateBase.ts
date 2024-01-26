@@ -5,6 +5,7 @@ export const titleValidation = z
   .string({ required_error: 'Veuillez renseigner le nom de la base' })
   .trim()
   .nonempty('Veuillez renseigner le nom de la base')
+  .max(100, 'Le nom de la base ne peut pas dépasser 100 caractères')
 export const departmentValidation = z.string().trim().optional()
 export const descriptionValidation = z
   .string()
@@ -24,9 +25,13 @@ export const emailValidation = z
 export const emailIsPublicValidation = z.boolean()
 export const siteValidation = z
   .string()
-  .url('Veuillez renseigner une URL valide')
   .trim()
-  .optional()
+  .url('Veuillez renseigner une URL valide')
+  // Accept empty string
+  .or(z.literal(''))
+  .nullish()
+  // Empty string -> null
+  .transform((url) => url || null)
 
 export const UpdateBaseInformationsCommandValidation = z.object({
   title: titleValidation,
