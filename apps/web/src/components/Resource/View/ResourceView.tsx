@@ -17,6 +17,7 @@ import ResourceActions from '@app/web/components/Resource/View/ResourceActions'
 import ResourceMobileNavigation from '@app/web/components/Resource/View/ResourceMobileNavigation'
 import ResourceContentView from '@app/web/components/Resource/Contents/ResourceContentView'
 import RegisterResourceView from '@app/web/components/Resource/View/RegisterResourceView'
+import DeleteResource from '@app/web/components/Resource/DeleteResource/DeleteResource'
 import styles from './ResourceView.module.css'
 import ResourceInformations from './ResourceInformations'
 
@@ -37,6 +38,7 @@ const ResourceView = ({
     contentsWithAnchor,
     hasInformationSection,
   })
+  const canEdit = isAdmin
 
   return (
     <div className="fr-grid-row fr-pb-20v" data-testid="resource-view">
@@ -111,6 +113,15 @@ const ResourceView = ({
           )}
         </div>
         {!!user && <SaveResourceInCollectionModal user={user} />}
+        {canEdit && (
+          <DeleteResource
+            redirectTo={
+              resource.base
+                ? `/bases/${resource.base.slug}`
+                : `/profils/${resource.createdBy.slug}`
+            }
+          />
+        )}
         <ResourceReport resourceId={resource.id} />
       </div>
     </div>

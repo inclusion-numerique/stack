@@ -41,7 +41,7 @@ const ErrorPage = ({
       <ul className="fr-btns-group fr-mt-12v">
         <li>
           <Link href="/connexion" target="_self" className="fr-btn">
-            Retour
+            Retour à la page de connexion
           </Link>
         </li>
       </ul>

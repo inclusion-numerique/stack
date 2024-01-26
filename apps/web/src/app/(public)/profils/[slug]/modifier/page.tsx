@@ -39,11 +39,13 @@ const ProfilEditionPage = async ({ params }: ProfilRouteParams) => {
       <Breadcrumbs
         parents={[
           {
-            label: 'Mon profil',
+            label: authorizations.isUser
+              ? 'Mon Profil'
+              : `${profile.name || 'Profil'}`,
             linkProps: { href: `/profils/${params.slug}` },
           },
         ]}
-        currentPage="Modifier mon profil"
+        currentPage="Modifier"
       />
       <div className="fr-mt-6w fr-mb-4w">
         <ProfilEdition profile={profile} resources={resources} />

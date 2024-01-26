@@ -12,6 +12,7 @@ import {
   searchUrl,
 } from '@app/web/server/search/searchQueryParams'
 import { metadataTitle } from '@app/web/app/metadataTitle'
+import ResourceBreadcrumbs from '@app/web/components/ResourceBreadcrumbs'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -46,6 +47,7 @@ const ResourceEditionPage = async ({
   return (
     <>
       <div className="fr-container">
+        <ResourceBreadcrumbs resource={resource} currentChildPage="Éditer" />
         <Breadcrumbs
           currentPage="Éditer"
           parents={[

@@ -23,7 +23,9 @@ const SignoutPage = () => (
         </li>
       </ul>
       <div className="fr-grid-row fr-grid-row--center">
-        <Link href="/">Retour</Link>
+        <Link className="fr-link" href="/">
+          Retour à la page d’accueil
+        </Link>
       </div>
     </AuthCard>
   </>
