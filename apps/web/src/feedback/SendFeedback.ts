@@ -31,12 +31,24 @@ export const SendFeedbackValidation = z.object({
       'Veuillez renseigner si vous avez rencontré des difficultés',
   }),
   difficultyArea: z.enum(difficultyAreas).nullish(),
-  difficultyComment: z.string().nullish(),
-  comment: z.string().nullish(),
+  difficultyComment: z
+    .string()
+    .trim()
+    .nullish() // Empty string -> null
+    .transform((email) => email || null),
+  comment: z
+    .string()
+    .trim()
+    .nullish() // Empty string -> null
+    .transform((email) => email || null),
   wantsToBeContacted: z
     .string()
     .email('Veuillez renseigner un email valide')
-    .nullish(),
+    .nullish()
+    // Accept empty string
+    .or(z.literal(''))
+    // Empty string -> null
+    .transform((email) => email || null),
 })
 
 export type SendFeedbackData = z.infer<typeof SendFeedbackValidation>
