@@ -1,14 +1,15 @@
 import React from 'react'
 import classNames from 'classnames'
 import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
-import { resourceCardImageBreakpoints } from '@app/web/components/Resource/resourceCardImageBreakpoints'
 import styles from './Images.module.css'
 
-/**
- * For now we reuse resource card breakpoints to minimize the number of image processed on the backend
- * And also to minimize the number of images downloaded by the client (same size is not downloaded twice)
- */
-const collectionImageBreakpoints = resourceCardImageBreakpoints
+const collectionImageBreakpoints = [
+  { media: '(max-width: 320px)', width: 320 - 32 },
+  // Image width is limited to 576 - 32 on non-desktop devices
+  // { media: '(max-width: 576px)', width: 576 - 32 },
+  { media: '(max-width: 768px)', width: 576 - 32 },
+  { media: '(min-width: 768px)', width: 180 },
+]
 
 const Images = ({
   className,

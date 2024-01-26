@@ -1,6 +1,7 @@
 .container {
     display: flex;
     width: 100%;
+    max-width: 544px;
     overflow: hidden;
     aspect-ratio: 1.66;
     background: var(--background-contrast-info) !important;
