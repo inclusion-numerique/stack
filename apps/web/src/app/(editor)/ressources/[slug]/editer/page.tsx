@@ -2,15 +2,10 @@ import { notFound, redirect } from 'next/navigation'
 import React from 'react'
 import { Metadata } from 'next'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
-import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import Edition from '@app/web/components/Resource/Edition/ResourceEdition'
 import { getResource } from '@app/web/server/resources/getResource'
 import { getResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
 import { filterAccess } from '@app/web/server/resources/authorization'
-import {
-  defaultSearchParams,
-  searchUrl,
-} from '@app/web/server/search/searchQueryParams'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import ResourceBreadcrumbs from '@app/web/components/ResourceBreadcrumbs'
 
@@ -48,19 +43,6 @@ const ResourceEditionPage = async ({
     <>
       <div className="fr-container">
         <ResourceBreadcrumbs resource={resource} currentChildPage="Éditer" />
-        <Breadcrumbs
-          currentPage="Éditer"
-          parents={[
-            {
-              label: 'Ressources',
-              linkProps: { href: searchUrl('ressources', defaultSearchParams) },
-            },
-            {
-              label: resource.title,
-              linkProps: { href: `/ressources/${resource.slug}` },
-            },
-          ]}
-        />
       </div>
       <Edition resource={resource} draftResource={draftResource} user={user} />
     </>
