@@ -22,7 +22,7 @@ describe('Utilisateur, je peux donner mon avis', () => {
     })
   })
 
-  it.only('Acceptation 2 - Je peux donner mon avis', () => {
+  it('Acceptation 2 - Je peux donner mon avis', () => {
     cy.visit('/')
     cy.dsfrModalsShouldBeBound()
 
