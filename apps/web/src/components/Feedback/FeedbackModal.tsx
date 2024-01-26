@@ -73,8 +73,6 @@ const FeedbackModal = () => {
   const isLoading = mutation.isPending || mutation.isSuccess
 
   const hadDifficulty = yesNoToBoolean(watch('hadDifficulty'))
-  const comment = watch('comment')
-  const hasComment = comment && comment.length > 0
 
   useEffect(() => {
     if (!hadDifficulty) {
@@ -84,13 +82,6 @@ const FeedbackModal = () => {
       setValue('difficultyComment', undefined)
     }
   }, [hadDifficulty, setValue])
-
-  useEffect(() => {
-    if (!hasComment) {
-      // eslint-disable-next-line unicorn/no-useless-undefined
-      setValue('wantsToBeContacted', undefined)
-    }
-  }, [hasComment, setValue])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -169,15 +160,13 @@ const FeedbackModal = () => {
           className="fr-mb-4v"
         />
 
-        {hasComment && (
-          <InputFormField
-            control={control}
-            path="wantsToBeContacted"
-            disabled={isLoading}
-            label="Si vous souhaitez être recontacté pour discuter de votre besoin ou d'un problème rencontré sur la plateforme, nous vous invitons à renseigner votre email ici :"
-            className="fr-mb-4v"
-          />
-        )}
+        <InputFormField
+          control={control}
+          path="wantsToBeContacted"
+          disabled={isLoading}
+          label="Si vous souhaitez être recontacté pour discuter de votre besoin ou d'un problème rencontré sur la plateforme, nous vous invitons à renseigner votre email ici :"
+          className="fr-mb-4v"
+        />
         {/* Spacer */}
         <div className="fr-pb-6v" />
       </feedbackModal.Component>
