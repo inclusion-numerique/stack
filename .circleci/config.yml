@@ -131,7 +131,7 @@ workflows:
   release_deployment:
     triggers:
       - schedule:
-          cron: "0/5 * * * *"
+          cron: "30,32,34,36 * * * *"
           filters:
             branches:
               only:
