@@ -57,16 +57,19 @@ const ResourceView = ({
             <OwnershipInformation
               user={resource.createdBy}
               base={resource.base}
-              attributionWording="resource"
+              attributionWording={
+                resource.published ? 'resource' : 'draft-resource'
+              }
             />
             <hr className="fr-separator-4v fr-separator-md-6v" />
             <div className="fr-flex fr-direction-column fr-direction-md-row fr-justify-content-space-between fr-align-items-start fr-align-items-md-center fr-flex-gap-3v fr-mb-4v fr-mb-md-6v">
               <ResourceDates
                 created={resource.created}
                 updated={resource.updated}
+                published={resource.published}
               />
               {isAdmin && (
-                <ResourcePublicStateBadge small isPublic={resource.isPublic} />
+                <ResourcePublicStateBadge small resource={resource} />
               )}
             </div>
             {resource.image ? (
