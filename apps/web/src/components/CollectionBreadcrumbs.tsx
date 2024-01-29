@@ -40,14 +40,14 @@ const CollectionBreadcrumbs = ({
       label: collection.title,
       linkProps: { href: `/collections/${collection.slug}` },
     })
-
-    return (
-      <Breadcrumbs
-        parents={parents}
-        currentPage={currentChildPage || collection.title}
-      />
-    )
   }
+
+  return (
+    <Breadcrumbs
+      parents={parents}
+      currentPage={currentChildPage || collection.title}
+    />
+  )
 }
 
 export default CollectionBreadcrumbs
