@@ -18,14 +18,14 @@ importers:
         specifier: ^7.3.0
         version: 7.3.0
       turbo:
-        specifier: ^1.11.3
+        specifier: ^1.12.0
         version: 1.12.0
     optionalDependencies:
       turbo-linux-64:
-        specifier: ^1.11.3
+        specifier: ^1.12.0
         version: 1.12.0
       turbo-linux-arm64:
-        specifier: ^1.11.3
+        specifier: ^1.12.0
         version: 1.12.0
 
   apps/cli:
