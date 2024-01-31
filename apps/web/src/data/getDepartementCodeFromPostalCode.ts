@@ -157,7 +157,7 @@ export const getDepartementCodeFromPostalCode = (postalCode: string) => {
     throw new Error(`Invalid Corsica postal code ${postalCode}`)
   }
 
-  if (postalCode.startsWith('97')) {
+  if (postalCode.startsWith('97') || postalCode.startsWith('98')) {
     // Special case for overseas departments
     const slice = postalCode.slice(0, 3)
     if (!departementCodes.has(slice)) {
