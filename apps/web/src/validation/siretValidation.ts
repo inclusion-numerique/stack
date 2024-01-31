@@ -1,6 +1,10 @@
 import z from 'zod'
 import { checkLuhnIntegrity } from '@app/web/utils/checkLuhnIntegrity'
 
+const validateValidSiretDigits = (siret: string) =>
+  // La poste has invalid siret for its structures, we whitelist La Poste SIREN
+  siret.startsWith('356000000') || checkLuhnIntegrity(siret)
+
 const baseSiretValidation = z
   .string()
   .trim()
@@ -8,7 +12,7 @@ const baseSiretValidation = z
   .regex(/^\d{14}$/, {
     message: 'Le SIRET doit être composé de 14 chiffres',
   })
-  .refine(checkLuhnIntegrity, {
+  .refine(validateValidSiretDigits, {
     message: 'Ce SIRET n’est pas valide',
   })
 

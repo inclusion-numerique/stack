@@ -21,6 +21,13 @@ describe('Validations SIRET', () => {
       ).toBeFalse() // SIRET invalide
     })
 
+    it('devrais valider un SIRET La poste', () => {
+      expect(
+        // La poste has invalid SIRETs
+        optionalSiretValidation.safeParse('35600000000000').success,
+      ).toBeTrue()
+    })
+
     it('devrait invalider une valeur null', () => {
       expect(optionalSiretValidation.safeParse(null).success).toBeFalse()
     })
