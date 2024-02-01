@@ -64,6 +64,7 @@ parameters:
     ## web_app_deployment
     ## web_app_preview_deletion
     ## project_stack_deployment
+    ## backup_main_database
     default: "web_app_deployment"
   # Name of the environment to scrap
   web_app_docker_registry:
@@ -131,8 +132,9 @@ workflows:
 
   manual_backup_main_database:
     when:
-      equal: [ web_app_deployment, << pipeline.parameters.trigger_workflow >> ]
+      equal: [ backup_main_database, << pipeline.parameters.trigger_workflow >> ]
     jobs:
+      - prepare_workspace_dependencies
       - backup_main_database
 
   weekly_backup_main_database:
@@ -144,6 +146,7 @@ workflows:
               only:
                 - main
     jobs:
+      - prepare_workspace_dependencies
       - backup_main_database:
           backup_type: weekly
           expires_in_days: 600
@@ -157,6 +160,7 @@ workflows:
               only:
                 - main
     jobs:
+      - prepare_workspace_dependencies
       - backup_main_database:
           backup_type: daily
           expires_in_days: 90
@@ -169,6 +173,7 @@ workflows:
               only:
                 - main
     jobs:
+      - prepare_workspace_dependencies
       - backup_main_database:
           backup_type: hourly
           expires_in_days: 7
