@@ -404,11 +404,17 @@ describe('profileRouter', () => {
       })
 
       const resources = await prismaClient.resource.findMany({
-        where: { contributors: { none: {} } },
+        where: {
+          createdById: givenUserId,
+          contributors: { none: {} },
+        },
       })
 
       const collections = await prismaClient.collection.findMany({
-        where: { savedCollection: { none: {} } },
+        where: {
+          ownerId: givenUserId,
+          savedCollection: { none: {} },
+        },
       })
 
       await expect(user.email).toBe(
@@ -425,6 +431,7 @@ describe('profileRouter', () => {
       await expect(user.twitter).toBeNull()
       await expect(user.linkedin).toBeNull()
       await expect(user.deleted).not.toBeNull()
+
       await expect(bases.every((base) => base.deleted != null)).toBe(true)
       await expect(
         resources.every((resource) => resource.deleted != null),
