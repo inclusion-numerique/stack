@@ -662,6 +662,7 @@ jobs:
       - install_dependencies
       - create_dotenv_file
       - add_secrets_to_dotenv_file
+      - add_dotenv_vars_to_bash_env
       - run:
           name: 'Set backup file name'
           command: |
@@ -679,7 +680,7 @@ jobs:
           name: "Create backup file"
           command: |
             curl -X POST \
-                -H "X-Auth-Token: $SCW_SECRET_KEY" \
+                -H "X-Auth-Token: $CI_SCW_SECRET_KEY" \
                 -H "Content-Type: application/json" \
                 -d "{
                 \"database_name\": \"$BACKUP_DATABASE_NAME\",
