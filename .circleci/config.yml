@@ -665,7 +665,7 @@ jobs:
       - run:
           name: 'Set backup file name'
           command: |
-            BACKUP_FILE_NAME="backup_$BACKUP_DATABASE_NAME_<< parameters.type >>_$(date -u +'%Y-%m-%d-%H%M%S')"
+            BACKUP_FILE_NAME="backup_$BACKUP_DATABASE_NAME_<< parameters.backup_type >>_$(date -u +'%Y-%m-%d-%H%M%S')"
             echo "Backup file name: $BACKUP_FILE_NAME"
       - run:
           name: 'Set expires at'
