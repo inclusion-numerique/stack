@@ -207,6 +207,7 @@ export const getProfileResources = async (
     where,
     select: resourceListSelect(user),
     orderBy: [
+      { published: 'desc' },
       {
         updated: 'desc',
       },
