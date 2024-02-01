@@ -659,6 +659,7 @@ jobs:
           default: 90
     steps:
       - checkout
+      - install_dependencies
       - create_dotenv_file
       - add_secrets_to_dotenv_file
       - run:
