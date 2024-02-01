@@ -414,6 +414,14 @@ describe('profileRouter', () => {
         where: {
           ownerId: givenUserId,
           savedCollection: { none: {} },
+          baseId: null,
+        },
+      })
+      const collectionsInBase = await prismaClient.collection.findMany({
+        where: {
+          ownerId: givenUserId,
+          savedCollection: { none: {} },
+          baseId: { not: null },
         },
       })
 
@@ -436,8 +444,14 @@ describe('profileRouter', () => {
       await expect(
         resources.every((resource) => resource.deleted != null),
       ).toBe(true)
+      // Should delete his collections
       await expect(
         collections.every((collection) => collection.deleted != null),
+      ).toBe(true)
+
+      // Should not delete collections in bases
+      await expect(
+        collectionsInBase.every((collection) => collection.deleted == null),
       ).toBe(true)
     })
   })
