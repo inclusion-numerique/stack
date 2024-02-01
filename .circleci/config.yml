@@ -129,6 +129,50 @@ workflows:
             - test_components
             - test_web_e2e
 
+  manual_backup_main_database:
+    when:
+      equal: [ web_app_deployment, << pipeline.parameters.trigger_workflow >> ]
+    jobs:
+      - backup_main_database
+
+  weekly_backup_main_database:
+    triggers:
+      - schedule:
+          cron: "0 0 * * 0"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - backup_main_database:
+          backup_type: weekly
+          expires_in_days: 600
+
+  daily_backup_main_database:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - backup_main_database:
+          backup_type: daily
+          expires_in_days: 90
+  hourly_backup_main_database:
+    triggers:
+      - schedule:
+          cron: "0 * * * *"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - backup_main_database:
+          backup_type: hourly
+          expires_in_days: 7
+
   project_infrastructure_deployment:
     when:
       equal: [ project_stack_deployment, << pipeline.parameters.trigger_workflow >> ]
@@ -589,6 +633,46 @@ jobs:
           name: 'Deploy project infrastructure stack'
           command: |
             pnpm --silent -F @app/cdk cdktf deploy project --var-file .tfvars.json --auto-approve --outputs-file=cdk.out.json --outputs-file-include-sensitive-outputs
+
+  backup_main_database:
+    executor: node
+    resource_class: large
+    parameters:
+      backup_type:
+          type: string
+          default: manual
+      expires_in_days:
+          type: integer
+          default: 90
+    steps:
+      - checkout
+      - create_dotenv_file
+      - add_secrets_to_dotenv_file
+      - run:
+          name: 'Set backup file name'
+          command: |
+            BACKUP_FILE_NAME="backup_$BACKUP_DATABASE_NAME_{{parameters.type}}_$(date -u +'%Y-%m-%d-%H%M%S')"
+            echo "Backup file name: $BACKUP_FILE_NAME"
+      - run:
+          name: 'Set expires at'
+          # Set the BACKUP_EXPIRES_AT env variable to iso 8601 format to now + number of days in {{parameters.expires_in_days}}
+          command: |
+            BACKUP_EXPIRES_AT=$(date -u -v+{{parameters.expires_in_days}}d +'%Y-%m-%dT%H:%M:%SZ')
+            echo "Backup expires at: $BACKUP_EXPIRES_AT"
+      - run:
+          name: "Create backup file"
+          command: |
+            curl -X POST \
+                -H "X-Auth-Token: $SCW_SECRET_KEY" \
+                -H "Content-Type: application/json" \
+                -d "{
+                \"database_name\": \"$BACKUP_DATABASE_NAME\",
+                \"instance_id\": \"$DATABASE_INSTANCE_ID\",
+                \"name\": \"$BACKUP_FILE_NAME\",
+                \"expires_at\": \"$BACKUP_EXPIRES_AT\"
+              }" \
+                "https://api.scaleway.com/rdb/v1/regions/fr-par/backups"
+      
 
   web_app_preview_deletion:
     executor: node
