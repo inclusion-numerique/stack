@@ -135,7 +135,9 @@ workflows:
       equal: [ backup_main_database, << pipeline.parameters.trigger_workflow >> ]
     jobs:
       - prepare_workspace_dependencies
-      - backup_main_database
+      - backup_main_database:
+          requires:
+            - prepare_workspace_dependencies
 
   weekly_backup_main_database:
     triggers:
@@ -150,6 +152,8 @@ workflows:
       - backup_main_database:
           backup_type: weekly
           expires_in_days: 600
+          requires:
+            - prepare_workspace_dependencies
 
   daily_backup_main_database:
     triggers:
@@ -164,6 +168,8 @@ workflows:
       - backup_main_database:
           backup_type: daily
           expires_in_days: 90
+          requires:
+            - prepare_workspace_dependencies
   hourly_backup_main_database:
     triggers:
       - schedule:
@@ -177,6 +183,8 @@ workflows:
       - backup_main_database:
           backup_type: hourly
           expires_in_days: 7
+          requires:
+            - prepare_workspace_dependencies
 
   project_infrastructure_deployment:
     when:
