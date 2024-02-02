@@ -6,7 +6,7 @@
 - [Créer une nouvelle table](#créer-une-nouvelle-table)
 - [Créer un formulaire](#créer-un-formulaire)
 - [Récupérer et afficher des données](#récupérer-et-afficher-des-données)
-- [Modifier un élément dans la base](#modifier-un-élément-dans-la-base)
+- [Modifier un élément](#modifier-un-élément)
 - [Supprimer un élément avec un "soft delete"](#supprimer-un-élément-avec-un-soft-delete)
 - [Mettre en place un test end-to-end](#mettre-en-place-un-test-end-to-end)
 
@@ -476,17 +476,23 @@ La liste des tâches peut être rendue côté serveur, mais un composant permet 
 ```tsx
 import { TodoListItem } from '@app/web/server/todos/getUserTodoList'
 
-const TodoList = ({ todoList }: { todoList: TodoListItem[] }) => {
-  return todoList.map((todo) => (
-    <div className="fr-py-3w fr-border--top">
-      {todo.description}
-      <div className="fr-text-mention--grey fr-text--sm fr-mb-0 fr-mt-1v">
-        <span className="fr-icon-calendar-line fr-icon--sm fr-pr-1v"></span>
-        {todo.created.toDateString()}
-      </div>
-    </div>
-  ))
-}
+const TodoList = ({ todoList }: { todoList: TodoListItem[] }) => (
+  <ul className="fr-raw-list">
+    {todoList.map((todo) => (
+      <li key={todo.id}>
+        <div className="fr-py-2w fr-border--bottom">
+          <span className="fr-flex fr-direction-column">
+            {todo.description}
+            <span className="fr-text-mention--grey fr-text--sm fr-mb-0 fr-mt-1v">
+              <span className="fr-icon-calendar-line fr-icon--sm fr-pr-1v"></span>
+              {todo.created.toDateString()}
+            </span>
+          </span>
+        </div>
+      </li>
+    ))}
+  </ul>
+)
 
 export default TodoList
 ```
@@ -564,7 +570,196 @@ const TodoPage = async () => {
 }
 ```
 
-## Modifier un élément dans la base
+## Modifier un élément
+
+Pour marquer un élément de la liste comme terminé, il faut créer une nouvelle route qui nous permettra de modifier une tâche en indiquant la date à laquelle elle a été réalisée.
+
+Créer un fichier `toggleDone.ts` dans le dossier [apps/web/src/server/todos](apps/web/src/server/todos) avec le contenu suivant :
+
+```typescript
+import z from 'zod'
+
+export const ToggleDoneCommandValidation = z.object({
+  id: z.string({ required_error: "Veuillez renseigner l'id de la tâche" }),
+  isDone: z.boolean().default(false),
+})
+```
+
+Dans le fichier [apps/web/src/server/rpc/todo/todoRouter.ts](apps/web/src/server/rpc/todo/todoRouter.ts), ajouter le la procédure `done` :
+
+```typescript
+/* ... */
+import { ToggleDoneCommandValidation } from '../../todos/toggleDone'
+
+export const todoRouter = router({
+  /* ... */
+  toggleDone: protectedProcedure
+    .input(ToggleDoneCommandValidation)
+    .mutation(async ({ input: { id, isDone } }) =>
+      prismaClient.todo.update({
+        where: { id },
+        data: { done: isDone ? new Date() : null },
+      }),
+    ),
+})
+```
+
+Ce code fonctionne, mais présente un problème de sécurité : en effet, il est possible pour n'importe quel utilisateur connecté de construire une requête qui permet de modifier n'importe quel todo, dans que l'id correspond.
+Pour empêcher cela, il faut veiller à faire correspondre la propriété `ownerId` de la tâche à modifier avec l'identifiant de l'utilisateur qui a initié la requête :
+
+```typescript
+/* ... */
+
+export const todoRouter = router({
+  /* ... */
+  toggleDone: protectedProcedure
+    /* ... */
+    .mutation(async ({ input: { id, isDone }, ctx: { user } }) =>
+      prismaClient.todo.update({
+        where: { id, ownerId: user.id },
+        /* ... */
+      }),
+    ),
+})
+```
+
+Côté interface, il faut ajouter un `input` de type `checkbox` pour chaque ligne de la liste des tâches, nous nous en servirons pour modifier chaque tâche en modifiant son état pour indiquer si elle reste à faire ou si elle est terminée :
+
+```tsx
+import { TodoListItem } from '@app/web/server/todos/getUserTodoList'
+
+const TodoList = ({ todoList }: { todoList: TodoListItem[] }) => (
+  <ul className="fr-toggle__list">
+    {todoList.map((todo) => (
+      <li key={todo.id}>
+        <div className="fr-toggle fr-toggle--border-bottom fr-toggle--label-left">
+          <input
+            type="checkbox"
+            className="fr-toggle__input"
+            id={`task-${todo.id}`}
+          />
+          <label
+            className="fr-toggle__label"
+            htmlFor={`task-${todo.id}`}
+            data-fr-checked-label="Terminé"
+            data-fr-unchecked-label="À faire"
+          >
+            <span className="fr-flex fr-direction-column">
+              {todo.description}
+              <span className="fr-text-mention--grey fr-text--sm fr-mb-0 fr-mt-1v">
+                <span className="fr-icon-calendar-line fr-icon--sm fr-pr-1v"></span>
+                {todo.created.toDateString()}
+              </span>
+            </span>
+          </label>
+        </div>
+      </li>
+    ))}
+  </ul>
+)
+```
+
+La prochaine étape est d'ajouter l'intéraction qui permet effectivement de mettre à jour la tâche depuis l'interface.
+Comme il est recommandé de faire des composants intéractifs les plus petits possibles et les plus bas dans la hiérarchie des composants,
+ajouter un nouveau composant `ToggleTodo.tsx` dans [apps/web/src/app/(private)/todo](<apps/web/src/app/(private)/todo>) avec le contenu suivant :
+
+```tsx
+'use client'
+
+import { useRouter } from 'next/navigation'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { trpc } from '@app/web/trpc'
+import { createToast } from '@app/ui/toast/createToast'
+import { TodoListItem } from '@app/web/server/todos/getUserTodoList'
+
+const ToggleTodo = ({
+  todo,
+  inputId,
+}: {
+  todo: TodoListItem
+  inputId: string
+}) => {
+  const router = useRouter()
+
+  const mutate = trpc.todo.toggleDone.useMutation()
+
+  const isLoading = mutate.isPending
+
+  const toggleDone = async ({ id, done }: TodoListItem) => {
+    try {
+      await mutate.mutateAsync({ id, isDone: done == null })
+
+      router.refresh()
+
+      createToast({
+        priority: 'success',
+        message: 'Le statut de la tâche a été mis à jour',
+      })
+    } catch (error) {
+      createToast({
+        priority: 'error',
+        message: "Le statut de la tâche n'a pas pu être mis à jour",
+      })
+    }
+  }
+
+  return (
+    <input
+      type="checkbox"
+      className="fr-toggle__input"
+      id={inputId}
+      disabled={isLoading}
+      checked={todo.done != null}
+      onChange={() => toggleDone(todo)}
+    />
+  )
+}
+export default withTrpc(ToggleTodo)
+```
+
+La fonction `toggleDone` est appelée à chaque changement sur l'input, en applique la mutation `toggleDone` qui va ajouter une date `done` ou la mettre à `null` en fonction de l'état précédent de `done`.
+En cas de succès, le contenu de la page est rechargé et un message de succès apparaît. Une erreur est signalée par un message.
+
+La valeur de `checked` de l'interrupteur est déduit de présence ou non d'une date dans `todo.done`, et l'état `disabled` est actif pendant que la requête est en train d'être exécutée.
+
+Il ne reste plus qu'à utiliser ce composant dans [TodoList.tsx](<apps/web/src/app/(private)/todo/TodoList.tsx>) :
+
+```tsx
+/* ... */
+import ToggleTodo from './ToggleTodo'
+
+const TodoList = ({ todoList }: { todoList: TodoListItem[] }) => {
+  return (
+    <ul className="fr-toggle__list">
+      {todoList.map((todo) => (
+        <li key={todo.id}>
+          <div className="fr-toggle fr-toggle--border-bottom fr-toggle--label-left">
+            <ToggleTodo todo={todo} inputId={`task-${todo.id}`} />
+            /* ... */
+          </div>
+        </li>
+      ))}
+    </ul>
+  )
+}
+export default TodoList
+```
+
+Pour terminer, il serait intéressant de trier les tâches de façon à faire apparaître les tâches à faire en premier en les triant par date de création, et de faire apparaître les tâches terminées après en les triant par date de fin.
+
+Dans le fichier [getUserTodoList.ts](apps/web/src/server/todos/getUserTodoList.ts), ajouter la propriété de tri :
+
+```typescript
+/* ... */
+
+export const getUserTodoList = async (user: Pick<SessionUser, 'id'> | null) =>
+  prismaClient.todo.findMany({
+    /* ... */
+    orderBy: [{ done: 'desc' }, { created: 'desc' }],
+  })
+
+/* ... */
+```
 
 ## Supprimer un élément avec un "soft delete"
 
