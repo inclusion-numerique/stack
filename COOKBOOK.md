@@ -479,7 +479,7 @@ import { TodoListItem } from '@app/web/server/todos/getUserTodoList'
 const TodoList = ({ todoList }: { todoList: TodoListItem[] }) => (
   <ul className="fr-raw-list">
     {todoList.map((todo) => (
-      <li key={todo.id}>
+      <li className="fr-flex" key={todo.id}>
         <div className="fr-py-2w fr-border--bottom">
           <span className="fr-flex fr-direction-column">
             {todo.description}
@@ -585,7 +585,7 @@ export const ToggleDoneCommandValidation = z.object({
 })
 ```
 
-Dans le fichier [apps/web/src/server/rpc/todo/todoRouter.ts](apps/web/src/server/rpc/todo/todoRouter.ts), ajouter le la procédure `done` :
+Dans le fichier [apps/web/src/server/rpc/todo/todoRouter.ts](apps/web/src/server/rpc/todo/todoRouter.ts), ajouter le la procédure `toggleDone` :
 
 ```typescript
 /* ... */
@@ -631,8 +631,8 @@ import { TodoListItem } from '@app/web/server/todos/getUserTodoList'
 const TodoList = ({ todoList }: { todoList: TodoListItem[] }) => (
   <ul className="fr-toggle__list">
     {todoList.map((todo) => (
-      <li key={todo.id}>
-        <div className="fr-toggle fr-toggle--border-bottom fr-toggle--label-left">
+      <li className="fr-flex" key={todo.id}>
+        <div className="fr-toggle fr-toggle--border-bottom fr-toggle--label-left fr-width-full">
           <input
             type="checkbox"
             className="fr-toggle__input"
@@ -728,20 +728,19 @@ Il ne reste plus qu'à utiliser ce composant dans [TodoList.tsx](<apps/web/src/a
 /* ... */
 import ToggleTodo from './ToggleTodo'
 
-const TodoList = ({ todoList }: { todoList: TodoListItem[] }) => {
-  return (
-    <ul className="fr-toggle__list">
-      {todoList.map((todo) => (
-        <li key={todo.id}>
-          <div className="fr-toggle fr-toggle--border-bottom fr-toggle--label-left">
-            <ToggleTodo todo={todo} inputId={`task-${todo.id}`} />
-            /* ... */
-          </div>
-        </li>
-      ))}
-    </ul>
-  )
-}
+const TodoList = ({ todoList }: { todoList: TodoListItem[] }) => (
+  <ul className="fr-toggle__list">
+    {todoList.map((todo) => (
+      <li className="fr-flex" key={todo.id}>
+        <div className="fr-toggle fr-toggle--border-bottom fr-toggle--label-left fr-width-full">
+          <ToggleTodo todo={todo} inputId={`task-${todo.id}`} />
+          /* ... */
+        </div>
+      </li>
+    ))}
+  </ul>
+)
+
 export default TodoList
 ```
 
@@ -762,5 +761,162 @@ export const getUserTodoList = async (user: Pick<SessionUser, 'id'> | null) =>
 ```
 
 ## Supprimer un élément avec un "soft delete"
+
+Le principe du "soft delete" est d'inscrire une date de suppression pour l'élément concerné, sans le supprimer réellement. Celà revient donc à une modification.
+
+Créer un fichier `deleteTodo.ts` dans le dossier [apps/web/src/server/todos](apps/web/src/server/todos) avec le contenu suivant :
+
+```typescript
+import z from 'zod'
+
+export const DeleteTodoCommandValidation = z.object({
+  id: z.string({ required_error: "Veuillez renseigner l'id de la tâche" }),
+})
+```
+
+Dans le fichier [apps/web/src/server/rpc/todo/todoRouter.ts](apps/web/src/server/rpc/todo/todoRouter.ts), ajouter le la procédure `delete` :
+
+```typescript
+/* ... */
+import { DeleteTodoCommandValidation } from '../../todos/deleteTodo'
+
+export const todoRouter = router({
+  /* ... */
+  delete: protectedProcedure
+    .input(DeleteTodoCommandValidation)
+    .mutation(async ({ input: { id }, ctx: { user } }) =>
+      prismaClient.todo.update({
+        where: { id, ownerId: user.id },
+        data: { deleted: new Date() },
+      }),
+    ),
+})
+```
+
+Cette route modifie donc la date `deleted` en veillant bien à ce que l'id de la tâche corresponde et que l'utilisateur qui a initié la requête correspond bien au propriétaire de la tâche en vérifiant la correspondance avec la propriété `ownerId`.
+
+Dans le dossier [apps/web/src/app/(private)/todo](<apps/web/src/app/(private)/todo>), ajouter un nouveau composant `DeleteTodo.tsx` avec le contenu suivant :
+
+```tsx
+'use client'
+
+import { createModal } from '@codegouvfr/react-dsfr/Modal'
+import { TodoListItem } from '@app/web/server/todos/getUserTodoList'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { useRouter } from 'next/navigation'
+import { trpc } from '@app/web/trpc'
+import { createToast } from '@app/ui/toast/createToast'
+
+const DeleteTodo = ({ todo }: { todo: TodoListItem }) => {
+  const {
+    Component: DeleteModal,
+    close: closeDeleteModal,
+    buttonProps: deleteModalNativeButtonProps,
+  } = createModal({
+    id: `delete-resource-${todo.id}`,
+    isOpenedByDefault: false,
+  })
+
+  const router = useRouter()
+  const mutate = trpc.todo.delete.useMutation()
+
+  const isLoading = mutate.isPending
+
+  const onDelete = async () => {
+    try {
+      await mutate.mutateAsync({ id: todo.id })
+
+      closeDeleteModal()
+      router.refresh()
+
+      createToast({
+        priority: 'success',
+        message: 'Le tâche a bien été supprimée',
+      })
+    } catch (error) {
+      createToast({
+        priority: 'error',
+        message: "Le tâche n'a pas pu être supprimée",
+      })
+    }
+  }
+
+  return (
+    <div className="fr-m-2w">
+      <button
+        className="fr-btn fr-btn--tertiary fr-btn--sm fr-icon-delete-line fr-btn--icon-left"
+        {...deleteModalNativeButtonProps}
+      >
+        Supprimer
+      </button>
+      <DeleteModal
+        title="Supprimer la tâche"
+        buttons={[
+          {
+            children: 'Annuler',
+            priority: 'secondary',
+            disabled: isLoading,
+            onClick: closeDeleteModal,
+          },
+          {
+            children: 'Supprimer',
+            ...buttonLoadingClassname(isLoading, 'fr-btn--danger'),
+            onClick: onDelete,
+          },
+        ]}
+      >
+        Confirmez-vous la suppression de cette tâche ?
+      </DeleteModal>
+    </div>
+  )
+}
+export default withTrpc(DeleteTodo)
+```
+
+`DeleteTodo` affiche un bouton qui ouvre une modale de confirmation de suppression de la tâche. Si la suppression est validée, la requête qui conduit à l'ajout de la date de suppression est déclenchée.
+Si la requête se déroule avec succès, la modale de confirmation est supprimée, le contenu de la page est rechargé, puis un message de confirmation est affiché.
+En cas d'erreur un message est également affiché. Le bouton de confirmation de suppression de la modale est désactivé le temps que la requête soit exécuté.
+
+Puis utiliser ce composant dans [TodoList.tsx](<apps/web/src/app/(private)/todo/TodoList.tsx>) :
+
+```tsx
+/* ... */
+import DeleteTodo from './DeleteTodo'
+
+const TodoList = ({ todoList }: { todoList: TodoListItem[] }) => (
+  <ul className="fr-toggle__list">
+    {todoList.map((todo) => (
+      <li className="fr-flex" key={todo.id}>
+        /* ... */
+        <DeleteTodo todo={todo} />
+      </li>
+    ))}
+  </ul>
+)
+
+export default TodoList
+```
+
+Pour que la suppression d'une tâche fasse disparaître l'élément concerné de la liste, il manque un filtre pour ne pas remonter les tâches dont la date de suppression est présente.
+
+Dans le fichier [getUserTodoList.ts](apps/web/src/server/todos/getUserTodoList.ts), ajouter le filtre sur le champ `deleted` :
+
+```typescript
+/* ... */
+
+const notDeleted = () => ({
+  deleted: null,
+})
+
+export const getUserTodoList = async (user: Pick<SessionUser, 'id'> | null) =>
+  prismaClient.todo.findMany({
+    /* ... */
+    where: { ...todoOwnerIs(user), ...notDeleted() },
+    /* ... */
+  })
+
+/* ... */
+```
 
 ## Mettre en place un test end-to-end
