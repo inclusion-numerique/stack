@@ -20,8 +20,6 @@ const ResourceDates = ({
     : null
   const publishedDay = resource.published ? dateAsDay(resource.published) : null
 
-  console.log({ canEdit, resource })
-
   // If published, we show the latest publication date
   if (lastPublishedDay) {
     const unpublishedModifications =
