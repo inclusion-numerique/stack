@@ -146,7 +146,6 @@ export const rankResources = async (
           /* Resource status check */
           resources.deleted IS NULL
           /* Search term check */
-          /* TODO condition if query is empty ? */
         AND (
           ${searchTerm ?? ''} = ''
               OR to_tsvector('french', unaccent(
@@ -192,6 +191,7 @@ export const rankResources = async (
             searchParams.targetAudiences,
           )}::target_audience[]
           )
+      /* TODO Conditional order here with THEN CASE confition with param inject */
       ORDER BY rank DESC, resources.last_published DESC, resources.updated DESC
       LIMIT ${paginationParams.perPage} OFFSET ${
         (paginationParams.page - 1) * paginationParams.perPage
