@@ -6,12 +6,12 @@ import { updateGithubDeployment } from '@app/cli/commands/github/updateGithubDep
 import { addNextPublicVariablesToDotEnv } from '@app/cli/commands/infrastructure/addNextPublicVariablesToDotEnv'
 import { createDotEnvFromCdk } from '@app/cli/commands/infrastructure/createDotEnvFromCdk'
 import { createTfVarsFileFromEnvironment } from '@app/cli/commands/infrastructure/createTfVarsFileFromEnvironment'
-import { importLegacyDatabase } from '@app/cli/commands/legacy/importLegacyDatabase'
 import { createDotEnvFromSecrets } from '@app/cli/commands/secrets/createDotEnvFromSecrets'
 import { getDatabasePasswordSecret } from '@app/cli/commands/secrets/getDatabasePasswordSecret'
 import { getSecretValue } from '@app/cli/commands/secrets/getSecretValue'
 import { listSecrets } from '@app/cli/commands/secrets/listSecrets'
 import { setupDatabaseSecret } from '@app/cli/commands/secrets/setupDatabaseSecret'
+import { locallyRestoreLatestMainBackup } from '@app/cli/commands/infrastructure/locallyRestoreLatestMainBackup'
 
 const program = new Command()
 
@@ -27,6 +27,6 @@ program.addCommand(updateGithubDeployment)
 program.addCommand(deactivateGithubDeployment)
 program.addCommand(createTfVarsFileFromEnvironment)
 program.addCommand(checkDeploymentStatus)
-program.addCommand(importLegacyDatabase)
+program.addCommand(locallyRestoreLatestMainBackup)
 
 program.parse()
