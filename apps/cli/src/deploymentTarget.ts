@@ -19,15 +19,6 @@ export const configureDeploymentTarget = async ({
     return
   }
   output(`🚀 Deployment target: ${deployment}`)
-  if (deployment === 'main') {
-    output(
-      '⚠️  You are executing a cli on MAIN PRODUCTION ENVIRONMENT, you have 5 seconds to abort ⚠️',
-    )
-    await new Promise((resolve) => {
-      setTimeout(resolve, 5000)
-    })
-    output('Continuing')
-  }
 
   const cliEnvDeploymentTargetBranch =
     process.env.CLI_TARGET_DEPLOYMENT_BRANCH ?? ''
@@ -51,4 +42,14 @@ export const configureDeploymentTarget = async ({
   process.env.DATABASE_URL = cliEnvDeploymentDatabaseUrl
 
   output('Configured database for deployment target')
+
+  if (deployment === 'main') {
+    output(
+      '⚠️  You are executing a cli on MAIN PRODUCTION ENVIRONMENT, you have 5 seconds to abort ⚠️',
+    )
+    await new Promise((resolve) => {
+      setTimeout(resolve, 5000)
+    })
+    output('Continuing')
+  }
 }
