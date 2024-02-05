@@ -5,8 +5,7 @@ const baseSections = (isAdmin: boolean) => [
   { id: 'informations', title: 'Informations de la base' },
   { id: 'contacts', title: 'Contacts' },
   { id: 'visibilite', title: 'Visibilité de la base' },
-  { id: 'inviter', title: 'Inviter des membres' },
-  { id: 'photos', title: 'Photo de profil & courverture' },
+  { id: 'photos', title: 'Photo de profil & couverture' },
   ...(isAdmin ? [{ id: 'supprimer', title: 'Supprimer la base' }] : []),
 ]
 
