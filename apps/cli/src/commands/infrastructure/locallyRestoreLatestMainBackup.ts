@@ -41,9 +41,10 @@ type ScalewayDatabaseBackup = {
   region: string
 }
 
-export const locallyRestoreLatestMainBackup = new Command()
-  .command(
-    'backup:locally-restore-latest-main',
+export const locallyRestoreLatestMainBackup = new Command(
+  'backup:locally-restore-latest-main',
+)
+  .description(
     'Restore the latest main backup from Scaleway to the local (DATABASE_URL env var) database ',
   )
   .action(async () => {

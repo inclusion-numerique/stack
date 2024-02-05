@@ -12,6 +12,7 @@ import { getSecretValue } from '@app/cli/commands/secrets/getSecretValue'
 import { listSecrets } from '@app/cli/commands/secrets/listSecrets'
 import { setupDatabaseSecret } from '@app/cli/commands/secrets/setupDatabaseSecret'
 import { locallyRestoreLatestMainBackup } from '@app/cli/commands/infrastructure/locallyRestoreLatestMainBackup'
+import { addConseillersNumeriquesToBases } from '@app/cli/commands/domain/addConseillersNumeriquesToBases'
 
 const program = new Command()
 
@@ -28,5 +29,6 @@ program.addCommand(deactivateGithubDeployment)
 program.addCommand(createTfVarsFileFromEnvironment)
 program.addCommand(checkDeploymentStatus)
 program.addCommand(locallyRestoreLatestMainBackup)
+program.addCommand(addConseillersNumeriquesToBases)
 
 program.parse()
