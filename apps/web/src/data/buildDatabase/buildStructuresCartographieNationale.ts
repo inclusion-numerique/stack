@@ -12,14 +12,14 @@ import { BuildCommunesOutput } from '@app/web/data/buildDatabase/buildCommunes'
 import { transformStringToSearchableString } from '@app/web/search/transformStringToSearchableString'
 
 /**
- * E.g. "mediation-numerique-conseiller-numerique-62ab017b8255a806e299c725-mediation-numerique"
+ * E.g. "Conseiller-Numerique_62ab017b8255a806e299c725"
  */
-const conumIdExtract = /conseiller-numerique-([\dA-Fa-f]{3,})/
+const conumIdExtract = /conseiller-numerique_([\da-f]{3,})/i
 
 /**
- * E.g. "aidants-connect-1539|numi-conseiller-numerique-63d784fce6d6a806f256657a|numinumiconseiller-numerique-63d784fce6d6a806f256657a"
+ * E.g. "Aidants-Connect_1539|numi-conseiller-numerique-63d784fce6d6a806f256657a|numinumiconseiller-numerique-63d784fce6d6a806f256657a"
  */
-const aidantsConnectIdExtract = /aidants-connect-(\d*)/
+const aidantsConnectIdExtract = /aidants-connect_([\da-f-]{3,})/i
 
 export const extractMetadataFromId = (id: string) => {
   const conumPermanenceIdMatch = id.match(conumIdExtract)
