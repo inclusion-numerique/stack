@@ -38,7 +38,7 @@ const BaseHeader = ({
         ) : (
           <div className={styles.buttons}>
             <FollowButton followPriority="primary" user={user} base={base} />
-            {base.email && (
+            {!!base.email && base.emailIsPublic && (
               <Link
                 className="fr-btn--sm fr-btn fr-btn--secondary fr-icon-mail-line fr-btn--icon-left"
                 href={`mailto:${base.email}`}

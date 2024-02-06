@@ -46,12 +46,14 @@ const ProfileHeader = ({
               profile={profile}
               followPriority="primary"
             />
-            <Link
-              className="fr-btn--sm fr-btn fr-btn--secondary fr-icon-mail-line fr-btn--icon-left"
-              href={`mailto:${profile.email}`}
-            >
-              Contacter
-            </Link>
+            {profile.emailIsPublic && (
+              <Link
+                className="fr-btn--sm fr-btn fr-btn--secondary fr-icon-mail-line fr-btn--icon-left"
+                href={`mailto:${profile.email}`}
+              >
+                Contacter
+              </Link>
+            )}
             <CopyLinkButton
               url={getServerUrl(`/profils/${profile.slug}`, true)}
               priority="secondary"
