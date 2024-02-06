@@ -6,13 +6,14 @@ import { createWriteStream } from 'node:fs'
 import { Command } from '@commander-js/extra-typings'
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
+import { varDirectory } from '@app/config/varDirectory'
+import { createVarDirectory } from '@app/config/createVarDirectory'
 import { output } from '@app/cli/output'
 
 const exec = promisify(callbackExec)
 
-const downloadDirectory = pathResolve(__dirname, '../../../../../var')
 const mainBackupFile = pathResolve(
-  downloadDirectory,
+  varDirectory,
   `${process.env.BACKUP_DATABASE_NAME}_backup.dump.sql`,
 )
 
@@ -153,6 +154,8 @@ export const locallyRestoreLatestMainBackup = new Command(
 
     output(`Backup is ready for download at ${latestBackup.download_url}`)
     output(`Downloading backup to ${mainBackupFile}`)
+
+    createVarDirectory()
 
     const downloadResponse = await axios.get<NodeJS.ReadableStream>(
       latestBackup.download_url,
