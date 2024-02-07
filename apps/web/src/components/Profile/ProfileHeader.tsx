@@ -40,27 +40,29 @@ const ProfileHeader = ({
             </Link>
           </div>
         ) : (
-          <div className={styles.buttons}>
-            <FollowButton
-              user={user}
-              profile={profile}
-              followPriority="primary"
-            />
-            {profile.emailIsPublic && (
-              <Link
-                className="fr-btn--sm fr-btn fr-btn--secondary fr-icon-mail-line fr-btn--icon-left"
-                href={`mailto:${profile.email}`}
+          profile.isPublic && (
+            <div className={styles.buttons}>
+              <FollowButton
+                user={user}
+                profile={profile}
+                followPriority="primary"
+              />
+              {profile.emailIsPublic && (
+                <Link
+                  className="fr-btn--sm fr-btn fr-btn--secondary fr-icon-mail-line fr-btn--icon-left"
+                  href={`mailto:${profile.email}`}
+                >
+                  Contacter
+                </Link>
+              )}
+              <CopyLinkButton
+                url={getServerUrl(`/profils/${profile.slug}`, true)}
+                priority="secondary"
               >
-                Contacter
-              </Link>
-            )}
-            <CopyLinkButton
-              url={getServerUrl(`/profils/${profile.slug}`, true)}
-              priority="secondary"
-            >
-              Partager
-            </CopyLinkButton>
-          </div>
+                Partager
+              </CopyLinkButton>
+            </div>
+          )
         )}
       </ProfileInformations>
     </div>
