@@ -43,7 +43,7 @@ export const filterAccess = (
         ? base
         : {
             ...base,
-            email: base.emailIsPublic ? base.email : '',
+            email: base.email,
           },
     }
   }
