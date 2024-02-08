@@ -4,12 +4,16 @@ import {
   getResourcePermissions,
   getResourceRoles,
   ResourceAuthorizationTarget,
+  ResourcePermissions,
+  resourcePermissions,
   ResourceRoles,
 } from '@app/web/authorization/models/resourceAuthorization'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import { UserSecurityRoles } from '@app/web/authorization/userSecurityRole'
 
 describe('Authorization - Ressources', () => {
   const resource = {
+    id: 'resource',
     baseId: null,
     createdById: 'creator',
     isPublic: false,
@@ -46,7 +50,7 @@ describe('Authorization - Ressources', () => {
       expect(getResourceRoles(resource, user)).toEqual([])
     })
 
-    it('Role createur', () => {
+    it('Role créateur', () => {
       expect(getResourceRoles(resource, { ...user, id: 'creator' })).toEqual([
         ResourceRoles.ResourceCreator,
       ])
@@ -54,7 +58,10 @@ describe('Authorization - Ressources', () => {
 
     it('Role contributeur', () => {
       expect(
-        getResourceRoles(resource, { ...user, id: 'contributor' }),
+        getResourceRoles(resource, {
+          ...user,
+          resources: [{ resourceId: 'resource' }],
+        }),
       ).toEqual([ResourceRoles.ResourceContributor])
     })
 
@@ -84,94 +91,170 @@ describe('Authorization - Ressources', () => {
         ),
       ).toEqual([])
     })
-
-    // Si je suis membre de la base qui contient la ressource => [ResourceRoles.ResourceContributor]
-    // Si je suis admin de la base qui contient la ressource => [ResourceRoles.ResourceContributor]
   })
 
   describe('Permissions - Ressources', () => {
-    // Si je suis admin => je peux tout faire
-    // Si je suis créateur => je peux ...
-    // Si je suis contributeur => je peux .....
-
-    it("Si la ressource est supprimée, je n'ai pas de permissions", () => {
-      expect(
-        getResourcePermissions(
-          { ...resource, deleted: new Date() },
-          { ...user, role: 'Admin' },
-          [ResourceRoles.ResourceContributor, ResourceRoles.ResourceCreator],
-        ),
-      ).toEqual([])
+    describe('Ressource supprimée', () => {
+      it("Si la ressource est supprimée, quelque soit mon rôle, je n'ai pas de permissions", () => {
+        expect(
+          getResourcePermissions({ ...resource, deleted: new Date() }, [
+            UserSecurityRoles.User,
+            UserSecurityRoles.Admin,
+            UserSecurityRoles.Support,
+            ResourceRoles.ResourceContributor,
+            ResourceRoles.ResourceCreator,
+          ]),
+        ).toEqual([])
+      })
     })
 
-    it('Si je suis contributeur, je peux editer la ressource', () => {
-      expect(
-        getResourcePermissions(resource, { ...user, id: 'contributor' }, [
-          ResourceRoles.ResourceContributor,
-        ]),
-      ).toEqual([
-        'WriteResource',
-        'ReadResourceContent',
-        'DeleteResource',
-        'AddResourceContributor',
-        'RemoveResourceContributor',
-      ])
+    describe('Ressource en brouillon', () => {
+      const draftResource = { ...resource, isPublic: true }
+
+      it.each([
+        {
+          title: 'Créateur',
+          roles: [UserSecurityRoles.User, ResourceRoles.ResourceCreator],
+        },
+        {
+          title: 'Contributeur',
+          roles: [UserSecurityRoles.User, ResourceRoles.ResourceContributor],
+        },
+        {
+          title: 'Support',
+          roles: [UserSecurityRoles.Support],
+        },
+        {
+          title: 'Admin',
+          roles: [UserSecurityRoles.Admin],
+        },
+      ])(
+        `$title, j’ai toutes les permissions sur une ressource en brouillon`,
+        ({ roles }) => {
+          expect(getResourcePermissions(draftResource, roles)).toEqual(
+            resourcePermissions,
+          )
+        },
+      )
+
+      it.each([
+        {
+          title: 'Visiteur',
+          roles: [],
+        },
+        {
+          title: 'Utilisateur connecté',
+          roles: [UserSecurityRoles.User],
+        },
+      ])(
+        '$title, je n’ai pas de permissions sur une ressource en brouillon',
+        ({ roles }) => {
+          expect(getResourcePermissions(draftResource, roles)).toEqual([])
+        },
+      )
     })
 
-    // Si je suis membre de la base qui a a accès à la ressource => je peux ....
-    // Tester si [ResourceRoles.ResourceCreator, ResourceRoles.ResourceContributor] => [ResourcePermissions.ReadGeneralResourceInformation, ResourcePermissions.WriteResource, ResourcePermissions.DeleteResource, ResourcePermissions.ReadResourceContent, ResourceContributorPermissions.AddResourceContributor, ResourceContributorPermissions.RemoveResourceContributor]
-  })
+    describe('Ressource privée', () => {
+      const privateResource = {
+        ...resource,
+        isPublic: false,
+        published: new Date(),
+      }
 
-  describe('Admin and support', () => {
-    it('Admin has all permissions', () => {
-      expect(
-        getResourcePermissions(resource, { ...user, role: 'Admin' }),
-      ).toEqual(resourcePermissions)
+      it.each([
+        {
+          title: 'Créateur',
+          roles: [UserSecurityRoles.User, ResourceRoles.ResourceCreator],
+        },
+        {
+          title: 'Contributeur',
+          roles: [UserSecurityRoles.User, ResourceRoles.ResourceContributor],
+        },
+        {
+          title: 'Support',
+          roles: [UserSecurityRoles.Support],
+        },
+        {
+          title: 'Admin',
+          roles: [UserSecurityRoles.Admin],
+        },
+      ])(
+        `$title, j’ai toutes les permissions sur une ressource privée`,
+        ({ roles }) => {
+          expect(getResourcePermissions(privateResource, roles)).toEqual(
+            resourcePermissions,
+          )
+        },
+      )
+
+      it.each([
+        {
+          title: 'Visiteur',
+          roles: [],
+        },
+        {
+          title: 'Utilisateur connecté',
+          roles: [UserSecurityRoles.User],
+        },
+      ])(
+        '$title, je n’ai pas de permissions sur une ressource privée',
+        ({ roles }) => {
+          expect(getResourcePermissions(privateResource, roles)).toEqual([])
+        },
+      )
     })
 
-    it('Admin has no permissions for deleted resources', () => {
-      expect(
-        getResourcePermissions(
-          { ...resource, deleted: new Date() },
-          { ...user, role: 'Admin' },
-        ),
-      ).toEqual([])
-    })
+    describe('Ressource publique', () => {
+      const publicResource = {
+        ...resource,
+        isPublic: true,
+        published: new Date(),
+      }
 
-    it('Support has all permissions', () => {
-      expect(
-        getResourcePermissions(resource, { ...user, role: 'Support' }),
-      ).toEqual(resourcePermissions)
-    })
+      it.each([
+        {
+          title: 'Créateur',
+          roles: [UserSecurityRoles.User, ResourceRoles.ResourceCreator],
+        },
+        {
+          title: 'Contributeur',
+          roles: [UserSecurityRoles.User, ResourceRoles.ResourceContributor],
+        },
+        {
+          title: 'Support',
+          roles: [UserSecurityRoles.Support],
+        },
+        {
+          title: 'Admin',
+          roles: [UserSecurityRoles.Admin],
+        },
+      ])(
+        `$title, j’ai toutes les permissions sur une ressource publique`,
+        ({ roles }) => {
+          expect(getResourcePermissions(publicResource, roles)).toEqual(
+            resourcePermissions,
+          )
+        },
+      )
 
-    it('Support has no permissions for deleted resources', () => {
-      expect(
-        getResourcePermissions(
-          { ...resource, deleted: new Date() },
-          { ...user, role: 'Support' },
-        ),
-      ).toEqual([])
-    })
-  })
+      it('Utilisateur connecté, je peux voir, signaler et enregistrer une ressource publique', () => {
+        expect(
+          getResourcePermissions(publicResource, [UserSecurityRoles.User]),
+        ).toEqual([
+          ResourcePermissions.ReadGeneralResourceInformation,
+          ResourcePermissions.ReadResourceContent,
+          ResourcePermissions.ReportResource,
+          ResourcePermissions.SaveResource,
+          ResourcePermissions.UnsaveResource,
+        ])
+      })
 
-  describe('Anonymous', () => {
-    it('Anonymous cannot view draft resources', () => {
-      expect(getResourcePermissions(resource, null)).toEqual([])
-    })
-
-    it('Anonymous can view public resources', () => {
-      expect(
-        getResourcePermissions({ ...resource, isPublic: true }, null),
-      ).toEqual([])
-    })
-
-    it('Anonymous cannot view deleted resources', () => {
-      expect(
-        getResourcePermissions(
-          { ...resource, isPublic: true, deleted: new Date() },
-          null,
-        ),
-      ).toEqual([])
+      it('Visiteur, je peux voir une ressource publique', () => {
+        expect(getResourcePermissions(publicResource, [])).toEqual([
+          ResourcePermissions.ReadGeneralResourceInformation,
+          ResourcePermissions.ReadResourceContent,
+        ])
+      })
     })
   })
 })

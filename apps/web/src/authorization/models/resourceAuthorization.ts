@@ -1,10 +1,13 @@
 import type { Resource } from '@prisma/client'
 import { Grantee } from '@app/web/authorization/grantee'
+import {
+  UserSecurityRole,
+  UserSecurityRoles,
+} from '@app/web/authorization/userSecurityRole'
 
 export const ResourceRoles = {
   ResourceCreator: 'ResourceCreator',
   ResourceContributor: 'ResourceContributor',
-  ResourceVisitor: 'ResourceVisitor',
 } as const
 
 export type ResourceRole = (typeof ResourceRoles)[keyof typeof ResourceRoles]
@@ -14,6 +17,11 @@ export const ResourcePermissions = {
   WriteResource: 'WriteResource',
   DeleteResource: 'DeleteResource',
   ReadResourceContent: 'ReadResourceContent',
+  AddResourceContributor: 'AddResourceContributor',
+  RemoveResourceContributor: 'RemoveResourceContributor',
+  SaveResource: 'SaveResource',
+  UnsaveResource: 'UnsaveResource',
+  ReportResource: 'ReportResource',
 } as const
 
 export const resourcePermissions = Object.values(ResourcePermissions)
@@ -21,70 +29,74 @@ export const resourcePermissions = Object.values(ResourcePermissions)
 export type ResourcePermission =
   (typeof ResourcePermissions)[keyof typeof ResourcePermissions]
 
-export const ResourceContributorPermissions = {
-  AddResourceContributor: 'AddResourceContributor',
-  RemoveResourceContributor: 'RemoveResourceContributor',
-} as const
-
-export const resourceContributorPermissions = Object.values(
-  ResourceContributorPermissions,
-)
-
-export type ResourceContributorPermission =
-  (typeof ResourceContributorPermissions)[keyof typeof ResourceContributorPermissions]
-
 export type ResourceAuthorizationTarget = Pick<
   Resource,
-  'published' | 'isPublic' | 'createdById' | 'baseId' | 'deleted'
+  'id' | 'published' | 'isPublic' | 'createdById' | 'baseId' | 'deleted'
 >
 
 export const getResourceRoles = (
   resource: ResourceAuthorizationTarget,
   user: Grantee,
 ): ResourceRole[] => {
-  if (resource.deleted) {
+  if (!user) {
     return []
   }
 
-  if (!user) {
-    return [ResourceRoles.ResourceVisitor]
-  }
-
   if (resource.createdById === user.id) {
-    return [ResourceRoles.ResourceCreator, ResourceRoles.ResourceContributor]
-  }
-
-  if (
-    user.resources.some() &&
-    (user?.role === 'Admin' || user?.role === 'Support')
-  ) {
-    return Object.values(ResourceRoles)
-  }
-
-  if (user?.id === resource.createdById) {
     return [ResourceRoles.ResourceCreator]
   }
 
-  return [ResourceRoles.ResourceVisitor]
+  // Resource contributor
+  if (user.resources.some(({ resourceId }) => resourceId === resource.id)) {
+    return [ResourceRoles.ResourceContributor]
+  }
+
+  // Contributor rules for base members
+  if (
+    resource.baseId &&
+    user.bases.some(({ base: { id: baseId } }) => baseId === resource.baseId)
+  ) {
+    return [ResourceRoles.ResourceContributor]
+  }
+
+  return []
 }
 
 export const getResourcePermissions = (
   resource: ResourceAuthorizationTarget,
-  user: Grantee,
-  roles: ResourceRole[],
+  roles: (UserSecurityRole | ResourceRole)[],
 ): ResourcePermission[] => {
   if (resource.deleted) {
     return []
   }
 
-  if (user?.role === 'Admin' || user?.role === 'Support') {
+  // Admins and contributors always have all permissions on ressource
+  if (
+    roles.includes('Admin') ||
+    roles.includes('Support') ||
+    roles.includes('ResourceCreator') ||
+    roles.includes('ResourceContributor')
+  ) {
     return resourcePermissions
   }
 
-  // Draft resources
-  if (!resource.published && !user) {
-    return []
+  const permissions: ResourcePermission[] = []
+
+  // Other users can only see published public resources
+  if (!!resource.published && resource.isPublic) {
+    permissions.push(
+      ResourcePermissions.ReadGeneralResourceInformation,
+      ResourcePermissions.ReadResourceContent,
+    )
+    // Only connected users can save/unsave or report a published resource
+    if (roles.includes(UserSecurityRoles.User)) {
+      permissions.push(
+        ResourcePermissions.SaveResource,
+        ResourcePermissions.UnsaveResource,
+        ResourcePermissions.ReportResource,
+      )
+    }
   }
 
-  return []
+  return permissions
 }

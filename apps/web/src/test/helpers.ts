@@ -14,6 +14,7 @@ export const createTestUser = (publicProfile?: boolean) =>
     lastName: 'Biche',
     slug: 'jean-biche',
     name: 'Jean Biche',
+    role: 'User',
     image: null,
     emailVerified: '2023-04-01',
     isPublic: publicProfile || false,
