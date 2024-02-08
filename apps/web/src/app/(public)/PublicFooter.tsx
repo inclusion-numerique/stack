@@ -30,6 +30,10 @@ const PublicFooter = () => (
         linkProps: { href: '/confidentialite' },
       },
       {
+        text: `Conditions générales d'utilisation`,
+        linkProps: { href: '/cgu' },
+      },
+      {
         text: 'Code source',
         linkProps: {
           href: 'https://github.com/inclusion-numerique/la-base',
