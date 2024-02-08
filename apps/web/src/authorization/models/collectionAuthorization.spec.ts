@@ -15,7 +15,7 @@ describe('Authorization - Collections', () => {
   const collection = {
     id: 'collection',
     baseId: null,
-    ownerId: 'creator',
+    createdById: 'creator',
     isPublic: false,
     deleted: null,
   } satisfies CollectionAuthorizationTarget

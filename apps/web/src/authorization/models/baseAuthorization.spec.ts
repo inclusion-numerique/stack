@@ -14,7 +14,7 @@ import { testSessionUser } from '@app/web/test/testSessionUser'
 describe('Authorization - Bases', () => {
   const base = {
     id: 'baseId',
-    ownerId: 'owner',
+    createdById: 'creator',
     isPublic: false,
     emailIsPublic: false,
     deleted: null,
@@ -36,8 +36,8 @@ describe('Authorization - Bases', () => {
     })
 
     it('Role créateur', () => {
-      expect(getBaseRoles(base, { ...user, id: 'owner' })).toEqual([
-        BaseRoles.BaseOwner,
+      expect(getBaseRoles(base, { ...user, id: 'creator' })).toEqual([
+        BaseRoles.BaseCreator,
       ])
     })
 
@@ -63,21 +63,21 @@ describe('Authorization - Bases', () => {
       expect(
         getBaseRoles(base, {
           ...user,
-          id: 'owner',
+          id: 'creator',
           bases: [{ base, isAdmin: false }],
         }),
-      ).toEqual([BaseRoles.BaseOwner, BaseRoles.BaseMember])
+      ).toEqual([BaseRoles.BaseCreator, BaseRoles.BaseMember])
     })
 
     it('Role membre admin et créateur', () => {
       expect(
         getBaseRoles(base, {
           ...user,
-          id: 'owner',
+          id: 'creator',
           bases: [{ base, isAdmin: true }],
         }),
       ).toEqual([
-        BaseRoles.BaseOwner,
+        BaseRoles.BaseCreator,
         BaseRoles.BaseMember,
         BaseRoles.BaseAdmin,
       ])
@@ -104,7 +104,7 @@ describe('Authorization - Bases', () => {
             UserSecurityRoles.Support,
             BaseRoles.BaseMember,
             BaseRoles.BaseAdmin,
-            BaseRoles.BaseOwner,
+            BaseRoles.BaseCreator,
           ]),
         ).toEqual([])
       })
@@ -160,7 +160,7 @@ describe('Authorization - Bases', () => {
         },
         {
           title: 'Créateur non membre',
-          roles: [BaseRoles.BaseOwner],
+          roles: [BaseRoles.BaseCreator],
         },
       ])(
         '$title, je n’ai pas de permissions sur une base privée',
@@ -208,12 +208,14 @@ describe('Authorization - Bases', () => {
       })
 
       it('Créateur non membre, je peux voir et suivre une base publique', () => {
-        expect(getBasePermissions(publicBase, [BaseRoles.BaseOwner])).toEqual([
-          BasePermissions.ReadGeneralBaseInformation,
-          BasePermissions.ReadBaseData,
-          BasePermissions.FollowBase,
-          BasePermissions.UnfollowBase,
-        ])
+        expect(getBasePermissions(publicBase, [BaseRoles.BaseCreator])).toEqual(
+          [
+            BasePermissions.ReadGeneralBaseInformation,
+            BasePermissions.ReadBaseData,
+            BasePermissions.FollowBase,
+            BasePermissions.UnfollowBase,
+          ],
+        )
       })
 
       it('Utilisateur connecté, je peux voir et suivre une base publique', () => {
@@ -282,7 +284,7 @@ describe('Authorization - Bases', () => {
         expect(
           getBasePermissions(publicBaseWithPublicEmail, [
             UserSecurityRoles.User,
-            BaseRoles.BaseOwner,
+            BaseRoles.BaseCreator,
           ]),
         ).toEqual([
           BasePermissions.ReadGeneralBaseInformation,

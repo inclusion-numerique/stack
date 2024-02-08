@@ -3,7 +3,7 @@ import type { Grantee } from '@app/web/authorization/grantee'
 import { type UserSecurityRole } from '@app/web/authorization/userSecurityRole'
 
 export const BaseRoles = {
-  BaseOwner: 'BaseOwner',
+  BaseCreator: 'BaseCreator',
   BaseAdmin: 'BaseAdmin',
   BaseMember: 'BaseMember',
 } as const
@@ -33,7 +33,7 @@ export const BaseMemberPermissions = {} as const
 
 export type BaseAuthorizationTarget = Pick<
   Base,
-  'id' | 'isPublic' | 'emailIsPublic' | 'ownerId' | 'deleted'
+  'id' | 'isPublic' | 'emailIsPublic' | 'createdById' | 'deleted'
 >
 
 export const getBaseRoles = (
@@ -46,8 +46,8 @@ export const getBaseRoles = (
 
   const roles: BaseRole[] = []
 
-  if (base.ownerId === user.id) {
-    roles.push(BaseRoles.BaseOwner)
+  if (base.createdById === user.id) {
+    roles.push(BaseRoles.BaseCreator)
   }
 
   const membership = user.bases.find(

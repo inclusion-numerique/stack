@@ -31,7 +31,7 @@ export type CollectionPermission =
 
 export type CollectionAuthorizationTarget = Pick<
   Collection,
-  'id' | 'isPublic' | 'ownerId' | 'baseId' | 'deleted'
+  'id' | 'isPublic' | 'createdById' | 'baseId' | 'deleted'
 >
 
 export const getCollectionRoles = (
@@ -42,7 +42,7 @@ export const getCollectionRoles = (
     return []
   }
 
-  if (collection.ownerId === user.id) {
+  if (collection.createdById === user.id) {
     return [CollectionRoles.CollectionCreator]
   }
 

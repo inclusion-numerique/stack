@@ -243,9 +243,9 @@ describe('Authorization - Ressources', () => {
         ).toEqual([
           ResourcePermissions.ReadGeneralResourceInformation,
           ResourcePermissions.ReadResourceContent,
-          ResourcePermissions.ReportResource,
           ResourcePermissions.SaveResource,
           ResourcePermissions.UnsaveResource,
+          ResourcePermissions.ReportResource,
         ])
       })
 
