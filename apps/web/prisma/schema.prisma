@@ -659,6 +659,8 @@ enum SearchType {
   Resources   @map("resources")
   Bases       @map("bases")
   Profiles    @map("profiles")
+
+  @@map("search_type")
 }
 
 model SearchExecution {
