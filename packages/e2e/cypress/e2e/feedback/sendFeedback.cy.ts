@@ -40,7 +40,7 @@ describe('Utilisateur, je peux donner mon avis', () => {
         'd’avantage',
       )
 
-      cy.findByLabelText(/Adresse email de contact */i).type('test@test.com')
+      cy.findByLabelText(/adresse email de contact */i).type('test@test.com')
 
       cy.findByRole('button', { name: /envoyer/i }).click()
     })

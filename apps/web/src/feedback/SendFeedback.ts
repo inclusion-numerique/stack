@@ -27,7 +27,7 @@ export const SendFeedbackValidation = z
         required_error: 'Veuillez renseigner une note de satisfaction',
       })
       .int()
-      .min(0)
+      .min(1)
       .max(10),
     hadDifficulty: z.enum(yesOrNo, {
       required_error:

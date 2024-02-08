@@ -116,7 +116,7 @@ const FeedbackModal = () => {
           label="Dans quelle mesure êtes-vous satisfait de la qualité globale de la plateforme ?"
           asterisk
           disabled={isLoading}
-          min={0}
+          min={1}
           max={10}
         />
 
