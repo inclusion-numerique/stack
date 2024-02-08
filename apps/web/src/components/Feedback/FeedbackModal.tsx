@@ -165,6 +165,7 @@ const FeedbackModal = () => {
             path="wantsToBeContacted"
             disabled={isLoading}
             label="Adresse email de contact"
+            placeholder="Entrez votre email"
             hint="Afin de bien comprendre & résoudre votre problème, veuillez renseigner une adresse email sur laquelle nous pouvons vous contacter."
             className="fr-mb-4v"
             asterisk
