@@ -73,6 +73,7 @@ const FeedbackModal = () => {
   const isLoading = mutation.isPending || mutation.isSuccess
 
   const hadDifficulty = yesNoToBoolean(watch('hadDifficulty'))
+  const hasComment = watch('comment') || watch('difficultyComment')
 
   useEffect(() => {
     if (!hadDifficulty) {
@@ -86,7 +87,7 @@ const FeedbackModal = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <feedbackModal.Component
-        size="large"
+        size="medium"
         title="Je donne mon avis"
         buttons={[
           {
@@ -134,10 +135,10 @@ const FeedbackModal = () => {
               control={control}
               path="difficultyArea"
               options={difficultyAreasOptions}
+              asterisk
               disabled={isLoading}
               label="Où avez-vous rencontré ces difficultés ?"
             />
-
             <InputFormField
               control={control}
               path="difficultyComment"
@@ -148,7 +149,6 @@ const FeedbackModal = () => {
             />
           </>
         )}
-
         <InputFormField
           control={control}
           path="comment"
@@ -159,15 +159,17 @@ const FeedbackModal = () => {
           rows={4}
           className="fr-mb-4v"
         />
-
-        <InputFormField
-          control={control}
-          path="wantsToBeContacted"
-          disabled={isLoading}
-          label="Si vous souhaitez être recontacté pour discuter de votre besoin ou d'un problème rencontré sur la plateforme, nous vous invitons à renseigner votre email ici :"
-          className="fr-mb-4v"
-        />
-        {/* Spacer */}
+        {hasComment && (
+          <InputFormField
+            control={control}
+            path="wantsToBeContacted"
+            disabled={isLoading}
+            label="Adresse email de contact"
+            hint="Afin de bien comprendre & résoudre votre problème, veuillez renseigner une adresse email sur laquelle nous pouvons vous contacter."
+            className="fr-mb-4v"
+            asterisk
+          />
+        )}
         <div className="fr-pb-6v" />
       </feedbackModal.Component>
     </form>
