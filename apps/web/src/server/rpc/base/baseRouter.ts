@@ -82,7 +82,6 @@ export const baseRouter = router({
       if (!base) {
         throw invalidError('Base not found')
       }
-
       authorizeOrThrow(baseAuthorization(base, user)(BasePermissions.WriteBase))
 
       /**
