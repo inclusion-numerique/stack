@@ -4,6 +4,7 @@ import {
   UserSecurityRole,
   UserSecurityRoles,
 } from '@app/web/authorization/userSecurityRole'
+import { createAuthorizer } from '@app/web/authorization/createAuthorizer'
 
 export const ResourceRoles = {
   ResourceCreator: 'ResourceCreator',
@@ -100,3 +101,8 @@ export const getResourcePermissions = (
 
   return permissions
 }
+
+export const resourceAuthorization = createAuthorizer(
+  getResourceRoles,
+  getResourcePermissions,
+)
