@@ -41,7 +41,7 @@ export const baseRouter = router({
           excerpt: generateBaseExcerpt(input.description),
           slug,
           titleDuplicationCheckSlug: slug,
-          ownerId: user.id,
+          createdById: user.id,
           members: {
             create: [
               { memberId: user.id, isAdmin: true },
