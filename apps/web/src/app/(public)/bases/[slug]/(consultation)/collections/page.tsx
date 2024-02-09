@@ -9,7 +9,13 @@ const BaseCollectionsPage = async ({
 }: {
   params: { slug: string }
 }) => {
-  const { user, authorizations, base } = await getBasePageContext(params.slug)
+  const {
+    user,
+    authorization: { hasPermission },
+    base,
+  } = await getBasePageContext(params.slug)
+
+  const canWrite = hasPermission('WriteBase')
 
   // TODO security and filtering check, separate query for collections
   const { collections, savedCollections, id } = base
@@ -19,11 +25,11 @@ const BaseCollectionsPage = async ({
       user={user}
       collections={collections}
       savedCollections={savedCollections.map(({ collection }) => collection)}
-      withCreation={authorizations.isMember}
+      withCreation={canWrite}
       baseId={id}
       collectionsLabel="Collections de la base"
       emptyBox={
-        authorizations.isMember ? (
+        canWrite ? (
           <EmptyBox title="Vous n’avez pas de collections dans cette base">
             <div data-testid="create-resource-button">
               <CreateCollectionButton baseId={id} />
@@ -37,7 +43,7 @@ const BaseCollectionsPage = async ({
         )
       }
       emptySavedBox={
-        authorizations.isMember ? (
+        canWrite ? (
           <EmptyBox title="Vous n’avez pas enregistré de collections dans cette base">
             Enregistrez la collection de quelqu&lsquo;un d&lsquo;autre et elle
             apparaîtra ici.

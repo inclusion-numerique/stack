@@ -7,12 +7,16 @@ import styles from './BaseMembers.module.css'
 
 const BaseMembers = ({
   base,
-  isMember,
-  isAdmin,
+  canAddAdmin,
+  canAddMember,
+  canRemoveMember,
+  canChangeMemberRole,
 }: {
   base: BasePageData
-  isMember: boolean
-  isAdmin: boolean
+  canAddMember: boolean
+  canChangeMemberRole: boolean
+  canRemoveMember: boolean
+  canAddAdmin: boolean
 }) => {
   // Cannot change access level of admins if there is only one admin
   const canChangeAccessLevelOfAdmins =
@@ -22,9 +26,11 @@ const BaseMembers = ({
     <div className={styles.container} data-testid="base-members">
       <div className={styles.header}>
         <h3 className="fr-mb-0">Membres · {base.members.length}</h3>
-        {isMember && <InviteBaseMemberButton base={base} isAdmin={isAdmin} />}
+        {canAddMember && (
+          <InviteBaseMemberButton base={base} canAddAdmin={canAddAdmin} />
+        )}
       </div>
-      {isAdmin
+      {canChangeMemberRole
         ? base.members.map((member) => (
             <BaseAdminMemberCard
               member={member}

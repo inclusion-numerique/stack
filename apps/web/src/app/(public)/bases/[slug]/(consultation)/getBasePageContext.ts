@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
-import { filterAccess } from '@app/web/server/bases/authorization'
 import { basePageQuery } from '@app/web/server/bases/getBase'
+import { baseAuthorization } from '@app/web/authorization/models/baseAuthorization'
 
 // Context is cached per request https://beta.nextjs.org/docs/data-fetching/caching#per-request-caching
 export const getBasePageContext = cache(async (baseSlug: string) => {
@@ -12,11 +12,11 @@ export const getBasePageContext = cache(async (baseSlug: string) => {
     notFound()
   }
 
-  const authorizations = filterAccess(base, user)
+  const authorization = baseAuthorization(base, user)
 
   return {
     base,
-    authorizations,
+    authorization,
     user,
   }
 })

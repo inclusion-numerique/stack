@@ -12,13 +12,13 @@ import styles from './Resources.module.css'
 const Resources = ({
   resources,
   user,
-  isConnectedUser,
+  canWrite,
   baseId,
 }: {
   baseId: string | null
   resources: BaseResource[]
   user: SessionUser | null
-  isConnectedUser: boolean
+  canWrite: boolean
 }) => {
   const drafts = useMemo(
     () => resources.filter((resource) => resource.isPublic === null),
@@ -37,7 +37,7 @@ const Resources = ({
     <div data-testid="base-resources">
       <div className={styles.header}>
         <h3 className="fr-mb-0">Ressources · {resources.length}</h3>
-        {isConnectedUser && (
+        {canWrite && (
           <div data-testid="create-resource-button">
             <CreateResourceButton
               baseId={baseId}
@@ -49,7 +49,7 @@ const Resources = ({
           </div>
         )}
       </div>
-      {isConnectedUser ? (
+      {canWrite ? (
         <Tabs
           tabs={[
             {

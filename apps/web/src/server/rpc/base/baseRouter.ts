@@ -82,7 +82,9 @@ export const baseRouter = router({
       if (!base) {
         throw invalidError('Base not found')
       }
-      authorizeOrThrow(baseAuthorization(base, user)(BasePermissions.WriteBase))
+      authorizeOrThrow(
+        baseAuthorization(base, user).hasPermission(BasePermissions.WriteBase),
+      )
 
       /**
        * We update the slug if the title has changed
@@ -165,7 +167,7 @@ export const baseRouter = router({
       }
 
       authorizeOrThrow(
-        baseAuthorization(base, user)(BasePermissions.DeleteBase),
+        baseAuthorization(base, user).hasPermission(BasePermissions.DeleteBase),
       )
 
       const timestamp = new Date()
@@ -189,7 +191,9 @@ export const baseRouter = router({
         throw invalidError('Base not found')
       }
 
-      authorizeOrThrow(baseAuthorization(base, user)(BasePermissions.WriteBase))
+      authorizeOrThrow(
+        baseAuthorization(base, user).hasPermission(BasePermissions.WriteBase),
+      )
 
       prismaClient.base.update({
         where: { id },

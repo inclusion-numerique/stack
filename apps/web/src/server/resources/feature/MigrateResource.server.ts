@@ -2,10 +2,7 @@ import {
   MigrateResourceCommand,
   ResourceMigrated,
 } from '@app/web/server/resources/feature/MigrateResource'
-import {
-  ResourceCommandSecurityRule,
-  ResourceCreationCommandHandler,
-} from '@app/web/server/resources/feature/ResourceCommandHandler'
+import { ResourceCreationCommandHandler } from '@app/web/server/resources/feature/ResourceCommandHandler'
 import { ResourceCreationEventApplier } from '@app/web/server/resources/feature/ResourceEventApplier'
 import { ResourceEventSideEffect } from '@app/web/server/resources/feature/ResourceEventSideEffect'
 import { generateResourceExcerpt } from '@app/web/resources/resourceExcerpt'
@@ -53,10 +50,6 @@ export const handleMigrateResource: ResourceCreationCommandHandler<
     },
   ]
 }
-
-export const migrateResourceSecurityRules: ResourceCommandSecurityRule<
-  MigrateResourceCommand
-> = () => false
 
 export const applyResourceMigrated: ResourceCreationEventApplier<
   ResourceMigrated

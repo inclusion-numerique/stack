@@ -16,12 +16,16 @@ export const createAuthorizer =
   ) =>
   /**
    * Authorizer function that can check a permission for a target and grantee
-   * Computes the roles and permissions only once and returns a "check" function
+   * Computes the roles and permissions only once and returns a "has" function
    */
   (target: Target, user: Grantee) => {
-    const roles = getRoles(target, user)
     const userRoles = user ? [user.role] : []
-    const permissions = getPermissions(target, [...userRoles, ...roles])
+    const roles = [...getRoles(target, user), ...userRoles]
+    const permissions = getPermissions(target, roles)
 
-    return (permission: TargetPermission) => permissions.includes(permission)
+    return {
+      hasRole: (role: TargetRole | UserSecurityRole) => roles.includes(role),
+      hasPermission: (permission: TargetPermission) =>
+        permissions.includes(permission),
+    }
   }
