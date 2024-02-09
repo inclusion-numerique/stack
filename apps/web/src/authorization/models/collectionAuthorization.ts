@@ -4,6 +4,7 @@ import {
   type UserSecurityRole,
   UserSecurityRoles,
 } from '@app/web/authorization/userSecurityRole'
+import { createAuthorizer } from '@app/web/authorization/createAuthorizer'
 
 export const CollectionRoles = {
   CollectionCreator: 'CollectionCreator',
@@ -95,3 +96,8 @@ export const getCollectionPermissions = (
 
   return permissions
 }
+
+export const collectionAuthorization = createAuthorizer(
+  getCollectionRoles,
+  getCollectionPermissions,
+)
