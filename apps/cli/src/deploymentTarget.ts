@@ -27,7 +27,7 @@ export const configureDeploymentTarget = async ({
     process.env.CLI_TARGET_DEPLOYMENT_DATABASE_URL ?? ''
 
   if (deployment !== cliEnvDeploymentTargetBranch) {
-    output(`⚠️  Your .env file is not configured for targetting ${deployment}:`)
+    output(`⚠️  Your .env file is not configured for targeting ${deployment}:`)
     output(
       `-> In your .env file: CLI_TARGET_DEPLOYMENT_BRANCH=${cliEnvDeploymentTargetBranch}`,
     )
