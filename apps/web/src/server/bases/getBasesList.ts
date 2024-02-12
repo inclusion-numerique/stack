@@ -21,7 +21,11 @@ const getWhereBasesList = (
               // Created by user
               { createdById: user.id },
               // user is member,
-              { members: { some: { memberId: user.id } } },
+              {
+                members: {
+                  some: { memberId: user.id, accepted: { not: null } },
+                },
+              },
             ],
           }
         : whereBaseIsPublic,
