@@ -104,7 +104,7 @@ importers:
   apps/web:
     dependencies:
       '@app/emails':
-        specifier: workspace:^
+        specifier: ^0.1.0
         version: link:../../packages/emails
       '@auth/core':
         specifier: 0.18.6
