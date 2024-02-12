@@ -1,4 +1,5 @@
 import Footer from '@codegouvfr/react-dsfr/Footer'
+import SwitchTheme from '@app/web/app/(public)/SwitchTheme'
 
 const PublicFooter = () => (
   <Footer
@@ -27,13 +28,12 @@ const PublicFooter = () => (
       {
         text: 'Code source',
         linkProps: {
-          href: {
-            href: 'https://github.com/inclusion-numerique/projets-territoires',
-          },
+          href: 'https://github.com/inclusion-numerique/stack',
           target: '_blank',
           rel: 'noreferrer',
         },
       },
+      <SwitchTheme key="switch-theme" />,
     ]}
   />
 )
