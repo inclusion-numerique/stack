@@ -5,6 +5,7 @@ import { parseCsvFileWithMapper } from '@app/web/data/parseCsvFile'
 type AidantsConnectCsvRow = {
   name: string
   id: string
+  uuid: string
   isActive: StringBoolean
   cityCode: string
   address: string
@@ -29,7 +30,7 @@ type AidantsConnectCsvRow = {
 
 export const AidantsConnectStructures = {
   url: 'https://metabase.aidantsconnect.beta.gouv.fr/question/112-aidants-connect-structure',
-  dataFile: '20231128-aidants_connect_structures.csv',
+  dataFile: '20240212-aidants_connect_structures.csv',
   // Headers are not pretty from metabase export, we redefine them here
   // Check with csv file when updating file
 
@@ -37,10 +38,12 @@ export const AidantsConnectStructures = {
   headers: [
     'name',
     'id',
+    'uuid',
     'isActive',
     'cityCode',
     'address',
     'zipCode',
+    'siret',
     'franceServicesLabel',
     'city',
     'aidants',
@@ -60,6 +63,15 @@ export const AidantsConnectStructures = {
   updated: '2021-07-13',
 }
 
+/**
+ * In the CSV siret is stored as a string float. e.g. '33296273700034.0' or '0.0'
+ * We convert it to a string without the decimal part an empty string if 0
+ */
+const siretToString = (value: string) => {
+  const withoutDecimal = value.split('.')[0]
+  return withoutDecimal === '0' ? '' : withoutDecimal
+}
+
 type StringBoolean = 'true' | 'false'
 export const stringBooleanToBoolean = (value: StringBoolean) => {
   switch (value) {
@@ -71,7 +83,7 @@ export const stringBooleanToBoolean = (value: StringBoolean) => {
     }
     default: {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      throw new Error(`Unexpected chelou boolean value: ${value}`)
+      throw new Error(`Cannot convert unexpected boolean value: ${value}`)
     }
   }
 }
@@ -128,9 +140,11 @@ export const getAidantsConnectStructures = () =>
     getDataFilePath(AidantsConnectStructures.dataFile),
     (row: AidantsConnectCsvRow): AidantsConnectStructure => {
       const {
+        uuid,
         cityCode,
         isActive,
         franceServicesLabel,
+        siret,
         aidants,
         usagersUniques,
         demarches,
@@ -149,6 +163,8 @@ export const getAidantsConnectStructures = () =>
 
       return {
         ...rest,
+        id: uuid,
+        siret: siretToString(siret),
         cityCode: cityCode || null,
         isActive: stringBooleanToBoolean(isActive),
         isFranceServices: stringBooleanToBoolean(franceServicesLabel),
