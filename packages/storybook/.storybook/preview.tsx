@@ -1,7 +1,8 @@
 import React from 'react'
+import '@app/web/app/app.css'
 import { useRef } from '@storybook/addons'
 import { Preview } from '@storybook/react'
-import '@app/web/app/app.css'
+import { DEFAULT_VIEWPORT, MINIMAL_VIEWPORTS } from '@storybook/addon-viewport'
 
 const loadDsfrJs = () => {
   const existing = document.querySelector('#dsfr-js')
@@ -31,6 +32,33 @@ const preview: Preview = {
     },
     nextjs: {
       appDirectory: true,
+    },
+    viewport: {
+      defaultViewport: DEFAULT_VIEWPORT,
+      viewports: {
+        ...MINIMAL_VIEWPORTS,
+        mediumContainer: {
+          name: 'Medium container',
+          styles: {
+            width: '792px',
+            height: '1000px',
+          },
+        },
+        narrowContainer: {
+          name: 'Narrow container',
+          styles: {
+            width: '588px',
+            height: '1000px',
+          },
+        },
+        container: {
+          name: 'Container',
+          styles: {
+            width: '1200px',
+            height: '1000px',
+          },
+        },
+      },
     },
   },
   decorators: [
