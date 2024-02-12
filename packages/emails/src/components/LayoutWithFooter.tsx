@@ -9,11 +9,11 @@ import {
   MjmlSection,
   MjmlText,
 } from '@faire/mjml-react'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import Head from '@app/emails/components/Head'
 import { backgroundColor } from '@app/emails/styles'
 import { emailAssetUrl } from '@app/emails/emailAssetUrl'
 import Footer from '@app/emails/components/Footer'
-import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 /**
  * With headerLogoOnly the logo will be centered and you can include title in children
