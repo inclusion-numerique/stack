@@ -274,7 +274,7 @@ jobs:
           command: pnpm tsc
       - run:
           name: 'Lint @app/web'
-          command: pnpm --silent -F '@app/web' lint
+          command: pnpm -F '@app/web' lint
           no_output_timeout: 30m
 
   lint_packages:
@@ -291,7 +291,7 @@ jobs:
           command: pnpm tsc
       - run:
           name: 'Lint all packages except @app/web'
-          command: pnpm --silent -F '!@app/web' lint
+          command: pnpm '!@app/web' lint
           no_output_timeout: 30m
 
   lint_and_test_cdk_package:
