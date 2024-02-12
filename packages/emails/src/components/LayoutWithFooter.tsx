@@ -1,4 +1,5 @@
 import React, { PropsWithChildren, ReactNode } from 'react'
+
 import {
   Mjml,
   MjmlBody,
@@ -12,6 +13,7 @@ import Head from '@app/emails/components/Head'
 import { backgroundColor } from '@app/emails/styles'
 import { emailAssetUrl } from '@app/emails/emailAssetUrl'
 import Footer from '@app/emails/components/Footer'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 /**
  * With headerLogoOnly the logo will be centered and you can include title in children
@@ -38,7 +40,7 @@ const LayoutWithFooter = ({
             <MjmlImage
               align="center"
               src={emailAssetUrl('/email/logo_anct.svg')}
-              alt="Logo Les Bases du numérique d’intérêt général"
+              alt={`Logo ${PublicWebAppConfig.projectTitle}`}
             />
           </MjmlColumn>
         </MjmlSection>
@@ -49,12 +51,12 @@ const LayoutWithFooter = ({
               <MjmlImage
                 align="left"
                 src={emailAssetUrl('/email/logo_anct.svg')}
-                alt="Logo Les Bases du numérique d’intérêt général"
+                alt={`Logo ${PublicWebAppConfig.projectTitle}`}
               />
             </MjmlColumn>
             <MjmlColumn width="80%" verticalAlign="middle">
               <MjmlText fontWeight="500" fontSize="18px">
-                Les Bases du numérique d’intérêt général
+                {PublicWebAppConfig.projectTitle}
               </MjmlText>
             </MjmlColumn>
           </MjmlSection>
