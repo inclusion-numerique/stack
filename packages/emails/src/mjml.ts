@@ -1,5 +1,6 @@
-import { Options, minify } from 'html-minifier'
+import type { Options } from 'html-minifier'
 import mjml2html from 'mjml'
+import { minify } from 'html-minifier'
 
 const MINIFIER_OPTIONS: Options = {
   collapseWhitespace: true,
