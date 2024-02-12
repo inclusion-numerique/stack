@@ -58,9 +58,12 @@ const ContentPolicyPage = () => (
           général, de partager ou documenter des outils, ressources,
           dispositifs.
         </p>
+        <hr />
+
         <h3>
           <strong>1) Objet</strong>
         </h3>
+
         <p>
           L&#39;objet de la plateforme est de favoriser la mise en réseau des
           ressources produites par les acteurs et actrices du numérique
@@ -74,71 +77,41 @@ const ContentPolicyPage = () => (
             des acteurs commerciaux.
           </strong>
         </p>
-        <h3 id="-2-utilisation-de-la-base-">
+        <br />
+        <hr />
+
+        <h3>
           <strong>2) Utilisation</strong>
         </h3>
-        <hr />
-        <ul>
-          <li>
-            <strong>Inscription</strong>
-          </li>
-        </ul>
+
+        <h6>Inscription</h6>
         <p>
           Les ressources publiques publiées sont accessibles sans création de
           compte.
         </p>
         <p>
-          L&#39;inscription sur permet d&#39;administrer une base ouverte ou
-          fermée et d&#39;interagir avec les contenus publiés par les autres
-          utilisateurs et utilisatrices. Il revient à chaque utilisateur et
-          utilisatrice de définir les modalités d&#39;ouverture de la base
+          L&#39;inscription sur Les Bases permet d&#39;administrer une base
+          ouverte ou fermée et d&#39;interagir avec les contenus publiés par les
+          autres utilisateurs et utilisatrices. Il revient à chaque utilisateur
+          et utilisatrice de définir les modalités d&#39;ouverture de la base
           qu&#39;il ou elle administre.
         </p>
-        <ul>
-          <li>
-            <strong>Publication d&#39;une ressource</strong>
-          </li>
-        </ul>
-        <hr />
+        <h6>Publication d&#39;une ressource</h6>
         <p>
           La publication d&#39;une ressource par un utilisateur ou une
           utilisatrice induit une vigilance particulière en matière de droits de
           la propriété intellectuelle. Il importe d&#39;avoir lu les conditions
           ci-dessous avant de publier une ressource.
         </p>
+
         <p>
-          L&#39;utilisateur-rice a les droits sur la ressource car il-elle en
-          est :
+          Si dans le cadre de sa ressource, l&#39;utilisateur ou
+          l&#39;utilisatrice réutilise des ressources produites par d’autres
+          (par exemple, des extraits d’articles de Wikipédia), il ou elle a
+          vérifié avant publication que celles-ci sont mises à disposition sous
+          des licences permettant cette réutilisation.
         </p>
-        <p>
-          <strong>
-            L&#39;utilisateur-rice est le-la créateur -rice de la ressource :
-          </strong>
-        </p>
-        <ul>
-          <li>le-la créateur-rice</li>
-          <li>
-            le-la créateur-rice et a obtenu l’autorisation de son employeur
-            (dans le cadre d’une création salariale)
-          </li>
-          <li>
-            le-la co-créateur-rice et a obtenu l’autorisation de ses
-            co-auteurs-rices.
-          </li>
-        </ul>
-        <p>
-          Si dans le cadre de sa ressource, l&#39;utilisateur-rice réutilise des
-          ressources produites par d’autres (par exemple, des extraits
-          d’articles de Wikipédia), il-elle a vérifié avant publication que
-          celles-ci sont mises à disposition sous des licences permettant cette
-          réutilisation.
-        </p>
-        <p>
-          <strong>
-            L&#39;utilisateur-rice n’est pas le-la créateur -rice de la
-            ressource :
-          </strong>
-        </p>
+
         <p>
           L&#39;utilisateur-rice peut publier une ressource qu&#39;il-elle
           n&#39;a pas créé si celle-ci est mise à disposition sous une licence
@@ -146,12 +119,12 @@ const ContentPolicyPage = () => (
           l&#39;utilisateur-rice a obtenu l&#39;autorisation de son
           créateur-rice de la partager sur Les Bases.
         </p>
+        <h6>Choix de la licence de la ressource</h6>
+
         <p>
-          <strong>Choix de la license de la ressource</strong>
-        </p>
-        <p>
-          L&#39;utilisateur-rice peut choisir une licence pour la ressource au
-          moment de sa publication parmi les licences suivantes :
+          L&#39;utilisateur ou l&#39;utilisatrice peut choisir une licence pour
+          la ressource au moment de sa publication parmi les licences
+          suivantes :
         </p>
         <ul>
           <li>Libre</li>
@@ -159,7 +132,9 @@ const ContentPolicyPage = () => (
           <li>Gratuite</li>
           <li>Autres licences</li>
         </ul>
-        <h3 id="3-h-bergement-de-la-la-base">3) Hébergement</h3>
+        <br />
+        <hr />
+        <h3>3) Hébergement</h3>
         <p>
           L&#39;Agence Nationale de la Cohésion des Territoires (ANCT), en tant
           qu&#39;établissement public au service de l&#39;outillage des
@@ -167,7 +142,9 @@ const ContentPolicyPage = () => (
           d&#39;intérêt général une infrastructure propice à la mise en réseau à
           et l&#39;échange de ressources.
         </p>
-        <h3 id="-4-edition-des-contenus-publi-s-sur-la-base-">
+        <br />
+        <hr />
+        <h3>
           <strong>4) Edition des contenus publiés</strong>
         </h3>
         <p>
@@ -189,14 +166,18 @@ const ContentPolicyPage = () => (
             sur tout autre support numérique ou physique.
           </li>
         </ul>
-        <h3 id="-5-ressources-publi-es-sur-la-base-">
+        <br />
+        <hr />
+        <h3>
           <strong>5) Ressources publiées</strong>
         </h3>
         <p>
           Toute ressource traitant ou oeuvrant au développement du numérique
           d&#39;intérêt général peut être publiée sur Les Bases.
         </p>
-        <h3 id="-6-mod-ration-de-la-base-">
+        <br />
+        <hr />
+        <h3>
           <strong>6) Modération</strong>
         </h3>
         <p>
