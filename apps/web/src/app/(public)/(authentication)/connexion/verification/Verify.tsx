@@ -3,6 +3,8 @@ import Notice from '@codegouvfr/react-dsfr/Notice'
 import { PublicWebAppConfig } from '@app/web/webAppConfig'
 import ContainerCard from '@app/web/components/ContainerCard'
 import styles from './Verify.module.css'
+import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export const Verify = () => {
   const email = cookies().get('email-signin')?.value

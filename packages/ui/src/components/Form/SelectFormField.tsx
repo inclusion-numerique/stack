@@ -26,6 +26,7 @@ const SelectFormField = <T extends FieldValues>({
   disabled,
   valid,
   asterisk,
+  className,
 }: UiComponentProps & SelectFormFieldProps<T>) => {
   const id = `select-form-field__${path}`
 
@@ -46,11 +47,15 @@ const SelectFormField = <T extends FieldValues>({
 
         return (
           <div
-            className={classNames('fr-select-group', {
-              'fr-select-group--error': error,
-              'fr-select-group--valid': valid && isDirty && !invalid,
-              'fr-select-group--disabled': disabled,
-            })}
+            className={classNames(
+              'fr-select-group',
+              {
+                'fr-select-group--error': error,
+                'fr-select-group--valid': valid && isDirty && !invalid,
+                'fr-select-group--disabled': disabled,
+              },
+              className,
+            )}
           >
             <label className="fr-label" htmlFor={id}>
               {label} {asterisk && <RedAsterisk />}

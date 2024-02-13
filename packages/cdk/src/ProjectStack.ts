@@ -39,6 +39,7 @@ export const projectStackVariables = [
   'SCW_PROJECT_ID',
   'EMAIL_FROM_DOMAIN',
   'UPLOADS_BUCKET',
+  'BACKUPS_BUCKET',
   'WEB_APP_DOCKER_REGISTRY_NAME',
   'S3_HOST',
 ] as const
@@ -135,6 +136,20 @@ export class ProjectStack extends TerraformStack {
     //     },
     //   ],
     // })
+
+    // Backups bucket for database dumps or other important backups
+    new ObjectBucket(this, 'backupsBucket', {
+      name: environmentVariables.BACKUPS_BUCKET.value,
+      corsRule: [
+        {
+          allowedHeaders: ['*'],
+          allowedMethods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
+          maxAgeSeconds: 3000,
+          exposeHeaders: ['Etag'],
+          allowedOrigins: ['http://localhost:3000', 'http://localhost'],
+        },
+      ],
+    })
 
     // https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/rdb_instance
     const database = new RdbInstance(this, 'database', {

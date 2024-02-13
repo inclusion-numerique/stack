@@ -1,5 +1,6 @@
 import { Argument, Command, Option } from '@commander-js/extra-typings'
 import { appendEnvVariablesToDotEnvFile } from '@app/cli/dotEnvFile'
+import { output } from '@app/cli/output'
 
 export const addNextPublicVariablesToDotEnv = new Command()
   .command('dotenv:add-next-public')
@@ -9,13 +10,17 @@ export const addNextPublicVariablesToDotEnv = new Command()
     const targetEnv: 'local' | 'main' | 'preview' = local
       ? 'local'
       : namespace === 'main'
-      ? 'main'
-      : 'preview'
+        ? 'main'
+        : 'preview'
+
+    output(`Adding next public variables to .env for "${targetEnv}" target`)
 
     await appendEnvVariablesToDotEnvFile({
       comment: 'Next public environment needed at build time',
       environmentVariables: [
-        { name: 'NEXT_PUBLIC_SENTRY_ENVIRONMENT', value: namespace },
+        targetEnv === 'local'
+          ? { name: 'NEXT_PUBLIC_SENTRY_DSN', value: '' }
+          : { name: 'NEXT_PUBLIC_SENTRY_ENVIRONMENT', value: namespace },
         {
           name: 'NEXT_PUBLIC_MONCOMPTEPRO_ISSUER',
           value: `$MONCOMPTEPRO_${targetEnv.toUpperCase()}_ISSUER`,

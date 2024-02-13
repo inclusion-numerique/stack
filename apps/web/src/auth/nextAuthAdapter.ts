@@ -10,11 +10,7 @@ import {
 /**
  * Ensuring that needed methods are defined when creating adapter
  */
-const createAdapter = (): Adapter & {
-  createUser: Exclude<Adapter['createUser'], undefined>
-  deleteSession: Exclude<Adapter['deleteSession'], undefined>
-  linkAccount: Exclude<Adapter['linkAccount'], undefined>
-} => {
+const createAdapter = () => {
   const prismaAdapter = PrismaAdapter(prismaClient)
 
   const { createUser, deleteSession, linkAccount } = prismaAdapter
@@ -24,21 +20,24 @@ const createAdapter = (): Adapter & {
     throw new Error('prismaAdapter.deleteSession is undefined')
   if (!linkAccount) throw new Error('prismaAdapter.linkAccount is undefined')
 
-  return { ...prismaAdapter, createUser, deleteSession, linkAccount }
+  return {
+    ...prismaAdapter,
+    createUser,
+    deleteSession,
+    linkAccount,
+  } satisfies Adapter
 }
 
 const prismaAdapter = createAdapter()
 
 // ⚠️ Keycloak returns non standard fields that are expected to be ignored by the client
-const removeNonStandardFields = <T extends Record<string, unknown>>(
-  data: T,
-): T => ({
+const removeNonStandardFields = <T extends AdapterAccount>(data: T): T => ({
   ...data,
   refresh_expires_in: undefined,
   'not-before-policy': undefined,
 })
 
-export const nextAuthAdapter: Adapter = {
+export const nextAuthAdapter: NextAuthOptions['adapter'] = {
   ...prismaAdapter,
   createUser: async (user) => {
     const { provider, ...rest } = user as Omit<AdapterUser, 'id'> & {
@@ -79,5 +78,7 @@ export const nextAuthAdapter: Adapter = {
   },
   // Custom link acount
   linkAccount: (account) =>
-    prismaAdapter.linkAccount(removeNonStandardFields(account)),
+    prismaAdapter.linkAccount(
+      removeNonStandardFields(account as AdapterAccount),
+    ),
 }

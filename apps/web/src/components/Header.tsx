@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import HeaderBackLink from '@app/web/components/HeaderBackLink'
 import { HeaderUserMenu } from '@app/web/components/HeaderUserMenu'
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import UserNavigation from '@app/web/app/UserNavigation'
 import styles from './Header.module.css'
 

@@ -1,4 +1,4 @@
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0

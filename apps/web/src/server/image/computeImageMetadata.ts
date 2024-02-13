@@ -2,7 +2,7 @@ import sharp from 'sharp'
 import { GetObjectCommand } from '@aws-sdk/client-s3'
 import { Image } from '@prisma/client'
 import { s3 } from '@app/web/server/s3/s3'
-import { ServerWebAppConfig } from '@app/web/webAppConfig'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 
 export const computeImageMetadata = async ({
   cropWidth,

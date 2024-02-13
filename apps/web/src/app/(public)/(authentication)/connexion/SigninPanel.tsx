@@ -3,7 +3,7 @@ import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import { signinErrorMessage } from '@app/web/app/(public)/(authentication)/authenticationErrorMessage'
 import { EmailSigninForm } from '@app/web/app/(public)/(authentication)/connexion/EmailSigninForm'
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import MonCompteProSigninButton from '@app/web/app/(public)/(authentication)/connexion/MonCompteProSigninButton'
 
 const SigninPanel = ({

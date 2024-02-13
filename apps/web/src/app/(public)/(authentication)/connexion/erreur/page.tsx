@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export const revalidate = 0
 

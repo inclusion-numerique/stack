@@ -1,45 +1,32 @@
-'use client'
-
-import { signOut } from 'next-auth/react'
 import Link from 'next/link'
-import { useState } from 'react'
+import type { Metadata } from 'next'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
+import SignoutButton from '@app/web/app/(public)/(authentication)/deconnexion/SignoutButton'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-const SignoutPage = () => {
-  const [isLoading, setIsLoading] = useState(false)
-  const onLogout = async () => {
-    setIsLoading(true)
-    await signOut({ redirect: true, callbackUrl: '/' })
-  }
-
-  return (
-    <>
-      <Breadcrumbs currentPage="Déconnexion" />
-      <AuthCard>
-        <h2>Déconnexion</h2>
-        <p>Êtes-vous sur de vouloir vous déconnecter&nbsp;?</p>
-        <ul className="fr-btns-group">
-          <li>
-            <button
-              type="button"
-              className="fr-btn"
-              disabled={isLoading}
-              onClick={onLogout}
-            >
-              Se déconnecter
-            </button>
-          </li>
-        </ul>
-        <div className="fr-grid-row fr-grid-row--center">
-          <Link href="/">Retour</Link>
-        </div>
-      </AuthCard>
-    </>
-  )
+export const metadata: Metadata = {
+  title: 'Déconnexion',
 }
+
+const SignoutPage = () => (
+  <>
+    <Breadcrumbs currentPage="Déconnexion" />
+    <AuthCard>
+      <h2>Déconnexion</h2>
+      <p>Êtes-vous sur de vouloir vous déconnecter&nbsp;?</p>
+      <ul className="fr-btns-group">
+        <li>
+          <SignoutButton />
+        </li>
+      </ul>
+      <div className="fr-grid-row fr-grid-row--center">
+        <Link href="/">Retour</Link>
+      </div>
+    </AuthCard>
+  </>
+)
 
 export default SignoutPage
