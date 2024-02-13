@@ -30,7 +30,7 @@ const SigninPage = async ({
         user.role === 'PrefectureDepartement' ||
         user.role === 'PrefectureRegion'
       ) {
-        redirect(suivant ?? '/tableau-de-bord')
+        redirect(suivant ?? '/donnees')
         return null
       }
       redirect(suivant ?? '/profil')
@@ -47,7 +47,7 @@ const SigninPage = async ({
 
   const callbackUrl =
     suivant ?? role === 'prefecture'
-      ? '/tableau-de-bord'
+      ? '/donnees'
       : role === 'collectivite'
         ? '/formulaires-feuilles-de-routes-territoriales'
         : '/profil'

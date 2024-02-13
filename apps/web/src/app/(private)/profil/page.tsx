@@ -71,10 +71,7 @@ const Page = async () => {
             className="fr-mb-6v"
             title="Vous êtes connecté à Espace France Numérique Ensemble avec un rôle administrateur"
           />
-          <Link
-            className="fr-link fr-mt-4v"
-            href="/tableau-de-bord/departement/69"
-          >
+          <Link className="fr-link fr-mt-4v" href="/donnees/departements/69">
             Accéder au tableau de bord Préfet
           </Link>
           <br />
@@ -92,10 +89,7 @@ const Page = async () => {
             className="fr-mb-6v"
             title="Vous êtes connecté à Espace France Numérique Ensemble avec un rôle de démonstration vous permettant d'accéder à toutes les fonctionnalités"
           />
-          <Link
-            className="fr-link fr-mt-4v"
-            href="/tableau-de-bord/departement/69"
-          >
+          <Link className="fr-link fr-mt-4v" href="/donnees/departements/69">
             Accéder au tableau de bord Préfet
           </Link>
           <br />
@@ -114,7 +108,7 @@ const Page = async () => {
           />
           <Link
             className="fr-link fr-mt-4v"
-            href={`/tableau-de-bord/departement/${user.roleScope ?? ''}`}
+            href={`/donnees/departements/${user.roleScope ?? ''}`}
           >
             Accéder au tableau de bord de votre département
           </Link>
@@ -131,7 +125,7 @@ const Page = async () => {
           />
           <Link
             className="fr-link fr-mt-4v"
-            href={`/tableau-de-bord/region/${user.roleScope ?? ''}`}
+            href={`/donnees/regions/${user.roleScope ?? ''}`}
           >
             Accéder au tableau de bord de votre région
           </Link>

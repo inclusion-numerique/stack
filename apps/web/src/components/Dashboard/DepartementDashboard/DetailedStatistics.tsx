@@ -3,8 +3,8 @@ import Box from '@app/web/components/Dashboard/Box/Box'
 import {
   BoxesData,
   DepartementDashboardData,
-} from '@app/web/app/(private)/tableau-de-bord/departement/[codeDepartement]/getDepartementDashboardData'
-import { NationalDashboardData } from '@app/web/app/(private)/tableau-de-bord/national/getNationalDashboardData'
+} from '@app/web/app/(public)/donnees/departements/[codeDepartement]/getDepartementDashboardData'
+import { NationalDashboardData } from '@app/web/app/(public)/donnees/national/getNationalDashboardData'
 
 const StatisticsWrapper = ({
   id,

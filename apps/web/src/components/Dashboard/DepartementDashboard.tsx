@@ -3,7 +3,7 @@ import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import MainStatistics from '@app/web/components/Dashboard/DepartementDashboard/MainStatistics'
 import DetailedStatistics from '@app/web/components/Dashboard/DepartementDashboard/DetailedStatistics'
 import DepartementDashboardHeader from '@app/web/components/Dashboard/DepartementDashboardHeader'
-import type { DepartementDashboardData } from '@app/web/app/(private)/tableau-de-bord/departement/[codeDepartement]/getDepartementDashboardData'
+import type { DepartementDashboardData } from '@app/web/app/(public)/donnees/departements/[codeDepartement]/getDepartementDashboardData'
 import ErrorBoundary from '@app/web/components/ErrorBoundary'
 import DepartementMap from './DepartementMap'
 
@@ -25,7 +25,7 @@ const DepartementDashboard = ({
 }) => (
   <div className="fr-container">
     <Breadcrumb
-      currentPageLabel="Tableau de bord"
+      currentPageLabel={`Données · ${data.departement.nom}`}
       segments={[
         {
           label: "Page d'accueil",

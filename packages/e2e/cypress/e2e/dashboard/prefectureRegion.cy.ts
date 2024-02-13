@@ -12,15 +12,15 @@ describe("En tant que préfecture de région, j'ai accès aux données de ma ré
 
   it('Should access dashboard and switch departements from own region', () => {
     cy.log('Redirect to scoped dashboard')
-    cy.visit(`/tableau-de-bord`)
-    cy.url().should('equal', appUrl('/tableau-de-bord/departement/16'))
+    cy.visit(`/donnees`)
+    cy.url().should('equal', appUrl('/donnees/departements/16'))
 
     cy.contains('Charente')
 
     // Peut changer de département
     cy.testId('departement-switcher').select('33')
 
-    cy.url().should('equal', appUrl('/tableau-de-bord/departement/33'))
+    cy.url().should('equal', appUrl('/donnees/departements/33'))
     cy.contains('Gironde')
 
     cy.intercept(
@@ -34,10 +34,7 @@ describe("En tant que préfecture de région, j'ai accès aux données de ma ré
     Cypress.on('uncaught:exception', () => false)
 
     cy.testId('cartographie-button').click()
-    cy.url().should(
-      'equal',
-      appUrl('/tableau-de-bord/departement/33/cartographie'),
-    )
+    cy.url().should('equal', appUrl('/donnees/departements/33/cartographie'))
 
     cy.testId('map-loader').should('be.visible')
     cy.wait('@cartographie-map-tiles')

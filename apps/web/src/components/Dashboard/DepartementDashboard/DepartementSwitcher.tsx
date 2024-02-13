@@ -19,7 +19,7 @@ const DepartementSwitcher = ({
   const onChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const codeDepartement = event.currentTarget.value
     if (codeDepartement) {
-      router.push(`/tableau-de-bord/departement/${codeDepartement}`)
+      router.push(`/donnees/departements/${codeDepartement}`)
     }
   }
 

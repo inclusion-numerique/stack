@@ -4,8 +4,8 @@ import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import { useSearchParams } from 'next/navigation'
 import { useDsfrModalIsBound } from '@app/ui/hooks/useDsfrModalIsBound'
 import { useEffect } from 'react'
+import { limiteModificationDesGouvernances } from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceMetadata'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
-import { limiteModificationDesGouvernances } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceMetadata'
 import { gouvernanceCompletedSearchParam } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
 
 const { Component, id, open } = createModal({

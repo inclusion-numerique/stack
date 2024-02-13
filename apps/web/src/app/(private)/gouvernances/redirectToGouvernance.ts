@@ -10,18 +10,18 @@ export const redirectToGouvernance = async () => {
   }
 
   if (user.role === 'PrefectureRegion' && user.roleScope) {
-    redirect(`/gouvernances/region/${user.roleScope}`)
+    redirect(`/gouvernances/regions/${user.roleScope}`)
     return
   }
 
   if (user.role === 'PrefectureDepartement' && user.roleScope) {
-    redirect(`/gouvernances/departement/${user.roleScope}`)
+    redirect(`/gouvernances/departements/${user.roleScope}`)
     return
   }
 
   if (hasAccessToDepartementDashboard(user, { departementCode: '69' })) {
     // Demonstration
-    redirect(`/gouvernances/departement/69`)
+    redirect(`/gouvernances/departements/69`)
     return
   }
 

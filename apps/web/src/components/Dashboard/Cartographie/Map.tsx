@@ -19,7 +19,7 @@ import {
   DepartementCartographieData,
   DepartementCartographieDataCommune,
   DepartementCartographieDataStructure,
-} from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
+} from '@app/web/app/(cartographie)/donnees/departements/[codeDepartement]/cartographie/getDepartementCartographieData'
 import {
   structureTypeImage,
   structureTypes,

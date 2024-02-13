@@ -8,6 +8,7 @@ import {
 } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/pageFormulaireData'
 import Participer from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/[gouvernancePersonaId]/participer/Participer'
 import BackLink from '@app/web/components/BackLink'
+import { getDepartementOptions } from '@app/web/data/getDepartementOptions'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -38,21 +39,7 @@ const Page = async (props: PageFormulaireProps) => {
       .then((regions) =>
         regions.map(({ code, nom }): OptionTuple => [code, nom]),
       ),
-    prismaClient.departement
-      .findMany({
-        select: {
-          code: true,
-          nom: true,
-        },
-        orderBy: {
-          code: 'asc',
-        },
-      })
-      .then((departements) =>
-        departements.map(
-          ({ code, nom }): OptionTuple => [code, `${code} · ${nom}`],
-        ),
-      ),
+    getDepartementOptions(),
   ])
 
   return (

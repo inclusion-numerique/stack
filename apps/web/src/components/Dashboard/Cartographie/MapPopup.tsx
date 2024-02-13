@@ -3,7 +3,7 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import {
   DepartementCartographieDataCommune,
   DepartementCartographieDataStructure,
-} from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
+} from '@app/web/app/(cartographie)/donnees/departements/[codeDepartement]/cartographie/getDepartementCartographieData'
 import CityDetails from '@app/web/components/Dashboard/Cartographie/CityDetails'
 import StructureDetails from '@app/web/components/Dashboard/Cartographie/StructureDetails'
 import styles from './MapPopup.module.css'

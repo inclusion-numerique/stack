@@ -2,7 +2,7 @@ import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import DetailedStatistics from '@app/web/components/Dashboard/DepartementDashboard/DetailedStatistics'
 import DepartementDashboardHeader from '@app/web/components/Dashboard/DepartementDashboardHeader'
-import { NationalDashboardData } from '@app/web/app/(private)/tableau-de-bord/national/getNationalDashboardData'
+import { NationalDashboardData } from '@app/web/app/(public)/donnees/national/getNationalDashboardData'
 import Box from '@app/web/components/Dashboard/Box/Box'
 
 const NationalDashboard = ({ data }: { data: NationalDashboardData }) => (

@@ -37,7 +37,7 @@ describe('ETQ Visiteur qui souhaite se connecter en Préfecture, je peux me conn
 
     cy.url().should(
       'equal',
-      appUrl('/connexion?role=prefecture&suivant=/tableau-de-bord'),
+      appUrl('/connexion?role=prefecture&suivant=/donnees'),
     )
 
     cy.contains('Préfecture')
@@ -66,7 +66,7 @@ describe('ETQ Visiteur qui souhaite se connecter en Préfecture, je peux me conn
     cy.signin(user)
     cy.visit('/connexion?role=prefecture')
 
-    cy.url().should('equal', appUrl('/tableau-de-bord/departement/34'))
+    cy.url().should('equal', appUrl('/donnees/departements/34'))
 
     cy.contains('Hérault')
 

@@ -12,8 +12,8 @@ describe("En tant que préfecture de département, j'ai accès aux données de m
 
   it('Should access dashboard and see detailed map informations', () => {
     cy.log('Redirect to scoped dashboard')
-    cy.visit(`/tableau-de-bord`)
-    cy.appUrlShouldBe('/tableau-de-bord/departement/33')
+    cy.visit(`/donnees`)
+    cy.appUrlShouldBe('/donnees/departements/33')
 
     cy.contains('Gironde')
 
@@ -28,10 +28,7 @@ describe("En tant que préfecture de département, j'ai accès aux données de m
     Cypress.on('uncaught:exception', () => false)
 
     cy.testId('cartographie-button').click()
-    cy.url().should(
-      'equal',
-      appUrl('/tableau-de-bord/departement/33/cartographie'),
-    )
+    cy.url().should('equal', appUrl('/donnees/departements/33/cartographie'))
 
     cy.testId('map-loader').should('be.visible')
     cy.wait('@cartographie-map-tiles')

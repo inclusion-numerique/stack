@@ -3,9 +3,9 @@ import React from 'react'
 import {
   BesoinsIngenierieFinanciereForForm,
   GouvernanceForForm,
-} from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
+} from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
+import GouvernanceDetails from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/GouvernanceDetails'
 import { GouvernanceScope } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
-import GouvernanceDetails from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/GouvernanceDetails'
 
 const GouvernancePrint = ({
   gouvernance,

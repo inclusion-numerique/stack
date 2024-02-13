@@ -1,7 +1,7 @@
 import React from 'react'
 import Box from '@app/web/components/Dashboard/Box/Box'
-import type { DepartementDashboardData } from '@app/web/app/(private)/tableau-de-bord/departement/[codeDepartement]/getDepartementDashboardData'
-import { NationalDashboardData } from '@app/web/app/(private)/tableau-de-bord/national/getNationalDashboardData'
+import type { DepartementDashboardData } from '@app/web/app/(public)/donnees/departements/[codeDepartement]/getDepartementDashboardData'
+import { NationalDashboardData } from '@app/web/app/(public)/donnees/national/getNationalDashboardData'
 
 const MainStatistics = ({
   data: {

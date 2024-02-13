@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import React from 'react'
-import { GouvernanceForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
+import { GouvernanceForForm } from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import {
   getPerimetreString,
   getPorteurString,

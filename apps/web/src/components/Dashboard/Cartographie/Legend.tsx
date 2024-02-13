@@ -11,7 +11,7 @@ import {
   DepartementCartographieDataCommune,
   DepartementCartographieDataCount,
   DepartementCartographieDataStructure,
-} from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
+} from '@app/web/app/(cartographie)/donnees/departements/[codeDepartement]/cartographie/getDepartementCartographieData'
 import LegendStructure from '@app/web/components/Dashboard/Cartographie/LegendStructure'
 import InfoButton from '@app/web/components/InfoButton'
 import {
@@ -166,7 +166,7 @@ const Legend = ({
                 {
                   label: 'Tableau de bord',
                   linkProps: {
-                    href: `/tableau-de-bord/departement/${departement.code}`,
+                    href: `/donnees/departements/${departement.code}`,
                   },
                 },
               ]}

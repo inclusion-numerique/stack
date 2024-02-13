@@ -33,9 +33,9 @@ export const gouvernanceHomePath = (
   const queryParamsPart = queryParamsString ? `?${queryParamsString}` : ''
 
   return scope.codeRegion
-    ? `/gouvernances/region/${scope.codeRegion}${queryParamsPart}`
+    ? `/gouvernances/regions/${scope.codeRegion}${queryParamsPart}`
     : scope.codeDepartement
-      ? `/gouvernances/departement/${scope.codeDepartement}${queryParamsPart}`
+      ? `/gouvernances/departements/${scope.codeDepartement}${queryParamsPart}`
       : `/gouvernances/national${queryParamsPart}`
 }
 

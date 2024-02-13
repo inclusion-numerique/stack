@@ -1,10 +1,10 @@
 import React from 'react'
 import { notFound } from 'next/navigation'
-import { getGouvernanceForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
+import { getGouvernanceForForm } from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
+import { getBesoinsEnIngenierieFinanciereForForm } from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/getBesoinsIngenierieFinanciereForForm'
+import { generateRegionMetadata } from '@app/web/app/(private)/gouvernances/regions/generateRegionMetadata'
 import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import GouvernancePrint from '@app/web/app/(private-print)/gouvernances/GouvernancePrint'
-import { generateRegionMetadata } from '@app/web/app/(private)/gouvernances/region/generateRegionMetadata'
-import { getBesoinsEnIngenierieFinanciereForForm } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getBesoinsIngenierieFinanciereForForm'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0

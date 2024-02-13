@@ -25,7 +25,7 @@ const UserNavigation = ({ user }: { user: SessionUser }) => {
   if (hasAccessToDonneesDeLInclusionNumerique(user)) {
     items.push({
       text: 'Données de l’Inclusion Numérique',
-      ...linkProps('/tableau-de-bord'),
+      ...linkProps('/donnees'),
     })
   }
 

@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import classNames from 'classnames'
 import { numberToString } from '@app/web/utils/formatNumber'
-import type { StatisticData } from '@app/web/app/(private)/tableau-de-bord/departement/[codeDepartement]/getDepartementDashboardData'
+import type { StatisticData } from '@app/web/app/(public)/donnees/departements/[codeDepartement]/getDepartementDashboardData'
 import { DepartementDashboardInfoButtons } from '@app/web/components/Dashboard/DepartementDashboardInfoModals'
 import styles from './Statistic.module.css'
 

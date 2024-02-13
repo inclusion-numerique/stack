@@ -2,6 +2,7 @@ import React from 'react'
 import Badge from '@codegouvfr/react-dsfr/Badge'
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
+import { limiteModificationDesGouvernances } from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceMetadata'
 import { ListeGouvernanceItem } from '@app/web/app/(private)/gouvernances/getListeGouvernances'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import {
@@ -9,7 +10,6 @@ import {
   modifierGouvernancePath,
 } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
 import CreateGouvernanceButton from '@app/web/app/(private)/gouvernances/CreateGouvernanceButton'
-import { limiteModificationDesGouvernances } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceMetadata'
 import { nameOrEmail } from '@app/web/utils/nameOrEmail'
 import styles from './GouvernanceList.module.css'
 

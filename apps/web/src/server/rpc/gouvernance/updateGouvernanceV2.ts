@@ -1,6 +1,10 @@
 import type { Prisma } from '@prisma/client'
 import { v4 } from 'uuid'
 import {
+  GouvernanceForForm,
+  gouvernanceSelect,
+} from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
+import {
   ComiteData,
   FeuilleDeRouteData,
   MembreData,
@@ -11,10 +15,6 @@ import {
   getMembreModelDataFromActorCode,
   membreToFormMembre,
 } from '@app/web/gouvernance/GouvernanceActor'
-import {
-  GouvernanceForForm,
-  gouvernanceSelect,
-} from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { prismaClient } from '@app/web/prismaClient'
 import { notFoundError } from '@app/web/server/rpc/trpcErrors'

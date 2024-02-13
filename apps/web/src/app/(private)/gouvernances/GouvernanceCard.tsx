@@ -4,6 +4,7 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import EmptyValue from '@app/ui/components/EmptyValue'
 import Badge from '@codegouvfr/react-dsfr/Badge'
 import Notice from '@codegouvfr/react-dsfr/Notice'
+import { limiteModificationDesGouvernances } from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceMetadata'
 import { ListeGouvernanceItem } from '@app/web/app/(private)/gouvernances/getListeGouvernances'
 import WhiteCard from '@app/web/ui/WhiteCard'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
@@ -20,7 +21,6 @@ import {
   getPorteurString,
 } from '@app/web/app/(private)/gouvernances/gouvernanceHelpers'
 import GouvernanceCardCtas from '@app/web/app/(private)/gouvernances/GouvernanceCardCtas'
-import { limiteModificationDesGouvernances } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/gouvernanceMetadata'
 
 const GouvernanceCard = ({
   gouvernance,

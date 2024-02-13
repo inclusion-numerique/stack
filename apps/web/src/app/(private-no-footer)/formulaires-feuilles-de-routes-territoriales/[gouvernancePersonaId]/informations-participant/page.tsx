@@ -10,6 +10,7 @@ import { OptionTuple } from '@app/web/utils/options'
 import BackLink from '@app/web/components/BackLink'
 import ProgressFormulairesFeuillesDeRoute from '@app/web/app/(private-no-footer)/formulaires-feuilles-de-routes-territoriales/ProgressFormulairesFeuillesDeRoute'
 import { getEtapeInfo } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/etapeFormulaireGouvernance'
+import { getDepartementOptions } from '@app/web/data/getDepartementOptions'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -41,21 +42,7 @@ const Page = async (props: PageFormulaireProps) => {
       .then((regions) =>
         regions.map(({ code, nom }): OptionTuple => [code, nom]),
       ),
-    prismaClient.departement
-      .findMany({
-        select: {
-          code: true,
-          nom: true,
-        },
-        orderBy: {
-          code: 'asc',
-        },
-      })
-      .then((departements) =>
-        departements.map(
-          ({ code, nom }): OptionTuple => [code, `${code} · ${nom}`],
-        ),
-      ),
+    getDepartementOptions(),
   ])
 
   return (

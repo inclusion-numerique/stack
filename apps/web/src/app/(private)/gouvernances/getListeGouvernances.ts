@@ -1,5 +1,5 @@
 import type { Prisma } from '@prisma/client'
-import { gouvernanceListSelect } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
+import { gouvernanceListSelect } from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { prismaClient } from '@app/web/prismaClient'
 
 export const gouvernancesDansRegionWhere = (codeRegion: string) =>

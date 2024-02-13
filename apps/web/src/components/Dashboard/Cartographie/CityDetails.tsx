@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import classNames from 'classnames'
-import { DepartementCartographieDataCommune } from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
+import { DepartementCartographieDataCommune } from '@app/web/app/(cartographie)/donnees/departements/[codeDepartement]/cartographie/getDepartementCartographieData'
 import { formatIfnScore } from '@app/web/data/ifnData'
 import { numberToString } from '@app/web/utils/formatNumber'
 import InfoButton from '@app/web/components/InfoButton'
