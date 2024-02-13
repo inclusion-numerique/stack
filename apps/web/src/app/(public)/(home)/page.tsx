@@ -94,7 +94,7 @@ const HomePage = async () => {
                   Les chiffres clés de l’inclusion numérique au national
                 </p>
                 <p className="fr-text--xs fr-hint-text fr-mb-8v">
-                  Mises à jour le {dateAsDay(dataUpdated)}
+                  Mis à jour le {dateAsDay(dataUpdated)}
                 </p>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <div className="fr-flex fr-direction-row fr-align-items-center fr-flex-gap-16v">
