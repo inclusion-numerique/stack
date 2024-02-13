@@ -459,46 +459,6 @@ jobs:
           name: 'Run cypress e2e tests'
           command: |
             pnpm --silent -F @app/e2e cy run --record --parallel --group e2e
-  test_web_integration:
-    executor: node-e2e
-    resource_class: large
-    steps:
-      - checkout
-      - install_dependencies
-      - create_dotenv_file
-      - add_secrets_to_dotenv_file
-      - setup_docker_web_env
-      - run:
-          name: "Add NEXT_PUBLIC_* env to .env"
-          command: |
-            pnpm --silent cli dotenv:add-next-public --local $NAMESPACE
-      - run:
-          name: 'Add e2e vars to .env'
-          command: |
-            echo "DATABASE_URL=$CI_DATABASE_URL" >> .env
-            echo "SMTP_SERVER=localhost" >> .env
-            echo "SMTP_PORT=1025" >> .env
-            echo "SMTP_USERNAME=mailuser" >> .env
-            echo "SMTP_PASSWORD=mailpassword" >> .env
-            echo "SMTP_SERVER=localhost" >> .env
-      - run:
-          name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma generate
-      - run:
-          name: 'Create CI database schema'
-          command: |
-            pnpm --silent -F @app/web prisma migrate deploy
-      - run:
-          name: 'Load fixtures'
-          command: |
-            pnpm -F @app/fixtures load
-      - restore_cache:
-          key: << pipeline.id >>-web-build
-      - add_dotenv_vars_to_bash_env
-      - run:
-          name: 'Run web integrations jest test'
-          command: |
-            pnpm --silent -F @app/web test:integration
 
   test_web_integration:
     executor: node-e2e
