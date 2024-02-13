@@ -5,11 +5,21 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import Button from '@codegouvfr/react-dsfr/Button'
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   emptyOptionTuple,
   OptionTuple,
   optionTuplesToOptions,
 } from '@app/web/utils/options'
+
+const codeDepartementValidation = z.object({
+  codeDepartement: z.string({
+    required_error: 'Veuillez sélectionner un département',
+  }),
+})
+
+type CodeDepartementData = z.infer<typeof codeDepartementValidation>
 
 const AccederAuxDonneesForm = ({
   optionsDepartements,
@@ -18,17 +28,16 @@ const AccederAuxDonneesForm = ({
   optionsDepartements: OptionTuple[]
   defaultDepartementCode?: string
 }) => {
-  const { watch, handleSubmit, control } = useForm<{ codeDepartement: string }>(
-    {
-      defaultValues: {
-        codeDepartement: defaultDepartementCode,
-      },
+  const { handleSubmit, control } = useForm<CodeDepartementData>({
+    resolver: zodResolver(codeDepartementValidation),
+    defaultValues: {
+      codeDepartement: defaultDepartementCode,
     },
-  )
+  })
 
   const router = useRouter()
 
-  const onSubmit = ({ codeDepartement }: { codeDepartement: string }) => {
+  const onSubmit = ({ codeDepartement }: CodeDepartementData) => {
     if (!codeDepartement) {
       return
     }
