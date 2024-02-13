@@ -124,7 +124,7 @@ describe('ETQ Visiteur qui souhaite se connecter en Collectivité, je peux me co
     cy.url().should('equal', appUrl('/gouvernance/epci'))
     cy.contains('Accéder au formulaire').click()
 
-    cy.acceptNextRedirectsException()
+    cy.allowNextRedirectException()
 
     cy.url().should(
       'equal',

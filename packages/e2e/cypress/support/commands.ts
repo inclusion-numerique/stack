@@ -1,5 +1,8 @@
 import '@testing-library/cypress/add-commands'
-import type { CreateUserInput,UpdateUserInput } from '@app/e2e/e2e/authentication/user.tasks'
+import type {
+  CreateUserInput,
+  UpdateUserInput,
+} from '@app/e2e/e2e/authentication/user.tasks'
 import { appUrl } from '@app/e2e/support/helpers'
 import type { Tasks as CustomTasks } from '@app/e2e/support/tasks'
 import Timeoutable = Cypress.Timeoutable
@@ -158,7 +161,9 @@ Cypress.Commands.add(
 )
 Cypress.Commands.add('appUrlShouldBe', (url: string, options) => {
   cy.url().should('equal', appUrl(url), options)
-Cypress.Commands.add('acceptNextRedirectsException', () => {
+})
+
+Cypress.Commands.add('allowNextRedirectException', () => {
   Cypress.on('uncaught:exception', (error) => {
     if (error.message.includes('NEXT_REDIRECT')) {
       return false
@@ -166,14 +171,7 @@ Cypress.Commands.add('acceptNextRedirectsException', () => {
     return true
   })
 })
-Cypress.Commands.add('appUrlShouldBe', (url: string) => {
-  cy.url().should('equal', appUrl(url))
-})
-Cypress.Commands.add('appUrlShouldBe', (url: string) => {
-  cy.url().should('equal', appUrl(url))
-})
 
-//
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -204,8 +202,6 @@ declare global {
       dsfrCollapsesShouldBeBound(): Chainable<void>
 
       testId(testId: string): Chainable<JQuery<HTMLElement>>
-      acceptNextRedirectsException(): Chainable<void>
-      appUrlShouldBe(url: string): Chainable<void>
 
       getToast(contains: string | RegExp): Chainable<JQuery<HTMLElement>>
 
@@ -220,6 +216,8 @@ declare global {
         url: string,
         options?: { timeout?: number },
       ): Chainable<void>
+
+      allowNextRedirectException(): Chainable<void>
 
       //       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
       //       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
