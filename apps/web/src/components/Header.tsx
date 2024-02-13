@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 import classNames from 'classnames'
+import Badge from '@codegouvfr/react-dsfr/Badge'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import HeaderBackLink from '@app/web/components/HeaderBackLink'
 import { HeaderUserMenu } from '@app/web/components/HeaderUserMenu'
@@ -74,6 +75,10 @@ const Header = ({
                   <Link aria-current="page" target="_self" {...baseLinkProps}>
                     <p className="fr-header__service-title">
                       {baseLinkProps.title}
+
+                      <Badge severity="new" className="fr-ml-2w" small>
+                        BETA
+                      </Badge>
                     </p>
                   </Link>
                 </div>

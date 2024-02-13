@@ -22,7 +22,7 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 const CartographiePage = ({
-  data: { departement, structures, count, communes, epcis },
+  data: { departement, structures, count, communes, epcis, dataUpdated },
 }: {
   data: DepartementCartographieData
 }) => {
@@ -120,6 +120,7 @@ const CartographiePage = ({
               ? [...filteredStructures, filteredOutSelectedStructure]
               : filteredStructures
           }
+          dataUpdated={dataUpdated}
         />
       </ErrorBoundary>
       <Filters onFilter={onFilter} />

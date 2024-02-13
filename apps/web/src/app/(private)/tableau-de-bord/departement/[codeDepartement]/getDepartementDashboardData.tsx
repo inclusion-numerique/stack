@@ -5,7 +5,7 @@ import { getTopCrasTypes } from '@app/web/components/Dashboard/Cartographie/getT
 import { getDepartementGeoFeatures } from '@app/web/data/departements'
 import { createWhereStructureInDepartement } from '@app/web/data/query/whereStructureInDepartement'
 import type { DepartementDashboardInfoButtonsId } from '@app/web/components/Dashboard/DepartementDashboardInfoModals'
-import { conumCrasUpdatedDate } from '@app/web/data/conumCras'
+import { getAppData } from '@app/web/data/appData'
 
 export type StatisticData = {
   id: string
@@ -85,50 +85,52 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
    * It would be more performant and less verbose to use SQL COUNT with filters.
    * But the query would be less readable.
    */
-  const [departement, structures, conumCras, conums] = await Promise.all([
-    prismaClient.departement.findUniqueOrThrow({
-      where: { code: codeDepartement },
-      select: {
-        nom: true,
-        code: true,
-        geometry: true,
-        bounds: true,
-        _count: {
-          select: {
-            coordinateursConseillerNumerique: true,
-          },
-        },
-      },
-    }),
-    prismaClient.structureCartographieNationale.findMany({
-      where: whereInDepartement,
-      select: {
-        id: true,
-        type: true,
-        sousTypePublic: true,
-        labelAidantsConnect: true,
-        labelFranceServices: true,
-        labelConseillersNumerique: true,
-        structureAidantsConnect: true,
-        zrr: true,
-        qpv: true,
-      },
-    }),
-    prismaClient.craConseillerNumeriqueParDepartement.findUnique({
-      where: { codeDepartement },
-    }),
-    prismaClient.conseillerNumerique.count({
-      where: {
-        enPermanence: {
-          some: {
-            permanence: {
-              structureCartographieNationale: whereInDepartement,
+  const [departement, structures, conumCras, conums, appData] =
+    await Promise.all([
+      prismaClient.departement.findUniqueOrThrow({
+        where: { code: codeDepartement },
+        select: {
+          nom: true,
+          code: true,
+          geometry: true,
+          bounds: true,
+          _count: {
+            select: {
+              coordinateursConseillerNumerique: true,
             },
           },
         },
-      },
-    }),
-  ])
+      }),
+      prismaClient.structureCartographieNationale.findMany({
+        where: whereInDepartement,
+        select: {
+          id: true,
+          type: true,
+          sousTypePublic: true,
+          labelAidantsConnect: true,
+          labelFranceServices: true,
+          labelConseillersNumerique: true,
+          structureAidantsConnect: true,
+          zrr: true,
+          qpv: true,
+        },
+      }),
+      prismaClient.craConseillerNumeriqueParDepartement.findUnique({
+        where: { codeDepartement },
+      }),
+      prismaClient.conseillerNumerique.count({
+        where: {
+          enPermanence: {
+            some: {
+              permanence: {
+                structureCartographieNationale: whereInDepartement,
+              },
+            },
+          },
+        },
+      }),
+      getAppData(),
+    ])
 
   const structuresCount = countStructuresForDepartementDashboard(structures)
 
@@ -289,14 +291,14 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
             id: 'par-des-conseillers-numériques',
             label: 'Par des Conseillers Numériques',
             value: conumCras?.usagers ?? 0,
-            updated: conumCrasUpdatedDate,
+            updated: appData.dataUpdated,
             source: 'conseiller-numerique.gouv.fr',
           },
           {
             id: 'par-des-aidants-habilités-à-aidants-connect',
             label: 'Par des Aidants habilités à Aidants Connect',
             value: structuresCount.aidantsConnect.usagersUniques,
-            updated: conumCrasUpdatedDate,
+            updated: appData.dataUpdated,
             source: 'aidantsconnect.beta.gouv.fr',
           },
         ],
@@ -304,7 +306,7 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
       {
         id: 'âge-des-usagers',
         label: 'Âge des usagers',
-        updated: conumCrasUpdatedDate,
+        updated: appData.dataUpdated,
         source: 'conseiller-numerique.gouv.fr',
         statistics: [
           {
@@ -337,7 +339,7 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
       {
         id: 'statut-des-usagers',
         label: 'Statut des usagers',
-        updated: conumCrasUpdatedDate,
+        updated: appData.dataUpdated,
         source: 'conseiller-numerique.gouv.fr',
         statistics: [
           {
@@ -387,14 +389,14 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
             id: 'accompagnements-de-médiation-numérique',
             label: 'Accompagnements de médiation numérique',
             value: conumCras?.accompagnements ?? 0,
-            updated: conumCrasUpdatedDate,
+            updated: appData.dataUpdated,
             source: 'conseiller-numerique.gouv.fr',
           },
           {
             id: 'accompagnements-pour-réaliser-des-démarches-en-lignes',
             label: 'Accompagnements pour réaliser des démarches en lignes',
             value: structuresCount.aidantsConnect.totalDemarches,
-            updated: new Date('2023-11-28'),
+            updated: appData.dataUpdated,
             source: 'aidantsconnect.beta.gouv.fr',
           },
         ],
@@ -403,7 +405,7 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
         id: 'accompagnements-de-médiation-numérique',
         label:
           'Les 4 principaux thèmes d’accompagnements de médiation numérique',
-        updated: conumCrasUpdatedDate,
+        updated: appData.dataUpdated,
         source: 'conseiller-numerique.gouv.fr',
         statistics: top4CraThemes.top4.map(({ label, count }) => ({
           id: label,
@@ -415,7 +417,7 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
         id: 'réaliser-des-démarches-en-lignes',
         label:
           'Les 4 principaux thèmes d’accompagnements pour réaliser des démarches en lignes',
-        updated: new Date('2023-11-28'),
+        updated: appData.dataUpdated,
         source: 'aidantsconnect.beta.gouv.fr',
         statistics: structuresCount.aidantsConnect.top4AndOther.map(
           ({ label, count }) => ({

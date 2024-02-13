@@ -7,7 +7,7 @@ import {
   BoxData,
   BoxesData,
 } from '@app/web/app/(private)/tableau-de-bord/departement/[codeDepartement]/getDepartementDashboardData'
-import { conumCrasUpdatedDate } from '@app/web/data/conumCras'
+import { getAppData } from '@app/web/data/appData'
 
 let memoizedNationalData: NationalDashboardData | undefined
 
@@ -77,24 +77,26 @@ const computeNationalDashboardData = async () => {
    * It would be more performant and less verbose to use SQL COUNT with filters.
    * But the query would be less readable.
    */
-  const [countCoconums, structures, conumCrasList, conums] = await Promise.all([
-    prismaClient.coordinateurConseillerNumerique.count(),
-    prismaClient.structureCartographieNationale.findMany({
-      select: {
-        id: true,
-        type: true,
-        sousTypePublic: true,
-        labelAidantsConnect: true,
-        labelFranceServices: true,
-        labelConseillersNumerique: true,
-        structureAidantsConnect: true,
-        zrr: true,
-        qpv: true,
-      },
-    }),
-    prismaClient.craConseillerNumeriqueParDepartement.findMany({}),
-    prismaClient.conseillerNumerique.count(),
-  ])
+  const [countCoconums, structures, conumCrasList, conums, appData] =
+    await Promise.all([
+      prismaClient.coordinateurConseillerNumerique.count(),
+      prismaClient.structureCartographieNationale.findMany({
+        select: {
+          id: true,
+          type: true,
+          sousTypePublic: true,
+          labelAidantsConnect: true,
+          labelFranceServices: true,
+          labelConseillersNumerique: true,
+          structureAidantsConnect: true,
+          zrr: true,
+          qpv: true,
+        },
+      }),
+      prismaClient.craConseillerNumeriqueParDepartement.findMany({}),
+      prismaClient.conseillerNumerique.count(),
+      getAppData(),
+    ])
 
   // Aggregate all conumCras
   const conumCras = aggregateConumCras(conumCrasList)
@@ -257,14 +259,14 @@ const computeNationalDashboardData = async () => {
             id: 'par-des-conseillers-numériques',
             label: 'Par des Conseillers Numériques',
             value: conumCras?.usagers ?? 0,
-            updated: conumCrasUpdatedDate,
+            updated: appData.dataUpdated,
             source: 'conseiller-numerique.gouv.fr',
           },
           {
             id: 'par-des-aidants-habilités-à-aidants-connect',
             label: 'Par des Aidants habilités à Aidants Connect',
             value: structuresCount.aidantsConnect.usagersUniques,
-            updated: conumCrasUpdatedDate,
+            updated: appData.dataUpdated,
             source: 'aidantsconnect.beta.gouv.fr',
           },
         ],
@@ -272,7 +274,7 @@ const computeNationalDashboardData = async () => {
       {
         id: 'âge-des-usagers',
         label: 'Âge des usagers',
-        updated: conumCrasUpdatedDate,
+        updated: appData.dataUpdated,
         source: 'conseiller-numerique.gouv.fr',
         statistics: [
           {
@@ -305,7 +307,7 @@ const computeNationalDashboardData = async () => {
       {
         id: 'statut-des-usagers',
         label: 'Statut des usagers',
-        updated: conumCrasUpdatedDate,
+        updated: appData.dataUpdated,
         source: 'conseiller-numerique.gouv.fr',
         statistics: [
           {
@@ -355,14 +357,14 @@ const computeNationalDashboardData = async () => {
             id: 'accompagnements-de-médiation-numérique',
             label: 'Accompagnements de médiation numérique',
             value: conumCras?.accompagnements ?? 0,
-            updated: conumCrasUpdatedDate,
+            updated: appData.dataUpdated,
             source: 'conseiller-numerique.gouv.fr',
           },
           {
             id: 'accompagnements-pour-réaliser-des-démarches-en-lignes',
             label: 'Accompagnements pour réaliser des démarches en lignes',
             value: structuresCount.aidantsConnect.totalDemarches,
-            updated: new Date('2023-11-28'),
+            updated: appData.dataUpdated,
             source: 'aidantsconnect.beta.gouv.fr',
           },
         ],
@@ -371,7 +373,7 @@ const computeNationalDashboardData = async () => {
         id: 'accompagnements-de-médiation-numérique',
         label:
           'Les 4 principaux thèmes d’accompagnements de médiation numérique',
-        updated: conumCrasUpdatedDate,
+        updated: appData.dataUpdated,
         source: 'conseiller-numerique.gouv.fr',
         statistics: top4CraThemes.top4.map(({ label, count }) => ({
           id: label,
@@ -383,7 +385,7 @@ const computeNationalDashboardData = async () => {
         id: 'réaliser-des-démarches-en-lignes',
         label:
           'Les 4 principaux thèmes d’accompagnements pour réaliser des démarches en lignes',
-        updated: new Date('2023-11-28'),
+        updated: appData.dataUpdated,
         source: 'aidantsconnect.beta.gouv.fr',
         statistics: structuresCount.aidantsConnect.top4AndOther.map(
           ({ label, count }) => ({

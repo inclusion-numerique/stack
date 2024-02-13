@@ -78,6 +78,7 @@ const Map = ({
   selectedStructure,
   filteredStructures,
   onStructureSelected,
+  dataUpdated,
 }: {
   departement: DepartementCartographieData['departement']
   epcis: DepartementCartographieData['epcis']
@@ -89,6 +90,7 @@ const Map = ({
   filteredStructures: DepartementCartographieDataStructure[]
   // Argument is the map auto generated id (sequencial) of structure
   onStructureSelected: (structure: string | null | undefined) => void
+  dataUpdated: Date
 }) => {
   const { bounds, code: departementCode } = departement
   const structurePopup = useRef<Popup | null>(null)
@@ -626,6 +628,7 @@ const Map = ({
         commune={selectedCommune}
         structure={selectedStructure}
         close={onMapPopupClose}
+        dataUpdated={dataUpdated}
       />
       <IndiceNumerique
         setViewIndiceFN={setViewIndiceFN}

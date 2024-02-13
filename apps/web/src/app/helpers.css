@@ -180,6 +180,18 @@
     gap: 40px;
 }
 
+.fr-flex-gap-12v {
+    gap: 48px;
+}
+
+.fr-flex-gap-16v {
+    gap: 64px;
+}
+
+.fr-flex-basis-0 {
+    flex-basis: 0;
+}
+
 .fr-flex-grow-0 {
     flex-grow: 0;
 }
@@ -433,6 +445,16 @@
     @media (min-width: 62em) {
         /* lg */
         max-width: 840px;
+    }
+}
+
+.fr-container--large {
+    /* 996 + padding */
+    max-width: 1028px;
+
+    @media (min-width: 62em) {
+        /* lg */
+        max-width: 1044px;
     }
 }
 

@@ -20,7 +20,7 @@ const TableauDeBordCtaButton = () => {
         className="fr-mt-8v"
         data-testid="tableau-de-bord-cta"
       >
-        Accéder au tableau de bord
+        Accéder aux données
       </Button>
       <TableauDeBordCtaModal.Component
         title="Tableau de bord accessible uniquement aux services préfectoraux"

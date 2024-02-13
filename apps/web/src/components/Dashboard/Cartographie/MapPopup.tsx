@@ -12,10 +12,12 @@ const MapPopup = ({
   commune,
   structure,
   close,
+  dataUpdated,
 }: {
   commune: DepartementCartographieDataCommune | null | undefined
   structure: DepartementCartographieDataStructure | null | undefined
   close: () => void
+  dataUpdated: Date
 }) => {
   if (!commune && !structure) {
     return null
@@ -36,7 +38,9 @@ const MapPopup = ({
         </Button>
       </div>
       {!!commune && <CityDetails commune={commune} />}
-      {!!structure && <StructureDetails structure={structure} />}
+      {!!structure && (
+        <StructureDetails dataUpdated={dataUpdated} structure={structure} />
+      )}
     </div>
   )
 }

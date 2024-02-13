@@ -23,8 +23,10 @@ const StructureDetails = ({
       qpv,
     },
   },
+  dataUpdated,
 }: {
   structure: DepartementCartographieDataStructure
+  dataUpdated: Date
 }) => {
   const typeString =
     type === 'association'
@@ -51,7 +53,7 @@ const StructureDetails = ({
         Code postal : {codePostal} - INSEE : {codeCommune || 'non disponible'}
       </p>
       <p className="fr-hint-text">
-        Mise à jour le {dateAsDay(new Date('2023-11-28'))} · Source :{' '}
+        Mise à jour le {dateAsDay(dataUpdated)} · Source :{' '}
         <Link
           href="https://cartographie.societenumerique.gouv.fr/"
           target="_blank"

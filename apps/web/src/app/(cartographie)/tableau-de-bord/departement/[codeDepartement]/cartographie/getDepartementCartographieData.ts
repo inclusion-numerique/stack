@@ -6,6 +6,7 @@ import {
   countStructuresForCommuneSummary,
 } from '@app/web/components/Dashboard/Cartographie/countStructures'
 import { createWhereStructureInDepartement } from '@app/web/data/query/whereStructureInDepartement'
+import { getAppData } from '@app/web/data/appData'
 
 type StructureFeature<T> = {
   type: 'Feature'
@@ -94,7 +95,7 @@ const getDepartement = (codeDepartement: string) =>
 type Departement = Awaited<ReturnType<typeof getDepartement>>
 
 const computeDepartementCartographieData = async (codeDepartement: string) => {
-  const [departement, epcis, structures] = await Promise.all([
+  const [departement, epcis, structures, appData] = await Promise.all([
     getDepartement(codeDepartement),
     prismaClient.epci.findMany({
       where: {
@@ -120,6 +121,7 @@ const computeDepartementCartographieData = async (codeDepartement: string) => {
       },
     }),
     listStructures(codeDepartement),
+    getAppData(),
   ])
 
   const communesByCode = new Map<string, Departement['communes'][number]>(
@@ -259,6 +261,7 @@ const computeDepartementCartographieData = async (codeDepartement: string) => {
     count: countStructuresForCartographieSummary(structures),
     communes: computedCommunes,
     epcis,
+    dataUpdated: appData.dataUpdated,
   }
 }
 

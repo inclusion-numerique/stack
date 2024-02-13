@@ -1,6 +1,4 @@
 .section {
-    max-width: 996px;
-
     :global a.fr-btn {
         width: 100%;
         text-align: center;
@@ -20,6 +18,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.homeNationalStatsCard {
+    background: var(--background-alt-blue-france);
+    border-radius: 24px;
+    padding: 24px;
+    width: 100%;
+
+    @media (min-width: 48em) {
+        padding: 48px;
+    }
+
 }
 
 .homeImage {
