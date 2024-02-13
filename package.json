@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@manypkg/cli": "^0.21.2",
-    "dotenv": "^16.4.2",
+    "dotenv": "^16.4.3",
     "dotenv-cli": "^7.3.0",
     "turbo": "^1.12.3"
   }
