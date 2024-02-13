@@ -17,6 +17,7 @@
 
 .innerContent {
     overflow-x: visible;
+
     @media (min-width: 48em) {
         margin: 0 auto;
         max-width: 486px;
@@ -26,8 +27,7 @@
 
 .topContent {
     min-height: 400px;
-    overflow-y: auto;
-    overflow-x: visible;
+    overflow: visible auto;
 
     @media (min-width: 48em) {
         height: 50%;
@@ -90,6 +90,7 @@
 
 .title {
     margin: 16px 0;
+
     @media (min-width: 48em) {
         margin: 24px 0;
     }
