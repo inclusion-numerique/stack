@@ -10,13 +10,10 @@ export const PublicWebAppConfig = {
     appId: process.env.CHROMATIC_APP_ID ?? '',
   },
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL,
+  supportUrl: 'https://support.inclusion-numerique.anct.gouv.fr',
   projectTitle,
   mainLiveUrl,
   repository: repositoryUrl,
-  InclusionConnect: {
-    hostname: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_HOSTNAME ?? '',
-    clientId: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID ?? '',
-  },
   MonComptePro: {
     issuer: process.env.NEXT_PUBLIC_MONCOMPTEPRO_ISSUER ?? '',
     clientId: process.env.NEXT_PUBLIC_MONCOMPTEPRO_CLIENT_ID ?? '',
@@ -28,5 +25,9 @@ export const PublicWebAppConfig = {
   Matomo: {
     host: process.env.NEXT_PUBLIC_MATOMO_HOST ?? '',
     siteId: process.env.NEXT_PUBLIC_MATOMO_SITE_ID ?? '',
+  },
+  Crisp: {
+    enableChat: false,
+    websiteId: process.env.NEXT_PUBLIC_CRISP_WEBSITE_ID ?? '',
   },
 }

@@ -49,8 +49,8 @@ const SigninPage = async ({
     suivant ?? role === 'prefecture'
       ? '/tableau-de-bord'
       : role === 'collectivite'
-      ? '/formulaires-feuilles-de-routes-territoriales'
-      : '/profil'
+        ? '/formulaires-feuilles-de-routes-territoriales'
+        : '/profil'
 
   if (!role) {
     return (

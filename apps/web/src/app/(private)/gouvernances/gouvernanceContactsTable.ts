@@ -154,8 +154,8 @@ export const contactToData = (
   const typeDeContact = contactPolitique
     ? 'Politique'
     : contactTechnique
-    ? 'Technique'
-    : 'Structure'
+      ? 'Technique'
+      : 'Structure'
 
   const siret = formulaireGouvernance.siretStructure
   const insee =

@@ -17,9 +17,9 @@ export const buildDepartements = async ({
   // We have 2 sources for departements:
   // INSEE (for metropolitan and dom) and Geo API (for non - dom)
   const geoApiDepartements = await axios
-    .get<{ code: string; nom: string; codeRegion: string }[]>(
-      'https://geo.api.gouv.fr/departements?fields=code,nom,codeRegion,geometry',
-    )
+    .get<
+      { code: string; nom: string; codeRegion: string }[]
+    >('https://geo.api.gouv.fr/departements?fields=code,nom,codeRegion,geometry')
     .then(({ data }) => arrayToMap(data, 'code'))
 
   output('-- Getting geo data from json file ...')

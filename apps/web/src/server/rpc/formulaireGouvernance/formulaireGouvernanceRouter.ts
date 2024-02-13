@@ -561,12 +561,12 @@ export const formulaireGouvernanceRouter = router({
                 participantSearchParams,
               )
             : type === 'epci'
-            ? await prismaClient.epciParticipantFormulaireGouvernance.findUnique(
-                participantSearchParams,
-              )
-            : await prismaClient.communeParticipanteFormulaireGouvernance.findUnique(
-                participantSearchParams,
-              )
+              ? await prismaClient.epciParticipantFormulaireGouvernance.findUnique(
+                  participantSearchParams,
+                )
+              : await prismaClient.communeParticipanteFormulaireGouvernance.findUnique(
+                  participantSearchParams,
+                )
 
         if (!participant) {
           throw notFoundError()
@@ -593,8 +593,8 @@ export const formulaireGouvernanceRouter = router({
                 [type === 'departement'
                   ? 'contactDepartementParticipant'
                   : type === 'epci'
-                  ? 'contactEpciParticipant'
-                  : 'contactCommuneParticipante']: {
+                    ? 'contactEpciParticipant'
+                    : 'contactCommuneParticipante']: {
                   connect: {
                     id: participant.id,
                   },

@@ -95,10 +95,10 @@ const PerimetreFeuilleDeRoute = ({
     collectivitesHorsTerritoire.collectivitesHorsTerritoireEnCoursDeModification
       ? "Vous devez valider ou supprimer les collectivités hors territoire en cours de modification avant de passer à l'étape suivante"
       : selectedEpci.size === 0 &&
-        selectedCommunes.size === 0 &&
-        collectivitesHorsTerritoire.collectivitesHorsTerritoire.length === 0
-      ? "Vous devez sélectionner au moins une collectivité pour passer à l'étape suivante"
-      : null
+          selectedCommunes.size === 0 &&
+          collectivitesHorsTerritoire.collectivitesHorsTerritoire.length === 0
+        ? "Vous devez sélectionner au moins une collectivité pour passer à l'étape suivante"
+        : null
 
   const totalSelectedEpcis =
     selectedEpci.size +

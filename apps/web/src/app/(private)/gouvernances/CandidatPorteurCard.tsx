@@ -20,10 +20,10 @@ const CandidatPorteurCard = ({
   const title = porteur.region
     ? `${porteur.region.nom}`
     : porteur.departement
-    ? `${porteur.departement.nom} (${porteur.departement.code})`
-    : porteur.epci
-    ? `${porteur.epci.nom}`
-    : ''
+      ? `${porteur.departement.nom} (${porteur.departement.code})`
+      : porteur.epci
+        ? `${porteur.epci.nom}`
+        : ''
 
   const persona =
     gouvernancePersonas[porteur.gouvernancePersona as GouvernancePersonaId]

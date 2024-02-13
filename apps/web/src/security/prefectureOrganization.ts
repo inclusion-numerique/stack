@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { MonCompteProOrganization } from '@app/web/auth/monCompteProConnect'
+import type { MonCompteProOrganization } from '@app/web/auth/MonCompteProProvider'
 
 type Siege = {
   activite_principale: string

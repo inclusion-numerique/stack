@@ -69,12 +69,12 @@ const RecapitulatifSection = ({
   const participantName = formulaireGouvernance.region
     ? formulaireGouvernance.region.nom
     : formulaireGouvernance.departement
-    ? `${formulaireGouvernance.departement.nom} (${formulaireGouvernance.departement.code})`
-    : formulaireGouvernance.epci
-    ? formulaireGouvernance.epci.nom
-    : formulaireGouvernance.commune?.nom ??
-      formulaireGouvernance.nomStructure ??
-      null
+      ? `${formulaireGouvernance.departement.nom} (${formulaireGouvernance.departement.code})`
+      : formulaireGouvernance.epci
+        ? formulaireGouvernance.epci.nom
+        : formulaireGouvernance.commune?.nom ??
+          formulaireGouvernance.nomStructure ??
+          null
   return (
     <>
       <h1 className="fr-text-title--blue-france fr-mb-12v">

@@ -59,14 +59,14 @@ export const getCommunesDepartementRegion = () =>
           row.code_commune_INSEE === '55138'
             ? 48.755_28
             : row.latitude
-            ? Number.parseFloat(row.latitude)
-            : null,
+              ? Number.parseFloat(row.latitude)
+              : null,
         longitude:
           row.code_commune_INSEE === '55138'
             ? 5.266_389
             : row.longitude
-            ? Number.parseFloat(row.longitude)
-            : null,
+              ? Number.parseFloat(row.longitude)
+              : null,
       }
     },
   ).then((rows) => {

@@ -3,7 +3,7 @@ import {
   qualifyPrefectureOrganization,
   removeAccents,
 } from '@app/web/security/prefectureOrganization'
-import { MonCompteProOrganization } from '@app/web/auth/monCompteProConnect'
+import type { MonCompteProOrganization } from '@app/web/auth/MonCompteProProvider'
 
 describe('prefectureOrganization', () => {
   describe('containsPrefecture', () => {

@@ -442,8 +442,8 @@ const GouvernanceDetails = async ({
                     const perimetreScope = perimetreRegion
                       ? 'region'
                       : perimetreDepartement
-                      ? 'departement'
-                      : 'epci'
+                        ? 'departement'
+                        : 'epci'
                     const perimetreTitle =
                       perimetreFeuilleDeRouteLabels[perimetreScope]
 

@@ -35,8 +35,8 @@ export const gouvernanceHomePath = (
   return scope.codeRegion
     ? `/gouvernances/region/${scope.codeRegion}${queryParamsPart}`
     : scope.codeDepartement
-    ? `/gouvernances/departement/${scope.codeDepartement}${queryParamsPart}`
-    : `/gouvernances/national${queryParamsPart}`
+      ? `/gouvernances/departement/${scope.codeDepartement}${queryParamsPart}`
+      : `/gouvernances/national${queryParamsPart}`
 }
 
 export const gouvernanceCandidatsPath = (scope: GouvernanceScope) =>

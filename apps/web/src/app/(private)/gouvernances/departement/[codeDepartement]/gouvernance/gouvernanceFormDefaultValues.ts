@@ -75,10 +75,10 @@ export const getGouvernanceFormDefaultValues = (
         perimetreScope: perimetreRegion
           ? 'region'
           : perimetreDepartement
-          ? 'departement'
-          : perimetreEpcis.length > 0
-          ? 'epci'
-          : undefined,
+            ? 'departement'
+            : perimetreEpcis.length > 0
+              ? 'epci'
+              : undefined,
 
         perimetreEpciCodes: perimetreEpcis.map(({ epci }) => epci.code),
       }

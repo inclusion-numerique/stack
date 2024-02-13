@@ -14,10 +14,10 @@ export const addBadgeToContactData = (data: Columns) =>
         row === badgeStrings.suggere
           ? badgeColors.suggere
           : row === badgeStrings.porteur
-          ? badgeColors.porteur
-          : row === badgeStrings.participant
-          ? badgeColors.participant
-          : null
+            ? badgeColors.porteur
+            : row === badgeStrings.participant
+              ? badgeColors.participant
+              : null
       return (
         // eslint-disable-next-line react/jsx-key
         <div className={classNames('fr-badge fr-badge--sm', colorClass)}>

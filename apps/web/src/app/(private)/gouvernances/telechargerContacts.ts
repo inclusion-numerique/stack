@@ -19,16 +19,16 @@ export const telechargerContacts = async (scope: GouvernanceScope) => {
           contacts: await getContactsGouvernanceRegion(scope.codeRegion),
         }
       : 'codeDepartement' in scope && scope.codeDepartement
-      ? {
-          scopeKey: `departement-${scope.codeDepartement}`,
-          contacts: await getContactsGouvernanceDepartement(
-            scope.codeDepartement,
-          ),
-        }
-      : {
-          scopeKey: 'national',
-          contacts: await getContactsGouvernanceNational(),
-        }
+        ? {
+            scopeKey: `departement-${scope.codeDepartement}`,
+            contacts: await getContactsGouvernanceDepartement(
+              scope.codeDepartement,
+            ),
+          }
+        : {
+            scopeKey: 'national',
+            contacts: await getContactsGouvernanceNational(),
+          }
 
   const date = formatInTimeZone(new Date(), 'Europe/Paris', 'yy-MM-dd-HH-mm')
   const filename = `france-numerique-ensemble_contacts_${scopeKey}_${date}.csv`

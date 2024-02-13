@@ -2,7 +2,6 @@ import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import React from 'react'
 import Accordion from '@codegouvfr/react-dsfr/Accordion'
-import { ProjectStack } from '@app/cdk/ProjectStack'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { hasAccessToDataAnalysis } from '@app/web/security/securityRules'
 import {
@@ -16,10 +15,6 @@ import { CnfsStructures } from '@app/web/data/cnfsStructures'
 import { AidantsConnectStructures } from '@app/web/data/aidantsConnectStructures'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { CnfsPermanences } from '@app/web/data/cnfsPermanences'
-import {
-  getDepartementDataQuery,
-  queryDonneesEtTerritoires,
-} from '@app/web/data/donneesEtTerritoires'
 import { numberToPercentage } from '@app/web/utils/formatNumber'
 
 export const dynamic = 'force-dynamic'
@@ -49,31 +44,11 @@ const Page = async () => {
     dataInclusionAnalysis,
   )
 
-  const dataFromGraphql = await queryDonneesEtTerritoires(
-    getDepartementDataQuery,
-    {
-      code: '08',
-    },
-  )
-
   return (
     <div className="fr-container">
       <Breadcrumbs currentPage="Analyses des données" />
 
       <h1>Analyses des données</h1>
-
-      <h2>Données et territoires</h2>
-      <p>
-        Données et territoire centralise nos données et les exposent via une API
-        pour consultation sur {ProjectStack.name}.
-      </p>
-      <pre className="fr-background-alt--grey fr-p-4v fr-text--sm">
-        <code>
-          ✅ Connexion aux indicateurs Données et Territoires OK&nbsp;:
-          <br />
-          {JSON.stringify(dataFromGraphql, null, 2)}
-        </code>
-      </pre>
 
       <h2>Structures Data Inclusion</h2>
       <p className="fr-hint-text">

@@ -26,12 +26,12 @@ const Page = async (props: PageFormulaireProps) => {
     persona.id === 'conseil-regional'
       ? 'En tant que conseil régional'
       : persona.id === 'conseil-departemental'
-      ? 'En tant que conseil départemental'
-      : persona.id === 'epci'
-      ? 'En tant qu’EPCI ou groupement de communes'
-      : persona.id === 'commune'
-      ? 'En tant que commune'
-      : 'En tant que structure'
+        ? 'En tant que conseil départemental'
+        : persona.id === 'epci'
+          ? 'En tant qu’EPCI ou groupement de communes'
+          : persona.id === 'commune'
+            ? 'En tant que commune'
+            : 'En tant que structure'
 
   return (
     <>

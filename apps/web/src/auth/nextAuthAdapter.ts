@@ -1,12 +1,11 @@
-import type { Adapter, AdapterUser } from 'next-auth/adapters'
-import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import type { Adapter, AdapterAccount, AdapterUser } from '@auth/core/adapters'
+import { PrismaAdapter } from '@auth/prisma-adapter'
+import type { NextAuthOptions } from 'next-auth'
+import { v4 } from 'uuid'
 import { prismaClient } from '@app/web/prismaClient'
 import { createUserData } from '@app/web/security/createUserData'
-import {
-  monCompteProConnectProviderId,
-  MonCompteProProfile,
-} from './monCompteProConnect'
-
+import type { MonCompteProProfile } from '@app/web/auth/MonCompteProProvider'
+import { monCompteProConnectProviderId } from './monCompteProConnect'
 /**
  * Ensuring that needed methods are defined when creating adapter
  */
@@ -44,11 +43,13 @@ export const nextAuthAdapter: NextAuthOptions['adapter'] = {
       // We pass the provider along from Keycloak provider to be able to detect if the user comes from Inclusion Connect
       provider?: typeof monCompteProConnectProviderId
     }
+    const info = { id: v4(), ...rest }
 
     if (provider === monCompteProConnectProviderId) {
       // TODO Types are not great ... We should maybe override AdapterUser ?
+
       const userData = await createUserData(
-        rest as never as MonCompteProProfile,
+        info as never as MonCompteProProfile & { id: string },
       )
 
       return prismaAdapter.createUser({
@@ -56,7 +57,7 @@ export const nextAuthAdapter: NextAuthOptions['adapter'] = {
         emailVerified: new Date(),
       })
     }
-    return prismaAdapter.createUser(rest)
+    return prismaAdapter.createUser(info)
   },
   // Better handle case of missing session when deleting. It should not crash auth process.
   deleteSession: async (sessionToken) => {

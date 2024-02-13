@@ -1,5 +1,5 @@
 import Footer from '@codegouvfr/react-dsfr/Footer'
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import SwitchTheme from '@app/web/app/(public)/SwitchTheme'
 
 const PublicFooter = () => (

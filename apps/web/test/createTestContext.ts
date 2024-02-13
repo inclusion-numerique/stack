@@ -1,17 +1,23 @@
-import { NextApiRequest, NextApiResponse } from 'next/types'
-import { SessionUser } from '../src/auth/sessionUser'
-import { AppContext } from '../src/server/rpc/createContext'
+import type { FetchCreateContextFnOptions } from '@trpc/server/src/adapters/fetch/types'
+import type { SessionUser } from '@app/web/auth/sessionUser'
+import type { AppContext } from '@app/web/server/rpc/createContext'
 
 export const createTestContext = ({
   user,
-  res,
+  resHeaders,
+  info,
   req,
 }: {
   user: SessionUser | null
-  res?: NextApiResponse
-  req?: NextApiRequest
+  resHeaders?: Headers
+  req?: Request
+  info?: FetchCreateContextFnOptions['info']
 }): AppContext => ({
-  res: res ?? (null as unknown as NextApiResponse),
-  req: req ?? (null as unknown as NextApiRequest),
+  resHeaders: resHeaders ?? (null as unknown as Headers),
+  req: req ?? (null as unknown as Request),
+  info: info ?? {
+    isBatchCall: false,
+    calls: [],
+  },
   user,
 })

@@ -33,6 +33,7 @@ import { ScalewayProvider } from '@app/scaleway/provider'
 import { RdbInstance } from '@app/scaleway/rdb-instance'
 import { RegistryNamespace } from '@app/scaleway/registry-namespace'
 import { TemDomain } from '@app/scaleway/tem-domain'
+import { ObjectBucket } from '@app/scaleway/object-bucket'
 
 export const projectStackVariables = [
   'SCW_DEFAULT_ORGANIZATION_ID',

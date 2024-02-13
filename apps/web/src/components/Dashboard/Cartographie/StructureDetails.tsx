@@ -30,8 +30,8 @@ const StructureDetails = ({
     type === 'association'
       ? 'associative'
       : type === 'publique'
-      ? 'publique'
-      : 'privée'
+        ? 'publique'
+        : 'privée'
 
   const subtypeString = sousTypePublic
     ? structureSubtypeLabel[

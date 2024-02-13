@@ -1,9 +1,9 @@
 /* eslint no-param-reassign: off */
 
 import { prismaClient } from '@app/web/prismaClient'
-import { ServerWebAppConfig } from '@app/web/webAppConfig'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
-const hideDemonstration = ServerWebAppConfig.isMain
+const hideDemonstration = PublicWebAppConfig.isMain
 
 export const getFormulairesEnCoursByDay = async () => {
   const rows = await prismaClient.$queryRawUnsafe<
@@ -19,7 +19,7 @@ export const getFormulairesEnCoursByDay = async () => {
       FROM formulaire_gouvernance
       WHERE confirme_et_envoye IS NULL
         AND annulation IS NULL
-      ${hideDemonstration ? 'AND demonstration = false' : ''}
+          ${hideDemonstration ? 'AND demonstration = false' : ''}
       GROUP BY
           DATE_TRUNC('day', creation)
       ORDER BY
@@ -114,14 +114,12 @@ export const getGouvernancesByDay = async () => {
       nombre: number
     }[]
   >(`
-  SELECT DATE_TRUNC('day', creation)            as creation,
-             COUNT(*)  as nombre
+      SELECT DATE_TRUNC('day', creation) as creation,
+             COUNT(*)                    as nombre
       FROM gouvernances
       WHERE gouvernances.supression IS NULL
-      GROUP BY
-          DATE_TRUNC('day', creation)
-      ORDER BY
-          DATE_TRUNC('day', creation)
+      GROUP BY DATE_TRUNC('day', creation)
+      ORDER BY DATE_TRUNC('day', creation)
   `)
   const originOfTime = {
     creation: new Date('2023-08-01'),
