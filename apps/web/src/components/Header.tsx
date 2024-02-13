@@ -76,7 +76,12 @@ const Header = ({
                     <p className="fr-header__service-title">
                       {baseLinkProps.title}
 
-                      <Badge severity="new" className="fr-ml-2w" small>
+                      <Badge
+                        severity="new"
+                        className="fr-ml-2w"
+                        small
+                        as="span"
+                      >
                         BETA
                       </Badge>
                     </p>
