@@ -96,7 +96,7 @@ const BesoinsIngenierieFinanciereSelectionForm = ({
           numérique
           <Button
             type="button"
-            className="fr-inline-block fr-ml-1w fr-btn--tooltip fr-mb-negative-2v"
+            className="fr-display-inline-block fr-ml-1w fr-btn--tooltip fr-mb-negative-2v"
             id="besoins-formation-tooltip"
             aria-describedby="besoins-formation-tooltip_tooltip"
           >
