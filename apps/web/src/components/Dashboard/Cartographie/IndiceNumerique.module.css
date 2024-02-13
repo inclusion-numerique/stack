@@ -3,14 +3,14 @@
   justify-content: space-between;
   height: 40px;
   width: 100%;
-  background-color: white;
+  background-color: var(--grey-1000-50);
   border-top: var(--slim-grey-border);
 
   :global(.fr-toggle) {
     width: calc(225px + 24px + 40px);
     color: var(--text-title-blue-france);
     padding: 8px 16px;
-    
+
     label {
       font-size: 14px;
 
@@ -40,7 +40,7 @@
   justify-content: center;
   width: 22px;
   height: 16px;
-  color: white;
+  color: var(--grey-1000-50);
   font-size: 12px;
   line-height: 12px;
   font-weight: bold;

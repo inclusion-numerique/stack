@@ -21,7 +21,7 @@ const codeDepartementValidation = z.object({
 
 type CodeDepartementData = z.infer<typeof codeDepartementValidation>
 
-const AccederAuxDonneesForm = ({
+const ChoixDepartementForm = ({
   optionsDepartements,
   defaultDepartementCode,
 }: {
@@ -61,4 +61,4 @@ const AccederAuxDonneesForm = ({
   )
 }
 
-export default AccederAuxDonneesForm
+export default ChoixDepartementForm

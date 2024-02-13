@@ -92,9 +92,6 @@ const SigninPage = async ({
           ]}
           currentPage="Préfecture"
         />
-        <div className="fr-narrow">
-          <BackLink href="/connexion" />
-        </div>
         <AuthCard className="fr-mt-12v">
           <h4>Pour accéder au tableau de bord des préfectures</h4>
           {error ? (
@@ -125,9 +122,6 @@ const SigninPage = async ({
         ]}
         currentPage="Feuilles de routes territoriales"
       />
-      <div className="fr-narrow">
-        <BackLink href="/connexion" />
-      </div>
       <AuthCard className="fr-mt-12v">
         <h4>
           Pour accéder aux formulaires pour participer à l’élaboration des

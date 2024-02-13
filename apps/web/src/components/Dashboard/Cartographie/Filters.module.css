@@ -5,7 +5,7 @@
 }
 
 .button {
-    background: white;
+    background: var(--grey-1000-50);
     z-index: 1001;
     border-radius: 4px;
     box-shadow: 0 4px 12px 0 rgb(0 0 18 / 16%);
@@ -17,7 +17,7 @@
     top: 46px;
     right: 0;
     margin-top: 2px;
-    background: white;
+    background: var(--grey-1000-50);
     z-index: 1000;
     text-wrap: none;
     white-space: nowrap;
@@ -60,7 +60,7 @@
     font-size: 14px;
     line-height: 24px;
     padding: 0 8px;
-    color: white;
+    color: var(--grey-1000-50);
 }
 
 .reset {

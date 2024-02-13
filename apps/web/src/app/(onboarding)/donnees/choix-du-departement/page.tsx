@@ -2,14 +2,14 @@ import { Metadata } from 'next'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import TwoPartOnboardingLayout from '@app/web/app/(onboarding)/TwoPartOnboardingLayout'
-import AccederAuxDonneesForm from '@app/web/app/(onboarding)/acceder-aux-donnees/AccederAuxDonneesForm'
 import { getDepartementOptions } from '@app/web/data/getDepartementOptions'
+import ChoixDepartementForm from '@app/web/app/(onboarding)/donnees/choix-du-departement/ChoixDepartementForm'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export const metadata: Metadata = {
-  title: metadataTitle('Accéder aux données'),
+  title: metadataTitle('Données départementales'),
 }
 
 const AccederAuxDonneesPage = async () => {
@@ -27,7 +27,7 @@ const AccederAuxDonneesPage = async () => {
       </h1>
       <Notice title="Vous pourrez également naviguer entre les différents départements à tout moment sur le tableau de bord." />
 
-      <AccederAuxDonneesForm optionsDepartements={departementOptions} />
+      <ChoixDepartementForm optionsDepartements={departementOptions} />
     </TwoPartOnboardingLayout>
   )
 }

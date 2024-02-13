@@ -1,9 +1,7 @@
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import React from 'react'
 import { getDepartementCartographieData } from '@app/web/app/(cartographie)/donnees/departements/[codeDepartement]/cartographie/getDepartementCartographieData'
-import { getSessionUser } from '@app/web/auth/getSessionUser'
 import CartographiePage from '@app/web/components/Dashboard/Cartographie/Page'
-import { hasAccessToDepartementDashboard } from '@app/web/security/securityRules'
 import { prismaClient } from '@app/web/prismaClient'
 
 export const dynamic = 'force-dynamic'
@@ -14,14 +12,6 @@ export const generateMetadata = async ({
 }: {
   params: { codeDepartement: string }
 }) => {
-  const user = await getSessionUser()
-
-  if (!user) {
-    redirect(
-      `/connexion?suivant=/donnees/departements/${codeDepartement}/cartographie`,
-    )
-  }
-
   const departement = await prismaClient.departement.findUnique({
     where: {
       code: codeDepartement,
@@ -31,15 +21,6 @@ export const generateMetadata = async ({
 
   if (!departement) {
     notFound()
-  }
-
-  if (
-    !hasAccessToDepartementDashboard(user, {
-      departementCode: departement.code,
-      regionCode: departement.codeRegion,
-    })
-  ) {
-    redirect(`/profil`)
   }
 
   return {
