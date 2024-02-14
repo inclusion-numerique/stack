@@ -1,22 +1,12 @@
 import React from 'react'
 import { getProfileResources } from '@app/web/server/resources/getResourcesList'
-import { BaseResource } from '@app/web/server/bases/getBase'
-import {
-  getResourceProjectionWithContext,
-  ResourceProjectionWithContext,
-} from '@app/web/server/resources/getResourceFromEvents'
+import { getResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
 import EmptyProfileResources from '@app/web/components/Profile/EmptyProfileResources'
 import Resources from '@app/web/components/Resource/List/Resources'
 import { getProfilePageContext } from '@app/web/app/(public)/profils/[slug]/(consultation)/getProfilePageContext'
 import { ProfilRouteParams } from '@app/web/app/(public)/profils/[slug]/profilRouteParams'
 import { applyDraft } from '@app/web/utils/resourceDraft'
-
-const matchingId =
-  (resource: BaseResource) =>
-  (draftResource: ResourceProjectionWithContext | null) =>
-    resource.id === draftResource?.id
-
-const onlyDefined = <T,>(nullable: T | null): nullable is T => nullable != null
+import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 
 const ProfilePage = async ({ params }: ProfilRouteParams) => {
   // Auth and profile has been checked in layout
@@ -25,23 +15,34 @@ const ProfilePage = async ({ params }: ProfilRouteParams) => {
   )
 
   const resources = await getProfileResources(profile.id, user)
-  const draftRessources = await Promise.all(
+
+  // Array of resources with their draft if they are in draft state
+  const ressourcesAndDrafts = await Promise.all(
     resources.map((ressource) =>
-      getResourceProjectionWithContext({ slug: decodeURI(ressource.slug) }),
+      // Only fetch draft if the resource is in draft state (not published)
+      ressource.published
+        ? { ressource, draft: null }
+        : getResourceProjectionWithContext({
+            slug: decodeURI(ressource.slug),
+          }).then((draft) => ({
+            ressource,
+            draft,
+          })),
     ),
   )
 
-  const ressourcesWithDraft = resources
-    .map((resource) =>
-      applyDraft(resource, draftRessources.find(matchingId(resource))),
+  // Apply draft to resource if it exists
+  const ressourcesWithAppliedDraft = ressourcesAndDrafts
+    .map(({ ressource, draft }) =>
+      draft ? applyDraft(ressource, draft) : ressource,
     )
-    .filter(onlyDefined)
+    .filter(isDefinedAndNotNull)
 
-  return ressourcesWithDraft.length === 0 ? (
+  return ressourcesWithAppliedDraft.length === 0 ? (
     <EmptyProfileResources isConnectedUser={authorizations.isUser} />
   ) : (
     <Resources
-      resources={ressourcesWithDraft}
+      resources={ressourcesWithAppliedDraft}
       isConnectedUser={authorizations.isUser}
       user={user}
       baseId={null}
