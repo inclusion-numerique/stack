@@ -22,12 +22,14 @@ const AccederAuxDonneesPage = () => (
       </p>
 
       <LinkCard
+        icon="fr-icon-france-fill"
         href="/donnees/choix-du-departement"
         title="Ouvert au grand public"
         text="Retrouvez des données publiques utiles pour comprendre l’inclusion numérique sur votre territoire."
       />
 
       <LinkCard
+        icon="fr-icon-government-fill"
         href="/connexion?role=prefecture&suivant=/donnees"
         title="Vous êtes une préfecture"
         text="Connectez-vous pour retrouver toutes les informations liés à la gouvernance dont vous êtes membre."
