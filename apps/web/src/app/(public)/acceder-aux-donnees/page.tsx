@@ -28,7 +28,7 @@ const AccederAuxDonneesPage = () => (
       />
 
       <LinkCard
-        href="/connexion?role=prefecture"
+        href="/connexion?role=prefecture&suivant=/donnees"
         title="Vous êtes une préfecture"
         text="Connectez-vous pour retrouver toutes les informations liés à la gouvernance dont vous êtes membre."
       />

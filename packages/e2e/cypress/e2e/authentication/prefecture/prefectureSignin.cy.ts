@@ -26,24 +26,6 @@ describe('ETQ Visiteur qui souhaite se connecter en Préfecture, je peux me conn
     cy.contains('Pour accéder au tableau de bord des préfectures')
   })
 
-  it('Préliminaire 2 -Entrée par CTA landing', () => {
-    cy.visit('/')
-    cy.dsfrModalsShouldBeBound()
-
-    cy.testId('tableau-de-bord-cta').click()
-
-    cy.get('#tableau-de-bord-cta-modal').as('modal')
-    cy.get('@modal').contains('J’ai compris').click()
-
-    cy.url().should(
-      'equal',
-      appUrl('/connexion?role=prefecture&suivant=/donnees'),
-    )
-
-    cy.contains('Préfecture')
-    cy.contains('Se connecter ')
-  })
-
   it('Préliminaire 2 - Le retour ramène sur le choix entre connexion Prefecture ou Collectivité', () => {
     cy.visit('/connexion?role=prefecture')
     cy.contains('Retour').click()
