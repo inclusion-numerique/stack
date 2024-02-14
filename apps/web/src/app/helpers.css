@@ -52,6 +52,10 @@
     width: 100%;
 }
 
+.fr-height-full {
+    height: 100%;
+}
+
 .fr-position-relative {
     position: relative;
 }

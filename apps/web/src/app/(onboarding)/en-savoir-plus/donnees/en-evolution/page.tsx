@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import TwoPartOnboardingLayout from '@app/web/app/(onboarding)/TwoPartOnboardingLayout'
+import FullPageTwoColumnsWithIllustrationLayout from '@app/web/app/(onboarding)/FullPageTwoColumnsWithIllustrationLayout'
 import { enSavoirPlusDonneesOnboardingSteps } from '@app/web/app/(onboarding)/en-savoir-plus/donnees/enSavoirPlusDonneesOnboarding'
 
 export const dynamic = 'force-dynamic'
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 }
 
 const Page = () => (
-  <TwoPartOnboardingLayout
+  <FullPageTwoColumnsWithIllustrationLayout
     illustrationSrc="/images/onboarding/en-evolution.svg"
     illustrationBackground="blue-france-975-75"
     illustrationMaxWidth={360}
@@ -29,7 +29,7 @@ const Page = () => (
       offrir une vision toujours plus précise et représentative du déploiement
       des services d’Inclusion Numérique sur votre territoire.
     </p>
-  </TwoPartOnboardingLayout>
+  </FullPageTwoColumnsWithIllustrationLayout>
 )
 
 export default Page

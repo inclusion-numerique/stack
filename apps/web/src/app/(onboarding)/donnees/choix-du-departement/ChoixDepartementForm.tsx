@@ -9,11 +9,7 @@ import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import {
-  emptyOptionTuple,
-  OptionTuple,
-  optionTuplesToOptions,
-} from '@app/web/utils/options'
+import { OptionTuple, optionTuplesToOptions } from '@app/web/utils/options'
 
 const codeDepartementValidation = z.object({
   codeDepartement: z.string({
@@ -53,30 +49,43 @@ const ChoixDepartementForm = ({
   const isLoading = isSubmitting || isSubmitSuccessful
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="fr-flex fr-direction-column fr-flex-grow-1"
+    >
       <SelectFormField
-        label="Département"
+        className="fr-mt-8v"
+        label=""
         control={control}
-        options={optionTuplesToOptions([
-          emptyOptionTuple,
-          ...optionsDepartements,
-        ])}
+        placeholder="Sélectionner un département"
+        options={optionTuplesToOptions([...optionsDepartements])}
         path="codeDepartement"
       />
 
-      <div>
+      <div className="fr-mt-8v">
         <Link
           href="/en-savoir-plus/donnees/tableau-de-bord"
           className="fr-link"
         >
           En savoir plus{' '}
-          <span className="fr-icon-arrow-right-line fr-icon--sm" />
+          <span className="fr-ml-1v fr-icon-arrow-right-line fr-icon--sm" />
         </Link>
       </div>
 
-      <Button type="submit" {...buttonLoadingClassname(isLoading)}>
-        Accéder
-      </Button>
+      {/* Push button at the bottom */}
+      <div className="fr-flex-grow-1" />
+      <div>
+        <Button
+          priority="tertiary"
+          className="fr-mr-2w"
+          linkProps={{ href: '/' }}
+        >
+          Retour à l’accueil
+        </Button>
+        <Button type="submit" {...buttonLoadingClassname(isLoading)}>
+          Accéder
+        </Button>
+      </div>
     </form>
   )
 }
