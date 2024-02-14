@@ -110,7 +110,7 @@ export const formulaireGouvernanceRouter = router({
         // User selected a different persona than existing form
         // We cancel the existing form
         await prismaClient.formulaireGouvernance.update({
-          where: { id: existingFormulaire.id },
+          where: { id: existingFormulaire.id, confirmeEtEnvoye: { not: null } },
           data: {
             annulation: new Date(),
           },
