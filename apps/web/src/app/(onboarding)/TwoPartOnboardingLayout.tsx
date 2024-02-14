@@ -11,11 +11,13 @@ const TwoPartOnboardingLayout = ({
   illustrationMaxWidth,
   children,
   nextHref,
+  nextLabel = 'Suivant',
   previousHref,
   stepIndex,
   totalSteps,
   title,
   titleClassName,
+  closeHref,
 }: PropsWithChildren<{
   illustrationBackground: 'blue-france-925-125' | 'blue-france-975-75'
   illustrationSrc: string
@@ -27,9 +29,14 @@ const TwoPartOnboardingLayout = ({
   totalSteps?: number
   previousHref?: string
   nextHref?: string
+  nextLabel?: string
+  closeHref: string
 }>) => (
   <>
-    <CloseOnboardingButton mdBackground={illustrationBackground} />
+    <CloseOnboardingButton
+      mdBackground={illustrationBackground}
+      href={closeHref}
+    />
     {/* Content is half left part */}
     <div className={styles.content}>
       {/* Inner content to be allow to center it horizontally */}
@@ -75,7 +82,7 @@ const TwoPartOnboardingLayout = ({
                 href: nextHref,
               }}
             >
-              Suivant
+              {nextLabel}
             </Button>
           )}
         </div>

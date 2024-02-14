@@ -16,10 +16,11 @@ const AccederAuxDonneesPage = async () => {
   const departementOptions = await getDepartementOptions()
   return (
     <TwoPartOnboardingLayout
-      illustrationSrc="/images/onboarding/france-map.svg"
+      illustrationSrc="/images/home-map.svg"
       illustrationBackground="blue-france-975-75"
       illustrationMaxWidth={392}
       titleClassName="fr-text--xl"
+      closeHref="/"
     >
       <h1 className="fr-text--xl">
         Découvrir l’évolution des données publiques d’Inclusion Numérique dans

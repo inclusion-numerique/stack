@@ -4,8 +4,10 @@ import styles from '@app/web/app/(onboarding)/CloseOnboardingButton.module.css'
 
 const CloseOnboardingButton = ({
   mdBackground,
+  href,
 }: {
   mdBackground: 'blue-france-925-125' | 'blue-france-975-75'
+  href: string
 }) => (
   <Button
     className={classNames(styles.closeButton, {

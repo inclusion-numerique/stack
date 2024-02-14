@@ -91,7 +91,4 @@
 .title {
     margin: 16px 0;
 
-    @media (min-width: 48em) {
-        margin: 24px 0;
-    }
 }
