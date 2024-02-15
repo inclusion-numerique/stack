@@ -164,7 +164,7 @@ const Legend = ({
                   },
                 },
                 {
-                  label: 'Tableau de bord',
+                  label: `Données · ${departement.nom}`,
                   linkProps: {
                     href: `/donnees/departements/${departement.code}`,
                   },

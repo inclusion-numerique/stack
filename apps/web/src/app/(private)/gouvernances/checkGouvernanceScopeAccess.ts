@@ -1,14 +1,12 @@
-import {
-  gouvernanceHomePath,
-  GouvernanceScope,
-} from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
 import { prismaClient } from '@app/web/prismaClient'
 import {
-  hasAccessToDepartementDashboard,
+  hasAccessToDashboard,
   hasAccessToNationalDashboard,
   hasAccessToRegionDashboard,
 } from '@app/web/security/securityRules'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 
 export type GouvernanceScopeAccessCheck = {
   access: boolean
@@ -88,7 +86,7 @@ export const checkGouvernanceScopeAccess = async ({
       }
     }
     if (
-      !hasAccessToDepartementDashboard(user, {
+      !hasAccessToDashboard(user, {
         regionCode: departementWithRegion.region?.code,
         departementCode: departementWithRegion.code,
       })

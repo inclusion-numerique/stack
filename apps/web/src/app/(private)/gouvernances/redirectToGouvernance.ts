@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
-import { hasAccessToDepartementDashboard } from '@app/web/security/securityRules'
+import { hasAccessToDashboard } from '@app/web/security/securityRules'
 
 export const redirectToGouvernance = async () => {
   const user = await getSessionUser()
@@ -19,7 +19,7 @@ export const redirectToGouvernance = async () => {
     return
   }
 
-  if (hasAccessToDepartementDashboard(user, { departementCode: '69' })) {
+  if (hasAccessToDashboard(user, { departementCode: '69' })) {
     // Demonstration
     redirect(`/gouvernances/departements/69`)
     return

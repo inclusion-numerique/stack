@@ -1,16 +1,17 @@
 import { Meta, StoryObj } from '@storybook/react'
-import DepartementDashboard from '@app/web/components/Dashboard/DepartementDashboard'
-import { DepartementGeoFeatures } from '@app/web/data/departements'
-import { getDepartementGeoJson } from '@app/web/test/testDepartementData'
+import React from 'react'
+import Dashboard from '@app/web/components/Dashboard/Dashboard'
 import {
   BoxData,
   BoxesData,
-  DepartementDashboardData,
-} from '@app/web/app/(public)/donnees/departements/[codeDepartement]/getDepartementDashboardData'
+  DashboardData,
+} from '@app/web/app/(public)/donnees/getDashboardData'
+import { DepartementGeoFeatures } from '@app/web/data/departements'
+import { getDepartementGeoJson } from '@app/web/test/testDepartementData'
+import { OptionTuples } from '@app/web/utils/options'
+import DashboardContent from '@app/web/components/Dashboard/DashboardContent'
 
-const getFakeData = (
-  departement: DepartementGeoFeatures,
-): DepartementDashboardData => {
+const getFakeData = (departement: DepartementGeoFeatures): DashboardData => {
   const inclusionLocations = {
     id: 'lieux-d-inclusion-numérique',
     label: "Lieux d'inclusion numérique",
@@ -232,15 +233,15 @@ const getFakeData = (
 
   const detailed = { publicsAccompagnes, accompagnements }
 
-  return { main, detailed, departement }
+  return { dataUpdated: new Date().toISOString(), main, detailed, departement }
 }
 
 export default {
-  title: 'Prefet/DashboardDépartement',
-  component: DepartementDashboard,
-} as Meta<typeof DepartementDashboard>
+  title: 'Donnees/Dashboard',
+  component: Dashboard,
+} as Meta<typeof Dashboard>
 
-type Story = StoryObj<typeof DepartementDashboard>
+type Story = StoryObj<typeof Dashboard>
 
 const [rhone, paris] = [
   getDepartementGeoJson({ code: '69' }),
@@ -248,10 +249,36 @@ const [rhone, paris] = [
 ]
 if (!rhone || !paris) throw new Error('Departement not found')
 
+const Template = ({
+  departementGeoFeatures,
+}: {
+  departementGeoFeatures: DepartementGeoFeatures
+}) => {
+  const data = getFakeData(departementGeoFeatures)
+  const departementOptions: OptionTuples = [
+    ['69', '69 · Rhône'],
+    ['75', '75 · Paris'],
+  ]
+
+  return (
+    <Dashboard
+      departementOptions={departementOptions}
+      departement={{
+        code: departementGeoFeatures.code,
+        nom: departementGeoFeatures.nom,
+      }}
+    >
+      <DashboardContent data={data} />
+    </Dashboard>
+  )
+}
+
 export const Rhône: Story = {
-  args: { data: getFakeData(rhone) },
+  name: 'Rhône',
+  render: () => <Template departementGeoFeatures={rhone} />,
 }
 
 export const Paris: Story = {
-  args: { data: getFakeData(paris) },
+  name: 'Paris',
+  render: () => <Template departementGeoFeatures={paris} />,
 }

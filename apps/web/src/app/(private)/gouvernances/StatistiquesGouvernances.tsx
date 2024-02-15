@@ -2,10 +2,8 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
 import type { StatistiquesGouvernance } from '@app/web/app/(private)/gouvernances/getStatistiquesGouvernances'
 import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
-import {
-  gouvernanceCandidatsPath,
-  GouvernanceScope,
-} from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import { gouvernanceCandidatsPath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 
 const StatistiquesGouvernances = ({
   statistiquesGouvernance,

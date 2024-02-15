@@ -1,5 +1,5 @@
 import { notFound, redirect } from 'next/navigation'
-import { GouvernanceScope } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { checkGouvernanceScopeAccess } from '@app/web/app/(private)/gouvernances/checkGouvernanceScopeAccess'
 

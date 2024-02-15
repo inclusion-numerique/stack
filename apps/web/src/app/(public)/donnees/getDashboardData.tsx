@@ -1,16 +1,18 @@
 /* eslint no-plusplus: 0 */
+import type { DashboardInfoButtonsId } from '@app/web/components/Dashboard/DashboardInfoModals'
 import { prismaClient } from '@app/web/prismaClient'
-import { countStructuresForDepartementDashboard } from '@app/web/components/Dashboard/Cartographie/countStructures'
+import { countStructuresForDashboard } from '@app/web/components/Dashboard/Cartographie/countStructures'
 import { getTopCrasTypes } from '@app/web/components/Dashboard/Cartographie/getTopCrasTypes'
 import { getDepartementGeoFeatures } from '@app/web/data/departements'
 import { createWhereStructureInDepartement } from '@app/web/data/query/whereStructureInDepartement'
-import type { DepartementDashboardInfoButtonsId } from '@app/web/components/Dashboard/DepartementDashboardInfoModals'
 import { getAppData } from '@app/web/data/appData'
+import { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
+import { aggregateConumCras } from '@app/web/data/aggregateConumCras'
 
 export type StatisticData = {
   id: string
   label: string
-  info?: DepartementDashboardInfoButtonsId
+  info?: DashboardInfoButtonsId
   value: number
   collapsable?: boolean
   statistics?: StatisticData[]
@@ -55,7 +57,7 @@ export type BoxesData = {
   boxes: BoxData[]
 }
 
-const memoizedDepartementsData = new Map<string, DepartementDashboardData>()
+const memoizedDepartementsData = new Map<string, DashboardData>()
 
 const listStructures = (codeDepartement: string) =>
   prismaClient.structureCartographieNationale.findMany({
@@ -73,66 +75,120 @@ const listStructures = (codeDepartement: string) =>
     },
   })
 
-export type DepartementDashboardStructureItem = Awaited<
+export type DashboardStructureItem = Awaited<
   ReturnType<typeof listStructures>
 >[number]
 
-const computeDepartementDashboardData = async (codeDepartement: string) => {
-  const whereInDepartement = createWhereStructureInDepartement(codeDepartement)
+/**
+ * We are using basic prisma queries and counting programmatically to provide type safety.
+ * It would be more performant and less verbose to use SQL COUNT with filters.
+ * But the query would be less readable.
+ */
+const getRawDataForScope = async ({
+  codeDepartement,
+  codeRegion,
+  national,
+}: GouvernanceScope) => {
+  if (codeDepartement) {
+    const whereInDepartement =
+      createWhereStructureInDepartement(codeDepartement)
 
-  /**
-   * We are using basic prisma queries and counting programmatically to provide type safety.
-   * It would be more performant and less verbose to use SQL COUNT with filters.
-   * But the query would be less readable.
-   */
-  const [departement, structures, conumCras, conums, appData] =
-    await Promise.all([
-      prismaClient.departement.findUniqueOrThrow({
-        where: { code: codeDepartement },
-        select: {
-          nom: true,
-          code: true,
-          geometry: true,
-          bounds: true,
-          _count: {
-            select: {
-              coordinateursConseillerNumerique: true,
-            },
-          },
-        },
-      }),
-      prismaClient.structureCartographieNationale.findMany({
-        where: whereInDepartement,
-        select: {
-          id: true,
-          type: true,
-          sousTypePublic: true,
-          labelAidantsConnect: true,
-          labelFranceServices: true,
-          labelConseillersNumerique: true,
-          structureAidantsConnect: true,
-          zrr: true,
-          qpv: true,
-        },
-      }),
-      prismaClient.craConseillerNumeriqueParDepartement.findUnique({
-        where: { codeDepartement },
-      }),
-      prismaClient.conseillerNumerique.count({
-        where: {
-          enPermanence: {
-            some: {
-              permanence: {
-                structureCartographieNationale: whereInDepartement,
+    const [departement, structures, conumCras, conums, appData] =
+      await Promise.all([
+        prismaClient.departement.findUniqueOrThrow({
+          where: { code: codeDepartement },
+          select: {
+            nom: true,
+            code: true,
+            geometry: true,
+            bounds: true,
+            _count: {
+              select: {
+                coordinateursConseillerNumerique: true,
               },
             },
           },
-        },
-      }),
-      getAppData(),
-    ])
+        }),
+        prismaClient.structureCartographieNationale.findMany({
+          where: whereInDepartement,
+          select: {
+            id: true,
+            type: true,
+            sousTypePublic: true,
+            labelAidantsConnect: true,
+            labelFranceServices: true,
+            labelConseillersNumerique: true,
+            structureAidantsConnect: true,
+            zrr: true,
+            qpv: true,
+          },
+        }),
+        prismaClient.craConseillerNumeriqueParDepartement.findUnique({
+          where: { codeDepartement },
+        }),
+        prismaClient.conseillerNumerique.count({
+          where: {
+            enPermanence: {
+              some: {
+                permanence: {
+                  structureCartographieNationale: whereInDepartement,
+                },
+              },
+            },
+          },
+        }),
+        getAppData(),
+      ])
 
-  const structuresCount = countStructuresForDepartementDashboard(structures)
+    return { departement, structures, conumCras, conums, appData }
+  }
+
+  if (codeRegion) {
+    throw new Error('Region not implemented')
+  }
+
+  if (national) {
+    const [countCoconums, structures, conumCras, conums, appData] =
+      await Promise.all([
+        prismaClient.coordinateurConseillerNumerique.count(),
+        prismaClient.structureCartographieNationale.findMany({
+          select: {
+            id: true,
+            type: true,
+            sousTypePublic: true,
+            labelAidantsConnect: true,
+            labelFranceServices: true,
+            labelConseillersNumerique: true,
+            structureAidantsConnect: true,
+            zrr: true,
+            qpv: true,
+          },
+        }),
+        prismaClient.craConseillerNumeriqueParDepartement.findMany({}),
+        prismaClient.conseillerNumerique.count(),
+        getAppData(),
+      ])
+    return {
+      countCoconums,
+      structures,
+      conumCras: aggregateConumCras(conumCras),
+      conums,
+      appData,
+    }
+  }
+
+  throw new Error('Invalid scope provided')
+}
+
+/**
+ */
+const computeDashboardData = async (scope: GouvernanceScope) => {
+  const { countCoconums, departement, structures, conumCras, conums, appData } =
+    await getRawDataForScope(scope)
+
+  const structuresCount = countStructuresForDashboard(structures)
+
+  const scopeTitle = departement?.nom ?? 'National'
 
   const inclusionLocations = {
     id: 'lieux-d-inclusion-numérique',
@@ -247,7 +303,9 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
             label: 'dont Conseillers Coordinateurs',
             info: 'coordinateursConseillerNumerique',
             // eslint-disable-next-line no-underscore-dangle
-            value: departement._count.coordinateursConseillerNumerique,
+            value: departement
+              ? departement._count.coordinateursConseillerNumerique
+              : countCoconums,
           },
           {
             id: 'aidants-habilités-à-aidant-connect',
@@ -278,7 +336,7 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
 
   const publicsAccompagnes = {
     id: 'publics-accompagnés',
-    label: `Publics accompagnés`,
+    label: `Publics accompagnés · ${scopeTitle}`,
     boxes: [
       {
         id: 'usagers-accompagnés',
@@ -376,7 +434,7 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
 
   const accompagnements = {
     id: 'accompagnements',
-    label: `Accompagnements`,
+    label: `Accompagnements · ${scopeTitle}`,
     boxes: [
       {
         id: 'accompagnements',
@@ -433,20 +491,34 @@ const computeDepartementDashboardData = async (codeDepartement: string) => {
 
   const detailed = { publicsAccompagnes, accompagnements }
 
-  return { main, detailed, departement: getDepartementGeoFeatures(departement) }
+  return {
+    dataUpdated: appData.dataUpdated.toISOString(),
+    main,
+    detailed,
+    departement: departement ? getDepartementGeoFeatures(departement) : null,
+  }
 }
 
-export const getDepartementDashboardData = async (codeDepartement: string) => {
-  const memoized = memoizedDepartementsData.get(codeDepartement)
-  if (memoized) {
+/**
+ * Dashboard data is memoized by scope and dataUpdated date.
+ * To avoid recomputing same projection for same dataset.
+ */
+export const getDashboardData = async (scope: GouvernanceScope) => {
+  const { dataUpdated } = await getAppData()
+
+  const cacheKey = scope.codeDepartement ?? 'national'
+
+  const memoized = memoizedDepartementsData.get(cacheKey)
+
+  // Return cached data if data has not been updated
+  if (memoized && memoized.dataUpdated === dataUpdated.toISOString()) {
     return memoized
   }
 
-  const data = await computeDepartementDashboardData(codeDepartement)
-  memoizedDepartementsData.set(codeDepartement, data)
+  // Recompute if cache miss or data has been updated
+  const data = await computeDashboardData(scope)
+  memoizedDepartementsData.set(cacheKey, data)
   return data
 }
 
-export type DepartementDashboardData = Awaited<
-  ReturnType<typeof computeDepartementDashboardData>
->
+export type DashboardData = Awaited<ReturnType<typeof computeDashboardData>>

@@ -6,10 +6,8 @@ import {
   getPorteurString,
 } from '@app/web/app/(private)/gouvernances/gouvernanceHelpers'
 import BackLink from '@app/web/components/BackLink'
-import {
-  gouvernanceHomePath,
-  GouvernanceScope,
-} from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import { gouvernanceHomePath } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 import PrintButton from '@app/web/app/(private-print)/PrintButton'
 import WhiteCard from '@app/web/ui/WhiteCard'
 import { dateAsDay } from '@app/web/utils/dateAsDay'

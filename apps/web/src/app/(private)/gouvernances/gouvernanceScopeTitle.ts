@@ -1,7 +1,8 @@
+import { cache } from 'react'
 import { prismaClient } from '@app/web/prismaClient'
-import type { GouvernanceScope } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 
-export const getGouvernanceScopeTitle = (scope: GouvernanceScope) =>
+export const getGouvernanceScopeTitle = cache((scope: GouvernanceScope) =>
   scope.national
     ? 'National'
     : scope.codeRegion
@@ -20,4 +21,5 @@ export const getGouvernanceScopeTitle = (scope: GouvernanceScope) =>
               nom: true,
             },
           })
-          .then(({ nom }) => nom)
+          .then(({ nom }) => nom),
+)

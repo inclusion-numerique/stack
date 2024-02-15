@@ -5,7 +5,7 @@ import {
   GouvernanceForForm,
 } from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import GouvernanceDetails from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/GouvernanceDetails'
-import { GouvernanceScope } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 
 const GouvernancePrint = ({
   gouvernance,

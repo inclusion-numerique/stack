@@ -20,10 +20,10 @@ import { limiteModificationDesGouvernances } from '@app/web/app/(private)/gouver
 import BackLink from '@app/web/components/BackLink'
 import {
   gouvernanceHomePath,
-  GouvernanceScope,
   imprimerGouvernancePath,
   modifierGouvernancePath,
 } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 import PrintButton from '@app/web/app/(private-print)/PrintButton'
 import WhiteCard from '@app/web/ui/WhiteCard'
 import { dateAsDay } from '@app/web/utils/dateAsDay'

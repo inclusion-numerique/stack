@@ -1,6 +1,6 @@
-import { GouvernanceScope } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { checkGouvernanceScopeAccess } from '@app/web/app/(private)/gouvernances/checkGouvernanceScopeAccess'
+import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 
 /**
  * Helpers for api routes pages to check user access to a gouvernance scope

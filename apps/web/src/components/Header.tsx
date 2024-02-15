@@ -74,14 +74,9 @@ const Header = ({
                 <div className="fr-header__service">
                   <Link aria-current="page" target="_self" {...baseLinkProps}>
                     <p className="fr-header__service-title">
-                      {baseLinkProps.title}
+                      <span className="fr-mr-1w">{baseLinkProps.title}</span>
 
-                      <Badge
-                        severity="new"
-                        className="fr-ml-2w"
-                        small
-                        as="span"
-                      >
+                      <Badge severity="new" small as="span">
                         BETA
                       </Badge>
                     </p>

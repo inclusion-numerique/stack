@@ -1,20 +1,14 @@
 import React from 'react'
-import { getNationalDashboardData } from '@app/web/app/(public)/donnees/national/getNationalDashboardData'
-import NationalDashboard from '@app/web/components/Dashboard/NationalDashboard'
-import { metadataTitle } from '@app/web/app/metadataTitle'
+import { getDashboardData } from '@app/web/app/(public)/donnees/getDashboardData'
+import DashboardContent from '@app/web/components/Dashboard/DashboardContent'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-export const generateMetadata = () => ({
-  title: metadataTitle(`Données nationales`),
-})
-
 const Page = async () => {
-  const data = await getNationalDashboardData()
+  const data = await getDashboardData({ national: true })
 
-  // User only has access to one departement
-  return <NationalDashboard data={data} />
+  return <DashboardContent data={data} />
 }
 
 export default Page

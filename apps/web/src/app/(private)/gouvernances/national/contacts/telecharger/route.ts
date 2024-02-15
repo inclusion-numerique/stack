@@ -1,6 +1,6 @@
 import { telechargerContacts } from '@app/web/app/(private)/gouvernances/telechargerContacts'
 import { checkUserAccessToGouvernanceScopeForApiResponse } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeForApiResponse'
-import { GouvernanceScope } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0

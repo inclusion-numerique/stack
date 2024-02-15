@@ -1,23 +1,5 @@
-export type GouvernanceScope =
-  | {
-      codeDepartement: string
-      codeRegion?: undefined
-      national?: undefined
-    }
-  | {
-      codeDepartement?: undefined
-      codeRegion: string
-      national?: undefined
-    }
-  | {
-      codeDepartement?: undefined
-      codeRegion?: undefined
-      national: true
-    }
+import { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 
-export type GouvernanceHomeSearchParams = {
-  'gouvernance-completee'?: string
-}
 export const gouvernanceCompletedSearchParam = 'gouvernance-completee'
 
 export const gouvernanceHomePath = (

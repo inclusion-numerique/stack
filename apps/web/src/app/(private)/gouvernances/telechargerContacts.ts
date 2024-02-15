@@ -5,11 +5,11 @@ import {
   getContactsGouvernanceNational,
   getContactsGouvernanceRegion,
 } from '@app/web/app/(private)/gouvernances/getContactsGouvernances'
-import { GouvernanceScope } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
 import {
   contactTableHeaders,
   contactToData,
 } from '@app/web/app/(private)/gouvernances/gouvernanceContactsTable'
+import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 
 export const telechargerContacts = async (scope: GouvernanceScope) => {
   const { contacts, scopeKey } =

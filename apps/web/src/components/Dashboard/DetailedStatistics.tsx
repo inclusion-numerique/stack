@@ -1,10 +1,9 @@
 import React, { PropsWithChildren } from 'react'
-import Box from '@app/web/components/Dashboard/Box/Box'
 import {
   BoxesData,
-  DepartementDashboardData,
-} from '@app/web/app/(public)/donnees/departements/[codeDepartement]/getDepartementDashboardData'
-import { NationalDashboardData } from '@app/web/app/(public)/donnees/national/getNationalDashboardData'
+  DashboardData,
+} from '@app/web/app/(public)/donnees/getDashboardData'
+import Box from '@app/web/components/Dashboard/Box/Box'
 
 const StatisticsWrapper = ({
   id,
@@ -13,7 +12,7 @@ const StatisticsWrapper = ({
   description,
 }: PropsWithChildren<BoxesData>) => (
   <div key={id} className="fr-mb-10w fr-text-title--grey">
-    <h2 className="fr-mb-2w">{label}</h2>
+    <h2 className="fr-h3 fr-mt-14v fr-mb-8v">{label}</h2>
     {description && <p className="fr-mb-8v">{description}</p>}
     <div className="fr-grid-row fr-grid-row--gutters fr-mt-8v">
       {boxes.map((box) => (
@@ -30,7 +29,7 @@ const DetailedStatistics = ({
     detailed: { publicsAccompagnes, accompagnements },
   },
 }: {
-  data: DepartementDashboardData | NationalDashboardData
+  data: DashboardData
 }) => (
   <>
     <StatisticsWrapper {...publicsAccompagnes} />

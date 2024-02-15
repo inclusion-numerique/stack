@@ -36,10 +36,9 @@ const CoordinateursConseillerNumeriqueInformationsModalButton = () => (
   </>
 )
 
-export const DepartementDashboardInfoButtons = {
+export const DashboardInfoButtons = {
   coordinateursConseillerNumerique:
     CoordinateursConseillerNumeriqueInformationsModalButton,
 }
 
-export type DepartementDashboardInfoButtonsId =
-  keyof typeof DepartementDashboardInfoButtons
+export type DashboardInfoButtonsId = keyof typeof DashboardInfoButtons

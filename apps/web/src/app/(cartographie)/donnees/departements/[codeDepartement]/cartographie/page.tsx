@@ -1,8 +1,8 @@
-import { notFound } from 'next/navigation'
 import React from 'react'
 import { getDepartementCartographieData } from '@app/web/app/(cartographie)/donnees/departements/[codeDepartement]/cartographie/getDepartementCartographieData'
 import CartographiePage from '@app/web/components/Dashboard/Cartographie/Page'
-import { prismaClient } from '@app/web/prismaClient'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+import { getDepartementNameAndCode } from '@app/web/data/getDepartementNameAndCode'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -12,19 +12,10 @@ export const generateMetadata = async ({
 }: {
   params: { codeDepartement: string }
 }) => {
-  const departement = await prismaClient.departement.findUnique({
-    where: {
-      code: codeDepartement,
-    },
-    select: { code: true, nom: true, codeRegion: true },
-  })
-
-  if (!departement) {
-    notFound()
-  }
+  const departement = await getDepartementNameAndCode(codeDepartement)
 
   return {
-    title: `${departement.nom} - Cartographie`,
+    title: metadataTitle(`Cartographie · ${departement.nom}`),
   }
 }
 

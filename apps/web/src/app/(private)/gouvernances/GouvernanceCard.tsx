@@ -12,9 +12,9 @@ import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
 import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
 import {
   detailGouvernancePath,
-  GouvernanceScope,
   imprimerGouvernancePath,
 } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 import { nameOrEmail } from '@app/web/utils/nameOrEmail'
 import {
   getPerimetreString,

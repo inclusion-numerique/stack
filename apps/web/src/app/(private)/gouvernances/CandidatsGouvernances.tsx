@@ -11,8 +11,8 @@ import ParticipantInfoAccordion from '@app/web/app/(private)/gouvernances/Partic
 import {
   gouvernanceContactsPath,
   gouvernanceHomePath,
-  GouvernanceScope,
 } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 
 const CandidatsGouvernances = ({
   candidatsGouvernance,

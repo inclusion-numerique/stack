@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react'
 import classNames from 'classnames'
+import type { StatisticData } from '@app/web/app/(public)/donnees/getDashboardData'
+import { DashboardInfoButtons } from '@app/web/components/Dashboard/DashboardInfoModals'
 import { numberToString } from '@app/web/utils/formatNumber'
-import type { StatisticData } from '@app/web/app/(public)/donnees/departements/[codeDepartement]/getDepartementDashboardData'
-import { DepartementDashboardInfoButtons } from '@app/web/components/Dashboard/DepartementDashboardInfoModals'
 import styles from './Statistic.module.css'
 
 type StatisticProps = {
@@ -27,7 +27,7 @@ const Statistic = ({
 }) => {
   const [open, setOpen] = useState(false)
   const displayChildren = children && (!collapsable || open)
-  const InfoComponent = info ? DepartementDashboardInfoButtons[info] : null
+  const InfoComponent = info ? DashboardInfoButtons[info] : null
   return (
     <>
       <div className={isSubStatistic ? styles.subStatistic : styles.statistic}>

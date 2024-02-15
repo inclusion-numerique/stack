@@ -29,7 +29,7 @@ const CartographieDepartementLayout = async ({
       <Header
         user={user}
         fullWidth
-        backLink={`Retour au tableau de bord ${department.nom}`}
+        backLink={`Retour aux données · ${department.nom}`}
         backLinkHref={`/donnees/departements/${department.code}`}
       />
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>

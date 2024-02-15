@@ -13,7 +13,7 @@ export const hasAccessToRegionDashboard = (
   return false
 }
 
-export const hasAccessToDepartementDashboard = (
+export const hasAccessToDashboard = (
   user: Pick<SessionUser, 'role' | 'roleScope'>,
   {
     departementCode,
@@ -61,7 +61,7 @@ export const canAddGouvernancePressentie = (
     departementCode: string
     regionCode?: string | null
   },
-) => hasAccessToDepartementDashboard(user, { departementCode, regionCode })
+) => hasAccessToDashboard(user, { departementCode, regionCode })
 
 export const canEditGouvernancePressentie = (
   user: Pick<SessionUser, 'role' | 'roleScope'>,
@@ -72,7 +72,7 @@ export const canEditGouvernancePressentie = (
   },
 ) =>
   user.role !== 'PrefectureRegion' &&
-  hasAccessToDepartementDashboard(user, { departementCode })
+  hasAccessToDashboard(user, { departementCode })
 
 export const hasAccessToNationalDashboard = (
   user: Pick<SessionUser, 'role'>,

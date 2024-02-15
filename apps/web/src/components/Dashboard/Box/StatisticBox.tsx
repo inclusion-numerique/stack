@@ -1,7 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
+import type { StatisticBoxData } from '@app/web/app/(public)/donnees/getDashboardData'
 import { numberToString } from '@app/web/utils/formatNumber'
-import type { StatisticBoxData } from '@app/web/app/(public)/donnees/departements/[codeDepartement]/getDepartementDashboardData'
 import Statistic from './Statistic'
 import styles from './StatisticBox.module.css'
 import Source from './Source'

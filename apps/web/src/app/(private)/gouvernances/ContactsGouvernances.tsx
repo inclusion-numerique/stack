@@ -9,8 +9,8 @@ import styles from '@app/web/app/(private)/gouvernances/Gouvernances.module.css'
 import {
   gouvernanceContactsDownloadPath,
   gouvernanceHomePath,
-  GouvernanceScope,
 } from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 import {
   contactTableHeaders,
   contactToData,
