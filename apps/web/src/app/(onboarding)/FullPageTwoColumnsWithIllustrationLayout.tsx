@@ -26,7 +26,7 @@ const FullPageTwoColumnsWithIllustrationLayout = ({
 }: PropsWithChildren<{
   illustrationBackground: 'blue-france-925-125' | 'blue-france-975-75'
   illustrationSrc: string
-  illustrationMaxWidth: number
+  illustrationMaxWidth: number | string
   // illustrationWidth: number
   title?: string
   titleClassName?: string
@@ -119,6 +119,7 @@ const FullPageTwoColumnsWithIllustrationLayout = ({
       <div
         className={styles.illustrationWrapper}
         style={{
+          width: illustrationMaxWidth,
           maxWidth: illustrationMaxWidth,
         }}
       >

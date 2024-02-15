@@ -14,7 +14,7 @@ const Page = () => (
   <FullPageTwoColumnsWithIllustrationLayout
     illustrationSrc="/images/onboarding/cartographie.svg"
     illustrationBackground="blue-france-975-75"
-    illustrationMaxWidth={570}
+    illustrationMaxWidth="79%"
     titleClassName="fr-text--xl"
     title="Une cartographie"
     stepIndex={2}

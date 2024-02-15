@@ -15,7 +15,7 @@ const AccederAuxDonneesPage = () => (
     <div className="fr-container">
       <Breadcrumbs currentPage="Accéder aux données" />
     </div>
-    <div className="fr-container fr-container--narrow">
+    <div className="fr-container fr-container--narrow fr-pb-50v">
       <h1 className="fr-h2 fr-mb-2v">Accéder aux données</h1>
       <p className="fr-text-mention--grey">
         Choisissez l’accès qui vous correspond :

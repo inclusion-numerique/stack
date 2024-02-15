@@ -14,7 +14,7 @@ const Page = () => (
   <FullPageTwoColumnsWithIllustrationLayout
     illustrationSrc="/images/onboarding/mise-en-commun.svg"
     illustrationBackground="blue-france-975-75"
-    illustrationMaxWidth={272}
+    illustrationMaxWidth="37.8%"
     titleClassName="fr-text--xl"
     title="Une vision globale grâce à la mise en commun de données"
     stepIndex={3}

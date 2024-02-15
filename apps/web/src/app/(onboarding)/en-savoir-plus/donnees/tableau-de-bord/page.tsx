@@ -14,7 +14,7 @@ const Page = () => (
   <FullPageTwoColumnsWithIllustrationLayout
     illustrationSrc="/images/onboarding/tableau-de-bord.svg"
     illustrationBackground="blue-france-975-75"
-    illustrationMaxWidth={453}
+    illustrationMaxWidth="63%"
     titleClassName="fr-text--xl"
     title="Un tableau de bord"
     stepIndex={1}

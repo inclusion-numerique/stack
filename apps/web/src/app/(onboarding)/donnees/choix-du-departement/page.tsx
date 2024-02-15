@@ -18,7 +18,7 @@ const AccederAuxDonneesPage = async () => {
     <FullPageTwoColumnsWithIllustrationLayout
       illustrationSrc="/images/home-map.svg"
       illustrationBackground="blue-france-975-75"
-      illustrationMaxWidth={392}
+      illustrationMaxWidth="54.5%"
       titleClassName="fr-text--xl"
       closeHref="/"
       contentClassname="fr-flex fr-direction-column fr-flex-grow-1"
