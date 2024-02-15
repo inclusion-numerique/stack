@@ -34,10 +34,17 @@ export const generateMetadata = async ({
 
 const RessourcePage = async ({ params }: { params: { slug: string } }) => {
   const user = await getSessionUser()
-  const [savedResource, draftResource] = await Promise.all([
-    getResource({ slug: decodeURI(params.slug) }, user),
-    getResourceProjectionWithContext({ slug: decodeURI(params.slug) }),
-  ])
+
+  const savedResource = await getResource(
+    { slug: decodeURI(params.slug) },
+    user,
+  )
+
+  const draftResource = savedResource?.published
+    ? null
+    : await getResourceProjectionWithContext({
+        slug: decodeURI(params.slug),
+      })
 
   const resource = applyDraft(savedResource, draftResource)
 
