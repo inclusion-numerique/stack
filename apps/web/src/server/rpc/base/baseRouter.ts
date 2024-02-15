@@ -59,7 +59,7 @@ export const baseRouter = router({
           sendInviteMemberEmail({
             baseTitle: input.title,
             from: user,
-            url: `/bases/${slug}/invitations/accepter/${tokens[member.id]}`,
+            url: `/invitations/base/${tokens[member.id]}`,
             email: member.email,
           }),
         ),
