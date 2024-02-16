@@ -200,7 +200,8 @@ const ResourceEdition = ({
           priority: 'success',
           message: (
             <>
-              La ressource <strong>{resource.title}</strong> a bien été publiée
+              La ressource <strong>{result.resource.title}</strong> a bien été
+              publiée
             </>
           ),
         })
