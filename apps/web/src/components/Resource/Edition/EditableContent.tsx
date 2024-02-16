@@ -20,13 +20,12 @@ const EditableContent = ({
     {showIcon && (
       <Button
         type="button"
-        title="Editer"
+        title="Modifier"
         data-testid={dataTestId}
         iconId="fr-icon-edit-line"
         iconPosition="right"
-        size="small"
         onClick={onEditClick}
-        priority="tertiary no outline"
+        priority="secondary"
       >
         {iconText}
       </Button>
