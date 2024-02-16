@@ -11,10 +11,6 @@ const DashboardHeader = ({
   departementOptions: OptionTuples
   currentCodeDepartement?: string
 }) => (
-  /*
-  display: flex;
-  align-items: center;
-  justify-content: space-between; */
   <div
     className={classNames(
       styles.header,

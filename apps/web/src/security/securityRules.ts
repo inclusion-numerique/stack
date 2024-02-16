@@ -35,22 +35,14 @@ export const hasAccessToDashboard = (
   return false
 }
 
-export const hasAccessToAdministration = (user: Pick<SessionUser, 'role'>) =>
-  user.role === 'Administrator' || user.role === 'Demo'
-
-// Accès a la carto, dashboards, etc...
-export const hasAccessToDonneesDeLInclusionNumerique = (
-  user: Pick<SessionUser, 'role'>,
-) => user.role !== 'User'
+export const hasAccessToAdministration = (
+  user: Pick<SessionUser, 'role'> | null,
+) => user?.role === 'Administrator' || user?.role === 'Demo'
 
 // Accès aux remontées de gouvernance
 export const hasAccessToRemonteesGouvernances = (
-  user: Pick<SessionUser, 'role'>,
-) => user.role !== 'User'
-
-export const hasAccessToNationalStatistics = (
-  user: Pick<SessionUser, 'role'>,
-) => user.role === 'Administrator' || user.role === 'Demo'
+  user: Pick<SessionUser, 'role'> | null,
+) => !!user && user.role !== 'User'
 
 export const canAddGouvernancePressentie = (
   user: Pick<SessionUser, 'role' | 'roleScope'>,

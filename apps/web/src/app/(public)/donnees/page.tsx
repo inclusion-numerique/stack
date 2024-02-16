@@ -8,7 +8,7 @@ import { getDonneesRouteForUser } from '@app/web/app/(public)/donnees/getDonnees
 const Page = async () => {
   const user = await getSessionUser()
 
-  redirect(getDonneesRouteForUser(user))
+  redirect(getDonneesRouteForUser(user, null))
 }
 
 export default Page

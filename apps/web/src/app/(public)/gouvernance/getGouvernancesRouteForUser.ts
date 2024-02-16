@@ -1,20 +1,20 @@
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 
-export const getDonneesRouteForUser = (
+export const getGouvernancesRouteForUser = (
   user: SessionUser | null,
   lastVisitedScope: GouvernanceScope | null,
 ) => {
   if (lastVisitedScope?.national) {
-    return '/donnees/national'
+    return '/gouvernances/national'
   }
 
   if (lastVisitedScope?.codeDepartement) {
-    return `/donnees/departements/${lastVisitedScope.codeDepartement}`
+    return `/gouvernances/departements/${lastVisitedScope.codeDepartement}`
   }
 
   if (lastVisitedScope?.codeRegion) {
-    return `/donnees/regions/${lastVisitedScope.codeRegion}`
+    return `/gouvernances/regions/${lastVisitedScope.codeRegion}`
   }
 
   if (!user) {
@@ -22,11 +22,11 @@ export const getDonneesRouteForUser = (
   }
 
   if (user.role === 'PrefectureDepartement' && user.roleScope) {
-    return `/donnees/departements/${user.roleScope}`
+    return `/gouvernances/departements/${user.roleScope}`
   }
 
   if (user.role === 'PrefectureRegion' && user.roleScope) {
-    return `/donnees/regions/${user.roleScope}`
+    return `/gouvernances/regions/${user.roleScope}`
   }
 
   // user logged in without particular data to identify scope, we redirect to choice page

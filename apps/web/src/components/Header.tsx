@@ -6,7 +6,7 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import HeaderBackLink from '@app/web/components/HeaderBackLink'
 import { HeaderUserMenu } from '@app/web/components/HeaderUserMenu'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
-import UserNavigation from '@app/web/app/UserNavigation'
+import MainNavigation from '@app/web/app/MainNavigation'
 import styles from './Header.module.css'
 
 const Header = ({
@@ -15,14 +15,12 @@ const Header = ({
   backLinkHref,
   fullWidth,
   hideFlag,
-  mainNavigation,
 }: {
-  user?: SessionUser | null
+  user: SessionUser | null
   backLink?: string
   backLinkHref?: string
   fullWidth?: boolean
   hideFlag?: boolean
-  mainNavigation?: boolean
 }) => {
   const baseLinkProps = {
     href: '/',
@@ -127,7 +125,7 @@ const Header = ({
           </div>
         </div>
       </div>
-      {mainNavigation && !!user && <UserNavigation user={user} />}
+      <MainNavigation user={user} />
       <dialog
         aria-labelledby="modal-menu-mobile-title"
         id="modal-menu-mobile"
