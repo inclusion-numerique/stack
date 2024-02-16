@@ -19,6 +19,7 @@ const EditableContent = ({
     <div>{children}</div>
     {showIcon && (
       <Button
+        type="button"
         title="Editer"
         data-testid={dataTestId}
         iconId="fr-icon-edit-line"

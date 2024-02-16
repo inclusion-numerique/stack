@@ -2,7 +2,7 @@ import { notFound, redirect } from 'next/navigation'
 import React from 'react'
 import { Metadata } from 'next'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
-import Edition from '@app/web/components/Resource/Edition/ResourceEdition'
+import ResourceEdition from '@app/web/components/Resource/Edition/ResourceEdition'
 import { getResource } from '@app/web/server/resources/getResource'
 import { getResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
 import { filterAccess } from '@app/web/server/resources/authorization'
@@ -44,7 +44,11 @@ const ResourceEditionPage = async ({
       <div className="fr-container">
         <ResourceBreadcrumbs resource={resource} currentChildPage="Éditer" />
       </div>
-      <Edition resource={resource} draftResource={draftResource} user={user} />
+      <ResourceEdition
+        resource={resource}
+        draftResource={draftResource}
+        user={user}
+      />
     </>
   )
 }
