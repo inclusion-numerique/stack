@@ -1,10 +1,12 @@
 import React from 'react'
 import { notFound } from 'next/navigation'
+import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import { getGouvernanceForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { generateDepartementMetadata } from '@app/web/app/(with-navigation)/gouvernances/departements/generateDepartementMetadata'
 import { getBesoinsEnIngenierieFinanciereForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getBesoinsIngenierieFinanciereForForm'
 import GouvernanceDetails from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/GouvernanceDetails'
-import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(with-navigation)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
+import { gouvernanceHomePath } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
+import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvernances/gouvernanceScopeTitle'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -15,10 +17,10 @@ const Page = async ({
 }: {
   params: { codeDepartement: string; gouvernanceId: string }
 }) => {
-  await checkUserAccessToGouvernanceScopeOrNavigate({ codeDepartement })
-
   const gouvernance = await getGouvernanceForForm(gouvernanceId)
   const besoins = await getBesoinsEnIngenierieFinanciereForForm(gouvernanceId)
+
+  const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
 
   if (!gouvernance) {
     notFound()
@@ -28,11 +30,34 @@ const Page = async ({
   }
 
   return (
-    <GouvernanceDetails
-      besoins={besoins}
-      gouvernance={gouvernance}
-      scope={{ codeDepartement }}
-    />
+    <>
+      <div className="fr-container">
+        <Breadcrumb
+          currentPageLabel="Détails"
+          segments={[
+            {
+              label: "Page d'accueil",
+              linkProps: {
+                href: '/',
+              },
+            },
+            {
+              label: `Gouvernance · ${scopeTitle}`,
+              linkProps: {
+                href: gouvernanceHomePath({ codeDepartement }),
+              },
+            },
+          ]}
+        />
+      </div>
+      <GouvernanceDetails
+        print={false}
+        besoins={besoins}
+        gouvernance={gouvernance}
+        scope={{ codeDepartement }}
+        publicView={false}
+      />
+    </>
   )
 }
 

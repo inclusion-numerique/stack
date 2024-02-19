@@ -1,38 +1,50 @@
 import React from 'react'
-import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import StatistiquesGouvernances from '@app/web/app/(with-navigation)/gouvernances/StatistiquesGouvernances'
 import { getStatistiquesGouvernanceNational } from '@app/web/app/(with-navigation)/gouvernances/getStatistiquesGouvernances'
-import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(with-navigation)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvernances/gouvernanceScopeTitle'
 import { getListeGouvernanceNational } from '@app/web/app/(with-navigation)/gouvernances/getListeGouvernances'
 import GouvernanceList from '@app/web/app/(with-navigation)/gouvernances/GouvernanceList'
+import SetLastVisitedGouvernanceScope from '@app/web/components/SetLastVisitedGouvernanceScope'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+import { checkAccessControl } from '@app/web/app/checkAccessControl'
+import { checkGouvernanceScopeWriteAccess } from '@app/web/app/(with-navigation)/gouvernances/checkGouvernanceScopeWriteAccess'
 
 export const generateMetadata = () => ({
-  title: `Gouvernance - National`,
+  title: metadataTitle(`Gouvernance · National`),
 })
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 const Page = async () => {
-  await checkUserAccessToGouvernanceScopeOrNavigate({ national: true })
+  const { access } = await checkAccessControl({
+    check: (user) =>
+      checkGouvernanceScopeWriteAccess({ scope: { national: true }, user }),
+    signinNextPath: `/gouvernances/national`,
+    throwNotFound: false,
+  })
 
   const statistiquesGouvernance = await getStatistiquesGouvernanceNational()
   const scopeTitle = await getGouvernanceScopeTitle({ national: true })
   const gouvernances = await getListeGouvernanceNational()
 
+  // Publicly available data
+  if (!access) {
+    return (
+      <>
+        <div className="fr-container fr-container--narrow fr-pt-15v">
+          <h1 className="fr-h3">Gouvernances</h1>
+        </div>
+        <div className="fr-container fr-container--narrow fr-mt-8v">
+          <div className="fr-background-alt--blue-france fr-width-full fr-border-radius--8 fr-p-8v fr-h6 fr-text--center">
+            Veuillez sélectionner un département pour accéder à la gouvernance
+          </div>
+        </div>
+      </>
+    )
+  }
+
   return (
     <div className="fr-container fr-pb-20v">
-      <Breadcrumb
-        currentPageLabel={`Gouvernance - ${scopeTitle}`}
-        segments={[
-          {
-            label: "Page d'accueil",
-            linkProps: {
-              href: '/',
-            },
-          },
-        ]}
-      />
       <StatistiquesGouvernances
         national
         statistiquesGouvernance={statistiquesGouvernance}
@@ -40,6 +52,7 @@ const Page = async () => {
       />
       <hr className="fr-separator-12v" />
       <GouvernanceList scope={{ national: true }} gouvernances={gouvernances} />
+      <SetLastVisitedGouvernanceScope scope={{ national: true }} />
     </div>
   )
 }

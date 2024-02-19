@@ -5,20 +5,32 @@ import { getSessionUser } from '@app/web/auth/getSessionUser'
 export const checkAccessControl = async ({
   check,
   signinNextPath,
+  throwNotFound = true,
+  redirect: redirectToSignin = true,
 }: {
   check: (user: SessionUser | null) => boolean | Promise<boolean>
   signinNextPath: string
+  throwNotFound?: boolean
+  redirect?: boolean
 }) => {
   const user = await getSessionUser()
   const hasAccess = await check(user)
 
   if (hasAccess) {
-    return
+    return { access: true, user }
   }
 
   if (!user) {
-    redirect(`/connexion?suivant=${signinNextPath}`)
+    if (redirectToSignin) {
+      redirect(`/connexion?suivant=${signinNextPath}`)
+    }
+
+    return { access: false, user: null }
   }
 
-  notFound()
+  if (throwNotFound) {
+    notFound()
+  }
+
+  return { access: false, user }
 }

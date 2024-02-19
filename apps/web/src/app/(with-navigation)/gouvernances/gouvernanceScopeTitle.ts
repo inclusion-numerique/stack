@@ -1,25 +1,12 @@
 import { cache } from 'react'
-import { prismaClient } from '@app/web/prismaClient'
 import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
+import { getRegionNameAndCode } from '@app/web/data/getRegionNameAndCode'
+import { getDepartementNameAndCode } from '@app/web/data/getDepartementNameAndCode'
 
 export const getGouvernanceScopeTitle = cache((scope: GouvernanceScope) =>
-  scope.national
-    ? 'National'
-    : scope.codeRegion
-      ? prismaClient.region
-          .findUniqueOrThrow({
-            where: { code: scope.codeRegion },
-            select: {
-              nom: true,
-            },
-          })
-          .then(({ nom }) => nom)
-      : prismaClient.departement
-          .findUniqueOrThrow({
-            where: { code: scope.codeDepartement },
-            select: {
-              nom: true,
-            },
-          })
-          .then(({ nom }) => nom),
+  scope.codeRegion
+    ? getRegionNameAndCode(scope.codeRegion).then(({ nom }) => nom)
+    : scope.codeDepartement
+      ? getDepartementNameAndCode(scope.codeDepartement).then(({ nom }) => nom)
+      : 'National',
 )

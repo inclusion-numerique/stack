@@ -85,3 +85,11 @@ export const gouvernanceFormSectionSideMenuItems: SideMenuProps.Item[] =
       href: `#${id}`,
     },
   }))
+
+// Les coordonnées du prefet et note de contexte ne sont pas consultable par le public
+export const publicViewGouvernanceSideMenuItems: SideMenuProps.Item[] =
+  gouvernanceFormSectionSideMenuItems.filter(
+    (item) =>
+      item.text !== gouvernanceFormSections.contactDuSousPrefetReferent.title &&
+      item.text !== gouvernanceFormSections.noteDeContexte.title,
+  )

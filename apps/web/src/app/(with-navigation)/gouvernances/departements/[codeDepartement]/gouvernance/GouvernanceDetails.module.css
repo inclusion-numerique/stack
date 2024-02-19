@@ -1,3 +1,13 @@
+.sideMenu{
+    :global(.fr-sidemenu__inner){
+        box-shadow: none;
+    }
+    :global(.fr-sidemenu__btn), :global(.fr-sidemenu__link){
+        font-size: 14px !important;
+    }
+}
+
+
 /**
   Hacky overrides for a decent print layout of the details component
  */

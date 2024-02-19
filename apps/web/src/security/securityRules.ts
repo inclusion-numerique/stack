@@ -56,13 +56,14 @@ export const canAddGouvernancePressentie = (
 ) => hasAccessToDashboard(user, { departementCode, regionCode })
 
 export const canEditGouvernancePressentie = (
-  user: Pick<SessionUser, 'role' | 'roleScope'>,
+  user: Pick<SessionUser, 'role' | 'roleScope'> | null,
   {
     departementCode,
   }: {
     departementCode: string
   },
 ) =>
+  !!user &&
   user.role !== 'PrefectureRegion' &&
   hasAccessToDashboard(user, { departementCode })
 

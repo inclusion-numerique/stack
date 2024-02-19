@@ -5,9 +5,6 @@ import {
   getPerimetreString,
   getPorteurString,
 } from '@app/web/app/(with-navigation)/gouvernances/gouvernanceHelpers'
-import BackLink from '@app/web/components/BackLink'
-import { gouvernanceHomePath } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
-import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 import PrintButton from '@app/web/app/(print)/PrintButton'
 import WhiteCard from '@app/web/ui/WhiteCard'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
@@ -17,10 +14,8 @@ import styles from '@app/web/app/(with-navigation)/gouvernances/Gouvernances.mod
 
 const GouvernancePressentieDetails = ({
   gouvernance,
-  scope,
 }: {
   gouvernance: GouvernanceForForm
-  scope: GouvernanceScope
 }) => {
   const {
     createur,
@@ -38,8 +33,6 @@ const GouvernancePressentieDetails = ({
   return (
     <>
       <div className="fr-flex fr-align-items-center fr-justify-content-space-between fr-hidden-print">
-        <BackLink href={gouvernanceHomePath(scope)} />
-
         <PrintButton />
       </div>
 

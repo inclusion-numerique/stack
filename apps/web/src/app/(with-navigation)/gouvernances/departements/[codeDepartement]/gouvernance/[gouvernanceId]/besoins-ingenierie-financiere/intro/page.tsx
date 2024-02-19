@@ -5,7 +5,6 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { getGouvernanceForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { generateDepartementMetadata } from '@app/web/app/(with-navigation)/gouvernances/departements/generateDepartementMetadata'
 import CreateBesoinsEnIngenierieFinanciereButton from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/intro/CreateBesoinsEnIngenierieFinanciereButton'
-import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(with-navigation)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import {
   gouvernanceHomePath,
   modifierBesoinsIngenieriePath,
@@ -14,6 +13,7 @@ import { canEditGouvernancePressentie } from '@app/web/security/securityRules'
 import BackLink from '@app/web/components/BackLink'
 import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvernances/gouvernanceScopeTitle'
 import WhiteCard from '@app/web/ui/WhiteCard'
+import { getSessionUser } from '@app/web/auth/getSessionUser'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -24,12 +24,11 @@ const Page = async ({
 }: {
   params: { codeDepartement: string; gouvernanceId: string }
 }) => {
-  const user = await checkUserAccessToGouvernanceScopeOrNavigate({
-    codeDepartement,
-  })
-
+  const user = await getSessionUser()
   if (
-    !canEditGouvernancePressentie(user, { departementCode: codeDepartement })
+    !canEditGouvernancePressentie(user, {
+      departementCode: codeDepartement,
+    })
   ) {
     notFound()
   }
@@ -57,7 +56,7 @@ const Page = async ({
               },
             },
             {
-              label: `Gouvernance - ${scopeTitle}`,
+              label: `Gouvernance · ${scopeTitle}`,
               linkProps: {
                 href: gouvernanceHomePath({ codeDepartement }),
               },

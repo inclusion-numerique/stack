@@ -7,9 +7,11 @@ import { OptionTuples } from '@app/web/utils/options'
 const DepartementSwitcher = ({
   departementOptions,
   currentCodeDepartement,
+  target,
 }: {
   departementOptions: OptionTuples
   currentCodeDepartement?: string
+  target: 'donnees' | 'gouvernances'
 }) => {
   const id = `select-departement-switcher`
 
@@ -22,10 +24,10 @@ const DepartementSwitcher = ({
     }
 
     if (codeDepartement === 'national') {
-      return router.push(`/donnees/national`)
+      return router.push(`/${target}/national`)
     }
 
-    router.push(`/donnees/departements/${codeDepartement}`)
+    router.push(`/${target}/departements/${codeDepartement}`)
   }
 
   return (

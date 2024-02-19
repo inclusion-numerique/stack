@@ -1,5 +1,6 @@
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
+import React from 'react'
 import type { StatistiquesGouvernance } from '@app/web/app/(with-navigation)/gouvernances/getStatistiquesGouvernances'
 import styles from '@app/web/app/(with-navigation)/gouvernances/Gouvernances.module.css'
 import { gouvernanceCandidatsPath } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
@@ -14,17 +15,14 @@ const StatistiquesGouvernances = ({
   statistiquesGouvernance: StatistiquesGouvernance
 } & GouvernanceScope) => (
   <>
-    <h1 className="fr-text-title--blue-france fr-mb-4v">
-      Gouvernance de l’Inclusion Numérique
-    </h1>
-    <h2 className="fr-text-title--blue-france fr-mb-12v">{scopeTitle}</h2>
+    <h1 className="fr-h3 fr-mt-15v fr-mb-12v">Gouvernance · {scopeTitle}</h1>
     <div className="fr-mb-12v fr-flex fr-align-items-center fr-justify-content-space-between">
-      <h3 className={classNames('fr-mb-0', styles.statisticsTitle)}>
+      <h4 className={classNames('fr-mb-0', styles.statisticsTitle)}>
         Les acteurs{' '}
         {scope.national ? 'au niveau national' : 'de votre territoire'}{' '}
         souhaitant porter ou participer à une feuille de route locale France
         Numérique Ensemble.
-      </h3>
+      </h4>
       <Button
         className="fr-ml-2w fr-flex-shrink-0"
         iconId="fr-icon-arrow-right-line"

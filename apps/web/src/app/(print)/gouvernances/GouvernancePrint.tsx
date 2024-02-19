@@ -33,6 +33,7 @@ const GouvernancePrint = ({
       gouvernance={gouvernance}
       scope={scope}
       besoins={besoins}
+      publicView={false}
       print
     />
   </div>

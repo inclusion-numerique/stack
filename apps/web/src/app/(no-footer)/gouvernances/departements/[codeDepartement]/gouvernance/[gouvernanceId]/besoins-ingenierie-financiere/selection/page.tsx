@@ -7,7 +7,6 @@ import { getBesoinsIngenierieFinanciereForForm } from '@app/web/app/(with-naviga
 import { generateDepartementMetadata } from '@app/web/app/(with-navigation)/gouvernances/departements/generateDepartementMetadata'
 import BesoinsIngenierieFinanciereSelectionForm from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/selection/BesoinsIngenierieFinanciereSelectionForm'
 import { getBesoinsEnIngenierieSelectionDefaultValues } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/besoinsEnIngenierieSelectionDefaultValues'
-import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(with-navigation)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import {
   gouvernanceHomePath,
   modifierBesoinsIngenieriePath,
@@ -15,6 +14,8 @@ import {
 import { canEditGouvernancePressentie } from '@app/web/security/securityRules'
 import BackLink from '@app/web/components/BackLink'
 import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvernances/gouvernanceScopeTitle'
+import { checkAccessControl } from '@app/web/app/checkAccessControl'
+import { checkGouvernanceScopeWriteAccess } from '@app/web/app/(with-navigation)/gouvernances/checkGouvernanceScopeWriteAccess'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -25,12 +26,15 @@ const Page = async ({
 }: {
   params: { codeDepartement: string; gouvernanceId: string }
 }) => {
-  const user = await checkUserAccessToGouvernanceScopeOrNavigate({
-    codeDepartement,
+  const accessCheck = await checkAccessControl({
+    check: (user) =>
+      checkGouvernanceScopeWriteAccess({ scope: { codeDepartement }, user }),
+    signinNextPath: `/gouvernances/departements/${codeDepartement}/gouvernance/${gouvernanceId}/besoins-ingenierie-financiere/priorisation`,
   })
-
   if (
-    !canEditGouvernancePressentie(user, { departementCode: codeDepartement })
+    !canEditGouvernancePressentie(accessCheck.user, {
+      departementCode: codeDepartement,
+    })
   ) {
     notFound()
   }

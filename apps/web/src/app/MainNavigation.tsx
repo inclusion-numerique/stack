@@ -18,7 +18,7 @@ const MainNavigation = ({ user }: { user: SessionUser | null }) => {
       isActive: pathname?.startsWith('/donnees'),
     },
     {
-      text: 'Gouvernance',
+      text: 'Gouvernances',
       linkProps: {
         href: '/gouvernances',
       },

@@ -36,9 +36,9 @@ const GouvernanceList = ({
       {/* Empty state */}
       {!canAdd && gouvernances.length === 0 && (
         <>
-          <h3 className="fr-mb-2v">
+          <h4 className="fr-mb-2v">
             Proposition de gouvernance sur votre territoire
-          </h3>
+          </h4>
           <p className="fr-mb-12v">
             Aucune gouvernance n’a été remontée pour le moment.
             <br />
@@ -53,9 +53,9 @@ const GouvernanceList = ({
       {/* Empty state is a creation CTA for v2 gouvernanceif the user can create gouvernance */}
       {canAdd && (
         <>
-          <h3 className="fr-mb-2v">
+          <h4 className="fr-mb-2v">
             Proposition de gouvernance sur votre territoire
-          </h3>
+          </h4>
           <p className="fr-mb-12v">
             Renseignez la proposition de gouvernance finale sur votre
             territoire, les feuilles de route ainsi que vos besoins en

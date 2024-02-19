@@ -4,12 +4,8 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import type { ContactsGouvernance } from '@app/web/app/(with-navigation)/gouvernances/getContactsGouvernances'
-import BackLink from '@app/web/components/BackLink'
 import styles from '@app/web/app/(with-navigation)/gouvernances/Gouvernances.module.css'
-import {
-  gouvernanceContactsDownloadPath,
-  gouvernanceHomePath,
-} from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
+import { gouvernanceContactsDownloadPath } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
 import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 import {
   contactTableHeaders,
@@ -25,14 +21,11 @@ const ContactsGouvernances = ({
   scopeTitle: string
   contactsGouvernance: ContactsGouvernance
 } & GouvernanceScope) => {
-  const backLink = gouvernanceHomePath(scope)
-
   const hasContacts = contactsGouvernance.length > 0
 
   return (
     <>
       <div className="fr-container">
-        <BackLink href={backLink} />
         <div className="fr-flex fr-align-items-center fr-justify-content-space-between">
           <h2 className="fr-text-title--blue-france fr-mt-6v fr-mb-4v">
             {scopeTitle}

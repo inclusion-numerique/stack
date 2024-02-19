@@ -1,7 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import DepartementSwitcher from '@app/web/components/Dashboard/DepartementSwitcher'
-import styles from '@app/web/components/Dashboard/Dashboard.module.css'
+import styles from '@app/web/components/Dashboard/DashboardHeader.module.css'
 import { OptionTuples } from '@app/web/utils/options'
 
 const DashboardHeader = ({
@@ -29,6 +29,7 @@ const DashboardHeader = ({
     <DepartementSwitcher
       departementOptions={departementOptions}
       currentCodeDepartement={currentCodeDepartement}
+      target="donnees"
     />
   </div>
 )

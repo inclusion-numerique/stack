@@ -4,14 +4,10 @@ import Link from 'next/link'
 import React from 'react'
 import classNames from 'classnames'
 import type { CandidatsGouvernance } from '@app/web/app/(with-navigation)/gouvernances/getCandidatsGouvernances'
-import BackLink from '@app/web/components/BackLink'
 import CandidatPorteurCard from '@app/web/app/(with-navigation)/gouvernances/CandidatPorteurCard'
 import styles from '@app/web/app/(with-navigation)/gouvernances/Gouvernances.module.css'
 import ParticipantInfoAccordion from '@app/web/app/(with-navigation)/gouvernances/ParticipantInfoAccordion'
-import {
-  gouvernanceContactsPath,
-  gouvernanceHomePath,
-} from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
+import { gouvernanceContactsPath } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
 import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 
 const CandidatsGouvernances = ({
@@ -22,8 +18,6 @@ const CandidatsGouvernances = ({
   scopeTitle: string
   candidatsGouvernance: CandidatsGouvernance
 } & GouvernanceScope) => {
-  const backLink = gouvernanceHomePath(scope)
-
   const downloadContactsLink = gouvernanceContactsPath(scope)
 
   const hasCandidats =
@@ -34,7 +28,6 @@ const CandidatsGouvernances = ({
 
   return (
     <>
-      <BackLink href={backLink} />
       <h2 className="fr-text-title--blue-france fr-mt-6v fr-mb-4v">
         {scopeTitle}
       </h2>

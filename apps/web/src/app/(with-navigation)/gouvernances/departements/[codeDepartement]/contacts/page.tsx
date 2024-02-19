@@ -1,11 +1,12 @@
 import React from 'react'
-import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import { generateDepartementMetadata } from '@app/web/app/(with-navigation)/gouvernances/departements/generateDepartementMetadata'
 import { gouvernanceHomePath } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
 import { getContactsGouvernanceDepartement } from '@app/web/app/(with-navigation)/gouvernances/getContactsGouvernances'
 import ContactsGouvernances from '@app/web/app/(with-navigation)/gouvernances/ContactsGouvernances'
-import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(with-navigation)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvernances/gouvernanceScopeTitle'
+import { checkAccessControl } from '@app/web/app/checkAccessControl'
+import { checkGouvernanceScopeWriteAccess } from '@app/web/app/(with-navigation)/gouvernances/checkGouvernanceScopeWriteAccess'
+import BackLink from '@app/web/components/BackLink'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -16,33 +17,21 @@ const Page = async ({
 }: {
   params: { codeDepartement: string }
 }) => {
-  await checkUserAccessToGouvernanceScopeOrNavigate({ codeDepartement })
-
+  await checkAccessControl({
+    check: (user) =>
+      checkGouvernanceScopeWriteAccess({ scope: { codeDepartement }, user }),
+    signinNextPath: `/gouvernances/departements/${codeDepartement}/contacts`,
+  })
   const contactsGouvernance =
     await getContactsGouvernanceDepartement(codeDepartement)
   const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
 
   return (
     <>
-      <div className="fr-container">
-        <Breadcrumb
-          currentPageLabel="Contacts"
-          segments={[
-            {
-              label: "Page d'accueil",
-              linkProps: {
-                href: '/',
-              },
-            },
-            {
-              label: `Gouvernance - ${scopeTitle}`,
-              linkProps: {
-                href: gouvernanceHomePath({
-                  codeDepartement,
-                }),
-              },
-            },
-          ]}
+      <div className="fr-container fr-pt-15v">
+        <BackLink
+          href={gouvernanceHomePath({ codeDepartement })}
+          label={`Retour à Gouvernance · ${scopeTitle}`}
         />
       </div>
       <ContactsGouvernances

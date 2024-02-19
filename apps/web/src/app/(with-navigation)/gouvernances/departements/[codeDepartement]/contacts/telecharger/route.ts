@@ -1,7 +1,8 @@
 import { NextRequest } from 'next/server'
 import { telechargerContacts } from '@app/web/app/(with-navigation)/gouvernances/telechargerContacts'
-import { checkUserAccessToGouvernanceScopeForApiResponse } from '@app/web/app/(with-navigation)/gouvernances/checkUserAccessToGouvernanceScopeForApiResponse'
 import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
+import { checkAccessControl } from '@app/web/app/checkAccessControl'
+import { checkGouvernanceScopeWriteAccess } from '@app/web/app/(with-navigation)/gouvernances/checkGouvernanceScopeWriteAccess'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -16,9 +17,15 @@ export const GET = async (
 ) => {
   const scope: GouvernanceScope = { codeDepartement }
 
-  const check = await checkUserAccessToGouvernanceScopeForApiResponse(scope)
+  const { access } = await checkAccessControl({
+    check: (user) =>
+      checkGouvernanceScopeWriteAccess({ scope: { codeDepartement }, user }),
+    signinNextPath: `/gouvernances/departements/${codeDepartement}/contacts`,
+    redirect: false,
+    throwNotFound: false,
+  })
 
-  if (!check) {
+  if (!access) {
     return new Response(null, { status: 403 })
   }
 

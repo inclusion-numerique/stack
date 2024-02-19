@@ -13,7 +13,7 @@ import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvern
 import BackLink from '@app/web/components/BackLink'
 import { canEditGouvernancePressentie } from '@app/web/security/securityRules'
 import { gouvernanceHomePath } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
-import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(with-navigation)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
+import { getSessionUser } from '@app/web/auth/getSessionUser'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -24,10 +24,7 @@ const Page = async ({
 }: {
   params: { codeDepartement: string; gouvernanceId: string }
 }) => {
-  const user = await checkUserAccessToGouvernanceScopeOrNavigate({
-    codeDepartement,
-  })
-
+  const user = await getSessionUser()
   if (
     !canEditGouvernancePressentie(user, { departementCode: codeDepartement })
   ) {
@@ -67,7 +64,7 @@ const Page = async ({
               },
             },
             {
-              label: `Gouvernance - ${scopeTitle}`,
+              label: `Gouvernance · ${scopeTitle}`,
               linkProps: {
                 href: gouvernanceHomePath({ codeDepartement }),
               },

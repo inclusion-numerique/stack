@@ -3,8 +3,9 @@ import { notFound } from 'next/navigation'
 import { getGouvernanceForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { generateDepartementMetadata } from '@app/web/app/(with-navigation)/gouvernances/departements/generateDepartementMetadata'
 import { getBesoinsEnIngenierieFinanciereForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getBesoinsIngenierieFinanciereForForm'
-import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(with-navigation)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import GouvernancePrint from '@app/web/app/(print)/gouvernances/GouvernancePrint'
+import { checkAccessControl } from '@app/web/app/checkAccessControl'
+import { checkGouvernanceScopeWriteAccess } from '@app/web/app/(with-navigation)/gouvernances/checkGouvernanceScopeWriteAccess'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -15,8 +16,11 @@ const Page = async ({
 }: {
   params: { codeDepartement: string; gouvernanceId: string }
 }) => {
-  await checkUserAccessToGouvernanceScopeOrNavigate({ codeDepartement })
-
+  await checkAccessControl({
+    check: (user) =>
+      checkGouvernanceScopeWriteAccess({ scope: { codeDepartement }, user }),
+    signinNextPath: `/gouvernances/departements/${codeDepartement}/gouvernance/${gouvernanceId}/imprimer`,
+  })
   const gouvernance = await getGouvernanceForForm(gouvernanceId)
   const besoins = await getBesoinsEnIngenierieFinanciereForForm(gouvernanceId)
 

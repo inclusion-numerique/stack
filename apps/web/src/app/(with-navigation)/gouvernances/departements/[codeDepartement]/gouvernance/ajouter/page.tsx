@@ -4,9 +4,10 @@ import { generateDepartementMetadata } from '@app/web/app/(with-navigation)/gouv
 import GouvernancePressentieForm from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/GouvernancePressentieForm'
 import { getPorteurOptions } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getPorteurOptions'
 import { gouvernanceHomePath } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
-import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(with-navigation)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import BackLink from '@app/web/components/BackLink'
 import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvernances/gouvernanceScopeTitle'
+import { checkAccessControl } from '@app/web/app/checkAccessControl'
+import { checkGouvernanceScopeWriteAccess } from '@app/web/app/(with-navigation)/gouvernances/checkGouvernanceScopeWriteAccess'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -19,7 +20,11 @@ const Page = async ({
 }: {
   params: { codeDepartement: string }
 }) => {
-  await checkUserAccessToGouvernanceScopeOrNavigate({ codeDepartement })
+  await checkAccessControl({
+    check: (user) =>
+      checkGouvernanceScopeWriteAccess({ scope: { codeDepartement }, user }),
+    signinNextPath: `/gouvernances/departements/${codeDepartement}/ajouter`,
+  })
 
   const optionsCollectivitesPorteur = await getPorteurOptions(codeDepartement)
   const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
@@ -37,7 +42,7 @@ const Page = async ({
               },
             },
             {
-              label: `Gouvernance - ${scopeTitle}`,
+              label: `Gouvernance · ${scopeTitle}`,
               linkProps: {
                 href: gouvernanceHomePath({ codeDepartement }),
               },

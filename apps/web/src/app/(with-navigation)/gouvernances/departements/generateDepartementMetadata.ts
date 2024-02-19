@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { prismaClient } from '@app/web/prismaClient'
+import { getDepartementNameAndCode } from '@app/web/data/getDepartementNameAndCode'
 
 export const generateDepartementMetadata =
   (pageTitle: string) =>
@@ -8,20 +8,12 @@ export const generateDepartementMetadata =
   }: {
     params: { codeDepartement: string }
   }) => {
-    const departement = await prismaClient.departement.findUnique({
-      where: {
-        code: codeDepartement,
-      },
-      select: {
-        code: true,
-        nom: true,
-      },
-    })
+    const departement = await getDepartementNameAndCode(codeDepartement)
     if (!departement) {
       notFound()
     }
 
     return {
-      title: `${departement.nom} - ${pageTitle}`,
+      title: `${departement.nom} · ${pageTitle}`,
     }
   }
