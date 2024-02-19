@@ -10,7 +10,6 @@ const SetLastVisitedGouvernanceScope = ({
   scope: GouvernanceScope
 }) => {
   useEffect(() => {
-    console.log('SET LAST VISITED SCOPE', scope)
     setLastVisitedGouvernanceScope(scope)
   }, [scope])
 

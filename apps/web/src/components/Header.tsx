@@ -15,12 +15,14 @@ const Header = ({
   backLinkHref,
   fullWidth,
   hideFlag,
+  mainNavigation,
 }: {
   user: SessionUser | null
   backLink?: string
   backLinkHref?: string
   fullWidth?: boolean
   hideFlag?: boolean
+  mainNavigation?: boolean
 }) => {
   const baseLinkProps = {
     href: '/',
@@ -125,7 +127,7 @@ const Header = ({
           </div>
         </div>
       </div>
-      <MainNavigation user={user} />
+      {mainNavigation && <MainNavigation user={user} />}
       <dialog
         aria-labelledby="modal-menu-mobile-title"
         id="modal-menu-mobile"

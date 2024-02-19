@@ -3,8 +3,8 @@ import React from 'react'
 import {
   BesoinsIngenierieFinanciereForForm,
   GouvernanceForForm,
-} from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
-import GouvernanceDetails from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/GouvernanceDetails'
+} from '@app/web/app/(private-with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
+import GouvernanceDetails from '@app/web/app/(private-with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/GouvernanceDetails'
 import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 
 const GouvernancePrint = ({

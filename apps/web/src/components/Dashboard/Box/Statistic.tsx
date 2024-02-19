@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import classNames from 'classnames'
-import type { StatisticData } from '@app/web/app/(public)/donnees/getDashboardData'
+import type { StatisticData } from '@app/web/data/getDashboardData'
 import { DashboardInfoButtons } from '@app/web/components/Dashboard/DashboardInfoModals'
 import { numberToString } from '@app/web/utils/formatNumber'
 import styles from './Statistic.module.css'

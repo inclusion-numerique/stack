@@ -3,7 +3,7 @@ import { v4 } from 'uuid'
 import {
   GouvernanceForForm,
   gouvernanceSelect,
-} from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
+} from '@app/web/app/(private-with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import {
   ComiteData,
   FeuilleDeRouteData,

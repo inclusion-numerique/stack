@@ -2,18 +2,18 @@ import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import { notFound } from 'next/navigation'
 import Progress from '@app/ui/components/Progress'
-import { getBesoinsIngenierieFinanciereForForm } from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
-import { generateDepartementMetadata } from '@app/web/app/(private)/gouvernances/departements/generateDepartementMetadata'
-import { getBesoinsEnIngenieriePriorisationDefaultValues } from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/besoinsEnIngenieriePriorisationDefaultValues'
-import BesoinsIngenierieFinancierePriorisationForm from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/priorisation/BesoinsIngenierieFinancierePriorisationForm'
-import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
+import { getBesoinsIngenierieFinanciereForForm } from '@app/web/app/(private-with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
+import { generateDepartementMetadata } from '@app/web/app/(private-with-navigation)/gouvernances/departements/generateDepartementMetadata'
+import { getBesoinsEnIngenieriePriorisationDefaultValues } from '@app/web/app/(private-with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/besoinsEnIngenieriePriorisationDefaultValues'
+import BesoinsIngenierieFinancierePriorisationForm from '@app/web/app/(private-with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/priorisation/BesoinsIngenierieFinancierePriorisationForm'
+import { checkUserAccessToGouvernanceScopeOrNavigate } from '@app/web/app/(private-with-navigation)/gouvernances/checkUserAccessToGouvernanceScopeOrNavigate'
 import {
   gouvernanceHomePath,
   modifierBesoinsIngenieriePath,
-} from '@app/web/app/(private)/gouvernances/gouvernancePaths'
+} from '@app/web/app/(private-with-navigation)/gouvernances/gouvernancePaths'
 import { canEditGouvernancePressentie } from '@app/web/security/securityRules'
 import BackLink from '@app/web/components/BackLink'
-import { getGouvernanceScopeTitle } from '@app/web/app/(private)/gouvernances/gouvernanceScopeTitle'
+import { getGouvernanceScopeTitle } from '@app/web/app/(private-with-navigation)/gouvernances/gouvernanceScopeTitle'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0

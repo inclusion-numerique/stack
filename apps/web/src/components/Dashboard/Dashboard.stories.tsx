@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
-import Dashboard from '@app/web/components/Dashboard/Dashboard'
 import {
   BoxData,
   BoxesData,
   DashboardData,
-} from '@app/web/app/(public)/donnees/getDashboardData'
+} from '@app/web/data/getDashboardData'
+import Dashboard from '@app/web/components/Dashboard/Dashboard'
 import { DepartementGeoFeatures } from '@app/web/data/departements'
 import { getDepartementGeoJson } from '@app/web/test/testDepartementData'
 import { OptionTuples } from '@app/web/utils/options'

@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-import { BoxData } from '@app/web/app/(public)/donnees/getDashboardData'
+import { BoxData } from '@app/web/data/getDashboardData'
 import StatisticBox from './StatisticBox'
 import styles from './Box.module.css'
 import PercentageBox from './PercentageBox'

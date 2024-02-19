@@ -1,8 +1,5 @@
 import React, { PropsWithChildren } from 'react'
-import {
-  BoxesData,
-  DashboardData,
-} from '@app/web/app/(public)/donnees/getDashboardData'
+import { BoxesData, DashboardData } from '@app/web/data/getDashboardData'
 import Box from '@app/web/components/Dashboard/Box/Box'
 
 const StatisticsWrapper = ({

@@ -4,6 +4,7 @@ import { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 
 export const getLastVisitedGouvernanceScopeServer = () => {
   const cookie = cookies().get(lastVisitedGouvernanceScopeCookie)
+
   if (!cookie) {
     return null
   }

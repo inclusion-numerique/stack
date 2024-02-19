@@ -14,7 +14,6 @@ import { Matomo } from '@app/web/app/Matomo'
 import { PreloadResources } from '@app/web/app/PreloadResources'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import Crisp from '@app/web/app/Crisp'
-import ZustandStores from '@app/web/app/ZustandStores'
 
 declare module '@codegouvfr/react-dsfr/link' {
   interface RegisterLink {
@@ -61,7 +60,6 @@ const RootLayout = ({ children }: PropsWithChildren) => {
         <EnvInformation />
         {children}
         <Toaster />
-        <ZustandStores />
       </body>
     </html>
   )

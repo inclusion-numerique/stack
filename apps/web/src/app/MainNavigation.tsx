@@ -5,28 +5,22 @@ import { MainNavigation as DsfrMainNavigation } from '@codegouvfr/react-dsfr/Mai
 import { usePathname } from 'next/navigation'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { hasAccessToAdministration } from '@app/web/security/securityRules'
-import { getDonneesRouteForUser } from '@app/web/app/(public)/donnees/getDonneesRouteForUser'
-import { getGouvernancesRouteForUser } from '@app/web/app/(public)/gouvernance/getGouvernancesRouteForUser'
-import { getLastVisitedGouvernanceScope } from '@app/web/app/getLastVisitedGouvernanceScope.client'
 
 const MainNavigation = ({ user }: { user: SessionUser | null }) => {
   const pathname = usePathname()
-  const lastVisitedScope = getLastVisitedGouvernanceScope()
-
-  console.log('LAST VISITED SCOPE', lastVisitedScope)
 
   const items: MainNavigationProps.Item[] = [
     {
       text: 'Données de l’inclusion numérique',
       linkProps: {
-        href: getDonneesRouteForUser(user, lastVisitedScope),
+        href: '/donnees',
       },
       isActive: pathname?.startsWith('/donnees'),
     },
     {
       text: 'Gouvernance',
       linkProps: {
-        href: getGouvernancesRouteForUser(user, lastVisitedScope),
+        href: '/gouvernances',
       },
       isActive: pathname?.startsWith('/gouvernances'),
     },
@@ -48,15 +42,6 @@ const MainNavigation = ({ user }: { user: SessionUser | null }) => {
       isActive: pathname?.startsWith('/administration'),
     })
   }
-
-  console.log(
-    'ITEMS',
-    items.map(({ text, linkProps, isActive }) => ({
-      text,
-      href: linkProps.href,
-      isActive,
-    })),
-  )
 
   return (
     <div className="fr-nav__container">

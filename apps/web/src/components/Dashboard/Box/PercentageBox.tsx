@@ -1,5 +1,5 @@
 import React from 'react'
-import { PercentageBoxData } from '@app/web/app/(public)/donnees/getDashboardData'
+import { PercentageBoxData } from '@app/web/data/getDashboardData'
 import Percentage from './Percentage'
 import Source from './Source'
 import styles from './PercentageBox.module.css'

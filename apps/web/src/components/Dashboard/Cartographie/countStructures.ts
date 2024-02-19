@@ -1,6 +1,6 @@
 /* eslint no-plusplus: 0 */
 
-import type { DashboardStructureItem } from '@app/web/app/(public)/donnees/getDashboardData'
+import type { DashboardStructureItem } from '@app/web/data/getDashboardData'
 import type { DepartementCartographieStructureItem } from '@app/web/app/(cartographie)/donnees/departements/[codeDepartement]/cartographie/getDepartementCartographieData'
 import { AidantsConnectDemarcheLabels } from '@app/web/data/aidantsConnectStructures'
 

@@ -1,6 +1,6 @@
 import { v4 } from 'uuid'
 import type { Prisma } from '@prisma/client'
-import { getBesoinsEnIngenieriePriorisationDefaultValues } from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/besoinsEnIngenieriePriorisationDefaultValues'
+import { getBesoinsEnIngenieriePriorisationDefaultValues } from '@app/web/app/(private-with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/besoinsEnIngenieriePriorisationDefaultValues'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { prismaClient } from '@app/web/prismaClient'
 import { invalidError, notFoundError } from '@app/web/server/rpc/trpcErrors'

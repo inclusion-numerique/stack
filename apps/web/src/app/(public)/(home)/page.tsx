@@ -6,6 +6,7 @@ import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { numberToString } from '@app/web/utils/formatNumber'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import AccederAuxDonneesButton from '@app/web/app/(public)/(home)/AccederAuxDonneesButton'
+import { getLastVisitedGouvernanceScopeServer } from '@app/web/app/getLastVisitedGouvernanceScope.server'
 import styles from './Home.module.css'
 
 export const dynamic = 'force-dynamic'
@@ -16,6 +17,7 @@ const HomePage = async () => {
     await getHomepageData()
 
   const user = await getSessionUser()
+  const lastVisitedScope = getLastVisitedGouvernanceScopeServer()
 
   const nationalStatsCard = [
     {
@@ -181,7 +183,10 @@ const HomePage = async () => {
                   des populations.
                 </li>
               </ul>
-              <AccederAuxDonneesButton user={user} />
+              <AccederAuxDonneesButton
+                user={user}
+                lastVisitedScope={lastVisitedScope}
+              />
             </div>
           </div>
         </section>

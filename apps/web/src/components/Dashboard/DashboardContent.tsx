@@ -1,8 +1,8 @@
 import React from 'react'
+import type { DashboardData } from '@app/web/data/getDashboardData'
 import DetailedStatistics from '@app/web/components/Dashboard/DetailedStatistics'
 import ErrorBoundary from '@app/web/components/ErrorBoundary'
 import DepartementMap from '@app/web/components/Dashboard/DepartementMap'
-import type { DashboardData } from '@app/web/app/(public)/donnees/getDashboardData'
 import Box from '@app/web/components/Dashboard/Box/Box'
 
 const DashboardContent = ({ data }: { data: DashboardData }) => {

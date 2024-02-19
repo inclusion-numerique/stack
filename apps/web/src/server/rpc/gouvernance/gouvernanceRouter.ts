@@ -1,7 +1,7 @@
 import type { Prisma } from '@prisma/client'
 import { v4 } from 'uuid'
 import sanitizeHtml from 'sanitize-html'
-import { gouvernanceSelect } from '@app/web/app/(private)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
+import { gouvernanceSelect } from '@app/web/app/(private-with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import {
   getInfoFromPorteurCode,
