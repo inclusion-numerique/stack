@@ -7,7 +7,7 @@ const Layout = async ({ children }: PropsWithChildren) => {
     signinNextPath: '/profil',
   })
 
-  return <>{children}</>
+  return { children }
 }
 
 export default Layout

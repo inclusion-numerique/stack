@@ -7,7 +7,7 @@ const Layout = async ({ children }: PropsWithChildren) => {
     signinNextPath: '/formulaires-feuilles-de-routes-territoriales',
   })
 
-  return <>{children}</>
+  return { children }
 }
 
 export default Layout
