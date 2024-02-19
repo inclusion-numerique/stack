@@ -1,5 +1,5 @@
 import { DefaultValues } from 'react-hook-form/dist/types/form'
-import { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
+import { GouvernanceFormulaireForForm } from '@app/web/app/(public)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
 import { ParticiperData } from '@app/web/gouvernance/Participer'
 import { contactDefaultValuesFromData } from '@app/web/gouvernance/contactHelper'
 

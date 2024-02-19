@@ -1,4 +1,4 @@
-import type { GouvernanceForForm } from '@app/web/app/(private-with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
+import type { GouvernanceForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { MembreData } from '@app/web/gouvernance/Gouvernance'
 
 export type GouvernanceActorType =

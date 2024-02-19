@@ -101,9 +101,9 @@ const HomePage = async () => {
                 <p className="fr-text--xs fr-hint-text fr-mb-8v">
                   Mis à jour le {dateAsDay(dataUpdated)}
                 </p>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <div className="fr-flex fr-direction-row fr-align-items-center fr-flex-gap-16v">
                   <div className="fr-flex-basis-0 fr-flex-grow-1">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src="/images/home-map.svg"
                       alt=""

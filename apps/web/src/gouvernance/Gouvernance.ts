@@ -1,7 +1,7 @@
 import z, { ZodArray, ZodEffects, ZodObject } from 'zod'
 import { ZodRawShape } from 'zod/lib/types'
 import { FrequenceComite, TypeComite, TypeContrat } from '@prisma/client'
-import { GouvernanceFormSection } from '@app/web/app/(private-with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceFormSections'
+import { GouvernanceFormSection } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceFormSections'
 import { requiredSiretValidation } from '@app/web/validation/siretValidation'
 
 export const MembreValidation = z.object({

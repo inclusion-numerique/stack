@@ -11,11 +11,11 @@ import { ChoixDuFormulaireValidation } from '@app/web/gouvernance/ChoixDuFormula
 import {
   getCurrentFormulaireGouvernanceForFormByUser,
   getFormulaireGouvernanceForFormById,
-} from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
+} from '@app/web/app/(public)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
 import {
   getEtapeEnCours,
   getEtapeInfo,
-} from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/etapeFormulaireGouvernance'
+} from '@app/web/app/(public)/formulaires-feuilles-de-routes-territoriales/etapeFormulaireGouvernance'
 import { PorterOuParticiperValidation } from '@app/web/gouvernance/PorterOuParticiper'
 import { AnnulerValidation } from '@app/web/gouvernance/Annuler'
 import { participerPersistenceFromData } from '@app/web/gouvernance/participerHelpers.server'
