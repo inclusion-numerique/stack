@@ -69,7 +69,7 @@ const ChoixIntention = ({
             impliquées.
           </p>
         </div>
-        <div className={linkCardStyles.iconContainer}>
+        <div className={linkCardStyles.arrowContainer}>
           {chosen === 'Porter' && disabled ? (
             <Spinner size="small" />
           ) : (
@@ -92,7 +92,7 @@ const ChoixIntention = ({
             sollicités à l’occasion des concertations territoriales.
           </p>
         </div>
-        <div className={linkCardStyles.iconContainer}>
+        <div className={linkCardStyles.arrowContainer}>
           {chosen === 'Participer' && disabled ? (
             <Spinner size="small" />
           ) : (

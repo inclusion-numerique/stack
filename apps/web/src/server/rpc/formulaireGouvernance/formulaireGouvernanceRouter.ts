@@ -96,28 +96,20 @@ export const formulaireGouvernanceRouter = router({
             })
 
       // User already had a form
-      if (existingFormulaire) {
-        // User selected same persona as existing form
-        if (existingFormulaire.gouvernancePersona === gouvernancePersonaId) {
-          // Reuse the existing formulaire for same persona and do not mutate anything else
+      if (
+        existingFormulaire && // User selected same persona as existing form
+        existingFormulaire.gouvernancePersona === gouvernancePersonaId
+      ) {
+        // Reuse the existing formulaire for same persona and do not mutate anything else
 
-          return getUpdatedFormulaireState({
-            formulaireGouvernance: existingFormulaire,
-            user: updatedUser,
-          })
-        }
-
-        // User selected a different persona than existing form
-        // We cancel the existing form
-        await prismaClient.formulaireGouvernance.update({
-          where: { id: existingFormulaire.id },
-          data: {
-            annulation: new Date(),
-          },
+        return getUpdatedFormulaireState({
+          formulaireGouvernance: existingFormulaire,
+          user: updatedUser,
         })
       }
 
       // Create a new formulaireGouvernance with the new persona
+      // It is more recent than existingFormulaire so it will be selected by default from now on
       await prismaClient.user.update({
         where: { id: user.id },
         data: {
