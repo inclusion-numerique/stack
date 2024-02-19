@@ -1,5 +1,6 @@
 /* eslint jsx-a11y/control-has-associated-label: 0  */
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 
@@ -12,7 +13,9 @@ const ConfidentialityPage = () => (
   <div className="fr-container landing-main-container fr-my-8w">
     <div className="fr-grid-row fr-grid-row--center">
       <div className="fr-col-md-8">
-        <h1>Politique de confidentialité</h1>
+        <h1>
+          Politique de confidentialité - {PublicWebAppConfig.projectTitle}
+        </h1>
 
         <h2>Traitement des données à caractère personnel</h2>
 
@@ -58,13 +61,16 @@ const ConfidentialityPage = () => (
         <h2>Responsable du traitement</h2>
 
         <p>
-          Le Ministère de la Transition écologique et le Ministère de la
-          Cohésion des territoires et des Relations avec les collectivités
-          territoriales sont les responsables du traitement de vos données à
-          caractère personnel.
+          {PublicWebAppConfig.projectTitle} est développé au sein de
+          l’incubateur de l’Agence Nationale de la Cohésion des Territoires.{' '}
         </p>
 
-        <p>Ils sont situés Tour Sequoia, 1 place Carpeaux, 92800 Puteaux.</p>
+        <p>
+          Le responsable de traitement des données à caractère personnel
+          collectées par le site {PublicWebAppConfig.projectTitle} est l’Agence
+          Nationale de la Cohésion des Territoires, représentée par Monsieur
+          Stanislas Bourron, Directeur général.
+        </p>
 
         <h2>Destinataires des données</h2>
 
@@ -89,14 +95,15 @@ const ConfidentialityPage = () => (
         </p>
 
         <p>
-          Les sociétés Scalingo (hébergeur), Sendinblue (envoi emails)
-          interviennent en tant que sous-traitants.
+          Les sociétés Scaleway (hébergeur), Brevo (envoi emails) interviennent
+          en tant que sous-traitants.
         </p>
 
         <p>
-          Aides-territoires s’est assurée de la mise en œuvre par ses
-          sous-traitants de garanties adéquates et du respect de conditions
-          strictes de confidentialité, d’usage et de protection des données.
+          {PublicWebAppConfig.projectTitle} s’est assurée de la mise en œuvre
+          par ses sous-traitants de garanties adéquates et du respect de
+          conditions strictes de confidentialité, d’usage et de protection des
+          données.
         </p>
 
         <div className="fr-table" data-fr-js-table="true">
@@ -104,8 +111,8 @@ const ConfidentialityPage = () => (
             <thead>
               <tr>
                 <th scope="col">Partenaire</th>
-                <th scope="col">Scalingo</th>
-                <th scope="col">SendinBlue</th>
+                <th scope="col">Scaleway</th>
+                <th scope="col">Brevo</th>
               </tr>
             </thead>
             <tbody>
@@ -123,8 +130,23 @@ const ConfidentialityPage = () => (
               </tr>
               <tr>
                 <th>Garanties</th>
-                <td>https://scalingo.com/fr/privacy-policy</td>
-                <td>https://fr.sendinblue.com/legal/privacypolicy/</td>
+                <td>
+                  <Link
+                    href="https://www-uploads.scaleway.com/DPA_030921_fc856ff6e8.pdf"
+                    target="_blank"
+                  >
+                    Politique de confidentialité
+                  </Link>
+                </td>
+                <td>
+                  <Link
+                    href="https://www.brevo.com/fr/legal/privacypolicy"
+                    target="_blank"
+                  >
+                    Politique de confidentialité
+                  </Link>
+                  /
+                </td>
               </tr>
             </tbody>
           </table>
@@ -144,10 +166,10 @@ const ConfidentialityPage = () => (
 
         <p>
           Les données sont également transférées sur les serveurs de notre
-          prestataire en charge de l&apos;envoi de la newsletter : Sendinblue,
-          Société par actions simplifiée au capital de 137.531 euros,
+          prestataire en charge de l&apos;envoi de la newsletter : SENDINBLUE,
+          Société par actions simplifiée au capital de 387 722 euros,
           immatriculée au RCS de Paris sous le numéro 498 019 298 et dont le
-          siège social est situé 55 rue d&apos;Amsterdam, 75008 Paris, France.
+          siège social est situé 106 boulevard Haussmann, 75008 Paris, France.
         </p>
 
         <h2>Durée de conservation</h2>
@@ -155,25 +177,22 @@ const ConfidentialityPage = () => (
         <p>
           Vous pouvez vous désincrire de la newsletter soit en nous envoyant un
           email, soit en utilisant les liens de désinscription présents dans nos
-          emails d&apos;alerte ou newsletter, ou directement dans le formulaire
-          d&apos;édition du profil, rubrique &ldquo;Mon compte&rdquo;.
+          emails d&apos;alerte ou newsletter.
         </p>
 
         <p>
           Vos coordonnées sont conservées jusqu&apos;à un an après votre
-          dernière action sur le site, (dernière connexion à condition de
-          n&apos;avoir aucune aide en cours de validité, envoi d&apos;un
-          message, etc), ou un an suite à votre demande d’effacement des données
-          ou demande de désinscription.
+          dernière action sur le site, (dernière connexion), ou un an suite à
+          votre demande d’effacement des données ou demande de désinscription.
         </p>
 
         <h2>Finalités du traitement</h2>
 
         <p>
-          La finalité du traitement de données réalisé par Aides-territoires est
-          de faciliter la connaissance et l&apos;accès aux aides financières et
-          en ingénierie pour permettre aux collectivités et acteurs du
-          territoire de réaliser leurs projets.
+          La finalité du traitement de données réalisé par{' '}
+          {PublicWebAppConfig.projectTitle} est de faciliter la connaissance et
+          le partage de ressources pour permettre aux acteurs du numérique
+          d&apos;intérêt général de réaliser leurs projets.
         </p>
 
         <h2>Liste des traitements</h2>
@@ -191,21 +210,14 @@ const ConfidentialityPage = () => (
                 <th>Traitement&nbsp;→</th>
                 <th>Accès authentifié</th>
                 <th>Inscription newsletter</th>
-                <th>Alerte nouveaux résultats</th>
-                <th>Formulaire de contact</th>
               </tr>
               <tr>
                 <th>Finalité du traitement&nbsp;→</th>
                 <td>
                   fourniture du service permettant aux utilisateurs de se créer
-                  un compte, de diffuser des dispositifs et de les consulter.
+                  un compte, de créer des ressources et de les consulter.
                 </td>
                 <td>envoi régulier ( mensuel) d’une lettre d’info</td>
-                <td>envoi d’emails</td>
-                <td>
-                  demande adressée à l’équipe {process.env.NEXT_PUBLIC_APP_NAME}
-                  , en vue d’une réponse personnalisée
-                </td>
               </tr>
               <tr>
                 <th>Durée de conservation</th>
@@ -217,54 +229,14 @@ const ConfidentialityPage = () => (
                   Vos coordonnées sont conservées jusqu&apos;à un an après une
                   demande de désinscription à la newsletter
                 </td>
-                <td>
-                  Vos coordonnées sont conservées jusqu&apos;à un an après votre
-                  dernière action sur le site ou demande de suppression
-                </td>
-                <td>
-                  Vos coordonnées sont conservées jusqu&apos;à un an après
-                  l’envoi de votre message
-                </td>
               </tr>
               <tr>
                 <th>Prénom/nom</th>
                 <td>Oui</td>
-                <td />
-                <td />
                 <td>Oui</td>
-              </tr>
-              <tr>
-                <th>Structure</th>
-                <td>Oui</td>
-                <td />
-                <td />
-                <td>Optionnel</td>
-              </tr>
-              <tr>
-                <th>Fonction</th>
-                <td>Oui</td>
-                <td />
-                <td />
-                <td>Optionnel</td>
-              </tr>
-              <tr>
-                <th>Adresse</th>
-                <td>Oui</td>
-                <td />
-                <td />
-                <td>Optionnel</td>
-              </tr>
-              <tr>
-                <th>Téléphone</th>
-                <td />
-                <td />
-                <td />
-                <td>Optionnel</td>
               </tr>
               <tr>
                 <th>Email</th>
-                <td>Oui</td>
-                <td>Oui</td>
                 <td>Oui</td>
                 <td>Oui</td>
               </tr>
@@ -294,13 +266,6 @@ const ConfidentialityPage = () => (
         </p>
 
         <p>
-          <b>
-            Nous utilisons différents types de cookies, certains nécessitant
-            votre consentement.
-          </b>
-        </p>
-
-        <p>
           <b>Nous utilisons pour cela Matomo,</b> un outil de mesure d’audience
           web libre, paramétré pour être en conformité avec la recommandation
           «&nbsp;Cookies&nbsp;» de la CNIL. Cela signifie que votre adresse IP,
@@ -325,14 +290,6 @@ const ConfidentialityPage = () => (
           Vous pouvez choisir de ne pas transmettre d&apos;informations à
           Matomo&nbsp;:
         </p>
-
-        <div className="fr-mb-3w" id="piwik-consent">
-          <iframe
-            title="Matomo"
-            style={{ border: 0, height: 200, width: 600 }}
-            src="https://matomo.incubateur.anct.gouv.fr/index.php?module=CoreAdminHome&action=optOut&language=en&backgroundColor=&fontColor=&fontSize=16px&fontFamily=Helvetica"
-          />
-        </div>
 
         <p>
           À tout moment, vous pouvez refuser l’utilisation des cookies et
@@ -370,21 +327,6 @@ const ConfidentialityPage = () => (
           </li>
         </ul>
         <p />
-        <h3>Je contribue à enrichir vos données, puis-je y accéder ?</h3>
-
-        <p>
-          Bien sûr ! Les statistiques d’usage de la majorité de nos produits
-          sont disponibles en accès libre sur&nbsp;
-          <a
-            href="https://stats.data.gouv.fr/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            stats.data.gouv.fr
-            <span className="fr-sr-only">Ouvre une nouvelle fenêtre</span>
-          </a>
-          .
-        </p>
 
         <h2>Sécurité et confidentialité</h2>
 
@@ -415,11 +357,11 @@ const ConfidentialityPage = () => (
           <li>
             Mesures de protection des logiciels&nbsp;: les mises à jour et les
             mesures de protection sont assurées par l&apos;hébergeur
-            Scalingo&nbsp;;
+            Scaleway&nbsp;;
           </li>
           <li>
             Sauvegarde des données&nbsp;: les sauvegardes sont assurées par
-            l&apos;hébergeur Scalingo&nbsp;;
+            l&apos;hébergeur Scaleway&nbsp;;
           </li>
           <li>
             Chiffrement des données&nbsp;: site uniquement accessible en HTTPS.
@@ -443,8 +385,8 @@ const ConfidentialityPage = () => (
         </ul>
 
         <p>
-          Pour toute demande, vous pouvez écrire un email à l’équipe La France
-          des solutions&nbsp;:{' '}
+          Pour toute demande, vous pouvez écrire un email à l’équipe{' '}
+          {PublicWebAppConfig.projectTitle}&nbsp;:{' '}
           <a
             href={
               PublicWebAppConfig.contactEmail &&
