@@ -42,7 +42,7 @@ export const getHomepageData = async () => {
       getAppData(),
       prismaClient.conseillerNumerique.count({}),
       prismaClient.structureAidantsConnect.aggregate({
-        _count: {
+        _sum: {
           aidants: true,
         },
       }),
@@ -53,7 +53,7 @@ export const getHomepageData = async () => {
     dataUpdated: appData.dataUpdated,
     gouvernances,
     conseillersNumeriques,
-    aidantsConnect: aidantsConnect._count.aidants,
+    aidantsConnect: aidantsConnect._sum.aidants,
   }
 }
 
