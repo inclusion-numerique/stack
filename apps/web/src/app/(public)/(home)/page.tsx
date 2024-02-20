@@ -120,7 +120,7 @@ const HomePage = async () => {
                             index !== 0 && 'fr-mt-4v',
                           )}
                         >
-                          {numberToString(value)}
+                          {numberToString(value ?? 0)}
                         </p>
                         <p className="fr-text--sm fr-mb-0" key={label}>
                           {label}
