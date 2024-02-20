@@ -117,7 +117,7 @@ workflows:
             - test_web
             - test_web_integration
             - test_components
-#            - test_web_e2e
+            - test_web_e2e
       - chromatic:
           requires:
             - lint_web
@@ -127,7 +127,7 @@ workflows:
             - test_web
             - test_web_integration
             - test_components
-#            - test_web_e2e
+            - test_web_e2e
 
   manual_backup_main_database:
     when:
