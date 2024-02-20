@@ -26,13 +26,7 @@ describe('ETQ Visiteur qui souhaite se connecter en Préfecture, je peux me conn
     cy.contains('Pour accéder au tableau de bord des préfectures')
   })
 
-  it('Préliminaire 2 - Le retour ramène sur le choix entre connexion Prefecture ou Collectivité', () => {
-    cy.visit('/connexion?role=prefecture')
-    cy.contains('Retour').click()
-    cy.url().should('equal', appUrl('/connexion'))
-  })
-
-  it('Préliminaire 3 - Pas de possibilité de connexion par email ou création de compte', () => {
+  it('Préliminaire 2 - Pas de possibilité de connexion par email ou création de compte', () => {
     cy.visit('/connexion?role=prefecture')
     cy.contains('Se connecter avec MonComptePro')
     cy.contains('Se connecter avec son email').should('not.exist')

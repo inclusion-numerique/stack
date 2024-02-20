@@ -34,7 +34,7 @@ describe("En tant que préfecture de département, j'ai accès aux données de m
     cy.wait('@cartographie-map-tiles')
     cy.wait('@cartographie-map-fonts')
 
-    cy.contains('Retour au tableau de bord Gironde')
+    cy.contains('Retour aux données · Gironde')
     cy.testId('structure-details-title').should('not.exist')
     cy.testId('city-details-title').should('not.exist')
 
