@@ -15,7 +15,7 @@ export const getGouvernancesCounts = () =>
     }[]
   >`
       SELECT COUNT(membre_gouvernance.id)                                                                        as membres,
-             COUNT(DISTINCT gouvernances.id)                                                                     as gouvernances,
+             COUNT(DISTINCT CASE WHEN gouvernances.v2_enregistree IS NOT NULL THEN gouvernances.id END)                                                                     as gouvernances,
              COUNT(membre_gouvernance.id)
              FILTER (WHERE membre_gouvernance.region_code IS NOT NULL)                                           as regions,
              COUNT(membre_gouvernance.id)
