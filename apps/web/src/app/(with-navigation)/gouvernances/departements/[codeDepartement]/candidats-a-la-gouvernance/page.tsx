@@ -1,5 +1,4 @@
 import React from 'react'
-import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import CandidatsGouvernances from '@app/web/app/(with-navigation)/gouvernances/CandidatsGouvernances'
 import { getCandidatsGouvernanceDepartement } from '@app/web/app/(with-navigation)/gouvernances/getCandidatsGouvernances'
 import { gouvernanceHomePath } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
