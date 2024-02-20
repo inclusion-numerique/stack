@@ -35,9 +35,11 @@ describe('ETQ EPCI connecté, je peux porter une feuille de route', () => {
     cy.get('.fr-accordion__btn').eq(3).click()
     cy.get('.fr-collapse.fr-collapse--expanded input[type="checkbox"]')
       .eq(0)
+      .parent()
       .click()
     cy.get('.fr-collapse.fr-collapse--expanded input[type="checkbox"]')
       .eq(1)
+      .parent()
       .click()
 
     cy.intercept('/api/trpc/*').as('mutation2')
@@ -147,6 +149,7 @@ describe('ETQ EPCI connecté, je peux porter une feuille de route', () => {
     // Deselecting all communes
     cy.get('.fr-collapse.fr-collapse--expanded input[type="checkbox"]')
       .eq(1)
+      .parent()
       // Click once to select all
       .click()
       // Click twice to deselect all
@@ -157,6 +160,7 @@ describe('ETQ EPCI connecté, je peux porter une feuille de route', () => {
     // Select only one commune
     cy.get('.fr-collapse.fr-collapse--expanded input[type="checkbox"]')
       .eq(6)
+      .parent()
       .click()
     cy.wait('@mutation8')
 

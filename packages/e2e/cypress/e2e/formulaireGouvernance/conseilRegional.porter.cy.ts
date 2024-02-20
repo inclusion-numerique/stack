@@ -43,6 +43,7 @@ describe('ETQ Conseil régional connecté, je peux porter une feuille de route',
         '.fr-collapse.fr-collapse--expanded .fr-collapse.fr-collapse--expanded input[type="checkbox"]',
       )
       .eq(0)
+      .parent()
       .click()
     cy.wait('@mutation2.1')
 

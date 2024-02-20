@@ -37,6 +37,7 @@ describe('ETQ Conseil départemental connecté, je peux porter une feuille de ro
 
     cy.get('.fr-collapse.fr-collapse--expanded input[type="checkbox"]')
       .eq(0)
+      .parent()
       .click()
     cy.wait('@mutation2.1')
 
