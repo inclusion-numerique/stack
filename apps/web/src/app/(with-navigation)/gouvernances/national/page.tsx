@@ -21,6 +21,7 @@ const Page = async () => {
       checkGouvernanceScopeWriteAccess({ scope: { national: true }, user }),
     signinNextPath: `/gouvernances/national`,
     throwNotFound: false,
+    redirect: false,
   })
 
   const statistiquesGouvernance = await getStatistiquesGouvernanceNational()
@@ -34,9 +35,9 @@ const Page = async () => {
         <div className="fr-container fr-container--narrow fr-pt-15v">
           <h1 className="fr-h3">Gouvernances</h1>
         </div>
-        <div className="fr-container fr-container--narrow fr-mt-8v">
+        <div className="fr-container fr-container--narrow fr-mt-8v fr-mb-50v">
           <div className="fr-background-alt--blue-france fr-width-full fr-border-radius--8 fr-p-8v fr-h6 fr-text--center">
-            Veuillez sélectionner un département pour accéder à la gouvernance
+            Veuillez sélectionner un département pour consulter une gouvernance
           </div>
         </div>
       </>
