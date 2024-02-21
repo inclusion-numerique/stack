@@ -8,6 +8,8 @@ import { getResourceProjectionWithContext } from '@app/web/server/resources/getR
 import { filterAccess } from '@app/web/server/resources/authorization'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import ResourceBreadcrumbs from '@app/web/components/ResourceBreadcrumbs'
+import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
+import { contentId, contentSkipLink } from '@app/web/utils/skipLinks'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -41,14 +43,17 @@ const ResourceEditionPage = async ({
 
   return (
     <>
+      <SkipLinksPortal links={[contentSkipLink]} />
       <div className="fr-container">
         <ResourceBreadcrumbs resource={resource} currentChildPage="Éditer" />
       </div>
-      <ResourceEdition
-        resource={resource}
-        draftResource={draftResource}
-        user={user}
-      />
+      <main id={contentId}>
+        <ResourceEdition
+          resource={resource}
+          draftResource={draftResource}
+          user={user}
+        />
+      </main>
     </>
   )
 }
