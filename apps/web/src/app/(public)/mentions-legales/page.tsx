@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 
@@ -77,8 +76,8 @@ const LegalPage = () => (
           </p>
           <p>
             En aucun cas les services associés à la plateforme ne seront à
-            l’origine d’envoi d'email pour demander la saisie d’informations
-            personnelles.
+            l’origine d’envoi d&lsquo;email pour demander la saisie
+            d’informations personnelles.
           </p>
         </div>
       </div>

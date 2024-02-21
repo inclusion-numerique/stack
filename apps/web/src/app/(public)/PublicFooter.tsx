@@ -1,8 +1,5 @@
 import Footer from '@codegouvfr/react-dsfr/Footer'
-import Button from '@codegouvfr/react-dsfr/Button'
-import classNames from 'classnames'
 import SwitchTheme from '@app/web/app/(public)/SwitchTheme'
-import { feedbackModalId } from '@app/web/components/Feedback/feedbackModalProps'
 
 const PublicFooter = () => (
   <Footer
