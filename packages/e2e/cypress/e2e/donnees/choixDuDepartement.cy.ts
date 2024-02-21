@@ -1,6 +1,7 @@
 describe('Utilisateur, lorsque je sélectionne depuis la page de selection de département, je peux accéder au dashboard du département sélectionné', () => {
   it('Si je n’ai pas selectionné de département, je ne peux pas accéder aux données', () => {
     cy.visit('/donnees/choix-du-departement')
+    cy.dsfrShouldBeStarted()
 
     cy.findByRole('button', { name: /accéder/i }).click()
 
