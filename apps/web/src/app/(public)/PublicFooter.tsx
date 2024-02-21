@@ -26,6 +26,10 @@ const PublicFooter = () => (
     }}
     bottomItems={[
       {
+        text: 'Mentions légales',
+        linkProps: { href: '/mentions-legales' },
+      },
+      {
         text: 'Politique de confidentialité',
         linkProps: { href: '/confidentialite' },
       },
@@ -42,19 +46,6 @@ const PublicFooter = () => (
         },
       },
       <SwitchTheme key="switch-theme" />,
-      <Button
-        key="feedback"
-        type="button"
-        priority="tertiary no outline"
-        aria-controls={feedbackModalId}
-        data-fr-opened={false}
-        id="footer-feedback-control-button"
-      >
-        <span
-          className={classNames('fr-icon--sm fr-mr-1-5v fr-icon-feedback-line')}
-        />
-        Je donne mon avis
-      </Button>,
     ]}
   />
 )
