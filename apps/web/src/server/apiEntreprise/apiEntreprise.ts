@@ -1,5 +1,5 @@
 import { request } from 'undici'
-import { ServerWebAppConfig } from '@app/web/webAppConfig'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 
 const stagingApiUrl = 'https://staging.entreprise.api.gouv.fr'
 const productionApiUrl = 'https://entreprise.api.gouv.fr'

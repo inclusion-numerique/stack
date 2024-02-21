@@ -24,7 +24,7 @@ export const contactOperation = (
         },
       }
     : existing
-    ? {
-        delete: true,
-      }
-    : undefined
+      ? {
+          delete: true,
+        }
+      : undefined

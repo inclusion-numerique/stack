@@ -44,7 +44,7 @@ const Filters = ({
   const buttonRef = useRef<HTMLButtonElement>(null)
   const filtersRef = useRef<HTMLDivElement>(null)
 
-  const onClickOutside = (event: MouseEvent) => {
+  useOnClickOutside(filtersRef, (event) => {
     if (!closeOnClickOutside) {
       return
     }
@@ -54,8 +54,7 @@ const Filters = ({
     }
 
     setOpen(false)
-  }
-  useOnClickOutside(filtersRef, onClickOutside)
+  })
 
   const filterForm = useForm<StructureFilters>({
     defaultValues,

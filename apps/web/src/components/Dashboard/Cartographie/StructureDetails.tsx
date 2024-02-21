@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { DepartementCartographieDataStructure } from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
+import { DepartementCartographieDataStructure } from '@app/web/app/(cartographie)/donnees/departements/[codeDepartement]/cartographie/getDepartementCartographieData'
 import { structureSubtypeLabel } from '@app/web/components/Dashboard/structuresTypes'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 
@@ -23,15 +23,17 @@ const StructureDetails = ({
       qpv,
     },
   },
+  dataUpdated,
 }: {
   structure: DepartementCartographieDataStructure
+  dataUpdated: Date
 }) => {
   const typeString =
     type === 'association'
       ? 'associative'
       : type === 'publique'
-      ? 'publique'
-      : 'privée'
+        ? 'publique'
+        : 'privée'
 
   const subtypeString = sousTypePublic
     ? structureSubtypeLabel[
@@ -51,7 +53,7 @@ const StructureDetails = ({
         Code postal : {codePostal} - INSEE : {codeCommune || 'non disponible'}
       </p>
       <p className="fr-hint-text">
-        Mise à jour le {dateAsDay(new Date('2023-11-28'))} · Source :{' '}
+        Mise à jour le {dateAsDay(dataUpdated)} · Source :{' '}
         <Link
           href="https://cartographie.societenumerique.gouv.fr/"
           target="_blank"

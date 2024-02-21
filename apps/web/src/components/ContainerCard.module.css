@@ -3,7 +3,7 @@
     max-width: 588px;
     margin: 48px auto 120px;
     padding: 16px 16px 24px;
-    background-color: white;
+    background-color: var(--grey-1000-50);
     border: var(--slim-grey-border);
 
     @media (min-width: 36em) {

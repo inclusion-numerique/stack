@@ -13,7 +13,7 @@ export const hasAccessToRegionDashboard = (
   return false
 }
 
-export const hasAccessToDepartementDashboard = (
+export const hasAccessToDashboard = (
   user: Pick<SessionUser, 'role' | 'roleScope'>,
   {
     departementCode,
@@ -35,22 +35,14 @@ export const hasAccessToDepartementDashboard = (
   return false
 }
 
-export const hasAccessToAdministration = (user: Pick<SessionUser, 'role'>) =>
-  user.role === 'Administrator' || user.role === 'Demo'
-
-// Accès a la carto, dashboards, etc...
-export const hasAccessToDonneesDeLInclusionNumerique = (
-  user: Pick<SessionUser, 'role'>,
-) => user.role !== 'User'
+export const hasAccessToAdministration = (
+  user: Pick<SessionUser, 'role'> | null,
+) => user?.role === 'Administrator' || user?.role === 'Demo'
 
 // Accès aux remontées de gouvernance
 export const hasAccessToRemonteesGouvernances = (
-  user: Pick<SessionUser, 'role'>,
-) => user.role !== 'User'
-
-export const hasAccessToNationalStatistics = (
-  user: Pick<SessionUser, 'role'>,
-) => user.role === 'Administrator' || user.role === 'Demo'
+  user: Pick<SessionUser, 'role'> | null,
+) => !!user && user.role !== 'User'
 
 export const canAddGouvernancePressentie = (
   user: Pick<SessionUser, 'role' | 'roleScope'>,
@@ -61,18 +53,19 @@ export const canAddGouvernancePressentie = (
     departementCode: string
     regionCode?: string | null
   },
-) => hasAccessToDepartementDashboard(user, { departementCode, regionCode })
+) => hasAccessToDashboard(user, { departementCode, regionCode })
 
 export const canEditGouvernancePressentie = (
-  user: Pick<SessionUser, 'role' | 'roleScope'>,
+  user: Pick<SessionUser, 'role' | 'roleScope'> | null,
   {
     departementCode,
   }: {
     departementCode: string
   },
 ) =>
+  !!user &&
   user.role !== 'PrefectureRegion' &&
-  hasAccessToDepartementDashboard(user, { departementCode })
+  hasAccessToDashboard(user, { departementCode })
 
 export const hasAccessToNationalDashboard = (
   user: Pick<SessionUser, 'role'>,

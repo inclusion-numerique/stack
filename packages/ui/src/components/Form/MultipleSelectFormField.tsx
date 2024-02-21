@@ -47,7 +47,6 @@ export type MultipleSelectFormFieldProps<T extends FieldValues> = {
   defaultOption?: boolean
   defaultOptionLabel?: string
   hint?: string
-  placeholder?: string
   badgeSize?: 'sm' | 'md'
   options: SelectOption[]
   limit?: number
@@ -57,7 +56,6 @@ const MultipleSelectFormField = <T extends FieldValues>({
   control,
   label,
   path,
-  placeholder,
   hint,
   defaultOption,
   disabled,
@@ -89,8 +87,8 @@ const MultipleSelectFormField = <T extends FieldValues>({
           )
         }
 
-        const selectedOptions = options.filter(
-          (option) => (value as string[])?.includes(option.value),
+        const selectedOptions = options.filter((option) =>
+          (value as string[])?.includes(option.value),
         )
 
         // Remove value on badge click
@@ -118,7 +116,6 @@ const MultipleSelectFormField = <T extends FieldValues>({
               className="fr-select fr-select--error"
               aria-describedby="text-select-error-desc-error"
               id={id}
-              placeholder={placeholder}
               disabled={disabled || !!(limit && value && value.length >= limit)}
               onBlur={onBlur}
               onChange={onSelectChange}

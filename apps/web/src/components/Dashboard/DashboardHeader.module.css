@@ -1,0 +1,9 @@
+.header {
+  h2 {
+    max-width: 790px;
+  }
+
+  p {
+    max-width: 680px;
+  }
+}

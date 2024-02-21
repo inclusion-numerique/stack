@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch", "postgresqlExtensions", "fullTextIndex"]
+  previewFeatures = ["fullTextSearch", "postgresqlExtensions", "nativeDistinct", "relationJoins"]
   binaryTargets   = ["native", "debian-openssl-1.1.x"]
 }
 
@@ -43,11 +43,13 @@ model Session {
 }
 
 enum UserRole {
-  Administrator
-  Demo
-  PrefectureDepartement
-  PrefectureRegion
-  User
+  Administrator         @map("administrator")
+  Demo                  @map("demo")
+  PrefectureDepartement @map("prefecture_departement")
+  PrefectureRegion      @map("prefecture_region")
+  User                  @map("user")
+
+  @@map("user_role")
 }
 
 model User {
@@ -123,6 +125,14 @@ model VerificationToken {
 
   @@unique([identifier, token])
   @@map("verification_tokens")
+}
+
+// This model only allows one unique row with 'app-data' id, to store global app data
+model AppData {
+  id          String   @id @default("app-data")
+  dataUpdated DateTime @map("data_updated") // The last time data from external sources was updated (structures, accompagnements...)
+
+  @@map("app_data")
 }
 
 model Image {
@@ -296,7 +306,7 @@ model StructureCartographieNationale {
   siret      String
 
   type           String
-  sousTypePublic String?
+  sousTypePublic String? @map("sous_type_public")
 
   // Bad data in, bad data out. Missing communes are frequent
   codeCommune String?  @map("code_commune")
@@ -317,9 +327,9 @@ model StructureCartographieNationale {
   latitude  Float?
   longitude Float?
 
-  labelConseillersNumerique Boolean
-  labelFranceServices       Boolean
-  labelAidantsConnect       Boolean
+  labelConseillersNumerique Boolean @map("label_conseillers_numerique")
+  labelFranceServices       Boolean @map("label_france_services")
+  labelAidantsConnect       Boolean @map("label_aidants_connect")
 
   zrr Boolean @default(false)
   qpv Boolean @default(false)
@@ -340,12 +350,10 @@ model StructureAidantsConnect {
   structureCartographieNationaleId String?                         @unique @map("structure_cartographie_nationale_id")
   structureCartographieNationale   StructureCartographieNationale? @relation(fields: [structureCartographieNationaleId], references: [id], onDelete: NoAction)
 
-  isActive Boolean
-
+  isActive       Boolean @map("is_active")
   aidants        Int
-  usagersUniques Int
-
-  totalDemarches Int
+  usagersUniques Int     @map("usagers_uniques")
+  totalDemarches Int     @map("total_demarches")
 
   // Nombre de démarches (smaller names for easier data transfer)
   argent    Int
@@ -715,7 +723,7 @@ model Gouvernance {
 
   // Département qui a créé la gouvernance
   departement     Departement @relation(name: "gouvernance_departement", fields: [departementCode], references: [code])
-  departementCode String
+  departementCode String      @map("departement_code")
 
   // V1 Fields applied to "Gouvernance préssentie" Gouvernance version
   // We keep them to have good default values for v2, and for safety in case we need to rollback or dig in old data
@@ -741,7 +749,7 @@ model Gouvernance {
   sousPrefetReferentNom    String? @map("sous_prefet_referent_nom")
   sousPrefetReferentEmail  String? @map("sous_prefet_referent_email")
 
-  noteDeContexte                        String
+  noteDeContexte                        String                                @map("note_de_contexte")
   organisationsRecruteusesCoordinateurs OrganisationRecruteuseCoordinateurs[]
 
   pasDeCoporteurs Boolean? @map("pas_de_co_porteurs")
@@ -772,9 +780,9 @@ model BesoinsEnIngenierieFinanciere {
   modification            DateTime  @updatedAt
   creation                DateTime  @default(now())
   supression              DateTime?
-  texteIntroductionLu     DateTime?
-  selectionEnregistree    DateTime?
-  priorisationEnregistree DateTime?
+  texteIntroductionLu     DateTime? @map("texte_introduction_lu")
+  selectionEnregistree    DateTime? @map("selection_enregistree")
+  priorisationEnregistree DateTime? @map("priorisation_enregistree")
 
   // Formaliser la feuille de route
 

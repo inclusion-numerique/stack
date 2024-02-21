@@ -1,9 +1,11 @@
 import * as Sentry from '@sentry/nextjs'
-import { MonCompteProProfile } from '@app/web/auth/monCompteProConnect'
 import { prismaClient } from '@app/web/prismaClient'
 import { qualifyPrefectureOrganization } from '@app/web/security/prefectureOrganization'
+import type { MonCompteProProfile } from '@app/web/auth/MonCompteProProvider'
 
-export const createUserData = async (userInfo: MonCompteProProfile) => {
+export const createUserData = async (
+  userInfo: MonCompteProProfile & { id: string },
+) => {
   // Get existing checked organization
   const existingOrganizations = await Promise.all(
     userInfo.organizations.map(({ id }) =>

@@ -11,6 +11,7 @@ type Story = StoryObj<typeof Header>
 
 export const SignedOut: Story = {
   name: 'Utilisateur non connecté',
+  args: { user: null },
 }
 
 export const SignedIn: Story = {

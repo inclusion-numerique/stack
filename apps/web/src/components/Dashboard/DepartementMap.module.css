@@ -29,9 +29,9 @@
 }
 
 .actionBox {
-  border: 1px solid #161616;
+  border: 1px solid var(--grey-50-1000);
   margin: 0 32px;
-  background-color: white;
+  background-color: var(--grey-1000-50);
   position: absolute;
   display: flex;
   gap: 16px;

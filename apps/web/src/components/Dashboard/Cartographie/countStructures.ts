@@ -1,8 +1,8 @@
 /* eslint no-plusplus: 0 */
 
-import type { DepartementCartographieStructureItem } from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
+import type { DashboardStructureItem } from '@app/web/data/getDashboardData'
+import type { DepartementCartographieStructureItem } from '@app/web/app/(cartographie)/donnees/departements/[codeDepartement]/cartographie/getDepartementCartographieData'
 import { AidantsConnectDemarcheLabels } from '@app/web/data/aidantsConnectStructures'
-import type { DepartementDashboardStructureItem } from '@app/web/app/(private)/tableau-de-bord/departement/[codeDepartement]/getDepartementDashboardData'
 
 export const countStructuresForCartographieSummary = (
   structures: Pick<
@@ -144,8 +144,8 @@ export type StructuresCountForCommuneSummary = ReturnType<
   typeof countStructuresForCommuneSummary
 >
 
-export const countStructuresForDepartementDashboard = (
-  structures: DepartementDashboardStructureItem[],
+export const countStructuresForDashboard = (
+  structures: DashboardStructureItem[],
 ) => {
   const count = {
     structures: countStructuresForCartographieSummary(structures),
@@ -221,6 +221,6 @@ export const countStructuresForDepartementDashboard = (
   return count
 }
 
-export type StructuresCountForDepartementDashboard = ReturnType<
-  typeof countStructuresForDepartementDashboard
+export type StructuresCountForDashboard = ReturnType<
+  typeof countStructuresForDashboard
 >

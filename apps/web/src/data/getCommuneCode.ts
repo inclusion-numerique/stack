@@ -95,8 +95,8 @@ export const getCommuneCode = (
   const alternativeSearchName = searchName.startsWith('saint-')
     ? searchName.replace('saint-', 'st-')
     : searchName.startsWith('st-')
-    ? searchName.replace('st-', 'saint-')
-    : null
+      ? searchName.replace('st-', 'saint-')
+      : null
 
   // We try to find matching name for the list of communes with same postal code
   const found = candidates.find(({ nom }) => nom === searchName)

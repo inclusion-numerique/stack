@@ -1,11 +1,12 @@
 import Link from 'next/link'
 import React from 'react'
 import classNames from 'classnames'
+import Badge from '@codegouvfr/react-dsfr/Badge'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import HeaderBackLink from '@app/web/components/HeaderBackLink'
 import { HeaderUserMenu } from '@app/web/components/HeaderUserMenu'
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
-import UserNavigation from '@app/web/app/UserNavigation'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import MainNavigation from '@app/web/app/MainNavigation'
 import styles from './Header.module.css'
 
 const Header = ({
@@ -16,7 +17,7 @@ const Header = ({
   hideFlag,
   mainNavigation,
 }: {
-  user?: SessionUser | null
+  user: SessionUser | null
   backLink?: string
   backLinkHref?: string
   fullWidth?: boolean
@@ -73,7 +74,11 @@ const Header = ({
                 <div className="fr-header__service">
                   <Link aria-current="page" target="_self" {...baseLinkProps}>
                     <p className="fr-header__service-title">
-                      {baseLinkProps.title}
+                      <span className="fr-mr-1w">{baseLinkProps.title}</span>
+
+                      <Badge severity="new" small as="span">
+                        BETA
+                      </Badge>
                     </p>
                   </Link>
                 </div>
@@ -122,7 +127,7 @@ const Header = ({
           </div>
         </div>
       </div>
-      {mainNavigation && !!user && <UserNavigation user={user} />}
+      {mainNavigation && <MainNavigation user={user} />}
       <dialog
         aria-labelledby="modal-menu-mobile-title"
         id="modal-menu-mobile"

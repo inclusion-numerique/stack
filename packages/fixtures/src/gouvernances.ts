@@ -32,6 +32,7 @@ export const gouvernances = () => {
     createur,
     derniereModificationPar: createur,
     departement: rhone,
+    v2Enregistree: new Date(),
     v1Perimetre: 'departement',
     v1PorteurEpci: metropoleDeLyon,
     noteDeContexte: 'Un contexte avec plein de précisions utiles',

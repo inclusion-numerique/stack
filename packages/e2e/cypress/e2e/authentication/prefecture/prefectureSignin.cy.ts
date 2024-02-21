@@ -26,31 +26,7 @@ describe('ETQ Visiteur qui souhaite se connecter en Préfecture, je peux me conn
     cy.contains('Pour accéder au tableau de bord des préfectures')
   })
 
-  it('Préliminaire 2 -Entrée par CTA landing', () => {
-    cy.visit('/')
-    cy.dsfrModalsShouldBeBound()
-
-    cy.testId('tableau-de-bord-cta').click()
-
-    cy.get('#tableau-de-bord-cta-modal').as('modal')
-    cy.get('@modal').contains('J’ai compris').click()
-
-    cy.url().should(
-      'equal',
-      appUrl('/connexion?role=prefecture&suivant=/tableau-de-bord'),
-    )
-
-    cy.contains('Préfecture')
-    cy.contains('Se connecter ')
-  })
-
-  it('Préliminaire 2 - Le retour ramène sur le choix entre connexion Prefecture ou Collectivité', () => {
-    cy.visit('/connexion?role=prefecture')
-    cy.contains('Retour').click()
-    cy.url().should('equal', appUrl('/connexion'))
-  })
-
-  it('Préliminaire 3 - Pas de possibilité de connexion par email ou création de compte', () => {
+  it('Préliminaire 2 - Pas de possibilité de connexion par email ou création de compte', () => {
     cy.visit('/connexion?role=prefecture')
     cy.contains('Se connecter avec MonComptePro')
     cy.contains('Se connecter avec son email').should('not.exist')
@@ -66,7 +42,7 @@ describe('ETQ Visiteur qui souhaite se connecter en Préfecture, je peux me conn
     cy.signin(user)
     cy.visit('/connexion?role=prefecture')
 
-    cy.url().should('equal', appUrl('/tableau-de-bord/departement/34'))
+    cy.url().should('equal', appUrl('/donnees/departements/34'))
 
     cy.contains('Hérault')
 

@@ -2,7 +2,7 @@ import { SendVerificationRequestParams } from 'next-auth/providers'
 import { createTransport } from 'nodemailer'
 import { compileMjml } from '@app/emails/mjml'
 import { emailSignin } from '@app/emails/templates/emailSignin'
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 const debugMagicLink = true
 

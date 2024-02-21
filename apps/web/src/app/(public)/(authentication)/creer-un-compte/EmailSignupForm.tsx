@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { zodResolver } from '@hookform/resolvers/zod'
 import InputFormField from '@app/ui/components/Form/InputFormField'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import {
   UserSignup,
@@ -45,7 +46,7 @@ const EmailSignupForm = ({
     Cookies.set('email-signin', data.email, { sameSite: 'strict' })
     await signIn('email', { callbackUrl, ...data })
   }
-  const disabled =
+  const isLoading =
     form.formState.isSubmitting || form.formState.isSubmitSuccessful
 
   return (
@@ -61,13 +62,13 @@ const EmailSignupForm = ({
         control={form.control}
         path="email"
         label="Email"
-        disabled={disabled}
+        disabled={isLoading}
       />
       <ButtonsGroup
         className="fr-mt-12v"
         buttons={[
           {
-            disabled,
+            ...buttonLoadingClassname(isLoading),
             children: 'Valider',
             type: 'submit',
           },

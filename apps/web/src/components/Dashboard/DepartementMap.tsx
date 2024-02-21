@@ -22,7 +22,7 @@ const DepartementMap = ({
   const router = useRouter()
 
   useEffect(() => {
-    router.prefetch(`/tableau-de-bord/departement/${code}/cartographie`)
+    router.prefetch(`/donnees/departements/${code}/cartographie`)
   }, [router, code])
 
   useEffect(() => {
@@ -96,7 +96,7 @@ const DepartementMap = ({
               cartographie.
             </div>
             <Link
-              href={`/tableau-de-bord/departement/${code}/cartographie`}
+              href={`/donnees/departements/${code}/cartographie`}
               className="fr-btn"
               data-testid="cartographie-button"
             >

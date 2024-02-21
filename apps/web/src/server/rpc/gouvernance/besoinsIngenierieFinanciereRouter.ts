@@ -1,5 +1,6 @@
 import { v4 } from 'uuid'
 import type { Prisma } from '@prisma/client'
+import { getBesoinsEnIngenieriePriorisationDefaultValues } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/besoinsEnIngenieriePriorisationDefaultValues'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { prismaClient } from '@app/web/prismaClient'
 import { invalidError, notFoundError } from '@app/web/server/rpc/trpcErrors'
@@ -9,7 +10,6 @@ import {
   BesoinsEnIngenierieFinancierePrioriteValidation,
   BesoinsEnIngenierieFinanciereValidation,
 } from '@app/web/gouvernance/BesoinsEnIngenierieFinanciere'
-import { getBesoinsEnIngenieriePriorisationDefaultValues } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/besoinsEnIngenieriePriorisationDefaultValues'
 
 export const besoinsIngenierieFinanciereRouter = router({
   create: protectedProcedure

@@ -4,7 +4,7 @@
   position: absolute;
   top: 16px;
   left: 16px;
-  background-color: white;
+  background-color: var(--grey-1000-50);
   box-shadow: 0 4px 12px #00001229;
   padding: 24px;
   max-height: calc(100% - 100px);

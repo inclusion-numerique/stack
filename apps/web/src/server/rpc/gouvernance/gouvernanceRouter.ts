@@ -1,6 +1,7 @@
 import type { Prisma } from '@prisma/client'
 import { v4 } from 'uuid'
 import sanitizeHtml from 'sanitize-html'
+import { gouvernanceSelect } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import {
   getInfoFromPorteurCode,
@@ -14,7 +15,6 @@ import {
   GouvernanceValidation,
   SiretInfoData,
 } from '@app/web/gouvernance/Gouvernance'
-import { gouvernanceSelect } from '@app/web/app/(private)/gouvernances/departement/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { getActorFromCode } from '@app/web/gouvernance/GouvernanceActor'
 import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 import { hasADefinedKey, hasANullishKey } from '@app/web/utils/hasADefinedKey'

@@ -1,15 +1,10 @@
-import axios from 'axios'
-import NextAuth, { NextAuthOptions, TokenSet } from 'next-auth'
+import NextAuth, { NextAuthOptions } from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
-import KeycloakProvider, { KeycloakProfile } from 'next-auth/providers/keycloak'
-import {
-  monCompteProConnectProviderId,
-  MonCompteProUserInfoOrganizationResponse,
-} from '@app/web/auth/monCompteProConnect'
 import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
 import '@app/web/auth/nextAuthSetup'
 import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
-import { PublicWebAppConfig, ServerWebAppConfig } from '@app/web/webAppConfig'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { MonCompteProProvider } from '@app/web/auth/MonCompteProProvider'
 
 export const authOptions: NextAuthOptions = {
   // debug: process.env.NODE_ENV !== 'production',
@@ -24,50 +19,10 @@ export const authOptions: NextAuthOptions = {
   },
   providers: [
     EmailProvider({
-      ...ServerWebAppConfig.Auth.Email,
+      ...ServerWebAppConfig.Email,
       sendVerificationRequest,
     }),
-    KeycloakProvider({
-      allowDangerousEmailAccountLinking: true,
-      id: monCompteProConnectProviderId,
-      name: 'MonComptePro',
-      clientId: PublicWebAppConfig.MonComptePro.clientId,
-      clientSecret: ServerWebAppConfig.MonComptePro.clientSecret,
-      authorization: {
-        params: { scope: 'openid email profile organization' },
-      },
-      // KeycloakProvider adds wellknown open id config path
-      issuer: PublicWebAppConfig.MonComptePro.issuer,
-      userinfo: `${PublicWebAppConfig.MonComptePro.issuer}/oauth/userinfo`,
-      profile: async (profile: KeycloakProfile, tokens: TokenSet) =>
-        axios
-          .get<MonCompteProUserInfoOrganizationResponse>(
-            `${PublicWebAppConfig.MonComptePro.issuer}/oauth/userinfo`,
-            {
-              headers: { Authorization: `Bearer ${tokens.access_token || ''}` },
-            },
-          )
-          .then((response) => response.data)
-          .then((userData) => ({
-            id: userData.sub,
-            name: `${userData.given_name} ${userData.family_name}`,
-            firstName: userData.given_name,
-            lastName: userData.family_name,
-            email: userData.email,
-            organizations: [
-              {
-                id: userData.siret,
-                is_collectivite_territoriale:
-                  userData.is_collectivite_territoriale,
-                is_external: userData.is_external,
-                is_service_public: userData.is_service_public,
-                label: userData.label,
-                siret: userData.siret,
-              },
-            ],
-            provider: monCompteProConnectProviderId,
-          })),
-    }),
+    MonCompteProProvider(),
   ],
   callbacks: {
     signIn({ account, user, email }) {

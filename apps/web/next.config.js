@@ -3,9 +3,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
 const path = require('node:path')
-const packageJson = require('./package.json')
-
-const isDevelopment = process.env.NODE_ENV === 'development'
 
 // Some packages export a lot of modules in a single index file. To avoid them being compiled
 // next has added native support for modularize import transform
@@ -13,33 +10,17 @@ const isDevelopment = process.env.NODE_ENV === 'development'
 // https://github.com/vercel/next.js/tree/canary/examples/modularize-imports
 const modularizeImports = {
   'date-fns': { transform: 'date-fns/{{member}}' },
-  'chart.js': { transform: 'chart.js/{{member}}' },
 }
 
-/**
- * For faster dev UX, server dependencies do not need to be bundled.
- * Except those that are expected to be bundled for compilation features.
- */
-const alwaysBundledPackages = new Set([
-  'next',
-  'server-only',
-  '@codegouvfr/react-dsfr',
-])
-const externalServerPackagesForFasterDevelopmentUx = isDevelopment
-  ? [
-      ...Object.keys(packageJson.dependencies),
-      ...Object.keys(packageJson.devDependencies),
-    ].filter((packageName) => !alwaysBundledPackages.has(packageName))
-  : undefined
+const serverComponentsExternalPackages = ['html-minifier']
 
 const nextConfig = {
   output: 'standalone',
   reactStrictMode: true,
   transpilePackages: ['@app/emails'],
   experimental: {
-    // See https://beta.nextjs.org/docs/api-reference/next.config.js#servercomponentsexternalpackages
-    serverComponentsExternalPackages:
-      externalServerPackagesForFasterDevelopmentUx,
+    // See https://nextjs.org/docs/app/api-reference/next-config-js/serverComponentsExternalPackages
+    serverComponentsExternalPackages,
     // This includes files from the monorepo base two directories up
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
@@ -50,6 +31,9 @@ const nextConfig = {
     autoInstrumentMiddleware: true,
     widenClientFileUpload: true,
     hideSourceMaps: true,
+    // Source map generation + upload
+    disableServerWebpackPlugin: true,
+    disableClientWebpackPlugin: true,
   },
   eslint: {
     // Lints are checked in other parts of the build process

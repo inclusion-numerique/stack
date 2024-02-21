@@ -18,12 +18,14 @@ export const packageJestConfig = ({
   transformIgnorePackages = [],
   testPathIgnorePatterns = [],
   mockableFilePatterns = [],
+  customExportConditions,
   testMatch,
 }: {
   transformIgnorePackages?: string[]
   testPathIgnorePatterns?: string[]
   mockableFilePatterns?: string[]
   testMatch?: string[]
+  customExportConditions?: string[]
 }) => {
   testDotenvConfig()
 
@@ -73,5 +75,12 @@ export const packageJestConfig = ({
       ...testPathIgnorePatterns,
     ],
     testEnvironment: 'node',
+    testEnvironmentOptions: {
+      customExportConditions: customExportConditions ?? [
+        'react-server',
+        'node',
+        'node-addons',
+      ],
+    },
   }
 }

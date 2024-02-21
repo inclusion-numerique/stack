@@ -1,5 +1,5 @@
 import Script from 'next/script'
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 // The Next <Script> tag expect a nonce as Next directly inject the code from the script file in an inline <script> tag
 const Crisp = ({ nonce }: { nonce?: string }) =>

@@ -30,7 +30,7 @@ const SigninPage = async ({
         user.role === 'PrefectureDepartement' ||
         user.role === 'PrefectureRegion'
       ) {
-        redirect(suivant ?? '/tableau-de-bord')
+        redirect(suivant ?? '/donnees')
         return null
       }
       redirect(suivant ?? '/profil')
@@ -47,10 +47,10 @@ const SigninPage = async ({
 
   const callbackUrl =
     suivant ?? role === 'prefecture'
-      ? '/tableau-de-bord'
+      ? '/donnees'
       : role === 'collectivite'
-      ? '/formulaires-feuilles-de-routes-territoriales'
-      : '/profil'
+        ? '/formulaires-feuilles-de-routes-territoriales'
+        : '/profil'
 
   if (!role) {
     return (
@@ -92,9 +92,6 @@ const SigninPage = async ({
           ]}
           currentPage="Préfecture"
         />
-        <div className="fr-narrow">
-          <BackLink href="/connexion" />
-        </div>
         <AuthCard className="fr-mt-12v">
           <h4>Pour accéder au tableau de bord des préfectures</h4>
           {error ? (
@@ -125,9 +122,6 @@ const SigninPage = async ({
         ]}
         currentPage="Feuilles de routes territoriales"
       />
-      <div className="fr-narrow">
-        <BackLink href="/connexion" />
-      </div>
       <AuthCard className="fr-mt-12v">
         <h4>
           Pour accéder aux formulaires pour participer à l’élaboration des

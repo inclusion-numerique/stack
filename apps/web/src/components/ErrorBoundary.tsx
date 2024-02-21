@@ -5,7 +5,7 @@
 import React, { Component, PropsWithChildren, ReactNode } from 'react'
 import * as Sentry from '@sentry/nextjs'
 import Alert from '@codegouvfr/react-dsfr/Alert'
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 class ErrorBoundary extends Component<
   PropsWithChildren<{ fallback?: ReactNode }>,

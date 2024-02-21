@@ -11,11 +11,11 @@ import { ChoixDuFormulaireValidation } from '@app/web/gouvernance/ChoixDuFormula
 import {
   getCurrentFormulaireGouvernanceForFormByUser,
   getFormulaireGouvernanceForFormById,
-} from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
+} from '@app/web/app/(public)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
 import {
   getEtapeEnCours,
   getEtapeInfo,
-} from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/etapeFormulaireGouvernance'
+} from '@app/web/app/(public)/formulaires-feuilles-de-routes-territoriales/etapeFormulaireGouvernance'
 import { PorterOuParticiperValidation } from '@app/web/gouvernance/PorterOuParticiper'
 import { AnnulerValidation } from '@app/web/gouvernance/Annuler'
 import { participerPersistenceFromData } from '@app/web/gouvernance/participerHelpers.server'
@@ -96,28 +96,20 @@ export const formulaireGouvernanceRouter = router({
             })
 
       // User already had a form
-      if (existingFormulaire) {
-        // User selected same persona as existing form
-        if (existingFormulaire.gouvernancePersona === gouvernancePersonaId) {
-          // Reuse the existing formulaire for same persona and do not mutate anything else
+      if (
+        existingFormulaire && // User selected same persona as existing form
+        existingFormulaire.gouvernancePersona === gouvernancePersonaId
+      ) {
+        // Reuse the existing formulaire for same persona and do not mutate anything else
 
-          return getUpdatedFormulaireState({
-            formulaireGouvernance: existingFormulaire,
-            user: updatedUser,
-          })
-        }
-
-        // User selected a different persona than existing form
-        // We cancel the existing form
-        await prismaClient.formulaireGouvernance.update({
-          where: { id: existingFormulaire.id, confirmeEtEnvoye: { not: null } },
-          data: {
-            annulation: new Date(),
-          },
+        return getUpdatedFormulaireState({
+          formulaireGouvernance: existingFormulaire,
+          user: updatedUser,
         })
       }
 
       // Create a new formulaireGouvernance with the new persona
+      // It is more recent than existingFormulaire so it will be selected by default from now on
       await prismaClient.user.update({
         where: { id: user.id },
         data: {
@@ -561,12 +553,12 @@ export const formulaireGouvernanceRouter = router({
                 participantSearchParams,
               )
             : type === 'epci'
-            ? await prismaClient.epciParticipantFormulaireGouvernance.findUnique(
-                participantSearchParams,
-              )
-            : await prismaClient.communeParticipanteFormulaireGouvernance.findUnique(
-                participantSearchParams,
-              )
+              ? await prismaClient.epciParticipantFormulaireGouvernance.findUnique(
+                  participantSearchParams,
+                )
+              : await prismaClient.communeParticipanteFormulaireGouvernance.findUnique(
+                  participantSearchParams,
+                )
 
         if (!participant) {
           throw notFoundError()
@@ -593,8 +585,8 @@ export const formulaireGouvernanceRouter = router({
                 [type === 'departement'
                   ? 'contactDepartementParticipant'
                   : type === 'epci'
-                  ? 'contactEpciParticipant'
-                  : 'contactCommuneParticipante']: {
+                    ? 'contactEpciParticipant'
+                    : 'contactCommuneParticipante']: {
                   connect: {
                     id: participant.id,
                   },

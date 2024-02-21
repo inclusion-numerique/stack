@@ -15,6 +15,7 @@ export type SelectFormFieldProps<T extends FieldValues> = {
   hint?: string
   valid?: string
   asterisk?: boolean
+  placeholder?: string
 }
 
 const SelectFormField = <T extends FieldValues>({
@@ -26,6 +27,8 @@ const SelectFormField = <T extends FieldValues>({
   disabled,
   valid,
   asterisk,
+  className,
+  placeholder,
 }: UiComponentProps & SelectFormFieldProps<T>) => {
   const id = `select-form-field__${path}`
 
@@ -46,11 +49,15 @@ const SelectFormField = <T extends FieldValues>({
 
         return (
           <div
-            className={classNames('fr-select-group', {
-              'fr-select-group--error': error,
-              'fr-select-group--valid': valid && isDirty && !invalid,
-              'fr-select-group--disabled': disabled,
-            })}
+            className={classNames(
+              'fr-select-group',
+              {
+                'fr-select-group--error': error,
+                'fr-select-group--valid': valid && isDirty && !invalid,
+                'fr-select-group--disabled': disabled,
+              },
+              className,
+            )}
           >
             <label className="fr-label" htmlFor={id}>
               {label} {asterisk && <RedAsterisk />}
@@ -70,6 +77,11 @@ const SelectFormField = <T extends FieldValues>({
               ref={ref}
               value={value || ''}
             >
+              {placeholder && (
+                <option value="" disabled>
+                  {placeholder}
+                </option>
+              )}
               {options.map((option) => (
                 <option
                   key={option.value}

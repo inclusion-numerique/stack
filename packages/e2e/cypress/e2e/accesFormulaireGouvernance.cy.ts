@@ -33,7 +33,7 @@ describe('ETQ Utilisateur connecté de la page gouvernance, je peux accéder à 
 
     cy.contains('Accéder au formulaire').click()
 
-    cy.acceptNextRedirectsException()
+    cy.allowNextRedirectException()
 
     cy.url().should(
       'equal',
@@ -76,7 +76,7 @@ describe('ETQ Utilisateur connecté de la page gouvernance, je peux accéder à 
 
     cy.contains('Accéder au formulaire').click()
 
-    cy.acceptNextRedirectsException()
+    cy.allowNextRedirectException()
 
     cy.url().should(
       'equal',
@@ -100,7 +100,7 @@ describe('ETQ Utilisateur connecté de la page gouvernance, je peux accéder à 
 
     cy.signin(user)
 
-    cy.acceptNextRedirectsException()
+    cy.allowNextRedirectException()
 
     cy.visit('/formulaires-feuilles-de-routes-territoriales')
 
@@ -139,7 +139,7 @@ describe('ETQ Utilisateur connecté de la page gouvernance, je peux accéder à 
 
     cy.signin(user)
 
-    cy.acceptNextRedirectsException()
+    cy.allowNextRedirectException()
 
     cy.visit('/formulaires-feuilles-de-routes-territoriales')
 

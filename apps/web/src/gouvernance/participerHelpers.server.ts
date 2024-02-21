@@ -1,6 +1,6 @@
 import type { Prisma } from '@prisma/client'
 import type { ParticiperData } from '@app/web/gouvernance/Participer'
-import type { GouvernanceFormulaireForForm } from '@app/web/app/(private)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
+import type { GouvernanceFormulaireForForm } from '@app/web/app/(public)/formulaires-feuilles-de-routes-territoriales/getCurrentFormulaireGouvernanceForFormByUser'
 import { contactOperation } from '@app/web/gouvernance/contactHelper.server'
 
 export const participerPersistenceFromData = (

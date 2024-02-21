@@ -42,7 +42,7 @@ describe('ETQ Utilisateur, je peux commencer un formulaire puis changer de perso
     cy.get('button').contains('Accéder au formulaire').click()
     cy.wait('@mutation3')
 
-    cy.acceptNextRedirectsException()
+    cy.allowNextRedirectException()
     cy.appUrlShouldBe(
       '/formulaires-feuilles-de-routes-territoriales/choix-du-formulaire',
     )

@@ -33,12 +33,14 @@ import { ScalewayProvider } from '@app/scaleway/provider'
 import { RdbInstance } from '@app/scaleway/rdb-instance'
 import { RegistryNamespace } from '@app/scaleway/registry-namespace'
 import { TemDomain } from '@app/scaleway/tem-domain'
+import { ObjectBucket } from '@app/scaleway/object-bucket'
 
 export const projectStackVariables = [
   'SCW_DEFAULT_ORGANIZATION_ID',
   'SCW_PROJECT_ID',
   'EMAIL_FROM_DOMAIN',
   'UPLOADS_BUCKET',
+  'BACKUPS_BUCKET',
   'WEB_APP_DOCKER_REGISTRY_NAME',
   'S3_HOST',
 ] as const
@@ -135,6 +137,20 @@ export class ProjectStack extends TerraformStack {
     //     },
     //   ],
     // })
+
+    // Backups bucket for database dumps or other important backups
+    new ObjectBucket(this, 'backupsBucket', {
+      name: environmentVariables.BACKUPS_BUCKET.value,
+      corsRule: [
+        {
+          allowedHeaders: ['*'],
+          allowedMethods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
+          maxAgeSeconds: 3000,
+          exposeHeaders: ['Etag'],
+          allowedOrigins: ['http://localhost:3000', 'http://localhost'],
+        },
+      ],
+    })
 
     // https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/rdb_instance
     const database = new RdbInstance(this, 'database', {

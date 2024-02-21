@@ -1,8 +1,6 @@
 import { readFile } from 'node:fs/promises'
 import { getDataFilePath } from '@app/web/data/dataFiles'
 
-export const conumCrasUpdatedDate = new Date('2023-11-28')
-
 const themes = [
   'autre',
   'equipement informatique',

@@ -6,7 +6,7 @@ import {
   DepartementCartographieData,
   DepartementCartographieDataCommune,
   DepartementCartographieDataStructure,
-} from '@app/web/app/(cartographie)/tableau-de-bord/departement/[codeDepartement]/cartographie/getDepartementCartographieData'
+} from '@app/web/app/(cartographie)/donnees/departements/[codeDepartement]/cartographie/getDepartementCartographieData'
 import {
   applyStructureFilter,
   isFilterEmpty,
@@ -22,7 +22,7 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 const CartographiePage = ({
-  data: { departement, structures, count, communes, epcis },
+  data: { departement, structures, count, communes, epcis, dataUpdated },
 }: {
   data: DepartementCartographieData
 }) => {
@@ -90,7 +90,7 @@ const CartographiePage = ({
 
   // Prefetch dashboard page
   useEffect(() => {
-    router.prefetch(`/tableau-de-bord/departement/${departement.code}`)
+    router.prefetch(`/donnees/departements/${departement.code}`)
   }, [router, departement.code])
 
   return (
@@ -120,6 +120,7 @@ const CartographiePage = ({
               ? [...filteredStructures, filteredOutSelectedStructure]
               : filteredStructures
           }
+          dataUpdated={dataUpdated}
         />
       </ErrorBoundary>
       <Filters onFilter={onFilter} />

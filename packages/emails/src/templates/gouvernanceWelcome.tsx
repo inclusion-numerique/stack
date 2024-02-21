@@ -1,28 +1,26 @@
 /* eslint react/no-array-index-key: 0 */
 
-import {
-  MjmlAll,
-  MjmlAttributes,
-  MjmlDivider,
-  MjmlFont,
-  MjmlSpacer,
-} from 'mjml-react'
-import React from 'react'
+import type { GouvernancePersona } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
 import {
   Mjml,
+  MjmlAll,
+  MjmlAttributes,
   MjmlBody,
   MjmlButton,
   MjmlColumn,
+  MjmlDivider,
+  MjmlFont,
   MjmlHead,
   MjmlImage,
   MjmlPreview,
   MjmlSection,
+  MjmlSpacer,
   MjmlText,
   MjmlTitle,
-  renderToMjml,
-} from '@luma-team/mjml-react'
-import { PublicWebAppConfig } from '@app/web/webAppConfig'
-import type { GouvernancePersona } from '@app/web/app/(public)/gouvernance/gouvernancePersona'
+} from '@faire/mjml-react'
+import React from 'react'
+import { renderToMjml } from '@faire/mjml-react/utils/renderToMjml'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { emailAssetUrl } from '@app/emails/emailAssetUrl'
 
 const brandColor = '#000091'
@@ -39,7 +37,7 @@ const GouvernancePersonaBloc = ({
 }) => (
   <>
     <MjmlDivider />
-    <MjmlText fontWeight={600} fontSize="20px" color={textTitleGrey}>
+    <MjmlText fontWeight="600" fontSize="20px" color={textTitleGrey}>
       {title}
     </MjmlText>
 
@@ -85,13 +83,13 @@ export const gouvernanceWelcome = {
               borderRadius={0}
               fontSize="16px"
               lineHeight="24px"
-              fontWeight={400}
+              fontWeight="400"
               innerPadding="8px 16px"
             />
             <MjmlText
               fontSize="16px"
               lineHeight="24px"
-              fontWeight={400}
+              fontWeight="400"
               paddingTop={0}
               paddingBottom={0}
               paddingLeft={0}
@@ -108,7 +106,7 @@ export const gouvernanceWelcome = {
             />
           </MjmlAttributes>
           <MjmlTitle>{`Connexion à ${PublicWebAppConfig.projectTitle}`}</MjmlTitle>
-          <MjmlPreview>Inscription confirmée !</MjmlPreview>
+          <MjmlPreview>Inscription confirmée !</MjmlPreview>
         </MjmlHead>
         <MjmlBody backgroundColor={backgroundColor}>
           {/* Section used for a bit of headroom at the top */}
@@ -125,7 +123,7 @@ export const gouvernanceWelcome = {
             </MjmlColumn>
             <MjmlColumn width="80%" verticalAlign="middle">
               <MjmlText
-                fontWeight={500}
+                fontWeight="500"
                 fontSize="20px"
                 padding={0}
                 color={textTitleGrey}
@@ -152,8 +150,8 @@ export const gouvernanceWelcome = {
           </MjmlSection>
           <MjmlSection paddingTop={0}>
             <MjmlColumn paddingTop={32} paddingBottom={40}>
-              <MjmlText fontWeight={600} fontSize={28} color={brandColor}>
-                Inscription confirmée !
+              <MjmlText fontWeight="600" fontSize={28} color={brandColor}>
+                Inscription confirmée !
               </MjmlText>
               <MjmlSpacer height={32} />
               <MjmlText fontSize={20}>
@@ -172,7 +170,7 @@ export const gouvernanceWelcome = {
           </MjmlSection>
           <MjmlSection>
             <MjmlColumn paddingTop={40} paddingBottom={40}>
-              <MjmlText fontWeight={600} fontSize="28px" color={brandColor}>
+              <MjmlText fontWeight="600" fontSize="28px" color={brandColor}>
                 Rappel des informations à renseigner
               </MjmlText>
               <MjmlSpacer height={32} />
@@ -181,7 +179,7 @@ export const gouvernanceWelcome = {
                 vous pouvez portez une feuille de route ou participez à
                 l’élaboration des feuilles de routes territoriales qui seront
                 proposées. Retrouvez ci-dessous les informations qui vous seront
-                demandées :
+                demandées :
               </MjmlText>
 
               {gouvernancePersona.blocs.map((bloc, blocIndex) => (

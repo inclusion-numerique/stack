@@ -17,10 +17,10 @@ const clientOptions: CreateTRPCClientOptions<AppRouter> = {
         (options.direction === 'down' && options.result instanceof Error),
     }),
     httpBatchLink({
+      transformer,
       url: '/api/trpc',
     }),
   ],
-  transformer,
 }
 
 export const queryClient = new QueryClient()
