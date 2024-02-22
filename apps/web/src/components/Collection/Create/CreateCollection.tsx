@@ -11,16 +11,16 @@ import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { createToast } from '@app/ui/toast/createToast'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import {
   CreateCollectionCommand,
   CreateCollectionCommandValidation,
 } from '@app/web/server/collections/createCollection'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import Card from '@app/web/components/Card'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import VisibilityField from '@app/web/components/VisibilityField'
-import { useImageUpload } from '../../../hooks/useImageUpload'
-import Card from '../../Card'
+import { useImageUpload } from '@app/web/hooks/useImageUpload'
 import ImageEdition from '../Edition/ImageEdition'
 import CollectionInformationsEdition from './CollectionInformationsEdition'
 import CreateCollectionSideMenu from './CreateCollectionSideMenu'
@@ -152,10 +152,17 @@ const CreateCollection = ({
             ) : (
               <VisibilityField
                 model="collection"
+                path="isPublic"
                 control={control}
                 disabled={isLoading}
                 publicTitle="Collection publique"
                 privateTitle="Collection privée"
+                publicHint="Visible par tous les visiteurs."
+                privateHint={
+                  base
+                    ? 'Visible uniquement par les membres de votre base.'
+                    : 'Visible uniquement par vous.'
+                }
               />
             )}
           </Card>
