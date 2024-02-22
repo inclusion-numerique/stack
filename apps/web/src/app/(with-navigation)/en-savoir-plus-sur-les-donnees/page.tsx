@@ -21,14 +21,14 @@ const information = [
         title: 'La Cartographie Nationale des lieux d’inclusion numérique',
         description:
           'Recenser les lieux d’inclusion numérique à l’échelle nationale & orienter les publics vers les structures répondant à leur besoin.',
-        link: 'TODO',
+        link: 'https://cartographie.societenumerique.gouv.fr/presentation',
         illustration: '/images/services/cartographie-nationale.svg',
       },
       {
         title: 'Data Inclusion',
         description:
           'Créer un référentiel commun de toutes les données de l’offre d’insertion des territoires.',
-        link: 'TODO',
+        link: 'https://www.data.inclusion.beta.gouv.fr',
         illustration: '/images/services/data-inclusion.svg',
       },
     ],
@@ -43,14 +43,14 @@ const information = [
         title: 'Aidants Connect',
         description:
           "Sécuriser l'aidant et la personne accompagnée dans la réalisation de démarches administratives en ligne.",
-        link: 'TODO',
+        link: 'https://aidantsconnect.beta.gouv.fr',
         illustration: '/images/services/aidants-connect.svg',
       },
       {
         title: 'Conseiller numérique',
         description:
           'Former et déployer des conseillers numériques pour accompagner les usagers vers l’autonomie numérique.',
-        link: 'TODO',
+        link: 'https://www.conseiller-numerique.gouv.fr',
         illustration: '/images/services/conseiller-numerique.svg',
       },
     ],
@@ -65,7 +65,7 @@ const information = [
         title: 'L’indice de Fragilité Numérique',
         description:
           'La cartographie pour comprendre le risque de fragilité numérique des territoires, réalisée par le Mednum.',
-        link: 'TODO',
+        link: 'https://lamednum.coop/actions/indice-de-fragilite-numerique',
         illustration: '/images/services/mednum.svg',
       },
     ],
