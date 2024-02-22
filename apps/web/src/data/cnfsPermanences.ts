@@ -1,11 +1,9 @@
-import { readFile } from 'node:fs/promises'
-import { getDataFilePath } from '@app/web/data/dataFiles'
+import axios from 'axios'
 import { mapStructuresBySiret } from '@app/web/data/siret'
 import { mapStructuresByKey } from '@app/web/data/mapByKey'
 
 export const CnfsPermanences = {
   url: 'https://api.conseiller-numerique.gouv.fr/permanences',
-  dataFile: '2023-11-28 - conum - permanences.json',
 }
 
 export type CnfsAidant = {
@@ -49,8 +47,9 @@ export type CnfsPermanence = {
 }
 
 export const getCnfsPermanences = async () => {
-  const data = await readFile(getDataFilePath(CnfsPermanences.dataFile), 'utf8')
-  return JSON.parse(data) as CnfsPermanence[]
+  const response = await axios.get<CnfsPermanence[]>(CnfsPermanences.url)
+
+  return response.data
 }
 
 export const mapCnfsPermanencesBySiret = (permanences: CnfsPermanence[]) =>

@@ -82,7 +82,7 @@ export type ReducedConumCras = {
 
 export const ConumCras = {
   url: 'Metabase conum',
-  dataFile: 'conum - departement-cras.json',
+  dataFile: 'conum_departement-cras.json',
 }
 
 export const getConumCrasByDepartement = async () => {

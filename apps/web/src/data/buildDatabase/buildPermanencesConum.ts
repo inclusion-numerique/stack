@@ -1,16 +1,17 @@
 import { output } from '@app/cli/output'
 import type { Prisma } from '@prisma/client'
 import { BuildStructuresCartographieNationaleOutput } from '@app/web/data/buildDatabase/buildStructuresCartographieNationale'
-import { getCnfsPermanences } from '@app/web/data/cnfsPermanences'
+import {
+  CnfsPermanences,
+  getCnfsPermanences,
+} from '@app/web/data/cnfsPermanences'
 
 export const buildPermanencesConum = async ({
   structuresCartographieNationale,
 }: {
   structuresCartographieNationale: BuildStructuresCartographieNationaleOutput
 }) => {
-  output(
-    '-- Getting data from local json https://api.conseiller-numerique.gouv.fr/permanences...',
-  )
+  output(`-- Getting data from ${CnfsPermanences.url}...`)
 
   const permanences = await getCnfsPermanences()
 

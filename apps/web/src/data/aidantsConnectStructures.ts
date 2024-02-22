@@ -30,7 +30,7 @@ type AidantsConnectCsvRow = {
 
 export const AidantsConnectStructures = {
   url: 'https://metabase.aidantsconnect.beta.gouv.fr/question/112-aidants-connect-structure',
-  dataFile: '20240212-aidants_connect_structures.csv',
+  dataFile: 'aidants-connect_structures.csv',
   // Headers are not pretty from metabase export, we redefine them here
   // Check with csv file when updating file
 
