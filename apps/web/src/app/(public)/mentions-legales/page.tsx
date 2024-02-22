@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
+import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
+import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 
 export const revalidate = 0
 
@@ -11,9 +13,12 @@ export const metadata: Metadata = {
 
 const LegalPage = () => (
   <div className="fr-container">
+    <SkipLinksPortal links={defaultSkipLinks} />
     <Breadcrumbs currentPage="Mentions légales" />
-
-    <div className="fr-container landing-main-container fr-my-8w">
+    <main
+      id={contentId}
+      className="fr-container landing-main-container fr-my-8w"
+    >
       <div className="fr-grid-row fr-grid-row--center">
         <div className="fr-col-md-8">
           <h1>Mentions légales</h1>
@@ -81,7 +86,7 @@ const LegalPage = () => (
           </p>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 )
 export default LegalPage
