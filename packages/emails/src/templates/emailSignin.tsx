@@ -12,7 +12,7 @@ import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { brandColor } from '@app/emails/styles'
 import LayoutWithFooter from '@app/emails/components/LayoutWithFooter'
 
-export const emailSignin = {
+export const infosGouvernancePourMembres = {
   text: ({ url }: { url: string }): string =>
     // eslint-disable-next-line no-irregular-whitespace
     `Pour vous connecter à ${PublicWebAppConfig.projectTitle}, merci d'utiliser le lien suivant :\n${url}\n\n`,
