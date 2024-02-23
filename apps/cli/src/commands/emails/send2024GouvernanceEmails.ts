@@ -99,14 +99,14 @@ const getPrefecturesWithGouvernances = async () => {
   }
 }
 
-type PrefecturesAndGouvernances = Awaited<
+export type PrefecturesAndGouvernances = Awaited<
   ReturnType<typeof getPrefecturesWithGouvernances>
 >
 
-type PrefectureWithGouvernance =
+export type PrefectureWithGouvernance =
   PrefecturesAndGouvernances['prefecturesAvecGouvernanceV2AvecBesoins'][number]
 
-type GouvernanceForEmailMembre =
+export type GouvernanceForEmailMembre =
   PrefectureWithGouvernance['gouvernance']['membres'][number]
 
 const getFormulaireGouvernancesForMembreWhere = ({
