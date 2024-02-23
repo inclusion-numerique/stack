@@ -26,7 +26,7 @@ const BaseCollectionsPage = async ({
         authorizations.isMember ? (
           <EmptyBox title="Vous n’avez pas de collections dans cette base">
             <div data-testid="create-resource-button">
-              <CreateCollectionButton />
+              <CreateCollectionButton baseId={id} />
             </div>
           </EmptyBox>
         ) : (
