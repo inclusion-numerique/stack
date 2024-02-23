@@ -24,7 +24,7 @@ const EditCard = <
   className,
   title,
   titleAs: CardTitle = 'h3',
-  desc,
+                     description,
   edition,
   view,
   form,
@@ -35,7 +35,7 @@ const EditCard = <
   className?: string
   title: string
   titleAs?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
-  desc?: string
+  description?: string
   edition: ReactNode
   view: ReactNode
   form: UseFormReturn<T>
@@ -75,7 +75,7 @@ const EditCard = <
           )}
         </div>
       }
-      desc={desc}
+      desc={description}
       titleAs="div"
       contentSeparator
     >
