@@ -5,11 +5,12 @@ import picocolors from 'picocolors'
 import { varDirectory } from '@app/config/varDirectory'
 import { parseCsvFile } from '@app/web/data/parseCsvFile'
 import { stringify } from 'csv-stringify/sync'
-import { infosGouvernancePourMembres } from '@app/emails/templates/infosGouvernancePourMembres'
+// import { infosGouvernancePourMembres } from '@app/emails/templates/infosGouvernancePourMembres'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { compileMjml } from '@app/emails/mjml'
 import { emailTransport } from '@app/web/server/email/emailTransport'
 import { throwOnSendMailFailure } from '@app/web/server/email/throwOnSendMailFailure'
+import { infosGouvernancePourMembres } from '@app/emails/templates/infosGouvernancePourMembres'
 import {
   configureDeploymentTarget,
   DeploymentTargetOption,
@@ -409,6 +410,7 @@ const sendEmailsForGouvernances = async ({
         output(
           `Email already sent to ${contact.email} (${departement.nom} - ${contact.type}), skipping`,
         )
+        done += 1
         continue
       }
 
@@ -422,22 +424,30 @@ const sendEmailsForGouvernances = async ({
         subject: infosGouvernancePourMembres.subject(emailProps),
         text: infosGouvernancePourMembres.text(emailProps),
         mjml: infosGouvernancePourMembres.mjml(emailProps),
+        html: '',
       }
+
+      emailContent.html = compileMjml(emailContent.mjml)
 
       const to = contact.nom
         ? `${contact.nom} <${contact.email}>`
         : contact.email
 
-      // eslint-disable-next-line no-await-in-loop
-      const emailResult = await emailTransport.sendMail({
-        to,
-        from: ServerWebAppConfig.Email.from,
-        subject: emailContent.subject,
-        text: emailContent.text,
-        html: compileMjml(emailContent.mjml),
-      })
+      const reallyExecuteSendMail = false
 
-      throwOnSendMailFailure(emailResult)
+      if (reallyExecuteSendMail) {
+        // eslint-disable-next-line no-await-in-loop
+        const emailResult = await emailTransport.sendMail({
+          to,
+          from: ServerWebAppConfig.Email.from,
+          subject: emailContent.subject,
+          text: emailContent.text,
+          html: emailContent.html,
+          replyTo: 'societe.numerique@anct.gouv.fr',
+        })
+
+        throwOnSendMailFailure(emailResult)
+      }
 
       appendSentEmail({
         envoye: new Date().toISOString(),
