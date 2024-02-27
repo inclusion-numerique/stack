@@ -59,6 +59,13 @@ const RessourcePage = async ({ params }: { params: { slug: string } }) => {
 
   const { hasPermission } = resourceAuthorization(resource, user)
 
+  const canReadGeneralInformation = hasPermission(
+    ResourcePermissions.ReadGeneralResourceInformation,
+  )
+  if (!canReadGeneralInformation) {
+    notFound()
+  }
+
   const canWrite = hasPermission(ResourcePermissions.WriteResource)
   const canReadContent = hasPermission(ResourcePermissions.ReadResourceContent)
   const canDelete = hasPermission(ResourcePermissions.DeleteResource)

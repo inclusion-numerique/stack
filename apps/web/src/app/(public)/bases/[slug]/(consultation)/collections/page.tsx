@@ -17,7 +17,6 @@ const BaseCollectionsPage = async ({
 
   const canWrite = hasPermission('WriteBase')
 
-  // TODO security and filtering check, separate query for collections
   const { collections, savedCollections, id } = base
 
   return (
