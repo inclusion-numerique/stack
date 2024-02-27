@@ -72,6 +72,7 @@ export const applyResourceMigrated: ResourceCreationEventApplier<
   id,
   created: new Date(created),
   updated: new Date(updated),
+  deleted: null,
   published: published ? new Date(published) : null,
   lastPublished: published ? new Date(published) : null,
   createdById: byId,

@@ -42,7 +42,9 @@ export const resourceRouter = router({
         }
 
         authorizeOrThrow(
-          baseAuthorization(base, user)(BasePermissions.WriteBase),
+          baseAuthorization(base, user).hasPermission(
+            BasePermissions.WriteBase,
+          ),
         )
       }
 
@@ -79,16 +81,15 @@ export const resourceRouter = router({
         }
 
         authorizeOrThrow(
-          baseAuthorization(base, user)(BasePermissions.WriteBase),
+          baseAuthorization(base, user).hasPermission(
+            BasePermissions.WriteBase,
+          ),
         )
       }
 
       // Check special delete permission
       authorizeOrThrow(
-        resourceAuthorization(
-          resource,
-          user,
-        )(
+        resourceAuthorization(resource, user).hasPermission(
           command.name === 'Delete'
             ? ResourcePermissions.DeleteResource
             : ResourcePermissions.WriteResource,
@@ -117,17 +118,15 @@ export const resourceRouter = router({
 
         // Can only add a accessible resource to collection
         authorizeOrThrow(
-          resourceAuthorization(
-            resource,
-            user,
-          )(ResourcePermissions.ReadResourceContent),
+          resourceAuthorization(resource, user).hasPermission(
+            ResourcePermissions.ReadResourceContent,
+          ),
         )
 
         authorizeOrThrow(
-          collectionAuthorization(
-            collection,
-            user,
-          )(CollectionPermissions.AddToCollection),
+          collectionAuthorization(collection, user).hasPermission(
+            CollectionPermissions.AddToCollection,
+          ),
         )
 
         const resultCollection = await prismaClient.collection.update({
@@ -172,17 +171,15 @@ export const resourceRouter = router({
 
         // Can only add a accessible resource to collection
         authorizeOrThrow(
-          resourceAuthorization(
-            resource,
-            user,
-          )(ResourcePermissions.ReadResourceContent),
+          resourceAuthorization(resource, user).hasPermission(
+            ResourcePermissions.ReadResourceContent,
+          ),
         )
 
         authorizeOrThrow(
-          collectionAuthorization(
-            collection,
-            user,
-          )(CollectionPermissions.AddToCollection),
+          collectionAuthorization(collection, user).hasPermission(
+            CollectionPermissions.AddToCollection,
+          ),
         )
 
         const resultCollection = await prismaClient.collection.update({

@@ -20,7 +20,6 @@ const ProfilePage = async ({ params }: ProfilRouteParams) => {
 
   const resources = await getProfileResources(profile.id, user)
 
-
   const canWrite = authorization.hasPermission(ProfilePermissions.WriteProfile)
   const isOwner = authorization.hasRole(ProfileRoles.ProfileOwner)
 
@@ -31,11 +30,11 @@ const ProfilePage = async ({ params }: ProfilRouteParams) => {
       ressource.published
         ? { ressource, draft: null }
         : getResourceProjectionWithContext({
-          slug: decodeURI(ressource.slug),
-        }).then((draft) => ({
-          ressource,
-          draft,
-        })),
+            slug: decodeURI(ressource.slug),
+          }).then((draft) => ({
+            ressource,
+            draft,
+          })),
     ),
   )
 
@@ -47,7 +46,7 @@ const ProfilePage = async ({ params }: ProfilRouteParams) => {
     .filter(isDefinedAndNotNull)
 
   return ressourcesWithAppliedDraft.length === 0 ? (
-    <EmptyProfileResources  canWrite={canWrite} isOwner={isOwner} />
+    <EmptyProfileResources canWrite={canWrite} isOwner={isOwner} />
   ) : (
     <Resources
       resources={ressourcesWithAppliedDraft}

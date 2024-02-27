@@ -92,8 +92,9 @@ const ProfileMenu = ({
                 currentTab={currentTab}
                 href={`/profils/${profile.slug}/suivis`}
               >
-                 Mes suivis · <b>{followsCount}</b>
-            </MenuItem>)}
+                Mes suivis · <b>{followsCount}</b>
+              </MenuItem>
+            )}
             <MenuItem
               tab="a-propos"
               currentTab={currentTab}

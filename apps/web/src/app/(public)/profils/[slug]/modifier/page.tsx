@@ -47,12 +47,12 @@ const ProfilEditionPage = async ({ params }: ProfilRouteParams) => {
           parents={[
             {
               label: isOwner ? 'Mon Profil' : `${profile.name || 'Profil'}`,
-            linkProps: { href: `/profils/${params.slug}` },
-          },
-        ]}
-        currentPage="Modifier"
-      />
-      <main id={contentId} className="fr-mt-6w fr-mb-4w">
+              linkProps: { href: `/profils/${params.slug}` },
+            },
+          ]}
+          currentPage="Modifier"
+        />
+        <main id={contentId} className="fr-mt-6w fr-mb-4w">
           <ProfilEdition profile={profile} resources={resources} />
         </main>
       </div>

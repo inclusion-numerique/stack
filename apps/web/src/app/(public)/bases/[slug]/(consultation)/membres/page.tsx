@@ -11,7 +11,6 @@ const BaseMembersPage = async ({ params }: { params: { slug: string } }) => {
   return (
     <BaseMembers
       base={base}
-      canRemoveMember={hasPermission('RemoveBaseMember')}
       canAddAdmin={hasPermission('AddBaseAdmin')}
       canAddMember={hasPermission('AddBaseMember')}
       canChangeMemberRole={hasPermission('ChangeBaseMemberRole')}

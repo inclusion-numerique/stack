@@ -20,6 +20,7 @@ const resource = (imageId: string | null) =>
     updated: new Date('2022-07-12'),
     published: new Date('2022-07-12'),
     lastPublished: new Date('2022-07-12'),
+    deleted: null,
     baseId: '2',
     base: {
       id: '2',
@@ -140,7 +141,8 @@ export const AvecImageBrouillon: Story = {
   render: (args) => <Template {...args} />,
   args: {
     resource: { ...resource('paysage'), published: null, lastPublished: null },
-    isAdmin: true,
+    canWrite: true,
+    canDelete: true,
   },
 }
 
@@ -159,7 +161,8 @@ export const Contributeur: Story = {
   render: (args) => <Template {...args} />,
   args: {
     resource: { ...resource('portrait'), updated: new Date('2023-12-12') },
-    isAdmin: true,
+    canWrite: true,
+    canDelete: true,
   },
 }
 

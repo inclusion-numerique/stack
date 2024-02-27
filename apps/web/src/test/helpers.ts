@@ -75,6 +75,7 @@ export const createTestResource = (
     created: new Date('2023-09-14'),
     updated: new Date('2023-09-14'),
     published: new Date('2023-09-14'),
+    deleted: null,
     lastPublished: new Date('2023-09-14'),
     description: testResourceDescription,
     excerpt: generateResourceExcerpt(testResourceDescription),

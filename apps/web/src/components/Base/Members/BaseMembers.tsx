@@ -9,13 +9,11 @@ const BaseMembers = ({
   base,
   canAddAdmin,
   canAddMember,
-  canRemoveMember,
   canChangeMemberRole,
 }: {
   base: BasePageData
   canAddMember: boolean
   canChangeMemberRole: boolean
-  canRemoveMember: boolean
   canAddAdmin: boolean
 }) => {
   // Cannot change access level of admins if there is only one admin

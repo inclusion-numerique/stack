@@ -6,10 +6,12 @@ import BaseEditionHeader, {
   headerSkipLink,
 } from '@app/web/components/Base/Edition/BaseEditionHeader'
 import BaseEdition from '@app/web/components/Base/Edition/BaseEdition'
-import { filterAccess } from '@app/web/server/bases/authorization'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
-import { baseAuthorization } from '@app/web/authorization/models/baseAuthorization'
+import {
+  baseAuthorization,
+  BasePermissions,
+} from '@app/web/authorization/models/baseAuthorization'
 
 const BaseEditionPage = async ({ params }: { params: { slug: string } }) => {
   const user = await getSessionUser()
@@ -24,7 +26,7 @@ const BaseEditionPage = async ({ params }: { params: { slug: string } }) => {
 
   const { hasPermission } = baseAuthorization(base, user)
 
-  if (!hasPermission('WriteBase')) {
+  if (!hasPermission(BasePermissions.WriteBase)) {
     redirect(`/bases/${params.slug}`)
   }
 
@@ -33,7 +35,10 @@ const BaseEditionPage = async ({ params }: { params: { slug: string } }) => {
       <SkipLinksPortal links={[headerSkipLink, ...defaultSkipLinks]} />
       <BaseEditionHeader base={base} />
       <main id={contentId}>
-        <BaseEdition base={base} canDelete={hasPermission('DeleteBase')} />
+        <BaseEdition
+          base={base}
+          canDelete={hasPermission(BasePermissions.DeleteBase)}
+        />
       </main>
     </>
   )

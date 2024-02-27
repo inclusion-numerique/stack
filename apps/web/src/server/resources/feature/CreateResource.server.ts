@@ -46,6 +46,7 @@ export const applyResourceCreated: ResourceCreationEventApplier<
   created: timestamp,
   updated: timestamp,
   published: null,
+  deleted: null,
   lastPublished: null,
   createdById: byId,
   imageId: null,
