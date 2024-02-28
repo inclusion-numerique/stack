@@ -43,24 +43,26 @@ export const getResourceRoles = (
     return []
   }
 
+  const roles: ResourceRole[] = []
+
   if (resource.createdById === user.id) {
-    return [ResourceRoles.ResourceCreator]
+    roles.push(ResourceRoles.ResourceCreator)
   }
 
   // Resource contributor
   if (user.resources.some(({ resourceId }) => resourceId === resource.id)) {
-    return [ResourceRoles.ResourceContributor]
-  }
-
-  // Contributor rules for base members
-  if (
+    roles.push(ResourceRoles.ResourceContributor)
+  } else if (
+    // Contributor rules for base members
     resource.baseId &&
     user.bases.some(({ base: { id: baseId } }) => baseId === resource.baseId)
   ) {
-    return [ResourceRoles.ResourceContributor]
+    roles.push(ResourceRoles.ResourceContributor)
   }
 
-  return []
+  console.log('ROLES', roles)
+
+  return roles
 }
 
 export const getResourcePermissions = (
@@ -71,24 +73,28 @@ export const getResourcePermissions = (
     return []
   }
 
+  console.log('ROLES IN GET RESOURCE PERMISSIONS', roles)
+
   // Admins and contributors always have all permissions on ressource
   if (
-    roles.includes('Admin') ||
-    roles.includes('Support') ||
-    roles.includes('ResourceCreator') ||
-    roles.includes('ResourceContributor')
+    roles.includes(UserSecurityRoles.Admin) ||
+    roles.includes(UserSecurityRoles.Support) ||
+    roles.includes(ResourceRoles.ResourceCreator) ||
+    roles.includes(ResourceRoles.ResourceContributor)
   ) {
     return resourcePermissions
   }
 
   const permissions: ResourcePermission[] = []
 
+  // Can see metadata for published private resource
+  if (resource.published) {
+    permissions.push(ResourcePermissions.ReadGeneralResourceInformation)
+  }
+
   // Other users can only see published public resources
   if (!!resource.published && resource.isPublic) {
-    permissions.push(
-      ResourcePermissions.ReadGeneralResourceInformation,
-      ResourcePermissions.ReadResourceContent,
-    )
+    permissions.push(ResourcePermissions.ReadResourceContent)
     // Only connected users can save/unsave or report a published resource
     if (roles.includes(UserSecurityRoles.User)) {
       permissions.push(
@@ -98,6 +104,7 @@ export const getResourcePermissions = (
       )
     }
   }
+  console.log('PERMISSIONS', permissions)
 
   return permissions
 }
