@@ -304,12 +304,14 @@ const computeDashboardData = async (scope: GouvernanceScope) => {
           },
           {
             id: 'Conseillers Coordinateurs',
-            label: 'Conseillers Coordinateurs en poste',
+            label: departement
+              ? 'Conseillers Coordinateurs en poste'
+              : 'Postes de Conseillers Coordinateurs attribués',
             info: 'coordinateursConseillerNumerique',
             // eslint-disable-next-line no-underscore-dangle
             value: departement
               ? departement._count.coordinateursConseillerNumerique
-              : countCoconums,
+              : 112,
           },
           {
             id: 'aidants-habilités-à-aidant-connect',
