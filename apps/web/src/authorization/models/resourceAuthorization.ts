@@ -60,8 +60,6 @@ export const getResourceRoles = (
     roles.push(ResourceRoles.ResourceContributor)
   }
 
-  console.log('ROLES', roles)
-
   return roles
 }
 
@@ -72,8 +70,6 @@ export const getResourcePermissions = (
   if (resource.deleted) {
     return []
   }
-
-  console.log('ROLES IN GET RESOURCE PERMISSIONS', roles)
 
   // Admins and contributors always have all permissions on ressource
   if (
@@ -104,7 +100,6 @@ export const getResourcePermissions = (
       )
     }
   }
-  console.log('PERMISSIONS', permissions)
 
   return permissions
 }

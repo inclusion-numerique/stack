@@ -63,9 +63,6 @@ export const getBaseRoles = (
     }
   }
 
-  console.log('MEMBERS FOR ROLE CHECK', user.bases)
-  console.log('ROLES', roles)
-
   return roles
 }
 
