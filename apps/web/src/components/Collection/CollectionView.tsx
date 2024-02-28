@@ -10,6 +10,10 @@ import OwnershipInformation from '@app/web/components/OwnershipInformation'
 import SaveCollectionModal from '@app/web/components/Collection/SaveCollectionModal'
 import CollectionMetaData from '@app/web/components/Collection/CollectionMetaData'
 import ResourceCard from '@app/web/components/Resource/ResourceCard'
+import {
+  resourceAuthorization,
+  ResourceRoles,
+} from '@app/web/authorization/models/resourceAuthorization'
 import styles from './CollectionView.module.css'
 
 const CollectionView = ({
@@ -67,6 +71,9 @@ const CollectionView = ({
         key={resource.id}
         resource={resource}
         user={user}
+        isContributor={resourceAuthorization(resource, user).hasRole(
+          ResourceRoles.ResourceContributor,
+        )}
         className={index === 0 ? 'fr-pt-12v' : undefined}
       />
     ))}

@@ -7,6 +7,10 @@ import DeleteResource from '@app/web/components/Resource/DeleteResource/DeleteRe
 import SaveResourceInCollectionModal from '@app/web/components/Resource/SaveResourceInCollectionModal'
 import ResourceTab from '@app/web/components/Resource/List/ResourceTab'
 import ResourceCard from '@app/web/components/Resource/ResourceCard'
+import {
+  resourceAuthorization,
+  ResourceRoles,
+} from '@app/web/authorization/models/resourceAuthorization'
 import styles from './Resources.module.css'
 
 const Resources = ({
@@ -92,7 +96,14 @@ const Resources = ({
         />
       ) : (
         resources.map((resource) => (
-          <ResourceCard key={resource.id} resource={resource} user={user} />
+          <ResourceCard
+            isContributor={resourceAuthorization(resource, user).hasRole(
+              ResourceRoles.ResourceContributor,
+            )}
+            key={resource.id}
+            resource={resource}
+            user={user}
+          />
         ))
       )}
       {!!user && <SaveResourceInCollectionModal user={user} />}
