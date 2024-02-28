@@ -17,6 +17,8 @@ export const getBasePageContext = cache(async (baseSlug: string) => {
 
   const authorization = baseAuthorization(base, user)
 
+  console.log('AUTH BASE CONTEXT', { user, base })
+
   if (
     !authorization.hasPermission(BasePermissions.ReadGeneralBaseInformation)
   ) {

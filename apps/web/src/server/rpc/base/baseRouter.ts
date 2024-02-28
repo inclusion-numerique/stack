@@ -48,7 +48,7 @@ export const baseRouter = router({
           createdById: user.id,
           members: {
             create: [
-              { memberId: user.id, isAdmin: true },
+              { memberId: user.id, isAdmin: true, accepted: new Date() },
               ...members.map((member) => ({
                 memberId: member.id,
                 acceptationToken: tokens[member.id],

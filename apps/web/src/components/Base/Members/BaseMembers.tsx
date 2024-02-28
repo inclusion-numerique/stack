@@ -20,6 +20,14 @@ const BaseMembers = ({
   const canChangeAccessLevelOfAdmins =
     base.members.filter((member) => member.isAdmin).length > 1
 
+  console.log({
+    base,
+    canAddAdmin,
+    canAddMember,
+    canChangeMemberRole,
+    canChangeAccessLevelOfAdmins,
+  })
+
   return (
     <div className={styles.container} data-testid="base-members">
       <div className={styles.header}>
