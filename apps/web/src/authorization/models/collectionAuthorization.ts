@@ -94,6 +94,18 @@ export const getCollectionPermissions = (
     }
   }
 
+  if (
+    roles.includes('CollectionCreator') ||
+    roles.includes('CollectionContributor')
+  ) {
+    permissions.push(
+      CollectionPermissions.WriteCollection,
+      CollectionPermissions.DeleteCollection,
+      CollectionPermissions.AddToCollection,
+      CollectionPermissions.RemoveFromCollection,
+    )
+  }
+
   return permissions
 }
 

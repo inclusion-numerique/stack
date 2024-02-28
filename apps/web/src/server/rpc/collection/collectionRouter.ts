@@ -35,6 +35,10 @@ import {
 } from '@app/web/authorization/models/resourceAuthorization'
 
 export const collectionRouter = router({
+  /**
+   * A Collection can be saved to a profile or a base.
+   * It does not mean the collection itself is being edited, but that it is being saved in a profile or a base.
+   */
   save: protectedProcedure
     .input(SaveCollectionValidation)
     .mutation(
@@ -71,7 +75,7 @@ export const collectionRouter = router({
 
         authorizeOrThrow(
           collectionAuthorization(collection, user).hasPermission(
-            CollectionPermissions.WriteCollection,
+            CollectionPermissions.SaveCollection,
           ),
         )
 
@@ -89,6 +93,10 @@ export const collectionRouter = router({
         })
       },
     ),
+  /**
+   * A Collection can be saved/unsaved to a profile or a base.
+   * It does not mean the collection itself is being edited, but that it is being saved in a profile or a base.
+   */
   unsave: protectedProcedure
     .input(SaveCollectionValidation)
     .mutation(
@@ -124,13 +132,17 @@ export const collectionRouter = router({
 
         authorizeOrThrow(
           collectionAuthorization(collection, user).hasPermission(
-            CollectionPermissions.WriteCollection,
+            CollectionPermissions.UnsaveCollection,
           ),
         )
 
         // Collection is saved in profile
         return prismaClient.savedCollection.deleteMany({
-          where: { collectionId, savedById, baseId: null },
+          where: baseId
+            ? // Remove from base if baseId is provided
+              { collectionId, baseId }
+            : // Remove from profile if baseId is not provided
+              { collectionId, savedById },
         })
       },
     ),
