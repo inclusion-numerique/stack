@@ -46,6 +46,7 @@ export const onRepublished: ResourceEventSideEffect<
       title: resource.title,
       imageId: resource.imageId,
       description: resource.description,
+      excerpt: resource.excerpt,
       baseId: resource.baseId,
       slug: resource.slug,
       // Deleting and recreating contents

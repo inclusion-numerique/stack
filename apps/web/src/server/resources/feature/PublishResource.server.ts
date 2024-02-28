@@ -77,6 +77,7 @@ export const onPublished: ResourceEventSideEffect<ResourcePublished> = async (
       title: resource.title,
       imageId: resource.imageId,
       description: resource.description,
+      excerpt: resource.excerpt,
       baseId: resource.baseId,
       // Deleting and recreating contents
       contents: {

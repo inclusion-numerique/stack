@@ -5,6 +5,7 @@ export const getResourceSelect = (user: { id: string } | null) =>
     id: true,
     title: true,
     description: true,
+    excerpt: true,
     slug: true,
     published: true,
     lastPublished: true,

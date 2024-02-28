@@ -6,6 +6,10 @@ import type {
   Resource,
   ResourceContent,
 } from '@app/web/server/resources/getResource'
+import { generateResourceExcerpt } from '@app/web/resources/resourceExcerpt'
+
+const description =
+  'Lorem Ipsul Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum quam mauris sit lacinia turpis sed vitae vel. Venenatis in in neque interdum nec facilisi mauris nunc vitae turpis sed vitae vel. Venenatis adipiscing elit.'
 
 const resource = (imageId: string | null) =>
   ({
@@ -14,8 +18,8 @@ const resource = (imageId: string | null) =>
     title:
       'Titre d’une ressource sur deux ligne très longues comme comme sur deux ligne très longues',
     slug: 'titre-d-une-ressource-sur-deux-ligne-très-longues-comme-comme-sur-deux-ligne-très-longues',
-    description:
-      'Lorem Ipsul Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum quam mauris sit lacinia turpis sed vitae vel. Venenatis in in neque interdum nec facilisi mauris nunc vitae turpis sed vitae vel. Venenatis adipiscing elit.',
+    description,
+    excerpt: generateResourceExcerpt(description),
     created: new Date('1998-07-12'),
     updated: new Date('2022-07-12'),
     published: new Date('2022-07-12'),
