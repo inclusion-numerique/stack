@@ -285,7 +285,7 @@ const computeDashboardData = async (scope: GouvernanceScope) => {
     ],
   } satisfies BoxData
 
-  const aidantConnectLocations = {
+  const aidantNumeriqueLocations = {
     id: 'aidants-numériques-identifiés',
     label: 'Aidants Numériques identifiés',
     value: conums + structuresCount.aidantsConnect.aidants,
@@ -321,7 +321,10 @@ const computeDashboardData = async (scope: GouvernanceScope) => {
     ],
   } satisfies BoxData
 
-  const main = { inclusionLocations, aidantConnectLocations }
+  const main = {
+    inclusionLocations,
+    aidantConnectLocations: aidantNumeriqueLocations,
+  }
 
   const totalAccompagnementsConum = conumCras
     ? conumCras.ageMoins12ans +
