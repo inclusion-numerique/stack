@@ -36,7 +36,7 @@ export const getHomepageData = async () => {
   const [appData, conseillersNumeriques, aidantsConnect, gouvernances] =
     await Promise.all([
       getAppData(),
-      //prismaClient.conseillerNumerique.count({}),
+      // prismaClient.conseillerNumerique.count({}),
       // on met 4000 en dur en attendant d'avoir la valeur du nombre de poste attribué
       4000,
       prismaClient.structureAidantsConnect.aggregate({
