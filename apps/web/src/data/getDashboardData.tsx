@@ -295,12 +295,16 @@ const computeDashboardData = async (scope: GouvernanceScope) => {
         statistics: [
           {
             id: 'conseillers-numériques',
-            label: 'Conseillers Numériques',
-            value: conums,
+            label: departement
+              ? 'Conseillers Numériques en poste'
+              : 'Postes de Conseillers Numérique attribués',
+            info: departement ? 'conseillerNumerique' : undefined,
+            //on ajoute 4000 en dur au niveau national le temps d'avoir les vrais chiffres de postes attribués
+            value: departement ? conums : 4000,
           },
           {
-            id: 'dont Conseillers Coordinateurs',
-            label: 'dont Conseillers Coordinateurs',
+            id: 'Conseillers Coordinateurs',
+            label: 'Conseillers Coordinateurs en poste',
             info: 'coordinateursConseillerNumerique',
             // eslint-disable-next-line no-underscore-dangle
             value: departement

@@ -14,18 +14,14 @@ export const getGouvernancesCounts = () =>
       structures: number
     }[]
   >`
-      SELECT COUNT(membre_gouvernance.id)                                                                        as membres,
-             COUNT(DISTINCT CASE WHEN gouvernances.v2_enregistree IS NOT NULL THEN gouvernances.id END)                                                                     as gouvernances,
+      SELECT COUNT(membre_gouvernance.id)                                                               as membres,
+             COUNT(DISTINCT CASE WHEN gouvernances.v2_enregistree IS NOT NULL THEN gouvernances.id END) as gouvernances,
              COUNT(membre_gouvernance.id)
-             FILTER (WHERE membre_gouvernance.region_code IS NOT NULL)                                           as regions,
-             COUNT(membre_gouvernance.id)
-             FILTER (WHERE membre_gouvernance.departement_code IS NOT NULL)                                          as departements,
-             COUNT(membre_gouvernance.id)
-             FILTER (WHERE membre_gouvernance.commune_code IS NOT NULL)                                          as communes,
-             COUNT(membre_gouvernance.id)
-             FILTER (WHERE membre_gouvernance.epci_code IS NOT NULL)                                             as epcis,
-             COUNT(membre_gouvernance.id)
-             FILTER (WHERE membre_gouvernance.siret IS NOT NULL)                              as structures
+                                                                                                           FILTER (WHERE membre_gouvernance.region_code IS NOT NULL)                                           as regions, COUNT(membre_gouvernance.id)
+          FILTER (WHERE membre_gouvernance.departement_code IS NOT NULL)                                          as departements, COUNT(membre_gouvernance.id)
+          FILTER (WHERE membre_gouvernance.commune_code IS NOT NULL)                                          as communes, COUNT(membre_gouvernance.id)
+          FILTER (WHERE membre_gouvernance.epci_code IS NOT NULL)                                             as epcis, COUNT(membre_gouvernance.id)
+          FILTER (WHERE membre_gouvernance.siret IS NOT NULL)                              as structures
       FROM membre_gouvernance
                RIGHT JOIN gouvernances ON gouvernances.id = membre_gouvernance.gouvernance_id AND
                                           gouvernances.v2_enregistree IS NOT NULL
@@ -40,8 +36,11 @@ export const getHomepageData = async () => {
   const [appData, conseillersNumeriques, aidantsConnect, gouvernances] =
     await Promise.all([
       getAppData(),
-      prismaClient.conseillerNumerique.count({}),
+      //prismaClient.conseillerNumerique.count({}),
+      // on met 4000 en dur en attendant d'avoir la valeur du nombre de poste attribué
+      4000,
       prismaClient.structureAidantsConnect.aggregate({
+        where: { isActive: true },
         _sum: {
           aidants: true,
         },

@@ -30,7 +30,7 @@ const HomePage = async () => {
     },
     {
       value: conseillersNumeriques,
-      label: 'Conseillers Numériques',
+      label: 'postes de Conseillers Numériques attribués',
     },
     {
       value: aidantsConnect,
