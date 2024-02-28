@@ -73,7 +73,7 @@ const AProposPage = async ({ params }: ProfilRouteParams) => {
             )}
             {hasSocialNetwork(profile) && (
               <>
-                <h3 className="fr-h6 fr-mb-1w">Nous suivre</h3>
+                <h3 className="fr-h6 fr-mb-1w">Me suivre</h3>
                 <div className="fr-flex fr-flex-wrap fr-flex-gap-5v">
                   <ExternalLink
                     href={profile.facebook}
