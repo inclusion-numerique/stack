@@ -125,9 +125,9 @@ const CreateCollection = ({
             id="visibilite"
             description="Choisissez la visibilité de votre collection."
           >
-            {/* Display info if cannot be public */}
-            {collectionCannotBePublic ? (
+            {collectionCannotBePublic && (
               <Notice
+                className="fr-mx-2v fr-my-4v"
                 title={
                   base ? (
                     <>
@@ -149,22 +149,21 @@ const CreateCollection = ({
                   )
                 }
               />
-            ) : (
-              <VisibilityField
-                model="collection"
-                path="isPublic"
-                control={control}
-                disabled={isLoading}
-                publicTitle="Collection publique"
-                privateTitle="Collection privée"
-                publicHint="Visible par tous les visiteurs."
-                privateHint={
-                  base
-                    ? 'Visible uniquement par les membres de votre base.'
-                    : 'Visible uniquement par vous.'
-                }
-              />
             )}
+            <VisibilityField
+              model="collection"
+              path="isPublic"
+              control={control}
+              disabled={isLoading || (base != null && !base.isPublic)}
+              publicTitle="Collection publique"
+              privateTitle="Collection privée"
+              publicHint="Visible par tous les visiteurs."
+              privateHint={
+                base
+                  ? 'Visible uniquement par les membres de votre base.'
+                  : 'Visible uniquement par vous.'
+              }
+            />
           </Card>
           <ButtonsGroup
             className="fr-mt-3w"

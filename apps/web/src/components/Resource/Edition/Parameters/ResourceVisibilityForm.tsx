@@ -70,14 +70,14 @@ const ResourceVisibilityForm = ({
             ? !resource.base.isPublic && (
                 <Notice
                   data-testid="notice-private-base"
-                  className="fr-mx-2v fr-mt-4v fr-mb-4v"
+                  className="fr-mx-2v fr-my-4v"
                   title="En publiant votre ressource dans une base privée, vous ne pourrez pas la rendre publique."
                 />
               )
             : !user.isPublic && (
                 <Notice
                   data-testid="notice-private-profile"
-                  className="fr-mx-2v fr-mt-4v fr-mb-4v"
+                  className="fr-mx-2v fr-my-4v"
                   title="En publiant votre ressource dans un profil privé, vous ne pourrez pas la rendre publique."
                 />
               )}

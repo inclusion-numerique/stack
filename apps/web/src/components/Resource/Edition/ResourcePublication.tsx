@@ -13,6 +13,15 @@ import ResourceBaseEdition from './ResourceBaseEdition'
 import styles from './ResourcePublication.module.css'
 import ResourceIndexationEdition from './Parameters/ResourceIndexationEdition'
 
+const visibilityTexts = (base: { id: string } | null) => ({
+  publicTitle: 'Ressource publique',
+  privateTitle: 'Ressource privée',
+  publicHint: 'Visible par tous les visiteurs.',
+  privateHint: base
+    ? 'Visible uniquement par les membres de votre base et les contributeurs que vous avez invités.'
+    : 'Visible uniquement par vous et les contributeurs que vous avez invités.',
+})
+
 const ResourcePublication = ({
   resource,
   user,
@@ -66,14 +75,14 @@ const ResourcePublication = ({
           ? !resource.base.isPublic && (
               <Notice
                 data-testid="notice-private-base"
-                className="fr-mx-2v fr-mt-4v fr-mb-4v"
+                className="fr-mx-2v fr-my-4v"
                 title="En publiant votre ressource dans une base privée, vous ne pourrez pas la rendre publique."
               />
             )
           : !user.isPublic && (
               <Notice
                 data-testid="notice-private-profile"
-                className="fr-mx-2v fr-mt-4v fr-mb-4v"
+                className="fr-mx-2v fr-my-4v"
                 title="En publiant votre ressource dans un profil privé, vous ne pourrez pas la rendre publique."
               />
             )}
@@ -83,14 +92,7 @@ const ResourcePublication = ({
           control={control}
           disabled={!(resource.base ? resource.base.isPublic : user.isPublic)}
           setIsPublic={setIsPublic}
-          publicTitle="Ressource publique"
-          privateTitle="Ressource privée"
-          publicHint="Visible par tous les visiteurs."
-          privateHint={
-            resource.base && !resource.base.isPublic
-              ? 'Visible uniquement par les membres de votre base et les contributeurs que vous avez invités.'
-              : 'Visible uniquement par vous et les contributeurs que vous avez invités.'
-          }
+          {...visibilityTexts(resource.base)}
         />
       </Card>
       {isPublic && (
@@ -106,8 +108,6 @@ const ResourcePublication = ({
             supportTypesPath="payload.supportTypes"
             targetAudiencesPath="payload.targetAudiences"
             required
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore: resource is public !
             control={control}
           />
         </Card>
