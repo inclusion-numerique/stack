@@ -49,6 +49,10 @@ export const collectionRouter = router({
             select: baseAuthorizationTargetSelect,
           })
 
+          if (!base) {
+            throw invalidError('Base not found')
+          }
+
           authorizeOrThrow(
             baseAuthorization(base, user).hasPermission(
               BasePermissions.WriteBase,
@@ -60,6 +64,10 @@ export const collectionRouter = router({
           where: { id: collectionId },
           select: collectionAuthorizationTargetSelect,
         })
+
+        if (!collection) {
+          throw invalidError('Collection not found')
+        }
 
         authorizeOrThrow(
           collectionAuthorization(collection, user).hasPermission(
@@ -94,6 +102,10 @@ export const collectionRouter = router({
             select: baseAuthorizationTargetSelect,
           })
 
+          if (!base) {
+            throw invalidError('Base not found')
+          }
+
           authorizeOrThrow(
             baseAuthorization(base, user).hasPermission(
               BasePermissions.WriteBase,
@@ -105,6 +117,10 @@ export const collectionRouter = router({
           where: { id: collectionId },
           select: collectionAuthorizationTargetSelect,
         })
+
+        if (!collection) {
+          throw invalidError('Collection not found')
+        }
 
         authorizeOrThrow(
           collectionAuthorization(collection, user).hasPermission(
@@ -131,6 +147,10 @@ export const collectionRouter = router({
             select: baseAuthorizationTargetSelect,
           })
 
+          if (!base) {
+            throw invalidError('Base not found')
+          }
+
           authorizeOrThrow(
             baseAuthorization(base, user).hasPermission(
               BasePermissions.WriteBase,
@@ -143,6 +163,10 @@ export const collectionRouter = router({
             where: { id: addResourceId },
             select: resourceAuthorizationTargetSelect,
           })
+
+          if (!resource) {
+            throw invalidError('Resource not found')
+          }
 
           authorizeOrThrow(
             resourceAuthorization(resource, user).hasPermission(
