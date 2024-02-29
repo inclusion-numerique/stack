@@ -13,5 +13,4 @@ jobs:
           # Branch from environment does not exists anymore, workflow will run from main branch
           branch: main
           payload: '{"trigger_workflow": "web_app_preview_deletion", "preview_deletion_branch": "${{ github.event.ref }}"}'
-        env:
-          CCI_TOKEN: ${{ secrets.CIRCLE_CI_TOKEN }}
+          user-token: ${{ secrets.CIRCLE_CI_TOKEN }}
