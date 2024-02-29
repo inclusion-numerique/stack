@@ -42,7 +42,7 @@ executors:
 parameters:
   cache_version:
     type: string
-    default: '2023-09-22-02'
+    default: '2024-02-29-01'
   virtual_store_dir:
     type: string
     default: './.pnpm'
@@ -291,7 +291,7 @@ jobs:
           command: pnpm tsc
       - run:
           name: 'Lint all packages except @app/web'
-          command: pnpm '!@app/web' lint
+          command: pnpm -F '!@app/web' lint
           no_output_timeout: 30m
 
   lint_and_test_cdk_package:
