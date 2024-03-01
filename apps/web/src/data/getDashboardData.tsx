@@ -126,17 +126,19 @@ const getRawDataForScope = async ({
         prismaClient.craConseillerNumeriqueParDepartement.findUnique({
           where: { codeDepartement },
         }),
-        prismaClient.conseillerNumerique.count({
-          where: {
-            enPermanence: {
-              some: {
-                permanence: {
-                  structureCartographieNationale: whereInDepartement,
-                },
-              },
-            },
-          },
-        }),
+        // prismaClient.conseillerNumerique.count({
+        //   where: {
+        //     enPermanence: {
+        //       some: {
+        //         permanence: {
+        //           structureCartographieNationale: whereInDepartement,
+        //         },
+        //       },
+        //     },
+        //   },
+        // }),
+        // on ajoute 4000 en dur au niveau national le temps d'avoir les vrais chiffres de postes attribués
+        4000,
         getAppData(),
       ])
 
@@ -150,7 +152,8 @@ const getRawDataForScope = async ({
   if (national) {
     const [countCoconums, structures, conumCras, conums, appData] =
       await Promise.all([
-        prismaClient.coordinateurConseillerNumerique.count(),
+        // prismaClient.coordinateurConseillerNumerique.count(),
+        112, // Value overriden for national data
         prismaClient.structureCartographieNationale.findMany({
           select: {
             id: true,
@@ -299,8 +302,7 @@ const computeDashboardData = async (scope: GouvernanceScope) => {
               ? 'Conseillers Numériques en poste'
               : 'Postes de Conseillers Numérique attribués',
             info: departement ? 'conseillerNumerique' : undefined,
-            // on ajoute 4000 en dur au niveau national le temps d'avoir les vrais chiffres de postes attribués
-            value: departement ? conums : 4000,
+            value: conums,
           },
           {
             id: 'Conseillers Coordinateurs',
@@ -311,7 +313,7 @@ const computeDashboardData = async (scope: GouvernanceScope) => {
             // eslint-disable-next-line no-underscore-dangle
             value: departement
               ? departement._count.coordinateursConseillerNumerique
-              : 112,
+              : countCoconums,
           },
           {
             id: 'aidants-habilités-à-aidant-connect',
