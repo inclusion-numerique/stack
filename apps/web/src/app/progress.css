@@ -8,6 +8,7 @@
 }
 
 .fr-progress__bar {
+  font-size: 0.75rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -16,4 +17,8 @@
   text-align: center;
   white-space: nowrap;
   background-color: var(--text-action-high-blue-france);
+}
+
+.fr-progress--sm {
+  --progress-height: 8px;
 }
