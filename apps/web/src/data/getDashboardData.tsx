@@ -126,17 +126,19 @@ const getRawDataForScope = async ({
         prismaClient.craConseillerNumeriqueParDepartement.findUnique({
           where: { codeDepartement },
         }),
-        prismaClient.conseillerNumerique.count({
-          where: {
-            enPermanence: {
-              some: {
-                permanence: {
-                  structureCartographieNationale: whereInDepartement,
-                },
-              },
-            },
-          },
-        }),
+        // prismaClient.conseillerNumerique.count({
+        //   where: {
+        //     enPermanence: {
+        //       some: {
+        //         permanence: {
+        //           structureCartographieNationale: whereInDepartement,
+        //         },
+        //       },
+        //     },
+        //   },
+        // }),
+        // on ajoute 4000 en dur au niveau national le temps d'avoir les vrais chiffres de postes attribués
+        4000,
         getAppData(),
       ])
 
@@ -150,7 +152,8 @@ const getRawDataForScope = async ({
   if (national) {
     const [countCoconums, structures, conumCras, conums, appData] =
       await Promise.all([
-        prismaClient.coordinateurConseillerNumerique.count(),
+        // prismaClient.coordinateurConseillerNumerique.count(),
+        112, // Value overriden for national data
         prismaClient.structureCartographieNationale.findMany({
           select: {
             id: true,
@@ -285,7 +288,7 @@ const computeDashboardData = async (scope: GouvernanceScope) => {
     ],
   } satisfies BoxData
 
-  const aidantConnectLocations = {
+  const aidantNumeriqueLocations = {
     id: 'aidants-numériques-identifiés',
     label: 'Aidants Numériques identifiés',
     value: conums + structuresCount.aidantsConnect.aidants,
@@ -295,12 +298,17 @@ const computeDashboardData = async (scope: GouvernanceScope) => {
         statistics: [
           {
             id: 'conseillers-numériques',
-            label: 'Conseillers Numériques',
+            label: departement
+              ? 'Conseillers Numériques en poste'
+              : 'Postes de Conseillers Numérique attribués',
+            info: departement ? 'conseillerNumerique' : undefined,
             value: conums,
           },
           {
-            id: 'dont Conseillers Coordinateurs',
-            label: 'dont Conseillers Coordinateurs',
+            id: 'Conseillers Coordinateurs',
+            label: departement
+              ? 'Conseillers Coordinateurs en poste'
+              : 'Postes de Conseillers Coordinateurs attribués',
             info: 'coordinateursConseillerNumerique',
             // eslint-disable-next-line no-underscore-dangle
             value: departement
@@ -317,7 +325,10 @@ const computeDashboardData = async (scope: GouvernanceScope) => {
     ],
   } satisfies BoxData
 
-  const main = { inclusionLocations, aidantConnectLocations }
+  const main = {
+    inclusionLocations,
+    aidantConnectLocations: aidantNumeriqueLocations,
+  }
 
   const totalAccompagnementsConum = conumCras
     ? conumCras.ageMoins12ans +

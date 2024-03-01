@@ -15,6 +15,8 @@ import { reduceCras } from '@app/cli/commands/data/reduceCras'
 import { buildDatabase } from '@app/cli/commands/data/buildDatabase'
 import { buildDataset } from '@app/cli/commands/deployment/buildDataset'
 import { siretVerification } from '@app/cli/commands/siret/siretVerification'
+import { send2024GouvernanceEmails } from '@app/cli/commands/emails/send2024GouvernanceEmails'
+import { locallyRestoreLatestMainBackup } from '@app/cli/commands/infrastructure/locallyRestoreLatestMainBackup'
 
 const program = new Command()
 
@@ -34,5 +36,7 @@ program.addCommand(reduceCras)
 program.addCommand(buildDatabase)
 program.addCommand(buildDataset)
 program.addCommand(siretVerification)
+program.addCommand(locallyRestoreLatestMainBackup)
+program.addCommand(send2024GouvernanceEmails)
 
 program.parse()

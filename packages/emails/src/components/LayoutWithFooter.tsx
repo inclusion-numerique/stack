@@ -35,26 +35,27 @@ const LayoutWithFooter = ({
       <MjmlSection backgroundColor={backgroundColor} />
       {/* Header with logos */}
       {headerLogoOnly ? (
-        <MjmlSection paddingBottom="16px">
-          <MjmlColumn width="20%" verticalAlign="middle">
+        <MjmlSection paddingBottom="32px">
+          <MjmlColumn width="40%">
             <MjmlImage
-              align="center"
+              align="left"
               src={emailAssetUrl('/email/logo_anct.svg')}
-              alt={`Logo ${PublicWebAppConfig.projectTitle}`}
+              alt="Logo ANCT"
             />
           </MjmlColumn>
+          <MjmlColumn width="60%" />
         </MjmlSection>
       ) : (
         <>
           <MjmlSection paddingBottom={0}>
-            <MjmlColumn width="20%" verticalAlign="middle">
+            <MjmlColumn width="30%" verticalAlign="middle">
               <MjmlImage
                 align="left"
                 src={emailAssetUrl('/email/logo_anct.svg')}
                 alt={`Logo ${PublicWebAppConfig.projectTitle}`}
               />
             </MjmlColumn>
-            <MjmlColumn width="80%" verticalAlign="middle">
+            <MjmlColumn width="70%" verticalAlign="middle">
               <MjmlText fontWeight="500" fontSize="18px">
                 {PublicWebAppConfig.projectTitle}
               </MjmlText>
