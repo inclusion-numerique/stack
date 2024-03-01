@@ -22,9 +22,9 @@ const HomeCategories = async () => {
   return (
     <div className="fr-container fr-pt-12v fr-pb-16v fr-pb-md-30v fr-pt-md-20v">
       <div className="fr-text--center">
-        <h3 className="fr-mb-4v">
+        <h2 className="fr-mb-4v fr-h3">
           Découvrez les ressources grâce aux thématiques
-        </h3>
+        </h2>
         <p className="fr-text--xl fr-mb-12v">
           Découvrez les ressources publiées grâce aux thématiques organisées en{' '}
           {categories.length} grandes catégories.
@@ -36,7 +36,7 @@ const HomeCategories = async () => {
             key={title}
             label={
               <div className={styles.accordionTitle}>
-                <h6 className="fr-mb-0">{title}</h6>
+                <span className="fr-mb-0">{title}</span>
                 <p
                   className={classNames(
                     'fr-mr-8v fr-text-default--grey',

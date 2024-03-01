@@ -40,7 +40,7 @@ const Resources = ({
   return (
     <div data-testid="base-resources">
       <div className={styles.header}>
-        <h3 className="fr-mb-0">Ressources · {resources.length}</h3>
+        <h2 className="fr-mb-0 fr-h3">Ressources · {resources.length}</h2>
         {canWrite && (
           <div data-testid="create-resource-button">
             <CreateResourceButton

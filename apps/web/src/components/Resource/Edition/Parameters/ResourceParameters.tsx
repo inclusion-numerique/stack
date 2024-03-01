@@ -20,7 +20,7 @@ const ResourceParameters = ({
 }) => (
   <div className={classNames('fr-container', styles.container)}>
     <ResourceParametersSideMenu />
-    <div>
+    <div className="fr-container--slim">
       <h1 className="fr-mb-6w">Paramètres de la ressource</h1>
       <ResourcePublication resource={resource} user={user} />
       <ResourceVisibilityForm resource={resource} user={user} />
@@ -29,7 +29,9 @@ const ResourceParameters = ({
         id="contributeurs"
         className="fr-mt-3w"
         title="Contributeurs"
-        description="Les contributeurs peuvent voir, éditer, inviter d’autres contributeurs et supprimer la ressource."
+        titleAs="h2"
+        desc="Les contributeurs peuvent voir, éditer, inviter d’autres contributeurs et supprimer la ressource."
+        contentSeparator
       >
         <InviteResourceContributors resource={resource} />
       </Card>
@@ -37,7 +39,9 @@ const ResourceParameters = ({
         className="fr-my-3w"
         id="supprimer"
         title="Supprimer la ressource"
-        description="Cette action est irréversible et entraîne la suppression définitive de de la ressource. Utilisez cette fonction avec précaution."
+        titleAs="h2"
+        desc="Cette action est irréversible et entraîne la suppression définitive de de la ressource. Utilisez cette fonction avec précaution."
+        contentSeparator
       >
         <ResourceDeletion resource={resource} />
       </Card>

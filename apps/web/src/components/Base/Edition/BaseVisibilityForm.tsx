@@ -121,7 +121,8 @@ const BaseVisibilityForm = ({
         }}
         className={className}
         title="Visibilité de la base"
-        description="Choisissez la visibilité de votre base."
+        titleAs="h2"
+        desc="Choisissez la visibilité de votre base."
         form={form}
         edition={
           <VisibilityField
