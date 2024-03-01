@@ -2,10 +2,7 @@ import type {
   PublishCommand,
   ResourcePublished,
 } from '@app/web/server/resources/feature/PublishResource'
-import type {
-  ResourceCommandSecurityRule,
-  ResourceMutationCommandHandler,
-} from '@app/web/server/resources/feature/ResourceCommandHandler'
+import type { ResourceMutationCommandHandler } from '@app/web/server/resources/feature/ResourceCommandHandler'
 import type { ResourceMutationEventApplier } from '@app/web/server/resources/feature/ResourceEventApplier'
 import type { ResourceEventSideEffect } from '@app/web/server/resources/feature/ResourceEventSideEffect'
 import { sortContents } from '@app/web/server/resources/sortContents'
@@ -42,10 +39,6 @@ export const handlePublish: ResourceMutationCommandHandler<
     },
   }
 }
-
-export const publishSecurityRules: ResourceCommandSecurityRule<
-  PublishCommand
-> = () => true
 
 export const applyResourcePublished: ResourceMutationEventApplier<
   ResourcePublished

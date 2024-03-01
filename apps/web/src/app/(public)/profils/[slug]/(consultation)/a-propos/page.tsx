@@ -19,7 +19,10 @@ const hasContact = (profile: ProfilePageData): boolean =>
   (profile.emailIsPublic && profile.email != null) || profile.website != null
 
 const AProposPage = async ({ params }: ProfilRouteParams) => {
-  const { profile, authorizations } = await getProfilePageContext(params.slug)
+  const {
+    profile,
+    authorization: { hasPermission, hasRole },
+  } = await getProfilePageContext(params.slug)
 
   return hasInformations(profile) ||
     hasInformations(profile) ||
@@ -98,7 +101,10 @@ const AProposPage = async ({ params }: ProfilRouteParams) => {
       </div>
     </>
   ) : (
-    <EmptyProfileInformations isConnectedUser={authorizations.isUser} />
+    <EmptyProfileInformations
+      canWrite={hasPermission('WriteProfile')}
+      isOwner={hasRole('ProfileOwner')}
+    />
   )
 }
 
