@@ -106,7 +106,7 @@ const CreateCollection = ({
             titleAs="h2"
             className="fr-mt-3w"
             id="informations"
-            desc={
+            description={
               <span className="fr-text--sm fr-hint-text fr-mb-0">
                 Les champs avec <RedAsterisk /> sont obligatoires.
               </span>
@@ -133,7 +133,7 @@ const CreateCollection = ({
             titleAs="h2"
             className="fr-mt-3w"
             id="visibilite"
-            desc="Choisissez la visibilité de votre collection."
+            description="Choisissez la visibilité de votre collection."
             contentSeparator
           >
             {collectionCannotBePublic && (

@@ -24,7 +24,7 @@ const EditCard = <
   className,
   title,
   titleAs: CardTitle = 'h3',
-                     description,
+  description,
   edition,
   view,
   form,
@@ -75,7 +75,7 @@ const EditCard = <
           )}
         </div>
       }
-      desc={description}
+      description={description}
       titleAs="div"
       contentSeparator
     >
