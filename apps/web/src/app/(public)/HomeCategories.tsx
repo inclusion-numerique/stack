@@ -36,7 +36,7 @@ const HomeCategories = async () => {
             key={title}
             label={
               <div className={styles.accordionTitle}>
-                <span className="fr-mb-0">{title}</span>
+                <span className="fr-mb-0 fr-h6">{title}</span>
                 <p
                   className={classNames(
                     'fr-mr-8v fr-text-default--grey',
