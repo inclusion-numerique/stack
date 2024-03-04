@@ -3,7 +3,7 @@ import SwitchTheme from '@app/web/app/(public)/SwitchTheme'
 
 const PublicFooter = () => (
   <Footer
-    accessibility="partially compliant"
+    accessibility="non compliant"
     accessibilityLinkProps={{ href: '/accessibilite' }}
     brandTop={
       <>
