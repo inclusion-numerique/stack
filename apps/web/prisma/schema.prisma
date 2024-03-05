@@ -94,6 +94,7 @@ model User {
 
   besoinsEnIngenierieFinanciereCrees             BesoinsEnIngenierieFinanciere[] @relation("besoins_ingenierie_financiere_createur")
   besoinsEnIngenierieFinanciereModifiesEnDernier BesoinsEnIngenierieFinanciere[] @relation("besoins_ingenierie_financiere_derniere_modification_par")
+  actionsCrees                                   Action[]                        @relation("action_createur")
 
   @@map("users")
 }
@@ -182,7 +183,8 @@ model Upload {
   created DateTime @default(now())
 
   // Is an image
-  image Image?
+  image  Image?
+  Action Action[]
 
   @@map("uploads")
 }
@@ -766,6 +768,48 @@ model Gouvernance {
   @@map("gouvernances")
 }
 
+// Une action portée par une gouvernance, financée par le porteur et/ou des subventions
+model Action {
+  id String @id @default(uuid()) @db.Uuid
+
+  createurId   String   @map("createur_id") @db.Uuid
+  createur     User     @relation("action_createur", fields: [createurId], references: [id])
+  creation     DateTime @default(now())
+  modification DateTime @updatedAt
+
+  feuilleDeRouteId String         @map("feuille_de_route_id") @db.Uuid
+  feuilleDeRoute   FeuilleDeRoute @relation(fields: [feuilleDeRouteId], references: [id])
+
+  nom                 String
+  contexte            String
+  description         String
+  categorieBesoin     String
+  sousCategorieBesoin String
+  budgetGlobal        Float  @map("budget_global")
+  subventionDemandee  Float  @map("subvention_demandee")
+
+  montantSubventionEtp        Float? @map("montant_subvention_etp")
+  montantSubventionPrestation Float? @map("montant_subvention_prestation")
+
+  pieceJointeKey String?        @map("piece_jointe_key")
+  pieceJointe    Upload?        @relation(fields: [pieceJointeKey], references: [key])
+  actionMembres  ActionMembre[]
+}
+
+model ActionMembre {
+  id String @id @default(uuid()) @db.Uuid
+
+  actionId String @map("action_id") @db.Uuid
+  action   Action @relation(fields: [actionId], references: [id])
+
+  membreGouvernanceId String            @map("membre_gouvernance_id") @db.Uuid
+  membreGouvernance   MembreGouvernance @relation(fields: [membreGouvernanceId], references: [id])
+
+  subventionDemandee Float @map("subvention_demandee")
+
+  @@map("action_membre")
+}
+
 model BesoinsEnIngenierieFinanciere {
   id String @id @default(uuid()) @db.Uuid
 
@@ -915,6 +959,7 @@ model MembreGouvernance {
   formulaireGouvernanceId String                 @map("formulaire_gouvernance_id") @db.Uuid
   formulaireGouvernance   FormulaireGouvernance  @relation(fields: [formulaireGouvernanceId], references: [id], onDelete: Cascade)
   feuillesDeRoutes        MembreFeuilleDeRoute[]
+  ActionMembre            ActionMembre[]
 
   @@map("membre_gouvernance")
 }
@@ -978,6 +1023,7 @@ model FeuilleDeRoute {
   perimetreDepartement     Departement? @relation(name: "feuille_de_route_perimetre_departement", fields: [perimetreDepartementCode], references: [code], onDelete: NoAction)
 
   perimetreEpcis PerimetreEpciFeuilleDeRoute[]
+  actions        Action[]
 
   @@map("feuille_de_route")
 }
