@@ -113,12 +113,6 @@ const GouvernancePressentieForm = ({
         <p className="fr-text--sm fr-text--medium fr-mb-6v">
           Les champs avec <RedAsterisk /> sont obligatoires
         </p>
-        <Notice
-          className="fr-mb-10v"
-          title={`Proposition modifiable jusqu’au ${dateAsDay(
-            limiteModificationDesGouvernancesPressenties,
-          )}`}
-        />
         <h6 className="fr-mb-4v">Périmètre de la gouvernance</h6>
         <RadioFormField
           control={control}

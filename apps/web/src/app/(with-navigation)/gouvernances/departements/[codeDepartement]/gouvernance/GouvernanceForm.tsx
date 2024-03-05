@@ -147,12 +147,6 @@ const GouvernanceForm = ({
     <form onSubmit={handleSubmit(onSubmit)}>
       <div id="gouvernance-form" className={className}>
         <h3 className="fr-text-title--blue-france fr-mt-6v">Gouvernance</h3>
-        <Notice
-          className="fr-mt-6v"
-          title={`Gouvernance modifiable jusqu’au ${dateAsDay(
-            limiteModificationDesGouvernances,
-          )}`}
-        />
         <p className="fr-text--sm fr-text--medium fr-mt-6v fr-mb-0">
           Les champs avec <RedAsterisk /> sont obligatoires
         </p>

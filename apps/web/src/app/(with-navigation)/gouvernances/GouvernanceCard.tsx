@@ -81,12 +81,6 @@ const GouvernanceCard = ({
             ) : (
               <h5 className="fr-mb-0">{title}</h5>
             )}
-            {(v2Enregistree || hasCompletedBesoins) && (
-              <Badge className="fr-mt-0 fr-ml-2w" severity="info" small>
-                Modifiable jusqu’au{' '}
-                {dateAsDay(limiteModificationDesGouvernances)}
-              </Badge>
-            )}
           </div>
           {!v2Enregistree && (
             <p className="fr-mb-0 fr-mt-2v fr-text--sm">
