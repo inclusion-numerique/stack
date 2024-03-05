@@ -75,6 +75,7 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
     cy.testId('visibility-radio-resource-private').click({ force: true })
     cy.testId('publish-resource-button').click()
     cy.url().should('contain', appUrl(`/ressources/un-titre`))
+    cy.dsfrModalsShouldBeBound()
 
     cy.log('Check new state')
     cy.visit(`/bases/${defaultTestBaseSlug}`)
