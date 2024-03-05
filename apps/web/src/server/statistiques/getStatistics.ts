@@ -135,13 +135,13 @@ export const getStatistics = async (_params: StatisticsParams) => {
                    'target_audiences' AS type,
                    unnest(target_audiences)::text AS key
                FROM
-                   resources WHERE created > CURRENT_DATE - INTERVAL '30 days'
+                   resources WHERE published IS NOT NULL AND deleted IS NULL AND is_public IS true
                UNION ALL
                SELECT
                    'themes' AS column_name,
                    unnest(themes)::text AS key
                FROM
-                   resources WHERE created > CURRENT_DATE - INTERVAL '30 days'
+                   resources WHERE published IS NOT NULL AND deleted IS NULL AND is_public IS true
            ) AS combined_data
       GROUP BY
           type, key
