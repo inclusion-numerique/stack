@@ -11,6 +11,7 @@ import {
   YAxis,
 } from 'recharts'
 import Card from '@app/web/components/Card'
+import { numberToString } from '@app/web/utils/formatNumber'
 
 const barColors = [
   {
@@ -41,10 +42,10 @@ const SearchStatistics = <T extends object>({
   legends?: { label: string; value: string; key: keyof T }[]
 }) => (
   <Card title={<h3 className="fr-h5">{title}</h3>} titleAs="div">
-    <div style={{ height: 240 }}>
+    <div style={{ height: 240, marginLeft: -32 }}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{}}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <Tooltip
             wrapperClassName="fr-text--sm fr-text-default--grey"
             isAnimationActive={false}
@@ -54,7 +55,7 @@ const SearchStatistics = <T extends object>({
             ]}
           />
           <XAxis dataKey={xAxisDataKey.toString()} interval={0} fontSize={10} />
-          <YAxis width={30} fontSize={10} />
+          <YAxis width={54} fontSize={10} tickFormatter={numberToString} />
           {barsDataKey.map((barDataKey, index) => (
             <Bar
               key={barDataKey.toString()}
