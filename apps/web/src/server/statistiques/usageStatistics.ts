@@ -2,7 +2,7 @@ import { TargetAudience, Theme } from '@prisma/client'
 import { pascalCase } from 'change-case'
 import { targetAudienceLabels } from '@app/web/themes/targetAudiences'
 import { themeLabels } from '@app/web/themes/themes'
-import { proportionOf, sum } from './statistics'
+import { percentage, sum } from './statistics'
 
 export type UsageStatisticsResult = {
   type: 'target_audiences' | 'themes'
@@ -24,7 +24,7 @@ const toValue = ({ value }: { value: number }) => value
 const getProgress = (
   result: { value: number },
   targetAudiences: { value: number }[],
-) => proportionOf(result.value, targetAudiences.map(toValue).reduce(sum))
+) => percentage(result.value, targetAudiences.map(toValue).reduce(sum))
 
 export const themesUsages = (usageStatisticsResult: UsageStatisticsResult) => {
   const usageStatistics = usageStatisticsResult.filter(onlyThemes)

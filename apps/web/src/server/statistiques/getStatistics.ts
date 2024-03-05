@@ -41,9 +41,6 @@ export const statisticsTimeframeLabels: {
   total: 'Cumulé',
 }
 
-const percentageChange = (curent: number, last: number) =>
-  Math.round(((curent - last) / curent) * 100)
-
 export const getStatistics = async (_params: StatisticsParams) => {
   const [
     feedback,
@@ -52,27 +49,20 @@ export const getStatistics = async (_params: StatisticsParams) => {
     publicResource,
     ressourceViews,
     ressourceViewsLastMonth,
-    ressourceViewsTwoMonthsAgo,
   ] = await prismaClient.$queryRaw<KpiStatisticsResult>`
-      SELECT 'public_ressource' AS category, COUNT(CASE WHEN is_public = true THEN 1 END)::integer AS count
-      FROM resources
+      SELECT 'public_ressource' AS category, COUNT(*)::integer AS count
+      FROM resources WHERE is_public = true AND deleted IS NULL AND published IS NOT NULL
       UNION
-      SELECT 'private_ressource' AS category, COUNT(CASE WHEN is_public = false THEN 1 END)::integer AS count
-      FROM resources
+      SELECT 'private_ressource' AS category, COUNT(*)::integer AS count
+      FROM resources WHERE is_public = false AND deleted IS NULL AND published IS NOT NULL
       UNION
       SELECT 'ressource_views' AS category, COUNT(*)::integer
-      FROM (SELECT DISTINCT resource_id, user_id FROM resource_views) AS count
+      FROM resource_views AS count
       UNION
       SELECT 'ressource_views_last_month' AS category,  COUNT(*)::integer
       FROM (
-               SELECT DISTINCT resource_id, user_id FROM resource_views
+               SELECT * FROM resource_views
                WHERE timestamp >= CURRENT_DATE - INTERVAL '30 days'
-           ) AS count
-      UNION
-      SELECT 'ressource_views_two_months_ago' AS category, COUNT(*)::integer
-      FROM (
-               SELECT DISTINCT resource_id, user_id FROM resource_views
-               WHERE timestamp BETWEEN CURRENT_DATE - INTERVAL '60 days' AND CURRENT_DATE - INTERVAL '31 days'
            ) AS count
       UNION
       SELECT 'feedback' AS category, COUNT(*)::integer AS count
@@ -92,10 +82,6 @@ export const getStatistics = async (_params: StatisticsParams) => {
     views: {
       count: ressourceViews.count,
       lastMonth: ressourceViewsLastMonth.count,
-      change: percentageChange(
-        ressourceViewsLastMonth.count,
-        ressourceViewsTwoMonthsAgo.count,
-      ),
     },
     rates: {
       count: feedback.count,

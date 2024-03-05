@@ -4,6 +4,7 @@ import {
 } from '@app/web/server/statistiques/getStatistics'
 import SearchStatistics from '@app/web/app/(public)/statistiques/SearchStatistics'
 import Card from '@app/web/components/Card'
+import { numberToString } from '@app/web/utils/formatNumber'
 import KeyFigureTitle from './KeyFigureTitle'
 import Publics from './Publics'
 import Thematiques from './Thematiques'
@@ -29,30 +30,31 @@ const StatisticsPage = async ({
             <Card
               title={
                 <KeyFigureTitle type="publications">
-                  {kpi.publications.count}
+                  {numberToString(kpi.publications.count)}
                 </KeyFigureTitle>
               }
               titleAs="div"
             >
               Nombre total de ressources publiées
               <div className="fr-text-title--blue-france fr-text--sm fr-mb-0">
-                dont {kpi.publications.public} publiques et{' '}
-                {kpi.publications.private} privées
+                dont {numberToString(kpi.publications.public)} publiques et{' '}
+                {numberToString(kpi.publications.private)} privées
               </div>
             </Card>
           </div>
           <div className="fr-col-12 fr-col-md-6 fr-col-lg-4">
             <Card
               title={
-                <KeyFigureTitle type="views">{kpi.views.count}</KeyFigureTitle>
+                <KeyFigureTitle type="views">
+                  {numberToString(kpi.views.count)}
+                </KeyFigureTitle>
               }
               titleAs="div"
             >
               Nombre total de vues de ressources
               <div className="fr-text-title--blue-france fr-text--sm fr-mb-0">
-                dont {kpi.views.lastMonth} sur les 30 derniers jours{' '}
-                {kpi.views.change > 0 && '+'}
-                {kpi.views.change}%
+                dont {numberToString(kpi.views.lastMonth)} sur les 30 derniers
+                jours
               </div>
             </Card>
           </div>
@@ -60,14 +62,14 @@ const StatisticsPage = async ({
             <Card
               title={
                 <KeyFigureTitle type="rates">
-                  {kpi.rates.average}/10
+                  {numberToString(kpi.rates.average)}/10
                 </KeyFigureTitle>
               }
               titleAs="div"
             >
               Indice de satisfaction globale
               <div className="fr-text-title--blue-france fr-text--sm fr-mb-0">
-                sur {kpi.rates.count} avis
+                sur {numberToString(kpi.rates.count)} avis
               </div>
             </Card>
           </div>
@@ -125,17 +127,17 @@ const StatisticsPage = async ({
               ]}
               legends={[
                 {
-                  label: 'Ressource privée',
+                  label: 'Privées',
                   value: `${creation.proportions.privateResources}%`,
                   key: 'private_resources',
                 },
                 {
-                  label: 'Ressource Publique',
+                  label: 'Publiques',
                   value: `${creation.proportions.publicResources}%`,
                   key: 'public_resources',
                 },
                 {
-                  label: 'Brouillon',
+                  label: 'Brouillons',
                   value: `${creation.proportions.draftResources}%`,
                   key: 'draft_resources',
                 },
@@ -150,12 +152,12 @@ const StatisticsPage = async ({
               barsDataKey={['private_users', 'public_users']}
               legends={[
                 {
-                  label: 'Profil privé',
+                  label: 'Privés',
                   value: `${creation.proportions.privateUsers}%`,
                   key: 'private_users',
                 },
                 {
-                  label: 'Profil Publique',
+                  label: 'Publics',
                   value: `${creation.proportions.publicUsers}%`,
                   key: 'public_users',
                 },
@@ -170,12 +172,12 @@ const StatisticsPage = async ({
               barsDataKey={['private_bases', 'public_bases']}
               legends={[
                 {
-                  label: 'Base privée',
+                  label: 'Privées',
                   value: `${creation.proportions.privateBases}%`,
                   key: 'private_bases',
                 },
                 {
-                  label: 'Base Publique',
+                  label: 'Publiques',
                   value: `${creation.proportions.publicBases}%`,
                   key: 'public_bases',
                 },

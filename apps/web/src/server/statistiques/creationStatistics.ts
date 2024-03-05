@@ -1,4 +1,4 @@
-import { proportionOf, sum } from './statistics'
+import { percentage, sum } from './statistics'
 
 export type CreationStatisticsResult = {
   period: string
@@ -45,25 +45,25 @@ const getTotalBases = (total: CreationStatistics) =>
 const resourcesProportions = (total: CreationStatistics) => {
   const totalResources = getTotalResources(total)
   return {
-    draftResources: proportionOf(total.draftResources, totalResources),
-    publicResources: proportionOf(total.publicResources, totalResources),
-    privateResources: proportionOf(total.privateResources, totalResources),
+    draftResources: percentage(total.draftResources, totalResources),
+    publicResources: percentage(total.publicResources, totalResources),
+    privateResources: percentage(total.privateResources, totalResources),
   }
 }
 
 const usersProportions = (total: CreationStatistics) => {
   const totalUsers = getTotalUsers(total)
   return {
-    publicUsers: proportionOf(total.publicUsers, totalUsers),
-    privateUsers: proportionOf(total.privateUsers, totalUsers),
+    publicUsers: percentage(total.publicUsers, totalUsers),
+    privateUsers: percentage(total.privateUsers, totalUsers),
   }
 }
 
 const basesProportions = (total: CreationStatistics) => {
   const totalBases = getTotalBases(total)
   return {
-    publicBases: proportionOf(total.publicBases, totalBases),
-    privateBases: proportionOf(total.privateBases, totalBases),
+    publicBases: percentage(total.publicBases, totalBases),
+    privateBases: percentage(total.privateBases, totalBases),
   }
 }
 
