@@ -2,7 +2,6 @@ import React from 'react'
 import Accordion from '@codegouvfr/react-dsfr/Accordion'
 import Button from '@codegouvfr/react-dsfr/Button'
 import EmptyValue from '@app/ui/components/EmptyValue'
-import Badge from '@codegouvfr/react-dsfr/Badge'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import { limiteModificationDesGouvernances } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceMetadata'
 import { ListeGouvernanceItem } from '@app/web/app/(with-navigation)/gouvernances/getListeGouvernances'
@@ -80,12 +79,6 @@ const GouvernanceCard = ({
               <h3 className="fr-mb-0">{title}</h3>
             ) : (
               <h5 className="fr-mb-0">{title}</h5>
-            )}
-            {(v2Enregistree || hasCompletedBesoins) && (
-              <Badge className="fr-mt-0 fr-ml-2w" severity="info" small>
-                Modifiable jusqu’au{' '}
-                {dateAsDay(limiteModificationDesGouvernances)}
-              </Badge>
             )}
           </div>
           {!v2Enregistree && (

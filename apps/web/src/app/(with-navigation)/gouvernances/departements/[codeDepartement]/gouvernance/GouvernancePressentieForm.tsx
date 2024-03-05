@@ -2,7 +2,6 @@
 
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import Notice from '@codegouvfr/react-dsfr/Notice'
 import RadioFormField from '@app/ui/components/Form/RadioFormField'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
 import Link from 'next/link'
@@ -13,7 +12,6 @@ import React from 'react'
 import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormField'
 import { useRouter } from 'next/navigation'
 import classNames from 'classnames'
-import { limiteModificationDesGouvernancesPressenties } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernancePressentieMetadata'
 import {
   GouvernancePressentieData,
   GouvernancePressentieValidation,
@@ -21,7 +19,6 @@ import {
 } from '@app/web/gouvernance/GouvernancePressentie'
 import WhiteCard from '@app/web/ui/WhiteCard'
 import RedAsterisk from '@app/web/ui/RedAsterisk'
-import { dateAsDay } from '@app/web/utils/dateAsDay'
 import SiretInputInfo from '@app/web/components/SiretInputInfo'
 import { trpc } from '@app/web/trpc'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
@@ -113,12 +110,6 @@ const GouvernancePressentieForm = ({
         <p className="fr-text--sm fr-text--medium fr-mb-6v">
           Les champs avec <RedAsterisk /> sont obligatoires
         </p>
-        <Notice
-          className="fr-mb-10v"
-          title={`Proposition modifiable jusqu’au ${dateAsDay(
-            limiteModificationDesGouvernancesPressenties,
-          )}`}
-        />
         <h6 className="fr-mb-4v">Périmètre de la gouvernance</h6>
         <RadioFormField
           control={control}
