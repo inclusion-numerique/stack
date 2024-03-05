@@ -9,10 +9,8 @@ import React, { RefObject, useEffect, useRef } from 'react'
 import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormField'
 import { useRouter } from 'next/navigation'
 import classNames from 'classnames'
-import Notice from '@codegouvfr/react-dsfr/Notice'
 import { useReplaceUrlToAnchor } from '@app/ui/hooks/useReplaceUrlToAnchor'
 import { createToast } from '@app/ui/toast/createToast'
-import { limiteModificationDesGouvernances } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceMetadata'
 import { gouvernanceFormSections } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceFormSections'
 import CoporteursForm from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceFormSections/CoporteursForm'
 import GouvernanceFormSectionCard from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceFormSections/GouvernanceFormSectionCard'
@@ -22,7 +20,6 @@ import ComitologieForm from '@app/web/app/(with-navigation)/gouvernances/departe
 import FeuillesDeRouteForm from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceFormSections/FeuillesDeRouteForm'
 import CoordinateursConseillersNumeriqueForm from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceFormSections/CoordinateursConseillersNumeriqueForm'
 import { Option } from '@app/web/utils/options'
-import { dateAsDay } from '@app/web/utils/dateAsDay'
 import {
   GouvernanceData,
   GouvernanceValidation,

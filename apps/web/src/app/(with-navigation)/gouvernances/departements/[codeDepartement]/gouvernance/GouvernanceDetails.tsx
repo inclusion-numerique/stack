@@ -175,7 +175,12 @@ const GouvernanceDetails = ({
               className="fr-mt-6v fr-mb-12v"
               title={
                 <span className="fr-flex fr-width-full fr-align-items-center fr-justify-content-space-between">
-                  <span />
+                  <span>
+                    Proposition modifiable jusqu’au{' '}
+                    <strong>
+                      {dateAsDay(limiteModificationDesGouvernances)}
+                    </strong>
+                  </span>
                   {!!scope.codeDepartement && (
                     <Button
                       size="small"

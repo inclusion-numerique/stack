@@ -100,7 +100,7 @@ const GouvernanceList = ({
             <GouvernanceCard
               key={gouvernance.id}
               gouvernance={gouvernance}
-              scope={scope}
+              scope={{ codeDepartement: gouvernance.departement.code }}
               canEdit={canEdit}
               showCtas
             />
@@ -160,7 +160,7 @@ const GouvernanceList = ({
                   ? `${index + 1}`.padStart(2, '0')
                   : undefined
               }
-              scope={scope}
+              scope={{ codeDepartement: gouvernance.departement.code }}
               canEdit={canEdit}
               showCtas={showCtasOnPressenties}
             />
