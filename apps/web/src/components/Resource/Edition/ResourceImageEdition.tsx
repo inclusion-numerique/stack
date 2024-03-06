@@ -174,7 +174,7 @@ const ResourceImageEdition = ({
               ? "Remplacer l'image de présentation"
               : 'Ajouter une image de présentation pour attirer les visiteurs'
           }
-          fileFieldHint={`Taille recommandée: 384px x 384px. ${imageUploadHint}`}
+          fileFieldHint={`Taille recommandée : 1764x1260px. ${imageUploadHint}`}
           disabled={disabled}
           canDelete={!!image}
           deleteButtonTitle="Supprimer l'image de présentation"
