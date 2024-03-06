@@ -129,12 +129,12 @@ const StatisticsPage = async ({
               ]}
               legends={[
                 {
-                  label: 'Privées',
+                  label: 'Ressources privées',
                   value: `${creation.proportions.privateResources}%`,
                   key: 'private_resources',
                 },
                 {
-                  label: 'Publiques',
+                  label: 'Ressources publiques',
                   value: `${creation.proportions.publicResources}%`,
                   key: 'public_resources',
                 },
@@ -154,12 +154,12 @@ const StatisticsPage = async ({
               barsDataKey={['private_users', 'public_users']}
               legends={[
                 {
-                  label: 'Privés',
+                  label: 'Profils privés',
                   value: `${creation.proportions.privateUsers}%`,
                   key: 'private_users',
                 },
                 {
-                  label: 'Publics',
+                  label: 'Profils publics',
                   value: `${creation.proportions.publicUsers}%`,
                   key: 'public_users',
                 },
@@ -174,12 +174,12 @@ const StatisticsPage = async ({
               barsDataKey={['private_bases', 'public_bases']}
               legends={[
                 {
-                  label: 'Privées',
+                  label: 'Bases privées',
                   value: `${creation.proportions.privateBases}%`,
                   key: 'private_bases',
                 },
                 {
-                  label: 'Publiques',
+                  label: 'Bases publiques',
                   value: `${creation.proportions.publicBases}%`,
                   key: 'public_bases',
                 },
