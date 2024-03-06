@@ -19,6 +19,8 @@ const StatisticsPage = async ({
     fonctionnalites,
   })
 
+  console.log(search)
+
   return (
     <>
       <section>

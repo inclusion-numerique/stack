@@ -28,6 +28,8 @@ type KpiStatisticsResult = [
 
 type SearchStatisticsResult = {
   period: string
+  start_date: string
+  end_date: string
   collection_resources: number
   search_executions: number
   resource_views: number
@@ -102,7 +104,9 @@ export const getStatistics = async (_params: StatisticsParams) => {
           (SELECT COUNT(*)::integer FROM collection_resources WHERE added BETWEEN start_date AND end_date) AS collection_resources,
           (SELECT COUNT(*)::integer FROM search_executions WHERE timestamp BETWEEN start_date AND end_date) AS search_executions,
           (SELECT COUNT(*)::integer FROM resource_views WHERE timestamp BETWEEN start_date AND end_date) AS resource_views,
-          TO_CHAR(start_date, 'DD/MM') || ' ' || TO_CHAR(end_date, 'DD/MM')  AS period
+          TO_CHAR(start_date, 'DD/MM') || ' ' || TO_CHAR(end_date, 'DD/MM') AS period,
+          TO_CHAR(start_date, 'YYYY-MM-DD') AS start_date,
+          TO_CHAR(end_date, 'YYYY-MM-DD') AS end_date
       FROM range`)
 
   const creationStatisticsDaysInterval = 7
@@ -122,7 +126,9 @@ export const getStatistics = async (_params: StatisticsParams) => {
           (SELECT COUNT(*)::integer FROM users pr_u WHERE pr_u.created BETWEEN start_date AND end_date AND pr_u.is_public IS false AND pr_u.deleted IS NULL) AS private_users,
           (SELECT COUNT(*)::integer FROM bases pu_b WHERE pu_b.created BETWEEN start_date AND end_date AND pu_b.is_public IS true AND pu_b.deleted IS NULL) AS public_bases,
           (SELECT COUNT(*)::integer FROM bases pr_b WHERE pr_b.created BETWEEN start_date AND end_date AND pr_b.is_public IS false AND pr_b.deleted IS NULL) AS private_bases,
-          TO_CHAR(start_date, 'DD/MM') || ' ' || TO_CHAR(end_date, 'DD/MM')  AS period
+          TO_CHAR(start_date, 'DD/MM') || ' ' || TO_CHAR(end_date, 'DD/MM') AS period,
+          TO_CHAR(start_date, 'YYYY-MM-DD') AS start_date,
+          TO_CHAR(end_date, 'YYYY-MM-DD') AS end_date
       FROM range`)
 
   const usageStatisticsResult =
