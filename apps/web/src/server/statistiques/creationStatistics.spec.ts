@@ -8,7 +8,6 @@ const EMPTY_STATISTICS_RESULTS = {
   period: '239/02',
   private_resources: 0,
   public_resources: 0,
-  draft_resources: 0,
   public_users: 0,
   private_users: 0,
   public_bases: 0,
@@ -48,9 +47,8 @@ describe('Creation proportions', () => {
     const creationStatisticsResult = [
       {
         ...EMPTY_STATISTICS_RESULTS,
-        draft_resources: 2,
-        public_resources: 2,
-        private_resources: 2,
+        public_resources: 3,
+        private_resources: 4,
       },
     ]
 
@@ -58,9 +56,8 @@ describe('Creation proportions', () => {
 
     expect(proportions).toStrictEqual<CreationStatistics>({
       ...EMPTY_PROPORTIONS,
-      draftResources: 33,
-      publicResources: 33,
-      privateResources: 33,
+      publicResources: 43,
+      privateResources: 57,
     })
   })
 

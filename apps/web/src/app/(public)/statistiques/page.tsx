@@ -122,11 +122,7 @@ const StatisticsPage = async ({
               title="Nombre de ressources publiées"
               data={creation.data}
               xAxisDataKey="period"
-              barsDataKey={[
-                'private_resources',
-                'public_resources',
-                'draft_resources',
-              ]}
+              barsDataKey={['private_resources', 'public_resources']}
               legends={[
                 {
                   label: 'Ressources privées',
