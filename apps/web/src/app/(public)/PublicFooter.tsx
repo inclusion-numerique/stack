@@ -35,6 +35,10 @@ const PublicFooter = () => (
         linkProps: { href: '/cgu' },
       },
       {
+        text: `Statistiques`,
+        linkProps: { href: '/statistiques' },
+      },
+      {
         text: 'Code source',
         linkProps: {
           href: 'https://github.com/inclusion-numerique/la-base',

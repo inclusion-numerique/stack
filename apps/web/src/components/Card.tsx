@@ -10,7 +10,7 @@ const Card = ({
   titleAs: CardTitle = 'h3',
   href,
   enlargeLink = href != null,
-  desc,
+  description,
   children,
   contentSeparator = false,
 }: {
@@ -21,7 +21,7 @@ const Card = ({
   titleAs?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div'
   href?: string
   enlargeLink?: boolean
-  desc?: ReactNode
+  description?: ReactNode
   children?: ReactNode
   contentSeparator?: boolean
 }) => (
@@ -38,7 +38,7 @@ const Card = ({
         <CardTitle className="fr-card__title">
           {href ? <Link href={href}>{title}</Link> : title}
         </CardTitle>
-        {desc && <div className="fr-card__desc">{desc}</div>}
+        {description && <div className="fr-card__desc">{description}</div>}
         {children && (
           <div className="fr-card__end">
             {contentSeparator && <hr className="fr-pb-4w" />}

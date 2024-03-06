@@ -142,7 +142,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
             titleAs="h2"
             className="fr-mt-3w"
             id="informations"
-            desc={
+            description={
               <span className="fr-text--sm fr-hint-text fr-mb-0">
                 Les champs avec <RedAsterisk /> sont obligatoires.
               </span>
@@ -162,7 +162,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
             titleAs="h2"
             className="fr-mt-3w"
             id="contacts"
-            desc={
+            description={
               <span className="fr-text--sm fr-hint-text fr-mb-0">
                 Les champs avec <RedAsterisk /> sont obligatoires.
               </span>
@@ -182,7 +182,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
             titleAs="h2"
             className="fr-mt-3w"
             id="visibilite"
-            desc="Choisissez la visibilité de votre base. Vous pourrez modifier sa visibilité à tout moment."
+            description="Choisissez la visibilité de votre base. Vous pourrez modifier sa visibilité à tout moment."
             contentSeparator
           >
             <VisibilityField
@@ -201,7 +201,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
             className="fr-mt-3w"
             title="Inviter des membres"
             titleAs="h2"
-            desc="Les membres peuvent voir, créer, publier et contribuer à l’ensemble des ressources liées à votre base. Vous pouvez également ajouter des administrateurs qui pourront inviter et gérer les membres de la base."
+            description="Les membres peuvent voir, créer, publier et contribuer à l’ensemble des ressources liées à votre base. Vous pouvez également ajouter des administrateurs qui pourront inviter et gérer les membres de la base."
             contentSeparator
           >
             <Controller
@@ -223,7 +223,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
             id="photos"
             title="Image & couverture"
             titleAs="h2"
-            desc="Ajouter une image et une image de couverture pour rendre votre base identifiable et attirer les visiteurs."
+            description="Ajouter une image et une image de couverture pour rendre votre base identifiable et attirer les visiteurs."
             contentSeparator
           >
             <Controller

@@ -30,7 +30,7 @@ const ResourceParameters = ({
         className="fr-mt-3w"
         title="Contributeurs"
         titleAs="h2"
-        desc="Les contributeurs peuvent voir, éditer, inviter d’autres contributeurs et supprimer la ressource."
+        description="Les contributeurs peuvent voir, éditer, inviter d’autres contributeurs et supprimer la ressource."
         contentSeparator
       >
         <InviteResourceContributors resource={resource} />
@@ -40,7 +40,7 @@ const ResourceParameters = ({
         id="supprimer"
         title="Supprimer la ressource"
         titleAs="h2"
-        desc="Cette action est irréversible et entraîne la suppression définitive de de la ressource. Utilisez cette fonction avec précaution."
+        description="Cette action est irréversible et entraîne la suppression définitive de de la ressource. Utilisez cette fonction avec précaution."
         contentSeparator
       >
         <ResourceDeletion resource={resource} />

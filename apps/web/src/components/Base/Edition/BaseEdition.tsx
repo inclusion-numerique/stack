@@ -29,7 +29,7 @@ const BaseEdition = ({
           id="supprimer"
           title="Supprimer la base"
           titleAs="h2"
-          desc="Cette action est irréversible et entraîne la suppression définitive de toutes les ressources de la Base. Utilisez cette fonction avec précaution."
+          description="Cette action est irréversible et entraîne la suppression définitive de toutes les ressources de la Base. Utilisez cette fonction avec précaution."
           contentSeparator
         >
           <BaseDeletion base={base} />

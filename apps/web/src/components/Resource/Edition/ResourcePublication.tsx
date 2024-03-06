@@ -70,7 +70,7 @@ const ResourcePublication = ({
       <Card
         title="Visibilité de la ressource"
         titleAs="h2"
-        desc="Choisissez qui peut voir votre ressource."
+        description="Choisissez qui peut voir votre ressource."
         className="fr-mt-3w"
         contentSeparator
       >
@@ -104,7 +104,7 @@ const ResourcePublication = ({
           className="fr-mt-3w"
           title="Indexation"
           titleAs="h2"
-          desc={
+          description={
             <>
               L’indexation permettra aux autres utilisateurs de la base de
               trouver votre ressource via le moteur de recherche.
@@ -131,7 +131,7 @@ const ResourcePublication = ({
           className="fr-mt-3w"
           title="Contributeurs"
           titleAs="h2"
-          desc="Les contributeurs peuvent voir, éditer, inviter d’autres contributeurs et supprimer la ressource."
+          description="Les contributeurs peuvent voir, éditer, inviter d’autres contributeurs et supprimer la ressource."
           contentSeparator
         >
           <InviteContributors resource={resource} />

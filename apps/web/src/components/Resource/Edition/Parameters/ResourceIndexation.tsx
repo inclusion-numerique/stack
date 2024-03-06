@@ -37,7 +37,7 @@ const ResourceIndexation = ({ resource }: { resource: Resource }) => {
       id="indexation"
       title="Indexation"
       titleAs="h2"
-      desc="L’indexation permettra aux autres utilisateurs de la base de trouver votre ressource via le moteur de recherche."
+      description="L’indexation permettra aux autres utilisateurs de la base de trouver votre ressource via le moteur de recherche."
       form={form}
       mutation={async (data) => {
         await mutate.mutateAsync(data)

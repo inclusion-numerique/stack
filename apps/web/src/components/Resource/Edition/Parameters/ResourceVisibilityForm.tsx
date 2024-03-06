@@ -60,7 +60,7 @@ const ResourceVisibilityForm = ({
       id="visibilite"
       title="Visibilité de la ressource"
       titleAs="h2"
-      desc="Choisissez qui peut voir votre ressource."
+      description="Choisissez qui peut voir votre ressource."
       form={form}
       mutation={async (data) => {
         await mutate.mutateAsync(data)
