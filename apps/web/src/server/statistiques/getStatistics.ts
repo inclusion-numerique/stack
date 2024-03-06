@@ -119,13 +119,12 @@ export const getStatistics = async (_params: StatisticsParams) => {
           SELECT start_date, (start_date + INTERVAL '${creationStatisticsDaysInterval} days') AS end_date FROM series
       )
       SELECT
-          (SELECT COUNT(*)::integer FROM resources pu_r WHERE pu_r.created BETWEEN start_date AND end_date AND pu_r.is_public IS true AND pu_r.published IS NOT NULL AND pu_r.deleted IS NULL) AS public_resources,
-          (SELECT COUNT(*)::integer FROM resources pr_r WHERE pr_r.created BETWEEN start_date AND end_date AND pr_r.is_public IS false AND pr_r.published IS NOT NULL AND pr_r.deleted IS NULL) AS private_resources,
-          (SELECT COUNT(*)::integer FROM resources d_r WHERE d_r.created BETWEEN start_date AND end_date AND d_r.published IS NULL AND d_r.deleted IS NULL) AS draft_resources,
-          (SELECT COUNT(*)::integer FROM users pu_u WHERE pu_u.created BETWEEN start_date AND end_date AND pu_u.is_public IS true AND pu_u.deleted IS NULL) AS public_users,
-          (SELECT COUNT(*)::integer FROM users pr_u WHERE pr_u.created BETWEEN start_date AND end_date AND pr_u.is_public IS false AND pr_u.deleted IS NULL) AS private_users,
-          (SELECT COUNT(*)::integer FROM bases pu_b WHERE pu_b.created BETWEEN start_date AND end_date AND pu_b.is_public IS true AND pu_b.deleted IS NULL) AS public_bases,
-          (SELECT COUNT(*)::integer FROM bases pr_b WHERE pr_b.created BETWEEN start_date AND end_date AND pr_b.is_public IS false AND pr_b.deleted IS NULL) AS private_bases,
+          (SELECT COUNT(*)::integer FROM resources pu_r WHERE pu_r.published BETWEEN start_date AND end_date AND pu_r.is_public IS true) AS public_resources,
+          (SELECT COUNT(*)::integer FROM resources pr_r WHERE pr_r.published BETWEEN start_date AND end_date AND pr_r.is_public IS false) AS private_resources,
+          (SELECT COUNT(*)::integer FROM users pu_u WHERE pu_u.created BETWEEN start_date AND end_date AND pu_u.is_public IS true) AS public_users,
+          (SELECT COUNT(*)::integer FROM users pr_u WHERE pr_u.created BETWEEN start_date AND end_date AND pr_u.is_public IS false) AS private_users,
+          (SELECT COUNT(*)::integer FROM bases pu_b WHERE pu_b.created BETWEEN start_date AND end_date AND pu_b.is_public IS true) AS public_bases,
+          (SELECT COUNT(*)::integer FROM bases pr_b WHERE pr_b.created BETWEEN start_date AND end_date AND pr_b.is_public IS false) AS private_bases,
           TO_CHAR(start_date, 'DD/MM') || ' ' || TO_CHAR(end_date, 'DD/MM') AS period,
           TO_CHAR(start_date, 'YYYY-MM-DD') AS start_date,
           TO_CHAR(end_date, 'YYYY-MM-DD') AS end_date

@@ -4,7 +4,6 @@ export type CreationStatisticsResult = {
   period: string
   private_resources: number
   public_resources: number
-  draft_resources: number
   public_users: number
   private_users: number
   public_bases: number
@@ -12,7 +11,6 @@ export type CreationStatisticsResult = {
 }[]
 
 export type CreationStatistics = {
-  draftResources: number
   publicResources: number
   privateResources: number
   publicUsers: number
@@ -22,7 +20,6 @@ export type CreationStatistics = {
 }
 
 export const EMPTY_PROPORTIONS: CreationStatistics = {
-  draftResources: 0,
   publicResources: 0,
   privateResources: 0,
   publicUsers: 0,
@@ -32,9 +29,7 @@ export const EMPTY_PROPORTIONS: CreationStatistics = {
 }
 
 const getTotalResources = (total: CreationStatistics) =>
-  [total.draftResources, total.publicResources, total.privateResources].reduce(
-    sum,
-  )
+  [total.publicResources, total.privateResources].reduce(sum)
 
 const getTotalUsers = (total: CreationStatistics) =>
   [total.publicUsers, total.privateUsers].reduce(sum, 0)
@@ -45,7 +40,6 @@ const getTotalBases = (total: CreationStatistics) =>
 const resourcesProportions = (total: CreationStatistics) => {
   const totalResources = getTotalResources(total)
   return {
-    draftResources: percentage(total.draftResources, totalResources),
     publicResources: percentage(total.publicResources, totalResources),
     privateResources: percentage(total.privateResources, totalResources),
   }
@@ -72,7 +66,6 @@ export const computeCreationProportions = (
 ): CreationStatistics => {
   const total: CreationStatistics = creationStatisticsResult.reduce(
     (mergedResults: CreationStatistics, result) => ({
-      draftResources: mergedResults.draftResources + result.draft_resources,
       publicResources: mergedResults.publicResources + result.public_resources,
       privateResources:
         mergedResults.privateResources + result.private_resources,

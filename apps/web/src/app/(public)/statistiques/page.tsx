@@ -119,7 +119,7 @@ const StatisticsPage = async ({
         <div className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-12 fr-col-md-6 fr-col-lg-4">
             <SearchStatistics
-              title="Nombre de ressources créées"
+              title="Nombre de ressources publiées"
               data={creation.data}
               xAxisDataKey="period"
               barsDataKey={[
@@ -137,11 +137,6 @@ const StatisticsPage = async ({
                   label: 'Ressources publiques',
                   value: `${creation.proportions.publicResources}%`,
                   key: 'public_resources',
-                },
-                {
-                  label: 'Brouillons',
-                  value: `${creation.proportions.draftResources}%`,
-                  key: 'draft_resources',
                 },
               ]}
             />
