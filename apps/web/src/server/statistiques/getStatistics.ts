@@ -102,7 +102,7 @@ export const getStatistics = async (_params: StatisticsParams) => {
         )
       SELECT
           (SELECT COUNT(*)::integer FROM collection_resources WHERE added BETWEEN start_date AND end_date) AS collection_resources,
-          (SELECT COUNT(*)::integer FROM search_executions WHERE timestamp BETWEEN start_date AND end_date) AS search_executions,
+          (SELECT COUNT(*)::integer FROM search_executions WHERE (query != '' OR array_length(themes, 1) > 0 OR array_length(support_types, 1) > 0 OR array_length(target_audiences, 1) > 0 OR array_length(departments, 1) > 0 ) AND timestamp BETWEEN start_date AND end_date) AS search_executions,
           (SELECT COUNT(*)::integer FROM resource_views WHERE timestamp BETWEEN start_date AND end_date) AS resource_views,
           TO_CHAR(start_date, 'DD/MM') || ' ' || TO_CHAR(end_date, 'DD/MM') AS period,
           TO_CHAR(start_date, 'YYYY-MM-DD') AS start_date,
