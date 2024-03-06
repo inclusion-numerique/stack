@@ -69,13 +69,13 @@ const Resources = ({
               ),
             },
             {
-              label: `Publiées · ${publics.length}`,
+              label: `Publiques · ${publics.length}`,
               iconId: 'fr-icon-earth-line',
               content: (
                 <ResourceTab
                   resources={publics}
                   user={user}
-                  emptyText="Vous n'avez pas de ressources publiées."
+                  emptyText="Vous n'avez pas de ressources publiques."
                   data-testid="resources-public-tab"
                 />
               ),
