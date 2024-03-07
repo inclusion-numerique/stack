@@ -234,7 +234,8 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
                   ratio={1}
                   round="quarter"
                   label="Image de la base"
-                  height={522 / 4.8}
+                  height={128}
+                  size={{ w: 384, h: 384 }}
                   modal={addImageCropModal}
                   disabled={isLoading}
                   error={error ? error.message : undefined}
@@ -251,6 +252,7 @@ const CreateBase = ({ user }: { user: SessionUser }) => {
                   ratio={4.8}
                   label="Image de couverture"
                   height={522 / 4.8}
+                  size={{ w: 2400, h: 500 }}
                   modal={addCoverImageCropModal}
                   onChange={setCoverImage}
                   disabled={isLoading}
