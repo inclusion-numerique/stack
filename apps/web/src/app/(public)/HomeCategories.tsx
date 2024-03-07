@@ -1,21 +1,11 @@
 import Accordion from '@codegouvfr/react-dsfr/Accordion'
 import Link from 'next/link'
 import classNames from 'classnames'
-import type { Theme } from '@prisma/client'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { getHomeCategoriesCount } from '@app/web/app/(public)/getHomeCategoriesCount'
-import {
-  defaultSearchParams,
-  searchUrl,
-} from '@app/web/server/search/searchQueryParams'
 import { categories } from '@app/web/themes/themes'
+import { searchResultThemeHref } from '@app/web/themes/searchResultHrefHelpers'
 import styles from './HomeCategories.module.css'
-
-const themeSearchResultHref = (theme: Theme) =>
-  searchUrl('ressources', {
-    ...defaultSearchParams,
-    themes: [theme],
-  })
 
 const HomeCategories = async () => {
   const categoriesCount = await getHomeCategoriesCount()
@@ -64,7 +54,7 @@ const HomeCategories = async () => {
               {themes.map((item) => (
                 <Link
                   key={item.theme}
-                  href={themeSearchResultHref(item.theme)}
+                  href={searchResultThemeHref(item.theme)}
                   className="fr-tag"
                 >
                   {item.title}&nbsp;·&nbsp;<strong>{item.count}</strong>

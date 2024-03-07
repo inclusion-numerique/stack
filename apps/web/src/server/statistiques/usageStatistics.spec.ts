@@ -23,7 +23,12 @@ describe('Usage statistics', () => {
     const usages = themesUsages(usageStatisticsResult)
 
     expect(usages).toStrictEqual([
-      { label: 'Emploi & entrepreunariat', value: 5, progress: 100 },
+      {
+        label: 'Emploi & entrepreunariat',
+        theme: 'EmploiEtEntrepreunariat',
+        value: 5,
+        progress: 100,
+      },
     ])
   })
 
@@ -37,8 +42,18 @@ describe('Usage statistics', () => {
     const usages = themesUsages(usageStatisticsResult)
 
     expect(usages).toStrictEqual([
-      { label: 'Intelligence artificielle', value: 8, progress: 100 },
-      { label: 'Emploi & entrepreunariat', value: 5, progress: 63 },
+      {
+        label: 'Intelligence artificielle',
+        theme: 'IntelligenceArtificielle',
+        value: 8,
+        progress: 100,
+      },
+      {
+        label: 'Emploi & entrepreunariat',
+        theme: 'EmploiEtEntrepreunariat',
+        value: 5,
+        progress: 63,
+      },
     ])
   })
 
@@ -60,7 +75,12 @@ describe('Usage statistics', () => {
     const usages = targetAudiencesUsages(usageStatisticsResult)
 
     expect(usages).toStrictEqual([
-      { label: 'Personne allophone', value: 2, progress: 100 },
+      {
+        label: 'Personne allophone',
+        targetAudience: 'PersonneAllophone',
+        value: 2,
+        progress: 100,
+      },
     ])
   })
 
@@ -78,8 +98,18 @@ describe('Usage statistics', () => {
     const usages = targetAudiencesUsages(usageStatisticsResult)
 
     expect(usages).toStrictEqual([
-      { label: 'Personne allophone', value: 2, progress: 100 },
-      { label: 'Personne en situation de handicap', value: 1, progress: 50 },
+      {
+        label: 'Personne allophone',
+        targetAudience: 'PersonneAllophone',
+        value: 2,
+        progress: 100,
+      },
+      {
+        label: 'Personne en situation de handicap',
+        targetAudience: 'PersonneSituationHandicap',
+        value: 1,
+        progress: 50,
+      },
     ])
   })
 })

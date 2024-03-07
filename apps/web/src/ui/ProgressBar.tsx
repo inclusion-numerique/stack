@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { ReactNode } from 'react'
 
 const colors = [
   'fr-highlight--green-bourgeon',
@@ -28,8 +29,8 @@ const ProgressBar = ({
   displayProgress = false,
   min = 0,
   max = 100,
+  ariaLabel,
   title,
-  displayTitle = false,
   value,
   size = 'medium',
   colorIndex,
@@ -39,8 +40,8 @@ const ProgressBar = ({
   displayProgress?: boolean
   min?: number
   max?: number
-  title: string
-  displayTitle?: boolean
+  ariaLabel: string
+  title?: ReactNode
   value?: number
   size?: 'medium' | 'small'
   colorIndex?: number
@@ -50,7 +51,7 @@ const ProgressBar = ({
     <div
       className={`fr-progress fr-mb-1v ${size === 'small' && 'fr-progress--sm'}`}
       role="progressbar"
-      aria-label={title}
+      aria-label={ariaLabel}
       aria-valuenow={progress ?? 0}
       aria-valuemin={min}
       aria-valuemax={max}
@@ -65,9 +66,9 @@ const ProgressBar = ({
         {displayProgress && `${progress ?? 0}%`}
       </motion.div>
     </div>
-    {(displayTitle || value) && (
+    {(title || value) && (
       <small className="fr-flex fr-justify-content-space-between">
-        {displayTitle && <span>{title}</span>}
+        {title && <span>{title}</span>}
         {value && <span className="fr-text--bold">{value}</span>}
       </small>
     )}
