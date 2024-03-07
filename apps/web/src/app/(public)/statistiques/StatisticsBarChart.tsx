@@ -4,7 +4,6 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  Rectangle,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -12,6 +11,8 @@ import {
 } from 'recharts'
 import Card from '@app/web/components/Card'
 import { numberToString } from '@app/web/utils/formatNumber'
+import CustomTooltip from '@app/web/app/(public)/statistiques/CustomTooltip'
+import type { StatisticsLegend } from '@app/web/app/(public)/statistiques/StatisticsLegend'
 
 const barColors = [
   {
@@ -28,31 +29,50 @@ const barColors = [
   },
 ]
 
-const SearchStatistics = <T extends object>({
+const StatisticsBarChart = <T extends object>({
   data,
   title,
   xAxisDataKey,
+  tooltipLabelDataKey,
   barsDataKey,
   legends = [],
+  showLegendBelowChart = false,
+  titleClassName,
 }: {
   data: T[]
   title: string
   xAxisDataKey: keyof T
+  tooltipLabelDataKey?: keyof T
   barsDataKey: (keyof T)[]
-  legends?: { label: string; value: string; key: keyof T }[]
+  legends?: StatisticsLegend<T>[]
+  showLegendBelowChart?: boolean
+  titleClassName?: string
 }) => (
-  <Card title={<h3 className="fr-h5">{title}</h3>} titleAs="div">
+  <Card
+    title={<h3 className={titleClassName ?? 'fr-h5'}>{title}</h3>}
+    titleAs="div"
+  >
     <div style={{ height: 240, marginLeft: -32 }}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{}}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <Tooltip
-            wrapperClassName="fr-text--sm fr-text-default--grey"
+            wrapperClassName="fr-text--sm fr-text-default--grey "
             isAnimationActive={false}
-            formatter={(value, name) => [
-              value,
-              legends.find((legend) => legend.key === name)?.label,
-            ]}
+            content={<CustomTooltip />}
+            cursor={{ fill: 'var(--background-alt-blue-france)' }}
+            labelFormatter={(label, payload) => {
+              const labelAsString = `${label}`
+              if (!tooltipLabelDataKey) return labelAsString
+
+              return (
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                `${(payload[0]?.payload as T)[tooltipLabelDataKey]}` ?? null
+              )
+            }}
+            formatter={(_value, name) =>
+              legends.find((legend) => legend.key === name)?.label
+            }
           />
           <XAxis dataKey={xAxisDataKey.toString()} interval={0} fontSize={10} />
           <YAxis width={54} fontSize={10} tickFormatter={numberToString} />
@@ -63,13 +83,12 @@ const SearchStatistics = <T extends object>({
               barSize={35}
               dataKey={barDataKey.toString()}
               fill={barColors[index].barFill}
-              activeBar={<Rectangle fill={barColors[index].activeBarFill} />}
             />
           ))}
         </BarChart>
       </ResponsiveContainer>
     </div>
-    {legends.length > 0 && (
+    {showLegendBelowChart && legends.length > 0 && (
       <div className="fr-text--sm fr-mt-2w fr-mb-0">
         {legends.map((item, index) => (
           <div
@@ -92,4 +111,4 @@ const SearchStatistics = <T extends object>({
   </Card>
 )
 
-export default SearchStatistics
+export default StatisticsBarChart

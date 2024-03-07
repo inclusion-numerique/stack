@@ -65,7 +65,7 @@ const FileUploadForm = <T extends FieldValues>({
           <ProgressBar
             progress={progress}
             size="small"
-            title="Progression du chargement"
+            ariaLabel="Progression du chargement"
           />
           <div className={styles.progressFooter}>
             <p className="fr-text--sm">{progress}%</p>

@@ -24,12 +24,17 @@ export const themesUsages = (usageStatisticsResult: UsageStatisticsResult) => {
 
   if (usageStatistics.length === 0) return []
 
-  return usageStatistics.map((result) => ({
-    label: themeLabels[pascalCase(result.key) as Theme],
-    value: result.value,
-    // We assume first value is the max value
-    progress: percentage(result.value, usageStatistics[0].value),
-  }))
+  return usageStatistics.map((result) => {
+    const theme = pascalCase(result.key) as Theme
+
+    return {
+      theme,
+      label: themeLabels[theme],
+      value: result.value,
+      // We assume first value is the max value
+      progress: percentage(result.value, usageStatistics[0].value),
+    }
+  })
 }
 
 export const targetAudiencesUsages = (
@@ -39,10 +44,15 @@ export const targetAudiencesUsages = (
 
   if (targetAudiences.length === 0) return []
 
-  return targetAudiences.map((result) => ({
-    label: targetAudienceLabels[pascalCase(result.key) as TargetAudience],
-    value: result.value,
-    // We assume first value is the max value
-    progress: percentage(result.value, targetAudiences[0].value),
-  }))
+  return targetAudiences.map((result) => {
+    const targetAudience = pascalCase(result.key) as TargetAudience
+
+    return {
+      targetAudience,
+      label: targetAudienceLabels[targetAudience],
+      value: result.value,
+      // We assume first value is the max value
+      progress: percentage(result.value, targetAudiences[0].value),
+    }
+  })
 }

@@ -2,11 +2,11 @@ import {
   getStatistics,
   StatisticsParams,
 } from '@app/web/server/statistiques/getStatistics'
-import SearchStatistics from '@app/web/app/(public)/statistiques/SearchStatistics'
+import StatisticsBarChart from '@app/web/app/(public)/statistiques/StatisticsBarChart'
 import Card from '@app/web/components/Card'
 import { numberToString } from '@app/web/utils/formatNumber'
 import KeyFigureTitle from './KeyFigureTitle'
-import Publics from './Publics'
+import TargetAudiences from './TargetAudiences'
 import Thematiques from './Thematiques'
 
 const StatisticsPage = async ({
@@ -18,8 +18,6 @@ const StatisticsPage = async ({
     recherche,
     fonctionnalites,
   })
-
-  console.log(search)
 
   return (
     <>
@@ -84,27 +82,48 @@ const StatisticsPage = async ({
         </h2>
         <div className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-12 fr-col-md-6 fr-col-lg-4">
-            <SearchStatistics
+            <StatisticsBarChart
               title="Nombre de recherches effectuées"
               data={search}
-              xAxisDataKey="period"
+              xAxisDataKey="start_date"
+              tooltipLabelDataKey="period"
               barsDataKey={['search_executions']}
+              legends={[
+                {
+                  label: 'Recherches effectuées',
+                  key: 'search_executions',
+                },
+              ]}
             />
           </div>
           <div className="fr-col-12 fr-col-md-6 fr-col-lg-4">
-            <SearchStatistics
+            <StatisticsBarChart
               title="Nombre de vues de ressources"
               data={search}
-              xAxisDataKey="period"
+              xAxisDataKey="start_date"
+              tooltipLabelDataKey="period"
               barsDataKey={['resource_views']}
+              legends={[
+                {
+                  label: 'Vues de ressources',
+                  key: 'resource_views',
+                },
+              ]}
             />
           </div>
           <div className="fr-col-12 fr-col-md-6 fr-col-lg-4">
-            <SearchStatistics
+            <StatisticsBarChart
               title="Nombre de ressources enregistrées"
               data={search}
-              xAxisDataKey="period"
+              xAxisDataKey="start_date"
+              tooltipLabelDataKey="period"
               barsDataKey={['collection_resources']}
+              legends={[
+                {
+                  label: 'Ressources enregistrées',
+                  key: 'collection_resources',
+                },
+              ]}
             />
           </div>
         </div>
@@ -118,10 +137,12 @@ const StatisticsPage = async ({
         </h2>
         <div className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-12 fr-col-md-6 fr-col-lg-4">
-            <SearchStatistics
+            <StatisticsBarChart
               title="Nombre de ressources publiées"
+              titleClassName="fr-h6"
               data={creation.data}
-              xAxisDataKey="period"
+              xAxisDataKey="start_date"
+              tooltipLabelDataKey="period"
               barsDataKey={['private_resources', 'public_resources']}
               legends={[
                 {
@@ -135,13 +156,15 @@ const StatisticsPage = async ({
                   key: 'public_resources',
                 },
               ]}
+              showLegendBelowChart
             />
           </div>
           <div className="fr-col-12 fr-col-md-6 fr-col-lg-4">
-            <SearchStatistics
+            <StatisticsBarChart
               title="Nombre de profils créés"
               data={creation.data}
-              xAxisDataKey="period"
+              xAxisDataKey="start_date"
+              tooltipLabelDataKey="period"
               barsDataKey={['private_users', 'public_users']}
               legends={[
                 {
@@ -155,13 +178,15 @@ const StatisticsPage = async ({
                   key: 'public_users',
                 },
               ]}
+              showLegendBelowChart
             />
           </div>
           <div className="fr-col-12 fr-col-md-6 fr-col-lg-4">
-            <SearchStatistics
+            <StatisticsBarChart
               title="Nombre de bases créées"
               data={creation.data}
-              xAxisDataKey="period"
+              xAxisDataKey="start_date"
+              tooltipLabelDataKey="period"
               barsDataKey={['private_bases', 'public_bases']}
               legends={[
                 {
@@ -175,6 +200,7 @@ const StatisticsPage = async ({
                   key: 'public_bases',
                 },
               ]}
+              showLegendBelowChart
             />
           </div>
         </div>
@@ -191,7 +217,7 @@ const StatisticsPage = async ({
             <Thematiques thematiques={usage.thematiques} />
           </div>
           <div className="fr-col-12 fr-col-lg-6">
-            <Publics publics={usage.publics} />
+            <TargetAudiences targetAudiences={usage.publics} />
           </div>
         </div>
       </section>

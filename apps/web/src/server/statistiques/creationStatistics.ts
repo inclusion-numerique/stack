@@ -2,6 +2,8 @@ import { percentage, sum } from './statistics'
 
 export type CreationStatisticsResult = {
   period: string
+  start_date: string
+  end_date: string
   private_resources: number
   public_resources: number
   public_users: number

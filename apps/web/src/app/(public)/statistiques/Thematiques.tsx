@@ -2,13 +2,21 @@
 
 import Button from '@codegouvfr/react-dsfr/Button'
 import { useState } from 'react'
+import Link from 'next/link'
+import type { Theme } from '@prisma/client'
 import Card from '@app/web/components/Card'
 import ProgressBar from '@app/web/ui/ProgressBar'
+import { searchResultThemeHref } from '@app/web/themes/searchResultHrefHelpers'
 
 const Thematiques = ({
   thematiques,
 }: {
-  thematiques: { label: string; value: number; progress: number }[]
+  thematiques: {
+    label: string
+    theme: Theme
+    value: number
+    progress: number
+  }[]
 }) => {
   const [showAllThematiques, setShowAllThematiques] = useState(false)
 
@@ -20,19 +28,24 @@ const Thematiques = ({
           <ProgressBar
             key={thematique.label}
             className="fr-mb-5v"
-            title={thematique.label}
+            ariaLabel={thematique.label}
+            title={
+              <Link href={searchResultThemeHref(thematique.theme)}>
+                {thematique.label}
+              </Link>
+            }
             progress={thematique.progress}
             value={thematique.value}
-            displayTitle
             colorIndex={index}
           />
         ))}
       <Button
         type="button"
-        className="fr-btn--tertiary"
+        priority="tertiary"
+        size="small"
         onClick={() => setShowAllThematiques(!showAllThematiques)}
       >
-        Voir {showAllThematiques ? 'moins de' : 'tous les'} thématiques
+        Voir {showAllThematiques ? 'moins de' : 'toutes les'} thématiques
       </Button>
     </Card>
   )

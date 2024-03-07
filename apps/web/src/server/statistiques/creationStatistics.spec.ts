@@ -5,7 +5,9 @@ import {
 } from './creationStatistics'
 
 const EMPTY_STATISTICS_RESULTS = {
-  period: '239/02',
+  period: 'Du 01/01 au 31/01',
+  start_date: '01/01',
+  end_date: '31/01',
   private_resources: 0,
   public_resources: 0,
   public_users: 0,
