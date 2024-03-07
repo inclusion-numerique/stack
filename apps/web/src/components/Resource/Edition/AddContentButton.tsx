@@ -32,7 +32,7 @@ const contents = [
     type: 'Image',
     image: '/images/add-image.svg',
     label: 'Image',
-    description: imageUploadHint,
+    description: imageUploadHint(),
   },
   {
     type: 'Link',

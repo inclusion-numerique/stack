@@ -90,8 +90,7 @@ const ContentPolicyPage = () => (
 
           <h4 className="fr-h6">Inscription</h4>
           <p>
-            Les ressources publiques publiées sont accessibles sans création de
-            compte.
+            Les ressources publiques sont accessibles sans création de compte.
           </p>
           <p>
             L&#39;inscription sur Les Bases permet d&#39;administrer une base

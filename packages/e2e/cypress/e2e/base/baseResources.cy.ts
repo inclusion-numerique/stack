@@ -38,7 +38,7 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
     cy.dsfrModalsShouldBeBound()
     cy.testId('base-resources').should('contain', 'Ressources · 1')
     cy.testId('base-resources').should('contain', 'Brouillons · 1')
-    cy.testId('base-resources').should('contain', 'Publiées · 0')
+    cy.testId('base-resources').should('contain', 'Publiques · 0')
     cy.testId('base-resources').should('contain', 'Privées · 0')
 
     cy.log('Check draft resources')
@@ -54,7 +54,7 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
       .should('have.length', 0)
     cy.get('@public').should(
       'contain',
-      "Vous n'avez pas de ressources publiées.",
+      "Vous n'avez pas de ressources publiques.",
     )
 
     cy.log('Check private resources empty state')
@@ -85,7 +85,7 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
     cy.dsfrModalsShouldBeBound()
     cy.testId('base-resources').should('contain', 'Ressources · 1')
     cy.testId('base-resources').should('contain', 'Brouillons · 0')
-    cy.testId('base-resources').should('contain', 'Publiées · 0')
+    cy.testId('base-resources').should('contain', 'Publiques · 0')
     cy.testId('base-resources').should('contain', 'Privées · 1')
 
     cy.log('Check draft resources')
@@ -102,7 +102,7 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
       .should('have.length', 0)
     cy.get('@public').should(
       'contain',
-      "Vous n'avez pas de ressources publiées.",
+      "Vous n'avez pas de ressources publiques.",
     )
 
     cy.log('Check private resources empty state')
@@ -128,7 +128,7 @@ describe('Utilisateur connecté, lorsque je créé une base, je peux voir ses re
     cy.dsfrModalsShouldBeBound()
     cy.testId('base-resources').should('contain', 'Ressources · 1')
     cy.testId('base-resources').should('contain', 'Brouillons · 0')
-    cy.testId('base-resources').should('contain', 'Publiées · 1')
+    cy.testId('base-resources').should('contain', 'Publiques · 1')
     cy.testId('base-resources').should('contain', 'Privées · 0')
 
     cy.log('Check draft resources')
