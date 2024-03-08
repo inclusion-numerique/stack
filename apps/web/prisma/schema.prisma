@@ -94,7 +94,7 @@ model User {
 
   besoinsEnIngenierieFinanciereCrees             BesoinsEnIngenierieFinanciere[] @relation("besoins_ingenierie_financiere_createur")
   besoinsEnIngenierieFinanciereModifiesEnDernier BesoinsEnIngenierieFinanciere[] @relation("besoins_ingenierie_financiere_derniere_modification_par")
-  actionsCrees                                   Action[]                        @relation("action_createur")
+  demandesDeSubventionCrees                      DemandeDeSubvention[]           @relation("demande_de_subvention_createur")
 
   @@map("users")
 }
@@ -183,8 +183,9 @@ model Upload {
   created DateTime @default(now())
 
   // Is an image
-  image  Image?
-  Action Action[]
+  image Image?
+
+  pieceJointeBudgetSubvention DemandeDeSubvention? @relation("piece_jointe_budget_subvention")
 
   @@map("uploads")
 }
@@ -768,46 +769,60 @@ model Gouvernance {
   @@map("gouvernances")
 }
 
-// Une action portée par une gouvernance, financée par le porteur et/ou des subventions
-model Action {
+enum BesoinSubvention {
+  FaireUnDiagnosticTerritorial @map("faire_un_diagnostic_territorial")
+
+  @@map("besoin_subvention")
+}
+
+// Une Demande de subvention en rapport avec une feuille de route, financée par le porteur et/ou des subventions
+model DemandeDeSubvention {
   id String @id @default(uuid()) @db.Uuid
 
-  createurId   String   @map("createur_id") @db.Uuid
-  createur     User     @relation("action_createur", fields: [createurId], references: [id])
-  creation     DateTime @default(now())
-  modification DateTime @updatedAt
+  besoins BesoinSubvention[]
+
+  createurId            String    @map("createur_id") @db.Uuid
+  createur              User      @relation("demande_de_subvention_createur", fields: [createurId], references: [id])
+  creation              DateTime  @default(now())
+  modification          DateTime  @updatedAt
+  // La demande n'est plus modifiable après validation
+  valideeEtEnvoyee      DateTime? @map("validee_et_envoyee")
+  demandeDeModification DateTime? @map("demande_de_modification")
+  rejetee               DateTime?
+  acceptee              DateTime?
 
   feuilleDeRouteId String         @map("feuille_de_route_id") @db.Uuid
   feuilleDeRoute   FeuilleDeRoute @relation(fields: [feuilleDeRouteId], references: [id])
 
-  nom                 String
-  contexte            String
-  description         String
-  categorieBesoin     String
-  sousCategorieBesoin String
-  budgetGlobal        Float  @map("budget_global")
-  subventionDemandee  Float  @map("subvention_demandee")
+  nomAction   String @map("nom_action")
+  contexte    String
+  description String
 
-  montantSubventionEtp        Float? @map("montant_subvention_etp")
-  montantSubventionPrestation Float? @map("montant_subvention_prestation")
+  budgetGlobal         Decimal @map("budget_global") @db.Decimal(10, 2)
+  pieceJointeBudgetKey String? @unique @map("piece_jointe_budget_key")
+  pieceJointeBudget    Upload? @relation(name: "piece_jointe_budget_subvention", fields: [pieceJointeBudgetKey], references: [key])
 
-  pieceJointeKey String?        @map("piece_jointe_key")
-  pieceJointe    Upload?        @relation(fields: [pieceJointeKey], references: [key])
-  actionMembres  ActionMembre[]
+  subventionDemandee   Decimal  @map("subvention_demandee") @db.Decimal(10, 2)
+  subventionEtp        Decimal? @map("subvention_etp") @db.Decimal(10, 2)
+  subventionPrestation Decimal? @map("subvention_prestation") @db.Decimal(10, 2)
+
+  beneficiaires BeneficiaireSubvention[]
+
+  @@map("demande_de_subvention")
 }
 
-model ActionMembre {
+model BeneficiaireSubvention {
   id String @id @default(uuid()) @db.Uuid
 
-  actionId String @map("action_id") @db.Uuid
-  action   Action @relation(fields: [actionId], references: [id])
+  demandeDeSubventionId String              @map("demande_de_subvention_id") @db.Uuid
+  demandeDeSubvention   DemandeDeSubvention @relation(fields: [demandeDeSubventionId], references: [id])
 
   membreGouvernanceId String            @map("membre_gouvernance_id") @db.Uuid
   membreGouvernance   MembreGouvernance @relation(fields: [membreGouvernanceId], references: [id])
 
-  subventionDemandee Float @map("subvention_demandee")
+  subvention Decimal @db.Decimal(10, 2)
 
-  @@map("action_membre")
+  @@map("beneficiaire_subvention")
 }
 
 model BesoinsEnIngenierieFinanciere {
@@ -956,10 +971,10 @@ model MembreGouvernance {
   siretInformations InformationsSiret? @relation(name: "membre_gouvernance_siret", fields: [siret], references: [siret], onDelete: NoAction)
 
   // Formulaire rempli par le porteur, surtout utile en cas de membre de type structure car une structure n'est pas modélisée en base
-  formulaireGouvernanceId String                 @map("formulaire_gouvernance_id") @db.Uuid
-  formulaireGouvernance   FormulaireGouvernance  @relation(fields: [formulaireGouvernanceId], references: [id], onDelete: Cascade)
+  formulaireGouvernanceId String                   @map("formulaire_gouvernance_id") @db.Uuid
+  formulaireGouvernance   FormulaireGouvernance    @relation(fields: [formulaireGouvernanceId], references: [id], onDelete: Cascade)
   feuillesDeRoutes        MembreFeuilleDeRoute[]
-  ActionMembre            ActionMembre[]
+  beneficiaireSubventions BeneficiaireSubvention[]
 
   @@map("membre_gouvernance")
 }
@@ -1022,8 +1037,8 @@ model FeuilleDeRoute {
   perimetreDepartementCode String?      @map("perimetre_departement_code")
   perimetreDepartement     Departement? @relation(name: "feuille_de_route_perimetre_departement", fields: [perimetreDepartementCode], references: [code], onDelete: NoAction)
 
-  perimetreEpcis PerimetreEpciFeuilleDeRoute[]
-  actions        Action[]
+  perimetreEpcis       PerimetreEpciFeuilleDeRoute[]
+  demandesDeSubvention DemandeDeSubvention[]
 
   @@map("feuille_de_route")
 }

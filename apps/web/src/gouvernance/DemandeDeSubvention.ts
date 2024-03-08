@@ -1,9 +1,10 @@
 import z from 'zod'
+import { BesoinSubvention } from '@prisma/client'
 
-const ActionMembreValidation = z.object({
+const BeneficiaireSubventionValidation = z.object({
   id: z.string().uuid().nullish(),
   membreGouvernanceId: z.string().uuid(),
-  subventionDemandee: z
+  subvention: z
     .number({
       required_error:
         'Veuillez renseigner le montant de la subvention demandée',
@@ -12,55 +13,67 @@ const ActionMembreValidation = z.object({
     .nullish(),
 })
 
-export type ActionMembreData = z.infer<typeof ActionMembreValidation>
+export type BeneficiaireSubventionData = z.infer<
+  typeof BeneficiaireSubventionValidation
+>
 
-const ActionValidation = z
+const DemandeDeSubventionValidation = z
   .object({
+    // This is the maximum amount of the dotation that can be used for subventionDemandee
+    // Is given by system, not user input
+    montantDotationRestante: z.number(),
+    id: z.string().uuid().nullish(),
+    besoins: z
+      .array(
+        z.nativeEnum(BesoinSubvention, {
+          required_error: 'Veuillez renseigner un besoin',
+        }),
+      )
+      .min(1, 'Veuillez sélectionner au moins un besoin'),
     feuilleDeRouteId: z
       .string({
         required_error: 'Veuillez renseigner la feuille de route concernée',
       })
       .uuid(),
-    nom: z.string({ required_error: 'Veuillez renseigner le nom de l’action' }),
+    nomAction: z.string({
+      required_error: 'Veuillez renseigner le nom de l’action',
+    }),
     contexte: z.string({ required_error: 'Veuillez renseigner le contexte' }),
     description: z.string({
-      required_error: 'Veuillez renseigner la description de l’action',
-    }),
-    categorieBesoin: z.string({
-      required_error: 'Veuillez renseigner la catégorie de besoin',
-    }),
-    sousCategorieBesoin: z.string({
-      required_error: 'Veuillez renseigner la sous-catégorie de besoin',
+      required_error:
+        'Veuillez renseigner la description de la demande de subvention',
     }),
     budgetGlobal: z
       .number({
         required_error: 'Veuillez renseigner le budget global',
       })
       .min(0, 'Le budget global doit être supérieur à 0'),
+    pieceJointeBudgetKey: z.string({
+      required_error: 'Veuillez joindre le budget prévisionnel',
+    }),
     subventionDemandee: z
       .number({
         required_error:
           'Veuillez renseigner le montant de la subvention demandée',
       })
       .min(0, 'La subvention demandée doit être supérieure ou égale à 0'),
-    montantSubventionEtp: z
+    subventionEtp: z
       .number({
         required_error:
           'Veuillez renseigner le montant de la subvention demandée pour les ETP',
       })
       .min(0, 'Le montant doit être supérieur ou égal à 0')
       .nullish(),
-    montantSubventionPrestation: z
+    subventionPrestation: z
       .number({
         required_error:
           'Veuillez renseigner le montant de la subvention demandée pour les prestations',
       })
       .min(0, 'Le montant doit être supérieur ou égal à 0')
       .nullish(),
-    pieceJointeKey: z.string().nullish(),
-    actionMembres: z
-      .array(ActionMembreValidation)
-      .min(1, 'Veuillez sélectionner au moins un membre de la gouvernance'),
+    beneficiaires: z
+      .array(BeneficiaireSubventionValidation)
+      .min(1, 'Veuillez sélectionner au moins un bénéficiaire'),
   })
   // subventionDemandee should be lower than budgetGlobal
   .refine((data) => data.subventionDemandee <= data.budgetGlobal, {
@@ -72,8 +85,7 @@ const ActionValidation = z
   .refine(
     (data) =>
       data.subventionDemandee ===
-      (data.montantSubventionEtp ?? 0) +
-        (data.montantSubventionPrestation ?? 0),
+      (data.subventionEtp ?? 0) + (data.subventionPrestation ?? 0),
     {
       message:
         'La somme de la subvention demandée pour les ETP et la prestation doit être égale à la subvention demandée',
@@ -83,8 +95,9 @@ const ActionValidation = z
   // La some des subventions demandées par les membres doit être égale à la subvention demandée
   .refine(
     (data) => {
-      const sum = data.actionMembres.reduce(
-        (acc, actionMembre) => acc + (actionMembre.subventionDemandee ?? 0),
+      const sum = data.beneficiaires.reduce(
+        (accumulator, demandeDeSubventionMembre) =>
+          accumulator + (demandeDeSubventionMembre.subvention ?? 0),
         0,
       )
       return sum === data.subventionDemandee
@@ -92,8 +105,10 @@ const ActionValidation = z
     {
       message:
         'La somme des subventions demandées par les membres doit être égale à la subvention demandée',
-      path: ['actionMembres'],
+      path: ['demandeDeSubventionMembres'],
     },
   )
 
-export type ActionData = z.infer<typeof ActionValidation>
+export type DemandeDeSubventionData = z.infer<
+  typeof DemandeDeSubventionValidation
+>
