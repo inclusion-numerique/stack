@@ -95,6 +95,7 @@ model User {
   besoinsEnIngenierieFinanciereCrees             BesoinsEnIngenierieFinanciere[] @relation("besoins_ingenierie_financiere_createur")
   besoinsEnIngenierieFinanciereModifiesEnDernier BesoinsEnIngenierieFinanciere[] @relation("besoins_ingenierie_financiere_derniere_modification_par")
   demandesDeSubventionCrees                      DemandeDeSubvention[]           @relation("demande_de_subvention_createur")
+  demandesDeSubventionModifieesEnDernier         DemandeDeSubvention[]           @relation("demande_de_subvention_modification_par")
 
   @@map("users")
 }
@@ -755,6 +756,9 @@ model Gouvernance {
   noteDeContexte                        String                                @map("note_de_contexte")
   organisationsRecruteusesCoordinateurs OrganisationRecruteuseCoordinateurs[]
 
+  noteDeContexteSubventions            String?   @map("note_de_contexte_subventions")
+  noteDeContexteSubventionsEnregistree DateTime? @map("note_de_contexte_subventions_enregistree")
+
   pasDeCoporteurs Boolean? @map("pas_de_co_porteurs")
 
   feuillesDeRoute FeuilleDeRoute[]
@@ -781,10 +785,13 @@ model DemandeDeSubvention {
 
   besoins BesoinSubvention[]
 
-  createurId            String    @map("createur_id") @db.Uuid
-  createur              User      @relation("demande_de_subvention_createur", fields: [createurId], references: [id])
-  creation              DateTime  @default(now())
-  modification          DateTime  @updatedAt
+  creation                  DateTime @default(now())
+  modification              DateTime @updatedAt
+  createurId                String   @map("createur_id") @db.Uuid
+  createur                  User     @relation("demande_de_subvention_createur", fields: [createurId], references: [id])
+  derniereModificationParId String   @map("derniere_modification_par_id") @db.Uuid
+  derniereModificationPar   User     @relation("demande_de_subvention_modification_par", fields: [derniereModificationParId], references: [id])
+
   // La demande n'est plus modifiable après validation
   valideeEtEnvoyee      DateTime? @map("validee_et_envoyee")
   demandeDeModification DateTime? @map("demande_de_modification")

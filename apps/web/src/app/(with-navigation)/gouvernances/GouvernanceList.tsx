@@ -1,8 +1,6 @@
 import React from 'react'
 import Notice from '@codegouvfr/react-dsfr/Notice'
-import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
-import { laOuLes } from '@app/ui/utils/pluriel/laOuLes'
-import { votreOuVos } from '@app/ui/utils/pluriel/votreOuVos'
+import Button from '@codegouvfr/react-dsfr/Button'
 import { limiteModificationDesGouvernances } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceMetadata'
 import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 import { ListeGouvernance } from '@app/web/app/(with-navigation)/gouvernances/getListeGouvernances'
@@ -11,6 +9,7 @@ import GouvernanceCardCtas from '@app/web/app/(with-navigation)/gouvernances/Gou
 import GouvernanceCard from '@app/web/app/(with-navigation)/gouvernances/GouvernanceCard'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import GouvernanceCompletedModal from '@app/web/app/(with-navigation)/gouvernances/GouvernanceCompletedModal'
+import { detailGouvernancePath } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
 
 const GouvernanceList = ({
   scope,
@@ -25,20 +24,18 @@ const GouvernanceList = ({
   const gouvernancesPressenties = gouvernances.filter(
     ({ v2Enregistree }) => !v2Enregistree,
   )
-  const gouvernancesProposees = gouvernances.filter(
+  const gouvernanceFinale = gouvernances.find(
     ({ v2Enregistree }) => !!v2Enregistree,
   )
 
-  const showCtasOnPressenties = canEdit && gouvernancesProposees.length === 0
+  const showCtasOnPressenties = canEdit && !gouvernanceFinale
 
   return (
     <>
       {/* Empty state */}
       {!canAdd && gouvernances.length === 0 && (
         <>
-          <h4 className="fr-mb-2v">
-            Proposition de gouvernance sur votre territoire
-          </h4>
+          <h4 className="fr-mb-2v">Gouvernance sur votre territoire</h4>
           <p className="fr-mb-12v">
             Aucune gouvernance n’a été remontée pour le moment.
             <br />
@@ -53,13 +50,9 @@ const GouvernanceList = ({
       {/* Empty state is a creation CTA for v2 gouvernanceif the user can create gouvernance */}
       {canAdd && (
         <>
-          <h4 className="fr-mb-2v">
-            Proposition de gouvernance sur votre territoire
-          </h4>
+          <h4 className="fr-mb-2v">Gouvernance sur votre territoire</h4>
           <p className="fr-mb-12v">
-            Renseignez la proposition de gouvernance finale sur votre
-            territoire, les feuilles de route ainsi que vos besoins en
-            ingénierie financière.
+            Renseignez la gouvernance finale sur votre territoire.
           </p>
 
           <WhiteCard>
@@ -71,86 +64,68 @@ const GouvernanceList = ({
         </>
       )}
 
-      {/* Show v2 gouvernances if any. It can be only one but it is in the array of gouvernances */}
-      {gouvernancesProposees.length > 0 && (
+      {/* Show v2 gouvernances. It can be only one but it is in the array of gouvernances */}
+      {!!gouvernanceFinale && (
         <>
-          <h3 className="fr-mb-2v">
-            Proposition{sPluriel(gouvernancesProposees.length)} de gouvernance
-            sur votre territoire
-          </h3>
-          <p className="fr-mb-12v">
-            Retrouvez ci-dessous {votreOuVos(gouvernancesProposees.length)}{' '}
-            proposition{sPluriel(gouvernancesProposees.length)} de gouvernance
-            finale{sPluriel(gouvernancesProposees.length)} sur votre territoire.
-            <br />
-            {canEdit ? (
-              <strong>
-                Vous pouvez encore {laOuLes(gouvernancesProposees.length)}{' '}
-                compléter et/ou {laOuLes(gouvernancesProposees.length)} modifier
-                jusqu’au {dateAsDay(limiteModificationDesGouvernances)}.
-              </strong>
-            ) : (
-              <strong>
-                Elles pourront encore être déposées et/ou modifiées jusqu’au{' '}
-                {dateAsDay(limiteModificationDesGouvernances)}.
-              </strong>
-            )}
-          </p>
-          {gouvernancesProposees.map((gouvernance) => (
-            <GouvernanceCard
-              key={gouvernance.id}
-              gouvernance={gouvernance}
-              scope={{ codeDepartement: gouvernance.departement.code }}
-              canEdit={canEdit}
-              showCtas
-            />
-          ))}
+          <div className="fr-flex fr-align-items-center fr-justify-content-space-between fr-flex-gap-12v fr-mb-12v">
+            <div>
+              <h3 className="fr-mb-2v">
+                Gérer la politique d’inclusion numérique de votre territoire
+              </h3>
+              <p className="fr-text--xl fr-mb-0" style={{ maxWidth: 680 }}>
+                Retrouvez ci-dessous les informations et demandes de subventions
+                liées à votre gouvernance.
+              </p>
+            </div>
+            <Button
+              priority="secondary"
+              iconId="fr-icon-arrow-right-line"
+              iconPosition="right"
+              linkProps={{
+                href: detailGouvernancePath(scope, gouvernanceFinale.id),
+              }}
+            >
+              Voir le détail
+            </Button>
+          </div>
+          <GouvernanceCard
+            key={gouvernanceFinale.id}
+            gouvernance={gouvernanceFinale}
+            scope={{ codeDepartement: gouvernanceFinale.departement.code }}
+            canEdit={canEdit}
+            showCtas
+          />
         </>
       )}
 
-      {/* Separator between 2 lists if v2 and v1 gouvernances are both present */}
-      {gouvernancesProposees.length > 0 &&
-        gouvernancesPressenties.length > 0 && (
-          <hr className="fr-separator-12v" />
-        )}
-
-      {/* Show v1 gouvernances if any */}
-      {gouvernancesPressenties.length > 0 && (
+      {/* Show v1 gouvernances if none finalized */}
+      {canEdit && !gouvernanceFinale && gouvernancesPressenties.length > 0 && (
         <>
-          <h3 className="fr-mb-2v">
-            Historique de vos gouvernances pressenties
-          </h3>
-          {canEdit && gouvernancesProposees.length === 0 ? (
-            <Notice
-              title={
-                gouvernancesPressenties.length > 1 ? (
-                  <>
-                    Retrouvez ci-dessous vos propositions de gouvernances
-                    pressenties.{' '}
-                    <strong>
-                      Vous devez maintenant en choisir une, finaliser votre
-                      proposition et renseigner vos besoins en ingénierie
-                      financière.
-                    </strong>
-                  </>
-                ) : (
-                  <>
-                    Afin de finaliser votre proposition de gouvernance,{' '}
-                    <strong>
-                      veuillez compléter le formulaire de gouvernance & feuilles
-                      de routes ainsi que vos besoins en ingénierie financière.
-                    </strong>
-                  </>
-                )
-              }
-              className="fr-notice--warning fr-mt-6v fr-mb-12v"
-            />
-          ) : (
-            <p className="fr-mb-12v">
-              Retrouvez ici vos précédentes propositions de gouvernances et
-              porteurs pressentis.
-            </p>
-          )}
+          <h3 className="fr-mb-2v">Gouvernances pressenties</h3>
+          <Notice
+            title={
+              gouvernancesPressenties.length > 1 ? (
+                <>
+                  Retrouvez ci-dessous vos propositions de gouvernances
+                  pressenties.{' '}
+                  <strong>
+                    Vous devez maintenant en choisir une, finaliser votre
+                    proposition et renseigner vos besoins en ingénierie
+                    financière.
+                  </strong>
+                </>
+              ) : (
+                <>
+                  Afin de finaliser votre proposition de gouvernance,{' '}
+                  <strong>
+                    veuillez compléter le formulaire de gouvernance & feuilles
+                    de routes ainsi que vos besoins en ingénierie financière.
+                  </strong>
+                </>
+              )
+            }
+            className="fr-notice--warning fr-mt-6v fr-mb-12v"
+          />
           {gouvernancesPressenties.map((gouvernance, index) => (
             <GouvernanceCard
               key={gouvernance.id}

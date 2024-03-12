@@ -49,6 +49,10 @@ const Page = async ({
   if (gouvernance.departement.code !== codeDepartement) {
     notFound()
   }
+  if (gouvernance.besoinsEnIngenierieFinanciere.priorisationEnregistree) {
+    // Les besoins terminés ne sont plus éditables
+    notFound()
+  }
   const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
 
   const defaultValues =

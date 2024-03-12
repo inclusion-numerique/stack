@@ -97,6 +97,51 @@ export const gouvernanceListSelect = {
     },
   },
 
+  feuillesDeRoute: {
+    select: {
+      demandesDeSubvention: {
+        select: {
+          id: true,
+          besoins: true,
+          creation: true,
+          modification: true,
+          valideeEtEnvoyee: true,
+          createur: {
+            select: {
+              id: true,
+              email: true,
+              name: true,
+            },
+          },
+          derniereModificationPar: {
+            select: {
+              id: true,
+              email: true,
+              name: true,
+            },
+          },
+          nomAction: true,
+          budgetGlobal: true,
+          subventionDemandee: true,
+          subventionEtp: true,
+          subventionPrestation: true,
+          beneficiaires: {
+            select: {
+              id: true,
+              membreGouvernance: {
+                select: membreSelect.select,
+              },
+              subvention: true,
+            },
+          },
+        },
+        orderBy: {
+          creation: 'asc',
+        },
+      },
+    },
+  },
+
   // V1 Fields
   v1Perimetre: true,
 

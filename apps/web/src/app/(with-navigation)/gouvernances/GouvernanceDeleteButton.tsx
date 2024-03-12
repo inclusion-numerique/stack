@@ -69,8 +69,7 @@ const GouvernanceDeleteButton = ({
           },
         ]}
       >
-        Êtes-vous sûr de vouloir supprimer cette proposition de gouvernance
-        pressentie&nbsp;?
+        Êtes-vous sûr de vouloir supprimer cette gouvernance pressentie&nbsp;?
       </deletionModal.Component>
     </>
   )

@@ -162,7 +162,7 @@ const GouvernanceCardCtas = ({
             small
             severity="success"
           >
-            Complétés
+            Terminé
           </Badge>
         ) : (
           <Badge
@@ -176,24 +176,7 @@ const GouvernanceCardCtas = ({
         )}
         {canEdit &&
           (gouvernance ? (
-            hasCompletedBesoins ? (
-              <Button
-                priority="secondary"
-                linkProps={{
-                  href: modifierBesoinsIngenieriePath(
-                    { codeDepartement: gouvernance.departement.code },
-                    {
-                      gouvernanceId: gouvernance.id,
-                      step: 'intro',
-                    },
-                  ),
-                }}
-                iconId="fr-icon-edit-line"
-                iconPosition="right"
-              >
-                Modifier
-              </Button>
-            ) : (
+            hasCompletedBesoins ? null : (
               <Button
                 linkProps={{
                   href: modifierBesoinsIngenieriePath(
@@ -217,6 +200,86 @@ const GouvernanceCardCtas = ({
             />
           ) : null)}
       </div>
+      {isV2 && (
+        <>
+          <hr className="fr-separator-8v" />
+          <div className={styles.cardCtaContainer}>
+            <div className="fr-flex-grow-1">
+              {isV2 ? (
+                <h6 className="fr-mb-0">Actions & demandes de subventions</h6>
+              ) : (
+                <h4 className="fr-mb-0">Actions & demandes de subventions</h4>
+              )}
+              {isV2 ? (
+                <p className="fr-mb-0 fr-text--sm fr-text-mention--grey">
+                  Complétée le {v2CreationMeta}
+                  {displayModificationMeta &&
+                    ` · Modifiée le ${modificationMeta}`}
+                </p>
+              ) : canEdit ? (
+                <p className="fr-mb-0">
+                  Finalisez votre gouvernance et organisez les feuilles de
+                  routes pressenties sur votre territoire.
+                </p>
+              ) : null}
+            </div>
+            {isV2 ? (
+              <Badge
+                className="fr-my-4v fr-ml-md-6w fr-mr-md-3w"
+                small
+                severity="success"
+              >
+                Complétée
+              </Badge>
+            ) : (
+              <Badge
+                className="fr-my-4v fr-ml-md-6w fr-mr-md-3w"
+                small
+                severity="new"
+              >
+                À&nbsp;renseigner&nbsp;avant&nbsp;le&nbsp;
+                {dateAsDay(limiteModificationDesGouvernances)}
+              </Badge>
+            )}
+            {canEdit &&
+              (isExistingGouvernance ? (
+                isV2 ? (
+                  <Button
+                    priority="secondary"
+                    linkProps={{
+                      href: modifierGouvernancePath(
+                        { codeDepartement: gouvernance.departement.code },
+                        gouvernance.id,
+                      ),
+                    }}
+                    iconId="fr-icon-edit-line"
+                    iconPosition="right"
+                  >
+                    Modifier
+                  </Button>
+                ) : (
+                  <Button
+                    linkProps={{
+                      href: modifierGouvernancePath(
+                        { codeDepartement: gouvernance.departement.code },
+                        gouvernance.id,
+                      ),
+                    }}
+                    iconId="fr-icon-arrow-right-line"
+                    iconPosition="right"
+                  >
+                    Compléter
+                  </Button>
+                )
+              ) : canCreateInDepartementCode ? (
+                <CreateGouvernanceButton
+                  codeDepartement={canCreateInDepartementCode}
+                  nextAction="editGouvernance"
+                />
+              ) : null)}
+          </div>
+        </>
+      )}
     </>
   )
 }
