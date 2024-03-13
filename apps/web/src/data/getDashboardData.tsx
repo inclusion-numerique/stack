@@ -126,19 +126,17 @@ const getRawDataForScope = async ({
         prismaClient.craConseillerNumeriqueParDepartement.findUnique({
           where: { codeDepartement },
         }),
-        // prismaClient.conseillerNumerique.count({
-        //   where: {
-        //     enPermanence: {
-        //       some: {
-        //         permanence: {
-        //           structureCartographieNationale: whereInDepartement,
-        //         },
-        //       },
-        //     },
-        //   },
-        // }),
-        // on ajoute 4000 en dur au niveau national le temps d'avoir les vrais chiffres de postes attribués
-        4000,
+        prismaClient.conseillerNumerique.count({
+          where: {
+            enPermanence: {
+              some: {
+                permanence: {
+                  structureCartographieNationale: whereInDepartement,
+                },
+              },
+            },
+          },
+        }),
         getAppData(),
       ])
 
@@ -168,7 +166,9 @@ const getRawDataForScope = async ({
           },
         }),
         prismaClient.craConseillerNumeriqueParDepartement.findMany({}),
-        prismaClient.conseillerNumerique.count(),
+        // prismaClient.conseillerNumerique.count(),
+        // on ajoute 4000 en dur au niveau national le temps d'avoir les vrais chiffres de postes attribués
+        4000,
         getAppData(),
       ])
     return {

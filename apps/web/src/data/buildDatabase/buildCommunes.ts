@@ -144,8 +144,8 @@ export const buildCommunes = async ({
       codeDepartement,
       population: commune.population ?? 0,
       codeEpci,
-      latitude: commune.centre.coordinates[0],
-      longitude: commune.centre.coordinates[1],
+      latitude: commune.centre ? commune.centre.coordinates[0] : null,
+      longitude: commune.centre ? commune.centre.coordinates[1] : null,
     })
   }
 
