@@ -14,17 +14,14 @@ export const getGouvernancesCounts = () =>
       structures: number
     }[]
   >`
-      SELECT COUNT(membre_gouvernance.id)                                                               as membres,
-             COUNT(DISTINCT CASE WHEN gouvernances.v2_enregistree IS NOT NULL THEN gouvernances.id END) as gouvernances,
-             COUNT(membre_gouvernance.id)
-                                                                                                           FILTER (WHERE membre_gouvernance.region_code IS NOT NULL)                                           as regions, COUNT(membre_gouvernance.id)
-          FILTER (WHERE membre_gouvernance.departement_code IS NOT NULL)                                          as departements, COUNT(membre_gouvernance.id)
-          FILTER (WHERE membre_gouvernance.commune_code IS NOT NULL)                                          as communes, COUNT(membre_gouvernance.id)
-          FILTER (WHERE membre_gouvernance.epci_code IS NOT NULL)                                             as epcis, COUNT(membre_gouvernance.id)
-          FILTER (WHERE membre_gouvernance.siret IS NOT NULL)                              as structures
+      SELECT COUNT(membre_gouvernance.id)                                                               AS membres,
+             COUNT(DISTINCT CASE WHEN gouvernances.v2_enregistree IS NOT NULL THEN gouvernances.id END) AS gouvernances,
+             COUNT(DISTINCT membre_gouvernance.region_code)                                             AS regions,
+             COUNT(membre_gouvernance.id)                                                                  FILTER (WHERE membre_gouvernance.departement_code IS NOT NULL) AS departements, COUNT(membre_gouvernance.id) FILTER (WHERE membre_gouvernance.commune_code IS NOT NULL) AS communes, COUNT(membre_gouvernance.id) FILTER (WHERE membre_gouvernance.epci_code IS NOT NULL) AS epcis, COUNT(membre_gouvernance.id) FILTER (WHERE membre_gouvernance.siret IS NOT NULL) AS structures
       FROM membre_gouvernance
                RIGHT JOIN gouvernances ON gouvernances.id = membre_gouvernance.gouvernance_id AND
                                           gouvernances.v2_enregistree IS NOT NULL
+
   `.then((rows) => {
     if (rows.length !== 1) {
       throw new Error('Unexpected number of rows for gouvernances counts')
