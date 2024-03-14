@@ -288,6 +288,7 @@ export const getDemandesSubventionsForForm = ({
         select: {
           nom: true,
           code: true,
+          dotation202406: true,
         },
       },
       feuillesDeRoute: {

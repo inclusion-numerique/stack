@@ -17,23 +17,19 @@ import RedAsterisk from '@app/web/ui/RedAsterisk'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { limiteModicitaionDesDemandesDeSubvention } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceMetadata'
 import DemandeDeSubventionForm from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/DemandeDeSubventionForm'
-import {
-  getDemandesDeSubventionsForGouvernance,
-  getMontantDotationRestante,
-} from '@app/web/gouvernance/gouvernanceStatus'
 import { getDemandesDeSubventionDefaultValues } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getDemandesDeSubventionDefaultValues'
+import { getMontantDotationRestante } from '@app/web/gouvernance/gouvernanceStatus'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 export const generateMetadata = generateDepartementMetadata('Gouvernance')
 
 const Page = async ({
-  params: { codeDepartement, gouvernanceId, demandeDeSubventionId },
+  params: { codeDepartement, gouvernanceId },
 }: {
   params: {
     codeDepartement: string
     gouvernanceId: string
-    demandeDeSubventionId: string
   }
 }) => {
   const accessCheck = await checkAccessControl({
@@ -63,21 +59,7 @@ const Page = async ({
     notFound()
   }
 
-  // Check if demande de subvention belongs to this gouvernance.
-  const demandesDeSubventions =
-    getDemandesDeSubventionsForGouvernance(gouvernance)
-
-  // Get the one we want to edit
-  const demandeDeSubvention = demandesDeSubventions.find(
-    ({ id }) => id === demandeDeSubventionId,
-  )
-  if (!demandeDeSubvention) {
-    notFound()
-  }
-
-  const defaultValues =
-    getDemandesDeSubventionDefaultValues(demandeDeSubvention)
-
+  const defaultValues = getDemandesDeSubventionDefaultValues()
   const montantDotationRestante = getMontantDotationRestante(gouvernance)
 
   const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
@@ -86,7 +68,7 @@ const Page = async ({
     <>
       <div className="fr-container">
         <Breadcrumb
-          currentPageLabel={demandeDeSubvention.nomAction}
+          currentPageLabel="Ajouter"
           segments={[
             {
               label: "Page d'accueil",

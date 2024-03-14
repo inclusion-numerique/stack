@@ -44,8 +44,9 @@ export const modifierGouvernancePath = (scope: GouvernanceScope, id: string) =>
 export const gouvernanceDemandesDeSubventionPath = (
   scope: GouvernanceScope,
   gouvernanceId: string,
+  subPath?: string,
 ) =>
-  `${gouvernanceHomePath(scope)}/gouvernance/${gouvernanceId}/demandes-de-subvention`
+  `${gouvernanceHomePath(scope)}/gouvernance/${gouvernanceId}/demandes-de-subvention${subPath ?? ''}`
 
 export const modifierDemandeDeSubventionPath = (
   scope: GouvernanceScope,

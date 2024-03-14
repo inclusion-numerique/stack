@@ -231,12 +231,16 @@ model Epci {
 
 model Departement {
   // INSEE
-  code                                String                                        @id
-  nom                                 String
-  searchable                          String                                        @map("searchable")
-  codeRegion                          String?                                       @map("code_region")
-  region                              Region?                                       @relation(fields: [codeRegion], references: [code], onDelete: NoAction)
-  communes                            Commune[]
+  code       String    @id
+  nom        String
+  searchable String    @map("searchable")
+  codeRegion String?   @map("code_region")
+  region     Region?   @relation(fields: [codeRegion], references: [code], onDelete: NoAction)
+  communes   Commune[]
+
+  // Dotation accordée par l’ANCT pour les demandes de subventions jusqu’au 30/06/2024
+  dotation202406 Decimal @default(0.0) @map("dotation202406") @db.Decimal(10, 2)
+
   geometry                            Json
   // north east [[lat,long], southwest [lat,long]]
   bounds                              Json
