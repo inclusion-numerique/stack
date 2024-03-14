@@ -806,8 +806,8 @@ model DemandeDeSubvention {
   description String
 
   budgetGlobal         Decimal @map("budget_global") @db.Decimal(10, 2)
-  pieceJointeBudgetKey String? @unique @map("piece_jointe_budget_key")
-  pieceJointeBudget    Upload? @relation(name: "piece_jointe_budget_subvention", fields: [pieceJointeBudgetKey], references: [key])
+  pieceJointeBudgetKey String  @unique @map("piece_jointe_budget_key")
+  pieceJointeBudget    Upload  @relation(name: "piece_jointe_budget_subvention", fields: [pieceJointeBudgetKey], references: [key])
 
   subventionDemandee   Decimal  @map("subvention_demandee") @db.Decimal(10, 2)
   subventionEtp        Decimal? @map("subvention_etp") @db.Decimal(10, 2)

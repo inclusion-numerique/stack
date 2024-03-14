@@ -11,7 +11,7 @@ import {
   gouvernanceHomePath,
   modifierBesoinsIngenieriePath,
 } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
-import { canEditGouvernancePressentie } from '@app/web/security/securityRules'
+import { canEditGouvernance } from '@app/web/security/securityRules'
 import BackLink from '@app/web/components/BackLink'
 import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvernances/gouvernanceScopeTitle'
 import { checkAccessControl } from '@app/web/app/checkAccessControl'
@@ -32,7 +32,7 @@ const Page = async ({
     signinNextPath: `/gouvernances/departements/${codeDepartement}/gouvernance/${gouvernanceId}/besoins-ingenierie-financiere/priorisation`,
   })
   if (
-    !canEditGouvernancePressentie(accessCheck.user, {
+    !canEditGouvernance(accessCheck.user, {
       departementCode: codeDepartement,
     })
   ) {
@@ -49,7 +49,7 @@ const Page = async ({
   if (gouvernance.departement.code !== codeDepartement) {
     notFound()
   }
-  if (gouvernance.besoinsEnIngenierieFinanciere.priorisationEnregistree) {
+  if (gouvernance.besoinsEnIngenierieFinanciere?.priorisationEnregistree) {
     // Les besoins terminés ne sont plus éditables
     notFound()
   }

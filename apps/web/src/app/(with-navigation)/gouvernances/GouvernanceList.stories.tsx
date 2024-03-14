@@ -46,6 +46,8 @@ const gouvernancesPressenties: ListeGouvernance = [
     derniereModificationPar: jeanDupont,
     createur: jeanDupont,
     v2Enregistree: null,
+    noteDeContexteSubventions: null,
+    noteDeContexteSubventionsEnregistree: null,
     departement: {
       codeRegion: '84',
       code: '69',
@@ -54,6 +56,7 @@ const gouvernancesPressenties: ListeGouvernance = [
     organisationsRecruteusesCoordinateurs: [],
     noteDeContexte: '<p>Des phrases qui expliquent le contexte</p>',
     besoinsEnIngenierieFinanciere: null,
+    feuillesDeRoute: [],
     v1Perimetre: 'region',
     v1PorteurRegion: {
       nom: 'Auvergne-Rhône-Alpes',
@@ -70,6 +73,8 @@ const gouvernancesPressenties: ListeGouvernance = [
     createur: jeanDupont,
     derniereModificationPar: jeanneBiche,
     v2Enregistree: null,
+    noteDeContexteSubventions: null,
+    noteDeContexteSubventionsEnregistree: null,
     departement: {
       codeRegion: '84',
       code: '69',
@@ -78,6 +83,7 @@ const gouvernancesPressenties: ListeGouvernance = [
     organisationsRecruteusesCoordinateurs: [],
     noteDeContexte: '<p>Des phrases qui expliquent le contexte</p>',
     besoinsEnIngenierieFinanciere: null,
+    feuillesDeRoute: [],
     v1Perimetre: 'region',
     v1PorteurRegion: {
       nom: 'Auvergne-Rhône-Alpes',
@@ -97,6 +103,8 @@ const gouvernancesProposees: ListeGouvernance = [
     derniereModificationPar: jeanDupont,
     createur: jeanDupont,
     v2Enregistree: now,
+    noteDeContexteSubventions: null,
+    noteDeContexteSubventionsEnregistree: null,
     departement: {
       codeRegion: '84',
       code: '69',
@@ -105,6 +113,7 @@ const gouvernancesProposees: ListeGouvernance = [
     organisationsRecruteusesCoordinateurs: [],
     noteDeContexte: '<p>Des phrases qui expliquent le contexte</p>',
     besoinsEnIngenierieFinanciere: null,
+    feuillesDeRoute: [],
     v1Perimetre: 'region',
     v1PorteurRegion: {
       nom: 'Auvergne-Rhône-Alpes',
@@ -121,6 +130,8 @@ const gouvernancesProposees: ListeGouvernance = [
     createur: jeanDupont,
     derniereModificationPar: jeanneBiche,
     v2Enregistree: tomorrow,
+    noteDeContexteSubventions: null,
+    noteDeContexteSubventionsEnregistree: null,
     departement: {
       codeRegion: '84',
       code: '69',
@@ -136,6 +147,8 @@ const gouvernancesProposees: ListeGouvernance = [
       derniereModificationPar: jeanneBiche,
       selectionEnregistree: now,
     } as unknown as ListeGouvernanceItem['besoinsEnIngenierieFinanciere'],
+
+    feuillesDeRoute: [],
     v1Perimetre: 'region',
     v1PorteurRegion: {
       nom: 'Auvergne-Rhône-Alpes',

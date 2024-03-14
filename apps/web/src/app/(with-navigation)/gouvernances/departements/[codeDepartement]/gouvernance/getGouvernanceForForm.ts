@@ -65,6 +65,8 @@ export const gouvernanceListSelect = {
 
   v2Enregistree: true,
   noteDeContexte: true,
+  noteDeContexteSubventions: true,
+  noteDeContexteSubventionsEnregistree: true,
 
   organisationsRecruteusesCoordinateurs: {
     select: {
@@ -266,3 +268,46 @@ export type BesoinsIngenierieFinanciereForForm = Exclude<
   GouvernanceWithBesoinsIngenierieFinanciereForForm['besoinsEnIngenierieFinanciere'],
   null
 >
+
+export const getDemandesSubventionsForForm = ({
+  gouvernanceId,
+}: {
+  gouvernanceId: string
+}) =>
+  prismaClient.gouvernance.findUnique({
+    where: {
+      id: gouvernanceId,
+      supression: null,
+    },
+    select: {
+      id: true,
+      v2Enregistree: true,
+      noteDeContexteSubventions: true,
+      noteDeContexteSubventionsEnregistree: true,
+      departement: {
+        select: {
+          nom: true,
+          code: true,
+        },
+      },
+      feuillesDeRoute: {
+        select: {
+          id: true,
+          nom: true,
+          demandesDeSubvention: {
+            include: {
+              beneficiaires: true,
+            },
+          },
+        },
+      },
+    },
+  })
+
+export type GouvernanceWithDemandesSubventionsForForm = Exclude<
+  Awaited<ReturnType<typeof getDemandesSubventionsForForm>>,
+  null
+>
+
+export type DemandesSubventionsForForm =
+  GouvernanceWithDemandesSubventionsForForm['feuillesDeRoute'][number]['demandesDeSubvention'][number]

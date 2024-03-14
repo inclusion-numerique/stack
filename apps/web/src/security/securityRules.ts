@@ -1,19 +1,6 @@
 import { SessionUser } from '@app/web/auth/sessionUser'
 
-export const hasAccessToRegionDashboard = (
-  user: Pick<SessionUser, 'role' | 'roleScope'>,
-  regionCode: string,
-) => {
-  if (user.role === 'Administrator' || user.role === 'Demo') {
-    return true
-  }
-  if (user.role === 'PrefectureRegion') {
-    return user.roleScope === regionCode
-  }
-  return false
-}
-
-export const hasAccessToDashboard = (
+export const hasWriteAccessOnScope = (
   user: Pick<SessionUser, 'role' | 'roleScope'>,
   {
     departementCode,
@@ -53,9 +40,9 @@ export const canAddGouvernancePressentie = (
     departementCode: string
     regionCode?: string | null
   },
-) => hasAccessToDashboard(user, { departementCode, regionCode })
+) => hasWriteAccessOnScope(user, { departementCode, regionCode })
 
-export const canEditGouvernancePressentie = (
+export const canEditGouvernance = (
   user: Pick<SessionUser, 'role' | 'roleScope'> | null,
   {
     departementCode,
@@ -65,7 +52,7 @@ export const canEditGouvernancePressentie = (
 ) =>
   !!user &&
   user.role !== 'PrefectureRegion' &&
-  hasAccessToDashboard(user, { departementCode })
+  hasWriteAccessOnScope(user, { departementCode })
 
 export const hasAccessToNationalDashboard = (
   user: Pick<SessionUser, 'role'>,

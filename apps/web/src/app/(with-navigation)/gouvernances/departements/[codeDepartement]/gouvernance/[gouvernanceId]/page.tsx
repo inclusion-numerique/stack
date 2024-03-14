@@ -7,6 +7,8 @@ import { getBesoinsEnIngenierieFinanciereForForm } from '@app/web/app/(with-navi
 import GouvernanceDetails from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/GouvernanceDetails'
 import { gouvernanceHomePath } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
 import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvernances/gouvernanceScopeTitle'
+import GouvernancesHeader from '@app/web/app/(with-navigation)/gouvernances/GouvernancesHeader'
+import { getDepartementNameAndCode } from '@app/web/data/getDepartementNameAndCode'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -19,8 +21,16 @@ const Page = async ({
 }) => {
   const gouvernance = await getGouvernanceForForm(gouvernanceId)
   const besoins = await getBesoinsEnIngenierieFinanciereForForm(gouvernanceId)
+  const departement = await getDepartementNameAndCode(codeDepartement)
 
   const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
+
+  console.log('PAGE ELEMENTS', {
+    gouvernance,
+    besoins,
+    departement,
+    scopeTitle,
+  })
 
   if (!gouvernance) {
     notFound()
@@ -31,6 +41,7 @@ const Page = async ({
 
   return (
     <>
+      <GouvernancesHeader departement={departement} />
       <div className="fr-container">
         <Breadcrumb
           currentPageLabel="Détails"

@@ -11,7 +11,7 @@ import { getPerimetreEpciOptions } from '@app/web/app/(with-navigation)/gouverna
 import { getGouvernanceFormDefaultValues } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceFormDefaultValues'
 import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvernances/gouvernanceScopeTitle'
 import BackLink from '@app/web/components/BackLink'
-import { canEditGouvernancePressentie } from '@app/web/security/securityRules'
+import { canEditGouvernance } from '@app/web/security/securityRules'
 import { gouvernanceHomePath } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 
@@ -25,9 +25,7 @@ const Page = async ({
   params: { codeDepartement: string; gouvernanceId: string }
 }) => {
   const user = await getSessionUser()
-  if (
-    !canEditGouvernancePressentie(user, { departementCode: codeDepartement })
-  ) {
+  if (!canEditGouvernance(user, { departementCode: codeDepartement })) {
     notFound()
   }
 

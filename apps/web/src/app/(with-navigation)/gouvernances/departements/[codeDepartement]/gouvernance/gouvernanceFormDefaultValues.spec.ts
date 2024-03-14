@@ -5,6 +5,8 @@ describe('getGouvernanceFormDefaultValues', () => {
   it('transforms gouvernance to default values', () => {
     const gouvernanceForForm: GouvernanceForForm = {
       besoinsEnIngenierieFinanciere: null,
+      noteDeContexteSubventions: null,
+      noteDeContexteSubventionsEnregistree: null,
       comites: [
         {
           commentaire: '🗺️',

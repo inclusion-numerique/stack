@@ -1,5 +1,26 @@
 import z from 'zod'
 import { BesoinSubvention } from '@prisma/client'
+import { numberToString } from '@app/web/utils/formatNumber'
+import { stripHtmlTags } from '@app/web/utils/stripHtmlTags'
+
+export const noteDeContexteSubventionMinChars = 100
+export const NoteDeContexteSubventionsValidation = z.object({
+  gouvernanceId: z.string().uuid(),
+  noteDeContexteSubventions: z
+    .string({
+      required_error: 'Veuillez renseigner la note de contexte',
+    })
+    .refine(
+      (value) =>
+        !value ||
+        stripHtmlTags(value).length >= noteDeContexteSubventionMinChars,
+      `La note de contexte doit faire au moins ${numberToString(noteDeContexteSubventionMinChars)} caractères`,
+    ),
+})
+
+export type NoteDeContexteSubventionsData = z.infer<
+  typeof NoteDeContexteSubventionsValidation
+>
 
 const BeneficiaireSubventionValidation = z.object({
   id: z.string().uuid().nullish(),
@@ -9,15 +30,22 @@ const BeneficiaireSubventionValidation = z.object({
       required_error:
         'Veuillez renseigner le montant de la subvention demandée',
     })
-    .min(0)
-    .nullish(),
+    .min(0),
 })
 
 export type BeneficiaireSubventionData = z.infer<
   typeof BeneficiaireSubventionValidation
 >
 
-const DemandeDeSubventionValidation = z
+export const DeleteDemandeDeSubventionValidation = z.object({
+  id: z.string().uuid(),
+})
+
+export type DeleteDemandeDeSubventionData = z.infer<
+  typeof DeleteDemandeDeSubventionValidation
+>
+
+export const DemandeDeSubventionValidation = z
   .object({
     // This is the maximum amount of the dotation that can be used for subventionDemandee
     // Is given by system, not user input

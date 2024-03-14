@@ -13,12 +13,13 @@ export type RichTextFormFieldProps<T extends FieldValues> = {
   path: FieldPath<T>
   disabled?: boolean
   label?: ReactNode
-  hint?: string
+  hint?: ReactNode
   placeholder?: string
   valid?: string
   icon?: string
   info?: string | ((value: string) => string)
   asterisk?: boolean
+  labelClassName?: string
 }
 
 const RichTextFormField = <T extends FieldValues>({
@@ -34,6 +35,7 @@ const RichTextFormField = <T extends FieldValues>({
   icon,
   info,
   asterisk,
+  labelClassName,
 }: UiComponentProps & RichTextFormFieldProps<T>) => {
   const id = `input-form-field__${path}`
   return (
@@ -76,7 +78,10 @@ const RichTextFormField = <T extends FieldValues>({
               className,
             )}
           >
-            <label className="fr-label fr-mb-2v" htmlFor={id}>
+            <label
+              className={classNames('fr-label fr-mb-2v', labelClassName)}
+              htmlFor={id}
+            >
               {label} {asterisk && <RedAsterisk />}
               {hint && <span className="fr-hint-text">{hint}</span>}
             </label>

@@ -12,6 +12,8 @@ import { getBesoinsEnIngenierieFinanciereForForm } from '@app/web/app/(with-navi
 import NoGouvernancePublicView from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/NoGouvernancePublicView'
 import { checkGouvernanceScopeWriteAccess } from '@app/web/app/(with-navigation)/gouvernances/checkGouvernanceScopeWriteAccess'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
+import GouvernancesHeader from '@app/web/app/(with-navigation)/gouvernances/GouvernancesHeader'
+import { getDepartementNameAndCode } from '@app/web/data/getDepartementNameAndCode'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -27,6 +29,7 @@ const Page = async ({
     scope: { codeDepartement },
     user,
   })
+  const departement = await getDepartementNameAndCode(codeDepartement)
 
   const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
   const gouvernances = await getListeGouvernanceDepartement(codeDepartement)
@@ -42,6 +45,7 @@ const Page = async ({
     if (!gouvernanceId) {
       return (
         <>
+          <GouvernancesHeader departement={departement} />
           <div className="fr-container fr-container--narrow fr-pt-15v">
             <h1 className="fr-h3">Gouvernance · {scopeTitle}</h1>
           </div>
@@ -56,12 +60,16 @@ const Page = async ({
       notFound()
     }
     return (
-      <GouvernanceDetails
-        gouvernance={gouvernance}
-        besoins={besoins}
-        publicView
-        scope={{ codeDepartement }}
-      />
+      <>
+        <GouvernancesHeader departement={departement} />
+
+        <GouvernanceDetails
+          gouvernance={gouvernance}
+          besoins={besoins}
+          publicView
+          scope={{ codeDepartement }}
+        />
+      </>
     )
   }
 
@@ -69,18 +77,22 @@ const Page = async ({
     await getStatistiquesGouvernanceDepartement(codeDepartement)
 
   return (
-    <div className="fr-container fr-pb-20v">
-      <StatistiquesGouvernances
-        codeDepartement={codeDepartement}
-        statistiquesGouvernance={statistiquesGouvernance}
-        scopeTitle={scopeTitle}
-      />
-      <hr className="fr-separator-12v" />
-      <GouvernanceList
-        scope={{ codeDepartement }}
-        gouvernances={gouvernances}
-      />
-    </div>
+    <>
+      <GouvernancesHeader departement={departement} />
+
+      <div className="fr-container fr-pb-20v">
+        <StatistiquesGouvernances
+          codeDepartement={codeDepartement}
+          statistiquesGouvernance={statistiquesGouvernance}
+          scopeTitle={scopeTitle}
+        />
+        <hr className="fr-separator-12v" />
+        <GouvernanceList
+          scope={{ codeDepartement }}
+          gouvernances={gouvernances}
+        />
+      </div>
+    </>
   )
 }
 

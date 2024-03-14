@@ -1,18 +1,11 @@
 import React from 'react'
 import Accordion from '@codegouvfr/react-dsfr/Accordion'
-import Button from '@codegouvfr/react-dsfr/Button'
 import EmptyValue from '@app/ui/components/EmptyValue'
-import Notice from '@codegouvfr/react-dsfr/Notice'
-import { limiteModificationDesGouvernances } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceMetadata'
 import { ListeGouvernanceItem } from '@app/web/app/(with-navigation)/gouvernances/getListeGouvernances'
 import WhiteCard from '@app/web/ui/WhiteCard'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
 import styles from '@app/web/app/(with-navigation)/gouvernances/Gouvernances.module.css'
-import {
-  detailGouvernancePath,
-  imprimerGouvernancePath,
-} from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
 import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 import { nameOrEmail } from '@app/web/utils/nameOrEmail'
 import {
@@ -35,7 +28,6 @@ const GouvernanceCard = ({
   titleIndex?: string
 }) => {
   const {
-    id,
     creation,
     modification,
     createur,
@@ -44,7 +36,6 @@ const GouvernanceCard = ({
     noteDeContexte,
     departement,
     v2Enregistree,
-    besoinsEnIngenierieFinanciere,
   } = gouvernance
 
   const isGouvernanceFinale = !!v2Enregistree
@@ -56,8 +47,6 @@ const GouvernanceCard = ({
     derniereModificationPar,
   )}`
   const displayModificationMeta = modificationMeta !== creationMeta
-  const hasCompletedBesoins =
-    !!besoinsEnIngenierieFinanciere?.priorisationEnregistree
 
   // Prefix by departement info if viewing this card from a higher scope than departement
   const titlePrefix = scope.codeDepartement
