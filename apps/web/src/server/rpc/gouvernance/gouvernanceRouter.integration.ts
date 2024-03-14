@@ -301,6 +301,8 @@ describe('gouvernanceRouter', () => {
         ],
         modification: expectDate,
         noteDeContexte: 'Such context',
+        noteDeContexteSubventions: null,
+        noteDeContexteSubventionsEnregistree: null,
         organisationsRecruteusesCoordinateurs: [
           {
             id: expectUuid,
