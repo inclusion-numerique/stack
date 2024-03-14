@@ -1,146 +1,61 @@
 # Stack
 
-## Description
+<h2 id="à-propos">🪧 À propos</h2>
 
-Stack est une application [Next.js](https://nextjs.org/docs) développée par le [Pôle Inclusion numérique de l'ANCT](https://societenumerique.gouv.fr/fr/les-services-de-linclusion-numerique/), utilisant le [Système de Design de l'Etat](https://www.systeme-de-design.gouv.fr/) et le [template commun de l'ANCT](https://www.figma.com/file/C9Ump1yh3z4DPMxm2qk3IY/Templates_communs?type=design&node-id=4-2946&t=d7Fn19OfHLoEcXqg-0) qui ajoute des composants métiers au Système de Design de l'Etat.
+Bienvenue sur la stack ! Le commun développé par le [Pôle Inclusion numérique de l'ANCT](https://societenumerique.gouv.fr/fr/les-services-de-linclusion-numerique/). \
+Ce [monorepo](https://en.wikipedia.org/wiki/Monorepo) fournit l'ensemble des projets nécessaires au fonctionnement d'une plateforme web utilisant le [Système de Design de l'Etat](https://www.systeme-de-design.gouv.fr/) et le [template commun de l'ANCT](https://www.figma.com/file/C9Ump1yh3z4DPMxm2qk3IY/Templates_communs?type=design&node-id=4-2946&t=d7Fn19OfHLoEcXqg-0) qui ajoute des composants métiers au Système de Design de l'État. \
+L'objectif de ce projet est de permettre une mise en ligne facile, rapide et respectant les critères de qualité de l'Incubateur des Territoires (sécurité, qualité de code, design, accessibilité, protection des données, respect de la confidentialité...).
 
-L'objectif de ce projet est de permettre une mise en ligne facile, rapide et respectant les critères de qualité de l'Incubateur des Territoires (sécurité, qualité de code, design, protection des données, respect de la confidentialité...).
+## 📑 Table des matières
 
-Il contient les pages suivantes:
+- 🪧 [À propos](#à-propos)
+- ✨ [Fonctionnalités](#fonctionnalités)
+- 📦 [Contenu](#contenu)
+- 🤗 [Contribution](#contribution)
+- 📝 [Licence](#licence)
+
+<h2 id="fonctionnalités">✨ Fonctionnalités</h2>
 
 - Accueil
 - Connexion par lien magique
-- Connexion par les Single Sign On [Inclusion Connect](https://inclusion.beta.gouv.fr/nos-services/inclusion-connect/) et [Mon compte pro](https://moncomptepro.beta.gouv.fr/)
-- Page profil (🏗️ En cours)
-- Politique de confidentialité (🏗️ En cours)
-- Mentions légales (🏗️ En cours)
-- Conditions générales d'utilisation (🏗️ En cours)
-- Statistiques (🏗️ En cours)
+- Connexion avec Single Sign On
+  - [Inclusion Connect](https://inclusion.beta.gouv.fr/nos-services/inclusion-connect/)
+  - [Mon compte pro](https://moncomptepro.beta.gouv.fr/)
+- Page profil
+- Politique de confidentialité
+- Mentions légales
+- Conditions générales d'utilisation
+- Statistiques
 - Déclaration d'accessibilité
-- Page 404 / 500...
+- Page d'erreur : 404, 500, etc.
 
-## Table des matières
+<h2 id="contenu">📦 Contenu</h2>
 
-- [🪧 Description](#description)
-- [🏗️ Contenu technique (🏗️ En cours)](#construit-avec)
-- [📦 Prérequis (🏗️ En cours)](#prérequis)
-- [🚀 Installation (🏗️ En cours)](#installation)
-- [🛠️ Utilisation (🏗️ En cours)](#utilisation)
-- [🤝 Contribution (🏗️ En cours)](#contribution)
-- [📝 Licence](#licence)
+### Applications
 
-## Construit avec
+Les `Applications` contiennent le code source des éléments propres au projet
 
-### Langage & Framework
+- [cli](apps/cli) : Suite d'outils en ligne de commande qui servent à exécuter des scripts complexes nécessaires lors de processus automatisés tels que l'intégration et le déploiement automatisé.
+- [web](apps/web) : Source du projet web next.js qui permet de faire tourner la stack, front et back en utilisant des servers components.
 
-- TypeScript
-- Next.js
+### Packages
 
-### Tests
+Les `Packages` contiennent des outils de support et des communs dont l'origine provient de la [stack](https://github.com/inclusion-numerique/stack).
 
-- Jest pour les tests unitaires
-- Cypress pour les tests de composants et e2e
-- ESlint pour l'analyse statique
-- Prettier pour harmoniser la rédaction du code
-- Storybook pour documenter et visualiser les interfaces
-- Chromatic pour valider les interfaces
+- [cdk](packages/cdk) : [Définition de l'infrastructure](packages/cdk/Readme.md) avec Terraform rédigé avec la version TypeScript du [CDKTF](https://developer.hashicorp.com/terraform/cdktf) pour déployer l'application sur [Scaleway](https://www.scaleway.com).
+- [config](packages/config) : [Configuration des services](packages/config/Readme.md) utilisés lors de la génération, le déploiement et l'exécution via des variables d'environnement.
+- [e2e](packages/e2e) : Tests de bout en bout opérés par [Cypress](https://www.cypress.io/).
+- [emails](packages/emails) : Templates pour les emails utilisés par l'application.
+- [fixtures](packages/fixtures) : Ensemble de données à insérer dans la base de données pour avoir un ensemble cohérent plutôt qu'un projet vide.
+- [lint](packages/lint) : Configuration des règles de syntaxes à respecter dans le projet.
+- [storybook](packages/storybook) : Configuration de storybook, utilisé pour administrer une bibliothèque des composants disponibles dans l'application.
+- [test](packages/test) : Configuration de jest, utilisé pour les tests unitaires et les tests d'intégration.
+- [ui](packages/ui) : Composants et utilitaires génériques provenant être réutilisés et surchargés dans d'autres applications.
 
-## Statistiques
+<h2 id="contribution">🤗 Contribution</h2>
 
-- Sentry pour les rapports d'erreur
-- Matomo pour les statistiques d'utilisation
+Pour contribuer, nous vous invitons à consulter le [guide de contribution](./CONTRIBUTING.md). Ce guide vous fournira des instructions détaillées sur la manière de configurer le projet localement, ainsi que sur la manière de soumettre des contributions de manière efficace.
 
-## Prérequis
+<h2 id="licence">📝 Licence</h2>
 
-Le projet nécessite les outils suivants pour fonctionner :
-- Node 18
-- pnpm 6
-- postgresql ou Docker
-- Un compte Scaleway pour pouvoir déployer l'application
-
-### Mon compte pro
-
-=> Faire un demande de token OpenID pour votre service spécifiquement (procédure sur le site https://moncomptepro.beta.gouv.fr/partenaire)
-
-## Installation
-
-Pour commencer à utiliser le projet, il faut cloner le dépôt et installer les dépendances :
-
-```bash
-git clone git@github.com:inclusion-numerique/stack.git
-pnpm install
-cp .env.dist .env
-pnpm -F web dev 
-```
-
-## Infrastructure
-
-Le package `cdk` contient les dépendances et le code nécéssaire pour déployer l'application sur Scaleway.️
-
-[Voir la documentation du package cdk pour plus de détails.](./packages/cdk/Readme.md)
-
-Il est possible de déployer l'application sur un autre cloud, ou sur un serveur en local, en modifiant le code du package `cdk` ou en créant votre propre pipeline de déploiement pour votre infrastructure.
-
-## Utilisation
-
-
-### Développement de votre projet
-
-Votre projet part du clone de ce dépôt, et vous pouvez le modifier à votre guise.
-
-Si vous développez une nouvelle fonctionnalité que vous pensez utile à d'autres, nous vous encourageons à la partager en créant une pull request sur ce dépôt.
-
-### Récupérer les mises à jour de ce dépôt
-
-Stack est un dépôt de code source, et non un template, il est ammené à évoluer régulièrement.
-
-Certaines mises à jours / nouveaux composants peuvent vous intéresser. Certains changements peuvent au contraire être en conflit avec les votre, ou ne pas vous convenir. Cela sera géré dans un flow de merge classique.
-
-Pour récupérer les mises à jour de ce dépôt, il faut ajouter le dépôt comme remote de votre projet :
-
-```bash
-git remote add stack git@github.com:inclusion-numerique/stack.git 
-```
-
-Cela vous permettra de voir facilement les changements entre votre projet et le dépôt stack.
-
-Nous recommandons ensuite de créer dans votre projet une branche `stack` qui suivra la branche `main` de ce dépôt, et de la rebaser régulièrement sur la branche `main` de ce dépôt.
-
-```bash
-git checkout -b stack
-git pull stack main
-git rebase main
-```
-
-Ensuite créez une PR sur votre branche principale (dev par exemple) pour intégrer les changements de la branche `stack` dans votre projet.
-
-Cela vous permettra de faire une code review de l'integration des changements de ce dépôt dans votre projet pour valider les changements que vous souhaitez intégrer ou non, et de résoudre les conflits.
-
-Une fois cette PR mergée (utilisez bien un merge classique pour ne pas avoir à résoudre les conflits à nouveau). Vous avez intégré les changements de ce dépôt dans votre projet.
-
-
-## Contribution
-
-### Nommage des branches
-
-- Avant de créer une nouvelle branche de travail, récupérer les dernières modifications disponibles sur la branche main.
-- La nouvelle branche de travail doit ête préfixée par `build/`, `chore/`, `ci/`, `docs/`, `feat/`, `fix/`, `perf/`, `refactor/`, `revert/`, `style/` ou `test/` en fonction du type de modification prévu, pour plus de détails à ce sujet, consulter [Conventional Commits cheat sheet](https://kapeli.com/cheat_sheets/Conventional_Commits.docset/Contents/Resources/Documents/index)
-
-### Commits
-
-#### Convention
-
-Les commits de ce repository doivent respecter la syntaxe décrite par [la spécification des Commits Conventionnels](https://www.conventionalcommits.org/fr/v1.0.0/#sp%c3%a9cification)
-
-#### Signature
-
-La branche main, ainsi que l'ensemble des branches de travail avec un préfixe valide requièrent que les commits soient signés :
-
-- La documentation de GitHub indique comment configurer la signature des commits
-- Les utilisateurs de keybase peuvent signer leurs commits avec leur clé GPG sur Keybase
-
-#### Déployer
-
-## Licence
-
-Voir le fichier [LICENSE](https://github.com/inclusion-numerique/stack/blob/main/LICENSE) du dépôt.
+Voir le fichier [LICENSE](./LICENSE) du dépôt.
