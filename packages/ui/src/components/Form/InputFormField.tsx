@@ -21,6 +21,7 @@ type CommonProps<T extends FieldValues> = {
   icon?: string
   info?: ReactNode | ((value?: string | null) => ReactNode)
   asterisk?: boolean
+  inputClassName?: string
 }
 
 type InputProps = {
@@ -54,6 +55,7 @@ const InputFormField = <T extends FieldValues>({
   icon,
   info,
   asterisk,
+  inputClassName,
   ...rest
 }: UiComponentProps & InputFormFieldProps<T>) => {
   const id = `input-form-field__${path}`
@@ -89,7 +91,7 @@ const InputFormField = <T extends FieldValues>({
           type === 'textarea' ? (
             <textarea
               data-testid={dataTestId}
-              className="fr-input"
+              className={classNames('fr-input', inputClassName)}
               aria-describedby={ariaDescribedBy}
               disabled={disabled}
               id={id}
@@ -103,7 +105,7 @@ const InputFormField = <T extends FieldValues>({
           ) : (
             <input
               data-testid={dataTestId}
-              className="fr-input"
+              className={classNames('fr-input', inputClassName)}
               aria-describedby={ariaDescribedBy}
               disabled={disabled}
               type={type}

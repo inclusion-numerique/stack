@@ -1,0 +1,12 @@
+.moneyInput {
+    :global(.fr-input-wrap) {
+        max-width: 360px;
+    }
+    margin-bottom: 32px !important;
+
+    .small {
+        :global(.fr-input-wrap) {
+            max-width: 200px;
+        }
+    }
+}

@@ -21,10 +21,11 @@ export type FileFormFieldProps<T extends FieldValues> = {
   placeholder?: string
   accept?: string
   className?: string
-  valid?: string
   info?: string | ((value: PathValue<T, Path<T>>) => string)
   'data-testid'?: string
   asterisk?: boolean
+  // Can be used for manual user error feedback
+  error?: string
 } & Omit<
   HTMLProps<HTMLInputElement>,
   'onChange' | 'type' | 'onBlur' | 'value' | 'ref' | 'id' | 'aria-describedby'
@@ -39,9 +40,9 @@ const FileFormField = <T extends FieldValues>({
   disabled,
   accept,
   className,
-  valid,
   info,
   asterisk,
+  error: errorProperty,
   'data-testid': dataTestId,
 }: FileFormFieldProps<T>) => {
   const id = `file-form-field__${path}`
@@ -52,8 +53,9 @@ const FileFormField = <T extends FieldValues>({
       name={path}
       render={({
         field: { onChange, onBlur, value, name, ref },
-        fieldState: { invalid, isTouched, error },
+        fieldState: { error: fieldError },
       }) => {
+        const error = errorProperty ?? fieldError?.message
         const inputValue =
           (value as { filename: string } | undefined)?.filename ?? ''
         return (
@@ -63,7 +65,6 @@ const FileFormField = <T extends FieldValues>({
               {
                 'fr-input-group--error': error,
                 'fr-input-group--disabled': disabled,
-                'fr-input-group--valid': isTouched && !invalid,
               },
               className,
             )}
@@ -112,15 +113,7 @@ const FileFormField = <T extends FieldValues>({
                 id={`${id}__error`}
                 className={classNames('fr-error-text', { 'fr-mt-1v': !!info })}
               >
-                {error.message}
-              </p>
-            )}
-            {valid && isTouched && !invalid && (
-              <p
-                id={`${id}__valid`}
-                className={classNames('fr-valid-text', { 'fr-mt-1v': !!info })}
-              >
-                {valid}
+                {error}
               </p>
             )}
           </div>

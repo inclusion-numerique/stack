@@ -3,6 +3,16 @@ import { BesoinSubvention } from '@prisma/client'
 import { numberToString } from '@app/web/utils/formatNumber'
 import { stripHtmlTags } from '@app/web/utils/stripHtmlTags'
 
+export const pieceJointeBudgetMaxSize = 40 * 1000 * 1000
+export const pieceJointeBudgetAllowedMimeTypes = [
+  'image/jpeg',
+  'image/png',
+  'application/pdf',
+]
+
+export const pieceJointeBudgetAllowedExtensions =
+  pieceJointeBudgetAllowedMimeTypes.map((mimeType) => mimeType.split('/')[1])
+
 export const noteDeContexteSubventionMinChars = 100
 export const NoteDeContexteSubventionsValidation = z.object({
   gouvernanceId: z.string().uuid(),
@@ -25,12 +35,12 @@ export type NoteDeContexteSubventionsData = z.infer<
 const BeneficiaireSubventionValidation = z.object({
   id: z.string().uuid().nullish(),
   membreGouvernanceId: z.string().uuid(),
+  nom: z.string(),
   subvention: z
     .number({
-      required_error:
-        'Veuillez renseigner le montant de la subvention demandée',
+      required_error: 'Veuillez renseigner le montant alloué',
     })
-    .min(0),
+    .gt(0, 'Le montant doit être supérieur à 0'),
 })
 
 export type BeneficiaireSubventionData = z.infer<
@@ -45,6 +55,11 @@ export type DeleteDemandeDeSubventionData = z.infer<
   typeof DeleteDemandeDeSubventionValidation
 >
 
+export const contexteDemandeSubventionMaxChars = 3000
+
+const besoinsErrorMessage = 'Veuillez sélectionner au moins un besoin'
+const beneficiairesErrorMessage = 'Veuillez renseigner au moins un bénéficiaire'
+
 export const DemandeDeSubventionValidation = z
   .object({
     // This is the maximum amount of the dotation that can be used for subventionDemandee
@@ -54,10 +69,11 @@ export const DemandeDeSubventionValidation = z
     besoins: z
       .array(
         z.nativeEnum(BesoinSubvention, {
-          required_error: 'Veuillez renseigner un besoin',
+          required_error: besoinsErrorMessage,
         }),
+        { required_error: besoinsErrorMessage },
       )
-      .min(1, 'Veuillez sélectionner au moins un besoin'),
+      .min(1, besoinsErrorMessage),
     feuilleDeRouteId: z
       .string({
         required_error: 'Veuillez renseigner la feuille de route concernée',
@@ -75,33 +91,43 @@ export const DemandeDeSubventionValidation = z
       .number({
         required_error: 'Veuillez renseigner le budget global',
       })
-      .min(0, 'Le budget global doit être supérieur à 0'),
+      .gt(0, 'Le budget global doit être supérieur à 0'),
+    // Only used in client for upload operation
+    pieceJointeBudgetFile: z.any(),
     pieceJointeBudgetKey: z.string({
       required_error: 'Veuillez joindre le budget prévisionnel',
     }),
     subventionDemandee: z
       .number({
-        required_error:
-          'Veuillez renseigner le montant de la subvention demandée',
+        required_error: 'Veuillez renseigner le montant de la subvention',
       })
-      .min(0, 'La subvention demandée doit être supérieure ou égale à 0'),
+      .gt(0, 'La subvention demandée doit être supérieure ou égale à 0'),
+    subventionEtpChecked: z.boolean().default(false),
     subventionEtp: z
       .number({
-        required_error:
-          'Veuillez renseigner le montant de la subvention demandée pour les ETP',
+        required_error: 'Veuillez renseigner le montant pour les ETP',
       })
-      .min(0, 'Le montant doit être supérieur ou égal à 0')
+      .gt(0, 'Le montant doit être supérieur ou égal à 0')
       .nullish(),
+    subventionPrestationChecked: z.boolean().default(false),
     subventionPrestation: z
       .number({
-        required_error:
-          'Veuillez renseigner le montant de la subvention demandée pour les prestations',
+        required_error: 'Veuillez renseigner le montant pour les prestations',
       })
-      .min(0, 'Le montant doit être supérieur ou égal à 0')
+      .gt(0, 'Le montant doit être supérieur ou égal à 0')
       .nullish(),
     beneficiaires: z
-      .array(BeneficiaireSubventionValidation)
-      .min(1, 'Veuillez sélectionner au moins un bénéficiaire'),
+      .array(BeneficiaireSubventionValidation, {
+        required_error: beneficiairesErrorMessage,
+      })
+      .min(1, beneficiairesErrorMessage),
+  })
+  // contexte must be less than contexteDemandeSubventionMaxChars characters
+  .refine((data) => data.contexte.length <= contexteDemandeSubventionMaxChars, {
+    message: `Le contexte doit faire moins de ${numberToString(
+      contexteDemandeSubventionMaxChars,
+    )} caractères`,
+    path: ['contexte'],
   })
   // subventionDemandee should be lower than budgetGlobal
   .refine((data) => data.subventionDemandee <= data.budgetGlobal, {
@@ -116,7 +142,7 @@ export const DemandeDeSubventionValidation = z
       (data.subventionEtp ?? 0) + (data.subventionPrestation ?? 0),
     {
       message:
-        'La somme de la subvention demandée pour les ETP et la prestation doit être égale à la subvention demandée',
+        'La somme de la subvention demandée en ressource humaine et prestation de service doit être égale à la subvention demandée',
       path: ['subventionDemandee'],
     },
   )

@@ -6,7 +6,11 @@ export const getDemandesDeSubventionDefaultValues = (
   demandeDeSubvention?: DemandesSubventionsForForm,
 ): DefaultValues<DemandeDeSubventionData> => {
   if (!demandeDeSubvention) {
-    return { id: undefined }
+    return {
+      id: undefined,
+      subventionEtpChecked: false,
+      subventionPrestationChecked: false,
+    }
   }
 
   const {
@@ -20,6 +24,8 @@ export const getDemandesDeSubventionDefaultValues = (
 
   return {
     ...rest,
+    subventionEtpChecked: !!subventionEtp?.toNumber(),
+    subventionPrestationChecked: !!subventionPrestation?.toNumber(),
     budgetGlobal: budgetGlobal?.toNumber(),
     subventionDemandee: subventionDemandee?.toNumber(),
     subventionEtp: subventionEtp?.toNumber(),
