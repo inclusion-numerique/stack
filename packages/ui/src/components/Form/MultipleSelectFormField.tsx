@@ -1,19 +1,10 @@
 import React, { ChangeEventHandler, MouseEventHandler, ReactNode } from 'react'
 import { Control, Controller, FieldValues } from 'react-hook-form'
-import { FieldPath } from 'react-hook-form/dist/types/path'
+import type { FieldPath } from 'react-hook-form/dist/types/path'
+import classNames from 'classnames'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
-import { SelectOption } from './utils/options'
-
-const OptionsList = ({ options }: { options: SelectOption[] }) => (
-  <>
-    {options.map(({ name, value }) => (
-      <option key={value} value={value}>
-        {name}
-      </option>
-    ))}
-    )
-  </>
-)
+import SelectOptionsList from '@app/ui/components/Form/SelectOptionsList'
+import type { SelectInputOption, SelectOption } from './utils/options'
 
 const OptionBadge = ({
   option,
@@ -48,8 +39,9 @@ export type MultipleSelectFormFieldProps<T extends FieldValues> = {
   defaultOptionLabel?: string
   hint?: string
   badgeSize?: 'sm' | 'md'
-  options: SelectOption[]
+  options: SelectInputOption[]
   limit?: number
+  className?: string
 }
 
 const MultipleSelectFormField = <T extends FieldValues>({
@@ -64,17 +56,21 @@ const MultipleSelectFormField = <T extends FieldValues>({
   badgeSize,
   options,
   limit,
+  className,
 }: MultipleSelectFormFieldProps<T>) => {
   const id = `select-tags-form-field__${path}`
 
-  // TODO Aria labeled by from id
+  const flattenedOptions = options.flatMap((option) =>
+    'options' in option ? option.options : [option],
+  )
+
   return (
     <Controller
       control={control}
       name={path}
       render={({
         field: { onChange, onBlur, value, name, ref },
-        fieldState: { invalid, isTouched, error },
+        fieldState: { error },
       }) => {
         // We will remove already selected options from the select options
         const valuesSet = new Set<string>(value ?? [])
@@ -87,8 +83,8 @@ const MultipleSelectFormField = <T extends FieldValues>({
           )
         }
 
-        const selectedOptions = options.filter((option) =>
-          (value as string[])?.includes(option.value),
+        const selectedOptions = flattenedOptions.filter((option) =>
+          valuesSet.has(option.value),
         )
 
         // Remove value on badge click
@@ -100,13 +96,33 @@ const MultipleSelectFormField = <T extends FieldValues>({
           )
         }
 
+        const optionsWithDisabledSelectedValues = options.map((option) => {
+          if ('options' in option) {
+            return {
+              ...option,
+              options: option.options.map((subOption) => ({
+                ...subOption,
+                disabled: valuesSet.has(subOption.value),
+              })),
+            }
+          }
+
+          return {
+            ...option,
+            disabled: valuesSet.has(option.value),
+          }
+        })
+
         return (
           <div
-            className={`fr-select-group ${
-              error ? 'fr-select-group--error' : ''
-            } ${disabled ? 'fr-select-group--disabled' : ''} ${
-              isTouched && !invalid ? 'fr-select-group--valid' : ''
-            }`}
+            className={classNames(
+              'fr-select-group',
+              {
+                'fr-select-group--disabled': disabled,
+                'fr-select-group--error': error,
+              },
+              className,
+            )}
           >
             <label className="fr-label" htmlFor={id}>
               {label} {asterisk && <RedAsterisk />}
@@ -126,9 +142,7 @@ const MultipleSelectFormField = <T extends FieldValues>({
               {defaultOption ? (
                 <option value="">{defaultOptionLabel}</option>
               ) : null}
-              <OptionsList
-                options={options.filter(({ value: v }) => !valuesSet.has(v))}
-              />
+              <SelectOptionsList options={optionsWithDisabledSelectedValues} />
             </select>
             <div className="fr-mt-4v">
               {selectedOptions.map((option) => (
