@@ -118,7 +118,6 @@ const Page = async ({
             { codeDepartement },
             gouvernance.id,
           )}
-          label={`Retour à mes actions & demandes de subventions · ${scopeTitle}`}
         />
 
         <h1 className="fr-text-title--blue-france fr-mt-6v fr-mb-2v">

@@ -8,6 +8,9 @@ import React from 'react'
 import { createToast } from '@app/ui/toast/createToast'
 import { DefaultValues } from 'react-hook-form/dist/types/form'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
+import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
+import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
+import MultipleSelectFormField from '@app/ui/components/Form/MultipleSelectFormField'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
@@ -17,6 +20,7 @@ import {
   noteDeContexteSubventionMinChars,
 } from '@app/web/gouvernance/DemandeDeSubvention'
 import { stripHtmlTags } from '@app/web/utils/stripHtmlTags'
+import { besoinSubventionOptions } from '@app/web/gouvernance/besoinSubvention'
 
 export const noteDeContexteSubventionInfoText = (title?: string | null) =>
   `${title ? stripHtmlTags(title).length : 0} caractères sur un minimum de ${noteDeContexteSubventionMinChars} `
@@ -64,7 +68,27 @@ const DemandeDeSubventionForm = ({
 
   return (
     <form id="signup-with-email" onSubmit={form.handleSubmit(onSubmit)}>
-      <div className={cardClassName}>TODO</div>
+      {/* Besoins */}
+      <div className={cardClassName}>
+        <h2 className="fr-h5 fr-mb-2v">Besoins liés à l’action</h2>
+        <p className="fr-text-mention--grey fr-mb-0">
+          Indiquez à quel besoins se rapporte l’action pour laquelle vous
+          demandez une subvention. Si vos besoins ont changé depuis leur
+          première expression dans le formulaire de janvier 2024 vous pouvez
+          tout à fait sélectionner une autre catégorie de besoin.
+        </p>
+        <hr className="fr-separator-8v" />
+        <MultipleSelectFormField
+          className="fr-mb-0"
+          asterisk
+          label="Sélectionner les besoins correspondant à cette action"
+          control={form.control}
+          path="besoins"
+          defaultOption
+          defaultOptionLabel=""
+          options={besoinSubventionOptions}
+        />
+      </div>
 
       {error ? (
         <div className="fr-fieldset__element">

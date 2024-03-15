@@ -778,7 +778,17 @@ model Gouvernance {
 }
 
 enum BesoinSubvention {
-  FaireUnDiagnosticTerritorial @map("faire_un_diagnostic_territorial")
+  EtablirUnDiagnosticTerritorial           @map("etablir_un_diagnostic_territorial")
+  CoConstruireLaFeuilleDeRoute             @map("co_construire_la_feuille_de_route")
+  RedigerLaFeuilleDeRoute                  @map("rediger_la_feuille_de_route")
+  AppuiJuridique                           @map("appui_juridique")
+  StructurerUnFonds                        @map("structurer_un_fonds")
+  MonterDossiersDeSubvention               @map("monter_dossiers_de_subvention")
+  AnimerLaGouvernance                      @map("animer_la_gouvernance")
+  StructurerUneFiliereDeReconditionnement  @map("structurer_une_filiere_de_reconditionnement")
+  CollecterDesDonneesTerritoriales         @map("collecter_des_donnees_territoriales")
+  SensibiliserLesActeursAuxOutilsExistants @map("sensibiliser_les_acteurs_aux_outils_existants")
+  AppuyerLaCertificationQualiopi           @map("appuyer_la_certification_qualiopi")
 
   @@map("besoin_subvention")
 }
