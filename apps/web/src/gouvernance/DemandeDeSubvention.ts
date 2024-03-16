@@ -47,12 +47,12 @@ export type BeneficiaireSubventionData = z.infer<
   typeof BeneficiaireSubventionValidation
 >
 
-export const DeleteDemandeDeSubventionValidation = z.object({
+export const DemandeDeSubventionActionValidation = z.object({
   id: z.string().uuid(),
 })
 
-export type DeleteDemandeDeSubventionData = z.infer<
-  typeof DeleteDemandeDeSubventionValidation
+export type DemandeDeSubventionActionData = z.infer<
+  typeof DemandeDeSubventionActionValidation
 >
 
 export const contexteDemandeSubventionMaxChars = 3000

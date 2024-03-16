@@ -3,13 +3,78 @@ import type { Prisma } from '@prisma/client'
 import sanitizeHtml from 'sanitize-html'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { prismaClient } from '@app/web/prismaClient'
-import { notFoundError } from '@app/web/server/rpc/trpcErrors'
+import { forbiddenError, notFoundError } from '@app/web/server/rpc/trpcErrors'
 import { checkSecurityForGouvernanceMutation } from '@app/web/server/rpc/gouvernance/gouvernanceSecurity'
 import {
-  DeleteDemandeDeSubventionValidation,
+  DemandeDeSubventionActionValidation,
   DemandeDeSubventionValidation,
   NoteDeContexteSubventionsValidation,
 } from '@app/web/gouvernance/DemandeDeSubvention'
+import { SessionUser } from '@app/web/auth/sessionUser'
+
+const demandeDeSubventionSecurityCheck = async ({
+  demandeDeSubventionId,
+  user,
+}: {
+  demandeDeSubventionId: string
+  user: SessionUser
+}) => {
+  const gouvernance = await prismaClient.gouvernance.findFirst({
+    where: {
+      feuillesDeRoute: {
+        some: {
+          demandesDeSubvention: {
+            some: {
+              id: demandeDeSubventionId,
+            },
+          },
+        },
+      },
+    },
+    select: {
+      id: true,
+      departementCode: true,
+      feuillesDeRoute: {
+        where: {
+          demandesDeSubvention: {
+            some: {
+              id: demandeDeSubventionId,
+            },
+          },
+        },
+        select: {
+          id: true,
+          demandesDeSubvention: {
+            select: {
+              id: true,
+              valideeEtEnvoyee: true,
+            },
+            where: {
+              id: demandeDeSubventionId,
+            },
+          },
+        },
+      },
+    },
+  })
+
+  const demandeDeSubvention =
+    gouvernance?.feuillesDeRoute[0]?.demandesDeSubvention[0]
+
+  if (!demandeDeSubvention) {
+    throw notFoundError()
+  }
+  if (demandeDeSubvention.valideeEtEnvoyee && user.role !== 'Administrator') {
+    throw forbiddenError()
+  }
+
+  await checkSecurityForGouvernanceMutation(user, gouvernance.departementCode)
+
+  return {
+    gouvernance,
+    demandeDeSubvention,
+  }
+}
 
 export const demandesDeSubventionRouter = router({
   updateNoteDeContexteSubventions: protectedProcedure
@@ -87,10 +152,15 @@ export const demandesDeSubventionRouter = router({
           throw notFoundError()
         }
 
-        await checkSecurityForGouvernanceMutation(
-          user,
-          gouvernance.departementCode,
-        )
+        await (inputId
+          ? demandeDeSubventionSecurityCheck({
+              demandeDeSubventionId: inputId,
+              user,
+            })
+          : checkSecurityForGouvernanceMutation(
+              user,
+              gouvernance.departementCode,
+            ))
 
         const id = inputId ?? v4()
 
@@ -152,38 +222,77 @@ export const demandesDeSubventionRouter = router({
     ),
 
   delete: protectedProcedure
-    .input(DeleteDemandeDeSubventionValidation)
+    .input(DemandeDeSubventionActionValidation)
     .mutation(async ({ input: { id }, ctx: { user } }) => {
-      const gouvernance = await prismaClient.gouvernance.findFirst({
-        where: {
-          feuillesDeRoute: {
-            some: {
-              demandesDeSubvention: {
-                some: {
-                  id,
-                },
-              },
-            },
-          },
-        },
-        select: {
-          id: true,
-          departementCode: true,
-        },
-      })
-
-      if (!gouvernance) {
-        throw notFoundError()
-      }
-
-      await checkSecurityForGouvernanceMutation(
+      await demandeDeSubventionSecurityCheck({
+        demandeDeSubventionId: id,
         user,
-        gouvernance.departementCode,
-      )
+      })
 
       await prismaClient.demandeDeSubvention.delete({
         where: {
           id,
+        },
+      })
+
+      return { id }
+    }),
+  validerEtEnvoyer: protectedProcedure
+    .input(DemandeDeSubventionActionValidation)
+    .mutation(async ({ input: { id }, ctx: { user } }) => {
+      await demandeDeSubventionSecurityCheck({
+        demandeDeSubventionId: id,
+        user,
+      })
+
+      await prismaClient.demandeDeSubvention.update({
+        where: {
+          id,
+        },
+        data: {
+          valideeEtEnvoyee: new Date(),
+          derniereModificationParId: user.id,
+          modification: new Date(),
+        },
+      })
+
+      return { id }
+    }),
+  accepter: protectedProcedure
+    .input(DemandeDeSubventionActionValidation)
+    .mutation(async ({ input: { id }, ctx: { user } }) => {
+      await demandeDeSubventionSecurityCheck({
+        demandeDeSubventionId: id,
+        user,
+      })
+
+      await prismaClient.demandeDeSubvention.update({
+        where: {
+          id,
+        },
+        data: {
+          acceptee: new Date(),
+        },
+      })
+
+      return { id }
+    }),
+  demanderAModifier: protectedProcedure
+    .input(DemandeDeSubventionActionValidation)
+    .mutation(async ({ input: { id }, ctx: { user } }) => {
+      await demandeDeSubventionSecurityCheck({
+        demandeDeSubventionId: id,
+        user,
+      })
+
+      await prismaClient.demandeDeSubvention.update({
+        where: {
+          id,
+        },
+        data: {
+          acceptee: null,
+          valideeEtEnvoyee: null,
+          demandeDeModification: new Date(),
         },
       })
 

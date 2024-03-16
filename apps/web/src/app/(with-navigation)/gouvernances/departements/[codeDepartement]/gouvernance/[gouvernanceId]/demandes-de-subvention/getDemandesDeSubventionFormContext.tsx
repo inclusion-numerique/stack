@@ -17,6 +17,7 @@ import {
 import { getDemandesDeSubventionDefaultValues } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getDemandesDeSubventionDefaultValues'
 import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvernances/gouvernanceScopeTitle'
 import { prismaClient } from '@app/web/prismaClient'
+import { getMembreGouvernanceStringName } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getMembreGouvernanceStringName'
 
 export const getDemandesDeSubventionFormContext = async ({
   demandeDeSubventionId,
@@ -148,17 +149,10 @@ export const getDemandesDeSubventionFormContext = async ({
     })
     .then((membresGouvernance) =>
       membresGouvernance.map(
-        ({ id, region, departement, epci, commune, nomStructure }) =>
+        (membre) =>
           ({
-            value: id,
-            name:
-              region?.nom ??
-              departement?.nom ??
-              epci?.nom ??
-              commune?.nom ??
-              nomStructure ??
-              siret ??
-              id,
+            value: membre.id,
+            name: getMembreGouvernanceStringName(membre),
           }) satisfies SelectOption,
       ),
     )

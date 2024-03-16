@@ -296,8 +296,50 @@ export const getDemandesSubventionsForForm = ({
           id: true,
           nom: true,
           demandesDeSubvention: {
-            include: {
-              beneficiaires: true,
+            select: {
+              id: true,
+              besoins: true,
+              creation: true,
+              modification: true,
+              createur: {
+                select: {
+                  id: true,
+                  email: true,
+                  name: true,
+                },
+              },
+              derniereModificationPar: {
+                select: {
+                  id: true,
+                  email: true,
+                  name: true,
+                },
+              },
+              valideeEtEnvoyee: true,
+              demandeDeModification: true,
+              rejetee: true,
+              acceptee: true,
+              feuilleDeRoute: {
+                select: {
+                  id: true,
+                  nom: true,
+                },
+              },
+              nomAction: true,
+              contexte: true,
+              description: true,
+              subventionDemandee: true,
+              subventionEtp: true,
+              subventionPrestation: true,
+              budgetGlobal: true,
+              pieceJointeBudgetKey: true,
+              beneficiaires: {
+                select: {
+                  id: true,
+                  subvention: true,
+                  membreGouvernance: membreSelect,
+                },
+              },
             },
           },
         },
@@ -310,5 +352,5 @@ export type GouvernanceWithDemandesSubventionsForForm = Exclude<
   null
 >
 
-export type DemandesSubventionsForForm =
+export type DemandeSubventionForForm =
   GouvernanceWithDemandesSubventionsForForm['feuillesDeRoute'][number]['demandesDeSubvention'][number]

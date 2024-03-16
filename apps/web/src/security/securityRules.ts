@@ -4,20 +4,18 @@ export const hasWriteAccessOnScope = (
   user: Pick<SessionUser, 'role' | 'roleScope'>,
   {
     departementCode,
-    regionCode,
   }: {
     departementCode: string
-    regionCode?: string | null
   },
 ) => {
-  if (user.role === 'Administrator' || user.role === 'Demo') {
+  if (user.role === 'Administrator') {
     return true
   }
   if (user.role === 'PrefectureDepartement') {
     return user.roleScope === departementCode
   }
   if (user.role === 'PrefectureRegion') {
-    return !!regionCode && user.roleScope === regionCode
+    return false // Region do not have write access anymore
   }
   return false
 }
@@ -35,12 +33,10 @@ export const canAddGouvernancePressentie = (
   user: Pick<SessionUser, 'role' | 'roleScope'>,
   {
     departementCode,
-    regionCode,
   }: {
     departementCode: string
-    regionCode?: string | null
   },
-) => hasWriteAccessOnScope(user, { departementCode, regionCode })
+) => hasWriteAccessOnScope(user, { departementCode })
 
 export const canEditGouvernance = (
   user: Pick<SessionUser, 'role' | 'roleScope'> | null,

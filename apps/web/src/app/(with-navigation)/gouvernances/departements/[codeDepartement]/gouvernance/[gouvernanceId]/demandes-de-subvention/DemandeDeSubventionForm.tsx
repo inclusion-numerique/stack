@@ -78,7 +78,9 @@ const DemandeDeSubventionForm = ({
     keyName: '_formKey',
   })
 
-  const uploadFileValue = form.watch('pieceJointeBudgetFile')
+  const uploadFileValue = form.watch('pieceJointeBudgetFile') as
+    | string
+    | undefined
   const hasSubventionEtp = form.watch('subventionEtpChecked')
   const hasSubventionPrestation = form.watch('subventionPrestationChecked')
   const beneficiaires = form.watch('beneficiaires') || []
@@ -100,7 +102,8 @@ const DemandeDeSubventionForm = ({
   console.log('ERRORS', form.formState.errors)
   console.log('BENEFICIAIRESERROR', form.formState.errors.beneficiaires)
 
-  const [fileInfo, setFileInfo] = useState(budgetPieceJointeUpload)
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const [_fileInfo, setFileInfo] = useState(budgetPieceJointeUpload)
 
   // File upload hooks for storage
   const fileUpload = useFileUpload({})
@@ -183,7 +186,10 @@ const DemandeDeSubventionForm = ({
 
     // If montant demandé change and one beneficiary only, we set the subvention to the montant demandé
     if (name === 'subventionDemandee' && beneficiaires.length === 1) {
-      updateBeneficiaire(0, 'subvention', data.subventionDemandee)
+      updateBeneficiaire(0, {
+        ...beneficiaires[0],
+        subvention: data.subventionDemandee ?? 0,
+      })
     }
 
     if (!data.subventionEtpChecked && !!data.subventionEtp) {

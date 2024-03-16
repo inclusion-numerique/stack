@@ -156,7 +156,27 @@
     text-transform: initial;
 }
 
-/* Priority variations */
+/* Priority and icons variations */
+
+.fr-notice--icon-airplane .fr-notice__body::before {
+    mask-image: url('/dsfr/icons/business/send-plane-fill.svg') !important;
+    content: '';
+}
+
+.fr-notice--success {
+    background: var(--background-contrast-success);
+
+    --hover: var(--background-contrast-success-hover);
+    --active: var(--background-contrast-success-active);
+
+    color: var(--text-default-success);
+}
+
+.fr-notice--success .fr-notice__body::before {
+    mask-image: url('/dsfr/icons/system/check-line.svg');
+    content: '';
+}
+
 .fr-notice--warning {
     background: var(--background-contrast-warning);
 

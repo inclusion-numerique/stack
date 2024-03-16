@@ -1,9 +1,9 @@
 import { DefaultValues } from 'react-hook-form/dist/types/form'
-import { DemandesSubventionsForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
+import { DemandeSubventionForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { DemandeDeSubventionData } from '@app/web/gouvernance/DemandeDeSubvention'
 
 export const getDemandesDeSubventionDefaultValues = (
-  demandeDeSubvention?: DemandesSubventionsForForm,
+  demandeDeSubvention?: DemandeSubventionForForm,
 ): DefaultValues<DemandeDeSubventionData> => {
   if (!demandeDeSubvention) {
     return {

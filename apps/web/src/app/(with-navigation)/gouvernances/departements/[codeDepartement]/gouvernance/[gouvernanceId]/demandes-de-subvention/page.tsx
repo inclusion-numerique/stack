@@ -19,6 +19,12 @@ import RedAsterisk from '@app/web/ui/RedAsterisk'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { limiteModicitaionDesDemandesDeSubvention } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceMetadata'
 import { numberToEuros } from '@app/web/utils/formatNumber'
+import {
+  getDemandesDeSubventionsForGouvernance,
+  getMontantDotationRestante,
+} from '@app/web/gouvernance/gouvernanceStatus'
+import DemandeDeSubventionCard from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/DemandeDeSubventionCard'
+import { getSessionUser } from '@app/web/auth/getSessionUser'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -29,9 +35,16 @@ const Page = async ({
 }: {
   params: { codeDepartement: string; gouvernanceId: string }
 }) => {
+  const user = await getSessionUser()
+
+  const canInstruct = user?.role === 'Administrator'
+
   const accessCheck = await checkAccessControl({
-    check: (user) =>
-      checkGouvernanceScopeWriteAccess({ scope: { codeDepartement }, user }),
+    check: (sessionUser) =>
+      checkGouvernanceScopeWriteAccess({
+        scope: { codeDepartement },
+        user: sessionUser,
+      }),
     signinNextPath: gouvernanceDemandesDeSubventionPath(
       { codeDepartement },
       gouvernanceId,
@@ -56,7 +69,12 @@ const Page = async ({
     notFound()
   }
 
+  const canValidate = !!gouvernance.noteDeContexteSubventions
+
   const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
+
+  const demandesDeSubvention =
+    getDemandesDeSubventionsForGouvernance(gouvernance)
 
   return (
     <>
@@ -112,9 +130,9 @@ const Page = async ({
             À&nbsp;renseigner&nbsp;avant&nbsp;le&nbsp;
             {dateAsDay(limiteModicitaionDesDemandesDeSubvention)}
           </Badge>
-          <h2 className="fr-h3 fr-flex fr-justify-content-space-between fr-align-items-center fr-flex-gap-3v fr-mb-0">
+          <h2 className="fr-h3 fr-flex fr-justify-content-space-between fr-align-items-center fr-flex-gap-3v fr-mb-4v">
             <span>
-              Dotation totale du département{' '}
+              Dotation totale{' '}
               <button
                 type="button"
                 className="fr-btn--tooltip fr-btn"
@@ -142,6 +160,30 @@ const Page = async ({
             </span>
             <span>{numberToEuros(gouvernance.departement.dotation202406)}</span>
           </h2>
+          <p className="fr-text--xl fr-mb-0 fr-text-default--info fr-flex fr-justify-content-space-between fr-align-items-center fr-flex-gap-3v">
+            <span>Montant de dotation restant</span>
+            <span>
+              {numberToEuros(
+                getMontantDotationRestante(gouvernance).montantRestant,
+              )}
+            </span>
+          </p>
+          {demandesDeSubvention.map((demandeDeSubvention) => (
+            <>
+              <hr
+                key={`${demandeDeSubvention.id}_separator`}
+                className="fr-separator-8v"
+              />
+              <DemandeDeSubventionCard
+                key={demandeDeSubvention.id}
+                demandeDeSubvention={demandeDeSubvention}
+                codeDepartement={codeDepartement}
+                gouvernanceId={gouvernanceId}
+                canInstruct={canInstruct}
+                canValidate={canValidate}
+              />
+            </>
+          ))}
           <hr className="fr-separator-8v" />
           <ButtonsGroup
             buttons={[
