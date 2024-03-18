@@ -256,10 +256,10 @@ const GouvernanceCardCtas = ({
                     gouvernance.id,
                   ),
                 }}
-                iconId="fr-icon-edit-line"
+                iconId="fr-icon-arrow-right-line"
                 iconPosition="right"
               >
-                Modifier
+                Voir
               </Button>
             ) : (
               <Button

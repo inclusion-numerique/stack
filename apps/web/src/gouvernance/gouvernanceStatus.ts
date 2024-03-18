@@ -84,11 +84,17 @@ export const getLatestDemandesDeSubventionModifiee = <
   )
 
 export const areGouvernanceDemandesSubventionsCompleted = <
-  T extends Pick<DemandeDeSubvention, 'valideeEtEnvoyee'>,
+  T extends Pick<
+    DemandeDeSubvention,
+    'valideeEtEnvoyee' | 'subventionDemandee'
+  >,
   V extends Pick<
     Gouvernance,
     'noteDeContexteSubventions' | 'noteDeContexteSubventionsEnregistree'
   > & {
+    departement: {
+      dotation202406: Decimal
+    }
     feuillesDeRoute: {
       demandesDeSubvention: T[]
     }[]
@@ -99,9 +105,13 @@ export const areGouvernanceDemandesSubventionsCompleted = <
   const demandesDeSubvention =
     getDemandesDeSubventionsForGouvernance(gouvernance)
 
+  const dotationRestante =
+    !gouvernance || getMontantDotationRestante(gouvernance).montantRestant.gt(0)
+
   return (
     !!gouvernance?.noteDeContexteSubventionsEnregistree &&
     demandesDeSubvention.length > 0 &&
-    demandesDeSubvention.every(({ valideeEtEnvoyee }) => !!valideeEtEnvoyee)
+    demandesDeSubvention.every(({ valideeEtEnvoyee }) => !!valideeEtEnvoyee) &&
+    !dotationRestante
   )
 }

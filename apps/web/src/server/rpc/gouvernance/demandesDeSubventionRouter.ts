@@ -124,6 +124,9 @@ export const demandesDeSubventionRouter = router({
       async ({
         input: {
           id: inputId,
+          besoins,
+          subventionEtpChecked,
+          subventionPrestationChecked,
           feuilleDeRouteId,
           nomAction,
           contexte,
@@ -167,6 +170,7 @@ export const demandesDeSubventionRouter = router({
         const data = {
           derniereModificationParId: user.id,
           modification: new Date(),
+          besoins,
           feuilleDeRouteId,
           nomAction,
           contexte,
@@ -174,8 +178,10 @@ export const demandesDeSubventionRouter = router({
           budgetGlobal,
           pieceJointeBudgetKey,
           subventionDemandee,
-          subventionEtp,
-          subventionPrestation,
+          subventionEtp: subventionEtpChecked ? subventionEtp ?? 0 : null,
+          subventionPrestation: subventionPrestationChecked
+            ? subventionPrestation ?? 0
+            : null,
         } satisfies Omit<
           Prisma.DemandeDeSubventionUncheckedCreateInput,
           'id' | 'createurId'
@@ -228,12 +234,23 @@ export const demandesDeSubventionRouter = router({
         demandeDeSubventionId: id,
         user,
       })
-
-      await prismaClient.demandeDeSubvention.delete({
-        where: {
-          id,
-        },
-      })
+      await prismaClient.$transaction([
+        prismaClient.upload.deleteMany({
+          where: {
+            pieceJointeBudgetSubvention: { id },
+          },
+        }),
+        prismaClient.beneficiaireSubvention.deleteMany({
+          where: {
+            demandeDeSubventionId: id,
+          },
+        }),
+        prismaClient.demandeDeSubvention.delete({
+          where: {
+            id,
+          },
+        }),
+      ])
 
       return { id }
     }),

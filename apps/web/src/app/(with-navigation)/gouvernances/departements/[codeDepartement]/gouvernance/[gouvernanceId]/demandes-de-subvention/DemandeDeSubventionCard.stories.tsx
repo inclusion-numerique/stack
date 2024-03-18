@@ -178,3 +178,68 @@ export const Acceptee: Story = {
     />
   ),
 }
+
+export const EnCoursSansContexteAdmin: Story = {
+  render: () => (
+    <Template
+      gouvernanceId={gouvernanceId}
+      codeDepartement={codeDepartement}
+      canValidate={false}
+      canInstruct
+      demandeDeSubvention={pending}
+    />
+  ),
+}
+
+export const EnCoursAdmin: Story = {
+  render: () => (
+    <Template
+      gouvernanceId={gouvernanceId}
+      codeDepartement={codeDepartement}
+      canValidate
+      canInstruct
+      demandeDeSubvention={{
+        ...pending,
+        modification: tomorrow,
+        derniereModificationPar: jeanneBiche,
+      }}
+    />
+  ),
+}
+
+export const EnvoyeeAdmin: Story = {
+  render: () => (
+    <Template
+      gouvernanceId={gouvernanceId}
+      codeDepartement={codeDepartement}
+      canValidate
+      canInstruct
+      demandeDeSubvention={{
+        ...pending,
+        valideeEtEnvoyee: tomorrow,
+        besoins: [
+          'AppuyerLaCertificationQualiopi',
+          'CoConstruireLaFeuilleDeRoute',
+          'AnimerLaGouvernance',
+          'CollecterDesDonneesTerritoriales',
+        ],
+      }}
+    />
+  ),
+}
+
+export const AccepteeAdmin: Story = {
+  render: () => (
+    <Template
+      gouvernanceId={gouvernanceId}
+      codeDepartement={codeDepartement}
+      canValidate
+      canInstruct
+      demandeDeSubvention={{
+        ...pending,
+        valideeEtEnvoyee: tomorrow,
+        acceptee: tomorrow,
+      }}
+    />
+  ),
+}

@@ -25,7 +25,7 @@ const Page = async ({
   const {
     gouvernance,
     defaultValues,
-    montantDotationRestante,
+    montantDotationRestantePourDemandeDeSubvention,
     feuillesDeRouteOptions,
     beneficiairesOptions,
     backUrl,
@@ -73,7 +73,7 @@ const Page = async ({
           defaultValues={{
             ...defaultValues,
             montantDotationRestante:
-              montantDotationRestante.montantRestant.toNumber(),
+              montantDotationRestantePourDemandeDeSubvention.toNumber(),
           }}
         />
       </div>

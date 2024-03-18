@@ -76,6 +76,9 @@ const Page = async ({
   const demandesDeSubvention =
     getDemandesDeSubventionsForGouvernance(gouvernance)
 
+  const canAddDemande =
+    getMontantDotationRestante(gouvernance).montantRestant.gt(0)
+
   return (
     <>
       <div className="fr-container">
@@ -184,24 +187,28 @@ const Page = async ({
               />
             </>
           ))}
-          <hr className="fr-separator-8v" />
-          <ButtonsGroup
-            buttons={[
-              {
-                iconId: 'fr-icon-add-line',
-                children: 'Ajouter une action',
-                priority: 'secondary',
-                className: 'fr-mb-0',
-                linkProps: {
-                  href: gouvernanceDemandesDeSubventionPath(
-                    { codeDepartement },
-                    gouvernanceId,
-                    '/ajouter',
-                  ),
-                },
-              },
-            ]}
-          />
+          {canAddDemande && (
+            <>
+              <hr className="fr-separator-8v" />
+              <ButtonsGroup
+                buttons={[
+                  {
+                    iconId: 'fr-icon-add-line',
+                    children: 'Ajouter une action',
+                    priority: 'secondary',
+                    className: 'fr-mb-0',
+                    linkProps: {
+                      href: gouvernanceDemandesDeSubventionPath(
+                        { codeDepartement },
+                        gouvernanceId,
+                        '/ajouter',
+                      ),
+                    },
+                  },
+                ]}
+              />
+            </>
+          )}
         </div>
       </div>
     </>

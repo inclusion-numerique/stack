@@ -97,7 +97,7 @@ const DemandeDeSubventionForm = ({
   const pieceJointeBudgetKeyError =
     form.formState.errors.pieceJointeBudgetKey?.message
 
-  const beneficiairesError = form.formState.errors.beneficiaires
+  const beneficiairesError = form.formState.errors.beneficiaires?.root
 
   console.log('ERRORS', form.formState.errors)
   console.log('BENEFICIAIRESERROR', form.formState.errors.beneficiaires)
@@ -117,42 +117,43 @@ const DemandeDeSubventionForm = ({
 
   const onSubmit = async (data: DemandeDeSubventionData) => {
     let uploadKey = data.pieceJointeBudgetKey
-    try {
-      // Upload file and get uploaded file key
-      const uploaded = await upload(data.pieceJointeBudgetFile as File)
-      if (!uploaded || 'error' in uploaded) {
-        form.setError(
-          'pieceJointeBudgetFile',
-          uploaded?.error ??
-            'Une erreur est survenue lors de l’envoi du fichier',
-        )
-        // Upload failed, error will be displayed from hooks states
-        return
-      }
+    if (uploadKey !== defaultValues.pieceJointeBudgetKey) {
+      try {
+        // Upload file and get uploaded file key
+        const uploaded = await upload(data.pieceJointeBudgetFile as File)
+        if (!uploaded || 'error' in uploaded) {
+          form.setError(
+            'pieceJointeBudgetFile',
+            uploaded?.error ??
+              'Une erreur est survenue lors de l’envoi du fichier',
+          )
+          // Upload failed, error will be displayed from hooks states
+          return
+        }
 
-      // Create upload model
-      const uploadModel = await createUpload.mutateAsync({
-        file: uploaded,
-      })
-
-      // Reset upload input
-      uploadKey = uploadModel.key
-      setTimeout(() => {
-        form.setValue('pieceJointeBudgetFile', null)
-        form.setValue('pieceJointeBudgetKey', uploadModel.key, {
-          shouldValidate: true,
+        // Create upload model
+        const uploadModel = await createUpload.mutateAsync({
+          file: uploaded,
         })
-        setFileInfo(uploadModel)
-      }, 0)
-    } catch (error) {
-      Sentry.captureException(error)
-      createToast({
-        priority: 'error',
-        message:
-          'Une erreur est survenue lors de l’envoi de votre pièce jointe de budget prévisionnel',
-      })
-    }
 
+        // Reset upload input
+        uploadKey = uploadModel.key
+        setTimeout(() => {
+          form.setValue('pieceJointeBudgetFile', null)
+          form.setValue('pieceJointeBudgetKey', uploadModel.key, {
+            shouldValidate: true,
+          })
+          setFileInfo(uploadModel)
+        }, 0)
+      } catch (error) {
+        Sentry.captureException(error)
+        createToast({
+          priority: 'error',
+          message:
+            'Une erreur est survenue lors de l’envoi de votre pièce jointe de budget prévisionnel',
+        })
+      }
+    }
     try {
       await mutation.mutateAsync({ ...data, pieceJointeBudgetKey: uploadKey })
       createToast({
@@ -193,11 +194,13 @@ const DemandeDeSubventionForm = ({
     }
 
     if (!data.subventionEtpChecked && !!data.subventionEtp) {
-      form.setValue('subventionEtp', 0)
+      // eslint-disable-next-line unicorn/no-useless-undefined
+      form.setValue('subventionEtp', undefined)
     }
 
     if (!data.subventionPrestationChecked && !!data.subventionPrestation) {
-      form.setValue('subventionPrestation', 0)
+      // eslint-disable-next-line unicorn/no-useless-undefined
+      form.setValue('subventionPrestation', undefined)
     }
 
     // If the user checks the ETP subvention and the subvention demandee is set, we set the ETP subvention to the subvention demandee
@@ -491,9 +494,6 @@ const DemandeDeSubventionForm = ({
               options={beneficiaireOptionsWithDisabledSelected}
             />
           </select>
-          {beneficiairesError && (
-            <p className="fr-error-text">{beneficiairesError.message}</p>
-          )}
         </div>
         <div className="fr-notice fr-notice--info">
           <div className="fr-container">
@@ -563,6 +563,9 @@ const DemandeDeSubventionForm = ({
               </>
             ))}
           </>
+        )}
+        {beneficiairesError && (
+          <p className="fr-error-text">{beneficiairesError.message}</p>
         )}
       </div>
 

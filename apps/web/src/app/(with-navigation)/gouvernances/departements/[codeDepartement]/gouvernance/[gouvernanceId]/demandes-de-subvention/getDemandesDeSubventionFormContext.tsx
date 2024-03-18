@@ -18,6 +18,7 @@ import { getDemandesDeSubventionDefaultValues } from '@app/web/app/(with-navigat
 import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvernances/gouvernanceScopeTitle'
 import { prismaClient } from '@app/web/prismaClient'
 import { getMembreGouvernanceStringName } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getMembreGouvernanceStringName'
+import { getSessionUser } from '@app/web/auth/getSessionUser'
 
 export const getDemandesDeSubventionFormContext = async ({
   demandeDeSubventionId,
@@ -29,6 +30,7 @@ export const getDemandesDeSubventionFormContext = async ({
   // Null for creation, id for update
   demandeDeSubventionId: string | null
 }) => {
+  const sessionUser = await getSessionUser()
   const accessCheck = await checkAccessControl({
     check: (user) =>
       checkGouvernanceScopeWriteAccess({ scope: { codeDepartement }, user }),
@@ -59,6 +61,10 @@ export const getDemandesDeSubventionFormContext = async ({
   let defaultValues = getDemandesDeSubventionDefaultValues()
   let currentPageLabel = 'Ajouter'
 
+  const montantDotationRestante = getMontantDotationRestante(gouvernance)
+  let montantDotationRestantePourDemandeDeSubvention =
+    montantDotationRestante.montantRestant
+
   if (demandeDeSubventionId) {
     // Check if demande de subvention belongs to this gouvernance.
     const demandesDeSubventions =
@@ -71,11 +77,21 @@ export const getDemandesDeSubventionFormContext = async ({
     if (!demandeDeSubvention) {
       notFound()
     }
+
+    if (
+      demandeDeSubvention.valideeEtEnvoyee &&
+      sessionUser?.role !== 'Administrator'
+    ) {
+      notFound()
+    }
+    // Do not take into account the subventionDemandee for an update
+    montantDotationRestantePourDemandeDeSubvention =
+      montantDotationRestantePourDemandeDeSubvention.add(
+        demandeDeSubvention.subventionDemandee,
+      )
     defaultValues = getDemandesDeSubventionDefaultValues(demandeDeSubvention)
     currentPageLabel = demandeDeSubvention.nomAction
   }
-
-  const montantDotationRestante = getMontantDotationRestante(gouvernance)
 
   const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
 
@@ -161,6 +177,7 @@ export const getDemandesDeSubventionFormContext = async ({
     gouvernance,
     defaultValues,
     montantDotationRestante,
+    montantDotationRestantePourDemandeDeSubvention,
     scopeTitle,
     currentPageLabel,
     feuillesDeRouteOptions,

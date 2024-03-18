@@ -60,6 +60,7 @@ export const gouvernanceListSelect = {
       code: true,
       nom: true,
       codeRegion: true,
+      dotation202406: true,
     },
   },
 

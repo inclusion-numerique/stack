@@ -39,6 +39,7 @@ const BeneficiaireSubventionValidation = z.object({
   subvention: z
     .number({
       required_error: 'Veuillez renseigner le montant alloué',
+      invalid_type_error: 'Veuillez renseigner le montant alloué',
     })
     .gt(0, 'Le montant doit être supérieur à 0'),
 })
@@ -90,6 +91,7 @@ export const DemandeDeSubventionValidation = z
     budgetGlobal: z
       .number({
         required_error: 'Veuillez renseigner le budget global',
+        invalid_type_error: 'Veuillez renseigner le budget global',
       })
       .gt(0, 'Le budget global doit être supérieur à 0'),
     // Only used in client for upload operation
@@ -100,12 +102,14 @@ export const DemandeDeSubventionValidation = z
     subventionDemandee: z
       .number({
         required_error: 'Veuillez renseigner le montant de la subvention',
+        invalid_type_error: 'Veuillez renseigner le montant de la subvention',
       })
       .gt(0, 'La subvention demandée doit être supérieure ou égale à 0'),
     subventionEtpChecked: z.boolean().default(false),
     subventionEtp: z
       .number({
         required_error: 'Veuillez renseigner le montant pour les ETP',
+        invalid_type_error: 'Veuillez renseigner le montant pour les ETP',
       })
       .gt(0, 'Le montant doit être supérieur ou égal à 0')
       .nullish(),
@@ -113,6 +117,8 @@ export const DemandeDeSubventionValidation = z
     subventionPrestation: z
       .number({
         required_error: 'Veuillez renseigner le montant pour les prestations',
+        invalid_type_error:
+          'Veuillez renseigner le montant pour les prestations',
       })
       .gt(0, 'Le montant doit être supérieur ou égal à 0')
       .nullish(),
@@ -159,7 +165,7 @@ export const DemandeDeSubventionValidation = z
     {
       message:
         'La somme des subventions demandées par les membres doit être égale à la subvention demandée',
-      path: ['demandeDeSubventionMembres'],
+      path: ['beneficiaires'],
     },
   )
 

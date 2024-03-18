@@ -12,19 +12,17 @@ import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { isBrowser } from '@app/web/utils/isBrowser'
 
-const ValiderEtEnvoyerDemandeDeSubventionButton = ({
+const AccepterDemandeDeSubventionButton = ({
   demandeDeSubventionId,
-  disabled,
 }: {
   demandeDeSubventionId: string
-  disabled: boolean
 }) => {
-  const mutation = trpc.demandesDeSubvention.validerEtEnvoyer.useMutation()
+  const mutation = trpc.demandesDeSubvention.accepter.useMutation()
   const router = useRouter()
 
   const { open, Component, close } = createModal({
     isOpenedByDefault: false,
-    id: `valider_et_envoyer_${demandeDeSubventionId}`,
+    id: `accepter_${demandeDeSubventionId}`,
   })
 
   const onClick = () => {
@@ -36,7 +34,7 @@ const ValiderEtEnvoyerDemandeDeSubventionButton = ({
       await mutation.mutateAsync({ id: demandeDeSubventionId })
       createToast({
         priority: 'success',
-        message: 'La demande de subvention a bien été envoyée',
+        message: 'La demande de subvention a bien été acceptée',
       })
       router.refresh()
       close()
@@ -64,14 +62,13 @@ const ValiderEtEnvoyerDemandeDeSubventionButton = ({
         onClick={onClick}
         iconId="fr-icon-check-line"
         iconPosition="right"
-        disabled={disabled}
       >
-        Valider&nbsp;&&nbsp;envoyer
+        Accepter
       </Button>
       {renderModal &&
         createPortal(
           <Component
-            title="Valider et envoyer votre demande de subvention"
+            title="Accepter la demande de subvention"
             buttons={[
               {
                 type: 'button',
@@ -84,7 +81,7 @@ const ValiderEtEnvoyerDemandeDeSubventionButton = ({
                 doClosesModal: false,
                 type: 'button',
                 priority: 'primary',
-                children: 'Valider & envoyer',
+                children: 'Accepter',
                 iconId: 'fr-icon-check-line',
                 iconPosition: 'right',
                 onClick: onConfirm,
@@ -92,21 +89,7 @@ const ValiderEtEnvoyerDemandeDeSubventionButton = ({
               },
             ]}
           >
-            Cette validation est définitive, vous ne pourrez plus modifier votre
-            action et la demande de subvention correspondante.
-            <br />
-            <br />
-            Nos équipes instruisent les demandes de subvention au fur et à
-            mesure de leur réception.
-            <br />
-            <br />
-            1. Si la demande est conforme, nos équipes reviennent vers les
-            destinataires des fonds pour établir les conventions. Les
-            préfectures seront en copie des échanges.
-            <br />
-            <br />
-            2. Si la demande nécessite des précisions, nos équipes reviennent
-            vers la préfecture.
+            Êtes-vous sûr de vouloir accepter cette demande de subvention&nbsp;?
           </Component>,
           document.body,
         )}
@@ -114,4 +97,4 @@ const ValiderEtEnvoyerDemandeDeSubventionButton = ({
   )
 }
 
-export default withTrpc(ValiderEtEnvoyerDemandeDeSubventionButton)
+export default withTrpc(AccepterDemandeDeSubventionButton)

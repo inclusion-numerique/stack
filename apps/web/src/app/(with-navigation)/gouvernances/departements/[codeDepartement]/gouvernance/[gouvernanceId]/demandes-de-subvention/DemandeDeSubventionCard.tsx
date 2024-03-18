@@ -11,6 +11,9 @@ import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
 import { besoinSubventionLabel } from '@app/web/gouvernance/besoinSubvention'
 import { getMembreGouvernanceStringName } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getMembreGouvernanceStringName'
 import { numberToEuros } from '@app/web/utils/formatNumber'
+import DeleteDemandeDeSubventionButton from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/DeleteDemandeDeSubventionButton'
+import AccepterDemandeDeSubventionButton from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/AccepterDemandeDeSubventionButton'
+import DemandeDeModificationDemandeDeSubventionButton from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/DemandeDeModificationDemandeDeSubventionButton'
 
 const DemandeDeSubventionCard = ({
   demandeDeSubvention,
@@ -50,6 +53,9 @@ const DemandeDeSubventionCard = ({
   )}`
   const displayModificationMeta = modificationMeta !== creationMeta
 
+  const canEdit = canInstruct || !valideeEtEnvoyee
+  const canDelete = canInstruct || !valideeEtEnvoyee
+
   return (
     <div>
       <div className="fr-flex fr-justify-content-space-between fr-flex-gap-4v">
@@ -60,21 +66,26 @@ const DemandeDeSubventionCard = ({
             {displayModificationMeta && ` · Modifiée le ${modificationMeta}`}
           </p>
         </div>
-        <div>
-          <Button
-            priority="secondary"
-            linkProps={{
-              href: gouvernanceDemandesDeSubventionPath(
-                { codeDepartement },
-                gouvernanceId,
-                `/${id}`,
-              ),
-            }}
-            iconId="fr-icon-edit-line"
-            iconPosition="right"
-          >
-            Modifier
-          </Button>
+        <div className="fr-flex fr-flex-gap-4v fr-align-items-start">
+          {canEdit && (
+            <Button
+              priority="secondary"
+              linkProps={{
+                href: gouvernanceDemandesDeSubventionPath(
+                  { codeDepartement },
+                  gouvernanceId,
+                  `/${id}`,
+                ),
+              }}
+              iconId="fr-icon-edit-line"
+              iconPosition="right"
+            >
+              Modifier
+            </Button>
+          )}
+          {canDelete && (
+            <DeleteDemandeDeSubventionButton demandeDeSubventionId={id} />
+          )}
         </div>
       </div>
       <InfoLabelValue
@@ -155,6 +166,37 @@ const DemandeDeSubventionCard = ({
         <Notice
           className="fr-mt-4v fr-notice--warning"
           title="Veuiller enregistrer la contextualisation des demandes de subvention pour pouvoir valider et envoyer votre demande"
+        />
+      )}
+      {valideeEtEnvoyee && !acceptee && canInstruct && (
+        <Notice
+          className="fr-mt-4v fr-notice--success"
+          title={
+            <span className="fr-flex fr-width-full fr-align-items-center fr-justify-content-space-between fr-flex-gap-4v">
+              <span>
+                En tant qu’administrateur, vous pouvez accepter cette demande de
+                subvention
+              </span>
+              <AccepterDemandeDeSubventionButton demandeDeSubventionId={id} />
+            </span>
+          }
+        />
+      )}
+      {valideeEtEnvoyee && canInstruct && (
+        <Notice
+          className="fr-mt-4v fr-notice--warning"
+          title={
+            <span className="fr-flex fr-width-full fr-align-items-center fr-justify-content-space-between fr-flex-gap-4v">
+              <span>
+                En tant qu’administrateur, vous pouvez demander des
+                modifications, et rendre la demande de subvention éditable à
+                nouveau pour la préfécture.
+              </span>
+              <DemandeDeModificationDemandeDeSubventionButton
+                demandeDeSubventionId={id}
+              />
+            </span>
+          }
         />
       )}
     </div>

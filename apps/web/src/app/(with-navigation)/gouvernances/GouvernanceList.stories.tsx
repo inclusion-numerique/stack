@@ -2,6 +2,7 @@ import { Tabs } from '@codegouvfr/react-dsfr/Tabs'
 import React, { ComponentProps } from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import { v4 } from 'uuid'
+import { Decimal } from 'decimal.js'
 import {
   ListeGouvernance,
   ListeGouvernanceItem,
@@ -52,6 +53,7 @@ const gouvernancesPressenties: ListeGouvernance = [
       codeRegion: '84',
       code: '69',
       nom: 'Rhône',
+      dotation202406: new Decimal(100_000),
     },
     organisationsRecruteusesCoordinateurs: [],
     noteDeContexte: '<p>Des phrases qui expliquent le contexte</p>',
@@ -76,6 +78,7 @@ const gouvernancesPressenties: ListeGouvernance = [
     noteDeContexteSubventions: null,
     noteDeContexteSubventionsEnregistree: null,
     departement: {
+      dotation202406: new Decimal(100_000),
       codeRegion: '84',
       code: '69',
       nom: 'Rhône',
@@ -106,6 +109,7 @@ const gouvernancesProposees: ListeGouvernance = [
     noteDeContexteSubventions: null,
     noteDeContexteSubventionsEnregistree: null,
     departement: {
+      dotation202406: new Decimal(100_000),
       codeRegion: '84',
       code: '69',
       nom: 'Rhône',
@@ -133,6 +137,7 @@ const gouvernancesProposees: ListeGouvernance = [
     noteDeContexteSubventions: null,
     noteDeContexteSubventionsEnregistree: null,
     departement: {
+      dotation202406: new Decimal(100_000),
       codeRegion: '84',
       code: '69',
       nom: 'Rhône',
