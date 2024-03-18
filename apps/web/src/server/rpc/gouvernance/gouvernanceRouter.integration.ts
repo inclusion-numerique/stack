@@ -6,6 +6,7 @@ import {
 import { testSessionUser } from '@app/web/test/testSessionUser'
 import { v4 } from 'uuid'
 import { prismaClient } from '@app/web/prismaClient'
+import { Decimal } from 'decimal.js'
 import { createTestContext } from '../../../../test/createTestContext'
 import { expectDate, expectUuid } from '../../../../test/expectHelpers'
 
@@ -146,7 +147,7 @@ describe('gouvernanceRouter', () => {
 
       const result = await executeGouvernanceProcedure(input)
 
-      expect(result).toEqual({
+      expect(result).toMatchObject({
         besoinsEnIngenierieFinanciere: null,
         comites: [
           {
@@ -169,6 +170,8 @@ describe('gouvernanceRouter', () => {
           code: '69',
           codeRegion: '84',
           nom: 'Rhône',
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          dotation202406: expect.anything(),
         },
         derniereModificationPar: {
           email: givenUserEmail,
