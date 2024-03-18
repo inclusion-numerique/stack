@@ -6,7 +6,6 @@ import {
 import { testSessionUser } from '@app/web/test/testSessionUser'
 import { v4 } from 'uuid'
 import { prismaClient } from '@app/web/prismaClient'
-import { Decimal } from 'decimal.js'
 import { createTestContext } from '../../../../test/createTestContext'
 import { expectDate, expectUuid } from '../../../../test/expectHelpers'
 
