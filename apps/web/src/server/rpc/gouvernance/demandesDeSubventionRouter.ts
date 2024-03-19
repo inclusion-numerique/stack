@@ -234,12 +234,17 @@ export const demandesDeSubventionRouter = router({
         demandeDeSubventionId: id,
         user,
       })
+
+      const uploadsToDelete = await prismaClient.upload.findMany({
+        where: {
+          pieceJointeBudgetSubvention: { id },
+        },
+        select: {
+          key: true,
+        },
+      })
+
       await prismaClient.$transaction([
-        prismaClient.upload.deleteMany({
-          where: {
-            pieceJointeBudgetSubvention: { id },
-          },
-        }),
         prismaClient.beneficiaireSubvention.deleteMany({
           where: {
             demandeDeSubventionId: id,
@@ -251,6 +256,14 @@ export const demandesDeSubventionRouter = router({
           },
         }),
       ])
+
+      await prismaClient.upload.deleteMany({
+        where: {
+          key: {
+            in: uploadsToDelete.map((upload) => upload.key),
+          },
+        },
+      })
 
       return { id }
     }),
