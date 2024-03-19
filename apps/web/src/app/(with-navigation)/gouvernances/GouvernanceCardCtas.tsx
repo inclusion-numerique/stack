@@ -259,7 +259,7 @@ const GouvernanceCardCtas = ({
                 iconId="fr-icon-arrow-right-line"
                 iconPosition="right"
               >
-                Voir
+                Voir le détail
               </Button>
             ) : (
               <Button

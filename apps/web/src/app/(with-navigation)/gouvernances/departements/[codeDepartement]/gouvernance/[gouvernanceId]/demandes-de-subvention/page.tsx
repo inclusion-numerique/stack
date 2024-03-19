@@ -20,6 +20,7 @@ import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { limiteModicitaionDesDemandesDeSubvention } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceMetadata'
 import { numberToEuros } from '@app/web/utils/formatNumber'
 import {
+  areGouvernanceDemandesSubventionsCompleted,
   getDemandesDeSubventionsForGouvernance,
   getMontantDotationRestante,
 } from '@app/web/gouvernance/gouvernanceStatus'
@@ -79,6 +80,9 @@ const Page = async ({
   const canAddDemande =
     getMontantDotationRestante(gouvernance).montantRestant.gt(0)
 
+  const canEditContexte =
+    !areGouvernanceDemandesSubventionsCompleted(gouvernance)
+
   return (
     <>
       <div className="fr-container">
@@ -125,6 +129,7 @@ const Page = async ({
           <NoteDeContexteSubventionsForm
             noteDeContexteSubventions={gouvernance.noteDeContexteSubventions}
             gouvernanceId={gouvernance.id}
+            canEdit={canEditContexte}
           />
         </div>
 

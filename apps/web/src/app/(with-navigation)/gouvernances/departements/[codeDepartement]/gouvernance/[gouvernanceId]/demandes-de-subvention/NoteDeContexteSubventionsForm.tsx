@@ -27,9 +27,11 @@ export const noteDeContexteSubventionInfoText = (title?: string | null) =>
 const NoteDeContexteSubventionsForm = ({
   gouvernanceId,
   noteDeContexteSubventions,
+  canEdit = true,
 }: {
   gouvernanceId: string
   noteDeContexteSubventions?: string | null
+  canEdit?: boolean
 }) => {
   const [isEditing, setIsEditing] = useState(!noteDeContexteSubventions)
 
@@ -146,17 +148,19 @@ const NoteDeContexteSubventionsForm = ({
       <>
         <div className="fr-flex fr-flex-gap-4v fr-align-items-center fr-justify-content-space-between fr-mb-2v">
           {title}
-          <Button
-            type="button"
-            priority="secondary"
-            size="small"
-            iconId="fr-icon-edit-line"
-            onClick={() => {
-              setIsEditing(true)
-            }}
-          >
-            Modifier
-          </Button>
+          {!!canEdit && (
+            <Button
+              type="button"
+              priority="secondary"
+              size="small"
+              iconId="fr-icon-edit-line"
+              onClick={() => {
+                setIsEditing(true)
+              }}
+            >
+              Modifier
+            </Button>
+          )}
         </div>
         <div>{hintContent}</div>
         <hr className="fr-separator-8v" />

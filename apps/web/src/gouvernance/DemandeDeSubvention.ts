@@ -111,7 +111,7 @@ export const DemandeDeSubventionValidation = z
         required_error: 'Veuillez renseigner le montant pour les ETP',
         invalid_type_error: 'Veuillez renseigner le montant pour les ETP',
       })
-      .gt(0, 'Le montant doit être supérieur ou égal à 0')
+      .gte(0, 'Le montant doit être supérieur ou égal à 0')
       .nullish(),
     subventionPrestationChecked: z.boolean().default(false),
     subventionPrestation: z
@@ -120,7 +120,7 @@ export const DemandeDeSubventionValidation = z
         invalid_type_error:
           'Veuillez renseigner le montant pour les prestations',
       })
-      .gt(0, 'Le montant doit être supérieur ou égal à 0')
+      .gte(0, 'Le montant doit être supérieur ou égal à 0')
       .nullish(),
     beneficiaires: z
       .array(BeneficiaireSubventionValidation, {

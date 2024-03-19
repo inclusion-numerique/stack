@@ -100,6 +100,7 @@ const DemandeDeSubventionForm = ({
   const beneficiairesError = form.formState.errors.beneficiaires?.root
 
   console.log('ERRORS', form.formState.errors)
+  console.log('VALUES', form.watch())
   console.log('BENEFICIAIRESERROR', form.formState.errors.beneficiaires)
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
