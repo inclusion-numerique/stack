@@ -17,6 +17,9 @@ importers:
       dotenv-cli:
         specifier: ^7.3.0
         version: 7.3.0
+      html-to-text:
+        specifier: ^9.0.5
+        version: 9.0.5
       turbo:
         specifier: ^1.11.3
         version: 1.11.3
@@ -36,12 +39,18 @@ importers:
       '@commander-js/extra-typings':
         specifier: ^11.1.0
         version: 11.1.0(commander@11.1.0)
+      '@prisma/client':
+        specifier: ^5.10.2
+        version: 5.10.2
       axios:
         specifier: ^1.6.5
         version: 1.6.5
       axios-retry:
         specifier: ^3.9.1
         version: 3.9.1
+      bottleneck:
+        specifier: ^2.19.5
+        version: 2.19.5
       commander:
         specifier: ^11.1.0
         version: 11.1.0
