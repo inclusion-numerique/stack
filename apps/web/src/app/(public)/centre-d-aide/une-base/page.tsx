@@ -4,7 +4,7 @@ import { metadataTitle } from '@app/web/app/metadataTitle';
 import Breadcrumbs from '@app/web/components/Breadcrumbs';
 import Notice from '@codegouvfr/react-dsfr/Notice';
 import Link from 'next/link';
-
+import { Table } from "@codegouvfr/react-dsfr/Table";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ const ContentPolicyPage = () => (
           <p>Une base est un espace collaboratif entre plusieurs membres souhaitant produire et/ou publier des ressources en commun.</p>
           <p>Une base peut notamment représenter une structure, une administration, un collectif qui souhaite regrouper et publier diverses ressources relatives à son activité, ses outils, guides, etc.</p>
           <p>Une base, si elle est publique, sert d’espace de publication commun pour ses membres.</p>
-          <p>Une base peut être <Link href="#">publique</Link> (visible par tous les visiteurs) ou <Link href="#">privée</Link> (visible uniquement par ses membres).</p>
+          <p>Une base peut être <Link className="fr-link" href="#">publique</Link> (visible par tous les visiteurs) ou <Link className="fr-link" href="#">privée</Link> (visible uniquement par ses membres).</p>
           <hr />
           <h2 className="fr-page-title">Comment utiliser une base ?</h2>
           <ul>
@@ -32,7 +32,7 @@ const ContentPolicyPage = () => (
             <li>Enregistrez des ressources dans des collections communes</li>
             <li>Retrouvez et gérez les membres de votre base et leurs rôles</li>
           </ul>
-          <p>Les membres d’une base peuvent éditer l’ensemble de ses contenus (ressources, collections, informations et paramètres) ainsi qu’inviter de nouveaux membres. Retrouvez plus d’informations <Link href="#">les rôles et les permissions ici</Link>.</p>
+          <p>Les membres d’une base peuvent éditer l’ensemble de ses contenus (ressources, collections, informations et paramètres) ainsi qu’inviter de nouveaux membres. Retrouvez plus d’informations <Link className="fr-link" href="#">les rôles et les permissions ici</Link>.</p>
           <h4>Base publique</h4>
           <p>Utilisez votre base comme un espace de publication commun</p>
           <p>Votre base publique est l’endroit où les visiteurs de la plateforme peuvent retrouver toutes les ressources et collections publiques créées par ses membres. Votre base sera référencée dans le moteur de recherche de la plateforme et les visiteurs peuvent également suivre votre base afin de retrouver plus facilement les prochaines ressources publiées sur celle-ci.</p>
@@ -67,6 +67,7 @@ const ContentPolicyPage = () => (
           <p>Sur une base, deux rôles sont disponibles : <strong>Administrateur & membre</strong></p>
           <p>Le créateur d’une base est par défaut l’administrateur de celle-ci. Les administrateurs peuvent nommer d’autres administrateurs et ajouter et supprimer des membres.</p>
           <p>Retrouvez dans le tableau ci-dessous les différentes permissions de ces deux rôles :</p>
+
           <h4>Inviter/supprimer un membre</h4>
           <p><strong>Inviter un membre</strong></p>
           <p>Pour inviter un membre dans une de vos bases, allez dans l’onglet <strong>‘Membres’</strong> de votre base, puis cliquez sur le bouton <strong>‘Inviter un membre’.</strong></p>
@@ -145,9 +146,9 @@ const ContentPolicyPage = () => (
   base. Dans le cas où vous supprimer votre base, toutes les ressources de la
   base seront supprimés définitivement.</p>
     </div>
+</div>
       </div>
     </div>
-  </div>
 );
 
 export default ContentPolicyPage;

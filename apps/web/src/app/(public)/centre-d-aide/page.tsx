@@ -20,4 +20,4 @@ const ContentPolicyPage = () => (
     </div>
   </div>
 )
-export default ContentPolicyPage
+export default ContentPolicyPage;
