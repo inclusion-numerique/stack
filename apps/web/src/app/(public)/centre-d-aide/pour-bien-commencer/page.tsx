@@ -19,7 +19,7 @@ const ContentPolicyPage = () => (
       <div className="fr-grid-row fr-grid-row--center">
         <div className="fr-col-md-8">
           <h1 className="fr-page-title">Pour bien commencer</h1>
-          <img src="/images/centre-d-aide/Frame341.svg"/>
+          <img className="fr-width-full" src="/images/centre-d-aide/Frame341.svg" alt=""/>
           <h2 className="fr-page-title ">Les Bases du numérique d’intérêt général, de quoi parle-t-on ?</h2>
             <p><strong>La plateforme collaborative de partage de ressources & communs numériques à l’échelle nationale.</strong></p>
             <p>Sans se substituer aux sites internet, bibliothèques d’outils,
@@ -139,11 +139,10 @@ const ContentPolicyPage = () => (
                     <li>Suivre les bases et les profils qui vous intéressent pour les retrouver plus facilement.</li>
                     </ul>
         <Notice className="fr-mb-2w"
-                title=<Link  href="">Retrouvez ici plus d’informations sur comment utiliser votre profil</Link>
-/>
-        </div>
+                title=<Link  href="">Retrouvez ici plus d’informations sur comment utiliser votre profil</Link>/>
       </div>
     </div>
   </div>
+
 )
 export default ContentPolicyPage

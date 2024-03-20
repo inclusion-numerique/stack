@@ -18,7 +18,7 @@ const ContentPolicyPage = () => (
       <div className="fr-grid-row fr-grid-row--center">
         <div className="fr-col-md-8">
           <h1 className="fr-page-title">Une base</h1>
-
+          <img className="fr-width-full" src="/images/centre-d-aide/base.svg" alt=""/>
           <h2 className="fr-page-title">Une base, c’est quoi ?</h2>
           <p>Une base est un espace collaboratif entre plusieurs membres souhaitant produire et/ou publier des ressources en commun.</p>
           <p>Une base peut notamment représenter une structure, une administration, un collectif qui souhaite regrouper et publier diverses ressources relatives à son activité, ses outils, guides, etc.</p>
@@ -85,7 +85,7 @@ const ContentPolicyPage = () => (
             disponible via le menu déroulant situé en haut à droite dans la barre de
             navigation et cliquez sur {" "}<strong>‘le nom de votre base’.</strong> Lorsque vous êtes sur votre
             base, cliquez sur le bouton {" "}<strong>‘Modifier la base’</strong> présent dans l’en-tête.</p>
-
+          <img className="fr-width-full" src="/images/centre-d-aide/infos_base.svg" alt=""/>
           <p>Sur cette page, vous pouvez venir modifier les différentes informations &
             paramètres d’une base en cliquant sur le bouton {" "}<strong>‘Modifier’ symbolisé par
               l’icône stylo</strong> présent en haut à droite de chaque bloc. Après avoir modifier
