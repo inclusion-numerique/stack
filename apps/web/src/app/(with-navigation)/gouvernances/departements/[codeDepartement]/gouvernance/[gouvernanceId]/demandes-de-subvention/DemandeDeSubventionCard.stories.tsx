@@ -68,7 +68,12 @@ const pending = {
   subventionEtp: new Decimal(5000),
   subventionPrestation: new Decimal(0),
   pieceJointeBudgetKey: 'key',
-
+  pieceJointeBudget: {
+    key: 'key',
+    name: 'name.pdf',
+    mimeType: 'application/pdf',
+    size: 10,
+  },
   beneficiaires: [
     {
       id: v4(),

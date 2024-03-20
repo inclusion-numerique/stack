@@ -4,7 +4,7 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import type { Upload } from '@prisma/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import React, { ChangeEventHandler, useState } from 'react'
+import React, { ChangeEventHandler, Fragment } from 'react'
 import * as Sentry from '@sentry/nextjs'
 import { createToast } from '@app/ui/toast/createToast'
 import { DefaultValues } from 'react-hook-form/dist/types/form'
@@ -24,6 +24,7 @@ import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { useDebounce } from 'usehooks-ts'
 import { useRouter } from 'next/navigation'
+import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
@@ -49,7 +50,7 @@ const cardClassName = 'fr-border--slim-grey fr-p-8v fr-pb-2v fr-mb-6v'
 const DemandeDeSubventionForm = ({
   defaultValues,
   feuillesDeRouteOptions,
-  budgetPieceJointeUpload,
+  pieceJointeBudget,
   beneficiairesOptions,
   backUrl,
 }: {
@@ -57,7 +58,7 @@ const DemandeDeSubventionForm = ({
     montantDotationRestante: number
   }
   feuillesDeRouteOptions: SelectOption[]
-  budgetPieceJointeUpload?: Upload | null
+  pieceJointeBudget?: Pick<Upload, 'name'>
   beneficiairesOptions: SelectOption[]
   backUrl: string
 }) => {
@@ -66,6 +67,8 @@ const DemandeDeSubventionForm = ({
     defaultValues,
     reValidateMode: 'onChange',
   })
+
+  useScrollToError({ errors: form.formState.errors })
 
   const {
     fields: beneficiairesFields,
@@ -93,18 +96,25 @@ const DemandeDeSubventionForm = ({
     ? subventionDemandee - beneficiairesSubventionAllouee
     : null
 
-  console.log('FILE VALUE', uploadFileValue)
   const pieceJointeBudgetKeyError =
     form.formState.errors.pieceJointeBudgetKey?.message
 
-  const beneficiairesError = form.formState.errors.beneficiaires?.root
+  const beneficiairesErrorMessage =
+    form.formState.errors.beneficiaires?.root?.message ??
+    form.formState.errors.beneficiaires?.message
 
-  console.log('ERRORS', form.formState.errors)
-  console.log('VALUES', form.watch())
-  console.log('BENEFICIAIRESERROR', form.formState.errors.beneficiaires)
+  // If user has already uploaded a file, we display it in the file input info
+  // If he changes the file, we hide the previous file name
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const [_fileInfo, setFileInfo] = useState(budgetPieceJointeUpload)
+  const pieceJointeBudgetFileInfo =
+    pieceJointeBudget && !uploadFileValue ? (
+      <span className="fr-flex fr-direction-column fr-align-items-start fr-justify-content-center fr-mt-2v fr-text-default--info">
+        <span>
+          <span className="fr-icon-checkbox-fill fr-icon--sm fr-mr-1v" />
+          {pieceJointeBudget.name}
+        </span>
+      </span>
+    ) : undefined
 
   // File upload hooks for storage
   const fileUpload = useFileUpload({})
@@ -144,7 +154,6 @@ const DemandeDeSubventionForm = ({
           form.setValue('pieceJointeBudgetKey', uploadModel.key, {
             shouldValidate: true,
           })
-          setFileInfo(uploadModel)
         }, 0)
       } catch (error) {
         Sentry.captureException(error)
@@ -244,9 +253,6 @@ const DemandeDeSubventionForm = ({
       </span>
     )
 
-  console.log('BENEFICIAIRES', beneficiaires)
-  console.log('BENEFICIAIRES FIELDS', beneficiairesFields)
-
   const onBeneficiaireChange: ChangeEventHandler<HTMLSelectElement> = (
     event,
   ) => {
@@ -254,11 +260,9 @@ const DemandeDeSubventionForm = ({
     if (!membreId) {
       return
     }
-    console.log('MEMBRE ID', membreId)
 
     const membre = beneficiairesOptions.find((m) => m.value === membreId)
 
-    console.log('MEMBRE', membre)
     if (!membre) {
       return
     }
@@ -367,6 +371,7 @@ const DemandeDeSubventionForm = ({
           disabled={isLoading}
           error={pieceJointeBudgetKeyError}
           className="fr-mb-8v"
+          info={pieceJointeBudgetFileInfo}
         />
         <hr className="fr-separator-8v" />
         <p className="fr-text--bold">
@@ -471,7 +476,7 @@ const DemandeDeSubventionForm = ({
         {/* Uncontrolled select to add beneficiaires */}
         <div
           className={classNames('fr-select-group', {
-            'fr-select-group--error': beneficiairesError,
+            'fr-select-group--error': beneficiairesErrorMessage,
             'fr-select-group--disabled': isLoading,
           })}
         >
@@ -529,9 +534,9 @@ const DemandeDeSubventionForm = ({
             </p>
 
             {beneficiairesFields.map((beneficiaire, index) => (
-              <>
+              <Fragment key={beneficiaire._formKey}>
                 <hr className="fr-separator-6v" />
-                <div key={beneficiaire.membreGouvernanceId}>
+                <div>
                   <div className="fr-text--bold fr-mb-4v fr-flex fr-justify-content-space-between">
                     <p className="fr-mb-0">{beneficiaire.nom}</p>
                     <Button
@@ -561,12 +566,12 @@ const DemandeDeSubventionForm = ({
                     />
                   )}
                 </div>
-              </>
+              </Fragment>
             ))}
           </>
         )}
-        {beneficiairesError && (
-          <p className="fr-error-text">{beneficiairesError.message}</p>
+        {beneficiairesErrorMessage && (
+          <p className="fr-error-text">{beneficiairesErrorMessage}</p>
         )}
       </div>
 

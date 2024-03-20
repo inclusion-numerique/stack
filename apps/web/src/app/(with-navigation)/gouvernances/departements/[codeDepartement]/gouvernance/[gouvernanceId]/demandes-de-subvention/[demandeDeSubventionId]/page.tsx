@@ -29,6 +29,7 @@ const Page = async ({
     feuillesDeRouteOptions,
     beneficiairesOptions,
     backUrl,
+    demandeDeSubvention,
     DemandeDeSubventionBreadcrumbs,
   } = await getDemandesDeSubventionFormContext({
     demandeDeSubventionId,
@@ -75,6 +76,7 @@ const Page = async ({
             montantDotationRestante:
               montantDotationRestantePourDemandeDeSubvention.toNumber(),
           }}
+          pieceJointeBudget={demandeDeSubvention?.pieceJointeBudget}
         />
       </div>
     </>

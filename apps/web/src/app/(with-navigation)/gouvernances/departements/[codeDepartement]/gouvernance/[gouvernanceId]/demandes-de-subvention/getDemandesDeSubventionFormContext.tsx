@@ -65,13 +65,15 @@ export const getDemandesDeSubventionFormContext = async ({
   let montantDotationRestantePourDemandeDeSubvention =
     montantDotationRestante.montantRestant
 
+  let demandeDeSubvention
+
   if (demandeDeSubventionId) {
     // Check if demande de subvention belongs to this gouvernance.
     const demandesDeSubventions =
       getDemandesDeSubventionsForGouvernance(gouvernance)
 
     // Get the one we want to edit
-    const demandeDeSubvention = demandesDeSubventions.find(
+    demandeDeSubvention = demandesDeSubventions.find(
       ({ id }) => id === demandeDeSubventionId,
     )
     if (!demandeDeSubvention) {
@@ -175,6 +177,7 @@ export const getDemandesDeSubventionFormContext = async ({
 
   return {
     gouvernance,
+    demandeDeSubvention,
     defaultValues,
     montantDotationRestante,
     montantDotationRestantePourDemandeDeSubvention,

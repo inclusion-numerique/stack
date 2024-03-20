@@ -25,13 +25,6 @@ const Page = async ({
 
   const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
 
-  console.log('PAGE ELEMENTS', {
-    gouvernance,
-    besoins,
-    departement,
-    scopeTitle,
-  })
-
   if (!gouvernance) {
     notFound()
   }

@@ -1,7 +1,12 @@
 'use client'
 
 import classNames from 'classnames'
-import React, { HTMLProps, ReactNode } from 'react'
+import React, {
+  HTMLProps,
+  isValidElement,
+  ReactElement,
+  ReactNode,
+} from 'react'
 import {
   Control,
   Controller,
@@ -21,7 +26,7 @@ export type FileFormFieldProps<T extends FieldValues> = {
   placeholder?: string
   accept?: string
   className?: string
-  info?: string | ((value: PathValue<T, Path<T>>) => string)
+  info?: ReactElement | ((value: PathValue<T, Path<T>>) => ReactElement)
   'data-testid'?: string
   asterisk?: boolean
   // Can be used for manual user error feedback
@@ -105,7 +110,9 @@ const FileFormField = <T extends FieldValues>({
 
             {info && (
               <p id={`${id}__info`} className="fr-hint-text fr-mt-1v fr-mb-0">
-                {typeof info === 'string' ? info : info(value)}
+                {isValidElement(info)
+                  ? info
+                  : typeof info === 'function' && info(value)}
               </p>
             )}
             {error && (

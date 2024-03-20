@@ -334,6 +334,14 @@ export const getDemandesSubventionsForForm = ({
               subventionPrestation: true,
               budgetGlobal: true,
               pieceJointeBudgetKey: true,
+              pieceJointeBudget: {
+                select: {
+                  key: true,
+                  mimeType: true,
+                  name: true,
+                  size: true,
+                },
+              },
               beneficiaires: {
                 select: {
                   id: true,

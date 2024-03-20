@@ -23,8 +23,6 @@ export const getDemandesDeSubventionDefaultValues = (
     ...rest
   } = demandeDeSubvention
 
-  console.log('BENEF DEFAULT VALUES', beneficiaires)
-
   return {
     ...rest,
     feuilleDeRouteId: demandeDeSubvention.feuilleDeRoute.id,
