@@ -1,17 +1,26 @@
 'use client'
 
-import React, { ChangeEventHandler } from 'react'
+import React, { ChangeEventHandler, CSSProperties } from 'react'
 import { useRouter } from 'next/navigation'
+import classNames from 'classnames'
 import { OptionTuples } from '@app/web/utils/options'
 
 const DepartementSwitcher = ({
   departementOptions,
   currentCodeDepartement,
   target,
+  className,
+  label: labelProperty = 'Département sélectionné',
+  style,
+  noPadding,
 }: {
   departementOptions: OptionTuples
   currentCodeDepartement?: string
-  target: 'donnees' | 'gouvernances'
+  target: 'donnees' | 'gouvernances' | 'administration'
+  className?: string
+  style?: CSSProperties
+  label?: string
+  noPadding?: boolean
 }) => {
   const id = `select-departement-switcher`
 
@@ -31,11 +40,18 @@ const DepartementSwitcher = ({
   }
 
   return (
-    <div className="fr-background-default--grey fr-border-radius--8 fr-p-8v">
+    <div
+      className={classNames(
+        'fr-background-default--grey fr-border-radius--8',
+        !noPadding && 'fr-p-8v',
+        className,
+      )}
+      style={style}
+    >
       <div className="fr-select-group fr-mb-0">
         <label className="fr-label fr-text--medium" htmlFor={id}>
           <span className="fr-icon-france-fill fr-text-label--blue-france" />{' '}
-          Département sélectionné
+          {labelProperty}
           <select
             className="fr-select fr-mt-2v"
             id={id}

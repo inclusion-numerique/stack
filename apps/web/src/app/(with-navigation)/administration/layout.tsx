@@ -1,11 +1,9 @@
 import type { PropsWithChildren } from 'react'
 import { checkAccessControl } from '@app/web/app/checkAccessControl'
-import { checkGouvernanceScopeWriteAccess } from '@app/web/app/(with-navigation)/gouvernances/checkGouvernanceScopeWriteAccess'
 
 const Layout = async ({ children }: PropsWithChildren) => {
   await checkAccessControl({
-    check: (user) =>
-      checkGouvernanceScopeWriteAccess({ scope: { national: true }, user }),
+    check: (user) => user?.role === 'Administrator' || user?.role === 'Demo',
     signinNextPath: `/administration`,
   })
 

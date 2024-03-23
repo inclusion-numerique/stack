@@ -270,6 +270,81 @@ export type BesoinsIngenierieFinanciereForForm = Exclude<
   null
 >
 
+export const getDemandesSubventionsForFormSelect = {
+  id: true,
+  v2Enregistree: true,
+  noteDeContexteSubventions: true,
+  noteDeContexteSubventionsEnregistree: true,
+  departement: {
+    select: {
+      nom: true,
+      code: true,
+      dotation202406: true,
+    },
+  },
+  feuillesDeRoute: {
+    select: {
+      id: true,
+      nom: true,
+      demandesDeSubvention: {
+        select: {
+          id: true,
+          besoins: true,
+          creation: true,
+          modification: true,
+          createur: {
+            select: {
+              id: true,
+              email: true,
+              name: true,
+            },
+          },
+          derniereModificationPar: {
+            select: {
+              id: true,
+              email: true,
+              name: true,
+            },
+          },
+          valideeEtEnvoyee: true,
+          demandeDeModification: true,
+          rejetee: true,
+          acceptee: true,
+          feuilleDeRoute: {
+            select: {
+              id: true,
+              nom: true,
+            },
+          },
+          nomAction: true,
+          contexte: true,
+          description: true,
+          subventionDemandee: true,
+          subventionEtp: true,
+          subventionPrestation: true,
+          budgetGlobal: true,
+          pieceJointeBudgetKey: true,
+          pieceJointeBudget: {
+            select: {
+              key: true,
+              mimeType: true,
+              name: true,
+              size: true,
+            },
+          },
+          beneficiaires: {
+            select: {
+              id: true,
+              subvention: true,
+              membreGouvernance: membreSelect,
+            },
+          },
+        },
+      },
+    },
+  },
+} satisfies Prisma.GouvernanceSelect
+
 export const getDemandesSubventionsForForm = ({
   gouvernanceId,
 }: {
@@ -280,80 +355,7 @@ export const getDemandesSubventionsForForm = ({
       id: gouvernanceId,
       supression: null,
     },
-    select: {
-      id: true,
-      v2Enregistree: true,
-      noteDeContexteSubventions: true,
-      noteDeContexteSubventionsEnregistree: true,
-      departement: {
-        select: {
-          nom: true,
-          code: true,
-          dotation202406: true,
-        },
-      },
-      feuillesDeRoute: {
-        select: {
-          id: true,
-          nom: true,
-          demandesDeSubvention: {
-            select: {
-              id: true,
-              besoins: true,
-              creation: true,
-              modification: true,
-              createur: {
-                select: {
-                  id: true,
-                  email: true,
-                  name: true,
-                },
-              },
-              derniereModificationPar: {
-                select: {
-                  id: true,
-                  email: true,
-                  name: true,
-                },
-              },
-              valideeEtEnvoyee: true,
-              demandeDeModification: true,
-              rejetee: true,
-              acceptee: true,
-              feuilleDeRoute: {
-                select: {
-                  id: true,
-                  nom: true,
-                },
-              },
-              nomAction: true,
-              contexte: true,
-              description: true,
-              subventionDemandee: true,
-              subventionEtp: true,
-              subventionPrestation: true,
-              budgetGlobal: true,
-              pieceJointeBudgetKey: true,
-              pieceJointeBudget: {
-                select: {
-                  key: true,
-                  mimeType: true,
-                  name: true,
-                  size: true,
-                },
-              },
-              beneficiaires: {
-                select: {
-                  id: true,
-                  subvention: true,
-                  membreGouvernance: membreSelect,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
+    select: getDemandesSubventionsForFormSelect,
   })
 
 export type GouvernanceWithDemandesSubventionsForForm = Exclude<
