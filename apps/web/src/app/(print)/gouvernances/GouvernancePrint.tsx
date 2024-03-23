@@ -1,20 +1,20 @@
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import React from 'react'
 import {
-  BesoinsIngenierieFinanciereForForm,
   GouvernanceForForm,
+  GouvernanceWithDemandesSubventionsForForm,
 } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import GouvernanceDetails from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/GouvernanceDetails'
 import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 
 const GouvernancePrint = ({
   gouvernance,
+  demandeDeSubvention,
   scope,
-  besoins,
 }: {
   gouvernance: GouvernanceForForm
+  demandeDeSubvention: GouvernanceWithDemandesSubventionsForForm
   scope: GouvernanceScope
-  besoins: BesoinsIngenierieFinanciereForForm | null
 }) => (
   <div className="fr-container fr-container--medium fr-py-10v ">
     <Notice
@@ -32,7 +32,7 @@ const GouvernancePrint = ({
     <GouvernanceDetails
       gouvernance={gouvernance}
       scope={scope}
-      besoins={besoins}
+      demandeDeSubvention={demandeDeSubvention}
       publicView={false}
       print
     />

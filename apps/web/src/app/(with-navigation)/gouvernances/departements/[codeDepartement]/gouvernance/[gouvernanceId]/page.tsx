@@ -1,9 +1,11 @@
 import React from 'react'
 import { notFound } from 'next/navigation'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
-import { getGouvernanceForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
+import {
+  getDemandesSubventionsForForm,
+  getGouvernanceForForm,
+} from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { generateDepartementMetadata } from '@app/web/app/(with-navigation)/gouvernances/departements/generateDepartementMetadata'
-import { getBesoinsEnIngenierieFinanciereForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getBesoinsIngenierieFinanciereForForm'
 import GouvernanceDetails from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/GouvernanceDetails'
 import { gouvernanceHomePath } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
 import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvernances/gouvernanceScopeTitle'
@@ -20,12 +22,14 @@ const Page = async ({
   params: { codeDepartement: string; gouvernanceId: string }
 }) => {
   const gouvernance = await getGouvernanceForForm(gouvernanceId)
-  const besoins = await getBesoinsEnIngenierieFinanciereForForm(gouvernanceId)
+  const demandeDeSubvention = await getDemandesSubventionsForForm({
+    gouvernanceId,
+  })
   const departement = await getDepartementNameAndCode(codeDepartement)
 
   const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
 
-  if (!gouvernance) {
+  if (!gouvernance || !demandeDeSubvention) {
     notFound()
   }
   if (gouvernance.departement.code !== codeDepartement) {
@@ -56,7 +60,7 @@ const Page = async ({
       </div>
       <GouvernanceDetails
         print={false}
-        besoins={besoins}
+        demandeDeSubvention={demandeDeSubvention}
         gouvernance={gouvernance}
         scope={{ codeDepartement }}
         publicView={false}

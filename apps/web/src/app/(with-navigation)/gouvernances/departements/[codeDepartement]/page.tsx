@@ -7,8 +7,10 @@ import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvern
 import { getListeGouvernanceDepartement } from '@app/web/app/(with-navigation)/gouvernances/getListeGouvernances'
 import GouvernanceList from '@app/web/app/(with-navigation)/gouvernances/GouvernanceList'
 import GouvernanceDetails from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/GouvernanceDetails'
-import { getGouvernanceForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
-import { getBesoinsEnIngenierieFinanciereForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getBesoinsIngenierieFinanciereForForm'
+import {
+  getDemandesSubventionsForForm,
+  getGouvernanceForForm,
+} from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import NoGouvernancePublicView from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/NoGouvernancePublicView'
 import { checkGouvernanceScopeWriteAccess } from '@app/web/app/(with-navigation)/gouvernances/checkGouvernanceScopeWriteAccess'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
@@ -55,8 +57,10 @@ const Page = async ({
     }
 
     const gouvernance = await getGouvernanceForForm(gouvernanceId)
-    const besoins = await getBesoinsEnIngenierieFinanciereForForm(gouvernanceId)
-    if (!gouvernance) {
+    const demandeDeSubvention = await getDemandesSubventionsForForm({
+      gouvernanceId,
+    })
+    if (!gouvernance || !demandeDeSubvention) {
       notFound()
     }
     return (
@@ -65,7 +69,7 @@ const Page = async ({
 
         <GouvernanceDetails
           gouvernance={gouvernance}
-          besoins={besoins}
+          demandeDeSubvention={demandeDeSubvention}
           publicView
           scope={{ codeDepartement }}
         />

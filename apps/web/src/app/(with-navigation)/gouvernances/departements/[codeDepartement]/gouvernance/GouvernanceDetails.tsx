@@ -1,16 +1,13 @@
 import classNames from 'classnames'
-import React from 'react'
+import React, { Fragment } from 'react'
 import NavigationSideMenu from '@app/ui/components/NavigationSideMenu'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import {
-  BesoinsIngenierieFinanciereForForm,
   GouvernanceForForm,
+  GouvernanceWithDemandesSubventionsForForm,
 } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
-import BesoinCardContent from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/priorisation/BesoinCardContent'
-import { getPriorisationCardInfos } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/priorisation/getPriorisationCardInfos'
-import { getBesoinsEnIngenieriePriorisationDefaultValues } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/besoinsEnIngenieriePriorisationDefaultValues'
 import {
   gouvernanceFormSections,
   gouvernanceFormSectionSideMenuItems,
@@ -39,19 +36,24 @@ import {
   typeContratLabels,
 } from '@app/web/gouvernance/gouvernanceWordingsAndOptions'
 import NoGouvernancePublicView from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/NoGouvernancePublicView'
+import {
+  areGouvernanceDemandesSubventionsCompleted,
+  getDemandesDeSubventionsForGouvernance,
+} from '@app/web/gouvernance/gouvernanceStatus'
+import DemandeDeSubventionDetailsCard from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/DemandeDeSubventionDetailsCard'
 import styles from './GouvernanceDetails.module.css'
 
 const GouvernanceDetails = ({
   publicView,
   gouvernance,
-  besoins,
+  demandeDeSubvention,
   scope,
   print,
 }: {
   // publicView -> Censor sensitive information
   publicView: boolean
   gouvernance: GouvernanceForForm
-  besoins: BesoinsIngenierieFinanciereForForm | null
+  demandeDeSubvention: GouvernanceWithDemandesSubventionsForForm
   scope: GouvernanceScope
   print?: boolean
 }) => {
@@ -73,7 +75,15 @@ const GouvernanceDetails = ({
     departement,
   } = gouvernance
 
-  if (!v2Enregistree && !besoins) {
+  const { noteDeContexteSubventionsEnregistree, noteDeContexteSubventions } =
+    demandeDeSubvention
+
+  // Public can only see accepted demandes de subvention
+  const demandesDeSubvention = getDemandesDeSubventionsForGouvernance(
+    demandeDeSubvention,
+  ).filter((demande) => (publicView ? demande.acceptee : true))
+
+  if (!v2Enregistree) {
     // Un visiteur public ne peux pas voir les gouvernances en cours d'élaboration
     return publicView ? (
       <>
@@ -89,23 +99,18 @@ const GouvernanceDetails = ({
     )
   }
 
-  const besoinCardInfos = besoins
-    ? getPriorisationCardInfos({
-        defaultValue: getBesoinsEnIngenieriePriorisationDefaultValues({
-          ...gouvernance,
-          besoinsEnIngenierieFinanciere: besoins,
-        }),
-        besoinsEnIngenierieFinanciere: besoins,
-      })
-    : []
+  const hasDemandesDeSubventions =
+    !!noteDeContexteSubventions &&
+    !!noteDeContexteSubventionsEnregistree &&
+    demandesDeSubvention.length > 0
 
   const sideMenuItems = [
     ...(publicView
       ? publicViewGouvernanceSideMenuItems
       : gouvernanceFormSectionSideMenuItems),
     {
-      text: 'Besoins en ingénierie financière',
-      linkProps: { href: '#besoins-ingenierie-financiere' },
+      text: 'Actions & subventions',
+      linkProps: { href: '#subventions' },
     },
   ]
 
@@ -524,33 +529,44 @@ const GouvernanceDetails = ({
               </WhiteCard>
             </div>
           )}
-          <div id="besoins-ingenierie-financiere" className="fr-pt-6v">
+          <div id="subventions" className="fr-pt-6v">
             <WhiteCard className={styles.box}>
-              <h5>Besoins en ingénierie financière</h5>
-              {besoinCardInfos.length === 0 && (
+              <h5>Actions & subventions</h5>
+              {areGouvernanceDemandesSubventionsCompleted(
+                demandeDeSubvention,
+              ) ? null : (
+                <Notice
+                  className="fr-mb-8v"
+                  title="Subventions en cours d’élaboration"
+                />
+              )}
+              {!hasDemandesDeSubventions && (
                 <>
                   <hr className="fr-separator-8v" />
-                  Aucun besoin renseigné
+                  Subventions en cours d’instruction
                 </>
               )}
-              {besoinCardInfos.map((card, index) => (
-                <>
-                  <hr
-                    key={`${card.prioriteKey}_separator`}
-                    className="fr-separator-8v"
-                  />
-
-                  <div
-                    key={card.prioriteKey}
-                    className={classNames(styles.card)}
-                  >
-                    <BesoinCardContent
-                      print={print}
-                      index={index}
-                      card={card}
+              {hasDemandesDeSubventions && (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: noteDeContexteSubventions,
+                  }}
+                  className={classNames(
+                    'fr-mb-4v',
+                    styles.noteDeContexteContainer,
+                  )}
+                />
+              )}
+              {demandesDeSubvention.map((demande) => (
+                <Fragment key={demande.id}>
+                  <hr className="fr-separator-8v" />
+                  <div className={classNames(styles.card)}>
+                    <DemandeDeSubventionDetailsCard
+                      demandeDeSubvention={demande}
+                      publicView={publicView}
                     />
                   </div>
-                </>
+                </Fragment>
               ))}
             </WhiteCard>
           </div>
