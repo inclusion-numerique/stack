@@ -33,6 +33,13 @@ const AdministrationSideMenu = () => {
       ),
     },
     {
+      text: 'Besoins subventions',
+      linkProps: {
+        href: '/administration/besoins-subventions',
+      },
+      isActive: pathname?.startsWith('/administration/besoins-subventions'),
+    },
+    {
       text: 'Metabase',
       linkProps: {
         href: metabaseDashboardUrl,

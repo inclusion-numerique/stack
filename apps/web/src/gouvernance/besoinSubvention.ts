@@ -25,6 +25,7 @@ export const besoinSubventionLabel: { [value in BesoinSubvention]: string } = {
 export const besoinSubventionCategories = [
   {
     name: 'Besoins relatif à la formalisation des feuilles de route',
+    adminLabel: 'Formalisation des feuilles de route',
     options: [
       'EtablirUnDiagnosticTerritorial',
       'CoConstruireLaFeuilleDeRoute',
@@ -34,6 +35,7 @@ export const besoinSubventionCategories = [
   },
   {
     name: 'Besoins relatif au financement du déploiement de la/des feuille(s) de route',
+    adminLabel: 'Financement du déploiement',
     options: [
       'StructurerUnFonds',
       'MonterDossiersDeSubvention',
@@ -42,6 +44,7 @@ export const besoinSubventionCategories = [
   },
   {
     name: "Besoin relatifs à l'outillage des acteurs de votre territoire",
+    adminLabel: 'Outillage des acteurs du territoire',
     options: [
       'StructurerUneFiliereDeReconditionnement',
       'CollecterDesDonneesTerritoriales',
@@ -50,6 +53,7 @@ export const besoinSubventionCategories = [
   },
   {
     name: "Besoins relatifs à la formation des professionnels de l'inclusion numérique",
+    adminLabel: 'Formation',
     options: ['AppuyerLaCertificationQualiopi'],
   },
 ] as const satisfies {

@@ -40,6 +40,7 @@ const Page = async ({
       title="Demandes de subvention"
       filters={<DemandesDeSubventionDataFilters searchParams={searchParams} />}
       csvData={csvData}
+      resultCount={data.length}
       infoContents={
         <ul className="fr-m-0 fr-text--sm">
           <li>
@@ -179,8 +180,10 @@ const Page = async ({
                       </Badge>
                     )}
                   </td>
-                  <td>{numberToEuros(dotation202406)}</td>
-                  <td>
+                  <td className="fr-text--right">
+                    {numberToEuros(dotation202406)}
+                  </td>
+                  <td className="fr-text--right">
                     {montantDemande ? numberToEuros(montantDemande) : null}
                   </td>
                   <td>{total || null}</td>

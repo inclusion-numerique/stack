@@ -44,6 +44,14 @@
     text-align: center;
 }
 
+.fr-text--right {
+    text-align: right !important;
+}
+
+.fr-text--justify {
+    text-align: justify  !important;
+}
+
 .fr-text--break-all {
     word-break: break-all;
 }

@@ -43,6 +43,7 @@ const Page = async ({
       title="Gouvernances"
       filters={<GouvernancesDataFilters searchParams={searchParams} />}
       csvData={csvData}
+      resultCount={data.length}
       infoContents={
         <ul className="fr-m-0 fr-text--sm">
           <li>
