@@ -56,7 +56,7 @@ const Page = async ({
           currentPageLabel="Compléter une gouvernance"
           segments={[
             {
-              label: "Page d'accueil",
+              label: 'Page d’accueil',
               linkProps: {
                 href: '/',
               },

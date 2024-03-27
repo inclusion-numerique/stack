@@ -90,7 +90,7 @@ const Page = async ({
           currentPageLabel="Demandes de subvention"
           segments={[
             {
-              label: "Page d'accueil",
+              label: 'Page d’accueil',
               linkProps: {
                 href: '/',
               },

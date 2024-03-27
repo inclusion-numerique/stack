@@ -44,7 +44,7 @@ const Page = async ({
           currentPageLabel="Détails"
           segments={[
             {
-              label: "Page d'accueil",
+              label: 'Page d’accueil',
               linkProps: {
                 href: '/',
               },

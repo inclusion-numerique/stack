@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 const Page = () => {
-  redirect('/administration/national')
+  redirect('/administration/gouvernances')
   return null
 }
 

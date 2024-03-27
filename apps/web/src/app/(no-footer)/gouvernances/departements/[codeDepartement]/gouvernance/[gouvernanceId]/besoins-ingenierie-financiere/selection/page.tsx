@@ -65,7 +65,7 @@ const Page = async ({
           currentPageLabel="Sélection des besoins en ingénierie financière"
           segments={[
             {
-              label: "Page d'accueil",
+              label: 'Page d’accueil',
               linkProps: {
                 href: '/',
               },

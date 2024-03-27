@@ -1,11 +1,19 @@
+.sideNavContainer {
+    width: 100%;
+
+    @media (min-width: 48em) {
+        width: 286px;
+    }
+}
 
 .pageContainer {
     min-height: 100%;
-}
+    padding: 0 16px;
 
-.metabaseContainer {
-    flex: 1;
-    position: relative;
-    min-height: 2200px;
-    margin-bottom: 80px;
+    @media (min-width: 48em) {
+        width: calc(100% - 286px);
+        padding: 0 32px 0 0;
+    }
+
+    padding-bottom: 120px;
 }

@@ -191,7 +191,7 @@ export const getDemandesDeSubventionFormContext = async ({
         currentPageLabel={currentPageLabel}
         segments={[
           {
-            label: "Page d'accueil",
+            label: 'Page d’accueil',
             linkProps: {
               href: '/',
             },

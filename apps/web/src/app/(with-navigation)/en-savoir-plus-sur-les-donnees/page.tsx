@@ -108,7 +108,7 @@ const Page = () => (
           currentPageLabel="En savoir plus sur les données"
           segments={[
             {
-              label: "Page d'accueil",
+              label: 'Page d’accueil',
               linkProps: {
                 href: '/',
               },
