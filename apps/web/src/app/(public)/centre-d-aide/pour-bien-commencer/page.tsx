@@ -213,33 +213,14 @@ const ContentPolicyPage = () => (
                 <h2 id="profil" className="fr-page-title fr-mt-5w fr-mb-3w">
                   Profitez dès à présent de votre profil
                 </h2>
-                <h3>Création de compte</h3>
-                <h4 className="fr-text--lead fr-mb-0">Inclusion Connect</h4>
                 <p>
-                  Inclusion Connect
-                  <Link
-                    href="https://connect.inclusion.beta.gouv.fr/accounts/register/"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    (https://connect.inclusion.beta.gouv.fr/accounts/register/)
-                  </Link>{' '}
-                  est une solution de connexion unique à plusieurs services
-                  publics pour les professionnels de l’inclusion.
+                  Lorsque vous vous inscrivez sur Les Bases du numérique
+                  d’intérêt général, un profil est automatiquement créé avec les
+                  informations que vous remplissez lors de votre inscription. Ce
+                  profil est donc personnel et individuel.
                 </p>
-                <p>
-                  Vous pouvez créer votre compte sur Les Bases, et vous y
-                  connecter par le biais d’Inclusion Connect, qui fournira votre
-                  nom, prénom et email à la plateforme Les Bases.
-                </p>
-                <h4 className="fr-text--lead fr-mb-0">Email</h4>
-                <p>
-                  Renseignez votre nom, prénom et email, et votre compte est
-                  prêt à être utilisé&nbsp;!
-                </p>
-                <h3 className="fr-mt-5w">Se connecter</h3>
                 <Notice
-                  className="fr-mb-2w"
+                  className="fr-mb-3w"
                   title={
                     <div>
                       <span className="fr-text-default--grey">
@@ -252,14 +233,8 @@ const ContentPolicyPage = () => (
                     </div>
                   }
                 />
-                <p>
-                  Lorsque vous vous inscrivez sur Les Bases du numérique
-                  d’intérêt général, un profil est automatiquement créé avec les
-                  informations que vous remplissez lors de votre inscription. Ce
-                  profil est donc personnel et individuel.
-                </p>
                 <p>Grâce à votre profil, vous pouvez&nbsp;:</p>
-                <ul>
+                <ul className="fr-mb-2w">
                   <li>
                     Créer et publier directement vos ressources depuis votre
                     profil

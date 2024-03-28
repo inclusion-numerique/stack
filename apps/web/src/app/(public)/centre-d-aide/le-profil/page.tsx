@@ -92,8 +92,8 @@ const ContentPolicyPage = () => (
                 </h2>
                 <ul>
                   <li>
-                    Retrouvez l’ensemble des ressources que vous avez créée ou
-                    auxquels vous avez contribué dans un même espace
+                    Retrouvez l’ensemble des ressources que vous avez créées ou
+                    auxquelles vous avez contribué dans un même espace
                   </li>
                   <li>
                     Créez et publiez (si votre{' '}
