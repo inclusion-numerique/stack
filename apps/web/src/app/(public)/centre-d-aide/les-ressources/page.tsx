@@ -41,7 +41,7 @@ const ContentPolicyPage = () => (
                   Une ressource, c’est quoi&nbsp;?
                 </h2>
                 <p className="fr-text--lg">
-                  Une ressource est une fiche traitant d'un sujet particulier
+                  Une ressource est une fiche traitant d’un sujet particulier
                   (trame d’atelier, initiative, documentation diverse, etc...).
                 </p>
                 <p className="fr-text--lg">
@@ -200,9 +200,9 @@ const ContentPolicyPage = () => (
                     formats supportés sont le jpeg, png et webp d’une taille
                     maximale de 20 Mo. Afin de donner du contexte aux visiteurs
                     sur l’image, vous pouvez ajouter, en optionnel, un titre, un
-                    texte alternatif (Il s'agit d'un court texte qui décrit ce
-                    que représente l'image . Cette information favorise
-                    l'accessibilité et le référencement) ainsi qu’une légende.
+                    texte alternatif (Il s’agit d’un court texte qui décrit ce
+                    que représente l’image . Cette information favorise
+                    l’accessibilité et le référencement) ainsi qu’une légende.
                   </li>
                   <li>
                     <strong>Lien&nbsp;:</strong> Vous pouvez ajouter un lien

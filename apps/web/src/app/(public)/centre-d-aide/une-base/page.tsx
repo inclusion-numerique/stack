@@ -2,6 +2,7 @@
 import type { Metadata } from 'next'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import Link from 'next/link'
+import React from 'react'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import SkipLinksPortal from '../../../../components/SkipLinksPortal'
@@ -265,13 +266,11 @@ const ContentPolicyPage = () => (
                   <table className="data-table" data-fr-js-table-element="true">
                     <thead>
                       <tr>
-                        <th scope="col" />
-                        <th scope="col" className="text-right">
-                          Administrateur
+                        <th scope="col">
+                          <span className="fr-sr-only">Propriétés</span>
                         </th>
-                        <th scope="col" className="text-right">
-                          Membre
-                        </th>
+                        <th scope="col">Administrateur</th>
+                        <th scope="col">Membre</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -729,13 +728,11 @@ const ContentPolicyPage = () => (
                   <table className="data-table" data-fr-js-table-element="true">
                     <thead>
                       <tr>
-                        <th scope="col" />
-                        <th scope="col" className="text-right">
-                          Base&nbsp;publique
+                        <th scope="col">
+                          <span className="fr-sr-only">Propriétés</span>
                         </th>
-                        <th scope="col" className="text-right">
-                          Base&nbsp;privée
-                        </th>
+                        <th scope="col">Base&nbsp;publique</th>
+                        <th scope="col">Base&nbsp;privée</th>
                       </tr>
                     </thead>
                     <tbody>

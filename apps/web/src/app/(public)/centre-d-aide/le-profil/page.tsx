@@ -122,7 +122,7 @@ const ContentPolicyPage = () => (
                   Utilisez votre profil comme un espace de publication personnel
                 </p>
                 <p>
-                  Votre page de profil public est l'endroit où les visiteurs de
+                  Votre page de profil public est l’endroit où les visiteurs de
                   la plateforme peuvent retrouver toutes vos ressources et
                   collections publiques. Votre profil sera référencé dans le
                   moteur de recherche de la plateforme et les visiteurs peuvent
@@ -314,13 +314,11 @@ const ContentPolicyPage = () => (
                   <table className="data-table" data-fr-js-table-element="true">
                     <thead>
                       <tr>
-                        <th scope="col" />
-                        <th scope="col" className="text-right">
-                          Profil public
+                        <th scope="col">
+                          <span className="fr-sr-only">Propriétés</span>
                         </th>
-                        <th scope="col" className="text-right">
-                          Profil privé
-                        </th>
+                        <th scope="col">Profil&nbsp;public</th>
+                        <th scope="col">Profil&nbsp;privé</th>
                       </tr>
                     </thead>
                     <tbody>

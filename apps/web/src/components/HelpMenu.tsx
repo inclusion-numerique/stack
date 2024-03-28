@@ -102,7 +102,7 @@ export const HelpMenu = () => {
           role="img"
           className="ri-question-line ri-lg fr-py-1v"
           aria-hidden={false}
-        ></span>
+        />
         <span className="fr-sr-only">Aide</span>
       </button>
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}

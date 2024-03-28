@@ -25,7 +25,7 @@ const CardIcon = ({
     <span
       role="img"
       className={`fr-background-contrast--${backgroundColor} fr-text-action-high--${color} ${icon} ri-xl fr-p-2w fr-border-radius--8`}
-      aria-hidden={true}
+      aria-hidden
     />
   </div>
 )

@@ -51,7 +51,7 @@ const ContentPolicyPage = () => (
                   ressourceries... qui existent déjà, Les Bases a pour vocation
                   de devenir le centre de ressources des acteurs du numérique
                   d’intérêt général en rendant accessible, pour la première fois
-                  au niveau national, l'ensemble des contenus et outils produits
+                  au niveau national, l’ensemble des contenus et outils produits
                   par et pour le secteur.
                 </p>
                 <p className="fr-text--lg">
@@ -74,9 +74,9 @@ const ContentPolicyPage = () => (
                   recensement d’outils et de ressources est récurrent.
                 </p>
                 <p>
-                  Le programme Société Numérique de l'Agence Nationale de la
+                  Le programme Société Numérique de l’Agence Nationale de la
                   Cohésion des Territoires (ANCT) a souhaité créer dans ce cadre
-                  un outil utile au quotidien pour les acteurs de l'inclusion et
+                  un outil utile au quotidien pour les acteurs de l’inclusion et
                   de la médiation numérique, leur permettant de&nbsp;:
                 </p>
                 <ul>
@@ -98,10 +98,10 @@ const ContentPolicyPage = () => (
                 <h4 className="fr-text--lead">Faire de la veille</h4>
                 <p className="fr-text--bold">
                   Inspirez-vous des ressources produites par une communauté au
-                  service du numérique d'intérêt général.
+                  service du numérique d’intérêt général.
                 </p>
                 <p>
-                  La Base du numérique d'intérêt général permet de rechercher,
+                  La Base du numérique d’intérêt général permet de rechercher,
                   prendre connaissance, et s’inspirer des ressources produites
                   par la communauté grâce à un moteur de recherche et des
                   thématiques adaptées, avec la possibilité d’enregistrer des
@@ -115,7 +115,7 @@ const ContentPolicyPage = () => (
                   soient diffusées auprès d’un large public.
                 </p>
                 <p>
-                  Les Bases du numérique d'intérêt général permet de présenter
+                  Les Bases du numérique d’intérêt général permet de présenter
                   et mettre en valeur vos ressources grâce à un système
                   modulaire de présentation des contenus, qui vous donne toute
                   la liberté pour composer de vraies pages d’information et de
@@ -172,7 +172,7 @@ const ContentPolicyPage = () => (
                     (https://connect.inclusion.beta.gouv.fr/accounts/register/)
                   </Link>{' '}
                   est une solution de connexion unique à plusieurs services
-                  publics pour les professionnels de l'inclusion.
+                  publics pour les professionnels de l’inclusion.
                 </p>
                 <p>
                   Vous pouvez créer votre compte sur Les Bases, et vous y
@@ -196,7 +196,7 @@ const ContentPolicyPage = () => (
                     (https://connect.inclusion.beta.gouv.fr/accounts/register/)
                   </Link>{' '}
                   est une solution de connexion unique à plusieurs services
-                  publics pour les professionnels de l'inclusion.
+                  publics pour les professionnels de l’inclusion.
                 </p>
                 <p>
                   Vous pouvez créer votre compte sur Les Bases, et vous y
@@ -225,7 +225,7 @@ const ContentPolicyPage = () => (
                     (https://connect.inclusion.beta.gouv.fr/accounts/register/)
                   </Link>{' '}
                   est une solution de connexion unique à plusieurs services
-                  publics pour les professionnels de l'inclusion.
+                  publics pour les professionnels de l’inclusion.
                 </p>
                 <p>
                   Vous pouvez créer votre compte sur Les Bases, et vous y
