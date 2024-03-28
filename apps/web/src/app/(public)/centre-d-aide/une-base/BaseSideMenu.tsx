@@ -8,8 +8,8 @@ const BASES_SECTIONS = [
     id: 'base',
     title: 'Une base, c’est quoi ?',
   },
-  { id: 'creer-base', title: 'Créer une base' },
   { id: 'utiliser-base', title: 'Comment utiliser une base ?' },
+  { id: 'creer-base', title: 'Créer une base' },
   { id: 'membre-base', title: 'Gérer les membres d’une base' },
   { id: 'infos-base', title: 'Informations & paramètres d’une base' },
 ]
