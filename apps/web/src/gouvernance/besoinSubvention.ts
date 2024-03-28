@@ -58,6 +58,7 @@ export const besoinSubventionCategories = [
   },
 ] as const satisfies {
   name: string
+  adminLabel: string
   options: BesoinSubvention[]
 }[]
 

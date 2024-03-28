@@ -1,6 +1,6 @@
 import React from 'react'
 import { AdministrationGouvernanceListSearchParams } from '@app/web/app/(with-navigation)/administration/gouvernances/getAdministrationGouvernancesList'
-import AdmininstrationDataPage from '@app/web/app/(with-navigation)/administration/AdmininstrationDataPage'
+import AdministrationDataPage from '@app/web/app/(with-navigation)/administration/AdministrationDataPage'
 import { numberToEuros, numberToString } from '@app/web/utils/formatNumber'
 import SortLink from '@app/web/app/(with-navigation)/administration/SortLink'
 import { createSortLinkProps } from '@app/web/app/(with-navigation)/administration/createSortLinkProps'
@@ -35,7 +35,7 @@ const Page = async ({
     })
 
   return (
-    <AdmininstrationDataPage
+    <AdministrationDataPage
       title="Subventions demandées par besoin"
       filters={<BesoinsSubventionsDataFilters searchParams={searchParams} />}
       csvData={csvData}

@@ -2,13 +2,13 @@
 
 import { useRouter } from 'next/navigation'
 import DataSearchAndFilters from '@app/web/app/(with-navigation)/administration/DataSearchAndFilters'
-import { AdministrationGouvernanceListSearchParams } from '@app/web/app/(with-navigation)/administration/gouvernances/getAdministrationGouvernancesList'
 import { createSearchCallback } from '@app/web/app/(with-navigation)/administration/createSearchCallback'
+import type { AdministrationGouvernancesDataTableSearchParams } from '@app/web/app/(with-navigation)/administration/gouvernances/AdministrationGouvernancesDataTable'
 
 const GouvernancesDataFilters = ({
   searchParams,
 }: {
-  searchParams: AdministrationGouvernanceListSearchParams
+  searchParams: AdministrationGouvernancesDataTableSearchParams
 }) => {
   const router = useRouter()
 
@@ -20,8 +20,8 @@ const GouvernancesDataFilters = ({
 
   return (
     <DataSearchAndFilters
-      searchQuery={searchParams.recherche}
       onSearch={onSearch}
+      searchQuery={searchParams.recherche}
     />
   )
 }

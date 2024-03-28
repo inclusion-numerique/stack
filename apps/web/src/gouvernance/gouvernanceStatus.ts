@@ -82,36 +82,3 @@ export const getLatestDemandesDeSubventionModifiee = <
   demandesDeSubventions.reduce((latest, demande) =>
     latest.modification > demande.modification ? latest : demande,
   )
-
-export const areGouvernanceDemandesSubventionsCompleted = <
-  T extends Pick<
-    DemandeDeSubvention,
-    'valideeEtEnvoyee' | 'subventionDemandee'
-  >,
-  V extends Pick<
-    Gouvernance,
-    'noteDeContexteSubventions' | 'noteDeContexteSubventionsEnregistree'
-  > & {
-    departement: {
-      dotation202406: Decimal
-    }
-    feuillesDeRoute: {
-      demandesDeSubvention: T[]
-    }[]
-  },
->(
-  gouvernance?: V,
-) => {
-  const demandesDeSubvention =
-    getDemandesDeSubventionsForGouvernance(gouvernance)
-
-  const dotationRestante =
-    !gouvernance || getMontantDotationRestante(gouvernance).montantRestant.gt(0)
-
-  return (
-    !!gouvernance?.noteDeContexteSubventionsEnregistree &&
-    demandesDeSubvention.length > 0 &&
-    demandesDeSubvention.every(({ valideeEtEnvoyee }) => !!valideeEtEnvoyee) &&
-    !dotationRestante
-  )
-}

@@ -1,20 +1,19 @@
 import React from 'react'
-import Badge from '@codegouvfr/react-dsfr/Badge'
-import Link from 'next/link'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
+import AdministrationDataPage from '@app/web/app/(with-navigation)/administration/AdministrationDataPage'
+import { numberToEuros } from '@app/web/utils/formatNumber'
 import GouvernancesDataFilters from '@app/web/app/(with-navigation)/administration/gouvernances/GouvernancesDataFilters'
 import {
-  AdministrationGouvernanceListSearchParams,
-  getAdministrationGouvernancesList,
-} from '@app/web/app/(with-navigation)/administration/gouvernances/getAdministrationGouvernancesList'
-import AdmininstrationDataPage from '@app/web/app/(with-navigation)/administration/AdmininstrationDataPage'
-import { dateAsDay } from '@app/web/utils/dateAsDay'
+  getAdministrationGouvernancesData,
+  getAdministrationGouvernancesMetadata,
+} from '@app/web/app/(with-navigation)/administration/gouvernances/getAdministrationGouvernances'
 import {
-  detailGouvernancePath,
-  gouvernanceHomePath,
-} from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
-import { numberToString } from '@app/web/utils/formatNumber'
-import SortLink from '@app/web/app/(with-navigation)/administration/SortLink'
-import { createSortLinkProps } from '@app/web/app/(with-navigation)/administration/createSortLinkProps'
+  AdministrationGouvernancesDataTable,
+  AdministrationGouvernancesDataTableSearchParams,
+} from '@app/web/app/(with-navigation)/administration/gouvernances/AdministrationGouvernancesDataTable'
+import { applyDataTableSearch } from '@app/web/data-table/applyDataTableSearch'
+import { applyDataTableOrdering } from '@app/web/data-table/applyDataTableOrdering'
+import { applyDataTableFilters } from '@app/web/data-table/applyDataTableFilters'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -22,163 +21,62 @@ export const revalidate = 0
 const Page = async ({
   searchParams,
 }: {
-  searchParams: AdministrationGouvernanceListSearchParams
+  searchParams: AdministrationGouvernancesDataTableSearchParams
 }) => {
-  const { data, gouvernanceCounts, besoinsCounts, subventionsCount, csvData } =
-    await getAdministrationGouvernancesList(searchParams)
+  const allData = await getAdministrationGouvernancesData({})
 
-  const sortLinkProps = (
-    sortParams: AdministrationGouvernanceListSearchParams,
-    isDefault = false,
-  ) =>
-    createSortLinkProps({
-      searchParams,
-      sortParams,
-      isDefault,
-      baseHref: '/administration/gouvernances',
-    })
+  const searchedData = applyDataTableSearch(
+    searchParams.recherche,
+    allData,
+    AdministrationGouvernancesDataTable,
+  )
+  const filteredData = applyDataTableFilters(
+    searchParams,
+    searchedData,
+    AdministrationGouvernancesDataTable,
+  )
+
+  const data = applyDataTableOrdering(
+    searchParams,
+    filteredData,
+    AdministrationGouvernancesDataTable,
+  )
+
+  const {
+    dotationIngenierieTotale,
+    montantDemandeTotal,
+    demandesCounts,
+    dotationTotale,
+  } = getAdministrationGouvernancesMetadata(data)
 
   return (
-    <AdmininstrationDataPage
+    <AdministrationDataPage
       title="Gouvernances"
       filters={<GouvernancesDataFilters searchParams={searchParams} />}
-      csvData={csvData}
-      resultCount={data.length}
+      data={data}
+      baseHref="/administration/gouvernances"
+      dataTableConfiguration={AdministrationGouvernancesDataTable}
+      searchParams={searchParams}
       infoContents={
         <ul className="fr-m-0 fr-text--sm">
           <li>
-            <b>{gouvernanceCounts.completed}</b>/{data.length} gouvernances
-            complétées
+            Dotation totale&nbsp;:&nbsp;<b>{numberToEuros(dotationTotale)}</b>
           </li>
           <li>
-            <b>{besoinsCounts.completed}</b>/{data.length} besoins en ingénierie
-            financière complétés
+            Dotation ingénierie&nbsp;:&nbsp;
+            <b>{numberToEuros(dotationIngenierieTotale)}</b>
           </li>
           <li>
-            <b>{subventionsCount.completed}</b>/{data.length} demandes de
-            subventions complétées
+            Montant total des demandes&nbsp;:&nbsp;
+            <b>{numberToEuros(montantDemandeTotal)}</b>
+          </li>
+          <li>
+            <b>{demandesCounts.total}</b> demandes de subventions (
+            {demandesCounts.enCours} en cours, {demandesCounts.aInstruire} à
+            instruire, {demandesCounts.validees} validée
+            {sPluriel(demandesCounts.validees)})
           </li>
         </ul>
-      }
-      table={
-        <table className="data-table" data-fr-js-table-element="true">
-          <thead>
-            <tr>
-              <th scope="col">
-                Département
-                <SortLink
-                  {...sortLinkProps(
-                    {
-                      tri: 'departement',
-                    },
-                    true,
-                  )}
-                />
-              </th>
-              <th scope="col">
-                Gouvernance
-                <SortLink
-                  {...sortLinkProps({
-                    tri: 'gouvernance',
-                  })}
-                />
-              </th>
-              <th scope="col">
-                Besoins en ingénierie financière
-                <SortLink
-                  {...sortLinkProps({
-                    tri: 'besoins',
-                  })}
-                />
-              </th>
-              <th scope="col">
-                Demandes de subventions
-                <SortLink
-                  {...sortLinkProps({
-                    tri: 'subventions',
-                  })}
-                />
-              </th>
-              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-              <th scope="col" />
-            </tr>
-          </thead>
-          <tbody>
-            {data.map(
-              ({
-                departement: { code, nom },
-                gouvernance,
-                besoinsIngenierieCompletedDate,
-                demandesSubvention,
-                areDemandesCompleted,
-              }) => (
-                <tr key={code}>
-                  <th>
-                    {code}&nbsp;·&nbsp;{nom}
-                  </th>
-                  <td>
-                    {gouvernance ? (
-                      <>
-                        <Badge small severity="success">
-                          Complétée le {dateAsDay(gouvernance.v2Enregistree)}
-                        </Badge>
-                        <Link
-                          className="fr-link fr-link--xs fr-ml-1v"
-                          href={detailGouvernancePath(
-                            { codeDepartement: code },
-                            gouvernance.id,
-                          )}
-                        >
-                          Détail{' '}
-                          <span className="fr-icon-arrow-right-line fr-icon--xs" />
-                        </Link>
-                      </>
-                    ) : (
-                      <Badge small severity="warning">
-                        Aucune&nbsp;gouvernance&nbsp;remontée
-                      </Badge>
-                    )}
-                  </td>
-                  <td>
-                    {besoinsIngenierieCompletedDate ? (
-                      <Badge small severity="success">
-                        Complétés le {dateAsDay(besoinsIngenierieCompletedDate)}
-                      </Badge>
-                    ) : (
-                      <Badge small severity="warning">
-                        Aucun&nbsp;besoin&nbsp;remonté
-                      </Badge>
-                    )}
-                  </td>
-                  <td>
-                    {demandesSubvention.length === 0 ? (
-                      <Badge small severity="warning">
-                        Aucune
-                      </Badge>
-                    ) : areDemandesCompleted ? (
-                      <Badge small severity="success">
-                        Complétées ({numberToString(demandesSubvention.length)})
-                      </Badge>
-                    ) : (
-                      <Badge small severity="info">
-                        En cours ({numberToString(demandesSubvention.length)})
-                      </Badge>
-                    )}
-                  </td>
-                  <td>
-                    <Link
-                      className="fr-link fr-link--xs fr-ml-1v"
-                      href={gouvernanceHomePath({ codeDepartement: code })}
-                      target="_blank"
-                    >
-                      Vue préfecture
-                    </Link>
-                  </td>
-                </tr>
-              ),
-            )}
-          </tbody>
-        </table>
       }
     />
   )

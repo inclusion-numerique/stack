@@ -4,16 +4,16 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { download } from '@app/web/utils/download'
 
 const DownloadCsvDataButton = ({
-  data,
-  title,
+  csvData,
+  csvFilename,
 }: {
-  data: string
-  title: string
+  csvData: string
+  csvFilename: string
 }) => {
   const onClick = () => {
-    const blob = new Blob([data], { type: 'text/csv' })
+    const blob = new Blob([csvData], { type: 'text/csv' })
     const url = URL.createObjectURL(blob)
-    download(url, `${title}.csv`)
+    download(url, `${csvFilename}.csv`)
   }
 
   return (

@@ -20,12 +20,12 @@ import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { limiteModicitaionDesDemandesDeSubvention } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceMetadata'
 import { numberToEuros } from '@app/web/utils/formatNumber'
 import {
-  areGouvernanceDemandesSubventionsCompleted,
   getDemandesDeSubventionsForGouvernance,
   getMontantDotationRestante,
 } from '@app/web/gouvernance/gouvernanceStatus'
 import DemandeDeSubventionCard from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/DemandeDeSubventionCard'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
+import { getStatutDemandesSubvention } from '@app/web/gouvernance/statutDemandesSubvention'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -81,7 +81,7 @@ const Page = async ({
     getMontantDotationRestante(gouvernance).montantRestant.gt(0)
 
   const canEditContexte =
-    !areGouvernanceDemandesSubventionsCompleted(gouvernance)
+    getStatutDemandesSubvention(gouvernance) !== 'Finalisé'
 
   return (
     <>

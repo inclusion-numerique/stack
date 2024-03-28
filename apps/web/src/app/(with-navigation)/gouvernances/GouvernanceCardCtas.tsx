@@ -16,10 +16,10 @@ import {
 import CreateGouvernanceButton from '@app/web/app/(with-navigation)/gouvernances/CreateGouvernanceButton'
 import { nameOrEmail } from '@app/web/utils/nameOrEmail'
 import {
-  areGouvernanceDemandesSubventionsCompleted,
   isGouvernanceBesoinsCompleted,
   isGouvernanceV2,
 } from '@app/web/gouvernance/gouvernanceStatus'
+import { getStatutDemandesSubvention } from '@app/web/gouvernance/statutDemandesSubvention'
 import styles from './GouvernanceList.module.css'
 
 const GouvernanceCardCtas = ({
@@ -68,7 +68,7 @@ const GouvernanceCardCtas = ({
     isExistingGouvernance && isGouvernanceBesoinsCompleted(gouvernance)
   const subventionsCompleted =
     isExistingGouvernance &&
-    areGouvernanceDemandesSubventionsCompleted(gouvernance)
+    getStatutDemandesSubvention(gouvernance) === 'Finalisé'
 
   return (
     <>

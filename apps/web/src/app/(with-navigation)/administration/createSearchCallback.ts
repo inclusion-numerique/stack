@@ -3,7 +3,7 @@ import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.
 export const createSearchCallback =
   <T extends { recherche?: string }>({
     router,
-    searchParams = {},
+    searchParams,
     baseHref,
   }: {
     router: AppRouterInstance

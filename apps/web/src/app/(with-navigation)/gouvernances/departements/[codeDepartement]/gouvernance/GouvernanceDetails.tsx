@@ -36,11 +36,9 @@ import {
   typeContratLabels,
 } from '@app/web/gouvernance/gouvernanceWordingsAndOptions'
 import NoGouvernancePublicView from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/NoGouvernancePublicView'
-import {
-  areGouvernanceDemandesSubventionsCompleted,
-  getDemandesDeSubventionsForGouvernance,
-} from '@app/web/gouvernance/gouvernanceStatus'
+import { getDemandesDeSubventionsForGouvernance } from '@app/web/gouvernance/gouvernanceStatus'
 import DemandeDeSubventionDetailsCard from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/DemandeDeSubventionDetailsCard'
+import { getStatutDemandesSubvention } from '@app/web/gouvernance/statutDemandesSubvention'
 import styles from './GouvernanceDetails.module.css'
 
 const GouvernanceDetails = ({
@@ -103,6 +101,9 @@ const GouvernanceDetails = ({
     !!noteDeContexteSubventions &&
     !!noteDeContexteSubventionsEnregistree &&
     demandesDeSubvention.length > 0
+
+  const demandesSubventionsCompleted =
+    getStatutDemandesSubvention(demandeDeSubvention) === 'Finalisé'
 
   const sideMenuItems = [
     ...(publicView
@@ -281,15 +282,14 @@ const GouvernanceDetails = ({
                 </>
               )}
               {coporteursMembres.map(({ nom, code }, index) => (
-                <>
-                  <hr key={`${code}_separator`} className="fr-separator-8v" />
+                <Fragment key={code}>
+                  <hr className="fr-separator-8v" />
                   <InfoLabelValue
-                    key={code}
                     label={`Co-porteur ${index + 1}`}
                     value={nom}
                     labelClassName={print ? 'fr-mt-2v' : ''}
                   />
-                </>
+                </Fragment>
               ))}
             </WhiteCard>
           </div>
@@ -365,13 +365,9 @@ const GouvernanceDetails = ({
                   },
                   index,
                 ) => (
-                  <>
-                    <hr
-                      key={`${comiteId}_separator`}
-                      className="fr-separator-8v"
-                    />
+                  <Fragment key={comiteId}>
+                    <hr className="fr-separator-8v" />
                     <InfoLabelValue
-                      key={comiteId}
                       label={`Comite ${index + 1}`}
                       labelClassName={print ? 'fr-mt-2v' : ''}
                       value={
@@ -389,7 +385,7 @@ const GouvernanceDetails = ({
                         </>
                       }
                     />
-                  </>
+                  </Fragment>
                 ),
               )}
             </WhiteCard>
@@ -441,13 +437,9 @@ const GouvernanceDetails = ({
                     ) : null
 
                   return (
-                    <>
-                      <hr
-                        key={`${feuilleDeRouteId}_separator`}
-                        className="fr-separator-8v"
-                      />
+                    <Fragment key={feuilleDeRouteId}>
+                      <hr className="fr-separator-8v" />
                       <InfoLabelValue
-                        key={feuilleDeRouteId}
                         label={`Feuille de route ${index + 1} : ${nom}`}
                         labelClassName={print ? 'fr-mt-2v' : ''}
                         value={
@@ -468,7 +460,7 @@ const GouvernanceDetails = ({
                           </>
                         }
                       />
-                    </>
+                    </Fragment>
                   )
                 },
               )}
@@ -491,7 +483,7 @@ const GouvernanceDetails = ({
               )}
               {organisationsRecruteusesCoordinateurs.map(
                 ({ siretInformations: { nom, siret } }, index) => (
-                  <>
+                  <Fragment key={siret}>
                     <hr className="fr-separator-8v" />
                     <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
                       <span>
@@ -504,7 +496,7 @@ const GouvernanceDetails = ({
                         />
                       </span>
                     </div>
-                  </>
+                  </Fragment>
                 ),
               )}
             </WhiteCard>
@@ -532,9 +524,7 @@ const GouvernanceDetails = ({
           <div id="subventions" className="fr-pt-6v">
             <WhiteCard className={styles.box}>
               <h5>Actions & subventions</h5>
-              {areGouvernanceDemandesSubventionsCompleted(
-                demandeDeSubvention,
-              ) ? null : (
+              {demandesSubventionsCompleted ? null : (
                 <Notice
                   className="fr-mb-8v"
                   title="Subventions en cours d’élaboration"

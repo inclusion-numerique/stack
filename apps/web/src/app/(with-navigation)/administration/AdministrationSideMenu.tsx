@@ -17,13 +17,6 @@ const AdministrationSideMenu = () => {
       isActive: pathname?.startsWith('/administration/gouvernances'),
     },
     {
-      text: 'Demandes de subvention',
-      linkProps: {
-        href: '/administration/demandes-de-subvention',
-      },
-      isActive: pathname?.startsWith('/administration/demandes-de-subvention'),
-    },
-    {
       text: 'Bénéficiaires subventions',
       linkProps: {
         href: '/administration/beneficiaires-subventions',
