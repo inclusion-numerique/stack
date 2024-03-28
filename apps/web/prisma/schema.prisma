@@ -763,6 +763,10 @@ model Gouvernance {
   noteDeContexteSubventions            String?   @map("note_de_contexte_subventions")
   noteDeContexteSubventionsEnregistree DateTime? @map("note_de_contexte_subventions_enregistree")
 
+  beneficiaireDotationFormationId         String?            @unique @map("beneficiaire_dotation_formation_id") @db.Uuid
+  beneficiaireDotationFormation           MembreGouvernance? @relation(name: "beneficiaire_dotation_formation", fields: [beneficiaireDotationFormationId], references: [id])
+  beneficiaireDotationFormationEnregistre DateTime?          @map("beneficiaire_dotation_formation_enregistre")
+
   pasDeCoporteurs Boolean? @map("pas_de_co_porteurs")
 
   feuillesDeRoute FeuilleDeRoute[]
@@ -992,10 +996,11 @@ model MembreGouvernance {
   siretInformations InformationsSiret? @relation(name: "membre_gouvernance_siret", fields: [siret], references: [siret], onDelete: NoAction)
 
   // Formulaire rempli par le porteur, surtout utile en cas de membre de type structure car une structure n'est pas modélisée en base
-  formulaireGouvernanceId String                   @map("formulaire_gouvernance_id") @db.Uuid
-  formulaireGouvernance   FormulaireGouvernance    @relation(fields: [formulaireGouvernanceId], references: [id], onDelete: Cascade)
-  feuillesDeRoutes        MembreFeuilleDeRoute[]
-  beneficiaireSubventions BeneficiaireSubvention[]
+  formulaireGouvernanceId       String                   @map("formulaire_gouvernance_id") @db.Uuid
+  formulaireGouvernance         FormulaireGouvernance    @relation(fields: [formulaireGouvernanceId], references: [id], onDelete: Cascade)
+  feuillesDeRoutes              MembreFeuilleDeRoute[]
+  beneficiaireSubventions       BeneficiaireSubvention[]
+  beneficiaireDotationFormation Gouvernance?             @relation(name: "beneficiaire_dotation_formation")
 
   @@map("membre_gouvernance")
 }
