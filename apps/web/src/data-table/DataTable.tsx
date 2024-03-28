@@ -85,6 +85,11 @@ const DataTable = <
               )}
             </tr>
           ))}
+          {rows.length === 0 && (
+            <tr>
+              <td colSpan={configuration.columns.length}>Aucun résultat</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
