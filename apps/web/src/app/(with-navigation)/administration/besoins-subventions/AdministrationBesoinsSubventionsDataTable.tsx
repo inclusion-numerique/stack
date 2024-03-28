@@ -16,13 +16,7 @@ export const AdministrationBesoinsSubventionsDataTable = {
       a.label.localeCompare(b.label),
     ),
   rowInMemorySearchableString: ({ label, categorie }) =>
-    `${label
-      .toLowerCase()
-      .normalize('NFD')
-      .replaceAll(/[\u0300-\u036F]/g, '')} ${categorie
-      .toLowerCase()
-      .normalize('NFD')
-      .replaceAll(/[\u0300-\u036F]/g, '')}`,
+    `${label} ${categorie}`,
   columns: [
     {
       name: 'besoin',

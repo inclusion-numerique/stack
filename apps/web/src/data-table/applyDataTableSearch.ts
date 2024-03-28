@@ -3,13 +3,20 @@ import {
   DataTableRow,
 } from '@app/web/data-table/DataTableConfiguration'
 
-export const getSearchTokens = (searchQuery?: string) =>
+const normalizeSearchString = (searchQuery: string) =>
   searchQuery
-    ?.replaceAll(/[\u0300-\u036F]/g, '')
     .normalize('NFD')
-    .split(' ')
-    .map((token) => token.toLowerCase().trim())
-    .filter(Boolean)
+    .replaceAll(/[\u0300-\u036F]/g, '')
+    .toLowerCase()
+    .trim()
+
+export const getSearchTokens = (searchQuery?: string) =>
+  searchQuery?.trim()
+    ? normalizeSearchString(searchQuery)
+        .split(' ')
+        .map((token) => token.toLowerCase().trim())
+        .filter(Boolean)
+    : undefined
 
 export const applyDataTableSearch = <Data extends DataTableRow>(
   search: string | undefined,
@@ -28,7 +35,9 @@ export const applyDataTableSearch = <Data extends DataTableRow>(
   }
 
   return data.filter((row) => {
-    const searchableString = toSearchableString(row)
+    const searchableString =
+      normalizeSearchString(toSearchableString(row)) ?? ''
+
     return searchTokens.some((token) => searchableString.includes(token))
   })
 }

@@ -80,7 +80,6 @@ export const getAdministrationGouvernancesData = async () => {
 
     const dotationTotale = dotation202406.add(dotationFormation202406)
 
-    // TODO add formation beneficiaire member id to the set
     const deduplicatedBeneficiaires = new Set(
       demandesSubvention.flatMap((demande) =>
         demande.beneficiaires.map(
@@ -88,6 +87,12 @@ export const getAdministrationGouvernancesData = async () => {
         ),
       ),
     )
+
+    if (gouvernance?.beneficiaireDotationFormation) {
+      deduplicatedBeneficiaires.add(
+        gouvernance.beneficiaireDotationFormation.id,
+      )
+    }
 
     return {
       departement,

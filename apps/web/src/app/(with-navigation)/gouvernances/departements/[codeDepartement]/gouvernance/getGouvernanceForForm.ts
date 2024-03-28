@@ -17,7 +17,7 @@ const siretInfoSelect = {
   },
 }
 
-const membreSelect = {
+export const membreSelect = {
   select: {
     id: true,
     modification: true,
@@ -68,6 +68,13 @@ export const gouvernanceListSelect = {
   noteDeContexte: true,
   noteDeContexteSubventions: true,
   noteDeContexteSubventionsEnregistree: true,
+
+  beneficiaireDotationFormationEnregistre: true,
+  beneficiaireDotationFormation: {
+    select: {
+      id: true,
+    },
+  },
 
   organisationsRecruteusesCoordinateurs: {
     select: {
@@ -281,6 +288,10 @@ export const getDemandesSubventionsForFormSelect = {
       code: true,
       dotation202406: true,
     },
+  },
+  beneficiaireDotationFormationEnregistre: true,
+  beneficiaireDotationFormation: {
+    select: membreSelect.select,
   },
   feuillesDeRoute: {
     select: {

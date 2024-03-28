@@ -8,6 +8,8 @@ describe('getGouvernanceFormDefaultValues', () => {
       besoinsEnIngenierieFinanciere: null,
       noteDeContexteSubventions: null,
       noteDeContexteSubventionsEnregistree: null,
+      beneficiaireDotationFormationEnregistre: null,
+      beneficiaireDotationFormation: null,
       comites: [
         {
           commentaire: '🗺️',

@@ -29,8 +29,9 @@ export const getStatutDemandesSubvention = <
   >,
   V extends Pick<
     Gouvernance,
-    // TODO Add formation member
-    'noteDeContexteSubventions' | 'noteDeContexteSubventionsEnregistree'
+    | 'noteDeContexteSubventions'
+    | 'noteDeContexteSubventionsEnregistree'
+    | 'beneficiaireDotationFormationEnregistre'
   > & {
     departement: {
       dotation202406: Decimal
@@ -38,6 +39,9 @@ export const getStatutDemandesSubvention = <
     feuillesDeRoute: {
       demandesDeSubvention: T[]
     }[]
+    beneficiaireDotationFormation: {
+      id: string
+    } | null
   },
 >(
   gouvernance?: V,
@@ -48,11 +52,10 @@ export const getStatutDemandesSubvention = <
   const dotationRestante =
     !gouvernance || getMontantDotationRestante(gouvernance).montantRestant.gt(0)
 
-  // TODO Formation test
-
   if (
     !gouvernance?.noteDeContexteSubventionsEnregistree &&
-    demandesDeSubvention.length === 0
+    demandesDeSubvention.length === 0 &&
+    !gouvernance?.beneficiaireDotationFormation
   ) {
     return 'Non renseigné'
   }
@@ -60,17 +63,18 @@ export const getStatutDemandesSubvention = <
   return !!gouvernance?.noteDeContexteSubventionsEnregistree &&
     demandesDeSubvention.length > 0 &&
     demandesDeSubvention.every(({ valideeEtEnvoyee }) => !!valideeEtEnvoyee) &&
-    !dotationRestante
+    !dotationRestante &&
+    !!gouvernance?.beneficiaireDotationFormation &&
+    !!gouvernance?.beneficiaireDotationFormationEnregistre
     ? 'Finalisé'
     : 'En cours'
 }
 
 export const getStatutBeneficiaireFormation = (
-  gouvernance?: Pick<Gouvernance, 'id'>,
+  gouvernance?: Pick<Gouvernance, 'beneficiaireDotationFormationEnregistre'>,
 ): StatutAction => {
-  if (!gouvernance) {
+  if (!gouvernance?.beneficiaireDotationFormationEnregistre) {
     return 'Non renseigné'
   }
-  // TODO Formation status
-  return 'Non renseigné'
+  return 'Envoyé'
 }
