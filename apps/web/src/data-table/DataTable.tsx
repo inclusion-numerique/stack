@@ -70,13 +70,19 @@ const DataTable = <
         <tbody>
           {rows.map((row) => (
             <tr key={configuration.rowKey(row)}>
-              {configuration.columns.map(({ name, cellAsTh, cell }) => {
-                if (!cell) {
-                  return null
-                }
-                const Component = cellAsTh ? 'th' : 'td'
-                return <Component key={name}>{cell(row)}</Component>
-              })}
+              {configuration.columns.map(
+                ({ name, cellAsTh, cell, cellClassName }) => {
+                  if (!cell) {
+                    return null
+                  }
+                  const Component = cellAsTh ? 'th' : 'td'
+                  return (
+                    <Component className={cellClassName} key={name}>
+                      {cell(row)}
+                    </Component>
+                  )
+                },
+              )}
             </tr>
           ))}
         </tbody>

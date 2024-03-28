@@ -46,7 +46,6 @@ export const AdministrationGouvernancesDataTable = {
           (a.gouvernance ? 1 : 0) - (b.gouvernance ? 1 : 0),
           a.membresCounts.coPorteurs - b.membresCounts.coPorteurs,
         ),
-      cellClassName: 'fr-text--right',
       cell: ({ gouvernance, membresCounts }) =>
         gouvernance ? (
           membresCounts.coPorteurs === 0 ? (
@@ -204,6 +203,7 @@ export const AdministrationGouvernancesDataTable = {
       header: 'En cours',
       csvHeaders: ['En cours'],
       csvValues: ({ demandesCounts }) => [demandesCounts.enCours],
+      cellClassName: 'fr-text--right',
       cell: ({ demandesCounts }) =>
         demandesCounts.enCours ? (
           <Badge small severity="info" noIcon>
@@ -217,6 +217,7 @@ export const AdministrationGouvernancesDataTable = {
       header: 'À instruire',
       csvHeaders: ['À instruire'],
       csvValues: ({ demandesCounts }) => [demandesCounts.aInstruire],
+      cellClassName: 'fr-text--right',
       cell: ({ demandesCounts }) =>
         demandesCounts.aInstruire ? (
           <Badge small severity="new" noIcon>
@@ -231,6 +232,7 @@ export const AdministrationGouvernancesDataTable = {
       header: 'Validées',
       csvHeaders: ['Validées'],
       csvValues: ({ demandesCounts }) => [demandesCounts.validees],
+      cellClassName: 'fr-text--right',
       cell: ({ demandesCounts }) =>
         demandesCounts.validees ? (
           <Badge small severity="success" noIcon>
