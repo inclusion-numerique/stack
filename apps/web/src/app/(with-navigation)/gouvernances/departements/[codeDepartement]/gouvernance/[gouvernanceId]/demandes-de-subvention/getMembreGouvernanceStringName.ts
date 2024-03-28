@@ -14,11 +14,14 @@ export const getMembreGouvernanceStringName = ({
   commune: { nom: string } | null
   nomStructure: string | null
   siret: string | null
-}) =>
-  region?.nom ??
-  departement?.nom ??
-  epci?.nom ??
-  commune?.nom ??
-  nomStructure ??
-  siret ??
-  id
+}) => {
+  if (region?.nom) {
+    return `CR · ${region.nom}`
+  }
+
+  if (departement?.nom) {
+    return `CD · ${departement.nom}`
+  }
+
+  return epci?.nom ?? commune?.nom ?? nomStructure ?? siret ?? id
+}
