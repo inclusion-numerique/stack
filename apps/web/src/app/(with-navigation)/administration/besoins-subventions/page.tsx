@@ -1,14 +1,18 @@
 import React from 'react'
-import { AdministrationGouvernanceListSearchParams } from '@app/web/app/(with-navigation)/administration/gouvernances/getAdministrationGouvernancesList'
 import AdministrationDataPage from '@app/web/app/(with-navigation)/administration/AdministrationDataPage'
-import { numberToEuros, numberToString } from '@app/web/utils/formatNumber'
-import SortLink from '@app/web/app/(with-navigation)/administration/SortLink'
-import { createSortLinkProps } from '@app/web/app/(with-navigation)/administration/createSortLinkProps'
+import { numberToEuros } from '@app/web/utils/formatNumber'
 import {
-  AdministrationBesoinsSubventionsListSearchParams,
-  getAdministrationBesoinsSubventions,
+  getAdministrationBesoinsSubventionsData,
+  getAdministrationBesoinsSubventionsMetadata,
 } from '@app/web/app/(with-navigation)/administration/besoins-subventions/getAdministrationBesoinsSubventions'
 import BesoinsSubventionsDataFilters from '@app/web/app/(with-navigation)/administration/besoins-subventions/BesoinsSubventionsDataFilters'
+import { applyDataTableSearch } from '@app/web/data-table/applyDataTableSearch'
+import { applyDataTableFilters } from '@app/web/data-table/applyDataTableFilters'
+import { applyDataTableOrdering } from '@app/web/data-table/applyDataTableOrdering'
+import {
+  AdministrationBesoinsSubventionsDataTable,
+  AdministrationBesoinsSubventionsDataTableSearchParams,
+} from '@app/web/app/(with-navigation)/administration/besoins-subventions/AdministrationBesoinsSubventionsDataTable'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -16,30 +20,36 @@ export const revalidate = 0
 const Page = async ({
   searchParams,
 }: {
-  searchParams: AdministrationBesoinsSubventionsListSearchParams
+  searchParams: AdministrationBesoinsSubventionsDataTableSearchParams
 }) => {
-  const { data, categories, csvData } =
-    await getAdministrationBesoinsSubventions(searchParams)
+  const allData = await getAdministrationBesoinsSubventionsData({})
 
-  console.log('CATEGORIES', categories)
+  const searchedData = applyDataTableSearch(
+    searchParams.recherche,
+    allData,
+    AdministrationBesoinsSubventionsDataTable,
+  )
+  const filteredData = applyDataTableFilters(
+    searchParams,
+    searchedData,
+    AdministrationBesoinsSubventionsDataTable,
+  )
 
-  const sortLinkProps = (
-    sortParams: AdministrationGouvernanceListSearchParams,
-    isDefault = false,
-  ) =>
-    createSortLinkProps({
-      searchParams,
-      sortParams,
-      isDefault,
-      baseHref: '/administration/besoins-subventions',
-    })
+  const data = applyDataTableOrdering(
+    searchParams,
+    filteredData,
+    AdministrationBesoinsSubventionsDataTable,
+  )
+
+  const { categories } = getAdministrationBesoinsSubventionsMetadata(
+    searchParams.recherche,
+    data,
+  )
 
   return (
     <AdministrationDataPage
       title="Subventions demandées par besoin"
       filters={<BesoinsSubventionsDataFilters searchParams={searchParams} />}
-      csvData={csvData}
-      resultCount={data.length}
       infoContents={
         <ul className="fr-m-0 fr-text--sm">
           {categories.map(({ label, actions, montant }) => (
@@ -52,65 +62,10 @@ const Page = async ({
           ))}
         </ul>
       }
-      table={
-        <table className="data-table" data-fr-js-table-element="true">
-          <thead>
-            <tr>
-              <th scope="col">
-                Besoin
-                <SortLink
-                  {...sortLinkProps(
-                    {
-                      tri: 'besoin',
-                    },
-                    true,
-                  )}
-                />
-              </th>
-              <th scope="col">
-                Catégorie
-                <SortLink
-                  {...sortLinkProps({
-                    tri: 'categorie',
-                  })}
-                />
-              </th>
-              <th scope="col">
-                Montant demandé
-                <SortLink
-                  {...sortLinkProps({
-                    tri: 'montant',
-                  })}
-                />
-              </th>
-              <th scope="col">
-                Actions
-                <SortLink
-                  {...sortLinkProps({
-                    tri: 'actions',
-                  })}
-                />
-              </th>
-              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-              <th scope="col" />
-            </tr>
-          </thead>
-          <tbody>
-            {data.map(({ actions, label, montant, categorie }) => (
-              <tr key={label}>
-                <th>{label}</th>
-                <td>{categorie}</td>
-                <td className="fr-text--right">
-                  {montant.gt(0) ? numberToEuros(montant) : null}
-                </td>
-                <td className="fr-text--right">
-                  {actions ? numberToString(actions) : null}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      }
+      data={data}
+      baseHref="/administration/besoins-subventions"
+      dataTableConfiguration={AdministrationBesoinsSubventionsDataTable}
+      searchParams={searchParams}
     />
   )
 }

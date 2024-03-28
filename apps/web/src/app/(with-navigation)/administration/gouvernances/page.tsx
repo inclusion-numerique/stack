@@ -67,7 +67,7 @@ const Page = async ({
             <b>{numberToEuros(dotationIngenierieTotale)}</b>
           </li>
           <li>
-            Montant total des demandes&nbsp;:&nbsp;
+            Total des demandes en ingénierie&nbsp;:&nbsp;
             <b>{numberToEuros(montantDemandeTotal)}</b>
           </li>
           <li>

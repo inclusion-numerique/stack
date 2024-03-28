@@ -1,40 +1,20 @@
-import { stringify } from 'csv-stringify/sync'
 import { Decimal } from 'decimal.js'
 import type { BesoinSubvention } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
-import { SortDirection } from '@app/web/app/(with-navigation)/administration/SortLink'
-import { compareMultiple } from '@app/web/utils/compareMultiple'
 import {
   besoinSubventionCategories,
   besoinSubventionLabel,
 } from '@app/web/gouvernance/besoinSubvention'
-import { getSearchTokens } from '@app/web/app/(with-navigation)/administration/administrationSearch'
 
-export type AdministrationBesoinsSubventionsListSearchParams = {
-  recherche?: string
-  tri?: 'besoin' | 'actions' | 'montant' | 'categorie'
-  ordre?: SortDirection
-}
-
-export const getAdministrationBesoinsSubventions = async ({
-  codeDepartement,
-  recherche,
-  tri,
-  ordre,
-}: {
-  codeDepartement?: string
-} & AdministrationBesoinsSubventionsListSearchParams) => {
-  const demandesRows = await prismaClient.demandeDeSubvention.findMany({
+export const getAdministrationBesoinsSubventionsData = async ({}) => {
+  const rows = await prismaClient.demandeDeSubvention.findMany({
     select: {
       besoins: true,
       subventionDemandee: true,
     },
-    where: {
-      code: codeDepartement,
-    },
   })
 
-  const flattenBesoins = demandesRows.flatMap((demande) =>
+  const flattenBesoins = rows.flatMap((demande) =>
     demande.besoins.map((besoin) => ({
       besoin,
       subventionDemandee: demande.subventionDemandee,
@@ -87,27 +67,26 @@ export const getAdministrationBesoinsSubventions = async ({
     })
   }
 
-  const rechercheTokens = getSearchTokens(recherche)
+  return [...besoinsMap.values()]
+}
 
-  const besoins = rechercheTokens
-    ? [...besoinsMap.values()].filter(({ label, categorie }) => {
-        const searchableBesoin = label
-          .toLowerCase()
-          .normalize('NFD')
-          .replaceAll(/[\u0300-\u036F]/g, '')
+export type AdministrationBesoinSubventionDataRow = Awaited<
+  ReturnType<typeof getAdministrationBesoinsSubventionsData>
+>[number]
 
-        const searchableCategory = categorie
-          .toLowerCase()
-          .normalize('NFD')
-          .replaceAll(/[\u0300-\u036F]/g, '')
+export const getAdministrationBesoinsSubventionsMetadata = (
+  search: string | undefined,
+  data: AdministrationBesoinSubventionDataRow[],
+) => {
+  const montantTotal = data.reduce(
+    (accumulator, row) => accumulator.add(row.montant),
+    new Decimal(0),
+  )
 
-        return rechercheTokens.some(
-          (token) =>
-            searchableBesoin.includes(token) ||
-            searchableCategory.includes(token),
-        )
-      })
-    : [...besoinsMap.values()]
+  const actionsTotal = data.reduce(
+    (accumulator, row) => accumulator + row.actions,
+    0,
+  )
 
   const categoriesMap = new Map<
     string,
@@ -119,7 +98,7 @@ export const getAdministrationBesoinsSubventions = async ({
     ]),
   )
 
-  for (const besoin of besoins) {
+  for (const besoin of data) {
     const categorieData = categoriesMap.get(besoin.categorie)
     if (!categorieData) {
       throw new Error(
@@ -135,68 +114,19 @@ export const getAdministrationBesoinsSubventions = async ({
   }
 
   const availableCategoriesInData = new Set(
-    besoins.map(({ categorie }) => categorie),
+    data.map(({ categorie }) => categorie),
   )
 
   const categories = [...categoriesMap.values()]
     .sort((a, b) => a.label.localeCompare(b.label))
     .filter(({ label }) =>
       // If filtered, we hide the category if it has no data in the filtered data
-      rechercheTokens ? availableCategoriesInData.has(label) : true,
+      search?.trim() ? availableCategoriesInData.has(label) : true,
     )
 
-  const data = besoins.sort((a, b) => {
-    const orderMultiplier = ordre === 'desc' ? -1 : 1
-
-    const defaultOrder = a.label.localeCompare(b.label)
-
-    if (tri === 'categorie') {
-      return (
-        compareMultiple(a.categorie.localeCompare(b.categorie), defaultOrder) *
-        orderMultiplier
-      )
-    }
-
-    if (tri === 'actions') {
-      return (
-        compareMultiple((a.actions ?? 0) - (b.actions ?? 0), defaultOrder) *
-        orderMultiplier
-      )
-    }
-
-    if (tri === 'montant') {
-      return (
-        compareMultiple(a.montant.sub(b.montant).toNumber(), defaultOrder) *
-        orderMultiplier
-      )
-    }
-
-    return defaultOrder * orderMultiplier
-  })
-
-  const csvData = stringify(
-    [
-      ['Catégorie', 'Besoin', 'Actions', 'Montant demandé'],
-      ...data.map(({ label, actions, montant, categorie }) => [
-        categorie,
-        label,
-        actions,
-        montant.toNumber(),
-      ]),
-    ],
-    {
-      delimiter: ',',
-      record_delimiter: '\r\n', // For Windows compatibility
-    },
-  )
-
   return {
-    data,
+    montantTotal,
+    actionsTotal,
     categories,
-    csvData,
   }
 }
-
-export type DepartementAdministrationInfo = Awaited<
-  ReturnType<typeof getAdministrationBesoinsSubventions>
->
