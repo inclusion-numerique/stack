@@ -1,23 +1,10 @@
 import React from 'react'
-import AdministrationDataPage from '@app/web/app/(with-navigation)/administration/AdministrationDataPage'
-import { AdministrationGouvernancesSearchParams } from '@app/web/app/(with-navigation)/administration/gouvernances/getAdministrationGouvernances'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-const Page = async ({
-  searchParams,
-}: {
-  searchParams: AdministrationGouvernancesSearchParams
-}) => (
-  <AdministrationDataPage
-    title="Bénéficiaires subventions"
-    infoContents={
-      <ul className="fr-m-0 fr-text--sm">
-        <li>Todo</li>
-      </ul>
-    }
-  />
+const Page = ({ searchParams }: { searchParams: { todo: true } }) => (
+  <h2>TODO {JSON.stringify(searchParams)}</h2>
 )
 
 export default Page

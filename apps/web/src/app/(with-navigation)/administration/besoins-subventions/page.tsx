@@ -22,7 +22,7 @@ const Page = async ({
 }: {
   searchParams: AdministrationBesoinsSubventionsDataTableSearchParams
 }) => {
-  const allData = await getAdministrationBesoinsSubventionsData({})
+  const allData = await getAdministrationBesoinsSubventionsData()
 
   const searchedData = applyDataTableSearch(
     searchParams.recherche,

@@ -3,12 +3,12 @@
 import { useRouter } from 'next/navigation'
 import DataSearchAndFilters from '@app/web/app/(with-navigation)/administration/DataSearchAndFilters'
 import { createSearchCallback } from '@app/web/app/(with-navigation)/administration/createSearchCallback'
-import { AdministrationBesoinsSubventionsListSearchParams } from '@app/web/app/(with-navigation)/administration/besoins-subventions/getAdministrationBesoinsSubventions'
+import { AdministrationBesoinsSubventionsDataTableSearchParams } from '@app/web/app/(with-navigation)/administration/besoins-subventions/AdministrationBesoinsSubventionsDataTable'
 
 const BesoinsSubventionsDataFilters = ({
   searchParams,
 }: {
-  searchParams: AdministrationBesoinsSubventionsListSearchParams
+  searchParams: AdministrationBesoinsSubventionsDataTableSearchParams
 }) => {
   const router = useRouter()
 

@@ -6,7 +6,7 @@ import {
   besoinSubventionLabel,
 } from '@app/web/gouvernance/besoinSubvention'
 
-export const getAdministrationBesoinsSubventionsData = async ({}) => {
+export const getAdministrationBesoinsSubventionsData = async () => {
   const rows = await prismaClient.demandeDeSubvention.findMany({
     select: {
       besoins: true,
@@ -33,7 +33,7 @@ export const getAdministrationBesoinsSubventionsData = async ({}) => {
   >(
     Object.keys(besoinSubventionLabel).map((besoin) => {
       const categorie = besoinSubventionCategories.find((category) =>
-        category.options.includes(besoin as BesoinSubvention),
+        category.options.includes(besoin as never),
       )
 
       if (!categorie) {

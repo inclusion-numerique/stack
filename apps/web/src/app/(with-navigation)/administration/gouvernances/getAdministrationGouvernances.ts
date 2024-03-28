@@ -11,7 +11,7 @@ import {
   getStatutDemandesSubvention,
 } from '@app/web/gouvernance/statutDemandesSubvention'
 
-export const getAdministrationGouvernancesData = async ({}) => {
+export const getAdministrationGouvernancesData = async () => {
   const rows = await prismaClient.departement.findMany({
     select: {
       code: true,
