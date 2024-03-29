@@ -24,7 +24,6 @@ export const createOdtFile = async ({
     'manifest.rdf': strToU8(manifestRdf),
     'meta.xml': strToU8(metaXml),
     mimetype: strToU8(mimeType),
-    'settings.xml': strToU8(settingsXml),
     'styles.xml': strToU8(stylesXml),
     'content.xml': strToU8(contentXml),
   }

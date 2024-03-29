@@ -1,6 +1,7 @@
 /**
  * Contents from a basic odt file template (versionned in template/ directory)
  */
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export const MetaInfManifestXml = `<?xml version="1.0" encoding="UTF-8"?>
 <manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.2">
@@ -9,7 +10,6 @@ export const MetaInfManifestXml = `<?xml version="1.0" encoding="UTF-8"?>
     <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="content.xml"/>
     <manifest:file-entry manifest:media-type="application/rdf+xml" manifest:full-path="manifest.rdf"/>
     <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="styles.xml"/>
-    <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="settings.xml"/>
     <manifest:file-entry manifest:media-type="text/xml" manifest:full-path="meta.xml"/>
 </manifest:manifest>
 `
@@ -93,129 +93,13 @@ export const metaXml = `<?xml version="1.0" encoding="UTF-8"?>
                       xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
                       office:version="1.2">
     <office:meta>
-        <meta:initial-creator>Hugues Maignol</meta:initial-creator>
-        <meta:creation-date>2024-03-29T12:25:00</meta:creation-date>
-        <dc:date>2024-03-29T12:30:34</dc:date>
-        <dc:creator>Hugues Maignol</dc:creator>
-        <meta:editing-duration>PT5M34S</meta:editing-duration>
-        <meta:editing-cycles>2</meta:editing-cycles>
-        <meta:generator>OpenOffice/4.1.15$Unix OpenOffice.org_project/4115m2$Build-9813</meta:generator>
-        <meta:document-statistic meta:table-count="0" meta:image-count="0" meta:object-count="0" meta:page-count="1"
-                                 meta:paragraph-count="2" meta:word-count="4" meta:character-count="22"/>
+        <meta:initial-creator>${PublicWebAppConfig.projectTitle}</meta:initial-creator>
+        <dc:creator>${PublicWebAppConfig.projectTitle}</dc:creator>
     </office:meta>
 </office:document-meta>
 `
 
 export const mimeType = 'application/vnd.oasis.opendocument.text'
-
-export const settingsXml = `<?xml version="1.0" encoding="UTF-8"?>
-<office:document-settings xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
-                          xmlns:config="urn:oasis:names:tc:opendocument:xmlns:config:1.0"
-                          xmlns:ooo="http://openoffice.org/2004/office"
-                          office:version="1.2">
-    <office:settings>
-        <config:config-item-set config:name="ooo:view-settings">
-            <config:config-item config:name="ViewAreaTop" config:type="long">0</config:config-item>
-            <config:config-item config:name="ViewAreaLeft" config:type="long">0</config:config-item>
-            <config:config-item config:name="ViewAreaWidth" config:type="long">21082</config:config-item>
-            <config:config-item config:name="ViewAreaHeight" config:type="long">13383</config:config-item>
-            <config:config-item config:name="ShowRedlineChanges" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="InBrowseMode" config:type="boolean">false</config:config-item>
-            <config:config-item-map-indexed config:name="Views">
-                <config:config-item-map-entry>
-                    <config:config-item config:name="ViewId" config:type="string">view2</config:config-item>
-                    <config:config-item config:name="ViewLeft" config:type="long">6311</config:config-item>
-                    <config:config-item config:name="ViewTop" config:type="long">5355</config:config-item>
-                    <config:config-item config:name="VisibleLeft" config:type="long">0</config:config-item>
-                    <config:config-item config:name="VisibleTop" config:type="long">0</config:config-item>
-                    <config:config-item config:name="VisibleRight" config:type="long">21080</config:config-item>
-                    <config:config-item config:name="VisibleBottom" config:type="long">13381</config:config-item>
-                    <config:config-item config:name="ZoomType" config:type="short">0</config:config-item>
-                    <config:config-item config:name="ViewLayoutColumns" config:type="short">0</config:config-item>
-                    <config:config-item config:name="ViewLayoutBookMode" config:type="boolean">false
-                    </config:config-item>
-                    <config:config-item config:name="ZoomFactor" config:type="short">100</config:config-item>
-                    <config:config-item config:name="IsSelectedFrame" config:type="boolean">false</config:config-item>
-                </config:config-item-map-entry>
-            </config:config-item-map-indexed>
-        </config:config-item-set>
-        <config:config-item-set config:name="ooo:configuration-settings">
-            <config:config-item config:name="CurrentDatabaseDataSource" config:type="string"/>
-            <config:config-item config:name="PrintReversed" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="PrintControls" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="PrintPageBackground" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="PrintAnnotationMode" config:type="short">0</config:config-item>
-            <config:config-item config:name="PrintGraphics" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="PrintLeftPages" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="PrintTables" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="PrintSingleJobs" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="PrintProspect" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="PrintRightPages" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="PrintFaxName" config:type="string"/>
-            <config:config-item config:name="PrintPaperFromSetup" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="AddFrameOffsets" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="MathBaselineAlignment" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="RedlineProtectionKey" config:type="base64Binary"/>
-            <config:config-item config:name="TabAtLeftIndentForParagraphsInList" config:type="boolean">false
-            </config:config-item>
-            <config:config-item config:name="UseFormerLineSpacing" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="ProtectForm" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="PrinterSetup" config:type="base64Binary"/>
-            <config:config-item config:name="CurrentDatabaseCommand" config:type="string"/>
-            <config:config-item config:name="ClipAsCharacterAnchoredWriterFlyFrames" config:type="boolean">false
-            </config:config-item>
-            <config:config-item config:name="DoNotCaptureDrawObjsOnPage" config:type="boolean">false
-            </config:config-item>
-            <config:config-item config:name="CurrentDatabaseCommandType" config:type="int">0</config:config-item>
-            <config:config-item config:name="LoadReadonly" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="DoNotResetParaAttrsForNumFont" config:type="boolean">false
-            </config:config-item>
-            <config:config-item config:name="AlignTabStopPosition" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="LinkUpdateMode" config:type="short">1</config:config-item>
-            <config:config-item config:name="DoNotJustifyLinesWithManualBreak" config:type="boolean">false
-            </config:config-item>
-            <config:config-item config:name="ConsiderTextWrapOnObjPos" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="UnxForceZeroExtLeading" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="PrintDrawings" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="UseFormerTextWrapping" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="AllowPrintJobCancel" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="AddParaSpacingToTableCells" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="AddExternalLeading" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="IsLabelDocument" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="IgnoreFirstLineIndentInNumbering" config:type="boolean">false
-            </config:config-item>
-            <config:config-item config:name="OutlineLevelYieldsNumbering" config:type="boolean">false
-            </config:config-item>
-            <config:config-item config:name="PrinterName" config:type="string"/>
-            <config:config-item config:name="IsKernAsianPunctuation" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="PrinterIndependentLayout" config:type="string">high-resolution
-            </config:config-item>
-            <config:config-item config:name="PrintBlackFonts" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="TableRowKeep" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="UpdateFromTemplate" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="TabsRelativeToIndent" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="UseOldPrinterMetrics" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="IgnoreTabsAndBlanksForLineCalculation" config:type="boolean">false
-            </config:config-item>
-            <config:config-item config:name="SaveGlobalDocumentLinks" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="PrintProspectRTL" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="PrintEmptyPages" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="ApplyUserData" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="FieldAutoUpdate" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="UseOldNumbering" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="UseFormerObjectPositioning" config:type="boolean">false
-            </config:config-item>
-            <config:config-item config:name="PrintHiddenText" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="AddParaTableSpacingAtStart" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="CharacterCompressionType" config:type="short">0</config:config-item>
-            <config:config-item config:name="SaveVersionOnClose" config:type="boolean">false</config:config-item>
-            <config:config-item config:name="ChartAutoUpdate" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="AddParaTableSpacing" config:type="boolean">true</config:config-item>
-            <config:config-item config:name="PrintTextPlaceholder" config:type="boolean">false</config:config-item>
-        </config:config-item-set>
-    </office:settings>
-</office:document-settings>
-`
 
 export const stylesXml = `<?xml version="1.0" encoding="UTF-8"?>
 <office:document-styles xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
