@@ -32,6 +32,22 @@ export type NoteDeContexteSubventionsData = z.infer<
   typeof NoteDeContexteSubventionsValidation
 >
 
+export const BeneficiaireSubventionFormationValidation = z.object({
+  gouvernanceId: z.string().uuid(),
+  membreGouvernanceId: z
+    .string({
+      required_error: 'Veuillez renseigner le bénéficiaire',
+      invalid_type_error: 'Veuillez renseigner le bénéficiaire',
+    })
+    .uuid({
+      message: 'Veuillez renseigner le bénéficiaire',
+    }),
+})
+
+export type BeneficiaireSubventionFormationData = z.infer<
+  typeof BeneficiaireSubventionFormationValidation
+>
+
 const BeneficiaireSubventionValidation = z.object({
   id: z.string().uuid().nullish(),
   membreGouvernanceId: z.string().uuid(),

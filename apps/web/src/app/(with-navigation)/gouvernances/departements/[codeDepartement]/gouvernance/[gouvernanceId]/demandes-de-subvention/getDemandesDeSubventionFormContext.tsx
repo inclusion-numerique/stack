@@ -17,8 +17,8 @@ import {
 import { getDemandesDeSubventionDefaultValues } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getDemandesDeSubventionDefaultValues'
 import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvernances/gouvernanceScopeTitle'
 import { prismaClient } from '@app/web/prismaClient'
-import { getMembreGouvernanceStringName } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getMembreGouvernanceStringName'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
+import { getSubventionBeneficiairesOptions } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getSubventionBeneficiairesOptions'
 
 export const getDemandesDeSubventionFormContext = async ({
   demandeDeSubventionId,
@@ -121,59 +121,9 @@ export const getDemandesDeSubventionFormContext = async ({
     gouvernanceId,
   )
 
-  const beneficiairesOptions = await prismaClient.membreGouvernance
-    .findMany({
-      where: {
-        gouvernanceId,
-      },
-      select: {
-        id: true,
-        region: {
-          select: {
-            code: true,
-            nom: true,
-          },
-        },
-        departement: {
-          select: {
-            code: true,
-            nom: true,
-          },
-        },
-        epci: {
-          select: {
-            code: true,
-            nom: true,
-          },
-        },
-        commune: {
-          select: {
-            code: true,
-            nom: true,
-          },
-        },
-        nomStructure: true,
-        siret: true,
-      },
-      orderBy: [
-        { region: { nom: 'asc' } },
-        { departement: { nom: 'asc' } },
-        { epci: { nom: 'asc' } },
-        { commune: { nom: 'asc' } },
-        {
-          nomStructure: 'asc',
-        },
-      ],
-    })
-    .then((membresGouvernance) =>
-      membresGouvernance.map(
-        (membre) =>
-          ({
-            value: membre.id,
-            name: getMembreGouvernanceStringName(membre),
-          }) satisfies SelectOption,
-      ),
-    )
+  const beneficiairesOptions = await getSubventionBeneficiairesOptions({
+    gouvernanceId,
+  })
 
   return {
     gouvernance,

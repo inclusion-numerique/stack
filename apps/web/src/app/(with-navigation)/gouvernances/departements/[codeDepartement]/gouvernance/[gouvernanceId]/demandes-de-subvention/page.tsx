@@ -26,6 +26,8 @@ import {
 import DemandeDeSubventionCard from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/DemandeDeSubventionCard'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { getStatutDemandesSubvention } from '@app/web/gouvernance/statutDemandesSubvention'
+import BeneficiaireSubventionFormationForm from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/BeneficiaireSubventionFormationForm'
+import { getSubventionBeneficiairesOptions } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getSubventionBeneficiairesOptions'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -69,6 +71,16 @@ const Page = async ({
   if (gouvernance.departement.code !== codeDepartement) {
     notFound()
   }
+
+  const beneficiairesOptions = await getSubventionBeneficiairesOptions({
+    gouvernanceId,
+  })
+
+  const beneficiaireFormationMembreNom =
+    beneficiairesOptions.find(
+      (option) =>
+        option.value === gouvernance.beneficiaireDotationFormation?.id,
+    )?.name ?? null
 
   const canValidate = !!gouvernance.noteDeContexteSubventions
 
@@ -133,14 +145,14 @@ const Page = async ({
           />
         </div>
 
-        <div className="fr-border--slim-grey fr-p-8v fr-pb-10v fr-mt-12v fr-mb-20v">
+        <div className="fr-border--slim-grey fr-p-8v fr-pb-10v fr-mt-4v">
           <Badge className="fr-mb-4v" small severity="new">
             À&nbsp;renseigner&nbsp;avant&nbsp;le&nbsp;
             {dateAsDay(limiteModicitaionDesDemandesDeSubvention)}
           </Badge>
-          <h2 className="fr-h3 fr-flex fr-justify-content-space-between fr-align-items-center fr-flex-gap-3v fr-mb-4v">
+          <h2 className="fr-h5 fr-flex fr-justify-content-space-between fr-align-items-center fr-flex-gap-3v fr-mb-0">
             <span>
-              Dotation totale{' '}
+              Dotation ingénierie{' '}
               <button
                 type="button"
                 className="fr-btn--tooltip fr-btn"
@@ -168,14 +180,16 @@ const Page = async ({
             </span>
             <span>{numberToEuros(gouvernance.departement.dotation202406)}</span>
           </h2>
-          <p className="fr-text--xl fr-mb-0 fr-text-default--info fr-flex fr-justify-content-space-between fr-align-items-center fr-flex-gap-3v">
-            <span>Montant de dotation restant</span>
-            <span>
-              {numberToEuros(
-                getMontantDotationRestante(gouvernance).montantRestant,
-              )}
-            </span>
-          </p>
+          {demandesDeSubvention.length > 0 && (
+            <p className="fr-text--lg fr-mt-2v fr-mb-0 fr-text-default--info fr-flex fr-justify-content-space-between fr-align-items-center fr-flex-gap-3v">
+              <span>Montant de dotation restant</span>
+              <span>
+                {numberToEuros(
+                  getMontantDotationRestante(gouvernance).montantRestant,
+                )}
+              </span>
+            </p>
+          )}
           {demandesDeSubvention.map((demandeDeSubvention) => (
             <>
               <hr
@@ -214,6 +228,18 @@ const Page = async ({
               />
             </>
           )}
+        </div>
+
+        <div className="fr-border--slim-grey fr-p-8v fr-mt-4v fr-pb-10v fr-mb-20v">
+          <BeneficiaireSubventionFormationForm
+            beneficiaireFormationMembreId={
+              gouvernance.beneficiaireDotationFormation?.id
+            }
+            beneficiaireFormationMembreNom={beneficiaireFormationMembreNom}
+            gouvernanceId={gouvernance.id}
+            canEdit={canEditContexte}
+            beneficiairesOptions={beneficiairesOptions}
+          />
         </div>
       </div>
     </>

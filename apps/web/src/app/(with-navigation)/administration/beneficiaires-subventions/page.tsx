@@ -25,8 +25,6 @@ const Page = async ({
 }) => {
   const allData = await getAdministrationBeneficiairesSubventionsData()
 
-  console.log('DATA', allData)
-
   const searchedData = applyDataTableSearch(
     searchParams.recherche,
     allData,

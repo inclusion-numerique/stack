@@ -6,6 +6,7 @@ import { prismaClient } from '@app/web/prismaClient'
 import { forbiddenError, notFoundError } from '@app/web/server/rpc/trpcErrors'
 import { checkSecurityForGouvernanceMutation } from '@app/web/server/rpc/gouvernance/gouvernanceSecurity'
 import {
+  BeneficiaireSubventionFormationValidation,
   DemandeDeSubventionActionValidation,
   DemandeDeSubventionValidation,
   NoteDeContexteSubventionsValidation,
@@ -110,6 +111,47 @@ export const demandesDeSubventionRouter = router({
           data: {
             noteDeContexteSubventions: sanitizeHtml(noteDeContexteSubventions),
             noteDeContexteSubventionsEnregistree: new Date(),
+            derniereModificationParId: user.id,
+            modification: new Date(),
+          },
+        })
+
+        return result
+      },
+    ),
+  updateBeneficiaireFormation: protectedProcedure
+    .input(BeneficiaireSubventionFormationValidation)
+    .mutation(
+      async ({
+        input: { gouvernanceId, membreGouvernanceId },
+        ctx: { user },
+      }) => {
+        const gouvernance = await prismaClient.gouvernance.findUnique({
+          where: {
+            id: gouvernanceId,
+          },
+          select: {
+            id: true,
+            departementCode: true,
+          },
+        })
+
+        if (!gouvernance) {
+          throw notFoundError()
+        }
+
+        await checkSecurityForGouvernanceMutation(
+          user,
+          gouvernance.departementCode,
+        )
+
+        const result = await prismaClient.gouvernance.update({
+          where: {
+            id: gouvernance.id,
+          },
+          data: {
+            beneficiaireDotationFormationId: membreGouvernanceId,
+            beneficiaireDotationFormationEnregistre: new Date(),
             derniereModificationParId: user.id,
             modification: new Date(),
           },

@@ -2,6 +2,7 @@ import Badge from '@codegouvfr/react-dsfr/Badge'
 import React, { Fragment } from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
 import Link from 'next/link'
+import { Decimal } from 'decimal.js'
 import {
   DataTableConfiguration,
   DataTableSearchParams,
@@ -18,6 +19,8 @@ import {
   searchableContactsToString,
 } from '@app/web/app/(with-navigation)/administration/beneficiaires-subventions/getAdministrationBeneficiairesSubventions'
 import { membreGouvernanceStatuts } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getMembreGouvernanceStringName'
+import { getSiretInfoUrl } from '@app/web/components/Siret/getSiretInfoUrl'
+import { isValidSiret } from '@app/web/data/siret'
 
 export const AdministrationBeneficiairesSubventionsDataTable = {
   csvFilename: () => `fne-${dateAsIsoDay(new Date())}-beneficiaires`,
@@ -35,11 +38,14 @@ export const AdministrationBeneficiairesSubventionsDataTable = {
     {
       name: 'convention',
       header: null,
-      cell: ({ nom }) => (
+      cell: ({ nom, id }) => (
         <Button
           size="small"
           title={`Télécharger la convention pour ${nom}`}
           iconId="fr-icon-download-line"
+          linkProps={{
+            href: `/administration/beneficiaires-subventions/${id}/convention.odt`,
+          }}
         />
       ),
     },
@@ -99,13 +105,16 @@ export const AdministrationBeneficiairesSubventionsDataTable = {
     },
     {
       name: 'subventions-formation',
-      header: 'Subventions formation',
-      csvHeaders: ['Subventions formation'],
-      csvValues: ({ subventionFormation }) => [subventionFormation.toNumber()],
+      header: 'Dotation formation',
+      csvHeaders: ['Dotation formation'],
+      csvValues: ({ subventionFormation }) => [subventionFormation?.toNumber()],
       cellClassName: 'fr-text--right',
-      cell: ({ subventionFormation }) => numberToEuros(subventionFormation),
+      cell: ({ subventionFormation }) =>
+        subventionFormation ? numberToEuros(subventionFormation) : null,
       sortable: (a, b) =>
-        a.subventionFormation.sub(b.subventionFormation).toNumber(),
+        (a.subventionFormation ?? new Decimal(0))
+          .sub(b.subventionFormation ?? new Decimal(0))
+          .toNumber(),
     },
     {
       name: 'subventions-ingenierie',
@@ -115,7 +124,8 @@ export const AdministrationBeneficiairesSubventionsDataTable = {
         subventionIngenierie.toNumber(),
       ],
       cellClassName: 'fr-text--right',
-      cell: ({ subventionIngenierie }) => numberToEuros(subventionIngenierie),
+      cell: ({ subventionIngenierie }) =>
+        subventionIngenierie.eq(0) ? null : numberToEuros(subventionIngenierie),
       sortable: (a, b) =>
         a.subventionIngenierie.sub(b.subventionIngenierie).toNumber(),
     },
@@ -201,7 +211,20 @@ export const AdministrationBeneficiairesSubventionsDataTable = {
       header: 'Siret',
       csvHeaders: ['Siret'],
       csvValues: ({ siret }) => [siret],
-      cell: ({ siret }) => siret,
+      cell: ({ siret }) =>
+        siret ? (
+          isValidSiret(siret) ? (
+            <Link
+              className="fr-link fr-link--sm"
+              target="_blank"
+              href={getSiretInfoUrl(siret)}
+            >
+              {siret}
+            </Link>
+          ) : (
+            <Badge severity="error">{siret}</Badge>
+          )
+        ) : null,
     },
     {
       name: 'code-insee',

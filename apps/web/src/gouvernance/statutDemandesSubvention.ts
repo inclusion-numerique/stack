@@ -22,6 +22,13 @@ export const statutsAction = [
   'Validé',
 ] as const satisfies StatutAction[]
 
+export type StatutMetadata = 'Non renseigné' | 'Enregistré'
+
+export const statutsMetadata = [
+  'Non renseigné',
+  'Enregistré',
+] as const satisfies StatutMetadata[]
+
 export const getStatutDemandesSubvention = <
   T extends Pick<
     DemandeDeSubvention,
@@ -72,9 +79,18 @@ export const getStatutDemandesSubvention = <
 
 export const getStatutBeneficiaireFormation = (
   gouvernance?: Pick<Gouvernance, 'beneficiaireDotationFormationEnregistre'>,
-): StatutAction => {
+): StatutMetadata => {
   if (!gouvernance?.beneficiaireDotationFormationEnregistre) {
     return 'Non renseigné'
   }
-  return 'Envoyé'
+  return 'Enregistré'
+}
+
+export const getStatutNoteDeContexteSubventions = (
+  gouvernance?: Pick<Gouvernance, 'noteDeContexteSubventionsEnregistree'>,
+): StatutMetadata => {
+  if (!gouvernance?.noteDeContexteSubventionsEnregistree) {
+    return 'Non renseigné'
+  }
+  return 'Enregistré'
 }

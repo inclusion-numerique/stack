@@ -9,6 +9,7 @@ import { dotationFormation202406 } from '@app/web/gouvernance/dotationFormation2
 import {
   getStatutBeneficiaireFormation,
   getStatutDemandesSubvention,
+  getStatutNoteDeContexteSubventions,
 } from '@app/web/gouvernance/statutDemandesSubvention'
 
 export const getAdministrationGouvernancesData = async () => {
@@ -50,6 +51,7 @@ export const getAdministrationGouvernancesData = async () => {
     const statutDemandesSubvention = getStatutDemandesSubvention(gouvernance)
     const statutBeneficiaireFormation =
       getStatutBeneficiaireFormation(gouvernance)
+    const statutNoteDeContexte = getStatutNoteDeContexteSubventions(gouvernance)
 
     const montantDemande = demandesSubvention.reduce(
       (demandesAccumulator, demande) =>
@@ -102,6 +104,7 @@ export const getAdministrationGouvernancesData = async () => {
       demandesSubvention,
       statutDemandesSubvention,
       statutBeneficiaireFormation,
+      statutNoteDeContexte,
       montantDemande,
       feuillesDeRoutesCount,
       membresCounts,

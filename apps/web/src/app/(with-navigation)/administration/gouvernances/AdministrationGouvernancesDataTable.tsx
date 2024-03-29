@@ -14,8 +14,8 @@ import { numberToEuros } from '@app/web/utils/formatNumber'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import type { AdministrationGouvernancesDataRow } from '@app/web/app/(with-navigation)/administration/gouvernances/getAdministrationGouvernances'
 import {
-  statutsAction,
   statutsDemandeSubvention,
+  statutsMetadata,
 } from '@app/web/gouvernance/statutDemandesSubvention'
 import { compareFromArrayIndex } from '@app/web/utils/compareFromArrayIndex'
 
@@ -106,6 +106,30 @@ export const AdministrationGouvernancesDataTable = {
         a.dotationIngenierie.sub(b.dotationIngenierie).toNumber(),
     },
     {
+      name: 'note-de-contexte',
+      header: 'Note de contexte',
+      csvHeaders: ['Note de contexte'],
+      csvValues: ({ statutNoteDeContexte }) => [statutNoteDeContexte],
+      cell: ({ statutNoteDeContexte }) =>
+        statutNoteDeContexte === 'Enregistré' ? (
+          <Badge small severity="success">
+            {statutNoteDeContexte}
+          </Badge>
+        ) : (
+          <Badge small severity="warning">
+            {statutNoteDeContexte}
+          </Badge>
+        ),
+      sortable: (a, b) =>
+        compareMultiple(
+          compareFromArrayIndex(
+            a.statutNoteDeContexte,
+            b.statutNoteDeContexte,
+            statutsMetadata,
+          ),
+        ),
+    },
+    {
       name: 'beneficiaire-formation',
       header: 'Bénéficiaire formation',
       csvHeaders: ['Bénéficiaire formation'],
@@ -113,16 +137,8 @@ export const AdministrationGouvernancesDataTable = {
         statutBeneficiaireFormation,
       ],
       cell: ({ statutBeneficiaireFormation }) =>
-        statutBeneficiaireFormation === 'Validé' ? (
+        statutBeneficiaireFormation === 'Enregistré' ? (
           <Badge small severity="success">
-            {statutBeneficiaireFormation}
-          </Badge>
-        ) : statutBeneficiaireFormation === 'Envoyé' ? (
-          <Badge small severity="new">
-            {statutBeneficiaireFormation}
-          </Badge>
-        ) : statutBeneficiaireFormation === 'En cours' ? (
-          <Badge small severity="info">
             {statutBeneficiaireFormation}
           </Badge>
         ) : (
@@ -135,15 +151,15 @@ export const AdministrationGouvernancesDataTable = {
           compareFromArrayIndex(
             a.statutBeneficiaireFormation,
             b.statutBeneficiaireFormation,
-            statutsAction,
+            statutsMetadata,
           ),
           a.demandesCounts.total - b.demandesCounts.total,
         ),
     },
     {
       name: 'statut-demandes',
-      header: 'Statut subventions',
-      csvHeaders: ['Statut subventions'],
+      header: 'Statut des demandes',
+      csvHeaders: ['Statut des demandes'],
       csvValues: ({ statutDemandesSubvention }) => [statutDemandesSubvention],
       cell: ({ statutDemandesSubvention }) =>
         statutDemandesSubvention === 'Finalisé' ? (

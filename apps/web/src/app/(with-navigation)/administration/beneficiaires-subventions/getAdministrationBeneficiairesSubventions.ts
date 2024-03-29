@@ -88,12 +88,6 @@ const getBeneficiairesRows = async () => {
 type BeneficiairesRow = Awaited<ReturnType<typeof getBeneficiairesRows>>[number]
 
 const getContacts = ({
-  gouvernance: {
-    createur,
-    sousPrefetReferentPrenom,
-    sousPrefetReferentNom,
-    sousPrefetReferentEmail,
-  },
   formulaireGouvernance: {
     contactPolitique,
     contactTechnique,
@@ -101,18 +95,6 @@ const getContacts = ({
   },
 }: BeneficiairesRow) =>
   [
-    {
-      type: 'Créateur gouvernance',
-      nom: createur.name,
-      email: createur.email,
-      fonction: null,
-    },
-    {
-      type: 'Sous-préfet référent',
-      nom: `${sousPrefetReferentPrenom} ${sousPrefetReferentNom}`.trim(),
-      email: sousPrefetReferentEmail,
-      fonction: null,
-    },
     contactPolitique
       ? {
           type: 'Contact politique',
@@ -167,7 +149,9 @@ export const getAdministrationBeneficiairesSubventionsData = async () => {
       ? dotationFormation202406
       : null
 
-    const subventionTotal = subventionIngenierie.add(subventionFormation)
+    const subventionTotal = subventionIngenierie.add(
+      subventionFormation ?? new Decimal(0),
+    )
 
     const demandesCounts = {
       total: demandesSubventions.length,
@@ -207,12 +191,13 @@ export const getAdministrationBeneficiairesSubventionsMetadata = (
   data: AdministrationBeneficiairesSubventionsDataRow[],
 ) => {
   const montantIngenierieTotal = data.reduce(
-    (accumulator, membre) => accumulator.add(membre.montantDemande),
+    (accumulator, membre) => accumulator.add(membre.subventionIngenierie),
     new Decimal(0),
   )
 
   const montantFormationTotal = data.reduce(
-    (accumulator, membre) => accumulator.add(membre.montantFormation),
+    (accumulator, membre) =>
+      accumulator.add(membre.subventionFormation ?? new Decimal(0)),
     new Decimal(0),
   )
 
