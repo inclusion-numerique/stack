@@ -1,16 +1,30 @@
-import { strToU8, zip, AsyncZippable } from 'fflate'
-import { createOdtContent } from '@app/web/server/odt/createOdtContent'
+import { AsyncZippable, strToU8, zip } from 'fflate'
+import {
+  contentXml,
+  manifestRdf,
+  MetaInfManifestXml,
+  metaXml,
+  mimeType,
+  settingsXml,
+  stylesXml,
+} from '@app/web/server/odt/template/template'
 
-export const createOdtFile = async ({
+export const createOdtFile = async ({x
   children,
 }: {
   children: string
 }): Promise<Buffer> => {
   // ODT files have a predefined structure
-  const contentXml = createOdtContent(children)
+  // const contentXml = createOdtContent(children)
 
   // Create a ZipObj for fflate
   const zipObject: AsyncZippable = {
+    'META-INF/manifest.xml': strToU8(MetaInfManifestXml),
+    'manifest.rdf': strToU8(manifestRdf),
+    'meta.xml': strToU8(metaXml),
+    mimetype: strToU8(mimeType),
+    'settings.xml': strToU8(settingsXml),
+    'styles.xml': strToU8(stylesXml),
     'content.xml': strToU8(contentXml),
   }
 

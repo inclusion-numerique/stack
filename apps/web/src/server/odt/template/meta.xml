@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-meta xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+                      xmlns:dc="http://purl.org/dc/elements/1.1/"
+                      xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+                      office:version="1.2">
+    <office:meta>
+        <meta:initial-creator>Hugues Maignol</meta:initial-creator>
+        <meta:creation-date>2024-03-29T12:25:00</meta:creation-date>
+        <dc:date>2024-03-29T12:30:34</dc:date>
+        <dc:creator>Hugues Maignol</dc:creator>
+        <meta:editing-duration>PT5M34S</meta:editing-duration>
+        <meta:editing-cycles>2</meta:editing-cycles>
+        <meta:generator>OpenOffice/4.1.15$Unix OpenOffice.org_project/4115m2$Build-9813</meta:generator>
+        <meta:document-statistic meta:table-count="0" meta:image-count="0" meta:object-count="0" meta:page-count="1"
+                                 meta:paragraph-count="2" meta:word-count="4" meta:character-count="22"/>
+    </office:meta>
+</office:document-meta>
