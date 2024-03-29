@@ -9,6 +9,7 @@ import {
   getMembreGouvernanceTypologie,
 } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getMembreGouvernanceStringName'
 import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { dotationFormation202406 } from '@app/web/gouvernance/dotationFormation202406'
 
 const getBeneficiairesRows = async () => {
   const rows = await prismaClient.membreGouvernance.findMany({
@@ -142,7 +143,12 @@ export const getAdministrationBeneficiairesSubventionsData = async () => {
   const rows = await getBeneficiairesRows()
 
   return rows.map((membre) => {
-    const { id, gouvernance, beneficiaireSubventions } = membre
+    const {
+      id,
+      gouvernance,
+      beneficiaireSubventions,
+      beneficiaireDotationFormation,
+    } = membre
 
     const beneficiaires = beneficiaireSubventions.map(
       (beneficiaire) => beneficiaire,
@@ -152,10 +158,16 @@ export const getAdministrationBeneficiairesSubventionsData = async () => {
       ({ demandeDeSubvention }) => demandeDeSubvention,
     )
 
-    const montantDemande = beneficiaires.reduce(
+    const subventionIngenierie = beneficiaires.reduce(
       (accumulator, beneficiaire) => accumulator.add(beneficiaire.subvention),
       new Decimal(0),
     )
+
+    const subventionFormation = beneficiaireDotationFormation
+      ? dotationFormation202406
+      : null
+
+    const subventionTotal = subventionIngenierie.add(subventionFormation)
 
     const demandesCounts = {
       total: demandesSubventions.length,
@@ -174,7 +186,9 @@ export const getAdministrationBeneficiairesSubventionsData = async () => {
       id,
       nom: getMembreGouvernanceStringName(membre),
       gouvernance,
-      montantDemande,
+      subventionIngenierie,
+      subventionFormation,
+      subventionTotal,
       type: getMembreGouvernanceTypologie(membre),
       statutGouvernance: getMembreGouvernanceStatut(membre),
       demandesCounts,
@@ -192,10 +206,17 @@ export type AdministrationBeneficiairesSubventionsDataRow = Awaited<
 export const getAdministrationBeneficiairesSubventionsMetadata = (
   data: AdministrationBeneficiairesSubventionsDataRow[],
 ) => {
-  const montantDemandeTotal = data.reduce(
+  const montantIngenierieTotal = data.reduce(
     (accumulator, membre) => accumulator.add(membre.montantDemande),
     new Decimal(0),
   )
+
+  const montantFormationTotal = data.reduce(
+    (accumulator, membre) => accumulator.add(membre.montantFormation),
+    new Decimal(0),
+  )
+
+  const montantTotal = montantIngenierieTotal.add(montantFormationTotal)
 
   const demandesCounts = data.reduce(
     (accumulator, beneficiaire) => {
@@ -216,7 +237,9 @@ export const getAdministrationBeneficiairesSubventionsMetadata = (
   )
 
   return {
-    montantDemandeTotal,
+    montantIngenierieTotal,
+    montantFormationTotal,
+    montantTotal,
     demandesCounts,
   }
 }

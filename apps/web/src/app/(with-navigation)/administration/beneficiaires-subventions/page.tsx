@@ -44,8 +44,12 @@ const Page = async ({
     AdministrationBeneficiairesSubventionsDataTable,
   )
 
-  const { montantDemandeTotal, demandesCounts } =
-    getAdministrationBeneficiairesSubventionsMetadata(data)
+  const {
+    montantIngenierieTotal,
+    montantFormationTotal,
+    montantTotal,
+    demandesCounts,
+  } = getAdministrationBeneficiairesSubventionsMetadata(data)
 
   return (
     <AdministrationDataPage
@@ -61,7 +65,15 @@ const Page = async ({
         <ul className="fr-m-0 fr-text--sm">
           <li>
             Total des fonds demandés&nbsp;:&nbsp;
-            <b>{numberToEuros(montantDemandeTotal)}</b>
+            <b>{numberToEuros(montantTotal)}</b>
+          </li>
+          <li>
+            Subventions ingénierie&nbsp;:&nbsp;
+            <b>{numberToEuros(montantIngenierieTotal)}</b>
+          </li>
+          <li>
+            Subventions formation&nbsp;:&nbsp;
+            <b>{numberToEuros(montantFormationTotal)}</b>
           </li>
           <li>
             <b>{demandesCounts.total}</b> demandes de subventions (

@@ -89,13 +89,35 @@ export const AdministrationBeneficiairesSubventionsDataTable = {
         ),
     },
     {
-      name: 'Fonds demandés',
-      header: 'Fonds demandés',
-      csvHeaders: ['Fonds demandés'],
-      csvValues: ({ montantDemande }) => [montantDemande.toNumber()],
+      name: 'subventions-total',
+      header: 'Total fonds demandés',
+      csvHeaders: ['Total fonds demandés'],
+      csvValues: ({ subventionTotal }) => [subventionTotal.toNumber()],
       cellClassName: 'fr-text--right',
-      cell: ({ montantDemande }) => numberToEuros(montantDemande),
-      sortable: (a, b) => a.montantDemande.sub(b.montantDemande).toNumber(),
+      cell: ({ subventionTotal }) => numberToEuros(subventionTotal),
+      sortable: (a, b) => a.subventionTotal.sub(b.subventionTotal).toNumber(),
+    },
+    {
+      name: 'subventions-formation',
+      header: 'Subventions formation',
+      csvHeaders: ['Subventions formation'],
+      csvValues: ({ subventionFormation }) => [subventionFormation.toNumber()],
+      cellClassName: 'fr-text--right',
+      cell: ({ subventionFormation }) => numberToEuros(subventionFormation),
+      sortable: (a, b) =>
+        a.subventionFormation.sub(b.subventionFormation).toNumber(),
+    },
+    {
+      name: 'subventions-ingenierie',
+      header: 'Subventions ingénierie',
+      csvHeaders: ['Subventions ingénierie'],
+      csvValues: ({ subventionIngenierie }) => [
+        subventionIngenierie.toNumber(),
+      ],
+      cellClassName: 'fr-text--right',
+      cell: ({ subventionIngenierie }) => numberToEuros(subventionIngenierie),
+      sortable: (a, b) =>
+        a.subventionIngenierie.sub(b.subventionIngenierie).toNumber(),
     },
     {
       name: 'Actions',
