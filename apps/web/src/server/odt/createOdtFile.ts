@@ -9,13 +9,14 @@ import {
   stylesXml,
 } from '@app/web/server/odt/template/template'
 
-export const createOdtFile = async ({x
+export const createOdtFile = async ({
   children,
 }: {
   children: string
 }): Promise<Buffer> => {
   // ODT files have a predefined structure
   // const contentXml = createOdtContent(children)
+  console.log('CHILDREN', children)
 
   // Create a ZipObj for fflate
   const zipObject: AsyncZippable = {
