@@ -48,7 +48,7 @@ export const getMembreBeneficiaireDataForConvention = async (
     return null
   }
 
-  return { membre }
+  return { membre, beneficiaireFormation: true }
 }
 
 export type MembreBeneficiaireDataForConvention = Exclude<

@@ -145,7 +145,7 @@ const DemandeDeSubventionCard = ({
         />
       ) : (
         <Notice
-          className="fr-mt-4v"
+          className="fr-mt-4v fr-notice--no-icon"
           title={
             <span className="fr-flex fr-width-full fr-align-items-center fr-justify-content-space-between fr-flex-gap-4v">
               <span>

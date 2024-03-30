@@ -3,6 +3,8 @@ import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import { notFound } from 'next/navigation'
 import Badge from '@codegouvfr/react-dsfr/Badge'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
+import Link from 'next/link'
+import Button from '@codegouvfr/react-dsfr/Button'
 import { getDemandesSubventionsForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { generateDepartementMetadata } from '@app/web/app/(with-navigation)/gouvernances/departements/generateDepartementMetadata'
 import {
@@ -92,8 +94,7 @@ const Page = async ({
   const canAddDemande =
     getMontantDotationRestante(gouvernance).montantRestant.gt(0)
 
-  const canEditContexte =
-    getStatutDemandesSubvention(gouvernance) !== 'Finalisé'
+  const canEditContexte = canInstruct
 
   return (
     <>
@@ -133,9 +134,20 @@ const Page = async ({
           base de la dotation à laquelle vous êtes éligibles. Vous êtes invités
           à remplir un formulaire par action que vous souhaitez faire financer.
           Une note précisant le contexte dans lequel ces demandes de subventions
-          s’inscrivent vous est demandée. Vous pouvez retrouver à{' '}
-          <span className="wip">[endroit]</span> le cahier des charges qui vous
-          guidera dans vos demandes de subventions.
+          s’inscrivent vous est demandée. Vous pouvez télécharger le cahier des
+          charges qui vous guidera dans vos demandes de subventions ici&nbsp;:{' '}
+          <Button
+            className="wip"
+            size="small"
+            priority="tertiary"
+            linkProps={{
+              href: '/ressources/france-numerique-ensemble_cahier-des-charges-subventions.pdf',
+              target: '_blank',
+            }}
+          >
+            Cahier des charges subventions
+          </Button>
+          .
         </p>
         <div className="fr-border--slim-grey fr-p-8v fr-pb-10v">
           <NoteDeContexteSubventionsForm

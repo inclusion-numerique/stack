@@ -158,6 +158,16 @@
 
 /* Priority and icons variations */
 
+.fr-notice.fr-notice--no-icon {
+    .fr-notice__body{
+        padding-left: 0;
+    }
+
+    .fr-notice__body:before{
+        display: none;
+    }
+}
+
 .fr-notice--icon-airplane .fr-notice__body::before {
     mask-image: url('/dsfr/icons/business/send-plane-fill.svg') !important;
     content: '';

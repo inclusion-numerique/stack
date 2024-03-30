@@ -1,31 +1,36 @@
 import { AsyncZippable, strToU8, zip } from 'fflate'
 import {
-  contentXml,
   manifestRdf,
   MetaInfManifestXml,
   metaXml,
   mimeType,
-  settingsXml,
-  stylesXml,
 } from '@app/web/server/odt/template/template'
 
 export const createOdtFile = async ({
-  children,
+  content,
+  styles,
+  manifest,
+  meta,
+  pictures,
 }: {
-  children: string
+  content: string
+  styles: string
+  manifest?: string
+  meta?: string
+  pictures: { name: string; data: Buffer }[]
 }): Promise<Buffer> => {
-  // ODT files have a predefined structure
-  // const contentXml = createOdtContent(children)
-  console.log('CHILDREN', children)
-
   // Create a ZipObj for fflate
   const zipObject: AsyncZippable = {
-    'META-INF/manifest.xml': strToU8(MetaInfManifestXml),
+    'META-INF/manifest.xml': strToU8(manifest ?? MetaInfManifestXml),
     'manifest.rdf': strToU8(manifestRdf),
-    'meta.xml': strToU8(metaXml),
+    'meta.xml': strToU8(meta ?? metaXml),
     mimetype: strToU8(mimeType),
-    'styles.xml': strToU8(stylesXml),
-    'content.xml': strToU8(contentXml),
+    'styles.xml': strToU8(styles),
+    'content.xml': strToU8(content),
+  }
+
+  for (const { name, data } of pictures) {
+    zipObject[`Pictures/${name}`] = data
   }
 
   return new Promise((resolve, reject) => {

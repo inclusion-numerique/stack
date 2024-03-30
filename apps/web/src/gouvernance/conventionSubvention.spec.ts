@@ -8,6 +8,7 @@ const outputName = (filename: string) =>
   `${varDirectory}/conventions/${filename}.odt`
 
 const conventionDataMock = {
+  beneficiaireFormation: true,
   membre: {
     id: '1',
     region: null,
@@ -38,9 +39,18 @@ describe('generateConventionSubvention', () => {
     createVarDirectory('/conventions')
   })
 
-  it('creates a valid odt convention file', async () => {
+  it('Creates convention without formation', async () => {
+    const data = await generateConventionSubvention({
+      ...conventionDataMock,
+      beneficiaireFormation: false,
+    })
+    expect(data).toBeInstanceOf(Buffer)
+    writeFileSync(outputName('fne-convention_without-formation'), data)
+  })
+
+  it('Creates convention with formation', async () => {
     const data = await generateConventionSubvention(conventionDataMock)
     expect(data).toBeInstanceOf(Buffer)
-    writeFileSync(outputName('test'), data)
+    writeFileSync(outputName('fne-convention_with-formation'), data)
   })
 })

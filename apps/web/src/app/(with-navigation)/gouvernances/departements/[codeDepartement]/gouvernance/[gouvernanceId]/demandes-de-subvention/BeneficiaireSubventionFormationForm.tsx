@@ -4,11 +4,14 @@ import { useForm } from 'react-hook-form'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createToast } from '@app/ui/toast/createToast'
 import { useRouter } from 'next/navigation'
 import SelectFormField from '@app/ui/components/Form/SelectFormField'
 import { SelectOption } from '@app/ui/components/Form/utils/options'
+import Notice from '@codegouvfr/react-dsfr/Notice'
+import { createModal } from '@codegouvfr/react-dsfr/Modal'
+import { createPortal } from 'react-dom'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
@@ -19,12 +22,22 @@ import {
 import { numberToEuros } from '@app/web/utils/formatNumber'
 import { dotationFormation202406 } from '@app/web/gouvernance/dotationFormation202406'
 import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
+import { dateAsDay } from '@app/web/utils/dateAsDay'
+import { limiteModicitaionDesDemandesDeSubvention } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceMetadata'
+import { isBrowser } from '@app/web/utils/isBrowser'
+import FindMemberNotice from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/FindMemberNotice'
+
+const { open, Component } = createModal({
+  isOpenedByDefault: false,
+  id: `valider_et_envoyer_formation`,
+})
 
 const BeneficiaireSubventionFormationForm = ({
   gouvernanceId,
   beneficiaireFormationMembreId,
   beneficiaireFormationMembreNom,
   canEdit = true,
+  canInstruct = false,
   beneficiairesOptions,
 }: {
   gouvernanceId: string
@@ -48,7 +61,12 @@ const BeneficiaireSubventionFormationForm = ({
 
   const router = useRouter()
 
-  const onSubmit = async (data: BeneficiaireSubventionFormationData) => {
+  const onSubmit = () => {
+    open()
+  }
+
+  const onConfirm = async () => {
+    const data = form.getValues()
     try {
       await mutation.mutateAsync(data)
       createToast({
@@ -72,9 +90,15 @@ const BeneficiaireSubventionFormationForm = ({
     }
   }
 
-  const isLoading = form.formState.isSubmitting
+  const isLoading = form.formState.isSubmitting || mutation.isPending
 
   const { error } = mutation
+
+  const [renderModal, setRenderModal] = useState(false)
+
+  useEffect(() => {
+    setRenderModal(isBrowser)
+  }, [])
 
   const title = (
     <h2 className="fr-h5 fr-flex fr-mb-0 fr-justify-content-space-between fr-flex-gap-4v">
@@ -131,6 +155,8 @@ const BeneficiaireSubventionFormationForm = ({
     )
   }
 
+  const displayNotFoundNotice = !form.watch('membreGouvernanceId')
+
   return (
     <>
       {title}
@@ -158,11 +184,70 @@ const BeneficiaireSubventionFormationForm = ({
           options={beneficiairesOptions}
         />
 
-        <div className="fr-flex fr-justify-content-end fr-mt-8v fr-width-full">
-          <Button {...buttonLoadingClassname(isLoading)} type="submit">
-            Enregistrer
-          </Button>
-        </div>
+        {displayNotFoundNotice && <FindMemberNotice className="fr-mt-8v" />}
+
+        <Notice
+          className="fr-mt-8v fr-notice--no-icon"
+          title={
+            <span className="fr-flex fr-width-full fr-align-items-center fr-justify-content-space-between fr-flex-gap-4v">
+              <span>
+                Valider votre formulaire avant le{' '}
+                {dateAsDay(limiteModicitaionDesDemandesDeSubvention)} pour que
+                votre demande soit instruite. Vous ne pourrez ensuite plus le
+                modifier.
+              </span>
+              <Button
+                {...buttonLoadingClassname(isLoading)}
+                iconId="fr-icon-check-line"
+                type="submit"
+              >
+                Valider&nbsp;&&nbsp;envoyer
+              </Button>
+            </span>
+          }
+        />
+        {renderModal &&
+          createPortal(
+            <Component
+              title="Valider et envoyer votre demande de subvention"
+              buttons={[
+                {
+                  type: 'button',
+                  priority: 'secondary',
+                  doClosesModal: true,
+                  children: 'Annuler',
+                  disabled: isLoading,
+                },
+                {
+                  doClosesModal: false,
+                  type: 'button',
+                  priority: 'primary',
+                  children: 'Valider & envoyer',
+                  iconId: 'fr-icon-check-line',
+                  iconPosition: 'right',
+                  onClick: onConfirm,
+                  ...buttonLoadingClassname(isLoading),
+                },
+              ]}
+            >
+              Cette validation est définitive, vous ne pourrez plus modifier le
+              bénéficiaire de la dotation formation.
+              <br />
+              <br />
+              Nos équipes instruisent les demandes de subvention au fur et à
+              mesure de leur réception.
+              <br />
+              <br />
+              1. Si la demande est conforme, nos équipes reviennent vers les
+              destinataires des fonds pour établir les conventions. Les
+              préfectures seront en copie des échanges.
+              <br />
+              <br />
+              2. Si la demande nécessite des précisions, nos équipes reviennent
+              vers la préfecture.
+            </Component>,
+            document.body,
+          )}
       </form>
     </>
   )
