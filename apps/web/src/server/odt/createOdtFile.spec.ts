@@ -10,7 +10,7 @@ describe('createOdtFile', () => {
   })
 
   it('creates a valid odt file', async () => {
-    const data = await createOdtFile({ children: childrenExample })
+    const data = await createOdtFile({ content: childrenExample })
     expect(data).toBeInstanceOf(Buffer)
     writeFileSync(`${varDirectory}/test.odt`, data)
   })

@@ -69,7 +69,9 @@ export const gouvernanceListSelect = {
   noteDeContexteSubventions: true,
   noteDeContexteSubventionsEnregistree: true,
 
-  beneficiaireDotationFormationEnregistre: true,
+  beneficiaireDotationFormationValideEtEnvoye: true,
+  beneficiaireDotationFormationAccepte: true,
+  beneficiaireDotationFormationDemandeDeModification: true,
   beneficiaireDotationFormation: {
     select: {
       id: true,
@@ -289,7 +291,11 @@ export const getDemandesSubventionsForFormSelect = {
       dotation202406: true,
     },
   },
-  beneficiaireDotationFormationEnregistre: true,
+
+  beneficiaireDotationFormationValideEtEnvoye: true,
+  beneficiaireDotationFormationAccepte: true,
+  beneficiaireDotationFormationDemandeDeModification: true,
+
   beneficiaireDotationFormation: {
     select: membreSelect.select,
   },

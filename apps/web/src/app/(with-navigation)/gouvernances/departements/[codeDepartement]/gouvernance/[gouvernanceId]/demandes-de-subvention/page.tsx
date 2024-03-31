@@ -3,7 +3,6 @@ import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import { notFound } from 'next/navigation'
 import Badge from '@codegouvfr/react-dsfr/Badge'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
-import Link from 'next/link'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { getDemandesSubventionsForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { generateDepartementMetadata } from '@app/web/app/(with-navigation)/gouvernances/departements/generateDepartementMetadata'
@@ -26,7 +25,6 @@ import {
   getMontantDotationRestante,
 } from '@app/web/gouvernance/gouvernanceStatus'
 import DemandeDeSubventionCard from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/DemandeDeSubventionCard'
-import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { getStatutDemandesSubvention } from '@app/web/gouvernance/statutDemandesSubvention'
 import BeneficiaireSubventionFormationForm from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/BeneficiaireSubventionFormationForm'
 import { getSubventionBeneficiairesOptions } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getSubventionBeneficiairesOptions'
@@ -40,10 +38,6 @@ const Page = async ({
 }: {
   params: { codeDepartement: string; gouvernanceId: string }
 }) => {
-  const user = await getSessionUser()
-
-  const canInstruct = user?.role === 'Administrator'
-
   const accessCheck = await checkAccessControl({
     check: (sessionUser) =>
       checkGouvernanceScopeWriteAccess({
@@ -94,7 +88,10 @@ const Page = async ({
   const canAddDemande =
     getMontantDotationRestante(gouvernance).montantRestant.gt(0)
 
-  const canEditContexte = canInstruct
+  const canEditContexte =
+    getStatutDemandesSubvention(gouvernance) !== 'Finalisé'
+  const canEditBeneficiaireFormation =
+    !gouvernance.beneficiaireDotationFormationValideEtEnvoye
 
   return (
     <>
@@ -213,7 +210,6 @@ const Page = async ({
                 demandeDeSubvention={demandeDeSubvention}
                 codeDepartement={codeDepartement}
                 gouvernanceId={gouvernanceId}
-                canInstruct={canInstruct}
                 canValidate={canValidate}
               />
             </>
@@ -247,10 +243,25 @@ const Page = async ({
             beneficiaireFormationMembreId={
               gouvernance.beneficiaireDotationFormation?.id
             }
+            beneficiaireDotationFormationValideEtEnvoye={
+              gouvernance.beneficiaireDotationFormationValideEtEnvoye
+                ? dateAsDay(
+                    gouvernance.beneficiaireDotationFormationValideEtEnvoye,
+                  )
+                : null
+            }
+            beneficiaireDotationFormationAccepte={
+              gouvernance.beneficiaireDotationFormationAccepte
+                ? dateAsDay(gouvernance.beneficiaireDotationFormationAccepte)
+                : null
+            }
             beneficiaireFormationMembreNom={beneficiaireFormationMembreNom}
             gouvernanceId={gouvernance.id}
-            canEdit={canEditContexte}
+            canEdit={canEditBeneficiaireFormation}
             beneficiairesOptions={beneficiairesOptions}
+            mustEditContextBeforeValidate={
+              !gouvernance.noteDeContexteSubventions
+            }
           />
         </div>
       </div>

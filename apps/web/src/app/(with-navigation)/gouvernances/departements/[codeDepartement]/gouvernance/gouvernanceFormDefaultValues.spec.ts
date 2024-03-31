@@ -8,7 +8,9 @@ describe('getGouvernanceFormDefaultValues', () => {
       besoinsEnIngenierieFinanciere: null,
       noteDeContexteSubventions: null,
       noteDeContexteSubventionsEnregistree: null,
-      beneficiaireDotationFormationEnregistre: null,
+      beneficiaireDotationFormationValideEtEnvoye: null,
+      beneficiaireDotationFormationAccepte: null,
+      beneficiaireDotationFormationDemandeDeModification: null,
       beneficiaireDotationFormation: null,
       comites: [
         {

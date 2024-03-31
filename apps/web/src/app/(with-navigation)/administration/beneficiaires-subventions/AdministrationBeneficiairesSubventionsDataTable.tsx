@@ -41,12 +41,15 @@ export const AdministrationBeneficiairesSubventionsDataTable = {
       cell: ({ nom, id }) => (
         <Button
           size="small"
+          priority="secondary"
           title={`Télécharger la convention pour ${nom}`}
           iconId="fr-icon-download-line"
           linkProps={{
             href: `/administration/beneficiaires-subventions/${id}/convention.odt`,
           }}
-        />
+        >
+          Convention
+        </Button>
       ),
     },
     {
@@ -252,12 +255,14 @@ export const AdministrationBeneficiairesSubventionsDataTable = {
           departement: { code },
         },
       }) => (
-        <a
-          className="fr-link fr-link--xs fr-ml-1v"
-          href={`/administration/gouvernances/${code}/demandes-de-subvention`}
+        <Button
+          size="small"
+          linkProps={{
+            href: `/administration/gouvernances/${code}/demandes-de-subvention`,
+          }}
         >
           Instruire les demandes
-        </a>
+        </Button>
       ),
     },
     {

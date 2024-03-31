@@ -49,7 +49,9 @@ const gouvernancesPressenties: ListeGouvernance = [
     v2Enregistree: null,
     noteDeContexteSubventions: null,
     noteDeContexteSubventionsEnregistree: null,
-    beneficiaireDotationFormationEnregistre: null,
+    beneficiaireDotationFormationValideEtEnvoye: null,
+    beneficiaireDotationFormationAccepte: null,
+    beneficiaireDotationFormationDemandeDeModification: null,
     beneficiaireDotationFormation: null,
     departement: {
       codeRegion: '84',
@@ -79,7 +81,9 @@ const gouvernancesPressenties: ListeGouvernance = [
     v2Enregistree: null,
     noteDeContexteSubventions: null,
     noteDeContexteSubventionsEnregistree: null,
-    beneficiaireDotationFormationEnregistre: null,
+    beneficiaireDotationFormationValideEtEnvoye: null,
+    beneficiaireDotationFormationAccepte: null,
+    beneficiaireDotationFormationDemandeDeModification: null,
     beneficiaireDotationFormation: null,
     departement: {
       dotation202406: new Decimal(100_000),
@@ -112,7 +116,9 @@ const gouvernancesProposees: ListeGouvernance = [
     v2Enregistree: now,
     noteDeContexteSubventions: null,
     noteDeContexteSubventionsEnregistree: null,
-    beneficiaireDotationFormationEnregistre: null,
+    beneficiaireDotationFormationValideEtEnvoye: null,
+    beneficiaireDotationFormationAccepte: null,
+    beneficiaireDotationFormationDemandeDeModification: null,
     beneficiaireDotationFormation: null,
     departement: {
       dotation202406: new Decimal(100_000),
@@ -142,7 +148,9 @@ const gouvernancesProposees: ListeGouvernance = [
     v2Enregistree: tomorrow,
     noteDeContexteSubventions: null,
     noteDeContexteSubventionsEnregistree: null,
-    beneficiaireDotationFormationEnregistre: null,
+    beneficiaireDotationFormationValideEtEnvoye: null,
+    beneficiaireDotationFormationAccepte: null,
+    beneficiaireDotationFormationDemandeDeModification: null,
     beneficiaireDotationFormation: null,
     departement: {
       dotation202406: new Decimal(100_000),

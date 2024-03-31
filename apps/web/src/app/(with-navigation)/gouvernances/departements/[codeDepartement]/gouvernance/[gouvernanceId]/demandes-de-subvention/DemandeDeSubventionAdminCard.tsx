@@ -1,29 +1,19 @@
-import Button from '@codegouvfr/react-dsfr/Button'
 import React from 'react'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import { DemandeSubventionForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
-import ValiderEtEnvoyerDemandeDeSubventionButton from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/ValiderEtEnvoyerDemandeDeSubventionButton'
-import { gouvernanceDemandesDeSubventionPath } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
-import { limiteModicitaionDesDemandesDeSubvention } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceMetadata'
 import { nameOrEmail } from '@app/web/utils/nameOrEmail'
 import InfoLabelValue from '@app/web/components/Gouvernance/InfoLabelValue'
 import { besoinSubventionLabel } from '@app/web/gouvernance/besoinSubvention'
 import { getMembreGouvernanceStringName } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getMembreGouvernanceStringName'
 import { numberToEuros } from '@app/web/utils/formatNumber'
-import DeleteDemandeDeSubventionButton from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/DeleteDemandeDeSubventionButton'
+import AccepterDemandeDeSubventionButton from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/AccepterDemandeDeSubventionButton'
+import DemandeDeModificationDemandeDeSubventionButton from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/DemandeDeModificationDemandeDeSubventionButton'
 
-const DemandeDeSubventionCard = ({
+const DemandeDeSubventionAdminCard = ({
   demandeDeSubvention,
-  canValidate,
-  codeDepartement,
-  gouvernanceId,
 }: {
-  codeDepartement: string
-  gouvernanceId: string
   demandeDeSubvention: DemandeSubventionForForm
-  // User cannot validate if context is not done
-  canValidate: boolean
 }) => {
   const {
     id,
@@ -41,15 +31,11 @@ const DemandeDeSubventionCard = ({
     valideeEtEnvoyee,
   } = demandeDeSubvention
 
-  const mustEditContextBeforeValidate = !canValidate
   const creationMeta = `${dateAsDay(creation)} par ${nameOrEmail(createur)}`
   const modificationMeta = `${dateAsDay(modification)} par ${nameOrEmail(
     derniereModificationPar,
   )}`
   const displayModificationMeta = modificationMeta !== creationMeta
-
-  const canEdit = !valideeEtEnvoyee
-  const canDelete = !valideeEtEnvoyee
 
   return (
     <div>
@@ -60,28 +46,6 @@ const DemandeDeSubventionCard = ({
             Déposée le {creationMeta}
             {displayModificationMeta && ` · Modifiée le ${modificationMeta}`}
           </p>
-        </div>
-        <div className="fr-flex fr-flex-gap-4v fr-align-items-start">
-          {canEdit && (
-            <Button
-              priority="secondary"
-              size="small"
-              linkProps={{
-                href: gouvernanceDemandesDeSubventionPath(
-                  { codeDepartement },
-                  gouvernanceId,
-                  `/${id}`,
-                ),
-              }}
-              iconId="fr-icon-edit-line"
-              iconPosition="right"
-            >
-              Modifier
-            </Button>
-          )}
-          {canDelete && (
-            <DeleteDemandeDeSubventionButton demandeDeSubventionId={id} />
-          )}
         </div>
       </div>
       <InfoLabelValue
@@ -127,16 +91,20 @@ const DemandeDeSubventionCard = ({
         />
       ) : valideeEtEnvoyee ? (
         <Notice
-          className="fr-mt-4v fr-notice--icon-airplane"
+          className="fr-mt-8v fr-notice--no-icon"
           title={
-            <>
-              Demande de subvention envoyée le {dateAsDay(valideeEtEnvoyee)}.
-              <br />
-              <span className="fr-text--regular">
-                Nos équipes instruisent les demandes de subvention au fur et à
-                mesure de leur réception.{' '}
+            <span className="fr-flex fr-width-full fr-align-items-center fr-justify-content-space-between fr-flex-gap-4v">
+              <span>
+                En attente de validation depuis le {dateAsDay(valideeEtEnvoyee)}
+                .
               </span>
-            </>
+              <span className="fr-flex fr-direction-column fr-flex-gap-2v fr-direction-md-row">
+                <DemandeDeModificationDemandeDeSubventionButton
+                  demandeDeSubventionId={id}
+                />
+                <AccepterDemandeDeSubventionButton demandeDeSubventionId={id} />
+              </span>
+            </span>
           }
         />
       ) : (
@@ -145,27 +113,15 @@ const DemandeDeSubventionCard = ({
           title={
             <span className="fr-flex fr-width-full fr-align-items-center fr-justify-content-space-between fr-flex-gap-4v">
               <span>
-                Validez votre formulaire avant le{' '}
-                {dateAsDay(limiteModicitaionDesDemandesDeSubvention)} pour que
-                votre demande soit instruite. Vous ne pourrez ensuite plus le
-                modifier.
+                Demande en cours, pas encore validée et envoyéee par la
+                préfecture.
               </span>
-              <ValiderEtEnvoyerDemandeDeSubventionButton
-                disabled={mustEditContextBeforeValidate}
-                demandeDeSubventionId={id}
-              />
             </span>
           }
-        />
-      )}
-      {mustEditContextBeforeValidate && (
-        <Notice
-          className="fr-mt-4v fr-notice--warning"
-          title="Veuiller enregistrer la contextualisation des demandes de subvention pour pouvoir valider et envoyer votre demande"
         />
       )}
     </div>
   )
 }
 
-export default DemandeDeSubventionCard
+export default DemandeDeSubventionAdminCard

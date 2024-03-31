@@ -77,6 +77,38 @@ const demandeDeSubventionSecurityCheck = async ({
   }
 }
 
+const gouvernanceSubventionInstructSecurityCheck = async ({
+  gouvernanceId,
+  user,
+}: {
+  gouvernanceId: string
+  user: SessionUser
+}) => {
+  const gouvernance = await prismaClient.gouvernance.findUnique({
+    where: {
+      id: gouvernanceId,
+    },
+    select: {
+      id: true,
+      departementCode: true,
+      beneficiaireDotationFormationId: true,
+      beneficiaireDotationFormationValideEtEnvoye: true,
+      beneficiaireDotationFormationAccepte: true,
+      beneficiaireDotationFormationDemandeDeModification: true,
+    },
+  })
+
+  if (!gouvernance) {
+    throw notFoundError()
+  }
+
+  if (user.role !== 'Administrator') {
+    throw forbiddenError('Vous ne pouvez pas instruire cette gouvernance')
+  }
+
+  return gouvernance
+}
+
 export const demandesDeSubventionRouter = router({
   updateNoteDeContexteSubventions: protectedProcedure
     .input(NoteDeContexteSubventionsValidation)
@@ -119,7 +151,7 @@ export const demandesDeSubventionRouter = router({
         return result
       },
     ),
-  updateBeneficiaireFormation: protectedProcedure
+  validerEtEnvoyerBeneficiaireFormation: protectedProcedure
     .input(BeneficiaireSubventionFormationValidation)
     .mutation(
       async ({
@@ -151,7 +183,8 @@ export const demandesDeSubventionRouter = router({
           },
           data: {
             beneficiaireDotationFormationId: membreGouvernanceId,
-            beneficiaireDotationFormationEnregistre: new Date(),
+            beneficiaireDotationFormationValideEtEnvoye: new Date(),
+            beneficiaireDotationFormationAccepte: null,
             derniereModificationParId: user.id,
             modification: new Date(),
           },
@@ -160,6 +193,52 @@ export const demandesDeSubventionRouter = router({
         return result
       },
     ),
+  accepterBeneficiaireFormation: protectedProcedure
+    .input(DemandeDeSubventionActionValidation)
+    // This is id of gouvernance, not demandeDeSubvention
+    .mutation(async ({ input: { id }, ctx: { user } }) => {
+      const gouvernance = await gouvernanceSubventionInstructSecurityCheck({
+        gouvernanceId: id,
+        user,
+      })
+
+      await prismaClient.gouvernance.update({
+        where: {
+          id,
+        },
+        data: {
+          beneficiaireDotationFormationValideEtEnvoye:
+            gouvernance.beneficiaireDotationFormationValideEtEnvoye
+              ? undefined
+              : new Date(),
+          beneficiaireDotationFormationAccepte: new Date(),
+        },
+      })
+
+      return { id }
+    }),
+  demanderAModifierBeneficiaireFormation: protectedProcedure
+    .input(DemandeDeSubventionActionValidation)
+    // This is id of gouvernance, not demandeDeSubvention
+    .mutation(async ({ input: { id }, ctx: { user } }) => {
+      await gouvernanceSubventionInstructSecurityCheck({
+        gouvernanceId: id,
+        user,
+      })
+
+      await prismaClient.gouvernance.update({
+        where: {
+          id,
+        },
+        data: {
+          beneficiaireDotationFormationValideEtEnvoye: null,
+          beneficiaireDotationFormationAccepte: null,
+          beneficiaireDotationFormationDemandeDeModification: new Date(),
+        },
+      })
+
+      return { id }
+    }),
   createOrUpdate: protectedProcedure
     .input(DemandeDeSubventionValidation)
     .mutation(

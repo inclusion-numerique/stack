@@ -38,7 +38,9 @@ export const getStatutDemandesSubvention = <
     Gouvernance,
     | 'noteDeContexteSubventions'
     | 'noteDeContexteSubventionsEnregistree'
-    | 'beneficiaireDotationFormationEnregistre'
+    | 'beneficiaireDotationFormationValideEtEnvoye'
+    | 'beneficiaireDotationFormationAccepte'
+    | 'beneficiaireDotationFormationDemandeDeModification'
   > & {
     departement: {
       dotation202406: Decimal
@@ -72,18 +74,25 @@ export const getStatutDemandesSubvention = <
     demandesDeSubvention.every(({ valideeEtEnvoyee }) => !!valideeEtEnvoyee) &&
     !dotationRestante &&
     !!gouvernance?.beneficiaireDotationFormation &&
-    !!gouvernance?.beneficiaireDotationFormationEnregistre
+    !!gouvernance?.beneficiaireDotationFormationAccepte
     ? 'Finalisé'
     : 'En cours'
 }
 
 export const getStatutBeneficiaireFormation = (
-  gouvernance?: Pick<Gouvernance, 'beneficiaireDotationFormationEnregistre'>,
-): StatutMetadata => {
-  if (!gouvernance?.beneficiaireDotationFormationEnregistre) {
-    return 'Non renseigné'
+  gouvernance?: Pick<
+    Gouvernance,
+    | 'beneficiaireDotationFormationAccepte'
+    | 'beneficiaireDotationFormationValideEtEnvoye'
+  >,
+): StatutAction => {
+  if (gouvernance?.beneficiaireDotationFormationAccepte) {
+    return 'Validé'
   }
-  return 'Enregistré'
+  if (gouvernance?.beneficiaireDotationFormationValideEtEnvoye) {
+    return 'Envoyé'
+  }
+  return 'Non renseigné'
 }
 
 export const getStatutNoteDeContexteSubventions = (

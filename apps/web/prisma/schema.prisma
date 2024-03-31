@@ -763,11 +763,12 @@ model Gouvernance {
   noteDeContexteSubventions            String?   @map("note_de_contexte_subventions")
   noteDeContexteSubventionsEnregistree DateTime? @map("note_de_contexte_subventions_enregistree")
 
-  beneficiaireDotationFormationId                    String?            @unique @map("beneficiaire_dotation_formation_id") @db.Uuid
-  beneficiaireDotationFormation                      MembreGouvernance? @relation(name: "beneficiaire_dotation_formation", fields: [beneficiaireDotationFormationId], references: [id])
-  beneficiaireDotationFormationEnregistre            DateTime?          @map("beneficiaire_dotation_formation_enregistre")
-  beneficiaireDotationFormationValide                DateTime?          @map("beneficiaire_dotation_formation_valide")
-  beneficiaireDotationFormationDemandeDeModification DateTime?          @map("beneficiaire_dotation_formation_demande_de_modification")
+  beneficiaireDotationFormationId String?            @unique @map("beneficiaire_dotation_formation_id") @db.Uuid
+  beneficiaireDotationFormation   MembreGouvernance? @relation(name: "beneficiaire_dotation_formation", fields: [beneficiaireDotationFormationId], references: [id])
+
+  beneficiaireDotationFormationValideEtEnvoye        DateTime? @map("beneficiaire_dotation_formation_valide_et_envoye")
+  beneficiaireDotationFormationDemandeDeModification DateTime? @map("beneficiaire_dotation_formation_demande_de_modification")
+  beneficiaireDotationFormationAccepte               DateTime? @map("beneficiaire_dotation_formation_accepte")
 
   pasDeCoporteurs Boolean? @map("pas_de_co_porteurs")
 

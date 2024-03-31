@@ -10,8 +10,13 @@ import {
 } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getMembreGouvernanceStringName'
 import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 import { dotationFormation202406 } from '@app/web/gouvernance/dotationFormation202406'
+import { getDemandesSubventionCounts } from '@app/web/app/(with-navigation)/administration/gouvernances/getDemandesSubventionCounts'
 
-const getBeneficiairesRows = async () => {
+const getBeneficiairesRows = async ({
+  gouvernanceId,
+}: {
+  gouvernanceId?: string
+}) => {
   const rows = await prismaClient.membreGouvernance.findMany({
     select: {
       ...membreSelect.select,
@@ -75,6 +80,7 @@ const getBeneficiairesRows = async () => {
         },
       ],
       gouvernance: {
+        id: gouvernanceId,
         v2Enregistree: {
           not: null,
         },
@@ -121,8 +127,14 @@ const getContacts = ({
       : null,
   ].filter(isDefinedAndNotNull)
 
-export const getAdministrationBeneficiairesSubventionsData = async () => {
-  const rows = await getBeneficiairesRows()
+export const getAdministrationBeneficiairesSubventionsData = async ({
+  gouvernanceId,
+}: {
+  gouvernanceId?: string
+}) => {
+  const rows = await getBeneficiairesRows({
+    gouvernanceId,
+  })
 
   return rows.map((membre) => {
     const {
@@ -153,16 +165,7 @@ export const getAdministrationBeneficiairesSubventionsData = async () => {
       subventionFormation ?? new Decimal(0),
     )
 
-    const demandesCounts = {
-      total: demandesSubventions.length,
-      enCours: demandesSubventions.filter(
-        ({ valideeEtEnvoyee }) => !valideeEtEnvoyee,
-      ).length,
-      aInstruire: demandesSubventions.filter(
-        ({ valideeEtEnvoyee, acceptee }) => !!valideeEtEnvoyee && !acceptee,
-      ).length,
-      validees: demandesSubventions.filter(({ acceptee }) => !!acceptee).length,
-    }
+    const demandesCounts = getDemandesSubventionCounts(demandesSubventions)
 
     const contacts = getContacts(membre)
 

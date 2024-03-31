@@ -57,7 +57,12 @@ const DemandeDeModificationDemandeDeSubventionButton = ({
 
   return (
     <>
-      <Button {...buttonLoadingClassname(isLoading)} onClick={onClick}>
+      <Button
+        {...buttonLoadingClassname(isLoading)}
+        size="small"
+        priority="secondary"
+        onClick={onClick}
+      >
         Demander&nbsp;à&nbsp;modifier
       </Button>
       {renderModal &&

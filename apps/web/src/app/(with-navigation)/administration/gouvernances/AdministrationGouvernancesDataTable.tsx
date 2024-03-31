@@ -14,6 +14,7 @@ import { numberToEuros } from '@app/web/utils/formatNumber'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import type { AdministrationGouvernancesDataRow } from '@app/web/app/(with-navigation)/administration/gouvernances/getAdministrationGouvernances'
 import {
+  statutsAction,
   statutsDemandeSubvention,
   statutsMetadata,
 } from '@app/web/gouvernance/statutDemandesSubvention'
@@ -137,8 +138,12 @@ export const AdministrationGouvernancesDataTable = {
         statutBeneficiaireFormation,
       ],
       cell: ({ statutBeneficiaireFormation }) =>
-        statutBeneficiaireFormation === 'Enregistré' ? (
+        statutBeneficiaireFormation === 'Validé' ? (
           <Badge small severity="success">
+            {statutBeneficiaireFormation}
+          </Badge>
+        ) : statutBeneficiaireFormation === 'Envoyé' ? (
+          <Badge small severity="new">
             {statutBeneficiaireFormation}
           </Badge>
         ) : (
@@ -151,7 +156,7 @@ export const AdministrationGouvernancesDataTable = {
           compareFromArrayIndex(
             a.statutBeneficiaireFormation,
             b.statutBeneficiaireFormation,
-            statutsMetadata,
+            statutsAction,
           ),
           a.demandesCounts.total - b.demandesCounts.total,
         ),

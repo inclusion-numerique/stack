@@ -62,6 +62,7 @@ const AccepterDemandeDeSubventionButton = ({
         onClick={onClick}
         iconId="fr-icon-check-line"
         iconPosition="right"
+        size="small"
       >
         Accepter
       </Button>

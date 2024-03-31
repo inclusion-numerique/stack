@@ -36,15 +36,24 @@ const BeneficiaireSubventionFormationForm = ({
   gouvernanceId,
   beneficiaireFormationMembreId,
   beneficiaireFormationMembreNom,
+  beneficiaireDotationFormationValideEtEnvoye,
+  beneficiaireDotationFormationAccepte,
   canEdit = true,
   canInstruct = false,
+  hideHint = false,
   beneficiairesOptions,
+  mustEditContextBeforeValidate,
 }: {
   gouvernanceId: string
   beneficiaireFormationMembreId?: string | null
   beneficiaireFormationMembreNom?: string | null
+  beneficiaireDotationFormationValideEtEnvoye?: string | null
+  beneficiaireDotationFormationAccepte?: string | null
   beneficiairesOptions: SelectOption[]
   canEdit?: boolean
+  canInstruct?: boolean
+  hideHint?: boolean
+  mustEditContextBeforeValidate: boolean
 }) => {
   const [isEditing, setIsEditing] = useState(!beneficiaireFormationMembreId)
 
@@ -56,11 +65,18 @@ const BeneficiaireSubventionFormationForm = ({
     },
   })
 
-  const mutation =
-    trpc.demandesDeSubvention.updateBeneficiaireFormation.useMutation()
+  const validerEtEnvoyer =
+    trpc.demandesDeSubvention.validerEtEnvoyerBeneficiaireFormation.useMutation()
+
+  const accepter =
+    trpc.demandesDeSubvention.accepterBeneficiaireFormation.useMutation()
+
+  const demanderAModifier =
+    trpc.demandesDeSubvention.demanderAModifierBeneficiaireFormation.useMutation()
 
   const router = useRouter()
 
+  // eslint-disable-next-line unicorn/consistent-function-scoping
   const onSubmit = () => {
     open()
   }
@@ -68,11 +84,10 @@ const BeneficiaireSubventionFormationForm = ({
   const onConfirm = async () => {
     const data = form.getValues()
     try {
-      await mutation.mutateAsync(data)
+      await validerEtEnvoyer.mutateAsync(data)
       createToast({
         priority: 'success',
-        message:
-          'Le bénéficiaire de la dotation formation a bien été enregistré',
+        message: 'Le bénéficiaire de la dotation formation a bien été envoyé',
       })
       setIsEditing(false)
       router.refresh()
@@ -90,9 +105,48 @@ const BeneficiaireSubventionFormationForm = ({
     }
   }
 
-  const isLoading = form.formState.isSubmitting || mutation.isPending
+  const onAccepter = async () => {
+    try {
+      await accepter.mutateAsync({ id: gouvernanceId })
+      createToast({
+        priority: 'success',
+        message: 'Le bénéficiaire de la dotation formation a bien été accepté',
+      })
+      setIsEditing(false)
+      router.refresh()
+    } catch {
+      createToast({
+        priority: 'error',
+        message: 'Une erreur est survenue',
+      })
+    }
+  }
 
-  const { error } = mutation
+  const onDemanderAModifier = async () => {
+    try {
+      await demanderAModifier.mutateAsync({ id: gouvernanceId })
+      createToast({
+        priority: 'success',
+        message:
+          'Le bénéficiaire de la dotation formation peut à nouveau être modifié',
+      })
+      setIsEditing(false)
+      router.refresh()
+    } catch {
+      createToast({
+        priority: 'error',
+        message: 'Une erreur est survenue',
+      })
+    }
+  }
+
+  const isLoading =
+    form.formState.isSubmitting ||
+    validerEtEnvoyer.isPending ||
+    accepter.isPending ||
+    demanderAModifier.isPending
+
+  const { error } = validerEtEnvoyer
 
   const [renderModal, setRenderModal] = useState(false)
 
@@ -144,13 +198,67 @@ const BeneficiaireSubventionFormationForm = ({
             </Button>
           )}
         </div>
-        <hr className="fr-separator-8v" />
-        <div>{hintContent}</div>
+        {!hideHint && (
+          <>
+            <hr className="fr-separator-8v" />
+            <div>{hintContent}</div>
+          </>
+        )}
         <hr className="fr-separator-8v" />
         <InfoLabelValue
           label="Bénéficiaire enregistré"
           value={beneficiaireFormationMembreNom}
         />
+        {!!beneficiaireDotationFormationValideEtEnvoye &&
+          !beneficiaireDotationFormationAccepte && (
+            <Notice
+              className="fr-mt-8v fr-notice--no-icon"
+              title={
+                <span className="fr-flex fr-width-full fr-align-items-center fr-justify-content-space-between fr-flex-gap-4v">
+                  <span>
+                    En attente de validation depuis le{' '}
+                    {beneficiaireDotationFormationValideEtEnvoye}.
+                  </span>
+                  {!!canInstruct && (
+                    <span className="fr-flex fr-direction-column fr-flex-gap-2v fr-direction-md-row">
+                      <Button
+                        {...buttonLoadingClassname(isLoading)}
+                        type="button"
+                        size="small"
+                        priority="secondary"
+                        onClick={onDemanderAModifier}
+                      >
+                        Demander&nbsp;à&nbsp;modifier
+                      </Button>
+                      <Button
+                        {...buttonLoadingClassname(isLoading)}
+                        iconId="fr-icon-check-line"
+                        iconPosition="right"
+                        size="small"
+                        type="button"
+                        onClick={onAccepter}
+                      >
+                        Accepter&nbsp;la&nbsp;demande
+                      </Button>
+                    </span>
+                  )}
+                </span>
+              }
+            />
+          )}
+        {!!beneficiaireDotationFormationValideEtEnvoye &&
+          !!beneficiaireDotationFormationAccepte && (
+            <Notice
+              className="fr-mt-8v fr-notice--success"
+              title={
+                <span className="fr-flex fr-width-full fr-align-items-center fr-justify-content-space-between fr-flex-gap-4v">
+                  <span>
+                    Demande validée le {beneficiaireDotationFormationAccepte}.
+                  </span>
+                </span>
+              }
+            />
+          )}
       </>
     )
   }
@@ -191,7 +299,7 @@ const BeneficiaireSubventionFormationForm = ({
           title={
             <span className="fr-flex fr-width-full fr-align-items-center fr-justify-content-space-between fr-flex-gap-4v">
               <span>
-                Valider votre formulaire avant le{' '}
+                Validez votre formulaire avant le{' '}
                 {dateAsDay(limiteModicitaionDesDemandesDeSubvention)} pour que
                 votre demande soit instruite. Vous ne pourrez ensuite plus le
                 modifier.
@@ -200,12 +308,19 @@ const BeneficiaireSubventionFormationForm = ({
                 {...buttonLoadingClassname(isLoading)}
                 iconId="fr-icon-check-line"
                 type="submit"
+                disabled={mustEditContextBeforeValidate}
               >
                 Valider&nbsp;&&nbsp;envoyer
               </Button>
             </span>
           }
         />
+        {mustEditContextBeforeValidate && (
+          <Notice
+            className="fr-mt-4v fr-notice--warning"
+            title="Veuiller enregistrer la contextualisation des demandes de subvention pour pouvoir valider et envoyer votre demande"
+          />
+        )}
         {renderModal &&
           createPortal(
             <Component

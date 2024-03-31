@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Metadata } from 'next'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import Link from 'next/link'
@@ -133,7 +133,7 @@ const Page = () => (
     </div>
     <div className="fr-container fr-container--medium fr-pt-20v fr-pb-50v">
       {information.map((info, index) => (
-        <>
+        <Fragment key={info.title}>
           {index !== 0 && <hr className="fr-separator-10v fr-mt-16v" />}
           <h2 className="fr-h3 fr-mb-8v">{info.title}</h2>
           <p className="fr-mb-8v">{info.description}</p>
@@ -142,7 +142,7 @@ const Page = () => (
               <ServiceCard key={service.title} {...service} />
             ))}
           </div>
-        </>
+        </Fragment>
       ))}
     </div>
   </>

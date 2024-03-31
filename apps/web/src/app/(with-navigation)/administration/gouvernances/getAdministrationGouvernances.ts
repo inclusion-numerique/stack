@@ -11,6 +11,7 @@ import {
   getStatutDemandesSubvention,
   getStatutNoteDeContexteSubventions,
 } from '@app/web/gouvernance/statutDemandesSubvention'
+import { getDemandesSubventionCounts } from '@app/web/app/(with-navigation)/administration/gouvernances/getDemandesSubventionCounts'
 
 export const getAdministrationGouvernancesData = async () => {
   const rows = await prismaClient.departement.findMany({
@@ -59,16 +60,6 @@ export const getAdministrationGouvernancesData = async () => {
       new Decimal(0),
     )
 
-    const enCours = demandesSubvention.filter(
-      ({ valideeEtEnvoyee }) => !valideeEtEnvoyee,
-    ).length
-    const aInstruire = demandesSubvention.filter(
-      ({ valideeEtEnvoyee, acceptee }) => !!valideeEtEnvoyee && !acceptee,
-    ).length
-    const validees = demandesSubvention.filter(
-      ({ acceptee }) => !!acceptee,
-    ).length
-
     const membresCounts = {
       total: gouvernance?.membres.length ?? 0,
       coPorteurs: gouvernance?.pasDeCoporteurs
@@ -109,12 +100,7 @@ export const getAdministrationGouvernancesData = async () => {
       feuillesDeRoutesCount,
       membresCounts,
       deduplicatedBeneficiairesCount: deduplicatedBeneficiaires.size,
-      demandesCounts: {
-        enCours,
-        aInstruire,
-        validees,
-        total: demandesSubvention.length,
-      },
+      demandesCounts: getDemandesSubventionCounts(demandesSubvention),
     }
   })
 }

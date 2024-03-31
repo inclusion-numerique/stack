@@ -4,6 +4,7 @@ import {
   MetaInfManifestXml,
   metaXml,
   mimeType,
+  stylesXml,
 } from '@app/web/server/odt/template/template'
 
 export const createOdtFile = async ({
@@ -14,10 +15,10 @@ export const createOdtFile = async ({
   pictures,
 }: {
   content: string
-  styles: string
+  styles?: string
   manifest?: string
   meta?: string
-  pictures: { name: string; data: Buffer }[]
+  pictures?: { name: string; data: Buffer }[]
 }): Promise<Buffer> => {
   // Create a ZipObj for fflate
   const zipObject: AsyncZippable = {
@@ -25,12 +26,14 @@ export const createOdtFile = async ({
     'manifest.rdf': strToU8(manifestRdf),
     'meta.xml': strToU8(meta ?? metaXml),
     mimetype: strToU8(mimeType),
-    'styles.xml': strToU8(styles),
+    'styles.xml': strToU8(styles ?? stylesXml),
     'content.xml': strToU8(content),
   }
 
-  for (const { name, data } of pictures) {
-    zipObject[`Pictures/${name}`] = data
+  if (pictures) {
+    for (const { name, data } of pictures) {
+      zipObject[`Pictures/${name}`] = data
+    }
   }
 
   return new Promise((resolve, reject) => {

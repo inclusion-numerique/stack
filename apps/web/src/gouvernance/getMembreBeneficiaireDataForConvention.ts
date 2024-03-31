@@ -1,5 +1,6 @@
 import { prismaClient } from '@app/web/prismaClient'
 import { membreSelect } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
+import { getMembreGouvernanceStringName } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getMembreGouvernanceStringName'
 
 export const getMembreBeneficiaireDataForConvention = async (
   membreGouvernanceId: string,
@@ -48,7 +49,11 @@ export const getMembreBeneficiaireDataForConvention = async (
     return null
   }
 
-  return { membre, beneficiaireFormation: true }
+  return {
+    membre,
+    beneficiaireFormation: true,
+    nom: getMembreGouvernanceStringName(membre),
+  }
 }
 
 export type MembreBeneficiaireDataForConvention = Exclude<

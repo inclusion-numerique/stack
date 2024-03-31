@@ -1,27 +1,15 @@
 import React from 'react'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import Badge from '@codegouvfr/react-dsfr/Badge'
-import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
-import Link from 'next/link'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
+import Notice from '@codegouvfr/react-dsfr/Notice'
 import Button from '@codegouvfr/react-dsfr/Button'
-import {
-  getDemandesSubventionsForForm,
-  getDemandesSubventionsForFormSelect,
-  gouvernanceSelect,
-} from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
+import { getDemandesSubventionsForFormSelect } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { generateDepartementMetadata } from '@app/web/app/(with-navigation)/gouvernances/departements/generateDepartementMetadata'
-import {
-  gouvernanceDemandesDeSubventionPath,
-  gouvernanceHomePath,
-} from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
-import { canEditGouvernance } from '@app/web/security/securityRules'
-import BackLink from '@app/web/components/BackLink'
 import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvernances/gouvernanceScopeTitle'
 import { checkAccessControl } from '@app/web/app/checkAccessControl'
 import { checkGouvernanceScopeWriteAccess } from '@app/web/app/(with-navigation)/gouvernances/checkGouvernanceScopeWriteAccess'
-import NoteDeContexteSubventionsForm from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/NoteDeContexteSubventionsForm'
-import RedAsterisk from '@app/web/ui/RedAsterisk'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { limiteModicitaionDesDemandesDeSubvention } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceMetadata'
 import { numberToEuros } from '@app/web/utils/formatNumber'
@@ -29,14 +17,14 @@ import {
   getDemandesDeSubventionsForGouvernance,
   getMontantDotationRestante,
 } from '@app/web/gouvernance/gouvernanceStatus'
-import DemandeDeSubventionCard from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/DemandeDeSubventionCard'
-import { getSessionUser } from '@app/web/auth/getSessionUser'
-import { getStatutDemandesSubvention } from '@app/web/gouvernance/statutDemandesSubvention'
 import BeneficiaireSubventionFormationForm from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/BeneficiaireSubventionFormationForm'
 import { getSubventionBeneficiairesOptions } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getSubventionBeneficiairesOptions'
 import { getMembreGouvernanceStringName } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getMembreGouvernanceStringName'
 import { prismaClient } from '@app/web/prismaClient'
 import styles from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/DemandeDeSubventionForm.module.css'
+import DemandeDeSubventionAdminCard from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/DemandeDeSubventionAdminCard'
+import { getDemandesSubventionCounts } from '@app/web/app/(with-navigation)/administration/gouvernances/getDemandesSubventionCounts'
+import { getAdministrationBeneficiairesSubventionsData } from '@app/web/app/(with-navigation)/administration/beneficiaires-subventions/getAdministrationBeneficiairesSubventions'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -90,6 +78,12 @@ const Page = async ({
 
   const demandesDeSubvention =
     getDemandesDeSubventionsForGouvernance(gouvernance)
+
+  const demandesCounts = getDemandesSubventionCounts(demandesDeSubvention)
+
+  const beneficiaires = await getAdministrationBeneficiairesSubventionsData({
+    gouvernanceId: gouvernance.id,
+  })
 
   const beneficiairesOptions = await getSubventionBeneficiairesOptions({
     gouvernanceId: gouvernance.id,
@@ -198,23 +192,72 @@ const Page = async ({
             </span>
           </p>
         )}
-        {demandesDeSubvention.map((demandeDeSubvention) => (
+        <hr className="fr-separator-8v" />
+        <p className="fr-text--bold fr-mb-2v">
+          {demandesCounts.total} Demande
+          {sPluriel(demandesCounts.total)} de subvention
+        </p>
+        <div>
+          <Badge small severity="info" noIcon>
+            {demandesCounts.enCours} en cours
+          </Badge>{' '}
+          ·{' '}
+          <Badge small severity="new" noIcon>
+            {demandesCounts.aInstruire} à instruire
+          </Badge>{' '}
+          ·{' '}
+          <Badge small severity="success" noIcon>
+            {demandesCounts.validees} validée{sPluriel(demandesCounts.validees)}
+          </Badge>
+        </div>
+        {beneficiaires.length > 0 && (
           <>
-            <hr
-              key={`${demandeDeSubvention.id}_separator`}
-              className="fr-separator-8v"
-            />
-            <DemandeDeSubventionCard
-              key={demandeDeSubvention.id}
-              demandeDeSubvention={demandeDeSubvention}
-              codeDepartement={codeDepartement}
-              gouvernanceId={gouvernance.id}
-              canInstruct
-              canValidate
-            />
+            <hr className="fr-separator-8v" />
+            <p className="fr-text--bold fr-mb-4v">Conventions bénéficiaires</p>
+            {!!demandesCounts.enCours && (
+              <Notice
+                className="fr-notice--warning"
+                title="Certaines demandes de subventions ne sont pas encore validées. Les conventions peuvent donc encore évoluer avec des avenants correspondants aux prochaines subventions validées."
+              />
+            )}
+            {beneficiaires.map((beneficiaire) => (
+              <div
+                key={beneficiaire.id}
+                className="fr-flex fr-align-items-center fr-mt-2v"
+              >
+                <Button
+                  size="small"
+                  priority="tertiary"
+                  title={`Télécharger la convention pour ${beneficiaire.nom}`}
+                  iconId="fr-icon-download-line"
+                  linkProps={{
+                    href: `/administration/beneficiaires-subventions/${beneficiaire.id}/convention.odt`,
+                  }}
+                />
+                <p className="fr-mb-0 fr-ml-2v">
+                  Convention pour {beneficiaire.nom} <br />
+                  <span className="fr-text--xs fr-text-mention--grey fr-mt-0 fr-mb-0">
+                    {numberToEuros(beneficiaire.subventionTotal)} ·{' '}
+                    {beneficiaire.demandesCounts.total} action
+                    {sPluriel(beneficiaire.demandesCounts.total)}
+                  </span>
+                </p>
+              </div>
+            ))}
           </>
-        ))}
+        )}
       </div>
+
+      {demandesDeSubvention.map((demandeDeSubvention) => (
+        <div
+          key={demandeDeSubvention.id}
+          className="fr-border--slim-grey fr-p-8v fr-mt-4v fr-pb-10v"
+        >
+          <DemandeDeSubventionAdminCard
+            demandeDeSubvention={demandeDeSubvention}
+          />
+        </div>
+      ))}
 
       <div className="fr-border--slim-grey fr-p-8v fr-mt-4v fr-pb-10v fr-mb-20v">
         <BeneficiaireSubventionFormationForm
@@ -222,8 +265,22 @@ const Page = async ({
             gouvernance.beneficiaireDotationFormation?.id
           }
           beneficiaireFormationMembreNom={beneficiaireFormationMembreNom}
+          beneficiaireDotationFormationValideEtEnvoye={
+            gouvernance.beneficiaireDotationFormationValideEtEnvoye
+              ? dateAsDay(
+                  gouvernance.beneficiaireDotationFormationValideEtEnvoye,
+                )
+              : null
+          }
+          beneficiaireDotationFormationAccepte={
+            gouvernance.beneficiaireDotationFormationAccepte
+              ? dateAsDay(gouvernance.beneficiaireDotationFormationAccepte)
+              : null
+          }
+          mustEditContextBeforeValidate={!gouvernance.noteDeContexteSubventions}
           gouvernanceId={gouvernance.id}
           canEdit
+          hideHint
           canInstruct
           beneficiairesOptions={beneficiairesOptions}
         />

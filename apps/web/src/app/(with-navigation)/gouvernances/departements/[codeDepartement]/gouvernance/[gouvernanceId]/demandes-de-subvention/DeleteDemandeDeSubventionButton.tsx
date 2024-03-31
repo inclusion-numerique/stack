@@ -61,6 +61,7 @@ const DeleteDemandeDeSubventionButton = ({
         {...buttonLoadingClassname(isLoading)}
         onClick={onClick}
         iconId="fr-icon-delete-line"
+        size="small"
         title="Supprimer"
         priority="tertiary"
       />

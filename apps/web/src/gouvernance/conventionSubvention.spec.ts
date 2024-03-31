@@ -9,6 +9,7 @@ const outputName = (filename: string) =>
 
 const conventionDataMock = {
   beneficiaireFormation: true,
+  nom: 'CD - Loire',
   membre: {
     id: '1',
     region: null,

@@ -65,6 +65,7 @@ const ValiderEtEnvoyerDemandeDeSubventionButton = ({
         iconId="fr-icon-check-line"
         iconPosition="right"
         disabled={disabled}
+        size="small"
       >
         Valider&nbsp;&&nbsp;envoyer
       </Button>
