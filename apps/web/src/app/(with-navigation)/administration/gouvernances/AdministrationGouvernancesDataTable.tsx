@@ -1,5 +1,6 @@
 import Badge from '@codegouvfr/react-dsfr/Badge'
 import React from 'react'
+import Button from '@codegouvfr/react-dsfr/Button'
 import {
   DataTableConfiguration,
   DataTableSearchParams,
@@ -278,12 +279,14 @@ export const AdministrationGouvernancesDataTable = {
       ],
       cell: ({ gouvernance, departement: { code } }) =>
         gouvernance ? (
-          <a
-            className="fr-link fr-link--xs fr-ml-1v"
-            href={`/administration/gouvernances/${code}/demandes-de-subvention`}
+          <Button
+            size="small"
+            linkProps={{
+              href: `/administration/gouvernances/${code}/demandes-de-subvention`,
+            }}
           >
             Instruire les demandes
-          </a>
+          </Button>
         ) : null,
     },
     {

@@ -9,7 +9,10 @@ import {
 } from '@app/web/data-table/DataTableConfiguration'
 import { compareMultiple } from '@app/web/utils/compareMultiple'
 import { getServerUrl } from '@app/web/utils/baseUrl'
-import { detailGouvernancePath } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
+import {
+  detailGouvernancePath,
+  gouvernanceHomePath,
+} from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
 import { numberToEuros } from '@app/web/utils/formatNumber'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import { compareFromArrayIndex } from '@app/web/utils/compareFromArrayIndex'
@@ -289,6 +292,22 @@ export const AdministrationBeneficiairesSubventionsDataTable = {
           target="_blank"
         >
           Voir la gouvernance
+        </a>
+      ),
+    },
+    {
+      name: 'vue-prefecture',
+      header: null,
+      cell: ({
+        gouvernance: {
+          departement: { code },
+        },
+      }) => (
+        <a
+          className="fr-link fr-link--xs fr-ml-1v"
+          href={gouvernanceHomePath({ codeDepartement: code })}
+        >
+          Vue préfecture
         </a>
       ),
     },

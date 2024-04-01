@@ -240,6 +240,9 @@ const Page = async ({
                     {numberToEuros(beneficiaire.subventionTotal)} ·{' '}
                     {beneficiaire.demandesCounts.total} action
                     {sPluriel(beneficiaire.demandesCounts.total)}
+                    {!!beneficiaire.subventionFormation && (
+                      <> · Dotation formation</>
+                    )}
                   </span>
                 </p>
               </div>

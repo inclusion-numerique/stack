@@ -68,7 +68,7 @@ const DemandeDeSubventionForm = ({
     reValidateMode: 'onChange',
   })
 
-  useScrollToError({ errors: form.formState.errors })
+  const scrollToError = useScrollToError({ errors: form.formState.errors })
 
   const {
     fields: beneficiairesFields,
@@ -118,7 +118,6 @@ const DemandeDeSubventionForm = ({
 
   // File upload hooks for storage
   const fileUpload = useFileUpload({})
-  const { upload } = fileUpload
   const router = useRouter()
 
   // Upload model creation mutation
@@ -131,13 +130,20 @@ const DemandeDeSubventionForm = ({
     if (uploadKey !== defaultValues.pieceJointeBudgetKey) {
       try {
         // Upload file and get uploaded file key
-        const uploaded = await upload(data.pieceJointeBudgetFile as File)
+        const uploaded = await fileUpload.upload(
+          data.pieceJointeBudgetFile as File,
+        )
+
         if (!uploaded || 'error' in uploaded) {
-          form.setError(
-            'pieceJointeBudgetFile',
-            uploaded?.error ??
-              'Une erreur est survenue lors de l’envoi du fichier',
-          )
+          form.setError('pieceJointeBudgetFile', {
+            message: 'Une erreur est survenue lors de l’envoi du fichier',
+          })
+          createToast({
+            priority: 'error',
+            message:
+              'Une erreur est survenue lors de l’envoi de votre pièce jointe de budget prévisionnel',
+          })
+          setTimeout(scrollToError.trigger, 50)
           // Upload failed, error will be displayed from hooks states
           return
         }
