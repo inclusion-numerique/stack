@@ -6,7 +6,7 @@ import {
   DataTableSearchParams,
 } from '@app/web/data-table/DataTableConfiguration'
 import SortLink from '@app/web/app/(with-navigation)/administration/SortLink'
-import { createSortLinkProps } from '@app/web/app/(with-navigation)/administration/createSortLinkProps'
+import { createSortLinkProps } from '@app/web/data-table/createSortLinkProps'
 
 const DataTable = <
   Data extends DataTableRow,

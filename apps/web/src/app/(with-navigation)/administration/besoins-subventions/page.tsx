@@ -5,7 +5,6 @@ import {
   getAdministrationBesoinsSubventionsData,
   getAdministrationBesoinsSubventionsMetadata,
 } from '@app/web/app/(with-navigation)/administration/besoins-subventions/getAdministrationBesoinsSubventions'
-import BesoinsSubventionsDataFilters from '@app/web/app/(with-navigation)/administration/besoins-subventions/BesoinsSubventionsDataFilters'
 import { applyDataTableSearch } from '@app/web/data-table/applyDataTableSearch'
 import { applyDataTableFilters } from '@app/web/data-table/applyDataTableFilters'
 import { applyDataTableOrdering } from '@app/web/data-table/applyDataTableOrdering'
@@ -49,7 +48,6 @@ const Page = async ({
   return (
     <AdministrationDataPage
       title="Subventions demandées par besoin"
-      filters={<BesoinsSubventionsDataFilters searchParams={searchParams} />}
       infoContents={
         <ul className="fr-m-0 fr-text--sm">
           {categories.map(({ label, actions, montant }) => (

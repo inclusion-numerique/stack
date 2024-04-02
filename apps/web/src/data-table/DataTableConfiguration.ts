@@ -13,11 +13,15 @@ export type DataTableFilter<
 > = {
   name: FilterName
   title: ReactNode
-  options?: SelectInputOption[]
+  options?:
+    | SelectInputOption[]
+    | (() => SelectInputOption[])
+    | (() => Promise<SelectInputOption[]>)
   toQuery?: (value: V[]) => string
   fromQuery?: (query?: string) => V[]
   applyInMemory?: (row: DataRow, value: V[]) => boolean
   applyWhereCondition?: (query: string, value: V[]) => Where
+  render?: (value: V[]) => ReactNode | Promise<ReactNode>
 }
 
 export type DataTableColumn<
@@ -47,6 +51,31 @@ export type DataTableConfiguration<
   defaultSortableInMemory?: (a: DataRow, b: DataRow) => number
 }
 
+type ConfiguredFilters<Configuration extends DataTableConfiguration> = Extract<
+  Configuration['columns'][number],
+  { filters: Required<DataTableColumn['filters']> }
+>
+
+export type DataTableFilterValues<
+  Configuration extends DataTableConfiguration = DataTableConfiguration,
+> = {
+  // TODO type for key in filter names and T values from config
+  [key in Exclude<
+    ConfiguredFilters<Configuration>['filters'],
+    undefined
+  >[number]['name']]: string[] | undefined
+}
+
+export type DataTableFilterSearchParams<
+  Configuration extends DataTableConfiguration = DataTableConfiguration,
+> = {
+  // TODO type for key in filter names and T values from config
+  [key in Exclude<
+    ConfiguredFilters<Configuration>['filters'],
+    undefined
+  >[number]['name']]: string | undefined
+}
+
 type SortableColumn<Configuration extends DataTableConfiguration> = Extract<
   Configuration['columns'][number],
   { sortable: Required<DataTableColumn['sortable']> }
@@ -58,4 +87,4 @@ export type DataTableSearchParams<
   recherche?: string
   tri?: SortableColumn<Configuration>['name']
   ordre?: SortDirection
-}
+} & DataTableFilterSearchParams<Configuration>

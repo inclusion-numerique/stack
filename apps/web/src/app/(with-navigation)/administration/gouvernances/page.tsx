@@ -2,7 +2,6 @@ import React from 'react'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import AdministrationDataPage from '@app/web/app/(with-navigation)/administration/AdministrationDataPage'
 import { numberToEuros } from '@app/web/utils/formatNumber'
-import GouvernancesDataFilters from '@app/web/app/(with-navigation)/administration/gouvernances/GouvernancesDataFilters'
 import {
   getAdministrationGouvernancesData,
   getAdministrationGouvernancesMetadata,
@@ -52,7 +51,6 @@ const Page = async ({
   return (
     <AdministrationDataPage
       title="Gouvernances"
-      filters={<GouvernancesDataFilters searchParams={searchParams} />}
       data={data}
       baseHref="/administration/gouvernances"
       dataTableConfiguration={AdministrationGouvernancesDataTable}

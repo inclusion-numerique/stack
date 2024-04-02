@@ -13,10 +13,11 @@ import {
   getAdministrationBeneficiairesSubventionsData,
   getAdministrationBeneficiairesSubventionsMetadata,
 } from '@app/web/app/(with-navigation)/administration/beneficiaires-subventions/getAdministrationBeneficiairesSubventions'
-import BeneficiairesSubventionsDataFilters from '@app/web/app/(with-navigation)/administration/beneficiaires-subventions/BeneficiairesSubventionsDataFilters'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+
+const baseHref = '/administration/beneficiaires-subventions'
 
 const Page = async ({
   searchParams,
@@ -30,7 +31,7 @@ const Page = async ({
     allData,
     AdministrationBeneficiairesSubventionsDataTable,
   )
-  const filteredData = applyDataTableFilters(
+  const { filteredData, filterValues } = applyDataTableFilters(
     searchParams,
     searchedData,
     AdministrationBeneficiairesSubventionsDataTable,
@@ -52,12 +53,10 @@ const Page = async ({
   return (
     <AdministrationDataPage
       title="Bénéficiaires subventions"
-      filters={
-        <BeneficiairesSubventionsDataFilters searchParams={searchParams} />
-      }
       data={data}
-      baseHref="/administration/beneficiaires-subventions"
+      baseHref={baseHref}
       dataTableConfiguration={AdministrationBeneficiairesSubventionsDataTable}
+      filterValues={filterValues}
       searchParams={searchParams}
       infoContents={
         <ul className="fr-m-0 fr-text--sm">

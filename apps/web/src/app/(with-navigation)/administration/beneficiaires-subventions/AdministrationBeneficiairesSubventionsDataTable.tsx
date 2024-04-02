@@ -24,6 +24,8 @@ import {
 import { membreGouvernanceStatuts } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getMembreGouvernanceStringName'
 import { getSiretInfoUrl } from '@app/web/components/Siret/getSiretInfoUrl'
 import { isValidSiret } from '@app/web/data/siret'
+import { getDepartementOptions } from '@app/web/data/getDepartementOptions'
+import { optionTuplesToOptions } from '@app/web/utils/options'
 
 export const AdministrationBeneficiairesSubventionsDataTable = {
   csvFilename: () => `fne-${dateAsIsoDay(new Date())}-beneficiaires`,
@@ -294,6 +296,17 @@ export const AdministrationBeneficiairesSubventionsDataTable = {
           Voir la gouvernance
         </a>
       ),
+      filters: [
+        {
+          name: 'departement' as const,
+          title: 'Département',
+          options: () => getDepartementOptions().then(optionTuplesToOptions),
+          fromQuery: (query) => query.split(','),
+          toQuery: (values) => values.join(','),
+          applyInMemory: (row, values) =>
+            values.includes(row.gouvernance.departement.code),
+        },
+      ],
     },
     {
       name: 'vue-prefecture',
