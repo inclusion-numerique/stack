@@ -3,7 +3,7 @@ import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import { notFound } from 'next/navigation'
 import Badge from '@codegouvfr/react-dsfr/Badge'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
-import Button from '@codegouvfr/react-dsfr/Button'
+import Link from 'next/link'
 import { getDemandesSubventionsForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { generateDepartementMetadata } from '@app/web/app/(with-navigation)/gouvernances/departements/generateDepartementMetadata'
 import {
@@ -131,19 +131,15 @@ const Page = async ({
           base de la dotation à laquelle vous êtes éligibles. Vous êtes invités
           à remplir un formulaire par action que vous souhaitez faire financer.
           Une note précisant le contexte dans lequel ces demandes de subventions
-          s’inscrivent vous est demandée. Vous pouvez télécharger le cahier des
-          charges qui vous guidera dans vos demandes de subventions ici&nbsp;:{' '}
-          <Button
-            className="wip"
-            size="small"
-            priority="tertiary"
-            linkProps={{
-              href: '/ressources/france-numerique-ensemble_cahier-des-charges-subventions.pdf',
-              target: '_blank',
-            }}
+          s’inscrivent vous est demandée.{' '}
+          <Link
+            className="fr-link"
+            href="https://lesbases.anct.gouv.fr/ressources/pas-a-pas-espace-france-numerique-ensemble"
+            target="_blank"
           >
-            Cahier des charges subventions
-          </Button>
+            Vous pouvez retrouver ici un guide qui vous aidera à remplir vos
+            formulaires de demande de subvention
+          </Link>
           .
         </p>
         <div className="fr-border--slim-grey fr-p-8v fr-pb-10v">

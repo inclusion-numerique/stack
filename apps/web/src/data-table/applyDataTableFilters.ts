@@ -35,14 +35,15 @@ export const applyDataTableFilters = <
   let filteredData = data
 
   for (const filter of filterConfigurations) {
-    const values = filterValues[filter.name]
+    const values = filterValues[filter.name as keyof typeof filterValues]
     if (!values || values.length === 0) {
       continue
     }
 
-    filteredData = filteredData.filter((row) =>
-      filter.applyInMemory(row, values),
-    )
+    const applyFilter = filter.applyInMemory
+    if (typeof applyFilter === 'function') {
+      filteredData = filteredData.filter((row) => applyFilter(row, values))
+    }
   }
 
   return { filteredData, filterValues }

@@ -186,7 +186,7 @@ const DemandeDeSubventionAdminCard = ({
           title={
             <span className="fr-flex fr-width-full fr-align-items-center fr-justify-content-space-between fr-flex-gap-4v">
               <span>
-                Demande en cours, pas encore validée et envoyéee par la
+                Demande en cours, pas encore validée et envoyée par la
                 préfecture.
               </span>
             </span>

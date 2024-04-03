@@ -28,7 +28,7 @@ const Page = async ({
     allData,
     AdministrationBesoinsSubventionsDataTable,
   )
-  const filteredData = applyDataTableFilters(
+  const { filteredData, filterValues } = applyDataTableFilters(
     searchParams,
     searchedData,
     AdministrationBesoinsSubventionsDataTable,
@@ -60,6 +60,7 @@ const Page = async ({
           ))}
         </ul>
       }
+      filterValues={filterValues}
       data={data}
       baseHref="/administration/besoins-subventions"
       dataTableConfiguration={AdministrationBesoinsSubventionsDataTable}

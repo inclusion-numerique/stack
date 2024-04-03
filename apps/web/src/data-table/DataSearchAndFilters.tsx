@@ -19,8 +19,7 @@ const DataSearchAndFilters = async <
   configuration,
   searchParams,
   baseHref,
-  filterValues: _filterValues,
-  data: _data, // needed for type inference
+  filterValues,
 }: {
   configuration: Configuration
   searchParams: DataTableSearchParams<Configuration>
@@ -33,28 +32,9 @@ const DataSearchAndFilters = async <
     .filter(isDefinedAndNotNull)
     .flat()
 
-  const filterValues: Record<string, string[]> = {}
-  for (const filter of filterConfigurations) {
-    const name = filter.name as keyof DataTableSearchParams<Configuration>
-    const queryValue = searchParams[name]
-
-    console.log('QUERY VALUE', queryValue)
-    console.log('CONFIG FROM QUERY', filter)
-    if (queryValue) {
-      filterValues[name] =
-        typeof filter.fromQuery === 'function'
-          ? filter.fromQuery(queryValue)
-          : []
-    }
-  }
-
-  console.log('FILTERS', filterConfigurations)
-  console.log('SEARCH PARAMS', searchParams)
-
-  console.log('FILTER VALUES', filterValues)
-
   const filterComponents = await Promise.all(
     filterConfigurations.map(async (filterConfiguration) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const options =
         'options' in filterConfiguration
           ? Array.isArray(filterConfiguration.options)
@@ -63,11 +43,13 @@ const DataSearchAndFilters = async <
               ? await filterConfiguration.options()
               : []
           : []
+      // TODO reuse filters from Les Bases ?
 
       return (
         <Button
           key={filterConfiguration.name}
-          priority="secondary"
+          className="fr-border-radius--8"
+          priority="tertiary"
           type="button"
           iconPosition="right"
           iconId="fr-icon-arrow-down-s-line"
@@ -86,7 +68,10 @@ const DataSearchAndFilters = async <
       filterComponents={filterComponents}
       filterValues={filterValues}
       searchBar={
-        <DataSearchBar searchParams={searchParams} baseHref={baseHref} />
+        <DataSearchBar
+          searchParams={searchParams as DataTableSearchParams}
+          baseHref={baseHref}
+        />
       }
     />
   )

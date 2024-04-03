@@ -29,7 +29,7 @@ const Page = async ({
     allData,
     AdministrationGouvernancesDataTable,
   )
-  const filteredData = applyDataTableFilters(
+  const { filteredData, filterValues } = applyDataTableFilters(
     searchParams,
     searchedData,
     AdministrationGouvernancesDataTable,
@@ -55,6 +55,7 @@ const Page = async ({
       baseHref="/administration/gouvernances"
       dataTableConfiguration={AdministrationGouvernancesDataTable}
       searchParams={searchParams}
+      filterValues={filterValues}
       infoContents={
         <ul className="fr-m-0 fr-text--sm">
           <li>

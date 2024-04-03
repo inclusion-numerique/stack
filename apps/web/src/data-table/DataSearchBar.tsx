@@ -4,13 +4,20 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 import { SearchBar } from '@codegouvfr/react-dsfr/SearchBar'
 import { createSearchCallback } from '@app/web/data-table/createSearchCallback'
-import { DataTableSearchParams } from '@app/web/data-table/DataTableConfiguration'
+import type {
+  DataTableConfiguration,
+  DataTableRow,
+  DataTableSearchParams,
+} from '@app/web/data-table/DataTableConfiguration'
 
-const DataSearchBar = ({
+const DataSearchBar = <
+  Data extends DataTableRow,
+  Configuration extends DataTableConfiguration<Data>,
+>({
   searchParams,
   baseHref,
 }: {
-  searchParams: DataTableSearchParams
+  searchParams: DataTableSearchParams<Configuration>
   baseHref: string
 }) => {
   const router = useRouter()

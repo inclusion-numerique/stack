@@ -2,8 +2,8 @@
 
 import Button from '@codegouvfr/react-dsfr/Button'
 import { ReactNode, useEffect, useRef, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import OptionBadge from '@app/ui/components/Form/OptionBadge'
+import { useRouter } from 'next/navigation'
 import {
   DataTableConfiguration,
   DataTableFilterValues,
@@ -27,6 +27,7 @@ const DataFilters = <Configuration extends DataTableConfiguration>({
 }) => {
   const router = useRouter()
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onFilter = () => {
     // TODO MERGE QUERY PARAAMS
     router.push(`${baseHref}?filter=todo`)
@@ -58,11 +59,14 @@ const DataFilters = <Configuration extends DataTableConfiguration>({
   )
 
   const filterValueEntries = Object.entries(filterValues)
-  const flattenedValueEntries = filterValueEntries.flatMap((entry) =>
-    entry[1].map((value) => [entry[0], value]),
-  )
+
+  // TODO do this in applyFilter serverside logic not in this component
+  const flattenedValueEntries = (
+    filterValueEntries as [string, string[]][]
+  ).flatMap((entry) => entry[1].map((value) => [entry[0], value]))
   // TODO Have the title of the filter instead of the "name"
 
+  // eslint-disable-next-line unicorn/consistent-function-scoping
   const onRemoveFilter = (name: string, value: string) => {
     console.log('REMOVE FILTER', { name, value })
   }
