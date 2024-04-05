@@ -38,7 +38,7 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
 
     cy.log('Go check emails in maildev server')
     // Go to maildev server to checkout the email and get the magic link
-    cy.visit('localhost:1080')
+    cy.visit('http://127.0.0.1:1080')
     cy.get('.email-list li a').first().click()
 
     cy.get('.email-meta .subject').should('contain', 'Connexion à Les Bases')
@@ -50,7 +50,7 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
       if (!emailPath) {
         throw new Error('Could not find email content path from maildev url')
       }
-      cy.visit(`localhost:1080${emailPath}/html`)
+      cy.visit(`http://127.0.0.1:1080${emailPath}/html`)
     })
 
     cy.log('Check mail contents')

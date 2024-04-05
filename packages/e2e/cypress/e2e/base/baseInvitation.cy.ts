@@ -44,7 +44,7 @@ describe("Utilisateur connecté, je peux gerer les membres d'une base", () => {
     cy.signin({ email: user.email })
     cy.log('Go check emails in maildev server')
     // Go to maildev server to checkout the email and get the magic link
-    cy.visit('localhost:1080')
+    cy.visit('http://127.0.0.1:1080')
     cy.get('.email-list li a').first().click()
 
     cy.get('.email-meta .subject').should(
@@ -59,7 +59,7 @@ describe("Utilisateur connecté, je peux gerer les membres d'une base", () => {
       if (!emailPath) {
         throw new Error('Could not find email content path from maildev url')
       }
-      cy.visit(`localhost:1080${emailPath}/html`)
+      cy.visit(`http://127.0.0.1:1080${emailPath}/html`)
     })
 
     cy.log('Check mail contents')
@@ -126,7 +126,7 @@ describe("Utilisateur connecté, je peux gerer les membres d'une base", () => {
     cy.signin({ email: user.email })
     cy.log('Go check emails in maildev server')
     // Go to maildev server to checkout the email and get the magic link
-    cy.visit('localhost:1080')
+    cy.visit('http://127.0.0.1:1080')
     cy.get('.email-list li a').first().click()
 
     cy.get('.email-meta .subject').should(
@@ -141,7 +141,7 @@ describe("Utilisateur connecté, je peux gerer les membres d'une base", () => {
       if (!emailPath) {
         throw new Error('Could not find email content path from maildev url')
       }
-      cy.visit(`localhost:1080${emailPath}/html`)
+      cy.visit(`http://127.0.0.1:1080${emailPath}/html`)
     })
 
     cy.log('Check mail contents')
