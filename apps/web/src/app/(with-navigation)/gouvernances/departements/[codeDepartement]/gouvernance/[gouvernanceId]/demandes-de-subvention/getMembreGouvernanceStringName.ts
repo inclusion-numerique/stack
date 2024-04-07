@@ -6,21 +6,25 @@ export const getMembreGouvernanceStringName = ({
   commune,
   nomStructure,
   siret,
+  formel,
 }: {
   id: string
-  region: { nom: string } | null
-  departement: { nom: string } | null
-  epci: { nom: string } | null
-  commune: { nom: string } | null
-  nomStructure: string | null
-  siret: string | null
+  region?: { nom: string } | null
+  departement?: { nom: string } | null
+  epci?: { nom: string } | null
+  commune?: { nom: string } | null
+  nomStructure?: string | null
+  siret?: string | null
+  formel?: boolean
 }) => {
   if (region?.nom) {
-    return `CR · ${region.nom}`
+    return formel ? `Conseil régional · ${region.nom}` : `CR · ${region.nom}`
   }
 
   if (departement?.nom) {
-    return `CD · ${departement.nom}`
+    return formel
+      ? `Conseil départemental · ${departement.nom}`
+      : `CD · ${departement.nom}`
   }
 
   return epci?.nom ?? commune?.nom ?? nomStructure ?? siret ?? id

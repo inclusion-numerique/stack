@@ -1,4 +1,4 @@
-export const convention202406Styles = `<?xml version="1.0" encoding="UTF-8"?>
+export const convention202406StylesFromExampleFile = `<?xml version="1.0" encoding="UTF-8"?>
 <office:document-styles xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
                         xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
                         xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
@@ -139,17 +139,6 @@ export const convention202406Styles = `<?xml version="1.0" encoding="UTF-8"?>
                                    style:font-name-asian="Arial" style:font-size-asian="16pt"
                                    style:font-weight-asian="bold" style:font-size-complex="16pt" fo:hyphenate="false"
                                    fo:hyphenation-remain-char-count="0" fo:hyphenation-push-char-count="0"/>
-        </style:style>
-        <style:style style:name="BREAK" style:family="paragraph" style:parent-style-name="Normal">
-            <style:paragraph-properties fo:break-before="page">
-                <style:tab-stops>
-                    <style:tab-stop style:position="6.1402in" style:type="right" style:leader-style="dotted"
-                                    style:leader-text="."/>
-                </style:tab-stops>
-            </style:paragraph-properties>
-            <style:text-properties style:font-name="Helvetica" fo:font-size="12pt" style:font-name-asian="Arial"
-                                   style:font-size-asian="12pt" style:language-asian="fr" style:country-asian="FR"
-                                   style:font-size-complex="12pt"/>
         </style:style>
         <style:style style:name="Heading_20_2" style:display-name="Heading 2" style:family="paragraph"
                      style:parent-style-name="Normal" style:next-style-name="Normal" style:default-outline-level="2"
@@ -1277,8 +1266,8 @@ export const convention202406Styles = `<?xml version="1.0" encoding="UTF-8"?>
         </style:style>
         <style:page-layout style:name="Mpm1">
             <style:page-layout-properties fo:page-width="8.2681in" fo:page-height="11.6929in" style:num-format="1"
-                                          style:print-orientation="portrait" fo:margin-top="1in"
-                                          fo:margin-bottom="1in" fo:margin-left="0.7874in"
+                                          style:print-orientation="portrait" fo:margin-top="0.7874in"
+                                          fo:margin-bottom="0.7874in" fo:margin-left="0.7874in"
                                           fo:margin-right="0.7874in" style:writing-mode="lr-tb"
                                           style:footnote-max-height="0in">
                 <style:footnote-sep style:width="0.0071in" style:distance-before-sep="0.0398in"
@@ -1290,8 +1279,8 @@ export const convention202406Styles = `<?xml version="1.0" encoding="UTF-8"?>
         </style:page-layout>
         <style:page-layout style:name="Mpm2">
             <style:page-layout-properties fo:page-width="8.2681in" fo:page-height="11.6929in" style:num-format="1"
-                                          style:print-orientation="portrait" fo:margin-top="1in"
-                                          fo:margin-bottom="1in" fo:margin-left="0.9839in"
+                                          style:print-orientation="portrait" fo:margin-top="0.4925in"
+                                          fo:margin-bottom="0.4925in" fo:margin-left="0.9839in"
                                           fo:margin-right="0.9839in" style:writing-mode="lr-tb"
                                           style:footnote-max-height="0in">
                 <style:footnote-sep style:width="0.0071in" style:adjustment="left" style:rel-width="33%"
@@ -1305,8 +1294,8 @@ export const convention202406Styles = `<?xml version="1.0" encoding="UTF-8"?>
         </style:page-layout>
         <style:page-layout style:name="Mpm3">
             <style:page-layout-properties fo:page-width="8.2681in" fo:page-height="11.6929in" style:num-format="1"
-                                          style:print-orientation="portrait" fo:margin-top="1in"
-                                          fo:margin-bottom="1in" fo:margin-left="0.7874in"
+                                          style:print-orientation="portrait" fo:margin-top="0.7874in"
+                                          fo:margin-bottom="0.7874in" fo:margin-left="0.7874in"
                                           fo:margin-right="0.7874in" style:writing-mode="lr-tb"
                                           style:footnote-max-height="0in">
                 <style:footnote-sep style:adjustment="left" style:rel-width="25%" style:color="#000000"/>

@@ -14,8 +14,10 @@ import { getDemandesSubventionCounts } from '@app/web/app/(with-navigation)/admi
 
 const getBeneficiairesRows = async ({
   gouvernanceId,
+  membreId,
 }: {
   gouvernanceId?: string
+  membreId?: string
 }) => {
   const rows = await prismaClient.membreGouvernance.findMany({
     select: {
@@ -54,6 +56,7 @@ const getBeneficiairesRows = async ({
               id: true,
               valideeEtEnvoyee: true,
               acceptee: true,
+              budgetGlobal: true,
               feuilleDeRoute: {
                 select: {
                   id: true,
@@ -71,6 +74,7 @@ const getBeneficiairesRows = async ({
       },
     },
     where: {
+      id: membreId,
       OR: [
         { beneficiaireDotationFormation: { isNot: null } },
         {
@@ -129,11 +133,14 @@ const getContacts = ({
 
 export const getAdministrationBeneficiairesSubventionsData = async ({
   gouvernanceId,
+  membreId,
 }: {
   gouvernanceId?: string
+  membreId?: string
 }) => {
   const rows = await getBeneficiairesRows({
     gouvernanceId,
+    membreId,
   })
 
   return rows.map((membre) => {
@@ -157,6 +164,11 @@ export const getAdministrationBeneficiairesSubventionsData = async ({
       new Decimal(0),
     )
 
+    const budgetGlobal = demandesSubventions.reduce(
+      (accumulator, demande) => accumulator.add(demande.budgetGlobal),
+      new Decimal(0),
+    )
+
     const subventionFormation = beneficiaireDotationFormation
       ? dotationFormation202406
       : null
@@ -173,6 +185,7 @@ export const getAdministrationBeneficiairesSubventionsData = async ({
       id,
       nom: getMembreGouvernanceStringName(membre),
       gouvernance,
+      budgetGlobal,
       subventionIngenierie,
       subventionFormation,
       subventionTotal,

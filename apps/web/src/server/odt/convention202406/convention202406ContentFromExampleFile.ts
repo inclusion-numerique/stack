@@ -1,19 +1,9 @@
-import { MembreBeneficiaireDataForConventionPostProcessed } from '@app/web/gouvernance/getMembreBeneficiaireDataForConvention'
-import { numberToEuros, numberToString } from '@app/web/utils/formatNumber'
-import { dateAsDay } from '@app/web/utils/dateAsDay'
+import { MembreBeneficiaireDataForConvention } from '@app/web/gouvernance/getMembreBeneficiaireDataForConvention'
 
 export const convention202406Content = ({
   beneficiaireFormation,
   nom,
-  demandesDeSubvention,
-  besoins,
-  // TODO Vérifier montant subventionTotal ou subventionIngenierie injecté dans le contenu ?
-  subventionIngenierie,
-  subventionIngenierieWords,
-  budgetGlobalWords,
-  budgetGlobal,
-  subventionIngenieriePercentageOfBudget,
-}: MembreBeneficiaireDataForConventionPostProcessed) => `<?xml version="1.0" encoding="UTF-8"?>
+}: MembreBeneficiaireDataForConvention) => `<?xml version="1.0" encoding="UTF-8"?>
 <office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
                          xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
                          xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
@@ -1570,7 +1560,9 @@ export const convention202406Content = ({
             </text:p>
             <text:p text:style-name="P7"/>
             <text:p text:style-name="P7">Il a été convenu ce qui suit :</text:p>
-            <text:p text:style-name="BREAK"/>
+            <text:p text:style-name="P7"/>
+            <text:p text:style-name="P7"/>
+            <text:p text:style-name="P34"/>
             <text:table-of-content text:style-name="Sect1" text:name="_TOC0">
                 <text:table-of-content-source text:outline-level="4" text:use-index-marks="false">
                     <text:index-title-template text:style-name="Contents_20_Heading">Table des matières
@@ -1797,24 +1789,19 @@ export const convention202406Content = ({
                                 text:visited-style-name="Visited_20_Internet_20_Link"><text:tab/>5
                         </text:a>
                     </text:p>
-                    ${
-                      beneficiaireFormation
-                        ? `
-                    <text:p text:style-name='P36'>
-                        <text:a xlink:type='simple' xlink:href='#_Toc162605997' office:target-frame-name='_top'
-                                xlink:show='replace' text:style-name='Internet_20_link'
-                                text:visited-style-name='Visited_20_Internet_20_Link'>
-                            <text:span text:style-name='Lien_20_hypertexte'>
-                                <text:span text:style-name='T37'>4. 1. 2. Formations Aidants Connect</text:span>
+                    <text:p text:style-name="P37">
+                        <text:a xlink:type="simple" xlink:href="#_Toc162605997" office:target-frame-name="_top"
+                                xlink:show="replace" text:style-name="Internet_20_link"
+                                text:visited-style-name="Visited_20_Internet_20_Link">
+                            <text:span text:style-name="Lien_20_hypertexte">
+                                <text:span text:style-name="T39">4. 1. 2. Formations Aidants Connect</text:span>
                             </text:span>
                         </text:a>
-                        <text:a xlink:type='simple' xlink:href='#_Toc162605997' office:target-frame-name='_top'
-                                xlink:show='replace' text:style-name='Internet_20_link'
-                                text:visited-style-name='Visited_20_Internet_20_Link'><text:tab/>5
+                        <text:a xlink:type="simple" xlink:href="#_Toc162605997" office:target-frame-name="_top"
+                                xlink:show="replace" text:style-name="Internet_20_link"
+                                text:visited-style-name="Visited_20_Internet_20_Link"><text:tab/>5
                         </text:a>
-                    </text:p>`
-                        : ''
-                    }
+                    </text:p>
                     <text:p text:style-name="P36">
                         <text:a xlink:type="simple" xlink:href="#_Toc162605998" office:target-frame-name="_top"
                                 xlink:show="replace" text:style-name="Internet_20_link"
@@ -1867,26 +1854,19 @@ export const convention202406Content = ({
                                 text:visited-style-name="Visited_20_Internet_20_Link"><text:tab/>6
                         </text:a>
                     </text:p>
-                    ${
-                      beneficiaireFormation
-                        ? `
-                    <text:p text:style-name='P36'>
-                        <text:a xlink:type='simple' xlink:href='#_Toc162606002' office:target-frame-name='_top'
-                                xlink:show='replace' text:style-name='Internet_20_link'
-                                text:visited-style-name='Visited_20_Internet_20_Link'>
-                            <text:span text:style-name='Lien_20_hypertexte'>
-                                <text:span text:style-name='T37'>5. 1. 2. Formations Aidants connect</text:span>
+                    <text:p text:style-name="P37">
+                        <text:a xlink:type="simple" xlink:href="#_Toc162606002" office:target-frame-name="_top"
+                                xlink:show="replace" text:style-name="Internet_20_link"
+                                text:visited-style-name="Visited_20_Internet_20_Link">
+                            <text:span text:style-name="Lien_20_hypertexte">
+                                <text:span text:style-name="T39">5. 1. 2. Formations Aidants connect</text:span>
                             </text:span>
                         </text:a>
-                        <text:a xlink:type='simple' xlink:href='#_Toc162606002' office:target-frame-name='_top'
-                                xlink:show='replace' text:style-name='Internet_20_link'
-                                text:visited-style-name='Visited_20_Internet_20_Link'><text:tab/>6
+                        <text:a xlink:type="simple" xlink:href="#_Toc162606002" office:target-frame-name="_top"
+                                xlink:show="replace" text:style-name="Internet_20_link"
+                                text:visited-style-name="Visited_20_Internet_20_Link"><text:tab/>6
                         </text:a>
                     </text:p>
-                    `
-                        : ''
-                    }
-                    
                     <text:p text:style-name="P36">
                         <text:a xlink:type="simple" xlink:href="#_Toc162606003" office:target-frame-name="_top"
                                 xlink:show="replace" text:style-name="Internet_20_link"
@@ -2142,7 +2122,10 @@ export const convention202406Content = ({
             <text:p text:style-name="P14">Contexte</text:p>
             <text:p text:style-name="P8">
                 <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T9">Cinq ans après le lancement de la première Stratégie nationale pour
+                    <text:span text:style-name="T9">C</text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T9">inq ans après le lancement de la première Stratégie nationale pour
                         un numérique inclusif (SNNI) et à l’issue d’une vaste concertation partenariale menée dans le
                         cadre du Conseil National de la Refondation numérique (CNR numérique), l’État, les collectivité
                     </text:span>
@@ -2296,14 +2279,10 @@ export const convention202406Content = ({
                 <text:span text:style-name="Police_20_par_20_défaut">
                     <text:span text:style-name="T10">e de projet</text:span>
                 </text:span>
-                ${
-                  beneficiaireFormation
-                    ? `<text:span text:style-name='Police_20_par_20_défaut'>
-                    <text:span text:style-name='T10'>et en formation des professionnels de la médiation numérique
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T23">et en formation des professionnels de la médiation numérique
                     </text:span>
-                </text:span>`
-                    : ''
-                }
+                </text:span>
                 <text:span text:style-name="Police_20_par_20_défaut">
                     <text:span text:style-name="T14">ont</text:span>
                 </text:span>
@@ -2342,23 +2321,25 @@ export const convention202406Content = ({
                             </text:span>
                         </text:span>
                         <text:span text:style-name="Police_20_par_20_défaut">
-                            <text:span text:style-name="T40">${numberToEuros(subventionIngenierie)}</text:span>
+                            <text:span text:style-name="T41">XXX</text:span>
+                        </text:span>
+                        <text:span text:style-name="Police_20_par_20_défaut">
+                            <text:span text:style-name="T40">€.</text:span>
                         </text:span>
                     </text:p>
                 </text:list-item>
-                ${
-                  beneficiaireFormation
-                    ? `<text:list-item>
-                    <text:p text:style-name='P78'>
-                        <text:span text:style-name='Police_20_par_20_défaut'>
-                            <text:span text:style-name='T40'>Permettre le financement de 62 formations au dispositif
-                                Aidants Connect pour les professionnels du territoire.
+                <text:list-item>
+                    <text:p text:style-name="P78">
+                        <text:span text:style-name="Police_20_par_20_défaut">
+                            <text:span text:style-name="T42">Permettre le financement de 62 formations au dispositif
+                                Aidants Connect pour les professionn
                             </text:span>
                         </text:span>
+                        <text:span text:style-name="Police_20_par_20_défaut">
+                            <text:span text:style-name="T42">els du territoire.</text:span>
+                        </text:span>
                     </text:p>
-                </text:list-item>`
-                    : ''
-                }
+                </text:list-item>
             </text:list>
             <text:p/>
             <text:p text:style-name="P40"/>
@@ -2386,13 +2367,13 @@ export const convention202406Content = ({
             <text:p text:style-name="P16">Le Bénéficiaire s’est engagé à mettre en œuvre de sa propre initiative et sous
                 sa responsabilité, sans que l’ANCT n’en tire de contrepartie directe, le projet suivant :
             </text:p>
-            ${demandesDeSubvention
-              .map(
-                ({ nomAction, contexte }) =>
-                  `<text:p text:style-name='P16'><text:span text:style-name='T4'>${nomAction} :</text:span></text:p>
-              <text:p text:style-name='P16'>${contexte}</text:p>`,
-              )
-              .join('')}
+            <text:p text:style-name="P28">Reprise des éléments de la case contexte de l’action, dans le formulaire de
+                demande de subvention.
+            </text:p>
+            <text:p text:style-name="P28">Si plusieurs actions pour ce bénéficiaire, ajout des différents contextes avec
+                Contexte de l’action [nom de l’action] puis le contexte de l’action renseignée dans le formulaire de
+                demande de suvbvention.
+            </text:p>
             <text:h text:style-name="P103" text:outline-level="3">
                 <text:bookmark-start text:name="_Toc162605991"/>
                 <text:bookmark-start text:name="_Toc162604410"/>
@@ -2405,52 +2386,63 @@ export const convention202406Content = ({
                 <text:bookmark-end text:name="_Toc162530247"/>
             </text:h>
             <text:p>Les actions de la gouvernance reposent sur les besoins suivants :</text:p>
+            <text:p/>
+            <text:p>Reprise des besoins exprimés dans le formulaire de demande.</text:p>
+            <text:p>Ex :</text:p>
             <text:list xml:id="list6507117097520247627" text:style-name="L2">
                 <text:list-item>
                     <text:list>
-                    ${besoins
-                      .map(
-                        (besoin) => `<text:list-item>
-                          <text:p text:style-name='T40'>${besoin}</text:p>
-                        </text:list-item>`,
-                      )
-                      .join('')}
+                        <text:list-item>
+                            <text:p text:style-name="P97">Structurer un fonds local pour l’inclusion numérique</text:p>
+                        </text:list-item>
+                        <text:list-item>
+                            <text:p text:style-name="P97">Monter des dossier subvention</text:p>
+                        </text:list-item>
+                        <text:list-item>
+                            <text:p text:style-name="P99">Animer et mettre en œuvre la gouvernance et la feuille de
+                                route
+                            </text:p>
+                        </text:list-item>
+                        <text:list-item>
+                            <text:p text:style-name="P99">XXX</text:p>
+                        </text:list-item>
                     </text:list>
                 </text:list-item>
             </text:list>
-            ${
-              beneficiaireFormation
-                ? `
-            <text:h text:style-name='P81' text:outline-level='3'>
-                <text:bookmark-start text:name='_Toc162605992'/>
-                <text:bookmark-start text:name='_Toc162604411'/>
+            <text:h text:style-name="P104" text:outline-level="3">
+                <text:bookmark-start text:name="_Toc162605992"/>
+                <text:bookmark-start text:name="_Toc162604411"/>
                 <text:soft-page-break/>Article 2.3: la formation des agents publics à Aidant Connect
-                <text:bookmark-end text:name='_Toc162605992'/>
-                <text:bookmark-end text:name='_Toc162604411'/>
+                <text:bookmark-end text:name="_Toc162605992"/>
+                <text:bookmark-end text:name="_Toc162604411"/>
             </text:h>
-            <text:p text:style-name='P66'>
-                <text:span text:style-name='Police_20_par_20_défaut'>
-                    <text:span text:style-name='P18'>Le</text:span>
+            <text:p text:style-name="P66">
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T24">Le</text:span>
                 </text:span>
-                <text:span text:style-name='Police_20_par_20_défaut'>
-                    <text:span text:style-name='P18'>Bénéficiaire s’est positionné comme tiers financeur sur son
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T24">Bénéficiaire s’est positionné comme tiers financeur sur son
                         territoire pour 62 formations à Aidants Connect (hors conseillers numériques et salariés des
                         branches de l’OPCO Uniformation). La subvention dédiée s’élève à 20 000 euros.
                     </text:span>
                 </text:span>
             </text:p>
-            <text:p text:style-name='P66'>
-                <text:span text:style-name='Police_20_par_20_défaut'>
-                    <text:span text:style-name='P18'>Le bénéficiaire peut financer les formations à Aidants Connect des professionnels de sa
+            <text:p text:style-name="P66">
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T24">Le bénéficiaire peut fin</text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T24">ancer les formations à Aidants Connect des professionnels de sa
                         structure. Toutefois, il doit aussi permettre le financement de formation de professionnels
                         d’autres structures de son territoire, dans la limite de 62 formations (à hauteur de 322 euros
-                        par agent, soit le coût d’une formation Aidants Connect de 7 heures).
+                        par a
                     </text:span>
                 </text:span>
-            </text:p>`
-                : ''
-            }
-            
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T24">gent, soit le coût d’une formation Aidants Connect de 7 heures).
+                    </text:span>
+                </text:span>
+            </text:p>
             <text:h text:style-name="P81" text:outline-level="2">
                 <text:bookmark-start text:name="_Toc162605993"/>
                 <text:bookmark-start text:name="_Toc162604412"/>
@@ -2586,14 +2578,40 @@ export const convention202406Content = ({
             <text:p text:style-name="P50">
                 <text:span text:style-name="Police_20_par_20_défaut">
                     <text:span text:style-name="T10">Au titre de l’exercice 2024, l’ANCT contribue financièrement au
-                        projet pour un montant de ${subventionIngenierieWords} (${numberToString(subventionIngenierie.toNumber())}) euros TTC, ce qui représente 
-                        ${subventionIngenieriePercentageOfBudget}%
-                        </text:span>
+                        projet pour un montant de
+                    </text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T17">(montant en toute lettre</text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T27">(XXX</text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T10">) euros TTC, ce qui représente</text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T17">XX</text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T14">%</text:span>
                 </text:span>
                 <text:span text:style-name="Police_20_par_20_défaut">
                     <text:span text:style-name="T10">du budget prévisionnel 2024 du projet dont le budget global s’élève
-                        à ${budgetGlobalWords} (${numberToString(budgetGlobal.toNumber())}) euros TTC.
+                        à
                     </text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T17">montant en toute lettre</text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T10"></text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T27">XXX</text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T10">euros TTC.</text:span>
                 </text:span>
             </text:p>
             <text:p text:style-name="P42"/>
@@ -2609,44 +2627,51 @@ export const convention202406Content = ({
                 </text:span>
                 <text:bookmark-start text:name="_Hlk127547269"/>
             </text:p>
-            ${
-              beneficiaireFormation
-                ? `
-                <text:h text:style-name='Heading_20_4' text:outline-level='4'>
-                <text:bookmark-start text:name='_Toc162605997'/>
-                <text:bookmark-start text:name='_Toc162604416'/>
-                <text:bookmark-start text:name='_Toc162603190'/>
-                <text:bookmark-start text:name='_Toc162530252'/>4. 1. 2.<text:bookmark-end text:name='_Hlk127547269'/>
+            <text:h text:style-name="P102" text:outline-level="4">
+                <text:bookmark-start text:name="_Toc162605997"/>
+                <text:bookmark-start text:name="_Toc162604416"/>
+                <text:bookmark-start text:name="_Toc162603190"/>
+                <text:bookmark-start text:name="_Toc162530252"/>4. 1. 2.<text:bookmark-end text:name="_Hlk127547269"/>
                 Formations Aidants Connect
-                <text:bookmark-end text:name='_Toc162605997'/>
-                <text:bookmark-end text:name='_Toc162604416'/>
-                <text:bookmark-end text:name='_Toc162603190'/>
-                <text:bookmark-end text:name='_Toc162530252'/>
+                <text:bookmark-end text:name="_Toc162605997"/>
+                <text:bookmark-end text:name="_Toc162604416"/>
+                <text:bookmark-end text:name="_Toc162603190"/>
+                <text:bookmark-end text:name="_Toc162530252"/>
             </text:h>
-            <text:p text:style-name='P50'/>
-            <text:p text:style-name='P50'>Au titre de l’exercice 2024, l’ANCT contribue financièrement aux formations
+            <text:p text:style-name="P46"/>
+            <text:p text:style-name="P45">Au titre de l’exercice 2024, l’ANCT contribue financièrement aux formations
                 pour un montant de vingt mille euros toutes taxes comprises (20 000€ TTC).
             </text:p>
-            <text:p text:style-name='P50'/>
-            <text:p text:style-name='P50'>Ce financement doit permettre 62 formations à Aidants Connect de 7 heures, à
+            <text:p text:style-name="P45"/>
+            <text:p text:style-name="P45">Ce financement doit permettre 62 formations à Aidants Connect de 7 heures, à
                 hauteur de 322 euros par formation.
             </text:p>
-            <text:p text:style-name='P50'/>
-            <text:p text:style-name='P50'>
-            Des formations plus longues intégrant une brique Aidants Connect
-                        sont également disponibles et peuvent être choisies par les professionnels. Les frais complémentaires (au-delà
+            <text:p text:style-name="P45"/>
+            <text:p text:style-name="P50">
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T23">Des formations plus longues intégrant une brique Aidants Connect
+                        sont également disponibles et peuvent être ch
+                    </text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T23">oisies par les professionnels. Les frais complémentaires (au-delà
                         de 322 euros) restent à la charge de leur structure employeuse.
+                    </text:span>
+                </text:span>
             </text:p>
-            <text:p text:style-name='P50'/>
-            <text:p text:style-name='P50'>
-            L’ANCT se réserve le droit de réévaluer ce montant par la voie d’un
-                        avenant, notamment si le bénéficiaire n’est pas en mesure de justifier de l’emploi de la subvention conformément à la
+            <text:p text:style-name="P45"/>
+            <text:p text:style-name="P50">
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T23">L’ANCT se réserve le droit de réévaluer ce montant par la voie d’un
+                        avenant, notamment si le bénéficiaire n’est pas en mesure
+                    </text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T23">de justifier de l’emploi de la subvention conformément à la
                         présente convention avant a fin de l’année 2024.
+                    </text:span>
+                </text:span>
             </text:p>
-            `
-                : ''
-            }
-            
             <text:p text:style-name="P43"/>
             <text:h text:style-name="P103" text:outline-level="3">
                 <text:bookmark-start text:name="_Toc162605998"/>
@@ -2791,32 +2816,40 @@ export const convention202406Content = ({
                 </text:list-item>
             </text:list>
             <text:p text:style-name="P71"/>
-            ${
-              beneficiaireFormation
-                ? `
-            <text:h text:style-name='P103' text:outline-level='4'>
-                <text:bookmark-start text:name='_Toc162606002'/>
-                <text:bookmark-start text:name='_Toc162604421'/>
-                <text:bookmark-start text:name='_Toc162603194'/>
-                <text:bookmark-start text:name='_Toc162530256'/>5. 1. 2. Formations Aidants connect
-                <text:bookmark-end text:name='_Toc162606002'/>
-                <text:bookmark-end text:name='_Toc162604421'/>
-                <text:bookmark-end text:name='_Toc162603194'/>
-                <text:bookmark-end text:name='_Toc162530256'/>
+            <text:h text:style-name="Heading_20_4" text:outline-level="4">
+                <text:bookmark-start text:name="_Toc162606002"/>
+                <text:bookmark-start text:name="_Toc162604421"/>
+                <text:bookmark-start text:name="_Toc162603194"/>
+                <text:bookmark-start text:name="_Toc162530256"/>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T39">5. 1. 2. Formations Aidants connect</text:span>
+                </text:span>
+                <text:bookmark-end text:name="_Toc162606002"/>
+                <text:bookmark-end text:name="_Toc162604421"/>
+                <text:bookmark-end text:name="_Toc162603194"/>
+                <text:bookmark-end text:name="_Toc162530256"/>
             </text:h>
-            <text:p text:style-name='P57'>Le bénéficiaire flèchera les 62 formations à Aidant Connect à [XX].</text:p>
-            <text:p text:style-name='P57'/>
-            <text:p text:style-name='P57'>Le bénéficiaire devra informer la préfecture de département de la bonne mise
+            <text:p text:style-name="P54">Le bénéficiaire flèchera les 62 formations à Aidant Connect à [XX].</text:p>
+            <text:p text:style-name="P54"/>
+            <text:p text:style-name="P54">Le bénéficiaire devra informer la préfecture de département de la bonne mise
                 en œuvre de sa stratégie de déploiement des formations.
             </text:p>
-            <text:p text:style-name='P57'/>
-            <text:p text:style-name='P57'>
-                  Il participera aux webinaires animés par l’ANCT pour les accompagner sur ce déploiement.
+            <text:p text:style-name="P54"/>
+            <text:p text:style-name="P56">
+                <text:soft-page-break/>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T31">Il participera aux webinaires animés par l’ANCT pour les accom
+                    </text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T31">pagner sur ce déploiement.</text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T29"></text:span>
+                </text:span>
             </text:p>
-            <text:p text:style-name='P57'/>
-            <text:p text:style-name='P57'/>`
-                : ''
-            }
+            <text:p text:style-name="P55"/>
+            <text:p text:style-name="P55"/>
             <text:h text:style-name="P103" text:outline-level="3">
                 <text:bookmark-start text:name="_Toc162606003"/>
                 <text:bookmark-start text:name="_Toc162604422"/>
@@ -2854,16 +2887,11 @@ export const convention202406Content = ({
                 <text:list-item>
                     <text:p text:style-name="P93">Une évaluation des résultats du projet</text:p>
                 </text:list-item>
-                ${
-                  beneficiaireFormation
-                    ? `<text:list-item>
-                    <text:p text:style-name='P93'>Une attestation de fin de formation pour chaque professionnel formé à
+                <text:list-item>
+                    <text:p text:style-name="P94">Une attestation de fin de formation pour chaque professionnel formé à
                         Aidants Connect via la subvention dédiée de la présente convention
                     </text:p>
-                </text:list-item>`
-                    : ''
-                }
-                
+                </text:list-item>
             </text:list>
             <text:p text:style-name="P59"/>
             <text:p text:style-name="P59">Ces documents devront attester de la conformité des dépenses effectuées à l&apos;objet
@@ -3131,7 +3159,19 @@ export const convention202406Content = ({
                 effectivement réalisés et justifiées par le Bénéficiaire à la date d’effet de la résiliation.
             </text:p>
             <text:p/>
-            <text:p>Le cas échéant, lebénéficiairesera tenu au reversement des sommes indûment perçues.
+            <text:p>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T43">Le cas échéa</text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T43">nt, le</text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T40">bénéficiaire</text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T43">sera tenu au reversement des sommes indûment perçues.</text:span>
+                </text:span>
             </text:p>
             <text:p/>
             <text:p><text:soft-page-break/>Aucune indemnité ne pourra être demandée du fait de cette résiliation.
@@ -3446,7 +3486,10 @@ export const convention202406Content = ({
             <text:p text:style-name="P60"/>
             <text:p text:style-name="P58">
                 <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T9">Le ${dateAsDay(new Date())}</text:span>
+                    <text:span text:style-name="T9">Le _</text:span>
+                </text:span>
+                <text:span text:style-name="Police_20_par_20_défaut">
+                    <text:span text:style-name="T32">___________XX /XX/XXXX________</text:span>
                 </text:span>
             </text:p>
             <text:p text:style-name="P60"/>
@@ -3459,13 +3502,16 @@ export const convention202406Content = ({
                         <text:p text:style-name="P38">
                             <text:bookmark-start text:name="_Hlk149643635"/>
                             <text:span text:style-name="Police_20_par_20_défaut">
-                                <text:span text:style-name="T9">Pour ${nom}</text:span>
+                                <text:span text:style-name="T9">Pour</text:span>
+                            </text:span>
+                            <text:span text:style-name="Police_20_par_20_défaut">
+                                <text:span text:style-name="T28">NOM DE LA STRUCTURE,</text:span>
                             </text:span>
                         </text:p>
-                        <text:p text:style-name="P49">NOM</text:p>
+                        <text:p text:style-name="P49">Le/La FONCTON</text:p>
                         <text:p text:style-name="P38">
                             <text:span text:style-name="Police_20_par_20_défaut">
-                                <text:span text:style-name="T32">FONCTION</text:span>
+                                <text:span text:style-name="T32">Monsieur/Madame NOM</text:span>
                             </text:span>
                         </text:p>
                     </table:table-cell>
@@ -3495,7 +3541,7 @@ export const convention202406Content = ({
                 <text:bookmark-start text:name="_Toc162530273"/>
             </text:h>
             <text:p text:style-name="P3"/>
-            <text:p text:style-name="BREAK"/>
+            <text:h text:style-name="P84" text:outline-level="2"/>
             <text:h text:style-name="P84" text:outline-level="2">Annexes
                 <text:bookmark-end text:name="_Toc162606019"/>
                 <text:bookmark-end text:name="_Toc162604438"/>
@@ -3533,6 +3579,8 @@ export const convention202406Content = ({
                     <text:p text:style-name="P91">Logo de FNE</text:p>
                 </text:list-item>
             </text:list>
+            <text:p text:style-name="P24"/>
+            <text:p text:style-name="P24"/>
             <text:p text:style-name="Normal">
                 <text:span text:style-name="Police_20_par_20_défaut">
                     <text:span text:style-name="T33">Annexe 1</text:span>
@@ -3573,7 +3621,7 @@ export const convention202406Content = ({
             <text:p text:style-name="P19">Les coûts de personnels titulaires de la fonction publique territoriale ne
                 sont pas éligibles à une subvention de l’Etat.
             </text:p>
-            <text:p text:style-name="BREAK"/>
+            <text:p text:style-name="P24"/>
             <text:p text:style-name="P4">
                 <text:span text:style-name="Police_20_par_20_défaut">
                     <text:span text:style-name="T33">Annexe 2</text:span>
@@ -3634,7 +3682,19 @@ export const convention202406Content = ({
                 Connect d’une structure peut former son collègue si celui-ci a réalisé plus de 5 mandats (se rapprocher
                 du référent Aidants Connect de votre structure pour bénéficier d’une formation entre pairs).
             </text:p>
-            <text:p text:style-name="BREAK"/>
+            <text:p text:style-name="P24"/>
+            <text:p text:style-name="P23"/>
+            <text:p text:style-name="P23"/>
+            <text:p text:style-name="P24"/>
+            <text:p text:style-name="P24"/>
+            <text:p text:style-name="P24"/>
+            <text:p text:style-name="P24">
+                <text:soft-page-break/>
+            </text:p>
+            <text:p text:style-name="P24"/>
+            <text:p text:style-name="P24"/>
+            <text:p text:style-name="P24"/>
+            <text:p text:style-name="P24"/>
             <text:p text:style-name="P4">
                 <text:span text:style-name="Police_20_par_20_défaut">
                     <text:span text:style-name="T33">Annexe 3</text:span>
@@ -3666,6 +3726,7 @@ export const convention202406Content = ({
                     </text:span>
                 </text:span>
             </text:p>
+            <text:p text:style-name="P24"/>
             <text:p text:style-name="P24">Annexe 4</text:p>
             <text:p text:style-name="P25">Logo France Numérique Ensemble</text:p>
             <text:p text:style-name="P25"/>
@@ -3681,6 +3742,15 @@ export const convention202406Content = ({
                     </text:span>
                 </text:span>
             </text:p>
+            <text:p text:style-name="P21"/>
+            <text:p text:style-name="P21"/>
+            <text:p text:style-name="P21"/>
+            <text:p text:style-name="P21"/>
+            <text:p text:style-name="P21">
+                <text:soft-page-break/>
+            </text:p>
+            <text:p text:style-name="P21"/>
+            <text:p text:style-name="P19"/>
         </office:text>
     </office:body>
 </office:document-content>
