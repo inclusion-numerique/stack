@@ -178,6 +178,16 @@ export const getAdministrationBeneficiairesSubventionsData = async ({
       new Decimal(0),
     )
 
+    const subventionIngenierieValidee = beneficiaires.reduce(
+      (accumulator, beneficiaire) => {
+        if (beneficiaire.demandeDeSubvention.acceptee) {
+          return accumulator.add(beneficiaire.subvention)
+        }
+        return accumulator
+      },
+      new Decimal(0),
+    )
+
     const budgetGlobal = demandesSubventions.reduce(
       (accumulator, demande) => accumulator.add(demande.budgetGlobal),
       new Decimal(0),
@@ -188,6 +198,10 @@ export const getAdministrationBeneficiairesSubventionsData = async ({
       : null
 
     const subventionTotal = subventionIngenierie.add(
+      subventionFormation ?? new Decimal(0),
+    )
+
+    const subventionTotaleValidee = subventionIngenierieValidee.add(
       subventionFormation ?? new Decimal(0),
     )
 
@@ -203,6 +217,8 @@ export const getAdministrationBeneficiairesSubventionsData = async ({
       subventionIngenierie,
       subventionFormation,
       subventionTotal,
+      subventionIngenierieValidee,
+      subventionTotaleValidee,
       type: getMembreGouvernanceTypologie(membre),
       statutGouvernance: getMembreGouvernanceStatut(membre),
       demandesCounts,

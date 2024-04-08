@@ -247,7 +247,7 @@ const Page = async ({
                   <p className="fr-mb-0 fr-ml-2v">
                     Convention pour {beneficiaire.nom} <br />
                     <span className="fr-text--xs fr-text-mention--grey fr-mt-0 fr-mb-0">
-                      {numberToEuros(beneficiaire.subventionTotal)}
+                      {numberToEuros(beneficiaire.subventionTotaleValidee)}
                       {beneficiaire.demandesCounts.validees > 0 && (
                         <>
                           {' '}
