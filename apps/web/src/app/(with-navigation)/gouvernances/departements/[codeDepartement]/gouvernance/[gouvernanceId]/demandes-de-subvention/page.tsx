@@ -142,7 +142,7 @@ const Page = async ({
           </Link>
           .
         </p>
-        <div className="fr-border--slim-grey fr-p-8v fr-pb-10v">
+        <div className="fr-border fr-p-8v fr-pb-10v">
           <NoteDeContexteSubventionsForm
             noteDeContexteSubventions={gouvernance.noteDeContexteSubventions}
             gouvernanceId={gouvernance.id}
@@ -150,7 +150,7 @@ const Page = async ({
           />
         </div>
 
-        <div className="fr-border--slim-grey fr-p-8v fr-pb-10v fr-mt-4v">
+        <div className="fr-border fr-p-8v fr-pb-10v fr-mt-4v">
           <Badge className="fr-mb-4v" small severity="new">
             À&nbsp;renseigner&nbsp;avant&nbsp;le&nbsp;
             {dateAsDay(limiteModicitaionDesDemandesDeSubvention)}
@@ -234,7 +234,7 @@ const Page = async ({
           )}
         </div>
 
-        <div className="fr-border--slim-grey fr-p-8v fr-mt-4v fr-pb-10v fr-mb-20v">
+        <div className="fr-border fr-p-8v fr-mt-4v fr-pb-10v fr-mb-20v">
           <BeneficiaireSubventionFormationForm
             beneficiaireFormationMembreId={
               gouvernance.beneficiaireDotationFormation?.id

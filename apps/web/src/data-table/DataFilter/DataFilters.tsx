@@ -72,7 +72,7 @@ const DataFilters = <Configuration extends DataTableConfiguration>({
   }
 
   return (
-    <div className="fr-border--slim-grey fr-p-4v fr-p-md-8v">
+    <div className="fr-border fr-p-4v fr-p-md-8v">
       <div className="fr-width-full fr-flex">
         {searchBar}
         {filterComponents.length > 0 && (

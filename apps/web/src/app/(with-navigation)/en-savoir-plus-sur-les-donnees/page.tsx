@@ -83,7 +83,7 @@ const ServiceCard = ({
   description: string
   link: string
 }) => (
-  <div className="fr-col-12 fr-col-md-6 fr-border--slim-grey fr-p-8v fr-pb-12v fr-flex fr-direction-column">
+  <div className="fr-col-12 fr-col-md-6 fr-border fr-p-8v fr-pb-12v fr-flex fr-direction-column">
     <div className="fr-mb-6v">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={illustration} alt="" style={{ width: 88, height: 88 }} />

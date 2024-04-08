@@ -3,7 +3,6 @@ import type { FieldErrors, FieldValues } from 'react-hook-form'
 
 export const scrollToError = () => {
   const errorElement = document.querySelector('form .fr-error-text')
-  console.log('ERROR ELEMENT', errorElement)
   if (!errorElement) {
     return
   }

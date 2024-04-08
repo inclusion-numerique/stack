@@ -130,7 +130,7 @@ const Page = async ({
         {codeDepartement}&nbsp;·&nbsp;{scopeTitle}
       </h1>
 
-      <div className="fr-border--slim-grey fr-p-8v fr-pb-10v">
+      <div className="fr-border fr-p-8v fr-pb-10v">
         <h2 className="fr-h5 fr-mb-8v">
           Contextualisation des demandes de subvention
         </h2>
@@ -151,7 +151,7 @@ const Page = async ({
         )}
       </div>
 
-      <div className="fr-border--slim-grey fr-p-8v fr-pb-10v fr-mt-4v">
+      <div className="fr-border fr-p-8v fr-pb-10v fr-mt-4v">
         <Badge className="fr-mb-4v" small severity="new">
           À&nbsp;renseigner&nbsp;avant&nbsp;le&nbsp;
           {dateAsDay(limiteModicitaionDesDemandesDeSubvention)}
@@ -258,7 +258,7 @@ const Page = async ({
       {demandesDeSubvention.map((demandeDeSubvention) => (
         <div
           key={demandeDeSubvention.id}
-          className="fr-border--slim-grey fr-p-8v fr-mt-4v fr-pb-10v"
+          className="fr-border fr-p-8v fr-mt-4v fr-pb-10v"
         >
           <DemandeDeSubventionAdminCard
             demandeDeSubvention={demandeDeSubvention}
@@ -266,7 +266,7 @@ const Page = async ({
         </div>
       ))}
 
-      <div className="fr-border--slim-grey fr-p-8v fr-mt-4v fr-pb-10v fr-mb-20v">
+      <div className="fr-border fr-p-8v fr-mt-4v fr-pb-10v fr-mb-20v">
         {gouvernance.beneficiaireDotationFormation ? (
           <BeneficiaireSubventionFormationForm
             beneficiaireFormationMembreId={

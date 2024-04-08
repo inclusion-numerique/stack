@@ -45,7 +45,7 @@ import styles from './DemandeDeSubventionForm.module.css'
 const contexteSubventionInfoText = (title?: string | null) =>
   `${title ? stripHtmlTags(title).length : 0} / ${contexteDemandeSubventionMaxChars}`
 
-const cardClassName = 'fr-border--slim-grey fr-p-8v fr-pb-2v fr-mb-6v'
+const cardClassName = 'fr-border fr-p-8v fr-pb-2v fr-mb-6v'
 
 const DemandeDeSubventionForm = ({
   defaultValues,
