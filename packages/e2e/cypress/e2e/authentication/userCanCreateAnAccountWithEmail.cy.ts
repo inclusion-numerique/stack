@@ -25,7 +25,7 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
     cy.contains(email)
 
     goToMostRecentEmailReceived({
-      subjectInclude: 'Connexion à France Numérique Ensemble',
+      subjectInclude: 'Connexion à Espace France Numérique Ensemble',
     })
 
     cy.log('Check mail contents')
