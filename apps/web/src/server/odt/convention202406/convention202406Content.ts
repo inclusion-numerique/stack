@@ -2197,17 +2197,10 @@ export const convention202406Content = ({
                     </text:span>
                 </text:span>
                 <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T9">. Elle doit permettre, d’ici à 2027, d’atteindre les ob</text:span>
-                </text:span>
-                <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T9">jectifs suivants : 8 millions de personnes accompagnées, 25 000
+                    <text:span text:style-name="T9">. Elle doit permettre, d’ici à 2027, d’atteindre les objectifs suivants : 8 millions de personnes accompagnées, 25 000
                         lieux d’inclusion numérique, 20 000 aidants numériques formés et 2 millions d’équipements
                         informatiques reconditionnés accessibles aux ménages les plus modestes, en complément des
-                        objectifs fi
-                    </text:span>
-                </text:span>
-                <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T9">xés dans le cadre de la politique prioritaire du Gouvernement
+                        objectifs fixés dans le cadre de la politique prioritaire du Gouvernement
                         « Devenir la première puissance numérique européenne » et de son chantier « Favoriser
                         l’inclusion numérique pour tous par la formation et les conseillers numériques ».
                     </text:span>
@@ -2215,29 +2208,11 @@ export const convention202406Content = ({
             </text:p>
             <text:p text:style-name="P8">
                 <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T10">Le Programme Société Numér</text:span>
-                </text:span>
-                <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T10">ique de l’ANCT, chargé de mettre en œuvre cette feuille de route
-                        France Numérique Ensemble, entend ainsi mener des actions pour
-                    </text:span>
-                </text:span>
-                <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T5"></text:span>
-                </text:span>
-                <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T10">renforcer les acteurs territoriaux de la politique d’inclusion
-                        numérique. L’Instruction du Gouvernement relative à la territoria
-                    </text:span>
-                </text:span>
-                <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T10">lisation de la feuille de route France Numérique Ensemble signée le
+                    <text:span text:style-name="T10">Le Programme Société Numérique de l’ANCT, chargé de mettre en œuvre cette feuille de route
+                        France Numérique Ensemble, entend ainsi mener des actions pour renforcer les acteurs territoriaux de la politique d’inclusion
+                        numérique. L’Instruction du Gouvernement relative à la territorialisation de la feuille de route France Numérique Ensemble signée le
                         28/07/2023 détaille le calendrier qui permet la territorialisation de la politique publique
-                        d’inclusion numérique. Ainsi, dans 80 départements, au moins une collectivité s’est déclarée vol
-                    </text:span>
-                </text:span>
-                <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T10">ontaire pour co-porter une gouvernance locale auprès de l’Etat.
+                        d’inclusion numérique. Ainsi, dans 80 départements, au moins une collectivité s’est déclarée volontaire pour co-porter une gouvernance locale auprès de l’Etat.
                         Cette gouvernance locale est constituée des différents acteurs concernés par l’inclusion
                         numérique.
                     </text:span>
@@ -2270,18 +2245,7 @@ export const convention202406Content = ({
                 <text:span text:style-name='Police_20_par_20_défaut'>
                     <text:span text:style-name='T10'>Par ailleurs, la formation des professionnels de la médiation
                         numérique, à la fois aidants et médiateurs numérique, est un enjeu majeur de la feuille de route
-                        France Numérique Ensemble. C’est pourquoi 1,2 millions
-                    </text:span>
-                </text:span>
-                <text:span text:style-name='Police_20_par_20_défaut'>
-                    <text:span text:style-name='T10'>d’euros sont répartis au sein des gouvernances locales pour
-                    </text:span>
-                </text:span>
-                <text:span text:style-name='Police_20_par_20_défaut'>
-                    <text:span text:style-name='T10'></text:span>
-                </text:span>
-                <text:span text:style-name='Police_20_par_20_défaut'>
-                    <text:span text:style-name='T10'>proposer des formations Aidants Connect aux professionnels hors
+                        France Numérique Ensemble. C’est pourquoi 1,2 millions d’euros sont répartis au sein des gouvernances locales pour proposer des formations Aidants Connect aux professionnels hors
                         conseillers numériques et salariés de structures adhérentes à l’OPCO Uniformation
                     </text:span>
                 </text:span>
@@ -2291,10 +2255,8 @@ export const convention202406Content = ({
             <text:p text:style-name="P8">
                 <text:soft-page-break/>
                 <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T10">Les besoins des gouvernances locales en ingénieri</text:span>
-                </text:span>
-                <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T10">e de projet</text:span>
+                    <text:span text:style-name="T10">Les besoins des gouvernances locales en ingénierie de projet
+                    </text:span>
                 </text:span>
                 ${
                   beneficiaireFormation
@@ -2310,11 +2272,7 @@ export const convention202406Content = ({
                 <text:span text:style-name="Police_20_par_20_défaut">
                     <text:span text:style-name="T10">été transmis à l’ANCT par le biais des préfectures de département
                         via leur espace France Numérique Ensemble, après concertation des acteurs au niveau local. Pour
-                        bénéficier de ce
-                    </text:span>
-                </text:span>
-                <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T10">dispositif, le bénéficiaire a eu connaissance du cahier des charges
+                        bénéficier de ce dispositif, le bénéficiaire a eu connaissance du cahier des charges
                         via cet espace France Numérique Ensemble (annexes 1 et 2).
                     </text:span>
                 </text:span>
@@ -2668,14 +2626,7 @@ export const convention202406Content = ({
             <text:p text:style-name="P51">
                 <text:span text:style-name="Police_20_par_20_défaut">
                     <text:span text:style-name="T10">Le bénéficiaire des fonds s’engage à fournir, dès la signature de
-                        la convention, un avis
-                    </text:span>
-                </text:span>
-                <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T10">SIRENE et un R</text:span>
-                </text:span>
-                <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T10">IB en format PDF.</text:span>
+                        la convention, un avis SIRENE et un RIB en format PDF.</text:span>
                 </text:span>
             </text:p>
             <text:p text:style-name="P43"/>
@@ -2764,19 +2715,8 @@ export const convention202406Content = ({
                         <text:span text:style-name="Police_20_par_20_défaut">
                             <text:span text:style-name="T29">Informer l’ANCT dès qu’il en a connaissance de tout
                                 évènement pouvant affecter le bon déroulement de ses actions ou la bonne exécution de la
-                                convention. En cas de difficulté majeure à la mise en œuvre d’une action conv
-                            </text:span>
-                        </text:span>
-                        <text:span text:style-name="Police_20_par_20_défaut">
-                            <text:span text:style-name="T29">entionnée, un plan d’actions pour y remédier doit être mis
-                                en place par le
-                            </text:span>
-                        </text:span>
-                        <text:span text:style-name="Police_20_par_20_défaut">
-                            <text:span text:style-name="T30">bénéficiaire</text:span>
-                        </text:span>
-                        <text:span text:style-name="Police_20_par_20_défaut">
-                            <text:span text:style-name="T29">concerné et les changements stratégiques peuvent faire
+                                convention. En cas de difficulté majeure à la mise en œuvre d’une action conventionnée, un plan d’actions pour y remédier doit être mis
+                                en place par le bénéficiaire concerné et les changements stratégiques peuvent faire
                                 l’objet d’un avenant à la convention sur accord des deux Parties.
                             </text:span>
                         </text:span>
@@ -2964,19 +2904,13 @@ export const convention202406Content = ({
                     <text:span text:style-name="T15">bénéficiaire</text:span>
                 </text:span>
                 <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T9">, par l’une des Parties, non prévue par le pr</text:span>
-                </text:span>
-                <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T9">ésent article, est interdite.</text:span>
+                    <text:span text:style-name="T9">, par l’une des Parties, non prévue par le présent article, est interdite.</text:span>
                 </text:span>
             </text:p>
             <text:p text:style-name="P41"/>
             <text:p text:style-name="P52">
                 <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T9">A l’e</text:span>
-                </text:span>
-                <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T10">xtinction des obligations visées par l’article 2 de la convention,
+                    <text:span text:style-name="T9">A l’extinction des obligations visées par l’article 2 de la convention,
                         le Bénéficiaire s’engage à cesser tout usage des signes distinctifs de l’ANCT sauf accord exprès
                         écrit contraire.
                     </text:span>
@@ -3131,7 +3065,7 @@ export const convention202406Content = ({
                 effectivement réalisés et justifiées par le Bénéficiaire à la date d’effet de la résiliation.
             </text:p>
             <text:p/>
-            <text:p>Le cas échéant, lebénéficiairesera tenu au reversement des sommes indûment perçues.
+            <text:p>Le cas échéant, le bénéficiaire sera tenu au reversement des sommes indûment perçues.
             </text:p>
             <text:p/>
             <text:p><text:soft-page-break/>Aucune indemnité ne pourra être demandée du fait de cette résiliation.
@@ -3331,11 +3265,7 @@ export const convention202406Content = ({
                 </text:span>
                 <text:span text:style-name="Police_20_par_20_défaut">
                     <text:span text:style-name="T11">confiés le traitement d’informations à caractère personnel des
-                        participants, les dispositions législatives et réglementaires relati
-                    </text:span>
-                </text:span>
-                <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T11">ves à l’informatique, aux fichiers et aux libertés.</text:span>
+                        participants, les dispositions législatives et réglementaires relatives à l’informatique, aux fichiers et aux libertés.</text:span>
                 </text:span>
             </text:p>
             <text:p text:style-name="P70"/>
@@ -3376,11 +3306,7 @@ export const convention202406Content = ({
             <text:p text:style-name="P76">
                 <text:span text:style-name="Police_20_par_20_défaut">
                     <text:span text:style-name="T11">L’ANCT se réserve le droit de vérifier que les mesures prises sont
-                        appropriées et peut exiger que des mes
-                    </text:span>
-                </text:span>
-                <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T11">ures supplémentaires soient prises si nécessaire.</text:span>
+                        appropriées et peut exiger que des mesures supplémentaires soient prises si nécessaire.</text:span>
                 </text:span>
             </text:p>
             <text:p text:style-name="P13"/>
@@ -3422,22 +3348,14 @@ export const convention202406Content = ({
                     <text:span text:style-name="T11">à la médiation en application des articles L 213-1 du Code de la
                         justice administrative du différend qui les oppose et de saisir le président du Tribunal
                         administratif de Paris à l’effet d’organiser la mission de médiation et de désigner la ou les
-                        personn
-                    </text:span>
-                </text:span>
-                <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T11">es qui en seront chargées.</text:span>
+                        personnes qui en seront chargées.</text:span>
                 </text:span>
             </text:p>
             <text:p text:style-name="P8">
                 <text:span text:style-name="Police_20_par_20_défaut">
                     <text:span text:style-name="T11">En cas d’échec d’une solution amiable, tout litige ou contestation
                         auxquels la présente convention pourrait donner lieu tant sur sa validité que sur son
-                        interprétation, son exécution ou sa réalisation, sera soumis aux tribunaux c
-                    </text:span>
-                </text:span>
-                <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T11">ompétents.</text:span>
+                        interprétation, son exécution ou sa réalisation, sera soumis aux tribunaux compétents.</text:span>
                 </text:span>
             </text:p>
             <text:p text:style-name="P17"/>
