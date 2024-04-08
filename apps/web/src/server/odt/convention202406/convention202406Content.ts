@@ -2253,7 +2253,7 @@ export const convention202406Content = ({
                 : ''
             }
             <text:p text:style-name="P8">
-                <text:soft-page-break/>
+                
                 <text:span text:style-name="Police_20_par_20_défaut">
                     <text:span text:style-name="T10">Les besoins des gouvernances locales en ingénierie de projet
                     </text:span>
@@ -2382,7 +2382,7 @@ export const convention202406Content = ({
             <text:h text:style-name='P81' text:outline-level='3'>
                 <text:bookmark-start text:name='_Toc162605992'/>
                 <text:bookmark-start text:name='_Toc162604411'/>
-                <text:soft-page-break/>Article 2.3: la formation des agents publics à Aidant Connect
+                Article 2.3: la formation des agents publics à Aidant Connect
                 <text:bookmark-end text:name='_Toc162605992'/>
                 <text:bookmark-end text:name='_Toc162604411'/>
             </text:h>
@@ -2615,7 +2615,7 @@ export const convention202406Content = ({
             <text:p text:style-name="P67"/>
             <text:p text:style-name="P43">Le versement s’effectuera à compter de la signature de la convention.</text:p>
             <text:p text:style-name="P53">
-                <text:soft-page-break/>
+                
                 <text:s/>
             </text:p>
             <text:p text:style-name="P43">L’ANCT se réserve le droit de réclamer la restitution de tout ou partie de
@@ -2918,7 +2918,7 @@ export const convention202406Content = ({
             </text:p>
             <text:p text:style-name="P48"/>
             <text:p text:style-name="P48">
-                <text:soft-page-break/>
+                
             </text:p>
             <text:p text:style-name="P52">
                 <text:span text:style-name="Police_20_par_20_défaut">
@@ -3068,7 +3068,7 @@ export const convention202406Content = ({
             <text:p>Le cas échéant, le bénéficiaire sera tenu au reversement des sommes indûment perçues.
             </text:p>
             <text:p/>
-            <text:p><text:soft-page-break/>Aucune indemnité ne pourra être demandée du fait de cette résiliation.
+            <text:p>Aucune indemnité ne pourra être demandée du fait de cette résiliation.
             </text:p>
             <text:p/>
             <text:p/>
@@ -3233,7 +3233,7 @@ export const convention202406Content = ({
                 <text:bookmark-start text:name="_Toc162604435"/>
                 <text:bookmark-start text:name="_Toc162603208"/>
                 <text:bookmark-start text:name="_Toc162530270"/>
-                <text:soft-page-break/>10.6. Données personnelles
+                10.6. Données personnelles
                 <text:bookmark-end text:name="_Toc162606016"/>
                 <text:bookmark-end text:name="_Toc162604435"/>
                 <text:bookmark-end text:name="_Toc162603208"/>
@@ -3359,7 +3359,7 @@ export const convention202406Content = ({
                 </text:span>
             </text:p>
             <text:p text:style-name="P17"/>
-            <text:p text:style-name="P60"><text:soft-page-break/>Fait en deux exemplaires originaux,
+            <text:p text:style-name="P60">Fait en deux exemplaires originaux,
             </text:p>
             <text:p text:style-name="P60"/>
             <text:p text:style-name="P58">
@@ -3479,7 +3479,7 @@ export const convention202406Content = ({
                                 xlink:show="embed" xlink:actuate="onLoad"/>
                 </draw:frame>
             </text:p>
-            <text:p text:style-name="P20"><text:soft-page-break/>La subvention reçue par le bénéficiaire ne peut en
+            <text:p text:style-name="P20">La subvention reçue par le bénéficiaire ne peut en
                 aucun cas être transférée à un autre organisme hormis dans le cadre de prestation de service avec devis
                 associé.
             </text:p>

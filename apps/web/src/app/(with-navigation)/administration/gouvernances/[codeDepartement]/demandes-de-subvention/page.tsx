@@ -226,7 +226,9 @@ const Page = async ({
             )}
             {beneficiaires
               .filter(
-                (beneficiaire) => beneficiaire.demandesCounts.validees > 0,
+                (beneficiaire) =>
+                  beneficiaire.demandesCounts.validees > 0 ||
+                  beneficiaire.subventionFormation,
               )
               .map((beneficiaire) => (
                 <div
@@ -245,10 +247,16 @@ const Page = async ({
                   <p className="fr-mb-0 fr-ml-2v">
                     Convention pour {beneficiaire.nom} <br />
                     <span className="fr-text--xs fr-text-mention--grey fr-mt-0 fr-mb-0">
-                      {numberToEuros(beneficiaire.subventionTotal)} ·{' '}
-                      {beneficiaire.demandesCounts.validees} action
-                      {sPluriel(beneficiaire.demandesCounts.validees)} validée
-                      {sPluriel(beneficiaire.demandesCounts.validees)}
+                      {numberToEuros(beneficiaire.subventionTotal)}
+                      {beneficiaire.demandesCounts.validees > 0 && (
+                        <>
+                          {' '}
+                          · {beneficiaire.demandesCounts.validees} action
+                          {sPluriel(beneficiaire.demandesCounts.validees)}{' '}
+                          validée
+                          {sPluriel(beneficiaire.demandesCounts.validees)}
+                        </>
+                      )}
                       {!!beneficiaire.subventionFormation && (
                         <> · Dotation formation</>
                       )}

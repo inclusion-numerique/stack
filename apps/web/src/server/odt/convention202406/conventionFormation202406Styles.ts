@@ -1,26 +1,18 @@
-export const convention202406StylesFromExampleFile = `<?xml version="1.0" encoding="UTF-8"?>
+export const conventionFormation202406Styles = `<?xml version="1.0" encoding="UTF-8"?>
 <office:document-styles xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
                         xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
                         xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
                         xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
                         xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
                         xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/"
                         xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
-                        xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
                         xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
                         xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0"
                         xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0"
-                        xmlns:math="http://www.w3.org/1998/Math/MathML"
                         xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0"
                         xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0"
-                        xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer"
-                        xmlns:oooc="http://openoffice.org/2004/calc" xmlns:dom="http://www.w3.org/2001/xml-events"
-                        xmlns:rpt="http://openoffice.org/2005/report"
                         xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2"
-                        xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:grddl="http://www.w3.org/2003/g/data-view#"
-                        xmlns:tableooo="http://openoffice.org/2009/table"
-                        xmlns:textooo="http://openoffice.org/2013/office" office:version="1.2">
+                        office:version="1.2">
     <office:font-face-decls>
         <style:font-face style:name="Symbol" svg:font-family="Symbol" style:font-family-generic="roman"
                          style:font-pitch="variable" style:font-charset="x-symbol"/>
@@ -129,6 +121,17 @@ export const convention202406StylesFromExampleFile = `<?xml version="1.0" encodi
                                    style:font-name-complex="Ubuntu" style:font-size-complex="12pt"
                                    style:language-complex="hi" style:country-complex="IN" fo:hyphenate="false"
                                    fo:hyphenation-remain-char-count="0" fo:hyphenation-push-char-count="0"/>
+        </style:style>
+        <style:style style:name="BREAK" style:family="paragraph" style:parent-style-name="Normal">
+            <style:paragraph-properties fo:break-before="page">
+                <style:tab-stops>
+                    <style:tab-stop style:position="6.1402in" style:type="right" style:leader-style="dotted"
+                                    style:leader-text="."/>
+                </style:tab-stops>
+            </style:paragraph-properties>
+            <style:text-properties style:font-name="Helvetica" fo:font-size="12pt" style:font-name-asian="Arial"
+                                   style:font-size-asian="12pt" style:language-asian="fr" style:country-asian="FR"
+                                   style:font-size-complex="12pt"/>
         </style:style>
         <style:style style:name="Heading_20_1" style:display-name="Heading 1" style:family="paragraph"
                      style:parent-style-name="Normal" style:next-style-name="Normal" style:default-outline-level="1"
@@ -789,7 +792,7 @@ export const convention202406StylesFromExampleFile = `<?xml version="1.0" encodi
                                    style:font-weight-asian="bold"/>
         </style:style>
         <style:style style:name="WW_5f_CharLFO5LVL1" style:display-name="WW_CharLFO5LVL1" style:family="text">
-            <style:text-properties style:font-name="Arial" style:font-name-asian="Calibri"
+            <style:text-properties style:font-name="Arial" style:font-name-asian="Arial"
                                    style:font-name-complex="Arial"/>
         </style:style>
         <style:style style:name="WW_5f_CharLFO5LVL2" style:display-name="WW_CharLFO5LVL2" style:family="text">
@@ -817,32 +820,39 @@ export const convention202406StylesFromExampleFile = `<?xml version="1.0" encodi
             <style:text-properties style:font-name="Wingdings"/>
         </style:style>
         <style:style style:name="WW_5f_CharLFO6LVL1" style:display-name="WW_CharLFO6LVL1" style:family="text">
-            <style:text-properties style:font-name="Courier New" fo:font-size="10pt" style:font-size-asian="10pt"/>
+            <style:text-properties style:font-name="Arial" style:font-name-complex="Arial"/>
         </style:style>
         <style:style style:name="WW_5f_CharLFO6LVL2" style:display-name="WW_CharLFO6LVL2" style:family="text">
-            <style:text-properties style:font-name="Arial" style:font-name-asian="Arial"
-                                   style:font-name-complex="Arial"/>
+            <style:text-properties style:font-name="Courier New" style:font-name-asian="Courier New"
+                                   style:font-name-complex="Courier New"/>
         </style:style>
         <style:style style:name="WW_5f_CharLFO6LVL3" style:display-name="WW_CharLFO6LVL3" style:family="text">
-            <style:text-properties style:font-name="Courier New" fo:font-size="10pt" style:font-size-asian="10pt"/>
+            <style:text-properties style:font-name="Wingdings" style:font-name-asian="Wingdings"
+                                   style:font-name-complex="Wingdings"/>
         </style:style>
         <style:style style:name="WW_5f_CharLFO6LVL4" style:display-name="WW_CharLFO6LVL4" style:family="text">
-            <style:text-properties style:font-name="Courier New" fo:font-size="10pt" style:font-size-asian="10pt"/>
+            <style:text-properties style:font-name="Symbol" style:font-name-asian="Symbol"
+                                   style:font-name-complex="Symbol"/>
         </style:style>
         <style:style style:name="WW_5f_CharLFO6LVL5" style:display-name="WW_CharLFO6LVL5" style:family="text">
-            <style:text-properties style:font-name="Courier New" fo:font-size="10pt" style:font-size-asian="10pt"/>
+            <style:text-properties style:font-name="Courier New" style:font-name-asian="Courier New"
+                                   style:font-name-complex="Courier New"/>
         </style:style>
         <style:style style:name="WW_5f_CharLFO6LVL6" style:display-name="WW_CharLFO6LVL6" style:family="text">
-            <style:text-properties style:font-name="Courier New" fo:font-size="10pt" style:font-size-asian="10pt"/>
+            <style:text-properties style:font-name="Wingdings" style:font-name-asian="Wingdings"
+                                   style:font-name-complex="Wingdings"/>
         </style:style>
         <style:style style:name="WW_5f_CharLFO6LVL7" style:display-name="WW_CharLFO6LVL7" style:family="text">
-            <style:text-properties style:font-name="Courier New" fo:font-size="10pt" style:font-size-asian="10pt"/>
+            <style:text-properties style:font-name="Symbol" style:font-name-asian="Symbol"
+                                   style:font-name-complex="Symbol"/>
         </style:style>
         <style:style style:name="WW_5f_CharLFO6LVL8" style:display-name="WW_CharLFO6LVL8" style:family="text">
-            <style:text-properties style:font-name="Courier New" fo:font-size="10pt" style:font-size-asian="10pt"/>
+            <style:text-properties style:font-name="Courier New" style:font-name-asian="Courier New"
+                                   style:font-name-complex="Courier New"/>
         </style:style>
         <style:style style:name="WW_5f_CharLFO6LVL9" style:display-name="WW_CharLFO6LVL9" style:family="text">
-            <style:text-properties style:font-name="Courier New" fo:font-size="10pt" style:font-size-asian="10pt"/>
+            <style:text-properties style:font-name="Wingdings" style:font-name-asian="Wingdings"
+                                   style:font-name-complex="Wingdings"/>
         </style:style>
         <style:style style:name="WW_5f_CharLFO7LVL1" style:display-name="WW_CharLFO7LVL1" style:family="text">
             <style:text-properties style:font-name="Arial" style:font-name-asian="Arial"
@@ -870,97 +880,6 @@ export const convention202406StylesFromExampleFile = `<?xml version="1.0" encodi
             <style:text-properties style:font-name="Courier New" style:font-name-complex="Courier New"/>
         </style:style>
         <style:style style:name="WW_5f_CharLFO7LVL9" style:display-name="WW_CharLFO7LVL9" style:family="text">
-            <style:text-properties style:font-name="Wingdings"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO8LVL1" style:display-name="WW_CharLFO8LVL1" style:family="text">
-            <style:text-properties style:font-name="Arial" style:font-name-asian="Arial"
-                                   style:font-name-complex="Arial"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO8LVL2" style:display-name="WW_CharLFO8LVL2" style:family="text">
-            <style:text-properties style:font-name="Courier New" style:font-name-complex="Courier New"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO8LVL3" style:display-name="WW_CharLFO8LVL3" style:family="text">
-            <style:text-properties style:font-name="Wingdings"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO8LVL4" style:display-name="WW_CharLFO8LVL4" style:family="text">
-            <style:text-properties style:font-name="Symbol"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO8LVL5" style:display-name="WW_CharLFO8LVL5" style:family="text">
-            <style:text-properties style:font-name="Courier New" style:font-name-complex="Courier New"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO8LVL6" style:display-name="WW_CharLFO8LVL6" style:family="text">
-            <style:text-properties style:font-name="Wingdings"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO8LVL7" style:display-name="WW_CharLFO8LVL7" style:family="text">
-            <style:text-properties style:font-name="Symbol"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO8LVL8" style:display-name="WW_CharLFO8LVL8" style:family="text">
-            <style:text-properties style:font-name="Courier New" style:font-name-complex="Courier New"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO8LVL9" style:display-name="WW_CharLFO8LVL9" style:family="text">
-            <style:text-properties style:font-name="Wingdings"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO9LVL1" style:display-name="WW_CharLFO9LVL1" style:family="text">
-            <style:text-properties style:font-name="Arial" style:font-name-complex="Arial"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO9LVL2" style:display-name="WW_CharLFO9LVL2" style:family="text">
-            <style:text-properties style:font-name="Courier New" style:font-name-asian="Courier New"
-                                   style:font-name-complex="Courier New"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO9LVL3" style:display-name="WW_CharLFO9LVL3" style:family="text">
-            <style:text-properties style:font-name="Wingdings" style:font-name-asian="Wingdings"
-                                   style:font-name-complex="Wingdings"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO9LVL4" style:display-name="WW_CharLFO9LVL4" style:family="text">
-            <style:text-properties style:font-name="Symbol" style:font-name-asian="Symbol"
-                                   style:font-name-complex="Symbol"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO9LVL5" style:display-name="WW_CharLFO9LVL5" style:family="text">
-            <style:text-properties style:font-name="Courier New" style:font-name-asian="Courier New"
-                                   style:font-name-complex="Courier New"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO9LVL6" style:display-name="WW_CharLFO9LVL6" style:family="text">
-            <style:text-properties style:font-name="Wingdings" style:font-name-asian="Wingdings"
-                                   style:font-name-complex="Wingdings"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO9LVL7" style:display-name="WW_CharLFO9LVL7" style:family="text">
-            <style:text-properties style:font-name="Symbol" style:font-name-asian="Symbol"
-                                   style:font-name-complex="Symbol"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO9LVL8" style:display-name="WW_CharLFO9LVL8" style:family="text">
-            <style:text-properties style:font-name="Courier New" style:font-name-asian="Courier New"
-                                   style:font-name-complex="Courier New"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO9LVL9" style:display-name="WW_CharLFO9LVL9" style:family="text">
-            <style:text-properties style:font-name="Wingdings" style:font-name-asian="Wingdings"
-                                   style:font-name-complex="Wingdings"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO10LVL1" style:display-name="WW_CharLFO10LVL1" style:family="text">
-            <style:text-properties style:font-name="Arial" style:font-name-asian="Arial"
-                                   style:font-name-complex="Arial"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO10LVL2" style:display-name="WW_CharLFO10LVL2" style:family="text">
-            <style:text-properties style:font-name="Courier New" style:font-name-complex="Courier New"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO10LVL3" style:display-name="WW_CharLFO10LVL3" style:family="text">
-            <style:text-properties style:font-name="Wingdings"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO10LVL4" style:display-name="WW_CharLFO10LVL4" style:family="text">
-            <style:text-properties style:font-name="Symbol"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO10LVL5" style:display-name="WW_CharLFO10LVL5" style:family="text">
-            <style:text-properties style:font-name="Courier New" style:font-name-complex="Courier New"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO10LVL6" style:display-name="WW_CharLFO10LVL6" style:family="text">
-            <style:text-properties style:font-name="Wingdings"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO10LVL7" style:display-name="WW_CharLFO10LVL7" style:family="text">
-            <style:text-properties style:font-name="Symbol"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO10LVL8" style:display-name="WW_CharLFO10LVL8" style:family="text">
-            <style:text-properties style:font-name="Courier New" style:font-name-complex="Courier New"/>
-        </style:style>
-        <style:style style:name="WW_5f_CharLFO10LVL9" style:display-name="WW_CharLFO10LVL9" style:family="text">
             <style:text-properties style:font-name="Wingdings"/>
         </style:style>
         <style:style style:name="Footnote_20_Symbol" style:display-name="Footnote Symbol" style:family="text"/>
@@ -1309,7 +1228,7 @@ export const convention202406StylesFromExampleFile = `<?xml version="1.0" encodi
         <style:master-page style:name="MP0" style:page-layout-name="Mpm2">
             <style:footer>
                 <text:p text:style-name="MP1">
-                    <text:page-number text:select-page="current">14</text:page-number>
+                    <text:page-number text:select-page="current">4</text:page-number>
                 </text:p>
                 <text:p text:style-name="Footer"/>
             </style:footer>

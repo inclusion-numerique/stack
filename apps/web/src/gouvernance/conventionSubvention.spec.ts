@@ -96,12 +96,24 @@ describe('generateConventionSubvention', () => {
       beneficiaireFormation: false,
     })
     expect(data).toBeInstanceOf(Buffer)
-    writeFileSync(outputName('fne-convention_without-formation'), data)
+    writeFileSync(outputName('fne-convention_only-actions'), data)
   })
 
-  it('Creates convention with formation', async () => {
+  it('Creates convention with actions and formation', async () => {
     const data = await generateConventionSubvention(processedDataMock)
     expect(data).toBeInstanceOf(Buffer)
-    writeFileSync(outputName('fne-convention_with-formation'), data)
+    writeFileSync(outputName('fne-convention_actions-and-formation'), data)
+  })
+
+  it('Creates convention with only formation', async () => {
+    const data = await generateConventionSubvention({
+      ...processedDataMock,
+      membre: {
+        ...processedDataMock.membre,
+        beneficiaireSubventions: [],
+      },
+    })
+    expect(data).toBeInstanceOf(Buffer)
+    writeFileSync(outputName('fne-convention_only-formation'), data)
   })
 })
