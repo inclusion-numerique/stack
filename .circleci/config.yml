@@ -42,7 +42,7 @@ executors:
 parameters:
   cache_version:
     type: string
-    default: '2023-12-06-01'
+    default: '2024-02-29-01'
   virtual_store_dir:
     type: string
     default: './.pnpm'
@@ -433,7 +433,7 @@ jobs:
             echo "SMTP_PORT=1025" >> .env
             echo "SMTP_USERNAME=mailuser" >> .env
             echo "SMTP_PASSWORD=mailpassword" >> .env
-            echo "SMTP_SERVER=localhost" >> .env
+            echo 'INCLUSION_CONNECT_CLIENT_SECRET=$INCLUSION_CONNECT_LOCAL_CLIENT_SECRET' >> .env
       - run:
           name: 'Create CI database schema'
           command: |
@@ -481,7 +481,6 @@ jobs:
             echo "SMTP_PORT=1025" >> .env
             echo "SMTP_USERNAME=mailuser" >> .env
             echo "SMTP_PASSWORD=mailpassword" >> .env
-            echo "SMTP_SERVER=localhost" >> .env
       - run:
           name: 'Create CI database schema'
           command: |
