@@ -62,7 +62,7 @@ export const getMembreBeneficiaireDataForConvention = async (
 
   return {
     membre,
-    beneficiaireFormation: true,
+    beneficiaireFormation: !!membre.beneficiaireDotationFormation,
     nom: getMembreGouvernanceStringName(membre),
     subventionIngenierie: data.subventionIngenierie,
     subventionFormation: data.subventionFormation,
