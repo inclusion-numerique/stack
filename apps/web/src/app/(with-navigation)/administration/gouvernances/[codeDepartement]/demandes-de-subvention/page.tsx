@@ -25,6 +25,7 @@ import styles from '@app/web/app/(with-navigation)/gouvernances/departements/[co
 import DemandeDeSubventionAdminCard from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/DemandeDeSubventionAdminCard'
 import { getDemandesSubventionCounts } from '@app/web/app/(with-navigation)/administration/gouvernances/getDemandesSubventionCounts'
 import { getAdministrationBeneficiairesSubventionsData } from '@app/web/app/(with-navigation)/administration/beneficiaires-subventions/getAdministrationBeneficiairesSubventions'
+import { dotationFormation202406 } from '@app/web/gouvernance/dotationFormation202406'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -141,9 +142,12 @@ const Page = async ({
             }}
           />
         ) : (
-          <Badge small severity="warning">
-            Non renseigné
-          </Badge>
+          <>
+            <hr className="fr-separator-8v" />
+            <Badge small severity="warning">
+              Non renseigné
+            </Badge>
+          </>
         )}
       </div>
 
@@ -263,30 +267,45 @@ const Page = async ({
       ))}
 
       <div className="fr-border--slim-grey fr-p-8v fr-mt-4v fr-pb-10v fr-mb-20v">
-        <BeneficiaireSubventionFormationForm
-          beneficiaireFormationMembreId={
-            gouvernance.beneficiaireDotationFormation?.id
-          }
-          beneficiaireFormationMembreNom={beneficiaireFormationMembreNom}
-          beneficiaireDotationFormationValideEtEnvoye={
-            gouvernance.beneficiaireDotationFormationValideEtEnvoye
-              ? dateAsDay(
-                  gouvernance.beneficiaireDotationFormationValideEtEnvoye,
-                )
-              : null
-          }
-          beneficiaireDotationFormationAccepte={
-            gouvernance.beneficiaireDotationFormationAccepte
-              ? dateAsDay(gouvernance.beneficiaireDotationFormationAccepte)
-              : null
-          }
-          mustEditContextBeforeValidate={!gouvernance.noteDeContexteSubventions}
-          gouvernanceId={gouvernance.id}
-          canEdit
-          hideHint
-          canInstruct
-          beneficiairesOptions={beneficiairesOptions}
-        />
+        {gouvernance.beneficiaireDotationFormation ? (
+          <BeneficiaireSubventionFormationForm
+            beneficiaireFormationMembreId={
+              gouvernance.beneficiaireDotationFormation?.id
+            }
+            beneficiaireFormationMembreNom={beneficiaireFormationMembreNom}
+            beneficiaireDotationFormationValideEtEnvoye={
+              gouvernance.beneficiaireDotationFormationValideEtEnvoye
+                ? dateAsDay(
+                    gouvernance.beneficiaireDotationFormationValideEtEnvoye,
+                  )
+                : null
+            }
+            beneficiaireDotationFormationAccepte={
+              gouvernance.beneficiaireDotationFormationAccepte
+                ? dateAsDay(gouvernance.beneficiaireDotationFormationAccepte)
+                : null
+            }
+            mustEditContextBeforeValidate={
+              !gouvernance.noteDeContexteSubventions
+            }
+            gouvernanceId={gouvernance.id}
+            canEdit
+            hideHint
+            canInstruct
+            beneficiairesOptions={beneficiairesOptions}
+          />
+        ) : (
+          <>
+            <h2 className="fr-h5 fr-flex fr-mb-0 fr-justify-content-space-between fr-flex-gap-4v">
+              <span>Dotation formation Aidants Connect</span>
+              <span>{numberToEuros(dotationFormation202406)}</span>
+            </h2>
+            <hr className="fr-separator-8v" />
+            <Badge small severity="warning">
+              Non renseigné
+            </Badge>
+          </>
+        )}
       </div>
     </div>
   )
