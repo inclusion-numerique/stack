@@ -36,6 +36,7 @@ export const getMembreBeneficiaireDataForConvention = async (
               contexte: true,
               besoins: true,
               id: true,
+              acceptee: true,
             },
           },
         },
@@ -52,8 +53,13 @@ export const getMembreBeneficiaireDataForConvention = async (
     return null
   }
 
+  membre.beneficiaireSubventions = membre.beneficiaireSubventions.filter(
+    (beneficiaire) => !!beneficiaire.demandeDeSubvention.acceptee,
+  )
+
   const [data] = await getAdministrationBeneficiairesSubventionsData({
     membreId: membre.id,
+    demandesValidees: true,
   })
 
   if (!data) {

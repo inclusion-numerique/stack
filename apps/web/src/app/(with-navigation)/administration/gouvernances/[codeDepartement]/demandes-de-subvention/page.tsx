@@ -221,36 +221,41 @@ const Page = async ({
             {!!demandesCounts.enCours && (
               <Notice
                 className="fr-notice--warning"
-                title="Certaines demandes de subventions ne sont pas encore validées. Les conventions peuvent donc encore évoluer avec des avenants correspondants aux prochaines subventions validées."
+                title="Certaines demandes de subventions ne sont pas encore validées. Les conventions peuvent donc encore évoluer avec des avenants correspondants aux prochaines subventions validées. Seules les demandes de subvention validées apparaissent dans les conventions."
               />
             )}
-            {beneficiaires.map((beneficiaire) => (
-              <div
-                key={beneficiaire.id}
-                className="fr-flex fr-align-items-center fr-mt-2v"
-              >
-                <Button
-                  size="small"
-                  priority="tertiary"
-                  title={`Télécharger la convention pour ${beneficiaire.nom}`}
-                  iconId="fr-icon-download-line"
-                  linkProps={{
-                    href: `/administration/beneficiaires-subventions/${beneficiaire.id}/convention.odt`,
-                  }}
-                />
-                <p className="fr-mb-0 fr-ml-2v">
-                  Convention pour {beneficiaire.nom} <br />
-                  <span className="fr-text--xs fr-text-mention--grey fr-mt-0 fr-mb-0">
-                    {numberToEuros(beneficiaire.subventionTotal)} ·{' '}
-                    {beneficiaire.demandesCounts.total} action
-                    {sPluriel(beneficiaire.demandesCounts.total)}
-                    {!!beneficiaire.subventionFormation && (
-                      <> · Dotation formation</>
-                    )}
-                  </span>
-                </p>
-              </div>
-            ))}
+            {beneficiaires
+              .filter(
+                (beneficiaire) => beneficiaire.demandesCounts.validees > 0,
+              )
+              .map((beneficiaire) => (
+                <div
+                  key={beneficiaire.id}
+                  className="fr-flex fr-align-items-center fr-mt-2v"
+                >
+                  <Button
+                    size="small"
+                    priority="tertiary"
+                    title={`Télécharger la convention pour ${beneficiaire.nom}`}
+                    iconId="fr-icon-download-line"
+                    linkProps={{
+                      href: `/administration/beneficiaires-subventions/${beneficiaire.id}/convention.odt`,
+                    }}
+                  />
+                  <p className="fr-mb-0 fr-ml-2v">
+                    Convention pour {beneficiaire.nom} <br />
+                    <span className="fr-text--xs fr-text-mention--grey fr-mt-0 fr-mb-0">
+                      {numberToEuros(beneficiaire.subventionTotal)} ·{' '}
+                      {beneficiaire.demandesCounts.validees} action
+                      {sPluriel(beneficiaire.demandesCounts.validees)} validée
+                      {sPluriel(beneficiaire.demandesCounts.validees)}
+                      {!!beneficiaire.subventionFormation && (
+                        <> · Dotation formation</>
+                      )}
+                    </span>
+                  </p>
+                </div>
+              ))}
           </>
         )}
       </div>

@@ -15,9 +15,11 @@ import { getDemandesSubventionCounts } from '@app/web/app/(with-navigation)/admi
 const getBeneficiairesRows = async ({
   gouvernanceId,
   membreId,
+  demandesValidees,
 }: {
   gouvernanceId?: string
   membreId?: string
+  demandesValidees?: boolean
 }) => {
   const rows = await prismaClient.membreGouvernance.findMany({
     select: {
@@ -66,6 +68,15 @@ const getBeneficiairesRows = async ({
             },
           },
         },
+        where: demandesValidees
+          ? {
+              demandeDeSubvention: {
+                acceptee: {
+                  not: null,
+                },
+              },
+            }
+          : undefined,
       },
       beneficiaireDotationFormation: {
         select: {
@@ -134,13 +145,16 @@ const getContacts = ({
 export const getAdministrationBeneficiairesSubventionsData = async ({
   gouvernanceId,
   membreId,
+  demandesValidees,
 }: {
   gouvernanceId?: string
   membreId?: string
+  demandesValidees?: boolean
 }) => {
   const rows = await getBeneficiairesRows({
     gouvernanceId,
     membreId,
+    demandesValidees,
   })
 
   return rows.map((membre) => {

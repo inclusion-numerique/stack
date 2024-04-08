@@ -41,19 +41,20 @@ export const AdministrationBeneficiairesSubventionsDataTable = {
     {
       name: 'convention',
       header: null,
-      cell: ({ nom, id }) => (
-        <Button
-          size="small"
-          priority="secondary"
-          title={`Télécharger la convention pour ${nom}`}
-          iconId="fr-icon-download-line"
-          linkProps={{
-            href: `/administration/beneficiaires-subventions/${id}/convention.odt`,
-          }}
-        >
-          Convention
-        </Button>
-      ),
+      cell: ({ nom, id, demandesCounts }) =>
+        demandesCounts.validees > 0 ? (
+          <Button
+            size="small"
+            priority="secondary"
+            title={`Télécharger la convention pour ${nom}`}
+            iconId="fr-icon-download-line"
+            linkProps={{
+              href: `/administration/beneficiaires-subventions/${id}/convention.odt`,
+            }}
+          >
+            Convention
+          </Button>
+        ) : null,
     },
     {
       name: 'departement',

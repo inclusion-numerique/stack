@@ -54,6 +54,7 @@ const conventionDataMock = {
             'RedigerLaFeuilleDeRoute',
             'StructurerUneFiliereDeReconditionnement',
           ],
+          acceptee: new Date(),
         },
       },
       {
@@ -68,6 +69,7 @@ const conventionDataMock = {
             'StructurerUneFiliereDeReconditionnement',
             'SensibiliserLesActeursAuxOutilsExistants',
           ],
+          acceptee: new Date(),
         },
       },
     ],

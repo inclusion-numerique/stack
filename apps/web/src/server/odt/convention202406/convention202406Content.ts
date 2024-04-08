@@ -1800,7 +1800,7 @@ export const convention202406Content = ({
                     ${
                       beneficiaireFormation
                         ? `
-                    <text:p text:style-name='P36'>
+                    <text:p text:style-name='P37'>
                         <text:a xlink:type='simple' xlink:href='#_Toc162605997' office:target-frame-name='_top'
                                 xlink:show='replace' text:style-name='Internet_20_link'
                                 text:visited-style-name='Visited_20_Internet_20_Link'>
@@ -1870,7 +1870,7 @@ export const convention202406Content = ({
                     ${
                       beneficiaireFormation
                         ? `
-                    <text:p text:style-name='P36'>
+                    <text:p text:style-name='P37'>
                         <text:a xlink:type='simple' xlink:href='#_Toc162606002' office:target-frame-name='_top'
                                 xlink:show='replace' text:style-name='Internet_20_link'
                                 text:visited-style-name='Visited_20_Internet_20_Link'>
