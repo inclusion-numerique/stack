@@ -1,5 +1,5 @@
-import { appUrl, createTestUser } from '../../support/helpers'
 import { goToMostRecentEmailReceived } from '@app/e2e/e2e/goToMostRecentEmailReceived'
+import { appUrl, createTestUser } from '../../support/helpers'
 
 describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter', () => {
   /**

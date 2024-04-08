@@ -1,5 +1,5 @@
-import { appUrl, createTestUser } from '../../support/helpers'
 import { goToMostRecentEmailReceived } from '@app/e2e/e2e/goToMostRecentEmailReceived'
+import { appUrl, createTestUser } from '../../support/helpers'
 
 describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je peux créer un compte avec mon mail', () => {
   /**
