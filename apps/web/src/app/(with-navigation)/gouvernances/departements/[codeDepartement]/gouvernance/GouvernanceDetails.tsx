@@ -1,16 +1,13 @@
 import classNames from 'classnames'
-import React from 'react'
+import React, { Fragment } from 'react'
 import NavigationSideMenu from '@app/ui/components/NavigationSideMenu'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import {
-  BesoinsIngenierieFinanciereForForm,
   GouvernanceForForm,
+  GouvernanceWithDemandesSubventionsForForm,
 } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
-import BesoinCardContent from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/priorisation/BesoinCardContent'
-import { getPriorisationCardInfos } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/priorisation/getPriorisationCardInfos'
-import { getBesoinsEnIngenieriePriorisationDefaultValues } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/besoinsEnIngenieriePriorisationDefaultValues'
 import {
   gouvernanceFormSections,
   gouvernanceFormSectionSideMenuItems,
@@ -39,19 +36,22 @@ import {
   typeContratLabels,
 } from '@app/web/gouvernance/gouvernanceWordingsAndOptions'
 import NoGouvernancePublicView from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/NoGouvernancePublicView'
+import { getDemandesDeSubventionsForGouvernance } from '@app/web/gouvernance/gouvernanceStatus'
+import DemandeDeSubventionDetailsCard from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/DemandeDeSubventionDetailsCard'
+import { getStatutDemandesSubvention } from '@app/web/gouvernance/statutDemandesSubvention'
 import styles from './GouvernanceDetails.module.css'
 
 const GouvernanceDetails = ({
   publicView,
   gouvernance,
-  besoins,
+  demandeDeSubvention,
   scope,
   print,
 }: {
   // publicView -> Censor sensitive information
   publicView: boolean
   gouvernance: GouvernanceForForm
-  besoins: BesoinsIngenierieFinanciereForForm | null
+  demandeDeSubvention: GouvernanceWithDemandesSubventionsForForm
   scope: GouvernanceScope
   print?: boolean
 }) => {
@@ -73,7 +73,15 @@ const GouvernanceDetails = ({
     departement,
   } = gouvernance
 
-  if (!v2Enregistree && !besoins) {
+  const { noteDeContexteSubventionsEnregistree, noteDeContexteSubventions } =
+    demandeDeSubvention
+
+  // Public can only see accepted demandes de subvention
+  const demandesDeSubvention = getDemandesDeSubventionsForGouvernance(
+    demandeDeSubvention,
+  ).filter((demande) => (publicView ? demande.acceptee : true))
+
+  if (!v2Enregistree) {
     // Un visiteur public ne peux pas voir les gouvernances en cours d'élaboration
     return publicView ? (
       <>
@@ -89,23 +97,21 @@ const GouvernanceDetails = ({
     )
   }
 
-  const besoinCardInfos = besoins
-    ? getPriorisationCardInfos({
-        defaultValue: getBesoinsEnIngenieriePriorisationDefaultValues({
-          ...gouvernance,
-          besoinsEnIngenierieFinanciere: besoins,
-        }),
-        besoinsEnIngenierieFinanciere: besoins,
-      })
-    : []
+  const hasDemandesDeSubventions =
+    !!noteDeContexteSubventions &&
+    !!noteDeContexteSubventionsEnregistree &&
+    demandesDeSubvention.length > 0
+
+  const demandesSubventionsCompleted =
+    getStatutDemandesSubvention(demandeDeSubvention) === 'Finalisé'
 
   const sideMenuItems = [
     ...(publicView
       ? publicViewGouvernanceSideMenuItems
       : gouvernanceFormSectionSideMenuItems),
     {
-      text: 'Besoins en ingénierie financière',
-      linkProps: { href: '#besoins-ingenierie-financiere' },
+      text: 'Actions & subventions',
+      linkProps: { href: '#subventions' },
     },
   ]
 
@@ -276,15 +282,14 @@ const GouvernanceDetails = ({
                 </>
               )}
               {coporteursMembres.map(({ nom, code }, index) => (
-                <>
-                  <hr key={`${code}_separator`} className="fr-separator-8v" />
+                <Fragment key={code}>
+                  <hr className="fr-separator-8v" />
                   <InfoLabelValue
-                    key={code}
                     label={`Co-porteur ${index + 1}`}
                     value={nom}
                     labelClassName={print ? 'fr-mt-2v' : ''}
                   />
-                </>
+                </Fragment>
               ))}
             </WhiteCard>
           </div>
@@ -360,13 +365,9 @@ const GouvernanceDetails = ({
                   },
                   index,
                 ) => (
-                  <>
-                    <hr
-                      key={`${comiteId}_separator`}
-                      className="fr-separator-8v"
-                    />
+                  <Fragment key={comiteId}>
+                    <hr className="fr-separator-8v" />
                     <InfoLabelValue
-                      key={comiteId}
                       label={`Comite ${index + 1}`}
                       labelClassName={print ? 'fr-mt-2v' : ''}
                       value={
@@ -384,7 +385,7 @@ const GouvernanceDetails = ({
                         </>
                       }
                     />
-                  </>
+                  </Fragment>
                 ),
               )}
             </WhiteCard>
@@ -436,13 +437,9 @@ const GouvernanceDetails = ({
                     ) : null
 
                   return (
-                    <>
-                      <hr
-                        key={`${feuilleDeRouteId}_separator`}
-                        className="fr-separator-8v"
-                      />
+                    <Fragment key={feuilleDeRouteId}>
+                      <hr className="fr-separator-8v" />
                       <InfoLabelValue
-                        key={feuilleDeRouteId}
                         label={`Feuille de route ${index + 1} : ${nom}`}
                         labelClassName={print ? 'fr-mt-2v' : ''}
                         value={
@@ -463,7 +460,7 @@ const GouvernanceDetails = ({
                           </>
                         }
                       />
-                    </>
+                    </Fragment>
                   )
                 },
               )}
@@ -486,7 +483,7 @@ const GouvernanceDetails = ({
               )}
               {organisationsRecruteusesCoordinateurs.map(
                 ({ siretInformations: { nom, siret } }, index) => (
-                  <>
+                  <Fragment key={siret}>
                     <hr className="fr-separator-8v" />
                     <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
                       <span>
@@ -499,7 +496,7 @@ const GouvernanceDetails = ({
                         />
                       </span>
                     </div>
-                  </>
+                  </Fragment>
                 ),
               )}
             </WhiteCard>
@@ -524,33 +521,42 @@ const GouvernanceDetails = ({
               </WhiteCard>
             </div>
           )}
-          <div id="besoins-ingenierie-financiere" className="fr-pt-6v">
+          <div id="subventions" className="fr-pt-6v">
             <WhiteCard className={styles.box}>
-              <h5>Besoins en ingénierie financière</h5>
-              {besoinCardInfos.length === 0 && (
+              <h5>Actions & subventions</h5>
+              {demandesSubventionsCompleted ? null : (
+                <Notice
+                  className="fr-mb-8v"
+                  title="Subventions en cours d’élaboration"
+                />
+              )}
+              {!hasDemandesDeSubventions && (
                 <>
                   <hr className="fr-separator-8v" />
-                  Aucun besoin renseigné
+                  Subventions en cours d’instruction
                 </>
               )}
-              {besoinCardInfos.map((card, index) => (
-                <>
-                  <hr
-                    key={`${card.prioriteKey}_separator`}
-                    className="fr-separator-8v"
-                  />
-
-                  <div
-                    key={card.prioriteKey}
-                    className={classNames(styles.card)}
-                  >
-                    <BesoinCardContent
-                      print={print}
-                      index={index}
-                      card={card}
+              {hasDemandesDeSubventions && (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: noteDeContexteSubventions,
+                  }}
+                  className={classNames(
+                    'fr-mb-4v',
+                    styles.noteDeContexteContainer,
+                  )}
+                />
+              )}
+              {demandesDeSubvention.map((demande) => (
+                <Fragment key={demande.id}>
+                  <hr className="fr-separator-8v" />
+                  <div className={classNames(styles.card)}>
+                    <DemandeDeSubventionDetailsCard
+                      demandeDeSubvention={demande}
+                      publicView={publicView}
                     />
                   </div>
-                </>
+                </Fragment>
               ))}
             </WhiteCard>
           </div>

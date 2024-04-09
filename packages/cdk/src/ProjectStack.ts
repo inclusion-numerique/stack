@@ -124,19 +124,18 @@ export class ProjectStack extends TerraformStack {
     )
 
     // Uploads bucket for usage in integration testing and dev environments
-    // new ObjectBucket(this, 'devUploads', {
-    //   name: environmentVariables.UPLOADS_BUCKET.value,
-    //   projectId: environmentVariables.SCW_PROJECT_ID.value,
-    //   corsRule: [
-    //     {
-    //       allowedHeaders: ['*'],
-    //       allowedMethods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
-    //       maxAgeSeconds: 3000,
-    //       exposeHeaders: ['Etag'],
-    //       allowedOrigins: ['http://localhost:3000', 'http://localhost'],
-    //     },
-    //   ],
-    // })
+    new ObjectBucket(this, 'devUploads', {
+      name: environmentVariables.UPLOADS_BUCKET.value,
+      corsRule: [
+        {
+          allowedHeaders: ['*'],
+          allowedMethods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
+          maxAgeSeconds: 3000,
+          exposeHeaders: ['Etag'],
+          allowedOrigins: ['http://localhost:3000', 'http://localhost'],
+        },
+      ],
+    })
 
     // Backups bucket for database dumps or other important backups
     new ObjectBucket(this, 'backupsBucket', {

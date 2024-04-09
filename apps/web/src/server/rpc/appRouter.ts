@@ -7,6 +7,7 @@ import { dataRouter } from '@app/web/server/rpc/data/dataRouter'
 import { gouvernanceRouter } from '@app/web/server/rpc/gouvernance/gouvernanceRouter'
 import { siretRouter } from '@app/web/server/rpc/data/siretRouter'
 import { besoinsIngenierieFinanciereRouter } from '@app/web/server/rpc/gouvernance/besoinsIngenierieFinanciereRouter'
+import { demandesDeSubventionRouter } from '@app/web/server/rpc/gouvernance/demandesDeSubventionRouter'
 
 export const appRouter = router({
   user: userRouter,
@@ -15,6 +16,7 @@ export const appRouter = router({
   formulaireGouvernance: formulaireGouvernanceRouter,
   gouvernance: gouvernanceRouter,
   besoinsIngenierieFinanciere: besoinsIngenierieFinanciereRouter,
+  demandesDeSubvention: demandesDeSubventionRouter,
   data: dataRouter,
   siret: siretRouter,
 })

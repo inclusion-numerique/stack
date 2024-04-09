@@ -28,11 +28,8 @@ export const checkSecurityForGouvernanceMutation = async (
   if (
     !canAddGouvernancePressentie(user, {
       departementCode,
-      regionCode: departementAndRegion.region?.code,
     })
   ) {
-    throw forbiddenError(
-      'Vous ne pouvez pas ajouter de gouvernance pressentie pour ce département',
-    )
+    throw forbiddenError('Vous ne pouvez pas modifier cette gouvernance')
   }
 }

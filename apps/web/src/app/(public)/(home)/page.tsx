@@ -204,7 +204,7 @@ const HomePage = async () => {
             {membersCountCards.map(({ value, label }) => (
               <div
                 key={label}
-                className="fr-flex fr-direction-column fr-flex-basis-0 fr-flex-grow-1 fr-align-items-center fr-justify-content-start fr-py-4v fr-px-8v fr-border--slim-grey"
+                className="fr-flex fr-direction-column fr-flex-basis-0 fr-flex-grow-1 fr-align-items-center fr-justify-content-start fr-py-4v fr-px-8v fr-border"
               >
                 <p className="fr-h6 fr-mb-0">{numberToString(value)}</p>
                 <p className="fr-text--sm fr-mb-0 fr-text--center">{label}</p>

@@ -2,13 +2,13 @@
 
 <h2 id="à-propos">🪧 À propos</h2>
 
-Bienvenue sur France Numérique Ensemble ! L’outil de diagnostic de l’inclusion numérique pour les territoires. \
-Ce [monorepo](https://en.wikipedia.org/wiki/Monorepo) fournit l'ensemble des projets nécessaires au fonctionnement de la plateforme.
+France Numérique Ensemble ! L’outil de diagnostic et de gouvernance de la politique publique d’inclusion numérique pour les territoires. \
+Ce [monorepo](https://en.wikipedia.org/wiki/Monorepo) fournit l'ensemble des projets nécessaires au fonctionnement d'une plateforme web utilisant le [Système de Design de l'Etat](https://www.systeme-de-design.gouv.fr/) et le [template commun de l'ANCT](https://www.figma.com/file/C9Ump1yh3z4DPMxm2qk3IY/Templates_communs?type=design&node-id=4-2946&t=d7Fn19OfHLoEcXqg-0) qui ajoute des composants métiers au Système de Design de l'État. \
 
 ## 📑 Table des matières
 
 - 🪧 [À propos](#à-propos)
-- 🔗 [Liens utiles](#liens-utiles)
+- ✨ [Fonctionnalités](#fonctionnalités)
 - 📦 [Contenu](#contenu)
 - 🤗 [Contribution](#contribution)
 - 📝 [Licence](#licence)
@@ -25,7 +25,7 @@ Ce [monorepo](https://en.wikipedia.org/wiki/Monorepo) fournit l'ensemble des pro
 Les `Applications` contiennent le code source des éléments propres au projet
 
 - [cli](apps/cli) : Suite d'outils en ligne de commande qui servent à exécuter des scripts complexes nécessaires lors de processus automatisés tels que l'intégration et le déploiement automatisé.
-- [web](apps/web) : Source du projet web next.js qui permet de faire tourner les bases, front et back en utilisant des servers components.
+- [web](apps/web) : Source du projet web next.js qui permet de faire tourner la stack, front et back en utilisant des servers components.
 
 ### Packages
 
@@ -39,7 +39,7 @@ Les `Packages` contiennent des outils de support et des communs dont l'origine p
 - [lint](packages/lint) : Configuration des règles de syntaxes à respecter dans le projet.
 - [storybook](packages/storybook) : Configuration de storybook, utilisé pour administrer une bibliothèque des composants disponibles dans l'application.
 - [test](packages/test) : Configuration de jest, utilisé pour les tests unitaires et les tests d'intégration.
-- [ui](packages/ui) : Composants et utilitaires génériques provenant de la [stack](https://github.com/inclusion-numerique/stack/tree/main/packages/ui).
+- [ui](packages/ui) : Composants et utilitaires génériques provenant être réutilisés et surchargés dans d'autres applications.
 
 <h2 id="contribution">🤗 Contribution</h2>
 

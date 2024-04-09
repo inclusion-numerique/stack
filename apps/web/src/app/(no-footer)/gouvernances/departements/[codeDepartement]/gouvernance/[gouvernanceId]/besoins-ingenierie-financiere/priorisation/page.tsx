@@ -3,18 +3,18 @@ import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import { notFound } from 'next/navigation'
 import Progress from '@app/ui/components/Progress'
 import { getBesoinsIngenierieFinanciereForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
-import { generateDepartementMetadata } from '@app/web/app/(with-navigation)/gouvernances/departements/generateDepartementMetadata'
-import { getBesoinsEnIngenieriePriorisationDefaultValues } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/besoinsEnIngenieriePriorisationDefaultValues'
 import BesoinsIngenierieFinancierePriorisationForm from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/priorisation/BesoinsIngenierieFinancierePriorisationForm'
+import { generateDepartementMetadata } from '@app/web/app/(with-navigation)/gouvernances/departements/generateDepartementMetadata'
 import {
   gouvernanceHomePath,
   modifierBesoinsIngenieriePath,
 } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
-import { canEditGouvernancePressentie } from '@app/web/security/securityRules'
+import { canEditGouvernance } from '@app/web/security/securityRules'
 import BackLink from '@app/web/components/BackLink'
 import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvernances/gouvernanceScopeTitle'
 import { checkAccessControl } from '@app/web/app/checkAccessControl'
 import { checkGouvernanceScopeWriteAccess } from '@app/web/app/(with-navigation)/gouvernances/checkGouvernanceScopeWriteAccess'
+import { getBesoinsEnIngenieriePriorisationDefaultValues } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/besoinsEnIngenieriePriorisationDefaultValues'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -32,7 +32,7 @@ const Page = async ({
   })
 
   if (
-    !canEditGouvernancePressentie(accessCheck.user, {
+    !canEditGouvernance(accessCheck.user, {
       departementCode: codeDepartement,
     })
   ) {
@@ -49,6 +49,10 @@ const Page = async ({
   if (gouvernance.departement.code !== codeDepartement) {
     notFound()
   }
+  if (gouvernance.besoinsEnIngenierieFinanciere.priorisationEnregistree) {
+    // Les besoins terminés ne sont plus éditables
+    notFound()
+  }
   const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
 
   const defaultValues =
@@ -61,7 +65,7 @@ const Page = async ({
           currentPageLabel="Priorisez vos besoins en ingénierie financière"
           segments={[
             {
-              label: "Page d'accueil",
+              label: 'Page d’accueil',
               linkProps: {
                 href: '/',
               },

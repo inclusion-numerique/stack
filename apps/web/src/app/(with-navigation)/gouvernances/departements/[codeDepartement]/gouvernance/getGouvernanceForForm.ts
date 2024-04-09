@@ -17,7 +17,7 @@ const siretInfoSelect = {
   },
 }
 
-const membreSelect = {
+export const membreSelect = {
   select: {
     id: true,
     modification: true,
@@ -60,11 +60,23 @@ export const gouvernanceListSelect = {
       code: true,
       nom: true,
       codeRegion: true,
+      dotation202406: true,
     },
   },
 
   v2Enregistree: true,
   noteDeContexte: true,
+  noteDeContexteSubventions: true,
+  noteDeContexteSubventionsEnregistree: true,
+
+  beneficiaireDotationFormationValideEtEnvoye: true,
+  beneficiaireDotationFormationAccepte: true,
+  beneficiaireDotationFormationDemandeDeModification: true,
+  beneficiaireDotationFormation: {
+    select: {
+      id: true,
+    },
+  },
 
   organisationsRecruteusesCoordinateurs: {
     select: {
@@ -92,6 +104,51 @@ export const gouvernanceListSelect = {
           id: true,
           email: true,
           name: true,
+        },
+      },
+    },
+  },
+
+  feuillesDeRoute: {
+    select: {
+      demandesDeSubvention: {
+        select: {
+          id: true,
+          besoins: true,
+          creation: true,
+          modification: true,
+          valideeEtEnvoyee: true,
+          createur: {
+            select: {
+              id: true,
+              email: true,
+              name: true,
+            },
+          },
+          derniereModificationPar: {
+            select: {
+              id: true,
+              email: true,
+              name: true,
+            },
+          },
+          nomAction: true,
+          budgetGlobal: true,
+          subventionDemandee: true,
+          subventionEtp: true,
+          subventionPrestation: true,
+          beneficiaires: {
+            select: {
+              id: true,
+              membreGouvernance: {
+                select: membreSelect.select,
+              },
+              subvention: true,
+            },
+          },
+        },
+        orderBy: {
+          creation: 'asc',
         },
       },
     },
@@ -221,3 +278,107 @@ export type BesoinsIngenierieFinanciereForForm = Exclude<
   GouvernanceWithBesoinsIngenierieFinanciereForForm['besoinsEnIngenierieFinanciere'],
   null
 >
+
+export const getDemandesSubventionsForFormSelect = {
+  id: true,
+  v2Enregistree: true,
+  noteDeContexteSubventions: true,
+  noteDeContexteSubventionsEnregistree: true,
+  departement: {
+    select: {
+      nom: true,
+      code: true,
+      dotation202406: true,
+    },
+  },
+
+  beneficiaireDotationFormationValideEtEnvoye: true,
+  beneficiaireDotationFormationAccepte: true,
+  beneficiaireDotationFormationDemandeDeModification: true,
+
+  beneficiaireDotationFormation: {
+    select: membreSelect.select,
+  },
+  feuillesDeRoute: {
+    select: {
+      id: true,
+      nom: true,
+      demandesDeSubvention: {
+        select: {
+          id: true,
+          besoins: true,
+          creation: true,
+          modification: true,
+          createur: {
+            select: {
+              id: true,
+              email: true,
+              name: true,
+            },
+          },
+          derniereModificationPar: {
+            select: {
+              id: true,
+              email: true,
+              name: true,
+            },
+          },
+          valideeEtEnvoyee: true,
+          demandeDeModification: true,
+          rejetee: true,
+          acceptee: true,
+          feuilleDeRoute: {
+            select: {
+              id: true,
+              nom: true,
+            },
+          },
+          nomAction: true,
+          contexte: true,
+          description: true,
+          subventionDemandee: true,
+          subventionEtp: true,
+          subventionPrestation: true,
+          budgetGlobal: true,
+          pieceJointeBudgetKey: true,
+          pieceJointeBudget: {
+            select: {
+              key: true,
+              mimeType: true,
+              name: true,
+              size: true,
+            },
+          },
+          beneficiaires: {
+            select: {
+              id: true,
+              subvention: true,
+              membreGouvernance: membreSelect,
+            },
+          },
+        },
+      },
+    },
+  },
+} satisfies Prisma.GouvernanceSelect
+
+export const getDemandesSubventionsForForm = ({
+  gouvernanceId,
+}: {
+  gouvernanceId: string
+}) =>
+  prismaClient.gouvernance.findUnique({
+    where: {
+      id: gouvernanceId,
+      supression: null,
+    },
+    select: getDemandesSubventionsForFormSelect,
+  })
+
+export type GouvernanceWithDemandesSubventionsForForm = Exclude<
+  Awaited<ReturnType<typeof getDemandesSubventionsForForm>>,
+  null
+>
+
+export type DemandeSubventionForForm =
+  GouvernanceWithDemandesSubventionsForForm['feuillesDeRoute'][number]['demandesDeSubvention'][number]

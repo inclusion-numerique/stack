@@ -30,7 +30,7 @@ const Dashboard = ({
           currentPageLabel={`Données · ${national ? 'National' : departement.nom}`}
           segments={[
             {
-              label: "Page d'accueil",
+              label: 'Page d’accueil',
               linkProps: {
                 href: '/',
               },

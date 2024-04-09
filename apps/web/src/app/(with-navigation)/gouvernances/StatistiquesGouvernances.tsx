@@ -38,20 +38,8 @@ const StatistiquesGouvernances = ({
         <div className="fr-badge fr-badge--yellow-tournesol">
           Porteurs d’une feuille de route
         </div>
-        <p className="fr-mt-6v fr-text--sm fr-mb-0">
-          Collectivités et leurs groupements désirant s’inscrire dans la
-          démarche France Numérique Ensemble et assurer aux côtés du Préfet, la
-          coordination de la ou des gouvernances territoriales porteuse(s) de la
-          politique publique d’inclusion numérique sur leur territoire de
-          référence.
-        </p>
         <hr />
-        <div
-          className={classNames(
-            styles.statisticsLabelAndValue,
-            styles.largeStatisticsLabelAndValue,
-          )}
-        >
+        <div className={classNames(styles.statisticsLabelAndValue)}>
           <h6>Collectivités</h6>
           <p>{statistiquesGouvernance.porteurs}</p>
         </div>
@@ -60,10 +48,6 @@ const StatistiquesGouvernances = ({
         <div className="fr-badge fr-badge--purple-glycine">
           Partenaires suggérés
         </div>
-        <p className="fr-mt-6v fr-text--sm fr-mb-0">
-          Collectivité ou structure proposée par le porteur de la feuille de
-          route pour composer la gouvernance locale France Numérique Ensemble.
-        </p>
         <hr />
         <div className={styles.statisticsLabelAndValue}>
           <h6>Collectivités</h6>
@@ -78,12 +62,6 @@ const StatistiquesGouvernances = ({
         <div className="fr-badge fr-badge--blue-cumulus">
           Souhaitent participer
         </div>
-        <p className="fr-mt-6v fr-text--sm fr-mb-0">
-          Collectivité ou structure souhaitant être partie prenante de la
-          gouvernance et de la feuille de route France Numérique Ensemble
-          associée, à travers à minima une participation aux comités de pilotage
-          relatives à la mise en œuvre de le la feuille de route
-        </p>
         <hr />
         <div className={styles.statisticsLabelAndValue}>
           <h6>Collectivités</h6>

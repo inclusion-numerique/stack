@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Metadata } from 'next'
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import Link from 'next/link'
@@ -83,7 +83,7 @@ const ServiceCard = ({
   description: string
   link: string
 }) => (
-  <div className="fr-col-12 fr-col-md-6 fr-border--slim-grey fr-p-8v fr-pb-12v fr-flex fr-direction-column">
+  <div className="fr-col-12 fr-col-md-6 fr-border fr-p-8v fr-pb-12v fr-flex fr-direction-column">
     <div className="fr-mb-6v">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={illustration} alt="" style={{ width: 88, height: 88 }} />
@@ -108,7 +108,7 @@ const Page = () => (
           currentPageLabel="En savoir plus sur les données"
           segments={[
             {
-              label: "Page d'accueil",
+              label: 'Page d’accueil',
               linkProps: {
                 href: '/',
               },
@@ -133,7 +133,7 @@ const Page = () => (
     </div>
     <div className="fr-container fr-container--medium fr-pt-20v fr-pb-50v">
       {information.map((info, index) => (
-        <>
+        <Fragment key={info.title}>
           {index !== 0 && <hr className="fr-separator-10v fr-mt-16v" />}
           <h2 className="fr-h3 fr-mb-8v">{info.title}</h2>
           <p className="fr-mb-8v">{info.description}</p>
@@ -142,7 +142,7 @@ const Page = () => (
               <ServiceCard key={service.title} {...service} />
             ))}
           </div>
-        </>
+        </Fragment>
       ))}
     </div>
   </>

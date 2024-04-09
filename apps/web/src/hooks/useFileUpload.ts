@@ -15,7 +15,8 @@ export const useFileUpload = ({
   const upload = async (
     file: File,
   ): Promise<
-    undefined | { key: string; mimeType: string; name: string; size: number }
+    | { error: unknown }
+    | { key: string; mimeType: string; name: string; size: number }
   > => {
     setUploadError(null)
     setUploading(true)
@@ -32,15 +33,16 @@ export const useFileUpload = ({
           "Une erreur est survenue lors de l'envoi du fichier. Veuillez réessayer.",
         )
         setUploading(false)
+        return { error: error as unknown }
       })
 
-    if (!uploadInfo) {
-      return
+    if ('error' in uploadInfo) {
+      return uploadInfo
     }
 
     let totalUploaded = 0
 
-    await axios
+    const bucketUploadResponse = await axios
       .put(uploadInfo.url, file, {
         headers: {
           'Content-Type': file.type,
@@ -69,7 +71,13 @@ export const useFileUpload = ({
           "Une erreur est survenue lors de l'envoi du fichier. Veuillez réessayer.",
         )
         setUploading(false)
+
+        return { error: error as unknown }
       })
+
+    if ('error' in bucketUploadResponse) {
+      return bucketUploadResponse
+    }
 
     return {
       key: uploadInfo.key,

@@ -2,6 +2,7 @@ import { Tabs } from '@codegouvfr/react-dsfr/Tabs'
 import React, { ComponentProps } from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import { v4 } from 'uuid'
+import { Decimal } from 'decimal.js'
 import {
   ListeGouvernance,
   ListeGouvernanceItem,
@@ -46,14 +47,22 @@ const gouvernancesPressenties: ListeGouvernance = [
     derniereModificationPar: jeanDupont,
     createur: jeanDupont,
     v2Enregistree: null,
+    noteDeContexteSubventions: null,
+    noteDeContexteSubventionsEnregistree: null,
+    beneficiaireDotationFormationValideEtEnvoye: null,
+    beneficiaireDotationFormationAccepte: null,
+    beneficiaireDotationFormationDemandeDeModification: null,
+    beneficiaireDotationFormation: null,
     departement: {
       codeRegion: '84',
       code: '69',
       nom: 'Rhône',
+      dotation202406: new Decimal(100_000),
     },
     organisationsRecruteusesCoordinateurs: [],
     noteDeContexte: '<p>Des phrases qui expliquent le contexte</p>',
     besoinsEnIngenierieFinanciere: null,
+    feuillesDeRoute: [],
     v1Perimetre: 'region',
     v1PorteurRegion: {
       nom: 'Auvergne-Rhône-Alpes',
@@ -70,7 +79,14 @@ const gouvernancesPressenties: ListeGouvernance = [
     createur: jeanDupont,
     derniereModificationPar: jeanneBiche,
     v2Enregistree: null,
+    noteDeContexteSubventions: null,
+    noteDeContexteSubventionsEnregistree: null,
+    beneficiaireDotationFormationValideEtEnvoye: null,
+    beneficiaireDotationFormationAccepte: null,
+    beneficiaireDotationFormationDemandeDeModification: null,
+    beneficiaireDotationFormation: null,
     departement: {
+      dotation202406: new Decimal(100_000),
       codeRegion: '84',
       code: '69',
       nom: 'Rhône',
@@ -78,6 +94,7 @@ const gouvernancesPressenties: ListeGouvernance = [
     organisationsRecruteusesCoordinateurs: [],
     noteDeContexte: '<p>Des phrases qui expliquent le contexte</p>',
     besoinsEnIngenierieFinanciere: null,
+    feuillesDeRoute: [],
     v1Perimetre: 'region',
     v1PorteurRegion: {
       nom: 'Auvergne-Rhône-Alpes',
@@ -97,7 +114,14 @@ const gouvernancesProposees: ListeGouvernance = [
     derniereModificationPar: jeanDupont,
     createur: jeanDupont,
     v2Enregistree: now,
+    noteDeContexteSubventions: null,
+    noteDeContexteSubventionsEnregistree: null,
+    beneficiaireDotationFormationValideEtEnvoye: null,
+    beneficiaireDotationFormationAccepte: null,
+    beneficiaireDotationFormationDemandeDeModification: null,
+    beneficiaireDotationFormation: null,
     departement: {
+      dotation202406: new Decimal(100_000),
       codeRegion: '84',
       code: '69',
       nom: 'Rhône',
@@ -105,6 +129,7 @@ const gouvernancesProposees: ListeGouvernance = [
     organisationsRecruteusesCoordinateurs: [],
     noteDeContexte: '<p>Des phrases qui expliquent le contexte</p>',
     besoinsEnIngenierieFinanciere: null,
+    feuillesDeRoute: [],
     v1Perimetre: 'region',
     v1PorteurRegion: {
       nom: 'Auvergne-Rhône-Alpes',
@@ -121,7 +146,14 @@ const gouvernancesProposees: ListeGouvernance = [
     createur: jeanDupont,
     derniereModificationPar: jeanneBiche,
     v2Enregistree: tomorrow,
+    noteDeContexteSubventions: null,
+    noteDeContexteSubventionsEnregistree: null,
+    beneficiaireDotationFormationValideEtEnvoye: null,
+    beneficiaireDotationFormationAccepte: null,
+    beneficiaireDotationFormationDemandeDeModification: null,
+    beneficiaireDotationFormation: null,
     departement: {
+      dotation202406: new Decimal(100_000),
       codeRegion: '84',
       code: '69',
       nom: 'Rhône',
@@ -136,6 +168,8 @@ const gouvernancesProposees: ListeGouvernance = [
       derniereModificationPar: jeanneBiche,
       selectionEnregistree: now,
     } as unknown as ListeGouvernanceItem['besoinsEnIngenierieFinanciere'],
+
+    feuillesDeRoute: [],
     v1Perimetre: 'region',
     v1PorteurRegion: {
       nom: 'Auvergne-Rhône-Alpes',

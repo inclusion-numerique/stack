@@ -41,6 +41,26 @@ export const detailGouvernancePath = (scope: GouvernanceScope, id: string) =>
 export const modifierGouvernancePath = (scope: GouvernanceScope, id: string) =>
   `${gouvernanceHomePath(scope)}/gouvernance/${id}/modifier`
 
+export const gouvernanceDemandesDeSubventionPath = (
+  scope: GouvernanceScope,
+  gouvernanceId: string,
+  subPath?: string,
+) =>
+  `${gouvernanceHomePath(scope)}/gouvernance/${gouvernanceId}/demandes-de-subvention${subPath ?? ''}`
+
+export const modifierDemandeDeSubventionPath = (
+  scope: GouvernanceScope,
+  gouvernanceId: string,
+  demandeDeSubventionId: string,
+) =>
+  `${gouvernanceHomePath(scope)}/gouvernance/${gouvernanceId}/demandes-de-subvention/${demandeDeSubventionId}`
+
+export const ajouterDemandeDeSubventionPath = (
+  scope: GouvernanceScope,
+  gouvernanceId: string,
+) =>
+  `${gouvernanceHomePath(scope)}/gouvernance/${gouvernanceId}/demandes-de-subvention/ajouter`
+
 export const modifierBesoinsIngenieriePath = (
   scope: GouvernanceScope,
   {

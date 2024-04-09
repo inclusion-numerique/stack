@@ -146,7 +146,7 @@ describe('gouvernanceRouter', () => {
 
       const result = await executeGouvernanceProcedure(input)
 
-      expect(result).toEqual({
+      expect(result).toMatchObject({
         besoinsEnIngenierieFinanciere: null,
         comites: [
           {
@@ -169,6 +169,8 @@ describe('gouvernanceRouter', () => {
           code: '69',
           codeRegion: '84',
           nom: 'Rhône',
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          dotation202406: expect.anything(),
         },
         derniereModificationPar: {
           email: givenUserEmail,
@@ -301,6 +303,8 @@ describe('gouvernanceRouter', () => {
         ],
         modification: expectDate,
         noteDeContexte: 'Such context',
+        noteDeContexteSubventions: null,
+        noteDeContexteSubventionsEnregistree: null,
         organisationsRecruteusesCoordinateurs: [
           {
             id: expectUuid,

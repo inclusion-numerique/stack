@@ -1,10 +1,17 @@
 import { GouvernanceForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { getGouvernanceFormDefaultValues } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceFormDefaultValues'
+import { Decimal } from 'decimal.js'
 
 describe('getGouvernanceFormDefaultValues', () => {
   it('transforms gouvernance to default values', () => {
     const gouvernanceForForm: GouvernanceForForm = {
       besoinsEnIngenierieFinanciere: null,
+      noteDeContexteSubventions: null,
+      noteDeContexteSubventionsEnregistree: null,
+      beneficiaireDotationFormationValideEtEnvoye: null,
+      beneficiaireDotationFormationAccepte: null,
+      beneficiaireDotationFormationDemandeDeModification: null,
+      beneficiaireDotationFormation: null,
       comites: [
         {
           commentaire: '🗺️',
@@ -27,6 +34,7 @@ describe('getGouvernanceFormDefaultValues', () => {
         code: '69',
         codeRegion: '84',
         nom: 'Rhône',
+        dotation202406: new Decimal(10_000),
       },
       derniereModificationPar: {
         email:

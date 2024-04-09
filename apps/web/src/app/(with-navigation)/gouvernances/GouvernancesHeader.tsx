@@ -27,7 +27,7 @@ const GouvernancesHeader = async ({
           currentPageLabel={`Gouvernance · ${national ? 'National' : departement.nom}`}
           segments={[
             {
-              label: "Page d'accueil",
+              label: 'Page d’accueil',
               linkProps: {
                 href: '/',
               },

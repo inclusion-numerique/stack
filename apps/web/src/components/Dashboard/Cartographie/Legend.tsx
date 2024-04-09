@@ -158,7 +158,7 @@ const Legend = ({
               currentPageLabel="Cartographie"
               segments={[
                 {
-                  label: "Page d'accueil",
+                  label: 'Page d’accueil',
                   linkProps: {
                     href: '/',
                   },

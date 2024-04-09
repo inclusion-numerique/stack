@@ -9,7 +9,7 @@ import {
   gouvernanceHomePath,
   modifierBesoinsIngenieriePath,
 } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
-import { canEditGouvernancePressentie } from '@app/web/security/securityRules'
+import { canEditGouvernance } from '@app/web/security/securityRules'
 import BackLink from '@app/web/components/BackLink'
 import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvernances/gouvernanceScopeTitle'
 import WhiteCard from '@app/web/ui/WhiteCard'
@@ -26,7 +26,7 @@ const Page = async ({
 }) => {
   const user = await getSessionUser()
   if (
-    !canEditGouvernancePressentie(user, {
+    !canEditGouvernance(user, {
       departementCode: codeDepartement,
     })
   ) {
@@ -41,6 +41,10 @@ const Page = async ({
   if (gouvernance.departement.code !== codeDepartement) {
     notFound()
   }
+  if (gouvernance.besoinsEnIngenierieFinanciere?.priorisationEnregistree) {
+    // Les besoins terminés ne sont plus éditables
+    notFound()
+  }
   const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
 
   return (
@@ -50,7 +54,7 @@ const Page = async ({
           currentPageLabel="Besoins en ingénierie financière"
           segments={[
             {
-              label: "Page d'accueil",
+              label: 'Page d’accueil',
               linkProps: {
                 href: '/',
               },

@@ -2,15 +2,24 @@ import React from 'react'
 import Badge from '@codegouvfr/react-dsfr/Badge'
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
-import { limiteModificationDesGouvernances } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceMetadata'
+import {
+  limiteModicitaionDesDemandesDeSubvention,
+  limiteModificationDesGouvernances,
+} from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceMetadata'
 import { ListeGouvernanceItem } from '@app/web/app/(with-navigation)/gouvernances/getListeGouvernances'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import {
+  gouvernanceDemandesDeSubventionPath,
   modifierBesoinsIngenieriePath,
   modifierGouvernancePath,
 } from '@app/web/app/(with-navigation)/gouvernances/gouvernancePaths'
 import CreateGouvernanceButton from '@app/web/app/(with-navigation)/gouvernances/CreateGouvernanceButton'
 import { nameOrEmail } from '@app/web/utils/nameOrEmail'
+import {
+  isGouvernanceBesoinsCompleted,
+  isGouvernanceV2,
+} from '@app/web/gouvernance/gouvernanceStatus'
+import { getStatutDemandesSubvention } from '@app/web/gouvernance/statutDemandesSubvention'
 import styles from './GouvernanceList.module.css'
 
 const GouvernanceCardCtas = ({
@@ -24,7 +33,9 @@ const GouvernanceCardCtas = ({
   canEdit?: boolean
   canCreateInDepartementCode?: string
 }) => {
-  const v2CreationMeta = gouvernance?.v2Enregistree
+  const isV2 = isGouvernanceV2(gouvernance)
+
+  const v2CreationMeta = isV2
     ? `${dateAsDay(gouvernance.v2Enregistree)} par ${nameOrEmail(
         gouvernance.createur,
       )}`
@@ -53,9 +64,11 @@ const GouvernanceCardCtas = ({
     besoinsModificationMeta !== besoinsCreationMeta
 
   const isExistingGouvernance = !!gouvernance
-  const isV2 = !!gouvernance?.v2Enregistree
-  const hasCompletedBesoins =
-    !!gouvernance?.besoinsEnIngenierieFinanciere?.priorisationEnregistree
+  const hasCompletedBesoins: boolean =
+    isExistingGouvernance && isGouvernanceBesoinsCompleted(gouvernance)
+  const subventionsCompleted =
+    isExistingGouvernance &&
+    getStatutDemandesSubvention(gouvernance) === 'Finalisé'
 
   return (
     <>
@@ -126,82 +139,135 @@ const GouvernanceCardCtas = ({
                 Compléter
               </Button>
             )
-          ) : canCreateInDepartementCode ? (
-            <CreateGouvernanceButton
-              codeDepartement={canCreateInDepartementCode}
-              nextAction="editGouvernance"
-            />
           ) : null)}
       </div>
-      <hr className="fr-separator-8v" />
-      <div className={styles.cardCtaContainer}>
-        <div className="fr-flex-grow-1">
-          {hasCompletedBesoins ? (
-            <h6 className="fr-mb-0">Besoins en ingénierie financière</h6>
-          ) : (
-            <h4 className="fr-mb-0">Besoins en ingénierie financière</h4>
-          )}
-          {hasCompletedBesoins ? (
-            <p className="fr-mb-0 fr-text--sm fr-text-mention--grey">
-              Complétés le {besoinsCreationMeta}
-              {displayBesoinsModificationMeta &&
-                ` · Modifiés le ${besoinsModificationMeta}`}
-            </p>
-          ) : canEdit ? (
-            <p className="fr-mb-0 fr-mt-2v">
-              Dans le cadre du développement de votre stratégie d’inclusion
-              numérique, de la structuration de votre gouvernance et de la mise
-              en en œuvre de vos feuilles de route territoriales, nous
-              souhaitons connaître vos besoins de financement.
-            </p>
-          ) : null}
-        </div>
-        {hasCompletedBesoins ? (
-          <Badge
-            className="fr-my-4v fr-ml-md-6w fr-mr-md-3w"
-            small
-            severity="success"
-          >
-            Complétés
-          </Badge>
-        ) : (
-          <Badge
-            className="fr-my-4v fr-ml-md-6w fr-mr-md-3w"
-            small
-            severity="new"
-          >
-            À&nbsp;renseigner&nbsp;avant&nbsp;le&nbsp;
-            {dateAsDay(limiteModificationDesGouvernances)}
-          </Badge>
-        )}
-        {canEdit &&
-          (gouvernance ? (
-            hasCompletedBesoins ? (
+
+      {/* On montre uniquement les besoins en ingénierie si ils ont déjà été créés car ils ne sont plus nécéssaires */}
+      {isV2 && canEdit && hasCompletedBesoins && (
+        <>
+          <hr className="fr-separator-8v" />
+          <div className={styles.cardCtaContainer}>
+            <div className="fr-flex-grow-1">
+              {hasCompletedBesoins ? (
+                <h6 className="fr-mb-0">Besoins en ingénierie financière</h6>
+              ) : (
+                <h4 className="fr-mb-0">Besoins en ingénierie financière</h4>
+              )}
+              {hasCompletedBesoins ? (
+                <p className="fr-mb-0 fr-text--sm fr-text-mention--grey">
+                  Complétés le {besoinsCreationMeta}
+                  {displayBesoinsModificationMeta &&
+                    ` · Modifiés le ${besoinsModificationMeta}`}
+                </p>
+              ) : canEdit ? (
+                <p className="fr-mb-0 fr-mt-2v">
+                  Dans le cadre du développement de votre stratégie d’inclusion
+                  numérique, de la structuration de votre gouvernance et de la
+                  mise en en œuvre de vos feuilles de route territoriales, nous
+                  souhaitons connaître vos besoins de financement.
+                </p>
+              ) : null}
+            </div>
+            {hasCompletedBesoins ? (
+              <Badge
+                className="fr-my-4v fr-ml-md-6w fr-mr-md-3w"
+                small
+                severity="success"
+              >
+                Terminé
+              </Badge>
+            ) : (
+              <Badge
+                className="fr-my-4v fr-ml-md-6w fr-mr-md-3w"
+                small
+                severity="new"
+              >
+                À&nbsp;renseigner&nbsp;avant&nbsp;le&nbsp;
+                {dateAsDay(limiteModificationDesGouvernances)}
+              </Badge>
+            )}
+            {canEdit &&
+              (gouvernance ? (
+                hasCompletedBesoins ? null : (
+                  <Button
+                    linkProps={{
+                      href: modifierBesoinsIngenieriePath(
+                        { codeDepartement: gouvernance.departement.code },
+                        {
+                          gouvernanceId: gouvernance.id,
+                          step: 'intro',
+                        },
+                      ),
+                    }}
+                    iconId="fr-icon-arrow-right-line"
+                    iconPosition="right"
+                  >
+                    Compléter
+                  </Button>
+                )
+              ) : canCreateInDepartementCode ? (
+                <CreateGouvernanceButton
+                  codeDepartement={canCreateInDepartementCode}
+                  nextAction="editBesoinsIngenierie"
+                />
+              ) : null)}
+          </div>
+        </>
+      )}
+      {/* Demandes de subventions */}
+      {isV2 && canEdit && (
+        <>
+          <hr className="fr-separator-8v" />
+          <div className={styles.cardCtaContainer}>
+            <div className="fr-flex-grow-1">
+              <h6 className="fr-mb-0">Actions & demandes de subventions</h6>
+              {subventionsCompleted ? (
+                <p className="fr-mb-0 fr-text--sm fr-text-mention--grey">
+                  Complétée le {v2CreationMeta}
+                  {displayModificationMeta &&
+                    ` · Modifiée le ${modificationMeta}`}
+                </p>
+              ) : null}
+            </div>
+            {subventionsCompleted ? (
+              <Badge
+                className="fr-my-4v fr-ml-md-6w fr-mr-md-3w"
+                small
+                severity="success"
+              >
+                Complétées
+              </Badge>
+            ) : (
+              <Badge
+                className="fr-my-4v fr-ml-md-6w fr-mr-md-3w"
+                small
+                severity="new"
+              >
+                À&nbsp;renseigner&nbsp;avant&nbsp;le&nbsp;
+                {dateAsDay(limiteModicitaionDesDemandesDeSubvention)}
+              </Badge>
+            )}
+            {subventionsCompleted ? (
               <Button
                 priority="secondary"
                 linkProps={{
-                  href: modifierBesoinsIngenieriePath(
+                  href: gouvernanceDemandesDeSubventionPath(
                     { codeDepartement: gouvernance.departement.code },
-                    {
-                      gouvernanceId: gouvernance.id,
-                      step: 'intro',
-                    },
+                    gouvernance.id,
                   ),
                 }}
-                iconId="fr-icon-edit-line"
+                iconId="fr-icon-arrow-right-line"
                 iconPosition="right"
               >
-                Modifier
+                Voir le détail
               </Button>
             ) : (
               <Button
+                priority="primary"
                 linkProps={{
-                  href: modifierBesoinsIngenieriePath(
+                  href: gouvernanceDemandesDeSubventionPath(
                     { codeDepartement: gouvernance.departement.code },
-                    {
-                      gouvernanceId: gouvernance.id,
-                      step: 'intro',
-                    },
+                    gouvernance.id,
                   ),
                 }}
                 iconId="fr-icon-arrow-right-line"
@@ -209,14 +275,10 @@ const GouvernanceCardCtas = ({
               >
                 Compléter
               </Button>
-            )
-          ) : canCreateInDepartementCode ? (
-            <CreateGouvernanceButton
-              codeDepartement={canCreateInDepartementCode}
-              nextAction="editBesoinsIngenierie"
-            />
-          ) : null)}
-      </div>
+            )}
+          </div>
+        </>
+      )}
     </>
   )
 }

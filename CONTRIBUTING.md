@@ -5,6 +5,7 @@
 - 📦 [Prérequis](#prérequis)
 - 🚀 [Démarrage](#démarrage)
 - 🛠️ [Scripts Disponibles](#scripts-disponibles)
+- 🧭 [Utilisation](#utilisation)
 - 🤝 [Procédures](#procédures)
 - 🏗️ [Construit avec](#construit-avec)
 
@@ -15,6 +16,10 @@
 - [pnpm](https://pnpm.io/) : Gestionnaire de paquets pour les projets Node.js
 - [Docker](https://www.docker.com/) (optionnel) : Environnement d'exécution d'applications sous forme de conteneurs
 - [PostgreSQL](https://www.postgresql.org/) (optionnel si Docker est utilisé) : Système de gestion de base de données relationnelle
+
+### Mon compte pro
+
+Faire une demande de token OpenID pour votre service spécifiquement (procédure sur le site https://moncomptepro.beta.gouv.fr/partenaire)
 
 ### Recommandation
 
@@ -113,6 +118,10 @@ Utilise Docker pour arrêter les services de mail et de bases de données.
 
 Utilise Docker pour réinitialiser la base de données.
 
+### `pnpm fixtures:load`
+
+Charge un ensemble de données prédéfinies par les [fixtures](packages/fixtures) dans la base. Il faut que la base de données soit accessible avant de lancer cette commande. \
+
 ### `pnpm prisma:generate-migration nom_de_la_migration`
 
 Pour modifier le schéma de base de données, il faut d'abord faire les modifications nécessaires dans le [schema.prisma](apps/web/prisma/schema.prisma). \
@@ -126,7 +135,7 @@ Construit les applications `cli` et `web` :
 
 ### `pnpm test`
 
-Lance l'exécution de tests avec Jest de l'ensemble des applications et packages du monorepo sauf `e2e` : `app/cli`, `app/web`, `packages/cdk`, `packages/config`, `packages/emails`, `packages/fixtures`, `packages/lint`, `packages/storybook`, `packages/test`, `packages/ui`
+Lance l'exécution de tests avec Jest de l'ensemble des applications et packages du monorepo sauf `e2e` : `app/cli`, `app/web`, `packages/cdk`, `packages/config`, `packages/emails`, `packages/fixtures`, `packages/lint`, `packages/migration`, `packages/storybook`, `packages/test`, `packages/ui`
 
 ### `pnpm test:integration`
 
@@ -148,6 +157,37 @@ Supprime le dossier `node_modules` à la racine du monorepo.
 
 Supprime les dossiers `node_modules` de tous les projets contenus dans le monorepo.
 
+<h2 id="utilisation">🧭 Utilisation</h2>
+
+### Développement de votre projet
+
+Ce projet a été créé à partir d'un clone du [dépôt de la stack](https://github.com/inclusion-numerique/stack). \
+Si vous développez une nouvelle fonctionnalité que vous pensez utile à d'autres, nous vous encourageons à la partager en créant une pull-request sur le [dépôt de la stack](https://github.com/inclusion-numerique/stack).
+
+### Récupérer les mises à jour de ce dépôt
+
+Stack est un dépôt de code source, et non un template, il est amené à évoluer régulièrement. \
+Certaines mises à jour / nouveaux composants peuvent vous intéresser. Certains changements peuvent au contraire être en conflit avec les vôtres, ou ne pas vous convenir. Cela sera géré dans un flow de merge classique. \
+Pour récupérer les mises à jour de ce dépôt, il faut ajouter le dépôt comme remote de votre projet :
+
+```bash
+git remote add stack git@github.com:inclusion-numerique/stack.git 
+```
+
+Cela vous permettra de voir facilement les changements entre votre projet et le dépôt stack.
+
+Nous recommandons ensuite de créer dans votre projet une branche `stack` qui suivra la branche `main` de ce dépôt, et de la rebaser régulièrement sur la branche `main` de ce dépôt.
+
+```bash
+git checkout -b stack
+git pull stack main
+git rebase main
+```
+
+Ensuite, créez une PR sur votre branche principale (dev par exemple) pour intégrer les changements de la branche `stack` dans votre projet. \
+Cela vous permettra de faire une code review de l'intégration des changements de ce dépôt dans votre projet pour valider les changements que vous souhaitez intégrer ou non, et de résoudre les conflits. \
+Une fois cette PR fusionnée (utilisez bien un merge classique pour ne pas avoir à résoudre les conflits à nouveau). Vous avez intégré les changements de ce dépôt dans votre projet.
+
 <h2 id="procédures">🤝 Procédures</h2>
 
 ### Branches
@@ -158,6 +198,12 @@ Supprime les dossiers `node_modules` de tous les projets contenus dans le monore
 ### Commits
 
 - **Commits Conventionnels** : Les messages de commit doivent suivre la spécification [Commits Conventionnels](https://www.conventionalcommits.org/fr) pour être valides.
+
+### Signature
+
+La branche main, ainsi que l'ensemble des branches de travail avec un préfixe valide requièrent que les commits soient signés :
+- La documentation de GitHub indique comment configurer la signature des commits
+- Les utilisateurs de keybase peuvent signer leurs commits avec leur clé GPG sur Keybase
 
 ### Création et publication d'une nouvelle fonctionnalité
 
@@ -184,6 +230,7 @@ Lorsqu'une branche est fusionnée avec `main`, cela déclenche automatiquement l
 - [Zod](https://zod.dev/) : Validation de schéma fondé sur TypeScript.
 - [tRPC](https://trpc.io/) : Intégrer des API stables en bénéficiant de l'inférence de Type de TypeScript.
 - [Prisma](https://www.prisma.io/) : ORM compatible avec TypeScript.
+- [mjml](https://mjml.io/) : Écrire des templates de mails avec React.
 - [mjml-react](https://github.com/Faire/mjml-react) : Écrire des templates de mails avec React et [mjml](https://mjml.io/)
 - [NextAuth.js](https://next-auth.js.org/) : Adaptateur pour services d'authentification.
 
