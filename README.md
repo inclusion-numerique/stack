@@ -1,10 +1,10 @@
-# Stack
+# La coop de la médiation numérique
 
 <h2 id="à-propos">🪧 À propos</h2>
 
-Bienvenue sur la stack ! Le commun développé par le [Pôle Inclusion numérique de l'ANCT](https://societenumerique.gouv.fr/fr/les-services-de-linclusion-numerique/). \
+Bienvenue sur la coop de la médiation numérique, développé par le [Pôle Inclusion numérique de l'ANCT](https://societenumerique.gouv.fr/fr/les-services-de-linclusion-numerique/). \
 Ce [monorepo](https://en.wikipedia.org/wiki/Monorepo) fournit l'ensemble des projets nécessaires au fonctionnement d'une plateforme web utilisant le [Système de Design de l'Etat](https://www.systeme-de-design.gouv.fr/) et le [template commun de l'ANCT](https://www.figma.com/file/C9Ump1yh3z4DPMxm2qk3IY/Templates_communs?type=design&node-id=4-2946&t=d7Fn19OfHLoEcXqg-0) qui ajoute des composants métiers au Système de Design de l'État. \
-L'objectif de ce projet est de permettre une mise en ligne facile, rapide et respectant les critères de qualité de l'Incubateur des Territoires (sécurité, qualité de code, design, accessibilité, protection des données, respect de la confidentialité...).
+L'objectif de ce projet est d’outiller les professionels de la médiation numérique.
 
 ## 📑 Table des matières
 

@@ -28,7 +28,7 @@ const PublicFooter = () => (
       {
         text: 'Code source',
         linkProps: {
-          href: 'https://github.com/inclusion-numerique/stack',
+          href: 'https://github.com/inclusion-numerique/coop-inclusion-numerique',
           target: '_blank',
           rel: 'noreferrer',
         },

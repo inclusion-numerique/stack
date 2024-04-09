@@ -32,7 +32,7 @@ Suivez ces étapes pour configurer le projet :
 ### 1. Clonez le dépôt
 
 ```bash
-git clone git@github.com:inclusion-numerique/stack.git
+git clone git@github.com:inclusion-numerique/coop-mediation-numerique.git
 ```
 
 ### 2. Installez la dernière version de node
@@ -44,7 +44,7 @@ nvm use --lts
 ### 3. Installez les dépendances du projet
 
 ```bash
-cd stack
+cd coop-inclusion-numerique
 pnpm install
 ```
 
