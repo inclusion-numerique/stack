@@ -189,10 +189,10 @@ const Legend = ({
             <p className="fr-text--xs fr-hint-text fr-mb-3w">
               Source :{' '}
               <Link
-                href="https://donnees.incubateur.anct.gouv.fr"
+                href="https://cartographie.societenumerique.gouv.fr/cartographie"
                 target="_blank"
               >
-                Données et territoires
+                Cartographie Nationale des lieux d’inclusion numérique
               </Link>
             </p>
             <form className={styles.filters} onSubmit={() => {}}>
