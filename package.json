@@ -1,6 +1,6 @@
 {
-  "name": "my-app",
-  "description": "My App - Monorepo",
+  "name": "coop-mediation-numerique",
+  "description": "La coop de la médiation numérique - Monorepo",
   "version": "0.1.0",
   "license": "AGPL-3.0-or-later",
   "private": true,
