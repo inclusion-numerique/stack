@@ -42,7 +42,7 @@ executors:
 parameters:
   cache_version:
     type: string
-    default: '2024-02-29-01'
+    default: '2024-04-09-01'
   virtual_store_dir:
     type: string
     default: './.pnpm'
@@ -51,7 +51,7 @@ parameters:
     default: './pnpm-lock.yaml'
   image:
     type: string
-    default: stack-web-<< pipeline.git.branch >> | sed -e 's/\//-/g'
+    default: coop-mediation-numerique-web-<< pipeline.git.branch >> | sed -e 's/\//-/g'
   deploy_version:
     type: string
     default: latest
@@ -69,7 +69,7 @@ parameters:
   web_app_docker_registry:
     # This is redundant with .env.dist but needed as jobs are way simpler to configure with this parameter
     type: string
-    default: 'rg.fr-par.scw.cloud/stack-web-app'
+    default: 'rg.fr-par.scw.cloud/coop-mediation-numerique-web-app'
   preview_deletion_branch:
     type: string
     default: ""
@@ -769,7 +769,7 @@ commands:
             echo "export WEB_APP_DOCKER_REGISTRY='<< pipeline.parameters.web_app_docker_registry >>'" >> ${BASH_ENV}
             echo "export BRANCH='<< pipeline.git.branch >>'" >> ${BASH_ENV}
             echo "export NAMESPACE=$(echo '<< pipeline.git.branch >>' | sed -e 's/\//-/g')" >> ${BASH_ENV}
-            echo "export IMAGE_NAME=$(echo 'stack-web-<< pipeline.git.branch >>' | sed -e 's/\//-/g')" >> ${BASH_ENV}
+            echo "export IMAGE_NAME=$(echo 'coop-mediation-numerique-web-<< pipeline.git.branch >>' | sed -e 's/\//-/g')" >> ${BASH_ENV}
             echo "export IMAGE_BUILD_TAG=$(echo '$WEB_APP_DOCKER_REGISTRY/$IMAGE_NAME:<< pipeline.number >>')" >> ${BASH_ENV}
             echo "export IMAGE_DEPLOY_TAG=$(echo '$WEB_APP_DOCKER_REGISTRY/$IMAGE_NAME:<< pipeline.parameters.deploy_version >>')" >> ${BASH_ENV}
             echo "export IMAGE_E2E_TAG=$(echo '$WEB_APP_DOCKER_REGISTRY/$IMAGE_NAME:<< pipeline.parameters.e2e_version >>')" >> ${BASH_ENV}
