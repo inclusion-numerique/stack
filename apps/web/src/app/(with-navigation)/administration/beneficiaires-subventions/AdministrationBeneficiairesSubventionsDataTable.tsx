@@ -177,15 +177,16 @@ export const AdministrationBeneficiairesSubventionsDataTable = {
       name: 'acceptees',
       header: 'Acceptées',
       csvHeaders: ['Acceptées'],
-      csvValues: ({ demandesCounts }) => [demandesCounts.validees],
+      csvValues: ({ demandesCounts }) => [demandesCounts.acceptees],
       cellClassName: 'fr-text--right',
       cell: ({ demandesCounts }) =>
-        demandesCounts.validees ? (
+        demandesCounts.acceptees ? (
           <Badge small severity="success" noIcon>
-            {demandesCounts.validees}
+            {demandesCounts.acceptees}
           </Badge>
         ) : null,
-      sortable: (a, b) => a.demandesCounts.validees - b.demandesCounts.validees,
+      sortable: (a, b) =>
+        a.demandesCounts.acceptees - b.demandesCounts.acceptees,
     },
     {
       name: 'contacts',

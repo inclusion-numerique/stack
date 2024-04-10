@@ -13,13 +13,17 @@ export const statutsDemandeSubvention = [
   'Finalisé',
 ] as const satisfies StatutDemandeSubvention[]
 
-export type StatutAction = 'Non renseigné' | 'En cours' | 'Envoyé' | 'Validé'
+export type StatutAction =
+  | 'Non renseigné'
+  | 'En cours'
+  | 'À instruire'
+  | 'Accepté'
 
 export const statutsAction = [
   'Non renseigné',
   'En cours',
-  'Envoyé',
-  'Validé',
+  'À instruire',
+  'Accepté',
 ] as const satisfies StatutAction[]
 
 export type StatutMetadata = 'Non renseigné' | 'Enregistré'
@@ -87,10 +91,10 @@ export const getStatutBeneficiaireFormation = (
   >,
 ): StatutAction => {
   if (gouvernance?.beneficiaireDotationFormationAccepte) {
-    return 'Validé'
+    return 'Accepté'
   }
   if (gouvernance?.beneficiaireDotationFormationValideEtEnvoye) {
-    return 'Envoyé'
+    return 'À instruire'
   }
   return 'Non renseigné'
 }

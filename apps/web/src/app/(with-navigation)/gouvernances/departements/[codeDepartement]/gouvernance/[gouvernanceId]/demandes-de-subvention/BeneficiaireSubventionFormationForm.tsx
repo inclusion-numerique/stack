@@ -162,20 +162,46 @@ const BeneficiaireSubventionFormationForm = ({
   )
 
   const hintContent = (
-    <span className="fr-text--sm fr-text-mention--grey">
-      Afin de déployer le dispositif Aidants Connect sur son territoire, une
-      dotation de 20 000€ dédiée à la formation d’agents publics est attribuée à
-      votre territoire.  Cette dotation doit être fléchée vers un destinataire
-      unique : · Il est préconisé que le destinataire de ces fonds soit le
-      Conseil Départemental · Les fonds doivent être destinés à la formation
-      d’agents publics non-conseillers numériques · La structure destinataire
-      des fonds peut se servir des fonds pour former ses propres agents publics
-      et/ou des agents publics appartenant à une autre structure. · La formation
-      financée est la formation Aidants Connect de 7 heures · Le coût d’une
-      formation étant de 322€ par agent, la dotation de 20 000€ permet de
-      financer la formation de 62 agents · Les informations sur la mise en œuvre
-      de ces formations Aidants Connect vont seront communiquées prochainement
-      (mail et webinaire)
+    <span className="fr-text--sm">
+      Afin de déployer le dispositif{' '}
+      <a
+        href="https://aidantsconnect.beta.gouv.fr"
+        target="_blank"
+        className="fr-link fr-link--sm"
+      >
+        Aidants Connect
+      </a>{' '}
+      sur son territoire, une dotation de 20&nbsp;000€ dédiée à la formation
+      d’agents publics est attribuée à votre territoire.
+      <br />
+      <br />
+      Cette dotation doit être fléchée vers un destinataire unique&nbsp;:
+      <ul>
+        <li>
+          Il est préconisé que le destinataire de ces fonds soit le Conseil
+          Départemental
+        </li>
+        <li>
+          Les fonds doivent être destinés à la formation d’agents publics
+          non-conseillers numériques
+        </li>
+        <li>
+          La structure destinataire des fonds peut se servir des fonds pour
+          former ses propres agents publics et/ou des agents publics appartenant
+          à une autre structure.
+        </li>
+        <li>
+          La formation financée est la formation Aidants Connect de 7 heures
+        </li>
+        <li>
+          Le coût d’une formation étant de 322€ par agent, la dotation de
+          20&nbsp;000€ permet de financer la formation de 62 agents
+        </li>
+        <li>
+          Les informations sur la mise en œuvre de ces formations Aidants
+          Connect vont seront communiquées prochainement (mail et webinaire)
+        </li>
+      </ul>
     </span>
   )
 
@@ -238,7 +264,7 @@ const BeneficiaireSubventionFormationForm = ({
                         type="button"
                         onClick={onAccepter}
                       >
-                        Accepter&nbsp;la&nbsp;demande
+                        Accepter
                       </Button>
                     </span>
                   )}

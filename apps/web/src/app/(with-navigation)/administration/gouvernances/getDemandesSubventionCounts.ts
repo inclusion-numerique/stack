@@ -10,14 +10,20 @@ export const getDemandesSubventionCounts = (
   const aInstruire = demandesSubvention.filter(
     ({ valideeEtEnvoyee, acceptee }) => !!valideeEtEnvoyee && !acceptee,
   ).length
-  const validees = demandesSubvention.filter(
+  const acceptees = demandesSubvention.filter(
     ({ acceptee }) => !!acceptee,
+  ).length
+
+  // Includes a instruire and acceptees
+  const convention = demandesSubvention.filter(
+    ({ valideeEtEnvoyee, acceptee }) => !!valideeEtEnvoyee || !!acceptee,
   ).length
 
   return {
     enCours,
     aInstruire,
-    validees,
+    acceptees,
+    convention,
     total: demandesSubvention.length,
   }
 }

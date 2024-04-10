@@ -39,10 +39,40 @@ export const getMembreBeneficiaireDataForConvention = async (
             },
           },
         },
+        where: {
+          demandeDeSubvention: {
+            OR: [
+              {
+                valideeEtEnvoyee: {
+                  not: null,
+                },
+              },
+              {
+                acceptee: {
+                  not: null,
+                },
+              },
+            ],
+          },
+        },
       },
       beneficiaireDotationFormation: {
         select: {
           id: true,
+        },
+        where: {
+          OR: [
+            {
+              beneficiaireDotationFormationValideEtEnvoye: {
+                not: null,
+              },
+            },
+            {
+              beneficiaireDotationFormationAccepte: {
+                not: null,
+              },
+            },
+          ],
         },
       },
     },
@@ -54,6 +84,7 @@ export const getMembreBeneficiaireDataForConvention = async (
 
   const [data] = await getAdministrationBeneficiairesSubventionsData({
     membreId: membre.id,
+    forConvention: true,
   })
 
   if (!data) {

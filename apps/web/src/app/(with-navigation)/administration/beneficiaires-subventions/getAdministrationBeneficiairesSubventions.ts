@@ -15,9 +15,11 @@ import { getDemandesSubventionCounts } from '@app/web/app/(with-navigation)/admi
 const getBeneficiairesRows = async ({
   gouvernanceId,
   membreId,
+  forConvention = false,
 }: {
   gouvernanceId?: string
   membreId?: string
+  forConvention?: boolean
 }) => {
   const rows = await prismaClient.membreGouvernance.findMany({
     select: {
@@ -66,11 +68,36 @@ const getBeneficiairesRows = async ({
             },
           },
         },
+        where: forConvention
+          ? {
+              demandeDeSubvention: {
+                OR: [
+                  {
+                    valideeEtEnvoyee: {
+                      not: null,
+                    },
+                  },
+                  {
+                    acceptee: {
+                      not: null,
+                    },
+                  },
+                ],
+              },
+            }
+          : undefined,
       },
       beneficiaireDotationFormation: {
         select: {
           id: true,
         },
+        where: forConvention
+          ? {
+              beneficiaireDotationFormationValideEtEnvoye: {
+                not: null,
+              },
+            }
+          : undefined,
       },
     },
     where: {
@@ -135,13 +162,16 @@ const getContacts = ({
 export const getAdministrationBeneficiairesSubventionsData = async ({
   gouvernanceId,
   membreId,
+  forConvention = false,
 }: {
   gouvernanceId?: string
   membreId?: string
+  forConvention?: boolean
 }) => {
   const rows = await getBeneficiairesRows({
     gouvernanceId,
     membreId,
+    forConvention,
   })
 
   return rows.map((membre) => {
@@ -165,9 +195,23 @@ export const getAdministrationBeneficiairesSubventionsData = async ({
       new Decimal(0),
     )
 
-    const subventionIngenierieValidee = beneficiaires.reduce(
+    const subventionIngenierieAcceptee = beneficiaires.reduce(
       (accumulator, beneficiaire) => {
         if (beneficiaire.demandeDeSubvention.acceptee) {
+          return accumulator.add(beneficiaire.subvention)
+        }
+        return accumulator
+      },
+      new Decimal(0),
+    )
+
+    // Includes accepted and sent demandes
+    const subventionIngenierieConvention = beneficiaires.reduce(
+      (accumulator, beneficiaire) => {
+        if (
+          beneficiaire.demandeDeSubvention.valideeEtEnvoyee ||
+          beneficiaire.demandeDeSubvention.acceptee
+        ) {
           return accumulator.add(beneficiaire.subvention)
         }
         return accumulator
@@ -188,7 +232,11 @@ export const getAdministrationBeneficiairesSubventionsData = async ({
       subventionFormation ?? new Decimal(0),
     )
 
-    const subventionTotaleValidee = subventionIngenierieValidee.add(
+    const subventionTotaleAcceptee = subventionIngenierieAcceptee.add(
+      subventionFormation ?? new Decimal(0),
+    )
+
+    const subventionTotaleConvention = subventionIngenierieConvention.add(
       subventionFormation ?? new Decimal(0),
     )
 
@@ -202,10 +250,12 @@ export const getAdministrationBeneficiairesSubventionsData = async ({
       gouvernance,
       budgetGlobal,
       subventionIngenierie,
+      subventionIngenierieConvention,
       subventionFormation,
       subventionTotal,
-      subventionIngenierieValidee,
-      subventionTotaleValidee,
+      subventionIngenierieAcceptee,
+      subventionTotaleAcceptee,
+      subventionTotaleConvention,
       type: getMembreGouvernanceTypologie(membre),
       statutGouvernance: getMembreGouvernanceStatut(membre),
       demandesCounts,
@@ -243,14 +293,14 @@ export const getAdministrationBeneficiairesSubventionsMetadata = (
         total: accumulator.total + currentCounts.total,
         enCours: accumulator.enCours + currentCounts.enCours,
         aInstruire: accumulator.aInstruire + currentCounts.aInstruire,
-        validees: accumulator.validees + currentCounts.validees,
+        acceptees: accumulator.acceptees + currentCounts.acceptees,
       }
     },
     {
       total: 0,
       enCours: 0,
       aInstruire: 0,
-      validees: 0,
+      acceptees: 0,
     },
   )
 

@@ -72,8 +72,8 @@ const Page = async ({
           <li>
             <b>{demandesCounts.total}</b> demandes de subventions (
             {demandesCounts.enCours} en cours, {demandesCounts.aInstruire} à
-            instruire, {demandesCounts.validees} acceptée
-            {sPluriel(demandesCounts.validees)})
+            instruire, {demandesCounts.acceptees} acceptée
+            {sPluriel(demandesCounts.acceptees)})
           </li>
         </ul>
       }

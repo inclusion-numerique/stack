@@ -151,6 +151,48 @@ const Page = async ({
         )}
       </div>
 
+      <div className="fr-border fr-p-8v fr-mt-4v">
+        {gouvernance.beneficiaireDotationFormation ? (
+          <BeneficiaireSubventionFormationForm
+            beneficiaireFormationMembreId={
+              gouvernance.beneficiaireDotationFormation?.id
+            }
+            beneficiaireFormationMembreNom={beneficiaireFormationMembreNom}
+            beneficiaireDotationFormationValideEtEnvoye={
+              gouvernance.beneficiaireDotationFormationValideEtEnvoye
+                ? dateAsDay(
+                    gouvernance.beneficiaireDotationFormationValideEtEnvoye,
+                  )
+                : null
+            }
+            beneficiaireDotationFormationAccepte={
+              gouvernance.beneficiaireDotationFormationAccepte
+                ? dateAsDay(gouvernance.beneficiaireDotationFormationAccepte)
+                : null
+            }
+            mustEditContextBeforeValidate={
+              !gouvernance.noteDeContexteSubventions
+            }
+            gouvernanceId={gouvernance.id}
+            canEdit
+            hideHint
+            canInstruct
+            beneficiairesOptions={beneficiairesOptions}
+          />
+        ) : (
+          <>
+            <h2 className="fr-h5 fr-flex fr-mb-0 fr-justify-content-space-between fr-flex-gap-4v">
+              <span>Dotation formation Aidants Connect</span>
+              <span>{numberToEuros(dotationFormation202406)}</span>
+            </h2>
+            <hr className="fr-separator-8v" />
+            <Badge small severity="warning">
+              Non renseigné
+            </Badge>
+          </>
+        )}
+      </div>
+
       <div className="fr-border fr-p-8v fr-pb-10v fr-mt-4v">
         <Badge className="fr-mb-4v" small severity="new">
           À&nbsp;renseigner&nbsp;avant&nbsp;le&nbsp;
@@ -211,25 +253,36 @@ const Page = async ({
           </Badge>{' '}
           ·{' '}
           <Badge small severity="success" noIcon>
-            {demandesCounts.validees} acceptée
-            {sPluriel(demandesCounts.validees)}
+            {demandesCounts.acceptees} acceptée
+            {sPluriel(demandesCounts.acceptees)}
           </Badge>
         </div>
+      </div>
+
+      <div className="fr-border fr-p-8v fr-pb-10v fr-mt-4v">
+        <h2 className="fr-h5 fr-flex fr-justify-content-space-between fr-align-items-center fr-flex-gap-3v fr-mb-0">
+          Conventions
+        </h2>
+        <hr className="fr-separator-8v" />
+        {beneficiaires.length === 0 && (
+          <Notice
+            className="fr-notice--warning"
+            title="Les conventions seront disponible lorsque la prefecture aura validé et envoyé au moins une demande."
+          />
+        )}
         {beneficiaires.length > 0 && (
           <>
-            <hr className="fr-separator-8v" />
-            <p className="fr-text--bold fr-mb-4v">Conventions bénéficiaires</p>
             {!!demandesCounts.enCours && (
               <Notice
-                className="fr-notice--warning"
-                title="Certaines demandes de subventions ne sont pas encore instruites. Les conventions peuvent donc encore évoluer avec des avenants correspondants aux prochaines subventions validées. Seules les demandes de subvention validées apparaissent dans les conventions."
+                className="fr-notice--warning fr-mb-8v"
+                title="Certaines demandes de subventions ne sont pas encore instruites. Les conventions peuvent donc encore évoluer avec des avenants correspondants aux prochaines subventions à instruire."
               />
             )}
             {beneficiaires
               .filter(
                 (beneficiaire) =>
-                  beneficiaire.demandesCounts.validees > 0 ||
-                  beneficiaire.subventionFormation,
+                  beneficiaire.subventionFormation ||
+                  beneficiaire.demandesCounts.convention > 0,
               )
               .map((beneficiaire) => (
                 <div
@@ -248,14 +301,14 @@ const Page = async ({
                   <p className="fr-mb-0 fr-ml-2v">
                     Convention pour {beneficiaire.nom} <br />
                     <span className="fr-text--xs fr-text-mention--grey fr-mt-0 fr-mb-0">
-                      {numberToEuros(beneficiaire.subventionTotaleValidee)}
-                      {beneficiaire.demandesCounts.validees > 0 && (
+                      {numberToEuros(beneficiaire.subventionTotaleConvention)}
+                      {beneficiaire.demandesCounts.convention > 0 && (
                         <>
                           {' '}
-                          · {beneficiaire.demandesCounts.validees} action
-                          {sPluriel(beneficiaire.demandesCounts.validees)}{' '}
-                          acceptée
-                          {sPluriel(beneficiaire.demandesCounts.validees)}
+                          · {beneficiaire.demandesCounts.convention} action
+                          {sPluriel(
+                            beneficiaire.demandesCounts.convention,
+                          )}{' '}
                         </>
                       )}
                       {!!beneficiaire.subventionFormation && (
@@ -279,48 +332,6 @@ const Page = async ({
           />
         </div>
       ))}
-
-      <div className="fr-border fr-p-8v fr-mt-4v fr-pb-10v fr-mb-20v">
-        {gouvernance.beneficiaireDotationFormation ? (
-          <BeneficiaireSubventionFormationForm
-            beneficiaireFormationMembreId={
-              gouvernance.beneficiaireDotationFormation?.id
-            }
-            beneficiaireFormationMembreNom={beneficiaireFormationMembreNom}
-            beneficiaireDotationFormationValideEtEnvoye={
-              gouvernance.beneficiaireDotationFormationValideEtEnvoye
-                ? dateAsDay(
-                    gouvernance.beneficiaireDotationFormationValideEtEnvoye,
-                  )
-                : null
-            }
-            beneficiaireDotationFormationAccepte={
-              gouvernance.beneficiaireDotationFormationAccepte
-                ? dateAsDay(gouvernance.beneficiaireDotationFormationAccepte)
-                : null
-            }
-            mustEditContextBeforeValidate={
-              !gouvernance.noteDeContexteSubventions
-            }
-            gouvernanceId={gouvernance.id}
-            canEdit
-            hideHint
-            canInstruct
-            beneficiairesOptions={beneficiairesOptions}
-          />
-        ) : (
-          <>
-            <h2 className="fr-h5 fr-flex fr-mb-0 fr-justify-content-space-between fr-flex-gap-4v">
-              <span>Dotation formation Aidants Connect</span>
-              <span>{numberToEuros(dotationFormation202406)}</span>
-            </h2>
-            <hr className="fr-separator-8v" />
-            <Badge small severity="warning">
-              Non renseigné
-            </Badge>
-          </>
-        )}
-      </div>
     </div>
   )
 }

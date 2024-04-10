@@ -3,6 +3,7 @@ import { prismaClient } from '@app/web/prismaClient'
 import {
   getDemandesSubventionsForFormSelect,
   gouvernanceSelect,
+  membreSelect,
 } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
 import { getDemandesDeSubventionsForGouvernance } from '@app/web/gouvernance/gouvernanceStatus'
 import { dotationFormation202406 } from '@app/web/gouvernance/dotationFormation202406'
@@ -37,6 +38,9 @@ export const getAdministrationGouvernancesData = async () => {
               ...gouvernanceSelect.feuillesDeRoute.select,
             },
           },
+          beneficiaireDotationFormation: {
+            select: membreSelect.select,
+          },
         },
       },
     },
@@ -55,6 +59,11 @@ export const getAdministrationGouvernancesData = async () => {
     const statutBeneficiaireFormation =
       getStatutBeneficiaireFormation(gouvernance)
     const statutNoteDeContexte = getStatutNoteDeContexteSubventions(gouvernance)
+
+    if (gouvernance?.beneficiaireDotationFormation) {
+      console.log('BENEFICIAIRE', gouvernance.beneficiaireDotationFormation)
+    }
+
     const beneficiaireFormationNom = gouvernance?.beneficiaireDotationFormation
       ? getMembreGouvernanceStringName(
           gouvernance.beneficiaireDotationFormation,
@@ -142,14 +151,14 @@ export const getAdministrationGouvernancesMetadata = (
         total: accumulator.total + currentCounts.total,
         enCours: accumulator.enCours + currentCounts.enCours,
         aInstruire: accumulator.aInstruire + currentCounts.aInstruire,
-        validees: accumulator.validees + currentCounts.validees,
+        acceptees: accumulator.acceptees + currentCounts.acceptees,
       }
     },
     {
       total: 0,
       enCours: 0,
       aInstruire: 0,
-      validees: 0,
+      acceptees: 0,
     },
   )
 
