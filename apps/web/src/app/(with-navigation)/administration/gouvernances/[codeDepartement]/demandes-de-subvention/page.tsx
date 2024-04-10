@@ -211,7 +211,8 @@ const Page = async ({
           </Badge>{' '}
           ·{' '}
           <Badge small severity="success" noIcon>
-            {demandesCounts.validees} validée{sPluriel(demandesCounts.validees)}
+            {demandesCounts.validees} acceptée
+            {sPluriel(demandesCounts.validees)}
           </Badge>
         </div>
         {beneficiaires.length > 0 && (
@@ -221,7 +222,7 @@ const Page = async ({
             {!!demandesCounts.enCours && (
               <Notice
                 className="fr-notice--warning"
-                title="Certaines demandes de subventions ne sont pas encore validées. Les conventions peuvent donc encore évoluer avec des avenants correspondants aux prochaines subventions validées. Seules les demandes de subvention validées apparaissent dans les conventions."
+                title="Certaines demandes de subventions ne sont pas encore instruites. Les conventions peuvent donc encore évoluer avec des avenants correspondants aux prochaines subventions validées. Seules les demandes de subvention validées apparaissent dans les conventions."
               />
             )}
             {beneficiaires
@@ -253,7 +254,7 @@ const Page = async ({
                           {' '}
                           · {beneficiaire.demandesCounts.validees} action
                           {sPluriel(beneficiaire.demandesCounts.validees)}{' '}
-                          validée
+                          acceptée
                           {sPluriel(beneficiaire.demandesCounts.validees)}
                         </>
                       )}

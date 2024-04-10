@@ -12,6 +12,7 @@ import {
   getStatutNoteDeContexteSubventions,
 } from '@app/web/gouvernance/statutDemandesSubvention'
 import { getDemandesSubventionCounts } from '@app/web/app/(with-navigation)/administration/gouvernances/getDemandesSubventionCounts'
+import { getMembreGouvernanceStringName } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/demandes-de-subvention/getMembreGouvernanceStringName'
 
 export const getAdministrationGouvernancesData = async () => {
   const rows = await prismaClient.departement.findMany({
@@ -25,6 +26,7 @@ export const getAdministrationGouvernancesData = async () => {
           v2Enregistree: {
             not: null,
           },
+          supression: null,
         },
         select: {
           ...getDemandesSubventionsForFormSelect,
@@ -53,6 +55,11 @@ export const getAdministrationGouvernancesData = async () => {
     const statutBeneficiaireFormation =
       getStatutBeneficiaireFormation(gouvernance)
     const statutNoteDeContexte = getStatutNoteDeContexteSubventions(gouvernance)
+    const beneficiaireFormationNom = gouvernance?.beneficiaireDotationFormation
+      ? getMembreGouvernanceStringName(
+          gouvernance.beneficiaireDotationFormation,
+        )
+      : null
 
     const montantDemande = demandesSubvention.reduce(
       (demandesAccumulator, demande) =>
@@ -95,6 +102,7 @@ export const getAdministrationGouvernancesData = async () => {
       demandesSubvention,
       statutDemandesSubvention,
       statutBeneficiaireFormation,
+      beneficiaireFormationNom,
       statutNoteDeContexte,
       montantDemande,
       feuillesDeRoutesCount,

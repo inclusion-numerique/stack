@@ -175,9 +175,9 @@ export const AdministrationBeneficiairesSubventionsDataTable = {
         a.demandesCounts.aInstruire - b.demandesCounts.aInstruire,
     },
     {
-      name: 'validees',
-      header: 'Validées',
-      csvHeaders: ['Validées'],
+      name: 'acceptees',
+      header: 'Acceptées',
+      csvHeaders: ['Acceptées'],
       csvValues: ({ demandesCounts }) => [demandesCounts.validees],
       cellClassName: 'fr-text--right',
       cell: ({ demandesCounts }) =>

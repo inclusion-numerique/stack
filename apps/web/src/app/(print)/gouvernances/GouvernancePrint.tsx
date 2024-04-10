@@ -1,6 +1,7 @@
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import React from 'react'
-import {
+import type {
+  BesoinsIngenierieFinanciereForForm,
   GouvernanceForForm,
   GouvernanceWithDemandesSubventionsForForm,
 } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
@@ -10,9 +11,11 @@ import type { GouvernanceScope } from '@app/web/gouvernance/GouvernanceScope'
 const GouvernancePrint = ({
   gouvernance,
   demandeDeSubvention,
+  besoins,
   scope,
 }: {
   gouvernance: GouvernanceForForm
+  besoins: BesoinsIngenierieFinanciereForForm | null
   demandeDeSubvention: GouvernanceWithDemandesSubventionsForForm
   scope: GouvernanceScope
 }) => (
@@ -31,6 +34,7 @@ const GouvernancePrint = ({
 
     <GouvernanceDetails
       gouvernance={gouvernance}
+      besoins={besoins}
       scope={scope}
       demandeDeSubvention={demandeDeSubvention}
       publicView={false}

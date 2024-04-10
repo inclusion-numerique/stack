@@ -132,9 +132,9 @@ export const AdministrationGouvernancesDataTable = {
         ),
     },
     {
-      name: 'beneficiaire-formation',
-      header: 'Bénéficiaire formation',
-      csvHeaders: ['Bénéficiaire formation'],
+      name: 'subvention-formation',
+      header: 'Subvention formation',
+      csvHeaders: ['Subvention formation'],
       csvValues: ({ statutBeneficiaireFormation }) => [
         statutBeneficiaireFormation,
       ],
@@ -163,32 +163,14 @@ export const AdministrationGouvernancesDataTable = {
         ),
     },
     {
-      name: 'statut-demandes',
-      header: 'Statut des demandes',
-      csvHeaders: ['Statut des demandes'],
-      csvValues: ({ statutDemandesSubvention }) => [statutDemandesSubvention],
-      cell: ({ statutDemandesSubvention }) =>
-        statutDemandesSubvention === 'Finalisé' ? (
-          <Badge small severity="success">
-            {statutDemandesSubvention}
-          </Badge>
-        ) : statutDemandesSubvention === 'En cours' ? (
-          <Badge small severity="info">
-            {statutDemandesSubvention}
-          </Badge>
-        ) : (
-          <Badge small severity="warning">
-            {statutDemandesSubvention}
-          </Badge>
-        ),
+      name: 'beneficiaire-formation',
+      header: 'Bénéficiaire formation',
+      csvHeaders: ['Bénéficiaire formation'],
+      csvValues: ({ beneficiaireFormationNom }) => [beneficiaireFormationNom],
+      cell: ({ beneficiaireFormationNom }) => beneficiaireFormationNom || null,
       sortable: (a, b) =>
-        compareMultiple(
-          compareFromArrayIndex(
-            a.statutDemandesSubvention,
-            b.statutDemandesSubvention,
-            statutsDemandeSubvention,
-          ),
-          a.demandesCounts.total - b.demandesCounts.total,
+        (a.beneficiaireFormationNom ?? '').localeCompare(
+          b.beneficiaireFormationNom ?? '',
         ),
     },
     {
@@ -253,9 +235,9 @@ export const AdministrationGouvernancesDataTable = {
         a.demandesCounts.aInstruire - b.demandesCounts.aInstruire,
     },
     {
-      name: 'validees',
-      header: 'Validées',
-      csvHeaders: ['Validées'],
+      name: 'acceptees',
+      header: 'Acceptées',
+      csvHeaders: ['Acceptées'],
       csvValues: ({ demandesCounts }) => [demandesCounts.validees],
       cellClassName: 'fr-text--right',
       cell: ({ demandesCounts }) =>
@@ -265,6 +247,35 @@ export const AdministrationGouvernancesDataTable = {
           </Badge>
         ) : null,
       sortable: (a, b) => a.demandesCounts.validees - b.demandesCounts.validees,
+    },
+    {
+      name: 'statut-demandes',
+      header: 'Statut des demandes',
+      csvHeaders: ['Statut des demandes'],
+      csvValues: ({ statutDemandesSubvention }) => [statutDemandesSubvention],
+      cell: ({ statutDemandesSubvention }) =>
+        statutDemandesSubvention === 'Finalisé' ? (
+          <Badge small severity="success">
+            {statutDemandesSubvention}
+          </Badge>
+        ) : statutDemandesSubvention === 'En cours' ? (
+          <Badge small severity="info">
+            {statutDemandesSubvention}
+          </Badge>
+        ) : (
+          <Badge small severity="warning">
+            {statutDemandesSubvention}
+          </Badge>
+        ),
+      sortable: (a, b) =>
+        compareMultiple(
+          compareFromArrayIndex(
+            a.statutDemandesSubvention,
+            b.statutDemandesSubvention,
+            statutsDemandeSubvention,
+          ),
+          a.demandesCounts.total - b.demandesCounts.total,
+        ),
     },
     {
       name: 'lien-instruire',

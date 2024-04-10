@@ -99,6 +99,7 @@ const getBeneficiairesRows = async ({
         v2Enregistree: {
           not: null,
         },
+        supression: null,
       },
     },
   })

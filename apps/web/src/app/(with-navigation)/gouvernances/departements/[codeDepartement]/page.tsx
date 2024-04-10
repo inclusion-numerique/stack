@@ -16,6 +16,7 @@ import { checkGouvernanceScopeWriteAccess } from '@app/web/app/(with-navigation)
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import GouvernancesHeader from '@app/web/app/(with-navigation)/gouvernances/GouvernancesHeader'
 import { getDepartementNameAndCode } from '@app/web/data/getDepartementNameAndCode'
+import { getBesoinsEnIngenierieFinanciereForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getBesoinsIngenierieFinanciereForForm'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -63,12 +64,15 @@ const Page = async ({
     if (!gouvernance || !demandeDeSubvention) {
       notFound()
     }
+
+    const besoins = await getBesoinsEnIngenierieFinanciereForForm(gouvernanceId)
     return (
       <>
         <GouvernancesHeader departement={departement} />
 
         <GouvernanceDetails
           gouvernance={gouvernance}
+          besoins={besoins}
           demandeDeSubvention={demandeDeSubvention}
           publicView
           scope={{ codeDepartement }}

@@ -11,6 +11,7 @@ import { gouvernanceHomePath } from '@app/web/app/(with-navigation)/gouvernances
 import { getGouvernanceScopeTitle } from '@app/web/app/(with-navigation)/gouvernances/gouvernanceScopeTitle'
 import GouvernancesHeader from '@app/web/app/(with-navigation)/gouvernances/GouvernancesHeader'
 import { getDepartementNameAndCode } from '@app/web/data/getDepartementNameAndCode'
+import { getBesoinsEnIngenierieFinanciereForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getBesoinsIngenierieFinanciereForForm'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -25,6 +26,7 @@ const Page = async ({
   const demandeDeSubvention = await getDemandesSubventionsForForm({
     gouvernanceId,
   })
+
   const departement = await getDepartementNameAndCode(codeDepartement)
 
   const scopeTitle = await getGouvernanceScopeTitle({ codeDepartement })
@@ -35,6 +37,7 @@ const Page = async ({
   if (gouvernance.departement.code !== codeDepartement) {
     notFound()
   }
+  const besoins = await getBesoinsEnIngenierieFinanciereForForm(gouvernanceId)
 
   return (
     <>
@@ -60,6 +63,7 @@ const Page = async ({
       </div>
       <GouvernanceDetails
         print={false}
+        besoins={besoins}
         demandeDeSubvention={demandeDeSubvention}
         gouvernance={gouvernance}
         scope={{ codeDepartement }}

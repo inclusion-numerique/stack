@@ -4,7 +4,8 @@ import NavigationSideMenu from '@app/ui/components/NavigationSideMenu'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
-import {
+import type {
+  BesoinsIngenierieFinanciereForForm,
   GouvernanceForForm,
   GouvernanceWithDemandesSubventionsForForm,
 } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getGouvernanceForForm'
@@ -13,6 +14,9 @@ import {
   gouvernanceFormSectionSideMenuItems,
   publicViewGouvernanceSideMenuItems,
 } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceFormSections'
+import BesoinCardContent from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/priorisation/BesoinCardContent'
+import { getPriorisationCardInfos } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/[gouvernanceId]/besoins-ingenierie-financiere/priorisation/getPriorisationCardInfos'
+import { getBesoinsEnIngenieriePriorisationDefaultValues } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/besoinsEnIngenieriePriorisationDefaultValues'
 import { limiteModificationDesGouvernances } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/gouvernanceMetadata'
 import {
   imprimerGouvernancePath,
@@ -39,11 +43,13 @@ import NoGouvernancePublicView from '@app/web/app/(with-navigation)/gouvernances
 import { getDemandesDeSubventionsForGouvernance } from '@app/web/gouvernance/gouvernanceStatus'
 import DemandeDeSubventionDetailsCard from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/DemandeDeSubventionDetailsCard'
 import { getStatutDemandesSubvention } from '@app/web/gouvernance/statutDemandesSubvention'
+import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 import styles from './GouvernanceDetails.module.css'
 
 const GouvernanceDetails = ({
   publicView,
   gouvernance,
+  besoins,
   demandeDeSubvention,
   scope,
   print,
@@ -52,6 +58,7 @@ const GouvernanceDetails = ({
   publicView: boolean
   gouvernance: GouvernanceForForm
   demandeDeSubvention: GouvernanceWithDemandesSubventionsForForm
+  besoins: BesoinsIngenierieFinanciereForForm | null
   scope: GouvernanceScope
   print?: boolean
 }) => {
@@ -97,6 +104,16 @@ const GouvernanceDetails = ({
     )
   }
 
+  const besoinCardInfos = besoins
+    ? getPriorisationCardInfos({
+        defaultValue: getBesoinsEnIngenieriePriorisationDefaultValues({
+          ...gouvernance,
+          besoinsEnIngenierieFinanciere: besoins,
+        }),
+        besoinsEnIngenierieFinanciere: besoins,
+      })
+    : []
+
   const hasDemandesDeSubventions =
     !!noteDeContexteSubventions &&
     !!noteDeContexteSubventionsEnregistree &&
@@ -109,11 +126,17 @@ const GouvernanceDetails = ({
     ...(publicView
       ? publicViewGouvernanceSideMenuItems
       : gouvernanceFormSectionSideMenuItems),
+    besoinCardInfos.length > 0
+      ? {
+          text: 'Besoins en ingénierie financière',
+          linkProps: { href: '#besoins-ingenierie-financiere' },
+        }
+      : undefined,
     {
       text: 'Actions & subventions',
       linkProps: { href: '#subventions' },
     },
-  ]
+  ].filter(isDefinedAndNotNull)
 
   const creationMeta = creation
     ? `${dateAsDay(creation)} par ${nameOrEmail(createur)}`
@@ -521,6 +544,28 @@ const GouvernanceDetails = ({
               </WhiteCard>
             </div>
           )}
+
+          {besoinCardInfos.length > 0 && (
+            <div id="besoins-ingenierie-financiere" className="fr-pt-6v">
+              <WhiteCard className={styles.box}>
+                <h5>Besoins en ingénierie financière</h5>
+                <hr className="fr-separator-8v" />
+                {besoinCardInfos.map((card, index) => (
+                  <Fragment key={card.prioriteKey}>
+                    <hr className="fr-separator-8v" />
+                    <div className={classNames(styles.card)}>
+                      <BesoinCardContent
+                        print={print}
+                        index={index}
+                        card={card}
+                      />
+                    </div>
+                  </Fragment>
+                ))}
+              </WhiteCard>
+            </div>
+          )}
+
           <div id="subventions" className="fr-pt-6v">
             <WhiteCard className={styles.box}>
               <h5>Actions & subventions</h5>

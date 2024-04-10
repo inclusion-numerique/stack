@@ -8,6 +8,7 @@ import { generateDepartementMetadata } from '@app/web/app/(with-navigation)/gouv
 import GouvernancePrint from '@app/web/app/(print)/gouvernances/GouvernancePrint'
 import { checkAccessControl } from '@app/web/app/checkAccessControl'
 import { checkGouvernanceScopeWriteAccess } from '@app/web/app/(with-navigation)/gouvernances/checkGouvernanceScopeWriteAccess'
+import { getBesoinsEnIngenierieFinanciereForForm } from '@app/web/app/(with-navigation)/gouvernances/departements/[codeDepartement]/gouvernance/getBesoinsIngenierieFinanciereForForm'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -33,9 +34,11 @@ const Page = async ({
   if (gouvernance.departement.code !== codeDepartement) {
     notFound()
   }
+  const besoins = await getBesoinsEnIngenierieFinanciereForForm(gouvernanceId)
 
   return (
     <GouvernancePrint
+      besoins={besoins}
       demandeDeSubvention={demandeDeSubvention}
       gouvernance={gouvernance}
       scope={{ codeDepartement }}

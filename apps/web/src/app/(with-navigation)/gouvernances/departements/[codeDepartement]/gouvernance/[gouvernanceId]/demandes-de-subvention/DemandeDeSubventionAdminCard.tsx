@@ -160,15 +160,15 @@ const DemandeDeSubventionAdminCard = ({
       {acceptee ? (
         <Notice
           className="fr-mt-4v fr-notice--success"
-          title={<>Demande de subvention validée le {dateAsDay(acceptee)}.</>}
+          title={<>Demande de subvention acceptée le {dateAsDay(acceptee)}.</>}
         />
       ) : valideeEtEnvoyee ? (
         <Notice
-          className="fr-mt-8v fr-notice--no-icon"
+          className="fr-mt-8v fr-notice--new fr-notice--no-icon"
           title={
             <span className="fr-flex fr-width-full fr-align-items-center fr-justify-content-space-between fr-flex-gap-4v">
               <span>
-                En attente de validation depuis le {dateAsDay(valideeEtEnvoyee)}
+                En attente d’instruction depuis le {dateAsDay(valideeEtEnvoyee)}
                 .
               </span>
               <span className="fr-flex fr-direction-column fr-flex-gap-2v fr-direction-md-row">

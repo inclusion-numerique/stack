@@ -212,11 +212,11 @@ const BeneficiaireSubventionFormationForm = ({
         {!!beneficiaireDotationFormationValideEtEnvoye &&
           !beneficiaireDotationFormationAccepte && (
             <Notice
-              className="fr-mt-8v fr-notice--no-icon"
+              className="fr-mt-8v fr-notice--new fr-notice--no-icon"
               title={
                 <span className="fr-flex fr-width-full fr-align-items-center fr-justify-content-space-between fr-flex-gap-4v">
                   <span>
-                    En attente de validation depuis le{' '}
+                    En attente d’instruction depuis le{' '}
                     {beneficiaireDotationFormationValideEtEnvoye}.
                   </span>
                   {!!canInstruct && (
@@ -253,7 +253,7 @@ const BeneficiaireSubventionFormationForm = ({
               title={
                 <span className="fr-flex fr-width-full fr-align-items-center fr-justify-content-space-between fr-flex-gap-4v">
                   <span>
-                    Demande validée le {beneficiaireDotationFormationAccepte}.
+                    Demande acceptée le {beneficiaireDotationFormationAccepte}.
                   </span>
                 </span>
               }

@@ -123,7 +123,7 @@ const DemandeDeSubventionCard = ({
       {acceptee ? (
         <Notice
           className="fr-mt-4v fr-notice--success"
-          title={<>Demande de subvention validée le {dateAsDay(acceptee)}.</>}
+          title={<>Demande de subvention acceptée le {dateAsDay(acceptee)}.</>}
         />
       ) : valideeEtEnvoyee ? (
         <Notice
