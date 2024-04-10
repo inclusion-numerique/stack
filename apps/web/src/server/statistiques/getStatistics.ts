@@ -9,11 +9,14 @@ import {
   UsageStatisticsResult,
 } from './usageStatistics'
 
-export type StatisticsTimeframe = 'semaine' | 'mois' | 'total'
+type RechercheTimeframe = 'semaine' | 'mois' | 'total'
+type CreationTimeframe = 'semaine' | 'mois' | 'total'
+type UsageTimeframe = 'mois' | 'six-mois' | 'total'
 
 export type StatisticsParams = {
-  recherche?: StatisticsTimeframe
-  fonctionnalites?: StatisticsTimeframe
+  recherche?: RechercheTimeframe
+  creation?: CreationTimeframe
+  usage?: UsageTimeframe
 }
 
 type KpiStatisticsResult = [
@@ -34,14 +37,6 @@ type SearchStatisticsResult = {
   search_executions: number
   resource_views: number
 }[]
-
-export const statisticsTimeframeLabels: {
-  [key in StatisticsTimeframe]: string
-} = {
-  semaine: 'Par semaine',
-  mois: 'Par mois',
-  total: 'Cumulé',
-}
 
 export const getStatistics = async (_params: StatisticsParams) => {
   const [
@@ -96,7 +91,7 @@ export const getStatistics = async (_params: StatisticsParams) => {
     },
   }
 
-  const searchStatisticsDaysInterval = 7
+  const searchStatisticsDaysInterval = _params.recherche === 'semaine' ? 7 : 30
 
   const searchStatisticsResult =
     await prismaClient.$queryRawUnsafe<SearchStatisticsResult>(`
@@ -121,7 +116,7 @@ export const getStatistics = async (_params: StatisticsParams) => {
                TO_CHAR(end_date, 'DD/MM')                                                                     AS end_date
         FROM range`)
 
-  const creationStatisticsDaysInterval = 7
+  const creationStatisticsDaysInterval = _params.creation === 'semaine' ? 7 : 30
 
   const creationStatisticsResult =
     await prismaClient.$queryRawUnsafe<CreationStatisticsResult>(`
@@ -155,22 +150,29 @@ export const getStatistics = async (_params: StatisticsParams) => {
                TO_CHAR(end_date, 'DD/MM')                                                         AS end_date
         FROM range`)
 
+  const isTotal = _params.usage === 'total'
+  const usageStatisticsDaysInterval = _params.usage === 'mois' ? 30 : 6 * 30
+  const startDate = new Date()
+  startDate.setDate(new Date().getDate() - usageStatisticsDaysInterval)
+
   const usageStatisticsResult =
     await prismaClient.$queryRaw<UsageStatisticsResult>`
         SELECT type,
                key,
                COUNT(*)::integer AS value
-        FROM (SELECT 'target_audiences'             AS type,
+        FROM (SELECT 'target_audiences' AS type,
                      unnest(target_audiences)::text AS key
               FROM resources
               WHERE published IS NOT NULL
+                AND (published >= ${startDate.toISOString()}::date OR ${isTotal})
                 AND deleted IS NULL
                 AND is_public IS true
               UNION ALL
-              SELECT 'themes'             AS column_name,
+              SELECT 'themes' AS column_name,
                      unnest(themes)::text AS key
               FROM resources
               WHERE published IS NOT NULL
+                AND (published >= ${startDate.toISOString()}::date OR ${isTotal})
                 AND deleted IS NULL
                 AND is_public IS true) AS combined_data
         GROUP BY type, key

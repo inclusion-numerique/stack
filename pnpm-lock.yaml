@@ -128,14 +128,14 @@ importers:
         specifier: ^3.495.0
         version: 3.495.0
       '@codegouvfr/react-dsfr':
-        specifier: ^1.2.1
-        version: 1.2.1
+        specifier: ^1.9.6
+        version: 1.9.6
       '@faire/mjml-react':
         specifier: ^3.3.0
         version: 3.3.0(mjml@4.14.1)(react-dom@18.2.0)(react@18.2.0)
       '@gouvfr/dsfr':
-        specifier: ^1.11.0
-        version: 1.11.0
+        specifier: ^1.11.2
+        version: 1.11.2
       '@hookform/resolvers':
         specifier: ^3.3.4
         version: 3.3.4(react-hook-form@7.49.3)
@@ -965,11 +965,11 @@ importers:
   packages/ui:
     dependencies:
       '@codegouvfr/react-dsfr':
-        specifier: ^1.2.1
-        version: 1.2.1
+        specifier: ^1.9.6
+        version: 1.9.6
       '@gouvfr/dsfr':
-        specifier: ^1.11.0
-        version: 1.11.0
+        specifier: ^1.11.2
+        version: 1.11.2
       '@hookform/resolvers':
         specifier: ^3.3.4
         version: 3.3.4(react-hook-form@7.49.3)
@@ -3647,11 +3647,12 @@ packages:
       - supports-color
     dev: false
 
-  /@codegouvfr/react-dsfr@1.2.1:
-    resolution: {integrity: sha512-8TIQc9IObRGe/qfD0cPqHZM2vmLmIw0AVvIbEY9P+16vZijLxshXWNZlNlyupMxNlIs5MRrfsJVaRiGru+r20A==}
+  /@codegouvfr/react-dsfr@1.9.6:
+    resolution: {integrity: sha512-1s9m6CMZbayocCFDt0V7KHCjnwxkZ4GiT+dc0+HhNSuqYfMbeYnfFK5ANaGscMplzrJ3TE9SF5Qb21UJaU1PPQ==}
     hasBin: true
     dependencies:
       tsafe: 1.6.6
+      yargs-parser: 21.1.1
     dev: false
 
   /@colors/colors@1.5.0:
@@ -4489,8 +4490,8 @@ packages:
     resolution: {integrity: sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==}
     dev: false
 
-  /@gouvfr/dsfr@1.11.0:
-    resolution: {integrity: sha512-RD+kUk9iJJ4B7xFdAFCNQz0LRqYiMy9dajlKfgnmDPSrYHm+JCJpYCzXhNjYyp4FJggMafRd1ZqJJ6KW6aM0Jw==}
+  /@gouvfr/dsfr@1.11.2:
+    resolution: {integrity: sha512-S7idT4rCCw6M1pqxJS8y4nUSq/Rus+Kucoifmv0CrZD/eoBA34HWqWYzR9GIxvtAX/TQ1XC7Hz+54THtVzMeqQ==}
     engines: {node: '>=18.16.1'}
     dev: false
 
@@ -10968,6 +10969,7 @@ packages:
 
   /ci-info@2.0.0:
     resolution: {integrity: sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==}
+    requiresBuild: true
 
   /ci-info@3.9.0:
     resolution: {integrity: sha512-NIxF55hv4nSqQswkAeiOi1r83xy8JldOFDTWiug55KBu9Jnblncd2U6ViHmYgHf01TPZS77NJBhBMKdWj9HQMQ==}
@@ -12471,7 +12473,7 @@ packages:
     dependencies:
       semver: 7.5.4
       shelljs: 0.8.5
-      typescript: 5.5.0-dev.20240405
+      typescript: 5.5.0-dev.20240410
     dev: false
 
   /duplexer3@0.1.5:
@@ -23670,8 +23672,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  /typescript@5.5.0-dev.20240405:
-    resolution: {integrity: sha512-gMeTgpfC2KDhKDbOu7niDwLmSA+Jgbl5lGunCrVnmvoxh3FbTRjAzZ1IRrqB+cph3wWLeCdy8bxQoff1uHLXMg==}
+  /typescript@5.5.0-dev.20240410:
+    resolution: {integrity: sha512-OvGiFb8iPBHHqR8RuhIeCM+j2W1TtPbTZLuesCEi4gulAxzkOP2B3jDPTWmcOmxvUeJN5pNzlKoi/reRn1BZww==}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: false
