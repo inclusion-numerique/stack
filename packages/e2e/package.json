@@ -24,8 +24,8 @@
   },
   "devDependencies": {
     "@testing-library/cypress": "^10.0.1",
-    "@types/node": "^20.12.5",
-    "@types/react": "^18.2.74",
+    "@types/node": "^20.12.7",
+    "@types/react": "^18.2.75",
     "@types/react-dom": "^18.2.24",
     "@types/uuid": "^9.0.8",
     "eslint": "^8.57.0",

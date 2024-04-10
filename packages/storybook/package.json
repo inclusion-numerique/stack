@@ -46,8 +46,8 @@
   "devDependencies": {
     "@storybook/addon-a11y": "^7.6.17",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.12.5",
-    "@types/react": "^18.2.74",
+    "@types/node": "^20.12.7",
+    "@types/react": "^18.2.75",
     "@types/react-dom": "^18.2.24",
     "@types/testing-library__jest-dom": "^5.14.9",
     "eslint": "^8.57.0",
