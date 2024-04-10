@@ -36,7 +36,7 @@ export const AdministrationBeneficiairesSubventionsDataTable = {
       a.nom.localeCompare(b.nom),
     ),
   rowInMemorySearchableString: (row) =>
-    `${row.gouvernance.departement.searchable} ${row.nom} ${row.type} ${row.siret ?? row.codeInsee ?? ''} ${searchableContactsToString(row.contacts)}`,
+    `${row.gouvernance.departement.searchable} ${row.gouvernance.departement.region?.nom ?? ''} ${row.nom} ${row.type} ${row.siret ?? row.codeInsee ?? ''} ${searchableContactsToString(row.contacts)}`,
   columns: [
     {
       name: 'convention',
@@ -58,18 +58,41 @@ export const AdministrationBeneficiairesSubventionsDataTable = {
     {
       name: 'departement',
       header: 'Département',
-      csvHeaders: ['Département'],
+      csvHeaders: ['Département', 'Nom département'],
       csvValues: ({
         gouvernance: {
-          departement: { code },
+          departement: { code, nom },
         },
-      }) => [code],
+      }) => [code, nom],
       cell: ({
         gouvernance: {
           departement: { code, nom },
         },
-      }) => <span title={nom}>{code}</span>,
+      }) => (
+        <>
+          {code}&nbsp;·&nbsp;{nom}
+        </>
+      ),
       defaultSortable: true,
+    },
+    {
+      name: 'region',
+      header: 'Région',
+      csvHeaders: ['Région'],
+      csvValues: ({
+        gouvernance: {
+          departement: { region },
+        },
+      }) => [region?.nom ?? ''],
+      cell: ({
+        gouvernance: {
+          departement: { region },
+        },
+      }) => region?.nom ?? null,
+      sortable: (a, b) =>
+        (a.gouvernance.departement.region?.nom ?? '').localeCompare(
+          b.gouvernance.departement.region?.nom ?? '',
+        ),
     },
     {
       name: 'beneficiaire',
@@ -78,6 +101,7 @@ export const AdministrationBeneficiairesSubventionsDataTable = {
       csvValues: ({ nom }) => [nom],
       cell: ({ nom }) => nom,
       sortable: (a, b) => a.nom.localeCompare(b.nom),
+      cellAsTh: true,
     },
     {
       name: 'typologie',

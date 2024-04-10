@@ -26,7 +26,8 @@ export const AdministrationGouvernancesDataTable = {
   rowKey: ({ departement }) => departement.code,
   defaultSortableInMemory: (a, b) =>
     a.departement.code.localeCompare(b.departement.code),
-  rowInMemorySearchableString: (row) => row.departement.searchable,
+  rowInMemorySearchableString: (row) =>
+    row.departement.searchable + (row.departement.region?.searchable ?? ''),
   columns: [
     {
       name: 'departement',
@@ -40,6 +41,17 @@ export const AdministrationGouvernancesDataTable = {
         </>
       ),
       defaultSortable: true,
+    },
+    {
+      name: 'region',
+      header: 'Région',
+      csvHeaders: ['Région'],
+      csvValues: ({ departement: { region } }) => [region?.nom ?? ''],
+      cell: ({ departement: { region } }) => region?.nom ?? null,
+      sortable: (a, b) =>
+        (a.departement.region?.nom ?? '').localeCompare(
+          b.departement.region?.nom ?? '',
+        ),
     },
     {
       name: 'coporteurs',

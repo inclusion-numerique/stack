@@ -37,6 +37,12 @@ const getBeneficiairesRows = async ({
               nom: true,
               searchable: true,
               dotation202406: true,
+              region: {
+                select: {
+                  nom: true,
+                  searchable: true,
+                },
+              },
             },
           },
         },

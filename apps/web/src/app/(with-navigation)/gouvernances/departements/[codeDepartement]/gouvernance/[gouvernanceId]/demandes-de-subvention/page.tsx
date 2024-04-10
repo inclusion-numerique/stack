@@ -38,7 +38,6 @@ const Page = async ({
 }: {
   params: { codeDepartement: string; gouvernanceId: string }
 }) => {
-  console.log('PRE', { codeDepartement, gouvernanceId })
   const accessCheck = await checkAccessControl({
     check: (sessionUser) =>
       checkGouvernanceScopeWriteAccess({
@@ -51,7 +50,6 @@ const Page = async ({
     ),
   })
 
-  console.log('HERE', { codeDepartement, gouvernanceId, accessCheck })
   if (
     !canEditGouvernance(accessCheck.user, {
       departementCode: codeDepartement,

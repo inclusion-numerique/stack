@@ -21,6 +21,12 @@ export const getAdministrationGouvernancesData = async () => {
       code: true,
       nom: true,
       searchable: true,
+      region: {
+        select: {
+          nom: true,
+          searchable: true,
+        },
+      },
       dotation202406: true,
       gouvernancesRemontees: {
         where: {
@@ -59,10 +65,6 @@ export const getAdministrationGouvernancesData = async () => {
     const statutBeneficiaireFormation =
       getStatutBeneficiaireFormation(gouvernance)
     const statutNoteDeContexte = getStatutNoteDeContexteSubventions(gouvernance)
-
-    if (gouvernance?.beneficiaireDotationFormation) {
-      console.log('BENEFICIAIRE', gouvernance.beneficiaireDotationFormation)
-    }
 
     const beneficiaireFormationNom = gouvernance?.beneficiaireDotationFormation
       ? getMembreGouvernanceStringName(

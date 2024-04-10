@@ -10,6 +10,9 @@ import {
   DataTableSearchParams,
 } from '@app/web/data-table/DataTableConfiguration'
 
+/**
+ * TODO This is not yet implemented
+ */
 const DataFilters = <Configuration extends DataTableConfiguration>({
   searchParams,
   baseHref,
