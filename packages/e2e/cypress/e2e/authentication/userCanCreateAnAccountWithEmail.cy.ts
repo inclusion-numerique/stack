@@ -27,12 +27,12 @@ describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je p
     cy.contains(email)
 
     goToMostRecentEmailReceived({
-      subjectInclude: 'Connexion à Stack',
+      subjectInclude: 'Connexion à La coop de la médiation numérique',
     })
 
     cy.log('Check mail contents')
     // We should not have the email html version in full
-    cy.contains('Connexion à Stack')
+    cy.contains('Connexion à La coop de la médiation numérique')
     cy.contains('Se connecter').invoke('attr', 'target', '_self').click()
 
     // With a valid magic link we should be automatically redirected to homepage, logged in
