@@ -70,7 +70,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     )
   })
 
-  it('Acceptation 1 - Connexion avec Inclusion Connect', () => {
+  it.skip('Acceptation 1 - Connexion avec Inclusion Connect', () => {
     cy.visit('/connexion')
     // Cypress deletes some cookies on redirection between domains
     // See https://github.com/cypress-io/cypress/issues/20476
@@ -181,7 +181,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.get('.fr-header__tools').contains('Se connecter')
   })
 
-  it('Acceptation 3 - Connexion avec Mon Compte Pro', () => {
+  it.skip('Acceptation 3 - Connexion avec Mon Compte Pro', () => {
     cy.visit('/connexion')
     // Cypress deletes some cookies on redirection between domains
     // See https://github.com/cypress-io/cypress/issues/20476

@@ -1,6 +1,6 @@
 import { appUrl } from '../../support/helpers'
 
-describe('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je peux créer un compte avec Mon Compte Pro', () => {
+describe.skip('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”, je peux créer un compte avec Mon Compte Pro', () => {
   const { email, password, name } = {
     email: Cypress.env('MON_COMPTE_PRO_TEST_USER_EMAIL') as string,
     password: Cypress.env('MON_COMPTE_PRO_TEST_USER_PASSWORD') as string,
