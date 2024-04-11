@@ -1,44 +1,41 @@
-import { faker } from '@faker-js/faker'
-import { prismaClient } from '@app/web/prismaClient'
+import type { Prisma } from '@prisma/client'
+import { givenUser } from '@app/fixtures/givenUser'
 
-const BASE_NUMBER = 10
+const administrateur = givenUser({
+  id: 'bd74893d-34fc-4d21-bfea-fe31b99b66a0',
+  firstName: 'Administrateur',
+  lastName: 'Test',
+}) satisfies Prisma.UserCreateInput
 
-export const users: Exclude<
-  Parameters<typeof prismaClient.user.upsert>[0]['create'],
-  undefined
->[] = [
-  {
+const teamAdministrateurs = [
+  givenUser({
     id: '99afd613-9d54-4110-9062-065c627eda8a',
-    firstName: 'Edith',
-    lastName: 'Piaf',
-    name: 'Edith Piaf',
-    email: 'edith@piaf.com',
-    emailVerified: new Date(),
-  },
-  {
+    firstName: 'Hugues',
+    lastName: 'Maignol',
+    email: 'hugues.maignol@beta.gouv.fr',
+    role: 'Admin',
+  }),
+  givenUser({
     id: 'eecac657-f415-47e1-8087-c4508ea16191',
-    firstName: 'Georges',
-    lastName: 'Moustaki',
-    name: 'Georges Moustaki',
-    email: 'georges@moustaki.com',
-  },
-]
+    firstName: 'Marc',
+    lastName: 'Gavanier',
+    email: 'marc.gavanier@beta.gouv.fr',
+    role: 'Admin',
+  }),
+  givenUser({
+    id: '8e3c9cdc-3125-4c2e-a49e-796903e9989e',
+    firstName: 'Thibault',
+    lastName: 'Rouveyrol',
+    email: 'thibault.rouveyrol@beta.gouv.fr',
+    role: 'Admin',
+  }),
+  givenUser({
+    id: '50439602-1437-443e-b6d0-25d96e21d60c',
+    firstName: 'Manon',
+    lastName: 'Galle',
+    email: 'manon.galle@anct.gouv.fr',
+    role: 'Admin',
+  }),
+] satisfies Prisma.UserCreateInput[]
 
-export const randomUsers: (
-  random: number,
-) => Exclude<
-  Parameters<typeof prismaClient.user.create>[0]['data'],
-  undefined
->[] = (random) =>
-  Array.from({ length: random * BASE_NUMBER }, (_, index) => {
-    const firstName = faker.name.firstName()
-    const lastName = faker.name.lastName()
-
-    return {
-      firstName,
-      lastName,
-      name: `${firstName} ${lastName}`,
-      email: faker.internet.email(),
-      emailVerified: index % 3 ? null : new Date(),
-    }
-  })
+export const users = [administrateur, ...teamAdministrateurs]

@@ -42,12 +42,21 @@ model Session {
   @@map("sessions")
 }
 
+// User roles are used for global app permissions
+// Domain roles are defined by relations between user and domain models
+enum UserRole {
+  Admin @map("admin")
+  User  @map("user")
+
+  @@map("user_roles")
+}
+
 model User {
   id            String    @id @default(uuid()) @db.Uuid
-  legacyId      Int?      @unique @map("legacy_id")
   firstName     String?   @map("first_name")
   lastName      String?   @map("last_name")
   name          String?
+  role          UserRole  @default(User)
   email         String    @unique
   emailVerified DateTime? @map("email_verified")
   image         Image?    @relation(fields: [imageId], references: [id])
@@ -58,10 +67,15 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  created DateTime @default(now())
-  updated DateTime @default(now())
+  created   DateTime  @default(now())
+  updated   DateTime  @default(now())
+  lastLogin DateTime? @map("last_login")
 
   uploads Upload[]
+
+  mediateur    Mediateur?
+  coordinateur Coordinateur?
+  mutations    Mutation[]
 
   @@map("users")
 }
@@ -125,4 +139,163 @@ model Upload {
   image Image?
 
   @@map("uploads")
+}
+
+// Domain model
+
+// Un médiateur numérique
+model Mediateur {
+  id String @id @default(uuid()) @db.Uuid
+
+  userId String @unique @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id])
+
+  // Un médiateur peut être un conseiller numérique
+  conseillerNumerique   ConseillerNumerique?
+
+  creation      DateTime             @default(now())
+  modification  DateTime             @default(now())
+  suppression   DateTime?
+
+  coordinations MediateurCoordonne[]
+  emplois       MediateurEmploye[]
+
+  @@map("mediateurs")
+}
+
+// Source de vérité https://api.conseiller-numerique.gouv.fr
+model ConseillerNumerique {
+  // ID externe chez conseiller-numerique
+  id String @id
+
+  mediateurId String    @unique @map("mediateur_id") @db.Uuid
+  mediateur   Mediateur @relation(fields: [mediateurId], references: [id])
+
+  @@map("conseillers_numeriques")
+}
+
+model Coordinateur {
+  id String @id @default(uuid()) @db.Uuid
+
+  userId String @unique @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id])
+
+  creation     DateTime  @default(now())
+  modification DateTime  @default(now())
+  suppression  DateTime?
+
+  mediateursCoordonnes MediateurCoordonne[]
+
+  @@map("coordinateurs")
+}
+
+model MediateurCoordonne {
+  id String @id @default(uuid()) @db.Uuid
+
+  mediateurId String    @map("mediateur_id") @db.Uuid
+  mediateur   Mediateur @relation(fields: [mediateurId], references: [id])
+
+  coordinateurId String       @map("coordinateur_id") @db.Uuid
+  coordinateur   Coordinateur @relation(fields: [coordinateurId], references: [id])
+
+  creation     DateTime  @default(now())
+  modification DateTime  @default(now())
+  suppression  DateTime?
+
+  @@map("mediateurs_coordonnes")
+}
+
+// Lieu physique. La source de véritée est data-inclusion https://api.gouv.fr/les-api/api-data-inclusion
+// Ce model joue le role de local data cache / search index pour les lieux
+// ET role temporaire de stockage de structure qui vont etre envoyée chez data-inclusion
+model Structure {
+  id              String  @id @default(uuid()) @db.Uuid
+  idDataInclusion String? @unique @map("id_data_inclusion")
+
+  creation     DateTime  @default(now())
+  modification DateTime  @default(now())
+  suppression  DateTime?
+
+  organisation Organisation?
+  lieuActivite LieuActivite?
+
+  @@map("structures")
+}
+
+// Une organisation emploie des utilisateurs. Ce n'est pas forcément leur lieu d'activité.
+// Cela à un role administratif et organisationnel.
+model Organisation {
+  id String @id @default(uuid()) @db.Uuid
+
+  monCompteProId String? @unique @map("mon_compte_pro_id")
+
+  structureId String    @unique @map("structure_id") @db.Uuid
+  structure   Structure @relation(fields: [structureId], references: [id])
+
+  creation         DateTime           @default(now())
+  modification     DateTime           @default(now())
+  suppression      DateTime?
+  MediateurEmploye MediateurEmploye[]
+
+  @@map("organisations")
+}
+
+model MediateurEmploye {
+  id String @id @default(uuid()) @db.Uuid
+
+  mediateurId String    @map("mediateur_id") @db.Uuid
+  mediateur   Mediateur @relation(fields: [mediateurId], references: [id])
+
+  organisationId String       @map("organisation_id") @db.Uuid
+  organisation   Organisation @relation(fields: [organisationId], references: [id])
+
+  creation     DateTime  @default(now())
+  modification DateTime  @default(now())
+  suppression  DateTime?
+
+  @@map("mediateurs_employes")
+}
+
+// Un lieu d’activité est une structure où un médiateur exerce son activité.
+model LieuActivite {
+  id String @id @default(uuid()) @db.Uuid
+
+  structureId String    @unique @map("structure_id") @db.Uuid
+  structure   Structure @relation(fields: [structureId], references: [id])
+
+  creation     DateTime  @default(now())
+  modification DateTime  @default(now())
+  suppression  DateTime?
+
+  @@map("lieux_activites")
+}
+
+enum MutationName {
+  CreerMediateur              @map("creer_mediateur")
+  ModifierMediateur           @map("modifier_mediateur")
+  SupprimerMediateur          @map("supprimer_mediateur")
+  CreerCoordinateur           @map("creer_coordinateur")
+  ModifierCoordinateur        @map("modifier_coordinateur")
+  SupprimerCoordinateur       @map("supprimer_coordinateur")
+  CreerMediateurCoordonne     @map("creer_mediateur_coordonne")
+  SupprimerMediateurCoordonne @map("supprimer_mediateur_coordonne")
+  CreerStructure              @map("creer_structure")
+  ModifierStructure           @map("modifier_structure")
+
+  @@map("mutation_name")
+}
+
+// Log d’utilisation des features de l’application
+// Ce n’est pas une source vérité à la event sourcing
+// C’est un log d’audit
+model Mutation {
+  id String @id @default(uuid()) @db.Uuid
+
+  // User non renseigné si l’action est faite par un système
+  userId String? @map("user_id") @db.Uuid
+  user   User?   @relation(fields: [userId], references: [id])
+
+  nom MutationName @map("nom")
+
+  timestamp DateTime @default(now()) @map("timestamp")
 }
