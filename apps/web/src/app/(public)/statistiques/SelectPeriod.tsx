@@ -28,7 +28,12 @@ const SelectPeriod = ({
   )
 
   const onSelect = (period: string) => {
-    appRouter.push(`statistiques?${createQueryString(param, period)}#${param}`)
+    appRouter.push(
+      `statistiques?${createQueryString(param, period)}#${param}`,
+      {
+        scroll: false,
+      },
+    )
   }
 
   return (
