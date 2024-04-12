@@ -99,7 +99,7 @@ const StatisticsPage = async ({
               data={search}
               xAxisDataKey="start_date"
               tooltipLabelDataKey="period"
-              barsDataKey={['search_executions']}
+              dataKeys={['search_executions']}
               legends={[
                 {
                   label: 'Recherches effectuées',
@@ -114,7 +114,7 @@ const StatisticsPage = async ({
               data={search}
               xAxisDataKey="start_date"
               tooltipLabelDataKey="period"
-              barsDataKey={['resource_views']}
+              dataKeys={['resource_views']}
               legends={[
                 {
                   label: 'Vues de ressources',
@@ -129,7 +129,7 @@ const StatisticsPage = async ({
               data={search}
               xAxisDataKey="start_date"
               tooltipLabelDataKey="period"
-              barsDataKey={['collection_resources']}
+              dataKeys={['collection_resources']}
               legends={[
                 {
                   label: 'Ressources enregistrées',
@@ -169,7 +169,7 @@ const StatisticsPage = async ({
               data={creation.data}
               xAxisDataKey="start_date"
               tooltipLabelDataKey="period"
-              barsDataKey={['private_resources', 'public_resources']}
+              dataKeys={['private_resources', 'public_resources']}
               legends={[
                 {
                   label: 'Ressources privées',
@@ -191,7 +191,7 @@ const StatisticsPage = async ({
               data={creation.data}
               xAxisDataKey="start_date"
               tooltipLabelDataKey="period"
-              barsDataKey={['private_users', 'public_users']}
+              dataKeys={['private_users', 'public_users']}
               legends={[
                 {
                   label: 'Profils privés',
@@ -213,7 +213,7 @@ const StatisticsPage = async ({
               data={creation.data}
               xAxisDataKey="start_date"
               tooltipLabelDataKey="period"
-              barsDataKey={['private_bases', 'public_bases']}
+              dataKeys={['private_bases', 'public_bases']}
               legends={[
                 {
                   label: 'Bases privées',

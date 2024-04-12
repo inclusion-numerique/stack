@@ -16,19 +16,10 @@ import { numberToString } from '@app/web/utils/formatNumber'
 import CustomTooltip from '@app/web/app/(public)/statistiques/CustomTooltip'
 import type { StatisticsLegend } from '@app/web/app/(public)/statistiques/StatisticsLegend'
 
-const barColors = [
-  {
-    barFill: 'var(--blue-france-sun-113-625)',
-    activeBarFill: 'var(--blue-france-sun-113-625)',
-  },
-  {
-    barFill: 'var(--blue-ecume-925-125-active)',
-    activeBarFill: 'var(--blue-ecume-925-125-active)',
-  },
-  {
-    barFill: 'var(--blue-cumulus-925-125)',
-    activeBarFill: 'var(--blue-cumulus-925-125)',
-  },
+const chartColors = [
+  { fill: 'var(--blue-france-sun-113-625)' },
+  { fill: 'var(--blue-ecume-925-125-active)' },
+  { fill: 'var(--blue-cumulus-925-125)' },
 ]
 
 const StatisticsTooltip = <T extends object>({
@@ -65,7 +56,7 @@ const StatisticsChart = <T extends object>({
   title,
   xAxisDataKey,
   tooltipLabelDataKey,
-  barsDataKey,
+  dataKeys,
   legends = [],
   showLegendBelowChart = false,
   titleClassName,
@@ -74,7 +65,7 @@ const StatisticsChart = <T extends object>({
   title: string
   xAxisDataKey: keyof T
   tooltipLabelDataKey?: keyof T
-  barsDataKey: (keyof T)[]
+  dataKeys: (keyof T)[]
   legends?: StatisticsLegend<T>[]
   showLegendBelowChart?: boolean
   titleClassName?: string
@@ -90,12 +81,12 @@ const StatisticsChart = <T extends object>({
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             {StatisticsTooltip({ tooltipLabelDataKey, legends })}
             <YAxis width={54} fontSize={10} tickFormatter={numberToString} />
-            {barsDataKey.map((barDataKey, index) => (
+            {dataKeys.map((dataKey, index) => (
               <Area
-                key={barDataKey.toString()}
+                key={dataKey.toString()}
                 stackId="stack-0"
-                dataKey={barDataKey.toString()}
-                fill={barColors[index].barFill}
+                dataKey={dataKey.toString()}
+                fill={chartColors[index].fill}
               />
             ))}
           </AreaChart>
@@ -109,13 +100,13 @@ const StatisticsChart = <T extends object>({
               fontSize={10}
             />
             <YAxis width={54} fontSize={10} tickFormatter={numberToString} />
-            {barsDataKey.map((barDataKey, index) => (
+            {dataKeys.map((dataKey, index) => (
               <Bar
-                key={barDataKey.toString()}
+                key={dataKey.toString()}
                 stackId="stack-0"
                 barSize={35}
-                dataKey={barDataKey.toString()}
-                fill={barColors[index].barFill}
+                dataKey={dataKey.toString()}
+                fill={chartColors[index].fill}
               />
             ))}
           </BarChart>
@@ -133,7 +124,7 @@ const StatisticsChart = <T extends object>({
               <span
                 className="ri-checkbox-blank-circle-fill fr-mr-1w"
                 aria-hidden="true"
-                style={{ color: barColors[index].barFill }}
+                style={{ color: chartColors[index].fill }}
               />
               {item.label}
             </span>
