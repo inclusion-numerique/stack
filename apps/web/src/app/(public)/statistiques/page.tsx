@@ -2,7 +2,7 @@ import {
   getStatistics,
   StatisticsParams,
 } from '@app/web/server/statistiques/getStatistics'
-import StatisticsBarChart from '@app/web/app/(public)/statistiques/StatisticsBarChart'
+import StatisticsChart from './StatisticsChart'
 import Card from '@app/web/components/Card'
 import { numberToString } from '@app/web/utils/formatNumber'
 import KeyFigureTitle from './KeyFigureTitle'
@@ -75,9 +75,9 @@ const StatisticsPage = async ({
       </section>
       <hr className="fr-separator-6v fr-separator-md-12v" />
       <section>
-        <div className="fr-grid-row">
+        <div className="fr-grid-row fr-mb-4w">
           <div className="fr-col-auto">
-            <h2 className="fr-h3 fr-mb-4w">
+            <h2 id="recherche" className="fr-h3 fr-mb-0">
               Données pour comprendre l’usage de la recherche
             </h2>
           </div>
@@ -94,7 +94,7 @@ const StatisticsPage = async ({
         </div>
         <div className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-12 fr-col-md-6 fr-col-lg-4">
-            <StatisticsBarChart
+            <StatisticsChart
               title="Nombre de recherches effectuées"
               data={search}
               xAxisDataKey="start_date"
@@ -109,7 +109,7 @@ const StatisticsPage = async ({
             />
           </div>
           <div className="fr-col-12 fr-col-md-6 fr-col-lg-4">
-            <StatisticsBarChart
+            <StatisticsChart
               title="Nombre de vues de ressources"
               data={search}
               xAxisDataKey="start_date"
@@ -124,7 +124,7 @@ const StatisticsPage = async ({
             />
           </div>
           <div className="fr-col-12 fr-col-md-6 fr-col-lg-4">
-            <StatisticsBarChart
+            <StatisticsChart
               title="Nombre de ressources enregistrées"
               data={search}
               xAxisDataKey="start_date"
@@ -142,9 +142,9 @@ const StatisticsPage = async ({
       </section>
       <hr className="fr-separator-6v fr-separator-md-12v" />
       <section>
-        <div className="fr-grid-row">
+        <div className="fr-grid-row fr-align-items-center fr-mb-4w">
           <div className="fr-col-auto">
-            <h2 className="fr-h3 fr-mb-4w">
+            <h2 id="creation" className="fr-h3 fr-mb-0">
               Données pour comprendre
               <br />
               la création de ressources, bases & profils
@@ -163,7 +163,7 @@ const StatisticsPage = async ({
         </div>
         <div className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-12 fr-col-md-6 fr-col-lg-4">
-            <StatisticsBarChart
+            <StatisticsChart
               title="Nombre de ressources publiées"
               titleClassName="fr-h6"
               data={creation.data}
@@ -186,7 +186,7 @@ const StatisticsPage = async ({
             />
           </div>
           <div className="fr-col-12 fr-col-md-6 fr-col-lg-4">
-            <StatisticsBarChart
+            <StatisticsChart
               title="Nombre de profils créés"
               data={creation.data}
               xAxisDataKey="start_date"
@@ -208,7 +208,7 @@ const StatisticsPage = async ({
             />
           </div>
           <div className="fr-col-12 fr-col-md-6 fr-col-lg-4">
-            <StatisticsBarChart
+            <StatisticsChart
               title="Nombre de bases créées"
               data={creation.data}
               xAxisDataKey="start_date"
@@ -233,9 +233,9 @@ const StatisticsPage = async ({
       </section>
       <hr className="fr-separator-6v fr-separator-md-12v" />
       <section>
-        <div className="fr-grid-row">
+        <div className="fr-grid-row fr-align-items-center fr-mb-4w">
           <div className="fr-col-auto">
-            <h2 className="fr-h3 fr-mb-4w">
+            <h2 id="usage" className="fr-h3 fr-mb-0">
               Données pour comprendre le contenu des
               <br />
               ressources ainsi que les publics visés

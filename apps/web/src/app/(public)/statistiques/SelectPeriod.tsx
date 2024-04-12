@@ -28,7 +28,7 @@ const SelectPeriod = ({
   )
 
   const onSelect = (period: string) => {
-    appRouter.push(`statistiques?${createQueryString(param, period)}`)
+    appRouter.push(`statistiques?${createQueryString(param, period)}#${param}`)
   }
 
   return (
@@ -41,7 +41,7 @@ const SelectPeriod = ({
           nativeInputProps: {
             checked:
               searchParams?.get(param) === segment.param ||
-              (searchParams?.get(param) == null && index === 1),
+              (searchParams?.get(param) == null && index === 0),
             onChange: () => onSelect(segment.param),
           },
         })) as unknown as SegmentedControlProps.Segments

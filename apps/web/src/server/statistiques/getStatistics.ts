@@ -92,10 +92,11 @@ export const getStatistics = async (_params: StatisticsParams) => {
   }
 
   const searchStatisticsDaysInterval = _params.recherche === 'semaine' ? 7 : 30
+  const searchStatisticsSeriesCount = _params.recherche === 'total' ? 21 : 4
 
   const searchStatisticsResult =
     await prismaClient.$queryRawUnsafe<SearchStatisticsResult>(`
-        WITH series AS (SELECT generate_series(CURRENT_DATE - INTERVAL '${searchStatisticsDaysInterval * 4} days',
+        WITH series AS (SELECT generate_series(CURRENT_DATE - INTERVAL '${searchStatisticsDaysInterval * searchStatisticsSeriesCount} days',
                                                CURRENT_DATE - INTERVAL '${searchStatisticsDaysInterval} days',
                                                '${searchStatisticsDaysInterval} days'::interval) AS start_date),
              range AS (SELECT start_date, (start_date + INTERVAL '${searchStatisticsDaysInterval} days') AS end_date
@@ -117,10 +118,11 @@ export const getStatistics = async (_params: StatisticsParams) => {
         FROM range`)
 
   const creationStatisticsDaysInterval = _params.creation === 'semaine' ? 7 : 30
+  const creationStatisticsSeriesCount = _params.creation === 'total' ? 24 : 4
 
   const creationStatisticsResult =
     await prismaClient.$queryRawUnsafe<CreationStatisticsResult>(`
-        WITH series AS (SELECT generate_series(CURRENT_DATE - INTERVAL '${creationStatisticsDaysInterval * 4} days',
+        WITH series AS (SELECT generate_series(CURRENT_DATE - INTERVAL '${creationStatisticsDaysInterval * creationStatisticsSeriesCount} days',
                                                CURRENT_DATE - INTERVAL '${creationStatisticsDaysInterval} days',
                                                '${creationStatisticsDaysInterval} days'::interval) AS start_date),
              range AS (SELECT start_date, (start_date + INTERVAL '${creationStatisticsDaysInterval} days') AS end_date
@@ -151,7 +153,7 @@ export const getStatistics = async (_params: StatisticsParams) => {
         FROM range`)
 
   const isTotal = _params.usage === 'total'
-  const usageStatisticsDaysInterval = _params.usage === 'mois' ? 30 : 6 * 30
+  const usageStatisticsDaysInterval = _params.usage === 'six-mois' ? 6 * 30 : 30
   const startDate = new Date()
   startDate.setDate(new Date().getDate() - usageStatisticsDaysInterval)
 
