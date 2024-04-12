@@ -128,8 +128,8 @@ importers:
         specifier: ^3.495.0
         version: 3.495.0
       '@codegouvfr/react-dsfr':
-        specifier: ^1.9.6
-        version: 1.9.6
+        specifier: ^1.6.0
+        version: 1.6.0
       '@faire/mjml-react':
         specifier: ^3.3.0
         version: 3.3.0(mjml@4.14.1)(react-dom@18.2.0)(react@18.2.0)
@@ -965,8 +965,8 @@ importers:
   packages/ui:
     dependencies:
       '@codegouvfr/react-dsfr':
-        specifier: ^1.9.6
-        version: 1.9.6
+        specifier: ^1.6.0
+        version: 1.6.0
       '@gouvfr/dsfr':
         specifier: ^1.11.2
         version: 1.11.2
@@ -3647,12 +3647,11 @@ packages:
       - supports-color
     dev: false
 
-  /@codegouvfr/react-dsfr@1.9.6:
-    resolution: {integrity: sha512-1s9m6CMZbayocCFDt0V7KHCjnwxkZ4GiT+dc0+HhNSuqYfMbeYnfFK5ANaGscMplzrJ3TE9SF5Qb21UJaU1PPQ==}
+  /@codegouvfr/react-dsfr@1.6.0:
+    resolution: {integrity: sha512-xF0U0Or4v48WXvFdoH9rGV26wV64WmpuAKF/GBv+LtCd+fb/UzSJ4OAJmLUhw53LTkjW1PDS1lrBPPI0w/lf+w==}
     hasBin: true
     dependencies:
       tsafe: 1.6.6
-      yargs-parser: 21.1.1
     dev: false
 
   /@colors/colors@1.5.0:
@@ -12473,7 +12472,7 @@ packages:
     dependencies:
       semver: 7.5.4
       shelljs: 0.8.5
-      typescript: 5.5.0-dev.20240410
+      typescript: 5.5.0-dev.20240412
     dev: false
 
   /duplexer3@0.1.5:
@@ -23672,8 +23671,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  /typescript@5.5.0-dev.20240410:
-    resolution: {integrity: sha512-OvGiFb8iPBHHqR8RuhIeCM+j2W1TtPbTZLuesCEi4gulAxzkOP2B3jDPTWmcOmxvUeJN5pNzlKoi/reRn1BZww==}
+  /typescript@5.5.0-dev.20240412:
+    resolution: {integrity: sha512-DfE8jAzZf9/FHHo0CMnIL6uFZ6Q1bJ4PCtpBd9Ytbfi0pRREKVJofJEHFbRXADT6Kq1twB4iiqvdc/rGbiBq7g==}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: false

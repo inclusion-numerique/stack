@@ -88,10 +88,7 @@ const StatisticsChart = <T extends object>({
         {data.length > MAX_BARS ? (
           <AreaChart data={data} margin={{}}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <StatisticsTooltip
-              tooltipLabelDataKey={tooltipLabelDataKey}
-              legends={legends}
-            />
+            {StatisticsTooltip({ tooltipLabelDataKey, legends })}
             <YAxis width={54} fontSize={10} tickFormatter={numberToString} />
             {barsDataKey.map((barDataKey, index) => (
               <Area
@@ -105,10 +102,7 @@ const StatisticsChart = <T extends object>({
         ) : (
           <BarChart data={data} margin={{}}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <StatisticsTooltip
-              tooltipLabelDataKey={tooltipLabelDataKey}
-              legends={legends}
-            />
+            {StatisticsTooltip({ tooltipLabelDataKey, legends })}
             <XAxis
               dataKey={xAxisDataKey.toString()}
               interval={0}

@@ -2,9 +2,9 @@ import {
   getStatistics,
   StatisticsParams,
 } from '@app/web/server/statistiques/getStatistics'
-import StatisticsChart from './StatisticsChart'
 import Card from '@app/web/components/Card'
 import { numberToString } from '@app/web/utils/formatNumber'
+import StatisticsChart from './StatisticsChart'
 import KeyFigureTitle from './KeyFigureTitle'
 import SelectPeriod from './SelectPeriod'
 import TargetAudiences from './TargetAudiences'
@@ -77,7 +77,7 @@ const StatisticsPage = async ({
       <section>
         <div className="fr-grid-row fr-mb-4w">
           <div className="fr-col-auto">
-            <h2 id="recherche" className="fr-h3 fr-mb-0">
+            <h2 className="fr-h3 fr-mb-0">
               Données pour comprendre l’usage de la recherche
             </h2>
           </div>
@@ -144,7 +144,7 @@ const StatisticsPage = async ({
       <section>
         <div className="fr-grid-row fr-align-items-center fr-mb-4w">
           <div className="fr-col-auto">
-            <h2 id="creation" className="fr-h3 fr-mb-0">
+            <h2 className="fr-h3 fr-mb-0">
               Données pour comprendre
               <br />
               la création de ressources, bases & profils
@@ -235,7 +235,7 @@ const StatisticsPage = async ({
       <section>
         <div className="fr-grid-row fr-align-items-center fr-mb-4w">
           <div className="fr-col-auto">
-            <h2 id="usage" className="fr-h3 fr-mb-0">
+            <h2 className="fr-h3 fr-mb-0">
               Données pour comprendre le contenu des
               <br />
               ressources ainsi que les publics visés
