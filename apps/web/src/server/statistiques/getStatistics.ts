@@ -123,8 +123,8 @@ export const getStatistics = async (_params: StatisticsParams) => {
                 FROM resource_views
                 WHERE timestamp BETWEEN start_date AND end_date)                                              AS resource_views,
                'Du ' || TO_CHAR(start_date, 'DD/MM/YY') || ' au ' || TO_CHAR(end_date, 'DD/MM/YY')                  AS period,
-               TO_CHAR(start_date, 'DD/MM/YY')                                                                   AS start_date,
-               TO_CHAR(end_date, 'DD/MM/YY')                                                                     AS end_date
+               TO_CHAR(start_date, 'DD/MM')                                                                   AS start_date,
+               TO_CHAR(end_date, 'DD/MM')                                                                     AS end_date
         FROM range`)
 
   const creationStatisticsDaysInterval = _params.creation === 'semaine' ? 7 : 30
@@ -161,8 +161,8 @@ export const getStatistics = async (_params: StatisticsParams) => {
                 FROM bases pr_b
                 WHERE pr_b.created BETWEEN start_date AND end_date AND pr_b.is_public IS false)   AS private_bases,
                'Du ' || TO_CHAR(start_date, 'DD/MM/YY') || ' au ' || TO_CHAR(end_date, 'DD/MM/YY')      AS period,
-               TO_CHAR(start_date, 'DD/MM/YY')                                                       AS start_date,
-               TO_CHAR(end_date, 'DD/MM/YY')                                                         AS end_date
+               TO_CHAR(start_date, 'DD/MM')                                                       AS start_date,
+               TO_CHAR(end_date, 'DD/MM')                                                         AS end_date
         FROM range`)
 
   const isTotal = _params.usage === 'total'

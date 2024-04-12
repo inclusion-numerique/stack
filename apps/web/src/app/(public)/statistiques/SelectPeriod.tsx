@@ -4,6 +4,7 @@ import {
   SegmentedControl,
   SegmentedControlProps,
 } from '@codegouvfr/react-dsfr/SegmentedControl'
+import { Select } from '@codegouvfr/react-dsfr/Select'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback } from 'react'
 
@@ -34,21 +35,38 @@ const SelectPeriod = ({
   }
 
   return (
-    <SegmentedControl
-      hideLegend
-      legend="Choix de la période"
-      segments={
-        segments.map((segment, index) => ({
-          label: segment.label,
-          nativeInputProps: {
-            checked:
-              searchParams?.get(param) === segment.param ||
-              (searchParams?.get(param) == null && index === 0),
-            onChange: () => onSelect(segment.param),
-          },
-        })) as unknown as SegmentedControlProps.Segments
-      }
-    />
+    <>
+      <Select
+        className="fr-hidden-md fr-mt-3w"
+        label="Choix de la période"
+        nativeSelectProps={{
+          onChange: (event) => onSelect(event.target.value),
+          value: searchParams?.get(param) || '',
+        }}
+      >
+        {segments.map((segment) => (
+          <option key={segment.param} value={segment.param}>
+            {segment.label}
+          </option>
+        ))}
+      </Select>
+      <SegmentedControl
+        className="fr-display-block fr-hidden fr-unhidden-md"
+        hideLegend
+        legend="Choix de la période"
+        segments={
+          segments.map((segment, index) => ({
+            label: segment.label,
+            nativeInputProps: {
+              checked:
+                searchParams?.get(param) === segment.param ||
+                (searchParams?.get(param) == null && index === 0),
+              onChange: () => onSelect(segment.param),
+            },
+          })) as unknown as SegmentedControlProps.Segments
+        }
+      />
+    </>
   )
 }
 

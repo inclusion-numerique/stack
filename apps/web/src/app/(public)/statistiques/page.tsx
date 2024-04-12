@@ -75,22 +75,20 @@ const StatisticsPage = async ({
       </section>
       <hr className="fr-separator-6v fr-separator-md-12v" />
       <section>
-        <div className="fr-grid-row fr-mb-4w">
-          <div className="fr-col-auto">
+        <div className="fr-flex-md fr-justify-content-space-between fr-align-items-center fr-flex-gap-4v fr-mb-4w">
+          <div>
             <h2 className="fr-h3 fr-mb-0">
               Données pour comprendre l’usage de la recherche
             </h2>
           </div>
-          <div className="fr-col-12 fr-col-md fr-text--right">
-            <SelectPeriod
-              param="recherche"
-              segments={[
-                { label: 'Par semaine', param: 'semaine' },
-                { label: 'Par mois', param: 'mois' },
-                { label: 'En cumulé', param: 'total' },
-              ]}
-            />
-          </div>
+          <SelectPeriod
+            param="recherche"
+            segments={[
+              { label: 'Par semaine', param: 'semaine' },
+              { label: 'Par mois', param: 'mois' },
+              { label: 'En cumulé', param: 'total' },
+            ]}
+          />
         </div>
         <div className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-12 fr-col-md-6 fr-col-lg-4">
@@ -142,24 +140,22 @@ const StatisticsPage = async ({
       </section>
       <hr className="fr-separator-6v fr-separator-md-12v" />
       <section>
-        <div className="fr-grid-row fr-align-items-center fr-mb-4w">
-          <div className="fr-col-auto">
+        <div className="fr-flex-md fr-justify-content-space-between fr-align-items-center fr-flex-gap-4v fr-mb-4w">
+          <div>
             <h2 className="fr-h3 fr-mb-0">
               Données pour comprendre
               <br />
               la création de ressources, bases & profils
             </h2>
           </div>
-          <div className="fr-col-12 fr-col-md fr-text--right">
-            <SelectPeriod
-              param="creation"
-              segments={[
-                { label: 'Par semaine', param: 'semaine' },
-                { label: 'Par mois', param: 'mois' },
-                { label: 'En cumulé', param: 'total' },
-              ]}
-            />
-          </div>
+          <SelectPeriod
+            param="creation"
+            segments={[
+              { label: 'Par semaine', param: 'semaine' },
+              { label: 'Par mois', param: 'mois' },
+              { label: 'En cumulé', param: 'total' },
+            ]}
+          />
         </div>
         <div className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-12 fr-col-md-6 fr-col-lg-4">
@@ -233,24 +229,21 @@ const StatisticsPage = async ({
       </section>
       <hr className="fr-separator-6v fr-separator-md-12v" />
       <section>
-        <div className="fr-grid-row fr-align-items-center fr-mb-4w">
-          <div className="fr-col-auto">
+        <div className="fr-flex-md fr-justify-content-space-between fr-align-items-center fr-flex-gap-4v fr-mb-4w">
+          <div>
             <h2 className="fr-h3 fr-mb-0">
-              Données pour comprendre le contenu des
-              <br />
-              ressources ainsi que les publics visés
+              Données pour comprendre le contenu des ressources ainsi que les
+              publics visés
             </h2>
           </div>
-          <div className="fr-col-12 fr-col-md fr-text--right">
-            <SelectPeriod
-              param="usage"
-              segments={[
-                { label: 'Sur les 30 derniers jours', param: 'mois' },
-                { label: 'Sur les 6 derniers mois', param: 'six-mois' },
-                { label: 'Depuis le début', param: 'total' },
-              ]}
-            />
-          </div>
+          <SelectPeriod
+            param="usage"
+            segments={[
+              { label: 'Sur les 30 derniers jours', param: 'mois' },
+              { label: 'Sur les 6 derniers mois', param: 'six-mois' },
+              { label: 'Depuis le début', param: 'total' },
+            ]}
+          />
         </div>
         <div className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-12 fr-col-lg-6">
