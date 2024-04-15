@@ -98,7 +98,8 @@ export const getStatistics = async (_params: StatisticsParams) => {
     },
   }
 
-  const searchStatisticsDaysInterval = _params.recherche === 'semaine' ? 7 : 30
+  const searchStatisticsDaysInterval =
+    _params.recherche === 'mois' || _params.recherche === 'total' ? 30 : 7
   const searchStatisticsSeriesCount =
     _params.recherche === 'total'
       ? elapsedMonthsSince(new Date('2022-07-01'))
@@ -127,7 +128,8 @@ export const getStatistics = async (_params: StatisticsParams) => {
                TO_CHAR(end_date, 'DD/MM')                                                                     AS end_date
         FROM range`)
 
-  const creationStatisticsDaysInterval = _params.creation === 'semaine' ? 7 : 30
+  const creationStatisticsDaysInterval =
+    _params.creation || _params.creation === 'total' ? 30 : 7
   const creationStatisticsSeriesCount =
     _params.creation === 'total'
       ? elapsedMonthsSince(new Date('2022-04-01'))
