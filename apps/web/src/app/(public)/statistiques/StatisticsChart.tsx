@@ -80,7 +80,12 @@ const StatisticsChart = <T extends object>({
           <AreaChart data={data} margin={{}}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             {StatisticsTooltip({ tooltipLabelDataKey, legends })}
-            <YAxis width={54} fontSize={10} tickFormatter={numberToString} />
+            <YAxis
+              width={54}
+              fontSize={10}
+              tickFormatter={numberToString}
+              allowDecimals={false}
+            />
             {dataKeys.map((dataKey, index) => (
               <Area
                 key={dataKey.toString()}
@@ -99,7 +104,12 @@ const StatisticsChart = <T extends object>({
               interval={0}
               fontSize={10}
             />
-            <YAxis width={54} fontSize={10} tickFormatter={numberToString} />
+            <YAxis
+              width={54}
+              fontSize={10}
+              tickFormatter={numberToString}
+              allowDecimals={false}
+            />
             {dataKeys.map((dataKey, index) => (
               <Bar
                 key={dataKey.toString()}
