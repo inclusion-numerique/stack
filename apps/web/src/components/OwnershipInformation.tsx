@@ -10,19 +10,19 @@ import BaseImage from '@app/web/components/BaseImage'
 
 const attributionWordings = {
   resource: {
-    what: 'Publiée ',
-    where: 'dans la base ',
-    by: 'par ',
+    what: 'Publiée',
+    where: ' dans la base ',
+    by: ' par ',
   },
   'draft-resource': {
-    what: 'Créée ',
-    where: 'dans la base ',
-    by: 'par ',
+    what: 'Créée',
+    where: ' dans la base ',
+    by: ' par ',
   },
   collection: {
-    what: 'Collection ',
-    where: 'de la base ',
-    by: 'par ',
+    what: 'Collection',
+    where: ' de la base ',
+    by: ' par ',
   },
   none: {
     what: '',
@@ -36,6 +36,7 @@ const OwnershipInformation = ({
   base,
   className,
   attributionWording,
+  displayUser = true,
 }: {
   user: Pick<
     User,
@@ -48,6 +49,7 @@ const OwnershipInformation = ({
     | null
   className?: string
   attributionWording: 'resource' | 'draft-resource' | 'collection' | 'none'
+  displayUser?: boolean
 }) => (
   <div
     className={classNames(
@@ -73,8 +75,7 @@ const OwnershipInformation = ({
           </Link>
         </>
       )}
-      {base && user.isPublic && <>, </>}
-      {(!base || user.isPublic) && (
+      {(!base || (user.isPublic && displayUser)) && (
         <>
           {attributionWordings[attributionWording].by}
           <Link
