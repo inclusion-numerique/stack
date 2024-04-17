@@ -20,5 +20,10 @@ export const generateDataTableCsv = <Data>({
     }),
   )
 
-  return stringify([csvHeaders, ...csvRows])
+  const csvContent = stringify([csvHeaders, ...csvRows], {
+    delimiter: ';',
+    bom: true,
+  })
+
+  return csvContent
 }

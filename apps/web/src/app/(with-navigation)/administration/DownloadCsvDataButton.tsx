@@ -11,7 +11,8 @@ const DownloadCsvDataButton = ({
   csvFilename: string
 }) => {
   const onClick = () => {
-    const blob = new Blob([csvData], { type: 'text/csv' })
+    const BOM = '\uFEFF'
+    const blob = new Blob([BOM + csvData], { type: 'text/csv;charset=utf-8;' })
     const url = URL.createObjectURL(blob)
     download(url, `${csvFilename}.csv`)
   }
