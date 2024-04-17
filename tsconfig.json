@@ -28,6 +28,7 @@
       "@app/storybook/*": ["packages/storybook/src/*"],
       "@app/ui/*": ["packages/ui/src/*"],
       "@app/test/*": ["packages/test/src/*"],
+      "@prisma/client": ["node_modules/.pnpm/@prisma+client@5.12.1_prisma@5.12.1/node_modules/@prisma/client"]
     }
   },
   "include": ["./packages/test/src/jest.setup.ts"],

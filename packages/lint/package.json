@@ -13,20 +13,20 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.24.1",
-    "@next/eslint-plugin-next": "^14.1.4",
+    "@next/eslint-plugin-next": "^14.2.1",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.12.5",
+    "@types/node": "^20.12.7",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.1.0",
-    "eslint-config-next": "^14.1.4",
+    "eslint-config-next": "^14.2.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-turbo": "^1.13.2",
     "eslint-formatter-pretty": "6.0.0",
     "eslint-formatter-summary": "^1.1.0",
-    "eslint-plugin-cypress": "^2.15.1",
+    "eslint-plugin-cypress": "^2.15.2",
     "eslint-plugin-eslint-comments": "3.2.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jest": "27.6.0",
@@ -40,7 +40,7 @@
     "prettier": "^3.2.5",
     "stylelint": "^15.11.0",
     "stylelint-config-standard": "^34.0.0",
-    "typescript": "^5.4.4"
+    "typescript": "^5.4.5"
   },
   "dependencies": {
     "eslint-plugin-disable": "^2.0.3"

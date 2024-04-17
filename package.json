@@ -38,7 +38,7 @@
     "turbo-linux-arm64": "^1.13.2"
   },
   "dependencies": {
-    "@manypkg/cli": "^0.21.3",
+    "@manypkg/cli": "^0.21.4",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.1",
     "turbo": "^1.13.2"
