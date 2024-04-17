@@ -20,6 +20,7 @@ export const ServerWebAppConfig = {
       process.env.EMAIL_FROM_ADDRESS ?? ''
     }>`,
   },
+  internalApiPrivateKey: process.env.INTERNAL_API_PRIVATE_KEY ?? '',
   S3: {
     uploadsBucket: process.env.UPLOADS_BUCKET ?? '',
     host: process.env.S3_HOST ?? '',

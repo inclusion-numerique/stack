@@ -47,6 +47,7 @@ export const webAppStackSensitiveVariables = [
   'INCLUSION_CONNECT_MAIN_CLIENT_SECRET',
   'MONCOMPTEPRO_PREVIEW_CLIENT_SECRET',
   'MONCOMPTEPRO_MAIN_CLIENT_SECRET',
+  'INTERNAL_API_PRIVATE_KEY',
 ] as const
 
 /**
@@ -201,6 +202,8 @@ export class WebAppStack extends TerraformStack {
           ? sensitiveEnvironmentVariables.MONCOMPTEPRO_MAIN_CLIENT_SECRET.value
           : sensitiveEnvironmentVariables.MONCOMPTEPRO_PREVIEW_CLIENT_SECRET
               .value,
+        INTERNAL_API_PRIVATE_KEY:
+          sensitiveEnvironmentVariables.INTERNAL_API_PRIVATE_KEY.value,
       },
       name: containerName,
       minScale: isMain ? 2 : namespace === 'dev' ? 1 : 0,

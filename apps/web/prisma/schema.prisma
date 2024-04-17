@@ -151,14 +151,15 @@ model Mediateur {
   user   User   @relation(fields: [userId], references: [id])
 
   // Un médiateur peut être un conseiller numérique
-  conseillerNumerique   ConseillerNumerique?
+  conseillerNumerique ConseillerNumerique?
 
-  creation      DateTime             @default(now())
-  modification  DateTime             @default(now())
-  suppression   DateTime?
+  creation     DateTime  @default(now())
+  modification DateTime  @default(now())
+  suppression  DateTime?
 
   coordinations MediateurCoordonne[]
   emplois       MediateurEmploye[]
+  enActivite    MediateurEnActivite[]
 
   @@map("mediateurs")
 }
@@ -174,8 +175,12 @@ model ConseillerNumerique {
   @@map("conseillers_numeriques")
 }
 
+// Tous les coordinateurs sont coordinateurs officiellement chez conseiller-numérique
 model Coordinateur {
   id String @id @default(uuid()) @db.Uuid
+
+  // Clé primaire chez conseiller-numerique
+  conseillerNumeriqueId String @unique @map("conseiller_numerique_id")
 
   userId String @unique @map("user_id") @db.Uuid
   user   User   @relation(fields: [userId], references: [id])
@@ -212,6 +217,7 @@ model Structure {
   id              String  @id @default(uuid()) @db.Uuid
   idDataInclusion String? @unique @map("id_data_inclusion")
 
+  // Timestamps internes à coop-mediation-numerique
   creation     DateTime  @default(now())
   modification DateTime  @default(now())
   suppression  DateTime?
@@ -219,10 +225,88 @@ model Structure {
   organisation Organisation?
   lieuActivite LieuActivite?
 
+  // # Champs Data inclusion
+
+  // Code SIRET de la structure (identifiant officiel des entreprises en France)
+  siret String? @unique @db.VarChar(14)
+
+  // Numéro RNA (Répertoire National des Associations) de la structure
+  rna String? @unique @db.VarChar(10)
+
+  // Nom de la structure
+  nom String
+
+  // Nom de la commune rattachée à l'adresse de la structure
+  commune String
+
+  // Code postal rattaché à l'adresse de la structure
+  codePostal String @map("code_postal") @db.VarChar(5)
+
+  // Code officiel géographique de la commune rattachée à l'adresse de la structure
+  codeInsee String? @map("code_insee") @db.VarChar(5)
+
+  // Adresse de la structure
+  adresse String
+
+  // Complément d'adresse pour préciser la localisation exacte
+  complementAdresse String? @map("complement_adresse")
+
+  // Longitude géographique de la structure
+  longitude Float?
+
+  // Latitude géographique de la structure
+  latitude Float?
+
+  // Type de la structure (CCAS, ASSO, etc.)
+  typologie String?
+
+  // Numéro de téléphone de la structure
+  telephone String?
+
+  // Adresse email de la structure
+  courriel String?
+
+  // URL du site web de la structure
+  siteWeb String? @map("site_web")
+
+  // Description courte de la structure
+  presentationResume String? @map("presentation_resume")
+
+  // Description détaillée de la structure
+  presentationDetail String? @map("presentation_detail")
+
+  // Source des données
+  source String?
+
+  // Indique si la structure est une antenne
+  antenne Boolean
+
+  // Date de dernière mise à jour des données
+  dateMaj DateTime @map("date_maj")
+
+  // URL vers la source des données
+  lienSource String? @map("lien_source")
+
+  // Horaires d'ouverture de la structure
+  horairesOuverture String? @map("horaires_ouverture")
+
+  // URL vers les informations d'accessibilité de la structure
+  accessibilite String?
+
+  // Labels nationaux obtenus par la structure
+  labelsNationaux String[] @map("labels_nationaux")
+
+  // Autres labels obtenus par la structure
+  labelsAutres String[] @map("labels_autres")
+
+  // Thématiques abordées par la structure
+  thematiques String[]
+
   @@map("structures")
 }
 
-// Une organisation emploie des utilisateurs. Ce n'est pas forcément leur lieu d'activité.
+// Une organisation emploie des médiateurs.
+// Ce n'est pas forcément leur lieu d'activité.
 // Cela à un role administratif et organisationnel.
 model Organisation {
   id String @id @default(uuid()) @db.Uuid
@@ -263,11 +347,29 @@ model LieuActivite {
   structureId String    @unique @map("structure_id") @db.Uuid
   structure   Structure @relation(fields: [structureId], references: [id])
 
+  enActivite MediateurEnActivite[]
+
   creation     DateTime  @default(now())
   modification DateTime  @default(now())
   suppression  DateTime?
 
   @@map("lieux_activites")
+}
+
+model MediateurEnActivite {
+  id String @id @default(uuid()) @db.Uuid
+
+  mediateurId String    @map("mediateur_id") @db.Uuid
+  mediateur   Mediateur @relation(fields: [mediateurId], references: [id])
+
+  lieuActiviteId String       @map("lieu_activite_id") @db.Uuid
+  lieuActivite   LieuActivite @relation(fields: [lieuActiviteId], references: [id])
+
+  creation     DateTime  @default(now())
+  modification DateTime  @default(now())
+  suppression  DateTime?
+
+  @@map("mediateurs_en_activite")
 }
 
 enum MutationName {
@@ -281,6 +383,7 @@ enum MutationName {
   SupprimerMediateurCoordonne @map("supprimer_mediateur_coordonne")
   CreerStructure              @map("creer_structure")
   ModifierStructure           @map("modifier_structure")
+  MiseAJourDataInclusionStructures @map("mise_a_jour_data_inclusion_structures")
 
   @@map("mutation_name")
 }
@@ -296,6 +399,11 @@ model Mutation {
   user   User?   @relation(fields: [userId], references: [id])
 
   nom MutationName @map("nom")
+
+  duration Int
+
+  // Do not include sensitive data, only useful for debugging or auditing
+  data Json
 
   timestamp DateTime @default(now()) @map("timestamp")
 }
