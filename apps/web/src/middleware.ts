@@ -80,10 +80,14 @@ const redirectToBaseDomain = ({
   return NextResponse.redirect(redirectTo, { status: 308 })
 }
 
-const middleware = (request: NextRequest) => {
+const middleware = async (request: NextRequest) => {
   const forwardedProto = request.headers.get('X-Forwarded-Proto')
   const requestHost = request.headers.get('host')
   const baseUrl = process.env.BASE_URL
+
+  console.log('request body', await request.text())
+  console.log('request headers', [...request.headers.entries()])
+  console.log('request url', request.url)
 
   /**
    * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security

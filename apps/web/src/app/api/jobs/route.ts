@@ -32,7 +32,20 @@ export const POST = async (request: NextRequest) => {
     )
   }
 
-  const data: unknown = await request.json()
+  const data: unknown = await request.json().catch(() => null)
+
+  if (!data) {
+    return new Response(
+      JSON.stringify({
+        status: 'error',
+        message: 'Invalid JSON payload format',
+      }),
+      {
+        headers: { 'Content-Type': 'application/json' },
+        status: 400,
+      },
+    )
+  }
 
   const jobPayload = await JobValidation.safeParseAsync(data)
 
