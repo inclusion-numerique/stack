@@ -85,9 +85,16 @@ const middleware = async (request: NextRequest) => {
   const requestHost = request.headers.get('host')
   const baseUrl = process.env.BASE_URL
 
-  console.log('request body', await request.text())
-  console.log('request headers', [...request.headers.entries()])
-  console.log('request url', request.url)
+  const requestDebugInfo = {
+    forwardedProto,
+    requestHost,
+    body: await request.text(),
+    method: request.method,
+    ip: request.ip,
+    headers: Object.fromEntries(request.headers.entries()),
+  }
+
+  console.log('DEBUG REQUEST', requestDebugInfo)
 
   /**
    * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
