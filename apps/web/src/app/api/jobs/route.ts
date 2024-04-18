@@ -10,9 +10,9 @@ export const revalidate = 0
 export const GET = () => new Response(null, { status: 405 })
 
 export const POST = async (request: NextRequest) => {
-  console.log('HEADERS :', [...request.headers.values()])
+  console.log('HEADERS :', [...request.headers.entries()])
 
-  console.log('BODY', await request.json())
+  console.log('BODY', await request.text())
 
   console.log('CONF', ServerWebAppConfig.internalApiPrivateKey)
 

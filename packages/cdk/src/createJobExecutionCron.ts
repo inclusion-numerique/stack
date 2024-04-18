@@ -35,7 +35,7 @@ export const createJobExecutionCron = (
   // Additionally, escape double quotes that may interfere with JSON parsing in shell
   const escapedJsonData = jsonData.replaceAll("'", "'\\''")
 
-  const command = `/usr/bin/curl -v --max-time 21600 --request POST 'https://${apiHostname}/api/jobs' --header 'Content-Type: application/json' --header 'x-api-key: ${internalApiPrivateKey}' --data '${escapedJsonData}'`
+  const command = `/usr/bin/curl -v --max-time 21600 https://${apiHostname}/api/jobs --header Content-Type: application/json --header x-api-key: ${internalApiPrivateKey} --data ${escapedJsonData}`
 
   new JobDefinition(scope, `job-${name}`, {
     name,
