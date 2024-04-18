@@ -28,6 +28,10 @@ type ScalewayCreateBackupResponse = {
   region: string
 }
 
+// Instance id is fr-par/uuid we only need the uuid for scaleway api calls
+const databaseInstanceIdForApiCall = (instanceId: string) =>
+  instanceId.split('/')[1]
+
 export const executeBackupDatabaseJob = async ({
   payload: { databaseName, type },
 }: BackupDatabaseJob) => {
@@ -43,7 +47,9 @@ export const executeBackupDatabaseJob = async ({
   const response = await axios.post<ScalewayCreateBackupResponse>(
     'https://api.scaleway.com/rdb/v1/regions/fr-par/backups',
     {
-      instance_id: ServerWebAppConfig.Database.instanceId,
+      instance_id: databaseInstanceIdForApiCall(
+        ServerWebAppConfig.Database.instanceId,
+      ),
       database_name: databaseName,
       name: fileName,
       expires_at: expiresAtISOString,
