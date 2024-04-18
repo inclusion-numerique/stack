@@ -29,7 +29,11 @@ export const createJobExecutionCron = (
     apiHostname: string
   },
 ) => {
-  const command = `apk --no-cache add curl && curl --max-time 21600 --request POST "https://$API_HOSTNAME/api/jobs" --header "Content-Type: application/json" --header "x-api-key: $INTERNAL_API_PRIVATE_KEY" --data '${JSON.stringify(job)}'`
+  const command = `apk --no-cache add curl; \
+curl --max-time 21600 --request POST "https://$API_HOSTNAME/api/jobs" \
+--header "Content-Type: application/json" \
+--header "x-api-key: $INTERNAL_API_PRIVATE_KEY" \
+--data '${JSON.stringify(job)}'`
 
   new JobDefinition(scope, `job-${name}`, {
     name,
