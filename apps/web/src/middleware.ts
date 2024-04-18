@@ -48,6 +48,7 @@ const redirectToHttps = ({
   const path = `${requestUrl.pathname}${requestUrl.search}`
   const redirectTo = `${httpsBase}${path}`
 
+  // eslint-disable-next-line no-console
   console.info(
     `HTTP protocol - redirecting to ${httpsBase}${requestUrl.pathname}${requestUrl.search}`,
   )
@@ -75,6 +76,7 @@ const redirectToBaseDomain = ({
   const path = `${requestUrl.pathname}${requestUrl.search}`
   const redirectTo = `${httpsBase}${path}`
 
+  // eslint-disable-next-line no-console
   console.info(
     `Secondary domain request ${requestHost} - Redirecting to base domain ${redirectTo}`,
   )
