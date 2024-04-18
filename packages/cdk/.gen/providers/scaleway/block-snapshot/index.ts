@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_namespace
+// https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/block_snapshot
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -6,69 +6,71 @@ import * as cdktf from 'cdktf';
 
 // Configuration
 
-export interface MnqNamespaceConfig extends cdktf.TerraformMetaArguments {
+export interface BlockSnapshotConfig extends cdktf.TerraformMetaArguments {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_namespace#id MnqNamespace#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/block_snapshot#id BlockSnapshot#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
   */
   readonly id?: string;
   /**
-  * The name of the mnq namespace
+  * The snapshot name
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_namespace#name MnqNamespace#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/block_snapshot#name BlockSnapshot#name}
   */
   readonly name?: string;
   /**
   * The project_id you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_namespace#project_id MnqNamespace#project_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/block_snapshot#project_id BlockSnapshot#project_id}
   */
   readonly projectId?: string;
   /**
-  * The Namespace protocol
+  * The tags associated with the snapshot
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_namespace#protocol MnqNamespace#protocol}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/block_snapshot#tags BlockSnapshot#tags}
   */
-  readonly protocol: string;
+  readonly tags?: string[];
   /**
-  * The region you want to attach the resource to
+  * ID of the volume from which creates a snapshot
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_namespace#region MnqNamespace#region}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/block_snapshot#volume_id BlockSnapshot#volume_id}
   */
-  readonly region?: string;
+  readonly volumeId: string;
+  /**
+  * The zone you want to attach the resource to
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/block_snapshot#zone BlockSnapshot#zone}
+  */
+  readonly zone?: string;
   /**
   * timeouts block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_namespace#timeouts MnqNamespace#timeouts}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/block_snapshot#timeouts BlockSnapshot#timeouts}
   */
-  readonly timeouts?: MnqNamespaceTimeouts;
+  readonly timeouts?: BlockSnapshotTimeouts;
 }
-export interface MnqNamespaceTimeouts {
+export interface BlockSnapshotTimeouts {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_namespace#create MnqNamespace#create}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/block_snapshot#create BlockSnapshot#create}
   */
   readonly create?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_namespace#default MnqNamespace#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/block_snapshot#default BlockSnapshot#default}
   */
   readonly default?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_namespace#delete MnqNamespace#delete}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/block_snapshot#delete BlockSnapshot#delete}
   */
   readonly delete?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_namespace#read MnqNamespace#read}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/block_snapshot#read BlockSnapshot#read}
   */
   readonly read?: string;
-  /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_namespace#update MnqNamespace#update}
-  */
-  readonly update?: string;
 }
 
-export function mnqNamespaceTimeoutsToTerraform(struct?: MnqNamespaceTimeouts | cdktf.IResolvable): any {
+export function blockSnapshotTimeoutsToTerraform(struct?: BlockSnapshotTimeouts | cdktf.IResolvable): any {
   if (!cdktf.canInspect(struct) || cdktf.Tokenization.isResolvable(struct)) { return struct; }
   if (cdktf.isComplexElement(struct)) {
     throw new Error("A complex element was used as configuration, this is not supported: https://cdk.tf/complex-object-as-configuration");
@@ -78,11 +80,10 @@ export function mnqNamespaceTimeoutsToTerraform(struct?: MnqNamespaceTimeouts | 
     default: cdktf.stringToTerraform(struct!.default),
     delete: cdktf.stringToTerraform(struct!.delete),
     read: cdktf.stringToTerraform(struct!.read),
-    update: cdktf.stringToTerraform(struct!.update),
   }
 }
 
-export class MnqNamespaceTimeoutsOutputReference extends cdktf.ComplexObject {
+export class BlockSnapshotTimeoutsOutputReference extends cdktf.ComplexObject {
   private isEmptyObject = false;
   private resolvableValue?: cdktf.IResolvable;
 
@@ -94,7 +95,7 @@ export class MnqNamespaceTimeoutsOutputReference extends cdktf.ComplexObject {
     super(terraformResource, terraformAttribute, false);
   }
 
-  public get internalValue(): MnqNamespaceTimeouts | cdktf.IResolvable | undefined {
+  public get internalValue(): BlockSnapshotTimeouts | cdktf.IResolvable | undefined {
     if (this.resolvableValue) {
       return this.resolvableValue;
     }
@@ -116,14 +117,10 @@ export class MnqNamespaceTimeoutsOutputReference extends cdktf.ComplexObject {
       hasAnyValues = true;
       internalValueResult.read = this._read;
     }
-    if (this._update !== undefined) {
-      hasAnyValues = true;
-      internalValueResult.update = this._update;
-    }
     return hasAnyValues ? internalValueResult : undefined;
   }
 
-  public set internalValue(value: MnqNamespaceTimeouts | cdktf.IResolvable | undefined) {
+  public set internalValue(value: BlockSnapshotTimeouts | cdktf.IResolvable | undefined) {
     if (value === undefined) {
       this.isEmptyObject = false;
       this.resolvableValue = undefined;
@@ -131,7 +128,6 @@ export class MnqNamespaceTimeoutsOutputReference extends cdktf.ComplexObject {
       this._default = undefined;
       this._delete = undefined;
       this._read = undefined;
-      this._update = undefined;
     }
     else if (cdktf.Tokenization.isResolvable(value)) {
       this.isEmptyObject = false;
@@ -144,7 +140,6 @@ export class MnqNamespaceTimeoutsOutputReference extends cdktf.ComplexObject {
       this._default = value.default;
       this._delete = value.delete;
       this._read = value.read;
-      this._update = value.update;
     }
   }
 
@@ -211,46 +206,30 @@ export class MnqNamespaceTimeoutsOutputReference extends cdktf.ComplexObject {
   public get readInput() {
     return this._read;
   }
-
-  // update - computed: false, optional: true, required: false
-  private _update?: string; 
-  public get update() {
-    return this.getStringAttribute('update');
-  }
-  public set update(value: string) {
-    this._update = value;
-  }
-  public resetUpdate() {
-    this._update = undefined;
-  }
-  // Temporarily expose input value. Use with caution.
-  public get updateInput() {
-    return this._update;
-  }
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_namespace scaleway_mnq_namespace}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/block_snapshot scaleway_block_snapshot}
 */
-export class MnqNamespace extends cdktf.TerraformResource {
+export class BlockSnapshot extends cdktf.TerraformResource {
 
   // =================
   // STATIC PROPERTIES
   // =================
-  public static readonly tfResourceType = "scaleway_mnq_namespace";
+  public static readonly tfResourceType = "scaleway_block_snapshot";
 
   // ==============
   // STATIC Methods
   // ==============
   /**
-  * Generates CDKTF code for importing a MnqNamespace resource upon running "cdktf plan <stack-name>"
+  * Generates CDKTF code for importing a BlockSnapshot resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
-  * @param importToId The construct id used in the generated config for the MnqNamespace to import
-  * @param importFromId The id of the existing MnqNamespace that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_namespace#import import section} in the documentation of this resource for the id to use
-  * @param provider? Optional instance of the provider where the MnqNamespace to import is found
+  * @param importToId The construct id used in the generated config for the BlockSnapshot to import
+  * @param importFromId The id of the existing BlockSnapshot that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/block_snapshot#import import section} in the documentation of this resource for the id to use
+  * @param provider? Optional instance of the provider where the BlockSnapshot to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
-        return new cdktf.ImportableResource(scope, importToId, { terraformResourceType: "scaleway_mnq_namespace", importId: importFromId, provider });
+        return new cdktf.ImportableResource(scope, importToId, { terraformResourceType: "scaleway_block_snapshot", importId: importFromId, provider });
       }
 
   // ===========
@@ -258,19 +237,19 @@ export class MnqNamespace extends cdktf.TerraformResource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_namespace scaleway_mnq_namespace} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/block_snapshot scaleway_block_snapshot} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
-  * @param options MnqNamespaceConfig
+  * @param options BlockSnapshotConfig
   */
-  public constructor(scope: Construct, id: string, config: MnqNamespaceConfig) {
+  public constructor(scope: Construct, id: string, config: BlockSnapshotConfig) {
     super(scope, id, {
-      terraformResourceType: 'scaleway_mnq_namespace',
+      terraformResourceType: 'scaleway_block_snapshot',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.31.0',
-        providerVersionConstraint: '>= 2.31.0'
+        providerVersion: '2.39.0',
+        providerVersionConstraint: '>= 2.39.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -283,24 +262,15 @@ export class MnqNamespace extends cdktf.TerraformResource {
     this._id = config.id;
     this._name = config.name;
     this._projectId = config.projectId;
-    this._protocol = config.protocol;
-    this._region = config.region;
+    this._tags = config.tags;
+    this._volumeId = config.volumeId;
+    this._zone = config.zone;
     this._timeouts.internalValue = config.timeouts;
   }
 
   // ==========
   // ATTRIBUTES
   // ==========
-
-  // created_at - computed: true, optional: false, required: false
-  public get createdAt() {
-    return this.getStringAttribute('created_at');
-  }
-
-  // endpoint - computed: true, optional: false, required: false
-  public get endpoint() {
-    return this.getStringAttribute('endpoint');
-  }
 
   // id - computed: true, optional: true, required: false
   private _id?: string; 
@@ -350,46 +320,57 @@ export class MnqNamespace extends cdktf.TerraformResource {
     return this._projectId;
   }
 
-  // protocol - computed: false, optional: false, required: true
-  private _protocol?: string; 
-  public get protocol() {
-    return this.getStringAttribute('protocol');
+  // tags - computed: false, optional: true, required: false
+  private _tags?: string[]; 
+  public get tags() {
+    return this.getListAttribute('tags');
   }
-  public set protocol(value: string) {
-    this._protocol = value;
+  public set tags(value: string[]) {
+    this._tags = value;
   }
-  // Temporarily expose input value. Use with caution.
-  public get protocolInput() {
-    return this._protocol;
-  }
-
-  // region - computed: true, optional: true, required: false
-  private _region?: string; 
-  public get region() {
-    return this.getStringAttribute('region');
-  }
-  public set region(value: string) {
-    this._region = value;
-  }
-  public resetRegion() {
-    this._region = undefined;
+  public resetTags() {
+    this._tags = undefined;
   }
   // Temporarily expose input value. Use with caution.
-  public get regionInput() {
-    return this._region;
+  public get tagsInput() {
+    return this._tags;
   }
 
-  // updated_at - computed: true, optional: false, required: false
-  public get updatedAt() {
-    return this.getStringAttribute('updated_at');
+  // volume_id - computed: false, optional: false, required: true
+  private _volumeId?: string; 
+  public get volumeId() {
+    return this.getStringAttribute('volume_id');
+  }
+  public set volumeId(value: string) {
+    this._volumeId = value;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get volumeIdInput() {
+    return this._volumeId;
+  }
+
+  // zone - computed: true, optional: true, required: false
+  private _zone?: string; 
+  public get zone() {
+    return this.getStringAttribute('zone');
+  }
+  public set zone(value: string) {
+    this._zone = value;
+  }
+  public resetZone() {
+    this._zone = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get zoneInput() {
+    return this._zone;
   }
 
   // timeouts - computed: false, optional: true, required: false
-  private _timeouts = new MnqNamespaceTimeoutsOutputReference(this, "timeouts");
+  private _timeouts = new BlockSnapshotTimeoutsOutputReference(this, "timeouts");
   public get timeouts() {
     return this._timeouts;
   }
-  public putTimeouts(value: MnqNamespaceTimeouts) {
+  public putTimeouts(value: BlockSnapshotTimeouts) {
     this._timeouts.internalValue = value;
   }
   public resetTimeouts() {
@@ -409,9 +390,10 @@ export class MnqNamespace extends cdktf.TerraformResource {
       id: cdktf.stringToTerraform(this._id),
       name: cdktf.stringToTerraform(this._name),
       project_id: cdktf.stringToTerraform(this._projectId),
-      protocol: cdktf.stringToTerraform(this._protocol),
-      region: cdktf.stringToTerraform(this._region),
-      timeouts: mnqNamespaceTimeoutsToTerraform(this._timeouts.internalValue),
+      tags: cdktf.listMapper(cdktf.stringToTerraform, false)(this._tags),
+      volume_id: cdktf.stringToTerraform(this._volumeId),
+      zone: cdktf.stringToTerraform(this._zone),
+      timeouts: blockSnapshotTimeoutsToTerraform(this._timeouts.internalValue),
     };
   }
 }

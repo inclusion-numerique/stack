@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/ipam_ip
+// https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/ipam_ip
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -8,51 +8,95 @@ import * as cdktf from 'cdktf';
 
 export interface DataScalewayIpamIpConfig extends cdktf.TerraformMetaArguments {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/ipam_ip#id DataScalewayIpamIp#id}
+  * Defines whether to filter only for IPs which are attached to a resource
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/ipam_ip#attached DataScalewayIpamIp#attached}
+  */
+  readonly attached?: boolean | cdktf.IResolvable;
+  /**
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/ipam_ip#id DataScalewayIpamIp#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
   */
   readonly id?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/ipam_ip#mac_address DataScalewayIpamIp#mac_address}
+  * The ID of the IPAM IP
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/ipam_ip#ipam_ip_id DataScalewayIpamIp#ipam_ip_id}
+  */
+  readonly ipamIpId?: string;
+  /**
+  * The MAC address to filter for
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/ipam_ip#mac_address DataScalewayIpamIp#mac_address}
   */
   readonly macAddress?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/ipam_ip#private_network_id DataScalewayIpamIp#private_network_id}
+  * The private Network to filter for
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/ipam_ip#private_network_id DataScalewayIpamIp#private_network_id}
   */
   readonly privateNetworkId?: string;
   /**
+  * The project_id you want to attach the resource to
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/ipam_ip#project_id DataScalewayIpamIp#project_id}
+  */
+  readonly projectId?: string;
+  /**
   * The region you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/ipam_ip#region DataScalewayIpamIp#region}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/ipam_ip#region DataScalewayIpamIp#region}
   */
   readonly region?: string;
   /**
+  * The tags associated with the IP
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/ipam_ip#tags DataScalewayIpamIp#tags}
+  */
+  readonly tags?: string[];
+  /**
   * IP Type (ipv4, ipv6)
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/ipam_ip#type DataScalewayIpamIp#type}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/ipam_ip#type DataScalewayIpamIp#type}
   */
-  readonly type: string;
+  readonly type?: string;
+  /**
+  * The zone you want to attach the resource to
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/ipam_ip#zonal DataScalewayIpamIp#zonal}
+  */
+  readonly zonal?: string;
   /**
   * resource block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/ipam_ip#resource DataScalewayIpamIp#resource}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/ipam_ip#resource DataScalewayIpamIp#resource}
   */
   readonly resource?: DataScalewayIpamIpResource;
 }
 export interface DataScalewayIpamIpResource {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/ipam_ip#id DataScalewayIpamIp#id}
+  * ID of the resource to filter for
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/ipam_ip#id DataScalewayIpamIp#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
   */
   readonly id?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/ipam_ip#type DataScalewayIpamIp#type}
+  * Name of the resource to filter for
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/ipam_ip#name DataScalewayIpamIp#name}
   */
-  readonly type?: string;
+  readonly name?: string;
+  /**
+  * Type of resource to filter for
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/ipam_ip#type DataScalewayIpamIp#type}
+  */
+  readonly type: string;
 }
 
 export function dataScalewayIpamIpResourceToTerraform(struct?: DataScalewayIpamIpResourceOutputReference | DataScalewayIpamIpResource): any {
@@ -62,6 +106,7 @@ export function dataScalewayIpamIpResourceToTerraform(struct?: DataScalewayIpamI
   }
   return {
     id: cdktf.stringToTerraform(struct!.id),
+    name: cdktf.stringToTerraform(struct!.name),
     type: cdktf.stringToTerraform(struct!.type),
   }
 }
@@ -84,6 +129,10 @@ export class DataScalewayIpamIpResourceOutputReference extends cdktf.ComplexObje
       hasAnyValues = true;
       internalValueResult.id = this._id;
     }
+    if (this._name !== undefined) {
+      hasAnyValues = true;
+      internalValueResult.name = this._name;
+    }
     if (this._type !== undefined) {
       hasAnyValues = true;
       internalValueResult.type = this._type;
@@ -95,11 +144,13 @@ export class DataScalewayIpamIpResourceOutputReference extends cdktf.ComplexObje
     if (value === undefined) {
       this.isEmptyObject = false;
       this._id = undefined;
+      this._name = undefined;
       this._type = undefined;
     }
     else {
       this.isEmptyObject = Object.keys(value).length === 0;
       this._id = value.id;
+      this._name = value.name;
       this._type = value.type;
     }
   }
@@ -120,16 +171,29 @@ export class DataScalewayIpamIpResourceOutputReference extends cdktf.ComplexObje
     return this._id;
   }
 
-  // type - computed: false, optional: true, required: false
+  // name - computed: false, optional: true, required: false
+  private _name?: string; 
+  public get name() {
+    return this.getStringAttribute('name');
+  }
+  public set name(value: string) {
+    this._name = value;
+  }
+  public resetName() {
+    this._name = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get nameInput() {
+    return this._name;
+  }
+
+  // type - computed: false, optional: false, required: true
   private _type?: string; 
   public get type() {
     return this.getStringAttribute('type');
   }
   public set type(value: string) {
     this._type = value;
-  }
-  public resetType() {
-    this._type = undefined;
   }
   // Temporarily expose input value. Use with caution.
   public get typeInput() {
@@ -138,7 +202,7 @@ export class DataScalewayIpamIpResourceOutputReference extends cdktf.ComplexObje
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/ipam_ip scaleway_ipam_ip}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/ipam_ip scaleway_ipam_ip}
 */
 export class DataScalewayIpamIp extends cdktf.TerraformDataSource {
 
@@ -154,7 +218,7 @@ export class DataScalewayIpamIp extends cdktf.TerraformDataSource {
   * Generates CDKTF code for importing a DataScalewayIpamIp resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
   * @param importToId The construct id used in the generated config for the DataScalewayIpamIp to import
-  * @param importFromId The id of the existing DataScalewayIpamIp that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/ipam_ip#import import section} in the documentation of this resource for the id to use
+  * @param importFromId The id of the existing DataScalewayIpamIp that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/ipam_ip#import import section} in the documentation of this resource for the id to use
   * @param provider? Optional instance of the provider where the DataScalewayIpamIp to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
@@ -166,19 +230,19 @@ export class DataScalewayIpamIp extends cdktf.TerraformDataSource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/ipam_ip scaleway_ipam_ip} Data Source
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/ipam_ip scaleway_ipam_ip} Data Source
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
-  * @param options DataScalewayIpamIpConfig
+  * @param options DataScalewayIpamIpConfig = {}
   */
-  public constructor(scope: Construct, id: string, config: DataScalewayIpamIpConfig) {
+  public constructor(scope: Construct, id: string, config: DataScalewayIpamIpConfig = {}) {
     super(scope, id, {
       terraformResourceType: 'scaleway_ipam_ip',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.31.0',
-        providerVersionConstraint: '>= 2.31.0'
+        providerVersion: '2.39.0',
+        providerVersionConstraint: '>= 2.39.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -188,11 +252,16 @@ export class DataScalewayIpamIp extends cdktf.TerraformDataSource {
       connection: config.connection,
       forEach: config.forEach
     });
+    this._attached = config.attached;
     this._id = config.id;
+    this._ipamIpId = config.ipamIpId;
     this._macAddress = config.macAddress;
     this._privateNetworkId = config.privateNetworkId;
+    this._projectId = config.projectId;
     this._region = config.region;
+    this._tags = config.tags;
     this._type = config.type;
+    this._zonal = config.zonal;
     this._resource.internalValue = config.resource;
   }
 
@@ -203,6 +272,27 @@ export class DataScalewayIpamIp extends cdktf.TerraformDataSource {
   // address - computed: true, optional: false, required: false
   public get address() {
     return this.getStringAttribute('address');
+  }
+
+  // address_cidr - computed: true, optional: false, required: false
+  public get addressCidr() {
+    return this.getStringAttribute('address_cidr');
+  }
+
+  // attached - computed: false, optional: true, required: false
+  private _attached?: boolean | cdktf.IResolvable; 
+  public get attached() {
+    return this.getBooleanAttribute('attached');
+  }
+  public set attached(value: boolean | cdktf.IResolvable) {
+    this._attached = value;
+  }
+  public resetAttached() {
+    this._attached = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get attachedInput() {
+    return this._attached;
   }
 
   // id - computed: true, optional: true, required: false
@@ -221,6 +311,22 @@ export class DataScalewayIpamIp extends cdktf.TerraformDataSource {
     return this._id;
   }
 
+  // ipam_ip_id - computed: false, optional: true, required: false
+  private _ipamIpId?: string; 
+  public get ipamIpId() {
+    return this.getStringAttribute('ipam_ip_id');
+  }
+  public set ipamIpId(value: string) {
+    this._ipamIpId = value;
+  }
+  public resetIpamIpId() {
+    this._ipamIpId = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get ipamIpIdInput() {
+    return this._ipamIpId;
+  }
+
   // mac_address - computed: false, optional: true, required: false
   private _macAddress?: string; 
   public get macAddress() {
@@ -235,6 +341,11 @@ export class DataScalewayIpamIp extends cdktf.TerraformDataSource {
   // Temporarily expose input value. Use with caution.
   public get macAddressInput() {
     return this._macAddress;
+  }
+
+  // organization_id - computed: true, optional: false, required: false
+  public get organizationId() {
+    return this.getStringAttribute('organization_id');
   }
 
   // private_network_id - computed: false, optional: true, required: false
@@ -253,6 +364,22 @@ export class DataScalewayIpamIp extends cdktf.TerraformDataSource {
     return this._privateNetworkId;
   }
 
+  // project_id - computed: true, optional: true, required: false
+  private _projectId?: string; 
+  public get projectId() {
+    return this.getStringAttribute('project_id');
+  }
+  public set projectId(value: string) {
+    this._projectId = value;
+  }
+  public resetProjectId() {
+    this._projectId = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get projectIdInput() {
+    return this._projectId;
+  }
+
   // region - computed: true, optional: true, required: false
   private _region?: string; 
   public get region() {
@@ -269,7 +396,23 @@ export class DataScalewayIpamIp extends cdktf.TerraformDataSource {
     return this._region;
   }
 
-  // type - computed: false, optional: false, required: true
+  // tags - computed: false, optional: true, required: false
+  private _tags?: string[]; 
+  public get tags() {
+    return this.getListAttribute('tags');
+  }
+  public set tags(value: string[]) {
+    this._tags = value;
+  }
+  public resetTags() {
+    this._tags = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get tagsInput() {
+    return this._tags;
+  }
+
+  // type - computed: false, optional: true, required: false
   private _type?: string; 
   public get type() {
     return this.getStringAttribute('type');
@@ -277,9 +420,28 @@ export class DataScalewayIpamIp extends cdktf.TerraformDataSource {
   public set type(value: string) {
     this._type = value;
   }
+  public resetType() {
+    this._type = undefined;
+  }
   // Temporarily expose input value. Use with caution.
   public get typeInput() {
     return this._type;
+  }
+
+  // zonal - computed: true, optional: true, required: false
+  private _zonal?: string; 
+  public get zonal() {
+    return this.getStringAttribute('zonal');
+  }
+  public set zonal(value: string) {
+    this._zonal = value;
+  }
+  public resetZonal() {
+    this._zonal = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get zonalInput() {
+    return this._zonal;
   }
 
   // resource - computed: false, optional: true, required: false
@@ -304,11 +466,16 @@ export class DataScalewayIpamIp extends cdktf.TerraformDataSource {
 
   protected synthesizeAttributes(): { [name: string]: any } {
     return {
+      attached: cdktf.booleanToTerraform(this._attached),
       id: cdktf.stringToTerraform(this._id),
+      ipam_ip_id: cdktf.stringToTerraform(this._ipamIpId),
       mac_address: cdktf.stringToTerraform(this._macAddress),
       private_network_id: cdktf.stringToTerraform(this._privateNetworkId),
+      project_id: cdktf.stringToTerraform(this._projectId),
       region: cdktf.stringToTerraform(this._region),
+      tags: cdktf.listMapper(cdktf.stringToTerraform, false)(this._tags),
       type: cdktf.stringToTerraform(this._type),
+      zonal: cdktf.stringToTerraform(this._zonal),
       resource: dataScalewayIpamIpResourceToTerraform(this._resource.internalValue),
     };
   }

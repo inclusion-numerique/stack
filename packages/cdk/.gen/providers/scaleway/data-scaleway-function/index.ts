@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/function
+// https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/function
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -10,11 +10,11 @@ export interface DataScalewayFunctionConfig extends cdktf.TerraformMetaArguments
   /**
   * The ID of the function
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/function#function_id DataScalewayFunction#function_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/function#function_id DataScalewayFunction#function_id}
   */
   readonly functionId?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/function#id DataScalewayFunction#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/function#id DataScalewayFunction#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -23,19 +23,31 @@ export interface DataScalewayFunctionConfig extends cdktf.TerraformMetaArguments
   /**
   * The name of the function
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/function#name DataScalewayFunction#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/function#name DataScalewayFunction#name}
   */
   readonly name?: string;
   /**
   * The namespace ID associated with this function
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/function#namespace_id DataScalewayFunction#namespace_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/function#namespace_id DataScalewayFunction#namespace_id}
   */
   readonly namespaceId: string;
+  /**
+  * The project_id you want to attach the resource to
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/function#project_id DataScalewayFunction#project_id}
+  */
+  readonly projectId?: string;
+  /**
+  * The region you want to attach the resource to
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/function#region DataScalewayFunction#region}
+  */
+  readonly region?: string;
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/function scaleway_function}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/function scaleway_function}
 */
 export class DataScalewayFunction extends cdktf.TerraformDataSource {
 
@@ -51,7 +63,7 @@ export class DataScalewayFunction extends cdktf.TerraformDataSource {
   * Generates CDKTF code for importing a DataScalewayFunction resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
   * @param importToId The construct id used in the generated config for the DataScalewayFunction to import
-  * @param importFromId The id of the existing DataScalewayFunction that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/function#import import section} in the documentation of this resource for the id to use
+  * @param importFromId The id of the existing DataScalewayFunction that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/function#import import section} in the documentation of this resource for the id to use
   * @param provider? Optional instance of the provider where the DataScalewayFunction to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
@@ -63,7 +75,7 @@ export class DataScalewayFunction extends cdktf.TerraformDataSource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/function scaleway_function} Data Source
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/function scaleway_function} Data Source
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -74,8 +86,8 @@ export class DataScalewayFunction extends cdktf.TerraformDataSource {
       terraformResourceType: 'scaleway_function',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.31.0',
-        providerVersionConstraint: '>= 2.31.0'
+        providerVersion: '2.39.0',
+        providerVersionConstraint: '>= 2.39.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -89,6 +101,8 @@ export class DataScalewayFunction extends cdktf.TerraformDataSource {
     this._id = config.id;
     this._name = config.name;
     this._namespaceId = config.namespaceId;
+    this._projectId = config.projectId;
+    this._region = config.region;
   }
 
   // ==========
@@ -217,14 +231,36 @@ export class DataScalewayFunction extends cdktf.TerraformDataSource {
     return this.getStringAttribute('privacy');
   }
 
-  // project_id - computed: true, optional: false, required: false
+  // project_id - computed: false, optional: true, required: false
+  private _projectId?: string; 
   public get projectId() {
     return this.getStringAttribute('project_id');
   }
+  public set projectId(value: string) {
+    this._projectId = value;
+  }
+  public resetProjectId() {
+    this._projectId = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get projectIdInput() {
+    return this._projectId;
+  }
 
-  // region - computed: true, optional: false, required: false
+  // region - computed: false, optional: true, required: false
+  private _region?: string; 
   public get region() {
     return this.getStringAttribute('region');
+  }
+  public set region(value: string) {
+    this._region = value;
+  }
+  public resetRegion() {
+    this._region = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get regionInput() {
+    return this._region;
   }
 
   // runtime - computed: true, optional: false, required: false
@@ -263,6 +299,8 @@ export class DataScalewayFunction extends cdktf.TerraformDataSource {
       id: cdktf.stringToTerraform(this._id),
       name: cdktf.stringToTerraform(this._name),
       namespace_id: cdktf.stringToTerraform(this._namespaceId),
+      project_id: cdktf.stringToTerraform(this._projectId),
+      region: cdktf.stringToTerraform(this._region),
     };
   }
 }

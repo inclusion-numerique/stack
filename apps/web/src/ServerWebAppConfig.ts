@@ -14,6 +14,7 @@ const emailServer = `smtp://${process.env.SMTP_USERNAME ?? ''}:${
 export const ServerWebAppConfig = {
   NodeEnv: NodeEnvironment,
   Namespace: process.env.NAMESPACE ?? '',
+  internalApiPrivateKey: process.env.INTERNAL_API_PRIVATE_KEY ?? '',
   Email: {
     server: emailServer,
     from: `${process.env.EMAIL_FROM_NAME ?? ''} <${
@@ -38,5 +39,8 @@ export const ServerWebAppConfig = {
   },
   MonComptePro: {
     clientSecret: process.env.MONCOMPTEPRO_CLIENT_SECRET ?? '',
+  },
+  Database: {
+    instanceId: process.env.DATABASE_INSTANCE_ID ?? '', // like fr-par/uuid
   },
 }

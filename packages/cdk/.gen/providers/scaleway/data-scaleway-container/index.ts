@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/container
+// https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/container
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -10,11 +10,11 @@ export interface DataScalewayContainerConfig extends cdktf.TerraformMetaArgument
   /**
   * The ID of the Container
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/container#container_id DataScalewayContainer#container_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/container#container_id DataScalewayContainer#container_id}
   */
   readonly containerId?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/container#id DataScalewayContainer#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/container#id DataScalewayContainer#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -23,25 +23,31 @@ export interface DataScalewayContainerConfig extends cdktf.TerraformMetaArgument
   /**
   * The container name
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/container#name DataScalewayContainer#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/container#name DataScalewayContainer#name}
   */
   readonly name?: string;
   /**
   * The ID of the Container namespace
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/container#namespace_id DataScalewayContainer#namespace_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/container#namespace_id DataScalewayContainer#namespace_id}
   */
   readonly namespaceId: string;
   /**
+  * The ID of the project to filter the Container
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/container#project_id DataScalewayContainer#project_id}
+  */
+  readonly projectId?: string;
+  /**
   * The region you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/container#region DataScalewayContainer#region}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/container#region DataScalewayContainer#region}
   */
   readonly region?: string;
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/container scaleway_container}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/container scaleway_container}
 */
 export class DataScalewayContainer extends cdktf.TerraformDataSource {
 
@@ -57,7 +63,7 @@ export class DataScalewayContainer extends cdktf.TerraformDataSource {
   * Generates CDKTF code for importing a DataScalewayContainer resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
   * @param importToId The construct id used in the generated config for the DataScalewayContainer to import
-  * @param importFromId The id of the existing DataScalewayContainer that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/container#import import section} in the documentation of this resource for the id to use
+  * @param importFromId The id of the existing DataScalewayContainer that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/container#import import section} in the documentation of this resource for the id to use
   * @param provider? Optional instance of the provider where the DataScalewayContainer to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
@@ -69,7 +75,7 @@ export class DataScalewayContainer extends cdktf.TerraformDataSource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/container scaleway_container} Data Source
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/container scaleway_container} Data Source
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -80,8 +86,8 @@ export class DataScalewayContainer extends cdktf.TerraformDataSource {
       terraformResourceType: 'scaleway_container',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.31.0',
-        providerVersionConstraint: '>= 2.31.0'
+        providerVersion: '2.39.0',
+        providerVersionConstraint: '>= 2.39.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -95,6 +101,7 @@ export class DataScalewayContainer extends cdktf.TerraformDataSource {
     this._id = config.id;
     this._name = config.name;
     this._namespaceId = config.namespaceId;
+    this._projectId = config.projectId;
     this._region = config.region;
   }
 
@@ -234,6 +241,22 @@ export class DataScalewayContainer extends cdktf.TerraformDataSource {
     return this.getStringAttribute('privacy');
   }
 
+  // project_id - computed: false, optional: true, required: false
+  private _projectId?: string; 
+  public get projectId() {
+    return this.getStringAttribute('project_id');
+  }
+  public set projectId(value: string) {
+    this._projectId = value;
+  }
+  public resetProjectId() {
+    this._projectId = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get projectIdInput() {
+    return this._projectId;
+  }
+
   // protocol - computed: true, optional: false, required: false
   public get protocol() {
     return this.getStringAttribute('protocol');
@@ -291,6 +314,7 @@ export class DataScalewayContainer extends cdktf.TerraformDataSource {
       id: cdktf.stringToTerraform(this._id),
       name: cdktf.stringToTerraform(this._name),
       namespace_id: cdktf.stringToTerraform(this._namespaceId),
+      project_id: cdktf.stringToTerraform(this._projectId),
       region: cdktf.stringToTerraform(this._region),
     };
   }

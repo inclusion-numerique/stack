@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/function_cron
+// https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/function_cron
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -10,60 +10,66 @@ export interface FunctionCronConfig extends cdktf.TerraformMetaArguments {
   /**
   * Functions arguments as json object to pass through during execution.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/function_cron#args FunctionCron#args}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/function_cron#args FunctionCron#args}
   */
   readonly args: string;
   /**
   * The ID of the function to create a cron for.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/function_cron#function_id FunctionCron#function_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/function_cron#function_id FunctionCron#function_id}
   */
   readonly functionId: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/function_cron#id FunctionCron#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/function_cron#id FunctionCron#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
   */
   readonly id?: string;
   /**
+  * The name of the cron job.
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/function_cron#name FunctionCron#name}
+  */
+  readonly name?: string;
+  /**
   * The region you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/function_cron#region FunctionCron#region}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/function_cron#region FunctionCron#region}
   */
   readonly region?: string;
   /**
   * Cron format string, e.g. 0 * * * * or @hourly, as schedule time of its jobs to be created and executed.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/function_cron#schedule FunctionCron#schedule}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/function_cron#schedule FunctionCron#schedule}
   */
   readonly schedule: string;
   /**
   * timeouts block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/function_cron#timeouts FunctionCron#timeouts}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/function_cron#timeouts FunctionCron#timeouts}
   */
   readonly timeouts?: FunctionCronTimeouts;
 }
 export interface FunctionCronTimeouts {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/function_cron#create FunctionCron#create}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/function_cron#create FunctionCron#create}
   */
   readonly create?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/function_cron#default FunctionCron#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/function_cron#default FunctionCron#default}
   */
   readonly default?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/function_cron#delete FunctionCron#delete}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/function_cron#delete FunctionCron#delete}
   */
   readonly delete?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/function_cron#read FunctionCron#read}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/function_cron#read FunctionCron#read}
   */
   readonly read?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/function_cron#update FunctionCron#update}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/function_cron#update FunctionCron#update}
   */
   readonly update?: string;
 }
@@ -230,7 +236,7 @@ export class FunctionCronTimeoutsOutputReference extends cdktf.ComplexObject {
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/function_cron scaleway_function_cron}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/function_cron scaleway_function_cron}
 */
 export class FunctionCron extends cdktf.TerraformResource {
 
@@ -246,7 +252,7 @@ export class FunctionCron extends cdktf.TerraformResource {
   * Generates CDKTF code for importing a FunctionCron resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
   * @param importToId The construct id used in the generated config for the FunctionCron to import
-  * @param importFromId The id of the existing FunctionCron that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/function_cron#import import section} in the documentation of this resource for the id to use
+  * @param importFromId The id of the existing FunctionCron that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/function_cron#import import section} in the documentation of this resource for the id to use
   * @param provider? Optional instance of the provider where the FunctionCron to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
@@ -258,7 +264,7 @@ export class FunctionCron extends cdktf.TerraformResource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/function_cron scaleway_function_cron} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/function_cron scaleway_function_cron} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -269,8 +275,8 @@ export class FunctionCron extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_function_cron',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.31.0',
-        providerVersionConstraint: '>= 2.31.0'
+        providerVersion: '2.39.0',
+        providerVersionConstraint: '>= 2.39.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -283,6 +289,7 @@ export class FunctionCron extends cdktf.TerraformResource {
     this._args = config.args;
     this._functionId = config.functionId;
     this._id = config.id;
+    this._name = config.name;
     this._region = config.region;
     this._schedule = config.schedule;
     this._timeouts.internalValue = config.timeouts;
@@ -332,6 +339,22 @@ export class FunctionCron extends cdktf.TerraformResource {
   // Temporarily expose input value. Use with caution.
   public get idInput() {
     return this._id;
+  }
+
+  // name - computed: true, optional: true, required: false
+  private _name?: string; 
+  public get name() {
+    return this.getStringAttribute('name');
+  }
+  public set name(value: string) {
+    this._name = value;
+  }
+  public resetName() {
+    this._name = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get nameInput() {
+    return this._name;
   }
 
   // region - computed: true, optional: true, required: false
@@ -393,6 +416,7 @@ export class FunctionCron extends cdktf.TerraformResource {
       args: cdktf.stringToTerraform(this._args),
       function_id: cdktf.stringToTerraform(this._functionId),
       id: cdktf.stringToTerraform(this._id),
+      name: cdktf.stringToTerraform(this._name),
       region: cdktf.stringToTerraform(this._region),
       schedule: cdktf.stringToTerraform(this._schedule),
       timeouts: functionCronTimeoutsToTerraform(this._timeouts.internalValue),

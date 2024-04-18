@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/instance_volume
+// https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/instance_volume
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -10,17 +10,11 @@ export interface InstanceVolumeConfig extends cdktf.TerraformMetaArguments {
   /**
   * Create a volume based on a image
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/instance_volume#from_snapshot_id InstanceVolume#from_snapshot_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/instance_volume#from_snapshot_id InstanceVolume#from_snapshot_id}
   */
   readonly fromSnapshotId?: string;
   /**
-  * Create a copy of an existing volume
-  *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/instance_volume#from_volume_id InstanceVolume#from_volume_id}
-  */
-  readonly fromVolumeId?: string;
-  /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/instance_volume#id InstanceVolume#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/instance_volume#id InstanceVolume#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -29,61 +23,61 @@ export interface InstanceVolumeConfig extends cdktf.TerraformMetaArguments {
   /**
   * The name of the volume
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/instance_volume#name InstanceVolume#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/instance_volume#name InstanceVolume#name}
   */
   readonly name?: string;
   /**
   * The project_id you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/instance_volume#project_id InstanceVolume#project_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/instance_volume#project_id InstanceVolume#project_id}
   */
   readonly projectId?: string;
   /**
   * The size of the volume in gigabyte
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/instance_volume#size_in_gb InstanceVolume#size_in_gb}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/instance_volume#size_in_gb InstanceVolume#size_in_gb}
   */
   readonly sizeInGb?: number;
   /**
   * The tags associated with the volume
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/instance_volume#tags InstanceVolume#tags}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/instance_volume#tags InstanceVolume#tags}
   */
   readonly tags?: string[];
   /**
   * The volume type
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/instance_volume#type InstanceVolume#type}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/instance_volume#type InstanceVolume#type}
   */
   readonly type: string;
   /**
   * The zone you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/instance_volume#zone InstanceVolume#zone}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/instance_volume#zone InstanceVolume#zone}
   */
   readonly zone?: string;
   /**
   * timeouts block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/instance_volume#timeouts InstanceVolume#timeouts}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/instance_volume#timeouts InstanceVolume#timeouts}
   */
   readonly timeouts?: InstanceVolumeTimeouts;
 }
 export interface InstanceVolumeTimeouts {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/instance_volume#create InstanceVolume#create}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/instance_volume#create InstanceVolume#create}
   */
   readonly create?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/instance_volume#default InstanceVolume#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/instance_volume#default InstanceVolume#default}
   */
   readonly default?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/instance_volume#delete InstanceVolume#delete}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/instance_volume#delete InstanceVolume#delete}
   */
   readonly delete?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/instance_volume#update InstanceVolume#update}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/instance_volume#update InstanceVolume#update}
   */
   readonly update?: string;
 }
@@ -227,7 +221,7 @@ export class InstanceVolumeTimeoutsOutputReference extends cdktf.ComplexObject {
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/instance_volume scaleway_instance_volume}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/instance_volume scaleway_instance_volume}
 */
 export class InstanceVolume extends cdktf.TerraformResource {
 
@@ -243,7 +237,7 @@ export class InstanceVolume extends cdktf.TerraformResource {
   * Generates CDKTF code for importing a InstanceVolume resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
   * @param importToId The construct id used in the generated config for the InstanceVolume to import
-  * @param importFromId The id of the existing InstanceVolume that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/instance_volume#import import section} in the documentation of this resource for the id to use
+  * @param importFromId The id of the existing InstanceVolume that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/instance_volume#import import section} in the documentation of this resource for the id to use
   * @param provider? Optional instance of the provider where the InstanceVolume to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
@@ -255,7 +249,7 @@ export class InstanceVolume extends cdktf.TerraformResource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/instance_volume scaleway_instance_volume} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/instance_volume scaleway_instance_volume} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -266,8 +260,8 @@ export class InstanceVolume extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_instance_volume',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.31.0',
-        providerVersionConstraint: '>= 2.31.0'
+        providerVersion: '2.39.0',
+        providerVersionConstraint: '>= 2.39.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -278,7 +272,6 @@ export class InstanceVolume extends cdktf.TerraformResource {
       forEach: config.forEach
     });
     this._fromSnapshotId = config.fromSnapshotId;
-    this._fromVolumeId = config.fromVolumeId;
     this._id = config.id;
     this._name = config.name;
     this._projectId = config.projectId;
@@ -307,22 +300,6 @@ export class InstanceVolume extends cdktf.TerraformResource {
   // Temporarily expose input value. Use with caution.
   public get fromSnapshotIdInput() {
     return this._fromSnapshotId;
-  }
-
-  // from_volume_id - computed: false, optional: true, required: false
-  private _fromVolumeId?: string; 
-  public get fromVolumeId() {
-    return this.getStringAttribute('from_volume_id');
-  }
-  public set fromVolumeId(value: string) {
-    this._fromVolumeId = value;
-  }
-  public resetFromVolumeId() {
-    this._fromVolumeId = undefined;
-  }
-  // Temporarily expose input value. Use with caution.
-  public get fromVolumeIdInput() {
-    return this._fromVolumeId;
   }
 
   // id - computed: true, optional: true, required: false
@@ -467,7 +444,6 @@ export class InstanceVolume extends cdktf.TerraformResource {
   protected synthesizeAttributes(): { [name: string]: any } {
     return {
       from_snapshot_id: cdktf.stringToTerraform(this._fromSnapshotId),
-      from_volume_id: cdktf.stringToTerraform(this._fromVolumeId),
       id: cdktf.stringToTerraform(this._id),
       name: cdktf.stringToTerraform(this._name),
       project_id: cdktf.stringToTerraform(this._projectId),
