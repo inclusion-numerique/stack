@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
-import { jobTriggerInfoFromRequest } from '@app/web/jobs/jobTriggerMiddleware'
-import { executeJobApiTokenHeader } from '@app/web/app/api/jobs/executeJobApiTokenHeader'
+import {
+  jobTriggerInfoFromRequest,
+  rewriteTriggerToJobEndpoint,
+} from '@app/web/jobs/jobTriggerMiddleware'
 
 const nodeEnvironment = process.env.NODE_ENV
 const isCI = !!process.env.CI
@@ -85,7 +87,7 @@ const redirectToBaseDomain = ({
 const middleware = async (request: NextRequest) => {
   const forwardedProto = request.headers.get('X-Forwarded-Proto')
   const requestHost = request.headers.get('host')
-  const baseUrl = process.env.BASE_URL
+  const baseUrl = process.env.BASE_URL ?? ''
 
   const requestDebugInfo = {
     forwardedProto,
@@ -103,13 +105,7 @@ const middleware = async (request: NextRequest) => {
     requestHost,
   })
   if (jobTriggerInfo) {
-    request.headers.set(
-      executeJobApiTokenHeader,
-      ServerWebAppConfig.internalApiPrivateKey,
-    )
-    return NextResponse.rewrite('/api/jobs', {
-      request,
-    })
+    return rewriteTriggerToJobEndpoint({ baseUrl, request })
   }
 
   /**
