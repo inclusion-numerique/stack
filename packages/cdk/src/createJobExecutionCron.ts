@@ -37,7 +37,7 @@ export const createJobExecutionCron = (
     .replaceAll("'", "'\\''")
     .replaceAll('"', '\\"')
 
-  const command = `sh -c "apk --no-cache add curl && curl --max-time 21600 --request POST 'https://\${API_HOSTNAME}/api/jobs' --header 'Content-Type: application/json' --header 'x-api-key: \${INTERNAL_API_PRIVATE_KEY}' --data '${escapedJsonData}'"`
+  const command = `sh -c "apk --no-cache add curl && curl --max-time 21600 --request POST 'https://$API_HOSTNAME/api/jobs' --header 'Content-Type: application/json' --header 'x-api-key: $INTERNAL_API_PRIVATE_KEY' --data '${escapedJsonData}'"`
 
   new JobDefinition(scope, `job-${name}`, {
     name,
