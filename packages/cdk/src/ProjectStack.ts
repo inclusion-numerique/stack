@@ -34,6 +34,8 @@ import { ScalewayProvider } from '@app/scaleway/provider'
 import { RdbInstance } from '@app/scaleway/rdb-instance'
 import { RegistryNamespace } from '@app/scaleway/registry-namespace'
 import { TemDomain } from '@app/scaleway/tem-domain'
+import { Secret } from '@app/scaleway/secret'
+import { SecretVersion } from '@app/scaleway/secret-version'
 
 export const projectStackVariables = [
   'SCW_DEFAULT_ORGANIZATION_ID',
@@ -246,6 +248,18 @@ export class ProjectStack extends TerraformStack {
         SMTP_SERVER: sensitiveEnvironmentVariables.SMTP_SERVER.value,
         SMTP_USERNAME: sensitiveEnvironmentVariables.SMTP_USERNAME.value,
       },
+    })
+
+    // Database secrets
+    const databaseInstanceIdSecret = new Secret(this, 'databaseInstanceId', {
+      name: 'DATABASE_INSTANCE_ID',
+      description:
+        'Instance id of managed database instance. Used for api interactions.',
+    })
+
+    new SecretVersion(this, 'databaseInstanceIdVersion', {
+      secretId: databaseInstanceIdSecret.id,
+      data: database.id,
     })
 
     new RegistryNamespace(this, 'webApp', {
