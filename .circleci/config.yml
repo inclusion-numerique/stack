@@ -379,6 +379,16 @@ jobs:
           name: "Add NEXT_PUBLIC_* env to .env"
           command: |
             pnpm --silent cli dotenv:add-next-public --local $NAMESPACE
+      - run:
+          name: 'Add e2e vars to .env'
+          command: |
+            echo "DATABASE_URL=$CI_DATABASE_URL" >> .env
+            echo "SMTP_SERVER=localhost" >> .env
+            echo "SMTP_PORT=1025" >> .env
+            echo "SMTP_USERNAME=mailuser" >> .env
+            echo "SMTP_PASSWORD=mailpassword" >> .env
+            echo 'INCLUSION_CONNECT_CLIENT_SECRET=$INCLUSION_CONNECT_LOCAL_CLIENT_SECRET' >> .env
+      - add_dotenv_vars_to_bash_env
       - restore_cache:
           keys:
             - << pipeline.parameters.cache_version >>-next-e2e-{{ checksum "<< pipeline.parameters.lockfile >>" }}-{{ checksum "./.env" }}
@@ -391,21 +401,9 @@ jobs:
           paths:
             - ./apps/web/.next/cache
       - run:
-          name: 'Add e2e vars to .env'
-          command: |
-            echo "DATABASE_URL=$CI_DATABASE_URL" >> .env
-            echo "SMTP_SERVER=localhost" >> .env
-            echo "SMTP_PORT=1025" >> .env
-            echo "SMTP_USERNAME=mailuser" >> .env
-            echo "SMTP_PASSWORD=mailpassword" >> .env
-            echo 'INCLUSION_CONNECT_CLIENT_SECRET=$INCLUSION_CONNECT_LOCAL_CLIENT_SECRET' >> .env
-      - run:
           name: 'Create CI database schema'
           command: |
             pnpm --silent -F @app/web prisma migrate deploy
-      - restore_cache:
-          key: << pipeline.id >>-web-build
-      - add_dotenv_vars_to_bash_env
       - run:
           name: Isolate built standalone application to correctly e2e test node_modules bundling and run
           background: true
