@@ -37,10 +37,17 @@ export const POST = async (request: NextRequest) => {
     )
   }
 
-  const data: unknown = await request.json().catch(() => null)
+  const data: unknown = await request
+    .text()
+    .then(JSON.parse)
+    .catch(() => null)
 
   if (!data) {
-    Sentry.captureException('Invalid JSON payload job execution')
+    Sentry.captureException('Invalid JSON payload job execution', {
+      data: {
+        body: await request.text(),
+      },
+    })
 
     return new Response(
       JSON.stringify({
