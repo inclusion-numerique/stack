@@ -130,7 +130,6 @@ export const getStructuresMetadata = async () => {
 
   const structures = await getStructuresFromLocalFile()
 
-
   const withSiret = structures.filter((s) => s.siret)
   const withRna = structures.filter((s) => s.rna)
 
@@ -151,7 +150,6 @@ export const getStructuresMetadata = async () => {
       ])
       .sort((a, b) => b[1] - a[1]),
   )
-
 
   const sourcesStructuresMap = new Map<string | null, number>()
 
