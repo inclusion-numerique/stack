@@ -10,11 +10,14 @@ export const revalidate = 0
 export const GET = () => new Response(null, { status: 405 })
 
 export const POST = async (request: NextRequest) => {
-  console.log('HEADERS :', [...request.headers.entries()])
+  const requestDebugInfo = {
+    body: await request.text(),
+    method: request.method,
+    ip: request.ip,
+    headers: Object.fromEntries(request.headers.entries()),
+  }
 
-  console.log('BODY', await request.text())
-
-  console.log('CONF', ServerWebAppConfig.internalApiPrivateKey)
+  console.log('DEBUG JOB ROUTE REQUEST', requestDebugInfo)
 
   if (
     request.headers.get(executeJobApiTokenHeader) !==

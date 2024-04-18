@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { jobTriggerInfoFromRequest } from '@app/web/jobs/jobTriggerMiddleware'
+import { executeJobApiTokenHeader } from '@app/web/app/api/jobs/executeJobApiTokenHeader'
 
 const nodeEnvironment = process.env.NODE_ENV
 const isCI = !!process.env.CI
@@ -95,6 +97,20 @@ const middleware = async (request: NextRequest) => {
   }
 
   console.log('DEBUG REQUEST', requestDebugInfo)
+
+  const jobTriggerInfo = jobTriggerInfoFromRequest({
+    request,
+    requestHost,
+  })
+  if (jobTriggerInfo) {
+    request.headers.set(
+      executeJobApiTokenHeader,
+      ServerWebAppConfig.internalApiPrivateKey,
+    )
+    return NextResponse.rewrite('/api/jobs', {
+      request,
+    })
+  }
 
   /**
    * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
