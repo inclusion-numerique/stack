@@ -7,11 +7,17 @@ import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
+export const GET = () => new Response(null, { status: 405 })
+
 export const POST = async (request: NextRequest) => {
-  const { body, headers } = request
+  console.log('HEADERS :', [...request.headers.values()])
+
+  console.log('BODY', await request.json())
+
+  console.log('CONF', ServerWebAppConfig.internalApiPrivateKey)
 
   if (
-    headers.get(executeJobApiTokenHeader) !==
+    request.headers.get(executeJobApiTokenHeader) !==
     ServerWebAppConfig.internalApiPrivateKey
   ) {
     return new Response(
@@ -26,7 +32,9 @@ export const POST = async (request: NextRequest) => {
     )
   }
 
-  const jobPayload = await JobValidation.safeParseAsync(body)
+  const data: unknown = await request.json()
+
+  const jobPayload = await JobValidation.safeParseAsync(data)
 
   if (!jobPayload.success) {
     return new Response(
