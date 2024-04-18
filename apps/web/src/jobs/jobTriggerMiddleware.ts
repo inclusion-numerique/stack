@@ -33,6 +33,9 @@ export const rewriteTriggerToJobEndpoint = ({
     executeJobApiTokenHeader,
     ServerWebAppConfig.internalApiPrivateKey,
   )
+
+  // Rewrite to https to avoid additional internal redirect
+  request.headers.set('X-Forwarded-Proto', 'https')
   return NextResponse.rewrite(`https://${baseUrl}/api/jobs`, {
     request,
   })

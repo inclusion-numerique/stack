@@ -84,21 +84,10 @@ const redirectToBaseDomain = ({
   return NextResponse.redirect(redirectTo, { status: 308 })
 }
 
-const middleware = async (request: NextRequest) => {
+const middleware = (request: NextRequest) => {
   const forwardedProto = request.headers.get('X-Forwarded-Proto')
   const requestHost = request.headers.get('host')
   const baseUrl = process.env.BASE_URL ?? ''
-
-  const requestDebugInfo = {
-    forwardedProto,
-    requestHost,
-    body: await request.text(),
-    method: request.method,
-    ip: request.ip,
-    headers: Object.fromEntries(request.headers.entries()),
-  }
-
-  console.log('DEBUG REQUEST', requestDebugInfo)
 
   const jobTriggerInfo = jobTriggerInfoFromRequest({
     request,

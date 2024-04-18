@@ -1,4 +1,5 @@
 import type { NextRequest } from 'next/server'
+import * as Sentry from '@sentry/nextjs'
 import { JobValidation } from '@app/web/jobs/jobs'
 import { executeJob } from '@app/web/jobs/jobExecutors'
 import { executeJobApiTokenHeader } from '@app/web/app/api/jobs/executeJobApiTokenHeader'
@@ -23,6 +24,7 @@ export const POST = async (request: NextRequest) => {
     request.headers.get(executeJobApiTokenHeader) !==
     ServerWebAppConfig.internalApiPrivateKey
   ) {
+    Sentry.captureException('Invalid API token for job execution')
     return new Response(
       JSON.stringify({
         status: 'error',
@@ -38,6 +40,8 @@ export const POST = async (request: NextRequest) => {
   const data: unknown = await request.json().catch(() => null)
 
   if (!data) {
+    Sentry.captureException('Invalid JSON payload job execution')
+
     return new Response(
       JSON.stringify({
         status: 'error',
@@ -53,6 +57,8 @@ export const POST = async (request: NextRequest) => {
   const jobPayload = await JobValidation.safeParseAsync(data)
 
   if (!jobPayload.success) {
+    Sentry.captureException(jobPayload.error)
+
     return new Response(
       JSON.stringify({
         status: 'error',
@@ -64,6 +70,9 @@ export const POST = async (request: NextRequest) => {
       },
     )
   }
+
+  // eslint-disable-next-line no-console
+  console.info(`Executing job ${jobPayload.data.name}`)
 
   const start = Date.now()
   const result = await executeJob(jobPayload.data)

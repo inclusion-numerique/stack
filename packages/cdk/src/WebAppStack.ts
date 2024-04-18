@@ -257,16 +257,8 @@ export class WebAppStack extends TerraformStack {
             type: 'weekly',
           },
         },
-        cron: {
-          timezone: 'Europe/Paris',
-          schedule: '0 0 * * 0',
-        },
-        timeout: '5m',
-        memoryLimit: '128',
-        cpuLimit: 72,
-        internalApiPrivateKey:
-          sensitiveEnvironmentVariables.INTERNAL_API_PRIVATE_KEY.value,
-        apiHostname: hostname,
+        schedule: '0 0 * * 0',
+        containerId: container.id,
       })
 
       // Daily backup job
@@ -279,16 +271,8 @@ export class WebAppStack extends TerraformStack {
             type: 'daily',
           },
         },
-        cron: {
-          timezone: 'Europe/Paris',
-          schedule: '0 0 * * *',
-        },
-        timeout: '5m',
-        memoryLimit: '128',
-        cpuLimit: 72,
-        internalApiPrivateKey:
-          sensitiveEnvironmentVariables.INTERNAL_API_PRIVATE_KEY.value,
-        apiHostname: hostname,
+        schedule: '0 0 * * *',
+        containerId: container.id,
       })
 
       // Hourly backup job
@@ -301,16 +285,8 @@ export class WebAppStack extends TerraformStack {
             type: 'hourly',
           },
         },
-        cron: {
-          timezone: 'Europe/Paris',
-          schedule: '0 * * * *',
-        },
-        timeout: '5m',
-        memoryLimit: '128',
-        cpuLimit: 72,
-        internalApiPrivateKey:
-          sensitiveEnvironmentVariables.INTERNAL_API_PRIVATE_KEY.value,
-        apiHostname: hostname,
+        schedule: '0 * * * *',
+        containerId: container.id,
       })
     }
 
