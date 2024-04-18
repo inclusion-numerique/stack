@@ -11,15 +11,6 @@ export const revalidate = 0
 export const GET = () => new Response(null, { status: 405 })
 
 export const POST = async (request: NextRequest) => {
-  const requestDebugInfo = {
-    body: await request.text(),
-    method: request.method,
-    ip: request.ip,
-    headers: Object.fromEntries(request.headers.entries()),
-  }
-
-  console.log('DEBUG JOB ROUTE REQUEST', requestDebugInfo)
-
   if (
     request.headers.get(executeJobApiTokenHeader) !==
     ServerWebAppConfig.internalApiPrivateKey
@@ -37,17 +28,10 @@ export const POST = async (request: NextRequest) => {
     )
   }
 
-  const data: unknown = await request
-    .text()
-    .then(JSON.parse)
-    .catch(() => null)
+  const data: unknown = await request.json().catch(() => null)
 
   if (!data) {
-    Sentry.captureException('Invalid JSON payload job execution', {
-      data: {
-        body: await request.text(),
-      },
-    })
+    Sentry.captureException('Invalid JSON payload job execution')
 
     return new Response(
       JSON.stringify({
@@ -60,6 +44,15 @@ export const POST = async (request: NextRequest) => {
       },
     )
   }
+
+  const requestDebugInfo = {
+    method: request.method,
+    ip: request.ip,
+    headers: Object.fromEntries(request.headers.entries()),
+    data,
+  }
+
+  console.log('DEBUG JOB ROUTE REQUEST', requestDebugInfo)
 
   const jobPayload = await JobValidation.safeParseAsync(data)
 
