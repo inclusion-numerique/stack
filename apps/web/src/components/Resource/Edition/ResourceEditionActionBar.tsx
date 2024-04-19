@@ -171,7 +171,7 @@ const ResourceEditionActionBar = ({
       <DeleteResourceModal {...deleteResourceModalProps(onDelete)} />
       <InviteContributorsModal
         title="Inviter des contributeurs"
-        className="overflowModal"
+        className="fr-modal--overflow-visible"
       >
         <p className="fr-mb-4w">
           Les contributeurs peuvent voir, éditer, inviter d’autres contributeurs
