@@ -11,9 +11,11 @@ import { getDatabasePasswordSecret } from '@app/cli/commands/secrets/getDatabase
 import { getSecretValue } from '@app/cli/commands/secrets/getSecretValue'
 import { listSecrets } from '@app/cli/commands/secrets/listSecrets'
 import { setupDatabaseSecret } from '@app/cli/commands/secrets/setupDatabaseSecret'
+import { executeJobCommand } from '@app/cli/commands/jobs/executeJobCommand'
 
 const program = new Command()
 
+program.addCommand(executeJobCommand)
 program.addCommand(listSecrets)
 program.addCommand(getSecretValue)
 program.addCommand(setupDatabaseSecret)

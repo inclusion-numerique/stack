@@ -1,11 +1,73 @@
 import { v4 } from 'uuid'
+import { type Prisma } from '@prisma/client'
 import {
+  type DataInclusionStructure,
   downloadDataInclusionStructures,
   getStructuresFromLocalFile,
 } from '@app/web/data/data-inclusion/dataInclusionStructures'
 import { prismaClient } from '@app/web/prismaClient'
 import type { UpdateDataInclusionStructuresJob } from '@app/web/jobs/update-data-inclusion-structures/updateDataInclusionStructuresJob'
 import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { dataInclusionStructureUniqueId } from '@app/web/data/data-inclusion/dataInclusionStructureUniqueId'
+
+const dataInclusionStructureToStructureData = ({
+  id: idDataInclusion,
+  date_maj,
+  source,
+  nom,
+  rna,
+  siret,
+  commune,
+  adresse,
+  antenne,
+  accessibilite,
+  code_insee,
+  code_postal,
+  complement_adresse,
+  courriel,
+  labels_autres,
+  horaires_ouverture,
+  labels_nationaux,
+  lien_source,
+  thematiques,
+  latitude,
+  longitude,
+  presentation_detail,
+  presentation_resume,
+  site_web,
+  telephone,
+  typologie,
+}: DataInclusionStructure): Prisma.StructureCreateManyInput => ({
+  idDataInclusion: dataInclusionStructureUniqueId({
+    id: idDataInclusion,
+    source,
+  }),
+  dateMaj: new Date(date_maj),
+  source,
+  nom,
+  rna,
+  siret,
+  commune: commune ?? '',
+  adresse: adresse ?? '',
+  antenne,
+  accessibilite,
+  codeInsee: code_insee ?? '',
+  codePostal: code_postal ?? '',
+  complementAdresse: complement_adresse,
+  courriel,
+  labelsAutres: labels_autres ?? [],
+  horairesOuverture: horaires_ouverture,
+  labelsNationaux: labels_nationaux ?? [],
+  lienSource: lien_source,
+  thematiques: thematiques ?? [],
+  latitude,
+  longitude,
+  presentationDetail: presentation_detail,
+  presentationResume: presentation_resume,
+  siteWeb: site_web,
+  telephone,
+  typologie,
+})
 
 export const executeUpdateDataInclusionStructures = async (
   _job: UpdateDataInclusionStructuresJob,
@@ -26,18 +88,18 @@ export const executeUpdateDataInclusionStructures = async (
     downloadDataInclusionStructures().then(() => getStructuresFromLocalFile()),
   ])
 
-  const existingMap = new Map(
-    existingStructures.map((s) => [s.idDataInclusion, s]),
-  )
+  const existingMap = new Map(existingStructures.map((s) => [s.id, s]))
   const dataInclusionStructuresMap = new Map(
-    dataInclusionStructures.map((s) => [s.id, s]),
+    dataInclusionStructures.map((s) => [dataInclusionStructureUniqueId(s), s]),
   )
 
-  const toCreate = dataInclusionStructures.filter((s) => !existingMap.has(s.id))
+  const toCreate = dataInclusionStructures.filter(
+    (s) => !existingMap.has(dataInclusionStructureUniqueId(s)),
+  )
 
   const toUpdate = dataInclusionStructures.filter((s) => {
-    const existing = existingMap.get(s.id)
-    return existing && existing.dateMaj.getTime() !== s.dateMaj
+    const existing = existingMap.get(dataInclusionStructureUniqueId(s))
+    return existing && existing.dateMaj.getTime() !== s.date_maj
   })
 
   const toDelete = existingStructures.filter(
@@ -47,128 +109,18 @@ export const executeUpdateDataInclusionStructures = async (
 
   await prismaClient.$transaction([
     prismaClient.structure.createMany({
-      data: toCreate.map(
-        ({
-          id: idDataInclusion,
-          dateMaj,
-          source,
-          nom,
-          rna,
-          siret,
-          commune,
-          adresse,
-          antenne,
-          accessibilite,
-          codeInsee,
-          codePostal,
-          complementAdresse,
-          courriel,
-          horairesOuverture,
-          labelsAutres,
-          labelsNationaux,
-          lienSource,
-          thematiques,
-          latitude,
-          longitude,
-          presentationDetail,
-          presentationResume,
-          siteWeb,
-          telephone,
-          typologie,
-        }) => ({
-          id: v4(),
-          idDataInclusion,
-          dateMaj: new Date(dateMaj),
-          source,
-          nom,
-          rna,
-          siret,
-          commune,
-          adresse,
-          antenne,
-          accessibilite,
-          codeInsee,
-          codePostal,
-          complementAdresse,
-          courriel,
-          horairesOuverture,
-          labelsAutres,
-          labelsNationaux,
-          lienSource,
-          thematiques,
-          latitude,
-          longitude,
-          presentationDetail,
-          presentationResume,
-          siteWeb,
-          telephone,
-          typologie,
-        }),
-      ),
+      data: toCreate.map((structure) => ({
+        ...dataInclusionStructureToStructureData(structure),
+        id: v4(),
+      })),
     }),
-    ...toUpdate.map(
-      ({
-        id: idDataInclusion,
-        dateMaj,
-        source,
-        nom,
-        rna,
-        siret,
-        commune,
-        adresse,
-        antenne,
-        accessibilite,
-        codeInsee,
-        codePostal,
-        complementAdresse,
-        courriel,
-        horairesOuverture,
-        labelsAutres,
-        labelsNationaux,
-        lienSource,
-        thematiques,
-        latitude,
-        longitude,
-        presentationDetail,
-        presentationResume,
-        siteWeb,
-        telephone,
-        typologie,
-      }) =>
-        prismaClient.structure.update({
-          where: {
-            idDataInclusion,
-          },
-          data: {
-            id: v4(),
-            idDataInclusion,
-            dateMaj: new Date(dateMaj),
-            source,
-            nom,
-            rna,
-            siret,
-            commune,
-            adresse,
-            antenne,
-            accessibilite,
-            codeInsee,
-            codePostal,
-            complementAdresse,
-            courriel,
-            horairesOuverture,
-            labelsAutres,
-            labelsNationaux,
-            lienSource,
-            thematiques,
-            latitude,
-            longitude,
-            presentationDetail,
-            presentationResume,
-            siteWeb,
-            telephone,
-            typologie,
-          },
-        }),
+    ...toUpdate.map((structure) =>
+      prismaClient.structure.update({
+        where: {
+          idDataInclusion: dataInclusionStructureUniqueId(structure),
+        },
+        data: dataInclusionStructureToStructureData(structure),
+      }),
     ),
     prismaClient.structure.updateMany({
       where: {

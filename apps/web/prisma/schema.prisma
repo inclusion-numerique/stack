@@ -244,10 +244,10 @@ model Structure {
   // # Champs Data inclusion
 
   // Code SIRET de la structure (identifiant officiel des entreprises en France)
-  siret String? @unique @db.VarChar(14)
+  siret String? @db.VarChar(14)
 
   // Numéro RNA (Répertoire National des Associations) de la structure
-  rna String? @unique @db.VarChar(10)
+  rna String? @db.VarChar(10)
 
   // Nom de la structure
   nom String
@@ -295,7 +295,7 @@ model Structure {
   source String?
 
   // Indique si la structure est une antenne
-  antenne Boolean
+  antenne Boolean?
 
   // Date de dernière mise à jour des données
   dateMaj DateTime @map("date_maj")
@@ -389,16 +389,16 @@ model MediateurEnActivite {
 }
 
 enum MutationName {
-  CreerMediateur              @map("creer_mediateur")
-  ModifierMediateur           @map("modifier_mediateur")
-  SupprimerMediateur          @map("supprimer_mediateur")
-  CreerCoordinateur           @map("creer_coordinateur")
-  ModifierCoordinateur        @map("modifier_coordinateur")
-  SupprimerCoordinateur       @map("supprimer_coordinateur")
-  CreerMediateurCoordonne     @map("creer_mediateur_coordonne")
-  SupprimerMediateurCoordonne @map("supprimer_mediateur_coordonne")
-  CreerStructure              @map("creer_structure")
-  ModifierStructure           @map("modifier_structure")
+  CreerMediateur                   @map("creer_mediateur")
+  ModifierMediateur                @map("modifier_mediateur")
+  SupprimerMediateur               @map("supprimer_mediateur")
+  CreerCoordinateur                @map("creer_coordinateur")
+  ModifierCoordinateur             @map("modifier_coordinateur")
+  SupprimerCoordinateur            @map("supprimer_coordinateur")
+  CreerMediateurCoordonne          @map("creer_mediateur_coordonne")
+  SupprimerMediateurCoordonne      @map("supprimer_mediateur_coordonne")
+  CreerStructure                   @map("creer_structure")
+  ModifierStructure                @map("modifier_structure")
   MiseAJourDataInclusionStructures @map("mise_a_jour_data_inclusion_structures")
 
   @@map("mutation_name")
@@ -422,4 +422,6 @@ model Mutation {
   data Json
 
   timestamp DateTime @default(now()) @map("timestamp")
+
+  @@map("mutations")
 }

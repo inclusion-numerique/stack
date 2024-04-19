@@ -1,13 +1,15 @@
 import { createWriteStream } from 'node:fs'
 import { readFile } from 'node:fs/promises'
 import type { Stream } from 'node:stream'
-import { cwdVarFile } from '@app/config/varDirectory'
+import { varFile } from '@app/config/varDirectory'
 import axios from 'axios'
+import { createVarDirectory } from '@app/config/createVarDirectory'
+import * as Sentry from '@sentry/nextjs'
 
 const dataInclusionStructuresUrl = () =>
   `https://www.data.gouv.fr/fr/datasets/r/4fc64287-e869-4550-8fb9-b1e0b7809ffa`
 
-const dataInclusionStructuresFilePath = cwdVarFile(
+const dataInclusionStructuresFilePath = varFile(
   'data-inclusion-structures.json',
 )
 
@@ -26,19 +28,19 @@ export type DataInclusionStructure = {
   nom: string
 
   // Nom de la commune rattachée à l'adresse de la structure
-  commune: string
+  commune: string | null
 
   // Code postal rattaché à l'adresse de la structure
-  codePostal: string
+  code_postal: string | null
 
   // Code INSEE de la commune rattachée à l'adresse de la structure (peut être null)
-  codeInsee: string | null
+  code_insee: string | null
 
   // Adresse de la structure
-  adresse: string
+  adresse: string | null
 
   // Complément d'adresse pour préciser la localisation exacte (peut être null)
-  complementAdresse: string | null
+  complement_adresse: string | null
 
   // Longitude géographique de la structure (peut être null)
   longitude: number | null
@@ -56,43 +58,44 @@ export type DataInclusionStructure = {
   courriel: string | null
 
   // URL du site web de la structure (peut être null)
-  siteWeb: string | null
+  site_web: string | null
 
   // Description courte de la structure (peut être null)
-  presentationResume: string | null
+  presentation_resume: string | null
 
   // Description détaillée de la structure (peut être null)
-  presentationDetail: string | null
+  presentation_detail: string | null
 
   // Source des données (peut être null)
   source: string | null
 
   // Indique si la structure est une antenne
-  antenne: boolean
+  antenne: boolean | null
 
   // Date de dernière mise à jour des données
-  dateMaj: number
+  date_maj: number
 
   // URL vers la source des données (peut être null)
-  lienSource: string | null
+  lien_source: string | null
 
   // Horaires d'ouverture de la structure (peut être null)
-  horairesOuverture: string | null
+  horaires_ouverture: string | null
 
   // URL vers les informations d'accessibilité de la structure (peut être null)
   accessibilite: string | null
 
   // Labels nationaux obtenus par la structure (peut être une liste vide)
-  labelsNationaux: string[]
+  labels_nationaux: string[] | null
 
   // Autres labels obtenus par la structure (peut être une liste vide)
-  labelsAutres: string[]
+  labels_autres: string[] | null
 
   // Thématiques abordées par la structure (peut être une liste vide)
-  thematiques: string[]
+  thematiques: string[] | null
 }
 
 export const downloadDataInclusionStructures = async () => {
+  createVarDirectory()
   // Download and write to file using stream, fetch, and fs write stream
   const response = await axios.get<Stream>(dataInclusionStructuresUrl(), {
     responseType: 'stream',
@@ -120,9 +123,15 @@ export const getStructuresFromLocalFile = async () => {
   // Read and parse json with read file promise from dataInclusionStructuresFilePath
   const data = await readFile(dataInclusionStructuresFilePath, 'utf8')
 
-  const structures = JSON.parse(data) as DataInclusionStructure[]
+  try {
+    const structures = JSON.parse(data) as DataInclusionStructure[]
 
-  return structures
+    return structures
+  } catch (error) {
+    Sentry.captureException(error)
+
+    throw new Error('Cannot parse structures json')
+  }
 }
 
 export const getStructuresMetadata = async () => {
@@ -170,8 +179,8 @@ export const getStructuresMetadata = async () => {
   )
 
   const lastUpdate = structures.reduce((accumulator, current) => {
-    if (current.dateMaj > accumulator) {
-      return current.dateMaj
+    if (current.date_maj > accumulator) {
+      return current.date_maj
     }
     return accumulator
   }, 0)

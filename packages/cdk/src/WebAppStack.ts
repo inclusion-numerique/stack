@@ -292,6 +292,16 @@ export class WebAppStack extends TerraformStack {
       })
     }
 
+    createJobExecutionCron(this, {
+      name: `update-data-inclusion-structures`,
+      job: {
+        name: 'update-data-inclusion-structures',
+        payload: undefined,
+      },
+      schedule: '0 3 * * *',
+      containerId: container.id,
+    })
+
     output('webBaseUrl', hostname)
     output('containerDomainName', container.domainName)
     output('databaseUrl', databaseUrl, 'sensitive')
