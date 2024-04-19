@@ -8,18 +8,7 @@ import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-// export const GET = () => new Response(null, { status: 405 })
-
-export const GET = async () => {
-  const result = await executeJob({
-    name: 'backup-database',
-    payload: {
-      type: 'hourly',
-      databaseName: 'stack-main',
-    },
-  })
-  return new Response(JSON.stringify(result))
-}
+export const GET = () => new Response(null, { status: 405 })
 
 export const POST = async (request: NextRequest) => {
   if (
@@ -55,15 +44,6 @@ export const POST = async (request: NextRequest) => {
       },
     )
   }
-
-  const requestDebugInfo = {
-    method: request.method,
-    ip: request.ip,
-    headers: Object.fromEntries(request.headers.entries()),
-    data,
-  }
-
-  console.log('DEBUG JOB ROUTE REQUEST', requestDebugInfo)
 
   const jobPayload = await JobValidation.safeParseAsync(data)
 

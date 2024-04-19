@@ -44,16 +44,6 @@ export const executeBackupDatabaseJob = async ({
 
   const expiresAtISOString = expiresAt.toISOString()
 
-  console.log('DATA', {
-    config: ServerWebAppConfig.Database,
-    instance_id: databaseInstanceIdForApiCall(
-      ServerWebAppConfig.Database.instanceId,
-    ),
-    database_name: databaseName,
-    name: fileName,
-    expires_at: expiresAtISOString,
-  })
-
   const response = await axios.post<ScalewayCreateBackupResponse>(
     'https://api.scaleway.com/rdb/v1/regions/fr-par/backups',
     {
