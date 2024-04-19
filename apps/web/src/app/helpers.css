@@ -3,9 +3,9 @@
  */
 
 :root {
-  --slim-grey-border: 1px solid var(--border-default-grey);
-  --border-width: 1px;
-  --border-style: solid;
+    --slim-grey-border: 1px solid var(--border-default-grey);
+    --border-width: 1px;
+    --border-style: solid;
 }
 
 .wip {
@@ -39,7 +39,7 @@
 }
 
 .fr-text--justify {
-    text-align: justify  !important;
+    text-align: justify !important;
 }
 
 .fr-text--break-all {
@@ -528,19 +528,19 @@
 }
 
 .fr-border--bottom {
-  border-bottom: var(--border-width) var(--border-style) var(--border-default-grey);
+    border-bottom: var(--border-width) var(--border-style) var(--border-default-grey);
 }
 
 .fr-border--top {
-  border-top: var(--border-width) var(--border-style) var(--border-default-grey);
+    border-top: var(--border-width) var(--border-style) var(--border-default-grey);
 }
 
 .fr-border--start {
-  border-left: var(--border-width) var(--border-style) var(--border-default-grey);
+    border-left: var(--border-width) var(--border-style) var(--border-default-grey);
 }
 
 .fr-border--end {
-  border-right: var(--border-width) var(--border-style) var(--border-default-grey);
+    border-right: var(--border-width) var(--border-style) var(--border-default-grey);
 }
 
 .fr-table--nowrap {
