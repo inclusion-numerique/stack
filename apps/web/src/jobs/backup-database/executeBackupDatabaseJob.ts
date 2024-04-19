@@ -56,7 +56,7 @@ export const executeBackupDatabaseJob = async ({
     },
     {
       headers: {
-        'X-Auth-Token': ServerWebAppConfig.S3.secretKey,
+        'X-Auth-Token': ServerWebAppConfig.Scaleway.secretKey,
         'Content-Type': 'application/json',
       },
     },

@@ -126,3 +126,19 @@ model Upload {
 
   @@map("uploads")
 }
+
+model JobExecution {
+  id String @id @default(uuid()) @db.Uuid
+
+  name String
+
+  started   DateTime
+  completed DateTime?
+  errored   DateTime?
+  duration  Int?
+  data      Json?
+  result    Json?
+  error     String?
+
+  @@map("job_executions")
+}
