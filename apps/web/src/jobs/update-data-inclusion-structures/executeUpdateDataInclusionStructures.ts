@@ -4,13 +4,12 @@ import {
   getStructuresFromLocalFile,
 } from '@app/web/data/data-inclusion/dataInclusionStructures'
 import { prismaClient } from '@app/web/prismaClient'
-import { UpdateDataInclusionStructuresJob } from '@app/web/jobs/jobs'
-import { createStopwatch } from '@app/web/utils/stopwatch'
+import type { UpdateDataInclusionStructuresJob } from '@app/web/jobs/update-data-inclusion-structures/updateDataInclusionStructuresJob'
+import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 
 export const executeUpdateDataInclusionStructures = async (
   _job: UpdateDataInclusionStructuresJob,
 ) => {
-  const stopwatch = createStopwatch()
   const [existingStructures, dataInclusionStructures] = await Promise.all([
     prismaClient.structure.findMany({
       where: {
@@ -171,17 +170,23 @@ export const executeUpdateDataInclusionStructures = async (
           },
         }),
     ),
-
-    prismaClient.mutation.create({
-      data: {
-        nom: 'MiseAJourDataInclusionStructures',
-        duration: stopwatch.stop().duration,
-        data: {
-          created: toCreate.length,
-          updated: toUpdate.length,
-          deleted: toDelete.length,
+    prismaClient.structure.updateMany({
+      where: {
+        idDataInclusion: {
+          in: toDelete
+            .map((s) => s.idDataInclusion)
+            .filter(isDefinedAndNotNull),
         },
+      },
+      data: {
+        suppression: new Date(),
       },
     }),
   ])
+
+  return {
+    created: toCreate.length,
+    updated: toUpdate.length,
+    deleted: toDelete.length,
+  }
 }

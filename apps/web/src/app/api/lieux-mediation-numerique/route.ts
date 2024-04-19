@@ -1,10 +1,11 @@
-import { prismaClient } from '@app/web/prismaClient'
 import { fromSchemaDataInclusion } from '@gouvfr-anct/lieux-de-mediation-numerique'
+import { prismaClient } from '@app/web/prismaClient'
 
 export const GET = async () => {
   const structures = await prismaClient.structure.findMany({
     // TODO Select orga / lieux activité to know if it is open to public
     where: {
+      suppression: null,
       OR: [
         {
           modification: {
@@ -18,22 +19,21 @@ export const GET = async () => {
     },
   })
 
-  const lieux = structures.map(structure => {
-
+  const lieux = structures.map((structure) => {
     const id = structure.idDataInclusion ?? structure.id
 
     const source = 'coop-numerique'
 
-    // TODO Si conseiller numérique en activité
+    // TODO Si conseiller numérique en activité (a ajouter au select)
     const hasConseillerNumeriqueEnActivite = false
-
 
     return fromSchemaDataInclusion(
       [
         {
-          id, nom: 'Médiation numérique', structure_id: id,
+          id,
+          nom: 'Médiation numérique',
+          structure_id: id,
           source,
-
         },
       ],
       {
@@ -51,11 +51,12 @@ export const GET = async () => {
           'numerique--utiliser-le-numerique-au-quotidien',
           'numerique--approfondir-ma-culture-numerique',
         ],
-        labels_nationaux: hasConseillerNumeriqueEnActivite ? [
-          'conseiller-numerique',
-        ] : [],
-
+        labels_nationaux: hasConseillerNumeriqueEnActivite
+          ? ['conseiller-numerique']
+          : [],
       },
     )
-  }
+  })
+
+  return new Response(JSON.stringify(lieux))
 }

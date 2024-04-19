@@ -4,6 +4,7 @@ import type { Job, JobName, JobPayload } from '@app/web/jobs/jobs'
 import { executeBackupDatabaseJob } from '@app/web/jobs/backup-database/executeBackupDatabaseJob'
 import { createStopwatch } from '@app/web/utils/stopwatch'
 import { prismaClient } from '@app/web/prismaClient'
+import { executeUpdateDataInclusionStructures } from '@app/web/jobs/update-data-inclusion-structures/executeUpdateDataInclusionStructures'
 
 export type JobExecutor<Name extends JobName, Result = unknown> = (
   job: Job & { name: Name; payload: JobPayload<Name> },
@@ -14,6 +15,7 @@ export const jobExecutors: {
   [Name in JobName]: JobExecutor<Name>
 } = {
   'backup-database': executeBackupDatabaseJob,
+  'update-data-inclusion-structures': executeUpdateDataInclusionStructures,
 }
 
 export const executeJob = async (job: Job) => {
@@ -31,7 +33,8 @@ export const executeJob = async (job: Job) => {
   })
 
   try {
-    const result = await jobExecutors[job.name](job)
+    const executor = jobExecutors[job.name] as JobExecutor<(typeof job)['name']>
+    const result = await executor(job)
     const { ended, duration } = stopWatch.stop()
 
     prismaClient.jobExecution

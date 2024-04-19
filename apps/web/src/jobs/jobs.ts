@@ -1,5 +1,6 @@
 import z from 'zod'
 import { BackupDatabaseJobValidation } from '@app/web/jobs/backup-database/backupDatabaseJob'
+import { UpdateDataInclusionStructuresJobValidation } from '@app/web/jobs/update-data-inclusion-structures/updateDataInclusionStructuresJob'
 
 /**
  * A job represents a task that can be executed asynchronously.
@@ -19,6 +20,7 @@ import { BackupDatabaseJobValidation } from '@app/web/jobs/backup-database/backu
 
 export const JobValidation = z.discriminatedUnion('name', [
   BackupDatabaseJobValidation,
+  UpdateDataInclusionStructuresJobValidation,
 ])
 
 export type Job = z.infer<typeof JobValidation>
