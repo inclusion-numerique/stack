@@ -11,11 +11,13 @@ const OptionBadge = ({
   onClick,
   disabled,
   size,
+  'data-testid': dataTestId,
 }: {
   option: SelectOption
   onClick: MouseEventHandler
   disabled?: boolean
   size?: 'sm' | 'md'
+  'data-testid'?: string
 }) => (
   <button
     type="button"
@@ -23,6 +25,7 @@ const OptionBadge = ({
     disabled={disabled || option.disabled}
     onClick={disabled ? undefined : onClick}
     aria-label={`Retirer ${option.name}`}
+    data-testid={dataTestId}
   >
     {option.name}
     <span className="fr-icon-close-line fr-ml-1w fr-icon--sm" />
