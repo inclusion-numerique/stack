@@ -1,6 +1,5 @@
 import { goToMostRecentEmailReceived } from '@app/e2e/e2e/goToMostRecentEmailReceived'
 import { givenUser } from '@app/e2e/support/given/givenUser'
-import { goToMostRecentEmailReceived } from '@app/e2e/e2e/goToMostRecentEmailReceived'
 
 describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter', () => {
   /**

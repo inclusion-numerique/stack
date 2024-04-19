@@ -52,7 +52,7 @@ const ResourceEditionActionBar = ({
   const buttonRef = useRef<HTMLButtonElement>(null)
   const collapseRef = useRef<HTMLDivElement>(null)
 
-  const onClickOutsideDropdown = (event: MouseEvent) => {
+  useOnClickOutside(collapseRef, (event) => {
     // Let the event propagate if clicked on the control button
     if (event.target === buttonRef?.current) {
       return
@@ -64,8 +64,7 @@ const ResourceEditionActionBar = ({
     }
 
     buttonRef.current.click()
-  }
-  useOnClickOutside(collapseRef, onClickOutsideDropdown)
+  })
 
   return (
     <>

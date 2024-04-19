@@ -1,11 +1,33 @@
-import React, { ChangeEventHandler, ReactNode } from 'react'
-import classNames from 'classnames'
+import React, { ChangeEventHandler, MouseEventHandler, ReactNode } from 'react'
 import { Control, Controller, FieldValues } from 'react-hook-form'
 import type { FieldPath } from 'react-hook-form/dist/types/path'
 import classNames from 'classnames'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 import SelectOptionsList from '@app/ui/components/Form/SelectOptionsList'
 import type { SelectInputOption, SelectOption } from './utils/options'
+
+const OptionBadge = ({
+  option,
+  onClick,
+  disabled,
+  size,
+}: {
+  option: SelectOption
+  onClick: MouseEventHandler
+  disabled?: boolean
+  size?: 'sm' | 'md'
+}) => (
+  <button
+    type="button"
+    className={`fr-tag fr-mr-1w fr-mb-2v ${size === 'sm' ? 'fr-tag--sm' : ''}`}
+    disabled={disabled || option.disabled}
+    onClick={disabled ? undefined : onClick}
+    aria-label={`Retirer ${option.name}`}
+  >
+    {option.name}
+    <span className="fr-icon-close-line fr-ml-1w fr-icon--sm" />
+  </button>
+)
 
 export type MultipleSelectFormFieldProps<T extends FieldValues> = {
   control: Control<T>
@@ -136,7 +158,6 @@ const MultipleSelectFormField = <T extends FieldValues>({
                   disabled={disabled}
                   size={badgeSize}
                   onClick={() => onTagClick(option)}
-                  className="fr-mb-2v"
                   data-testid={`${dataTestId}-${option.value}`}
                 />
               ))}

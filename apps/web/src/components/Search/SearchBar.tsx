@@ -46,7 +46,10 @@ const SearchBar = ({
 }: {
   searchParamsFromUrl?: boolean
 }) => {
-  const [searchSegment, tabSegment] = useSelectedLayoutSegments()
+  const [searchSegment, tabSegment] = useSelectedLayoutSegments() as [
+    string,
+    string,
+  ]
 
   const tab = searchTabFromString(tabSegment)
 

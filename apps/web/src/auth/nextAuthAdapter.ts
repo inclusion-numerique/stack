@@ -1,4 +1,4 @@
-import type { Adapter, AdapterUser, AdapterAccount } from '@auth/core/adapters'
+import type { Adapter, AdapterAccount, AdapterUser } from '@auth/core/adapters'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { v4 } from 'uuid'
 import type { NextAuthOptions } from 'next-auth'
