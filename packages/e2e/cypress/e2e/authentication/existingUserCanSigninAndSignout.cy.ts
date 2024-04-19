@@ -20,7 +20,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
   const monCompteProUser = {
     email: Cypress.env('MON_COMPTE_PRO_TEST_USER_EMAIL') as string,
     password: Cypress.env('MON_COMPTE_PRO_TEST_USER_PASSWORD') as string,
-    name: 'Jean User',
+    name: 'Lila Blanca',
   }
 
   before(() => {

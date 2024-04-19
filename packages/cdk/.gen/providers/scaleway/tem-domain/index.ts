@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/tem_domain
+// https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/tem_domain
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -10,11 +10,11 @@ export interface TemDomainConfig extends cdktf.TerraformMetaArguments {
   /**
   * Accept the Scaleway Terms of Service
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/tem_domain#accept_tos TemDomain#accept_tos}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/tem_domain#accept_tos TemDomain#accept_tos}
   */
   readonly acceptTos: boolean | cdktf.IResolvable;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/tem_domain#id TemDomain#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/tem_domain#id TemDomain#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -23,35 +23,119 @@ export interface TemDomainConfig extends cdktf.TerraformMetaArguments {
   /**
   * The domain name used when sending emails
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/tem_domain#name TemDomain#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/tem_domain#name TemDomain#name}
   */
   readonly name: string;
   /**
   * The project_id you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/tem_domain#project_id TemDomain#project_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/tem_domain#project_id TemDomain#project_id}
   */
   readonly projectId?: string;
   /**
   * The region you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/tem_domain#region TemDomain#region}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/tem_domain#region TemDomain#region}
   */
   readonly region?: string;
   /**
   * timeouts block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/tem_domain#timeouts TemDomain#timeouts}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/tem_domain#timeouts TemDomain#timeouts}
   */
   readonly timeouts?: TemDomainTimeouts;
 }
+export interface TemDomainReputation {
+}
+
+export function temDomainReputationToTerraform(struct?: TemDomainReputation): any {
+  if (!cdktf.canInspect(struct) || cdktf.Tokenization.isResolvable(struct)) { return struct; }
+  if (cdktf.isComplexElement(struct)) {
+    throw new Error("A complex element was used as configuration, this is not supported: https://cdk.tf/complex-object-as-configuration");
+  }
+  return {
+  }
+}
+
+export class TemDomainReputationOutputReference extends cdktf.ComplexObject {
+  private isEmptyObject = false;
+
+  /**
+  * @param terraformResource The parent resource
+  * @param terraformAttribute The attribute on the parent resource this class is referencing
+  * @param complexObjectIndex the index of this item in the list
+  * @param complexObjectIsFromSet whether the list is wrapping a set (will add tolist() to be able to access an item via an index)
+  */
+  public constructor(terraformResource: cdktf.IInterpolatingParent, terraformAttribute: string, complexObjectIndex: number, complexObjectIsFromSet: boolean) {
+    super(terraformResource, terraformAttribute, complexObjectIsFromSet, complexObjectIndex);
+  }
+
+  public get internalValue(): TemDomainReputation | undefined {
+    let hasAnyValues = this.isEmptyObject;
+    const internalValueResult: any = {};
+    return hasAnyValues ? internalValueResult : undefined;
+  }
+
+  public set internalValue(value: TemDomainReputation | undefined) {
+    if (value === undefined) {
+      this.isEmptyObject = false;
+    }
+    else {
+      this.isEmptyObject = Object.keys(value).length === 0;
+    }
+  }
+
+  // previous_score - computed: true, optional: false, required: false
+  public get previousScore() {
+    return this.getNumberAttribute('previous_score');
+  }
+
+  // previous_scored_at - computed: true, optional: false, required: false
+  public get previousScoredAt() {
+    return this.getStringAttribute('previous_scored_at');
+  }
+
+  // score - computed: true, optional: false, required: false
+  public get score() {
+    return this.getNumberAttribute('score');
+  }
+
+  // scored_at - computed: true, optional: false, required: false
+  public get scoredAt() {
+    return this.getStringAttribute('scored_at');
+  }
+
+  // status - computed: true, optional: false, required: false
+  public get status() {
+    return this.getStringAttribute('status');
+  }
+}
+
+export class TemDomainReputationList extends cdktf.ComplexList {
+
+  /**
+  * @param terraformResource The parent resource
+  * @param terraformAttribute The attribute on the parent resource this class is referencing
+  * @param wrapsSet whether the list is wrapping a set (will add tolist() to be able to access an item via an index)
+  */
+  constructor(protected terraformResource: cdktf.IInterpolatingParent, protected terraformAttribute: string, protected wrapsSet: boolean) {
+    super(terraformResource, terraformAttribute, wrapsSet)
+  }
+
+  /**
+  * @param index the index of the item to return
+  */
+  public get(index: number): TemDomainReputationOutputReference {
+    return new TemDomainReputationOutputReference(this.terraformResource, this.terraformAttribute, index, this.wrapsSet);
+  }
+}
 export interface TemDomainTimeouts {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/tem_domain#default TemDomain#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/tem_domain#default TemDomain#default}
   */
   readonly default?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/tem_domain#delete TemDomain#delete}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/tem_domain#delete TemDomain#delete}
   */
   readonly delete?: string;
 }
@@ -149,7 +233,7 @@ export class TemDomainTimeoutsOutputReference extends cdktf.ComplexObject {
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/tem_domain scaleway_tem_domain}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/tem_domain scaleway_tem_domain}
 */
 export class TemDomain extends cdktf.TerraformResource {
 
@@ -165,7 +249,7 @@ export class TemDomain extends cdktf.TerraformResource {
   * Generates CDKTF code for importing a TemDomain resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
   * @param importToId The construct id used in the generated config for the TemDomain to import
-  * @param importFromId The id of the existing TemDomain that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/tem_domain#import import section} in the documentation of this resource for the id to use
+  * @param importFromId The id of the existing TemDomain that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/tem_domain#import import section} in the documentation of this resource for the id to use
   * @param provider? Optional instance of the provider where the TemDomain to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
@@ -177,7 +261,7 @@ export class TemDomain extends cdktf.TerraformResource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/tem_domain scaleway_tem_domain} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/tem_domain scaleway_tem_domain} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -188,8 +272,8 @@ export class TemDomain extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_tem_domain',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.31.0',
-        providerVersionConstraint: '>= 2.31.0'
+        providerVersion: '2.39.0',
+        providerVersionConstraint: '>= 2.39.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -260,6 +344,11 @@ export class TemDomain extends cdktf.TerraformResource {
     return this.getStringAttribute('last_valid_at');
   }
 
+  // mx_blackhole - computed: true, optional: false, required: false
+  public get mxBlackhole() {
+    return this.getStringAttribute('mx_blackhole');
+  }
+
   // name - computed: false, optional: false, required: true
   private _name?: string; 
   public get name() {
@@ -310,6 +399,12 @@ export class TemDomain extends cdktf.TerraformResource {
     return this._region;
   }
 
+  // reputation - computed: true, optional: false, required: false
+  private _reputation = new TemDomainReputationList(this, "reputation", false);
+  public get reputation() {
+    return this._reputation;
+  }
+
   // revoked_at - computed: true, optional: false, required: false
   public get revokedAt() {
     return this.getStringAttribute('revoked_at');
@@ -333,6 +428,11 @@ export class TemDomain extends cdktf.TerraformResource {
   // smtp_port_unsecure - computed: true, optional: false, required: false
   public get smtpPortUnsecure() {
     return this.getNumberAttribute('smtp_port_unsecure');
+  }
+
+  // smtps_auth_user - computed: true, optional: false, required: false
+  public get smtpsAuthUser() {
+    return this.getStringAttribute('smtps_auth_user');
   }
 
   // smtps_port - computed: true, optional: false, required: false

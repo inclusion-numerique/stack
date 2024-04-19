@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/iam_group
+// https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/iam_group
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -10,23 +10,23 @@ export interface IamGroupConfig extends cdktf.TerraformMetaArguments {
   /**
   * List of IDs of the applications attached to the group
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/iam_group#application_ids IamGroup#application_ids}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/iam_group#application_ids IamGroup#application_ids}
   */
   readonly applicationIds?: string[];
   /**
   * The description of the iam group
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/iam_group#description IamGroup#description}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/iam_group#description IamGroup#description}
   */
   readonly description?: string;
   /**
   * Handle user and application memberships externally
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/iam_group#external_membership IamGroup#external_membership}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/iam_group#external_membership IamGroup#external_membership}
   */
   readonly externalMembership?: boolean | cdktf.IResolvable;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/iam_group#id IamGroup#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/iam_group#id IamGroup#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -35,25 +35,31 @@ export interface IamGroupConfig extends cdktf.TerraformMetaArguments {
   /**
   * The name of the iam group
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/iam_group#name IamGroup#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/iam_group#name IamGroup#name}
   */
   readonly name?: string;
   /**
   * ID of organization the resource is associated to.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/iam_group#organization_id IamGroup#organization_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/iam_group#organization_id IamGroup#organization_id}
   */
   readonly organizationId?: string;
   /**
+  * The tags associated with the application
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/iam_group#tags IamGroup#tags}
+  */
+  readonly tags?: string[];
+  /**
   * List of IDs of the users attached to the group
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/iam_group#user_ids IamGroup#user_ids}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/iam_group#user_ids IamGroup#user_ids}
   */
   readonly userIds?: string[];
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/iam_group scaleway_iam_group}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/iam_group scaleway_iam_group}
 */
 export class IamGroup extends cdktf.TerraformResource {
 
@@ -69,7 +75,7 @@ export class IamGroup extends cdktf.TerraformResource {
   * Generates CDKTF code for importing a IamGroup resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
   * @param importToId The construct id used in the generated config for the IamGroup to import
-  * @param importFromId The id of the existing IamGroup that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/iam_group#import import section} in the documentation of this resource for the id to use
+  * @param importFromId The id of the existing IamGroup that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/iam_group#import import section} in the documentation of this resource for the id to use
   * @param provider? Optional instance of the provider where the IamGroup to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
@@ -81,7 +87,7 @@ export class IamGroup extends cdktf.TerraformResource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/iam_group scaleway_iam_group} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/iam_group scaleway_iam_group} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -92,8 +98,8 @@ export class IamGroup extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_iam_group',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.31.0',
-        providerVersionConstraint: '>= 2.31.0'
+        providerVersion: '2.39.0',
+        providerVersionConstraint: '>= 2.39.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -109,6 +115,7 @@ export class IamGroup extends cdktf.TerraformResource {
     this._id = config.id;
     this._name = config.name;
     this._organizationId = config.organizationId;
+    this._tags = config.tags;
     this._userIds = config.userIds;
   }
 
@@ -217,6 +224,22 @@ export class IamGroup extends cdktf.TerraformResource {
     return this._organizationId;
   }
 
+  // tags - computed: false, optional: true, required: false
+  private _tags?: string[]; 
+  public get tags() {
+    return this.getListAttribute('tags');
+  }
+  public set tags(value: string[]) {
+    this._tags = value;
+  }
+  public resetTags() {
+    this._tags = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get tagsInput() {
+    return this._tags;
+  }
+
   // updated_at - computed: true, optional: false, required: false
   public get updatedAt() {
     return this.getStringAttribute('updated_at');
@@ -250,6 +273,7 @@ export class IamGroup extends cdktf.TerraformResource {
       id: cdktf.stringToTerraform(this._id),
       name: cdktf.stringToTerraform(this._name),
       organization_id: cdktf.stringToTerraform(this._organizationId),
+      tags: cdktf.listMapper(cdktf.stringToTerraform, false)(this._tags),
       user_ids: cdktf.listMapper(cdktf.stringToTerraform, false)(this._userIds),
     };
   }

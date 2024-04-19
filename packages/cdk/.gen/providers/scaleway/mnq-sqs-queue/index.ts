@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue
+// https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -10,29 +10,23 @@ export interface MnqSqsQueueConfig extends cdktf.TerraformMetaArguments {
   /**
   * SQS access key
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#access_key MnqSqsQueue#access_key}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#access_key MnqSqsQueue#access_key}
   */
   readonly accessKey: string;
   /**
   * Specifies whether to enable content-based deduplication. Allows omitting the deduplication ID
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#content_based_deduplication MnqSqsQueue#content_based_deduplication}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#content_based_deduplication MnqSqsQueue#content_based_deduplication}
   */
   readonly contentBasedDeduplication?: boolean | cdktf.IResolvable;
   /**
-  * The sqs endpoint
-  *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#endpoint MnqSqsQueue#endpoint}
-  */
-  readonly endpoint?: string;
-  /**
   * Whether the queue is a FIFO queue. If true, the queue name must end with .fifo
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#fifo_queue MnqSqsQueue#fifo_queue}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#fifo_queue MnqSqsQueue#fifo_queue}
   */
   readonly fifoQueue?: boolean | cdktf.IResolvable;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#id MnqSqsQueue#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#id MnqSqsQueue#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -41,79 +35,85 @@ export interface MnqSqsQueueConfig extends cdktf.TerraformMetaArguments {
   /**
   * The number of seconds the queue retains a message.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#message_max_age MnqSqsQueue#message_max_age}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#message_max_age MnqSqsQueue#message_max_age}
   */
   readonly messageMaxAge?: number;
   /**
   * The maximum size of a message. Should be in bytes.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#message_max_size MnqSqsQueue#message_max_size}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#message_max_size MnqSqsQueue#message_max_size}
   */
   readonly messageMaxSize?: number;
   /**
   * The name of the queue. Conflicts with name_prefix.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#name MnqSqsQueue#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#name MnqSqsQueue#name}
   */
   readonly name?: string;
   /**
   * Creates a unique name beginning with the specified prefix. Conflicts with name.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#name_prefix MnqSqsQueue#name_prefix}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#name_prefix MnqSqsQueue#name_prefix}
   */
   readonly namePrefix?: string;
   /**
   * The project_id you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#project_id MnqSqsQueue#project_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#project_id MnqSqsQueue#project_id}
   */
   readonly projectId?: string;
   /**
   * The number of seconds to wait for a message to arrive in the queue before returning.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#receive_wait_time_seconds MnqSqsQueue#receive_wait_time_seconds}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#receive_wait_time_seconds MnqSqsQueue#receive_wait_time_seconds}
   */
   readonly receiveWaitTimeSeconds?: number;
   /**
   * The region you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#region MnqSqsQueue#region}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#region MnqSqsQueue#region}
   */
   readonly region?: string;
   /**
   * SQS secret key
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#secret_key MnqSqsQueue#secret_key}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#secret_key MnqSqsQueue#secret_key}
   */
   readonly secretKey: string;
   /**
+  * The sqs endpoint
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#sqs_endpoint MnqSqsQueue#sqs_endpoint}
+  */
+  readonly sqsEndpoint?: string;
+  /**
   * The number of seconds a message is hidden from other consumers.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#visibility_timeout_seconds MnqSqsQueue#visibility_timeout_seconds}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#visibility_timeout_seconds MnqSqsQueue#visibility_timeout_seconds}
   */
   readonly visibilityTimeoutSeconds?: number;
   /**
   * timeouts block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#timeouts MnqSqsQueue#timeouts}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#timeouts MnqSqsQueue#timeouts}
   */
   readonly timeouts?: MnqSqsQueueTimeouts;
 }
 export interface MnqSqsQueueTimeouts {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#create MnqSqsQueue#create}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#create MnqSqsQueue#create}
   */
   readonly create?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#default MnqSqsQueue#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#default MnqSqsQueue#default}
   */
   readonly default?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#delete MnqSqsQueue#delete}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#delete MnqSqsQueue#delete}
   */
   readonly delete?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#update MnqSqsQueue#update}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#update MnqSqsQueue#update}
   */
   readonly update?: string;
 }
@@ -257,7 +257,7 @@ export class MnqSqsQueueTimeoutsOutputReference extends cdktf.ComplexObject {
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue scaleway_mnq_sqs_queue}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue scaleway_mnq_sqs_queue}
 */
 export class MnqSqsQueue extends cdktf.TerraformResource {
 
@@ -273,7 +273,7 @@ export class MnqSqsQueue extends cdktf.TerraformResource {
   * Generates CDKTF code for importing a MnqSqsQueue resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
   * @param importToId The construct id used in the generated config for the MnqSqsQueue to import
-  * @param importFromId The id of the existing MnqSqsQueue that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue#import import section} in the documentation of this resource for the id to use
+  * @param importFromId The id of the existing MnqSqsQueue that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue#import import section} in the documentation of this resource for the id to use
   * @param provider? Optional instance of the provider where the MnqSqsQueue to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
@@ -285,7 +285,7 @@ export class MnqSqsQueue extends cdktf.TerraformResource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/mnq_sqs_queue scaleway_mnq_sqs_queue} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/mnq_sqs_queue scaleway_mnq_sqs_queue} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -296,8 +296,8 @@ export class MnqSqsQueue extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_mnq_sqs_queue',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.31.0',
-        providerVersionConstraint: '>= 2.31.0'
+        providerVersion: '2.39.0',
+        providerVersionConstraint: '>= 2.39.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -309,7 +309,6 @@ export class MnqSqsQueue extends cdktf.TerraformResource {
     });
     this._accessKey = config.accessKey;
     this._contentBasedDeduplication = config.contentBasedDeduplication;
-    this._endpoint = config.endpoint;
     this._fifoQueue = config.fifoQueue;
     this._id = config.id;
     this._messageMaxAge = config.messageMaxAge;
@@ -320,6 +319,7 @@ export class MnqSqsQueue extends cdktf.TerraformResource {
     this._receiveWaitTimeSeconds = config.receiveWaitTimeSeconds;
     this._region = config.region;
     this._secretKey = config.secretKey;
+    this._sqsEndpoint = config.sqsEndpoint;
     this._visibilityTimeoutSeconds = config.visibilityTimeoutSeconds;
     this._timeouts.internalValue = config.timeouts;
   }
@@ -355,22 +355,6 @@ export class MnqSqsQueue extends cdktf.TerraformResource {
   // Temporarily expose input value. Use with caution.
   public get contentBasedDeduplicationInput() {
     return this._contentBasedDeduplication;
-  }
-
-  // endpoint - computed: false, optional: true, required: false
-  private _endpoint?: string; 
-  public get endpoint() {
-    return this.getStringAttribute('endpoint');
-  }
-  public set endpoint(value: string) {
-    this._endpoint = value;
-  }
-  public resetEndpoint() {
-    this._endpoint = undefined;
-  }
-  // Temporarily expose input value. Use with caution.
-  public get endpointInput() {
-    return this._endpoint;
   }
 
   // fifo_queue - computed: true, optional: true, required: false
@@ -530,6 +514,22 @@ export class MnqSqsQueue extends cdktf.TerraformResource {
     return this._secretKey;
   }
 
+  // sqs_endpoint - computed: false, optional: true, required: false
+  private _sqsEndpoint?: string; 
+  public get sqsEndpoint() {
+    return this.getStringAttribute('sqs_endpoint');
+  }
+  public set sqsEndpoint(value: string) {
+    this._sqsEndpoint = value;
+  }
+  public resetSqsEndpoint() {
+    this._sqsEndpoint = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get sqsEndpointInput() {
+    return this._sqsEndpoint;
+  }
+
   // url - computed: true, optional: false, required: false
   public get url() {
     return this.getStringAttribute('url');
@@ -575,7 +575,6 @@ export class MnqSqsQueue extends cdktf.TerraformResource {
     return {
       access_key: cdktf.stringToTerraform(this._accessKey),
       content_based_deduplication: cdktf.booleanToTerraform(this._contentBasedDeduplication),
-      endpoint: cdktf.stringToTerraform(this._endpoint),
       fifo_queue: cdktf.booleanToTerraform(this._fifoQueue),
       id: cdktf.stringToTerraform(this._id),
       message_max_age: cdktf.numberToTerraform(this._messageMaxAge),
@@ -586,6 +585,7 @@ export class MnqSqsQueue extends cdktf.TerraformResource {
       receive_wait_time_seconds: cdktf.numberToTerraform(this._receiveWaitTimeSeconds),
       region: cdktf.stringToTerraform(this._region),
       secret_key: cdktf.stringToTerraform(this._secretKey),
+      sqs_endpoint: cdktf.stringToTerraform(this._sqsEndpoint),
       visibility_timeout_seconds: cdktf.numberToTerraform(this._visibilityTimeoutSeconds),
       timeouts: mnqSqsQueueTimeoutsToTerraform(this._timeouts.internalValue),
     };

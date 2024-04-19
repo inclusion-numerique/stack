@@ -4,7 +4,7 @@ describe.skip('ETQ Utilisateur, lorsque je clique sur “Se créer un compte”,
   const { email, password, name } = {
     email: Cypress.env('MON_COMPTE_PRO_TEST_USER_EMAIL') as string,
     password: Cypress.env('MON_COMPTE_PRO_TEST_USER_PASSWORD') as string,
-    name: 'Jean User',
+    name: 'Lila Blanca',
   }
 
   before(() => {

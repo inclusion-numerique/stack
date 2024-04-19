@@ -1,15 +1,16 @@
 export const createStopwatch = () => {
-  const start = Date.now()
+  const started = new Date()
 
   return {
+    started,
     stop: () => {
-      const end = Date.now()
-      const duration = end - start
+      const ended = new Date()
+      const duration = ended.getTime() - started.getTime()
 
       return {
         duration,
-        start,
-        end,
+        started,
+        ended,
       }
     },
   }

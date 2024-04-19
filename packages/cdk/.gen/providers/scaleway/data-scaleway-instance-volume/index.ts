@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/instance_volume
+// https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/instance_volume
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -8,7 +8,7 @@ import * as cdktf from 'cdktf';
 
 export interface DataScalewayInstanceVolumeConfig extends cdktf.TerraformMetaArguments {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/instance_volume#id DataScalewayInstanceVolume#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/instance_volume#id DataScalewayInstanceVolume#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -17,25 +17,31 @@ export interface DataScalewayInstanceVolumeConfig extends cdktf.TerraformMetaArg
   /**
   * The name of the volume
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/instance_volume#name DataScalewayInstanceVolume#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/instance_volume#name DataScalewayInstanceVolume#name}
   */
   readonly name?: string;
   /**
+  * The project_id you want to attach the resource to
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/instance_volume#project_id DataScalewayInstanceVolume#project_id}
+  */
+  readonly projectId?: string;
+  /**
   * The ID of the volume
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/instance_volume#volume_id DataScalewayInstanceVolume#volume_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/instance_volume#volume_id DataScalewayInstanceVolume#volume_id}
   */
   readonly volumeId?: string;
   /**
   * The zone you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/instance_volume#zone DataScalewayInstanceVolume#zone}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/instance_volume#zone DataScalewayInstanceVolume#zone}
   */
   readonly zone?: string;
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/instance_volume scaleway_instance_volume}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/instance_volume scaleway_instance_volume}
 */
 export class DataScalewayInstanceVolume extends cdktf.TerraformDataSource {
 
@@ -51,7 +57,7 @@ export class DataScalewayInstanceVolume extends cdktf.TerraformDataSource {
   * Generates CDKTF code for importing a DataScalewayInstanceVolume resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
   * @param importToId The construct id used in the generated config for the DataScalewayInstanceVolume to import
-  * @param importFromId The id of the existing DataScalewayInstanceVolume that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/instance_volume#import import section} in the documentation of this resource for the id to use
+  * @param importFromId The id of the existing DataScalewayInstanceVolume that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/instance_volume#import import section} in the documentation of this resource for the id to use
   * @param provider? Optional instance of the provider where the DataScalewayInstanceVolume to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
@@ -63,7 +69,7 @@ export class DataScalewayInstanceVolume extends cdktf.TerraformDataSource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/instance_volume scaleway_instance_volume} Data Source
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/instance_volume scaleway_instance_volume} Data Source
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -74,8 +80,8 @@ export class DataScalewayInstanceVolume extends cdktf.TerraformDataSource {
       terraformResourceType: 'scaleway_instance_volume',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.31.0',
-        providerVersionConstraint: '>= 2.31.0'
+        providerVersion: '2.39.0',
+        providerVersionConstraint: '>= 2.39.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -87,6 +93,7 @@ export class DataScalewayInstanceVolume extends cdktf.TerraformDataSource {
     });
     this._id = config.id;
     this._name = config.name;
+    this._projectId = config.projectId;
     this._volumeId = config.volumeId;
     this._zone = config.zone;
   }
@@ -98,11 +105,6 @@ export class DataScalewayInstanceVolume extends cdktf.TerraformDataSource {
   // from_snapshot_id - computed: true, optional: false, required: false
   public get fromSnapshotId() {
     return this.getStringAttribute('from_snapshot_id');
-  }
-
-  // from_volume_id - computed: true, optional: false, required: false
-  public get fromVolumeId() {
-    return this.getStringAttribute('from_volume_id');
   }
 
   // id - computed: true, optional: true, required: false
@@ -142,9 +144,20 @@ export class DataScalewayInstanceVolume extends cdktf.TerraformDataSource {
     return this.getStringAttribute('organization_id');
   }
 
-  // project_id - computed: true, optional: false, required: false
+  // project_id - computed: false, optional: true, required: false
+  private _projectId?: string; 
   public get projectId() {
     return this.getStringAttribute('project_id');
+  }
+  public set projectId(value: string) {
+    this._projectId = value;
+  }
+  public resetProjectId() {
+    this._projectId = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get projectIdInput() {
+    return this._projectId;
   }
 
   // server_id - computed: true, optional: false, required: false
@@ -207,6 +220,7 @@ export class DataScalewayInstanceVolume extends cdktf.TerraformDataSource {
     return {
       id: cdktf.stringToTerraform(this._id),
       name: cdktf.stringToTerraform(this._name),
+      project_id: cdktf.stringToTerraform(this._projectId),
       volume_id: cdktf.stringToTerraform(this._volumeId),
       zone: cdktf.stringToTerraform(this._zone),
     };

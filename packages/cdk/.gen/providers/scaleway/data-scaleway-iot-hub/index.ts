@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/iot_hub
+// https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/iot_hub
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -10,11 +10,11 @@ export interface DataScalewayIotHubConfig extends cdktf.TerraformMetaArguments {
   /**
   * The ID of the IOT Hub
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/iot_hub#hub_id DataScalewayIotHub#hub_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/iot_hub#hub_id DataScalewayIotHub#hub_id}
   */
   readonly hubId?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/iot_hub#id DataScalewayIotHub#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/iot_hub#id DataScalewayIotHub#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -23,19 +23,25 @@ export interface DataScalewayIotHubConfig extends cdktf.TerraformMetaArguments {
   /**
   * The name of the hub
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/iot_hub#name DataScalewayIotHub#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/iot_hub#name DataScalewayIotHub#name}
   */
   readonly name?: string;
   /**
+  * The project_id you want to attach the resource to
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/iot_hub#project_id DataScalewayIotHub#project_id}
+  */
+  readonly projectId?: string;
+  /**
   * The region you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/iot_hub#region DataScalewayIotHub#region}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/iot_hub#region DataScalewayIotHub#region}
   */
   readonly region?: string;
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/iot_hub scaleway_iot_hub}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/iot_hub scaleway_iot_hub}
 */
 export class DataScalewayIotHub extends cdktf.TerraformDataSource {
 
@@ -51,7 +57,7 @@ export class DataScalewayIotHub extends cdktf.TerraformDataSource {
   * Generates CDKTF code for importing a DataScalewayIotHub resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
   * @param importToId The construct id used in the generated config for the DataScalewayIotHub to import
-  * @param importFromId The id of the existing DataScalewayIotHub that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/iot_hub#import import section} in the documentation of this resource for the id to use
+  * @param importFromId The id of the existing DataScalewayIotHub that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/iot_hub#import import section} in the documentation of this resource for the id to use
   * @param provider? Optional instance of the provider where the DataScalewayIotHub to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
@@ -63,7 +69,7 @@ export class DataScalewayIotHub extends cdktf.TerraformDataSource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/iot_hub scaleway_iot_hub} Data Source
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/iot_hub scaleway_iot_hub} Data Source
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -74,8 +80,8 @@ export class DataScalewayIotHub extends cdktf.TerraformDataSource {
       terraformResourceType: 'scaleway_iot_hub',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.31.0',
-        providerVersionConstraint: '>= 2.31.0'
+        providerVersion: '2.39.0',
+        providerVersionConstraint: '>= 2.39.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -88,6 +94,7 @@ export class DataScalewayIotHub extends cdktf.TerraformDataSource {
     this._hubId = config.hubId;
     this._id = config.id;
     this._name = config.name;
+    this._projectId = config.projectId;
     this._region = config.region;
   }
 
@@ -177,6 +184,16 @@ export class DataScalewayIotHub extends cdktf.TerraformDataSource {
     return this._id;
   }
 
+  // mqtt_ca - computed: true, optional: false, required: false
+  public get mqttCa() {
+    return this.getStringAttribute('mqtt_ca');
+  }
+
+  // mqtt_ca_url - computed: true, optional: false, required: false
+  public get mqttCaUrl() {
+    return this.getStringAttribute('mqtt_ca_url');
+  }
+
   // name - computed: false, optional: true, required: false
   private _name?: string; 
   public get name() {
@@ -203,9 +220,20 @@ export class DataScalewayIotHub extends cdktf.TerraformDataSource {
     return this.getStringAttribute('product_plan');
   }
 
-  // project_id - computed: true, optional: false, required: false
+  // project_id - computed: false, optional: true, required: false
+  private _projectId?: string; 
   public get projectId() {
     return this.getStringAttribute('project_id');
+  }
+  public set projectId(value: string) {
+    this._projectId = value;
+  }
+  public resetProjectId() {
+    this._projectId = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get projectIdInput() {
+    return this._projectId;
   }
 
   // region - computed: false, optional: true, required: false
@@ -243,6 +271,7 @@ export class DataScalewayIotHub extends cdktf.TerraformDataSource {
       hub_id: cdktf.stringToTerraform(this._hubId),
       id: cdktf.stringToTerraform(this._id),
       name: cdktf.stringToTerraform(this._name),
+      project_id: cdktf.stringToTerraform(this._projectId),
       region: cdktf.stringToTerraform(this._region),
     };
   }
