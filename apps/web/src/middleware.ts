@@ -5,6 +5,10 @@ import {
   redirectLegacyPathToCurrentUrl,
 } from '@app/web/legacyRedirection/legacyRedirection'
 import { output } from '@app/web/utils/output'
+import {
+  jobTriggerInfoFromRequest,
+  rewriteTriggerToJobEndpoint,
+} from '@app/web/jobs/jobTriggerMiddleware'
 
 const nodeEnvironment = process.env.NODE_ENV
 const isCI = !!process.env.CI
@@ -88,7 +92,15 @@ const redirectToBaseDomain = ({
 const middleware = (request: NextRequest) => {
   const forwardedProto = request.headers.get('X-Forwarded-Proto')
   const requestHost = request.headers.get('host')
-  const baseUrl = process.env.BASE_URL
+  const baseUrl = process.env.BASE_URL ?? ''
+
+  const jobTriggerInfo = jobTriggerInfoFromRequest({
+    request,
+    requestHost,
+  })
+  if (jobTriggerInfo) {
+    return rewriteTriggerToJobEndpoint({ baseUrl, request })
+  }
 
   /**
    * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security

@@ -14,6 +14,7 @@ const emailServer = `smtp://${process.env.SMTP_USERNAME ?? ''}:${
 export const ServerWebAppConfig = {
   NodeEnv: NodeEnvironment,
   Namespace: process.env.NAMESPACE ?? '',
+  internalApiPrivateKey: process.env.INTERNAL_API_PRIVATE_KEY ?? '',
   Email: {
     server: emailServer,
     from: `${process.env.EMAIL_FROM_NAME ?? ''} <${
@@ -23,6 +24,11 @@ export const ServerWebAppConfig = {
   S3: {
     uploadsBucket: process.env.UPLOADS_BUCKET ?? '',
     host: process.env.S3_HOST ?? '',
+    region: process.env.SCW_DEFAULT_REGION ?? '',
+    accessKey: process.env.SCW_ACCESS_KEY ?? '',
+    secretKey: process.env.SCW_SECRET_KEY ?? '',
+  },
+  Scaleway: {
     region: process.env.SCW_DEFAULT_REGION ?? '',
     accessKey: process.env.SCW_ACCESS_KEY ?? '',
     secretKey: process.env.SCW_SECRET_KEY ?? '',
@@ -49,5 +55,8 @@ export const ServerWebAppConfig = {
     to: `${process.env.REPORT_MODERATOR_NAME ?? ''} <${
       process.env.REPORT_MODERATOR_EMAIL ?? ''
     }>`,
+  },
+  Database: {
+    instanceId: process.env.DATABASE_INSTANCE_ID ?? '', // like fr-par/uuid
   },
 }

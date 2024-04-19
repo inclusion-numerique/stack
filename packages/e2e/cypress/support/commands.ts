@@ -202,7 +202,15 @@ Cypress.Commands.add('appUrlShouldBe', (url: string, options) => {
   cy.url().should('equal', appUrl(url), options)
 })
 
-//
+Cypress.Commands.add('allowNextRedirectException', () => {
+  Cypress.on('uncaught:exception', (error) => {
+    if (error.message.includes('NEXT_REDIRECT')) {
+      return false
+    }
+    return true
+  })
+})
+
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -262,6 +270,8 @@ declare global {
         url: string,
         options?: { timeout?: number },
       ): Chainable<void>
+
+      allowNextRedirectException(): Chainable<void>
 
       //       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
       //       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>

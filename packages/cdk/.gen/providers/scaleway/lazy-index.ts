@@ -3,6 +3,8 @@ Object.defineProperty(exports, 'accountProject', { get: function () { return req
 Object.defineProperty(exports, 'accountSshKey', { get: function () { return require('./account-ssh-key'); } });
 Object.defineProperty(exports, 'appleSiliconServer', { get: function () { return require('./apple-silicon-server'); } });
 Object.defineProperty(exports, 'baremetalServer', { get: function () { return require('./baremetal-server'); } });
+Object.defineProperty(exports, 'blockSnapshot', { get: function () { return require('./block-snapshot'); } });
+Object.defineProperty(exports, 'blockVolume', { get: function () { return require('./block-volume'); } });
 Object.defineProperty(exports, 'cockpit', { get: function () { return require('./cockpit'); } });
 Object.defineProperty(exports, 'cockpitGrafanaUser', { get: function () { return require('./cockpit-grafana-user'); } });
 Object.defineProperty(exports, 'cockpitToken', { get: function () { return require('./cockpit-token'); } });
@@ -50,6 +52,9 @@ Object.defineProperty(exports, 'iotDevice', { get: function () { return require(
 Object.defineProperty(exports, 'iotHub', { get: function () { return require('./iot-hub'); } });
 Object.defineProperty(exports, 'iotNetwork', { get: function () { return require('./iot-network'); } });
 Object.defineProperty(exports, 'iotRoute', { get: function () { return require('./iot-route'); } });
+Object.defineProperty(exports, 'ipamIp', { get: function () { return require('./ipam-ip'); } });
+Object.defineProperty(exports, 'ipamIpReverseDns', { get: function () { return require('./ipam-ip-reverse-dns'); } });
+Object.defineProperty(exports, 'jobDefinition', { get: function () { return require('./job-definition'); } });
 Object.defineProperty(exports, 'k8SCluster', { get: function () { return require('./k8s-cluster'); } });
 Object.defineProperty(exports, 'k8SPool', { get: function () { return require('./k8s-pool'); } });
 Object.defineProperty(exports, 'lb', { get: function () { return require('./lb'); } });
@@ -59,11 +64,12 @@ Object.defineProperty(exports, 'lbCertificate', { get: function () { return requ
 Object.defineProperty(exports, 'lbFrontend', { get: function () { return require('./lb-frontend'); } });
 Object.defineProperty(exports, 'lbIp', { get: function () { return require('./lb-ip'); } });
 Object.defineProperty(exports, 'lbRoute', { get: function () { return require('./lb-route'); } });
-Object.defineProperty(exports, 'mnqCredential', { get: function () { return require('./mnq-credential'); } });
-Object.defineProperty(exports, 'mnqNamespace', { get: function () { return require('./mnq-namespace'); } });
 Object.defineProperty(exports, 'mnqNatsAccount', { get: function () { return require('./mnq-nats-account'); } });
 Object.defineProperty(exports, 'mnqNatsCredentials', { get: function () { return require('./mnq-nats-credentials'); } });
-Object.defineProperty(exports, 'mnqQueue', { get: function () { return require('./mnq-queue'); } });
+Object.defineProperty(exports, 'mnqSns', { get: function () { return require('./mnq-sns'); } });
+Object.defineProperty(exports, 'mnqSnsCredentials', { get: function () { return require('./mnq-sns-credentials'); } });
+Object.defineProperty(exports, 'mnqSnsTopic', { get: function () { return require('./mnq-sns-topic'); } });
+Object.defineProperty(exports, 'mnqSnsTopicSubscription', { get: function () { return require('./mnq-sns-topic-subscription'); } });
 Object.defineProperty(exports, 'mnqSqs', { get: function () { return require('./mnq-sqs'); } });
 Object.defineProperty(exports, 'mnqSqsCredentials', { get: function () { return require('./mnq-sqs-credentials'); } });
 Object.defineProperty(exports, 'mnqSqsQueue', { get: function () { return require('./mnq-sqs-queue'); } });
@@ -82,6 +88,7 @@ Object.defineProperty(exports, 'rdbReadReplica', { get: function () { return req
 Object.defineProperty(exports, 'rdbUser', { get: function () { return require('./rdb-user'); } });
 Object.defineProperty(exports, 'redisCluster', { get: function () { return require('./redis-cluster'); } });
 Object.defineProperty(exports, 'registryNamespace', { get: function () { return require('./registry-namespace'); } });
+Object.defineProperty(exports, 'sdbSqlDatabase', { get: function () { return require('./sdb-sql-database'); } });
 Object.defineProperty(exports, 'secret', { get: function () { return require('./secret'); } });
 Object.defineProperty(exports, 'secretVersion', { get: function () { return require('./secret-version'); } });
 Object.defineProperty(exports, 'temDomain', { get: function () { return require('./tem-domain'); } });
@@ -104,6 +111,8 @@ Object.defineProperty(exports, 'dataScalewayBaremetalOs', { get: function () { r
 Object.defineProperty(exports, 'dataScalewayBaremetalServer', { get: function () { return require('./data-scaleway-baremetal-server'); } });
 Object.defineProperty(exports, 'dataScalewayBillingConsumptions', { get: function () { return require('./data-scaleway-billing-consumptions'); } });
 Object.defineProperty(exports, 'dataScalewayBillingInvoices', { get: function () { return require('./data-scaleway-billing-invoices'); } });
+Object.defineProperty(exports, 'dataScalewayBlockSnapshot', { get: function () { return require('./data-scaleway-block-snapshot'); } });
+Object.defineProperty(exports, 'dataScalewayBlockVolume', { get: function () { return require('./data-scaleway-block-volume'); } });
 Object.defineProperty(exports, 'dataScalewayCockpit', { get: function () { return require('./data-scaleway-cockpit'); } });
 Object.defineProperty(exports, 'dataScalewayCockpitPlan', { get: function () { return require('./data-scaleway-cockpit-plan'); } });
 Object.defineProperty(exports, 'dataScalewayContainer', { get: function () { return require('./data-scaleway-container'); } });
@@ -123,6 +132,7 @@ Object.defineProperty(exports, 'dataScalewayIamSshKey', { get: function () { ret
 Object.defineProperty(exports, 'dataScalewayIamUser', { get: function () { return require('./data-scaleway-iam-user'); } });
 Object.defineProperty(exports, 'dataScalewayInstanceImage', { get: function () { return require('./data-scaleway-instance-image'); } });
 Object.defineProperty(exports, 'dataScalewayInstanceIp', { get: function () { return require('./data-scaleway-instance-ip'); } });
+Object.defineProperty(exports, 'dataScalewayInstancePlacementGroup', { get: function () { return require('./data-scaleway-instance-placement-group'); } });
 Object.defineProperty(exports, 'dataScalewayInstancePrivateNic', { get: function () { return require('./data-scaleway-instance-private-nic'); } });
 Object.defineProperty(exports, 'dataScalewayInstanceSecurityGroup', { get: function () { return require('./data-scaleway-instance-security-group'); } });
 Object.defineProperty(exports, 'dataScalewayInstanceServer', { get: function () { return require('./data-scaleway-instance-server'); } });
@@ -132,6 +142,7 @@ Object.defineProperty(exports, 'dataScalewayInstanceVolume', { get: function () 
 Object.defineProperty(exports, 'dataScalewayIotDevice', { get: function () { return require('./data-scaleway-iot-device'); } });
 Object.defineProperty(exports, 'dataScalewayIotHub', { get: function () { return require('./data-scaleway-iot-hub'); } });
 Object.defineProperty(exports, 'dataScalewayIpamIp', { get: function () { return require('./data-scaleway-ipam-ip'); } });
+Object.defineProperty(exports, 'dataScalewayIpamIps', { get: function () { return require('./data-scaleway-ipam-ips'); } });
 Object.defineProperty(exports, 'dataScalewayK8SCluster', { get: function () { return require('./data-scaleway-k8s-cluster'); } });
 Object.defineProperty(exports, 'dataScalewayK8SPool', { get: function () { return require('./data-scaleway-k8s-pool'); } });
 Object.defineProperty(exports, 'dataScalewayK8SVersion', { get: function () { return require('./data-scaleway-k8s-version'); } });

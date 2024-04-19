@@ -33,6 +33,7 @@ import { ScalewayProvider } from '@app/scaleway/provider'
 import { RdbDatabase } from '@app/scaleway/rdb-database'
 import { RdbPrivilege } from '@app/scaleway/rdb-privilege'
 import { RdbUser } from '@app/scaleway/rdb-user'
+import { createJobExecutionCron } from '@app/cdk/createJobExecutionCron'
 
 export const webAppStackVariables = [
   'WEB_CONTAINER_IMAGE',
@@ -49,6 +50,7 @@ export const webAppStackSensitiveVariables = [
   'DATABASE_PASSWORD',
   'INCLUSION_CONNECT_PREVIEW_CLIENT_SECRET',
   'INCLUSION_CONNECT_MAIN_CLIENT_SECRET',
+  'INTERNAL_API_PRIVATE_KEY',
 ] as const
 
 /**
@@ -247,6 +249,50 @@ export class WebAppStack extends TerraformStack {
       hostname,
       dependsOn: [webDnsRecord, container],
     })
+
+    if (isMain) {
+      // Weekly backup job
+      createJobExecutionCron(this, {
+        name: `backup-${namespace}-database-weekly`,
+        job: {
+          name: 'backup-database',
+          payload: {
+            databaseName,
+            type: 'weekly',
+          },
+        },
+        schedule: '0 0 * * 0',
+        containerId: container.id,
+      })
+
+      // Daily backup job
+      createJobExecutionCron(this, {
+        name: `backup-${namespace}-database-daily`,
+        job: {
+          name: 'backup-database',
+          payload: {
+            databaseName,
+            type: 'daily',
+          },
+        },
+        schedule: '0 0 * * *',
+        containerId: container.id,
+      })
+
+      // Hourly backup job
+      createJobExecutionCron(this, {
+        name: `backup-${namespace}-database-hourly`,
+        job: {
+          name: 'backup-database',
+          payload: {
+            databaseName,
+            type: 'hourly',
+          },
+        },
+        schedule: '0 * * * *',
+        containerId: container.id,
+      })
+    }
 
     output('webBaseUrl', hostname)
     output('containerDomainName', container.domainName)

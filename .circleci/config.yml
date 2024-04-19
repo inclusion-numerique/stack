@@ -42,7 +42,7 @@ executors:
 parameters:
   cache_version:
     type: string
-    default: '2024-01-04-01'
+    default: '2024-02-29-01'
   virtual_store_dir:
     type: string
     default: './.pnpm'
@@ -97,6 +97,9 @@ workflows:
       - test_web_integration:
           requires:
             - prepare_workspace_dependencies
+      - test_web_integration:
+          requires:
+            - prepare_workspace_dependencies
       - build_web:
           requires:
             - prepare_workspace_dependencies
@@ -129,62 +132,6 @@ workflows:
             - test_web_integration
             - test_components
             - test_web_e2e
-
-  manual_backup_main_database:
-    when:
-      equal: [ backup_main_database, << pipeline.parameters.trigger_workflow >> ]
-    jobs:
-      - prepare_workspace_dependencies
-      - backup_main_database:
-          requires:
-            - prepare_workspace_dependencies
-
-  weekly_backup_main_database:
-    triggers:
-      - schedule:
-          cron: "0 0 * * 0"
-          filters:
-            branches:
-              only:
-                - main
-    jobs:
-      - prepare_workspace_dependencies
-      - backup_main_database:
-          backup_type: weekly
-          expires_in_days: 600
-          requires:
-            - prepare_workspace_dependencies
-
-  daily_backup_main_database:
-    triggers:
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only:
-                - main
-    jobs:
-      - prepare_workspace_dependencies
-      - backup_main_database:
-          backup_type: daily
-          expires_in_days: 90
-          requires:
-            - prepare_workspace_dependencies
-  hourly_backup_main_database:
-    triggers:
-      - schedule:
-          cron: "0 * * * *"
-          filters:
-            branches:
-              only:
-                - main
-    jobs:
-      - prepare_workspace_dependencies
-      - backup_main_database:
-          backup_type: hourly
-          expires_in_days: 7
-          requires:
-            - prepare_workspace_dependencies
 
   project_infrastructure_deployment:
     when:
@@ -275,7 +222,7 @@ jobs:
           command: pnpm tsc
       - run:
           name: 'Lint @app/web'
-          command: pnpm --silent -F '@app/web' lint
+          command: pnpm -F '@app/web' lint
           no_output_timeout: 30m
 
   lint_packages:
@@ -292,7 +239,7 @@ jobs:
           command: pnpm tsc
       - run:
           name: 'Lint all packages except @app/web'
-          command: pnpm --silent -F '!@app/web' lint
+          command: pnpm -F '!@app/web' lint
           no_output_timeout: 30m
 
   lint_and_test_cdk_package:
@@ -436,6 +383,16 @@ jobs:
           name: "Add NEXT_PUBLIC_* env to .env"
           command: |
             pnpm --silent cli dotenv:add-next-public --local $NAMESPACE
+      - run:
+          name: 'Add e2e vars to .env'
+          command: |
+            echo "DATABASE_URL=$CI_DATABASE_URL" >> .env
+            echo "SMTP_SERVER=localhost" >> .env
+            echo "SMTP_PORT=1025" >> .env
+            echo "SMTP_USERNAME=mailuser" >> .env
+            echo "SMTP_PASSWORD=mailpassword" >> .env
+            echo 'INCLUSION_CONNECT_CLIENT_SECRET=$INCLUSION_CONNECT_LOCAL_CLIENT_SECRET' >> .env
+      - add_dotenv_vars_to_bash_env
       - restore_cache:
           keys:
             - << pipeline.parameters.cache_version >>-next-e2e-{{ checksum "<< pipeline.parameters.lockfile >>" }}-{{ checksum "./.env" }}
@@ -448,21 +405,9 @@ jobs:
           paths:
             - ./apps/web/.next/cache
       - run:
-          name: 'Add e2e vars to .env'
-          command: |
-            echo "DATABASE_URL=$CI_DATABASE_URL" >> .env
-            echo "SMTP_SERVER=localhost" >> .env
-            echo "SMTP_PORT=1025" >> .env
-            echo "SMTP_USERNAME=mailuser" >> .env
-            echo "SMTP_PASSWORD=mailpassword" >> .env
-            echo 'INCLUSION_CONNECT_CLIENT_SECRET=$INCLUSION_CONNECT_LOCAL_CLIENT_SECRET' >> .env
-      - run:
           name: 'Create CI database schema'
           command: |
             pnpm --silent -F @app/web prisma migrate deploy
-      - restore_cache:
-          key: << pipeline.id >>-web-build
-      - add_dotenv_vars_to_bash_env
       - run:
           name: Isolate built standalone application to correctly e2e test node_modules bundling and run
           background: true
@@ -477,6 +422,45 @@ jobs:
           name: 'Run cypress e2e tests'
           command: |
             pnpm --silent -F @app/e2e cy run --record --parallel --group e2e
+  test_web_integration:
+    executor: node-e2e
+    resource_class: large
+    steps:
+      - checkout
+      - install_dependencies
+      - create_dotenv_file
+      - add_secrets_to_dotenv_file
+      - setup_docker_web_env
+      - run:
+          name: "Add NEXT_PUBLIC_* env to .env"
+          command: |
+            pnpm --silent cli dotenv:add-next-public --local $NAMESPACE
+      - run:
+          name: 'Add e2e vars to .env'
+          command: |
+            echo "DATABASE_URL=$CI_DATABASE_URL" >> .env
+            echo "SMTP_SERVER=localhost" >> .env
+            echo "SMTP_PORT=1025" >> .env
+            echo "SMTP_USERNAME=mailuser" >> .env
+            echo "SMTP_PASSWORD=mailpassword" >> .env
+      - run:
+          name: 'Prisma generate'
+          command: pnpm --silent -F @app/web prisma generate
+      - run:
+          name: 'Create CI database schema'
+          command: |
+            pnpm --silent -F @app/web prisma migrate deploy
+      - run:
+          name: 'Load fixtures'
+          command: |
+            pnpm -F @app/fixtures load
+      - restore_cache:
+          key: << pipeline.id >>-web-build
+      - add_dotenv_vars_to_bash_env
+      - run:
+          name: 'Run web integrations jest test'
+          command: |
+            pnpm --silent -F @app/web test:integration
 
   test_web_integration:
     executor: node-e2e

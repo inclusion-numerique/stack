@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/lbs
+// https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/lbs
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -8,7 +8,7 @@ import * as cdktf from 'cdktf';
 
 export interface DataScalewayLbsConfig extends cdktf.TerraformMetaArguments {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/lbs#id DataScalewayLbs#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/lbs#id DataScalewayLbs#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -17,19 +17,25 @@ export interface DataScalewayLbsConfig extends cdktf.TerraformMetaArguments {
   /**
   * LBs with a name like it are listed.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/lbs#name DataScalewayLbs#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/lbs#name DataScalewayLbs#name}
   */
   readonly name?: string;
   /**
   * The project_id you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/lbs#project_id DataScalewayLbs#project_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/lbs#project_id DataScalewayLbs#project_id}
   */
   readonly projectId?: string;
   /**
+  * LBs with these exact tags are listed
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/lbs#tags DataScalewayLbs#tags}
+  */
+  readonly tags?: string[];
+  /**
   * The zone you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/lbs#zone DataScalewayLbs#zone}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/lbs#zone DataScalewayLbs#zone}
   */
   readonly zone?: string;
 }
@@ -374,7 +380,7 @@ export class DataScalewayLbsLbsList extends cdktf.ComplexList {
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/lbs scaleway_lbs}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/lbs scaleway_lbs}
 */
 export class DataScalewayLbs extends cdktf.TerraformDataSource {
 
@@ -390,7 +396,7 @@ export class DataScalewayLbs extends cdktf.TerraformDataSource {
   * Generates CDKTF code for importing a DataScalewayLbs resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
   * @param importToId The construct id used in the generated config for the DataScalewayLbs to import
-  * @param importFromId The id of the existing DataScalewayLbs that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/lbs#import import section} in the documentation of this resource for the id to use
+  * @param importFromId The id of the existing DataScalewayLbs that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/lbs#import import section} in the documentation of this resource for the id to use
   * @param provider? Optional instance of the provider where the DataScalewayLbs to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
@@ -402,7 +408,7 @@ export class DataScalewayLbs extends cdktf.TerraformDataSource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/data-sources/lbs scaleway_lbs} Data Source
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/data-sources/lbs scaleway_lbs} Data Source
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -413,8 +419,8 @@ export class DataScalewayLbs extends cdktf.TerraformDataSource {
       terraformResourceType: 'scaleway_lbs',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.31.0',
-        providerVersionConstraint: '>= 2.31.0'
+        providerVersion: '2.39.0',
+        providerVersionConstraint: '>= 2.39.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -427,6 +433,7 @@ export class DataScalewayLbs extends cdktf.TerraformDataSource {
     this._id = config.id;
     this._name = config.name;
     this._projectId = config.projectId;
+    this._tags = config.tags;
     this._zone = config.zone;
   }
 
@@ -493,6 +500,22 @@ export class DataScalewayLbs extends cdktf.TerraformDataSource {
     return this._projectId;
   }
 
+  // tags - computed: false, optional: true, required: false
+  private _tags?: string[]; 
+  public get tags() {
+    return this.getListAttribute('tags');
+  }
+  public set tags(value: string[]) {
+    this._tags = value;
+  }
+  public resetTags() {
+    this._tags = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get tagsInput() {
+    return this._tags;
+  }
+
   // zone - computed: true, optional: true, required: false
   private _zone?: string; 
   public get zone() {
@@ -518,6 +541,7 @@ export class DataScalewayLbs extends cdktf.TerraformDataSource {
       id: cdktf.stringToTerraform(this._id),
       name: cdktf.stringToTerraform(this._name),
       project_id: cdktf.stringToTerraform(this._projectId),
+      tags: cdktf.listMapper(cdktf.stringToTerraform, false)(this._tags),
       zone: cdktf.stringToTerraform(this._zone),
     };
   }

@@ -1,21 +1,11 @@
 import React, { ChangeEventHandler, ReactNode } from 'react'
 import classNames from 'classnames'
 import { Control, Controller, FieldValues } from 'react-hook-form'
-import { FieldPath } from 'react-hook-form/dist/types/path'
+import type { FieldPath } from 'react-hook-form/dist/types/path'
+import classNames from 'classnames'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
-import { SelectOption } from './utils/options'
-import { OptionBadge } from './OptionBadge'
-
-const OptionsList = ({ options }: { options: SelectOption[] }) => (
-  <>
-    {options.map(({ name, value }) => (
-      <option key={value} value={value}>
-        {name}
-      </option>
-    ))}
-    )
-  </>
-)
+import SelectOptionsList from '@app/ui/components/Form/SelectOptionsList'
+import type { SelectInputOption, SelectOption } from './utils/options'
 
 export type MultipleSelectFormFieldProps<T extends FieldValues> = {
   control: Control<T>
@@ -27,8 +17,9 @@ export type MultipleSelectFormFieldProps<T extends FieldValues> = {
   defaultOptionLabel?: string
   hint?: ReactNode
   badgeSize?: 'sm' | 'md'
-  options: SelectOption[]
+  options: SelectInputOption[]
   limit?: number
+  className?: string
   'data-testid'?: string
 }
 
@@ -44,11 +35,15 @@ const MultipleSelectFormField = <T extends FieldValues>({
   badgeSize,
   options,
   limit,
+  className,
   'data-testid': dataTestId,
 }: MultipleSelectFormFieldProps<T>) => {
   const id = `select-tags-form-field__${path}`
 
-  // TODO Aria labeled by from id
+  const flattenedOptions = options.flatMap((option) =>
+    'options' in option ? option.options : [option],
+  )
+
   return (
     <Controller
       control={control}
@@ -70,7 +65,7 @@ const MultipleSelectFormField = <T extends FieldValues>({
           )
         }
 
-        const selectedOptions = options.filter((option) =>
+        const selectedOptions = flattenedOptions.filter((option) =>
           valuesSet.has(option.value),
         )
 
@@ -84,12 +79,33 @@ const MultipleSelectFormField = <T extends FieldValues>({
           )
         }
 
+        const optionsWithDisabledSelectedValues = options.map((option) => {
+          if ('options' in option) {
+            return {
+              ...option,
+              options: option.options.map((subOption) => ({
+                ...subOption,
+                disabled: valuesSet.has(subOption.value),
+              })),
+            }
+          }
+
+          return {
+            ...option,
+            disabled: valuesSet.has(option.value),
+          }
+        })
+
         return (
           <div
-            className={classNames('fr-select-group', {
-              'fr-select-group--disabled': disabled,
-              'fr-select-group--error': error,
-            })}
+            className={classNames(
+              'fr-select-group',
+              {
+                'fr-select-group--disabled': disabled,
+                'fr-select-group--error': error,
+              },
+              className,
+            )}
           >
             <label className="fr-label" htmlFor={id}>
               {label} {asterisk && <RedAsterisk />}
@@ -110,9 +126,7 @@ const MultipleSelectFormField = <T extends FieldValues>({
               {defaultOption ? (
                 <option value="">{defaultOptionLabel}</option>
               ) : null}
-              <OptionsList
-                options={options.filter(({ value: v }) => !valuesSet.has(v))}
-              />
+              <SelectOptionsList options={optionsWithDisabledSelectedValues} />
             </select>
             <div className="fr-mt-4v">
               {selectedOptions.map((option) => (

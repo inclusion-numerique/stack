@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance
+// https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -10,11 +10,11 @@ export interface DocumentdbInstanceConfig extends cdktf.TerraformMetaArguments {
   /**
   * Database's engine version id
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#engine DocumentdbInstance#engine}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#engine DocumentdbInstance#engine}
   */
   readonly engine: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#id DocumentdbInstance#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#id DocumentdbInstance#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -23,95 +23,95 @@ export interface DocumentdbInstanceConfig extends cdktf.TerraformMetaArguments {
   /**
   * Enable or disable high availability for the database instance
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#is_ha_cluster DocumentdbInstance#is_ha_cluster}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#is_ha_cluster DocumentdbInstance#is_ha_cluster}
   */
   readonly isHaCluster?: boolean | cdktf.IResolvable;
   /**
   * The document db instance name
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#name DocumentdbInstance#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#name DocumentdbInstance#name}
   */
   readonly name?: string;
   /**
   * The type of database instance you want to create
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#node_type DocumentdbInstance#node_type}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#node_type DocumentdbInstance#node_type}
   */
   readonly nodeType: string;
   /**
   * Password for the first user of the database instance
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#password DocumentdbInstance#password}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#password DocumentdbInstance#password}
   */
   readonly password?: string;
   /**
   * The project_id you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#project_id DocumentdbInstance#project_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#project_id DocumentdbInstance#project_id}
   */
   readonly projectId?: string;
   /**
   * The region you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#region DocumentdbInstance#region}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#region DocumentdbInstance#region}
   */
   readonly region?: string;
   /**
   * List of tags ["tag1", "tag2", ...] attached to a database instance
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#tags DocumentdbInstance#tags}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#tags DocumentdbInstance#tags}
   */
   readonly tags?: string[];
   /**
   *  Enable telemetry to collects basic anonymous usage data and sends them to FerretDB telemetry service
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#telemetry_enabled DocumentdbInstance#telemetry_enabled}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#telemetry_enabled DocumentdbInstance#telemetry_enabled}
   */
   readonly telemetryEnabled?: boolean | cdktf.IResolvable;
   /**
   * Identifier for the first user of the database instance
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#user_name DocumentdbInstance#user_name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#user_name DocumentdbInstance#user_name}
   */
   readonly userName?: string;
   /**
   * Volume size (in GB) when volume_type is not lssd
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#volume_size_in_gb DocumentdbInstance#volume_size_in_gb}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#volume_size_in_gb DocumentdbInstance#volume_size_in_gb}
   */
   readonly volumeSizeInGb?: number;
   /**
   * Type of volume where data are stored
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#volume_type DocumentdbInstance#volume_type}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#volume_type DocumentdbInstance#volume_type}
   */
   readonly volumeType?: string;
   /**
   * timeouts block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#timeouts DocumentdbInstance#timeouts}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#timeouts DocumentdbInstance#timeouts}
   */
   readonly timeouts?: DocumentdbInstanceTimeouts;
 }
 export interface DocumentdbInstanceTimeouts {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#create DocumentdbInstance#create}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#create DocumentdbInstance#create}
   */
   readonly create?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#default DocumentdbInstance#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#default DocumentdbInstance#default}
   */
   readonly default?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#delete DocumentdbInstance#delete}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#delete DocumentdbInstance#delete}
   */
   readonly delete?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#read DocumentdbInstance#read}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#read DocumentdbInstance#read}
   */
   readonly read?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#update DocumentdbInstance#update}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#update DocumentdbInstance#update}
   */
   readonly update?: string;
 }
@@ -278,7 +278,7 @@ export class DocumentdbInstanceTimeoutsOutputReference extends cdktf.ComplexObje
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance scaleway_documentdb_instance}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance scaleway_documentdb_instance}
 */
 export class DocumentdbInstance extends cdktf.TerraformResource {
 
@@ -294,7 +294,7 @@ export class DocumentdbInstance extends cdktf.TerraformResource {
   * Generates CDKTF code for importing a DocumentdbInstance resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
   * @param importToId The construct id used in the generated config for the DocumentdbInstance to import
-  * @param importFromId The id of the existing DocumentdbInstance that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance#import import section} in the documentation of this resource for the id to use
+  * @param importFromId The id of the existing DocumentdbInstance that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance#import import section} in the documentation of this resource for the id to use
   * @param provider? Optional instance of the provider where the DocumentdbInstance to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
@@ -306,7 +306,7 @@ export class DocumentdbInstance extends cdktf.TerraformResource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.31.0/docs/resources/documentdb_instance scaleway_documentdb_instance} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.39.0/docs/resources/documentdb_instance scaleway_documentdb_instance} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -317,8 +317,8 @@ export class DocumentdbInstance extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_documentdb_instance',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.31.0',
-        providerVersionConstraint: '>= 2.31.0'
+        providerVersion: '2.39.0',
+        providerVersionConstraint: '>= 2.39.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,

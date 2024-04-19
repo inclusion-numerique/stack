@@ -38,7 +38,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
       buttonRef.current?.click()
     }
   }
-  const onClickOutsideDropdown = (event: MouseEvent) => {
+  useOnClickOutside(collapseRef, (event) => {
     // Let the event propagate if clicked on the control button
     if (event.target === buttonRef?.current) {
       return
@@ -50,8 +50,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
     }
 
     buttonRef.current.click()
-  }
-  useOnClickOutside(collapseRef, onClickOutsideDropdown)
+  })
 
   const menuContent = (
     <ul className="fr-menu__list">
@@ -120,12 +119,9 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
       ) : null}
       <li>
         <Link
-          className="fr-nav__link"
+          className="fr-nav__link fr-border--bottom"
           href="/bases/creer"
-          style={{
-            boxShadow: 'none',
-            borderBottom: 'var(--slim-grey-border)',
-          }}
+          style={{ boxShadow: 'none' }}
         >
           <span
             className="fr-icon-add-line fr-icon--sm fr-mr-1w"

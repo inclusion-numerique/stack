@@ -9,11 +9,7 @@ import { createAvailableSlug } from '@app/web/server/slug/createAvailableSlug'
 /**
  * Ensuring that needed methods are defined when creating adapter
  */
-const createAdapter = (): Adapter & {
-  createUser: Exclude<Adapter['createUser'], undefined>
-  deleteSession: Exclude<Adapter['deleteSession'], undefined>
-  linkAccount: Exclude<Adapter['linkAccount'], undefined>
-} => {
+const createAdapter = () => {
   const prismaAdapter = PrismaAdapter(prismaClient)
 
   const { createUser, deleteSession, linkAccount } = prismaAdapter
@@ -23,7 +19,12 @@ const createAdapter = (): Adapter & {
     throw new Error('prismaAdapter.deleteSession is undefined')
   if (!linkAccount) throw new Error('prismaAdapter.linkAccount is undefined')
 
-  return { ...prismaAdapter, createUser, deleteSession, linkAccount }
+  return {
+    ...prismaAdapter,
+    createUser,
+    deleteSession,
+    linkAccount,
+  } satisfies Adapter
 }
 
 const prismaAdapter = createAdapter()

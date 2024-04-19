@@ -30,21 +30,6 @@ export const createDotEnvFromCdk = new Command()
       output('Added web stack variables to .env file')
       return
     }
-    if (stack === 'project') {
-      const { databaseInstanceId } = await getCdkOutput('project')
-
-      await appendEnvVariablesToDotEnvFile({
-        comment: 'From project stack cdk output',
-        environmentVariables: [
-          {
-            name: 'DATABASE_INSTANCE_ID',
-            value: databaseInstanceId,
-          },
-        ],
-      })
-      output('Added project stack variables to .env file')
-      return
-    }
 
     throw new Error('Invalid stack provided')
   })
