@@ -31,7 +31,8 @@ export const executeJob = async (job: Job) => {
   })
 
   try {
-    const result = await jobExecutors[job.name](job)
+    const executor = jobExecutors[job.name] as JobExecutor<(typeof job)['name']>
+    const result = await executor(job)
     const { ended, duration } = stopWatch.stop()
 
     prismaClient.jobExecution
