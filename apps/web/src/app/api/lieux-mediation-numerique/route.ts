@@ -1,6 +1,9 @@
 import { fromSchemaDataInclusion } from '@gouvfr-anct/lieux-de-mediation-numerique'
 import { prismaClient } from '@app/web/prismaClient'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export const GET = async () => {
   const structures = await prismaClient.structure.findMany({
     // TODO Select orga / lieux activité to know if it is open to public
