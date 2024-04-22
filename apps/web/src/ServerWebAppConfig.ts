@@ -42,9 +42,6 @@ export const ServerWebAppConfig = {
   InclusionConnect: {
     clientSecret: process.env.INCLUSION_CONNECT_CLIENT_SECRET ?? '',
   },
-  MonComptePro: {
-    clientSecret: process.env.MONCOMPTEPRO_CLIENT_SECRET ?? '',
-  },
   Database: {
     instanceId: process.env.DATABASE_INSTANCE_ID ?? '', // like fr-par/uuid
   },

@@ -17,10 +17,6 @@ export const PublicWebAppConfig = {
     hostname: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_HOSTNAME ?? '',
     clientId: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID ?? '',
   },
-  MonComptePro: {
-    issuer: process.env.NEXT_PUBLIC_MONCOMPTEPRO_ISSUER ?? '',
-    clientId: process.env.NEXT_PUBLIC_MONCOMPTEPRO_CLIENT_ID ?? '',
-  },
   Sentry: {
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN ?? '',
     environment: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT ?? 'local',

@@ -67,6 +67,9 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
+  // Created by a fixture system, can be reset and will only be here on preview envs
+  isFixture Boolean @map("is_fixture") @default(false)
+
   created   DateTime  @default(now())
   updated   DateTime  @default(now())
   lastLogin DateTime? @map("last_login")

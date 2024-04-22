@@ -1,11 +1,7 @@
 import NextAuth, { NextAuthOptions } from 'next-auth'
-import EmailProvider from 'next-auth/providers/email'
 import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
 import '@app/web/auth/nextAuthSetup'
-import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
 import { InclusionConnectProvider } from '@app/web/auth/InclusionConnectProvider'
-import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
-import { MonCompteProProvider } from '@app/web/auth/MonCompteProProvider'
 
 export const authOptions: NextAuthOptions = {
   // debug: process.env.NODE_ENV !== 'production',
@@ -18,14 +14,7 @@ export const authOptions: NextAuthOptions = {
     // This would be the first page the user sees after signing up
     // newUser: '/bienvenue',
   },
-  providers: [
-    EmailProvider({
-      ...ServerWebAppConfig.Email,
-      sendVerificationRequest,
-    }),
-    InclusionConnectProvider(),
-    MonCompteProProvider(),
-  ],
+  providers: [InclusionConnectProvider()],
   callbacks: {
     signIn({ account, user }) {
       const isAllowedToSignIn =

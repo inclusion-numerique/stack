@@ -9,12 +9,11 @@ import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export const revalidate = 0
 const SigninPage = async ({
-  searchParams: { error, email, raison, suivant } = {},
+  searchParams: { error, raison, suivant } = {},
 }: {
   searchParams?: {
     error?: string
     raison?: 'connexion-sans-compte'
-    email?: string
     suivant?: Route
   }
 }) => {
@@ -40,7 +39,7 @@ const SigninPage = async ({
           />
         ) : null}
       </div>
-      <SignupPanel error={error} email={email} callbackUrl={callbackUrl} />
+      <SignupPanel error={error} callbackUrl={callbackUrl} />
     </>
   )
 }
