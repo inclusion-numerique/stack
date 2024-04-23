@@ -6,6 +6,7 @@ import { KeyboardEvent, MouseEvent as ReactMouseEvent, useRef } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { getUserDisplayName } from '@app/web/utils/user'
+import TerminerUsurpationHeaderUserMenuItem from '@app/web/components/TerminerUsurpationHeaderUserMenuItem'
 import styles from './HeaderUserMenu.module.css'
 
 export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
@@ -59,6 +60,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
           Voir mon profil
         </Link>
       </li>
+      {user.usurper && <TerminerUsurpationHeaderUserMenuItem />}
       <li>
         <Link className="fr-nav__link" href="/deconnexion">
           <span

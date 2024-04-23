@@ -2,7 +2,7 @@ import { Command } from '@commander-js/extra-typings'
 import { prismaClient } from '@app/web/prismaClient'
 import type { Prisma } from '@prisma/client'
 import { output } from '@app/fixtures/output'
-import { users } from '@app/fixtures/users'
+import { fixtureUsers, teamAdministrateurs } from '@app/fixtures/users'
 
 const deleteAll = async (transaction: Prisma.TransactionClient) => {
   const tables = await transaction.$queryRaw<
@@ -24,12 +24,24 @@ const deleteAll = async (transaction: Prisma.TransactionClient) => {
 }
 
 const seed = async (transaction: Prisma.TransactionClient) => {
+
+
   await Promise.all(
-    users.map((user) =>
+    fixtureUsers.map((user) =>
       transaction.user.upsert({
         where: { id: user.id },
         create: user,
         update: user,
+      }),
+    ),
+  )
+
+  await Promise.all(
+    teamAdministrateurs.map((team) =>
+      transaction.user.upsert({
+        where: { id: team.id },
+        create: team,
+        update: team,
       }),
     ),
   )

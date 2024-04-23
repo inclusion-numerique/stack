@@ -1,0 +1,19 @@
+.sideNavContainer {
+    width: 100%;
+
+    @media (min-width: 48em) {
+        width: 286px;
+    }
+}
+
+.pageContainer {
+    min-height: 100%;
+    padding: 0 16px;
+
+    @media (min-width: 48em) {
+        width: calc(100% - 286px);
+        padding: 0 32px 0 0;
+    }
+
+    padding-bottom: 120px;
+}

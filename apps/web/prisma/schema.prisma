@@ -39,6 +39,11 @@ model Session {
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  // Les administrateurs peuvent usurper des utilisateurs de fixtures pour tester des parcours
+  // On garde la reference ici pour pouvoir revenir à la session initiale de l’administrateur
+  usurperId String? @unique @map("usurper_id") @db.Uuid
+  usurper   User?   @relation(fields: [usurperId], references: [id], name: "usurper")
+
   @@map("sessions")
 }
 
@@ -68,7 +73,7 @@ model User {
   sessions      Session[]
 
   // Created by a fixture system, can be reset and will only be here on preview envs
-  isFixture Boolean @map("is_fixture") @default(false)
+  isFixture Boolean @default(false) @map("is_fixture")
 
   created   DateTime  @default(now())
   updated   DateTime  @default(now())
@@ -79,6 +84,7 @@ model User {
   mediateur    Mediateur?
   coordinateur Coordinateur?
   mutations    Mutation[]
+  usurpateur   Session?      @relation(name: "usurper")
 
   @@map("users")
 }

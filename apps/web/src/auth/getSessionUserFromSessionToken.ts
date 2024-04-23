@@ -14,6 +14,11 @@ export const getSessionUserFromSessionToken = async (
       expires: { gt: new Date() },
     },
     include: {
+      usurper: {
+        select: {
+          id: true,
+        },
+      },
       user: {
         select: {
           id: true,
@@ -28,6 +33,8 @@ export const getSessionUserFromSessionToken = async (
           description: true,
           created: true,
           updated: true,
+          role: true,
+          isFixture: true,
         },
       },
     },
@@ -42,5 +49,6 @@ export const getSessionUserFromSessionToken = async (
     created: res.user.created.toISOString(),
     updated: res.user.updated.toISOString(),
     emailVerified: res.user.emailVerified?.toISOString() ?? null,
+    usurper: res.usurper,
   }
 }
