@@ -9,6 +9,13 @@ const AdministrationSideMenu = () => {
 
   const items = [
     {
+      text: 'Structures',
+      linkProps: {
+        href: '/administration/structures',
+      },
+      isActive: pathname?.startsWith('/administration/structures'),
+    },
+    {
       text: 'Usurpation',
       linkProps: {
         href: '/administration/usurpation',

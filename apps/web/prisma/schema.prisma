@@ -246,6 +246,12 @@ model Structure {
   creation     DateTime  @default(now())
   modification DateTime  @default(now())
   suppression  DateTime?
+  // Importation depuis dataset data-inclusion
+  creationImport DateTime? @map("creation_import")
+  // modifié suite à une mise à jour de data-inclusion
+  modificationImport DateTime? @map("modification_import")
+  // plus disponible dans data-inclusion
+  suppressionImport DateTime? @map("suppression_import")
 
   organisation Organisation?
   lieuActivite LieuActivite?

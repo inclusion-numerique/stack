@@ -83,12 +83,17 @@ export const executeUpdateDataInclusionStructures = async (
         id: true,
         idDataInclusion: true,
         dateMaj: true,
+        creationImport: true,
+        modificationImport: true,
+        modification: true,
       },
     }),
     downloadDataInclusionStructures().then(() => getStructuresFromLocalFile()),
   ])
 
-  const existingMap = new Map(existingStructures.map((s) => [s.id, s]))
+  const existingMap = new Map(
+    existingStructures.map((s) => [s.idDataInclusion, s]),
+  )
   const dataInclusionStructuresMap = new Map(
     dataInclusionStructures.map((s) => [dataInclusionStructureUniqueId(s), s]),
   )
@@ -107,10 +112,16 @@ export const executeUpdateDataInclusionStructures = async (
       !!s.idDataInclusion && !dataInclusionStructuresMap.has(s.idDataInclusion),
   )
 
+  const now = new Date()
+
   await prismaClient.$transaction([
     prismaClient.structure.createMany({
       data: toCreate.map((structure) => ({
         ...dataInclusionStructureToStructureData(structure),
+        creationImport: now,
+        modificationImport: now,
+        creation: now,
+        modification: now,
         id: v4(),
       })),
     }),
@@ -119,7 +130,11 @@ export const executeUpdateDataInclusionStructures = async (
         where: {
           idDataInclusion: dataInclusionStructureUniqueId(structure),
         },
-        data: dataInclusionStructureToStructureData(structure),
+        data: {
+          ...dataInclusionStructureToStructureData(structure),
+          modificationImport: now,
+          modification: now,
+        },
       }),
     ),
     prismaClient.structure.updateMany({
@@ -131,7 +146,9 @@ export const executeUpdateDataInclusionStructures = async (
         },
       },
       data: {
+        modification: now,
         suppression: new Date(),
+        suppressionImport: new Date(),
       },
     }),
   ])
