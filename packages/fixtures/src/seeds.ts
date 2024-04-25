@@ -24,8 +24,6 @@ const deleteAll = async (transaction: Prisma.TransactionClient) => {
 }
 
 const seed = async (transaction: Prisma.TransactionClient) => {
-
-
   await Promise.all(
     fixtureUsers.map((user) =>
       transaction.user.upsert({

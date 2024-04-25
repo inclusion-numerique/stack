@@ -32,7 +32,7 @@ const SigninPanel = ({
           children: 'Créer un compte',
           linkProps: {
             href:
-              callbackUrl === '/'
+              callbackUrl === '/' || callbackUrl === '/connexion/suivant'
                 ? '/creer-un-compte'
                 : `/creer-un-compte?suivant=${callbackUrl}`,
           },
