@@ -1,4 +1,4 @@
-import { request } from 'undici'
+import axios from 'axios'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 
 const stagingApiUrl = 'https://staging.entreprise.api.gouv.fr'
@@ -37,20 +37,20 @@ export const fetchFromApiEntreprise = async <T>({
   url.searchParams.append('context', contexte)
 
   try {
-    const response = await request(url, {
+    const response = await axios.get<T>(url.toString(), {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-    const body = await response.body.json()
-    if (!response.statusCode.toString().startsWith('2')) {
+    const body = response.data
+    if (!response.status.toString().startsWith('2')) {
       const bodyWithErrors = body as {
         errors?: [{ code: string; detail: string; title: string }]
       }
       return {
         error: {
-          statusCode: response.statusCode,
+          statusCode: response.status,
           message: Array.isArray(bodyWithErrors.errors)
             ? bodyWithErrors.errors[0].detail
             : 'Unknown error',
@@ -58,7 +58,7 @@ export const fetchFromApiEntreprise = async <T>({
       }
     }
 
-    return body as T
+    return body
   } catch (error) {
     return {
       error: {
