@@ -37,7 +37,7 @@ export const executeJob = async (job: Job) => {
     const result = await executor(job)
     const { ended, duration } = stopWatch.stop()
 
-    prismaClient.jobExecution
+    await prismaClient.jobExecution
       .update({
         where: { id },
         data: {
@@ -64,7 +64,7 @@ export const executeJob = async (job: Job) => {
       stack?: string
     }
 
-    prismaClient.jobExecution
+    await prismaClient.jobExecution
       .update({
         where: { id },
         data: {
