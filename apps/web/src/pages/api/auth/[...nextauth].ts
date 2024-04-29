@@ -1,7 +1,9 @@
 import NextAuth, { NextAuthOptions } from 'next-auth'
+import * as Sentry from '@sentry/nextjs'
 import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
 import '@app/web/auth/nextAuthSetup'
 import { InclusionConnectProvider } from '@app/web/auth/InclusionConnectProvider'
+import { registerLastLogin } from '@app/web/security/registerLastLogin'
 
 export const authOptions: NextAuthOptions = {
   // debug: process.env.NODE_ENV !== 'production',
@@ -27,6 +29,9 @@ export const authOptions: NextAuthOptions = {
           !!user.updated)
 
       if (isAllowedToSignIn) {
+        registerLastLogin({ userId: user.id }).catch((error) => {
+          Sentry.captureException(error)
+        })
         return true
       }
       // Return false to display a default error message
