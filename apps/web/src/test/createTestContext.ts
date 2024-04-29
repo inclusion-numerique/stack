@@ -20,4 +20,5 @@ export const createTestContext = ({
     calls: [],
   },
   user,
+  sessionToken: 'test-session-token',
 })

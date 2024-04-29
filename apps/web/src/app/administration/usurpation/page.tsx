@@ -1,10 +1,9 @@
 import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import Notice from '@codegouvfr/react-dsfr/Notice'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { prismaClient } from '@app/web/prismaClient'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
-import { usurper } from '@app/web/app/administration/usurpation/usurper'
+import UsurpUserButton from '@app/web/app/administration/usurpation/UsurpUserButton'
 
 export const metadata = {
   title: metadataTitle('Usurpation'),
@@ -70,17 +69,7 @@ const Page = async () => {
                 <tr key={row.id}>
                   <th>{row.name}</th>
                   <td>
-                    <form action={usurper}>
-                      <input type="hidden" value={row.id} name="id" />
-                      <Button
-                        type="submit"
-                        iconId="fr-icon-user-star-line"
-                        size="small"
-                        priority="secondary"
-                      >
-                        Usurper
-                      </Button>
-                    </form>
+                    <UsurpUserButton userId={row.id} />
                   </td>
                 </tr>
               ))}

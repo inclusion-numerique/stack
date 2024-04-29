@@ -818,6 +818,9 @@ importers:
       storybook:
         specifier: ^8.0.9
         version: 8.0.9(@babel/preset-env@7.24.4(@babel/core@7.24.4))(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      storybook-addon-module-mock:
+        specifier: ^1.2.0
+        version: 1.2.0(@types/react@18.2.79)(react@18.2.0)
     devDependencies:
       '@storybook/addon-a11y':
         specifier: ^8.0.9
@@ -9721,6 +9724,9 @@ packages:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
     hasBin: true
 
+  react-base16-styling@0.10.0:
+    resolution: {integrity: sha512-H1k2eFB6M45OaiRru3PBXkuCcn2qNmx+gzLb4a9IPMR7tMH8oBRXU5jGbPDYG1Hz+82d88ED0vjR8BmqU3pQdg==}
+
   react-chartjs-2@5.2.0:
     resolution: {integrity: sha512-98iN5aguJyVSxp5U3CblRLH67J8gkfyGNbiK3c+l1QI/G4irHMPQw44aEPmjVag+YKTyQ260NcF82GTQ3bdscA==}
     peerDependencies:
@@ -9795,6 +9801,12 @@ packages:
 
   react-is@18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
+
+  react-json-tree@0.19.0:
+    resolution: {integrity: sha512-PqT1WRVcWP+RROsZPQfNEKIC1iM/ZMfY4g5jN6oDnXp5593PPRAYgoHcgYCDjflAHQMtxl8XGdlTwIBdEGUXvw==}
+    peerDependencies:
+      '@types/react': ^16.8.0 || ^17.0.0 || ^18.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
   react-loader-spinner@5.5.0:
     resolution: {integrity: sha512-3y+l6RPbkfW8EMs/X7MtfiPlAPwYp+WbCtls3gZn+fDJCt0SW4TakRoj2/lExbCVxSxA6Y5M8Nly+WfhNxnFcw==}
@@ -10471,6 +10483,9 @@ packages:
         optional: true
       webpack:
         optional: true
+
+  storybook-addon-module-mock@1.2.0:
+    resolution: {integrity: sha512-OFXg2c1neMTAaxEo6Rkx6toHl0fcK/UOpSxq2fM0oaaTqKtWtnIZfeUobBsXCiJ93xm1aCq0VbBMEjd3ieRsBQ==}
 
   storybook@8.0.9:
     resolution: {integrity: sha512-/Mvij0Br5bUwJpCvqAUZMEDIWmdRxEyllvVj8Ukw5lIWJePxfpSsz4px5jg9+R6B9tO8sQSqjg4HJvQ/pZk8Tg==}
@@ -16194,7 +16209,9 @@ snapshots:
     dependencies:
       undici-types: 5.26.5
 
-  '@types/node@20.12.7': {}
+  '@types/node@20.12.7':
+    dependencies:
+      undici-types: 5.26.5
 
   '@types/nodemailer@6.4.14':
     dependencies:
@@ -23389,6 +23406,13 @@ snapshots:
       minimist: 1.2.8
       strip-json-comments: 2.0.1
 
+  react-base16-styling@0.10.0:
+    dependencies:
+      '@types/lodash': 4.17.0
+      color: 4.2.3
+      csstype: 3.1.3
+      lodash-es: 4.17.21
+
   react-chartjs-2@5.2.0(chart.js@4.4.2)(react@18.2.0):
     dependencies:
       chart.js: 4.4.2
@@ -23472,6 +23496,13 @@ snapshots:
   react-is@18.1.0: {}
 
   react-is@18.2.0: {}
+
+  react-json-tree@0.19.0(@types/react@18.2.79)(react@18.2.0):
+    dependencies:
+      '@types/lodash': 4.17.0
+      '@types/react': 18.2.79
+      react: 18.2.0
+      react-base16-styling: 0.10.0
 
   react-loader-spinner@5.5.0(@babel/core@7.24.4)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
@@ -24274,6 +24305,14 @@ snapshots:
     optionalDependencies:
       webpack: 5.91.0(@swc/core@1.5.0(@swc/helpers@0.5.5))(esbuild@0.18.20)
 
+  storybook-addon-module-mock@1.2.0(@types/react@18.2.79)(react@18.2.0):
+    dependencies:
+      minimatch: 9.0.4
+      react-json-tree: 0.19.0(@types/react@18.2.79)(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - react
+
   storybook@8.0.9(@babel/preset-env@7.24.4(@babel/core@7.24.4))(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       '@storybook/cli': 8.0.9(@babel/preset-env@7.24.4(@babel/core@7.24.4))(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -24862,7 +24901,11 @@ snapshots:
       minimist: 1.2.8
       strip-bom: 3.0.0
 
-  tsconfig-paths@4.2.0: {}
+  tsconfig-paths@4.2.0:
+    dependencies:
+      json5: 2.2.3
+      minimist: 1.2.8
+      strip-bom: 3.0.0
 
   tslib@1.14.1: {}
 
