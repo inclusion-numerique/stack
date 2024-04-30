@@ -7,7 +7,7 @@ import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 
 export type MonCompteProOrganization = {
   id: string
-  is_collectivite_territoriale: boolean
+  is_collectivite_territoriale?: boolean
   is_external: boolean
   is_service_public: boolean
   // e.g. 'Commune de les martres sur morge - Mairie'
