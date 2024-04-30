@@ -50,7 +50,8 @@ export const locallyRestoreLatestMainBackup = new Command(
     'Restore the latest main backup from Scaleway to the local (DATABASE_URL env var) database ',
   )
   .action(async () => {
-    const databaseInstanceId = process.env.DATABASE_INSTANCE_ID ?? ''
+    const databaseInstanceIdWithRegion = process.env.DATABASE_INSTANCE_ID ?? ''
+    const databaseInstanceId = databaseInstanceIdWithRegion.split('/')[1]
     const backupDatabaseName = process.env.BACKUP_DATABASE_NAME ?? ''
     const secretKey = process.env.SCW_SECRET_KEY ?? ''
     const databaseUrl = process.env.DATABASE_URL ?? ''
