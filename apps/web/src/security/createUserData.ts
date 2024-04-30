@@ -40,6 +40,8 @@ export const createUserData = async (
             create: {
               monCompteProId,
               ...qualified,
+              is_collectivite_territoriale:
+                qualified.is_collectivite_territoriale ?? false,
             },
           })
         }
