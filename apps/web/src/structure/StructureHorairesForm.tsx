@@ -26,8 +26,6 @@ const StructureHorairesForm = ({
 
   console.log('OPENING HOURS', openingHours)
 
-  const days = openingHours?.getIterator(new Date())
-
   return (
     <>
       <pre className="fr-background-alt--blue-france fr-p-4v fr-border-radius--16 fr-text--xs fr-mb-0">
