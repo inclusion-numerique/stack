@@ -78,6 +78,7 @@
     "next-auth": "^4.24.7",
     "node-html-parser": "^6.1.13",
     "nodemailer": "^6.9.13",
+    "opening_hours": "^3.8.0",
     "postcss": "^8.4.38",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^15.1.0",

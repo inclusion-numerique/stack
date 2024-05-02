@@ -1,9 +1,9 @@
-import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { prismaClient } from '@app/web/prismaClient'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import UsurpUserButton from '@app/web/app/administration/usurpation/UsurpUserButton'
+import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
 
 export const metadata = {
   title: metadataTitle('Usurpation'),
@@ -21,24 +21,7 @@ const Page = async () => {
 
   return (
     <div className="fr-container">
-      <Breadcrumb
-        className="fr-mb-4v"
-        currentPageLabel="Usurpation"
-        segments={[
-          {
-            label: 'Page d’accueil',
-            linkProps: {
-              href: '/',
-            },
-          },
-          {
-            label: 'Administration',
-            linkProps: {
-              href: '/administration',
-            },
-          },
-        ]}
-      />
+      <AdministrationBreadcrumbs currentPage="Usurpation" />
       <h1 className="fr-h2 fr-text-title--blue-france fr-mb-8v">
         Usurpation d’utilisateurs de test
       </h1>

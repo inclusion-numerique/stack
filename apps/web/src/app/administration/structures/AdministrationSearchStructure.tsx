@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { useRef } from 'react'
+import Button from '@codegouvfr/react-dsfr/Button'
 import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import type { SearchStructureResultStructure } from '@app/web/structure/searchStructure'
@@ -89,10 +90,23 @@ const AdministrationSearchStructure = () => {
           cacheOptions
         />
       </form>
+
       {!!selectedStructure && (
-        <pre className="fr-background-alt--blue-france fr-p-4v fr-border-radius--16 fr-text--xs fr-mb-0">
-          {JSON.stringify(selectedStructure, null, 2)}
-        </pre>
+        <>
+          <Button
+            className="fr-mb-6v fr-mt-2v"
+            linkProps={{
+              href: `/administration/structures/${selectedStructureId}/modifier`,
+            }}
+            priority="tertiary"
+            iconId="fr-icon-edit-line"
+          >
+            Modifier cette structure
+          </Button>
+          <pre className="fr-background-alt--blue-france fr-p-4v fr-border-radius--16 fr-text--xs fr-mb-0">
+            {JSON.stringify(selectedStructure, null, 2)}
+          </pre>
+        </>
       )}
     </>
   )

@@ -1,4 +1,3 @@
-import Breadcrumb from '@codegouvfr/react-dsfr/Breadcrumb'
 import Link from 'next/link'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { prismaClient } from '@app/web/prismaClient'
@@ -6,6 +5,7 @@ import AdministrationSearchStructure from '@app/web/app/administration/structure
 import { numberToString } from '@app/web/utils/formatNumber'
 import AdministrationCheckSiret from '@app/web/app/administration/structures/AdministrationCheckSiret'
 import { getServerUrl } from '@app/web/utils/baseUrl'
+import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
 
 export const metadata = {
   title: metadataTitle('Structures'),
@@ -16,24 +16,7 @@ const Page = async () => {
 
   return (
     <div className="fr-container">
-      <Breadcrumb
-        className="fr-mb-4v"
-        currentPageLabel="Structures"
-        segments={[
-          {
-            label: 'Page d’accueil',
-            linkProps: {
-              href: '/',
-            },
-          },
-          {
-            label: 'Administration',
-            linkProps: {
-              href: '/administration',
-            },
-          },
-        ]}
-      />
+      <AdministrationBreadcrumbs currentPage="Structures" />
       <h1 className="fr-h2 fr-text-title--blue-france fr-mb-8v">
         Structures data inclusion
       </h1>
