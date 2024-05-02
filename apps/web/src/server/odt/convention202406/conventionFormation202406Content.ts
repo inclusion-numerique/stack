@@ -2199,8 +2199,7 @@ export const conventionFormation202406Content = ({
             </text:h>
             <text:p text:style-name="P49">
                 <text:span text:style-name="Police_20_par_20_défaut">
-                    <text:span text:style-name="T9">A l’achèvement du projet et au plus tard à N+1 de la date de
-                        signature de la présente convention, est établi par le
+                    <text:span text:style-name="T9">A l’achèvement du projet et au plus tard au 31 décembre 2025, est établi par le
                     </text:span>
                 </text:span>
                 <text:span text:style-name="Police_20_par_20_défaut">
