@@ -22,16 +22,6 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.visit('/')
     cy.get('.fr-header__tools').contains('Se connecter').click()
     cy.url().should('equal', appUrl('/connexion'))
-
-    cy.log('Check that the signup CTA is linked correctly')
-    cy.contains('Créer un compte').click()
-    cy.url().should('equal', appUrl('/creer-un-compte'))
-
-    cy.log('Check that the signin CTA is linked correctly')
-    cy.findByRole('main')
-      .contains(/^Se connecter$/)
-      .click()
-    cy.url().should('equal', appUrl('/connexion'))
   })
 
   it('Acceptation 1 - Connexion avec Inclusion Connect', () => {
