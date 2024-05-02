@@ -91,7 +91,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.url().should('equal', appUrl('/deconnexion'))
     cy.contains('Êtes-vous sur de vouloir vous déconnecter ?')
     cy.get('main').contains('Se déconnecter').click()
-    cy.url().should('equal', appUrl('/'))
+    cy.url().should('equal', appUrl('/connexion'))
     cy.get('.fr-header__tools').contains('Se connecter')
   })
 })
