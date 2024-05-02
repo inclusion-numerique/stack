@@ -18,29 +18,13 @@ export const authOptions: NextAuthOptions = {
   },
   providers: [InclusionConnectProvider()],
   callbacks: {
-    signIn({ account, user }) {
-      const isAllowedToSignIn =
-        // KeyCloak is a type of oauth
-        account?.type === 'oauth' ||
-        // If user exists and comes from prisma, we will have User model properties defined
-        ('created' in user &&
-          !!user.created &&
-          'updated' in user &&
-          !!user.updated)
+    signIn({ user }) {
+      // Everyone is allowed to sign in
 
-      if (isAllowedToSignIn) {
-        registerLastLogin({ userId: user.id }).catch((error) => {
-          Sentry.captureException(error)
-        })
-        return true
-      }
-      // Return false to display a default error message
-      // return false
-
-      // Or you can return a URL to redirect to:
-      return `/creer-un-compte?raison=connexion-sans-compte&email=${
-        user?.email ?? ''
-      }`
+      registerLastLogin({ userId: user.id }).catch((error) => {
+        Sentry.captureException(error)
+      })
+      return true
     },
     session: ({ session, user }) => {
       if (session.user) {

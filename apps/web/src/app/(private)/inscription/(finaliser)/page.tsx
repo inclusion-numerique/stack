@@ -3,7 +3,7 @@ import { metadataTitle } from '@app/web/app/metadataTitle'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 
 export const metadata = {
-  title: metadataTitle('Finaliser son inscription'),
+  title: metadataTitle('Finaliser mon inscription'),
 }
 
 const Page = async () => {
@@ -12,7 +12,7 @@ const Page = async () => {
   return (
     <div className="fr-container fr-container--narrow fr-pt-12v fr-pb-40v">
       <h1 className="fr-h2 fr-text-title--blue-france fr-mb-8v">
-        Finaliser son inscription
+        Finaliser mon inscription
       </h1>
       <div className="fr-width-full fr-flex fr-align-items-center fr-flex-gap-12v fr-border-radius--16 fr-background-alt--blue-france fr-py-6v fr-px-12v">
         <div>

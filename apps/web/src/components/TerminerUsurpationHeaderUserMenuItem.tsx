@@ -19,8 +19,7 @@ const TerminerUsurpationHeaderUserMenuItem = () => {
         message: `Usurpation terminée, vous êtes de retour en tant que ${initialUser.name || initialUser.email}`,
       })
 
-      router.refresh()
-      router.push('/administration/usurpation')
+      router.replace('/administration/usurpation')
     } catch {
       createToast({
         priority: 'error',
@@ -32,22 +31,21 @@ const TerminerUsurpationHeaderUserMenuItem = () => {
 
   return (
     <li>
-      <form onSubmit={terminerUsurpation}>
-        <button
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          {...buttonLoadingClassname(
-            mutation.isPending || mutation.isSuccess,
-            'fr-nav__link',
-          )}
-          type="submit"
-        >
-          <span
-            className="fr-icon-user-star-line fr-icon--sm fr-mr-1w"
-            style={{ color: 'var(--blue-france-sun-113-625)' }}
-          />
-          Terminer usurpation
-        </button>
-      </form>
+      <button
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...buttonLoadingClassname(
+          mutation.isPending || mutation.isSuccess,
+          'fr-nav__link',
+        )}
+        type="button"
+        onClick={terminerUsurpation}
+      >
+        <span
+          className="fr-icon-user-star-line fr-icon--sm fr-mr-1w"
+          style={{ color: 'var(--blue-france-sun-113-625)' }}
+        />
+        Terminer usurpation
+      </button>
     </li>
   )
 }

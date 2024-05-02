@@ -5,12 +5,13 @@ import { createToast } from '@app/ui/toast/createToast'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { trpc } from '@app/web/trpc'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
 
 const UsurpUserButton = ({ userId }: { userId: string }) => {
   const mutation = trpc.usurpation.usurpUser.useMutation()
   const router = useRouter()
 
-  const terminerUsurpation = async () => {
+  const usurpUser = async () => {
     try {
       const usurped = await mutation.mutateAsync({ userId })
 
@@ -19,8 +20,7 @@ const UsurpUserButton = ({ userId }: { userId: string }) => {
         message: `Vous êtes maintenant connécté en tant que ${usurped.name || usurped.email}`,
       })
 
-      router.refresh()
-      router.push('/coop')
+      router.replace('/coop')
     } catch {
       createToast({
         priority: 'error',
@@ -36,7 +36,7 @@ const UsurpUserButton = ({ userId }: { userId: string }) => {
       iconId="fr-icon-user-star-line"
       size="small"
       priority="secondary"
-      onClick={terminerUsurpation}
+      onClick={usurpUser}
       {...buttonLoadingClassname(mutation.isPending || mutation.isSuccess)}
     >
       Usurper
@@ -44,4 +44,4 @@ const UsurpUserButton = ({ userId }: { userId: string }) => {
   )
 }
 
-export default UsurpUserButton
+export default withTrpc(UsurpUserButton)

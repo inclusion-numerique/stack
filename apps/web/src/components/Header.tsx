@@ -4,6 +4,7 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import HeaderBackLink from '@app/web/components/HeaderBackLink'
 import { HeaderUserMenu } from '@app/web/components/HeaderUserMenu'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import { getHomepage } from '@app/web/security/getHomepage'
 
 const Header = ({
   user,
@@ -23,7 +24,7 @@ const Header = ({
               ) : (
                 <div className="fr-header__logo">
                   <Link
-                    href="/"
+                    href={getHomepage(user)}
                     aria-current="page"
                     target="_self"
                     title={process.env.NEXT_PUBLIC_APP_NAME}
@@ -53,7 +54,7 @@ const Header = ({
             </div>
             <div className="fr-header__service">
               <Link
-                href="/"
+                href={getHomepage(user)}
                 aria-current="page"
                 target="_self"
                 title={`Accueil - ${PublicWebAppConfig.projectTitle}`}

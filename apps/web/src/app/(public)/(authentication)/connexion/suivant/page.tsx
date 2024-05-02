@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
+import { getHomepage } from '@app/web/security/getHomepage'
 
 /**
  * Cette page permet de rediriger l'utilisateur après une connexion réussie
@@ -7,15 +8,7 @@ import { getSessionUser } from '@app/web/auth/getSessionUser'
  */
 const Page = async () => {
   const user = await getSessionUser()
-  if (!user) {
-    redirect('/connexion')
-  }
-
-  if (user.role === 'Admin') {
-    redirect('/administration')
-  }
-
-  redirect('/coop')
+  redirect(getHomepage(user))
 
   return null
 }
