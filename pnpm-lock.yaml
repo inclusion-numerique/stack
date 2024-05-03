@@ -130,6 +130,9 @@ importers:
       '@gouvfr-anct/lieux-de-mediation-numerique':
         specifier: ^1.22.2
         version: 1.22.2
+      '@gouvfr-anct/timetable-to-osm-opening-hours':
+        specifier: ^1.1.0
+        version: 1.1.0
       '@gouvfr/dsfr':
         specifier: ^1.11.2
         version: 1.11.2
@@ -2427,6 +2430,9 @@ packages:
 
   '@gouvfr-anct/lieux-de-mediation-numerique@1.22.2':
     resolution: {integrity: sha512-ayKJVhyLkQRGis4M+Lemt2qXcyIQPk9z796hJHBSYCTXDt4N1OuCiLACaWsBTJXruV0y8ceHzfs5uZ+dpJR28Q==}
+
+  '@gouvfr-anct/timetable-to-osm-opening-hours@1.1.0':
+    resolution: {integrity: sha512-lUqYH2mDbp/VX49rxua1hjKsxWjpOR9Yqt1tI6dPViLF+Ac58ku8lEWGKJwVK2rLl3Kwq/xen+ml7CfmvNdhWQ==}
 
   '@gouvfr/dsfr@1.11.2':
     resolution: {integrity: sha512-S7idT4rCCw6M1pqxJS8y4nUSq/Rus+Kucoifmv0CrZD/eoBA34HWqWYzR9GIxvtAX/TQ1XC7Hz+54THtVzMeqQ==}
@@ -13736,6 +13742,8 @@ snapshots:
   '@floating-ui/utils@0.2.1': {}
 
   '@gouvfr-anct/lieux-de-mediation-numerique@1.22.2': {}
+
+  '@gouvfr-anct/timetable-to-osm-opening-hours@1.1.0': {}
 
   '@gouvfr/dsfr@1.11.2': {}
 

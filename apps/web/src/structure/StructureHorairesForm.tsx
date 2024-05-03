@@ -1,18 +1,7 @@
 'use client'
 
-import OpeningHours from 'opening_hours'
 import { StructureDataForForm } from '@app/web/structure/getStructureDataForForm'
-
-const toOpeningHoursObject = (horairesOuverture: string | null) => {
-  if (!horairesOuverture) return null
-
-  try {
-    return new OpeningHours(horairesOuverture)
-  } catch (error) {
-    console.error('Invalid opening hours format', error)
-    return null
-  }
-}
+import { stringToOpeningHours } from '@app/web/opening-hours/stringToOpeningHours'
 
 const StructureHorairesForm = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -22,7 +11,7 @@ const StructureHorairesForm = ({
 }) => {
   const { horairesOuverture } = structure
 
-  const openingHours = toOpeningHoursObject(horairesOuverture)
+  const openingHours = stringToOpeningHours(horairesOuverture)
 
   console.log('OPENING HOURS', openingHours)
 
@@ -39,6 +28,10 @@ const StructureHorairesForm = ({
       {!!openingHours && (
         <p>Horaires d’ouvertures spécifiés au format Open Street Map</p>
       )}
+
+      <pre className="fr-background-alt--blue-france fr-p-4v fr-border-radius--16 fr-text--xs fr-mb-0">
+        {JSON.stringify(openingHours, null, 2)}
+      </pre>
     </>
   )
 }
