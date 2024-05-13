@@ -7,6 +7,7 @@ import RoundProfileImage from '@app/web/components/RoundProfileImage'
 import { BasePageData } from '@app/web/server/bases/getBase'
 import { WithMinimalImageData } from '@app/web/server/image/imageTypes'
 import BaseImage from '@app/web/components/BaseImage'
+import { formatName } from '../server/rpc/user/formatName'
 
 const attributionWordings = {
   resource: {
@@ -82,7 +83,7 @@ const OwnershipInformation = ({
             href={`/profils/${user.slug}`}
             className="fr-link fr-text--xs fr-text-decoration--none fr-link--underline-on-hover"
           >
-            {user.name}
+            {user.name && formatName(user.name)}
           </Link>
         </>
       )}

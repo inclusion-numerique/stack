@@ -7,6 +7,7 @@ import {
 } from '@app/web/server/rpc/createRouter'
 import { ServerUserSignupValidation } from '@app/web/server/rpc/user/userSignup.server'
 import { createAvailableSlug } from '@app/web/server/slug/createAvailableSlug'
+import { formatName } from './formatName'
 
 export const userRouter = router({
   signup: publicProcedure
@@ -15,8 +16,10 @@ export const userRouter = router({
       async ({
         input: { firstName: firstNameInput, lastName: lastNameInput, email },
       }) => {
-        const firstName = firstNameInput?.trim() || null
-        const lastName = lastNameInput?.trim() || null
+        const firstName =
+          firstNameInput == null ? null : formatName(firstNameInput)
+        const lastName =
+          lastNameInput == null ? null : formatName(lastNameInput)
         const name = `${firstName ?? ''} ${lastName ?? ''}`.trim() || null
         const slugTitle = name || 'utilisateur'
 

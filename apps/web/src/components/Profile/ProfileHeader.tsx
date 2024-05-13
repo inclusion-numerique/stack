@@ -5,6 +5,7 @@ import { getServerUrl } from '@app/web/utils/baseUrl'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { FollowButton } from '@app/web/components/Follows/FollowButton'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import { formatName } from '@app/web/server/rpc/user/formatName'
 import CopyLinkButton from '../CopyLinkButton'
 import styles from './ProfileHeader.module.css'
 import ProfileInformations from './ProfileInformations'
@@ -28,7 +29,11 @@ const ProfileHeader = ({
   <div className={styles.container}>
     <div className="fr-container">
       <Breadcrumbs
-        currentPage={isOwner ? 'Mon Profil' : `${profile.name || 'Profil'}`}
+        currentPage={
+          isOwner
+            ? 'Mon Profil'
+            : `${(profile.name && formatName(profile.name)) || 'Profil'}`
+        }
       />
       <div id={headerId}>
         <ProfileInformations profile={profile} resourcesCount={resourcesCount}>
