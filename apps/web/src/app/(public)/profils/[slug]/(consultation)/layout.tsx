@@ -13,6 +13,7 @@ import { prismaClient } from '@app/web/prismaClient'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import { formatName } from '@app/web/server/rpc/user/formatName'
 
 export const generateMetadata = async ({
   params: { slug },
@@ -30,7 +31,9 @@ export const generateMetadata = async ({
   }
 
   return {
-    title: metadataTitle(profile.name || 'Profil'),
+    title: metadataTitle(
+      (profile.name && formatName(profile.name)) || 'Profil',
+    ),
   }
 }
 

@@ -169,6 +169,9 @@ export const searchProfiles = async (
       id: {
         in: searchResults.map(({ id }) => id),
       },
+      emailVerified: {
+        not: null,
+      },
     },
     select: profileListSelect(user),
   })
@@ -192,6 +195,9 @@ export const quickSearchProfiles = async (
     where: {
       id: {
         in: searchResults.map(({ id }) => id),
+      },
+      emailVerified: {
+        not: null,
       },
     },
     select: {

@@ -7,6 +7,7 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import { FollowButton } from '@app/web/components/Follows/FollowButton'
 import ProfileMetadata from '@app/web/components/Profile/ProfileMetadata'
 import { countProfileResources } from '@app/web/server/profiles/countProfileResources'
+import { formatName } from '@app/web/server/rpc/user/formatName'
 import styles from './ProfileCard.module.css'
 
 const ProfileCard = ({
@@ -31,7 +32,7 @@ const ProfileCard = ({
           href={`/profils/${profile.slug}`}
         >
           <ProfileTitle className="fr-text--md fr-text--medium fr-mb-0">
-            {profile.name}
+            {profile.name && formatName(profile.name)}
           </ProfileTitle>
         </Link>
         <ProfileMetadata
