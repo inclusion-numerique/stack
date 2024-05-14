@@ -44,20 +44,21 @@ const NAME_PARTICLES = [
 
 const NAME_WORD = "^|[’'\\s-]"
 
+const APOSTROPHE_WITH_SPACE = "'\\s"
+
 const toParticleRegexp = (particle: string) =>
-  `^${particle}\\s|\\s${particle}\\s`.replaceAll("'\\s", "['’]")
+  `^${particle}\\s|\\s${particle}\\s`.replaceAll(APOSTROPHE_WITH_SPACE, "['’]")
 
 const FIRST_LETTERS = new RegExp(
   `(?:${[...NAME_PARTICLES.map(toParticleRegexp), NAME_WORD].join('|')})(.)`,
   'giu',
 )
+const particleAndSeparator = (nameWordPart: string) => nameWordPart.slice(0, -1)
 
-const nextLetter = (name: string) => name.slice(-1)
+const nextWordFirstLetter = (nameWordPart: string) => nameWordPart.slice(-1)
 
-const separatorAndParticle = (name: string) => name.slice(0, -1)
-
-const toUpperCase = (separatorWithNextLetter: string) =>
-  `${separatorAndParticle(separatorWithNextLetter)}${nextLetter(separatorWithNextLetter).toUpperCase()}`
+const toUpperCase = (nameWordPart: string) =>
+  `${particleAndSeparator(nameWordPart)}${nextWordFirstLetter(nameWordPart).toUpperCase()}`
 
 export const formatName = (name: string) =>
   name.trim().toLowerCase().replaceAll(FIRST_LETTERS, toUpperCase)
