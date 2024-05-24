@@ -88,6 +88,8 @@ const ResourceEdition = ({
         : ResourceEditionState.SAVED
       : ResourceEditionState.EDITING
 
+  console.log('editionState', editionState)
+
   // If the user has made an edit, we ask for confirmation before leaving page
   const [askConfirmationBeforeLeaving, setAskConfirmationBeforeLeaving] =
     useState(false)
