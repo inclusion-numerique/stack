@@ -14,16 +14,18 @@ const isGivenBy =
 export const ResourceFeedbackList = ({
   resource,
   user,
+  canGiveFeedback,
 }: {
   resource: ResourceProjection
   user: SessionUser | null
+  canGiveFeedback: boolean
 }) => {
   const [isEditing, setIsEditing] = useState(false)
 
   return (
     <>
       <h1 className="fr-sr-only">Avis - {resource.title}</h1>
-      {!resource.resourceFeedback.some(isGivenBy(user)) && (
+      {canGiveFeedback && !resource.resourceFeedback.some(isGivenBy(user)) && (
         <div className="fr-border fr-border-radius--8 fr-pt-4w fr-px-4w fr-mb-6w">
           <h2 className="fr-sr-only">
             Quel est votre avis à propos de cette ressource ?

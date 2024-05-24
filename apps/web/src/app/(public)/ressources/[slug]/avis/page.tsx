@@ -10,6 +10,10 @@ import { metadataTitle } from '@app/web/app/metadataTitle'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { getResource } from '@app/web/server/resources/getResource'
 import { applyDraft } from '@app/web/utils/resourceDraft'
+import {
+  resourceAuthorization,
+  ResourcePermissions,
+} from '@app/web/authorization/models/resourceAuthorization'
 import { getResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
 import { ResourceFeedbackList } from './_components/ResourceFeedbackList'
 
@@ -55,6 +59,9 @@ const ResourceFeedbackPage = async ({
     notFound()
   }
 
+  const { hasPermission } = resourceAuthorization(resource, user)
+  const canWrite = hasPermission(ResourcePermissions.WriteResource)
+
   return (
     <>
       <SkipLinksPortal links={defaultSkipLinks} />
@@ -62,7 +69,11 @@ const ResourceFeedbackPage = async ({
         <ResourceBreadcrumbs resource={resource} currentChildPage="Avis" />
         <main className="fr-container fr-container--medium" id={contentId}>
           <HeaderBackLink />
-          <ResourceFeedbackList resource={resource} user={user} />
+          <ResourceFeedbackList
+            resource={resource}
+            user={user}
+            canGiveFeedback={!canWrite}
+          />
         </main>
       </div>
     </>

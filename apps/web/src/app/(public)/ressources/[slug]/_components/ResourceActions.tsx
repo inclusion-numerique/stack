@@ -28,6 +28,7 @@ const ResourceActions = ({
       <div>
         {canWrite && (
           <Button
+            size="small"
             data-testid="resource-edition-button"
             priority="secondary"
             iconId="fr-icon-edit-line"
@@ -60,17 +61,20 @@ const ResourceActions = ({
         )}
         {isPublished && (
           <>
-            <Link
-              className="fr-btn fr-btn--secondary fr-btn--sm"
-              href={
-                user
-                  ? `/ressources/${resource.slug}/avis`
-                  : `/connexion?suivant=/ressources/${resource.slug}/avis`
-              }
-            >
-              <span className="ri-emotion-line fr-mr-1w" aria-hidden />
-              Donner son avis
-            </Link>
+            {(!canWrite || resource.feedbackCount > 0) && (
+              <Link
+                className="fr-btn fr-btn--secondary fr-btn--sm"
+                href={
+                  user
+                    ? `/ressources/${resource.slug}/avis`
+                    : `/connexion?suivant=/ressources/${resource.slug}/avis`
+                }
+              >
+                <span className="ri-emotion-line fr-mr-1w" aria-hidden />
+                {canWrite ? 'Voir les avis' : 'Donner son avis'}
+              </Link>
+            )}
+
             {user && <ResourceReportButton size="small" variant="icon-only" />}
           </>
         )}
