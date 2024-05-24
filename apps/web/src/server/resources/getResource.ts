@@ -15,6 +15,7 @@ export const getResourceSelect = (user: { id: string } | null) =>
     isPublic: true,
     createdById: true,
     legacyId: true,
+    publicFeedback: true,
     resourceFeedback: {
       where: {
         deleted: null,
