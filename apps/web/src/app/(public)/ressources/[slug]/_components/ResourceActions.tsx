@@ -61,7 +61,7 @@ const ResourceActions = ({
         )}
         {isPublished && (
           <>
-            {(!canWrite || resource.feedbackCount > 0) && (
+            {(!canWrite || resource.feedbackCount.total > 0) && (
               <Link
                 className="fr-btn fr-btn--secondary fr-btn--sm"
                 href={

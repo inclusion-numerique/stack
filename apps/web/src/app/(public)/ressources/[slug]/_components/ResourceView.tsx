@@ -98,7 +98,7 @@ const ResourceView = ({
               resource={resource}
               className="fr-my-4v fr-my-md-6v"
             >
-              {resource.feedbackCount > 0 && (
+              {resource.feedbackCount.total > 0 && (
                 <>
                   <FeedbackBadge value={resource.feedbackAverage} />
                   <Link
@@ -108,7 +108,7 @@ const ResourceView = ({
                         : `/connexion?suivant=/ressources/${resource.slug}/avis`
                     }
                   >
-                    {resource.feedbackCount}&nbsp;avis
+                    {resource.feedbackCount.total}&nbsp;avis
                   </Link>
                 </>
               )}
@@ -130,11 +130,11 @@ const ResourceView = ({
               <ResourceContentView content={content} />
             </div>
           ))}
-          {resource.feedbackCount > 0 && (
+          {resource.feedbackCount.total > 0 && (
             <div className="fr-border-top fr-border-bottom fr-py-4w fr-flex">
               <div className="fr-flex fr-direction-lg-row fr-direction-column fr-flex-gap-4v fr-align-items-lg-center fr-flex-grow-1">
                 <h2 className="fr-h6 fr-mb-0">
-                  {resource.feedbackCount} Avis sur la ressource
+                  {resource.feedbackCount.total} Avis sur la ressource
                 </h2>
                 <FeedbackBadge value={resource.feedbackAverage ?? 0} />
               </div>

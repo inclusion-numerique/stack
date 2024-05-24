@@ -1,4 +1,10 @@
 import { prismaClient } from '@app/web/prismaClient'
+import { SessionUser } from '@app/web/auth/sessionUser'
+import {
+  resourceAuthorization,
+  ResourceAuthorizationTarget,
+  ResourcePermissions,
+} from '@app/web/authorization/models/resourceAuthorization'
 
 export const getResourceSelect = (user: { id: string } | null) =>
   ({
@@ -29,6 +35,7 @@ export const getResourceSelect = (user: { id: string } | null) =>
         resourceId: true,
         sentBy: {
           select: {
+            email: true,
             firstName: true,
             lastName: true,
             name: true,
@@ -158,9 +165,72 @@ export const getResourceSelect = (user: { id: string } | null) =>
     },
   }) satisfies Parameters<typeof prismaClient.resource.findUnique>[0]['select']
 
+const onlySendBy =
+  (user: SessionUser | null) =>
+  ({ sentById }: { sentById: string }) =>
+    sentById === user?.id
+
+const canSeeAllFeedbacksFor =
+  (resource: ResourceAuthorizationTarget & { publicFeedback: boolean }) =>
+  (user: SessionUser | null) => {
+    const { hasPermission } = resourceAuthorization(resource, user)
+    const canWrite = hasPermission(ResourcePermissions.WriteResource)
+
+    return resource.publicFeedback || canWrite
+  }
+
+type FeedbackCountByRecommendation = {
+  notRecommended: number
+  moderatelyRecommended: number
+  recommended: number
+  highlyRecommended: number
+}
+
+const DEFAULT_FEEDBACK_COUNT_BY_RECOMMENDATION: FeedbackCountByRecommendation =
+  {
+    notRecommended: 0,
+    moderatelyRecommended: 0,
+    recommended: 0,
+    highlyRecommended: 0,
+  }
+
+const RATING_MAP: Map<number, keyof FeedbackCountByRecommendation> = new Map([
+  [1, 'notRecommended'],
+  [2, 'moderatelyRecommended'],
+  [3, 'recommended'],
+  [4, 'highlyRecommended'],
+])
+
+const feedbackCountFor =
+  (key: keyof FeedbackCountByRecommendation | undefined) => (rating: number) =>
+    key ? { [key]: rating } : {}
+
+const toFeedbackCountByRecommendation = (
+  feedbackCount: FeedbackCountByRecommendation,
+  { _count, rating }: { _count: { rating: number }; rating: number },
+) => ({
+  ...feedbackCount,
+  ...feedbackCountFor(RATING_MAP.get(rating))(_count.rating),
+})
+
+const feedbackCountByRating = async (id: string) =>
+  prismaClient.resourceFeedback.groupBy({
+    by: ['rating'],
+    where: { resourceId: id, deleted: null },
+    _count: { rating: true },
+  })
+
+const feedbackCountByRecommendation = async ({ id }: { id: string }) => {
+  const countByRating = await feedbackCountByRating(id)
+  return countByRating.reduce(
+    toFeedbackCountByRecommendation,
+    DEFAULT_FEEDBACK_COUNT_BY_RECOMMENDATION,
+  )
+}
+
 export const getResource = async (
   where: { slug: string } | { id: string },
-  user: { id: string } | null,
+  user: SessionUser | null,
 ) => {
   const resource = await prismaClient.resource.findFirst({
     select: getResourceSelect(user),
@@ -180,7 +250,7 @@ export const getResource = async (
 
   if (resource == null) return resource
 
-  const aggregate = await prismaClient.resourceFeedback.aggregate({
+  const allFeedbacks = await prismaClient.resourceFeedback.aggregate({
     where: { resourceId: resource.id, deleted: null },
     _avg: { rating: true },
     _count: { rating: true },
@@ -188,8 +258,14 @@ export const getResource = async (
 
   return {
     ...resource,
-    feedbackCount: aggregate._count.rating ?? 0,
-    feedbackAverage: aggregate._avg.rating ?? 0,
+    resourceFeedback: canSeeAllFeedbacksFor(resource)(user)
+      ? resource.resourceFeedback
+      : resource.resourceFeedback.filter(onlySendBy(user)),
+    feedbackCount: {
+      ...(await feedbackCountByRecommendation(resource)),
+      total: allFeedbacks._count.rating ?? 0,
+    },
+    feedbackAverage: allFeedbacks._avg.rating ?? 0,
   }
 }
 

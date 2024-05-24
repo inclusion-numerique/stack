@@ -119,7 +119,14 @@ const resource = (imageId: string | null) =>
     },
     resourceFeedback: [],
     feedbackAverage: 0,
-    feedbackCount: 0,
+    feedbackCount: {
+      total: 0,
+      notRecommended: 0,
+      moderatelyRecommended: 0,
+      recommended: 0,
+      highlyRecommended: 0,
+    },
+    publicFeedback: true,
   }) satisfies Resource
 
 const Template = (props: ComponentProps<typeof ResourceView>) => (

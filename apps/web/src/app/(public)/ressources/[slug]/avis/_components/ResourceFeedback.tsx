@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 import { useRouter } from 'next/navigation'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
@@ -23,6 +24,7 @@ const {
 const ResourceFeedback = ({
   feedback,
   isOwner,
+  canSendMail,
   onEdit,
 }: {
   feedback: {
@@ -31,14 +33,16 @@ const ResourceFeedback = ({
     updated: Date
     sentBy: {
       image: { id: string; altText: string | null } | null
-      name: string | null
       firstName: string | null
       lastName: string | null
+      name: string | null
+      email: string | null
     }
     comment: string | null
     rating: number
   }
   isOwner: boolean
+  canSendMail: boolean
   onEdit: () => void
 }) => {
   const router = useRouter()
@@ -66,7 +70,7 @@ const ResourceFeedback = ({
 
   return (
     <>
-      <div className="fr-border fr-border-radius--8 fr-p-4w fr-mb-6w">
+      <div className="fr-border fr-border-radius--8 fr-p-4w fr-mb-3w">
         <div className="fr-flex fr-justify-content-space-between">
           <div className="fr-flex fr-align-items-center fr-flex-gap-3v">
             <RoundProfileImage user={feedback.sentBy} />
@@ -76,18 +80,26 @@ const ResourceFeedback = ({
               <span className="fr-text--xs fr-mb-0 fr-text-mention--grey fr-flex-grow-1">
                 {feedback.created.getTime() === feedback.updated.getTime() ? (
                   <>
-                    Avis&nbsp;Publié&nbsp;le&nbsp;
+                    Avis&nbsp;publié&nbsp;le&nbsp;
                     {dateAsDay(feedback.created)}
                   </>
                 ) : (
                   <>
-                    Avis&nbsp;Modifié&nbsp;le&nbsp;
+                    Avis&nbsp;modifié&nbsp;le&nbsp;
                     {dateAsDay(feedback.updated)}
                   </>
                 )}
               </span>
             </div>
           </div>
+          {canSendMail && feedback.sentBy.email && (
+            <Link
+              className="fr-btn fr-btn--tertiary-no-outline fr-icon-mail-line fr-btn--icon-right"
+              href={`mailto:${feedback.sentBy.email}`}
+            >
+              Contacter
+            </Link>
+          )}
           {isOwner && (
             <ButtonsGroup
               inlineLayoutWhen="always"

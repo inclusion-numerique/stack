@@ -97,7 +97,14 @@ export const applyResourceMigrated: ResourceCreationEventApplier<
   },
   resourceFeedback: [],
   feedbackAverage: 0,
-  feedbackCount: 0,
+  feedbackCount: {
+    total: 0,
+    notRecommended: 0,
+    moderatelyRecommended: 0,
+    recommended: 0,
+    highlyRecommended: 0,
+  },
+  publicFeedback: true,
 })
 
 export const onMigrated: ResourceEventSideEffect<ResourceMigrated> = async (

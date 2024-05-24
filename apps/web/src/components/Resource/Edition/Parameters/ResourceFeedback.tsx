@@ -3,9 +3,9 @@
 import React from 'react'
 import { useRouter } from 'next/navigation'
 import ToggleSwitch from '@codegouvfr/react-dsfr/ToggleSwitch'
+import { createToast } from '@app/ui/toast/createToast'
 import { trpc } from '@app/web/trpc'
 import { Resource } from '@app/web/server/resources/getResource'
-import { createToast } from '@app/ui/toast/createToast'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 
 const ResourceFeedback = ({ resource }: { resource: Resource }) => {
