@@ -42,7 +42,7 @@ const ProfileCard = ({
           )}
           {isAdmin != null && (
             <div className="fr-text-mention--grey">
-              {isAdmin ? 'Admin' : 'Membre'}
+              {isAdmin ? 'Administrateur' : 'Membre'}
             </div>
           )}
         </div>
