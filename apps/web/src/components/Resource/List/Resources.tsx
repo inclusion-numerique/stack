@@ -24,15 +24,22 @@ const Resources = ({
   canWrite: boolean
 }) => {
   const drafts = useMemo(
-    () => resources.filter((resource) => resource.isPublic === null),
+    () => resources.filter((resource) => resource.published === null),
     [resources],
   )
   const publics = useMemo(
-    () => resources.filter((resource) => resource.isPublic === true),
+    () =>
+      resources.filter(
+        (resource) => resource.isPublic === true && resource.published !== null,
+      ),
     [resources],
   )
   const privates = useMemo(
-    () => resources.filter((resource) => resource.isPublic === false),
+    () =>
+      resources.filter(
+        (resource) =>
+          resource.isPublic === false && resource.published !== null,
+      ),
     [resources],
   )
 
