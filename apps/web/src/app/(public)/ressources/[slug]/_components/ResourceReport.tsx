@@ -16,9 +16,9 @@ import {
   resourceReportReasonOptions,
   ResourceReportValidation,
 } from '@app/web/resources/resourceReport'
-import { ResourceReportModal } from '@app/web/components/Resource/View/ResourceReportModal'
 import { trpc } from '@app/web/trpc'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
+import { ResourceReportModal } from './ResourceReportModal'
 
 const ResourceReport = ({ resourceId }: { resourceId: string }) => {
   const { handleSubmit, control, reset, setError } =

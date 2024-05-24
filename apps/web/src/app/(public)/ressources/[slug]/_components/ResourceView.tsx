@@ -1,25 +1,27 @@
+import Link from 'next/link'
 import React from 'react'
 import classNames from 'classnames'
 import { Resource } from '@app/web/server/resources/getResource'
 import { hasIndexation } from '@app/web/utils/indexation'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import SaveResourceInCollectionModal from '@app/web/components/Resource/SaveResourceInCollectionModal'
-import ResourceReport from '@app/web/components/Resource/View/ResourceReport'
 import OwnershipInformation from '@app/web/components/OwnershipInformation'
 import ResourceDates from '@app/web/components/Resource/ResourceDates'
-import ResourcePublicStateBadge from '@app/web/components/Resource/View/ResourcePublicStateBadge'
-import ResourceDesktopNavigation from '@app/web/components/Resource/View/ResourceDesktopNavigation'
-import { getResourceNavigationData } from '@app/web/components/Resource/View/getResourceNavigationData'
-import { addAnchorIdsToResourceContents } from '@app/web/components/Resource/View/addAnchorIdsToResourceContents'
 import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
-import ResourcesViewsAndMetadata from '@app/web/components/Resource/View/ResourcesViewsAndMetadata'
-import ResourceActions from '@app/web/components/Resource/View/ResourceActions'
-import ResourceMobileNavigation from '@app/web/components/Resource/View/ResourceMobileNavigation'
+import ResourcesViewsAndMetadata from '@app/web/components/Resource/ResourcesViewsAndMetadata'
 import ResourceContentView from '@app/web/components/Resource/Contents/ResourceContentView'
-import RegisterResourceView from '@app/web/components/Resource/View/RegisterResourceView'
 import DeleteResource from '@app/web/components/Resource/DeleteResource/DeleteResource'
-import styles from './ResourceView.module.css'
+import { FeedbackBadge } from '../avis/_components/FeedbackBadge'
+import { addAnchorIdsToResourceContents } from './addAnchorIdsToResourceContents'
+import { getResourceNavigationData } from './getResourceNavigationData'
+import ResourceMobileNavigation from './ResourceMobileNavigation'
+import ResourceReport from './ResourceReport'
+import RegisterResourceView from './RegisterResourceView'
+import ResourceActions from './ResourceActions'
+import ResourceDesktopNavigation from './ResourceDesktopNavigation'
 import ResourceInformations from './ResourceInformations'
+import ResourcePublicStateBadge from './ResourcePublicStateBadge'
+import styles from './ResourceView.module.css'
 
 const ResourceView = ({
   resource,
@@ -95,7 +97,22 @@ const ResourceView = ({
             <ResourcesViewsAndMetadata
               resource={resource}
               className="fr-my-4v fr-my-md-6v"
-            />
+            >
+              {resource.feedbackCount > 0 && (
+                <>
+                  <FeedbackBadge value={resource.feedbackAverage} />
+                  <Link
+                    href={
+                      user
+                        ? `/ressources/${resource.slug}/avis`
+                        : `/connexion?suivant=/ressources/${resource.slug}/avis`
+                    }
+                  >
+                    {resource.feedbackCount}&nbsp;avis
+                  </Link>
+                </>
+              )}
+            </ResourcesViewsAndMetadata>
             <ResourceActions
               resource={resource}
               user={user}
@@ -113,6 +130,29 @@ const ResourceView = ({
               <ResourceContentView content={content} />
             </div>
           ))}
+          {resource.feedbackCount > 0 && (
+            <div className="fr-border-top fr-border-bottom fr-py-4w fr-flex">
+              <div className="fr-flex fr-direction-lg-row fr-direction-column fr-flex-gap-4v fr-align-items-lg-center fr-flex-grow-1">
+                <h2 className="fr-h6 fr-mb-0">
+                  {resource.feedbackCount} Avis sur la ressource
+                </h2>
+                <FeedbackBadge value={resource.feedbackAverage ?? 0} />
+              </div>
+              <div>
+                <Link
+                  className="fr-link"
+                  href={
+                    user
+                      ? `/ressources/${resource.slug}/avis`
+                      : `/connexion?suivant=/ressources/${resource.slug}/avis`
+                  }
+                >
+                  Voir les avis
+                </Link>
+              </div>
+            </div>
+          )}
+
           <RegisterResourceView resourceSlug={resource.slug} />
           {(resource.isPublic || hasIndexation(resource)) && (
             <ResourceInformations resource={resource} />

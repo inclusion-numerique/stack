@@ -1,4 +1,4 @@
-import { addAnchorIdsToResourceContents } from '@app/web/components/Resource/View/addAnchorIdsToResourceContents'
+import { addAnchorIdsToResourceContents } from './addAnchorIdsToResourceContents'
 
 describe('addAnchorIdsToResourceContents', () => {
   it('should add unique anchor IDs and hrefs to resource contents', () => {

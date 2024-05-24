@@ -34,7 +34,7 @@ describe('Utilisateur connecté, je peux signaler une ressource', () => {
       cy.visit(`/ressources/${slug}`)
     })
 
-    cy.findByRole('button', { name: /signaler/i }).should('not.exist')
+    cy.findByTitle('Signaler la ressource').should('not.exist')
   })
 
   it('Acceptation 2 - Je peux signaler une resource, et le modérateur est prévenu', () => {
@@ -55,9 +55,7 @@ describe('Utilisateur connecté, je peux signaler une ressource', () => {
 
     cy.dsfrModalsShouldBeBound()
 
-    cy.findByRole('button', { name: /plus d’options/i }).click()
-
-    cy.findByRole('button', { name: /signaler/i }).click()
+    cy.findByTitle('Signaler la ressource').click()
 
     cy.findByRole('dialog').within(() => {
       // Should not submit with empty form

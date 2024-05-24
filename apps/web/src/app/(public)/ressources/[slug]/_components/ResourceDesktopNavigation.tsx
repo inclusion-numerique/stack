@@ -1,8 +1,8 @@
 import NavigationSideMenu from '@app/ui/components/NavigationSideMenu'
 import type { Resource } from '@app/web/server/resources/getResource'
-import ResourceIndexationView from '@app/web/components/Resource/View/ResourceIndexationView'
-import type { ResourceNavigationData } from '@app/web/components/Resource/View/getResourceNavigationData'
+import { ResourceNavigationData } from './getResourceNavigationData'
 import styles from './ResourceDesktopNavigation.module.css'
+import ResourceIndexationView from './ResourceIndexationView'
 
 const ResourceDesktopNavigation = ({
   resource,

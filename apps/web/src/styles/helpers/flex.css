@@ -167,6 +167,14 @@
   .fr-flex-lg {
     display: flex;
   }
+
+  .fr-direction-lg-row {
+    flex-direction: row;
+  }
+
+  .fr-align-items-lg-center {
+    align-items: center;
+  }
 }
 
 /* md flex rules */

@@ -119,6 +119,9 @@ export const createTestResource = (
       collections: 2,
       views: 4,
     },
+    resourceFeedback: [],
+    feedbackAverage: 0,
+    feedbackCount: 0,
   }) satisfies Resource | BasePageData['resources'][number]
 
 export const createTestBase = (

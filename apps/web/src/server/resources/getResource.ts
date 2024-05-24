@@ -15,6 +15,32 @@ export const getResourceSelect = (user: { id: string } | null) =>
     isPublic: true,
     createdById: true,
     legacyId: true,
+    resourceFeedback: {
+      where: {
+        deleted: null,
+      },
+      select: {
+        rating: true,
+        comment: true,
+        created: true,
+        updated: true,
+        sentById: true,
+        resourceId: true,
+        sentBy: {
+          select: {
+            firstName: true,
+            lastName: true,
+            name: true,
+            image: {
+              select: {
+                id: true,
+                altText: true,
+              },
+            },
+          },
+        },
+      },
+    },
     createdBy: {
       select: {
         name: true,
@@ -134,8 +160,8 @@ export const getResourceSelect = (user: { id: string } | null) =>
 export const getResource = async (
   where: { slug: string } | { id: string },
   user: { id: string } | null,
-) =>
-  prismaClient.resource.findFirst({
+) => {
+  const resource = await prismaClient.resource.findFirst({
     select: getResourceSelect(user),
     where: {
       ...where,
@@ -150,6 +176,21 @@ export const getResource = async (
       ],
     },
   })
+
+  if (resource == null) return resource
+
+  const aggregate = await prismaClient.resourceFeedback.aggregate({
+    where: { resourceId: resource.id, deleted: null },
+    _avg: { rating: true },
+    _count: { rating: true },
+  })
+
+  return {
+    ...resource,
+    feedbackCount: aggregate._count.rating ?? 0,
+    feedbackAverage: aggregate._avg.rating ?? 0,
+  }
+}
 
 export type Resource = Exclude<Awaited<ReturnType<typeof getResource>>, null>
 export type ResourceContent = Resource['contents'][number]

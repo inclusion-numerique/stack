@@ -6,6 +6,10 @@
   text-align: center !important;
 }
 
+.fr-text--transform-uppercase {
+  text-transform: uppercase;
+}
+
 .fr-text--right {
   text-align: right !important;
 }
@@ -20,6 +24,10 @@
 
 .fr-text--semi-bold {
   font-weight: 500 !important;
+}
+
+.fr-text--nowrap {
+  text-wrap: nowrap;
 }
 
 /* sm flex rules */

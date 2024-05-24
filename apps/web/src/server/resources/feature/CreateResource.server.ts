@@ -61,6 +61,9 @@ export const applyResourceCreated: ResourceCreationEventApplier<
     collections: 0,
     views: 0,
   },
+  resourceFeedback: [],
+  feedbackAverage: 0,
+  feedbackCount: 0,
 })
 
 export const onCreated: ResourceEventSideEffect<ResourceCreated> = async (
