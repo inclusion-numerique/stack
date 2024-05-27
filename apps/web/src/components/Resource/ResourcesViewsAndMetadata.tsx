@@ -13,6 +13,7 @@ const ResourcesViewsAndMetadata = ({
   children?: ReactNode
 }) => (
   <span
+    data-testid="resources-views-and-metadata"
     className={classNames(
       'fr-text--sm fr-text--medium fr-text-mention--grey fr-flex fr-flex-gap-2v',
       className,

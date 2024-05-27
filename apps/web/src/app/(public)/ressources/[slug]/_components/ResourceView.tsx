@@ -101,13 +101,7 @@ const ResourceView = ({
               {resource.feedbackCount.total > 0 && (
                 <>
                   <FeedbackBadge value={resource.feedbackAverage} />
-                  <Link
-                    href={
-                      user
-                        ? `/ressources/${resource.slug}/avis`
-                        : `/connexion?suivant=/ressources/${resource.slug}/avis`
-                    }
-                  >
+                  <Link href={`/ressources/${resource.slug}/avis`}>
                     {resource.feedbackCount.total}&nbsp;avis
                   </Link>
                 </>
@@ -131,7 +125,10 @@ const ResourceView = ({
             </div>
           ))}
           {resource.feedbackCount.total > 0 && (
-            <div className="fr-border-top fr-border-bottom fr-py-4w fr-flex">
+            <div
+              data-testid="resources-feedbacks"
+              className="fr-border-top fr-border-bottom fr-py-4w fr-flex"
+            >
               <div className="fr-flex fr-direction-lg-row fr-direction-column fr-flex-gap-4v fr-align-items-lg-center fr-flex-grow-1">
                 <h2 className="fr-h6 fr-mb-0">
                   {resource.feedbackCount.total} Avis sur la ressource
@@ -141,11 +138,7 @@ const ResourceView = ({
               <div>
                 <Link
                   className="fr-link"
-                  href={
-                    user
-                      ? `/ressources/${resource.slug}/avis`
-                      : `/connexion?suivant=/ressources/${resource.slug}/avis`
-                  }
+                  href={`/ressources/${resource.slug}/avis`}
                 >
                   Voir les avis
                 </Link>

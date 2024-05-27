@@ -64,11 +64,7 @@ const ResourceActions = ({
             {(!canWrite || resource.feedbackCount.total > 0) && (
               <Link
                 className="fr-btn fr-btn--secondary fr-btn--sm"
-                href={
-                  user
-                    ? `/ressources/${resource.slug}/avis`
-                    : `/connexion?suivant=/ressources/${resource.slug}/avis`
-                }
+                href={`/ressources/${resource.slug}/avis`}
               >
                 <span className="ri-emotion-line fr-mr-1w" aria-hidden />
                 {canWrite ? 'Voir les avis' : 'Donner son avis'}
