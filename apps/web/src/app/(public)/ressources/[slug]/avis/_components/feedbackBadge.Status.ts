@@ -1,30 +1,23 @@
 const BADGE_STATUS = [
   {
-    threshold: 4,
+    threshold: 3.25,
     content: {
       severity: 'triumph',
       label: 'Très recommandée',
     },
   },
   {
-    threshold: 3,
+    threshold: 2.5,
     content: {
       severity: 'success',
       label: 'Recommandée',
     },
   },
   {
-    threshold: 2,
-    content: {
-      severity: 'warning',
-      label: 'Moyennement recommandée',
-    },
-  },
-  {
     threshold: 1,
     content: {
-      severity: 'error',
-      label: 'Non recommandée',
+      severity: 'warning',
+      label: 'Peu recommandée',
     },
   },
 ]

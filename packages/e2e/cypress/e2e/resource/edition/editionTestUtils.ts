@@ -57,7 +57,7 @@ export const cleanUpAndCreateTestPublishedResource = ({
     base: CreateBaseInput
   }) => void
   feedbacks?: {
-    comment: string
+    comment?: string
     rate: 1 | 2 | 3 | 4
     user: { firstName: string; lastName: string }
   }[]

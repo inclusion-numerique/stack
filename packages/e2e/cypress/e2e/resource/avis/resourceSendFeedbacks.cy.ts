@@ -3,7 +3,7 @@ import { givenUser } from '@app/e2e/support/given/givenUser'
 import { cleanUpAndCreateTestPublishedResource } from '../edition/editionTestUtils'
 
 describe("Ajout d'un avis sur une ressource", () => {
-  xit('Acceptation 1 - Utilisateur non connecté, je suis redirigé vers la connexion au clic sur un smiley', () => {
+  it('Acceptation 1 - Utilisateur non connecté, je suis redirigé vers la connexion au clic sur un smiley', () => {
     cleanUpAndCreateTestPublishedResource({
       publicBase: true,
       publicResource: true,
@@ -25,7 +25,7 @@ describe("Ajout d'un avis sur une ressource", () => {
     )
   })
 
-  xit('Acceptation 2 - Utilisateur non connecté, je suis redirigé vers la connexion au clic sur la zone de texte', () => {
+  it('Acceptation 2 - Utilisateur non connecté, je suis redirigé vers la connexion au clic sur la zone de texte', () => {
     cleanUpAndCreateTestPublishedResource({
       publicBase: true,
       publicResource: true,
@@ -47,7 +47,7 @@ describe("Ajout d'un avis sur une ressource", () => {
     )
   })
 
-  xit('Acceptation 3 - Utilisateur connecté, j’obtiens un message d’erreur lorsque j’essaie de publier l’avis sans compléter le niveau de satisfaction', () => {
+  it('Acceptation 3 - Utilisateur connecté, j’obtiens un message d’erreur lorsque j’essaie de publier l’avis sans compléter le niveau de satisfaction', () => {
     cleanUpAndCreateTestPublishedResource({
       publicBase: true,
       publicResource: true,
@@ -69,7 +69,7 @@ describe("Ajout d'un avis sur une ressource", () => {
     )
   })
 
-  xit('Acceptation 4 - Utilisateur connecté, lorsque je complète le formulaire et que je clique sur annuler le formulaire est vide', () => {
+  it('Acceptation 4 - Utilisateur connecté, lorsque je complète le formulaire et que je clique sur annuler le formulaire est vide', () => {
     cleanUpAndCreateTestPublishedResource({
       publicBase: true,
       publicResource: true,
@@ -92,7 +92,7 @@ describe("Ajout d'un avis sur une ressource", () => {
     cy.get('textarea').should('have.value', '')
   })
 
-  xit('Acceptation 5 - Utilisateur connecté, lorsque je complète le formulaire et que je le valide je vois mon avis dans la liste', () => {
+  it('Acceptation 5 - Utilisateur connecté, lorsque je complète le formulaire et que je le valide je vois mon avis dans la liste', () => {
     cleanUpAndCreateTestPublishedResource({
       publicBase: true,
       publicResource: true,
@@ -118,7 +118,7 @@ describe("Ajout d'un avis sur une ressource", () => {
     cy.getToast('Avis partagé')
   })
 
-  xit("Acceptation 6 - Utilisateur connecté, je peux modifié l'avis que j'ai partagé", () => {
+  it("Acceptation 6 - Utilisateur connecté, je peux modifié l'avis que j'ai partagé", () => {
     cleanUpAndCreateTestPublishedResource({
       publicBase: true,
       publicResource: true,
