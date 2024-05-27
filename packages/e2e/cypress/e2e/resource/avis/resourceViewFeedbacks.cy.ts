@@ -1,4 +1,4 @@
-import { appUrl } from '../../../support/helpers'
+import { appUrl } from '@app/e2e/support/helpers'
 import { cleanUpAndCreateTestPublishedResource } from '../edition/editionTestUtils'
 
 describe("Utilisateur sans droit, je peux consulter les avis d'une ressource", () => {

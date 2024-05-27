@@ -18,12 +18,27 @@ import {
   SendResourceFeedbackValidation,
 } from '@app/web/server/resources/sendResourceFeedback'
 import { ResourceProjection } from '@app/web/server/resources/feature/createResourceProjection'
+import { SessionUser } from '@app/web/auth/sessionUser'
+
+const toastMessage = ({
+  isPublic,
+  isUpdated,
+}: {
+  isPublic: boolean
+  isUpdated: boolean
+}) => {
+  if (isUpdated) return 'Avis modifié'
+  if (isPublic) return 'Avis partagé'
+  return 'Avis partagé au créateur et contributeurs de la ressource'
+}
 
 const ResourceFeedbackForm = ({
+  user,
   feedback,
   resource,
   onDismiss,
 }: {
+  user: SessionUser | null
   resource: ResourceProjection
   feedback?: {
     comment: string | null
@@ -49,12 +64,16 @@ const ResourceFeedbackForm = ({
   const handleSave = async (data: SendResourceFeedbackFormData) => {
     await mutate
       .mutateAsync(data)
-      .then(() => {
+      .then((newFeedback) => {
         onDismiss?.()
         router.refresh()
         return createToast({
           priority: 'success',
-          message: 'Avis partagé',
+          message: toastMessage({
+            isPublic: resource.publicFeedback,
+            isUpdated:
+              newFeedback.created.getTime() !== newFeedback.updated.getTime(),
+          }),
         })
       })
       .catch((error: unknown) => {
@@ -66,8 +85,13 @@ const ResourceFeedbackForm = ({
       })
   }
 
+  const requestLogin = () => {
+    if (user == null)
+      router.push(`/connexion?suivant=/ressources/${resource.slug}/avis`)
+  }
+
   return (
-    <form onSubmit={form.handleSubmit(handleSave)}>
+    <form onSubmit={form.handleSubmit(handleSave)} onChange={requestLogin}>
       <RadioFormField
         className="fr-radio--card"
         control={form.control}
@@ -131,8 +155,13 @@ const ResourceFeedbackForm = ({
         type="textarea"
         rows={4}
         disabled={isLoading}
-        label="Laissez un avis (optionnel)"
+        label={
+          resource.publicFeedback
+            ? 'Laissez un avis (optionnel)'
+            : 'Partagez un commentaire privé au créateur de la ressource'
+        }
         hint="Partagez un retour d’expérience sur la ressource, une suggestion d’amélioration...."
+        onClick={requestLogin}
       />
       <ButtonsGroup
         inlineLayoutWhen="always"

@@ -49,7 +49,7 @@ export const ResourceFeedbackList = ({
           <h2 className="fr-sr-only">
             Quel est votre avis à propos de cette ressource ?
           </h2>
-          <ResourceFeedbackForm resource={resource} />
+          <ResourceFeedbackForm resource={resource} user={user} />
         </div>
       )}
       <div className="fr-mb-15w">
@@ -69,6 +69,7 @@ export const ResourceFeedbackList = ({
           return isOwner && isEditing ? (
             <ResourceFeedbackForm
               resource={resource}
+              user={user}
               feedback={feedback}
               onDismiss={() => setIsEditing(false)}
             />

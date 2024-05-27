@@ -58,7 +58,7 @@ const ResourceFeedback = ({
 
       createToast({
         priority: 'success',
-        message: 'Votre avis a bien été supprimé',
+        message: 'Avis supprimé',
       })
     } catch {
       createToast({
@@ -69,7 +69,7 @@ const ResourceFeedback = ({
   }
 
   return (
-    <>
+    <article data-testid="resource-feedback">
       <div className="fr-border fr-border-radius--8 fr-p-4w fr-mb-3w">
         <div className="fr-flex fr-justify-content-space-between">
           <div className="fr-flex fr-align-items-center fr-flex-gap-3v">
@@ -153,7 +153,7 @@ const ResourceFeedback = ({
       >
         Êtes-vous sûr de vouloir supprimer votre avis sur cette ressource ?
       </DeleteModal>
-    </>
+    </article>
   )
 }
 
