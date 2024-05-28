@@ -39,6 +39,7 @@ export const getResourceSelect = (user: { id: string } | null) =>
             firstName: true,
             lastName: true,
             name: true,
+            isPublic: true,
             image: {
               select: {
                 id: true,

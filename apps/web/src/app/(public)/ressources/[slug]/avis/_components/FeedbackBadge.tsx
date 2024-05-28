@@ -3,8 +3,14 @@ import Badge from '@codegouvfr/react-dsfr/Badge'
 import type { AlertProps } from '@codegouvfr/react-dsfr/src/Alert'
 import { feedbackBadgeStatus } from './feedbackBadge.Status'
 
-export const FeedbackBadge = ({ value }: { value: number }) => {
-  const badgeStatus = feedbackBadgeStatus(value)
+export const FeedbackBadge = ({
+  value,
+  customThresholds,
+}: {
+  value: number
+  customThresholds?: [number, number, number, number]
+}) => {
+  const badgeStatus = feedbackBadgeStatus(value, customThresholds)
 
   return (
     <Badge
@@ -13,7 +19,7 @@ export const FeedbackBadge = ({ value }: { value: number }) => {
       severity={badgeStatus?.severity as AlertProps.Severity}
       className="fr-pl-1v fr-text--center fr-text--transform-uppercase fr-text--nowrap"
     >
-      <span className="ri-emotion-happy-fill ri-lg fr-mr-1v" aria-hidden />
+      <span className={`${badgeStatus?.emoticon} ri-lg fr-mr-1v`} aria-hidden />
       {badgeStatus?.label}
     </Badge>
   )

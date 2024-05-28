@@ -59,7 +59,7 @@ export const cleanUpAndCreateTestPublishedResource = ({
   feedbacks?: {
     comment?: string
     rate: 1 | 2 | 3 | 4
-    user: { firstName: string; lastName: string }
+    user: Partial<CreateUserInput>
   }[]
 }) => {
   cy.execute('deleteAllData', {})
@@ -80,14 +80,14 @@ export const cleanUpAndCreateTestPublishedResource = ({
   cy.createBase(base)
   cy.sendResourceCommands({ user, commands }).then(({ slug }) => {
     additionalSetup?.({ user, base })
-    if (visitResourcePage) {
-      cy.visit(`/ressources/${slug}`)
-      cy.dsfrShouldBeStarted()
-    }
-
     if (feedbacks.length > 0) {
       addFeedbackToResource({ slug, feedbacks })
       if (signinAsResourceCreator) cy.signin(user)
+    }
+
+    if (visitResourcePage) {
+      cy.visit(`/ressources/${slug}`)
+      cy.dsfrShouldBeStarted()
     }
   })
 

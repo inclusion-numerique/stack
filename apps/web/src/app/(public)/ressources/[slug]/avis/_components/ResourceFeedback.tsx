@@ -37,6 +37,7 @@ const ResourceFeedback = ({
       lastName: string | null
       name: string | null
       email: string | null
+      isPublic: boolean | null
     }
     comment: string | null
     rating: number
@@ -92,7 +93,7 @@ const ResourceFeedback = ({
               </span>
             </div>
           </div>
-          {canSendMail && feedback.sentBy.email && (
+          {canSendMail && feedback.sentBy.email && feedback.sentBy.isPublic && (
             <Link
               className="fr-btn fr-btn--tertiary-no-outline fr-icon-mail-line fr-btn--icon-right"
               href={`mailto:${feedback.sentBy.email}`}
@@ -131,7 +132,7 @@ const ResourceFeedback = ({
         </div>
         {feedback.comment && (
           <p className="fr-mt-2w fr-mb-0">
-            <ReadMore limit={610}>{feedback.comment}</ReadMore>
+            <ReadMore limit={660}>{feedback.comment}</ReadMore>
           </p>
         )}
       </div>

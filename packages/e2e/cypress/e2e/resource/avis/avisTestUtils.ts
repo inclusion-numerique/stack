@@ -1,4 +1,5 @@
 import { givenUser } from '@app/e2e/support/given/givenUser'
+import { CreateUserInput } from '../../authentication/user.tasks'
 
 export const addFeedbackToResource = ({
   slug,
@@ -8,7 +9,7 @@ export const addFeedbackToResource = ({
   feedbacks: {
     comment?: string
     rate: 1 | 2 | 3 | 4
-    user: { firstName: string; lastName: string }
+    user: Partial<CreateUserInput>
   }[]
 }) => {
   for (const feedback of feedbacks) {

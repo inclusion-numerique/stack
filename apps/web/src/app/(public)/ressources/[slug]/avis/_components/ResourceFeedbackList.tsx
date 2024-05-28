@@ -30,16 +30,16 @@ export const ResourceFeedbackList = ({
         <Notice
           className="fr-mb-3w"
           title={
-            <div className="fr-text-default--grey">
-              <div className="fr-text--bold fr-mb-1w">
+            <span className="fr-text-default--grey">
+              <span className="fr-text--bold fr-mb-1w fr-display-block">
                 Commentaires publics désactivés sur cette ressource
-              </div>
-              <p className="fr-text--regular">
+              </span>
+              <span className="fr-text--regular">
                 {canGiveFeedback
                   ? 'Votre avis sera uniquement visible par le créateur et les contributeurs de la ressource afin de contribuer à l’amélioration de leur ressource.'
                   : 'Les commentaires sont uniquement visibles par vous et les contributeurs de votre ressource.'}
-              </p>
-            </div>
+              </span>
+            </span>
           }
         />
       )}
@@ -56,7 +56,7 @@ export const ResourceFeedbackList = ({
         <h2 className="fr-h4">
           {resource.feedbackCount.total} Avis sur la ressource
         </h2>
-        {resource.resourceFeedback.length === 0 && (
+        {resource.feedbackCount.total === 0 && (
           <div className="fr-border fr-p-4w fr-mb-6w fr-text--center fr-text-mention--grey">
             Il n’y a pas encore d’avis sur cette ressource
             <br />

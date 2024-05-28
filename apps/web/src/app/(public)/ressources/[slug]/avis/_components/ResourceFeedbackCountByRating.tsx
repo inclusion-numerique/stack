@@ -15,7 +15,7 @@ const FeedbackWithCount = ({
 
   return (
     countWithoutUserFeedback > 0 && (
-      <div>
+      <div data-testid="feedback-count">
         <FeedbackBadge value={rating} />
         <div className="fr-text--sm fr-mb-0">
           {countWithoutUserFeedback} Avis
@@ -31,6 +31,7 @@ export const ResourceFeedbackCountByRating = ({
     moderatelyRecommended,
     recommended,
     highlyRecommended,
+    total,
   },
   userFeedbackRating = 0,
 }: {
@@ -39,29 +40,32 @@ export const ResourceFeedbackCountByRating = ({
     moderatelyRecommended: number
     recommended: number
     highlyRecommended: number
+    total: number
   }
   userFeedbackRating?: number
-}) => (
-  <div className="fr-border fr-border-radius--8 fr-p-4w fr-mb-6w fr-flex fr-justify-content-space-between fr-flex-wrap">
-    <FeedbackWithCount
-      rating={1}
-      feedbackCount={notRecommended}
-      userFeedbackRating={userFeedbackRating}
-    />
-    <FeedbackWithCount
-      rating={2}
-      feedbackCount={moderatelyRecommended}
-      userFeedbackRating={userFeedbackRating}
-    />
-    <FeedbackWithCount
-      rating={3}
-      feedbackCount={recommended}
-      userFeedbackRating={userFeedbackRating}
-    />
-    <FeedbackWithCount
-      rating={4}
-      feedbackCount={highlyRecommended}
-      userFeedbackRating={userFeedbackRating}
-    />
-  </div>
-)
+}) =>
+  ((userFeedbackRating != null && total > 1) ||
+    (userFeedbackRating == null && total > 0)) && (
+    <div className="fr-border fr-border-radius--8 fr-p-4w fr-mb-6w fr-flex fr-justify-content-space-between fr-flex-wrap">
+      <FeedbackWithCount
+        rating={1}
+        feedbackCount={notRecommended}
+        userFeedbackRating={userFeedbackRating}
+      />
+      <FeedbackWithCount
+        rating={2}
+        feedbackCount={moderatelyRecommended}
+        userFeedbackRating={userFeedbackRating}
+      />
+      <FeedbackWithCount
+        rating={3}
+        feedbackCount={recommended}
+        userFeedbackRating={userFeedbackRating}
+      />
+      <FeedbackWithCount
+        rating={4}
+        feedbackCount={highlyRecommended}
+        userFeedbackRating={userFeedbackRating}
+      />
+    </div>
+  )
