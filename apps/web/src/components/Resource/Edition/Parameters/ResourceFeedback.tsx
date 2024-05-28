@@ -41,19 +41,21 @@ const ResourceFeedback = ({ resource }: { resource: Resource }) => {
   }
 
   return (
-    <ToggleSwitch
-      inputTitle="Configurer les avis"
-      checked={resource.publicFeedback}
-      disabled={mutate.isPending}
-      label={
-        resource.publicFeedback
-          ? 'Les avis & les commentaires sont visibles par tous.'
-          : 'Les commentaires ne sont plus visibles par les visiteurs, mais uniquement par vous et les contributeurs de votre ressource.'
-      }
-      labelPosition="left"
-      showCheckedHint
-      onChange={onConfigureFeedback}
-    />
+    <div data-testid="resource-feedback">
+      <ToggleSwitch
+        inputTitle="Configurer les avis"
+        checked={resource.publicFeedback}
+        disabled={mutate.isPending}
+        label={
+          resource.publicFeedback
+            ? 'Les avis & les commentaires sont visibles par tous.'
+            : 'Les commentaires ne sont plus visibles par les visiteurs, mais uniquement par vous et les contributeurs de votre ressource.'
+        }
+        labelPosition="left"
+        showCheckedHint
+        onChange={onConfigureFeedback}
+      />
+    </div>
   )
 }
 
