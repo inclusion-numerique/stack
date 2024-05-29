@@ -160,6 +160,7 @@ export const getResourceSelect = (user: { id: string } | null) =>
     },
     _count: {
       select: {
+        resourceFeedback: true,
         collections: true,
         views: true,
       },
@@ -264,7 +265,6 @@ export const getResource = async (
       : resource.resourceFeedback.filter(onlySendBy(user)),
     feedbackCount: {
       ...(await feedbackCountByRecommendation(resource)),
-      total: allFeedbacks._count.rating ?? 0,
     },
     feedbackAverage: allFeedbacks._avg.rating ?? 0,
   }

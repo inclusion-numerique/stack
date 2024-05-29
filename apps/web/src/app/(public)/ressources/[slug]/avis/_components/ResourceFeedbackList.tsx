@@ -54,9 +54,9 @@ export const ResourceFeedbackList = ({
       )}
       <div className="fr-mb-15w">
         <h2 className="fr-h4">
-          {resource.feedbackCount.total} Avis sur la ressource
+          {resource._count.resourceFeedback} Avis sur la ressource
         </h2>
-        {resource.feedbackCount.total === 0 && (
+        {resource._count.resourceFeedback === 0 && (
           <div className="fr-border fr-p-4w fr-mb-6w fr-text--center fr-text-mention--grey">
             Il n’y a pas encore d’avis sur cette ressource
             <br />
@@ -86,7 +86,7 @@ export const ResourceFeedbackList = ({
         {!resource.publicFeedback && canGiveFeedback && (
           <ResourceFeedbackCountByRating
             userFeedbackRating={resource.resourceFeedback.at(0)?.rating}
-            feedbackCount={resource.feedbackCount}
+            resource={resource}
           />
         )}
       </div>

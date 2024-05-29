@@ -118,11 +118,11 @@ export const createTestResource = (
     _count: {
       collections: 2,
       views: 4,
+      resourceFeedback: 0,
     },
     resourceFeedback: [],
     feedbackAverage: 0,
     feedbackCount: {
-      total: 0,
       notRecommended: 0,
       moderatelyRecommended: 0,
       recommended: 0,

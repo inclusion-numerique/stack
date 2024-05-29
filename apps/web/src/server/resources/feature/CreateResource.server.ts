@@ -60,6 +60,7 @@ export const applyResourceCreated: ResourceCreationEventApplier<
   _count: {
     collections: 0,
     views: 0,
+    resourceFeedback: 0,
   },
   resourceFeedback: [],
   feedbackAverage: 0,

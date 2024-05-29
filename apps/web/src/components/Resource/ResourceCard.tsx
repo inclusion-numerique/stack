@@ -9,9 +9,14 @@ import SaveResourceInCollectionButton from '@app/web/components/Resource/SaveRes
 import { resourceCardImageBreakpoints } from '@app/web/components/Resource/resourceCardImageBreakpoints'
 import OwnershipInformation from '@app/web/components/OwnershipInformation'
 import ResourceDates from '@app/web/components/Resource/ResourceDates'
+import { FeedbackBadge } from '@app/web/components/Resource/feedbackBadge/FeedbackBadge'
+import { getServerUrl } from '../../utils/baseUrl'
+import CopyLinkButton from '../CopyLinkButton'
 import styles from './ResourceCard.module.css'
 import DeleteResourceButton from './DeleteResourceButton'
 import ResourcesViewsAndMetadata from './ResourcesViewsAndMetadata'
+
+const CUSTOM_THRESHOLD: [number, number, number, number] = [3.25, 2.5, 1, 0]
 
 const ResourceCard = ({
   resource,
@@ -74,13 +79,26 @@ const ResourceCard = ({
         </div>
       )}
     </Link>
-    <div className={styles.footer}>
+    <div className="fr-flex fr-align-items-md-center fr-justify-content-space-between fr-direction-md-row fr-direction-column">
       {resource.published && (
         <div className="fr-text--sm fr-mb-0">
-          <ResourcesViewsAndMetadata resource={resource} />
+          <ResourcesViewsAndMetadata
+            resource={resource}
+            className="fr-my-4v fr-my-md-6v"
+          >
+            {resource._count.resourceFeedback > 0 && (
+              <>
+                <FeedbackBadge
+                  value={resource.feedbackAverage}
+                  customThresholds={CUSTOM_THRESHOLD}
+                />
+                {resource._count.resourceFeedback}&nbsp;avis
+              </>
+            )}
+          </ResourcesViewsAndMetadata>
         </div>
       )}
-      <div className={classNames(styles.footerRight, 'fr-text--sm', 'fr-mb-0')}>
+      <div className="fr-flex fr-align-items-center">
         {isContributor && (
           <>
             <Button
@@ -99,6 +117,7 @@ const ResourceCard = ({
               <DeleteResourceButton resourceId={resource.id} />
             ) : (
               <SaveResourceInCollectionButton
+                size="small"
                 user={user}
                 resource={resource}
                 variant="icon-only"
@@ -107,11 +126,19 @@ const ResourceCard = ({
           </>
         )}
         {!isContributor && (
-          <SaveResourceInCollectionButton
-            user={user}
-            resource={resource}
-            variant="card"
-          />
+          <>
+            <SaveResourceInCollectionButton
+              size="small"
+              user={user}
+              resource={resource}
+              variant="card"
+            />
+            <CopyLinkButton
+              size="small"
+              priority="tertiary no outline"
+              url={getServerUrl(`/ressources/${resource.slug}`, true)}
+            />
+          </>
         )}
       </div>
     </div>

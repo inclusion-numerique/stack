@@ -7,7 +7,10 @@ import {
 } from '@app/web/server/search/searchQueryParams'
 import { prismaClient } from '@app/web/prismaClient'
 import type { SessionUser } from '@app/web/auth/sessionUser'
-import { resourceListSelect } from '@app/web/server/resources/getResourcesList'
+import {
+  resourceListSelect,
+  toResourceWithFeedbackAverage,
+} from '@app/web/server/resources/getResourcesList'
 import { orderItemsByIndexMap } from '@app/web/server/search/orderItemsByIndexMap'
 import { enumArrayToSnakeCaseStringArray } from '@app/web/server/search/enumArrayToSnakeCaseStringArray'
 import { searchToTsQueryInput } from '@app/web/server/search/searchToTsQueryInput'
@@ -255,7 +258,10 @@ export const searchResources = async (
     select: resourceListSelect(user),
   })
 
-  return orderItemsByIndexMap(resources, resultIndexById)
+  return orderItemsByIndexMap(
+    resources.map(toResourceWithFeedbackAverage),
+    resultIndexById,
+  )
 }
 
 export type SearchResourcesResult = Awaited<ReturnType<typeof searchResources>>

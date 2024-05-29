@@ -1,5 +1,5 @@
 import React from 'react'
-import { FeedbackBadge } from './FeedbackBadge'
+import { FeedbackBadge } from '@app/web/components/Resource/feedbackBadge/FeedbackBadge'
 
 const FeedbackWithCount = ({
   feedbackCount,
@@ -26,45 +26,43 @@ const FeedbackWithCount = ({
 }
 
 export const ResourceFeedbackCountByRating = ({
-  feedbackCount: {
-    notRecommended,
-    moderatelyRecommended,
-    recommended,
-    highlyRecommended,
-    total,
-  },
+  resource: { feedbackCount, _count },
   userFeedbackRating = 0,
 }: {
-  feedbackCount: {
-    notRecommended: number
-    moderatelyRecommended: number
-    recommended: number
-    highlyRecommended: number
-    total: number
+  resource: {
+    feedbackCount: {
+      notRecommended: number
+      moderatelyRecommended: number
+      recommended: number
+      highlyRecommended: number
+    }
+    _count: {
+      resourceFeedback: number
+    }
   }
   userFeedbackRating?: number
 }) =>
-  ((userFeedbackRating != null && total > 1) ||
-    (userFeedbackRating == null && total > 0)) && (
+  ((userFeedbackRating != null && _count.resourceFeedback > 1) ||
+    (userFeedbackRating == null && _count.resourceFeedback > 0)) && (
     <div className="fr-border fr-border-radius--8 fr-p-4w fr-mb-6w fr-flex fr-justify-content-space-between fr-flex-wrap">
       <FeedbackWithCount
         rating={1}
-        feedbackCount={notRecommended}
+        feedbackCount={feedbackCount.notRecommended}
         userFeedbackRating={userFeedbackRating}
       />
       <FeedbackWithCount
         rating={2}
-        feedbackCount={moderatelyRecommended}
+        feedbackCount={feedbackCount.moderatelyRecommended}
         userFeedbackRating={userFeedbackRating}
       />
       <FeedbackWithCount
         rating={3}
-        feedbackCount={recommended}
+        feedbackCount={feedbackCount.recommended}
         userFeedbackRating={userFeedbackRating}
       />
       <FeedbackWithCount
         rating={4}
-        feedbackCount={highlyRecommended}
+        feedbackCount={feedbackCount.highlyRecommended}
         userFeedbackRating={userFeedbackRating}
       />
     </div>

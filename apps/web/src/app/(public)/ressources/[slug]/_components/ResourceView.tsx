@@ -11,7 +11,7 @@ import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage
 import ResourcesViewsAndMetadata from '@app/web/components/Resource/ResourcesViewsAndMetadata'
 import ResourceContentView from '@app/web/components/Resource/Contents/ResourceContentView'
 import DeleteResource from '@app/web/components/Resource/DeleteResource/DeleteResource'
-import { FeedbackBadge } from '../avis/_components/FeedbackBadge'
+import { FeedbackBadge } from '@app/web/components/Resource/feedbackBadge/FeedbackBadge'
 import { addAnchorIdsToResourceContents } from './addAnchorIdsToResourceContents'
 import { getResourceNavigationData } from './getResourceNavigationData'
 import ResourceMobileNavigation from './ResourceMobileNavigation'
@@ -100,14 +100,14 @@ const ResourceView = ({
               resource={resource}
               className="fr-my-4v fr-my-md-6v"
             >
-              {resource.feedbackCount.total > 0 && (
+              {resource._count.resourceFeedback > 0 && (
                 <>
                   <FeedbackBadge
                     value={resource.feedbackAverage}
                     customThresholds={CUSTOM_THRESHOLD}
                   />
                   <Link href={`/ressources/${resource.slug}/avis`}>
-                    {resource.feedbackCount.total}&nbsp;avis
+                    {resource._count.resourceFeedback}&nbsp;avis
                   </Link>
                 </>
               )}
@@ -129,14 +129,14 @@ const ResourceView = ({
               <ResourceContentView content={content} />
             </div>
           ))}
-          {resource.feedbackCount.total > 0 && (
+          {resource._count.resourceFeedback > 0 && (
             <div
               data-testid="resources-feedbacks"
               className="fr-border-top fr-border-bottom fr-py-4w fr-flex"
             >
               <div className="fr-flex fr-direction-lg-row fr-direction-column fr-flex-gap-4v fr-align-items-lg-center fr-flex-grow-1">
                 <h2 className="fr-h6 fr-mb-0">
-                  {resource.feedbackCount.total} Avis sur la ressource
+                  {resource._count.resourceFeedback} Avis sur la ressource
                 </h2>
                 <FeedbackBadge
                   value={resource.feedbackAverage ?? 0}

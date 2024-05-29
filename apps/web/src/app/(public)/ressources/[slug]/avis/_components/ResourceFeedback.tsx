@@ -9,7 +9,7 @@ import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import RoundProfileImage from '@app/web/components/RoundProfileImage'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { trpc } from '@app/web/trpc'
-import { FeedbackBadge } from './FeedbackBadge'
+import { FeedbackBadge } from '@app/web/components/Resource/feedbackBadge/FeedbackBadge'
 import { ReadMore } from './ReadMore'
 
 const {
