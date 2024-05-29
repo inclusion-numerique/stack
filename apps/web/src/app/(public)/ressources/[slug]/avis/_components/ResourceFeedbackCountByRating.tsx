@@ -42,8 +42,8 @@ export const ResourceFeedbackCountByRating = ({
   }
   userFeedbackRating?: number
 }) =>
-  ((userFeedbackRating != null && _count.resourceFeedback > 1) ||
-    (userFeedbackRating == null && _count.resourceFeedback > 0)) && (
+  ((userFeedbackRating > 1 && _count.resourceFeedback > 1) ||
+    (userFeedbackRating < 1 && _count.resourceFeedback > 0)) && (
     <div className="fr-border fr-border-radius--8 fr-p-4w fr-mb-6w fr-flex fr-justify-content-space-between fr-flex-wrap">
       <FeedbackWithCount
         rating={1}
