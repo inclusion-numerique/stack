@@ -13,13 +13,7 @@ const OpenSaveResourceInCollectionModalButton = ({
   }) => {
   const open = SaveResourceInCollectionDynamicModal.useOpen()
 
-  return (
-    <Button
-      size="medium"
-      {...buttonProps}
-      onClick={() => open({ resourceId })}
-    />
-  )
+  return <Button {...buttonProps} onClick={() => open({ resourceId })} />
 }
 
 export default OpenSaveResourceInCollectionModalButton

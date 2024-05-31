@@ -35,7 +35,7 @@ const alreadySavedCardButtonProps = {
 const buttonIconOnlyProps = {
   iconId: defaultIconId,
   title: secondaryButtonProps.children,
-  priority: 'tertiary no outline',
+  priority: 'secondary',
 } as const
 
 const alreadySavedButtonIconOnlyProps = {

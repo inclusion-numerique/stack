@@ -13,7 +13,7 @@ import { FeedbackBadge } from '@app/web/components/Resource/feedbackBadge/Feedba
 import { getServerUrl } from '../../utils/baseUrl'
 import CopyLinkButton from '../CopyLinkButton'
 import styles from './ResourceCard.module.css'
-import DeleteResourceButton from './DeleteResourceButton'
+import { ResourceMoreActionsDropdown } from './ResourceMoreActionsDropdown'
 import ResourcesViewsAndMetadata from './ResourcesViewsAndMetadata'
 
 const CUSTOM_THRESHOLD: [number, number, number, number] = [3.25, 2.5, 1, 0]
@@ -113,16 +113,7 @@ const ResourceCard = ({
             >
               Modifier
             </Button>
-            {resource.published === null ? (
-              <DeleteResourceButton resourceId={resource.id} />
-            ) : (
-              <SaveResourceInCollectionButton
-                size="small"
-                user={user}
-                resource={resource}
-                variant="icon-only"
-              />
-            )}
+            <ResourceMoreActionsDropdown resource={resource} />
           </>
         )}
         {!isContributor && (

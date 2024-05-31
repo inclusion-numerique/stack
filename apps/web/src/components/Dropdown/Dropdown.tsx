@@ -7,6 +7,7 @@ import React, {
   useRef,
 } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
+import Button, { ButtonProps } from '@codegouvfr/react-dsfr/Button'
 
 const hasKey = (
   event: React.KeyboardEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>,
@@ -18,12 +19,19 @@ export const Dropdown = ({
   control,
   children,
   alignRight = false,
+  title,
+  priority,
+  size,
 }: {
   id: string
   control: ReactNode
   children: ReactNode
   alignRight?: boolean
+  title?: string
+  priority?: ButtonProps['priority']
+  size?: ButtonProps['size']
 }) => {
+  const formattedId = id.replace('-', '_')
   const buttonRef = useRef<HTMLButtonElement>(null)
   const collapseRef = useRef<HTMLDivElement>(null)
 
@@ -54,21 +62,24 @@ export const Dropdown = ({
 
   return (
     <div className="fr-dropdown">
-      <button
-        className="fr-dropdown__btn fr-btn "
+      <Button
+        className="fr-dropdown__btn"
+        priority={priority}
+        title={title}
         type="button"
+        size={size}
         aria-expanded="false"
-        aria-controls={id}
+        aria-controls={formattedId}
         ref={buttonRef}
       >
         {control}
-      </button>
+      </Button>
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <div
         role="navigation"
         className="fr-collapse fr-dropdown__pane fr-mr-1v"
         style={{ [alignRight ? 'right' : 'left']: 0 }}
-        id={id}
+        id={formattedId}
         ref={collapseRef}
         onClick={onClickOrEnterInsideDropdown}
         onKeyDown={onClickOrEnterInsideDropdown}

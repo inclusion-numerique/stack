@@ -17,7 +17,7 @@ import {
   InviteMemberCommand,
   InviteMemberCommandValidation,
 } from '@app/web/server/baseMembers/inviteMember'
-import InviteUsers from '../../InviteUsers'
+import InviteUsers from '@app/web/components/InviteUsers'
 import styles from './InviteBaseMemberButton.module.css'
 
 const {

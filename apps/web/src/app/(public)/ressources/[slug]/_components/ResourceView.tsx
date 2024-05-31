@@ -10,8 +10,10 @@ import ResourceDates from '@app/web/components/Resource/ResourceDates'
 import ResponsiveUploadedImage from '@app/web/components/ResponsiveUploadedImage'
 import ResourcesViewsAndMetadata from '@app/web/components/Resource/ResourcesViewsAndMetadata'
 import ResourceContentView from '@app/web/components/Resource/Contents/ResourceContentView'
-import DeleteResource from '@app/web/components/Resource/DeleteResource/DeleteResource'
+import DeleteResource from '@app/web/components/Resource/DeleteResource/DeleteResourceModal'
 import { FeedbackBadge } from '@app/web/components/Resource/feedbackBadge/FeedbackBadge'
+import SaveCollectionModal from '@app/web/components/Collection/SaveCollectionModal'
+import InviteContributorModal from '@app/web/components/Resource/Contributors/InviteContributorModal'
 import { addAnchorIdsToResourceContents } from './addAnchorIdsToResourceContents'
 import { getResourceNavigationData } from './getResourceNavigationData'
 import ResourceMobileNavigation from './ResourceMobileNavigation'
@@ -160,6 +162,8 @@ const ResourceView = ({
           )}
         </div>
         {!!user && <SaveResourceInCollectionModal user={user} />}
+        {!!user && <SaveCollectionModal user={user} />}
+        <InviteContributorModal />
         {canDelete && (
           <DeleteResource
             redirectTo={

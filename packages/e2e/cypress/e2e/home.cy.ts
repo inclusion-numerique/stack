@@ -30,10 +30,10 @@ describe("Page d'accueil", () => {
     cy.get('.fr-header__tools').should('not.contain', 'Se connecter')
     cy.dsfrShouldBeStarted()
     cy.dsfrCollapsesShouldBeBound()
-    cy.get('.fr-header__tools button[aria-controls="header-user-menu"]')
+    cy.get('.fr-header__tools button[aria-controls="header_user_menu"]')
       .contains(user.name)
       .click()
-    cy.get('#header-user-menu').should('be.visible').contains('Se déconnecter')
+    cy.get('#header_user_menu').should('be.visible').contains('Se déconnecter')
   })
 
   it('Un utilisateur avec un token invalide peut accéder au site', () => {

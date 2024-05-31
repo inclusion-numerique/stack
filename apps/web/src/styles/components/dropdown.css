@@ -1,6 +1,10 @@
 .fr-dropdown {
   position: relative;
   display: inline-block;
+
+  @media (max-width: 48em) {
+    position: unset;
+  }
 }
 
 .fr-dropdown__btn::after {
@@ -28,9 +32,14 @@
 .fr-dropdown__pane {
   pointer-events: none;
   position: absolute;
-  top: 100%;
-  z-index: calc(var(--ground) + 1000);
+  z-index: calc(var(--ground) + 1750);
   filter: drop-shadow(var(--overlap-shadow));
+  top: 100%;
+
+  @media (max-width: 48em) {
+    top: unset;
+    width: 100%;
+  }
 
   .fr-btn {
     background-color: transparent;
@@ -42,7 +51,7 @@
   }
 
   & > ul {
-    width: 20rem;
+    min-width: 20rem;
     pointer-events: auto;
     padding: 0;
     margin: 0;

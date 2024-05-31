@@ -116,7 +116,7 @@ const Header = ({ user }: { user?: SessionUser | null }) => (
                     <>
                       <div className="fr-hidden fr-unhidden-lg">
                         <Dropdown
-                          id="header-user-menu"
+                          id="header_user_menu"
                           alignRight
                           control={getUserDisplayName(user)}
                         >

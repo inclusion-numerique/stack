@@ -1,9 +1,9 @@
 import { v4 } from 'uuid'
 import { ProfilePageData } from '@app/web/server/profiles/getProfile'
 import { generateResourceExcerpt } from '@app/web/resources/resourceExcerpt'
+import { Resource } from '@app/web/server/resources/getResource'
 import { SessionUser } from '../auth/sessionUser'
 import { BasePageData } from '../server/bases/getBase'
-import { Resource } from '../server/resources/getResource'
 
 export const createTestUser = (publicProfile?: boolean) =>
   ({

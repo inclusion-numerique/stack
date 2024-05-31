@@ -3,7 +3,7 @@ import { Tabs } from '@codegouvfr/react-dsfr/Tabs'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { BaseResource } from '@app/web/server/bases/getBase'
 import { CreateResourceButton } from '@app/web/components/Resource/CreateResourceModal'
-import DeleteResource from '@app/web/components/Resource/DeleteResource/DeleteResource'
+import DeleteResourceModal from '@app/web/components/Resource/DeleteResource/DeleteResourceModal'
 import SaveResourceInCollectionModal from '@app/web/components/Resource/SaveResourceInCollectionModal'
 import ResourceTab from '@app/web/components/Resource/List/ResourceTab'
 import ResourceCard from '@app/web/components/Resource/ResourceCard'
@@ -11,6 +11,8 @@ import {
   resourceAuthorization,
   ResourceRoles,
 } from '@app/web/authorization/models/resourceAuthorization'
+import InviteContributorModal from '../Contributors/InviteContributorModal'
+import SaveCollectionModal from '../../Collection/SaveCollectionModal'
 
 const Resources = ({
   resources,
@@ -66,6 +68,7 @@ const Resources = ({
       </div>
       {canWrite ? (
         <Tabs
+          className="fr-overflow-visible"
           tabs={[
             {
               label: `Brouillons · ${drafts.length}`,
@@ -119,7 +122,9 @@ const Resources = ({
         ))
       )}
       {!!user && <SaveResourceInCollectionModal user={user} />}
-      {!!user && <DeleteResource />}
+      {!!user && <SaveCollectionModal user={user} />}
+      <DeleteResourceModal />
+      <InviteContributorModal />
     </div>
   )
 }

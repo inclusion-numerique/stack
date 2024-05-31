@@ -106,14 +106,14 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
 
     cy.dsfrShouldBeStarted()
     cy.dsfrCollapsesShouldBeBound()
-    cy.get('.fr-header__tools button[aria-controls="header-user-menu"]')
+    cy.get('.fr-header__tools button[aria-controls="header_user_menu"]')
       .contains(inclusionConnectUser.firstName)
       .contains(inclusionConnectUser.lastName)
       .click()
 
-    cy.get('#header-user-menu').should('be.visible')
+    cy.get('#header_user_menu').should('be.visible')
 
-    cy.get('#header-user-menu').contains('Se déconnecter').click()
+    cy.get('#header_user_menu').contains('Se déconnecter').click()
     cy.appUrlShouldBe('/deconnexion')
     cy.contains('Êtes-vous sur de vouloir vous déconnecter ?')
     cy.get('main').contains('Se déconnecter').click()
@@ -157,10 +157,10 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
 
     cy.dsfrShouldBeStarted()
     cy.dsfrCollapsesShouldBeBound()
-    cy.get('.fr-header__tools button[aria-controls="header-user-menu"]')
+    cy.get('.fr-header__tools button[aria-controls="header_user_menu"]')
       .contains(emailUser.name)
       .click()
-    cy.get('#header-user-menu')
+    cy.get('#header_user_menu')
       .should('be.visible')
       .contains('Se déconnecter')
       .click()

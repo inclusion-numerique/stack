@@ -2,11 +2,12 @@ import React from 'react'
 import Link from 'next/link'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import { Resource } from '@app/web/server/resources/getResource'
-import SaveResourceInCollectionButton from '@app/web/components/Resource/SaveResourceInCollectionButton'
-import CopyLinkButton from '@app/web/components/CopyLinkButton'
 import { getServerUrl } from '@app/web/utils/baseUrl'
-import DeleteResourceButton from '@app/web/components/Resource/DeleteResourceButton'
+import CopyLinkButton from '@app/web/components/CopyLinkButton'
+import SaveResourceInCollectionButton from '@app/web/components/Resource/SaveResourceInCollectionButton'
+import OpenDeleteResourceModalButton from '@app/web/components/Resource/OpenDeleteResourceModalButton'
+import { ResourceMoreActionsDropdown } from '@app/web/components/Resource/ResourceMoreActionsDropdown'
+import { Resource } from '@app/web/server/resources/getResource'
 import ResourceReportButton from './ResourceReportButton'
 import styles from './ResourceActions.module.css'
 
@@ -30,7 +31,6 @@ const ResourceActions = ({
           <Button
             size="small"
             data-testid="resource-edition-button"
-            priority="secondary"
             iconId="fr-icon-edit-line"
             linkProps={{
               href: `/ressources/${resource.slug}/editer`,
@@ -43,6 +43,7 @@ const ResourceActions = ({
           <>
             <SaveResourceInCollectionButton
               size="small"
+              variant="icon-only"
               resource={resource}
               user={user}
               data-testid="save-resource-in-collection-button"
@@ -57,7 +58,7 @@ const ResourceActions = ({
       </div>
       <div>
         {!isPublished && canDelete && (
-          <DeleteResourceButton resourceId={resource.id} variant="icon-only" />
+          <OpenDeleteResourceModalButton resourceId={resource.id} />
         )}
         {isPublished && (
           <>
@@ -70,8 +71,19 @@ const ResourceActions = ({
                 {canWrite ? 'Voir les avis' : 'Donner son avis'}
               </Link>
             )}
-
-            {user && <ResourceReportButton size="small" variant="icon-only" />}
+            {!canWrite && user && (
+              <ResourceReportButton size="small" variant="icon-only" />
+            )}
+            {canWrite && (
+              <ResourceMoreActionsDropdown
+                saveResourceInCollection={false}
+                copyLink={false}
+                resource={resource}
+                priority="secondary"
+              >
+                Plus d’options
+              </ResourceMoreActionsDropdown>
+            )}
           </>
         )}
       </div>
