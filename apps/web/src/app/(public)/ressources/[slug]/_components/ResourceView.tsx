@@ -58,7 +58,7 @@ const ResourceView = ({
         </div>
       </div>
       <div className="fr-col-12 fr-col-md-7 fr-col-md-6 fr-pb-20v">
-        <div className={styles.contentColumn}>
+        <div className="fr-container--slim fr-mx-auto">
           {/* This div is used for top anchor */}
           <div id={resource.slug} className="fr-width-full">
             <OwnershipInformation

@@ -34,7 +34,11 @@ describe('Utilisateur connecté, je peux signaler une ressource', () => {
       cy.visit(`/ressources/${slug}`)
     })
 
-    cy.findByTitle('Signaler la ressource').should('not.exist')
+    cy.findByTitle('Signaler la ressource').click()
+
+    cy.appUrlShouldBe(
+      '/connexion?suivant=/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
+    )
   })
 
   it('Acceptation 2 - Je peux signaler une resource, et le modérateur est prévenu', () => {

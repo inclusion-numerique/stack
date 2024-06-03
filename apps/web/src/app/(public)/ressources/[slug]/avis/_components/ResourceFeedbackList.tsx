@@ -45,7 +45,7 @@ export const ResourceFeedbackList = ({
       )}
       <h1 className="fr-sr-only">Avis - {resource.title}</h1>
       {canGiveFeedback && !resource.resourceFeedback.some(isGivenBy(user)) && (
-        <div className="fr-border fr-border-radius--8 fr-pt-4w fr-px-4w fr-mb-6w">
+        <div className="fr-border fr-border-radius--8 fr-pt-3w fr-px-3w fr-mb-3w">
           <h2 className="fr-sr-only">
             Quel est votre avis à propos de cette ressource ?
           </h2>
@@ -67,12 +67,15 @@ export const ResourceFeedbackList = ({
           const isOwner = feedback.sentById === user?.id
 
           return isOwner && isEditing ? (
-            <ResourceFeedbackForm
-              resource={resource}
-              user={user}
-              feedback={feedback}
-              onDismiss={() => setIsEditing(false)}
-            />
+            <div className="fr-border fr-border-radius--8 fr-pt-3w fr-px-3w fr-mb-3w">
+              <ResourceFeedbackForm
+                resource={resource}
+                user={user}
+                feedback={feedback}
+                isEditing
+                onDismiss={() => setIsEditing(false)}
+              />
+            </div>
           ) : (
             <ResourceFeedback
               feedback={feedback}

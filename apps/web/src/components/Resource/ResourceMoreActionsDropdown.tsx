@@ -28,6 +28,7 @@ export const ResourceMoreActionsDropdown = ({
     priority={priority}
     size="small"
     alignRight
+    displayDropdownArrow={false}
     control={
       <>
         <span className="ri-more-fill" aria-hidden />

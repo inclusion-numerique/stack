@@ -21,16 +21,6 @@
   }
 }
 
-.contentColumn {
-  width: 100%;
-
-  @media (min-width: 768px) {
-    /* UI does not respects grid system */
-    max-width: 588px;
-    margin: 0 auto;
-  }
-}
-
 .separatorRow {
   margin-top: 16px;
   height: 1px;

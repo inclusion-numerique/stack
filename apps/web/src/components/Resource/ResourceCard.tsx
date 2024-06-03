@@ -79,13 +79,10 @@ const ResourceCard = ({
         </div>
       )}
     </Link>
-    <div className="fr-flex fr-align-items-md-center fr-justify-content-space-between fr-direction-md-row fr-direction-column">
+    <div className="fr-flex fr-align-items-md-center fr-justify-content-space-between fr-direction-row fr-my-2w">
       {resource.published && (
         <div className="fr-text--sm fr-mb-0">
-          <ResourcesViewsAndMetadata
-            resource={resource}
-            className="fr-my-4v fr-my-md-6v"
-          >
+          <ResourcesViewsAndMetadata resource={resource}>
             {resource._count.resourceFeedback > 0 && (
               <>
                 <FeedbackBadge
@@ -98,7 +95,7 @@ const ResourceCard = ({
           </ResourcesViewsAndMetadata>
         </div>
       )}
-      <div className="fr-flex fr-align-items-center">
+      <div className="fr-flex fr-align-items-center fr-ml-auto">
         {isContributor && (
           <>
             <Button
@@ -113,17 +110,19 @@ const ResourceCard = ({
             >
               Modifier
             </Button>
-            <ResourceMoreActionsDropdown resource={resource} />
+            <ResourceMoreActionsDropdown resource={resource} copyLink={false} />
           </>
         )}
         {!isContributor && (
           <>
             <SaveResourceInCollectionButton
               size="small"
+              priority="tertiary no outline"
               user={user}
               resource={resource}
-              variant="card"
-            />
+            >
+              Enregistrer
+            </SaveResourceInCollectionButton>
             <CopyLinkButton
               size="small"
               priority="tertiary no outline"

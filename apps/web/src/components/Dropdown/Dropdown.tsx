@@ -22,6 +22,7 @@ export const Dropdown = ({
   title,
   priority,
   size,
+  displayDropdownArrow = true,
 }: {
   id: string
   control: ReactNode
@@ -30,6 +31,7 @@ export const Dropdown = ({
   title?: string
   priority?: ButtonProps['priority']
   size?: ButtonProps['size']
+  displayDropdownArrow?: boolean
 }) => {
   const formattedId = id.replace('-', '_')
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -63,7 +65,7 @@ export const Dropdown = ({
   return (
     <div className="fr-dropdown">
       <Button
-        className="fr-dropdown__btn"
+        className={displayDropdownArrow ? 'fr-dropdown__btn' : ''}
         priority={priority}
         title={title}
         type="button"

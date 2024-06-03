@@ -68,17 +68,22 @@ export const FollowButton = (props: FollowButtonProps) => {
     ? followProfileIconOnlyButtonProps
     : followProfileButtonProps
 
-  const buttonProps = followPriority
+  const buttonProps: ButtonProps = followPriority
     ? { ...initialButtonProps, priority: followPriority }
     : initialButtonProps
 
   return (
     <Button
+      title={buttonProps.title}
+      priority={buttonProps.priority}
+      size={buttonProps.size}
       className={className}
-      {...buttonProps}
       linkProps={{
         href,
       }}
-    />
+    >
+      <span className="ri-user-heart-line fr-mr-1w" aria-hidden />
+      {buttonProps.children}
+    </Button>
   )
 }

@@ -67,8 +67,8 @@ const ResourceFeedbackPage = async ({
       <SkipLinksPortal links={defaultSkipLinks} />
       <div className="fr-container">
         <ResourceBreadcrumbs resource={resource} currentChildPage="Avis" />
-        <main className="fr-container fr-container--medium" id={contentId}>
-          <HeaderBackLink />
+        <main className="fr-mx-auto fr-container--slim" id={contentId}>
+          <HeaderBackLink href={`/ressources/${resource.slug}`} />
           <ResourceFeedbackList
             resource={resource}
             user={user}

@@ -1,25 +1,15 @@
 import Link from 'next/link'
 import React from 'react'
 import { useRouter } from 'next/navigation'
-import { createModal } from '@codegouvfr/react-dsfr/Modal'
-import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { createToast } from '@app/ui/toast/createToast'
-import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import RoundProfileImage from '@app/web/components/RoundProfileImage'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { trpc } from '@app/web/trpc'
 import { FeedbackBadge } from '@app/web/components/Resource/feedbackBadge/FeedbackBadge'
+import { formatName } from '@app/web/server/rpc/user/formatName'
 import { ReadMore } from './ReadMore'
-
-const {
-  Component: DeleteModal,
-  close: closeDeleteModal,
-  buttonProps: deleteModalNativeButtonProps,
-} = createModal({
-  id: `delete-resource-feedback`,
-  isOpenedByDefault: false,
-})
+import { ResourceFeedbackActions } from './ResourceFeedbackActions'
 
 const ResourceFeedback = ({
   feedback,
@@ -37,6 +27,7 @@ const ResourceFeedback = ({
       lastName: string | null
       name: string | null
       email: string | null
+      slug: string | null
       isPublic: boolean | null
     }
     comment: string | null
@@ -50,7 +41,7 @@ const ResourceFeedback = ({
   const mutate = trpc.resource.deleteFeedback.useMutation()
   const isLoading = mutate.isPending
 
-  const onDelete = async () => {
+  const onDelete = async (closeDeleteModal: () => void) => {
     try {
       await mutate.mutateAsync({ resourceId: feedback.resourceId })
 
@@ -71,27 +62,34 @@ const ResourceFeedback = ({
 
   return (
     <article data-testid="resource-feedback">
-      <div className="fr-border fr-border-radius--8 fr-p-4w fr-mb-3w">
-        <div className="fr-flex fr-justify-content-space-between">
-          <div className="fr-flex fr-align-items-center fr-flex-gap-3v">
-            <RoundProfileImage user={feedback.sentBy} />
-            <div className="fr-flex fr-align-items-baseline fr-direction-md-row fr-direction-column">
-              <span className="fr-text--bold">{feedback.sentBy.name}</span>
-              <span className="fr-unhidden-md fr-hidden fr-mx-1w">·</span>
-              <span className="fr-text--xs fr-mb-0 fr-text-mention--grey fr-flex-grow-1">
-                {feedback.created.getTime() === feedback.updated.getTime() ? (
-                  <>
-                    Avis&nbsp;publié&nbsp;le&nbsp;
-                    {dateAsDay(feedback.created)}
-                  </>
-                ) : (
-                  <>
-                    Avis&nbsp;modifié&nbsp;le&nbsp;
-                    {dateAsDay(feedback.updated)}
-                  </>
-                )}
-              </span>
+      <div className="fr-border fr-border-radius--8 fr-p-3w fr-mb-3w">
+        <div className="fr-flex fr-justify-content-space-between fr-direction-sm-row fr-direction-column fr-flex-gap-2v">
+          <div className="fr-flex fr-align-items-sm-center fr-flex-gap-2v fr-direction-sm-row fr-direction-column">
+            <div className="fr-flex fr-align-items-center fr-flex-gap-2v">
+              <RoundProfileImage user={feedback.sentBy} />
+              <Link
+                href={`/profils/${feedback.sentBy.slug}`}
+                className="fr-link fr-text--xs fr-text-decoration--none fr-link--underline-on-hover"
+              >
+                {feedback.sentBy.name
+                  ? formatName(feedback.sentBy.name)
+                  : feedback.sentBy.slug}
+              </Link>
             </div>
+            <span className="fr-unhidden-sm fr-hidden">·</span>
+            <span className="fr-text--xs fr-mb-0 fr-text-mention--grey fr-flex-grow-1">
+              {feedback.created.getTime() === feedback.updated.getTime() ? (
+                <>
+                  Avis&nbsp;publié&nbsp;le&nbsp;
+                  {dateAsDay(feedback.created)}
+                </>
+              ) : (
+                <>
+                  Avis&nbsp;mis&nbsp;à&nbsp;jour&nbsp;le&nbsp;
+                  {dateAsDay(feedback.updated)}
+                </>
+              )}
+            </span>
           </div>
           {canSendMail && feedback.sentBy.email && feedback.sentBy.isPublic && (
             <Link
@@ -101,31 +99,13 @@ const ResourceFeedback = ({
               Contacter
             </Link>
           )}
-          {isOwner && (
-            <ButtonsGroup
-              inlineLayoutWhen="always"
-              buttons={[
-                {
-                  type: 'button',
-                  size: 'small',
-                  priority: 'tertiary no outline',
-                  className: 'fr-pr-0 fr-pl-1w fr-my-0 fr-py-0',
-                  iconId: 'fr-icon-edit-line',
-                  title: "Modifier l'avis",
-                  onClick: onEdit,
-                },
-                {
-                  type: 'button',
-                  size: 'small',
-                  priority: 'tertiary no outline',
-                  className: 'fr-pr-0 fr-pl-1w fr-my-0 fr-py-0',
-                  nativeButtonProps: deleteModalNativeButtonProps,
-                  iconId: 'fr-icon-delete-bin-line',
-                  title: "Supprimer l'avis",
-                },
-              ]}
-            />
-          )}
+          <ResourceFeedbackActions
+            className="fr-hidden fr-unhidden-sm"
+            isLoading={isLoading}
+            isOwner={isOwner}
+            onDelete={onDelete}
+            onEdit={onEdit}
+          />
         </div>
         <div className="fr-mt-2w">
           <FeedbackBadge value={feedback.rating} />
@@ -135,25 +115,14 @@ const ResourceFeedback = ({
             <ReadMore limit={660}>{feedback.comment}</ReadMore>
           </p>
         )}
+        <ResourceFeedbackActions
+          className="fr-hidden-sm fr-mt-2w fr-flex fr-direction-row-reverse"
+          isLoading={isLoading}
+          isOwner={isOwner}
+          onDelete={onDelete}
+          onEdit={onEdit}
+        />
       </div>
-      <DeleteModal
-        title="Supprimer votre avis"
-        buttons={[
-          {
-            children: 'Annuler',
-            priority: 'secondary',
-            disabled: isLoading,
-            onClick: closeDeleteModal,
-          },
-          {
-            children: 'Supprimer',
-            ...buttonLoadingClassname(isLoading, 'fr-btn--danger'),
-            onClick: onDelete,
-          },
-        ]}
-      >
-        Êtes-vous sûr de vouloir supprimer votre avis sur cette ressource ?
-      </DeleteModal>
     </article>
   )
 }

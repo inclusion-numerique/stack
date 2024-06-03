@@ -140,6 +140,7 @@ export const rankResources = async (
                            resources.published            AS published,
                            resources.last_published       AS last_published,
                            COUNT(DISTINCT resource_views.id)       AS views_count,
+                           COUNT(DISTINCT resource_feedback.sent_by_id)       AS feedbacks_count,
                            COUNT(DISTINCT collection_resources.id) AS collections_count
                     FROM resources
                              /* Join user contributor only to have only one row per resource */
@@ -155,6 +156,7 @@ export const rankResources = async (
                                           base_members.member_id = ${userId}::uuid AND
                                           base_members.accepted IS NOT NULL
                              LEFT JOIN resource_views ON resource_views.resource_id = resources.id
+                             LEFT JOIN resource_feedback ON resource_feedback.resource_id = resources.id
                              LEFT JOIN collection_resources ON collection_resources.resource_id = resources.id
                     WHERE
                         /* Resource status check */
@@ -219,6 +221,7 @@ export const rankResources = async (
                    /* Order by DESC the right data depending on the sort */
                    WHEN ${paginationParams.sort === 'pertinence'} THEN rank
                    WHEN ${paginationParams.sort === 'vues'} THEN views_count
+                   WHEN ${paginationParams.sort === 'recommandations'} THEN feedbacks_count
                    WHEN ${paginationParams.sort === 'enregistrements'} THEN collections_count
                    END DESC,
                CASE

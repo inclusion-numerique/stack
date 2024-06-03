@@ -15,7 +15,7 @@ const ResourcesViewsAndMetadata = ({
   <span
     data-testid="resources-views-and-metadata"
     className={classNames(
-      'fr-text--sm fr-text--medium fr-text-mention--grey fr-flex fr-flex-gap-2v',
+      'fr-text--sm fr-mb-0 fr-text--medium fr-text-mention--grey fr-flex fr-flex-gap-2v',
       className,
     )}
   >

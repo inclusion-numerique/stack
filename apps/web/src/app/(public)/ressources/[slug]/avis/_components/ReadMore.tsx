@@ -28,10 +28,10 @@ export const ReadMore = ({
     </>
   ) : (
     <>
-      {children.slice(0, limit).trim()}...
+      {children.slice(0, limit).replace(/[\s!,.;?]+$/, '')}...
       <Button
         type="button"
-        className="fr-display-block fr-mt-2w"
+        className="fr-display-block fr-mt-1w"
         priority="tertiary no outline"
         onClick={() => setReadMore(true)}
       >

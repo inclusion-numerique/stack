@@ -27,7 +27,7 @@ const toastMessage = ({
   isPublic: boolean
   isUpdated: boolean
 }) => {
-  if (isUpdated) return 'Avis modifié'
+  if (isUpdated) return 'Avis mis à jour'
   if (isPublic) return 'Avis partagé'
   return 'Avis partagé au créateur et contributeurs de la ressource'
 }
@@ -37,6 +37,7 @@ const ResourceFeedbackForm = ({
   feedback,
   resource,
   onDismiss,
+  isEditing = false,
 }: {
   user: SessionUser | null
   resource: ResourceProjection
@@ -45,6 +46,7 @@ const ResourceFeedbackForm = ({
     rating: number
   }
   onDismiss?: () => void
+  isEditing?: boolean
 }) => {
   const router = useRouter()
 
@@ -99,9 +101,9 @@ const ResourceFeedbackForm = ({
         options={[
           {
             name: (
-              <div className="fr-text--center fr-align-self-center">
+              <div className="fr-flex fr-flex-gap-1v fr-text--center fr-align-self-sm-center fr-direction-row fr-direction-sm-column">
                 <div
-                  className="ri-emotion-unhappy-fill ri-2x fr-text-default--error fr-mb-1v fr-width-full"
+                  className="ri-emotion-unhappy-fill ri-2x fr-text-default--error fr-width-full fr-mr-1w"
                   aria-hidden
                 />
                 Non
@@ -111,9 +113,9 @@ const ResourceFeedbackForm = ({
           },
           {
             name: (
-              <div className="fr-text--center fr-align-self-center">
+              <div className="fr-flex fr-flex-gap-1v fr-text--center fr-align-self-sm-center fr-direction-row fr-direction-sm-column">
                 <div
-                  className="ri-emotion-normal-fill ri-2x fr-text-default--warning fr-mb-1v fr-width-full"
+                  className="ri-emotion-normal-fill ri-2x fr-text-default--warning fr-width-full fr-mr-1w"
                   aria-hidden
                 />
                 Moyen
@@ -123,9 +125,9 @@ const ResourceFeedbackForm = ({
           },
           {
             name: (
-              <div className="fr-text--center fr-align-self-center">
+              <div className="fr-flex fr-flex-gap-1v fr-text--center fr-align-self-sm-center fr-direction-row fr-direction-sm-column">
                 <div
-                  className="ri-emotion-happy-fill ri-2x fr-text-default--success fr-mb-1v fr-width-full"
+                  className="ri-emotion-happy-fill ri-2x fr-text-default--success fr-width-full fr-mr-1w"
                   aria-hidden
                 />
                 Oui
@@ -135,9 +137,9 @@ const ResourceFeedbackForm = ({
           },
           {
             name: (
-              <div className="fr-text--center fr-align-self-center">
+              <div className="fr-flex fr-flex-gap-1v fr-text--center fr-align-self-sm-center fr-direction-row fr-direction-sm-column">
                 <div
-                  className="ri-emotion-fill ri-2x fr-quote--green-emeraude fr-mb-1v fr-width-full"
+                  className="ri-emotion-fill ri-2x fr-quote--green-emeraude fr-width-full fr-mr-1w"
                   aria-hidden
                 />
                 Beaucoup
@@ -165,19 +167,20 @@ const ResourceFeedbackForm = ({
       />
       <ButtonsGroup
         inlineLayoutWhen="always"
-        className="fr-mt-5w fr-direction-row-reverse"
+        className="fr-mt-5w fr-direction-sm-row-reverse fr-direction-column"
         buttons={[
           {
             type: 'submit',
             children: 'Partager mon avis',
-            ...buttonLoadingClassname(isLoading),
+            ...buttonLoadingClassname(isLoading, 'fr-width-full'),
             disabled: isLoading,
           },
           {
             type: 'button',
             children: 'Annuler',
             priority: 'secondary',
-            disabled: isLoading,
+            className: 'fr-width-full',
+            disabled: isLoading || (!form.formState.isDirty && !isEditing),
             onClick: () => {
               form.reset()
               onDismiss?.()

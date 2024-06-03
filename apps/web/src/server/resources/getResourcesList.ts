@@ -92,7 +92,9 @@ export const resourceListSelect = (user: { id: string } | null) =>
       select: {
         collections: true,
         views: true,
-        resourceFeedback: true,
+        resourceFeedback: {
+          where: { deleted: null },
+        },
       },
     },
   }) satisfies Parameters<typeof prismaClient.resource.findUnique>[0]['select']

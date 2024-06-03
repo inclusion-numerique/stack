@@ -26,6 +26,9 @@ export const getResourceSelect = (user: { id: string } | null) =>
       where: {
         deleted: null,
       },
+      orderBy: {
+        created: 'desc',
+      },
       select: {
         rating: true,
         comment: true,
@@ -39,6 +42,7 @@ export const getResourceSelect = (user: { id: string } | null) =>
             firstName: true,
             lastName: true,
             name: true,
+            slug: true,
             isPublic: true,
             image: {
               select: {
@@ -160,7 +164,9 @@ export const getResourceSelect = (user: { id: string } | null) =>
     },
     _count: {
       select: {
-        resourceFeedback: true,
+        resourceFeedback: {
+          where: { deleted: null },
+        },
         collections: true,
         views: true,
       },

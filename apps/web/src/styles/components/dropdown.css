@@ -51,7 +51,7 @@
   }
 
   & > ul {
-    min-width: 20rem;
+    min-width: 17rem;
     pointer-events: auto;
     padding: 0;
     margin: 0;

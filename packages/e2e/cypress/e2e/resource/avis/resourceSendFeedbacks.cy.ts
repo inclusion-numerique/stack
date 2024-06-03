@@ -137,14 +137,14 @@ describe("Ajout d'un avis sur une ressource", () => {
     cy.get('textarea').first().type('hello')
     cy.contains('Partager mon avis').click()
 
-    cy.findByTitle("Modifier l'avis").click()
+    cy.testId('update-feedback').filter(':visible').first().click()
     cy.get('textarea').first().type(' world')
     cy.contains('Partager mon avis').click()
 
     cy.get('article').contains('Pierre Laubet')
     cy.get('article').contains('Recommandée')
     cy.get('article').contains('hello world')
-    cy.getToast('Avis modifié')
+    cy.getToast('Avis mis à jour')
   })
 
   it("Acceptation 7 - Utilisateur connecté, je peux supprimer l'avis que j'ai partagé", () => {
@@ -166,7 +166,7 @@ describe("Ajout d'un avis sur une ressource", () => {
     cy.get('textarea').first().type('hello')
     cy.contains('Partager mon avis').click()
 
-    cy.findByTitle("Supprimer l'avis").click()
+    cy.testId('delete-feedback').filter(':visible').first().click()
     cy.get('dialog').get('button').contains('Supprimer').click()
 
     cy.getToast('Avis supprimé')

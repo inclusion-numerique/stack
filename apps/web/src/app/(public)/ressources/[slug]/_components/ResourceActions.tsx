@@ -43,11 +43,13 @@ const ResourceActions = ({
           <>
             <SaveResourceInCollectionButton
               size="small"
-              variant="icon-only"
+              priority="secondary"
               resource={resource}
               user={user}
               data-testid="save-resource-in-collection-button"
-            />
+            >
+              {canWrite ? undefined : 'Enregistrer'}
+            </SaveResourceInCollectionButton>
             <CopyLinkButton
               size="small"
               priority="secondary"
@@ -71,8 +73,13 @@ const ResourceActions = ({
                 {canWrite ? 'Voir les avis' : 'Donner son avis'}
               </Link>
             )}
-            {!canWrite && user && (
-              <ResourceReportButton size="small" variant="icon-only" />
+            {!canWrite && (
+              <ResourceReportButton
+                size="small"
+                variant="icon-only"
+                user={user}
+                resource={resource}
+              />
             )}
             {canWrite && (
               <ResourceMoreActionsDropdown

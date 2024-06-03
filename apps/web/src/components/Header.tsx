@@ -132,7 +132,7 @@ const Header = ({ user }: { user?: SessionUser | null }) => (
                       linkProps={{
                         href: '/connexion',
                       }}
-                      iconId="fr-icon-user-line"
+                      iconId="fr-icon-account-circle-line"
                     >
                       Se connecter
                     </Button>
