@@ -84,7 +84,8 @@ model User {
   mediateur    Mediateur?
   coordinateur Coordinateur?
   mutations    Mutation[]
-  usurpateur   Session?      @relation(name: "usurper")
+  emplois      EmployeStructure[]
+  usurpateur   Session?           @relation(name: "usurper")
 
   @@map("users")
 }
@@ -183,7 +184,6 @@ model Mediateur {
   suppression  DateTime?
 
   coordinations MediateurCoordonne[]
-  emplois       MediateurEmploye[]
   enActivite    MediateurEnActivite[]
 
   @@map("mediateurs")
@@ -235,156 +235,184 @@ model MediateurCoordonne {
   @@map("mediateurs_coordonnes")
 }
 
-// Lieu physique. La source de véritée est data-inclusion https://api.gouv.fr/les-api/api-data-inclusion
-// Ce model joue le role de local data cache / search index pour les lieux
-// ET role temporaire de stockage de structure qui vont etre envoyée chez data-inclusion
+// Lieu physique. Source de vérité interne. Peut être mise à jour depuis StructureCartographieNationale.
+// Ce model recense les structures utilisées dans la coop, ce n'est pas une source de vérité exaustive des structures
 model Structure {
+
+  // Id
   id              String  @id @default(uuid()) @db.Uuid
-  idDataInclusion String? @unique @map("id_data_inclusion")
+
+  structureCartographieNationaleId String? @unique @map("id_cartographie_nationale")
+  structureCartographieNationale   StructureCartographieNationale? @relation(fields: [structureCartographieNationaleId], references: [id])
 
   // Timestamps internes à coop-mediation-numerique
-  creation     DateTime  @default(now())
-  modification DateTime  @default(now())
-  suppression  DateTime?
-  // Importation depuis dataset data-inclusion
-  creationImport DateTime? @map("creation_import")
-  // modifié suite à une mise à jour de data-inclusion
-  modificationImport DateTime? @map("modification_import")
-  // plus disponible dans data-inclusion
-  suppressionImport DateTime? @map("suppression_import")
+  creation           DateTime  @default(now())
+  modification       DateTime  @default(now())
+  suppression        DateTime?
 
-  organisation Organisation?
-  lieuActivite LieuActivite?
+  // # Relations
+  emplois              EmployeStructure[]
+  mediateursEnActivite MediateurEnActivite[]
 
-  // # Champs Data inclusion
+  // Champs métier
 
-  // Code SIRET de la structure (identifiant officiel des entreprises en France)
-  siret String? @db.VarChar(14)
-
-  // Numéro RNA (Répertoire National des Associations) de la structure
-  rna String? @db.VarChar(10)
-
-  // Nom de la structure
   nom String
-
-  // Nom de la commune rattachée à l'adresse de la structure
-  commune String
-
-  // Code postal rattaché à l'adresse de la structure
-  codePostal String @map("code_postal") @db.VarChar(5)
-
-  // Code officiel géographique de la commune rattachée à l'adresse de la structure
-  codeInsee String? @map("code_insee") @db.VarChar(5)
-
-  // Adresse de la structure
+  typologie String?
   adresse String
-
-  // Complément d'adresse pour préciser la localisation exacte
   complementAdresse String? @map("complement_adresse")
 
-  // Longitude géographique de la structure
-  longitude Float?
+  siretOuRna           String? @map("siret_ou_rna")
 
-  // Latitude géographique de la structure
-  latitude Float?
+  visiblePourCartographieNationale Boolean @default(false) @map("visible_pour_cartographie_nationale")
 
-  // Type de la structure (CCAS, ASSO, etc.)
-  typologie String?
-
-  // Numéro de téléphone de la structure
-  telephone String?
-
-  // Adresse email de la structure
-  courriel String?
-
-  // URL du site web de la structure
-  siteWeb String? @map("site_web")
-
-  // Description courte de la structure
   presentationResume String? @map("presentation_resume")
-
-  // Description détaillée de la structure
   presentationDetail String? @map("presentation_detail")
-
-  // Source des données
-  source String?
-
-  // Indique si la structure est une antenne
-  antenne Boolean?
-
-  // Date de dernière mise à jour des données
-  dateMaj DateTime @map("date_maj")
-
-  // URL vers la source des données
-  lienSource String? @map("lien_source")
-
-  // Horaires d'ouverture de la structure
-  horairesOuverture String? @map("horaires_ouverture")
-
-  // URL vers les informations d'accessibilité de la structure
+  siteWeb String? @map("site_web")
   accessibilite String?
-
-  // Labels nationaux obtenus par la structure
-  labelsNationaux String[] @map("labels_nationaux")
-
-  // Autres labels obtenus par la structure
-  labelsAutres String[] @map("labels_autres")
-
-  // Thématiques abordées par la structure
+  horaires String?
   thematiques String[]
+  typesAccompagnement String[]
+
+  // TODO finish this according to our Figma complete form for this model and on import, update it from carto data
+
 
   @@map("structures")
 }
 
-// Une organisation emploie des médiateurs.
-// Ce n'est pas forcément leur lieu d'activité.
-// Cela à un role administratif et organisationnel.
-model Organisation {
-  id String @id @default(uuid()) @db.Uuid
+// Lieu physique. CF LieuStandardMediationNumerique.ts.
+// La source de véritée est cartographie-nationale https://anct-cartographie-nationale.github.io/api-application/v0/#operation/lieux-inclusion-numerique.get
+// Ce model joue le role de local data cache / search index pour les lieux
+model StructureCartographieNationale {
+  // Id externe chez cartographie-nationale
+  id              String  @id
 
-  monCompteProId String? @unique @map("mon_compte_pro_id")
+  // Timestamps internes à coop-mediation-numerique
+  creation           DateTime  @default(now())
+  modification       DateTime  @default(now())
+  suppression        DateTime?
 
-  structureId String    @unique @map("structure_id") @db.Uuid
-  structure   Structure @relation(fields: [structureId], references: [id])
+  // Importation depuis dataset cartographie-nationale
+  creationImport     DateTime? @map("creation_import")
+  // modifié suite à une mise à jour de data-inclusion
+  modificationImport DateTime? @map("modification_import")
+  // plus disponible dans data-inclusion
+  suppressionImport  DateTime? @map("suppression_import")
 
-  creation         DateTime           @default(now())
-  modification     DateTime           @default(now())
-  suppression      DateTime?
-  MediateurEmploye MediateurEmploye[]
+  // # Relations
+  structure              Structure?
 
-  @@map("organisations")
+  // # Champs cartographie nationale
+
+  // SIRET ou RNA ou RIDET
+  pivot            String
+
+  // Nom du lieu
+  nom              String
+
+  // Nom de la commune rattachée à l'adresse du lieu
+  commune          String
+
+  // Code postal rattaché à l'adresse du lieu
+  codePostal       String  @map("code_postal") @db.VarChar(5)
+
+  // Code officiel géographique de la commune rattachée à l'adresse du lieu
+  codeInsee        String? @map("code_insee") @db.VarChar(5)
+
+  // Adresse du lieu
+  adresse          String
+
+  // Complément d'adresse
+  complementAdresse String? @map("complement_adresse")
+
+  // Latitude du lieu
+  latitude         Float?
+
+  // Longitude du lieu
+  longitude        Float?
+
+  // Typologie du lieu
+  typologie        String?
+
+  // Numéro de téléphone du lieu
+  telephone        String? @db.VarChar(20)
+
+  // Courriel(s) de contact du lieu
+  courriels        String?
+
+  // Site web du lieu
+  siteWeb          String? @map("site_web")
+
+  // Horaires d'ouverture du lieu
+  horaires         String?
+
+  // Présentation résumée du lieu
+  presentationResume String? @map("presentation_resume")
+
+  // Présentation détaillée du lieu
+  presentationDetail String? @map("presentation_detail")
+
+  // Structure collectant la donnée
+  source           String?
+
+  // Itinérance du lieu
+  itinerance       String?
+
+  // Structure parente du lieu
+  structureParente String? @map("structure_parente")
+
+  // Date de mise à jour des données
+  dateMaj          DateTime @map("date_maj") @db.Date
+
+  // Services proposés par le lieu
+  services         String
+
+  // Publics spécifiquement adressés par le lieu
+  publicsSpecifiquementAdresses String? @map("publics_specifiquement_adresses")
+
+  // Prise en charge spécifique des publics
+  priseEnChargeSpecifique String? @map("prise_en_charge_specifique")
+
+  // Frais à charge pour accéder au lieu
+  fraisACharge     String? @map("frais_a_charge")
+
+  // Dispositifs et programmes nationaux auxquels appartient le lieu
+  dispositifProgrammesNationaux String? @map("dispositif_programmes_nationaux")
+
+  // Formations et labels obtenus par le lieu
+  formationsLabels String? @map("formations_labels")
+
+  // Autres formations et labels obtenus par le lieu
+  autresFormationsLabels String? @map("autres_formations_labels")
+
+  // Modalités d'accès au lieu
+  modalitesAcces   String? @map("modalites_acces")
+
+  // Modalités d'accompagnement proposées par le lieu
+  modalitesAccompagnement String? @map("modalites_accompagnement")
+
+  // URL vers la fiche Accès libre du lieu
+  ficheAccesLibre  String? @map("fiche_acces_libre")
+
+  // URL vers le site de prise de rendez-vous en ligne
+  priseRdv         String? @map("prise_rdv")
+
+  @@map("structures_cartographie_nationale")
 }
 
-model MediateurEmploye {
+model EmployeStructure {
   id String @id @default(uuid()) @db.Uuid
 
-  mediateurId String    @map("mediateur_id") @db.Uuid
-  mediateur   Mediateur @relation(fields: [mediateurId], references: [id])
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id])
 
-  organisationId String       @map("organisation_id") @db.Uuid
-  organisation   Organisation @relation(fields: [organisationId], references: [id])
+  structureId String    @map("structure_id") @db.Uuid
+  structure   Structure @relation(fields: [structureId], references: [id])
 
   creation     DateTime  @default(now())
   modification DateTime  @default(now())
   suppression  DateTime?
 
-  @@map("mediateurs_employes")
-}
-
-// Un lieu d’activité est une structure où un médiateur exerce son activité.
-model LieuActivite {
-  id String @id @default(uuid()) @db.Uuid
-
-  structureId String    @unique @map("structure_id") @db.Uuid
-  structure   Structure @relation(fields: [structureId], references: [id])
-
-  enActivite MediateurEnActivite[]
-
-  creation     DateTime  @default(now())
-  modification DateTime  @default(now())
-  suppression  DateTime?
-
-  @@map("lieux_activites")
+  @@map("employes_structures")
 }
 
 model MediateurEnActivite {
@@ -393,8 +421,8 @@ model MediateurEnActivite {
   mediateurId String    @map("mediateur_id") @db.Uuid
   mediateur   Mediateur @relation(fields: [mediateurId], references: [id])
 
-  lieuActiviteId String       @map("lieu_activite_id") @db.Uuid
-  lieuActivite   LieuActivite @relation(fields: [lieuActiviteId], references: [id])
+  structureId String    @map("structure_id") @db.Uuid
+  structure   Structure @relation(fields: [structureId], references: [id])
 
   creation     DateTime  @default(now())
   modification DateTime  @default(now())
@@ -414,7 +442,7 @@ enum MutationName {
   SupprimerMediateurCoordonne      @map("supprimer_mediateur_coordonne")
   CreerStructure                   @map("creer_structure")
   ModifierStructure                @map("modifier_structure")
-  MiseAJourDataInclusionStructures @map("mise_a_jour_data_inclusion_structures")
+  MiseAJourStructuresCartographieNationale @map("mise_a_jour_structures_cartographie_nationale")
 
   @@map("mutation_name")
 }

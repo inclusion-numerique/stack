@@ -4,7 +4,7 @@ import type { Job, JobName, JobPayload } from '@app/web/jobs/jobs'
 import { executeBackupDatabaseJob } from '@app/web/jobs/backup-database/executeBackupDatabaseJob'
 import { createStopwatch } from '@app/web/utils/stopwatch'
 import { prismaClient } from '@app/web/prismaClient'
-import { executeUpdateDataInclusionStructures } from '@app/web/jobs/update-data-inclusion-structures/executeUpdateDataInclusionStructures'
+import { executeUpdateStructuresCartographieNationale } from '@app/web/jobs/update-structures-cartographie-nationale/executeUpdateStructuresCartographieNationale'
 
 export type JobExecutor<Name extends JobName, Result = unknown> = (
   job: Job & { name: Name; payload: JobPayload<Name> },
@@ -15,7 +15,8 @@ export const jobExecutors: {
   [Name in JobName]: JobExecutor<Name>
 } = {
   'backup-database': executeBackupDatabaseJob,
-  'update-data-inclusion-structures': executeUpdateDataInclusionStructures,
+  'update-structures-cartographie-nationale':
+    executeUpdateStructuresCartographieNationale,
 }
 
 export const executeJob = async (job: Job) => {

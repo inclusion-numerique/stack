@@ -103,7 +103,7 @@ export const downloadDataInclusionStructures = async () => {
 
   if (response.status !== 200) {
     throw new Error(
-      `Failed to download data inclusion structures: ${response.statusText}`,
+      `Failed to download cartographie nationale structures: ${response.statusText}`,
     )
   }
   const writeStream = createWriteStream(dataInclusionStructuresFilePath)

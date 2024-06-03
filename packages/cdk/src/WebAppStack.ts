@@ -293,9 +293,9 @@ export class WebAppStack extends TerraformStack {
     }
 
     createJobExecutionCron(this, {
-      name: `update-data-inclusion-structures`,
+      name: `update-structures-cartographie-nationale`,
       job: {
-        name: 'update-data-inclusion-structures',
+        name: 'update-structures-cartographie-nationale',
         payload: undefined,
       },
       schedule: '0 3 * * *',
