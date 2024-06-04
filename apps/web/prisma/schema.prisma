@@ -238,17 +238,16 @@ model MediateurCoordonne {
 // Lieu physique. Source de vérité interne. Peut être mise à jour depuis StructureCartographieNationale.
 // Ce model recense les structures utilisées dans la coop, ce n'est pas une source de vérité exaustive des structures
 model Structure {
-
   // Id
-  id              String  @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
-  structureCartographieNationaleId String? @unique @map("id_cartographie_nationale")
+  structureCartographieNationaleId String?                         @unique @map("id_cartographie_nationale")
   structureCartographieNationale   StructureCartographieNationale? @relation(fields: [structureCartographieNationaleId], references: [id])
 
   // Timestamps internes à coop-mediation-numerique
-  creation           DateTime  @default(now())
-  modification       DateTime  @default(now())
-  suppression        DateTime?
+  creation     DateTime  @default(now())
+  modification DateTime  @default(now())
+  suppression  DateTime?
 
   // # Relations
   emplois              EmployeStructure[]
@@ -257,25 +256,30 @@ model Structure {
   // Champs métier
 
   nom String
-  typologie String?
-  adresse String
-  complementAdresse String? @map("complement_adresse")
 
-  siretOuRna           String? @map("siret_ou_rna")
+  typologie String?
+
+  adresse String
+  commune String
+  codePostal String @map("code_postal") @db.VarChar(5)
+  codeInsee String? @map("code_insee") @db.VarChar(5)
+  complementAdresse String? @map("complement_adresse")
+  latitude Float?
+  longitude Float?
+
+  siretOuRna String? @map("siret_ou_rna")
 
   visiblePourCartographieNationale Boolean @default(false) @map("visible_pour_cartographie_nationale")
 
-  presentationResume String? @map("presentation_resume")
-  presentationDetail String? @map("presentation_detail")
-  siteWeb String? @map("site_web")
-  accessibilite String?
-  horaires String?
-  thematiques String[]
+  presentationResume  String?  @map("presentation_resume")
+  presentationDetail  String?  @map("presentation_detail")
+  siteWeb             String?  @map("site_web")
+  accessibilite       String?
+  horaires            String?
+  thematiques         String[]
   typesAccompagnement String[]
 
   // TODO finish this according to our Figma complete form for this model and on import, update it from carto data
-
-
   @@map("structures")
 }
 
@@ -284,12 +288,12 @@ model Structure {
 // Ce model joue le role de local data cache / search index pour les lieux
 model StructureCartographieNationale {
   // Id externe chez cartographie-nationale
-  id              String  @id
+  id String @id
 
   // Timestamps internes à coop-mediation-numerique
-  creation           DateTime  @default(now())
-  modification       DateTime  @default(now())
-  suppression        DateTime?
+  creation     DateTime  @default(now())
+  modification DateTime  @default(now())
+  suppression  DateTime?
 
   // Importation depuis dataset cartographie-nationale
   creationImport     DateTime? @map("creation_import")
@@ -299,51 +303,51 @@ model StructureCartographieNationale {
   suppressionImport  DateTime? @map("suppression_import")
 
   // # Relations
-  structure              Structure?
+  structure Structure?
 
   // # Champs cartographie nationale
 
   // SIRET ou RNA ou RIDET
-  pivot            String
+  pivot String
 
   // Nom du lieu
-  nom              String
+  nom String
 
   // Nom de la commune rattachée à l'adresse du lieu
-  commune          String
+  commune String
 
   // Code postal rattaché à l'adresse du lieu
-  codePostal       String  @map("code_postal") @db.VarChar(5)
+  codePostal String @map("code_postal") @db.VarChar(5)
 
   // Code officiel géographique de la commune rattachée à l'adresse du lieu
-  codeInsee        String? @map("code_insee") @db.VarChar(5)
+  codeInsee String? @map("code_insee") @db.VarChar(5)
 
   // Adresse du lieu
-  adresse          String
+  adresse String
 
   // Complément d'adresse
   complementAdresse String? @map("complement_adresse")
 
   // Latitude du lieu
-  latitude         Float?
+  latitude Float?
 
   // Longitude du lieu
-  longitude        Float?
+  longitude Float?
 
   // Typologie du lieu
-  typologie        String?
+  typologie String?
 
   // Numéro de téléphone du lieu
-  telephone        String? @db.VarChar(20)
+  telephone String? @db.VarChar(20)
 
   // Courriel(s) de contact du lieu
-  courriels        String?
+  courriels String?
 
   // Site web du lieu
-  siteWeb          String? @map("site_web")
+  siteWeb String? @map("site_web")
 
   // Horaires d'ouverture du lieu
-  horaires         String?
+  horaires String?
 
   // Présentation résumée du lieu
   presentationResume String? @map("presentation_resume")
@@ -352,19 +356,19 @@ model StructureCartographieNationale {
   presentationDetail String? @map("presentation_detail")
 
   // Structure collectant la donnée
-  source           String?
+  source String?
 
   // Itinérance du lieu
-  itinerance       String?
+  itinerance String?
 
   // Structure parente du lieu
   structureParente String? @map("structure_parente")
 
   // Date de mise à jour des données
-  dateMaj          DateTime @map("date_maj") @db.Date
+  dateMaj DateTime @map("date_maj") @db.Date
 
   // Services proposés par le lieu
-  services         String
+  services String
 
   // Publics spécifiquement adressés par le lieu
   publicsSpecifiquementAdresses String? @map("publics_specifiquement_adresses")
@@ -373,7 +377,7 @@ model StructureCartographieNationale {
   priseEnChargeSpecifique String? @map("prise_en_charge_specifique")
 
   // Frais à charge pour accéder au lieu
-  fraisACharge     String? @map("frais_a_charge")
+  fraisACharge String? @map("frais_a_charge")
 
   // Dispositifs et programmes nationaux auxquels appartient le lieu
   dispositifProgrammesNationaux String? @map("dispositif_programmes_nationaux")
@@ -385,16 +389,16 @@ model StructureCartographieNationale {
   autresFormationsLabels String? @map("autres_formations_labels")
 
   // Modalités d'accès au lieu
-  modalitesAcces   String? @map("modalites_acces")
+  modalitesAcces String? @map("modalites_acces")
 
   // Modalités d'accompagnement proposées par le lieu
   modalitesAccompagnement String? @map("modalites_accompagnement")
 
   // URL vers la fiche Accès libre du lieu
-  ficheAccesLibre  String? @map("fiche_acces_libre")
+  ficheAccesLibre String? @map("fiche_acces_libre")
 
   // URL vers le site de prise de rendez-vous en ligne
-  priseRdv         String? @map("prise_rdv")
+  priseRdv String? @map("prise_rdv")
 
   @@map("structures_cartographie_nationale")
 }
@@ -432,16 +436,16 @@ model MediateurEnActivite {
 }
 
 enum MutationName {
-  CreerMediateur                   @map("creer_mediateur")
-  ModifierMediateur                @map("modifier_mediateur")
-  SupprimerMediateur               @map("supprimer_mediateur")
-  CreerCoordinateur                @map("creer_coordinateur")
-  ModifierCoordinateur             @map("modifier_coordinateur")
-  SupprimerCoordinateur            @map("supprimer_coordinateur")
-  CreerMediateurCoordonne          @map("creer_mediateur_coordonne")
-  SupprimerMediateurCoordonne      @map("supprimer_mediateur_coordonne")
-  CreerStructure                   @map("creer_structure")
-  ModifierStructure                @map("modifier_structure")
+  CreerMediateur                           @map("creer_mediateur")
+  ModifierMediateur                        @map("modifier_mediateur")
+  SupprimerMediateur                       @map("supprimer_mediateur")
+  CreerCoordinateur                        @map("creer_coordinateur")
+  ModifierCoordinateur                     @map("modifier_coordinateur")
+  SupprimerCoordinateur                    @map("supprimer_coordinateur")
+  CreerMediateurCoordonne                  @map("creer_mediateur_coordonne")
+  SupprimerMediateurCoordonne              @map("supprimer_mediateur_coordonne")
+  CreerStructure                           @map("creer_structure")
+  ModifierStructure                        @map("modifier_structure")
   MiseAJourStructuresCartographieNationale @map("mise_a_jour_structures_cartographie_nationale")
 
   @@map("mutation_name")

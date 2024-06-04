@@ -56,12 +56,14 @@ export const searchStructure = async (
     where: matchesWhere,
   })
 
-  const structures = structuresRaw.map(({ nom, adresse, ...rest }) => ({
-    nom: toTitleCase(nom, { noUpper: true }),
-    // commune: toTitleCase(commune),
-    adresse: toTitleCase(adresse, { noUpper: true }),
-    ...rest,
-  }))
+  const structures = structuresRaw.map(
+    ({ nom, adresse, commune, ...rest }) => ({
+      nom: toTitleCase(nom, { noUpper: true }),
+      commune: toTitleCase(commune),
+      adresse: toTitleCase(adresse, { noUpper: true }),
+      ...rest,
+    }),
+  )
 
   return {
     structures,

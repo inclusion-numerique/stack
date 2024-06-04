@@ -9,9 +9,9 @@ const StructureHorairesForm = ({
 }: {
   structure: StructureDataForForm
 }) => {
-  const { horairesOuverture } = structure
+  const { horaires } = structure
 
-  const openingHours = stringToOpeningHours(horairesOuverture)
+  const openingHours = stringToOpeningHours(horaires)
 
   console.log('OPENING HOURS', openingHours)
 
@@ -21,8 +21,8 @@ const StructureHorairesForm = ({
         {JSON.stringify(structure, null, 2)}
       </pre>
 
-      {!horairesOuverture && <p>Horaires d’ouvertures non spécifiés</p>}
-      {!!horairesOuverture && !openingHours && (
+      {!horaires && <p>Horaires d’ouvertures non spécifiés</p>}
+      {!!horaires && !openingHours && (
         <p>Les horaires ne sont pas au format Open Street Map</p>
       )}
       {!!openingHours && (

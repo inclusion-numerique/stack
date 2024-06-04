@@ -88,7 +88,7 @@ export const getStructuresMetadata = async () => {
   for (const structure of structures) {
     sourcesStructuresMap.set(
       structure.source ?? null,
-      (sourcesStructuresMap.get(structure.source?? null) ?? 0) + 1,
+      (sourcesStructuresMap.get(structure.source ?? null) ?? 0) + 1,
     )
   }
 
@@ -102,7 +102,7 @@ export const getStructuresMetadata = async () => {
   )
 
   const lastUpdate = structures.reduce((accumulator, current) => {
-    if(!current.date_maj) return accumulator
+    if (!current.date_maj) return accumulator
     const maj = new Date(current.date_maj).getTime()
 
     if (maj > accumulator) {

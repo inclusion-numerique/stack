@@ -37,7 +37,9 @@ const Page = async () => {
       </p>
 
       <div className="fr-border-radius--16 fr-border  fr-py-6v fr-px-12v fr-mb-6v">
-        <h2 className="fr-h6">Rechercher une structure cartographie nationale</h2>
+        <h2 className="fr-h6">
+          Rechercher une structure cartographie nationale
+        </h2>
         <AdministrationSearchStructure />
       </div>
 

@@ -1,8 +1,6 @@
 import z from 'zod'
 import { BackupDatabaseJobValidation } from '@app/web/jobs/backup-database/backupDatabaseJob'
-import {
-  UpdateStructuresCartographieNationaleJobValidation,
-} from '@app/web/jobs/update-structures-cartographie-nationale/updateStructuresCartographieNationaleJob'
+import { UpdateStructuresCartographieNationaleJobValidation } from '@app/web/jobs/update-structures-cartographie-nationale/updateStructuresCartographieNationaleJob'
 
 /**
  * A job represents a task that can be executed asynchronously.
