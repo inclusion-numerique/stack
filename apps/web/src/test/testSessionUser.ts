@@ -12,4 +12,11 @@ export const testSessionUser = {
   role: 'User',
   isFixture: false,
   usurper: null,
+  coordinateur: null,
+  emplois: [],
+  inscriptionValidee: null,
+  lieuxActiviteRenseignes: null,
+  mediateur: null,
+  profilInscription: null,
+  structureEmployeuseRenseignee: null,
 } satisfies SessionUser

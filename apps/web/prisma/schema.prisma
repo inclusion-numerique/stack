@@ -85,6 +85,7 @@ model User {
 
   created   DateTime  @default(now())
   updated   DateTime  @default(now())
+  deleted   DateTime?
   lastLogin DateTime? @map("last_login")
 
   // Flux d’inscription

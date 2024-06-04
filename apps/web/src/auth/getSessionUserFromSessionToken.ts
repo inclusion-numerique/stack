@@ -12,6 +12,11 @@ export const getSessionUserFromSessionToken = async (
     where: {
       sessionToken,
       expires: { gt: new Date() },
+      user: {
+        deleted: {
+          not: null,
+        },
+      },
     },
     include: {
       usurper: {
@@ -35,6 +40,47 @@ export const getSessionUserFromSessionToken = async (
           updated: true,
           role: true,
           isFixture: true,
+          profilInscription: true,
+          structureEmployeuseRenseignee: true,
+          lieuxActiviteRenseignes: true,
+          inscriptionValidee: true,
+          emplois: {
+            select: {
+              id: true,
+              structure: {
+                select: {
+                  id: true,
+                  nom: true,
+                  codePostal: true,
+                  commune: true,
+                },
+              },
+            },
+            where: {
+              suppression: null,
+            },
+          },
+          mediateur: {
+            select: {
+              id: true,
+              conseillerNumerique: {
+                select: {
+                  id: true,
+                },
+              },
+            },
+            where: {
+              suppression: null,
+            },
+          },
+          coordinateur: {
+            select: {
+              id: true,
+            },
+            where: {
+              suppression: null,
+            },
+          },
         },
       },
     },
@@ -49,6 +95,11 @@ export const getSessionUserFromSessionToken = async (
     created: res.user.created.toISOString(),
     updated: res.user.updated.toISOString(),
     emailVerified: res.user.emailVerified?.toISOString() ?? null,
+    inscriptionValidee: res.user.inscriptionValidee?.toISOString() ?? null,
+    structureEmployeuseRenseignee:
+      res.user.structureEmployeuseRenseignee?.toISOString() ?? null,
+    lieuxActiviteRenseignes:
+      res.user.lieuxActiviteRenseignes?.toISOString() ?? null,
     usurper: res.usurper,
   }
 }
