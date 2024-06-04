@@ -56,6 +56,14 @@ enum UserRole {
   @@map("user_roles")
 }
 
+enum ProfilInscription {
+  ConseillerNumerique @map("conseiller-numerique")
+  Mediateur           @map("mediateur")
+  Coordinateur        @map("coordinateur-conseiller-numerique")
+
+  @@map("profil_inscription")
+}
+
 model User {
   id            String    @id @default(uuid()) @db.Uuid
   firstName     String?   @map("first_name")
@@ -78,6 +86,12 @@ model User {
   created   DateTime  @default(now())
   updated   DateTime  @default(now())
   lastLogin DateTime? @map("last_login")
+
+  // Flux d’inscription
+  profilInscription ProfilInscription? @map("profil_inscription")
+  structureEmployeuseRenseignee DateTime? @map("structure_employeuse_renseignee")
+  lieuxActiviteRenseignes DateTime? @map("lieux_activite_renseignes")
+  inscriptionValidee DateTime? @map("inscription_validee")
 
   uploads Upload[]
 
