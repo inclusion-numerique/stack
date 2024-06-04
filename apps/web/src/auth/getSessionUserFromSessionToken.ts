@@ -13,9 +13,7 @@ export const getSessionUserFromSessionToken = async (
       sessionToken,
       expires: { gt: new Date() },
       user: {
-        deleted: {
-          not: null,
-        },
+        deleted: null,
       },
     },
     include: {

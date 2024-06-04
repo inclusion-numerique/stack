@@ -4,7 +4,7 @@ import PublicFooter from '@app/web/app/(public)/PublicFooter'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Header from '@app/web/components/Header'
 
-const PrivateLayout = async ({ children }: PropsWithChildren) => {
+const InscriptionLayout = async ({ children }: PropsWithChildren) => {
   const user = await getSessionUser()
   if (!user) {
     redirect('/connexion')
@@ -15,8 +15,7 @@ const PrivateLayout = async ({ children }: PropsWithChildren) => {
     notFound()
   }
 
-  // TODO Rule for inscription already done
-  if (false) {
+  if (user.inscriptionValidee) {
     redirect('/coop')
   }
 
@@ -31,4 +30,4 @@ const PrivateLayout = async ({ children }: PropsWithChildren) => {
   )
 }
 
-export default PrivateLayout
+export default InscriptionLayout
