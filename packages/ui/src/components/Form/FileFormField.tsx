@@ -22,7 +22,7 @@ export type FileFormFieldProps<T extends FieldValues> = {
   path: FieldPath<T>
   disabled?: boolean
   label?: ReactNode
-  hint?: string
+  hint?: string | ReactElement
   placeholder?: string
   accept?: string
   className?: string

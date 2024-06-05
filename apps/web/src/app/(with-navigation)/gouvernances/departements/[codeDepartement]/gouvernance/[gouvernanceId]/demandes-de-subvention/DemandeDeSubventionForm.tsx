@@ -369,9 +369,20 @@ const DemandeDeSubventionForm = ({
         <FileFormField
           asterisk
           label="Ajoutez une pièce-jointe détaillant le budget prévisionnel de l'action sur l'année 2024 à minima, incluant les co-financements éventuels"
-          hint={`Taille maximale : ${formatByteSize(
-            pieceJointeBudgetMaxSize,
-          )}. Formats supportés : ${pieceJointeBudgetAllowedExtensions.join(', ')}. Un modèle de budget prévisionnel détaillé est fourni dans le cahier des charges.`}
+          hint={
+            <>
+              Taille maximale : ${formatByteSize(pieceJointeBudgetMaxSize)}.
+              Formats supportés : ${pieceJointeBudgetAllowedExtensions.join(', ')}. Un modèle de budget prévisionnel détaillé est fourni sur
+              <a
+                href="https://lesbases.anct.gouv.fr/ressources/comment-financer-les-feuilles-de-routes"
+                rel="external noopener noreferrer"
+                target="_blank"
+              >
+                La Base France Numérique Ensemble
+              </a>
+              .
+            </>
+          }
           control={form.control}
           path="pieceJointeBudgetFile"
           disabled={isLoading}
