@@ -37,12 +37,6 @@ const profile = {
 export default {
   title: 'Profile/Card',
   component: ProfileCard,
-  parameters: {
-    design: {
-      type: 'figma',
-      url: 'https://www.figma.com/file/Rk4NNQVYRBE0bJZ6i5mrfU/Les-Bases---V.2?m=dev&node-id=5347-115203&t=t1deQ0CvqlU3zZbd-1',
-    },
-  },
 } as Meta<typeof ProfileCard>
 
 type Story = StoryObj<typeof ProfileCard>
