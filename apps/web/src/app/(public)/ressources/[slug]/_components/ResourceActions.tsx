@@ -51,6 +51,7 @@ const ResourceActions = ({
               {canWrite ? undefined : 'Enregistrer'}
             </SaveResourceInCollectionButton>
             <CopyLinkButton
+              className="fr-unhidden-sm fr-hidden"
               size="small"
               priority="secondary"
               url={getServerUrl(`/ressources/${resource.slug}`, true)}
@@ -66,7 +67,7 @@ const ResourceActions = ({
           <>
             {(!canWrite || resource._count.resourceFeedback > 0) && (
               <Link
-                className="fr-btn fr-btn--secondary fr-btn--sm"
+                className="fr-btn fr-btn--secondary fr-btn--sm fr-unhidden-sm fr-hidden"
                 href={`/ressources/${resource.slug}/avis`}
               >
                 <span className="ri-emotion-line fr-mr-1w" aria-hidden />
@@ -74,21 +75,35 @@ const ResourceActions = ({
               </Link>
             )}
             {!canWrite && (
-              <ResourceReportButton
-                size="small"
-                variant="icon-only"
-                user={user}
-                resource={resource}
-              />
+              <>
+                <ResourceReportButton
+                  className="fr-unhidden-sm fr-hidden fr-btn--secondary"
+                  size="small"
+                  variant="icon-only"
+                  user={user}
+                  resource={resource}
+                />
+                <span className="fr-hidden-sm">
+                  <ResourceMoreActionsDropdown
+                    resource={resource}
+                    user={user}
+                    saveResourceInCollection={false}
+                    copyLink={false}
+                  />
+                </span>
+              </>
             )}
             {canWrite && (
               <ResourceMoreActionsDropdown
+                canWrite
                 saveResourceInCollection={false}
                 copyLink={false}
                 resource={resource}
                 priority="secondary"
               >
-                Plus d’options
+                <span className="fr-unhidden-sm fr-hidden">
+                  &ensp;Plus d’options
+                </span>
               </ResourceMoreActionsDropdown>
             )}
           </>

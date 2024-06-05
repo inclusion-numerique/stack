@@ -31,7 +31,6 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.dsfrModalsShouldBeBound()
 
     cy.findAllByTitle(/enregistrer la collection/i)
-      .filter(':visible')
       .first()
       .click()
     cy.findByRole('dialog').within(() => {
@@ -249,7 +248,6 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.contains(collection.title)
     cy.findByTestId('collection-card').should('be.visible')
     cy.findByRole('button', { name: /enregistrer la collection/i })
-      .filter(':visible')
       .first()
       .click()
 

@@ -16,12 +16,11 @@ export const HelpMenu = () => (
         Centre d’aide
       </Link>
     </li>
-    <li>
+    <li data-testid="header-feedback-control-button">
       <Button
         key="feedback"
         type="button"
         aria-controls={feedbackModalId}
-        id="header-feedback-control-button"
         data-fr-opened={false}
       >
         <span

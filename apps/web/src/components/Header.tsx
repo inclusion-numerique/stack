@@ -81,7 +81,10 @@ const Header = ({ user }: { user?: SessionUser | null }) => (
                   )}
                 </li>
                 <li>
-                  <div className="fr-hidden fr-unhidden-lg">
+                  <div
+                    data-testid="help-menu-help-center"
+                    className="fr-hidden fr-unhidden-lg"
+                  >
                     <Dropdown
                       id="header-help-menu"
                       alignRight

@@ -110,7 +110,11 @@ const ResourceCard = ({
             >
               Modifier
             </Button>
-            <ResourceMoreActionsDropdown resource={resource} copyLink={false} />
+            <ResourceMoreActionsDropdown
+              resource={resource}
+              copyLink={false}
+              canWrite
+            />
           </>
         )}
         {!isContributor && (

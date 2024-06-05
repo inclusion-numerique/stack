@@ -5,26 +5,32 @@ import { ResourceListItem } from '@app/web/server/resources/getResourcesList'
 import { getServerUrl } from '@app/web/utils/baseUrl'
 import { Dropdown } from '@app/web/components/Dropdown/Dropdown'
 import CopyLinkButton from '@app/web/components/CopyLinkButton'
+import ResourceReportButton from '../../app/(public)/ressources/[slug]/_components/ResourceReportButton'
+import { SessionUser } from '../../auth/sessionUser'
 import OpenInviteContributorModalButton from './Contributors/OpenInviteContributorModalButton'
 import OpenDeleteResourceModalButton from './OpenDeleteResourceModalButton'
 import OpenSaveResourceInCollectionModalButton from './OpenSaveResourceInCollectionModalButton'
 
 export const ResourceMoreActionsDropdown = ({
   resource,
+  user,
   priority = 'tertiary no outline',
   children,
   saveResourceInCollection = true,
   copyLink = true,
+  canWrite = false,
 }: {
+  resource: ResourceListItem
+  user?: SessionUser | null
   priority?: ButtonProps['priority']
   children?: ReactNode
-  resource: ResourceListItem
   saveResourceInCollection?: boolean
   copyLink?: boolean
+  canWrite?: boolean
 }) => (
   <Dropdown
-    id={`more-actions-for-${resource.slug}`}
-    title="Plus d'actions"
+    id={`more_actions_for_${resource.slug}`}
+    title="Options sur la ressource"
     priority={priority}
     size="small"
     alignRight
@@ -32,12 +38,12 @@ export const ResourceMoreActionsDropdown = ({
     control={
       <>
         <span className="ri-more-fill" aria-hidden />
-        {children && <>&ensp;{children}</>}
+        {children}
       </>
     }
   >
     <ul>
-      {resource.title && saveResourceInCollection && (
+      {resource.published && saveResourceInCollection && (
         <li>
           <OpenSaveResourceInCollectionModalButton
             size="small"
@@ -68,48 +74,71 @@ export const ResourceMoreActionsDropdown = ({
           </CopyLinkButton>
         </li>
       )}
-      <li>
-        <Link
-          className="fr-btn fr-btn--sm"
-          href={`/ressources/${resource.slug}/parametres`}
-        >
-          <span
-            className="ri-settings-5-line fr-mr-1w fr-text-label--blue-france"
-            aria-hidden
-          />
-          Modifier les paramètres
-        </Link>
-      </li>
-      <li>
-        <OpenInviteContributorModalButton size="small" resource={resource}>
-          <span
-            className="ri-user-add-line fr-mr-1w fr-text-label--blue-france"
-            aria-hidden
-          />
-          Inviter un contributeur
-        </OpenInviteContributorModalButton>
-      </li>
-      <li>
-        <Link
-          className="fr-btn fr-btn--sm"
-          href={`/ressources/${resource.slug}/avis`}
-        >
-          <span
-            className="ri-emotion-line fr-mr-1w fr-text-label--blue-france"
-            aria-hidden
-          />
-          Voir les avis
-        </Link>
-      </li>
-      <li>
-        <OpenDeleteResourceModalButton resourceId={resource.id} size="small">
-          <span
-            className="ri-delete-bin-6-line fr-mr-1w fr-text-label--blue-france"
-            aria-hidden
-          />
-          Supprimer la ressource
-        </OpenDeleteResourceModalButton>
-      </li>
+      {canWrite && resource.published && (
+        <li>
+          <Link
+            className="fr-btn fr-btn--sm"
+            href={`/ressources/${resource.slug}/parametres`}
+          >
+            <span
+              className="ri-settings-5-line fr-mr-1w fr-text-label--blue-france"
+              aria-hidden
+            />
+            Modifier les paramètres
+          </Link>
+        </li>
+      )}
+      {canWrite && (
+        <li>
+          <OpenInviteContributorModalButton size="small" resource={resource}>
+            <span
+              className="ri-user-add-line fr-mr-1w fr-text-label--blue-france"
+              aria-hidden
+            />
+            Inviter un contributeur
+          </OpenInviteContributorModalButton>
+        </li>
+      )}
+      {resource.published && (
+        <li>
+          <Link
+            className="fr-btn fr-btn--sm"
+            href={`/ressources/${resource.slug}/avis`}
+          >
+            <span
+              className="ri-emotion-line fr-mr-1w fr-text-label--blue-france"
+              aria-hidden
+            />
+            {canWrite ? 'Voir les avis' : 'Donner son avis'}
+          </Link>
+        </li>
+      )}
+      {canWrite && (
+        <li>
+          <OpenDeleteResourceModalButton resourceId={resource.id} size="small">
+            <span
+              className="ri-delete-bin-6-line fr-mr-1w fr-text-label--blue-france"
+              aria-hidden
+            />
+            Supprimer la ressource
+          </OpenDeleteResourceModalButton>
+        </li>
+      )}
+      {!canWrite && (
+        <li>
+          <ResourceReportButton
+            user={user}
+            resource={resource}
+            priority="tertiary no outline"
+          >
+            <span
+              className="ri-alert-line fr-mr-1w fr-text-label--blue-france"
+              aria-hidden
+            />
+            Signaler
+          </ResourceReportButton>
+        </li>
+      )}
     </ul>
   </Dropdown>
 )

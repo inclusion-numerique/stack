@@ -34,7 +34,9 @@ describe('Utilisateur connecté, je peux signaler une ressource', () => {
       cy.visit(`/ressources/${slug}`)
     })
 
-    cy.findByTitle('Signaler la ressource').click()
+    cy.findAllByTitle(/signaler la ressource/i)
+      .filter(':visible')
+      .click()
 
     cy.appUrlShouldBe(
       '/connexion?suivant=/ressources/titre-d-une-ressource-sur-deux-ligne-tres-longues-comme-comme-sur-deux-lignes',
@@ -65,7 +67,9 @@ describe('Utilisateur connecté, je peux signaler une ressource', () => {
 
     cy.dsfrModalsShouldBeBound()
 
-    cy.findByTitle('Signaler la ressource').click()
+    cy.findAllByTitle(/signaler la ressource/i)
+      .filter(':visible')
+      .click()
 
     cy.findByRole('dialog').within(() => {
       // Should not submit with empty form
