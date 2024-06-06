@@ -138,20 +138,6 @@ const Template = (props: ComponentProps<typeof ResourceView>) => (
 export default {
   title: 'Ressource/View',
   component: ResourceView,
-  parameters: {
-    design: [
-      {
-        name: 'Desktop',
-        type: 'figma',
-        url: 'https://www.figma.com/file/Rk4NNQVYRBE0bJZ6i5mrfU/Les-Bases---V.2?node-id=10993-29171&t=MbwOB3HnF8uqKTBI-4',
-      },
-      {
-        name: 'Mobile',
-        type: 'figma',
-        url: 'https://www.figma.com/file/Rk4NNQVYRBE0bJZ6i5mrfU/Les-Bases---V.2?node-id=10981-173793&t=MbwOB3HnF8uqKTBI-4',
-      },
-    ],
-  },
 } as Meta<typeof ResourceView>
 
 type Story = StoryObj<typeof ResourceView>
