@@ -1,5 +1,5 @@
 import { Resource } from '@app/web/server/resources/getResource'
-import { WithAnchorIdAndHref } from '@app/web/components/Resource/View/addAnchorIdsToResourceContents'
+import { WithAnchorIdAndHref } from './addAnchorIdsToResourceContents'
 
 export const getResourceNavigationData = ({
   title,

@@ -1,5 +1,6 @@
 'use client'
 
+import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import React, {
   KeyboardEvent,
   MouseEvent as ReactMouseEvent,
@@ -7,6 +8,7 @@ import React, {
   useRef,
 } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
+import Button, { ButtonProps } from '@codegouvfr/react-dsfr/Button'
 
 const hasKey = (
   event: React.KeyboardEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>,
@@ -18,12 +20,27 @@ export const Dropdown = ({
   control,
   children,
   alignRight = false,
+  title,
+  priority,
+  size,
+  displayDropdownArrow = true,
 }: {
   id: string
   control: ReactNode
   children: ReactNode
   alignRight?: boolean
+  title?: string
+  priority?: ButtonProps['priority']
+  size?: ButtonProps['size']
+  displayDropdownArrow?: boolean
 }) => {
+  const formattedId = id.replace('-', '_')
+
+  const modal = createModal({
+    id: formattedId,
+    isOpenedByDefault: false,
+  })
+
   const buttonRef = useRef<HTMLButtonElement>(null)
   const collapseRef = useRef<HTMLDivElement>(null)
 
@@ -53,28 +70,55 @@ export const Dropdown = ({
   })
 
   return (
-    <div className="fr-dropdown">
-      <button
-        className="fr-dropdown__btn fr-btn "
-        type="button"
-        aria-expanded="false"
-        aria-controls={id}
-        ref={buttonRef}
-      >
-        {control}
-      </button>
-      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
-      <div
-        role="navigation"
-        className="fr-collapse fr-dropdown__pane fr-mr-1v"
-        style={{ [alignRight ? 'right' : 'left']: 0 }}
-        id={id}
-        ref={collapseRef}
-        onClick={onClickOrEnterInsideDropdown}
-        onKeyDown={onClickOrEnterInsideDropdown}
-      >
-        {children}
+    <>
+      <div className="fr-hidden-md">
+        <Button
+          priority={priority}
+          title={title}
+          type="button"
+          size={size}
+          {...modal.buttonProps}
+        >
+          {control}
+        </Button>
+        <modal.Component title={title}>
+          <div
+            role="navigation"
+            className="fr-dropdown__modal"
+            style={{ [alignRight ? 'right' : 'left']: 0 }}
+            id={formattedId}
+            ref={collapseRef}
+          >
+            {children}
+          </div>
+        </modal.Component>
       </div>
-    </div>
+      <div className="fr-dropdown fr-hidden fr-unhidden-md">
+        <Button
+          className={displayDropdownArrow ? 'fr-dropdown__btn' : ''}
+          priority={priority}
+          title={title}
+          type="button"
+          size={size}
+          aria-expanded="false"
+          aria-controls={formattedId}
+          ref={buttonRef}
+        >
+          {control}
+        </Button>
+        {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
+        <div
+          role="navigation"
+          className="fr-collapse fr-dropdown__pane fr-mr-1v"
+          style={{ [alignRight ? 'right' : 'left']: 0 }}
+          id={formattedId}
+          ref={collapseRef}
+          onClick={onClickOrEnterInsideDropdown}
+          onKeyDown={onClickOrEnterInsideDropdown}
+        >
+          {children}
+        </div>
+      </div>
+    </>
   )
 }

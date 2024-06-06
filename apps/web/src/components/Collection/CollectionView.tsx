@@ -5,7 +5,7 @@ import { CollectionPageData } from '@app/web/server/collections/getCollection'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { WithMinimalImageData } from '@app/web/server/image/imageTypes'
 import SaveResourceInCollectionModal from '@app/web/components/Resource/SaveResourceInCollectionModal'
-import DeleteResource from '@app/web/components/Resource/DeleteResource/DeleteResource'
+import DeleteResourceModal from '@app/web/components/Resource/DeleteResource/DeleteResourceModal'
 import Images from '@app/web/components/Collection/Images'
 import OwnershipInformation from '@app/web/components/OwnershipInformation'
 import SaveCollectionModal from '@app/web/components/Collection/SaveCollectionModal'
@@ -111,7 +111,7 @@ const CollectionView = ({
     ))}
     {!!user && <SaveResourceInCollectionModal user={user} />}
     {!!user && <SaveCollectionModal user={user} />}
-    {!!user && <DeleteResource />}
+    <DeleteResourceModal />
   </div>
 )
 

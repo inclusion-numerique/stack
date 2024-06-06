@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { ComponentProps } from 'react'
 import { mobileStory } from '@app/storybook/storyHelper'
-import ResourceView from '@app/web/components/Resource/View/ResourceView'
 import type {
   Resource,
   ResourceContent,
 } from '@app/web/server/resources/getResource'
 import { generateResourceExcerpt } from '@app/web/resources/resourceExcerpt'
+import ResourceView from './ResourceView'
 
 const description =
   'Lorem Ipsul Lorem ipsum dolor sit amet, consectetur adipiscing elit. Bibendum quam mauris sit lacinia turpis sed vitae vel. Venenatis in in neque interdum nec facilisi mauris nunc vitae turpis sed vitae vel. Venenatis adipiscing elit.'
@@ -116,7 +116,17 @@ const resource = (imageId: string | null) =>
     _count: {
       collections: 0,
       views: 0,
+      resourceFeedback: 0,
     },
+    resourceFeedback: [],
+    feedbackAverage: 0,
+    feedbackCount: {
+      notRecommended: 0,
+      moderatelyRecommended: 0,
+      recommended: 0,
+      highlyRecommended: 0,
+    },
+    publicFeedback: true,
   }) satisfies Resource
 
 const Template = (props: ComponentProps<typeof ResourceView>) => (

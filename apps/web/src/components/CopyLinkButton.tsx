@@ -13,6 +13,7 @@ const CopyLinkButton = ({
   size = 'medium',
   full = false,
   priority = 'tertiary',
+  displayIcon = true,
 }: {
   className?: string
   url: string
@@ -21,6 +22,7 @@ const CopyLinkButton = ({
   size?: 'medium' | 'small'
   full?: boolean
   priority?: 'primary' | 'secondary' | 'tertiary' | 'tertiary no outline'
+  displayIcon?: boolean
 }) => {
   const [copied, setCopied] = useState(false)
   const onCopy = () => {
@@ -47,7 +49,7 @@ const CopyLinkButton = ({
           full ? 'fr-width-full fr-justify-content-center' : '',
           className,
         )}
-        iconId="fr-icon-links-line"
+        iconId={displayIcon ? 'fr-icon-links-line' : undefined}
         size={size}
         priority={priority}
         type="button"

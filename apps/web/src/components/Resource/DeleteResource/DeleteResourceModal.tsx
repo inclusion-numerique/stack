@@ -1,9 +1,9 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { createDynamicModal } from '@app/ui/components/Modal/createDynamicModal'
-import classNames from 'classnames'
 import React from 'react'
+import { useRouter } from 'next/navigation'
+import classNames from 'classnames'
+import { createDynamicModal } from '@app/ui/components/Modal/createDynamicModal'
 import { createToast } from '@app/ui/toast/createToast'
 import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
@@ -16,7 +16,7 @@ export const DeleteResourceDynamicModal = createDynamicModal({
   },
 })
 
-const DeleteResource = ({ redirectTo }: { redirectTo?: string }) => {
+const DeleteResourceModal = ({ redirectTo }: { redirectTo?: string }) => {
   const { resourceId } = DeleteResourceDynamicModal.useState()
 
   const router = useRouter()
@@ -91,4 +91,4 @@ const DeleteResource = ({ redirectTo }: { redirectTo?: string }) => {
   )
 }
 
-export default withTrpc(DeleteResource)
+export default withTrpc(DeleteResourceModal)

@@ -24,33 +24,37 @@ const ProfileCard = ({
   displayProfileMetadata?: boolean
 }) => (
   <article className="fr-border-top" data-testid="profile-card">
-    <div className="fr-enlarge-link fr-flex fr-flex-gap-2v fr-align-items-center fr-width-full fr-py-3w">
-      <RoundProfileImage size={48} user={profile} />
-      <div className="fr-flex fr-direction-sm-row fr-direction-column fr-width-full">
-        <Link className="fr-flex-grow-1" href={`/profils/${profile.slug}`}>
-          <ProfileTitle className="fr-text--md fr-text--medium fr-mb-0">
-            {profile.name && formatName(profile.name)}
-          </ProfileTitle>
-        </Link>
-        <div className="fr-flex fr-flex-gap-2v fr-align-items-baseline">
-          {displayProfileMetadata && (
-            <ProfileMetadata
-              className="fr-text-mention--grey"
-              resourcesCount={countProfileResources(profile)}
-              followedByCount={profile._count.followedBy}
-            />
-          )}
-          {isAdmin != null && (
-            <div className="fr-text-mention--grey">
-              {isAdmin ? 'Administrateur' : 'Membre'}
-            </div>
-          )}
+    <div className="fr-enlarge-link fr-py-2w fr-flex fr-flex-gap-4v fr-align-items-sm-center fr-direction-sm-row fr-direction-column">
+      <div className="fr-flex fr-flex-gap-4v fr-align-items-center fr-flex-grow-1 ">
+        <RoundProfileImage size={48} user={profile} />
+        <div className="fr-flex fr-direction-column fr-flex-gap-2v">
+          <Link className="fr-flex-grow-1" href={`/profils/${profile.slug}`}>
+            <ProfileTitle className="fr-text--md fr-text--medium fr-mb-0">
+              {profile.name && formatName(profile.name)}
+            </ProfileTitle>
+          </Link>
+          <div className="fr-flex fr-flex-gap-2v fr-align-items-baseline">
+            {displayProfileMetadata && (
+              <ProfileMetadata
+                className="fr-text-mention--grey"
+                resourcesCount={countProfileResources(profile)}
+                followedByCount={profile._count.followedBy}
+              />
+            )}
+            {isAdmin != null && (
+              <div className="fr-text-mention--grey">
+                {isAdmin ? 'Administrateur' : 'Membre'}
+              </div>
+            )}
+          </div>
         </div>
       </div>
+      {canFollow && profile.id !== user?.id ? (
+        <div style={{ zIndex: 1 }}>
+          <FollowButton profile={profile} user={user} />
+        </div>
+      ) : null}
     </div>
-    {canFollow && profile.id !== user?.id ? (
-      <FollowButton profile={profile} user={user} />
-    ) : null}
   </article>
 )
 

@@ -99,17 +99,6 @@
   }
 }
 
-.footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 8px;
-
-  @media (min-width: 768px) {
-    margin-top: 16px;
-  }
-}
-
 .title {
   margin-bottom: 8px;
 
@@ -136,11 +125,4 @@
   -webkit-line-clamp: 3;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.footerRight {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
 }
