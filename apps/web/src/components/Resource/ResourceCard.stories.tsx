@@ -58,6 +58,30 @@ const creatorUser = { ...testSessionUser, id: resource.createdBy.id }
 export default {
   title: 'Ressource/Card',
   component: ResourceCard,
+  parameters: {
+    design: [
+      {
+        name: 'Desktop',
+        type: 'figma',
+        url: 'https://www.figma.com/file/Rk4NNQVYRBE0bJZ6i5mrfU/Les-Bases---V.2?node-id=10993-29171&t=MbwOB3HnF8uqKTBI-4',
+      },
+      {
+        name: 'Mobile',
+        type: 'figma',
+        url: 'https://www.figma.com/file/Rk4NNQVYRBE0bJZ6i5mrfU/Les-Bases---V.2?node-id=10981-173793&t=MbwOB3HnF8uqKTBI-4',
+      },
+      {
+        name: 'Action desktop',
+        type: 'figma',
+        url: 'https://www.figma.com/file/Rk4NNQVYRBE0bJZ6i5mrfU/Les-Bases---V.2?node-id=10981-173773&t=MbwOB3HnF8uqKTBI-4',
+      },
+      {
+        name: 'Action mobile',
+        type: 'figma',
+        url: 'https://www.figma.com/file/Rk4NNQVYRBE0bJZ6i5mrfU/Les-Bases---V.2?node-id=10998-59330&t=MbwOB3HnF8uqKTBI-4',
+      },
+    ],
+  },
 } as Meta<typeof ResourceCard>
 
 type Story = StoryObj<typeof ResourceCard>
