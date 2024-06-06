@@ -1,3 +1,4 @@
+import { dirname, join } from "path";
 /* eslint unicorn/prefer-module: 0,  @typescript-eslint/no-var-requires: 0, @typescript-eslint/unbound-method: 0 */
 
 const { parse } = require('dotenv')
@@ -19,32 +20,43 @@ module.exports = {
     '../../../apps/web/src/**/*.stories.@(js|jsx|ts|tsx)',
     '../../../packages/ui/src/**/*.stories.@(js|jsx|ts|tsx)',
   ],
+
   addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
-    '@storybook/addon-jest',
-    '@storybook/addon-a11y',
-    '@storybook/addon-viewport',
+    getAbsolutePath("@storybook/addon-links"),
+    getAbsolutePath("@storybook/addon-essentials"),
+    getAbsolutePath("@storybook/addon-interactions"),
+    getAbsolutePath("@storybook/addon-jest"),
+    getAbsolutePath("@storybook/addon-a11y"),
+    getAbsolutePath("@storybook/addon-viewport"),
+    '@chromatic-com/storybook'
   ],
+
   framework: {
-    name: '@storybook/nextjs',
+    name: getAbsolutePath("@storybook/nextjs"),
     options: {
       nextConfigPath: resolve(__dirname, '../../../apps/web/next.config.js'),
     },
   },
+
   staticDirs: ['../../../apps/web/public', '../public'],
+
   features: {
     interactionsDebugger: true,
-    storyStoreV7: true,
   },
-  docs: {
-    docsPage: true,
-    autodocs: true,
-  },
+
+  docs: {},
+
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   env: (config) => ({
     ...config,
     ...dotenvVariables(),
   }),
+
+  typescript: {
+    reactDocgen: 'react-docgen-typescript'
+  }
+}
+
+function getAbsolutePath(value) {
+  return dirname(require.resolve(join(value, "package.json")));
 }
