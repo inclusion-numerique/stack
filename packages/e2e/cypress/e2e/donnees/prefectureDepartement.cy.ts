@@ -60,17 +60,17 @@ describe("En tant que préfecture de département, j'ai accès aux données de m
     cy.log('Can search and select a structure')
 
     cy.get(`input[placeholder="${searchInputPlaceholder}"]`).type(
-      "mairie d'arcachon",
+      "mairie pomerol",
     )
-    cy.contains("Mairie d'Arcachon").trigger('mousedown')
+    cy.contains("Mairie Pomerol").trigger('mousedown')
     cy.get(`input[placeholder="${searchInputPlaceholder}"]`).should(
       'have.value',
-      "Mairie d'Arcachon",
+      "Mairie Pomerol",
     )
 
     cy.testId('structure-details-title').should(
       'include.text',
-      "Mairie d'Arcachon",
+      "Mairie Pomerol",
     )
 
     cy.testId('map-popup-close-button').click()
