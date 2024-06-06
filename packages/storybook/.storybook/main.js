@@ -13,8 +13,6 @@ const dotenvVariables = () => {
   return parse(readFileSync(dotenvFile))
 }
 
-const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
-
 // See https://github.com/storybookjs/storybook/blob/111edc3929eb8afff1b58285b0b9c49dd493ae85/code/frameworks/nextjs/README.md
 module.exports = {
   stories: [
