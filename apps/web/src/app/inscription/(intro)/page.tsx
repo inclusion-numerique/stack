@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import Button from '@codegouvfr/react-dsfr/Button'
 import Link from 'next/link'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import { ProfilInscription } from '@app/web/inscription/profilInscription'
+import type { ProfileInscriptionSlug } from '@app/web/inscription/profilInscription'
 import InscriptionCard from '@app/web/app/inscription/InscriptionCard'
 
 export const metadata = {
@@ -14,7 +14,7 @@ const Page = ({
   searchParams: { profil },
 }: {
   searchParams: {
-    profil?: ProfilInscription
+    profil?: ProfileInscriptionSlug
   }
 }) => {
   if (!profil) {

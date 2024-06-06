@@ -1,5 +1,16 @@
-export enum ProfilInscription {
-  ConseillerNumerique = 'conseiller-numerique',
-  Mediateur = 'mediateur',
-  CoordinateurConseillerNumerique = 'coordinateur-conseiller-numerique',
-}
+import type { ProfilInscription } from '@prisma/client'
+
+export const profileInscriptionSlugs = {
+  ConseillerNumerique: 'conseiller-numerique',
+  Coordinateur: 'coordinateur',
+  Mediateur: 'mediateur',
+} as const satisfies { [key in ProfilInscription]: string }
+
+export type ProfileInscriptionSlug =
+  (typeof profileInscriptionSlugs)[ProfilInscription]
+
+export const profileInscriptionFromSlug = {
+  'conseiller-numerique': 'ConseillerNumerique',
+  coordinateur: 'Coordinateur',
+  mediateur: 'Mediateur',
+} as const satisfies { [key in ProfileInscriptionSlug]: ProfilInscription }

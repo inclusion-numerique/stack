@@ -1,5 +1,5 @@
 import Button from '@codegouvfr/react-dsfr/Button'
-import { ProfilInscription } from '@app/web/inscription/profilInscription'
+import { profileInscriptionSlugs } from '@app/web/inscription/profilInscription'
 
 export const revalidate = 0
 
@@ -14,7 +14,7 @@ const HomePage = () => (
         <li>
           <Button
             linkProps={{
-              href: `/connexion?suivant=/inscription?profil=${ProfilInscription.ConseillerNumerique}`,
+              href: `/connexion?suivant=/inscription?profil=${profileInscriptionSlugs.ConseillerNumerique}`,
             }}
             iconId="fr-icon-arrow-right-line"
           >
@@ -24,7 +24,7 @@ const HomePage = () => (
         <li>
           <Button
             linkProps={{
-              href: `/connexion?suivant=/inscription?profil=${ProfilInscription.Mediateur}`,
+              href: `/connexion?suivant=/inscription?profil=${profileInscriptionSlugs.Mediateur}`,
             }}
             iconId="fr-icon-arrow-right-line"
           >
@@ -34,7 +34,7 @@ const HomePage = () => (
         <li>
           <Button
             linkProps={{
-              href: `/connexion?suivant=/inscription?profil=${ProfilInscription.CoordinateurConseillerNumerique}`,
+              href: `/connexion?suivant=/inscription?profil=${profileInscriptionSlugs.Coordinateur}`,
             }}
             iconId="fr-icon-arrow-right-line"
           >

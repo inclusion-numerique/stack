@@ -17,6 +17,7 @@ export type CustomSelectFormFieldProps<T extends FieldValues> = {
   hint?: string
   valid?: string
   asterisk?: boolean
+  info?: ReactNode
 } & Omit<CustomSelectProps, 'onChange' | 'name' | 'onBlur'>
 
 export type CustomSelectOptions = CustomSelectProps['options']
@@ -46,6 +47,7 @@ const CustomSelectFormField = <T extends FieldValues>({
   disabled,
   valid,
   asterisk,
+  info,
   ...customSelectProps
 }: UiComponentProps & CustomSelectFormFieldProps<T>) => {
   const id = `custom-select-form-field__${path}`
@@ -95,6 +97,11 @@ const CustomSelectFormField = <T extends FieldValues>({
               inputId={id}
               instanceId={customSelectProps.instanceId ?? id}
             />
+            {info && (
+              <p id={`${id}__info`} className="fr-hint-text fr-mt-1v fr-mb-0">
+                {info}
+              </p>
+            )}
             {error && (
               <p id={`${id}__error`} className="fr-error-text">
                 {error.message}

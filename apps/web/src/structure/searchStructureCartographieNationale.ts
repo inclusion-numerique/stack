@@ -2,13 +2,13 @@ import type { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
 import { toTitleCase } from '@app/web/utils/toTitleCase'
 
-type SearchStructureOptions = {
+type SearchStructureCartographieNationaleOptions = {
   limit: number
 }
 
-export const searchStructure = async (
+export const searchStructureCartographieNationale = async (
   query: string,
-  options?: SearchStructureOptions,
+  options?: SearchStructureCartographieNationaleOptions,
 ) => {
   const structuresSearchLimit = options?.limit || 50
   const queryParts = query.split(' ')
@@ -18,7 +18,7 @@ export const searchStructure = async (
     AND: queryParts.map((part) => ({
       OR: [
         {
-          siret: {
+          pivot: {
             contains: part,
             mode: 'insensitive',
           },
@@ -43,17 +43,25 @@ export const searchStructure = async (
         },
       ],
     })),
-  } satisfies Prisma.StructureWhereInput
+  } satisfies Prisma.StructureCartographieNationaleWhereInput
 
-  const structuresRaw = await prismaClient.structure.findMany({
-    where: matchesWhere,
-    take: structuresSearchLimit,
-    orderBy: {
-      nom: 'asc',
-    },
-  })
+  const structuresRaw =
+    await prismaClient.structureCartographieNationale.findMany({
+      where: matchesWhere,
+      take: structuresSearchLimit,
+      orderBy: {
+        nom: 'asc',
+      },
+      include: {
+        structure: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    })
 
-  const matchesCount = await prismaClient.structure.count({
+  const matchesCount = await prismaClient.structureCartographieNationale.count({
     where: matchesWhere,
   })
 
@@ -73,7 +81,9 @@ export const searchStructure = async (
   }
 }
 
-export type SearchStructureResult = Awaited<ReturnType<typeof searchStructure>>
+export type SearchStructureCartographieNationaleResult = Awaited<
+  ReturnType<typeof searchStructureCartographieNationale>
+>
 
-export type SearchStructureResultStructure =
-  SearchStructureResult['structures'][number]
+export type SearchStructureCartographieNationaleResultStructure =
+  SearchStructureCartographieNationaleResult['structures'][number]
