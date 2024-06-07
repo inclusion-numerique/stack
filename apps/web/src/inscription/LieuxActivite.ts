@@ -1,10 +1,10 @@
 import z from 'zod'
-import { CartoNationaleStructureValidation } from '@app/web/app/structure/CartoNationaleStructure'
+import { StructureValidation } from '@app/web/app/structure/StructureValidation'
 
 export const LieuxActiviteValidation = z.object({
   userId: z.string().uuid(),
   lieuxActivite: z
-    .array(CartoNationaleStructureValidation, {
+    .array(StructureValidation, {
       required_error: 'Veuillez renseigner au moins un lieu d’activité',
     })
     .min(1, 'Veuillez renseigner au moins un lieu d’activité'),

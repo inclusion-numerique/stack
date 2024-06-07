@@ -4,7 +4,8 @@ import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import InscriptionCard from '@app/web/app/inscription/InscriptionCard'
 import { prismaClient } from '@app/web/prismaClient'
 import LieuxActiviteForm from '@app/web/app/inscription/lieux-activite/LieuxActiviteForm'
-import { CartoNationaleStructureData } from '@app/web/app/structure/CartoNationaleStructure'
+import { StructureData } from '@app/web/app/structure/StructureValidation'
+import { profileInscriptionSlugs } from '@app/web/inscription/profilInscription'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),
@@ -20,7 +21,7 @@ const Page = async () => {
 
   if (user.emplois.length === 0) {
     redirect(
-      `/inscription/structure-employeuse?profil=${user.profilInscription}`,
+      `/inscription/structure-employeuse?profil=${profileInscriptionSlugs[user.profilInscription]}`,
     )
   }
 
@@ -42,7 +43,8 @@ const Page = async () => {
           commune: true,
           codePostal: true,
           codeInsee: true,
-          siretOuRna: true,
+          siret: true,
+          rna: true,
           adresse: true,
           complementAdresse: true,
           typologie: true,
@@ -51,16 +53,14 @@ const Page = async () => {
     },
   })
 
-  const lieuxActivite: CartoNationaleStructureData[] = enActivite.map(
-    (lieuActivite) => ({
-      ...lieuActivite.structure,
-    }),
-  )
+  const lieuxActivite: StructureData[] = enActivite.map((lieuActivite) => ({
+    ...lieuActivite.structure,
+  }))
 
   return (
     <InscriptionCard
       title="Renseignez vos lieux d’activité"
-      backHref={`/inscription/structure-employeuse?profil=${user.profilInscription}`}
+      backHref={`/inscription/structure-employeuse?profil=${profileInscriptionSlugs[user.profilInscription]}`}
       nextStepTitle="Récapitulatif de vos informations"
       stepNumber={2}
     >

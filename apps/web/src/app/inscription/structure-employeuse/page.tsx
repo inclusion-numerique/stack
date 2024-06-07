@@ -8,8 +8,6 @@ import {
 import InscriptionCard from '@app/web/app/inscription/InscriptionCard'
 import RenseignerStructureEmployeuseForm from '@app/web/app/inscription/structure-employeuse/RenseignerStructureEmployeuseForm'
 import { prismaClient } from '@app/web/prismaClient'
-import { StructureInfo } from '@app/web/structure/structuresInfoFromUniteLegale'
-import { TypologieStructure } from '@app/web/structure/typologieStructure'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),
@@ -48,25 +46,23 @@ const Page = async ({
           commune: true,
           codePostal: true,
           codeInsee: true,
-          siretOuRna: true,
+          siret: true,
+          rna: true,
           adresse: true,
-          complementAdresse: true,
           typologie: true,
         },
       },
     },
   })
 
-  const structureEmployeuse = emploi?.structure
+  const structure = emploi?.structure
 
-  const structureInfo: StructureInfo | null = structureEmployeuse
+  const structureEmployeuse = structure
     ? {
-        ...structureEmployeuse,
-        siret: structureEmployeuse.siretOuRna ?? '',
-        typologie:
-          // TODO Typologie enum
-          structureEmployeuse.typologie as TypologieStructure | null,
-        codeInsee: structureEmployeuse.codeInsee ?? '',
+        ...structure,
+        // Those casts should not happen as in creation they are required. This is for type safety
+        codeInsee: structure.codeInsee ?? '',
+        siret: structure.siret ?? '',
       }
     : null
 
@@ -80,10 +76,10 @@ const Page = async ({
       <RenseignerStructureEmployeuseForm
         defaultValues={{
           profil: profileInscriptionFromSlug[profil],
-          structureEmployeuse: structureInfo ?? undefined,
+          structureEmployeuse: structureEmployeuse ?? undefined,
           userId: user.id,
         }}
-        structureEmployeuse={structureInfo}
+        structureEmployeuse={structureEmployeuse}
       />
     </InscriptionCard>
   )

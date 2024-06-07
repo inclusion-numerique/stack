@@ -17,19 +17,17 @@ import {
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { trpc } from '@app/web/trpc'
 import { rechercheApiEntreprise } from '@app/web/external-apis/rechercheApiEntreprise'
-import {
-  StructureInfo,
-  structuresInfoFromUniteLegale,
-} from '@app/web/structure/structuresInfoFromUniteLegale'
+import { structureCreationDataWithSiretFromUniteLegale } from '@app/web/structure/structuresInfoFromUniteLegale'
 import SiretInputInfo from '@app/web/siret/SiretInputInfo'
 import StructureCard from '@app/web/components/structure/StructureCard'
+import { StructureCreationDataWithSiret } from '@app/web/app/structure/StructureValidation'
 
 const RenseignerStructureEmployeuseForm = ({
   defaultValues,
   structureEmployeuse,
 }: {
   defaultValues: DefaultValues<RenseignerStructureEmployeuseData>
-  structureEmployeuse: StructureInfo | null
+  structureEmployeuse: StructureCreationDataWithSiret | null
 }) => {
   const form = useForm<RenseignerStructureEmployeuseData>({
     defaultValues,
@@ -48,10 +46,12 @@ const RenseignerStructureEmployeuseForm = ({
 
   const router = useRouter()
 
-  const structuresMapRef = useRef(new Map<string, StructureInfo>())
+  const structuresMapRef = useRef(
+    new Map<string, StructureCreationDataWithSiret>(),
+  )
 
   const [selectedStructure, setSelectedStructure] =
-    useState<StructureInfo | null>(structureEmployeuse)
+    useState<StructureCreationDataWithSiret | null>(structureEmployeuse)
 
   const selectedStructureSiret = form.watch('structureEmployeuse.siret')
 
@@ -96,7 +96,9 @@ const RenseignerStructureEmployeuseForm = ({
 
     console.log('SERACH RESULTS IN CLIENT', result)
 
-    const structures = result.results.flatMap(structuresInfoFromUniteLegale)
+    const structures = result.results.flatMap(
+      structureCreationDataWithSiretFromUniteLegale,
+    )
 
     const structuresCount = structures.length
 
@@ -184,16 +186,7 @@ const RenseignerStructureEmployeuseForm = ({
           {errors.structureEmployeuse.root.message}
         </p>
       ) : null}
-      {!!selectedStructure && (
-        <StructureCard
-          structure={{
-            siretOuRna: selectedStructure.siret,
-            typologie: selectedStructure.typologie,
-            adresse: selectedStructure.adresse,
-            nom: selectedStructure.nom,
-          }}
-        />
-      )}
+      {!!selectedStructure && <StructureCard structure={selectedStructure} />}
       <div className="fr-btns-group">
         <Button
           type="submit"

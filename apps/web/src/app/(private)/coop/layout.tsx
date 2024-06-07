@@ -5,12 +5,13 @@ import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 const Layout = async ({ children }: PropsWithChildren) => {
   const user = await getAuthenticatedSessionUser()
 
+  // Admin users are not allowed to access this page
   if (user.role === 'Admin') {
+    // TODO proper error message for admins
     notFound()
   }
 
-  // TODO Rule for should onboard
-  if (true) {
+  if (!user.inscriptionValidee) {
     redirect('/inscription')
   }
 

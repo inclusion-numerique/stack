@@ -7,14 +7,13 @@ import { useRouter } from 'next/navigation'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
-import { StructureInfoWithId } from '@app/web/structure/structuresInfoFromUniteLegale'
 
 const StructureEmployeuseLieuActiviteForm = ({
   userId,
-  structureEmployeuse,
+  structureEmployeuseId,
 }: {
   userId: string
-  structureEmployeuse: StructureInfoWithId
+  structureEmployeuseId: string
 }) => {
   const mutation =
     trpc.inscription.ajouterStructureEmployeuseEnLieuActivite.useMutation()
@@ -25,7 +24,7 @@ const StructureEmployeuseLieuActiviteForm = ({
     try {
       await mutation.mutateAsync({
         userId,
-        structureEmployeuseId: structureEmployeuse.id,
+        structureEmployeuseId,
         estLieuActivite,
       })
       router.refresh()

@@ -196,7 +196,7 @@ model Mediateur {
 
   creation     DateTime  @default(now())
   modification DateTime  @default(now())
-  suppression  DateTime?
+  // Cannot soft delete as we need to keep userId and conseillerNumerique.mediateurId unique
 
   coordinations MediateurCoordonne[]
   enActivite    MediateurEnActivite[]
@@ -227,7 +227,7 @@ model Coordinateur {
 
   creation     DateTime  @default(now())
   modification DateTime  @default(now())
-  suppression  DateTime?
+  // Cannot soft delete as we need to keep userId and conseillerNumeriqueId unique
 
   mediateursCoordonnes MediateurCoordonne[]
 
@@ -282,7 +282,8 @@ model Structure {
   latitude Float?
   longitude Float?
 
-  siretOuRna String? @map("siret_ou_rna")
+  siret String?
+  rna String?
 
   visiblePourCartographieNationale Boolean @default(false) @map("visible_pour_cartographie_nationale")
 

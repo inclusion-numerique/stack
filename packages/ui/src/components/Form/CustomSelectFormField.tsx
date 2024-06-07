@@ -82,7 +82,7 @@ const CustomSelectFormField = <T extends FieldValues>({
               'fr-input-group--disabled': disabled,
             })}
           >
-            <label className="fr-label" htmlFor={id}>
+            <label className="fr-label fr-mb-1v" htmlFor={id}>
               {label} {asterisk && <RedAsterisk />}
               {hint ? <span className="fr-hint-text">{hint}</span> : null}
             </label>

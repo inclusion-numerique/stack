@@ -1,13 +1,14 @@
 import { UniteLegale } from '@app/web/external-apis/apiEntrepriseApiModels'
 import { getTypologieFromApiEntreprise } from '@app/web/structure/typologieFromApiEntreprise'
 import { toTitleCase } from '@app/web/utils/toTitleCase'
+import { StructureCreationDataWithSiret } from '@app/web/app/structure/StructureValidation'
 
-export const structuresInfoFromUniteLegale = ({
+export const structureCreationDataWithSiretFromUniteLegale = ({
   nature_juridique,
   complements,
   nom_raison_sociale,
   matching_etablissements,
-}: UniteLegale) => {
+}: UniteLegale): StructureCreationDataWithSiret[] => {
   const typologie = getTypologieFromApiEntreprise({
     complements,
     nature_juridique,
@@ -43,18 +44,3 @@ export const structuresInfoFromUniteLegale = ({
       },
     )
 }
-
-export type StructureInfo = ReturnType<
-  typeof structuresInfoFromUniteLegale
->[number]
-
-export type StructureInfoWithId = StructureInfo & { id: string }
-
-export type StructureInfoWithCartoNationaleId = StructureInfo & {
-  cartoNationalId: string
-}
-
-export type StructureInfoWithCartoNationaleIdAndId =
-  StructureInfoWithCartoNationaleId & {
-    id: string
-  }

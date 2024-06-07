@@ -18,6 +18,7 @@ import {
   LieuxActiviteValidation,
 } from '@app/web/inscription/LieuxActivite'
 import { SearchStructureCartographieNationaleResultStructure } from '@app/web/structure/searchStructureCartographieNationale'
+import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 
 const LieuxActiviteForm = ({
   defaultValues,
@@ -61,15 +62,12 @@ const LieuxActiviteForm = ({
   )
 
   useEffect(() => {
-    console.log('WATCH ID', selectedCartographieNationaleId)
     if (!selectedCartographieNationaleId) {
       return
     }
     const structure = structuresMapRef.current.get(
       selectedCartographieNationaleId,
     )
-    console.log('THE STRUCTURE', structure)
-    console.log('THE MAP', [...structuresMapRef.current.entries()])
     if (!structure) {
       return
     }
@@ -88,6 +86,14 @@ const LieuxActiviteForm = ({
     setValue('addLieuActiviteCartographieNationaleId', '')
   }, [selectedCartographieNationaleId, setValue, appendStructure])
 
+  // Used to prevent adding the same structure multiple times
+  const alreadySelectedStructureCartoIds = new Set<string>(
+    form
+      .watch('lieuxActivite')
+      .map((structure) => structure.structureCartographieNationaleId)
+      .filter(isDefinedAndNotNull),
+  )
+
   const loadOptions = async (search: string) => {
     if (search.length < 3) {
       return [
@@ -100,9 +106,8 @@ const LieuxActiviteForm = ({
     const result =
       await trpcClient.structures.searchCartographieNationale.query({
         query: search,
+        except: [...alreadySelectedStructureCartoIds.values()],
       })
-
-    console.log('SERACH RESULTS IN CLIENT', result)
 
     const hasMore = result.matchesCount - result.structures.length
     const hasMoreMessage = hasMore
@@ -172,15 +177,10 @@ const LieuxActiviteForm = ({
 
   const isLoading = isSubmitting || isSubmitSuccessful
 
-  if (errors) {
-    console.log('ERRORS', errors)
-  }
-  console.log('FORM VALUES', form.watch())
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <CustomSelectFormField
-        label={null}
+        label="Ajouter un lieu d’activité :"
         control={control}
         path="addLieuActiviteCartographieNationaleId"
         placeholder="Rechercher"
@@ -196,12 +196,7 @@ const LieuxActiviteForm = ({
       {structureFields.map((structure, index) => (
         <StructureCard
           key={structure.structureCartographieNationaleId}
-          structure={{
-            siretOuRna: structure.siret ?? '',
-            nom: structure.nom,
-            adresse: structure.adresse ?? '',
-            typologie: structure.typologie ?? null,
-          }}
+          structure={structure}
           className="fr-mt-6v"
           topRight={
             <Button

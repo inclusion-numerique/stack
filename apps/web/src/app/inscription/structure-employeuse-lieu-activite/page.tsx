@@ -6,9 +6,8 @@ import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import InscriptionCard from '@app/web/app/inscription/InscriptionCard'
 import { prismaClient } from '@app/web/prismaClient'
 import StructureEmployeuseLieuActiviteForm from '@app/web/app/inscription/structure-employeuse-lieu-activite/StructureEmployeuseLieuActiviteForm'
-import { StructureInfoWithId } from '@app/web/structure/structuresInfoFromUniteLegale'
-import { TypologieStructure } from '@app/web/structure/typologieStructure'
 import StructureCard from '@app/web/components/structure/StructureCard'
+import { profileInscriptionSlugs } from '@app/web/inscription/profilInscription'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),
@@ -24,7 +23,7 @@ const Page = async () => {
 
   if (user.emplois.length === 0) {
     redirect(
-      `/inscription/structure-employeuse?profil=${user.profilInscription}`,
+      `/inscription/structure-employeuse?profil=${profileInscriptionSlugs[user.profilInscription]}`,
     )
   }
 
@@ -45,7 +44,8 @@ const Page = async () => {
           commune: true,
           codePostal: true,
           codeInsee: true,
-          siretOuRna: true,
+          siret: true,
+          rna: true,
           adresse: true,
           complementAdresse: true,
           typologie: true,
@@ -56,19 +56,15 @@ const Page = async () => {
 
   if (!emploi) {
     redirect(
-      `/inscription/structure-employeuse?profil=${user.profilInscription}`,
+      `/inscription/structure-employeuse?profil=${profileInscriptionSlugs[user.profilInscription]}`,
     )
   }
 
-  const structureInfo: StructureInfoWithId = {
-    id: emploi.structure.id,
-    siret: emploi.structure.siretOuRna ?? '',
-    nom: emploi.structure.nom,
-    // Todo adresse helpers
-    adresse: emploi.structure.adresse,
+  const structure = {
+    ...emploi.structure,
+    // Should never happen as the siret is required in first step of inscription
+    siret: emploi.structure.siret ?? '',
     codeInsee: emploi.structure.codeInsee ?? '',
-    commune: emploi.structure.commune,
-    typologie: emploi.structure.typologie as TypologieStructure | null,
   }
 
   return (
@@ -92,13 +88,10 @@ const Page = async () => {
           vos bénéficiaires (ex : lieu de permanence...)
         </p>
       </div>
-      <StructureCard
-        structure={{ ...structureInfo, siretOuRna: structureInfo.siret }}
-        className="fr-mb-12v"
-      />
+      <StructureCard structure={structure} className="fr-mb-12v" />
       <StructureEmployeuseLieuActiviteForm
         userId={user.id}
-        structureEmployeuse={structureInfo}
+        structureEmployeuseId={structure.id}
       />
     </InscriptionCard>
   )

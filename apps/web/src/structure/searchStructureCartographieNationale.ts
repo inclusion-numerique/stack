@@ -3,7 +3,9 @@ import { prismaClient } from '@app/web/prismaClient'
 import { toTitleCase } from '@app/web/utils/toTitleCase'
 
 type SearchStructureCartographieNationaleOptions = {
-  limit: number
+  limit?: number
+  // Ids of structuresCartographieNationale to exclude from the search
+  except?: string[]
 }
 
 export const searchStructureCartographieNationale = async (
@@ -15,6 +17,11 @@ export const searchStructureCartographieNationale = async (
 
   const matchesWhere = {
     suppression: null,
+    id: options?.except
+      ? {
+          notIn: options.except,
+        }
+      : undefined,
     AND: queryParts.map((part) => ({
       OR: [
         {

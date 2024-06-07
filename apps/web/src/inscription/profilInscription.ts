@@ -14,3 +14,10 @@ export const profileInscriptionFromSlug = {
   coordinateur: 'Coordinateur',
   mediateur: 'Mediateur',
 } as const satisfies { [key in ProfileInscriptionSlug]: ProfilInscription }
+
+export const profileInscriptionLabels: { [key in ProfilInscription]: string } =
+  {
+    ConseillerNumerique: 'Conseiller numérique',
+    Coordinateur: 'Coordinateur',
+    Mediateur: 'Médiateur numérique',
+  }

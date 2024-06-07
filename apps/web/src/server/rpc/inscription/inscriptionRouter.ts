@@ -1,5 +1,6 @@
 import { v4 } from 'uuid'
 import z from 'zod'
+import * as Sentry from '@sentry/nextjs'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { RenseignerStructureEmployeuseValidation } from '@app/web/inscription/RenseignerStructureEmployeuse'
@@ -7,6 +8,11 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import { forbiddenError } from '@app/web/server/rpc/trpcErrors'
 import { StructureEmployeuseLieuActiviteValidation } from '@app/web/inscription/StructureEmployeuseLieuActivite'
 import { LieuxActiviteValidation } from '@app/web/inscription/LieuxActivite'
+import { searchAdresse } from '@app/web/external-apis/apiAdresse'
+import { StructureCreationDataWithSiret } from '@app/web/app/structure/StructureValidation'
+import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { validateValidSiretDigits } from '@app/web/siret/siretValidation'
+import { validateValidRnaDigits } from '@app/web/rna/rnaValidation'
 
 const inscriptionGuard = (
   targetUserId: string,
@@ -17,56 +23,92 @@ const inscriptionGuard = (
   }
 }
 
+const getOrCreateStructureEmployeuse = async (
+  structureEmployeuse: StructureCreationDataWithSiret,
+) => {
+  const existingStructure = await prismaClient.structure.findFirst({
+    where: {
+      id: structureEmployeuse.id ?? undefined,
+      siret: structureEmployeuse.siret,
+      suppression: null,
+    },
+    select: {
+      id: true,
+    },
+  })
+
+  if (existingStructure) {
+    return existingStructure
+  }
+
+  const adresseResult = await searchAdresse(structureEmployeuse.adresse)
+
+  if (!adresseResult) {
+    // We create with default data if no adresse found but raise a Sentry exception
+    Sentry.captureException(new Error('No adresse info found on api adresse'), {
+      data: {
+        structureEmployeuse,
+      },
+    })
+
+    return prismaClient.structure.create({
+      data: {
+        id: v4(),
+        siret: structureEmployeuse.siret,
+        codeInsee: structureEmployeuse.codeInsee,
+        nom: structureEmployeuse.nom,
+        adresse: structureEmployeuse.adresse,
+        commune: structureEmployeuse.commune,
+        codePostal: '',
+      },
+      select: {
+        id: true,
+      },
+    })
+  }
+
+  return prismaClient.structure.create({
+    data: {
+      id: v4(),
+      siret: structureEmployeuse.siret,
+      codeInsee: structureEmployeuse.codeInsee,
+      nom: structureEmployeuse.nom,
+      adresse:
+        `${adresseResult.properties.housenumber} ${adresseResult.properties.street}`.trim(),
+      commune: adresseResult.properties.city,
+      codePostal: adresseResult.properties.postcode,
+      longitude: adresseResult.geometry.coordinates[0],
+      latitude: adresseResult.geometry.coordinates[1],
+    },
+  })
+}
+
 export const inscriptionRouter = router({
   renseignerStructureEmployeuse: protectedProcedure
     .input(RenseignerStructureEmployeuseValidation)
     .mutation(
       async ({
-        input: { profil, structureEmployeuse, userId },
+        input: { profil, structureEmployeuse, userId, conseillerNumeriqueId },
         ctx: { user: sessionUser },
       }) => {
         inscriptionGuard(userId, sessionUser)
 
-        // TODO Find existing Structure based on SIRET, if not found, create a new one
-        // TODO Remove link between user and structureEmployeuse if it already exists and is different SIRET
-        // TODO Link user to structureEmployeuse
+        const structure =
+          await getOrCreateStructureEmployeuse(structureEmployeuse)
 
         const transactionResult = await prismaClient.$transaction(
           async (transaction) => {
-            const existingStructure = await transaction.structure.findFirst({
-              where: {
-                siretOuRna: structureEmployeuse.siret,
-                codeInsee: structureEmployeuse.codeInsee,
-                nom: {
-                  equals: structureEmployeuse.nom,
-                  mode: 'insensitive',
-                },
-              },
-            })
-
-            const structure =
-              existingStructure ??
-              (await transaction.structure.create({
-                data: {
-                  id: v4(),
-                  siretOuRna: structureEmployeuse.siret,
-                  codeInsee: structureEmployeuse.codeInsee,
-                  nom: structureEmployeuse.nom,
-                  adresse: structureEmployeuse.adresse,
-                  commune: structureEmployeuse.commune,
-                  // TODO Use table for codePostal
-                  // TODO Use api adresse here before transaction
-                  codePostal: structureEmployeuse.codeInsee,
-                },
-              }))
-
-            // Remove link between user and structureEmployeuse if it already exists and is different SIRET
-            await transaction.employeStructure.deleteMany({
+            // Remove link between user and structureEmployeuse if it already exists
+            await transaction.employeStructure.updateMany({
               where: {
                 userId,
                 structure: {
                   id: { not: structure.id },
                 },
+                suppression: null,
+              },
+              data: {
+                suppression: new Date(),
               },
             })
 
@@ -87,8 +129,20 @@ export const inscriptionRouter = router({
                   ? undefined
                   : {
                       create: {
-                        // TODO Conum
                         id: v4(),
+                        // TODO this should be checked and add conum infos through api ?
+                        conseillerNumerique: conseillerNumeriqueId
+                          ? {
+                              connectOrCreate: {
+                                create: {
+                                  id: conseillerNumeriqueId,
+                                },
+                                where: {
+                                  id: conseillerNumeriqueId,
+                                },
+                              },
+                            }
+                          : undefined,
                       },
                     },
               },
@@ -109,33 +163,261 @@ export const inscriptionRouter = router({
   ajouterStructureEmployeuseEnLieuActivite: protectedProcedure
     .input(StructureEmployeuseLieuActiviteValidation)
     .mutation(
-      ({
+      async ({
         input: { userId, estLieuActivite, structureEmployeuseId },
         ctx: { user: sessionUser },
       }) => {
         inscriptionGuard(userId, sessionUser)
 
-        console.log('structure en lieu d’activité', {
-          userId,
-          estLieuActivite,
-          structureEmployeuseId,
+        if (estLieuActivite) {
+          // Add a lieu d'activité for the structure if not exists
+          const existing = await prismaClient.mediateurEnActivite.findFirst({
+            where: {
+              mediateur: {
+                userId,
+              },
+              structureId: structureEmployeuseId,
+              suppression: null,
+            },
+            select: {
+              id: true,
+            },
+          })
+
+          if (existing) {
+            return existing
+          }
+
+          return prismaClient.mediateurEnActivite.create({
+            data: {
+              id: v4(),
+              mediateur: {
+                connect: {
+                  userId,
+                },
+              },
+              structure: {
+                connect: {
+                  id: structureEmployeuseId,
+                },
+              },
+            },
+            select: {
+              id: true,
+            },
+          })
+        }
+
+        // Remove the link between the user and the structure if it exists
+        await prismaClient.mediateurEnActivite.updateMany({
+          where: {
+            mediateur: {
+              userId,
+            },
+            structureId: structureEmployeuseId,
+            suppression: null,
+          },
+          data: {
+            suppression: new Date(),
+          },
         })
-        // TODO implement this
-        console.log('SKIPPING this mutation logic for now')
+
+        return null
       },
     ),
   renseignerLieuxActivite: protectedProcedure
     .input(LieuxActiviteValidation)
     .mutation(
-      ({ input: { userId, lieuxActivite }, ctx: { user: sessionUser } }) => {
+      async ({
+        input: { userId, lieuxActivite },
+        ctx: { user: sessionUser },
+      }) => {
         inscriptionGuard(userId, sessionUser)
 
-        console.log('lieux activité', {
-          userId,
-          lieuxActivite,
+        const existingActivite =
+          await prismaClient.mediateurEnActivite.findMany({
+            where: {
+              mediateur: {
+                userId,
+              },
+              suppression: null,
+            },
+            select: {
+              id: true,
+              structure: {
+                select: {
+                  id: true,
+                  structureCartographieNationaleId: true,
+                },
+              },
+            },
+          })
+
+        const lieuxActiviteCartoIds = new Set<string>(
+          lieuxActivite
+            .map(
+              ({ structureCartographieNationaleId }) =>
+                structureCartographieNationaleId,
+            )
+            .filter(isDefinedAndNotNull),
+        )
+
+        // Delete all existing activite that are not in the new list of carto ids
+        // For now if removed and readed, it will be deleted here and recreated after
+        const toDelete = existingActivite.filter(
+          ({ structure }) =>
+            !structure.structureCartographieNationaleId ||
+            !lieuxActiviteCartoIds.has(
+              structure.structureCartographieNationaleId,
+            ),
+        )
+
+        const existingStructuresForCartoIds =
+          await prismaClient.structure.findMany({
+            where: {
+              structureCartographieNationaleId: {
+                in: [...lieuxActiviteCartoIds.values()],
+              },
+            },
+          })
+
+        const existingStructuresByCartoId = new Map(
+          existingStructuresForCartoIds.map((s) => [
+            s.structureCartographieNationaleId as string,
+            s,
+          ]),
+        )
+
+        const structuresToCreate = lieuxActivite.filter(
+          ({ structureCartographieNationaleId }) =>
+            !!structureCartographieNationaleId &&
+            !existingStructuresByCartoId.has(structureCartographieNationaleId),
+        )
+
+        const result = await prismaClient.$transaction(async (transaction) => {
+          const deleted = await transaction.mediateurEnActivite.updateMany({
+            where: {
+              id: { in: toDelete.map(({ id }) => id) },
+            },
+            data: {
+              suppression: new Date(),
+            },
+          })
+
+          const newActivites = await Promise.all(
+            structuresToCreate.map(async (lieu) => {
+              if (!lieu.structureCartographieNationaleId) {
+                // This is not an exisint carto structure, we just create the lieu
+
+                if (!lieu.id) {
+                  throw new Error('Invalid structure for lieu activité')
+                }
+
+                return transaction.mediateurEnActivite.create({
+                  data: {
+                    id: v4(),
+                    mediateur: {
+                      connect: {
+                        userId,
+                      },
+                    },
+                    structure: {
+                      connect: {
+                        id: lieu.id,
+                      },
+                    },
+                  },
+                })
+              }
+
+              const structure = existingStructuresByCartoId.get(
+                lieu.structureCartographieNationaleId,
+              )
+
+              if (structure) {
+                // Structure already exists, we just create the lieu, linking with carto id
+                return transaction.mediateurEnActivite.create({
+                  data: {
+                    id: v4(),
+                    mediateur: {
+                      connect: {
+                        userId,
+                      },
+                    },
+                    structure: {
+                      connect: {
+                        structureCartographieNationaleId:
+                          lieu.structureCartographieNationaleId,
+                      },
+                    },
+                  },
+                })
+              }
+
+              // Structure does not exist, we create it with the lieu
+              const cartoStructure =
+                await transaction.structureCartographieNationale.findFirst({
+                  where: {
+                    id: lieu.structureCartographieNationaleId,
+                  },
+                })
+
+              if (!cartoStructure) {
+                throw new Error('Structure carto not found')
+              }
+
+              return transaction.mediateurEnActivite.create({
+                data: {
+                  id: v4(),
+                  mediateur: {
+                    connect: {
+                      userId,
+                    },
+                  },
+                  structure: {
+                    create: {
+                      id: v4(),
+                      structureCartographieNationaleId:
+                        lieu.structureCartographieNationaleId,
+                      nom: cartoStructure.nom,
+                      adresse: cartoStructure.adresse,
+                      commune: cartoStructure.commune,
+                      codePostal: cartoStructure.codePostal,
+                      siret:
+                        cartoStructure.pivot &&
+                        validateValidSiretDigits(cartoStructure.pivot)
+                          ? cartoStructure.pivot
+                          : null,
+                      rna:
+                        cartoStructure.pivot &&
+                        validateValidRnaDigits(cartoStructure.pivot)
+                          ? cartoStructure.pivot
+                          : null,
+                      codeInsee: cartoStructure.codeInsee,
+                      longitude: cartoStructure.longitude,
+                      latitude: cartoStructure.latitude,
+                      // TODO check these and make a dedicated function to create structure from carto structure
+                      accessibilite: cartoStructure.ficheAccesLibre,
+                      presentationDetail: cartoStructure.presentationDetail,
+                      presentationResume: cartoStructure.presentationResume,
+                      visiblePourCartographieNationale: true,
+                      complementAdresse: cartoStructure.complementAdresse,
+                      horaires: cartoStructure.horaires,
+                      siteWeb: cartoStructure.siteWeb,
+                      typologie: cartoStructure.typologie,
+                      typesAccompagnement:
+                        cartoStructure.modalitesAccompagnement?.split('|'),
+                    },
+                  },
+                },
+              })
+            }),
+          )
+
+          return { deleted, newActivites }
         })
-        // TODO implement this
-        console.log('SKIPPING this mutation logic for now')
+
+        return result
       },
     ),
   validerInscription: protectedProcedure

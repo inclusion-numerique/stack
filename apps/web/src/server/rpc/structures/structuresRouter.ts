@@ -9,9 +9,13 @@ export const structuresRouter = router({
     .query(({ input: { query } }) => searchStructure(query)),
 
   searchCartographieNationale: protectedProcedure
-    .input(z.object({ query: z.string() }))
-    .query(({ input: { query } }) =>
-      searchStructureCartographieNationale(query).catch((error) => {
+    .input(
+      z.object({ query: z.string(), except: z.array(z.string()).nullish() }),
+    )
+    .query(({ input: { query, except } }) =>
+      searchStructureCartographieNationale(query, {
+        except: except ?? undefined,
+      }).catch((error) => {
         console.error('Error searching carto nationale structures', error)
         throw error
       }),
