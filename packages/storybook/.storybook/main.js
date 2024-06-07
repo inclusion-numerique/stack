@@ -1,8 +1,6 @@
-import { dirname, join } from 'path'
 /* eslint unicorn/prefer-module: 0,  @typescript-eslint/no-var-requires: 0, @typescript-eslint/unbound-method: 0 */
-
 const { parse } = require('dotenv')
-const { resolve } = require('node:path')
+const { resolve, dirname, join } = require('node:path')
 const { readFileSync, existsSync } = require('node:fs')
 
 const dotenvVariables = () => {
@@ -13,6 +11,9 @@ const dotenvVariables = () => {
 
   return parse(readFileSync(dotenvFile))
 }
+
+const getAbsolutePath = (value) =>
+  dirname(require.resolve(join(value, 'package.json')))
 
 // See https://github.com/storybookjs/storybook/blob/111edc3929eb8afff1b58285b0b9c49dd493ae85/code/frameworks/nextjs/README.md
 module.exports = {
@@ -55,8 +56,4 @@ module.exports = {
   typescript: {
     reactDocgen: 'react-docgen-typescript',
   },
-}
-
-function getAbsolutePath(value) {
-  return dirname(require.resolve(join(value, 'package.json')))
 }
