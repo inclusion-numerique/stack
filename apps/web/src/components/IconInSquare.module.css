@@ -9,7 +9,8 @@
 .icon {
     line-height: 20px !important;  max-height: 20px;
     max-width: 20px;
-    &:before {
+
+    &::before {
         max-height: 20px;
         max-width: 20px;
     }
