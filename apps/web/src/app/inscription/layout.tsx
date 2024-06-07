@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import React, { PropsWithChildren } from 'react'
 import PublicFooter from '@app/web/app/(public)/PublicFooter'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
@@ -9,6 +9,10 @@ const InscriptionLayout = async ({ children }: PropsWithChildren) => {
   if (!user) {
     redirect('/connexion')
     return null
+  }
+
+  if (user.role === 'Admin') {
+    notFound()
   }
 
   if (user.inscriptionValidee) {
