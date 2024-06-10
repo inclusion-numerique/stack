@@ -33,22 +33,18 @@ const StructureCard = ({
     </p>
     {(siret || rna || typologie) && (
       <p className="fr-mt-1v fr-text--sm fr-text-mention--grey fr-mb-0">
-        {typologie ? (
-          <>
-            <span className="fr-icon-government-line fr-icon--sm fr-mr-1w" />
-            {typologie}
-          </>
+        {typologie || siret || rna ? (
+          <span className="fr-icon-government-line fr-icon--sm fr-mr-1w" />
         ) : null}
+        {typologie || null}
         {typologie && (siret || rna) ? ' · ' : null}
         {siret ? (
           <>
-            <span className="fr-icon-government-line fr-icon--sm fr-mr-1w" />
             <span className="fr-text--medium">SIRET</span>&nbsp;: {siret}
           </>
         ) : null}
         {rna ? (
           <>
-            <span className="fr-icon-government-line fr-icon--sm fr-mr-1w" />
             <span className="fr-text--medium">RNA</span>&nbsp;: {rna}
           </>
         ) : null}
