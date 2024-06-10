@@ -10,6 +10,7 @@ import { generateResourceExcerpt } from '@app/web/resources/resourceExcerpt'
 import { testResourceDescription } from '@app/web/test/helpers'
 
 const date = new Date('2023-01-31')
+const updated = new Date('2023-02-03')
 const nextDay = addDays(date, 1)
 
 const resource = {
@@ -129,7 +130,7 @@ const BrouillonModifiéSansImageStory: Story = {
   args: {
     resource: {
       ...resource,
-      updated: new Date(),
+      updated,
       published: null,
       lastPublished: null,
       base: null,
@@ -151,7 +152,7 @@ const BrouillonModifiéAvecImageStory: Story = {
   args: {
     resource: {
       ...resource,
-      updated: new Date(),
+      updated,
       published: null,
       lastPublished: null,
       image: { id: 'portrait', altText: 'Texte alternatif' },
@@ -256,7 +257,7 @@ const ModificationsNonPubliéesAvecImageVueContributeurStory: Story = {
   args: {
     resource: {
       ...resource,
-      updated: new Date(),
+      updated,
       image: { id: 'portrait', altText: 'Texte alternatif' },
     },
     user: creatorUser,
