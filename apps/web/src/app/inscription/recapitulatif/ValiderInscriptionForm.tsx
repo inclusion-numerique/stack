@@ -18,8 +18,8 @@ const ValiderInscriptionForm = ({ userId }: { userId: string }) => {
   const onValiderInscription = async () => {
     try {
       await mutation.mutateAsync({ userId })
-      router.refresh()
       router.push('/coop')
+      router.refresh()
       createToast({
         priority: 'success',
         message: 'Votre inscription a bien été validée !',

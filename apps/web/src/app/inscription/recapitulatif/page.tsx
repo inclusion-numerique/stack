@@ -87,6 +87,8 @@ const Page = async () => {
     },
   })
 
+  console.log('EN ACTIVITE', enActivite)
+
   if (!emploi) {
     redirect(
       `/inscription/structure-employeuse?profil=${profileInscriptionSlugs[user.profilInscription]}`,

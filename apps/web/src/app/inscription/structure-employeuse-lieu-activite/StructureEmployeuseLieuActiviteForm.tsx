@@ -32,8 +32,8 @@ const StructureEmployeuseLieuActiviteForm = ({
         structureEmployeuseId,
         estLieuActivite,
       })
-      router.refresh()
       router.push('/inscription/lieux-activite')
+      router.refresh()
     } catch {
       createToast({
         priority: 'error',

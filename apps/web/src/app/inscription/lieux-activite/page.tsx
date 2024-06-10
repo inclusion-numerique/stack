@@ -53,6 +53,10 @@ const Page = async () => {
     },
   })
 
+
+
+  console.log('EN ACTIVITE', enActivite)
+
   const lieuxActivite: StructureData[] = enActivite.map((lieuActivite) => ({
     ...lieuActivite.structure,
   }))

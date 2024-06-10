@@ -161,8 +161,8 @@ const LieuxActiviteForm = ({
   const onSubmit = async (data: LieuxActiviteData) => {
     try {
       await mutation.mutateAsync(data)
-      router.refresh()
       router.push('/inscription/recapitulatif')
+      router.refresh()
     } catch (mutationError) {
       if (applyZodValidationMutationErrorsToForm(mutationError, setError)) {
         return

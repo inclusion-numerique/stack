@@ -148,8 +148,8 @@ const RenseignerStructureEmployeuseForm = ({
   const onSubmit = async (data: RenseignerStructureEmployeuseData) => {
     try {
       await mutation.mutateAsync(data)
-      router.refresh()
       router.push('/inscription/structure-employeuse-lieu-activite')
+      router.refresh()
     } catch (mutationError) {
       if (applyZodValidationMutationErrorsToForm(mutationError, setError)) {
         return
