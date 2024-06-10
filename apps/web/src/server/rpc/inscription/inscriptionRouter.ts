@@ -262,14 +262,23 @@ export const inscriptionRouter = router({
             .filter(isDefinedAndNotNull),
         )
 
+        const lieuxActiviteIds = new Set<string>(
+          lieuxActivite.map(({ id }) => id).filter(isDefinedAndNotNull),
+        )
+
         // Delete all existing activite that are not in the new list of carto ids
+        // AND that is not in the new list of internal ids
         // For now if removed and readed, it will be deleted here and recreated after
         const toDelete = existingActivite.filter(
-          ({ structure }) =>
-            !structure.structureCartographieNationaleId ||
-            !lieuxActiviteCartoIds.has(
-              structure.structureCartographieNationaleId,
-            ),
+          ({ structure: existing }) =>
+            // e.g. if the structure was removed, re-added and has the same carto id
+            (existing.structureCartographieNationaleId &&
+              !lieuxActiviteCartoIds.has(
+                existing.structureCartographieNationaleId,
+              )) ||
+            // If the structure already has an internal id and did not come from carto nationale
+            (!existing.structureCartographieNationaleId &&
+              !lieuxActiviteIds.has(existing.id)),
         )
 
         const existingStructuresForCartoIds =
