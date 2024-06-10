@@ -67,16 +67,10 @@ export const getSessionUserFromSessionToken = async (
                 },
               },
             },
-            where: {
-              suppression: null,
-            },
           },
           coordinateur: {
             select: {
               id: true,
-            },
-            where: {
-              suppression: null,
             },
           },
         },
