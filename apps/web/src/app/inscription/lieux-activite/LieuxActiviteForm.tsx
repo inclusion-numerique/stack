@@ -175,11 +175,19 @@ const LieuxActiviteForm = ({
     }
   }
 
+  // Re-render the custom select when structure added to empty the field
+  const customSelectKey = structureFields
+    .map(
+      (structure) => structure.id ?? structure.structureCartographieNationaleId,
+    )
+    .join('')
+
   const isLoading = isSubmitting || isSubmitSuccessful
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <CustomSelectFormField
+        key={customSelectKey}
         label="Ajouter un lieu d’activité :"
         control={control}
         path="addLieuActiviteCartographieNationaleId"
@@ -195,7 +203,7 @@ const LieuxActiviteForm = ({
       ) : null}
       {structureFields.map((structure, index) => (
         <StructureCard
-          key={structure.structureCartographieNationaleId}
+          key={structure.id ?? structure.structureCartographieNationaleId}
           structure={structure}
           className="fr-mt-6v"
           topRight={

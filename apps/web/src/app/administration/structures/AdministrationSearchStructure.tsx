@@ -26,8 +26,6 @@ const AdministrationSearchStructure = () => {
       query: search,
     })
 
-    console.log('SERACH RESULTS IN CLIENT', result)
-
     const hasMore = result.matchesCount - result.structures.length
     const hasMoreMessage = hasMore
       ? hasMore === 1

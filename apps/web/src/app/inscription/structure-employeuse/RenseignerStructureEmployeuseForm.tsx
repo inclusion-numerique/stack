@@ -56,13 +56,10 @@ const RenseignerStructureEmployeuseForm = ({
   const selectedStructureSiret = form.watch('structureEmployeuse.siret')
 
   useEffect(() => {
-    console.log('WATCH STRUCTURE EMPLOYEUSE SIRET', selectedStructureSiret)
     if (!selectedStructureSiret) {
       return
     }
     const structure = structuresMapRef.current.get(selectedStructureSiret)
-    console.log('THE STRUCTURE', structure)
-    console.log('THE MAP', [...structuresMapRef.current.entries()])
     if (!structure) {
       return
     }
@@ -164,14 +161,10 @@ const RenseignerStructureEmployeuseForm = ({
 
   const isLoading = isSubmitting || isSubmitSuccessful
 
-  if (errors) {
-    console.log('ERRORS', errors)
-  }
-  console.log('FORM VALUES', form.watch())
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <CustomSelectFormField
+        key={selectedStructure?.siret}
         label={null}
         control={control}
         path="structureEmployeuse.siret"
