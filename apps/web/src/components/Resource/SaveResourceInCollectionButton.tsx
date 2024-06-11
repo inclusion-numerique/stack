@@ -85,6 +85,7 @@ const SaveResourceInCollectionButton = ({
     ...getButtonProps(alreadySaved, variant),
     children,
     priority,
+    iconPosition: 'right' as const,
   }
 
   if (user) {
