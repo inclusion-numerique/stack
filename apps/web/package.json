@@ -74,6 +74,7 @@
     "maplibre-gl": "^3.6.2",
     "mjml": "^4.15.3",
     "mjml-react": "^2.0.8",
+    "mongodb": "^6.7.0",
     "nanoid": "^3.3.7",
     "next": "^14.2.3",
     "next-auth": "^4.24.7",

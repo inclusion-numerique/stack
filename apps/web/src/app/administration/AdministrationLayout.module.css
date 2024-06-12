@@ -1,8 +1,13 @@
+
+.container {
+    --side-nav-width: 296px;
+}
+
 .sideNavContainer {
     width: 100%;
 
     @media (min-width: 48em) {
-        width: 286px;
+        width: var(--side-nav-width)
     }
 }
 
@@ -11,7 +16,7 @@
     padding: 0 16px;
 
     @media (min-width: 48em) {
-        width: calc(100% - 286px);
+        width: calc(100% - var(--side-nav-width));
         padding: 0 32px 0 0;
     }
 

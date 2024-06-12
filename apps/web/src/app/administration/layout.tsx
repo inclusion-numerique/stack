@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import React, { PropsWithChildren } from 'react'
+import classNames from 'classnames'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Header from '@app/web/components/Header'
 import AdministrationSideMenu from '@app/web/app/administration/AdministrationSideMenu'
@@ -16,7 +17,9 @@ const AdministrationLayout = async ({ children }: PropsWithChildren) => {
       style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}
     >
       <Header user={user} />
-      <div className="fr-grid-row fr-width-full">
+      <div
+        className={classNames('fr-grid-row fr-width-full', styles.container)}
+      >
         <div className={styles.sideNavContainer}>
           <AdministrationSideMenu />
         </div>

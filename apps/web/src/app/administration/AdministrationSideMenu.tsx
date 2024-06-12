@@ -22,6 +22,22 @@ const AdministrationSideMenu = () => {
       },
       isActive: pathname?.startsWith('/administration/usurpation'),
     },
+    {
+      text: 'Intégrations',
+      isActive: pathname?.startsWith('/administration/integrations'),
+      expandedByDefault: pathname?.startsWith('/administration/integrations'),
+      items: [
+        {
+          text: 'Conseillers numérique',
+          isActive: pathname?.startsWith(
+            '/administration/integrations/conseillers-numerique',
+          ),
+          linkProps: {
+            href: '/administration/integrations/conseillers-numerique',
+          },
+        },
+      ],
+    },
   ] satisfies SideMenuProps.Item[]
 
   return (
