@@ -1,7 +1,7 @@
 import { PropsWithChildren, ReactNode } from 'react'
 import classNames from 'classnames'
 import Link from 'next/link'
-import { inscriptionStepsCount } from '@app/web/app/inscription/inscriptionSteps'
+import { inscriptionStepsCount } from '@app/web/app/inscription/(steps)/inscriptionSteps'
 
 const InscriptionCard = ({
   children,

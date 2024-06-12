@@ -498,6 +498,16 @@
     border-radius: 8px;
 }
 
+.fr-border-radius-top--8 {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.fr-border-radius-bottom--8 {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
 .fr-border-radius--16 {
     border-radius: 16px;
 }
@@ -508,6 +518,16 @@
 
 .fr-border-radius--64 {
     border-radius: 64px;
+}
+
+.fr-border-radius-bottom--0 {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.fr-border-radius-top--0 {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }
 
 /* No underline when not hovered */

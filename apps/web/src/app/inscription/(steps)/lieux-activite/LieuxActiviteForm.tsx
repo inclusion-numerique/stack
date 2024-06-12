@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { ReactNode, useEffect, useRef } from 'react'
 import { DefaultValues, useFieldArray, useForm } from 'react-hook-form'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -120,7 +120,11 @@ const LieuxActiviteForm = ({
       structuresMapRef.current.set(structure.id, structure)
     }
 
-    return [
+    const options: {
+      // Type does not accept ReactNode as label but react-select works with it
+      label: ReactNode
+      value: string
+    }[] = [
       {
         label: `${result.matchesCount} résultat${sPluriel(result.matchesCount)}`,
         value: '',
@@ -143,19 +147,39 @@ const LieuxActiviteForm = ({
           value: id,
         }),
       ),
-      ...(hasMoreMessage
-        ? [
-            {
-              label: hasMoreMessage,
-              value: '',
-            },
-          ]
-        : []),
-    ] as {
-      // Type does not accept ReactNode as label but react-select works with it
-      label: string
-      value: string
-    }[]
+    ]
+
+    if (hasMoreMessage) {
+      options.push({
+        label: hasMoreMessage,
+        value: '',
+      })
+    } else {
+      options.push(
+        {
+          label: 'Vous ne trouvez pas votre structure ?',
+          value: '',
+        },
+        {
+          label: (
+            <div className="fr-btns-group">
+              <Button
+                priority="secondary"
+                className="fr-width-full fr-mb-0"
+                linkProps={{
+                  href: '/inscription/creer-un-lieu-d-activite',
+                }}
+              >
+                Créer une structure
+              </Button>
+            </div>
+          ),
+          value: '',
+        },
+      )
+    }
+
+    return options as { label: string; value: string }[]
   }
 
   const onSubmit = async (data: LieuxActiviteData) => {

@@ -3,7 +3,7 @@ import React from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
-import InscriptionCard from '@app/web/app/inscription/InscriptionCard'
+import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 import { prismaClient } from '@app/web/prismaClient'
 import {
   profileInscriptionLabels,
@@ -12,7 +12,7 @@ import {
 import IconInSquare from '@app/web/components/IconInSquare'
 import InfoLabelValue from '@app/web/components/InfoLabelValue'
 import StructureCard from '@app/web/components/structure/StructureCard'
-import ValiderInscriptionForm from '@app/web/app/inscription/recapitulatif/ValiderInscriptionForm'
+import ValiderInscriptionForm from '@app/web/app/inscription/(steps)/recapitulatif/ValiderInscriptionForm'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),

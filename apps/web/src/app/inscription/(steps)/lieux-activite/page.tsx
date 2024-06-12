@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
-import InscriptionCard from '@app/web/app/inscription/InscriptionCard'
+import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 import { prismaClient } from '@app/web/prismaClient'
-import LieuxActiviteForm from '@app/web/app/inscription/lieux-activite/LieuxActiviteForm'
+import LieuxActiviteForm from '@app/web/app/inscription/(steps)/lieux-activite/LieuxActiviteForm'
 import { StructureData } from '@app/web/app/structure/StructureValidation'
 import { profileInscriptionSlugs } from '@app/web/inscription/profilInscription'
 

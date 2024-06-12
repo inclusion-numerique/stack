@@ -38,14 +38,16 @@ const addActiveStateToItems = (
     }
   })
 
+export type NavigationSideMenuProps = {
+  className?: string
+  contentId: string
+} & Omit<SideMenuProps, 'id'>
+
 const NavigationSideMenu = ({
   contentId,
   items,
   ...sideMenuProps
-}: {
-  className?: string
-  contentId: string
-} & Omit<SideMenuProps, 'id'>) => {
+}: NavigationSideMenuProps) => {
   const { activeHref } = useNavigationSideMenu({
     contentId,
     items,

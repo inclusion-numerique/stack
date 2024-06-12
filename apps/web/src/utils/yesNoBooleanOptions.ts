@@ -1,4 +1,4 @@
-import { labelsToOptions } from '@app/web/utils/options'
+import { labelsToOptions } from '@app/ui/components/Form/utils/options'
 
 export const yesNoLabels = {
   yes: 'Oui',

@@ -33,3 +33,14 @@ export type RichRadioOption<T extends string = string> = {
   hint?: string
   disabled?: boolean
 }
+
+export const labelsToOptions = <T extends string>(
+  object: Record<T, string>,
+): SelectOption<T>[] =>
+  Object.entries(object).map(
+    ([value, name]) => ({ name, value }) as SelectOption<T>,
+  )
+
+export const optionsWithEmptyValue = <T extends string>(
+  options: SelectOption<T>[],
+): SelectOption<T>[] => [{ name: '', value: '' } as SelectOption<T>, ...options]

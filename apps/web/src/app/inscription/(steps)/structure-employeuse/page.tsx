@@ -5,9 +5,9 @@ import {
   profileInscriptionFromSlug,
   ProfileInscriptionSlug,
 } from '@app/web/inscription/profilInscription'
-import InscriptionCard from '@app/web/app/inscription/InscriptionCard'
-import RenseignerStructureEmployeuseForm from '@app/web/app/inscription/structure-employeuse/RenseignerStructureEmployeuseForm'
+import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 import { prismaClient } from '@app/web/prismaClient'
+import RenseignerStructureEmployeuseForm from '@app/web/app/inscription/(steps)/structure-employeuse/RenseignerStructureEmployeuseForm'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),

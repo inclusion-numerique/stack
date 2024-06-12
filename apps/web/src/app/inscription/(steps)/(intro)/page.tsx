@@ -3,7 +3,7 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import Link from 'next/link'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import type { ProfileInscriptionSlug } from '@app/web/inscription/profilInscription'
-import InscriptionCard from '@app/web/app/inscription/InscriptionCard'
+import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),
