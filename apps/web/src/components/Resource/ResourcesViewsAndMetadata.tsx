@@ -7,10 +7,14 @@ const ResourcesViewsAndMetadata = ({
   className,
   resource,
   children,
+  showLabels = false,
+  showPrivate = true,
 }: {
   className?: string
   resource: ResourceListItem
   children?: ReactNode
+  showLabels?: boolean
+  showPrivate?: boolean
 }) => (
   <span
     data-testid="resources-views-and-metadata"
@@ -20,23 +24,33 @@ const ResourcesViewsAndMetadata = ({
     )}
   >
     <span className="fr-flex fr-flex-gap-2v">
-      <span className="fr-flex fr-flex-gap-1v">
-        <span className="fr-icon-eye-line fr-icon--sm" aria-hidden />
-        <span className="fr-text--bold" data-testid="resource-views-count">
+      <span className="fr-icon-eye-line fr-icon--sm" aria-hidden />
+      <span className="fr-text--semi-bold" data-testid="resource-views-count">
+        <span className="fr-text--nowrap">
           {resource._count.views}
+          {showLabels && (
+            <span className="fr-hidden fr-unhidden-sm"> Vues</span>
+          )}
+          <span className="fr-hidden-sm fr-unhidden fr-sr-only">Vues</span>
         </span>
       </span>
       <span>·</span>
-      <span className="fr-flex fr-flex-gap-1v">
-        <span className="fr-icon-bookmark-line fr-icon--sm" aria-hidden />
-        <span
-          className="fr-text--bold"
-          data-testid="resource-collections-count"
-        >
+      <span className="fr-icon-bookmark-line fr-icon--sm" aria-hidden />
+      <span
+        className="fr-text--semi-bold"
+        data-testid="resource-collections-count"
+      >
+        <span className="fr-text--nowrap">
           {resource._count.collections}
+          {showLabels && (
+            <span className="fr-hidden fr-unhidden-sm"> Enregistrements</span>
+          )}
+          <span className="fr-hidden-sm fr-unhidden fr-sr-only">
+            Enregistrements
+          </span>
         </span>
       </span>
-      {!resource.isPublic && (
+      {!resource.isPublic && showPrivate && (
         <span className="fr-unhidden fr-hidden-sm">
           <span className="fr-mr-1w">·</span>
           <span className="fr-tag fr-tag--sm">
@@ -45,10 +59,14 @@ const ResourcesViewsAndMetadata = ({
           </span>
         </span>
       )}
-      <span className="fr-hidden fr-unhidden-sm">·</span>
     </span>
-    {children && <span className="fr-flex fr-flex-gap-2v">{children}</span>}
-    {!resource.isPublic && (
+    {children && (
+      <>
+        <span className="fr-hidden fr-unhidden-sm">·</span>
+        <span className="fr-flex fr-flex-gap-2v">{children}</span>
+      </>
+    )}
+    {!resource.isPublic && showPrivate && (
       <span className="fr-hidden fr-unhidden-sm">
         <span className="fr-mr-1w ">·</span>
         <CustomTag
