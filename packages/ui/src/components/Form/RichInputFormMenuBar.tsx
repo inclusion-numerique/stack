@@ -71,14 +71,23 @@ const RichInputFormMenuBar = ({
               title="Titre 1"
               icon="fr-icon-h-1"
               onClick={() => {
+                editor.chain().focus().toggleHeading({ level: 4 }).run()
+              }}
+              active={editor.isActive('heading', { level: 4 })}
+              disabled={disabled}
+            />
+            <MenuButton
+              title="Titre 2"
+              icon="fr-icon-h-2"
+              onClick={() => {
                 editor.chain().focus().toggleHeading({ level: 5 }).run()
               }}
               active={editor.isActive('heading', { level: 5 })}
               disabled={disabled}
             />
             <MenuButton
-              title="Titre 2"
-              icon="fr-icon-h-2"
+              title="Titre 3"
+              icon="fr-icon-h-3"
               onClick={() => {
                 editor.chain().focus().toggleHeading({ level: 6 }).run()
               }}
