@@ -63,6 +63,6 @@ export default function auth(request: NextApiRequest, res: NextApiResponse) {
     return res.status(200).end()
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
-  return NextAuth(authOptions)(request, res)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return NextAuth(request, res, authOptions)
 }
