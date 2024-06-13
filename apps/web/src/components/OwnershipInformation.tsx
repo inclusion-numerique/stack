@@ -58,11 +58,7 @@ const OwnershipInformation = ({
       className,
     )}
   >
-    {base ? (
-      <BaseImage className="fr-mr-1w" base={base} />
-    ) : (
-      <RoundProfileImage className="fr-mr-1w" user={user} />
-    )}
+    {base ? <BaseImage base={base} /> : <RoundProfileImage user={user} />}
     <span className="fr-text--xs fr-mb-0">
       {attributionWordings[attributionWording].what}
       {base != null && (
