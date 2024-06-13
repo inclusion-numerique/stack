@@ -1,5 +1,6 @@
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
+import type { NextApiRequest, NextApiResponse } from 'next'
 import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
 import '@app/web/auth/nextAuthSetup'
 import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
@@ -56,4 +57,12 @@ export const authOptions: NextAuthOptions = {
   },
 }
 
-export default NextAuth(authOptions)
+export default function auth(request: NextApiRequest, res: NextApiResponse) {
+  // https://next-auth.js.org/tutorials/avoid-corporate-link-checking-email-provider
+  if (request.method === 'HEAD') {
+    return res.status(200).end()
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
+  return NextAuth(authOptions)(request, res)
+}
