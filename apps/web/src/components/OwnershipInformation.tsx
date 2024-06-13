@@ -76,7 +76,7 @@ const OwnershipInformation = ({
           </Link>
         </>
       )}
-      {!base && (
+      {!base && displayUser && (
         <>
           {attributionWordings[attributionWording].by}
           <Link

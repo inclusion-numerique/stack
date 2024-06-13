@@ -51,9 +51,7 @@ export const locallyRestoreLatestMainBackup = new Command(
   )
   .action(async () => {
     const databaseInstanceIdWithRegion = process.env.DATABASE_INSTANCE_ID ?? ''
-    console.log('databaseInstanceIdWithRegion', databaseInstanceIdWithRegion)
-    const databaseInstanceId = databaseInstanceIdWithRegion
-    console.log('databaseInstanceId', databaseInstanceId)
+    const databaseInstanceId = databaseInstanceIdWithRegion.split('/')[1]
     const backupDatabaseName = process.env.BACKUP_DATABASE_NAME ?? ''
     const secretKey = process.env.SCW_SECRET_KEY ?? ''
     const databaseUrl = process.env.DATABASE_URL ?? ''
