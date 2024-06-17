@@ -13,8 +13,6 @@ const StructureHorairesForm = ({
 
   const openingHours = stringToOpeningHours(horaires)
 
-  console.log('OPENING HOURS', openingHours)
-
   return (
     <>
       <pre className="fr-background-alt--blue-france fr-p-4v fr-border-radius--16 fr-text--xs fr-mb-0">

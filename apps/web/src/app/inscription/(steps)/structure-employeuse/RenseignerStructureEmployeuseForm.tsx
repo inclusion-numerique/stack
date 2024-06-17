@@ -91,8 +91,6 @@ const RenseignerStructureEmployeuseForm = ({
       include: 'complements,matching_etablissements',
     })
 
-    console.log('SERACH RESULTS IN CLIENT', result)
-
     const structures = result.results.flatMap(
       structureCreationDataWithSiretFromUniteLegale,
     )

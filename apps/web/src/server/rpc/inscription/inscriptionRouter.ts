@@ -11,8 +11,7 @@ import { LieuxActiviteValidation } from '@app/web/inscription/LieuxActivite'
 import { searchAdresse } from '@app/web/external-apis/apiAdresse'
 import { StructureCreationDataWithSiret } from '@app/web/app/structure/StructureValidation'
 import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
-import { validateValidSiretDigits } from '@app/web/siret/siretValidation'
-import { validateValidRnaDigits } from '@app/web/rna/rnaValidation'
+import { cartoStructureToStructure } from '@app/web/structure/cartoStructureToStructure'
 
 const inscriptionGuard = (
   targetUserId: string,
@@ -384,39 +383,7 @@ export const inscriptionRouter = router({
                     },
                   },
                   structure: {
-                    create: {
-                      id: v4(),
-                      structureCartographieNationaleId:
-                        lieu.structureCartographieNationaleId,
-                      nom: cartoStructure.nom,
-                      adresse: cartoStructure.adresse,
-                      commune: cartoStructure.commune,
-                      codePostal: cartoStructure.codePostal,
-                      siret:
-                        cartoStructure.pivot &&
-                        validateValidSiretDigits(cartoStructure.pivot)
-                          ? cartoStructure.pivot
-                          : null,
-                      rna:
-                        cartoStructure.pivot &&
-                        validateValidRnaDigits(cartoStructure.pivot)
-                          ? cartoStructure.pivot
-                          : null,
-                      codeInsee: cartoStructure.codeInsee,
-                      longitude: cartoStructure.longitude,
-                      latitude: cartoStructure.latitude,
-                      // TODO check these and make a dedicated function to create structure from carto structure
-                      accessibilite: cartoStructure.ficheAccesLibre,
-                      presentationDetail: cartoStructure.presentationDetail,
-                      presentationResume: cartoStructure.presentationResume,
-                      visiblePourCartographieNationale: true,
-                      complementAdresse: cartoStructure.complementAdresse,
-                      horaires: cartoStructure.horaires,
-                      siteWeb: cartoStructure.siteWeb,
-                      typologie: cartoStructure.typologie,
-                      typesAccompagnement:
-                        cartoStructure.modalitesAccompagnement?.split('|'),
-                    },
+                    create: cartoStructureToStructure(cartoStructure),
                   },
                 },
               })

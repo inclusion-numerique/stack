@@ -5,6 +5,7 @@ import { searchStructure } from '@app/web/structure/searchStructure'
 import { searchStructureCartographieNationale } from '@app/web/structure/searchStructureCartographieNationale'
 import { CreerStructureValidation } from '@app/web/app/structure/CreerStructureValidation'
 import { prismaClient } from '@app/web/prismaClient'
+import { createStopwatch } from '@app/web/utils/stopwatch'
 
 export const structuresRouter = router({
   search: protectedProcedure
@@ -49,30 +50,13 @@ export const structuresRouter = router({
         },
         ctx: { user },
       }) => {
-        console.log('user', user)
-        console.log('mutation input', {
-          lieuActiviteMediateurId,
-          nom,
-          typologie,
-          adresse,
-          commune,
-          codePostal,
-          complementAdresse,
-          siret,
-          rna,
-          visiblePourCartographieNationale,
-          presentationResume,
-          presentationDetail,
-          siteWeb,
-          accessibilite,
-          horaires,
-          thematiques,
-          typesAccompagnement,
-        })
+        const stopwatch = createStopwatch()
+
+        const id = v4()
 
         const created = await prismaClient.structure.create({
           data: {
-            id: v4(),
+            id,
             nom,
             typologie,
             adresse,
@@ -98,6 +82,22 @@ export const structuresRouter = router({
                   },
                 }
               : undefined,
+          },
+        })
+
+        await prismaClient.mutation.create({
+          data: {
+            nom: 'CreerStructure',
+            userId: user.id,
+            duration: stopwatch.stop().duration,
+            data: {
+              id,
+              nom,
+              typologie,
+              siret,
+              rna,
+              codePostal,
+            },
           },
         })
 

@@ -99,8 +99,6 @@ export const rechercheApiEntreprise = async (
 ): Promise<RechercheApiResponse> => {
   const queryUrl = `${rechercheApiEntrepriseEndpoint}?${convertQueryParams(queryParams).toString()}`
 
-  console.log('queryUrl', queryUrl)
-
   const response = await fetch(queryUrl)
 
   if (!response.ok) {

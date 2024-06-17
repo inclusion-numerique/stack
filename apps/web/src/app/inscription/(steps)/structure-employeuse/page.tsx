@@ -23,8 +23,6 @@ const Page = async ({
 }) => {
   const user = await getAuthenticatedSessionUser()
 
-  console.log('USER', user)
-
   if (!profil) {
     redirect('/')
   }

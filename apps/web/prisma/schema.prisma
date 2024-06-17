@@ -89,10 +89,11 @@ model User {
   lastLogin DateTime? @map("last_login")
 
   // Flux d’inscription
-  profilInscription ProfilInscription? @map("profil_inscription")
-  structureEmployeuseRenseignee DateTime? @map("structure_employeuse_renseignee")
-  lieuxActiviteRenseignes DateTime? @map("lieux_activite_renseignes")
-  inscriptionValidee DateTime? @map("inscription_validee")
+  profilInscription                   ProfilInscription? @map("profil_inscription")
+  checkConseillerNumeriqueInscription DateTime?          @map("check_conseiller_numerique_inscription")
+  structureEmployeuseRenseignee       DateTime?          @map("structure_employeuse_renseignee")
+  lieuxActiviteRenseignes             DateTime?          @map("lieux_activite_renseignes")
+  inscriptionValidee                  DateTime?          @map("inscription_validee")
 
   uploads Upload[]
 
@@ -194,8 +195,8 @@ model Mediateur {
   // Un médiateur peut être un conseiller numérique
   conseillerNumerique ConseillerNumerique?
 
-  creation     DateTime  @default(now())
-  modification DateTime  @default(now())
+  creation     DateTime @default(now())
+  modification DateTime @default(now())
   // Cannot soft delete as we need to keep userId and conseillerNumerique.mediateurId unique
 
   coordinations MediateurCoordonne[]
@@ -225,8 +226,8 @@ model Coordinateur {
   userId String @unique @map("user_id") @db.Uuid
   user   User   @relation(fields: [userId], references: [id])
 
-  creation     DateTime  @default(now())
-  modification DateTime  @default(now())
+  creation     DateTime @default(now())
+  modification DateTime @default(now())
   // Cannot soft delete as we need to keep userId and conseillerNumeriqueId unique
 
   mediateursCoordonnes MediateurCoordonne[]
@@ -257,7 +258,7 @@ model Structure {
   id String @id @default(uuid()) @db.Uuid
 
   structureCartographieNationaleId String?                         @unique @map("id_cartographie_nationale")
-  structureCartographieNationale   StructureCartographieNationale? @relation(fields: [structureCartographieNationaleId], references: [id])
+  structureCartographieNationale   StructureCartographieNationale? @relation(fields: [structureCartographieNationaleId], references: [id], onDelete: SetNull)
 
   // Timestamps internes à coop-mediation-numerique
   creation     DateTime  @default(now())
@@ -274,16 +275,16 @@ model Structure {
 
   typologie String?
 
-  adresse String
-  commune String
-  codePostal String @map("code_postal") @db.VarChar(5)
-  codeInsee String? @map("code_insee") @db.VarChar(5)
+  adresse           String
+  commune           String
+  codePostal        String  @map("code_postal") @db.VarChar(5)
+  codeInsee         String? @map("code_insee") @db.VarChar(5)
   complementAdresse String? @map("complement_adresse")
-  latitude Float?
-  longitude Float?
+  latitude          Float?
+  longitude         Float?
 
   siret String?
-  rna String?
+  rna   String?
 
   visiblePourCartographieNationale Boolean @default(false) @map("visible_pour_cartographie_nationale")
 
@@ -320,6 +321,13 @@ model StructureCartographieNationale {
 
   // # Relations
   structure Structure?
+
+  // # Id extractions
+  // L'id de structure carto nationale concatene les ids de différentes sources. On les stocke ici pour faciliter les lookups.
+  conseillerNumeriquePermanenceIds String[] @default([]) @map("conseiller_numerique_permanence_ids")
+  coopId                           String?  @map("coop_id")
+  // In some rare edge cases, we have multiple coopIds, that indicate duplicates in our structures, we store them here for deduplication checks
+  coopIds                          String[] @default([]) @map("coop_ids")
 
   // # Champs cartographie nationale
 
@@ -416,6 +424,8 @@ model StructureCartographieNationale {
   // URL vers le site de prise de rendez-vous en ligne
   priseRdv String? @map("prise_rdv")
 
+  // Index conseillerNumeriqueId, aidantsConnectId, and coopIds array values for fast lookups
+  @@index([coopId])
   @@map("structures_cartographie_nationale")
 }
 

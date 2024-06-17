@@ -2,12 +2,13 @@ import { type Prisma } from '@prisma/client'
 import { chunk } from 'lodash'
 import { prismaClient } from '@app/web/prismaClient'
 import { output } from '@app/web/jobs/output'
-import { LieuStandardMediationNumerique } from '@app/web/data/standard-mediation-numerique/LieuStandardMediationNumerique'
-import { UpdateStructuresCartographieNationaleJob } from '@app/web/jobs/update-structures-cartographie-nationale/updateStructuresCartographieNationaleJob'
+import type { LieuStandardMediationNumerique } from '@app/web/data/standard-mediation-numerique/LieuStandardMediationNumerique'
+import type { UpdateStructuresCartographieNationaleJob } from '@app/web/jobs/update-structures-cartographie-nationale/updateStructuresCartographieNationaleJob'
 import {
   downloadCartographieNationaleStructures,
   getStructuresCartographieNationaleFromLocalFile,
 } from '@app/web/data/cartographie-nationale/cartographieNationaleStructures'
+import { extractIdsFromCartographieNationaleStructure } from '@app/web/data/cartographie-nationale/extractIdsFromCartographieNationaleStructure'
 
 const structureCartographieNationaleToPrismaModel = ({
   id,
@@ -75,6 +76,7 @@ const structureCartographieNationaleToPrismaModel = ({
   priseRdv: prise_rdv,
   publicsSpecifiquementAdresses: publics_specifiquement_adresses,
   structureParente: structure_parente,
+  ...extractIdsFromCartographieNationaleStructure({ id }),
 })
 
 export const executeUpdateStructuresCartographieNationale = async (
