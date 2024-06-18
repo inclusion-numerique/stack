@@ -1,44 +1,63 @@
 import React, { ReactNode } from 'react'
-import { Control, Controller, FieldValues } from 'react-hook-form'
+import { Control, Controller, FieldValues, PathValue } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
 import classNames from 'classnames'
-import type { PropsValue } from 'react-select'
+import type { GroupBase } from 'react-select'
 import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 import CustomSelect, {
   CustomSelectProps,
 } from '@app/ui/components/CustomSelect/CustomSelect'
 
-export type CustomSelectFormFieldProps<T extends FieldValues> = {
+export type CustomSelectFormFieldProps<
+  FormData extends FieldValues,
+  Option = { label: string; value: string },
+  IsMulti extends boolean = false,
+  Group extends GroupBase<Option> = GroupBase<Option>,
+  PathProperty extends FieldPath<FormData> = FieldPath<FormData>,
+> = {
   label: ReactNode
-  path: FieldPath<T>
-  control: Control<T>
+  path: PathProperty
+  control: Control<FormData>
   disabled?: boolean
   hint?: string
   valid?: string
   asterisk?: boolean
   info?: ReactNode
-} & Omit<CustomSelectProps, 'onChange' | 'name' | 'onBlur'>
+  optionToFormValue?: (option: Option) => PathValue<FormData, PathProperty>
+} & Omit<
+  CustomSelectProps<Option, IsMulti, Group>,
+  'onChange' | 'name' | 'onBlur'
+>
 
-export type CustomSelectOptions = CustomSelectProps['options']
-
-/**
- * TODO For now only works with single value, not isMulti
- */
-const valuePropertyFromValue = (
-  value: string,
-  options: CustomSelectOptions,
-): PropsValue<{ label: string; value: string }> | undefined => {
-  if (!options) {
-    return
+const defaultGetOptionValue = (option: unknown) => {
+  if (!option || !Object.prototype.hasOwnProperty.call(option, 'value')) {
+    throw new Error(
+      'CustomSelect option has no "value" property. If you are using a custom Option type, pass the correct "getOptionValue" prop to CustomSelect.',
+    )
   }
 
-  return options.find(
-    (option) => (option as { value: string }).value === value,
-  ) as PropsValue<{ label: string; value: string }> | undefined
+  return (option as { value: string }).value
 }
 
-const CustomSelectFormField = <T extends FieldValues>({
+const defaultGetOptionLabel = (option: unknown) => {
+  if (!option || !Object.prototype.hasOwnProperty.call(option, 'label')) {
+    throw new Error(
+      'CustomSelect option has no "label" property. If you are using a custom Option type, pass the correct "getOptionLabel" prop to CustomSelect.',
+    )
+  }
+
+  return (option as { label: string }).label
+}
+
+const defaultOptionToFormValue = defaultGetOptionValue
+
+const CustomSelectFormField = <
+  FormData extends FieldValues = FieldValues,
+  Option = { label: string; value: string },
+  IsMulti extends boolean = false,
+  Group extends GroupBase<Option> = GroupBase<Option>,
+>({
   label,
   path,
   control,
@@ -48,9 +67,18 @@ const CustomSelectFormField = <T extends FieldValues>({
   valid,
   asterisk,
   info,
+  getOptionLabel: getOptionLabelProperty,
+  getOptionValue: getOptionValueProperty,
+  optionToFormValue: optionToFormValueProperty,
   ...customSelectProps
-}: UiComponentProps & CustomSelectFormFieldProps<T>) => {
+}: UiComponentProps &
+  CustomSelectFormFieldProps<FormData, Option, IsMulti, Group>) => {
   const id = `custom-select-form-field__${path}`
+
+  const getOptionValue = getOptionValueProperty ?? defaultGetOptionValue
+  const getOptionLabel = getOptionLabelProperty ?? defaultGetOptionLabel
+  const optionToFormValue =
+    optionToFormValueProperty ?? defaultOptionToFormValue
 
   return (
     <Controller
@@ -66,13 +94,24 @@ const CustomSelectFormField = <T extends FieldValues>({
         } else if (valid && isDirty && !invalid) {
           ariaDescribedBy = `${id}__valid`
         }
-        const onChangeProperty: CustomSelectProps['onChange'] = (newValue) => {
-          const changeValue =
-            (newValue as null | { value: string })?.value ?? ''
-          onChange(changeValue)
+        const onChangeProperty: CustomSelectProps<
+          Option,
+          IsMulti,
+          Group
+        >['onChange'] = (option) => {
+          const newValue = Array.isArray(option)
+            ? option.map(optionToFormValue)
+            : optionToFormValue(option as Option)
+
+          console.log('ON CHANGE INPUT', {
+            option,
+            value,
+            newValue,
+          })
+          onChange(newValue)
         }
 
-        const valueProperty = valuePropertyFromValue(value, options)
+        // const valueProperty = valuePropertyFromValue(value, options)
 
         return (
           <div
@@ -90,7 +129,12 @@ const CustomSelectFormField = <T extends FieldValues>({
               {...customSelectProps}
               {...fieldProps}
               onChange={onChangeProperty}
-              value={valueProperty}
+              value={
+                // value
+                undefined
+              }
+              getOptionValue={getOptionValue}
+              getOptionLabel={getOptionLabel}
               options={options}
               isDisabled={disabled}
               aria-describedby={ariaDescribedBy}
