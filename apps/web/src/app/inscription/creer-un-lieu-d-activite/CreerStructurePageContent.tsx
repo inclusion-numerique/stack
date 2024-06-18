@@ -68,7 +68,7 @@ const CreerStructurePageContent = ({
   <div className="fr-container" style={{ flex: 1 }}>
     <div className="fr-flex">
       <CreateStructureSideMenu />
-      <div className="fr-container fr-container--narrow fr-ml-0">
+      <div className="fr-container fr-container--narrow fr-ml-0 fr-mb-30v">
         <Button
           priority="tertiary no outline"
           size="small"
@@ -89,8 +89,6 @@ const CreerStructurePageContent = ({
           lieuActiviteMediateurId={lieuActiviteMediateurId}
           backLinkHref={backLinkHref}
         />
-
-        <div style={{ height: 2000 }} />
       </div>
     </div>
   </div>

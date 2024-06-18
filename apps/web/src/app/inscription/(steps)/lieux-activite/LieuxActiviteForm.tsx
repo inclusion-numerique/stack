@@ -157,7 +157,11 @@ const LieuxActiviteForm = ({
     } else {
       options.push(
         {
-          label: 'Vous ne trouvez pas votre structure ?',
+          label: (
+            <div style={{ marginBottom: -16 }}>
+              Vous ne trouvez pas votre lieu d’activité ?
+            </div>
+          ),
           value: '',
         },
         {
@@ -170,7 +174,7 @@ const LieuxActiviteForm = ({
                   href: '/inscription/creer-un-lieu-d-activite',
                 }}
               >
-                Créer une structure
+                Créer un lieu d’activité
               </Button>
             </div>
           ),
@@ -210,16 +214,18 @@ const LieuxActiviteForm = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <CustomSelectFormField
-        key={customSelectKey}
-        label="Ajouter un lieu d’activité :"
-        control={control}
-        path="addLieuActiviteCartographieNationaleId"
-        placeholder="Rechercher"
-        loadOptions={loadOptions}
-        isOptionDisabled={(option) => option.value === ''}
-        cacheOptions
-      />
+      <div className="fr-background-alt--blue-france fr-pt-6v fr-pb-4v fr-px-8v fr-border-radius--8">
+        <CustomSelectFormField
+          key={customSelectKey}
+          label="Ajouter un lieu d’activité :"
+          control={control}
+          path="addLieuActiviteCartographieNationaleId"
+          placeholder="Rechercher"
+          loadOptions={loadOptions}
+          isOptionDisabled={(option) => option.value === ''}
+          cacheOptions
+        />
+      </div>
       {errors.lieuxActivite?.root || errors.lieuxActivite?.message ? (
         <p className="fr-text-default--error fr-mb-0">
           {errors.lieuxActivite.root?.message ?? errors.lieuxActivite.message}

@@ -157,7 +157,7 @@ const Page = async () => {
         <Button
           priority="tertiary no outline"
           linkProps={{
-            href: `/inscription/structure-employeuse-lieu-activite`,
+            href: `/inscription/lieux-activite`,
           }}
           iconId="fr-icon-edit-line"
           iconPosition="right"

@@ -1,5 +1,4 @@
-export const apiAdresseEndpoint =
-  'https://api-adresse.data.gouv.fr/search/?q=4%20B%20Rue%20Burais%2069100%20Villeurbanne'
+export const apiAdresseEndpoint = 'https://api-adresse.data.gouv.fr/search'
 
 export type FeatureCollection = {
   type: 'FeatureCollection' // Type de la collection de fonctionnalités
@@ -39,16 +38,32 @@ export type Properties = {
   street: string // Nom de la rue
 }
 
-export const searchAdresse = async (
+export type SearchAdresseOptions = {
+  limit?: number
+  autocomplete?: boolean
+}
+
+export const searchAdresses = async (
   adresse: string,
-): Promise<Feature | null> => {
+  options?: SearchAdresseOptions,
+): Promise<Feature[]> => {
   const url = new URL(apiAdresseEndpoint)
+
+  const limit = options?.limit ?? 1
+  const autocomplete = options?.autocomplete ?? false
+
   url.searchParams.append('q', adresse)
-  url.searchParams.append('limit', '1')
-  url.searchParams.append('autocomplete', '0')
+  url.searchParams.append('limit', limit.toString(10))
+  url.searchParams.append('autocomplete', autocomplete ? '1' : '0')
 
   const response = await fetch(url.toString())
   const body = (await response.json()) as FeatureCollection
 
-  return body.features.at(0) ?? null
+  return body.features
 }
+
+export const searchAdresse = (adresse: string): Promise<Feature | null> =>
+  searchAdresses(adresse, {
+    autocomplete: false,
+    limit: 1,
+  }).then((features) => features[0] ?? null)

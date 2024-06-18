@@ -25,12 +25,41 @@ export const structuresRouter = router({
       }),
     ),
 
-  create: protectedProcedure
-    .input(CreerStructureValidation)
-    .mutation(
-      async ({
-        input: {
-          lieuActiviteMediateurId,
+  create: protectedProcedure.input(CreerStructureValidation).mutation(
+    async ({
+      input: {
+        lieuActiviteMediateurId,
+        nom,
+        typologie,
+        adresseBan: {
+          longitude,
+          latitude,
+          codeInsee,
+          nom: adresse,
+          commune,
+          codePostal,
+        },
+        complementAdresse,
+        siret,
+        rna,
+        visiblePourCartographieNationale,
+        presentationResume,
+        presentationDetail,
+        siteWeb,
+        accessibilite,
+        horaires,
+        thematiques,
+        typesAccompagnement,
+      },
+      ctx: { user },
+    }) => {
+      const stopwatch = createStopwatch()
+
+      const id = v4()
+
+      const created = await prismaClient.structure.create({
+        data: {
+          id,
           nom,
           typologie,
           adresse,
@@ -39,69 +68,46 @@ export const structuresRouter = router({
           complementAdresse,
           siret,
           rna,
-          visiblePourCartographieNationale,
+          longitude,
+          latitude,
+          codeInsee,
+          visiblePourCartographieNationale:
+            visiblePourCartographieNationale ?? false,
           presentationResume,
           presentationDetail,
           siteWeb,
           accessibilite,
           horaires,
-          thematiques,
-          typesAccompagnement,
+          thematiques: thematiques ?? [],
+          typesAccompagnement: typesAccompagnement ?? [],
+          mediateursEnActivite: lieuActiviteMediateurId
+            ? {
+                create: {
+                  id: v4(),
+                  mediateurId: lieuActiviteMediateurId,
+                },
+              }
+            : undefined,
         },
-        ctx: { user },
-      }) => {
-        const stopwatch = createStopwatch()
+      })
 
-        const id = v4()
-
-        const created = await prismaClient.structure.create({
+      await prismaClient.mutation.create({
+        data: {
+          nom: 'CreerStructure',
+          userId: user.id,
+          duration: stopwatch.stop().duration,
           data: {
             id,
             nom,
             typologie,
-            adresse,
-            commune,
-            codePostal,
-            complementAdresse,
             siret,
             rna,
-            visiblePourCartographieNationale:
-              visiblePourCartographieNationale ?? false,
-            presentationResume,
-            presentationDetail,
-            siteWeb,
-            accessibilite,
-            horaires,
-            thematiques: thematiques ?? [],
-            typesAccompagnement: typesAccompagnement ?? [],
-            mediateursEnActivite: lieuActiviteMediateurId
-              ? {
-                  create: {
-                    id: v4(),
-                    mediateurId: lieuActiviteMediateurId,
-                  },
-                }
-              : undefined,
+            codePostal,
           },
-        })
+        },
+      })
 
-        await prismaClient.mutation.create({
-          data: {
-            nom: 'CreerStructure',
-            userId: user.id,
-            duration: stopwatch.stop().duration,
-            data: {
-              id,
-              nom,
-              typologie,
-              siret,
-              rna,
-              codePostal,
-            },
-          },
-        })
-
-        return created
-      },
-    ),
+      return created
+    },
+  ),
 })

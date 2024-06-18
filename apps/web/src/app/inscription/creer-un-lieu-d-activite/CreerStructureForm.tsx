@@ -23,6 +23,7 @@ import {
 } from '@app/web/app/structure/CreerStructureValidation'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { validateValidRnaDigits } from '@app/web/rna/rnaValidation'
+import AdresseBanFormField from '@app/web/components/form/AdresseBanFormField'
 
 const CreerStructureForm = ({
   lieuActiviteMediateurId,
@@ -105,42 +106,16 @@ const CreerStructureForm = ({
             disabled={isLoading}
             asterisk
           />
-          <SelectFormField
-            control={control}
-            path="typologie"
-            label="Typologie de la structure"
-            disabled={isLoading}
-            asterisk
-            options={typologieStructureOptions}
-            placeholder=" "
-          />
-          <InputFormField
-            control={control}
-            path="adresse"
-            label="Adresse"
-            disabled={isLoading}
-            asterisk
-          />
+
+          <AdresseBanFormField control={control} />
+
           <InputFormField
             control={control}
             path="complementAdresse"
             label="Complément d’adresse"
             disabled={isLoading}
           />
-          <InputFormField
-            control={control}
-            path="codePostal"
-            label="Code postal"
-            disabled={isLoading}
-            asterisk
-          />
-          <InputFormField
-            control={control}
-            path="commune"
-            label="Commune"
-            disabled={isLoading}
-            asterisk
-          />
+
           <InputFormField
             control={control}
             path="siret"
@@ -214,7 +189,17 @@ const CreerStructureForm = ({
               </p>
             </div>
             <hr className="fr-separator" />
-            <div className="fr-p-8v wip">🚧</div>
+            <div className="fr-p-8v wip">
+              🚧
+              <SelectFormField
+                control={control}
+                path="typologie"
+                label="Typologie de la structure"
+                disabled={isLoading}
+                options={typologieStructureOptions}
+                placeholder=" "
+              />
+            </div>
             <hr className="fr-separator" />
             <div className="fr-p-8v">
               <IconInSquare iconId="fr-icon-heart-line" />

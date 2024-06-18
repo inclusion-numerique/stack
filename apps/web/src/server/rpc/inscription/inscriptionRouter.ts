@@ -12,6 +12,7 @@ import { searchAdresse } from '@app/web/external-apis/apiAdresse'
 import { StructureCreationDataWithSiret } from '@app/web/app/structure/StructureValidation'
 import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 import { cartoStructureToStructure } from '@app/web/structure/cartoStructureToStructure'
+import { banFeatureToAdresseBanData } from '@app/web/external-apis/ban/banFeatureToAdresseBanData'
 
 const inscriptionGuard = (
   targetUserId: string,
@@ -66,18 +67,25 @@ const getOrCreateStructureEmployeuse = async (
     })
   }
 
+  const {
+    commune,
+    codePostal,
+    longitude,
+    latitude,
+    nom: adresse,
+  } = banFeatureToAdresseBanData(adresseResult)
+
   return prismaClient.structure.create({
     data: {
       id: v4(),
       siret: structureEmployeuse.siret,
       codeInsee: structureEmployeuse.codeInsee,
       nom: structureEmployeuse.nom,
-      adresse:
-        `${adresseResult.properties.housenumber} ${adresseResult.properties.street}`.trim(),
-      commune: adresseResult.properties.city,
-      codePostal: adresseResult.properties.postcode,
-      longitude: adresseResult.geometry.coordinates[0],
-      latitude: adresseResult.geometry.coordinates[1],
+      adresse,
+      commune,
+      codePostal,
+      longitude,
+      latitude,
     },
   })
 }
