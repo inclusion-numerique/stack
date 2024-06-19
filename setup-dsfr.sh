@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# This script is a cross platform custom installation of dsfr assets to avoid including them in webpack build for performance reasons.
+
+echo "Copying DSFR assets..."
+
 # Ensure TO is set
 if [ -z "$TO" ]; then
   echo "Error: TO variable is not set."
@@ -23,12 +27,14 @@ mkdir -p "$TO/artwork"
 mkdir -p "$TO/fonts"
 
 # Copy files
-cp "$FROM/dsfr.module.min.js" "$TO/"
-cp "$FROM/dsfr.module.min.js.map" "$TO/"
-cp "$FROM/dsfr.nomodule.min.js" "$TO/"
-cp "$FROM/dsfr.nomodule.min.js.map" "$TO/"
-cp "$FROM/dsfr.min.css" "$TO/"
-cp "$FROM/utility/utility.min.css" "$TO/utility/"
-cp -R "$FROM/icons/." "$TO/icons/"
-cp -R "$FROM/artwork/." "$TO/artwork/"
-cp -R "$FROM/fonts/." "$TO/fonts/"
+cp "$FROM/dsfr.module.min.js" "$TO/" || { echo "Failed to copy dsfr.module.min.js"; exit 1; }
+cp "$FROM/dsfr.module.min.js.map" "$TO/" || { echo "Failed to copy dsfr.module.min.js.map"; exit 1; }
+cp "$FROM/dsfr.nomodule.min.js" "$TO/" || { echo "Failed to copy dsfr.nomodule.min.js"; exit 1; }
+cp "$FROM/dsfr.nomodule.min.js.map" "$TO/" || { echo "Failed to copy dsfr.nomodule.min.js.map"; exit 1; }
+cp "$FROM/dsfr.min.css" "$TO/" || { echo "Failed to copy dsfr.min.css"; exit 1; }
+cp "$FROM/utility/utility.min.css" "$TO/utility/" || { echo "Failed to copy utility.min.css"; exit 1; }
+cp -R "$FROM/icons/." "$TO/icons/" || { echo "Failed to copy icons"; exit 1; }
+cp -R "$FROM/artwork/." "$TO/artwork/" || { echo "Failed to copy artwork"; exit 1; }
+cp -R "$FROM/fonts/." "$TO/fonts/" || { echo "Failed to copy fonts"; exit 1; }
+
+echo "DSFR assets copied successfully."
