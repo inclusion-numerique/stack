@@ -15,22 +15,22 @@ const HomeCategories = async () => {
       <div className="fr-col-md-6 fr-col-12">
         <CategoryCard
           category="Culture numérique"
-          resourcesCount={categoriesCount[1].resourcesCount}
-          thematicCount={categoriesCount[1].themes.length}
-        />
-      </div>
-      <div className="fr-col-md-6 fr-col-12">
-        <CategoryCard
-          category="Communs & souveraineté"
           resourcesCount={categoriesCount[2].resourcesCount}
           thematicCount={categoriesCount[2].themes.length}
         />
       </div>
       <div className="fr-col-md-6 fr-col-12">
         <CategoryCard
-          category="Numérique & environnement"
+          category="Communs & souveraineté"
           resourcesCount={categoriesCount[3].resourcesCount}
           thematicCount={categoriesCount[3].themes.length}
+        />
+      </div>
+      <div className="fr-col-md-6 fr-col-12">
+        <CategoryCard
+          category="Numérique & environnement"
+          resourcesCount={categoriesCount[1].resourcesCount}
+          thematicCount={categoriesCount[1].themes.length}
         />
       </div>
     </div>

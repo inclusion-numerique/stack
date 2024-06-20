@@ -19,25 +19,25 @@ const CATEGORY_VARIANTS: Record<Category, CategoryStyle> = {
     icon: 'ri-service-fill',
     color: 'fr-text-label--green-archipel',
     background: 'fr-background-alt--green-archipel',
-    href: '',
+    href: '/inclusion-et-competences-numeriques',
   },
   'Culture numérique': {
     icon: 'ri-stack-fill',
     color: 'fr-text-label--pink-tuile',
     background: 'fr-background-alt--pink-tuile',
-    href: '',
+    href: '/culture-numerique',
   },
   'Communs & souveraineté': {
     icon: 'ri-government-fill',
     color: 'fr-text-label--yellow-tournesol',
     background: 'fr-background-alt--yellow-tournesol',
-    href: '',
+    href: '/communs-et-souverainete',
   },
   'Numérique & environnement': {
     icon: 'ri-leaf-fill',
     color: 'fr-text-label--green-bourgeon',
     background: 'fr-background-alt--green-bourgeon',
-    href: '',
+    href: '/numerique-et-environnement',
   },
 }
 
