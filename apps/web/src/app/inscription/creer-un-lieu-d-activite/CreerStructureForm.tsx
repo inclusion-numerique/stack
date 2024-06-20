@@ -1,6 +1,6 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
+import { DefaultValues, useForm } from 'react-hook-form'
 import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDisclamer'
 import { zodResolver } from '@hookform/resolvers/zod'
 import InputFormField from '@app/ui/components/Form/InputFormField'
@@ -20,21 +20,33 @@ import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodV
 import {
   CreerStructureData,
   CreerStructureValidation,
+  descriptionMaxLength,
 } from '@app/web/app/structure/CreerStructureValidation'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { validateValidRnaDigits } from '@app/web/rna/rnaValidation'
 import AdresseBanFormField from '@app/web/components/form/AdresseBanFormField'
+import { useEffect } from 'react'
+import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormField'
+import ToggleFormField from '@app/ui/components/Form/ToggleFormField'
+
+const descriptionInfo = (description?: string | null) =>
+  `${description?.length ?? 0}/${descriptionMaxLength} caractères`
 
 const CreerStructureForm = ({
   lieuActiviteMediateurId,
   backLinkHref,
+  onVisiblePourCartographieNationaleChange,
+  defaultValues,
 }: {
   lieuActiviteMediateurId?: string
   backLinkHref: string
+  onVisiblePourCartographieNationaleChange?: (visible: boolean) => void
+  defaultValues?: DefaultValues<CreerStructureData>
 }) => {
   const form = useForm<CreerStructureData>({
     resolver: zodResolver(CreerStructureValidation),
     defaultValues: {
+      ...defaultValues,
       lieuActiviteMediateurId,
       visiblePourCartographieNationale: false,
     },
@@ -88,6 +100,15 @@ const CreerStructureForm = ({
     'visiblePourCartographieNationale',
   )
 
+  const nom = form.watch('nom')
+
+  useEffect(() => {
+    onVisiblePourCartographieNationaleChange?.(visiblePourCartographieNationale)
+  }, [
+    onVisiblePourCartographieNationaleChange,
+    visiblePourCartographieNationale,
+  ])
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="fr-border fr-border-radius--8" id="informations">
@@ -123,7 +144,7 @@ const CreerStructureForm = ({
             disabled={isLoading}
             info={
               <>
-                <SiretInputInfo className="fr-mb-0" />
+                <SiretInputInfo className="fr-mb-0" searchTerm={nom} />
                 <RnaInputInfo />
               </>
             }
@@ -165,18 +186,19 @@ const CreerStructureForm = ({
             En savoir plus sur la cartographie
           </Link>
         </div>
-        <hr className="fr-separator" />
+        <hr className="fr-separator fr-separator-1px" />
         <div className="fr-pt-8v fr-pb-6v fr-px-8v">
-          <CheckboxFormField
+          <ToggleFormField
             control={control}
             path="visiblePourCartographieNationale"
             disabled={isLoading}
             label="Rendre mon lieu d’activité visible sur la cartographie"
+            labelPosition="left"
           />
         </div>
         {visiblePourCartographieNationale && (
           <>
-            <hr className="fr-separator" />
+            <hr className="fr-separator fr-separator-1px" id="accueil-public" />
             <div className="fr-p-8v">
               <IconInSquare iconId="fr-icon-map-pin-2-line" />
               <h3 className="fr-h4 fr-mt-4v fr-mb-1v fr-text-title--blue-france">
@@ -188,9 +210,15 @@ const CreerStructureForm = ({
                 public.
               </p>
             </div>
-            <hr className="fr-separator" />
-            <div className="fr-p-8v wip">
-              🚧
+            <hr className="fr-separator fr-separator-1px" id="description" />
+            <div className="fr-p-8v">
+              <h4 className="fr-h6 fr-mb-1v">Description du lieu</h4>
+              <p className="fr-text--sm fr-mb-0">
+                Décrivez ici le lieu et les activités qu’il propose.
+              </p>
+              <p className="fr-my-8v fr-text--sm fr-text-mention--grey">
+                Ces champs sont optionnels
+              </p>
               <SelectFormField
                 control={control}
                 path="typologie"
@@ -199,8 +227,85 @@ const CreerStructureForm = ({
                 options={typologieStructureOptions}
                 placeholder=" "
               />
+              <InputFormField
+                type="textarea"
+                label="Résumé de l’activité du lieu"
+                hint="Ce résumé permet d’introduire brièvement l’activité du lieu."
+                control={control}
+                rows={3}
+                info={descriptionInfo}
+                path="presentationResume"
+              />
+              <RichTextFormField
+                form={form}
+                asterisk
+                path="presentationDetail"
+                disabled={isLoading}
+                label="Description complète du lieu"
+              />
+              <hr
+                className="fr-separator fr-separator-8v"
+                id="informations-pratiques"
+              />
+              <h4 className="fr-h6 fr-mt-4v fr-mb-1v">
+                Informations pratiques
+              </h4>
+              <p className="fr-text--sm fr-mb-0">
+                Horaires, accès et site internet du lieu.
+              </p>
+              <p className="fr-my-8v fr-text--sm fr-text-mention--grey">
+                Ces champs sont optionnels
+              </p>
+              <InputFormField
+                control={control}
+                path="horaires"
+                label="Site internet du lieu"
+                hint="Exemple: https://mastructure.fr"
+                disabled={isLoading}
+              />
+              <CheckboxFormField
+                className="fr-mt-6v fr-mb-2v"
+                control={control}
+                path="lieuItinerant"
+                label="Lieu d’activité itinérant (exemple : bus)"
+              />
+
+              <InputFormField
+                control={control}
+                path="accessibilite"
+                label="Accessibilité"
+                hint={
+                  <>
+                    Afin de renseigner les informations d’accessibilité sur la
+                    structure, retrouvez-la via la plateforme{' '}
+                    <Link
+                      href="https://acceslibre.beta.gouv.fr"
+                      target="_blank"
+                      className="fr-link fr-link--xs"
+                    >
+                      accès libre
+                    </Link>{' '}
+                    et copiez l’url dans le champs ci-dessous.
+                  </>
+                }
+                placeholder="https://acceslibre.beta.gouv.fr/..."
+                disabled={isLoading}
+              />
+              <hr
+                className="fr-separator fr-separator-8v"
+                id="informations-pratiques"
+              />
+              <p className="wip-outline">Horaires d’ouverture du lieu</p>
+              <p>🚧</p>
+              <InputFormField
+                control={control}
+                path="horaires"
+                label="Détail horaires"
+                hint="Vous pouvez renseigner ici des informations spécifiques concernant les horaires."
+                disabled={isLoading}
+              />
             </div>
-            <hr className="fr-separator" />
+            <hr className="fr-separator fr-separator-1px" />
             <div className="fr-p-8v">
               <IconInSquare iconId="fr-icon-heart-line" />
               <h3 className="fr-h4 fr-mt-4v fr-mb-1v fr-text-title--blue-france">
@@ -212,7 +317,7 @@ const CreerStructureForm = ({
                 bénéficiaires.
               </p>
             </div>
-            <hr className="fr-separator" />
+            <hr className="fr-separator fr-separator-1px" />
             <div className="fr-p-8v wip">🚧</div>
           </>
         )}

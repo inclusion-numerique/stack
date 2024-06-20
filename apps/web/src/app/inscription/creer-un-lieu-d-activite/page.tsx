@@ -9,7 +9,13 @@ export const metadata = {
 }
 
 // next js query params "profil": ProfilInscription
-const Page = async () => {
+const Page = async ({
+  searchParams: { nom },
+}: {
+  searchParams: {
+    nom?: string
+  }
+}) => {
   const user = await getAuthenticatedSessionUser()
 
   if (!user.profilInscription || !user.mediateur) {
@@ -29,6 +35,7 @@ const Page = async () => {
         backLinkTitle="Retour aux lieux d’activité"
         lieuActiviteMediateurId={user.mediateur.id}
         title="Lieu d’activité"
+        defaultValues={{ nom }}
       />
     </div>
   )

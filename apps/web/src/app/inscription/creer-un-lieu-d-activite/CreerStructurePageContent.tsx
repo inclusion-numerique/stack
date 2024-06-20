@@ -1,74 +1,49 @@
+'use client'
+
 import Button from '@codegouvfr/react-dsfr/Button'
-import React from 'react'
-import FormSideMenu from '@app/web/components/form/FormSideMenu'
+import React, { useState } from 'react'
 import CreerStructureForm from '@app/web/app/inscription/creer-un-lieu-d-activite/CreerStructureForm'
 import IconInSquare from '@app/web/components/IconInSquare'
-
-const CreateStructureSideMenu = () => (
-  <div className="fr-hidden fr-unhidden-lg fr-mt-30v fr-pt-23v">
-    <div className="fr-width-full">
-      <FormSideMenu
-        items={[
-          {
-            text: 'Informations',
-            linkProps: { href: `#informations` },
-          },
-          {
-            text: 'Lieu accueillant du public',
-            expandedByDefault: true,
-            items: [
-              {
-                text: 'Description de l’activité du lieu',
-                linkProps: { href: `#description` },
-              },
-              {
-                text: 'Informations pratiques',
-                linkProps: { href: `#informations-pratiques` },
-              },
-            ],
-          },
-          {
-            text: 'Services d’inclusion numérique',
-            expandedByDefault: true,
-            items: [
-              {
-                text: 'Services & types d’accompagnement',
-                linkProps: { href: `#services` },
-              },
-              {
-                text: 'Modalités d’accès au service',
-                linkProps: { href: `#acces` },
-              },
-              {
-                text: 'Types de publics accueillis',
-                linkProps: { href: `#publics` },
-              },
-            ],
-          },
-        ]}
-        burgerMenuButtonText="Sections"
-        contentId="form"
-        sticky
-      />
-    </div>
-  </div>
-)
+import { DefaultValues } from 'react-hook-form'
+import { CreerStructureData } from '@app/web/app/structure/CreerStructureValidation'
+import CreerStructureSideMenu from '@app/web/app/inscription/creer-un-lieu-d-activite/CreerStructureSideMenu'
+import styles from './CreerStructurePageContent.module.css'
+import classNames from 'classnames'
 
 const CreerStructurePageContent = ({
   backLinkHref,
   backLinkTitle,
   lieuActiviteMediateurId,
   title,
+  defaultValues,
 }: {
   backLinkHref: string
   backLinkTitle?: string
   lieuActiviteMediateurId?: string
   title: string
-}) => (
-  <div className="fr-container" style={{ flex: 1 }}>
-    <div className="fr-flex">
-      <CreateStructureSideMenu />
-      <div className="fr-container fr-container--narrow fr-ml-0 fr-mb-30v">
+  defaultValues?: DefaultValues<CreerStructureData>
+}) => {
+  const [showSideMenu, setShowSideMenu] = useState(false)
+
+  return (
+    <div
+      className={classNames('fr-container', styles.container)}
+      style={{ flex: 1 }}
+    >
+      <div
+        className={classNames(
+          'fr-hidden fr-unhidden-lg fr-mt-30v fr-pt-23v',
+          styles.sideNavContainer,
+        )}
+      >
+        {showSideMenu ? <CreerStructureSideMenu /> : null}
+      </div>
+      <div
+        className={classNames(
+          'fr-container fr-container--narrow fr-ml-0 fr-mb-30v',
+          styles.pageContainer,
+        )}
+      >
         <Button
           priority="tertiary no outline"
           size="small"
@@ -88,10 +63,12 @@ const CreerStructurePageContent = ({
         <CreerStructureForm
           lieuActiviteMediateurId={lieuActiviteMediateurId}
           backLinkHref={backLinkHref}
+          onVisiblePourCartographieNationaleChange={setShowSideMenu}
+          defaultValues={defaultValues}
         />
       </div>
     </div>
-  </div>
-)
+  )
+}
 
 export default CreerStructurePageContent
