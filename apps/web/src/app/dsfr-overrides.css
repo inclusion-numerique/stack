@@ -312,6 +312,15 @@
     }
 }
 
+/* Toggle */
+
+/* Fix broken status text */
+.fr-toggle {
+    .fr-toggle__label[data-fr-unchecked-label][data-fr-checked-label]:before, .fr-toggle__label[data-fr-unchecked-label][data-fr-checked-label]:before {
+        white-space: nowrap;
+    }
+}
+
 /* Tabs */
 
 /* Remove border */
