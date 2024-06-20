@@ -1,14 +1,13 @@
 /* eslint react/destructuring-assignment: 0 */
 
 import React, { ReactNode } from 'react'
-import type { GroupBase, ThemeConfig } from 'react-select'
+import type { GroupBase, SelectComponentsConfig, ThemeConfig } from 'react-select'
 import Select from 'react-select'
 import type { AsyncProps } from 'react-select/async'
 import AsyncSelect from 'react-select/async'
 import { Spinner } from '@app/web/ui/Spinner'
 import styles from './CustomSelect.module.css'
 import dynamic from 'next/dynamic'
-import { SelectComponentsConfig } from 'react-select/dist/declarations/src/components'
 
 export type CustomSelectProps<
   Option = { label: string; value: string },
@@ -67,10 +66,7 @@ const DynamicValueContainer = dynamic(
   {
     ssr: false,
     loading: () => (
-      <span
-        className="fr-width-full fr-border-radius--8"
-        style={{ height: 42 }}
-      />
+      <span className="fr-border-radius--8" style={{ width: 16, height: 42 }} />
     ),
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
