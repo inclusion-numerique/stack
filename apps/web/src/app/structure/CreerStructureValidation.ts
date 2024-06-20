@@ -56,6 +56,20 @@ export const CreerStructureValidation = z.object({
   horaires: z.string().nullish(),
   thematiques: z.array(z.string()).nullish(),
   typesAccompagnement: z.array(z.string()).nullish(),
+  modalitesAcces: z.object({
+    surPlace: z.boolean().nullish(),
+    parTelephone: z.boolean().nullish(),
+    numeroTelephone: z.string().nullish(),
+    parMail: z.boolean().nullish(),
+    adresseMail: z
+      .string()
+      .email('Veuillez renseigner une adresse email valide')
+      .nullish(),
+  }),
+  fraisACharge: z.string().nullish(),
+  priseEnChargeSpecifique: z.array(z.string()).nullish(),
+  toutPublic: z.boolean().nullish(),
+  publicsAccueillis: z.array(z.string()).nullish(),
 })
 
 export type CreerStructureData = z.infer<typeof CreerStructureValidation>

@@ -54,12 +54,6 @@ const LieuxActiviteForm = ({
     .map((field, index) => ({ field, index }))
     .reverse()
 
-  console.log({
-    reversedFields,
-
-    structureFields,
-  })
-
   const mutation = trpc.inscription.renseignerLieuxActivite.useMutation()
 
   const router = useRouter()

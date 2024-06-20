@@ -11,6 +11,11 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { useRouter } from 'next/navigation'
 import { createToast } from '@app/ui/toast/createToast'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import { useEffect } from 'react'
+import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormField'
+import ToggleFormField from '@app/ui/components/Form/ToggleFormField'
+import MultipleSelectFormField from '@app/ui/components/Form/MultipleSelectFormField'
+import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
 import SiretInputInfo from '@app/web/siret/SiretInputInfo'
 import RnaInputInfo from '@app/web/rna/RnaInputInfo'
 import { typologieStructureOptions } from '@app/web/app/structure/typologieStructure'
@@ -25,9 +30,13 @@ import {
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { validateValidRnaDigits } from '@app/web/rna/rnaValidation'
 import AdresseBanFormField from '@app/web/components/form/AdresseBanFormField'
-import { useEffect } from 'react'
-import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormField'
-import ToggleFormField from '@app/ui/components/Form/ToggleFormField'
+import {
+  fraisAChargeStructureOptions,
+  priseEnChargeSpecifiqueStructureOptions,
+  publicsAccueillisStructureOptions,
+  thematiquesStructureOptions,
+  typesAccompagnementStructureOptions,
+} from '@app/web/app/structure/optionsStructure'
 
 const descriptionInfo = (description?: string | null) =>
   `${description?.length ?? 0}/${descriptionMaxLength} caractères`
@@ -109,6 +118,61 @@ const CreerStructureForm = ({
     visiblePourCartographieNationale,
   ])
 
+  // TODO Split in multiple sub forms with extended  form data for edition
+
+  // Also split this logic
+
+  const publicsAccueillisKey =
+    form.watch('publicsAccueillis')?.join(',') ?? 'none'
+  const toutPublicKey = form.watch('toutPublic') ? 'true' : 'false'
+
+  // Check if all publics are checked if toutPublic is checked
+  form.watch((data, { name }) => {
+    // This watcher is only concerned for these fields
+    if (name !== 'toutPublic' && name !== 'publicsAccueillis') return
+
+    // Check all publics if toutPublic is checked
+    const allPublicsChecked =
+      Array.isArray(data.publicsAccueillis) &&
+      data.publicsAccueillis.length === publicsAccueillisStructureOptions.length
+
+    if (name === 'toutPublic') {
+      if (data.toutPublic && !allPublicsChecked) {
+        console.log(
+          'setting all publicsAccueillis because toutPublic is checked',
+        )
+        form.setValue(
+          'publicsAccueillis',
+          publicsAccueillisStructureOptions.map((option) => option.value),
+        )
+      } else if (!data.toutPublic && data.publicsAccueillis?.length !== 0) {
+        console.log(
+          'setting empty publicsAccueillis because toutPublic is unchecked',
+        )
+        form.setValue('publicsAccueillis', [])
+      }
+    }
+
+    // Check tout public if all publics are checked
+    if (name === 'publicsAccueillis') {
+      if (allPublicsChecked && !data.toutPublic) {
+        console.log(
+          'setting toutPublic to true because all publics are checked',
+        )
+        form.setValue('toutPublic', true)
+      } else if (!allPublicsChecked && data.toutPublic) {
+        console.log(
+          'setting toutPublic to false because not all publics are checked',
+        )
+        form.setValue('toutPublic', false)
+      }
+    }
+  })
+
+  // Logic for contact
+  const showPhoneInput = !!form.watch('modalitesAcces.parTelephone')
+  const showEmailInput = !!form.watch('modalitesAcces.parMail')
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="fr-border fr-border-radius--8" id="informations">
@@ -142,6 +206,7 @@ const CreerStructureForm = ({
             path="siret"
             label="SIRET structure (ou RNA)"
             disabled={isLoading}
+            className="fr-mb-0"
             info={
               <>
                 <SiretInputInfo className="fr-mb-0" searchTerm={nom} />
@@ -187,12 +252,17 @@ const CreerStructureForm = ({
           </Link>
         </div>
         <hr className="fr-separator fr-separator-1px" />
-        <div className="fr-pt-8v fr-pb-6v fr-px-8v">
+        <div className="fr-pt-8v fr-pb-0 fr-px-8v">
           <ToggleFormField
             control={control}
             path="visiblePourCartographieNationale"
             disabled={isLoading}
-            label="Rendre mon lieu d’activité visible sur la cartographie"
+            label={
+              <span className="fr-text--medium">
+                Rendre mon lieu d’activité visible sur la cartographie
+              </span>
+            }
+            className="fr-mb-0"
             labelPosition="left"
           />
         </div>
@@ -317,8 +387,130 @@ const CreerStructureForm = ({
                 bénéficiaires.
               </p>
             </div>
-            <hr className="fr-separator fr-separator-1px" />
-            <div className="fr-p-8v wip">🚧</div>
+            <hr className="fr-separator fr-separator-1px" id="services" />
+            <div className="fr-p-8v">
+              <h4 className="fr-h6 fr-mb-1v">
+                Services & types d’accompagnement
+              </h4>
+              <p className="fr-text--sm fr-mb-0">
+                Renseignez ici les services et les types d’accompagnements
+                proposés dans ce lieu.
+              </p>
+              <p className="fr-my-8v fr-text--sm fr-text-mention--grey">
+                Ces champs sont optionnels
+              </p>
+              <MultipleSelectFormField
+                control={control}
+                path="thematiques"
+                options={thematiquesStructureOptions}
+                label="Thématiques des services d’inclusion numérique"
+                hint="Renseignez ici les services proposés dans ce lieu."
+              />
+
+              <CheckboxGroupFormField
+                control={control}
+                path="typesAccompagnement"
+                options={typesAccompagnementStructureOptions}
+                label="Types d’accompagnements proposés"
+                className="fr-mb-0"
+              />
+              <hr className="fr-separator fr-separator-8v" id="acces" />
+              <h4 className="fr-h6 fr-mb-1v">Modalités d’accès au service</h4>
+              <p className="fr-text--sm fr-mb-0">
+                Indiquez comment bénéficier des services d’inclusion numérique.
+              </p>
+              <p className="fr-my-8v fr-text--sm fr-text-mention--grey">
+                Ces champs sont optionnels
+              </p>
+              <p className="fr-mb-1v">Modalités d’accès</p>
+              <p className="fr-text-mention--grey fr-text--sm fr-mb-0">
+                Indiquez comment bénéficier de ses services. Sélectionnez un ou
+                plusieurs choix.
+              </p>
+              <CheckboxFormField
+                control={control}
+                path="modalitesAcces.surPlace"
+                label="Se présenter sur place"
+              />
+              <CheckboxFormField
+                control={control}
+                path="modalitesAcces.parTelephone"
+                label="Téléphoner"
+              />
+              {showPhoneInput && (
+                <InputFormField
+                  control={control}
+                  path="modalitesAcces.numeroTelephone"
+                  label="Précisez le téléphone de contact"
+                  hint="Exemples : 06 00 00 00 00 ou 0600000000"
+                  asterisk
+                  disabled={isLoading}
+                />
+              )}
+              <CheckboxFormField
+                control={control}
+                path="modalitesAcces.parMail"
+                label="Contacter par mail"
+              />
+              {showEmailInput && (
+                <InputFormField
+                  control={control}
+                  path="modalitesAcces.adresseMail"
+                  label="Précisez l’adresse mail de contact"
+                  hint="Format attendu : nom@domaine.fr"
+                  asterisk
+                  disabled={isLoading}
+                />
+              )}
+              <CheckboxGroupFormField
+                control={control}
+                path="fraisACharge"
+                label="Frais à charge"
+                hint="Indiquez les conditions financières d'accès aux services."
+                options={fraisAChargeStructureOptions}
+              />
+              <hr className="fr-separator fr-separator-8v" id="publics" />
+              <h4 className="fr-h6 fr-mb-1v">Types de publics accueillis</h4>
+              <p className="fr-text--sm fr-mb-0">
+                Indiquez si ce lieu accueille des publics spécifiques.
+              </p>
+              <p className="fr-my-8v fr-text--sm fr-text-mention--grey">
+                Ces champs sont optionnels
+              </p>
+              <p className="fr-mb-1v">
+                Précisez les publics accueillis dans ce lieu
+              </p>
+              <p className="fr-text-mention--grey fr-text--sm fr-mb-0">
+                Par défaut, un lieu d’inclusion numérique est inclusif et peut
+                accueillir tout public. Malgré tout, certains lieux sont
+                habilités à recevoir exclusivement certains publics. Vous pouvez
+                le préciser ici.
+              </p>
+              <CheckboxFormField
+                key={toutPublicKey}
+                control={control}
+                path="toutPublic"
+                label="Tout public (tout sélectionner)"
+                className="fr-mb-0 fr-mt-4v"
+              />
+              <CheckboxGroupFormField
+                key={publicsAccueillisKey}
+                control={control}
+                path="publicsAccueillis"
+                options={publicsAccueillisStructureOptions}
+                className="fr-mb-0 fr-ml-4v"
+                style={{ marginTop: -16 }}
+                small
+              />
+              <CheckboxGroupFormField
+                control={control}
+                path="priseEnChargeSpecifique"
+                options={priseEnChargeSpecifiqueStructureOptions}
+                label="Prise en charge spécifique"
+                hint="Indiquez si le lieu est en mesure d'accompagner et soutenir des publics ayant des besoins particuliers."
+                className="fr-mb-0"
+              />
+            </div>
           </>
         )}
       </div>

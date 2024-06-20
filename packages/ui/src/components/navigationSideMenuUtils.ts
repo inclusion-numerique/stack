@@ -9,6 +9,12 @@ export const addActiveStateToItems = (
   isFirstRecursion = true,
 ): SideMenuProps.Item[] =>
   items.map((item, index) => {
+    console.log('ITEM ACTIVE? ', {
+      item,
+      index,
+      isFirstRecursion,
+      active: isItemActive(activeHref ?? '', item),
+    })
     // Sub menu
     if ('items' in item) {
       return {

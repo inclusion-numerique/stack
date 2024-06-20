@@ -49,7 +49,7 @@ const CheckboxFormField = <T extends FieldValues>({
           <div className="fr-form-group" data-testid={dataTestId}>
             <fieldset
               className={classNames(
-                'fr-fieldset',
+                'fr-fieldset fr-mb-0',
                 {
                   'fr-fieldset--error': error,
                   'fr-fieldset--disabled': disabled,

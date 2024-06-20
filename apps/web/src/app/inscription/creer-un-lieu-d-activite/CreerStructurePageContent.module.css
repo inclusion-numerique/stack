@@ -1,6 +1,7 @@
 
 .container {
     --side-nav-width: 296px;
+
     display: flex;
 }
 

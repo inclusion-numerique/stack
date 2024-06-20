@@ -10,7 +10,7 @@ const CreerStructureSideMenu = () => (
       },
       {
         text: 'Lieu accueillant du public',
-        linkProps: { href: `#accueil-public` },
+        linkProps: { href: `#description` },
         items: [
           {
             text: 'Description de l’activité du lieu',
