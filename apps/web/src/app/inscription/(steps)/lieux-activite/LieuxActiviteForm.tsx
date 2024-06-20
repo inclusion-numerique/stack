@@ -49,6 +49,17 @@ const LieuxActiviteForm = ({
     name: 'lieuxActivite',
     keyName: '_formKey',
   })
+
+  const reversedFields = structureFields
+    .map((field, index) => ({ field, index }))
+    .reverse()
+
+  console.log({
+    reversedFields,
+
+    structureFields,
+  })
+
   const mutation = trpc.inscription.renseignerLieuxActivite.useMutation()
 
   const router = useRouter()
@@ -83,6 +94,12 @@ const LieuxActiviteForm = ({
       siret: structure.pivot,
       typologie: structure.typologie,
     })
+
+    createToast({
+      priority: 'success',
+      message: `Le lieu d’activité ${structure.nom} a bien été ajouté.`,
+    })
+
     setValue('addLieuActiviteCartographieNationaleId', '')
   }, [selectedCartographieNationaleId, setValue, appendStructure])
 
@@ -171,7 +188,7 @@ const LieuxActiviteForm = ({
                 priority="secondary"
                 className="fr-width-full fr-mb-0"
                 linkProps={{
-                  href: '/inscription/creer-un-lieu-d-activite',
+                  href: `/inscription/creer-un-lieu-d-activite?nom=${search}`,
                 }}
               >
                 Créer un lieu d’activité
@@ -215,12 +232,19 @@ const LieuxActiviteForm = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="fr-background-alt--blue-france fr-pt-6v fr-pb-4v fr-px-8v fr-border-radius--8">
+        <p className="fr-text--bold fr-mb-1v">
+          Renseignez au moins un lieu d’activité pour finaliser votre
+          inscription.
+        </p>
+        <p className="fr-text--sm fr-mb-2v">
+          Vous pourrez également les renseigner plus tard via votre espace.
+        </p>
         <CustomSelectFormField
           key={customSelectKey}
-          label="Ajouter un lieu d’activité :"
+          label=" "
           control={control}
           path="addLieuActiviteCartographieNationaleId"
-          placeholder="Rechercher"
+          placeholder="Rechercher un lieu d’activité"
           loadOptions={loadOptions}
           isOptionDisabled={(option) => option.value === ''}
           cacheOptions
@@ -231,7 +255,7 @@ const LieuxActiviteForm = ({
           {errors.lieuxActivite.root?.message ?? errors.lieuxActivite.message}
         </p>
       ) : null}
-      {structureFields.map((structure, index) => (
+      {reversedFields.map(({ field: structure, index }) => (
         <StructureCard
           key={structure.id ?? structure.structureCartographieNationaleId}
           structure={structure}
