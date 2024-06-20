@@ -15,7 +15,7 @@ type CommonProps<T extends FieldValues> = {
   path: FieldPath<T>
   disabled?: boolean
   label?: ReactNode
-  hint?: string
+  hint?: ReactNode
   placeholder?: string
   valid?: string
   icon?: string

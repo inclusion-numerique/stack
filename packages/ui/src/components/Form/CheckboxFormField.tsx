@@ -10,7 +10,7 @@ export type CheckboxFormFieldProps<T extends FieldValues> = {
   path: FieldPath<T>
   disabled?: boolean
   label?: ReactNode
-  hint?: string
+  hint?: ReactNode
   valid?: string
   small?: boolean
   asterisk?: boolean
