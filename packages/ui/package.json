@@ -10,7 +10,7 @@
     "tsc": "tsc --noEmit",
     "postinstall": "pnpm --silent setup:dsfr",
     "with-env": "dotenv -e ../../.env --",
-    "setup:dsfr": "TO=public/dsfr bash ../../setup-dsfr.sh"
+    "setup:dsfr": "bash ../../setup-dsfr.sh"
   },
   "engines": {
     "node": "^20.11"

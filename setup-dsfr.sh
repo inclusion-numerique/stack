@@ -4,10 +4,10 @@
 
 echo "Copying DSFR assets..."
 
-# Ensure TO is set
+# Ensure TO is set or default to "public/dsfr"
+
 if [ -z "$TO" ]; then
-  echo "Error: TO variable is not set."
-  exit 1
+  TO="public/dsfr"
 fi
 
 # Determine the package directory based on the current working directory
