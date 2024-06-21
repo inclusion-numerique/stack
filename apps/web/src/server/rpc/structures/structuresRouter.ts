@@ -6,6 +6,11 @@ import { searchStructureCartographieNationale } from '@app/web/structure/searchS
 import { CreerStructureValidation } from '@app/web/app/structure/CreerStructureValidation'
 import { prismaClient } from '@app/web/prismaClient'
 import { createStopwatch } from '@app/web/utils/stopwatch'
+import {
+  itineranceStructureValues,
+  modalitesAccesStructureValues,
+} from '@app/web/app/structure/optionsStructure'
+import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 
 export const structuresRouter = router({
   search: protectedProcedure
@@ -46,10 +51,15 @@ export const structuresRouter = router({
         presentationResume,
         presentationDetail,
         siteWeb,
-        accessibilite,
+        ficheAccesLibre,
         horaires,
-        thematiques,
-        typesAccompagnement,
+        priseEnChargeSpecifique,
+        modalitesAcces,
+        fraisACharge,
+        lieuItinerant,
+        publicsSpecifiquementAdresses,
+        services,
+        modalitesAccompagnement,
       },
       ctx: { user },
     }) => {
@@ -76,10 +86,8 @@ export const structuresRouter = router({
           presentationResume,
           presentationDetail,
           siteWeb,
-          accessibilite,
+          ficheAccesLibre,
           horaires,
-          thematiques: thematiques ?? [],
-          typesAccompagnement: typesAccompagnement ?? [],
           mediateursEnActivite: lieuActiviteMediateurId
             ? {
                 create: {
@@ -88,6 +96,35 @@ export const structuresRouter = router({
                 },
               }
             : undefined,
+          fraisACharge: fraisACharge ?? undefined,
+          itinerance:
+            typeof lieuItinerant === 'boolean'
+              ? lieuItinerant
+                ? [itineranceStructureValues.Itinérant]
+                : [itineranceStructureValues.Fixe]
+              : undefined,
+          modalitesAcces: modalitesAcces
+            ? [
+                modalitesAcces.surPlace
+                  ? modalitesAccesStructureValues['Se présenter']
+                  : undefined,
+                modalitesAcces.parTelephone
+                  ? modalitesAccesStructureValues.Téléphoner
+                  : undefined,
+                modalitesAcces.parMail
+                  ? modalitesAccesStructureValues['Contacter par mail']
+                  : undefined,
+              ].filter(isDefinedAndNotNull)
+            : undefined,
+          telephone: modalitesAcces?.numeroTelephone ?? undefined,
+          courriels: modalitesAcces?.adresseMail
+            ? [modalitesAcces.adresseMail]
+            : undefined,
+          modalitesAccompagnement: modalitesAccompagnement ?? undefined,
+          priseEnChargeSpecifique: priseEnChargeSpecifique ?? undefined,
+          publicsSpecifiquementAdresses:
+            publicsSpecifiquementAdresses ?? undefined,
+          services: services ?? undefined,
         },
       })
 

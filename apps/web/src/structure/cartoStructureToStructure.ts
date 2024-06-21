@@ -6,56 +6,86 @@ import {
 import { validateValidSiretDigits } from '@app/web/siret/siretValidation'
 import { validateValidRnaDigits } from '@app/web/rna/rnaValidation'
 
-/**
- * TODO check the more subtle fields like accessibility, typology ...
- */
-export const cartoStructureToStructure = (
-  cartoStructure: Pick<
-    StructureCartographieNationale,
-    | 'id'
-    | 'nom'
-    | 'adresse'
-    | 'commune'
-    | 'codePostal'
-    | 'pivot'
-    | 'codeInsee'
-    | 'longitude'
-    | 'latitude'
-    | 'ficheAccesLibre'
-    | 'presentationDetail'
-    | 'presentationResume'
-    | 'complementAdresse'
-    | 'horaires'
-    | 'siteWeb'
-    | 'typologie'
-    | 'modalitesAccompagnement'
-  >,
-) =>
+export const cartoStructureToStructure = ({
+  adresse,
+  codeInsee,
+  codePostal,
+  commune,
+  complementAdresse,
+  courriels,
+  ficheAccesLibre,
+  fraisACharge,
+  horaires,
+  id,
+  itinerance,
+  latitude,
+  longitude,
+  modalitesAcces,
+  modalitesAccompagnement,
+  nom,
+  pivot,
+  presentationDetail,
+  presentationResume,
+  priseEnChargeSpecifique,
+  publicsSpecifiquementAdresses,
+  services,
+  siteWeb,
+  telephone,
+  typologie,
+}: Pick<
+  StructureCartographieNationale,
+  | 'id'
+  | 'nom'
+  | 'adresse'
+  | 'commune'
+  | 'codePostal'
+  | 'pivot'
+  | 'codeInsee'
+  | 'longitude'
+  | 'latitude'
+  | 'ficheAccesLibre'
+  | 'presentationDetail'
+  | 'presentationResume'
+  | 'complementAdresse'
+  | 'horaires'
+  | 'siteWeb'
+  | 'typologie'
+  | 'modalitesAccompagnement'
+  | 'services'
+  | 'modalitesAcces'
+  | 'fraisACharge'
+  | 'itinerance'
+  | 'priseEnChargeSpecifique'
+  | 'publicsSpecifiquementAdresses'
+  | 'courriels'
+  | 'telephone'
+>) =>
   ({
     id: v4(),
-    structureCartographieNationaleId: cartoStructure.id,
-    nom: cartoStructure.nom,
-    adresse: cartoStructure.adresse,
-    commune: cartoStructure.commune,
-    codePostal: cartoStructure.codePostal,
-    siret:
-      cartoStructure.pivot && validateValidSiretDigits(cartoStructure.pivot)
-        ? cartoStructure.pivot
-        : null,
-    rna:
-      cartoStructure.pivot && validateValidRnaDigits(cartoStructure.pivot)
-        ? cartoStructure.pivot
-        : null,
-    codeInsee: cartoStructure.codeInsee,
-    longitude: cartoStructure.longitude,
-    latitude: cartoStructure.latitude,
-    accessibilite: cartoStructure.ficheAccesLibre,
-    presentationDetail: cartoStructure.presentationDetail,
-    presentationResume: cartoStructure.presentationResume,
-    visiblePourCartographieNationale: true,
-    complementAdresse: cartoStructure.complementAdresse,
-    horaires: cartoStructure.horaires,
-    siteWeb: cartoStructure.siteWeb,
-    typologie: cartoStructure.typologie,
-    typesAccompagnement: cartoStructure.modalitesAccompagnement?.split('|'),
+    structureCartographieNationaleId: id,
+    nom,
+    adresse,
+    complementAdresse,
+    commune,
+    codePostal,
+    siret: pivot && validateValidSiretDigits(pivot) ? pivot : null,
+    rna: pivot && validateValidRnaDigits(pivot) ? pivot : null,
+    codeInsee,
+    longitude,
+    latitude,
+    ficheAccesLibre,
+    services: services?.split('|'),
+    horaires,
+    typologie,
+    presentationResume,
+    presentationDetail,
+    courriels: courriels?.split('|'),
+    telephone,
+    siteWeb,
+    modalitesAccompagnement: modalitesAccompagnement?.split('|'),
+    modalitesAcces: modalitesAcces?.split('|'),
+    fraisACharge: fraisACharge?.split('|'),
+    itinerance: itinerance?.split('|'),
+    priseEnChargeSpecifique: priseEnChargeSpecifique?.split('|'),
+    publicsSpecifiquementAdresses: publicsSpecifiquementAdresses?.split('|'),
   }) satisfies Prisma.StructureCreateManyInput

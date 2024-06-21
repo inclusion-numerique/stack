@@ -12,7 +12,6 @@ import { useRouter } from 'next/navigation'
 import { createToast } from '@app/ui/toast/createToast'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { useEffect } from 'react'
-import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormField'
 import ToggleFormField from '@app/ui/components/Form/ToggleFormField'
 import MultipleSelectFormField from '@app/ui/components/Form/MultipleSelectFormField'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
@@ -32,10 +31,10 @@ import { validateValidRnaDigits } from '@app/web/rna/rnaValidation'
 import AdresseBanFormField from '@app/web/components/form/AdresseBanFormField'
 import {
   fraisAChargeStructureOptions,
+  modalitesAccompagnementStructureOptions,
   priseEnChargeSpecifiqueStructureOptions,
   publicsAccueillisStructureOptions,
-  thematiquesStructureOptions,
-  typesAccompagnementStructureOptions,
+  servicesStructureOptions,
 } from '@app/web/app/structure/optionsStructure'
 
 const descriptionInfo = (description?: string | null) =>
@@ -123,47 +122,44 @@ const CreerStructureForm = ({
   // Also split this logic
 
   const publicsAccueillisKey =
-    form.watch('publicsAccueillis')?.join(',') ?? 'none'
+    form.watch('publicsSpecifiquementAdresses')?.join(',') ?? 'none'
   const toutPublicKey = form.watch('toutPublic') ? 'true' : 'false'
 
   // Check if all publics are checked if toutPublic is checked
-  form.watch((data, { name }) => {
-    // This watcher is only concerned for these fields
-    if (name !== 'toutPublic' && name !== 'publicsAccueillis') return
+  form.watch((data, { name, type }) => {
+    // This watcher is only concerned for these fields, only from user change action
+    if (name !== 'toutPublic' && name !== 'publicsSpecifiquementAdresses')
+      return
+    // Only if this is a user change, not triggered from this listener
+    if (type !== 'change') {
+      return
+    }
 
     // Check all publics if toutPublic is checked
     const allPublicsChecked =
-      Array.isArray(data.publicsAccueillis) &&
-      data.publicsAccueillis.length === publicsAccueillisStructureOptions.length
+      Array.isArray(data.publicsSpecifiquementAdresses) &&
+      data.publicsSpecifiquementAdresses.length ===
+        publicsAccueillisStructureOptions.length
 
     if (name === 'toutPublic') {
       if (data.toutPublic && !allPublicsChecked) {
-        console.log(
-          'setting all publicsAccueillis because toutPublic is checked',
-        )
         form.setValue(
-          'publicsAccueillis',
+          'publicsSpecifiquementAdresses',
           publicsAccueillisStructureOptions.map((option) => option.value),
         )
-      } else if (!data.toutPublic && data.publicsAccueillis?.length !== 0) {
-        console.log(
-          'setting empty publicsAccueillis because toutPublic is unchecked',
-        )
-        form.setValue('publicsAccueillis', [])
+      } else if (
+        !data.toutPublic &&
+        data.publicsSpecifiquementAdresses?.length !== 0
+      ) {
+        form.setValue('publicsSpecifiquementAdresses', [])
       }
     }
 
     // Check tout public if all publics are checked
-    if (name === 'publicsAccueillis') {
+    if (name === 'publicsSpecifiquementAdresses') {
       if (allPublicsChecked && !data.toutPublic) {
-        console.log(
-          'setting toutPublic to true because all publics are checked',
-        )
         form.setValue('toutPublic', true)
       } else if (!allPublicsChecked && data.toutPublic) {
-        console.log(
-          'setting toutPublic to false because not all publics are checked',
-        )
         form.setValue('toutPublic', false)
       }
     }
@@ -306,10 +302,11 @@ const CreerStructureForm = ({
                 info={descriptionInfo}
                 path="presentationResume"
               />
-              <RichTextFormField
-                form={form}
-                asterisk
+              <InputFormField
+                type="textarea"
                 path="presentationDetail"
+                control={control}
+                rows={6}
                 disabled={isLoading}
                 label="Description complète du lieu"
               />
@@ -328,7 +325,7 @@ const CreerStructureForm = ({
               </p>
               <InputFormField
                 control={control}
-                path="horaires"
+                path="siteWeb"
                 label="Site internet du lieu"
                 hint="Exemple: https://mastructure.fr"
                 disabled={isLoading}
@@ -342,7 +339,7 @@ const CreerStructureForm = ({
 
               <InputFormField
                 control={control}
-                path="accessibilite"
+                path="ficheAccesLibre"
                 label="Accessibilité"
                 hint={
                   <>
@@ -366,12 +363,44 @@ const CreerStructureForm = ({
                 id="informations-pratiques"
               />
               <p className="wip-outline">Horaires d’ouverture du lieu</p>
-              <p>🚧</p>
+              <p className="fr-text--sm">
+                La cartographie nationale utilise des horaires au format
+                open-source{' '}
+                <Link
+                  href="https://www.openstreetmap.org"
+                  target="_blank"
+                  className="fr-link fr-link--sm"
+                >
+                  OpenStreetMap
+                </Link>
+                .<br /> Pour les générer, rendez-vous sur &nbsp;:{' '}
+                <Link
+                  href="https://projets.pavie.info/yohours"
+                  target="_blank"
+                  className="fr-link fr-link--sm"
+                >
+                  https://projets.pavie.info/yohours
+                </Link>
+                <br />
+                puis copiez-coller le résultat dans le champ suivant.
+              </p>
+
               <InputFormField
                 control={control}
                 path="horaires"
-                label="Détail horaires"
-                hint="Vous pouvez renseigner ici des informations spécifiques concernant les horaires."
+                label="Horaires au format Open Street Map"
+                hint={
+                  <>
+                    Généré depuis{' '}
+                    <Link
+                      href="https://projets.pavie.info/yohours"
+                      target="_blank"
+                      className="fr-link fr-link--xs"
+                    >
+                      https://projets.pavie.info/yohours
+                    </Link>
+                  </>
+                }
                 disabled={isLoading}
               />
             </div>
@@ -401,16 +430,16 @@ const CreerStructureForm = ({
               </p>
               <MultipleSelectFormField
                 control={control}
-                path="thematiques"
-                options={thematiquesStructureOptions}
+                path="services"
+                options={servicesStructureOptions}
                 label="Thématiques des services d’inclusion numérique"
                 hint="Renseignez ici les services proposés dans ce lieu."
               />
 
               <CheckboxGroupFormField
                 control={control}
-                path="typesAccompagnement"
-                options={typesAccompagnementStructureOptions}
+                path="modalitesAccompagnement"
+                options={modalitesAccompagnementStructureOptions}
                 label="Types d’accompagnements proposés"
                 className="fr-mb-0"
               />
@@ -496,7 +525,7 @@ const CreerStructureForm = ({
               <CheckboxGroupFormField
                 key={publicsAccueillisKey}
                 control={control}
-                path="publicsAccueillis"
+                path="publicsSpecifiquementAdresses"
                 options={publicsAccueillisStructureOptions}
                 className="fr-mb-0 fr-ml-4v"
                 style={{ marginTop: -16 }}

@@ -30,7 +30,9 @@ export type LieuStandardMediationNumerique = {
   // Ce champ contient la longitude du lieu, dans le système WGS84 (GPS), typiquement issue du géocodage de son adresse et pouvant servir à la localiser. Il est possible de copier les coordonnées GPS depuis le site : adresse.data.gouv.fr
   longitude?: number | null
 
-  // La valeur de ce champ indique le type du lieu : CCAS, ASSO, COMMUNE, etc. Les valeurs possibles (il est possible d'en renseigner plusieurs) sont restreintes au vocabulaire décrivant les types de structures : https://www.data.inclusion.beta.gouv.fr/schemas-de-donnees-de-loffre/schema-des-structures-dinsertion/typologies-de-structure
+  // La valeur de ce champ indique le type du lieu : CCAS, ASSO, COMMUNE, etc.
+  // Les valeurs possibles (il est possible d'en renseigner plusieurs) sont restreintes au vocabulaire décrivant les types de structures :
+  // https://www.data.inclusion.beta.gouv.fr/schemas-de-donnees-de-loffre/schema-des-structures-dinsertion/typologies-de-structure
   typologie?: string | null
 
   // Ce champ contient un numéro de téléphone du lieu. Le format international doit être respecté : le premier zéro suivant l'indicatif pays (+33) est supprimé et il n'y a pas d'espaces.
@@ -54,7 +56,9 @@ export type LieuStandardMediationNumerique = {
   // La valeur de ce champ détaille la structure qui a collecté les données sur le lieu. Cela peut être la structure elle-même ou une structure tierce (une collectivité territoriale, un réseau de médiation numérique...)
   source?: string | null
 
-  // Ce champ permet d'informer si c'est un lieu de médiation itinérant comme un bus numérique, une cyber-caravane ou un camion connecté. Sélectionner une ou plusieurs valeurs séparées par un `|` parmi la liste suivante : 'Itinérant;Fixe'
+  // Ce champ permet d'informer si c'est un lieu de médiation itinérant comme un bus numérique, une cyber-caravane ou un camion connecté.
+  // Sélectionner une ou plusieurs valeurs séparées par un `|` parmi la liste suivante :
+  // 'Itinérant;Fixe'
   itinerance?: string | null
 
   // Ce champ permet de décrire le réseau/la structure auquel le lieu appartient. Pour le remplir, indiquer le nom de cette entité.
@@ -63,17 +67,27 @@ export type LieuStandardMediationNumerique = {
   // Ce champ contient la date à laquelle la donnée considérée a été mise à jour. Il respecte le format ISO 8601 : année-mois-jour (YYYY-MM-DD).
   date_maj: string
 
-  // Ce champ permet de décrire les types d'accompagnement proposés dans l'offre du lieu. Sélectionner une ou plusieurs valeurs séparées par un `|` parmi la liste suivante :  Aide aux démarches administratives;Maîtrise des outils numériques du quotidien;Insertion professionnelle via le numérique;Utilisation sécurisée du numérique;Parentalité et éducation avec le numérique;Loisirs et créations numériques;Comprehension du monde numérique;Accès internet et matériel informatique;Acquisition de matériel informatique à prix solidaire.
+  // Ce champ permet de décrire les types d'accompagnement proposés dans l'offre du lieu.
+  // Sélectionner une ou plusieurs valeurs séparées par un `|` parmi la liste suivante :
+  // Aide aux démarches administratives;Maîtrise des outils numériques du quotidien;Insertion professionnelle via le numérique;Utilisation sécurisée du numérique;Parentalité et éducation avec le numérique;Loisirs et créations numériques;Comprehension du monde numérique;Accès internet et matériel informatique;Acquisition de matériel informatique à prix solidaire.
   // Par défault: "Maîtrise des outils numériques du quotidien"
   services: string
 
-  // Par défaut, un lieu d'inclusion numérique est inclusif et peut accueillir tout public. Malgré tout, certains lieux sont habilités à recevoir exclusivement certains publics précis ! Ce champ permet de spécifier si l'action du lieu est tournée vers un public spécifiquement adressé. Sélectionner une ou plusieurs valeurs séparées par un `|` parmi la liste suivante : Jeunes;Étudiants;Familles et/ou enfants;Seniors;Femmes
+  // Par défaut, un lieu d'inclusion numérique est inclusif et peut accueillir tout public.
+  // Malgré tout, certains lieux sont habilités à recevoir exclusivement certains publics précis !
+  // Ce champ permet de spécifier si l'action du lieu est tournée vers un public spécifiquement adressé.
+  // Sélectionner une ou plusieurs valeurs séparées par un `|` parmi la liste suivante :
+  // Jeunes;Étudiants;Familles et/ou enfants;Seniors;Femmes
   publics_specifiquement_adresses?: string | null
 
-  // Ce champ permet d'informer si le lieu est en mesure d'accompagner et soutenir des publics ayant des besoins particuliers. Sélectionner une ou plusieurs valeurs séparées par un `|` parmi la liste suivante :Surdité;Handicaps moteurs;Handicaps mentaux;Illettrisme;Langues étrangères (anglais);Langues étrangères (autres) sont tous des formes de déficience visuelle.
+  // Ce champ permet d'informer si le lieu est en mesure d'accompagner et soutenir des publics ayant des besoins particuliers.
+  // Sélectionner une ou plusieurs valeurs séparées par un `|` parmi la liste suivante :
+  // Surdité;Handicaps moteurs;Handicaps mentaux;Illettrisme;Langues étrangères (anglais);Langues étrangères (autres) sont tous des formes de déficience visuelle.
   prise_en_charge_specifique?: string | null
 
-  // Ce champ indique les conditions financières d'accès au lieu. Sélectionner une ou plusieurs valeurs séparées par un `|` parmi la liste suivante : Gratuit : Je peux accéder gratuitement au lieu et à ses services;Gratuit sous condition : La gratuité est conditionnée à des critères (adhésion, situation familiale, convention avec un organisme social, pass numériques…);Payant : L’accès au lieu et/ou à ses services est payant
+  // Ce champ indique les conditions financières d'accès au lieu.
+  // Sélectionner une ou plusieurs valeurs séparées par un `|` parmi la liste suivante :
+  // Gratuit : Je peux accéder gratuitement au lieu et à ses services;Gratuit sous condition : La gratuité est conditionnée à des critères (adhésion, situation familiale, convention avec un organisme social, pass numériques…);Payant : L’accès au lieu et/ou à ses services est payant
   frais_a_charge?: string | null
 
   // Ce champ indique si le lieu appartient à un dispositif ou à un programme national. Sélectionner une ou plusieurs valeurs séparées par un `|` parmi la liste suivante : Aidants Connect;Bibliothèques numérique de référence;Certification PIX; Conseillers numériques;Emmaüs Connect;France Services;Grande école du numérique;La Croix Rouge;Point d'accès numérique CAF;Promeneurs du net;Relais numérique (Emmaüs Connect)
@@ -85,10 +99,14 @@ export type LieuStandardMediationNumerique = {
   // Ce champ permet de préciser si le lieu a obtenu d’autres formations ou labels non proposés dans le champ 'Formations et labels'.
   autres_formations_labels?: string | null
 
-  // Ce champ fournit des informations sur les différentes étapes ou démarches à suivre pour se rendre au lieu d'inclusion numérique et bénéficier de ses services. Sélectionner une ou plusieurs valeurs séparées par un `|` parmi la liste suivante : Se présenter;Téléphoner;Contacter par mail;Prendre un RDV en ligne;Ce lieu n'accueille pas de public;Envoyer un mail avec une fiche de prescription
+  // Ce champ fournit des informations sur les différentes étapes ou démarches à suivre pour se rendre au lieu d'inclusion numérique et bénéficier de ses services.
+  // Sélectionner une ou plusieurs valeurs séparées par un `|` parmi la liste suivante :
+  // Se présenter;Téléphoner;Contacter par mail;Prendre un RDV en ligne;Ce lieu n'accueille pas de public;Envoyer un mail avec une fiche de prescription
   modalites_acces?: string | null
 
-  // Ce champ indique les types d'accompagnement proposés par le lieu. Sélectionner une ou plusieurs valeurs séparées par un `|` parmi la liste suivante : En autonomie;Accompagnement individuel; Dans un atelier collectif : j'apprends collectivement à utiliser le numérique;À distance (par téléphone ou en visioconférence)
+  // Ce champ indique les types d'accompagnement proposés par le lieu.
+  // Sélectionner une ou plusieurs valeurs séparées par un `|` parmi la liste suivante :
+  // En autonomie;Accompagnement individuel; Dans un atelier collectif : j'apprends collectivement à utiliser le numérique;À distance (par téléphone ou en visioconférence)
   modalites_accompagnement?: string | null
 
   // Ce champ contient une url renvoyant vers le profil acceslibre du lieu : https://acceslibre.beta.gouv.fr/. Acceslibre est un service public porté par le Ministère de la Transition Écologique afin de collecter et de partager les données d'accessibilité des établissements recevant du public. Le remplissage d'une fiche prend moins de 5 minutes.

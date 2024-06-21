@@ -45,7 +45,7 @@ export const CreerStructureValidation = z.object({
   lieuItinerant: z.boolean().nullish(),
   presentationDetail: z.string().nullish(),
   siteWeb: z.string().url('Veuillez renseigner une URL valide').nullish(),
-  accessibilite: z
+  ficheAccesLibre: z
     .string()
     .url('Veuillez renseigner une URL valide')
     .startsWith(
@@ -54,8 +54,7 @@ export const CreerStructureValidation = z.object({
     )
     .nullish(),
   horaires: z.string().nullish(),
-  thematiques: z.array(z.string()).nullish(),
-  typesAccompagnement: z.array(z.string()).nullish(),
+  services: z.array(z.string()).nullish(),
   modalitesAcces: z.object({
     surPlace: z.boolean().nullish(),
     parTelephone: z.boolean().nullish(),
@@ -66,10 +65,11 @@ export const CreerStructureValidation = z.object({
       .email('Veuillez renseigner une adresse email valide')
       .nullish(),
   }),
-  fraisACharge: z.string().nullish(),
+  fraisACharge: z.array(z.string()).nullish(),
   priseEnChargeSpecifique: z.array(z.string()).nullish(),
   toutPublic: z.boolean().nullish(),
-  publicsAccueillis: z.array(z.string()).nullish(),
+  publicsSpecifiquementAdresses: z.array(z.string()).nullish(),
+  modalitesAccompagnement: z.array(z.string()).nullish(),
 })
 
 export type CreerStructureData = z.infer<typeof CreerStructureValidation>

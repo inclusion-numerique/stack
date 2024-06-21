@@ -4,12 +4,11 @@ import { Control, Controller, FieldValues } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
 import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
-import { RadioOption } from './utils/options'
 
 export type RadioFormFieldProps<T extends FieldValues> = {
   control: Control<T>
   path: FieldPath<T>
-  options: RadioOption[]
+  options: SelectOption[]
   disabled?: boolean
   label?: ReactNode
   hint?: string

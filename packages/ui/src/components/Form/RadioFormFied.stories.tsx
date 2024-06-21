@@ -5,7 +5,6 @@ import { zodResolver } from '@hookform/resolvers/zod/dist/zod'
 import { Meta, StoryObj } from '@storybook/react'
 import { useOnDiff } from '@app/web/hooks/useOnDiff'
 import RadioFormField, { RadioFormFieldProps } from './RadioFormField'
-import { RadioOption } from './utils/options'
 
 const objectFormValidation = z
   .object({
@@ -51,7 +50,7 @@ export default meta
 
 type Story = StoryObj<typeof RadioFormField>
 
-const options: RadioOption[] = [
+const options: SelectOption[] = [
   {
     name: 'Choix 1',
     value: 'choice-1',

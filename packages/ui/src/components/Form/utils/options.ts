@@ -1,17 +1,11 @@
 import { ReactNode } from 'react'
 
-export type RadioOption<T extends string = string> = {
-  name: string
-  value: T
-  hint?: string
-  disabled?: boolean
-}
-
 export type SelectOption<T extends string = string> = {
   name: string
   value: T
   disabled?: boolean
   hidden?: boolean
+  hint?: string
 }
 
 export type SelectOptionGroup<T extends string = string> = {
@@ -36,9 +30,16 @@ export type RichRadioOption<T extends string = string> = {
 
 export const labelsToOptions = <T extends string>(
   object: Record<T, string>,
+  { hints }: { hints?: Partial<Record<T, string>> } = {},
 ): SelectOption<T>[] =>
-  Object.entries(object).map(
-    ([value, name]) => ({ name, value }) as SelectOption<T>,
+  Object.entries(object).map(([value, name]) =>
+    hints
+      ? ({
+          name,
+          value,
+          hint: hints[value as T],
+        } as SelectOption<T>)
+      : ({ name, value } as SelectOption<T>),
   )
 
 export const optionsWithEmptyValue = <T extends string>(

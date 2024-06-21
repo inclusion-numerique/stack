@@ -1,15 +1,15 @@
 import classNames from 'classnames'
 import React, { ReactNode } from 'react'
-import { Control, Controller, FieldValues } from 'react-hook-form'
-import { FieldPath } from 'react-hook-form/dist/types/path'
-import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
+import { type Control, Controller, type FieldValues } from 'react-hook-form'
+import type { FieldPath } from 'react-hook-form/dist/types/path'
+import type { UiComponentProps } from '@app/ui/utils/uiComponentProps'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
-import { RadioOption } from './utils/options'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
 
 export type CheckboxGroupFormFieldProps<T extends FieldValues> = {
   control: Control<T>
   path: FieldPath<T>
-  options: RadioOption[]
+  options: SelectOption[]
   disabled?: boolean
   label?: ReactNode
   hint?: string
