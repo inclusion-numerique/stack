@@ -9,7 +9,7 @@ export const addActiveStateToItems = (
   isFirstRecursion = true,
 ): SideMenuProps.Item[] =>
   items.map((item, index) => {
-    console.log('ITEM ACTIVE? ', {
+    console.log('ITEM ACTIVE?', {
       item,
       index,
       isFirstRecursion,

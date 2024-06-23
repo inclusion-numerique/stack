@@ -1,13 +1,17 @@
 /* eslint react/destructuring-assignment: 0 */
 
 import React, { ReactNode } from 'react'
-import type { GroupBase, SelectComponentsConfig, ThemeConfig } from 'react-select'
+import type {
+  GroupBase,
+  SelectComponentsConfig,
+  ThemeConfig,
+} from 'react-select'
 import Select from 'react-select'
 import type { AsyncProps } from 'react-select/async'
 import AsyncSelect from 'react-select/async'
 import { Spinner } from '@app/web/ui/Spinner'
-import styles from './CustomSelect.module.css'
 import dynamic from 'next/dynamic'
+import styles from './CustomSelect.module.css'
 
 export type CustomSelectProps<
   Option = { label: string; value: string },

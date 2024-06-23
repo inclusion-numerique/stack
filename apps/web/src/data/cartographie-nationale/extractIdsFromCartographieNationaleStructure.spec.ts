@@ -7,7 +7,7 @@ describe('extractIdsFromCartographieNationaleStructure', () => {
     const result = extractIdsFromCartographieNationaleStructure({ id })
 
     expect(result).toEqual({
-      coopId: ['aaabb333-cccdd-4343', 'bb112233-4455'],
+      coopId: 'aaabb333-cccdd-4343',
       coopIds: ['aaabb333-cccdd-4343', 'bb112233-4455'],
       conseillerNumeriquePermanenceIds: ['62ab017b8255a806e299c725'],
     })
@@ -18,7 +18,7 @@ describe('extractIdsFromCartographieNationaleStructure', () => {
     const result = extractIdsFromCartographieNationaleStructure({ id })
 
     expect(result).toEqual({
-      coopId: [],
+      coopId: undefined,
       coopIds: [],
       conseillerNumeriquePermanenceIds: [],
     })
@@ -30,7 +30,7 @@ describe('extractIdsFromCartographieNationaleStructure', () => {
     const result = extractIdsFromCartographieNationaleStructure({ id })
 
     expect(result).toEqual({
-      coopId: ['aaabb333-cccdd-4343', 'bb112233-4455', 'cc556677-8899'],
+      coopId: 'aaabb333-cccdd-4343',
       coopIds: ['aaabb333-cccdd-4343', 'bb112233-4455', 'cc556677-8899'],
       conseillerNumeriquePermanenceIds: [],
     })
@@ -41,7 +41,7 @@ describe('extractIdsFromCartographieNationaleStructure', () => {
     const result = extractIdsFromCartographieNationaleStructure({ id })
 
     expect(result).toEqual({
-      coopId: ['bb112233-4455'],
+      coopId: 'bb112233-4455',
       coopIds: ['bb112233-4455'],
       conseillerNumeriquePermanenceIds: [],
     })
@@ -53,7 +53,7 @@ describe('extractIdsFromCartographieNationaleStructure', () => {
     const result = extractIdsFromCartographieNationaleStructure({ id })
 
     expect(result).toEqual({
-      coopId: ['aaabb333-cccdd-4343', 'bb112233-4455'],
+      coopId: 'aaabb333-cccdd-4343',
       coopIds: ['aaabb333-cccdd-4343', 'bb112233-4455'],
       conseillerNumeriquePermanenceIds: ['abcdef123'],
     })
