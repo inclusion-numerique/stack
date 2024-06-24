@@ -4,10 +4,13 @@ import classNames from 'classnames'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
-import { prismaClient } from '@app/web/prismaClient'
-import StructureEmployeuseLieuActiviteForm from '@app/web/app/inscription/(steps)/structure-employeuse-lieu-activite/StructureEmployeuseLieuActiviteForm'
 import StructureCard from '@app/web/components/structure/StructureCard'
-import { profileInscriptionSlugs } from '@app/web/inscription/profilInscription'
+import {
+  mediateurInscriptionSteps,
+  mediateurinscriptionStepsCount,
+} from '@app/web/app/inscription/(steps)/mediateur/mediateurinscriptionSteps'
+import { getStructureEmployeuseForInscription } from '@app/web/app/inscription/getStructureEmployeuseForInscription'
+import StructureEmployeuseLieuActiviteForm from '@app/web/app/inscription/(steps)/mediateur/structure-employeuse-lieu-activite/StructureEmployeuseLieuActiviteForm'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),
@@ -17,47 +20,24 @@ export const metadata = {
 const Page = async () => {
   const user = await getAuthenticatedSessionUser()
 
-  if (!user.profilInscription || !user.mediateur) {
+  if (
+    !user.profilInscription ||
+    !user.mediateur ||
+    user.mediateur.conseillerNumerique
+  ) {
     redirect('/')
   }
 
   if (user.emplois.length === 0) {
-    redirect(
-      `/inscription/structure-employeuse?profil=${profileInscriptionSlugs[user.profilInscription]}`,
-    )
+    redirect(mediateurInscriptionSteps.structureEmployeuse)
   }
 
-  const emploi = await prismaClient.employeStructure.findFirst({
-    where: {
-      userId: user.id,
-      suppression: null,
-    },
-    orderBy: {
-      creation: 'desc',
-    },
-    select: {
-      id: true,
-      structure: {
-        select: {
-          id: true,
-          nom: true,
-          commune: true,
-          codePostal: true,
-          codeInsee: true,
-          siret: true,
-          rna: true,
-          adresse: true,
-          complementAdresse: true,
-          typologie: true,
-        },
-      },
-    },
+  const emploi = await getStructureEmployeuseForInscription({
+    userId: user.id,
   })
 
   if (!emploi) {
-    redirect(
-      `/inscription/structure-employeuse?profil=${profileInscriptionSlugs[user.profilInscription]}`,
-    )
+    redirect(mediateurInscriptionSteps.structureEmployeuse)
   }
 
   const structure = {
@@ -70,9 +50,10 @@ const Page = async () => {
   return (
     <InscriptionCard
       title="Renseignez vos lieux d’activité"
-      backHref={`/inscription/structure-employeuse?profil=${user.profilInscription}`}
+      backHref={mediateurInscriptionSteps.structureEmployeuse}
       nextStepTitle="Récapitulatif de vos informations"
       stepNumber={2}
+      totalSteps={mediateurinscriptionStepsCount}
     >
       <div
         className={classNames(

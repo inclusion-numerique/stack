@@ -1,7 +1,6 @@
 import { PropsWithChildren, ReactNode } from 'react'
 import classNames from 'classnames'
 import Link from 'next/link'
-import { inscriptionStepsCount } from '@app/web/app/inscription/(steps)/inscriptionSteps'
 
 const InscriptionCard = ({
   children,
@@ -10,12 +9,16 @@ const InscriptionCard = ({
   nextStepTitle,
   titleClassName,
   stepNumber,
+  totalSteps,
+  subtitle,
 }: PropsWithChildren<{
   title: ReactNode
   titleClassName?: string
   backHref?: string
   nextStepTitle?: string
   stepNumber?: number
+  totalSteps?: number
+  subtitle?: ReactNode
 }>) => (
   <>
     {backHref && (
@@ -33,20 +36,21 @@ const InscriptionCard = ({
         !backHref && 'fr-mt-32v',
       )}
     >
-      {stepNumber && (
+      {stepNumber && totalSteps && (
         <p className="fr-text--sm fr-text-mention--grey fr-mb-1v">
-          Étape {stepNumber} sur {inscriptionStepsCount}
+          Étape {stepNumber} sur {totalSteps}
         </p>
       )}
       <h1
         className={classNames(
           'fr-h3',
-          nextStepTitle ? 'fr-mb-2v' : 'fr-mb-12v',
+          nextStepTitle || subtitle ? 'fr-mb-2v' : 'fr-mb-12v',
           titleClassName,
         )}
       >
         {title}
       </h1>
+      {subtitle && <p className="fr-mt-4v fr-mb-12v">{subtitle}</p>}
       {nextStepTitle && (
         <p className="fr-text--xs fr-text-mention--grey fr-mb-12v">
           <b>Étape suivante&nbsp;:</b> {nextStepTitle}

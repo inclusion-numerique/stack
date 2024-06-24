@@ -6,8 +6,12 @@ import {
   ProfileInscriptionSlug,
 } from '@app/web/inscription/profilInscription'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
-import { prismaClient } from '@app/web/prismaClient'
-import RenseignerStructureEmployeuseForm from '@app/web/app/inscription/(steps)/structure-employeuse/RenseignerStructureEmployeuseForm'
+import RenseignerStructureEmployeuseForm from '@app/web/app/inscription/(steps)/mediateur/structure-employeuse/RenseignerStructureEmployeuseForm'
+import {
+  mediateurInscriptionSteps,
+  mediateurinscriptionStepsCount,
+} from '@app/web/app/inscription/(steps)/mediateur/mediateurinscriptionSteps'
+import { getStructureEmployeuseForInscription } from '@app/web/app/inscription/getStructureEmployeuseForInscription'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),
@@ -23,34 +27,12 @@ const Page = async ({
 }) => {
   const user = await getAuthenticatedSessionUser()
 
-  if (!profil) {
+  if (!profil || !user.mediateur || user.mediateur.conseillerNumerique) {
     redirect('/')
   }
 
-  const emploi = await prismaClient.employeStructure.findFirst({
-    where: {
-      userId: user.id,
-      suppression: null,
-    },
-    orderBy: {
-      creation: 'desc',
-    },
-    select: {
-      id: true,
-      structure: {
-        select: {
-          id: true,
-          nom: true,
-          commune: true,
-          codePostal: true,
-          codeInsee: true,
-          siret: true,
-          rna: true,
-          adresse: true,
-          typologie: true,
-        },
-      },
-    },
+  const emploi = await getStructureEmployeuseForInscription({
+    userId: user.id,
   })
 
   const structure = emploi?.structure
@@ -67,9 +49,10 @@ const Page = async ({
   return (
     <InscriptionCard
       title="Renseignez votre structure employeuse"
-      backHref={`/inscription?profil=${profil}`}
+      backHref={mediateurInscriptionSteps.intro}
       nextStepTitle="Renseignez vos lieux d’activité"
       stepNumber={1}
+      totalSteps={mediateurinscriptionStepsCount}
     >
       <RenseignerStructureEmployeuseForm
         defaultValues={{

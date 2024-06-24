@@ -227,6 +227,9 @@ export const checkInscriptionConseillerNumerique = async (
       id: user.id,
     },
     data: {
+      structureEmployeuseRenseignee: new Date(),
+      lieuxActiviteRenseignes:
+        lieuxActiviteStructureIds.length > 0 ? new Date() : undefined,
       checkConseillerNumeriqueInscription: new Date(),
       emplois: {
         deleteMany: {},

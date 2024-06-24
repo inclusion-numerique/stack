@@ -22,8 +22,10 @@ import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 
 const LieuxActiviteForm = ({
   defaultValues,
+  nextHref,
 }: {
   defaultValues: DefaultValues<LieuxActiviteData>
+  nextHref: string
 }) => {
   const form = useForm<LieuxActiviteData>({
     defaultValues,
@@ -182,7 +184,7 @@ const LieuxActiviteForm = ({
                 priority="secondary"
                 className="fr-width-full fr-mb-0"
                 linkProps={{
-                  href: `/inscription/creer-un-lieu-d-activite?nom=${search}`,
+                  href: `/inscription/mediateur/creer-un-lieu-d-activite?nom=${search}`,
                 }}
               >
                 Créer un lieu d’activité
@@ -200,7 +202,7 @@ const LieuxActiviteForm = ({
   const onSubmit = async (data: LieuxActiviteData) => {
     try {
       await mutation.mutateAsync(data)
-      router.push('/inscription/recapitulatif')
+      router.push(nextHref)
       router.refresh()
     } catch (mutationError) {
       if (applyZodValidationMutationErrorsToForm(mutationError, setError)) {

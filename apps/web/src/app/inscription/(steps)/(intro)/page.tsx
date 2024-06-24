@@ -6,6 +6,12 @@ import type { ProfileInscriptionSlug } from '@app/web/inscription/profilInscript
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import { checkInscriptionConseillerNumerique } from '@app/web/app/inscription/checkInscriptionConseillerNumerique'
+import { mediateurInscriptionSteps } from '@app/web/app/inscription/(steps)/mediateur/mediateurinscriptionSteps'
+import { conseillerNumeriqueInscriptionSteps } from '@app/web/app/inscription/(steps)/conseiller-numerique/conseillerNumeriqueinscriptionSteps'
+import { conseillerNumeriqueLieuxInscriptionSteps } from '@app/web/app/inscription/(steps)/conseiller-numerique-lieux/conseillerNumeriqueLieuxInscriptionSteps'
+import { coordinateurInscriptionSteps } from '@app/web/app/inscription/(steps)/coordinateur/coordinateurInscriptionSteps'
+import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
+import ConseillerNumeriqueInscriptionNotice from '@app/web/app/inscription/ConseillerNumeriqueInscriptionNotice'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),
@@ -32,26 +38,32 @@ const Page = async ({
       ? user
       : await checkInscriptionConseillerNumerique(user)
 
+  // Only fetch lieux activite if user is conseiller numerique to check which step to go to
+  const lieuxActivite = user.mediateur?.conseillerNumerique
+    ? await getLieuxActiviteForInscription({
+        mediateurId: user.mediateur.id,
+      })
+    : []
+
+  const nextStep = // Coordinateur
+    checkedUser.coordinateur
+      ? coordinateurInscriptionSteps.recapituatif
+      : checkedUser.mediateur?.conseillerNumerique
+        ? // Conseiller numérique with lieux activite
+          lieuxActivite.length > 0
+          ? conseillerNumeriqueInscriptionSteps.recapitulatif
+          : // Conseiller numérique without lieux activite
+            conseillerNumeriqueLieuxInscriptionSteps.lieuxActivites
+        : // Mediateur
+          mediateurInscriptionSteps.structureEmployeuse
+
   return (
     <InscriptionCard
       title="Finaliser votre inscription pour accéder à votre espace."
       titleClassName="fr-text-title--blue-france"
     >
       {checkedUser.mediateur?.conseillerNumerique ? (
-        <div className="fr-border-radius--8 fr-background-alt--blue-france fr-flex-gap-4v fr-px-6v fr-py-4v fr-width-full fr-flex fr-justify-content-center fr-mb-12v">
-          <img src="/images/services/conseillers-numerique-logo.svg" />
-          <div>
-            <p className="fr-text--bold fr-mb-1v">
-              Vous avez été identifié en tant que conseiller numérique
-            </p>
-            <p className="fr-text-mention--grey fr-text--xs fr-mb-0">
-              Source&nbsp;:{' '}
-              <Link target="_blank" href="https://conseiller-numerique.gouv.fr">
-                conseiller-numerique.gouv.fr
-              </Link>
-            </p>
-          </div>
-        </div>
+        <ConseillerNumeriqueInscriptionNotice />
       ) : null}
       <p className="fr-mb-12v wip">
         Afin de profiter de la Coop des médiateurs numériques, nous avons besoin
@@ -62,7 +74,7 @@ const Page = async ({
         <Button
           className="fr-width-full fr-mb-6v"
           linkProps={{
-            href: `/inscription/structure-employeuse?profil=${profil}`,
+            href: nextStep,
           }}
         >
           Commencer
