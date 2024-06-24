@@ -27,7 +27,7 @@ export const FeaturedBase = ({
   children?: ReactNode
 }) => (
   <>
-    <div className="fr-mb-2w fr-enlarge-link">
+    <div className="fr-mb-2w fr-enlarge-link fr-no-hover-bg">
       <Link href={`/bases/${slug}`}>
         <BaseImage base={{ id, image }} size={96} />
       </Link>

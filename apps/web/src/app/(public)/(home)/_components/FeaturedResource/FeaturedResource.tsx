@@ -78,7 +78,7 @@ export const FeaturedResource = ({
   base,
   createdBy,
 }: FeaturedResourceProps) => (
-  <div className="fr-border-top fr-enlarge-link">
+  <div className="fr-border-top fr-enlarge-link fr-no-hover-bg">
     <div className="fr-my-2w fr-flex fr-align-items-center fr-flex-gap-2v">
       {base != null && <BaseMetadata base={base} />}
       {base == null && createdBy != null && (

@@ -20,7 +20,7 @@ export const FeaturedProfil = ({
   resourcesCount?: number
   followersCount?: number
 }) => (
-  <div className="fr-flex fr-align-items-center fr-flex-gap-4v fr-enlarge-link">
+  <div className="fr-flex fr-align-items-center fr-flex-gap-4v fr-enlarge-link fr-no-hover-bg">
     <RoundProfileImage user={{ firstName, lastName, image }} size={48} />
     <div>
       <h3 className="fr-text--md fr-mb-0">
