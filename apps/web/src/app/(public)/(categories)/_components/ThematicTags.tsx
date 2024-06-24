@@ -1,7 +1,7 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import React from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
 import Tag from '@codegouvfr/react-dsfr/Tag'
 
 const toQueryString = (selected: string[]) =>
@@ -22,15 +22,23 @@ export const ThematicTags = ({
   className?: string
 }) => {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    setIsLoading(false)
+  }, [searchParams])
 
   const unselect = (option: string) => {
     router.push(
       `${href}?${toQueryString(selected.filter(onlySelected(option)))}`,
     )
+    setIsLoading(true)
   }
 
   const select = (option: string) => {
     router.push(`${href}?${toQueryString([...selected, option])}`)
+    setIsLoading(true)
   }
 
   return (
@@ -43,6 +51,7 @@ export const ThematicTags = ({
             nativeButtonProps={{
               onClick: () =>
                 selected.includes(value) ? unselect(value) : select(value),
+              disabled: isLoading,
             }}
           >
             {name}

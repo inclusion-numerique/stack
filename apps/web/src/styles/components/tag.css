@@ -111,3 +111,15 @@ button.fr-tag--yellow-tournesol[aria-pressed='true']::after,
 input[type='button'].fr-tag--yellow-tournesol[aria-pressed='true']::after {
   display: none;
 }
+
+button.fr-tag--green-archipel[aria-pressed='true']:disabled,
+button.fr-tag--green-bourgeon[aria-pressed='true']:disabled,
+button.fr-tag--pink-tuile[aria-pressed='true']:disabled,
+button.fr-tag--yellow-tournesol[aria-pressed='true']:disabled,
+input[type='button'].fr-tag--green-archipel[aria-pressed='true']:disabled,
+input[type='button'].fr-tag--green-bourgeon[aria-pressed='true']:disabled,
+input[type='button'].fr-tag--pink-tuile[aria-pressed='true']:disabled,
+input[type='button'].fr-tag--yellow-tournesol[aria-pressed='true']:disabled {
+  background-color: var(--background-disabled-grey);
+  background-image: none;
+}
