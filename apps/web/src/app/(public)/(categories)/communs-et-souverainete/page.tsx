@@ -4,7 +4,6 @@ import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import Webinaire from '@app/web/app/(public)/Webinaire'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
-import ResourcesSearchResults from '@app/web/components/Search/ResourcesSearchResults'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import {
   countSearchResults,
@@ -16,9 +15,11 @@ import {
 } from '@app/web/server/search/searchQueryParams'
 import SearchResults from '@app/web/components/Search/SearchResults'
 import { categoryThemesOptions } from '@app/web/themes/themes'
-import { getHomeCategoriesCount } from '../../(home)/_components/getHomeCategoriesCount'
+import { getHomeCategoriesCount } from '@app/web/app/(public)/(home)/_components/getHomeCategoriesCount'
+import ResourcesSearchResults from '@app/web/components/Search/ResourcesSearchResults'
 import { ThematicHeader } from '../_components/ThematicHeader'
 import { ThematicTags } from '../_components/ThematicTags'
+import { createThematicLink } from '../_helpers/createThematicLink'
 
 type UrlPaginationParams = {
   page?: string | string[] | null
@@ -85,14 +86,19 @@ const CommunsEtSouverainetePage = async ({
               href="communs-et-souverainete"
               thematic={thematic}
               selected={toArray(urlPaginationParams.thematiques)}
+              page={
+                urlPaginationParams.page ? +urlPaginationParams.page : undefined
+              }
             />
           </div>
           <main id={contentId}>
             <SearchResults
-              tab="ressources"
-              searchParams={searchParams}
               paginationParams={paginationParams}
               count={resourcesCount}
+              createPageLink={createThematicLink(
+                'communs-et-souverainete',
+                toArray(urlPaginationParams.thematiques),
+              )}
             >
               <ResourcesSearchResults
                 searchParams={searchParams}

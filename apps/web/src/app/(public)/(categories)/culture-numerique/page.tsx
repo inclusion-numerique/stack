@@ -19,6 +19,7 @@ import { categoryThemesOptions } from '@app/web/themes/themes'
 import { getHomeCategoriesCount } from '../../(home)/_components/getHomeCategoriesCount'
 import { ThematicHeader } from '../_components/ThematicHeader'
 import { ThematicTags } from '../_components/ThematicTags'
+import { createThematicLink } from '../_helpers/createThematicLink'
 
 type UrlPaginationParams = {
   page?: string | string[] | null
@@ -85,14 +86,19 @@ const CultureNumeriquePage = async ({
               href="culture-numerique"
               thematic={thematic}
               selected={toArray(urlPaginationParams.thematiques)}
+              page={
+                urlPaginationParams.page ? +urlPaginationParams.page : undefined
+              }
             />
           </div>
           <main id={contentId}>
             <SearchResults
-              tab="ressources"
-              searchParams={searchParams}
               paginationParams={paginationParams}
               count={resourcesCount}
+              createPageLink={createThematicLink(
+                'culture-numerique',
+                toArray(urlPaginationParams.thematiques),
+              )}
             >
               <ResourcesSearchResults
                 searchParams={searchParams}

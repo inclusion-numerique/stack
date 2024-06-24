@@ -3,9 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import Tag from '@codegouvfr/react-dsfr/Tag'
-
-const toQueryString = (selected: string[]) =>
-  selected.map((thematic: string) => `thematiques=${thematic}`).join('&')
+import { createThematicLink } from '../_helpers/createThematicLink'
 
 const onlySelected = (option: string) => (thematic: string) =>
   thematic !== option
@@ -14,11 +12,13 @@ export const ThematicTags = ({
   href,
   thematic,
   selected = [],
+  page,
   className,
 }: {
   href: string
   thematic: { name: string; value: string }[]
   selected: string[]
+  page?: number
   className?: string
 }) => {
   const router = useRouter()
@@ -31,13 +31,13 @@ export const ThematicTags = ({
 
   const unselect = (option: string) => {
     router.push(
-      `${href}?${toQueryString(selected.filter(onlySelected(option)))}`,
+      createThematicLink(href, selected.filter(onlySelected(option)))(page),
     )
     setIsLoading(true)
   }
 
   const select = (option: string) => {
-    router.push(`${href}?${toQueryString([...selected, option])}`)
+    router.push(createThematicLink(href, [...selected, option])(page))
     setIsLoading(true)
   }
 

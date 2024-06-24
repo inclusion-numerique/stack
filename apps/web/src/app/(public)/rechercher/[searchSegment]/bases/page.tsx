@@ -3,6 +3,7 @@ import { getSessionUser } from '@app/web/auth/getSessionUser'
 import {
   sanitizeUrlPaginationParams,
   searchParamsFromSegment,
+  searchUrl,
   UrlPaginationParams,
 } from '@app/web/server/search/searchQueryParams'
 import SearchResults from '@app/web/components/Search/SearchResults'
@@ -36,10 +37,11 @@ const BasesSearchResultPage = async ({
     <>
       <SynchronizeTabCounts tabCounts={tabCounts} />
       <SearchResults
-        tab="bases"
-        searchParams={searchParams}
         paginationParams={paginationParams}
         count={basesCount}
+        createPageLink={(page: number) =>
+          searchUrl('bases', searchParams, { ...paginationParams, page })
+        }
       >
         <BasesSearchResult
           user={user}
