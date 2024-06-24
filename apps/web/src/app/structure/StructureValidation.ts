@@ -9,7 +9,7 @@ export const StructureValidation = z.object({
   commune: z.string().nullish(),
   codePostal: z.string().nullish(),
   codeInsee: z.string().nullish(),
-  typologie: z.string().nullish(),
+  typologies: z.array(z.string()).nullish(),
   siret: z.string().nullish(),
   rna: z.string().nullish(),
   visiblePourCartographieNationale: z.boolean().nullish(),

@@ -73,10 +73,11 @@ export const searchStructureCartographieNationale = async (
   })
 
   const structures = structuresRaw.map(
-    ({ nom, adresse, commune, ...rest }) => ({
+    ({ nom, adresse, commune, pivot, ...rest }) => ({
       nom: toTitleCase(nom, { noUpper: true }),
       commune: toTitleCase(commune),
       adresse: toTitleCase(adresse, { noUpper: true }),
+      pivot: pivot === '00000000000000' ? undefined : pivot,
       ...rest,
     }),
   )

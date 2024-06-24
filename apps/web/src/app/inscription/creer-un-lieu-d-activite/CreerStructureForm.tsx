@@ -5,7 +5,6 @@ import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDiscl
 import { zodResolver } from '@hookform/resolvers/zod'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
-import SelectFormField from '@app/ui/components/Form/SelectFormField'
 import Link from 'next/link'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { useRouter } from 'next/navigation'
@@ -285,13 +284,12 @@ const CreerStructureForm = ({
               <p className="fr-my-8v fr-text--sm fr-text-mention--grey">
                 Ces champs sont optionnels
               </p>
-              <SelectFormField
+              <MultipleSelectFormField
                 control={control}
-                path="typologie"
-                label="Typologie de la structure"
+                path="typologies"
+                label="Typologies de la structure"
                 disabled={isLoading}
                 options={typologieStructureOptions}
-                placeholder=" "
               />
               <InputFormField
                 type="textarea"

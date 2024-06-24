@@ -28,7 +28,7 @@ export const getLieuxActiviteForInscription = async ({
           rna: true,
           adresse: true,
           complementAdresse: true,
-          typologie: true,
+          typologies: true,
         },
       },
     },

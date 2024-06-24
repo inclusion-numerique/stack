@@ -29,12 +29,7 @@ export const CreerStructureValidation = z.object({
     ),
   rna: z.string().nullish(),
   visiblePourCartographieNationale: z.boolean().default(false),
-  // TODO sub objects for whole optional validation ?
-  typologie: z
-    .string({
-      required_error: 'Veuillez renseigner la typologie de la structure',
-    })
-    .nullish(),
+  typologies: z.array(z.string()).nullish(),
   presentationResume: z
     .string()
     .max(

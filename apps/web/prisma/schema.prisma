@@ -273,8 +273,6 @@ model Structure {
 
   nom String
 
-  typologie String?
-
   adresse           String
   commune           String
   codePostal        String  @map("code_postal") @db.VarChar(5)
@@ -291,21 +289,23 @@ model Structure {
   // Champs venant du schema des lieux de mediation numérique
   // CF optionsStructures.ts pour les valeurs possibles
   // CF LieuStandardMediationNumerique.ts pour la documentation complète
-  presentationResume  String?  @map("presentation_resume")
-  presentationDetail  String?  @map("presentation_detail")
-  siteWeb             String?  @map("site_web")
-  telephone String?
-  courriels String[] @default([])
-  ficheAccesLibre       String? @map("fiche_acces_libre") // url vers fiche accès libre
-  horaires            String?
-  services            String[] @default([])
+
+  typologies                    String[] @default([])
+  presentationResume            String?  @map("presentation_resume")
+  presentationDetail            String?  @map("presentation_detail")
+  siteWeb                       String?  @map("site_web")
+  telephone                     String?
+  courriels                     String[] @default([])
+  ficheAccesLibre               String?  @map("fiche_acces_libre") // url vers fiche accès libre
+  horaires                      String?
+  services                      String[] @default([])
   publicsSpecifiquementAdresses String[] @default([]) @map("publics_specifiquement_adresses")
-  priseEnChargeSpecifique String[] @default([]) @map("prise_en_charge_specifique")
-  fraisACharge            String[] @default([]) @map("frais_a_charge")
+  priseEnChargeSpecifique       String[] @default([]) @map("prise_en_charge_specifique")
+  fraisACharge                  String[] @default([]) @map("frais_a_charge")
   dispositifProgrammesNationaux String[] @default([]) @map("dispositif_programmes_nationaux")
-  itinerance String[] @default([])
-  modalitesAcces String [] @default([]) @map("modalites_acces")
-  modalitesAccompagnement String[] @default([]) @map("modalites_accompagnement")
+  itinerance                    String[] @default([])
+  modalitesAcces                String[] @default([]) @map("modalites_acces")
+  modalitesAccompagnement       String[] @default([]) @map("modalites_accompagnement")
 
   @@map("structures")
 }

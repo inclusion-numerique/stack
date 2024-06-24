@@ -69,7 +69,7 @@ const RenseignerStructureEmployeuseForm = ({
     setValue('structureEmployeuse', {
       siret: selectedStructureSiret,
       adresse: structure.adresse,
-      typologie: structure.typologie,
+      typologies: structure.typologies,
       commune: structure.commune,
       codeInsee: structure.codeInsee,
       nom: structure.nom,
@@ -113,12 +113,12 @@ const RenseignerStructureEmployeuseForm = ({
         label: `${structuresCount} résultat${sPluriel(structuresCount)}`,
         value: '',
       },
-      ...structures.map(({ adresse, nom, siret, typologie }) => ({
+      ...structures.map(({ adresse, nom, siret, typologies }) => ({
         label: (
           <>
             <div className="fr-width-full fr-text--sm fr-mb-0">{nom}</div>
             <div className="fr-width-full fr-text--xs fr-text-mention--grey fr-mb-0">
-              {typologie ? `${typologie} · ` : null}
+              {typologies ? `${typologies.join(', ')} · ` : null}
               {adresse}
             </div>
           </>

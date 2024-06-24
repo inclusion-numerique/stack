@@ -35,7 +35,7 @@ export const structuresRouter = router({
       input: {
         lieuActiviteMediateurId,
         nom,
-        typologie,
+        typologies,
         adresseBan: {
           longitude,
           latitude,
@@ -71,7 +71,7 @@ export const structuresRouter = router({
         data: {
           id,
           nom,
-          typologie,
+          typologies: typologies ?? undefined,
           adresse,
           commune,
           codePostal,
@@ -136,7 +136,7 @@ export const structuresRouter = router({
           data: {
             id,
             nom,
-            typologie,
+            typologies,
             siret,
             rna,
             codePostal,

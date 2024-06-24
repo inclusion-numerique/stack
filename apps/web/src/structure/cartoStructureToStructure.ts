@@ -76,7 +76,7 @@ export const cartoStructureToStructure = ({
     ficheAccesLibre,
     services: services?.split('|'),
     horaires,
-    typologie,
+    typologies: typologie?.split(';'),
     presentationResume,
     presentationDetail,
     courriels: courriels?.split('|'),

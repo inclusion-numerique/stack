@@ -4,6 +4,7 @@ import { checkLuhnIntegrity } from '@app/web/siret/checkLuhnIntegrity'
 export const validateValidSiretDigits = (siret: string) =>
   // La poste has invalid siret for its structures, we whitelist La Poste SIREN
   siret.length === 14 &&
+  siret !== '00000000000000' &&
   (siret.startsWith('356000000') || checkLuhnIntegrity(siret))
 
 const baseSiretValidation = z

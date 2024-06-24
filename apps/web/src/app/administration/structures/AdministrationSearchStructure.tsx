@@ -43,12 +43,12 @@ const AdministrationSearchStructure = () => {
         value: '',
       },
       ...result.structures.map(
-        ({ nom, id, adresse, commune, codePostal, typologie }) => ({
+        ({ nom, id, adresse, commune, codePostal, typologies }) => ({
           label: (
             <>
               <div className="fr-width-full fr-text--sm fr-mb-0">{nom}</div>
               <div className="fr-width-full fr-text--xs fr-text-mention--grey fr-mb-0">
-                {typologie ? `${typologie} · ` : null}
+                {typologies ? `${typologies.join(', ')} · ` : null}
                 {adresse}
                 {adresse && (codePostal || commune) ? ', ' : null}
                 {codePostal}

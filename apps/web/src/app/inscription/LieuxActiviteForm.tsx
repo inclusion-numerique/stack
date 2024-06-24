@@ -88,7 +88,7 @@ const LieuxActiviteForm = ({
       complementAdresse: structure.complementAdresse,
       nom: structure.nom,
       siret: structure.pivot,
-      typologie: structure.typologie,
+      typologies: structure.typologie?.split(';'),
     })
 
     createToast({
