@@ -26,19 +26,19 @@ export const FeaturedProfil = ({
       <h3 className="fr-text--md fr-mb-0">
         <Link href={`/profils/${slug}`}>{name}</Link>
       </h3>
-      {/*<div className="fr-text--sm fr-mb-0 fr-text-mention--grey fr-flex fr-flex-gap-2v">*/}
-      {/*  <span className="ri-file-text-line" />*/}
-      {/*  <span className="fr-flex fr-flex-gap-2v">*/}
-      {/*    <b>{resourcesCount}</b>*/}
-      {/*    <span className="fr-hidden fr-unhidden-md"> Ressources</span>*/}
-      {/*  </span>*/}
-      {/*  ·*/}
-      {/*  <span className="ri-user-heart-line" />*/}
-      {/*  <span className="fr-flex fr-flex-gap-2v">*/}
-      {/*    <b>{followersCount}</b>*/}
-      {/*    <span className="fr-hidden fr-unhidden-md"> Suivis</span>*/}
-      {/*  </span>*/}
-      {/*</div>*/}
+      {/* <div className="fr-text--sm fr-mb-0 fr-text-mention--grey fr-flex fr-flex-gap-2v"> */}
+      {/*  <span className="ri-file-text-line" /> */}
+      {/*  <span className="fr-flex fr-flex-gap-2v"> */}
+      {/*    <b>{resourcesCount}</b> */}
+      {/*    <span className="fr-hidden fr-unhidden-md"> Ressources</span> */}
+      {/*  </span> */}
+      {/*  · */}
+      {/*  <span className="ri-user-heart-line" /> */}
+      {/*  <span className="fr-flex fr-flex-gap-2v"> */}
+      {/*    <b>{followersCount}</b> */}
+      {/*    <span className="fr-hidden fr-unhidden-md"> Suivis</span> */}
+      {/*  </span> */}
+      {/* </div> */}
     </div>
   </div>
 )

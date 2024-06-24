@@ -37,12 +37,12 @@ export const FeaturedBase = ({
         {getDepartmentName(department)}
       </p>
       <div className="fr-text--sm fr-my-3v">{htmlToText(excerpt)}</div>
-      {/*<div className="fr-text--sm fr-mb-0 fr-text-mention--grey fr-flex fr-flex-gap-2v">*/}
-      {/*  <span className="ri-file-text-line" />*/}
-      {/*  <b>{resourcesCount}</b>·*/}
-      {/*  <span className="ri-user-heart-line" />*/}
-      {/*  <b>{followersCount}</b>*/}
-      {/*</div>*/}
+      {/* <div className="fr-text--sm fr-mb-0 fr-text-mention--grey fr-flex fr-flex-gap-2v"> */}
+      {/*  <span className="ri-file-text-line" /> */}
+      {/*  <b>{resourcesCount}</b>· */}
+      {/*  <span className="ri-user-heart-line" /> */}
+      {/*  <b>{followersCount}</b> */}
+      {/* </div> */}
     </div>
     {children}
   </>

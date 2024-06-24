@@ -109,7 +109,7 @@ const CultureNumeriquePage = async ({
                 totalCount={resourcesCount}
               >
                 <ThematicLinkSortingSelect
-                  href="numerique-et-environnement"
+                  href="culture-numerique"
                   thematiques={toArray(urlPaginationParams.thematiques)}
                   paginationParams={paginationParams}
                   searchParams={searchParams}

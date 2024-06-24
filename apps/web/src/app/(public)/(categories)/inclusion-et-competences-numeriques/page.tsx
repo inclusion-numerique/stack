@@ -109,7 +109,7 @@ const InclusionEtCompetencesNumeriquesPage = async ({
                 totalCount={resourcesCount}
               >
                 <ThematicLinkSortingSelect
-                  href="numerique-et-environnement"
+                  href="inclusion-et-competences-numeriques"
                   thematiques={toArray(urlPaginationParams.thematiques)}
                   paginationParams={paginationParams}
                   searchParams={searchParams}
