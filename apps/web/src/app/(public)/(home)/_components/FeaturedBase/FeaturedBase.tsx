@@ -8,22 +8,22 @@ import { RoundImageProps } from '@app/web/components/RoundImage'
 export const FeaturedBase = ({
   id,
   slug,
-  image,
   title,
   excerpt,
   department,
-  resourcesCount = 0,
-  followersCount = 0,
+  image,
+  // resourcesCount,
+  // followersCount,
   children,
 }: {
   id: string
   slug: string
-  image: RoundImageProps['image']
   title: string
   excerpt: string
   department: string
-  resourcesCount?: number
-  followersCount?: number
+  image: RoundImageProps['image']
+  // resourcesCount?: number
+  // followersCount?: number
   children?: ReactNode
 }) => (
   <>
@@ -37,12 +37,12 @@ export const FeaturedBase = ({
         {getDepartmentName(department)}
       </p>
       <div className="fr-text--sm fr-my-3v">{htmlToText(excerpt)}</div>
-      <div className="fr-text--sm fr-mb-0 fr-text-mention--grey fr-flex fr-flex-gap-2v">
-        <span className="ri-file-text-line" />
-        <b>{resourcesCount}</b>·
-        <span className="ri-user-heart-line" />
-        <b>{followersCount}</b>
-      </div>
+      {/*<div className="fr-text--sm fr-mb-0 fr-text-mention--grey fr-flex fr-flex-gap-2v">*/}
+      {/*  <span className="ri-file-text-line" />*/}
+      {/*  <b>{resourcesCount}</b>·*/}
+      {/*  <span className="ri-user-heart-line" />*/}
+      {/*  <b>{followersCount}</b>*/}
+      {/*</div>*/}
     </div>
     {children}
   </>

@@ -27,8 +27,8 @@ export const Profile: Story = {
     lastName: 'Nom',
     name: 'Prénom Nom',
     image: null,
-    resourcesCount: 45,
-    followersCount: 45,
+    // resourcesCount: 45,
+    // followersCount: 45,
   },
   render: (args) => (
     <div style={{ width: '380px' }}>

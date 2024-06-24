@@ -20,9 +20,9 @@ export type FeaturedResourceProps = {
     id: string
     slug: string
     name: string
-    isPublic: boolean
     firstName: string
     lastName: string
+    isPublic: boolean
     image: null
   }
 }

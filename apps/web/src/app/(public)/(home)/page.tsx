@@ -120,7 +120,7 @@ const HomePage = async () => {
                 className="fr-col-lg-4 fr-col-md-6 fr-col-12 fr-mt-4w fr-pb-0"
               >
                 <FeaturedBase {...base}>
-                  <FollowBaseButton userId={user?.id} {...base} />
+                  {/*<FollowBaseButton userId={user?.id} {...base} />*/}
                 </FeaturedBase>
               </div>
             ))}

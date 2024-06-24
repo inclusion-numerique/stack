@@ -29,8 +29,8 @@ export const PublishedInBase: Story = {
     excerpt:
       "Anciennement appelé <b>Maison de la Recherche et de l'Imagination</b> (MRI), Le Dôme est un espace collaboratif d’innovation né du Programme des Investissements d’Avenir Inmediats en...",
     department: '08',
-    resourcesCount: 45,
-    followersCount: 45,
+    // resourcesCount: 45,
+    // followersCount: 45,
   },
   render: (args) => (
     <div style={{ width: '380px' }}>

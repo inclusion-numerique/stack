@@ -3,24 +3,18 @@
     "slug": "jean-michel-avec-tout",
     "firstName": "Jean-Michel",
     "lastName": "Avec Tout",
-    "name": "Jean-Michel Avec Tout",
-    "resourcesCount": 0,
-    "followersCount": 0
+    "name": "Jean-Michel Avec Tout"
   },
   {
     "slug": "prenom-nom",
     "firstName": "Prénom",
     "lastName": "Nom",
-    "name": "Prénom Nom",
-    "resourcesCount": 45,
-    "followersCount": 45
+    "name": "Prénom Nom"
   },
   {
     "slug": "prenom-nom",
     "firstName": "Prénom",
     "lastName": "Nom",
-    "name": "Prénom Nom",
-    "resourcesCount": 45,
-    "followersCount": 45
+    "name": "Prénom Nom"
   }
 ]

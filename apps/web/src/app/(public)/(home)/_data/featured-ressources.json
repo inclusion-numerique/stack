@@ -14,10 +14,13 @@
     "title": "Figma, outil de design à interface collaborative",
     "slug": "figma-outil-de-design-a-interface-collaborative",
     "published": "2024-06-13",
-    "base": {
+    "createdBy": {
       "id": "1",
-      "title": "Numérique en Commun[s]",
-      "slug": "numerique-en-communs",
+      "slug": "jean-michel-avec-tout",
+      "firstName": "Jean-Michel",
+      "lastName": "Avec Tout",
+      "name": "Jean-Michel Avec Tout",
+      "isPublic": true,
       "image": null
     }
   },
