@@ -29,7 +29,7 @@ const Page = async () => {
   }
 
   if (user.emplois.length === 0) {
-    redirect(mediateurInscriptionSteps.lieuxActivites)
+    redirect(mediateurInscriptionSteps.lieuxActivite)
     return null
   }
 
@@ -49,13 +49,13 @@ const Page = async () => {
   return (
     <InscriptionCard
       title="Récapitulatif de vos informations"
-      backHref={mediateurInscriptionSteps.lieuxActivites}
+      backHref={mediateurInscriptionSteps.lieuxActivite}
       stepNumber={3}
       totalSteps={mediateurinscriptionStepsCount}
       subtitle="Vérifiez que ces informations sont exactes avant de valider votre inscription."
     >
       <InscriptionRecapitulatif
-        editLieuxActiviteHref={mediateurInscriptionSteps.lieuxActivites}
+        editLieuxActiviteHref={mediateurInscriptionSteps.lieuxActivite}
         user={user}
         structureEmployeuse={emploi.structure}
         lieuxActivite={lieuxActivite}

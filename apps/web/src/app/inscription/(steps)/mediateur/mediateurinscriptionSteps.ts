@@ -6,6 +6,6 @@ export const mediateurInscriptionSteps = {
   intro: `/inscription?profil=${profileInscriptionSlugs.Mediateur}`,
   structureEmployeuse: `/inscription/mediateur/structure-employeuse`,
   structureEmployeuseLieuActivite: `/inscription/mediateur/structure-employeuse-lieu-activite`,
-  lieuxActivites: `/inscription/mediateur/lieux-activites`,
+  lieuxActivite: `/inscription/mediateur/lieux-activite`,
   recapitulatif: `/inscription/mediateur/recapitulatif`,
 }

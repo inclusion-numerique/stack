@@ -1,5 +1,5 @@
 import Button from '@codegouvfr/react-dsfr/Button'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import IconInSquare from '@app/web/components/IconInSquare'
 import InfoLabelValue from '@app/web/components/InfoLabelValue'
 import { profileInscriptionLabels } from '@app/web/inscription/profilInscription'
@@ -16,13 +16,15 @@ const InscriptionRecapitulatif = ({
   lieuxActivite,
   user,
   contactSupportLink = false,
+  button,
 }: {
   editStructureEmployeuseHref?: string
   editLieuxActiviteHref: string
   user: Pick<SessionUser, 'profilInscription' | 'id' | 'email' | 'name'>
   structureEmployeuse: StructureData
-  lieuxActivite: StructureData[]
+  lieuxActivite?: StructureData[]
   contactSupportLink?: boolean
+  button?: ReactNode
 }) => (
   <>
     <div className="fr-flex fr-align-items-center fr-flex-gap-3v fr-mt-12v">
@@ -75,34 +77,38 @@ const InscriptionRecapitulatif = ({
       )}
     </div>
     <StructureCard structure={structureEmployeuse} className="fr-mt-4v" />
+    {!!lieuxActivite && (
+      <>
+        <hr className="fr-separator-12v" />
+        <div className="fr-flex fr-align-items-center fr-flex-gap-3v fr-mt-12v fr-mb-6v">
+          <IconInSquare iconId="ri-home-office-line" size="small" />
+          <h2 className="fr-h6 fr-mb-0 fr-text-title--blue-france">
+            {lieuxActivite.length === 1
+              ? 'Mon lieu d’activité'
+              : `Mes lieux d’activité · ${lieuxActivite.length}`}
+          </h2>
+          <span className="fr-flex-grow-1" />
+          <Button
+            priority="tertiary no outline"
+            linkProps={{
+              href: editLieuxActiviteHref,
+            }}
+            iconId="fr-icon-edit-line"
+            iconPosition="right"
+            size="small"
+          >
+            Modifier
+          </Button>
+        </div>
+        {/* Les lieux sont affichés dans l'ordre inverse (le plus récent en haut) dans la formulaire lieux activité, on reproduit cela pour */}
+        {/* que l'affichage soit cohérent */}
+        {lieuxActivite.reverse().map((lieu) => (
+          <StructureCard key={lieu.id} structure={lieu} className="fr-mt-4v" />
+        ))}
+      </>
+    )}
     <hr className="fr-separator-12v" />
-    <div className="fr-flex fr-align-items-center fr-flex-gap-3v fr-mt-12v fr-mb-6v">
-      <IconInSquare iconId="ri-home-office-line" size="small" />
-      <h2 className="fr-h6 fr-mb-0 fr-text-title--blue-france">
-        {lieuxActivite.length === 1
-          ? 'Mon lieu d’activité'
-          : `Mes lieux d’activité · ${lieuxActivite.length}`}
-      </h2>
-      <span className="fr-flex-grow-1" />
-      <Button
-        priority="tertiary no outline"
-        linkProps={{
-          href: editLieuxActiviteHref,
-        }}
-        iconId="fr-icon-edit-line"
-        iconPosition="right"
-        size="small"
-      >
-        Modifier
-      </Button>
-    </div>
-    {/* Les lieux sont affichés dans l'ordre inverse (le plus récent en haut) dans la formulaire lieux activité, on reproduit cela pour */}
-    {/* que l'affichage soit cohérent */}
-    {lieuxActivite.reverse().map((lieu) => (
-      <StructureCard key={lieu.id} structure={lieu} className="fr-mt-4v" />
-    ))}
-    <hr className="fr-separator-12v" />
-    <ValiderInscriptionForm userId={user.id} />
+    {button || <ValiderInscriptionForm userId={user.id} />}
     {contactSupportLink && <InscriptionInvalidInformationContactSupportLink />}
   </>
 )

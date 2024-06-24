@@ -50,12 +50,17 @@ const InscriptionCard = ({
       >
         {title}
       </h1>
-      {subtitle && <p className="fr-mt-4v fr-mb-12v">{subtitle}</p>}
       {nextStepTitle && (
-        <p className="fr-text--xs fr-text-mention--grey fr-mb-12v">
+        <p
+          className={classNames(
+            'fr-text--xs fr-text-mention--grey',
+            subtitle ? 'fr-mb-4v' : 'fr-mb-12v',
+          )}
+        >
           <b>Étape suivante&nbsp;:</b> {nextStepTitle}
         </p>
       )}
+      {subtitle && <p className="fr-mt-4v fr-mb-12v">{subtitle}</p>}
       {children}
     </div>
   </>

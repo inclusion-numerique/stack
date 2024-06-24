@@ -5,9 +5,12 @@ import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 import { getStructureEmployeuseForInscription } from '@app/web/app/inscription/getStructureEmployeuseForInscription'
 import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
-import { conseillerNumeriqueInscriptionSteps } from '@app/web/app/inscription/(steps)/conseiller-numerique/conseillerNumeriqueinscriptionSteps'
 import ConseillerNumeriqueInscriptionNotice from '@app/web/app/inscription/ConseillerNumeriqueInscriptionNotice'
 import InscriptionRecapitulatif from '@app/web/app/inscription/InscriptionRecapitulatif'
+import {
+  conseillerNumeriqueLieuxInscriptionSteps,
+  conseillerNumeriqueLieuxInscriptionStepsCount,
+} from '@app/web/app/inscription/(steps)/conseiller-numerique-lieux/conseillerNumeriqueLieuxInscriptionSteps'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),
@@ -41,13 +44,15 @@ const Page = async () => {
   return (
     <InscriptionCard
       title="Récapitulatif de vos informations"
-      backHref={conseillerNumeriqueInscriptionSteps.intro}
+      backHref={conseillerNumeriqueLieuxInscriptionSteps.lieuxActivite}
       subtitle="Vérifiez que ces informations sont exactes avant de valider votre inscription."
+      stepNumber={3}
+      totalSteps={conseillerNumeriqueLieuxInscriptionStepsCount}
     >
       <ConseillerNumeriqueInscriptionNotice className="fr-mt-12v" />
       <InscriptionRecapitulatif
         editLieuxActiviteHref={
-          conseillerNumeriqueInscriptionSteps.lieuxActivite
+          conseillerNumeriqueLieuxInscriptionSteps.lieuxActivite
         }
         user={user}
         structureEmployeuse={emploi.structure}

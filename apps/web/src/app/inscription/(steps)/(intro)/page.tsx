@@ -47,13 +47,13 @@ const Page = async ({
 
   const nextStep = // Coordinateur
     checkedUser.coordinateur
-      ? coordinateurInscriptionSteps.recapituatif
+      ? coordinateurInscriptionSteps.recapitulatif
       : checkedUser.mediateur?.conseillerNumerique
         ? // Conseiller numérique with lieux activite
           lieuxActivite.length > 0
           ? conseillerNumeriqueInscriptionSteps.recapitulatif
           : // Conseiller numérique without lieux activite
-            conseillerNumeriqueLieuxInscriptionSteps.lieuxActivites
+            conseillerNumeriqueLieuxInscriptionSteps.verifier
         : // Mediateur
           mediateurInscriptionSteps.structureEmployeuse
 

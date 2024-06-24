@@ -9,6 +9,8 @@ export const conseillerNumeriqueLieuxInscriptionSteps = {
   intro: `/inscription?profil=${profileInscriptionSlugs.ConseillerNumerique}`,
   // Vérifier infos de base
   verifier: `/inscription/conseiller-numerique-lieux/verifier`,
-  lieuxActivites: `/inscription/conseiller-numerique-lieux/lieux-activites`,
-  recapituatif: `/inscription/conseiller-numerique-lieux/recapitulatif`,
+  lieuxActivite: `/inscription/conseiller-numerique-lieux/lieux-activite`,
+  recapitulatif: `/inscription/conseiller-numerique-lieux/recapitulatif`,
 }
+
+export const conseillerNumeriqueLieuxInscriptionStepsCount = 3
