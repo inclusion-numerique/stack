@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import Tag from '@codegouvfr/react-dsfr/Tag'
+import { Sorting } from '@app/web/server/search/searchQueryParams'
 import { createThematicLink } from '../_helpers/createThematicLink'
 
 const onlySelected = (option: string) => (thematic: string) =>
@@ -13,12 +14,14 @@ export const ThematicTags = ({
   thematic,
   selected = [],
   page,
+  tri,
   className,
 }: {
   href: string
   thematic: { name: string; value: string }[]
   selected: string[]
   page?: number
+  tri?: Sorting
   className?: string
 }) => {
   const router = useRouter()
@@ -31,13 +34,16 @@ export const ThematicTags = ({
 
   const unselect = (option: string) => {
     router.push(
-      createThematicLink(href, selected.filter(onlySelected(option)))(page),
+      createThematicLink(href, selected.filter(onlySelected(option)))(
+        page,
+        tri,
+      ),
     )
     setIsLoading(true)
   }
 
   const select = (option: string) => {
-    router.push(createThematicLink(href, [...selected, option])(page))
+    router.push(createThematicLink(href, [...selected, option])(page, tri))
     setIsLoading(true)
   }
 

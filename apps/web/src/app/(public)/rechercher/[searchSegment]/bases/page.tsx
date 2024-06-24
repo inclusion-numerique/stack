@@ -12,6 +12,7 @@ import {
   executeBasesSearch,
 } from '@app/web/server/search/executeSearch'
 import BasesSearchResult from '@app/web/components/Search/BasesSearchResult'
+import { SearchUrlResultSortingSelect } from '@app/web/components/Search/SearchUrlResultSortingSelect'
 import SynchronizeTabCounts from '@app/web/app/(public)/rechercher/[searchSegment]/SynchronizeTabCounts'
 
 export const dynamic = 'force-dynamic'
@@ -43,13 +44,13 @@ const BasesSearchResultPage = async ({
           searchUrl('bases', searchParams, { ...paginationParams, page })
         }
       >
-        <BasesSearchResult
-          user={user}
-          bases={bases}
-          searchParams={searchParams}
-          paginationParams={paginationParams}
-          totalCount={basesCount}
-        />
+        <BasesSearchResult user={user} bases={bases} totalCount={basesCount}>
+          <SearchUrlResultSortingSelect
+            paginationParams={paginationParams}
+            searchParams={searchParams}
+            tab="bases"
+          />
+        </BasesSearchResult>
       </SearchResults>
     </>
   )

@@ -12,6 +12,7 @@ import {
   executeProfilesSearch,
 } from '@app/web/server/search/executeSearch'
 import ProfilesSearchResult from '@app/web/components/Search/ProfilesSearchResult'
+import { SearchUrlResultSortingSelect } from '@app/web/components/Search/SearchUrlResultSortingSelect'
 import SynchronizeTabCounts from '@app/web/app/(public)/rechercher/[searchSegment]/SynchronizeTabCounts'
 
 export const dynamic = 'force-dynamic'
@@ -47,9 +48,13 @@ const ProfilesSearchResultPage = async ({
           user={user}
           profiles={profiles}
           totalCount={profilesCount}
-          paginationParams={paginationParams}
-          searchParams={searchParams}
-        />
+        >
+          <SearchUrlResultSortingSelect
+            paginationParams={paginationParams}
+            searchParams={searchParams}
+            tab="profils"
+          />
+        </ProfilesSearchResult>
       </SearchResults>
     </>
   )

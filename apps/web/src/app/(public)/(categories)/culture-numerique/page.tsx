@@ -13,10 +13,12 @@ import {
 import {
   sanitizeUrlPaginationParams,
   searchParamsFromSegment,
+  Sorting,
 } from '@app/web/server/search/searchQueryParams'
 import SearchResults from '@app/web/components/Search/SearchResults'
 import { categoryThemesOptions } from '@app/web/themes/themes'
-import { getHomeCategoriesCount } from '../../(home)/_components/getHomeCategoriesCount'
+import { getHomeCategoriesCount } from '@app/web/app/(public)/(home)/_components/getHomeCategoriesCount'
+import { ThematicLinkSortingSelect } from '@app/web/components/Search/ThematicLinkResultSortingSelect'
 import { ThematicHeader } from '../_components/ThematicHeader'
 import { ThematicTags } from '../_components/ThematicTags'
 import { createThematicLink } from '../_helpers/createThematicLink'
@@ -86,27 +88,33 @@ const CultureNumeriquePage = async ({
               href="culture-numerique"
               thematic={thematic}
               selected={toArray(urlPaginationParams.thematiques)}
-              page={
-                urlPaginationParams.page ? +urlPaginationParams.page : undefined
-              }
+              page={1}
+              tri={urlPaginationParams.tri as Sorting}
             />
           </div>
           <main id={contentId}>
             <SearchResults
               paginationParams={paginationParams}
               count={resourcesCount}
-              createPageLink={createThematicLink(
-                'culture-numerique',
-                toArray(urlPaginationParams.thematiques),
-              )}
+              createPageLink={(page) =>
+                createThematicLink(
+                  'culture-numerique',
+                  toArray(urlPaginationParams.thematiques),
+                )(page, urlPaginationParams.tri as Sorting)
+              }
             >
               <ResourcesSearchResults
-                searchParams={searchParams}
-                paginationParams={paginationParams}
                 resources={resources}
                 user={user}
                 totalCount={resourcesCount}
-              />
+              >
+                <ThematicLinkSortingSelect
+                  href="numerique-et-environnement"
+                  thematiques={toArray(urlPaginationParams.thematiques)}
+                  paginationParams={paginationParams}
+                  searchParams={searchParams}
+                />
+              </ResourcesSearchResults>
             </SearchResults>
           </main>
         </div>
