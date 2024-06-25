@@ -38,7 +38,9 @@ export const ThematicTags = ({
     const newSelectedTags = [...activeTags, value]
     setActiveTags(newSelectedTags)
 
-    router.push(createThematicLink(categoryPath, newSelectedTags)(page, tri))
+    router.push(createThematicLink(categoryPath, newSelectedTags)(page, tri), {
+      scroll: false,
+    })
   }
 
   return (

@@ -198,8 +198,10 @@ export const getResourcesCountByTheme = async () => {
   >`
       SELECT unnest(themes) AS theme, CAST(COUNT(DISTINCT resources.id) AS integer) AS "count"
       FROM resources
+      LEFT JOIN bases ON resources.base_id = bases.id
       WHERE resources.is_public = true
         AND resources.deleted IS NULL
+        AND (bases.id IS NULL OR bases.deleted IS NULL)
       GROUP BY theme
       ORDER BY theme ASC;
   `
@@ -236,9 +238,12 @@ export const getResourcesCountByCategory = async () => {
       WITH categories AS (${categoryThemesSQL})
       SELECT categories.category, CAST(COUNT(DISTINCT resources.id) AS integer) AS count
       FROM resources
-               JOIN categories ON resources.themes && categories.themes
+        JOIN categories ON resources.themes && categories.themes
+        LEFT JOIN bases ON resources.base_id = bases.id
       WHERE resources.is_public = true
         AND resources.deleted IS NULL
+        AND resources.published IS NOT NULL
+        AND (bases.id IS NULL OR bases.deleted IS NULL)
       GROUP BY categories.category
       ORDER BY categories.category ASC;
   `
