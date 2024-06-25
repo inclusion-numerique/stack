@@ -1,13 +1,13 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import React, { useState } from 'react'
 import Tag from '@codegouvfr/react-dsfr/Tag'
 import { Sorting } from '@app/web/server/search/searchQueryParams'
 import { createThematicLink } from '../_helpers/createThematicLink'
 
-const onlySelected = (option: string) => (thematic: string) =>
-  thematic !== option
+// helper for filter() method
+const excludeValue = (value: string) => (thematic: string) => thematic !== value
 
 export const ThematicTags = ({
   href,
@@ -25,26 +25,20 @@ export const ThematicTags = ({
   className?: string
 }) => {
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const [isLoading, setIsLoading] = useState(false)
+  const [activeTags, setActiveTags] = useState(selected)
 
-  useEffect(() => {
-    setIsLoading(false)
-  }, [searchParams])
+  const unselect = (value: string) => {
+    const newSelectedTags = activeTags.filter(excludeValue(value))
+    setActiveTags(newSelectedTags)
 
-  const unselect = (option: string) => {
-    router.push(
-      createThematicLink(href, selected.filter(onlySelected(option)))(
-        page,
-        tri,
-      ),
-    )
-    setIsLoading(true)
+    router.push(createThematicLink(href, newSelectedTags)(page, tri))
   }
 
-  const select = (option: string) => {
-    router.push(createThematicLink(href, [...selected, option])(page, tri))
-    setIsLoading(true)
+  const select = (value: string) => {
+    const newSelectedTags = [...activeTags, value]
+    setActiveTags(newSelectedTags)
+
+    router.push(createThematicLink(href, newSelectedTags)(page, tri))
   }
 
   return (
@@ -53,11 +47,10 @@ export const ThematicTags = ({
         <li key={name}>
           <Tag
             className={className}
-            pressed={selected.includes(value)}
+            pressed={activeTags.includes(value)}
             nativeButtonProps={{
               onClick: () =>
-                selected.includes(value) ? unselect(value) : select(value),
-              disabled: isLoading,
+                activeTags.includes(value) ? unselect(value) : select(value),
             }}
           >
             {name}
