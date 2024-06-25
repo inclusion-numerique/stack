@@ -10,15 +10,15 @@ import { createThematicLink } from '../_helpers/createThematicLink'
 const excludeValue = (value: string) => (thematic: string) => thematic !== value
 
 export const ThematicTags = ({
-  href,
-  thematic,
+  categoryPath,
+  themeOptions,
   selected = [],
   page,
   tri,
   className,
 }: {
-  href: string
-  thematic: { name: string; value: string }[]
+  categoryPath: string
+  themeOptions: { name: string; value: string }[]
   selected: string[]
   page?: number
   tri?: Sorting
@@ -31,19 +31,19 @@ export const ThematicTags = ({
     const newSelectedTags = activeTags.filter(excludeValue(value))
     setActiveTags(newSelectedTags)
 
-    router.push(createThematicLink(href, newSelectedTags)(page, tri))
+    router.push(createThematicLink(categoryPath, newSelectedTags)(page, tri))
   }
 
   const select = (value: string) => {
     const newSelectedTags = [...activeTags, value]
     setActiveTags(newSelectedTags)
 
-    router.push(createThematicLink(href, newSelectedTags)(page, tri))
+    router.push(createThematicLink(categoryPath, newSelectedTags)(page, tri))
   }
 
   return (
     <ul className="fr-tags-group fr-justify-content-center">
-      {thematic.map(({ name, value }) => (
+      {themeOptions.map(({ name, value }) => (
         <li key={name}>
           <Tag
             className={className}

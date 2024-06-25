@@ -12,17 +12,19 @@ export const ThematicLinkSortingSelect = ({
   paginationParams,
   searchParams,
   thematiques,
-  href,
+  categoryPath,
 }: {
   paginationParams: PaginationParams
   searchParams: SearchParams
   thematiques: string[]
-  href: string
+  categoryPath: string
 }) => (
   <ResultSortingSelect
     paginationParams={paginationParams}
     searchParams={searchParams}
     tab="ressources"
-    createSortingLink={(sort) => createThematicLink(href, thematiques)(1, sort)}
+    createSortingLink={(sort) =>
+      createThematicLink(categoryPath, thematiques)(1, sort)
+    }
   />
 )

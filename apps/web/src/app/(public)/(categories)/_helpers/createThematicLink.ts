@@ -8,5 +8,6 @@ const toPageQueryIfAny = (page?: number) => (page ? [`page=${page}`] : [])
 const toSortQueryIfAny = (sort?: Sorting) => (sort ? [`tri=${sort}`] : [])
 
 export const createThematicLink =
-  (href: string, thematics: string[]) => (page?: number, sort?: Sorting) =>
-    `${href}?${[...toThematicsQuery(thematics), ...toPageQueryIfAny(page), ...toSortQueryIfAny(sort)].join('&')}`
+  (categoryPath: string, thematics: string[]) =>
+  (page?: number, sort?: Sorting) =>
+    `${categoryPath}?${[...toThematicsQuery(thematics), ...toPageQueryIfAny(page), ...toSortQueryIfAny(sort)].join('&')}`

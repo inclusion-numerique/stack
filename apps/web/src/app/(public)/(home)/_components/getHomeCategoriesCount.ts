@@ -1,32 +1,48 @@
-import { Theme } from '@prisma/client'
-import { getResourcesCountByTheme } from '@app/web/server/resources/getResourcesList'
-import { categoryThemes, themeLabels } from '@app/web/themes/themes'
+import type { Theme } from '@prisma/client'
+import {
+  getResourcesCountByCategory,
+  getResourcesCountByTheme,
+} from '@app/web/server/resources/getResourcesList'
+import { categories, Category, categoryThemes } from '@app/web/themes/themes'
 
 export const getHomeCategoriesCount = async () => {
-  const categoriesCount = await getResourcesCountByTheme()
+  const themesCount = await getResourcesCountByTheme()
 
-  return Object.entries(categoryThemes).map(([category, themes]) => {
-    let resourcesCount = 0
-    const themesInfo: {
-      title: string
-      count: number
-      theme: Theme
-    }[] = []
+  const categoriesCount = await getResourcesCountByCategory()
 
-    for (const theme of themes) {
-      const themeResourcesCount = categoriesCount[theme]
-      themesInfo.push({
-        theme,
-        title: themeLabels[theme],
-        count: themeResourcesCount,
-      })
-      resourcesCount += themeResourcesCount
+  return Object.fromEntries(
+    categories.map((category) => {
+      const counts = {
+        category,
+        resources: categoriesCount[category],
+        themes: categoryThemes[category].map((theme) => ({
+          theme,
+          resources: themesCount[theme],
+        })),
+      } satisfies {
+        category: Category
+        resources: number
+        themes: {
+          theme: Theme
+          resources: number
+        }[]
+      }
+
+      return [category, counts]
+    }),
+  ) as unknown as {
+    [category in Category]: {
+      category: Category
+      resources: number
+      themes: {
+        theme: Theme
+        resources: number
+      }[]
     }
-
-    return {
-      title: category,
-      resourcesCount,
-      themes: themesInfo,
-    }
-  })
+  }
 }
+
+export type HomeCategoriesCount = Awaited<
+  ReturnType<typeof getHomeCategoriesCount>
+>
+export type HomeCategoryCounts = HomeCategoriesCount[Category]
