@@ -2,43 +2,28 @@ import React from 'react'
 import Link from 'next/link'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { CropText } from '@app/web/components/CropText/CropText'
-import { RoundImageProps } from '@app/web/components/RoundImage'
 import BaseImage from '@app/web/components/BaseImage'
 import RoundProfileImage from '@app/web/components/RoundProfileImage'
+import type { ResourceListItem } from '@app/web/server/resources/getResourcesList'
+import type { SessionUser } from '@app/web/auth/sessionUser'
 
 export type FeaturedResourceProps = {
-  title: string
-  slug: string
-  published: Date | string
-  base?: {
-    id: string
-    slug: string
-    title: string
-    image: RoundImageProps['image']
-  }
-  createdBy?: {
-    id: string
-    slug: string
-    name: string
-    firstName: string
-    lastName: string
-    isPublic: boolean
-    image: null
-  }
+  resource: ResourceListItem
+  user: SessionUser | null
 }
 
 const BaseMetadata = ({
   base,
 }: {
-  base: NonNullable<FeaturedResourceProps['base']>
+  base: NonNullable<FeaturedResourceProps['resource']['base']>
 }) => (
   <>
     <BaseImage base={base} />
-    <span>
+    <span className="fr-text--xs fr-mb-0">
       Publiée&nbsp;dans&nbsp;la&nbsp;base{' '}
       <Link
         href={`bases/${base.slug}`}
-        className="fr-link fr-position-relative"
+        className="fr-link fr-position-relative fr-link--xs"
         style={{ zIndex: 2 }}
       >
         {base.title}
@@ -50,16 +35,16 @@ const BaseMetadata = ({
 const ProfileMetadata = ({
   profile,
 }: {
-  profile: NonNullable<FeaturedResourceProps['createdBy']>
+  profile: NonNullable<FeaturedResourceProps['resource']['createdBy']>
 }) => (
   <>
     <RoundProfileImage user={profile} />
-    <span>
+    <span className="fr-text--xs fr-mb-0">
       Publiée&nbsp;par{' '}
       {profile.isPublic ? (
         <Link
           href={`profils/${profile.slug}`}
-          className="fr-link fr-position-relative"
+          className="fr-link fr-position-relative  fr-link--xs"
           style={{ zIndex: 2 }}
         >
           {profile.name}
@@ -72,11 +57,10 @@ const ProfileMetadata = ({
 )
 
 export const FeaturedResource = ({
-  title,
-  slug,
-  published,
-  base,
-  createdBy,
+  resource: { title, slug, published, base, createdBy },
+  // Todo use the user prop for action buttons
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  user,
 }: FeaturedResourceProps) => (
   <div className="fr-border-top fr-enlarge-link fr-no-hover-bg">
     <div className="fr-my-2w fr-flex fr-align-items-center fr-flex-gap-2v">
@@ -85,11 +69,15 @@ export const FeaturedResource = ({
         <ProfileMetadata profile={createdBy} />
       )}
     </div>
-    <h3 className="fr-text--lg fr-mb-1v">
+    <h3 className="fr-text--md fr-mb-1v">
       <Link href={`/ressources/${slug}`}>
         <CropText limit={79}>{title}</CropText>
       </Link>
     </h3>
-    Publiée&nbsp;le&nbsp;{dateAsDay(new Date(published))}
+    {!!published && (
+      <span className="fr-text--xs fr-mb-0">
+        Publiée&nbsp;le&nbsp;{dateAsDay(new Date(published))}
+      </span>
+    )}
   </div>
 )

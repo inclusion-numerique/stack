@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
+import type { ProfileListItem } from '@app/web/server/profiles/getProfilesList'
 import { FeaturedProfil } from './FeaturedProfil'
 
 const meta = {
@@ -20,15 +21,40 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const profile = {
+  id: 'f41d4215-aee5-4b39-95c9-60484df15de9',
+  name: 'Jean Biche',
+  image: null,
+  firstName: 'Jean',
+  lastName: 'Biche',
+  followedBy: [],
+  slug: 'jean-biche',
+  _count: { followedBy: 4 },
+  resourceEvent: [
+    { resourceId: 'a' },
+    { resourceId: 'b' },
+    { resourceId: 'c' },
+    { resourceId: 'd' },
+  ],
+  resources: [
+    {
+      resourceId: 'b',
+    },
+  ],
+  createdResources: [
+    {
+      id: 'c',
+    },
+    {
+      id: 'd',
+    },
+  ],
+} satisfies ProfileListItem
+
 export const Profile: Story = {
   args: {
-    slug: 'prenom-nom',
-    firstName: 'Prénom',
-    lastName: 'Nom',
-    name: 'Prénom Nom',
-    image: null,
-    // resourcesCount: 45,
-    // followersCount: 45,
+    profile,
+    user: null,
   },
   render: (args) => (
     <div style={{ width: '380px' }}>

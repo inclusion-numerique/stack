@@ -1,49 +1,48 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import Link from 'next/link'
-import { htmlToText } from '@app/web/utils/htmlToText'
+import classNames from 'classnames'
 import { getDepartmentName } from '@app/web/utils/departments'
 import BaseImage from '@app/web/components/BaseImage'
-import { RoundImageProps } from '@app/web/components/RoundImage'
+import type { BaseListItem } from '@app/web/server/bases/getBasesList'
+import { SessionUser } from '@app/web/auth/sessionUser'
+import styles from './FeaturedBase.module.css'
 
 export const FeaturedBase = ({
-  id,
-  slug,
-  title,
-  excerpt,
-  department,
-  image,
-  // resourcesCount,
-  // followersCount,
-  children,
+  base: { id, slug, title, excerpt, department, image, _count },
 }: {
-  id: string
-  slug: string
-  title: string
-  excerpt: string
-  department: string
-  image: RoundImageProps['image']
-  // resourcesCount?: number
-  // followersCount?: number
-  children?: ReactNode
+  base: BaseListItem
+  // eslint-disable-next-line react/no-unused-prop-types
+  user: SessionUser | null
 }) => (
   <>
     <div className="fr-mb-2w fr-enlarge-link fr-no-hover-bg">
       <Link href={`/bases/${slug}`}>
         <BaseImage base={{ id, image }} size={96} />
       </Link>
-      <h3 className="fr-h6 fr-my-3v">{title}</h3>
-      <p className="fr-text--sm fr-text-mention--grey fr-mb-0 fr-flex fr-flex-gap-1v">
-        <span className="ri-map-pin-2-line" />
-        {getDepartmentName(department)}
-      </p>
-      <div className="fr-text--sm fr-my-3v">{htmlToText(excerpt)}</div>
-      {/* <div className="fr-text--sm fr-mb-0 fr-text-mention--grey fr-flex fr-flex-gap-2v"> */}
-      {/*  <span className="ri-file-text-line" /> */}
-      {/*  <b>{resourcesCount}</b>· */}
-      {/*  <span className="ri-user-heart-line" /> */}
-      {/*  <b>{followersCount}</b> */}
-      {/* </div> */}
+      <h3 className="fr-text--lg fr-my-3v">{title}</h3>
+      {!!department && (
+        <p className="fr-text--sm fr-text-mention--grey fr-my-3v fr-flex fr-flex-gap-1v">
+          <span className="ri-map-pin-2-line" />
+          {getDepartmentName(department)}
+        </p>
+      )}
+      {!!excerpt && (
+        <div className={classNames('fr-text--sm fr-my-3v', styles.exerpt)}>
+          {excerpt}
+        </div>
+      )}
+      <div className="fr-text--sm fr-mb-0 fr-text-mention--grey fr-flex fr-flex-gap-2v">
+        <span className="ri-file-text-line" />
+        <b>{_count.resources}</b>·
+        <span className="ri-user-heart-line" />
+        <b>{_count.followedBy}</b>
+      </div>
     </div>
-    {children}
+    {/* <FollowBaseButton */}
+    {/*  userId={user?.id} */}
+    {/*  id={id} */}
+    {/*  followedBy={follows} */}
+    {/*  title={title} */}
+    {/* /> */}
   </>
 )

@@ -1,31 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { FeaturedResource, FeaturedResourceProps } from './FeaturedResource'
+import { resource } from '@app/web/components/Resource/Cards/cardsStoriesHelpers'
+import {
+  FeaturedResource,
+  type FeaturedResourceProps,
+} from './FeaturedResource'
 
-const BASE: FeaturedResourceProps['base'] = {
-  id: '2',
-  slug: 'conseiller-numerique',
-  title: 'Conseiller numérique France Services',
-  image: null,
-}
-
-const CREATED_BY: FeaturedResourceProps['createdBy'] = {
-  id: '1',
-  slug: 'jean-biche',
-  name: 'Jean Biche',
-  firstName: 'Jean',
-  lastName: 'Biche',
-  isPublic: true,
-  image: null,
-}
-
-const FEATURED_RESSOURCE: FeaturedResourceProps = {
-  title:
-    'Lorem ipsum dolor sit amet consectetur. Curabitur pellentesque tincidunt viverra',
-  slug: 'exemple',
-  published: new Date('2022-07-12'),
-  base: BASE,
-  createdBy: CREATED_BY,
-}
+const FEATURED_RESSOURCE: FeaturedResourceProps['resource'] = resource
 
 const meta = {
   title: "Page d'accueil/Ressource à la une",
@@ -47,7 +27,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const PublishedInBase: Story = {
-  args: FEATURED_RESSOURCE,
+  args: { resource: FEATURED_RESSOURCE, user: null },
   render: (args) => (
     <div style={{ width: '380px' }}>
       <FeaturedResource {...args} />
@@ -59,8 +39,11 @@ PublishedInBase.storyName =
 
 export const PublishedInProfileProfile: Story = {
   args: {
-    ...FEATURED_RESSOURCE,
-    base: undefined,
+    resource: {
+      ...FEATURED_RESSOURCE,
+      base: null,
+    },
+    user: null,
   },
   render: (args) => (
     <div style={{ width: '380px' }}>
@@ -73,12 +56,15 @@ PublishedInProfileProfile.storyName =
 
 export const PublishedInPrivateProfile: Story = {
   args: {
-    ...FEATURED_RESSOURCE,
-    base: undefined,
-    createdBy: {
-      ...CREATED_BY,
-      isPublic: false,
+    resource: {
+      ...FEATURED_RESSOURCE,
+      base: null,
+      createdBy: {
+        ...FEATURED_RESSOURCE.createdBy,
+        isPublic: false,
+      },
     },
+    user: null,
   },
   render: (args) => (
     <div style={{ width: '380px' }}>
