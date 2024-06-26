@@ -24,7 +24,7 @@ const ProfileCard = ({
   displayProfileMetadata?: boolean
 }) => (
   <article className="fr-border-top" data-testid="profile-card">
-    <div className="fr-enlarge-link fr-py-2w fr-flex fr-flex-gap-4v fr-align-items-sm-center fr-direction-sm-row fr-direction-column">
+    <div className="fr-py-2w fr-flex fr-flex-gap-4v fr-align-items-sm-center fr-direction-sm-row fr-direction-column">
       <div className="fr-flex fr-flex-gap-4v fr-align-items-center fr-flex-grow-1 ">
         <RoundProfileImage size={48} user={profile} />
         <div className="fr-flex fr-direction-column fr-flex-gap-2v">
