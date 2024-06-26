@@ -55,7 +55,7 @@ export const CategoryCard = ({
   <div
     className={classNames(
       CATEGORY_VARIANTS[category].background,
-      'fr-p-6w fr-border-radius--16 fr-height-full fr-flex fr-direction-column',
+      'fr-p-6w fr-border-radius--16 fr-height-full fr-flex fr-direction-column fr-enlarge-link',
     )}
   >
     <div>
