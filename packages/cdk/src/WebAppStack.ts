@@ -49,6 +49,7 @@ export const webAppStackSensitiveVariables = [
   'MONCOMPTEPRO_PREVIEW_CLIENT_SECRET',
   'MONCOMPTEPRO_MAIN_CLIENT_SECRET',
   'INTERNAL_API_PRIVATE_KEY',
+  'CONSEILLER_NUMERIQUE_MONGODB_URL',
 ] as const
 
 /**
@@ -205,6 +206,8 @@ export class WebAppStack extends TerraformStack {
               .value,
         INTERNAL_API_PRIVATE_KEY:
           sensitiveEnvironmentVariables.INTERNAL_API_PRIVATE_KEY.value,
+        CONSEILLER_NUMERIQUE_MONGODB_URL:
+          sensitiveEnvironmentVariables.CONSEILLER_NUMERIQUE_MONGODB_URL.value,
       },
       name: containerName,
       minScale: isMain ? 2 : namespace === 'dev' ? 1 : 0,
