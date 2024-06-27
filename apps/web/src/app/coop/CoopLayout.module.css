@@ -34,7 +34,15 @@
     }
 }
 
+
 .contentContainer {
     flex-grow: 1;
+}
+
+.contentContainer--944{
     max-width: 944px;
+}
+
+.contentContainer--794 {
+    max-width: 794px;
 }

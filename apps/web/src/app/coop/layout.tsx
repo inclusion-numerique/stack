@@ -58,9 +58,7 @@ const Layout = async ({ children }: PropsWithChildren) => {
         <div className={styles.sideNavContainer}>
           <CoopSideMenu user={user} />
         </div>
-        <div className={styles.pageContainer}>
-          <div className={styles.contentContainer}>{children}</div>
-        </div>
+        <div className={styles.pageContainer}>{children}</div>
       </div>
       <PublicFooter />
     </div>
