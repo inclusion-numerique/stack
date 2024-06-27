@@ -4,6 +4,7 @@ import { prismaClient } from '@app/web/prismaClient'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import UsurpUserButton from '@app/web/app/administration/usurpation/UsurpUserButton'
 import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
+import ResetUserFixtureButton from '@app/web/app/administration/usurpation/ResetUserFixtureButton'
 
 export const metadata = {
   title: metadataTitle('Usurpation'),
@@ -44,7 +45,7 @@ const Page = async () => {
               <tr>
                 <th scope="col">Utilisateur</th>
                 {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                <th scope="col" />
+                <th scope="col" colSpan={2} />
               </tr>
             </thead>
             <tbody>
@@ -53,6 +54,9 @@ const Page = async () => {
                   <th>{row.name}</th>
                   <td>
                     <UsurpUserButton userId={row.id} />
+                  </td>
+                  <td>
+                    <ResetUserFixtureButton userId={row.id} />
                   </td>
                 </tr>
               ))}

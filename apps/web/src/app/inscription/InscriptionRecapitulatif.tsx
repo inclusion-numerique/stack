@@ -2,7 +2,10 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import React, { ReactNode } from 'react'
 import IconInSquare from '@app/web/components/IconInSquare'
 import InfoLabelValue from '@app/web/components/InfoLabelValue'
-import { profileInscriptionLabels } from '@app/web/inscription/profilInscription'
+import {
+  computeUserProfile,
+  profileInscriptionLabels,
+} from '@app/web/inscription/profilInscription'
 import StructureCard from '@app/web/components/structure/StructureCard'
 import ValiderInscriptionForm from '@app/web/app/inscription/ValiderInscriptionForm'
 import { SessionUser } from '@app/web/auth/sessionUser'
@@ -20,7 +23,10 @@ const InscriptionRecapitulatif = ({
 }: {
   editStructureEmployeuseHref?: string
   editLieuxActiviteHref: string
-  user: Pick<SessionUser, 'profilInscription' | 'id' | 'email' | 'name'>
+  user: Pick<
+    SessionUser,
+    'profilInscription' | 'id' | 'email' | 'name' | 'mediateur' | 'coordinateur'
+  >
   structureEmployeuse: StructureData
   lieuxActivite?: StructureData[]
   contactSupportLink?: boolean
@@ -34,12 +40,10 @@ const InscriptionRecapitulatif = ({
       </h2>
     </div>
     <div className="fr-width-full fr-border-radius--8 fr-p-6v fr-p-md-8v fr-border fr-mt-6v">
-      {!!user.profilInscription && (
-        <InfoLabelValue
-          label="Profession"
-          value={profileInscriptionLabels[user.profilInscription]}
-        />
-      )}
+      <InfoLabelValue
+        label="Profession"
+        value={profileInscriptionLabels[computeUserProfile(user)]}
+      />
       {!!user.name && (
         <InfoLabelValue
           labelClassName="fr-mt-4v"

@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { prismaClient } from '@app/web/prismaClient'
 import { enforceIsAdmin } from '@app/web/server/rpc/enforceIsAdmin'
@@ -73,4 +74,22 @@ export const usurpationRouter = router({
       return usurper
     },
   ),
+  resetUserFixture: protectedProcedure
+    .input(z.object({ userId: z.string().uuid() }))
+    .mutation(async ({ input: { userId }, ctx: { user: initialUser } }) => {
+      enforceIsAdmin(initialUser)
+
+      const user = await prismaClient.user.findUnique({
+        where: {
+          id: userId,
+          isFixture: true,
+        },
+      })
+
+      if (!user) {
+        throw invalidError('User not found or user is not a fixture')
+      }
+
+      return resetFixtureUser(user)
+    }),
 })

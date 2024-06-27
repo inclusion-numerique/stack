@@ -19,11 +19,7 @@ export const metadata = {
 const Page = async () => {
   const user = await getAuthenticatedSessionUser()
 
-  if (
-    !user.profilInscription ||
-    !user.mediateur ||
-    user.mediateur.conseillerNumerique
-  ) {
+  if (!user.mediateur || user.mediateur.conseillerNumerique) {
     redirect('/')
     return null
   }

@@ -83,6 +83,15 @@ export const typologieStructureLabels = {
 
 export type TypologieStructure = keyof typeof typologieStructureLabels
 
+export const typologieStructureValue = Object.fromEntries(
+  Object.keys(typologieStructureLabels).map((key) => [
+    key,
+    key as TypologieStructure,
+  ]),
+) as {
+  [key in TypologieStructure]: TypologieStructure
+}
+
 export const typologieStructureOptions = labelsToOptions(
   typologieStructureLabels,
 )

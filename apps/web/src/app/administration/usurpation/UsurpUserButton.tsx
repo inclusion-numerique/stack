@@ -6,6 +6,7 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { getHomepage } from '@app/web/security/getHomepage'
 
 const UsurpUserButton = ({ userId }: { userId: string }) => {
   const mutation = trpc.usurpation.usurpUser.useMutation()
@@ -20,7 +21,8 @@ const UsurpUserButton = ({ userId }: { userId: string }) => {
         message: `Vous êtes maintenant connécté en tant que ${usurped.name || usurped.email}`,
       })
 
-      router.replace('/coop')
+      router.replace(getHomepage(usurped))
+      router.refresh()
     } catch {
       createToast({
         priority: 'error',

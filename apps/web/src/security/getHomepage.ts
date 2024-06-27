@@ -1,7 +1,11 @@
 import type { SessionUser } from '@app/web/auth/sessionUser'
 
 export const getHomepage = (
-  user?: Pick<SessionUser, 'role' | 'inscriptionValidee'> | null,
+  user?:
+    | (Pick<SessionUser, 'role'> & {
+        inscriptionValidee: Date | string | null
+      })
+    | null,
 ) => {
   if (!user) {
     return '/connexion'
