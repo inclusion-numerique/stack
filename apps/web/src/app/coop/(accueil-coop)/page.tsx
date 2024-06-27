@@ -1,14 +1,17 @@
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
+import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 
-const Page = () => (
-  <>
-    <div className="fr-container">
+const Page = async () => {
+  const user = await getAuthenticatedSessionUser()
+
+  return (
+    <>
       <Breadcrumbs currentPage="Tableau de bord" />
-    </div>
-    <div className="fr-container fr-container--medium">
-      <h1 className="fr-text-title--blue-france">Bienvenue sur la coop</h1>
-    </div>
-  </>
-)
+      <h1 className="fr-text-title--blue-france">
+        Bonjour {user.firstName || user.name || user.email} 👋
+      </h1>
+    </>
+  )
+}
 
 export default Page

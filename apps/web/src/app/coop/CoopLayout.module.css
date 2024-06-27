@@ -15,11 +15,26 @@
 .pageContainer {
     min-height: 100%;
     padding: 0 16px;
+    width: 100%;
 
+    /* md */
     @media (min-width: 48em) {
         width: calc(100% - var(--side-nav-width));
+        /* same as sidemenu right padding */
         padding: 0 32px 0 0;
+        display: flex;
+        justify-content: center;
+    }
+    /* lg */
+    @media (min-width: 62em) {
+        padding: 0 80px 0 48px;
+        justify-content: flex-start;
     }
 
     padding-bottom: 120px;
+}
+
+.contentContainer {
+    flex-grow: 1;
+    max-width: 944px;
 }

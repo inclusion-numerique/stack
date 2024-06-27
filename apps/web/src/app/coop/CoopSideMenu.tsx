@@ -94,16 +94,11 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
 
   return (
     <SideMenu
-      title={
-        <h5 className="fr-mt-md-4v fr-pl-4v fr-text-title--blue-france">
-          Administration
-        </h5>
-      }
       classes={{
         item: styles.item,
       }}
       items={items}
-      burgerMenuButtonText="Menu Administration"
+      burgerMenuButtonText="Menu"
       sticky
       fullHeight
     />
