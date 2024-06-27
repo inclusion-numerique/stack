@@ -86,10 +86,10 @@ export const coordinateur = givenUser({
         conseillerNumerique: {
           connectOrCreate: {
             where: {
-              id: 'fixture-coordinateur-inscription',
+              id: 'fixture-coordinateur',
             },
             create: {
-              id: 'fixture-coordinateur-inscription',
+              id: 'fixture-coordinateur',
             },
           },
         },
