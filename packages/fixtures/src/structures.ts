@@ -1,6 +1,6 @@
 import type { Prisma } from '@prisma/client'
-import { givenStructure } from '@app/fixtures/givenStructure'
 import { typologieStructureValue } from '@app/web/app/structure/typologieStructure'
+import { givenStructure } from '@app/fixtures/givenStructure'
 
 export const structureEmployeuse = givenStructure({
   id: 'f4dbca97-6fe8-4be1-97be-bdf5e66b9ea8',
