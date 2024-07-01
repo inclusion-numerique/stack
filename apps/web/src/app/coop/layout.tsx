@@ -7,6 +7,7 @@ import InscriptionStepsLayout from '@app/web/app/inscription/(steps)/layout'
 import Header from '@app/web/components/Header'
 import PublicFooter from '@app/web/app/(public)/PublicFooter'
 import CoopSideMenu from '@app/web/app/coop/CoopSideMenu'
+import CreateCraModal from '@app/web/app/coop/mon-activite/CreateCraModal'
 import styles from './CoopLayout.module.css'
 
 const Layout = async ({ children }: PropsWithChildren) => {
@@ -60,6 +61,7 @@ const Layout = async ({ children }: PropsWithChildren) => {
         </div>
         <div className={styles.pageContainer}>{children}</div>
       </div>
+      <CreateCraModal />
       <PublicFooter />
     </div>
   )

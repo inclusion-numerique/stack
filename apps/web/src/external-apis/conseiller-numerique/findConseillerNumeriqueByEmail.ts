@@ -5,7 +5,7 @@ import {
   ConseillerNumeriqueProjection,
   mongoQueryConseillerProjection,
 } from '@app/web/external-apis/conseiller-numerique/conseillersProjection'
-import { MiseEnRelation } from '@app/web/external-apis/conseiller-numerique/MiseEnRelation'
+import { StructureConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/StructureConseillerNumerique'
 
 export type FindConseillerNumeriqueByEmailOptions = {
   email: string
@@ -58,7 +58,7 @@ export const findConseillerNumeriqueByEmail = async (
   )) as unknown as {
     _id: ObjectId
     statut: 'finalisee'
-    structureObj: MiseEnRelation
+    structureObj: StructureConseillerNumerique
     dateRecrutement: Date | null
     dateDebutDeContrat: Date | null
     dateFinDeContrat: Date | null

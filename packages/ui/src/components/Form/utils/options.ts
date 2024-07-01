@@ -1,11 +1,15 @@
 import { ReactNode } from 'react'
 
-export type SelectOption<T extends string = string> = {
+export type SelectOption<
+  T extends string = string,
+  E extends Record<string, unknown> = Record<string, unknown>,
+> = {
   name: string
   value: T
   disabled?: boolean
   hidden?: boolean
   hint?: string
+  extra?: E
 }
 
 export type SelectOptionGroup<T extends string = string> = {
