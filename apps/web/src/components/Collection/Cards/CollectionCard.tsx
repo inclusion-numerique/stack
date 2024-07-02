@@ -4,9 +4,9 @@ import Link from 'next/link'
 import { CollectionListItem } from '@app/web/server/collections/getCollectionsList'
 import OwnershipInformation from '@app/web/components/OwnershipInformation'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import CollectionMetaData from '../CollectionMetaData'
+import Images from '../Images'
 import styles from './CollectionCard.module.css'
-import Images from './Images'
-import CollectionMetaData from './CollectionMetaData'
 
 const CollectionCard = ({
   collection,
