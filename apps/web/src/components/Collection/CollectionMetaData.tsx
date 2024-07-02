@@ -65,14 +65,14 @@ const CollectionMetaData = ({
             </Link>
           )}
           <SaveCollectionButton
-            priority="tertiary"
+            priority="tertiary no outline"
             user={user}
             collection={collection}
             context={context}
           />
           <CopyLinkButton
             size="small"
-            priority="tertiary"
+            priority="tertiary no outline"
             url={getServerUrl(`/collections/${collection.slug}`, true)}
           />
         </div>
