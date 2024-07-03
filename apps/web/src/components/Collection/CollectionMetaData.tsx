@@ -1,7 +1,4 @@
 import React from 'react'
-import { ButtonProps } from '@codegouvfr/react-dsfr/Button'
-import classNames from 'classnames'
-import Link from 'next/link'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { getServerUrl } from '@app/web/utils/baseUrl'
 import SaveCollectionButton from '@app/web/components/Collection/SaveCollectionButton'
@@ -13,22 +10,18 @@ const CollectionMetaData = ({
   user,
   collection,
   count,
-  priority,
-  canWrite,
   context,
   hideRessourceLabelOnSmallDevices = false,
 }: {
   user: SessionUser | null
   collection: { isPublic: boolean; id: string; slug: string }
-  priority?: ButtonProps.Common['priority']
   count: number
-  canWrite?: boolean
   context: 'card' | 'view' | 'collectionModal'
   hideRessourceLabelOnSmallDevices?: boolean
 }) => {
   const withButtons = context === 'card' || context === 'view'
   return (
-    <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-my-6v">
+    <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-my-2v">
       <div className="fr-flex fr-flex-gap-2v fr-text--sm fr-mb-0">
         <span className="fr-icon-file-text-line fr-icon--sm" />
         <b>{count}</b>
@@ -47,23 +40,7 @@ const CollectionMetaData = ({
         />
       </div>
       {withButtons && (
-        <div className="fr-flex fr-flex-gap-2v fr-hidden fr-unhidden-md">
-          {canWrite && (
-            <Link
-              href={`./${collection.slug}/modifier`}
-              className={classNames(
-                'fr-btn',
-                'fr-btn--sm',
-                `fr-btn--${
-                  priority ? priority.replace(' ', '-') : 'tertiary-no-outline'
-                }`,
-                'fr-icon-edit-line',
-                'fr-btn--icon-right',
-              )}
-            >
-              Modifier
-            </Link>
-          )}
+        <div className="fr-flex fr-flex-gap-2v">
           <SaveCollectionButton
             priority="tertiary no outline"
             user={user}
@@ -72,6 +49,7 @@ const CollectionMetaData = ({
           />
           <CopyLinkButton
             size="small"
+            className="fr-hidden fr-unhidden-md"
             priority="tertiary no outline"
             url={getServerUrl(`/collections/${collection.slug}`, true)}
           />

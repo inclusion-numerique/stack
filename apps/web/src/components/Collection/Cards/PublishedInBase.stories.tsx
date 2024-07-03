@@ -47,7 +47,7 @@ export const PublishedInBase: Story = mediumContainerStory({
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/Rk4NNQVYRBE0bJZ6i5mrfU/Les-Bases---V.2?m=dev&node-id=4393-56239&t=VjffwleK5IsdOv2Z-1',
+      url: 'https://www.figma.com/file/Rk4NNQVYRBE0bJZ6i5mrfU/Les-Bases---V.2?m=dev&node-id=4336-353420&t=zaFroVHWh70gk8K5-1',
     },
   },
   render: () => (
@@ -63,7 +63,7 @@ export const PublishedInBaseMobile: Story = mobileStory({
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/file/Rk4NNQVYRBE0bJZ6i5mrfU/Les-Bases---V.2?m=dev&node-id=4393-56239&t=VjffwleK5IsdOv2Z-1',
+      url: 'https://www.figma.com/file/Rk4NNQVYRBE0bJZ6i5mrfU/Les-Bases---V.2?m=dev&node-id=4336-353420&t=zaFroVHWh70gk8K5-1',
     },
   },
   render: () => (

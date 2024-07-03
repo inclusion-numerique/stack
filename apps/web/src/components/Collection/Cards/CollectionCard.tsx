@@ -42,7 +42,7 @@ const CollectionCard = ({
             </h3>
             {collection.description && (
               <div
-                className="fr-text--sm fr-mb-0"
+                className="fr-text--sm fr-mb-3v"
                 dangerouslySetInnerHTML={{
                   __html: collection.description,
                 }}
@@ -61,6 +61,7 @@ const CollectionCard = ({
             count={resourcesCount}
             priority="tertiary no outline"
             context="card"
+            hideRessourceLabelOnSmallDevices
           />
         )}
       </div>
