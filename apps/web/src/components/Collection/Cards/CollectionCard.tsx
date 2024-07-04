@@ -59,7 +59,6 @@ const CollectionCard = ({
               isPublic: collection.isPublic,
             }}
             count={resourcesCount}
-            priority="tertiary no outline"
             context="card"
             hideRessourceLabelOnSmallDevices
           />
