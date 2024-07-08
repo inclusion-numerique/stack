@@ -4,10 +4,12 @@ import {
   dureeAccompagnementValues,
   lieuAccompagnementValues,
   materielValues,
-  poursuiteAccompagnementValues,
+  structuresRedirectionValues,
   thematiqueAccompagnementValues,
 } from '@app/web/cra/cra'
 import { BeneficiaireValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
+import { AdresseBanValidation } from '@app/web/external-apis/ban/AdresseBanValidation'
+import { yesOrNo } from '@app/web/utils/yesNoBooleanOptions'
 
 export const CraIndividuelValidation = z.object({
   id: z.string().uuid().nullish(), // defined if update, nullish if create
@@ -25,17 +27,14 @@ export const CraIndividuelValidation = z.object({
     required_error: 'Veuillez renseigner un lieu d’accompagnement',
   }),
   lieuActiviteId: z.string().uuid().nullish(),
-  codeCommuneDomicile: z
-    .string()
-    .length(5, 'Veuillez renseigner une commune valide')
-    .nullish(),
+  lieuAccompagnementDomicileCommune: AdresseBanValidation.nullish(),
   materiel: z.array(z.enum(materielValues)).default([]),
   thematiques: z.array(z.enum(thematiqueAccompagnementValues)).default([]),
   autonomie: z.enum(autonomieValues).nullish(),
-  poursuiteAccompagnement: z
-    .array(z.enum(poursuiteAccompagnementValues))
+  orienteVersStructure: z.enum(yesOrNo).nullish(),
+  structureDeRedirection: z
+    .array(z.enum(structuresRedirectionValues))
     .default([]),
-  poursuiteAccompagnementStructureId: z.string().uuid().nullish(),
   notes: z.string().nullish(),
 })
 

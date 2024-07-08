@@ -1,8 +1,11 @@
 import type {
   Autonomie,
+  DegreDeFinalisationDemarche,
   LieuAccompagnement,
+  LieuAtelier,
   Materiel,
-  PoursuiteAccompagnement,
+  NiveauAtelier,
+  StructureDeRedirection,
   ThematiqueAccompagnement,
   ThematiqueDemarcheAdministrative,
 } from '@prisma/client'
@@ -349,37 +352,143 @@ export const autonomieOptionsWithExtras = autonomieOptions.map(
   }),
 )
 
-export const poursuiteAccompagnementLabels: {
-  [key in PoursuiteAccompagnement]: string
+export const structuresRedirectionLabels: {
+  [key in StructureDeRedirection]: string
 } = {
-  AccompagnementIndividuel: 'Vers un accompagnement individuel',
-  AtelierCollectif: 'Vers un atelier collectif',
-  AutreStructure: 'Vers une autre structure',
+  OperateurOuOrganismeEnCharge:
+    'Opérateur ou organisme en charge de la démarche administrative',
+  AideAuxDemarchesAdministratives:
+    'Structure d’aide aux démarches administratives (France Services…)',
+  Administration: 'Administration (collectivité locale, préfecture…)',
+  MediationNumerique: 'Autre structure de médiation numérique',
+  Autre: 'Autre',
 }
 
-export const poursuiteAccompagnementIllustrations: {
-  [key in PoursuiteAccompagnement]?: string
-} = {
-  AccompagnementIndividuel:
-    '/images/iconographie/accompagnement-individuel.svg',
-  AtelierCollectif: '/images/iconographie/accompagnement-collectif.svg',
-  AutreStructure: '/dsfr/artwork/pictograms/digital/avatar.svg',
-}
-
-export const poursuiteAccompagnementOptions = labelsToOptions(
-  poursuiteAccompagnementLabels,
+export const structuresRedirectionOptions = labelsToOptions(
+  structuresRedirectionLabels,
 )
 
-export const poursuiteAccompagnementOptionsWithExtras =
-  poursuiteAccompagnementOptions.map(({ name, value }) => ({
+export const structuresRedirectionValues = Object.keys(
+  structuresRedirectionLabels,
+) as [StructureDeRedirection, ...StructureDeRedirection[]]
+
+export const lieuAtelierLabels: {
+  [key in LieuAtelier]: string
+} = {
+  LieuActivite: 'Lieu d’activité',
+  Autre: 'Autre lieu',
+}
+
+export const lieuAtelierOptions = labelsToOptions(lieuAtelierLabels)
+
+export const lieuAtelierIllustrations: {
+  [key in LieuAtelier]?: string
+} = {
+  LieuActivite: '/dsfr/artwork/pictograms/buildings/city-hall.svg',
+  Autre: '/dsfr/artwork/pictograms/buildings/school.svg',
+}
+
+export const lieuAtelierOptionsWithExtras = lieuAtelierOptions.map(
+  ({ name, value }) => ({
+    name,
+    value,
+    extra: {
+      illustration: lieuAtelierIllustrations[value as LieuAtelier],
+    },
+  }),
+)
+
+export const lieuAtelierValues = Object.keys(lieuAtelierLabels) as [
+  LieuAtelier,
+  ...LieuAtelier[],
+]
+
+/**
+ *
+ * enum NiveauAtelier {
+ *   Debutant      @map("debutant")
+ *   Intermediaire @map("intermediaire")
+ *   Avance        @map("avance")
+ *   }
+ *
+ *   USE 1, 2 and 3 stars
+ */
+
+export const niveauAtelierLabels: {
+  [key in NiveauAtelier]: string
+} = {
+  Debutant: 'Débutant',
+  Intermediaire: 'Intermédiaire',
+  Avance: 'Avancé',
+}
+
+export const niveauAtelierStars: {
+  [key in NiveauAtelier]: number
+} = {
+  Debutant: 1,
+  Intermediaire: 2,
+  Avance: 3,
+}
+
+export const niveauAtelierOptions = labelsToOptions(niveauAtelierLabels)
+
+export const niveauAtelierOptionsWithExtras = niveauAtelierOptions.map(
+  ({ name, value }) => ({
+    name,
+    value,
+    extra: {
+      stars: niveauAtelierStars[value as NiveauAtelier],
+    },
+  }),
+)
+
+export const niveauAtelierValues = Object.keys(niveauAtelierLabels) as [
+  NiveauAtelier,
+  ...NiveauAtelier[],
+]
+
+export const degreDeFinalisationDemarcheLabels: {
+  [key in DegreDeFinalisationDemarche]: string
+} = {
+  Finalisee: 'Oui',
+  AFinaliserEnAutonomie: 'Non',
+  DoitRevenir: 'Non',
+  OrienteVersStructure: 'Non',
+}
+
+export const degreDeFinalisationDemarcheIllustrations: {
+  [key in DegreDeFinalisationDemarche]?: string
+} = {
+  Finalisee: '/dsfr/artwork/pictograms/system/success.svg',
+}
+
+export const degreDeFinalisationDemarcheHints: {
+  [key in DegreDeFinalisationDemarche]?: string
+} = {
+  AFinaliserEnAutonomie: 'Il reste des démarches à finaliser en autonomie.',
+  DoitRevenir: 'L’usager devra revenir.',
+  OrienteVersStructure: 'L’usager est orienté vers une autre structure.',
+}
+
+export const degreDeFinalisationDemarcheOptions = labelsToOptions(
+  degreDeFinalisationDemarcheLabels,
+)
+
+export const degreDeFinalisationDemarcheOptionsWithExtras =
+  degreDeFinalisationDemarcheOptions.map(({ name, value }) => ({
     name,
     value,
     extra: {
       illustration:
-        poursuiteAccompagnementIllustrations[value as PoursuiteAccompagnement],
+        degreDeFinalisationDemarcheIllustrations[
+          value as DegreDeFinalisationDemarche
+        ],
+      hint: degreDeFinalisationDemarcheHints[
+        value as DegreDeFinalisationDemarche
+      ],
     },
   }))
 
-export const poursuiteAccompagnementValues = Object.keys(
-  poursuiteAccompagnementLabels,
-) as [PoursuiteAccompagnement, ...PoursuiteAccompagnement[]]
+export const degreDeFinalisationDemarcheValues = Object.keys(
+  degreDeFinalisationDemarcheLabels,
+) as [DegreDeFinalisationDemarche, ...DegreDeFinalisationDemarche[]]

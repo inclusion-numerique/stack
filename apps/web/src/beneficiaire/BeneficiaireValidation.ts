@@ -4,10 +4,14 @@ import {
   statutSocialValues,
   trancheAgeValues,
 } from '@app/web/beneficiaire/beneficiaire'
+import { AdresseBanValidation } from '@app/web/external-apis/ban/AdresseBanValidation'
+import { yesOrNo } from '@app/web/utils/yesNoBooleanOptions'
 
 export const BeneficiaireValidation = z.object({
   id: z.string().uuid().nullish(), // defined if update, nullish if create
   mediateurId: z.string().uuid(), // creator of the beneficiaire
+
+  vaPoursuivreParcoursAccompagnement: z.enum(yesOrNo).nullish(), // Useful for anonymous beneficiaire
 
   prenom: z.string().nullish(),
   nom: z.string().nullish(),
@@ -27,10 +31,7 @@ export const BeneficiaireValidation = z.object({
     .max(2030, 'Veuillez renseigner une année de naissance valide')
     .nullish(),
   adresse: z.string().nullish(),
-  codeCommune: z
-    .string()
-    .length(5, 'Veuillez renseigner une commune valide')
-    .nullish(),
+  communeResidence: AdresseBanValidation.nullish(),
   genre: z.enum(genreValues).nullish(),
   trancheAge: z.enum(trancheAgeValues).nullish(),
   statutSocial: z.enum(statutSocialValues).nullish(),

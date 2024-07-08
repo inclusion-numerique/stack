@@ -14,7 +14,6 @@ import {
   dureeAccompagnementOptions,
   lieuAccompagnementOptionsWithExtras,
   materielOptions,
-  poursuiteAccompagnementOptionsWithExtras,
   thematiqueAccompagnementOptionsWithExtras,
 } from '@app/web/cra/cra'
 import RichCardLabel, {
@@ -38,6 +37,7 @@ import { trpc } from '@app/web/trpc'
 import { useRouter } from 'next/navigation'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { yesNoBooleanOptions } from '@app/web/utils/yesNoBooleanOptions'
 
 const CraIndividuelForm = ({
   defaultValues,
@@ -188,19 +188,20 @@ const CraIndividuelForm = ({
         }}
       />
       <p className="fr-text--medium fr-mb-4v fr-mt-12v">
-        L’accompagnement va-t-il être poursuivi&nbsp;?
+        Le bénéficiaire est-il orienté vers une autre structure&nbsp;?
       </p>
-      <CheckboxGroupFormField
+      <RadioFormField
         control={control}
-        path="poursuiteAccompagnement"
-        options={poursuiteAccompagnementOptionsWithExtras}
+        path="orienteVersStructure"
+        options={yesNoBooleanOptions}
         disabled={isLoading}
         components={{
           label: RichCardLabel,
         }}
         classes={{
           fieldsetElement: richCardFieldsetElementClassName,
-          fieldset: styles.thematiquesFieldset,
+          fieldset: styles.yesNoFieldSet,
+          radioGroup: richCardRadioGroupClassName,
         }}
       />
 
@@ -214,10 +215,37 @@ const CraIndividuelForm = ({
             Vous pouvez renseigner des informations anonymes sur le bénéficiaire
             pour compléter vos statistiques.
           </p>
-          <AdresseBanFormField
+
+          <p className="fr-text--medium fr-mb-4v fr-mt-12v">
+            Le bénéficiaire va-t-il poursuivre son parcours
+            d’accompagnement&nbsp;?
+          </p>
+          <RadioFormField
             control={control}
-            path="beneficiaire"
+            path="beneficiaire.vaPoursuivreParcoursAccompagnement"
+            options={yesNoBooleanOptions}
             disabled={isLoading}
+            components={{
+              label: RichCardLabel,
+            }}
+            className="fr-mb-12v"
+            classes={{
+              fieldsetElement: richCardFieldsetElementClassName,
+              fieldset: styles.yesNoFieldSet,
+              radioGroup: richCardRadioGroupClassName,
+            }}
+          />
+          <AdresseBanFormField<CraIndividuelData>
+            control={control}
+            path="beneficiaire.communeResidence"
+            disabled={isLoading}
+            label={
+              <span className="fr-text--medium">
+                Commune de résidence du bénéficiaire
+              </span>
+            }
+            placeholder="Rechercher une commune par son nom ou son code postal"
+            searchOptions={{ type: 'municipality' }}
           />
           <CraFormLabel as="p" className="fr-mb-4v fr-mt-12v">
             Genre
@@ -283,7 +311,9 @@ const CraIndividuelForm = ({
         form={form}
         disabled={isLoading}
         path="notes"
-        label="Notes sur l’accompagnement"
+        label={
+          <span className="fr-text--medium">Notes sur l’accompagnement</span>
+        }
         hint={
           <>
             Il est interdit de stocker des informations sensibles (données de

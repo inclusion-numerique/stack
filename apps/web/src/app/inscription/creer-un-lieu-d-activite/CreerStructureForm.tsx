@@ -187,7 +187,12 @@ const CreerStructureForm = ({
             asterisk
           />
 
-          <AdresseBanFormField control={control} />
+          <AdresseBanFormField
+            label="adresse"
+            path="adresseBan"
+            placeholder="Rechercher l’adresse"
+            control={control}
+          />
 
           <InputFormField
             control={control}

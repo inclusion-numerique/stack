@@ -199,12 +199,13 @@ model Mediateur {
   modification DateTime @default(now())
   // Cannot soft delete as we need to keep userId and conseillerNumerique.mediateurId unique
 
-  coordinations             MediateurCoordonne[]
-  enActivite                MediateurEnActivite[]
-  beneficiaires             Beneficiaire[]
-  crasIndividuels           CraIndividuel[]
-  CraCollectif              CraCollectif[]
-  CraDemarcheAdministrative CraDemarcheAdministrative[]
+  coordinations                MediateurCoordonne[]
+  enActivite                   MediateurEnActivite[]
+  beneficiaires                Beneficiaire[]
+  crasIndividuels              CraIndividuel[]
+  crasCollectifs               CraCollectif[]
+  crasDemarchesAdministratives CraDemarcheAdministrative[]
+  activites                    Activite[]
 
   @@map("mediateurs")
 }
@@ -294,27 +295,25 @@ model Structure {
   // CF optionsStructures.ts pour les valeurs possibles
   // CF LieuStandardMediationNumerique.ts pour la documentation complète
 
-  typologies                              String[]                    @default([])
-  presentationResume                      String?                     @map("presentation_resume")
-  presentationDetail                      String?                     @map("presentation_detail")
-  siteWeb                                 String?                     @map("site_web")
-  telephone                               String?
-  courriels                               String[]                    @default([])
-  ficheAccesLibre                         String?                     @map("fiche_acces_libre") // url vers fiche accès libre
-  horaires                                String?
-  services                                String[]                    @default([])
-  publicsSpecifiquementAdresses           String[]                    @default([]) @map("publics_specifiquement_adresses")
-  priseEnChargeSpecifique                 String[]                    @default([]) @map("prise_en_charge_specifique")
-  fraisACharge                            String[]                    @default([]) @map("frais_a_charge")
-  dispositifProgrammesNationaux           String[]                    @default([]) @map("dispositif_programmes_nationaux")
-  itinerance                              String[]                    @default([])
-  modalitesAcces                          String[]                    @default([]) @map("modalites_acces")
-  modalitesAccompagnement                 String[]                    @default([]) @map("modalites_accompagnement")
-  crasIndividuels                         CraIndividuel[]             @relation(name: "cra_individuel_lieu_activite")
-  redirectionCrasIndividuels              CraIndividuel[]             @relation(name: "cra_individuel_redirection_structure")
-  crasCollectifs                          CraCollectif[]              @relation(name: "cra_collectif_lieu_activite")
-  crasDemarchesAdministratives            CraDemarcheAdministrative[] @relation(name: "cra_demarche_administrative_lieu_activite")
-  redirectionCrasDemarchesAdministratives CraDemarcheAdministrative[] @relation(name: "cra_demarche_administrative_redirection_structure")
+  typologies                    String[]                    @default([])
+  presentationResume            String?                     @map("presentation_resume")
+  presentationDetail            String?                     @map("presentation_detail")
+  siteWeb                       String?                     @map("site_web")
+  telephone                     String?
+  courriels                     String[]                    @default([])
+  ficheAccesLibre               String?                     @map("fiche_acces_libre") // url vers fiche accès libre
+  horaires                      String?
+  services                      String[]                    @default([])
+  publicsSpecifiquementAdresses String[]                    @default([]) @map("publics_specifiquement_adresses")
+  priseEnChargeSpecifique       String[]                    @default([]) @map("prise_en_charge_specifique")
+  fraisACharge                  String[]                    @default([]) @map("frais_a_charge")
+  dispositifProgrammesNationaux String[]                    @default([]) @map("dispositif_programmes_nationaux")
+  itinerance                    String[]                    @default([])
+  modalitesAcces                String[]                    @default([]) @map("modalites_acces")
+  modalitesAccompagnement       String[]                    @default([]) @map("modalites_accompagnement")
+  crasIndividuels               CraIndividuel[]             @relation(name: "cra_individuel_lieu_activite")
+  crasCollectifs                CraCollectif[]              @relation(name: "cra_collectif_lieu_activite")
+  crasDemarchesAdministratives  CraDemarcheAdministrative[] @relation(name: "cra_demarche_administrative_lieu_activite")
 
   @@map("structures")
 }
@@ -523,8 +522,11 @@ model Beneficiaire {
   dateNaissance  DateTime? @map("date_naissance") @db.Date
   anneeNaissance Int?      @map("annee_naissance")
   adresse        String?
-  // Code INSEE de la commune de résidence
-  codeCommune    String?   @map("code_commune") @db.VarChar(5)
+
+  // Nom de la commune de résidence
+  commune           String?
+  communeCodePostal String? @map("commune_code_postal")
+  communeCodeInsee  String? @map("commune_code_insee")
 
   genre        Genre?
   trancheAge   TrancheAge?
@@ -541,6 +543,25 @@ model Beneficiaire {
   participationsAteliersCollectifs ParticipantAtelierCollectif[]
 
   @@map("beneficiaires")
+}
+
+// This model / table is used for easier joins with prisma between mediateur / beneficiaire and different Cras
+model Activite {
+  id String @id @default(uuid()) @db.Uuid
+
+  mediateurId String    @map("mediateur_id") @db.Uuid
+  mediateur   Mediateur @relation(fields: [mediateurId], references: [id])
+
+  craIndividuelId String?        @unique @map("cra_individuel_id") @db.Uuid
+  craIndividuel   CraIndividuel? @relation(fields: [craIndividuelId], references: [id])
+
+  craCollectifId String?       @unique @map("cra_collectif_id") @db.Uuid
+  craCollectif   CraCollectif? @relation(fields: [craCollectifId], references: [id])
+
+  craDemarcheAdministrativeId String?                    @unique @map("cra_demarche_administrative_id") @db.Uuid
+  craDemarcheAdministrative   CraDemarcheAdministrative? @relation(fields: [craDemarcheAdministrativeId], references: [id])
+
+  @@map("activites")
 }
 
 enum LieuAccompagnement {
@@ -588,12 +609,14 @@ enum Autonomie {
   @@map("autonomie")
 }
 
-enum PoursuiteAccompagnement {
-  AccompagnementIndividuel @map("accompagnement_individuel")
-  AtelierCollectif         @map("atelier_collectif")
-  AutreStructure           @map("autre_structure")
+enum StructureDeRedirection {
+  OperateurOuOrganismeEnCharge    @map("operateur_ou_organisme_en_charge")
+  AideAuxDemarchesAdministratives @map("aide_aux_demarches_administratives")
+  Administration                  @map("administration")
+  MediationNumerique              @map("mediation_numerique")
+  Autre                           @map("autre")
 
-  @@map("poursuite_accompagnement")
+  @@map("structure_de_redirection")
 }
 
 model CraIndividuel {
@@ -609,26 +632,31 @@ model CraIndividuel {
   duree Int      @map("duree")
 
   // Lieu du cra : Lieu d'activité / Domicile bénéficiaire / A distance
-  lieuAccompagnement  LieuAccompagnement
+  lieuAccompagnement                   LieuAccompagnement
   // Renseigné si lieuAccompagnement = LieuActivite
-  lieuActiviteId      String?            @map("lieu_activite_id") @db.Uuid
-  lieuActivite        Structure?         @relation(fields: [lieuActiviteId], references: [id], name: "cra_individuel_lieu_activite")
+  lieuActiviteId                       String?            @map("lieu_activite_id") @db.Uuid
+  lieuActivite                         Structure?         @relation(fields: [lieuActiviteId], references: [id], name: "cra_individuel_lieu_activite")
   // Renseigné si lieuAccompagnement = Domicile
-  codeCommuneDomicile String?            @map("code_commune_domicile") @db.VarChar(5)
+  lieuAccompagnementDomicileCodePostal String?            @map("lieu_accompagnement_domicile_code_postal")
+  lieuAccompagnementDomicileCommune    String?            @map("lieu_accompagnement_domicile_commune")
+  lieuAccompagnementDomicileCodeInsee  String?            @map("lieu_accompagnement_domicile_code_insee")
 
   materiel    Materiel[]                 @default([])
   thematiques ThematiqueAccompagnement[] @default([]) @map("thematiques_accompagnement")
   autonomie   Autonomie?
 
-  poursuiteAccompagnement            PoursuiteAccompagnement[] @default([]) @map("poursuite_accompagnement")
-  poursuiteAccompagnementStructureId String?                   @map("poursuite_accompagnement_structure_id") @db.Uuid
-  poursuiteAccompagnementStructure   Structure?                @relation(fields: [poursuiteAccompagnementStructureId], references: [id], name: "cra_individuel_redirection_structure")
+  orienteVersStructure   Boolean?                @map("oriente_vers_structure")
+  structureDeRedirection StructureDeRedirection?
+
+  vaPoursuivreParcoursAccompagnement Boolean? @map("va_poursuivre_parcours_accompagnement")
 
   notes String?
 
   creation     DateTime  @default(now())
   modification DateTime  @default(now())
   suppression  DateTime?
+
+  activite Activite? // Should always be defined but id is owned by Activite
 
   @@map("cras_individuels")
 }
@@ -645,6 +673,21 @@ model ParticipantAtelierCollectif {
   @@map("participants_ateliers_collectifs")
 }
 
+enum LieuAtelier {
+  LieuActivite @map("lieu_activite")
+  Autre        @map("autre")
+
+  @@map("lieu_atelier")
+}
+
+enum NiveauAtelier {
+  Debutant      @map("debutant")
+  Intermediaire @map("intermediaire")
+  Avance        @map("avance")
+
+  @@map("niveau_atelier")
+}
+
 model CraCollectif {
   id                 String    @id @default(uuid()) @db.Uuid
   creeParMediateurId String    @map("cree_par_mediateur_id") @db.Uuid
@@ -658,24 +701,28 @@ model CraCollectif {
   // Durée en minutes
   duree Int      @map("duree")
 
+  titreAtelier String? @map("titre_atelier")
+
   // Lieu du cra : Lieu d'activité / Domicile bénéficiaire / A distance
-  lieuAccompagnement  LieuAccompagnement
+  lieuAtelier                       LieuAtelier
   // Renseigné si lieuAccompagnement = LieuActivite
-  lieuActiviteId      String?            @map("lieu_activite_id") @db.Uuid
-  lieuActivite        Structure?         @relation(fields: [lieuActiviteId], references: [id], name: "cra_collectif_lieu_activite")
-  // Renseigné si lieuAccompagnement = Domicile
-  codeCommuneDomicile String?            @map("code_commune_domicile") @db.VarChar(5)
+  lieuActiviteId                    String?     @map("lieu_activite_id") @db.Uuid
+  lieuActivite                      Structure?  @relation(fields: [lieuActiviteId], references: [id], name: "cra_collectif_lieu_activite")
+  // Renseigné si lieuAccompagnement = Autre
+  lieuAccompagnementAutreCodePostal String?     @map("lieu_accompagnement_autre_code_postal")
+  lieuAccompagnementAutreCommune    String?     @map("lieu_accompagnement_autre_commune")
+  lieuAccompagnementAutreCodeInsee  String?     @map("lieu_accompagnement_autre_code_insee")
 
   materiel    Materiel[]                 @default([])
   thematiques ThematiqueAccompagnement[] @default([]) @map("thematiques_accompagnement")
-  autonomie   Autonomie?
+  niveau      NiveauAtelier?
 
   notes String?
 
-  creation                           DateTime  @default(now())
-  modification                       DateTime  @default(now())
-  suppression                        DateTime?
-  participantsAnonymesCraCollectifId String    @db.Uuid
+  creation     DateTime  @default(now())
+  modification DateTime  @default(now())
+  suppression  DateTime?
+  activite     Activite? // Should always be defined but id is owned by Activite
 
   @@map("cras_collectifs")
 }
@@ -726,6 +773,15 @@ enum ThematiqueDemarcheAdministrative {
   @@map("thematique_demarche_administrative")
 }
 
+enum DegreDeFinalisationDemarche {
+  Finalisee             @map("finalisee")
+  AFinaliserEnAutonomie @map("a_finaliser_en_autonomie")
+  DoitRevenir           @map("doit_revenir")
+  OrienteVersStructure  @map("oriente_vers_structure")
+
+  @@map("degre_de_finalisation_demarche")
+}
+
 model CraDemarcheAdministrative {
   id                 String    @id @default(uuid()) @db.Uuid
   creeParMediateurId String    @map("cree_par_mediateur_id") @db.Uuid
@@ -739,26 +795,31 @@ model CraDemarcheAdministrative {
   duree Int      @map("duree")
 
   // Lieu du cra : Lieu d'activité / Domicile bénéficiaire / A distance
-  lieuAccompagnement  LieuAccompagnement
+  lieuAccompagnement                   LieuAccompagnement
   // Renseigné si lieuAccompagnement = LieuActivite
-  lieuActiviteId      String?            @map("lieu_activite_id") @db.Uuid
-  lieuActivite        Structure?         @relation(fields: [lieuActiviteId], references: [id], name: "cra_demarche_administrative_lieu_activite")
+  lieuActiviteId                       String?            @map("lieu_activite_id") @db.Uuid
+  lieuActivite                         Structure?         @relation(fields: [lieuActiviteId], references: [id], name: "cra_demarche_administrative_lieu_activite")
   // Renseigné si lieuAccompagnement = Domicile
-  codeCommuneDomicile String?            @map("code_commune_domicile") @db.VarChar(5)
+  lieuAccompagnementDomicileCodePostal String?            @map("lieu_accompagnement_domicile_code_postal")
+  lieuAccompagnementDomicileCommune    String?            @map("lieu_accompagnement_domicile_commune")
+  lieuAccompagnementDomicileCodeInsee  String?            @map("lieu_accompagnement_domicile_code_insee")
 
-  materiel    Materiel[]                         @default([])
-  thematiques ThematiqueDemarcheAdministrative[] @default([]) @map("thematiques_accompagnement")
-  autonomie   Autonomie?
+  materiel            Materiel[]                         @default([])
+  thematiques         ThematiqueDemarcheAdministrative[] @default([]) @map("thematiques_accompagnement")
+  degreDeFinalisation DegreDeFinalisationDemarche?
 
-  poursuiteAccompagnement            PoursuiteAccompagnement[] @default([]) @map("poursuite_accompagnement")
-  poursuiteAccompagnementStructureId String?                   @map("poursuite_accompagnement_structure_id") @db.Uuid
-  poursuiteAccompagnementStructure   Structure?                @relation(fields: [poursuiteAccompagnementStructureId], references: [id], name: "cra_demarche_administrative_redirection_structure")
+  orienteVersStructure   Boolean?                @map("oriente_vers_structure")
+  structureDeRedirection StructureDeRedirection?
+
+  vaPoursuivreParcoursAccompagnement Boolean? @map("va_poursuivre_parcours_accompagnement")
 
   notes String?
 
   creation     DateTime  @default(now())
   modification DateTime  @default(now())
   suppression  DateTime?
+
+  activite Activite? // Should always be defined but id is owned by Activite
 
   @@map("cras_demarches_administratives")
 }

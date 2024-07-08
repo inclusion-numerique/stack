@@ -13,7 +13,9 @@ const CraFormLabel = ({
   className?: string
   as?: 'span' | 'p'
 }) => (
-  <Component className={classNames('fr-text--medium', className)}>
+  <Component
+    className={classNames('fr-text--medium fr-text-label--grey', className)}
+  >
     {children}
     {required ? (
       <>
