@@ -1,8 +1,10 @@
-import { redirect } from 'next/navigation'
 import Button from '@codegouvfr/react-dsfr/Button'
 import Link from 'next/link'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import type { ProfileInscriptionSlug } from '@app/web/inscription/profilInscription'
+import {
+  profileInscriptionFromSlug,
+  ProfileInscriptionSlug,
+} from '@app/web/inscription/profilInscription'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import { checkInscriptionConseillerNumerique } from '@app/web/app/inscription/checkInscriptionConseillerNumerique'
@@ -17,26 +19,30 @@ export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),
 }
 
-// next js query params "profil": ProfilInscription
 const Page = async ({
-  searchParams: { profil, check },
+  searchParams: { profil: urlProfil, check },
 }: {
   searchParams: {
+    // profil is used to display warnings if user type/roles check is in an error state
     profil?: ProfileInscriptionSlug
     check?: '1'
   }
 }) => {
-  if (!profil) {
-    redirect('/')
-  }
-
   const user = await getAuthenticatedSessionUser()
 
+  const profil = urlProfil
+    ? profileInscriptionFromSlug[urlProfil]
+    : user.profilInscription ?? undefined
+
+  // Create mediateur object and conseiller numerique data if needed
   const checkedUser =
     // We can force the check by adding the query param check=1
     !check && user.checkConseillerNumeriqueInscription
       ? user
-      : await checkInscriptionConseillerNumerique(user)
+      : await checkInscriptionConseillerNumerique({
+          user,
+          profil,
+        })
 
   // Only fetch lieux activite if user is conseiller numerique to check which step to go to
   const lieuxActivite = user.mediateur?.conseillerNumerique
@@ -56,6 +62,11 @@ const Page = async ({
             conseillerNumeriqueLieuxInscriptionSteps.verifier
         : // Mediateur
           mediateurInscriptionSteps.structureEmployeuse
+
+  // TODO error card depending on state and intention
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const errorCard =
+    profil === 'Mediateur' && user.mediateur?.conseillerNumerique ? null : null
 
   return (
     <InscriptionCard

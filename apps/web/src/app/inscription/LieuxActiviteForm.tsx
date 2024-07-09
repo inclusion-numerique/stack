@@ -23,9 +23,11 @@ import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 const LieuxActiviteForm = ({
   defaultValues,
   nextHref,
+  createStructureBackHref,
 }: {
   defaultValues: DefaultValues<LieuxActiviteData>
   nextHref: string
+  createStructureBackHref: string
 }) => {
   const form = useForm<LieuxActiviteData>({
     defaultValues,
@@ -184,7 +186,7 @@ const LieuxActiviteForm = ({
                 priority="secondary"
                 className="fr-width-full fr-mb-0"
                 linkProps={{
-                  href: `/inscription/mediateur/creer-un-lieu-d-activite?nom=${search}`,
+                  href: `/inscription/creer-un-lieu-d-activite?nom=${search}&retour=${createStructureBackHref}`,
                 }}
               >
                 Créer un lieu d’activité

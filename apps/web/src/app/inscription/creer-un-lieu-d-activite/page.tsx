@@ -9,10 +9,11 @@ export const metadata = {
 
 // next js query params "profil": ProfilInscription
 const Page = async ({
-  searchParams: { nom },
+  searchParams: { nom, retour },
 }: {
   searchParams: {
     nom?: string
+    retour?: string
   }
 }) => {
   const user = await getAuthenticatedSessionUser()
@@ -21,14 +22,15 @@ const Page = async ({
     redirect('/')
   }
 
-  if (user.emplois.length === 0) {
+  if (user.emplois.length === 0 || !retour) {
     redirect(`/inscription`)
   }
 
   return (
     <div className="fr-width-full">
       <CreerStructurePageContent
-        backLinkHref="/inscription/lieux-activite"
+        backLinkHref={retour}
+        nextHref={retour}
         backLinkTitle="Retour aux lieux d’activité"
         lieuActiviteMediateurId={user.mediateur.id}
         title="Lieu d’activité"

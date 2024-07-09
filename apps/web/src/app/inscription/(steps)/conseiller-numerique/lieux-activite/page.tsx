@@ -30,6 +30,9 @@ const Page = async () => {
     >
       <LieuxActiviteForm
         nextHref={conseillerNumeriqueInscriptionSteps.recapitulatif}
+        createStructureBackHref={
+          conseillerNumeriqueInscriptionSteps.lieuxActivite
+        }
         defaultValues={{
           lieuxActivite,
           userId: user.id,

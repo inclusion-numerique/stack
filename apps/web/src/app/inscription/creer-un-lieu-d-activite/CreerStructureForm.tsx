@@ -14,6 +14,7 @@ import { useEffect } from 'react'
 import ToggleFormField from '@app/ui/components/Form/ToggleFormField'
 import MultipleSelectFormField from '@app/ui/components/Form/MultipleSelectFormField'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
+import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import SiretInputInfo from '@app/web/siret/SiretInputInfo'
 import RnaInputInfo from '@app/web/rna/RnaInputInfo'
 import { typologieStructureOptions } from '@app/web/app/structure/typologieStructure'
@@ -42,11 +43,13 @@ const descriptionInfo = (description?: string | null) =>
 const CreerStructureForm = ({
   lieuActiviteMediateurId,
   backLinkHref,
+  nextHref,
   onVisiblePourCartographieNationaleChange,
   defaultValues,
 }: {
   lieuActiviteMediateurId?: string
   backLinkHref: string
+  nextHref: string
   onVisiblePourCartographieNationaleChange?: (visible: boolean) => void
   defaultValues?: DefaultValues<CreerStructureData>
 }) => {
@@ -63,8 +66,12 @@ const CreerStructureForm = ({
     handleSubmit,
     control,
     setError,
-    formState: { isSubmitSuccessful, isSubmitting },
+    formState: { isSubmitSuccessful, isSubmitting, errors },
   } = form
+
+  useScrollToError({ errors })
+
+  console.log('ERRORS', errors)
 
   const mutation = trpc.structures.create.useMutation()
 
@@ -88,7 +95,7 @@ const CreerStructureForm = ({
         message: 'Le lieu d’activité a bien été créé.',
       })
 
-      router.push(backLinkHref)
+      router.push(nextHref)
       router.refresh()
     } catch (mutationError) {
       if (applyZodValidationMutationErrorsToForm(mutationError, setError)) {

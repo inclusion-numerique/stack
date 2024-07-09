@@ -1,23 +1,27 @@
 import { v4 } from 'uuid' // Do the process of finding a corresponding conseiller numerique and updating the user model.
-import { type Prisma } from '@prisma/client'
+import { type Prisma, type ProfilInscription } from '@prisma/client'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { findConseillerNumeriqueByEmail } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
 import { prismaClient } from '@app/web/prismaClient'
 import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
 import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
-import { cartoStructureToStructure } from '@app/web/structure/cartoStructureToStructure' // Do the process of finding a corresponding conseiller numerique and updating the user model.
+import { cartoStructureToStructure } from '@app/web/structure/cartoStructureToStructure'
 
 // Do the process of finding a corresponding conseiller numerique and updating the user model.
-export const checkInscriptionConseillerNumerique = async (
-  user: SessionUser,
-) => {
-  if (user.checkConseillerNumeriqueInscription) {
+// Créé l'objet médiateur si besoin
+export const checkInscriptionConseillerNumerique = async ({
+  profil,
+  user,
+}: {
+  user: SessionUser
+  profil?: ProfilInscription
+}) => {
+  if (user.checkConseillerNumeriqueInscription || !user.mediateur) {
     // Already done
     return user
   }
 
   // Find conseiller numerique by email
-
   const conseillerInfo = await findConseillerNumeriqueByEmail({
     email: user.email,
   })
@@ -27,9 +31,17 @@ export const checkInscriptionConseillerNumerique = async (
     await prismaClient.user.update({
       where: {
         id: user.id,
+        profilInscription: profil,
       },
       data: {
         checkConseillerNumeriqueInscription: new Date(),
+        mediateur: user.mediateur
+          ? undefined
+          : {
+              create: {
+                id: v4(),
+              },
+            },
       },
     })
     return user
@@ -227,6 +239,7 @@ export const checkInscriptionConseillerNumerique = async (
       id: user.id,
     },
     data: {
+      profilInscription: profil,
       structureEmployeuseRenseignee: new Date(),
       lieuxActiviteRenseignes:
         lieuxActiviteStructureIds.length > 0 ? new Date() : undefined,
