@@ -179,7 +179,7 @@ const CheckboxGroupFormField = <
                       />
                       {LabelComponent === 'label' ? (
                         <label className="fr-label" htmlFor={`${id}__${index}`}>
-                          {option.name}
+                          {option.label}
                           {option.hint && (
                             <span className="fr-hint-text">{option.hint}</span>
                           )}

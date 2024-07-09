@@ -6,7 +6,7 @@ import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 
-type LabelComponentPropsType<O extends SelectOption> = {
+export type LabelComponentPropsType<O extends SelectOption> = {
   option: O
   htmlFor: string
   className?: string
@@ -161,7 +161,7 @@ const RadioFormField = <
                       />
                       {LabelComponent === 'label' ? (
                         <label className="fr-label" htmlFor={`${id}__${index}`}>
-                          {option.name}
+                          {option.label}
                           {option.hint && (
                             <span className="fr-hint-text">{option.hint}</span>
                           )}

@@ -100,7 +100,7 @@ const RichCardLabel = memo(
                 ))}
               </div>
             )}
-            {option.name}
+            {option.label}
             {!!option.hint && (
               <>
                 <br />

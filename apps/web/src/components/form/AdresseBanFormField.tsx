@@ -51,6 +51,12 @@ const loadOptions = async (
 }
 
 const customStyles: CustomSelectFormFieldProps<FieldValues>['styles'] = {
+  valueContainer: (provided) => ({
+    ...provided,
+    // Keep same height as select with dropdown indicator
+    paddingTop: 4,
+    paddingBottom: 4,
+  }),
   dropdownIndicator: (provided) => ({
     ...provided,
     display: 'none', // hide the dropdown indicator

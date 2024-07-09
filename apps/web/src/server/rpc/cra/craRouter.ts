@@ -1,11 +1,12 @@
+import { v4 } from 'uuid'
+import type { Prisma } from '@prisma/client'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { CraIndividuelValidation } from '@app/web/cra/CraIndividuelValidation'
 import { enforceIsMediateur } from '@app/web/server/rpc/enforceIsMediateur'
 import { prismaClient } from '@app/web/prismaClient'
 import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
-import { v4 } from 'uuid'
-import type { Prisma } from '@prisma/client'
 import { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
+import { yesNoToOptionalBoolean } from '@app/web/utils/yesNoBooleanOptions'
 
 const getExistingBeneficiaire = async ({
   beneficiaireId,
@@ -62,7 +63,8 @@ const beneficiaireUpdateInputFromForm = ({
   dateNaissance,
   anneeNaissance,
   adresse,
-  codeCommune,
+  communeResidence,
+  vaPoursuivreParcoursAccompagnement,
   genre,
   trancheAge,
   statutSocial,
@@ -79,11 +81,16 @@ const beneficiaireUpdateInputFromForm = ({
   dateNaissance: dateNaissance ?? undefined,
   anneeNaissance: anneeNaissance ?? undefined,
   adresse: adresse ?? undefined,
-  codeCommune: codeCommune ?? undefined,
   genre: genre ?? undefined,
   trancheAge: trancheAge ?? undefined,
   statutSocial: statutSocial ?? undefined,
   notes: notes ?? undefined,
+  vaPoursuivreParcoursAccompagnement: yesNoToOptionalBoolean(
+    vaPoursuivreParcoursAccompagnement ?? undefined,
+  ),
+  commune: communeResidence?.nom ?? undefined,
+  communeCodePostal: communeResidence?.codePostal ?? undefined,
+  communeCodeInsee: communeResidence?.codeInsee ?? undefined,
 })
 
 export const craRouter = router({
@@ -96,16 +103,16 @@ export const craRouter = router({
           beneficiaire,
           mediateurId,
           autonomie,
-          codeCommuneDomicile,
           date,
           duree,
           lieuAccompagnement,
           lieuActiviteId,
           materiel,
           notes,
-          poursuiteAccompagnement,
-          poursuiteAccompagnementStructureId,
           thematiques,
+          lieuAccompagnementDomicileCommune,
+          orienteVersStructure,
+          structureDeRedirection,
         },
         ctx: { user },
       }) => {
@@ -128,12 +135,6 @@ export const craRouter = router({
           beneficiaireId: beneficiaire?.id,
           mediateurId,
         })
-
-        // Same logic for structureAccompagnementId
-        const existingStructurePoursuiteAccompagnement =
-          await getExistingStructure({
-            structureId: poursuiteAccompagnementStructureId,
-          })
 
         const existingLieuActivite = await getExistingStructure({
           structureId: lieuActiviteId,
@@ -161,17 +162,21 @@ export const craRouter = router({
           duree: Number.parseInt(duree, 10),
           lieuAccompagnement,
           materiel,
-          codeCommuneDomicile,
+          lieuAccompagnementDomicileCommune:
+            lieuAccompagnementDomicileCommune?.commune,
+          lieuAccompagnementDomicileCodePostal:
+            lieuAccompagnementDomicileCommune?.codePostal,
+          lieuAccompagnementDomicileCodeInsee:
+            lieuAccompagnementDomicileCommune?.codeInsee,
           notes,
-          poursuiteAccompagnement,
+          orienteVersStructure: yesNoToOptionalBoolean(
+            orienteVersStructure ?? undefined,
+          ),
+          structureDeRedirection: structureDeRedirection ?? undefined,
           thematiques,
           lieuActivite: existingLieuActivite
             ? { connect: { id: existingLieuActivite.id } }
             : undefined,
-          poursuiteAccompagnementStructure:
-            existingStructurePoursuiteAccompagnement
-              ? { connect: { id: existingStructurePoursuiteAccompagnement.id } }
-              : undefined,
         } satisfies Prisma.CraIndividuelUpdateInput
 
         if (id) {
@@ -183,9 +188,16 @@ export const craRouter = router({
           return updated
         }
 
+        const newId = v4()
         const created = await prismaClient.craIndividuel.create({
           data: {
-            id: v4(),
+            id: newId,
+            activite: {
+              create: {
+                id: v4(),
+                mediateurId,
+              },
+            },
             ...data,
           },
         })

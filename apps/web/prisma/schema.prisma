@@ -528,6 +528,9 @@ model Beneficiaire {
   communeCodePostal String? @map("commune_code_postal")
   communeCodeInsee  String? @map("commune_code_insee")
 
+  // Useful for anonymous beneficiaire
+  vaPoursuivreParcoursAccompagnement Boolean? @map("va_poursuivre_parcours_accompagnement")
+
   genre        Genre?
   trancheAge   TrancheAge?
   statutSocial StatutSocial?
@@ -647,8 +650,6 @@ model CraIndividuel {
 
   orienteVersStructure   Boolean?                @map("oriente_vers_structure")
   structureDeRedirection StructureDeRedirection?
-
-  vaPoursuivreParcoursAccompagnement Boolean? @map("va_poursuivre_parcours_accompagnement")
 
   notes String?
 
@@ -810,8 +811,6 @@ model CraDemarcheAdministrative {
 
   orienteVersStructure   Boolean?                @map("oriente_vers_structure")
   structureDeRedirection StructureDeRedirection?
-
-  vaPoursuivreParcoursAccompagnement Boolean? @map("va_poursuivre_parcours_accompagnement")
 
   notes String?
 

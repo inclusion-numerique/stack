@@ -5,23 +5,16 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 import RadioFormField from '@app/ui/components/Form/RadioFormField'
-import {
-  CraIndividuelData,
-  CraIndividuelValidation,
-} from '@app/web/cra/CraIndividuelValidation'
-import {
-  autonomieOptionsWithExtras,
-  dureeAccompagnementOptions,
-  lieuAccompagnementOptionsWithExtras,
-  materielOptions,
-  thematiqueAccompagnementOptionsWithExtras,
-} from '@app/web/cra/cra'
-import RichCardLabel, {
-  richCardFieldsetElementClassName,
-  richCardRadioGroupClassName,
-} from '@app/web/components/form/RichCardLabel'
-import styles from '../CraForm.module.css'
 import InputFormField from '@app/ui/components/Form/InputFormField'
+import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormField'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { createToast } from '@app/ui/toast/createToast'
+import { useRouter } from 'next/navigation'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
+import React from 'react'
+import { SelectOption } from '@app/ui/components/Form/utils/options'
+import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import CraFormLabel from '@app/web/app/coop/mon-activite/cra/CraFormLabel'
 import AdresseBanFormField from '@app/web/components/form/AdresseBanFormField'
 import {
@@ -29,20 +22,35 @@ import {
   statutSocialOptions,
   trancheAgeOptions,
 } from '@app/web/beneficiaire/beneficiaire'
-import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormField'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
-import { createToast } from '@app/ui/toast/createToast'
 import { trpc } from '@app/web/trpc'
-import { useRouter } from 'next/navigation'
-import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import RichCardLabel, {
+  richCardFieldsetElementClassName,
+  richCardRadioGroupClassName,
+} from '@app/web/components/form/RichCardLabel'
+import {
+  autonomieOptionsWithExtras,
+  dureeAccompagnementOptions,
+  lieuAccompagnementOptionsWithExtras,
+  materielOptions,
+  structuresRedirectionOptions,
+  thematiqueAccompagnementOptionsWithExtras,
+} from '@app/web/cra/cra'
+import {
+  CraIndividuelData,
+  CraIndividuelValidation,
+} from '@app/web/cra/CraIndividuelValidation'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { yesNoBooleanOptions } from '@app/web/utils/yesNoBooleanOptions'
+import { craFormFieldsetClassname } from '@app/web/app/coop/mon-activite/cra/craFormFieldsetClassname'
+import styles from '../CraForm.module.css'
 
 const CraIndividuelForm = ({
   defaultValues,
+  lieuActiviteOptions,
 }: {
   defaultValues: DefaultValues<CraIndividuelData>
+  lieuActiviteOptions: SelectOption[]
 }) => {
   const form = useForm<CraIndividuelData>({
     resolver: zodResolver(CraIndividuelValidation),
@@ -56,6 +64,15 @@ const CraIndividuelForm = ({
 
   const beneficiaireId = form.watch('beneficiaire.id')
   const showAnonymousForm = !beneficiaireId
+
+  const lieuAccompagnement = form.watch('lieuAccompagnement')
+  const showLieuAccompagnementDomicileCommune =
+    lieuAccompagnement === 'Domicile'
+  const showLieuAccompagnementLieuActivite =
+    lieuAccompagnement === 'LieuActivite'
+
+  const orienteVersStructure = form.watch('orienteVersStructure')
+  const showStructureOrientation = orienteVersStructure === 'yes'
 
   const {
     control,
@@ -86,7 +103,7 @@ const CraIndividuelForm = ({
   }
   const isLoading = isSubmitting || isSubmitSuccessful
 
-  console.log('ERRORS', errors)
+  useScrollToError({ errors })
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -115,7 +132,7 @@ const CraIndividuelForm = ({
             }}
             classes={{
               fieldsetElement: richCardFieldsetElementClassName,
-              fieldset: styles.durationFieldSet,
+              fieldset: craFormFieldsetClassname(styles.durationFieldSet),
               radioGroup: richCardRadioGroupClassName,
             }}
           />
@@ -134,10 +151,29 @@ const CraIndividuelForm = ({
         }}
         classes={{
           fieldsetElement: richCardFieldsetElementClassName,
-          fieldset: styles.lieuFieldSet,
+          fieldset: craFormFieldsetClassname(styles.lieuFieldSet),
           radioGroup: richCardRadioGroupClassName,
         }}
       />
+      {showLieuAccompagnementDomicileCommune && (
+        <AdresseBanFormField<CraIndividuelData>
+          label=" "
+          control={control}
+          path="lieuAccompagnementDomicileCommune"
+          disabled={isLoading}
+          placeholder="Rechercher une commune par son nom ou son code postal"
+          searchOptions={{ type: 'municipality' }}
+        />
+      )}
+      {showLieuAccompagnementLieuActivite && (
+        <CustomSelectFormField
+          label=" "
+          control={control}
+          path="lieuActiviteId"
+          placeholder="Rechercher un lieu d’activité"
+          options={lieuActiviteOptions}
+        />
+      )}
       <hr className="fr-separator-12v" />
       <p className="fr-text--medium fr-mb-4v">Matériel numérique utilisé</p>
       <CheckboxGroupFormField
@@ -151,7 +187,7 @@ const CraIndividuelForm = ({
         }}
         classes={{
           fieldsetElement: richCardFieldsetElementClassName,
-          fieldset: styles.materielFieldset,
+          fieldset: craFormFieldsetClassname(styles.materielFieldset),
           label: 'fr-py-4v',
         }}
       />
@@ -168,7 +204,7 @@ const CraIndividuelForm = ({
         }}
         classes={{
           fieldsetElement: richCardFieldsetElementClassName,
-          fieldset: styles.thematiquesFieldset,
+          fieldset: craFormFieldsetClassname(styles.thematiquesFieldset),
         }}
       />
       <p className="fr-text--medium fr-mb-4v fr-mt-12v">
@@ -184,7 +220,7 @@ const CraIndividuelForm = ({
         }}
         classes={{
           fieldsetElement: richCardFieldsetElementClassName,
-          fieldset: styles.thematiquesFieldset,
+          fieldset: craFormFieldsetClassname(styles.thematiquesFieldset),
         }}
       />
       <p className="fr-text--medium fr-mb-4v fr-mt-12v">
@@ -200,10 +236,19 @@ const CraIndividuelForm = ({
         }}
         classes={{
           fieldsetElement: richCardFieldsetElementClassName,
-          fieldset: styles.yesNoFieldSet,
+          fieldset: craFormFieldsetClassname(styles.yesNoFieldSet),
           radioGroup: richCardRadioGroupClassName,
         }}
       />
+      {!!showStructureOrientation && (
+        <CustomSelectFormField
+          label=" "
+          control={control}
+          path="structureDeRedirection"
+          placeholder="Structure de redirection"
+          options={structuresRedirectionOptions}
+        />
+      )}
 
       {showAnonymousForm && (
         <>
@@ -231,7 +276,7 @@ const CraIndividuelForm = ({
             className="fr-mb-12v"
             classes={{
               fieldsetElement: richCardFieldsetElementClassName,
-              fieldset: styles.yesNoFieldSet,
+              fieldset: craFormFieldsetClassname(styles.yesNoFieldSet),
               radioGroup: richCardRadioGroupClassName,
             }}
           />
@@ -240,7 +285,7 @@ const CraIndividuelForm = ({
             path="beneficiaire.communeResidence"
             disabled={isLoading}
             label={
-              <span className="fr-text--medium">
+              <span className="fr-text--medium fr-mb-4v fr-display-block">
                 Commune de résidence du bénéficiaire
               </span>
             }
@@ -260,7 +305,7 @@ const CraIndividuelForm = ({
             }}
             classes={{
               fieldsetElement: richCardFieldsetElementClassName,
-              fieldset: styles.genreFieldSet,
+              fieldset: craFormFieldsetClassname(styles.genreFieldSet),
               radioGroup: richCardRadioGroupClassName,
             }}
           />
@@ -278,7 +323,7 @@ const CraIndividuelForm = ({
                   label: RichCardLabel,
                 }}
                 classes={{
-                  fieldset: styles.columnFieldSet,
+                  fieldset: craFormFieldsetClassname(styles.columnFieldSet),
                   fieldsetElement: richCardFieldsetElementClassName,
                   radioGroup: richCardRadioGroupClassName,
                 }}
@@ -297,7 +342,7 @@ const CraIndividuelForm = ({
                   label: RichCardLabel,
                 }}
                 classes={{
-                  fieldset: styles.columnFieldSet,
+                  fieldset: craFormFieldsetClassname(styles.columnFieldSet),
                   fieldsetElement: richCardFieldsetElementClassName,
                   radioGroup: richCardRadioGroupClassName,
                 }}

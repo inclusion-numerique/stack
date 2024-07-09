@@ -53,8 +53,8 @@ export const lieuAccompagnementHints: { [key in LieuAccompagnement]?: string } =
   }
 
 export const lieuAccompagnementOptionsWithExtras = lieuAccompanementOptions.map(
-  ({ name, value }) => ({
-    name,
+  ({ label, value }) => ({
+    label,
     value,
     hint: lieuAccompagnementHints[value as LieuAccompagnement],
     extra: {
@@ -202,8 +202,8 @@ export const thematiqueAccompagnementOptions = labelsToOptions(
 )
 
 export const thematiqueAccompagnementOptionsWithExtras =
-  thematiqueAccompagnementOptions.map(({ name, value }) => ({
-    name,
+  thematiqueAccompagnementOptions.map(({ label, value }) => ({
+    label,
     value,
     extra: {
       tooltips:
@@ -312,8 +312,8 @@ export const thematiqueDemarcheAdministrativeValues = Object.keys(
 ) as [ThematiqueDemarcheAdministrative, ...ThematiqueDemarcheAdministrative[]]
 
 export const thematiqueDemarcheAdministrativeOptionsWithExtras =
-  thematiqueDemarcheAdministrativeOptions.map(({ name, value }) => ({
-    name,
+  thematiqueDemarcheAdministrativeOptions.map(({ label, value }) => ({
+    label,
     value,
     extra: {
       tooltips:
@@ -343,8 +343,8 @@ export const autonomieValues = Object.keys(autonomieLabels) as [
 ]
 
 export const autonomieOptionsWithExtras = autonomieOptions.map(
-  ({ name, value }) => ({
-    name,
+  ({ label, value }) => ({
+    label,
     value,
     extra: {
       stars: autonomieStars[value as Autonomie],
@@ -360,7 +360,7 @@ export const structuresRedirectionLabels: {
   AideAuxDemarchesAdministratives:
     'Structure d’aide aux démarches administratives (France Services…)',
   Administration: 'Administration (collectivité locale, préfecture…)',
-  MediationNumerique: 'Autre structure de médiation numérique',
+  MediationNumerique: 'Structure de médiation numérique',
   Autre: 'Autre',
 }
 
@@ -389,8 +389,8 @@ export const lieuAtelierIllustrations: {
 }
 
 export const lieuAtelierOptionsWithExtras = lieuAtelierOptions.map(
-  ({ name, value }) => ({
-    name,
+  ({ label, value }) => ({
+    label,
     value,
     extra: {
       illustration: lieuAtelierIllustrations[value as LieuAtelier],
@@ -433,8 +433,8 @@ export const niveauAtelierStars: {
 export const niveauAtelierOptions = labelsToOptions(niveauAtelierLabels)
 
 export const niveauAtelierOptionsWithExtras = niveauAtelierOptions.map(
-  ({ name, value }) => ({
-    name,
+  ({ label, value }) => ({
+    label,
     value,
     extra: {
       stars: niveauAtelierStars[value as NiveauAtelier],
@@ -475,8 +475,8 @@ export const degreDeFinalisationDemarcheOptions = labelsToOptions(
 )
 
 export const degreDeFinalisationDemarcheOptionsWithExtras =
-  degreDeFinalisationDemarcheOptions.map(({ name, value }) => ({
-    name,
+  degreDeFinalisationDemarcheOptions.map(({ label, value }) => ({
+    label,
     value,
     extra: {
       illustration:

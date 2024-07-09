@@ -1,40 +1,36 @@
-.materielFieldset {
+.fieldset {
+    margin-left: -8px;
+    margin-right: -8px;
+    padding-left: 8px;
+    padding-right: 8px;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
     gap: 16px;
+
+    :global .fr-messages-group {
+        padding-left: 4px;
+    }
+}
+
+.materielFieldset {
+    grid-template-columns: repeat(5, 1fr);
 }
 
 .thematiquesFieldset {
-    display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
 }
 
 .durationFieldSet {
-    display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
 }
 
 .lieuFieldSet {
-    display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
 }
-
 
 .genreFieldSet {
-    display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-}
-
-.columnFieldSet {
-    gap: 16px;
 }
 
 .yesNoFieldSet {
-    display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
 }

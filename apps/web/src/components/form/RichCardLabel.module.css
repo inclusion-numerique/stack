@@ -73,27 +73,6 @@
         content: none !important;
     }
 
-    input:not(:disabled) + .label {
-        --hover-tint: var(--hover);
-        --active-tint: var(--active);
-
-        &:hover {
-            background: var(--hover-tint) !important;
-        }
-
-        &:active {
-            background: var(--active-tint) !important;
-        }
-
-        &:has(button:hover) {
-            background: initial !important; /* Reset the background if info button is hovered */
-        }
-
-        &:has(button:active) {
-            background: initial !important; /* Reset the background if info button is active */
-        }
-    }
-
     input:checked + .label {
         border: 2px solid var(--border-action-high-blue-france);
 
@@ -116,11 +95,32 @@
             top: 0;
             right: 0;
         }
-
     }
 
 
-    input[type=radio] + label.label {
+    input:not(:disabled) + .label {
+        --hover-tint: var(--hover);
+        --active-tint: var(--active);
+
+        &:hover {
+            background: var(--hover-tint) !important;
+        }
+
+        &:active {
+            background: var(--active-tint) !important;
+        }
+
+        &:has(button:hover) {
+            background: initial !important; /* Reset the background if info button is hovered */
+        }
+
+        &:has(button:active) {
+            background: initial !important; /* Reset the background if info button is active */
+        }
+    }
+
+
+    input[type="radio"] + label.label {
         justify-content: center;
     }
 
