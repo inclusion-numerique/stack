@@ -62,7 +62,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     // Cookies are lost in redirect (Cypress issue)
     // https://github.com/cypress-io/cypress/issues/20476#issuecomment-1298486439
 
-    cy.url().should('equal', appUrl('/'))
+    cy.url().should('equal', appUrl('/inscription'))
 
     cy.get('.fr-header__tools').should('not.contain', 'Se connecter')
 
