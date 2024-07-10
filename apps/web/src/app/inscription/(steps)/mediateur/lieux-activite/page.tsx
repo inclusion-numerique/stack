@@ -39,6 +39,7 @@ const Page = async () => {
     >
       <LieuxActiviteForm
         nextHref={mediateurInscriptionSteps.recapitulatif}
+        createStructureBackHref={mediateurInscriptionSteps.lieuxActivite}
         defaultValues={{
           lieuxActivite,
           userId: user.id,

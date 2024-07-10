@@ -1,10 +1,6 @@
 import { redirect } from 'next/navigation'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
-import {
-  profileInscriptionFromSlug,
-  ProfileInscriptionSlug,
-} from '@app/web/inscription/profilInscription'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 import RenseignerStructureEmployeuseForm from '@app/web/app/inscription/(steps)/mediateur/structure-employeuse/RenseignerStructureEmployeuseForm'
 import {
@@ -17,17 +13,10 @@ export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),
 }
 
-// next js query params "profil": ProfilInscription
-const Page = async ({
-  searchParams: { profil },
-}: {
-  searchParams: {
-    profil?: ProfileInscriptionSlug
-  }
-}) => {
+const Page = async () => {
   const user = await getAuthenticatedSessionUser()
 
-  if (!profil || !user.mediateur || user.mediateur.conseillerNumerique) {
+  if (!user.mediateur || user.mediateur.conseillerNumerique) {
     redirect('/')
   }
 
@@ -56,7 +45,6 @@ const Page = async ({
     >
       <RenseignerStructureEmployeuseForm
         defaultValues={{
-          profil: profileInscriptionFromSlug[profil],
           structureEmployeuse: structureEmployeuse ?? undefined,
           userId: user.id,
         }}

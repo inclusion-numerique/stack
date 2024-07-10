@@ -6,14 +6,17 @@ const IconInSquare = ({
   className,
   iconId,
   size = 'medium',
+  background = 'fr-background-alt--blue-france',
 }: {
+  background?: string
   className?: string
   iconId: ButtonProps.IconOnly['iconId']
   size?: 'small' | 'medium' | 'large'
 }) => (
   <div
     className={classNames(
-      'fr-background-alt--blue-france fr-border-radius--8',
+      background,
+      'fr-border-radius--8',
       styles.container,
       styles[size],
       className,

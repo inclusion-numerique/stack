@@ -12,12 +12,14 @@ import styles from './CreerStructurePageContent.module.css'
 
 const CreerStructurePageContent = ({
   backLinkHref,
+  nextHref,
   backLinkTitle,
   lieuActiviteMediateurId,
   title,
   defaultValues,
 }: {
   backLinkHref: string
+  nextHref: string
   backLinkTitle?: string
   lieuActiviteMediateurId?: string
   title: string
@@ -63,6 +65,7 @@ const CreerStructurePageContent = ({
         <CreerStructureForm
           lieuActiviteMediateurId={lieuActiviteMediateurId}
           backLinkHref={backLinkHref}
+          nextHref={nextHref}
           onVisiblePourCartographieNationaleChange={setShowSideMenu}
           defaultValues={defaultValues}
         />

@@ -508,6 +508,16 @@
     border-bottom-right-radius: 8px;
 }
 
+.fr-border-radius-left--8 {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.fr-border-radius-right--8 {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
 .fr-border-radius--16 {
     border-radius: 16px;
 }
@@ -539,6 +549,15 @@
     &:hover,
     &:active {
         --underline-hover-width: 1px !important;
+    }
+}
+
+.fr-link--no-underline {
+    background-image: none !important;
+
+    &:hover,
+    &:active {
+        --underline-hover-width: 0 !important;
     }
 }
 
@@ -575,4 +594,9 @@
 
 .fr-cell--wrap {
     white-space: normal !important;
+}
+
+/* Full width row for a grid layout child */
+.fr-grid-row--full {
+    grid-column: 1 / -1;
 }

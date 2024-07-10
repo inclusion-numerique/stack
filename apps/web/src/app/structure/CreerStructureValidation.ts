@@ -50,16 +50,18 @@ export const CreerStructureValidation = z.object({
     .nullish(),
   horaires: z.string().nullish(),
   services: z.array(z.string()).nullish(),
-  modalitesAcces: z.object({
-    surPlace: z.boolean().nullish(),
-    parTelephone: z.boolean().nullish(),
-    numeroTelephone: z.string().nullish(),
-    parMail: z.boolean().nullish(),
-    adresseMail: z
-      .string()
-      .email('Veuillez renseigner une adresse email valide')
-      .nullish(),
-  }),
+  modalitesAcces: z
+    .object({
+      surPlace: z.boolean().nullish(),
+      parTelephone: z.boolean().nullish(),
+      numeroTelephone: z.string().nullish(),
+      parMail: z.boolean().nullish(),
+      adresseMail: z
+        .string()
+        .email('Veuillez renseigner une adresse email valide')
+        .nullish(),
+    })
+    .nullish(),
   fraisACharge: z.array(z.string()).nullish(),
   priseEnChargeSpecifique: z.array(z.string()).nullish(),
   toutPublic: z.boolean().nullish(),

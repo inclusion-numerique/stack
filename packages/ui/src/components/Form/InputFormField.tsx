@@ -21,6 +21,9 @@ type CommonProps<T extends FieldValues> = {
   icon?: string
   info?: ReactNode | ((value?: string | null) => ReactNode)
   asterisk?: boolean
+  classes?: {
+    label?: string
+  }
 }
 
 type InputProps = {
@@ -54,6 +57,7 @@ const InputFormField = <T extends FieldValues>({
   icon,
   info,
   asterisk,
+  classes,
   ...rest
 }: UiComponentProps & InputFormFieldProps<T>) => {
   const id = `input-form-field__${path}`
@@ -131,7 +135,10 @@ const InputFormField = <T extends FieldValues>({
               className,
             )}
           >
-            <label className="fr-label fr-mb-1v" htmlFor={id}>
+            <label
+              className={classNames('fr-label fr-mb-1v', classes?.label)}
+              htmlFor={id}
+            >
               {label} {asterisk && <RedAsterisk />}
               {hint && <span className="fr-hint-text">{hint}</span>}
             </label>

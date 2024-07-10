@@ -1,3 +1,6 @@
+/**
+ * Documentation: https://adresse.data.gouv.fr/api-doc/adresse
+ */
 export const apiAdresseEndpoint = 'https://api-adresse.data.gouv.fr/search'
 
 export type FeatureCollection = {
@@ -21,12 +24,20 @@ export type Geometry = {
   coordinates: [number, number] // Coordonnées géographiques (longitude, latitude)
 }
 
+/**
+ * housenumber : numéro « à la plaque »
+ * street : position « à la voie », placé approximativement au centre de celle-ci
+ * locality : lieu-dit
+ * municipality : numéro « à la commune »
+ */
+export type AdresseType = 'housenumber' | 'street' | 'locality' | 'municipality'
+
 export type Properties = {
   label: string // Adresse complète
   score: number // Score de correspondance
   housenumber: string // Numéro de la maison
   id: string // Identifiant unique
-  type: string // Type de la fonctionnalité (e.g., "housenumber")
+  type: AdresseType // Type de la fonctionnalité (e.g., "housenumber")
   name: string // Nom de la rue avec le numéro de la maison
   postcode: string // Code postal
   citycode: string // Code INSEE de la ville
@@ -41,6 +52,7 @@ export type Properties = {
 export type SearchAdresseOptions = {
   limit?: number
   autocomplete?: boolean
+  type?: AdresseType
 }
 
 export const searchAdresses = async (
@@ -55,6 +67,7 @@ export const searchAdresses = async (
   url.searchParams.append('q', adresse)
   url.searchParams.append('limit', limit.toString(10))
   url.searchParams.append('autocomplete', autocomplete ? '1' : '0')
+  if (options?.type) url.searchParams.append('type', options.type)
 
   const response = await fetch(url.toString())
   const body = (await response.json()) as FeatureCollection

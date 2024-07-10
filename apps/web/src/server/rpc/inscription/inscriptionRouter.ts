@@ -95,7 +95,7 @@ export const inscriptionRouter = router({
     .input(RenseignerStructureEmployeuseValidation)
     .mutation(
       async ({
-        input: { profil, structureEmployeuse, userId, conseillerNumeriqueId },
+        input: { structureEmployeuse, userId },
         ctx: { user: sessionUser },
       }) => {
         inscriptionGuard(userId, sessionUser)
@@ -125,33 +125,12 @@ export const inscriptionRouter = router({
               },
               data: {
                 structureEmployeuseRenseignee: new Date(),
-                profilInscription: profil,
                 emplois: {
                   create: {
                     id: v4(),
                     structureId: structure.id,
                   },
                 },
-                mediateur: sessionUser.mediateur
-                  ? undefined
-                  : {
-                      create: {
-                        id: v4(),
-                        // TODO this should be checked and add conum infos through api ?
-                        conseillerNumerique: conseillerNumeriqueId
-                          ? {
-                              connectOrCreate: {
-                                create: {
-                                  id: conseillerNumeriqueId,
-                                },
-                                where: {
-                                  id: conseillerNumeriqueId,
-                                },
-                              },
-                            }
-                          : undefined,
-                      },
-                    },
               },
               select: {
                 id: true,

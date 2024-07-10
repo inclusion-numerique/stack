@@ -1,8 +1,14 @@
 import React, { ReactNode } from 'react'
-import { Control, Controller, FieldValues, PathValue } from 'react-hook-form'
+import {
+  Control,
+  Controller,
+  FieldPathValue,
+  FieldValues,
+  PathValue,
+} from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
 import classNames from 'classnames'
-import type { GroupBase } from 'react-select'
+import type { GroupBase, OptionsOrGroups } from 'react-select'
 import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 import CustomSelect, {
@@ -25,6 +31,10 @@ export type CustomSelectFormFieldProps<
   asterisk?: boolean
   info?: ReactNode
   optionToFormValue?: (option: Option) => PathValue<FormData, PathProperty>
+  optionFromFormValue?: (
+    options: OptionsOrGroups<Option, Group>,
+    value: FieldPathValue<FormData, PathProperty>,
+  ) => Option | Option[]
 } & Omit<
   CustomSelectProps<Option, IsMulti, Group>,
   'onChange' | 'name' | 'onBlur'
@@ -52,6 +62,14 @@ const defaultGetOptionLabel = (option: unknown) => {
 
 const defaultOptionToFormValue = defaultGetOptionValue
 
+const defaultOptionFromFormValue = (options: unknown[], value: unknown) => {
+  if (Array.isArray(value)) {
+    return value.map((v) => options.find((o) => defaultGetOptionValue(o) === v))
+  }
+
+  return options.find((o) => defaultGetOptionValue(o) === value)
+}
+
 const CustomSelectFormField = <
   FormData extends FieldValues = FieldValues,
   Option = { label: string; value: string },
@@ -70,6 +88,7 @@ const CustomSelectFormField = <
   getOptionLabel: getOptionLabelProperty,
   getOptionValue: getOptionValueProperty,
   optionToFormValue: optionToFormValueProperty,
+  optionFromFormValue: optionFromFormValueProperty,
   ...customSelectProps
 }: UiComponentProps &
   CustomSelectFormFieldProps<FormData, Option, IsMulti, Group>) => {
@@ -79,6 +98,17 @@ const CustomSelectFormField = <
   const getOptionLabel = getOptionLabelProperty ?? defaultGetOptionLabel
   const optionToFormValue =
     optionToFormValueProperty ?? defaultOptionToFormValue
+  const optionFromFormValue =
+    optionFromFormValueProperty ??
+    (defaultOptionFromFormValue as Exclude<
+      CustomSelectFormFieldProps<
+        FormData,
+        Option,
+        IsMulti,
+        Group
+      >['optionFromFormValue'],
+      undefined
+    >)
 
   return (
     <Controller
@@ -103,15 +133,12 @@ const CustomSelectFormField = <
             ? option.map(optionToFormValue)
             : optionToFormValue(option as Option)
 
-          console.log('ON CHANGE INPUT', {
-            option,
-            value,
-            newValue,
-          })
           onChange(newValue)
         }
 
-        // const valueProperty = valuePropertyFromValue(value, options)
+        const valueOption = options
+          ? optionFromFormValue(options, value)
+          : undefined
 
         return (
           <div
@@ -129,10 +156,7 @@ const CustomSelectFormField = <
               {...customSelectProps}
               {...fieldProps}
               onChange={onChangeProperty}
-              value={
-                // value
-                undefined
-              }
+              value={valueOption}
               getOptionValue={getOptionValue}
               getOptionLabel={getOptionLabel}
               options={options}

@@ -1,40 +1,62 @@
-import { Control } from 'react-hook-form'
+import React, { ReactNode } from 'react'
+import type { Control, FieldValues, Path, PathValue } from 'react-hook-form'
 import CustomSelectFormField, {
   type CustomSelectFormFieldProps,
 } from '@app/ui/components/Form/CustomSelectFormField'
-import { AdresseBanData } from '@app/web/external-apis/ban/AdresseBanValidation'
-import { searchAdresses } from '@app/web/external-apis/apiAdresse'
+import {
+  Feature,
+  SearchAdresseOptions,
+  searchAdresses,
+} from '@app/web/external-apis/apiAdresse'
 import { banFeatureToAdresseBanData } from '@app/web/external-apis/ban/banFeatureToAdresseBanData'
+import type { AdresseBanData } from '@app/web/external-apis/ban/AdresseBanValidation'
 
-type AdresseBanFormData = {
-  adresseBan: AdresseBanData
+export type AdressBanFormFieldOption = {
+  label: string
+  adresse: AdresseBanData | null
 }
 
-const loadOptions = async (search: string) => {
+const getAdresseBanLabel = ({
+  properties: { type, label, postcode },
+}: Feature) => {
+  if (type === 'municipality' && !!postcode) {
+    return `${label} · ${postcode}`
+  }
+
+  return label
+}
+
+const loadOptions = async (
+  search: string,
+  options?: SearchAdresseOptions,
+): Promise<AdressBanFormFieldOption[]> => {
   if (search.trim().length < 3) {
     return [
       {
         label: `La recherche doit contenir au moins 3 caractères`,
         adresse: null,
-      },
+      } as AdressBanFormFieldOption,
     ]
   }
   const result = await searchAdresses(search, {
     limit: 10,
     autocomplete: true,
+    ...options,
   })
 
   return result.map((adresseBan) => ({
-    label: adresseBan.properties.label,
+    label: getAdresseBanLabel(adresseBan),
     adresse: banFeatureToAdresseBanData(adresseBan),
   }))
 }
 
-export type AdressBanFormFieldOption = Awaited<
-  ReturnType<typeof loadOptions>
->[number]
-
-const customStyles: CustomSelectFormFieldProps<AdresseBanFormData>['styles'] = {
+const customStyles: CustomSelectFormFieldProps<FieldValues>['styles'] = {
+  valueContainer: (provided) => ({
+    ...provided,
+    // Keep same height as select with dropdown indicator
+    paddingTop: 4,
+    paddingBottom: 4,
+  }),
   dropdownIndicator: (provided) => ({
     ...provided,
     display: 'none', // hide the dropdown indicator
@@ -49,27 +71,60 @@ const customStyles: CustomSelectFormFieldProps<AdresseBanFormData>['styles'] = {
   }),
 }
 
-const AdresseBanFormField = <T extends AdresseBanFormData>({
-  control,
-}: {
+interface AdresseBanFormFieldProps<
+  T extends FieldValues,
+  P extends Path<T> = Path<T>,
+> {
   control: Control<T>
-}) => {
-  const castedControl = control as unknown as Control<AdresseBanFormData>
-  return (
-    <CustomSelectFormField
-      label="Adresse"
-      asterisk
-      control={castedControl}
-      path="adresseBan"
-      placeholder="Rechercher l’adresse"
-      loadOptions={loadOptions}
-      cacheOptions
-      styles={customStyles as never}
-      getOptionValue={(option: AdressBanFormFieldOption) =>
-        option.adresse?.id ?? ''
-      }
-      optionToFormValue={(option: AdressBanFormFieldOption) => option.adresse}
-    />
-  )
+  path: P
+  label?: ReactNode
+  placeholder?: string
+  searchOptions?: SearchAdresseOptions
+  asterisk?: boolean
+  disabled?: boolean
+  hint?: string
+  valid?: string
+  info?: ReactNode
+  className?: string
 }
+
+const AdresseBanFormField = <
+  T extends FieldValues,
+  P extends Path<T> = Path<T>,
+>({
+  control,
+  path,
+  label,
+  placeholder,
+  searchOptions,
+  asterisk,
+  disabled,
+  hint,
+  info,
+  valid,
+  className,
+}: AdresseBanFormFieldProps<T, P>) => (
+  <CustomSelectFormField
+    className={className}
+    label={label}
+    control={control}
+    asterisk={asterisk}
+    disabled={disabled}
+    path={path}
+    hint={hint}
+    valid={valid}
+    info={info}
+    placeholder={placeholder}
+    loadOptions={(search) => loadOptions(search, searchOptions)}
+    cacheOptions
+    styles={customStyles as never}
+    getOptionValue={(option: AdressBanFormFieldOption) =>
+      option.adresse?.id ?? ''
+    }
+    optionToFormValue={(option: AdressBanFormFieldOption) =>
+      option.adresse as PathValue<T, Path<T>>
+    }
+  />
+)
+
 export default AdresseBanFormField

@@ -1,6 +1,6 @@
 import type { ObjectId } from 'mongodb'
 
-export type MiseEnRelation = {
+export type StructureConseillerNumerique = {
   _id: ObjectId
   idPG: number
   type: string // 'DEPARTEMENT' | 'REGION' | 'COMMUNE' - assuming other values

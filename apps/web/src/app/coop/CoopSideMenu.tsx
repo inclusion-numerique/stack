@@ -3,7 +3,9 @@
 import { usePathname } from 'next/navigation'
 import type { SideMenuProps } from '@codegouvfr/react-dsfr/SideMenu'
 import SideMenu from '@codegouvfr/react-dsfr/SideMenu'
+import Button from '@codegouvfr/react-dsfr/Button'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import { CreateCraModalDefinition } from '@app/web/app/coop/mon-activite/CreateCraModalDefinition'
 import styles from './CoopSideMenu.module.css'
 
 const CoopSideMenu = ({ user }: { user: SessionUser }) => {
@@ -78,17 +80,17 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
   if (canCreateCra) {
     items.push({
       text: (
-        <button
+        <Button
           type="button"
-          className="fr-ml-4v wip-outline fr-btn fr-btn--icon-left fr-icon-add-line"
+          className="fr-ml-4v"
+          {...CreateCraModalDefinition.buttonProps}
+          iconId="fr-icon-add-line"
         >
           Enregistrer une activité
-        </button>
+        </Button>
       ),
       isActive: false,
-      linkProps: {
-        href: '/coop/mon-activite/enregistrer-une-activite',
-      },
+      linkProps: undefined as unknown as { href: string },
     })
   }
 
