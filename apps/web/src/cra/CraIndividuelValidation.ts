@@ -30,7 +30,11 @@ export const CraIndividuelValidation = z
     lieuActiviteId: z.string().uuid().nullish(),
     lieuAccompagnementDomicileCommune: AdresseBanValidation.nullish(),
     materiel: z.array(z.enum(materielValues)).default([]),
-    thematiques: z.array(z.enum(thematiqueAccompagnementValues)).default([]),
+    thematiques: z
+      .array(z.enum(thematiqueAccompagnementValues), {
+        required_error: 'Veuillez renseigner au moins une thématique',
+      })
+      .min(1, 'Veuillez renseigner au moins une thématique'),
     autonomie: z.enum(autonomieValues).nullish(),
     orienteVersStructure: z.enum(yesOrNo).nullish(),
     structureDeRedirection: z.enum(structuresRedirectionValues).nullish(),
