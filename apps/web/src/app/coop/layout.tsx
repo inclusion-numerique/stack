@@ -23,7 +23,7 @@ const Layout = async ({ children }: PropsWithChildren) => {
       <div
         style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}
       >
-        <Header user={user} />
+        <Header user={user} fullWidth />
         <InscriptionStepsLayout>
           <div className="fr-mb-32v fr-p-12v fr-width-full fr-border-radius--8 fr-background-default--grey fr-mt-32v">
             <h2>Vous êtes connecté en tant qu’administrateur</h2>
@@ -51,7 +51,7 @@ const Layout = async ({ children }: PropsWithChildren) => {
     <div
       style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}
     >
-      <Header user={user} />
+      <Header user={user} fullWidth />
 
       <div
         className={classNames('fr-grid-row fr-width-full', styles.container)}

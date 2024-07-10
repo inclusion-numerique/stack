@@ -5,17 +5,20 @@ import HeaderBackLink from '@app/web/components/HeaderBackLink'
 import { HeaderUserMenu } from '@app/web/components/HeaderUserMenu'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { getHomepage } from '@app/web/security/getHomepage'
+import styles from './Header.module.css'
 
 const Header = ({
   user,
   backLink,
+  fullWidth,
 }: {
   user?: SessionUser | null
   backLink?: boolean
+  fullWidth?: boolean
 }) => (
   <header role="banner" className="fr-header">
     <div className="fr-header__body">
-      <div className="fr-container">
+      <div className={fullWidth ? styles.bodyContainer : 'fr-container'}>
         <div className="fr-header__body-row">
           <div className="fr-header__brand fr-enlarge-link">
             <div className="fr-header__brand-top">
