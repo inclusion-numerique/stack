@@ -33,6 +33,7 @@ export type SessionUser = Pick<
   mediateur:
     | (Pick<Mediateur, 'id'> & {
         conseillerNumerique: Pick<ConseillerNumerique, 'id'> | null
+        _count: { enActivite: number }
       })
     | null
   coordinateur: Pick<Coordinateur, 'id'> | null
