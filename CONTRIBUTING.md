@@ -56,7 +56,11 @@ Créer le fichier `.env` contenant les variables d'environnement à partir de [.
 cp .env.dist .env
 ```
 
-### 5. Démarrer les services de mail et de base de données en local
+### 5. Demander à un membre de l'équipe la valeur des variables d'environment
+
+- `INCLUSION_CONNECT_LOCAL_CLIENT_SECRET` : pour utiliser Inclusion Connect en local
+
+### 6. Démarrer les services de mail et de base de données en local
 
 #### Avec Docker
 
@@ -64,17 +68,21 @@ cp .env.dist .env
 pnpm docker:start
 ```
 
+Utilise Docker pour lancer les services de mail et de bases de données :
+- Le service d'interception des mails de l'application `MailDev` est disponible sur http://0.0.0.0:1080/
+- Par défault, la base est accessible sur `localhost`, port `5433`, avec l'utilisateur `coop-mediation-numerique` et le mot de passe `password` : `postgresql://coop-mediation-numerique:password@localhost:5433/coop-mediation-numerique`
+
 #### Sans Docker
 
 [//]: # TODO
 
-### 6. Générer le client prisma et initialiser la base de données
+### 7. Générer le client prisma et initialiser la base de données
 
 ```bash
 pnpm db:init
 ```
 
-### 7. Démarrer le client next en local
+### 8. Démarrer le client next en local
 
 ```bash
 pnpm start:web
