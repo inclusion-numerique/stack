@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { mobileStory, mobileStoryParameters } from '@app/storybook/storyHelper'
+import { mobileStoryParameters } from '@app/storybook/storyHelper'
 import Header from '@app/web/components/Header'
 import { testSessionUser } from '@app/web/test/testSessionUser'
 
