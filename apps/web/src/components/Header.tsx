@@ -35,28 +35,12 @@ const Header = ({ user }: { user?: SessionUser | null }) => (
                 </Link>
               </div>
               <div className="fr-header__operator fr-pl-0">
-                <Link href="/" className="fr-text--medium">
+                <Link href="/" className="fr-text--sm fr-text--medium	">
                   {PublicWebAppConfig.projectTitle}
                   <span className="fr-sr-only"> - Retour à l’accueil</span>
                 </Link>
               </div>
               <div className="fr-header__navbar fr-unhidden fr-hidden-lg ">
-                <Link
-                  href="/rechercher/tout/ressources"
-                  title="Rechercher"
-                  className="fr-text--medium"
-                >
-                  <button
-                    type="button"
-                    className="fr-btn--search fr-btn"
-                    aria-controls="header__navbar"
-                    id="header-modal-button"
-                    title="Recherche"
-                  >
-                    Recherche
-                  </button>
-                </Link>
-
                 <button
                   type="button"
                   className="fr-btn--menu fr-btn"
