@@ -27,7 +27,6 @@ export const Full: Story = {
       'Conseiller-Numerique_64258318456999069aa3c9bb',
     creation: new Date('2018-03-01'),
     modification: new Date('2020-01-01'),
-    onDelete: () => {},
   },
 }
 
@@ -40,7 +39,6 @@ export const Minimal: Story = {
     commune: 'Saint-Denis',
     creation: new Date('2018-03-01'),
     modification: new Date('2018-03-01'),
-    onDelete: () => {},
   },
 }
 
@@ -54,6 +52,5 @@ export const LieuEnCoursDAjout: Story = {
     creation: new Date('2018-03-01'),
     modification: new Date('2018-03-01'),
     visiblePourCartographieNationale: true,
-    onDelete: () => {},
   },
 }

@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import { prismaClient } from '@app/web/prismaClient'
-import LieuxActiviteList from './_components/LieuActiviteList'
+import { LieuxActiviteList } from './_components/LieuActiviteList'
 
-const LieuActivitePage = async () => {
+const LieuActiviteListPage = async () => {
   const user = await getAuthenticatedSessionUser()
 
   if (
@@ -52,4 +52,4 @@ const LieuActivitePage = async () => {
   )
 }
 
-export default LieuActivitePage
+export default LieuActiviteListPage

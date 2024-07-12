@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
+import DeleteMediateurActivite from './DeleteMediateurActivite'
 
 export const LieuActivite = ({
   id,
@@ -17,7 +17,6 @@ export const LieuActivite = ({
   structureCartographieNationaleId,
   creation,
   modification,
-  onDelete,
 }: {
   id: string
   nom: string
@@ -32,7 +31,6 @@ export const LieuActivite = ({
   structureCartographieNationaleId?: string | null
   creation: Date
   modification: Date
-  onDelete: (id: string) => void
 }) => (
   <div className="fr-border fr-border-radius--8 fr-p-4w">
     <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
@@ -44,18 +42,13 @@ export const LieuActivite = ({
         )}
       </span>
       <span>
-        <Button type="button" size="small" priority="tertiary no outline">
-          Modifier <span className="ri-edit-line fr-ml-1w" />
-        </Button>
-        <Button
-          type="button"
-          size="small"
-          priority="tertiary no outline"
-          title="Supprimer"
-          onClick={() => onDelete(id)}
+        <Link
+          className="fr-btn fr-btn--sm fr-btn--tertiary-no-outline"
+          href={`lieux-activite/${id}`}
         >
-          <span className="ri-delete-bin-6-line" />
-        </Button>
+          Modifier <span className="ri-edit-line fr-ml-1w" />
+        </Link>
+        <DeleteMediateurActivite structureId={id} />
       </span>
     </div>
     <div className="fr-my-2w">
