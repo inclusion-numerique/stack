@@ -73,7 +73,7 @@ export const LieuActivite = ({
         <div className="fr-p-1w fr-background-contrast--info fr-border-radius--8">
           <Image
             className="fr-display-block"
-            src="/images/cartographie-nationale/icon.png"
+            src="/images/services/cartographie-icon.png"
             alt=""
             width={24}
             height={24}

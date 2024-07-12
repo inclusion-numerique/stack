@@ -52,6 +52,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
           <span
             className="ri-account-circle-line fr-mr-1w"
             style={{ color: 'var(--blue-france-sun-113-625)' }}
+            aria-hidden
           />
           Voir mon profil
         </Link>
@@ -64,8 +65,9 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
             style={{ boxShadow: 'none' }}
           >
             <span
-              className="ri-home-gear-line fr-mr-1w"
+              className="ri-home-office-line fr-mr-1w"
               style={{ color: 'var(--blue-france-sun-113-625)' }}
+              aria-hidden
             />
             Voir mes lieux d’activités ·{' '}
             <span className="fr-text--bold">
@@ -80,6 +82,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
           <span
             className="fr-icon-logout-box-r-line fr-icon--sm fr-mr-1w"
             style={{ color: 'var(--blue-france-sun-113-625)' }}
+            aria-hidden
           />
           Se déconnecter
         </Link>

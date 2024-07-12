@@ -42,9 +42,16 @@ const LieuActiviteListPage = async () => {
 
   return (
     <div className="fr-container fr-container--800 fr-mb-16w">
-      <h1 className="fr-h3 fr-page-title fr-my-5w">
-        Mes lieux d’activités · {user.mediateur._count.enActivite}
-      </h1>
+      <span className="fr-flex fr-direction-row fr-align-items-center fr-flex-gap-4v fr-my-5w">
+        <span
+          className="ri-home-office-line ri-lg fr-line-height-1 fr-text-label--blue-france fr-background-alt--blue-france fr-p-2w fr-m-0 fr-border-radius--8"
+          aria-hidden
+        />
+        <h1 className="fr-h3 fr-page-title fr-m-0">
+          Mes lieux d’activités · {user.mediateur._count.enActivite}
+        </h1>
+      </span>
+
       <div className="fr-flex fr-direction-column fr-flex-gap-4v">
         <LieuxActiviteList lieuxActivite={lieuxActivite} />
       </div>

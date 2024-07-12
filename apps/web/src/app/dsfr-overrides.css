@@ -3,6 +3,7 @@
 /* Card variants */
 
 .fr-card {
+  background-color: transparent;
     &.fr-card--editable {
         .fr-card__header {
             display: flex;
