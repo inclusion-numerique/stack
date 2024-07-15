@@ -1,12 +1,13 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import EditCard from '@app/web/components/EditCard'
 import {
   ModalitesAccesAuServiceCommandValidation,
   ModalitesAccesAuServiceData,
 } from '@app/web/app/structure/ModalitesAccesAuServiceCommandValidation'
+import { ModalitesAccesAuServiceInputs } from './ModalitesAccesAuServiceInputs'
 import { ModalitesAccesAuServiceView } from './ModalitesAccesAuServiceView'
 
 export const ModalitesAccesAuServiceEditCard = (props: {
@@ -28,7 +29,7 @@ export const ModalitesAccesAuServiceEditCard = (props: {
     <EditCard
       noBorder
       contentSeparator={false}
-      id="informations-generales"
+      id="modalites-acces-au-service"
       title="Modalités d’accès au service"
       description="Indiquez comment bénéficier des services d’inclusion numérique."
       titleAs="h3"
@@ -36,7 +37,7 @@ export const ModalitesAccesAuServiceEditCard = (props: {
       mutation={async (data) => {
         console.log(data)
       }}
-      edition={<>Edit mode</>}
+      edition={<ModalitesAccesAuServiceInputs form={form} />}
       view={<ModalitesAccesAuServiceView {...props} />}
     />
   )

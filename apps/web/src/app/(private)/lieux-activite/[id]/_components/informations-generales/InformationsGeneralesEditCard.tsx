@@ -7,16 +7,13 @@ import {
   StructureInformationsGeneralesCommandValidation,
   StructureInformationsGeneralesData,
 } from '@app/web/app/structure/StructureInformationsGeneralesCommandValidation'
-import { AdresseBanData } from '@app/web/external-apis/ban/AdresseBanValidation'
+import { InformationsGeneralesProps } from './InformationsGeneralesProps'
+import { InformationsGeneralesFields } from './InformationsGeneralesFields'
 import { InformationsGeneralesView } from './InformationsGeneralesView'
 
-export const InformationsGeneralesEditCard = (props: {
-  nom: string
-  adresseBan: AdresseBanData
-  complementAdresse?: string
-  siret?: string
-  rna?: string
-}) => {
+export const InformationsGeneralesEditCard = (
+  props: InformationsGeneralesProps,
+) => {
   const form = useForm<StructureInformationsGeneralesData>({
     resolver: zodResolver(StructureInformationsGeneralesCommandValidation),
     defaultValues: props,
@@ -36,7 +33,7 @@ export const InformationsGeneralesEditCard = (props: {
       mutation={async (data) => {
         console.log(data)
       }}
-      edition={<>Edit mode</>}
+      edition={<InformationsGeneralesFields {...props} form={form} />}
       view={<InformationsGeneralesView {...props} />}
     />
   )

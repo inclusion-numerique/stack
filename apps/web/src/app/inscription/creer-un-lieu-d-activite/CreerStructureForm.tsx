@@ -1,16 +1,16 @@
 'use client'
 
+import React, { useCallback, useEffect } from 'react'
 import { DefaultValues, useForm } from 'react-hook-form'
-import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDisclamer'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
+import Button from '@codegouvfr/react-dsfr/Button'
+import RequiredFieldsDisclaimer from '@app/ui/components/Form/RequiredFieldsDisclaimer'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
-import Link from 'next/link'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { useRouter } from 'next/navigation'
 import { createToast } from '@app/ui/toast/createToast'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import { useCallback, useEffect } from 'react'
 import ToggleFormField from '@app/ui/components/Form/ToggleFormField'
 import MultipleSelectFormField from '@app/ui/components/Form/MultipleSelectFormField'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
@@ -38,6 +38,7 @@ import {
   publicsAccueillisStructureOptions,
   servicesStructureOptions,
 } from '@app/web/app/structure/optionsStructure'
+import { DisplayOnCartography } from '@app/web/components/structure/DisplayOnCartography'
 
 const descriptionInfo = (description?: string | null) =>
   `${description?.length ?? 0}/${descriptionMaxLength} caractères`
@@ -194,7 +195,7 @@ const CreerStructureForm = ({
         </div>
         <hr className="fr-separator-8v" />
         <div className="fr-px-8v fr-pb-10v">
-          <RequiredFieldsDisclamer className="fr-mb-4v" />
+          <RequiredFieldsDisclaimer className="fr-mb-4v" />
           <InputFormField
             control={control}
             path="nom"
@@ -234,39 +235,7 @@ const CreerStructureForm = ({
       </div>
 
       <div className="fr-border fr-border-radius--8 fr-mt-6v">
-        <div className="fr-px-8v fr-py-10v fr-background-alt--blue-france fr-border-radius-top--8">
-          <div className="fr-flex fr-flex-gap-6v fr-align-items-center">
-            <img
-              src="/images/services/cartographie-logo.svg"
-              alt="Cartographie Nationale"
-            />
-            <p className="fr-text--lg fr-mb-0 fr-text-title--blue-france fr-text--bold">
-              Vous souhaitez apparaître sur la cartographie nationale des lieux
-              d’inclusion numérique&nbsp;?
-            </p>
-          </div>
-          <div className="fr-flex fr-mt-8v fr-flex-gap-3v fr-align-items-center">
-            <span className="fr-icon-edit-line fr-icon--sm fr-text-title--blue-france" />
-            <p className="fr-text--sm fr-mb-0">
-              Renseignez des informations sur le lieu et les services
-              d’inclusion numérique qui y sont proposés
-            </p>
-          </div>
-          <div className="fr-flex fr-mt-4v fr-mb-8v fr-flex-gap-3v fr-align-items-center">
-            <span className="fr-icon-compass-3-line fr-icon--sm fr-text-title--blue-france" />
-            <p className="fr-text--sm fr-mb-0">
-              Gagnez en visibilité et orientez les bénéficiaires grâce à la
-              cartographie
-            </p>
-          </div>
-          <Link
-            href="https://cartographie.societenumerique.gouv.fr/presentation"
-            target="_blank"
-            className="fr-link fr-link--sm fr-mb-0"
-          >
-            En savoir plus sur la cartographie
-          </Link>
-        </div>
+        <DisplayOnCartography />
         <hr className="fr-separator fr-separator-1px" />
         <div className="fr-pt-8v fr-pb-0 fr-px-8v">
           <ToggleFormField

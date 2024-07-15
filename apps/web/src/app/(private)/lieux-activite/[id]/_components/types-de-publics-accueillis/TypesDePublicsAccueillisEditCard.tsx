@@ -7,6 +7,7 @@ import {
   TypesDePublicsAccueillisCommandValidation,
   TypesDePublicsAccueillisData,
 } from '@app/web/app/structure/TypesDePublicsAccueillisCommandValidation'
+import { TypesDePublicsAccueillisInputs } from './TypesDePublicsAccueillisInputs'
 import { TypesDePublicsAccueillisView } from './TypesDePublicsAccueillisView'
 
 export const TypesDePublicsAccueillisEditCard = (props: {
@@ -23,7 +24,7 @@ export const TypesDePublicsAccueillisEditCard = (props: {
     <EditCard
       noBorder
       contentSeparator={false}
-      id="modalites-acces-au-service"
+      id="types-publics-accueillis"
       title="Types de publics accueillis"
       description="Indiquez si ce lieu accueille des publics spécifiques."
       titleAs="h3"
@@ -31,7 +32,7 @@ export const TypesDePublicsAccueillisEditCard = (props: {
       mutation={async (data) => {
         console.log(data)
       }}
-      edition={<>Edit mode</>}
+      edition={<TypesDePublicsAccueillisInputs form={form} />}
       view={<TypesDePublicsAccueillisView {...props} />}
     />
   )

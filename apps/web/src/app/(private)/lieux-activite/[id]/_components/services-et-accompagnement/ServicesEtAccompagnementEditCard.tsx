@@ -7,6 +7,7 @@ import {
   ServicesEtAccompagnementCommandValidation,
   ServicesEtAccompagnementData,
 } from '@app/web/app/structure/ServicesEtAccompagnementCommandValidation'
+import { ServicesEtAccompagnementInputs } from './ServicesEtAccompagnementInputs'
 import { ServicesEtAccompagnementView } from './ServicesEtAccompagnementView'
 
 export const ServicesEtAccompagnementEditCard = (props: {
@@ -30,7 +31,7 @@ export const ServicesEtAccompagnementEditCard = (props: {
       mutation={async (data) => {
         console.log(data)
       }}
-      edition={<>Edit mode</>}
+      edition={<ServicesEtAccompagnementInputs form={form} />}
       view={<ServicesEtAccompagnementView {...props} />}
     />
   )

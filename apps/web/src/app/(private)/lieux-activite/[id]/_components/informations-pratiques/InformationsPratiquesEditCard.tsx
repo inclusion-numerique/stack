@@ -1,12 +1,13 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import EditCard from '@app/web/components/EditCard'
 import {
   StructureInformationsPratiquesCommandValidation,
   StructureInformationsPratiquesData,
 } from '@app/web/app/structure/StructureInformationsPratiquesCommandValidation'
+import { InformationsPratiquesInputs } from './InformationsPratiquesInputs'
 import { InformationsPratiquesView } from './InformationsPratiquesView'
 
 export const InformationsPratiquesEditCard = (props: {
@@ -24,7 +25,7 @@ export const InformationsPratiquesEditCard = (props: {
     <EditCard
       contentSeparator={false}
       noBorder
-      id="informations-generales"
+      id="informations-pratiques"
       title="Informations pratiques"
       description="Horaires, accès et site internet du lieu."
       titleAs="h2"
@@ -32,7 +33,7 @@ export const InformationsPratiquesEditCard = (props: {
       mutation={async (data) => {
         console.log(data)
       }}
-      edition={<>Edit mode</>}
+      edition={<InformationsPratiquesInputs form={form} />}
       view={<InformationsPratiquesView {...props} />}
     />
   )

@@ -1,5 +1,6 @@
 import z from 'zod'
-import { descriptionMaxLength } from './CreerStructureValidation'
+
+export const descriptionMaxLength = 280
 
 export const DescriptionCommandValidation = z.object({
   typologies: z.array(z.string()).nullish(),

@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import { prismaClient } from '@app/web/prismaClient'
-import { LieuxActiviteList } from './_components/LieuActiviteList'
+import { LieuActivite } from './_components/LieuActivite'
 
 const LieuActiviteListPage = async () => {
   const user = await getAuthenticatedSessionUser()
@@ -53,7 +53,15 @@ const LieuActiviteListPage = async () => {
       </span>
 
       <div className="fr-flex fr-direction-column fr-flex-gap-4v">
-        <LieuxActiviteList lieuxActivite={lieuxActivite} />
+        {lieuxActivite.map((lieuActivite) => (
+          <LieuActivite
+            key={lieuActivite.structure.id}
+            canDelete={lieuxActivite.length > 1}
+            {...lieuActivite.structure}
+            creation={lieuActivite.creation}
+            modification={lieuActivite.modification}
+          />
+        ))}
       </div>
     </div>
   )

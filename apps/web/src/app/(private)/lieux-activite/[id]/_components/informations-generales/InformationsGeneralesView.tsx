@@ -1,4 +1,4 @@
-import { AdresseBanData } from '@app/web/external-apis/ban/AdresseBanValidation'
+import { InformationsGeneralesProps } from './InformationsGeneralesProps'
 
 export const InformationsGeneralesView = ({
   nom,
@@ -6,13 +6,7 @@ export const InformationsGeneralesView = ({
   complementAdresse,
   siret,
   rna,
-}: {
-  nom: string
-  adresseBan: AdresseBanData
-  complementAdresse?: string
-  siret?: string
-  rna?: string
-}) => (
+}: InformationsGeneralesProps) => (
   <div className="fr-flex fr-direction-column fr-flex-gap-6v">
     <div>
       <span className="fr-text-mention--grey">Nom de la structure</span>

@@ -12,8 +12,6 @@ export const OpeningHours = ({
 }) => {
   const openingHours = stringToOpeningHours(horaires)
 
-  console.log(openingHours)
-
   return (
     <div
       className={classNames(

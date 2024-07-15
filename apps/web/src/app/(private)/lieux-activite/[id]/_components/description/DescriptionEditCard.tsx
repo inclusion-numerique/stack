@@ -7,6 +7,7 @@ import {
   DescriptionCommandValidation,
   DescriptionData,
 } from '@app/web/app/structure/DescriptionCommandValidation'
+import { DescriptionFields } from './DescriptionFields'
 import { DescriptionView } from './DescriptionView'
 
 export const DescriptionEditCard = (props: {
@@ -23,7 +24,7 @@ export const DescriptionEditCard = (props: {
     <EditCard
       noBorder
       contentSeparator={false}
-      id="informations-generales"
+      id="description"
       title="Description du lieu"
       description="Décrivez ici le lieu et les activités qu’il propose."
       titleAs="h3"
@@ -31,7 +32,7 @@ export const DescriptionEditCard = (props: {
       mutation={async (data) => {
         console.log(data)
       }}
-      edition={<>Edit mode</>}
+      edition={<DescriptionFields form={form} />}
       view={<DescriptionView {...props} />}
     />
   )

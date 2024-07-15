@@ -24,6 +24,7 @@ const IconInSquare = ({
   >
     <span
       className={classNames('fr-text-title--blue-france', styles.icon, iconId)}
+      aria-hidden
     />
   </div>
 )
