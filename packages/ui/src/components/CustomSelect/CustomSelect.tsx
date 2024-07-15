@@ -4,6 +4,7 @@ import React, { ReactNode } from 'react'
 import type {
   GroupBase,
   SelectComponentsConfig,
+  StylesConfig,
   ThemeConfig,
 } from 'react-select'
 import Select from 'react-select'
@@ -31,24 +32,31 @@ const customTheme: ThemeConfig = {
     controlHeight: 38,
   },
   colors: {
-    primary: '#000091', // Selected option (text is white...)
-    primary75: '#c1c1c1', // ?
-    primary50: '#eee', // Active option
-    primary25: '#F6F6F6', // Hover option
-    danger: '#c9191e',
-    dangerLight: '#fcbfbf',
-    neutral0: '#fff',
-    neutral5: '#e5e5e5',
-    neutral10: '#d2d2d2',
-    neutral20: '#c1c1c1',
-    neutral30: '#929292',
-    neutral40: '#777', // Button Color
-    neutral50: '#666', // Placeholder
-    neutral60: '#494949',
-    neutral70: '#3a3a3a',
-    neutral80: '#161616', // Value text
-    neutral90: '#101010',
+    primary: 'var(--blue-france-975-75)', // Selected option (text is white...)
+    primary75: 'var(--grey-950-100-active)', // ?
+    primary50: 'var(--grey-950-100)', // Active option
+    primary25: 'var(--grey-975-75)', // Hover option
+    danger: 'var(--red-marianne-425-625)',
+    dangerLight: 'var(--red-marianne-850-200)',
+    neutral0: 'var(--grey-1000-50)',
+    neutral5: 'var(--grey-925-125)',
+    neutral10: 'var(--grey-950-125-hover)',
+    neutral20: 'var(--grey-950-125-active)',
+    neutral30: 'var(--grey-625-425)',
+    neutral40: 'var(--grey-425-625)', // Button Color
+    neutral50: 'var(--grey-425-625)', // Placeholder
+    neutral60: 'var(--grey-425-625)',
+    neutral70: 'var(--grey-200-850)',
+    neutral80: 'var(--grey-50-1000)', // Value text
+    neutral90: 'var(--grey-0-1000)',
   },
+}
+
+const customStyles: StylesConfig = {
+  option: (provided, state) => ({
+    ...provided,
+    color: state.isSelected ? 'var(--text-black-white-grey)' : provided.color,
+  }),
 }
 
 const loadingMessage = (): ReactNode => (
@@ -119,6 +127,7 @@ const CustomSelect = <
         loadingMessage={props.loadingMessage ?? loadingMessage}
         noOptionsMessage={props.noOptionsMessage ?? noOptionsMessage}
         theme={customTheme}
+        styles={customStyles as unknown as StylesConfig<Option, IsMulti, Group>}
         classNames={classNames}
       />
     )
@@ -131,6 +140,7 @@ const CustomSelect = <
       loadingMessage={props.loadingMessage ?? loadingMessage}
       noOptionsMessage={props.noOptionsMessage ?? noOptionsMessage}
       theme={customTheme}
+      styles={customStyles as unknown as StylesConfig<Option, IsMulti, Group>}
       classNames={classNames}
     />
   )

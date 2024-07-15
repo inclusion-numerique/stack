@@ -1,0 +1,20 @@
+.fieldset {
+    margin-left: -8px;
+    margin-right: -8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    display: grid;
+    gap: 16px;
+
+    :global .fr-messages-group {
+        padding-left: 4px;
+    }
+}
+
+.genreFieldSet {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.yesNoFieldSet {
+    grid-template-columns: repeat(2, 1fr);
+}

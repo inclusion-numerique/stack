@@ -7,7 +7,7 @@ import {
   structuresRedirectionValues,
   thematiqueAccompagnementValues,
 } from '@app/web/cra/cra'
-import { BeneficiaireValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
+import { BeneficiaireCraValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { AdresseBanValidation } from '@app/web/external-apis/ban/AdresseBanValidation'
 import { yesOrNo } from '@app/web/utils/yesNoBooleanOptions'
 
@@ -16,7 +16,7 @@ export const CraIndividuelValidation = z
     id: z.string().uuid().nullish(), // defined if update, nullish if create
     mediateurId: z.string().uuid(), // owner of the CRA
 
-    beneficiaire: BeneficiaireValidation,
+    beneficiaire: BeneficiaireCraValidation,
 
     date: z
       .string({ required_error: 'Veuillez renseigner une date' })
@@ -41,18 +41,27 @@ export const CraIndividuelValidation = z
     notes: z.string().nullish(),
   })
   // lieuActiviteId is required if lieuAccompagnement ===  LieuActivite
-  .refine((data) => {
-    if (data.lieuAccompagnement === 'LieuActivite') {
-      return !!data.lieuActiviteId
-    }
-    return true
-  }, 'Veuillez renseigner le lieu d’activité')
+  .refine(
+    (data) => {
+      if (data.lieuAccompagnement === 'LieuActivite') {
+        return !!data.lieuActiviteId
+      }
+      return true
+    },
+    {
+      message: 'Veuillez renseigner le lieu d’activité',
+      path: ['lieuActiviteId'],
+    },
+  )
   // lieuAccompagnementDomicileCommune is required if lieuAccompagnement === Domicile
   .refine(
     (data) =>
       data.lieuAccompagnement !== 'Domicile' ||
       !!data.lieuAccompagnementDomicileCommune,
-    'Veuillez renseigner la commune',
+    {
+      message: 'Veuillez renseigner la commune',
+      path: ['lieuAccompagnementDomicileCommune'],
+    },
   )
 
 export type CraIndividuelData = z.infer<typeof CraIndividuelValidation>
