@@ -46,17 +46,16 @@ const CheckboxFormField = <T extends FieldValues>({
         }
 
         return (
-          <div className="fr-form-group" data-testid={dataTestId}>
+          <div
+            className={classNames('fr-form-group', className)}
+            data-testid={dataTestId}
+          >
             <fieldset
-              className={classNames(
-                'fr-fieldset fr-mb-0',
-                {
-                  'fr-fieldset--error': error,
-                  'fr-fieldset--disabled': disabled,
-                  'fr-fieldset--valid': valid && isDirty && !invalid,
-                },
-                className,
-              )}
+              className={classNames('fr-fieldset fr-mb-0', {
+                'fr-fieldset--error': error,
+                'fr-fieldset--disabled': disabled,
+                'fr-fieldset--valid': valid && isDirty && !invalid,
+              })}
               aria-labelledby={`${id}__legend${
                 ariaLabelBy ? ` ${ariaLabelBy}` : ''
               }`}

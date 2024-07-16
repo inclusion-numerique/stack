@@ -8,6 +8,7 @@ import { usurpationRouter } from '@app/web/server/rpc/usurpation/usurpationRoute
 import { inscriptionRouter } from '@app/web/server/rpc/inscription/inscriptionRouter'
 import { conseillersNumeriqueRouter } from '@app/web/server/rpc/conseillers-numerique/conseillersNumeriqueRouter'
 import { craRouter } from '@app/web/server/rpc/cra/craRouter'
+import { beneficiairesRouter } from '@app/web/server/rpc/beneficiaires/beneficiairesRouter'
 
 export const appRouter = router({
   user: userRouter,
@@ -16,6 +17,7 @@ export const appRouter = router({
   image: imageRouter,
   siret: siretRouter,
   structures: structuresRouter,
+  beneficiaires: beneficiairesRouter,
   cra: craRouter,
   usurpation: usurpationRouter,
   conseillersNumerique: conseillersNumeriqueRouter,

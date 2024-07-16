@@ -512,12 +512,15 @@ enum StatutSocial {
 model Beneficiaire {
   id String @id @default(uuid()) @db.Uuid
 
-  creeParMediateurId String?    @map("cree_par_mediateur_id") @db.Uuid
-  creeParMediateur   Mediateur? @relation(fields: [creeParMediateurId], references: [id])
+  // Relation avec le médiateur à qui est "rattaché" le bénéficiaire
+  // Si le beneficiaire est "partagé", cela gardera la trace du médiateur source
+  mediateurId String    @map("mediateur_id") @db.Uuid
+  mediateur   Mediateur @relation(fields: [mediateurId], references: [id])
 
   prenom         String?
   nom            String?
   telephone      String?
+  pasDeTelephone Boolean?  @map("pas_de_telephone")
   email          String?
   dateNaissance  DateTime? @map("date_naissance") @db.Date
   anneeNaissance Int?      @map("annee_naissance")

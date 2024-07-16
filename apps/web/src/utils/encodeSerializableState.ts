@@ -21,7 +21,12 @@ export const encodeSerializableState = <T>(formState: T): EncodedState<T> => {
 
 export const decodeSerializableState = <T>(
   encodedState: EncodedState<T>,
+  defaultValue: T, // Needed if decoding fails
 ): T => {
-  const jsonString = atob(encodedState)
-  return JSON.parse(jsonString) as T
+  try {
+    const jsonString = atob(encodedState)
+    return JSON.parse(jsonString) as T
+  } catch {
+    return defaultValue
+  }
 }

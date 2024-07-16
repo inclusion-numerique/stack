@@ -12,11 +12,13 @@ import { createToast } from '@app/ui/toast/createToast'
 import { useRouter } from 'next/navigation'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import React from 'react'
-import { SelectOption } from '@app/ui/components/Form/utils/options'
+import React, { useState } from 'react'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import CraFormLabel from '@app/web/app/coop/mon-activite/cra/CraFormLabel'
-import AdresseBanFormField from '@app/web/components/form/AdresseBanFormField'
+import AdresseBanFormField, {
+  type AdressBanFormFieldOption,
+} from '@app/web/components/form/AdresseBanFormField'
 import {
   genreOptions,
   statutSocialOptions,
@@ -43,14 +45,54 @@ import {
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { yesNoBooleanOptions } from '@app/web/utils/yesNoBooleanOptions'
 import { craFormFieldsetClassname } from '@app/web/app/coop/mon-activite/cra/craFormFieldsetClassname'
+import CraBeneficiaryForm from '@app/web/app/coop/mon-activite/cra/CraBeneficiaryForm'
+import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
+import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
+import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipalityLabel'
+import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
 import styles from '../CraForm.module.css'
+
+/**
+ * Initial options can come from the field data it self or be pre-populated by beneficiaire data
+ */
+const lieuResidenceOptionsFromFormData = (
+  data: DefaultValues<CraIndividuelData>,
+): AdressBanFormFieldOption[] => {
+  const result: AdressBanFormFieldOption[] = []
+  if (data.lieuAccompagnementDomicileCommune?.codeInsee) {
+    result.push({
+      label: banMunicipalityLabel(data.lieuAccompagnementDomicileCommune),
+      value: banDefaultValueToAdresseBanData(
+        data.lieuAccompagnementDomicileCommune,
+      ),
+    })
+  }
+
+  // Do not duplicate option
+  if (
+    !data.beneficiaire?.communeResidence?.codeInsee ||
+    data.beneficiaire?.communeResidence?.codeInsee ===
+      data.lieuAccompagnementDomicileCommune?.codeInsee
+  ) {
+    return result
+  }
+
+  result.push({
+    label: banMunicipalityLabel(data.beneficiaire.communeResidence),
+    value: banDefaultValueToAdresseBanData(data.beneficiaire.communeResidence),
+  })
+
+  return result
+}
 
 const CraIndividuelForm = ({
   defaultValues,
   lieuActiviteOptions,
+  initialBeneficiariesOptions,
 }: {
-  defaultValues: DefaultValues<CraIndividuelData>
+  defaultValues: DefaultValues<CraIndividuelData> & { mediateurId: string }
   lieuActiviteOptions: SelectOption[]
+  initialBeneficiariesOptions: SelectOption<BeneficiaireData | null>[]
 }) => {
   const form = useForm<CraIndividuelData>({
     resolver: zodResolver(CraIndividuelValidation),
@@ -78,6 +120,9 @@ const CraIndividuelForm = ({
     control,
     setError,
     handleSubmit,
+    getValues,
+    setValue,
+    watch,
     formState: { isSubmitting, isSubmitSuccessful, errors },
   } = form
 
@@ -105,8 +150,67 @@ const CraIndividuelForm = ({
 
   useScrollToError({ errors })
 
+  const [initialLieuResidenceOptions, setInitialLieuResidenceOptions] =
+    useState<AdressBanFormFieldOption[]>(
+      lieuResidenceOptionsFromFormData(defaultValues),
+    )
+
+  const [
+    lieuAccompagnementDomicileCommuneDefaultValue,
+    setLieuAccompagnementDomicileCommuneDefaultValue,
+  ] = useState<AdressBanFormFieldOption | undefined>(
+    defaultValues.lieuAccompagnementDomicileCommune
+      ? {
+          label: banMunicipalityLabel(
+            defaultValues.lieuAccompagnementDomicileCommune,
+          ),
+          value: banDefaultValueToAdresseBanData(
+            defaultValues.lieuAccompagnementDomicileCommune,
+          ),
+        }
+      : undefined,
+  )
+
+  watch((data, { name }) => {
+    router.replace(
+      `/coop/mon-activite/cra/individuel?v=${encodeSerializableState(data)}`,
+      {
+        scroll: false,
+      },
+    )
+
+    // Set the initial options for the lieu de residence
+    if (
+      name === 'beneficiaire' &&
+      data.beneficiaire?.communeResidence?.codeInsee
+    ) {
+      setInitialLieuResidenceOptions(lieuResidenceOptionsFromFormData(data))
+      const newDomicileValue = banDefaultValueToAdresseBanData(
+        data.beneficiaire.communeResidence,
+      )
+      setLieuAccompagnementDomicileCommuneDefaultValue({
+        label: banMunicipalityLabel(data.beneficiaire.communeResidence),
+        value: newDomicileValue,
+      })
+      setValue('lieuAccompagnementDomicileCommune', newDomicileValue)
+    }
+  })
+
+  const lieuAccompagnementDomicileCommuneRenderKey = watch(
+    'lieuAccompagnementDomicileCommune',
+  )?.id
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <CraBeneficiaryForm
+        getValues={getValues}
+        control={control}
+        mediateurId={defaultValues.mediateurId}
+        setValue={setValue}
+        watch={watch}
+        creerBeneficiaireRetourUrl="/coop/mon-activite/cra/individuel"
+        initialBeneficiariesOptions={initialBeneficiariesOptions}
+      />
       <div className="fr-flex fr-flex-gap-12v">
         <InputFormField
           control={control}
@@ -163,6 +267,9 @@ const CraIndividuelForm = ({
           disabled={isLoading}
           placeholder="Rechercher une commune par son nom ou son code postal"
           searchOptions={{ type: 'municipality' }}
+          defaultOptions={initialLieuResidenceOptions}
+          defaultValue={lieuAccompagnementDomicileCommuneDefaultValue}
+          key={lieuAccompagnementDomicileCommuneRenderKey}
         />
       )}
       {showLieuAccompagnementLieuActivite && (
@@ -284,6 +391,7 @@ const CraIndividuelForm = ({
             control={control}
             path="beneficiaire.communeResidence"
             disabled={isLoading}
+            defaultOptions={initialLieuResidenceOptions}
             label={
               <span className="fr-text--medium fr-mb-4v fr-display-block">
                 Commune de résidence du bénéficiaire

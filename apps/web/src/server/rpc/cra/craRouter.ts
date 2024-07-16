@@ -5,7 +5,7 @@ import { CraIndividuelValidation } from '@app/web/cra/CraIndividuelValidation'
 import { enforceIsMediateur } from '@app/web/server/rpc/enforceIsMediateur'
 import { prismaClient } from '@app/web/prismaClient'
 import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
-import { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
+import { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { yesNoToOptionalBoolean } from '@app/web/utils/yesNoBooleanOptions'
 
 const getExistingBeneficiaire = async ({
@@ -27,7 +27,7 @@ const getExistingBeneficiaire = async ({
   if (!existingBeneficiaire) {
     throw invalidError('Beneficiaire not found')
   }
-  if (existingBeneficiaire.creeParMediateurId !== mediateurId) {
+  if (existingBeneficiaire.mediateurId !== mediateurId) {
     throw invalidError('Beneficiaire not created by current mediateur')
   }
 
@@ -70,8 +70,8 @@ const beneficiaireUpdateInputFromForm = ({
   statutSocial,
   notes,
   mediateurId,
-}: BeneficiaireData): Prisma.BeneficiaireCreateInput => ({
-  creeParMediateur: {
+}: BeneficiaireCraData): Prisma.BeneficiaireCreateInput => ({
+  mediateur: {
     connect: { id: mediateurId },
   },
   prenom: prenom ?? undefined,
@@ -157,6 +157,9 @@ export const craRouter = router({
                 create: {
                   id: v4(),
                   ...beneficiaireUpdateInputFromForm(beneficiaire),
+                  mediateur: {
+                    connect: { id: mediateurId },
+                  },
                 },
               },
           duree: Number.parseInt(duree, 10),

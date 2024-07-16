@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 
 export type SelectOption<
-  T extends string = string,
+  T = string,
   E extends Record<string, unknown> = Record<string, unknown>,
 > = {
   label: string

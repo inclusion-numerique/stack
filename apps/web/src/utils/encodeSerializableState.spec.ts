@@ -23,7 +23,13 @@ describe('encodeSerializableState and decodeSerializableState', () => {
 
   it('should encode and decode form state correctly', () => {
     const encodedState = encodeSerializableState(testFormState)
-    const decodedState = decodeSerializableState(encodedState)
+    const decodedState = decodeSerializableState(encodedState, {
+      date: '',
+      mediateurId: '',
+      beneficiaire: {
+        mediateurId: '',
+      },
+    })
 
     expect(decodedState).toEqual(testFormState)
   })
@@ -35,6 +41,6 @@ describe('encodeSerializableState and decodeSerializableState', () => {
 
   it('should throw an error when decoding an invalid string', () => {
     const invalidEncodedState = 'invalidString' as EncodedState<string>
-    expect(() => decodeSerializableState(invalidEncodedState)).toThrow()
+    expect(decodeSerializableState(invalidEncodedState, 'ooof')).toEqual('ooof')
   })
 })

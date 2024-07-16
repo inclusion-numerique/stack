@@ -71,8 +71,6 @@ const CreerStructureForm = ({
 
   useScrollToError({ errors })
 
-  console.log('ERRORS', errors)
-
   const mutation = trpc.structures.create.useMutation()
 
   const router = useRouter()
