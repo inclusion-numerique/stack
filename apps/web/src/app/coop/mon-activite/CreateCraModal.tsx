@@ -61,7 +61,6 @@ const CreateCraModal = () => {
       </ModalNavigationButton>
 
       <ModalNavigationButton
-        className="wip-outline"
         illustration="/images/iconographie/demarche-administrative.svg"
         onClick={() => navigateTo('/coop/mon-activite/cra/administratif')}
       >

@@ -808,12 +808,11 @@ model CraDemarcheAdministrative {
   lieuAccompagnementDomicileCommune    String?            @map("lieu_accompagnement_domicile_commune")
   lieuAccompagnementDomicileCodeInsee  String?            @map("lieu_accompagnement_domicile_code_insee")
 
-  materiel            Materiel[]                         @default([])
-  thematiques         ThematiqueDemarcheAdministrative[] @default([]) @map("thematiques_accompagnement")
-  degreDeFinalisation DegreDeFinalisationDemarche?
-
-  orienteVersStructure   Boolean?                @map("oriente_vers_structure")
-  structureDeRedirection StructureDeRedirection?
+  thematiques            ThematiqueDemarcheAdministrative[] @default([]) @map("thematiques_accompagnement")
+  precisionsDemarche     String?                            @map("precisions_demarche")
+  autonomie              Autonomie?
+  degreDeFinalisation    DegreDeFinalisationDemarche?       @map("degre_de_finalisation")
+  structureDeRedirection StructureDeRedirection?            @map("structure_de_redirection")
 
   notes String?
 

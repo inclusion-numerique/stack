@@ -2,7 +2,6 @@
 
 import type {
   Control,
-  DefaultValues,
   UseFormGetValues,
   UseFormSetValue,
   UseFormWatch,
@@ -14,11 +13,13 @@ import { useRouter } from 'next/navigation'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import IconInSquare from '@app/web/components/IconInSquare'
-import type { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import { trpc } from '@app/web/trpc'
-import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
+import type {
+  BeneficiaireCraData,
+  BeneficiaireData,
+} from '@app/web/beneficiaire/BeneficiaireValidation'
 import { AdresseBanData } from '@app/web/external-apis/ban/AdresseBanValidation'
 
 /**
@@ -34,7 +35,12 @@ enum CraBeneficiaryFormState {
   SearchOrCreate,
 }
 
-const initialStateFromValues = (values: DefaultValues<CraIndividuelData>) => {
+export type CraDataWithBeneficiaire = {
+  beneficiaire: BeneficiaireCraData | null | undefined
+  lieuAccompagnementDomicileCommune: AdresseBanData | null | undefined
+}
+
+const initialStateFromValues = (values: CraDataWithBeneficiaire) => {
   if (values.beneficiaire?.id) {
     return CraBeneficiaryFormState.Selected
   }
@@ -71,10 +77,10 @@ const CraBeneficiaryForm = ({
   initialBeneficiariesOptions,
   creerBeneficiaireRetourUrl,
 }: {
-  getValues: UseFormGetValues<CraIndividuelData>
-  setValue: UseFormSetValue<CraIndividuelData>
-  watch: UseFormWatch<CraIndividuelData>
-  control: Control<CraIndividuelData>
+  getValues: UseFormGetValues<CraDataWithBeneficiaire>
+  setValue: UseFormSetValue<CraDataWithBeneficiaire>
+  watch: UseFormWatch<CraDataWithBeneficiaire>
+  control: Control<CraDataWithBeneficiaire>
   mediateurId: string
   creerBeneficiaireRetourUrl: string
   initialBeneficiariesOptions: BeneficiaireOption[]

@@ -478,14 +478,14 @@ export const degreDeFinalisationDemarcheOptionsWithExtras =
   degreDeFinalisationDemarcheOptions.map(({ label, value }) => ({
     label,
     value,
+    hint: degreDeFinalisationDemarcheHints[
+      value as DegreDeFinalisationDemarche
+    ],
     extra: {
       illustration:
         degreDeFinalisationDemarcheIllustrations[
           value as DegreDeFinalisationDemarche
         ],
-      hint: degreDeFinalisationDemarcheHints[
-        value as DegreDeFinalisationDemarche
-      ],
     },
   }))
 
