@@ -22,7 +22,9 @@ export const DescriptionView = ({
         className="fr-text--medium"
         data-testid="description-presentation-resume"
       >
-        {presentationResume ?? 'Non renseignée'}
+        {(presentationResume?.length ?? 0) > 0
+          ? presentationResume
+          : 'Non renseignée'}
       </div>
     </div>
     <div>

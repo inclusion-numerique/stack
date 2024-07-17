@@ -2,10 +2,10 @@ import Link from 'next/link'
 import Tag from '@codegouvfr/react-dsfr/Tag'
 
 export const ModalitesAccesAuServiceView = ({
-  fraisACharge,
+  fraisACharge = [],
   modalitesAcces,
 }: {
-  fraisACharge: string[]
+  fraisACharge?: string[]
   modalitesAcces?: {
     surPlace?: boolean | null
     parTelephone?: boolean | null
@@ -32,7 +32,7 @@ export const ModalitesAccesAuServiceView = ({
           )}
           {modalitesAcces?.parTelephone && (
             <li>
-              <Tag>Se Téléphoner</Tag>
+              <Tag>Téléphoner</Tag>
             </li>
           )}
           {modalitesAcces?.parMail && (

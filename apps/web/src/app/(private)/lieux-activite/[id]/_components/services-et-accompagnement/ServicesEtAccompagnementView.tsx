@@ -1,11 +1,11 @@
 import Tag from '@codegouvfr/react-dsfr/Tag'
 
 export const ServicesEtAccompagnementView = ({
-  services,
-  modalitesAccompagnement,
+  services = [],
+  modalitesAccompagnement = [],
 }: {
-  services: string[]
-  modalitesAccompagnement: string[]
+  services?: string[]
+  modalitesAccompagnement?: string[]
 }) => (
   <div className="fr-flex fr-direction-column fr-flex-gap-4v">
     <div data-testid="services-et-accompagnement-services">

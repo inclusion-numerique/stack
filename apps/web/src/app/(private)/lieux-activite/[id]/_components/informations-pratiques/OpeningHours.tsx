@@ -29,9 +29,12 @@ export const OpeningHours = ({
           <span>13h30 – 17h00</span>
         </div>
       ))}
-      <i className="fr-text--sm fr-text-mention--grey fr-mb-0">
-        Sauf les jours fériés et le premier Lundi du mois
-      </i>
+      {openingHours.comment && (
+        <i className="fr-text--sm fr-text-mention--grey fr-mb-0">
+          {openingHours.comment}
+        </i>
+      )}
+      <p>{horaires}</p>
     </div>
   )
 }

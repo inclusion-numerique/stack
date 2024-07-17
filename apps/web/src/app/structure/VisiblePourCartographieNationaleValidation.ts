@@ -1,9 +1,10 @@
 import z from 'zod'
 
-export const VisiblePourCartographieNationaleCommandValidation = z.object({
+export const VisiblePourCartographieNationaleValidation = z.object({
+  id: z.string().uuid(),
   visiblePourCartographieNationale: z.boolean().default(false),
 })
 
 export type VisiblePourCartographieNationaleData = z.infer<
-  typeof VisiblePourCartographieNationaleCommandValidation
+  typeof VisiblePourCartographieNationaleValidation
 >

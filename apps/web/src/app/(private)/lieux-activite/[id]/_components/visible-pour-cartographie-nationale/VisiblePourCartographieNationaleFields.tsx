@@ -1,45 +1,77 @@
 'use client'
 
-import React from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import ToggleFormField from '@app/ui/components/Form/ToggleFormField'
-import {
-  VisiblePourCartographieNationaleCommandValidation,
-  VisiblePourCartographieNationaleData,
-} from '@app/web/app/structure/VisiblePourCartographieNationaleCommandValidation'
+import React, { ReactNode } from 'react'
+import { useRouter } from 'next/navigation'
+import ToggleSwitch from '@codegouvfr/react-dsfr/ToggleSwitch'
+import { createToast } from '@app/ui/toast/createToast'
+import { trpc } from '@app/web/trpc'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
 
-export const VisiblePourCartographieNationaleFields = ({
+const VisiblePourCartographieNationaleFields = ({
+  id,
   visiblePourCartographieNationale,
+  className,
+  children,
 }: {
+  id: string
   visiblePourCartographieNationale: boolean
+  className: string
+  children?: ReactNode
 }) => {
-  const form = useForm<VisiblePourCartographieNationaleData>({
-    resolver: zodResolver(VisiblePourCartographieNationaleCommandValidation),
-    defaultValues: {
-      visiblePourCartographieNationale,
-    },
-  })
+  const router = useRouter()
+  const mutate =
+    trpc.lieuActivite.updateVisiblePourCartographieNationale.useMutation()
 
-  const {
-    control,
-    formState: { isSubmitting, isSubmitSuccessful },
-  } = form
-
-  const isLoading = isSubmitting || isSubmitSuccessful
+  const handleChange = async () => {
+    try {
+      await mutate.mutateAsync({
+        id,
+        visiblePourCartographieNationale: !visiblePourCartographieNationale,
+      })
+      router.refresh()
+      createToast({
+        priority: 'success',
+        message: (
+          <>
+            Le lieu d’activité{' '}
+            <strong>
+              {visiblePourCartographieNationale
+                ? 'n’est pas visible'
+                : 'est visible'}
+            </strong>{' '}
+            sur la cartographie
+          </>
+        ),
+      })
+    } catch {
+      createToast({
+        priority: 'error',
+        message:
+          'Une erreur est survenue lors de la configuration de la visibilité du lieu d’activité sur la cartographie',
+      })
+    }
+  }
 
   return (
-    <ToggleFormField
-      control={control}
-      path="visiblePourCartographieNationale"
-      disabled={isLoading}
-      label={
-        <span className="fr-text--medium">
-          Rendre mon lieu d’activité visible sur la cartographie
-        </span>
-      }
-      className="fr-mb-0"
-      labelPosition="left"
-    />
+    <>
+      <div className={className}>
+        <ToggleSwitch
+          inputTitle="Visibilité du lieu d’activité sur la cartographie"
+          disabled={mutate.isPending}
+          checked={visiblePourCartographieNationale}
+          label={
+            <span className="fr-text--medium">
+              Rendre mon lieu d’activité visible sur la cartographie
+            </span>
+          }
+          labelPosition="left"
+          showCheckedHint
+          onChange={handleChange}
+        />
+      </div>
+      {visiblePourCartographieNationale && children}
+    </>
   )
 }
+
+export default withTrpc(VisiblePourCartographieNationaleFields)

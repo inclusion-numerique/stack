@@ -1,11 +1,12 @@
 import z from 'zod'
 
-export const TypesDePublicsAccueillisCommandValidation = z.object({
+export const TypesDePublicsAccueillisValidation = z.object({
+  id: z.string().uuid(),
   priseEnChargeSpecifique: z.array(z.string()).nullish(),
   toutPublic: z.boolean().nullish(),
   publicsSpecifiquementAdresses: z.array(z.string()).nullish(),
 })
 
 export type TypesDePublicsAccueillisData = z.infer<
-  typeof TypesDePublicsAccueillisCommandValidation
+  typeof TypesDePublicsAccueillisValidation
 >

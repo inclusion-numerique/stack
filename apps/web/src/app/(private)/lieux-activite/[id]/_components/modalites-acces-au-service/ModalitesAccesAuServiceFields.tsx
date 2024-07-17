@@ -3,23 +3,16 @@ import { UseFormReturn } from 'react-hook-form'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
 import InputFormField from '@app/ui/components/Form/InputFormField'
-import { ModalitesAccesAuServiceData } from '@app/web/app/structure/ModalitesAccesAuServiceCommandValidation'
+import { ModalitesAccesAuServiceData } from '@app/web/app/structure/ModalitesAccesAuServiceValidation'
 import { fraisAChargeStructureOptions } from '@app/web/app/structure/optionsStructure'
 
-export const ModalitesAccesAuServiceInputs = ({
-  form,
+export const ModalitesAccesAuServiceFields = ({
+  form: { control, formState, watch },
 }: {
   form: UseFormReturn<ModalitesAccesAuServiceData>
 }) => {
-  const {
-    control,
-    formState: { isSubmitSuccessful, isSubmitting },
-  } = form
-
-  const showPhoneInput = !!form.watch('modalitesAcces.parTelephone')
-  const showEmailInput = !!form.watch('modalitesAcces.parMail')
-
-  const isLoading = isSubmitting || isSubmitSuccessful
+  const showPhoneInput = !!watch('modalitesAcces.parTelephone')
+  const showEmailInput = !!watch('modalitesAcces.parMail')
 
   return (
     <>
@@ -32,50 +25,50 @@ export const ModalitesAccesAuServiceInputs = ({
         plusieurs choix.
       </p>
       <CheckboxFormField
-        control={control}
         path="modalitesAcces.surPlace"
         label="Se présenter sur place"
-        disabled={isLoading}
+        control={control}
+        disabled={formState.isSubmitting}
       />
       <CheckboxFormField
-        control={control}
         path="modalitesAcces.parTelephone"
         label="Téléphoner"
-        disabled={isLoading}
+        control={control}
+        disabled={formState.isSubmitting}
       />
       {showPhoneInput && (
         <InputFormField
-          control={control}
           path="modalitesAcces.numeroTelephone"
           label="Précisez le téléphone de contact"
           hint="Exemples : 06 00 00 00 00 ou 0600000000"
           asterisk
-          disabled={isLoading}
+          control={control}
+          disabled={formState.isSubmitting}
         />
       )}
       <CheckboxFormField
-        control={control}
         path="modalitesAcces.parMail"
         label="Contacter par mail"
-        disabled={isLoading}
+        control={control}
+        disabled={formState.isSubmitting}
       />
       {showEmailInput && (
         <InputFormField
-          control={control}
           path="modalitesAcces.adresseMail"
           label="Précisez l’adresse mail de contact"
           hint="Format attendu : nom@domaine.fr"
           asterisk
-          disabled={isLoading}
+          control={control}
+          disabled={formState.isSubmitting}
         />
       )}
       <CheckboxGroupFormField
-        control={control}
         path="fraisACharge"
         label="Frais à charge"
-        disabled={isLoading}
         hint="Indiquez les conditions financières d'accès aux services."
         options={fraisAChargeStructureOptions}
+        control={control}
+        disabled={formState.isSubmitting}
       />
     </>
   )

@@ -1,25 +1,71 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { createToast } from '@app/ui/toast/createToast'
+import { trpc } from '@app/web/trpc'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import EditCard from '@app/web/components/EditCard'
 import {
-  StructureInformationsPratiquesCommandValidation,
-  StructureInformationsPratiquesData,
-} from '@app/web/app/structure/StructureInformationsPratiquesCommandValidation'
-import { InformationsPratiquesInputs } from './InformationsPratiquesInputs'
+  InformationsPratiquesValidation,
+  InformationsPratiquesData,
+} from '@app/web/app/structure/InformationsPratiquesValidation'
+import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
+import { isEmpty } from '@app/web/utils/isEmpty'
+import { EmptyState } from '../EmptyState'
+import { InformationsPratiquesFields } from './InformationsPratiquesFields'
 import { InformationsPratiquesView } from './InformationsPratiquesView'
 
-export const InformationsPratiquesEditCard = (props: {
+const InformationsPratiquesEditCard = ({
+  id,
+  lieuItinerant,
+  siteWeb,
+  ficheAccesLibre,
+  horaires,
+}: {
+  id: string
   lieuItinerant?: boolean | null
   siteWeb?: string | null
   ficheAccesLibre?: string | null
   horaires?: string | null
 }) => {
-  const form = useForm<StructureInformationsPratiquesData>({
-    resolver: zodResolver(StructureInformationsPratiquesCommandValidation),
-    defaultValues: props,
+  const mutation = trpc.lieuActivite.updateInformationsPratiques.useMutation()
+  const router = useRouter()
+  const form = useForm<InformationsPratiquesData>({
+    resolver: zodResolver(InformationsPratiquesValidation),
+    defaultValues: {
+      id,
+      lieuItinerant,
+      siteWeb,
+      ficheAccesLibre,
+      horaires,
+    },
   })
+
+  const handleMutation = async (data: InformationsPratiquesData) => {
+    try {
+      await mutation.mutateAsync(data)
+
+      createToast({
+        priority: 'success',
+        message: 'Le lieu d’activité a bien été modifié.',
+      })
+
+      router.refresh()
+    } catch (mutationError) {
+      if (
+        applyZodValidationMutationErrorsToForm(mutationError, form.setError)
+      ) {
+        return
+      }
+      createToast({
+        priority: 'error',
+        message:
+          'Une erreur est survenue lors de l’enregistrement, veuillez réessayer ultérieurement.',
+      })
+    }
+  }
 
   return (
     <EditCard
@@ -30,11 +76,24 @@ export const InformationsPratiquesEditCard = (props: {
       description="Horaires, accès et site internet du lieu."
       titleAs="h2"
       form={form}
-      mutation={async (data) => {
-        console.log(data)
-      }}
-      edition={<InformationsPratiquesInputs form={form} />}
-      view={<InformationsPratiquesView {...props} />}
+      mutation={handleMutation}
+      edition={<InformationsPratiquesFields form={form} />}
+      view={
+        <InformationsPratiquesView
+          lieuItinerant={lieuItinerant}
+          siteWeb={siteWeb}
+          ficheAccesLibre={ficheAccesLibre}
+          horaires={horaires}
+        />
+      }
+      isEmpty={[lieuItinerant, siteWeb, ficheAccesLibre, horaires].every(
+        isEmpty,
+      )}
+      emptyState={
+        <EmptyState title="Compléter ces informations pour faciliter l’accès du public." />
+      }
     />
   )
 }
+
+export default withTrpc(InformationsPratiquesEditCard)

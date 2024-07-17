@@ -1,12 +1,20 @@
-import { InformationsGeneralesProps } from './InformationsGeneralesProps'
-
 export const InformationsGeneralesView = ({
   nom,
-  adresseBan,
+  adresse,
+  commune,
+  codePostal,
   complementAdresse,
   siret,
   rna,
-}: InformationsGeneralesProps) => (
+}: {
+  nom: string
+  adresse: string
+  commune: string
+  codePostal: string
+  complementAdresse?: string | null
+  siret?: string | null
+  rna?: string | null
+}) => (
   <div className="fr-flex fr-direction-column fr-flex-gap-6v">
     <div>
       <span className="fr-text-mention--grey">Nom de la structure</span>
@@ -20,7 +28,7 @@ export const InformationsGeneralesView = ({
         className="fr-text--medium"
         data-testid="informations-generales-adresse"
       >
-        {adresseBan.nom}, {adresseBan.codePostal} {adresseBan.commune}
+        {adresse}, {codePostal} {commune}
       </div>
     </div>
     <div>
@@ -29,7 +37,9 @@ export const InformationsGeneralesView = ({
         className="fr-text--medium"
         data-testid="informations-generales-complement-adresse"
       >
-        {complementAdresse ?? 'Non renseigné'}
+        {(complementAdresse?.length ?? 0) > 0
+          ? complementAdresse
+          : 'Non renseigné'}
       </div>
     </div>
     <div>
@@ -38,7 +48,9 @@ export const InformationsGeneralesView = ({
         className="fr-text--medium"
         data-testid="informations-generales-pivot"
       >
-        {siret ?? rna ?? 'Non renseigné'}
+        {(siret?.length ?? 0) > 0 || (rna?.length ?? 0) > 0
+          ? siret ?? rna
+          : 'Non renseigné'}
       </div>
     </div>
   </div>

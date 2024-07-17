@@ -3,10 +3,9 @@ import { AdresseBanValidation } from '@app/web/external-apis/ban/AdresseBanValid
 import { validateValidSiretDigits } from '@app/web/siret/siretValidation'
 import { validateValidRnaDigits } from '@app/web/rna/rnaValidation'
 
-export const StructureInformationsGeneralesCommandValidation = z.object({
-  nom: z.string({
-    required_error: 'Veuillez renseigner le nom de la structure',
-  }),
+export const InformationsGeneralesValidation = z.object({
+  id: z.string().uuid(),
+  nom: z.string().trim().min(1, 'Veuillez renseigner le nom de la structure'),
   adresseBan: AdresseBanValidation,
   complementAdresse: z.string().nullish(),
   siret: z
@@ -24,6 +23,6 @@ export const StructureInformationsGeneralesCommandValidation = z.object({
   rna: z.string().nullish(),
 })
 
-export type StructureInformationsGeneralesData = z.infer<
-  typeof StructureInformationsGeneralesCommandValidation
+export type InformationsGeneralesData = z.infer<
+  typeof InformationsGeneralesValidation
 >

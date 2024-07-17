@@ -4,58 +4,49 @@ import RequiredFieldsDisclaimer from '@app/ui/components/Form/RequiredFieldsDisc
 import AdresseBanFormField from '@app/web/components/form/AdresseBanFormField'
 import RnaInputInfo from '@app/web/rna/RnaInputInfo'
 import SiretInputInfo from '@app/web/siret/SiretInputInfo'
-import { StructureInformationsGeneralesData } from '@app/web/app/structure/StructureInformationsGeneralesCommandValidation'
-import { InformationsGeneralesProps } from './InformationsGeneralesProps'
+import { InformationsGeneralesData } from '@app/web/app/structure/InformationsGeneralesValidation'
 
 export const InformationsGeneralesFields = ({
   nom,
-  form,
-}: InformationsGeneralesProps & {
-  form: UseFormReturn<StructureInformationsGeneralesData>
-}) => {
-  const {
-    control,
-    formState: { isSubmitSuccessful, isSubmitting },
-  } = form
-
-  const isLoading = isSubmitting || isSubmitSuccessful
-
-  return (
-    <>
-      <RequiredFieldsDisclaimer className="fr-mb-4v" />
-      <InputFormField
-        control={control}
-        path="nom"
-        label="Nom de la structure"
-        disabled={isLoading}
-        asterisk
-      />
-      <AdresseBanFormField
-        label="adresse"
-        path="adresseBan"
-        placeholder="Rechercher l’adresse"
-        control={control}
-        disabled={isLoading}
-      />
-      <InputFormField
-        control={control}
-        path="complementAdresse"
-        label="Complément d’adresse"
-        disabled={isLoading}
-      />
-      <InputFormField
-        control={control}
-        path="siret"
-        label="SIRET structure (ou RNA)"
-        disabled={isLoading}
-        className="fr-mb-0"
-        info={
-          <>
-            <SiretInputInfo className="fr-mb-0" searchTerm={nom} />
-            <RnaInputInfo />
-          </>
-        }
-      />
-    </>
-  )
-}
+  form: { control, formState },
+}: {
+  nom: string
+  form: UseFormReturn<InformationsGeneralesData>
+}) => (
+  <>
+    <RequiredFieldsDisclaimer className="fr-mb-4v" />
+    <InputFormField
+      asterisk
+      path="nom"
+      label="Nom de la structure"
+      control={control}
+      disabled={formState.isSubmitting}
+    />
+    <AdresseBanFormField
+      path="adresseBan"
+      label="adresse"
+      placeholder="Rechercher l’adresse"
+      control={control}
+      disabled={formState.isSubmitting}
+    />
+    <InputFormField
+      path="complementAdresse"
+      label="Complément d’adresse"
+      control={control}
+      disabled={formState.isSubmitting}
+    />
+    <InputFormField
+      path="siret"
+      label="SIRET structure (ou RNA)"
+      control={control}
+      disabled={formState.isSubmitting}
+      className="fr-mb-0"
+      info={
+        <>
+          <SiretInputInfo className="fr-mb-0" searchTerm={nom} />
+          <RnaInputInfo />
+        </>
+      }
+    />
+  </>
+)

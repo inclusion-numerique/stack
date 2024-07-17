@@ -1,13 +1,13 @@
 import Tag from '@codegouvfr/react-dsfr/Tag'
 
 export const TypesDePublicsAccueillisView = ({
-  priseEnChargeSpecifique,
-  toutPublic,
-  publicsSpecifiquementAdresses,
+  priseEnChargeSpecifique = [],
+  toutPublic = false,
+  publicsSpecifiquementAdresses = [],
 }: {
-  priseEnChargeSpecifique: string[]
-  toutPublic: boolean
-  publicsSpecifiquementAdresses: string[]
+  priseEnChargeSpecifique?: string[]
+  toutPublic?: boolean
+  publicsSpecifiquementAdresses?: string[]
 }) => (
   <>
     <div
@@ -15,16 +15,16 @@ export const TypesDePublicsAccueillisView = ({
       data-testid="types-de-pubic-accueillis-prise-en-charge"
     >
       <div>Précisez les publics accueillis dans ce lieu</div>
-      {!toutPublic && priseEnChargeSpecifique.length > 0 && (
+      {!toutPublic && publicsSpecifiquementAdresses.length > 0 && (
         <ul className="fr-tags-group fr-mt-3v fr-mt-1v">
-          {priseEnChargeSpecifique.map((priseEnCharge) => (
-            <li key={priseEnCharge}>
-              <Tag>{priseEnCharge}</Tag>
+          {publicsSpecifiquementAdresses.map((publicSpecifiquementAdresse) => (
+            <li key={publicSpecifiquementAdresse}>
+              <Tag>{publicSpecifiquementAdresse}</Tag>
             </li>
           ))}
         </ul>
       )}
-      {!toutPublic && priseEnChargeSpecifique.length === 0 && (
+      {!toutPublic && publicsSpecifiquementAdresses.length === 0 && (
         <div className="fr-text--medium fr-mt-2w">Non renseigné</div>
       )}
       {toutPublic && <Tag className="fr-my-3v">Tout public</Tag>}
@@ -37,11 +37,11 @@ export const TypesDePublicsAccueillisView = ({
           publics ayant des besoins particuliers.
         </p>
       </div>
-      {publicsSpecifiquementAdresses.length > 0 ? (
+      {priseEnChargeSpecifique.length > 0 ? (
         <ul className="fr-tags-group">
-          {publicsSpecifiquementAdresses.map((publicSpecifiquementAdresse) => (
-            <li key={publicSpecifiquementAdresse}>
-              <Tag>{publicSpecifiquementAdresse}</Tag>
+          {priseEnChargeSpecifique.map((priseEnCharge) => (
+            <li key={priseEnCharge}>
+              <Tag>{priseEnCharge}</Tag>
             </li>
           ))}
         </ul>

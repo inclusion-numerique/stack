@@ -6,26 +6,19 @@ import {
   priseEnChargeSpecifiqueStructureOptions,
   publicsAccueillisStructureOptions,
 } from '@app/web/app/structure/optionsStructure'
-import { TypesDePublicsAccueillisData } from '@app/web/app/structure/TypesDePublicsAccueillisCommandValidation'
+import { TypesDePublicsAccueillisData } from '@app/web/app/structure/TypesDePublicsAccueillisValidation'
 
-export const TypesDePublicsAccueillisInputs = ({
-  form,
+export const TypesDePublicsAccueillisFields = ({
+  form: { control, formState, watch, setValue },
 }: {
   form: UseFormReturn<TypesDePublicsAccueillisData>
 }) => {
-  const {
-    control,
-    formState: { isSubmitSuccessful, isSubmitting },
-  } = form
-
-  const isLoading = isSubmitting || isSubmitSuccessful
-
   const publicsAccueillisKey =
-    form.watch('publicsSpecifiquementAdresses')?.join(',') ?? 'none'
-  const toutPublicKey = form.watch('toutPublic') ? 'true' : 'false'
+    watch('publicsSpecifiquementAdresses')?.join(',') ?? 'none'
+  const toutPublicKey = watch('toutPublic') ? 'true' : 'false'
 
   // Check if all publics are checked if toutPublic is checked
-  form.watch((data, { name, type }) => {
+  watch((data, { name, type }) => {
     // This watcher is only concerned for these fields, only from user change action
     if (name !== 'toutPublic' && name !== 'publicsSpecifiquementAdresses')
       return
@@ -42,7 +35,7 @@ export const TypesDePublicsAccueillisInputs = ({
 
     if (name === 'toutPublic') {
       if (data.toutPublic && !allPublicsChecked) {
-        form.setValue(
+        setValue(
           'publicsSpecifiquementAdresses',
           publicsAccueillisStructureOptions.map((option) => option.value),
         )
@@ -50,16 +43,16 @@ export const TypesDePublicsAccueillisInputs = ({
         !data.toutPublic &&
         data.publicsSpecifiquementAdresses?.length !== 0
       ) {
-        form.setValue('publicsSpecifiquementAdresses', [])
+        setValue('publicsSpecifiquementAdresses', [])
       }
     }
 
     // Check tout public if all publics are checked
     if (name === 'publicsSpecifiquementAdresses') {
       if (allPublicsChecked && !data.toutPublic) {
-        form.setValue('toutPublic', true)
+        setValue('toutPublic', true)
       } else if (!allPublicsChecked && data.toutPublic) {
-        form.setValue('toutPublic', false)
+        setValue('toutPublic', false)
       }
     }
   })
@@ -76,29 +69,29 @@ export const TypesDePublicsAccueillisInputs = ({
       </p>
       <CheckboxFormField
         key={toutPublicKey}
-        control={control}
         path="toutPublic"
         label="Tout public (tout sélectionner)"
-        disabled={isLoading}
+        control={control}
+        disabled={formState.isSubmitting}
         className="fr-mb-0 fr-mt-4v"
       />
       <CheckboxGroupFormField
         key={publicsAccueillisKey}
-        control={control}
         path="publicsSpecifiquementAdresses"
         options={publicsAccueillisStructureOptions}
-        disabled={isLoading}
+        control={control}
+        disabled={formState.isSubmitting}
         className="fr-mb-0 fr-ml-4v"
         style={{ marginTop: -16 }}
         small
       />
       <CheckboxGroupFormField
-        control={control}
         path="priseEnChargeSpecifique"
         options={priseEnChargeSpecifiqueStructureOptions}
         label="Prise en charge spécifique"
-        disabled={isLoading}
         hint="Indiquez si le lieu est en mesure d'accompagner et soutenir des publics ayant des besoins particuliers."
+        control={control}
+        disabled={formState.isSubmitting}
         className="fr-mb-0"
       />
     </>

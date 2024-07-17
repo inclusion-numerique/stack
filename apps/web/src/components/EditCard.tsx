@@ -18,6 +18,8 @@ const EditCard = <T extends FieldValues, V>({
   description,
   edition,
   view,
+  emptyState,
+  isEmpty = false,
   form,
   mutation,
   noRefresh,
@@ -31,6 +33,8 @@ const EditCard = <T extends FieldValues, V>({
   description?: string
   edition: ReactNode
   view: ReactNode
+  isEmpty?: boolean
+  emptyState?: ReactNode
   form: UseFormReturn<T>
   mutation: (data: T) => Promise<V>
   noRefresh?: boolean
@@ -65,10 +69,10 @@ const EditCard = <T extends FieldValues, V>({
               size="small"
               priority="tertiary no outline"
               iconId="fr-icon-edit-line"
-              title="Modifier"
+              title={isEmpty ? 'Compléter' : 'Modifier'}
               onClick={() => setEditMode(true)}
             >
-              Modifier
+              {isEmpty ? 'Compléter' : 'Modifier'}
             </Button>
           )}
         </div>
@@ -76,7 +80,7 @@ const EditCard = <T extends FieldValues, V>({
       description={description}
       titleAs="div"
     >
-      {editMode ? (
+      {editMode && (
         <form onSubmit={form.handleSubmit(onSubmit)}>
           {edition}
           <ButtonsGroup
@@ -100,9 +104,8 @@ const EditCard = <T extends FieldValues, V>({
             ]}
           />
         </form>
-      ) : (
-        view
       )}
+      {!editMode && (isEmpty ? emptyState : view)}
     </Card>
   )
 }

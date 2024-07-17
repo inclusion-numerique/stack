@@ -1,17 +1,29 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { createToast } from '@app/ui/toast/createToast'
+import { trpc } from '@app/web/trpc'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import EditCard from '@app/web/components/EditCard'
 import {
-  ModalitesAccesAuServiceCommandValidation,
+  ModalitesAccesAuServiceValidation,
   ModalitesAccesAuServiceData,
-} from '@app/web/app/structure/ModalitesAccesAuServiceCommandValidation'
-import { ModalitesAccesAuServiceInputs } from './ModalitesAccesAuServiceInputs'
+} from '@app/web/app/structure/ModalitesAccesAuServiceValidation'
+import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
+import { isEmpty } from '@app/web/utils/isEmpty'
+import { EmptyState } from '../EmptyState'
+import { ModalitesAccesAuServiceFields } from './ModalitesAccesAuServiceFields'
 import { ModalitesAccesAuServiceView } from './ModalitesAccesAuServiceView'
 
-export const ModalitesAccesAuServiceEditCard = (props: {
-  fraisACharge: string[]
+const ModalitesAccesAuServiceEditCard = ({
+  id,
+  fraisACharge,
+  modalitesAcces,
+}: {
+  id: string
+  fraisACharge?: string[]
   modalitesAcces?: {
     surPlace?: boolean | null
     parTelephone?: boolean | null
@@ -20,10 +32,40 @@ export const ModalitesAccesAuServiceEditCard = (props: {
     adresseMail?: string | null
   }
 }) => {
+  const mutation = trpc.lieuActivite.updateModalitesAccesAuService.useMutation()
+  const router = useRouter()
   const form = useForm<ModalitesAccesAuServiceData>({
-    resolver: zodResolver(ModalitesAccesAuServiceCommandValidation),
-    defaultValues: props,
+    resolver: zodResolver(ModalitesAccesAuServiceValidation),
+    defaultValues: {
+      id,
+      fraisACharge,
+      modalitesAcces,
+    },
   })
+
+  const handleMutation = async (data: ModalitesAccesAuServiceData) => {
+    try {
+      await mutation.mutateAsync(data)
+
+      createToast({
+        priority: 'success',
+        message: 'Le lieu d’activité a bien été modifié.',
+      })
+
+      router.refresh()
+    } catch (mutationError) {
+      if (
+        applyZodValidationMutationErrorsToForm(mutationError, form.setError)
+      ) {
+        return
+      }
+      createToast({
+        priority: 'error',
+        message:
+          'Une erreur est survenue lors de l’enregistrement, veuillez réessayer ultérieurement.',
+      })
+    }
+  }
 
   return (
     <EditCard
@@ -34,11 +76,25 @@ export const ModalitesAccesAuServiceEditCard = (props: {
       description="Indiquez comment bénéficier des services d’inclusion numérique."
       titleAs="h3"
       form={form}
-      mutation={async (data) => {
-        console.log(data)
-      }}
-      edition={<ModalitesAccesAuServiceInputs form={form} />}
-      view={<ModalitesAccesAuServiceView {...props} />}
+      mutation={handleMutation}
+      edition={<ModalitesAccesAuServiceFields form={form} />}
+      view={
+        <ModalitesAccesAuServiceView
+          modalitesAcces={modalitesAcces}
+          fraisACharge={fraisACharge}
+        />
+      }
+      isEmpty={
+        [fraisACharge].every(isEmpty) &&
+        !modalitesAcces?.parMail &&
+        !modalitesAcces?.parTelephone &&
+        !modalitesAcces?.surPlace
+      }
+      emptyState={
+        <EmptyState title="Compléter ces informations pour permettre l’orientation des bénéficiaires vers vos services." />
+      }
     />
   )
 }
+
+export default withTrpc(ModalitesAccesAuServiceEditCard)
