@@ -68,4 +68,5 @@ export type ParticipantsAnonymesCraCollectifData = {
   statutSocialNonCommunique: number
 }
 
-export type ParticipantsAnonymesCraCollectifDataKey = keyof ParticipantsAnonymesCraCollectifData
+export type ParticipantsAnonymesCraCollectifDataKey =
+  keyof ParticipantsAnonymesCraCollectifData
