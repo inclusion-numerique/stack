@@ -31,7 +31,7 @@ export const countProfiles = async (
       FROM users
       WHERE (
           ${searchTerm ?? ''} = ''
-              OR to_tsvector('french',@
+              OR to_tsvector('french',
                              unaccent(coalesce(users.name, '') || ' ' || coalesce(users.location, '') || ' ' ||
                                       coalesce(users.title, '') || ' ' || coalesce(users.description, ''))) @@
                  to_tsquery('french', unaccent(${searchTerm}))
