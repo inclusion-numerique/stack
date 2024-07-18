@@ -82,7 +82,7 @@ const RichCardLabel = memo(
         tabIndex={0}
         onKeyDown={handleKeyPress}
       >
-        <div className="fr-flex fr-justify-content-space-between fr-flex-gap-4v fr-width-full">
+        <div className="fr-flex fr-justify-content-space-between fr-flex-gap-4v fr-width-full fr-height-full">
           <div className="fr-text--sm fr-mb-0 fr-text--medium fr-flex-grow-1 fr-flex fr-justify-content-center fr-direction-column">
             {typeof option.extra?.stars === 'number' && (
               <div className="fr-text-title--blue-france fr-mb-1v">
@@ -104,7 +104,7 @@ const RichCardLabel = memo(
             {!!option.hint && (
               <>
                 <br />
-                <span className="fr-text--xs fr-mb-0 fr-text--regular fr-text-mention--grey">
+                <span className="fr-text--xs fr-mb-0 fr-text--regular fr-text-mention--grey fr-flex-grow-1">
                   {option.hint}
                 </span>{' '}
               </>
@@ -113,7 +113,7 @@ const RichCardLabel = memo(
 
           {/* eslint-disable-next-line @next/next/no-img-element */}
           {!!option.extra?.illustration && (
-            <div className="fr-flex-shrink-0">
+            <div className="fr-flex-shrink-0 fr-flex fr-align-items-center">
               <img
                 className={styles.illustration}
                 alt=""
