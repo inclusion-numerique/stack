@@ -19,22 +19,26 @@
     grid-template-columns: repeat(3, 1fr);
 }
 
-.durationFieldSet {
+.durationFieldset {
     grid-template-columns: repeat(4, 1fr);
 }
 
-.lieuFieldSet {
+.lieuFieldset {
     grid-template-columns: repeat(3, 1fr);
 }
 
-.genreFieldSet {
-    grid-template-columns: repeat(3, 1fr);
-}
-
-.yesNoFieldSet {
+.lieuAtelierFieldset {
     grid-template-columns: repeat(2, 1fr);
 }
 
-.degreDeFinalisationFieldSet {
+.genreFieldset {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.yesNoFieldset {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.degreDeFinalisationFieldset {
     grid-template-columns: repeat(4, 1fr);
 }
