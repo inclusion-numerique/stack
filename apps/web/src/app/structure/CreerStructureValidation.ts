@@ -11,9 +11,12 @@ export const CreerStructureValidation = z.object({
 
   adresseBan: AdresseBanValidation,
 
-  nom: z.string({
-    required_error: 'Veuillez renseigner le nom de la structure',
-  }),
+  nom: z
+    .string({
+      required_error: 'Veuillez renseigner le nom de la structure',
+    })
+    .trim()
+    .min(1, 'Veuillez renseigner le nom de la structure'),
   complementAdresse: z.string().nullish(),
   siret: z
     .string()
