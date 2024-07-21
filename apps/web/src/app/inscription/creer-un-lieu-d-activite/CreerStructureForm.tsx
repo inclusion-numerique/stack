@@ -15,6 +15,7 @@ import ToggleFormField from '@app/ui/components/Form/ToggleFormField'
 import MultipleSelectFormField from '@app/ui/components/Form/MultipleSelectFormField'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
+import { optionsWithEmptyValue } from '@app/ui/components/Form/utils/options'
 import SiretInputInfo from '@app/web/siret/SiretInputInfo'
 import RnaInputInfo from '@app/web/rna/RnaInputInfo'
 import { typologieStructureOptions } from '@app/web/app/structure/typologieStructure'
@@ -193,7 +194,7 @@ const CreerStructureForm = ({
           />
 
           <AdresseBanFormField
-            label="adresse"
+            label="Adresse"
             path="adresseBan"
             placeholder="Rechercher l’adresse"
             control={control}
@@ -299,7 +300,7 @@ const CreerStructureForm = ({
                 path="typologies"
                 label="Typologies de la structure"
                 disabled={isLoading}
-                options={typologieStructureOptions}
+                options={optionsWithEmptyValue(typologieStructureOptions)}
               />
               <InputFormField
                 type="textarea"
@@ -439,7 +440,7 @@ const CreerStructureForm = ({
               <MultipleSelectFormField
                 control={control}
                 path="services"
-                options={servicesStructureOptions}
+                options={optionsWithEmptyValue(servicesStructureOptions)}
                 label="Thématiques des services d’inclusion numérique"
                 hint="Renseignez ici les services proposés dans ce lieu."
               />
