@@ -32,6 +32,46 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
   if (user.mediateur?.id) {
     const mediateurId = user.mediateur.id
 
+    await prismaClient.activite.deleteMany({
+      where: {
+        mediateurId,
+      },
+    })
+
+    await prismaClient.craDemarcheAdministrative.deleteMany({
+      where: {
+        creeParMediateurId: mediateurId,
+      },
+    })
+
+    await prismaClient.participantAtelierCollectif.deleteMany({
+      where: {
+        craCollectif: {
+          creeParMediateurId: mediateurId,
+        },
+      },
+    })
+
+    await prismaClient.participantsAnonymesCraCollectif.deleteMany({
+      where: {
+        craCollectif: {
+          creeParMediateurId: mediateurId,
+        },
+      },
+    })
+
+    await prismaClient.craCollectif.deleteMany({
+      where: {
+        creeParMediateurId: mediateurId,
+      },
+    })
+
+    await prismaClient.craIndividuel.deleteMany({
+      where: {
+        creeParMediateurId: mediateurId,
+      },
+    })
+
     await prismaClient.mediateurEnActivite.deleteMany({
       where: {
         mediateurId,
@@ -39,6 +79,12 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
     })
 
     await prismaClient.mediateurCoordonne.deleteMany({
+      where: {
+        mediateurId,
+      },
+    })
+
+    await prismaClient.beneficiaire.deleteMany({
       where: {
         mediateurId,
       },
