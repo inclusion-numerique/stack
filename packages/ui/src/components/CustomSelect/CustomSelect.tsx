@@ -57,6 +57,10 @@ const customStyles: StylesConfig = {
     ...provided,
     color: state.isSelected ? 'var(--text-black-white-grey)' : provided.color,
   }),
+  control: (provided) => ({
+    ...provided,
+    borderColor: 'var(--border-default-grey)',
+  }),
 }
 
 const loadingMessage = (): ReactNode => (
