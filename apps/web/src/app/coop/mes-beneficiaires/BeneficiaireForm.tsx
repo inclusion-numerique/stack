@@ -84,8 +84,8 @@ const BeneficiaireForm = ({
     formState: { isSubmitting, isSubmitSuccessful, errors },
   } = form
 
-  const nextUrlBase = retour || '/mes-beneficiaires'
-  const backUrlBase = retour || '/mes-beneficiaires'
+  const nextUrlBase = retour || '/coop/mes-beneficiaires'
+  const backUrlBase = retour || '/coop/mes-beneficiaires'
 
   const onSubmit = async (data: BeneficiaireData) => {
     try {
@@ -264,10 +264,9 @@ const BeneficiaireForm = ({
             disabled={isLoading || disableTelephone}
             path="telephone"
             label="Numéro de téléphone"
-            hint="Format attendu : (+33) 1 22 33 44 55"
           />
           <CheckboxFormField
-            className="fr-flex-grow-1 fr-flex-basis-0 fr-mt-16v"
+            className="fr-flex-grow-1 fr-flex-basis-0 fr-mt-9v"
             control={control}
             path="pasDeTelephone"
             label="N’a pas de téléphone"

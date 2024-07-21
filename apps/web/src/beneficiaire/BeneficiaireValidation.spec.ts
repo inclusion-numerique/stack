@@ -6,6 +6,7 @@ import {
 describe('BeneficiaireValidation', () => {
   describe('telephoneRegex', () => {
     it.each([
+      { number: '0122334455', isValid: true },
       { number: '01 22 33 44 55', isValid: true },
       { number: '(+33) 1 22 33 44 55', isValid: true },
       { number: '+1 (555) 555-5555', isValid: true },

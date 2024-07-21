@@ -13,14 +13,14 @@ export const anneeNaissanceMin = 1900
 // Should accept any international numbers like  (+33) 1 22 33 44 55
 // See the spec file for test cases
 export const telephoneRegex =
-  /^(?:(?:\(\+\d{1,4}\)|\+\d{1,4}|00\d{1,4})[\s()./-]*(?:\d[\s()./-]*){6,14}\d|0\d(?:\s\d{2}){4})$/
+  /^(?:(?:\(\+\d{1,4}\)|\+\d{1,4}|00\d{1,4})[\s()./-]*(?:\d[\s()./-]*){6,14}\d|0\d(?:\s\d{2}){4}|\d{10}|\d(?:\s?\d){9})$/
 
 export const telephoneValidation = z
   .string()
   .transform((value) => (value.trim() === '' ? null : value))
   .refine((data) => data === null || telephoneRegex.test(data), {
     message:
-      'Veuillez renseigner un numéro suivant le format international e.g. (+33) 1 22 33 44 55',
+      'Veuillez renseigner un numéro suivant le format français (e.g. 04 55 66 77 88) ou international (e.g. +33 1 22 33 44 55)',
   })
   .nullish()
 
