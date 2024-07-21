@@ -8,6 +8,7 @@ import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
 import { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { yesNoToOptionalBoolean } from '@app/web/utils/yesNoBooleanOptions'
 import { CraDemarcheAdministrativeValidation } from '@app/web/cra/CraDemarcheAdministrativeValidation'
+import { CraCollectifValidation } from '@app/web/cra/CraCollectifValidation'
 
 const getExistingBeneficiaire = async ({
   beneficiaireId,
@@ -325,6 +326,133 @@ export const craRouter = router({
 
         const newId = v4()
         const created = await prismaClient.craDemarcheAdministrative.create({
+          data: {
+            id: newId,
+            activite: {
+              create: {
+                id: v4(),
+                mediateurId,
+              },
+            },
+            ...data,
+          },
+        })
+
+        return created
+      },
+    ),
+  collectif: protectedProcedure
+    .input(CraCollectifValidation)
+    .mutation(
+      async ({
+        input: {
+          id,
+          mediateurId,
+          date,
+          duree,
+          lieuActiviteId,
+          materiel,
+          notes,
+          thematiques,
+          lieuAtelier,
+          lieuAtelierAutreCommune,
+          niveau,
+          participants,
+          participantsAnonymes,
+          titreAtelier,
+        },
+        ctx: { user },
+      }) => {
+        enforceIsMediateur(user)
+
+        // Enforce user can create CRA for given mediateurId (for now only self)
+        if (mediateurId !== user.mediateur.id) {
+          throw forbiddenError('Cannot create CRA for another mediateur')
+        }
+
+        // Enforce beneficiaire data is coherent with mediateurId
+        for (const participant of participants) {
+          if (
+            participant?.mediateurId &&
+            participant.mediateurId !== mediateurId
+          ) {
+            throw invalidError('Beneficiaire data does not match mediateurId')
+          }
+        }
+
+        const existingBeneficiaire = await getExistingBeneficiaire({
+          beneficiaireId: beneficiaire?.id,
+          mediateurId,
+        })
+
+        const existingLieuActivite = await getExistingStructure({
+          structureId: lieuActiviteId,
+        })
+
+        const orienteVersStructure = yesNoToOptionalBoolean(
+          orienteVersStructureYesNo ?? undefined,
+        )
+
+        const data = {
+          autonomie,
+          date: new Date(date),
+          creeParMediateur: {
+            connect: { id: mediateurId },
+          },
+          // TODO ok for edition of anonymous ?
+          beneficiaire: existingBeneficiaire
+            ? { connect: { id: existingBeneficiaire.id } }
+            : {
+                create: {
+                  id: v4(),
+                  ...beneficiaireUpdateInputFromForm(beneficiaire),
+                  mediateur: {
+                    connect: { id: mediateurId },
+                  },
+                },
+              },
+          duree: Number.parseInt(duree, 10),
+          lieuAccompagnement,
+          materiel,
+          // Only set domicile commune if it is the correct type of lieuAccompagnement
+          lieuAccompagnementDomicileCommune:
+            lieuAccompagnement === 'Domicile'
+              ? lieuAccompagnementDomicileCommune?.commune
+              : null,
+          lieuAccompagnementDomicileCodePostal:
+            lieuAccompagnement === 'Domicile'
+              ? lieuAccompagnementDomicileCommune?.codePostal
+              : null,
+          lieuAccompagnementDomicileCodeInsee:
+            lieuAccompagnement === 'Domicile'
+              ? lieuAccompagnementDomicileCommune?.codeInsee
+              : null,
+          notes,
+          orienteVersStructure,
+          structureDeRedirection: orienteVersStructure
+            ? structureDeRedirection ?? null
+            : null,
+          thematiques,
+          lieuActivite:
+            // Only set lieuActivité if it is the correct type of lieuAccompagnement
+            lieuAccompagnement === 'LieuActivite' && existingLieuActivite
+              ? { connect: { id: existingLieuActivite.id } }
+              : {
+                  disconnect: true,
+                },
+        } satisfies Prisma.CraIndividuelUpdateInput
+
+        if (id) {
+          const updated = await prismaClient.craIndividuel.update({
+            where: { id },
+            data,
+          })
+
+          return updated
+        }
+
+        const newId = v4()
+        const created = await prismaClient.craIndividuel.create({
           data: {
             id: newId,
             activite: {
