@@ -29,16 +29,23 @@ export const ParticipantsAnonymesCraCollectifValidation = z
     statutSocialRetraite: z.number().int(),
     statutSocialNonCommunique: z.number().int(),
   })
-  .refine((data) => countTotalGenre(data) > (data.total ?? 0), {
+  .refine((data) => {
+    console.log('REFINE DATA', {
+      countGenre: countTotalGenre(data),
+      total: data.total,
+    })
+    return true
+  })
+  .refine((data) => countTotalGenre(data) <= (data.total ?? 0), {
     message:
       'La somme des genres ne doit pas dépasser le total des participants anonymes',
     path: ['genreNonCommunique'],
   })
-  .refine((data) => countTotalTrancheAge(data) > (data.total ?? 0), {
+  .refine((data) => countTotalTrancheAge(data) <= (data.total ?? 0), {
     message:
       'La somme des tranches d’âges ne doit pas dépasser le total des participants anonymes',
   })
-  .refine((data) => countTotalStatutSocial(data) > (data.total ?? 0), {
+  .refine((data) => countTotalStatutSocial(data) <= (data.total ?? 0), {
     message:
       'La somme des statuts sociaux ne doit pas dépasser le total des participants anonymes',
   })

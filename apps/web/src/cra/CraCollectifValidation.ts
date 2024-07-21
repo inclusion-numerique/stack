@@ -17,6 +17,8 @@ export const CraCollectifValidation = z
 
     participants: z.array(BeneficiaireCraValidation).default([]),
     participantsAnonymes: ParticipantsAnonymesCraCollectifValidation,
+    // Helper field only used in client form for type safety
+    addParticipant: BeneficiaireCraValidation.nullish(),
 
     titreAtelier: z.string().nullish(),
 
