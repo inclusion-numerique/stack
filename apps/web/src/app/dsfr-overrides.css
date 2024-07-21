@@ -352,3 +352,43 @@
         overflow: visible !important;
     }
 }
+
+/* Theme for form components */
+
+.fr-input {
+    background-color: var(--background-alt-grey);
+    border: var(--slim-grey-border);
+    border-radius: 4px;
+    box-shadow: none !important;
+    &input {
+        padding-top: 16px;
+        padding-bottom: 16px;
+        padding-right: 16px;
+        min-height: 40px !important;
+        height: 40px !important;
+    }
+
+    &.fr-input--white {
+        background-color: var(--grey-1000-75);
+    }
+
+    &.fr-input--14v {
+        min-height: 56px !important;
+        height: 56px !important;
+    }
+}
+
+select.fr-select{
+    background-color: var(--background-alt-grey);
+    border: var(--slim-grey-border);
+    border-radius: 4px;
+    box-shadow: none !important;
+    &.fr-select--white {
+        background-color: var(--grey-1000-75);
+    }
+
+    &.fr-select--14v {
+        min-height: 56px !important;
+        height: 56px !important;
+    }
+}
