@@ -96,7 +96,12 @@ const LieuActiviteDetailPage = async ({
               <hr className="fr-separator-1px" />
               <DescriptionEditCard {...lieuActivite.structure} />
               <hr className="fr-separator-1px fr-mx-4w" />
-              <InformationsPratiquesEditCard {...lieuActivite.structure} />
+              <InformationsPratiquesEditCard
+                {...lieuActivite.structure}
+                lieuItinerant={lieuActivite.structure.itinerance.includes(
+                  'Itinérant',
+                )}
+              />
               <hr className="fr-separator-1px" />
               <div className="fr-p-4w fr-flex fr-direction-column fr-flex-gap-4v">
                 <div>

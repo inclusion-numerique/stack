@@ -13,9 +13,12 @@ export type ToggleFormFieldProps<T extends FieldValues> = {
   hint?: ReactNode
   valid?: string
   asterisk?: boolean
-  checkedLabel?: string
-  uncheckedLabel?: string
+  checkedLabel?: string | null
+  uncheckedLabel?: string | null
   labelPosition?: 'right' | 'left'
+  classes?: {
+    fieldsetElement?: string
+  }
 }
 
 const ToggleFormField = <T extends FieldValues>({
@@ -31,6 +34,7 @@ const ToggleFormField = <T extends FieldValues>({
   uncheckedLabel = 'Désactivé',
   labelPosition,
   'data-testid': dataTestId,
+  classes,
 }: UiComponentProps & ToggleFormFieldProps<T>) => {
   const id = `input-form-field__${path}`
 
@@ -66,7 +70,12 @@ const ToggleFormField = <T extends FieldValues>({
               }`}
               role="group"
             >
-              <div className="fr-fieldset__element">
+              <div
+                className={classNames(
+                  'fr-fieldset__element',
+                  classes?.fieldsetElement,
+                )}
+              >
                 <div
                   className={classNames(
                     'fr-toggle',

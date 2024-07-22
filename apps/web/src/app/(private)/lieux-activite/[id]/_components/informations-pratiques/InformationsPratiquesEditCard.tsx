@@ -3,6 +3,10 @@
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import {
+  fromTimetableOpeningHours,
+  Schedule,
+} from '@gouvfr-anct/timetable-to-osm-opening-hours'
 import { createToast } from '@app/ui/toast/createToast'
 import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
@@ -11,11 +15,20 @@ import {
   InformationsPratiquesValidation,
   InformationsPratiquesData,
 } from '@app/web/app/structure/InformationsPratiquesValidation'
+import { OpeningHoursData } from '@app/web/app/structure/OpeningHoursValidation'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { isEmpty } from '@app/web/utils/isEmpty'
 import { EmptyState } from '../EmptyState'
 import { InformationsPratiquesFields } from './InformationsPratiquesFields'
 import { InformationsPratiquesView } from './InformationsPratiquesView'
+import { osmOpeningHoursToOpeningHours } from './openingHoursHelpers'
+
+function appendComment(osmOpeningHours: string, comment?: string | null) {
+  return [
+    osmOpeningHours,
+    ...((comment?.length ?? 0) > 1 ? [`"${comment?.replace('"', '')}"`] : []),
+  ].join(' ')
+}
 
 const InformationsPratiquesEditCard = ({
   id,
@@ -39,13 +52,20 @@ const InformationsPratiquesEditCard = ({
       lieuItinerant,
       siteWeb,
       ficheAccesLibre,
-      horaires,
+      openingHours: osmOpeningHoursToOpeningHours(horaires) as OpeningHoursData,
+      horairesComment: horaires?.match(/".+"/g)?.toString().replaceAll('"', ''),
     },
   })
 
   const handleMutation = async (data: InformationsPratiquesData) => {
     try {
-      await mutation.mutateAsync(data)
+      await mutation.mutateAsync({
+        ...data,
+        horaires: appendComment(
+          fromTimetableOpeningHours(data.openingHours as Schedule),
+          data?.horairesComment,
+        ),
+      })
 
       createToast({
         priority: 'success',
@@ -86,9 +106,9 @@ const InformationsPratiquesEditCard = ({
           horaires={horaires}
         />
       }
-      isEmpty={[lieuItinerant, siteWeb, ficheAccesLibre, horaires].every(
-        isEmpty,
-      )}
+      isEmpty={
+        !lieuItinerant && [siteWeb, ficheAccesLibre, horaires].every(isEmpty)
+      }
       emptyState={
         <EmptyState title="Compléter ces informations pour faciliter l’accès du public." />
       }

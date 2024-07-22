@@ -23,8 +23,9 @@ export const InformationsGeneralesFields = ({
       disabled={formState.isSubmitting}
     />
     <AdresseBanFormField
+      asterisk
       path="adresseBan"
-      label="adresse"
+      label="Adresse"
       placeholder="Rechercher l’adresse"
       control={control}
       disabled={formState.isSubmitting}

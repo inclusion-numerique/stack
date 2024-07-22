@@ -608,3 +608,15 @@
 .fr-line-height-1 {
   line-height: 1 !important;
 }
+
+
+.fr-input--clear {
+  background-color: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  margin: 0 !important;
+
+  &:disabled {
+    box-shadow: none;
+  }
+}

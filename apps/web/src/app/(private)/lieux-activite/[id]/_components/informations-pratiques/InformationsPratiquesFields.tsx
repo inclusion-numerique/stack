@@ -1,12 +1,14 @@
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import Link from 'next/link'
+import { OSM_DAYS_OF_WEEK } from '@gouvfr-anct/timetable-to-osm-opening-hours'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import { InformationsPratiquesData } from '@app/web/app/structure/InformationsPratiquesValidation'
+import { OpeningHourField } from './OpeningHourField'
 
 export const InformationsPratiquesFields = ({
-  form: { control, formState },
+  form,
 }: {
   form: UseFormReturn<InformationsPratiquesData>
 }) => (
@@ -18,17 +20,16 @@ export const InformationsPratiquesFields = ({
       path="siteWeb"
       label="Site internet du lieu"
       hint="Exemple: https://mastructure.fr"
-      control={control}
-      disabled={formState.isSubmitting}
+      control={form.control}
+      disabled={form.formState.isSubmitting}
     />
     <CheckboxFormField
       className="fr-mt-6v fr-mb-2v"
       path="lieuItinerant"
       label="Lieu d’activité itinérant (exemple : bus)"
-      control={control}
-      disabled={formState.isSubmitting}
+      control={form.control}
+      disabled={form.formState.isSubmitting}
     />
-
     <InputFormField
       path="ficheAccesLibre"
       label="Accessibilité"
@@ -47,49 +48,29 @@ export const InformationsPratiquesFields = ({
         </>
       }
       placeholder="https://acceslibre.beta.gouv.fr/..."
-      control={control}
-      disabled={formState.isSubmitting}
+      control={form.control}
+      disabled={form.formState.isSubmitting}
     />
     <hr className="fr-separator fr-separator-8v" id="informations-pratiques" />
-    <p className="wip-outline">Horaires d’ouverture du lieu</p>
-    <p className="fr-text--sm">
-      La cartographie nationale utilise des horaires au format open-source{' '}
-      <Link
-        href="https://www.openstreetmap.org"
-        target="_blank"
-        className="fr-link fr-link--sm"
-      >
-        OpenStreetMap
-      </Link>
-      .<br /> Pour les générer, rendez-vous sur &nbsp;:{' '}
-      <Link
-        href="https://projets.pavie.info/yohours"
-        target="_blank"
-        className="fr-link fr-link--sm"
-      >
-        https://projets.pavie.info/yohours
-      </Link>
-      <br />
-      puis copiez-coller le résultat dans le champ suivant.
-    </p>
-
+    <p>Horaires d’ouverture du lieu</p>
+    <div className="fr-grid-row fr-grid-row--gutters fr-mb-2w">
+      {OSM_DAYS_OF_WEEK.map((day) => (
+        <React.Fragment key={day}>
+          <div className="fr-col-6 ">
+            <OpeningHourField day={day} period="am" form={form} />
+          </div>
+          <div className="fr-col-6">
+            <OpeningHourField day={day} period="pm" form={form} />
+          </div>
+        </React.Fragment>
+      ))}
+    </div>
     <InputFormField
-      path="horaires"
-      label="Horaires au format Open Street Map"
-      hint={
-        <>
-          Généré depuis{' '}
-          <Link
-            href="https://projets.pavie.info/yohours"
-            target="_blank"
-            className="fr-link fr-link--xs"
-          >
-            https://projets.pavie.info/yohours
-          </Link>
-        </>
-      }
-      control={control}
-      disabled={formState.isSubmitting}
+      path="horairesComment"
+      label="Détail horaires"
+      hint="Vous pouvez renseigner ici des informations spécifiques concernant les horaires."
+      control={form.control}
+      disabled={form.formState.isSubmitting}
     />
   </>
 )
