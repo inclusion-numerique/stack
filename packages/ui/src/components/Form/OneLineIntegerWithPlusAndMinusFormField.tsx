@@ -22,7 +22,7 @@ const OneLineIntegerWithPlusAndMinusFormField = <
     className={classNames(styles.container, className)}
     classes={{
       ...classes,
-      label: classNames(styles.label, classes?.label),
+      label: classNames('fr-text--sm', styles.label, classes?.label),
       input: classNames(styles.input, classes?.input),
     }}
   />

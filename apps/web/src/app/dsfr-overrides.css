@@ -360,6 +360,7 @@
     border: var(--slim-grey-border);
     border-radius: 4px;
     box-shadow: none !important;
+
     &input {
         padding-top: 16px;
         padding-bottom: 16px;
@@ -383,6 +384,7 @@ select.fr-select{
     border: var(--slim-grey-border);
     border-radius: 4px;
     box-shadow: none !important;
+
     &.fr-select--white {
         background-color: var(--grey-1000-75);
     }

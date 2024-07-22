@@ -18,8 +18,9 @@ input.input {
 
 .label {
     position: absolute;
-    background: var(--grey-1000-75);
     left: 24px;
     top: 17px;
     font-weight: 500;
+    margin: 0;
+    max-width: 67%;
 }

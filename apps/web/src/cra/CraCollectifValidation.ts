@@ -15,7 +15,13 @@ export const CraCollectifValidation = z
     id: z.string().uuid().nullish(), // defined if update, nullish if create
     mediateurId: z.string().uuid(), // owner of the CRA
 
-    participants: z.array(BeneficiaireCraValidation).default([]),
+    participants: z
+      .array(
+        BeneficiaireCraValidation.extend({
+          id: z.string().uuid(),
+        }),
+      )
+      .default([]),
     participantsAnonymes: ParticipantsAnonymesCraCollectifValidation,
     // Helper field only used in client form for type safety
     addParticipant: BeneficiaireCraValidation.nullish(),

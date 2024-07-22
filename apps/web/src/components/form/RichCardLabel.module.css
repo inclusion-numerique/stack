@@ -6,6 +6,7 @@
 
     position: relative;
     height: 100%;
+
     /* 15px to be able to have 56px height total, 16 wierdly makes it 58px */
     padding-top: 15px !important;
     padding-bottom: 15px !important;

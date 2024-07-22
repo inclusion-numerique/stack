@@ -9,6 +9,12 @@ import { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireValidatio
 import { yesNoToOptionalBoolean } from '@app/web/utils/yesNoBooleanOptions'
 import { CraDemarcheAdministrativeValidation } from '@app/web/cra/CraDemarcheAdministrativeValidation'
 import { CraCollectifValidation } from '@app/web/cra/CraCollectifValidation'
+import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import {
+  countGenreNonCommunique,
+  countStatutSocialNonCommunique,
+  countTrancheAgeNonCommunique,
+} from '@app/web/cra/participantsAnonymes'
 
 const getExistingBeneficiaire = async ({
   beneficiaireId,
@@ -24,6 +30,10 @@ const getExistingBeneficiaire = async ({
     where: {
       id: beneficiaireId,
     },
+    select: {
+      id: true,
+      mediateurId: true,
+    },
   })
   // Enforce that the beneficiaire is created by the current mediateur
   if (!existingBeneficiaire) {
@@ -36,10 +46,44 @@ const getExistingBeneficiaire = async ({
   return existingBeneficiaire
 }
 
+const getExistingBeneficiaires = async ({
+  beneficiaires,
+  mediateurId,
+}: {
+  beneficiaires: { id: string }[]
+  mediateurId: string
+}) => {
+  const existingBeneficiaires = await prismaClient.beneficiaire.findMany({
+    where: {
+      id: {
+        in: beneficiaires.map((beneficiaire) => beneficiaire.id),
+      },
+    },
+    select: {
+      id: true,
+      mediateurId: true,
+    },
+  })
+
+  if (existingBeneficiaires.length !== beneficiaires.length) {
+    throw invalidError('Beneficiaire not found')
+  }
+
+  for (const existingBeneficiaire of existingBeneficiaires) {
+    if (existingBeneficiaire.mediateurId !== mediateurId) {
+      throw invalidError('Beneficiaire not created by current mediateur')
+    }
+  }
+
+  return existingBeneficiaires
+}
+
 const getExistingStructure = async ({
   structureId,
+  mediateurId,
 }: {
   structureId: string | null | undefined
+  mediateurId: string
 }) => {
   if (!structureId) {
     return null
@@ -47,6 +91,11 @@ const getExistingStructure = async ({
   const existingStructure = await prismaClient.structure.findUnique({
     where: {
       id: structureId,
+      mediateursEnActivite: {
+        some: {
+          mediateurId,
+        },
+      },
     },
   })
 
@@ -140,6 +189,7 @@ export const craRouter = router({
 
         const existingLieuActivite = await getExistingStructure({
           structureId: lieuActiviteId,
+          mediateurId,
         })
 
         const orienteVersStructure = yesNoToOptionalBoolean(
@@ -265,6 +315,7 @@ export const craRouter = router({
 
         const existingLieuActivite = await getExistingStructure({
           structureId: lieuActiviteId,
+          mediateurId,
         })
 
         const data = {
@@ -380,90 +431,117 @@ export const craRouter = router({
           }
         }
 
-        const existingBeneficiaire = await getExistingBeneficiaire({
-          beneficiaireId: beneficiaire?.id,
+        // Check if all beneficiaires exist and are created by the current mediateur
+        await getExistingBeneficiaires({
+          beneficiaires: participants,
           mediateurId,
         })
 
         const existingLieuActivite = await getExistingStructure({
           structureId: lieuActiviteId,
+          mediateurId,
         })
 
-        const orienteVersStructure = yesNoToOptionalBoolean(
-          orienteVersStructureYesNo ?? undefined,
-        )
+        const { id: participantsAnonymesId, ...participantsAnonymesRest } =
+          participantsAnonymes
+        const participantsAnonymesData = {
+          ...participantsAnonymesRest,
+          // We recompute the "non communique" totals to ensure they are correct
+          // The "total" field is the source of truth
+          genreNonCommunique: countGenreNonCommunique(participantsAnonymesRest),
+          trancheAgeNonCommunique: countTrancheAgeNonCommunique(
+            participantsAnonymesRest,
+          ),
+          statutSocialNonCommunique: countStatutSocialNonCommunique(
+            participantsAnonymesRest,
+          ),
+        } satisfies Prisma.ParticipantsAnonymesCraCollectifUpdateInput
+
+        const craId = id ?? v4()
 
         const data = {
-          autonomie,
           date: new Date(date),
           creeParMediateur: {
             connect: { id: mediateurId },
           },
-          // TODO ok for edition of anonymous ?
-          beneficiaire: existingBeneficiaire
-            ? { connect: { id: existingBeneficiaire.id } }
-            : {
-                create: {
-                  id: v4(),
-                  ...beneficiaireUpdateInputFromForm(beneficiaire),
-                  mediateur: {
-                    connect: { id: mediateurId },
-                  },
-                },
-              },
+          titreAtelier,
+          lieuAtelier,
+          // Only set lieu accompagnement commune if it is the correct type of lieuAccompagnement
+          lieuAccompagnementAutreCodeInsee:
+            lieuAtelier === 'Autre' ? lieuAtelierAutreCommune?.codeInsee : null,
+          lieuAccompagnementAutreCodePostal:
+            lieuAtelier === 'Autre'
+              ? lieuAtelierAutreCommune?.codePostal
+              : null,
+          lieuAccompagnementAutreCommune:
+            lieuAtelier === 'Autre' ? lieuAtelierAutreCommune?.nom : null,
           duree: Number.parseInt(duree, 10),
-          lieuAccompagnement,
+          niveau,
+          participantsAnonymes: {
+            create: participantsAnonymesId
+              ? undefined
+              : { id: v4(), ...participantsAnonymesData },
+            update: participantsAnonymesId
+              ? { id: participantsAnonymesId, ...participantsAnonymesData }
+              : undefined,
+          },
           materiel,
-          // Only set domicile commune if it is the correct type of lieuAccompagnement
-          lieuAccompagnementDomicileCommune:
-            lieuAccompagnement === 'Domicile'
-              ? lieuAccompagnementDomicileCommune?.commune
-              : null,
-          lieuAccompagnementDomicileCodePostal:
-            lieuAccompagnement === 'Domicile'
-              ? lieuAccompagnementDomicileCommune?.codePostal
-              : null,
-          lieuAccompagnementDomicileCodeInsee:
-            lieuAccompagnement === 'Domicile'
-              ? lieuAccompagnementDomicileCommune?.codeInsee
-              : null,
           notes,
-          orienteVersStructure,
-          structureDeRedirection: orienteVersStructure
-            ? structureDeRedirection ?? null
-            : null,
           thematiques,
           lieuActivite:
             // Only set lieuActivité if it is the correct type of lieuAccompagnement
-            lieuAccompagnement === 'LieuActivite' && existingLieuActivite
+            lieuAtelier === 'LieuActivite' && existingLieuActivite
               ? { connect: { id: existingLieuActivite.id } }
               : {
                   disconnect: true,
                 },
-        } satisfies Prisma.CraIndividuelUpdateInput
+        } satisfies Prisma.CraCollectifUpdateInput
 
         if (id) {
-          const updated = await prismaClient.craIndividuel.update({
-            where: { id },
-            data,
-          })
+          const [updated] = await prismaClient.$transaction(
+            [
+              prismaClient.craCollectif.update({
+                where: { id },
+                data,
+              }),
+              prismaClient.participantAtelierCollectif.deleteMany({
+                where: { craCollectifId: craId },
+              }),
+              prismaClient.participantAtelierCollectif.createMany({
+                data: participants.map((participant) => ({
+                  id: v4(),
+                  beneficiaireId: participant.id,
+                  craCollectifId: craId,
+                })),
+              }),
+            ].filter(isDefinedAndNotNull),
+          )
 
           return updated
         }
 
         const newId = v4()
-        const created = await prismaClient.craIndividuel.create({
-          data: {
-            id: newId,
-            activite: {
-              create: {
-                id: v4(),
-                mediateurId,
+        const [created] = await prismaClient.$transaction([
+          prismaClient.craCollectif.create({
+            data: {
+              id: newId,
+              activite: {
+                create: {
+                  id: craId,
+                  mediateurId,
+                },
               },
+              ...data,
             },
-            ...data,
-          },
-        })
+          }),
+          prismaClient.participantAtelierCollectif.createMany({
+            data: participants.map((participant) => ({
+              id: v4(),
+              beneficiaireId: participant.id,
+              craCollectifId: newId,
+            })),
+          }),
+        ])
 
         return created
       },

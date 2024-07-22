@@ -9,6 +9,9 @@ import {
 } from 'react-hook-form'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
 import { useRouter } from 'next/navigation'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
+import Tag from '@codegouvfr/react-dsfr/Tag'
+import { useRef } from 'react'
 import IconInSquare from '@app/web/components/IconInSquare'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
@@ -17,10 +20,8 @@ import {
   BeneficiaireOption,
   useCraBeneficiaireLoadOptions,
 } from '@app/web/app/coop/mon-activite/cra/useCraBeneficiaireLoadOptions'
-import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
-import Tag from '@codegouvfr/react-dsfr/Tag'
-import { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import CraBeneficiairesAnonymesForm from '@app/web/app/coop/mon-activite/cra/collectif/CraBeneficiairesAnonymesForm'
+import { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 
 const CraBeneficiairesMultiplesForm = ({
   control,
@@ -47,8 +48,6 @@ const CraBeneficiairesMultiplesForm = ({
     keyName: '_formkey',
   })
 
-  console.log('PARTICIPANTS FIELDS', fields)
-
   const router = useRouter()
 
   const beneficiaireOptions = useCraBeneficiaireLoadOptions({
@@ -70,23 +69,19 @@ const CraBeneficiairesMultiplesForm = ({
 
   const totalParticipants = suivisCount + anonymesTotal
 
-  const suivisIds = new Set(fields.map((field) => field.id))
+  // We have to use a ref to keep track of the ids of the beneficiaries
+  // As the watch gets called multiple times for the same change :( but I don't know why
+  const suivisIds = useRef(new Set(fields.map((field) => field.id)))
 
   watch((data, { name, type }) => {
     if (name === 'addParticipant' && !!type) {
-      console.log('ADD PARTICIPANT', type, data.addParticipant)
+      const participantToAdd = data.addParticipant?.id
+        ? (data.addParticipant as BeneficiaireData & { id: string })
+        : null
 
-      // TODO Added multiple times
-      console.log(
-        'SUIVI IDS',
-        [...suivisIds.values()],
-        data.addParticipant?.id,
-        suivisIds.has(data.addParticipant?.id),
-      )
-
-      if (data.addParticipant?.id && !suivisIds.has(data.addParticipant.id)) {
-        suivisIds.add(data.addParticipant.id)
-        append({ ...data.addParticipant, mediateurId } as BeneficiaireData)
+      if (participantToAdd && !suivisIds.current.has(participantToAdd.id)) {
+        suivisIds.current.add(participantToAdd.id)
+        append({ ...participantToAdd, mediateurId })
       }
     }
   })
@@ -116,7 +111,7 @@ const CraBeneficiairesMultiplesForm = ({
             getOptionKey={(option) => option.value?.id ?? ''}
             getValueKey={(value) => value?.id ?? ''}
             filterOption={({ data }) =>
-              !data.value?.id || !suivisIds.has(data.value.id)
+              !data.value?.id || !suivisIds.current.has(data.value.id)
             }
           />
           <div>
@@ -151,7 +146,6 @@ const CraBeneficiairesMultiplesForm = ({
       )}
       <div className="fr-p-8v">
         <CraBeneficiairesAnonymesForm
-          getValues={getValues}
           setValue={setValue}
           watch={watch}
           control={control}

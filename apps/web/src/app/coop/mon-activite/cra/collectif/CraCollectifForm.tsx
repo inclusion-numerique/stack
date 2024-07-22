@@ -38,13 +38,13 @@ import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipalityLabel'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
-import styles from '../CraForm.module.css'
 import {
   type CraCollectifData,
   CraCollectifValidation,
 } from '@app/web/cra/CraCollectifValidation'
 import CraBeneficiairesMultiplesForm from '@app/web/app/coop/mon-activite/cra/collectif/CraBeneficiairesMultiplesForm'
 import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
+import styles from '../CraForm.module.css'
 
 const CraCollectifForm = ({
   defaultValues,
@@ -117,14 +117,14 @@ const CraCollectifForm = ({
       : undefined
 
   watch((data) => {
-    replaceRouteWithoutRerender(
-      `/coop/mon-activite/cra/collectif?v=${encodeSerializableState(data)}`,
-    )
+    requestAnimationFrame(() => {
+      replaceRouteWithoutRerender(
+        `/coop/mon-activite/cra/collectif?v=${encodeSerializableState(data)}`,
+      )
+    })
   })
 
   const lieuAtelierAutreCommuneRenderKey = watch('lieuAtelierAutreCommune')?.id
-
-  console.log('ERRORS', errors)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

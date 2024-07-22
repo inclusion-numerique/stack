@@ -30,8 +30,6 @@ const CreateCraCollectifPage = async ({
 
   const urlFormState = v ? decodeSerializableState(v, {}) : {}
 
-  console.log('STATE FROM QUERY PARAMS', urlFormState)
-
   // delete sensitive data from urlFormState
   delete urlFormState.id
   delete urlFormState.mediateurId

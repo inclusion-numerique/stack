@@ -1,9 +1,9 @@
-import { trpc } from '@app/web/trpc'
 import { useCallback, useMemo, useRef } from 'react'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
+import { trpc } from '@app/web/trpc'
 import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
-import type { SelectOption } from '@app/ui/components/Form/utils/options'
 
 const beneficiaireOptionRichLabel = (value: BeneficiaireData) => {
   const { communeResidence } = value

@@ -1,16 +1,9 @@
 'use client'
 
-import {
-  Control,
-  UseFormGetValues,
-  UseFormSetValue,
-  UseFormWatch,
-} from 'react-hook-form'
-import { useRouter } from 'next/navigation'
-import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
+import { Control, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import InputFormField from '@app/ui/components/Form/InputFormField'
-import styles from './CraBeneficiairesAnonymesForm.module.css'
 import React from 'react'
+import OneLineIntegerWithPlusAndMinusFormField from '@app/ui/components/Form/OneLineIntegerWithPlusAndMinusFormField'
 import {
   genreLabels,
   genreValues,
@@ -19,31 +12,103 @@ import {
   trancheAgeLabels,
   trancheAgeValues,
 } from '@app/web/beneficiaire/beneficiaire'
-import OneLineIntegerWithPlusAndMinusFormField from '@app/ui/components/Form/OneLineIntegerWithPlusAndMinusFormField'
+import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
+import {
+  countGenreNonCommunique,
+  countStatutSocialNonCommunique,
+  countTrancheAgeNonCommunique,
+} from '@app/web/cra/participantsAnonymes'
+import styles from './CraBeneficiairesAnonymesForm.module.css'
 
 const CraBeneficiairesMultiplesForm = ({
   control,
   setValue,
-  getValues,
   watch,
   isLoading,
 }: {
   isLoading?: boolean
-  getValues: UseFormGetValues<CraCollectifData>
   setValue: UseFormSetValue<CraCollectifData>
   watch: UseFormWatch<CraCollectifData>
   control: Control<CraCollectifData>
 }) => {
-  const router = useRouter()
+  watch((data, { name }) => {
+    requestAnimationFrame(() => {
+      // Set values of non communique to right value if total changes
+      if (
+        name === 'participantsAnonymes.total' &&
+        // This second condition is only for type safety
+        data.participantsAnonymes
+      ) {
+        const genreNonCommunique = countGenreNonCommunique(
+          data.participantsAnonymes,
+        )
+        setValue(
+          'participantsAnonymes.genreNonCommunique',
+          Math.max(genreNonCommunique, 0),
+        )
 
-  watch((data, { name, type }) => {
-    if (name?.startsWith('participantsAnonymes')) {
-      console.log('CHANGE', {
-        name,
-        type,
-        participantsAnonymes: data.participantsAnonymes,
-      })
-    }
+        const trancheAgeNonCommunique = countTrancheAgeNonCommunique(
+          data.participantsAnonymes,
+        )
+        setValue(
+          'participantsAnonymes.trancheAgeNonCommunique',
+          Math.max(trancheAgeNonCommunique, 0),
+        )
+
+        const statutSocialNonCommunique = countStatutSocialNonCommunique(
+          data.participantsAnonymes,
+        )
+        setValue(
+          'participantsAnonymes.statutSocialNonCommunique',
+          Math.max(statutSocialNonCommunique, 0),
+        )
+      }
+
+      // Set values of genreNonCommunique if genre changes
+      if (
+        name?.startsWith('participantsAnonymes.genre') &&
+        name !== 'participantsAnonymes.genreNonCommunique' &&
+        data.participantsAnonymes
+      ) {
+        const genreNonCommunique = countGenreNonCommunique(
+          data.participantsAnonymes,
+        )
+        setValue(
+          'participantsAnonymes.genreNonCommunique',
+          Math.max(genreNonCommunique, 0),
+        )
+      }
+
+      // Set values of trancheAgeNonCommunique if trancheAge changes
+      if (
+        name?.startsWith('participantsAnonymes.trancheAge') &&
+        name !== 'participantsAnonymes.trancheAgeNonCommunique' &&
+        data.participantsAnonymes
+      ) {
+        const trancheAgeNonCommunique = countTrancheAgeNonCommunique(
+          data.participantsAnonymes,
+        )
+        setValue(
+          'participantsAnonymes.trancheAgeNonCommunique',
+          Math.max(trancheAgeNonCommunique, 0),
+        )
+      }
+
+      // Set values of statutSocialNonCommunique if statutSocial changes
+      if (
+        name?.startsWith('participantsAnonymes.statutSocial') &&
+        name !== 'participantsAnonymes.statutSocialNonCommunique' &&
+        data.participantsAnonymes
+      ) {
+        const statutSocialNonCommunique = countStatutSocialNonCommunique(
+          data.participantsAnonymes,
+        )
+        setValue(
+          'participantsAnonymes.statutSocialNonCommunique',
+          Math.max(statutSocialNonCommunique, 0),
+        )
+      }
+    })
   })
 
   return (
@@ -54,7 +119,6 @@ const CraBeneficiairesMultiplesForm = ({
         path="participantsAnonymes.total"
         type="number"
         min={0}
-        max={10_000}
         step={1}
         label="Bénéficiaires anonymes"
         classes={{
@@ -75,7 +139,6 @@ const CraBeneficiairesMultiplesForm = ({
             disabled={genre === 'NonCommunique' || isLoading}
             path={`participantsAnonymes.genre${genre}`}
             min={0}
-            max={10_000}
             label={genreLabels[genre]}
           />
         ))}
@@ -90,7 +153,6 @@ const CraBeneficiairesMultiplesForm = ({
               disabled={trancheAge === 'NonCommunique' || isLoading}
               path={`participantsAnonymes.trancheAge${trancheAge}`}
               min={0}
-              max={10_000}
               label={trancheAgeLabels[trancheAge]}
             />
           ))}
@@ -106,7 +168,6 @@ const CraBeneficiairesMultiplesForm = ({
               disabled={statutSocial === 'NonCommunique' || isLoading}
               path={`participantsAnonymes.statutSocial${statutSocial}`}
               min={0}
-              max={10_000}
               label={statutSocialLabels[statutSocial]}
             />
           ))}
