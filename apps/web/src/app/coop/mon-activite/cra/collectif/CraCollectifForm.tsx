@@ -12,9 +12,10 @@ import { createToast } from '@app/ui/toast/createToast'
 import { useRouter } from 'next/navigation'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import React from 'react'
+import React, { useCallback } from 'react'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
+import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import CraFormLabel from '@app/web/app/coop/mon-activite/cra/CraFormLabel'
 import AdresseBanFormField, {
   AdressBanFormFieldOption,
@@ -116,13 +117,17 @@ const CraCollectifForm = ({
         }
       : undefined
 
-  watch((data) => {
-    requestAnimationFrame(() => {
-      replaceRouteWithoutRerender(
-        `/coop/mon-activite/cra/collectif?v=${encodeSerializableState(data)}`,
-      )
-    })
-  })
+  useWatchSubscription(
+    watch,
+    useCallback((data) => {
+      // use idle callback to avoid blocking the main thread while typing
+      requestIdleCallback(() => {
+        replaceRouteWithoutRerender(
+          `/coop/mon-activite/cra/collectif?v=${encodeSerializableState(data)}`,
+        )
+      })
+    }, []),
+  )
 
   const lieuAtelierAutreCommuneRenderKey = watch('lieuAtelierAutreCommune')?.id
 

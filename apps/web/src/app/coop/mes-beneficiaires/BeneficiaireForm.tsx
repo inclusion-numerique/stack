@@ -7,12 +7,13 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { createToast } from '@app/ui/toast/createToast'
 import { useRouter } from 'next/navigation'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import React, { Fragment } from 'react'
+import React, { Fragment, useCallback } from 'react'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import Link from 'next/link'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
 import RadioFormField from '@app/ui/components/Form/RadioFormField'
 import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormField'
+import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { trpc } from '@app/web/trpc'
 import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
@@ -158,22 +159,32 @@ const BeneficiaireForm = ({
     anneeNaissanceInt >= anneeNaissanceMin &&
     anneeNaissanceInt <= anneeNaissanceMax
 
-  watch((data, { name }) => {
-    // Erase telephone if pasDeTelephone is checked
-    if (name === 'pasDeTelephone' && data.pasDeTelephone && !!data.telephone) {
-      setValue('telephone', null)
-    }
+  useWatchSubscription(
+    watch,
+    useCallback(
+      (data, { name }) => {
+        // Erase telephone if pasDeTelephone is checked
+        if (
+          name === 'pasDeTelephone' &&
+          data.pasDeTelephone &&
+          !!data.telephone
+        ) {
+          setValue('telephone', null)
+        }
 
-    // Set tranche d’age depending on birth year
-    if (name === 'anneeNaissance') {
-      const trancheAgeFromAnnee = trancheAgeFromAnneeNaissance(
-        data.anneeNaissance,
-      )
-      if (trancheAgeFromAnnee && data.trancheAge !== trancheAgeFromAnnee) {
-        setValue('trancheAge', trancheAgeFromAnnee)
-      }
-    }
-  })
+        // Set tranche d’age depending on birth year
+        if (name === 'anneeNaissance') {
+          const trancheAgeFromAnnee = trancheAgeFromAnneeNaissance(
+            data.anneeNaissance,
+          )
+          if (trancheAgeFromAnnee && data.trancheAge !== trancheAgeFromAnnee) {
+            setValue('trancheAge', trancheAgeFromAnnee)
+          }
+        }
+      },
+      [setValue],
+    ),
+  )
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

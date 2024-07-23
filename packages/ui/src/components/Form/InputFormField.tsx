@@ -24,7 +24,10 @@ type CommonProps<T extends FieldValues> = {
   classes?: {
     label?: string
     input?: string
+    inputWrap?: string
   }
+  inputPre?: ReactNode
+  inputPost?: ReactNode
 }
 
 type InputProps = {
@@ -59,6 +62,8 @@ const InputFormField = <T extends FieldValues = FieldValues>({
   info,
   asterisk,
   classes,
+  inputPost,
+  inputPre,
   ...rest
 }: UiComponentProps & InputFormFieldProps<T>) => {
   const id = `input-form-field__${path}`
@@ -143,11 +148,17 @@ const InputFormField = <T extends FieldValues = FieldValues>({
               {label} {asterisk && <RedAsterisk />}
               {hint && <span className="fr-hint-text">{hint}</span>}
             </label>
-            {icon ? (
-              <div className={`fr-input-wrap ${icon}`}>{input}</div>
-            ) : (
-              input
-            )}
+            <div
+              className={classNames(
+                !!icon && `fr-input-wrap`,
+                icon,
+                classes?.inputWrap,
+              )}
+            >
+              {inputPre}
+              {input}
+              {inputPost}
+            </div>
             {info && (
               <p id={`${id}__info`} className="fr-hint-text fr-mt-1v fr-mb-0">
                 {typeof info === 'function' ? info(value) : info}

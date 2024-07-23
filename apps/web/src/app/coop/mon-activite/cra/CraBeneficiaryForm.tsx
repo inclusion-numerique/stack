@@ -12,6 +12,7 @@ import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField
 import { useRouter } from 'next/navigation'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
+import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import IconInSquare from '@app/web/components/IconInSquare'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
@@ -175,22 +176,28 @@ const CraBeneficiaryForm = ({
     nom: watch('beneficiaire.nom'),
   })
 
-  watch((data, { name }) => {
-    // Change state on selection of beneficiaire
-    if (name === 'beneficiaire' && data.beneficiaire?.id) {
-      setState(CraBeneficiaryFormState.Selected)
-      // Pre select domicile beneficiaire
-      if (
-        !data.lieuAccompagnementDomicileCommune &&
-        data.beneficiaire.communeResidence
-      ) {
-        setValue(
-          'lieuAccompagnementDomicileCommune',
-          data.beneficiaire.communeResidence as AdresseBanData,
-        )
-      }
-    }
-  })
+  useWatchSubscription(
+    watch,
+    useCallback(
+      (data, { name }) => {
+        // Change state on selection of beneficiaire
+        if (name === 'beneficiaire' && data.beneficiaire?.id) {
+          setState(CraBeneficiaryFormState.Selected)
+          // Pre select domicile beneficiaire
+          if (
+            !data.lieuAccompagnementDomicileCommune &&
+            data.beneficiaire.communeResidence
+          ) {
+            setValue(
+              'lieuAccompagnementDomicileCommune',
+              data.beneficiaire.communeResidence as AdresseBanData,
+            )
+          }
+        }
+      },
+      [setValue],
+    ),
+  )
 
   return (
     <div className="fr-background-alt--blue-france fr-px-8v fr-py-6v fr-border-radius--8 fr-my-12v fr-flex fr-flex-gap-8v fr-align-items-center">

@@ -19,9 +19,10 @@ import { createToast } from '@app/ui/toast/createToast'
 import { useRouter } from 'next/navigation'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
+import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import CraFormLabel from '@app/web/app/coop/mon-activite/cra/CraFormLabel'
 import AdresseBanFormField, {
   type AdressBanFormFieldOption,
@@ -184,27 +185,33 @@ const CraDemarcheAdministrativeForm = ({
       : undefined,
   )
 
-  watch((data, { name }) => {
-    replaceRouteWithoutRerender(
-      `/coop/mon-activite/cra/administratif?v=${encodeSerializableState(data)}`,
-    )
+  useWatchSubscription(
+    watch,
+    useCallback(
+      (data, { name }) => {
+        replaceRouteWithoutRerender(
+          `/coop/mon-activite/cra/administratif?v=${encodeSerializableState(data)}`,
+        )
 
-    // Set the initial options for the lieu de residence
-    if (
-      name === 'beneficiaire' &&
-      data.beneficiaire?.communeResidence?.codeInsee
-    ) {
-      setInitialLieuResidenceOptions(lieuResidenceOptionsFromFormData(data))
-      const newDomicileValue = banDefaultValueToAdresseBanData(
-        data.beneficiaire.communeResidence,
-      )
-      setLieuAccompagnementDomicileCommuneDefaultValue({
-        label: banMunicipalityLabel(data.beneficiaire.communeResidence),
-        value: newDomicileValue,
-      })
-      setValue('lieuAccompagnementDomicileCommune', newDomicileValue)
-    }
-  })
+        // Set the initial options for the lieu de residence
+        if (
+          name === 'beneficiaire' &&
+          data.beneficiaire?.communeResidence?.codeInsee
+        ) {
+          setInitialLieuResidenceOptions(lieuResidenceOptionsFromFormData(data))
+          const newDomicileValue = banDefaultValueToAdresseBanData(
+            data.beneficiaire.communeResidence,
+          )
+          setLieuAccompagnementDomicileCommuneDefaultValue({
+            label: banMunicipalityLabel(data.beneficiaire.communeResidence),
+            value: newDomicileValue,
+          })
+          setValue('lieuAccompagnementDomicileCommune', newDomicileValue)
+        }
+      },
+      [setValue],
+    ),
+  )
 
   const lieuAccompagnementDomicileCommuneRenderKey = watch(
     'lieuAccompagnementDomicileCommune',

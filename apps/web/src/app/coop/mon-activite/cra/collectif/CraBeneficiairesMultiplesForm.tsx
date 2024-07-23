@@ -11,7 +11,8 @@ import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField
 import { useRouter } from 'next/navigation'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import Tag from '@codegouvfr/react-dsfr/Tag'
-import { useRef } from 'react'
+import { useCallback } from 'react'
+import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import IconInSquare from '@app/web/components/IconInSquare'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
@@ -69,22 +70,25 @@ const CraBeneficiairesMultiplesForm = ({
 
   const totalParticipants = suivisCount + anonymesTotal
 
-  // We have to use a ref to keep track of the ids of the beneficiaries
-  // As the watch gets called multiple times for the same change :( but I don't know why
-  const suivisIds = useRef(new Set(fields.map((field) => field.id)))
+  const participantsIds = new Set(fields.map((field) => field.id))
 
-  watch((data, { name, type }) => {
-    if (name === 'addParticipant' && !!type) {
-      const participantToAdd = data.addParticipant?.id
-        ? (data.addParticipant as BeneficiaireData & { id: string })
-        : null
+  useWatchSubscription(
+    watch,
+    useCallback(
+      (data, { name, type }) => {
+        if (name === 'addParticipant' && !!type) {
+          const participantToAdd = data.addParticipant?.id
+            ? (data.addParticipant as BeneficiaireData & { id: string })
+            : null
 
-      if (participantToAdd && !suivisIds.current.has(participantToAdd.id)) {
-        suivisIds.current.add(participantToAdd.id)
-        append({ ...participantToAdd, mediateurId })
-      }
-    }
-  })
+          if (participantToAdd && !participantsIds.has(participantToAdd.id)) {
+            append({ ...participantToAdd, mediateurId })
+          }
+        }
+      },
+      [append, mediateurId],
+    ),
+  )
 
   return (
     <div className="fr-my-12v fr-border fr-border-radius--8 fr-width-full">
@@ -111,7 +115,10 @@ const CraBeneficiairesMultiplesForm = ({
             getOptionKey={(option) => option.value?.id ?? ''}
             getValueKey={(value) => value?.id ?? ''}
             filterOption={({ data }) =>
-              !data.value?.id || !suivisIds.current.has(data.value.id)
+              // Display if has no id (info message)
+              !data.value?.id ||
+              // Display if not already in the list
+              !participantsIds.has(data.value.id)
             }
           />
           <div>

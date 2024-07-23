@@ -75,13 +75,6 @@ export const ParticipantsAnonymesCraCollectifValidation = z
       maxMessage: `Le nombre de participants anonymes de statut social non communiqué ne doit pas dépasser ${participantsAnonymesMaxLocaleString}`,
     }),
   })
-  .refine((data) => {
-    console.log('REFINE DATA', {
-      countGenre: countTotalGenre(data),
-      total: data.total,
-    })
-    return true
-  })
   .refine((data) => countTotalGenre(data) <= (data.total ?? 0), {
     message:
       'La somme des genres ne doit pas dépasser le total des participants anonymes',
