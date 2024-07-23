@@ -13,7 +13,7 @@ const SiretInputInfo = ({
     href={`https://annuaire-entreprises.data.gouv.fr${searchTerm ? `/rechercher?terme=${searchTerm}` : ''}`}
     target="_blank"
     className={classNames(
-      'fr-mt-2v fr-display-inline-block fr-text-action-high--blue-france fr-text--sm',
+      'fr-mt-2v fr-display-inline-block fr-text-action-high--blue-france fr-text--sm fr-mb-0',
       className,
     )}
   >

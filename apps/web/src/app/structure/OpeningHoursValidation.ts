@@ -11,7 +11,7 @@ const checkIsOpen = (
     isOpen,
     startTime,
     endTime,
-  }: { isOpen: boolean; startTime?: string; endTime?: string },
+  }: { isOpen: boolean; startTime?: string | null; endTime?: string | null },
   context: RefinementCtx,
 ) => {
   if (!isOpen) return
@@ -22,15 +22,15 @@ const checkIsOpen = (
 const OpeningHoursDayValidation = z.object({
   am: z
     .object({
-      startTime: z.string().optional(),
-      endTime: z.string().optional(),
+      startTime: z.string().nullable(),
+      endTime: z.string().nullable(),
       isOpen: z.boolean(),
     })
     .superRefine(checkIsOpen),
   pm: z
     .object({
-      startTime: z.string().optional(),
-      endTime: z.string().optional(),
+      startTime: z.string().nullable(),
+      endTime: z.string().nullable(),
       isOpen: z.boolean(),
     })
     .superRefine(checkIsOpen),

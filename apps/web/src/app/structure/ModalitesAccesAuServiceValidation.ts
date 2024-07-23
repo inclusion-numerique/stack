@@ -1,7 +1,6 @@
 import z from 'zod'
 
-export const ModalitesAccesAuServiceValidation = z.object({
-  id: z.string().uuid(),
+export const ModalitesAccesAuServiceShape = {
   modalitesAcces: z
     .object({
       surPlace: z.boolean().nullish(),
@@ -31,6 +30,11 @@ export const ModalitesAccesAuServiceValidation = z.object({
       }
     }),
   fraisACharge: z.array(z.string()).nullish(),
+}
+
+export const ModalitesAccesAuServiceValidation = z.object({
+  id: z.string().uuid(),
+  ...ModalitesAccesAuServiceShape,
 })
 
 export type ModalitesAccesAuServiceData = z.infer<

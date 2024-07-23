@@ -2,8 +2,7 @@ import z from 'zod'
 
 export const descriptionMaxLength = 280
 
-export const DescriptionValidation = z.object({
-  id: z.string().uuid(),
+export const DescriptionShape = {
   typologies: z.array(z.string()).nullish(),
   presentationResume: z
     .string()
@@ -14,6 +13,11 @@ export const DescriptionValidation = z.object({
     .trim()
     .nullish(),
   presentationDetail: z.string().trim().nullish(),
+}
+
+export const DescriptionValidation = z.object({
+  id: z.string().uuid(),
+  ...DescriptionShape,
 })
 
 export type DescriptionData = z.infer<typeof DescriptionValidation>

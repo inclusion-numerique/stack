@@ -25,17 +25,28 @@ const defaultOpeningHours = {
   pm: { startTime: null, endTime: null, isOpen: false },
 }
 
+export const emptyOpeningHours = {
+  Mo: defaultOpeningHours,
+  Tu: defaultOpeningHours,
+  We: defaultOpeningHours,
+  Th: defaultOpeningHours,
+  Fr: defaultOpeningHours,
+  Sa: defaultOpeningHours,
+  Su: defaultOpeningHours,
+}
+
 export const osmOpeningHoursToOpeningHours = (
   osmOpeningHours?: string | null,
 ) =>
   osmOpeningHours
     ? toTimetableOpeningHours(new Date())(osmOpeningHours)
-    : {
-        Mo: defaultOpeningHours,
-        Tu: defaultOpeningHours,
-        We: defaultOpeningHours,
-        Th: defaultOpeningHours,
-        Fr: defaultOpeningHours,
-        Sa: defaultOpeningHours,
-        Su: defaultOpeningHours,
-      }
+    : emptyOpeningHours
+
+export const appendComment = (
+  osmOpeningHours: string,
+  comment?: string | null,
+) =>
+  [
+    osmOpeningHours,
+    ...((comment?.length ?? 0) > 1 ? [`"${comment?.replace('"', "'")}"`] : []),
+  ].join(' ')

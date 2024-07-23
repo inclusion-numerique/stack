@@ -18,17 +18,13 @@ import {
 import { OpeningHoursData } from '@app/web/app/structure/OpeningHoursValidation'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { isEmpty } from '@app/web/utils/isEmpty'
+import {
+  appendComment,
+  osmOpeningHoursToOpeningHours,
+} from '@app/web/components/structure/fields/openingHoursHelpers'
+import { InformationsPratiquesFields } from '@app/web/components/structure/fields/InformationsPratiquesFields'
 import { EmptyState } from '../EmptyState'
-import { InformationsPratiquesFields } from './InformationsPratiquesFields'
 import { InformationsPratiquesView } from './InformationsPratiquesView'
-import { osmOpeningHoursToOpeningHours } from './openingHoursHelpers'
-
-function appendComment(osmOpeningHours: string, comment?: string | null) {
-  return [
-    osmOpeningHours,
-    ...((comment?.length ?? 0) > 1 ? [`"${comment?.replace('"', '')}"`] : []),
-  ].join(' ')
-}
 
 const InformationsPratiquesEditCard = ({
   id,

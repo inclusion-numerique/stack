@@ -1,22 +1,16 @@
 import z from 'zod'
 import { OpeningHoursValidation } from './OpeningHoursValidation'
 
-export const InformationsPratiquesValidation = z.object({
-  id: z.string().uuid(),
+export const InformationsPratiquesShape = {
   lieuItinerant: z.boolean().nullish(),
   siteWeb: z
     .string()
     .nullish()
     .refine(
-      (value) => {
-        console.log(value)
-
-        return (
-          value === '' ||
-          value === null ||
-          z.string().url().safeParse(value).success
-        )
-      },
+      (value) =>
+        value === '' ||
+        value == null ||
+        z.string().url().safeParse(value).success,
       {
         message: 'Veuillez renseigner une URL valide',
       },
@@ -27,7 +21,7 @@ export const InformationsPratiquesValidation = z.object({
     .refine(
       (value) =>
         value === '' ||
-        value === null ||
+        value == null ||
         (z.string().url().safeParse(value).success &&
           value?.startsWith('https://acceslibre.beta.gouv.fr/')),
       {
@@ -38,6 +32,11 @@ export const InformationsPratiquesValidation = z.object({
   horaires: z.string().nullish(),
   horairesComment: z.string().nullish(),
   openingHours: OpeningHoursValidation,
+}
+
+export const InformationsPratiquesValidation = z.object({
+  id: z.string().uuid(),
+  ...InformationsPratiquesShape,
 })
 
 export type InformationsPratiquesData = z.infer<

@@ -8,12 +8,12 @@ import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import EditCard from '@app/web/components/EditCard'
 import { validateValidRnaDigits } from '@app/web/rna/rnaValidation'
-import {
-  InformationsGeneralesValidation,
-  InformationsGeneralesData,
-} from '@app/web/app/structure/InformationsGeneralesValidation'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
-import { InformationsGeneralesFields } from './InformationsGeneralesFields'
+import {
+  InformationsGeneralesData,
+  InformationsGeneralesValidation,
+} from '@app/web/app/structure/InformationsGeneralesValidation'
+import { InformationsGeneralesFields } from '@app/web/components/structure/fields/InformationsGeneralesFields'
 import { InformationsGeneralesView } from './InformationsGeneralesView'
 
 const InformationsGeneralesEditCard = (props: {
@@ -77,7 +77,13 @@ const InformationsGeneralesEditCard = (props: {
       titleAs="h2"
       form={form}
       mutation={handleMutation}
-      edition={<InformationsGeneralesFields {...props} form={form} />}
+      edition={
+        <InformationsGeneralesFields
+          className="fr-mb-4w"
+          {...props}
+          form={form}
+        />
+      }
       view={<InformationsGeneralesView {...props} />}
     />
   )

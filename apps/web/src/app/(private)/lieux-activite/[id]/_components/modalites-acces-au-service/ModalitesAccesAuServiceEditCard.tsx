@@ -13,8 +13,8 @@ import {
 } from '@app/web/app/structure/ModalitesAccesAuServiceValidation'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { isEmpty } from '@app/web/utils/isEmpty'
+import { ModalitesAccesAuServiceFields } from '@app/web/components/structure/fields/ModalitesAccesAuServiceFields'
 import { EmptyState } from '../EmptyState'
-import { ModalitesAccesAuServiceFields } from './ModalitesAccesAuServiceFields'
 import { ModalitesAccesAuServiceView } from './ModalitesAccesAuServiceView'
 
 const ModalitesAccesAuServiceEditCard = ({

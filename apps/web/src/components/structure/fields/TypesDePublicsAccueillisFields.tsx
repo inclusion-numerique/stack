@@ -8,11 +8,16 @@ import {
 } from '@app/web/app/structure/optionsStructure'
 import { TypesDePublicsAccueillisData } from '@app/web/app/structure/TypesDePublicsAccueillisValidation'
 
-export const TypesDePublicsAccueillisFields = ({
-  form: { control, formState, watch, setValue },
+export const TypesDePublicsAccueillisFields = <
+  T extends Omit<TypesDePublicsAccueillisData, 'id'>,
+>({
+  form,
 }: {
-  form: UseFormReturn<TypesDePublicsAccueillisData>
+  form: UseFormReturn<T>
 }) => {
+  const { control, formState, watch, setValue } =
+    form as unknown as UseFormReturn<TypesDePublicsAccueillisData>
+
   const publicsAccueillisKey =
     watch('publicsSpecifiquementAdresses')?.join(',') ?? 'none'
   const toutPublicKey = watch('toutPublic') ? 'true' : 'false'

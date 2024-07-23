@@ -7,6 +7,7 @@ import { createToast } from '@app/ui/toast/createToast'
 import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import EditCard from '@app/web/components/EditCard'
+import { DescriptionFields } from '@app/web/components/structure/fields/DescriptionFields'
 import {
   DescriptionValidation,
   DescriptionData,
@@ -14,7 +15,6 @@ import {
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { isEmpty } from '@app/web/utils/isEmpty'
 import { EmptyState } from '../EmptyState'
-import { DescriptionFields } from './DescriptionFields'
 import { DescriptionView } from './DescriptionView'
 
 const DescriptionEditCard = ({

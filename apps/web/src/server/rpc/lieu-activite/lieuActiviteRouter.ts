@@ -1,20 +1,43 @@
+import { v4 } from 'uuid'
 import z from 'zod'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
-import { SessionUser } from '@app/web/auth/sessionUser'
-import { VisiblePourCartographieNationaleValidation } from '@app/web/app/structure/VisiblePourCartographieNationaleValidation'
-import { DescriptionValidation } from '@app/web/app/structure/DescriptionValidation'
-import { InformationsPratiquesValidation } from '@app/web/app/structure/InformationsPratiquesValidation'
-import { ModalitesAccesAuServiceValidation } from '@app/web/app/structure/ModalitesAccesAuServiceValidation'
+import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import {
+  DescriptionData,
+  DescriptionValidation,
+} from '@app/web/app/structure/DescriptionValidation'
+import {
+  InformationsGeneralesData,
+  InformationsGeneralesValidation,
+} from '@app/web/app/structure/InformationsGeneralesValidation'
+import {
+  InformationsPratiquesData,
+  InformationsPratiquesValidation,
+} from '@app/web/app/structure/InformationsPratiquesValidation'
+import {
+  ModalitesAccesAuServiceData,
+  ModalitesAccesAuServiceValidation,
+} from '@app/web/app/structure/ModalitesAccesAuServiceValidation'
 import {
   itineranceStructureValues,
   modalitesAccesStructureValues,
 } from '@app/web/app/structure/optionsStructure'
-import { ServicesEtAccompagnementValidation } from '@app/web/app/structure/ServicesEtAccompagnementValidation'
-import { TypesDePublicsAccueillisValidation } from '@app/web/app/structure/TypesDePublicsAccueillisValidation'
-import { InformationsGeneralesValidation } from '@app/web/app/structure/InformationsGeneralesValidation'
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import {
+  ServicesEtAccompagnementData,
+  ServicesEtAccompagnementValidation,
+} from '@app/web/app/structure/ServicesEtAccompagnementValidation'
+import {
+  TypesDePublicsAccueillisData,
+  TypesDePublicsAccueillisValidation,
+} from '@app/web/app/structure/TypesDePublicsAccueillisValidation'
+import {
+  VisiblePourCartographieNationaleData,
+  VisiblePourCartographieNationaleValidation,
+} from '@app/web/app/structure/VisiblePourCartographieNationaleValidation'
+import { CreerLieuActiviteValidation } from '@app/web/app/lieu-activite/CreerLieuActiviteValidation'
 import { lieuActiviteValidation } from './lieuActiviteValidation'
 
 const lieuActiviteToUpdate = async (
@@ -36,7 +59,129 @@ const lieuActiviteToUpdate = async (
   return lieuActivite?.structure ?? null
 }
 
+const setInformationsGeneralesFields = ({
+  nom,
+  adresseBan,
+  complementAdresse,
+  siret,
+  rna,
+}: Omit<InformationsGeneralesData, 'id'>) => ({
+  nom,
+  adresse: adresseBan.nom,
+  commune: adresseBan.commune,
+  codePostal: adresseBan.codePostal,
+  codeInsee: adresseBan.codeInsee,
+  latitude: adresseBan.latitude,
+  longitude: adresseBan.longitude,
+  complementAdresse,
+  siret,
+  rna,
+})
+
+const setVisiblePourCartographieNationaleFields = ({
+  visiblePourCartographieNationale,
+}: Omit<VisiblePourCartographieNationaleData, 'id'>) => ({
+  visiblePourCartographieNationale,
+})
+
+const setInformationsPratiquesFields = ({
+  lieuItinerant,
+  siteWeb,
+  ficheAccesLibre,
+  horaires,
+}: Omit<InformationsPratiquesData, 'id'>) => ({
+  itinerance:
+    lieuItinerant == null
+      ? undefined
+      : lieuItinerant
+        ? [itineranceStructureValues.Itinérant]
+        : [itineranceStructureValues.Fixe],
+  siteWeb: siteWeb ?? undefined,
+  ficheAccesLibre: ficheAccesLibre ?? undefined,
+  horaires: horaires ?? undefined,
+})
+
+const setDescriptionFields = ({
+  typologies,
+  presentationResume,
+  presentationDetail,
+}: Omit<DescriptionData, 'id'>) => ({
+  typologies: typologies ?? undefined,
+  presentationResume: presentationResume ?? undefined,
+  presentationDetail: presentationDetail ?? undefined,
+})
+
+const setServicesEtAccompagnementFields = ({
+  services,
+  modalitesAccompagnement,
+}: Omit<ServicesEtAccompagnementData, 'id'>) => ({
+  services: services ?? undefined,
+  modalitesAccompagnement: modalitesAccompagnement ?? undefined,
+})
+
+const setModalitesAccesAuServiceFields = ({
+  modalitesAcces,
+  fraisACharge,
+}: Omit<ModalitesAccesAuServiceData, 'id'>) => ({
+  telephone:
+    modalitesAcces?.parTelephone && modalitesAcces?.numeroTelephone != null
+      ? modalitesAcces?.numeroTelephone
+      : '',
+  courriels:
+    modalitesAcces?.parMail && modalitesAcces?.adresseMail != null
+      ? [modalitesAcces.adresseMail]
+      : [],
+  modalitesAcces: modalitesAcces
+    ? [
+        modalitesAcces.surPlace
+          ? modalitesAccesStructureValues['Se présenter']
+          : undefined,
+        modalitesAcces.parTelephone
+          ? modalitesAccesStructureValues.Téléphoner
+          : undefined,
+        modalitesAcces.parMail
+          ? modalitesAccesStructureValues['Contacter par mail']
+          : undefined,
+      ].filter(isDefinedAndNotNull)
+    : undefined,
+  fraisACharge: fraisACharge ?? undefined,
+})
+
+const setTypesDePublicsAccueillisFields = ({
+  priseEnChargeSpecifique,
+  publicsSpecifiquementAdresses,
+}: Omit<TypesDePublicsAccueillisData, 'id'>) => ({
+  priseEnChargeSpecifique: priseEnChargeSpecifique ?? undefined,
+  publicsSpecifiquementAdresses: publicsSpecifiquementAdresses ?? undefined,
+})
+
 export const lieuActiviteRouter = router({
+  create: protectedProcedure
+    .input(CreerLieuActiviteValidation)
+    .mutation(async ({ input, ctx: { user } }) => {
+      if (!user.mediateur) {
+        throw forbiddenError("Cet utilisateur n'est pas un médiateur")
+      }
+
+      return prismaClient.structure.create({
+        data: {
+          id: v4(),
+          ...setInformationsGeneralesFields(input),
+          ...setVisiblePourCartographieNationaleFields(input),
+          ...setInformationsPratiquesFields(input),
+          ...setDescriptionFields(input),
+          ...setServicesEtAccompagnementFields(input),
+          ...setModalitesAccesAuServiceFields(input),
+          ...setTypesDePublicsAccueillisFields(input),
+          mediateursEnActivite: {
+            create: {
+              id: v4(),
+              mediateurId: user.mediateur.id,
+            },
+          },
+        },
+      })
+    }),
   delete: protectedProcedure
     .input(
       z.object({
@@ -83,17 +228,8 @@ export const lieuActiviteRouter = router({
         where: { id: structure.id },
         data: {
           ...structure,
+          ...setInformationsGeneralesFields(input),
           modification: new Date(),
-          nom: input.nom,
-          adresse: input.adresseBan.nom,
-          commune: input.adresseBan.commune,
-          codePostal: input.adresseBan.codePostal,
-          codeInsee: input.adresseBan.codeInsee,
-          latitude: input.adresseBan.latitude,
-          longitude: input.adresseBan.longitude,
-          complementAdresse: input.complementAdresse,
-          siret: input.siret,
-          rna: input.rna,
         },
       })
     }),
@@ -108,9 +244,8 @@ export const lieuActiviteRouter = router({
         where: { id: structure.id },
         data: {
           ...structure,
+          ...setVisiblePourCartographieNationaleFields(input),
           modification: new Date(),
-          visiblePourCartographieNationale:
-            input.visiblePourCartographieNationale,
         },
       })
     }),
@@ -125,15 +260,7 @@ export const lieuActiviteRouter = router({
         where: { id: structure.id },
         data: {
           ...structure,
-          itinerance:
-            typeof input.lieuItinerant === 'boolean'
-              ? input.lieuItinerant
-                ? [itineranceStructureValues.Itinérant]
-                : [itineranceStructureValues.Fixe]
-              : undefined,
-          siteWeb: input.siteWeb ?? undefined,
-          ficheAccesLibre: input.ficheAccesLibre ?? undefined,
-          horaires: input.horaires ?? undefined,
+          ...setInformationsPratiquesFields(input),
           modification: new Date(),
         },
       })
@@ -145,15 +272,11 @@ export const lieuActiviteRouter = router({
 
       if (structure == null) return
 
-      console.log(input)
-
       return prismaClient.structure.update({
         where: { id: structure.id },
         data: {
           ...structure,
-          typologies: input.typologies ?? undefined,
-          presentationResume: input.presentationResume ?? undefined,
-          presentationDetail: input.presentationDetail ?? undefined,
+          ...setDescriptionFields(input),
           modification: new Date(),
         },
       })
@@ -169,8 +292,7 @@ export const lieuActiviteRouter = router({
         where: { id: structure.id },
         data: {
           ...structure,
-          services: input.services ?? undefined,
-          modalitesAccompagnement: input.modalitesAccompagnement ?? undefined,
+          ...setServicesEtAccompagnementFields(input),
           modification: new Date(),
         },
       })
@@ -186,30 +308,7 @@ export const lieuActiviteRouter = router({
         where: { id: structure.id },
         data: {
           ...structure,
-          telephone:
-            input.modalitesAcces?.parTelephone &&
-            input.modalitesAcces?.numeroTelephone != null
-              ? input.modalitesAcces?.numeroTelephone
-              : '',
-          courriels:
-            input.modalitesAcces?.parMail &&
-            input.modalitesAcces?.adresseMail != null
-              ? [input.modalitesAcces.adresseMail]
-              : [],
-          modalitesAcces: input.modalitesAcces
-            ? [
-                input.modalitesAcces.surPlace
-                  ? modalitesAccesStructureValues['Se présenter']
-                  : undefined,
-                input.modalitesAcces.parTelephone
-                  ? modalitesAccesStructureValues.Téléphoner
-                  : undefined,
-                input.modalitesAcces.parMail
-                  ? modalitesAccesStructureValues['Contacter par mail']
-                  : undefined,
-              ].filter(isDefinedAndNotNull)
-            : undefined,
-          fraisACharge: input.fraisACharge ?? undefined,
+          ...setModalitesAccesAuServiceFields(input),
           modification: new Date(),
         },
       })
@@ -225,9 +324,7 @@ export const lieuActiviteRouter = router({
         where: { id: structure.id },
         data: {
           ...structure,
-          priseEnChargeSpecifique: input.priseEnChargeSpecifique ?? undefined,
-          publicsSpecifiquementAdresses:
-            input.publicsSpecifiquementAdresses ?? undefined,
+          ...setTypesDePublicsAccueillisFields(input),
           modification: new Date(),
         },
       })

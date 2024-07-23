@@ -7,14 +7,16 @@ import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { prismaClient } from '@app/web/prismaClient'
 import { DisplayOnCartography } from '@app/web/components/structure/DisplayOnCartography'
+import { LieuAccueillantPublicTitle } from '@app/web/components/structure/titles/LieuAccueillantPublicTitle'
+import { ServiceInclusionNumeriqueTitle } from '@app/web/components/structure/titles/ServiceInclusionNumeriqueTitle'
+import LieuActiviteSideMenu from '../_components/LieuActiviteSideMenu'
 import InformationsGeneralesEditCard from './_components/informations-generales/InformationsGeneralesEditCard'
-import VisiblePourCartographieNationaleFields from './_components/visible-pour-cartographie-nationale/VisiblePourCartographieNationaleFields'
+import VisiblePourCartographieNationaleFields from './_components/VisiblePourCartographieNationaleFields'
 import DescriptionEditCard from './_components/description/DescriptionEditCard'
 import InformationsPratiquesEditCard from './_components/informations-pratiques/InformationsPratiquesEditCard'
 import ServicesEtAccompagnementEditCard from './_components/services-et-accompagnement/ServicesEtAccompagnementEditCard'
 import ModalitesAccesAuServiceEditCard from './_components/modalites-acces-au-service/ModalitesAccesAuServiceEditCard'
 import TypesDePublicsAccueillisEditCard from './_components/types-de-publics-accueillis/TypesDePublicsAccueillisEditCard'
-import LieuActiviteSideMenu from './_components/LieuActiviteSideMenu'
 
 const LieuActiviteDetailPage = async ({
   params,
@@ -71,28 +73,8 @@ const LieuActiviteDetailPage = async ({
               className="fr-px-4w fr-pt-4w fr-pb-2w"
               {...lieuActivite.structure}
             >
-              <hr className="fr-separator fr-separator-1px" />
-              <div className="fr-p-4w fr-flex fr-direction-column fr-flex-gap-4v">
-                <div>
-                  <div
-                    className="fr-display-inline-block fr-icon-map-pin-2-line ri-lg fr-line-height-1 fr-text-label--blue-france fr-background-contrast--info fr-p-2w fr-border-radius--8 fr-p-2w fr-m-0 fr-border-radius--8"
-                    aria-hidden
-                  />
-                </div>
-                <div>
-                  <h2
-                    className="fr-h4 fr-mb-0 fr-text-label--blue-france"
-                    id="description"
-                  >
-                    Lieu accueillant du public
-                  </h2>
-                  <p className="fr-text--sm fr-mb-0">
-                    Renseignez ici des informations supplémentaires permettant
-                    d’ajouter du contexte sur le lieu et de faciliter l’accès au
-                    public.
-                  </p>
-                </div>
-              </div>
+              <hr className="fr-separator-1px" />
+              <LieuAccueillantPublicTitle />
               <hr className="fr-separator-1px" />
               <DescriptionEditCard {...lieuActivite.structure} />
               <hr className="fr-separator-1px fr-mx-4w" />
@@ -103,27 +85,7 @@ const LieuActiviteDetailPage = async ({
                 )}
               />
               <hr className="fr-separator-1px" />
-              <div className="fr-p-4w fr-flex fr-direction-column fr-flex-gap-4v">
-                <div>
-                  <div
-                    className="fr-display-inline-block ri-service-line ri-lg fr-line-height-1 fr-text-label--blue-france fr-background-contrast--info fr-p-2w fr-border-radius--8 fr-p-2w fr-m-0 fr-border-radius--8"
-                    aria-hidden
-                  />
-                </div>
-                <div>
-                  <h2
-                    className="fr-h4 fr-mb-0 fr-text-label--blue-france"
-                    id="services-et-accompagnement"
-                  >
-                    Services d’inclusion numérique
-                  </h2>
-                  <p className="fr-text--sm fr-mb-0">
-                    Renseignez des informations sur les services d’inclusion
-                    numérique proposés dans ce lieu afin d’orienter les
-                    bénéficiaires.
-                  </p>
-                </div>
-              </div>
+              <ServiceInclusionNumeriqueTitle />
               <hr className="fr-separator-1px" />
               <ServicesEtAccompagnementEditCard {...lieuActivite.structure} />
               <hr className="fr-separator-1px fr-mx-4w" />

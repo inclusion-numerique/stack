@@ -13,8 +13,8 @@ import {
 } from '@app/web/app/structure/TypesDePublicsAccueillisValidation'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { isEmpty } from '@app/web/utils/isEmpty'
+import { TypesDePublicsAccueillisFields } from '@app/web/components/structure/fields/TypesDePublicsAccueillisFields'
 import { EmptyState } from '../EmptyState'
-import { TypesDePublicsAccueillisFields } from './TypesDePublicsAccueillisFields'
 import { TypesDePublicsAccueillisView } from './TypesDePublicsAccueillisView'
 
 const TypesDePublicsAccueillisEditCard = ({

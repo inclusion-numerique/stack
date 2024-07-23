@@ -6,11 +6,16 @@ import InputFormField from '@app/ui/components/Form/InputFormField'
 import { ModalitesAccesAuServiceData } from '@app/web/app/structure/ModalitesAccesAuServiceValidation'
 import { fraisAChargeStructureOptions } from '@app/web/app/structure/optionsStructure'
 
-export const ModalitesAccesAuServiceFields = ({
-  form: { control, formState, watch },
+export const ModalitesAccesAuServiceFields = <
+  T extends Omit<ModalitesAccesAuServiceData, 'id'>,
+>({
+  form,
 }: {
-  form: UseFormReturn<ModalitesAccesAuServiceData>
+  form: UseFormReturn<T>
 }) => {
+  const { control, formState, watch } =
+    form as unknown as UseFormReturn<ModalitesAccesAuServiceData>
+
   const showPhoneInput = !!watch('modalitesAcces.parTelephone')
   const showEmailInput = !!watch('modalitesAcces.parMail')
 

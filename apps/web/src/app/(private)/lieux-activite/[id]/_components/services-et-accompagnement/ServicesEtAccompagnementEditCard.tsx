@@ -13,8 +13,8 @@ import {
   ServicesEtAccompagnementData,
 } from '@app/web/app/structure/ServicesEtAccompagnementValidation'
 import { isEmpty } from '@app/web/utils/isEmpty'
+import { ServicesEtAccompagnementFields } from '@app/web/components/structure/fields/ServicesEtAccompagnementFields'
 import { EmptyState } from '../EmptyState'
-import { ServicesEtAccompagnementFields } from './ServicesEtAccompagnementFields'
 import { ServicesEtAccompagnementView } from './ServicesEtAccompagnementView'
 
 const ServicesEtAccompagnementEditCard = ({
