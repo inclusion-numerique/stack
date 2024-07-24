@@ -78,17 +78,17 @@ export const ParticipantsAnonymesCraCollectifValidation = z
   .refine((data) => countTotalGenre(data) <= (data.total ?? 0), {
     message:
       'La somme des genres ne doit pas dépasser le total des participants anonymes',
-    path: ['genreNonCommunique'],
+    path: ['total'],
   })
   .refine((data) => countTotalTrancheAge(data) <= (data.total ?? 0), {
     message:
       'La somme des tranches d’âges ne doit pas dépasser le total des participants anonymes',
-    path: ['trancheAgeNonCommunique'],
+    path: ['total'],
   })
   .refine((data) => countTotalStatutSocial(data) <= (data.total ?? 0), {
     message:
       'La somme des statuts sociaux ne doit pas dépasser le total des participants anonymes',
-    path: ['statutSocialNonCommunique'],
+    path: ['total'],
   })
 
 // Cannot infer as the count functions would recursively type fail

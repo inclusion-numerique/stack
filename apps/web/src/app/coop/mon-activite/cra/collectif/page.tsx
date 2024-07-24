@@ -27,6 +27,7 @@ const CreateCraCollectifPage = async ({
   searchParams?: { v?: EncodedState<DefaultValues<CraCollectifData>> }
 }) => {
   const user = await getAuthenticatedMediateur()
+  const mediateurId = user.mediateur.id
 
   const urlFormState = v ? decodeSerializableState(v, {}) : {}
 
@@ -39,11 +40,17 @@ const CreateCraCollectifPage = async ({
   } = {
     ...urlFormState,
     date: new Date().toISOString().slice(0, 10),
-    mediateurId: user.mediateur.id,
+    mediateurId,
     participantsAnonymes: {
       ...participantsAnonymesDefault,
       ...urlFormState.participantsAnonymes,
     },
+    // Filter participants to only show the ones that are linked to the current mediator (e.g. in case of url copy/paste)
+    participants:
+      urlFormState.participants?.filter(
+        (participant) =>
+          !!participant?.id && participant.mediateurId === mediateurId,
+      ) ?? [],
   }
 
   /**
@@ -52,7 +59,7 @@ const CreateCraCollectifPage = async ({
    */
   const lieuxActivite = await prismaClient.mediateurEnActivite.findMany({
     where: {
-      mediateurId: user.mediateur.id,
+      mediateurId,
       suppression: null,
     },
     select: {
@@ -65,7 +72,7 @@ const CreateCraCollectifPage = async ({
             select: {
               crasCollectifs: {
                 where: {
-                  creeParMediateurId: user.mediateur.id,
+                  creeParMediateurId: mediateurId,
                 },
               },
             },
@@ -107,7 +114,7 @@ const CreateCraCollectifPage = async ({
 
   // Initial list of beneficiaires for pre-populating selected beneficiary or quick select search
   const whereBeneficiaire = beneficiairesListWhere({
-    mediateurId: user.mediateur.id,
+    mediateurId,
   })
   const beneficiariesForSelect = await prismaClient.beneficiaire.findMany({
     where: whereBeneficiaire,
@@ -155,7 +162,7 @@ const CreateCraCollectifPage = async ({
 
   const crasCollectifsForCommune = await prismaClient.craCollectif.groupBy({
     where: {
-      creeParMediateurId: user.mediateur.id,
+      creeParMediateurId: mediateurId,
     },
     by: ['lieuAccompagnementAutreCodeInsee'],
     _count: {

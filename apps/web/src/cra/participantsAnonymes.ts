@@ -63,6 +63,12 @@ export const countStatutSocialNonCommunique = ({
   (statutSocialEnEmploi ?? 0) -
   (statutSocialRetraite ?? 0)
 
+export const countNonCommunique = {
+  genre: countGenreNonCommunique,
+  trancheAge: countTrancheAgeNonCommunique,
+  statutSocial: countStatutSocialNonCommunique,
+}
+
 export const countTotalGenre = ({
   genreFeminin,
   genreMasculin,
@@ -99,3 +105,9 @@ export const countTotalStatutSocial = ({
   (statutSocialEnEmploi ?? 0) +
   (statutSocialRetraite ?? 0) +
   (statutSocialNonCommunique ?? 0)
+
+export const countTotal = {
+  genre: countTotalGenre,
+  trancheAge: countTotalTrancheAge,
+  statutSocial: countTotalStatutSocial,
+}

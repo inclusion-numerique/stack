@@ -16,9 +16,8 @@ import {
 } from '@app/web/beneficiaire/beneficiaire'
 import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
 import {
-  countGenreNonCommunique,
-  countStatutSocialNonCommunique,
-  countTrancheAgeNonCommunique,
+  countNonCommunique,
+  countTotal,
 } from '@app/web/cra/participantsAnonymes'
 import styles from './CraBeneficiairesAnonymesForm.module.css'
 
@@ -71,74 +70,54 @@ const CraBeneficiairesMultiplesForm = ({
             return
           }
 
-          const genreNonCommunique = countGenreNonCommunique(
-            data.participantsAnonymes,
-          )
-          setValue(
-            'participantsAnonymes.genreNonCommunique',
-            Math.max(genreNonCommunique, 0),
-          )
+          for (const type of ['genre', 'trancheAge', 'statutSocial'] as const) {
+            const nonCommunique = Math.max(
+              countNonCommunique[type](data.participantsAnonymes),
+              0,
+            )
 
-          const trancheAgeNonCommunique = countTrancheAgeNonCommunique(
-            data.participantsAnonymes,
-          )
-          setValue(
-            'participantsAnonymes.trancheAgeNonCommunique',
-            Math.max(trancheAgeNonCommunique, 0),
-          )
-
-          const statutSocialNonCommunique = countStatutSocialNonCommunique(
-            data.participantsAnonymes,
-          )
-          setValue(
-            'participantsAnonymes.statutSocialNonCommunique',
-            Math.max(statutSocialNonCommunique, 0),
-          )
+            if (
+              nonCommunique !==
+              data.participantsAnonymes[`${type}NonCommunique`]
+            ) {
+              setValue(
+                `participantsAnonymes.${type}NonCommunique`,
+                nonCommunique,
+              )
+            }
+          }
         }
 
-        // Set values of genreNonCommunique if genre changes
-        if (
-          name?.startsWith('participantsAnonymes.genre') &&
-          name !== 'participantsAnonymes.genreNonCommunique' &&
-          data.participantsAnonymes
-        ) {
-          const genreNonCommunique = countGenreNonCommunique(
-            data.participantsAnonymes,
-          )
-          setValue(
-            'participantsAnonymes.genreNonCommunique',
-            Math.max(genreNonCommunique, 0),
-          )
-        }
+        /**
+         * If a count value for a sub type is changed, we need to update the "nonCommunique"
+         * for this type, and to update the total if needed
+         */
+        for (const type of ['genre', 'trancheAge', 'statutSocial'] as const) {
+          if (
+            name?.startsWith(`participantsAnonymes.${type}`) &&
+            name !== `participantsAnonymes.${type}NonCommunique` &&
+            data.participantsAnonymes
+          ) {
+            const nonCommunique = countNonCommunique[type](
+              data.participantsAnonymes,
+            )
+            setValue(
+              `participantsAnonymes.${type}NonCommunique`,
+              Math.max(nonCommunique, 0),
+            )
 
-        // Set values of trancheAgeNonCommunique if trancheAge changes
-        if (
-          name?.startsWith('participantsAnonymes.trancheAge') &&
-          name !== 'participantsAnonymes.trancheAgeNonCommunique' &&
-          data.participantsAnonymes
-        ) {
-          const trancheAgeNonCommunique = countTrancheAgeNonCommunique(
-            data.participantsAnonymes,
-          )
-          setValue(
-            'participantsAnonymes.trancheAgeNonCommunique',
-            Math.max(trancheAgeNonCommunique, 0),
-          )
-        }
-
-        // Set values of statutSocialNonCommunique if statutSocial changes
-        if (
-          name?.startsWith('participantsAnonymes.statutSocial') &&
-          name !== 'participantsAnonymes.statutSocialNonCommunique' &&
-          data.participantsAnonymes
-        ) {
-          const statutSocialNonCommunique = countStatutSocialNonCommunique(
-            data.participantsAnonymes,
-          )
-          setValue(
-            'participantsAnonymes.statutSocialNonCommunique',
-            Math.max(statutSocialNonCommunique, 0),
-          )
+            // If there is more type total than current total, we need to update the total
+            if (nonCommunique < 0) {
+              // Need to update the value of total
+              setValue(
+                'participantsAnonymes.total',
+                countTotal[type]({
+                  ...data.participantsAnonymes,
+                  [`${type}NonCommunique`]: 0,
+                }),
+              )
+            }
+          }
         }
       },
       [setValue],
