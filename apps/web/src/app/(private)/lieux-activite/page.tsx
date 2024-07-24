@@ -7,11 +7,7 @@ import { LieuActivite } from './_components/LieuActivite'
 const LieuActiviteListPage = async () => {
   const user = await getAuthenticatedSessionUser()
 
-  if (
-    !user.mediateur ||
-    !user.mediateur.conseillerNumerique ||
-    user.mediateur._count.enActivite === 0
-  ) {
+  if (!user.mediateur || user.mediateur._count.enActivite === 0) {
     return redirect('/')
   }
 
