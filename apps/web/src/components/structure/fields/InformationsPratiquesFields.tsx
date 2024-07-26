@@ -1,3 +1,4 @@
+import { OsmDaysOfWeek } from '@gouvfr-anct/timetable-to-osm-opening-hours/lib/cjs/utilities'
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import Link from 'next/link'
@@ -64,7 +65,7 @@ export const InformationsPratiquesFields = <
       />
       <p>Horaires d’ouverture du lieu</p>
       <div className="fr-grid-row fr-grid-row--gutters fr-mb-2w">
-        {OSM_DAYS_OF_WEEK.map((day) => (
+        {(OSM_DAYS_OF_WEEK as unknown as OsmDaysOfWeek[]).map((day) => (
           <React.Fragment key={day}>
             <div className="fr-col-6 ">
               <OpeningHourField day={day} period="am" form={form} />

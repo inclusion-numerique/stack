@@ -3,3 +3,11 @@ export const validateValidRnaDigits = (rna: string): boolean => {
   const rnaPattern = /^W\d{9}$/
   return rnaPattern.test(rna)
 }
+
+export const siretOrRna = (data: { siret?: string | null }) =>
+  data.siret && validateValidRnaDigits(data.siret)
+    ? {
+        rna: data.siret,
+        siret: undefined,
+      }
+    : {}

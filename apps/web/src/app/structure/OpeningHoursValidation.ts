@@ -24,14 +24,14 @@ const OpeningHoursDayValidation = z.object({
     .object({
       startTime: z.string().nullable(),
       endTime: z.string().nullable(),
-      isOpen: z.boolean(),
+      isOpen: z.boolean().default(false),
     })
     .superRefine(checkIsOpen),
   pm: z
     .object({
       startTime: z.string().nullable(),
       endTime: z.string().nullable(),
-      isOpen: z.boolean(),
+      isOpen: z.boolean().default(false),
     })
     .superRefine(checkIsOpen),
 })

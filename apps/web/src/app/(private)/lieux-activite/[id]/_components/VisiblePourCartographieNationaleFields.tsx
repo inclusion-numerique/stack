@@ -10,11 +10,13 @@ import { withTrpc } from '@app/web/components/trpc/withTrpc'
 const VisiblePourCartographieNationaleFields = ({
   id,
   visiblePourCartographieNationale,
+  onChange,
   className,
   children,
 }: {
   id: string
   visiblePourCartographieNationale: boolean
+  onChange?: (visible: boolean) => void
   className: string
   children?: ReactNode
 }) => {
@@ -43,6 +45,8 @@ const VisiblePourCartographieNationaleFields = ({
           </>
         ),
       })
+
+      onChange?.(!visiblePourCartographieNationale)
     } catch {
       createToast({
         priority: 'error',

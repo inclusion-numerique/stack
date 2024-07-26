@@ -1,6 +1,7 @@
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
+import { optionsWithEmptyValue } from '@app/ui/components/Form/utils/options'
 import MultipleSelectFormField from '@app/ui/components/Form/MultipleSelectFormField'
 import { ServicesEtAccompagnementData } from '@app/web/app/structure/ServicesEtAccompagnementValidation'
 import {
@@ -25,7 +26,7 @@ export const ServicesEtAccompagnementFields = <
       </p>
       <MultipleSelectFormField
         path="services"
-        options={servicesStructureOptions}
+        options={optionsWithEmptyValue(servicesStructureOptions)}
         label="Thématiques des services d’inclusion numérique"
         hint="Renseignez ici les services proposés dans ce lieu."
         control={control}

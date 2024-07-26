@@ -1,23 +1,28 @@
 'use client'
 
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import ToggleFormField from '@app/ui/components/Form/ToggleFormField'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { CreerLieuActiviteData } from '@app/web/app/lieu-activite/CreerLieuActiviteValidation'
 
-const VisiblePourCartographieNationaleFields = ({
+export const VisiblePourCartographieNationaleFields = ({
   form: { control, formState, watch },
+  onChange,
   className,
   children,
 }: {
   form: UseFormReturn<CreerLieuActiviteData>
+  onChange?: (visible: boolean) => void
   className: string
   children?: ReactNode
 }) => {
   const visiblePourCartographieNationale = watch(
     'visiblePourCartographieNationale',
   )
+
+  useEffect(() => {
+    onChange?.(visiblePourCartographieNationale)
+  }, [onChange, visiblePourCartographieNationale])
 
   return (
     <>
@@ -39,5 +44,3 @@ const VisiblePourCartographieNationaleFields = ({
     </>
   )
 }
-
-export default withTrpc(VisiblePourCartographieNationaleFields)

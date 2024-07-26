@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
+import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import {
   priseEnChargeSpecifiqueStructureOptions,
   publicsAccueillisStructureOptions,
@@ -22,45 +23,50 @@ export const TypesDePublicsAccueillisFields = <
     watch('publicsSpecifiquementAdresses')?.join(',') ?? 'none'
   const toutPublicKey = watch('toutPublic') ? 'true' : 'false'
 
-  // Check if all publics are checked if toutPublic is checked
-  watch((data, { name, type }) => {
-    // This watcher is only concerned for these fields, only from user change action
-    if (name !== 'toutPublic' && name !== 'publicsSpecifiquementAdresses')
-      return
-    // Only if this is a user change, not triggered from this listener
-    if (type !== 'change') {
-      return
-    }
+  useWatchSubscription(
+    watch,
+    useCallback(
+      (data, { name, type }) => {
+        // This watcher is only concerned for these fields, only from user change action
+        if (name !== 'toutPublic' && name !== 'publicsSpecifiquementAdresses')
+          return
+        // Only if this is a user change, not triggered from this listener
+        if (type !== 'change') {
+          return
+        }
 
-    // Check all publics if toutPublic is checked
-    const allPublicsChecked =
-      Array.isArray(data.publicsSpecifiquementAdresses) &&
-      data.publicsSpecifiquementAdresses.length ===
-        publicsAccueillisStructureOptions.length
+        // Check all publics if toutPublic is checked
+        const allPublicsChecked =
+          Array.isArray(data.publicsSpecifiquementAdresses) &&
+          data.publicsSpecifiquementAdresses.length ===
+            publicsAccueillisStructureOptions.length
 
-    if (name === 'toutPublic') {
-      if (data.toutPublic && !allPublicsChecked) {
-        setValue(
-          'publicsSpecifiquementAdresses',
-          publicsAccueillisStructureOptions.map((option) => option.value),
-        )
-      } else if (
-        !data.toutPublic &&
-        data.publicsSpecifiquementAdresses?.length !== 0
-      ) {
-        setValue('publicsSpecifiquementAdresses', [])
-      }
-    }
+        if (name === 'toutPublic') {
+          if (data.toutPublic && !allPublicsChecked) {
+            setValue(
+              'publicsSpecifiquementAdresses',
+              publicsAccueillisStructureOptions.map((option) => option.value),
+            )
+          } else if (
+            !data.toutPublic &&
+            data.publicsSpecifiquementAdresses?.length !== 0
+          ) {
+            setValue('publicsSpecifiquementAdresses', [])
+          }
+        }
 
-    // Check tout public if all publics are checked
-    if (name === 'publicsSpecifiquementAdresses') {
-      if (allPublicsChecked && !data.toutPublic) {
-        setValue('toutPublic', true)
-      } else if (!allPublicsChecked && data.toutPublic) {
-        setValue('toutPublic', false)
-      }
-    }
-  })
+        // Check tout public if all publics are checked
+        if (name === 'publicsSpecifiquementAdresses') {
+          if (allPublicsChecked && !data.toutPublic) {
+            setValue('toutPublic', true)
+          } else if (!allPublicsChecked && data.toutPublic) {
+            setValue('toutPublic', false)
+          }
+        }
+      },
+      [setValue],
+    ),
+  )
 
   return (
     <>

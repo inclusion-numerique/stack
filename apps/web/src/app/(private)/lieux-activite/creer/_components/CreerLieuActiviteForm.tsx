@@ -1,15 +1,15 @@
 'use client'
 
-import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import React from 'react'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import Button from '@codegouvfr/react-dsfr/Button'
 import {
   fromTimetableOpeningHours,
   Schedule,
 } from '@gouvfr-anct/timetable-to-osm-opening-hours'
-import React from 'react'
-import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { createToast } from '@app/ui/toast/createToast'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
@@ -31,10 +31,14 @@ import {
 } from '@app/web/components/structure/fields/openingHoursHelpers'
 import { LieuAccueillantPublicTitle } from '@app/web/components/structure/titles/LieuAccueillantPublicTitle'
 import { ServiceInclusionNumeriqueTitle } from '@app/web/components/structure/titles/ServiceInclusionNumeriqueTitle'
-import { CompleteFields } from './CompleteFields'
-import VisiblePourCartographieNationaleFields from './VisiblePourCartographieNationaleFields'
+import { VisiblePourCartographieNationaleFields } from '@app/web/components/structure/fields/VisiblePourCartographieNationaleFields'
+import { CompleteFields } from '@app/web/components/form/CompleteFields'
 
-const CreateLieuActiviteForm = () => {
+const CreerLieuActiviteForm = ({
+  onVisiblePourCartographieNationaleChange,
+}: {
+  onVisiblePourCartographieNationaleChange?: (visible: boolean) => void
+}) => {
   const router = useRouter()
   const mutation = trpc.lieuActivite.create.useMutation()
   const form = useForm<CreerLieuActiviteData>({
@@ -91,6 +95,7 @@ const CreateLieuActiviteForm = () => {
         <hr className="fr-separator fr-separator-1px" />
         <VisiblePourCartographieNationaleFields
           className="fr-px-4w fr-pt-4w"
+          onChange={onVisiblePourCartographieNationaleChange}
           form={form}
         >
           <hr className="fr-separator-1px" />
@@ -145,16 +150,20 @@ const CreateLieuActiviteForm = () => {
       </div>
       <Button
         type="submit"
-        {...buttonLoadingClassname(mutation.isPending)}
-        className="fr-display-block fr-width-full fr-mb-4w"
+        {...buttonLoadingClassname(
+          mutation.isPending,
+          'fr-display-block fr-width-full fr-mb-4w',
+        )}
       >
         Créer le lieu d’activité
       </Button>
       <Button
-        {...buttonLoadingClassname(mutation.isPending)}
         className="fr-display-block fr-width-full fr-text--center"
         priority="secondary"
-        linkProps={{ href: '/lieux-activite/' }}
+        linkProps={{
+          href: '/lieux-activite/',
+          'aria-disabled': mutation.isPending,
+        }}
       >
         Annuler
       </Button>
@@ -162,4 +171,4 @@ const CreateLieuActiviteForm = () => {
   )
 }
 
-export default withTrpc(CreateLieuActiviteForm)
+export default withTrpc(CreerLieuActiviteForm)

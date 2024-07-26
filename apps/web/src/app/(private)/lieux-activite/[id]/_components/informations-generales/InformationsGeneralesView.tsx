@@ -49,7 +49,7 @@ export const InformationsGeneralesView = ({
         data-testid="informations-generales-pivot"
       >
         {(siret?.length ?? 0) > 0 || (rna?.length ?? 0) > 0
-          ? siret ?? rna
+          ? (siret ?? rna)
           : 'Non renseigné'}
       </div>
     </div>

@@ -7,7 +7,7 @@ import { createToast } from '@app/ui/toast/createToast'
 import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import EditCard from '@app/web/components/EditCard'
-import { validateValidRnaDigits } from '@app/web/rna/rnaValidation'
+import { siretOrRna } from '@app/web/rna/rnaValidation'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import {
   InformationsGeneralesData,
@@ -35,15 +35,8 @@ const InformationsGeneralesEditCard = (props: {
   })
 
   const handleMutation = async (data: InformationsGeneralesData) => {
-    if (data.siret && validateValidRnaDigits(data.siret)) {
-      // eslint-disable-next-line no-param-reassign
-      data.rna = data.siret
-      // eslint-disable-next-line no-param-reassign
-      data.siret = undefined
-    }
-
     try {
-      await mutation.mutateAsync(data)
+      await mutation.mutateAsync({ ...data, ...siretOrRna(data) })
 
       createToast({
         priority: 'success',
