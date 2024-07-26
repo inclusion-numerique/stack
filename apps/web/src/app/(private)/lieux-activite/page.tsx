@@ -51,7 +51,7 @@ const LieuActiviteListPage = async () => {
           className="fr-ml-auto"
           priority="secondary"
           linkProps={{
-            href: '/lieux-activite/creer',
+            href: '/lieux-activite/ajouter',
           }}
           iconId="fr-icon-add-line"
         >

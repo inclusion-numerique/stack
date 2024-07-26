@@ -90,6 +90,21 @@ const getOrCreateStructureEmployeuse = async (
   })
 }
 
+const onlyLieuxActiviteToCreate =
+  (existingActiviteIds: Set<string>) =>
+  ({
+    id,
+    structureCartographieNationaleId,
+  }: {
+    id?: string | null
+    structureCartographieNationaleId?: string | null
+  }) =>
+    (id != null && !existingActiviteIds.has(id)) ||
+    (id == null && structureCartographieNationaleId != null)
+
+const toStructureId = ({ structure }: { structure: { id: string } }) =>
+  structure.id
+
 export const inscriptionRouter = router({
   renseignerStructureEmployeuse: protectedProcedure
     .input(RenseignerStructureEmployeuseValidation)
@@ -283,12 +298,6 @@ export const inscriptionRouter = router({
           ]),
         )
 
-        const structuresToCreate = lieuxActivite.filter(
-          ({ structureCartographieNationaleId }) =>
-            !!structureCartographieNationaleId &&
-            !existingStructuresByCartoId.has(structureCartographieNationaleId),
-        )
-
         const result = await prismaClient.$transaction(async (transaction) => {
           const deleted = await transaction.mediateurEnActivite.updateMany({
             where: {
@@ -299,13 +308,72 @@ export const inscriptionRouter = router({
             },
           })
 
-          const newActivites = await Promise.all(
-            structuresToCreate.map(async (lieu) => {
-              if (!lieu.structureCartographieNationaleId) {
-                // This is not an exisint carto structure, we just create the lieu
+          const existingActiviteStructuresIds = new Set(
+            existingActivite.map(toStructureId),
+          )
 
-                if (!lieu.id) {
-                  throw new Error('Invalid structure for lieu activité')
+          const newActivites = await Promise.all(
+            lieuxActivite
+              .filter(onlyLieuxActiviteToCreate(existingActiviteStructuresIds))
+              .map(async (lieu) => {
+                if (!lieu.structureCartographieNationaleId) {
+                  // This is not an exisint carto structure, we just create the lieu
+
+                  if (!lieu.id) {
+                    throw new Error('Invalid structure for lieu activité')
+                  }
+
+                  return transaction.mediateurEnActivite.create({
+                    data: {
+                      id: v4(),
+                      mediateur: {
+                        connect: {
+                          userId,
+                        },
+                      },
+                      structure: {
+                        connect: {
+                          id: lieu.id,
+                        },
+                      },
+                    },
+                  })
+                }
+
+                const structure = existingStructuresByCartoId.get(
+                  lieu.structureCartographieNationaleId,
+                )
+
+                if (structure) {
+                  // Structure already exists, we just create the lieu, linking with carto id
+                  return transaction.mediateurEnActivite.create({
+                    data: {
+                      id: v4(),
+                      mediateur: {
+                        connect: {
+                          userId,
+                        },
+                      },
+                      structure: {
+                        connect: {
+                          structureCartographieNationaleId:
+                            lieu.structureCartographieNationaleId,
+                        },
+                      },
+                    },
+                  })
+                }
+
+                // Structure does not exist, we create it with the lieu
+                const cartoStructure =
+                  await transaction.structureCartographieNationale.findFirst({
+                    where: {
+                      id: lieu.structureCartographieNationaleId,
+                    },
+                  })
+
+                if (!cartoStructure) {
+                  throw new Error('Structure carto not found')
                 }
 
                 return transaction.mediateurEnActivite.create({
@@ -317,64 +385,11 @@ export const inscriptionRouter = router({
                       },
                     },
                     structure: {
-                      connect: {
-                        id: lieu.id,
-                      },
+                      create: cartoStructureToStructure(cartoStructure),
                     },
                   },
                 })
-              }
-
-              const structure = existingStructuresByCartoId.get(
-                lieu.structureCartographieNationaleId,
-              )
-
-              if (structure) {
-                // Structure already exists, we just create the lieu, linking with carto id
-                return transaction.mediateurEnActivite.create({
-                  data: {
-                    id: v4(),
-                    mediateur: {
-                      connect: {
-                        userId,
-                      },
-                    },
-                    structure: {
-                      connect: {
-                        structureCartographieNationaleId:
-                          lieu.structureCartographieNationaleId,
-                      },
-                    },
-                  },
-                })
-              }
-
-              // Structure does not exist, we create it with the lieu
-              const cartoStructure =
-                await transaction.structureCartographieNationale.findFirst({
-                  where: {
-                    id: lieu.structureCartographieNationaleId,
-                  },
-                })
-
-              if (!cartoStructure) {
-                throw new Error('Structure carto not found')
-              }
-
-              return transaction.mediateurEnActivite.create({
-                data: {
-                  id: v4(),
-                  mediateur: {
-                    connect: {
-                      userId,
-                    },
-                  },
-                  structure: {
-                    create: cartoStructureToStructure(cartoStructure),
-                  },
-                },
-              })
-            }),
+              }),
           )
 
           return { deleted, newActivites }

@@ -88,6 +88,12 @@ pnpm db:init
 pnpm start:web
 ```
 
+### 9. Télécharger les lieux issus de la cartographie nationale
+
+```bash
+pnpm cli job:execute update-structures-cartographie-nationale
+```
+
 Une fois ces étapes terminées, vous êtes prêt à commencer à travailler sur le projet ! 🎉
 
 <h2 id="scripts-disponibles">🛠️ Scripts Disponibles</h2>
