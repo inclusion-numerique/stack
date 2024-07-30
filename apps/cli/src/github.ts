@@ -6,7 +6,7 @@ export const repo = process.env.NEXT_PUBLIC_APP_SLUG || ''
 let octokit: Octokit
 
 // Lazily validate env and instanciate octokit
-export const getOctokit = () => {
+export const getOctokit = (): Octokit => {
   if (!octokit) {
     const token = process.env.GITHUB_TOKEN
 

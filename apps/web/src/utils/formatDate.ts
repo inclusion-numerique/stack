@@ -1,37 +1,29 @@
-import { format as dateFnsFormat } from 'date-fns'
-
-export type DateFormatOptions = {
-  locale?: Locale
-  weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
-  firstWeekContainsDate?: number
-  useAdditionalWeekYearTokens?: boolean
-  useAdditionalDayOfYearTokens?: boolean
-}
+import { format as dateFnsFormat, type FormatOptions } from 'date-fns'
 
 export function formatDate(
   date: Date,
   format: string,
-  options?: DateFormatOptions,
+  options?: FormatOptions,
 ): string
 export function formatDate(
   date: Date | undefined,
   format: string,
-  options?: DateFormatOptions,
+  options?: FormatOptions,
 ): string | undefined
 export function formatDate(
   date: Date | null,
   format: string,
-  options?: DateFormatOptions,
+  options?: FormatOptions,
 ): string | null
 export function formatDate(
   date: Date | undefined | null,
   format: string,
-  options?: DateFormatOptions,
+  options?: FormatOptions,
 ): string | undefined | null
 export function formatDate(
   date: Date | undefined | null,
   format: string,
-  options?: DateFormatOptions,
+  options?: FormatOptions,
 ): string | undefined | null {
   if (!date) {
     return date
@@ -48,6 +40,6 @@ type DateFormatter = {
 
 export const dateFormatter = (
   format: string,
-  options?: DateFormatOptions,
+  options?: FormatOptions,
 ): DateFormatter =>
   ((date) => formatDate(date, format, options)) as DateFormatter

@@ -1,11 +1,13 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import NextAuth, { NextAuthOptions } from 'next-auth'
-import * as Sentry from '@sentry/nextjs'
+import NextAuth, { type NextAuthOptions } from 'next-auth'
 import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
-import '@app/web/auth/nextAuthSetup'
 import { InclusionConnectProvider } from '@app/web/auth/InclusionConnectProvider'
 import { registerLastLogin } from '@app/web/security/registerLastLogin'
-import { isFirewallUserAgent } from '@app/web/pages/api/auth/isFirewallUserAgent'
+import * as Sentry from '@sentry/nextjs'
+import { isFirewallUserAgent } from '@app/web/app/api/auth/[...nextauth]/isFirewallUserAgent'
+import type { NextRequest } from 'next/server'
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export const authOptions: NextAuthOptions = {
   // debug: process.env.NODE_ENV !== 'production',
@@ -38,12 +40,19 @@ export const authOptions: NextAuthOptions = {
   },
 }
 
-export default function auth(request: NextApiRequest, res: NextApiResponse) {
+const handler = (
+  request: NextRequest,
+  res: {
+    params: { nextauth: string[] }
+  },
+) => {
   // https://next-auth.js.org/tutorials/avoid-corporate-link-checking-email-provider
   if (isFirewallUserAgent(request)) {
-    return res.status(400).end()
+    return new Response('Bad Request', { status: 400 })
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return NextAuth(request, res, authOptions)
 }
+
+export { handler as GET, handler as POST }

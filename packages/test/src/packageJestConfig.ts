@@ -82,5 +82,13 @@ export const packageJestConfig = ({
         'node-addons',
       ],
     },
+    globals: {
+      'ts-jest': {
+        tsconfig: {
+          sourceMap: true,
+          inlineSources: false,
+        },
+      },
+    },
   }
 }

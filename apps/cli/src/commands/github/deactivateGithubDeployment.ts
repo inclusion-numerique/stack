@@ -9,12 +9,14 @@ export const deactivateGithubDeployment = new Command()
   .action(async (branch) => {
     const environment = computeBranchNamespace(branch)
     const octokit = getOctokit()
+    octokit.rest.repos.listDeployments
 
-    const { data: deployments } = await octokit.rest.repos.listDeployments({
-      owner,
-      repo,
-      environment,
-    })
+    const { data: deployments }: { data: { id: string }[] } =
+      await octokit.rest.repos.listDeployments({
+        owner,
+        repo,
+        environment,
+      })
 
     const deploymentIds = deployments.map(({ id }) => id)
 

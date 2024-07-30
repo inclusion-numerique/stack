@@ -14,21 +14,21 @@
     "node": "^20.7"
   },
   "dependencies": {
-    "@cypress/react18": "^2.0.0",
-    "cypress": "^13.8.1",
-    "next": "^14.2.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-hook-form": "^7.51.3",
-    "uuid": "^9.0.1"
+    "@cypress/react18": "^2.0.1",
+    "cypress": "^13.13.1",
+    "next": "^14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.52.1",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "@testing-library/cypress": "^10.0.1",
-    "@types/node": "^20.12.7",
-    "@types/react": "^18.2.79",
-    "@types/react-dom": "^18.2.25",
-    "@types/uuid": "^9.0.8",
-    "eslint": "^8.57.0",
-    "typescript": "^5.4.5"
+    "@testing-library/cypress": "^10.0.2",
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@types/uuid": "^10.0.0",
+    "eslint": "^9.8.0",
+    "typescript": "^5.5.4"
   }
 }
