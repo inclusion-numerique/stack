@@ -4,7 +4,9 @@ import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 import { isBrowser } from '@app/web/utils/isBrowser'
 
 const getIdFromItem = (item: SideMenuProps.Item): string | null =>
-  'linkProps' in item ? item.linkProps?.href?.toString().slice(1) ?? null : null
+  'linkProps' in item
+    ? (item.linkProps?.href?.toString().slice(1) ?? null)
+    : null
 
 const getIdsFromItem = (item: SideMenuProps.Item): string[] => {
   const rootId = getIdFromItem(item)

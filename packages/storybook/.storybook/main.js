@@ -1,11 +1,11 @@
 /* eslint unicorn/prefer-module: 0,  @typescript-eslint/no-var-requires: 0, @typescript-eslint/unbound-method: 0 */
 
 const { parse } = require('dotenv')
-const { resolve } = require('node:path')
+const path = require('node:path')
 const { readFileSync, existsSync } = require('node:fs')
 
 const dotenvVariables = () => {
-  const dotenvFile = resolve(__dirname, '../../../.env')
+  const dotenvFile = path.resolve(__dirname, '../../../.env')
   if (!existsSync(dotenvFile)) {
     return null
   }
@@ -29,7 +29,10 @@ module.exports = {
   framework: {
     name: '@storybook/nextjs',
     options: {
-      nextConfigPath: resolve(__dirname, '../../../apps/web/next.config.js'),
+      nextConfigPath: path.resolve(
+        __dirname,
+        '../../../apps/web/next.config.js',
+      ),
     },
   },
   staticDirs: ['../../../apps/web/public', '../public'],

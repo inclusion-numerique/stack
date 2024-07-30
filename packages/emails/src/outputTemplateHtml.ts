@@ -1,8 +1,8 @@
 import { existsSync, promises as fs } from 'node:fs'
-import { resolve } from 'node:path'
+import path from 'node:path'
 import { compileMjml } from './mjml'
 
-const outputDirectory = resolve(
+const outputDirectory = path.resolve(
   // eslint-disable-next-line unicorn/prefer-module
   __dirname,
   '../var/email',

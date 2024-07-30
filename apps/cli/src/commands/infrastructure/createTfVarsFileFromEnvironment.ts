@@ -1,6 +1,6 @@
 // eslint-disable-next-line unicorn/prevent-abbreviations
 import { writeFile } from 'node:fs/promises'
-import { resolve } from 'node:path'
+import path from 'node:path'
 import { Argument, Command } from '@commander-js/extra-typings'
 import {
   projectStackSensitiveVariables,
@@ -42,7 +42,7 @@ export const createTfVarsFileFromEnvironment = new Command()
       }),
     )
 
-    const tfVariablesFile = resolve(
+    const tfVariablesFile = path.resolve(
       // eslint-disable-next-line unicorn/prefer-module
       __dirname,
       '../../../../../packages/cdk/.tfvars.json',

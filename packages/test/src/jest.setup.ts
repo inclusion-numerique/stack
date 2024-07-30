@@ -1,14 +1,14 @@
 import 'jest'
 import 'jest-extended'
 import 'jest-extended/all'
-import { resolve } from 'node:path'
+import path from 'node:path'
 import { TextDecoder, TextEncoder } from 'node:util'
 import * as dotenv from 'dotenv'
 import '@testing-library/jest-dom'
 
 dotenv.config({
   // eslint-disable-next-line unicorn/prefer-module
-  path: resolve(__dirname, '../.env'),
+  path: path.resolve(__dirname, '../.env'),
 })
 
 global.TextEncoder = TextEncoder

@@ -1,6 +1,6 @@
 import { Command } from '@commander-js/extra-typings'
 import { computeBranchNamespace } from '@app/cdk/utils'
-import { getOctokit, owner, repo } from '@app/cli/github'
+import { octokit, owner, repo } from '@app/cli/github'
 import { output } from '@app/cli/output'
 
 export const deactivateGithubDeployment = new Command()
@@ -8,15 +8,12 @@ export const deactivateGithubDeployment = new Command()
   .argument('<branch>', 'branch target')
   .action(async (branch) => {
     const environment = computeBranchNamespace(branch)
-    const octokit = getOctokit()
-    octokit.rest.repos.listDeployments
 
-    const { data: deployments }: { data: { id: string }[] } =
-      await octokit.rest.repos.listDeployments({
-        owner,
-        repo,
-        environment,
-      })
+    const { data: deployments } = await octokit.rest.repos.listDeployments({
+      owner,
+      repo,
+      environment,
+    })
 
     const deploymentIds = deployments.map(({ id }) => id)
 
