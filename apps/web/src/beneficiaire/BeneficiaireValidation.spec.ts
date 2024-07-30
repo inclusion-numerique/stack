@@ -1,9 +1,12 @@
-import { telephoneRegex } from '@app/web/beneficiaire/BeneficiaireValidation'
+import {
+  telephoneRegex,
+  telephoneValidation,
+} from '@app/web/beneficiaire/BeneficiaireValidation'
 
 describe('BeneficiaireValidation', () => {
   describe('telephoneRegex', () => {
     it.each([
-      { number: '01 22 33 44 55', isValid: false },
+      { number: '01 22 33 44 55', isValid: true },
       { number: '(+33) 1 22 33 44 55', isValid: true },
       { number: '+1 (555) 555-5555', isValid: true },
       { number: '0044 123 4567 890', isValid: true },
@@ -20,5 +23,26 @@ describe('BeneficiaireValidation', () => {
         expect(telephoneRegex.test(number)).toBe(isValid)
       },
     )
+  })
+
+  describe('telephoneValidation', () => {
+    it('allows null', () => {
+      expect(() => telephoneValidation.parse(null)).not.toThrow()
+    })
+    it('allows undefined', () => {
+      // eslint-disable-next-line unicorn/no-useless-undefined
+      expect(() => telephoneValidation.parse(undefined)).not.toThrow()
+    })
+    it('allows empty string', () => {
+      expect(() => telephoneValidation.parse(' ')).not.toThrow()
+    })
+    it('allows phone number', () => {
+      expect(() =>
+        telephoneValidation.parse('+49 (0) 123 456 7890'),
+      ).not.toThrow()
+    })
+    it('disallows phone number', () => {
+      expect(() => telephoneValidation.parse('abcd')).toThrow()
+    })
   })
 })

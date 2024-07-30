@@ -11,10 +11,10 @@
     }
 }
 
-.genreFieldSet {
+.genreFieldset {
     grid-template-columns: repeat(3, 1fr);
 }
 
-.yesNoFieldSet {
+.yesNoFieldset {
     grid-template-columns: repeat(2, 1fr);
 }

@@ -53,9 +53,8 @@ const CreateCraModal = () => {
       </ModalNavigationButton>
 
       <ModalNavigationButton
-        className="wip-outline"
         illustration="/images/iconographie/accompagnement-collectif.svg"
-        onClick={() => navigateTo('/coop/mon-activite/cra/atelier')}
+        onClick={() => navigateTo('/coop/mon-activite/cra/collectif')}
       >
         Atelier collectif de médiation numérique
       </ModalNavigationButton>

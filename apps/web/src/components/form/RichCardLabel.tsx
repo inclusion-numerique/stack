@@ -74,7 +74,7 @@ const RichCardLabel = memo(
       <label
         htmlFor={htmlFor}
         className={classNames(
-          'fr-border-radius--8 fr-border',
+          'fr-border-radius--4 fr-border',
           styles.label,
           paddingX === 16 ? styles.paddingX16 : styles.paddingX24,
           className,

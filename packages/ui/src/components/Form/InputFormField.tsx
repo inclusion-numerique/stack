@@ -23,7 +23,11 @@ type CommonProps<T extends FieldValues> = {
   asterisk?: boolean
   classes?: {
     label?: string
+    input?: string
+    inputWrap?: string
   }
+  inputPre?: ReactNode
+  inputPost?: ReactNode
 }
 
 type InputProps = {
@@ -40,10 +44,10 @@ type TextareaProps = {
   'onChange' | 'onBlur' | 'value' | 'ref' | 'id' | 'aria-describedby'
 >
 
-export type InputFormFieldProps<T extends FieldValues> = CommonProps<T> &
-  (InputProps | TextareaProps)
+export type InputFormFieldProps<T extends FieldValues = FieldValues> =
+  CommonProps<T> & (InputProps | TextareaProps)
 
-const InputFormField = <T extends FieldValues>({
+const InputFormField = <T extends FieldValues = FieldValues>({
   label,
   path,
   control,
@@ -58,6 +62,8 @@ const InputFormField = <T extends FieldValues>({
   info,
   asterisk,
   classes,
+  inputPost,
+  inputPre,
   ...rest
 }: UiComponentProps & InputFormFieldProps<T>) => {
   const id = `input-form-field__${path}`
@@ -93,7 +99,7 @@ const InputFormField = <T extends FieldValues>({
           type === 'textarea' ? (
             <textarea
               data-testid={dataTestId}
-              className="fr-input"
+              className={classNames('fr-input', classes?.input)}
               aria-describedby={ariaDescribedBy}
               disabled={disabled}
               id={id}
@@ -107,7 +113,7 @@ const InputFormField = <T extends FieldValues>({
           ) : (
             <input
               data-testid={dataTestId}
-              className="fr-input"
+              className={classNames('fr-input', classes?.input)}
               aria-describedby={ariaDescribedBy}
               disabled={disabled}
               type={type}
@@ -142,11 +148,17 @@ const InputFormField = <T extends FieldValues>({
               {label} {asterisk && <RedAsterisk />}
               {hint && <span className="fr-hint-text">{hint}</span>}
             </label>
-            {icon ? (
-              <div className={`fr-input-wrap ${icon}`}>{input}</div>
-            ) : (
-              input
-            )}
+            <div
+              className={classNames(
+                !!icon && `fr-input-wrap`,
+                icon,
+                classes?.inputWrap,
+              )}
+            >
+              {inputPre}
+              {input}
+              {inputPost}
+            </div>
             {info && (
               <p id={`${id}__info`} className="fr-hint-text fr-mt-1v fr-mb-0">
                 {typeof info === 'function' ? info(value) : info}

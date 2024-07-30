@@ -19,9 +19,10 @@ import { createToast } from '@app/ui/toast/createToast'
 import { useRouter } from 'next/navigation'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
+import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import CraFormLabel from '@app/web/app/coop/mon-activite/cra/CraFormLabel'
 import AdresseBanFormField, {
   type AdressBanFormFieldOption,
@@ -59,6 +60,7 @@ import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipalityLabel'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
+import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
 import styles from '../CraForm.module.css'
 
 /**
@@ -180,30 +182,33 @@ const CraIndividuelForm = ({
       : undefined,
   )
 
-  watch((data, { name }) => {
-    router.replace(
-      `/coop/mon-activite/cra/individuel?v=${encodeSerializableState(data)}`,
-      {
-        scroll: false,
-      },
-    )
+  useWatchSubscription(
+    watch,
+    useCallback(
+      (data, { name }) => {
+        replaceRouteWithoutRerender(
+          `/coop/mon-activite/cra/individuel?v=${encodeSerializableState(data)}`,
+        )
 
-    // Set the initial options for the lieu de residence
-    if (
-      name === 'beneficiaire' &&
-      data.beneficiaire?.communeResidence?.codeInsee
-    ) {
-      setInitialLieuResidenceOptions(lieuResidenceOptionsFromFormData(data))
-      const newDomicileValue = banDefaultValueToAdresseBanData(
-        data.beneficiaire.communeResidence,
-      )
-      setLieuAccompagnementDomicileCommuneDefaultValue({
-        label: banMunicipalityLabel(data.beneficiaire.communeResidence),
-        value: newDomicileValue,
-      })
-      setValue('lieuAccompagnementDomicileCommune', newDomicileValue)
-    }
-  })
+        // Set the initial options for the lieu de residence
+        if (
+          name === 'beneficiaire' &&
+          data.beneficiaire?.communeResidence?.codeInsee
+        ) {
+          setInitialLieuResidenceOptions(lieuResidenceOptionsFromFormData(data))
+          const newDomicileValue = banDefaultValueToAdresseBanData(
+            data.beneficiaire.communeResidence,
+          )
+          setLieuAccompagnementDomicileCommuneDefaultValue({
+            label: banMunicipalityLabel(data.beneficiaire.communeResidence),
+            value: newDomicileValue,
+          })
+          setValue('lieuAccompagnementDomicileCommune', newDomicileValue)
+        }
+      },
+      [setValue],
+    ),
+  )
 
   const lieuAccompagnementDomicileCommuneRenderKey = watch(
     'lieuAccompagnementDomicileCommune',
@@ -234,7 +239,10 @@ const CraIndividuelForm = ({
           asterisk
           label="Date de l’accompagnement"
           className="fr-flex-grow-1"
-          classes={{ label: 'fr-text--medium fr-mb-3v' }}
+          classes={{
+            label: 'fr-text--medium fr-mb-3v',
+            input: 'fr-input--white fr-input--14v',
+          }}
         />
         <div className="fr-flex-grow-2">
           <CraFormLabel required as="p" className="fr-mb-3v">
@@ -250,7 +258,7 @@ const CraIndividuelForm = ({
             }}
             classes={{
               fieldsetElement: richCardFieldsetElementClassName,
-              fieldset: craFormFieldsetClassname(styles.durationFieldSet),
+              fieldset: craFormFieldsetClassname(styles.durationFieldset),
               radioGroup: richCardRadioGroupClassName,
             }}
           />
@@ -269,7 +277,7 @@ const CraIndividuelForm = ({
         }}
         classes={{
           fieldsetElement: richCardFieldsetElementClassName,
-          fieldset: craFormFieldsetClassname(styles.lieuFieldSet),
+          fieldset: craFormFieldsetClassname(styles.lieuFieldset),
           radioGroup: richCardRadioGroupClassName,
         }}
       />
@@ -357,7 +365,7 @@ const CraIndividuelForm = ({
         }}
         classes={{
           fieldsetElement: richCardFieldsetElementClassName,
-          fieldset: craFormFieldsetClassname(styles.yesNoFieldSet),
+          fieldset: craFormFieldsetClassname(styles.yesNoFieldset),
           radioGroup: richCardRadioGroupClassName,
         }}
       />
@@ -397,7 +405,7 @@ const CraIndividuelForm = ({
             className="fr-mb-12v"
             classes={{
               fieldsetElement: richCardFieldsetElementClassName,
-              fieldset: craFormFieldsetClassname(styles.yesNoFieldSet),
+              fieldset: craFormFieldsetClassname(styles.yesNoFieldset),
               radioGroup: richCardRadioGroupClassName,
             }}
           />
@@ -427,7 +435,7 @@ const CraIndividuelForm = ({
             }}
             classes={{
               fieldsetElement: richCardFieldsetElementClassName,
-              fieldset: craFormFieldsetClassname(styles.genreFieldSet),
+              fieldset: craFormFieldsetClassname(styles.genreFieldset),
               radioGroup: richCardRadioGroupClassName,
             }}
           />
@@ -445,7 +453,7 @@ const CraIndividuelForm = ({
                   label: RichCardLabel,
                 }}
                 classes={{
-                  fieldset: craFormFieldsetClassname(styles.columnFieldSet),
+                  fieldset: craFormFieldsetClassname(styles.columnFieldset),
                   fieldsetElement: richCardFieldsetElementClassName,
                   radioGroup: richCardRadioGroupClassName,
                 }}
@@ -464,7 +472,7 @@ const CraIndividuelForm = ({
                   label: RichCardLabel,
                 }}
                 classes={{
-                  fieldset: craFormFieldsetClassname(styles.columnFieldSet),
+                  fieldset: craFormFieldsetClassname(styles.columnFieldset),
                   fieldsetElement: richCardFieldsetElementClassName,
                   radioGroup: richCardRadioGroupClassName,
                 }}

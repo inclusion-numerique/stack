@@ -40,8 +40,6 @@ const CompactNavigationSideMenu = memo(
       items: itemsProperty,
     })
 
-    console.log('ACTIVE HREF', activeHref)
-
     const items = addActiveStateToItems(itemsProperty, activeHref)
 
     const id = idProperty ?? 'fr-sidemenu'

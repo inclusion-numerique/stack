@@ -10,11 +10,13 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { useRouter } from 'next/navigation'
 import { createToast } from '@app/ui/toast/createToast'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import ToggleFormField from '@app/ui/components/Form/ToggleFormField'
 import MultipleSelectFormField from '@app/ui/components/Form/MultipleSelectFormField'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
+import { optionsWithEmptyValue } from '@app/ui/components/Form/utils/options'
+import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import SiretInputInfo from '@app/web/siret/SiretInputInfo'
 import RnaInputInfo from '@app/web/rna/RnaInputInfo'
 import { typologieStructureOptions } from '@app/web/app/structure/typologieStructure'
@@ -66,6 +68,8 @@ const CreerStructureForm = ({
     handleSubmit,
     control,
     setError,
+    watch,
+    setValue,
     formState: { isSubmitSuccessful, isSubmitting, errors },
   } = form
 
@@ -108,11 +112,11 @@ const CreerStructureForm = ({
   }
   const isLoading = isSubmitting || isSubmitSuccessful
 
-  const visiblePourCartographieNationale = form.watch(
+  const visiblePourCartographieNationale = watch(
     'visiblePourCartographieNationale',
   )
 
-  const nom = form.watch('nom')
+  const nom = watch('nom')
 
   useEffect(() => {
     onVisiblePourCartographieNationaleChange?.(visiblePourCartographieNationale)
@@ -126,52 +130,59 @@ const CreerStructureForm = ({
   // Also split this logic
 
   const publicsAccueillisKey =
-    form.watch('publicsSpecifiquementAdresses')?.join(',') ?? 'none'
-  const toutPublicKey = form.watch('toutPublic') ? 'true' : 'false'
+    watch('publicsSpecifiquementAdresses')?.join(',') ?? 'none'
+  const toutPublicKey = watch('toutPublic') ? 'true' : 'false'
 
   // Check if all publics are checked if toutPublic is checked
-  form.watch((data, { name, type }) => {
-    // This watcher is only concerned for these fields, only from user change action
-    if (name !== 'toutPublic' && name !== 'publicsSpecifiquementAdresses')
-      return
-    // Only if this is a user change, not triggered from this listener
-    if (type !== 'change') {
-      return
-    }
 
-    // Check all publics if toutPublic is checked
-    const allPublicsChecked =
-      Array.isArray(data.publicsSpecifiquementAdresses) &&
-      data.publicsSpecifiquementAdresses.length ===
-        publicsAccueillisStructureOptions.length
+  useWatchSubscription(
+    watch,
+    useCallback(
+      (data, { name, type }) => {
+        // This watcher is only concerned for these fields, only from user change action
+        if (name !== 'toutPublic' && name !== 'publicsSpecifiquementAdresses')
+          return
+        // Only if this is a user change, not triggered from this listener
+        if (type !== 'change') {
+          return
+        }
 
-    if (name === 'toutPublic') {
-      if (data.toutPublic && !allPublicsChecked) {
-        form.setValue(
-          'publicsSpecifiquementAdresses',
-          publicsAccueillisStructureOptions.map((option) => option.value),
-        )
-      } else if (
-        !data.toutPublic &&
-        data.publicsSpecifiquementAdresses?.length !== 0
-      ) {
-        form.setValue('publicsSpecifiquementAdresses', [])
-      }
-    }
+        // Check all publics if toutPublic is checked
+        const allPublicsChecked =
+          Array.isArray(data.publicsSpecifiquementAdresses) &&
+          data.publicsSpecifiquementAdresses.length ===
+            publicsAccueillisStructureOptions.length
 
-    // Check tout public if all publics are checked
-    if (name === 'publicsSpecifiquementAdresses') {
-      if (allPublicsChecked && !data.toutPublic) {
-        form.setValue('toutPublic', true)
-      } else if (!allPublicsChecked && data.toutPublic) {
-        form.setValue('toutPublic', false)
-      }
-    }
-  })
+        if (name === 'toutPublic') {
+          if (data.toutPublic && !allPublicsChecked) {
+            setValue(
+              'publicsSpecifiquementAdresses',
+              publicsAccueillisStructureOptions.map((option) => option.value),
+            )
+          } else if (
+            !data.toutPublic &&
+            data.publicsSpecifiquementAdresses?.length !== 0
+          ) {
+            setValue('publicsSpecifiquementAdresses', [])
+          }
+        }
+
+        // Check tout public if all publics are checked
+        if (name === 'publicsSpecifiquementAdresses') {
+          if (allPublicsChecked && !data.toutPublic) {
+            setValue('toutPublic', true)
+          } else if (!allPublicsChecked && data.toutPublic) {
+            setValue('toutPublic', false)
+          }
+        }
+      },
+      [setValue],
+    ),
+  )
 
   // Logic for contact
-  const showPhoneInput = !!form.watch('modalitesAcces.parTelephone')
-  const showEmailInput = !!form.watch('modalitesAcces.parMail')
+  const showPhoneInput = !!watch('modalitesAcces.parTelephone')
+  const showEmailInput = !!watch('modalitesAcces.parMail')
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -193,7 +204,7 @@ const CreerStructureForm = ({
           />
 
           <AdresseBanFormField
-            label="adresse"
+            label="Adresse"
             path="adresseBan"
             placeholder="Rechercher l’adresse"
             control={control}
@@ -299,7 +310,7 @@ const CreerStructureForm = ({
                 path="typologies"
                 label="Typologies de la structure"
                 disabled={isLoading}
-                options={typologieStructureOptions}
+                options={optionsWithEmptyValue(typologieStructureOptions)}
               />
               <InputFormField
                 type="textarea"
@@ -439,7 +450,7 @@ const CreerStructureForm = ({
               <MultipleSelectFormField
                 control={control}
                 path="services"
-                options={servicesStructureOptions}
+                options={optionsWithEmptyValue(servicesStructureOptions)}
                 label="Thématiques des services d’inclusion numérique"
                 hint="Renseignez ici les services proposés dans ce lieu."
               />

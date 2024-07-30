@@ -6,8 +6,10 @@
 
     position: relative;
     height: 100%;
-    padding-top: 16px !important;
-    padding-bottom: 16px !important;
+
+    /* 15px to be able to have 56px height total, 16 wierdly makes it 58px */
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
     background: var(--background-default-grey) !important;
     align-items: center;
 
@@ -78,8 +80,8 @@
 
         /* Adjust padding for border width change */
 
-        padding-top: 15px !important;
-        padding-bottom: 15px !important;
+        padding-top: 14px !important;
+        padding-bottom: 14px !important;
 
         &.paddingX16 {
             padding-left: 15px !important;

@@ -1,0 +1,23 @@
+.genreContainer {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(3, 1fr);
+
+}
+
+
+.nonCommuniqueCountContainer {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    border: var(--slim-grey-border);
+    border-radius: 4px;
+    padding: 16px 24px;
+    min-height: 56px !important;
+    height: 56px !important;
+
+}
+
+.nonCommuniqueCountNumber {
+    text-align: right;
+}

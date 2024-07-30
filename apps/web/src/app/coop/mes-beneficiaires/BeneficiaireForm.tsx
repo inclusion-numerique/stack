@@ -7,12 +7,13 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { createToast } from '@app/ui/toast/createToast'
 import { useRouter } from 'next/navigation'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import React, { Fragment } from 'react'
+import React, { Fragment, useCallback } from 'react'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import Link from 'next/link'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
 import RadioFormField from '@app/ui/components/Form/RadioFormField'
 import RichTextFormField from '@app/ui/components/Form/RichText/RichTextFormField'
+import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { trpc } from '@app/web/trpc'
 import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
@@ -20,6 +21,7 @@ import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import {
   anneeNaissanceMax,
   anneeNaissanceMin,
+  BeneficiaireCraData,
   BeneficiaireData,
   BeneficiaireValidation,
 } from '@app/web/beneficiaire/BeneficiaireValidation'
@@ -39,6 +41,7 @@ import {
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trancheAgeFromAnneeNaissance } from '@app/web/beneficiaire/trancheAgeFromAnneeNaissance'
 import { beneficiaireCommuneResidenceToPreviewBanData } from '@app/web/beneficiaire/prismaBeneficiaireToBeneficiaireData'
+import type { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
 import styles from './BeneficiaireForm.module.css'
 
 const BeneficiaireForm = ({
@@ -48,7 +51,7 @@ const BeneficiaireForm = ({
 }: {
   defaultValues: DefaultValues<BeneficiaireData> & { mediateurId: string }
   // If present, used to merge with state on retour redirection
-  cra?: DefaultValues<CraIndividuelData>
+  cra?: DefaultValues<CraIndividuelData> | DefaultValues<CraCollectifData>
   retour?: string
 }) => {
   const form = useForm<BeneficiaireData>({
@@ -99,17 +102,30 @@ const BeneficiaireForm = ({
       if (cra) {
         // We merge existing cra state with created / updated beneficiaire id
 
-        const newCra = {
-          ...cra,
-          beneficiaire: {
-            id: beneficiaire.id,
-            mediateurId: beneficiaire.mediateurId,
-            prenom: beneficiaire.prenom,
-            nom: beneficiaire.nom,
-            communeResidence:
-              beneficiaireCommuneResidenceToPreviewBanData(beneficiaire),
-          },
+        const beneficiaireFormData: BeneficiaireCraData = {
+          id: beneficiaire.id,
+          mediateurId: beneficiaire.mediateurId,
+          prenom: beneficiaire.prenom,
+          nom: beneficiaire.nom,
+          communeResidence:
+            beneficiaireCommuneResidenceToPreviewBanData(beneficiaire),
         }
+
+        const newCra =
+          'participants' in cra
+            ? {
+                // Append beneficiaire to cra collectif
+                ...cra,
+                participants: [
+                  ...(cra.participants ?? []),
+                  beneficiaireFormData,
+                ],
+              }
+            : {
+                // Replace beneficiaire in cra individuel
+                ...cra,
+                beneficiaire: beneficiaireFormData,
+              }
         queryParams = `?v=${encodeSerializableState(newCra)}`
       }
 
@@ -143,22 +159,32 @@ const BeneficiaireForm = ({
     anneeNaissanceInt >= anneeNaissanceMin &&
     anneeNaissanceInt <= anneeNaissanceMax
 
-  watch((data, { name }) => {
-    // Erase telephone if pasDeTelephone is checked
-    if (name === 'pasDeTelephone' && data.pasDeTelephone && !!data.telephone) {
-      setValue('telephone', null)
-    }
+  useWatchSubscription(
+    watch,
+    useCallback(
+      (data, { name }) => {
+        // Erase telephone if pasDeTelephone is checked
+        if (
+          name === 'pasDeTelephone' &&
+          data.pasDeTelephone &&
+          !!data.telephone
+        ) {
+          setValue('telephone', null)
+        }
 
-    // Set tranche d’age depending on birth year
-    if (name === 'anneeNaissance') {
-      const trancheAgeFromAnnee = trancheAgeFromAnneeNaissance(
-        data.anneeNaissance,
-      )
-      if (trancheAgeFromAnnee && data.trancheAge !== trancheAgeFromAnnee) {
-        setValue('trancheAge', trancheAgeFromAnnee)
-      }
-    }
-  })
+        // Set tranche d’age depending on birth year
+        if (name === 'anneeNaissance') {
+          const trancheAgeFromAnnee = trancheAgeFromAnneeNaissance(
+            data.anneeNaissance,
+          )
+          if (trancheAgeFromAnnee && data.trancheAge !== trancheAgeFromAnnee) {
+            setValue('trancheAge', trancheAgeFromAnnee)
+          }
+        }
+      },
+      [setValue],
+    ),
+  )
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -294,7 +320,7 @@ const BeneficiaireForm = ({
           }}
           classes={{
             fieldsetElement: richCardFieldsetElementClassName,
-            fieldset: craFormFieldsetClassname(styles.genreFieldSet),
+            fieldset: craFormFieldsetClassname(styles.genreFieldset),
             radioGroup: richCardRadioGroupClassName,
           }}
         />
@@ -312,7 +338,7 @@ const BeneficiaireForm = ({
                 label: RichCardLabel,
               }}
               classes={{
-                fieldset: craFormFieldsetClassname(styles.columnFieldSet),
+                fieldset: craFormFieldsetClassname(styles.columnFieldset),
                 fieldsetElement: richCardFieldsetElementClassName,
                 radioGroup: richCardRadioGroupClassName,
               }}
@@ -331,7 +357,7 @@ const BeneficiaireForm = ({
                 label: RichCardLabel,
               }}
               classes={{
-                fieldset: craFormFieldsetClassname(styles.columnFieldSet),
+                fieldset: craFormFieldsetClassname(styles.columnFieldset),
                 fieldsetElement: richCardFieldsetElementClassName,
                 radioGroup: richCardRadioGroupClassName,
               }}
