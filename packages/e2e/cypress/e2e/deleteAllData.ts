@@ -1,10 +1,10 @@
-import { prismaClient } from '@app/web/prismaClient'
+import { cypressPrismaClient } from '../support/cypressPrismaClient'
 
 export const deleteAllData = async (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _emptyParametersNeededForTypesafety: Record<string, string>,
 ) => {
-  const tables = await prismaClient.$queryRaw<
+  const tables = await cypressPrismaClient.$queryRaw<
     { table_name: string }[]
   >`SELECT table_name
     FROM information_schema.tables
@@ -15,7 +15,7 @@ export const deleteAllData = async (
       AND table_name != 'structures'
   `
 
-  await prismaClient.$queryRawUnsafe(
+  await cypressPrismaClient.$queryRawUnsafe(
     `TRUNCATE TABLE "${tables
       .map(({ table_name }) => table_name)
       .join('", "')}" CASCADE`,

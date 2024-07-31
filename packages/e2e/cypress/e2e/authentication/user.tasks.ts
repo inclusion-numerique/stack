@@ -1,21 +1,21 @@
 import * as uuid from 'uuid'
-import { prismaClient } from '@app/web/prismaClient'
+import { cypressPrismaClient } from '../../support/cypressPrismaClient'
 
 export type CreateUserInput = Parameters<
-  typeof prismaClient.user.create
+  typeof cypressPrismaClient.user.create
 >[0]['data']
 export const createUser = async (user: CreateUserInput) =>
-  prismaClient.user.create({ data: user })
+  cypressPrismaClient.user.create({ data: user })
 
 export const deleteUser = async (user: { email: string }) => {
-  const exists = await prismaClient.user.findUnique({
+  const exists = await cypressPrismaClient.user.findUnique({
     where: user,
     select: { id: true },
   })
   if (!exists) {
     return null
   }
-  await prismaClient.user.delete({ where: user })
+  await cypressPrismaClient.user.delete({ where: user })
 
   return null
 }
@@ -24,7 +24,7 @@ export const createSession = async ({ email }: { email: string }) => {
   const expires = new Date()
   expires.setFullYear(expires.getFullYear() + 1)
 
-  const created = await prismaClient.session.create({
+  const created = await cypressPrismaClient.session.create({
     data: {
       id: uuid.v4(),
       sessionToken: uuid.v4(),
@@ -38,12 +38,12 @@ export const createSession = async ({ email }: { email: string }) => {
   return created
 }
 export const deleteSession = async (sessionToken: string) => {
-  const exists = await prismaClient.session.findUnique({
+  const exists = await cypressPrismaClient.session.findUnique({
     where: { sessionToken },
   })
   if (!exists) {
     return null
   }
-  await prismaClient.session.delete({ where: { sessionToken } })
+  await cypressPrismaClient.session.delete({ where: { sessionToken } })
   return null
 }
