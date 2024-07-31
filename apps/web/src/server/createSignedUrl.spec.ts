@@ -6,6 +6,7 @@ import {
   createSignedUploadUrl,
 } from '@app/web/server/createSignedUrl'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { getDirname } from '@app/config/dirname'
 
 describe.skip('createSignedUrl', () => {
   describe('createSignedGetUrl', () => {
@@ -34,7 +35,7 @@ describe.skip('createSignedUrl', () => {
       const fileName = '2022-11-test.png'
       const mimeType = 'image/png'
       const filePath = path.resolve(
-        __dirname,
+        getDirname(import.meta.url),
         '../../test/small-test-image.png',
       )
 

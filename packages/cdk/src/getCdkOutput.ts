@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
+import { getDirname } from '@app/config/dirname'
 import { outputPrefix } from '@app/cdk/output'
 
 export type WebCdkOutput = {
@@ -43,8 +44,7 @@ export async function getCdkOutput(
   stack: 'web' | 'project',
 ): Promise<WebCdkOutput | ProjectCdkOutput> {
   const outputFile = path.resolve(
-    // eslint-disable-next-line unicorn/prefer-module
-    __dirname,
+    getDirname(import.meta.url),
     '../cdk.out.json',
   )
   const outputContents = await readFile(outputFile, 'utf8')

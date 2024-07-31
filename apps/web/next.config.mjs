@@ -15,8 +15,8 @@ const modularizeImports = {
   'date-fns': { transform: 'date-fns/{{member}}' },
 };
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename); 
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
 
 const serverComponentsExternalPackages = ['html-minifier'];
 
@@ -28,7 +28,7 @@ const nextConfig = {
     // See https://nextjs.org/docs/app/api-reference/next-config-js/serverComponentsExternalPackages
     serverComponentsExternalPackages,
     // This includes files from the monorepo base two directories up
-    outputFileTracingRoot: path.join(__dirname, '../../'),
+    outputFileTracingRoot: path.join(dirname, '../../'),
   },
   modularizeImports,
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/

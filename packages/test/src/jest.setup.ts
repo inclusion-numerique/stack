@@ -5,10 +5,10 @@ import path from 'node:path'
 import { TextDecoder, TextEncoder } from 'node:util'
 import * as dotenv from 'dotenv'
 import '@testing-library/jest-dom'
+import { getDirname } from '@app/config/dirname'
 
 dotenv.config({
-  // eslint-disable-next-line unicorn/prefer-module
-  path: path.resolve(__dirname, '../.env'),
+  path: path.resolve(getDirname(import.meta.url), '../.env'),
 })
 
 global.TextEncoder = TextEncoder

@@ -1,9 +1,13 @@
 import { parse } from 'dotenv'
 import path from 'node:path'
 import { existsSync, readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
 
 const dotenvVariables = () => {
-  const dotenvFile = path.resolve(__dirname, '../../../.env')
+  const dotenvFile = path.resolve(dirname, '../../../.env')
   if (!existsSync(dotenvFile)) {
     return null
   }
@@ -27,10 +31,7 @@ export default {
   framework: {
     name: '@storybook/nextjs',
     options: {
-      nextConfigPath: path.resolve(
-        __dirname,
-        '../../../apps/web/next.config.js',
-      ),
+      nextConfigPath: path.resolve(dirname, '../../../apps/web/next.config.js'),
     },
   },
   staticDirs: ['../../../apps/web/public', '../public'],

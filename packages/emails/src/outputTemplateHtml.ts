@@ -1,10 +1,10 @@
 import { existsSync, promises as fs } from 'node:fs'
 import path from 'node:path'
+import { getDirname } from '@app/config/dirname'
 import { compileMjml } from './mjml'
 
 const outputDirectory = path.resolve(
-  // eslint-disable-next-line unicorn/prefer-module
-  __dirname,
+  getDirname(import.meta.url),
   '../var/email',
 )
 
