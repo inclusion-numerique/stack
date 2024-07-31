@@ -21,21 +21,21 @@
     }
   },
   "dependencies": {
-    "cdktf": "^0.19.2",
-    "cdktf-cli": "^0.19.2",
+    "cdktf": "^0.20.8",
+    "cdktf-cli": "^0.20.8",
     "constructs": "^10.3.0",
     "dotenv": "^16.4.5",
-    "dotenv-cli": "^7.4.1",
+    "dotenv-cli": "^7.4.2",
     "git-rev-sync": "^3.0.2"
   },
   "devDependencies": {
     "@types/git-rev-sync": "^2.0.2",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.12.7",
+    "@types/node": "^22.0.0",
     "eslint": "^8.57.0",
     "jest": "^29.7.0",
-    "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.4.5"
+    "tsx": "^4.16.3",
+    "typescript": "^5.5.4"
   }
 }

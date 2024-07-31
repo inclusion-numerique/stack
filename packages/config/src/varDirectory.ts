@@ -1,12 +1,17 @@
 /* eslint unicorn/prevent-abbreviations: 0 */
 
-import { resolve } from 'node:path'
+import path from 'node:path'
+import { getDirname } from '@app/config/dirname'
 
-export const varDirectory = resolve(__dirname, '../../../var')
+export const varDirectory = path.resolve(
+  getDirname(import.meta.url),
+  '../../../var',
+)
 
-export const varFile = (filename: string) => resolve(varDirectory, filename)
+export const varFile = (filename: string) =>
+  path.resolve(varDirectory, filename)
 
-export const cwdVarDirectory = resolve(process.cwd(), '../../var')
+export const cwdVarDirectory = path.resolve(process.cwd(), '../../var')
 
 export const cwdVarFile = (filename: string) =>
-  resolve(cwdVarDirectory, filename)
+  path.resolve(cwdVarDirectory, filename)

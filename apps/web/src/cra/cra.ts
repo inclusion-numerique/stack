@@ -56,10 +56,9 @@ export const lieuAccompagnementOptionsWithExtras = lieuAccompanementOptions.map(
   ({ label, value }) => ({
     label,
     value,
-    hint: lieuAccompagnementHints[value as LieuAccompagnement],
+    hint: lieuAccompagnementHints[value],
     extra: {
-      illustration:
-        lieuAccompagnementIllustrations[value as LieuAccompagnement],
+      illustration: lieuAccompagnementIllustrations[value],
     },
   }),
 )
@@ -206,12 +205,8 @@ export const thematiqueAccompagnementOptionsWithExtras =
     label,
     value,
     extra: {
-      tooltips:
-        thematiqueAccompagnementHints[value as ThematiqueAccompagnement],
-      illustration:
-        thematiqueAccompagnementIllustrations[
-          value as ThematiqueAccompagnement
-        ],
+      tooltips: thematiqueAccompagnementHints[value],
+      illustration: thematiqueAccompagnementIllustrations[value],
     },
   }))
 
@@ -316,14 +311,8 @@ export const thematiqueDemarcheAdministrativeOptionsWithExtras =
     label,
     value,
     extra: {
-      tooltips:
-        thematiqueDemarcheAdministrativeHints[
-          value as ThematiqueDemarcheAdministrative
-        ],
-      illustration:
-        thematiqueDemarcheAdministrativeIllustrations[
-          value as ThematiqueDemarcheAdministrative
-        ],
+      tooltips: thematiqueDemarcheAdministrativeHints[value],
+      illustration: thematiqueDemarcheAdministrativeIllustrations[value],
     },
   }))
 
@@ -347,7 +336,7 @@ export const autonomieOptionsWithExtras = autonomieOptions.map(
     label,
     value,
     extra: {
-      stars: autonomieStars[value as Autonomie],
+      stars: autonomieStars[value],
     },
   }),
 )
@@ -393,7 +382,7 @@ export const lieuAtelierOptionsWithExtras = lieuAtelierOptions.map(
     label,
     value,
     extra: {
-      illustration: lieuAtelierIllustrations[value as LieuAtelier],
+      illustration: lieuAtelierIllustrations[value],
     },
   }),
 )
@@ -437,7 +426,7 @@ export const niveauAtelierOptionsWithExtras = niveauAtelierOptions.map(
     label,
     value,
     extra: {
-      stars: niveauAtelierStars[value as NiveauAtelier],
+      stars: niveauAtelierStars[value],
     },
   }),
 )
@@ -478,14 +467,9 @@ export const degreDeFinalisationDemarcheOptionsWithExtras =
   degreDeFinalisationDemarcheOptions.map(({ label, value }) => ({
     label,
     value,
-    hint: degreDeFinalisationDemarcheHints[
-      value as DegreDeFinalisationDemarche
-    ],
+    hint: degreDeFinalisationDemarcheHints[value],
     extra: {
-      illustration:
-        degreDeFinalisationDemarcheIllustrations[
-          value as DegreDeFinalisationDemarche
-        ],
+      illustration: degreDeFinalisationDemarcheIllustrations[value],
     },
   }))
 

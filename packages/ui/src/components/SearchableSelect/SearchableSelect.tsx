@@ -97,6 +97,7 @@ const SearchableSelect = <T extends string>({
 
   return (
     <div className={styles.input}>
+      {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
       <button
         type="button"
         title="Effacer la recherche"

@@ -1,7 +1,6 @@
-import type { Adapter, AdapterAccount, AdapterUser } from '@auth/core/adapters'
-import { PrismaAdapter } from '@auth/prisma-adapter'
-import type { NextAuthOptions } from 'next-auth'
 import { v4 } from 'uuid'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import type { Adapter, AdapterAccount, AdapterUser } from 'next-auth/adapters'
 import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
 import { prismaClient } from '@app/web/prismaClient'
 
@@ -23,7 +22,7 @@ const createAdapter = () => {
     createUser,
     deleteSession,
     linkAccount,
-  } satisfies Adapter
+  }
 }
 
 const prismaAdapter = createAdapter()
@@ -35,7 +34,7 @@ const removeNonStandardFields = <T extends AdapterAccount>(data: T): T => ({
   'not-before-policy': undefined,
 })
 
-export const nextAuthAdapter: NextAuthOptions['adapter'] = {
+export const nextAuthAdapter = {
   ...prismaAdapter,
   createUser: async (user) => {
     const { provider, ...rest } = user as Omit<AdapterUser, 'id'> & {
@@ -68,9 +67,7 @@ export const nextAuthAdapter: NextAuthOptions['adapter'] = {
       throw error
     }
   },
-  // Custom link acount
+  // Custom link account
   linkAccount: (account) =>
-    prismaAdapter.linkAccount(
-      removeNonStandardFields(account as AdapterAccount),
-    ),
-}
+    prismaAdapter.linkAccount(removeNonStandardFields(account)),
+} satisfies Adapter
