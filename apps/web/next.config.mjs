@@ -1,8 +1,11 @@
-const { withSentryConfig } = require('@sentry/nextjs')
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
+import { withSentryConfig } from '@sentry/nextjs'
+import withBundleAnalyzer from '@next/bundle-analyzer'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const withBundleAnalyzerConfig = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
-})
-const path = require('node:path')
+});
 
 // Some packages export a lot of modules in a single index file. To avoid them being compiled
 // next has added native support for modularize import transform
@@ -10,9 +13,12 @@ const path = require('node:path')
 // https://github.com/vercel/next.js/tree/canary/examples/modularize-imports
 const modularizeImports = {
   'date-fns': { transform: 'date-fns/{{member}}' },
-}
+};
 
-const serverComponentsExternalPackages = ['html-minifier']
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename); 
+
+const serverComponentsExternalPackages = ['html-minifier'];
 
 const nextConfig = {
   output: 'standalone',
@@ -50,35 +56,35 @@ const nextConfig = {
     config.module.rules.push({
       test: /\.min.css$/,
       use: [], // An empty set of loaders, effectively bypassing these files
-    })
+    });
     // (this is not an array, this is a rule object)
     // eslint-disable-next-line unicorn/no-array-push-push
     config.module.rules.push({
       test: /\.remixicon.css$/,
       use: [], // An empty set of loaders, effectively bypassing these files
-    })
+    });
 
     if (!isServer) {
       // Client bundling
-      return config
+      return config;
     }
 
     // Server bundling
 
     // Mjml cannot be bundled as it uses dynamic requires
     // Only put library required on the server in externals as they would not be available in client
-    config.externals.push('mjml', 'mjml-core')
+    config.externals.push('mjml', 'mjml-core');
 
-    return config
+    return config;
   },
-}
+};
 
 // For all available options, see:
 // https://github.com/getsentry/sentry-webpack-plugin#options.
 const sentryWebpackPluginOptions = {
   silent: true, // Suppresses all logs
-}
+};
 
-module.exports = withBundleAnalyzer(
+export default withBundleAnalyzerConfig(
   withSentryConfig(nextConfig, sentryWebpackPluginOptions),
-)
+);

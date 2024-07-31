@@ -227,7 +227,7 @@ module.exports = {
     },
     // Json files
     {
-      files: ['**/*.json'],
+      files: '**/*.json',
       plugins: ['json'],
       extends: ['plugin:json/recommended-legacy'],
     },

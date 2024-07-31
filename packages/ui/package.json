@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "license": "AGPL-3.0-or-later",
   "private": true,
+  "type": "module",
   "scripts": {
     "lint": "eslint src",
     "lint:style": "../../packages/lint/node_modules/.bin/stylelint \"src/**/*.css\"",

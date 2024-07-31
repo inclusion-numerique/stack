@@ -1,8 +1,6 @@
-/* eslint unicorn/prefer-module: 0,  @typescript-eslint/no-var-requires: 0, @typescript-eslint/unbound-method: 0 */
-
-const { parse } = require('dotenv')
-const path = require('node:path')
-const { readFileSync, existsSync } = require('node:fs')
+import { parse } from 'dotenv'
+import path from 'node:path'
+import { existsSync, readFileSync } from 'node:fs'
 
 const dotenvVariables = () => {
   const dotenvFile = path.resolve(__dirname, '../../../.env')
@@ -13,7 +11,7 @@ const dotenvVariables = () => {
 }
 
 // See https://github.com/storybookjs/storybook/blob/111edc3929eb8afff1b58285b0b9c49dd493ae85/code/frameworks/nextjs/README.md
-module.exports = {
+export default {
   stories: [
     '../../../apps/web/src/**/*.stories.@(js|jsx|ts|tsx)',
     '../../../packages/ui/src/**/*.stories.@(js|jsx|ts|tsx)',

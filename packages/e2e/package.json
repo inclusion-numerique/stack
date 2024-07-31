@@ -2,6 +2,7 @@
   "name": "@app/e2e",
   "version": "0.1.0",
   "license": "AGPL-3.0-or-later",
+  "type": "module",
   "scripts": {
     "lint": "eslint cypress",
     "lint:debug": "eslint --debug cypress/e2e/authentication/userCanCreateAnAccountWithEmail.cy.ts",
