@@ -92,6 +92,11 @@ module.exports = {
   parserOptions: {
     sourceType: 'module',
   },
+  settings: {
+    react: {
+      version: '18.2',
+    },
+  },
   overrides: [
     // Typescript packages
     {

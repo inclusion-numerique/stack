@@ -3,21 +3,21 @@
   "version": "0.1.0",
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "load": "dotenv -e ../../.env -- ts-node -r tsconfig-paths/register src/seeds.ts",
-    "load:erase-all-data": "dotenv -e ../../.env -- ts-node -r tsconfig-paths/register src/seeds.ts --erase-all-data",
+    "load": "dotenv -e ../../.env -- tsx src/seeds.ts",
+    "load:erase-all-data": "dotenv -e ../../.env -- tsx src/seeds.ts --erase-all-data",
     "lint": "eslint src",
     "tsc": "tsc --noEmit",
     "test": "jest --passWithNoTests"
   },
   "engines": {
-    "node": "^20.7"
+    "node": "^22.5"
   },
   "dependencies": {
     "@commander-js/extra-typings": "^12.1.0",
     "@faker-js/faker": "^8.4.1",
     "@prisma/client": "^5.17.0",
     "dotenv": "^16.4.5",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.16.3",
     "typescript": "^5.5.4",
     "uuid": "^10.0.0"
   },

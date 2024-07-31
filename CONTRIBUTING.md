@@ -12,7 +12,7 @@
 <h2 id="prérequis">📦 Prérequis</h2>
 
 - [Git](https://git-scm.com/) : Système de contrôle de version distribué
-- [Node.js](https://nodejs.org/) : Environnement d'exécution pour JavaScript (version 20.7 minimum)
+- [Node.js](https://nodejs.org/) : Environnement d'exécution pour JavaScript (version 22.5 minimum)
 - [pnpm](https://pnpm.io/) : Gestionnaire de paquets pour les projets Node.js
 - [Docker](https://www.docker.com/) (optionnel) : Environnement d'exécution d'applications sous forme de conteneurs
 - [PostgreSQL](https://www.postgresql.org/) (optionnel si Docker est utilisé) : Système de gestion de base de données relationnelle

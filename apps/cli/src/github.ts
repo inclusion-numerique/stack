@@ -1,4 +1,5 @@
-import { Octokit } from '@octokit/rest'
+import { Octokit } from '@octokit/core'
+import { restEndpointMethods } from '@octokit/plugin-rest-endpoint-methods'
 
 export const owner = 'inclusion-numerique'
 export const repo = process.env.NEXT_PUBLIC_APP_SLUG || ''
@@ -11,4 +12,6 @@ if (!token) {
   )
 }
 
-export const octokit = new Octokit({ auth: token })
+const OctokitWithPlugins = Octokit.plugin(restEndpointMethods)
+
+export const octokit = new OctokitWithPlugins({ auth: token })

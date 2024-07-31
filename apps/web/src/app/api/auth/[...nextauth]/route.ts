@@ -1,10 +1,10 @@
 import NextAuth, { type NextAuthOptions } from 'next-auth'
+import * as Sentry from '@sentry/nextjs'
+import type { NextRequest } from 'next/server'
 import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
 import { InclusionConnectProvider } from '@app/web/auth/InclusionConnectProvider'
 import { registerLastLogin } from '@app/web/security/registerLastLogin'
-import * as Sentry from '@sentry/nextjs'
 import { isFirewallUserAgent } from '@app/web/app/api/auth/[...nextauth]/isFirewallUserAgent'
-import type { NextRequest } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0

@@ -32,7 +32,7 @@ const Page = async ({
 
   const profil = urlProfil
     ? profileInscriptionFromSlug[urlProfil]
-    : user.profilInscription ?? undefined
+    : (user.profilInscription ?? undefined)
 
   // Create mediateur object and conseiller numerique data if needed
   const checkedUser =

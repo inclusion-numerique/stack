@@ -1,6 +1,6 @@
 {
   "language": "typescript",
-  "app": "ts-node -r tsconfig-paths/register src/main.ts",
+  "app": "tsx src/main.ts",
   "terraformProviders": [
     "scaleway/scaleway@>= 2.42.1"
   ],

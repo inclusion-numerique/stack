@@ -4,13 +4,14 @@
   "version": "0.1.0",
   "license": "AGPL-3.0-or-later",
   "private": true,
+  "type": "module",
   "engines": {
-    "node": "^20.7"
+    "node": "^22.5"
   },
   "packageManager": "pnpm@9.6.0",
   "scripts": {
     "build": "turbo build",
-    "cli": "dotenv -- ./apps/cli/node_modules/.bin/ts-node -r tsconfig-paths/register apps/cli/src/index.ts",
+    "cli": "dotenv -- ./apps/cli/node_modules/.bin/tsx apps/cli/src/index.ts",
     "clean": "rm -rf node_modules",
     "clean:workspaces": "turbo clean",
     "dev": "turbo dev --parallel",

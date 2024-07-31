@@ -6,13 +6,6 @@
         "name": "next"
       }
     ],
-    "esModuleInterop": true,
-    "strictNullChecks": true,
-    "module": "esnext",
-    "types": [
-      "jest",
-      "node"
-    ],
     "paths": {
       "@app/cli/*": [
         "../../apps/cli/src/*"

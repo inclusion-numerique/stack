@@ -1,5 +1,5 @@
 import { type Prisma } from '@prisma/client'
-import { chunk } from 'lodash'
+import { chunk } from 'lodash-es'
 import { prismaClient } from '@app/web/prismaClient'
 import { output } from '@app/web/jobs/output'
 import type { LieuStandardMediationNumerique } from '@app/web/data/standard-mediation-numerique/LieuStandardMediationNumerique'

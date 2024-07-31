@@ -31,6 +31,8 @@ export const getLastUserActivityDate = async ({
   return {
     created: user.created,
     lastLogin: user.lastLogin ?? user.created,
-    lastMutation: user.mutations ? user.mutations[0]?.timestamp ?? null : null,
+    lastMutation: user.mutations
+      ? (user.mutations[0]?.timestamp ?? null)
+      : null,
   }
 }

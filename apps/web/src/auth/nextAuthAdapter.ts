@@ -1,8 +1,8 @@
 import { v4 } from 'uuid'
-import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
-import { prismaClient } from '@app/web/prismaClient'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import type { Adapter, AdapterAccount, AdapterUser } from 'next-auth/adapters'
+import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
+import { prismaClient } from '@app/web/prismaClient'
 
 /**
  * Ensuring that needed methods are defined when creating adapter
@@ -69,7 +69,5 @@ export const nextAuthAdapter = {
   },
   // Custom link account
   linkAccount: (account) =>
-    prismaAdapter.linkAccount(
-      removeNonStandardFields(account as AdapterAccount),
-    ),
+    prismaAdapter.linkAccount(removeNonStandardFields(account)),
 } satisfies Adapter

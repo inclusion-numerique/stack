@@ -233,7 +233,7 @@ export const craRouter = router({
           notes,
           orienteVersStructure,
           structureDeRedirection: orienteVersStructure
-            ? structureDeRedirection ?? null
+            ? (structureDeRedirection ?? null)
             : null,
           thematiques,
           lieuActivite:
@@ -356,7 +356,7 @@ export const craRouter = router({
           precisionsDemarche,
           structureDeRedirection:
             degreDeFinalisation === 'OrienteVersStructure'
-              ? structureDeRedirection ?? null
+              ? (structureDeRedirection ?? null)
               : null,
           thematiques,
           lieuActivite:
