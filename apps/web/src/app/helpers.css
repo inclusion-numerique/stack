@@ -46,6 +46,10 @@
     word-break: break-all;
 }
 
+.fr-text--uppercase {
+  text-transform: uppercase
+}
+
 .fr-width-full {
     width: 100%;
 }

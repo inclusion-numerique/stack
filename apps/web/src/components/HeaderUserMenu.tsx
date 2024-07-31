@@ -37,14 +37,20 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
     buttonRef.current.click()
   })
 
+  const structureEmployeuse = user.emplois.at(0)
+
   const menuContent = (
     <ul className="fr-menu__list">
       <li>
         <span className="fr-nav__link fr-pt-4v fr-pb-2v">
           {!!user.name && (
-            <p className="fr-text--medium fr-text--sm">{user.name}</p>
+            <span className="fr-text--medium fr-text--sm fr-display-block">
+              {user.name}
+            </span>
           )}
-          <p className="fr-text--sm fr-text-default--grey">{user.email}</p>
+          <span className="fr-text--sm fr-text-default--grey">
+            {user.email}
+          </span>
         </span>
       </li>
       <li>
@@ -60,6 +66,25 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
           Voir mon profil
         </Link>
       </li>
+      {structureEmployeuse && (
+        <li>
+          <span className="fr-nav__link fr-pb-0 fr-text-mention--grey fr-text--medium fr-text--sm">
+            Ma structure employeuse
+          </span>
+          <Link
+            className="fr-nav__link fr-border--bottom"
+            href="/ma-structure-employeuse"
+            style={{ boxShadow: 'none' }}
+          >
+            <span
+              className="ri-home-smile-2-line fr-mr-1w"
+              style={{ color: 'var(--blue-france-sun-113-625)' }}
+              aria-hidden
+            />
+            {structureEmployeuse.structure.nom}
+          </Link>
+        </li>
+      )}
       {user.usurper && <TerminerUsurpationHeaderUserMenuItem />}
       <li>
         <Link className="fr-nav__link" href="/deconnexion">

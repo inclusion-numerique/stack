@@ -2,10 +2,7 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
 import { addresseFromParts } from '@app/web/utils/addresseFromParts'
 import type { StructureData } from '@app/web/app/structure/StructureValidation'
-import {
-  TypologieStructure,
-  typologieStructureLabels,
-} from '@app/web/app/structure/typologieStructure'
+import { typologieStructureLabels } from '@app/web/app/structure/typologieStructure'
 
 const StructureCard = ({
   structure: { nom, adresse, rna, siret, codePostal, commune, typologies },
@@ -65,7 +62,7 @@ const StructureCard = ({
             {typologies
               .map((typologie) =>
                 typologie in typologieStructureLabels
-                  ? typologieStructureLabels[typologie as TypologieStructure]
+                  ? typologieStructureLabels[typologie]
                   : typologie,
               )
               .join(', ')}
