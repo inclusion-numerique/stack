@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@commander-js/extra-typings": "^12.1.0",
+    "@octokit/core": "^6.1.2",
+    "@octokit/plugin-rest-endpoint-methods": "^13.2.4",
     "axios": "^1.7.2",
     "axios-retry": "^4.4.2",
     "commander": "^12.1.0",
@@ -24,12 +26,10 @@
     "dotenv": "^16.4.5",
     "form-data": "^4.0.0",
     "lodash-es": "^4.17.21",
-    "@octokit/core": "^6.1.2",
-    "@octokit/plugin-rest-endpoint-methods": "^13.2.4",
     "picocolors": "^1.0.1",
     "slug": "^9.1.0",
-    "tsx": "^4.16.3",
     "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.16.3",
     "undici": "^6.19.4",
     "zod": "^3.23.8"
   },
