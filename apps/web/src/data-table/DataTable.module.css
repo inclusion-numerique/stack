@@ -1,0 +1,12 @@
+.cellLinkContainer{
+    padding: 0 !important;
+}
+
+a.cellLink {
+    padding: 16px;
+    background: none;
+    min-width: 100%;
+    width: 100%;
+    height: 100%;
+    display: block;
+}

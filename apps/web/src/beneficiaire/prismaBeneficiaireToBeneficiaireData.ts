@@ -31,6 +31,7 @@ export const prismaBeneficiaireToBeneficiaireData = ({
   prenom,
   nom,
   id,
+  creation,
 }: Pick<
   Beneficiaire,
   | 'id'
@@ -42,7 +43,8 @@ export const prismaBeneficiaireToBeneficiaireData = ({
   | 'commune'
   | 'trancheAge'
   | 'anneeNaissance'
->): BeneficiaireData => ({
+  | 'creation'
+>): BeneficiaireData & { id: string; creation: Date } => ({
   id,
   mediateurId,
   prenom: prenom ?? '',
@@ -54,4 +56,5 @@ export const prismaBeneficiaireToBeneficiaireData = ({
   }),
   trancheAge,
   anneeNaissance,
+  creation,
 })

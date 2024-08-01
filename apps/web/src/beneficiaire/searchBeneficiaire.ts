@@ -5,6 +5,7 @@ import { prismaBeneficiaireToBeneficiaireData } from '@app/web/beneficiaire/pris
 
 type SearchBeneficiaireOptions = {
   limit: number
+  orderBy?: Prisma.BeneficiaireOrderByWithRelationInput[]
 }
 
 export const searchBeneficiaireSelect = {
@@ -17,6 +18,24 @@ export const searchBeneficiaireSelect = {
   commune: true,
   communeCodePostal: true,
   communeCodeInsee: true,
+  creation: true,
+  _count: {
+    select: {
+      crasDemarchesAdministratives: {
+        where: { suppression: null },
+      },
+      crasIndividuels: {
+        where: { suppression: null },
+      },
+      participationsAteliersCollectifs: {
+        where: {
+          craCollectif: {
+            suppression: null,
+          },
+        },
+      },
+    },
+  },
 } satisfies Prisma.BeneficiaireSelect
 
 const getMediateurIdWhereFilter = (user: SessionUser) => {
@@ -103,6 +122,7 @@ export const searchBeneficiaire = async (
     take: beneficiairesSearchLimit,
     select: searchBeneficiaireSelect,
     orderBy: [
+      ...(options?.orderBy ?? []),
       {
         nom: 'asc',
       },
@@ -116,9 +136,18 @@ export const searchBeneficiaire = async (
     where: matchesWhere,
   })
 
-  const beneficiaires = beneficiairesRaw.map(
-    prismaBeneficiaireToBeneficiaireData,
-  )
+  const beneficiaires = beneficiairesRaw.map((beneficiaire) => ({
+    ...prismaBeneficiaireToBeneficiaireData(beneficiaire),
+    craDemarchesAdministrativesCount:
+      beneficiaire._count.crasDemarchesAdministratives,
+    craIndividuelsCount: beneficiaire._count.crasIndividuels,
+    participationsAteliersCollectifsCount:
+      beneficiaire._count.participationsAteliersCollectifs,
+    totalCrasCount:
+      beneficiaire._count.crasDemarchesAdministratives +
+      beneficiaire._count.crasIndividuels +
+      beneficiaire._count.participationsAteliersCollectifs,
+  }))
 
   return {
     beneficiaires,
@@ -126,3 +155,10 @@ export const searchBeneficiaire = async (
     moreResults: Math.max(matchesCount - beneficiairesSearchLimit, 0),
   }
 }
+
+export type SearchBeneficiaireResult = Awaited<
+  ReturnType<typeof searchBeneficiaire>
+>
+
+export type SearchBeneficiaireResultRow =
+  SearchBeneficiaireResult['beneficiaires'][number]

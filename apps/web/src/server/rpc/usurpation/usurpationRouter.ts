@@ -26,6 +26,13 @@ export const usurpationRouter = router({
           throw invalidError('User not found or user is not a fixture')
         }
 
+        // Close potential previous usurpations
+        await prismaClient.session.deleteMany({
+          where: {
+            usurperId: initialUser.id,
+          },
+        })
+
         await prismaClient.session.update({
           where: {
             sessionToken,
