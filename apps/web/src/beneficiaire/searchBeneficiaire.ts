@@ -2,6 +2,10 @@ import type { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { prismaBeneficiaireToBeneficiaireData } from '@app/web/beneficiaire/prismaBeneficiaireToBeneficiaireData'
+import {
+  beneficiaireCrasCounts,
+  beneficiaireCrasCountSelect,
+} from '@app/web/beneficiaire/beneficiaireQueries'
 
 type SearchBeneficiaireOptions = {
   limit: number
@@ -19,23 +23,7 @@ export const searchBeneficiaireSelect = {
   communeCodePostal: true,
   communeCodeInsee: true,
   creation: true,
-  _count: {
-    select: {
-      crasDemarchesAdministratives: {
-        where: { suppression: null },
-      },
-      crasIndividuels: {
-        where: { suppression: null },
-      },
-      participationsAteliersCollectifs: {
-        where: {
-          craCollectif: {
-            suppression: null,
-          },
-        },
-      },
-    },
-  },
+  ...beneficiaireCrasCountSelect,
 } satisfies Prisma.BeneficiaireSelect
 
 const getMediateurIdWhereFilter = (user: SessionUser) => {
@@ -138,15 +126,7 @@ export const searchBeneficiaire = async (
 
   const beneficiaires = beneficiairesRaw.map((beneficiaire) => ({
     ...prismaBeneficiaireToBeneficiaireData(beneficiaire),
-    craDemarchesAdministrativesCount:
-      beneficiaire._count.crasDemarchesAdministratives,
-    craIndividuelsCount: beneficiaire._count.crasIndividuels,
-    participationsAteliersCollectifsCount:
-      beneficiaire._count.participationsAteliersCollectifs,
-    totalCrasCount:
-      beneficiaire._count.crasDemarchesAdministratives +
-      beneficiaire._count.crasIndividuels +
-      beneficiaire._count.participationsAteliersCollectifs,
+    ...beneficiaireCrasCounts(beneficiaire),
   }))
 
   return {

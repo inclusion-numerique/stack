@@ -1,0 +1,14 @@
+.navigationBar {
+    display: flex;
+    border-bottom: 1px solid var(--border-default-grey);
+    margin-bottom: 32px;
+
+    @media (min-width:62em){
+        margin-bottom: 48px;
+        :global(.fr-nav__list .fr-nav__item) {
+            margin-bottom: -1px;
+        }
+    }
+
+
+}
