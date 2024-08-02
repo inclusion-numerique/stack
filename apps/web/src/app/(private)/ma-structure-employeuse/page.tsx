@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
@@ -85,11 +86,25 @@ const MaStructureEmployeusePage = async () => {
               Ma structure employeuse
             </h1>
           </span>
-          {structureEmployeuse && (
+          {structureEmployeuse ? (
             <StructureEmployeuse
               {...structureEmployeuse}
               isLieuActivite={matchingLieuActivite != null}
             />
+          ) : (
+            <div className="fr-text--center fr-background-alt--blue-france fr-border-radius--8 fr-p-6w">
+              <h2 className="fr-h6 fr-mb-1v">
+                Vous n’avez pas renseigné de structure employeuse
+              </h2>
+              <p className="fr-mb-0">
+                Vous pouvez continuez à utiliser la plateforme, cependant vous
+                ne serez plus identifié sur votre territoire comme faisant
+                partie de la communauté de la médiation numérique
+              </p>
+              <Link className="fr-link wip" href="/">
+                En savoir plus
+              </Link>
+            </div>
           )}
         </main>
       </div>
