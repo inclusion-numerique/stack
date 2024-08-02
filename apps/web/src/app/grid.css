@@ -1,0 +1,5 @@
+@media (min-width: 36em) {
+  .fr-sm-col {
+    flex: 1;
+  }
+}
