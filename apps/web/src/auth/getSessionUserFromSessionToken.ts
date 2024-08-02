@@ -5,6 +5,7 @@ import { prismaClient } from '@app/web/prismaClient'
 export const sessionUserSelect = {
   id: true,
   email: true,
+  phone: true,
   firstName: true,
   lastName: true,
   name: true,

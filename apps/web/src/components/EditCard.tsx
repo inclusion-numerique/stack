@@ -19,6 +19,7 @@ const EditCard = <T extends FieldValues, V>({
   edition,
   view,
   emptyState,
+  canEdit = true,
   isEmpty = false,
   form,
   mutation,
@@ -33,6 +34,7 @@ const EditCard = <T extends FieldValues, V>({
   description?: string
   edition: ReactNode
   view: ReactNode
+  canEdit?: boolean
   isEmpty?: boolean
   emptyState?: ReactNode
   form: UseFormReturn<T>
@@ -63,7 +65,7 @@ const EditCard = <T extends FieldValues, V>({
       title={
         <div className="fr-flex fr-justify-content-space-between fr-align-items-center">
           <CardTitle className="fr-mb-0 fr-py-1v fr-h5">{title}</CardTitle>
-          {!editMode && setEditMode && (
+          {!editMode && canEdit && (
             <Button
               data-testid="edit-card-button"
               size="small"

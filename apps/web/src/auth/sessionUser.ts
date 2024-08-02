@@ -15,6 +15,7 @@ export type SessionUser = Pick<
   | 'lastName'
   | 'name'
   | 'email'
+  | 'phone'
   | 'role'
   | 'isFixture'
   | 'profilInscription'

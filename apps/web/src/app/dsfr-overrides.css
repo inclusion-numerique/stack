@@ -397,6 +397,10 @@ select.fr-select {
     }
 }
 
+.fr-card__title button.fr-btn--sm {
+  font-size: .875rem;
+}
+
 /* Pagination */
 .fr-pagination__link {
     margin-bottom: 0;
