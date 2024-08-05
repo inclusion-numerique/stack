@@ -1,6 +1,6 @@
 import { labelsToOptions } from '@app/ui/components/Form/utils/options'
 
-export const typologieStructureLabels = {
+export const typologieStructureLabels: Record<string, string> = {
   ACI: 'Structures porteuses d’ateliers et chantiers d’insertion (ACI)',
   ACIPHC: 'SIAE — Atelier chantier d’insertion premières heures en chantier',
   AFPA: 'Agence nationale pour la formation professionnelle des adultes (AFPA)',
@@ -84,10 +84,7 @@ export const typologieStructureLabels = {
 export type TypologieStructure = keyof typeof typologieStructureLabels
 
 export const typologieStructureValue = Object.fromEntries(
-  Object.keys(typologieStructureLabels).map((key) => [
-    key,
-    key as TypologieStructure,
-  ]),
+  Object.keys(typologieStructureLabels).map((key) => [key, key]),
 ) as {
   [key in TypologieStructure]: TypologieStructure
 }

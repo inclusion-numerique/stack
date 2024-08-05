@@ -31,11 +31,15 @@ export const sessionUserSelect = {
           nom: true,
           codePostal: true,
           commune: true,
+          modification: true,
         },
       },
     },
     where: {
       suppression: null,
+    },
+    orderBy: {
+      modification: 'desc',
     },
   },
   mediateur: {
