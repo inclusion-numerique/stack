@@ -88,7 +88,7 @@ const CraCollectifForm = ({
       await mutation.mutateAsync(data)
       createToast({
         priority: 'success',
-        message: 'L’accompagnement collectif a bien été enregistrée.',
+        message: 'L’atelier collectif a bien été enregistrée.',
       })
       router.push('/coop') // TODO SUCCESS LINK
       router.refresh()
@@ -101,6 +101,8 @@ const CraCollectifForm = ({
         message:
           'Une erreur est survenue lors de l’enregistrement, veuillez réessayer ultérieurement.',
       })
+      // Throw again to fail the submit
+      throw mutationError
     }
   }
   const isLoading = isSubmitting || isSubmitSuccessful
