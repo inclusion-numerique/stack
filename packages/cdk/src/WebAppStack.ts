@@ -188,6 +188,7 @@ export class WebAppStack extends TerraformStack {
         STACK_WEB_IMAGE: environmentVariables.WEB_CONTAINER_IMAGE.value,
         UPLOADS_BUCKET: uploadsBucket.name,
         BASE_URL: hostname,
+        NEXTAUTH_URL: hostname,
         BRANCH: branch,
         NAMESPACE: namespace,
         // This env variable is reserved at the level of container namespace. We inject it here even if its shared.
