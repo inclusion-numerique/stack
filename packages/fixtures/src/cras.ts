@@ -1,3 +1,7 @@
+import {
+  ThematiqueAccompagnement,
+  ThematiqueDemarcheAdministrative,
+} from '@prisma/client'
 import { mediateurAvecActiviteMediateurId } from '@app/fixtures/users'
 import {
   givenCraDemarcheAdministrative,
@@ -7,10 +11,6 @@ import {
   beneficiaireMaximaleMediateurAvecActivite,
   beneficiaireMinimaleMediateurAvecActivite,
 } from '@app/fixtures/beneficiaires'
-import {
-  ThematiqueAccompagnement,
-  ThematiqueDemarcheAdministrative,
-} from '@prisma/client'
 
 export const mediateurAvecActiviteCrasIndividuels = [
   givenCraIndividuel({
