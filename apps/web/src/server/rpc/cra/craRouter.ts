@@ -240,9 +240,13 @@ export const craRouter = router({
             // Only set lieuActivité if it is the correct type of lieuAccompagnement
             lieuAccompagnement === 'LieuActivite' && existingLieuActivite
               ? { connect: { id: existingLieuActivite.id } }
-              : {
-                  disconnect: true,
-                },
+              : id
+                ? // disconnect if this is an update
+                  {
+                    disconnect: true,
+                  }
+                : // no data if creation
+                  undefined,
         } satisfies Prisma.CraIndividuelUpdateInput
 
         if (id) {
@@ -363,7 +367,13 @@ export const craRouter = router({
             // Only set lieuActivité if it is the correct type of lieuAccompagnement
             lieuAccompagnement === 'LieuActivite' && existingLieuActivite
               ? { connect: { id: existingLieuActivite.id } }
-              : undefined,
+              : id
+                ? // disconnect if this is an update
+                  {
+                    disconnect: true,
+                  }
+                : // no data if creation
+                  undefined,
         } satisfies Prisma.CraDemarcheAdministrativeUpdateInput
 
         if (id) {
@@ -492,9 +502,13 @@ export const craRouter = router({
             // Only set lieuActivité if it is the correct type of lieuAccompagnement
             lieuAtelier === 'LieuActivite' && existingLieuActivite
               ? { connect: { id: existingLieuActivite.id } }
-              : {
-                  disconnect: true,
-                },
+              : id
+                ? // disconnect if this is an update
+                  {
+                    disconnect: true,
+                  }
+                : // no data if creation
+                  undefined,
         } satisfies Prisma.CraCollectifUpdateInput
 
         if (id) {
