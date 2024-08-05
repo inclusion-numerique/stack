@@ -14,6 +14,11 @@ export type InclusionConnectProfile = {
   family_name: string
 }
 
+console.log(
+  'PROVIDER SERVER URL',
+  getServerUrl('/api/auth/callback/inclusion-connect'),
+)
+
 export const InclusionConnectProvider = () =>
   ({
     id: inclusionConnectProviderId,
@@ -33,6 +38,10 @@ export const InclusionConnectProvider = () =>
     },
     token: {
       request: async (context) => {
+        console.log(
+          'REQUEST TOKEN SERVER URL',
+          getServerUrl('/api/auth/callback/inclusion-connect'),
+        )
         const body = {
           grant_type: 'authorization_code',
           client_id: PublicWebAppConfig.InclusionConnect.clientId,
