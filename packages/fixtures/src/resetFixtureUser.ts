@@ -1,6 +1,11 @@
 import { prismaClient } from '@app/web/prismaClient'
 import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
 import { fixtureUsers } from '@app/fixtures/users'
+import { fixtureBeneficiaires } from '@app/fixtures/beneficiaires'
+import {
+  fixtureCrasDemarchesAdministratives,
+  fixtureCrasIndividuels,
+} from '@app/fixtures/cras'
 
 export const resetFixtureUser = async ({ id }: { id: string }) => {
   const userId = id
@@ -96,6 +101,24 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
       },
     })
 
+    await prismaClient.craIndividuel.deleteMany({
+      where: {
+        creeParMediateurId: mediateurId,
+      },
+    })
+
+    await prismaClient.craDemarcheAdministrative.deleteMany({
+      where: {
+        creeParMediateurId: mediateurId,
+      },
+    })
+
+    await prismaClient.beneficiaire.deleteMany({
+      where: {
+        mediateurId,
+      },
+    })
+
     await prismaClient.mediateur.delete({
       where: {
         id: mediateurId,
@@ -125,8 +148,33 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
     },
   })
 
-  return prismaClient.user.create({
+  const resetedUser = await prismaClient.user.create({
     data: userFixture,
     select: sessionUserSelect,
   })
+
+  /**
+   * Re-create mediateur owned data
+   */
+  if (resetedUser.mediateur?.id) {
+    await prismaClient.beneficiaire.createMany({
+      data: fixtureBeneficiaires.filter(
+        (b) => resetedUser.mediateur?.id === b.mediateurId,
+      ),
+    })
+
+    await prismaClient.craIndividuel.createMany({
+      data: fixtureCrasIndividuels.filter(
+        (c) => resetedUser.mediateur?.id === c.creeParMediateurId,
+      ),
+    })
+
+    await prismaClient.craDemarcheAdministrative.createMany({
+      data: fixtureCrasDemarchesAdministratives.filter(
+        (c) => resetedUser.mediateur?.id === c.creeParMediateurId,
+      ),
+    })
+  }
+
+  return resetedUser
 }

@@ -1,7 +1,7 @@
-import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
-import { prismaClient } from '@app/web/prismaClient'
 import { notFound } from 'next/navigation'
 import { PropsWithChildren } from 'react'
+import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
+import { prismaClient } from '@app/web/prismaClient'
 import ViewBeneficiaireLayout from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/ViewBeneficiaireLayout'
 
 const BeneficiairePage = async ({

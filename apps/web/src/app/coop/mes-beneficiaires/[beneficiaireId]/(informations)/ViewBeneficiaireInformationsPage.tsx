@@ -1,11 +1,33 @@
+import Tag from '@codegouvfr/react-dsfr/Tag'
 import BeneficiairePageNavigationBar from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/BeneficiairePageNavigationBar'
 import { BeneficiaireInformationsData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(informations)/getBeneficiaireInformationsData'
+import InfoLabelValue from '@app/web/components/InfoLabelValue'
+import {
+  genreLabels,
+  statutSocialLabels,
+  trancheAgeLabels,
+} from '@app/web/beneficiaire/beneficiaire'
+import styles from './ViewBeneficiaireInformationsPage.module.css'
 
 const ViewBeneficiaireInformationsPage = ({
-  data: { beneficiaire, totalCrasCount },
+  data: { beneficiaire, totalCrasCount, thematiquesCounts },
 }: {
   data: BeneficiaireInformationsData
 }) => {
+  const {
+    notes,
+    telephone,
+    email,
+    pasDeTelephone,
+    anneeNaissance,
+    communeCodePostal,
+    commune,
+    communeCodeInsee,
+    adresse,
+    genre,
+    statutSocial,
+    trancheAge,
+  } = beneficiaire
   return (
     <>
       <BeneficiairePageNavigationBar
@@ -15,9 +37,95 @@ const ViewBeneficiaireInformationsPage = ({
       />
       <div className="fr-border-radius--8 fr-border  fr-pt-8v fr-px-7v fr-pb-10v fr-mt-6v">
         <h2 className="fr-h6 fr-mb-1v">Thématiques d’accompagnements</h2>
-        <p className="fr-text--xs fr-text-mention--grey">
+        <p className="fr-text--xs fr-text-mention--grey fr-mb-4v">
           Retrouvez les thématiques d’accompagnements vues avec ce bénéficiaire.
         </p>
+        {thematiquesCounts.total.length > 0 ? (
+          <div className="fr-flex fr-flex-wrap fr-flex-gap-3v">
+            {thematiquesCounts.total.map(({ thematique, label, count }) => (
+              <Tag key={thematique}>
+                {label}
+                {count > 1 ? (
+                  <>
+                    &nbsp;·&nbsp;<span className="fr-text--bold">{count}</span>
+                  </>
+                ) : null}
+              </Tag>
+            ))}
+          </div>
+        ) : (
+          <p className="fr-text--sm">-</p>
+        )}
+      </div>
+      <div className="fr-border-radius--8 fr-border  fr-pt-8v fr-px-7v fr-pb-10v fr-mt-6v">
+        <h2 className="fr-h6 fr-mb-4v">Coordonnées</h2>
+        <div className={styles.infosGrid}>
+          <div>
+            <InfoLabelValue
+              label="Numéro de téléphone"
+              value={pasDeTelephone ? 'Pas de téléphone' : telephone || '-'}
+            />
+          </div>
+          <div>
+            <InfoLabelValue label="E-mail" value={email || '-'} />
+          </div>
+          <div>
+            <InfoLabelValue label="Adresse" value={adresse || '-'} />
+          </div>
+          <div>
+            <InfoLabelValue
+              label="Commune de résidence"
+              value={
+                commune && communeCodeInsee && communeCodePostal
+                  ? `${communeCodePostal} ${commune}`
+                  : '-'
+              }
+            />
+          </div>
+        </div>
+      </div>
+      <div className="fr-border-radius--8 fr-border  fr-pt-8v fr-px-7v fr-pb-10v fr-mt-6v">
+        <h2 className="fr-h6 fr-mb-4v">Informations complémentaires</h2>
+        <div className={styles.infosGrid}>
+          <div>
+            <InfoLabelValue
+              label="Année de naissance"
+              value={anneeNaissance || '-'}
+            />
+          </div>
+          <div>
+            <InfoLabelValue
+              label="Tranche d’âge"
+              value={trancheAge ? trancheAgeLabels[trancheAge] : '-'}
+            />
+          </div>
+
+          <div>
+            <InfoLabelValue
+              label="Genre"
+              value={genre ? genreLabels[genre] : '-'}
+            />
+          </div>
+
+          <div>
+            <InfoLabelValue
+              label="Statut social"
+              value={statutSocial ? statutSocialLabels[statutSocial] : '-'}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="fr-border-radius--8 fr-border  fr-pt-8v fr-px-7v fr-pb-10v fr-mt-6v">
+        <h2 className="fr-h6 fr-mb-4v">Notes supplémentaires</h2>
+        {notes ? (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: notes,
+            }}
+          />
+        ) : (
+          <p className="fr-text--sm">-</p>
+        )}
       </div>
     </>
   )

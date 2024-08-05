@@ -1,9 +1,9 @@
-import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
-import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import Button from '@codegouvfr/react-dsfr/Button'
 import type { PropsWithChildren } from 'react'
-import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import type { Beneficiaire } from '@prisma/client'
+import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
+import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 
 const ViewBeneficiaireLayout = ({
   beneficiaire,
@@ -34,7 +34,7 @@ const ViewBeneficiaireLayout = ({
           )}
         </div>
         <div className="fr-flex fr-flex-gap-4v">
-          {/*TODO add cra to existing beneficiaire*/}
+          {/* TODO add cra to existing beneficiaire */}
           <Button iconId="fr-icon-user-add-line" className="wip-outline">
             Ajouter une activité
           </Button>
@@ -47,7 +47,7 @@ const ViewBeneficiaireLayout = ({
               href: `/coop/mes-beneficiaires/${beneficiaire.id}/modifier`,
             }}
           />
-          {/*TODO deletion feature*/}
+          {/* TODO deletion feature */}
           <Button
             iconId="fr-icon-delete-bin-line"
             priority="secondary"

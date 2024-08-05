@@ -1,5 +1,5 @@
-import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { notFound } from 'next/navigation'
+import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import ViewBeneficiaireInformationsPage from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(informations)/ViewBeneficiaireInformationsPage'
 import { getBeneficiaireInformationsData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(informations)/getBeneficiaireInformationsData'
 

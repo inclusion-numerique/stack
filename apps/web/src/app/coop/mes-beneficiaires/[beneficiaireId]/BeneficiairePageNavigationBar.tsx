@@ -1,5 +1,5 @@
-import styles from './BeneficiairePageNavigationBar.module.css'
 import Link from 'next/link'
+import styles from './BeneficiairePageNavigationBar.module.css'
 
 const BeneficiairePageNavigationBar = ({
   accompagnementsCount,
