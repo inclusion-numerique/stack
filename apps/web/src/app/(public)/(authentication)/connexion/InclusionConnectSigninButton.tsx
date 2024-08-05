@@ -16,6 +16,7 @@ const InclusionConnectSigninButton = ({
   callbackUrl: Route
 }) => {
   const [isLoading, setIsLoading] = useState(false)
+  console.log('INCLUSION CONNECT SIGNIN BUTTON CALLBACK', callbackUrl)
   const onClick = () => {
     setIsLoading(true)
     signIn(inclusionConnectProviderId, { callbackUrl })
