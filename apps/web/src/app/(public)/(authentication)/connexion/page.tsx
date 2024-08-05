@@ -14,11 +14,6 @@ const SigninPage = async ({
 }) => {
   const user = await getSessionUser()
 
-  console.log('SIGNIN REDIRECTION', {
-    suivant,
-    withServerUrl: getServerUrl(suivant ?? '/connexion/suivant'),
-  })
-
   const callbackUrl = getServerUrl(suivant ?? '/connexion/suivant')
 
   if (user) {

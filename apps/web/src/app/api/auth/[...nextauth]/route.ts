@@ -9,9 +9,6 @@ import { isFirewallUserAgent } from '@app/web/app/api/auth/[...nextauth]/isFirew
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-console.log('NEXTAUTH BASE URL', process.env.NEXTAUTH_URL)
-console.log('base url', process.env.BASE_URL)
-
 export const authOptions: NextAuthOptions = {
   // debug: process.env.NODE_ENV !== 'production',
   adapter: nextAuthAdapter,
