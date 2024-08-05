@@ -54,6 +54,7 @@
     "@trpc/server": "next",
     "aws-crt": "^1.21.3",
     "axios": "^1.7.2",
+    "change-case": "^5.4.4",
     "classnames": "^2.5.1",
     "client-only": "^0.0.1",
     "cookie": "^0.6.0",

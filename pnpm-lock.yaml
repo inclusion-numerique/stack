@@ -159,7 +159,7 @@ importers:
         version: 8.20.0
       '@sentry/nextjs':
         specifier: ^8.20.0
-        version: 8.20.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(encoding@0.1.13)(next@14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8))(react@18.3.1)(webpack@5.93.0(uglify-js@3.19.1))
+        version: 8.20.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(encoding@0.1.13)(next@14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8))(react@18.3.1)(webpack@5.93.0(esbuild@0.21.5)(uglify-js@3.19.1))
       '@tanstack/react-query':
         specifier: ^5.51.15
         version: 5.51.15(react@18.3.1)
@@ -181,6 +181,9 @@ importers:
       axios:
         specifier: ^1.7.2
         version: 1.7.2
+      change-case:
+        specifier: ^5.4.4
+        version: 5.4.4
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -279,7 +282,7 @@ importers:
         version: 16.1.0(postcss@8.4.40)
       postcss-loader:
         specifier: ^8.1.1
-        version: 8.1.1(postcss@8.4.40)(typescript@5.5.4)(webpack@5.93.0(uglify-js@3.19.1))
+        version: 8.1.1(postcss@8.4.40)(typescript@5.5.4)(webpack@5.93.0(esbuild@0.21.5)(uglify-js@3.19.1))
       postcss-nested:
         specifier: ^6.2.0
         version: 6.2.0(postcss@8.4.40)
@@ -427,7 +430,7 @@ importers:
         version: 10.0.0
       css-loader:
         specifier: ^7.1.2
-        version: 7.1.2(webpack@5.93.0(uglify-js@3.19.1))
+        version: 7.1.2(webpack@5.93.0(esbuild@0.21.5)(uglify-js@3.19.1))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -454,10 +457,10 @@ importers:
         version: 2.0.2
       style-loader:
         specifier: ^4.0.0
-        version: 4.0.0(webpack@5.93.0(uglify-js@3.19.1))
+        version: 4.0.0(webpack@5.93.0(esbuild@0.21.5)(uglify-js@3.19.1))
       ts-jest:
         specifier: ^29.2.3
-        version: 29.2.3(@babel/core@7.25.2)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.25.2))(jest@29.7.0(@types/node@22.0.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.0.0)(typescript@5.5.4)))(typescript@5.5.4)
+        version: 29.2.3(@babel/core@7.25.2)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.25.2))(esbuild@0.21.5)(jest@29.7.0(@types/node@22.0.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.0.0)(typescript@5.5.4)))(typescript@5.5.4)
       tsconfig-paths:
         specifier: ^4.2.0
         version: 4.2.0
@@ -5408,6 +5411,9 @@ packages:
   chalk@5.3.0:
     resolution: {integrity: sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==}
     engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
+
+  change-case@5.4.4:
+    resolution: {integrity: sha512-HRQyTk2/YPEkt9TnUPbOpr64Uw3KOicFWPVBb+xiHvd6eBx/qPr9xqfBFDT8P2vWsvvz4jbEkfDe71W3VyNu2w==}
 
   char-regex@1.0.2:
     resolution: {integrity: sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw==}
@@ -15583,7 +15589,7 @@ snapshots:
       '@sentry/utils': 7.116.0
       localforage: 1.10.0
 
-  '@sentry/nextjs@8.20.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(encoding@0.1.13)(next@14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8))(react@18.3.1)(webpack@5.93.0(uglify-js@3.19.1))':
+  '@sentry/nextjs@8.20.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.1(@opentelemetry/api@1.9.0))(encoding@0.1.13)(next@14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8))(react@18.3.1)(webpack@5.93.0(esbuild@0.21.5)(uglify-js@3.19.1))':
     dependencies:
       '@opentelemetry/instrumentation-http': 0.52.1(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.25.1
@@ -15595,14 +15601,14 @@ snapshots:
       '@sentry/types': 8.20.0
       '@sentry/utils': 8.20.0
       '@sentry/vercel-edge': 8.20.0
-      '@sentry/webpack-plugin': 2.20.1(encoding@0.1.13)(webpack@5.93.0(uglify-js@3.19.1))
+      '@sentry/webpack-plugin': 2.20.1(encoding@0.1.13)(webpack@5.93.0(esbuild@0.21.5)(uglify-js@3.19.1))
       chalk: 3.0.0
       next: 14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)
       resolve: 1.22.8
       rollup: 3.29.4
       stacktrace-parser: 0.1.10
     optionalDependencies:
-      webpack: 5.93.0(uglify-js@3.19.1)
+      webpack: 5.93.0(esbuild@0.21.5)(uglify-js@3.19.1)
     transitivePeerDependencies:
       - '@opentelemetry/api'
       - '@opentelemetry/core'
@@ -15693,12 +15699,12 @@ snapshots:
       '@sentry/types': 8.20.0
       '@sentry/utils': 8.20.0
 
-  '@sentry/webpack-plugin@2.20.1(encoding@0.1.13)(webpack@5.93.0(uglify-js@3.19.1))':
+  '@sentry/webpack-plugin@2.20.1(encoding@0.1.13)(webpack@5.93.0(esbuild@0.21.5)(uglify-js@3.19.1))':
     dependencies:
       '@sentry/bundler-plugin-core': 2.20.1(encoding@0.1.13)
       unplugin: 1.0.1
       uuid: 9.0.1
-      webpack: 5.93.0(uglify-js@3.19.1)
+      webpack: 5.93.0(esbuild@0.21.5)(uglify-js@3.19.1)
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -18350,6 +18356,8 @@ snapshots:
 
   chalk@5.3.0: {}
 
+  change-case@5.4.4: {}
+
   char-regex@1.0.2: {}
 
   chardet@0.7.0: {}
@@ -18867,7 +18875,7 @@ snapshots:
     optionalDependencies:
       webpack: 5.93.0(esbuild@0.21.5)
 
-  css-loader@7.1.2(webpack@5.93.0(uglify-js@3.19.1)):
+  css-loader@7.1.2(webpack@5.93.0(esbuild@0.21.5)(uglify-js@3.19.1)):
     dependencies:
       icss-utils: 5.1.0(postcss@8.4.40)
       postcss: 8.4.40
@@ -18878,7 +18886,7 @@ snapshots:
       postcss-value-parser: 4.2.0
       semver: 7.6.3
     optionalDependencies:
-      webpack: 5.93.0(uglify-js@3.19.1)
+      webpack: 5.93.0(esbuild@0.21.5)(uglify-js@3.19.1)
 
   css-prefers-color-scheme@9.0.1(postcss@8.4.40):
     dependencies:
@@ -23138,11 +23146,9 @@ snapshots:
       '@babel/runtime': 7.25.0
       js-beautify: 1.15.1
       lodash: 4.17.21
-      mjml-core: 4.15.3
+      mjml-core: 4.15.3(encoding@0.1.13)
       mjml-parser-xml: 4.15.3
       yargs: 17.7.2
-    transitivePeerDependencies:
-      - encoding
 
   mjml-migrate@4.15.3(encoding@0.1.13):
     dependencies:
@@ -24380,6 +24386,17 @@ snapshots:
       postcss: 8.4.40
       ts-node: 10.9.2(@types/node@22.0.0)(typescript@5.5.4)
 
+  postcss-loader@8.1.1(postcss@8.4.40)(typescript@5.5.4)(webpack@5.93.0(esbuild@0.21.5)(uglify-js@3.19.1)):
+    dependencies:
+      cosmiconfig: 9.0.0(typescript@5.5.4)
+      jiti: 1.21.6
+      postcss: 8.4.40
+      semver: 7.6.3
+    optionalDependencies:
+      webpack: 5.93.0(esbuild@0.21.5)(uglify-js@3.19.1)
+    transitivePeerDependencies:
+      - typescript
+
   postcss-loader@8.1.1(postcss@8.4.40)(typescript@5.5.4)(webpack@5.93.0(esbuild@0.21.5)):
     dependencies:
       cosmiconfig: 9.0.0(typescript@5.5.4)
@@ -24388,17 +24405,6 @@ snapshots:
       semver: 7.6.3
     optionalDependencies:
       webpack: 5.93.0(esbuild@0.21.5)
-    transitivePeerDependencies:
-      - typescript
-
-  postcss-loader@8.1.1(postcss@8.4.40)(typescript@5.5.4)(webpack@5.93.0(uglify-js@3.19.1)):
-    dependencies:
-      cosmiconfig: 9.0.0(typescript@5.5.4)
-      jiti: 1.21.6
-      postcss: 8.4.40
-      semver: 7.6.3
-    optionalDependencies:
-      webpack: 5.93.0(uglify-js@3.19.1)
     transitivePeerDependencies:
       - typescript
 
@@ -26089,9 +26095,9 @@ snapshots:
     dependencies:
       webpack: 5.93.0(esbuild@0.21.5)
 
-  style-loader@4.0.0(webpack@5.93.0(uglify-js@3.19.1)):
+  style-loader@4.0.0(webpack@5.93.0(esbuild@0.21.5)(uglify-js@3.19.1)):
     dependencies:
-      webpack: 5.93.0(uglify-js@3.19.1)
+      webpack: 5.93.0(esbuild@0.21.5)(uglify-js@3.19.1)
 
   styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
@@ -26304,6 +26310,18 @@ snapshots:
       supports-hyperlinks: 2.3.0
     optional: true
 
+  terser-webpack-plugin@5.3.10(esbuild@0.21.5)(uglify-js@3.19.1)(webpack@5.93.0(esbuild@0.21.5)(uglify-js@3.19.1)):
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.25
+      jest-worker: 27.5.1
+      schema-utils: 3.3.0
+      serialize-javascript: 6.0.2
+      terser: 5.31.3
+      webpack: 5.93.0(esbuild@0.21.5)(uglify-js@3.19.1)
+    optionalDependencies:
+      esbuild: 0.21.5
+      uglify-js: 3.19.1
+
   terser-webpack-plugin@5.3.10(esbuild@0.21.5)(webpack@5.93.0(esbuild@0.21.5)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
@@ -26314,17 +26332,6 @@ snapshots:
       webpack: 5.93.0(esbuild@0.21.5)
     optionalDependencies:
       esbuild: 0.21.5
-
-  terser-webpack-plugin@5.3.10(uglify-js@3.19.1)(webpack@5.93.0(uglify-js@3.19.1)):
-    dependencies:
-      '@jridgewell/trace-mapping': 0.3.25
-      jest-worker: 27.5.1
-      schema-utils: 3.3.0
-      serialize-javascript: 6.0.2
-      terser: 5.31.3
-      webpack: 5.93.0(uglify-js@3.19.1)
-    optionalDependencies:
-      uglify-js: 3.19.1
 
   terser@5.31.3:
     dependencies:
@@ -26433,12 +26440,12 @@ snapshots:
     optionalDependencies:
       typescript: 5.5.4
 
-  ts-jest@29.2.3(@babel/core@7.25.2)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.25.2))(jest@29.7.0(@types/node@22.0.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.7.3(@swc/helpers@0.5.5))(@types/node@22.0.0)(typescript@5.5.4)))(typescript@5.5.4):
+  ts-jest@29.2.3(@babel/core@7.25.2)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.25.2))(esbuild@0.21.5)(jest@29.7.0(@types/node@22.0.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.0.0)(typescript@5.5.4)))(typescript@5.5.4):
     dependencies:
       bs-logger: 0.2.6
       ejs: 3.1.10
       fast-json-stable-stringify: 2.1.0
-      jest: 29.7.0(@types/node@22.0.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.7.3(@swc/helpers@0.5.5))(@types/node@22.0.0)(typescript@5.5.4))
+      jest: 29.7.0(@types/node@22.0.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.0.0)(typescript@5.5.4))
       jest-util: 29.7.0
       json5: 2.2.3
       lodash.memoize: 4.1.2
@@ -26451,13 +26458,14 @@ snapshots:
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
       babel-jest: 29.7.0(@babel/core@7.25.2)
+      esbuild: 0.21.5
 
-  ts-jest@29.2.3(@babel/core@7.25.2)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.25.2))(jest@29.7.0(@types/node@22.0.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.0.0)(typescript@5.5.4)))(typescript@5.5.4):
+  ts-jest@29.2.3(@babel/core@7.25.2)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.25.2))(jest@29.7.0(@types/node@22.0.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.7.3(@swc/helpers@0.5.5))(@types/node@22.0.0)(typescript@5.5.4)))(typescript@5.5.4):
     dependencies:
       bs-logger: 0.2.6
       ejs: 3.1.10
       fast-json-stable-stringify: 2.1.0
-      jest: 29.7.0(@types/node@22.0.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.0.0)(typescript@5.5.4))
+      jest: 29.7.0(@types/node@22.0.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.7.3(@swc/helpers@0.5.5))(@types/node@22.0.0)(typescript@5.5.4))
       jest-util: 29.7.0
       json5: 2.2.3
       lodash.memoize: 4.1.2
@@ -27091,7 +27099,7 @@ snapshots:
       - esbuild
       - uglify-js
 
-  webpack@5.93.0(uglify-js@3.19.1):
+  webpack@5.93.0(esbuild@0.21.5)(uglify-js@3.19.1):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.5
@@ -27114,7 +27122,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(uglify-js@3.19.1)(webpack@5.93.0(uglify-js@3.19.1))
+      terser-webpack-plugin: 5.3.10(esbuild@0.21.5)(uglify-js@3.19.1)(webpack@5.93.0(esbuild@0.21.5)(uglify-js@3.19.1))
       watchpack: 2.4.1
       webpack-sources: 3.2.3
     transitivePeerDependencies:
