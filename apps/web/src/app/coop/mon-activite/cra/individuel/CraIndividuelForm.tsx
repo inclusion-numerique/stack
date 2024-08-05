@@ -194,10 +194,6 @@ const CraIndividuelForm = ({
     ),
   )
 
-  const lieuAccompagnementDomicileCommuneRenderKey = watch(
-    'lieuAccompagnementDomicileCommune',
-  )?.id
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <CraBeneficiaryForm
@@ -275,7 +271,6 @@ const CraIndividuelForm = ({
           searchOptions={{ type: 'municipality' }}
           defaultOptions={initialLieuResidenceOptions}
           defaultValue={lieuAccompagnementDomicileCommuneDefaultValue}
-          key={lieuAccompagnementDomicileCommuneRenderKey}
         />
       )}
       {showLieuAccompagnementLieuActivite && (
