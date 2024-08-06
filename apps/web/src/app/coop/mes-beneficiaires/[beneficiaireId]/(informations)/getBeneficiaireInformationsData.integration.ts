@@ -150,16 +150,8 @@ describe('getBeneficiaireInformationsData', () => {
         trancheAge: null,
       },
       displayName: getBeneficiaireDisplayName(beneficiaire),
-      thematiquesCounts: {
-        crasCollectifs: [],
-        crasDemarchesAdministratives: [],
-        crasIndividuels: [],
-        total: [],
-      },
-      activites: {
-        all: [],
-        byDate: [],
-      },
+      thematiquesCounts: [],
+      activites: [],
       totalCrasCount: 0,
     })
   })
