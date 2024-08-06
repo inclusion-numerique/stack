@@ -118,16 +118,6 @@ workflows:
             - test_web_integration
             - test_components
             - test_web_e2e
-      - chromatic:
-          requires:
-            - lint_web
-            - lint_packages
-            - build_web
-            - test_packages
-            - test_web
-            - test_web_integration
-            - test_components
-            - test_web_e2e
 
   chromatic_deployment:
     when:
