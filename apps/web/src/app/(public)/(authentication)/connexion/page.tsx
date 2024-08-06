@@ -14,7 +14,7 @@ const SigninPage = async ({
 }) => {
   const user = await getSessionUser()
 
-  const callbackUrl = getServerUrl(suivant ?? '/connexion/suivant')
+  const callbackUrl = suivant ?? '/connexion/suivant'
 
   if (user) {
     redirect(getServerUrl(callbackUrl))
