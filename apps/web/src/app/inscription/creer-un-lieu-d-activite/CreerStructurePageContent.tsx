@@ -38,7 +38,7 @@ const CreerStructurePageContent = ({
           styles.sideNavContainer,
         )}
       >
-        {showSideMenu ? <CreerStructureSideMenu /> : null}
+        {showSideMenu && <CreerStructureSideMenu />}
       </div>
       <div
         className={classNames(

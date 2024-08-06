@@ -28,6 +28,7 @@ type CommonProps<T extends FieldValues> = {
   }
   inputPre?: ReactNode
   inputPost?: ReactNode
+  labelSrOnly?: boolean
 }
 
 type InputProps = {
@@ -64,6 +65,7 @@ const InputFormField = <T extends FieldValues = FieldValues>({
   classes,
   inputPost,
   inputPre,
+  labelSrOnly = false,
   ...rest
 }: UiComponentProps & InputFormFieldProps<T>) => {
   const id = `input-form-field__${path}`
@@ -142,7 +144,10 @@ const InputFormField = <T extends FieldValues = FieldValues>({
             )}
           >
             <label
-              className={classNames('fr-label fr-mb-1v', classes?.label)}
+              className={classNames(
+                labelSrOnly ? 'fr-sr-only' : 'fr-label fr-mb-1v',
+                classes?.label,
+              )}
               htmlFor={id}
             >
               {label} {asterisk && <RedAsterisk />}

@@ -50,6 +50,11 @@ export const sessionUserSelect = {
           id: true,
         },
       },
+      _count: {
+        select: {
+          enActivite: { where: { suppression: null } },
+        },
+      },
     },
   },
   coordinateur: {

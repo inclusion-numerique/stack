@@ -36,7 +36,6 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
 
     buttonRef.current.click()
   })
-
   const structureEmployeuse = user.emplois.at(0)
 
   const menuContent = (
@@ -54,18 +53,34 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
         </span>
       </li>
       <li>
-        <Link
-          className="fr-nav__link fr-border--bottom"
-          href="/"
-          style={{ boxShadow: 'none' }}
-        >
+        <Link className="fr-nav__link" href="/" style={{ boxShadow: 'none' }}>
           <span
-            className="fr-icon-user-setting-line fr-icon--sm fr-mr-1w"
+            className="ri-account-circle-line fr-mr-1w"
             style={{ color: 'var(--blue-france-sun-113-625)' }}
+            aria-hidden
           />
           Voir mon profil
         </Link>
       </li>
+      {user.mediateur && user.mediateur._count.enActivite > 0 && (
+        <li>
+          <Link
+            className="fr-nav__link fr-border--bottom"
+            href="/lieux-activite"
+            style={{ boxShadow: 'none' }}
+          >
+            <span
+              className="ri-home-office-line fr-mr-1w"
+              style={{ color: 'var(--blue-france-sun-113-625)' }}
+              aria-hidden
+            />
+            Voir mes lieux d’activités ·{' '}
+            <span className="fr-text--bold">
+              {user.mediateur?._count.enActivite}
+            </span>
+          </Link>
+        </li>
+      )}
       {structureEmployeuse && (
         <li>
           <span className="fr-nav__link fr-pb-0 fr-text-mention--grey fr-text--medium fr-text--sm">
@@ -91,6 +106,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
           <span
             className="fr-icon-logout-box-r-line fr-icon--sm fr-mr-1w"
             style={{ color: 'var(--blue-france-sun-113-625)' }}
+            aria-hidden
           />
           Se déconnecter
         </Link>

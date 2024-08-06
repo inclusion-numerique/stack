@@ -24,7 +24,7 @@ const StructureCard = ({
   topRight?: React.ReactNode
   infoLinkHref?: string
 }) => {
-  const tooltipId = `tooltip-${nom}-${typologies?.join(',')}-${siret}-${rna}-${codePostal}-${commune}-${adresse}`
+  const tooltipId = `tooltip-${nom.replaceAll('"', '')}-${typologies?.join(',')}-${siret}-${rna}-${codePostal}-${commune}-${adresse}`
 
   return (
     <div

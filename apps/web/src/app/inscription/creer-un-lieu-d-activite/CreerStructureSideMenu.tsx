@@ -6,37 +6,37 @@ const CreerStructureSideMenu = () => (
     items={[
       {
         text: 'Informations',
-        linkProps: { href: `#informations` },
+        linkProps: { href: `#informations-generales` },
       },
       {
         text: 'Lieu accueillant du public',
-        linkProps: { href: `#description` },
+        linkProps: { href: '#description' },
         items: [
           {
             text: 'Description de l’activité du lieu',
-            linkProps: { href: `#description` },
+            linkProps: { href: '#description' },
           },
           {
             text: 'Informations pratiques',
-            linkProps: { href: `#informations-pratiques` },
+            linkProps: { href: '#informations-pratiques' },
           },
         ],
       },
       {
         text: 'Services d’inclusion numérique',
-        linkProps: { href: `#services` },
+        linkProps: { href: '#services-et-accompagnement' },
         items: [
           {
             text: 'Services & types d’accompagnement',
-            linkProps: { href: `#services` },
+            linkProps: { href: '#services-et-accompagnement' },
           },
           {
             text: 'Modalités d’accès au service',
-            linkProps: { href: `#acces` },
+            linkProps: { href: '#modalites-acces-au-service' },
           },
           {
             text: 'Types de publics accueillis',
-            linkProps: { href: `#publics` },
+            linkProps: { href: '#types-publics-accueillis' },
           },
         ],
       },
