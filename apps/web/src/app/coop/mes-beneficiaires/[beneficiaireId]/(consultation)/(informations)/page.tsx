@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
-import ViewBeneficiaireInformationsPage from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(informations)/ViewBeneficiaireInformationsPage'
-import { getBeneficiaireInformationsData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(informations)/getBeneficiaireInformationsData'
+import ViewBeneficiaireInformationsPage from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/(informations)/ViewBeneficiaireInformationsPage'
+import { getBeneficiaireInformationsPageData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/(informations)/getBeneficiaireInformationsPageData'
 
 const BeneficiaireInformationsPage = async ({
   params: { beneficiaireId },
@@ -10,7 +10,7 @@ const BeneficiaireInformationsPage = async ({
 }) => {
   const user = await getAuthenticatedMediateur()
 
-  const data = await getBeneficiaireInformationsData({
+  const data = await getBeneficiaireInformationsPageData({
     beneficiaireId,
     mediateurId: user.mediateur.id,
   })

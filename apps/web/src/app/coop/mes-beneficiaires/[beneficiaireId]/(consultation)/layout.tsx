@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import { PropsWithChildren } from 'react'
 import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { prismaClient } from '@app/web/prismaClient'
-import ViewBeneficiaireLayout from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/ViewBeneficiaireLayout'
+import ViewBeneficiaireLayout from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/ViewBeneficiaireLayout'
 
 const BeneficiaireLayout = async ({
   params: { beneficiaireId },
@@ -24,6 +24,7 @@ const BeneficiaireLayout = async ({
       nom: true,
       email: true,
       anneeNaissance: true,
+      mediateurId: true,
     },
   })
 

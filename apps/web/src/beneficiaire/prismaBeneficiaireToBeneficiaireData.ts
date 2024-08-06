@@ -21,7 +21,21 @@ export const beneficiaireCommuneResidenceToPreviewBanData = ({
       }
     : undefined
 
-export const prismaBeneficiaireToBeneficiaireData = ({
+export const prismaBeneficiaireToBeneficiaireData = <
+  T extends Pick<
+    Beneficiaire,
+    | 'id'
+    | 'mediateurId'
+    | 'nom'
+    | 'prenom'
+    | 'communeCodePostal'
+    | 'communeCodeInsee'
+    | 'commune'
+    | 'trancheAge'
+    | 'anneeNaissance'
+    | 'creation'
+  >,
+>({
   communeCodeInsee,
   mediateurId,
   communeCodePostal,
@@ -32,19 +46,8 @@ export const prismaBeneficiaireToBeneficiaireData = ({
   nom,
   id,
   creation,
-}: Pick<
-  Beneficiaire,
-  | 'id'
-  | 'mediateurId'
-  | 'nom'
-  | 'prenom'
-  | 'communeCodePostal'
-  | 'communeCodeInsee'
-  | 'commune'
-  | 'trancheAge'
-  | 'anneeNaissance'
-  | 'creation'
->): BeneficiaireData & { id: string; creation: Date } => ({
+  ...rest
+}: T): BeneficiaireData & { id: string; creation: Date } => ({
   id,
   mediateurId,
   prenom: prenom ?? '',
@@ -57,4 +60,5 @@ export const prismaBeneficiaireToBeneficiaireData = ({
   trancheAge,
   anneeNaissance,
   creation,
+  ...rest,
 })

@@ -3,11 +3,10 @@ import {
   beneficiaireCrasCounts,
   beneficiaireCrasCountSelect,
   countThematiques,
-  getBeneficiaireActivites,
 } from '@app/web/beneficiaire/beneficiaireQueries'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 
-export const getBeneficiaireInformationsData = async ({
+export const getBeneficiaireInformationsPageData = async ({
   beneficiaireId,
   mediateurId,
 }: {
@@ -24,6 +23,7 @@ export const getBeneficiaireInformationsData = async ({
     },
     select: {
       id: true,
+      mediateurId: true,
       prenom: true,
       nom: true,
       email: true,
@@ -50,21 +50,17 @@ export const getBeneficiaireInformationsData = async ({
   const displayName = getBeneficiaireDisplayName(beneficiaire)
   const { totalCrasCount } = beneficiaireCrasCounts(beneficiaire)
 
-  const [thematiquesCounts, activites] = await Promise.all([
-    countThematiques({ beneficiaireId }),
-    getBeneficiaireActivites({ beneficiaireId }),
-  ])
+  const thematiquesCounts = await countThematiques({ beneficiaireId })
 
   return {
     displayName,
     beneficiaire,
     thematiquesCounts,
-    activites: activites.byDate,
     totalCrasCount,
   }
 }
 
 export type BeneficiaireInformationsPageData = Exclude<
-  Awaited<ReturnType<typeof getBeneficiaireInformationsData>>,
+  Awaited<ReturnType<typeof getBeneficiaireInformationsPageData>>,
   null
 >

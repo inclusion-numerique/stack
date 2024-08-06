@@ -4,17 +4,36 @@ import type { Beneficiaire } from '@prisma/client'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
+import BeneficiaireAjouterUneActivite from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/BeneficiaireAjouterUneActivite'
+import type { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireValidation'
 
 const ViewBeneficiaireLayout = ({
   beneficiaire,
   children,
 }: PropsWithChildren<{
-  beneficiaire: Pick<Beneficiaire, 'id' | 'prenom' | 'nom' | 'anneeNaissance'>
+  beneficiaire: Pick<
+    Beneficiaire,
+    'id' | 'prenom' | 'nom' | 'anneeNaissance' | 'mediateurId'
+  >
 }>) => {
   const displayName = getBeneficiaireDisplayName(beneficiaire)
-  const { anneeNaissance } = beneficiaire
+  const {
+    anneeNaissance,
+    id: beneficiaireId,
+    nom,
+    prenom,
+    mediateurId,
+  } = beneficiaire
+
+  const beneficiaireCraData = {
+    id: beneficiaireId,
+    prenom,
+    nom,
+    mediateurId,
+  } satisfies BeneficiaireCraData
+
   return (
-    <CoopPageContainer size={794} className="fr-pt-8v">
+    <CoopPageContainer size={794} className="fr-pt-8v fr-pb-20v">
       <CoopBreadcrumbs
         parents={[
           {
@@ -34,14 +53,13 @@ const ViewBeneficiaireLayout = ({
           )}
         </div>
         <div className="fr-flex fr-flex-gap-4v">
-          {/* TODO add cra to existing beneficiaire */}
-          <Button iconId="fr-icon-user-add-line" className="wip-outline">
-            Ajouter une activité
-          </Button>
+          <BeneficiaireAjouterUneActivite
+            beneficiaire={beneficiaireCraData}
+            displayName={displayName}
+          />
           <Button
             iconId="fr-icon-edit-line"
             priority="secondary"
-            className="wip-outline"
             title="Modifier"
             linkProps={{
               href: `/coop/mes-beneficiaires/${beneficiaire.id}/modifier`,

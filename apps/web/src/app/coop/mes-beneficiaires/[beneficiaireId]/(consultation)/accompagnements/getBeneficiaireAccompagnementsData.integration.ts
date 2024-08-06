@@ -1,6 +1,4 @@
 import { prismaClient } from '@app/web/prismaClient'
-import { getBeneficiaireInformationsData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(informations)/getBeneficiaireInformationsData'
-import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import {
   LieuAccompagnement,
   LieuAtelier,
@@ -8,9 +6,9 @@ import {
   ThematiqueDemarcheAdministrative,
 } from '@prisma/client'
 import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
-import { CountThematiquesResult } from '@app/web/beneficiaire/beneficiaireQueries'
+import { getBeneficiaireAccompagnementsPageData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/getBeneficiaireAccompagnementsPageData'
 
-describe('getBeneficiaireInformationsData', () => {
+describe('getBeneficiaireAccompagnementsData', () => {
   const userId = '3afe39cb-9c3b-4411-a202-5829584e3ae4'
   const mediateurId = '2ec95060-d4ac-446a-bf72-c5ce2e02a0ba'
   const beneficiaireIds: string[] = [
@@ -108,7 +106,7 @@ describe('getBeneficiaireInformationsData', () => {
     await deleteFixtures()
   })
 
-  it('returns no thematiques for beneficiaire with no data', async () => {
+  it('returns no activites for beneficiaire with no data', async () => {
     const beneficiaire = await prismaClient.beneficiaire.create({
       data: {
         id: beneficiaireIds[0],
@@ -119,40 +117,25 @@ describe('getBeneficiaireInformationsData', () => {
     })
 
     expect(
-      await getBeneficiaireInformationsData({
+      await getBeneficiaireAccompagnementsPageData({
         mediateurId,
         beneficiaireId: beneficiaire.id,
       }),
     ).toEqual({
       beneficiaire: {
+        id: beneficiaire.id,
+        mediateurId,
+        prenom: 'Test',
+        nom: 'Integration',
+        anneeNaissance: null,
         _count: {
           crasDemarchesAdministratives: 0,
           crasIndividuels: 0,
           participationsAteliersCollectifs: 0,
         },
-        anneeNaissance: null,
-        email: null,
-        id: beneficiaire.id,
-        nom: beneficiaire.nom,
-        prenom: beneficiaire.prenom,
-
-        adresse: null,
-        commune: null,
-        communeCodeInsee: null,
-        communeCodePostal: null,
-        creation: expect.any(Date) as string,
-        dateNaissance: null,
-        genre: null,
-        notes: null,
-        pasDeTelephone: null,
-        statutSocial: null,
-        telephone: null,
-        trancheAge: null,
       },
-      displayName: getBeneficiaireDisplayName(beneficiaire),
-      thematiquesCounts: [],
-      activites: [],
       totalCrasCount: 0,
+      activitesByDate: [],
     })
   })
 
@@ -253,6 +236,7 @@ describe('getBeneficiaireInformationsData', () => {
             ThematiqueAccompagnement.ReseauxSociaux,
             ThematiqueAccompagnement.CultureNumerique,
           ],
+          titreAtelier: 'Exemple de titre',
           date: new Date('2024-07-07'),
         },
       ],
@@ -264,98 +248,35 @@ describe('getBeneficiaireInformationsData', () => {
       })),
     })
 
-    const expectedThematiqueCounts = [
-      {
-        count: 1,
-        enumValue: 'culture_numerique',
-        label: 'Culture numérique',
-        thematique: 'CultureNumerique',
-      },
-      {
-        count: 3,
-        enumValue: 'email',
-        label: 'E-mail',
-        thematique: 'Email',
-      },
-      {
-        count: 1,
-        enumValue: 'justice',
-        label: 'Justice',
-        thematique: 'Justice',
-      },
-      {
-        count: 1,
-        enumValue: 'logement',
-        label: 'Logement',
-        thematique: 'Logement',
-      },
-      {
-        count: 1,
-        enumValue: 'parentalite',
-        label: 'Parentalité',
-        thematique: 'Parentalite',
-      },
-      {
-        count: 2,
-        enumValue: 'reseaux_sociaux',
-        label: 'Réseaux sociaux communication',
-        thematique: 'ReseauxSociaux',
-      },
-      {
-        count: 1,
-        enumValue: 'sante',
-        label: 'Santé',
-        thematique: 'Sante',
-      },
-      {
-        count: 2,
-        enumValue: 'social_sante',
-        label: 'Social - Santé',
-        thematique: 'SocialSante',
-      },
-    ] satisfies CountThematiquesResult
-
     expect(
-      await getBeneficiaireInformationsData({
+      await getBeneficiaireAccompagnementsPageData({
         mediateurId,
         beneficiaireId: beneficiaire.id,
       }),
     ).toEqual({
       beneficiaire: {
+        id: beneficiaire.id,
+        mediateurId,
+        prenom: 'Test',
+        nom: 'Integration',
+        anneeNaissance: null,
         _count: {
           crasDemarchesAdministratives: 2,
           crasIndividuels: 2,
           participationsAteliersCollectifs: 2,
         },
-        anneeNaissance: null,
-        email: null,
-        id: beneficiaire.id,
-        nom: beneficiaire.nom,
-        prenom: beneficiaire.prenom,
-
-        adresse: null,
-        commune: null,
-        communeCodeInsee: null,
-        communeCodePostal: null,
-        creation: expect.any(Date) as string,
-        dateNaissance: null,
-        genre: null,
-        notes: null,
-        pasDeTelephone: null,
-        statutSocial: null,
-        telephone: null,
-        trancheAge: null,
       },
-      displayName: getBeneficiaireDisplayName(beneficiaire),
-      thematiquesCounts: expectedThematiqueCounts,
-      activites: [
+      totalCrasCount: 6,
+      activitesByDate: [
         {
           activites: [
             {
+              id: crasCollectifsIds[1],
               date: new Date('2024-07-07T00:00:00.000Z'),
               niveau: null,
               thematiques: ['ReseauxSociaux', 'CultureNumerique'],
               type: 'collectif',
+              titreAtelier: 'Exemple de titre',
             },
           ],
           date: '2024-07-07',
@@ -363,40 +284,45 @@ describe('getBeneficiaireInformationsData', () => {
         {
           activites: [
             {
+              id: crasIndividuelsIds[0],
               autonomie: null,
               date: new Date('2024-07-05T00:00:00.000Z'),
               thematiques: ['Email', 'Parentalite'],
               type: 'individuel',
             },
             {
+              id: crasIndividuelsIds[1],
               autonomie: null,
               date: new Date('2024-07-05T00:00:00.000Z'),
               thematiques: ['Email', 'Sante'],
               type: 'individuel',
             },
             {
+              id: crasDemarchesIds[0],
               autonomie: null,
               date: new Date('2024-07-05T00:00:00.000Z'),
               thematiques: ['SocialSante', 'Logement'],
               type: 'demarche',
             },
             {
+              id: crasDemarchesIds[1],
               autonomie: null,
               date: new Date('2024-07-05T00:00:00.000Z'),
               thematiques: ['SocialSante', 'Justice'],
               type: 'demarche',
             },
             {
+              id: crasCollectifsIds[0],
               date: new Date('2024-07-05T00:00:00.000Z'),
               niveau: null,
               thematiques: ['Email', 'ReseauxSociaux'],
               type: 'collectif',
+              titreAtelier: null,
             },
           ],
           date: '2024-07-05',
         },
       ],
-      totalCrasCount: 6,
     })
   })
 })

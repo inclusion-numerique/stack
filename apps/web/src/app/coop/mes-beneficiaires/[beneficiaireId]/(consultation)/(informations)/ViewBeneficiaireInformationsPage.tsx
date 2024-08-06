@@ -1,6 +1,6 @@
 import Tag from '@codegouvfr/react-dsfr/Tag'
-import BeneficiairePageNavigationBar from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/BeneficiairePageNavigationBar'
-import { BeneficiaireInformationsPageData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(informations)/getBeneficiaireInformationsData'
+import BeneficiairePageNavigationBar from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/BeneficiairePageNavigationBar'
+import { BeneficiaireInformationsPageData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/(informations)/getBeneficiaireInformationsPageData'
 import InfoLabelValue from '@app/web/components/InfoLabelValue'
 import {
   genreLabels,

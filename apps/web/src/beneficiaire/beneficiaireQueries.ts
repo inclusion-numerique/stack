@@ -182,18 +182,22 @@ export const countThematiques = async ({
 
 export type BeneficiaireActivite =
   | {
+      id: string
       type: 'individuel'
       date: string | Date
       autonomie: Autonomie | null
       thematiques: ThematiqueAccompagnement[]
     }
   | {
+      id: string
       type: 'collectif'
       date: string | Date
+      titreAtelier: string | null
       niveau: NiveauAtelier | null
       thematiques: ThematiqueAccompagnement[]
     }
   | {
+      id: string
       type: 'demarche'
       date: string | Date
       autonomie: Autonomie | null
@@ -219,6 +223,7 @@ export const getBeneficiaireActivites = async ({
       suppression: null,
     },
     select: {
+      id: true,
       date: true,
       autonomie: true,
       thematiques: true,
@@ -235,6 +240,7 @@ export const getBeneficiaireActivites = async ({
         suppression: null,
       },
       select: {
+        id: true,
         date: true,
         autonomie: true,
         thematiques: true,
@@ -254,9 +260,11 @@ export const getBeneficiaireActivites = async ({
       suppression: null,
     },
     select: {
+      id: true,
       date: true,
       niveau: true,
       thematiques: true,
+      titreAtelier: true,
     },
     orderBy: {
       creation: 'desc',
@@ -265,20 +273,24 @@ export const getBeneficiaireActivites = async ({
 
   const activites = [
     ...crasIndividuels.map((cra) => ({
+      id: cra.id,
       type: 'individuel' as const,
       date: cra.date,
       autonomie: cra.autonomie,
       thematiques: cra.thematiques,
     })),
     ...crasDemarchesAdministratives.map((cra) => ({
+      id: cra.id,
       type: 'demarche' as const,
       date: cra.date,
       autonomie: cra.autonomie,
       thematiques: cra.thematiques,
     })),
     ...crasCollectifs.map((cra) => ({
+      id: cra.id,
       type: 'collectif' as const,
       date: cra.date,
+      titreAtelier: cra.titreAtelier,
       niveau: cra.niveau,
       thematiques: cra.thematiques,
     })),

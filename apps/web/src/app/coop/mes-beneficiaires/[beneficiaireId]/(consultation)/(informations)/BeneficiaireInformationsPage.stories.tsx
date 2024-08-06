@@ -5,9 +5,9 @@ import {
   beneficiaireMinimaleMediateurAvecActivite,
 } from '@app/fixtures/beneficiaires'
 import { expect, within } from '@storybook/test'
-import type { BeneficiaireInformationsPageData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(informations)/getBeneficiaireInformationsData'
-import ViewBeneficiaireLayout from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/ViewBeneficiaireLayout'
-import ViewBeneficiaireInformationsPage from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(informations)/ViewBeneficiaireInformationsPage'
+import type { BeneficiaireInformationsPageData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/(informations)/getBeneficiaireInformationsPageData'
+import ViewBeneficiaireLayout from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/ViewBeneficiaireLayout'
+import ViewBeneficiaireInformationsPage from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/(informations)/ViewBeneficiaireInformationsPage'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 
 const Template = ({ data }: { data: BeneficiaireInformationsPageData }) => (
@@ -39,7 +39,6 @@ const sansInformations = {
   thematiquesCounts: [],
   displayName: getBeneficiaireDisplayName(beneficiaireSansInformations),
   totalCrasCount: 0,
-  activites: [],
 } satisfies BeneficiaireInformationsPageData
 
 export const SansInformations: Story = {
@@ -85,19 +84,6 @@ const avecInformations = {
       count: 1,
       enumValue: '',
       label: 'Argent et impôts',
-    },
-  ],
-  activites: [
-    {
-      date: '2021-09-01',
-      activites: [
-        {
-          type: 'individuel',
-          date: '2021-09-01',
-          thematiques: ['BanqueEtAchatsEnLigne'],
-          autonomie: 'Autonome',
-        },
-      ],
     },
   ],
   displayName: getBeneficiaireDisplayName(beneficiaireAvecInformations),
