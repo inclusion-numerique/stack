@@ -1,4 +1,6 @@
-import type {
+import {
+  Autonomie,
+  NiveauAtelier,
   Prisma,
   ThematiqueAccompagnement,
   ThematiqueDemarcheAdministrative,
@@ -185,5 +187,131 @@ export const countThematiques = async ({
     crasDemarchesAdministratives,
     crasCollectifs,
     total,
+  }
+}
+
+export type BeneficiaireActivite =
+  | {
+      type: 'individuel'
+      date: string | Date
+      autonomie: Autonomie | null
+      thematiques: ThematiqueAccompagnement[]
+    }
+  | {
+      type: 'collectif'
+      date: string | Date
+      niveau: NiveauAtelier | null
+      thematiques: ThematiqueAccompagnement[]
+    }
+  | {
+      type: 'demarche'
+      date: string | Date
+      autonomie: Autonomie | null
+      thematiques: ThematiqueDemarcheAdministrative[]
+    }
+
+export type BeneficiaireActiviteByDate = {
+  date: string | Date
+  activites: BeneficiaireActivite[]
+}
+
+export const getBeneficiaireActivites = async ({
+  beneficiaireId,
+}: {
+  beneficiaireId: string
+}): Promise<{
+  all: BeneficiaireActivite[]
+  byDate: BeneficiaireActiviteByDate[]
+}> => {
+  const crasIndividuels = await prismaClient.craIndividuel.findMany({
+    where: {
+      beneficiaireId,
+      suppression: null,
+    },
+    select: {
+      date: true,
+      autonomie: true,
+      thematiques: true,
+    },
+    orderBy: {
+      creation: 'desc',
+    },
+  })
+
+  const crasDemarchesAdministratives =
+    await prismaClient.craDemarcheAdministrative.findMany({
+      where: {
+        beneficiaireId,
+        suppression: null,
+      },
+      select: {
+        date: true,
+        autonomie: true,
+        thematiques: true,
+      },
+      orderBy: {
+        creation: 'desc',
+      },
+    })
+
+  const crasCollectifs = await prismaClient.craCollectif.findMany({
+    where: {
+      participants: {
+        some: {
+          beneficiaireId,
+        },
+      },
+      suppression: null,
+    },
+    select: {
+      date: true,
+      niveau: true,
+      thematiques: true,
+    },
+    orderBy: {
+      creation: 'desc',
+    },
+  })
+
+  const activites = [
+    ...crasIndividuels.map((cra) => ({
+      type: 'individuel' as const,
+      date: cra.date,
+      autonomie: cra.autonomie,
+      thematiques: cra.thematiques,
+    })),
+    ...crasDemarchesAdministratives.map((cra) => ({
+      type: 'demarche' as const,
+      date: cra.date,
+      autonomie: cra.autonomie,
+      thematiques: cra.thematiques,
+    })),
+    ...crasCollectifs.map((cra) => ({
+      type: 'collectif' as const,
+      date: cra.date,
+      niveau: cra.niveau,
+      thematiques: cra.thematiques,
+    })),
+  ].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  ) satisfies BeneficiaireActivite[]
+
+  const activitesByDate = activites.reduce<
+    Record<string, BeneficiaireActiviteByDate>
+  >((accumulator, activity) => {
+    const date = new Date(activity.date).toISOString().slice(0, 10)
+    if (!accumulator[date]) {
+      accumulator[date] = {
+        date,
+        activites: [],
+      }
+    }
+    accumulator[date].activites.push(activity)
+    return accumulator
+  }, {})
+
+  return {
+    all: activites,
+    byDate: Object.values(activitesByDate),
   }
 }

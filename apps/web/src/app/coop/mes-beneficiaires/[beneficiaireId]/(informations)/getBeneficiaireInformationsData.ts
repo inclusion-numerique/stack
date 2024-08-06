@@ -3,6 +3,7 @@ import {
   beneficiaireCrasCounts,
   beneficiaireCrasCountSelect,
   countThematiques,
+  getBeneficiaireActivites,
 } from '@app/web/beneficiaire/beneficiaireQueries'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 
@@ -49,12 +50,16 @@ export const getBeneficiaireInformationsData = async ({
   const displayName = getBeneficiaireDisplayName(beneficiaire)
   const { totalCrasCount } = beneficiaireCrasCounts(beneficiaire)
 
-  const thematiquesCounts = await countThematiques({ beneficiaireId })
+  const [thematiquesCounts, activites] = await Promise.all([
+    countThematiques({ beneficiaireId }),
+    getBeneficiaireActivites({ beneficiaireId }),
+  ])
 
   return {
     displayName,
     beneficiaire,
     thematiquesCounts,
+    activites,
     totalCrasCount,
   }
 }

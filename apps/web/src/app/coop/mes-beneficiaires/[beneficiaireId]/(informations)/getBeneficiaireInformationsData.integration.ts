@@ -156,6 +156,10 @@ describe('getBeneficiaireInformationsData', () => {
         crasIndividuels: [],
         total: [],
       },
+      activites: {
+        all: [],
+        byDate: [],
+      },
       totalCrasCount: 0,
     })
   })
@@ -169,7 +173,7 @@ describe('getBeneficiaireInformationsData', () => {
         mediateurId,
       },
     })
-    const date = new Date()
+    const date = new Date('2024-07-05')
     const duree = 90
 
     const commonData = {
@@ -257,6 +261,7 @@ describe('getBeneficiaireInformationsData', () => {
             ThematiqueAccompagnement.ReseauxSociaux,
             ThematiqueAccompagnement.CultureNumerique,
           ],
+          date: new Date('2024-07-07'),
         },
       ],
     })
@@ -413,6 +418,94 @@ describe('getBeneficiaireInformationsData', () => {
       },
       displayName: getBeneficiaireDisplayName(beneficiaire),
       thematiquesCounts: expectedThematiqueCounts,
+      activites: {
+        all: [
+          {
+            date: new Date('2024-07-07T00:00:00.000Z'),
+            niveau: null,
+            thematiques: ['ReseauxSociaux', 'CultureNumerique'],
+            type: 'collectif',
+          },
+          {
+            autonomie: null,
+            date: new Date('2024-07-05T00:00:00.000Z'),
+            thematiques: ['Email', 'Parentalite'],
+            type: 'individuel',
+          },
+          {
+            autonomie: null,
+            date: new Date('2024-07-05T00:00:00.000Z'),
+            thematiques: ['Email', 'Sante'],
+            type: 'individuel',
+          },
+          {
+            autonomie: null,
+            date: new Date('2024-07-05T00:00:00.000Z'),
+            thematiques: ['SocialSante', 'Logement'],
+            type: 'demarche',
+          },
+          {
+            autonomie: null,
+            date: new Date('2024-07-05T00:00:00.000Z'),
+            thematiques: ['SocialSante', 'Justice'],
+            type: 'demarche',
+          },
+          {
+            date: new Date('2024-07-05T00:00:00.000Z'),
+            niveau: null,
+            thematiques: ['Email', 'ReseauxSociaux'],
+            type: 'collectif',
+          },
+        ],
+        byDate: [
+          {
+            activites: [
+              {
+                date: new Date('2024-07-07T00:00:00.000Z'),
+                niveau: null,
+                thematiques: ['ReseauxSociaux', 'CultureNumerique'],
+                type: 'collectif',
+              },
+            ],
+            date: '2024-07-07',
+          },
+          {
+            activites: [
+              {
+                autonomie: null,
+                date: new Date('2024-07-05T00:00:00.000Z'),
+                thematiques: ['Email', 'Parentalite'],
+                type: 'individuel',
+              },
+              {
+                autonomie: null,
+                date: new Date('2024-07-05T00:00:00.000Z'),
+                thematiques: ['Email', 'Sante'],
+                type: 'individuel',
+              },
+              {
+                autonomie: null,
+                date: new Date('2024-07-05T00:00:00.000Z'),
+                thematiques: ['SocialSante', 'Logement'],
+                type: 'demarche',
+              },
+              {
+                autonomie: null,
+                date: new Date('2024-07-05T00:00:00.000Z'),
+                thematiques: ['SocialSante', 'Justice'],
+                type: 'demarche',
+              },
+              {
+                date: new Date('2024-07-05T00:00:00.000Z'),
+                niveau: null,
+                thematiques: ['Email', 'ReseauxSociaux'],
+                type: 'collectif',
+              },
+            ],
+            date: '2024-07-05',
+          },
+        ],
+      },
       totalCrasCount: 6,
     })
   })
