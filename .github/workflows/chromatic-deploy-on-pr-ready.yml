@@ -1,0 +1,15 @@
+name: Deploy chromatic when PR status is ready (not draft)
+on:
+  pull_request:
+    types: [ready_for_review]
+jobs:
+    chromatic-deploy-on-pr-ready:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Trigger CircleCI workflow
+            uses: promiseofcake/circleci-trigger-action@v1
+            with:
+              # Branch from environment does not exists anymore, workflow will run from dev branch
+              branch: ${{ github.event.ref }}
+              payload: '{"trigger_workflow": "chromatic_deployment"}'
+              user-token: ${{ secrets.CIRCLE_CI_TOKEN }}

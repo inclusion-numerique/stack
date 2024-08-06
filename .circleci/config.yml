@@ -128,6 +128,7 @@ workflows:
             - test_web_integration
             - test_components
             - test_web_e2e
+
   chromatic_deployment:
     when:
       equal: [ chromatic_deployment, << pipeline.parameters.trigger_workflow >> ]
