@@ -117,10 +117,6 @@ export const AvecInformations: Story = {
       canvas.getByText('Culture numérique', { selector: '.fr-tag' }),
     ).toBeInTheDocument()
 
-    await expect(
-      canvas.getByText('EXPECTED FAIL TO TEST CI', { selector: '.fr-tag' }),
-    ).toBeInTheDocument()
-
     // It finds the tags with count > 1 with the count
     await expect(
       canvas.getByText(
