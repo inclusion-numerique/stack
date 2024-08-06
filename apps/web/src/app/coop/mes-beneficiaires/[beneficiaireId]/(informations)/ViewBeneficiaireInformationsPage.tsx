@@ -1,6 +1,6 @@
 import Tag from '@codegouvfr/react-dsfr/Tag'
 import BeneficiairePageNavigationBar from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/BeneficiairePageNavigationBar'
-import { BeneficiaireInformationsData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(informations)/getBeneficiaireInformationsData'
+import { BeneficiaireInformationsPageData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(informations)/getBeneficiaireInformationsData'
 import InfoLabelValue from '@app/web/components/InfoLabelValue'
 import {
   genreLabels,
@@ -12,7 +12,7 @@ import styles from './ViewBeneficiaireInformationsPage.module.css'
 const ViewBeneficiaireInformationsPage = ({
   data: { beneficiaire, totalCrasCount, thematiquesCounts },
 }: {
-  data: BeneficiaireInformationsData
+  data: BeneficiaireInformationsPageData
 }) => {
   const {
     notes,
@@ -40,9 +40,9 @@ const ViewBeneficiaireInformationsPage = ({
         <p className="fr-text--xs fr-text-mention--grey fr-mb-4v">
           Retrouvez les thématiques d’accompagnements vues avec ce bénéficiaire.
         </p>
-        {thematiquesCounts.total.length > 0 ? (
+        {thematiquesCounts.length > 0 ? (
           <div className="fr-flex fr-flex-wrap fr-flex-gap-3v">
-            {thematiquesCounts.total.map(({ thematique, label, count }) => (
+            {thematiquesCounts.map(({ thematique, label, count }) => (
               <Tag key={thematique}>
                 {label}
                 {count > 1 ? (

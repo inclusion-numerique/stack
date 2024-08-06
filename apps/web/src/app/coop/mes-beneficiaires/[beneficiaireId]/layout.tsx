@@ -4,7 +4,7 @@ import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediate
 import { prismaClient } from '@app/web/prismaClient'
 import ViewBeneficiaireLayout from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/ViewBeneficiaireLayout'
 
-const BeneficiairePage = async ({
+const BeneficiaireLayout = async ({
   params: { beneficiaireId },
   children,
 }: PropsWithChildren<{
@@ -39,4 +39,4 @@ const BeneficiairePage = async ({
   )
 }
 
-export default BeneficiairePage
+export default BeneficiaireLayout

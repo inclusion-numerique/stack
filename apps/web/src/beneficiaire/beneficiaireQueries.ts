@@ -68,12 +68,7 @@ export type CraThematiqueCount =
   | ThematiqueAccompagnementCount
   | ThematiqueDemarcheAdministrativeCount
 
-export type CountThematiquesResult = {
-  crasIndividuels: ThematiqueAccompagnementCount[]
-  crasDemarchesAdministratives: ThematiqueDemarcheAdministrativeCount[]
-  crasCollectifs: ThematiqueAccompagnementCount[]
-  total: CraThematiqueCount[]
-}
+export type CountThematiquesResult = CraThematiqueCount[]
 
 export const countThematiques = async ({
   beneficiaireId,
@@ -182,12 +177,7 @@ export const countThematiques = async ({
     (a, b) => a.label.localeCompare(b.label),
   )
 
-  return {
-    crasIndividuels,
-    crasDemarchesAdministratives,
-    crasCollectifs,
-    total,
-  }
+  return total
 }
 
 export type BeneficiaireActivite =

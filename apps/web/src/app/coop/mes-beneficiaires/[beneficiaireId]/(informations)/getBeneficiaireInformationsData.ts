@@ -59,12 +59,12 @@ export const getBeneficiaireInformationsData = async ({
     displayName,
     beneficiaire,
     thematiquesCounts,
-    activites,
+    activites: activites.byDate,
     totalCrasCount,
   }
 }
 
-export type BeneficiaireInformationsData = Exclude<
+export type BeneficiaireInformationsPageData = Exclude<
   Awaited<ReturnType<typeof getBeneficiaireInformationsData>>,
   null
 >

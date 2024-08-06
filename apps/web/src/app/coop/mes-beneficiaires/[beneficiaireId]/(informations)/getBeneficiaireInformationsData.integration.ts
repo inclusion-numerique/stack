@@ -272,118 +272,56 @@ describe('getBeneficiaireInformationsData', () => {
       })),
     })
 
-    const expectedThematiqueCounts = {
-      crasCollectifs: [
-        {
-          count: 1,
-          enumValue: 'email',
-          label: 'E-mail',
-          thematique: 'Email',
-        },
-        {
-          count: 2,
-          enumValue: 'reseaux_sociaux',
-          label: 'Réseaux sociaux communication',
-          thematique: 'ReseauxSociaux',
-        },
-        {
-          count: 1,
-          enumValue: 'culture_numerique',
-          label: 'Culture numérique',
-          thematique: 'CultureNumerique',
-        },
-      ],
-      crasDemarchesAdministratives: [
-        {
-          count: 2,
-          enumValue: 'social_sante',
-          label: 'Social - Santé',
-          thematique: 'SocialSante',
-        },
-        {
-          count: 1,
-          enumValue: 'logement',
-          label: 'Logement',
-          thematique: 'Logement',
-        },
-        {
-          count: 1,
-          enumValue: 'justice',
-          label: 'Justice',
-          thematique: 'Justice',
-        },
-      ],
-      crasIndividuels: [
-        {
-          count: 2,
-          enumValue: 'email',
-          label: 'E-mail',
-          thematique: 'Email',
-        },
-        {
-          count: 1,
-          enumValue: 'sante',
-          label: 'Santé',
-          thematique: 'Sante',
-        },
-        {
-          count: 1,
-          enumValue: 'parentalite',
-          label: 'Parentalité',
-          thematique: 'Parentalite',
-        },
-      ],
-      total: [
-        {
-          count: 1,
-          enumValue: 'culture_numerique',
-          label: 'Culture numérique',
-          thematique: 'CultureNumerique',
-        },
-        {
-          count: 3,
-          enumValue: 'email',
-          label: 'E-mail',
-          thematique: 'Email',
-        },
-        {
-          count: 1,
-          enumValue: 'justice',
-          label: 'Justice',
-          thematique: 'Justice',
-        },
-        {
-          count: 1,
-          enumValue: 'logement',
-          label: 'Logement',
-          thematique: 'Logement',
-        },
-        {
-          count: 1,
-          enumValue: 'parentalite',
-          label: 'Parentalité',
-          thematique: 'Parentalite',
-        },
-        {
-          count: 2,
-          enumValue: 'reseaux_sociaux',
-          label: 'Réseaux sociaux communication',
-          thematique: 'ReseauxSociaux',
-        },
-        {
-          count: 1,
-          enumValue: 'sante',
-          label: 'Santé',
-          thematique: 'Sante',
-        },
-        {
-          count: 2,
-          enumValue: 'social_sante',
-          label: 'Social - Santé',
-          thematique: 'SocialSante',
-        },
-      ],
-    } satisfies CountThematiquesResult
+    const expectedThematiqueCounts = [
+      {
+        count: 1,
+        enumValue: 'culture_numerique',
+        label: 'Culture numérique',
+        thematique: 'CultureNumerique',
+      },
+      {
+        count: 3,
+        enumValue: 'email',
+        label: 'E-mail',
+        thematique: 'Email',
+      },
+      {
+        count: 1,
+        enumValue: 'justice',
+        label: 'Justice',
+        thematique: 'Justice',
+      },
+      {
+        count: 1,
+        enumValue: 'logement',
+        label: 'Logement',
+        thematique: 'Logement',
+      },
+      {
+        count: 1,
+        enumValue: 'parentalite',
+        label: 'Parentalité',
+        thematique: 'Parentalite',
+      },
+      {
+        count: 2,
+        enumValue: 'reseaux_sociaux',
+        label: 'Réseaux sociaux communication',
+        thematique: 'ReseauxSociaux',
+      },
+      {
+        count: 1,
+        enumValue: 'sante',
+        label: 'Santé',
+        thematique: 'Sante',
+      },
+      {
+        count: 2,
+        enumValue: 'social_sante',
+        label: 'Social - Santé',
+        thematique: 'SocialSante',
+      },
+    ] satisfies CountThematiquesResult
 
     expect(
       await getBeneficiaireInformationsData({
@@ -418,94 +356,54 @@ describe('getBeneficiaireInformationsData', () => {
       },
       displayName: getBeneficiaireDisplayName(beneficiaire),
       thematiquesCounts: expectedThematiqueCounts,
-      activites: {
-        all: [
-          {
-            date: new Date('2024-07-07T00:00:00.000Z'),
-            niveau: null,
-            thematiques: ['ReseauxSociaux', 'CultureNumerique'],
-            type: 'collectif',
-          },
-          {
-            autonomie: null,
-            date: new Date('2024-07-05T00:00:00.000Z'),
-            thematiques: ['Email', 'Parentalite'],
-            type: 'individuel',
-          },
-          {
-            autonomie: null,
-            date: new Date('2024-07-05T00:00:00.000Z'),
-            thematiques: ['Email', 'Sante'],
-            type: 'individuel',
-          },
-          {
-            autonomie: null,
-            date: new Date('2024-07-05T00:00:00.000Z'),
-            thematiques: ['SocialSante', 'Logement'],
-            type: 'demarche',
-          },
-          {
-            autonomie: null,
-            date: new Date('2024-07-05T00:00:00.000Z'),
-            thematiques: ['SocialSante', 'Justice'],
-            type: 'demarche',
-          },
-          {
-            date: new Date('2024-07-05T00:00:00.000Z'),
-            niveau: null,
-            thematiques: ['Email', 'ReseauxSociaux'],
-            type: 'collectif',
-          },
-        ],
-        byDate: [
-          {
-            activites: [
-              {
-                date: new Date('2024-07-07T00:00:00.000Z'),
-                niveau: null,
-                thematiques: ['ReseauxSociaux', 'CultureNumerique'],
-                type: 'collectif',
-              },
-            ],
-            date: '2024-07-07',
-          },
-          {
-            activites: [
-              {
-                autonomie: null,
-                date: new Date('2024-07-05T00:00:00.000Z'),
-                thematiques: ['Email', 'Parentalite'],
-                type: 'individuel',
-              },
-              {
-                autonomie: null,
-                date: new Date('2024-07-05T00:00:00.000Z'),
-                thematiques: ['Email', 'Sante'],
-                type: 'individuel',
-              },
-              {
-                autonomie: null,
-                date: new Date('2024-07-05T00:00:00.000Z'),
-                thematiques: ['SocialSante', 'Logement'],
-                type: 'demarche',
-              },
-              {
-                autonomie: null,
-                date: new Date('2024-07-05T00:00:00.000Z'),
-                thematiques: ['SocialSante', 'Justice'],
-                type: 'demarche',
-              },
-              {
-                date: new Date('2024-07-05T00:00:00.000Z'),
-                niveau: null,
-                thematiques: ['Email', 'ReseauxSociaux'],
-                type: 'collectif',
-              },
-            ],
-            date: '2024-07-05',
-          },
-        ],
-      },
+      activites: [
+        {
+          activites: [
+            {
+              date: new Date('2024-07-07T00:00:00.000Z'),
+              niveau: null,
+              thematiques: ['ReseauxSociaux', 'CultureNumerique'],
+              type: 'collectif',
+            },
+          ],
+          date: '2024-07-07',
+        },
+        {
+          activites: [
+            {
+              autonomie: null,
+              date: new Date('2024-07-05T00:00:00.000Z'),
+              thematiques: ['Email', 'Parentalite'],
+              type: 'individuel',
+            },
+            {
+              autonomie: null,
+              date: new Date('2024-07-05T00:00:00.000Z'),
+              thematiques: ['Email', 'Sante'],
+              type: 'individuel',
+            },
+            {
+              autonomie: null,
+              date: new Date('2024-07-05T00:00:00.000Z'),
+              thematiques: ['SocialSante', 'Logement'],
+              type: 'demarche',
+            },
+            {
+              autonomie: null,
+              date: new Date('2024-07-05T00:00:00.000Z'),
+              thematiques: ['SocialSante', 'Justice'],
+              type: 'demarche',
+            },
+            {
+              date: new Date('2024-07-05T00:00:00.000Z'),
+              niveau: null,
+              thematiques: ['Email', 'ReseauxSociaux'],
+              type: 'collectif',
+            },
+          ],
+          date: '2024-07-05',
+        },
+      ],
       totalCrasCount: 6,
     })
   })

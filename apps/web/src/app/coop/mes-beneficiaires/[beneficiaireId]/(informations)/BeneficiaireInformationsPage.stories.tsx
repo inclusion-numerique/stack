@@ -4,12 +4,13 @@ import {
   beneficiaireMaximaleMediateurAvecActivite,
   beneficiaireMinimaleMediateurAvecActivite,
 } from '@app/fixtures/beneficiaires'
-import type { BeneficiaireInformationsData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(informations)/getBeneficiaireInformationsData'
+import { expect, within } from '@storybook/test'
+import type { BeneficiaireInformationsPageData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(informations)/getBeneficiaireInformationsData'
 import ViewBeneficiaireLayout from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/ViewBeneficiaireLayout'
 import ViewBeneficiaireInformationsPage from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(informations)/ViewBeneficiaireInformationsPage'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 
-const Template = ({ data }: { data: BeneficiaireInformationsData }) => (
+const Template = ({ data }: { data: BeneficiaireInformationsPageData }) => (
   <ViewBeneficiaireLayout beneficiaire={data.beneficiaire}>
     <ViewBeneficiaireInformationsPage data={data} />
   </ViewBeneficiaireLayout>
@@ -31,19 +32,15 @@ const beneficiaireSansInformations = {
     crasDemarchesAdministratives: 0,
     participationsAteliersCollectifs: 0,
   },
-} satisfies BeneficiaireInformationsData['beneficiaire']
+} satisfies BeneficiaireInformationsPageData['beneficiaire']
 
 const sansInformations = {
   beneficiaire: beneficiaireSansInformations,
-  thematiquesCounts: {
-    crasCollectifs: [],
-    crasIndividuels: [],
-    crasDemarchesAdministratives: [],
-    total: [],
-  },
+  thematiquesCounts: [],
   displayName: getBeneficiaireDisplayName(beneficiaireSansInformations),
   totalCrasCount: 0,
-} satisfies BeneficiaireInformationsData
+  activites: [],
+} satisfies BeneficiaireInformationsPageData
 
 export const SansInformations: Story = {
   name: 'Sans informations',
@@ -60,82 +57,77 @@ const beneficiaireAvecInformations = {
     crasDemarchesAdministratives: 1,
     participationsAteliersCollectifs: 3,
   },
-} satisfies BeneficiaireInformationsData['beneficiaire']
+} satisfies BeneficiaireInformationsPageData['beneficiaire']
 
 const avecInformations = {
   beneficiaire: beneficiaireAvecInformations,
-  thematiquesCounts: {
-    crasIndividuels: [
-      {
-        thematique: 'BanqueEtAchatsEnLigne',
-        count: 2,
-        enumValue: '',
-        label: 'Banque et achats en ligne',
-      },
-    ],
-    crasDemarchesAdministratives: [
-      {
-        thematique: 'ArgentImpots',
-        count: 1,
-        enumValue: '',
-        label: 'Argent et impôts',
-      },
-    ],
-    crasCollectifs: [
-      {
-        thematique: 'BanqueEtAchatsEnLigne',
-        count: 1,
-        enumValue: '',
-        label: 'Banque et achats en ligne',
-      },
-      {
-        thematique: 'CultureNumerique',
-        count: 1,
-        enumValue: '',
-        label: 'Culture numérique',
-      },
-      {
-        thematique: 'Entrepreneuriat',
-        count: 1,
-        enumValue: '',
-        label: 'Entrepreneuriat',
-      },
-    ],
-    total: [
-      {
-        thematique: 'BanqueEtAchatsEnLigne',
-        count: 3,
-        enumValue: '',
-        label: 'Banque et achats en ligne',
-      },
-      {
-        thematique: 'CultureNumerique',
-        count: 1,
-        enumValue: '',
-        label: 'Culture numérique',
-      },
-      {
-        thematique: 'Entrepreneuriat',
-        count: 1,
-        enumValue: '',
-        label: 'Entrepreneuriat',
-      },
-      {
-        thematique: 'ArgentImpots',
-        count: 1,
-        enumValue: '',
-        label: 'Argent et impôts',
-      },
-    ],
-  },
+  thematiquesCounts: [
+    {
+      thematique: 'BanqueEtAchatsEnLigne',
+      count: 3,
+      enumValue: '',
+      label: 'Banque et achats en ligne',
+    },
+    {
+      thematique: 'CultureNumerique',
+      count: 1,
+      enumValue: '',
+      label: 'Culture numérique',
+    },
+    {
+      thematique: 'Entrepreneuriat',
+      count: 1,
+      enumValue: '',
+      label: 'Entrepreneuriat',
+    },
+    {
+      thematique: 'ArgentImpots',
+      count: 1,
+      enumValue: '',
+      label: 'Argent et impôts',
+    },
+  ],
+  activites: [
+    {
+      date: '2021-09-01',
+      activites: [
+        {
+          type: 'individuel',
+          date: '2021-09-01',
+          thematiques: ['BanqueEtAchatsEnLigne'],
+          autonomie: 'Autonome',
+        },
+      ],
+    },
+  ],
   displayName: getBeneficiaireDisplayName(beneficiaireAvecInformations),
   totalCrasCount: 6,
-} satisfies BeneficiaireInformationsData
+} satisfies BeneficiaireInformationsPageData
 
 export const AvecInformations: Story = {
   name: 'Avec informations',
   render: (args) => <Template {...args} />,
   args: {
     data: avecInformations,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    // It finds tags with count 1 without the count
+    await expect(
+      canvas.getByText('Culture numérique', { selector: '.fr-tag' }),
+    ).toBeInTheDocument()
+
+    await expect(
+      canvas.getByText('EXPECTED FAIL TO TEST CI', { selector: '.fr-tag' }),
+    ).toBeInTheDocument()
+
+    // It finds the tags with count > 1 with the count
+    await expect(
+      canvas.getByText(
+        (_, element) =>
+          element?.textContent === 'Banque et achats en ligne · 3',
+        { selector: '.fr-tag' },
+      ),
+    ).toBeInTheDocument()
   },
 }
