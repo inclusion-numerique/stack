@@ -119,4 +119,36 @@ export const beneficiairesRouter = router({
 
       return created
     }),
+  delete: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input, ctx: { user } }) => {
+      enforceIsMediateur(user)
+
+      const { id } = input
+
+      await checkExistingBeneficiaire({
+        beneficiaireId: id,
+        mediateurId: user.mediateur.id,
+      })
+
+      const deleted = await prismaClient.beneficiaire.update({
+        where: { id },
+        data: {
+          suppression: new Date(),
+          modification: new Date(),
+          // Anonymize the beneficiaire but keep anonymous data for stats
+          prenom: null,
+          nom: null,
+          telephone: null,
+          anneeNaissance: null,
+          dateNaissance: null,
+          email: null,
+          notes: null,
+          adresse: null,
+          pasDeTelephone: null,
+        },
+      })
+
+      return deleted
+    }),
 })
