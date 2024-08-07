@@ -9,7 +9,12 @@ const Stars = ({
   className?: string
   max?: number
 }) => (
-  <div className={classNames('fr-text-title--blue-france', className)}>
+  <div
+    className={classNames(
+      'fr-text-title--blue-france fr-flex fr-flex-nowrap',
+      className,
+    )}
+  >
     {Array.from({ length: count }).map((_, index) => (
       <span
         key={

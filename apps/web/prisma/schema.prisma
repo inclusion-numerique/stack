@@ -522,7 +522,6 @@ model Beneficiaire {
   telephone      String?
   pasDeTelephone Boolean?  @map("pas_de_telephone")
   email          String?
-  dateNaissance  DateTime? @map("date_naissance") @db.Date
   anneeNaissance Int?      @map("annee_naissance")
   adresse        String?
 

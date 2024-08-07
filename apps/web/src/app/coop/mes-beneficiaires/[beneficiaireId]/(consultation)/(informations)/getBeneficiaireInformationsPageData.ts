@@ -36,7 +36,6 @@ export const getBeneficiaireInformationsPageData = async ({
       telephone: true,
       pasDeTelephone: true,
       statutSocial: true,
-      dateNaissance: true,
       commune: true,
       communeCodePostal: true,
       communeCodeInsee: true,
