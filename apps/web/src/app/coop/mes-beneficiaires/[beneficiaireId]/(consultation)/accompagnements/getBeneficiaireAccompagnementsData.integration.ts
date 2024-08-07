@@ -7,110 +7,113 @@ import {
 } from '@prisma/client'
 import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
 import { getBeneficiaireAccompagnementsPageData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/getBeneficiaireAccompagnementsPageData'
+import { flushPromises } from '@app/test/flushPromises'
+
+const userId = '3afe39cb-9c3b-4411-a202-5829584e3ae4'
+const mediateurId = '2ec95060-d4ac-446a-bf72-c5ce2e02a0ba'
+const beneficiaireIds: string[] = [
+  '5d839b7c-69f8-4a4f-bc4a-bf7dd34a734c',
+  '0e6569fe-6672-46f9-b4d2-ecfc5233e8f5',
+]
+const crasIndividuelsIds: string[] = [
+  '69cc03f6-12ee-47e5-8759-8a82fb97ba89',
+  '3921644e-2343-4fce-954b-0c69bd81a358',
+]
+const crasCollectifsIds: string[] = [
+  'bfce1609-2170-431a-903e-728c541d3fe3',
+  'faf81ac7-cb7f-4949-8dbf-330b435fa87c',
+]
+const crasDemarchesIds: string[] = [
+  '31a4230e-b992-49cc-92de-1823fadd4d6a',
+  'aa9765e2-7f8e-4af5-8bf1-d40bdf6ec5cd',
+]
+
+const deleteFixtures = async () => {
+  await prismaClient.craIndividuel.deleteMany({
+    where: {
+      id: {
+        in: crasIndividuelsIds,
+      },
+    },
+  })
+  await prismaClient.participantAtelierCollectif.deleteMany({
+    where: {
+      craCollectifId: {
+        in: crasCollectifsIds,
+      },
+    },
+  })
+  await prismaClient.craCollectif.deleteMany({
+    where: {
+      id: {
+        in: crasCollectifsIds,
+      },
+    },
+  })
+  await prismaClient.participantsAnonymesCraCollectif.deleteMany({
+    where: {
+      id: {
+        in: crasCollectifsIds,
+      },
+    },
+  })
+  await prismaClient.craDemarcheAdministrative.deleteMany({
+    where: {
+      id: {
+        in: crasDemarchesIds,
+      },
+    },
+  })
+  await prismaClient.beneficiaire.deleteMany({
+    where: {
+      id: {
+        in: beneficiaireIds,
+      },
+    },
+  })
+  await prismaClient.mediateur.deleteMany({
+    where: {
+      id: { in: [mediateurId] },
+    },
+  })
+  await prismaClient.user.deleteMany({
+    where: {
+      id: {
+        in: [userId],
+      },
+    },
+  })
+}
+
+const prepare = async () => {
+  await deleteFixtures()
+  await flushPromises()
+  // Fixtures loading
+  await prismaClient.mediateur.create({
+    data: {
+      id: mediateurId,
+      user: {
+        create: {
+          id: userId,
+          email: `test-integration+${userId}@test.test`,
+        },
+      },
+    },
+  })
+}
+
+const cleanup = async () => {
+  await deleteFixtures()
+}
 
 describe('getBeneficiaireAccompagnementsData', () => {
-  const userId = '3afe39cb-9c3b-4411-a202-5829584e3ae4'
-  const mediateurId = '2ec95060-d4ac-446a-bf72-c5ce2e02a0ba'
-  const beneficiaireIds: string[] = [
-    '5d839b7c-69f8-4a4f-bc4a-bf7dd34a734c',
-    '0e6569fe-6672-46f9-b4d2-ecfc5233e8f5',
-  ]
-  const crasIndividuelsIds: string[] = [
-    '69cc03f6-12ee-47e5-8759-8a82fb97ba89',
-    '3921644e-2343-4fce-954b-0c69bd81a358',
-  ]
-  const crasCollectifsIds: string[] = [
-    'bfce1609-2170-431a-903e-728c541d3fe3',
-    'faf81ac7-cb7f-4949-8dbf-330b435fa87c',
-  ]
-  const crasDemarchesIds: string[] = [
-    '31a4230e-b992-49cc-92de-1823fadd4d6a',
-    'aa9765e2-7f8e-4af5-8bf1-d40bdf6ec5cd',
-  ]
-
-  const deleteFixtures = async () => {
-    await prismaClient.craIndividuel.deleteMany({
-      where: {
-        id: {
-          in: crasIndividuelsIds,
-        },
-      },
-    })
-    await prismaClient.participantAtelierCollectif.deleteMany({
-      where: {
-        craCollectifId: {
-          in: crasCollectifsIds,
-        },
-      },
-    })
-    await prismaClient.craCollectif.deleteMany({
-      where: {
-        id: {
-          in: crasCollectifsIds,
-        },
-      },
-    })
-    await prismaClient.participantsAnonymesCraCollectif.deleteMany({
-      where: {
-        id: {
-          in: crasCollectifsIds,
-        },
-      },
-    })
-    await prismaClient.craDemarcheAdministrative.deleteMany({
-      where: {
-        id: {
-          in: crasDemarchesIds,
-        },
-      },
-    })
-    await prismaClient.beneficiaire.deleteMany({
-      where: {
-        id: {
-          in: beneficiaireIds,
-        },
-      },
-    })
-    await prismaClient.mediateur.deleteMany({
-      where: {
-        id: { in: [mediateurId] },
-      },
-    })
-    await prismaClient.user.deleteMany({
-      where: {
-        id: {
-          in: [userId],
-        },
-      },
-    })
-  }
-
-  const prepare = async () => {
-    await deleteFixtures()
-    // Fixtures loading
-    await prismaClient.mediateur.create({
-      data: {
-        id: mediateurId,
-        user: {
-          create: {
-            id: userId,
-            email: `test-integration+${userId}@test.test`,
-          },
-        },
-      },
-    })
-  }
-
-  const cleanup = async () => {
-    await deleteFixtures()
-  }
-
   afterAll(async () => {
     await cleanup()
   })
 
   it('returns no activites for beneficiaire with no data', async () => {
     await prepare()
+    await flushPromises()
     const beneficiaire = await prismaClient.beneficiaire.create({
       data: {
         id: beneficiaireIds[0],
@@ -145,6 +148,7 @@ describe('getBeneficiaireAccompagnementsData', () => {
 
   it('returns thematiques for beneficiaire with cras', async () => {
     await prepare()
+    await flushPromises()
     const beneficiaire = await prismaClient.beneficiaire.create({
       data: {
         id: beneficiaireIds[1],
