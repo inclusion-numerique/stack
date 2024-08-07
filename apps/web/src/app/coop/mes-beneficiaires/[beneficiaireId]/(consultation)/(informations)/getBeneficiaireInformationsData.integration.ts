@@ -87,7 +87,7 @@ describe('getBeneficiaireInformationsData', () => {
     })
   }
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     await deleteFixtures()
     // Fixtures loading
     await prismaClient.mediateur.create({
