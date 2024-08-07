@@ -248,9 +248,20 @@ export const craRouter = router({
         } satisfies Prisma.CraIndividuelUpdateInput
 
         if (id) {
+          const beneficiaireId = existingBeneficiaire?.id
+          if (!beneficiaireId) {
+            throw invalidError('Beneficiaire missing')
+          }
           const updated = await prismaClient.craIndividuel.update({
             where: { id },
-            data,
+            data: {
+              ...data,
+              activiteBeneficiaire: {
+                update: {
+                  beneficiaireId,
+                },
+              },
+            },
           })
 
           return updated
@@ -260,12 +271,20 @@ export const craRouter = router({
         const created = await prismaClient.craIndividuel.create({
           data: {
             id: newId,
-            activite: {
+            activiteMediateur: {
               create: {
                 id: v4(),
                 mediateurId,
               },
             },
+            activiteBeneficiaire: existingBeneficiaire
+              ? {
+                  create: {
+                    id: v4(),
+                    beneficiaireId: existingBeneficiaire.id,
+                  },
+                }
+              : undefined,
             ...data,
           },
         })
@@ -375,9 +394,20 @@ export const craRouter = router({
         } satisfies Prisma.CraDemarcheAdministrativeUpdateInput
 
         if (id) {
+          const beneficiaireId = existingBeneficiaire?.id
+          if (!beneficiaireId) {
+            throw invalidError('Beneficiaire missing')
+          }
           const updated = await prismaClient.craDemarcheAdministrative.update({
             where: { id },
-            data,
+            data: {
+              ...data,
+              activiteBeneficiaire: {
+                update: {
+                  beneficiaireId,
+                },
+              },
+            },
           })
 
           return updated
@@ -387,12 +417,20 @@ export const craRouter = router({
         const created = await prismaClient.craDemarcheAdministrative.create({
           data: {
             id: newId,
-            activite: {
+            activiteMediateur: {
               create: {
                 id: v4(),
                 mediateurId,
               },
             },
+            activiteBeneficiaire: existingBeneficiaire
+              ? {
+                  create: {
+                    id: v4(),
+                    beneficiaireId: existingBeneficiaire.id,
+                  },
+                }
+              : undefined,
             ...data,
           },
         })
@@ -526,6 +564,16 @@ export const craRouter = router({
                   craCollectifId: craId,
                 })),
               }),
+              prismaClient.activiteBeneficiaire.deleteMany({
+                where: { craCollectifId: craId },
+              }),
+              prismaClient.activiteBeneficiaire.createMany({
+                data: participants.map((participant) => ({
+                  id: v4(),
+                  beneficiaireId: participant.id,
+                  craCollectifId: craId,
+                })),
+              }),
             ].filter(isDefinedAndNotNull),
           )
 
@@ -537,7 +585,7 @@ export const craRouter = router({
           prismaClient.craCollectif.create({
             data: {
               id: newId,
-              activite: {
+              activiteMediateur: {
                 create: {
                   id: craId,
                   mediateurId,
@@ -547,6 +595,13 @@ export const craRouter = router({
             },
           }),
           prismaClient.participantAtelierCollectif.createMany({
+            data: participants.map((participant) => ({
+              id: v4(),
+              beneficiaireId: participant.id,
+              craCollectifId: newId,
+            })),
+          }),
+          prismaClient.activiteBeneficiaire.createMany({
             data: participants.map((participant) => ({
               id: v4(),
               beneficiaireId: participant.id,

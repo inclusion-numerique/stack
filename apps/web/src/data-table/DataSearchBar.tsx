@@ -16,9 +16,11 @@ const DataSearchBar = <
 >({
   searchParams,
   baseHref,
+  placeholder,
 }: {
   searchParams: DataTableSearchParams<Configuration>
   baseHref: string
+  placeholder?: string
 }) => {
   const router = useRouter()
 
@@ -57,6 +59,7 @@ const DataSearchBar = <
       onButtonClick={onSearch}
       allowEmptySearch
       ref={searchBarRef}
+      label={placeholder}
     />
   )
 }

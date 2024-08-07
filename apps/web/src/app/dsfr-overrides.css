@@ -396,3 +396,8 @@ select.fr-select{
         height: 56px !important;
     }
 }
+
+/* Pagination */
+.fr-pagination__link{
+    margin-bottom: 0;
+}

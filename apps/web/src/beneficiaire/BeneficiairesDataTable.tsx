@@ -6,7 +6,7 @@ import {
 } from '@app/web/data-table/DataTableConfiguration'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import { SearchBeneficiaireResultRow } from '@app/web/beneficiaire/searchBeneficiaire'
-import { dateAsDayAndTime } from '@app/web/utils/dateAsDayAndTime'
+import { numberToString } from '@app/web/utils/formatNumber'
 
 export type BeneficiairesDataTableConfiguration = DataTableConfiguration<
   SearchBeneficiaireResultRow,
@@ -44,24 +44,12 @@ export const BeneficiairesDataTable = {
       ],
     },
     {
-      name: 'ajout',
-      header: 'Ajouté le',
-      csvHeaders: ['Ajouté le'],
-      csvValues: ({ creation }) => [creation.toLocaleString()],
-      cell: ({ creation }) => dateAsDayAndTime(creation),
-      defaultSortable: true,
-      orderBy: (direction) => [
-        {
-          creation: direction,
-        },
-      ],
-    },
-    {
       name: 'annee-naissance',
       header: 'Année de naissance',
       csvHeaders: ['Année de naissance'],
       csvValues: ({ anneeNaissance }) => [anneeNaissance],
       cell: ({ anneeNaissance }) => anneeNaissance || '-',
+      headerClassName: 'fr-text--right',
       cellClassName: 'fr-text--right',
       orderBy: (direction) => [
         {
@@ -74,8 +62,17 @@ export const BeneficiairesDataTable = {
       header: 'Accompagnements',
       csvHeaders: ['Accompagnements'],
       csvValues: ({ totalCrasCount }) => [totalCrasCount],
-      cell: ({ totalCrasCount }) => totalCrasCount,
+      cell: ({ totalCrasCount }) => numberToString(totalCrasCount),
+      headerClassName: 'fr-text--right',
       cellClassName: 'fr-text--right',
+      orderBy: (direction) => [
+        {
+          activites: {
+            // TODO Cannot sort by supression:null until: https://github.com/prisma/prisma/issues/20838
+            _count: direction,
+          },
+        },
+      ],
     },
   ],
 } satisfies BeneficiairesDataTableConfiguration

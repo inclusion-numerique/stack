@@ -80,12 +80,72 @@ const seed = async (transaction: Prisma.TransactionClient) => {
     ),
   )
 
+  // Create activités for mediateurs
+  await Promise.all(
+    fixtureCrasIndividuels.map((cra) =>
+      transaction.activiteMediateur.upsert({
+        where: { id: cra.id },
+        create: {
+          id: cra.id,
+          mediateurId: cra.creeParMediateurId,
+          craIndividuelId: cra.id,
+        },
+        update: { mediateurId: cra.creeParMediateurId },
+      }),
+    ),
+  )
+
+  // Create activités for beneficiaires
+  await Promise.all(
+    fixtureCrasIndividuels.map((cra) =>
+      transaction.activiteBeneficiaire.upsert({
+        where: { id: cra.id },
+        create: {
+          id: cra.id,
+          beneficiaireId: cra.beneficiaireId,
+          craIndividuelId: cra.id,
+        },
+        update: { beneficiaireId: cra.beneficiaireId },
+      }),
+    ),
+  )
+
   await Promise.all(
     fixtureCrasDemarchesAdministratives.map((cra) =>
       transaction.craDemarcheAdministrative.upsert({
         where: { id: cra.id },
         create: cra,
         update: cra,
+      }),
+    ),
+  )
+
+  // Create activités for mediateurs
+  await Promise.all(
+    fixtureCrasIndividuels.map((cra) =>
+      transaction.activiteMediateur.upsert({
+        where: { id: cra.id },
+        create: {
+          id: cra.id,
+          mediateurId: cra.creeParMediateurId,
+          craDemarcheAdministrativeId: cra.id,
+        },
+        update: { mediateurId: cra.creeParMediateurId },
+      }),
+    ),
+  )
+
+  // Create activités for beneficiaires
+  await Promise.all(
+    fixtureCrasDemarchesAdministratives.map((cra) =>
+      transaction.activiteBeneficiaire.upsert({
+        where: { id: cra.id },
+        create: {
+          id: cra.id,
+          beneficiaireId: cra.beneficiaireId,
+          craDemarcheAdministrativeId: cra.id,
+        },
+        update: { beneficiaireId: cra.beneficiaireId },
       }),
     ),
   )

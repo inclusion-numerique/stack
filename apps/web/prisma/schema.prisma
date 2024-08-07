@@ -205,7 +205,7 @@ model Mediateur {
   crasIndividuels              CraIndividuel[]
   crasCollectifs               CraCollectif[]
   crasDemarchesAdministratives CraDemarcheAdministrative[]
-  activites                    Activite[]
+  activites                    ActiviteMediateur[]
 
   @@map("mediateurs")
 }
@@ -520,9 +520,9 @@ model Beneficiaire {
   prenom         String?
   nom            String?
   telephone      String?
-  pasDeTelephone Boolean?  @map("pas_de_telephone")
+  pasDeTelephone Boolean? @map("pas_de_telephone")
   email          String?
-  anneeNaissance Int?      @map("annee_naissance")
+  anneeNaissance Int?     @map("annee_naissance")
   adresse        String?
 
   // Nom de la commune de résidence
@@ -546,12 +546,13 @@ model Beneficiaire {
   crasIndividuels                  CraIndividuel[]
   crasDemarchesAdministratives     CraDemarcheAdministrative[]
   participationsAteliersCollectifs ParticipantAtelierCollectif[]
+  activites                        ActiviteBeneficiaire[]
 
   @@map("beneficiaires")
 }
 
-// This model / table is used for easier joins with prisma between mediateur / beneficiaire and different Cras
-model Activite {
+// This model / table is used for easier joins and aggregations with prisma between mediateur and different Cras
+model ActiviteMediateur {
   id String @id @default(uuid()) @db.Uuid
 
   mediateurId String    @map("mediateur_id") @db.Uuid
@@ -566,7 +567,27 @@ model Activite {
   craDemarcheAdministrativeId String?                    @unique @map("cra_demarche_administrative_id") @db.Uuid
   craDemarcheAdministrative   CraDemarcheAdministrative? @relation(fields: [craDemarcheAdministrativeId], references: [id])
 
-  @@map("activites")
+  @@map("activites_mediateurs")
+}
+
+// This model / table is used for easier joins and aggregations with beneficiaire and different Cras
+model ActiviteBeneficiaire {
+  id String @id @default(uuid()) @db.Uuid
+
+  beneficiaireId String       @map("beneficiaire_id") @db.Uuid
+  beneficiaire   Beneficiaire @relation(fields: [beneficiaireId], references: [id])
+
+  craIndividuelId String?        @unique @map("cra_individuel_id") @db.Uuid
+  craIndividuel   CraIndividuel? @relation(fields: [craIndividuelId], references: [id])
+
+  craCollectifId String?       @map("cra_collectif_id") @db.Uuid
+  craCollectif   CraCollectif? @relation(fields: [craCollectifId], references: [id])
+
+  craDemarcheAdministrativeId String?                    @unique @map("cra_demarche_administrative_id") @db.Uuid
+  craDemarcheAdministrative   CraDemarcheAdministrative? @relation(fields: [craDemarcheAdministrativeId], references: [id])
+
+  @@unique([beneficiaireId, craCollectifId])
+  @@map("activites_beneficiaires")
 }
 
 enum LieuAccompagnement {
@@ -659,7 +680,8 @@ model CraIndividuel {
   modification DateTime  @default(now())
   suppression  DateTime?
 
-  activite Activite? // Should always be defined but id is owned by Activite
+  activiteMediateur    ActiviteMediateur? // Should always be defined but id is owned by Activite
+  activiteBeneficiaire ActiviteBeneficiaire? // Should always be defined but id is owned by Activite
 
   @@map("cras_individuels")
 }
@@ -673,6 +695,7 @@ model ParticipantAtelierCollectif {
   beneficiaireId String       @map("beneficiaire_id") @db.Uuid
   beneficiaire   Beneficiaire @relation(fields: [beneficiaireId], references: [id])
 
+  @@unique([beneficiaireId, craCollectifId])
   @@map("participants_ateliers_collectifs")
 }
 
@@ -725,7 +748,9 @@ model CraCollectif {
   creation     DateTime  @default(now())
   modification DateTime  @default(now())
   suppression  DateTime?
-  activite     Activite? // Should always be defined but id is owned by Activite
+
+  activiteMediateur      ActiviteMediateur? // Should always be defined but id is owned by Activite
+  activitesBeneficiaires ActiviteBeneficiaire[]
 
   @@map("cras_collectifs")
 }
@@ -819,7 +844,8 @@ model CraDemarcheAdministrative {
   modification DateTime  @default(now())
   suppression  DateTime?
 
-  activite Activite? // Should always be defined but id is owned by Activite
+  activiteMediateur    ActiviteMediateur? // Should always be defined but id is owned by Activite
+  activiteBeneficiaire ActiviteBeneficiaire? // Should always be defined but id is owned by Activite
 
   @@map("cras_demarches_administratives")
 }

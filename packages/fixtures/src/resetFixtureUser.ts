@@ -37,7 +37,7 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
   if (user.mediateur?.id) {
     const mediateurId = user.mediateur.id
 
-    await prismaClient.activite.deleteMany({
+    await prismaClient.activiteMediateur.deleteMany({
       where: {
         mediateurId,
       },
@@ -86,6 +86,12 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
     await prismaClient.mediateurCoordonne.deleteMany({
       where: {
         mediateurId,
+      },
+    })
+
+    await prismaClient.activiteBeneficiaire.deleteMany({
+      where: {
+        beneficiaire: { mediateurId },
       },
     })
 

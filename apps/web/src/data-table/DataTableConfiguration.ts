@@ -99,4 +99,6 @@ export type DataTableSearchParams<
   recherche?: string
   tri?: SortableColumn<Configuration>['name']
   ordre?: SortDirection
+  page?: number
+  lignes?: number // Nombre de résultats par page
 } & DataTableFilterSearchParams<Configuration>

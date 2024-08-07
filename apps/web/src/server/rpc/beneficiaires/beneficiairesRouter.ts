@@ -73,9 +73,16 @@ const beneficiaireCreateInputFromForm = ({
 export const beneficiairesRouter = router({
   search: protectedProcedure
     .input(z.object({ query: z.string() }))
-    .query(({ input: { query }, ctx: { user } }) =>
-      searchBeneficiaire(query, user),
-    ),
+    .query(({ input: { query }, ctx: { user } }) => {
+      if (!user.mediateur && user.role !== 'Admin') {
+        throw forbiddenError('User is not a mediateur')
+      }
+      return searchBeneficiaire({
+        mediateurId: user.mediateur?.id,
+        take: 10_000,
+        query,
+      })
+    }),
   createOrUpdate: protectedProcedure
     .input(BeneficiaireValidation)
     .mutation(async ({ input, ctx: { user } }) => {
