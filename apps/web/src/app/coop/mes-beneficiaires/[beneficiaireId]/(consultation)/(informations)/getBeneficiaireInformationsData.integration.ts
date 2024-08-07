@@ -87,7 +87,7 @@ describe('getBeneficiaireInformationsData', () => {
     })
   }
 
-  beforeEach(async () => {
+  const prepare = async () => {
     await deleteFixtures()
     // Fixtures loading
     await prismaClient.mediateur.create({
@@ -101,14 +101,18 @@ describe('getBeneficiaireInformationsData', () => {
         },
       },
     })
-  })
+  }
 
-  // Delete all this whatever happens in the test
-  afterAll(async () => {
+  const cleanup = async () => {
     await deleteFixtures()
+  }
+
+  afterAll(async () => {
+    await cleanup()
   })
 
   it('returns no thematiques for beneficiaire with no data', async () => {
+    await prepare()
     const beneficiaire = await prismaClient.beneficiaire.create({
       data: {
         id: beneficiaireIds[0],
@@ -156,6 +160,7 @@ describe('getBeneficiaireInformationsData', () => {
   })
 
   it('returns thematiques for beneficiaire with cras', async () => {
+    await prepare()
     const beneficiaire = await prismaClient.beneficiaire.create({
       data: {
         id: beneficiaireIds[1],
