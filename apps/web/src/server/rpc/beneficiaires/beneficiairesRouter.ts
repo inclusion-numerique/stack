@@ -131,27 +131,75 @@ export const beneficiairesRouter = router({
 
       const { id } = input
 
-      await checkExistingBeneficiaire({
+      const beneficiaire = await checkExistingBeneficiaire({
         beneficiaireId: id,
         mediateurId: user.mediateur.id,
       })
 
-      const deleted = await prismaClient.beneficiaire.update({
-        where: { id },
-        data: {
-          suppression: new Date(),
-          modification: new Date(),
-          // Anonymize the beneficiaire but keep anonymous data for stats
-          prenom: null,
-          nom: null,
-          telephone: null,
-          email: null,
-          notes: null,
-          adresse: null,
-          pasDeTelephone: null,
-        },
-      })
+      if (!beneficiaire) {
+        throw invalidError('Beneficiaire not found')
+      }
 
-      return deleted
+      /**
+       * Cas spécifique si je supprime un bénéficiaire qui est lié à des activités :
+       *
+       * - Bénéficiaire dans un atelier collectif → retiré des beneficiaires suivis et ajouté en compteur benef anonymes
+       * - Beneficiaire dans un accompagnement individuel / demarche → retiré du bénéficiaire sélectionné, et on affiche la partie beneficiaire anonyme
+       *   -- Cela fonctionne car un beneficiaire est toujours associé, il sera "anonyme" a partir du moment ou prenom et nom sont null
+       */
+
+      const { genre, trancheAge, statutSocial } = beneficiaire
+
+      const incrementParticipantsAnonymesData = {
+        total: {
+          increment: 1,
+        },
+        [genre ? `genre${genre}` : 'genreNonCommunique']: {
+          increment: 1,
+        },
+        [trancheAge ? `trancheAge${trancheAge}` : 'trancheAgeNonCommunique']: {
+          increment: 1,
+        },
+        [statutSocial
+          ? `statutSocial${statutSocial}`
+          : 'statutSocialNonCommunique']: {
+          increment: 1,
+        },
+      } satisfies Prisma.ParticipantsAnonymesCraCollectifUncheckedUpdateManyInput
+
+      await prismaClient.$transaction([
+        prismaClient.participantAtelierCollectif.deleteMany({
+          where: {
+            beneficiaireId: id,
+          },
+        }),
+        prismaClient.participantsAnonymesCraCollectif.updateMany({
+          where: {
+            craCollectif: {
+              participants: {
+                some: {
+                  beneficiaireId: id,
+                },
+              },
+            },
+          },
+          data: incrementParticipantsAnonymesData,
+        }),
+        prismaClient.beneficiaire.update({
+          where: { id },
+          data: {
+            suppression: new Date(),
+            modification: new Date(),
+            // Anonymize the beneficiaire but keep anonymous data for stats
+            prenom: null,
+            nom: null,
+            telephone: null,
+            email: null,
+            notes: null,
+            adresse: null,
+            pasDeTelephone: null,
+          },
+        }),
+      ])
     }),
 })

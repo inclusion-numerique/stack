@@ -6,6 +6,8 @@ import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import BeneficiaireAjouterUneActivite from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/BeneficiaireAjouterUneActivite'
 import type { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireValidation'
+import { DeleteBeneficiaireModal } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/DeleteBeneficiaireModal'
+import DeleteBeneficiaireModalContent from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/DeleteBeneficiaireModalContent'
 
 const ViewBeneficiaireLayout = ({
   beneficiaire,
@@ -65,17 +67,20 @@ const ViewBeneficiaireLayout = ({
               href: `/coop/mes-beneficiaires/${beneficiaire.id}/modifier`,
             }}
           />
-          {/* TODO deletion feature */}
           <Button
             iconId="fr-icon-delete-bin-line"
             priority="secondary"
-            className="wip-outline"
             title="Supprimer"
             type="button"
+            {...DeleteBeneficiaireModal.buttonProps}
           />
         </div>
       </div>
       {children}
+      <DeleteBeneficiaireModalContent
+        beneficiaireId={beneficiaire.id}
+        displayName={displayName}
+      />
     </CoopPageContainer>
   )
 }

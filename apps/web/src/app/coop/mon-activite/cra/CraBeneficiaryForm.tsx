@@ -22,6 +22,7 @@ import type {
   BeneficiaireData,
 } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { AdresseBanData } from '@app/web/external-apis/ban/AdresseBanValidation'
+import { isBeneficiaireAnonymous } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
 
 /**
  * This component has 3 states :
@@ -42,7 +43,10 @@ export type CraDataWithBeneficiaire = {
 }
 
 const initialStateFromValues = (values: CraDataWithBeneficiaire) => {
-  if (values.beneficiaire?.id) {
+  if (
+    values.beneficiaire?.id &&
+    !isBeneficiaireAnonymous(values.beneficiaire)
+  ) {
     return CraBeneficiaryFormState.Selected
   }
 
