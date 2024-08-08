@@ -3,6 +3,7 @@ import { BeneficiaireAccompagnementsPageData } from '@app/web/app/coop/mes-benef
 import ActiviteBeneficiaireCard from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/ActiviteBeneficiaireCard'
 import { formatActiviteDayDate } from '@app/web/utils/activiteDayDateFormat'
 import BeneficiairePageNavigationBar from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/BeneficiairePageNavigationBar'
+import ActiviteDetailsModal from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsModal'
 
 const ViewBeneficiaireAccompagnementsPage = ({
   data: { activitesByDate, beneficiaire, totalCrasCount },
@@ -28,10 +29,11 @@ const ViewBeneficiaireAccompagnementsPage = ({
           {formatActiviteDayDate(date)}
         </h3>
         {activites.map((activite) => (
-          <ActiviteBeneficiaireCard key={activite.id} activite={activite} />
+          <ActiviteBeneficiaireCard key={activite.cra.id} activite={activite} />
         ))}
       </Fragment>
     ))}
+    {activitesByDate.length > 0 && <ActiviteDetailsModal />}
   </>
 )
 

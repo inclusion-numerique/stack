@@ -1,0 +1,7 @@
+dialog.modal {
+    :global .fr-modal__title {
+        position: absolute;
+        top: 32px;
+    }
+
+}

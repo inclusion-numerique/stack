@@ -1,5 +1,4 @@
 import Tag from '@codegouvfr/react-dsfr/Tag'
-import { BeneficiaireActivite } from '@app/web/beneficiaire/beneficiaireQueries'
 import {
   accompagnementTypeIllustrations,
   accompagnementTypeLabels,
@@ -9,22 +8,23 @@ import {
   thematiqueDemarcheAdministrativeLabels,
 } from '@app/web/cra/cra'
 import Stars from '@app/web/components/Stars'
+import ActiviteBeneficiaireCardOpenModalLink from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/ActiviteBeneficiaireCardOpenModalLink'
+import { Activite } from '@app/web/cra/activitesQueries'
 
-const ActiviteBeneficiaireCard = ({
-  activite,
-}: {
-  activite: BeneficiaireActivite
-}) => {
+const ActiviteBeneficiaireCard = ({ activite }: { activite: Activite }) => {
   const { hasStars, starsCount } =
     (activite.type === 'individuel' || activite.type === 'demarche') &&
-    activite.autonomie
-      ? { hasStars: true, starsCount: autonomieStars[activite.autonomie] }
-      : activite.type === 'collectif' && activite.niveau
-        ? { hasStars: true, starsCount: niveauAtelierStars[activite.niveau] }
+    activite.cra.autonomie
+      ? { hasStars: true, starsCount: autonomieStars[activite.cra.autonomie] }
+      : activite.type === 'collectif' && activite.cra.niveau
+        ? {
+            hasStars: true,
+            starsCount: niveauAtelierStars[activite.cra.niveau],
+          }
         : { hasStars: false, starsCount: 0 }
 
   return (
-    <div className="fr-py-2v fr-px-4v fr-flex fr-align-items-center fr-flex-gap-4v fr-my-2v">
+    <div className="fr-py-2v fr-px-4v fr-flex fr-align-items-center fr-flex-gap-4v fr-my-2v fr-enlarge-button fr-border-radius--8">
       <div className="fr-background-alt--blue-france fr-p-2v fr-border-radius--8 fr-flex">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -39,9 +39,9 @@ const ActiviteBeneficiaireCard = ({
           <span className="fr-text--xs fr-text--bold fr-text--uppercase fr-mb-0">
             {accompagnementTypeLabels[activite.type]}
           </span>
-          {activite.type === 'collectif' && activite.titreAtelier ? (
+          {activite.type === 'collectif' && activite.cra.titreAtelier ? (
             <span className="fr-text--medium fr-text--sm fr-text-mention--grey fr-mb-0">
-              &nbsp;·&nbsp;{activite.titreAtelier}
+              &nbsp;·&nbsp;{activite.cra.titreAtelier}
             </span>
           ) : null}
         </p>
@@ -49,7 +49,7 @@ const ActiviteBeneficiaireCard = ({
           <div className="fr-flex fr-flex-wrap fr-flex-gap-2v">
             {activite.type === 'individuel' || activite.type === 'collectif' ? (
               <>
-                {activite.thematiques.map((thematique) => (
+                {activite.cra.thematiques.map((thematique) => (
                   <Tag key={thematique} small>
                     {thematiqueAccompagnementLabels[thematique]}
                   </Tag>
@@ -57,7 +57,7 @@ const ActiviteBeneficiaireCard = ({
               </>
             ) : (
               <>
-                {activite.thematiques.map((thematique) => (
+                {activite.cra.thematiques.map((thematique) => (
                   <Tag key={thematique} small>
                     {thematiqueDemarcheAdministrativeLabels[thematique]}
                   </Tag>
@@ -74,6 +74,7 @@ const ActiviteBeneficiaireCard = ({
           )}
         </div>
       </div>
+      <ActiviteBeneficiaireCardOpenModalLink activite={activite} />
     </div>
   )
 }

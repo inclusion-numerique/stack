@@ -23,6 +23,7 @@ export const BeneficiairesDataTable = {
       name: 'nom',
       header: 'Nom',
       csvHeaders: ['Nom'],
+      defaultSortable: true,
       csvValues: ({ nom }) => [nom],
       cell: ({ nom }) => nom,
       orderBy: (direction) => [

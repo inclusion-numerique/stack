@@ -424,6 +424,12 @@
     white-space: nowrap;
 }
 
+.fr-ellipsis {
+    max-width: 100%;
+    width: 100%;
+    display: inline-block !important;
+}
+
 .fr-hidden-print {
     @media print {
         display: none !important;
