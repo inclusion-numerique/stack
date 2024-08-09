@@ -13,6 +13,7 @@ import {
 export const beneficiaireCrasCountSelect = {
   _count: {
     select: {
+      activites: true,
       crasDemarchesAdministratives: {
         where: { suppression: null },
       },

@@ -1,7 +1,5 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { beneficiaireMaximaleMediateurAvecActivite } from '@app/fixtures/beneficiaires'
-import { BeneficiaireAccompagnementsPageData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/getBeneficiaireAccompagnementsPageData'
 import MesBeneficiairesListeLayout from '@app/web/app/coop/mes-beneficiaires/(liste)/MesBeneficiairesListeLayout'
 import MesBeneficiairesListePage from '@app/web/app/coop/mes-beneficiaires/(liste)/MesBeneficiairesListePage'
 import { BeneficiairesListPageData } from '@app/web/app/coop/mes-beneficiaires/(liste)/getBeneficiairesListPageData'
@@ -35,15 +33,6 @@ export const SansBeneficiaires: Story = {
   render: () => <TemplateEmpty />,
   args: {},
 }
-
-const beneficiaireAvecAccompagnements = {
-  ...beneficiaireMaximaleMediateurAvecActivite,
-  _count: {
-    crasIndividuels: 2,
-    crasDemarchesAdministratives: 1,
-    participationsAteliersCollectifs: 3,
-  },
-} satisfies BeneficiaireAccompagnementsPageData['beneficiaire']
 
 const beneficiaire = {
   id: '1',

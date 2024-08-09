@@ -22,6 +22,6 @@ export const isBeneficiaireEmpty = ({
   statutSocial?: StatutSocial | null
 }) =>
   isBeneficiaireAnonymous({ prenom, nom }) &&
-  !genre &&
-  !trancheAge &&
-  !statutSocial
+  (!genre || genre === 'NonCommunique') &&
+  (!trancheAge || trancheAge === 'NonCommunique') &&
+  (!statutSocial || statutSocial === 'NonCommunique')

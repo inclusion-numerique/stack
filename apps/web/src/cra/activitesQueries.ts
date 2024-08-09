@@ -1,5 +1,5 @@
-import { prismaClient } from '@app/web/prismaClient'
 import type { Prisma } from '@prisma/client'
+import { prismaClient } from '@app/web/prismaClient'
 
 /**
  * Helpers for activite detail modals and activité lists that merge data from all types of Cras

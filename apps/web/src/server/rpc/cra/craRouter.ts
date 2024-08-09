@@ -1,5 +1,6 @@
 import { v4 } from 'uuid'
 import type { Prisma } from '@prisma/client'
+import z from 'zod'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { CraIndividuelValidation } from '@app/web/cra/CraIndividuelValidation'
 import { enforceIsMediateur } from '@app/web/server/rpc/enforceIsMediateur'
@@ -15,6 +16,7 @@ import {
   countStatutSocialNonCommunique,
   countTrancheAgeNonCommunique,
 } from '@app/web/cra/participantsAnonymes'
+import { accompagnementTypeValues } from '@app/web/cra/cra'
 
 const getExistingBeneficiaire = async ({
   beneficiaireId,
@@ -613,4 +615,95 @@ export const craRouter = router({
         return created
       },
     ),
+  deleteActivite: protectedProcedure
+    .input(
+      z.object({
+        craId: z.string().uuid(),
+        type: z.enum(accompagnementTypeValues),
+      }),
+    )
+    .mutation(async ({ input: { craId, type }, ctx: { user } }) => {
+      enforceIsMediateur(user)
+
+      const cra =
+        type === 'individuel'
+          ? await prismaClient.craIndividuel.findUnique({
+              where: { id: craId },
+              select: {
+                id: true,
+                creeParMediateurId: true,
+              },
+            })
+          : type === 'collectif'
+            ? await prismaClient.craCollectif.findUnique({
+                where: { id: craId },
+                select: {
+                  id: true,
+                  creeParMediateurId: true,
+                },
+              })
+            : // Demarche administrative
+              await prismaClient.craDemarcheAdministrative.findUnique({
+                where: { id: craId },
+                select: {
+                  id: true,
+                  creeParMediateurId: true,
+                },
+              })
+
+      if (!cra) {
+        throw invalidError('Cra not found')
+      }
+
+      if (cra.creeParMediateurId !== user.mediateur.id) {
+        throw forbiddenError('Cannot delete CRA for another mediateur')
+      }
+
+      if (type === 'individuel') {
+        await prismaClient.$transaction([
+          prismaClient.activiteBeneficiaire.deleteMany({
+            where: { craIndividuelId: craId },
+          }),
+          prismaClient.activiteMediateur.deleteMany({
+            where: { craIndividuelId: craId },
+          }),
+          prismaClient.craIndividuel.delete({
+            where: { id: craId },
+          }),
+        ])
+      }
+
+      if (type === 'demarche') {
+        await prismaClient.$transaction([
+          prismaClient.activiteBeneficiaire.deleteMany({
+            where: { craDemarcheAdministrativeId: craId },
+          }),
+          prismaClient.activiteMediateur.deleteMany({
+            where: { craDemarcheAdministrativeId: craId },
+          }),
+          prismaClient.craDemarcheAdministrative.delete({
+            where: { id: craId },
+          }),
+        ])
+      }
+
+      if (type === 'collectif') {
+        await prismaClient.$transaction([
+          prismaClient.activiteBeneficiaire.deleteMany({
+            where: { craCollectifId: craId },
+          }),
+          prismaClient.activiteMediateur.deleteMany({
+            where: { craCollectifId: craId },
+          }),
+          prismaClient.participantAtelierCollectif.deleteMany({
+            where: { craCollectifId: craId },
+          }),
+          prismaClient.craCollectif.delete({
+            where: { id: craId },
+          }),
+        ])
+      }
+
+      return true
+    }),
 })

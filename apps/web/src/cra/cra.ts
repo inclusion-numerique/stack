@@ -29,6 +29,10 @@ export const accompagnementTypeIllustrations: {
   demarche: '/images/iconographie/demarche-administrative.svg',
 }
 
+export const accompagnementTypeValues = Object.keys(
+  accompagnementTypeLabels,
+) as [AccompagnementType, ...AccompagnementType[]]
+
 export const dureeAccompagnementLabels = {
   '30': '30min',
   '60': '1h',
