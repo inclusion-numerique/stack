@@ -64,6 +64,13 @@ const deleteFixtures = async () => {
       },
     },
   })
+  await prismaClient.activiteBeneficiaire.deleteMany({
+    where: {
+      beneficiaireId: {
+        in: beneficiaireIds,
+      },
+    },
+  })
   await prismaClient.beneficiaire.deleteMany({
     where: {
       id: {
@@ -136,6 +143,7 @@ describe('getBeneficiaireAccompagnementsData', () => {
         nom: 'Integration',
         anneeNaissance: null,
         _count: {
+          activites: 0,
           crasDemarchesAdministratives: 0,
           crasIndividuels: 0,
           participationsAteliersCollectifs: 0,
@@ -168,46 +176,68 @@ describe('getBeneficiaireAccompagnementsData', () => {
       lieuAccompagnement: LieuAccompagnement.ADistance,
     }
 
-    await prismaClient.craIndividuel.createMany({
-      data: [
-        {
-          ...commonData,
-          id: crasIndividuelsIds[0],
-          thematiques: [
-            ThematiqueAccompagnement.Email,
-            ThematiqueAccompagnement.Parentalite,
-          ],
+    await prismaClient.craIndividuel.create({
+      data: {
+        ...commonData,
+        id: crasIndividuelsIds[0],
+        thematiques: [
+          ThematiqueAccompagnement.Email,
+          ThematiqueAccompagnement.Parentalite,
+        ],
+        activiteBeneficiaire: {
+          create: {
+            beneficiaireId: beneficiaire.id,
+          },
         },
-        {
-          ...commonData,
-          id: crasIndividuelsIds[1],
-          thematiques: [
-            ThematiqueAccompagnement.Email,
-            ThematiqueAccompagnement.Sante,
-          ],
-        },
-      ],
+      },
     })
 
-    await prismaClient.craDemarcheAdministrative.createMany({
-      data: [
-        {
-          ...commonData,
-          id: crasDemarchesIds[0],
-          thematiques: [
-            ThematiqueDemarcheAdministrative.SocialSante,
-            ThematiqueDemarcheAdministrative.Logement,
-          ],
+    await prismaClient.craIndividuel.create({
+      data: {
+        ...commonData,
+        id: crasIndividuelsIds[1],
+        thematiques: [
+          ThematiqueAccompagnement.Email,
+          ThematiqueAccompagnement.Sante,
+        ],
+        activiteBeneficiaire: {
+          create: {
+            beneficiaireId: beneficiaire.id,
+          },
         },
-        {
-          ...commonData,
-          id: crasDemarchesIds[1],
-          thematiques: [
-            ThematiqueDemarcheAdministrative.SocialSante,
-            ThematiqueDemarcheAdministrative.Justice,
-          ],
+      },
+    })
+
+    await prismaClient.craDemarcheAdministrative.create({
+      data: {
+        ...commonData,
+        id: crasDemarchesIds[0],
+        thematiques: [
+          ThematiqueDemarcheAdministrative.SocialSante,
+          ThematiqueDemarcheAdministrative.Logement,
+        ],
+        activiteBeneficiaire: {
+          create: {
+            beneficiaireId: beneficiaire.id,
+          },
         },
-      ],
+      },
+    })
+
+    await prismaClient.craDemarcheAdministrative.create({
+      data: {
+        ...commonData,
+        id: crasDemarchesIds[1],
+        thematiques: [
+          ThematiqueDemarcheAdministrative.SocialSante,
+          ThematiqueDemarcheAdministrative.Justice,
+        ],
+        activiteBeneficiaire: {
+          create: {
+            beneficiaireId: beneficiaire.id,
+          },
+        },
+      },
     })
 
     const {
@@ -256,6 +286,12 @@ describe('getBeneficiaireAccompagnementsData', () => {
         beneficiaireId: beneficiaire.id,
       })),
     })
+    await prismaClient.activiteBeneficiaire.createMany({
+      data: crasCollectifsIds.map((id) => ({
+        craCollectifId: id,
+        beneficiaireId: beneficiaire.id,
+      })),
+    })
 
     expect(
       await getBeneficiaireAccompagnementsPageData({
@@ -270,6 +306,7 @@ describe('getBeneficiaireAccompagnementsData', () => {
         nom: 'Integration',
         anneeNaissance: null,
         _count: {
+          activites: 6,
           crasDemarchesAdministratives: 2,
           crasIndividuels: 2,
           participationsAteliersCollectifs: 2,
@@ -280,12 +317,34 @@ describe('getBeneficiaireAccompagnementsData', () => {
         {
           activites: [
             {
-              id: crasCollectifsIds[1],
-              date: new Date('2024-07-07T00:00:00.000Z'),
-              niveau: null,
-              thematiques: ['ReseauxSociaux', 'CultureNumerique'],
               type: 'collectif',
-              titreAtelier: 'Exemple de titre',
+              cra: {
+                date: new Date('2024-07-07T00:00:00.000Z'),
+                duree: 90,
+                id: crasCollectifsIds[1], // 'faf81ac7-cb7f-4949-8dbf-330b435fa87c'
+                lieuAccompagnementAutreCodeInsee: null,
+                lieuAccompagnementAutreCodePostal: null,
+                lieuAccompagnementAutreCommune: null,
+                lieuActivite: null,
+                lieuAtelier: 'LieuActivite',
+                niveau: null,
+                notes: null,
+                participants: [
+                  {
+                    beneficiaire: {
+                      id: beneficiaire.id,
+                      nom: 'Integration',
+                      prenom: 'Test',
+                    },
+                  },
+                ],
+                participantsAnonymes: {
+                  ...participantsAnonymesDefault,
+                  id: crasCollectifsIds[1],
+                },
+                thematiques: ['ReseauxSociaux', 'CultureNumerique'],
+                titreAtelier: 'Exemple de titre',
+              },
             },
           ],
           date: '2024-07-07',
@@ -293,40 +352,166 @@ describe('getBeneficiaireAccompagnementsData', () => {
         {
           activites: [
             {
-              id: crasIndividuelsIds[0],
-              autonomie: null,
-              date: new Date('2024-07-05T00:00:00.000Z'),
-              thematiques: ['Email', 'Parentalite'],
               type: 'individuel',
+              cra: {
+                autonomie: null,
+                beneficiaire: {
+                  _count: {
+                    activites: 6,
+                  },
+                  commune: null,
+                  communeCodePostal: null,
+                  genre: null,
+                  id: beneficiaire.id,
+                  nom: 'Integration',
+                  prenom: 'Test',
+                  statutSocial: null,
+                  trancheAge: null,
+                  vaPoursuivreParcoursAccompagnement: null,
+                },
+                date: new Date('2024-07-05T00:00:00.000Z'),
+                duree: 90,
+                id: crasIndividuelsIds[1], // '3921644e-2343-4fce-954b-0c69bd81a358'
+                lieuAccompagnement: 'ADistance',
+                lieuAccompagnementDomicileCodeInsee: null,
+                lieuAccompagnementDomicileCodePostal: null,
+                lieuAccompagnementDomicileCommune: null,
+                lieuActivite: null,
+                materiel: [],
+                notes: null,
+                orienteVersStructure: null,
+                structureDeRedirection: null,
+                thematiques: ['Email', 'Sante'],
+              },
             },
             {
-              id: crasIndividuelsIds[1],
-              autonomie: null,
-              date: new Date('2024-07-05T00:00:00.000Z'),
-              thematiques: ['Email', 'Sante'],
               type: 'individuel',
+              cra: {
+                autonomie: null,
+                beneficiaire: {
+                  _count: {
+                    activites: 6,
+                  },
+                  commune: null,
+                  communeCodePostal: null,
+                  genre: null,
+                  id: beneficiaire.id,
+                  nom: 'Integration',
+                  prenom: 'Test',
+                  statutSocial: null,
+                  trancheAge: null,
+                  vaPoursuivreParcoursAccompagnement: null,
+                },
+                date: new Date('2024-07-05T00:00:00.000Z'),
+                duree: 90,
+                id: crasIndividuelsIds[0], // '69cc03f6-12ee-47e5-8759-8a82fb97ba89'
+                lieuAccompagnement: 'ADistance',
+                lieuAccompagnementDomicileCodeInsee: null,
+                lieuAccompagnementDomicileCodePostal: null,
+                lieuAccompagnementDomicileCommune: null,
+                lieuActivite: null,
+                materiel: [],
+                notes: null,
+                orienteVersStructure: null,
+                structureDeRedirection: null,
+                thematiques: ['Email', 'Parentalite'],
+              },
             },
             {
-              id: crasDemarchesIds[0],
-              autonomie: null,
-              date: new Date('2024-07-05T00:00:00.000Z'),
-              thematiques: ['SocialSante', 'Logement'],
               type: 'demarche',
+              cra: {
+                autonomie: null,
+                beneficiaire: {
+                  _count: {
+                    activites: 6,
+                  },
+                  commune: null,
+                  communeCodePostal: null,
+                  genre: null,
+                  id: beneficiaire.id,
+                  nom: 'Integration',
+                  prenom: 'Test',
+                  statutSocial: null,
+                  trancheAge: null,
+                  vaPoursuivreParcoursAccompagnement: null,
+                },
+                date: new Date('2024-07-05T00:00:00.000Z'),
+                degreDeFinalisation: null,
+                duree: 90,
+                id: crasDemarchesIds[1], // 'aa9765e2-7f8e-4af5-8bf1-d40bdf6ec5cd'
+                lieuAccompagnement: 'ADistance',
+                lieuAccompagnementDomicileCodeInsee: null,
+                lieuAccompagnementDomicileCodePostal: null,
+                lieuAccompagnementDomicileCommune: null,
+                lieuActivite: null,
+                notes: null,
+                precisionsDemarche: null,
+                structureDeRedirection: null,
+                thematiques: ['SocialSante', 'Justice'],
+              },
             },
             {
-              id: crasDemarchesIds[1],
-              autonomie: null,
-              date: new Date('2024-07-05T00:00:00.000Z'),
-              thematiques: ['SocialSante', 'Justice'],
               type: 'demarche',
+              cra: {
+                autonomie: null,
+                beneficiaire: {
+                  _count: {
+                    activites: 6,
+                  },
+                  commune: null,
+                  communeCodePostal: null,
+                  genre: null,
+                  id: beneficiaire.id,
+                  nom: 'Integration',
+                  prenom: 'Test',
+                  statutSocial: null,
+                  trancheAge: null,
+                  vaPoursuivreParcoursAccompagnement: null,
+                },
+                date: new Date('2024-07-05T00:00:00.000Z'),
+                degreDeFinalisation: null,
+                duree: 90,
+                id: crasDemarchesIds[0], // '31a4230e-b992-49cc-92de-1823fadd4d6a'
+                lieuAccompagnement: 'ADistance',
+                lieuAccompagnementDomicileCodeInsee: null,
+                lieuAccompagnementDomicileCodePostal: null,
+                lieuAccompagnementDomicileCommune: null,
+                lieuActivite: null,
+                notes: null,
+                precisionsDemarche: null,
+                structureDeRedirection: null,
+                thematiques: ['SocialSante', 'Logement'],
+              },
             },
             {
-              id: crasCollectifsIds[0],
-              date: new Date('2024-07-05T00:00:00.000Z'),
-              niveau: null,
-              thematiques: ['Email', 'ReseauxSociaux'],
               type: 'collectif',
-              titreAtelier: null,
+              cra: {
+                date: new Date('2024-07-05T00:00:00.000Z'),
+                duree: 90,
+                id: crasCollectifsIds[0], // 'bfce1609-2170-431a-903e-728c541d3fe3'
+                lieuAccompagnementAutreCodeInsee: null,
+                lieuAccompagnementAutreCodePostal: null,
+                lieuAccompagnementAutreCommune: null,
+                lieuActivite: null,
+                lieuAtelier: 'Autre',
+                niveau: null,
+                notes: null,
+                participants: [
+                  {
+                    beneficiaire: {
+                      id: beneficiaire.id,
+                      nom: 'Integration',
+                      prenom: 'Test',
+                    },
+                  },
+                ],
+                participantsAnonymes: {
+                  ...participantsAnonymesDefault,
+                  id: crasCollectifsIds[0],
+                },
+                thematiques: ['Email', 'ReseauxSociaux'],
+                titreAtelier: null,
+              },
             },
           ],
           date: '2024-07-05',
