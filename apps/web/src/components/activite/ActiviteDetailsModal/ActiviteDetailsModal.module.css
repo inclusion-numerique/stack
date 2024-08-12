@@ -17,9 +17,9 @@ dialog.modal {
 }
 
 .accordion {
-    margin: -24px -16px -24px;
+    margin: -24px -16px;
 
-    &:before {
+    &::before {
         box-shadow: none !important;
     }
 
@@ -49,11 +49,13 @@ dialog.modal {
         padding-bottom: 24px;
     }
 
-    :global .fr-accordion__btn[aria-expanded=true] {
+    :global .fr-accordion__btn[aria-expanded="true"] {
         background-color:  var(--grey-1000-50-hover);
+
         &:hover {
             background-color: var(--grey-1000-50-active);
         }
+
         &:active {
             background-color: var(--grey-1000-50-active);
         }

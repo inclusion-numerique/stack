@@ -29,6 +29,8 @@ import {
   accompagnementTypeIllustrations,
   accompagnementTypeLabels,
   autonomieStars,
+  degreDeFinalisationDemarcheHints,
+  degreDeFinalisationDemarcheLabels,
   DureeAccompagnement,
   dureeAccompagnementLabels,
   materielLabels,
@@ -158,6 +160,27 @@ const ActiviteDetailsModal = ({
         <Stars count={autonomieStars[cra.autonomie]} max={3} />
       </>
     ),
+    // Finalisation démarche
+    'degreDeFinalisation' in cra && cra.degreDeFinalisation && (
+      <>
+        Démarche finalisée&nbsp;:{' '}
+        {degreDeFinalisationDemarcheLabels[cra.degreDeFinalisation]}
+        {degreDeFinalisationDemarcheHints[cra.degreDeFinalisation] &&
+          `, ${(
+            degreDeFinalisationDemarcheHints[cra.degreDeFinalisation] ?? ''
+          ).toLocaleLowerCase()}`}
+      </>
+    ),
+    // Redirection structure accompagnement individuel
+    activite.type === 'individuel' &&
+      activite.cra.orienteVersStructure &&
+      activite.cra.structureDeRedirection &&
+      `Orienté vers ${structuresRedirectionLabels[activite.cra.structureDeRedirection]}`,
+    // Redirection structure démarche
+    'degreDeFinalisation' in cra &&
+      cra.degreDeFinalisation === 'OrienteVersStructure' &&
+      cra.structureDeRedirection &&
+      `Orienté vers ${structuresRedirectionLabels[cra.structureDeRedirection]}`,
     // Niveau atelier
     'niveau' in cra && cra.niveau && (
       <>
@@ -165,11 +188,6 @@ const ActiviteDetailsModal = ({
         <Stars count={niveauAtelierStars[cra.niveau]} max={3} />
       </>
     ),
-    // Redirection structure
-    activite.type === 'individuel' &&
-      activite.cra.orienteVersStructure &&
-      activite.cra.structureDeRedirection &&
-      `Orienté vers ${structuresRedirectionLabels[activite.cra.structureDeRedirection]}`,
   ].filter(Boolean)
 
   const infosBeneficiaireAnonyme =

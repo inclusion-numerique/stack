@@ -161,6 +161,8 @@ const avecAccompagnements = {
             lieuAccompagnement: 'ADistance',
             lieuAccompagnementDomicileCodePostal: null,
             lieuAccompagnementDomicileCodeInsee: null,
+            structureDeRedirection: null,
+            degreDeFinalisation: null,
           },
         },
         {
@@ -180,6 +182,8 @@ const avecAccompagnements = {
             lieuAccompagnement: 'ADistance',
             lieuAccompagnementDomicileCodePostal: null,
             lieuAccompagnementDomicileCodeInsee: null,
+            structureDeRedirection: null,
+            degreDeFinalisation: null,
           },
         },
         {

@@ -388,3 +388,95 @@ export const ConfirmationSuppression: Story = {
     },
   },
 }
+
+export const DemarcheBeneficiaireSuivi: Story = {
+  name: 'Demarche - Bénéficiaire suivi',
+  play,
+  render: (args) => <Template {...args} />,
+  args: {
+    initialState: {
+      activite: {
+        type: 'demarche',
+        cra: {
+          id: '1',
+          date: new Date('2024-03-22'),
+          duree: 120,
+          thematiques: ['TransportsMobilite', 'TravailFormation'],
+          notes: null,
+          precisionsDemarche: 'Demande de renouvellement de carte d’identité',
+          beneficiaire: {
+            id: '2',
+            prenom: 'Jean',
+            nom: 'Dupont',
+            _count: {
+              activites: 5,
+            },
+            commune: null,
+            communeCodePostal: null,
+            vaPoursuivreParcoursAccompagnement: null,
+            statutSocial: 'EnEmploi',
+            genre: 'Masculin',
+            trancheAge: 'NonCommunique',
+          },
+          lieuAccompagnement: 'ADistance',
+          autonomie: null,
+          lieuAccompagnementDomicileCommune: null,
+          lieuAccompagnementDomicileCodeInsee: null,
+          lieuAccompagnementDomicileCodePostal: null,
+          lieuActivite: null,
+          degreDeFinalisation: 'OrienteVersStructure',
+          structureDeRedirection: 'AideAuxDemarchesAdministratives',
+        },
+      },
+    },
+  },
+}
+
+export const DemarcheBeneficiaireAnonyme: Story = {
+  name: 'Demarche - Bénéficiaire anonyme',
+  play,
+  render: (args) => <Template {...args} />,
+  args: {
+    initialState: {
+      activite: {
+        type: 'demarche',
+        cra: {
+          id: '1',
+          date: new Date('2024-03-22'),
+          duree: 120,
+          thematiques: [
+            'ArgentImpots',
+            'PapiersElectionsCitoyennete',
+            'Justice',
+          ],
+          precisionsDemarche: null,
+          beneficiaire: {
+            id: '2',
+            prenom: null,
+            nom: null,
+            _count: {
+              activites: 0,
+            },
+            commune: 'Lyon',
+            communeCodePostal: '69002',
+            vaPoursuivreParcoursAccompagnement: true,
+            statutSocial: 'EnEmploi',
+            genre: 'Masculin',
+            trancheAge: 'QuaranteCinquanteNeuf',
+          },
+          lieuAccompagnement: 'Domicile',
+          autonomie: 'EntierementAccompagne',
+          lieuAccompagnementDomicileCommune: 'Lyon',
+          lieuAccompagnementDomicileCodeInsee: '69381',
+          lieuAccompagnementDomicileCodePostal: '69002',
+          lieuActivite: null,
+          degreDeFinalisation: 'AFinaliserEnAutonomie',
+          structureDeRedirection: null,
+          notes:
+            '<p>Lörem ipsum ladeniliga douche <strong>plaledes</strong>. Nining son. Mipära kavun joskap juling lanar. Segyde snålsurfa då jevis. Dorade preng posad. Spefuv ter i kvasitiskap då mobilblottare dir. Häbel epihet i tegt. Ultrar. Digt hän. Polytt doskapet tempopatologi. Use betårta, tena. Biktiga pojuren.</p>' +
+            '<p>Segyde snålsurfa då jevis. <strong>Dorade preng posad</strong>. Spefuv ter i kvasitiskap då mobilblottare dir. Häbel epihet i tegt. Ultrar. Digt hän. Polytt doskapet tempopatologi. Use betårta, tena. Biktiga pojuren</p>',
+        },
+      },
+    },
+  },
+}

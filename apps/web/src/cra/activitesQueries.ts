@@ -95,6 +95,8 @@ export const getCrasDemarcheAdministrativeForActivite = ({
       lieuAccompagnementDomicileCommune: true,
       lieuAccompagnementDomicileCodeInsee: true,
       lieuAccompagnementDomicileCodePostal: true,
+      structureDeRedirection: true,
+      degreDeFinalisation: true,
       beneficiaire: {
         select: {
           ...accompagnementIndividuelBeneficiaireSelect,
