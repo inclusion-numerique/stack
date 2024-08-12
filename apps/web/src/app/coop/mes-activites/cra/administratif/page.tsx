@@ -5,6 +5,7 @@ import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { prismaClient } from '@app/web/prismaClient'
+import { CraDemarcheAdministrativeData } from '@app/web/cra/CraDemarcheAdministrativeValidation'
 import {
   decodeSerializableState,
   EncodedState,
@@ -16,18 +17,17 @@ import {
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import { prismaBeneficiaireToBeneficiaireData } from '@app/web/beneficiaire/prismaBeneficiaireToBeneficiaireData'
 import { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
-import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
-import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
-import CraCollectifForm from '@app/web/app/coop/mon-activite/cra/collectif/CraCollectifForm'
-import { AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
+import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
+import CraDemarcheAdministrativeForm from '@app/web/app/coop/mes-activites/cra/administratif/CraDemarcheAdministrativeForm'
 
-const CreateCraCollectifPage = async ({
+const CreateCraDemarcheAdministrativePage = async ({
   searchParams: { v } = {},
 }: {
-  searchParams?: { v?: EncodedState<DefaultValues<CraCollectifData>> }
+  searchParams?: {
+    v?: EncodedState<DefaultValues<CraDemarcheAdministrativeData>>
+  }
 }) => {
   const user = await getAuthenticatedMediateur()
-  const mediateurId = user.mediateur.id
 
   const urlFormState = v ? decodeSerializableState(v, {}) : {}
 
@@ -35,31 +35,30 @@ const CreateCraCollectifPage = async ({
   delete urlFormState.id
   delete urlFormState.mediateurId
 
-  const defaultValues: DefaultValues<CraCollectifData> & {
+  const defaultValues: DefaultValues<CraDemarcheAdministrativeData> & {
     mediateurId: string
   } = {
     ...urlFormState,
     date: new Date().toISOString().slice(0, 10),
-    mediateurId,
-    participantsAnonymes: {
-      ...participantsAnonymesDefault,
-      ...urlFormState.participantsAnonymes,
+    mediateurId: user.mediateur.id,
+    beneficiaire: {
+      // Could be from another mediateur ? is it safe ? check will be backend ?
+      mediateurId: user.mediateur.id,
+      ...urlFormState.beneficiaire,
     },
-    // Filter participants to only show the ones that are linked to the current mediator (e.g. in case of url copy/paste)
-    participants:
-      urlFormState.participants?.filter(
-        (participant) =>
-          !!participant?.id && participant.mediateurId === mediateurId,
-      ) ?? [],
+    // If no value for domicile usager, then default to beneficiaire adresse
+    lieuAccompagnementDomicileCommune:
+      urlFormState.lieuAccompagnementDomicileCommune ??
+      (urlFormState.beneficiaire?.communeResidence
+        ? banDefaultValueToAdresseBanData(
+            urlFormState.beneficiaire.communeResidence,
+          )
+        : null),
   }
 
-  /**
-   * Récupération des lieux d'activité de l'utilisateur
-   * et sélection du lieu d'activité le plus utilisé pour ce type de CRA
-   */
   const lieuxActivite = await prismaClient.mediateurEnActivite.findMany({
     where: {
-      mediateurId,
+      mediateurId: user.mediateur.id,
       suppression: null,
     },
     select: {
@@ -70,9 +69,9 @@ const CreateCraCollectifPage = async ({
           id: true,
           _count: {
             select: {
-              crasCollectifs: {
+              crasDemarchesAdministratives: {
                 where: {
-                  creeParMediateurId: mediateurId,
+                  creeParMediateurId: user.mediateur.id,
                 },
               },
             },
@@ -94,8 +93,8 @@ const CreateCraCollectifPage = async ({
 
   const mostUsedLieuActivite = lieuxActivite.reduce((accumulator, lieu) => {
     if (
-      lieu.structure._count.crasCollectifs >
-      accumulator.structure._count.crasCollectifs
+      lieu.structure._count.crasDemarchesAdministratives >
+      accumulator.structure._count.crasDemarchesAdministratives
     ) {
       return lieu
     }
@@ -114,13 +113,13 @@ const CreateCraCollectifPage = async ({
 
   // Initial list of beneficiaires for pre-populating selected beneficiary or quick select search
   const whereBeneficiaire = beneficiairesListWhere({
-    mediateurId,
+    mediateurId: user.mediateur.id,
   })
   const beneficiariesForSelect = await prismaClient.beneficiaire.findMany({
     where: whereBeneficiaire,
     select: searchBeneficiaireSelect,
     orderBy: [
-      { participationsAteliersCollectifs: { _count: 'desc' } },
+      { crasDemarchesAdministratives: { _count: 'desc' } },
       {
         nom: 'asc',
       },
@@ -155,50 +154,21 @@ const CreateCraCollectifPage = async ({
     })
   }
 
-  /**
-   * Récupération des communes les plus probables pour les options par défault de la commune du lieu de l'atelier
-   * ( là ou il y a déjà eu des cras collectifs ou là ou il y a les lieux d’activité )
-   */
-
-  const crasCollectifsForCommune = await prismaClient.craCollectif.groupBy({
-    where: {
-      creeParMediateurId: mediateurId,
-    },
-    by: ['lieuAccompagnementAutreCodeInsee'],
-    _count: {
-      id: true,
-    },
-    orderBy: {
-      _count: {
-        id: 'desc',
-      },
-    },
-    take: 20,
-  })
-
-  console.log('CRAS COLLECTIFS FOR COMMUNE', crasCollectifsForCommune)
-  // TODO Check this and populate options
-
-  const initialCommunesOptions: AdressBanFormFieldOption[] = []
-
-  console.log('DEFAULT VALUES FROM PAGE', defaultValues)
-
   return (
     <CoopPageContainer size={794} className="fr-pt-8v">
-      <CoopBreadcrumbs currentPage="Enregistrer un accompagnement collectif" />
+      <CoopBreadcrumbs currentPage="Enregistrer une aide aux démarches administratives" />
       <h1 className="fr-text-title--blue-france fr-mb-2v">
-        Accompagnement collectif
+        Aide aux démarches administratives
       </h1>
       <RequiredFieldsDisclamer />
 
-      <CraCollectifForm
+      <CraDemarcheAdministrativeForm
         defaultValues={defaultValues}
         lieuActiviteOptions={lieuxActiviteOptions}
         initialBeneficiariesOptions={initialBeneficiariesOptions}
-        initialCommunesOptions={initialCommunesOptions}
       />
     </CoopPageContainer>
   )
 }
 
-export default CreateCraCollectifPage
+export default CreateCraDemarcheAdministrativePage

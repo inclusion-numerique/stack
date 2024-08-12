@@ -3,9 +3,10 @@ import { SelectOption } from '@app/ui/components/Form/utils/options'
 import { DefaultValues } from 'react-hook-form'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import CraIndividuelForm from '@app/web/app/coop/mes-activites/cra/individuel/CraIndividuelForm'
 import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { prismaClient } from '@app/web/prismaClient'
-import { CraDemarcheAdministrativeData } from '@app/web/cra/CraDemarcheAdministrativeValidation'
+import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
 import {
   decodeSerializableState,
   EncodedState,
@@ -18,14 +19,11 @@ import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiair
 import { prismaBeneficiaireToBeneficiaireData } from '@app/web/beneficiaire/prismaBeneficiaireToBeneficiaireData'
 import { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
-import CraDemarcheAdministrativeForm from '@app/web/app/coop/mon-activite/cra/administratif/CraDemarcheAdministrativeForm'
 
-const CreateCraDemarcheAdministrativePage = async ({
+const CreateCraIndividuelPage = async ({
   searchParams: { v } = {},
 }: {
-  searchParams?: {
-    v?: EncodedState<DefaultValues<CraDemarcheAdministrativeData>>
-  }
+  searchParams?: { v?: EncodedState<DefaultValues<CraIndividuelData>> }
 }) => {
   const user = await getAuthenticatedMediateur()
 
@@ -35,7 +33,7 @@ const CreateCraDemarcheAdministrativePage = async ({
   delete urlFormState.id
   delete urlFormState.mediateurId
 
-  const defaultValues: DefaultValues<CraDemarcheAdministrativeData> & {
+  const defaultValues: DefaultValues<CraIndividuelData> & {
     mediateurId: string
   } = {
     ...urlFormState,
@@ -69,7 +67,7 @@ const CreateCraDemarcheAdministrativePage = async ({
           id: true,
           _count: {
             select: {
-              crasDemarchesAdministratives: {
+              crasIndividuels: {
                 where: {
                   creeParMediateurId: user.mediateur.id,
                 },
@@ -93,8 +91,8 @@ const CreateCraDemarcheAdministrativePage = async ({
 
   const mostUsedLieuActivite = lieuxActivite.reduce((accumulator, lieu) => {
     if (
-      lieu.structure._count.crasDemarchesAdministratives >
-      accumulator.structure._count.crasDemarchesAdministratives
+      lieu.structure._count.crasIndividuels >
+      accumulator.structure._count.crasIndividuels
     ) {
       return lieu
     }
@@ -119,7 +117,7 @@ const CreateCraDemarcheAdministrativePage = async ({
     where: whereBeneficiaire,
     select: searchBeneficiaireSelect,
     orderBy: [
-      { crasDemarchesAdministratives: { _count: 'desc' } },
+      { crasIndividuels: { _count: 'desc' } },
       {
         nom: 'asc',
       },
@@ -156,13 +154,13 @@ const CreateCraDemarcheAdministrativePage = async ({
 
   return (
     <CoopPageContainer size={794} className="fr-pt-8v">
-      <CoopBreadcrumbs currentPage="Enregistrer une aide aux démarches administratives" />
+      <CoopBreadcrumbs currentPage="Enregistrer un accompagnement individuel" />
       <h1 className="fr-text-title--blue-france fr-mb-2v">
-        Aide aux démarches administratives
+        Accompagnement individuel
       </h1>
       <RequiredFieldsDisclamer />
 
-      <CraDemarcheAdministrativeForm
+      <CraIndividuelForm
         defaultValues={defaultValues}
         lieuActiviteOptions={lieuxActiviteOptions}
         initialBeneficiariesOptions={initialBeneficiariesOptions}
@@ -171,4 +169,4 @@ const CreateCraDemarcheAdministrativePage = async ({
   )
 }
 
-export default CreateCraDemarcheAdministrativePage
+export default CreateCraIndividuelPage

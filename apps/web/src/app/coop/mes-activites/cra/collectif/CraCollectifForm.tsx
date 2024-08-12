@@ -16,7 +16,7 @@ import React, { useCallback } from 'react'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
-import CraFormLabel from '@app/web/app/coop/mon-activite/cra/CraFormLabel'
+import CraFormLabel from '@app/web/app/coop/mes-activites/cra/CraFormLabel'
 import AdresseBanFormField, {
   AdressBanFormFieldOption,
 } from '@app/web/components/form/AdresseBanFormField'
@@ -34,7 +34,7 @@ import {
   thematiqueAccompagnementOptionsWithExtras,
 } from '@app/web/cra/cra'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { craFormFieldsetClassname } from '@app/web/app/coop/mon-activite/cra/craFormFieldsetClassname'
+import { craFormFieldsetClassname } from '@app/web/app/coop/mes-activites/cra/craFormFieldsetClassname'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipalityLabel'
@@ -43,7 +43,7 @@ import {
   type CraCollectifData,
   CraCollectifValidation,
 } from '@app/web/cra/CraCollectifValidation'
-import CraBeneficiairesMultiplesForm from '@app/web/app/coop/mon-activite/cra/collectif/CraBeneficiairesMultiplesForm'
+import CraBeneficiairesMultiplesForm from '@app/web/app/coop/mes-activites/cra/collectif/CraBeneficiairesMultiplesForm'
 import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
 import styles from '../CraForm.module.css'
 
@@ -125,7 +125,7 @@ const CraCollectifForm = ({
       // use idle callback to avoid blocking the main thread while typing
       requestIdleCallback(() => {
         replaceRouteWithoutRerender(
-          `/coop/mon-activite/cra/collectif?v=${encodeSerializableState(data)}`,
+          `/coop/mes-activites/cra/collectif?v=${encodeSerializableState(data)}`,
         )
       })
     }, []),
@@ -150,7 +150,7 @@ const CraCollectifForm = ({
         mediateurId={defaultValues.mediateurId}
         setValue={setValue}
         watch={watch}
-        creerBeneficiaireRetourUrl="/coop/mon-activite/cra/collectif"
+        creerBeneficiaireRetourUrl="/coop/mes-activites/cra/collectif"
         initialBeneficiariesOptions={initialBeneficiariesOptions}
       />
       <div className="fr-flex fr-flex-gap-12v">

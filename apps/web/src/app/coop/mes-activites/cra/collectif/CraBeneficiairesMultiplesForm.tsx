@@ -20,8 +20,8 @@ import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
 import {
   BeneficiaireOption,
   useCraBeneficiaireLoadOptions,
-} from '@app/web/app/coop/mon-activite/cra/useCraBeneficiaireLoadOptions'
-import CraBeneficiairesAnonymesForm from '@app/web/app/coop/mon-activite/cra/collectif/CraBeneficiairesAnonymesForm'
+} from '@app/web/app/coop/mes-activites/cra/useCraBeneficiaireLoadOptions'
+import CraBeneficiairesAnonymesForm from '@app/web/app/coop/mes-activites/cra/collectif/CraBeneficiairesAnonymesForm'
 import { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 
 const CraBeneficiairesMultiplesForm = ({

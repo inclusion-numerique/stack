@@ -5,7 +5,7 @@ import type { SideMenuProps } from '@codegouvfr/react-dsfr/SideMenu'
 import SideMenu from '@codegouvfr/react-dsfr/SideMenu'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import { CreateCraModalDefinition } from '@app/web/app/coop/mon-activite/CreateCraModalDefinition'
+import { CreateCraModalDefinition } from '@app/web/app/coop/mes-activites/CreateCraModalDefinition'
 import styles from './CoopSideMenu.module.css'
 
 const CoopSideMenu = ({ user }: { user: SessionUser }) => {
@@ -30,14 +30,22 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
     {
       text: (
         <>
-          <span className="fr-icon-chat-poll-line fr-mr-1w wip-outline" />
-          Mon activité
+          <span
+            className="fr-mb-0 ri-service-line fr-mr-1w"
+            style={{
+              width: 24,
+              height: 24,
+              fontSize: 22,
+              fontWeight: 400,
+            }}
+          />
+          Mes activités
         </>
       ),
       linkProps: {
-        href: '/coop/mon-activite',
+        href: '/coop/mes-activites',
       },
-      isActive: pathname?.startsWith('/coop/mon-activite'),
+      isActive: pathname?.startsWith('/coop/mes-activites'),
     },
     {
       text: (

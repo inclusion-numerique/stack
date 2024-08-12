@@ -1,13 +1,6 @@
 'use client'
 
-import {
-  Control,
-  DefaultValues,
-  useForm,
-  UseFormGetValues,
-  UseFormSetValue,
-  UseFormWatch,
-} from 'react-hook-form'
+import { Control, DefaultValues, useForm, UseFormGetValues, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
@@ -23,15 +16,9 @@ import React, { useCallback, useState } from 'react'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
-import CraFormLabel from '@app/web/app/coop/mon-activite/cra/CraFormLabel'
-import AdresseBanFormField, {
-  type AdressBanFormFieldOption,
-} from '@app/web/components/form/AdresseBanFormField'
-import {
-  genreOptions,
-  statutSocialOptions,
-  trancheAgeOptions,
-} from '@app/web/beneficiaire/beneficiaire'
+import CraFormLabel from '@app/web/app/coop/mes-activites/cra/CraFormLabel'
+import AdresseBanFormField, { type AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
+import { genreOptions, statutSocialOptions, trancheAgeOptions } from '@app/web/beneficiaire/beneficiaire'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { trpc } from '@app/web/trpc'
 import RichCardLabel, {
@@ -40,22 +27,20 @@ import RichCardLabel, {
 } from '@app/web/components/form/RichCardLabel'
 import {
   autonomieOptionsWithExtras,
+  degreDeFinalisationDemarcheOptionsWithExtras,
   dureeAccompagnementOptions,
   lieuAccompagnementOptionsWithExtras,
-  materielOptions,
   structuresRedirectionOptions,
-  thematiqueAccompagnementOptionsWithExtras,
+  thematiqueDemarcheAdministrativeOptionsWithExtras,
 } from '@app/web/cra/cra'
 import {
-  CraIndividuelData,
-  CraIndividuelValidation,
-} from '@app/web/cra/CraIndividuelValidation'
+  CraDemarcheAdministrativeData,
+  CraDemarcheAdministrativeValidation,
+} from '@app/web/cra/CraDemarcheAdministrativeValidation'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { yesNoBooleanOptions } from '@app/web/utils/yesNoBooleanOptions'
-import { craFormFieldsetClassname } from '@app/web/app/coop/mon-activite/cra/craFormFieldsetClassname'
-import CraBeneficiaryForm, {
-  CraDataWithBeneficiaire,
-} from '@app/web/app/coop/mon-activite/cra/CraBeneficiaryForm'
+import { craFormFieldsetClassname } from '@app/web/app/coop/mes-activites/cra/craFormFieldsetClassname'
+import CraBeneficiaryForm, { CraDataWithBeneficiaire } from '@app/web/app/coop/mes-activites/cra/CraBeneficiaryForm'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipalityLabel'
@@ -67,7 +52,7 @@ import styles from '../CraForm.module.css'
  * Initial options can come from the field data it self or be pre-populated by beneficiaire data
  */
 const lieuResidenceOptionsFromFormData = (
-  data: DefaultValues<CraIndividuelData>,
+  data: DefaultValues<CraDemarcheAdministrativeData>,
 ): AdressBanFormFieldOption[] => {
   const result: AdressBanFormFieldOption[] = []
   if (data.lieuAccompagnementDomicileCommune?.codeInsee) {
@@ -96,22 +81,24 @@ const lieuResidenceOptionsFromFormData = (
   return result
 }
 
-const CraIndividuelForm = ({
+const CraDemarcheAdministrativeForm = ({
   defaultValues,
   lieuActiviteOptions,
   initialBeneficiariesOptions,
 }: {
-  defaultValues: DefaultValues<CraIndividuelData> & { mediateurId: string }
+  defaultValues: DefaultValues<CraDemarcheAdministrativeData> & {
+    mediateurId: string
+  }
   lieuActiviteOptions: SelectOption[]
   initialBeneficiariesOptions: SelectOption<BeneficiaireData | null>[]
 }) => {
-  const form = useForm<CraIndividuelData>({
-    resolver: zodResolver(CraIndividuelValidation),
+  const form = useForm<CraDemarcheAdministrativeData>({
+    resolver: zodResolver(CraDemarcheAdministrativeValidation),
     defaultValues: {
       ...defaultValues,
     },
   })
-  const mutation = trpc.cra.individuel.useMutation()
+  const mutation = trpc.cra.demarcheAdministrative.useMutation()
 
   const router = useRouter()
 
@@ -124,8 +111,9 @@ const CraIndividuelForm = ({
   const showLieuAccompagnementLieuActivite =
     lieuAccompagnement === 'LieuActivite'
 
-  const orienteVersStructure = form.watch('orienteVersStructure')
-  const showStructureOrientation = orienteVersStructure === 'yes'
+  const degreDeFinalisation = form.watch('degreDeFinalisation')
+  const showStructureOrientation =
+    degreDeFinalisation === 'OrienteVersStructure'
 
   const {
     control,
@@ -137,12 +125,12 @@ const CraIndividuelForm = ({
     formState: { isSubmitting, isSubmitSuccessful, errors },
   } = form
 
-  const onSubmit = async (data: CraIndividuelData) => {
+  const onSubmit = async (data: CraDemarcheAdministrativeData) => {
     try {
       await mutation.mutateAsync(data)
       createToast({
         priority: 'success',
-        message: 'L’accompagnement individuel a bien été enregistrée.',
+        message: 'L’accompagnement a bien été enregistrée.',
       })
       router.push('/coop') // TODO SUCCESS LINK
       router.refresh()
@@ -155,8 +143,6 @@ const CraIndividuelForm = ({
         message:
           'Une erreur est survenue lors de l’enregistrement, veuillez réessayer ultérieurement.',
       })
-      // Throw again to fail the sumbit
-      throw mutationError
     }
   }
   const isLoading = isSubmitting || isSubmitSuccessful
@@ -189,7 +175,7 @@ const CraIndividuelForm = ({
     useCallback(
       (data, { name }) => {
         replaceRouteWithoutRerender(
-          `/coop/mon-activite/cra/individuel?v=${encodeSerializableState(data)}`,
+          `/coop/mes-activites/cra/administratif?v=${encodeSerializableState(data)}`,
         )
 
         // Set the initial options for the lieu de residence
@@ -215,7 +201,6 @@ const CraIndividuelForm = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <CraBeneficiaryForm
-        // TODO These types are fragile. But hard to type a sub component that works for 2 form data types
         getValues={
           getValues as unknown as UseFormGetValues<CraDataWithBeneficiaire>
         }
@@ -225,7 +210,7 @@ const CraIndividuelForm = ({
           setValue as unknown as UseFormSetValue<CraDataWithBeneficiaire>
         }
         watch={watch as unknown as UseFormWatch<CraDataWithBeneficiaire>}
-        creerBeneficiaireRetourUrl="/coop/mon-activite/cra/individuel"
+        creerBeneficiaireRetourUrl="/coop/mes-activites/cra/administratif"
         initialBeneficiariesOptions={initialBeneficiariesOptions}
       />
       <div className="fr-flex fr-flex-gap-12v">
@@ -280,7 +265,7 @@ const CraIndividuelForm = ({
         }}
       />
       {showLieuAccompagnementDomicileCommune && (
-        <AdresseBanFormField<CraIndividuelData>
+        <AdresseBanFormField<CraDemarcheAdministrativeData>
           label=" "
           control={control}
           path="lieuAccompagnementDomicileCommune"
@@ -301,29 +286,13 @@ const CraIndividuelForm = ({
         />
       )}
       <hr className="fr-separator-12v" />
-      <p className="fr-text--medium fr-mb-4v">Matériel numérique utilisé</p>
-      <CheckboxGroupFormField
-        control={control}
-        path="materiel"
-        options={materielOptions}
-        disabled={isLoading}
-        components={{
-          label: RichCardLabel,
-          labelProps: { paddingX: 16 },
-        }}
-        classes={{
-          fieldsetElement: richCardFieldsetElementClassName,
-          fieldset: craFormFieldsetClassname(styles.materielFieldset),
-          label: 'fr-py-4v',
-        }}
-      />
       <p className="fr-text--medium fr-mb-4v fr-mt-12v">
         Thématique(s) d’accompagnement <RedAsterisk />
       </p>
       <CheckboxGroupFormField
         control={control}
         path="thematiques"
-        options={thematiqueAccompagnementOptionsWithExtras}
+        options={thematiqueDemarcheAdministrativeOptionsWithExtras}
         disabled={isLoading}
         components={{
           label: RichCardLabel,
@@ -332,6 +301,14 @@ const CraIndividuelForm = ({
           fieldsetElement: richCardFieldsetElementClassName,
           fieldset: craFormFieldsetClassname(styles.thematiquesFieldset),
         }}
+      />
+      <InputFormField
+        control={control}
+        disabled={isLoading}
+        path="precisionsDemarche"
+        label="Préciser la démarche"
+        className="fr-flex-grow-1 fr-mt-12v"
+        classes={{ label: 'fr-text--medium fr-mb-3v' }}
       />
       <p className="fr-text--medium fr-mb-4v fr-mt-12v">
         Niveau d’autonomie du bénéficiaire
@@ -350,19 +327,21 @@ const CraIndividuelForm = ({
         }}
       />
       <p className="fr-text--medium fr-mb-4v fr-mt-12v">
-        Le bénéficiaire est-il orienté vers une autre structure&nbsp;?
+        La démarche est-elle finalisée&nbsp;?
       </p>
       <RadioFormField
         control={control}
-        path="orienteVersStructure"
-        options={yesNoBooleanOptions}
+        path="degreDeFinalisation"
+        options={degreDeFinalisationDemarcheOptionsWithExtras}
         disabled={isLoading}
         components={{
           label: RichCardLabel,
         }}
         classes={{
           fieldsetElement: richCardFieldsetElementClassName,
-          fieldset: craFormFieldsetClassname(styles.yesNoFieldset),
+          fieldset: craFormFieldsetClassname(
+            styles.degreDeFinalisationFieldset,
+          ),
           radioGroup: richCardRadioGroupClassName,
         }}
       />
@@ -406,7 +385,7 @@ const CraIndividuelForm = ({
               radioGroup: richCardRadioGroupClassName,
             }}
           />
-          <AdresseBanFormField<CraIndividuelData>
+          <AdresseBanFormField<CraDemarcheAdministrativeData>
             control={control}
             path="beneficiaire.communeResidence"
             disabled={isLoading}
@@ -513,4 +492,4 @@ const CraIndividuelForm = ({
   )
 }
 
-export default withTrpc(CraIndividuelForm)
+export default withTrpc(CraDemarcheAdministrativeForm)
