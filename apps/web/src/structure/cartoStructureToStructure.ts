@@ -63,6 +63,7 @@ export const cartoStructureToStructure = ({
   ({
     id: v4(),
     structureCartographieNationaleId: id,
+    visiblePourCartographieNationale: true,
     nom,
     adresse,
     complementAdresse,

@@ -1,7 +1,6 @@
 import React from 'react'
 import { redirect } from 'next/navigation'
 import Button from '@codegouvfr/react-dsfr/Button'
-import { prismaClient } from '@app/web/prismaClient'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
@@ -14,32 +13,6 @@ const AjouterLieuPage = async () => {
   if (!user.mediateur || user.mediateur._count.enActivite === 0) {
     return redirect('/')
   }
-
-  const lieuxActivite = await prismaClient.mediateurEnActivite.findMany({
-    where: {
-      mediateurId: user.mediateur.id,
-      suppression: null,
-    },
-    select: {
-      creation: true,
-      modification: true,
-      structure: {
-        select: {
-          id: true,
-          nom: true,
-          adresse: true,
-          commune: true,
-          codePostal: true,
-          complementAdresse: true,
-          siret: true,
-          rna: true,
-          visiblePourCartographieNationale: true,
-          structureCartographieNationaleId: true,
-          typologies: true,
-        },
-      },
-    },
-  })
 
   return (
     <>
@@ -73,10 +46,7 @@ const AjouterLieuPage = async () => {
           <LieuxActiviteForm
             nextHref="/lieux-activite"
             createStructureHref="/lieux-activite/creer"
-            defaultValues={{
-              lieuxActivite: lieuxActivite.map(({ structure }) => structure),
-              userId: user.id,
-            }}
+            userId={user.id}
           />
         </div>
       </main>
