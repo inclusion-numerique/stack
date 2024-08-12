@@ -15,7 +15,7 @@ const SignoutPage = () => (
     <Breadcrumbs currentPage="Déconnexion" />
     <AuthCard>
       <h2>Déconnexion</h2>
-      <p>Êtes-vous sur de vouloir vous déconnecter&nbsp;?</p>
+      <p>Êtes-vous sûr·e de vouloir vous déconnecter&nbsp;?</p>
       <ul className="fr-btns-group">
         <li>
           <SignoutButton />

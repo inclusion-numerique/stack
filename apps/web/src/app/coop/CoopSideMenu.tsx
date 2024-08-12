@@ -42,7 +42,7 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
     {
       text: (
         <>
-          <span className="fr-icon-heart-line fr-mr-1w wip-outline" />
+          <span className="fr-icon-user-heart-line fr-mr-1w" />
           Mes bénéficiaires
         </>
       ),

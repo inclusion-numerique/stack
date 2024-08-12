@@ -7,6 +7,12 @@ export const genreLabels: { [key in Genre]: string } = {
   NonCommunique: 'Non communiqué',
 }
 
+export const sexLabels: { [key in Genre]: string } = {
+  Masculin: 'Homme',
+  Feminin: 'Femme',
+  NonCommunique: 'Non communiqué',
+}
+
 export const genreOptions = labelsToOptions(genreLabels)
 
 export const genreValues = Object.keys(genreLabels) as [Genre, ...Genre[]]

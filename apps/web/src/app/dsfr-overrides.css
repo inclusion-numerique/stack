@@ -3,7 +3,7 @@
 /* Card variants */
 
 .fr-card {
-  background-color: transparent;
+    background-color: transparent;
 
     &.fr-card--editable {
         .fr-card__header {
@@ -381,7 +381,7 @@
     }
 }
 
-select.fr-select{
+select.fr-select {
     background-color: var(--background-alt-grey);
     border: var(--slim-grey-border);
     border-radius: 4px;
@@ -395,4 +395,43 @@ select.fr-select{
         min-height: 56px !important;
         height: 56px !important;
     }
+}
+
+/* Pagination */
+.fr-pagination__link {
+    margin-bottom: 0;
+}
+
+/* Active backgrounds for enlarge link / button */
+
+/* With lighter hover/active background colors */
+
+body {
+    --hover-alpha: color-mix(in srgb, var(--hover), transparent 66%);
+    --active-alpha: color-mix(in srgb, var(--active), transparent 66%);
+}
+
+.fr-enlarge-link:hover {
+    background-color: var(--hover-alpha)
+}
+
+.fr-enlarge-link:active {
+    background-color: var(--active-alpha)
+}
+
+.fr-enlarge-button:hover {
+    background-color: var(--hover-alpha)
+}
+
+.fr-enlarge-button:active {
+    background-color: var(--active-alpha)
+}
+
+
+.fr-card--download.fr-enlarge-button:hover .fr-card__header, .fr-card--download.fr-enlarge-link:hover .fr-card__header {
+    background-color: var(--hover-alpha)
+}
+
+.fr-card--download.fr-enlarge-button:active .fr-card__header, .fr-card--download.fr-enlarge-link:active .fr-card__header {
+    background-color: var(--active-alpha)
 }

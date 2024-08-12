@@ -4,6 +4,7 @@ import { SelectOption } from '@app/ui/components/Form/utils/options'
 import classNames from 'classnames'
 
 import { Fragment, KeyboardEventHandler, memo } from 'react'
+import Stars from '@app/web/components/Stars'
 import styles from './RichCardLabel.module.css'
 
 export type RichCardOptionExtras = {
@@ -85,20 +86,7 @@ const RichCardLabel = memo(
         <div className="fr-flex fr-justify-content-space-between fr-flex-gap-4v fr-width-full fr-height-full">
           <div className="fr-text--sm fr-mb-0 fr-text--medium fr-flex-grow-1 fr-flex fr-justify-content-center fr-direction-column">
             {typeof option.extra?.stars === 'number' && (
-              <div className="fr-text-title--blue-france fr-mb-1v">
-                {Array.from({ length: option.extra.stars }).map((_, index) => (
-                  <span
-                    key={
-                      // eslint-disable-next-line react/no-array-index-key
-                      index
-                    }
-                    className={classNames(
-                      'fr-icon-star-fill fr-icon--sm',
-                      index !== 0 && 'fr-ml-1v',
-                    )}
-                  />
-                ))}
-              </div>
+              <Stars count={option.extra.stars} className="fr-mb-1v" />
             )}
             {option.label}
             {!!option.hint && (

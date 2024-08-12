@@ -1,5 +1,6 @@
 import { v4 } from 'uuid'
 import type { Prisma } from '@prisma/client'
+import z from 'zod'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { CraIndividuelValidation } from '@app/web/cra/CraIndividuelValidation'
 import { enforceIsMediateur } from '@app/web/server/rpc/enforceIsMediateur'
@@ -15,6 +16,7 @@ import {
   countStatutSocialNonCommunique,
   countTrancheAgeNonCommunique,
 } from '@app/web/cra/participantsAnonymes'
+import { accompagnementTypeValues } from '@app/web/cra/cra'
 
 const getExistingBeneficiaire = async ({
   beneficiaireId,
@@ -111,7 +113,6 @@ const beneficiaireUpdateInputFromForm = ({
   nom,
   telephone,
   email,
-  dateNaissance,
   anneeNaissance,
   adresse,
   communeResidence,
@@ -129,7 +130,6 @@ const beneficiaireUpdateInputFromForm = ({
   nom: nom ?? undefined,
   telephone: telephone ?? undefined,
   email: email ?? undefined,
-  dateNaissance: dateNaissance ?? undefined,
   anneeNaissance: anneeNaissance ?? undefined,
   adresse: adresse ?? undefined,
   genre: genre ?? undefined,
@@ -250,9 +250,20 @@ export const craRouter = router({
         } satisfies Prisma.CraIndividuelUpdateInput
 
         if (id) {
+          const beneficiaireId = existingBeneficiaire?.id
+          if (!beneficiaireId) {
+            throw invalidError('Beneficiaire missing')
+          }
           const updated = await prismaClient.craIndividuel.update({
             where: { id },
-            data,
+            data: {
+              ...data,
+              activiteBeneficiaire: {
+                update: {
+                  beneficiaireId,
+                },
+              },
+            },
           })
 
           return updated
@@ -262,12 +273,20 @@ export const craRouter = router({
         const created = await prismaClient.craIndividuel.create({
           data: {
             id: newId,
-            activite: {
+            activiteMediateur: {
               create: {
                 id: v4(),
                 mediateurId,
               },
             },
+            activiteBeneficiaire: existingBeneficiaire
+              ? {
+                  create: {
+                    id: v4(),
+                    beneficiaireId: existingBeneficiaire.id,
+                  },
+                }
+              : undefined,
             ...data,
           },
         })
@@ -377,9 +396,20 @@ export const craRouter = router({
         } satisfies Prisma.CraDemarcheAdministrativeUpdateInput
 
         if (id) {
+          const beneficiaireId = existingBeneficiaire?.id
+          if (!beneficiaireId) {
+            throw invalidError('Beneficiaire missing')
+          }
           const updated = await prismaClient.craDemarcheAdministrative.update({
             where: { id },
-            data,
+            data: {
+              ...data,
+              activiteBeneficiaire: {
+                update: {
+                  beneficiaireId,
+                },
+              },
+            },
           })
 
           return updated
@@ -389,12 +419,20 @@ export const craRouter = router({
         const created = await prismaClient.craDemarcheAdministrative.create({
           data: {
             id: newId,
-            activite: {
+            activiteMediateur: {
               create: {
                 id: v4(),
                 mediateurId,
               },
             },
+            activiteBeneficiaire: existingBeneficiaire
+              ? {
+                  create: {
+                    id: v4(),
+                    beneficiaireId: existingBeneficiaire.id,
+                  },
+                }
+              : undefined,
             ...data,
           },
         })
@@ -528,6 +566,16 @@ export const craRouter = router({
                   craCollectifId: craId,
                 })),
               }),
+              prismaClient.activiteBeneficiaire.deleteMany({
+                where: { craCollectifId: craId },
+              }),
+              prismaClient.activiteBeneficiaire.createMany({
+                data: participants.map((participant) => ({
+                  id: v4(),
+                  beneficiaireId: participant.id,
+                  craCollectifId: craId,
+                })),
+              }),
             ].filter(isDefinedAndNotNull),
           )
 
@@ -539,7 +587,7 @@ export const craRouter = router({
           prismaClient.craCollectif.create({
             data: {
               id: newId,
-              activite: {
+              activiteMediateur: {
                 create: {
                   id: craId,
                   mediateurId,
@@ -555,9 +603,107 @@ export const craRouter = router({
               craCollectifId: newId,
             })),
           }),
+          prismaClient.activiteBeneficiaire.createMany({
+            data: participants.map((participant) => ({
+              id: v4(),
+              beneficiaireId: participant.id,
+              craCollectifId: newId,
+            })),
+          }),
         ])
 
         return created
       },
     ),
+  deleteActivite: protectedProcedure
+    .input(
+      z.object({
+        craId: z.string().uuid(),
+        type: z.enum(accompagnementTypeValues),
+      }),
+    )
+    .mutation(async ({ input: { craId, type }, ctx: { user } }) => {
+      enforceIsMediateur(user)
+
+      const cra =
+        type === 'individuel'
+          ? await prismaClient.craIndividuel.findUnique({
+              where: { id: craId },
+              select: {
+                id: true,
+                creeParMediateurId: true,
+              },
+            })
+          : type === 'collectif'
+            ? await prismaClient.craCollectif.findUnique({
+                where: { id: craId },
+                select: {
+                  id: true,
+                  creeParMediateurId: true,
+                },
+              })
+            : // Demarche administrative
+              await prismaClient.craDemarcheAdministrative.findUnique({
+                where: { id: craId },
+                select: {
+                  id: true,
+                  creeParMediateurId: true,
+                },
+              })
+
+      if (!cra) {
+        throw invalidError('Cra not found')
+      }
+
+      if (cra.creeParMediateurId !== user.mediateur.id) {
+        throw forbiddenError('Cannot delete CRA for another mediateur')
+      }
+
+      if (type === 'individuel') {
+        await prismaClient.$transaction([
+          prismaClient.activiteBeneficiaire.deleteMany({
+            where: { craIndividuelId: craId },
+          }),
+          prismaClient.activiteMediateur.deleteMany({
+            where: { craIndividuelId: craId },
+          }),
+          prismaClient.craIndividuel.delete({
+            where: { id: craId },
+          }),
+        ])
+      }
+
+      if (type === 'demarche') {
+        await prismaClient.$transaction([
+          prismaClient.activiteBeneficiaire.deleteMany({
+            where: { craDemarcheAdministrativeId: craId },
+          }),
+          prismaClient.activiteMediateur.deleteMany({
+            where: { craDemarcheAdministrativeId: craId },
+          }),
+          prismaClient.craDemarcheAdministrative.delete({
+            where: { id: craId },
+          }),
+        ])
+      }
+
+      if (type === 'collectif') {
+        await prismaClient.$transaction([
+          prismaClient.activiteBeneficiaire.deleteMany({
+            where: { craCollectifId: craId },
+          }),
+          prismaClient.activiteMediateur.deleteMany({
+            where: { craCollectifId: craId },
+          }),
+          prismaClient.participantAtelierCollectif.deleteMany({
+            where: { craCollectifId: craId },
+          }),
+          prismaClient.craCollectif.delete({
+            where: { id: craId },
+          }),
+        ])
+      }
+
+      return true
+    }),
 })

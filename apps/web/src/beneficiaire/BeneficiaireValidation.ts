@@ -48,10 +48,6 @@ export const BeneficiaireValidation = z.object({
     .string()
     .email('Veuillez renseigner une adresse email valide')
     .nullish(),
-  dateNaissance: z
-    .string()
-    .date('Veuillez renseigner une date de naissance valide')
-    .nullish(),
   anneeNaissance: z
     .number()
     .int('Veuillez renseigner une année de naissance valide')

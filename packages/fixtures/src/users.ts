@@ -117,10 +117,10 @@ export const mediateurInscription = givenUser({
   },
 })
 
-export const mediateur = givenUser({
+export const mediateurSansActivites = givenUser({
   id: 'd3378267-18cf-4b5f-ae1e-9f63c7093ac2',
   firstName: 'Mediateur',
-  lastName: 'Inscrit',
+  lastName: 'Sans activités',
   isFixture: true,
   role: 'User',
   checkConseillerNumeriqueInscription: new Date(),
@@ -160,6 +160,53 @@ export const mediateur = givenUser({
     },
   },
 })
+
+export const mediateurAvecActivite = givenUser({
+  id: 'd10844c6-b6de-402a-a68d-f8328b1d1b0c',
+  firstName: 'Mediateur',
+  lastName: 'Avec activités',
+  isFixture: true,
+  role: 'User',
+  checkConseillerNumeriqueInscription: new Date(),
+  inscriptionValidee: new Date(),
+  lieuxActiviteRenseignes: new Date(),
+  structureEmployeuseRenseignee: new Date(),
+  mediateur: {
+    connectOrCreate: {
+      where: {
+        id: '303381cc-3da7-433d-a553-1a5f76465989',
+      },
+      create: {
+        id: '303381cc-3da7-433d-a553-1a5f76465989',
+        enActivite: {
+          connectOrCreate: {
+            where: {
+              id: '4bad4ee5-f446-4739-ae93-9974d81aa0c0',
+            },
+            create: {
+              id: '4bad4ee5-f446-4739-ae93-9974d81aa0c0',
+              structureId: mediateque.id,
+            },
+          },
+        },
+      },
+    },
+  },
+  emplois: {
+    connectOrCreate: {
+      where: {
+        id: '057b286d-ece5-41a7-b770-756cae8b9353',
+      },
+      create: {
+        id: '057b286d-ece5-41a7-b770-756cae8b9353',
+        structureId: structureEmployeuse.id,
+      },
+    },
+  },
+})
+
+export const mediateurAvecActiviteMediateurId =
+  mediateurAvecActivite.mediateur.connectOrCreate.where.id
 
 export const conseillerInscription = givenUser({
   id: '0658cfe9-93aa-4de8-96a1-613452ac82ea',
@@ -337,7 +384,8 @@ export const fixtureUsers = [
   conseillerSansLieuInscription,
   conseillerNumerique,
   mediateurInscription,
-  mediateur,
+  mediateurSansActivites,
+  mediateurAvecActivite,
 ]
 
 export const teamAdministrateurs = [

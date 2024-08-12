@@ -44,7 +44,6 @@ const beneficiaireCreateInputFromForm = ({
   nom,
   telephone,
   email,
-  dateNaissance,
   anneeNaissance,
   adresse,
   communeResidence,
@@ -60,7 +59,6 @@ const beneficiaireCreateInputFromForm = ({
   nom,
   telephone: telephone ?? undefined,
   email: email ?? undefined,
-  dateNaissance: dateNaissance ?? undefined,
   anneeNaissance: anneeNaissance ?? undefined,
   adresse: adresse ?? undefined,
   genre: genre ?? undefined,
@@ -75,9 +73,16 @@ const beneficiaireCreateInputFromForm = ({
 export const beneficiairesRouter = router({
   search: protectedProcedure
     .input(z.object({ query: z.string() }))
-    .query(({ input: { query }, ctx: { user } }) =>
-      searchBeneficiaire(query, user),
-    ),
+    .query(({ input: { query }, ctx: { user } }) => {
+      if (!user.mediateur && user.role !== 'Admin') {
+        throw forbiddenError('User is not a mediateur')
+      }
+      return searchBeneficiaire({
+        mediateurId: user.mediateur?.id,
+        take: 10_000,
+        query,
+      })
+    }),
   createOrUpdate: protectedProcedure
     .input(BeneficiaireValidation)
     .mutation(async ({ input, ctx: { user } }) => {
@@ -118,5 +123,83 @@ export const beneficiairesRouter = router({
       })
 
       return created
+    }),
+  delete: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input, ctx: { user } }) => {
+      enforceIsMediateur(user)
+
+      const { id } = input
+
+      const beneficiaire = await checkExistingBeneficiaire({
+        beneficiaireId: id,
+        mediateurId: user.mediateur.id,
+      })
+
+      if (!beneficiaire) {
+        throw invalidError('Beneficiaire not found')
+      }
+
+      /**
+       * Cas spécifique si je supprime un bénéficiaire qui est lié à des activités :
+       *
+       * - Bénéficiaire dans un atelier collectif → retiré des beneficiaires suivis et ajouté en compteur benef anonymes
+       * - Beneficiaire dans un accompagnement individuel / demarche → retiré du bénéficiaire sélectionné, et on affiche la partie beneficiaire anonyme
+       *   -- Cela fonctionne car un beneficiaire est toujours associé, il sera "anonyme" a partir du moment ou prenom et nom sont null
+       */
+
+      const { genre, trancheAge, statutSocial } = beneficiaire
+
+      const incrementParticipantsAnonymesData = {
+        total: {
+          increment: 1,
+        },
+        [genre ? `genre${genre}` : 'genreNonCommunique']: {
+          increment: 1,
+        },
+        [trancheAge ? `trancheAge${trancheAge}` : 'trancheAgeNonCommunique']: {
+          increment: 1,
+        },
+        [statutSocial
+          ? `statutSocial${statutSocial}`
+          : 'statutSocialNonCommunique']: {
+          increment: 1,
+        },
+      } satisfies Prisma.ParticipantsAnonymesCraCollectifUncheckedUpdateManyInput
+
+      await prismaClient.$transaction([
+        prismaClient.participantAtelierCollectif.deleteMany({
+          where: {
+            beneficiaireId: id,
+          },
+        }),
+        prismaClient.participantsAnonymesCraCollectif.updateMany({
+          where: {
+            craCollectif: {
+              participants: {
+                some: {
+                  beneficiaireId: id,
+                },
+              },
+            },
+          },
+          data: incrementParticipantsAnonymesData,
+        }),
+        prismaClient.beneficiaire.update({
+          where: { id },
+          data: {
+            suppression: new Date(),
+            modification: new Date(),
+            // Anonymize the beneficiaire but keep anonymous data for stats
+            prenom: null,
+            nom: null,
+            telephone: null,
+            email: null,
+            notes: null,
+            adresse: null,
+            pasDeTelephone: null,
+          },
+        }),
+      ])
     }),
 })

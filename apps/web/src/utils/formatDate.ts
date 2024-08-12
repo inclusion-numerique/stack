@@ -1,4 +1,11 @@
-import { format as dateFnsFormat, type FormatOptions } from 'date-fns'
+import {
+  format as dateFnsFormat,
+  type FormatOptions,
+  setDefaultOptions,
+} from 'date-fns'
+import { fr } from 'date-fns/locale'
+
+setDefaultOptions({ locale: fr })
 
 export function formatDate(
   date: Date,

@@ -31,7 +31,9 @@ import RichCardLabel, {
   richCardRadioGroupClassName,
 } from '@app/web/components/form/RichCardLabel'
 import { craFormFieldsetClassname } from '@app/web/app/coop/mon-activite/cra/craFormFieldsetClassname'
-import AdresseBanFormField from '@app/web/components/form/AdresseBanFormField'
+import AdresseBanFormField, {
+  AdressBanFormFieldOption,
+} from '@app/web/components/form/AdresseBanFormField'
 import CraFormLabel from '@app/web/app/coop/mon-activite/cra/CraFormLabel'
 import {
   genreOptions,
@@ -48,11 +50,13 @@ const BeneficiaireForm = ({
   defaultValues,
   cra,
   retour,
+  communeResidenceDefaultOptions,
 }: {
   defaultValues: DefaultValues<BeneficiaireData> & { mediateurId: string }
   // If present, used to merge with state on retour redirection
   cra?: DefaultValues<CraIndividuelData> | DefaultValues<CraCollectifData>
   retour?: string
+  communeResidenceDefaultOptions?: AdressBanFormFieldOption[]
 }) => {
   const form = useForm<BeneficiaireData>({
     resolver: zodResolver(BeneficiaireValidation),
@@ -84,8 +88,11 @@ const BeneficiaireForm = ({
     formState: { isSubmitting, isSubmitSuccessful, errors },
   } = form
 
-  const nextUrlBase = retour || '/coop/mes-beneficiaires'
-  const backUrlBase = retour || '/coop/mes-beneficiaires'
+  const nextUrlBase =
+    retour || defaultValues.id
+      ? `/coop/mes-beneficiaires/${defaultValues.id}`
+      : '/coop/mes-beneficiaires'
+  const backUrlBase = nextUrlBase
 
   const onSubmit = async (data: BeneficiaireData) => {
     try {
@@ -305,6 +312,12 @@ const BeneficiaireForm = ({
           }
           placeholder="Rechercher une commune par son nom ou son code postal"
           searchOptions={{ type: 'municipality' }}
+          defaultOptions={communeResidenceDefaultOptions}
+          defaultValue={
+            communeResidenceDefaultOptions?.length
+              ? communeResidenceDefaultOptions[0]
+              : undefined
+          }
         />
         <CraFormLabel as="p" className="fr-mb-4v fr-mt-12v">
           Genre

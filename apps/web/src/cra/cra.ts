@@ -11,6 +11,28 @@ import type {
 } from '@prisma/client'
 import { labelsToOptions } from '@app/ui/components/Form/utils/options'
 
+export type AccompagnementType = 'individuel' | 'collectif' | 'demarche'
+
+export const accompagnementTypeLabels: {
+  [key in AccompagnementType]: string
+} = {
+  individuel: 'Accompagnement individuel',
+  collectif: 'Atelier',
+  demarche: 'Aide aux démarches administratives',
+}
+
+export const accompagnementTypeIllustrations: {
+  [key in AccompagnementType]?: string
+} = {
+  individuel: '/images/iconographie/accompagnement-individuel.svg',
+  collectif: '/images/iconographie/accompagnement-collectif.svg',
+  demarche: '/images/iconographie/demarche-administrative.svg',
+}
+
+export const accompagnementTypeValues = Object.keys(
+  accompagnementTypeLabels,
+) as [AccompagnementType, ...AccompagnementType[]]
+
 export const dureeAccompagnementLabels = {
   '30': '30min',
   '60': '1h',

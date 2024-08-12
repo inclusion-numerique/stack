@@ -1,10 +1,17 @@
 import type { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
-import { SessionUser } from '@app/web/auth/sessionUser'
 import { prismaBeneficiaireToBeneficiaireData } from '@app/web/beneficiaire/prismaBeneficiaireToBeneficiaireData'
+import {
+  beneficiaireCrasCounts,
+  beneficiaireCrasCountSelect,
+} from '@app/web/beneficiaire/beneficiaireQueries'
 
 type SearchBeneficiaireOptions = {
-  limit: number
+  take: number
+  mediateurId?: string
+  orderBy?: Prisma.BeneficiaireOrderByWithRelationInput[]
+  skip?: number
+  query?: string
 }
 
 export const searchBeneficiaireSelect = {
@@ -17,19 +24,9 @@ export const searchBeneficiaireSelect = {
   commune: true,
   communeCodePostal: true,
   communeCodeInsee: true,
+  creation: true,
+  ...beneficiaireCrasCountSelect,
 } satisfies Prisma.BeneficiaireSelect
-
-const getMediateurIdWhereFilter = (user: SessionUser) => {
-  if (user.role === 'Admin') {
-    return
-  }
-
-  if (user.mediateur) {
-    return user.mediateur.id
-  }
-
-  throw new Error('User is not authorized to search for beneficiaires')
-}
 
 // List beneficiaires not anonymous
 export const beneficiairesListWhere = ({
@@ -49,19 +46,15 @@ export const beneficiairesListWhere = ({
   }) satisfies Prisma.BeneficiaireWhereInput
 
 export const searchBeneficiaire = async (
-  query: string,
-  user: SessionUser,
-  options?: SearchBeneficiaireOptions,
+  options: SearchBeneficiaireOptions,
 ) => {
-  const beneficiairesSearchLimit = options?.limit || 50
-  const queryParts = query.split(' ')
-
-  if (user.role !== 'Admin' && !user.mediateur) {
-    throw new Error('User is not authorized to search for beneficiaires')
-  }
+  const beneficiairesSearchLimit = options?.take || 50
+  const queryParts = options?.query?.split(' ') ?? []
 
   const matchesWhere = {
-    ...beneficiairesListWhere({ mediateurId: getMediateurIdWhereFilter(user) }),
+    ...beneficiairesListWhere({
+      mediateurId: options?.mediateurId,
+    }),
     AND: queryParts.map((part) => ({
       OR: [
         {
@@ -101,8 +94,10 @@ export const searchBeneficiaire = async (
   const beneficiairesRaw = await prismaClient.beneficiaire.findMany({
     where: matchesWhere,
     take: beneficiairesSearchLimit,
+    skip: options?.skip,
     select: searchBeneficiaireSelect,
     orderBy: [
+      ...(options?.orderBy ?? []),
       {
         nom: 'asc',
       },
@@ -116,13 +111,24 @@ export const searchBeneficiaire = async (
     where: matchesWhere,
   })
 
-  const beneficiaires = beneficiairesRaw.map(
-    prismaBeneficiaireToBeneficiaireData,
-  )
+  const totalPages = Math.ceil(matchesCount / beneficiairesSearchLimit)
+
+  const beneficiaires = beneficiairesRaw.map((beneficiaire) => ({
+    ...prismaBeneficiaireToBeneficiaireData(beneficiaire),
+    ...beneficiaireCrasCounts(beneficiaire),
+  }))
 
   return {
     beneficiaires,
     matchesCount,
     moreResults: Math.max(matchesCount - beneficiairesSearchLimit, 0),
+    totalPages,
   }
 }
+
+export type SearchBeneficiaireResult = Awaited<
+  ReturnType<typeof searchBeneficiaire>
+>
+
+export type SearchBeneficiaireResultRow =
+  SearchBeneficiaireResult['beneficiaires'][number]

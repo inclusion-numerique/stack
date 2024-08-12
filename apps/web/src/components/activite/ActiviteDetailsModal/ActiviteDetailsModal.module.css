@@ -1,0 +1,64 @@
+dialog.modal {
+    :global .fr-modal__title {
+        position: absolute;
+        top: 32px;
+    }
+
+    :global .fr-modal__content {
+        margin-bottom: 40px;
+    }
+}
+
+.notes {
+    p {
+        font-size: 14px;
+        line-height: 24px;
+    }
+}
+
+.accordion {
+    margin: -24px -16px;
+
+    &::before {
+        box-shadow: none !important;
+    }
+
+
+    :global .fr-collapse{
+        padding-right:  16px;
+        padding-left:  16px;
+    }
+
+    @media (min-width: 48em) {
+        margin-left: -32px;
+        margin-right: -32px;
+
+        :global .fr-accordion__btn {
+            padding-right:  32px;
+            padding-left:  32px;
+        }
+
+        :global .fr-collapse{
+            padding-right:  32px;
+            padding-left:  32px;
+        }
+    }
+
+    :global button.fr-accordion__btn {
+        padding-top: 24px;
+        padding-bottom: 24px;
+    }
+
+    :global .fr-accordion__btn[aria-expanded="true"] {
+        background-color:  var(--grey-1000-50-hover);
+
+        &:hover {
+            background-color: var(--grey-1000-50-active);
+        }
+
+        &:active {
+            background-color: var(--grey-1000-50-active);
+        }
+
+    }
+}
