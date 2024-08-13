@@ -4,12 +4,14 @@ import {
 } from '@prisma/client'
 import { mediateurAvecActiviteMediateurId } from '@app/fixtures/users'
 import {
+  givenCraCollectif,
   givenCraDemarcheAdministrative,
   givenCraIndividuel,
 } from '@app/fixtures/givenCra'
 import {
   beneficiaireMaximaleMediateurAvecActivite,
   beneficiaireMinimaleMediateurAvecActivite,
+  beneficiairesMediateurAvecActivite,
 } from '@app/fixtures/beneficiaires'
 
 export const mediateurAvecActiviteCrasIndividuels = [
@@ -54,8 +56,29 @@ export const mediateurAvecActiviteCrasDemarchesAdministratives = [
   }),
 ]
 
+export const mediateurAvecActiviteCrasCollectifs = [
+  givenCraCollectif({
+    creeParMediateurId: mediateurAvecActiviteMediateurId,
+    thematiques: [
+      ThematiqueAccompagnement.Sante,
+      ThematiqueAccompagnement.CultureNumerique,
+    ],
+    date: new Date('2024-08-04'),
+    beneficiaireIds: beneficiairesMediateurAvecActivite.map((b) => b.id),
+    participantsAnonymes: {},
+  }),
+]
+
 export const fixtureCrasIndividuels = [...mediateurAvecActiviteCrasIndividuels]
 
 export const fixtureCrasDemarchesAdministratives = [
   ...mediateurAvecActiviteCrasDemarchesAdministratives,
+]
+
+export const fixtureCrasCollectifs = [...mediateurAvecActiviteCrasCollectifs]
+
+export const fixtureCras = [
+  ...fixtureCrasIndividuels,
+  ...fixtureCrasDemarchesAdministratives,
+  ...fixtureCrasCollectifs,
 ]

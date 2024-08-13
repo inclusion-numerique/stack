@@ -47,7 +47,9 @@ export const beneficiaireMaximaleMediateurAvecActivite = givenBeneficiaire({
   suppression: null,
 })
 
-export const fixtureBeneficiaires = [
+export const beneficiairesMediateurAvecActivite = [
   beneficiaireMinimaleMediateurAvecActivite,
   beneficiaireMaximaleMediateurAvecActivite,
 ]
+
+export const fixtureBeneficiaires = [...beneficiairesMediateurAvecActivite]
