@@ -65,6 +65,7 @@ const DataTable = <
                     ({
                       name,
                       header,
+                      sortInMemory,
                       sortable,
                       defaultSortable,
                       headerClassName,
@@ -76,7 +77,10 @@ const DataTable = <
                         className={classNames(headerClassName, classes?.th)}
                       >
                         {header}
-                        {(!!defaultSortable || !!sortable || !!orderBy) && (
+                        {(!!defaultSortable ||
+                          !!sortable ||
+                          !!sortInMemory ||
+                          !!orderBy) && (
                           <SortLink
                             {...sortLinkProps(
                               {

@@ -1,12 +1,12 @@
-import { SearchActiviteResult } from '@app/web/activite/searchActivite'
 import DataTable from '@app/web/data-table/DataTable'
-import {
-  ActivitesDataTable,
-  ActivitesDataTableSearchParams,
-} from '@app/web/activite/ActivitesDataTable'
 import PaginationNav from '@app/web/data-table/PaginationNav'
 import { createDataTableHref } from '@app/web/data-table/createDataTableHref'
 import styles from './MesActivitesListePage.module.css'
+import {
+  ActivitesDataTable,
+  ActivitesDataTableSearchParams,
+} from '@app/web/cra/ActivitesDataTable'
+import { SearchActiviteResult } from '@app/web/cra/searchActivite'
 
 const ActivitesTable = ({
   data: { activites, totalPages },

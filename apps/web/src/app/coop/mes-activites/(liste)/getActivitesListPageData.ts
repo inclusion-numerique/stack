@@ -1,10 +1,10 @@
-import { searchBeneficiaire } from '@app/web/beneficiaire/searchBeneficiaire'
-import {
-  BeneficiairesDataTable,
-  BeneficiairesDataTableSearchParams,
-} from '@app/web/beneficiaire/BeneficiairesDataTable'
 import { takeAndSkipFromPage } from '@app/web/data-table/takeAndSkipFromPage'
 import { getDataTableOrderBy } from '@app/web/data-table/getDataTableOrderBy'
+import {
+  ActivitesDataTable,
+  ActivitesDataTableSearchParams,
+} from '@app/web/cra/ActivitesDataTable'
+import { searchActivite } from '@app/web/cra/searchActivite'
 
 export const getActivitesListPageData = async ({
   mediateurId,

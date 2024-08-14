@@ -1,6 +1,11 @@
 import type { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
-import { activiteCrasCounts } from '@app/web/cra/activiteQueries'
+import { prismaActiviteToActiviteModel } from '@app/web/cra/prismaActiviteToActiviteModel'
+import {
+  craCollectifForActiviteSelect,
+  craDemarcheForActiviteSelect,
+  craIndividuelForActiviteSelect,
+} from '@app/web/cra/activitesQueries'
 
 type SearchActiviteOptions = {
   take: number
@@ -13,9 +18,9 @@ type SearchActiviteOptions = {
 export const searchActiviteSelect = {
   id: true,
   mediateurId: true,
-  craIndividuel: true,
-  craDemarcheAdministrative: true,
-  craCollectif: true,
+  craIndividuel: { select: craIndividuelForActiviteSelect },
+  craDemarcheAdministrative: { select: craDemarcheForActiviteSelect },
+  craCollectif: { select: craCollectifForActiviteSelect },
 } satisfies Prisma.ActiviteMediateurSelect
 
 // List activites not anonymous
@@ -41,64 +46,58 @@ export const activitesListWhere = ({ mediateurId }: { mediateurId?: string }) =>
     ],
   }) satisfies Prisma.ActiviteMediateurWhereInput
 
+export const queryActivitesForList = async ({
+  orderBy,
+  skip,
+  take,
+  where,
+}: {
+  where: Prisma.ActiviteMediateurWhereInput
+  orderBy: Prisma.ActiviteMediateurOrderByWithRelationInput[]
+  skip?: number
+  take?: number
+}) =>
+  prismaClient.activiteMediateur.findMany({
+    where,
+    take,
+    skip,
+    select: searchActiviteSelect,
+    orderBy,
+  })
+
+export type ActiviteForListQueryResult = Awaited<
+  ReturnType<typeof queryActivitesForList>
+>[number]
+
 export const searchActivite = async (options: SearchActiviteOptions) => {
   const activitesSearchLimit = options?.take || 50
-  const queryParts = options?.query?.split(' ') ?? []
 
   const matchesWhere = {
     ...activitesListWhere({
       mediateurId: options?.mediateurId,
     }),
-    AND: queryParts.map((part) => ({
-      OR: [
-        {
-          prenom: {
-            contains: part,
-            mode: 'insensitive',
-          },
-        },
-        {
-          nom: {
-            contains: part,
-            mode: 'insensitive',
-          },
-        },
-        {
-          commune: {
-            contains: part,
-            mode: 'insensitive',
-          },
-        },
-        {
-          email: {
-            contains: part,
-            mode: 'insensitive',
-          },
-        },
-        {
-          communeCodePostal: {
-            contains: part,
-            mode: 'insensitive',
-          },
-        },
-      ],
-    })),
   } satisfies Prisma.ActiviteMediateurWhereInput
 
-  const activitesRaw = await prismaClient.activiteMediateur.findMany({
+  // TODO this will NOT work with prisma as we need to coalesce fields for ordering
+  // TODO FIRST Do a raw sql query to fetch the ids of the activities
+  // Then do a prisma query with the select to fetch correct date types, and "id IN..." clause
+
+  const activitesQueryResult = await queryActivitesForList({
     where: matchesWhere,
-    take: activitesSearchLimit,
-    skip: options?.skip,
-    select: searchActiviteSelect,
     orderBy: [
       ...(options?.orderBy ?? []),
       {
-        nom: 'asc',
+        craDemarcheAdministrative: { date: 'desc' },
       },
       {
-        prenom: 'asc',
+        craIndividuel: { date: 'desc' },
+      },
+      {
+        craCollectif: { date: 'desc' },
       },
     ],
+    skip: options?.skip,
+    take: activitesSearchLimit,
   })
 
   const matchesCount = await prismaClient.activiteMediateur.count({
@@ -107,10 +106,7 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
 
   const totalPages = Math.ceil(matchesCount / activitesSearchLimit)
 
-  const activites = activitesRaw.map((activite) => ({
-    ...prismaActiviteToActiviteData(activite),
-    ...activiteCrasCounts(activite),
-  }))
+  const activites = activitesQueryResult.map(prismaActiviteToActiviteModel)
 
   return {
     activites,

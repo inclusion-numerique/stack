@@ -22,6 +22,30 @@ const accompagnementIndividuelBeneficiaireSelect = {
   },
 } satisfies Prisma.BeneficiaireSelect
 
+export const craIndividuelForActiviteSelect = {
+  id: true,
+  date: true,
+  autonomie: true,
+  thematiques: true,
+  duree: true,
+  materiel: true,
+  notes: true,
+  lieuAccompagnement: true,
+  lieuActivite: {
+    select: { id: true, commune: true, codePostal: true, nom: true },
+  },
+  lieuAccompagnementDomicileCommune: true,
+  lieuAccompagnementDomicileCodeInsee: true,
+  lieuAccompagnementDomicileCodePostal: true,
+  orienteVersStructure: true,
+  structureDeRedirection: true,
+  beneficiaire: {
+    select: {
+      ...accompagnementIndividuelBeneficiaireSelect,
+    },
+  },
+} satisfies Prisma.CraIndividuelSelect
+
 export const getCrasIndividuelForActivite = ({
   beneficiaireId,
   mediateurId,
@@ -35,29 +59,7 @@ export const getCrasIndividuelForActivite = ({
       creeParMediateurId: mediateurId,
       suppression: null,
     },
-    select: {
-      id: true,
-      date: true,
-      autonomie: true,
-      thematiques: true,
-      duree: true,
-      materiel: true,
-      notes: true,
-      lieuAccompagnement: true,
-      lieuActivite: {
-        select: { id: true, commune: true, codePostal: true, nom: true },
-      },
-      lieuAccompagnementDomicileCommune: true,
-      lieuAccompagnementDomicileCodeInsee: true,
-      lieuAccompagnementDomicileCodePostal: true,
-      orienteVersStructure: true,
-      structureDeRedirection: true,
-      beneficiaire: {
-        select: {
-          ...accompagnementIndividuelBeneficiaireSelect,
-        },
-      },
-    },
+    select: craIndividuelForActiviteSelect,
     orderBy: {
       creation: 'desc',
     },
@@ -66,6 +68,30 @@ export const getCrasIndividuelForActivite = ({
 export type CraIndividuelForActivite = Awaited<
   ReturnType<typeof getCrasIndividuelForActivite>
 >[number]
+
+export const craDemarcheForActiviteSelect = {
+  id: true,
+  date: true,
+  autonomie: true,
+  thematiques: true,
+  duree: true,
+  notes: true,
+  lieuAccompagnement: true,
+  precisionsDemarche: true,
+  lieuActivite: {
+    select: { id: true, commune: true, codePostal: true, nom: true },
+  },
+  lieuAccompagnementDomicileCommune: true,
+  lieuAccompagnementDomicileCodeInsee: true,
+  lieuAccompagnementDomicileCodePostal: true,
+  structureDeRedirection: true,
+  degreDeFinalisation: true,
+  beneficiaire: {
+    select: {
+      ...accompagnementIndividuelBeneficiaireSelect,
+    },
+  },
+} satisfies Prisma.CraDemarcheAdministrativeSelect
 
 export const getCrasDemarcheAdministrativeForActivite = ({
   beneficiaireId,
@@ -80,29 +106,7 @@ export const getCrasDemarcheAdministrativeForActivite = ({
       creeParMediateurId: mediateurId,
       suppression: null,
     },
-    select: {
-      id: true,
-      date: true,
-      autonomie: true,
-      thematiques: true,
-      duree: true,
-      notes: true,
-      lieuAccompagnement: true,
-      precisionsDemarche: true,
-      lieuActivite: {
-        select: { id: true, commune: true, codePostal: true, nom: true },
-      },
-      lieuAccompagnementDomicileCommune: true,
-      lieuAccompagnementDomicileCodeInsee: true,
-      lieuAccompagnementDomicileCodePostal: true,
-      structureDeRedirection: true,
-      degreDeFinalisation: true,
-      beneficiaire: {
-        select: {
-          ...accompagnementIndividuelBeneficiaireSelect,
-        },
-      },
-    },
+    select: craDemarcheForActiviteSelect,
     orderBy: {
       creation: 'desc',
     },
@@ -111,6 +115,35 @@ export const getCrasDemarcheAdministrativeForActivite = ({
 export type CraDemarcheAdministrativeForActivite = Awaited<
   ReturnType<typeof getCrasDemarcheAdministrativeForActivite>
 >[number]
+
+export const craCollectifForActiviteSelect = {
+  id: true,
+  date: true,
+  niveau: true,
+  thematiques: true,
+  titreAtelier: true,
+  duree: true,
+  notes: true,
+  lieuAtelier: true,
+  lieuActivite: {
+    select: { id: true, commune: true, codePostal: true, nom: true },
+  },
+  lieuAccompagnementAutreCommune: true,
+  lieuAccompagnementAutreCodeInsee: true,
+  lieuAccompagnementAutreCodePostal: true,
+  participants: {
+    select: {
+      beneficiaire: {
+        select: {
+          id: true,
+          prenom: true,
+          nom: true,
+        },
+      },
+    },
+  },
+  participantsAnonymes: true,
+} satisfies Prisma.CraCollectifSelect
 
 export const getCrasCollectifForActivite = ({
   beneficiaireId,
@@ -125,34 +158,7 @@ export const getCrasCollectifForActivite = ({
       ...(mediateurId ? { participants: { some: { beneficiaireId } } } : {}),
       suppression: null,
     },
-    select: {
-      id: true,
-      date: true,
-      niveau: true,
-      thematiques: true,
-      titreAtelier: true,
-      duree: true,
-      notes: true,
-      lieuAtelier: true,
-      lieuActivite: {
-        select: { id: true, commune: true, codePostal: true, nom: true },
-      },
-      lieuAccompagnementAutreCommune: true,
-      lieuAccompagnementAutreCodeInsee: true,
-      lieuAccompagnementAutreCodePostal: true,
-      participants: {
-        select: {
-          beneficiaire: {
-            select: {
-              id: true,
-              prenom: true,
-              nom: true,
-            },
-          },
-        },
-      },
-      participantsAnonymes: true,
-    },
+    select: craCollectifForActiviteSelect,
     orderBy: {
       creation: 'desc',
     },

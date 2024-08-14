@@ -1,28 +1,19 @@
 import Button from '@codegouvfr/react-dsfr/Button'
+import { CreateCraModalDefinition } from '@app/web/app/coop/mes-activites/CreateCraModalDefinition'
 
 const MesActivitesListeEmptyPage = () => (
   <div className="fr-border-radius--8 fr-p-12v fr-background-alt--blue-france fr-align-items-center">
     <h2 className="fr-h6 fr-mb-2v fr-text--center">
-      Vous n’avez pas enregistré de bénéficiaire
+      Vous n’avez pas enregistré d’activité
     </h2>
-    <p className="fr-text--center wip-outline fr-mb-8v">
-      Vous pouvez créer un·e bénéficiaire afin de réaliser un suivi de ses
-      accompagnements. Vous retrouverez la liste de vos bénéficiaires sur cette
-      page.
-      <br />
-      <br />
-      Vous pouvez également{' '}
-    </p>
+    <p className="fr-text--center wip-outline fr-mb-8v">TODO</p>
     <div className="fr-flex fr-justify-content-center fr-width-full">
       <Button
-        iconId="fr-icon-download-line"
-        priority="tertiary"
-        className="wip-outline"
-        linkProps={{
-          href: '/coop/mes-activites/importer',
-        }}
+        type="button"
+        {...CreateCraModalDefinition.buttonProps}
+        iconId="fr-icon-add-line"
       >
-        Importer des bénéficiaires
+        Enregistrer une activité
       </Button>
     </div>
   </div>

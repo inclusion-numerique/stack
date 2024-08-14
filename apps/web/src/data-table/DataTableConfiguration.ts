@@ -38,7 +38,9 @@ export type DataTableColumn<
   csvHeaders?: string[]
   csvValues?: (row: DataRow) => (string | number | null | undefined)[]
   defaultSortable?: boolean
-  sortable?: (a: DataRow, b: DataRow) => number
+  defaultSortableDirection?: SortDirection
+  sortInMemory?: (a: DataRow, b: DataRow) => number
+  sortable?: boolean
   orderBy?: (direction: SortDirection) => OrderBy[]
   cell?: (row: DataRow) => ReactNode
   filters?: DataTableFilter<DataRow, Where>[]
@@ -90,7 +92,7 @@ export type DataTableFilterSearchParams<
 
 type SortableColumn<Configuration extends DataTableConfiguration> = Extract<
   Configuration['columns'][number],
-  { sortable: Required<DataTableColumn['sortable']> }
+  { sortable: Required<DataTableColumn['sortInMemory']> }
 >
 
 export type DataTableSearchParams<

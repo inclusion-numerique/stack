@@ -7,7 +7,7 @@ import { activitesListWhere } from '@app/web/cra/searchActivite'
 import { ActivitesDataTableSearchParams } from '@app/web/cra/ActivitesDataTable'
 import MesActivitesListeLayout from '@app/web/app/coop/mes-activites/(liste)/MesActivitesListeLayout'
 
-const MesActivitesPage = async ({
+const MesActivitesTableauPage = async ({
   searchParams = {},
 }: {
   searchParams?: ActivitesDataTableSearchParams
@@ -26,17 +26,17 @@ const MesActivitesPage = async ({
     })
 
     return (
-      <MesActivitesListeLayout vue="liste">
+      <MesActivitesListeLayout vue="tableau">
         <MesActivitesListePage data={data} />
       </MesActivitesListeLayout>
     )
   }
 
   return (
-    <MesActivitesListeLayout vue="liste">
+    <MesActivitesListeLayout vue="tableau">
       <MesActivitesListeEmptyPage />
     </MesActivitesListeLayout>
   )
 }
 
-export default MesActivitesPage
+export default MesActivitesTableauPage

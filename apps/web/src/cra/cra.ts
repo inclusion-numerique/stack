@@ -17,7 +17,7 @@ export const accompagnementTypeLabels: {
   [key in AccompagnementType]: string
 } = {
   individuel: 'Accompagnement individuel',
-  collectif: 'Atelier',
+  collectif: 'Atelier collectif',
   demarche: 'Aide aux démarches administratives',
 }
 
