@@ -3,6 +3,7 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 export const testSessionUser = {
   id: 'test',
   email: 'jean.biche@example.com',
+  phone: '0123456789',
   firstName: 'Jean',
   lastName: 'Biche',
   name: 'Jean Biche',

@@ -53,7 +53,11 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
         </span>
       </li>
       <li>
-        <Link className="fr-nav__link" href="/" style={{ boxShadow: 'none' }}>
+        <Link
+          className="fr-nav__link fr-border--bottom"
+          href="/mon-profil"
+          style={{ boxShadow: 'none' }}
+        >
           <span
             className="ri-account-circle-line fr-mr-1w"
             style={{ color: 'var(--blue-france-sun-113-625)' }}
