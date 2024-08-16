@@ -2,12 +2,12 @@ import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediate
 import { prismaClient } from '@app/web/prismaClient'
 import MesActivitesListeEmptyPage from '@app/web/app/coop/mes-activites/(liste)/MesActivitesListeEmptyPage'
 import { getActivitesListPageData } from '@app/web/app/coop/mes-activites/(liste)/getActivitesListPageData'
-import MesActivitesListePage from '@app/web/app/coop/mes-activites/(liste)/MesActivitesListePage'
 import { activitesListWhere } from '@app/web/cra/searchActivite'
 import { ActivitesDataTableSearchParams } from '@app/web/cra/ActivitesDataTable'
 import MesActivitesListeLayout from '@app/web/app/coop/mes-activites/(liste)/MesActivitesListeLayout'
+import MesActivitesTableauPage from '@app/web/app/coop/mes-activites/(liste)/tableau/MesActivitesTableauPage'
 
-const MesActivitesTableauPage = async ({
+const MesActivitesVueTableauPage = async ({
   searchParams = {},
 }: {
   searchParams?: ActivitesDataTableSearchParams
@@ -27,7 +27,7 @@ const MesActivitesTableauPage = async ({
 
     return (
       <MesActivitesListeLayout vue="tableau">
-        <MesActivitesListePage data={data} />
+        <MesActivitesTableauPage data={data} />
       </MesActivitesListeLayout>
     )
   }
@@ -39,4 +39,4 @@ const MesActivitesTableauPage = async ({
   )
 }
 
-export default MesActivitesTableauPage
+export default MesActivitesVueTableauPage

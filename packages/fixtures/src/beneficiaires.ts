@@ -1,4 +1,7 @@
-import { givenBeneficiaire } from '@app/fixtures/givenBeneficiaire'
+import {
+  givenBeneficiaire,
+  givenBeneficiaireAnonyme,
+} from '@app/fixtures/givenBeneficiaire'
 import { mediateurAvecActiviteMediateurId } from '@app/fixtures/users'
 
 export const beneficiaireMinimaleMediateurAvecActivite = givenBeneficiaire({
@@ -47,9 +50,25 @@ export const beneficiaireMaximaleMediateurAvecActivite = givenBeneficiaire({
   suppression: null,
 })
 
+export const beneficiaireAnonymeMediateurAvecActivite =
+  givenBeneficiaireAnonyme({
+    id: 'c6f21f86-8334-488c-ba48-c29a4ed74669',
+    mediateurId: mediateurAvecActiviteMediateurId,
+    commune: 'Paris',
+    communeCodePostal: '75001',
+    communeCodeInsee: '75101',
+    vaPoursuivreParcoursAccompagnement: true,
+    genre: null,
+    trancheAge: 'DixHuitVingtQuatre',
+    creation: new Date('2024-08-08'),
+    modification: new Date('2024-08-12'),
+    suppression: null,
+  })
+
 export const beneficiairesMediateurAvecActivite = [
   beneficiaireMinimaleMediateurAvecActivite,
   beneficiaireMaximaleMediateurAvecActivite,
+  beneficiaireAnonymeMediateurAvecActivite,
 ]
 
 export const fixtureBeneficiaires = [...beneficiairesMediateurAvecActivite]

@@ -1,5 +1,9 @@
 import Link from 'next/link'
 import classNames from 'classnames'
+import {
+  createDataTableHref,
+  CreateDataTableHrefParams,
+} from '@app/web/data-table/createDataTableHref'
 
 // Only display at most 6 pages numbered links
 /**
@@ -34,30 +38,38 @@ export const createPagesNumbersToDisplay = (
 
 export type PaginationNavProps = {
   className?: string
-  pageNumber: number
   totalPages: number
-  createPageLink: (pageNumber: number) => string
-}
+} & CreateDataTableHrefParams
 
 const PaginationNav = ({
   className,
-  createPageLink,
+  baseHref,
+  searchParams,
   totalPages,
-  pageNumber,
 }: PaginationNavProps) => {
+  const pageNumber = searchParams.page
+    ? Number.parseInt(searchParams.page, 10)
+    : 1
+
   const isFirstPage = pageNumber <= 1
   const isLastPage = pageNumber >= totalPages
 
   const linkablePages = createPagesNumbersToDisplay(totalPages, pageNumber)
 
+  const createPageHref = (page: number) =>
+    createDataTableHref({
+      baseHref,
+      searchParams: {
+        ...searchParams,
+        page: page.toString(10),
+      },
+    })
+
   return (
     <nav
       role="navigation"
       aria-label="Pagination"
-      className={classNames(
-        'fr-pagination fr-flex fr-justify-content-center',
-        className,
-      )}
+      className={classNames('fr-pagination fr-flex', className)}
     >
       <ul className="fr-pagination__list">
         <li>
@@ -73,7 +85,7 @@ const PaginationNav = ({
             <Link
               className="fr-pagination__link fr-pagination__link--first"
               role="link"
-              href={createPageLink(1)}
+              href={createPageHref(1)}
               prefetch={false}
             >
               Première page
@@ -93,7 +105,7 @@ const PaginationNav = ({
             <Link
               className="fr-pagination__link fr-pagination__link--prev fr-pagination__link--lg-label"
               role="link"
-              href={createPageLink(pageNumber - 1)}
+              href={createPageHref(pageNumber - 1)}
               prefetch={false}
             >
               Précédent
@@ -113,7 +125,7 @@ const PaginationNav = ({
                 className="fr-pagination__link"
                 aria-current={pageNumber === linkNumber ? 'page' : undefined}
                 title={`Page ${linkNumber}`}
-                href={createPageLink(linkNumber)}
+                href={createPageHref(linkNumber)}
                 prefetch={false}
               >
                 {linkNumber}
@@ -134,7 +146,7 @@ const PaginationNav = ({
             <Link
               className="fr-pagination__link fr-pagination__link--next fr-pagination__link--lg-label"
               role="link"
-              href={createPageLink(pageNumber + 1)}
+              href={createPageHref(pageNumber + 1)}
               prefetch={false}
             >
               Suivant
@@ -154,7 +166,7 @@ const PaginationNav = ({
             <Link
               className="fr-pagination__link fr-pagination__link--last"
               role="link"
-              href={createPageLink(totalPages)}
+              href={createPageHref(totalPages)}
               prefetch={false}
             >
               Dernière page

@@ -1,8 +1,8 @@
 'use client'
 
-import { ActiviteDetailsDynamicModal } from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsDynamicModal'
 import type { MouseEventHandler } from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
+import { ActiviteDetailsDynamicModal } from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsDynamicModal'
 import { Activite } from '@app/web/cra/activitesQueries'
 
 const ActiviteRowShowDetailsButton = ({ activite }: { activite: Activite }) => {

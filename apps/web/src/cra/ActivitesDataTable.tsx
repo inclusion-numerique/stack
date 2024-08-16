@@ -5,14 +5,15 @@ import {
   DataTableSearchParams,
 } from '@app/web/data-table/DataTableConfiguration'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
-import { SearchActiviteResultRow } from '@app/web/cra/searchActivite'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { accompagnementTypeLabels } from '@app/web/cra/cra'
 import ActiviteRowShowDetailsButton from '@app/web/cra/ActiviteRowShowDetailsButton'
 import styles from '@app/web/app/coop/mes-activites/(liste)/MesActivitesListePage.module.css'
+import { Activite } from '@app/web/cra/activitesQueries'
+import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 
 export type ActivitesDataTableConfiguration = DataTableConfiguration<
-  SearchActiviteResultRow,
+  Activite,
   Prisma.ActiviteMediateurWhereInput,
   Prisma.ActiviteMediateurOrderByWithRelationInput
 >
@@ -31,6 +32,32 @@ export const ActivitesDataTable = {
       sortable: true,
       csvValues: ({ cra: { date } }) => [dateAsIsoDay(date)],
       cell: ({ cra: { date } }) => dateAsDay(date),
+      filters: [
+        // {
+        //   name: 'du',
+        //   title: 'Du',
+        //   render: (value) => `TODO RENDER du`,
+        //   applyWhereCondition: (query, value) => ({
+        //     OR: [
+        //       { craIndividuel: { date: { gte: query } } },
+        //       { craCollectif: { date: { gte: query } } },
+        //       { craDemarcheAdministrative: { date: { gte: query } } },
+        //     ],
+        //   }),
+        // },
+        // {
+        //   name: 'au',
+        //   title: 'Au',
+        //   render: (value) => `TODO RENDER au`,
+        //   applyWhereCondition: (query, value) => ({
+        //     OR: [
+        //       { craIndividuel: { date: { lte: query } } },
+        //       { craCollectif: { date: { lte: query } } },
+        //       { craDemarcheAdministrative: { date: { lte: query } } },
+        //     ],
+        //   }),
+        // },
+      ],
     },
     {
       name: 'type',
@@ -39,20 +66,50 @@ export const ActivitesDataTable = {
       csvValues: ({ type }) => [accompagnementTypeLabels[type]],
       cell: ({ type }) => accompagnementTypeLabels[type],
       sortable: true,
+      filters: [
+        // {
+        //   name: 'type',
+        //   title: 'Type',
+        //   render: (value) => `TODO RENDER type`,
+        //   applyWhereCondition: (query, value) => ({
+        //     OR: [
+        //       // TODO
+        //     ],
+        //   }),
+        // },
+      ],
     },
     {
       name: 'beneficiaire',
       header: 'Bénéficiaire',
       csvHeaders: ['Bénéficiaire'],
-      csvValues: () => ['TODO'],
-      cell: () => 'TODO',
+      csvValues: (activite) => [
+        activite.type === 'collectif'
+          ? `${activite.cra.participants.length + activite.cra.participantsAnonymes.total} participants`
+          : getBeneficiaireDisplayName(activite.cra.beneficiaire),
+      ],
+      cell: (activite) =>
+        activite.type === 'collectif'
+          ? `${activite.cra.participants.length + activite.cra.participantsAnonymes.total} participants`
+          : getBeneficiaireDisplayName(activite.cra.beneficiaire),
     },
     {
       name: 'lieu',
       header: 'Lieu',
       csvHeaders: ['Lieu'],
-      csvValues: () => ['TODO'],
-      cell: () => 'TODO',
+      csvValues: () => [],
+      cell: (activite) =>
+        'lieuActivite' in activite.cra && activite.cra.lieuActivite
+          ? activite.cra.lieuActivite.nom
+          : activite.type === 'collectif'
+            ? activite.cra.lieuAccompagnementAutreCommune
+              ? `${activite.cra.lieuAccompagnementAutreCommune} · ${activite.cra.lieuAccompagnementAutreCodePostal}`
+              : '-'
+            : activite.cra.lieuAccompagnement === 'ADistance'
+              ? 'À distance'
+              : activite.cra.lieuAccompagnementDomicileCommune
+                ? `${activite.cra.lieuAccompagnementDomicileCommune} · ${activite.cra.lieuAccompagnementDomicileCodePostal}`
+                : '-',
     },
     {
       name: 'actions',

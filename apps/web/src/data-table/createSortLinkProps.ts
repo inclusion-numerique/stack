@@ -6,12 +6,14 @@ export const createSortLinkProps = <
 >({
   sortParams,
   searchParams,
+  defaultSortableDirection = 'asc',
   isDefault = false,
   baseHref,
 }: {
   searchParams: T
   sortParams: V
   isDefault?: boolean
+  defaultSortableDirection?: SortDirection
   baseHref: string
 }) => {
   const params = {
@@ -19,14 +21,20 @@ export const createSortLinkProps = <
     ...sortParams,
   }
 
-  const isActive =
-    (!searchParams.tri && isDefault) || searchParams.tri === sortParams.tri
+  const isActiveByDefault = !searchParams.tri && isDefault
 
-  const ordre = isActive
-    ? searchParams.ordre === 'desc'
-      ? 'asc'
-      : 'desc'
-    : 'asc'
+  const isActive = isActiveByDefault || searchParams.tri === sortParams.tri
+
+  const ordre =
+    isActiveByDefault && !searchParams.ordre
+      ? defaultSortableDirection === 'desc'
+        ? 'asc'
+        : 'desc'
+      : isActive
+        ? searchParams.ordre === 'desc'
+          ? 'asc'
+          : 'desc'
+        : 'asc'
 
   const props = {
     ...params,

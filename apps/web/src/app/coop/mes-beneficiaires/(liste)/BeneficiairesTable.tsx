@@ -4,9 +4,11 @@ import {
   BeneficiairesDataTable,
   BeneficiairesDataTableSearchParams,
 } from '@app/web/beneficiaire/BeneficiairesDataTable'
-import PaginationNav from '@app/web/data-table/PaginationNav'
-import { createDataTableHref } from '@app/web/data-table/createDataTableHref'
+import PaginationNavWithPageSizeSelect from '@app/web/data-table/PaginationNavWithPageSizeSelect'
+import { generatePageSizeSelectOptions } from '@app/web/data-table/pageSizeSelectOptions'
 import styles from './MesBeneficiairesListePage.module.css'
+
+const pageSizeOptions = generatePageSizeSelectOptions([10, 20, 50, 100])
 
 const BeneficiairesTable = ({
   data: { beneficiaires, totalPages },
@@ -26,18 +28,12 @@ const BeneficiairesTable = ({
       baseHref={baseHref}
       classes={{ table: styles.table }}
     />
-    <PaginationNav
+    <PaginationNavWithPageSizeSelect
+      defaultPageSize={10}
+      pageSizeOptions={pageSizeOptions}
       totalPages={totalPages}
-      pageNumber={searchParams.page ?? 1}
-      createPageLink={(page) =>
-        createDataTableHref({
-          baseHref,
-          searchParams: {
-            ...searchParams,
-            page,
-          },
-        })
-      }
+      baseHref={baseHref}
+      searchParams={searchParams}
     />
   </>
 )

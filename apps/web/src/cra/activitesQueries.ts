@@ -252,3 +252,11 @@ export const groupActivitesByDate = (
     activites: groupedActivites,
   }))
 }
+
+export const activitesMediateurWithCrasSelect = {
+  id: true,
+  mediateurId: true,
+  craIndividuel: { select: craIndividuelForActiviteSelect },
+  craDemarcheAdministrative: { select: craDemarcheForActiviteSelect },
+  craCollectif: { select: craCollectifForActiviteSelect },
+} satisfies Prisma.ActiviteMediateurSelect

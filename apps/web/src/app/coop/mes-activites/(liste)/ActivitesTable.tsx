@@ -1,12 +1,14 @@
 import DataTable from '@app/web/data-table/DataTable'
-import PaginationNav from '@app/web/data-table/PaginationNav'
-import { createDataTableHref } from '@app/web/data-table/createDataTableHref'
-import styles from './MesActivitesListePage.module.css'
 import {
   ActivitesDataTable,
   ActivitesDataTableSearchParams,
 } from '@app/web/cra/ActivitesDataTable'
 import { SearchActiviteResult } from '@app/web/cra/searchActivite'
+import { generatePageSizeSelectOptions } from '@app/web/data-table/pageSizeSelectOptions'
+import PaginationNavWithPageSizeSelect from '@app/web/data-table/PaginationNavWithPageSizeSelect'
+import styles from './MesActivitesListePage.module.css'
+
+const pageSizeOptions = generatePageSizeSelectOptions([10, 20, 50, 100])
 
 const ActivitesTable = ({
   data: { activites, totalPages },
@@ -26,18 +28,12 @@ const ActivitesTable = ({
       baseHref={baseHref}
       classes={{ table: styles.table }}
     />
-    <PaginationNav
+    <PaginationNavWithPageSizeSelect
+      defaultPageSize={10}
+      pageSizeOptions={pageSizeOptions}
       totalPages={totalPages}
-      pageNumber={searchParams.page ?? 1}
-      createPageLink={(page) =>
-        createDataTableHref({
-          baseHref,
-          searchParams: {
-            ...searchParams,
-            page,
-          },
-        })
-      }
+      searchParams={searchParams}
+      baseHref={baseHref}
     />
   </>
 )

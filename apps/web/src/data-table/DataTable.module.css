@@ -26,6 +26,7 @@ a.cellLink {
     &:active {
         background-color: var(--active) !important;
     }
+
     td {
         background-color: transparent !important;
     }

@@ -135,9 +135,6 @@ describe('getBeneficiaireInformationsData', () => {
       beneficiaire: {
         _count: {
           activites: 0,
-          crasDemarchesAdministratives: 0,
-          crasIndividuels: 0,
-          participationsAteliersCollectifs: 0,
         },
         anneeNaissance: null,
         email: null,
@@ -333,9 +330,6 @@ describe('getBeneficiaireInformationsData', () => {
     ).toEqual({
       beneficiaire: {
         _count: {
-          crasDemarchesAdministratives: 2,
-          crasIndividuels: 2,
-          participationsAteliersCollectifs: 2,
           activites: 0,
         },
         anneeNaissance: null,

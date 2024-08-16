@@ -7,7 +7,7 @@ import {
   fixtureCrasDemarchesAdministratives,
   fixtureCrasIndividuels,
 } from '@app/fixtures/cras'
-import { upsertCrasFixtures } from '@app/fixtures/seeds'
+import { upsertCraFixtures } from '@app/fixtures/upsertCraFixtures'
 
 export const resetFixtureUser = async ({ id }: { id: string }) => {
   const userId = id
@@ -56,14 +56,6 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
         },
       })
 
-      await prismaClient.participantsAnonymesCraCollectif.deleteMany({
-        where: {
-          craCollectif: {
-            creeParMediateurId: mediateurId,
-          },
-        },
-      })
-
       await prismaClient.craCollectif.deleteMany({
         where: {
           creeParMediateurId: mediateurId,
@@ -73,6 +65,14 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
       await prismaClient.craIndividuel.deleteMany({
         where: {
           creeParMediateurId: mediateurId,
+        },
+      })
+
+      await prismaClient.participantsAnonymesCraCollectif.deleteMany({
+        where: {
+          craCollectif: {
+            creeParMediateurId: mediateurId,
+          },
         },
       })
 
@@ -181,7 +181,7 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
       ({ cra: { creeParMediateurId } }) => mediateurId === creeParMediateurId,
     )
 
-    await upsertCrasFixtures({
+    await upsertCraFixtures({
       transaction: prismaClient,
       crasIndividuels: mediateurCraIndividuelFixtures,
       crasDemarchesAdministratives: mediateurCraDemarcheAdministrativeFixtures,

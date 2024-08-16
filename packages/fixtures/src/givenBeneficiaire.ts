@@ -21,3 +21,24 @@ export const givenBeneficiaire = <
     ...rest,
   } satisfies Prisma.BeneficiaireUncheckedCreateInput
 }
+
+export const givenBeneficiaireAnonyme = <
+  T extends Partial<Prisma.BeneficiaireUncheckedCreateInput> & {
+    prenom?: null
+    nom?: null
+    mediateurId: string
+  },
+>(
+  data: T,
+): Omit<T, 'id'> & {
+  id: string
+} => {
+  const { id, ...rest } = data
+
+  const givenId = id ?? v4()
+
+  return {
+    id: givenId,
+    ...rest,
+  } satisfies Prisma.BeneficiaireUncheckedCreateInput
+}

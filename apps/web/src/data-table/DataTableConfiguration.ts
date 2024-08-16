@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import type { SelectInputOption } from '@app/ui/components/Form/utils/options'
+import type { Sql } from '@prisma/client/runtime/library'
 import type { SortDirection } from '@app/web/data-table/SortLink'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,6 +43,7 @@ export type DataTableColumn<
   sortInMemory?: (a: DataRow, b: DataRow) => number
   sortable?: boolean
   orderBy?: (direction: SortDirection) => OrderBy[]
+  rawOrderBy?: (direction: SortDirection) => Sql[]
   cell?: (row: DataRow) => ReactNode
   filters?: DataTableFilter<DataRow, Where>[]
 }
@@ -101,6 +103,6 @@ export type DataTableSearchParams<
   recherche?: string
   tri?: SortableColumn<Configuration>['name']
   ordre?: SortDirection
-  page?: number
-  lignes?: number // Nombre de résultats par page
+  page?: string // String as it is used in URL query params
+  lignes?: string // Nombre de résultats par page // String as it is used in URL query params
 } & DataTableFilterSearchParams<Configuration>

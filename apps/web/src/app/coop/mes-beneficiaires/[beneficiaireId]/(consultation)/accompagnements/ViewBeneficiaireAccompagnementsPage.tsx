@@ -6,14 +6,14 @@ import BeneficiairePageNavigationBar from '@app/web/app/coop/mes-beneficiaires/[
 import ActiviteDetailsModal from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsModal'
 
 const ViewBeneficiaireAccompagnementsPage = ({
-  data: { activitesByDate, beneficiaire, totalCrasCount },
+  data: { activitesByDate, beneficiaire },
 }: {
   data: BeneficiaireAccompagnementsPageData
 }) => (
   <>
     <BeneficiairePageNavigationBar
       beneficiaireId={beneficiaire.id}
-      accompagnementsCount={totalCrasCount}
+      accompagnementsCount={beneficiaire._count.activites}
       current="accompagnements"
     />
     {activitesByDate.length === 0 && (

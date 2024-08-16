@@ -1,5 +1,5 @@
 import type { Activite } from '@app/web/cra/activitesQueries'
-import type { ActiviteForListQueryResult } from '@app/web/cra/searchActivite'
+import type { ActiviteForListQueryResult } from '@app/web/cra/getActivitesForList'
 
 export const prismaActiviteToActiviteModel = (
   prismaActivite: ActiviteForListQueryResult,

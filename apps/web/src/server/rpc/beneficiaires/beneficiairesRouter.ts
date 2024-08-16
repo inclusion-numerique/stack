@@ -79,8 +79,9 @@ export const beneficiairesRouter = router({
       }
       return searchBeneficiaire({
         mediateurId: user.mediateur?.id,
-        take: 10_000,
-        query,
+        searchParams: {
+          recherche: query,
+        },
       })
     }),
   createOrUpdate: protectedProcedure

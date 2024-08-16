@@ -42,11 +42,13 @@ const DataTable = <
   const sortLinkProps = (
     sortParams: DataTableSearchParams<Configuration>,
     isDefault = false,
+    defaultSortableDirection?: 'asc' | 'desc',
   ) =>
     createSortLinkProps({
       searchParams,
       sortParams,
       isDefault,
+      defaultSortableDirection,
       baseHref,
     })
 
@@ -68,6 +70,7 @@ const DataTable = <
                       sortInMemory,
                       sortable,
                       defaultSortable,
+                      defaultSortableDirection,
                       headerClassName,
                       orderBy,
                     }) => (
@@ -87,6 +90,7 @@ const DataTable = <
                                 tri: name,
                               } as DataTableSearchParams<Configuration>,
                               defaultSortable,
+                              defaultSortableDirection,
                             )}
                           />
                         )}

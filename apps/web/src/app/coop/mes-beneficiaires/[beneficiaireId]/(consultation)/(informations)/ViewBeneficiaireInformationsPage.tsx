@@ -10,7 +10,7 @@ import {
 import styles from './ViewBeneficiaireInformationsPage.module.css'
 
 const ViewBeneficiaireInformationsPage = ({
-  data: { beneficiaire, totalCrasCount, thematiquesCounts },
+  data: { beneficiaire, thematiquesCounts },
 }: {
   data: BeneficiaireInformationsPageData
 }) => {
@@ -32,7 +32,7 @@ const ViewBeneficiaireInformationsPage = ({
     <>
       <BeneficiairePageNavigationBar
         beneficiaireId={beneficiaire.id}
-        accompagnementsCount={totalCrasCount}
+        accompagnementsCount={beneficiaire._count.activites}
         current="informations"
       />
       <div className="fr-border-radius--8 fr-border  fr-pt-8v fr-px-7v fr-pb-10v fr-mt-6v">

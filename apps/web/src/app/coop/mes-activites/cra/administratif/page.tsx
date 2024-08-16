@@ -10,15 +10,13 @@ import {
   decodeSerializableState,
   EncodedState,
 } from '@app/web/utils/encodeSerializableState'
-import {
-  beneficiairesListWhere,
-  searchBeneficiaireSelect,
-} from '@app/web/beneficiaire/searchBeneficiaire'
+import { beneficiairesListWhere } from '@app/web/beneficiaire/searchBeneficiaire'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import { prismaBeneficiaireToBeneficiaireData } from '@app/web/beneficiaire/prismaBeneficiaireToBeneficiaireData'
 import { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
 import CraDemarcheAdministrativeForm from '@app/web/app/coop/mes-activites/cra/administratif/CraDemarcheAdministrativeForm'
+import { searchBeneficiaireSelect } from '@app/web/beneficiaire/queryBeneficiairesForList'
 
 const CreateCraDemarcheAdministrativePage = async ({
   searchParams: { v } = {},
