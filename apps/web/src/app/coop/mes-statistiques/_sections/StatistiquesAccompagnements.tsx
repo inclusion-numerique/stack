@@ -56,7 +56,7 @@ export const StatistiquesAccompagnements = ({
         ({ label, count, proportion, participants }) => (
           <StatistiqueAccompagnement
             key={label}
-            className="fr-col-md fr-col-12"
+            className="fr-col-xl fr-col-12"
             accompagnement={label}
             count={count}
             proportion={proportion}
@@ -87,11 +87,11 @@ export const StatistiquesAccompagnements = ({
         ))}
       </ul>
       <h3 className="fr-h6">Matériel utilisé</h3>
-      <div className="fr-grid-row fr-grid-row--gutters">
+      <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--center">
         {materielUtilise.map(({ label, count, proportion }) => (
           <StatistiqueMateriel
             key={label}
-            className="fr-col-sm fr-col-4"
+            className="fr-col-xl fr-col-4"
             value={label}
             count={count}
             proportion={proportion}
@@ -101,7 +101,7 @@ export const StatistiquesAccompagnements = ({
     </div>
     <div className="fr-border fr-p-4w fr-border-radius--16">
       <div className="fr-grid-row fr-grid-row--gutters">
-        <div className="fr-col-md-6 fr-col-12">
+        <div className="fr-col-xl-6 fr-col-12">
           <h3 className="fr-h6">Canaux d’accompagnements</h3>
           <div className="fr-flex fr-align-items-center">
             <AccompagnementPieChart
@@ -116,7 +116,7 @@ export const StatistiquesAccompagnements = ({
             />
           </div>
         </div>
-        <div className="fr-col-md-6 fr-col-12">
+        <div className="fr-col-xl-6 fr-col-12">
           <h3 className="fr-h6">Durées des accompagnements</h3>
           <div className="fr-flex fr-align-items-center">
             <AccompagnementPieChart

@@ -109,17 +109,20 @@ const status = [
   { label: 'Non communiqué ou hétérogène ', count: 4, proportion: 4 },
 ]
 
-export const getMesStatistiquesPageData = () => ({
-  modalitesAccompagnement,
-  materielUtilise,
-  thematiquesAccompagnement,
-  nombreAccompagnementsParLieu,
-  communesDesBeneficiaires,
-  nombreAccompagnements,
-  accompagnementBeneficiaires,
-  canauxAccompagnement,
-  dureesAccompagnement,
-  genres,
-  tranchesAge,
-  status,
-})
+export const getMesStatistiquesPageData = (mediateurId: string) => {
+  console.log(mediateurId)
+  return {
+    modalitesAccompagnement,
+    materielUtilise,
+    thematiquesAccompagnement,
+    nombreAccompagnementsParLieu,
+    communesDesBeneficiaires,
+    nombreAccompagnements,
+    accompagnementBeneficiaires,
+    canauxAccompagnement,
+    dureesAccompagnement,
+    genres,
+    tranchesAge,
+    status,
+  }
+}

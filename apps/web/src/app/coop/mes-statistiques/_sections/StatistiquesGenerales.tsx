@@ -18,7 +18,7 @@ export const StatistiquesGenerales = ({
       Statistiques générales sur votre activité
     </h2>
     <div className="fr-grid-row fr-flex-gap-6v">
-      <div className="fr-flex fr-direction-column fr-flex-gap-6v fr-col-md-4 fr-col-12">
+      <div className="fr-flex fr-direction-column fr-flex-gap-6v fr-col-xl-4 fr-col-12">
         <div className="fr-p-3w fr-border-radius--16 fr-background-alt--brown-caramel fr-width-full">
           <div className="fr-flex fr-align-items-center fr-justify-content-space-between">
             <span className="fr-h2 fr-mb-0">{accompagnements}</span>

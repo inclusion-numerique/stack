@@ -12,11 +12,11 @@ export const ProgressListItem = ({
   colors?: string[]
 }) => (
   <li className="fr-grid-row fr-grid-row--gutters fr-text--sm fr-align-items-center">
-    <span className="fr-sm-col fr-col-12">{label}</span>
-    <span className="fr-col-sm-1 fr-col-2 fr-text--bold fr-whitespace-nowrap">
+    <span className="fr-lg-col fr-col-12">{label}</span>
+    <span className="fr-col-md-1 fr-col-2 fr-text--bold fr-whitespace-nowrap">
       {count}
     </span>
-    <span className="fr-col-sm-1 fr-col-2 fr-text--medium fr-text-mention--grey fr-whitespace-nowrap">
+    <span className="fr-col-md-2 fr-col-2 fr-text--medium fr-text-mention--grey fr-whitespace-nowrap">
       {proportion} %
     </span>
     <ProgressBar

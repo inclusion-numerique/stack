@@ -46,14 +46,14 @@ export const StatistiquesBeneficiaires = ({
     </h2>
     <div className="fr-border fr-p-4w fr-border-radius--16">
       <div className="fr-grid-row fr-grid-row--gutters">
-        <div className="fr-col-md-6 fr-col-12">
+        <div className="fr-col-lg-6 fr-col-12">
           <h3 className="fr-h6">Genres</h3>
           <QuantifiedShareLegend
             quantifiedShares={genres}
             colors={grenresColors}
           />
         </div>
-        <div className="fr-col-md-6 fr-col-12">
+        <div className="fr-col-lg-6 fr-col-12">
           <AccompagnementPieChart
             size={140}
             className="fr-mx-auto"
@@ -64,7 +64,7 @@ export const StatistiquesBeneficiaires = ({
       </div>
       <hr className="fr-separator-1px fr-my-5w" />
       <div className="fr-grid-row fr-grid-row--gutters">
-        <div className="fr-col-sm-6 fr-col-12">
+        <div className="fr-col-lg-6 fr-col-12">
           <h3 className="fr-h6">Tranches d’âge</h3>
           <div className="fr-mr-3w fr-mb-2w">
             <ProgressBar
@@ -78,7 +78,7 @@ export const StatistiquesBeneficiaires = ({
             colors={tranchesAgeColors}
           />
         </div>
-        <div className="fr-col-sm-6 fr-col-12">
+        <div className="fr-col-lg-6 fr-col-12">
           <h3 className="fr-h6">Statuts</h3>
           <div className="fr-mr-3w fr-mb-2w">
             <ProgressBar

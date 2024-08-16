@@ -4,10 +4,10 @@ import { AccompagnementLabel } from '../quantifiedShare'
 
 const accompagnementToImage: Record<AccompagnementLabel, string> = {
   'Accompagnements individuels':
-    'images/iconographie/accompagnement-individuel.svg',
-  'Ateliers collectifs': 'images/iconographie/accompagnement-collectif.svg',
+    '/images/iconographie/accompagnement-individuel.svg',
+  'Ateliers collectifs': '/images/iconographie/accompagnement-collectif.svg',
   'Aide aux démarches administratives':
-    'images/iconographie/demarche-administrative.svg',
+    '/images/iconographie/demarche-administrative.svg',
 }
 
 export const StatistiqueAccompagnement = ({
