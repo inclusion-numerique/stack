@@ -1,17 +1,11 @@
-import { notFound } from 'next/navigation'
-import { getAuthenticatedMediateur } from '../../../auth/getAuthenticatedMediateur'
+import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { getMesStatistiquesPageData } from './getMesStatistiquesPageData'
 import { MesStatistiques } from './MesStatistiques'
 
 const MesStatistiquesPage = async () => {
   const user = await getAuthenticatedMediateur()
 
-  const mesStatistiques = getMesStatistiquesPageData(user.mediateur.id)
-
-  if (!mesStatistiques) {
-    notFound()
-    return null
-  }
+  const mesStatistiques = await getMesStatistiquesPageData(user.mediateur.id)
 
   return <MesStatistiques {...mesStatistiques} />
 }

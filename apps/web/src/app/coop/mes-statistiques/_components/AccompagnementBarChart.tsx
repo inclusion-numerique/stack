@@ -21,7 +21,7 @@ export const AccompagnementBarChart = ({
       barSize={20}
     >
       <XAxis dataKey="label" scale="point" padding={{ left: 10, right: 10 }} />
-      <YAxis />
+      <YAxis allowDecimals={false} />
       <Tooltip />
       <Bar dataKey="count" fill="#009099" />
     </BarChart>

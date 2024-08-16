@@ -15,7 +15,7 @@ const tranchesAgeColors = [
 ]
 const statusColors = ['#FFF480', '#B68B65', '#A3A6BC', '#C6C6FB', '#FFDBD2']
 const grenresColors = ['#C08C65', '#009099', '#E3E3FD']
-const communeDesBeneficiairesColor = '#6A6AF4'
+const communeColor = '#6A6AF4'
 
 const toProgress = ({
   label,
@@ -29,15 +29,15 @@ const toProgress = ({
 })
 
 export const StatistiquesBeneficiaires = ({
-  genres,
-  tranchesAge,
-  status,
-  communesDesBeneficiaires,
+  genresBeneficiaires,
+  tranchesAgeBeneficiaires,
+  statusBeneficiaires,
+  communesBeneficiaires,
 }: {
-  genres: QuantifiedShare[]
-  tranchesAge: QuantifiedShare[]
-  status: QuantifiedShare[]
-  communesDesBeneficiaires: QuantifiedShare[]
+  genresBeneficiaires: QuantifiedShare[]
+  tranchesAgeBeneficiaires: QuantifiedShare[]
+  statusBeneficiaires: QuantifiedShare[]
+  communesBeneficiaires: QuantifiedShare[]
 }) => (
   <>
     <h2 className="fr-h5 fr-text-mention--grey">
@@ -49,7 +49,7 @@ export const StatistiquesBeneficiaires = ({
         <div className="fr-col-lg-6 fr-col-12">
           <h3 className="fr-h6">Genres</h3>
           <QuantifiedShareLegend
-            quantifiedShares={genres}
+            quantifiedShares={genresBeneficiaires}
             colors={grenresColors}
           />
         </div>
@@ -57,7 +57,7 @@ export const StatistiquesBeneficiaires = ({
           <AccompagnementPieChart
             size={140}
             className="fr-mx-auto"
-            data={genres}
+            data={genresBeneficiaires}
             colors={grenresColors}
           />
         </div>
@@ -69,12 +69,12 @@ export const StatistiquesBeneficiaires = ({
           <div className="fr-mr-3w fr-mb-2w">
             <ProgressBar
               size="large"
-              progress={tranchesAge.map(toProgress)}
+              progress={tranchesAgeBeneficiaires.map(toProgress)}
               colors={tranchesAgeColors}
             />
           </div>
           <QuantifiedShareLegend
-            quantifiedShares={tranchesAge}
+            quantifiedShares={tranchesAgeBeneficiaires}
             colors={tranchesAgeColors}
           />
         </div>
@@ -83,12 +83,12 @@ export const StatistiquesBeneficiaires = ({
           <div className="fr-mr-3w fr-mb-2w">
             <ProgressBar
               size="large"
-              progress={status.map(toProgress)}
+              progress={statusBeneficiaires.map(toProgress)}
               colors={statusColors}
             />
           </div>
           <QuantifiedShareLegend
-            quantifiedShares={status}
+            quantifiedShares={statusBeneficiaires}
             colors={statusColors}
           />
         </div>
@@ -98,11 +98,11 @@ export const StatistiquesBeneficiaires = ({
       <div className="fr-text--bold fr-text--uppercase fr-text--sm fr-text-mention--grey fr-mb-1w">
         Commune
       </div>
-      {communesDesBeneficiaires.map((communeDesBeneficiaires) => (
+      {communesBeneficiaires.map((commune) => (
         <ProgressListItem
-          {...communeDesBeneficiaires}
-          key={communeDesBeneficiaires.label}
-          colors={[communeDesBeneficiairesColor]}
+          {...commune}
+          key={commune.label}
+          colors={[communeColor]}
         />
       ))}
     </div>

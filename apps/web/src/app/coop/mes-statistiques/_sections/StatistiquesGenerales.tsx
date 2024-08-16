@@ -32,7 +32,7 @@ export const StatistiquesGenerales = ({
         </div>
         <div className="fr-p-3w fr-border-radius--16 fr-background-alt--brown-caramel">
           <div className="fr-flex fr-align-items-center fr-justify-content-space-between">
-            <span className="fr-h2 fr-mb-0">{beneficiaires}</span>
+            <span className="fr-h2 fr-mb-0">{beneficiaires + anonymes}</span>
             <span
               className="ri-user-heart-line ri-2x fr-text-label--brown-caramel"
               aria-hidden
@@ -42,7 +42,7 @@ export const StatistiquesGenerales = ({
             Bénéficiaires accompagnés
           </div>
           <div className="fr-text-mention--grey">
-            <div>{beneficiaires - anonymes} bénéficiaires suivis</div>
+            <div>{beneficiaires} bénéficiaires suivis</div>
             <div>{anonymes} bénéficiaires anonymes</div>
           </div>
         </div>

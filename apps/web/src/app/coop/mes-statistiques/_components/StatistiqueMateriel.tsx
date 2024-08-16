@@ -3,7 +3,7 @@ import { MaterielLabel } from '../quantifiedShare'
 
 const valueToIcon: Record<MaterielLabel, { icon: string; rotation: number }> = {
   Ordinateur: { icon: 'ri-computer-line', rotation: 0 },
-  Smartphone: { icon: 'ri-smartphone-line', rotation: 0 },
+  Téléphone: { icon: 'ri-smartphone-line', rotation: 0 },
   Tablette: { icon: 'ri-tablet-line', rotation: -90 },
   Autre: { icon: 'ri-vidicon-2-line', rotation: 0 },
   'Sans matériel': { icon: 'ri-loader-fill', rotation: 0 },

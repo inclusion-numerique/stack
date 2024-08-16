@@ -14,45 +14,12 @@ const modalitesAccompagnement: (QuantifiedShare<AccompagnementLabel> & {
   { label: 'Aide aux démarches administratives', count: 68, proportion: 34 },
 ]
 
-const materielUtilise: QuantifiedShare<MaterielLabel>[] = [
+const materielsAccompagnements: QuantifiedShare<MaterielLabel>[] = [
   { label: 'Ordinateur', count: 56, proportion: 16 },
-  { label: 'Smartphone', count: 84, proportion: 24 },
+  { label: 'Téléphone', count: 84, proportion: 24 },
   { label: 'Tablette', count: 21, proportion: 6 },
   { label: 'Autre', count: 115, proportion: 33 },
   { label: 'Sans matériel', count: 73, proportion: 21 },
-]
-
-const thematiquesAccompagnement = [
-  { label: 'Prendre en main du matériel', count: 488, proportion: 23 },
-  { label: 'Navigation sur internet', count: 322, proportion: 16 },
-  { label: 'E-mail', count: 288, proportion: 12 },
-  { label: 'Bureautique', count: 176, proportion: 8 },
-  { label: 'Réseaux sociaux - communication', count: 152, proportion: 7 },
-  { label: 'Santé', count: 116, proportion: 5 },
-  { label: 'Banque et achats en ligne', count: 53, proportion: 2 },
-  { label: 'Entrepreneuriat', count: 23, proportion: 1 },
-  { label: 'Insertion professionnelle', count: 18, proportion: 1 },
-  { label: 'Prévention en sécurité numérique', count: 16, proportion: 1 },
-  { label: 'Parentalité', count: 12, proportion: 1 },
-  { label: 'Scolarité et numérique', count: 8, proportion: 1 },
-  { label: 'Créer avec le numérique', count: 5, proportion: 1 },
-  { label: 'Culture numérique', count: 2, proportion: 1 },
-]
-
-const nombreAccompagnementsParLieu = [
-  { label: "Bibliotheque Musee de l'Opera", count: 488, proportion: 23 },
-  { label: 'Le techshop', count: 322, proportion: 16 },
-  { label: 'Open Factory', count: 288, proportion: 12 },
-  { label: 'Médiathèque de Quimper', count: 176, proportion: 8 },
-  { label: 'La station', count: 152, proportion: 7 },
-]
-
-const communesDesBeneficiaires = [
-  { label: "L'Arbresle", count: 488, proportion: 23 },
-  { label: 'Bessenay', count: 322, proportion: 16 },
-  { label: 'Sain Bel', count: 288, proportion: 12 },
-  { label: 'Jucieux', count: 176, proportion: 8 },
-  { label: 'Brullioles', count: 152, proportion: 7 },
 ]
 
 const nombreAccompagnements = [
@@ -73,27 +40,60 @@ const accompagnementBeneficiaires = {
   anonymes: 223,
 }
 
-const canauxAccompagnement = [
+const canauxAccompagnements = [
   { label: 'Lieu d’activité', count: 22, proportion: 18 },
   { label: 'À distance', count: 16, proportion: 13 },
   { label: 'Autre lieu', count: 54, proportion: 46 },
   { label: 'À domicile', count: 41, proportion: 35 },
 ]
 
-const dureesAccompagnement = [
+const dureesAccompagnements = [
   { label: '30 min', count: 22, proportion: 18 },
   { label: '1h', count: 16, proportion: 13 },
   { label: '1h30', count: 54, proportion: 46 },
   { label: '2h', count: 41, proportion: 35 },
 ]
 
-const genres = [
+const lieuxAccompagnements = [
+  { label: "Bibliotheque Musee de l'Opera", count: 488, proportion: 23 },
+  { label: 'Le techshop', count: 322, proportion: 16 },
+  { label: 'Open Factory', count: 288, proportion: 12 },
+  { label: 'Médiathèque de Quimper', count: 176, proportion: 8 },
+  { label: 'La station', count: 152, proportion: 7 },
+]
+
+const thematiquesAccompagnements = [
+  { label: 'Prendre en main du matériel', count: 488, proportion: 23 },
+  { label: 'Navigation sur internet', count: 322, proportion: 16 },
+  { label: 'E-mail', count: 288, proportion: 12 },
+  { label: 'Bureautique', count: 176, proportion: 8 },
+  { label: 'Réseaux sociaux - communication', count: 152, proportion: 7 },
+  { label: 'Santé', count: 116, proportion: 5 },
+  { label: 'Banque et achats en ligne', count: 53, proportion: 2 },
+  { label: 'Entrepreneuriat', count: 23, proportion: 1 },
+  { label: 'Insertion professionnelle', count: 18, proportion: 1 },
+  { label: 'Prévention en sécurité numérique', count: 16, proportion: 1 },
+  { label: 'Parentalité', count: 12, proportion: 1 },
+  { label: 'Scolarité et numérique', count: 8, proportion: 1 },
+  { label: 'Créer avec le numérique', count: 5, proportion: 1 },
+  { label: 'Culture numérique', count: 2, proportion: 1 },
+]
+
+const genresBeneficiaires = [
   { label: 'Masculin', count: 20, proportion: 48 },
   { label: 'Féminin', count: 11, proportion: 22 },
   { label: 'Non communiqué', count: 8, proportion: 20 },
 ]
 
-const tranchesAge = [
+const statusBeneficiaires = [
+  { label: 'Retraité', count: 20, proportion: 47 },
+  { label: 'Sans emploi', count: 11, proportion: 28 },
+  { label: 'En emploi', count: 9, proportion: 13 },
+  { label: 'Scolaire', count: 8, proportion: 8 },
+  { label: 'Non communiqué ou hétérogène ', count: 4, proportion: 4 },
+]
+
+const tranchesAgeBeneficiaires = [
   { label: '75 ans et plus', count: 23, proportion: 36 },
   { label: '60 - 74 ans', count: 19, proportion: 25 },
   { label: '45 - 59 ans', count: 7, proportion: 13 },
@@ -103,12 +103,12 @@ const tranchesAge = [
   { label: 'Non communiqué', count: 1, proportion: 3 },
 ]
 
-const status = [
-  { label: 'Retraité', count: 20, proportion: 47 },
-  { label: 'Sans emploi', count: 11, proportion: 28 },
-  { label: 'En emploi', count: 9, proportion: 13 },
-  { label: 'Scolaire', count: 8, proportion: 8 },
-  { label: 'Non communiqué ou hétérogène ', count: 4, proportion: 4 },
+const communesBeneficiaires = [
+  { label: "L'Arbresle", count: 488, proportion: 23 },
+  { label: 'Bessenay', count: 322, proportion: 16 },
+  { label: 'Sain Bel', count: 288, proportion: 12 },
+  { label: 'Jucieux', count: 176, proportion: 8 },
+  { label: 'Brullioles', count: 152, proportion: 7 },
 ]
 
 export default {
@@ -121,17 +121,17 @@ type Story = StoryObj<typeof MesStatistiques>
 export const Statistiques: Story = {
   args: {
     modalitesAccompagnement,
-    materielUtilise,
-    thematiquesAccompagnement,
-    nombreAccompagnementsParLieu,
     nombreAccompagnements,
     accompagnementBeneficiaires,
-    canauxAccompagnement,
-    dureesAccompagnement,
-    genres,
-    tranchesAge,
-    status,
-    communesDesBeneficiaires,
+    materielsAccompagnements,
+    canauxAccompagnements,
+    dureesAccompagnements,
+    lieuxAccompagnements,
+    thematiquesAccompagnements,
+    genresBeneficiaires,
+    statusBeneficiaires,
+    tranchesAgeBeneficiaires,
+    communesBeneficiaires,
   },
 }
 Statistiques.storyName = 'Statistiques'

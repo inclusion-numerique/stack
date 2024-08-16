@@ -31,20 +31,20 @@ const dureesAccompagnementColors = ['#F7EBE5', '#EAC7B2', '#C08C65', '#855D48']
 
 export const StatistiquesAccompagnements = ({
   modalitesAccompagnement,
-  materielUtilise,
-  thematiquesAccompagnement,
-  canauxAccompagnement,
-  dureesAccompagnement,
-  nombreAccompagnementsParLieu,
+  materielsAccompagnements,
+  thematiquesAccompagnements,
+  canauxAccompagnements,
+  dureesAccompagnements,
+  lieuxAccompagnements,
 }: {
   modalitesAccompagnement: (QuantifiedShare<AccompagnementLabel> & {
     participants?: number
   })[]
-  materielUtilise: QuantifiedShare<MaterielLabel>[]
-  thematiquesAccompagnement: QuantifiedShare[]
-  canauxAccompagnement: QuantifiedShare[]
-  dureesAccompagnement: QuantifiedShare[]
-  nombreAccompagnementsParLieu: QuantifiedShare[]
+  materielsAccompagnements: QuantifiedShare[]
+  thematiquesAccompagnements: QuantifiedShare[]
+  canauxAccompagnements: QuantifiedShare[]
+  dureesAccompagnements: QuantifiedShare[]
+  lieuxAccompagnements: QuantifiedShare[]
 }) => (
   <>
     <h2 className="fr-h5 fr-text-mention--grey">
@@ -74,7 +74,7 @@ export const StatistiquesAccompagnements = ({
     <div className="fr-border fr-p-4w fr-mb-3w fr-border-radius--16">
       <h3 className="fr-h6">Thématiques d’accompagnements</h3>
       <ul className="fr-px-0 fr-mb-5w">
-        {thematiquesAccompagnement.map((thematiqueAccompagnement, index) => (
+        {thematiquesAccompagnements.map((thematiqueAccompagnement, index) => (
           <ProgressListItem
             key={thematiqueAccompagnement.label}
             {...thematiqueAccompagnement}
@@ -88,11 +88,11 @@ export const StatistiquesAccompagnements = ({
       </ul>
       <h3 className="fr-h6">Matériel utilisé</h3>
       <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--center">
-        {materielUtilise.map(({ label, count, proportion }) => (
+        {materielsAccompagnements.map(({ label, count, proportion }) => (
           <StatistiqueMateriel
             key={label}
             className="fr-col-xl fr-col-4"
-            value={label}
+            value={label as MaterielLabel}
             count={count}
             proportion={proportion}
           />
@@ -106,12 +106,12 @@ export const StatistiquesAccompagnements = ({
           <div className="fr-flex fr-align-items-center">
             <AccompagnementPieChart
               size={128}
-              data={canauxAccompagnement}
+              data={canauxAccompagnements}
               colors={canauxAccompagnementColors}
             />
             <QuantifiedShareLegend
               classeName="fr-pl-3w"
-              quantifiedShares={canauxAccompagnement}
+              quantifiedShares={canauxAccompagnements}
               colors={canauxAccompagnementColors}
             />
           </div>
@@ -121,12 +121,12 @@ export const StatistiquesAccompagnements = ({
           <div className="fr-flex fr-align-items-center">
             <AccompagnementPieChart
               size={128}
-              data={dureesAccompagnement}
+              data={dureesAccompagnements}
               colors={dureesAccompagnementColors}
             />
             <QuantifiedShareLegend
               classeName="fr-pl-3w"
-              quantifiedShares={dureesAccompagnement}
+              quantifiedShares={dureesAccompagnements}
               colors={dureesAccompagnementColors}
             />
           </div>
@@ -138,7 +138,7 @@ export const StatistiquesAccompagnements = ({
         Lieux d’activités
       </div>
       <ul className="fr-px-0">
-        {nombreAccompagnementsParLieu.map((nombreAccompagnementParLieu) => (
+        {lieuxAccompagnements.map((nombreAccompagnementParLieu) => (
           <ProgressListItem
             {...nombreAccompagnementParLieu}
             key={nombreAccompagnementParLieu.label}

@@ -5,47 +5,11 @@ import { StatistiquesTerritoriales } from './_components/StatistiquesTerritorial
 import { StatistiquesAccompagnements } from './_sections/StatistiquesAccompagnements'
 import { StatistiquesBeneficiaires } from './_sections/StatistiquesBeneficiaires'
 import { StatistiquesGenerales } from './_sections/StatistiquesGenerales'
-import {
-  AccompagnementLabel,
-  MaterielLabel,
-  QuantifiedShare,
-} from './quantifiedShare'
+import { MesStatistiquesPageData } from './getMesStatistiquesPageData'
 
-type MesStatistiquesProps = {
-  modalitesAccompagnement: (QuantifiedShare<AccompagnementLabel> & {
-    participants?: number
-  })[]
-  materielUtilise: QuantifiedShare<MaterielLabel>[]
-  thematiquesAccompagnement: QuantifiedShare[]
-  nombreAccompagnementsParLieu: QuantifiedShare[]
-  communesDesBeneficiaires: QuantifiedShare[]
-  nombreAccompagnements: QuantifiedShare[]
-  accompagnementBeneficiaires: {
-    accompagnements: number
-    beneficiaires: number
-    anonymes: number
-  }
-  canauxAccompagnement: QuantifiedShare[]
-  dureesAccompagnement: QuantifiedShare[]
-  genres: QuantifiedShare[]
-  tranchesAge: QuantifiedShare[]
-  status: QuantifiedShare[]
-}
-
-export const MesStatistiques = ({
-  modalitesAccompagnement,
-  materielUtilise,
-  thematiquesAccompagnement,
-  nombreAccompagnementsParLieu,
-  nombreAccompagnements,
-  accompagnementBeneficiaires,
-  canauxAccompagnement,
-  dureesAccompagnement,
-  genres,
-  tranchesAge,
-  status,
-  communesDesBeneficiaires,
-}: MesStatistiquesProps) => (
+export const MesStatistiques = (
+  mesStatistiquesProps: MesStatistiquesPageData,
+) => (
   <>
     <SkipLinksPortal links={defaultSkipLinks} />
     <main
@@ -56,28 +20,13 @@ export const MesStatistiques = ({
       <h1 className="fr-h2 fr-text-title--blue-france">Mes statistiques</h1>
       <hr />
       <section className="fr-mb-6w">
-        <StatistiquesGenerales
-          nombreAccompagnements={nombreAccompagnements}
-          accompagnementBeneficiaires={accompagnementBeneficiaires}
-        />
+        <StatistiquesGenerales {...mesStatistiquesProps} />
       </section>
       <section className="fr-mb-6w">
-        <StatistiquesAccompagnements
-          modalitesAccompagnement={modalitesAccompagnement}
-          materielUtilise={materielUtilise}
-          thematiquesAccompagnement={thematiquesAccompagnement}
-          canauxAccompagnement={canauxAccompagnement}
-          dureesAccompagnement={dureesAccompagnement}
-          nombreAccompagnementsParLieu={nombreAccompagnementsParLieu}
-        />
+        <StatistiquesAccompagnements {...mesStatistiquesProps} />
       </section>
       <section className="fr-mb-6w">
-        <StatistiquesBeneficiaires
-          genres={genres}
-          tranchesAge={tranchesAge}
-          status={status}
-          communesDesBeneficiaires={communesDesBeneficiaires}
-        />
+        <StatistiquesBeneficiaires {...mesStatistiquesProps} />
       </section>
       <section>
         <h2 className="fr-h5 fr-text-mention--grey fr-flex fr-align-items-center fr-flex-gap-2v">
