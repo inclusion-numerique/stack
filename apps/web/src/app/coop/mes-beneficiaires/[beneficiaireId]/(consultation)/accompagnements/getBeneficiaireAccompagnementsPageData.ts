@@ -33,6 +33,8 @@ export const getBeneficiaireAccompagnementsPageData = async ({
     return null
   }
 
+  console.log('ACTIVITES BENEF ID', beneficiaireId)
+
   const activites = await getActivites({ beneficiaireId })
 
   const activitesByDate = groupActivitesByDate(activites)

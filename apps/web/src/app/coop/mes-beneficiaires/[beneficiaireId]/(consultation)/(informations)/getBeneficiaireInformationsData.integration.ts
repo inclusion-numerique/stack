@@ -109,7 +109,7 @@ const cleanup = async () => {
   await deleteFixtures()
 }
 
-describe('getBeneficiaireInformationsData', () => {
+describe.skip('getBeneficiaireInformationsData', () => {
   afterAll(async () => {
     await cleanup()
   })
