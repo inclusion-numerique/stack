@@ -13,9 +13,9 @@ export const PublicWebAppConfig = {
   projectTitle,
   mainLiveUrl,
   repository: repositoryUrl,
-  InclusionConnect: {
-    hostname: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_HOSTNAME ?? '',
-    clientId: process.env.NEXT_PUBLIC_INCLUSION_CONNECT_CLIENT_ID ?? '',
+  ProConnect: {
+    hostname: process.env.NEXT_PUBLIC_PROCONNECT_HOSTNAME ?? '',
+    clientId: process.env.NEXT_PUBLIC_PROCONNECT_CLIENT_ID ?? '',
   },
   Sentry: {
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN ?? '',

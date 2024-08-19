@@ -37,12 +37,7 @@ export default defineConfig({
         return launchOptions
       })
     },
-    env: {
-      INCLUSION_CONNECT_TEST_USER_EMAIL:
-        process.env.INCLUSION_CONNECT_TEST_USER_EMAIL,
-      INCLUSION_CONNECT_TEST_USER_PASSWORD:
-        process.env.INCLUSION_CONNECT_TEST_USER_PASSWORD,
-    },
+    env: {},
     baseUrl:
       process.env.CYPRESS_BASE_URL ??
       `http://localhost:${process.env.PORT ?? 3000}`,

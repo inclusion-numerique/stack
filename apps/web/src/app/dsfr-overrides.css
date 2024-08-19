@@ -239,7 +239,7 @@
 }
 
 .fr-btn.fr-btn--loading {
-    &:not(.fr-btn--icon-right) {
+    &:not(.fr-btn--icon-right, .fr-connect) {
         &::before {
             mask-image: url('/images/spinner.svg');
             animation: spinner-rotate-animation 1.2s infinite linear;

@@ -2,7 +2,7 @@ import NextAuth, { type NextAuthOptions } from 'next-auth'
 import * as Sentry from '@sentry/nextjs'
 import type { NextRequest } from 'next/server'
 import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
-import { InclusionConnectProvider } from '@app/web/auth/InclusionConnectProvider'
+import { ProConnectProvider } from '@app/web/auth/ProConnectProvider'
 import { registerLastLogin } from '@app/web/security/registerLastLogin'
 import { isFirewallUserAgent } from '@app/web/app/api/auth/[...nextauth]/isFirewallUserAgent'
 
@@ -20,7 +20,7 @@ export const authOptions: NextAuthOptions = {
     // This would be the first page the user sees after signing up
     // newUser: '/bienvenue',
   },
-  providers: [InclusionConnectProvider()],
+  providers: [ProConnectProvider()],
   callbacks: {
     signIn({ user }) {
       // Everyone is allowed to sign in

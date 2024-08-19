@@ -58,7 +58,7 @@ cp .env.dist .env
 
 ### 5. Demander à un membre de l'équipe la valeur des variables d'environment
 
-- `INCLUSION_CONNECT_LOCAL_CLIENT_SECRET` : pour utiliser Inclusion Connect en local
+- `PROCONNECT_LOCAL_CLIENT_SECRET` : pour utiliser Inclusion Connect en local
 
 ### 6. Démarrer les services de mail et de base de données en local
 

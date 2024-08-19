@@ -1,7 +1,7 @@
 import { Route } from 'next'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import { signinErrorMessage } from '@app/web/app/(public)/(authentication)/authenticationErrorMessage'
-import InclusionConnectSigninButton from '@app/web/app/(public)/(authentication)/connexion/InclusionConnectSigninButton'
+import ProConnectSigninButton from '@app/web/app/(public)/(authentication)/connexion/ProConnectSigninButton'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 const SigninPanel = ({
@@ -19,7 +19,7 @@ const SigninPanel = ({
       </div>
     ) : null}
     <div className="fr-connect-group fr-mt-8v">
-      <InclusionConnectSigninButton callbackUrl={callbackUrl} />
+      <ProConnectSigninButton callbackUrl={callbackUrl} />
     </div>
   </AuthCard>
 )

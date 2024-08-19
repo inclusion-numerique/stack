@@ -1,8 +1,8 @@
 import { v4 } from 'uuid'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import type { Adapter, AdapterAccount, AdapterUser } from 'next-auth/adapters'
-import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
 import { prismaClient } from '@app/web/prismaClient'
+import { proConnectProviderId } from '@app/web/auth/proConnect'
 
 /**
  * Ensuring that needed methods are defined when creating adapter
@@ -39,12 +39,12 @@ export const nextAuthAdapter = {
   createUser: async (user) => {
     const { provider, ...rest } = user as Omit<AdapterUser, 'id'> & {
       // We pass the provider along from Keycloak provider to be able to detect if the user comes from Inclusion Connect
-      provider?: typeof inclusionConnectProviderId
+      provider?: typeof proConnectProviderId
     }
 
     const info = { id: v4(), ...rest }
 
-    if (provider === inclusionConnectProviderId) {
+    if (provider === proConnectProviderId) {
       return prismaAdapter.createUser({ ...info, emailVerified: new Date() })
     }
     return prismaAdapter.createUser(info)
