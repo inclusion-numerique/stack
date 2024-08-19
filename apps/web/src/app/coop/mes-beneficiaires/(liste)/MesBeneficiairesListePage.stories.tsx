@@ -41,19 +41,11 @@ const beneficiaire = {
   creation: new Date(),
   communeResidence: null,
   mediateurId: '1',
-  adresse: null,
   anneeNaissance: null,
-  craDemarchesAdministrativesCount: 1,
-  craIndividuelsCount: 2,
-  participationsAteliersCollectifsCount: 3,
-  totalCrasCount: 6,
-  email: null,
-  pasDeTelephone: null,
-  genre: null,
-  notes: null,
-  statutSocial: null,
-  telephone: null,
   trancheAge: null,
+  _count: {
+    activites: 6,
+  },
 } satisfies BeneficiairesListPageData['searchResult']['beneficiaires'][number]
 
 const dataAvecBeneficiaires = {
@@ -79,10 +71,9 @@ const dataAvecBeneficiaires = {
         id: '3',
         prenom: 'Paul',
         nom: 'Martin',
-        participationsAteliersCollectifsCount: 0,
-        craDemarchesAdministrativesCount: 0,
-        craIndividuelsCount: 0,
-        totalCrasCount: 0,
+        _count: {
+          activites: 0,
+        },
       },
     ],
   },

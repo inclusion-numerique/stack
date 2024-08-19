@@ -30,11 +30,11 @@ import RichCardLabel, {
   richCardFieldsetElementClassName,
   richCardRadioGroupClassName,
 } from '@app/web/components/form/RichCardLabel'
-import { craFormFieldsetClassname } from '@app/web/app/coop/mon-activite/cra/craFormFieldsetClassname'
+import { craFormFieldsetClassname } from '@app/web/app/coop/mes-activites/cra/craFormFieldsetClassname'
 import AdresseBanFormField, {
   AdressBanFormFieldOption,
 } from '@app/web/components/form/AdresseBanFormField'
-import CraFormLabel from '@app/web/app/coop/mon-activite/cra/CraFormLabel'
+import CraFormLabel from '@app/web/app/coop/mes-activites/cra/CraFormLabel'
 import {
   genreOptions,
   statutSocialOptions,

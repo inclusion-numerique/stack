@@ -1,6 +1,5 @@
 import { prismaClient } from '@app/web/prismaClient'
 import {
-  beneficiaireCrasCounts,
   beneficiaireCrasCountSelect,
   countThematiques,
 } from '@app/web/beneficiaire/beneficiaireQueries'
@@ -47,7 +46,6 @@ export const getBeneficiaireInformationsPageData = async ({
   }
 
   const displayName = getBeneficiaireDisplayName(beneficiaire)
-  const { totalCrasCount } = beneficiaireCrasCounts(beneficiaire)
 
   const thematiquesCounts = await countThematiques({ beneficiaireId })
 
@@ -55,7 +53,6 @@ export const getBeneficiaireInformationsPageData = async ({
     displayName,
     beneficiaire,
     thematiquesCounts,
-    totalCrasCount,
   }
 }
 

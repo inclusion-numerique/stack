@@ -1,32 +1,17 @@
 import type { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
-import { prismaBeneficiaireToBeneficiaireData } from '@app/web/beneficiaire/prismaBeneficiaireToBeneficiaireData'
 import {
-  beneficiaireCrasCounts,
-  beneficiaireCrasCountSelect,
-} from '@app/web/beneficiaire/beneficiaireQueries'
+  BeneficiairesDataTable,
+  type BeneficiairesDataTableSearchParams,
+} from '@app/web/beneficiaire/BeneficiairesDataTable'
+import { getDataTableOrderBy } from '@app/web/data-table/getDataTableOrderBy'
+import { takeAndSkipFromPage } from '@app/web/data-table/takeAndSkipFromPage'
+import { queryBeneficiairesForList } from '@app/web/beneficiaire/queryBeneficiairesForList'
 
 type SearchBeneficiaireOptions = {
-  take: number
   mediateurId?: string
-  orderBy?: Prisma.BeneficiaireOrderByWithRelationInput[]
-  skip?: number
-  query?: string
+  searchParams?: BeneficiairesDataTableSearchParams
 }
-
-export const searchBeneficiaireSelect = {
-  id: true,
-  mediateurId: true,
-  prenom: true,
-  nom: true,
-  anneeNaissance: true,
-  trancheAge: true,
-  commune: true,
-  communeCodePostal: true,
-  communeCodeInsee: true,
-  creation: true,
-  ...beneficiaireCrasCountSelect,
-} satisfies Prisma.BeneficiaireSelect
 
 // List beneficiaires not anonymous
 export const beneficiairesListWhere = ({
@@ -48,12 +33,25 @@ export const beneficiairesListWhere = ({
 export const searchBeneficiaire = async (
   options: SearchBeneficiaireOptions,
 ) => {
-  const beneficiairesSearchLimit = options?.take || 50
-  const queryParts = options?.query?.split(' ') ?? []
+  const searchParams = options.searchParams ?? {}
+  const { mediateurId } = options
+
+  const orderBy = getDataTableOrderBy(searchParams, BeneficiairesDataTable)
+  const pageSize = searchParams?.lignes
+    ? Number.parseInt(searchParams.lignes, 10)
+    : 10
+  const page = searchParams?.page ? Number.parseInt(searchParams.page, 10) : 1
+
+  const { take, skip } = takeAndSkipFromPage({
+    page,
+    pageSize,
+  })
+
+  const queryParts = searchParams.recherche?.split(' ') ?? []
 
   const matchesWhere = {
     ...beneficiairesListWhere({
-      mediateurId: options?.mediateurId,
+      mediateurId,
     }),
     AND: queryParts.map((part) => ({
       OR: [
@@ -91,37 +89,23 @@ export const searchBeneficiaire = async (
     })),
   } satisfies Prisma.BeneficiaireWhereInput
 
-  const beneficiairesRaw = await prismaClient.beneficiaire.findMany({
+  const beneficiaires = await queryBeneficiairesForList({
     where: matchesWhere,
-    take: beneficiairesSearchLimit,
-    skip: options?.skip,
-    select: searchBeneficiaireSelect,
-    orderBy: [
-      ...(options?.orderBy ?? []),
-      {
-        nom: 'asc',
-      },
-      {
-        prenom: 'asc',
-      },
-    ],
+    take,
+    skip,
+    orderBy,
   })
 
   const matchesCount = await prismaClient.beneficiaire.count({
     where: matchesWhere,
   })
 
-  const totalPages = Math.ceil(matchesCount / beneficiairesSearchLimit)
-
-  const beneficiaires = beneficiairesRaw.map((beneficiaire) => ({
-    ...prismaBeneficiaireToBeneficiaireData(beneficiaire),
-    ...beneficiaireCrasCounts(beneficiaire),
-  }))
+  const totalPages = take ? Math.ceil(matchesCount / take) : 1
 
   return {
     beneficiaires,
     matchesCount,
-    moreResults: Math.max(matchesCount - beneficiairesSearchLimit, 0),
+    moreResults: Math.max(matchesCount - (take ?? 0), 0),
     totalPages,
   }
 }
@@ -129,6 +113,3 @@ export const searchBeneficiaire = async (
 export type SearchBeneficiaireResult = Awaited<
   ReturnType<typeof searchBeneficiaire>
 >
-
-export type SearchBeneficiaireResultRow =
-  SearchBeneficiaireResult['beneficiaires'][number]

@@ -23,7 +23,7 @@ import React, { useCallback, useState } from 'react'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
-import CraFormLabel from '@app/web/app/coop/mon-activite/cra/CraFormLabel'
+import CraFormLabel from '@app/web/app/coop/mes-activites/cra/CraFormLabel'
 import AdresseBanFormField, {
   type AdressBanFormFieldOption,
 } from '@app/web/components/form/AdresseBanFormField'
@@ -52,10 +52,10 @@ import {
 } from '@app/web/cra/CraIndividuelValidation'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { yesNoBooleanOptions } from '@app/web/utils/yesNoBooleanOptions'
-import { craFormFieldsetClassname } from '@app/web/app/coop/mon-activite/cra/craFormFieldsetClassname'
+import { craFormFieldsetClassname } from '@app/web/app/coop/mes-activites/cra/craFormFieldsetClassname'
 import CraBeneficiaryForm, {
   CraDataWithBeneficiaire,
-} from '@app/web/app/coop/mon-activite/cra/CraBeneficiaryForm'
+} from '@app/web/app/coop/mes-activites/cra/CraBeneficiaryForm'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipalityLabel'
@@ -189,7 +189,7 @@ const CraIndividuelForm = ({
     useCallback(
       (data, { name }) => {
         replaceRouteWithoutRerender(
-          `/coop/mon-activite/cra/individuel?v=${encodeSerializableState(data)}`,
+          `/coop/mes-activites/cra/individuel?v=${encodeSerializableState(data)}`,
         )
 
         // Set the initial options for the lieu de residence
@@ -225,7 +225,7 @@ const CraIndividuelForm = ({
           setValue as unknown as UseFormSetValue<CraDataWithBeneficiaire>
         }
         watch={watch as unknown as UseFormWatch<CraDataWithBeneficiaire>}
-        creerBeneficiaireRetourUrl="/coop/mon-activite/cra/individuel"
+        creerBeneficiaireRetourUrl="/coop/mes-activites/cra/individuel"
         initialBeneficiariesOptions={initialBeneficiariesOptions}
       />
       <div className="fr-flex fr-flex-gap-12v">

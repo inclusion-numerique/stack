@@ -1,4 +1,4 @@
-.cellLinkContainer{
+.cellLinkContainer {
     padding: 0 !important;
 }
 
@@ -10,3 +10,25 @@ a.cellLink {
     height: 100%;
     display: block;
 }
+
+.rowLinkCell {
+    width: 0 !important;
+    padding: 0 !important;
+}
+
+.rowWithLink {
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--hover) !important;
+    }
+
+    &:active {
+        background-color: var(--active) !important;
+    }
+
+    td {
+        background-color: transparent !important;
+    }
+}
+

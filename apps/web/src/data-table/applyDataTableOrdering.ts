@@ -25,23 +25,23 @@ export const applyDataTableOrdering = <
   return data.sort((a, b) => {
     // Default sorting if no column is specified
     if (
-      (!searchParams.tri || column?.defaultSortable || !column?.sortable) &&
+      (!searchParams.tri || column?.defaultSortable || !column?.sortInMemory) &&
       configuration.defaultSortableInMemory
     ) {
       return configuration.defaultSortableInMemory(a, b) * orderMultiplier
     }
 
-    if (configuration.defaultSortableInMemory && column?.sortable) {
+    if (configuration.defaultSortableInMemory && column?.sortInMemory) {
       return (
         compareMultiple(
-          column.sortable(a, b),
+          column.sortInMemory(a, b),
           configuration.defaultSortableInMemory(a, b),
         ) * orderMultiplier
       )
     }
 
-    if (column?.sortable) {
-      return column.sortable(a, b) * orderMultiplier
+    if (column?.sortInMemory) {
+      return column.sortInMemory(a, b) * orderMultiplier
     }
 
     throw new Error('No sorting function found')

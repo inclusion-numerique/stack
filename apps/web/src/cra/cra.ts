@@ -17,16 +17,16 @@ export const accompagnementTypeLabels: {
   [key in AccompagnementType]: string
 } = {
   individuel: 'Accompagnement individuel',
-  collectif: 'Atelier',
   demarche: 'Aide aux démarches administratives',
+  collectif: 'Atelier collectif',
 }
 
 export const accompagnementTypeIllustrations: {
   [key in AccompagnementType]?: string
 } = {
   individuel: '/images/iconographie/accompagnement-individuel.svg',
-  collectif: '/images/iconographie/accompagnement-collectif.svg',
   demarche: '/images/iconographie/demarche-administrative.svg',
+  collectif: '/images/iconographie/accompagnement-collectif.svg',
 }
 
 export const accompagnementTypeValues = Object.keys(

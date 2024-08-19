@@ -14,40 +14,9 @@ export const beneficiaireCrasCountSelect = {
   _count: {
     select: {
       activites: true,
-      crasDemarchesAdministratives: {
-        where: { suppression: null },
-      },
-      crasIndividuels: {
-        where: { suppression: null },
-      },
-      participationsAteliersCollectifs: {
-        where: {
-          craCollectif: {
-            suppression: null,
-          },
-        },
-      },
     },
   },
 } satisfies Prisma.BeneficiaireSelect
-
-export const beneficiaireCrasCounts = (beneficiaire: {
-  _count: {
-    crasDemarchesAdministratives: number
-    crasIndividuels: number
-    participationsAteliersCollectifs: number
-  }
-}) => ({
-  craDemarchesAdministrativesCount:
-    beneficiaire._count.crasDemarchesAdministratives,
-  craIndividuelsCount: beneficiaire._count.crasIndividuels,
-  participationsAteliersCollectifsCount:
-    beneficiaire._count.participationsAteliersCollectifs,
-  totalCrasCount:
-    beneficiaire._count.crasDemarchesAdministratives +
-    beneficiaire._count.crasIndividuels +
-    beneficiaire._count.participationsAteliersCollectifs,
-})
 
 export type ThematiqueAccompagnementCount = {
   thematique: ThematiqueAccompagnement

@@ -40,33 +40,41 @@ const Page = async () => {
       )}
       {!PublicWebAppConfig.isMain && (
         <div className="fr-table" data-fr-js-table="true">
-          <table data-fr-js-table-element="true">
-            <thead>
-              <tr>
-                <th scope="col">Utilisateur</th>
-                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                <th scope="col" colSpan={2} />
-              </tr>
-            </thead>
-            <tbody>
-              {fixtureUsers.map((row) => (
-                <tr key={row.id}>
-                  <th>{row.name}</th>
-                  <td>
-                    <UsurpUserButton userId={row.id} />
-                  </td>
-                  <td>
-                    <ResetUserFixtureButton userId={row.id} />
-                  </td>
-                </tr>
-              ))}
-              {fixtureUsers.length === 0 && (
-                <tr>
-                  <td colSpan={4}>Aucun utilisateur de test n’a été chargé</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+          <div className="fr-table__wrapper">
+            <div className="fr-table__container">
+              <div className="fr-table__content">
+                <table data-fr-js-table-element="true">
+                  <thead>
+                    <tr>
+                      <th scope="col">Utilisateur</th>
+                      {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                      <th scope="col" colSpan={2} />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {fixtureUsers.map((row) => (
+                      <tr key={row.id}>
+                        <th>{row.name}</th>
+                        <td>
+                          <UsurpUserButton userId={row.id} />
+                        </td>
+                        <td>
+                          <ResetUserFixtureButton userId={row.id} />
+                        </td>
+                      </tr>
+                    ))}
+                    {fixtureUsers.length === 0 && (
+                      <tr>
+                        <td colSpan={4}>
+                          Aucun utilisateur de test n’a été chargé
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

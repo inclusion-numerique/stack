@@ -29,9 +29,6 @@ const beneficiaireSansInformations = {
   ...beneficiaireMinimaleMediateurAvecActivite,
   _count: {
     activites: 0,
-    crasIndividuels: 0,
-    crasDemarchesAdministratives: 0,
-    participationsAteliersCollectifs: 0,
   },
 } satisfies BeneficiaireInformationsPageData['beneficiaire']
 
@@ -39,7 +36,6 @@ const sansInformations = {
   beneficiaire: beneficiaireSansInformations,
   thematiquesCounts: [],
   displayName: getBeneficiaireDisplayName(beneficiaireSansInformations),
-  totalCrasCount: 0,
 } satisfies BeneficiaireInformationsPageData
 
 export const SansInformations: Story = {
@@ -54,9 +50,6 @@ const beneficiaireAvecInformations = {
   ...beneficiaireMaximaleMediateurAvecActivite,
   _count: {
     activites: 6,
-    crasIndividuels: 2,
-    crasDemarchesAdministratives: 1,
-    participationsAteliersCollectifs: 3,
   },
 } satisfies BeneficiaireInformationsPageData['beneficiaire']
 
@@ -89,7 +82,6 @@ const avecInformations = {
     },
   ],
   displayName: getBeneficiaireDisplayName(beneficiaireAvecInformations),
-  totalCrasCount: 6,
 } satisfies BeneficiaireInformationsPageData
 
 export const AvecInformations: Story = {

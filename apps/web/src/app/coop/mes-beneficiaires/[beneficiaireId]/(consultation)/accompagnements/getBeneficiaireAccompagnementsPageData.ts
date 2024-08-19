@@ -1,8 +1,5 @@
 import { prismaClient } from '@app/web/prismaClient'
-import {
-  beneficiaireCrasCounts,
-  beneficiaireCrasCountSelect,
-} from '@app/web/beneficiaire/beneficiaireQueries'
+import { beneficiaireCrasCountSelect } from '@app/web/beneficiaire/beneficiaireQueries'
 import {
   getActivites,
   groupActivitesByDate,
@@ -36,16 +33,15 @@ export const getBeneficiaireAccompagnementsPageData = async ({
     return null
   }
 
+  console.log('ACTIVITES BENEF ID', beneficiaireId)
+
   const activites = await getActivites({ beneficiaireId })
 
   const activitesByDate = groupActivitesByDate(activites)
 
-  const { totalCrasCount } = beneficiaireCrasCounts(beneficiaire)
-
   return {
     beneficiaire,
     activitesByDate,
-    totalCrasCount,
   }
 }
 

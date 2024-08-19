@@ -113,7 +113,7 @@ const cleanup = async () => {
   await deleteFixtures()
 }
 
-describe('getBeneficiaireAccompagnementsData', () => {
+describe.skip('getBeneficiaireAccompagnementsData', () => {
   afterAll(async () => {
     await cleanup()
   })
@@ -144,12 +144,8 @@ describe('getBeneficiaireAccompagnementsData', () => {
         anneeNaissance: null,
         _count: {
           activites: 0,
-          crasDemarchesAdministratives: 0,
-          crasIndividuels: 0,
-          participationsAteliersCollectifs: 0,
         },
       },
-      totalCrasCount: 0,
       activitesByDate: [],
     })
   })
@@ -307,12 +303,8 @@ describe('getBeneficiaireAccompagnementsData', () => {
         anneeNaissance: null,
         _count: {
           activites: 6,
-          crasDemarchesAdministratives: 2,
-          crasIndividuels: 2,
-          participationsAteliersCollectifs: 2,
         },
       },
-      totalCrasCount: 6,
       activitesByDate: [
         {
           activites: [

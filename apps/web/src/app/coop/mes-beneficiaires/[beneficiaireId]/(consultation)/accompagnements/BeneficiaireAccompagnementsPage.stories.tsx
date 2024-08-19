@@ -28,15 +28,11 @@ const beneficiaireSansAccompagnements = {
   ...beneficiaireMinimaleMediateurAvecActivite,
   _count: {
     activites: 0,
-    crasIndividuels: 0,
-    crasDemarchesAdministratives: 0,
-    participationsAteliersCollectifs: 0,
   },
 } satisfies BeneficiaireAccompagnementsPageData['beneficiaire']
 
 const sansAccompagnements = {
   beneficiaire: beneficiaireSansAccompagnements,
-  totalCrasCount: 0,
   activitesByDate: [],
 } satisfies BeneficiaireAccompagnementsPageData
 
@@ -52,15 +48,11 @@ const beneficiaireAvecAccompagnements = {
   ...beneficiaireMaximaleMediateurAvecActivite,
   _count: {
     activites: 6,
-    crasIndividuels: 2,
-    crasDemarchesAdministratives: 1,
-    participationsAteliersCollectifs: 3,
   },
 } satisfies BeneficiaireAccompagnementsPageData['beneficiaire']
 
 const avecAccompagnements = {
   beneficiaire: beneficiaireAvecAccompagnements,
-  totalCrasCount: 6,
   activitesByDate: [
     {
       activites: [

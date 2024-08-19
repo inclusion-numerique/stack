@@ -1,15 +1,15 @@
 import type { Prisma } from '@prisma/client'
-import {
+import type {
   DataTableConfiguration,
   DataTableFilterValues,
   DataTableSearchParams,
 } from '@app/web/data-table/DataTableConfiguration'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
-import { SearchBeneficiaireResultRow } from '@app/web/beneficiaire/searchBeneficiaire'
 import { numberToString } from '@app/web/utils/formatNumber'
+import type { BeneficiaireForList } from '@app/web/beneficiaire/queryBeneficiairesForList'
 
 export type BeneficiairesDataTableConfiguration = DataTableConfiguration<
-  SearchBeneficiaireResultRow,
+  BeneficiaireForList,
   Prisma.BeneficiaireWhereInput,
   Prisma.BeneficiaireOrderByWithRelationInput
 >
@@ -62,8 +62,8 @@ export const BeneficiairesDataTable = {
       name: 'accompagnements',
       header: 'Accompagnements',
       csvHeaders: ['Accompagnements'],
-      csvValues: ({ totalCrasCount }) => [totalCrasCount],
-      cell: ({ totalCrasCount }) => numberToString(totalCrasCount),
+      csvValues: ({ _count: { activites } }) => [activites],
+      cell: ({ _count: { activites } }) => numberToString(activites),
       headerClassName: 'fr-text--right',
       cellClassName: 'fr-text--right',
       orderBy: (direction) => [

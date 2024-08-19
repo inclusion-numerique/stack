@@ -100,7 +100,7 @@ export const coordinateur = givenUser({
 
 export const mediateurInscription = givenUser({
   id: '1c8a6a72-c912-4eff-a45f-1252fa09f1b9',
-  firstName: 'Mediateur',
+  firstName: 'Médiateur',
   lastName: 'Inscription',
   isFixture: true,
   role: 'User',
@@ -119,7 +119,7 @@ export const mediateurInscription = givenUser({
 
 export const mediateurSansActivites = givenUser({
   id: 'd3378267-18cf-4b5f-ae1e-9f63c7093ac2',
-  firstName: 'Mediateur',
+  firstName: 'Médiateur',
   lastName: 'Sans activités',
   isFixture: true,
   role: 'User',
@@ -163,7 +163,7 @@ export const mediateurSansActivites = givenUser({
 
 export const mediateurAvecActivite = givenUser({
   id: 'd10844c6-b6de-402a-a68d-f8328b1d1b0c',
-  firstName: 'Mediateur',
+  firstName: 'Médiateur',
   lastName: 'Avec activités',
   isFixture: true,
   role: 'User',

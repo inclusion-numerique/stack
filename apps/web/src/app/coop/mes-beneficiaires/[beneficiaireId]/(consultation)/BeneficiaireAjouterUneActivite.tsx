@@ -2,7 +2,7 @@
 
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import Button from '@codegouvfr/react-dsfr/Button'
-import CreateCraModalContent from '@app/web/app/coop/mon-activite/CreateCraModalContent'
+import CreateCraModalContent from '@app/web/app/coop/mes-activites/CreateCraModalContent'
 import { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireValidation'
 
 export const CreateCraBeneficiaireModalDefinition = createModal({

@@ -66,7 +66,7 @@ const CreateCraModalContent = ({
       </p>
       <ModalNavigationButton
         illustration="/images/iconographie/accompagnement-individuel.svg"
-        onClick={() => navigateTo('/coop/mon-activite/cra/individuel')}
+        onClick={() => navigateTo('/coop/mes-activites/cra/individuel')}
       >
         Accompagnement individuel
       </ModalNavigationButton>
@@ -74,7 +74,7 @@ const CreateCraModalContent = ({
       {atelier && (
         <ModalNavigationButton
           illustration="/images/iconographie/accompagnement-collectif.svg"
-          onClick={() => navigateTo('/coop/mon-activite/cra/collectif')}
+          onClick={() => navigateTo('/coop/mes-activites/cra/collectif')}
         >
           Atelier collectif de médiation numérique
         </ModalNavigationButton>
@@ -82,7 +82,7 @@ const CreateCraModalContent = ({
 
       <ModalNavigationButton
         illustration="/images/iconographie/demarche-administrative.svg"
-        onClick={() => navigateTo('/coop/mon-activite/cra/administratif')}
+        onClick={() => navigateTo('/coop/mes-activites/cra/administratif')}
       >
         Aide aux démarches administratives
       </ModalNavigationButton>

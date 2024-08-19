@@ -3,12 +3,12 @@ export const takeAndSkipFromPage = ({
   page: pageParameter,
 }: {
   page?: number | null
-  pageSize: number
+  pageSize?: number | null
 }) => {
   const page = pageParameter && pageParameter > 0 ? pageParameter : 1
 
   return {
-    take: pageSize,
-    skip: (page - 1) * pageSize,
+    take: pageSize || undefined,
+    skip: (page - 1) * (pageSize ?? 0),
   }
 }

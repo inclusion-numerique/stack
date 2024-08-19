@@ -42,11 +42,13 @@ const DataTable = <
   const sortLinkProps = (
     sortParams: DataTableSearchParams<Configuration>,
     isDefault = false,
+    defaultSortableDirection?: 'asc' | 'desc',
   ) =>
     createSortLinkProps({
       searchParams,
       sortParams,
       isDefault,
+      defaultSortableDirection,
       baseHref,
     })
 
@@ -65,8 +67,10 @@ const DataTable = <
                     ({
                       name,
                       header,
+                      sortInMemory,
                       sortable,
                       defaultSortable,
+                      defaultSortableDirection,
                       headerClassName,
                       orderBy,
                     }) => (
@@ -76,13 +80,17 @@ const DataTable = <
                         className={classNames(headerClassName, classes?.th)}
                       >
                         {header}
-                        {(!!defaultSortable || !!sortable || !!orderBy) && (
+                        {(!!defaultSortable ||
+                          !!sortable ||
+                          !!sortInMemory ||
+                          !!orderBy) && (
                           <SortLink
                             {...sortLinkProps(
                               {
                                 tri: name,
                               } as DataTableSearchParams<Configuration>,
                               defaultSortable,
+                              defaultSortableDirection,
                             )}
                           />
                         )}
@@ -95,52 +103,33 @@ const DataTable = <
                 {rows.map((row) => (
                   <tr
                     key={configuration.rowKey(row)}
-                    className={classNames(classes?.tr)}
+                    className={classNames(
+                      classes?.tr,
+                      !!configuration.rowLink && 'fr-enlarge-link',
+                      !!configuration.rowLink && styles.rowWithLink,
+                    )}
                   >
                     {configuration.columns.map(
-                      (
-                        { name, cellAsTh, cell, cellClassName },
-                        columnIndex,
-                      ) => {
+                      ({ name, cellAsTh, cell, cellClassName }) => {
                         if (!cell) {
                           return null
                         }
                         const Component = cellAsTh ? 'th' : 'td'
 
-                        const child = configuration.rowLink ? (
-                          // The row is a link. In html we are required to add <a> to individual tds for accessible and correct html
-                          <Link
-                            key={`${name}_link`}
-                            {...configuration.rowLink(row)}
-                            tabIndex={columnIndex === 0 ? undefined : -1}
-                            className={classNames(
-                              styles.cellLink,
-                              cellClassName,
-                            )}
-                          >
-                            {cell(row)}
-                          </Link>
-                        ) : (
-                          cell(row)
-                        )
-
                         return (
                           <Component
-                            className={classNames(
-                              {
-                                [styles.cellLinkContainer]:
-                                  !!configuration.rowLink,
-                              },
-                              !!cellClassName && !configuration.rowLink
-                                ? cellClassName
-                                : undefined,
-                            )}
+                            className={classNames(cellClassName)}
                             key={name}
                           >
-                            {child}
+                            {cell(row)}
                           </Component>
                         )
                       },
+                    )}
+                    {!!configuration.rowLink && (
+                      <td className={styles.rowLinkCell}>
+                        <Link {...configuration.rowLink(row)} />
+                      </td>
                     )}
                   </tr>
                 ))}

@@ -9,17 +9,15 @@ import {
   decodeSerializableState,
   EncodedState,
 } from '@app/web/utils/encodeSerializableState'
-import {
-  beneficiairesListWhere,
-  searchBeneficiaireSelect,
-} from '@app/web/beneficiaire/searchBeneficiaire'
+import { beneficiairesListWhere } from '@app/web/beneficiaire/searchBeneficiaire'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import { prismaBeneficiaireToBeneficiaireData } from '@app/web/beneficiaire/prismaBeneficiaireToBeneficiaireData'
 import { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
 import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
-import CraCollectifForm from '@app/web/app/coop/mon-activite/cra/collectif/CraCollectifForm'
+import CraCollectifForm from '@app/web/app/coop/mes-activites/cra/collectif/CraCollectifForm'
 import { AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
+import { searchBeneficiaireSelect } from '@app/web/beneficiaire/queryBeneficiairesForList'
 
 const CreateCraCollectifPage = async ({
   searchParams: { v } = {},
