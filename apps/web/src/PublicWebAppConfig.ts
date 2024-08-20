@@ -6,6 +6,12 @@ import { mainLiveUrl, projectTitle, repositoryUrl } from '@app/config/config'
 export const PublicWebAppConfig = {
   Branch: process.env.BRANCH ?? '',
   isMain: process.env.BRANCH === 'main',
+  isDev: process.env.BRANCH === 'dev',
+  isLocal: !process.env.BRANCH,
+  isPreview:
+    !!process.env.BRANCH &&
+    process.env.BRANCH !== 'main' &&
+    process.env.BRANCH !== 'dev',
   Chromatic: {
     appId: process.env.CHROMATIC_APP_ID ?? '',
   },
