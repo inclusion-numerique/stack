@@ -3,15 +3,20 @@
  */
 import { mainLiveUrl, projectTitle, repositoryUrl } from '@app/config/config'
 
+const isMain = process.env.BRANCH === 'main'
+// eslint-disable-next-line unicorn/prevent-abbreviations
+const isDev = process.env.BRANCH === 'dev'
+const isLocal = !process.env.BRANCH
+// eslint-disable-next-line unicorn/prevent-abbreviations
+const isE2e = !!process.env.IS_E2E
+const isPreview = !isMain && !isDev && !isLocal && !isE2e
+
 export const PublicWebAppConfig = {
   Branch: process.env.BRANCH ?? '',
-  isMain: process.env.BRANCH === 'main',
-  isDev: process.env.BRANCH === 'dev',
-  isLocal: !process.env.BRANCH,
-  isPreview:
-    !!process.env.BRANCH &&
-    process.env.BRANCH !== 'main' &&
-    process.env.BRANCH !== 'dev',
+  isMain,
+  isDev,
+  isLocal,
+  isPreview,
   Chromatic: {
     appId: process.env.CHROMATIC_APP_ID ?? '',
   },

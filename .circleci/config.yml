@@ -394,6 +394,7 @@ jobs:
             echo "SMTP_PORT=1025" >> .env
             echo "SMTP_USERNAME=mailuser" >> .env
             echo "SMTP_PASSWORD=mailpassword" >> .env
+            echo "IS_E2E=true" >> .env
             echo 'PROCONNECT_CLIENT_SECRET=$PROCONNECT_LOCAL_CLIENT_SECRET' >> .env
             echo 'CYPRESS_PROCONNECT_TEST_USER_EMAIL=$PROCONNECT_TEST_USER_EMAIL' >> .env
             echo 'CYPRESS_PROCONNECT_TEST_USER_PASSWORD=$PROCONNECT_TEST_USER_PASSWORD' >> .env
