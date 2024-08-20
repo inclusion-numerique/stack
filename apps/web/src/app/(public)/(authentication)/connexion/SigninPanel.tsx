@@ -1,8 +1,9 @@
 import { Route } from 'next'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import { signinErrorMessage } from '@app/web/app/(public)/(authentication)/authenticationErrorMessage'
-import InclusionConnectSigninButton from '@app/web/app/(public)/(authentication)/connexion/InclusionConnectSigninButton'
+import ProConnectSigninButton from '@app/web/app/(public)/(authentication)/connexion/ProConnectSigninButton'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import { EmailSigninForm } from '@app/web/app/(public)/(authentication)/connexion/EmailSigninForm'
 
 const SigninPanel = ({
   error,
@@ -18,9 +19,23 @@ const SigninPanel = ({
         <p>{signinErrorMessage(error)}</p>
       </div>
     ) : null}
-    <div className="fr-connect-group fr-mt-8v">
-      <InclusionConnectSigninButton callbackUrl={callbackUrl} />
-    </div>
+    {PublicWebAppConfig.isPreview ? (
+      <>
+        <p>
+          La connexion avec ProConnect est uniquement disponible sur les
+          environnement de production <i>main</i> et de recette <i>dev</i>.
+          <br />
+          <br />
+          Sur cette environnement de preview <i>{PublicWebAppConfig.Branch}</i>,
+          vous pouvez vous connecter avec votre email.
+        </p>
+        <EmailSigninForm callbackUrl={callbackUrl} error={error} />
+      </>
+    ) : (
+      <div className="fr-connect-group fr-mt-8v">
+        <ProConnectSigninButton callbackUrl={callbackUrl} />
+      </div>
+    )}
   </AuthCard>
 )
 

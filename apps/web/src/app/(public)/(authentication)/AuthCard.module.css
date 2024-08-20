@@ -4,6 +4,7 @@
     margin: 56px auto 120px;
     background: var(--background-alt-grey);
     padding: 56px 16px;
+    border-radius: 8px;
 
     @media (min-width: 36em) {
         /*! media sm */

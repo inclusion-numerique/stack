@@ -44,10 +44,8 @@ export const webAppStackSensitiveVariables = [
   'SCW_ACCESS_KEY',
   'SCW_SECRET_KEY',
   'DATABASE_PASSWORD',
-  'INCLUSION_CONNECT_PREVIEW_CLIENT_SECRET',
-  'INCLUSION_CONNECT_MAIN_CLIENT_SECRET',
-  'MONCOMPTEPRO_PREVIEW_CLIENT_SECRET',
-  'MONCOMPTEPRO_MAIN_CLIENT_SECRET',
+  'PROCONNECT_PREVIEW_CLIENT_SECRET',
+  'PROCONNECT_MAIN_CLIENT_SECRET',
   'INTERNAL_API_PRIVATE_KEY',
   'CONSEILLER_NUMERIQUE_MONGODB_URL',
 ] as const
@@ -196,14 +194,9 @@ export class WebAppStack extends TerraformStack {
       },
       secretEnvironmentVariables: {
         DATABASE_URL: databaseUrl,
-        INCLUSION_CONNECT_CLIENT_SECRET: isMain
-          ? sensitiveEnvironmentVariables.INCLUSION_CONNECT_MAIN_CLIENT_SECRET
-              .value
-          : sensitiveEnvironmentVariables
-              .INCLUSION_CONNECT_PREVIEW_CLIENT_SECRET.value,
-        MONCOMPTEPRO_CLIENT_SECRET: isMain
-          ? sensitiveEnvironmentVariables.MONCOMPTEPRO_MAIN_CLIENT_SECRET.value
-          : sensitiveEnvironmentVariables.MONCOMPTEPRO_PREVIEW_CLIENT_SECRET
+        PROCONNECT_CLIENT_SECRET: isMain
+          ? sensitiveEnvironmentVariables.PROCONNECT_MAIN_CLIENT_SECRET.value
+          : sensitiveEnvironmentVariables.PROCONNECT_PREVIEW_CLIENT_SECRET
               .value,
         INTERNAL_API_PRIVATE_KEY:
           sensitiveEnvironmentVariables.INTERNAL_API_PRIVATE_KEY.value,
