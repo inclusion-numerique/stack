@@ -284,7 +284,12 @@ const ActiviteDetailsModal = ({
   return (
     <ActiviteDetailsDynamicModal.Component
       title={
-        <div className="fr-background-alt--blue-france fr-p-2v fr-border-radius--8 fr-flex">
+        <div
+          className={classNames(
+            'fr-background-alt--blue-france fr-p-2v fr-border-radius--8 fr-flex',
+            styles.titleIconContainer,
+          )}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className="fr-display-block"
@@ -324,7 +329,7 @@ const ActiviteDetailsModal = ({
           : undefined
       }
     >
-      <div className="fr-mt-12v fr-flex fr-flex-gap-2v fr-justify-content-space-between fr-align-items-center">
+      <div className="fr-mt-6v fr-flex fr-flex-gap-2v fr-justify-content-space-between fr-align-items-center">
         <div>
           <p className="fr-text--xs fr-text-mention--grey fr-text--bold fr-text--uppercase fr-mb-0">
             {formatActiviteDayDate(cra.date)}

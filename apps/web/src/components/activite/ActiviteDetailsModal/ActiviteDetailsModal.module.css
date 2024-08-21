@@ -1,12 +1,16 @@
 dialog.modal {
     :global .fr-modal__title {
-        position: absolute;
-        top: 32px;
+        margin-top: -32px;
+        display: block;
     }
 
     :global .fr-modal__content {
         margin-bottom: 40px;
     }
+}
+
+.titleIconContainer{
+    width: 56px;
 }
 
 .notes {
