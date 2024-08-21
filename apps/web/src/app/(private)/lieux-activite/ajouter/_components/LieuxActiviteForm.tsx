@@ -93,12 +93,6 @@ const LieuxActiviteForm = ({
       siret: structure.pivot,
       typologies: structure.typologie?.split(';'),
     })
-
-    createToast({
-      priority: 'success',
-      message: `Le lieu d’activité ${structure.nom} a bien été ajouté.`,
-    })
-
     setValue('addLieuActiviteCartographieNationaleId', '')
   }, [selectedCartographieNationaleId, setValue, appendStructure])
 
@@ -207,6 +201,14 @@ const LieuxActiviteForm = ({
       await mutation.mutateAsync(data)
       router.push(nextHref)
       router.refresh()
+
+      createToast({
+        priority: 'success',
+        message:
+          data.lieuxActivite.length === 1
+            ? "Le lieu d'activité a bien été ajouté"
+            : `Les ${data.lieuxActivite.length} lieux d’activité ont bien été ajoutés.`,
+      })
     } catch (mutationError) {
       if (applyZodValidationMutationErrorsToForm(mutationError, setError)) {
         return
