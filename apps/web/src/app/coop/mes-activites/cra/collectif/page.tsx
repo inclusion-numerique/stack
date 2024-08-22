@@ -158,28 +158,23 @@ const CreateCraCollectifPage = async ({
    * ( là ou il y a déjà eu des cras collectifs ou là ou il y a les lieux d’activité )
    */
 
-  const crasCollectifsForCommune = await prismaClient.craCollectif.groupBy({
-    where: {
-      creeParMediateurId: mediateurId,
-    },
-    by: ['lieuAccompagnementAutreCodeInsee'],
-    _count: {
-      id: true,
-    },
-    orderBy: {
-      _count: {
-        id: 'desc',
-      },
-    },
-    take: 20,
-  })
-
-  console.log('CRAS COLLECTIFS FOR COMMUNE', crasCollectifsForCommune)
-  // TODO Check this and populate options
+  // const crasCollectifsForCommune = await prismaClient.craCollectif.groupBy({
+  //   where: {
+  //     creeParMediateurId: mediateurId,
+  //   },
+  //   by: ['lieuAccompagnementAutreCodeInsee'],
+  //   _count: {
+  //     id: true,
+  //   },
+  //   orderBy: {
+  //     _count: {
+  //       id: 'desc',
+  //     },
+  //   },
+  //   take: 20,
+  // })
 
   const initialCommunesOptions: AdressBanFormFieldOption[] = []
-
-  console.log('DEFAULT VALUES FROM PAGE', defaultValues)
 
   return (
     <CoopPageContainer size={794} className="fr-pt-8v">

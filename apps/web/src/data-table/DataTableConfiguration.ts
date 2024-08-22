@@ -99,10 +99,12 @@ type SortableColumn<Configuration extends DataTableConfiguration> = Extract<
 
 export type DataTableSearchParams<
   Configuration extends DataTableConfiguration = DataTableConfiguration,
+  FilterParams extends Record<string, unknown> = Record<string, unknown>,
 > = {
   recherche?: string
   tri?: SortableColumn<Configuration>['name']
   ordre?: SortDirection
   page?: string // String as it is used in URL query params
   lignes?: string // Nombre de résultats par page // String as it is used in URL query params
-} & DataTableFilterSearchParams<Configuration>
+} & DataTableFilterSearchParams<Configuration> &
+  FilterParams

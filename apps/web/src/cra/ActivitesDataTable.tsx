@@ -1,7 +1,6 @@
 import type { Prisma } from '@prisma/client'
 import {
   DataTableConfiguration,
-  DataTableFilterValues,
   DataTableSearchParams,
 } from '@app/web/data-table/DataTableConfiguration'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
@@ -11,6 +10,7 @@ import ActiviteRowShowDetailsButton from '@app/web/cra/ActiviteRowShowDetailsBut
 import styles from '@app/web/app/coop/mes-activites/(liste)/MesActivitesListePage.module.css'
 import { Activite } from '@app/web/cra/activitesQueries'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
+import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 
 export type ActivitesDataTableConfiguration = DataTableConfiguration<
   Activite,
@@ -32,32 +32,6 @@ export const ActivitesDataTable = {
       sortable: true,
       csvValues: ({ cra: { date } }) => [dateAsIsoDay(date)],
       cell: ({ cra: { date } }) => dateAsDay(date),
-      filters: [
-        // {
-        //   name: 'du',
-        //   title: 'Du',
-        //   render: (value) => `TODO RENDER du`,
-        //   applyWhereCondition: (query, value) => ({
-        //     OR: [
-        //       { craIndividuel: { date: { gte: query } } },
-        //       { craCollectif: { date: { gte: query } } },
-        //       { craDemarcheAdministrative: { date: { gte: query } } },
-        //     ],
-        //   }),
-        // },
-        // {
-        //   name: 'au',
-        //   title: 'Au',
-        //   render: (value) => `TODO RENDER au`,
-        //   applyWhereCondition: (query, value) => ({
-        //     OR: [
-        //       { craIndividuel: { date: { lte: query } } },
-        //       { craCollectif: { date: { lte: query } } },
-        //       { craDemarcheAdministrative: { date: { lte: query } } },
-        //     ],
-        //   }),
-        // },
-      ],
     },
     {
       name: 'type',
@@ -66,18 +40,6 @@ export const ActivitesDataTable = {
       csvValues: ({ type }) => [accompagnementTypeLabels[type]],
       cell: ({ type }) => accompagnementTypeLabels[type],
       sortable: true,
-      filters: [
-        // {
-        //   name: 'type',
-        //   title: 'Type',
-        //   render: (value) => `TODO RENDER type`,
-        //   applyWhereCondition: (query, value) => ({
-        //     OR: [
-        //       // TODO
-        //     ],
-        //   }),
-        // },
-      ],
     },
     {
       name: 'beneficiaire',
@@ -122,8 +84,7 @@ export const ActivitesDataTable = {
   ],
 } satisfies ActivitesDataTableConfiguration
 
-export type ActivitesDataTableSearchParams =
-  DataTableSearchParams<ActivitesDataTableConfiguration>
-
-export type ActivitesDataTableFilterValues =
-  DataTableFilterValues<ActivitesDataTableConfiguration>
+export type ActivitesDataTableSearchParams = DataTableSearchParams<
+  ActivitesDataTableConfiguration,
+  ActivitesFilters
+>

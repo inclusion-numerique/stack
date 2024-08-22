@@ -19,9 +19,8 @@ const MesActivitesVueSegmentedControl = ({
   const router = useRouter()
 
   const onChange: FormEventHandler = (event: FormEvent) => {
-    const { checked, id, dataset } = event.target as HTMLInputElement
+    const { checked, dataset } = event.target as HTMLInputElement
 
-    console.log({ checked, id, target: event.target, dataset })
     if (checked) {
       router.push(
         dataset.vue === 'tableau'

@@ -6,9 +6,10 @@ import MesActivitesListePage from '@app/web/app/coop/mes-activites/(liste)/MesAc
 import { activitesListWhere } from '@app/web/cra/searchActivite'
 import { ActivitesDataTableSearchParams } from '@app/web/cra/ActivitesDataTable'
 import MesActivitesListeLayout from '@app/web/app/coop/mes-activites/(liste)/MesActivitesListeLayout'
+import { validateActivitesFilters } from '@app/web/cra/ActivitesFilters'
 
 const MesActivitesPage = async ({
-  searchParams = {},
+  searchParams: rawSearchParams = {},
 }: {
   searchParams?: ActivitesDataTableSearchParams
 }) => {
@@ -20,6 +21,7 @@ const MesActivitesPage = async ({
   })
 
   if (hasActivites) {
+    const searchParams = validateActivitesFilters(rawSearchParams)
     const data = await getActivitesListPageData({
       mediateurId: user.mediateur.id,
       searchParams,

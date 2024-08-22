@@ -11,6 +11,7 @@ import { ActivitesRawSqlConfiguration } from '@app/web/cra/ActivitesRawSqlConfig
 import { activitesMediateurWithCrasSelect } from '@app/web/cra/activitesQueries'
 import { orderItemsByIndexedValues } from '@app/web/utils/orderItemsByIndexedValues'
 import { getDataTableSortParams } from '@app/web/data-table/getDefaultDataTableSortParams'
+import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 
 type SearchActiviteOptions = {
   mediateurId?: string
@@ -40,6 +41,60 @@ export const activitesListWhere = ({ mediateurId }: { mediateurId?: string }) =>
     ],
   }) satisfies Prisma.ActiviteMediateurWhereInput
 
+const activiteDateSelect = Prisma.raw(
+  'COALESCE(cra_individuel.date, cra_collectif.date, cra_demarche_administrative.date)',
+)
+
+const participantsCountSelect = Prisma.raw(
+  '(SELECT COUNT(*) FROM participants_ateliers_collectifs participants WHERE participants.cra_collectif_id = cra_collectif.id) + (SELECT COALESCE(SUM(participants_anonymes.total), 0) FROM participants_anonymes_cras_collectifs participants_anonymes WHERE participants_anonymes.id = cra_collectif.participants_anonymes_id)',
+)
+
+const typeSelect = Prisma.raw(
+  `CASE
+                 WHEN cra_individuel.id IS NOT NULL THEN 'individuel'
+                 WHEN cra_demarche_administrative.id IS NOT NULL THEN 'demarche'
+                 ELSE 'collectif'
+                 END`,
+)
+
+const typeOrderSelect = Prisma.raw(
+  `CASE
+                 WHEN cra_individuel.id IS NOT NULL THEN 1
+                 WHEN cra_demarche_administrative.id IS NOT NULL THEN 2
+                 ELSE 3
+                 END`,
+)
+
+const lieuLabelSelect =
+  Prisma.raw(`COALESCE(structure.nom, cra_individuel.lieu_accompagnement_domicile_commune,
+                      cra_collectif.lieu_accompagnement_autre_commune,
+                      cra_demarche_administrative.lieu_accompagnement_domicile_commune, 'À distance')`)
+
+const notDeletedCondition = Prisma.raw(`AND (
+          (cra_individuel.suppression IS NULL AND cra_individuel.id IS NOT NULL)
+              OR (cra_collectif.suppression IS NULL AND cra_collectif.id IS NOT NULL)
+              OR (cra_demarche_administrative.suppression IS NULL AND cra_demarche_administrative.id IS NOT NULL)
+          )`)
+
+export const getFiltersWhereConditions = ({
+  du,
+  au,
+  // TODO Other filters
+  // beneficiaire,
+  // commune,
+  // departement,
+  // lieu,
+  type,
+}: ActivitesFilters) => ({
+  du: Prisma.raw(
+    du ? `AND ${activiteDateSelect.text} >= '${du}'::timestamp` : '',
+  ),
+  au: Prisma.raw(
+    au ? `AND ${activiteDateSelect.text} <= '${au}'::timestamp` : '',
+  ),
+  type: Prisma.raw(type ? `AND ${typeSelect.text} = '${type}'` : ''),
+})
+
 export const searchActivite = async (options: SearchActiviteOptions) => {
   const searchParams = options.searchParams ?? {}
 
@@ -58,12 +113,6 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
     page,
     pageSize,
   })
-
-  const matchesWhere = {
-    ...activitesListWhere({
-      mediateurId: options?.mediateurId,
-    }),
-  } satisfies Prisma.ActiviteMediateurWhereInput
 
   const mediateurIdMatch = options?.mediateurId ?? '_any_'
 
@@ -86,33 +135,15 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
     orderByCondition,
   })
 
-  const activiteIdsSearch = await prismaClient.$queryRaw<{ id: string }[]>`
-      SELECT activite.id                                                                              as id,
-             COALESCE(cra_individuel.date, cra_collectif.date, cra_demarche_administrative.date)      as date,
-             (
-                 (SELECT COUNT(*)
-                  FROM participants_ateliers_collectifs participants
-                  WHERE participants.cra_collectif_id = cra_collectif.id) +
-                 (SELECT COALESCE(SUM(participants_anonymes.total), 0)
-                  FROM participants_anonymes_cras_collectifs participants_anonymes
-                  WHERE participants_anonymes.id = cra_collectif.participants_anonymes_id)
-                 )                                                                                    as participant_count,
-             CASE
-                 WHEN cra_individuel.id IS NOT NULL THEN 'individuel'
-                 WHEN cra_demarche_administrative.id IS NOT NULL THEN 'demarche'
-                 ELSE 'collectif'
-                 END                                                                                  as type,
-             CASE
-                 WHEN cra_individuel.id IS NOT NULL THEN 1
-                 WHEN cra_demarche_administrative.id IS NOT NULL THEN 2
-                 ELSE 3
-                 END                                                                                  as type_order,
-             COALESCE(structure.nom, cra_individuel.lieu_accompagnement_domicile_commune,
-                      cra_collectif.lieu_accompagnement_autre_commune,
-                      cra_demarche_administrative.lieu_accompagnement_domicile_commune, 'À distance') as lieu
+  const filterConditions = getFiltersWhereConditions(searchParams)
 
-      /* TODO a string "type": that is 'individuel' if cra_individuel.id is not null, 'collectif' if cra_collectif.id is not null, 'demarche' if cra_demarche_administrative.id is not null */
-      /* TODO a number type_order that is 1 if 'individuel', 2 if 'demarche', 3 if 'collectif' */
+  const activiteIdsSearch = await prismaClient.$queryRaw<{ id: string }[]>`
+      SELECT activite.id                as id,
+             ${activiteDateSelect}      as date,
+             ${participantsCountSelect} as participant_count,
+             ${typeSelect}              as type,
+             ${typeOrderSelect}         as type_order,
+             ${lieuLabelSelect}         as lieu
       FROM activites_mediateurs activite
                LEFT JOIN cras_individuels cra_individuel ON activite.cra_individuel_id = cra_individuel.id
                LEFT JOIN cras_collectifs cra_collectif ON activite.cra_collectif_id = cra_collectif.id
@@ -124,17 +155,11 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
               cra_demarche_administrative.lieu_activite_id
                                                                 )
       WHERE (activite.mediateur_id = ${mediateurIdMatch}::UUID OR ${mediateurIdMatch} = '_any_')
-        AND (
-          (cra_individuel.suppression IS NULL AND cra_individuel.id IS NOT NULL)
-              OR (cra_collectif.suppression IS NULL AND cra_collectif.id IS NOT NULL)
-              OR (cra_demarche_administrative.suppression IS NULL AND cra_demarche_administrative.id IS NOT NULL)
-          )
+          ${notDeletedCondition} ${filterConditions.du} ${filterConditions.au} ${filterConditions.type}
       ORDER BY ${orderByCondition},
-               date DESC
+          date DESC
       LIMIT ${take ?? 2_147_483_647} OFFSET ${skip ?? 0}
   `
-
-  console.log('IDS SEARCH RESULT', activiteIdsSearch)
 
   // TODO this will NOT work with prisma as we need to coalesce fields for ordering
   // TODO FIRST Do a raw sql query to fetch the ids of the activities
@@ -156,9 +181,23 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
     searchResultIds,
   )
 
-  const matchesCount = await prismaClient.activiteMediateur.count({
-    where: matchesWhere,
-  })
+  const countQueryResult = await prismaClient.$queryRaw<{ count: number }[]>`
+      SELECT COUNT(activite.id)::INT as count
+      FROM activites_mediateurs activite
+               LEFT JOIN cras_individuels cra_individuel ON activite.cra_individuel_id = cra_individuel.id
+               LEFT JOIN cras_collectifs cra_collectif ON activite.cra_collectif_id = cra_collectif.id
+               LEFT JOIN cras_demarches_administratives cra_demarche_administrative
+                         ON activite.cra_demarche_administrative_id = cra_demarche_administrative.id
+               LEFT JOIN structures structure ON structure.id = COALESCE(
+              cra_individuel.lieu_activite_id,
+              cra_collectif.lieu_activite_id,
+              cra_demarche_administrative.lieu_activite_id
+                                                                )
+      WHERE (activite.mediateur_id = ${mediateurIdMatch}::UUID OR ${mediateurIdMatch} = '_any_')
+          ${notDeletedCondition} ${filterConditions.du} ${filterConditions.au} ${filterConditions.type}
+  `
+
+  const matchesCount = countQueryResult.at(0)?.count ?? 0
 
   const totalPages = take ? Math.ceil(matchesCount / take) : 1
 
