@@ -7,6 +7,7 @@ import { activitesListWhere } from '@app/web/cra/searchActivite'
 import { ActivitesDataTableSearchParams } from '@app/web/cra/ActivitesDataTable'
 import MesActivitesListeLayout from '@app/web/app/coop/mes-activites/(liste)/MesActivitesListeLayout'
 import { validateActivitesFilters } from '@app/web/cra/ActivitesFilters'
+import ActivitesFilterTags from '@app/web/app/coop/mes-activites/(liste)/ActivitesFilterTags'
 
 const MesActivitesPage = async ({
   searchParams: rawSearchParams = {},
@@ -22,13 +23,14 @@ const MesActivitesPage = async ({
 
   if (hasActivites) {
     const searchParams = validateActivitesFilters(rawSearchParams)
-    const data = await getActivitesListPageData({
+    const data = getActivitesListPageData({
       mediateurId: user.mediateur.id,
       searchParams,
     })
 
     return (
       <MesActivitesListeLayout vue="liste">
+        <ActivitesFilterTags defaultFilters={searchParams} />
         <MesActivitesListePage data={data} />
       </MesActivitesListeLayout>
     )

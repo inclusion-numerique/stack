@@ -104,10 +104,6 @@ const PeriodFilter = ({
     if (start && value < start) {
       setStart(null)
       setEnd(value)
-      onChange({
-        du: dateAsIsoDay(value),
-        au: dateAsIsoDay(start),
-      })
       return
     }
 

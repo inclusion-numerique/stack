@@ -8,7 +8,7 @@ import { activitesForModalStories } from '@app/web/components/activite/ActiviteD
 
 const TemplateTableau = ({ data }: { data: ActivitesListPageData }) => (
   <MesActivitesListeLayout vue="tableau">
-    <MesActivitesTableauPage data={data} />
+    <MesActivitesTableauPage data={Promise.resolve(data)} />
   </MesActivitesListeLayout>
 )
 
@@ -25,7 +25,7 @@ const meta: Meta<typeof MesActivitesTableauPage> = {
 
 export default meta
 
-type Story = StoryObj<typeof MesActivitesTableauPage>
+type Story = StoryObj<typeof TemplateTableau>
 
 export const SansActivites: Story = {
   name: 'Sans bénéficiaires',
