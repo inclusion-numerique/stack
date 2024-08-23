@@ -54,14 +54,14 @@ export const LieuActivitePageContent = ({
           linkProps={{
             href: '/lieux-activite',
           }}
-          className="fr-mt-12v fr-mb-10v"
+          className="fr-mt-2v fr-mb-10v"
           iconId="fr-icon-arrow-left-line"
         >
           Retour aux lieux d’activité
         </Button>
         <span className="fr-flex fr-direction-row fr-align-items-center fr-flex-gap-6v fr-mb-5w">
           <IconInSquare iconId="ri-home-office-line" />
-          <h1 className="fr-page-title fr-m-0 fr-h2">Lieu d’activité</h1>
+          <h1 className="fr-page-title fr-m-0 fr-h2">{structure.nom}</h1>
         </span>
         <div className="fr-border fr-border-radius--8">
           <InformationsGeneralesEditCard {...structure} />

@@ -5,6 +5,7 @@ import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import IconInSquare from '@app/web/components/IconInSquare'
+import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import LieuxActiviteForm from './_components/LieuxActiviteForm'
 
 const AjouterLieuPage = async () => {
@@ -17,39 +18,50 @@ const AjouterLieuPage = async () => {
   return (
     <>
       <SkipLinksPortal links={defaultSkipLinks} />
-      <main
-        id={contentId}
-        className="fr-container fr-container--narrow fr-mb-30v"
-      >
-        <Button
-          priority="tertiary no outline"
-          size="small"
-          linkProps={{
-            href: '/lieux-activite',
-          }}
-          className="fr-mt-12v fr-mb-10v"
-          iconId="fr-icon-arrow-left-line"
+      <div className="fr-container fr-mt-2w">
+        <CoopBreadcrumbs
+          parents={[
+            {
+              label: `Mes lieux d'activités`,
+              linkProps: { href: '/lieux-activite/' },
+            },
+          ]}
+          currentPage={"Ajouter un lieu d'activité"}
+        />
+        <main
+          id={contentId}
+          className="fr-container fr-container--narrow fr-mb-30v"
         >
-          Retour aux lieux d’activité
-        </Button>
-        <span className="fr-flex fr-direction-row fr-align-items-center fr-flex-gap-6v fr-mb-5w">
-          <IconInSquare iconId="ri-home-office-line" />
-          <h1 className="fr-page-title fr-m-0 fr-h2">
-            Ajouter un lieu d’activité
-          </h1>
-        </span>
-        <div className="fr-border fr-border-radius--8 fr-p-4w">
-          <p className="fr-mb-6w">
-            Rechercher dans les lieux déjà référencés. Si vous ne trouvez pas
-            vos lieux, vous pouvez les créer afin d’être référencé.
-          </p>
-          <LieuxActiviteForm
-            nextHref="/lieux-activite"
-            createStructureHref="/lieux-activite/creer"
-            userId={user.id}
-          />
-        </div>
-      </main>
+          <Button
+            priority="tertiary no outline"
+            size="small"
+            linkProps={{
+              href: '/lieux-activite',
+            }}
+            className="fr-mt-2v fr-mb-10v"
+            iconId="fr-icon-arrow-left-line"
+          >
+            Retour aux lieux d’activité
+          </Button>
+          <span className="fr-flex fr-direction-row fr-align-items-center fr-flex-gap-6v fr-mb-5w">
+            <IconInSquare iconId="ri-home-office-line" />
+            <h1 className="fr-page-title fr-m-0 fr-h2">
+              Ajouter un lieu d’activité
+            </h1>
+          </span>
+          <div className="fr-border fr-border-radius--8 fr-p-4w">
+            <p className="fr-mb-6w">
+              Rechercher dans les lieux déjà référencés. Si vous ne trouvez pas
+              vos lieux, vous pouvez les créer afin d’être référencé.
+            </p>
+            <LieuxActiviteForm
+              nextHref="/lieux-activite"
+              createStructureHref="/lieux-activite/creer"
+              userId={user.id}
+            />
+          </div>
+        </main>
+      </div>
     </>
   )
 }

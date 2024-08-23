@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import Breadcrumbs from '@app/web/components/Breadcrumbs'
+import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import ProfileEditCard from './_components/ProfileEditCard'
 
 const getUserRole = (user: {
@@ -29,7 +29,7 @@ const MonProfilPage = async () => {
     <>
       <SkipLinksPortal links={defaultSkipLinks} />
       <div className="fr-container fr-mt-2w">
-        <Breadcrumbs className="fr-mb-0" currentPage="Mon profil" />
+        <CoopBreadcrumbs className="fr-mb-0" currentPage="Mon profil" />
         <main
           id={contentId}
           className="fr-container fr-container--800 fr-mb-16w"

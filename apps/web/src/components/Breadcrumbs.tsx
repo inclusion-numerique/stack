@@ -22,7 +22,7 @@ const Breadcrumbs = ({
   <Breadcrumb
     currentPageLabel={currentPage}
     homeLinkProps={{
-      href: homeLinkHref ?? '/coop',
+      href: homeLinkHref ?? '/',
     }}
     segments={parents}
     className={className}

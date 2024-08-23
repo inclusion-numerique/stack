@@ -1,10 +1,11 @@
 import { redirect } from 'next/navigation'
 import Button from '@codegouvfr/react-dsfr/Button'
+import React from 'react'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import { prismaClient } from '@app/web/prismaClient'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
-import Breadcrumbs from '@app/web/components/Breadcrumbs'
+import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { LieuActivite } from './_components/LieuActivite'
 
 const LieuActiviteListPage = async () => {
@@ -44,12 +45,11 @@ const LieuActiviteListPage = async () => {
     <>
       <SkipLinksPortal links={defaultSkipLinks} />
       <div className="fr-container fr-mt-2w">
-        <Breadcrumbs className="fr-mb-0" currentPage="Mes lieux d’activités" />
+        <CoopBreadcrumbs currentPage={"Mes lieux d'activités"} />
         <main
           id={contentId}
           className="fr-container fr-container--800 fr-mb-16w"
         >
-          {' '}
           <span className="fr-flex fr-flex-wrap fr-direction-row fr-align-items-center fr-flex-gap-4v fr-my-5w">
             <span
               className="ri-home-office-line ri-lg fr-line-height-1 fr-text-label--blue-france fr-background-alt--blue-france fr-p-2w fr-m-0 fr-border-radius--8"
