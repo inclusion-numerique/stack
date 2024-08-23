@@ -38,22 +38,19 @@ export const getModalitesAccompagnementStats = async (mediateurId: string) =>
           SELECT 
               'modalitesAccompagnement' AS category_type,
               'Accompagnements individuels' AS label,
-              i.total AS count,
-              ROUND(i.total * 100.0 / t.total)::integer AS proportion
+              i.total AS count
           FROM individuels_total i, total_accompagnements t
           UNION ALL
           SELECT 
               'modalitesAccompagnement' AS category_type,
               'Ateliers collectifs' AS label,
-              c.total AS count,
-              ROUND(c.total * 100.0 / t.total)::integer AS proportion
+              c.total AS count
           FROM collectifs_total c, total_accompagnements t
           UNION ALL
           SELECT 
               'modalitesAccompagnement' AS category_type,
               'Aide aux démarches administratives' AS label,
-              d.total AS count,
-              ROUND(d.total * 100.0 / t.total)::integer AS proportion
+              d.total AS count
           FROM demarches_total d, total_accompagnements t
       )
       SELECT * FROM accompagnement_stats;

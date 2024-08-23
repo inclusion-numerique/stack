@@ -1,8 +1,8 @@
 'use client'
 
+import { useState } from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
-import { useState } from 'react'
 import { AccompagnementBarChart } from '../_components/AccompagnementBarChart'
 import { AccompagnementLabel, QuantifiedShare } from '../quantifiedShare'
 
