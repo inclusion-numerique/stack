@@ -33,7 +33,7 @@ const DeleteMediateurActivite = ({ structureId }: { structureId: string }) => {
       createToast({
         priority: 'success',
         message:
-          'Le lLieu d’activité a bien été supprimé de votre liste de lieu d’activité !',
+          'Le lieu d’activité a bien été supprimé de votre liste de lieu d’activité !',
       })
     } catch {
       createToast({

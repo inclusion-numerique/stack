@@ -4,6 +4,7 @@ import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { prismaClient } from '@app/web/prismaClient'
+import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { LieuActivitePageContent } from './_components/LieuActivitePageContent'
 
 const LieuActiviteDetailPage = async ({
@@ -34,9 +35,20 @@ const LieuActiviteDetailPage = async ({
   return (
     <>
       <SkipLinksPortal links={defaultSkipLinks} />
-      <main id={contentId} className="fr-container fr-flex">
-        <LieuActivitePageContent structure={lieuActivite.structure} />
-      </main>
+      <div className="fr-container fr-mt-2w">
+        <CoopBreadcrumbs
+          parents={[
+            {
+              label: `Mes lieux d'activités`,
+              linkProps: { href: '/lieux-activite/' },
+            },
+          ]}
+          currentPage={lieuActivite.structure.nom}
+        />
+        <main id={contentId} className="fr-container fr-flex">
+          <LieuActivitePageContent structure={lieuActivite.structure} />
+        </main>
+      </div>
     </>
   )
 }

@@ -1,18 +1,18 @@
+import * as Sentry from '@sentry/nextjs'
 import { v4 } from 'uuid'
 import z from 'zod'
-import * as Sentry from '@sentry/nextjs'
+import { StructureCreationDataWithSiret } from '@app/web/app/structure/StructureValidation'
+import { SessionUser } from '@app/web/auth/sessionUser'
+import { searchAdresse } from '@app/web/external-apis/apiAdresse'
+import { banFeatureToAdresseBanData } from '@app/web/external-apis/ban/banFeatureToAdresseBanData'
+import { LieuxActiviteValidation } from '@app/web/inscription/LieuxActivite'
+import { RenseignerStructureEmployeuseValidation } from '@app/web/inscription/RenseignerStructureEmployeuse'
+import { StructureEmployeuseLieuActiviteValidation } from '@app/web/inscription/StructureEmployeuseLieuActivite'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
-import { RenseignerStructureEmployeuseValidation } from '@app/web/inscription/RenseignerStructureEmployeuse'
-import { SessionUser } from '@app/web/auth/sessionUser'
 import { forbiddenError } from '@app/web/server/rpc/trpcErrors'
-import { StructureEmployeuseLieuActiviteValidation } from '@app/web/inscription/StructureEmployeuseLieuActivite'
-import { LieuxActiviteValidation } from '@app/web/inscription/LieuxActivite'
-import { searchAdresse } from '@app/web/external-apis/apiAdresse'
-import { StructureCreationDataWithSiret } from '@app/web/app/structure/StructureValidation'
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 import { cartoStructureToStructure } from '@app/web/structure/cartoStructureToStructure'
-import { banFeatureToAdresseBanData } from '@app/web/external-apis/ban/banFeatureToAdresseBanData'
+import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 
 const inscriptionGuard = (
   targetUserId: string,
@@ -104,6 +104,22 @@ const onlyLieuxActiviteToCreate =
 
 const toStructureId = ({ structure }: { structure: { id: string } }) =>
   structure.id
+
+const existingActiviteFor = (userId: string) => ({
+  where: {
+    mediateur: { userId },
+    suppression: null,
+  },
+  select: {
+    id: true,
+    structure: {
+      select: {
+        id: true,
+        structureCartographieNationaleId: true,
+      },
+    },
+  },
+})
 
 export const inscriptionRouter = router({
   renseignerStructureEmployeuse: protectedProcedure
@@ -236,23 +252,9 @@ export const inscriptionRouter = router({
         inscriptionGuard(userId, sessionUser)
 
         const existingActivite =
-          await prismaClient.mediateurEnActivite.findMany({
-            where: {
-              mediateur: {
-                userId,
-              },
-              suppression: null,
-            },
-            select: {
-              id: true,
-              structure: {
-                select: {
-                  id: true,
-                  structureCartographieNationaleId: true,
-                },
-              },
-            },
-          })
+          await prismaClient.mediateurEnActivite.findMany(
+            existingActiviteFor(userId),
+          )
 
         const lieuxActiviteCartoIds = new Set<string>(
           lieuxActivite
@@ -298,7 +300,7 @@ export const inscriptionRouter = router({
           ]),
         )
 
-        const result = await prismaClient.$transaction(async (transaction) => {
+        return prismaClient.$transaction(async (transaction) => {
           const deleted = await transaction.mediateurEnActivite.updateMany({
             where: {
               id: { in: toDelete.map(({ id }) => id) },
@@ -394,8 +396,134 @@ export const inscriptionRouter = router({
 
           return { deleted, newActivites }
         })
+      },
+    ),
+  ajouterLieuxActivite: protectedProcedure
+    .input(LieuxActiviteValidation)
+    .mutation(
+      async ({
+        input: { userId, lieuxActivite },
+        ctx: { user: sessionUser },
+      }) => {
+        inscriptionGuard(userId, sessionUser)
 
-        return result
+        const existingActivite =
+          await prismaClient.mediateurEnActivite.findMany(
+            existingActiviteFor(userId),
+          )
+
+        const lieuxActiviteCartoIds = new Set<string>(
+          lieuxActivite
+            .map(
+              ({ structureCartographieNationaleId }) =>
+                structureCartographieNationaleId,
+            )
+            .filter(isDefinedAndNotNull),
+        )
+
+        const existingStructuresForCartoIds =
+          await prismaClient.structure.findMany({
+            where: {
+              structureCartographieNationaleId: {
+                in: [...lieuxActiviteCartoIds.values()],
+              },
+            },
+          })
+
+        const existingStructuresByCartoId = new Map(
+          existingStructuresForCartoIds.map((s) => [
+            s.structureCartographieNationaleId as string,
+            s,
+          ]),
+        )
+
+        return prismaClient.$transaction(async (transaction) => {
+          const existingActiviteStructuresIds = new Set(
+            existingActivite.map(toStructureId),
+          )
+
+          const newActivites = await Promise.all(
+            lieuxActivite
+              .filter(onlyLieuxActiviteToCreate(existingActiviteStructuresIds))
+              .map(async (lieu) => {
+                if (!lieu.structureCartographieNationaleId) {
+                  // This is not an exisint carto structure, we just create the lieu
+
+                  if (!lieu.id) {
+                    throw new Error('Invalid structure for lieu activité')
+                  }
+
+                  return transaction.mediateurEnActivite.create({
+                    data: {
+                      id: v4(),
+                      mediateur: {
+                        connect: {
+                          userId,
+                        },
+                      },
+                      structure: {
+                        connect: {
+                          id: lieu.id,
+                        },
+                      },
+                    },
+                  })
+                }
+
+                const structure = existingStructuresByCartoId.get(
+                  lieu.structureCartographieNationaleId,
+                )
+
+                if (structure) {
+                  // Structure already exists, we just create the lieu, linking with carto id
+                  return transaction.mediateurEnActivite.create({
+                    data: {
+                      id: v4(),
+                      mediateur: {
+                        connect: {
+                          userId,
+                        },
+                      },
+                      structure: {
+                        connect: {
+                          structureCartographieNationaleId:
+                            lieu.structureCartographieNationaleId,
+                        },
+                      },
+                    },
+                  })
+                }
+
+                // Structure does not exist, we create it with the lieu
+                const cartoStructure =
+                  await transaction.structureCartographieNationale.findFirst({
+                    where: {
+                      id: lieu.structureCartographieNationaleId,
+                    },
+                  })
+
+                if (!cartoStructure) {
+                  throw new Error('Structure carto not found')
+                }
+
+                return transaction.mediateurEnActivite.create({
+                  data: {
+                    id: v4(),
+                    mediateur: {
+                      connect: {
+                        userId,
+                      },
+                    },
+                    structure: {
+                      create: cartoStructureToStructure(cartoStructure),
+                    },
+                  },
+                })
+              }),
+          )
+
+          return { newActivites }
+        })
       },
     ),
   validerInscription: protectedProcedure

@@ -3,7 +3,7 @@
 import React, { ReactNode, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { DefaultValues, useFieldArray, useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { createToast } from '@app/ui/toast/createToast'
@@ -22,16 +22,16 @@ import { SearchStructureCartographieNationaleResultStructure } from '@app/web/st
 import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 
 const LieuxActiviteForm = ({
-  defaultValues,
+  userId,
   nextHref,
   createStructureHref,
 }: {
-  defaultValues: DefaultValues<LieuxActiviteData>
+  userId: string
   nextHref: string
   createStructureHref: string
 }) => {
   const form = useForm<LieuxActiviteData>({
-    defaultValues,
+    defaultValues: { lieuxActivite: [], userId },
     resolver: zodResolver(LieuxActiviteValidation),
   })
 
@@ -59,7 +59,7 @@ const LieuxActiviteForm = ({
     .map((field, index) => ({ field, index }))
     .reverse()
 
-  const mutation = trpc.inscription.renseignerLieuxActivite.useMutation()
+  const mutation = trpc.inscription.ajouterLieuxActivite.useMutation()
 
   const router = useRouter()
 
@@ -93,12 +93,6 @@ const LieuxActiviteForm = ({
       siret: structure.pivot,
       typologies: structure.typologie?.split(';'),
     })
-
-    createToast({
-      priority: 'success',
-      message: `Le lieu d’activité ${structure.nom} a bien été ajouté.`,
-    })
-
     setValue('addLieuActiviteCartographieNationaleId', '')
   }, [selectedCartographieNationaleId, setValue, appendStructure])
 
@@ -207,6 +201,14 @@ const LieuxActiviteForm = ({
       await mutation.mutateAsync(data)
       router.push(nextHref)
       router.refresh()
+
+      createToast({
+        priority: 'success',
+        message:
+          data.lieuxActivite.length === 1
+            ? "Le lieu d'activité a bien été ajouté"
+            : `Les ${data.lieuxActivite.length} lieux d’activité ont bien été ajoutés.`,
+      })
     } catch (mutationError) {
       if (applyZodValidationMutationErrorsToForm(mutationError, setError)) {
         return
