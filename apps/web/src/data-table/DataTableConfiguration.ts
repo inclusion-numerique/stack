@@ -63,6 +63,7 @@ export type DataTableConfiguration<
     shallow?: boolean
     prefetch?: boolean
   }
+  rowButton?: (row: DataRow) => ReactNode
   rowInMemorySearchableString?: (row: DataRow) => string
   defaultSortableInMemory?: (a: DataRow, b: DataRow) => number
 }

@@ -107,6 +107,8 @@ const DataTable = <
                       classes?.tr,
                       !!configuration.rowLink && 'fr-enlarge-link',
                       !!configuration.rowLink && styles.rowWithLink,
+                      !!configuration.rowButton && 'fr-enlarge-button',
+                      !!configuration.rowButton && styles.rowWithButton,
                     )}
                   >
                     {configuration.columns.map(
@@ -129,6 +131,11 @@ const DataTable = <
                     {!!configuration.rowLink && (
                       <td className={styles.rowLinkCell}>
                         <Link {...configuration.rowLink(row)} />
+                      </td>
+                    )}
+                    {!!configuration.rowButton && (
+                      <td className={styles.rowButtonCell}>
+                        {configuration.rowButton(row)}
                       </td>
                     )}
                   </tr>
