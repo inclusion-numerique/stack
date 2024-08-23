@@ -44,8 +44,5 @@
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.2",
     "turbo": "^2.0.9"
-  },
-  "devDependencies": {
-    "ts-node": "^10.9.2"
   }
 }
