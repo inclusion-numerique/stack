@@ -51,6 +51,7 @@ describe('merge quantified share', () => {
     ]
 
     const merged = mergeQuantifiedShare(
+      {},
       accompagnementCollectifsStats,
       accompagnementDemarchesStats,
     )

@@ -14,7 +14,7 @@ export const AccompagnementBarChart = ({
 }: {
   data: { label: string; count: number }[]
 }) => (
-  <ResponsiveContainer width="100%" height={240}>
+  <ResponsiveContainer width="100%" height={200}>
     <BarChart
       data={data}
       margin={{ top: 5, right: 30, left: -20, bottom: -5 }}

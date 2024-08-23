@@ -22,8 +22,8 @@ export type MaterielLabel =
   | 'Ordinateur'
   | 'Téléphone'
   | 'Tablette'
-  | 'Autre'
-  | 'Sans matériel'
+  | 'Autre matériel'
+  | 'Pas de matériel'
 
 export const toTotalCount = (total: number, { count }: { count: number }) =>
   total + count
@@ -106,6 +106,7 @@ const withProportions = <T extends string>(
   )
 
 export const mergeQuantifiedShare = <T extends string>(
+  defaultValue: Record<T, QuantifiedShare[]>,
   ...quantifiedShares: QuantifiedShareToProcess<T>[][]
 ) =>
   withProportions(
@@ -119,6 +120,6 @@ export const mergeQuantifiedShare = <T extends string>(
           isNewCategoryEntryFor(quantifiedShare)(quantifiedShareToProcess)
             ? newCategoryEntryFor(quantifiedShare)(quantifiedShareToProcess)
             : appendCategoryEntry(quantifiedShare)(quantifiedShareToProcess),
-        {} as Record<T, QuantifiedShare[]>,
+        defaultValue,
       ),
   )

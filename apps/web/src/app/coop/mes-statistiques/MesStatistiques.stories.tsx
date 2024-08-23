@@ -18,11 +18,11 @@ const materielsAccompagnements: QuantifiedShare<MaterielLabel>[] = [
   { label: 'Ordinateur', count: 56, proportion: 16 },
   { label: 'Téléphone', count: 84, proportion: 24 },
   { label: 'Tablette', count: 21, proportion: 6 },
-  { label: 'Autre', count: 115, proportion: 33 },
-  { label: 'Sans matériel', count: 73, proportion: 21 },
+  { label: 'Autre matériel', count: 115, proportion: 33 },
+  { label: 'Pas de matériel', count: 73, proportion: 21 },
 ]
 
-const nombreAccompagnements = [
+const nombreAccompagnementsParMois = [
   { label: 'Avril', count: 24, proportion: 0 },
   { label: 'Mai', count: 93, proportion: 0 },
   { label: 'Juin', count: 31, proportion: 0 },
@@ -34,6 +34,34 @@ const nombreAccompagnements = [
   { label: 'Dec.', count: 80, proportion: 0 },
 ]
 
+const nombreAccompagnementsParJour = [
+  { label: '01/07', count: 24, proportion: 0 },
+  { label: '02/07', count: 93, proportion: 0 },
+  { label: '03/07', count: 31, proportion: 0 },
+  { label: '04/07', count: 75, proportion: 0 },
+  { label: '05/07', count: 71, proportion: 0 },
+  { label: '06/07', count: 71, proportion: 0 },
+  { label: '07/07', count: 60, proportion: 0 },
+  { label: '08/07', count: 60, proportion: 0 },
+  { label: '09/07', count: 82, proportion: 0 },
+  { label: '10/07', count: 90, proportion: 0 },
+  { label: '11/07', count: 80, proportion: 0 },
+  { label: '12/07', count: 24, proportion: 0 },
+  { label: '13/07', count: 93, proportion: 0 },
+  { label: '14/07', count: 31, proportion: 0 },
+  { label: '15/07', count: 75, proportion: 0 },
+  { label: '16/07', count: 71, proportion: 0 },
+  { label: '17/07', count: 60, proportion: 0 },
+  { label: '18/07', count: 82, proportion: 0 },
+  { label: '19/07', count: 90, proportion: 0 },
+  { label: '20/07', count: 80, proportion: 0 },
+  { label: '21/07', count: 24, proportion: 0 },
+  { label: '22/07', count: 93, proportion: 0 },
+  { label: '23/07', count: 31, proportion: 0 },
+  { label: '24/07', count: 75, proportion: 0 },
+  { label: '25/07', count: 82, proportion: 0 },
+]
+
 const accompagnementBeneficiaires = {
   accompagnements: 329,
   beneficiaires: 477,
@@ -42,16 +70,16 @@ const accompagnementBeneficiaires = {
 
 const canauxAccompagnements = [
   { label: 'Lieu d’activité', count: 22, proportion: 18 },
+  { label: 'À domicile', count: 41, proportion: 35 },
   { label: 'À distance', count: 16, proportion: 13 },
   { label: 'Autre lieu', count: 54, proportion: 46 },
-  { label: 'À domicile', count: 41, proportion: 35 },
 ]
 
 const dureesAccompagnements = [
-  { label: '30 min', count: 22, proportion: 18 },
-  { label: '1h', count: 16, proportion: 13 },
-  { label: '1h30', count: 54, proportion: 46 },
-  { label: '2h', count: 41, proportion: 35 },
+  { label: '30', count: 22, proportion: 18 },
+  { label: '60', count: 16, proportion: 13 },
+  { label: '90', count: 54, proportion: 46 },
+  { label: '120', count: 41, proportion: 35 },
 ]
 
 const lieuxAccompagnements = [
@@ -60,6 +88,7 @@ const lieuxAccompagnements = [
   { label: 'Open Factory', count: 288, proportion: 12 },
   { label: 'Médiathèque de Quimper', count: 176, proportion: 8 },
   { label: 'La station', count: 152, proportion: 7 },
+  { label: 'CCAS de Bretagne', count: 82, proportion: 4 },
 ]
 
 const thematiquesAccompagnements = [
@@ -77,6 +106,19 @@ const thematiquesAccompagnements = [
   { label: 'Scolarité et numérique', count: 8, proportion: 1 },
   { label: 'Créer avec le numérique', count: 5, proportion: 1 },
   { label: 'Culture numérique', count: 2, proportion: 1 },
+]
+
+const thematiquesDemarchesAdministratives = [
+  { label: 'Papiers - Élections Citoyenneté', count: 152, proportion: 7 },
+  { label: 'Famille - Scolarité', count: 116, proportion: 5 },
+  { label: 'Social - Santé', count: 23, proportion: 1 },
+  { label: 'Travail - Formation', count: 18, proportion: 1 },
+  { label: 'Logement', count: 12, proportion: 1 },
+  { label: 'Transports - Mobilité', count: 8, proportion: 1 },
+  { label: 'Argent - Impôts', count: 2, proportion: 1 },
+  { label: 'Justice', count: 1, proportion: 1 },
+  { label: 'Étrangers - Europe', count: 1, proportion: 1 },
+  { label: 'Loisirs - Sports Culture', count: 1, proportion: 1 },
 ]
 
 const genresBeneficiaires = [
@@ -109,6 +151,7 @@ const communesBeneficiaires = [
   { label: 'Sain Bel', count: 288, proportion: 12 },
   { label: 'Jucieux', count: 176, proportion: 8 },
   { label: 'Brullioles', count: 152, proportion: 7 },
+  { label: 'Brussieux', count: 77, proportion: 3 },
 ]
 
 export default {
@@ -121,17 +164,20 @@ type Story = StoryObj<typeof MesStatistiques>
 export const Statistiques: Story = {
   args: {
     modalitesAccompagnement,
-    nombreAccompagnements,
+    nombreAccompagnementsParMois,
+    nombreAccompagnementsParJour,
     accompagnementBeneficiaires,
     materielsAccompagnements,
     canauxAccompagnements,
     dureesAccompagnements,
     lieuxAccompagnements,
     thematiquesAccompagnements,
+    thematiquesDemarchesAdministratives,
     genresBeneficiaires,
     statusBeneficiaires,
     tranchesAgeBeneficiaires,
     communesBeneficiaires,
+    codeInsee: '75101',
   },
 }
 Statistiques.storyName = 'Statistiques'

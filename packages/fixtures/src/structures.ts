@@ -7,6 +7,7 @@ export const structureEmployeuse = givenStructure({
   nom: 'Exemple de structure employeuse',
   adresse: '1 rue du vide',
   codePostal: '75001',
+  codeInsee: '75101',
   commune: 'Paris 1er',
 }) satisfies Prisma.StructureCreateInput
 

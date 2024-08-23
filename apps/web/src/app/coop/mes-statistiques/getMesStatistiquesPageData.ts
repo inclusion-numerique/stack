@@ -1,17 +1,24 @@
-import { getAccompagnementsCountByMonth } from './_queries/getAccompagnementsCountByMonth'
 import {
+  getAccompagnementsCountByDay,
+  getAccompagnementsCountByMonth,
+} from './_queries/getAccompagnementsCountByPeriod'
+import {
+  EMPTY_ACCOMPAGNEMENT_DATA,
   getAccompagnementCollectifsStats,
   getAccompagnementDemarchesStats,
   getAccompagnementIndividuelsStats,
 } from './_queries/getAccompagnementStats'
 import { getAteliersCollectifsParticipants } from './_queries/getAteliersCollectifsParticipants'
-import { getBeneficiaireStats } from './_queries/getBeneficiaireStats'
+import {
+  EMPTY_BENEFICIAIRE_DATA,
+  getBeneficiairesAnonymesStats,
+  getBeneficiaireStats,
+} from './_queries/getBeneficiaireStats'
 import {
   getAccompagnementBeneficiaires,
   getModalitesAccompagnementStats,
   toModalitesWithParticipantsCount,
 } from './_queries/getModalitesAccompagnementStats'
-import { getBeneficiairesAnonymesStats } from './_queries/getBeneficiairesAnonymesStats'
 import { mergeQuantifiedShare } from './quantifiedShare'
 
 export const getMesStatistiquesPageData = async (mediateurId: string) => {
@@ -27,11 +34,14 @@ export const getMesStatistiquesPageData = async (mediateurId: string) => {
     await getAteliersCollectifsParticipants(mediateurId)
 
   return {
-    nombreAccompagnements: await getAccompagnementsCountByMonth(mediateurId),
+    nombreAccompagnementsParJour:
+      await getAccompagnementsCountByDay(mediateurId),
+    nombreAccompagnementsParMois:
+      await getAccompagnementsCountByMonth(mediateurId),
     accompagnementBeneficiaires: getAccompagnementBeneficiaires(
       modalitesAccompagnement,
-      mergeQuantifiedShare(beneficiaireStats),
-      mergeQuantifiedShare(beneficiairesAnonymesStats),
+      mergeQuantifiedShare(EMPTY_BENEFICIAIRE_DATA, beneficiaireStats),
+      mergeQuantifiedShare(EMPTY_BENEFICIAIRE_DATA, beneficiairesAnonymesStats),
     ),
     modalitesAccompagnement: modalitesAccompagnement.map(
       toModalitesWithParticipantsCount(
@@ -39,8 +49,13 @@ export const getMesStatistiquesPageData = async (mediateurId: string) => {
         beneficiairesAnonymesStats,
       ),
     ),
-    ...mergeQuantifiedShare(beneficiaireStats, beneficiairesAnonymesStats),
     ...mergeQuantifiedShare(
+      EMPTY_BENEFICIAIRE_DATA,
+      beneficiaireStats,
+      beneficiairesAnonymesStats,
+    ),
+    ...mergeQuantifiedShare(
+      EMPTY_ACCOMPAGNEMENT_DATA,
       await getAccompagnementIndividuelsStats(mediateurId),
       await getAccompagnementDemarchesStats(mediateurId),
       await getAccompagnementCollectifsStats(mediateurId),

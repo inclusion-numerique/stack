@@ -19,6 +19,7 @@ const InscriptionLayout = async ({ children }: PropsWithChildren) => {
 
   return (
     <div className="fr-flex fr-direction-column" style={{ minHeight: '100%' }}>
+      <div id="skip-links" />
       <Header user={user} />
       {user.role === 'Admin' ? (
         // Admins cannot access the inscription process

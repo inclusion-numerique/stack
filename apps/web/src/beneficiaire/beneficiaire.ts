@@ -20,13 +20,13 @@ export const genreValues = Object.keys(genreLabels) as [Genre, ...Genre[]]
 export const trancheAgeLabels: {
   [key in TrancheAge]: string
 } = {
-  Mineur: 'Mineur(e)',
-  DixHuitVingtQuatre: '18 - 24 ans',
-  VingtCinqTrenteNeuf: '25 - 39 ans',
-  QuaranteCinquanteNeuf: '40 - 59 ans',
-  SoixanteSoixanteNeuf: '60 - 69 ans',
-  SoixanteDixPlus: '70 ans ou plus',
-  NonCommunique: 'Non communiqué',
+  SoixanteDixPlus: '70 ans et plus',
+  SoixanteSoixanteNeuf: '60 - 69 ans',
+  QuaranteCinquanteNeuf: '40 - 59 ans',
+  VingtCinqTrenteNeuf: '25 - 39 ans',
+  DixHuitVingtQuatre: '18 - 24 ans',
+  Mineur: 'Mineur',
+  NonCommunique: 'Non communiqué',
 }
 
 export const trancheAgeOptions = labelsToOptions(trancheAgeLabels)
@@ -39,11 +39,11 @@ export const trancheAgeValues = Object.keys(trancheAgeLabels) as [
 export const statutSocialLabels: {
   [key in StatutSocial]: string
 } = {
-  Scolarise: 'Scolarisé(e)',
-  SansEmploi: 'Sans emploi',
-  EnEmploi: 'En emploi',
-  Retraite: 'Retraité(e)',
-  NonCommunique: 'Non communiqué ou hétérogène',
+  Retraite: 'Retraité',
+  SansEmploi: 'Sans emploi',
+  EnEmploi: 'En emploi',
+  Scolarise: 'Scolarisé',
+  NonCommunique: 'Non communiqué ou hétérogène',
 }
 
 export const statutSocialOptions = labelsToOptions(statutSocialLabels)

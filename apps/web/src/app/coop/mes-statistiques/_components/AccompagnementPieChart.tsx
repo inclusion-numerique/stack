@@ -19,6 +19,7 @@ export const AccompagnementPieChart = ({
     <PieChart>
       <Pie
         dataKey="count"
+        nameKey="label"
         isAnimationActive
         data={data}
         cx="50%"

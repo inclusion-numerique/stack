@@ -4,7 +4,7 @@ import {
   QuantifiedShare,
   toTotalCount,
 } from '../quantifiedShare'
-import { BeneficiaireQuantifiedShare } from './getBeneficiairesAnonymesStats'
+import { BeneficiaireQuantifiedShare } from './getBeneficiaireStats'
 
 export const getModalitesAccompagnementStats = async (mediateurId: string) =>
   prismaClient.$queryRaw<

@@ -1,11 +1,19 @@
 import { prismaClient } from '@app/web/prismaClient'
-import { QuantifiedShareToProcess } from '../quantifiedShare'
+import {
+  lieuAccompagnementLabels,
+  lieuAtelierLabels,
+  materielLabels,
+  thematiqueAccompagnementLabels,
+  thematiqueDemarcheAdministrativeLabels,
+} from '@app/web/cra/cra'
+import { QuantifiedShare, QuantifiedShareToProcess } from '../quantifiedShare'
 
 const accompagnementCategories = [
   'canauxAccompagnements',
   'dureesAccompagnements',
   'lieuxAccompagnements',
   'thematiquesAccompagnements',
+  'thematiquesDemarchesAdministratives',
   'materielsAccompagnements',
 ] as const
 
@@ -22,7 +30,7 @@ export const getAccompagnementCollectifsStats = async (mediateurId: string) =>
                   'canauxAccompagnements' AS category_type,
                   CASE
                       WHEN "lieuAtelier" = 'lieu_activite' THEN 'Lieu d’activité'
-                      WHEN "lieuAtelier" = 'autre' THEN 'Autre'
+                      WHEN "lieuAtelier" = 'autre' THEN 'Autre lieu'
                       ELSE 'Non communiqué'
                       END AS category,
                   COUNT(*)::integer AS count
@@ -31,13 +39,7 @@ export const getAccompagnementCollectifsStats = async (mediateurId: string) =>
               GROUP BY category
               UNION ALL
               SELECT
-                  'dureesAccompagnements' AS category_type,
-                  CASE
-                      WHEN "duree" >= 60 THEN
-                          CONCAT(FLOOR("duree" / 60), 'h', LPAD(("duree" % 60)::text, 2, '0'))
-                      ELSE
-                          CONCAT("duree", ' min')
-                      END AS category,
+                  'dureesAccompagnements' AS category_type, "duree"::text AS category,
                   COUNT(*)::integer AS count
               FROM "coop-mediation-numerique".public.cras_collectifs
               WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
@@ -108,8 +110,8 @@ export const getAccompagnementDemarchesStats = async (mediateurId: string) =>
                    'canauxAccompagnements' AS category_type,
                    CASE
                        WHEN "lieuAccompagnement" = 'lieu_activite' THEN 'Lieu d’activité'
-                       WHEN "lieuAccompagnement"  = 'domicile' THEN 'Domicile'
-                       WHEN "lieuAccompagnement"  = 'a_distance' THEN 'À distance'
+                       WHEN "lieuAccompagnement" = 'domicile' THEN 'À domicile'
+                       WHEN "lieuAccompagnement" = 'a_distance' THEN 'À distance'
                        ELSE 'Non communiqué'
                        END AS category,
                    COUNT(*)::integer AS count
@@ -118,13 +120,7 @@ export const getAccompagnementDemarchesStats = async (mediateurId: string) =>
                GROUP BY category
                UNION ALL
                SELECT
-                   'dureesAccompagnements' AS category_type,
-                   CASE
-                       WHEN "duree" >= 60 THEN
-                           CONCAT(FLOOR("duree" / 60), 'h', LPAD(("duree" % 60)::text, 2, '0'))
-                       ELSE
-                           CONCAT("duree", ' min')
-                       END AS category,
+                   'dureesAccompagnements' AS category_type, "duree"::text AS category,
                    COUNT(*)::integer AS count
                FROM "coop-mediation-numerique".public.cras_demarches_administratives
                WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
@@ -140,18 +136,18 @@ export const getAccompagnementDemarchesStats = async (mediateurId: string) =>
                GROUP BY category
                UNION ALL
                SELECT
-                   'thematiquesAccompagnements' AS category_type,
+                   'thematiquesDemarchesAdministratives' AS category_type,
                    CASE
-                       WHEN thematique = 'papiers_elections_citoyennete' THEN 'Papiers élections et citoyenneté'
-                       WHEN thematique = 'famille_scolarite' THEN 'Famille et scolarité'
-                       WHEN thematique = 'social_sante' THEN 'Social et santé'
-                       WHEN thematique = 'travail_formation' THEN 'Travail et formation'
+                       WHEN thematique = 'papiers_elections_citoyennete' THEN 'Papiers - Élections Citoyenneté'
+                       WHEN thematique = 'famille_scolarite' THEN 'Famille - Scolarité'
+                       WHEN thematique = 'social_sante' THEN 'Social - Santé'
+                       WHEN thematique = 'travail_formation' THEN 'Travail - Formation'
                        WHEN thematique = 'logement' THEN 'Logement'
-                       WHEN thematique = 'transports_mobilite' THEN 'Transports et mobilité'
-                       WHEN thematique = 'argent_impots' THEN 'Agent impôts'
+                       WHEN thematique = 'transports_mobilite' THEN 'Transports - Mobilité'
+                       WHEN thematique = 'argent_impots' THEN 'Argent - Impôts'
                        WHEN thematique = 'justice' THEN 'Justice'
-                       WHEN thematique = 'etrangers_europe' THEN 'Étrangers et europe'
-                       WHEN thematique = 'loisirs_sports_culture' THEN 'Loisirs, sports et culture'
+                       WHEN thematique = 'etrangers_europe' THEN 'Étrangers - Europe'
+                       WHEN thematique = 'loisirs_sports_culture' THEN 'Loisirs - Sports Culture'
                        ELSE 'Non communiqué'
                        END AS category,
                    COUNT(*)::integer AS count
@@ -175,7 +171,7 @@ export const getAccompagnementIndividuelsStats = async (mediateurId: string) =>
                    'canauxAccompagnements' AS category_type,
                    CASE
                        WHEN "lieuAccompagnement" = 'lieu_activite' THEN 'Lieu d’activité'
-                       WHEN "lieuAccompagnement" = 'domicile' THEN 'Domicile'
+                       WHEN "lieuAccompagnement" = 'domicile' THEN 'À domicile'
                        WHEN "lieuAccompagnement" = 'a_distance' THEN 'À distance'
                        ELSE 'Non communiqué'
                        END AS category,
@@ -185,13 +181,7 @@ export const getAccompagnementIndividuelsStats = async (mediateurId: string) =>
                GROUP BY category
                UNION ALL
                SELECT
-                   'dureesAccompagnements' AS category_type,
-                   CASE
-                       WHEN "duree" >= 60 THEN
-                           CONCAT(FLOOR("duree" / 60), 'h', LPAD(("duree" % 60)::text, 2, '0'))
-                       ELSE
-                           CONCAT("duree", ' min')
-                       END AS category,
+                   'dureesAccompagnements' AS category_type, "duree"::text AS category,
                    COUNT(*)::integer AS count
                FROM "coop-mediation-numerique".public.cras_individuels
                WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
@@ -237,8 +227,8 @@ export const getAccompagnementIndividuelsStats = async (mediateurId: string) =>
                        WHEN mat = 'ordinateur' THEN 'Ordinateur'
                        WHEN mat = 'telephone' THEN 'Téléphone'
                        WHEN mat = 'tablette' THEN 'Tablette'
-                       WHEN mat = 'autre' THEN 'Autre'
-                       WHEN mat = 'aucun' THEN 'Aucun'
+                       WHEN mat = 'autre' THEN 'Autre matériel'
+                       WHEN mat = 'aucun' THEN 'Pas de matériel'
                        ELSE 'Non communiqué'
                        END AS category,
                    COUNT(*)::integer AS count
@@ -253,3 +243,28 @@ export const getAccompagnementIndividuelsStats = async (mediateurId: string) =>
           count
       FROM categorized_data;
   `
+
+export const EMPTY_ACCOMPAGNEMENT_DATA: Record<
+  AccompagnementCategory,
+  QuantifiedShare[]
+> = {
+  thematiquesAccompagnements: Object.values(thematiqueAccompagnementLabels).map(
+    (label) => ({ label, count: 0, proportion: 0 }),
+  ),
+  thematiquesDemarchesAdministratives: Object.values(
+    thematiqueDemarcheAdministrativeLabels,
+  ).map((label) => ({ label, count: 0, proportion: 0 })),
+  materielsAccompagnements: Object.values(materielLabels).map((label) => ({
+    label,
+    count: 0,
+    proportion: 0,
+  })),
+  canauxAccompagnements: [
+    ...new Set([
+      ...Object.values(lieuAccompagnementLabels),
+      ...Object.values(lieuAtelierLabels),
+    ]),
+  ].map((label) => ({ label, count: 0, proportion: 0 })),
+  dureesAccompagnements: [],
+  lieuxAccompagnements: [],
+}
