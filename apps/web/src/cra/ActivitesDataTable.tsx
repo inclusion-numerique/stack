@@ -7,10 +7,10 @@ import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { accompagnementTypeLabels } from '@app/web/cra/cra'
 import ActiviteRowShowDetailsButton from '@app/web/cra/ActiviteRowShowDetailsButton'
-import styles from '@app/web/app/coop/mes-activites/(liste)/MesActivitesListePage.module.css'
 import { Activite } from '@app/web/cra/activitesQueries'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
+import styles from '@app/web/app/coop/mes-activites/(liste)/MesActivitesListePage.module.css'
 
 export type ActivitesDataTableConfiguration = DataTableConfiguration<
   Activite,
@@ -21,6 +21,7 @@ export type ActivitesDataTableConfiguration = DataTableConfiguration<
 export const ActivitesDataTable = {
   csvFilename: () => `coop-${dateAsIsoDay(new Date())}-activites`,
   rowKey: ({ cra: { id } }) => id,
+  rowButton: (activite) => <ActiviteRowShowDetailsButton activite={activite} />,
   columns: [
     {
       name: 'date',
@@ -39,6 +40,7 @@ export const ActivitesDataTable = {
       csvHeaders: ['Type'],
       csvValues: ({ type }) => [accompagnementTypeLabels[type]],
       cell: ({ type }) => accompagnementTypeLabels[type],
+      cellClassName: styles.typeCell,
       sortable: true,
     },
     {
@@ -54,6 +56,7 @@ export const ActivitesDataTable = {
         activite.type === 'collectif'
           ? `${activite.cra.participants.length + activite.cra.participantsAnonymes.total} participants`
           : getBeneficiaireDisplayName(activite.cra.beneficiaire),
+      cellClassName: styles.beneficiaireCell,
     },
     {
       name: 'lieu',
@@ -72,14 +75,7 @@ export const ActivitesDataTable = {
               : activite.cra.lieuAccompagnementDomicileCommune
                 ? `${activite.cra.lieuAccompagnementDomicileCommune} · ${activite.cra.lieuAccompagnementDomicileCodePostal}`
                 : '-',
-    },
-    {
-      name: 'actions',
-      header: '',
-      csvHeaders: [],
-      csvValues: () => [],
-      cellClassName: styles.activiteRowMoreButtonCell,
-      cell: (activite) => <ActiviteRowShowDetailsButton activite={activite} />,
+      cellClassName: styles.lieuCell,
     },
   ],
 } satisfies ActivitesDataTableConfiguration

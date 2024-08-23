@@ -70,20 +70,30 @@ const lieuLabelSelect =
                       cra_collectif.lieu_accompagnement_autre_commune,
                       cra_demarche_administrative.lieu_accompagnement_domicile_commune, 'À distance')`)
 
+const lieuActiviteIdSelect = Prisma.raw(`COALESCE(
+              cra_individuel.lieu_activite_id,
+              cra_collectif.lieu_activite_id,
+              cra_demarche_administrative.lieu_activite_id) `)
+
 const notDeletedCondition = Prisma.raw(`AND (
           (cra_individuel.suppression IS NULL AND cra_individuel.id IS NOT NULL)
               OR (cra_collectif.suppression IS NULL AND cra_collectif.id IS NOT NULL)
               OR (cra_demarche_administrative.suppression IS NULL AND cra_demarche_administrative.id IS NOT NULL)
           )`)
 
+const communeCodeInseeSelect = Prisma.raw(`COALESCE(
+                structure.code_insee, 
+                cra_individuel.lieu_accompagnement_domicile_code_insee,
+                cra_collectif.lieu_accompagnement_autre_code_insee,
+                cra_demarche_administrative.lieu_accompagnement_domicile_code_insee)`)
+
 export const getFiltersWhereConditions = ({
   du,
   au,
-  // TODO Other filters
-  // beneficiaire,
-  // commune,
-  // departement,
-  // lieu,
+  beneficiaire,
+  commune,
+  departement,
+  lieu,
   type,
 }: ActivitesFilters) => ({
   du: Prisma.raw(
@@ -93,6 +103,33 @@ export const getFiltersWhereConditions = ({
     au ? `AND ${activiteDateSelect.text} <= '${au}'::timestamp` : '',
   ),
   type: Prisma.raw(type ? `AND ${typeSelect.text} = '${type}'` : ''),
+  lieu: Prisma.raw(
+    lieu ? `AND ${lieuActiviteIdSelect.text} = '${lieu}'::UUID` : '',
+  ),
+  commune: Prisma.raw(
+    commune ? `AND ${communeCodeInseeSelect.text} = '${commune}'` : '',
+  ),
+  departement: Prisma.raw(
+    departement
+      ? `AND ${communeCodeInseeSelect.text} LIKE '${departement}%'`
+      : '',
+  ),
+  beneficiaire: Prisma.raw(
+    beneficiaire
+      ? `AND (
+       cra_individuel.beneficiaire_id = '${beneficiaire}'::UUID
+       OR (
+        EXISTS (
+          SELECT 1
+          FROM participants_ateliers_collectifs participants
+          WHERE participants.beneficiaire_id = '${beneficiaire}'::UUID
+            AND participants.cra_collectif_id = cra_collectif.id
+        )
+       )
+       OR cra_demarche_administrative.beneficiaire_id = '${beneficiaire}'::UUID
+    )`
+      : '',
+  ),
 })
 
 export const searchActivite = async (options: SearchActiviteOptions) => {
@@ -144,18 +181,16 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
              ${typeSelect}              as type,
              ${typeOrderSelect}         as type_order,
              ${lieuLabelSelect}         as lieu
+
       FROM activites_mediateurs activite
                LEFT JOIN cras_individuels cra_individuel ON activite.cra_individuel_id = cra_individuel.id
                LEFT JOIN cras_collectifs cra_collectif ON activite.cra_collectif_id = cra_collectif.id
                LEFT JOIN cras_demarches_administratives cra_demarche_administrative
                          ON activite.cra_demarche_administrative_id = cra_demarche_administrative.id
-               LEFT JOIN structures structure ON structure.id = COALESCE(
-              cra_individuel.lieu_activite_id,
-              cra_collectif.lieu_activite_id,
-              cra_demarche_administrative.lieu_activite_id
-                                                                )
+               LEFT JOIN structures structure ON structure.id = ${lieuActiviteIdSelect}
+
       WHERE (activite.mediateur_id = ${mediateurIdMatch}::UUID OR ${mediateurIdMatch} = '_any_')
-          ${notDeletedCondition} ${filterConditions.du} ${filterConditions.au} ${filterConditions.type}
+          ${notDeletedCondition} ${filterConditions.du} ${filterConditions.au} ${filterConditions.type} ${filterConditions.lieu} ${filterConditions.commune} ${filterConditions.departement} ${filterConditions.beneficiaire}
       ORDER BY ${orderByCondition},
           date DESC
       LIMIT ${take ?? 2_147_483_647} OFFSET ${skip ?? 0}
@@ -194,7 +229,7 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
               cra_demarche_administrative.lieu_activite_id
                                                                 )
       WHERE (activite.mediateur_id = ${mediateurIdMatch}::UUID OR ${mediateurIdMatch} = '_any_')
-          ${notDeletedCondition} ${filterConditions.du} ${filterConditions.au} ${filterConditions.type}
+          ${notDeletedCondition} ${filterConditions.du} ${filterConditions.au} ${filterConditions.type} ${filterConditions.lieu} ${filterConditions.commune} ${filterConditions.departement} ${filterConditions.beneficiaire}
   `
 
   const matchesCount = countQueryResult.at(0)?.count ?? 0
