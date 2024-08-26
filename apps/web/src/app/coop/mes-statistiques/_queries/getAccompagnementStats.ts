@@ -34,22 +34,22 @@ export const getAccompagnementCollectifsStats = async (mediateurId: string) =>
                       ELSE 'Non communiqué'
                       END AS category,
                   COUNT(*)::integer AS count
-              FROM "coop-mediation-numerique".public.cras_collectifs
+              FROM cras_collectifs
               WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
               GROUP BY category
               UNION ALL
               SELECT
                   'dureesAccompagnements' AS category_type, "duree"::text AS category,
                   COUNT(*)::integer AS count
-              FROM "coop-mediation-numerique".public.cras_collectifs
+              FROM cras_collectifs
               WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
               GROUP BY category
               UNION ALL
               SELECT 'lieuxAccompagnements' AS category_type,
                      COALESCE("structures".nom, 'Non communiqué') AS category,
                      COUNT(*)::integer AS count
-              FROM "coop-mediation-numerique".public.cras_collectifs
-                       LEFT JOIN "coop-mediation-numerique".public.structures structures
+              FROM cras_collectifs
+                       LEFT JOIN structures structures
                                  ON lieu_activite_id = structures.id
               WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND cras_collectifs.suppression IS NULL
               GROUP BY category
@@ -74,7 +74,7 @@ export const getAccompagnementCollectifsStats = async (mediateurId: string) =>
                       ELSE 'Non communiqué'
                       END AS category,
                   COUNT(*)::integer AS count
-              FROM "coop-mediation-numerique".public.cras_collectifs,
+              FROM cras_collectifs,
                    UNNEST(thematiques_accompagnement) AS thematique
               WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
               GROUP BY thematique
@@ -90,7 +90,7 @@ export const getAccompagnementCollectifsStats = async (mediateurId: string) =>
                       ELSE 'Non communiqué'
                       END AS category,
                   COUNT(*)::integer AS count
-              FROM "coop-mediation-numerique".public.cras_collectifs,
+              FROM cras_collectifs,
                    UNNEST(materiel) AS mat
               WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
               GROUP BY mat
@@ -115,22 +115,22 @@ export const getAccompagnementDemarchesStats = async (mediateurId: string) =>
                        ELSE 'Non communiqué'
                        END AS category,
                    COUNT(*)::integer AS count
-               FROM "coop-mediation-numerique".public.cras_demarches_administratives
+               FROM cras_demarches_administratives
                WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
                GROUP BY category
                UNION ALL
                SELECT
                    'dureesAccompagnements' AS category_type, "duree"::text AS category,
                    COUNT(*)::integer AS count
-               FROM "coop-mediation-numerique".public.cras_demarches_administratives
+               FROM cras_demarches_administratives
                WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
                GROUP BY category
                UNION ALL
                SELECT 'lieuxAccompagnements' AS category_type,
                    COALESCE("structures".nom, 'Non communiqué') AS category,
                    COUNT(*)::integer AS count
-               FROM "coop-mediation-numerique".public.cras_demarches_administratives
-                   LEFT JOIN "coop-mediation-numerique".public.structures structures
+               FROM cras_demarches_administratives
+                   LEFT JOIN structures structures
                        ON lieu_activite_id = structures.id
                WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND cras_demarches_administratives.suppression IS NULL
                GROUP BY category
@@ -151,7 +151,7 @@ export const getAccompagnementDemarchesStats = async (mediateurId: string) =>
                        ELSE 'Non communiqué'
                        END AS category,
                    COUNT(*)::integer AS count
-               FROM "coop-mediation-numerique".public.cras_demarches_administratives,
+               FROM cras_demarches_administratives,
                     UNNEST(thematiques_accompagnement) AS thematique
                WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
                GROUP BY thematique
@@ -176,22 +176,22 @@ export const getAccompagnementIndividuelsStats = async (mediateurId: string) =>
                        ELSE 'Non communiqué'
                        END AS category,
                    COUNT(*)::integer AS count
-               FROM "coop-mediation-numerique".public.cras_individuels
+               FROM cras_individuels
                WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
                GROUP BY category
                UNION ALL
                SELECT
                    'dureesAccompagnements' AS category_type, "duree"::text AS category,
                    COUNT(*)::integer AS count
-               FROM "coop-mediation-numerique".public.cras_individuels
+               FROM cras_individuels
                WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
                GROUP BY category
                UNION ALL
                SELECT 'lieuxAccompagnements' AS category_type,
                    COALESCE("structures".nom, 'Non communiqué') AS category,
                    COUNT(*)::integer AS count
-               FROM "coop-mediation-numerique".public.cras_individuels
-                   LEFT JOIN "coop-mediation-numerique".public.structures structures
+               FROM cras_individuels
+                   LEFT JOIN structures structures
                        ON lieu_activite_id = structures.id
                WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND cras_individuels.suppression IS NULL
                GROUP BY category
@@ -216,7 +216,7 @@ export const getAccompagnementIndividuelsStats = async (mediateurId: string) =>
                        ELSE 'Non communiqué'
                        END AS category,
                    COUNT(*)::integer AS count
-               FROM "coop-mediation-numerique".public.cras_individuels,
+               FROM cras_individuels,
                     UNNEST(thematiques_accompagnement) AS thematique
                WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
                GROUP BY thematique
@@ -232,7 +232,7 @@ export const getAccompagnementIndividuelsStats = async (mediateurId: string) =>
                        ELSE 'Non communiqué'
                        END AS category,
                    COUNT(*)::integer AS count
-               FROM "coop-mediation-numerique".public.cras_individuels,
+               FROM cras_individuels,
                     UNNEST(materiel) AS mat
                WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
                GROUP BY mat

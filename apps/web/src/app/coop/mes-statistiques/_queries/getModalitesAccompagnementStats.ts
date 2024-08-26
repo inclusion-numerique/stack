@@ -15,17 +15,17 @@ export const getModalitesAccompagnementStats = async (mediateurId: string) =>
       WITH
       individuels_total AS (
           SELECT COUNT(*)::integer as total
-          FROM "coop-mediation-numerique".public.cras_individuels
+          FROM cras_individuels
           WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
       ),
       collectifs_total AS (
           SELECT COUNT(*)::integer as total
-          FROM "coop-mediation-numerique".public.cras_collectifs
+          FROM cras_collectifs
           WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
       ),
       demarches_total AS (
           SELECT COUNT(*)::integer as total
-          FROM "coop-mediation-numerique".public.cras_demarches_administratives
+          FROM cras_demarches_administratives
           WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
       ),
       total_accompagnements AS (

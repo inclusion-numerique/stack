@@ -16,13 +16,13 @@ export const getAccompagnementsCountByMonth = async (mediateurId: string) =>
                    DATE_TRUNC('month', "date") AS month,
                    COUNT(*)::integer AS total
                FROM (
-                        SELECT "date" FROM "coop-mediation-numerique".public.cras_individuels
+                        SELECT "date" FROM cras_individuels
                         WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL AND "date" >= (CURRENT_DATE - INTERVAL '9 months')
                         UNION ALL
-                        SELECT "date" FROM "coop-mediation-numerique".public.cras_collectifs
+                        SELECT "date" FROM cras_collectifs
                         WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL AND "date" >= (CURRENT_DATE - INTERVAL '9 months')
                         UNION ALL
-                        SELECT "date" FROM "coop-mediation-numerique".public.cras_demarches_administratives
+                        SELECT "date" FROM cras_demarches_administratives
                         WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL AND "date" >= (CURRENT_DATE - INTERVAL '9 months')
                     ) AS all_dates
                GROUP BY month
@@ -66,13 +66,13 @@ export const getAccompagnementsCountByDay = async (mediateurId: string) =>
               DATE_TRUNC('day', "date") AS day,
               COUNT(*)::integer AS total
           FROM (
-                   SELECT "date" FROM "coop-mediation-numerique".public.cras_individuels
+                   SELECT "date" FROM cras_individuels
                    WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL AND "date" >= (CURRENT_DATE - INTERVAL '25 days')
                    UNION ALL
-                   SELECT "date" FROM "coop-mediation-numerique".public.cras_collectifs
+                   SELECT "date" FROM cras_collectifs
                    WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL AND "date" >= (CURRENT_DATE - INTERVAL '25 days')
                    UNION ALL
-                   SELECT "date" FROM "coop-mediation-numerique".public.cras_demarches_administratives
+                   SELECT "date" FROM cras_demarches_administratives
                    WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND suppression IS NULL AND "date" >= (CURRENT_DATE - INTERVAL '25 days')
                ) AS all_dates
           GROUP BY day

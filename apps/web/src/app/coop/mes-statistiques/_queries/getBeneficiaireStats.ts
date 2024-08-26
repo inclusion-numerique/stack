@@ -23,7 +23,7 @@ export const getBeneficiaireStats = async (mediateurId: string) =>
   prismaClient.$queryRaw<BeneficiaireQuantifiedShare[]>`
       WITH total_count AS (
           SELECT COUNT(*)::integer AS total
-          FROM "coop-mediation-numerique".public.beneficiaires
+          FROM beneficiaires
           WHERE mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
       ),
            categorized_data AS (
@@ -35,7 +35,7 @@ export const getBeneficiaireStats = async (mediateurId: string) =>
                        ELSE 'Non communiqué'
                        END AS category,
                    COUNT(*)::integer AS count
-               FROM "coop-mediation-numerique".public.beneficiaires
+               FROM beneficiaires
                WHERE mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
                GROUP BY category
                UNION ALL
@@ -49,7 +49,7 @@ export const getBeneficiaireStats = async (mediateurId: string) =>
                        ELSE 'Non communiqué ou hétérogène'
                        END AS category,
                    COUNT(*)::integer AS count
-               FROM "coop-mediation-numerique".public.beneficiaires
+               FROM beneficiaires
                WHERE mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
                GROUP BY category
                UNION ALL
@@ -65,14 +65,14 @@ export const getBeneficiaireStats = async (mediateurId: string) =>
                        ELSE 'Non communiqué'
                        END AS category,
                    COUNT(*)::integer AS count
-               FROM "coop-mediation-numerique".public.beneficiaires
+               FROM beneficiaires
                WHERE mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
                GROUP BY category
                UNION ALL
                SELECT 'communesBeneficiaires' AS category_type,
                    COALESCE("commune", 'Non communiqué') AS category,
                    COUNT(*)::integer AS count
-               FROM "coop-mediation-numerique".public.beneficiaires
+               FROM beneficiaires
                WHERE mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
                GROUP BY category
            )
@@ -103,8 +103,8 @@ export const getBeneficiairesAnonymesStats = async (mediateurId: string) =>
               (SUM(pac.statut_social_retraite)) AS statut_social_retraite,
               (SUM(pac.statut_social_non_communique)) AS statut_social_non_communique,
               (SUM(pac.total)) AS total
-          FROM "coop-mediation-numerique".public.cras_collectifs cc
-                   JOIN "coop-mediation-numerique".public.participants_anonymes_cras_collectifs pac
+          FROM cras_collectifs cc
+                   JOIN participants_anonymes_cras_collectifs pac
                         ON cc.participants_anonymes_id = pac.id
           WHERE cc.cree_par_mediateur_id = ${mediateurId}::UUID AND cc.suppression IS NULL
       )

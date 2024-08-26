@@ -7,12 +7,12 @@ export const getAteliersCollectifsParticipants = async (
     SELECT 
       COUNT(DISTINCT participant.id) as count
     FROM 
-      "coop-mediation-numerique".public.beneficiaires beneficiaire
+      beneficiaires beneficiaire
     JOIN 
-      "coop-mediation-numerique".public.participants_ateliers_collectifs participant 
+      participants_ateliers_collectifs participant 
       ON beneficiaire.id = participant.beneficiaire_id
     JOIN 
-      "coop-mediation-numerique".public.cras_collectifs cras 
+      cras_collectifs cras 
       ON participant.cra_collectif_id = cras.id
     WHERE 
       beneficiaire.mediateur_id = ${mediateurId}::UUID
