@@ -60,7 +60,7 @@ export const useDsfrModalIsBound = (
       observerRef.current?.disconnect()
       observerRef.current = undefined
     }
-  }, [bound, dialogId, setBound])
+  }, [bound, dialogId, onBound, setBound])
 
   return bound
 }

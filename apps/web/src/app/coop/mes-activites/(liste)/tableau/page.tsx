@@ -8,6 +8,7 @@ import MesActivitesListeLayout from '@app/web/app/coop/mes-activites/(liste)/Mes
 import MesActivitesTableauPage from '@app/web/app/coop/mes-activites/(liste)/tableau/MesActivitesTableauPage'
 import { validateActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import ActivitesFilterTags from '@app/web/app/coop/mes-activites/(liste)/ActivitesFilterTags'
+import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 
 const MesActivitesVueTableauPage = async ({
   searchParams: rawSearchParams = {},
@@ -28,9 +29,17 @@ const MesActivitesVueTableauPage = async ({
       searchParams,
     })
 
+    const initialBeneficiairesOptions =
+      await getInitialBeneficiairesOptionsForSearch({
+        mediateurId: user.mediateur.id,
+      })
+
     return (
       <MesActivitesListeLayout vue="tableau">
-        <ActivitesFilterTags defaultFilters={searchParams} />
+        <ActivitesFilterTags
+          defaultFilters={searchParams}
+          initialBeneficiairesOptions={initialBeneficiairesOptions}
+        />
         <MesActivitesTableauPage data={data} />
       </MesActivitesListeLayout>
     )

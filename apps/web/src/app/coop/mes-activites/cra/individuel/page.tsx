@@ -11,12 +11,8 @@ import {
   decodeSerializableState,
   EncodedState,
 } from '@app/web/utils/encodeSerializableState'
-import { beneficiairesListWhere } from '@app/web/beneficiaire/searchBeneficiaire'
-import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
-import { prismaBeneficiaireToBeneficiaireData } from '@app/web/beneficiaire/prismaBeneficiaireToBeneficiaireData'
-import { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
-import { searchBeneficiaireSelect } from '@app/web/beneficiaire/queryBeneficiairesForList'
+import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 
 const CreateCraIndividuelPage = async ({
   searchParams: { v } = {},
@@ -107,48 +103,10 @@ const CreateCraIndividuelPage = async ({
 
   defaultValues.lieuActiviteId = mostUsedLieuActivite.structure.id
 
-  // Initial list of beneficiaires for pre-populating selected beneficiary or quick select search
-  const whereBeneficiaire = beneficiairesListWhere({
-    mediateurId: user.mediateur.id,
-  })
-  const beneficiariesForSelect = await prismaClient.beneficiaire.findMany({
-    where: whereBeneficiaire,
-    select: searchBeneficiaireSelect,
-    orderBy: [
-      { crasIndividuels: { _count: 'desc' } },
-      {
-        nom: 'asc',
-      },
-      {
-        prenom: 'asc',
-      },
-    ],
-    take: 20,
-  })
-
-  const totalCountBeneficiaires = await prismaClient.beneficiaire.count({
-    where: whereBeneficiaire,
-  })
-
-  const initialBeneficiariesOptions: SelectOption<BeneficiaireData | null>[] =
-    beneficiariesForSelect.map((beneficiaire) => ({
-      label: getBeneficiaireDisplayName({
-        nom: beneficiaire.nom,
-        prenom: beneficiaire.prenom,
-      }),
-      value: prismaBeneficiaireToBeneficiaireData(beneficiaire),
-    }))
-
-  const beneficiairesNotDisplayed =
-    totalCountBeneficiaires - initialBeneficiariesOptions.length
-  if (beneficiairesNotDisplayed > 0) {
-    initialBeneficiariesOptions.push({
-      label: `Veuillez préciser votre recherche - ${
-        beneficiairesNotDisplayed
-      } bénéficiaire${beneficiairesNotDisplayed === 1 ? ' n’est pas affiché' : 's ne sont pas affichés'}`,
-      value: null,
+  const initialBeneficiairesOptions =
+    await getInitialBeneficiairesOptionsForSearch({
+      mediateurId: user.mediateur.id,
     })
-  }
 
   return (
     <CoopPageContainer size={794} className="fr-pt-8v">
@@ -161,7 +119,7 @@ const CreateCraIndividuelPage = async ({
       <CraIndividuelForm
         defaultValues={defaultValues}
         lieuActiviteOptions={lieuxActiviteOptions}
-        initialBeneficiariesOptions={initialBeneficiariesOptions}
+        initialBeneficiairesOptions={initialBeneficiairesOptions}
       />
     </CoopPageContainer>
   )

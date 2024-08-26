@@ -9,15 +9,11 @@ import {
   decodeSerializableState,
   EncodedState,
 } from '@app/web/utils/encodeSerializableState'
-import { beneficiairesListWhere } from '@app/web/beneficiaire/searchBeneficiaire'
-import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
-import { prismaBeneficiaireToBeneficiaireData } from '@app/web/beneficiaire/prismaBeneficiaireToBeneficiaireData'
-import { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
 import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
 import CraCollectifForm from '@app/web/app/coop/mes-activites/cra/collectif/CraCollectifForm'
 import { AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
-import { searchBeneficiaireSelect } from '@app/web/beneficiaire/queryBeneficiairesForList'
+import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 
 const CreateCraCollectifPage = async ({
   searchParams: { v } = {},
@@ -110,49 +106,10 @@ const CreateCraCollectifPage = async ({
 
   defaultValues.lieuActiviteId = mostUsedLieuActivite.structure.id
 
-  // Initial list of beneficiaires for pre-populating selected beneficiary or quick select search
-  const whereBeneficiaire = beneficiairesListWhere({
-    mediateurId,
-  })
-  const beneficiariesForSelect = await prismaClient.beneficiaire.findMany({
-    where: whereBeneficiaire,
-    select: searchBeneficiaireSelect,
-    orderBy: [
-      { participationsAteliersCollectifs: { _count: 'desc' } },
-      {
-        nom: 'asc',
-      },
-      {
-        prenom: 'asc',
-      },
-    ],
-    take: 20,
-  })
-
-  const totalCountBeneficiaires = await prismaClient.beneficiaire.count({
-    where: whereBeneficiaire,
-  })
-
-  const initialBeneficiariesOptions: SelectOption<BeneficiaireData | null>[] =
-    beneficiariesForSelect.map((beneficiaire) => ({
-      label: getBeneficiaireDisplayName({
-        nom: beneficiaire.nom,
-        prenom: beneficiaire.prenom,
-      }),
-      value: prismaBeneficiaireToBeneficiaireData(beneficiaire),
-    }))
-
-  const beneficiairesNotDisplayed =
-    totalCountBeneficiaires - initialBeneficiariesOptions.length
-  if (beneficiairesNotDisplayed > 0) {
-    initialBeneficiariesOptions.push({
-      label: `Veuillez préciser votre recherche - ${
-        beneficiairesNotDisplayed
-      } bénéficiaire${beneficiairesNotDisplayed === 1 ? ' n’est pas affiché' : 's ne sont pas affichés'}`,
-      value: null,
+  const initialBeneficiairesOptions =
+    await getInitialBeneficiairesOptionsForSearch({
+      mediateurId,
     })
-  }
-
   /**
    * Récupération des communes les plus probables pour les options par défault de la commune du lieu de l'atelier
    * ( là ou il y a déjà eu des cras collectifs ou là ou il y a les lieux d’activité )
@@ -187,7 +144,7 @@ const CreateCraCollectifPage = async ({
       <CraCollectifForm
         defaultValues={defaultValues}
         lieuActiviteOptions={lieuxActiviteOptions}
-        initialBeneficiariesOptions={initialBeneficiariesOptions}
+        initialBeneficiairesOptions={initialBeneficiairesOptions}
         initialCommunesOptions={initialCommunesOptions}
       />
     </CoopPageContainer>

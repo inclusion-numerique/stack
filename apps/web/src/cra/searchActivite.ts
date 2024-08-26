@@ -5,7 +5,6 @@ import {
   ActivitesDataTable,
   ActivitesDataTableSearchParams,
 } from '@app/web/cra/ActivitesDataTable'
-import { getDataTableOrderBy } from '@app/web/data-table/getDataTableOrderBy'
 import { takeAndSkipFromPage } from '@app/web/data-table/takeAndSkipFromPage'
 import { ActivitesRawSqlConfiguration } from '@app/web/cra/ActivitesRawSqlConfiguration'
 import { activitesMediateurWithCrasSelect } from '@app/web/cra/activitesQueries'
@@ -135,7 +134,6 @@ export const getFiltersWhereConditions = ({
 export const searchActivite = async (options: SearchActiviteOptions) => {
   const searchParams = options.searchParams ?? {}
 
-  const orderBy = getDataTableOrderBy(searchParams, ActivitesDataTable)
   const pageSize = searchParams?.lignes
     ? Number.parseInt(searchParams.lignes, 10)
     : 10
@@ -159,18 +157,6 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
           sortBy as keyof typeof ActivitesRawSqlConfiguration
         ].rawOrderBySql(sortDirection)
       : null
-
-  console.log({
-    searchParams,
-    orderBy,
-    pageSize,
-    page,
-    sortBy,
-    take,
-    skip,
-    sortDirection,
-    orderByCondition,
-  })
 
   const filterConditions = getFiltersWhereConditions(searchParams)
 

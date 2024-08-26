@@ -30,7 +30,7 @@ const CraBeneficiairesMultiplesForm = ({
   getValues,
   watch,
   mediateurId,
-  initialBeneficiariesOptions,
+  initialBeneficiairesOptions,
   creerBeneficiaireRetourUrl,
   isLoading,
 }: {
@@ -40,7 +40,7 @@ const CraBeneficiairesMultiplesForm = ({
   control: Control<CraCollectifData>
   mediateurId: string
   creerBeneficiaireRetourUrl: string
-  initialBeneficiariesOptions: BeneficiaireOption[]
+  initialBeneficiairesOptions: BeneficiaireOption[]
   isLoading?: boolean
 }) => {
   const { append, fields, remove } = useFieldArray({
@@ -52,7 +52,7 @@ const CraBeneficiairesMultiplesForm = ({
   const router = useRouter()
 
   const beneficiaireOptions = useCraBeneficiaireLoadOptions({
-    initialOptions: initialBeneficiariesOptions,
+    initialOptions: initialBeneficiairesOptions,
   })
 
   const onCreer = () => {

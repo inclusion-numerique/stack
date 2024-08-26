@@ -9,7 +9,9 @@ import PeriodFilter, {
 } from '@app/web/components/filters/PeriodFilter'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import ActiviteTypeFilter from '@app/web/components/filters/ActiviteTypeFilter'
-import { AccompagnementType } from '@app/web/cra/cra'
+import type { AccompagnementType } from '@app/web/cra/cra'
+import BeneficiaireFilter from '@app/web/components/filters/BeneficiaireFilter'
+import { BeneficiaireOption } from '@app/web/hooks/useBeneficiaireSearch'
 
 // Allows to replace the current route with new query params
 const replaceRouteWithNewParams = ({
@@ -61,8 +63,10 @@ const createRouteParamsReplacer =
 
 const ActivitesFilterTags = ({
   defaultFilters,
+  initialBeneficiairesOptions,
 }: {
   defaultFilters: ActivitesFilters
+  initialBeneficiairesOptions: BeneficiaireOption[]
 }) => {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -105,6 +109,12 @@ const ActivitesFilterTags = ({
     })
   }
 
+  const onBeneficiaireChange = (beneficiaireId: string | null) => {
+    replaceRouteParams({
+      beneficiaire: beneficiaireId,
+    })
+  }
+
   return (
     <div className="fr-flex fr-align-items-start fr-flex-gap-2v ">
       <p className="fr-text--sm fr-text--medium fr-mb-0 fr-mt-1v">
@@ -115,6 +125,10 @@ const ActivitesFilterTags = ({
         <ActiviteTypeFilter
           onChange={onActiviteTypeChange}
           defaultValue={defaultFilters.type}
+        />
+        <BeneficiaireFilter
+          onChange={onBeneficiaireChange}
+          initialBeneficiairesOptions={initialBeneficiairesOptions}
         />
       </div>
     </div>

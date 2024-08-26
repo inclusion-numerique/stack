@@ -51,6 +51,7 @@ a.cellLink {
 .rowButtonCell {
     width: 0 !important;
     padding: 0 !important;
+
     button {
         padding: 0 !important;
         width: 0;

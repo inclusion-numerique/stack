@@ -99,11 +99,11 @@ const lieuResidenceOptionsFromFormData = (
 const CraIndividuelForm = ({
   defaultValues,
   lieuActiviteOptions,
-  initialBeneficiariesOptions,
+  initialBeneficiairesOptions,
 }: {
   defaultValues: DefaultValues<CraIndividuelData> & { mediateurId: string }
   lieuActiviteOptions: SelectOption[]
-  initialBeneficiariesOptions: SelectOption<BeneficiaireData | null>[]
+  initialBeneficiairesOptions: SelectOption<BeneficiaireData | null>[]
 }) => {
   const form = useForm<CraIndividuelData>({
     resolver: zodResolver(CraIndividuelValidation),
@@ -226,7 +226,7 @@ const CraIndividuelForm = ({
         }
         watch={watch as unknown as UseFormWatch<CraDataWithBeneficiaire>}
         creerBeneficiaireRetourUrl="/coop/mes-activites/cra/individuel"
-        initialBeneficiariesOptions={initialBeneficiariesOptions}
+        initialBeneficiairesOptions={initialBeneficiairesOptions}
       />
       <div className="fr-flex fr-flex-gap-12v">
         <InputFormField
