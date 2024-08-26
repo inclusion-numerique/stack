@@ -29,7 +29,7 @@ const SigninPanel = ({
           Sur cette environnement de preview <i>{PublicWebAppConfig.Branch}</i>,
           vous pouvez vous connecter avec votre email.
         </p>
-        <EmailSigninForm callbackUrl={callbackUrl} error={error} />
+        <EmailSigninForm callbackUrl={callbackUrl} />
       </>
     ) : (
       <div className="fr-connect-group fr-mt-8v">
