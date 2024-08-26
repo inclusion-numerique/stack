@@ -1,6 +1,7 @@
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import Breadcrumbs from '@app/web/components/Breadcrumbs'
+import CoopBreadcrumbs from '../CoopBreadcrumbs'
+import CoopPageContainer from '../CoopPageContainer'
 import { StatistiquesTerritoriales } from './_components/StatistiquesTerritoriales'
 import { StatistiquesAccompagnements } from './_sections/StatistiquesAccompagnements'
 import { StatistiquesBeneficiaires } from './_sections/StatistiquesBeneficiaires'
@@ -10,14 +11,11 @@ import { MesStatistiquesPageData } from './getMesStatistiquesPageData'
 export const MesStatistiques = (
   mesStatistiquesProps: MesStatistiquesPageData & { codeInsee?: string | null },
 ) => (
-  <>
+  <CoopPageContainer size={794} className="fr-pt-8v">
+    <CoopBreadcrumbs currentPage="Mes statistiques" />
     <SkipLinksPortal links={defaultSkipLinks} />
-    <main
-      id={contentId}
-      className="fr-container fr-container--medium fr-mb-16w"
-    >
-      <Breadcrumbs currentPage="Mes statistiques" />
-      <h1 className="fr-h2 fr-text-title--blue-france">Mes statistiques</h1>
+    <main id={contentId}>
+      <h1 className="fr-text-title--blue-france">Mes statistiques</h1>
       <hr />
       <section className="fr-mb-6w">
         <StatistiquesGenerales {...mesStatistiquesProps} />
@@ -39,5 +37,5 @@ export const MesStatistiques = (
         <StatistiquesTerritoriales {...mesStatistiquesProps} />
       </section>
     </main>
-  </>
+  </CoopPageContainer>
 )
