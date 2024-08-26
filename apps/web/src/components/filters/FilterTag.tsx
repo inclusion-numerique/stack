@@ -32,7 +32,10 @@ const FilterTag = <T = unknown,>({
 
   const state: FilterTagState = hasValue ? 'active' : open ? 'open' : 'idle'
 
-  const onClick = () => {
+  const onClick = (event: MouseEvent) => {
+    event.stopPropagation()
+    event.preventDefault()
+
     if (hasValue) {
       onClear()
       return setOpen(false)
@@ -83,7 +86,10 @@ const FilterTag = <T = unknown,>({
         }}
       >
         {activeLabel ?? label}
-        <span className={classNames('fr-ml-1v fr-icon--sm', iconId)} />
+        <span
+          className={classNames('fr-ml-1v fr-icon--sm', iconId)}
+          style={{ pointerEvents: 'none' }}
+        />
       </Tag>
       {state === 'open' && (
         <div className={classNames(styles.content)} ref={collapseRef}>

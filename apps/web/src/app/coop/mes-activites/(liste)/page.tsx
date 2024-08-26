@@ -9,6 +9,8 @@ import MesActivitesListeLayout from '@app/web/app/coop/mes-activites/(liste)/Mes
 import { validateActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import ActivitesFilterTags from '@app/web/app/coop/mes-activites/(liste)/ActivitesFilterTags'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
+import { getMediateurCommunesAndDepartementsOptions } from '@app/web/app/lieu-activite/getMediateurCommunesOptions'
+import { getInitialLieuxActiviteOptionsForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
 
 const MesActivitesPage = async ({
   searchParams: rawSearchParams = {},
@@ -29,16 +31,31 @@ const MesActivitesPage = async ({
       searchParams,
     })
 
-    const initialBeneficiairesOptions =
-      await getInitialBeneficiairesOptionsForSearch({
+    const [
+      { communesOptions, departementsOptions },
+      initialBeneficiairesOptions,
+      { lieuxActiviteOptions },
+    ] = await Promise.all([
+      getMediateurCommunesAndDepartementsOptions({
         mediateurId: user.mediateur.id,
-      })
+      }),
+      getInitialBeneficiairesOptionsForSearch({
+        mediateurId: user.mediateur.id,
+      }),
+      getInitialLieuxActiviteOptionsForSearch({
+        withMost: 'individuel',
+        mediateurId: user.mediateur.id,
+      }),
+    ])
 
     return (
       <MesActivitesListeLayout vue="liste">
         <ActivitesFilterTags
           defaultFilters={searchParams}
           initialBeneficiairesOptions={initialBeneficiairesOptions}
+          communesOptions={communesOptions}
+          departementsOptions={departementsOptions}
+          lieuxActiviteOptions={lieuxActiviteOptions}
         />
         <MesActivitesListePage data={data} />
       </MesActivitesListeLayout>

@@ -12,6 +12,10 @@ import ActiviteTypeFilter from '@app/web/components/filters/ActiviteTypeFilter'
 import type { AccompagnementType } from '@app/web/cra/cra'
 import BeneficiaireFilter from '@app/web/components/filters/BeneficiaireFilter'
 import { BeneficiaireOption } from '@app/web/hooks/useBeneficiaireSearch'
+import LocationFilter, {
+  LocationFilterValue,
+} from '@app/web/components/filters/LocationFilter'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
 
 // Allows to replace the current route with new query params
 const replaceRouteWithNewParams = ({
@@ -64,9 +68,15 @@ const createRouteParamsReplacer =
 const ActivitesFilterTags = ({
   defaultFilters,
   initialBeneficiairesOptions,
+  communesOptions,
+  departementsOptions,
+  lieuxActiviteOptions,
 }: {
   defaultFilters: ActivitesFilters
   initialBeneficiairesOptions: BeneficiaireOption[]
+  communesOptions: SelectOption[]
+  lieuxActiviteOptions: SelectOption[]
+  departementsOptions: SelectOption[]
 }) => {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -115,6 +125,53 @@ const ActivitesFilterTags = ({
     })
   }
 
+  const defaultLocation: LocationFilterValue | undefined = defaultFilters.lieu
+    ? {
+        type: 'lieu',
+        value: defaultFilters.lieu,
+      }
+    : defaultFilters.commune
+      ? {
+          type: 'commune',
+          value: defaultFilters.commune,
+        }
+      : defaultFilters.departement
+        ? {
+            type: 'departement',
+            value: defaultFilters.departement,
+          }
+        : undefined
+
+  const onLocationChange = (location: LocationFilterValue | null) => {
+    const newLocationParams: {
+      lieu: null | string
+      commune: null | string
+      departement: null | string
+    } = {
+      lieu: null,
+      commune: null,
+      departement: null,
+    }
+    if (!location) {
+      replaceRouteParams(newLocationParams)
+      return
+    }
+
+    if (location.type === 'lieu') {
+      newLocationParams.lieu = location.value
+    }
+
+    if (location.type === 'commune') {
+      newLocationParams.commune = location.value
+    }
+
+    if (location.type === 'departement') {
+      newLocationParams.departement = location.value
+    }
+
+    replaceRouteParams(newLocationParams)
+  }
+
   return (
     <div className="fr-flex fr-align-items-start fr-flex-gap-2v ">
       <p className="fr-text--sm fr-text--medium fr-mb-0 fr-mt-1v">
@@ -122,6 +179,13 @@ const ActivitesFilterTags = ({
       </p>
       <div className="fr-flex fr-flex-gap-2v fr-flex-wrap">
         <PeriodFilter onChange={onPeriodChange} defaultValue={defaultPeriod} />
+        <LocationFilter
+          onChange={onLocationChange}
+          defaultValue={defaultLocation}
+          lieuxActiviteOptions={lieuxActiviteOptions}
+          communesOptions={communesOptions}
+          departementsOptions={departementsOptions}
+        />
         <ActiviteTypeFilter
           onChange={onActiviteTypeChange}
           defaultValue={defaultFilters.type}
