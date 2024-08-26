@@ -29,6 +29,18 @@ export const InformationsPratiquesShape = {
           'Veuillez renseigner une URL Acceslibre (https://acceslibre.beta.gouv.fr/...)',
       },
     ),
+  priseRdv: z
+    .string()
+    .nullish()
+    .refine(
+      (value) =>
+        value === '' ||
+        value == null ||
+        z.string().url().safeParse(value).success,
+      {
+        message: 'Veuillez renseigner une URL de prise de rendez-vous valide',
+      },
+    ),
   horaires: z.string().nullish(),
   horairesComment: z.string().nullish(),
   openingHours: OpeningHoursValidation,

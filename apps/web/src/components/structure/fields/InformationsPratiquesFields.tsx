@@ -59,6 +59,13 @@ export const InformationsPratiquesFields = <
         control={control}
         disabled={formState.isSubmitting}
       />
+      <InputFormField
+        path="priseRdv"
+        label="Prise de rendez-vous en ligne"
+        placeholder="https://www.rdv-aide-numerique.fr/..."
+        control={control}
+        disabled={formState.isSubmitting}
+      />
       <hr
         className="fr-separator fr-separator-8v"
         id="informations-pratiques"

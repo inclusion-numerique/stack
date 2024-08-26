@@ -28,16 +28,19 @@ const InformationsPratiquesEditCard = ({
   lieuItinerant,
   siteWeb,
   ficheAccesLibre,
+  priseRdv,
   horaires,
 }: {
   id: string
   lieuItinerant?: boolean | null
   siteWeb?: string | null
   ficheAccesLibre?: string | null
+  priseRdv?: string | null
   horaires?: string | null
 }) => {
   const mutation = trpc.lieuActivite.updateInformationsPratiques.useMutation()
   const router = useRouter()
+
   const form = useForm<InformationsPratiquesData>({
     resolver: zodResolver(InformationsPratiquesValidation),
     defaultValues: {
@@ -45,8 +48,9 @@ const InformationsPratiquesEditCard = ({
       lieuItinerant,
       siteWeb,
       ficheAccesLibre,
+      priseRdv,
       openingHours:
-        horaires == null
+        horaires == null || horaires === ''
           ? undefined
           : toTimetableOpeningHours(new Date())(horaires),
       horairesComment: horaires?.match(/".+"/g)?.toString().replaceAll('"', ''),
@@ -99,11 +103,13 @@ const InformationsPratiquesEditCard = ({
           lieuItinerant={lieuItinerant}
           siteWeb={siteWeb}
           ficheAccesLibre={ficheAccesLibre}
+          priseRdv={priseRdv}
           horaires={horaires}
         />
       }
       isEmpty={
-        !lieuItinerant && [siteWeb, ficheAccesLibre, horaires].every(isEmpty)
+        !lieuItinerant &&
+        [siteWeb, ficheAccesLibre, horaires, priseRdv].every(isEmpty)
       }
       emptyState={
         <EmptyState title="Compléter ces informations pour faciliter l’accès du public." />

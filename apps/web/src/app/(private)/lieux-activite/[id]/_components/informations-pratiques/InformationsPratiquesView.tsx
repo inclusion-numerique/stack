@@ -5,11 +5,13 @@ export const InformationsPratiquesView = ({
   lieuItinerant,
   siteWeb,
   ficheAccesLibre,
+  priseRdv,
   horaires,
 }: {
   lieuItinerant?: boolean | null
   siteWeb?: string | null
   ficheAccesLibre?: string | null
+  priseRdv?: string | null
   horaires?: string | null
 }) => (
   <div className="fr-flex fr-direction-column fr-flex-gap-6v">
@@ -50,6 +52,25 @@ export const InformationsPratiquesView = ({
             rel="noreferrer"
           >
             Retrouvez les informations d’accessibilité via ce lien
+          </Link>
+        ) : (
+          <span className="fr-text--medium">Non renseignée</span>
+        )}
+      </div>
+    </div>
+    <div>
+      <span className="fr-text-mention--grey">
+        Prise de rendez-vous en ligne{' '}
+      </span>
+      <div data-testid="informations-pratiques-prise-rdv">
+        {priseRdv ? (
+          <Link
+            className="fr-link"
+            href={priseRdv}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Prenez rendez-vous en ligne via ce lien
           </Link>
         ) : (
           <span className="fr-text--medium">Non renseignée</span>
