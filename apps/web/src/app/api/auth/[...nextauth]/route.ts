@@ -13,7 +13,7 @@ import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   // debug: process.env.NODE_ENV !== 'production',
   adapter: nextAuthAdapter,
   pages: {
