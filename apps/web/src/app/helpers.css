@@ -337,6 +337,13 @@
     }
 }
 
+/* xl flex rules */
+@media (min-width: 78em) {
+  .fr-flex-xl {
+    display: flex;
+  }
+}
+
 .fr-separator-1px {
     padding-bottom: 1px;
 }
@@ -629,4 +636,10 @@
   &:disabled {
     box-shadow: none;
   }
+}
+
+
+ul.fr-list-group {
+  list-style-type: none;
+  padding: 0;
 }
