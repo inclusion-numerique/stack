@@ -4,6 +4,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import type { ReadonlyURLSearchParams } from 'next/dist/client/components/navigation.react-server'
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 import { useMemo } from 'react'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import PeriodFilter, {
   PeriodFilterValue,
 } from '@app/web/components/filters/PeriodFilter'
@@ -15,7 +16,6 @@ import { BeneficiaireOption } from '@app/web/hooks/useBeneficiaireSearch'
 import LocationFilter, {
   LocationFilterValue,
 } from '@app/web/components/filters/LocationFilter'
-import type { SelectOption } from '@app/ui/components/Form/utils/options'
 
 // Allows to replace the current route with new query params
 const replaceRouteWithNewParams = ({

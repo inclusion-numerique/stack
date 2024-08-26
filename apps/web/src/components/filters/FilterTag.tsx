@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  MouseEventHandler,
   PropsWithChildren,
   ReactNode,
   useEffect,
@@ -32,7 +33,7 @@ const FilterTag = <T = unknown,>({
 
   const state: FilterTagState = hasValue ? 'active' : open ? 'open' : 'idle'
 
-  const onClick = (event: MouseEvent) => {
+  const onClick: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.stopPropagation()
     event.preventDefault()
 

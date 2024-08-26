@@ -2,12 +2,12 @@
 
 import { ReactNode, useState } from 'react'
 import CustomSelect from '@app/ui/components/CustomSelect/CustomSelect'
-import FilterTag from '@app/web/components/filters/FilterTag'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import {
   labelsToOptions,
   SelectOption,
 } from '@app/ui/components/Form/utils/options'
+import FilterTag from '@app/web/components/filters/FilterTag'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
 
 export type LocationFilterType = 'lieu' | 'commune' | 'departement'
 
@@ -26,7 +26,7 @@ const locationTypeLabels: {
   departement: 'Département',
 }
 
-const locationTypeOptions: SelectOption<string>[] =
+const locationTypeOptions: SelectOption<LocationFilterType>[] =
   labelsToOptions(locationTypeLabels)
 
 const locationValuePlaceholder: {
@@ -50,27 +50,25 @@ const LocationFilter = ({
   lieuxActiviteOptions: SelectOption[]
   departementsOptions: SelectOption[]
 }) => {
-  // const { initialOptions, loadOptions } = useLocationSearch({
-  //   initialLocationsOptions,
-  // })
-
   const [locationType, setLocationType] = useState<LocationFilterType | null>(
-    null,
+    defaultValue?.type ?? null,
   )
 
-  const [locationValue, setLocationValue] = useState<string | null>(null)
+  const [locationValue, setLocationValue] = useState<string | null>(
+    defaultValue?.value ?? null,
+  )
 
-  const onTypeChange = (option: SelectOption | null) => {
+  const onTypeChange = (option: SelectOption<LocationFilterType> | null) => {
     setLocationType(option?.value ?? null)
     setLocationValue(null)
   }
 
   const onValueChange = (option: SelectOption | null) => {
-    if (!option || !locationType) {
-      setLocationValue(null)
+    if (!option || !locationType || !option.value) {
+      return setLocationValue(null)
     }
 
-    setLocationValue(option?.value ?? null)
+    setLocationValue(option.value)
     onChange({
       type: locationType,
       value: option?.value,
@@ -108,9 +106,10 @@ const LocationFilter = ({
     )
   }
 
-  const defaultTypeValue: SelectOption | undefined = locationType
-    ? locationTypeOptions.find(({ value }) => value === locationType)
-    : undefined
+  const defaultTypeValue: SelectOption<LocationFilterType> | undefined =
+    locationType
+      ? locationTypeOptions.find(({ value }) => value === locationType)
+      : undefined
 
   const locationValueForTypeOptions = optionsForType(locationType)
 

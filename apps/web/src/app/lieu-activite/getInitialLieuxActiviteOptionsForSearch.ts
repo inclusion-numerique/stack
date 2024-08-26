@@ -1,5 +1,5 @@
-import { prismaClient } from '@app/web/prismaClient'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
+import { prismaClient } from '@app/web/prismaClient'
 import { AccompagnementType } from '@app/web/cra/cra'
 
 export const mediateurStructureSelect = ({
