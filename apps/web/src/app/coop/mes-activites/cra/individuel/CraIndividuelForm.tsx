@@ -100,10 +100,12 @@ const CraIndividuelForm = ({
   defaultValues,
   lieuActiviteOptions,
   initialBeneficiairesOptions,
+  retour,
 }: {
   defaultValues: DefaultValues<CraIndividuelData> & { mediateurId: string }
   lieuActiviteOptions: SelectOption[]
   initialBeneficiairesOptions: SelectOption<BeneficiaireData | null>[]
+  retour?: string
 }) => {
   const form = useForm<CraIndividuelData>({
     resolver: zodResolver(CraIndividuelValidation),
@@ -142,9 +144,9 @@ const CraIndividuelForm = ({
       await mutation.mutateAsync(data)
       createToast({
         priority: 'success',
-        message: 'L’accompagnement individuel a bien été enregistrée.',
+        message: 'L’accompagnement individuel a bien été enregistré.',
       })
-      router.push('/coop') // TODO SUCCESS LINK
+      router.push(retour ?? '/coop/mes-activites')
       router.refresh()
     } catch (mutationError) {
       if (applyZodValidationMutationErrorsToForm(mutationError, setError)) {
@@ -503,7 +505,7 @@ const CraIndividuelForm = ({
         <Button
           priority="secondary"
           linkProps={{
-            href: '/coop', // TODO BACK LINK PROP
+            href: retour ?? '/coop',
           }}
         >
           Annuler

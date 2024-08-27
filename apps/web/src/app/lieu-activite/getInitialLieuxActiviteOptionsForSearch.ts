@@ -96,3 +96,7 @@ export const getInitialLieuxActiviteOptionsForSearch = async ({
     mostUsedLieuActivite,
   }
 }
+
+export type MostUsedLieuActiviteForSearch = Awaited<
+  ReturnType<typeof getInitialLieuxActiviteOptionsForSearch>
+>

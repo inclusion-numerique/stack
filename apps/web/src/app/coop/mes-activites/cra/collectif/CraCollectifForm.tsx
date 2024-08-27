@@ -52,11 +52,13 @@ const CraCollectifForm = ({
   lieuActiviteOptions,
   initialBeneficiairesOptions,
   initialCommunesOptions,
+  retour,
 }: {
   defaultValues: DefaultValues<CraCollectifData> & { mediateurId: string }
   lieuActiviteOptions: SelectOption[]
   initialCommunesOptions: AdressBanFormFieldOption[]
   initialBeneficiairesOptions: SelectOption<BeneficiaireData | null>[]
+  retour?: string
 }) => {
   const form = useForm<CraCollectifData>({
     resolver: zodResolver(CraCollectifValidation),
@@ -88,9 +90,9 @@ const CraCollectifForm = ({
       await mutation.mutateAsync(data)
       createToast({
         priority: 'success',
-        message: 'L’atelier collectif a bien été enregistrée.',
+        message: 'L’atelier collectif a bien été enregistré.',
       })
-      router.push('/coop') // TODO SUCCESS LINK
+      router.push(retour ?? '/coop/mes-activites')
       router.refresh()
     } catch (mutationError) {
       if (applyZodValidationMutationErrorsToForm(mutationError, setError)) {
@@ -298,7 +300,7 @@ const CraCollectifForm = ({
         <Button
           priority="secondary"
           linkProps={{
-            href: '/coop', // TODO BACK LINK PROP
+            href: retour ?? '/coop',
           }}
         >
           Annuler
