@@ -27,8 +27,33 @@ a.cellLink {
         background-color: var(--active) !important;
     }
 
-    td {
+    td, th {
         background-color: transparent !important;
     }
 }
 
+.rowWithButton {
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--hover) !important;
+    }
+
+    &:active {
+        background-color: var(--active) !important;
+    }
+
+    td, th {
+        background-color: transparent !important;
+    }
+}
+
+.rowButtonCell {
+    width: 0 !important;
+    padding: 0 !important;
+
+    button {
+        padding: 0 !important;
+        width: 0;
+    }
+}

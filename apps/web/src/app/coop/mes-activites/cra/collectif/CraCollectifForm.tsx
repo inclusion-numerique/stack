@@ -50,13 +50,13 @@ import styles from '../CraForm.module.css'
 const CraCollectifForm = ({
   defaultValues,
   lieuActiviteOptions,
-  initialBeneficiariesOptions,
+  initialBeneficiairesOptions,
   initialCommunesOptions,
 }: {
   defaultValues: DefaultValues<CraCollectifData> & { mediateurId: string }
   lieuActiviteOptions: SelectOption[]
   initialCommunesOptions: AdressBanFormFieldOption[]
-  initialBeneficiariesOptions: SelectOption<BeneficiaireData | null>[]
+  initialBeneficiairesOptions: SelectOption<BeneficiaireData | null>[]
 }) => {
   const form = useForm<CraCollectifData>({
     resolver: zodResolver(CraCollectifValidation),
@@ -151,7 +151,7 @@ const CraCollectifForm = ({
         setValue={setValue}
         watch={watch}
         creerBeneficiaireRetourUrl="/coop/mes-activites/cra/collectif"
-        initialBeneficiariesOptions={initialBeneficiariesOptions}
+        initialBeneficiairesOptions={initialBeneficiairesOptions}
       />
       <div className="fr-flex fr-flex-gap-12v">
         <InputFormField

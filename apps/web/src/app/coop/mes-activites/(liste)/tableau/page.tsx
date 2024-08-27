@@ -6,9 +6,12 @@ import { activitesListWhere } from '@app/web/cra/searchActivite'
 import { ActivitesDataTableSearchParams } from '@app/web/cra/ActivitesDataTable'
 import MesActivitesListeLayout from '@app/web/app/coop/mes-activites/(liste)/MesActivitesListeLayout'
 import MesActivitesTableauPage from '@app/web/app/coop/mes-activites/(liste)/tableau/MesActivitesTableauPage'
+import { validateActivitesFilters } from '@app/web/cra/ActivitesFilters'
+import ActivitesFilterTags from '@app/web/app/coop/mes-activites/(liste)/ActivitesFilterTags'
+import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFiltersOptionsForMediateur'
 
 const MesActivitesVueTableauPage = async ({
-  searchParams = {},
+  searchParams: rawSearchParams = {},
 }: {
   searchParams?: ActivitesDataTableSearchParams
 }) => {
@@ -20,13 +23,30 @@ const MesActivitesVueTableauPage = async ({
   })
 
   if (hasActivites) {
-    const data = await getActivitesListPageData({
+    const searchParams = validateActivitesFilters(rawSearchParams)
+    const data = getActivitesListPageData({
       mediateurId: user.mediateur.id,
       searchParams,
     })
 
+    const {
+      communesOptions,
+      departementsOptions,
+      initialBeneficiairesOptions,
+      lieuxActiviteOptions,
+    } = await getFiltersOptionsForMediateur({
+      mediateurId: user.mediateur.id,
+    })
+
     return (
       <MesActivitesListeLayout vue="tableau">
+        <ActivitesFilterTags
+          defaultFilters={searchParams}
+          initialBeneficiairesOptions={initialBeneficiairesOptions}
+          lieuxActiviteOptions={lieuxActiviteOptions}
+          communesOptions={communesOptions}
+          departementsOptions={departementsOptions}
+        />
         <MesActivitesTableauPage data={data} />
       </MesActivitesListeLayout>
     )

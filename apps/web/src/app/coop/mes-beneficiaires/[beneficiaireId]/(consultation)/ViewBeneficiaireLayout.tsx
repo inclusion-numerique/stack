@@ -54,7 +54,7 @@ const ViewBeneficiaireLayout = ({
             </p>
           )}
         </div>
-        <div className="fr-flex fr-flex-gap-4v">
+        <div className="fr-flex fr-flex-gap-4v fr-flex-nowrap fr-flex-shrink-0">
           <BeneficiaireAjouterUneActivite
             beneficiaire={beneficiaireCraData}
             displayName={displayName}

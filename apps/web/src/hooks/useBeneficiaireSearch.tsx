@@ -1,9 +1,11 @@
-import { useCallback, useMemo, useRef } from 'react'
+import { useCallback, useRef } from 'react'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
-import { trpc } from '@app/web/trpc'
 import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
+import { trpc } from '@app/web/trpc'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
+
+export type BeneficiaireOption = SelectOption<BeneficiaireData | null>
 
 const beneficiaireOptionRichLabel = (value: BeneficiaireData) => {
   const { communeResidence } = value
@@ -23,28 +25,22 @@ const beneficiaireOptionRichLabel = (value: BeneficiaireData) => {
   ) as unknown as string // ReactNode is supported but types are not up to date
 }
 
-export type BeneficiaireOption = SelectOption<BeneficiaireData | null>
-
-export const useCraBeneficiaireLoadOptions = ({
-  initialOptions: initialOptionsProperty,
+export const useBeneficiaireSearch = ({
+  initialBeneficiairesOptions,
 }: {
-  initialOptions: BeneficiaireOption[]
+  initialBeneficiairesOptions: BeneficiaireOption[]
 }) => {
-  const { client: trpcClient } = trpc.useContext()
-
   const beneficiairesMapRef = useRef(new Map<string, BeneficiaireData>())
 
-  const initialOptions = useMemo(
-    () =>
-      initialOptionsProperty.map((option) =>
-        option.value
-          ? {
-              value: option.value,
-              label: beneficiaireOptionRichLabel(option.value),
-            }
-          : option,
-      ),
-    [initialOptionsProperty],
+  const { client: trpcClient } = trpc.useContext()
+
+  const initialOptions = initialBeneficiairesOptions.map((option) =>
+    option.value
+      ? {
+          value: option.value,
+          label: beneficiaireOptionRichLabel(option.value),
+        }
+      : option,
   )
 
   const loadOptions = useCallback(
@@ -65,8 +61,8 @@ export const useCraBeneficiaireLoadOptions = ({
       const hasMore = result.matchesCount - result.beneficiaires.length
       const hasMoreMessage = hasMore
         ? hasMore === 1
-          ? `Veuillez préciser votre recherche - 1 bénéficiaire n’est pas affichée`
-          : `Veuillez préciser votre recherche - ${hasMore} bénéficiaires ne sont pas affichées`
+          ? `Veuillez préciser votre recherche - 1 bénéficiaire n’est pas affiché`
+          : `Veuillez préciser votre recherche - ${hasMore} bénéficiaires ne sont pas affichés`
         : null
 
       for (const beneficiaire of result.beneficiaires) {
@@ -93,12 +89,11 @@ export const useCraBeneficiaireLoadOptions = ({
           : []),
       ]
     },
-    [beneficiairesMapRef, trpcClient],
+    [initialBeneficiairesOptions, beneficiairesMapRef, trpcClient],
   )
 
   return {
     initialOptions,
     loadOptions,
-    beneficiairesMapRef,
   }
 }

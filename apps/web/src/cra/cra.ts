@@ -33,6 +33,10 @@ export const accompagnementTypeValues = Object.keys(
   accompagnementTypeLabels,
 ) as [AccompagnementType, ...AccompagnementType[]]
 
+export const accompagnementTypeOptions = labelsToOptions(
+  accompagnementTypeLabels,
+)
+
 export const dureeAccompagnementLabels = {
   '30': '30min',
   '60': '1h',

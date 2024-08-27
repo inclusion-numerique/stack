@@ -2,7 +2,7 @@
 
 import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
 import { type ComponentProps, FormEvent, FormEventHandler } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 const MesActivitesVueSegmentedControl = ({
   current,
@@ -18,15 +18,16 @@ const MesActivitesVueSegmentedControl = ({
 
   const router = useRouter()
 
-  const onChange: FormEventHandler = (event: FormEvent) => {
-    const { checked, id, dataset } = event.target as HTMLInputElement
+  const searchParams = useSearchParams()
 
-    console.log({ checked, id, target: event.target, dataset })
+  const onChange: FormEventHandler = (event: FormEvent) => {
+    const { checked, dataset } = event.target as HTMLInputElement
+
     if (checked) {
       router.push(
         dataset.vue === 'tableau'
-          ? '/coop/mes-activites/tableau'
-          : '/coop/mes-activites',
+          ? `/coop/mes-activites/tableau?${searchParams.toString()}`
+          : `/coop/mes-activites?${searchParams.toString()}`,
       )
     }
   }
