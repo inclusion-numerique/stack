@@ -36,13 +36,13 @@
     "overrides": {}
   },
   "optionalDependencies": {
-    "turbo-linux-64": "^2.0.9",
-    "turbo-linux-arm64": "^2.0.9"
+    "turbo-linux-64": "^2.0.14",
+    "turbo-linux-arm64": "^2.0.14"
   },
   "dependencies": {
     "@manypkg/cli": "^0.21.4",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.2",
-    "turbo": "^2.0.9"
+    "turbo": "^2.0.14"
   }
 }
