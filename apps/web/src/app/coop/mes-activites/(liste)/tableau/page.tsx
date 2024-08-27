@@ -8,9 +8,7 @@ import MesActivitesListeLayout from '@app/web/app/coop/mes-activites/(liste)/Mes
 import MesActivitesTableauPage from '@app/web/app/coop/mes-activites/(liste)/tableau/MesActivitesTableauPage'
 import { validateActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import ActivitesFilterTags from '@app/web/app/coop/mes-activites/(liste)/ActivitesFilterTags'
-import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
-import { getMediateurCommunesAndDepartementsOptions } from '@app/web/app/lieu-activite/getMediateurCommunesOptions'
-import { getInitialLieuxActiviteOptionsForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
+import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFiltersOptionsForMediateur'
 
 const MesActivitesVueTableauPage = async ({
   searchParams: rawSearchParams = {},
@@ -31,22 +29,14 @@ const MesActivitesVueTableauPage = async ({
       searchParams,
     })
 
-    const [
-      { communesOptions, departementsOptions },
+    const {
+      communesOptions,
+      departementsOptions,
       initialBeneficiairesOptions,
-      { lieuxActiviteOptions },
-    ] = await Promise.all([
-      getMediateurCommunesAndDepartementsOptions({
-        mediateurId: user.mediateur.id,
-      }),
-      getInitialBeneficiairesOptionsForSearch({
-        mediateurId: user.mediateur.id,
-      }),
-      getInitialLieuxActiviteOptionsForSearch({
-        withMost: 'individuel',
-        mediateurId: user.mediateur.id,
-      }),
-    ])
+      lieuxActiviteOptions,
+    } = await getFiltersOptionsForMediateur({
+      mediateurId: user.mediateur.id,
+    })
 
     return (
       <MesActivitesListeLayout vue="tableau">
