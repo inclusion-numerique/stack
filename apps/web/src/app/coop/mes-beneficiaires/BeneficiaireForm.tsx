@@ -88,8 +88,9 @@ const BeneficiaireForm = ({
     formState: { isSubmitting, isSubmitSuccessful, errors },
   } = form
 
-  const nextUrlBase =
-    retour || defaultValues.id
+  const nextUrlBase = retour
+    ? retour
+    : defaultValues.id
       ? `/coop/mes-beneficiaires/${defaultValues.id}`
       : '/coop/mes-beneficiaires'
   const backUrlBase = nextUrlBase
