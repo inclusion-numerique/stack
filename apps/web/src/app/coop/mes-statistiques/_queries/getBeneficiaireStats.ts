@@ -104,8 +104,8 @@ export const getBeneficiairesAnonymesStats = async (mediateurId: string) =>
               (SUM(pac.statut_social_non_communique)) AS statut_social_non_communique,
               (SUM(pac.total)) AS total
           FROM cras_collectifs cc
-                   JOIN participants_anonymes_cras_collectifs pac
-                        ON cc.participants_anonymes_id = pac.id
+              JOIN participants_anonymes_cras_collectifs pac
+                  ON cc.participants_anonymes_id = pac.id
           WHERE cc.cree_par_mediateur_id = ${mediateurId}::UUID AND cc.suppression IS NULL
       )
       SELECT

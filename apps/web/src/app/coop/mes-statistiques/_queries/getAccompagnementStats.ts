@@ -46,11 +46,11 @@ export const getAccompagnementCollectifsStats = async (mediateurId: string) =>
               GROUP BY category
               UNION ALL
               SELECT 'lieuxAccompagnements' AS category_type,
-                     COALESCE("structures".nom, 'Non communiqué') AS category,
-                     COUNT(*)::integer AS count
+                  COALESCE("structures".nom, 'Non communiqué') AS category,
+                  COUNT(*)::integer AS count
               FROM cras_collectifs
-                       LEFT JOIN structures structures
-                                 ON lieu_activite_id = structures.id
+                  LEFT JOIN structures structures
+                      ON lieu_activite_id = structures.id
               WHERE cree_par_mediateur_id = ${mediateurId}::UUID AND cras_collectifs.suppression IS NULL
               GROUP BY category
               UNION ALL
@@ -265,6 +265,11 @@ export const EMPTY_ACCOMPAGNEMENT_DATA: Record<
       ...Object.values(lieuAtelierLabels),
     ]),
   ].map((label) => ({ label, count: 0, proportion: 0 })),
-  dureesAccompagnements: [],
+  dureesAccompagnements: [
+    { label: '30', count: 0, proportion: 0 },
+    { label: '60', count: 0, proportion: 0 },
+    { label: '90', count: 0, proportion: 0 },
+    { label: '120', count: 0, proportion: 0 },
+  ],
   lieuxAccompagnements: [],
 }

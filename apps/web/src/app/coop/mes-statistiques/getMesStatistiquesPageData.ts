@@ -8,7 +8,6 @@ import {
   getAccompagnementDemarchesStats,
   getAccompagnementIndividuelsStats,
 } from './_queries/getAccompagnementStats'
-import { getAteliersCollectifsParticipants } from './_queries/getAteliersCollectifsParticipants'
 import {
   EMPTY_BENEFICIAIRE_DATA,
   getBeneficiairesAnonymesStats,
@@ -17,9 +16,8 @@ import {
 import {
   getAccompagnementBeneficiaires,
   getModalitesAccompagnementStats,
-  toModalitesWithParticipantsCount,
 } from './_queries/getModalitesAccompagnementStats'
-import { mergeQuantifiedShare } from './quantifiedShare'
+import { mergeQuantifiedShare, withProportions } from './quantifiedShare'
 
 export const getMesStatistiquesPageData = async (mediateurId: string) => {
   const modalitesAccompagnement =
@@ -29,9 +27,6 @@ export const getMesStatistiquesPageData = async (mediateurId: string) => {
 
   const beneficiairesAnonymesStats =
     await getBeneficiairesAnonymesStats(mediateurId)
-
-  const participantsAteliersCount =
-    await getAteliersCollectifsParticipants(mediateurId)
 
   return {
     nombreAccompagnementsParJour:
@@ -43,12 +38,7 @@ export const getMesStatistiquesPageData = async (mediateurId: string) => {
       mergeQuantifiedShare(EMPTY_BENEFICIAIRE_DATA, beneficiaireStats),
       mergeQuantifiedShare(EMPTY_BENEFICIAIRE_DATA, beneficiairesAnonymesStats),
     ),
-    modalitesAccompagnement: modalitesAccompagnement.map(
-      toModalitesWithParticipantsCount(
-        participantsAteliersCount,
-        beneficiairesAnonymesStats,
-      ),
-    ),
+    modalitesAccompagnement: withProportions(modalitesAccompagnement),
     ...mergeQuantifiedShare(
       EMPTY_BENEFICIAIRE_DATA,
       beneficiaireStats,

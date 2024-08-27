@@ -9,9 +9,19 @@ import {
 const modalitesAccompagnement: (QuantifiedShare<AccompagnementLabel> & {
   participants?: number
 })[] = [
-  { label: 'Accompagnements individuels', count: 121, proportion: 58 },
+  {
+    label: 'Accompagnements individuels',
+    count: 121,
+    proportion: 58,
+    participants: 0,
+  },
   { label: 'Ateliers collectifs', count: 4, proportion: 8, participants: 40 },
-  { label: 'Aide aux démarches administratives', count: 68, proportion: 34 },
+  {
+    label: 'Aide aux démarches administratives',
+    count: 68,
+    proportion: 34,
+    participants: 0,
+  },
 ]
 
 const materielsAccompagnements: QuantifiedShare<MaterielLabel>[] = [

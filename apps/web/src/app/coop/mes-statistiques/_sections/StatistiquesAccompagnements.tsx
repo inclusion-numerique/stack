@@ -82,7 +82,7 @@ export const StatistiquesAccompagnements = ({
     <>
       <h2 className="fr-h5 fr-text-mention--grey">
         <span className="ri-service-line fr-mr-1w" aria-hidden />
-        Statistiques sur vos accompagnements
+        Statistiques sur vos activités
       </h2>
       <div className="fr-background-alt--blue-france fr-p-4w fr-mb-3w fr-border-radius--16 fr-grid-row fr-flex-gap-4v">
         {modalitesAccompagnement.map(
@@ -107,9 +107,7 @@ export const StatistiquesAccompagnements = ({
       <div className="fr-border fr-p-4w fr-mb-3w fr-border-radius--16">
         <div className="fr-grid-row fr-mb-3w fr-align-items-center">
           <div className="fr-mb-0 fr-col fr-flex fr-align-items-center">
-            <h3 className="fr-text--lg fr-mb-0">
-              Thématiques d’accompagnements
-            </h3>
+            <h3 className="fr-text--lg fr-mb-0">Thématiques des activités</h3>
             <Button
               className="fr-px-1v fr-ml-1v"
               title="Plus d’information à propos des thématiques d’accompagnements"
@@ -223,7 +221,7 @@ export const StatistiquesAccompagnements = ({
         <div className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-xl-6 fr-col-12">
             <div className="fr-mb-0 fr-col fr-flex fr-align-items-center fr-mb-3w">
-              <h3 className="fr-text--lg fr-mb-0">Canaux d’accompagnements</h3>
+              <h3 className="fr-text--lg fr-mb-0">Canaux des activités</h3>
               <Button
                 className="fr-px-1v fr-ml-1v"
                 title="Plus d’information à propos des canaux d’accompagnements"
@@ -240,8 +238,8 @@ export const StatistiquesAccompagnements = ({
                 role="tooltip"
                 aria-hidden
               >
-                Il s’agit de la répartition des activités enregistrées par canal
-                d’accompagnement.
+                Il s’agit de la répartition des activités enregistrées par
+                canal.
               </span>
             </div>
             <div className="fr-flex fr-align-items-center">
@@ -259,9 +257,7 @@ export const StatistiquesAccompagnements = ({
           </div>
           <div className="fr-col-xl-6 fr-col-12">
             <div className="fr-mb-0 fr-col fr-flex fr-align-items-center fr-mb-3w">
-              <h3 className="fr-text--lg fr-mb-0">
-                Durées des accompagnements
-              </h3>
+              <h3 className="fr-text--lg fr-mb-0">Durées des activités</h3>
               <Button
                 className="fr-px-1v fr-ml-1v"
                 title="Plus d’information à propos des durées d’accompagnements"
@@ -278,8 +274,8 @@ export const StatistiquesAccompagnements = ({
                 role="tooltip"
                 aria-hidden
               >
-                Il s’agit de la répartition des activités enregistrées par canal
-                d’accompagnement.
+                Il s’agit de la répartition des activités enregistrées par
+                durée.
               </span>
             </div>
 
@@ -299,9 +295,7 @@ export const StatistiquesAccompagnements = ({
         </div>
         <hr className="fr-separator-1px fr-my-5w" />
         <div className="fr-mb-0 fr-col fr-flex fr-align-items-center fr-mb-3w">
-          <h3 className="fr-text--lg fr-mb-0">
-            Nombre d’accompagnements par lieux
-          </h3>
+          <h3 className="fr-text--lg fr-mb-0">Nombre d’activités par lieux</h3>
           <Button
             className="fr-px-1v fr-ml-1v"
             title="Plus d’information à propos du nombre d’accompagnements par lieux"
@@ -319,8 +313,7 @@ export const StatistiquesAccompagnements = ({
             aria-hidden
           >
             Il s’agit de la répartition des activités enregistrées par lieu
-            d’accompagnement. À noter : Les lieux à distance ou à domicile
-            n’apparaissent pas sur la carte.
+            d’activité.
           </span>
         </div>
         <div className="fr-text--bold fr-text--uppercase fr-text--sm fr-text-mention--grey fr-mb-1w">

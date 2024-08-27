@@ -78,6 +78,13 @@ const newCategoryEntryFor =
     [category_type]: [{ label, count, proportion: 0 }],
   })
 
+const toCompute =
+  (total: number) =>
+  <T extends QuantifiedShare>(item: T) => ({
+    ...item,
+    proportion: total > 0 ? Math.round((item.count * 100) / total) : 0,
+  })
+
 const computeProportion =
   <T extends string>(quantifiedShare: Record<T, QuantifiedShare[]>) =>
   (
@@ -86,16 +93,26 @@ const computeProportion =
     total: number,
   ) => ({
     ...quantifiedShare,
-    [category]: mergedQuantifiedShares[category].map((item) => ({
-      ...item,
-      proportion: total > 0 ? Math.round((item.count * 100) / total) : 0,
-    })),
+    [category]: mergedQuantifiedShares[category].map(toCompute(total)),
   })
 
-const withProportions = <T extends string>(
-  mergedQuantifiedShares: Record<T, QuantifiedShare[]>,
+const updateCategories = <T extends string>(
+  quantifiedShare: Record<T, QuantifiedShare[]>,
+  quantifiedShareToProcess: QuantifiedShareToProcess<T>,
 ) =>
-  (Object.keys(mergedQuantifiedShares) as T[]).reduce(
+  isNewCategoryEntryFor(quantifiedShare)(quantifiedShareToProcess)
+    ? newCategoryEntryFor(quantifiedShare)(quantifiedShareToProcess)
+    : appendCategoryEntry(quantifiedShare)(quantifiedShareToProcess)
+
+export const mergeQuantifiedShare = <T extends string>(
+  defaultValue: Record<T, QuantifiedShare[]>,
+  ...quantifiedShares: QuantifiedShareToProcess<T>[][]
+) => {
+  const mergedQuantifiedShares = quantifiedShares
+    .flat()
+    .reduce(updateCategories, defaultValue)
+
+  return (Object.keys(mergedQuantifiedShares) as T[]).reduce(
     (quantifiedShare: Record<T, QuantifiedShare[]>, category: T) =>
       computeProportion(quantifiedShare)(
         category,
@@ -104,22 +121,9 @@ const withProportions = <T extends string>(
       ),
     {} as Record<T, QuantifiedShare[]>,
   )
+}
 
-export const mergeQuantifiedShare = <T extends string>(
-  defaultValue: Record<T, QuantifiedShare[]>,
-  ...quantifiedShares: QuantifiedShareToProcess<T>[][]
-) =>
-  withProportions(
-    quantifiedShares
-      .flat()
-      .reduce(
-        (
-          quantifiedShare: Record<T, QuantifiedShare[]>,
-          quantifiedShareToProcess: QuantifiedShareToProcess<T>,
-        ) =>
-          isNewCategoryEntryFor(quantifiedShare)(quantifiedShareToProcess)
-            ? newCategoryEntryFor(quantifiedShare)(quantifiedShareToProcess)
-            : appendCategoryEntry(quantifiedShare)(quantifiedShareToProcess),
-        defaultValue,
-      ),
-  )
+export const withProportions = <T extends QuantifiedShare>(
+  quantifiedShare: T[],
+): T[] =>
+  quantifiedShare.map(toCompute(quantifiedShare.reduce(toTotalCount, 0)))

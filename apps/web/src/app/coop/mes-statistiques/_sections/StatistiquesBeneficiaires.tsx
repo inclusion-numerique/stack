@@ -37,16 +37,26 @@ const toTotalCountExcept =
   (total: number, { count, label }: QuantifiedShare) =>
     label === except ? total : total + count
 
+const toAnonymesAsNonComunique =
+  (anonymes: number) => (quantifiedShare: QuantifiedShare) =>
+    quantifiedShare.label === 'Non communiqué'
+      ? { ...quantifiedShare, count: quantifiedShare.count + anonymes }
+      : quantifiedShare
+
 export const StatistiquesBeneficiaires = ({
   genresBeneficiaires,
   tranchesAgeBeneficiaires,
   statusBeneficiaires,
   communesBeneficiaires,
+  accompagnementBeneficiaires: { anonymes },
 }: {
   genresBeneficiaires: QuantifiedShare[]
   tranchesAgeBeneficiaires: QuantifiedShare[]
   statusBeneficiaires: QuantifiedShare[]
   communesBeneficiaires: QuantifiedShare[]
+  accompagnementBeneficiaires: {
+    anonymes: number
+  }
 }) => (
   <>
     <h2 className="fr-h5 fr-text-mention--grey">
@@ -141,6 +151,7 @@ export const StatistiquesBeneficiaires = ({
               size="large"
               progress={tranchesAgeBeneficiaires.map(toProgress)}
               colors={tranchesAgeColors}
+              tooltopKey="tranches-age"
             />
           </div>
           <QuantifiedShareLegend
@@ -185,6 +196,7 @@ export const StatistiquesBeneficiaires = ({
               size="large"
               progress={statusBeneficiaires.map(toProgress)}
               colors={statusColors}
+              tooltopKey="status-beneficiaires"
             />
           </div>
           <QuantifiedShareLegend
@@ -224,8 +236,8 @@ export const StatistiquesBeneficiaires = ({
             toTotalCountExcept('Non communiqué'),
             0,
           )}
-          /{communesBeneficiaires.reduce(toTotalCount, 0)} bénéficiaires suivis
-          ou anonymes
+          /{communesBeneficiaires.reduce(toTotalCount, 0) + anonymes}{' '}
+          bénéficiaires suivis ou anonymes
         </span>
       </div>
 
@@ -238,7 +250,9 @@ export const StatistiquesBeneficiaires = ({
           hideLabel: 'Réduire',
           count: 5,
         }}
-        quantifiedShares={communesBeneficiaires}
+        quantifiedShares={communesBeneficiaires.map(
+          toAnonymesAsNonComunique(anonymes),
+        )}
         colors={[communeColor]}
       />
     </div>

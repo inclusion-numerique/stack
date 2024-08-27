@@ -30,7 +30,7 @@ export const StatistiquesGenerales = ({
     <>
       <h2 className="fr-h5 fr-text-mention--grey">
         <span className="ri-line-chart-line fr-mr-1w" aria-hidden />
-        Statistiques générales sur votre activité
+        Statistiques générales sur vos accompagnements
       </h2>
       <div className="fr-grid-row fr-flex-gap-6v">
         <div className="fr-flex fr-direction-column fr-flex-gap-6v fr-col-xl-4 fr-col-12">
@@ -42,7 +42,7 @@ export const StatistiquesGenerales = ({
                 aria-hidden
               />
             </div>
-            <div className="fr-text--bold fr-my-1w">
+            <div className="fr-text--bold fr-mt-1w">
               Accompagnements{' '}
               <Button
                 className="fr-px-1v fr-ml-1v"
@@ -62,16 +62,18 @@ export const StatistiquesGenerales = ({
               >
                 {accompagnements} accompagnements au total dont :
                 <ul>
-                  {modalitesAccompagnement.map(
-                    ({ label, count, participants }) => (
-                      <li key={label}>
-                        {count} {label}{' '}
-                        {participants && (
-                          <>({participants} participants au total)*</>
-                        )}
-                      </li>
-                    ),
-                  )}
+                  <li>
+                    {modalitesAccompagnement[0].count} accompagnements
+                    individuels
+                  </li>
+                  <li>
+                    {modalitesAccompagnement[1].participants} participants lors
+                    de {modalitesAccompagnement[1].count} ateliers*
+                  </li>
+                  <li>
+                    {modalitesAccompagnement[2].count} aides aux démarches
+                    administratives
+                  </li>
                 </ul>
                 *Les ateliers collectifs comptent pour 1 accompagnement par
                 participant. Ex : Un atelier collectif avec 10 participants

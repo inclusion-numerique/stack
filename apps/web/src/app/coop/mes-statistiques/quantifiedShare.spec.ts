@@ -1,4 +1,4 @@
-import { mergeQuantifiedShare } from './quantifiedShare'
+import { mergeQuantifiedShare, withProportions } from './quantifiedShare'
 
 describe('merge quantified share', () => {
   it('should merge accompagnementCollectifsStats and accompagnementDemarchesStats', () => {
@@ -74,5 +74,27 @@ describe('merge quantified share', () => {
         { label: 'Tablette', count: 2, proportion: 50 },
       ],
     })
+  })
+
+  it('should compute proportion', () => {
+    const quantifiedShare = [
+      { label: 'Lieu d’activité', count: 2, proportion: 0 },
+      { label: '2h00', count: 1, proportion: 0 },
+      { label: 'Non communiqué', count: 3, proportion: 0 },
+      { label: 'Ordinateur', count: 3, proportion: 0 },
+      { label: 'Téléphone', count: 7, proportion: 0 },
+      { label: 'Tablette', count: 1, proportion: 0 },
+    ]
+
+    const quantifiedShareWithProportions = withProportions(quantifiedShare)
+
+    expect(quantifiedShareWithProportions).toStrictEqual([
+      { label: 'Lieu d’activité', count: 2, proportion: 12 },
+      { label: '2h00', count: 1, proportion: 6 },
+      { label: 'Non communiqué', count: 3, proportion: 18 },
+      { label: 'Ordinateur', count: 3, proportion: 18 },
+      { label: 'Téléphone', count: 7, proportion: 41 },
+      { label: 'Tablette', count: 1, proportion: 6 },
+    ])
   })
 })
