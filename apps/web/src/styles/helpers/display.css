@@ -1,0 +1,11 @@
+.fr-flex {
+  display: flex;
+}
+
+.fr-display-block {
+  display: block;
+}
+
+.fr-display-inline-block {
+  display: inline-block;
+}

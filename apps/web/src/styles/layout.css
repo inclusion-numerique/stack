@@ -1,0 +1,32 @@
+/* Layout setup */
+html,
+body,
+body > div:not(#environment-information, #print) {
+  min-height: 100% !important;
+  height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+textarea {
+  resize: none;
+}
+
+:root {
+  --slim-grey-border: 1px solid var(--border-default-grey);
+  --border-width: 1px;
+  --border-style: solid;
+}
+
+body {
+  --hover-alpha: color-mix(in srgb, var(--hover), transparent 66%);
+  --active-alpha: color-mix(in srgb, var(--active), transparent 66%);
+}

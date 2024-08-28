@@ -413,7 +413,7 @@ const ActiviteDetailsModal = ({
           </div>
         )}
       </div>
-      <p className="fr-mt-2v fr-text--sm fr-mb-0 fr-text-mention--grey fr-ellipsis">
+      <p className="fr-mt-2v fr-text--sm fr-mb-0 fr-text-mention--grey">
         <span className="fr-icon-time-line fr-icon--sm" /> Durée :{' '}
         {dureeAccompagnementLabels[duree]} ·{' '}
         <span className="fr-icon-map-pin-2-line fr-icon--sm" /> {locationString}

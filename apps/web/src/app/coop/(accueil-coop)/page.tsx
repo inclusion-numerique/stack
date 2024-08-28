@@ -5,6 +5,7 @@ import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
+import Card from '../../../components/Card'
 import { CreateCraModalDefinition } from '../mes-activites/CreateCraModalDefinition'
 
 const Page = async () => {
@@ -90,6 +91,26 @@ const Page = async () => {
             <span className="ri-information-line fr-mr-1w" aria-hidden />
             Plus d’informations sur la Coop
           </h2>
+          <div className="fr-grid-row fr-grid-row--gutters">
+            <div className="fr-col fr-col-md-6">
+              <Card
+                noBorder
+                className="fr-enlarge-link fr-border fr-border-radius--16"
+                title={<span>Le Centre d’aide</span>}
+                description="Nous vous guidons dans la prise en main des différentes fonctionnalités de la Coop de la médiation numérique."
+                href="#"
+              />
+            </div>
+            <div className="fr-col fr-col-md-6">
+              <Card
+                noBorder
+                className="fr-enlarge-link fr-border fr-border-radius--16"
+                title={<span>Prochaines évolutions</span>}
+                description="Retrouvez ici les prochaines évolutions de la plateforme et comment contribuer à son amélioration."
+                href="#"
+              />
+            </div>
+          </div>
         </section>
         <section className="fr-flex-xl fr-flex-gap-4v fr-background-alt--blue-france fr-p-4w fr-border-radius--16">
           <div>
