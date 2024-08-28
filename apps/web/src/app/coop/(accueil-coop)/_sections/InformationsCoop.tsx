@@ -1,0 +1,55 @@
+import React from 'react'
+import Card from '@app/web/components/Card'
+
+export const InformationsCoop = () => (
+  <>
+    <h2 className="fr-h5 fr-text-mention--grey">
+      <span className="ri-information-line fr-mr-1w" aria-hidden />
+      Plus d’informations sur la Coop
+    </h2>
+    <div className="fr-grid-row fr-grid-row--gutters">
+      <div className="fr-col-lg-6 fr-col-md-12 fr-col-sm-6 fr-col-12">
+        <Card
+          noBorder
+          arrowTop
+          arrowSm
+          className="fr-border fr-border-radius--16 wip-outline"
+          title={
+            <span className="fr-inline-flex fr-align-items-center">
+              <span
+                className="ri-question-line fr-text-default--info fr-mr-1w"
+                aria-hidden
+              />
+              <span className="fr-text--uppercase fr-text--sm fr-mb-0 fr-text-default--info">
+                Le centre d’aide
+              </span>
+            </span>
+          }
+          description="Nous vous guidons dans la prise en main des différentes fonctionnalités de la Coop de la médiation numérique."
+          href="#"
+        />
+      </div>
+      <div className="fr-col-lg-6 fr-col-md-12 fr-col-sm-6 fr-col-12">
+        <Card
+          noBorder
+          arrowTop
+          arrowSm
+          className="fr-border fr-border-radius--16 wip-outline"
+          title={
+            <span className="fr-inline-flex fr-align-items-center">
+              <span
+                className="ri-flashlight-line fr-text-label--yellow-tournesol fr-mr-1w"
+                aria-hidden
+              />
+              <span className="fr-text--uppercase fr-text--sm fr-mb-0 fr-text-label--yellow-tournesol">
+                Prochaines évolutions
+              </span>
+            </span>
+          }
+          description="Retrouvez ici les prochaines évolutions de la plateforme et comment contribuer à son amélioration."
+          href="#"
+        />
+      </div>
+    </div>
+  </>
+)
