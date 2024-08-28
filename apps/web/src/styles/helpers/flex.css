@@ -142,6 +142,13 @@
   flex-shrink: 2;
 }
 
+/* sm flex rules */
+@media (min-width: 36em) {
+  .fr-flex-sm {
+    display: flex;
+  }
+}
+
 /* md flex rules */
 @media (min-width: 48em) {
   .fr-flex-md {

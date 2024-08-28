@@ -1,11 +1,12 @@
-import Button from '@codegouvfr/react-dsfr/Button'
 import React from 'react'
 import Link from 'next/link'
+import { Button } from '@codegouvfr/react-dsfr/Button'
+import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import Card from '../../../components/Card'
+import Card from '@app/web/components/Card'
 import { CreateCraModalDefinition } from '../mes-activites/CreateCraModalDefinition'
 
 const Page = async () => {
@@ -23,12 +24,50 @@ const Page = async () => {
             <span className="ri-apps-line fr-mr-1w" aria-hidden />
             Mes actions rapides
           </h2>
+          <div className="fr-grid-row fr-grid-row--gutters">
+            <div className="fr-col-lg-6 fr-col-md-12 fr-col-sm-6 fr-col-12">
+              <Button
+                type="button"
+                {...CreateCraModalDefinition.buttonProps}
+                className="fr-link--quick-action"
+              >
+                <span
+                  className="ri-add-line ri-2x fr-mr-3w fr-text--regular"
+                  aria-hidden
+                />
+                Enregistrer une activité
+              </Button>
+            </div>
+            <div className="fr-col-lg-6 fr-col-md-12 fr-col-sm-6 fr-col-12">
+              <Link
+                className="fr-link--quick-action"
+                href="/coop/mes-beneficiaires/nouveau"
+              >
+                <span
+                  className="ri-user-add-line ri-2x fr-mr-3w fr-text--regular"
+                  aria-hidden
+                />
+                Créer un·e bénéficiaire
+              </Link>
+            </div>
+          </div>
         </section>
         <section className="fr-my-6w">
-          <h2 className="fr-h5 fr-text-mention--grey">
-            <span className="ri-chat-poll-line fr-mr-1w" aria-hidden />
-            Mes statistiques
-          </h2>
+          <div className="fr-flex fr-flex-wrap fr-flex-gap-4v fr-align-items-center fr-justify-content-space-between fr-mb-3w">
+            <h2 className="fr-h5 fr-text-mention--grey fr-mb-0">
+              <span className="ri-chat-poll-line fr-mr-1w" aria-hidden />
+              statistiques
+            </h2>
+            <SegmentedControl
+              small
+              hideLegend
+              legend="Période de statistiques"
+              segments={[
+                { label: 'Sur les 30 derniers jours' },
+                { label: 'Sur les 7 derniers jours' },
+              ]}
+            />
+          </div>
           <div className="fr-grid-row fr-grid-row--gutters">
             <div className="fr-col-lg-6 fr-col-md-12 fr-col-sm-6 fr-col-12">
               <div className="fr-p-3w fr-border-radius--16 fr-background-alt--brown-caramel fr-height-full">
@@ -64,10 +103,19 @@ const Page = async () => {
           </div>
         </section>
         <section className="fr-my-6w">
-          <h2 className="fr-h5 fr-text-mention--grey">
-            <span className="ri-service-line fr-mr-1w" aria-hidden />
-            Mes 3 dernières activités enregistrés
-          </h2>
+          <div className="fr-flex fr-flex-wrap fr-flex-gap-4v fr-align-items-center fr-justify-content-space-between fr-mb-3w">
+            <h2 className="fr-h5 fr-text-mention--grey fr-mb-0">
+              <span className="ri-service-line fr-mr-1w" aria-hidden />
+              Mes 3 dernières activités enregistrés
+            </h2>
+            <Link
+              className="fr-btn fr-btn--sm fr-btn--tertiary-no-outline"
+              href="/coop/mes-activites"
+            >
+              Voir toutes mes activités
+            </Link>
+          </div>
+
           <div className="fr-text--center fr-background-alt--blue-france fr-p-6w fr-border-radius--16">
             <p className="fr-text--bold fr-text--lg fr-mb-1w">
               Vous n’avez pas encore enregistré d’activité
@@ -92,20 +140,44 @@ const Page = async () => {
             Plus d’informations sur la Coop
           </h2>
           <div className="fr-grid-row fr-grid-row--gutters">
-            <div className="fr-col fr-col-md-6">
+            <div className="fr-col-lg-6 fr-col-md-12 fr-col-sm-6 fr-col-12">
               <Card
                 noBorder
-                className="fr-enlarge-link fr-border fr-border-radius--16"
-                title={<span>Le Centre d’aide</span>}
+                arrowTop
+                arrowSm
+                className="fr-border fr-border-radius--16 wip-outline"
+                title={
+                  <span className="fr-inline-flex fr-align-items-center">
+                    <span
+                      className="ri-question-line fr-text-default--info fr-mr-1w"
+                      aria-hidden
+                    />
+                    <span className="fr-text--uppercase fr-text--sm fr-mb-0 fr-text-default--info">
+                      Le centre d’aide
+                    </span>
+                  </span>
+                }
                 description="Nous vous guidons dans la prise en main des différentes fonctionnalités de la Coop de la médiation numérique."
                 href="#"
               />
             </div>
-            <div className="fr-col fr-col-md-6">
+            <div className="fr-col-lg-6 fr-col-md-12 fr-col-sm-6 fr-col-12">
               <Card
                 noBorder
-                className="fr-enlarge-link fr-border fr-border-radius--16"
-                title={<span>Prochaines évolutions</span>}
+                arrowTop
+                arrowSm
+                className="fr-border fr-border-radius--16 wip-outline"
+                title={
+                  <span className="fr-inline-flex fr-align-items-center">
+                    <span
+                      className="ri-flashlight-line fr-text-label--yellow-tournesol fr-mr-1w"
+                      aria-hidden
+                    />
+                    <span className="fr-text--uppercase fr-text--sm fr-mb-0 fr-text-label--yellow-tournesol">
+                      Prochaines évolutions
+                    </span>
+                  </span>
+                }
                 description="Retrouvez ici les prochaines évolutions de la plateforme et comment contribuer à son amélioration."
                 href="#"
               />
