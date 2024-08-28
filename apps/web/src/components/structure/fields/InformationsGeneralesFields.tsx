@@ -1,7 +1,9 @@
 import { UseFormReturn } from 'react-hook-form'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import RequiredFieldsDisclaimer from '@app/ui/components/Form/RequiredFieldsDisclaimer'
-import AdresseBanFormField from '@app/web/components/form/AdresseBanFormField'
+import AdresseBanFormField, {
+  type AdressBanFormFieldOption,
+} from '@app/web/components/form/AdresseBanFormField'
 import RnaInputInfo from '@app/web/rna/RnaInputInfo'
 import SiretInputInfo from '@app/web/siret/SiretInputInfo'
 import { InformationsGeneralesData } from '@app/web/app/structure/InformationsGeneralesValidation'
@@ -12,10 +14,14 @@ export const InformationsGeneralesFields = <
   nom,
   form,
   className,
+  initialAdresseBanOptions,
+  adresseBanDefaultValue,
 }: {
   nom?: string
   form: UseFormReturn<T>
   className?: string
+  initialAdresseBanOptions?: AdressBanFormFieldOption[]
+  adresseBanDefaultValue?: AdressBanFormFieldOption
 }) => {
   const { control, formState } =
     form as unknown as UseFormReturn<InformationsGeneralesData>
@@ -37,6 +43,8 @@ export const InformationsGeneralesFields = <
         placeholder="Rechercher l’adresse"
         control={control}
         disabled={formState.isSubmitting}
+        defaultOptions={initialAdresseBanOptions}
+        defaultValue={adresseBanDefaultValue}
       />
       <InputFormField
         path="complementAdresse"

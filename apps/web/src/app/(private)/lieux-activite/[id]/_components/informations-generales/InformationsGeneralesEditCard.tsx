@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
+import { DefaultValues, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createToast } from '@app/ui/toast/createToast'
 import { trpc } from '@app/web/trpc'
@@ -14,6 +14,9 @@ import {
   InformationsGeneralesValidation,
 } from '@app/web/app/structure/InformationsGeneralesValidation'
 import { InformationsGeneralesFields } from '@app/web/components/structure/fields/InformationsGeneralesFields'
+import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
+import { AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
+import { getAdresseBanLabel } from '@app/web/external-apis/ban/adresseBanLabel'
 import { InformationsGeneralesView } from './InformationsGeneralesView'
 
 const InformationsGeneralesEditCard = (props: {
@@ -29,9 +32,36 @@ const InformationsGeneralesEditCard = (props: {
 }) => {
   const mutation = trpc.lieuActivite.updateInformationsGenerales.useMutation()
   const router = useRouter()
+
+  /**
+   * We need to create the form default value AdressBanData from the existing structure.
+   * Also we have to create initial AdressBanData Option for the search select
+   * to have it pre-populated with the existing structure data.
+   */
+  const { codeInsee, codePostal, commune, adresse } = props
+
+  const adresseBanData = banDefaultValueToAdresseBanData({
+    codeInsee: codeInsee ?? undefined,
+    codePostal,
+    commune,
+    nom: adresse,
+  })
+  const adresseBanLabel = getAdresseBanLabel(adresseBanData)
+  adresseBanData.label = adresseBanLabel
+
+  const defaultValues = {
+    ...props,
+    adresseBan: adresseBanData,
+  } satisfies DefaultValues<InformationsGeneralesData>
+
+  const initialAdresseBanOption = {
+    label: adresseBanLabel,
+    value: adresseBanData,
+  } satisfies AdressBanFormFieldOption
+
   const form = useForm<InformationsGeneralesData>({
     resolver: zodResolver(InformationsGeneralesValidation),
-    defaultValues: props,
+    defaultValues,
   })
 
   const handleMutation = async (data: InformationsGeneralesData) => {
@@ -75,6 +105,8 @@ const InformationsGeneralesEditCard = (props: {
           className="fr-mb-4w"
           {...props}
           form={form}
+          initialAdresseBanOptions={[initialAdresseBanOption]}
+          adresseBanDefaultValue={initialAdresseBanOption}
         />
       }
       view={<InformationsGeneralesView {...props} />}

@@ -59,8 +59,9 @@ export const LieuActivite = ({
       <h2 className="fr-text--lg fr-mb-0">{nom}</h2>
       <div className="fr-text--sm fr-text-mention--grey fr-flex fr-direction-column fr-flex-gap-1v">
         <div>
-          <span className="ri-map-pin-2-line fr-mr-1v" /> {adresse}{' '}
-          {complementAdresse}, {codePostal} {commune}
+          <span className="ri-map-pin-2-line fr-mr-1v" /> {adresse}
+          {complementAdresse ? ` ${complementAdresse}` : ''}, {codePostal}{' '}
+          {commune}
         </div>
         {typologies.length > 0 && (
           <div className="fr-flex fr-align-items-center">
