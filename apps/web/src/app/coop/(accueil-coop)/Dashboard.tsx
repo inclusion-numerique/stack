@@ -14,10 +14,37 @@ export const Dashboard = ({
   firstName,
   name,
   email,
+  statistiques,
 }: {
   firstName: string | null
   name: string | null
   email: string
+  statistiques: {
+    accompagnementBeneficiaires: {
+      dernierMois: {
+        accompagnements: number
+        beneficiaires: number
+        anonymes: number
+      }
+      derniereSemaine: {
+        accompagnements: number
+        beneficiaires: number
+        anonymes: number
+      }
+    }
+    modalitesAccompagnement: {
+      dernierMois: {
+        label: string
+        count: number
+        participants: number
+      }[]
+      derniereSemaine: {
+        label: string
+        count: number
+        participants: number
+      }[]
+    }
+  }
 }) => (
   <CoopPageContainer size={794}>
     <SkipLinksPortal links={defaultSkipLinks} />
@@ -29,7 +56,7 @@ export const Dashboard = ({
         <ActionsRapides />
       </section>
       <section className="fr-my-6w">
-        <Statistiques />
+        <Statistiques {...statistiques} />
       </section>
       <section className="fr-my-6w">
         <DernieresActivites />
