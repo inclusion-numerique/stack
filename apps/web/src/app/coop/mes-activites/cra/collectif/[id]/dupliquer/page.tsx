@@ -26,13 +26,19 @@ const DupliquerPage = async ({
     return null
   }
 
-  const defaultValuesWithoutId = {
+  const defaultValuesWithoutIds = {
     ...defaultValues,
     id: undefined,
+    participantsAnonymes: defaultValues.participantsAnonymes
+      ? {
+          ...defaultValues.participantsAnonymes,
+          id: undefined,
+        }
+      : undefined,
   }
 
   redirect(
-    `/coop/mes-activites/cra/collectif?${retour ? `retour=${retour}&` : ''}v=${encodeSerializableState(defaultValuesWithoutId)}`,
+    `/coop/mes-activites/cra/collectif?${retour ? `retour=${retour}&` : ''}v=${encodeSerializableState(defaultValuesWithoutIds)}`,
   )
 
   return null

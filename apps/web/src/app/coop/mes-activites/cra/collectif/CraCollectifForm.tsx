@@ -133,8 +133,6 @@ const CraCollectifForm = ({
     }, []),
   )
 
-  const lieuAtelierAutreCommuneRenderKey = watch('lieuAtelierAutreCommune')?.id
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <InputFormField
@@ -216,7 +214,6 @@ const CraCollectifForm = ({
           searchOptions={{ type: 'municipality' }}
           defaultOptions={initialCommunesOptions}
           defaultValue={lieuAtelierAutreCommuneDefaultValue}
-          key={lieuAtelierAutreCommuneRenderKey}
         />
       )}
       {showLieuAccompagnementLieuActivite && (
