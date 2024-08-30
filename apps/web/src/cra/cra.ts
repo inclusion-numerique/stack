@@ -57,7 +57,7 @@ export const dureeAccompagnementValues = Object.keys(
 export const lieuAccompagnementLabels: { [key in LieuAccompagnement]: string } =
   {
     LieuActivite: 'Lieu d’activité',
-    Domicile: 'Au domicile de l’usager',
+    Domicile: 'À domicile',
     ADistance: 'À distance',
   }
 

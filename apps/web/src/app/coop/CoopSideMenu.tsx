@@ -18,7 +18,7 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
     {
       text: (
         <>
-          <span className="fr-icon-home-4-line fr-mr-1w" />
+          <span className="ri-home-line ri-xl fr-mr-1w fr-text--regular" />
           Accueil
         </>
       ),
@@ -30,15 +30,19 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
     {
       text: (
         <>
-          <span
-            className="fr-mb-0 ri-service-line fr-mr-1w"
-            style={{
-              width: 24,
-              height: 24,
-              fontSize: 22,
-              fontWeight: 400,
-            }}
-          />
+          <span className="ri-chat-poll-line ri-xl fr-mr-1w fr-text--regular" />
+          Mes statistiques
+        </>
+      ),
+      linkProps: {
+        href: '/coop/mes-statistiques',
+      },
+      isActive: pathname?.startsWith('/coop/mes-statistiques'),
+    },
+    {
+      text: (
+        <>
+          <span className="ri-service-line ri-xl fr-mr-1w fr-text--regular" />
           Mes activités
         </>
       ),
@@ -50,7 +54,7 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
     {
       text: (
         <>
-          <span className="fr-icon-user-heart-line fr-mr-1w" />
+          <span className="ri-user-heart-line ri-xl fr-mr-1w fr-text--regular" />
           Mes bénéficiaires
         </>
       ),
@@ -62,7 +66,7 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
     {
       text: (
         <>
-          <span className="fr-icon-parent-line fr-mr-1w wip-outline" />
+          <span className="ri-parent-line ri-xl fr-mr-1w fr-text--regular wip-outline" />
           Mes ateliers
         </>
       ),
@@ -74,7 +78,7 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
     {
       text: (
         <>
-          <span className="fr-icon-compass-3-line fr-mr-1w wip-outline" />
+          <span className="ri-apps-2-line ri-xl fr-mr-1w fr-text--regular wip-outline" />
           Mes outils
         </>
       ),
@@ -104,9 +108,7 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
 
   return (
     <SideMenu
-      classes={{
-        item: styles.item,
-      }}
+      classes={{ item: styles.item }}
       items={items}
       burgerMenuButtonText="Menu"
       sticky

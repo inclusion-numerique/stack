@@ -23,6 +23,7 @@ const Layout = async ({ children }: PropsWithChildren) => {
       <div
         style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}
       >
+        <div id="skip-links" />
         <Header user={user} fullWidth />
         <InscriptionStepsLayout>
           <div className="fr-mb-32v fr-p-12v fr-width-full fr-border-radius--8 fr-background-default--grey fr-mt-32v">
@@ -51,6 +52,7 @@ const Layout = async ({ children }: PropsWithChildren) => {
     <div
       style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}
     >
+      <div id="skip-links" />
       <Header user={user} fullWidth />
 
       <div

@@ -102,6 +102,10 @@
     align-items: center;
 }
 
+.fr-align-items-baseline {
+  align-items: baseline;
+}
+
 .fr-align-items-start {
     align-items: flex-start;
 }
