@@ -5,6 +5,7 @@ import type { ReadonlyURLSearchParams } from 'next/dist/client/components/naviga
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 import { useMemo } from 'react'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
+import classNames from 'classnames'
 import PeriodFilter, {
   PeriodFilterValue,
 } from '@app/web/components/filters/PeriodFilter'
@@ -71,12 +72,14 @@ const ActivitesFilterTags = ({
   communesOptions,
   departementsOptions,
   lieuxActiviteOptions,
+  className,
 }: {
   defaultFilters: ActivitesFilters
   initialBeneficiairesOptions: BeneficiaireOption[]
   communesOptions: SelectOption[]
   lieuxActiviteOptions: SelectOption[]
   departementsOptions: SelectOption[]
+  className?: string
 }) => {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -173,7 +176,12 @@ const ActivitesFilterTags = ({
   }
 
   return (
-    <div className="fr-flex fr-align-items-start fr-flex-gap-2v ">
+    <div
+      className={classNames(
+        'fr-flex fr-align-items-start fr-flex-gap-2v',
+        className,
+      )}
+    >
       <p className="fr-text--sm fr-text--medium fr-mb-0 fr-mt-1v">
         Filtres&nbsp;:
       </p>

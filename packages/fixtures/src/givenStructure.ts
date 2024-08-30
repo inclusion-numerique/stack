@@ -7,6 +7,7 @@ export const givenStructure = <
     adresse: string
     commune: string
     codePostal: string
+    codeInsee: string
   },
 >(
   data: T,

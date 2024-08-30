@@ -1,17 +1,12 @@
 import Link from 'next/link'
-import departements from '@app/web/data/collectivites-territoriales/departements.json'
-
-const matchingDepartement =
-  (codeInsee?: string | null) =>
-  ({ code }: { code: string }) =>
-    codeInsee?.startsWith(code)
+import { getDepartementFromCodeInsee } from '@app/web/utils/getDepartementFromCodeInsee'
 
 export const StatistiquesTerritoriales = ({
   codeInsee,
 }: {
   codeInsee?: string | null
 }) => {
-  const departement = departements.find(matchingDepartement(codeInsee))
+  const departement = codeInsee ? getDepartementFromCodeInsee(codeInsee) : null
 
   return (
     <div className="fr-background-alt--blue-france fr-p-4w fr-mb-3w fr-border-radius--16">

@@ -22,8 +22,6 @@ export const upsertCraFixtures = async ({
     ...crasCollectifs,
   ]
 
-  console.log('ALL CRAS', allCras)
-
   await Promise.all(
     crasIndividuels.map(({ cra }) =>
       transaction.craIndividuel.upsert({

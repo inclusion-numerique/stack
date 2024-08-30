@@ -3,7 +3,7 @@ import { prismaClient } from '@app/web/prismaClient'
 import type { Prisma } from '@prisma/client'
 import { output } from '@app/fixtures/output'
 import { fixtureUsers, teamAdministrateurs } from '@app/fixtures/users'
-import { fixtureStructures } from '@app/fixtures/structures'
+import { seedStructures } from '@app/fixtures/structures'
 import { fixtureBeneficiaires } from '@app/fixtures/beneficiaires'
 import {
   fixtureCrasCollectifs,
@@ -32,15 +32,7 @@ const deleteAll = async (transaction: Prisma.TransactionClient) => {
 }
 
 const seed = async (transaction: Prisma.TransactionClient) => {
-  await Promise.all(
-    fixtureStructures.map((structure) =>
-      transaction.structure.upsert({
-        where: { id: structure.id },
-        create: structure,
-        update: structure,
-      }),
-    ),
-  )
+  await seedStructures(transaction)
 
   await Promise.all(
     fixtureUsers.map((user) =>

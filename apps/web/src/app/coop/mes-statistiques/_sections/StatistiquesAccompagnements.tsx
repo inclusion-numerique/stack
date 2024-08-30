@@ -138,14 +138,14 @@ export const StatistiquesAccompagnements = ({
                 label: 'Médiation numérique',
                 nativeInputProps: {
                   checked: isMediationNumeriqueAccompagnement,
-                  onClick: () => setIsMediationNumeriqueAccompagnement(true),
+                  onChange: () => setIsMediationNumeriqueAccompagnement(true),
                 },
               },
               {
                 label: 'Démarches administratives',
                 nativeInputProps: {
                   checked: !isMediationNumeriqueAccompagnement,
-                  onClick: () => setIsMediationNumeriqueAccompagnement(false),
+                  onChange: () => setIsMediationNumeriqueAccompagnement(false),
                 },
               },
             ]}

@@ -129,6 +129,12 @@ export const thematiqueAccompagnementLabels: {
   CultureNumerique: 'Culture numérique',
 }
 
+export const thematiqueAccompagnementShortLabels = {
+  ...thematiqueAccompagnementLabels,
+  ReseauxSociaux: 'Réseaux sociaux',
+  SecuriteNumerique: 'Sécurité numérique',
+}
+
 export const thematiqueAccompagnementHints: {
   [key in ThematiqueAccompagnement]?: string[]
 } = {

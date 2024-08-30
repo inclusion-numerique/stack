@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { AccompagnementBarChart } from '../_components/AccompagnementBarChart'
 import { AccompagnementLabel, QuantifiedShare } from '../quantifiedShare'
 
@@ -60,7 +61,7 @@ export const StatistiquesGenerales = ({
                 role="tooltip"
                 aria-hidden
               >
-                {accompagnements} accompagnements au total dont :
+                {accompagnements} accompagnements au total dont&nbsp;:
                 <ul>
                   <li>
                     {modalitesAccompagnement[0].count} accompagnements
@@ -76,7 +77,7 @@ export const StatistiquesGenerales = ({
                   </li>
                 </ul>
                 *Les ateliers collectifs comptent pour 1 accompagnement par
-                participant. Ex : Un atelier collectif avec 10 participants
+                participant. Ex&nbsp;: Un atelier collectif avec 10 participants
                 compte pour 10 accompagnements.
               </span>
             </div>
@@ -94,8 +95,14 @@ export const StatistiquesGenerales = ({
               Bénéficiaires accompagnés
             </div>
             <div className="fr-text-mention--grey">
-              <div>{beneficiaires} bénéficiaires suivis</div>
-              <div>{anonymes} bénéficiaires anonymes</div>
+              <div>
+                {beneficiaires} bénéficiaire{sPluriel(beneficiaires)} suivi
+                {sPluriel(beneficiaires)}
+              </div>
+              <div>
+                {anonymes} bénéficiaire{sPluriel(beneficiaires)} anonyme
+                {sPluriel(beneficiaires)}
+              </div>
             </div>
           </div>
         </div>
@@ -123,7 +130,7 @@ export const StatistiquesGenerales = ({
                 d’activités enregistrées (accompagnement individuel, atelier
                 collectif et aides aux démarches administratives).
                 <br />
-                <br />À noter : Les ateliers collectifs comptent pour 1
+                <br />À noter&nbsp;: Les ateliers collectifs comptent pour 1
                 accompagnement par participant. Ex : Un atelier collectif avec
                 10 participants compte pour 10 accompagnements.
               </span>
@@ -138,14 +145,14 @@ export const StatistiquesGenerales = ({
                   label: 'Par mois',
                   nativeInputProps: {
                     checked: isAccompagnementCountByMonth,
-                    onClick: () => setIsAccompagnementCountByMonth(true),
+                    onChange: () => setIsAccompagnementCountByMonth(true),
                   },
                 },
                 {
-                  label: 'Par jours',
+                  label: 'Par jour',
                   nativeInputProps: {
                     checked: !isAccompagnementCountByMonth,
-                    onClick: () => setIsAccompagnementCountByMonth(false),
+                    onChange: () => setIsAccompagnementCountByMonth(false),
                   },
                 },
               ]}

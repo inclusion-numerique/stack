@@ -2,6 +2,7 @@
 
 import classNames from 'classnames'
 import { motion } from 'framer-motion'
+import { Fragment } from 'react'
 
 const ProgressBar = ({
   progress = [],
@@ -31,7 +32,7 @@ const ProgressBar = ({
     )}
   >
     {progress.map(({ value, label }, index) => (
-      <>
+      <Fragment key={label}>
         {tooltopKey && (
           <span
             className="fr-tooltip fr-placement fr-text--md"
@@ -82,7 +83,7 @@ const ProgressBar = ({
             {displayProgress && `${value ?? 0}%`}
           </motion.span>
         </motion.span>
-      </>
+      </Fragment>
     ))}
   </span>
 )

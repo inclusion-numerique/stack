@@ -189,5 +189,6 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
     })
   }
 
+  console.log('RESET USER', resetedUser)
   return resetedUser
 }

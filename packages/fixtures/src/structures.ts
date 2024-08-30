@@ -15,8 +15,9 @@ export const mediateque = givenStructure({
   id: '36929ed7-3b6f-4ed3-9924-b5e1a6c27096',
   nom: 'Exemple de Mediateque',
   adresse: '2 rue des livres',
-  codePostal: '75002',
-  commune: 'Paris 2eme',
+  codePostal: '69002',
+  codeInsee: '69382',
+  commune: 'Lyon 2eme',
   typologies: [
     typologieStructureValue.BIB,
     typologieStructureValue.MUNI,
@@ -30,6 +31,7 @@ export const centreSocial = givenStructure({
   adresse: '3 rue des amis',
   codePostal: '75003',
   commune: 'Paris 3eme',
+  codeInsee: '75103',
   typologies: [
     typologieStructureValue.PREVENTION,
     typologieStructureValue.REG,
@@ -39,3 +41,18 @@ export const centreSocial = givenStructure({
 })
 
 export const fixtureStructures = [structureEmployeuse, mediateque, centreSocial]
+
+export const seedStructures = (transaction: Prisma.TransactionClient) =>
+  Promise.all(
+    fixtureStructures.map((structure) =>
+      transaction.structure.upsert({
+        where: { id: structure.id },
+        create: structure,
+        update: structure,
+        select: {
+          id: true,
+          nom: true,
+        },
+      }),
+    ),
+  )

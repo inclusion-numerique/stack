@@ -5,6 +5,7 @@ import {
   trancheAgeLabels,
 } from '@app/web/beneficiaire/beneficiaire'
 import { QuantifiedShare } from '../quantifiedShare'
+import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 
 const beneficiaireCategories = [
   'genresBeneficiaires',
@@ -19,7 +20,13 @@ export type BeneficiaireQuantifiedShare = QuantifiedShare & {
   category_type: BeneficiaireCategory
 }
 
-export const getBeneficiaireStats = async (mediateurId: string) =>
+export const getBeneficiaireStats = async ({
+  mediateurId,
+  activitesFilters,
+}: {
+  mediateurId: string
+  activitesFilters: ActivitesFilters
+}) =>
   prismaClient.$queryRaw<BeneficiaireQuantifiedShare[]>`
       WITH total_count AS (
           SELECT COUNT(*)::integer AS total
@@ -83,7 +90,13 @@ export const getBeneficiaireStats = async (mediateurId: string) =>
       FROM categorized_data, total_count AS total;
   `
 
-export const getBeneficiairesAnonymesStats = async (mediateurId: string) =>
+export const getBeneficiairesAnonymesStats = async ({
+  mediateurId,
+  activitesFilters,
+}: {
+  mediateurId: string
+  activitesFilters: ActivitesFilters
+}) =>
   prismaClient.$queryRaw<BeneficiaireQuantifiedShare[]>`
       WITH total_participants AS (
           SELECT

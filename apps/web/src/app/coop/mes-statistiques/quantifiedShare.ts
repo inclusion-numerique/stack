@@ -1,15 +1,16 @@
+export type LabelAndCount<TLabel = string> = {
+  label: TLabel
+  count: number
+}
+
 export type QuantifiedShareToProcess<
   TCategoryType = string,
   TLabel = string,
-> = {
-  label: TLabel
-  count: number
+> = LabelAndCount<TLabel> & {
   category_type: TCategoryType
 }
 
-export type QuantifiedShare<TLabel = string> = {
-  label: TLabel
-  count: number
+export type QuantifiedShare<TLabel = string> = LabelAndCount<TLabel> & {
   proportion: number
 }
 
