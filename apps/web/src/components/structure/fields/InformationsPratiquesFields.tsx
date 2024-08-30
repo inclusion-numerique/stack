@@ -49,6 +49,7 @@ export const InformationsPratiquesFields = <
               href="https://acceslibre.beta.gouv.fr"
               target="_blank"
               className="fr-link fr-link--xs"
+              title="Site d’accès libre (nouvel onglet)"
             >
               accès libre
             </Link>{' '}
@@ -56,6 +57,28 @@ export const InformationsPratiquesFields = <
           </>
         }
         placeholder="https://acceslibre.beta.gouv.fr/..."
+        control={control}
+        disabled={formState.isSubmitting}
+      />
+      <InputFormField
+        path="priseRdv"
+        label="Prise de rendez-vous en ligne"
+        hint={
+          <>
+            Si la structure dispose d’un outil en ligne de prise de rendez-vous
+            (par exemple RDV Aide Numérique{' '}
+            <Link
+              href="https://www.rdv-aide-numerique.fr/presentation_agent"
+              target="_blank"
+              className="fr-link fr-link--xs"
+              title="Site de RDV Aide Numérique (nouvel onglet)"
+            >
+              https://www.rdv-aide-numerique.fr/presentation_agent
+            </Link>
+            ) , vous pouvez ajouter le lien ici.
+          </>
+        }
+        placeholder="https://..."
         control={control}
         disabled={formState.isSubmitting}
       />

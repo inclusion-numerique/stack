@@ -60,6 +60,7 @@ export const structuresRouter = router({
         publicsSpecifiquementAdresses,
         services,
         modalitesAccompagnement,
+        priseRdv,
       },
       ctx: { user },
     }) => {
@@ -125,6 +126,7 @@ export const structuresRouter = router({
           publicsSpecifiquementAdresses:
             publicsSpecifiquementAdresses ?? undefined,
           services: services ?? undefined,
+          priseRdv: priseRdv ?? undefined,
         },
       })
 

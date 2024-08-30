@@ -89,6 +89,7 @@ const setInformationsPratiquesFields = ({
   siteWeb,
   ficheAccesLibre,
   horaires,
+  priseRdv,
 }: Omit<InformationsPratiquesData, 'id'>) => ({
   itinerance:
     lieuItinerant == null
@@ -99,6 +100,7 @@ const setInformationsPratiquesFields = ({
   siteWeb: siteWeb ?? undefined,
   ficheAccesLibre: ficheAccesLibre ?? undefined,
   horaires: horaires ?? undefined,
+  priseRdv: priseRdv ?? undefined,
 })
 
 const setDescriptionFields = ({
