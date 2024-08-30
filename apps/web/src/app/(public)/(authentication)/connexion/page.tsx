@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
-import { PrismaClient } from '@prisma/client'
 import SigninPanel from '@app/web/app/(public)/(authentication)/connexion/SigninPanel'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
@@ -9,7 +8,6 @@ import { LoginSearchParams } from '@app/web/security/login'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
-import { SessionUser } from '@app/web/auth/sessionUser'
 
 export const revalidate = 0
 
