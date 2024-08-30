@@ -100,12 +100,14 @@ const CraDemarcheAdministrativeForm = ({
   defaultValues,
   lieuActiviteOptions,
   initialBeneficiairesOptions,
+  retour,
 }: {
   defaultValues: DefaultValues<CraDemarcheAdministrativeData> & {
     mediateurId: string
   }
   lieuActiviteOptions: SelectOption[]
   initialBeneficiairesOptions: SelectOption<BeneficiaireData | null>[]
+  retour?: string
 }) => {
   const form = useForm<CraDemarcheAdministrativeData>({
     resolver: zodResolver(CraDemarcheAdministrativeValidation),
@@ -145,9 +147,9 @@ const CraDemarcheAdministrativeForm = ({
       await mutation.mutateAsync(data)
       createToast({
         priority: 'success',
-        message: 'L’accompagnement a bien été enregistrée.',
+        message: 'L’accompagnement a bien été enregistré.',
       })
-      router.push('/coop') // TODO SUCCESS LINK
+      router.push(retour ?? '/coop/mes-activites')
       router.refresh()
     } catch (mutationError) {
       if (applyZodValidationMutationErrorsToForm(mutationError, setError)) {
@@ -497,7 +499,7 @@ const CraDemarcheAdministrativeForm = ({
         <Button
           priority="secondary"
           linkProps={{
-            href: '/coop', // TODO BACK LINK PROP
+            href: retour ?? '/coop',
           }}
         >
           Annuler

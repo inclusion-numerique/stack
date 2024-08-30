@@ -1,7 +1,4 @@
-import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDisclamer'
 import { DefaultValues } from 'react-hook-form'
-import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
-import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { CraDemarcheAdministrativeData } from '@app/web/cra/CraDemarcheAdministrativeValidation'
 import {
@@ -9,15 +6,16 @@ import {
   EncodedState,
 } from '@app/web/utils/encodeSerializableState'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
-import CraDemarcheAdministrativeForm from '@app/web/app/coop/mes-activites/cra/administratif/CraDemarcheAdministrativeForm'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import { getInitialLieuxActiviteOptionsForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
+import CraDemarcheAdministrativePage from '@app/web/app/coop/mes-activites/cra/administratif/CraDemarcheAdministrativePage'
 
 const CreateCraDemarcheAdministrativePage = async ({
-  searchParams: { v } = {},
+  searchParams: { v, retour } = {},
 }: {
   searchParams?: {
     v?: EncodedState<DefaultValues<CraDemarcheAdministrativeData>>
+    retour?: string
   }
 }) => {
   const user = await getAuthenticatedMediateur()
@@ -55,27 +53,25 @@ const CreateCraDemarcheAdministrativePage = async ({
       withMost: 'demarche',
     })
 
-  defaultValues.lieuActiviteId = mostUsedLieuActivite?.structure.id ?? undefined
+  if (!defaultValues.lieuActiviteId) {
+    defaultValues.lieuActiviteId =
+      mostUsedLieuActivite?.structure.id ?? undefined
+  }
 
   const initialBeneficiairesOptions =
     await getInitialBeneficiairesOptionsForSearch({
       mediateurId: user.mediateur.id,
+      includeBeneficiaireId: defaultValues.beneficiaire?.id ?? undefined,
     })
 
   return (
-    <CoopPageContainer size={794} className="fr-pt-8v">
-      <CoopBreadcrumbs currentPage="Enregistrer une aide aux démarches administratives" />
-      <h1 className="fr-text-title--blue-france fr-mb-2v">
-        Aide aux démarches administratives
-      </h1>
-      <RequiredFieldsDisclamer />
-
-      <CraDemarcheAdministrativeForm
-        defaultValues={defaultValues}
-        lieuActiviteOptions={lieuxActiviteOptions}
-        initialBeneficiairesOptions={initialBeneficiairesOptions}
-      />
-    </CoopPageContainer>
+    <CraDemarcheAdministrativePage
+      defaultValues={defaultValues}
+      mediateurId={user.mediateur.id}
+      lieuxActiviteOptions={lieuxActiviteOptions}
+      initialBeneficiairesOptions={initialBeneficiairesOptions}
+      retour={retour}
+    />
   )
 }
 

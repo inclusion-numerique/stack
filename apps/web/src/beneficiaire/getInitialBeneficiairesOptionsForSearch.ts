@@ -84,3 +84,7 @@ export const getInitialBeneficiairesOptionsForSearch = async ({
 
   return initialBeneficiairesOptions
 }
+
+export type MostUsedBeneficiairesForSearch = Awaited<
+  ReturnType<typeof getInitialBeneficiairesOptionsForSearch>
+>

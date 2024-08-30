@@ -525,14 +525,6 @@ export const craRouter = router({
             lieuAtelier === 'Autre' ? lieuAtelierAutreCommune?.nom : null,
           duree: Number.parseInt(duree, 10),
           niveau,
-          participantsAnonymes: {
-            create: participantsAnonymesId
-              ? undefined
-              : { id: v4(), ...participantsAnonymesData },
-            update: participantsAnonymesId
-              ? { id: participantsAnonymesId, ...participantsAnonymesData }
-              : undefined,
-          },
           materiel,
           notes,
           thematiques,
@@ -556,6 +548,12 @@ export const craRouter = router({
                 where: { id },
                 data,
               }),
+              participantsAnonymesId
+                ? prismaClient.participantsAnonymesCraCollectif.update({
+                    where: { id: participantsAnonymesId },
+                    data: { ...participantsAnonymesData, id: undefined },
+                  })
+                : undefined,
               prismaClient.participantAtelierCollectif.deleteMany({
                 where: { craCollectifId: craId },
               }),
@@ -583,18 +581,24 @@ export const craRouter = router({
         }
 
         const newId = v4()
+
+        const createData = {
+          ...data,
+          id: newId,
+          participantsAnonymes: {
+            create: { ...participantsAnonymesData, id: v4() },
+          },
+          activiteMediateur: {
+            create: {
+              id: craId,
+              mediateurId,
+            },
+          },
+        }
+
         const [created] = await prismaClient.$transaction([
           prismaClient.craCollectif.create({
-            data: {
-              id: newId,
-              activiteMediateur: {
-                create: {
-                  id: craId,
-                  mediateurId,
-                },
-              },
-              ...data,
-            },
+            data: createData,
           }),
           prismaClient.participantAtelierCollectif.createMany({
             data: participants.map((participant) => ({

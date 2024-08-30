@@ -1,22 +1,22 @@
-import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDisclamer'
-import { DefaultValues } from 'react-hook-form'
-import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
-import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
-import CraIndividuelForm from '@app/web/app/coop/mes-activites/cra/individuel/CraIndividuelForm'
+import type { DefaultValues } from 'react-hook-form'
 import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
-import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
+import type { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
 import {
   decodeSerializableState,
-  EncodedState,
+  type EncodedState,
 } from '@app/web/utils/encodeSerializableState'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import { getInitialLieuxActiviteOptionsForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
+import CraIndividuelPage from '@app/web/app/coop/mes-activites/cra/individuel/CraIndividuelPage'
 
 const CreateCraIndividuelPage = async ({
-  searchParams: { v } = {},
+  searchParams: { v, retour } = {},
 }: {
-  searchParams?: { v?: EncodedState<DefaultValues<CraIndividuelData>> }
+  searchParams?: {
+    v?: EncodedState<DefaultValues<CraIndividuelData>>
+    retour?: string
+  }
 }) => {
   const user = await getAuthenticatedMediateur()
 
@@ -53,7 +53,10 @@ const CreateCraIndividuelPage = async ({
       withMost: 'individuel',
     })
 
-  defaultValues.lieuActiviteId = mostUsedLieuActivite?.structure.id ?? undefined
+  if (!defaultValues.lieuActiviteId) {
+    defaultValues.lieuActiviteId =
+      mostUsedLieuActivite?.structure.id ?? undefined
+  }
 
   const initialBeneficiairesOptions =
     await getInitialBeneficiairesOptionsForSearch({
@@ -61,19 +64,13 @@ const CreateCraIndividuelPage = async ({
     })
 
   return (
-    <CoopPageContainer size={794} className="fr-pt-8v">
-      <CoopBreadcrumbs currentPage="Enregistrer un accompagnement individuel" />
-      <h1 className="fr-text-title--blue-france fr-mb-2v">
-        Accompagnement individuel
-      </h1>
-      <RequiredFieldsDisclamer />
-
-      <CraIndividuelForm
-        defaultValues={defaultValues}
-        lieuActiviteOptions={lieuxActiviteOptions}
-        initialBeneficiairesOptions={initialBeneficiairesOptions}
-      />
-    </CoopPageContainer>
+    <CraIndividuelPage
+      lieuxActiviteOptions={lieuxActiviteOptions}
+      initialBeneficiairesOptions={initialBeneficiairesOptions}
+      mediateurId={user.mediateur.id}
+      defaultValues={defaultValues}
+      retour={retour}
+    />
   )
 }
 

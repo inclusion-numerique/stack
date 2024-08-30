@@ -6,7 +6,7 @@ import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import Tag from '@codegouvfr/react-dsfr/Tag'
 import Link from 'next/link'
 import classNames from 'classnames'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { createToast } from '@app/ui/toast/createToast'
 import Accordion from '@codegouvfr/react-dsfr/Accordion'
 import Stars from '@app/web/components/Stars'
@@ -44,6 +44,8 @@ import {
   ActiviteDetailsDynamicModalState,
 } from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsDynamicModal'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { createDupliquerActiviteLink } from '@app/web/app/coop/mes-activites/cra/createDupliquerActiviteLink'
+import { createModifierActiviteLink } from '@app/web/app/coop/mes-activites/cra/createModifierActiviteLink'
 import styles from './ActiviteDetailsModal.module.css'
 
 const ListItem = ({
@@ -67,6 +69,11 @@ const ActiviteDetailsModal = ({
 
   const router = useRouter()
   const mutation = trpc.cra.deleteActivite.useMutation()
+
+  // Get full path with query params for actionsRetourPath
+  const currentPath = usePathname()
+  const searchParamsString = useSearchParams().toString()
+  const actionsRetourPath = `${currentPath}${searchParamsString ? `?${searchParamsString}` : ''}`
 
   const [deletionConfirmation, setDeletionConfirmation] = useState(false)
   useEffect(() => {
@@ -345,20 +352,25 @@ const ActiviteDetailsModal = ({
           <div className="fr-flex fr-flex-gap-2v">
             <Button
               iconId="fr-icon-edit-line"
-              className="wip-outline"
               linkProps={{
-                href: `/coop/mes-activites/${type}/${cra.id}/modifier`,
+                href: createModifierActiviteLink(activite, {
+                  retour: actionsRetourPath,
+                }),
               }}
               title="Modifier"
               size="small"
             />
             <Button
-              type="button"
               iconId="ri-file-copy-line"
-              className="wip-outline fr-px-2v"
+              className="fr-px-2v"
               priority="secondary"
               title="Dupliquer"
               size="small"
+              linkProps={{
+                href: createDupliquerActiviteLink(activite, {
+                  retour: actionsRetourPath,
+                }),
+              }}
             />
             <Button
               type="button"
