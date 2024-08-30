@@ -14,7 +14,7 @@ export const ActionsRapides = () => (
         <Button
           type="button"
           {...CreateCraModalDefinition.buttonProps}
-          className="fr-link--quick-action"
+          className="fr-quick-action"
         >
           <span
             className="ri-add-line ri-2x fr-mr-3w fr-text--regular"
@@ -25,7 +25,7 @@ export const ActionsRapides = () => (
       </div>
       <div className="fr-col-lg-6 fr-col-md-12 fr-col-sm-6 fr-col-12">
         <Link
-          className="fr-link--quick-action"
+          className="fr-quick-action"
           href="/coop/mes-beneficiaires/nouveau"
         >
           <span

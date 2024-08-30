@@ -1,6 +1,7 @@
 import React from 'react'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import ActiviteDetailsModal from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsModal'
 import CoopPageContainer from '../CoopPageContainer'
 import {
   ActionsRapides,
@@ -9,43 +10,19 @@ import {
   Statistiques,
   Support,
 } from './_sections'
+import { AccueilPageData } from './getAccueilPageData'
 
-export const Dashboard = ({
+export const Accueil = ({
   firstName,
   name,
   email,
   statistiques,
+  activites,
 }: {
   firstName: string | null
   name: string | null
   email: string
-  statistiques: {
-    accompagnementBeneficiaires: {
-      dernierMois: {
-        accompagnements: number
-        beneficiaires: number
-        anonymes: number
-      }
-      derniereSemaine: {
-        accompagnements: number
-        beneficiaires: number
-        anonymes: number
-      }
-    }
-    modalitesAccompagnement: {
-      dernierMois: {
-        label: string
-        count: number
-        participants: number
-      }[]
-      derniereSemaine: {
-        label: string
-        count: number
-        participants: number
-      }[]
-    }
-  }
-}) => (
+} & AccueilPageData) => (
   <CoopPageContainer size={794}>
     <SkipLinksPortal links={defaultSkipLinks} />
     <main id={contentId}>
@@ -59,7 +36,7 @@ export const Dashboard = ({
         <Statistiques {...statistiques} />
       </section>
       <section className="fr-my-6w">
-        <DernieresActivites />
+        <DernieresActivites activites={activites} />
       </section>
       <hr className="fr-separator-1px" />
       <section className="fr-my-6w">
@@ -69,5 +46,6 @@ export const Dashboard = ({
         <Support />
       </section>
     </main>
+    <ActiviteDetailsModal />
   </CoopPageContainer>
 )

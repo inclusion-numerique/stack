@@ -1,12 +1,13 @@
+'use client'
+
 import React, { useState } from 'react'
 import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
+import { AccueilPageData } from '../getAccueilPageData'
 
 const BeneficiairesStatistiques = ({
-  accompagnements,
   beneficiaires,
   anonymes,
 }: {
-  accompagnements: number
   beneficiaires: number
   anonymes: number
 }) => (
@@ -16,7 +17,7 @@ const BeneficiairesStatistiques = ({
       aria-hidden
     />
     <div className="fr-text--bold fr-my-1w fr-text--xl">
-      {accompagnements} Bénéficiaires accompagnés
+      {beneficiaires + anonymes} Bénéficiaires accompagnés
     </div>
     <ul className="fr-text-mention--grey fr-text--sm fr-mb-0 fr-list-group">
       <li>{beneficiaires} bénéficiaires suivis</li>
@@ -31,7 +32,7 @@ const AccompagnementsStatistiques = ({
   modalitesAccompagnement: {
     label: string
     count: number
-    participants: number
+    participants?: number
   }[]
 }) => (
   <div className="fr-p-3w fr-border-radius--16 fr-background-alt--brown-caramel fr-height-full">
@@ -40,10 +41,9 @@ const AccompagnementsStatistiques = ({
       aria-hidden
     />
     <div className="fr-text--bold fr-my-1w fr-text--xl">
-      {modalitesAccompagnement.reduce(
-        (total, modaliteAccompagnement) => total + modaliteAccompagnement.count,
-        0,
-      )}{' '}
+      {modalitesAccompagnement[0].count +
+        (modalitesAccompagnement[1].participants ?? 0) +
+        modalitesAccompagnement[2].count}{' '}
       Accompagnements
     </div>
     <ul className="fr-text-mention--grey fr-text--sm fr-mb-0 fr-list-group">
@@ -62,32 +62,7 @@ const AccompagnementsStatistiques = ({
 export const Statistiques = ({
   accompagnementBeneficiaires,
   modalitesAccompagnement,
-}: {
-  accompagnementBeneficiaires: {
-    dernierMois: {
-      accompagnements: number
-      beneficiaires: number
-      anonymes: number
-    }
-    derniereSemaine: {
-      accompagnements: number
-      beneficiaires: number
-      anonymes: number
-    }
-  }
-  modalitesAccompagnement: {
-    dernierMois: {
-      label: string
-      count: number
-      participants: number
-    }[]
-    derniereSemaine: {
-      label: string
-      count: number
-      participants: number
-    }[]
-  }
-}) => {
+}: AccueilPageData['statistiques']) => {
   const [isMonthSelected, setIsMonthSelected] = useState(true)
 
   return (
