@@ -8,30 +8,29 @@ import type {
   StructureDeRedirection,
   ThematiqueAccompagnement,
   ThematiqueDemarcheAdministrative,
+  TypeActivite,
 } from '@prisma/client'
 import { labelsToOptions } from '@app/ui/components/Form/utils/options'
 
-export type AccompagnementType = 'individuel' | 'collectif' | 'demarche'
-
 export const accompagnementTypeLabels: {
-  [key in AccompagnementType]: string
+  [key in TypeActivite]: string
 } = {
-  individuel: 'Accompagnement individuel',
-  demarche: 'Aide aux démarches administratives',
-  collectif: 'Atelier collectif',
+  Individuel: 'Accompagnement individuel',
+  Demarche: 'Aide aux démarches administratives',
+  Collectif: 'Atelier collectif',
 }
 
 export const accompagnementTypeIllustrations: {
-  [key in AccompagnementType]?: string
+  [key in TypeActivite]?: string
 } = {
-  individuel: '/images/iconographie/accompagnement-individuel.svg',
-  demarche: '/images/iconographie/demarche-administrative.svg',
-  collectif: '/images/iconographie/accompagnement-collectif.svg',
+  Individuel: '/images/iconographie/accompagnement-individuel.svg',
+  Demarche: '/images/iconographie/demarche-administrative.svg',
+  Collectif: '/images/iconographie/accompagnement-collectif.svg',
 }
 
 export const accompagnementTypeValues = Object.keys(
   accompagnementTypeLabels,
-) as [AccompagnementType, ...AccompagnementType[]]
+) as [TypeActivite, ...TypeActivite[]]
 
 export const accompagnementTypeOptions = labelsToOptions(
   accompagnementTypeLabels,
