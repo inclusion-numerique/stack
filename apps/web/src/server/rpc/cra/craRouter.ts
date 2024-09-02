@@ -157,7 +157,7 @@ export const craRouter = router({
           date,
           duree,
           lieuAccompagnement,
-          lieuActiviteId,
+          structureId,
           materiel,
           notes,
           thematiques,
@@ -188,7 +188,7 @@ export const craRouter = router({
         })
 
         const existingLieuActivite = await getExistingStructure({
-          structureId: lieuActiviteId,
+          structureId: structureId,
           mediateurId,
         })
 
@@ -307,7 +307,7 @@ export const craRouter = router({
           date,
           duree,
           lieuAccompagnement,
-          lieuActiviteId,
+          structureId,
           degreDeFinalisation,
           precisionsDemarche,
           notes,
@@ -338,7 +338,7 @@ export const craRouter = router({
         })
 
         const existingLieuActivite = await getExistingStructure({
-          structureId: lieuActiviteId,
+          structureId: structureId,
           mediateurId,
         })
 
@@ -451,7 +451,7 @@ export const craRouter = router({
           mediateurId,
           date,
           duree,
-          lieuActiviteId,
+          structureId,
           materiel,
           notes,
           thematiques,
@@ -488,7 +488,7 @@ export const craRouter = router({
         })
 
         const existingLieuActivite = await getExistingStructure({
-          structureId: lieuActiviteId,
+          structureId: structureId,
           mediateurId,
         })
 
@@ -517,13 +517,13 @@ export const craRouter = router({
           titreAtelier,
           lieuAtelier,
           // Only set lieu accompagnement commune if it is the correct type of lieuAccompagnement
-          lieuAccompagnementAutreCodeInsee:
+          lieuCodeInsee:
             lieuAtelier === 'Autre' ? lieuAtelierAutreCommune?.codeInsee : null,
-          lieuAccompagnementAutreCodePostal:
+          lieuCodePostal:
             lieuAtelier === 'Autre'
               ? lieuAtelierAutreCommune?.codePostal
               : null,
-          lieuAccompagnementAutreCommune:
+          lieuCommune:
             lieuAtelier === 'Autre' ? lieuAtelierAutreCommune?.nom : null,
           duree: Number.parseInt(duree, 10),
           niveau,
@@ -625,7 +625,7 @@ export const craRouter = router({
     .input(
       z.object({
         craId: z.string().uuid(),
-        type: z.enum(accompagnementTypeValues),
+        type: z.enum(typeActiviteValues),
       }),
     )
     .mutation(async ({ input: { craId, type }, ctx: { user } }) => {
@@ -637,7 +637,7 @@ export const craRouter = router({
               where: { id: craId },
               select: {
                 id: true,
-                creeParMediateurId: true,
+                mediateurId: true,
               },
             })
           : type === 'collectif'
@@ -645,7 +645,7 @@ export const craRouter = router({
                 where: { id: craId },
                 select: {
                   id: true,
-                  creeParMediateurId: true,
+                  mediateurId: true,
                 },
               })
             : // Demarche administrative
@@ -653,7 +653,7 @@ export const craRouter = router({
                 where: { id: craId },
                 select: {
                   id: true,
-                  creeParMediateurId: true,
+                  mediateurId: true,
                 },
               })
 
@@ -661,7 +661,7 @@ export const craRouter = router({
         throw invalidError('Cra not found')
       }
 
-      if (cra.creeParMediateurId !== user.mediateur.id) {
+      if (cra.mediateurId !== user.mediateur.id) {
         throw forbiddenError('Cannot delete CRA for another mediateur')
       }
 

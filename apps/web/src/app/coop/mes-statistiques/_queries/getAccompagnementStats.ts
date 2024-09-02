@@ -3,14 +3,14 @@ import {
   lieuAccompagnementLabels,
   lieuAtelierLabels,
   materielLabels,
-  thematiqueAccompagnementLabels,
-  thematiqueAccompagnementShortLabels,
   thematiqueDemarcheAdministrativeLabels,
+  thematiqueLabels,
+  thematiqueShortLabels,
 } from '@app/web/cra/cra'
 import { QuantifiedShare, QuantifiedShareToProcess } from '../quantifiedShare'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { createEnumLabelCaseSelect } from '@app/web/app/coop/mes-statistiques/_queries/createEnumLabelCaseSelect'
-import { ThematiqueAccompagnement } from '@prisma/client'
+import { Thematique } from '@prisma/client'
 import {
   getActiviteFiltersSqlFragment,
   getCrasCollectifsFiltersWhereConditions,
@@ -80,9 +80,8 @@ export const getAccompagnementCollectifsStats = async ({
                                 UNION ALL
                                 SELECT 'thematiquesAccompagnements' AS category_type,
                                        ${createEnumLabelCaseSelect({
-                                         enumObj: ThematiqueAccompagnement,
-                                         labels:
-                                           thematiqueAccompagnementShortLabels,
+                                         enumObj: Thematique,
+                                         labels: thematiqueShortLabels,
                                          column: 'thematique',
                                        })}                          AS category,
                                        COUNT(*)::integer            AS count
@@ -274,9 +273,11 @@ export const EMPTY_ACCOMPAGNEMENT_DATA: Record<
   AccompagnementCategory,
   QuantifiedShare[]
 > = {
-  thematiquesAccompagnements: Object.values(thematiqueAccompagnementLabels).map(
-    (label) => ({ label, count: 0, proportion: 0 }),
-  ),
+  thematiquesAccompagnements: Object.values(thematiqueLabels).map((label) => ({
+    label,
+    count: 0,
+    proportion: 0,
+  })),
   thematiquesDemarchesAdministratives: Object.values(
     thematiqueDemarcheAdministrativeLabels,
   ).map((label) => ({ label, count: 0, proportion: 0 })),

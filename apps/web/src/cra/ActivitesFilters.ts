@@ -1,12 +1,13 @@
 import z from 'zod'
-import { AccompagnementType, accompagnementTypeValues } from '@app/web/cra/cra'
+import { typeActiviteValues } from '@app/web/cra/cra'
+import type { TypeActivite } from '@prisma/client'
 
 const isoDayRegex = /^\d{4}-\d{2}-\d{2}$/
 
 export const ActivitesFilterValidations = {
   du: z.string().regex(isoDayRegex).optional(),
   au: z.string().optional(),
-  type: z.enum(accompagnementTypeValues).optional(),
+  type: z.enum(typeActiviteValues).optional(),
   beneficiaire: z.string().uuid().optional(),
   commune: z.string().length(5).optional(),
   departement: z.string().max(3).optional(),
@@ -16,7 +17,7 @@ export const ActivitesFilterValidations = {
 export type ActivitesFilters = {
   du?: string // Iso date e.g. '2022-01-01'
   au?: string // Iso date e.g. '2022-01-01'
-  type?: AccompagnementType
+  type?: TypeActivite
   beneficiaire?: string // UUID of beneficiaire
   commune?: string // Code INSEE of commune
   departement?: string // Code département
@@ -45,7 +46,7 @@ export const validateActivitesFilters = <T extends ActivitesFilters>(
       validatedFilterValue.success &&
       validatedFilterValue.data !== undefined
     ) {
-      result[typedKey] = validatedFilterValue.data as AccompagnementType
+      result[typedKey] = validatedFilterValue.data as TypeActivite
     } else {
       delete result[typedKey]
     }

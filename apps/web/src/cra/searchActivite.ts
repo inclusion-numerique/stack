@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
 import { prismaActiviteToActiviteModel } from '@app/web/cra/prismaActiviteToActiviteModel'
 import {
@@ -7,48 +6,26 @@ import {
 } from '@app/web/cra/ActivitesDataTable'
 import { takeAndSkipFromPage } from '@app/web/data-table/takeAndSkipFromPage'
 import { ActivitesRawSqlConfiguration } from '@app/web/cra/ActivitesRawSqlConfiguration'
-import { activitesMediateurWithCrasSelect } from '@app/web/cra/activitesQueries'
 import { orderItemsByIndexedValues } from '@app/web/utils/orderItemsByIndexedValues'
 import { getDataTableSortParams } from '@app/web/data-table/getDefaultDataTableSortParams'
 import {
   crasDateSelect,
-  crasLieuActiviteIdSelect,
   crasLieuLabelSelect,
   crasNotDeletedCondition,
   crasParticipantsCountSelect,
+  crasStructureIdSelect,
   crasTypeOrderSelect,
   crasTypeSelect,
   getActiviteFiltersSqlFragment,
   getCrasFiltersWhereConditions,
 } from '@app/web/cra/activitesFiltersSqlWhereConditions'
+import { activiteListSelect } from '@app/web/cra/activitesQueries'
 
 type SearchActiviteOptions = {
   mediateurId?: string
+  beneficiaireId?: string
   searchParams?: ActivitesDataTableSearchParams
 }
-
-// List activites not anonymous
-export const activitesListWhere = ({ mediateurId }: { mediateurId?: string }) =>
-  ({
-    mediateurId,
-    OR: [
-      {
-        craIndividuel: {
-          suppression: null,
-        },
-      },
-      {
-        craCollectif: {
-          suppression: null,
-        },
-      },
-      {
-        craDemarcheAdministrative: {
-          suppression: null,
-        },
-      },
-    ],
-  }) satisfies Prisma.ActiviteMediateurWhereInput
 
 export const searchActivite = async (options: SearchActiviteOptions) => {
   const searchParams = options.searchParams ?? {}
@@ -103,24 +80,25 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
                LEFT JOIN cras_collectifs cra_collectif ON activite.cra_collectif_id = cra_collectif.id
                LEFT JOIN cras_demarches_administratives cra_demarche_administrative
                          ON activite.cra_demarche_administrative_id = cra_demarche_administrative.id
-               LEFT JOIN structures ON structures.id = ${crasLieuActiviteIdSelect}
+               LEFT JOIN structures ON structures.id = ${crasStructureIdSelect}
 
       WHERE (activite.mediateur_id = ${mediateurIdMatch}::UUID OR ${mediateurIdMatch} = '_any_')
-          AND ${crasNotDeletedCondition} AND ${filterFragment}
+        AND ${crasNotDeletedCondition}
+        AND ${filterFragment}
       ORDER BY ${orderByCondition},
-          date DESC
+               date DESC
       LIMIT ${take ?? 2_147_483_647} OFFSET ${skip ?? 0}
   `
 
   const searchResultIds = activiteIdsSearch.map(({ id }) => id)
 
-  const activitesQueryResult = await prismaClient.activiteMediateur.findMany({
+  const activitesQueryResult = await prismaClient.activite.findMany({
     where: {
       id: {
         in: searchResultIds,
       },
     },
-    select: activitesMediateurWithCrasSelect,
+    select: activiteListSelect,
   })
 
   const orderedActivites = orderItemsByIndexedValues(
@@ -139,9 +117,10 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
               cra_individuel.lieu_activite_id,
               cra_collectif.lieu_activite_id,
               cra_demarche_administrative.lieu_activite_id
-                                                                )
+                                                       )
       WHERE (activite.mediateur_id = ${mediateurIdMatch}::UUID OR ${mediateurIdMatch} = '_any_')
-          AND ${crasNotDeletedCondition} AND ${filterFragment}
+        AND ${crasNotDeletedCondition}
+        AND ${filterFragment}
   `
 
   const matchesCount = countQueryResult.at(0)?.count ?? 0

@@ -26,7 +26,7 @@ export const CraDemarcheAdministrativeValidation = z
     lieuAccompagnement: z.enum(lieuAccompagnementValues, {
       required_error: 'Veuillez renseigner un lieu d’accompagnement',
     }),
-    lieuActiviteId: z.string().uuid().nullish(),
+    structureId: z.string().uuid().nullish(),
     lieuAccompagnementDomicileCommune: AdresseBanValidation.nullish(),
     thematiques: z
       .array(z.enum(thematiqueDemarcheAdministrativeValues), {
@@ -39,17 +39,17 @@ export const CraDemarcheAdministrativeValidation = z
     structureDeRedirection: z.enum(structuresRedirectionValues).nullish(),
     notes: z.string().nullish(),
   })
-  // lieuActiviteId is required if lieuAccompagnement ===  LieuActivite
+  // structureId is required if lieuAccompagnement ===  LieuActivite
   .refine(
     (data) => {
       if (data.lieuAccompagnement === 'LieuActivite') {
-        return !!data.lieuActiviteId
+        return !!data.structureId
       }
       return true
     },
     {
       message: 'Veuillez renseigner le lieu d’activité',
-      path: ['lieuActiviteId'],
+      path: ['structureId'],
     },
   )
   // lieuAccompagnementDomicileCommune is required if lieuAccompagnement === Domicile

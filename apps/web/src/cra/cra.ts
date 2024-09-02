@@ -1,18 +1,18 @@
-import type {
+import {
   Autonomie,
   DegreDeFinalisationDemarche,
-  LieuAccompagnement,
-  LieuAtelier,
   Materiel,
   NiveauAtelier,
   StructureDeRedirection,
-  ThematiqueAccompagnement,
+  Thematique,
   ThematiqueDemarcheAdministrative,
   TypeActivite,
+  TypeLieu,
+  TypeLieuAtelier,
 } from '@prisma/client'
 import { labelsToOptions } from '@app/ui/components/Form/utils/options'
 
-export const accompagnementTypeLabels: {
+export const typeActiviteLabels: {
   [key in TypeActivite]: string
 } = {
   Individuel: 'Accompagnement individuel',
@@ -20,7 +20,20 @@ export const accompagnementTypeLabels: {
   Collectif: 'Atelier collectif',
 }
 
-export const accompagnementTypeIllustrations: {
+export type TypeActiviteSlug = 'individuel' | 'demarche' | 'collectif'
+export const typeActiviteSlugs: { [key in TypeActivite]: TypeActiviteSlug } = {
+  Individuel: 'individuel',
+  Demarche: 'demarche',
+  Collectif: 'collectif',
+}
+export const typeActiviteForSlug: { [key in TypeActiviteSlug]: TypeActivite } =
+  {
+    individuel: 'Individuel',
+    demarche: 'Demarche',
+    collectif: 'Collectif',
+  }
+
+export const typeActiviteIllustrations: {
   [key in TypeActivite]?: string
 } = {
   Individuel: '/images/iconographie/accompagnement-individuel.svg',
@@ -28,13 +41,12 @@ export const accompagnementTypeIllustrations: {
   Collectif: '/images/iconographie/accompagnement-collectif.svg',
 }
 
-export const accompagnementTypeValues = Object.keys(
-  accompagnementTypeLabels,
-) as [TypeActivite, ...TypeActivite[]]
+export const typeActiviteValues = Object.keys(typeActiviteLabels) as [
+  TypeActivite,
+  ...TypeActivite[],
+]
 
-export const accompagnementTypeOptions = labelsToOptions(
-  accompagnementTypeLabels,
-)
+export const typeActiviteOptions = labelsToOptions(typeActiviteLabels)
 
 export const dureeAccompagnementLabels = {
   '30': '30min',
@@ -53,15 +65,14 @@ export const dureeAccompagnementValues = Object.keys(
   dureeAccompagnementLabels,
 ) as [DureeAccompagnement, ...DureeAccompagnement[]]
 
-export const lieuAccompagnementLabels: { [key in LieuAccompagnement]: string } =
-  {
-    LieuActivite: 'Lieu d’activité',
-    Domicile: 'À domicile',
-    ADistance: 'À distance',
-  }
+export const lieuAccompagnementLabels: { [key in TypeLieu]: string } = {
+  LieuActivite: 'Lieu d’activité',
+  Domicile: 'À domicile',
+  ADistance: 'À distance',
+}
 
 export const lieuAccompagnementIllustrations: {
-  [key in LieuAccompagnement]?: string
+  [key in TypeLieu]?: string
 } = {
   LieuActivite: '/dsfr/artwork/pictograms/buildings/city-hall.svg',
   Domicile: '/images/iconographie/thematique-logement.svg',
@@ -72,10 +83,9 @@ export const lieuAccompanementOptions = labelsToOptions(
   lieuAccompagnementLabels,
 )
 
-export const lieuAccompagnementHints: { [key in LieuAccompagnement]?: string } =
-  {
-    ADistance: 'Téléphone ou visio-conférence',
-  }
+export const lieuAccompagnementHints: { [key in TypeLieu]?: string } = {
+  ADistance: 'Téléphone ou visio-conférence',
+}
 
 export const lieuAccompagnementOptionsWithExtras = lieuAccompanementOptions.map(
   ({ label, value }) => ({
@@ -90,7 +100,7 @@ export const lieuAccompagnementOptionsWithExtras = lieuAccompanementOptions.map(
 
 export const lieuAccompagnementValues = Object.keys(
   lieuAccompagnementLabels,
-) as [LieuAccompagnement, ...LieuAccompagnement[]]
+) as [TypeLieu, ...TypeLieu[]]
 
 export const materielLabels: {
   [key in Materiel]: string
@@ -109,8 +119,8 @@ export const materielValues = Object.keys(materielLabels) as [
   ...Materiel[],
 ]
 
-export const thematiqueAccompagnementLabels: {
-  [key in ThematiqueAccompagnement]: string
+export const thematiqueLabels: {
+  [key in Thematique]: string
 } = {
   PrendreEnMainDuMateriel: 'Prendre en main du matériel',
   NavigationSurInternet: 'Navigation sur internet',
@@ -128,14 +138,14 @@ export const thematiqueAccompagnementLabels: {
   CultureNumerique: 'Culture numérique',
 }
 
-export const thematiqueAccompagnementShortLabels = {
-  ...thematiqueAccompagnementLabels,
+export const thematiqueShortLabels = {
+  ...thematiqueLabels,
   ReseauxSociaux: 'Réseaux sociaux',
   SecuriteNumerique: 'Sécurité numérique',
 }
 
-export const thematiqueAccompagnementHints: {
-  [key in ThematiqueAccompagnement]?: string[]
+export const thematiqueHints: {
+  [key in Thematique]?: string[]
 } = {
   PrendreEnMainDuMateriel: [
     'Utiliser un ordinateur, une tablette ou un smartphone',
@@ -208,8 +218,8 @@ export const thematiqueAccompagnementHints: {
   ],
 }
 
-export const thematiqueAccompagnementIllustrations: {
-  [key in ThematiqueAccompagnement]?: string
+export const thematiqueIllustrations: {
+  [key in Thematique]?: string
 } = {
   PrendreEnMainDuMateriel: '/images/iconographie/mednum-materiel.svg',
   NavigationSurInternet: '/images/iconographie/mednum-internet.svg',
@@ -227,23 +237,23 @@ export const thematiqueAccompagnementIllustrations: {
   CultureNumerique: '/images/iconographie/mednum-culture-numerique.svg',
 }
 
-export const thematiqueAccompagnementOptions = labelsToOptions(
-  thematiqueAccompagnementLabels,
-)
+export const thematiqueOptions = labelsToOptions(thematiqueLabels)
 
-export const thematiqueAccompagnementOptionsWithExtras =
-  thematiqueAccompagnementOptions.map(({ label, value }) => ({
+export const thematiqueOptionsWithExtras = thematiqueOptions.map(
+  ({ label, value }) => ({
     label,
     value,
     extra: {
-      tooltips: thematiqueAccompagnementHints[value],
-      illustration: thematiqueAccompagnementIllustrations[value],
+      tooltips: thematiqueHints[value],
+      illustration: thematiqueIllustrations[value],
     },
-  }))
+  }),
+)
 
-export const thematiqueAccompagnementValues = Object.keys(
-  thematiqueAccompagnementLabels,
-) as [ThematiqueAccompagnement, ...ThematiqueAccompagnement[]]
+export const thematiqueValues = Object.keys(thematiqueLabels) as [
+  Thematique,
+  ...Thematique[],
+]
 
 export const autonomieLabels: {
   [key in Autonomie]: string
@@ -393,7 +403,7 @@ export const structuresRedirectionValues = Object.keys(
 ) as [StructureDeRedirection, ...StructureDeRedirection[]]
 
 export const lieuAtelierLabels: {
-  [key in LieuAtelier]: string
+  [key in TypeLieuAtelier]: string
 } = {
   LieuActivite: 'Lieu d’activité',
   Autre: 'Autre lieu',
@@ -402,7 +412,7 @@ export const lieuAtelierLabels: {
 export const lieuAtelierOptions = labelsToOptions(lieuAtelierLabels)
 
 export const lieuAtelierIllustrations: {
-  [key in LieuAtelier]?: string
+  [key in TypeLieuAtelier]?: string
 } = {
   LieuActivite: '/dsfr/artwork/pictograms/buildings/city-hall.svg',
   Autre: '/dsfr/artwork/pictograms/buildings/school.svg',
@@ -419,8 +429,8 @@ export const lieuAtelierOptionsWithExtras = lieuAtelierOptions.map(
 )
 
 export const lieuAtelierValues = Object.keys(lieuAtelierLabels) as [
-  LieuAtelier,
-  ...LieuAtelier[],
+  TypeLieuAtelier,
+  ...TypeLieuAtelier[],
 ]
 
 /**

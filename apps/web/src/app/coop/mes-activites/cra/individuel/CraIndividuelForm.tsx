@@ -1,13 +1,6 @@
 'use client'
 
-import {
-  Control,
-  DefaultValues,
-  useForm,
-  UseFormGetValues,
-  UseFormSetValue,
-  UseFormWatch,
-} from 'react-hook-form'
+import { Control, DefaultValues, useForm, UseFormGetValues, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
@@ -24,14 +17,8 @@ import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import CraFormLabel from '@app/web/app/coop/mes-activites/cra/CraFormLabel'
-import AdresseBanFormField, {
-  type AdressBanFormFieldOption,
-} from '@app/web/components/form/AdresseBanFormField'
-import {
-  genreOptions,
-  statutSocialOptions,
-  trancheAgeOptions,
-} from '@app/web/beneficiaire/beneficiaire'
+import AdresseBanFormField, { type AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
+import { genreOptions, statutSocialOptions, trancheAgeOptions } from '@app/web/beneficiaire/beneficiaire'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { trpc } from '@app/web/trpc'
 import RichCardLabel, {
@@ -44,18 +31,13 @@ import {
   lieuAccompagnementOptionsWithExtras,
   materielOptions,
   structuresRedirectionOptions,
-  thematiqueAccompagnementOptionsWithExtras,
+  thematiqueOptionsWithExtras,
 } from '@app/web/cra/cra'
-import {
-  CraIndividuelData,
-  CraIndividuelValidation,
-} from '@app/web/cra/CraIndividuelValidation'
+import { CraIndividuelData, CraIndividuelValidation } from '@app/web/cra/CraIndividuelValidation'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { yesNoBooleanOptions } from '@app/web/utils/yesNoBooleanOptions'
 import { craFormFieldsetClassname } from '@app/web/app/coop/mes-activites/cra/craFormFieldsetClassname'
-import CraBeneficiaryForm, {
-  CraDataWithBeneficiaire,
-} from '@app/web/app/coop/mes-activites/cra/CraBeneficiaryForm'
+import CraBeneficiaryForm, { CraDataWithBeneficiaire } from '@app/web/app/coop/mes-activites/cra/CraBeneficiaryForm'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipalityLabel'
@@ -297,7 +279,7 @@ const CraIndividuelForm = ({
         <CustomSelectFormField
           label=" "
           control={control}
-          path="lieuActiviteId"
+          path="structureId"
           placeholder="Rechercher un lieu d’activité"
           options={lieuActiviteOptions}
         />
@@ -325,7 +307,7 @@ const CraIndividuelForm = ({
       <CheckboxGroupFormField
         control={control}
         path="thematiques"
-        options={thematiqueAccompagnementOptionsWithExtras}
+        options={thematiqueOptionsWithExtras}
         disabled={isLoading}
         components={{
           label: RichCardLabel,

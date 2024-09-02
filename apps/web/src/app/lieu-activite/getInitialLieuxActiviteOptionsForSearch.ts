@@ -1,6 +1,5 @@
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import { prismaClient } from '@app/web/prismaClient'
-import { AccompagnementType } from '@app/web/cra/cra'
 
 export const mediateurStructureSelect = ({
   mediateurId,
@@ -11,19 +10,9 @@ export const mediateurStructureSelect = ({
   id: true,
   _count: {
     select: {
-      crasIndividuels: {
+      activites: {
         where: {
-          creeParMediateurId: mediateurId,
-        },
-      },
-      crasCollectifs: {
-        where: {
-          creeParMediateurId: mediateurId,
-        },
-      },
-      crasDemarchesAdministratives: {
-        where: {
-          creeParMediateurId: mediateurId,
+          mediateurId,
         },
       },
     },
@@ -31,11 +20,9 @@ export const mediateurStructureSelect = ({
 })
 
 export const getInitialLieuxActiviteOptionsForSearch = async ({
-  withMost,
   mediateurId,
 }: {
   mediateurId: string
-  withMost: AccompagnementType
 }) => {
   const structureSelect = mediateurStructureSelect({
     mediateurId,
@@ -54,24 +41,11 @@ export const getInitialLieuxActiviteOptionsForSearch = async ({
     },
     orderBy: [
       {
-        structure:
-          withMost === 'collectif'
-            ? {
-                crasCollectifs: {
-                  _count: 'desc',
-                },
-              }
-            : withMost === 'demarche'
-              ? {
-                  crasDemarchesAdministratives: {
-                    _count: 'desc',
-                  },
-                }
-              : {
-                  crasIndividuels: {
-                    _count: 'desc',
-                  },
-                },
+        structure: {
+          activites: {
+            _count: 'desc',
+          },
+        },
       },
       {
         structure: {

@@ -38,8 +38,8 @@ export const ActivitesDataTable = {
       name: 'type',
       header: 'Type',
       csvHeaders: ['Type'],
-      csvValues: ({ type }) => [accompagnementTypeLabels[type]],
-      cell: ({ type }) => accompagnementTypeLabels[type],
+      csvValues: ({ type }) => [typeActiviteLabels[type]],
+      cell: ({ type }) => typeActiviteLabels[type],
       cellClassName: styles.typeCell,
       sortable: true,
     },
@@ -67,8 +67,8 @@ export const ActivitesDataTable = {
         'lieuActivite' in activite.cra && activite.cra.lieuActivite
           ? activite.cra.lieuActivite.nom
           : activite.type === 'collectif'
-            ? activite.cra.lieuAccompagnementAutreCommune
-              ? `${activite.cra.lieuAccompagnementAutreCommune} · ${activite.cra.lieuAccompagnementAutreCodePostal}`
+            ? activite.cra.lieuCommune
+              ? `${activite.cra.lieuCommune} · ${activite.cra.lieuCodePostal}`
               : '-'
             : activite.cra.lieuAccompagnement === 'ADistance'
               ? 'À distance'

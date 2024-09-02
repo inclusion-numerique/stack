@@ -153,33 +153,29 @@ export const StatistiquesAccompagnements = ({
         </div>
         <ul className="fr-px-0 fr-mb-5w">
           {isMediationNumeriqueAccompagnement &&
-            thematiquesAccompagnements.map(
-              (thematiqueAccompagnement, index) => (
-                <ProgressListItem
-                  key={thematiqueAccompagnement.label}
-                  {...thematiqueAccompagnement}
-                  colors={[
-                    thematiquesAccompagnementColors[
-                      index % thematiquesAccompagnementColors.length
-                    ],
-                  ]}
-                />
-              ),
-            )}
+            thematiquesAccompagnements.map((thematique, index) => (
+              <ProgressListItem
+                key={thematique.label}
+                {...thematique}
+                colors={[
+                  thematiquesAccompagnementColors[
+                    index % thematiquesAccompagnementColors.length
+                  ],
+                ]}
+              />
+            ))}
           {!isMediationNumeriqueAccompagnement &&
-            thematiquesDemarchesAdministratives.map(
-              (thematiqueAccompagnement, index) => (
-                <ProgressListItem
-                  key={thematiqueAccompagnement.label}
-                  {...thematiqueAccompagnement}
-                  colors={[
-                    thematiquesAccompagnementColors[
-                      index % thematiquesAccompagnementColors.length
-                    ],
-                  ]}
-                />
-              ),
-            )}
+            thematiquesDemarchesAdministratives.map((thematique, index) => (
+              <ProgressListItem
+                key={thematique.label}
+                {...thematique}
+                colors={[
+                  thematiquesAccompagnementColors[
+                    index % thematiquesAccompagnementColors.length
+                  ],
+                ]}
+              />
+            ))}
         </ul>
         <div className="fr-mb-0 fr-col fr-flex fr-align-items-center fr-mb-3w">
           <h3 className="fr-text--lg fr-mb-0">Matériel utilisé</h3>

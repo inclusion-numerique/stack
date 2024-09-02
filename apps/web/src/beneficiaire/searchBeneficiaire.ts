@@ -22,12 +22,7 @@ export const beneficiairesListWhere = ({
   ({
     suppression: null,
     mediateurId,
-    prenom: {
-      not: null,
-    },
-    nom: {
-      not: null,
-    },
+    anonyme: false,
   }) satisfies Prisma.BeneficiaireWhereInput
 
 export const searchBeneficiaire = async (

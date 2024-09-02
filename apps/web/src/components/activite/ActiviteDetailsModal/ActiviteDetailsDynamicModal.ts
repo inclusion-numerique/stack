@@ -1,10 +1,10 @@
 'use client'
 
 import { createDynamicModal } from '@app/ui/components/Modal/createDynamicModal'
-import type { Activite } from '@app/web/cra/activitesQueries'
+import type { ActiviteForList } from '@app/web/cra/activitesQueries'
 
 export type ActiviteDetailsDynamicModalState = {
-  activite: Activite
+  activite: ActiviteForList
 }
 
 export const ActiviteDetailsDynamicModal = createDynamicModal({

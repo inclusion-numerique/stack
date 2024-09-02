@@ -10,10 +10,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { createToast } from '@app/ui/toast/createToast'
 import Accordion from '@codegouvfr/react-dsfr/Accordion'
 import Stars from '@app/web/components/Stars'
-import {
-  isBeneficiaireAnonymous,
-  isBeneficiaireEmpty,
-} from '@app/web/beneficiaire/isBeneficiaireAnonymous'
+import { isBeneficiaireEmpty } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import { trpc } from '@app/web/trpc'
 import {
@@ -26,27 +23,30 @@ import {
 } from '@app/web/beneficiaire/beneficiaire'
 import { formatActiviteDayDate } from '@app/web/utils/activiteDayDateFormat'
 import {
-  accompagnementTypeIllustrations,
-  accompagnementTypeLabels,
   autonomieStars,
   degreDeFinalisationDemarcheHints,
   degreDeFinalisationDemarcheLabels,
-  DureeAccompagnement,
+  type DureeAccompagnement,
   dureeAccompagnementLabels,
   materielLabels,
   niveauAtelierStars,
   structuresRedirectionLabels,
-  thematiqueAccompagnementLabels,
   thematiqueDemarcheAdministrativeLabels,
+  thematiqueLabels,
+  typeActiviteIllustrations,
+  typeActiviteLabels,
+  typeActiviteSlugs,
 } from '@app/web/cra/cra'
 import {
   ActiviteDetailsDynamicModal,
-  ActiviteDetailsDynamicModalState,
+  type ActiviteDetailsDynamicModalState,
 } from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsDynamicModal'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { createDupliquerActiviteLink } from '@app/web/app/coop/mes-activites/cra/createDupliquerActiviteLink'
 import { createModifierActiviteLink } from '@app/web/app/coop/mes-activites/cra/createModifierActiviteLink'
 import styles from './ActiviteDetailsModal.module.css'
+import type { ActiviteForList } from '@app/web/cra/activitesQueries'
+import { createParticipantsAnonymesForBeneficiaires } from '@app/web/beneficiaire/createParticipantsAnonymesForBeneficiaires'
 
 const ListItem = ({
   children,
@@ -59,6 +59,20 @@ const ListItem = ({
     <div className=" fr-flex fr-flex-gap-1v">{children}</div>
   </li>
 )
+
+const getActiviteLocationString = (activite: ActiviteForList) => {
+  const { structure, lieuCodePostal, lieuCommune, typeLieu } = activite
+
+  if (structure) {
+    return `${structure.nom} · ${structure.codePostal} ${structure.commune}`
+  }
+
+  return lieuCommune
+    ? `${lieuCodePostal} ${lieuCommune}`
+    : typeLieu === 'ADistance'
+      ? 'À distance'
+      : 'Non renseigné'
+}
 
 const ActiviteDetailsModal = ({
   initialState,
@@ -79,7 +93,7 @@ const ActiviteDetailsModal = ({
   useEffect(() => {
     // Cancel deletion state on state change
     setDeletionConfirmation(false)
-  }, [state?.activite.cra.id])
+  }, [state?.activite.id])
 
   const onDeleteButtonClick = () => {
     setDeletionConfirmation(true)
@@ -90,13 +104,36 @@ const ActiviteDetailsModal = ({
 
   const { activite } = state
 
-  const { type, cra } = activite
+  const {
+    type,
+    id,
+    duree: dureeInteger,
+    autonomie,
+    structure,
+    date,
+    lieuCodeInsee,
+    lieuCodePostal,
+    lieuCommune,
+    typeLieu,
+    degreDeFinalisation,
+    structureDeRedirection,
+    orienteVersStructure,
+    niveau,
+    notes,
+    titreAtelier,
+    typeLieuAtelier,
+    materiel,
+    precisionsDemarche,
+    accompagnements,
+    thematiques,
+    thematiquesDemarche,
+  } = activite
 
   const onDelete = async () => {
     try {
       await mutation.mutateAsync({
         type,
-        craId: cra.id,
+        craId: id,
       })
       ActiviteDetailsDynamicModal.close()
       router.refresh()
@@ -120,36 +157,25 @@ const ActiviteDetailsModal = ({
 
   const isLoading = mutation.isPending || mutation.isSuccess
 
-  const duree = cra.duree.toString() as DureeAccompagnement
-  const locationString = cra.lieuActivite
-    ? `${cra.lieuActivite.nom} · ${cra.lieuActivite.codePostal} ${cra.lieuActivite.commune}`
-    : (activite.type === 'demarche' || activite.type === 'individuel') &&
-        activite.cra.lieuAccompagnementDomicileCommune
-      ? `${activite.cra.lieuAccompagnementDomicileCodePostal} ${activite.cra.lieuAccompagnementDomicileCommune}`
-      : activite.type === 'collectif' &&
-          activite.cra.lieuAccompagnementAutreCommune
-        ? `${activite.cra.lieuAccompagnementAutreCodePostal} ${activite.cra.lieuAccompagnementAutreCommune}`
-        : 'À distance'
+  const duree = dureeInteger.toString() as DureeAccompagnement
+  const locationString = getActiviteLocationString(activite)
 
-  const thematiqueLabels =
-    activite.type === 'demarche'
-      ? activite.cra.thematiques.map(
-          (thematique) => thematiqueDemarcheAdministrativeLabels[thematique],
-        )
-      : activite.cra.thematiques.map(
-          (thematique) => thematiqueAccompagnementLabels[thematique],
-        )
+  const thematiqueTags = [
+    ...thematiques.map((thematique) => thematiqueLabels[thematique]),
+    ...thematiquesDemarche.map(
+      (thematique) => thematiqueDemarcheAdministrativeLabels[thematique],
+    ),
+  ]
 
   const donneesItems: ReactNode[] = [
-    // Materiel utilisé
-    'materiel' in cra &&
-      cra.materiel.length > 0 &&
-      `Matériel utilisé : ${cra.materiel.map((materiel) => materielLabels[materiel]).join(', ')}`,
+    // Material utilisé
+    !!materiel &&
+      `Matériel utilisé : ${materiel.map((materielValue) => materielLabels[materielValue]).join(', ')}`,
     // Thématiques
     <>
-      Thématique{sPluriel(thematiqueLabels.length)}&nbsp;:{' '}
+      Thématique{sPluriel(thematiqueTags.length)}&nbsp;:{' '}
       <div className="fr-text--regular fr-flex fr-flex-wrap fr-flex-gap-2v">
-        {thematiqueLabels.map((label) => (
+        {thematiqueTags.map((label) => (
           <Tag small key={label}>
             {label}
           </Tag>
@@ -157,99 +183,109 @@ const ActiviteDetailsModal = ({
       </div>
     </>,
     // Demarche
-    'precisionsDemarche' in cra &&
-      !!cra.precisionsDemarche &&
-      `Démarche : ${cra.precisionsDemarche}`,
+    !!precisionsDemarche && `Démarche : ${precisionsDemarche}`,
     // Autonomie
-    'autonomie' in cra && cra.autonomie && (
+    !!autonomie && (
       <>
         Autonomie du bénéficiaire&nbsp;:{' '}
-        <Stars count={autonomieStars[cra.autonomie]} max={3} />
+        <Stars count={autonomieStars[autonomie]} max={3} />
       </>
     ),
-    // Finalisation démarche
-    'degreDeFinalisation' in cra && cra.degreDeFinalisation && (
+    // Finalisation demarche
+    !!degreDeFinalisation && (
       <>
         Démarche finalisée&nbsp;:{' '}
-        {degreDeFinalisationDemarcheLabels[cra.degreDeFinalisation]}
-        {degreDeFinalisationDemarcheHints[cra.degreDeFinalisation] &&
+        {degreDeFinalisationDemarcheLabels[degreDeFinalisation]}
+        {degreDeFinalisationDemarcheHints[degreDeFinalisation] &&
           `, ${(
-            degreDeFinalisationDemarcheHints[cra.degreDeFinalisation] ?? ''
+            degreDeFinalisationDemarcheHints[degreDeFinalisation] ?? ''
           ).toLocaleLowerCase()}`}
       </>
     ),
     // Redirection structure accompagnement individuel
-    activite.type === 'individuel' &&
-      activite.cra.orienteVersStructure &&
-      activite.cra.structureDeRedirection &&
-      `Orienté vers ${structuresRedirectionLabels[activite.cra.structureDeRedirection]}`,
+    !!orienteVersStructure &&
+      !!structureDeRedirection &&
+      `Orienté vers ${structuresRedirectionLabels[structureDeRedirection]}`,
     // Redirection structure démarche
-    'degreDeFinalisation' in cra &&
-      cra.degreDeFinalisation === 'OrienteVersStructure' &&
-      cra.structureDeRedirection &&
-      `Orienté vers ${structuresRedirectionLabels[cra.structureDeRedirection]}`,
+    degreDeFinalisation === 'OrienteVersStructure' &&
+      !!structureDeRedirection &&
+      `Orienté vers ${structuresRedirectionLabels[structureDeRedirection]}`,
     // Niveau atelier
-    'niveau' in cra && cra.niveau && (
+    !!niveau && (
       <>
         Niveau de l’atelier&nbsp;:{' '}
-        <Stars count={niveauAtelierStars[cra.niveau]} max={3} />
+        <Stars count={niveauAtelierStars[niveau]} max={3} />
       </>
     ),
   ].filter(Boolean)
 
+  const beneficiaires = accompagnements.map(
+    (accompagnement) => accompagnement.beneficiaire,
+  )
+
+  const beneficiaireUnique = type === 'Collectif' ? null : beneficiaires[0]
+
+  const beneficiairesCollectif = type === 'Collectif' ? beneficiaires : null
+
+  // Informations si le beneficiaire est anonyme et à des informations supplémentaires
   const infosBeneficiaireAnonyme =
-    'beneficiaire' in cra &&
-    isBeneficiaireAnonymous(cra.beneficiaire) &&
-    !isBeneficiaireEmpty(cra.beneficiaire)
+    !!beneficiaireUnique &&
+    beneficiaireUnique.anonyme &&
+    !isBeneficiaireEmpty(beneficiaireUnique)
       ? [
           [
-            cra.beneficiaire.genre &&
-              cra.beneficiaire.genre !== 'NonCommunique' &&
-              sexLabels[cra.beneficiaire.genre],
-            cra.beneficiaire.trancheAge &&
-              cra.beneficiaire.trancheAge !== 'NonCommunique' &&
-              trancheAgeLabels[cra.beneficiaire.trancheAge],
-            cra.beneficiaire.statutSocial &&
-              cra.beneficiaire.statutSocial !== 'NonCommunique' &&
-              statutSocialLabels[cra.beneficiaire.statutSocial],
+            beneficiaireUnique.genre &&
+              beneficiaireUnique.genre !== 'NonCommunique' &&
+              sexLabels[beneficiaireUnique.genre],
+            beneficiaireUnique.trancheAge &&
+              beneficiaireUnique.trancheAge !== 'NonCommunique' &&
+              trancheAgeLabels[beneficiaireUnique.trancheAge],
+            beneficiaireUnique.statutSocial &&
+              beneficiaireUnique.statutSocial !== 'NonCommunique' &&
+              statutSocialLabels[beneficiaireUnique.statutSocial],
           ]
             .filter(Boolean)
             .join(', '),
-          !!cra.beneficiaire.commune &&
-            `${cra.beneficiaire.communeCodePostal} ${cra.beneficiaire.commune}`.trim(),
-          cra.beneficiaire.vaPoursuivreParcoursAccompagnement === null
+          !!beneficiaireUnique.commune &&
+            `${beneficiaireUnique.communeCodePostal} ${beneficiaireUnique.commune}`.trim(),
+          beneficiaireUnique.vaPoursuivreParcoursAccompagnement === null
             ? null
-            : cra.beneficiaire.vaPoursuivreParcoursAccompagnement
+            : beneficiaireUnique.vaPoursuivreParcoursAccompagnement
               ? 'Poursuit son parcours d’accompagnement de médiation numérique'
               : 'Ne poursuit pas son parcours d’accompagnement de médiation numérique',
         ].filter(Boolean)
       : null
 
-  const participantsCountTitle =
-    'participants' in cra
-      ? cra.participants.length > 0 && cra.participantsAnonymes.total > 0
-        ? // Both participants suivis and anonymes
-          `${cra.participants.length + cra.participantsAnonymes.total} participant${sPluriel(cra.participants.length + cra.participantsAnonymes.total)} dont ${
-            cra.participants.length
-          } bénéficiaire${sPluriel(cra.participants.length)} suivi${sPluriel(
-            cra.participants.length,
-          )} et ${
-            cra.participantsAnonymes.total
-          } anonyme${sPluriel(cra.participantsAnonymes.total)}`
-        : cra.participants.length > 0
-          ? // Only participants suivis
-            `${cra.participants.length} bénéficiaire${sPluriel(cra.participants.length)} suivi${sPluriel(cra.participants.length)}`
-          : // Only participants anonymes
-            `${cra.participantsAnonymes.total} participant${sPluriel(cra.participantsAnonymes.total)} anonyme${sPluriel(cra.participantsAnonymes.total)}`
-      : null
+  const participants = beneficiairesCollectif
+    ? createParticipantsAnonymesForBeneficiaires(beneficiairesCollectif)
+    : null
+
+  const participantsCountTitle = participants
+    ? participants.beneficiairesSuivis.length > 0 &&
+      participants.participantsAnonymes.total > 0
+      ? // Both participants suivis and anonymes
+        `${(beneficiairesCollectif ?? []).length} participant${sPluriel((beneficiairesCollectif ?? []).length)} dont ${
+          participants.beneficiairesSuivis.length
+        } bénéficiaire${sPluriel(participants.beneficiairesSuivis.length)} suivi${sPluriel(
+          participants.beneficiairesSuivis.length,
+        )} et ${
+          participants.participantsAnonymes.total
+        } anonyme${sPluriel(participants.participantsAnonymes.total)}`
+      : participants.beneficiairesSuivis.length > 0
+        ? // Only participants suivis
+          `${participants.beneficiairesSuivis.length} bénéficiaire${sPluriel(participants.beneficiairesSuivis.length)} suivi${sPluriel(participants.beneficiairesSuivis.length)}`
+        : // Only participants anonymes
+          `${participants.participantsAnonymes.total} participant${sPluriel(participants.participantsAnonymes.total)} anonyme${sPluriel(participants.participantsAnonymes.total)}`
+    : null
 
   const participantsAnonymesInfos =
-    'participants' in cra && cra.participantsAnonymes.total > 0
+    participants && participants.participantsAnonymes.total > 0
       ? [
           genreValues
             .map((enumValue) => ({
               enumValue,
-              count: cra.participantsAnonymes[`genre${enumValue}`] || 0,
+              count:
+                participants.participantsAnonymes[`genre${enumValue}`] || 0,
               label: sexLabels[enumValue].toLocaleLowerCase(),
               prefix: enumValue === 'NonCommunique' ? ' de genre' : '',
               pluralize: enumValue !== 'NonCommunique',
@@ -263,7 +299,9 @@ const ActiviteDetailsModal = ({
           trancheAgeValues
             .map((enumValue) => ({
               enumValue,
-              count: cra.participantsAnonymes[`trancheAge${enumValue}`] || 0,
+              count:
+                participants.participantsAnonymes[`trancheAge${enumValue}`] ||
+                0,
               label: trancheAgeLabels[enumValue].toLocaleLowerCase(),
               prefix: enumValue === 'NonCommunique' ? ' de tranche d’âge' : '',
               pluralize: enumValue !== 'NonCommunique',
@@ -274,7 +312,9 @@ const ActiviteDetailsModal = ({
           statutSocialValues
             .map((enumValue) => ({
               enumValue,
-              count: cra.participantsAnonymes[`statutSocial${enumValue}`] || 0,
+              count:
+                participants.participantsAnonymes[`statutSocial${enumValue}`] ||
+                0,
               label: statutSocialLabels[enumValue].toLocaleLowerCase(),
               prefix: enumValue === 'NonCommunique' ? ' de statut social' : '',
               pluralize: enumValue !== 'NonCommunique',
@@ -300,8 +340,8 @@ const ActiviteDetailsModal = ({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className="fr-display-block"
-            alt={accompagnementTypeLabels[type]}
-            src={accompagnementTypeIllustrations[type]}
+            alt={typeActiviteLabels[type]}
+            src={typeActiviteIllustrations[type]}
             style={{ width: 40, height: 40 }}
           />
         </div>
@@ -339,13 +379,11 @@ const ActiviteDetailsModal = ({
       <div className="fr-mt-6v fr-flex fr-flex-gap-2v fr-justify-content-space-between fr-align-items-center">
         <div>
           <p className="fr-text--xs fr-text-mention--grey fr-text--bold fr-text--uppercase fr-mb-0">
-            {formatActiviteDayDate(cra.date)}
+            {formatActiviteDayDate(date)}
           </p>
           <p className="fr-text--bold fr-mb-0">
-            {accompagnementTypeLabels[type]}
-            {activite.type === 'collectif' &&
-              !!activite.cra.titreAtelier &&
-              ` · ${activite.cra.titreAtelier}`}
+            {typeActiviteLabels[type]}
+            {!!titreAtelier && ` · ${titreAtelier}`}
           </p>
         </div>
         {!deletionConfirmation && (
@@ -399,7 +437,7 @@ const ActiviteDetailsModal = ({
           </ul>
 
           <hr className="fr-separator-6v" />
-          {'beneficiaire' in cra && isBeneficiaireEmpty(cra.beneficiaire) && (
+          {!!beneficiaireUnique && isBeneficiaireEmpty(beneficiaireUnique) && (
             <div className="fr-flex fr-justify-content-space-between fr-flex-gap-4v fr-text-mention--grey">
               <p className="fr-text--xs fr-mb-0 fr-text--bold fr-text--uppercase">
                 <span className="fr-icon-user-heart-line fr-icon--sm fr-mr-1w" />
@@ -424,21 +462,20 @@ const ActiviteDetailsModal = ({
               </ul>
             </>
           )}
-          {'beneficiaire' in cra &&
-            !isBeneficiaireAnonymous(cra.beneficiaire) && (
-              <div className="fr-flex fr-align-items-center">
-                <span className="fr-icon-user-heart-line fr-icon--sm fr-mr-3v fr-text-mention--grey" />
-                <Link
-                  href={`/coop/mes-beneficiaires/${cra.beneficiaire.id}`}
-                  className="fr-link fr-text--sm fr-mb-0 fr-text--medium fr-link--underline-on-hover"
-                >
-                  {getBeneficiaireDisplayName(cra.beneficiaire)}&nbsp;·&nbsp;
-                  {cra.beneficiaire._count.activites} accompagnement
-                  {sPluriel(cra.beneficiaire._count.activites)}
-                </Link>
-              </div>
-            )}
-          {'participants' in cra && (
+          {!!beneficiaireUnique && !beneficiaireUnique.anonyme && (
+            <div className="fr-flex fr-align-items-center">
+              <span className="fr-icon-user-heart-line fr-icon--sm fr-mr-3v fr-text-mention--grey" />
+              <Link
+                href={`/coop/mes-beneficiaires/${beneficiaireUnique.id}`}
+                className="fr-link fr-text--sm fr-mb-0 fr-text--medium fr-link--underline-on-hover"
+              >
+                {getBeneficiaireDisplayName(beneficiaireUnique)}&nbsp;·&nbsp;
+                {beneficiaireUnique._count.accompagnements} accompagnement
+                {sPluriel(beneficiaireUnique._count.accompagnements)}
+              </Link>
+            </div>
+          )}
+          {!!participants && (
             <Accordion
               className={styles.accordion}
               label={
@@ -453,42 +490,41 @@ const ActiviteDetailsModal = ({
                 </div>
               }
             >
-              {cra.participants.length > 0 && (
+              {participants.beneficiairesSuivis.length > 0 && (
                 <>
                   {/* Only add title if both type of participants are present */}
-                  {cra.participantsAnonymes.total > 0 && (
+                  {participants.participantsAnonymes.total > 0 && (
                     <p className="fr-text--sm fr-text--bold fr-mb-1v">
-                      {cra.participants.length} bénéficiaire
-                      {sPluriel(cra.participants.length)} suivi
-                      {sPluriel(cra.participants.length)}&nbsp;:
+                      {participants.beneficiairesSuivis.length} bénéficiaire
+                      {sPluriel(participants.beneficiairesSuivis.length)} suivi
+                      {sPluriel(participants.beneficiairesSuivis.length)}&nbsp;:
                     </p>
                   )}
                   <ul className="fr-my-0">
-                    {cra.participants.map((participant) => (
-                      <ListItem
-                        key={participant.beneficiaire.id}
-                        className="fr-mb-0"
-                      >
+                    {participants.beneficiairesSuivis.map((beneficiaire) => (
+                      <ListItem key={beneficiaire.id} className="fr-mb-0">
                         <Link
                           className="fr-link fr-link--underline-on-hover fr-text--sm fr-mb-0"
-                          href={`/coop/mes-beneficiaires/${participant.beneficiaire.id}`}
+                          href={`/coop/mes-beneficiaires/${beneficiaire.id}`}
                         >
-                          {getBeneficiaireDisplayName(participant.beneficiaire)}
+                          {getBeneficiaireDisplayName(beneficiaire)}
                         </Link>
                       </ListItem>
                     ))}
                   </ul>
                 </>
               )}
-              {cra.participantsAnonymes.total > 0 &&
+              {participants.participantsAnonymes.total > 0 &&
                 participantsAnonymesInfos && (
                   <>
                     {/* Only add title if both type of participants are present */}
-                    {cra.participants.length > 0 && (
+                    {participants.beneficiairesSuivis.length > 0 && (
                       <p className="fr-text--sm fr-text--bold fr-mb-1v">
-                        {cra.participantsAnonymes.total} participant
-                        {sPluriel(cra.participantsAnonymes.total)} anonyme
-                        {sPluriel(cra.participantsAnonymes.total)}&nbsp;:
+                        {participants.participantsAnonymes.total} participant
+                        {sPluriel(participants.participantsAnonymes.total)}{' '}
+                        anonyme
+                        {sPluriel(participants.participantsAnonymes.total)}
+                        &nbsp;:
                       </p>
                     )}
                     <ul className="fr-my-0">
@@ -502,18 +538,18 @@ const ActiviteDetailsModal = ({
                 )}
             </Accordion>
           )}
-          {!!cra.notes && (
+          {!!notes && (
             <>
               <hr className="fr-separator-6v" />
               <p className="fr-text-mention--grey fr-text--xs fr-mb-2v fr-text--bold fr-text--uppercase">
                 <span className="fr-icon-file-text-line fr-icon--sm fr-mr-1w" />
                 Notes sur l’
-                {type === 'collectif' ? 'atelier' : 'accompagnement'}
+                {type === 'Collectif' ? 'atelier' : 'accompagnement'}
               </p>
               <div
                 className={styles.notes}
                 dangerouslySetInnerHTML={{
-                  __html: cra.notes,
+                  __html: notes,
                 }}
               />
             </>

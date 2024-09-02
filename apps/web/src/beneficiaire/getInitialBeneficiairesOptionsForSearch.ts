@@ -32,7 +32,7 @@ export const getInitialBeneficiairesOptionsForSearch = async ({
       : whereBeneficiaire,
     select: searchBeneficiaireSelect,
     orderBy: [
-      { activites: { _count: 'desc' } },
+      { accompagnements: { _count: 'desc' } },
       {
         nom: 'asc',
       },

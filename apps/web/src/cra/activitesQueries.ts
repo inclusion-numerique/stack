@@ -1,14 +1,17 @@
 import type { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
+import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 
 /**
  * Helpers for activite detail modals and activité lists that merge data from all types of Cras
  */
 
-const accompagnementIndividuelBeneficiaireSelect = {
+export const activiteListeBeneficiaireSelect = {
   id: true,
   prenom: true,
   nom: true,
+  anonyme: true,
+  attributionsAleatoires: true,
   trancheAge: true,
   statutSocial: true,
   genre: true,
@@ -17,227 +20,118 @@ const accompagnementIndividuelBeneficiaireSelect = {
   vaPoursuivreParcoursAccompagnement: true,
   _count: {
     select: {
-      activites: true,
+      accompagnements: true,
     },
   },
 } satisfies Prisma.BeneficiaireSelect
 
-export const craIndividuelForActiviteSelect = {
+export const activiteListSelect = {
   id: true,
-  date: true,
-  autonomie: true,
-  thematiques: true,
-  duree: true,
-  materiel: true,
-  notes: true,
-  lieuAccompagnement: true,
-  lieuActivite: {
-    select: { id: true, commune: true, codePostal: true, nom: true },
-  },
-  lieuAccompagnementDomicileCommune: true,
-  lieuAccompagnementDomicileCodeInsee: true,
-  lieuAccompagnementDomicileCodePostal: true,
-  orienteVersStructure: true,
-  structureDeRedirection: true,
-  beneficiaire: {
-    select: {
-      ...accompagnementIndividuelBeneficiaireSelect,
-    },
-  },
-} satisfies Prisma.CraIndividuelSelect
-
-export const getCrasIndividuelForActivite = ({
-  beneficiaireId,
-  mediateurId,
-}: {
-  beneficiaireId?: string
-  mediateurId?: string
-}) =>
-  prismaClient.craIndividuel.findMany({
-    where: {
-      beneficiaireId,
-      creeParMediateurId: mediateurId,
-      suppression: null,
-    },
-    select: craIndividuelForActiviteSelect,
-    orderBy: {
-      creation: 'desc',
-    },
-  })
-
-export type CraIndividuelForActivite = Awaited<
-  ReturnType<typeof getCrasIndividuelForActivite>
->[number]
-
-export const craDemarcheForActiviteSelect = {
-  id: true,
-  date: true,
-  autonomie: true,
-  thematiques: true,
-  duree: true,
-  notes: true,
-  lieuAccompagnement: true,
-  precisionsDemarche: true,
-  lieuActivite: {
-    select: { id: true, commune: true, codePostal: true, nom: true },
-  },
-  lieuAccompagnementDomicileCommune: true,
-  lieuAccompagnementDomicileCodeInsee: true,
-  lieuAccompagnementDomicileCodePostal: true,
-  structureDeRedirection: true,
-  degreDeFinalisation: true,
-  beneficiaire: {
-    select: {
-      ...accompagnementIndividuelBeneficiaireSelect,
-    },
-  },
-} satisfies Prisma.CraDemarcheAdministrativeSelect
-
-export const getCrasDemarcheAdministrativeForActivite = ({
-  beneficiaireId,
-  mediateurId,
-}: {
-  beneficiaireId?: string
-  mediateurId?: string
-}) =>
-  prismaClient.craDemarcheAdministrative.findMany({
-    where: {
-      beneficiaireId,
-      creeParMediateurId: mediateurId,
-      suppression: null,
-    },
-    select: craDemarcheForActiviteSelect,
-    orderBy: {
-      creation: 'desc',
-    },
-  })
-
-export type CraDemarcheAdministrativeForActivite = Awaited<
-  ReturnType<typeof getCrasDemarcheAdministrativeForActivite>
->[number]
-
-export const craCollectifForActiviteSelect = {
-  id: true,
-  date: true,
-  niveau: true,
-  thematiques: true,
-  titreAtelier: true,
-  duree: true,
-  notes: true,
-  lieuAtelier: true,
-  lieuActivite: {
-    select: { id: true, commune: true, codePostal: true, nom: true },
-  },
-  lieuAccompagnementAutreCommune: true,
-  lieuAccompagnementAutreCodeInsee: true,
-  lieuAccompagnementAutreCodePostal: true,
-  participants: {
+  type: true,
+  mediateurId: true,
+  accompagnements: {
     select: {
       beneficiaire: {
         select: {
-          id: true,
-          prenom: true,
-          nom: true,
+          ...activiteListeBeneficiaireSelect,
         },
       },
     },
   },
-  participantsAnonymes: true,
-} satisfies Prisma.CraCollectifSelect
+  date: true,
 
-export const getCrasCollectifForActivite = ({
+  duree: true,
+  notes: true,
+
+  structure: {
+    select: { id: true, commune: true, codePostal: true, nom: true },
+  },
+  lieuCodePostal: true,
+  lieuCommune: true,
+  lieuCodeInsee: true,
+
+  creation: true,
+  modification: true,
+
+  typeLieu: true,
+  autonomie: true,
+  structureDeRedirection: true,
+
+  materiel: true,
+  thematiques: true,
+
+  orienteVersStructure: true,
+
+  thematiquesDemarche: true,
+  precisionsDemarche: true,
+  degreDeFinalisation: true,
+
+  titreAtelier: true,
+  typeLieuAtelier: true,
+  niveau: true,
+} satisfies Prisma.ActiviteSelect
+
+export const getAllActivites = async ({
   beneficiaireId,
   mediateurId,
 }: {
   beneficiaireId?: string
   mediateurId?: string
 }) =>
-  prismaClient.craCollectif.findMany({
+  prismaClient.activite.findMany({
     where: {
-      creeParMediateurId: mediateurId,
-      ...(mediateurId ? { participants: { some: { beneficiaireId } } } : {}),
+      accompagnements: { some: { beneficiaireId } },
+      mediateurId,
       suppression: null,
     },
-    select: craCollectifForActiviteSelect,
-    orderBy: {
-      creation: 'desc',
-    },
+    select: activiteListSelect,
+    orderBy: [
+      {
+        date: 'desc',
+      },
+      { creation: 'desc' },
+    ],
   })
 
-export type CraCollectifForActivite = Awaited<
-  ReturnType<typeof getCrasCollectifForActivite>
->[number]
-
-export type ActiviteIndividuelle = {
-  type: 'individuel'
-  cra: CraIndividuelForActivite
-}
-
-export type ActiviteCollective = {
-  type: 'collectif'
-  cra: CraCollectifForActivite
-}
-
-export type ActiviteDemarcheAdministrative = {
-  type: 'demarche'
-  cra: CraDemarcheAdministrativeForActivite
-}
-
-export type Activite =
-  | ActiviteIndividuelle
-  | ActiviteCollective
-  | ActiviteDemarcheAdministrative
-
-export const getActivites = async ({
+export const mediateurHasActivites = async ({
   beneficiaireId,
   mediateurId,
 }: {
   beneficiaireId?: string
-  mediateurId?: string
-}): Promise<Activite[]> => {
-  const [crasIndividuels, crasDemarchesAdministratives, crasCollectifs] =
-    await Promise.all([
-      getCrasIndividuelForActivite({ beneficiaireId, mediateurId }),
-      getCrasDemarcheAdministrativeForActivite({ beneficiaireId, mediateurId }),
-      getCrasCollectifForActivite({ beneficiaireId, mediateurId }),
-    ])
+  mediateurId: string
+}) =>
+  prismaClient.activite
+    .count({
+      where: {
+        mediateurId,
+        suppression: null,
+        accompagnements: beneficiaireId
+          ? {
+              some: {
+                beneficiaireId,
+              },
+            }
+          : undefined,
+      },
+      take: 1,
+    })
+    .then((count) => count > 0)
 
-  return [
-    ...crasIndividuels.map(
-      (cra) =>
-        ({
-          type: 'individuel' as const,
-          cra,
-        }) satisfies ActiviteIndividuelle,
-    ),
-    ...crasDemarchesAdministratives.map(
-      (cra) =>
-        ({
-          type: 'demarche' as const,
-          cra,
-        }) satisfies ActiviteDemarcheAdministrative,
-    ),
-    ...crasCollectifs.map(
-      (cra) =>
-        ({
-          type: 'collectif' as const,
-          cra,
-        }) satisfies ActiviteCollective,
-    ),
-  ].sort((a, b) => b.cra.date.getTime() - a.cra.date.getTime())
-}
+export type ActiviteForList = Awaited<
+  ReturnType<typeof getAllActivites>
+>[number]
 
 export type ActivitesByDate = {
   date: string
-  activites: Activite[]
+  activites: ActiviteForList[]
 }
 
 export const groupActivitesByDate = (
-  activites: Activite[],
+  activites: ActiviteForList[],
 ): ActivitesByDate[] => {
-  const byDateRecord = activites.reduce<Record<string, Activite[]>>(
+  const byDateRecord = activites.reduce<Record<string, ActiviteForList[]>>(
     (accumulator, activity) => {
-      const date = new Date(activity.cra.date).toISOString().slice(0, 10)
+      const date = dateAsIsoDay(activity.date)
       if (!accumulator[date]) {
         accumulator[date] = []
       }
@@ -252,11 +146,3 @@ export const groupActivitesByDate = (
     activites: groupedActivites,
   }))
 }
-
-export const activitesMediateurWithCrasSelect = {
-  id: true,
-  mediateurId: true,
-  craIndividuel: { select: craIndividuelForActiviteSelect },
-  craDemarcheAdministrative: { select: craDemarcheForActiviteSelect },
-  craCollectif: { select: craCollectifForActiviteSelect },
-} satisfies Prisma.ActiviteMediateurSelect

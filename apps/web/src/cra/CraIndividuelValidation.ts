@@ -5,7 +5,7 @@ import {
   lieuAccompagnementValues,
   materielValues,
   structuresRedirectionValues,
-  thematiqueAccompagnementValues,
+  thematiqueValues,
 } from '@app/web/cra/cra'
 import { BeneficiaireCraValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { AdresseBanValidation } from '@app/web/external-apis/ban/AdresseBanValidation'
@@ -27,11 +27,11 @@ export const CraIndividuelValidation = z
     lieuAccompagnement: z.enum(lieuAccompagnementValues, {
       required_error: 'Veuillez renseigner un lieu d’accompagnement',
     }),
-    lieuActiviteId: z.string().uuid().nullish(),
+    structureId: z.string().uuid().nullish(),
     lieuAccompagnementDomicileCommune: AdresseBanValidation.nullish(),
     materiel: z.array(z.enum(materielValues)).default([]),
     thematiques: z
-      .array(z.enum(thematiqueAccompagnementValues), {
+      .array(z.enum(thematiqueValues), {
         required_error: 'Veuillez renseigner au moins une thématique',
       })
       .min(1, 'Veuillez renseigner au moins une thématique'),
@@ -40,17 +40,17 @@ export const CraIndividuelValidation = z
     structureDeRedirection: z.enum(structuresRedirectionValues).nullish(),
     notes: z.string().nullish(),
   })
-  // lieuActiviteId is required if lieuAccompagnement ===  LieuActivite
+  // structureId is required if lieuAccompagnement ===  LieuActivite
   .refine(
     (data) => {
       if (data.lieuAccompagnement === 'LieuActivite') {
-        return !!data.lieuActiviteId
+        return !!data.structureId
       }
       return true
     },
     {
       message: 'Veuillez renseigner le lieu d’activité',
-      path: ['lieuActiviteId'],
+      path: ['structureId'],
     },
   )
   // lieuAccompagnementDomicileCommune is required if lieuAccompagnement === Domicile

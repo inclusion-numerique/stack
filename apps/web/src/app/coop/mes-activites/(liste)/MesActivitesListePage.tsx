@@ -32,7 +32,7 @@ const SuspensedContent = async ({
             {formatActiviteDayDate(date)}
           </h3>
           {activites.map((activite) => (
-            <ActiviteMediateurCard key={activite.cra.id} activite={activite} />
+            <ActiviteMediateurCard key={activite.id} activite={activite} />
           ))}
         </Fragment>
       ))}

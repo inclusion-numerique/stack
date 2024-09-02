@@ -1,14 +1,13 @@
 import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
-import { prismaClient } from '@app/web/prismaClient'
 import MesActivitesListeEmptyPage from '@app/web/app/coop/mes-activites/(liste)/MesActivitesListeEmptyPage'
 import { getActivitesListPageData } from '@app/web/app/coop/mes-activites/(liste)/getActivitesListPageData'
 import MesActivitesListePage from '@app/web/app/coop/mes-activites/(liste)/MesActivitesListePage'
-import { activitesListWhere } from '@app/web/cra/searchActivite'
-import { ActivitesDataTableSearchParams } from '@app/web/cra/ActivitesDataTable'
+import type { ActivitesDataTableSearchParams } from '@app/web/cra/ActivitesDataTable'
 import MesActivitesListeLayout from '@app/web/app/coop/mes-activites/(liste)/MesActivitesListeLayout'
 import { validateActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import ActivitesFilterTags from '@app/web/app/coop/mes-activites/(liste)/ActivitesFilterTags'
 import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFiltersOptionsForMediateur'
+import { mediateurHasActivites } from '@app/web/cra/activitesQueries'
 
 const MesActivitesPage = async ({
   searchParams: rawSearchParams = {},
@@ -17,9 +16,8 @@ const MesActivitesPage = async ({
 }) => {
   const user = await getAuthenticatedMediateur()
 
-  const hasActivites = await prismaClient.activiteMediateur.count({
-    where: activitesListWhere({ mediateurId: user.mediateur.id }),
-    take: 1,
+  const hasActivites = await mediateurHasActivites({
+    mediateurId: user.mediateur.id,
   })
 
   if (hasActivites) {

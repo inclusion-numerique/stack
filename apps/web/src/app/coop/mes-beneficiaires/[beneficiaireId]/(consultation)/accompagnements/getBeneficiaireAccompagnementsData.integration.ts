@@ -1,9 +1,8 @@
 import { prismaClient } from '@app/web/prismaClient'
 import {
-  LieuAccompagnement,
   LieuAtelier,
-  ThematiqueAccompagnement,
   ThematiqueDemarcheAdministrative,
+  TypeLieu,
 } from '@prisma/client'
 import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
 import { getBeneficiaireAccompagnementsPageData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/getBeneficiaireAccompagnementsPageData'
@@ -166,20 +165,17 @@ describe.skip('getBeneficiaireAccompagnementsData', () => {
 
     const commonData = {
       beneficiaireId: beneficiaire.id,
-      creeParMediateurId: mediateurId,
+      mediateurId: mediateurId,
       date,
       duree,
-      lieuAccompagnement: LieuAccompagnement.ADistance,
+      lieuAccompagnement: TypeLieu.ADistance,
     }
 
     await prismaClient.craIndividuel.create({
       data: {
         ...commonData,
         id: crasIndividuelsIds[0],
-        thematiques: [
-          ThematiqueAccompagnement.Email,
-          ThematiqueAccompagnement.Parentalite,
-        ],
+        thematiques: [Thematique.Email, Thematique.Parentalite],
         activiteBeneficiaire: {
           create: {
             beneficiaireId: beneficiaire.id,
@@ -192,10 +188,7 @@ describe.skip('getBeneficiaireAccompagnementsData', () => {
       data: {
         ...commonData,
         id: crasIndividuelsIds[1],
-        thematiques: [
-          ThematiqueAccompagnement.Email,
-          ThematiqueAccompagnement.Sante,
-        ],
+        thematiques: [Thematique.Email, Thematique.Sante],
         activiteBeneficiaire: {
           create: {
             beneficiaireId: beneficiaire.id,
@@ -257,20 +250,14 @@ describe.skip('getBeneficiaireAccompagnementsData', () => {
           id: crasCollectifsIds[0],
           participantsAnonymesId: crasCollectifsIds[0],
           lieuAtelier: LieuAtelier.Autre,
-          thematiques: [
-            ThematiqueAccompagnement.Email,
-            ThematiqueAccompagnement.ReseauxSociaux,
-          ],
+          thematiques: [Thematique.Email, Thematique.ReseauxSociaux],
         },
         {
           ...collectifCommonData,
           id: crasCollectifsIds[1],
           participantsAnonymesId: crasCollectifsIds[1],
           lieuAtelier: LieuAtelier.LieuActivite,
-          thematiques: [
-            ThematiqueAccompagnement.ReseauxSociaux,
-            ThematiqueAccompagnement.CultureNumerique,
-          ],
+          thematiques: [Thematique.ReseauxSociaux, Thematique.CultureNumerique],
           titreAtelier: 'Exemple de titre',
           date: new Date('2024-07-07'),
         },
@@ -314,9 +301,9 @@ describe.skip('getBeneficiaireAccompagnementsData', () => {
                 date: new Date('2024-07-07T00:00:00.000Z'),
                 duree: 90,
                 id: crasCollectifsIds[1], // 'faf81ac7-cb7f-4949-8dbf-330b435fa87c'
-                lieuAccompagnementAutreCodeInsee: null,
-                lieuAccompagnementAutreCodePostal: null,
-                lieuAccompagnementAutreCommune: null,
+                lieuCodeInsee: null,
+                lieuCodePostal: null,
+                lieuCommune: null,
                 lieuActivite: null,
                 lieuAtelier: 'LieuActivite',
                 niveau: null,
@@ -481,9 +468,9 @@ describe.skip('getBeneficiaireAccompagnementsData', () => {
                 date: new Date('2024-07-05T00:00:00.000Z'),
                 duree: 90,
                 id: crasCollectifsIds[0], // 'bfce1609-2170-431a-903e-728c541d3fe3'
-                lieuAccompagnementAutreCodeInsee: null,
-                lieuAccompagnementAutreCodePostal: null,
-                lieuAccompagnementAutreCommune: null,
+                lieuCodeInsee: null,
+                lieuCodePostal: null,
+                lieuCommune: null,
                 lieuActivite: null,
                 lieuAtelier: 'Autre',
                 niveau: null,

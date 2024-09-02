@@ -6,8 +6,8 @@ describe('createEnumLabelCaseSelect', () => {
   it('should return a case select with the enum values and labels', () => {
     expect(
       createEnumLabelCaseSelect({
-        enumObj: ThematiqueAccompagnement,
-        labels: thematiqueAccompagnementShortLabels,
+        enumObj: Thematique,
+        labels: thematiqueShortLabels,
         column: 'thematique',
       }).sql,
     ).toEqual(`CASE

@@ -11,12 +11,12 @@ import PeriodFilter, {
 } from '@app/web/components/filters/PeriodFilter'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import ActiviteTypeFilter from '@app/web/components/filters/ActiviteTypeFilter'
-import type { AccompagnementType } from '@app/web/cra/cra'
 import BeneficiaireFilter from '@app/web/components/filters/BeneficiaireFilter'
 import { BeneficiaireOption } from '@app/web/hooks/useBeneficiaireSearch'
 import LocationFilter, {
   LocationFilterValue,
 } from '@app/web/components/filters/LocationFilter'
+import type { TypeActivite } from '@prisma/client'
 
 // Allows to replace the current route with new query params
 const replaceRouteWithNewParams = ({
@@ -116,7 +116,7 @@ const ActivitesFilterTags = ({
           },
     )
   }
-  const onActiviteTypeChange = (type: AccompagnementType | null) => {
+  const onActiviteTypeChange = (type: TypeActivite | null) => {
     replaceRouteParams({
       type,
     })

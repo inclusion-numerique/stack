@@ -50,7 +50,7 @@ export const crasLieuLabelSelect =
                       cra_collectif.lieu_accompagnement_autre_commune,
                       cra_demarche_administrative.lieu_accompagnement_domicile_commune, 'À distance')`)
 
-export const crasLieuActiviteIdSelect = Prisma.raw(`COALESCE(
+export const crasStructureIdSelect = Prisma.raw(`COALESCE(
               cra_individuel.lieu_activite_id,
               cra_collectif.lieu_activite_id,
               cra_demarche_administrative.lieu_activite_id) `)
@@ -80,7 +80,7 @@ export const getCrasFiltersWhereConditions = ({
   au: au ? Prisma.raw(`${crasDateSelect.text} <= '${au}'::timestamp`) : null,
   type: type ? Prisma.raw(`${crasTypeSelect.text} = '${type}'`) : null,
   lieu: lieu
-    ? Prisma.raw(`${crasLieuActiviteIdSelect.text} = '${lieu}'::UUID`)
+    ? Prisma.raw(`${crasStructureIdSelect.text} = '${lieu}'::UUID`)
     : null,
   commune: commune
     ? Prisma.raw(`${crasCommuneCodeInseeSelect.text} = '${commune}'`)

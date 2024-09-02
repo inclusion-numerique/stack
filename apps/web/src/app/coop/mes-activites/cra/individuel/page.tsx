@@ -50,11 +50,10 @@ const CreateCraIndividuelPage = async ({
   const { lieuxActiviteOptions, mostUsedLieuActivite } =
     await getInitialLieuxActiviteOptionsForSearch({
       mediateurId: user.mediateur.id,
-      withMost: 'individuel',
     })
 
-  if (!defaultValues.lieuActiviteId) {
-    defaultValues.lieuActiviteId =
+  if (!defaultValues.structureId) {
+    defaultValues.structureId =
       mostUsedLieuActivite?.structure.id ?? undefined
   }
 

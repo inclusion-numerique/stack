@@ -49,11 +49,10 @@ const CreateCraCollectifPage = async ({
   const { lieuxActiviteOptions, mostUsedLieuActivite } =
     await getInitialLieuxActiviteOptionsForSearch({
       mediateurId: user.mediateur.id,
-      withMost: 'collectif',
     })
 
   if (!defaultValues.lieuActiviteId) {
-    defaultValues.lieuActiviteId =
+    defaultValues.structureId =
       mostUsedLieuActivite?.structure.id ?? undefined
   }
 

@@ -1,25 +1,25 @@
 import {
   Prisma,
-  ThematiqueAccompagnement,
+  Thematique,
   ThematiqueDemarcheAdministrative,
 } from '@prisma/client'
 import { pascalCase } from 'change-case'
 import { prismaClient } from '@app/web/prismaClient'
 import {
-  thematiqueAccompagnementLabels,
   thematiqueDemarcheAdministrativeLabels,
+  thematiqueLabels,
 } from '@app/web/cra/cra'
 
 export const beneficiaireCrasCountSelect = {
   _count: {
     select: {
-      activites: true,
+      accompagnements: true,
     },
   },
 } satisfies Prisma.BeneficiaireSelect
 
-export type ThematiqueAccompagnementCount = {
-  thematique: ThematiqueAccompagnement
+export type ThematiqueCount = {
+  thematique: Thematique
   count: number
   enumValue: string
   label: string
@@ -33,7 +33,7 @@ export type ThematiqueDemarcheAdministrativeCount = {
 }
 
 export type CraThematiqueCount =
-  | ThematiqueAccompagnementCount
+  | ThematiqueCount
   | ThematiqueDemarcheAdministrativeCount
 
 export type CountThematiquesResult = CraThematiqueCount[]
@@ -81,14 +81,12 @@ export const countThematiques = async ({
 
   const crasIndividuels = thematiquesIndividuelCounts.map((queryResult) => {
     const count = Number(queryResult.count)
-    const thematique = pascalCase(
-      queryResult.thematique,
-    ) as ThematiqueAccompagnement
+    const thematique = pascalCase(queryResult.thematique) as Thematique
 
     return {
       thematique,
       enumValue: queryResult.thematique,
-      label: thematiqueAccompagnementLabels[thematique],
+      label: thematiqueLabels[thematique],
       count,
     }
   })
@@ -109,14 +107,12 @@ export const countThematiques = async ({
   )
   const crasCollectifs = thematiquesCollectifCounts.map((queryResult) => {
     const count = Number(queryResult.count)
-    const thematique = pascalCase(
-      queryResult.thematique,
-    ) as ThematiqueAccompagnement
+    const thematique = pascalCase(queryResult.thematique) as Thematique
 
     return {
       thematique,
       enumValue: queryResult.thematique,
-      label: thematiqueAccompagnementLabels[thematique],
+      label: thematiqueLabels[thematique],
       count,
     }
   })

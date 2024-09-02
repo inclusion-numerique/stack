@@ -1,11 +1,11 @@
 import Tag from '@codegouvfr/react-dsfr/Tag'
 import {
-  accompagnementTypeIllustrations,
-  accompagnementTypeLabels,
   autonomieStars,
   niveauAtelierStars,
-  thematiqueAccompagnementLabels,
   thematiqueDemarcheAdministrativeLabels,
+  thematiqueLabels,
+  typeActiviteIllustrations,
+  typeActiviteLabels,
 } from '@app/web/cra/cra'
 import Stars from '@app/web/components/Stars'
 import ActiviteBeneficiaireCardOpenModalLink from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/ActiviteBeneficiaireCardOpenModalLink'
@@ -30,14 +30,14 @@ const ActiviteBeneficiaireCard = ({ activite }: { activite: Activite }) => {
         <img
           className="fr-display-block"
           alt=""
-          src={accompagnementTypeIllustrations[activite.type]}
+          src={typeActiviteIllustrations[activite.type]}
           style={{ width: 40, height: 40 }}
         />
       </div>
       <div className="fr-flex-grow-1">
         <p className=" fr-mb-2v">
           <span className="fr-text--xs fr-text--bold fr-text--uppercase fr-mb-0">
-            {accompagnementTypeLabels[activite.type]}
+            {typeActiviteLabels[activite.type]}
           </span>
           {activite.type === 'collectif' && activite.cra.titreAtelier ? (
             <span className="fr-text--medium fr-text--sm fr-text-mention--grey fr-mb-0">
@@ -51,7 +51,7 @@ const ActiviteBeneficiaireCard = ({ activite }: { activite: Activite }) => {
               <>
                 {activite.cra.thematiques.map((thematique) => (
                   <Tag key={thematique} small>
-                    {thematiqueAccompagnementLabels[thematique]}
+                    {thematiqueLabels[thematique]}
                   </Tag>
                 ))}
               </>

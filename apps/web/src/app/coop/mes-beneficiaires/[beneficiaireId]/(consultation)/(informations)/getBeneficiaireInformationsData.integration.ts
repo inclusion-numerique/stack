@@ -2,10 +2,10 @@ import { prismaClient } from '@app/web/prismaClient'
 import { getBeneficiaireInformationsPageData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/(informations)/getBeneficiaireInformationsPageData'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import {
-  LieuAccompagnement,
   LieuAtelier,
-  ThematiqueAccompagnement,
+  Thematique,
   ThematiqueDemarcheAdministrative,
+  TypeLieu,
 } from '@prisma/client'
 import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
 import { CountThematiquesResult } from '@app/web/beneficiaire/beneficiaireQueries'
@@ -177,10 +177,10 @@ describe.skip('getBeneficiaireInformationsData', () => {
 
     const commonData = {
       beneficiaireId: beneficiaire.id,
-      creeParMediateurId: mediateurId,
+      mediateurId: mediateurId,
       date,
       duree,
-      lieuAccompagnement: LieuAccompagnement.ADistance,
+      lieuAccompagnement: TypeLieu.ADistance,
     }
 
     await prismaClient.craIndividuel.createMany({
@@ -188,18 +188,12 @@ describe.skip('getBeneficiaireInformationsData', () => {
         {
           ...commonData,
           id: crasIndividuelsIds[0],
-          thematiques: [
-            ThematiqueAccompagnement.Email,
-            ThematiqueAccompagnement.Parentalite,
-          ],
+          thematiques: [Thematique.Email, Thematique.Parentalite],
         },
         {
           ...commonData,
           id: crasIndividuelsIds[1],
-          thematiques: [
-            ThematiqueAccompagnement.Email,
-            ThematiqueAccompagnement.Sante,
-          ],
+          thematiques: [Thematique.Email, Thematique.Sante],
         },
       ],
     })
@@ -246,20 +240,14 @@ describe.skip('getBeneficiaireInformationsData', () => {
           id: crasCollectifsIds[0],
           participantsAnonymesId: crasCollectifsIds[0],
           lieuAtelier: LieuAtelier.Autre,
-          thematiques: [
-            ThematiqueAccompagnement.Email,
-            ThematiqueAccompagnement.ReseauxSociaux,
-          ],
+          thematiques: [Thematique.Email, Thematique.ReseauxSociaux],
         },
         {
           ...collectifCommonData,
           id: crasCollectifsIds[1],
           participantsAnonymesId: crasCollectifsIds[1],
           lieuAtelier: LieuAtelier.LieuActivite,
-          thematiques: [
-            ThematiqueAccompagnement.ReseauxSociaux,
-            ThematiqueAccompagnement.CultureNumerique,
-          ],
+          thematiques: [Thematique.ReseauxSociaux, Thematique.CultureNumerique],
           date: new Date('2024-07-07'),
         },
       ],

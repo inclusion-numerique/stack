@@ -31,7 +31,7 @@ import {
   lieuAtelierOptionsWithExtras,
   materielOptions,
   niveauAtelierOptionsWithExtras,
-  thematiqueAccompagnementOptionsWithExtras,
+  thematiqueOptionsWithExtras,
 } from '@app/web/cra/cra'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { craFormFieldsetClassname } from '@app/web/app/coop/mes-activites/cra/craFormFieldsetClassname'
@@ -220,7 +220,7 @@ const CraCollectifForm = ({
         <CustomSelectFormField
           label=" "
           control={control}
-          path="lieuActiviteId"
+          path="structureId"
           placeholder="Rechercher un lieu d’activité"
           options={lieuActiviteOptions}
         />
@@ -248,7 +248,7 @@ const CraCollectifForm = ({
       <CheckboxGroupFormField
         control={control}
         path="thematiques"
-        options={thematiqueAccompagnementOptionsWithExtras}
+        options={thematiqueOptionsWithExtras}
         disabled={isLoading}
         components={{
           label: RichCardLabel,
