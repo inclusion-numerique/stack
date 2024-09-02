@@ -1,7 +1,4 @@
-import {
-  ThematiqueAccompagnement,
-  ThematiqueDemarcheAdministrative,
-} from '@prisma/client'
+import { Thematique, ThematiqueDemarcheAdministrative } from '@prisma/client'
 import { mediateurAvecActiviteMediateurId } from '@app/fixtures/users'
 import {
   givenCraCollectif,
@@ -14,36 +11,31 @@ import {
   beneficiairesMediateurAvecActivite,
 } from '@app/fixtures/beneficiaires'
 import { mediateque } from '@app/fixtures/structures'
+import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
 
 export const mediateurAvecActiviteCrasIndividuels = [
   givenCraIndividuel({
     beneficiaireId: beneficiaireMinimaleMediateurAvecActivite.id,
-    creeParMediateurId: mediateurAvecActiviteMediateurId,
-    thematiques: [
-      ThematiqueAccompagnement.Sante,
-      ThematiqueAccompagnement.CultureNumerique,
-    ],
+    mediateurId: mediateurAvecActiviteMediateurId,
+    thematiques: [Thematique.Sante, Thematique.CultureNumerique],
     date: new Date('2024-06-15'),
   }),
   givenCraIndividuel({
     beneficiaireId: beneficiaireMinimaleMediateurAvecActivite.id,
-    creeParMediateurId: mediateurAvecActiviteMediateurId,
-    thematiques: [
-      ThematiqueAccompagnement.InsertionProfessionnelle,
-      ThematiqueAccompagnement.Sante,
-    ],
+    mediateurId: mediateurAvecActiviteMediateurId,
+    thematiques: [Thematique.InsertionProfessionnelle, Thematique.Sante],
     date: new Date('2024-08-02'),
-    lieuAccompagnementDomicileCodePostal: '75001',
-    lieuAccompagnementDomicileCodeInsee: '75101',
-    lieuAccompagnementDomicileCommune: 'Paris 1er',
+    lieuCodePostal: '75001',
+    lieuCodeInsee: '75101',
+    lieuCommune: 'Paris 1er',
   }),
 ]
 
 export const mediateurAvecActiviteCrasDemarchesAdministratives = [
   givenCraDemarcheAdministrative({
     beneficiaireId: beneficiaireMinimaleMediateurAvecActivite.id,
-    creeParMediateurId: mediateurAvecActiviteMediateurId,
-    thematiques: [
+    mediateurId: mediateurAvecActiviteMediateurId,
+    thematiquesDemarche: [
       ThematiqueDemarcheAdministrative.SocialSante,
       ThematiqueDemarcheAdministrative.EtrangersEurope,
     ],
@@ -51,40 +43,38 @@ export const mediateurAvecActiviteCrasDemarchesAdministratives = [
   }),
   givenCraDemarcheAdministrative({
     beneficiaireId: beneficiaireMaximaleMediateurAvecActivite.id,
-    creeParMediateurId: mediateurAvecActiviteMediateurId,
-    thematiques: [
+    mediateurId: mediateurAvecActiviteMediateurId,
+    thematiquesDemarche: [
       ThematiqueDemarcheAdministrative.Justice,
       ThematiqueDemarcheAdministrative.FamilleScolarite,
     ],
     date: new Date('2024-05-20'),
-    lieuActiviteId: mediateque.id,
+    structureId: mediateque.id,
   }),
 ]
 
 export const mediateurAvecActiviteCrasCollectifs = [
   givenCraCollectif({
-    creeParMediateurId: mediateurAvecActiviteMediateurId,
-    thematiques: [
-      ThematiqueAccompagnement.Sante,
-      ThematiqueAccompagnement.CultureNumerique,
-    ],
+    mediateurId: mediateurAvecActiviteMediateurId,
+    thematiques: [Thematique.Sante, Thematique.CultureNumerique],
     date: new Date('2024-08-04'),
     beneficiaireIds: beneficiairesMediateurAvecActivite.map((b) => b.id),
-    participantsAnonymes: {},
+    participantsAnonymes: participantsAnonymesDefault,
   }),
 
   givenCraCollectif({
-    creeParMediateurId: mediateurAvecActiviteMediateurId,
+    mediateurId: mediateurAvecActiviteMediateurId,
     thematiques: [
-      ThematiqueAccompagnement.BanqueEtAchatsEnLigne,
-      ThematiqueAccompagnement.NavigationSurInternet,
-      ThematiqueAccompagnement.CreerAvecLeNumerique,
+      Thematique.BanqueEtAchatsEnLigne,
+      Thematique.NavigationSurInternet,
+      Thematique.CreerAvecLeNumerique,
     ],
     date: new Date('2024-07-05'),
     titreAtelier:
       'Conduites à risque sur internet et les bons usages du numérique',
     beneficiaireIds: beneficiairesMediateurAvecActivite.map((b) => b.id),
     participantsAnonymes: {
+      ...participantsAnonymesDefault,
       total: 10,
       genreNonCommunique: 10,
       statutSocialEnEmploi: 8,

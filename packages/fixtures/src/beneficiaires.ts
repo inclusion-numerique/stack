@@ -54,6 +54,7 @@ export const beneficiaireAnonymeMediateurAvecActivite =
   givenBeneficiaireAnonyme({
     id: 'c6f21f86-8334-488c-ba48-c29a4ed74669',
     mediateurId: mediateurAvecActiviteMediateurId,
+    anonyme: true,
     commune: 'Paris',
     communeCodePostal: '75001',
     communeCodeInsee: '75101',

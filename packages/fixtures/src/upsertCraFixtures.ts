@@ -22,88 +22,60 @@ export const upsertCraFixtures = async ({
     ...crasCollectifs,
   ]
 
+  // First we upsert all the activites
   await Promise.all(
-    crasIndividuels.map(({ cra }) =>
-      transaction.craIndividuel.upsert({
-        where: { id: cra.id },
-        create: cra,
-        update: cra,
+    allCras.map(({ activite }) =>
+      transaction.activite.upsert({
+        where: { id: activite.id },
+        create: activite,
+        update: activite,
       }),
     ),
   )
 
-  await Promise.all(
-    crasDemarchesAdministratives.map(({ cra }) =>
-      transaction.craDemarcheAdministrative.upsert({
-        where: { id: cra.id },
-        create: cra,
-        update: cra,
-      }),
-    ),
+  // Then we delete and recreate the accompagnements
+  const activiteIds = allCras.map(({ activite }) => activite.id)
+
+  await transaction.accompagnement.deleteMany({
+    where: {
+      activiteId: {
+        in: activiteIds,
+      },
+    },
+  })
+
+  // Delete the anonymous beneficiaires created for the participants anonymes
+  // of the cra collectifs
+  await transaction.beneficiaire.deleteMany({
+    where: {
+      anonyme: true,
+      attributionsAleatoires: true,
+      accompagnements: {
+        every: {
+          activiteId: {
+            in: activiteIds,
+          },
+        },
+      },
+    },
+  })
+
+  // Recreate the anonymous beneficiaires created for the participants anonymes
+
+  const beneficiairesAnonymesData = crasCollectifs.flatMap(
+    ({ beneficiairesAnonymes }) => beneficiairesAnonymes,
   )
 
-  await Promise.all(
-    crasCollectifs.map(({ participantsAnonymes }) =>
-      transaction.participantsAnonymesCraCollectif.upsert({
-        where: { id: participantsAnonymes.id },
-        create: participantsAnonymes,
-        update: participantsAnonymes,
-      }),
-    ),
+  await transaction.beneficiaire.createMany({
+    data: beneficiairesAnonymesData,
+  })
+
+  const accompagnementsData = allCras.flatMap(
+    ({ accompagnements }) => accompagnements,
   )
 
-  await Promise.all(
-    crasCollectifs.map(({ cra, participantsAnonymes }) =>
-      transaction.craCollectif.upsert({
-        where: { id: cra.id },
-        create: { ...cra, participantsAnonymesId: participantsAnonymes.id },
-        update: cra,
-      }),
-    ),
-  )
-
-  // Create participations for beneficiaires
-  await Promise.all(
-    crasCollectifs.flatMap(({ participants }) =>
-      participants.map((participant) =>
-        transaction.participantAtelierCollectif.upsert({
-          where: { id: participant.id },
-          create: participant,
-          update: participant,
-        }),
-      ),
-    ),
-  )
-
-  // Create activités for mediateurs
-  await Promise.all(
-    allCras.map(({ activiteMediateur }) =>
-      transaction.activiteMediateur.upsert({
-        where: { id: activiteMediateur.id },
-        create: activiteMediateur,
-        update: activiteMediateur,
-      }),
-    ),
-  )
-
-  // Create activités for beneficiaires
-  await Promise.all(
-    allCras.flatMap((fixture) =>
-      'activiteBeneficiaire' in fixture
-        ? [
-            transaction.activiteBeneficiaire.upsert({
-              where: { id: fixture.activiteBeneficiaire.id },
-              create: fixture.activiteBeneficiaire,
-              update: fixture.activiteBeneficiaire,
-            }),
-          ]
-        : fixture.activitesBeneficiaire.map((activiteBeneficiaire) =>
-            transaction.activiteBeneficiaire.upsert({
-              where: { id: activiteBeneficiaire.id },
-              create: activiteBeneficiaire,
-              update: activiteBeneficiaire,
-            }),
-          ),
-    ),
-  )
+  // Recreate the accompagnements
+  await transaction.accompagnement.createMany({
+    data: accompagnementsData,
+  })
 }

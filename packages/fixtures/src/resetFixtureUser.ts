@@ -50,43 +50,17 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
     if (user.mediateur?.id) {
       const mediateurId = user.mediateur.id
 
-      await prismaClient.activiteMediateur.deleteMany({
+      await prismaClient.accompagnement.deleteMany({
+        where: {
+          activite: {
+            mediateurId,
+          },
+        },
+      })
+
+      await prismaClient.activite.deleteMany({
         where: {
           mediateurId,
-        },
-      })
-
-      await prismaClient.craDemarcheAdministrative.deleteMany({
-        where: {
-          creeParMediateurId: mediateurId,
-        },
-      })
-
-      await prismaClient.participantAtelierCollectif.deleteMany({
-        where: {
-          craCollectif: {
-            creeParMediateurId: mediateurId,
-          },
-        },
-      })
-
-      await prismaClient.craCollectif.deleteMany({
-        where: {
-          creeParMediateurId: mediateurId,
-        },
-      })
-
-      await prismaClient.craIndividuel.deleteMany({
-        where: {
-          creeParMediateurId: mediateurId,
-        },
-      })
-
-      await prismaClient.participantsAnonymesCraCollectif.deleteMany({
-        where: {
-          craCollectif: {
-            creeParMediateurId: mediateurId,
-          },
         },
       })
 
@@ -102,12 +76,6 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
         },
       })
 
-      await prismaClient.activiteBeneficiaire.deleteMany({
-        where: {
-          beneficiaire: { mediateurId },
-        },
-      })
-
       await prismaClient.beneficiaire.deleteMany({
         where: {
           mediateurId,
@@ -117,18 +85,6 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
       await prismaClient.conseillerNumerique.deleteMany({
         where: {
           mediateurId,
-        },
-      })
-
-      await prismaClient.craIndividuel.deleteMany({
-        where: {
-          creeParMediateurId: mediateurId,
-        },
-      })
-
-      await prismaClient.craDemarcheAdministrative.deleteMany({
-        where: {
-          creeParMediateurId: mediateurId,
         },
       })
 
@@ -189,14 +145,14 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
     })
 
     const mediateurCraIndividuelFixtures = fixtureCrasIndividuels.filter(
-      ({ cra: { creeParMediateurId } }) => mediateurId === creeParMediateurId,
+      ({ activite }) => activite.mediateurId === mediateurId,
     )
     const mediateurCraDemarcheAdministrativeFixtures =
       fixtureCrasDemarchesAdministratives.filter(
-        ({ cra: { creeParMediateurId } }) => mediateurId === creeParMediateurId,
+        ({ activite }) => activite.mediateurId === mediateurId,
       )
     const mediateurCraCollectifFixtures = fixtureCrasCollectifs.filter(
-      ({ cra: { creeParMediateurId } }) => mediateurId === creeParMediateurId,
+      ({ activite }) => activite.mediateurId === mediateurId,
     )
 
     await upsertCraFixtures({
@@ -207,6 +163,5 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
     })
   }
 
-  console.log('RESET USER', resetedUser)
   return resetedUser
 }
