@@ -519,6 +519,10 @@ model Beneficiaire {
   mediateurId String    @map("mediateur_id") @db.Uuid
   mediateur   Mediateur @relation(fields: [mediateurId], references: [id])
 
+  // Lorsqu’un médiateur ne spécifie pas de bénéficiaire suivi, un bénéficiaire
+  // anonyme est créé, avec les memes informations mais sans prenom et nom
+  anonyme Boolean @default(false)
+
   prenom         String?
   nom            String?
   telephone      String?

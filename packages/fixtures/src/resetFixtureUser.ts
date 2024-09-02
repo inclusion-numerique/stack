@@ -8,6 +8,7 @@ import {
   fixtureCrasIndividuels,
 } from '@app/fixtures/cras'
 import { upsertCraFixtures } from '@app/fixtures/upsertCraFixtures'
+import type { Session } from '@prisma/client'
 
 export const resetFixtureUser = async ({ id }: { id: string }) => {
   const userId = id
@@ -24,8 +25,21 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
     throw new Error(`User with id ${id} is not a fixture user`)
   }
 
+  let sessions: Session[] = []
+
   /** Delete all data related to the user if exists */
   if (user) {
+    /**
+     * We will re-create sessions after reset to avoid unneccessary re-login
+     * This is mostly useful in dev environment
+     */
+
+    sessions = await prismaClient.session.findMany({
+      where: {
+        userId: user.id,
+      },
+    })
+
     await prismaClient.employeStructure.deleteMany({
       where: {
         userId,
@@ -157,6 +171,10 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
   const resetedUser = await prismaClient.user.create({
     data: userFixture,
     select: sessionUserSelect,
+  })
+
+  await prismaClient.session.createMany({
+    data: sessions,
   })
 
   /**

@@ -209,6 +209,7 @@ export const craRouter = router({
                 create: {
                   id: v4(),
                   ...beneficiaireUpdateInputFromForm(beneficiaire),
+                  anonyme: true,
                   mediateur: {
                     connect: { id: mediateurId },
                   },
@@ -353,6 +354,7 @@ export const craRouter = router({
                 create: {
                   id: v4(),
                   ...beneficiaireUpdateInputFromForm(beneficiaire),
+                  anonyme: true,
                   mediateur: {
                     connect: { id: mediateurId },
                   },

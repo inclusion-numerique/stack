@@ -189,6 +189,7 @@ export const beneficiairesRouter = router({
         prismaClient.beneficiaire.update({
           where: { id },
           data: {
+            anonyme: true,
             suppression: new Date(),
             modification: new Date(),
             // Anonymize the beneficiaire but keep anonymous data for stats

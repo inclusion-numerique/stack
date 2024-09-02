@@ -9,7 +9,7 @@ import {
   givenCraIndividuel,
 } from '@app/fixtures/givenCra'
 import {
-  beneficiaireAnonymeMediateurAvecActivite,
+  beneficiaireMaximaleMediateurAvecActivite,
   beneficiaireMinimaleMediateurAvecActivite,
   beneficiairesMediateurAvecActivite,
 } from '@app/fixtures/beneficiaires'
@@ -32,7 +32,7 @@ export const mediateurAvecActiviteCrasIndividuels = [
       ThematiqueAccompagnement.InsertionProfessionnelle,
       ThematiqueAccompagnement.Sante,
     ],
-    date: new Date('2024-06-25'),
+    date: new Date('2024-08-02'),
     lieuAccompagnementDomicileCodePostal: '75001',
     lieuAccompagnementDomicileCodeInsee: '75101',
     lieuAccompagnementDomicileCommune: 'Paris 1er',
@@ -47,10 +47,10 @@ export const mediateurAvecActiviteCrasDemarchesAdministratives = [
       ThematiqueDemarcheAdministrative.SocialSante,
       ThematiqueDemarcheAdministrative.EtrangersEurope,
     ],
-    date: new Date('2024-06-25'),
+    date: new Date('2024-08-02'),
   }),
   givenCraDemarcheAdministrative({
-    beneficiaireId: beneficiaireAnonymeMediateurAvecActivite.id,
+    beneficiaireId: beneficiaireMaximaleMediateurAvecActivite.id,
     creeParMediateurId: mediateurAvecActiviteMediateurId,
     thematiques: [
       ThematiqueDemarcheAdministrative.Justice,
