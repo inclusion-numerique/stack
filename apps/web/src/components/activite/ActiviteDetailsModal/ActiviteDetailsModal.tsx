@@ -109,19 +109,13 @@ const ActiviteDetailsModal = ({
     id,
     duree: dureeInteger,
     autonomie,
-    structure,
     date,
-    lieuCodeInsee,
-    lieuCodePostal,
-    lieuCommune,
-    typeLieu,
     degreDeFinalisation,
     structureDeRedirection,
     orienteVersStructure,
     niveau,
     notes,
     titreAtelier,
-    typeLieuAtelier,
     materiel,
     precisionsDemarche,
     accompagnements,
@@ -132,8 +126,7 @@ const ActiviteDetailsModal = ({
   const onDelete = async () => {
     try {
       await mutation.mutateAsync({
-        type,
-        craId: id,
+        activiteId: id,
       })
       ActiviteDetailsDynamicModal.close()
       router.refresh()

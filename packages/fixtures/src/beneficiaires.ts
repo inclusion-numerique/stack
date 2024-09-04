@@ -50,6 +50,26 @@ export const beneficiaireMaximaleMediateurAvecActivite = givenBeneficiaire({
   suppression: null,
 })
 
+export const beneficiaireSansAccompagnementsMediateurAvecActivite =
+  givenBeneficiaire({
+    id: 'b8a9306e-6e3d-410d-bf21-6ca4e17ee371',
+    mediateurId: mediateurAvecActiviteMediateurId,
+    anonyme: false,
+    prenom: 'Félix',
+    nom: 'Sans accompagnements',
+    commune: 'Crolles',
+    communeCodePostal: '38920',
+    communeCodeInsee: '38140',
+    vaPoursuivreParcoursAccompagnement: null,
+    genre: 'Masculin',
+    trancheAge: 'VingtCinqTrenteNeuf',
+    statutSocial: 'EnEmploi',
+    notes: null,
+    creation: new Date('2024-03-03'),
+    modification: new Date('2024-06-06'),
+    suppression: null,
+  })
+
 export const beneficiaireAnonymeMediateurAvecActivite =
   givenBeneficiaireAnonyme({
     id: 'c6f21f86-8334-488c-ba48-c29a4ed74669',
@@ -69,6 +89,7 @@ export const beneficiaireAnonymeMediateurAvecActivite =
 export const beneficiairesMediateurAvecActivite = [
   beneficiaireMinimaleMediateurAvecActivite,
   beneficiaireMaximaleMediateurAvecActivite,
+  beneficiaireSansAccompagnementsMediateurAvecActivite,
   beneficiaireAnonymeMediateurAvecActivite,
 ]
 

@@ -29,9 +29,9 @@ import {
   autonomieOptionsWithExtras,
   degreDeFinalisationDemarcheOptionsWithExtras,
   dureeAccompagnementOptions,
-  lieuAccompagnementOptionsWithExtras,
   structuresRedirectionOptions,
   thematiqueDemarcheAdministrativeOptionsWithExtras,
+  typeLieuOptionsWithExtras,
 } from '@app/web/cra/cra'
 import {
   CraDemarcheAdministrativeData,
@@ -107,11 +107,9 @@ const CraDemarcheAdministrativeForm = ({
   const beneficiaireId = form.watch('beneficiaire.id')
   const showAnonymousForm = !beneficiaireId
 
-  const lieuAccompagnement = form.watch('lieuAccompagnement')
-  const showLieuAccompagnementDomicileCommune =
-    lieuAccompagnement === 'Domicile'
-  const showLieuAccompagnementLieuActivite =
-    lieuAccompagnement === 'LieuActivite'
+  const typeLieu = form.watch('typeLieu')
+  const showLieuAccompagnementDomicileCommune = typeLieu === 'Domicile'
+  const showStructure = typeLieu === 'LieuActivite'
 
   const degreDeFinalisation = form.watch('degreDeFinalisation')
   const showStructureOrientation =
@@ -254,9 +252,9 @@ const CraDemarcheAdministrativeForm = ({
       </CraFormLabel>
       <RadioFormField
         control={control}
-        path="lieuAccompagnement"
+        path="typeLieu"
         disabled={isLoading}
-        options={lieuAccompagnementOptionsWithExtras}
+        options={typeLieuOptionsWithExtras}
         components={{
           label: RichCardLabel,
         }}
@@ -278,7 +276,7 @@ const CraDemarcheAdministrativeForm = ({
           defaultValue={lieuAccompagnementDomicileCommuneDefaultValue}
         />
       )}
-      {showLieuAccompagnementLieuActivite && (
+      {showStructure && (
         <CustomSelectFormField
           label=" "
           control={control}

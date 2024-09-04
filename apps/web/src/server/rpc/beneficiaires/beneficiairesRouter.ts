@@ -6,10 +6,12 @@ import { enforceIsMediateur } from '@app/web/server/rpc/enforceIsMediateur'
 import { prismaClient } from '@app/web/prismaClient'
 import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
 import {
-  BeneficiaireData,
+  type BeneficiaireData,
   BeneficiaireValidation,
 } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { searchBeneficiaire } from '@app/web/beneficiaire/searchBeneficiaire'
+import { addMutationLog } from '@app/web/utils/addMutationLog'
+import { createStopwatch } from '@app/web/utils/stopwatch'
 
 const checkExistingBeneficiaire = async ({
   beneficiaireId,
@@ -91,6 +93,8 @@ export const beneficiairesRouter = router({
 
       const { id, mediateurId } = input
 
+      const stopwatch = createStopwatch()
+
       // Enforce user can create CRA for given mediateurId (for now only self)
       if (mediateurId !== user.mediateur.id) {
         throw forbiddenError('Cannot beneficiary for another mediateur')
@@ -109,6 +113,13 @@ export const beneficiairesRouter = router({
           data,
         })
 
+        addMutationLog({
+          userId: user.id,
+          nom: 'ModifierBeneficiaire',
+          duration: stopwatch.stop().duration,
+          data: input,
+        })
+
         return updated
       }
 
@@ -123,6 +134,13 @@ export const beneficiairesRouter = router({
         },
       })
 
+      addMutationLog({
+        userId: user.id,
+        nom: 'CreerBeneficiaire',
+        duration: stopwatch.stop().duration,
+        data: input,
+      })
+
       return created
     }),
   delete: protectedProcedure
@@ -131,6 +149,8 @@ export const beneficiairesRouter = router({
       enforceIsMediateur(user)
 
       const { id } = input
+
+      const stopwatch = createStopwatch()
 
       const beneficiaire = await checkExistingBeneficiaire({
         beneficiaireId: id,
@@ -141,67 +161,32 @@ export const beneficiairesRouter = router({
         throw invalidError('Beneficiaire not found')
       }
 
-      /**
-       * Cas spécifique si je supprime un bénéficiaire qui est lié à des activités :
-       *
-       * - Bénéficiaire dans un atelier collectif → retiré des beneficiaires suivis et ajouté en compteur benef anonymes
-       * - Beneficiaire dans un accompagnement individuel / demarche → retiré du bénéficiaire sélectionné, et on affiche la partie beneficiaire anonyme
-       *   -- Cela fonctionne car un beneficiaire est toujours associé, il sera "anonyme" a partir du moment ou prenom et nom sont null
-       */
+      await prismaClient.beneficiaire.update({
+        where: { id },
+        data: {
+          anonyme: true,
+          suppression: new Date(),
+          modification: new Date(),
+          // Anonymize the beneficiaire but keep anonymous data for stats
+          prenom: null,
+          nom: null,
+          telephone: null,
+          email: null,
+          notes: null,
+          adresse: null,
+          pasDeTelephone: null,
+        },
+      })
 
-      const { genre, trancheAge, statutSocial } = beneficiaire
+      addMutationLog({
+        userId: user.id,
+        nom: 'SupprimerBeneficiaire',
+        duration: stopwatch.stop().duration,
+        data: {
+          id,
+        },
+      })
 
-      const incrementParticipantsAnonymesData = {
-        total: {
-          increment: 1,
-        },
-        [genre ? `genre${genre}` : 'genreNonCommunique']: {
-          increment: 1,
-        },
-        [trancheAge ? `trancheAge${trancheAge}` : 'trancheAgeNonCommunique']: {
-          increment: 1,
-        },
-        [statutSocial
-          ? `statutSocial${statutSocial}`
-          : 'statutSocialNonCommunique']: {
-          increment: 1,
-        },
-      } satisfies Prisma.ParticipantsAnonymesCraCollectifUncheckedUpdateManyInput
-
-      await prismaClient.$transaction([
-        prismaClient.participantAtelierCollectif.deleteMany({
-          where: {
-            beneficiaireId: id,
-          },
-        }),
-        prismaClient.participantsAnonymesCraCollectif.updateMany({
-          where: {
-            craCollectif: {
-              participants: {
-                some: {
-                  beneficiaireId: id,
-                },
-              },
-            },
-          },
-          data: incrementParticipantsAnonymesData,
-        }),
-        prismaClient.beneficiaire.update({
-          where: { id },
-          data: {
-            anonyme: true,
-            suppression: new Date(),
-            modification: new Date(),
-            // Anonymize the beneficiaire but keep anonymous data for stats
-            prenom: null,
-            nom: null,
-            telephone: null,
-            email: null,
-            notes: null,
-            adresse: null,
-            pasDeTelephone: null,
-          },
-        }),
-      ])
+      return true
     }),
 })

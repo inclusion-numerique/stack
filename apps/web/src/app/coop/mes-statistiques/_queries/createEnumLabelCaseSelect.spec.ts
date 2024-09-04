@@ -1,6 +1,6 @@
 import { createEnumLabelCaseSelect } from '@app/web/app/coop/mes-statistiques/_queries/createEnumLabelCaseSelect'
-import { ThematiqueAccompagnement } from '@prisma/client'
-import { thematiqueAccompagnementShortLabels } from '@app/web/cra/cra'
+import { Thematique } from '@prisma/client'
+import { thematiqueShortLabels } from '@app/web/cra/cra'
 
 describe('createEnumLabelCaseSelect', () => {
   it('should return a case select with the enum values and labels', () => {

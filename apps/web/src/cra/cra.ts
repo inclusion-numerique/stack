@@ -65,13 +65,13 @@ export const dureeAccompagnementValues = Object.keys(
   dureeAccompagnementLabels,
 ) as [DureeAccompagnement, ...DureeAccompagnement[]]
 
-export const lieuAccompagnementLabels: { [key in TypeLieu]: string } = {
+export const typeLieuLabels: { [key in TypeLieu]: string } = {
   LieuActivite: 'Lieu d’activité',
   Domicile: 'À domicile',
   ADistance: 'À distance',
 }
 
-export const lieuAccompagnementIllustrations: {
+export const typeLieuIllustrations: {
   [key in TypeLieu]?: string
 } = {
   LieuActivite: '/dsfr/artwork/pictograms/buildings/city-hall.svg',
@@ -79,28 +79,27 @@ export const lieuAccompagnementIllustrations: {
   ADistance: '/images/iconographie/mednum-internet.svg',
 }
 
-export const lieuAccompanementOptions = labelsToOptions(
-  lieuAccompagnementLabels,
-)
+export const typeLieuOptions = labelsToOptions(typeLieuLabels)
 
-export const lieuAccompagnementHints: { [key in TypeLieu]?: string } = {
+export const typeLieuHints: { [key in TypeLieu]?: string } = {
   ADistance: 'Téléphone ou visio-conférence',
 }
 
-export const lieuAccompagnementOptionsWithExtras = lieuAccompanementOptions.map(
+export const typeLieuOptionsWithExtras = typeLieuOptions.map(
   ({ label, value }) => ({
     label,
     value,
-    hint: lieuAccompagnementHints[value],
+    hint: typeLieuHints[value],
     extra: {
-      illustration: lieuAccompagnementIllustrations[value],
+      illustration: typeLieuIllustrations[value],
     },
   }),
 )
 
-export const lieuAccompagnementValues = Object.keys(
-  lieuAccompagnementLabels,
-) as [TypeLieu, ...TypeLieu[]]
+export const typeLieuValues = Object.keys(typeLieuLabels) as [
+  TypeLieu,
+  ...TypeLieu[],
+]
 
 export const materielLabels: {
   [key in Materiel]: string
@@ -402,33 +401,33 @@ export const structuresRedirectionValues = Object.keys(
   structuresRedirectionLabels,
 ) as [StructureDeRedirection, ...StructureDeRedirection[]]
 
-export const lieuAtelierLabels: {
+export const typeLieuAtelierLabels: {
   [key in TypeLieuAtelier]: string
 } = {
   LieuActivite: 'Lieu d’activité',
   Autre: 'Autre lieu',
 }
 
-export const lieuAtelierOptions = labelsToOptions(lieuAtelierLabels)
+export const typeLieuAtelierOptions = labelsToOptions(typeLieuAtelierLabels)
 
-export const lieuAtelierIllustrations: {
+export const typeLieuAtelierIllustrations: {
   [key in TypeLieuAtelier]?: string
 } = {
   LieuActivite: '/dsfr/artwork/pictograms/buildings/city-hall.svg',
   Autre: '/dsfr/artwork/pictograms/buildings/school.svg',
 }
 
-export const lieuAtelierOptionsWithExtras = lieuAtelierOptions.map(
+export const typeLieuAtelierOptionsWithExtras = typeLieuAtelierOptions.map(
   ({ label, value }) => ({
     label,
     value,
     extra: {
-      illustration: lieuAtelierIllustrations[value],
+      illustration: typeLieuAtelierIllustrations[value],
     },
   }),
 )
 
-export const lieuAtelierValues = Object.keys(lieuAtelierLabels) as [
+export const typeLieuAtelierValues = Object.keys(typeLieuAtelierLabels) as [
   TypeLieuAtelier,
   ...TypeLieuAtelier[],
 ]

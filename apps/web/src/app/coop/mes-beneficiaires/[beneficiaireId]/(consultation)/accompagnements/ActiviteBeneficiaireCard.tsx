@@ -9,19 +9,37 @@ import {
 } from '@app/web/cra/cra'
 import Stars from '@app/web/components/Stars'
 import ActiviteBeneficiaireCardOpenModalLink from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/ActiviteBeneficiaireCardOpenModalLink'
-import { Activite } from '@app/web/cra/activitesQueries'
+import type { ActiviteForList } from '@app/web/cra/activitesQueries'
 
-const ActiviteBeneficiaireCard = ({ activite }: { activite: Activite }) => {
-  const { hasStars, starsCount } =
-    (activite.type === 'individuel' || activite.type === 'demarche') &&
-    activite.cra.autonomie
-      ? { hasStars: true, starsCount: autonomieStars[activite.cra.autonomie] }
-      : activite.type === 'collectif' && activite.cra.niveau
-        ? {
-            hasStars: true,
-            starsCount: niveauAtelierStars[activite.cra.niveau],
-          }
-        : { hasStars: false, starsCount: 0 }
+const ActiviteBeneficiaireCard = ({
+  activite,
+}: {
+  activite: ActiviteForList
+}) => {
+  const {
+    titreAtelier,
+    niveau,
+    thematiques,
+    thematiquesDemarche,
+    autonomie,
+    type,
+  } = activite
+
+  const { hasStars, starsCount } = autonomie
+    ? { hasStars: true, starsCount: autonomieStars[autonomie] }
+    : niveau
+      ? {
+          hasStars: true,
+          starsCount: niveauAtelierStars[niveau],
+        }
+      : { hasStars: false, starsCount: 0 }
+
+  const thematiqueTags = [
+    ...thematiques.map((thematique) => thematiqueLabels[thematique]),
+    ...thematiquesDemarche.map(
+      (thematique) => thematiqueDemarcheAdministrativeLabels[thematique],
+    ),
+  ]
 
   return (
     <div className="fr-py-2v fr-px-4v fr-flex fr-align-items-center fr-flex-gap-4v fr-my-2v fr-enlarge-button fr-border-radius--8">
@@ -30,40 +48,28 @@ const ActiviteBeneficiaireCard = ({ activite }: { activite: Activite }) => {
         <img
           className="fr-display-block"
           alt=""
-          src={typeActiviteIllustrations[activite.type]}
+          src={typeActiviteIllustrations[type]}
           style={{ width: 40, height: 40 }}
         />
       </div>
       <div className="fr-flex-grow-1">
         <p className=" fr-mb-2v">
           <span className="fr-text--xs fr-text--bold fr-text--uppercase fr-mb-0">
-            {typeActiviteLabels[activite.type]}
+            {typeActiviteLabels[type]}
           </span>
-          {activite.type === 'collectif' && activite.cra.titreAtelier ? (
+          {titreAtelier ? (
             <span className="fr-text--medium fr-text--sm fr-text-mention--grey fr-mb-0">
-              &nbsp;·&nbsp;{activite.cra.titreAtelier}
+              &nbsp;·&nbsp;{titreAtelier}
             </span>
           ) : null}
         </p>
         <div className="fr-flex fr-align-items-center fr-justify-content-start">
           <div className="fr-flex fr-flex-wrap fr-flex-gap-2v">
-            {activite.type === 'individuel' || activite.type === 'collectif' ? (
-              <>
-                {activite.cra.thematiques.map((thematique) => (
-                  <Tag key={thematique} small>
-                    {thematiqueLabels[thematique]}
-                  </Tag>
-                ))}
-              </>
-            ) : (
-              <>
-                {activite.cra.thematiques.map((thematique) => (
-                  <Tag key={thematique} small>
-                    {thematiqueDemarcheAdministrativeLabels[thematique]}
-                  </Tag>
-                ))}
-              </>
-            )}
+            {thematiqueTags.map((thematique) => (
+              <Tag key={thematique} small>
+                {thematique}
+              </Tag>
+            ))}
           </div>
 
           {hasStars && (

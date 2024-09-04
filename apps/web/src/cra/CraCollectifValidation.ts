@@ -1,10 +1,10 @@
 import z from 'zod'
 import {
   dureeAccompagnementValues,
-  lieuAtelierValues,
   materielValues,
   niveauAtelierValues,
   thematiqueValues,
+  typeLieuAtelierValues,
 } from '@app/web/cra/cra'
 import { BeneficiaireCraValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { AdresseBanValidation } from '@app/web/external-apis/ban/AdresseBanValidation'
@@ -34,7 +34,7 @@ export const CraCollectifValidation = z
     duree: z.enum(dureeAccompagnementValues, {
       required_error: 'Veuillez renseigner une durée',
     }),
-    lieuAtelier: z.enum(lieuAtelierValues, {
+    typeLieuAtelier: z.enum(typeLieuAtelierValues, {
       required_error: 'Veuillez renseigner un lieu',
     }),
     structureId: z.string().uuid().nullish(),
@@ -52,7 +52,7 @@ export const CraCollectifValidation = z
   // structureId is required if lieuAtelier ===  LieuActivite
   .refine(
     (data) => {
-      if (data.lieuAtelier === 'LieuActivite') {
+      if (data.typeLieuAtelier === 'LieuActivite') {
         return !!data.structureId
       }
       return true
@@ -64,7 +64,8 @@ export const CraCollectifValidation = z
   )
   // lieuAtelierAutreCommune is required if lieuAtelier === Autre
   .refine(
-    (data) => data.lieuAtelier !== 'Autre' || !!data.lieuAtelierAutreCommune,
+    (data) =>
+      data.typeLieuAtelier !== 'Autre' || !!data.lieuAtelierAutreCommune,
     {
       message: 'Veuillez renseigner la commune',
       path: ['lieuAtelierAutreCommune'],

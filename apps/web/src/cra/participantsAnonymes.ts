@@ -3,8 +3,6 @@ import type { ParticipantsAnonymesCraCollectifData } from '@app/web/cra/Particip
 
 export const participantsAnonymesDefault: ParticipantsAnonymesCraCollectifData =
   {
-    id: undefined,
-
     total: 0,
 
     genreMasculin: 0,

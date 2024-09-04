@@ -21,8 +21,6 @@ const participantsAnonymeNumber = ({ maxMessage }: { maxMessage: string }) =>
 
 export const ParticipantsAnonymesCraCollectifValidation = z
   .object({
-    id: z.string().uuid().nullish(), //  defined if update, nullish if create
-
     total: participantsAnonymeNumber({
       maxMessage: `Le nombre total de participants anonymes ne doit pas dépasser ${participantsAnonymesMaxLocaleString}`,
     }),
@@ -93,8 +91,6 @@ export const ParticipantsAnonymesCraCollectifValidation = z
 
 // Cannot infer as the count functions would recursively type fail
 export type ParticipantsAnonymesCraCollectifData = {
-  id: string | null | undefined
-
   total: number
 
   genreFeminin: number

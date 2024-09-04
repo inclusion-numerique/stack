@@ -2,7 +2,7 @@ import type { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
 import { beneficiaireCommuneResidenceToPreviewBanData } from '@app/web/beneficiaire/prismaBeneficiaireToBeneficiaireData'
 import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
-import { beneficiaireCrasCountSelect } from '@app/web/beneficiaire/beneficiaireQueries'
+import { beneficiaireAccompagnementsCountSelect } from '@app/web/beneficiaire/beneficiaireQueries'
 
 export const searchBeneficiaireSelect = {
   id: true,
@@ -15,7 +15,7 @@ export const searchBeneficiaireSelect = {
   communeCodePostal: true,
   communeCodeInsee: true,
   creation: true,
-  ...beneficiaireCrasCountSelect,
+  ...beneficiaireAccompagnementsCountSelect,
 } satisfies Prisma.BeneficiaireSelect
 
 export const queryBeneficiairesForList = async ({

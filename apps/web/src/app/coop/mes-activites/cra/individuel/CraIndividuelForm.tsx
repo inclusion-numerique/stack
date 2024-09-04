@@ -28,10 +28,10 @@ import RichCardLabel, {
 import {
   autonomieOptionsWithExtras,
   dureeAccompagnementOptions,
-  lieuAccompagnementOptionsWithExtras,
   materielOptions,
   structuresRedirectionOptions,
   thematiqueOptionsWithExtras,
+  typeLieuOptionsWithExtras,
 } from '@app/web/cra/cra'
 import { CraIndividuelData, CraIndividuelValidation } from '@app/web/cra/CraIndividuelValidation'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
@@ -102,11 +102,9 @@ const CraIndividuelForm = ({
   const beneficiaireId = form.watch('beneficiaire.id')
   const showAnonymousForm = !beneficiaireId
 
-  const lieuAccompagnement = form.watch('lieuAccompagnement')
-  const showLieuAccompagnementDomicileCommune =
-    lieuAccompagnement === 'Domicile'
-  const showLieuAccompagnementLieuActivite =
-    lieuAccompagnement === 'LieuActivite'
+  const typeLieu = form.watch('typeLieu')
+  const showLieuAccompagnementDomicileCommune = typeLieu === 'Domicile'
+  const showStructure = typeLieu === 'LieuActivite'
 
   const orienteVersStructure = form.watch('orienteVersStructure')
   const showStructureOrientation = orienteVersStructure === 'yes'
@@ -251,9 +249,9 @@ const CraIndividuelForm = ({
       </CraFormLabel>
       <RadioFormField
         control={control}
-        path="lieuAccompagnement"
+        path="typeLieu"
         disabled={isLoading}
-        options={lieuAccompagnementOptionsWithExtras}
+        options={typeLieuOptionsWithExtras}
         components={{
           label: RichCardLabel,
         }}
@@ -275,7 +273,7 @@ const CraIndividuelForm = ({
           defaultValue={lieuAccompagnementDomicileCommuneDefaultValue}
         />
       )}
-      {showLieuAccompagnementLieuActivite && (
+      {showStructure && (
         <CustomSelectFormField
           label=" "
           control={control}

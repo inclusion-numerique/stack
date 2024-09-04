@@ -1,6 +1,12 @@
 import type { ParticipantsAnonymesCraCollectifData } from '@app/web/cra/ParticipantsAnonymesCraCollectifValidation'
 import { v4 } from 'uuid'
-import type { Beneficiaire, Prisma } from '@prisma/client'
+import type {
+  Beneficiaire,
+  Genre,
+  Prisma,
+  StatutSocial,
+  TrancheAge,
+} from '@prisma/client'
 import {
   genreValues,
   statutSocialValues,
@@ -26,6 +32,12 @@ export type BeneficiaireForParticipantsAnonymes = Pick<
 type CreatedBeneficiairesForParticipantsAnonymes =
   Prisma.BeneficiaireUncheckedCreateInput & {
     id: string
+    mediateurId: string
+    trancheAge: TrancheAge
+    statutSocial: StatutSocial
+    genre: Genre
+    anonyme: true
+    attributionsAleatoires: true
   }
 
 export const createBeneficiairesForParticipantsAnonymes = ({

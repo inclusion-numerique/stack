@@ -1,11 +1,11 @@
 import { prismaClient } from '@app/web/prismaClient'
 import {
-  lieuAccompagnementLabels,
-  lieuAtelierLabels,
   materielLabels,
   thematiqueDemarcheAdministrativeLabels,
   thematiqueLabels,
   thematiqueShortLabels,
+  typeLieuAtelierLabels,
+  typeLieuLabels,
 } from '@app/web/cra/cra'
 import { QuantifiedShare, QuantifiedShareToProcess } from '../quantifiedShare'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
@@ -288,8 +288,8 @@ export const EMPTY_ACCOMPAGNEMENT_DATA: Record<
   })),
   canauxAccompagnements: [
     ...new Set([
-      ...Object.values(lieuAccompagnementLabels),
-      ...Object.values(lieuAtelierLabels),
+      ...Object.values(typeLieuLabels),
+      ...Object.values(typeLieuAtelierLabels),
     ]),
   ].map((label) => ({ label, count: 0, proportion: 0 })),
   dureesAccompagnements: [

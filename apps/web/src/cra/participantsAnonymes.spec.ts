@@ -22,8 +22,7 @@ describe('participantsAnonymes', () => {
       (key) => `statutSocial${key}`,
     ) as ParticipantsAnonymesCraCollectifDataKey[]
 
-    it('has id and total', () => {
-      expect(participantsAnonymes).toHaveProperty('id')
+    it('has a total', () => {
       expect(participantsAnonymes.total).toEqual(0)
     })
 
@@ -46,7 +45,7 @@ describe('participantsAnonymes', () => {
     })
 
     it('has no additional counts', () => {
-      const { id, total, ...enumCounts } = participantsAnonymes
+      const { total, ...enumCounts } = participantsAnonymes
 
       const modelKeys = [...genreKeys, ...trancheAgeKeys, ...statutSocialKeys]
 

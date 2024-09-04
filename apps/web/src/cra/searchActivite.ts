@@ -1,5 +1,4 @@
 import { prismaClient } from '@app/web/prismaClient'
-import { prismaActiviteToActiviteModel } from '@app/web/cra/prismaActiviteToActiviteModel'
 import {
   ActivitesDataTable,
   ActivitesDataTableSearchParams,
@@ -127,10 +126,8 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
 
   const totalPages = take ? Math.ceil(matchesCount / take) : 1
 
-  const activites = orderedActivites.map(prismaActiviteToActiviteModel)
-
   return {
-    activites,
+    activites: orderedActivites,
     matchesCount,
     moreResults: Math.max(matchesCount - (take ?? 0), 0),
     totalPages,

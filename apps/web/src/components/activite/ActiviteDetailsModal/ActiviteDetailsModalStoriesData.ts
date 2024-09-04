@@ -1,209 +1,324 @@
-import type { Activite } from '@app/web/cra/activitesQueries'
+import type { ActiviteForList } from '@app/web/cra/activitesQueries'
 import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
+import { createBeneficiairesForParticipantsAnonymes } from '@app/web/beneficiaire/createBeneficiairesForParticipantsAnonymes'
 
 export const activiteIndividuelleInfosMinimum = {
-  type: 'individuel',
-  cra: {
-    id: '1',
-    date: new Date('2024-03-22'),
-    duree: 90,
-    thematiques: [
-      'CreerAvecLeNumerique',
-      'PrendreEnMainDuMateriel',
-      'InsertionProfessionnelle',
-    ],
-    notes: null,
-    beneficiaire: {
-      id: '2',
-      prenom: null,
-      nom: null,
-      _count: {
-        activites: 5,
+  type: 'Individuel',
+  id: '1',
+  mediateurId: '2',
+  creation: new Date('2024-03-22'),
+  modification: new Date('2024-03-22'),
+  date: new Date('2024-03-22'),
+  duree: 90,
+  thematiques: [
+    'CreerAvecLeNumerique',
+    'PrendreEnMainDuMateriel',
+    'InsertionProfessionnelle',
+  ],
+  thematiquesDemarche: [],
+  notes: null,
+  accompagnements: [
+    {
+      beneficiaire: {
+        id: '2',
+        anonyme: true,
+        attributionsAleatoires: false,
+        prenom: null,
+        nom: null,
+        commune: null,
+        communeCodePostal: null,
+        vaPoursuivreParcoursAccompagnement: null,
+        statutSocial: null,
+        genre: null,
+        trancheAge: null,
+        _count: {
+          accompagnements: 5,
+        },
       },
-      commune: null,
-      communeCodePostal: null,
-      vaPoursuivreParcoursAccompagnement: null,
-      statutSocial: null,
-      genre: null,
-      trancheAge: null,
     },
-    lieuAccompagnement: 'LieuActivite',
-    autonomie: null,
-    materiel: [],
-    lieuAccompagnementDomicileCommune: null,
-    lieuAccompagnementDomicileCodeInsee: null,
-    lieuAccompagnementDomicileCodePostal: null,
-    lieuActivite: {
-      id: '1',
-      nom: 'Bibliotheque Musee de l’Opera, au fond du couloir à droite',
-      commune: 'Paris',
-      codePostal: '75006',
-    },
-    orienteVersStructure: null,
-    structureDeRedirection: null,
+  ],
+  typeLieu: 'LieuActivite',
+  autonomie: null,
+  materiel: [],
+  lieuCommune: null,
+  lieuCodeInsee: null,
+  lieuCodePostal: null,
+  structure: {
+    id: '1',
+    nom: 'Bibliotheque Musee de l’Opera, au fond du couloir à droite',
+    commune: 'Paris',
+    codePostal: '75006',
   },
-} satisfies Activite
+  orienteVersStructure: null,
+  structureDeRedirection: null,
+  precisionsDemarche: null,
+  degreDeFinalisation: null,
+  titreAtelier: null,
+  typeLieuAtelier: null,
+  niveau: null,
+} satisfies ActiviteForList
 
 export const activiteIndividuelleBeneficiaireSuivi = {
-  type: 'individuel',
-  cra: {
-    id: '1',
-    date: new Date('2024-03-22'),
-    duree: 120,
-    thematiques: ['NavigationSurInternet', 'Email'],
-    notes: null,
-    beneficiaire: {
-      id: '2',
-      prenom: 'Jean',
-      nom: 'Dupont',
-      _count: {
-        activites: 5,
+  type: 'Individuel',
+  id: '1',
+  mediateurId: '2',
+  creation: new Date('2024-03-22'),
+  modification: new Date('2024-03-22'),
+  date: new Date('2024-03-22'),
+  duree: 120,
+  thematiques: ['NavigationSurInternet', 'Email'],
+  thematiquesDemarche: [],
+  notes: null,
+  accompagnements: [
+    {
+      beneficiaire: {
+        id: '2',
+        anonyme: false,
+        attributionsAleatoires: false,
+        prenom: 'Jean',
+        nom: 'Dupont',
+        commune: null,
+        communeCodePostal: null,
+        vaPoursuivreParcoursAccompagnement: null,
+        statutSocial: 'EnEmploi',
+        genre: 'Masculin',
+        trancheAge: 'NonCommunique',
+        _count: {
+          accompagnements: 5,
+        },
       },
-      commune: null,
-      communeCodePostal: null,
-      vaPoursuivreParcoursAccompagnement: null,
-      statutSocial: 'EnEmploi',
-      genre: 'Masculin',
-      trancheAge: 'NonCommunique',
     },
-    lieuAccompagnement: 'ADistance',
-    autonomie: null,
-    materiel: [],
-    lieuAccompagnementDomicileCommune: null,
-    lieuAccompagnementDomicileCodeInsee: null,
-    lieuAccompagnementDomicileCodePostal: null,
-    lieuActivite: null,
-    orienteVersStructure: true,
-    structureDeRedirection: 'OperateurOuOrganismeEnCharge',
-  },
-} satisfies Activite
+  ],
+  typeLieu: 'ADistance',
+  autonomie: null,
+  materiel: [],
+  lieuCommune: null,
+  lieuCodeInsee: null,
+  lieuCodePostal: null,
+  structure: null,
+  orienteVersStructure: true,
+  structureDeRedirection: 'OperateurOuOrganismeEnCharge',
+  precisionsDemarche: null,
+  degreDeFinalisation: null,
+  titreAtelier: null,
+  typeLieuAtelier: null,
+  niveau: null,
+} satisfies ActiviteForList
 
+// Refactored "Individuel" type activity with an anonymous beneficiary
 export const activiteIndividuelleBeneficiaireAnonyme = {
-  type: 'individuel',
-  cra: {
-    id: '1',
-    date: new Date('2024-03-22'),
-    duree: 120,
-    thematiques: ['NavigationSurInternet', 'Email'],
-    beneficiaire: {
-      id: '2',
-      prenom: null,
-      nom: null,
-      _count: {
-        activites: 0,
+  type: 'Individuel',
+  id: '1',
+  mediateurId: '2',
+  creation: new Date('2024-03-22'),
+  modification: new Date('2024-03-22'),
+  date: new Date('2024-03-22'),
+  duree: 120,
+  thematiques: ['NavigationSurInternet', 'Email'],
+  thematiquesDemarche: [],
+  notes:
+    '<p>Lörem ipsum ladeniliga douche <strong>plaledes</strong>. Nining son. Mipära kavun joskap juling lanar. Segyde snålsurfa då jevis. Dorade preng posad. Spefuv ter i kvasitiskap då mobilblottare dir. Häbel epihet i tegt. Ultrar. Digt hän. Polytt doskapet tempopatologi. Use betårta, tena. Biktiga pojuren.</p><p>Segyde snålsurfa då jevis. <strong>Dorade preng posad</strong>. Spefuv ter i kvasitiskap då mobilblottare dir. Häbel epihet i tegt. Ultrar. Digt hän. Polytt doskapet tempopatologi. Use betårta, tena. Biktiga pojuren</p>',
+  accompagnements: [
+    {
+      beneficiaire: {
+        id: '2',
+        anonyme: true,
+        attributionsAleatoires: false,
+        prenom: null,
+        nom: null,
+        commune: 'Lyon',
+        communeCodePostal: '69002',
+        vaPoursuivreParcoursAccompagnement: true,
+        statutSocial: 'EnEmploi',
+        genre: 'Masculin',
+        trancheAge: 'QuaranteCinquanteNeuf',
+        _count: {
+          accompagnements: 0,
+        },
       },
-      commune: 'Lyon',
-      communeCodePostal: '69002',
-      vaPoursuivreParcoursAccompagnement: true,
-      statutSocial: 'EnEmploi',
-      genre: 'Masculin',
-      trancheAge: 'QuaranteCinquanteNeuf',
     },
-    lieuAccompagnement: 'Domicile',
-    autonomie: null,
-    materiel: [],
-    lieuAccompagnementDomicileCommune: 'Lyon',
-    lieuAccompagnementDomicileCodeInsee: '69381',
-    lieuAccompagnementDomicileCodePostal: '69002',
-    lieuActivite: null,
-    orienteVersStructure: true,
-    structureDeRedirection: 'OperateurOuOrganismeEnCharge',
-    notes:
-      '<p>Lörem ipsum ladeniliga douche <strong>plaledes</strong>. Nining son. Mipära kavun joskap juling lanar. Segyde snålsurfa då jevis. Dorade preng posad. Spefuv ter i kvasitiskap då mobilblottare dir. Häbel epihet i tegt. Ultrar. Digt hän. Polytt doskapet tempopatologi. Use betårta, tena. Biktiga pojuren.</p>' +
-      '<p>Segyde snålsurfa då jevis. <strong>Dorade preng posad</strong>. Spefuv ter i kvasitiskap då mobilblottare dir. Häbel epihet i tegt. Ultrar. Digt hän. Polytt doskapet tempopatologi. Use betårta, tena. Biktiga pojuren</p>',
-  },
-} satisfies Activite
+  ],
+  typeLieu: 'Domicile',
+  autonomie: null,
+  materiel: [],
+  lieuCommune: 'Lyon',
+  lieuCodeInsee: '69381',
+  lieuCodePostal: '69002',
+  structure: null,
+  orienteVersStructure: true,
+  structureDeRedirection: 'OperateurOuOrganismeEnCharge',
+  precisionsDemarche: null,
+  degreDeFinalisation: null,
+  titreAtelier: null,
+  typeLieuAtelier: null,
+  niveau: null,
+} satisfies ActiviteForList
 
+// Refactored "Collectif" type activity with minimal information
 export const activiteCollectifInfosRepliees = {
-  type: 'collectif',
-  cra: {
-    id: '1',
-    date: new Date('2024-03-22'),
-    duree: 120,
-    thematiques: ['NavigationSurInternet', 'Email'],
-    participantsAnonymes: { ...participantsAnonymesDefault, id: '5' },
-    participants: [
-      {
-        beneficiaire: {
-          id: '3',
-          prenom: 'Marie',
-          nom: 'Durand',
+  type: 'Collectif',
+  id: '1',
+  mediateurId: '2',
+  creation: new Date('2024-03-22'),
+  modification: new Date('2024-03-22'),
+  date: new Date('2024-03-22'),
+  duree: 120,
+  thematiques: ['NavigationSurInternet', 'Email'],
+  thematiquesDemarche: [],
+  notes:
+    '<p>Lörem ipsum ladeniliga douche <strong>plaledes</strong>. Nining son. Mipära kavun joskap juling lanar. Segyde snålsurfa då jevis. Dorade preng posad. Spefuv ter i kvasitiskap då mobilblottare dir. Häbel epihet i tegt. Ultrar. Digt hän. Polytt doskapet tempopatologi. Use betårta, tena. Biktiga pojuren.</p><p>Segyde snålsurfa då jevis. <strong>Dorade preng posad</strong>. Spefuv ter i kvasitiskap då mobilblottare dir. Häbel epihet i tegt. Ultrar. Digt hän. Polytt doskapet tempopatologi. Use betårta, tena. Biktiga pojuren</p>',
+  accompagnements: [
+    {
+      beneficiaire: {
+        id: '3',
+        anonyme: false,
+        attributionsAleatoires: false,
+        prenom: 'Marie',
+        nom: 'Durand',
+        genre: null,
+        trancheAge: null,
+        statutSocial: null,
+        commune: null,
+        communeCodePostal: null,
+        vaPoursuivreParcoursAccompagnement: null,
+        _count: {
+          accompagnements: 1,
         },
       },
-      {
-        beneficiaire: {
-          id: '2',
-          prenom: 'Jean',
-          nom: 'Dupont',
+    },
+    {
+      beneficiaire: {
+        id: '2',
+        anonyme: false,
+        attributionsAleatoires: false,
+        prenom: 'Jean',
+        nom: 'Dupont',
+        genre: null,
+        trancheAge: null,
+        statutSocial: null,
+        commune: null,
+        communeCodePostal: null,
+        vaPoursuivreParcoursAccompagnement: null,
+        _count: {
+          accompagnements: 1,
         },
       },
-    ],
-    niveau: 'Debutant',
-    lieuAtelier: 'Autre',
-    lieuCommune: 'Lyon',
-    lieuCodeInsee: '69381',
-    lieuCodePostal: '69002',
-    titreAtelier: 'Atelier de découverte de la vacuité de toute chose',
-    lieuActivite: null,
-    notes:
-      '<p>Lörem ipsum ladeniliga douche <strong>plaledes</strong>. Nining son. Mipära kavun joskap juling lanar. Segyde snålsurfa då jevis. Dorade preng posad. Spefuv ter i kvasitiskap då mobilblottare dir. Häbel epihet i tegt. Ultrar. Digt hän. Polytt doskapet tempopatologi. Use betårta, tena. Biktiga pojuren.</p>' +
-      '<p>Segyde snålsurfa då jevis. <strong>Dorade preng posad</strong>. Spefuv ter i kvasitiskap då mobilblottare dir. Häbel epihet i tegt. Ultrar. Digt hän. Polytt doskapet tempopatologi. Use betårta, tena. Biktiga pojuren</p>',
-  },
-} satisfies Activite
+    },
+  ],
+  typeLieu: null,
+  autonomie: null,
+  materiel: [],
+  lieuCommune: 'Lyon',
+  lieuCodeInsee: '69381',
+  lieuCodePostal: '69002',
+  structure: null,
+  orienteVersStructure: null,
+  structureDeRedirection: null,
+  precisionsDemarche: null,
+  degreDeFinalisation: null,
+  titreAtelier: 'Atelier de découverte de la vacuité de toute chose',
+  typeLieuAtelier: 'Autre',
+  niveau: 'Debutant',
+} satisfies ActiviteForList
 
+// Refactored "Collectif" type activity with expanded information
 export const activiteCollectifInfosDepliees = {
-  type: 'collectif',
-  cra: {
+  type: 'Collectif',
+  id: '1',
+  mediateurId: '2',
+  creation: new Date('2024-07-22'),
+  modification: new Date('2024-07-22'),
+  date: new Date('2024-07-22'),
+  duree: 120,
+  thematiques: ['NavigationSurInternet', 'Email'],
+  thematiquesDemarche: [],
+  notes: null,
+  accompagnements: [
+    ...createBeneficiairesForParticipantsAnonymes({
+      mediateurId: '2',
+      participantsAnonymes: {
+        ...participantsAnonymesDefault,
+        total: 40,
+        genreFeminin: 15,
+        genreMasculin: 2,
+        genreNonCommunique: 23,
+        trancheAgeVingtCinqTrenteNeuf: 40,
+        statutSocialNonCommunique: 40,
+      },
+    }).map(
+      (beneficiaire, index): ActiviteForList['accompagnements'][number] => ({
+        beneficiaire: {
+          ...beneficiaire,
+          id: `3${index.toString()}`,
+          prenom: null,
+          nom: null,
+          commune: null,
+          communeCodePostal: null,
+          vaPoursuivreParcoursAccompagnement: null,
+          _count: {
+            accompagnements: 1,
+          },
+        },
+      }),
+    ),
+    {
+      beneficiaire: {
+        id: '3',
+        anonyme: false,
+        attributionsAleatoires: false,
+        prenom: 'Marie',
+        nom: 'Durand',
+        genre: null,
+        trancheAge: null,
+        statutSocial: null,
+        commune: null,
+        communeCodePostal: null,
+        vaPoursuivreParcoursAccompagnement: null,
+        _count: {
+          accompagnements: 1,
+        },
+      },
+    },
+    {
+      beneficiaire: {
+        id: '2',
+        anonyme: false,
+        attributionsAleatoires: false,
+        prenom: 'Jean',
+        nom: 'Dupont',
+        genre: null,
+        trancheAge: null,
+        statutSocial: null,
+        commune: null,
+        communeCodePostal: null,
+        vaPoursuivreParcoursAccompagnement: null,
+        _count: {
+          accompagnements: 1,
+        },
+      },
+    },
+  ],
+
+  typeLieu: 'LieuActivite',
+  autonomie: null,
+  materiel: [],
+  lieuCommune: null,
+  lieuCodeInsee: null,
+  lieuCodePostal: null,
+  structure: {
     id: '1',
-    date: new Date('2024-07-22'),
-    duree: 120,
-    thematiques: ['NavigationSurInternet', 'Email'],
-    participantsAnonymes: {
-      ...participantsAnonymesDefault,
-
-      total: 40,
-
-      genreFeminin: 15,
-      genreMasculin: 2,
-      genreNonCommunique: 23,
-
-      trancheAgeVingtCinqTrenteNeuf: 40,
-
-      statutSocialNonCommunique: 40,
-
-      id: '5',
-    },
-    participants: [
-      {
-        beneficiaire: {
-          id: '3',
-          prenom: 'Marie',
-          nom: 'Durand',
-        },
-      },
-      {
-        beneficiaire: {
-          id: '2',
-          prenom: 'Jean',
-          nom: 'Dupont',
-        },
-      },
-    ],
-    niveau: 'Debutant',
-    lieuAtelier: 'LieuActivite',
-    lieuCommune: null,
-    lieuCodeInsee: null,
-    lieuCodePostal: null,
-    titreAtelier: null,
-    lieuActivite: {
-      id: '1',
-      nom: 'Bibliotheque Musee de l’Opera, au fond du couloir à droite',
-      commune: 'Paris',
-      codePostal: '75006',
-    },
-    notes: null,
+    nom: 'Bibliotheque Musee de l’Opera, au fond du couloir à droite',
+    commune: 'Paris',
+    codePostal: '75006',
   },
-} satisfies Activite
+  orienteVersStructure: null,
+  structureDeRedirection: null,
+  precisionsDemarche: null,
+  degreDeFinalisation: null,
+  titreAtelier: null,
+  typeLieuAtelier: 'LieuActivite',
+  niveau: 'Debutant',
+} satisfies ActiviteForList
 
 export const activitesForModalStories = [
   activiteIndividuelleInfosMinimum,

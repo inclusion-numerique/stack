@@ -19,5 +19,5 @@ export const optionalBooleanToYesNo = (value: boolean | undefined | null) =>
   value === undefined || value === null ? value : booleanToYesNo(value)
 
 export const yesNoToOptionalBoolean = (
-  value: YesOrNo | undefined,
-): boolean | undefined => (value === undefined ? undefined : value === 'yes')
+  value: YesOrNo | undefined | null,
+): boolean | undefined => (value ? value === 'yes' : undefined)

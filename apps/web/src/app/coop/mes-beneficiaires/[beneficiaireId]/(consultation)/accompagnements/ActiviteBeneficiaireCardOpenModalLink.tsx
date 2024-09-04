@@ -2,12 +2,12 @@
 
 import type { MouseEventHandler } from 'react'
 import { ActiviteDetailsDynamicModal } from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsDynamicModal'
-import type { Activite } from '@app/web/cra/activitesQueries'
+import type { ActiviteForList } from '@app/web/cra/activitesQueries'
 
 const ActiviteBeneficiaireCardOpenModalLink = ({
   activite,
 }: {
-  activite: Activite
+  activite: ActiviteForList
 }) => {
   const open = ActiviteDetailsDynamicModal.useOpen()
 

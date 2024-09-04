@@ -28,10 +28,10 @@ import RichCardLabel, {
 } from '@app/web/components/form/RichCardLabel'
 import {
   dureeAccompagnementOptions,
-  lieuAtelierOptionsWithExtras,
   materielOptions,
   niveauAtelierOptionsWithExtras,
   thematiqueOptionsWithExtras,
+  typeLieuAtelierOptionsWithExtras,
 } from '@app/web/cra/cra'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { craFormFieldsetClassname } from '@app/web/app/coop/mes-activites/cra/craFormFieldsetClassname'
@@ -70,10 +70,9 @@ const CraCollectifForm = ({
 
   const router = useRouter()
 
-  const lieuAccompagnement = form.watch('lieuAtelier')
-  const showLieuAtelierAutreCommune = lieuAccompagnement === 'Autre'
-  const showLieuAccompagnementLieuActivite =
-    lieuAccompagnement === 'LieuActivite'
+  const typeLieuAtelier = form.watch('typeLieuAtelier')
+  const showLieuAtelierAutreCommune = typeLieuAtelier === 'Autre'
+  const showStructure = typeLieuAtelier === 'LieuActivite'
 
   const {
     control,
@@ -192,9 +191,9 @@ const CraCollectifForm = ({
       </CraFormLabel>
       <RadioFormField
         control={control}
-        path="lieuAtelier"
+        path="typeLieuAtelier"
         disabled={isLoading}
-        options={lieuAtelierOptionsWithExtras}
+        options={typeLieuAtelierOptionsWithExtras}
         components={{
           label: RichCardLabel,
         }}
@@ -216,7 +215,7 @@ const CraCollectifForm = ({
           defaultValue={lieuAtelierAutreCommuneDefaultValue}
         />
       )}
-      {showLieuAccompagnementLieuActivite && (
+      {showStructure && (
         <CustomSelectFormField
           label=" "
           control={control}

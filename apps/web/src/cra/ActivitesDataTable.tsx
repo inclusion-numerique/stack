@@ -5,22 +5,22 @@ import {
 } from '@app/web/data-table/DataTableConfiguration'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
-import { accompagnementTypeLabels } from '@app/web/cra/cra'
 import ActiviteRowShowDetailsButton from '@app/web/cra/ActiviteRowShowDetailsButton'
-import { Activite } from '@app/web/cra/activitesQueries'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import styles from '@app/web/app/coop/mes-activites/(liste)/MesActivitesListePage.module.css'
+import { ActiviteForList } from '@app/web/cra/activitesQueries'
+import { typeActiviteLabels } from '@app/web/cra/cra'
 
 export type ActivitesDataTableConfiguration = DataTableConfiguration<
-  Activite,
-  Prisma.ActiviteMediateurWhereInput,
-  Prisma.ActiviteMediateurOrderByWithRelationInput
+  ActiviteForList,
+  Prisma.ActiviteWhereInput,
+  Prisma.ActiviteOrderByWithRelationInput
 >
 
 export const ActivitesDataTable = {
   csvFilename: () => `coop-${dateAsIsoDay(new Date())}-activites`,
-  rowKey: ({ cra: { id } }) => id,
+  rowKey: ({ id }) => id,
   rowButton: (activite) => <ActiviteRowShowDetailsButton activite={activite} />,
   columns: [
     {
@@ -31,8 +31,8 @@ export const ActivitesDataTable = {
       defaultSortableDirection: 'desc',
       cellAsTh: true,
       sortable: true,
-      csvValues: ({ cra: { date } }) => [dateAsIsoDay(date)],
-      cell: ({ cra: { date } }) => dateAsDay(date),
+      csvValues: ({ date }) => [dateAsIsoDay(date)],
+      cell: ({ date }) => dateAsDay(date),
     },
     {
       name: 'type',
@@ -48,14 +48,18 @@ export const ActivitesDataTable = {
       header: 'Bénéficiaire',
       csvHeaders: ['Bénéficiaire'],
       csvValues: (activite) => [
-        activite.type === 'collectif'
-          ? `${activite.cra.participants.length + activite.cra.participantsAnonymes.total} participants`
-          : getBeneficiaireDisplayName(activite.cra.beneficiaire),
+        activite.type === 'Collectif'
+          ? `${activite.accompagnements.length} participants`
+          : getBeneficiaireDisplayName(
+              activite.accompagnements[0]?.beneficiaire ?? {},
+            ),
       ],
       cell: (activite) =>
-        activite.type === 'collectif'
-          ? `${activite.cra.participants.length + activite.cra.participantsAnonymes.total} participants`
-          : getBeneficiaireDisplayName(activite.cra.beneficiaire),
+        activite.type === 'Collectif'
+          ? `${activite.accompagnements.length} participants`
+          : getBeneficiaireDisplayName(
+              activite.accompagnements[0]?.beneficiaire ?? {},
+            ),
       cellClassName: styles.beneficiaireCell,
     },
     {
@@ -63,18 +67,21 @@ export const ActivitesDataTable = {
       header: 'Lieu',
       csvHeaders: ['Lieu'],
       csvValues: () => [],
-      cell: (activite) =>
-        'lieuActivite' in activite.cra && activite.cra.lieuActivite
-          ? activite.cra.lieuActivite.nom
-          : activite.type === 'collectif'
-            ? activite.cra.lieuCommune
-              ? `${activite.cra.lieuCommune} · ${activite.cra.lieuCodePostal}`
-              : '-'
-            : activite.cra.lieuAccompagnement === 'ADistance'
-              ? 'À distance'
-              : activite.cra.lieuAccompagnementDomicileCommune
-                ? `${activite.cra.lieuAccompagnementDomicileCommune} · ${activite.cra.lieuAccompagnementDomicileCodePostal}`
-                : '-',
+      cell: ({
+        structure,
+        lieuCommune,
+        lieuCodePostal,
+        typeLieu,
+        typeLieuAtelier,
+      }) =>
+        (typeLieu === 'LieuActivite' || typeLieuAtelier === 'LieuActivite') &&
+        structure
+          ? structure.nom
+          : typeLieu === 'ADistance'
+            ? 'À distance'
+            : lieuCommune
+              ? `${lieuCommune} · ${lieuCodePostal}`
+              : '-',
       cellClassName: styles.lieuCell,
     },
   ],

@@ -3,7 +3,7 @@ import {
   fixtureCrasCollectifs,
   fixtureCrasDemarchesAdministratives,
   fixtureCrasIndividuels,
-} from '@app/fixtures/cras'
+} from '@app/fixtures/activites'
 
 export const upsertCraFixtures = async ({
   transaction,

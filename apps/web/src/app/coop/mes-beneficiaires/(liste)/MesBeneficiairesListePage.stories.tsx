@@ -44,7 +44,7 @@ const beneficiaire = {
   anneeNaissance: null,
   trancheAge: null,
   _count: {
-    activites: 6,
+    accompagnements: 6,
   },
 } satisfies BeneficiairesListPageData['searchResult']['beneficiaires'][number]
 
@@ -72,7 +72,7 @@ const dataAvecBeneficiaires = {
         prenom: 'Paul',
         nom: 'Martin',
         _count: {
-          activites: 0,
+          accompagnements: 0,
         },
       },
     ],

@@ -1,6 +1,6 @@
 import { prismaClient } from '@app/web/prismaClient'
 import {
-  beneficiaireCrasCountSelect,
+  beneficiaireAccompagnementsCountSelect,
   countThematiques,
 } from '@app/web/beneficiaire/beneficiaireQueries'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
@@ -38,7 +38,7 @@ export const getBeneficiaireInformationsPageData = async ({
       commune: true,
       communeCodePostal: true,
       communeCodeInsee: true,
-      ...beneficiaireCrasCountSelect,
+      ...beneficiaireAccompagnementsCountSelect,
     },
   })
   if (!beneficiaire) {
@@ -47,7 +47,10 @@ export const getBeneficiaireInformationsPageData = async ({
 
   const displayName = getBeneficiaireDisplayName(beneficiaire)
 
-  const thematiquesCounts = await countThematiques({ beneficiaireId })
+  const thematiquesCounts = await countThematiques({
+    beneficiaireId,
+    mediateurId,
+  })
 
   return {
     displayName,

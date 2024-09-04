@@ -2,10 +2,10 @@ import z from 'zod'
 import {
   autonomieValues,
   dureeAccompagnementValues,
-  lieuAccompagnementValues,
   materielValues,
   structuresRedirectionValues,
   thematiqueValues,
+  typeLieuValues,
 } from '@app/web/cra/cra'
 import { BeneficiaireCraValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { AdresseBanValidation } from '@app/web/external-apis/ban/AdresseBanValidation'
@@ -24,7 +24,7 @@ export const CraIndividuelValidation = z
     duree: z.enum(dureeAccompagnementValues, {
       required_error: 'Veuillez renseigner une durée',
     }),
-    lieuAccompagnement: z.enum(lieuAccompagnementValues, {
+    typeLieu: z.enum(typeLieuValues, {
       required_error: 'Veuillez renseigner un lieu d’accompagnement',
     }),
     structureId: z.string().uuid().nullish(),
@@ -43,7 +43,7 @@ export const CraIndividuelValidation = z
   // structureId is required if lieuAccompagnement ===  LieuActivite
   .refine(
     (data) => {
-      if (data.lieuAccompagnement === 'LieuActivite') {
+      if (data.typeLieu === 'LieuActivite') {
         return !!data.structureId
       }
       return true
@@ -56,8 +56,7 @@ export const CraIndividuelValidation = z
   // lieuAccompagnementDomicileCommune is required if lieuAccompagnement === Domicile
   .refine(
     (data) =>
-      data.lieuAccompagnement !== 'Domicile' ||
-      !!data.lieuAccompagnementDomicileCommune,
+      data.typeLieu !== 'Domicile' || !!data.lieuAccompagnementDomicileCommune,
     {
       message: 'Veuillez renseigner la commune',
       path: ['lieuAccompagnementDomicileCommune'],
