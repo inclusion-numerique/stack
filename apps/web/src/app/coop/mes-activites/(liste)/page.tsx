@@ -34,6 +34,7 @@ const MesActivitesPage = async ({
       lieuxActiviteOptions,
     } = await getFiltersOptionsForMediateur({
       mediateurId: user.mediateur.id,
+      includeBeneficiaireId: searchParams.beneficiaire,
     })
 
     return (

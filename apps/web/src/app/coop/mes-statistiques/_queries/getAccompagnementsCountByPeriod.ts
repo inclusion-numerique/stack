@@ -1,12 +1,12 @@
+import { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
-import { LabelAndCount, QuantifiedShare } from '../quantifiedShare'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import {
   crasNotDeletedCondition,
   getActiviteFiltersSqlFragment,
   getCrasFiltersWhereConditions,
 } from '@app/web/cra/activitesFiltersSqlWhereConditions'
-import { Prisma } from '@prisma/client'
+import { LabelAndCount, QuantifiedShare } from '../quantifiedShare'
 
 export const getAccompagnementsCountByMonth = async ({
   mediateurId,

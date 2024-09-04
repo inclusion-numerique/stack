@@ -16,7 +16,7 @@ import { BeneficiaireOption } from '@app/web/hooks/useBeneficiaireSearch'
 import LocationFilter, {
   LocationFilterValue,
 } from '@app/web/components/filters/LocationFilter'
-import type { TypeActivite } from '@prisma/client'
+import { TypeActiviteSlug } from '@app/web/cra/cra'
 
 // Allows to replace the current route with new query params
 const replaceRouteWithNewParams = ({
@@ -116,7 +116,7 @@ const ActivitesFilterTags = ({
           },
     )
   }
-  const onActiviteTypeChange = (type: TypeActivite | null) => {
+  const onActiviteTypeChange = (type: TypeActiviteSlug | null) => {
     replaceRouteParams({
       type,
     })
@@ -201,6 +201,7 @@ const ActivitesFilterTags = ({
         <BeneficiaireFilter
           onChange={onBeneficiaireChange}
           initialBeneficiairesOptions={initialBeneficiairesOptions}
+          defaultValue={defaultFilters.beneficiaire}
         />
       </div>
     </div>

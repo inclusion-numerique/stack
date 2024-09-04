@@ -21,6 +21,7 @@ export const typeActiviteLabels: {
 }
 
 export type TypeActiviteSlug = 'individuel' | 'demarche' | 'collectif'
+
 export const typeActiviteSlugs: { [key in TypeActivite]: TypeActiviteSlug } = {
   Individuel: 'individuel',
   Demarche: 'demarche',
@@ -32,6 +33,14 @@ export const typeActiviteForSlug: { [key in TypeActiviteSlug]: TypeActivite } =
     demarche: 'Demarche',
     collectif: 'Collectif',
   }
+
+export const typeActiviteSlugLabels: {
+  [key in TypeActiviteSlug]: string
+} = {
+  individuel: typeActiviteLabels[typeActiviteForSlug.individuel],
+  demarche: typeActiviteLabels[typeActiviteForSlug.demarche],
+  collectif: typeActiviteLabels[typeActiviteForSlug.collectif],
+}
 
 export const typeActiviteIllustrations: {
   [key in TypeActivite]?: string
@@ -47,6 +56,13 @@ export const typeActiviteValues = Object.keys(typeActiviteLabels) as [
 ]
 
 export const typeActiviteOptions = labelsToOptions(typeActiviteLabels)
+
+export const typeActiviteSlugOptions = labelsToOptions(typeActiviteSlugLabels)
+
+export const typeActiviteSlugValues = Object.keys(typeActiviteSlugLabels) as [
+  TypeActiviteSlug,
+  ...TypeActiviteSlug[],
+]
 
 export const dureeAccompagnementLabels = {
   '30': '30min',

@@ -1,5 +1,9 @@
 import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
-import { conseillerNumerique, mediateurAvecActivite, mediateurSansActivites } from '@app/fixtures/users'
+import {
+  conseillerNumerique,
+  mediateurAvecActivite,
+  mediateurSansActivites,
+} from '@app/fixtures/users'
 import {
   getMesStatistiquesPageData,
   MesStatistiquesGraphOptions,
@@ -216,9 +220,7 @@ describe('getMesStatistiquesPageData', () => {
       {
         title: 'should compute all data without filters',
         activitesFilters: {},
-        expected: createExpectedData((data) => {
-          return data
-        }),
+        expected: createExpectedData((data) => data),
       },
     ]
 

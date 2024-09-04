@@ -1,5 +1,7 @@
 import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFiltersOptionsForMediateur'
+import { dateAsIsoDay, dateAsIsoMonth } from '@app/web/utils/dateAsIsoDay'
+import { prismaClient } from '@app/web/prismaClient'
 import {
   getAccompagnementsCountByDay,
   getAccompagnementsCountByMonth,
@@ -20,8 +22,6 @@ import {
   getModalitesAccompagnementStats,
 } from './_queries/getModalitesAccompagnementStats'
 import { mergeQuantifiedShare, withProportions } from './quantifiedShare'
-import { dateAsIsoDay, dateAsIsoMonth } from '@app/web/utils/dateAsIsoDay'
-import { prismaClient } from '@app/web/prismaClient'
 
 export type MesStatistiquesGraphOptions = {
   fin?: Date
@@ -71,6 +71,7 @@ export const getMesStatistiquesPageData = async ({
     lieuxActiviteOptions,
   } = await getFiltersOptionsForMediateur({
     mediateurId,
+    includeBeneficiaireId: activitesFilters.beneficiaire,
   })
 
   return {

@@ -1,4 +1,3 @@
-import type { ParticipantsAnonymesCraCollectifData } from '@app/web/cra/ParticipantsAnonymesCraCollectifValidation'
 import { v4 } from 'uuid'
 import type {
   Beneficiaire,
@@ -7,12 +6,13 @@ import type {
   StatutSocial,
   TrancheAge,
 } from '@prisma/client'
+import { shuffle } from 'lodash-es' // Replace the 5 last digits of the root uuid with the index.toString(10)
 import {
   genreValues,
   statutSocialValues,
   trancheAgeValues,
 } from '@app/web/beneficiaire/beneficiaire'
-import { shuffle } from 'lodash-es' // Replace the 5 last digits of the root uuid with the index.toString(10)
+import type { ParticipantsAnonymesCraCollectifData } from '@app/web/cra/ParticipantsAnonymesCraCollectifValidation'
 
 // Replace the 5 last digits of the root uuid with the index.toString(10)
 // Use padding left with zeros to ensure the length is ok

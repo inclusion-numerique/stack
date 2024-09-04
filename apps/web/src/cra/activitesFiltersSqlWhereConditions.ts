@@ -1,6 +1,6 @@
-import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { Sql } from '@prisma/client/runtime/library'
 import { Prisma } from '@prisma/client'
+import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 
 export type ActivitesFiltersWhereConditions = {
@@ -14,46 +14,41 @@ export const getActiviteFiltersSqlFragment = (
 
   if (parts.length === 0) return Prisma.raw('1=1')
 
-  return Prisma.join(parts, 'AND')
+  return Prisma.join(parts, ' AND ')
 }
 
 /**
  * Conditions for a query on the 3 tables of the CRA models
  */
 
-export const crasDateSelect = Prisma.raw(
-  'COALESCE(cra_individuel.date, cra_collectif.date, cra_demarche_administrative.date)',
+export const activiteAccompagnementsCountSelect = Prisma.raw(
+  '(SELECT COUNT(*) FROM accompagnements WHERE accompagnements.activite_id = activites.id)',
 )
 
-export const crasParticipantsCountSelect = Prisma.raw(
-  '(SELECT COUNT(*) FROM participants_ateliers_collectifs participants WHERE participants.cra_collectif_id = cra_collectif.id) + (SELECT COALESCE(SUM(participants_anonymes.total), 0) FROM participants_anonymes_cras_collectifs participants_anonymes WHERE participants_anonymes.id = cra_collectif.participants_anonymes_id)',
-)
-
-export const crasTypeSelect = Prisma.raw(
-  `CASE
-                 WHEN cra_individuel.id IS NOT NULL THEN 'individuel'
-                 WHEN cra_demarche_administrative.id IS NOT NULL THEN 'demarche'
-                 ELSE 'collectif'
-                 END`,
-)
+/**
+ * Used to scope an activite query to a specific beneficiaire.
+ * NOT USED FOR FILTERS but before, to reduce the set for a specific beneficiaire view.
+ */
+export const activitesBeneficiaireInnerJoin = (
+  beneficiaireId: string | null | undefined,
+) =>
+  Prisma.raw(
+    beneficiaireId
+      ? `INNER JOIN accompagnements ON (accompagnements.activite_id = activites.id AND accompagnements.beneficiaire_id = '${beneficiaireId}'::UUID) `
+      : '',
+  )
 
 export const crasTypeOrderSelect = Prisma.raw(
   `CASE
-                 WHEN cra_individuel.id IS NOT NULL THEN 1
-                 WHEN cra_demarche_administrative.id IS NOT NULL THEN 2
+                 WHEN type = 'individuel' THEN 1
+                 WHEN type = 'demarche' THEN 2
                  ELSE 3
                  END`,
 )
 
-export const crasLieuLabelSelect =
-  Prisma.raw(`COALESCE(structures.nom, cra_individuel.lieu_accompagnement_domicile_commune,
-                      cra_collectif.lieu_accompagnement_autre_commune,
-                      cra_demarche_administrative.lieu_accompagnement_domicile_commune, 'À distance')`)
-
-export const crasStructureIdSelect = Prisma.raw(`COALESCE(
-              cra_individuel.lieu_activite_id,
-              cra_collectif.lieu_activite_id,
-              cra_demarche_administrative.lieu_activite_id) `)
+export const crasLieuLabelSelect = Prisma.raw(
+  `COALESCE(structures.nom, activites.lieu_commune, 'À distance')`,
+)
 
 export const crasNotDeletedCondition = Prisma.raw(`(
           (cra_individuel.suppression IS NULL AND cra_individuel.id IS NOT NULL)
@@ -61,11 +56,9 @@ export const crasNotDeletedCondition = Prisma.raw(`(
               OR (cra_demarche_administrative.suppression IS NULL AND cra_demarche_administrative.id IS NOT NULL)
           )`)
 
-export const crasCommuneCodeInseeSelect = Prisma.raw(`COALESCE(
+export const activiteLieuCodeInseeSelect = Prisma.raw(`COALESCE(
                 structures.code_insee, 
-                cra_individuel.lieu_accompagnement_domicile_code_insee,
-                cra_collectif.lieu_accompagnement_autre_code_insee,
-                cra_demarche_administrative.lieu_accompagnement_domicile_code_insee)`)
+                activites.lieu_code_insee)`)
 
 export const getCrasFiltersWhereConditions = ({
   du,
@@ -76,166 +69,22 @@ export const getCrasFiltersWhereConditions = ({
   lieu,
   type,
 }: ActivitesFilters): ActivitesFiltersWhereConditions => ({
-  du: du ? Prisma.raw(`${crasDateSelect.text} >= '${du}'::timestamp`) : null,
-  au: au ? Prisma.raw(`${crasDateSelect.text} <= '${au}'::timestamp`) : null,
-  type: type ? Prisma.raw(`${crasTypeSelect.text} = '${type}'`) : null,
-  lieu: lieu
-    ? Prisma.raw(`${crasStructureIdSelect.text} = '${lieu}'::UUID`)
-    : null,
+  du: du ? Prisma.raw(`activites.date >= '${du}'::timestamp`) : null,
+  au: au ? Prisma.raw(`activites.date <= '${au}'::timestamp`) : null,
+  type: type ? Prisma.raw(`activites.type = '${type}'`) : null,
+  lieu: lieu ? Prisma.raw(`activites.structure_id = '${lieu}'::UUID`) : null,
   commune: commune
-    ? Prisma.raw(`${crasCommuneCodeInseeSelect.text} = '${commune}'`)
+    ? Prisma.raw(`${activiteLieuCodeInseeSelect.text} = '${commune}'`)
     : null,
   departement: departement
-    ? Prisma.raw(`${crasCommuneCodeInseeSelect.text} LIKE '${departement}%'`)
+    ? Prisma.raw(`${activiteLieuCodeInseeSelect.text} LIKE '${departement}%'`)
     : null,
   beneficiaire: beneficiaire
-    ? Prisma.raw(`
-        AND (
-          cra_individuel.beneficiaire_id = '${beneficiaire}'::UUID
-          OR (
-            EXISTS (
+    ? Prisma.raw(`EXISTS (
               SELECT 1
-              FROM participants_ateliers_collectifs participants
-              WHERE participants.beneficiaire_id = '${beneficiaire}'::UUID
-                AND participants.cra_collectif_id = cra_collectif.id
-            )
-          )
-          OR cra_demarche_administrative.beneficiaire_id = '${beneficiaire}'::UUID
-        )
-      `)
-    : null,
-})
-
-/**
- * Conditions on a query on only the cras_demarches_administratives table
- */
-
-export const craDemarcheAdministrativeCommuneCodeInseeSelect = Prisma.raw(
-  `COALESCE(
-      structures.code_insee, 
-      cra_demarche_administrative.lieu_accompagnement_domicile_code_insee
-    )`,
-)
-
-export const getCrasDemarchesAdministrativesFiltersWhereConditions = ({
-  du,
-  au,
-  type,
-  lieu,
-  commune,
-  departement,
-  beneficiaire,
-}: ActivitesFilters): ActivitesFiltersWhereConditions => ({
-  du: du
-    ? Prisma.raw(`cra_demarche_administrative.date >= '${du}'::timestamp`)
-    : null,
-  au: au
-    ? Prisma.raw(`cra_demarche_administrative.date <= '${au}'::timestamp`)
-    : null,
-  type: type && type !== 'demarche' ? Prisma.raw(`1 = 0`) : null,
-  lieu: lieu
-    ? Prisma.raw(
-        `cra_demarche_administrative.lieu_activite_id = '${lieu}'::UUID`,
-      )
-    : null,
-  commune: commune
-    ? Prisma.raw(
-        `${craDemarcheAdministrativeCommuneCodeInseeSelect.text} = '${commune}'`,
-      )
-    : null,
-  departement: departement
-    ? Prisma.raw(
-        `${craDemarcheAdministrativeCommuneCodeInseeSelect.text} LIKE '${departement}%'`,
-      )
-    : null,
-  beneficiaire: beneficiaire
-    ? Prisma.raw(
-        `cra_demarche_administrative.beneficiaire_id = '${beneficiaire}'::UUID`,
-      )
-    : null,
-})
-
-/**
- * Conditions on a query on only the cras_individuel table
- */
-
-export const craIndividuelCommuneCodeInseeSelect = Prisma.raw(
-  `COALESCE(
-      structures.code_insee, 
-      cra_individuel.lieu_accompagnement_domicile_code_insee
-    )`,
-)
-
-export const getCrasIndividuelFiltersWhereConditions = ({
-  du,
-  au,
-  type,
-  lieu,
-  commune,
-  departement,
-  beneficiaire,
-}: ActivitesFilters): ActivitesFiltersWhereConditions => ({
-  du: du ? Prisma.raw(`cra_individuel.date >= '${du}'::timestamp`) : null,
-  au: au ? Prisma.raw(`cra_individuel.date <= '${au}'::timestamp`) : null,
-  type: type && type !== 'individuel' ? Prisma.raw(`1 = 0`) : null,
-  lieu: lieu
-    ? Prisma.raw(`cra_individuel.lieu_activite_id = '${lieu}'::UUID`)
-    : null,
-  commune: commune
-    ? Prisma.raw(`${craIndividuelCommuneCodeInseeSelect.text} = '${commune}'`)
-    : null,
-  departement: departement
-    ? Prisma.raw(
-        `${craIndividuelCommuneCodeInseeSelect.text} LIKE '${departement}%'`,
-      )
-    : null,
-  beneficiaire: beneficiaire
-    ? Prisma.raw(`cra_individuel.beneficiaire_id = '${beneficiaire}'::UUID`)
-    : null,
-})
-
-/**
- * Conditions on a query on only the cras_collectifs table
- */
-
-export const craCollectifCommuneCodeInseeSelect = Prisma.raw(
-  `COALESCE(
-      structures.code_insee, 
-      cra_collectif.lieu_accompagnement_autre_code_insee
-    )`,
-)
-
-export const getCrasCollectifsFiltersWhereConditions = ({
-  du,
-  au,
-  type,
-  lieu,
-  commune,
-  departement,
-  beneficiaire,
-}: ActivitesFilters): ActivitesFiltersWhereConditions => ({
-  du: du ? Prisma.raw(`cra_collectif.date >= '${du}'::timestamp`) : null,
-  au: au ? Prisma.raw(`cra_collectif.date <= '${au}'::timestamp`) : null,
-  type: type && type !== 'collectif' ? Prisma.raw(`1 = 0`) : null,
-  lieu: lieu
-    ? Prisma.raw(`cra_collectif.lieu_activite_id = '${lieu}'::UUID`)
-    : null,
-  commune: commune
-    ? Prisma.raw(`${craCollectifCommuneCodeInseeSelect.text} = '${commune}'`)
-    : null,
-  departement: departement
-    ? Prisma.raw(
-        `${craCollectifCommuneCodeInseeSelect.text} LIKE '${departement}%'`,
-      )
-    : null,
-  beneficiaire: beneficiaire
-    ? Prisma.raw(`
-        EXISTS (
-          SELECT 1
-          FROM participants_ateliers_collectifs participants
-          WHERE participants.beneficiaire_id = '${beneficiaire}'::UUID
-            AND participants.cra_collectif_id = cra_collectif.id
-        )
-      `)
+              FROM accompagnements
+              WHERE accompagnements.beneficiaire_id = '${beneficiaire}'::UUID
+                AND accompagnements.activite_id = activites.id
+            ) `)
     : null,
 })

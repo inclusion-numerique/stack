@@ -53,8 +53,7 @@ const CreateCraDemarcheAdministrativePage = async ({
     })
 
   if (!defaultValues.structureId) {
-    defaultValues.structureId =
-      mostUsedLieuActivite?.structure.id ?? undefined
+    defaultValues.structureId = mostUsedLieuActivite?.structure.id ?? undefined
   }
 
   const initialBeneficiairesOptions =

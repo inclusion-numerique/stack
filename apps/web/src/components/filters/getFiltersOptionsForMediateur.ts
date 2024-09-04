@@ -4,8 +4,10 @@ import { getInitialLieuxActiviteOptionsForSearch } from '@app/web/app/lieu-activ
 
 export const getFiltersOptionsForMediateur = async ({
   mediateurId,
+  includeBeneficiaireId,
 }: {
   mediateurId: string
+  includeBeneficiaireId?: string
 }) => {
   const [
     { communesOptions, departementsOptions },
@@ -17,6 +19,7 @@ export const getFiltersOptionsForMediateur = async ({
     }),
     getInitialBeneficiairesOptionsForSearch({
       mediateurId,
+      includeBeneficiaireId,
     }),
     getInitialLieuxActiviteOptionsForSearch({
       mediateurId,

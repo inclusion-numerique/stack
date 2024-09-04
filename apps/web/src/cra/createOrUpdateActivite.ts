@@ -1,47 +1,16 @@
+import { Prisma, TypeActivite } from '@prisma/client'
+import { v4 } from 'uuid'
 import { prismaClient } from '@app/web/prismaClient'
 import { invalidError } from '@app/web/server/rpc/trpcErrors'
 import { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireValidation'
-import { Prisma, TypeActivite } from '@prisma/client'
 import { yesNoToOptionalBoolean } from '@app/web/utils/yesNoBooleanOptions'
 import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
 import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
 import { CraDemarcheAdministrativeData } from '@app/web/cra/CraDemarcheAdministrativeValidation'
-import { v4 } from 'uuid'
 import { createBeneficiairesForParticipantsAnonymes } from '@app/web/beneficiaire/createBeneficiairesForParticipantsAnonymes'
 import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 import { createStopwatch } from '@app/web/utils/stopwatch'
 import { addMutationLog } from '@app/web/utils/addMutationLog'
-
-const getExistingBeneficiaire = async ({
-  beneficiaireId,
-  mediateurId,
-}: {
-  beneficiaireId: string | null | undefined
-  mediateurId: string
-}) => {
-  if (!beneficiaireId) {
-    return null
-  }
-  const existingBeneficiaire = await prismaClient.beneficiaire.findUnique({
-    where: {
-      id: beneficiaireId,
-      mediateurId,
-    },
-    select: {
-      id: true,
-      mediateurId: true,
-    },
-  })
-  // Enforce that the beneficiaire is created by the current mediateur
-  if (!existingBeneficiaire) {
-    throw invalidError('Beneficiaire not found')
-  }
-  if (existingBeneficiaire.mediateurId !== mediateurId) {
-    throw invalidError('Beneficiaire not created by current mediateur')
-  }
-
-  return existingBeneficiaire
-}
 
 const getExistingBeneficiairesSuivis = async ({
   beneficiaires,

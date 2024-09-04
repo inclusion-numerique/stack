@@ -1,3 +1,4 @@
+import { Thematique } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
 import {
   materielLabels,
@@ -7,16 +8,15 @@ import {
   typeLieuAtelierLabels,
   typeLieuLabels,
 } from '@app/web/cra/cra'
-import { QuantifiedShare, QuantifiedShareToProcess } from '../quantifiedShare'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { createEnumLabelCaseSelect } from '@app/web/app/coop/mes-statistiques/_queries/createEnumLabelCaseSelect'
-import { Thematique } from '@prisma/client'
 import {
   getActiviteFiltersSqlFragment,
   getCrasCollectifsFiltersWhereConditions,
   getCrasDemarchesAdministrativesFiltersWhereConditions,
   getCrasIndividuelFiltersWhereConditions,
 } from '@app/web/cra/activitesFiltersSqlWhereConditions'
+import { QuantifiedShare, QuantifiedShareToProcess } from '../quantifiedShare'
 
 const accompagnementCategories = [
   'canauxAccompagnements',

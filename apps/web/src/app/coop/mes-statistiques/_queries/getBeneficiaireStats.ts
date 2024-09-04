@@ -4,8 +4,8 @@ import {
   statutSocialLabels,
   trancheAgeLabels,
 } from '@app/web/beneficiaire/beneficiaire'
-import { QuantifiedShare } from '../quantifiedShare'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
+import { QuantifiedShare } from '../quantifiedShare'
 
 const beneficiaireCategories = [
   'genresBeneficiaires',

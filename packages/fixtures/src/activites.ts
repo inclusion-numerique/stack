@@ -26,6 +26,7 @@ export const mediateurAvecActiviteCrasIndividuels = [
     thematiques: [Thematique.InsertionProfessionnelle, Thematique.Sante],
     date: new Date('2024-08-02'),
     creation: new Date('2024-08-02T19:00:00'),
+    typeLieu: 'Domicile',
     lieuCodePostal: '75001',
     lieuCodeInsee: '75101',
     lieuCommune: 'Paris 1er',

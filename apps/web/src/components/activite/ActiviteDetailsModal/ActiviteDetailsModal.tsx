@@ -35,7 +35,6 @@ import {
   thematiqueLabels,
   typeActiviteIllustrations,
   typeActiviteLabels,
-  typeActiviteSlugs,
 } from '@app/web/cra/cra'
 import {
   ActiviteDetailsDynamicModal,
@@ -44,9 +43,9 @@ import {
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { createDupliquerActiviteLink } from '@app/web/app/coop/mes-activites/cra/createDupliquerActiviteLink'
 import { createModifierActiviteLink } from '@app/web/app/coop/mes-activites/cra/createModifierActiviteLink'
-import styles from './ActiviteDetailsModal.module.css'
 import type { ActiviteForList } from '@app/web/cra/activitesQueries'
 import { createParticipantsAnonymesForBeneficiaires } from '@app/web/beneficiaire/createParticipantsAnonymesForBeneficiaires'
+import styles from './ActiviteDetailsModal.module.css'
 
 const ListItem = ({
   children,
@@ -162,7 +161,7 @@ const ActiviteDetailsModal = ({
 
   const donneesItems: ReactNode[] = [
     // Material utilisé
-    !!materiel &&
+    materiel.length > 0 &&
       `Matériel utilisé : ${materiel.map((materielValue) => materielLabels[materielValue]).join(', ')}`,
     // Thématiques
     <>

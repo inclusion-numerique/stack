@@ -13,7 +13,7 @@ export const ActivitesRawSqlConfiguration = {
   type: {
     rawOrderBySql: (direction) => Prisma.raw(`type_order ${direction}`),
     rawFilterSqls: {
-      type: (value: string[]) => Prisma.raw(`type = ${value[0]}`),
+      type: (value: string[]) => Prisma.raw(`type = ${value[0].toLowerCase()}`),
     },
   },
 } satisfies RawDataTableSqlConfiguration<ActivitesDataTableConfiguration>

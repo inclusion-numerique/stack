@@ -9,7 +9,7 @@ import {
   fixtureCrasCollectifs,
   fixtureCrasDemarchesAdministratives,
   fixtureCrasIndividuels,
-} from '@app/fixtures/cras'
+} from '@app/fixtures/activites'
 import { upsertCraFixtures } from '@app/fixtures/upsertCraFixtures'
 
 const deleteAll = async (transaction: Prisma.TransactionClient) => {

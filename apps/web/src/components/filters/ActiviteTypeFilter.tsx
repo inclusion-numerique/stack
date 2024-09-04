@@ -3,21 +3,28 @@
 import { ChangeEvent, ReactNode, useState } from 'react'
 import classNames from 'classnames'
 import FilterTag from '@app/web/components/filters/FilterTag'
-import { typeActiviteLabels, typeActiviteOptions } from '@app/web/cra/cra'
-import type { TypeActivite } from '@prisma/client'
+import {
+  typeActiviteOptions,
+  TypeActiviteSlug,
+  typeActiviteSlugLabels,
+  typeActiviteSlugOptions,
+} from '@app/web/cra/cra'
 
-const valueLabel = (value: TypeActivite): ReactNode => typeActiviteLabels[value]
+const valueLabel = (value: TypeActiviteSlug): ReactNode =>
+  typeActiviteSlugLabels[value]
 
-export type PeriodFilterOnChange = (value: TypeActivite | null) => void
+export type PeriodFilterOnChange = (value: TypeActiviteSlug | null) => void
 
 const ActiviteTypeFilter = ({
   onChange,
   defaultValue,
 }: {
   onChange: PeriodFilterOnChange
-  defaultValue?: TypeActivite
+  defaultValue?: TypeActiviteSlug
 }) => {
-  const [value, setValue] = useState<TypeActivite | null>(defaultValue ?? null)
+  const [value, setValue] = useState<TypeActiviteSlug | null>(
+    defaultValue ?? null,
+  )
 
   const onClear = () => {
     onChange(null)
@@ -25,8 +32,8 @@ const ActiviteTypeFilter = ({
   }
   // Get the value of selected radio
   const onFormChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value as TypeActivite)
-    onChange(event.target.value as TypeActivite)
+    setValue(event.target.value as TypeActiviteSlug)
+    onChange(event.target.value as TypeActiviteSlug)
     event.preventDefault()
     event.stopPropagation()
   }
@@ -39,7 +46,7 @@ const ActiviteTypeFilter = ({
       label="Type"
     >
       <fieldset className="fr-fieldset fr-mb-0">
-        {typeActiviteOptions.map(({ label, value: optionValue }, index) => {
+        {typeActiviteSlugOptions.map(({ label, value: optionValue }, index) => {
           const id = `activite-filter-radio-${optionValue}`
 
           return (

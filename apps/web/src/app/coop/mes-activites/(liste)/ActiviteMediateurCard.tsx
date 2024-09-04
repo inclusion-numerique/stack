@@ -1,3 +1,4 @@
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { typeActiviteIllustrations, typeActiviteLabels } from '@app/web/cra/cra'
 import ActiviteBeneficiaireCardOpenModalLink from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/ActiviteBeneficiaireCardOpenModalLink'
 import type { ActiviteForList } from '@app/web/cra/activitesQueries'
@@ -28,10 +29,11 @@ const ActiviteMediateurCard = ({ activite }: { activite: ActiviteForList }) => {
       ) : null}
       <p className="fr-text--medium fr-text--sm fr-text-mention--grey fr-mb-0  fr-whitespace-nowrap">
         {spacer}
-        {activite.accompagnements.length > 0 ? (
+        {activite.type === 'Collectif' ? (
           <>
             <span className="fr-icon-group-line fr-mr-1w fr-icon--sm" />
-            {activite.accompagnements.length} participants
+            {activite.accompagnements.length} participant
+            {sPluriel(activite.accompagnements.length)}
           </>
         ) : (
           <>

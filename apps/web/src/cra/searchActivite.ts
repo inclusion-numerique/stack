@@ -8,13 +8,10 @@ import { ActivitesRawSqlConfiguration } from '@app/web/cra/ActivitesRawSqlConfig
 import { orderItemsByIndexedValues } from '@app/web/utils/orderItemsByIndexedValues'
 import { getDataTableSortParams } from '@app/web/data-table/getDefaultDataTableSortParams'
 import {
-  crasDateSelect,
+  activiteAccompagnementsCountSelect,
+  activitesBeneficiaireInnerJoin,
   crasLieuLabelSelect,
-  crasNotDeletedCondition,
-  crasParticipantsCountSelect,
-  crasStructureIdSelect,
   crasTypeOrderSelect,
-  crasTypeSelect,
   getActiviteFiltersSqlFragment,
   getCrasFiltersWhereConditions,
 } from '@app/web/cra/activitesFiltersSqlWhereConditions'
@@ -67,22 +64,19 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
   const filterFragment = getActiviteFiltersSqlFragment(filterConditions)
 
   const activiteIdsSearch = await prismaClient.$queryRaw<{ id: string }[]>`
-      SELECT activite.id                    as id,
-             ${crasDateSelect}              as date,
-             ${crasParticipantsCountSelect} as participant_count,
-             ${crasTypeSelect}              as type,
-             ${crasTypeOrderSelect}         as type_order,
-             ${crasLieuLabelSelect}         as lieu
+      SELECT activites.id                          as id,
+             activites.date                        as date,
+             ${activiteAccompagnementsCountSelect} as participant_count,
+             activites.type                as type,
+             ${crasTypeOrderSelect}                as type_order,
+             ${crasLieuLabelSelect}                as lieu
 
-      FROM activites_mediateurs activite
-               LEFT JOIN cras_individuels cra_individuel ON activite.cra_individuel_id = cra_individuel.id
-               LEFT JOIN cras_collectifs cra_collectif ON activite.cra_collectif_id = cra_collectif.id
-               LEFT JOIN cras_demarches_administratives cra_demarche_administrative
-                         ON activite.cra_demarche_administrative_id = cra_demarche_administrative.id
-               LEFT JOIN structures ON structures.id = ${crasStructureIdSelect}
+      FROM activites
+               ${activitesBeneficiaireInnerJoin(options.beneficiaireId)}
+               LEFT JOIN structures ON activites.structure_id = structures.id
 
-      WHERE (activite.mediateur_id = ${mediateurIdMatch}::UUID OR ${mediateurIdMatch} = '_any_')
-        AND ${crasNotDeletedCondition}
+      WHERE (activites.mediateur_id = ${mediateurIdMatch}::UUID OR ${mediateurIdMatch} = '_any_')
+        AND activites.suppression IS NULL
         AND ${filterFragment}
       ORDER BY ${orderByCondition},
                date DESC
@@ -106,19 +100,12 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
   )
 
   const countQueryResult = await prismaClient.$queryRaw<{ count: number }[]>`
-      SELECT COUNT(activite.id)::INT as count
-      FROM activites_mediateurs activite
-               LEFT JOIN cras_individuels cra_individuel ON activite.cra_individuel_id = cra_individuel.id
-               LEFT JOIN cras_collectifs cra_collectif ON activite.cra_collectif_id = cra_collectif.id
-               LEFT JOIN cras_demarches_administratives cra_demarche_administrative
-                         ON activite.cra_demarche_administrative_id = cra_demarche_administrative.id
-               LEFT JOIN structures ON structures.id = COALESCE(
-              cra_individuel.lieu_activite_id,
-              cra_collectif.lieu_activite_id,
-              cra_demarche_administrative.lieu_activite_id
-                                                       )
-      WHERE (activite.mediateur_id = ${mediateurIdMatch}::UUID OR ${mediateurIdMatch} = '_any_')
-        AND ${crasNotDeletedCondition}
+      SELECT COUNT(activites.id)::INT as count
+      FROM activites
+               ${activitesBeneficiaireInnerJoin(options.beneficiaireId)}
+               LEFT JOIN structures ON activites.structure_id = structures.id
+      WHERE (activites.mediateur_id = ${mediateurIdMatch}::UUID OR ${mediateurIdMatch} = '_any_')
+        AND activites.suppression IS NULL
         AND ${filterFragment}
   `
 
