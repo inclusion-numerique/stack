@@ -20,25 +20,30 @@ export const getCraDemarcheAdministrativeDataDefaultValuesFromExisting =
       })
     | null
   > => {
-    const cra = await prismaClient.craDemarcheAdministrative.findUnique({
+    const cra = await prismaClient.activite.findUnique({
       where: {
         id,
-        creeParMediateurId: mediateurId,
+        mediateurId,
         suppression: null,
+        type: 'Demarche',
       },
       select: {
-        beneficiaire: true,
+        accompagnements: {
+          select: {
+            beneficiaire: true,
+          },
+        },
         date: true,
         duree: true,
-        lieuAccompagnement: true,
-        lieuAccompagnementDomicileCodeInsee: true,
-        lieuAccompagnementDomicileCodePostal: true,
-        lieuAccompagnementDomicileCommune: true,
-        lieuActiviteId: true,
+        typeLieu: true,
+        lieuCodeInsee: true,
+        lieuCodePostal: true,
+        lieuCommune: true,
+        structureId: true,
         notes: true,
         precisionsDemarche: true,
         structureDeRedirection: true,
-        thematiques: true,
+        thematiquesDemarche: true,
         degreDeFinalisation: true,
         autonomie: true,
       },
@@ -49,46 +54,48 @@ export const getCraDemarcheAdministrativeDataDefaultValuesFromExisting =
     }
 
     const {
-      beneficiaire,
+      accompagnements,
       date,
       duree,
       notes,
       autonomie,
       degreDeFinalisation,
-      thematiques,
+      thematiquesDemarche,
       structureDeRedirection,
       precisionsDemarche,
-      lieuActiviteId,
-      lieuAccompagnementDomicileCommune,
-      lieuAccompagnementDomicileCodePostal,
-      lieuAccompagnementDomicileCodeInsee,
-      lieuAccompagnement,
+      typeLieu,
+      lieuCodeInsee,
+      lieuCodePostal,
+      lieuCommune,
+      structureId,
     } = cra
+
+    const beneficiaire = accompagnements[0]?.beneficiaire
 
     const defaultValues = {
       id,
       mediateurId,
-      beneficiaire: getBeneficiaireDefaulCratDataFromExisting(beneficiaire),
+      beneficiaire: beneficiaire
+        ? getBeneficiaireDefaulCratDataFromExisting(beneficiaire)
+        : { mediateurId },
       date: dateAsIsoDay(date),
       duree: duree.toString() as DureeAccompagnement,
       notes: notes ?? undefined,
       autonomie: autonomie ?? undefined,
       degreDeFinalisation: degreDeFinalisation ?? undefined,
-      thematiques: thematiques ?? undefined,
+      thematiques: thematiquesDemarche ?? undefined,
       structureDeRedirection: structureDeRedirection ?? undefined,
       precisionsDemarche: precisionsDemarche ?? undefined,
-      lieuActiviteId: lieuActiviteId ?? undefined,
+      structureId: structureId ?? undefined,
       lieuAccompagnementDomicileCommune:
-        lieuAccompagnementDomicileCommune &&
-        lieuAccompagnementDomicileCodePostal &&
-        lieuAccompagnementDomicileCodeInsee
+        lieuCommune && lieuCodePostal && lieuCodeInsee
           ? banDefaultValueToAdresseBanData({
-              commune: lieuAccompagnementDomicileCommune ?? undefined,
-              codePostal: lieuAccompagnementDomicileCodePostal ?? undefined,
-              codeInsee: lieuAccompagnementDomicileCodeInsee ?? undefined,
+              commune: lieuCommune ?? undefined,
+              codePostal: lieuCodePostal ?? undefined,
+              codeInsee: lieuCodeInsee ?? undefined,
             })
           : undefined,
-      lieuAccompagnement: lieuAccompagnement ?? undefined,
+      typeLieu: typeLieu ?? undefined,
     } satisfies DefaultValues<CraDemarcheAdministrativeData>
 
     return defaultValues

@@ -38,12 +38,16 @@ export type CraThematiqueCount =
 
 export type CountThematiquesResult = CraThematiqueCount[]
 
-const addLabelToThematiques = <T extends string>(
+const addLabelToThematiques = (
   counts: { thematique: string; count: bigint }[],
-  labelMap: Record<T, string>,
+  labelMap:
+    | { [key in ThematiqueDemarcheAdministrative]: string }
+    | { [key in Thematique]: string },
 ): CraThematiqueCount[] =>
   counts.map((queryResult) => {
-    const thematique = pascalCase(queryResult.thematique) as T
+    const thematique = pascalCase(
+      queryResult.thematique,
+    ) as keyof typeof labelMap
 
     return {
       thematique,

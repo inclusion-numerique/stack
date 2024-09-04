@@ -20,21 +20,26 @@ export const getCraIndividuelDataDefaultValuesFromExisting = async ({
     })
   | null
 > => {
-  const cra = await prismaClient.craIndividuel.findUnique({
+  const cra = await prismaClient.activite.findUnique({
     where: {
       id,
-      creeParMediateurId: mediateurId,
+      mediateurId,
       suppression: null,
+      type: 'Individuel',
     },
     select: {
-      beneficiaire: true,
+      accompagnements: {
+        select: {
+          beneficiaire: true,
+        },
+      },
       date: true,
       duree: true,
-      lieuAccompagnement: true,
-      lieuAccompagnementDomicileCodeInsee: true,
-      lieuAccompagnementDomicileCodePostal: true,
-      lieuAccompagnementDomicileCommune: true,
-      lieuActiviteId: true,
+      typeLieu: true,
+      lieuCodeInsee: true,
+      lieuCodePostal: true,
+      lieuCommune: true,
+      structureId: true,
       materiel: true,
       thematiques: true,
       autonomie: true,
@@ -49,26 +54,30 @@ export const getCraIndividuelDataDefaultValuesFromExisting = async ({
   }
 
   const {
-    beneficiaire,
+    accompagnements,
     date,
     duree,
     notes,
     autonomie,
     thematiques,
     structureDeRedirection,
-    lieuActiviteId,
-    lieuAccompagnementDomicileCommune,
-    lieuAccompagnementDomicileCodePostal,
-    lieuAccompagnementDomicileCodeInsee,
-    lieuAccompagnement,
+    typeLieu,
+    lieuCodeInsee,
+    lieuCodePostal,
+    lieuCommune,
+    structureId,
     materiel,
     orienteVersStructure,
   } = cra
 
+  const beneficiaire = accompagnements[0]?.beneficiaire
+
   const defaultValues = {
     id,
     mediateurId,
-    beneficiaire: getBeneficiaireDefaulCratDataFromExisting(beneficiaire),
+    beneficiaire: beneficiaire
+      ? getBeneficiaireDefaulCratDataFromExisting(beneficiaire)
+      : { mediateurId },
     date: dateAsIsoDay(date),
     duree: duree.toString() as DureeAccompagnement,
     notes: notes ?? undefined,
@@ -77,18 +86,16 @@ export const getCraIndividuelDataDefaultValuesFromExisting = async ({
     materiel: materiel ?? undefined,
     thematiques: thematiques ?? undefined,
     structureDeRedirection: structureDeRedirection ?? undefined,
-    lieuActiviteId: lieuActiviteId ?? undefined,
+    structureId: structureId ?? undefined,
     lieuAccompagnementDomicileCommune:
-      lieuAccompagnementDomicileCommune &&
-      lieuAccompagnementDomicileCodePostal &&
-      lieuAccompagnementDomicileCodeInsee
+      lieuCommune && lieuCodePostal && lieuCodeInsee
         ? banDefaultValueToAdresseBanData({
-            commune: lieuAccompagnementDomicileCommune ?? undefined,
-            codePostal: lieuAccompagnementDomicileCodePostal ?? undefined,
-            codeInsee: lieuAccompagnementDomicileCodeInsee ?? undefined,
+            commune: lieuCommune ?? undefined,
+            codePostal: lieuCodePostal ?? undefined,
+            codeInsee: lieuCodeInsee ?? undefined,
           })
         : undefined,
-    lieuAccompagnement: lieuAccompagnement ?? undefined,
+    typeLieu: typeLieu ?? undefined,
   } satisfies DefaultValues<CraIndividuelData>
 
   return defaultValues

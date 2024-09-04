@@ -45,7 +45,7 @@ export const getMesStatistiquesPageData = async ({
   console.log(
     'ACTIVITES FOR',
     { mediateurId },
-    await prismaClient.activiteMediateur.findMany({
+    await prismaClient.activite.findMany({
       where: {
         mediateurId,
       },

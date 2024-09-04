@@ -5,6 +5,7 @@ import { getBeneficiaireDefaulCratDataFromExisting } from '@app/web/app/coop/mes
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import type { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
+import { createParticipantsAnonymesForBeneficiaires } from '@app/web/beneficiaire/createParticipantsAnonymesForBeneficiaires'
 
 export const getCraCollectifDataDefaultValuesFromExisting = async ({
   id,
@@ -19,28 +20,27 @@ export const getCraCollectifDataDefaultValuesFromExisting = async ({
     })
   | null
 > => {
-  const cra = await prismaClient.craCollectif.findUnique({
+  const cra = await prismaClient.activite.findUnique({
     where: {
       id,
-      creeParMediateurId: mediateurId,
+      mediateurId,
       suppression: null,
+      type: 'Collectif',
     },
     select: {
-      participants: {
+      accompagnements: {
         select: {
-          id: true,
           beneficiaire: true,
         },
       },
-      participantsAnonymes: true,
       date: true,
       duree: true,
       titreAtelier: true,
-      lieuAtelier: true,
-      lieuAccompagnementAutreCodeInsee: true,
-      lieuAccompagnementAutreCodePostal: true,
-      lieuAccompagnementAutreCommune: true,
-      lieuActiviteId: true,
+      typeLieuAtelier: true,
+      lieuCodeInsee: true,
+      lieuCodePostal: true,
+      lieuCommune: true,
+      structureId: true,
       materiel: true,
       thematiques: true,
       niveau: true,
@@ -57,21 +57,24 @@ export const getCraCollectifDataDefaultValuesFromExisting = async ({
     duree,
     notes,
     thematiques,
-    lieuActiviteId,
     materiel,
-    participants,
-    participantsAnonymes,
-    lieuAccompagnementAutreCodeInsee,
-    lieuAccompagnementAutreCodePostal,
-    lieuAccompagnementAutreCommune,
-    lieuAtelier,
+    lieuCommune,
+    lieuCodePostal,
+    lieuCodeInsee,
+    structureId,
+    accompagnements,
+    typeLieuAtelier,
     niveau,
     titreAtelier,
   } = cra
 
-  const participantsDefaultValues = participants.map(
-    ({ beneficiaire }) =>
-      getBeneficiaireDefaulCratDataFromExisting(beneficiaire),
+  const { beneficiairesSuivis, participantsAnonymes } =
+    createParticipantsAnonymesForBeneficiaires(
+      accompagnements.map(({ beneficiaire }) => beneficiaire),
+    )
+
+  const participantsDefaultValues = beneficiairesSuivis.map(
+    (beneficiaire) => getBeneficiaireDefaulCratDataFromExisting(beneficiaire),
     // I cannot figure out how to make the type checker happy without this cast
   ) as Exclude<
     DefaultValues<CraCollectifData>['participants'],
@@ -87,19 +90,17 @@ export const getCraCollectifDataDefaultValuesFromExisting = async ({
     notes: notes ?? undefined,
     materiel: materiel ?? undefined,
     thematiques: thematiques ?? undefined,
-    lieuActiviteId: lieuActiviteId ?? undefined,
+    structureId: structureId ?? undefined,
     lieuAtelierAutreCommune:
-      lieuAccompagnementAutreCommune &&
-      lieuAccompagnementAutreCodePostal &&
-      lieuAccompagnementAutreCodeInsee
+      lieuCommune && lieuCodePostal && lieuCodeInsee
         ? banDefaultValueToAdresseBanData({
-            commune: lieuAccompagnementAutreCommune ?? undefined,
-            codePostal: lieuAccompagnementAutreCodePostal ?? undefined,
-            codeInsee: lieuAccompagnementAutreCodeInsee ?? undefined,
+            commune: lieuCommune ?? undefined,
+            codePostal: lieuCodePostal ?? undefined,
+            codeInsee: lieuCodeInsee ?? undefined,
           })
         : undefined,
     participantsAnonymes,
-    lieuAtelier: lieuAtelier ?? undefined,
+    typeLieuAtelier: typeLieuAtelier ?? undefined,
     niveau: niveau ?? undefined,
     titreAtelier: titreAtelier ?? undefined,
   } satisfies DefaultValues<CraCollectifData>

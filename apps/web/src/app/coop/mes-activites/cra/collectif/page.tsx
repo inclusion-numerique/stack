@@ -51,9 +51,8 @@ const CreateCraCollectifPage = async ({
       mediateurId: user.mediateur.id,
     })
 
-  if (!defaultValues.lieuActiviteId) {
-    defaultValues.structureId =
-      mostUsedLieuActivite?.structure.id ?? undefined
+  if (!defaultValues.structureId) {
+    defaultValues.structureId = mostUsedLieuActivite?.structure.id ?? undefined
   }
 
   const initialBeneficiairesOptions =

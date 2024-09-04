@@ -13,7 +13,7 @@ const ViewBeneficiaireAccompagnementsPage = ({
   <>
     <BeneficiairePageNavigationBar
       beneficiaireId={beneficiaire.id}
-      accompagnementsCount={beneficiaire._count.activites}
+      accompagnementsCount={beneficiaire._count.accompagnements}
       current="accompagnements"
     />
     {activitesByDate.length === 0 && (
@@ -29,7 +29,7 @@ const ViewBeneficiaireAccompagnementsPage = ({
           {formatActiviteDayDate(date)}
         </h3>
         {activites.map((activite) => (
-          <ActiviteBeneficiaireCard key={activite.cra.id} activite={activite} />
+          <ActiviteBeneficiaireCard key={activite.id} activite={activite} />
         ))}
       </Fragment>
     ))}

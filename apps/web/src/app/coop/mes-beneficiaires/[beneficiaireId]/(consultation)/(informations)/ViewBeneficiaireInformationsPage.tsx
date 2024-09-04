@@ -32,7 +32,7 @@ const ViewBeneficiaireInformationsPage = ({
     <>
       <BeneficiairePageNavigationBar
         beneficiaireId={beneficiaire.id}
-        accompagnementsCount={beneficiaire._count.activites}
+        accompagnementsCount={beneficiaire._count.accompagnements}
         current="informations"
       />
       <div className="fr-border-radius--8 fr-border  fr-pt-8v fr-px-7v fr-pb-10v fr-mt-6v">

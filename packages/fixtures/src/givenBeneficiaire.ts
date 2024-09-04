@@ -17,8 +17,8 @@ export const givenBeneficiaire = <
   return {
     id: givenId,
     ...rest, // Spread the rest of the input
-    anonyme: data.anonyme ?? undefined,
-    attributionsAleatoires: data.attributionsAleatoires ?? undefined,
+    anonyme: data.anonyme ?? false,
+    attributionsAleatoires: data.attributionsAleatoires ?? false,
     telephone: data.telephone ?? null,
     pasDeTelephone: data.pasDeTelephone ?? null,
     email: data.email ?? null,
@@ -57,7 +57,7 @@ export const givenBeneficiaireAnonyme = <
     id: givenId,
     ...rest,
     anonyme: true,
-    attributionsAleatoires: data.attributionsAleatoires ?? undefined,
+    attributionsAleatoires: data.attributionsAleatoires ?? false,
     telephone: data.telephone ?? null,
     pasDeTelephone: data.pasDeTelephone ?? null,
     email: data.email ?? null,

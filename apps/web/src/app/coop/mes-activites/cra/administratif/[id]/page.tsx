@@ -32,12 +32,10 @@ const UpdateCraDemarcheAdministrativePage = async ({
   const { lieuxActiviteOptions, mostUsedLieuActivite } =
     await getInitialLieuxActiviteOptionsForSearch({
       mediateurId: user.mediateur.id,
-      withMost: 'demarche',
     })
 
-  if (!defaultValues.lieuActiviteId) {
-    defaultValues.lieuActiviteId =
-      mostUsedLieuActivite?.structure.id ?? undefined
+  if (!defaultValues.structureId) {
+    defaultValues.structureId = mostUsedLieuActivite?.structure.id ?? undefined
   }
 
   const initialBeneficiairesOptions =

@@ -33,15 +33,15 @@ const materielsAccompagnements: QuantifiedShare<MaterielLabel>[] = [
 ]
 
 const nombreAccompagnementsParMois = [
-  { label: 'Avril', count: 24, proportion: 0 },
-  { label: 'Mai', count: 93, proportion: 0 },
-  { label: 'Juin', count: 31, proportion: 0 },
-  { label: 'Juil.', count: 75, proportion: 0 },
-  { label: 'Aout', count: 71, proportion: 0 },
-  { label: 'Sep.', count: 60, proportion: 0 },
-  { label: 'Oct.', count: 82, proportion: 0 },
-  { label: 'Nov.', count: 90, proportion: 0 },
-  { label: 'Dec.', count: 80, proportion: 0 },
+  { label: 'Avril', count: 24, proportion: 0, month_name: 'Avril' },
+  { label: 'Mai', count: 93, proportion: 0, month_name: 'Mai' },
+  { label: 'Juin', count: 31, proportion: 0, month_name: 'Juin' },
+  { label: 'Juil.', count: 75, proportion: 0, month_name: 'Juil.' },
+  { label: 'Aout', count: 71, proportion: 0, month_name: 'Aout' },
+  { label: 'Sep.', count: 60, proportion: 0, month_name: 'Sep.' },
+  { label: 'Oct.', count: 82, proportion: 0, month_name: 'Oct.' },
+  { label: 'Nov.', count: 90, proportion: 0, month_name: 'Nov.' },
+  { label: 'Dec.', count: 80, proportion: 0, month_name: 'Dec.' },
 ]
 
 const nombreAccompagnementsParJour = [

@@ -5,7 +5,11 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { AccompagnementBarChart } from '../_components/AccompagnementBarChart'
-import { AccompagnementLabel, QuantifiedShare } from '../quantifiedShare'
+import {
+  AccompagnementLabel,
+  LabelAndCount,
+  QuantifiedShare,
+} from '../quantifiedShare'
 
 export const StatistiquesGenerales = ({
   nombreAccompagnementsParJour,
@@ -13,7 +17,7 @@ export const StatistiquesGenerales = ({
   modalitesAccompagnement,
   accompagnementBeneficiaires: { accompagnements, beneficiaires, anonymes },
 }: {
-  nombreAccompagnementsParJour: QuantifiedShare[]
+  nombreAccompagnementsParJour: LabelAndCount[]
   nombreAccompagnementsParMois: QuantifiedShare[]
   modalitesAccompagnement: (QuantifiedShare<AccompagnementLabel> & {
     participants?: number

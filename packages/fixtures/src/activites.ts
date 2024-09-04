@@ -18,12 +18,14 @@ export const mediateurAvecActiviteCrasIndividuels = [
     mediateurId: mediateurAvecActiviteMediateurId,
     thematiques: [Thematique.Sante, Thematique.CultureNumerique],
     date: new Date('2024-06-15'),
+    creation: new Date('2024-06-15T09:30:00'),
   }),
   givenCraIndividuel({
     beneficiaireId: beneficiaireMinimaleMediateurAvecActivite.id,
     mediateurId: mediateurAvecActiviteMediateurId,
     thematiques: [Thematique.InsertionProfessionnelle, Thematique.Sante],
     date: new Date('2024-08-02'),
+    creation: new Date('2024-08-02T19:00:00'),
     lieuCodePostal: '75001',
     lieuCodeInsee: '75101',
     lieuCommune: 'Paris 1er',
@@ -32,7 +34,8 @@ export const mediateurAvecActiviteCrasIndividuels = [
     beneficiaireId: beneficiaireMaximaleMediateurAvecActivite.id,
     mediateurId: mediateurAvecActiviteMediateurId,
     thematiques: [Thematique.Email, Thematique.Parentalite],
-    date: new Date('2024-07-21'),
+    date: new Date('2024-07-28'),
+    creation: new Date('2024-07-28T10:00:00'),
     typeLieu: 'ADistance',
   }),
   givenCraIndividuel({
@@ -40,6 +43,7 @@ export const mediateurAvecActiviteCrasIndividuels = [
     mediateurId: mediateurAvecActiviteMediateurId,
     thematiques: [Thematique.Email, Thematique.Sante],
     date: new Date('2024-07-28'),
+    creation: new Date('2024-07-28T09:00:00'),
     typeLieu: 'Domicile',
     lieuCodePostal: '75001',
     lieuCodeInsee: '75101',
@@ -56,6 +60,7 @@ export const mediateurAvecActiviteCrasDemarchesAdministratives = [
       ThematiqueDemarcheAdministrative.EtrangersEurope,
     ],
     date: new Date('2024-08-02'),
+    creation: new Date('2024-08-02T14:00:00'),
   }),
   givenCraDemarcheAdministrative({
     beneficiaireId: beneficiaireMaximaleMediateurAvecActivite.id,
@@ -65,6 +70,7 @@ export const mediateurAvecActiviteCrasDemarchesAdministratives = [
       ThematiqueDemarcheAdministrative.Logement,
     ],
     date: new Date('2024-08-03'),
+    creation: new Date('2024-08-03T15:00:00'),
     structureId: mediateque.id,
   }),
   givenCraDemarcheAdministrative({
@@ -75,6 +81,7 @@ export const mediateurAvecActiviteCrasDemarchesAdministratives = [
       ThematiqueDemarcheAdministrative.Justice,
     ],
     date: new Date('2024-08-03'),
+    creation: new Date('2024-08-03T16:00:00'),
     structureId: mediateque.id,
   }),
 ]
@@ -84,6 +91,7 @@ export const mediateurAvecActiviteCrasCollectifs = [
     mediateurId: mediateurAvecActiviteMediateurId,
     thematiques: [Thematique.Email, Thematique.ReseauxSociaux],
     date: new Date('2024-08-04'),
+    creation: new Date('2024-08-04T08:00:00'),
     beneficiaireIds: [
       beneficiaireMinimaleMediateurAvecActivite,
       beneficiaireMaximaleMediateurAvecActivite,
@@ -95,6 +103,7 @@ export const mediateurAvecActiviteCrasCollectifs = [
     mediateurId: mediateurAvecActiviteMediateurId,
     thematiques: [Thematique.ReseauxSociaux, Thematique.CultureNumerique],
     date: new Date('2024-07-05'),
+    creation: new Date('2024-07-05T09:00:00'),
     titreAtelier:
       'Conduites à risque sur internet et les bons usages du numérique',
     beneficiaireIds: [
@@ -127,3 +136,5 @@ export const fixtureCras = [
   ...fixtureCrasDemarchesAdministratives,
   ...fixtureCrasCollectifs,
 ]
+
+export type ActiviteFixture = (typeof fixtureCras)[number]
