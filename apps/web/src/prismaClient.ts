@@ -8,24 +8,24 @@ const globalForPrisma = global as unknown as {
 export const prismaClient =
   globalForPrisma.prismaClient ??
   new PrismaClient({
-    // log: [
-    //   {
-    //     emit: 'stdout',
-    //     level: 'query',
-    //   },
-    //   {
-    //     emit: 'stdout',
-    //     level: 'error',
-    //   },
-    //   {
-    //     emit: 'stdout',
-    //     level: 'info',
-    //   },
-    //   {
-    //     emit: 'stdout',
-    //     level: 'warn',
-    //   },
-    // ],
+    log: [
+      {
+        emit: 'stdout',
+        level: 'query',
+      },
+      {
+        emit: 'stdout',
+        level: 'error',
+      },
+      {
+        emit: 'stdout',
+        level: 'info',
+      },
+      {
+        emit: 'stdout',
+        level: 'warn',
+      },
+    ],
   })
 
 if (process.env.NODE_ENV !== 'production') {

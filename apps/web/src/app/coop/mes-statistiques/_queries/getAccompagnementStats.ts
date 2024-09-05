@@ -1,302 +1,145 @@
-import { Thematique } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
-import {
-  materielLabels,
-  thematiqueDemarcheAdministrativeLabels,
-  thematiqueLabels,
-  thematiqueShortLabels,
-  typeLieuAtelierLabels,
-  typeLieuLabels,
-} from '@app/web/cra/cra'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
-import { createEnumLabelCaseSelect } from '@app/web/app/coop/mes-statistiques/_queries/createEnumLabelCaseSelect'
 import {
   getActiviteFiltersSqlFragment,
-  getCrasCollectifsFiltersWhereConditions,
-  getCrasDemarchesAdministrativesFiltersWhereConditions,
-  getCrasIndividuelFiltersWhereConditions,
+  getActivitesFiltersWhereConditions,
 } from '@app/web/cra/activitesFiltersSqlWhereConditions'
-import { QuantifiedShare, QuantifiedShareToProcess } from '../quantifiedShare'
+import { allocatePercentages } from '@app/web/app/coop/mes-statistiques/_queries/allocatePercentages'
 
-const accompagnementCategories = [
-  'canauxAccompagnements',
-  'dureesAccompagnements',
-  'lieuxAccompagnements',
-  'thematiquesAccompagnements',
-  'thematiquesDemarchesAdministratives',
-  'materielsAccompagnements',
-] as const
-
-export type AccompagnementCategory = (typeof accompagnementCategories)[number]
-
-export type AccompagnementQuantifiedShare =
-  QuantifiedShareToProcess<AccompagnementCategory>
-
-export const getAccompagnementCollectifsStats = async ({
-  mediateurId,
-  activitesFilters,
-}: {
-  mediateurId: string
-  activitesFilters: ActivitesFilters
-}) =>
-  prismaClient.$queryRaw<AccompagnementQuantifiedShare[]>`
-      WITH filtered_cras_collectifs AS (SELECT cras_collectifs.*
-                                        FROM cras_collectifs
-                                            LEFT JOIN structures ON structures.id = cras_collectifs.lieu_activite_id
-                                            LEFT JOIN participants_ateliers_collectifs ON participants_ateliers_collectifs.cra_collectif_id = cras_collectifs.id
-                                        WHERE cras_collectifs.cree_par_mediateur_id = ${mediateurId}::UUID
-                                          AND cras_collectifs.suppression IS NULL
-                                          AND ${getActiviteFiltersSqlFragment(
-                                            getCrasCollectifsFiltersWhereConditions(
-                                              activitesFilters,
-                                            ),
-                                          )}
-                                    ),
-       categorized_data AS (SELECT 'canauxAccompagnements' AS category_type,
-                                       CASE
-                                           WHEN "lieuAtelier" = 'lieu_activite' THEN 'Lieu d’activité'
-                                           WHEN "lieuAtelier" = 'autre' THEN 'Autre lieu'
-                                           ELSE 'Non communiqué'
-                                           END                 AS category,
-                                       COUNT(*)::integer       AS count
-                                FROM filtered_cras_collectifs
-                                GROUP BY category
-                                UNION ALL
-                                SELECT 'dureesAccompagnements' AS category_type,
-                                       "duree"::text           AS category,
-                                       COUNT(*)::integer       AS count
-                                FROM filtered_cras_collectifs
-                                WHERE cree_par_mediateur_id = ${mediateurId}::UUID
-                                  AND suppression IS NULL
-                                GROUP BY category
-                                UNION ALL
-                                SELECT 'lieuxAccompagnements'                       AS category_type,
-                                       COALESCE("structures".nom, 'Non communiqué') AS category,
-                                       COUNT(*)::integer                            AS count
-                                FROM filtered_cras_collectifs
-                                         LEFT JOIN structures
-                                                   ON filtered_cras_collectifs.lieu_activite_id = structures.id
-                                GROUP BY category
-                                UNION ALL
-                                SELECT 'thematiquesAccompagnements' AS category_type,
-                                       ${createEnumLabelCaseSelect({
-                                         enumObj: Thematique,
-                                         labels: thematiqueShortLabels,
-                                         column: 'thematique',
-                                       })}                          AS category,
-                                       COUNT(*)::integer            AS count
-                                FROM filtered_cras_collectifs,
-                                     UNNEST(thematiques_accompagnement) AS thematique
-                                GROUP BY thematique
-                                UNION ALL
-                                SELECT 'materielsAccompagnements' AS category_type,
-                                       CASE
-                                           WHEN mat = 'ordinateur' THEN 'Ordinateur'
-                                           WHEN mat = 'telephone' THEN 'Téléphone'
-                                           WHEN mat = 'tablette' THEN 'Tablette'
-                                           WHEN mat = 'autre' THEN 'Autre'
-                                           WHEN mat = 'aucun' THEN 'Aucun'
-                                           ELSE 'Non communiqué'
-                                           END                    AS category,
-                                       COUNT(*)::integer          AS count
-                                FROM filtered_cras_collectifs,
-                                     UNNEST(materiel) AS mat
-                                GROUP BY mat)
-      SELECT category_type,
-             category AS label,
-             count
-      FROM categorized_data;
-  `
-
-export const getAccompagnementDemarchesStats = async ({
-  mediateurId,
-  activitesFilters,
-}: {
-  mediateurId: string
-  activitesFilters: ActivitesFilters
-}) => prismaClient.$queryRaw<AccompagnementQuantifiedShare[]>`
-      WITH filtered_cras_demarches_administratives AS (SELECT cras_demarches_administratives.*
-                                                       FROM cras_demarches_administratives
-                                                            LEFT JOIN structures
-                                                                      ON structures.id = cras_demarches_administratives.lieu_activite_id
-                                                       WHERE cras_demarches_administratives.cree_par_mediateur_id = ${mediateurId}::UUID
-                                                         AND cras_demarches_administratives.suppression IS NULL 
-                                                         AND ${getActiviteFiltersSqlFragment(
-                                                           getCrasDemarchesAdministrativesFiltersWhereConditions(
-                                                             activitesFilters,
-                                                           ),
-                                                         )}
-                                                      ),
-           categorized_data AS (SELECT 'canauxAccompagnements' AS category_type,
-                                       CASE
-                                           WHEN "lieuAccompagnement" = 'lieu_activite' THEN 'Lieu d’activité'
-                                           WHEN "lieuAccompagnement" = 'domicile' THEN 'À domicile'
-                                           WHEN "lieuAccompagnement" = 'a_distance' THEN 'À distance'
-                                           ELSE 'Non communiqué'
-                                           END                 AS category,
-                                       COUNT(*)::integer       AS count
-                                FROM filtered_cras_demarches_administratives
-                                GROUP BY category
-                                UNION ALL
-                                SELECT 'dureesAccompagnements' AS category_type,
-                                       "duree"::text           AS category,
-                                       COUNT(*)::integer       AS count
-                                FROM filtered_cras_demarches_administratives
-                                GROUP BY category
-                                UNION ALL
-                                SELECT 'lieuxAccompagnements'                       AS category_type,
-                                       COALESCE("structures".nom, 'Non communiqué') AS category,
-                                       COUNT(*)::integer                            AS count
-                                FROM filtered_cras_demarches_administratives
-                                         LEFT JOIN structures 
-                                                   ON lieu_activite_id = structures.id
-                                GROUP BY category
-                                UNION ALL
-                                SELECT 'thematiquesDemarchesAdministratives' AS category_type,
-                                       CASE
-                                           WHEN thematique = 'papiers_elections_citoyennete'
-                                               THEN 'Papiers - Élections Citoyenneté'
-                                           WHEN thematique = 'famille_scolarite' THEN 'Famille - Scolarité'
-                                           WHEN thematique = 'social_sante' THEN 'Social - Santé'
-                                           WHEN thematique = 'travail_formation' THEN 'Travail - Formation'
-                                           WHEN thematique = 'logement' THEN 'Logement'
-                                           WHEN thematique = 'transports_mobilite' THEN 'Transports - Mobilité'
-                                           WHEN thematique = 'argent_impots' THEN 'Argent - Impôts'
-                                           WHEN thematique = 'justice' THEN 'Justice'
-                                           WHEN thematique = 'etrangers_europe' THEN 'Étrangers - Europe'
-                                           WHEN thematique = 'loisirs_sports_culture' THEN 'Loisirs - Sports Culture'
-                                           ELSE 'Non communiqué'
-                                           END                               AS category,
-                                       COUNT(*)::integer                     AS count
-                                FROM filtered_cras_demarches_administratives,
-                                     UNNEST(thematiques_accompagnement) AS thematique
-                                GROUP BY thematique)
-      SELECT category_type,
-             category AS label,
-             count
-      FROM categorized_data;
-  `
-
-export const getAccompagnementIndividuelsStats = async ({
-  mediateurId,
-  activitesFilters,
-}: {
-  mediateurId: string
-  activitesFilters: ActivitesFilters
-}) =>
-  prismaClient.$queryRaw<AccompagnementQuantifiedShare[]>`
-        WITH filtered_cras_individuels AS (
-        SELECT cras_individuels.* 
-        FROM cras_individuels
-             LEFT JOIN structures ON structures.id = cras_individuels.lieu_activite_id
-        WHERE cras_individuels.cree_par_mediateur_id = ${mediateurId}::UUID
-          AND cras_individuels.suppression IS NULL
-          AND ${getActiviteFiltersSqlFragment(
-            getCrasIndividuelFiltersWhereConditions(activitesFilters),
-          )}
-      ),
-       categorized_data AS (SELECT 'canauxAccompagnements' AS category_type,
-                                       CASE
-                                           WHEN "lieuAccompagnement" = 'lieu_activite' THEN 'Lieu d’activité'
-                                           WHEN "lieuAccompagnement" = 'domicile' THEN 'À domicile'
-                                           WHEN "lieuAccompagnement" = 'a_distance' THEN 'À distance'
-                                           ELSE 'Non communiqué'
-                                           END                 AS category,
-                                       COUNT(*)::integer       AS count
-                                FROM filtered_cras_individuels
-                                GROUP BY category
-                                UNION ALL
-                                SELECT 'dureesAccompagnements' AS category_type,
-                                       "duree"::text           AS category,
-                                       COUNT(*)::integer       AS count
-                                FROM filtered_cras_individuels
-                                GROUP BY category
-                                UNION ALL
-                                SELECT 'lieuxAccompagnements'                       AS category_type,
-                                       COALESCE("structures".nom, 'Non communiqué') AS category,
-                                       COUNT(*)::integer                            AS count
-                                FROM filtered_cras_individuels
-                                         LEFT JOIN structures
-                                                   ON filtered_cras_individuels.lieu_activite_id = structures.id
-                                GROUP BY category
-                                UNION ALL
-                                SELECT 'thematiquesAccompagnements' AS category_type,
-                                       CASE
-                                           WHEN thematique = 'prendre_en_main_du_materiel'
-                                               THEN 'Prendre en main du matériel'
-                                           WHEN thematique = 'navigation_sur_internet' THEN 'Navigation sur internet'
-                                           WHEN thematique = 'email' THEN 'Email'
-                                           WHEN thematique = 'bureautique' THEN 'Bureautique'
-                                           WHEN thematique = 'reseaux_sociaux' THEN 'Réseaux sociaux'
-                                           WHEN thematique = 'sante' THEN 'Santé'
-                                           WHEN thematique = 'banque_et_achats_en_ligne'
-                                               THEN 'Banques et achats en ligne'
-                                           WHEN thematique = 'entrepreneuriat' THEN 'Entrepreneuriat'
-                                           WHEN thematique = 'insertion_professionnelle'
-                                               THEN 'Insertion professionnelle'
-                                           WHEN thematique = 'securite_numerique' THEN 'Sécurité numérique'
-                                           WHEN thematique = 'parentalite' THEN 'Parentalité'
-                                           WHEN thematique = 'scolarite_et_numerique' THEN 'Scolarité et numérique'
-                                           WHEN thematique = 'creer_avec_le_numerique' THEN 'Créer avec le numérique'
-                                           WHEN thematique = 'culture_numerique' THEN 'Culture numérique'
-                                           ELSE 'Non communiqué'
-                                           END                      AS category,
-                                       COUNT(*)::integer            AS count
-                                FROM filtered_cras_individuels,
-                                     UNNEST(thematiques_accompagnement) AS thematique
-                                WHERE cree_par_mediateur_id = ${mediateurId}::UUID
-                                  AND suppression IS NULL
-                                GROUP BY thematique
-                                UNION ALL
-                                SELECT 'materielsAccompagnements' AS category_type,
-                                       CASE
-                                           WHEN mat = 'ordinateur' THEN 'Ordinateur'
-                                           WHEN mat = 'telephone' THEN 'Téléphone'
-                                           WHEN mat = 'tablette' THEN 'Tablette'
-                                           WHEN mat = 'autre' THEN 'Autre matériel'
-                                           WHEN mat = 'aucun' THEN 'Pas de matériel'
-                                           ELSE 'Non communiqué'
-                                           END                    AS category,
-                                       COUNT(*)::integer          AS count
-                                FROM filtered_cras_individuels,
-                                     UNNEST(materiel) AS mat
-                                WHERE cree_par_mediateur_id = ${mediateurId}::UUID
-                                  AND suppression IS NULL
-                                GROUP BY mat)
-      SELECT category_type,
-             category AS label,
-             count
-      FROM categorized_data;
-  `
-
-export const EMPTY_ACCOMPAGNEMENT_DATA: Record<
-  AccompagnementCategory,
-  QuantifiedShare[]
-> = {
-  thematiquesAccompagnements: Object.values(thematiqueLabels).map((label) => ({
-    label,
-    count: 0,
-    proportion: 0,
-  })),
-  thematiquesDemarchesAdministratives: Object.values(
-    thematiqueDemarcheAdministrativeLabels,
-  ).map((label) => ({ label, count: 0, proportion: 0 })),
-  materielsAccompagnements: Object.values(materielLabels).map((label) => ({
-    label,
-    count: 0,
-    proportion: 0,
-  })),
-  canauxAccompagnements: [
-    ...new Set([
-      ...Object.values(typeLieuLabels),
-      ...Object.values(typeLieuAtelierLabels),
-    ]),
-  ].map((label) => ({ label, count: 0, proportion: 0 })),
-  dureesAccompagnements: [
-    { label: '30', count: 0, proportion: 0 },
-    { label: '60', count: 0, proportion: 0 },
-    { label: '90', count: 0, proportion: 0 },
-    { label: '120', count: 0, proportion: 0 },
-  ],
-  lieuxAccompagnements: [],
+export type AccompagnementsStats = {
+  activites: {
+    total: number
+    individuel: {
+      total: number
+      proportion: number
+    }
+    collectifs: {
+      total: number
+      proportion: number
+      participants: number
+    }
+    demarches: {
+      total: number
+      proportion: number
+    }
+  }
+  accompagnements: {
+    total: number
+    individuels: {
+      count: number
+      proportion: number
+    }
+    collectifs: {
+      count: number
+      proportion: number
+    }
+    demarches: {
+      count: number
+      proportion: number
+    }
+  }
+  beneficiaires: {
+    total: number
+    suivis: number
+    anonymes: number
+  }
 }
+export const getAccompagnementStats = async ({
+  mediateurId,
+  activitesFilters,
+}: {
+  mediateurId: string
+  activitesFilters: ActivitesFilters
+}): Promise<AccompagnementsStats> =>
+  prismaClient.$queryRaw<
+    [
+      {
+        total_activites: number
+        total_individuels: number
+        total_collectifs: number
+        total_demarches: number
+        total_beneficiaires: number
+        total_beneficiaires_suivis: number
+        total_accompagnements: number
+        total_accompagnements_collectifs: number
+      },
+    ]
+  >`
+    SELECT 
+        COUNT(DISTINCT activites.id)::integer AS total_activites,
+        COUNT(DISTINCT CASE WHEN activites.type = 'individuel' THEN activites.id END)::integer AS total_individuels,
+        COUNT(DISTINCT CASE WHEN activites.type = 'collectif' THEN activites.id END)::integer AS total_collectifs,
+        COUNT(DISTINCT CASE WHEN activites.type = 'demarche' THEN activites.id END)::integer AS total_demarches,
+        COUNT(DISTINCT beneficiaires.id)::integer AS total_beneficiaires,
+        COUNT(DISTINCT CASE WHEN beneficiaires.anonyme = false THEN beneficiaires.id END)::integer AS total_beneficiaires_suivis,
+        COUNT(DISTINCT accompagnements.id)::integer AS total_accompagnements,
+        COUNT(DISTINCT CASE WHEN activites.type = 'collectif' THEN accompagnements.id END)::integer AS total_accompagnements_collectifs
+    FROM activites
+    LEFT JOIN accompagnements ON accompagnements.activite_id = activites.id
+    LEFT JOIN beneficiaires ON beneficiaires.id = accompagnements.beneficiaire_id
+    WHERE activites.mediateur_id = ${mediateurId}::UUID
+      AND activites.suppression IS NULL
+      AND ${getActiviteFiltersSqlFragment(
+        getActivitesFiltersWhereConditions(activitesFilters),
+      )}
+  `.then(([result]) => {
+    const [
+      proportionActivitesIndividuels,
+      proportionActivitesCollectifs,
+      proportionActivitesDemarches,
+    ] = allocatePercentages([
+      result.total_individuels,
+      result.total_collectifs,
+      result.total_demarches,
+    ])
+
+    const [
+      proportionAccompagnementsIndividuels,
+      proportionAccompagnementsCollectifs,
+      proportionAccompagnementsDemarches,
+    ] = allocatePercentages([
+      result.total_individuels, // Pour individuel, le nb d’accompagnements = nb d’activités
+      result.total_accompagnements_collectifs,
+      result.total_demarches, // Pour démarches, le nb d’accompagnements = nb d’activités
+    ])
+
+    return {
+      activites: {
+        total: result.total_activites,
+        individuel: {
+          total: result.total_individuels,
+          proportion: proportionActivitesIndividuels,
+        },
+        collectifs: {
+          total: result.total_collectifs,
+          proportion: proportionActivitesCollectifs,
+          participants: result.total_accompagnements_collectifs,
+        },
+        demarches: {
+          total: result.total_demarches,
+          proportion: proportionActivitesDemarches,
+        },
+      },
+      accompagnements: {
+        total: result.total_accompagnements,
+        individuels: {
+          count: result.total_individuels,
+          proportion: proportionAccompagnementsIndividuels,
+        },
+        collectifs: {
+          count: result.total_accompagnements_collectifs,
+          proportion: proportionAccompagnementsCollectifs,
+        },
+        demarches: {
+          count: result.total_demarches,
+          proportion: proportionAccompagnementsDemarches,
+        },
+      },
+      beneficiaires: {
+        total: result.total_beneficiaires,
+        suivis: result.total_beneficiaires_suivis,
+        anonymes:
+          result.total_beneficiaires - result.total_beneficiaires_suivis,
+      },
+    }
+  })

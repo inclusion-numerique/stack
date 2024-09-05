@@ -13,7 +13,7 @@ import {
   crasLieuLabelSelect,
   crasTypeOrderSelect,
   getActiviteFiltersSqlFragment,
-  getCrasFiltersWhereConditions,
+  getActivitesFiltersWhereConditions,
 } from '@app/web/cra/activitesFiltersSqlWhereConditions'
 import { activiteListSelect } from '@app/web/cra/activitesQueries'
 
@@ -53,7 +53,7 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
 
   console.log('SEARCH PARAMS', searchParams)
 
-  const filterConditions = getCrasFiltersWhereConditions(searchParams)
+  const filterConditions = getActivitesFiltersWhereConditions(searchParams)
 
   console.log('FILTER CONDITIONS', filterConditions)
   console.log(

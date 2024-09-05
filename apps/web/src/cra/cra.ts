@@ -20,6 +20,14 @@ export const typeActiviteLabels: {
   Collectif: 'Atelier collectif',
 }
 
+export const typeActivitePluralLabels: {
+  [key in TypeActivite]: string
+} = {
+  Individuel: 'Accompagnements individuels',
+  Demarche: 'Aides aux démarches administratives',
+  Collectif: 'Ateliers collectifs',
+}
+
 export type TypeActiviteSlug = 'individuel' | 'demarche' | 'collectif'
 
 export const typeActiviteSlugs: { [key in TypeActivite]: TypeActiviteSlug } = {
@@ -80,6 +88,9 @@ export type DureeAccompagnement = keyof typeof dureeAccompagnementLabels
 export const dureeAccompagnementValues = Object.keys(
   dureeAccompagnementLabels,
 ) as [DureeAccompagnement, ...DureeAccompagnement[]]
+
+export const dureeAcompagnementsIntegerValues =
+  dureeAccompagnementValues.map(Number)
 
 export const typeLieuLabels: { [key in TypeLieu]: string } = {
   LieuActivite: 'Lieu d’activité',

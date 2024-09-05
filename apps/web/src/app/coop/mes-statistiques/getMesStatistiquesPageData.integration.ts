@@ -11,8 +11,7 @@ import {
 } from '@app/web/app/coop/mes-statistiques/getMesStatistiquesPageData'
 import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { cloneDeep } from 'lodash-es'
-import { mediateque, seedStructures } from '@app/fixtures/structures'
-import { prismaClient } from '@app/web/prismaClient'
+import { mediateque } from '@app/fixtures/structures'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 
 /**
@@ -191,7 +190,6 @@ const createExpectedData = (
 
 describe('getMesStatistiquesPageData', () => {
   beforeAll(async () => {
-    await seedStructures(prismaClient)
     await resetFixtureUser(mediateurAvecActivite)
     await resetFixtureUser(mediateurSansActivites)
     await resetFixtureUser(conseillerNumerique)

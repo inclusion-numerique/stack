@@ -82,8 +82,6 @@ export const getInitialBeneficiairesOptionsForSearch = async ({
     })
   }
 
-  console.log('INITIAL BENEFICIAIRES OPTIONS', initialBeneficiairesOptions)
-
   return initialBeneficiairesOptions
 }
 

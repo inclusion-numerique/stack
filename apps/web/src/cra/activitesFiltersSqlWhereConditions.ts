@@ -60,7 +60,7 @@ export const activiteLieuCodeInseeSelect = Prisma.raw(`COALESCE(
                 structures.code_insee, 
                 activites.lieu_code_insee)`)
 
-export const getCrasFiltersWhereConditions = ({
+export const getActivitesFiltersWhereConditions = ({
   du,
   au,
   beneficiaire,

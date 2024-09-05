@@ -20,7 +20,7 @@ export const StatistiquesTerritoriales = ({
           'en France'
         ) : (
           <>
-            du département {departement.nom} · {departement.code}
+            du département {departement.nom}&nbsp;·&nbsp;{departement.code}
           </>
         )}
       </div>

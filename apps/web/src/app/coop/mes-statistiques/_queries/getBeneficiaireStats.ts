@@ -1,10 +1,21 @@
+import { Genre, StatutSocial, TrancheAge } from '@prisma/client'
+import { snakeCase } from 'change-case'
 import { prismaClient } from '@app/web/prismaClient'
 import {
   genreLabels,
+  genreValues,
   statutSocialLabels,
+  statutSocialValues,
   trancheAgeLabels,
+  trancheAgeValues,
 } from '@app/web/beneficiaire/beneficiaire'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
+import {
+  getActiviteFiltersSqlFragment,
+  getActivitesFiltersWhereConditions,
+} from '@app/web/cra/activitesFiltersSqlWhereConditions'
+import { createEnumCountSelect } from '@app/web/app/coop/mes-statistiques/_queries/createEnumCountSelect'
+import { allocatePercentagesFromRecords } from '@app/web/app/coop/mes-statistiques/_queries/allocatePercentages'
 import { QuantifiedShare } from '../quantifiedShare'
 
 const beneficiaireCategories = [
@@ -20,196 +31,196 @@ export type BeneficiaireQuantifiedShare = QuantifiedShare & {
   category_type: BeneficiaireCategory
 }
 
+export type BeneficiairesStatsRaw = {
+  total_beneficiaires: number
+  [key: `genre_${string}`]: number
+  [key: `tranche_age_${string}`]: number
+  [key: `statut_social_${string}`]: number
+}
+
+export const sortEnumProportions = <
+  Item extends {
+    proportion: number
+    value: TrancheAge | StatutSocial | Genre
+  },
+>(
+  items: Item[],
+) =>
+  items.sort(
+    // If the value is 'NonCommunique', it should be last
+    (a, b) => {
+      if (a.value === 'NonCommunique') return 1
+      if (b.value === 'NonCommunique') return -1
+      return b.proportion - a.proportion
+    },
+  )
+
+export const getBeneficiaireStatsRaw = async ({
+  mediateurId,
+  activitesFilters,
+}: {
+  mediateurId: string
+  activitesFilters: ActivitesFilters
+}) =>
+  prismaClient.$queryRaw<[BeneficiairesStatsRaw]>`
+      WITH distinct_beneficiaires AS (SELECT DISTINCT beneficiaires.id,
+                                                      beneficiaires.genre,
+                                                      beneficiaires.statut_social,
+                                                      beneficiaires.tranche_age,
+                                                      beneficiaires.commune,
+                                                      beneficiaires.commune_code_postal,
+                                                      beneficiaires.commune_code_insee
+                                      FROM beneficiaires
+                                               INNER JOIN accompagnements ON accompagnements.beneficiaire_id = beneficiaires.id
+                                               INNER JOIN activites ON
+                                          activites.id = accompagnements.activite_id
+                                              AND activites.mediateur_id = ${mediateurId}::UUID
+                                              AND activites.suppression IS NULL
+                                              AND ${getActiviteFiltersSqlFragment(
+                                                getActivitesFiltersWhereConditions(
+                                                  activitesFilters,
+                                                ),
+                                              )})
+      SELECT COUNT(distinct_beneficiaires.id)::integer AS total_beneficiaires,
+
+             -- Enum count selects for genre, statut_social, tranche_age
+             ${createEnumCountSelect({
+               enumObj: Genre,
+               column: 'distinct_beneficiaires.genre',
+               as: 'genre',
+               defaultEnumValue: Genre.NonCommunique,
+             })},
+             ${createEnumCountSelect({
+               enumObj: StatutSocial,
+               column: 'distinct_beneficiaires.statut_social',
+               as: 'statut_social',
+               defaultEnumValue: StatutSocial.NonCommunique,
+             })},
+             ${createEnumCountSelect({
+               enumObj: TrancheAge,
+               column: 'distinct_beneficiaires.tranche_age',
+               as: 'tranche_age',
+               defaultEnumValue: TrancheAge.NonCommunique,
+             })}
+      FROM distinct_beneficiaires`.then((result) => result[0])
+
+export const normalizeBeneficiairesStatsRaw = (
+  stats: BeneficiairesStatsRaw,
+) => {
+  const genresData = genreValues.map((genre) => ({
+    value: genre,
+    label: genreLabels[genre],
+    count: stats[`genre_${snakeCase(genre)}_count`],
+  }))
+
+  const trancheAgesData = trancheAgeValues.map((trancheAge) => ({
+    value: trancheAge,
+    label: trancheAgeLabels[trancheAge],
+    count: stats[`tranche_age_${snakeCase(trancheAge)}_count`],
+  }))
+
+  const statutsSocialData = statutSocialValues.map((statutSocial) => ({
+    value: statutSocial,
+    label: statutSocialLabels[statutSocial],
+    count: stats[`statut_social_${snakeCase(statutSocial)}_count`],
+  }))
+
+  return {
+    total: stats.total_beneficiaires,
+    genres: allocatePercentagesFromRecords(genresData, 'count', 'proportion'),
+    trancheAges: allocatePercentagesFromRecords(
+      trancheAgesData,
+      'count',
+      'proportion',
+    ),
+    statutsSocial: allocatePercentagesFromRecords(
+      statutsSocialData,
+      'count',
+      'proportion',
+    ),
+  }
+}
+
+export type BeneficiairesCommunesRaw = {
+  commune: string
+  code_postal: string
+  code_insee: string
+  count_beneficiaires: number
+}
+
+export const getBeneficiairesCommunesRaw = async ({
+  mediateurId,
+  activitesFilters,
+}: {
+  mediateurId: string
+  activitesFilters: ActivitesFilters
+}) =>
+  prismaClient.$queryRaw<BeneficiairesCommunesRaw[]>`
+      SELECT DISTINCT COALESCE(beneficiaires.commune_code_insee, activites.lieu_code_insee)        AS code_insee,
+                      MIN(COALESCE(beneficiaires.commune, activites.lieu_commune))                 AS commune,
+                      MIN(COALESCE(beneficiaires.commune_code_postal, activites.lieu_code_postal)) AS code_postal,
+                      COUNT(DISTINCT beneficiaires.id)::integer                                    AS count_beneficiaires
+      FROM beneficiaires
+               INNER JOIN accompagnements ON
+          accompagnements.beneficiaire_id = beneficiaires.id
+               INNER JOIN activites ON
+          activites.id = accompagnements.activite_id
+              AND activites.mediateur_id = ${mediateurId}::UUID
+              AND activites.suppression IS NULL
+              AND ${getActiviteFiltersSqlFragment(
+                getActivitesFiltersWhereConditions(activitesFilters),
+              )}
+      GROUP BY code_insee
+  `.then((result) =>
+    // Filter out null codeInsee for when there is no commune in beneficiaire or activite
+    result.filter(({ code_insee }) => !!code_insee),
+  )
+
+export const normalizeBeneficiairesCommunesRaw = (
+  rawCommunes: BeneficiairesCommunesRaw[],
+) => {
+  const sortedCommunes = rawCommunes.sort(
+    (a, b) => a.count_beneficiaires - b.count_beneficiaires,
+  )
+  const normalizedCommunes = sortedCommunes.map(
+    ({ commune, code_insee, code_postal, count_beneficiaires }) => ({
+      nom: commune,
+      codeInsee: code_insee,
+      codePostal: code_postal,
+      count: count_beneficiaires,
+      label: `${commune} · ${code_postal}`,
+    }),
+  )
+
+  return allocatePercentagesFromRecords(
+    normalizedCommunes,
+    'count',
+    'proportion',
+  ).sort((a, b) => b.count - a.count)
+}
+
 export const getBeneficiaireStats = async ({
   mediateurId,
   activitesFilters,
 }: {
   mediateurId: string
   activitesFilters: ActivitesFilters
-}) =>
-  prismaClient.$queryRaw<BeneficiaireQuantifiedShare[]>`
-      WITH total_count AS (
-          SELECT COUNT(*)::integer AS total
-          FROM beneficiaires
-          WHERE mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
-      ),
-           categorized_data AS (
-               SELECT
-                   'genresBeneficiaires' AS category_type,
-                   CASE
-                       WHEN genre = 'masculin' THEN 'Masculin'
-                       WHEN genre = 'feminin' THEN 'Féminin'
-                       ELSE 'Non communiqué'
-                       END AS category,
-                   COUNT(*)::integer AS count
-               FROM beneficiaires
-               WHERE mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
-               GROUP BY category
-               UNION ALL
-               SELECT
-                   'statusBeneficiaires' AS category_type,
-                   CASE
-                       WHEN "statutSocial" = 'scolarise' THEN 'Scolarisé'
-                       WHEN "statutSocial" = 'sans_emploi' THEN 'Sans emploi'
-                       WHEN "statutSocial" = 'en_emploi' THEN 'En emploi'
-                       WHEN "statutSocial" = 'retraite' THEN 'Retraité'
-                       ELSE 'Non communiqué ou hétérogène'
-                       END AS category,
-                   COUNT(*)::integer AS count
-               FROM beneficiaires
-               WHERE mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
-               GROUP BY category
-               UNION ALL
-               SELECT
-                   'tranchesAgeBeneficiaires' AS category_type,
-                   CASE
-                       WHEN "trancheAge" = 'mineur' THEN 'Mineur'
-                       WHEN "trancheAge" = '18-24' THEN '18 - 24 ans'
-                       WHEN "trancheAge" = '25-39' THEN '25 - 39 ans'
-                       WHEN "trancheAge" = '40-59' THEN '40 - 59 ans'
-                       WHEN "trancheAge" = '60-69' THEN '60 - 69 ans'
-                       WHEN "trancheAge" = '70+' THEN '70 ans et plus'
-                       ELSE 'Non communiqué'
-                       END AS category,
-                   COUNT(*)::integer AS count
-               FROM beneficiaires
-               WHERE mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
-               GROUP BY category
-               UNION ALL
-               SELECT 'communesBeneficiaires' AS category_type,
-                   COALESCE("commune", 'Non communiqué') AS category,
-                   COUNT(*)::integer AS count
-               FROM beneficiaires
-               WHERE mediateur_id = ${mediateurId}::UUID AND suppression IS NULL
-               GROUP BY category
-           )
-      SELECT
-          category_type,
-          category AS label,
-          count
-      FROM categorized_data, total_count AS total;
-  `
+}) => {
+  const statsRaw = await getBeneficiaireStatsRaw({
+    mediateurId,
+    activitesFilters,
+  })
 
-export const getBeneficiairesAnonymesStats = async ({
-  mediateurId,
-  activitesFilters,
-}: {
-  mediateurId: string
-  activitesFilters: ActivitesFilters
-}) =>
-  prismaClient.$queryRaw<BeneficiaireQuantifiedShare[]>`
-      WITH total_participants AS (
-          SELECT
-              (SUM(pac.genre_feminin)) AS genre_feminin,
-              (SUM(pac.genre_masculin)) AS genre_masculin,
-              (SUM(pac.genre_non_communique)) AS genre_non_communique,
-              (SUM(pac.tranche_age_mineur)) AS tranche_age_mineur,
-              (SUM(pac.tranche_age_18_24)) AS tranche_age_18_24,
-              (SUM(pac.tranche_age_25_39)) AS tranche_age_25_39,
-              (SUM(pac.tranche_age_40_59)) AS tranche_age_40_59,
-              (SUM(pac.tranche_age_60_69)) AS tranche_age_60_69,
-              (SUM(pac.tranche_age_70_plus)) AS tranche_age_70_plus,
-              (SUM(pac.tranche_age_non_communique)) AS tranche_age_non_communique,
-              (SUM(pac.statut_social_scolarise)) AS statut_social_scolarise,
-              (SUM(pac.statut_social_sans_emploi)) AS statut_social_sans_emploi,
-              (SUM(pac.statut_social_en_emploi)) AS statut_social_en_emploi,
-              (SUM(pac.statut_social_retraite)) AS statut_social_retraite,
-              (SUM(pac.statut_social_non_communique)) AS statut_social_non_communique,
-              (SUM(pac.total)) AS total
-          FROM cras_collectifs cc
-              JOIN participants_anonymes_cras_collectifs pac
-                  ON cc.participants_anonymes_id = pac.id
-          WHERE cc.cree_par_mediateur_id = ${mediateurId}::UUID AND cc.suppression IS NULL
-      )
-      SELECT
-          'genresBeneficiaires' AS category_type,
-          'Féminin' AS label,
-          COALESCE(genre_feminin, 0)::integer AS count
-      FROM total_participants
-      UNION ALL
-      SELECT
-          'genresBeneficiaires' AS category_type,
-          'Masculin' AS label,
-          COALESCE(genre_masculin, 0)::integer AS count
-      FROM total_participants
-      UNION ALL
-      SELECT
-          'genresBeneficiaires' AS category_type,
-          'Non communiqué' AS label,
-          COALESCE(genre_non_communique, 0)::integer AS count
-      FROM total_participants
-      UNION ALL
-      SELECT
-          'tranchesAgeBeneficiaires' AS category_type,
-          'Mineur' AS label,
-          COALESCE(tranche_age_mineur, 0)::integer AS count
-      FROM total_participants
-      UNION ALL
-      SELECT
-          'tranchesAgeBeneficiaires' AS category_type,
-          '18 - 24 ans' AS label,
-          COALESCE(tranche_age_18_24, 0)::integer AS count
-      FROM total_participants
-      UNION ALL
-      SELECT
-          'tranchesAgeBeneficiaires' AS category_type,
-          '25 - 39 ans' AS label,
-          COALESCE(tranche_age_25_39, 0)::integer AS count
-      FROM total_participants
-      UNION ALL
-      SELECT
-          'tranchesAgeBeneficiaires' AS category_type,
-          '40 - 59 ans' AS label,
-          COALESCE(tranche_age_40_59, 0)::integer AS count
-      FROM total_participants
-      UNION ALL
-      SELECT
-          'tranchesAgeBeneficiaires' AS category_type,
-          '60 - 69 ans' AS label,
-          COALESCE(tranche_age_60_69, 0)::integer AS count
-      FROM total_participants
-      UNION ALL
-      SELECT
-          'tranchesAgeBeneficiaires' AS category_type,
-          '70 ans et plus' AS label,
-          COALESCE(tranche_age_70_plus, 0)::integer AS count
-      FROM total_participants
-      UNION ALL
-      SELECT
-          'tranchesAgeBeneficiaires' AS category_type,
-          'Non communiqué' AS label,
-          COALESCE(tranche_age_non_communique, 0)::integer AS count
-      FROM total_participants
-      UNION ALL
-      SELECT
-          'statusBeneficiaires' AS category_type,
-          'Scolarisé' AS label,
-          COALESCE(statut_social_scolarise, 0)::integer AS count
-      FROM total_participants
-      UNION ALL
-      SELECT
-          'statusBeneficiaires' AS category_type,
-          'Sans emploi' AS label,
-          COALESCE(statut_social_sans_emploi, 0)::integer AS count
-      FROM total_participants
-      UNION ALL
-      SELECT
-          'statusBeneficiaires' AS category_type,
-          'En emploi' AS label,
-          COALESCE(statut_social_en_emploi, 0)::integer AS count
-      FROM total_participants
-      UNION ALL
-      SELECT
-          'statusBeneficiaires' AS category_type,
-          'Retraité' AS label,
-          COALESCE(statut_social_retraite, 0)::integer AS count
-      FROM total_participants
-      UNION ALL
-      SELECT
-          'statusBeneficiaires' AS category_type,
-          'Non communiqué ou hétérogène' AS label,
-          COALESCE(statut_social_non_communique, 0)::integer AS count
-      FROM total_participants;`
+  const rawCommunes = await getBeneficiairesCommunesRaw({
+    mediateurId,
+    activitesFilters,
+  })
+
+  return {
+    ...normalizeBeneficiairesStatsRaw(statsRaw),
+    communes: normalizeBeneficiairesCommunesRaw(rawCommunes),
+  }
+}
 
 export const EMPTY_BENEFICIAIRE_DATA: Record<
   BeneficiaireCategory,

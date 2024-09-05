@@ -6,6 +6,7 @@ import {
   givenCraIndividuel,
 } from '@app/fixtures/givenCra'
 import {
+  beneficiaireAnonymeMediateurAvecActivite,
   beneficiaireMaximaleMediateurAvecActivite,
   beneficiaireMinimaleMediateurAvecActivite,
 } from '@app/fixtures/beneficiaires'
@@ -30,6 +31,7 @@ export const mediateurAvecActiviteCrasIndividuels = [
     lieuCodePostal: '75001',
     lieuCodeInsee: '75101',
     lieuCommune: 'Paris 1er',
+    materiel: ['Ordinateur'],
   }),
   givenCraIndividuel({
     beneficiaireId: beneficiaireMaximaleMediateurAvecActivite.id,
@@ -38,6 +40,7 @@ export const mediateurAvecActiviteCrasIndividuels = [
     date: new Date('2024-07-28'),
     creation: new Date('2024-07-28T10:00:00'),
     typeLieu: 'ADistance',
+    materiel: ['Ordinateur', 'Telephone'],
   }),
   givenCraIndividuel({
     beneficiaireId: beneficiaireMaximaleMediateurAvecActivite.id,
@@ -75,6 +78,20 @@ export const mediateurAvecActiviteCrasDemarchesAdministratives = [
     structureId: mediateque.id,
   }),
   givenCraDemarcheAdministrative({
+    beneficiaireId: beneficiaireAnonymeMediateurAvecActivite.id,
+    mediateurId: mediateurAvecActiviteMediateurId,
+    thematiquesDemarche: [
+      ThematiqueDemarcheAdministrative.FamilleScolarite,
+      ThematiqueDemarcheAdministrative.TransportsMobilite,
+    ],
+    date: new Date('2024-08-05'),
+    creation: new Date('2024-08-05T15:30:00'),
+    lieuCommune: 'Lyon 2eme',
+    lieuCodePostal: '69002',
+    lieuCodeInsee: '69381',
+    structureId: null,
+  }),
+  givenCraDemarcheAdministrative({
     beneficiaireId: beneficiaireMaximaleMediateurAvecActivite.id,
     mediateurId: mediateurAvecActiviteMediateurId,
     thematiquesDemarche: [
@@ -98,6 +115,7 @@ export const mediateurAvecActiviteCrasCollectifs = [
       beneficiaireMaximaleMediateurAvecActivite,
     ].map((b) => b.id),
     participantsAnonymes: participantsAnonymesDefault,
+    materiel: ['Ordinateur', 'Tablette', 'Autre'],
   }),
 
   givenCraCollectif({
