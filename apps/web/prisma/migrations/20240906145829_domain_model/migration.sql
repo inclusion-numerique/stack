@@ -8,7 +8,7 @@ CREATE TYPE "profil_inscription" AS ENUM ('conseiller-numerique', 'mediateur', '
 CREATE TYPE "genre" AS ENUM ('masculin', 'feminin', 'non_communique');
 
 -- CreateEnum
-CREATE TYPE "tranche_age" AS ENUM ('mineur', '18-24', '25-39', '40-59', '60-69', '70+', 'non_communique');
+CREATE TYPE "tranche_age" AS ENUM ('mineur', 'dix_huit_vingt_quatre', 'vingt_cinq_trente_neuf', 'quarante_cinquante_neuf', 'soixante_soixante_neuf', 'soixante_dix_plus', 'non_communique');
 
 -- CreateEnum
 CREATE TYPE "statut_social" AS ENUM ('scolarise', 'sans_emploi', 'en_emploi', 'retraite', 'non_communique');
@@ -226,6 +226,7 @@ CREATE TABLE "structures" (
     "courriels" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "fiche_acces_libre" TEXT,
     "horaires" TEXT,
+    "prise_rdv" TEXT,
     "services" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "publics_specifiquement_adresses" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "prise_en_charge_specifique" TEXT[] DEFAULT ARRAY[]::TEXT[],
