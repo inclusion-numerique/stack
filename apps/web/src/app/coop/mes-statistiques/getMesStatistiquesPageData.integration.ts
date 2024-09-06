@@ -1,5 +1,9 @@
 import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
-import { conseillerNumerique, mediateurAvecActivite, mediateurSansActivites } from '@app/fixtures/users'
+import {
+  conseillerNumerique,
+  mediateurAvecActivite,
+  mediateurSansActivites,
+} from '@app/fixtures/users'
 import {
   getMesStatistiquesPageData,
   MesStatistiquesGraphOptions,
@@ -18,7 +22,11 @@ import {
   typeLieuAtelierLabels,
   typeLieuLabels,
 } from '@app/web/cra/cra'
-import { genreLabels, statutSocialLabels, trancheAgeLabels } from '@app/web/beneficiaire/beneficiaire'
+import {
+  genreLabels,
+  statutSocialLabels,
+  trancheAgeLabels,
+} from '@app/web/beneficiaire/beneficiaire'
 import { emptyQuantifiedSharesFromEnum } from '@app/web/app/coop/mes-statistiques/statistiquesFixturesHelpers'
 import { prismaClient } from '@app/web/prismaClient'
 
