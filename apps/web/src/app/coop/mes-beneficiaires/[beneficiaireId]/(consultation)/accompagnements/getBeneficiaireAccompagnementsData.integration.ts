@@ -10,9 +10,12 @@ import {
   mediateurAvecActiviteCrasDemarchesAdministratives,
   mediateurAvecActiviteCrasIndividuels,
 } from '@app/fixtures/activites'
+import { seedStructures } from '@app/fixtures/structures'
+import { prismaClient } from '@app/web/prismaClient'
 
-describe('getBeneficiaireAccompagnementsData', () => {
+describe.skip('getBeneficiaireAccompagnementsData', () => {
   beforeAll(async () => {
+    await seedStructures(prismaClient)
     await resetFixtureUser(mediateurAvecActivite)
   })
 

@@ -1,4 +1,5 @@
 import { Thematique, ThematiqueDemarcheAdministrative } from '@prisma/client'
+import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
 import { mediateurAvecActiviteMediateurId } from '@app/fixtures/users'
 import {
   givenCraCollectif,
@@ -11,7 +12,6 @@ import {
   beneficiaireMinimaleMediateurAvecActivite,
 } from '@app/fixtures/beneficiaires'
 import { mediateque } from '@app/fixtures/structures'
-import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
 
 export const mediateurAvecActiviteCrasIndividuels = [
   givenCraIndividuel({

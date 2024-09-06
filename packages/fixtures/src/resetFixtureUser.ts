@@ -1,5 +1,6 @@
 import { prismaClient } from '@app/web/prismaClient'
 import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
+import type { Session } from '@prisma/client'
 import { fixtureUsers } from '@app/fixtures/users'
 import { fixtureBeneficiaires } from '@app/fixtures/beneficiaires'
 import {
@@ -8,7 +9,6 @@ import {
   fixtureCrasIndividuels,
 } from '@app/fixtures/activites'
 import { upsertCraFixtures } from '@app/fixtures/upsertCraFixtures'
-import type { Session } from '@prisma/client'
 
 export const resetFixtureUser = async ({ id }: { id: string }) => {
   const userId = id

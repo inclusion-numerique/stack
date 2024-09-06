@@ -1,9 +1,7 @@
 import type { Prisma, TypeLieu, TypeLieuAtelier } from '@prisma/client'
 import { v4 } from 'uuid'
 import type { ParticipantsAnonymesCraCollectifData } from '@app/web/cra/ParticipantsAnonymesCraCollectifValidation'
-import {
-  createBeneficiairesForParticipantsAnonymes,
-} from '@app/web/beneficiaire/createBeneficiairesForParticipantsAnonymes'
+import { createBeneficiairesForParticipantsAnonymes } from '@app/web/beneficiaire/createBeneficiairesForParticipantsAnonymes'
 
 /**
  * Create a CRA individuel prisma data with associated entities

@@ -7,9 +7,12 @@ import {
   beneficiaireMaximaleMediateurAvecActivite,
   beneficiaireSansAccompagnementsMediateurAvecActivite,
 } from '@app/fixtures/beneficiaires'
+import { seedStructures } from '@app/fixtures/structures'
+import { prismaClient } from '@app/web/prismaClient'
 
 describe('getBeneficiaireInformationsData', () => {
   beforeAll(async () => {
+    await seedStructures(prismaClient)
     await resetFixtureUser(mediateurAvecActivite)
   })
 

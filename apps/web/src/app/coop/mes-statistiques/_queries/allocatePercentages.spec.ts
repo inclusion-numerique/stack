@@ -33,15 +33,15 @@ describe('allocatePercentagesFromRecords', () => {
   it('should allocate percentages based on a key in objects and add a new key with percentages', () => {
     const values = [
       { name: 'A', count: 1 },
-      { name: 'B', count: 2 },
-      { name: 'C', count: 3 },
+      { name: 'B', count: 3 },
+      { name: 'C', count: 4 },
     ]
 
     const result = allocatePercentagesFromRecords(values, 'count', 'proportion')
     expect(result).toEqual([
-      { name: 'A', count: 1, proportion: 16.666_666_666_666_668 },
-      { name: 'B', count: 2, proportion: 33.333_333_333_333_336 },
-      { name: 'C', count: 3, proportion: 50 },
+      { name: 'A', count: 1, proportion: 12.5 },
+      { name: 'B', count: 3, proportion: 37.5 },
+      { name: 'C', count: 4, proportion: 50 },
     ])
   })
 

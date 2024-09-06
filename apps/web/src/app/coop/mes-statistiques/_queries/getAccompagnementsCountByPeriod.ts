@@ -49,13 +49,12 @@ export const getAccompagnementsCountByMonth = async ({
                          ON DATE_TRUNC('month', filtered_accompagnements.date) = months.month
       GROUP BY months.month
       ORDER BY months.month
-  `.then((result) => {
-    console.log('RESULT', result)
-    return result.map(({ count, month }) => ({
+  `.then((result) =>
+    result.map(({ count, month }) => ({
       count,
       label: monthShortLabels[month - 1],
-    }))
-  })
+    })),
+  )
 }
 
 export const getAccompagnementsCountByDay = async ({

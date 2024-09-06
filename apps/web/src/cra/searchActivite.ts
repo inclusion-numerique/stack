@@ -31,7 +31,6 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
     : 10
   const page = searchParams?.page ? Number.parseInt(searchParams.page, 10) : 1
 
-  console.log('SERACH ACTIVITE')
   const { sortBy, sortDirection } = getDataTableSortParams(
     searchParams,
     ActivitesDataTable,
@@ -51,15 +50,7 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
         ].rawOrderBySql(sortDirection)
       : null
 
-  console.log('SEARCH PARAMS', searchParams)
-
   const filterConditions = getActivitesFiltersWhereConditions(searchParams)
-
-  console.log('FILTER CONDITIONS', filterConditions)
-  console.log(
-    'FILTER FRAGMENT',
-    getActiviteFiltersSqlFragment(filterConditions).text,
-  )
 
   const filterFragment = getActiviteFiltersSqlFragment(filterConditions)
 

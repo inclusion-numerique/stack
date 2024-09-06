@@ -39,10 +39,6 @@ export const ProConnectProvider = () =>
     },
     token: {
       request: async (context) => {
-        console.log(
-          'REQUEST TOKEN SERVER URL',
-          getServerUrl('/api/auth/callback/proconnect'),
-        )
         const body = {
           grant_type: 'authorization_code',
           client_id: PublicWebAppConfig.ProConnect.clientId,

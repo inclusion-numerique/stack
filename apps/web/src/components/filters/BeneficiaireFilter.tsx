@@ -45,7 +45,6 @@ const BeneficiaireFilter = ({
 
   const onSelectChange = (option: BeneficiaireOption | null) => {
     setBeneficiaire(option)
-    console.log('onChange', option)
     onChange(option?.value?.id ?? null)
   }
 

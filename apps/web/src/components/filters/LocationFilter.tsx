@@ -122,11 +122,6 @@ const LocationFilter = ({
     ? locationValuePlaceholder[locationType]
     : undefined
 
-  console.log('TYPE', locationType)
-  console.log('VALUE', locationValue)
-  console.log('PLACEHOLDER', valuePlaceholder)
-  console.log('OPTIONS', locationValueForTypeOptions)
-
   return (
     <FilterTag
       value={filterValue}
