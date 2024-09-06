@@ -1,11 +1,11 @@
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import ActivitesFilterTags from '@app/web/app/coop/mes-activites/(liste)/ActivitesFilterTags'
+import { StatistiquesActivites } from '@app/web/app/coop/mes-statistiques/_sections/StatistiquesActivites'
+import { StatistiquesBeneficiaires } from '@app/web/app/coop/mes-statistiques/_sections/StatistiquesBeneficiaires'
 import CoopBreadcrumbs from '../CoopBreadcrumbs'
 import CoopPageContainer from '../CoopPageContainer'
 import { StatistiquesTerritoriales } from './_components/StatistiquesTerritoriales'
-import { StatistiquesAccompagnements } from './_sections/StatistiquesAccompagnements'
-import { StatistiquesBeneficiaires } from './_sections/StatistiquesBeneficiaires'
 import { StatistiquesGenerales } from './_sections/StatistiquesGenerales'
 import { MesStatistiquesPageData } from './getMesStatistiquesPageData'
 
@@ -41,7 +41,7 @@ export const MesStatistiques = (
           <StatistiquesGenerales {...mesStatistiquesProps} />
         </section>
         <section className="fr-mb-6w">
-          <StatistiquesAccompagnements {...mesStatistiquesProps} />
+          <StatistiquesActivites {...mesStatistiquesProps} />
         </section>
         <section className="fr-mb-6w">
           <StatistiquesBeneficiaires {...mesStatistiquesProps} />

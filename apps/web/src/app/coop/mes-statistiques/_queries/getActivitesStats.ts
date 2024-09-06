@@ -36,7 +36,6 @@ import {
   createIntArrayCountSelect,
 } from '@app/web/app/coop/mes-statistiques/_queries/createEnumCountSelect'
 import { allocatePercentagesFromRecords } from '@app/web/app/coop/mes-statistiques/_queries/allocatePercentages'
-import { QuantifiedShareToProcess } from '../quantifiedShare'
 
 const accompagnementCategories = [
   'canauxAccompagnements',
@@ -48,9 +47,6 @@ const accompagnementCategories = [
 ] as const
 
 export type AccompagnementCategory = (typeof accompagnementCategories)[number]
-
-export type AccompagnementQuantifiedShare =
-  QuantifiedShareToProcess<AccompagnementCategory>
 
 export type ActivitesStatsRaw = {
   total_activites: number
@@ -71,7 +67,7 @@ export const getActivitesStatsRaw = async ({
   activitesFilters: ActivitesFilters
 }) =>
   prismaClient.$queryRaw<[ActivitesStatsRaw]>`
-      SELECT COUNT(*)::integer AS total_activites,
+      SELECT COALESCE(COUNT(*), 0)::integer AS total_activites,
              -- Enum count selects for type, type_lieu, type_lieu_atelier, duree, thematiques, thematiques_demarche, materiel
              ${createEnumCountSelect({
                enumObj: TypeActivite,
@@ -141,6 +137,22 @@ export const normalizeActivitesStatsRaw = (stats: ActivitesStatsRaw) => {
     count: stats[`type_lieu_atelier_${snakeCase(typeLieuAtelier)}_count`],
   }))
 
+  const mergedTypeLieuData = [...typeLieuData, ...typeLieuAtelierData].reduce<
+    {
+      value: TypeLieu | TypeLieuAtelier
+      label: string
+      count: number
+    }[]
+  >((accumulator, item) => {
+    const existingItem = accumulator.find(({ value }) => value === item.value)
+    if (existingItem) {
+      existingItem.count += item.count
+    } else {
+      accumulator.push(item)
+    }
+    return accumulator
+  }, [])
+
   const thematiquesData = thematiqueValues.map((thematique) => ({
     value: thematique,
     label: thematiqueLabels[thematique],
@@ -182,6 +194,11 @@ export const normalizeActivitesStatsRaw = (stats: ActivitesStatsRaw) => {
     ),
     typeLieuAtelier: allocatePercentagesFromRecords(
       typeLieuAtelierData,
+      'count',
+      'proportion',
+    ),
+    mergedTypeLieu: allocatePercentagesFromRecords(
+      mergedTypeLieuData,
       'count',
       'proportion',
     ),
@@ -239,7 +256,7 @@ export const getActivitesStructuresStatsRaw = async ({
            structures.commune,
            structures.code_postal,
            structures.code_insee,
-           COUNT(*)::int AS count
+           COALESCE(COUNT(*), 0)::int AS count
     FROM structures
              INNER JOIN activites ON activites.structure_id = structures.id
         AND activites.suppression IS NULL

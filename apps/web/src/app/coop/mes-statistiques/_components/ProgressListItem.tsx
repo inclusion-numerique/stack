@@ -1,14 +1,17 @@
+import { numberToPercentage } from '@app/web/utils/formatNumber'
 import ProgressBar from './ProgressBar'
 
 export const ProgressListItem = ({
   label,
   count,
   proportion,
+  maxProportion,
   colors = [],
 }: {
   label: string
   count: number
   proportion: number
+  maxProportion: number
   colors?: string[]
 }) => (
   <li className="fr-grid-row fr-grid-row--gutters fr-text--sm fr-align-items-center">
@@ -17,11 +20,16 @@ export const ProgressListItem = ({
       {count}
     </span>
     <span className="fr-col-1 fr-text--right fr-text--medium fr-text-mention--grey fr-whitespace-nowrap">
-      {proportion} %
+      {numberToPercentage(proportion)}
     </span>
     <ProgressBar
       className="fr-col fr-my-auto"
-      progress={[{ label, value: proportion }]}
+      progress={[
+        {
+          label,
+          value: maxProportion === 0 ? 0 : (100 * proportion) / maxProportion,
+        },
+      ]}
       colors={colors}
     />
   </li>

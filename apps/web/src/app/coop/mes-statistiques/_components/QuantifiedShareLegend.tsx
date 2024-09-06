@@ -1,5 +1,6 @@
 import classNames from 'classnames'
-import { QuantifiedShare } from '../quantifiedShare'
+import { numberToPercentage } from '@app/web/utils/formatNumber'
+import type { QuantifiedShare } from '../quantifiedShare'
 
 export const QuantifiedShareLegend = ({
   colors,
@@ -19,8 +20,8 @@ export const QuantifiedShareLegend = ({
         />
         <span className="fr-col">{label}</span>
         <span className="fr-col-auto fr-pr-2w fr-text--bold">{count}</span>
-        <span className="fr-col-2 fr-text--medium fr-text-mention--grey">
-          {proportion} %
+        <span className="fr-col-2 fr-text--medium fr-text-mention--grey fr-text--right">
+          {numberToPercentage(proportion)}
         </span>
       </li>
     ))}

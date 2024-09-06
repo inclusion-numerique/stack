@@ -19,7 +19,7 @@ export const createEnumCountSelect = <T extends string>({
     const isNullSnippet =
       key === defaultEnumValue ? ` OR ${column} IS NULL` : ''
 
-    return `SUM((${column} = '${snakeCaseValue}'${isNullSnippet})::int)::int AS ${as}_${snakeCaseValue}_count`
+    return `COALESCE(SUM((${column} = '${snakeCaseValue}'${isNullSnippet})::int), 0)::int AS ${as}_${snakeCaseValue}_count`
   })
 
   return Prisma.raw(sumStatements.join(',\n'))
@@ -37,7 +37,7 @@ export const createEnumArrayCountSelect = <T extends string>({
   const sumStatements = Object.keys(enumObj).map((key) => {
     const snakeCaseValue = snakeCase(enumObj[key as T])
 
-    return `SUM(('${snakeCaseValue}' = ANY(${column}))::int)::int AS ${as}_${snakeCaseValue}_count`
+    return `COALESCE(SUM(('${snakeCaseValue}' = ANY(${column}))::int), 0)::int AS ${as}_${snakeCaseValue}_count`
   })
 
   return Prisma.raw(sumStatements.join(',\n'))
@@ -54,8 +54,7 @@ export const createIntArrayCountSelect = ({
 }): Prisma.Sql => {
   const sumStatements = values.map(
     (value) =>
-      // SUM if the value is included in the column that is an array
-      `SUM((${column} = ${value})::int)::int AS ${as}_${value.toString(10)}_count`,
+      `COALESCE(SUM((${column} = ${value})::int), 0)::int AS ${as}_${value.toString(10)}_count`,
   )
 
   return Prisma.raw(sumStatements.join(',\n'))

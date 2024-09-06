@@ -1,23 +1,20 @@
 import { ReactNode } from 'react'
 import classNames from 'classnames'
-import { AccompagnementLabel } from '../quantifiedShare'
-
-const accompagnementToImage: Record<AccompagnementLabel, string> = {
-  'Accompagnements individuels':
-    '/images/iconographie/accompagnement-individuel.svg',
-  'Ateliers collectifs': '/images/iconographie/accompagnement-collectif.svg',
-  'Aide aux démarches administratives':
-    '/images/iconographie/demarche-administrative.svg',
-}
+import { TypeActivite } from '@prisma/client'
+import {
+  typeActiviteIllustrations,
+  typeActivitePluralLabels,
+} from '@app/web/cra/cra'
+import { numberToPercentage } from '@app/web/utils/formatNumber'
 
 export const StatistiqueAccompagnement = ({
-  accompagnement,
+  typeActivite,
   count,
   proportion,
   className,
   children,
 }: {
-  accompagnement: AccompagnementLabel
+  typeActivite: TypeActivite
   count: number
   proportion: number
   className?: string
@@ -30,14 +27,18 @@ export const StatistiqueAccompagnement = ({
     )}
   >
     <div className="fr-py-1v fr-px-2v fr-border-radius--8 fr-background-default--grey">
-      <img src={accompagnementToImage[accompagnement]} />
+      <img src={typeActiviteIllustrations[typeActivite]} />
     </div>
     <div>
       <div className="fr-flex fr-direction-row fr-flex-gap-3v fr-align-items-baseline">
         <span className="fr-h4 fr-mb-0">{count}</span>
-        <span className="fr-text-mention--grey ">{proportion} %</span>
+        <span className="fr-text-mention--grey ">
+          {numberToPercentage(proportion)}
+        </span>
       </div>
-      <div className="fr-text--sm fr-mb-0">{accompagnement}</div>
+      <div className="fr-text--sm fr-mb-0">
+        {typeActivitePluralLabels[typeActivite]}
+      </div>
       <div className="fr-text--sm fr-text-mention--grey fr-mb-0">
         {children}
       </div>

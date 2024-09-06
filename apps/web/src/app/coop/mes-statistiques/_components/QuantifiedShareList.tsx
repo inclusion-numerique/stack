@@ -20,13 +20,24 @@ export const QuantifiedShareList = ({
 }) => {
   const [displayFullList, setDisplayFullList] = useState(false)
 
+  const maxProportion = quantifiedShares.reduce(
+    (max, quantifiedShare) =>
+      quantifiedShare.proportion > max ? quantifiedShare.proportion : max,
+    0,
+  )
+
   return (
     <>
       <ul className="fr-px-0">
         {quantifiedShares
           .slice(0, displayFullList && limit != null ? limit.count : undefined)
           .map((item) => (
-            <ProgressListItem {...item} key={item.label} colors={colors} />
+            <ProgressListItem
+              {...item}
+              key={item.label}
+              colors={colors}
+              maxProportion={maxProportion}
+            />
           ))}
       </ul>
       {limit && quantifiedShares.length - limit.count > 0 && (

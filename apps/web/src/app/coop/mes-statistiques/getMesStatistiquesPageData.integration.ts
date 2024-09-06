@@ -13,6 +13,21 @@ import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { cloneDeep } from 'lodash-es'
 import { mediateque } from '@app/fixtures/structures'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
+import {
+  dureeAccompagnementLabels,
+  materielLabels,
+  thematiqueDemarcheAdministrativeLabels,
+  thematiqueLabels,
+  typeActiviteLabels,
+  typeLieuAtelierLabels,
+  typeLieuLabels,
+} from '@app/web/cra/cra'
+import {
+  genreLabels,
+  statutSocialLabels,
+  trancheAgeLabels,
+} from '@app/web/beneficiaire/beneficiaire'
+import { emptyQuantifiedSharesFromEnum } from '@app/web/app/coop/mes-statistiques/statistiquesFixturesHelpers'
 
 /**
  * Base empty data for all tests
@@ -24,7 +39,7 @@ const graphOptions = {
 } satisfies MesStatistiquesGraphOptions
 
 const emptyData = {
-  nombreAccompagnementsParJour: [
+  accompagnementsParJour: [
     { label: '17/07', count: 0 },
     { label: '18/07', count: 0 },
     { label: '19/07', count: 0 },
@@ -56,123 +71,83 @@ const emptyData = {
     { label: '14/08', count: 0 },
     { label: '15/08', count: 0 },
   ],
-  nombreAccompagnementsParMois: [
-    { month_name: 'September', label: 'Sep.', count: 0, proportion: 0 },
-    { month_name: 'October', label: 'Oct.', count: 0, proportion: 0 },
-    { month_name: 'November', label: 'Nov.', count: 0, proportion: 0 },
-    { month_name: 'December', label: 'Déc.', count: 0, proportion: 0 },
-    { month_name: 'January', label: 'Jan.', count: 0, proportion: 0 },
-    { month_name: 'February', label: 'Fév.', count: 0, proportion: 0 },
-    { month_name: 'March', label: 'Mars', count: 0, proportion: 0 },
-    { month_name: 'April', label: 'Avr.', count: 0, proportion: 0 },
-    { month_name: 'May', label: 'Mai', count: 0, proportion: 0 },
-    { month_name: 'June', label: 'Juin', count: 0, proportion: 0 },
-    { month_name: 'July', label: 'Juil.', count: 0, proportion: 0 },
-    { month_name: 'August', label: 'Août', count: 0, proportion: 0 },
+  accompagnementsParMois: [
+    { label: 'Sep.', count: 0 },
+    { label: 'Oct.', count: 0 },
+    { label: 'Nov.', count: 0 },
+    { label: 'Déc.', count: 0 },
+    { label: 'Jan.', count: 0 },
+    { label: 'Fév.', count: 0 },
+    { label: 'Mars', count: 0 },
+    { label: 'Avr.', count: 0 },
+    { label: 'Mai', count: 0 },
+    { label: 'Juin', count: 0 },
+    { label: 'Juil.', count: 0 },
+    { label: 'Août', count: 0 },
   ],
-  accompagnementBeneficiaires: {
-    accompagnements: 0,
-    beneficiaires: 0,
-    anonymes: 0,
+  totalCounts: {
+    accompagnements: {
+      total: 0,
+      individuels: {
+        count: 0,
+        proportion: 0,
+      },
+      collectifs: {
+        count: 0,
+        proportion: 0,
+      },
+      demarches: {
+        count: 0,
+        proportion: 0,
+      },
+    },
+    activites: {
+      total: 0,
+      individuel: {
+        total: 0,
+        proportion: 0,
+      },
+      collectifs: {
+        total: 0,
+        proportion: 0,
+        participants: 0,
+      },
+      demarches: {
+        total: 0,
+        proportion: 0,
+      },
+    },
+    beneficiaires: {
+      total: 0,
+      anonymes: 0,
+      suivis: 0,
+    },
   },
-  modalitesAccompagnement: [
-    {
-      label: 'Accompagnements individuels',
-      count: 0,
-      participants: 0,
-      proportion: 0,
-    },
-    {
-      label: 'Ateliers collectifs',
-      count: 0,
-      participants: 0,
-      proportion: 0,
-    },
-    {
-      label: 'Aide aux démarches administratives',
-      count: 0,
-      participants: 0,
-      proportion: 0,
-    },
-  ],
-  genresBeneficiaires: [
-    { label: 'Masculin', count: 0, proportion: 0 },
-    { label: 'Féminin', count: 0, proportion: 0 },
-    { label: 'Non communiqué', count: 0, proportion: 0 },
-  ],
-  statusBeneficiaires: [
-    { label: 'Retraité', count: 0, proportion: 0 },
-    { label: 'Sans emploi', count: 0, proportion: 0 },
-    { label: 'En emploi', count: 0, proportion: 0 },
-    { label: 'Scolarisé', count: 0, proportion: 0 },
-    { label: 'Non communiqué ou hétérogène', count: 0, proportion: 0 },
-  ],
-  tranchesAgeBeneficiaires: [
-    { label: '70 ans et plus', count: 0, proportion: 0 },
-    { label: '60 - 69 ans', count: 0, proportion: 0 },
-    { label: '40 - 59 ans', count: 0, proportion: 0 },
-    { label: '25 - 39 ans', count: 0, proportion: 0 },
-    { label: '18 - 24 ans', count: 0, proportion: 0 },
-    { label: 'Mineur', count: 0, proportion: 0 },
-    { label: 'Non communiqué', count: 0, proportion: 0 },
-  ],
-  communesBeneficiaires: [],
-  thematiquesAccompagnements: [
-    { label: 'Prendre en main du matériel', count: 0, proportion: 0 },
-    { label: 'Navigation sur internet', count: 0, proportion: 0 },
-    { label: 'E-mail', count: 0, proportion: 0 },
-    { label: 'Bureautique', count: 0, proportion: 0 },
-    { label: 'Réseaux sociaux communication', count: 0, proportion: 0 },
-    { label: 'Santé', count: 0, proportion: 0 },
-    { label: 'Banque et achats en ligne', count: 0, proportion: 0 },
-    { label: 'Entrepreneuriat', count: 0, proportion: 0 },
-    { label: 'Insertion professionnelle', count: 0, proportion: 0 },
-    {
-      label: 'Prévention en sécurité numérique',
-      count: 0,
-      proportion: 0,
-    },
-    { label: 'Parentalité', count: 0, proportion: 0 },
-    { label: 'Scolarité et numérique', count: 0, proportion: 0 },
-    { label: 'Créer avec le numérique', count: 0, proportion: 0 },
-    { label: 'Culture numérique', count: 0, proportion: 0 },
-  ],
-  thematiquesDemarchesAdministratives: [
-    {
-      label: 'Papiers - Élections Citoyenneté',
-      count: 0,
-      proportion: 0,
-    },
-    { label: 'Famille - Scolarité', count: 0, proportion: 0 },
-    { label: 'Social - Santé', count: 0, proportion: 0 },
-    { label: 'Travail - Formation', count: 0, proportion: 0 },
-    { label: 'Logement', count: 0, proportion: 0 },
-    { label: 'Transports - Mobilité', count: 0, proportion: 0 },
-    { label: 'Argent - Impôts', count: 0, proportion: 0 },
-    { label: 'Justice', count: 0, proportion: 0 },
-    { label: 'Étrangers - Europe', count: 0, proportion: 0 },
-    { label: 'Loisirs - Sports Culture', count: 0, proportion: 0 },
-  ],
-  materielsAccompagnements: [
-    { label: 'Ordinateur', count: 0, proportion: 0 },
-    { label: 'Téléphone', count: 0, proportion: 0 },
-    { label: 'Tablette', count: 0, proportion: 0 },
-    { label: 'Autre matériel', count: 0, proportion: 0 },
-    { label: 'Pas de matériel', count: 0, proportion: 0 },
-  ],
-  canauxAccompagnements: [
-    { label: 'Lieu d’activité', count: 0, proportion: 0 },
-    { label: 'À domicile', count: 0, proportion: 0 },
-    { label: 'À distance', count: 0, proportion: 0 },
-    { label: 'Autre lieu', count: 0, proportion: 0 },
-  ],
-  dureesAccompagnements: [
-    { label: '30', count: 0, proportion: 0 },
-    { label: '60', count: 0, proportion: 0 },
-    { label: '90', count: 0, proportion: 0 },
-    { label: '120', count: 0, proportion: 0 },
-  ],
-  lieuxAccompagnements: [],
+  activites: {
+    total: 0,
+    typeActivites: emptyQuantifiedSharesFromEnum(typeActiviteLabels),
+    thematiques: emptyQuantifiedSharesFromEnum(thematiqueLabels),
+    thematiquesDemarches: emptyQuantifiedSharesFromEnum(
+      thematiqueDemarcheAdministrativeLabels,
+    ),
+    materiels: emptyQuantifiedSharesFromEnum(materielLabels),
+    typeLieu: emptyQuantifiedSharesFromEnum(typeLieuLabels),
+    typeLieuAtelier: emptyQuantifiedSharesFromEnum(typeLieuAtelierLabels),
+    mergedTypeLieu: emptyQuantifiedSharesFromEnum({
+      ...typeLieuLabels,
+      ...typeLieuAtelierLabels,
+    }),
+    durees: emptyQuantifiedSharesFromEnum(dureeAccompagnementLabels),
+  },
+  beneficiaires: {
+    total: 0,
+    genres: emptyQuantifiedSharesFromEnum(genreLabels),
+    trancheAges: emptyQuantifiedSharesFromEnum(trancheAgeLabels),
+    statutsSocial: emptyQuantifiedSharesFromEnum(statutSocialLabels),
+    communes: [],
+  },
+  structures: [],
+
   activitesFilters: {},
   communesOptions: [],
   departementsOptions: [],

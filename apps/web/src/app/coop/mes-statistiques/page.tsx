@@ -16,12 +16,19 @@ export const metadata: Metadata = {
 const MesStatistiquesPage = async ({
   searchParams = {},
 }: {
-  searchParams?: ActivitesFilters
+  searchParams?: ActivitesFilters & {
+    graphique_fin?: string
+  }
 }) => {
   const user = await getAuthenticatedMediateur()
   const mesStatistiques = await getMesStatistiquesPageData({
     mediateurId: user.mediateur.id,
     activitesFilters: validateActivitesFilters(searchParams),
+    graphOptions: {
+      fin: searchParams.graphique_fin
+        ? new Date(searchParams.graphique_fin)
+        : undefined,
+    },
   })
   const employeStructure = await getStructureEmployeuseAddress(user.id)
 

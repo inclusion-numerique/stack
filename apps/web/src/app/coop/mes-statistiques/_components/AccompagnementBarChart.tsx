@@ -3,12 +3,12 @@
 import {
   Bar,
   BarChart,
+  LabelList,
   ResponsiveContainer,
+  Tooltip,
+  TooltipProps,
   XAxis,
   YAxis,
-  Tooltip,
-  LabelList,
-  TooltipProps,
 } from 'recharts'
 
 const CustomTooltip = ({
@@ -18,7 +18,7 @@ const CustomTooltip = ({
 }: TooltipProps<number, string>) =>
   active &&
   payload && (
-    <ul className="fr-background-default--grey fr-p-1w fr-list-group fr-tile--shadow">
+    <ul className="fr-background-default--grey fr-p-1w fr-list-group fr-raw-list fr-tile--shadow">
       <li className="fr-text--bold">{label}</li>
       <li>
         Accompagnements :{' '}

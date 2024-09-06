@@ -138,6 +138,16 @@ export const materielLabels: {
   Aucun: 'Pas de matériel',
 }
 
+export const materielIcons: {
+  [key in Materiel]: { icon: string; rotation?: number }
+} = {
+  Ordinateur: { icon: 'ri-computer-line' },
+  Telephone: { icon: 'ri-smartphone-line' },
+  Tablette: { icon: 'ri-tablet-line', rotation: -90 },
+  Autre: { icon: 'ri-vidicon-2-line' },
+  Aucun: { icon: 'ri-loader-fill' },
+}
+
 export const materielOptions = labelsToOptions(materielLabels)
 
 export const materielValues = Object.keys(materielLabels) as [

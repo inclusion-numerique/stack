@@ -4,30 +4,14 @@ import { useState } from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
+import type { MesStatistiquesPageData } from '@app/web/app/coop/mes-statistiques/getMesStatistiquesPageData'
 import { AccompagnementBarChart } from '../_components/AccompagnementBarChart'
-import {
-  AccompagnementLabel,
-  LabelAndCount,
-  QuantifiedShare,
-} from '../quantifiedShare'
 
 export const StatistiquesGenerales = ({
-  nombreAccompagnementsParJour,
-  nombreAccompagnementsParMois,
-  modalitesAccompagnement,
-  accompagnementBeneficiaires: { accompagnements, beneficiaires, anonymes },
-}: {
-  nombreAccompagnementsParJour: LabelAndCount[]
-  nombreAccompagnementsParMois: QuantifiedShare[]
-  modalitesAccompagnement: (QuantifiedShare<AccompagnementLabel> & {
-    participants?: number
-  })[]
-  accompagnementBeneficiaires: {
-    accompagnements: number
-    beneficiaires: number
-    anonymes: number
-  }
-}) => {
+  totalCounts,
+  accompagnementsParMois,
+  accompagnementsParJour,
+}: MesStatistiquesPageData) => {
   const [isAccompagnementCountByMonth, setIsAccompagnementCountByMonth] =
     useState(true)
 
@@ -41,7 +25,9 @@ export const StatistiquesGenerales = ({
         <div className="fr-flex fr-direction-column fr-flex-gap-6v fr-col-xl-4 fr-col-12">
           <div className="fr-p-3w fr-border-radius--16 fr-background-alt--brown-caramel fr-width-full">
             <div className="fr-flex fr-align-items-center fr-justify-content-space-between">
-              <span className="fr-h2 fr-mb-0">{accompagnements}</span>
+              <span className="fr-h2 fr-mb-0">
+                {totalCounts.accompagnements.total}
+              </span>
               <span
                 className="ri-service-line ri-2x fr-text-label--brown-caramel"
                 aria-hidden
@@ -50,7 +36,7 @@ export const StatistiquesGenerales = ({
             <div className="fr-text--bold fr-mt-1w">
               Accompagnements{' '}
               <Button
-                className="fr-px-1v fr-ml-1v"
+                className="fr-px-2v"
                 title="Plus d’information à propos des accompagnements"
                 priority="tertiary no outline"
                 size="small"
@@ -65,19 +51,20 @@ export const StatistiquesGenerales = ({
                 role="tooltip"
                 aria-hidden
               >
-                {accompagnements} accompagnements au total dont&nbsp;:
+                {totalCounts.accompagnements.total} accompagnements au total
+                dont&nbsp;:
                 <ul>
                   <li>
-                    {modalitesAccompagnement[0].count} accompagnements
-                    individuels
+                    {totalCounts.accompagnements.individuels.count}{' '}
+                    accompagnements individuels
                   </li>
                   <li>
-                    {modalitesAccompagnement[1].participants} participants lors
-                    de {modalitesAccompagnement[1].count} ateliers*
+                    {totalCounts.accompagnements.collectifs.count} participants
+                    lors de {totalCounts.activites.collectifs.total} ateliers*
                   </li>
                   <li>
-                    {modalitesAccompagnement[2].count} aides aux démarches
-                    administratives
+                    {totalCounts.accompagnements.demarches.count} aides aux
+                    démarches administratives
                   </li>
                 </ul>
                 *Les ateliers collectifs comptent pour 1 accompagnement par
@@ -89,7 +76,9 @@ export const StatistiquesGenerales = ({
           </div>
           <div className="fr-p-3w fr-border-radius--16 fr-background-alt--brown-caramel">
             <div className="fr-flex fr-align-items-center fr-justify-content-space-between">
-              <span className="fr-h2 fr-mb-0">{beneficiaires + anonymes}</span>
+              <span className="fr-h2 fr-mb-0">
+                {totalCounts.beneficiaires.total}
+              </span>
               <span
                 className="ri-user-heart-line ri-2x fr-text-label--brown-caramel"
                 aria-hidden
@@ -100,12 +89,14 @@ export const StatistiquesGenerales = ({
             </div>
             <div className="fr-text-mention--grey">
               <div>
-                {beneficiaires} bénéficiaire{sPluriel(beneficiaires)} suivi
-                {sPluriel(beneficiaires)}
+                {totalCounts.beneficiaires.suivis} bénéficiaire
+                {sPluriel(totalCounts.beneficiaires.suivis)} suivi
+                {sPluriel(totalCounts.beneficiaires.suivis)}
               </div>
               <div>
-                {anonymes} bénéficiaire{sPluriel(beneficiaires)} anonyme
-                {sPluriel(beneficiaires)}
+                {totalCounts.beneficiaires.anonymes} bénéficiaire
+                {sPluriel(totalCounts.beneficiaires.anonymes)} anonyme
+                {sPluriel(totalCounts.beneficiaires.anonymes)}
               </div>
             </div>
           </div>
@@ -165,8 +156,8 @@ export const StatistiquesGenerales = ({
           <AccompagnementBarChart
             data={
               isAccompagnementCountByMonth
-                ? nombreAccompagnementsParMois
-                : nombreAccompagnementsParJour
+                ? accompagnementsParMois
+                : accompagnementsParJour
             }
           />
         </div>

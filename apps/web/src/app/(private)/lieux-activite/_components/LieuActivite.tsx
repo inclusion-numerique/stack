@@ -116,6 +116,7 @@ export const LieuActivite = ({
         Lieu en cours d’ajout sur la cartographie nationale des lieux
         d’inclusion numérique
         <Button
+          type="button"
           className="fr-btn--tooltip"
           priority="tertiary no outline"
           aria-describedby={`tooltip-visible-no-id-${id}`}

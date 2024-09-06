@@ -3,17 +3,13 @@
 import { useState } from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
-import { AccompagnementPieChart } from '../_components/AccompagnementPieChart'
+import type { MesStatistiquesPageData } from '@app/web/app/coop/mes-statistiques/getMesStatistiquesPageData'
+import { AccompagnementPieChart } from '@app/web/app/coop/mes-statistiques/_components/AccompagnementPieChart'
+import { QuantifiedShareLegend } from '@app/web/app/coop/mes-statistiques/_components/QuantifiedShareLegend'
 import { ProgressListItem } from '../_components/ProgressListItem'
-import { QuantifiedShareLegend } from '../_components/QuantifiedShareLegend'
 import { QuantifiedShareList } from '../_components/QuantifiedShareList'
 import { StatistiqueAccompagnement } from '../_components/StatistiqueAccompagnement'
 import { StatistiqueMateriel } from '../_components/StatistiqueMateriel'
-import {
-  AccompagnementLabel,
-  MaterielLabel,
-  QuantifiedShare,
-} from '../quantifiedShare'
 
 const thematiquesAccompagnementColors = [
   '#68A532',
@@ -35,48 +31,25 @@ const nombreAccompagnementParLieuColor = '#009099'
 const canauxAccompagnementColors = ['#C7F6FC', '#60E0EB', '#009099', '#006A6F']
 const dureesAccompagnementColors = ['#F7EBE5', '#EAC7B2', '#C08C65', '#855D48']
 
-const formatTime = (time: number): string =>
-  time >= 60 ? `${Math.floor(time / 60)}h${time % 60 || '00'}` : `${time} min`
-
-const toFormattedDureeAccompagnement = (
-  dureeAccompagnement: QuantifiedShare,
-) => ({
-  ...dureeAccompagnement,
-  label: formatTime(+dureeAccompagnement.label),
-})
-
-const byLabel = (
-  { label: label1 }: QuantifiedShare,
-  { label: label2 }: QuantifiedShare,
-): number => +label1 - +label2
-
-export const StatistiquesAccompagnements = ({
-  modalitesAccompagnement,
-  materielsAccompagnements,
-  thematiquesAccompagnements,
-  thematiquesDemarchesAdministratives,
-  canauxAccompagnements,
-  dureesAccompagnements,
-  lieuxAccompagnements,
-}: {
-  modalitesAccompagnement: (QuantifiedShare<AccompagnementLabel> & {
-    participants?: number
-  })[]
-  materielsAccompagnements: QuantifiedShare[]
-  thematiquesAccompagnements: QuantifiedShare[]
-  thematiquesDemarchesAdministratives: QuantifiedShare[]
-  canauxAccompagnements: QuantifiedShare[]
-  dureesAccompagnements: QuantifiedShare[]
-  lieuxAccompagnements: QuantifiedShare[]
-}) => {
+export const StatistiquesActivites = ({
+  activites,
+  structures,
+  totalCounts,
+}: MesStatistiquesPageData) => {
   const [
     isMediationNumeriqueAccompagnement,
     setIsMediationNumeriqueAccompagnement,
   ] = useState(true)
 
-  const formattedDureesAccompagnements = dureesAccompagnements
-    .toSorted(byLabel)
-    .map(toFormattedDureeAccompagnement)
+  const thematiquesToDisplay = isMediationNumeriqueAccompagnement
+    ? activites.thematiques
+    : activites.thematiquesDemarches
+
+  const thematiquesToDisplayMaxProportion = thematiquesToDisplay.reduce(
+    (max, thematique) =>
+      thematique.proportion > max ? thematique.proportion : max,
+    0,
+  )
 
   return (
     <>
@@ -85,24 +58,24 @@ export const StatistiquesAccompagnements = ({
         Statistiques sur vos activités
       </h2>
       <div className="fr-background-alt--blue-france fr-p-4w fr-mb-3w fr-border-radius--16 fr-grid-row fr-flex-gap-4v">
-        {modalitesAccompagnement.map(
-          ({ label, count, proportion, participants }) => (
-            <StatistiqueAccompagnement
-              key={label}
-              className="fr-col-xl fr-col-12"
-              accompagnement={label}
-              count={count}
-              proportion={proportion}
-            >
-              {participants && (
-                <>
-                  <span className="fr-text--bold">{participants}</span>{' '}
-                  participants
-                </>
-              )}
-            </StatistiqueAccompagnement>
-          ),
-        )}
+        {activites.typeActivites.map(({ count, proportion, value }) => (
+          <StatistiqueAccompagnement
+            key={value}
+            className="fr-col-xl fr-col-12"
+            typeActivite={value}
+            count={count}
+            proportion={proportion}
+          >
+            {value === 'Collectif' && (
+              <>
+                <span className="fr-text--bold">
+                  {totalCounts.accompagnements.collectifs.count}
+                </span>{' '}
+                participants
+              </>
+            )}
+          </StatistiqueAccompagnement>
+        ))}
       </div>
       <div className="fr-border fr-p-4w fr-mb-3w fr-border-radius--16">
         <div className="fr-grid-row fr-mb-3w fr-align-items-center">
@@ -125,7 +98,7 @@ export const StatistiquesAccompagnements = ({
               aria-hidden
             >
               Thématiques sélectionnées lors de l’enregistrement d’une activité.
-              À noter : une activité peut avoir plusieurs thématiques.
+              À noter&nbsp;: une activité peut avoir plusieurs thématiques.
             </span>
           </div>
           <SegmentedControl
@@ -152,30 +125,22 @@ export const StatistiquesAccompagnements = ({
           />
         </div>
         <ul className="fr-px-0 fr-mb-5w">
-          {isMediationNumeriqueAccompagnement &&
-            thematiquesAccompagnements.map((thematique, index) => (
+          {thematiquesToDisplay.map(
+            ({ value, proportion, label, count }, index) => (
               <ProgressListItem
-                key={thematique.label}
-                {...thematique}
+                key={value}
+                count={count}
+                proportion={proportion}
+                maxProportion={thematiquesToDisplayMaxProportion}
+                label={label}
                 colors={[
                   thematiquesAccompagnementColors[
                     index % thematiquesAccompagnementColors.length
                   ],
                 ]}
               />
-            ))}
-          {!isMediationNumeriqueAccompagnement &&
-            thematiquesDemarchesAdministratives.map((thematique, index) => (
-              <ProgressListItem
-                key={thematique.label}
-                {...thematique}
-                colors={[
-                  thematiquesAccompagnementColors[
-                    index % thematiquesAccompagnementColors.length
-                  ],
-                ]}
-              />
-            ))}
+            ),
+          )}
         </ul>
         <div className="fr-mb-0 fr-col fr-flex fr-align-items-center fr-mb-3w">
           <h3 className="fr-text--lg fr-mb-0">Matériel utilisé</h3>
@@ -202,11 +167,12 @@ export const StatistiquesAccompagnements = ({
         </div>
 
         <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--center">
-          {materielsAccompagnements.map(({ label, count, proportion }) => (
+          {activites.materiels.map(({ value, label, count, proportion }) => (
             <StatistiqueMateriel
-              key={label}
+              key={value}
               className="fr-col-xl fr-col-4"
-              value={label as MaterielLabel}
+              value={value}
+              label={label}
               count={count}
               proportion={proportion}
             />
@@ -241,12 +207,12 @@ export const StatistiquesAccompagnements = ({
             <div className="fr-flex fr-align-items-center">
               <AccompagnementPieChart
                 size={128}
-                data={canauxAccompagnements}
+                data={activites.mergedTypeLieu}
                 colors={canauxAccompagnementColors}
               />
               <QuantifiedShareLegend
                 classeName="fr-pl-3w"
-                quantifiedShares={canauxAccompagnements}
+                quantifiedShares={activites.mergedTypeLieu}
                 colors={canauxAccompagnementColors}
               />
             </div>
@@ -278,12 +244,12 @@ export const StatistiquesAccompagnements = ({
             <div className="fr-flex fr-align-items-center">
               <AccompagnementPieChart
                 size={128}
-                data={formattedDureesAccompagnements}
+                data={activites.durees}
                 colors={dureesAccompagnementColors}
               />
               <QuantifiedShareLegend
                 classeName="fr-pl-3w"
-                quantifiedShares={formattedDureesAccompagnements}
+                quantifiedShares={activites.durees}
                 colors={dureesAccompagnementColors}
               />
             </div>
@@ -321,7 +287,7 @@ export const StatistiquesAccompagnements = ({
             hideLabel: 'Réduire',
             count: 5,
           }}
-          quantifiedShares={lieuxAccompagnements}
+          quantifiedShares={structures}
           colors={[nombreAccompagnementParLieuColor]}
         />
       </div>

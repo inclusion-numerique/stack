@@ -44,7 +44,7 @@ export type AccompagnementsStats = {
     anonymes: number
   }
 }
-export const getAccompagnementStats = async ({
+export const getTotalCountsStats = async ({
   mediateurId,
   activitesFilters,
 }: {
