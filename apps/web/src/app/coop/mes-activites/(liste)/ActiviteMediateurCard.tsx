@@ -53,7 +53,7 @@ const ActiviteMediateurCard = ({
       </p>
       {displayDate && (
         <p className="fr-text--xs fr-text-mention--grey fr-text--bold fr-text--uppercase flex-1 fr-ml-auto fr-pl-3w fr-my-4v fr-whitespace-nowrap">
-          {formatActiviteDayDate(activite.cra.date)}
+          {formatActiviteDayDate(activite.date)}
         </p>
       )}
       <ActiviteBeneficiaireCardOpenModalLink activite={activite} />

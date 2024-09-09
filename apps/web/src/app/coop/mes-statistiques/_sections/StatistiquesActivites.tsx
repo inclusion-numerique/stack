@@ -69,7 +69,7 @@ export const StatistiquesActivites = ({
             {value === 'Collectif' && (
               <>
                 <span className="fr-text--bold">
-                  {totalCounts.accompagnements.collectifs.count}
+                  {totalCounts.accompagnements.collectifs.total}
                 </span>{' '}
                 participants
               </>

@@ -1,9 +1,9 @@
 import React from 'react'
 import Link from 'next/link'
 import { Button } from '@codegouvfr/react-dsfr/Button'
-import { Activite } from '@app/web/cra/activitesQueries'
 import { CreateCraModalDefinition } from '@app/web/app/coop/mes-activites/CreateCraModalDefinition'
 import ActiviteMediateurCard from '@app/web/app/coop/mes-activites/(liste)/ActiviteMediateurCard'
+import { ActiviteForList } from '@app/web/cra/activitesQueries'
 
 const ActiviteEmptyState = () => (
   <div className="fr-text--center fr-background-alt--blue-france fr-p-6w fr-border-radius--16">
@@ -27,7 +27,7 @@ const ActiviteEmptyState = () => (
 export const DernieresActivites = ({
   activites,
 }: {
-  activites: Activite[]
+  activites: ActiviteForList[]
 }) => (
   <>
     <div className="fr-flex fr-flex-wrap fr-flex-gap-4v fr-align-items-center fr-justify-content-space-between fr-mb-3w">
@@ -46,7 +46,7 @@ export const DernieresActivites = ({
     {activites.length > 0 ? (
       activites.map((activite) => (
         <ActiviteMediateurCard
-          key={activite.cra.id}
+          key={activite.id}
           activite={activite}
           displayDate
         />

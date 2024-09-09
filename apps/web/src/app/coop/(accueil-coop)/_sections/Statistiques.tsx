@@ -5,10 +5,12 @@ import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
 import { AccueilPageData } from '../getAccueilPageData'
 
 const BeneficiairesStatistiques = ({
-  beneficiaires,
+  total,
+  suivis,
   anonymes,
 }: {
-  beneficiaires: number
+  total: number
+  suivis: number
   anonymes: number
 }) => (
   <div className="fr-p-3w fr-border-radius--16 fr-background-alt--brown-caramel fr-height-full">
@@ -17,23 +19,25 @@ const BeneficiairesStatistiques = ({
       aria-hidden
     />
     <div className="fr-text--bold fr-my-1w fr-text--xl">
-      {beneficiaires + anonymes} Bénéficiaires accompagnés
+      {total} Bénéficiaires accompagnés
     </div>
     <ul className="fr-text-mention--grey fr-text--sm fr-mb-0 fr-list-group">
-      <li>{beneficiaires} bénéficiaires suivis</li>
+      <li>{suivis} bénéficiaires suivis</li>
       <li>{anonymes} bénéficiaires anonymes</li>
     </ul>
   </div>
 )
 
 const AccompagnementsStatistiques = ({
-  modalitesAccompagnement,
+  total,
+  individuels,
+  collectifs,
+  demarches,
 }: {
-  modalitesAccompagnement: {
-    label: string
-    count: number
-    participants?: number
-  }[]
+  total: number
+  individuels: { total: number; proportion: number }
+  collectifs: { total: number; proportion: number; participants: number }
+  demarches: { total: number; proportion: number }
 }) => (
   <div className="fr-p-3w fr-border-radius--16 fr-background-alt--brown-caramel fr-height-full">
     <span
@@ -41,27 +45,22 @@ const AccompagnementsStatistiques = ({
       aria-hidden
     />
     <div className="fr-text--bold fr-my-1w fr-text--xl">
-      {modalitesAccompagnement[0].count +
-        (modalitesAccompagnement[1].participants ?? 0) +
-        modalitesAccompagnement[2].count}{' '}
-      Accompagnements
+      {total} Accompagnements
     </div>
     <ul className="fr-text-mention--grey fr-text--sm fr-mb-0 fr-list-group">
-      <li>{modalitesAccompagnement[0].count} accompagnements individuels</li>
+      <li>{individuels.total} accompagnements individuels</li>
       <li>
-        {modalitesAccompagnement[1].participants} participants lors de{' '}
-        {modalitesAccompagnement[1].count} ateliers
+        {collectifs.participants} participants lors de {collectifs.total}{' '}
+        ateliers
       </li>
-      <li>
-        {modalitesAccompagnement[2].count} aides aux démarches administratives
-      </li>
+      <li>{demarches.total} aides aux démarches administratives</li>
     </ul>
   </div>
 )
 
 export const Statistiques = ({
-  accompagnementBeneficiaires,
-  modalitesAccompagnement,
+  totalCountsStats7Days,
+  totalCountsStats30Days,
 }: AccueilPageData['statistiques']) => {
   const [isMonthSelected, setIsMonthSelected] = useState(true)
 
@@ -80,14 +79,14 @@ export const Statistiques = ({
             {
               label: 'Sur les 30 derniers jours',
               nativeInputProps: {
-                checked: isMonthSelected,
+                defaultChecked: isMonthSelected,
                 onClick: () => setIsMonthSelected(true),
               },
             },
             {
               label: 'Sur les 7 derniers jours',
               nativeInputProps: {
-                checked: !isMonthSelected,
+                defaultChecked: !isMonthSelected,
                 onClick: () => setIsMonthSelected(false),
               },
             },
@@ -98,17 +97,15 @@ export const Statistiques = ({
         <div className="fr-col-lg-6 fr-col-md-12 fr-col-sm-6 fr-col-12">
           <BeneficiairesStatistiques
             {...(isMonthSelected
-              ? accompagnementBeneficiaires.dernierMois
-              : accompagnementBeneficiaires.derniereSemaine)}
+              ? totalCountsStats30Days.beneficiaires
+              : totalCountsStats7Days.beneficiaires)}
           />
         </div>
         <div className="fr-col-lg-6 fr-col-md-12 fr-col-sm-6 fr-col-12">
           <AccompagnementsStatistiques
-            modalitesAccompagnement={
-              isMonthSelected
-                ? modalitesAccompagnement.dernierMois
-                : modalitesAccompagnement.derniereSemaine
-            }
+            {...(isMonthSelected
+              ? totalCountsStats30Days.activites
+              : totalCountsStats7Days.activites)}
           />
         </div>
       </div>

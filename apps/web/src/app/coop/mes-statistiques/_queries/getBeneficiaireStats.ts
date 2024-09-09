@@ -221,25 +221,3 @@ export const getBeneficiaireStats = async ({
     communes: normalizeBeneficiairesCommunesRaw(rawCommunes),
   }
 }
-
-export const EMPTY_BENEFICIAIRE_DATA: Record<
-  BeneficiaireCategory,
-  QuantifiedShare[]
-> = {
-  genresBeneficiaires: Object.values(genreLabels).map((label) => ({
-    label,
-    count: 0,
-    proportion: 0,
-  })),
-  statusBeneficiaires: Object.values(statutSocialLabels).map((label) => ({
-    label,
-    count: 0,
-    proportion: 0,
-  })),
-  tranchesAgeBeneficiaires: Object.values(trancheAgeLabels).map((label) => ({
-    label,
-    count: 0,
-    proportion: 0,
-  })),
-  communesBeneficiaires: [],
-}

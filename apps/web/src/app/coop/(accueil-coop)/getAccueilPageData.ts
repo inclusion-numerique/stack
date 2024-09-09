@@ -1,47 +1,41 @@
-import { getActivitesListPageData } from '@app/web/app/coop/mes-activites/(liste)/getActivitesListPageData'
-import {
-  EMPTY_BENEFICIAIRE_DATA,
-  getBeneficiairesAnonymesStats,
-  getBeneficiaireStats,
-} from '@app/web/app/coop/mes-statistiques/_queries/getBeneficiaireStats'
-import {
-  getAccompagnementBeneficiaires,
-  getModalitesAccompagnementStats,
-} from '@app/web/app/coop/mes-statistiques/_queries/getModalitesAccompagnementStats'
-import { mergeQuantifiedShare } from '@app/web/app/coop/mes-statistiques/quantifiedShare'
+import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
+import { getActivitesListPageData } from '../mes-activites/(liste)/getActivitesListPageData'
+import { getTotalCountsStats } from '../mes-statistiques/_queries/getTotalCountsStats'
+
+const activitesFiltersLastDays = (daysCount: number) => {
+  const currentDate = new Date()
+  currentDate.setDate(currentDate.getDate() - daysCount)
+  const activitesFilters: ActivitesFilters = {
+    du: currentDate.toISOString().split('T')[0],
+    au: new Date().toISOString().split('T')[0],
+  }
+  return activitesFilters
+}
 
 export const getAccueilPageData = async (mediateurId: string) => {
-  const modalitesAccompagnement =
-    await getModalitesAccompagnementStats(mediateurId)
+  const totalCountsStats7Days = await getTotalCountsStats({
+    mediateurId,
+    activitesFilters: activitesFiltersLastDays(7),
+  })
 
-  const beneficiaireStats = await getBeneficiaireStats(mediateurId)
+  const totalCountsStats30Days = await getTotalCountsStats({
+    mediateurId,
+    activitesFilters: activitesFiltersLastDays(30),
+  })
 
-  const beneficiairesAnonymesStats =
-    await getBeneficiairesAnonymesStats(mediateurId)
-
-  const accompagnementBeneficiaires = getAccompagnementBeneficiaires(
-    modalitesAccompagnement,
-    mergeQuantifiedShare(EMPTY_BENEFICIAIRE_DATA, beneficiaireStats),
-    mergeQuantifiedShare(EMPTY_BENEFICIAIRE_DATA, beneficiairesAnonymesStats),
-  )
-
-  const data = await getActivitesListPageData({
+  const {
+    searchResult: { activites },
+  } = await getActivitesListPageData({
     mediateurId,
     searchParams: { lignes: '3' },
   })
 
   return {
-    activites: data.searchResult.activites,
     statistiques: {
-      accompagnementBeneficiaires: {
-        dernierMois: accompagnementBeneficiaires,
-        derniereSemaine: accompagnementBeneficiaires,
-      },
-      modalitesAccompagnement: {
-        dernierMois: modalitesAccompagnement,
-        derniereSemaine: modalitesAccompagnement,
-      },
+      totalCountsStats7Days,
+      totalCountsStats30Days,
     },
+    activites,
   }
 }
 
