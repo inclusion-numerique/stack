@@ -55,15 +55,15 @@ export const StatistiquesGenerales = ({
                 dont&nbsp;:
                 <ul>
                   <li>
-                    {totalCounts.accompagnements.individuels.count}{' '}
+                    {totalCounts.accompagnements.individuels.total}{' '}
                     accompagnements individuels
                   </li>
                   <li>
-                    {totalCounts.accompagnements.collectifs.count} participants
+                    {totalCounts.activites.collectifs.participants} participants
                     lors de {totalCounts.activites.collectifs.total} ateliers*
                   </li>
                   <li>
-                    {totalCounts.accompagnements.demarches.count} aides aux
+                    {totalCounts.accompagnements.demarches.total} aides aux
                     démarches administratives
                   </li>
                 </ul>

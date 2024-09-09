@@ -3,8 +3,15 @@ import { typeActiviteIllustrations, typeActiviteLabels } from '@app/web/cra/cra'
 import ActiviteBeneficiaireCardOpenModalLink from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/ActiviteBeneficiaireCardOpenModalLink'
 import type { ActiviteForList } from '@app/web/cra/activitesQueries'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
+import { formatActiviteDayDate } from '@app/web/utils/activiteDayDateFormat'
 
-const ActiviteMediateurCard = ({ activite }: { activite: ActiviteForList }) => {
+const ActiviteMediateurCard = ({
+  activite,
+  displayDate = false,
+}: {
+  activite: ActiviteForList
+  displayDate?: boolean
+}) => {
   const spacer = <span className="fr-mx-2v">·</span>
 
   return (
@@ -44,7 +51,11 @@ const ActiviteMediateurCard = ({ activite }: { activite: ActiviteForList }) => {
           </>
         )}
       </p>
-
+      {displayDate && (
+        <p className="fr-text--xs fr-text-mention--grey fr-text--bold fr-text--uppercase flex-1 fr-ml-auto fr-pl-3w fr-my-4v fr-whitespace-nowrap">
+          {formatActiviteDayDate(activite.date)}
+        </p>
+      )}
       <ActiviteBeneficiaireCardOpenModalLink activite={activite} />
     </div>
   )

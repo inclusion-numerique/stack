@@ -1,0 +1,5 @@
+export * from './ActionsRapides'
+export * from './DernieresActivites'
+export * from './InformationsCoop'
+export * from './Statistiques'
+export * from './Support'

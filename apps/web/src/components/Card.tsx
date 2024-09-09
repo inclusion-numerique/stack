@@ -15,6 +15,8 @@ const Card = ({
   children,
   header,
   contentSeparator = false,
+  arrowTop = false,
+  arrowSm = false,
 }: {
   id?: string
   className?: string
@@ -28,14 +30,18 @@ const Card = ({
   children?: ReactNode
   header?: ReactNode
   contentSeparator?: boolean
+  arrowTop?: boolean
+  arrowSm?: boolean
 }) => (
   <div
     id={id}
     data-testid={dataTestid}
-    className={classNames(
-      className,
-      `fr-card ${noBorder && 'fr-card--no-border'} ${enlargeLink && 'fr-enlarge-link'}`,
-    )}
+    className={classNames(className, 'fr-card', [
+      noBorder && 'fr-card--no-border',
+      enlargeLink && 'fr-enlarge-link',
+      arrowTop && 'fr-card--arrow-top',
+      arrowSm && 'fr-card--arrow-sm',
+    ])}
   >
     <div className="fr-card__body">
       <div className="fr-card__content">

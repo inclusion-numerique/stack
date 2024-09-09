@@ -1,16 +1,19 @@
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
-import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
+import type { Metadata } from 'next'
+import React from 'react'
+import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+import { Accueil } from './Accueil'
+import { getAccueilPageData } from './getAccueilPageData'
+
+export const metadata: Metadata = {
+  title: metadataTitle('Accueil'),
+}
 
 const Page = async () => {
-  const user = await getAuthenticatedSessionUser()
+  const user = await getAuthenticatedMediateur()
+  const dashboardPageData = await getAccueilPageData(user.mediateur.id)
 
-  return (
-    <CoopPageContainer size={944}>
-      <h1 className="fr-text-title--blue-france fr-mt-10v">
-        Bonjour {user.firstName || user.name || user.email} 👋
-      </h1>
-    </CoopPageContainer>
-  )
+  return <Accueil {...user} {...dashboardPageData} />
 }
 
 export default Page

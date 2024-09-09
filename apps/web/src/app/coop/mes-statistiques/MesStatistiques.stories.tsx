@@ -62,21 +62,21 @@ const statistiquesPageData = {
     accompagnements: {
       total: 3300,
       individuels: {
-        count: 1650,
+        total: 1650,
         proportion: 50,
       },
       collectifs: {
-        count: 1350,
+        total: 1350,
         proportion: 40,
       },
       demarches: {
-        count: 300,
+        total: 300,
         proportion: 10,
       },
     },
     activites: {
       total: 1000,
-      individuel: {
+      individuels: {
         total: 500,
         proportion: 50,
       },

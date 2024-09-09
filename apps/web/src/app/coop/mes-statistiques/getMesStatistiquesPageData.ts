@@ -78,7 +78,6 @@ export const getMesStatistiquesPageData = async ({
     beneficiaires,
     activites,
     structures,
-
     activitesFilters,
     communesOptions,
     departementsOptions,

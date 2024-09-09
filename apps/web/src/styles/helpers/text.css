@@ -1,0 +1,31 @@
+.fr-text--medium {
+  font-weight: 500 !important;
+}
+
+.fr-text--center {
+  text-align: center;
+}
+
+.fr-text--right {
+  text-align: right !important;
+}
+
+.fr-text--justify {
+  text-align: justify !important;
+}
+
+.fr-text--break-all {
+  word-break: break-all;
+}
+
+.fr-text--uppercase {
+  text-transform: uppercase;
+}
+
+.fr-whitespace-nowrap {
+  white-space: nowrap;
+}
+
+.fr-line-height-1 {
+  line-height: 1 !important;
+}

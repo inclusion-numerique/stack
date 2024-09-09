@@ -9,7 +9,7 @@ import { allocatePercentages } from '@app/web/app/coop/mes-statistiques/_queries
 export type AccompagnementsStats = {
   activites: {
     total: number
-    individuel: {
+    individuels: {
       total: number
       proportion: number
     }
@@ -26,15 +26,15 @@ export type AccompagnementsStats = {
   accompagnements: {
     total: number
     individuels: {
-      count: number
+      total: number
       proportion: number
     }
     collectifs: {
-      count: number
+      total: number
       proportion: number
     }
     demarches: {
-      count: number
+      total: number
       proportion: number
     }
   }
@@ -106,7 +106,7 @@ export const getTotalCountsStats = async ({
     return {
       activites: {
         total: result.total_activites,
-        individuel: {
+        individuels: {
           total: result.total_individuels,
           proportion: proportionActivitesIndividuels,
         },
@@ -123,15 +123,15 @@ export const getTotalCountsStats = async ({
       accompagnements: {
         total: result.total_accompagnements,
         individuels: {
-          count: result.total_individuels,
+          total: result.total_individuels,
           proportion: proportionAccompagnementsIndividuels,
         },
         collectifs: {
-          count: result.total_accompagnements_collectifs,
+          total: result.total_accompagnements_collectifs,
           proportion: proportionAccompagnementsCollectifs,
         },
         demarches: {
-          count: result.total_demarches,
+          total: result.total_demarches,
           proportion: proportionAccompagnementsDemarches,
         },
       },

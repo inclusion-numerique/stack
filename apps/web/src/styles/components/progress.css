@@ -1,0 +1,44 @@
+.fr-progress,
+.fr-progress-stacked {
+  --progress-height: 12px;
+  --progress-radius: 16px;
+
+  display: flex;
+  height: var(--progress-height);
+  overflow: hidden;
+  font-size: 0.75rem;
+  background-color: var(--blue-france-975-75);
+  border-radius: var(--progress-radius);
+}
+
+.fr-progress__bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--text-default-grey);
+  text-align: center;
+  white-space: nowrap;
+  background-color: var(--text-action-high-blue-france);
+}
+
+.fr-progress--sm {
+  --progress-height: 8px;
+}
+
+.fr-progress--lg {
+  --progress-height: 24px;
+}
+
+.fr-progress:last-child .fr-progress__bar {
+  border-start-end-radius: var(--progress-radius);
+  border-end-end-radius: var(--progress-radius);
+}
+
+.fr-progress-stacked > .fr-progress {
+  overflow: visible;
+}
+
+.fr-progress-stacked > .fr-progress > .fr-progress__bar {
+  width: 100%;
+}

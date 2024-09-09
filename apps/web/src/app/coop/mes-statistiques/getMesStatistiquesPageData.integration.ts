@@ -90,21 +90,21 @@ const emptyData = {
     accompagnements: {
       total: 0,
       individuels: {
-        count: 0,
+        total: 0,
         proportion: 0,
       },
       collectifs: {
-        count: 0,
+        total: 0,
         proportion: 0,
       },
       demarches: {
-        count: 0,
+        total: 0,
         proportion: 0,
       },
     },
     activites: {
       total: 0,
-      individuel: {
+      individuels: {
         total: 0,
         proportion: 0,
       },
