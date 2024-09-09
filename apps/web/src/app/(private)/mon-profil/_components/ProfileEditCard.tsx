@@ -13,17 +13,13 @@ import {
   UpdateProfileValidation,
 } from '@app/web/app/user/UpdateProfileValidation'
 import { ProfileView } from './ProfileView'
+import type { UserRoleLabel } from '@app/web/utils/getUserRoleLabel'
 
 const ProfileEditCard = (profileData: {
   email: string
   name?: string | null
   phone?: string | null
-  userRole:
-    | 'Administrateur'
-    | 'Coordinateur'
-    | 'Conseiller Numérique'
-    | 'Médiateur'
-    | 'Role non défini'
+  userRole: UserRoleLabel
 }) => {
   const mutation = trpc.user.updateProfile.useMutation()
   const router = useRouter()

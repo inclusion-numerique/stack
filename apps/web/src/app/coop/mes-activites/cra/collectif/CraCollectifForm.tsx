@@ -36,7 +36,6 @@ import {
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { craFormFieldsetClassname } from '@app/web/app/coop/mes-activites/cra/craFormFieldsetClassname'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
-import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipalityLabel'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
 import {
@@ -46,6 +45,7 @@ import {
 import CraBeneficiairesMultiplesForm from '@app/web/app/coop/mes-activites/cra/collectif/CraBeneficiairesMultiplesForm'
 import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
 import styles from '../CraForm.module.css'
+import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 
 const CraCollectifForm = ({
   defaultValues,
@@ -57,7 +57,7 @@ const CraCollectifForm = ({
   defaultValues: DefaultValues<CraCollectifData> & { mediateurId: string }
   lieuActiviteOptions: SelectOption[]
   initialCommunesOptions: AdressBanFormFieldOption[]
-  initialBeneficiairesOptions: SelectOption<BeneficiaireData | null>[]
+  initialBeneficiairesOptions: BeneficiaireOption[]
   retour?: string
 }) => {
   const form = useForm<CraCollectifData>({

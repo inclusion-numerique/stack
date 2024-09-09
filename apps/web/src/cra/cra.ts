@@ -79,6 +79,17 @@ export const dureeAccompagnementLabels = {
   '120': '2h',
 } as const
 
+export const dureeAccompagnementLabelFromIntegerValue = (
+  value: number,
+): string => {
+  const asString = value.toString(10)
+  if (asString in dureeAccompagnementLabels) {
+    return dureeAccompagnementLabels[asString as DureeAccompagnement]
+  }
+
+  return `${asString}min`
+}
+
 export const dureeAccompagnementOptions = labelsToOptions(
   dureeAccompagnementLabels,
 )

@@ -1,10 +1,9 @@
-import { SelectOption } from '@app/ui/components/Form/utils/options'
 import { beneficiairesListWhere } from '@app/web/beneficiaire/searchBeneficiaire'
 import { prismaClient } from '@app/web/prismaClient'
 import { searchBeneficiaireSelect } from '@app/web/beneficiaire/queryBeneficiairesForList'
-import { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import { prismaBeneficiaireToBeneficiaireData } from '@app/web/beneficiaire/prismaBeneficiaireToBeneficiaireData'
+import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 
 export const getInitialBeneficiairesOptionsForSearch = async ({
   mediateurId,
@@ -61,7 +60,7 @@ export const getInitialBeneficiairesOptionsForSearch = async ({
     where: whereBeneficiaire,
   })
 
-  const initialBeneficiairesOptions: SelectOption<BeneficiaireData | null>[] =
+  const initialBeneficiairesOptions: BeneficiaireOption[] =
     beneficiariesForSelect.map((beneficiaire) => ({
       label: getBeneficiaireDisplayName({
         nom: beneficiaire.nom,

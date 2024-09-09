@@ -5,7 +5,7 @@ const isoDayRegex = /^\d{4}-\d{2}-\d{2}$/
 
 export const ActivitesFilterValidations = {
   du: z.string().regex(isoDayRegex).optional(),
-  au: z.string().optional(),
+  au: z.string().regex(isoDayRegex).optional(),
   type: z.enum(typeActiviteSlugValues).optional(),
   beneficiaire: z.string().uuid().optional(),
   commune: z.string().length(5).optional(),

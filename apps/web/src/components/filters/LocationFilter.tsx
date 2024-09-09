@@ -8,6 +8,7 @@ import {
 } from '@app/ui/components/Form/utils/options'
 import FilterTag from '@app/web/components/filters/FilterTag'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { locationTypeLabels } from '@app/web/cra/generateActivitesFiltersLabels'
 
 export type LocationFilterType = 'lieu' | 'commune' | 'departement'
 
@@ -17,14 +18,6 @@ export type LocationFilterValue = {
 }
 
 export type LocationFilterOnChange = (value: LocationFilterValue | null) => void
-
-const locationTypeLabels: {
-  [key in LocationFilterType]: string
-} = {
-  lieu: 'Lieu d’activité',
-  commune: 'Commune',
-  departement: 'Département',
-}
 
 const locationTypeOptions: SelectOption<LocationFilterType>[] =
   labelsToOptions(locationTypeLabels)

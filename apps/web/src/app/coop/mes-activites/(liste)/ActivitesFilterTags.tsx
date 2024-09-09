@@ -12,7 +12,7 @@ import PeriodFilter, {
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import ActiviteTypeFilter from '@app/web/components/filters/ActiviteTypeFilter'
 import BeneficiaireFilter from '@app/web/components/filters/BeneficiaireFilter'
-import { BeneficiaireOption } from '@app/web/hooks/useBeneficiaireSearch'
+import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import LocationFilter, {
   LocationFilterValue,
 } from '@app/web/components/filters/LocationFilter'
