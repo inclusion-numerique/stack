@@ -1,6 +1,12 @@
 /* eslint-disable no-param-reassign */
 import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
-import { conseillerNumerique, mediateurAvecActivite, mediateurSansActivites } from '@app/fixtures/users'
+import {
+  conseillerNumerique,
+  mediateurAvecActivite,
+  mediateurAvecActiviteMediateurId,
+  mediateurSansActivites,
+  mediateurSansActivitesMediateurId,
+} from '@app/fixtures/users'
 import {
   getMesStatistiquesPageData,
   MesStatistiquesGraphOptions,
@@ -34,7 +40,7 @@ const graphOptions = {
   fin: new Date('2024-08-15'),
 } satisfies MesStatistiquesGraphOptions
 
-const emptyData = {
+const emptyData: MesStatistiquesPageData = {
   accompagnementsParJour: [
     { label: '17/07', count: 0 },
     { label: '18/07', count: 0 },
@@ -149,7 +155,7 @@ const emptyData = {
   departementsOptions: [],
   initialBeneficiairesOptions: [],
   lieuxActiviteOptions: [],
-} satisfies MesStatistiquesPageData
+}
 
 const createExpectedData = (
   transform: (data: typeof emptyData) => MesStatistiquesPageData,
@@ -204,7 +210,7 @@ describe('getMesStatistiquesPageData', () => {
   describe('mediateur sans activites', () => {
     test('should give empty data without filters', async () => {
       const data = await getMesStatistiquesPageData({
-        mediateurId: mediateurSansActivites.mediateur.connectOrCreate.where.id,
+        mediateurId: mediateurSansActivitesMediateurId,
         activitesFilters: {},
         graphOptions,
       })
@@ -458,7 +464,7 @@ describe('getMesStatistiquesPageData', () => {
       },
     ]
 
-    const mediateurId = mediateurAvecActivite.mediateur.connectOrCreate.where.id
+    const mediateurId = mediateurAvecActiviteMediateurId
 
     let expectedCommon: Pick<
       MesStatistiquesPageData,
@@ -500,7 +506,7 @@ describe('getMesStatistiquesPageData', () => {
 
     test.each(cases)('$title', async ({ activitesFilters, expected }) => {
       const data = await getMesStatistiquesPageData({
-        mediateurId: mediateurAvecActivite.mediateur.connectOrCreate.where.id,
+        mediateurId: mediateurAvecActiviteMediateurId,
         activitesFilters,
         graphOptions,
       })
