@@ -1,9 +1,9 @@
 import { useCallback, useMemo, useRef } from 'react'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
-import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import { trpc } from '@app/web/trpc'
 import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
+import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 
 const beneficiaireOptionRichLabel = (value: BeneficiaireData) => {
   const { communeResidence } = value
@@ -22,8 +22,6 @@ const beneficiaireOptionRichLabel = (value: BeneficiaireData) => {
     </>
   ) as unknown as string // ReactNode is supported but types are not up to date
 }
-
-export type BeneficiaireOption = SelectOption<BeneficiaireData | null>
 
 export const useCraBeneficiaireLoadOptions = ({
   initialOptions: initialOptionsProperty,

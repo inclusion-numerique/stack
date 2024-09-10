@@ -3,20 +3,8 @@ import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
 import ProfileEditCard from './_components/ProfileEditCard'
-
-const getUserRole = (user: {
-  role: string
-  mediateur: { conseillerNumerique: { id: string } | null } | null
-  coordinateur: { id: string } | null
-}) => {
-  if (user.role === 'Admin') return 'Administrateur'
-  if (user.coordinateur != null) return 'Coordinateur'
-  if (user.mediateur?.conseillerNumerique != null) return 'Conseiller Numérique'
-  if (user.mediateur != null) return 'Médiateur'
-
-  return 'Role non défini'
-}
 
 const MonProfilPage = async () => {
   const user = await getAuthenticatedSessionUser()
@@ -45,7 +33,7 @@ const MonProfilPage = async () => {
             name={user.name}
             email={user.email}
             phone={user.phone}
-            userRole={getUserRole(user)}
+            userRole={getUserRoleLabel(user)}
           />
         </main>
       </div>

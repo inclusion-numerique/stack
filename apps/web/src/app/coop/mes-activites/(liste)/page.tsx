@@ -5,9 +5,9 @@ import MesActivitesListePage from '@app/web/app/coop/mes-activites/(liste)/MesAc
 import type { ActivitesDataTableSearchParams } from '@app/web/cra/ActivitesDataTable'
 import MesActivitesListeLayout from '@app/web/app/coop/mes-activites/(liste)/MesActivitesListeLayout'
 import { validateActivitesFilters } from '@app/web/cra/ActivitesFilters'
-import ActivitesFilterTags from '@app/web/app/coop/mes-activites/(liste)/ActivitesFilterTags'
 import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFiltersOptionsForMediateur'
 import { mediateurHasActivites } from '@app/web/cra/activitesQueries'
+import MesActivitesListeHeader from '@app/web/app/coop/mes-activites/(liste)/MesActivitesListeHeader'
 
 const MesActivitesPage = async ({
   searchParams: rawSearchParams = {},
@@ -27,6 +27,10 @@ const MesActivitesPage = async ({
       searchParams,
     })
 
+    const searchResultMatchesCount = data.then(
+      ({ searchResult: { matchesCount } }) => matchesCount,
+    )
+
     const {
       communesOptions,
       departementsOptions,
@@ -39,7 +43,8 @@ const MesActivitesPage = async ({
 
     return (
       <MesActivitesListeLayout vue="liste">
-        <ActivitesFilterTags
+        <MesActivitesListeHeader
+          searchResultMatchesCount={searchResultMatchesCount}
           defaultFilters={searchParams}
           initialBeneficiairesOptions={initialBeneficiairesOptions}
           communesOptions={communesOptions}

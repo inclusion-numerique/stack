@@ -1,11 +1,9 @@
 import { useCallback, useRef } from 'react'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
-import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { trpc } from '@app/web/trpc'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
-
-export type BeneficiaireOption = SelectOption<BeneficiaireData | null>
+import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 
 const beneficiaireOptionRichLabel = (value: BeneficiaireData) => {
   const { communeResidence } = value

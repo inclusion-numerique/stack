@@ -57,10 +57,10 @@ import CraBeneficiaryForm, {
   CraDataWithBeneficiaire,
 } from '@app/web/app/coop/mes-activites/cra/CraBeneficiaryForm'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
-import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipalityLabel'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
 import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
+import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import styles from '../CraForm.module.css'
 
 /**
@@ -106,7 +106,7 @@ const CraDemarcheAdministrativeForm = ({
     mediateurId: string
   }
   lieuActiviteOptions: SelectOption[]
-  initialBeneficiairesOptions: SelectOption<BeneficiaireData | null>[]
+  initialBeneficiairesOptions: BeneficiaireOption[]
   retour?: string
 }) => {
   const form = useForm<CraDemarcheAdministrativeData>({
