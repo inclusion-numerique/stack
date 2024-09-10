@@ -39,7 +39,7 @@ export const mediateurAvecActiviteCrasIndividuels = [
     lieuCodePostal: '75001',
     lieuCodeInsee: '75101',
     lieuCommune: 'Paris 1er',
-    materiel: ['Ordinateur'],
+    materiel: ['Ordinateur', 'Telephone', 'Autre'],
   }),
   givenCraIndividuel({
     id: 'b0f901a3-38b0-4c30-89b8-ace056801ca2',
@@ -49,13 +49,13 @@ export const mediateurAvecActiviteCrasIndividuels = [
     date: new Date('2024-07-28'),
     creation: new Date('2024-07-28T10:00:00'),
     typeLieu: 'ADistance',
-    materiel: ['Ordinateur', 'Telephone'],
+    materiel: ['Ordinateur', 'Telephone', 'Tablette', 'Autre'],
   }),
   givenCraIndividuel({
     id: 'b72eb129-86e7-4cda-8238-5a57c79999a1',
     beneficiaireId: beneficiaireMaximaleMediateurAvecActivite.id,
     mediateurId: mediateurAvecActiviteMediateurId,
-    thematiques: [Thematique.Email, Thematique.Sante],
+    thematiques: [Thematique.Email],
     date: new Date('2024-07-28'),
     creation: new Date('2024-07-28T09:00:00'),
     typeLieu: 'Domicile',
@@ -101,7 +101,7 @@ export const mediateurAvecActiviteCrasDemarchesAdministratives = [
     creation: new Date('2024-08-05T15:30:00'),
     lieuCommune: 'Lyon 2eme',
     lieuCodePostal: '69002',
-    lieuCodeInsee: '69381',
+    lieuCodeInsee: '69382',
     structureId: null,
   }),
   givenCraDemarcheAdministrative({
@@ -178,7 +178,7 @@ export const conseillerNumeriqueCrasIndividuels = [
     lieuCodePostal: '75001',
     lieuCodeInsee: '75101',
     lieuCommune: 'Paris 1er',
-    materiel: ['Ordinateur'],
+    materiel: ['Ordinateur', 'Telephone', 'Tablette'],
   }),
   givenCraIndividuel({
     id: '4edab41b-f924-431f-b59e-def20528d1ef',
@@ -188,7 +188,7 @@ export const conseillerNumeriqueCrasIndividuels = [
     date: new Date('2024-07-28'),
     creation: new Date('2024-07-28T10:00:00'),
     typeLieu: 'ADistance',
-    materiel: ['Ordinateur', 'Telephone'],
+    materiel: ['Ordinateur', 'Telephone', 'Tablette', 'Autre'],
   }),
   givenCraIndividuel({
     id: 'a0e12e9c-46c7-4f83-86bd-824d18113bf6',
@@ -240,7 +240,7 @@ export const conseillerNumeriqueCrasDemarchesAdministratives = [
     creation: new Date('2024-08-05T15:30:00'),
     lieuCommune: 'Lyon 2eme',
     lieuCodePostal: '69002',
-    lieuCodeInsee: '69381',
+    lieuCodeInsee: '69382',
     structureId: null,
   }),
   givenCraDemarcheAdministrative({
