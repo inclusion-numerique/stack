@@ -270,8 +270,12 @@ export const conseillerInscription = givenUser({
   },
 })
 
+export const conseillerNumeriqueId = 'b66d2370-4245-4492-a630-02749a98237d'
+export const conseillerNumeriqueMediateurId =
+  '1ae07d95-316c-489f-893a-d17052c883b7'
+
 export const conseillerNumerique = givenUser({
-  id: 'b66d2370-4245-4492-a630-02749a98237d',
+  id: conseillerNumeriqueId,
   firstName: 'Conseiller Num',
   lastName: 'Inscrit',
   isFixture: true,
@@ -284,10 +288,10 @@ export const conseillerNumerique = givenUser({
   mediateur: {
     connectOrCreate: {
       where: {
-        id: '1ae07d95-316c-489f-893a-d17052c883b7',
+        id: conseillerNumeriqueMediateurId,
       },
       create: {
-        id: '1ae07d95-316c-489f-893a-d17052c883b7',
+        id: conseillerNumeriqueMediateurId,
         conseillerNumerique: {
           connectOrCreate: {
             where: {
