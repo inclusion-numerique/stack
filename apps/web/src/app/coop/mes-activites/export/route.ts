@@ -19,11 +19,7 @@ const ExportActivitesValidation = z
   })
   .extend(ActivitesFilterValidations)
 
-// We resize and convert images to webp on the fly and cache the result.
 export const GET = async (request: NextRequest) => {
-  // Log all query params
-  console.log(request.nextUrl.searchParams)
-
   const sessionToken = getSessionTokenFromNextRequestCookies(request.cookies)
   const user = await getSessionUserFromSessionToken(sessionToken)
 
@@ -42,7 +38,6 @@ export const GET = async (request: NextRequest) => {
   // Do not know why but TS does not understand user.mediateur is not null after previous check
   const typedUser = user as AuthenticatedMediateur
 
-  // Validate zod safe parese the query params into an object using ExportActivitesValidation
   const parsedQueryParams = ExportActivitesValidation.safeParse(
     request.nextUrl.searchParams,
   )

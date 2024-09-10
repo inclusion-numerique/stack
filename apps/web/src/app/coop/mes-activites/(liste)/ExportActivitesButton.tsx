@@ -36,7 +36,6 @@ const ExportActivitesButton = ({
         ? `${exportPath}?${searchParams.toString()}`
         : exportPath
 
-    console.log('EXPORT URL', pathWithSearchParams)
     download(pathWithSearchParams)
     ExportActiviteModal.close()
     createToast({
