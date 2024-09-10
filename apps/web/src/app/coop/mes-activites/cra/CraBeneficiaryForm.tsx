@@ -15,12 +15,10 @@ import IconInSquare from '@app/web/components/IconInSquare'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import type { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireValidation'
-import { AdresseBanData } from '@app/web/external-apis/ban/AdresseBanValidation'
+import type { AdresseBanData } from '@app/web/external-apis/ban/AdresseBanValidation'
 import { isBeneficiaireAnonymous } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
-import {
-  BeneficiaireOption,
-  useBeneficiaireSearch,
-} from '@app/web/hooks/useBeneficiaireSearch'
+import { useBeneficiaireSearch } from '@app/web/hooks/useBeneficiaireSearch'
+import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 
 /**
  * This component has 3 states :

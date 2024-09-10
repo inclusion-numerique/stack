@@ -1,10 +1,12 @@
 import { NextRequest } from 'next/server'
+import { z } from 'zod'
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
-import { z } from 'zod'
 import { ActivitesFilterValidations } from '@app/web/cra/ActivitesFilters'
 import { buildActivitesWorksheet } from '@app/web/worksheet/buildActivitesWorksheet'
+import { getActivitesWorksheetInput } from '@app/web/worksheet/getActivitesWorksheetInput'
+import { AuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -37,6 +39,9 @@ export const GET = async (request: NextRequest) => {
     })
   }
 
+  // Do not know why but TS does not understand user.mediateur is not null after previous check
+  const typedUser = user as AuthenticatedMediateur
+
   // Validate zod safe parese the query params into an object using ExportActivitesValidation
   const parsedQueryParams = ExportActivitesValidation.safeParse(
     request.nextUrl.searchParams,
@@ -58,7 +63,7 @@ export const GET = async (request: NextRequest) => {
   }
 
   const activitesWorksheetInput = await getActivitesWorksheetInput({
-    user,
+    user: typedUser,
     filters,
   })
 

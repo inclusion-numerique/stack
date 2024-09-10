@@ -3,8 +3,8 @@ import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
-import ProfileEditCard from './_components/ProfileEditCard'
 import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
+import ProfileEditCard from './_components/ProfileEditCard'
 
 const MonProfilPage = async () => {
   const user = await getAuthenticatedSessionUser()

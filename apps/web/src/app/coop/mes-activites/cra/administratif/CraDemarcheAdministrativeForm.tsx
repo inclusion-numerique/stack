@@ -1,6 +1,13 @@
 'use client'
 
-import { Control, DefaultValues, useForm, UseFormGetValues, UseFormSetValue, UseFormWatch } from 'react-hook-form'
+import {
+  Control,
+  DefaultValues,
+  useForm,
+  UseFormGetValues,
+  UseFormSetValue,
+  UseFormWatch,
+} from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
@@ -17,8 +24,14 @@ import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import CraFormLabel from '@app/web/app/coop/mes-activites/cra/CraFormLabel'
-import AdresseBanFormField, { type AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
-import { genreOptions, statutSocialOptions, trancheAgeOptions } from '@app/web/beneficiaire/beneficiaire'
+import AdresseBanFormField, {
+  type AdressBanFormFieldOption,
+} from '@app/web/components/form/AdresseBanFormField'
+import {
+  genreOptions,
+  statutSocialOptions,
+  trancheAgeOptions,
+} from '@app/web/beneficiaire/beneficiaire'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { trpc } from '@app/web/trpc'
 import RichCardLabel, {
@@ -40,13 +53,15 @@ import {
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { yesNoBooleanOptions } from '@app/web/utils/yesNoBooleanOptions'
 import { craFormFieldsetClassname } from '@app/web/app/coop/mes-activites/cra/craFormFieldsetClassname'
-import CraBeneficiaryForm, { CraDataWithBeneficiaire } from '@app/web/app/coop/mes-activites/cra/CraBeneficiaryForm'
+import CraBeneficiaryForm, {
+  CraDataWithBeneficiaire,
+} from '@app/web/app/coop/mes-activites/cra/CraBeneficiaryForm'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipalityLabel'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
 import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
-import styles from '../CraForm.module.css'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
+import styles from '../CraForm.module.css'
 
 /**
  * Initial options can come from the field data it self or be pre-populated by beneficiaire data

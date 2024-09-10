@@ -12,8 +12,8 @@ import {
   UpdateProfileData,
   UpdateProfileValidation,
 } from '@app/web/app/user/UpdateProfileValidation'
-import { ProfileView } from './ProfileView'
 import type { UserRoleLabel } from '@app/web/utils/getUserRoleLabel'
+import { ProfileView } from './ProfileView'
 
 const ProfileEditCard = (profileData: {
   email: string

@@ -44,8 +44,8 @@ import {
 } from '@app/web/cra/CraCollectifValidation'
 import CraBeneficiairesMultiplesForm from '@app/web/app/coop/mes-activites/cra/collectif/CraBeneficiairesMultiplesForm'
 import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
-import styles from '../CraForm.module.css'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
+import styles from '../CraForm.module.css'
 
 const CraCollectifForm = ({
   defaultValues,

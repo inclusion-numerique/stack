@@ -1,5 +1,5 @@
-import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
+import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import type { LocationFilterType } from '@app/web/components/filters/LocationFilter'
 import { typeActiviteSlugLabels } from '@app/web/cra/cra'
@@ -76,14 +76,14 @@ export const generateActivitesLocationNameFilterLabel = (
 
 const generateBeneficiaireFilterLabel = (
   { beneficiaire }: Pick<ActivitesFilters, 'beneficiaire'>,
-  { beneficiairesOptions }: { beneficiairesOptions: SelectOption[] },
+  { beneficiairesOptions }: { beneficiairesOptions: BeneficiaireOption[] },
 ) => {
   if (!beneficiaire) {
     return null
   }
 
   return (
-    beneficiairesOptions.find((option) => option.value === beneficiaire)
+    beneficiairesOptions.find((option) => option.value?.id === beneficiaire)
       ?.label ?? null
   )
 }

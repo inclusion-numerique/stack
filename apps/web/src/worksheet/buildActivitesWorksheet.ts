@@ -3,13 +3,11 @@ import type { SessionUser } from '@app/web/auth/sessionUser'
 import type { AuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { ActiviteForList } from '@app/web/cra/activitesQueries'
 import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
-import { dateAsDay } from '@app/web/utils/dateAsDay'
 import {
   autonomieStars,
   autonomieValues,
   degreDeFinalisationDemarcheHints,
   degreDeFinalisationDemarcheLabels,
-  dureeAccompagnementLabelFromIntegerValue,
   materielLabels,
   niveauAtelierStars,
   niveauAtelierValues,
@@ -50,6 +48,9 @@ export type BuildActivitesWorksheetInput = {
 
 const intraCellLineBreak = '\n'
 
+const maxLength = (values: (string | null | undefined)[]) =>
+  Math.max(...values.filter(Boolean).map((value) => value?.length ?? 10)) || 10
+
 const beneficiairesListCellFormatter =
   (activite: ActiviteForList) =>
   (
@@ -78,10 +79,11 @@ export const buildActivitesWorksheet = ({
 
   const worksheet = workbook.addWorksheet('Activités')
 
-  const informationsExport: [string, string][] = [
+  const informationsExport: [string, string | number][] = [
     ['Nom', user.firstName ?? '-'],
     ['Prénom', user.lastName ?? '-'],
     ['Rôle', getUserRoleLabel(user)],
+    ['Activités', activites.length],
     ['Date d’export', now.toLocaleDateString()],
     ['Heure d’export', now.toLocaleTimeString()],
   ]
@@ -122,7 +124,7 @@ export const buildActivitesWorksheet = ({
     'Bénéficiaire',
     'Canaux d’accompagnement',
     'Lieu',
-    'Durée',
+    'Durée (min)',
     'Nom de l’atelier',
     'Matériel numérique utilisé',
     'Thématique(s) d’accompagnement',
@@ -142,9 +144,11 @@ export const buildActivitesWorksheet = ({
 
   const separatorRowBeforeTable = worksheet.addRow([''])
 
+  const tableStartRowNumber = separatorRowBeforeTable.number + 1
+
   worksheet.addTable({
     name: 'Activités',
-    ref: `A${separatorRowBeforeTable.number}`,
+    ref: `A${tableStartRowNumber}`,
     headerRow: true,
     totalsRow: false,
     columns: activitesTableHeaders.map((label) => ({
@@ -176,7 +180,7 @@ export const buildActivitesWorksheet = ({
       } = activite
 
       return [
-        dateAsDay(date),
+        date,
         typeActiviteLabels[type],
         activite.accompagnements.length,
         beneficiairesListCell(getBeneficiaireDisplayName),
@@ -190,7 +194,7 @@ export const buildActivitesWorksheet = ({
           : lieuCommune
             ? `${lieuCodePostal} ${lieuCommune}`
             : '',
-        dureeAccompagnementLabelFromIntegerValue(duree),
+        duree,
         titreAtelier || '',
         materiel
           .map((materielValue) => materielLabels[materielValue])
@@ -225,18 +229,54 @@ export const buildActivitesWorksheet = ({
         beneficiairesListCell(({ commune, communeCodePostal }) =>
           commune ? `${communeCodePostal} ${commune}` : '-',
         ),
-        beneficiairesListCell(({ genre }) =>
-          genre ? genreLabels[genre] : '-',
+        beneficiairesListCell(
+          ({ genre }) => genreLabels[genre ?? 'NonCommunique'],
         ),
-        beneficiairesListCell(({ trancheAge }) =>
-          trancheAge ? trancheAgeLabels[trancheAge] : '-',
+        beneficiairesListCell(
+          ({ trancheAge }) => trancheAgeLabels[trancheAge ?? 'NonCommunique'],
         ),
-        beneficiairesListCell(({ statutSocial }) =>
-          statutSocial ? statutSocialLabels[statutSocial] : '-',
+        beneficiairesListCell(
+          ({ statutSocial }) =>
+            statutSocialLabels[statutSocial ?? 'NonCommunique'],
         ),
         notes || '',
       ]
     }),
+  })
+
+  // Adjust column width automatically based on content
+  for (const column of worksheet.columns) {
+    let columnMaxLength = 10
+
+    if (!column.eachCell) continue
+
+    column.eachCell({ includeEmpty: false }, (cell) => {
+      const cellLength =
+        cell.value && typeof cell.value !== 'object'
+          ? maxLength(cell.value.toString().split('\n'))
+          : 10
+
+      if (cellLength > columnMaxLength) {
+        columnMaxLength = cellLength
+      }
+    })
+    column.width = columnMaxLength
+  }
+
+  const dateColumnIndex = 1
+  worksheet
+    .getColumn(dateColumnIndex)
+    .eachCell({ includeEmpty: true }, (cell, rowNumber) => {
+      if (rowNumber >= tableStartRowNumber && cell.value) {
+        // eslint-disable-next-line no-param-reassign
+        cell.numFmt = 'dd/mm/yyyy' // Set date format only for rows starting from tableStartRowNumber
+      }
+    })
+
+  // Ensure that the rows auto-adjust their height to fit the wrapped text and displays break lines
+  worksheet.eachRow((row) => {
+    // eslint-disable-next-line no-param-reassign
+    row.alignment = { wrapText: true, vertical: 'top' }
   })
 
   return workbook

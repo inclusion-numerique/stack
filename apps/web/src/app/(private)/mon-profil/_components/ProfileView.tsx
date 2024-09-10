@@ -1,3 +1,5 @@
+import type { UserRoleLabel } from '@app/web/utils/getUserRoleLabel'
+
 export const ProfileView = ({
   email,
   name,
@@ -7,12 +9,7 @@ export const ProfileView = ({
   email: string
   name?: string | null
   phone?: string | null
-  userRole:
-    | 'Administrateur'
-    | 'Coordinateur'
-    | 'Conseiller Numérique'
-    | 'Médiateur'
-    | 'Role non défini'
+  userRole: UserRoleLabel
 }) => (
   <div className="fr-flex fr-direction-column fr-flex-gap-6v">
     <div>

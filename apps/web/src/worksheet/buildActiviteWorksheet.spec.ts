@@ -32,8 +32,10 @@ describe('buildActivitesWorksheet', () => {
       filters: {
         du: '01/01/2023',
         au: '31/01/2023',
+        periode: null, // unused in worksheet
         typeLieu: 'Commune',
         nomLieu: 'Lyon',
+        lieu: null, // unused in worksheet
         type: 'Accompagnement',
         beneficiaire: 'Beneficiaire Name',
       },
@@ -61,13 +63,13 @@ describe('buildActivitesWorksheet', () => {
     expect(nomValueCell.value).toBe('John')
 
     // Check if "Filtres" section is present
-    const filtersTitleCell = worksheet.getCell('A8')
+    const filtersTitleCell = worksheet.getCell('A9')
     expect(filtersTitleCell.value).toBe('Filtres')
     expect(filtersTitleCell.font?.bold).toBe(true)
 
     // Check a specific filter, e.g., "Type de lieu: Commune"
-    const filterTypeLieuCell = worksheet.getCell('A11')
-    const filterTypeLieuValueCell = worksheet.getCell('B11')
+    const filterTypeLieuCell = worksheet.getCell('A12')
+    const filterTypeLieuValueCell = worksheet.getCell('B12')
     expect(filterTypeLieuCell.value).toBe('Type de lieu')
     expect(filterTypeLieuValueCell.value).toBe('Commune')
   })
