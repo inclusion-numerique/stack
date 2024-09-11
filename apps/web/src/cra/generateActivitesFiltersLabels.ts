@@ -19,7 +19,7 @@ export const generateActivitesPeriodeFilterLabel = ({
 }: {
   au: string
   du: string
-}) => `${dateAsDay(new Date(du))}&nbsp;-&nbsp;${dateAsDay(new Date(au))}`
+}) => `${dateAsDay(new Date(du))} - ${dateAsDay(new Date(au))}`
 
 export const generateActivitesLocationTypeFilterLabel = ({
   commune,

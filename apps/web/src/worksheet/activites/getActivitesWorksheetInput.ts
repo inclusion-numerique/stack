@@ -1,11 +1,11 @@
-import {
-  BuildActivitesWorksheetInput,
-  WorksheetUser,
-} from '@app/web/worksheet/buildActivitesWorksheet'
 import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { searchActivite } from '@app/web/cra/searchActivite'
 import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFiltersOptionsForMediateur'
 import { generateActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
+import {
+  BuildActivitesWorksheetInput,
+  WorksheetUser,
+} from './buildActivitesWorksheet'
 
 export const getActivitesWorksheetInput = async ({
   user,

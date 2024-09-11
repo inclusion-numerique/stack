@@ -34,12 +34,10 @@ const BeneficiairesStatistiques = ({
 )
 
 const AccompagnementsStatistiques = ({
-  total,
   individuels,
   collectifs,
   demarches,
 }: {
-  total: number
   individuels: { total: number; proportion: number }
   collectifs: { total: number; proportion: number; participants: number }
   demarches: { total: number; proportion: number }
@@ -50,7 +48,8 @@ const AccompagnementsStatistiques = ({
       aria-hidden
     />
     <div className="fr-text--bold fr-my-1w fr-text--xl">
-      {total} Accompagnement{sPluriel(total)}
+      {collectifs.participants + individuels.total + demarches.total}{' '}
+      Accompagnement{sPluriel(collectifs.participants + individuels.total + demarches.total)}
     </div>
     <ul className="fr-text-mention--grey fr-text--sm fr-mb-0 fr-list-group">
       <li>

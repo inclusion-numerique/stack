@@ -1,7 +1,7 @@
 import {
   buildActivitesWorksheet,
   BuildActivitesWorksheetInput,
-} from '@app/web/worksheet/buildActivitesWorksheet'
+} from './buildActivitesWorksheet'
 
 describe('buildActivitesWorksheet', () => {
   let mockInput: BuildActivitesWorksheetInput
