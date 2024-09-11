@@ -1,6 +1,10 @@
 import { getBeneficiaireAccompagnementsPageData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/getBeneficiaireAccompagnementsPageData'
 import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
-import { mediateurAvecActivite } from '@app/fixtures/users'
+import {
+  conseillerNumerique,
+  mediateurAvecActivite,
+  mediateurSansActivites,
+} from '@app/fixtures/users'
 import {
   beneficiaireMaximaleMediateurAvecActivite,
   beneficiaireSansAccompagnementsMediateurAvecActivite,
@@ -13,10 +17,12 @@ import {
 import { seedStructures } from '@app/fixtures/structures'
 import { prismaClient } from '@app/web/prismaClient'
 
-describe.skip('getBeneficiaireAccompagnementsData', () => {
+describe('getBeneficiaireAccompagnementsData', () => {
   beforeAll(async () => {
     await seedStructures(prismaClient)
     await resetFixtureUser(mediateurAvecActivite)
+    await resetFixtureUser(mediateurSansActivites)
+    await resetFixtureUser(conseillerNumerique)
   })
 
   it('returns no activites for beneficiaire with no data', async () => {
@@ -79,7 +85,7 @@ describe.skip('getBeneficiaireAccompagnementsData', () => {
           activites: [
             // Demarche Admin on 2024-08-03 (creation: 16:00:00)
             expect.objectContaining({
-              id: mediateurAvecActiviteCrasDemarchesAdministratives[2].activite
+              id: mediateurAvecActiviteCrasDemarchesAdministratives[3].activite
                 .id,
             }),
             // Demarche Admin on 2024-08-03 (creation: 15:00:00)
