@@ -14,7 +14,7 @@ const ProgressBar = ({
   className,
   tooltopKey,
 }: {
-  progress?: { value: number; label: string }[]
+  progress?: { percentage: number; count?: number; label: string }[]
   displayProgress?: boolean
   min?: number
   max?: number
@@ -31,7 +31,7 @@ const ProgressBar = ({
       size === 'large' && 'fr-progress--lg',
     )}
   >
-    {progress.map(({ value, label }, index) => (
+    {progress.map(({ percentage, label, count }, index) => (
       <Fragment key={label}>
         {tooltopKey && (
           <span
@@ -40,7 +40,8 @@ const ProgressBar = ({
             role="tooltip"
             aria-hidden
           >
-            {label} : <span className="fr-text--bold">{value}</span>
+            {label} :{' '}
+            <span className="fr-text--bold">{count ?? percentage}</span>
           </span>
         )}
         <motion.span
@@ -57,12 +58,12 @@ const ProgressBar = ({
           )}
           role="progressbar"
           aria-label={label}
-          aria-valuenow={value ?? 0}
+          aria-valuenow={percentage ?? 0}
           aria-valuemin={min}
           aria-valuemax={max}
           animate={
             progress.length > 1
-              ? { width: `${value ?? 0}%`, transition: { duration: 0.2 } }
+              ? { width: `${percentage ?? 0}%`, transition: { duration: 0.2 } }
               : {}
           }
         >
@@ -76,11 +77,14 @@ const ProgressBar = ({
             }}
             animate={
               progress.length === 1
-                ? { width: `${value ?? 0}%`, transition: { duration: 0.2 } }
+                ? {
+                    width: `${percentage ?? 0}%`,
+                    transition: { duration: 0.2 },
+                  }
                 : {}
             }
           >
-            {displayProgress && `${value ?? 0}%`}
+            {displayProgress && `${percentage ?? 0}%`}
           </motion.span>
         </motion.span>
       </Fragment>

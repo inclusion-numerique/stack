@@ -27,7 +27,8 @@ export const ProgressListItem = ({
       progress={[
         {
           label,
-          value: maxProportion === 0 ? 0 : (100 * proportion) / maxProportion,
+          percentage:
+            maxProportion === 0 ? 0 : (100 * proportion) / maxProportion,
         },
       ]}
       colors={colors}
