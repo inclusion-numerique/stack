@@ -1,6 +1,6 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import classNames from 'classnames'
 import type { DefaultValues } from 'react-hook-form'
@@ -50,7 +50,7 @@ const CreateCraModalContent = ({
     | DefaultValues<CraDemarcheAdministrativeData>
   onClose: () => void
 }) => {
-  const { push } = useRouter()
+  const { push, prefetch } = useRouter()
   const navigateTo = (path: string) => {
     if (craDefaultValues) {
       push(`${path}?v=${encodeSerializableState(craDefaultValues)}`)
@@ -59,6 +59,13 @@ const CreateCraModalContent = ({
     }
     onClose()
   }
+  
+  useEffect(() => {
+    prefetch('/coop/mes-activites/cra/individuel')
+    prefetch('/coop/mes-activites/cra/collectif')
+    prefetch('/coop/mes-activites/cra/administratif')
+  }, [prefetch])
+
   return (
     <>
       <p className="fr-text--xl">
