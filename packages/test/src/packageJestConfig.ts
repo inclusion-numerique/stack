@@ -57,6 +57,7 @@ export const packageJestConfig = ({
       '**/*.integration.tsx',
     ],
     moduleNameMapper: {
+      '\\.module\\.css$': 'identity-obj-proxy', // Mock CSS modules
       '^@app/web/(.*)$': '<rootDir>/../../apps/web/src/$1',
       '^@app/cli/(.*)$': '<rootDir>/../../apps/cli/src/$1',
       '^@app/cdk/(.*)$': '<rootDir>/../../packages/cdk/src/$1',

@@ -131,7 +131,7 @@ describe('getBeneficiaireStats', () => {
         expect(
           normalizeBeneficiairesCommunesRaw([
             {
-              code_insee: '69381',
+              code_insee: '69382',
               commune: 'Lyon 2eme',
               code_postal: '69002',
               count_beneficiaires: 1,
@@ -155,7 +155,7 @@ describe('getBeneficiaireStats', () => {
           {
             nom: 'Lyon 2eme',
             codePostal: '69002',
-            codeInsee: '69381',
+            codeInsee: '69382',
             count: 1,
             label: 'Lyon 2eme · 69002',
             proportion: 25,

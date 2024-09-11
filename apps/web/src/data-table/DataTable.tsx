@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ComponentType } from 'react'
 import classNames from 'classnames'
 import Link from 'next/link'
 import {
@@ -31,6 +31,7 @@ const DataTable = <
   classes,
   searchParams,
   baseHref,
+  rowButtonComponent: RowButtonComponent,
 }: {
   rows: Data[]
   configuration: Configuration
@@ -38,6 +39,7 @@ const DataTable = <
   classes?: DataTableClasses
   searchParams: DataTableSearchParams<Configuration>
   baseHref: string
+  rowButtonComponent?: ComponentType<{ row: Data }>
 }) => {
   const sortLinkProps = (
     sortParams: DataTableSearchParams<Configuration>,
@@ -107,8 +109,8 @@ const DataTable = <
                       classes?.tr,
                       !!configuration.rowLink && 'fr-enlarge-link',
                       !!configuration.rowLink && styles.rowWithLink,
-                      !!configuration.rowButton && 'fr-enlarge-button',
-                      !!configuration.rowButton && styles.rowWithButton,
+                      !!RowButtonComponent && 'fr-enlarge-button',
+                      !!RowButtonComponent && styles.rowWithButton,
                     )}
                   >
                     {configuration.columns.map(
@@ -133,9 +135,9 @@ const DataTable = <
                         <Link {...configuration.rowLink(row)} />
                       </td>
                     )}
-                    {!!configuration.rowButton && (
+                    {!!RowButtonComponent && (
                       <td className={styles.rowButtonCell}>
-                        {configuration.rowButton(row)}
+                        <RowButtonComponent row={row} />
                       </td>
                     )}
                   </tr>

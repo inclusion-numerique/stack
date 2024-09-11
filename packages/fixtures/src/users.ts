@@ -117,8 +117,14 @@ export const mediateurInscription = givenUser({
   },
 })
 
+export const mediateurSansActivitesUserId =
+  'd3378267-18cf-4b5f-ae1e-9f63c7093ac2'
+
+export const mediateurSansActivitesMediateurId =
+  'c513c349-46dc-461a-a3dc-a81d53c459b6'
+
 export const mediateurSansActivites = givenUser({
-  id: 'd3378267-18cf-4b5f-ae1e-9f63c7093ac2',
+  id: mediateurSansActivitesUserId,
   firstName: 'Médiateur',
   lastName: 'Sans activités',
   isFixture: true,
@@ -130,10 +136,10 @@ export const mediateurSansActivites = givenUser({
   mediateur: {
     connectOrCreate: {
       where: {
-        id: 'c513c349-46dc-461a-a3dc-a81d53c459b6',
+        id: mediateurSansActivitesMediateurId,
       },
       create: {
-        id: 'c513c349-46dc-461a-a3dc-a81d53c459b6',
+        id: mediateurSansActivitesMediateurId,
         enActivite: {
           connectOrCreate: {
             where: {
@@ -270,8 +276,12 @@ export const conseillerInscription = givenUser({
   },
 })
 
+export const conseillerNumeriqueUserId = 'b66d2370-4245-4492-a630-02749a98237d'
+export const conseillerNumeriqueMediateurId =
+  '1ae07d95-316c-489f-893a-d17052c883b7'
+
 export const conseillerNumerique = givenUser({
-  id: 'b66d2370-4245-4492-a630-02749a98237d',
+  id: conseillerNumeriqueUserId,
   firstName: 'Conseiller Num',
   lastName: 'Inscrit',
   isFixture: true,
@@ -284,10 +294,10 @@ export const conseillerNumerique = givenUser({
   mediateur: {
     connectOrCreate: {
       where: {
-        id: '1ae07d95-316c-489f-893a-d17052c883b7',
+        id: conseillerNumeriqueMediateurId,
       },
       create: {
-        id: '1ae07d95-316c-489f-893a-d17052c883b7',
+        id: conseillerNumeriqueMediateurId,
         conseillerNumerique: {
           connectOrCreate: {
             where: {

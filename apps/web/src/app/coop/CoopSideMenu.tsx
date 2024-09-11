@@ -63,18 +63,18 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
       },
       isActive: pathname?.startsWith('/coop/mes-beneficiaires'),
     },
-    {
-      text: (
-        <>
-          <span className="ri-parent-line ri-xl fr-mr-1w fr-text--regular wip-outline" />
-          Mes ateliers
-        </>
-      ),
-      linkProps: {
-        href: '/coop/mes-ateliers',
-      },
-      isActive: pathname?.startsWith('/coop/mes-ateliers'),
-    },
+    // {
+    //   text: (
+    //     <>
+    //       <span className="ri-parent-line ri-xl fr-mr-1w fr-text--regular wip-outline" />
+    //       Mes ateliers
+    //     </>
+    //   ),
+    //   linkProps: {
+    //     href: '/coop/mes-ateliers',
+    //   },
+    //   isActive: pathname?.startsWith('/coop/mes-ateliers'),
+    // },
     {
       text: (
         <>

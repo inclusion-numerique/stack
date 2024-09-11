@@ -6,6 +6,7 @@ import {
 import { SearchActiviteResult } from '@app/web/cra/searchActivite'
 import { generatePageSizeSelectOptions } from '@app/web/data-table/pageSizeSelectOptions'
 import PaginationNavWithPageSizeSelect from '@app/web/data-table/PaginationNavWithPageSizeSelect'
+import ActiviteRowShowDetailsButton from '@app/web/cra/ActiviteRowShowDetailsButton'
 import styles from './MesActivitesListePage.module.css'
 
 const pageSizeOptions = generatePageSizeSelectOptions([10, 20, 50, 100])
@@ -27,6 +28,7 @@ const ActivitesTable = ({
       searchParams={searchParams}
       baseHref={baseHref}
       classes={{ table: styles.table }}
+      rowButtonComponent={ActiviteRowShowDetailsButton}
     />
     <PaginationNavWithPageSizeSelect
       defaultPageSize={10}
