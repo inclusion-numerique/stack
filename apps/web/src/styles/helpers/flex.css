@@ -264,6 +264,13 @@
   }
 }
 
+/* lg flex rules */
+@media (min-width: 62em) {
+  .fr-direction-lg-row {
+    flex-direction: row;
+  }
+}
+
 /* xl flex rules */
 @media (min-width: 78em) {
   .fr-flex-xl {

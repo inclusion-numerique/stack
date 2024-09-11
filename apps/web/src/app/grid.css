@@ -4,13 +4,11 @@
   }
 }
 
-
 @media (min-width: 48em) {
   .fr-md-col {
     flex: 1;
   }
 }
-
 
 @media (min-width: 36em) {
   .fr-sm-col {

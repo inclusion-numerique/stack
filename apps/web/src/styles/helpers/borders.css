@@ -90,3 +90,9 @@
   border-right: var(--border-width) var(--border-style)
     var(--border-default-grey);
 }
+
+@media (max-width: 48em) {
+  .fr-border-md-none {
+    border: none;
+  }
+}
