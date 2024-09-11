@@ -1,27 +1,15 @@
-import type { Prisma } from '@prisma/client'
-import {
-  DataTableConfiguration,
-  DataTableSearchParams,
-} from '@app/web/data-table/DataTableConfiguration'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
-import ActiviteRowShowDetailsButton from '@app/web/cra/ActiviteRowShowDetailsButton'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
-import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
+import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import styles from '@app/web/app/coop/mes-activites/(liste)/MesActivitesListePage.module.css'
-import { ActiviteForList } from '@app/web/cra/activitesQueries'
 import { typeActiviteLabels } from '@app/web/cra/cra'
-
-export type ActivitesDataTableConfiguration = DataTableConfiguration<
-  ActiviteForList,
-  Prisma.ActiviteWhereInput,
-  Prisma.ActiviteOrderByWithRelationInput
->
+import type { DataTableSearchParams } from '@app/web/data-table/DataTableConfiguration'
+import type { ActivitesDataTableConfiguration } from '@app/web/cra/ActivitesDataTableConfiguration'
 
 export const ActivitesDataTable = {
   csvFilename: () => `coop-${dateAsIsoDay(new Date())}-activites`,
   rowKey: ({ id }) => id,
-  rowButton: (activite) => <ActiviteRowShowDetailsButton activite={activite} />,
   columns: [
     {
       name: 'date',

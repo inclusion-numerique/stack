@@ -158,6 +158,12 @@ export const mediateurAvecActiviteCrasCollectifs = [
   }),
 ]
 
+export const fixturesActivitesMediateurAvecActivite = [
+  ...mediateurAvecActiviteCrasCollectifs,
+  ...mediateurAvecActiviteCrasDemarchesAdministratives,
+  ...mediateurAvecActiviteCrasIndividuels,
+]
+
 export const conseillerNumeriqueCrasIndividuels = [
   givenCraIndividuel({
     id: 'fa05c7eb-a4a5-4b90-bc59-8c83eea045ea',
@@ -295,6 +301,12 @@ export const conseillerNumeriqueCrasCollectifs = [
       trancheAgeNonCommunique: 2,
     },
   }),
+]
+
+export const fixturesActivitesConseillerNumerique = [
+  ...conseillerNumeriqueCrasCollectifs,
+  ...conseillerNumeriqueCrasDemarchesAdministratives,
+  ...conseillerNumeriqueCrasIndividuels,
 ]
 
 export const fixtureCrasIndividuels = [

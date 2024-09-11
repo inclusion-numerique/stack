@@ -1,10 +1,11 @@
 import { Prisma } from '@prisma/client'
-import { RawDataTableSqlConfiguration } from '@app/web/data-table/RawDataTableSqlConfiguration'
-import { ActivitesDataTableConfiguration } from '@app/web/cra/ActivitesDataTable'
+import type { RawDataTableSqlConfiguration } from '@app/web/data-table/RawDataTableSqlConfiguration'
+import type { ActivitesDataTableConfiguration } from '@app/web/cra/ActivitesDataTableConfiguration'
 
 export const ActivitesRawSqlConfiguration = {
   date: {
-    rawOrderBySql: (direction) => Prisma.raw(`date ${direction}`),
+    rawOrderBySql: (direction) =>
+      Prisma.raw(`date ${direction}, activites.creation ${direction}`),
     rawFilterSqls: {
       au: (value: string[]) => Prisma.raw(`date <= ${value[0]}`),
       du: (value: string[]) => Prisma.raw(`date >= ${value[0]}`),

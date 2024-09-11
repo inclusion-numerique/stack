@@ -59,7 +59,7 @@ const CreateCraModalContent = ({
     }
     onClose()
   }
-  
+
   useEffect(() => {
     prefetch('/coop/mes-activites/cra/individuel')
     prefetch('/coop/mes-activites/cra/collectif')
