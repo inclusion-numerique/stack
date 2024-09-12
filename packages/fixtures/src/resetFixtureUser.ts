@@ -47,9 +47,9 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
     })
 
     // Delete mediateur, mediateurEnActivite, mediateurCoordonne, conseillerNumerique
-    if (user.mediateur?.id) {
-      const mediateurId = user.mediateur.id
+    const mediateurId = user.mediateur?.id
 
+    if (mediateurId) {
       await prismaClient.accompagnement.deleteMany({
         where: {
           activite: {

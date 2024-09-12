@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   skip: theodo/skip@0.1.2
-  queue: eddiewebb/queue@1.8.4
+  queue: eddiewebb/queue@3.2.1
 executors:
   node:
     docker:
@@ -494,8 +494,7 @@ jobs:
           name: 'Generate Prisma client for this platform'
           command: |
             pnpm --silent -F @app/web prisma generate
-      - queue/until_front_of_line:
-          time: '3'
+      - queue/until_front_of_line
       - run:
           name: Create Pending Deployment
           command: |

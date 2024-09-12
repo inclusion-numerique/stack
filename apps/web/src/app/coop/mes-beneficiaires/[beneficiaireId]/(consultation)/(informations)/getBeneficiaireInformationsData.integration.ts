@@ -135,12 +135,6 @@ describe('getBeneficiaireInformationsData', () => {
         thematique: 'ReseauxSociaux',
       },
       {
-        count: 1,
-        enumValue: 'sante',
-        label: 'Santé',
-        thematique: 'Sante',
-      },
-      {
         count: 2,
         enumValue: 'social_sante',
         label: 'Social - Santé',
