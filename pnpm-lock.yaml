@@ -196,6 +196,9 @@ importers:
       copy:
         specifier: ^0.3.2
         version: 0.3.2
+      csv-parse:
+        specifier: ^5.5.6
+        version: 5.5.6
       csv-stringify:
         specifier: ^6.5.1
         version: 6.5.1

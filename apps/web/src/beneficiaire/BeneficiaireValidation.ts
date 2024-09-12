@@ -24,6 +24,15 @@ export const telephoneValidation = z
   })
   .nullish()
 
+export const anneeNaissanceValidation = z
+  .number({
+    invalid_type_error: 'Veuillez renseigner une année de naissance valide',
+  })
+  .int('Veuillez renseigner une année de naissance valide')
+  .min(anneeNaissanceMin, 'Veuillez renseigner une année de naissance valide')
+  .max(anneeNaissanceMax, 'Veuillez renseigner une année de naissance valide')
+  .nullish()
+
 export const BeneficiaireValidation = z.object({
   id: z.string().uuid().nullish(), // defined if update, nullish if create
   mediateurId: z.string().uuid(), // creator of the beneficiaire
@@ -48,12 +57,7 @@ export const BeneficiaireValidation = z.object({
     .string()
     .email('Veuillez renseigner une adresse email valide')
     .nullish(),
-  anneeNaissance: z
-    .number()
-    .int('Veuillez renseigner une année de naissance valide')
-    .min(anneeNaissanceMin, 'Veuillez renseigner une année de naissance valide')
-    .max(anneeNaissanceMax, 'Veuillez renseigner une année de naissance valide')
-    .nullish(),
+  anneeNaissance: anneeNaissanceValidation,
   adresse: z.string().nullish(),
   communeResidence: AdresseBanValidation.nullish(),
   genre: z.enum(genreValues).nullish(),
