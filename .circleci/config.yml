@@ -494,7 +494,8 @@ jobs:
           name: 'Generate Prisma client for this platform'
           command: |
             pnpm --silent -F @app/web prisma generate
-      - queue/until_front_of_line
+      - queue/until_front_of_line:
+          my-pipeline: <<pipeline.number>>
       - run:
           name: Create Pending Deployment
           command: |
