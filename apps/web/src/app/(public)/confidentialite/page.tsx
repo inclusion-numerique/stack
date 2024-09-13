@@ -52,13 +52,15 @@ const ConfidentialityPage = () => (
         <h2>Responsable du traitement</h2>
 
         <p>
-          Le Ministère de la Transition écologique et le Ministère de la
-          Cohésion des territoires et des Relations avec les collectivités
-          territoriales sont les responsables du traitement de vos données à
-          caractère personnel.
+          La coop de la médiation numérique est développée au sein de l'Incubateur 
+          des territoires de l'Agence Nationale de la Cohésion des Territoires (ANCT).
         </p>
 
-        <p>Ils sont situés Tour Sequoia, 1 place Carpeaux, 92800 Puteaux.</p>
+        <p>  
+          Le responsable de traitement des données à caractère personnel collectées par 
+          le site Les Bases du numérique d’intérêt général est l’Agence Nationale de la 
+          Cohésion des Territoires, représentée par Monsieur Stanislas Bourron, Directeur général.
+        </p>
 
         <h2>Destinataires des données</h2>
 
@@ -68,7 +70,7 @@ const ConfidentialityPage = () => (
         </p>
 
         <p>
-          Vos données ne sont pas transférées vers des états en dehors de
+          Vos données ne sont pas transférées vers des Etats en dehors de
           l&apos;Union Européenne.
         </p>
 
@@ -88,8 +90,8 @@ const ConfidentialityPage = () => (
         </p>
 
         <p>
-          Aides-territoires s’est assurée de la mise en œuvre par ses
-          sous-traitants de garanties adéquates et du respect de conditions
+          La coop de la médiation numérique s’est assurée de la mise en œuvre 
+          par ses sous-traitants de garanties adéquates et du respect de conditions
           strictes de confidentialité, d’usage et de protection des données.
         </p>
 
@@ -127,13 +129,13 @@ const ConfidentialityPage = () => (
         <h2>Base légale du traitement</h2>
 
         <p>
-          Le traitement de données est rendu licite parce qu’il est nécessaire à
-          l’exécution d’une mission d’intérêt public ou relevant de l’exercice
-          de l’autorité publique dont est investi le responsable de traitement,
-          telle qu’entendue par l’article 6-e du règlement (UE) n°2016/679 du
-          Parlement européen et du Conseil relatif à la protection des personnes
-          physiques à l’égard du traitement des données à caractère personnel et
-          à la libre circulation de ces données.
+          Le traitement de données est rendu licite parce qu&apos;il est nécessaire à
+          l&apos;exécution d&apos;une mission d&apos;intérêt public ou relevant de 
+          l&apos;exercice de l&apos;autorité publique dont est investi le responsable 
+          de traitement, telle qu&apos;entendue par l&apos;article 6-e du règlement (UE) 
+          n°2016/679 du Parlement européen et du Conseil relatif à la protection des 
+          personnes physiques à l&apos;égard du traitement des données à caractère 
+          personnel et à la libre circulation de ces données.
         </p>
 
         <p>
@@ -147,27 +149,25 @@ const ConfidentialityPage = () => (
         <h2>Durée de conservation</h2>
 
         <p>
-          Vous pouvez vous désincrire de la newsletter soit en nous envoyant un
-          email, soit en utilisant les liens de désinscription présents dans nos
-          emails d&apos;alerte ou newsletter, ou directement dans le formulaire
-          d&apos;édition du profil, rubrique &ldquo;Mon compte&rdquo;.
+        Vous pouvez vous désincrire de la newsletter soit en nous envoyant un 
+        email, soit en utilisant les liens de désinscription présents dans nos 
+        emails d'alerte ou newsletter.
         </p>
 
         <p>
-          Vos coordonnées sont conservées jusqu&apos;à un an après votre
-          dernière action sur le site, (dernière connexion à condition de
-          n&apos;avoir aucune aide en cours de validité, envoi d&apos;un
-          message, etc), ou un an suite à votre demande d’effacement des données
-          ou demande de désinscription.
+        Vos coordonnées sont conservées jusqu'à un an après votre dernière 
+        action sur le site, (dernière connexion), ou un an suite à votre 
+        demande d&apos;effacement des données ou demande de désinscription.
         </p>
 
         <h2>Finalités du traitement</h2>
 
         <p>
-          La finalité du traitement de données réalisé par Aides-territoires est
-          de faciliter la connaissance et l&apos;accès aux aides financières et
-          en ingénierie pour permettre aux collectivités et acteurs du
-          territoire de réaliser leurs projets.
+          La finalité du traitement de données réalisé par La coop de la médiation
+          numérique est de mettre à disposition de tous les médiateurs numériques
+          une gamme d'outils pour les aider dans leurs activités professionnelles
+          d'accompagnement à la montée en compétence de la population sur les
+          compétences numériques.
         </p>
 
         <h2>Liste des traitements</h2>
@@ -185,17 +185,17 @@ const ConfidentialityPage = () => (
                 <th>Traitement&nbsp;→</th>
                 <th>Accès authentifié</th>
                 <th>Inscription newsletter</th>
-                <th>Alerte nouveaux résultats</th>
                 <th>Formulaire de contact</th>
               </tr>
               <tr>
                 <th>Finalité du traitement&nbsp;→</th>
                 <td>
                   fourniture du service permettant aux utilisateurs de se créer
-                  un compte, de diffuser des dispositifs et de les consulter.
+                  un compte, de remplir des comptes rendus d'activités, de suivre
+                  ses bénéficiaires et d'accéder à ses statistiques d'activités.
                 </td>
-                <td>envoi régulier ( mensuel) d’une lettre d’info</td>
-                <td>envoi d’emails</td>
+                <td>envoi régulier (mensuel) d’une lettre d’info et d'informations 
+                  personnalisées (rappels, notifications)</td>
                 <td>
                   demande adressée à l’équipe {process.env.NEXT_PUBLIC_APP_NAME}
                   , en vue d’une réponse personnalisée
@@ -212,10 +212,6 @@ const ConfidentialityPage = () => (
                   demande de désinscription à la newsletter
                 </td>
                 <td>
-                  Vos coordonnées sont conservées jusqu&apos;à un an après votre
-                  dernière action sur le site ou demande de suppression
-                </td>
-                <td>
                   Vos coordonnées sont conservées jusqu&apos;à un an après
                   l’envoi de votre message
                 </td>
@@ -224,13 +220,11 @@ const ConfidentialityPage = () => (
                 <th>Prénom/nom</th>
                 <td>Oui</td>
                 <td />
-                <td />
                 <td>Oui</td>
               </tr>
               <tr>
                 <th>Structure</th>
                 <td>Oui</td>
-                <td />
                 <td />
                 <td>Optionnel</td>
               </tr>
@@ -238,26 +232,22 @@ const ConfidentialityPage = () => (
                 <th>Fonction</th>
                 <td>Oui</td>
                 <td />
-                <td />
                 <td>Optionnel</td>
               </tr>
               <tr>
                 <th>Adresse</th>
                 <td>Oui</td>
                 <td />
-                <td />
                 <td>Optionnel</td>
               </tr>
               <tr>
                 <th>Téléphone</th>
-                <td />
-                <td />
+                <td>Optionnel</td>
                 <td />
                 <td>Optionnel</td>
               </tr>
               <tr>
                 <th>Email</th>
-                <td>Oui</td>
                 <td>Oui</td>
                 <td>Oui</td>
                 <td>Oui</td>
@@ -364,21 +354,6 @@ const ConfidentialityPage = () => (
           </li>
         </ul>
         <p />
-        <h3>Je contribue à enrichir vos données, puis-je y accéder ?</h3>
-
-        <p>
-          Bien sûr ! Les statistiques d’usage de la majorité de nos produits
-          sont disponibles en accès libre sur&nbsp;
-          <a
-            href="https://stats.data.gouv.fr/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            stats.data.gouv.fr
-            <span className="fr-sr-only">Ouvre une nouvelle fenêtre</span>
-          </a>
-          .
-        </p>
 
         <h2>Sécurité et confidentialité</h2>
 
@@ -437,8 +412,8 @@ const ConfidentialityPage = () => (
         </ul>
 
         <p>
-          Pour toute demande, vous pouvez écrire un email à l’équipe La France
-          des solutions&nbsp;:{' '}
+          Pour toute demande, vous pouvez écrire un email à l’équipe La coop de 
+          la médiation numérique&nbsp;:{' '}
           <a
             href={
               PublicWebAppConfig.contactEmail &&
