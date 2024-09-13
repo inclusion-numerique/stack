@@ -745,6 +745,7 @@ enum MutationName {
   ModifierActivite                         @map("modifier_activite")
   SupprimerActivite                        @map("supprimer_activite")
   CreerBeneficiaire                        @map("creer_beneficiaire")
+  ImporterBeneficiaires                    @map("importer_beneficiaires")
   ModifierBeneficiaire                     @map("modifier_beneficiaire")
   SupprimerBeneficiaire                    @map("supprimer_beneficiaire")
   CreerStructure                           @map("creer_structure")

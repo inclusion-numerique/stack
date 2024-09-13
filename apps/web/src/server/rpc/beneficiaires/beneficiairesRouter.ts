@@ -12,6 +12,7 @@ import {
 import { searchBeneficiaire } from '@app/web/beneficiaire/searchBeneficiaire'
 import { addMutationLog } from '@app/web/utils/addMutationLog'
 import { createStopwatch } from '@app/web/utils/stopwatch'
+import { AnalysisSchema } from '@app/web/beneficiaire/import/analyseImportBeneficiairesExcel'
 
 const checkExistingBeneficiaire = async ({
   beneficiaireId,
@@ -188,5 +189,47 @@ export const beneficiairesRouter = router({
       })
 
       return true
+    }),
+  import: protectedProcedure
+    .input(AnalysisSchema)
+    .mutation(async ({ input: analysis, ctx: { user } }) => {
+      enforceIsMediateur(user)
+
+      const stopwatch = createStopwatch()
+
+      const { rows, status } = analysis
+
+      const beneficiairesData = rows.map(
+        (row): Prisma.BeneficiaireCreateManyInput => ({
+          prenom: row.values.prenom ?? '',
+          nom: row.values.nom ?? '',
+          anneeNaissance: row.parsed.anneeNaissance || undefined,
+          telephone: row.values.numeroTelephone || undefined,
+          email: row.values.email,
+          genre: row.parsed.genre,
+          notes: row.values.notesSupplementaires,
+          mediateurId: user.mediateur.id,
+          communeCodeInsee: row.parsed.commune?.codeInsee,
+          commune: row.parsed.commune?.nom,
+          communeCodePostal: row.parsed.commune?.codePostal,
+        }),
+      )
+
+      const created = await prismaClient.beneficiaire.createMany({
+        data: beneficiairesData,
+      })
+
+      addMutationLog({
+        userId: user.id,
+        nom: 'ImporterBeneficiaires',
+        duration: stopwatch.stop().duration,
+        data: {
+          rows: rows.length,
+          rowsErrorsCount: rows.filter((row) => !!row.errors).length,
+          status,
+        },
+      })
+
+      return { created: created.count }
     }),
 })

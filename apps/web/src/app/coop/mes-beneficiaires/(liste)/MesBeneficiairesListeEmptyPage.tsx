@@ -17,7 +17,6 @@ const MesBeneficiairesListeEmptyPage = () => (
       <Button
         iconId="fr-icon-download-line"
         priority="tertiary"
-        className="wip-outline"
         linkProps={{
           href: '/coop/mes-beneficiaires/importer',
         }}

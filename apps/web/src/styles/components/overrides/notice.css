@@ -15,7 +15,20 @@
   }
 }
 
-/* Priority variations */
+.fr-notice--success {
+  background: var(--background-contrast-success);
+
+  --hover: var(--background-contrast-success-hover);
+  --active: var(--background-contrast-success-active);
+
+  color: var(--text-default-success);
+}
+
+.fr-notice--success .fr-notice__title::before {
+  mask-image: url('/dsfr/icons/system/check-line.svg') !important;
+  content: '';
+}
+
 .fr-notice--warning {
   background: var(--background-contrast-warning);
 
@@ -25,8 +38,8 @@
   color: var(--text-default-warning);
 }
 
-.fr-notice--warning .fr-notice__body::before {
-  mask-image: url('/dsfr/icons/system/fr--warning-fill.svg');
+.fr-notice--warning .fr-notice__title::before {
+  mask-image: url('/dsfr/icons/system/fr--warning-fill.svg') !important;
   content: '';
 }
 
@@ -39,7 +52,31 @@
   color: var(--text-action-high-yellow-moutarde);
 }
 
-.fr-notice--new .fr-notice__body::before {
-  mask-image: url('/dsfr/icons/weather/flashlight-fill.svg');
+.fr-notice--new .fr-notice__title::before {
+  mask-image: url('/dsfr/icons/weather/flashlight-fill.svg') !important;
+  content: '';
+}
+
+.fr-notice.fr-notice--no-icon {
+  .fr-notice__body{
+    padding-left: 0;
+  }
+
+  .fr-notice__body::before{
+    display: none;
+  }
+}
+
+.fr-notice--error {
+  background: var(--background-contrast-error);
+
+  --hover: var(--background-contrast-error-hover);
+  --active: var(--background-contrast-error-active);
+
+  color: var(--text-default-error);
+}
+
+.fr-notice--error .fr-notice__title::before {
+  mask-image: url('/dsfr/icons/system/fr--error-line.svg') !important;
   content: '';
 }

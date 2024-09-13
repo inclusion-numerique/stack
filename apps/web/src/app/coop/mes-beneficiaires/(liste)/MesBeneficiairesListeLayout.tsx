@@ -31,7 +31,6 @@ const MesBeneficiairesListeLayout = ({
       <Button
         iconId="fr-icon-download-line"
         priority="tertiary no outline"
-        className="wip-outline"
         size="small"
         linkProps={{
           href: '/coop/mes-beneficiaires/importer',

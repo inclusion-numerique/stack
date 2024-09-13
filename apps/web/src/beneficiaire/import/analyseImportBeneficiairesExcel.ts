@@ -1,38 +1,61 @@
 import type { Row, Workbook } from 'exceljs'
-import { type Commune, CommunesClient, getCommunesClient } from '@app/web/communes/findCommune'
+import {
+  type Commune,
+  CommunesClient,
+  getCommunesClient,
+} from '@app/web/communes/findCommune'
 import { anneeNaissanceValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
+import { z } from 'zod'
+import { genreValues } from '@app/web/beneficiaire/beneficiaire'
 
-/**
- * Get values from row
- * Headers: Nom	Prénom	Année de naissance	Commune			N° de téléphone	E-mail	Genre	Notes supplémentaires
- *      Code insee	Nom	Code postal
- * @param row
- */
+export const ParsedBeneficiaireRowSchema = z.object({
+  values: z.object({
+    nom: z.string().nullish(),
+    prenom: z.string().nullish(),
+    anneeNaissance: z.union([z.string().nullish(), z.number().nullish()]),
+    numeroTelephone: z.string().nullish(),
+    communeCodeInsee: z.string().nullish(),
+    communeNom: z.string().nullish(),
+    communeCodePostal: z.string().nullish(),
+    email: z.string().nullish(),
+    genre: z.string().nullish(),
+    notesSupplementaires: z.string().nullish(),
+  }),
+  parsed: z.object({
+    commune: z
+      .object({
+        codePostal: z.string(),
+        nom: z.string(),
+        codeInsee: z.string(),
+      })
+      .nullable(),
+    anneeNaissance: z.number().nullable(),
+    genre: z.enum(genreValues).nullable(),
+  }),
+  errors: z
+    .object({
+      nom: z.string().optional(),
+      prenom: z.string().optional(),
+      anneeNaissance: z.string().optional(),
+      communeCodeInsee: z.string().optional(),
+      communeNom: z.string().optional(),
+      communeCodePostal: z.string().optional(),
+      numeroTelephone: z.string().optional(),
+      email: z.string().optional(),
+      genre: z.string().optional(),
+      notesSupplementaires: z.string().optional(),
+    })
+    .nullish(),
+})
 
-type ParsedBeneficiaireRow = {
-  values: {
-    nom: string | null
-    prenom: string | null
-    anneeNaissance: string | null
-    communeCodeInsee: string | null
-    communeNom: string | null
-    communeCodePostal: string | null
-    numeroTelephone: string | null
-    email: string | null
-    genre: string | null
-    notesSupplementaires: string | null
-  }
-  errors?: {
-    nom?: string
-    prenom?: string
-    anneeNaissance?: string
-    commune?: string
-    numeroTelephone?: string
-    email?: string
-    genre?: string
-    notesSupplementaires?: string
-  }
-}
+export type ParsedBeneficiaireRow = z.infer<typeof ParsedBeneficiaireRowSchema>
+
+export const AnalysisSchema = z.object({
+  rows: z.array(ParsedBeneficiaireRowSchema),
+  status: z.enum(['ok', 'error']),
+})
+
+export type Analysis = z.infer<typeof AnalysisSchema>
 
 const parseGenre = (genreRaw: string | null | undefined) => {
   if (!genreRaw) {
@@ -94,15 +117,16 @@ const parseBeneficiaireRow = (row: Row, communesClient: CommunesClient) => {
 
   if (communeCodeInsee) {
     commune = communesClient.findCommuneByInsee(communeCodeInsee)
-    if (!commune) {
+    if (commune) {
+      if (commune.codePostal !== communeCodePostal) {
+        errors.communeCodePostal =
+          'Le code postal de la commune ne correspond pas'
+      }
+      if (commune.nom !== communeNom) {
+        errors.communeNom = 'Le nom de la commune ne correspond pas'
+      }
+    } else {
       errors.communeCodeInsee = 'Code commune non trouvé'
-    }
-    if (commune.codePostal !== communeCodePostal) {
-      errors.communeCodePostal =
-        'Le code postal de la commune ne correspond pas'
-    }
-    if (commune.nom !== communeNom) {
-      errors.communeNom = 'Le nom de la commune ne correspond pas'
     }
   }
 
@@ -142,13 +166,9 @@ const parseBeneficiaireRow = (row: Row, communesClient: CommunesClient) => {
   return result
 }
 
-export type ParsedBeneficiaireRow = Awaited<
-  ReturnType<typeof parseBeneficiaireRow>
->
-
-export const parseImportBeneficiaireExcel = async (
+export const analyseImportBeneficiairesExcel = async (
   workbook: Workbook,
-): Promise<ParseImportBeneficiaireExcelResult> => {
+): Promise<Analysis> => {
   const beneficiairesWorksheet = workbook.getWorksheet('Bénéficiaires')
 
   if (!beneficiairesWorksheet) {
@@ -183,9 +203,4 @@ export const parseImportBeneficiaireExcel = async (
     status: hasError ? 'error' : 'ok',
     rows: result,
   }
-}
-
-export type ParseImportBeneficiaireExcelResult = {
-  rows: ParsedBeneficiaireRow[]
-  status: 'ok' | 'error'
 }

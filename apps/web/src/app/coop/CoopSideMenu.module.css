@@ -1,3 +1,12 @@
+.sideMenu {
+    /* md */
+    @media (min-width: 48em) {
+        :global .fr-sidemenu__inner {
+            padding-right: 0 !important;
+        }
+    }
+}
+
 .item {
     :global .fr-sidemenu__link:has(.fr-btn) {
         margin-top: 24px;
@@ -6,9 +15,5 @@
         &:hover {
             background-color: transparent !important;
         }
-
-   
     }
-
-
 }

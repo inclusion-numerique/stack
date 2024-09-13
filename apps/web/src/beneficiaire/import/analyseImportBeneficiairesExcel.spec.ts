@@ -1,7 +1,10 @@
 import { resolve } from 'path'
 import ExcelJS from 'exceljs'
 import { readFileSync } from 'fs'
-import { parseImportBeneficiaireExcel } from '@app/web/beneficiaire/import/parseImportBeneficiaireExcel'
+import {
+  analyseImportBeneficiairesExcel,
+  AnalysisSchema,
+} from '@app/web/beneficiaire/import/analyseImportBeneficiairesExcel'
 
 const loadLocalExcelFile = async (file: string) => {
   const filePath = resolve(__dirname, `./_test/${file}`)
@@ -15,13 +18,15 @@ const loadLocalExcelFile = async (file: string) => {
   return workbook
 }
 
-describe('parseImportBeneficiaireExcel', () => {
+describe('analyseImportBeneficiairesExcel', () => {
   it('should parse a valid excel file', async () => {
     const workbook = await loadLocalExcelFile(
       'import-beneficiaires_modele.xlsx',
     )
 
-    expect(await parseImportBeneficiaireExcel(workbook)).toEqual({
+    const result = await analyseImportBeneficiairesExcel(workbook)
+
+    expect(result).toEqual({
       status: 'ok',
       rows: [
         {
@@ -38,6 +43,7 @@ describe('parseImportBeneficiaireExcel', () => {
             notesSupplementaires: undefined,
           },
           parsed: {
+            anneeNaissance: 1970,
             genre: 'Feminin',
             commune: {
               codePostal: '32100',
@@ -48,12 +54,15 @@ describe('parseImportBeneficiaireExcel', () => {
         },
       ],
     })
+
+    expect(AnalysisSchema.safeParse(result).error).toBe(undefined)
   })
 
   it('should parse an excel with errors', async () => {
     const workbook = await loadLocalExcelFile('import-beneficiaire_errors.xlsx')
+    const result = await analyseImportBeneficiairesExcel(workbook)
 
-    expect(await parseImportBeneficiaireExcel(workbook)).toEqual({
+    expect(result).toEqual({
       status: 'error',
       rows: [
         {
@@ -83,5 +92,7 @@ describe('parseImportBeneficiaireExcel', () => {
         },
       ],
     })
+
+    expect(AnalysisSchema.safeParse(result).error).toBe(undefined)
   })
 })

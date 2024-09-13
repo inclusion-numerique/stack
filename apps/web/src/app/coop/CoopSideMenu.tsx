@@ -108,7 +108,7 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
 
   return (
     <SideMenu
-      classes={{ item: styles.item }}
+      classes={{ item: styles.item, root: styles.sideMenu }}
       items={items}
       burgerMenuButtonText="Menu"
       sticky
