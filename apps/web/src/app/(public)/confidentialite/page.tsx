@@ -52,14 +52,16 @@ const ConfidentialityPage = () => (
         <h2>Responsable du traitement</h2>
 
         <p>
-          La coop de la médiation numérique est développée au sein de l'Incubateur 
-          des territoires de l'Agence Nationale de la Cohésion des Territoires (ANCT).
+          La coop de la médiation numérique est développée au sein de
+          l’Incubateur des territoires de l’Agence Nationale de la Cohésion des
+          Territoires (ANCT).
         </p>
 
-        <p>  
-          Le responsable de traitement des données à caractère personnel collectées par 
-          le site Les Bases du numérique d’intérêt général est l’Agence Nationale de la 
-          Cohésion des Territoires, représentée par Monsieur Stanislas Bourron, Directeur général.
+        <p>
+          Le responsable de traitement des données à caractère personnel
+          collectées par le site Les Bases du numérique d’intérêt général est
+          l’Agence Nationale de la Cohésion des Territoires, représentée par
+          Monsieur Stanislas Bourron, Directeur général.
         </p>
 
         <h2>Destinataires des données</h2>
@@ -90,9 +92,10 @@ const ConfidentialityPage = () => (
         </p>
 
         <p>
-          La coop de la médiation numérique s’est assurée de la mise en œuvre 
-          par ses sous-traitants de garanties adéquates et du respect de conditions
-          strictes de confidentialité, d’usage et de protection des données.
+          La coop de la médiation numérique s’est assurée de la mise en œuvre
+          par ses sous-traitants de garanties adéquates et du respect de
+          conditions strictes de confidentialité, d’usage et de protection des
+          données.
         </p>
 
         <div className="fr-table" data-fr-js-table="true">
@@ -129,13 +132,14 @@ const ConfidentialityPage = () => (
         <h2>Base légale du traitement</h2>
 
         <p>
-          Le traitement de données est rendu licite parce qu&apos;il est nécessaire à
-          l&apos;exécution d&apos;une mission d&apos;intérêt public ou relevant de 
-          l&apos;exercice de l&apos;autorité publique dont est investi le responsable 
-          de traitement, telle qu&apos;entendue par l&apos;article 6-e du règlement (UE) 
-          n°2016/679 du Parlement européen et du Conseil relatif à la protection des 
-          personnes physiques à l&apos;égard du traitement des données à caractère 
-          personnel et à la libre circulation de ces données.
+          Le traitement de données est rendu licite parce qu&apos;il est
+          nécessaire à l&apos;exécution d&apos;une mission d&apos;intérêt public
+          ou relevant de l&apos;exercice de l&apos;autorité publique dont est
+          investi le responsable de traitement, telle qu&apos;entendue par
+          l&apos;article 6-e du règlement (UE) n°2016/679 du Parlement européen
+          et du Conseil relatif à la protection des personnes physiques à
+          l&apos;égard du traitement des données à caractère personnel et à la
+          libre circulation de ces données.
         </p>
 
         <p>
@@ -149,25 +153,25 @@ const ConfidentialityPage = () => (
         <h2>Durée de conservation</h2>
 
         <p>
-        Vous pouvez vous désincrire de la newsletter soit en nous envoyant un 
-        email, soit en utilisant les liens de désinscription présents dans nos 
-        emails d'alerte ou newsletter.
+          Vous pouvez vous désincrire de la newsletter soit en nous envoyant un
+          email, soit en utilisant les liens de désinscription présents dans nos
+          emails d’alerte ou newsletter.
         </p>
 
         <p>
-        Vos coordonnées sont conservées jusqu'à un an après votre dernière 
-        action sur le site, (dernière connexion), ou un an suite à votre 
-        demande d&apos;effacement des données ou demande de désinscription.
+          Vos coordonnées sont conservées jusqu’à un an après votre dernière
+          action sur le site, (dernière connexion), ou un an suite à votre
+          demande d&apos;effacement des données ou demande de désinscription.
         </p>
 
         <h2>Finalités du traitement</h2>
 
         <p>
-          La finalité du traitement de données réalisé par La coop de la médiation
-          numérique est de mettre à disposition de tous les médiateurs numériques
-          une gamme d'outils pour les aider dans leurs activités professionnelles
-          d'accompagnement à la montée en compétence de la population sur les
-          compétences numériques.
+          La finalité du traitement de données réalisé par La coop de la
+          médiation numérique est de mettre à disposition de tous les médiateurs
+          numériques une gamme d’outils pour les aider dans leurs activités
+          professionnelles d’accompagnement à la montée en compétence de la
+          population sur les compétences numériques.
         </p>
 
         <h2>Liste des traitements</h2>
@@ -191,11 +195,14 @@ const ConfidentialityPage = () => (
                 <th>Finalité du traitement&nbsp;→</th>
                 <td>
                   fourniture du service permettant aux utilisateurs de se créer
-                  un compte, de remplir des comptes rendus d'activités, de suivre
-                  ses bénéficiaires et d'accéder à ses statistiques d'activités.
+                  un compte, de remplir des comptes rendus d’activités, de
+                  suivre ses bénéficiaires et d’accéder à ses statistiques
+                  d’activités.
                 </td>
-                <td>envoi régulier (mensuel) d’une lettre d’info et d'informations 
-                  personnalisées (rappels, notifications)</td>
+                <td>
+                  envoi régulier (mensuel) d’une lettre d’info et d’informations
+                  personnalisées (rappels, notifications)
+                </td>
                 <td>
                   demande adressée à l’équipe {process.env.NEXT_PUBLIC_APP_NAME}
                   , en vue d’une réponse personnalisée
@@ -412,7 +419,7 @@ const ConfidentialityPage = () => (
         </ul>
 
         <p>
-          Pour toute demande, vous pouvez écrire un email à l’équipe La coop de 
+          Pour toute demande, vous pouvez écrire un email à l’équipe La coop de
           la médiation numérique&nbsp;:{' '}
           <a
             href={
