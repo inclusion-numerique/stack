@@ -7,7 +7,7 @@ export const Faq = () => (
       <h2 className="fr-h1">Questions fréquentes</h2>
       <p className="fr-mb-6w">
         Pour en savoir plus, visitez notre{' '}
-        <Link className="fr-link" href="/">
+        <Link className="fr-link wip-outline" href="/">
           centre d’aide
         </Link>
         .

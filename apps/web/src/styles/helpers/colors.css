@@ -1,7 +1,7 @@
 .fr-background-alt--brown-caramel-950 {
-  background: #f7ebe5;
+  background: var(--brown-caramel-950-100);
 }
 
 .fr-text-title--brown-caramel-sun-425 {
-  color: #855d48;
+  color: var(--brown-caramel-sun-425-moon-901);
 }
