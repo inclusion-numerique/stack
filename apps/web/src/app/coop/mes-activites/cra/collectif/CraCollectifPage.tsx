@@ -26,10 +26,8 @@ const CraCollectifPage = ({
   retour,
 }: CraCollectifPageData) => (
   <CoopPageContainer size={794} className="fr-pt-8v">
-    <CoopBreadcrumbs currentPage="Enregistrer un accompagnement collectif" />
-    <h1 className="fr-text-title--blue-france fr-mb-2v">
-      Accompagnement collectif
-    </h1>
+    <CoopBreadcrumbs currentPage="Enregistrer un atelier collectif" />
+    <h1 className="fr-text-title--blue-france fr-mb-2v">Atelier collectif</h1>
     <RequiredFieldsDisclamer />
 
     <CraCollectifForm
