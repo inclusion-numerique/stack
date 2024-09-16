@@ -33,13 +33,18 @@
 .fr-notice--new {
   background: var(--background-contrast-yellow-moutarde);
 
-  --hover: var(--background-contrast-yellow-moutarde-hover);
-  --active: var(--background-contrast-yellow-moutarde-active);
+  --hover: var(--background-contrast-yellow-tournesol-hover);
+  --active: var(--background-contrast-yellow-tournesol-active);
 
-  color: var(--text-action-high-yellow-moutarde);
+  color: var(--text-action-high-yellow-tournesol);
 }
 
-.fr-notice--new .fr-notice__body::before {
-  mask-image: url('/dsfr/icons/weather/flashlight-fill.svg');
+.fr-notice--flex .fr-notice__title {
+  display: flex;
+  align-items: center;
+}
+
+.fr-notice--new .fr-notice__title::before {
+  mask-image: url('/dsfr/icons/weather/flashlight-fill.svg') !important;
   content: '';
 }

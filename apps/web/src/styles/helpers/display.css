@@ -20,3 +20,10 @@
     display: block;
   }
 }
+
+/* xl display rules */
+@media (min-width: 78em) {
+  .fr-display-block-xl {
+    display: block;
+  }
+}
