@@ -1,29 +1,21 @@
 import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
-import { searchActivite } from '@app/web/cra/searchActivite'
 import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFiltersOptionsForMediateur'
 import { generateActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
-import { WorksheetUser } from '@app/web/worksheet/buildWorksheetHelpers'
-import type { BuildActivitesWorksheetInput } from './buildActivitesWorksheet'
+import type { WorksheetUser } from '@app/web/worksheet/buildWorksheetHelpers'
+import { getMesStatistiquesPageData } from '@app/web/app/coop/mes-statistiques/getMesStatistiquesPageData'
+import type { BuildStatistiquesWorksheetInput } from '@app/web/worksheet/statistiques/buildStatistiquesWorksheet'
 
-export const getActivitesWorksheetInput = async ({
+export const getStatistiquesWorksheetInput = async ({
   user,
   filters,
 }: {
   user: WorksheetUser & { mediateur: { id: string } }
   filters: ActivitesFilters
-}): Promise<BuildActivitesWorksheetInput> => {
-  const { activites, totalPages } = await searchActivite({
+}): Promise<BuildStatistiquesWorksheetInput> => {
+  const statistiques = await getMesStatistiquesPageData({
     mediateurId: user.mediateur.id,
-    beneficiaireId: filters.beneficiaire,
-    searchParams: {
-      ...filters,
-      lignes: '10000000',
-    },
+    activitesFilters: filters,
   })
-
-  if (totalPages > 1) {
-    throw new Error('Export should not be paginated')
-  }
 
   const {
     communesOptions,
@@ -43,7 +35,7 @@ export const getActivitesWorksheetInput = async ({
   })
 
   return {
-    activites,
+    statistiques,
     user,
     mediateur: user,
     filters: activitesFiltersLabels,

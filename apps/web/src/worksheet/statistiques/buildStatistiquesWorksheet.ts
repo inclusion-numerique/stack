@@ -1,66 +1,17 @@
 import * as Excel from 'exceljs'
+import { Worksheet } from 'exceljs'
 import { ActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
-import { AuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { MesStatistiquesPageData } from '@app/web/app/coop/mes-statistiques/getMesStatistiquesPageData'
-
-const addTitleRow =
-  (worksheet: Excel.Worksheet) => (title: string, bgColor?: string) => {
-    const row = worksheet.addRow([title])
-    row.getCell(1).font = { bold: true }
-    if (!bgColor) return
-    row.getCell(1).fill = {
-      bgColor: { argb: bgColor },
-      pattern: 'solid',
-      type: 'pattern',
-    }
-  }
-
-const addStatistiquesFilters =
-  (worksheet: Excel.Worksheet) =>
-  ({ du, au, typeLieu, nomLieu, type }: Partial<ActivitesFiltersLabels>) => {
-    addTitleRow(worksheet)('Filtres :')
-    worksheet.addRow(['Début de période', du])
-    worksheet.addRow(['Fin de période', au])
-    worksheet.addRow(['Type de lieu', typeLieu])
-    worksheet.addRow(['Nom du lieu', nomLieu])
-    worksheet.addRow(["Type d'accompagnement", type])
-    worksheet.addRow([])
-  }
-
-const getRole = (
-  user: Pick<
-    AuthenticatedMediateur,
-    'firstName' | 'lastName' | 'role' | 'mediateur' | 'coordinateur'
-  >,
-): string =>
-  user.mediateur.conseillerNumerique?.id == null
-    ? user.role
-    : 'Conseiller numérique'
-
-const formattedDate = (date: Date) =>
-  `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`
-
-const formattedTime = (date: Date) =>
-  `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
-
-const addStatistiquesExportInfo =
-  (worksheet: Excel.Worksheet) =>
-  (
-    user: Pick<
-      AuthenticatedMediateur,
-      'firstName' | 'lastName' | 'role' | 'mediateur' | 'coordinateur'
-    >,
-    date: Date,
-  ) => {
-    addTitleRow(worksheet)('Informations export')
-
-    worksheet.addRow(['Nom', user.lastName])
-    worksheet.addRow(['Prénom', user.firstName])
-    worksheet.addRow(['Rôle', getRole(user)])
-    worksheet.addRow(["Date d'export", formattedDate(date)])
-    worksheet.addRow(["Heure d'export", formattedTime(date)])
-    worksheet.addRow([])
-  }
+import {
+  addExportMetadata,
+  addFilters,
+  addTitleRow,
+  autosizeColumns,
+  setWorkbookMetadata,
+  WorksheetUser,
+} from '@app/web/worksheet/buildWorksheetHelpers'
+import { numberToPercentage } from '@app/web/utils/formatNumber'
+import { QuantifiedShare } from '@app/web/app/coop/mes-statistiques/quantifiedShare'
 
 const addStatistiquesGenerales =
   (worksheet: Excel.Worksheet) =>
@@ -81,8 +32,9 @@ const addStatistiquesGenerales =
     ])
     worksheet.addRow([
       'Accompagnements sur les 12 derniers mois',
-      ...accompagnementsParMois.map(({ count }: { count: number }) => count),
+      ...accompagnementsParMois.map(({ label }) => label),
     ])
+    worksheet.addRow(['', ...accompagnementsParMois.map(({ count }) => count)])
     worksheet.addRow([])
   }
 
@@ -95,17 +47,17 @@ const addStatistiquesActivites =
     worksheet.addRow([
       'Accompagnements individuels',
       accompagnements.individuels.total,
-      `${accompagnements.individuels.proportion.toFixed(2)}%`,
+      numberToPercentage(accompagnements.individuels.proportion),
     ])
     worksheet.addRow([
       'Ateliers collectifs',
       accompagnements.collectifs.total,
-      `${accompagnements.collectifs.proportion.toFixed(2)}%`,
+      numberToPercentage(accompagnements.collectifs.proportion),
     ])
     worksheet.addRow([
       'Aide aux démarches administratives',
       accompagnements.demarches.total,
-      `${accompagnements.demarches.proportion.toFixed(2)}%`,
+      numberToPercentage(accompagnements.demarches.proportion),
     ])
     worksheet.addRow([
       'Nombre total de participants aux ateliers',
@@ -114,13 +66,20 @@ const addStatistiquesActivites =
     worksheet.addRow([])
   }
 
+const addQuantifiedShareRows = (
+  worksheet: Worksheet,
+  items: QuantifiedShare[],
+) => {
+  for (const { label, count, proportion } of items) {
+    worksheet.addRow([label, count, numberToPercentage(proportion)])
+  }
+}
+
 const addStatistiquesThematiquesMediationNumerique =
   (worksheet: Excel.Worksheet) =>
   ({ activites: { thematiques } }: MesStatistiquesPageData) => {
     addTitleRow(worksheet)('Thématiques Médiation numérique')
-    for (const { label, count, proportion } of thematiques) {
-      worksheet.addRow([label, count, `${proportion}%`])
-    }
+    addQuantifiedShareRows(worksheet, thematiques)
     worksheet.addRow([])
   }
 
@@ -128,9 +87,7 @@ const addStatistiquesThematiquesDemarchesAdministratives =
   (worksheet: Excel.Worksheet) =>
   ({ activites: { thematiquesDemarches } }: MesStatistiquesPageData) => {
     addTitleRow(worksheet)('Thématiques Démarches administratives')
-    for (const { label, count, proportion } of thematiquesDemarches) {
-      worksheet.addRow([label, count, `${proportion}%`])
-    }
+    addQuantifiedShareRows(worksheet, thematiquesDemarches)
     worksheet.addRow([])
   }
 
@@ -138,9 +95,7 @@ const addStatistiquesMaterielUtilises =
   (worksheet: Excel.Worksheet) =>
   ({ activites: { materiels } }: MesStatistiquesPageData) => {
     addTitleRow(worksheet)('Matériel utilisés')
-    for (const { label, count, proportion } of materiels) {
-      worksheet.addRow([label, count, `${proportion}%`])
-    }
+    addQuantifiedShareRows(worksheet, materiels)
     worksheet.addRow([])
   }
 
@@ -148,9 +103,7 @@ const addStatistiquesCanauxActivites =
   (worksheet: Excel.Worksheet) =>
   ({ activites: { mergedTypeLieu } }: MesStatistiquesPageData) => {
     addTitleRow(worksheet)('Canaux des activités')
-    for (const { label, count, proportion } of mergedTypeLieu) {
-      worksheet.addRow([label, count, `${proportion}%`])
-    }
+    addQuantifiedShareRows(worksheet, mergedTypeLieu)
     worksheet.addRow([])
   }
 
@@ -158,19 +111,15 @@ const addStatistiquesDureesActivites =
   (worksheet: Excel.Worksheet) =>
   ({ activites: { durees } }: MesStatistiquesPageData) => {
     addTitleRow(worksheet)('Durées des activités')
-    for (const { label, count, proportion } of durees) {
-      worksheet.addRow([label, count, `${proportion}%`])
-    }
+    addQuantifiedShareRows(worksheet, durees)
     worksheet.addRow([])
   }
 
 const addStatistiquesNombreActivitesParLieux =
   (worksheet: Excel.Worksheet) =>
   ({ structures }: MesStatistiquesPageData) => {
-    addTitleRow(worksheet)("Nombre d'activités par lieux", 'F4CCCCFF')
-    for (const { nom, count, proportion } of structures) {
-      worksheet.addRow([nom, count, `${proportion}%`])
-    }
+    addTitleRow(worksheet)('Nombre d’activités par lieux')
+    addQuantifiedShareRows(worksheet, structures)
     worksheet.addRow([])
   }
 
@@ -178,9 +127,7 @@ const addStatistiquesGenre =
   (worksheet: Excel.Worksheet) =>
   ({ beneficiaires: { genres } }: MesStatistiquesPageData) => {
     addTitleRow(worksheet)('Genre')
-    for (const { label, count, proportion } of genres) {
-      worksheet.addRow([label, count, `${proportion}%`])
-    }
+    addQuantifiedShareRows(worksheet, genres)
     worksheet.addRow([])
   }
 
@@ -188,9 +135,7 @@ const addStatistiquesTranchesAge =
   (worksheet: Excel.Worksheet) =>
   ({ beneficiaires: { trancheAges } }: MesStatistiquesPageData) => {
     addTitleRow(worksheet)('Tranches d’âge')
-    for (const { label, count, proportion } of trancheAges) {
-      worksheet.addRow([label, count, `${proportion}%`])
-    }
+    addQuantifiedShareRows(worksheet, trancheAges)
     worksheet.addRow([])
   }
 
@@ -198,61 +143,61 @@ const addStatistiquesStatus =
   (worksheet: Excel.Worksheet) =>
   ({ beneficiaires: { statutsSocial } }: MesStatistiquesPageData) => {
     addTitleRow(worksheet)('Statuts')
-    for (const { label, count, proportion } of statutsSocial) {
-      worksheet.addRow([label, count, `${proportion}%`])
-    }
+    addQuantifiedShareRows(worksheet, statutsSocial)
     worksheet.addRow([])
   }
 
 const addStatistiquesCommuneResidenceBeneficiaires =
   (worksheet: Excel.Worksheet) =>
   ({ beneficiaires: { communes } }: MesStatistiquesPageData) => {
-    addTitleRow(worksheet)('Commune de résidence des bénéficiaires', 'F4CCCCFF')
-    for (const { label, count, proportion } of communes) {
-      worksheet.addRow([label, count, `${proportion}%`])
-    }
+    addTitleRow(worksheet)('Commune de résidence des bénéficiaires')
+    addQuantifiedShareRows(worksheet, communes)
     worksheet.addRow([])
   }
 
-export const buildStatistiquesWorksheet =
-  (date: Date) =>
-  ({
-    user,
-    filters,
-    statistiques,
-  }: {
-    user: Pick<
-      AuthenticatedMediateur,
-      'firstName' | 'lastName' | 'role' | 'mediateur' | 'coordinateur'
-    >
-    filters: Partial<ActivitesFiltersLabels>
-    statistiques: MesStatistiquesPageData
-  }): Excel.Workbook => {
-    const workbook = new Excel.Workbook()
+export type BuildStatistiquesWorksheetInput = {
+  // This is the user that requested the worksheet, it might not be the same user as the one that owns the activites
+  user: WorksheetUser
+  // This is the user that owns the activites
+  mediateur: WorksheetUser
+  filters: ActivitesFiltersLabels
+  statistiques: MesStatistiquesPageData
+  worksheetGenerationDate?: Date // Defaults to current date
+}
 
-    workbook.creator = 'La coop de la médiation numérique'
-    workbook.lastModifiedBy = 'La coop de la médiation numérique'
-    workbook.created = date
-    workbook.modified = date
-    workbook.lastPrinted = date
+export const buildStatistiquesWorksheet = ({
+  user,
+  mediateur,
+  filters,
+  statistiques,
+  worksheetGenerationDate = new Date(),
+}: BuildStatistiquesWorksheetInput): Excel.Workbook => {
+  const workbook = new Excel.Workbook()
 
-    const worksheet = workbook.addWorksheet('Statistiques')
+  setWorkbookMetadata(workbook)
 
-    addStatistiquesExportInfo(worksheet)(user, date)
-    addStatistiquesFilters(worksheet)(filters)
-    addStatistiquesGenerales(worksheet)(statistiques)
-    addStatistiquesActivites(worksheet)(statistiques)
-    addStatistiquesThematiquesMediationNumerique(worksheet)(statistiques)
-    addStatistiquesThematiquesDemarchesAdministratives(worksheet)(statistiques)
-    addStatistiquesMaterielUtilises(worksheet)(statistiques)
-    addStatistiquesCanauxActivites(worksheet)(statistiques)
-    addStatistiquesDureesActivites(worksheet)(statistiques)
-    addStatistiquesNombreActivitesParLieux(worksheet)(statistiques)
-    addTitleRow(worksheet)('Statistiques sur vos bénéficiaires')
-    addStatistiquesGenre(worksheet)(statistiques)
-    addStatistiquesTranchesAge(worksheet)(statistiques)
-    addStatistiquesStatus(worksheet)(statistiques)
-    addStatistiquesCommuneResidenceBeneficiaires(worksheet)(statistiques)
+  const worksheet = workbook.addWorksheet('Statistiques')
 
-    return workbook
-  }
+  addExportMetadata(worksheet)({ user, date: worksheetGenerationDate })
+  addFilters(worksheet)(filters, {
+    // only display the mediateur name if the user is NOT the mediateur used for export
+    mediateurScope: user.id === mediateur.id ? null : mediateur,
+  })
+  addStatistiquesGenerales(worksheet)(statistiques)
+  addStatistiquesActivites(worksheet)(statistiques)
+  addStatistiquesThematiquesMediationNumerique(worksheet)(statistiques)
+  addStatistiquesThematiquesDemarchesAdministratives(worksheet)(statistiques)
+  addStatistiquesMaterielUtilises(worksheet)(statistiques)
+  addStatistiquesCanauxActivites(worksheet)(statistiques)
+  addStatistiquesDureesActivites(worksheet)(statistiques)
+  addStatistiquesNombreActivitesParLieux(worksheet)(statistiques)
+  addTitleRow(worksheet)('Statistiques sur vos bénéficiaires')
+  addStatistiquesGenre(worksheet)(statistiques)
+  addStatistiquesTranchesAge(worksheet)(statistiques)
+  addStatistiquesStatus(worksheet)(statistiques)
+  addStatistiquesCommuneResidenceBeneficiaires(worksheet)(statistiques)
+
+  autosizeColumns(worksheet)
+
+  return workbook
+}

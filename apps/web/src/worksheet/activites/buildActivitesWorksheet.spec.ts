@@ -28,6 +28,7 @@ describe('buildActivitesWorksheet', () => {
           id: '2',
           conseillerNumerique: { id: '4' },
         },
+        coordinateur: null,
       },
       filters: {
         du: '01/01/2023',
@@ -60,7 +61,7 @@ describe('buildActivitesWorksheet', () => {
     const nomCell = worksheet.getCell('A2')
     const nomValueCell = worksheet.getCell('B2')
     expect(nomCell.value).toBe('Nom')
-    expect(nomValueCell.value).toBe('John')
+    expect(nomValueCell.value).toBe('Doe')
 
     // Check if "Filtres" section is present
     const filtersTitleCell = worksheet.getCell('A9')

@@ -39,7 +39,7 @@ export const GET = async (request: NextRequest) => {
   const typedUser = user as AuthenticatedMediateur
 
   const parsedQueryParams = ExportActivitesValidation.safeParse(
-    request.nextUrl.searchParams,
+    Object.fromEntries(request.nextUrl.searchParams.entries()),
   )
 
   if (parsedQueryParams.error) {

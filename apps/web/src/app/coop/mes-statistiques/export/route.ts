@@ -4,21 +4,20 @@ import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionT
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import { ActivitesFilterValidations } from '@app/web/cra/ActivitesFilters'
-import { AuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { buildStatistiquesWorksheet } from '@app/web/worksheet/statistiques/buildStatistiquesWorksheet'
-import { SessionUser } from '@app/web/auth/sessionUser'
-import { getMesStatistiquesPageData } from '../getMesStatistiquesPageData'
+import { getStatistiquesWorksheetInput } from '@app/web/worksheet/statistiques/getStatistiquesWorksheetInput'
+import { AuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 const ExportActivitesValidation = z
-  .object({ mediateur: z.string().uuid().optional() })
+  .object({
+    // If you want to filter by a specific mediateur, you can add it here
+    // By default this will export for current user if he is a mediateur
+    mediateur: z.string().uuid().optional(),
+  })
   .extend(ActivitesFilterValidations)
-
-const isMediateur = (
-  user: SessionUser | null,
-): user is AuthenticatedMediateur => user?.mediateur != null
 
 export const GET = async (request: NextRequest) => {
   const sessionToken = getSessionTokenFromNextRequestCookies(request.cookies)
@@ -28,12 +27,15 @@ export const GET = async (request: NextRequest) => {
     return new Response('Unauthorized', { status: 401 })
   }
 
-  if (!isMediateur(user)) {
+  if (!user.mediateur) {
     return new Response('Forbidden', { status: 403 })
   }
 
+  // Do not know why but TS does not understand user.mediateur is not null after previous check
+  const typedUser = user as AuthenticatedMediateur
+
   const parsedQueryParams = ExportActivitesValidation.safeParse(
-    request.nextUrl.searchParams,
+    Object.fromEntries(request.nextUrl.searchParams.entries()),
   )
 
   if (parsedQueryParams.error) {
@@ -46,16 +48,12 @@ export const GET = async (request: NextRequest) => {
     return new Response('Cannot export for another mediateur', { status: 403 })
   }
 
-  const statistiques = await getMesStatistiquesPageData({
-    mediateurId: user.mediateur.id,
-    activitesFilters: filters,
+  const statistiquesWorksheetInput = await getStatistiquesWorksheetInput({
+    user: typedUser,
+    filters,
   })
 
-  const workbook = buildStatistiquesWorksheet(new Date())({
-    user,
-    filters,
-    statistiques,
-  })
+  const workbook = buildStatistiquesWorksheet(statistiquesWorksheetInput)
 
   const data = await workbook.xlsx.writeBuffer()
   const filename = `coop-numerique_statistiques_${dateAsIsoDay(new Date())}.xlsx`
