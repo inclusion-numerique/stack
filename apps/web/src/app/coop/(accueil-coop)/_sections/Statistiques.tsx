@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { AccueilPageData } from '../getAccueilPageData'
 
 const BeneficiairesStatistiques = ({
@@ -19,11 +20,15 @@ const BeneficiairesStatistiques = ({
       aria-hidden
     />
     <div className="fr-text--bold fr-my-1w fr-text--xl">
-      {total} Bénéficiaires accompagnés
+      {total} Bénéficiaire{sPluriel(total)} accompagné{sPluriel(total)}
     </div>
     <ul className="fr-text-mention--grey fr-text--sm fr-mb-0 fr-list-group">
-      <li>{suivis} bénéficiaires suivis</li>
-      <li>{anonymes} bénéficiaires anonymes</li>
+      <li>
+        {suivis} bénéficiaire{sPluriel(suivis)} suivi{sPluriel(suivis)}
+      </li>
+      <li>
+        {anonymes} bénéficiaire{sPluriel(anonymes)} anonyme{sPluriel(anonymes)}
+      </li>
     </ul>
   </div>
 )
@@ -45,15 +50,21 @@ const AccompagnementsStatistiques = ({
       aria-hidden
     />
     <div className="fr-text--bold fr-my-1w fr-text--xl">
-      {total} Accompagnements
+      {total} Accompagnement{sPluriel(total)}
     </div>
     <ul className="fr-text-mention--grey fr-text--sm fr-mb-0 fr-list-group">
-      <li>{individuels.total} accompagnements individuels</li>
       <li>
-        {collectifs.participants} participants lors de {collectifs.total}{' '}
-        ateliers
+        {individuels.total} accompagnement{sPluriel(individuels.total)}{' '}
+        individuel{sPluriel(individuels.total)}
       </li>
-      <li>{demarches.total} aides aux démarches administratives</li>
+      <li>
+        {collectifs.participants} participant{sPluriel(collectifs.participants)}{' '}
+        lors de {collectifs.total} atelier{sPluriel(collectifs.total)}
+      </li>
+      <li>
+        {demarches.total} aide{sPluriel(demarches.total)} aux démarches
+        administratives
+      </li>
     </ul>
   </div>
 )
@@ -69,7 +80,7 @@ export const Statistiques = ({
       <div className="fr-flex fr-flex-wrap fr-flex-gap-4v fr-align-items-center fr-justify-content-space-between fr-mb-3w">
         <h2 className="fr-h5 fr-text-mention--grey fr-mb-0">
           <span className="ri-chat-poll-line fr-mr-1w" aria-hidden />
-          statistiques
+          Statistiques
         </h2>
         <SegmentedControl
           small
