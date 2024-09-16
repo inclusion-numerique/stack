@@ -7,7 +7,7 @@ export const Outils = () => (
       <Image
         width={69}
         height={64}
-        src="/images/illustrations/outils.webp"
+        src="/images/illustrations/landing-page/outils/outiller.svg"
         alt=""
       />
       <div className="fr-text-mention--grey fr-text--bold fr-text--xl fr-text--uppercase fr-mt-3w fr-mb-0">
@@ -31,7 +31,7 @@ export const Outils = () => (
             className="fr-background-alt--blue-france fr-border-radius--16 fr-p-2w"
             width={88}
             height={88}
-            src="/images/services/cartographie-icon.png"
+            src="/images/services/cartographie-icon.svg"
             alt=""
           />
           <div className="fr-my-3w">

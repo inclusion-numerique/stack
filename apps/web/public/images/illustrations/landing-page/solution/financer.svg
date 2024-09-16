@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Calque_1"
+   viewBox="0 0 498.92001 710.365"
+   version="1.1"
+   sodipodi:docname="financer.svg"
+   width="498.92001"
+   height="710.36499"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview23"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="0.353125"
+     inkscape:cx="-256.28319"
+     inkscape:cy="549.38053"
+     inkscape:window-width="2560"
+     inkscape:window-height="1363"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Calque_1" />
+  <defs
+     id="defs4">
+    <style
+       id="style2">.cls-1{stroke:#000;stroke-linejoin:round;stroke-width:15.73px;}.cls-1,.cls-2{fill:none;stroke-linecap:round;}.cls-3,.cls-4{stroke-width:0px;}.cls-2{stroke:#fff;stroke-miterlimit:10;stroke-width:26.22px;}.cls-4{fill:#f49a01;}</style>
+  </defs>
+  <circle
+     class="cls-3"
+     cx="249.46001"
+     cy="460.905"
+     r="249.46001"
+     id="circle6" />
+  <circle
+     class="cls-4"
+     cx="249.46001"
+     cy="419.44501"
+     id="circle8"
+     r="249.46001" />
+  <path
+     class="cls-2"
+     d="m 301.93001,496.035 c -13.66,6.86 -29.2,10.75 -45.69,10.75 -54.53,0 -98.73,-42.47 -98.73,-94.85 0,-52.38 44.2,-94.85 98.73,-94.85 18.12,0 35.1,4.69 49.7,12.88"
+     id="path10" />
+  <line
+     class="cls-2"
+     x1="131.00999"
+     y1="394.02499"
+     x2="235.18999"
+     y2="394.02499"
+     id="line12" />
+  <line
+     class="cls-2"
+     x1="131.00999"
+     y1="431.29498"
+     x2="235.18999"
+     y2="431.29498"
+     id="line14" />
+  <line
+     class="cls-1"
+     x1="85.040024"
+     y1="157.91499"
+     x2="27.949997"
+     y2="102.505"
+     id="line16" />
+  <line
+     class="cls-1"
+     x1="265.70001"
+     y1="92.915001"
+     x2="265.70001"
+     y2="7.8649998"
+     id="line18" />
+  <line
+     class="cls-1"
+     x1="430.57001"
+     y1="153.72499"
+     x2="482.63007"
+     y2="106.705"
+     id="line20" />
+</svg>

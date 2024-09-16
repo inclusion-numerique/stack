@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 
-export const Jumbotron = () => (
+export const Hero = () => (
   <div className="fr-container">
     <div className="fr-grid-row fr-grid-row--gutters fr-align-items-center">
       <div className="fr-col-xl-6 col-12 fr-mx-auto">
@@ -34,14 +34,14 @@ export const Jumbotron = () => (
           <div className="fr-flex fr-direction-column fr-mx-md-0 fr-mx-auto fr-pb-1w  fr-justify-content-space-between">
             <Image
               className="fr-border-radius--16 fr-responsive-img"
-              src="/images/illustrations/besoin.webp"
+              src="/images/illustrations/landing-page/hero/besoin.webp"
               alt=""
               width={282}
               height={166}
             />
             <Image
               className="fr-border-radius--16 fr-responsive-img"
-              src="/images/illustrations/complexité.webp"
+              src="/images/illustrations/landing-page/hero/complexité.webp"
               alt=""
               width={282}
               height={166}
@@ -49,8 +49,8 @@ export const Jumbotron = () => (
           </div>
           <div className="fr-ml-md-4w fr-ml-3w">
             <Image
-              className="fr-border-radius--16 fr-responsive-img "
-              src="/images/illustrations/solution.webp"
+              className="fr-border-radius--16 fr-responsive-img"
+              src="/images/illustrations/landing-page/hero/solution.webp"
               alt=""
               width={282}
               height={356}

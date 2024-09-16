@@ -8,7 +8,7 @@ export const Fonctionnalites = () => (
     <div className="fr-text--center">
       <Image
         className="fr-border-radius--16"
-        src="/images/illustrations/fonctionnalités.webp"
+        src="/images/illustrations/landing-page/fonctionnalites/deployer.svg"
         alt=""
         width={52}
         height={64}
@@ -30,7 +30,7 @@ export const Fonctionnalites = () => (
       <div className="fr-col-sm-6 fr-col-offset-lg-1 fr-col-12">
         <Image
           className="fr-responsive-img"
-          src="/images/illustrations/activité.webp"
+          src="/images/illustrations/landing-page/fonctionnalites/mes-activités.svg"
           alt=""
           width={558}
           height={420}
@@ -54,7 +54,7 @@ export const Fonctionnalites = () => (
       <div className="fr-col-sm-6  fr-col-12">
         <Image
           className="fr-responsive-img"
-          src="/images/illustrations/bénéficiaire.webp"
+          src="/images/illustrations/landing-page/fonctionnalites/mes-bénéficiaire.svg"
           alt=""
           width={558}
           height={420}
@@ -79,7 +79,7 @@ export const Fonctionnalites = () => (
       <div className="fr-col-sm-6 fr-col-offset-lg-1 fr-col-12">
         <Image
           className="fr-responsive-img"
-          src="/images/illustrations/services.webp"
+          src="/images/illustrations/landing-page/fonctionnalites/mes-outils.svg"
           alt=""
           width={558}
           height={420}
