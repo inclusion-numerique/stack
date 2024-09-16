@@ -7,6 +7,6 @@ export const metadata: Metadata = {
   title: metadataTitle('Mes outils'),
 }
 
-const Page = async () => <MesOutils />
+const Page = () => <MesOutils />
 
 export default Page

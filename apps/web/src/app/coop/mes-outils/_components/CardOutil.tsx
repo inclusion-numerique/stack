@@ -7,12 +7,14 @@ export const CardOutil = ({
   logo,
   title,
   href,
+  inforef,
   children,
   inline = false,
 }: {
   logo: string
   title: string
   href: string
+  inforef: string
   children: ReactNode
   inline?: boolean
 }) => (
@@ -39,7 +41,7 @@ export const CardOutil = ({
       <Link
         className="fr-link fr-link--no-underline fr-icon-question-line fr-link--icon-left"
         title={`En savoir plus à propos de ${title}`}
-        href="/"
+        href={`/coop/mes-outils/${inforef}`}
       >
         En savoir plus
       </Link>

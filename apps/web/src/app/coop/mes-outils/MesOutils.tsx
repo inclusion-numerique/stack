@@ -48,6 +48,7 @@ export const MesOutils = () => (
             <CardOutil
               logo="/images/services/rdv-aide-numerique.svg"
               title="RDV Aide Numérique"
+              inforef="rdv-aide-numerique"
               href="https://www.rdv-aide-numerique.fr"
             >
               Faciliter la gestion des rendez-vous avec vos bénéficiaires.
@@ -57,6 +58,7 @@ export const MesOutils = () => (
             <CardOutil
               logo="/images/services/aidants-connect.svg"
               title="Aidants Connect"
+              inforef="aidants-connect"
               href="https://aidantsconnect.beta.gouv.fr"
             >
               Sécuriser l’aidant et la personne accompagnée dans la réalisation
@@ -81,6 +83,7 @@ export const MesOutils = () => (
             <CardOutil
               logo="/images/services/pix.svg"
               title="PIX"
+              inforef="pix"
               href="https://pix.fr"
             >
               Proposez des tutoriels PIX adaptés aux besoins de vos apprenants
@@ -91,6 +94,7 @@ export const MesOutils = () => (
             <CardOutil
               logo="/images/services/abc-diag.svg"
               title="ABC Diag"
+              inforef="abc-diag"
               href="https://pix.fr/abc-diag"
             >
               Diagnostiquez en 10 questions la maîtrise de compétences
@@ -112,6 +116,7 @@ export const MesOutils = () => (
             <CardOutil
               logo="/images/services/conseillers-numerique-logo-small.svg"
               title="Espace France Numérique Ensemble"
+              inforef="espace-france-numerique-ensemble"
               href="https://inclusion-numerique.anct.gouv.fr"
             >
               Les données utiles pour comprendre l’inclusion numérique sur votre
@@ -122,6 +127,7 @@ export const MesOutils = () => (
             <CardOutil
               logo="/images/services/cartographie-icon.png"
               title="La Cartographie Nationale des lieux d’inclusion numérique"
+              inforef="cartographie-nationale-des-lieux-d-inclusion-numerique"
               href="https://cartographie.societenumerique.gouv.fr"
             >
               Rendre visible vos lieux et services d’inclusion numérique pour
@@ -139,6 +145,7 @@ export const MesOutils = () => (
           inline
           logo="/images/services/les-bases.svg"
           title="Les Bases du numérique d’intérêt général"
+          inforef="les-bases-du-numerique-d-interet-general"
           href="https://lesbases.anct.gouv.fr"
         >
           La plateforme collaborative de partage de ressources & communs
