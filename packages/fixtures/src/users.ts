@@ -57,6 +57,7 @@ export const coordinateurInscription = givenUser({
 export const coordinateur = givenUser({
   id: '8c8824f0-a10d-4e30-baf0-8d4fab5c7a74',
   profilInscription: 'Coordinateur',
+  acceptationCgu: new Date(),
   firstName: 'Coordinateur',
   lastName: 'Inscrit',
   isFixture: true,
@@ -125,6 +126,7 @@ export const mediateurSansActivitesMediateurId =
 
 export const mediateurSansActivites = givenUser({
   id: mediateurSansActivitesUserId,
+  acceptationCgu: new Date(),
   firstName: 'Médiateur',
   lastName: 'Sans activités',
   isFixture: true,
@@ -169,6 +171,7 @@ export const mediateurSansActivites = givenUser({
 
 export const mediateurAvecActivite = givenUser({
   id: 'd10844c6-b6de-402a-a68d-f8328b1d1b0c',
+  acceptationCgu: new Date(),
   firstName: 'Médiateur',
   lastName: 'Avec activités',
   isFixture: true,
@@ -287,6 +290,7 @@ export const conseillerNumerique = givenUser({
   isFixture: true,
   role: 'User',
   profilInscription: 'ConseillerNumerique',
+  acceptationCgu: new Date(),
   checkConseillerNumeriqueInscription: new Date(),
   structureEmployeuseRenseignee: new Date(),
   lieuxActiviteRenseignes: new Date(),

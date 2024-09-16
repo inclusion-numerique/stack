@@ -6,6 +6,8 @@ import { HeaderUserMenu } from '@app/web/components/HeaderUserMenu'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { getHomepage } from '@app/web/security/getHomepage'
 import styles from './Header.module.css'
+import LogoCoop from '@app/web/components/LogoCoop'
+import classNames from 'classnames'
 
 const Header = ({
   user,
@@ -62,7 +64,13 @@ const Header = ({
                 target="_self"
                 title={`Accueil - ${PublicWebAppConfig.projectTitle}`}
               >
-                <p className="fr-header__service-title">
+                <p
+                  className={classNames(
+                    'fr-header__service-title fr-flex fr-align-items-center',
+                    styles.serviceTitle,
+                  )}
+                >
+                  <LogoCoop className={classNames(styles.logo, 'fr-mr-4v')} />
                   {PublicWebAppConfig.projectTitle}
                 </p>
               </Link>

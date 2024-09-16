@@ -12,3 +12,17 @@
         padding-right: 24px;
     }
 }
+
+.logo {
+    width: 56px;
+    height: 56px;
+    flex-basis: 56px;
+    flex-shrink: 0;
+}
+
+.serviceTitle {
+    font-weight: 500;
+    max-width: 280px;
+    font-size: 18px;
+    line-height: 24px;
+}
