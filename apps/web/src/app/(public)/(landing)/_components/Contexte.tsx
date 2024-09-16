@@ -7,7 +7,7 @@ export const Contexte = () => (
       <Image
         width={68}
         height={64}
-        src="/images/illustrations/identifier.webp"
+        src="/images/illustrations/landing-page/contexte/identifier.svg"
         alt=""
       />
       <div className="fr-text-mention--grey fr-text--bold fr-text--xl fr-text--uppercase fr-mt-3w fr-mb-0">
@@ -21,7 +21,7 @@ export const Contexte = () => (
       <div className="fr-col-md-6 fr-background-alt--blue-france fr-p-6w fr-border-radius--16">
         <Image
           className="fr-responsive-img fr-border-radius--16"
-          src="/images/illustrations/éloignement-numérique.webp"
+          src="/images/illustrations/landing-page/contexte/éloignement-numérique.svg"
           alt=""
           width={464}
           height={270}
@@ -60,7 +60,7 @@ export const Contexte = () => (
       <div className="fr-col-md-6 fr-background-alt--blue-france fr-p-6w fr-border-radius--16">
         <Image
           className="fr-responsive-img fr-border-radius--16"
-          src="/images/illustrations/médiation-numérique.webp"
+          src="/images/illustrations/landing-page/contexte/médiation-numérique.svg"
           alt=""
           width={464}
           height={270}

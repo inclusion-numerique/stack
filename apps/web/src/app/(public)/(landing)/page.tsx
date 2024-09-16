@@ -1,16 +1,16 @@
 import { Contexte } from './_components/Contexte'
 import { Faq } from './_components/Faq'
 import { Fonctionnalites } from './_components/Fonctionnalites'
-import { Jumbotron } from './_components/Jumbotron'
+import { Hero } from './_components/Hero'
 import { Outils } from './_components/Outils'
 import { QuiSommesNous } from './_components/QuiSommesNous'
 import Webinaire from './_components/Webinaire'
 import { Solution } from './_components/Solution'
 
-const HomePage = () => (
+const LandingPage = () => (
   <div className="fr-container--fluid">
     <section className="fr-background-alt--brown-caramel-950 fr-py-md-12w fr-py-6w">
-      <Jumbotron />
+      <Hero />
     </section>
     <section className="fr-pt-md-11w fr-pb-md-15w fr-py-8w">
       <Fonctionnalites />
@@ -36,4 +36,4 @@ const HomePage = () => (
   </div>
 )
 
-export default HomePage
+export default LandingPage

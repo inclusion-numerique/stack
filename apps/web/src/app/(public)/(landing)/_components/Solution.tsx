@@ -14,7 +14,7 @@ export const Solution = () => (
         <Image
           width={73}
           height={88}
-          src="/images/illustrations/accessibilité.webp"
+          src="/images/illustrations/landing-page/solution/former.svg"
           alt=""
         />
         <h3 className="fr-h6 fr-my-2w">
@@ -31,7 +31,7 @@ export const Solution = () => (
         <Image
           width={86}
           height={88}
-          src="/images/illustrations/institution.webp"
+          src="/images/illustrations/landing-page/solution/instituer.svg"
           alt=""
         />
         <h3 className="fr-h6 fr-my-2w">Une solution publique et souveraine</h3>
@@ -45,7 +45,7 @@ export const Solution = () => (
         <Image
           width={62}
           height={88}
-          src="/images/illustrations/gratuit.webp"
+          src="/images/illustrations/landing-page/solution/financer.svg"
           alt=""
         />
         <h3 className="fr-h6 fr-my-2w">Une solution simple et gratuite</h3>
