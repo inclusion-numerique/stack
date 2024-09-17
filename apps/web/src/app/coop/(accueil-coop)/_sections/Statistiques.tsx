@@ -49,7 +49,8 @@ const AccompagnementsStatistiques = ({
     />
     <div className="fr-text--bold fr-my-1w fr-text--xl">
       {collectifs.participants + individuels.total + demarches.total}{' '}
-      Accompagnement{sPluriel(collectifs.participants + individuels.total + demarches.total)}
+      Accompagnement
+      {sPluriel(collectifs.participants + individuels.total + demarches.total)}
     </div>
     <ul className="fr-text-mention--grey fr-text--sm fr-mb-0 fr-list-group">
       <li>
