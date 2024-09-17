@@ -105,6 +105,7 @@ export const getActivitesStatsRaw = async ({
                as: 'materiel',
              })}
       FROM activites
+        LEFT JOIN structures ON structures.id = activites.structure_id
       WHERE activites.mediateur_id = ${mediateurId}::UUID
         AND activites.suppression IS NULL
         AND ${getActiviteFiltersSqlFragment(

@@ -5,6 +5,7 @@ import { StatistiquesActivites } from '@app/web/app/coop/mes-statistiques/_secti
 import { StatistiquesBeneficiaires } from '@app/web/app/coop/mes-statistiques/_sections/StatistiquesBeneficiaires'
 import CoopBreadcrumbs from '../CoopBreadcrumbs'
 import CoopPageContainer from '../CoopPageContainer'
+import { ExportStatistiques } from './_components/ExportStatistiques'
 import { StatistiquesTerritoriales } from './_components/StatistiquesTerritoriales'
 import { StatistiquesGenerales } from './_sections/StatistiquesGenerales'
 import { MesStatistiquesPageData } from './getMesStatistiquesPageData'
@@ -27,15 +28,25 @@ export const MesStatistiques = (
       <CoopBreadcrumbs currentPage="Mes statistiques" />
       <SkipLinksPortal links={defaultSkipLinks} />
       <main id={contentId}>
-        <h1 className="fr-text-title--blue-france">Mes statistiques</h1>
-        <ActivitesFilterTags
-          className="fr-mt-2v fr-mb-4v"
-          defaultFilters={activitesFilters}
-          communesOptions={communesOptions}
-          departementsOptions={departementsOptions}
-          lieuxActiviteOptions={lieuxActiviteOptions}
-          initialBeneficiairesOptions={initialBeneficiairesOptions}
-        />
+        <h1 className="fr-text-title--blue-france fr-mb-2w">
+          Mes statistiques
+        </h1>
+        <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-flex-gap-4v fr-mb-3w">
+          <ActivitesFilterTags
+            defaultFilters={activitesFilters}
+            communesOptions={communesOptions}
+            departementsOptions={departementsOptions}
+            lieuxActiviteOptions={lieuxActiviteOptions}
+            initialBeneficiairesOptions={initialBeneficiairesOptions}
+          />
+          <ExportStatistiques
+            filters={activitesFilters}
+            communesOptions={communesOptions}
+            departementsOptions={departementsOptions}
+            lieuxActiviteOptions={lieuxActiviteOptions}
+            beneficiairesOptions={initialBeneficiairesOptions}
+          />
+        </div>
         <hr />
         <section className="fr-mb-6w">
           <StatistiquesGenerales {...mesStatistiquesProps} />

@@ -4,8 +4,8 @@ import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionT
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import { ActivitesFilterValidations } from '@app/web/cra/ActivitesFilters'
-import { buildActivitesWorksheet } from '@app/web/worksheet/activites/buildActivitesWorksheet'
-import { getActivitesWorksheetInput } from '@app/web/worksheet/activites/getActivitesWorksheetInput'
+import { buildStatistiquesWorksheet } from '@app/web/worksheet/statistiques/buildStatistiquesWorksheet'
+import { getStatistiquesWorksheetInput } from '@app/web/worksheet/statistiques/getStatistiquesWorksheetInput'
 import { AuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 
 export const dynamic = 'force-dynamic'
@@ -24,15 +24,11 @@ export const GET = async (request: NextRequest) => {
   const user = await getSessionUserFromSessionToken(sessionToken)
 
   if (!user) {
-    return new Response('Unauthorized', {
-      status: 401,
-    })
+    return new Response('Unauthorized', { status: 401 })
   }
 
   if (!user.mediateur) {
-    return new Response('Forbidden', {
-      status: 403,
-    })
+    return new Response('Forbidden', { status: 403 })
   }
 
   // Do not know why but TS does not understand user.mediateur is not null after previous check
@@ -43,30 +39,24 @@ export const GET = async (request: NextRequest) => {
   )
 
   if (parsedQueryParams.error) {
-    return new Response('Invalid query params', {
-      status: 400,
-    })
+    return new Response('Invalid query params', { status: 400 })
   }
 
   const { mediateur: exportForMediateurId, ...filters } = parsedQueryParams.data
 
-  // For now we only support exporting for current user
   if (exportForMediateurId && exportForMediateurId !== user.mediateur.id) {
-    return new Response('Cannot export for another mediateur', {
-      status: 403,
-    })
+    return new Response('Cannot export for another mediateur', { status: 403 })
   }
 
-  const activitesWorksheetInput = await getActivitesWorksheetInput({
+  const statistiquesWorksheetInput = await getStatistiquesWorksheetInput({
     user: typedUser,
     filters,
   })
 
-  const workbook = buildActivitesWorksheet(activitesWorksheetInput)
+  const workbook = buildStatistiquesWorksheet(statistiquesWorksheetInput)
 
   const data = await workbook.xlsx.writeBuffer()
-
-  const filename = `coop-numerique_activites_${dateAsIsoDay(new Date())}.xlsx`
+  const filename = `coop-numerique_statistiques_${dateAsIsoDay(new Date())}.xlsx`
 
   return new Response(data, {
     status: 200,

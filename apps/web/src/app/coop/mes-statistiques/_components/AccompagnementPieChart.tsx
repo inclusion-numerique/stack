@@ -34,6 +34,7 @@ export const AccompagnementPieChart = ({
   <ResponsiveContainer width={size} height={size} className={className}>
     <PieChart>
       <Pie
+        strokeWidth={0}
         dataKey="count"
         nameKey="label"
         isAnimationActive

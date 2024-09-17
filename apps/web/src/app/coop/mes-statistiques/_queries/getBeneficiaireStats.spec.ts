@@ -131,13 +131,13 @@ describe('getBeneficiaireStats', () => {
         expect(
           normalizeBeneficiairesCommunesRaw([
             {
-              code_insee: '69382',
+              coalesced_code_insee: '69382',
               commune: 'Lyon 2eme',
               code_postal: '69002',
               count_beneficiaires: 1,
             },
             {
-              code_insee: '75101',
+              coalesced_code_insee: '75101',
               commune: 'Paris',
               code_postal: '75001',
               count_beneficiaires: 3,

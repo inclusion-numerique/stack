@@ -77,6 +77,7 @@ export const getTotalCountsStats = async ({
     FROM activites
     LEFT JOIN accompagnements ON accompagnements.activite_id = activites.id
     LEFT JOIN beneficiaires ON beneficiaires.id = accompagnements.beneficiaire_id
+    LEFT JOIN structures ON structures.id = activites.structure_id
     WHERE activites.mediateur_id = ${mediateurId}::UUID
       AND activites.suppression IS NULL
       AND ${getActiviteFiltersSqlFragment(

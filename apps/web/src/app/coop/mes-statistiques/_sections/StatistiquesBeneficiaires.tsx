@@ -20,13 +20,16 @@ const communeColor = '#6A6AF4'
 
 const toProgress = ({
   label,
+  count,
   proportion,
 }: {
   label: string
+  count?: number
   proportion: number
 }) => ({
   label,
-  value: proportion,
+  count,
+  percentage: proportion,
 })
 
 export const StatistiquesBeneficiaires = ({

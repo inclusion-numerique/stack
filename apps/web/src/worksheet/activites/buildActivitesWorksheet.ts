@@ -1,8 +1,5 @@
 import * as Excel from 'exceljs'
-import type { SessionUser } from '@app/web/auth/sessionUser'
-import type { AuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { ActiviteForList } from '@app/web/cra/activitesQueries'
-import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
 import {
   autonomieStars,
   autonomieValues,
@@ -26,30 +23,25 @@ import {
   trancheAgeLabels,
 } from '@app/web/beneficiaire/beneficiaire'
 import { ActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
-
-export type WorksheetUser = Pick<
-  SessionUser,
-  'firstName' | 'lastName' | 'role' | 'id'
-> & {
-  mediateur: Pick<
-    AuthenticatedMediateur['mediateur'],
-    'id' | 'conseillerNumerique'
-  > | null
-}
+import {
+  addExportMetadata,
+  addFilters,
+  autosizeColumns,
+  setWorkbookMetadata,
+  WorksheetUser,
+} from '@app/web/worksheet/buildWorksheetHelpers'
 
 export type BuildActivitesWorksheetInput = {
   // This is the user that requested the worksheet, it might not be the same user as the one that owns the activites
-  user: WorksheetUser & { coordinateur: { id: string } | null }
+  user: WorksheetUser
   // This is the user that owns the activites
   mediateur: WorksheetUser
   filters: ActivitesFiltersLabels
   activites: ActiviteForList[]
+  worksheetGenerationDate?: Date // Defaults to current date
 }
 
 const intraCellLineBreak = '\n'
-
-const maxLength = (values: (string | null | undefined)[]) =>
-  Math.max(...values.filter(Boolean).map((value) => value?.length ?? 10)) || 10
 
 const beneficiairesListCellFormatter =
   (activite: ActiviteForList) =>
@@ -68,54 +60,24 @@ export const buildActivitesWorksheet = ({
   user,
   filters,
   mediateur,
+  worksheetGenerationDate = new Date(),
 }: BuildActivitesWorksheetInput): Excel.Workbook => {
-  const now = new Date()
   const workbook = new Excel.Workbook()
-  workbook.creator = 'La coop de la médiation numérique'
-  workbook.lastModifiedBy = 'La coop de la médiation numérique'
-  workbook.created = now
-  workbook.modified = now
-  workbook.lastPrinted = now
+
+  setWorkbookMetadata(workbook)
 
   const worksheet = workbook.addWorksheet('Activités')
 
-  const informationsExport: [string, string | number][] = [
-    ['Nom', user.firstName ?? '-'],
-    ['Prénom', user.lastName ?? '-'],
-    ['Rôle', getUserRoleLabel(user)],
-    ['Activités', activites.length],
-    ['Date d’export', now.toLocaleDateString()],
-    ['Heure d’export', now.toLocaleTimeString()],
-  ]
+  addExportMetadata(worksheet)({
+    user,
+    date: worksheetGenerationDate,
+    activitesCount: activites.length,
+  })
 
-  const filtres: [string, string][] = [
-    ['Début de période', filters.du ?? '-'],
-    ['Fin de période', filters.au ?? '-'],
-    ['Type de lieu', filters.typeLieu ?? '-'],
-    ['Nom du lieu', filters.nomLieu ?? '-'],
-    ['Type d’accompagnement', filters.type ?? '-'],
-  ]
-
-  if (filters.beneficiaire) {
-    filtres.push(['Bénéficiaire', filters.beneficiaire])
-  }
-
-  // Only display mediateur if it is not the same as the user that requested the worksheet
-  if (mediateur.id !== user.id) {
-    filtres.push(['Médiateur', `${mediateur.firstName} ${mediateur.lastName}`])
-  }
-
-  const exportTitleRow = worksheet.addRow(['Informations export', ''])
-  exportTitleRow.getCell(1).font = { bold: true }
-
-  for (const info of informationsExport) worksheet.addRow(info)
-
-  worksheet.addRow([''])
-
-  const filtersTitleRow = worksheet.addRow(['Filtres'])
-  filtersTitleRow.getCell(1).font = { bold: true }
-
-  for (const filtre of filtres) worksheet.addRow(filtre)
+  addFilters(worksheet)(filters, {
+    // only display the mediateur name if the user is NOT the mediateur used for export
+    mediateurScope: user.id === mediateur.id ? null : mediateur,
+  })
 
   const activitesTableHeaders = [
     'Date',
@@ -244,25 +206,6 @@ export const buildActivitesWorksheet = ({
     }),
   })
 
-  // Adjust column width automatically based on content
-  for (const column of worksheet.columns) {
-    let columnMaxLength = 10
-
-    if (!column.eachCell) continue
-
-    column.eachCell({ includeEmpty: false }, (cell) => {
-      const cellLength =
-        cell.value && typeof cell.value !== 'object'
-          ? maxLength(cell.value.toString().split('\n'))
-          : 10
-
-      if (cellLength > columnMaxLength) {
-        columnMaxLength = cellLength
-      }
-    })
-    column.width = columnMaxLength
-  }
-
   const dateColumnIndex = 1
   worksheet
     .getColumn(dateColumnIndex)
@@ -278,6 +221,8 @@ export const buildActivitesWorksheet = ({
     // eslint-disable-next-line no-param-reassign
     row.alignment = { wrapText: true, vertical: 'top' }
   })
+
+  autosizeColumns(worksheet)
 
   return workbook
 }
