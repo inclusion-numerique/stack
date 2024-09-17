@@ -42,7 +42,7 @@ const RichCardLabel = memo(
           className="fr-btn--tooltip fr-btn"
           aria-describedby={tooltipId}
         >
-          Information typologies
+          Information
         </button>
         <span
           className="fr-tooltip fr-placement"

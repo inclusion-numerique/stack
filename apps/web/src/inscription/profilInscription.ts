@@ -1,4 +1,5 @@
 import type { ProfilInscription } from '@prisma/client'
+import { labelsToOptions } from '@app/ui/components/Form/utils/options'
 import { SessionUser } from '@app/web/auth/sessionUser'
 
 export const profileInscriptionSlugs = {
@@ -18,10 +19,35 @@ export const profileInscriptionFromSlug = {
 
 export const profileInscriptionLabels: { [key in ProfilInscription]: string } =
   {
-    ConseillerNumerique: 'Conseiller numérique',
-    Coordinateur: 'Coordinateur',
-    Mediateur: 'Médiateur numérique',
+    Mediateur: 'Médiateur·rice numérique professionnel·le',
+    ConseillerNumerique: 'Conseiller·ère numérique',
+    Coordinateur: 'Coordinateur·rice de conseillers numériques',
   }
+
+export const profileInscriptionValues = Object.keys(
+  profileInscriptionLabels,
+) as [ProfilInscription, ...ProfilInscription[]]
+
+export const profileInscriptionOptions = labelsToOptions(
+  profileInscriptionLabels,
+)
+
+export const profileInscriptionIllustrations: {
+  [key in ProfilInscription]: string
+} = {
+  Mediateur: '/images/iconographie/profil-mediateur.svg',
+  ConseillerNumerique: '/images/iconographie/profil-conseiller-numerique.svg',
+  Coordinateur: '/images/iconographie/profil-coordinateur.svg',
+}
+
+export const profileInscriptionOptionsWithExtras =
+  profileInscriptionOptions.map(({ label, value }) => ({
+    label,
+    value,
+    extra: {
+      illustration: profileInscriptionIllustrations[value],
+    },
+  }))
 
 export const computeUserProfile = (
   user: Pick<SessionUser, 'mediateur' | 'coordinateur'>,

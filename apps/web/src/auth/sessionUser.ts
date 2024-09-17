@@ -3,8 +3,8 @@ import type {
   Coordinateur,
   EmployeStructure,
   Mediateur,
-  User,
   Structure,
+  User,
 } from '@prisma/client'
 
 // Serializable user interface
@@ -19,6 +19,7 @@ export type SessionUser = Pick<
   | 'role'
   | 'isFixture'
   | 'profilInscription'
+  | 'acceptationCgu'
 > & {
   emailVerified: string | null
   created: string | null

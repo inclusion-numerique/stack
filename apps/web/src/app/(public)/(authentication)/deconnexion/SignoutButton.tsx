@@ -2,23 +2,33 @@
 
 import Button from '@codegouvfr/react-dsfr/Button'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 import { signOut } from 'next-auth/react'
+import { ButtonProps } from '@codegouvfr/react-dsfr/src/Button'
 
-const SignoutButton = () => {
+const SignoutButton = ({
+  children = 'Se déconnecter',
+  callbackUrl = '/',
+  className,
+  ...buttonProps
+}: {
+  children?: ReactNode
+  callbackUrl?: string
+} & ButtonProps.Common) => {
   const [isLoading, setIsLoading] = useState(false)
   const onLogout = async () => {
     setIsLoading(true)
-    await signOut({ redirect: true, callbackUrl: '/' })
+    await signOut({ redirect: true, callbackUrl })
   }
 
   return (
     <Button
       type="button"
       onClick={onLogout}
-      {...buttonLoadingClassname(isLoading)}
+      {...buttonProps}
+      {...buttonLoadingClassname(isLoading, className)}
     >
-      Se déconnecter
+      {children}
     </Button>
   )
 }

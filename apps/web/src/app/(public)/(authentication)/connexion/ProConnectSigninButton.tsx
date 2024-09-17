@@ -24,18 +24,19 @@ const ProConnectSigninButton = ({
   return (
     <div
       className={classNames(
-        'fr-flex fr-direction-column fr-align-items-start',
+        'fr-flex fr-direction-column fr-align-items-center fr-width-full',
         className,
       )}
     >
-      <Button
-        type="button"
-        {...buttonLoadingClassname(isLoading, 'fr-connect fr-py-4v')}
-        onClick={onClick}
-        title="S’identifier avec ProConnect"
-      >
-        S’identifier avec ProConnect
-      </Button>
+      <div className="fr-btns-group fr-width-full">
+        <Button
+          type="button"
+          {...buttonLoadingClassname(isLoading, 'fr-mx-0 fr-width-full')}
+          onClick={onClick}
+        >
+          S’identifier avec ProConnect
+        </Button>
+      </div>
 
       <a
         className="fr-link fr-link--sm"
@@ -43,7 +44,7 @@ const ProConnectSigninButton = ({
         target="_blank"
         rel="noreferrer"
       >
-        Qu’est-ce que ProConnect&nbsp;?
+        En savoir plus sur ProConnect
       </a>
     </div>
   )

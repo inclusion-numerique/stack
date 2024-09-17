@@ -13,6 +13,8 @@ import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { forbiddenError } from '@app/web/server/rpc/trpcErrors'
 import { cartoStructureToStructure } from '@app/web/structure/cartoStructureToStructure'
 import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { ChoisirProfilEtAccepterCguValidation } from '@app/web/inscription/ChoisirProfilEtAccepterCguValidation'
+import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
 
 const inscriptionGuard = (
   targetUserId: string,
@@ -122,6 +124,24 @@ const existingActiviteFor = (userId: string) => ({
 })
 
 export const inscriptionRouter = router({
+  choisirProfilEtAccepterCgu: protectedProcedure
+    .input(ChoisirProfilEtAccepterCguValidation)
+    .mutation(
+      async ({ input: { userId, profil }, ctx: { user: sessionUser } }) => {
+        inscriptionGuard(userId, sessionUser)
+
+        const user = await prismaClient.user.update({
+          where: { id: userId },
+          data: {
+            profilInscription: profil,
+            acceptationCgu: new Date(),
+          },
+          select: sessionUserSelect,
+        })
+
+        return user
+      },
+    ),
   renseignerStructureEmployeuse: protectedProcedure
     .input(RenseignerStructureEmployeuseValidation)
     .mutation(

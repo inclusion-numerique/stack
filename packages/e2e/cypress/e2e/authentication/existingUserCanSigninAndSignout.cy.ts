@@ -43,7 +43,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter 
       })
     })
 
-    cy.get('button[title="S’identifier avec ProConnect"]').click()
+    cy.findByRole('button', { name: 'S’identifier avec ProConnect' }).click()
     cy.url().should('contain', 'fca.integ01.dev-agentconnect.fr')
 
     cy.intercept(/\/api\/auth\/callback/, (request) => {

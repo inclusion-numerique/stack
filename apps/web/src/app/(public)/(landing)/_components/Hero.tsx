@@ -17,9 +17,8 @@ export const Hero = () => (
           buttonsSize="large"
           buttons={[
             {
-              className: 'wip-outline',
               children: 'Se créer un compte',
-              linkProps: { href: '/' },
+              linkProps: { href: '/connexion' },
             },
             {
               children: 'Se connecter',
