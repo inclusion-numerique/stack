@@ -74,14 +74,15 @@ export const getBeneficiaireStatsRaw = async ({
                                                INNER JOIN accompagnements ON accompagnements.beneficiaire_id = beneficiaires.id
                                                INNER JOIN activites ON
                                                     activites.id = accompagnements.activite_id
-                                               LEFT JOIN structures ON structures.id = activites.structure_id
                                               AND activites.mediateur_id = ${mediateurId}::UUID
                                               AND activites.suppression IS NULL
                                               AND ${getActiviteFiltersSqlFragment(
                                                 getActivitesFiltersWhereConditions(
                                                   activitesFilters,
                                                 ),
-                                              )})
+                                              )}
+                                               LEFT JOIN structures ON structures.id = activites.structure_id
+                                      )
       SELECT COUNT(distinct_beneficiaires.id)::integer AS total_beneficiaires,
 
              -- Enum count selects for genre, statut_social, tranche_age
@@ -171,12 +172,12 @@ export const getBeneficiairesCommunesRaw = async ({
           accompagnements.beneficiaire_id = beneficiaires.id
                INNER JOIN activites ON
           activites.id = accompagnements.activite_id
-               LEFT JOIN structures ON structures.id = activites.structure_id AND 1 = 0 
-          AND activites.mediateur_id = ${mediateurId}::UUID
-          AND activites.suppression IS NULL
-          AND ${getActiviteFiltersSqlFragment(
-            getActivitesFiltersWhereConditions(activitesFilters),
-          )}
+              AND activites.mediateur_id = ${mediateurId}::UUID
+              AND activites.suppression IS NULL
+              AND ${getActiviteFiltersSqlFragment(
+                getActivitesFiltersWhereConditions(activitesFilters),
+              )}
+               LEFT JOIN structures ON structures.id = activites.structure_id
       GROUP BY coalesced_code_insee
   `.then((result) =>
     // Filter out null codeInsee for when there is no commune in beneficiaire or activite
