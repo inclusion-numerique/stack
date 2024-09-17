@@ -1,13 +1,13 @@
 import Link from 'next/link'
 import React from 'react'
+import classNames from 'classnames'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import HeaderBackLink from '@app/web/components/HeaderBackLink'
 import { HeaderUserMenu } from '@app/web/components/HeaderUserMenu'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { getHomepage } from '@app/web/security/getHomepage'
-import styles from './Header.module.css'
 import LogoCoop from '@app/web/components/LogoCoop'
-import classNames from 'classnames'
+import styles from './Header.module.css'
 
 const Header = ({
   user,
