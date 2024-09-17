@@ -6,6 +6,6 @@ import { profileInscriptionSlugs } from '@app/web/inscription/profilInscription'
  */
 
 export const coordinateurInscriptionSteps = {
-  intro: `/inscription?profil=${profileInscriptionSlugs.Coordinateur}`,
+  intro: `/inscription/identification?profil=${profileInscriptionSlugs.Coordinateur}`,
   recapitulatif: `/inscription/coordinateur/recapitulatif`,
 }

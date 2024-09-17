@@ -6,7 +6,7 @@ import { profileInscriptionSlugs } from '@app/web/inscription/profilInscription'
  */
 
 export const conseillerNumeriqueLieuxInscriptionSteps = {
-  intro: `/inscription?profil=${profileInscriptionSlugs.ConseillerNumerique}`,
+  intro: `/inscription/identification?profil=${profileInscriptionSlugs.ConseillerNumerique}`,
   // Vérifier infos de base
   verifier: `/inscription/conseiller-numerique-lieux/verifier`,
   lieuxActivite: `/inscription/conseiller-numerique-lieux/lieux-activite`,

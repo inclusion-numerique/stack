@@ -4,31 +4,36 @@ import { useForm } from 'react-hook-form'
 import Button from '@codegouvfr/react-dsfr/Button'
 import Link from 'next/link'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import {
-  ChoisirProfilEtAccepterCguData,
-  ChoisirProfilEtAccepterCguValidation,
-} from '@app/web/inscription/ChoisirProfilEtAccepterCguValidation'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { trpc } from '@app/web/trpc'
 import { createToast } from '@app/ui/toast/createToast'
 import { useRouter } from 'next/navigation'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
 import React from 'react'
-import { profileInscriptionOptions } from '@app/web/inscription/profilInscription'
 import RadioFormField from '@app/ui/components/Form/RadioFormField'
+import {
+  profileInscriptionOptionsWithExtras,
+  profileInscriptionSlugs,
+} from '@app/web/inscription/profilInscription'
+import { trpc } from '@app/web/trpc'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import {
+  ChoisirProfilEtAccepterCguData,
+  ChoisirProfilEtAccepterCguValidation,
+} from '@app/web/inscription/ChoisirProfilEtAccepterCguValidation'
 import RichCardLabel, {
   richCardFieldsetElementClassName,
 } from '@app/web/components/form/RichCardLabel'
-import { craFormFieldsetClassname } from '@app/web/app/coop/mes-activites/cra/craFormFieldsetClassname'
 import styles from './ProfilEtCguForm.module.css'
 
-const ProfilEtCguForm = () => {
+const ProfilEtCguForm = ({ userId }: { userId: string }) => {
   const form = useForm<ChoisirProfilEtAccepterCguData>({
     resolver: zodResolver(ChoisirProfilEtAccepterCguValidation),
+    defaultValues: {
+      userId,
+    },
   })
 
-  const { control, formState } = form
+  const { control } = form
 
   const mutation = trpc.inscription.choisirProfilEtAccepterCgu.useMutation()
   const router = useRouter()
@@ -36,7 +41,9 @@ const ProfilEtCguForm = () => {
   const onSubmit = async (data: ChoisirProfilEtAccepterCguData) => {
     console.log('onSubmit', data)
 
-    router.push('/inscription/identification')
+    router.push(
+      `/inscription/identification?profil=${profileInscriptionSlugs[data.profil]}`,
+    )
     router.refresh()
 
     try {
@@ -58,29 +65,42 @@ const ProfilEtCguForm = () => {
       <RadioFormField
         control={control}
         path="profil"
-        options={profileInscriptionOptions}
+        options={profileInscriptionOptionsWithExtras}
         disabled={isLoading}
         components={{
           label: RichCardLabel,
+          labelProps: { paddingX: 16 },
         }}
         classes={{
+          radioGroup: styles.radioGroup,
           fieldsetElement: richCardFieldsetElementClassName,
-          fieldset: craFormFieldsetClassname(styles.profilInscriptionFieldset),
         }}
       />
+      <hr className="fr-separator-6v fr-mb-10v" />
       <CheckboxFormField
         path="cguAcceptee"
         label={
           <>
-            J’ai lu et j’accepte les conditions générales d’utilisation du
-            service ainsi que la politique de confidentialité.
+            J’ai lu et j’accepte les{' '}
+            <a href="/" className="fr-link wip-outline" target="_blank">
+              conditions générales d’utilisation du service
+            </a>
+            {'  '}
+            ainsi que la{' '}
+            <a href="/" className="fr-link wip-outline" target="_blank">
+              politique de confidentialité
+            </a>
+            .
           </>
         }
+        classes={{
+          label: styles.cguLabel,
+        }}
         control={control}
         disabled={isLoading}
       />
 
-      <div className="fr-btns-group fr-mt-10">
+      <div className="fr-btns-group fr-mt-10v">
         <Button type="submit" {...buttonLoadingClassname(isLoading)}>
           Continuer
         </Button>

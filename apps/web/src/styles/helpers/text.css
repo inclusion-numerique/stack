@@ -26,6 +26,10 @@
   white-space: nowrap;
 }
 
+.fr-whitespace-wrap {
+  white-space: normal;
+}
+
 .fr-line-height-1 {
   line-height: 1 !important;
 }

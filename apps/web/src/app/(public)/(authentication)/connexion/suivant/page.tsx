@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
-import { getHomepage } from '@app/web/security/getHomepage'
+import { getLoginRedirectUrl } from '@app/web/security/getHomepage'
 
 /**
  * Cette page permet de rediriger l'utilisateur après une connexion réussie
@@ -8,7 +8,7 @@ import { getHomepage } from '@app/web/security/getHomepage'
  */
 const Page = async () => {
   const user = await getSessionUser()
-  redirect(getHomepage(user))
+  redirect(getLoginRedirectUrl(user))
 
   return null
 }

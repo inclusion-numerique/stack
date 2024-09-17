@@ -8,11 +8,33 @@ export const getHomepage = (
     | null,
 ) => {
   if (!user) {
-    return '/connexion'
+    return '/'
   }
 
   if (user.role === 'Admin') {
     return '/administration'
+  }
+
+  if (!user.inscriptionValidee) {
+    return '/'
+  }
+
+  return '/coop'
+}
+
+export const getLoginRedirectUrl = (
+  user?:
+    | (Pick<SessionUser, 'role'> & {
+        inscriptionValidee: Date | string | null
+      })
+    | null,
+) => {
+  if (!user) {
+    return '/connexion'
+  }
+
+  if (user.role === 'Admin') {
+    return '/administration/utilisateurs/nouveau'
   }
 
   if (!user.inscriptionValidee) {

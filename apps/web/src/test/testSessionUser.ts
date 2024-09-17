@@ -20,5 +20,6 @@ export const testSessionUser = {
   lieuxActiviteRenseignes: null,
   mediateur: null,
   profilInscription: null,
+  acceptationCgu: null,
   structureEmployeuseRenseignee: null,
 } satisfies SessionUser

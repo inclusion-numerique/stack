@@ -14,6 +14,9 @@ export type CheckboxFormFieldProps<T extends FieldValues> = {
   valid?: string
   small?: boolean
   asterisk?: boolean
+  classes?: {
+    label?: string
+  }
 }
 
 const CheckboxFormField = <T extends FieldValues>({
@@ -26,6 +29,7 @@ const CheckboxFormField = <T extends FieldValues>({
   small,
   asterisk,
   className,
+  classes,
   'data-testid': dataTestId,
 }: UiComponentProps & CheckboxFormFieldProps<T>) => {
   const id = `input-form-field__${path}`
@@ -83,7 +87,10 @@ const CheckboxFormField = <T extends FieldValues>({
                     name={name}
                     ref={ref}
                   />
-                  <label className="fr-label" htmlFor={id}>
+                  <label
+                    className={classNames('fr-label', classes?.label)}
+                    htmlFor={id}
+                  >
                     {label} {asterisk && <RedAsterisk />}
                     {hint && <span className="fr-hint-text">{hint}</span>}
                   </label>
