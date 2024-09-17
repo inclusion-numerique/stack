@@ -73,7 +73,8 @@ export const getBeneficiaireStatsRaw = async ({
                                       FROM beneficiaires
                                                INNER JOIN accompagnements ON accompagnements.beneficiaire_id = beneficiaires.id
                                                INNER JOIN activites ON
-                                          activites.id = accompagnements.activite_id
+                                                    activites.id = accompagnements.activite_id
+                                               LEFT JOIN structures ON structures.id = activites.structure_id
                                               AND activites.mediateur_id = ${mediateurId}::UUID
                                               AND activites.suppression IS NULL
                                               AND ${getActiviteFiltersSqlFragment(
@@ -144,7 +145,7 @@ export const normalizeBeneficiairesStatsRaw = (
 export type BeneficiairesCommunesRaw = {
   commune: string
   code_postal: string
-  code_insee: string
+  coalesced_code_insee: string
   count_beneficiaires: number
 }
 
@@ -156,7 +157,12 @@ export const getBeneficiairesCommunesRaw = async ({
   activitesFilters: ActivitesFilters
 }) =>
   prismaClient.$queryRaw<BeneficiairesCommunesRaw[]>`
-      SELECT DISTINCT COALESCE(beneficiaires.commune_code_insee, activites.lieu_code_insee)        AS code_insee,
+      SELECT DISTINCT COALESCE(
+                              beneficiaires.commune_code_insee,
+                              CASE
+                                  WHEN activites.type != 'collectif' THEN activites.lieu_code_insee
+                                  END
+                      )                                                                            AS coalesced_code_insee,
                       MIN(COALESCE(beneficiaires.commune, activites.lieu_commune))                 AS commune,
                       MIN(COALESCE(beneficiaires.commune_code_postal, activites.lieu_code_postal)) AS code_postal,
                       COUNT(DISTINCT beneficiaires.id)::integer                                    AS count_beneficiaires
@@ -165,15 +171,16 @@ export const getBeneficiairesCommunesRaw = async ({
           accompagnements.beneficiaire_id = beneficiaires.id
                INNER JOIN activites ON
           activites.id = accompagnements.activite_id
-              AND activites.mediateur_id = ${mediateurId}::UUID
-              AND activites.suppression IS NULL
-              AND ${getActiviteFiltersSqlFragment(
-                getActivitesFiltersWhereConditions(activitesFilters),
-              )}
-      GROUP BY code_insee
+               LEFT JOIN structures ON structures.id = activites.structure_id AND 1 = 0 
+          AND activites.mediateur_id = ${mediateurId}::UUID
+          AND activites.suppression IS NULL
+          AND ${getActiviteFiltersSqlFragment(
+            getActivitesFiltersWhereConditions(activitesFilters),
+          )}
+      GROUP BY coalesced_code_insee
   `.then((result) =>
     // Filter out null codeInsee for when there is no commune in beneficiaire or activite
-    result.filter(({ code_insee }) => !!code_insee),
+    result.filter(({ coalesced_code_insee }) => !!coalesced_code_insee),
   )
 
 export const normalizeBeneficiairesCommunesRaw = (
@@ -183,9 +190,9 @@ export const normalizeBeneficiairesCommunesRaw = (
     (a, b) => a.count_beneficiaires - b.count_beneficiaires,
   )
   const normalizedCommunes = sortedCommunes.map(
-    ({ commune, code_insee, code_postal, count_beneficiaires }) => ({
+    ({ commune, coalesced_code_insee, code_postal, count_beneficiaires }) => ({
       nom: commune,
-      codeInsee: code_insee,
+      codeInsee: coalesced_code_insee,
       codePostal: code_postal,
       count: count_beneficiaires,
       label: `${commune} · ${code_postal}`,
