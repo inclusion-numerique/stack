@@ -63,7 +63,7 @@ const IntroPage = async ({
       {introFor('conseiller-numerique')(role, urlProfil) && (
         <FinaliserInscriptionConseiller
           inscriptionRole={role}
-          email={user.email}
+          user={user}
           lieuActiviteCount={lieuxActivite.length}
         />
       )}
@@ -76,7 +76,7 @@ const IntroPage = async ({
       {introFor('coordinateur')(role, urlProfil) && (
         <FinaliserInscriptionCoordinateur
           inscriptionRole={role}
-          email={user.email}
+          user={user}
           lieuActiviteCount={lieuxActivite.length}
         />
       )}

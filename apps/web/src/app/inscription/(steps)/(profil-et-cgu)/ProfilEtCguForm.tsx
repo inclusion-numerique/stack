@@ -39,8 +39,6 @@ const ProfilEtCguForm = ({ userId }: { userId: string }) => {
   const router = useRouter()
 
   const onSubmit = async (data: ChoisirProfilEtAccepterCguData) => {
-    console.log('onSubmit', data)
-
     router.push(
       `/inscription/identification?profil=${profileInscriptionSlugs[data.profil]}`,
     )

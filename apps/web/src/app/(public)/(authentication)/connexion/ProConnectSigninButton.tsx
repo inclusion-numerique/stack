@@ -28,15 +28,18 @@ const ProConnectSigninButton = ({
         className,
       )}
     >
-      <div className="fr-btns-group fr-width-full">
-        <Button
-          type="button"
-          {...buttonLoadingClassname(isLoading, 'fr-mx-0 fr-width-full')}
-          onClick={onClick}
-        >
-          S’identifier avec ProConnect
-        </Button>
-      </div>
+      <Button
+        type="button"
+        {...buttonLoadingClassname(isLoading, 'fr-mb-4v')}
+        onClick={onClick}
+      >
+        <img src="/images/services/pro-connect-logo.svg" alt="" />
+        <span className="fr-ml-1v fr-text--left">
+          S’identifier avec
+          <br />
+          <strong>ProConnect</strong>
+        </span>
+      </Button>
 
       <a
         className="fr-link fr-link--sm"

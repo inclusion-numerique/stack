@@ -19,6 +19,10 @@ export type ProConnectProfile = {
   iss: string
 }
 
+/**
+ * https://github.com/numerique-gouv/agentconnect-documentation/blob/main/doc_fs.md
+ */
+
 export const ProConnectProvider = () =>
   ({
     id: proConnectProviderId,
@@ -33,7 +37,10 @@ export const ProConnectProvider = () =>
     authorization: {
       url: `${issuer}/api/v2/authorize`,
       params: {
+        // https://github.com/numerique-gouv/agentconnect-documentation/blob/main/doc_fs/scope-claims.md#correspondance-entre-scope-et-claims-sur-agentconnect
         scope: 'openid given_name usual_name email',
+        // 'openid given_name usual_name email uid siret siren organizational_unit belonging_population phone chorusdt',
+
         acr_values: 'eidas1',
       },
     },
@@ -62,10 +69,10 @@ export const ProConnectProvider = () =>
           data,
           url: `${issuer}/api/v2/token`,
         })
+
         return { tokens: r.data }
       },
     },
-    // TODO Logout ? https://github.com/numerique-gouv/agentconnect-documentation/blob/main/doc_fs/implementation_technique.md
     userinfo: {
       request: async ({ tokens }) => {
         const r = await axios<string>({

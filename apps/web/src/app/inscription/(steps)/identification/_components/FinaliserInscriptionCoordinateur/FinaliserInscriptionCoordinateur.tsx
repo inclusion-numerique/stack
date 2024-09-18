@@ -1,16 +1,17 @@
+import type { SessionUser } from '@app/web/auth/sessionUser'
 import { AnotherRoleFound } from '../AnotherRoleFound'
-import { InscriptionRole } from '../inscriptionRole'
+import type { InscriptionRole } from '../inscriptionRole'
 import { RoleFound } from '../RoleFound'
 import { RoleNotFound } from '../RoleNotFound'
 
 export const FinaliserInscriptionCoordinateur = ({
   inscriptionRole,
-  email,
   lieuActiviteCount,
+  user,
 }: {
   inscriptionRole: InscriptionRole
-  email: string
   lieuActiviteCount: number
+  user: Pick<SessionUser, 'email' | 'id' | 'usurper'>
 }) => {
   switch (inscriptionRole) {
     case 'conseiller-numerique': {
@@ -22,7 +23,7 @@ export const FinaliserInscriptionCoordinateur = ({
       )
     }
     case 'mediateur': {
-      return <RoleNotFound email={email} roleNotFound="coordinateur" />
+      return <RoleNotFound roleNotFound="coordinateur" user={user} />
     }
     default: {
       return (

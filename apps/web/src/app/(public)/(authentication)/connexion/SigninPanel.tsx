@@ -21,8 +21,8 @@ const SigninPanel = ({
         height={60}
       />
       <p className="fr-text--xl fr-text--center fr-mb-0 fr-mt-8v">
-        Accédez à ce service grâce à ProConnect, votre identifiant unique pour
-        accéder à plusieurs services de l’État.
+        Accédez à ce service grâce à <strong>ProConnect</strong>, votre
+        identifiant unique pour accéder à plusieurs services de l’État.
       </p>
     </div>
 

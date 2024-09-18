@@ -6,6 +6,10 @@
   text-align: center;
 }
 
+.fr-text--left {
+  text-align: left !important;
+}
+
 .fr-text--right {
   text-align: right !important;
 }
