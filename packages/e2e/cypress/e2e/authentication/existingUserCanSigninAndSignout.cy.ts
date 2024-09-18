@@ -43,7 +43,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter 
       })
     })
 
-    cy.findByRole('button', { name: 'S’identifier avec ProConnect' }).click()
+    cy.get('button[title="S’identifier avec ProConnect"]').click()
     cy.url().should('contain', 'fca.integ01.dev-agentconnect.fr')
 
     cy.intercept(/\/api\/auth\/callback/, (request) => {
@@ -78,10 +78,18 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter 
     cy.get('#header-user-menu').should('be.visible')
 
     cy.get('#header-user-menu').contains('Se déconnecter').click()
+
     cy.url().should('equal', appUrl('/deconnexion'))
     cy.contains('Êtes-vous sûr·e de vouloir vous déconnecter ?')
     cy.get('main').contains('Se déconnecter').click()
+
+    // Identity provider logout flow
+    cy.url().should(
+      'contain',
+      'https://app-sandbox.moncomptepro.beta.gouv.fr/oauth/logout',
+    )
     cy.url().should('equal', appUrl('/'))
+
     cy.get('.fr-header__tools').contains('Se connecter')
   })
 })
