@@ -23,7 +23,7 @@
   ],
   "access": {
     "how": "Accédez à ce service grâce à votre identifiant unique ProConnect.",
-    "illustration": "/images/illustrations/mes-outils/pro-connect.svg",
+    "illustration": "/images/services/pro-connect.svg",
     "info": {
       "label": "En savoir plus sur Pro Connect",
       "link": "https://proconnect.gouv.fr/"
