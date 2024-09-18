@@ -125,7 +125,7 @@ export const MesOutils = () => (
           </div>
           <div className="fr-col-xl-6 fr-col-12">
             <CardOutil
-              logo="/images/services/cartographie-icon.png"
+              logo="/images/services/cartographie-icon.svg"
               title="La Cartographie Nationale des lieux d’inclusion numérique"
               inforef="cartographie-nationale-des-lieux-d-inclusion-numerique"
               href="https://cartographie.societenumerique.gouv.fr"
