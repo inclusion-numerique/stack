@@ -269,11 +269,27 @@
   .fr-direction-lg-row {
     flex-direction: row;
   }
+
+  .fr-direction-lg-column {
+    flex-direction: column;
+  }
 }
 
 /* xl flex rules */
 @media (min-width: 78em) {
   .fr-flex-xl {
     display: flex;
+  }
+
+  .fr-direction-xl-row {
+    flex-direction: row;
+  }
+
+  .fr-direction-xl-column {
+    flex-direction: column;
+  }
+
+  .fr-align-items-xl-start {
+    align-items: flex-start;
   }
 }

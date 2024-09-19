@@ -1,28 +1,22 @@
 import classNames from 'classnames'
 import { ReactNode } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 
 export const CardOutil = ({
   logo,
   title,
-  href,
   inforef,
   children,
-  inline = false,
 }: {
   logo: string
   title: string
-  href: string
   inforef: string
   children: ReactNode
-  inline?: boolean
 }) => (
-  <div className="fr-background-default--grey fr-border-radius--16 fr-border fr-p-6w fr-height-full fr-flex fr-direction-column">
+  <div className="fr-border-radius--16 fr-border fr-py-10v fr-px-8v fr-height-full fr-flex fr-direction-column fr-enlarge-link">
     <div
       className={classNames(
-        'fr-flex fr-align-items-center fr-flex-gap-8v',
-        !inline && 'fr-display-block-xl',
+        'fr-flex fr-align-items-center fr-align-items-xl-start fr-flex-gap-6v fr-height-full fr-direction-xl-column',
       )}
     >
       <Image
@@ -32,28 +26,19 @@ export const CardOutil = ({
         src={logo}
         alt=""
       />
-      <div className="fr-my-3w">
+      <div className=" fr-flex-grow-1">
         <h3 className="fr-h6 fr-mb-2w">{title}</h3>
         <p className="fr-mb-0 fr-text-mention--grey">{children}</p>
+        <a
+          className="fr-flex-basis-0"
+          title={`En savoir plus à propos de ${title}`}
+          href={`/coop/mes-outils/${inforef}`}
+          aria-label={`En savoir plus à propos de ${title}`}
+        />
+      </div>
+      <div className="fr-flex fr-justify-content-end fr-width-full">
+        <span className="fr-icon-arrow-right-line fr-text-title--blue-france" />
       </div>
     </div>
-    <span className="fr-mt-auto fr-flex fr-flex-gap-4v fr-justify-content-space-between">
-      <Link
-        className="fr-link fr-link--no-underline fr-icon-question-line fr-link--icon-left"
-        title={`En savoir plus à propos de ${title}`}
-        href={`/coop/mes-outils/${inforef}`}
-      >
-        En savoir plus
-      </Link>
-      <Link
-        className="fr-link fr-link--no-underline"
-        target="_blank"
-        rel="noreferrer"
-        title={`Accéder à ${title} - nouvel onglet`}
-        href={href}
-      >
-        Accéder
-      </Link>
-    </span>
   </div>
 )
