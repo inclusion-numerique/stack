@@ -78,7 +78,7 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
     {
       text: (
         <>
-          <span className="ri-apps-2-line ri-xl fr-mr-1w fr-text--regular wip-outline" />
+          <span className="ri-apps-2-line ri-xl fr-mr-1w fr-text--regular" />
           Mes outils
         </>
       ),

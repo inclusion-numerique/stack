@@ -6,7 +6,7 @@ const CoopPageContainer = ({
   size,
   children,
   className,
-}: PropsWithChildren<{ size: 944 | 794; className?: string }>) => (
+}: PropsWithChildren<{ size: 944 | 894 | 794; className?: string }>) => (
   <div
     className={classNames(
       styles.contentContainer,

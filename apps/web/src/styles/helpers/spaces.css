@@ -5,3 +5,9 @@
 .fr-mb-50v {
   margin-bottom: 200px;
 }
+
+@media (min-width: 78em) {
+  .fr-mr-xl-0 {
+    margin-right: 0;
+  }
+}

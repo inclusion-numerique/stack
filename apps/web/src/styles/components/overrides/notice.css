@@ -1,3 +1,8 @@
+.fr-notice--flex .fr-notice__title {
+  display: flex;
+  align-items: center;
+}
+
 /* Fix notice padding right bug and add border radius */
 .fr-notice {
   border-radius: 8px;
@@ -46,10 +51,10 @@
 .fr-notice--new {
   background: var(--background-contrast-yellow-moutarde);
 
-  --hover: var(--background-contrast-yellow-moutarde-hover);
-  --active: var(--background-contrast-yellow-moutarde-active);
+  --hover: var(--background-contrast-yellow-tournesol-hover);
+  --active: var(--background-contrast-yellow-tournesol-active);
 
-  color: var(--text-action-high-yellow-moutarde);
+  color: var(--text-action-high-yellow-tournesol);
 }
 
 .fr-notice--new .fr-notice__title::before {

@@ -1,4 +1,12 @@
-'use client'
+import React from 'react'
+import type { Metadata } from 'next'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+import { MesOutils } from './MesOutils'
 
-// eslint-disable-next-line no-restricted-exports
-export { WipPage as default } from '@app/web/app/coop/WipPage'
+export const metadata: Metadata = {
+  title: metadataTitle('Mes outils'),
+}
+
+const Page = () => <MesOutils />
+
+export default Page
