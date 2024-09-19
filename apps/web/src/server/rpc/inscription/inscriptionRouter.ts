@@ -135,6 +135,13 @@ export const inscriptionRouter = router({
           data: {
             profilInscription: profil,
             acceptationCgu: new Date(),
+            mediateur: sessionUser.mediateur
+              ? undefined
+              : {
+                  create: {
+                    id: v4(),
+                  },
+                },
           },
           select: sessionUserSelect,
         })
