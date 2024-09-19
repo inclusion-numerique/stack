@@ -1,9 +1,7 @@
-import { redirect } from 'next/navigation'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import LogoCoop from '@app/web/components/LogoCoop'
 import ProfilEtCguForm from '@app/web/app/inscription/(steps)/(profil-et-cgu)/ProfilEtCguForm'
-import { profileInscriptionSlugs } from '@app/web/inscription/profilInscription'
 
 export const metadata = {
   title: metadataTitle('Inscription'),
@@ -11,13 +9,6 @@ export const metadata = {
 
 const IntroPage = async () => {
   const user = await getAuthenticatedSessionUser()
-
-  if (user.profilInscription && user.acceptationCgu) {
-    redirect(
-      `/inscription/identification?profil=${profileInscriptionSlugs[user.profilInscription]}`,
-    )
-    return null
-  }
 
   return (
     <div className="fr-mb-32v fr-p-12v fr-width-full fr-border-radius--8 fr-background-default--grey fr-mt-32v">
