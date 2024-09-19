@@ -91,8 +91,6 @@ const parseAnneeNaissance = (anneeNaissanceRaw: number | null | undefined) => {
   return { value: anneeNaissanceRaw }
 }
 
-const rowIsEmpty = (row: Row) => (row.values as Cell[]).every((value) => !value)
-
 const getCellValue = (
   cell: Cell | undefined,
 ): string | number | Date | null => {
@@ -131,6 +129,9 @@ const getCellValueAsNumber = (cell: Cell | undefined): number | null => {
 
   return numberValue
 }
+
+const rowIsEmpty = (row: Row) =>
+  (row.values as Cell[]).map(getCellValueAsString).every((value) => !value)
 
 const parseBeneficiaireRow = (row: Row, communesClient: CommunesClient) => {
   const values = row.values as Cell[]
