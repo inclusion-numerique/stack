@@ -1,4 +1,4 @@
-import type { Row, Workbook } from 'exceljs'
+import type { Cell, Row, Workbook } from 'exceljs'
 import {
   type Commune,
   CommunesClient,
@@ -90,19 +90,20 @@ const parseAnneeNaissance = (anneeNaissanceRaw: string | null | undefined) => {
 const rowIsEmpty = (row: Row) => row.values.every((value) => !value)
 
 const parseBeneficiaireRow = (row: Row, communesClient: CommunesClient) => {
-  const nom = row.values[1]
-  const prenom = row.values[2]
-  const anneeNaissance = row.values[3]
-  const communeCodeInsee = row.values[4]
+  const values = row.values as Cell[]
+
+  const nom = values[1]
+  const prenom = values[2]
+  const anneeNaissance = values[3]
+  const communeCodeInsee = values[4]
   // Formula cells have a result property and a formula property
-  const communeNom =
-    'formula' in row.values[5] ? row.values[5].result : row.values[5]
+  const communeNom = 'formula' in values[5] ? values[5].result : values[5]
   const communeCodePostal =
-    'formula' in row.values[6] ? row.values[6].result : row.values[6]
-  const numeroTelephone = row.values[7]
-  const email = row.values[8]
-  const genre = row.values[9]
-  const notesSupplementaires = row.values[10]
+    'formula' in values[6] ? values[6].result : values[6]
+  const numeroTelephone = values[7]
+  const email = values[8]
+  const genre = values[9]
+  const notesSupplementaires = values[10]
 
   const errors: ParsedBeneficiaireRow['errors'] = {}
 

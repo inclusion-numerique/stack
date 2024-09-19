@@ -16,7 +16,7 @@ export const getHomepage = (
   }
 
   if (!user.inscriptionValidee) {
-    return '/'
+    return '/inscription'
   }
 
   return '/coop'
