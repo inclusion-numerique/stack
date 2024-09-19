@@ -30,7 +30,7 @@
     },
     "callToAction": {
       "label": "Se connecter",
-      "link": "https://www.rdv-aide-numerique.fr/users/sign_in"
+      "link": "https://www.rdv-aide-numerique.fr/agents/sign_in"
     }
   }
 }
