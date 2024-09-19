@@ -20,7 +20,7 @@ export const QuantifiedShareLegend = ({
         />
         <span className="fr-col">{label}</span>
         <span className="fr-pr-2w fr-text--bold">{count}</span>
-        <span className="fr-col-2 fr-text--medium fr-text-mention--grey fr-text--right">
+        <span className="fr-col-3 fr-text--medium fr-text-mention--grey fr-text--right">
           {numberToPercentage(proportion)}
         </span>
       </li>
