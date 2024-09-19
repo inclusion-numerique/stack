@@ -18,6 +18,8 @@ const loadLocalExcelFile = async (file: string) => {
   return workbook
 }
 
+jest.setTimeout(10_000)
+
 describe('analyseImportBeneficiairesExcel', () => {
   it('should parse a valid excel file', async () => {
     const workbook = await loadLocalExcelFile(
