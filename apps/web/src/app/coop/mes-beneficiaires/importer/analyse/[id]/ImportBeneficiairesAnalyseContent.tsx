@@ -15,10 +15,10 @@ import classNames from 'classnames'
 import { trpc } from '@app/web/trpc'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { coopSideMenuWidth } from '@app/web/app/coop/coopSideMenuWidth'
 import styles from './ImportBeneficiairesAnalyseContent.module.css'
 import { createToast } from '@app/ui/toast/createToast'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
 
 const analysisTableHeaders = [
   'Statut',
@@ -149,16 +149,29 @@ const ImportBeneficiairesAnalyseContent = ({
 
   return (
     <>
-      <p className="fr-mb-6v">
-        Nous avons détécté {rows.length} bénéficiaire{sPluriel(rows.length)}
+      <p className="fr-text--lg fr-text--bold fr-mb-6v">
+        Nous avons détécté{' '}
+        <span className="fr-text-title--blue-france">
+          {rows.length} bénéficiaire{sPluriel(rows.length)}
+        </span>
       </p>
       {status === 'ok' ? (
         <Notice className="fr-notice--success" title="Aucune erreur détectée" />
       ) : (
-        <Notice
-          className="fr-notice--error"
-          title={`${errorsCount} bénéficiaire${sPluriel(errorsCount)} contiennent des erreurs`}
-        />
+        <div className="fr-notice fr-notice--error">
+          <div className="fr-container">
+            <div className="fr-notice__body ">
+              <p className="fr-notice__title fr-text--lg fr-text--bold fr-mb-1v ">
+                {errorsCount} bénéficiaire{sPluriel(errorsCount)} contiennent
+                des erreurs
+              </p>
+              <p className="fr-text--sm fr-mb-0 ">
+                Nous vous conseillons d’annuler l’import, de les corriger dans
+                votre fichier Excel puis de ré-importer le fichier.
+              </p>
+            </div>
+          </div>
+        </div>
       )}
       <div
         ref={tableContainerRef}
@@ -262,8 +275,7 @@ const ImportBeneficiairesAnalyseContent = ({
           </div>
         </div>
       </div>
-      <hr className="fr-separator-12v" />
-      <div className="fr-btns-group">
+      <div className="fr-btns-group fr-mt-12v">
         <Button
           type="button"
           priority="primary"

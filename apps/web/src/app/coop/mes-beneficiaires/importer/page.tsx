@@ -23,13 +23,13 @@ const ImporterPage = () => (
       ci-dessous. Une fois terminé, vous les retrouverez dans la liste de vos
       bénéficiaires.
     </p>
-    <hr className="fr-separator-12-v" />
+    <hr className="fr-separator-12v" />
     <div className="fr-grid-row fr-grid-row--gutters">
       <div className="fr-col-12 fr-col-md-5">
         <h2 className="fr-h5 fr-text-title--blue-france fr-mb-2v">
           1. Télécharger le fichier
         </h2>
-        <p className="fr-text--sm fr-mb-2v">
+        <p className="fr-text--sm">
           Nous vous invitons à télécharger le fichier vierge ci-contre. Il
           s’agit d’un tableau Excel vide que vous pourrez compléter.
         </p>
@@ -52,6 +52,7 @@ const ImporterPage = () => (
               <a
                 className="fr-flex fr-align-items-center fr-text-title--blue-france"
                 href="/modeles/coop-numerique_import-beneficiaires.xlsx"
+                download
                 title="Télécharger le modèle"
               >
                 <span className="fr-icon-download-line" />
@@ -69,7 +70,7 @@ const ImporterPage = () => (
         <h2 className="fr-h5 fr-text-title--blue-france fr-mb-2v">
           2. Compléter le fichier
         </h2>
-        <p className="fr-text--sm fr-mb-2v">
+        <p className="fr-text--sm">
           Vous pouvez compléter le tableau, chaque ligne correspond à un
           bénéficiaire. Les champs Nom et Prénom sont obligatoires, le champ
           Année de naissance est fortement conseillé afin de ne pas avoir de
@@ -78,16 +79,18 @@ const ImporterPage = () => (
           respecter le format de chaque cellule.
         </p>
       </div>
-      <div className="fr-col-12 fr-col-md-7">
-        <div className="fr-border fr-border-radius--16 fr-p-8v fr-flex fr-enlarge-link  fr-align-items-center">
+      <div className="fr-col-12 fr-col-md-7 fr-flex fr-align-items-center">
+        <div className="fr-width-full fr-border fr-border-radius--8 fr-p-4v">
           <img
-            src="/dsfr/artwork/pictograms/document/document.svg"
+            className="fr-width-full fr-border-radius--8"
+            src="/modeles/import-beneficiaires.png"
             alt=""
-            width={64}
           />
         </div>
       </div>
     </div>
+    <hr className="fr-separator-12v" />
+
     <UploadBeneficiaireFileForm />
   </CoopPageContainer>
 )

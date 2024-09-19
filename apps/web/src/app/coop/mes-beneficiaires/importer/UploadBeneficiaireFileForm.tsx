@@ -71,15 +71,19 @@ const UploadBeneficiaireFileForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* ... your existing form fields ... */}
-      <div className="fr-grid-row">
-        <div className="fr-col-12 fr-col-md-6">
+      <div className="fr-grid-row fr-grid-row--gutters">
+        <div className="fr-col-12 fr-col-md-5">
           <h2 className="fr-h5 fr-text-title--blue-france fr-mb-2v">
             3. Importer le fichier
           </h2>
+          <p className="fr-text--sm">
+            Une fois le fichier complété, vous pouvez l’importer en cliquant sur
+            Parcourir, en le sélectionnant parmi vos dossiers puis en cliquant
+            sur Importer.
+          </p>
         </div>
-        <div className="fr-col-12 fr-col-md-6">
-          <div className="fr-border fr-border-radius--16 fr-p-2v">
+        <div className="fr-col-12 fr-col-md-7">
+          <div className="fr-border fr-border-radius--16 fr-p-4v">
             <FileFormField
               control={control}
               path="file"
