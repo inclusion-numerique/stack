@@ -5,13 +5,13 @@ const MesBeneficiairesListeEmptyPage = () => (
     <h2 className="fr-h6 fr-mb-2v fr-text--center">
       Vous n’avez pas enregistré de bénéficiaire
     </h2>
-    <p className="fr-text--center wip-outline fr-mb-8v">
+    <p className="fr-text--center fr-mb-8v">
       Vous pouvez créer un·e bénéficiaire afin de réaliser un suivi de ses
       accompagnements. Vous retrouverez la liste de vos bénéficiaires sur cette
       page.
       <br />
       <br />
-      Vous pouvez également{' '}
+      Vous pouvez également importer une liste de bénéficiaires au format Excel.
     </p>
     <div className="fr-flex fr-justify-content-center fr-width-full">
       <Button
