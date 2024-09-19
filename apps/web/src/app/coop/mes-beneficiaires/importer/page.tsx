@@ -54,6 +54,7 @@ const ImporterPage = () => (
                 href="/modeles/coop-numerique_import-beneficiaires.xlsx"
                 download
                 title="Télécharger le modèle"
+                aria-label="Télécharger le modèle"
               >
                 <span className="fr-icon-download-line" />
               </a>

@@ -1,6 +1,5 @@
 .tableContainer {
     max-height: 480px; /* 10+header times a regular row height of 43px + showing part of below row */
-
     overflow-y: auto;
     position: relative;
 

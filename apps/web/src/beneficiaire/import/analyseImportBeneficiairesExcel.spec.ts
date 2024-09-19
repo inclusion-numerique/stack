@@ -1,13 +1,13 @@
-import { resolve } from 'path'
+import path from 'node:path'
 import ExcelJS from 'exceljs'
-import { readFileSync } from 'fs'
+import { readFileSync } from 'node:fs'
 import {
   analyseImportBeneficiairesExcel,
   AnalysisSchema,
 } from '@app/web/beneficiaire/import/analyseImportBeneficiairesExcel'
 
 const loadLocalExcelFile = async (file: string) => {
-  const filePath = resolve(__dirname, `./_test/${file}`)
+  const filePath = path.resolve(__dirname, `./_test/${file}`)
 
   const fileBuffer = readFileSync(filePath)
 

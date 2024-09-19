@@ -1,11 +1,12 @@
 import type { Cell, Row, Workbook } from 'exceljs'
+import { z } from 'zod'
+import type { Genre } from '@prisma/client'
 import {
   type Commune,
   CommunesClient,
   getCommunesClient,
 } from '@app/web/communes/findCommune'
 import { anneeNaissanceValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
-import { z } from 'zod'
 import { genreValues } from '@app/web/beneficiaire/beneficiaire'
 
 export const ParsedBeneficiaireRowSchema = z.object({
@@ -57,7 +58,12 @@ export const AnalysisSchema = z.object({
 
 export type Analysis = z.infer<typeof AnalysisSchema>
 
-const parseGenre = (genreRaw: string | null | undefined) => {
+const parseGenre = (
+  genreRaw: string | null | undefined,
+): {
+  value?: Genre | null
+  error?: string
+} => {
   if (!genreRaw) {
     return { value: 'NonCommunique' }
   }
@@ -72,38 +78,66 @@ const parseGenre = (genreRaw: string | null | undefined) => {
   return { error: 'Genre invalide' }
 }
 
-const parseAnneeNaissance = (anneeNaissanceRaw: string | null | undefined) => {
+const parseAnneeNaissance = (anneeNaissanceRaw: number | null | undefined) => {
   if (!anneeNaissanceRaw) {
     return { value: null }
   }
 
-  const anneeNaissanceInt = Number.parseInt(anneeNaissanceRaw, 10)
-
-  const parsed = anneeNaissanceValidation.safeParse(anneeNaissanceInt)
+  const parsed = anneeNaissanceValidation.safeParse(anneeNaissanceRaw)
   if (!parsed.success) {
     return { error: parsed.error.issues[0].message }
   }
 
-  return { value: anneeNaissanceInt }
+  return { value: anneeNaissanceRaw }
 }
 
-const rowIsEmpty = (row: Row) => row.values.every((value) => !value)
+const rowIsEmpty = (row: Row) => (row.values as Cell[]).every((value) => !value)
+
+const getCellValue = (
+  cell: Cell | undefined,
+): string | number | Date | null => {
+  if (!cell) {
+    return null
+  }
+  if ('formula' in cell) {
+    return cell.result ?? null
+  }
+
+  return cell
+}
+
+const getCellValueAsString = (cell: Cell | undefined): string | null => {
+  const value = getCellValue(cell)
+  if (value === null) {
+    return null
+  }
+  return value.toString().trim()
+}
+
+const getCellValueAsNumber = (cell: Cell | undefined): number | null => {
+  const value = getCellValue(cell)
+  if (value === null) {
+    return null
+  }
+  if (typeof value === 'number') {
+    return value
+  }
+  return Number.parseInt(value.toString().trim(), 10)
+}
 
 const parseBeneficiaireRow = (row: Row, communesClient: CommunesClient) => {
   const values = row.values as Cell[]
 
-  const nom = values[1]
-  const prenom = values[2]
-  const anneeNaissance = values[3]
-  const communeCodeInsee = values[4]
-  // Formula cells have a result property and a formula property
-  const communeNom = 'formula' in values[5] ? values[5].result : values[5]
-  const communeCodePostal =
-    'formula' in values[6] ? values[6].result : values[6]
-  const numeroTelephone = values[7]
-  const email = values[8]
-  const genre = values[9]
-  const notesSupplementaires = values[10]
+  const nom = getCellValueAsString(values[1])
+  const prenom = getCellValueAsString(values[2])
+  const anneeNaissance = getCellValueAsNumber(values[3])
+  const communeCodeInsee = getCellValueAsString(values[4])
+  const communeNom = getCellValueAsString(values[5])
+  const communeCodePostal = getCellValueAsString(values[6])
+  const numeroTelephone = getCellValueAsString(values[7])
+  const email = getCellValueAsString(values[8])
+  const genre = getCellValueAsString(values[9])
+  const notesSupplementaires = getCellValueAsString(values[10])
 
   const errors: ParsedBeneficiaireRow['errors'] = {}
 
@@ -174,8 +208,8 @@ export const analyseImportBeneficiairesExcel = async (
 
   if (!beneficiairesWorksheet) {
     return {
-      error:
-        'Le fichier ne correspond pas au modèle, il n’a pas de feuille "Bénéficiaires"',
+      status: 'error',
+      rows: [],
     }
   }
 

@@ -199,21 +199,23 @@ export const beneficiairesRouter = router({
 
       const { rows, status } = analysis
 
-      const beneficiairesData = rows.map(
-        (row): Prisma.BeneficiaireCreateManyInput => ({
-          prenom: row.values.prenom ?? '',
-          nom: row.values.nom ?? '',
-          anneeNaissance: row.parsed.anneeNaissance || undefined,
-          telephone: row.values.numeroTelephone || undefined,
-          email: row.values.email,
-          genre: row.parsed.genre,
-          notes: row.values.notesSupplementaires,
-          mediateurId: user.mediateur.id,
-          communeCodeInsee: row.parsed.commune?.codeInsee,
-          commune: row.parsed.commune?.nom,
-          communeCodePostal: row.parsed.commune?.codePostal,
-        }),
-      )
+      const beneficiairesData = rows
+        .map(
+          (row): Prisma.BeneficiaireCreateManyInput => ({
+            prenom: row.values.prenom ?? '',
+            nom: row.values.nom ?? '',
+            anneeNaissance: row.parsed.anneeNaissance || undefined,
+            telephone: row.values.numeroTelephone || undefined,
+            email: row.values.email,
+            genre: row.parsed.genre,
+            notes: row.values.notesSupplementaires,
+            mediateurId: user.mediateur.id,
+            communeCodeInsee: row.parsed.commune?.codeInsee,
+            commune: row.parsed.commune?.nom,
+            communeCodePostal: row.parsed.commune?.codePostal,
+          }),
+        )
+        .filter(({ prenom, nom }) => prenom && nom)
 
       const created = await prismaClient.beneficiaire.createMany({
         data: beneficiairesData,
