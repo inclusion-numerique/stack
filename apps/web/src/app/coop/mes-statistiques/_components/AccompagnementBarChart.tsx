@@ -36,7 +36,7 @@ export const AccompagnementBarChart = ({
     <BarChart
       data={data}
       margin={{ top: 5, right: 30, left: -20, bottom: 10 }}
-      barSize={16}
+      barSize={data.length > 12 ? 6 : 16}
     >
       <XAxis
         className="fr-text--sm fr-text--medium"
