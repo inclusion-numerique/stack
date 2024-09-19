@@ -99,7 +99,7 @@ const getCellValue = (
   if (!cell) {
     return null
   }
-  if ('formula' in cell) {
+  if (typeof cell === 'object' && 'formula' in cell) {
     return cell.result ?? null
   }
 
@@ -119,10 +119,17 @@ const getCellValueAsNumber = (cell: Cell | undefined): number | null => {
   if (value === null) {
     return null
   }
-  if (typeof value === 'number') {
-    return value
+
+  const numberValue =
+    typeof value === 'number'
+      ? value
+      : Number.parseInt(value.toString().trim(), 10)
+
+  if (Number.isNaN(numberValue)) {
+    return null
   }
-  return Number.parseInt(value.toString().trim(), 10)
+
+  return numberValue
 }
 
 const parseBeneficiaireRow = (row: Row, communesClient: CommunesClient) => {
