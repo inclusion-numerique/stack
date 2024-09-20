@@ -1,12 +1,21 @@
 /* eslint @typescript-eslint/no-unsafe-assignment: 0 */
 
-import { mediateurAvecActivite, mediateurAvecActiviteMediateurId } from '@app/fixtures/users'
+import {
+  mediateurAvecActivite,
+  mediateurAvecActiviteMediateurId,
+} from '@app/fixtures/users'
 import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
 import { prismaClient } from '@app/web/prismaClient'
 import { seedStructures } from '@app/fixtures/structures'
-import { createOrUpdateActivite, CreateOrUpdateActiviteInput } from '@app/web/cra/createOrUpdateActivite'
+import {
+  createOrUpdateActivite,
+  CreateOrUpdateActiviteInput,
+} from '@app/web/cra/createOrUpdateActivite'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
-import { ActiviteForList, activiteListSelect } from '@app/web/cra/activitesQueries'
+import {
+  ActiviteForList,
+  activiteListSelect,
+} from '@app/web/cra/activitesQueries'
 import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
 
 const nullActivite: Omit<
