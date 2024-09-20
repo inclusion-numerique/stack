@@ -7,9 +7,10 @@ import {
   ActionsRapides,
   DernieresActivites,
   InformationsCoop,
+  OnboardingInfo,
   Statistiques,
   Support,
-} from './_sections'
+} from './_components'
 import { AccueilPageData } from './getAccueilPageData'
 
 export const Accueil = ({
@@ -18,9 +19,11 @@ export const Accueil = ({
   email,
   statistiques,
   activites,
+  hasSeenOnboarding,
 }: {
   firstName: string | null
   name: string | null
+  hasSeenOnboarding: string | null
   email: string
 } & AccueilPageData) => (
   <CoopPageContainer size={794}>
@@ -29,6 +32,7 @@ export const Accueil = ({
       <h1 className="fr-text-title--blue-france fr-mt-10v">
         👋 Bonjour {firstName || name || email}
       </h1>
+      <OnboardingInfo hasSeenOnboarding={hasSeenOnboarding} />
       <section className="fr-my-6w">
         <ActionsRapides />
       </section>

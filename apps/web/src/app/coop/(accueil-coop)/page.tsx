@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 
 const Page = async () => {
   const user = await getAuthenticatedMediateur()
+
   const dashboardPageData = await getAccueilPageData(user.mediateur.id)
 
   return <Accueil {...user} {...dashboardPageData} />
