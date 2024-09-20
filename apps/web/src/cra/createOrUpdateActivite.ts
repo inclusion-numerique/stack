@@ -21,12 +21,14 @@ const getExistingBeneficiairesSuivis = async ({
 }) => {
   if (beneficiaires.length === 0) return []
 
+  const existingBeneficiairesIds = beneficiaires
+    .map((beneficiaire) => beneficiaire.id)
+    .filter(isDefinedAndNotNull)
+
   const existingBeneficiaires = await prismaClient.beneficiaire.findMany({
     where: {
       id: {
-        in: beneficiaires
-          .map((beneficiaire) => beneficiaire.id)
-          .filter(isDefinedAndNotNull),
+        in: existingBeneficiairesIds,
       },
     },
     select: {
@@ -36,7 +38,7 @@ const getExistingBeneficiairesSuivis = async ({
     },
   })
 
-  if (existingBeneficiaires.length !== beneficiaires.length) {
+  if (existingBeneficiaires.length !== existingBeneficiairesIds.length) {
     throw invalidError('Beneficiaire not found')
   }
 
@@ -93,7 +95,8 @@ const beneficiaireAnonymeCreateDataFromForm = ({
   statutSocial,
   notes,
   mediateurId,
-}: BeneficiaireCraData): Prisma.BeneficiaireCreateInput => ({
+}: BeneficiaireCraData): Prisma.BeneficiaireCreateInput & { id: string } => ({
+  id: v4(),
   mediateur: {
     connect: { id: mediateurId },
   },
@@ -116,7 +119,7 @@ const beneficiaireAnonymeCreateDataFromForm = ({
   communeCodeInsee: communeResidence?.codeInsee ?? undefined,
 })
 
-type CreateOrUpdateActiviteInput =
+export type CreateOrUpdateActiviteInput =
   | {
       type: 'Collectif'
       data: CraCollectifData
@@ -296,6 +299,15 @@ export const createOrUpdateActivite = async ({
               beneficiaireId: beneficiaire.id,
               activiteId: id,
             })),
+            ...(beneficiaireAnonymeToCreate
+              ? [
+                  {
+                    id: v4(),
+                    beneficiaireId: beneficiaireAnonymeToCreate.id,
+                    activiteId: creationId,
+                  },
+                ]
+              : []),
           ],
         }),
         // Update the activite
@@ -359,6 +371,15 @@ export const createOrUpdateActivite = async ({
             beneficiaireId: beneficiaire.id,
             activiteId: creationId,
           })),
+          ...(beneficiaireAnonymeToCreate
+            ? [
+                {
+                  id: v4(),
+                  beneficiaireId: beneficiaireAnonymeToCreate.id,
+                  activiteId: creationId,
+                },
+              ]
+            : []),
         ],
       }),
     ].filter(isDefinedAndNotNull),

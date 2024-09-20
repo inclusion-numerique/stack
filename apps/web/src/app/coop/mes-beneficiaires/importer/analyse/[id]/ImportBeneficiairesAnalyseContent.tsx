@@ -68,8 +68,6 @@ const ImportBeneficiairesAnalyseContent = ({
 
   const router = useRouter()
 
-  console.log('ANALYSIS', { analysisId, analysisResponse })
-
   useEffect(() => {
     if (!analysisResponse) {
       router.push(`/coop/mes-beneficiaires/importer/erreur`)
@@ -99,15 +97,6 @@ const ImportBeneficiairesAnalyseContent = ({
 
     // Apply a negative margin-right to extend the container to the right edge of the window
     tableContainerRef.current.style.marginRight = `-${distanceToWindowRight}px`
-
-    console.log({
-      boundingRect,
-      distanceToWindowRight,
-      windowWidth: window.innerWidth,
-    })
-
-    console.log('TABLE CONTAINER REF', tableContainerRef.current)
-    console.log('STYLE', tableContainerRef.current.style.marginRight)
   }, [tableContainerRef])
 
   const mutation = trpc.beneficiaires.import.useMutation()
