@@ -34,7 +34,7 @@ export const InformationsCoop = () => (
           noBorder
           arrowTop
           arrowSm
-          className="fr-border fr-border-radius--16 wip-outline"
+          className="fr-border fr-border-radius--16"
           title={
             <span className="fr-inline-flex fr-align-items-center">
               <span
@@ -47,7 +47,8 @@ export const InformationsCoop = () => (
             </span>
           }
           description="Retrouvez ici les prochaines évolutions de la plateforme et comment contribuer à son amélioration."
-          href="#"
+          href="https://incubateurdesterritoires.notion.site/105744bf03dd80349c26e76cd8459eac?v=8949acfdde544d12860f5c0ca89af72f"
+          isExternal
         />
       </div>
     </div>

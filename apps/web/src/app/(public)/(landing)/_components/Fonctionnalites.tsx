@@ -99,12 +99,15 @@ export const Fonctionnalites = () => (
           et vous êtes tenu au courant des prochaines fonctionnalités à venir.
         </p>
         <Button
-          className="wip-outline fr-btn--responsive-sm"
+          className="fr-btn--responsive-sm"
           title="Voir la roadmap"
           priority="secondary"
           iconPosition="right"
           iconId="fr-icon-arrow-right-line"
-          linkProps={{ href: '/' }}
+          linkProps={{
+            href: 'https://incubateurdesterritoires.notion.site/105744bf03dd80349c26e76cd8459eac?v=8949acfdde544d12860f5c0ca89af72f',
+            target: '_blank',
+          }}
         >
           Voir la roadmap
         </Button>
