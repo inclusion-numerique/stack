@@ -20,6 +20,7 @@ export const sessionUserSelect = {
   isFixture: true,
   profilInscription: true,
   acceptationCgu: true,
+  hasSeenOnboarding: true,
   checkConseillerNumeriqueInscription: true,
   structureEmployeuseRenseignee: true,
   lieuxActiviteRenseignes: true,
@@ -101,6 +102,7 @@ export const getSessionUserFromSessionToken = async (
     ...res.user,
     created: res.user.created.toISOString(),
     updated: res.user.updated.toISOString(),
+    hasSeenOnboarding: res.user.hasSeenOnboarding?.toISOString() ?? null,
     emailVerified: res.user.emailVerified?.toISOString() ?? null,
     checkConseillerNumeriqueInscription:
       res.user.checkConseillerNumeriqueInscription?.toISOString() ?? null,

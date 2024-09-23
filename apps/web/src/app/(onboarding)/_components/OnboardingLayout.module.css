@@ -1,0 +1,10 @@
+.closeButton {
+  position: absolute;
+  top: 24px;
+  right: 16px;
+
+  @media (min-width: 48em) {
+    top: 32px;
+    right: 32px;
+  }
+}
