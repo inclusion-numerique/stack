@@ -1,5 +1,6 @@
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import Link from 'next/link'
+import React from 'react'
 import SignoutButton from '@app/web/app/(public)/(authentication)/deconnexion/SignoutButton'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { getProconnectIdToken } from '@app/web/security/getProconnectIdToken'
@@ -49,7 +50,7 @@ export const RoleNotFound = async ({
             </span>
             <br />
             <br />
-            <Link href="mailto:coop-numerique@anct.gouv.fr" className="fr-link">
+            <Link href="https://tally.so/r/mBDDX5" target="_blank">
               <span role="img" className="ri-mail-line fr-mr-1w" aria-hidden />
               Veuillez contacter le support
             </Link>

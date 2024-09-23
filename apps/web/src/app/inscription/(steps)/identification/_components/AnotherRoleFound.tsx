@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import React from 'react'
 import { InscriptionRole, inscriptionRolesToText } from './inscriptionRole'
 
 const nextPageFor =
@@ -48,7 +49,7 @@ export const AnotherRoleFound = ({
         Si ce rôle ne correspond pas à votre situation actuelle, si vous ne
         faites plus partie du dispositif conseiller numérique :
       </p>
-      <Link href="mailto:coop-numerique@anct.gouv.fr" className="fr-link">
+      <Link href="https://tally.so/r/mBDDX5" target="_blank">
         <span role="img" className="ri-mail-line fr-mr-1w" aria-hidden />
         Veuillez contacter le support
       </Link>

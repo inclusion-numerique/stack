@@ -34,15 +34,15 @@ export const Support = () => (
       </h2>
       <p className="fr-text--sm fr-my-2w">
         En cas de problèmes rencontrés sur la plateforme, n’hésitez pas à nous
-        contacter à l’adresse suivante&nbsp;:
+        contacter&nbsp;:
       </p>
       <div className="fr-text--lg fr-text-label--blue-france fr-flex fr-flex-gap-3v fr-align-items-center fr-mb-0">
         <span
           className="ri-mail-line ri-lg fr-text--light"
           aria-hidden="true"
         />
-        <Link href="mailto:coop-numerique@anct.gouv.fr">
-          coop-numerique@anct.gouv.fr
+        <Link href="https://tally.so/r/mBDDX5" target="_blank">
+          Formulaire de retour
         </Link>
       </div>
     </div>
