@@ -49,7 +49,7 @@ export const RoleNotFound = async ({
             </span>
             <br />
             <br />
-            <Link href="mailto:contact@coop-mednum.fr" className="fr-link wip">
+            <Link href="mailto:coop-numerique@anct.gouv.fr" className="fr-link">
               <span role="img" className="ri-mail-line fr-mr-1w" aria-hidden />
               Veuillez contacter le support
             </Link>
