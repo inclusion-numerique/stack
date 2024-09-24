@@ -253,6 +253,12 @@ export const createOrUpdateActivite = async ({
     // This is an Update operation
     await prismaClient.$transaction(
       [
+        // Delete all accompagnements as we recreate them after
+        prismaClient.accompagnement.deleteMany({
+          where: {
+            activiteId: id,
+          },
+        }),
         // If collectif, delete all beneficiaires anonymes as we will recreate them from counters
         // or data if not selected in form
         input.type === 'Collectif'
@@ -267,12 +273,6 @@ export const createOrUpdateActivite = async ({
               },
             })
           : null,
-        // Delete all accompagnements as we recreate them after
-        prismaClient.accompagnement.deleteMany({
-          where: {
-            activiteId: id,
-          },
-        }),
         // (re)Create beneficiaire anonyme for one-to-one cra
         beneficiaireAnonymeToCreate
           ? prismaClient.beneficiaire.create({
