@@ -57,17 +57,26 @@
   color: var(--text-action-high-yellow-tournesol);
 }
 
+.fr-notice--hint {
+  background: var(--background-alt-blue-france);
+
+  --hover: var(--background-alt-blue-france-hover);
+  --active: var(--background-alt-blue-france-active);
+
+  color: var(--text-action-high-blue-france);
+}
+
 .fr-notice--new .fr-notice__title::before {
   mask-image: url('/dsfr/icons/weather/flashlight-fill.svg') !important;
   content: '';
 }
 
 .fr-notice.fr-notice--no-icon {
-  .fr-notice__body{
+  .fr-notice__body {
     padding-left: 0;
   }
 
-  .fr-notice__body::before{
+  .fr-notice__body::before {
     display: none;
   }
 }

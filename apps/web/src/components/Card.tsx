@@ -9,6 +9,7 @@ const Card = ({
   title,
   titleAs: CardTitle = 'h3',
   href,
+  isExternal = false,
   enlargeLink = href != null,
   noBorder = false,
   description,
@@ -24,6 +25,7 @@ const Card = ({
   title: ReactNode
   titleAs?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div'
   href?: string
+  isExternal?: boolean
   enlargeLink?: boolean
   noBorder?: boolean
   description?: ReactNode
@@ -46,7 +48,13 @@ const Card = ({
     <div className="fr-card__body">
       <div className="fr-card__content">
         <CardTitle className="fr-card__title">
-          {href ? <Link href={href}>{title}</Link> : title}
+          {href ? (
+            <Link href={href} target={isExternal ? '_blank' : ''}>
+              {title}
+            </Link>
+          ) : (
+            title
+          )}
         </CardTitle>
         {description && <div className="fr-card__desc">{description}</div>}
         {children && (

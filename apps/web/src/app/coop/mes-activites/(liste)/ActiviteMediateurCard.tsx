@@ -46,7 +46,7 @@ const ActiviteMediateurCard = ({
           <>
             <span className="fr-icon-user-line fr-mr-1w fr-icon--sm" />
             {getBeneficiaireDisplayName(
-              activite.accompagnements[0].beneficiaire ?? {},
+              activite.accompagnements[0]?.beneficiaire ?? {},
             )}
           </>
         )}

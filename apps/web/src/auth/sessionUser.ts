@@ -24,6 +24,7 @@ export type SessionUser = Pick<
   emailVerified: string | null
   created: string | null
   updated: string | null
+  hasSeenOnboarding: string | null
   inscriptionValidee: string | null
   structureEmployeuseRenseignee: string | null
   checkConseillerNumeriqueInscription: string | null

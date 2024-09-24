@@ -18,7 +18,7 @@ const ValiderInscriptionForm = ({ userId }: { userId: string }) => {
   const onValiderInscription = async () => {
     try {
       await mutation.mutateAsync({ userId })
-      router.push('/coop')
+      router.push('/en-savoir-plus')
       router.refresh()
       createToast({
         priority: 'success',

@@ -19,11 +19,9 @@ const ViewBeneficiaireInformationsPage = ({
     telephone,
     email,
     pasDeTelephone,
-    anneeNaissance,
     communeCodePostal,
     commune,
     communeCodeInsee,
-    adresse,
     genre,
     statutSocial,
     trancheAge,
@@ -69,9 +67,11 @@ const ViewBeneficiaireInformationsPage = ({
           <div>
             <InfoLabelValue label="E-mail" value={email || '-'} />
           </div>
-          <div>
-            <InfoLabelValue label="Adresse" value={adresse || '-'} />
-          </div>
+        </div>
+      </div>
+      <div className="fr-border-radius--8 fr-border  fr-pt-8v fr-px-7v fr-pb-10v fr-mt-6v">
+        <h2 className="fr-h6 fr-mb-4v">Informations complémentaires</h2>
+        <div className={styles.infosGrid}>
           <div>
             <InfoLabelValue
               label="Commune de résidence"
@@ -82,15 +82,10 @@ const ViewBeneficiaireInformationsPage = ({
               }
             />
           </div>
-        </div>
-      </div>
-      <div className="fr-border-radius--8 fr-border  fr-pt-8v fr-px-7v fr-pb-10v fr-mt-6v">
-        <h2 className="fr-h6 fr-mb-4v">Informations complémentaires</h2>
-        <div className={styles.infosGrid}>
           <div>
             <InfoLabelValue
-              label="Année de naissance"
-              value={anneeNaissance || '-'}
+              label="Genre"
+              value={genre ? genreLabels[genre] : '-'}
             />
           </div>
           <div>
@@ -99,14 +94,6 @@ const ViewBeneficiaireInformationsPage = ({
               value={trancheAge ? trancheAgeLabels[trancheAge] : '-'}
             />
           </div>
-
-          <div>
-            <InfoLabelValue
-              label="Genre"
-              value={genre ? genreLabels[genre] : '-'}
-            />
-          </div>
-
           <div>
             <InfoLabelValue
               label="Statut social"
