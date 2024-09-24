@@ -44,7 +44,7 @@ const ProConnectSigninButton = ({
 
       <a
         className="fr-link fr-link--sm wip-outline"
-        href=""
+        href="/"
         target="_blank"
         rel="noreferrer"
       >
