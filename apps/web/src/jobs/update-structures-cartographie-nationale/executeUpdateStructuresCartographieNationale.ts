@@ -118,6 +118,22 @@ export const executeUpdateStructuresCartographieNationale = async (
     (s) => !existingMap.has(s.id),
   )
 
+  // Ensure every id is unique by counting them in an array id => [objects]
+  const toCreateStructureIdsMap = new Map<
+    string,
+    LieuStandardMediationNumerique[]
+  >()
+
+  for (const structure of toCreate) {
+    if (toCreateStructureIdsMap.has(structure.id)) {
+      toCreateStructureIdsMap.get(structure.id)?.push(structure)
+      console.log('DUPLICATED TO CREATE', structure)
+      continue
+    }
+
+    toCreateStructureIdsMap.set(structure.id, [structure])
+  }
+
   const toUpdate = structuresCartographieNationale.filter((s) => {
     const existing = existingMap.get(s.id)
     return (
@@ -140,12 +156,36 @@ export const executeUpdateStructuresCartographieNationale = async (
    * We chunk the updates in smaller batches to avoid memory issues
    */
 
-  const creationChunks = chunk(toCreate, 500)
-  const editionChunks = chunk(toUpdate, 10)
-  const deletionChunks = chunk(toDelete, 300)
+  const creationChunkSize = 50
+  const editionChunkSize = 10
+  const deletionChunkSize = 100
+
+  const creationChunks = chunk(toCreate, creationChunkSize)
+  const editionChunks = chunk(toUpdate, editionChunkSize)
+  const deletionChunks = chunk(toDelete, deletionChunkSize)
 
   output.log(
-    `update-structures-carto: creating ${creationChunks.length} chunks of 500 structures`,
+    `update-structures-carto: deleting ${deletionChunks.length} chunks of ${deletionChunkSize} structures`,
+  )
+
+  for (const deletionChunk of deletionChunks) {
+    // eslint-disable-next-line no-await-in-loop
+    await prismaClient.structureCartographieNationale.updateMany({
+      where: {
+        id: {
+          in: deletionChunk.map((s) => s.id),
+        },
+      },
+      data: {
+        modification: now,
+        suppression: new Date(),
+        suppressionImport: new Date(),
+      },
+    })
+  }
+
+  output.log(
+    `update-structures-carto: creating ${creationChunks.length} chunks of ${creationChunkSize} structures`,
   )
 
   for (const creationChunk of creationChunks) {
@@ -162,7 +202,7 @@ export const executeUpdateStructuresCartographieNationale = async (
   }
 
   output.log(
-    `update-structures-carto: updating ${editionChunks.length} chunks of 10 structures`,
+    `update-structures-carto: updating ${editionChunks.length} chunks of ${editionChunkSize} structures`,
   )
 
   for (const editionChunk of editionChunks) {
@@ -181,26 +221,6 @@ export const executeUpdateStructuresCartographieNationale = async (
         }),
       ),
     )
-  }
-
-  output.log(
-    `update-structures-carto: deleting ${deletionChunks.length} chunks of 300 structures`,
-  )
-
-  for (const deletionChunk of deletionChunks) {
-    // eslint-disable-next-line no-await-in-loop
-    await prismaClient.structureCartographieNationale.updateMany({
-      where: {
-        id: {
-          in: deletionChunk.map((s) => s.id),
-        },
-      },
-      data: {
-        modification: now,
-        suppression: new Date(),
-        suppressionImport: new Date(),
-      },
-    })
   }
 
   output.log(`update-structures-carto: done`)

@@ -47,7 +47,10 @@ export const executeJob = async (job: Job) => {
         },
       })
       .catch((error) => {
-        Sentry.captureException(error)
+        if (Sentry?.captureException) {
+          Sentry.captureException(error)
+        }
+        console.error(error)
       })
 
     return {
@@ -57,7 +60,10 @@ export const executeJob = async (job: Job) => {
       duration,
     }
   } catch (error) {
-    Sentry.captureException(error)
+    if (Sentry?.captureException) {
+      Sentry.captureException(error)
+    }
+    console.error(error)
     const { ended, duration } = stopWatch.stop()
 
     const typedError = error as {

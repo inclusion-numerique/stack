@@ -1,12 +1,11 @@
-import type { Stream } from 'node:stream'
 import type { NextRequest } from 'next/server'
 import { v4 } from 'uuid'
-import ExcelJS from 'exceljs'
 import * as Sentry from '@sentry/nextjs'
 import {
   analyseImportBeneficiairesExcel,
   Analysis,
 } from '@app/web/beneficiaire/import/analyseImportBeneficiairesExcel'
+import { getBeneficiaireImportSheet } from '@app/web/beneficiaire/import/getBeneficiaireImportSheet'
 
 export type AnalyseResponse = {
   analysis: Analysis
@@ -25,11 +24,11 @@ export const POST = async (request: NextRequest) => {
       })
     }
 
-    const workbook = new ExcelJS.Workbook()
-    // Typescript rejects the type of the stream, but it is correct
-    await workbook.xlsx.read(file.stream() as unknown as Stream)
+    const arrayBuffer = await file.arrayBuffer()
 
-    const analysis = await analyseImportBeneficiairesExcel(workbook)
+    const sheet = getBeneficiaireImportSheet(arrayBuffer)
+
+    const analysis = await analyseImportBeneficiairesExcel(sheet)
 
     if (analysis.status === 'error' && analysis.rows.length === 0) {
       throw new Error('Fichier invalide ou vide')
