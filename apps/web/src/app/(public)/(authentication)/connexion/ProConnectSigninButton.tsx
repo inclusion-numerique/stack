@@ -43,7 +43,7 @@ const ProConnectSigninButton = ({
       </Button>
 
       <a
-        className="fr-link fr-link--sm wip-outline"
+        className="fr-link fr-link--sm"
         href="https://www.proconnect.gouv.fr/"
         target="_blank"
         rel="noreferrer"
