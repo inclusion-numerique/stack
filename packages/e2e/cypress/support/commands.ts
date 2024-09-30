@@ -1,7 +1,7 @@
 import '@testing-library/cypress/add-commands'
-import type { CreateUserInput } from '@app/e2e/e2e/authentication/user.tasks'
 import { appUrl } from '@app/e2e/support/helpers'
-import type { Tasks as CustomTasks } from './tasks'
+import type { Tasks as CustomTasks } from '@app/e2e/tasks/tasks'
+import type { CreateUserInput } from '@app/e2e/tasks/handlers/user.tasks'
 import Timeoutable = Cypress.Timeoutable
 import Loggable = Cypress.Loggable
 
@@ -52,6 +52,10 @@ Cypress.Commands.add('signin', ({ email }: { email: string }) =>
 
 Cypress.Commands.add('deleteAllData', () => {
   cy.execute('deleteAllData', {})
+})
+
+Cypress.Commands.add('resetFixtures', () => {
+  cy.execute('resetFixtures', {})
 })
 
 Cypress.Commands.add('logout', () => cy.clearCookie('next-auth.session-token'))
@@ -182,6 +186,8 @@ declare global {
       signin(user: { email: string }): Chainable<string>
 
       deleteAllData(): Chainable<null>
+
+      resetFixtures(): Chainable<null>
 
       logout(): Chainable<null>
 

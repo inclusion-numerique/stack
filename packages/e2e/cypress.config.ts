@@ -1,9 +1,8 @@
 import { defineConfig } from 'cypress'
-// import 'tsconfig-paths/register'
 // eslint-disable-next-line import/no-relative-packages
 import { cypressProjectId } from '../config/src/config'
 // eslint-disable-next-line import/no-relative-packages
-import { tasks } from './cypress/support/tasks'
+import { taskManager } from './cypress/support/taskManager'
 
 export default defineConfig({
   projectId: cypressProjectId,
@@ -20,7 +19,7 @@ export default defineConfig({
 
   e2e: {
     setupNodeEvents(on) {
-      on('task', tasks)
+      on('task', taskManager)
       on('before:browser:launch', (browser, launchOptions) => {
         if (browser.family === 'firefox') {
           // eslint-disable-next-line no-param-reassign

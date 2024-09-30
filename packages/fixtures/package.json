@@ -4,8 +4,8 @@
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "scripts": {
-    "load": "dotenv -e ../../.env -- tsx src/seeds.ts",
-    "load:erase-all-data": "dotenv -e ../../.env -- tsx src/seeds.ts --erase-all-data",
+    "load": "dotenv -e ../../.env -- tsx src/load.ts",
+    "load:erase-all-data": "dotenv -e ../../.env -- tsx src/load.ts --erase-all-data",
     "lint": "eslint src",
     "tsc": "tsc --noEmit",
     "test": "jest --passWithNoTests"
