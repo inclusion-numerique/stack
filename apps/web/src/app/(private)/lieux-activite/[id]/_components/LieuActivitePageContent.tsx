@@ -29,6 +29,7 @@ export const LieuActivitePageContent = ({
     siret?: string | null
     rna?: string | null
     telephone?: string | null
+    structureCartographieNationaleId: string | null
     visiblePourCartographieNationale: boolean
     itinerance: string[]
     fraisACharge: string[]
@@ -67,14 +68,20 @@ export const LieuActivitePageContent = ({
           <InformationsGeneralesEditCard {...structure} />
         </div>
         <div className="fr-border fr-border-radius--8 fr-mt-5w">
-          <DisplayOnCartography />
+          <DisplayOnCartography
+            canChangeVisibility={
+              structure.structureCartographieNationaleId == null
+            }
+          />
           <hr className="fr-separator fr-separator-1px" />
           <VisiblePourCartographieNationaleFields
-            className="fr-px-4w fr-pt-4w fr-pb-2w"
+            className="fr-px-4w fr-py-3w"
+            canChangeVisibility={
+              structure.structureCartographieNationaleId == null
+            }
             onChange={setShowSideMenu}
             {...structure}
           >
-            <hr className="fr-separator-1px" />
             <LieuAccueillantPublicTitle />
             <hr className="fr-separator-1px" />
             <DescriptionEditCard {...structure} />
