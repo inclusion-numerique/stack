@@ -8,12 +8,6 @@ import { prismaClient } from '@app/web/prismaClient'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-// todo: il manque les champs suivants :
-//  X structure_parente
-//  X formations_labels
-//  X autres_formations_labels
-//  X prise_rdv
-
 export const GET = async () => {
   const lieuxDeMediationNumerique = await prismaClient.$queryRaw<
     LieuMediationNumerique[]
@@ -51,18 +45,22 @@ export const GET = async () => {
              'detail', presentation_detail
             )
         ) AS presentation,
-        'coop-mednum' AS source,
+        'coop-numerique' AS source,
         "itinerance",
         NULLIF(itinerance, '{}') AS itinerance,
         "modification" as "date_maj",
         NULLIF(services, '{}') AS services,
+        NULLIF(structure_parente, '{}') AS structure_parente,
         NULLIF(publics_specifiquement_adresses, '{}') AS publics_specifiquement_adresses,
         NULLIF(prise_en_charge_specifique, '{}') AS prise_en_charge_specifique,
         NULLIF(frais_a_charge, '{}') AS frais_a_charge,
         NULLIF(dispositif_programmes_nationaux, '{}') AS dispositif_programmes_nationaux,
+        NULLIF(formations_labels, '{}') AS formations_labels,
+        NULLIF(autres_formations_labels, '{}') AS autres_formations_labels,
         NULLIF(modalites_acces, '{}') AS modalites_acces,
         NULLIF(modalites_accompagnement, '{}') AS modalites_accompagnement,
-        NULLIF(fiche_acces_libre, '') AS fiche_acces_libre
+        NULLIF(fiche_acces_libre, '') AS fiche_acces_libre,
+        NULLIF(prise_rdv, '') AS prise_rdv
       FROM "structures"
       WHERE "suppression" IS NULL
         AND 
