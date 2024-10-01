@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url'
 
 const withBundleAnalyzerConfig = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
-});
+})
 
 // Some packages export a lot of modules in a single index file. To avoid them being compiled
 // next has added native support for modularize import transform
@@ -13,12 +13,12 @@ const withBundleAnalyzerConfig = withBundleAnalyzer({
 // https://github.com/vercel/next.js/tree/canary/examples/modularize-imports
 const modularizeImports = {
   'date-fns': { transform: 'date-fns/{{member}}' },
-};
+}
 
-const filename = fileURLToPath(import.meta.url);
-const dirname = path.dirname(filename);
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
 
-const serverComponentsExternalPackages = ['html-minifier'];
+const serverComponentsExternalPackages = ['html-minifier']
 
 const nextConfig = {
   output: 'standalone',
@@ -56,35 +56,35 @@ const nextConfig = {
     config.module.rules.push({
       test: /\.min.css$/,
       use: [], // An empty set of loaders, effectively bypassing these files
-    });
+    })
     // (this is not an array, this is a rule object)
     // eslint-disable-next-line unicorn/no-array-push-push
     config.module.rules.push({
       test: /\.remixicon.css$/,
       use: [], // An empty set of loaders, effectively bypassing these files
-    });
+    })
 
     if (!isServer) {
       // Client bundling
-      return config;
+      return config
     }
 
     // Server bundling
 
     // Mjml cannot be bundled as it uses dynamic requires
     // Only put library required on the server in externals as they would not be available in client
-    config.externals.push('mjml', 'mjml-core');
+    config.externals.push('mjml', 'mjml-core', 'xlsx')
 
-    return config;
+    return config
   },
-};
+}
 
 // For all available options, see:
 // https://github.com/getsentry/sentry-webpack-plugin#options.
 const sentryWebpackPluginOptions = {
   silent: true, // Suppresses all logs
-};
+}
 
 export default withBundleAnalyzerConfig(
   withSentryConfig(nextConfig, sentryWebpackPluginOptions),
-);
+)

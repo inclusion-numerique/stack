@@ -57,6 +57,7 @@ storybook-static
 /packages/e2e/cypress/videos
 /packages/e2e/cypress/screenshots
 /packages/e2e/.next/
+/packages/e2e/cypress/downloads
 
 # cdk
 /packages/cdk/cdktf.out/
