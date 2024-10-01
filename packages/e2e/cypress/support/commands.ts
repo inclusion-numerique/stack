@@ -2,6 +2,7 @@ import '@testing-library/cypress/add-commands'
 import { appUrl } from '@app/e2e/support/helpers'
 import type { Tasks as CustomTasks } from '@app/e2e/tasks/tasks'
 import type { CreateUserInput } from '@app/e2e/tasks/handlers/user.tasks'
+import 'cypress-file-upload'
 import Timeoutable = Cypress.Timeoutable
 import Loggable = Cypress.Loggable
 
@@ -45,6 +46,7 @@ Cypress.Commands.add(
 
 Cypress.Commands.add('signin', ({ email }: { email: string }) =>
   cy.execute('createSession', { email }).then((session) => {
+    cy.log('Signin session', session)
     cy.setCookie('next-auth.session-token', session.sessionToken)
     return cy.wrap(session.sessionToken)
   }),

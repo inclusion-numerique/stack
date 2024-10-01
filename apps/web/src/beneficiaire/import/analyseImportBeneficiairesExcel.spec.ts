@@ -17,8 +17,10 @@ const getSheetFromLocalFile = (file: string) => {
 jest.setTimeout(10_000)
 
 describe('analyseImportBeneficiairesExcel', () => {
-  it('should parse a valid excel file', async () => {
-    const workbook = getSheetFromLocalFile('import-beneficiaires_modele.xlsx')
+  it('should parse the downloadable model xlsx file', async () => {
+    const workbook = getSheetFromLocalFile(
+      '../../../../public/modeles/coop-numerique_import-beneficiaires.xlsx',
+    )
 
     const result = await analyseImportBeneficiairesExcel(workbook)
 

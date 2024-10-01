@@ -1,27 +1,22 @@
 /**
- * Is executed through  const taskCommand = `pnpm -F e2e task ${task} ${JSON.stringify(input)}`
- * And through Cypress.task() to execute tasks using other packages and database in cypress e2e tests
+ * This file is executed as a separate process using `tsx` and `child_process.exec`
+ * From the parent cypress process, in taskManager.ts
+ * This is mandatory as cypress does not allows for typescript paths alias to be used
+ * in the main cypress process and we need our packages imported correctly in the "tasks"
+ * we need to execute.
  */
+
 import { logToFile } from '@app/e2e/support/logToFile'
 import { TaskName, tasks } from '@app/e2e/tasks/tasks'
-
-const stdOut = console.log.bind(console)
-const stdError = console.error.bind(console)
-
-// Disable console.log
-Object.assign(console, {
-  log: logToFile,
-  error: logToFile,
-  warn: logToFile,
-  info: logToFile,
-  debug: logToFile,
-  table: logToFile,
-})
+import {
+  decodeSerializableState,
+  EncodedState,
+  encodeSerializableState,
+} from '@app/web/utils/encodeSerializableState'
 
 const taskExecutor = async () => {
   const task = process.argv[2] as TaskName
-  const input = JSON.parse(process.argv[3] as unknown as string) as unknown
-
+  const input = process.argv[3] as EncodedState<unknown>
 
   logToFile('EXECUTING TASK', { task, input })
   if (!task) {
@@ -30,21 +25,32 @@ const taskExecutor = async () => {
   if (!input) {
     throw new Error('No input provided')
   }
+  const parsedInput = decodeSerializableState(input, '_empty')
+  if (parsedInput === '_empty') {
+    throw new Error('No valid serialized input provided')
+  }
+
   const executor = tasks[task]
   if (!executor) {
     throw new Error(`No task executor found for ${task}`)
   }
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  const result = await executor(input as never)
-
-  // Output result to pass to other process
-  stdOut(JSON.stringify(result))
+  return executor(parsedInput as never)
 }
 
-// eslint-disable-next-line unicorn/prefer-top-level-await
-taskExecutor().catch((error) => {
-  stdError(error)
-  logToFile({ error: error as unknown })
-  // eslint-disable-next-line unicorn/no-process-exit
-  process.exit(1)
-})
+taskExecutor()
+  .then((result) => {
+    // Output result must be the last stdout output to pass to other process
+    // eslint-disable-next-line no-console
+    console.log(encodeSerializableState(result))
+    // eslint-disable-next-line unicorn/no-process-exit
+    process.exit(0)
+  })
+  // eslint-disable-next-line unicorn/prefer-top-level-await
+  .catch((error) => {
+    // eslint-disable-next-line no-console
+    console.error(error)
+    logToFile({ error: error as unknown })
+    // eslint-disable-next-line unicorn/no-process-exit
+    process.exit(1)
+  })

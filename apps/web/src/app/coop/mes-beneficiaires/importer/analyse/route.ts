@@ -44,6 +44,7 @@ export const POST = async (request: NextRequest) => {
       status: 200,
     })
   } catch (error) {
+    console.error(error)
     Sentry.captureException(error)
 
     return new Response(null, {

@@ -1,4 +1,9 @@
-import { createSession, createUser, deleteSession, deleteUser } from '@app/e2e/tasks/handlers/user.tasks'
+import {
+  createSession,
+  createUser,
+  deleteSession,
+  deleteUser,
+} from '@app/e2e/tasks/handlers/user.tasks'
 import { deleteAllData } from '@app/e2e/tasks/handlers/deleteAllData'
 import { resetFixtures } from '@app/e2e/tasks/handlers/resetFixtures'
 

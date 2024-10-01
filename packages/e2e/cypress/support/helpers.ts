@@ -1,5 +1,5 @@
 import { v4 } from 'uuid'
-import { CreateUserInput } from '../e2e/authentication/user.tasks'
+import type { CreateUserInput } from '@app/e2e/tasks/handlers/user.tasks'
 
 export const appUrl = (path: string) =>
   `${Cypress.config().baseUrl}${encodeURI(path)}`

@@ -5,6 +5,7 @@ export const getBeneficiaireImportSheet = (
   data: Buffer | ArrayBuffer,
 ): WorkSheet => {
   const workbook = XLSX.read(data, {
+    type: 'buffer',
     sheets: [importBeneficiaireWorksheetName],
   })
 
