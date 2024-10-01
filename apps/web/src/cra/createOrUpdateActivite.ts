@@ -304,7 +304,7 @@ export const createOrUpdateActivite = async ({
                   {
                     id: v4(),
                     beneficiaireId: beneficiaireAnonymeToCreate.id,
-                    activiteId: creationId,
+                    activiteId: id,
                   },
                 ]
               : []),

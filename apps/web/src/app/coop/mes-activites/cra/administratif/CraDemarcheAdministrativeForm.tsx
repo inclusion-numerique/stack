@@ -61,6 +61,7 @@ import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipality
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
 import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
+import { isBeneficiaireAnonymous } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
 import styles from '../CraForm.module.css'
 
 /**
@@ -119,8 +120,9 @@ const CraDemarcheAdministrativeForm = ({
 
   const router = useRouter()
 
-  const beneficiaireId = form.watch('beneficiaire.id')
-  const showAnonymousForm = !beneficiaireId
+  const beneficiaire = form.watch('beneficiaire')
+  const showAnonymousForm =
+    !beneficiaire || isBeneficiaireAnonymous(beneficiaire)
 
   const typeLieu = form.watch('typeLieu')
   const showLieuAccompagnementDomicileCommune = typeLieu === 'Domicile'

@@ -23,7 +23,6 @@ const CreateCraIndividuelPage = async ({
   const urlFormState = v ? decodeSerializableState(v, {}) : {}
 
   // delete sensitive data from urlFormState
-  delete urlFormState.id
   delete urlFormState.mediateurId
 
   const defaultValues: DefaultValues<CraIndividuelData> & {
