@@ -50,6 +50,7 @@ const RichTextForm = <T extends FieldValues>({
   const editor = useEditor({
     extensions: [StarterKit, CustomLink],
     content: form.getValues(path),
+    immediatelyRender: false,
     onUpdate: (event) => {
       if (onChange) {
         onChange(event.editor.getHTML() as PathValue<T, Path<T>>)
