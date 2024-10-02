@@ -122,8 +122,8 @@ importers:
         specifier: ^3.635.0
         version: 3.635.0
       '@codegouvfr/react-dsfr':
-        specifier: ^1.11.5
-        version: 1.11.5
+        specifier: ^1.13.6
+        version: 1.13.6
       '@fastify/busboy':
         specifier: ^3.0.0
         version: 3.0.0
@@ -974,8 +974,8 @@ importers:
   packages/ui:
     dependencies:
       '@codegouvfr/react-dsfr':
-        specifier: ^1.11.5
-        version: 1.11.5
+        specifier: ^1.13.6
+        version: 1.13.6
       '@gouvfr/dsfr':
         specifier: ^1.12.1
         version: 1.12.1(browser-sync@2.29.3)
@@ -1979,9 +1979,14 @@ packages:
   '@cdktf/provider-schema@0.20.8':
     resolution: {integrity: sha512-beQuJgjN/7zLS0zVv0d5VyErbBjx61/CI77qg7LFa6KZHRd/OWegkSQ/8DayhLzYfaW8GEYvP7WXbJLl86jIgg==}
 
-  '@codegouvfr/react-dsfr@1.11.5':
-    resolution: {integrity: sha512-+49AVVeRwGBq0YS6jUyhyPdN8OSg71fOYaPid5AeUIeCpsn3rOK5zgcXHnyT3vc88dKXferuljB8666UDvChzQ==}
+  '@codegouvfr/react-dsfr@1.13.6':
+    resolution: {integrity: sha512-/ERzY5MhgZ8X8uz40qfBAx6wNjsqHk2BqjPbcrLNtsj5o3DIGYL6HBF7hRA3fRGq+l8CrFfLgE9xOIQRtTVfvA==}
     hasBin: true
+    peerDependencies:
+      '@gouvfr/dsfr-chart': ^1.0.0
+    peerDependenciesMeta:
+      '@gouvfr/dsfr-chart':
+        optional: true
 
   '@colors/colors@1.5.0':
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
@@ -12420,8 +12425,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  typescript@5.7.0-dev.20241001:
-    resolution: {integrity: sha512-E+sQ0WmFXNyLddzyWmBBVwyn4NpBRgVJoiq8lLy25nQBLTKFMPnHmrKq+09uOv35ey3XhMA6y3lVzayuukJRpQ==}
+  typescript@5.7.0-dev.20241002:
+    resolution: {integrity: sha512-FHahwICnaTEQZYVLpDwZdoy/lgPn30O+XQ5VbNGk1UQojnr60qb2XgoPOfohDBojGtQGL5iilNhThM4gLxaMjQ==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -14648,7 +14653,7 @@ snapshots:
       - debug
       - supports-color
 
-  '@codegouvfr/react-dsfr@1.11.5':
+  '@codegouvfr/react-dsfr@1.13.6':
     dependencies:
       tsafe: 1.7.2
       yargs-parser: 21.1.1
@@ -20370,7 +20375,7 @@ snapshots:
     dependencies:
       semver: 7.6.3
       shelljs: 0.8.5
-      typescript: 5.7.0-dev.20241001
+      typescript: 5.7.0-dev.20241002
 
   duplexer2@0.1.4:
     dependencies:
@@ -28103,7 +28108,7 @@ snapshots:
 
   typescript@5.5.4: {}
 
-  typescript@5.7.0-dev.20241001: {}
+  typescript@5.7.0-dev.20241002: {}
 
   typewise-core@1.2.0: {}
 
