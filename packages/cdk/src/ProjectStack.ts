@@ -260,8 +260,6 @@ export class ProjectStack extends TerraformStack {
         SCW_DEFAULT_REGION: region,
         AWS_DEFAULT_REGION: region,
         S3_HOST: environmentVariables.S3_HOST.value,
-        LEGACY_UPLOADS_S3_HOST:
-          environmentVariables.LEGACY_UPLOADS_S3_HOST.value,
         LEGACY_UPLOADS_S3_BUCKET:
           environmentVariables.LEGACY_UPLOADS_S3_BUCKET.value,
         LEGACY_HOSTNAME: environmentVariables.LEGACY_HOSTNAME.value,
@@ -277,10 +275,6 @@ export class ProjectStack extends TerraformStack {
         AWS_ACCESS_KEY_ID: sensitiveEnvironmentVariables.SCW_ACCESS_KEY.value,
         AWS_SECRET_ACCESS_KEY:
           sensitiveEnvironmentVariables.SCW_SECRET_KEY.value,
-        LEGACY_UPLOADS_S3_ACCESS_KEY:
-          sensitiveEnvironmentVariables.LEGACY_UPLOADS_S3_ACCESS_KEY.value,
-        LEGACY_UPLOADS_S3_SECRET_KEY:
-          sensitiveEnvironmentVariables.LEGACY_UPLOADS_S3_SECRET_KEY.value,
         SENTRY_AUTH_TOKEN:
           sensitiveEnvironmentVariables.SENTRY_AUTH_TOKEN.value,
         SMTP_PASSWORD: sensitiveEnvironmentVariables.SMTP_PASSWORD.value,
