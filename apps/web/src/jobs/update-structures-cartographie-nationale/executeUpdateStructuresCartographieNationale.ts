@@ -110,7 +110,7 @@ export const executeUpdateStructuresCartographieNationale = async (
   )
 
   const existingMap = new Map(existingStructures.map((s) => [s.id, s]))
-  const dataInclusionStructuresMap = new Map(
+  const structuresCartographieNationaleMap = new Map(
     structuresCartographieNationale.map((s) => [s.id, s]),
   )
 
@@ -142,7 +142,7 @@ export const executeUpdateStructuresCartographieNationale = async (
   })
 
   const toDelete = existingStructures.filter(
-    (s) => !!s.id && !dataInclusionStructuresMap.has(s.id),
+    (s) => !!s.id && !structuresCartographieNationaleMap.has(s.id),
   )
 
   output.log(
