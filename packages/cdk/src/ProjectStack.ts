@@ -45,7 +45,6 @@ export const projectStackVariables = [
   'BACKUPS_BUCKET',
   'WEB_APP_DOCKER_REGISTRY_NAME',
   'S3_HOST',
-  'LEGACY_UPLOADS_S3_HOST',
   'LEGACY_UPLOADS_S3_BUCKET',
   'LEGACY_HOSTNAME',
 ] as const
@@ -58,8 +57,6 @@ export const projectStackSensitiveVariables = [
   'SMTP_PASSWORD',
   'SMTP_SERVER',
   'SMTP_USERNAME',
-  'LEGACY_UPLOADS_S3_ACCESS_KEY',
-  'LEGACY_UPLOADS_S3_SECRET_KEY',
 ] as const
 
 /**
@@ -131,6 +128,20 @@ export class ProjectStack extends TerraformStack {
           maxAgeSeconds: 3000,
           exposeHeaders: ['Etag'],
           allowedOrigins: ['http://localhost:3000', 'http://localhost'],
+        },
+      ],
+    })
+
+    // Uploads bucket for migration of legacy v1 uploads
+    new ObjectBucket(this, 'legacyUploads', {
+      name: environmentVariables.LEGACY_UPLOADS_S3_BUCKET.value,
+      corsRule: [
+        {
+          allowedHeaders: ['*'],
+          allowedMethods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
+          maxAgeSeconds: 3000,
+          exposeHeaders: ['Etag'],
+          allowedOrigins: ['*'],
         },
       ],
     })
