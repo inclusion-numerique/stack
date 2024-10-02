@@ -71,7 +71,7 @@ export type LieuStandardMediationNumerique = {
   // Sélectionner une ou plusieurs valeurs séparées par un `|` parmi la liste suivante :
   // Aide aux démarches administratives;Maîtrise des outils numériques du quotidien;Insertion professionnelle via le numérique;Utilisation sécurisée du numérique;Parentalité et éducation avec le numérique;Loisirs et créations numériques;Comprehension du monde numérique;Accès internet et matériel informatique;Acquisition de matériel informatique à prix solidaire.
   // Par défault: "Maîtrise des outils numériques du quotidien"
-  services: string
+  services?: string | null
 
   // Par défaut, un lieu d'inclusion numérique est inclusif et peut accueillir tout public.
   // Malgré tout, certains lieux sont habilités à recevoir exclusivement certains publics précis !

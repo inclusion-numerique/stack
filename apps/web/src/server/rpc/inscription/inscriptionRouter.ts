@@ -374,6 +374,18 @@ export const inscriptionRouter = router({
                 )
 
                 if (structure) {
+                  const existingStructure =
+                    await transaction.structure.findFirst({
+                      where: {
+                        structureCartographieNationaleId:
+                          lieu.structureCartographieNationaleId,
+                      },
+                    })
+
+                  if (!existingStructure) {
+                    throw new Error('Structure not found')
+                  }
+
                   // Structure already exists, we just create the lieu, linking with carto id
                   return transaction.mediateurEnActivite.create({
                     data: {
@@ -385,8 +397,7 @@ export const inscriptionRouter = router({
                       },
                       structure: {
                         connect: {
-                          structureCartographieNationaleId:
-                            lieu.structureCartographieNationaleId,
+                          id: existingStructure.id,
                         },
                       },
                     },
@@ -502,6 +513,18 @@ export const inscriptionRouter = router({
                 )
 
                 if (structure) {
+                  const existingStructure =
+                    await transaction.structure.findFirst({
+                      where: {
+                        structureCartographieNationaleId:
+                          lieu.structureCartographieNationaleId,
+                      },
+                    })
+
+                  if (!existingStructure) {
+                    throw new Error('Structure not found')
+                  }
+
                   // Structure already exists, we just create the lieu, linking with carto id
                   return transaction.mediateurEnActivite.create({
                     data: {
@@ -513,8 +536,7 @@ export const inscriptionRouter = router({
                       },
                       structure: {
                         connect: {
-                          structureCartographieNationaleId:
-                            lieu.structureCartographieNationaleId,
+                          id: existingStructure.id,
                         },
                       },
                     },

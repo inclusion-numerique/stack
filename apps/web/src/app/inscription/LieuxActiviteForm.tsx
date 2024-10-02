@@ -82,7 +82,7 @@ const LieuxActiviteForm = ({
     }
     appendStructure({
       structureCartographieNationaleId: selectedCartographieNationaleId,
-      id: structure.structure?.id,
+      id: structure.structures.at(0)?.id,
       adresse: structure.adresse,
       codeInsee: structure.codeInsee,
       codePostal: structure.codePostal,

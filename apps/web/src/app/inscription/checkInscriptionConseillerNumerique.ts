@@ -141,10 +141,8 @@ export const checkInscriptionConseillerNumerique = async ({
         },
       },
       include: {
-        structure: {
-          select: {
-            id: true,
-          },
+        structures: {
+          select: { id: true },
         },
       },
     })
@@ -196,18 +194,20 @@ export const checkInscriptionConseillerNumerique = async ({
       // Only those with carto structure
       .filter(isDefinedAndNotNull)
       // That have no structure
-      .filter((s) => !s.structure)
+      .filter((s) => !s.structures)
       // We create structure from carto structure
       .map(cartoStructureToStructure)
 
   const existingStructureIds = conseillerInfo.permanences
     .map(
       (permanence) =>
-        structuresCartoActiviteExistantes.find((s) =>
-          s.conseillerNumeriquePermanenceIds.includes(
-            permanence._id.toString(),
-          ),
-        )?.structure?.id,
+        structuresCartoActiviteExistantes
+          .find((s) =>
+            s.conseillerNumeriquePermanenceIds.includes(
+              permanence._id.toString(),
+            ),
+          )
+          ?.structures.at(0)?.id,
     )
     .filter(isDefinedAndNotNull)
 
