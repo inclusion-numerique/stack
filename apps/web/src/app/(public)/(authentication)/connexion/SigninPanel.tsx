@@ -1,11 +1,10 @@
 import { Route } from 'next'
-import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import { signinErrorMessage } from '@app/web/app/(public)/(authentication)/authenticationErrorMessage'
-import { EmailSigninForm } from '@app/web/app/(public)/(authentication)/connexion/EmailSigninForm'
-import InclusionConnectSigninButton from '@app/web/app/(public)/(authentication)/connexion/InclusionConnectSigninButton'
+import ProConnectSigninButton from '@app/web/app/(public)/(authentication)/connexion/ProConnectSigninButton'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
-import MonCompteProSigninButton from '@app/web/app/(public)/(authentication)/connexion/MonCompteProSigninButton'
+import { EmailSigninForm } from '@app/web/app/(public)/(authentication)/connexion/EmailSigninForm'
+import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 
 const SigninPanel = ({
   error,
@@ -22,14 +21,8 @@ const SigninPanel = ({
       </div>
     ) : null}
 
-    <h5>Se connecter avec MonComptePro</h5>
     <div className="fr-connect-group">
-      <MonCompteProSigninButton callbackUrl={callbackUrl} />
-    </div>
-    <p className="fr-hr-or fr-mt-6v">ou</p>
-    <h5>Se connecter avec InclusionConnect</h5>
-    <div className="fr-connect-group">
-      <InclusionConnectSigninButton callbackUrl={callbackUrl} />
+      <ProConnectSigninButton className="fr-mt-8v" callbackUrl={callbackUrl} />
     </div>
     <p className="fr-hr-or fr-mt-6v">ou</p>
     <h5>Se connecter avec son email</h5>

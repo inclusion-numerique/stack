@@ -1,0 +1,10 @@
+.fr-input--clear {
+  background-color: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  margin: 0 !important;
+
+  &:disabled {
+    box-shadow: none;
+  }
+}

@@ -1,9 +1,8 @@
-import type { Adapter, AdapterAccount, AdapterUser } from '@auth/core/adapters'
-import { PrismaAdapter } from '@auth/prisma-adapter'
-import type { NextAuthOptions } from 'next-auth'
 import { v4 } from 'uuid'
-import { inclusionConnectProviderId } from '@app/web/auth/inclusionConnect'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import type { Adapter, AdapterAccount, AdapterUser } from 'next-auth/adapters'
 import { prismaClient } from '@app/web/prismaClient'
+import { proConnectProviderId } from '@app/web/auth/proConnect'
 
 /**
  * Ensuring that needed methods are defined when creating adapter
@@ -23,7 +22,7 @@ const createAdapter = () => {
     createUser,
     deleteSession,
     linkAccount,
-  } satisfies Adapter
+  }
 }
 
 const prismaAdapter = createAdapter()
@@ -35,17 +34,17 @@ const removeNonStandardFields = <T extends AdapterAccount>(data: T): T => ({
   'not-before-policy': undefined,
 })
 
-export const nextAuthAdapter: NextAuthOptions['adapter'] = {
+export const nextAuthAdapter = {
   ...prismaAdapter,
   createUser: async (user) => {
     const { provider, ...rest } = user as Omit<AdapterUser, 'id'> & {
       // We pass the provider along from Keycloak provider to be able to detect if the user comes from Inclusion Connect
-      provider?: typeof inclusionConnectProviderId
+      provider?: typeof proConnectProviderId
     }
 
     const info = { id: v4(), ...rest }
 
-    if (provider === inclusionConnectProviderId) {
+    if (provider === proConnectProviderId) {
       return prismaAdapter.createUser({ ...info, emailVerified: new Date() })
     }
     return prismaAdapter.createUser(info)
@@ -68,9 +67,7 @@ export const nextAuthAdapter: NextAuthOptions['adapter'] = {
       throw error
     }
   },
-  // Custom link acount
+  // Custom link account
   linkAccount: (account) =>
-    prismaAdapter.linkAccount(
-      removeNonStandardFields(account as AdapterAccount),
-    ),
-}
+    prismaAdapter.linkAccount(removeNonStandardFields(account)),
+} satisfies Adapter

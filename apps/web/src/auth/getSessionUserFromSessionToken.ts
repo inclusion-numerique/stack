@@ -1,5 +1,21 @@
+import type { Prisma } from '@prisma/client'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { prismaClient } from '@app/web/prismaClient'
+
+export const sessionUserSelect = {
+  id: true,
+  email: true,
+  firstName: true,
+  lastName: true,
+  name: true,
+  emailVerified: true,
+  image: true,
+  title: true,
+  location: true,
+  description: true,
+  created: true,
+  updated: true,
+} satisfies Prisma.UserSelect
 
 export const getSessionUserFromSessionToken = async (
   sessionToken: string | null,
@@ -15,20 +31,7 @@ export const getSessionUserFromSessionToken = async (
     },
     include: {
       user: {
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          name: true,
-          emailVerified: true,
-          image: true,
-          title: true,
-          location: true,
-          description: true,
-          created: true,
-          updated: true,
-        },
+        select: sessionUserSelect,
       },
     },
   })

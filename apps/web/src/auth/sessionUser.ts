@@ -1,4 +1,4 @@
-import { User } from '@prisma/client'
+import type { User } from '@prisma/client'
 
 // Serializable user interface
 export type SessionUser = Pick<

@@ -39,11 +39,8 @@ export const ServerWebAppConfig = {
     alertManagerUrl: process.env.COCKPIT_ALERT_MANAGER_URL ?? '',
     grafanaUrl: process.env.COCKPIT_GRAFANA_URL ?? '',
   },
-  InclusionConnect: {
-    clientSecret: process.env.INCLUSION_CONNECT_CLIENT_SECRET ?? '',
-  },
-  MonComptePro: {
-    clientSecret: process.env.MONCOMPTEPRO_CLIENT_SECRET ?? '',
+  ProConnect: {
+    clientSecret: process.env.PROCONNECT_CLIENT_SECRET ?? '',
   },
   Database: {
     instanceId: process.env.DATABASE_INSTANCE_ID ?? '', // like fr-par/uuid
