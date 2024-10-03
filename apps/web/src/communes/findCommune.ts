@@ -1,7 +1,6 @@
 import { createReadStream } from 'node:fs'
-import path from 'node:path'
 import { createInterface } from 'node:readline'
-import { getDirname } from '@app/config/dirname'
+import { staticFile } from '@app/web/staticDirectory'
 
 export type Commune = {
   codeInsee: string
@@ -9,7 +8,7 @@ export type Commune = {
   codePostal: string // Can be multiple, comma separated
 }
 
-const filePath = path.resolve(getDirname(import.meta.url), './communes.csv')
+const filePath = staticFile('communes.csv')
 
 const createCommuneReadline = () => {
   const fileStream = createReadStream(filePath)
