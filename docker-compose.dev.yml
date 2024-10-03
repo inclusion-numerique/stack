@@ -24,7 +24,7 @@ services:
       - stack-network
 
 volumes:
-  coop-pgdata:
+  stack-pgdata:
     name: stack_pgdata
 
 networks:
