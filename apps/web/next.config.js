@@ -1,8 +1,11 @@
-const { withSentryConfig } = require('@sentry/nextjs')
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
+import { withSentryConfig } from '@sentry/nextjs'
+import withBundleAnalyzer from '@next/bundle-analyzer'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const withBundleAnalyzerConfig = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 })
-const path = require('node:path')
 
 // Some packages export a lot of modules in a single index file. To avoid them being compiled
 // next has added native support for modularize import transform
@@ -11,6 +14,9 @@ const path = require('node:path')
 const modularizeImports = {
   'date-fns': { transform: 'date-fns/{{member}}' },
 }
+
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
 
 const serverComponentsExternalPackages = ['html-minifier']
 
@@ -22,7 +28,7 @@ const nextConfig = {
     // See https://nextjs.org/docs/app/api-reference/next-config-js/serverComponentsExternalPackages
     serverComponentsExternalPackages,
     // This includes files from the monorepo base two directories up
-    outputFileTracingRoot: path.join(__dirname, '../../'),
+    outputFileTracingRoot: path.join(dirname, '../../'),
   },
   modularizeImports,
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
@@ -79,6 +85,6 @@ const sentryWebpackPluginOptions = {
   silent: true, // Suppresses all logs
 }
 
-module.exports = withBundleAnalyzer(
+export default withBundleAnalyzerConfig(
   withSentryConfig(nextConfig, sentryWebpackPluginOptions),
 )
