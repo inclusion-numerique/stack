@@ -1,11 +1,13 @@
-/* eslint unicorn/prefer-module: 0,  @typescript-eslint/no-var-requires: 0, @typescript-eslint/unbound-method: 0 */
+import { parse } from 'dotenv'
+import path from 'node:path'
+import { existsSync, readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 
-const { parse } = require('dotenv')
-const { resolve } = require('node:path')
-const { readFileSync, existsSync } = require('node:fs')
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
 
 const dotenvVariables = () => {
-  const dotenvFile = resolve(__dirname, '../../../.env')
+  const dotenvFile = path.resolve(dirname, '../../../.env')
   if (!existsSync(dotenvFile)) {
     return null
   }
@@ -13,7 +15,7 @@ const dotenvVariables = () => {
 }
 
 // See https://github.com/storybookjs/storybook/blob/111edc3929eb8afff1b58285b0b9c49dd493ae85/code/frameworks/nextjs/README.md
-module.exports = {
+export default {
   stories: [
     '../../../apps/web/src/**/*.stories.@(js|jsx|ts|tsx)',
     '../../../packages/ui/src/**/*.stories.@(js|jsx|ts|tsx)',
@@ -22,14 +24,14 @@ module.exports = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
-    '@storybook/addon-jest',
     '@storybook/addon-a11y',
     '@storybook/addon-viewport',
+    'storybook-addon-module-mock',
   ],
   framework: {
     name: '@storybook/nextjs',
     options: {
-      nextConfigPath: resolve(__dirname, '../../../apps/web/next.config.js'),
+      nextConfigPath: path.resolve(dirname, '../../../apps/web/next.config.js'),
     },
   },
   staticDirs: ['../../../apps/web/public', '../public'],

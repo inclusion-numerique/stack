@@ -1,7 +1,7 @@
 import { createTestUser } from '../support/helpers'
 
-describe("Page d'accueil", () => {
-  it("La page d'accueil s'affiche correctement, avec les styles du DSFR", () => {
+describe('Page d’accueil', () => {
+  it('La page d’accueil s’affiche correctement, avec les styles du DSFR', () => {
     cy.visit('/')
     cy.dsfrStylesShouldBeLoaded()
     cy.get('.fr-header__service a').should('contain', 'Stack')
@@ -16,7 +16,7 @@ describe("Page d'accueil", () => {
     cy.get('.fr-header').should('have.css', 'filter', 'none')
   })
 
-  it("La page d'accueil affiche le statut de connexion de l'utilisateur", () => {
+  it('La page d’accueil affiche le statut de connexion de l’utilisateur', () => {
     const user = createTestUser()
     cy.createUserAndSignin(user)
     cy.visit('/')

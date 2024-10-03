@@ -11,7 +11,8 @@ export const deleteAllData = async (
     WHERE table_schema = 'public'
       AND table_type = 'BASE TABLE'
       AND table_name != '_prisma_migrations' 
-      AND table_name != '_prisma_migrations_lock'`
+      AND table_name != '_prisma_migrations_lock'
+  `
 
   await prismaClient.$queryRawUnsafe(
     `TRUNCATE TABLE "${tables
