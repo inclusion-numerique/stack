@@ -12,7 +12,6 @@ export const testSessionUser = {
   created: new Date('2023-01-01').toISOString(),
   hasSeenOnboarding: new Date('2023-01-01').toISOString(),
   emailVerified: null,
-  role: 'User',
   isFixture: false,
   usurper: null,
   coordinateur: null,
