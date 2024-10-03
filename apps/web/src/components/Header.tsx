@@ -87,7 +87,7 @@ const Header = ({
                     title="Aide"
                   >
                     <span className="fr-icon-question-line fr-icon--sm" />
-                    <span className="fr-hidden-lg fr-ml-1w">Aide</span>
+                    <span className="fr-ml-1w">Aide</span>
                   </Link>
                 </li>
                 <li className="fr-hidden fr-unhidden-lg fr-px-1w fr-py-1w">
