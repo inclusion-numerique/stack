@@ -4,6 +4,7 @@ import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import { signinErrorMessage } from '@app/web/app/(public)/(authentication)/authenticationErrorMessage'
 import EmailSignupForm from '@app/web/app/(public)/(authentication)/creer-un-compte/EmailSignupForm'
 import ProConnectSigninButton from '@app/web/app/(public)/(authentication)/connexion/ProConnectSigninButton'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 const SignupPanel = ({
   error,
@@ -20,9 +21,23 @@ const SignupPanel = ({
         <p>{signinErrorMessage(error)}</p>
       </div>
     ) : null}
-    <div className="fr-connect-group">
-      <ProConnectSigninButton className="fr-mt-8v" callbackUrl={callbackUrl} />
-    </div>
+    {PublicWebAppConfig.isPreview ? (
+      <p>
+        La connexion avec ProConnect est uniquement disponible sur les
+        environnement de production <i>main</i> et de recette <i>dev</i>.
+        <br />
+        <br />
+        Sur cette environnement de preview <i>{PublicWebAppConfig.Branch}</i>,
+        vous pouvez vous connecter avec votre email.
+      </p>
+    ) : (
+      <div className="fr-connect-group">
+        <ProConnectSigninButton
+          className="fr-mt-8v"
+          callbackUrl={callbackUrl}
+        />
+      </div>
+    )}
     <p className="fr-hr-or fr-mt-6v">ou</p>
     <h5>Se créer un compte avec son email</h5>
     <EmailSignupForm callbackUrl={callbackUrl} email={email} />

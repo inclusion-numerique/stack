@@ -6,9 +6,9 @@ import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
 import { ProConnectProvider } from '@app/web/auth/ProConnectProvider'
 import { registerLastLogin } from '@app/web/security/registerLastLogin'
 import { isFirewallUserAgent } from '@app/web/app/api/auth/[...nextauth]/isFirewallUserAgent'
-import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -31,7 +31,14 @@ const authOptions: NextAuthOptions = {
           sendVerificationRequest,
         }),
       ]
-    : [ProConnectProvider()],
+    : [
+        // Proconnect is only available in main or dev environments
+        ProConnectProvider(),
+        Email({
+          ...ServerWebAppConfig.Email,
+          sendVerificationRequest,
+        }),
+      ],
   callbacks: {
     signIn({ user }) {
       // Everyone is allowed to sign in

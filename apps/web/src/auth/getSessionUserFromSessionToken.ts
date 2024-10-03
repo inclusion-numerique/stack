@@ -8,6 +8,7 @@ export const sessionUserSelect = {
   firstName: true,
   lastName: true,
   name: true,
+  role: true,
   emailVerified: true,
   image: true,
   title: true,

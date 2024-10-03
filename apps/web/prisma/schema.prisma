@@ -42,12 +42,21 @@ model Session {
   @@map("sessions")
 }
 
+enum UserRole {
+  User    @map("user")
+  Support @map("support")
+  Admin   @map("admin")
+
+  @@map("user_role")
+}
+
 model User {
   id            String    @id @default(uuid()) @db.Uuid
   legacyId      Int?      @unique @map("legacy_id")
   firstName     String?   @map("first_name")
   lastName      String?   @map("last_name")
   name          String?
+  role          UserRole  @default(User)
   email         String    @unique
   emailVerified DateTime? @map("email_verified")
   image         Image?    @relation(fields: [imageId], references: [id])
