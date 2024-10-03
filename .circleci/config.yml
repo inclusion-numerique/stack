@@ -331,6 +331,7 @@ jobs:
             - ./apps/web/.next/standalone
             - ./apps/web/.next/static
             - ./apps/web/public
+            - ./apps/web/static
 
   chromatic:
     executor: node
