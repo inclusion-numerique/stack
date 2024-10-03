@@ -1,6 +1,7 @@
 import { appUrl } from '../../support/helpers'
 
-describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter avec ProConnect', () => {
+// Enable this test in your app. ProConnect is not available in "stack" project.
+describe.skip('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter avec ProConnect', () => {
   /**
    * US https://www.notion.so/ETQ-Utilisateur-je-peux-me-connecter-mon-compte-me-d-connecter-8a4ed652501042fd8445df6a2d2273df?pvs=4
    * Parcours https://www.figma.com/file/4wfmwOaKRnMhgiGEF256qS/La-Base---Parcours-utilisateurs?node-id=38%3A1135&t=mLwaw4Kkwt7FG9lz-1
