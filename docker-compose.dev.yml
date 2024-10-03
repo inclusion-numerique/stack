@@ -11,7 +11,7 @@ services:
       - "1025:1025"
   db:
     image: postgres:12.14-alpine
-    container_name: my-app_pg
+    container_name: stack_pg
     environment:
       - POSTGRES_DB=${NEXT_PUBLIC_APP_SLUG}
       - POSTGRES_USER=${NEXT_PUBLIC_APP_SLUG}
@@ -19,16 +19,16 @@ services:
     ports:
       - '5433:5432'
     volumes:
-      - my-app-pgdata:/var/lib/postgresql/data
+      - stack-pgdata:/var/lib/postgresql/data
     networks:
-      - my-app-network
+      - stack-network
 
 volumes:
-  my-app-pgdata:
-    name: my-app_pgdata
+  coop-pgdata:
+    name: stack_pgdata
 
 networks:
-  my-app-network:
+  stack-network:
     external: false
-    name: my-app-network
+    name: stack-network
 

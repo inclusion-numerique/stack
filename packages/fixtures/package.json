@@ -10,7 +10,7 @@
     "test": "jest --passWithNoTests"
   },
   "engines": {
-    "node": "^20.7"
+    "node": "^22.9"
   },
   "dependencies": {
     "@commander-js/extra-typings": "^11.1.0",

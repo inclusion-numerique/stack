@@ -11,7 +11,7 @@
     "cy": "ELECTRON_EXTRA_LAUNCH_ARGS=\"--force-prefers-reduced-motion\" pnpm --silent with-env cypress"
   },
   "engines": {
-    "node": "^20.7"
+    "node": "^22.9"
   },
   "dependencies": {
     "@cypress/react18": "^2.0.0",

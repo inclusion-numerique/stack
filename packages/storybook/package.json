@@ -14,7 +14,7 @@
     "chromatic": "pnpm with-env chromatic --exit-zero-on-changes --exit-once-uploaded"
   },
   "engines": {
-    "node": "^20.7"
+    "node": "^22.9"
   },
   "overrides": {
     "storybook": {
