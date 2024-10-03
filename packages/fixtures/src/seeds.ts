@@ -20,7 +20,7 @@ export const deleteAll = async (transaction: Prisma.TransactionClient) => {
   return tables.map(({ table_name }) => table_name)
 }
 
-const seed = async (transaction: TransactionClient) => {
+export const seed = async (transaction: Prisma.TransactionClient) => {
   await Promise.all(
     fixtureUsers.map((user) =>
       transaction.user.upsert({

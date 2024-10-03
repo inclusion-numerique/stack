@@ -4,12 +4,11 @@ import type { SessionUser } from '@app/web/auth/sessionUser'
 
 export const getProconnectIdToken = ({
   id,
-  usurper,
-}: Pick<SessionUser, 'id' | 'usurper'>): Promise<string | null> =>
+}: Pick<SessionUser, 'id'>): Promise<string | null> =>
   prismaClient.account
     .findFirst({
       where: {
-        userId: usurper?.id ?? id,
+        userId: id,
         provider: proConnectProviderId,
         id_token: { not: null },
       },

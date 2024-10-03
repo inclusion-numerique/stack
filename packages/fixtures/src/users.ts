@@ -1,4 +1,3 @@
-import { faker } from '@faker-js/faker'
 import { prismaClient } from '@app/web/prismaClient'
 
 export const fixtureUsers: Exclude<
