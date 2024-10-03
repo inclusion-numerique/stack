@@ -13,7 +13,7 @@ export const InformationsCoop = () => (
           noBorder
           arrowTop
           arrowSm
-          className="fr-border fr-border-radius--16 wip-outline"
+          className="fr-border fr-border-radius--16"
           title={
             <span className="fr-inline-flex fr-align-items-center">
               <span
@@ -26,7 +26,8 @@ export const InformationsCoop = () => (
             </span>
           }
           description="Nous vous guidons dans la prise en main des différentes fonctionnalités de la Coop de la médiation numérique."
-          href="#"
+          href="https://incubateurdesterritoires.notion.site/Centre-d-aide-de-La-Coop-de-la-m-diation-num-rique-e2db421ac63249769c1a9aa155af5f2f"
+          isExternal
         />
       </div>
       <div className="fr-col-lg-6 fr-col-md-12 fr-col-sm-6 fr-col-12">

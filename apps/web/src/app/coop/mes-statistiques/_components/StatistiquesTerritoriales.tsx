@@ -28,8 +28,8 @@ export const StatistiquesTerritoriales = ({
         Vos statistiques contribuent à valoriser et comprendre l’impact de
         l’inclusion numérique sur votre territoire.{' '}
         <Link
-          className="fr-link wip fr-text--sm fr-mb-0"
-          href="/"
+          className="fr-link fr-text--sm fr-mb-0"
+          href="https://incubateurdesterritoires.notion.site/En-savoir-plus-sur-l-utilisation-des-donn-es-sur-la-Coop-de-la-m-diation-num-rique-82af14ef964b41c1bfb5cb4a01d6e40b"
           target="_blank"
           rel="noreferrer"
         >

@@ -80,9 +80,14 @@ const Header = ({
             <div className="fr-header__tools-links">
               <ul className="fr-btns-group">
                 <li>
-                  <Link href="/" className="fr-btn icon-only" title="Aide">
+                  <Link
+                    href="https://incubateurdesterritoires.notion.site/Centre-d-aide-de-La-Coop-de-la-m-diation-num-rique-e2db421ac63249769c1a9aa155af5f2f"
+                    className="fr-btn icon-only fr-btn--no-after"
+                    target="_blank"
+                    title="Aide"
+                  >
                     <span className="fr-icon-question-line fr-icon--sm" />
-                    <span className="fr-hidden-lg fr-ml-1w">Aide</span>
+                    <span className="fr-ml-1w">Aide</span>
                   </Link>
                 </li>
                 <li className="fr-hidden fr-unhidden-lg fr-px-1w fr-py-1w">

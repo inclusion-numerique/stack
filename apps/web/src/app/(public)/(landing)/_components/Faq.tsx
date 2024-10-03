@@ -7,7 +7,11 @@ export const Faq = () => (
       <h2 className="fr-h1">Questions fréquentes</h2>
       <p className="fr-mb-6w">
         Pour en savoir plus, visitez notre{' '}
-        <Link className="fr-link wip-outline" href="/">
+        <Link
+          className="fr-link"
+          target="_blank"
+          href="https://incubateurdesterritoires.notion.site/Centre-d-aide-de-La-Coop-de-la-m-diation-num-rique-e2db421ac63249769c1a9aa155af5f2f"
+        >
           centre d’aide
         </Link>
         .
@@ -40,7 +44,10 @@ export const Faq = () => (
           tranche d’âge, statut et commune de résidence), sous la forme de
           statistiques générales au niveau du territoire et anonymisées.
         </p>
-        <Link href="/" className="fr-link wip-outline">
+        <Link
+          href="https://incubateurdesterritoires.notion.site/En-savoir-plus-sur-l-utilisation-des-donn-es-sur-la-Coop-de-la-m-diation-num-rique-82af14ef964b41c1bfb5cb4a01d6e40b"
+          className="fr-link"
+        >
           En savoir plus l’utilisation des données sur la plateforme
         </Link>
       </Accordion>
