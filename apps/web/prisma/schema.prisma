@@ -47,13 +47,12 @@ model Session {
   @@map("sessions")
 }
 
-// User roles are used for global app permissions
-// Domain roles are defined by relations between user and domain models
 enum UserRole {
-  Admin @map("admin")
-  User  @map("user")
+  User    @map("user")
+  Support @map("support")
+  Admin   @map("admin")
 
-  @@map("user_roles")
+  @@map("user_role")
 }
 
 enum ProfilInscription {

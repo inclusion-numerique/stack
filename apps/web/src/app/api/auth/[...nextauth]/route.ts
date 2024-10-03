@@ -9,6 +9,7 @@ import { isFirewallUserAgent } from '@app/web/app/api/auth/[...nextauth]/isFirew
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0

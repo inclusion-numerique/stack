@@ -20,6 +20,10 @@ const dirname = path.dirname(filename)
 
 const serverComponentsExternalPackages = ['html-minifier']
 
+// Mjml cannot be bundled as it uses dynamic requires
+// Only put library required on the server in externals as they would not be available in client
+const externals = ['mjml', 'mjml-core', 'xlsx']
+
 const nextConfig = {
   output: 'standalone',
   reactStrictMode: true,
@@ -71,9 +75,7 @@ const nextConfig = {
 
     // Server bundling
 
-    // Mjml cannot be bundled as it uses dynamic requires
-    // Only put library required on the server in externals as they would not be available in client
-    config.externals.push('mjml', 'mjml-core', 'xlsx')
+    config.externals.push(...externals)
 
     return config
   },

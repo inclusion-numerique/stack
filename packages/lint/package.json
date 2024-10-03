@@ -9,7 +9,7 @@
     "tsc": "tsc --noEmit"
   },
   "engines": {
-    "node": "^22.5"
+    "node": "^22.9"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.25.1",

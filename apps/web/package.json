@@ -26,7 +26,7 @@
     "standalone:start": "HOSTNAME=\"0.0.0.0\" ../../node_modules/.bin/dotenv -e ../../.env -- node ./.next/standalone/apps/web/server.js"
   },
   "engines": {
-    "node": "^22.5"
+    "node": "^22.9"
   },
   "dependencies": {
     "@app/emails": "workspace:^",
@@ -84,7 +84,7 @@
     "mongodb": "^6.8.0",
     "nanoid": "^5.0.7",
     "next": "^14.2.13",
-    "next-auth": "^4.24.7",
+    "next-auth": "4.24.7",
     "node-html-parser": "^6.1.13",
     "nodemailer": "^6.9.14",
     "opening_hours": "^3.8.0",
