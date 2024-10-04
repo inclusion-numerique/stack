@@ -9,7 +9,7 @@ export const staticDirectory = () => {
   // For local and e2e execution environments
   const cwd = process.cwd()
   if (cwd.includes('apps/web')) {
-    return path.resolve(cwd.split('apps/web')[0], 'apps/web/src')
+    return path.resolve(cwd.split('apps/web')[0], 'apps/web/private-static')
   }
   return path.resolve(cwd, './private-static')
 }
