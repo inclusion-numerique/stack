@@ -3,7 +3,7 @@ import { getDirname } from '@app/config/dirname'
 
 export const staticDirectory = path.resolve(
   getDirname(import.meta.url),
-  '../static',
+  '../private-static',
 )
 
 export const staticFile = (filename: string) =>

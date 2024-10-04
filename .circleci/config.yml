@@ -331,7 +331,7 @@ jobs:
             - ./apps/web/.next/standalone
             - ./apps/web/.next/static
             - ./apps/web/public
-            - ./apps/web/static
+            - ./apps/web/private-static
 
   chromatic:
     executor: node
@@ -422,7 +422,7 @@ jobs:
           command: |
             mv apps/web/.next/standalone ~/dist
             mv apps/web/public ~/dist/apps/web/public
-            mv apps/web/static ~/dist/apps/web/static
+            mv apps/web/private-static ~/dist/apps/web/private-static
             mv apps/web/.next/static ~/dist/apps/web/.next/static
             cd ~/dist
             NODE_TLS_REJECT_UNAUTHORIZED="0" HOSTNAME=localhost node apps/web/server.js
