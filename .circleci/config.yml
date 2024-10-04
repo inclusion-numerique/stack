@@ -312,7 +312,7 @@ jobs:
             - << pipeline.parameters.cache_version >>-next-prod-{{ checksum "<< pipeline.parameters.lockfile >>" }}-{{ checksum "./.env" }}
       - run:
           name: 'Build next app'
-          command: pnpm --silent -F @app/web build
+          command: SENTRY_RELEASE=true pnpm --silent -F @app/web build
       - save_cache:
           key: << pipeline.parameters.cache_version >>-next-prod-{{ checksum "<< pipeline.parameters.lockfile >>" }}-{{ checksum "./.env" }}
           paths:

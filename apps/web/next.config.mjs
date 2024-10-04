@@ -71,6 +71,8 @@ const nextConfig = {
   },
 }
 
+const enableRelease = process.env.SENTRY_ENABLE_RELEASE === 'true'
+
 export default withBundleAnalyzerConfig(
   withSentryConfig(nextConfig, {
     silent: false, // Suppresses all logs
@@ -79,8 +81,11 @@ export default withBundleAnalyzerConfig(
     tunnelRoute: '/monitoring',
     widenClientFileUpload: true,
     hideSourceMaps: true,
-    // Source map generation + upload
     disableServerWebpackPlugin: true,
     disableClientWebpackPlugin: true,
+    release: { create: enableRelease },
+    sourcemaps: {
+      disable: !enableRelease,
+    },
   }),
 )
