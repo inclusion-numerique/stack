@@ -33,19 +33,9 @@ const nextConfig = {
     serverComponentsExternalPackages,
     // This includes files from the monorepo base two directories up
     outputFileTracingRoot: path.join(dirname, '../../'),
+    instrumentationHook: true,
   },
   modularizeImports,
-  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
-  sentry: {
-    autoInstrumentServerFunctions: true,
-    autoInstrumentMiddleware: true,
-    tunnelRoute: '/monitoring',
-    widenClientFileUpload: true,
-    hideSourceMaps: true,
-    // Source map generation + upload
-    disableServerWebpackPlugin: true,
-    disableClientWebpackPlugin: true,
-  },
   eslint: {
     // Lints are checked in other parts of the build process
     ignoreDuringBuilds: true,
@@ -81,12 +71,16 @@ const nextConfig = {
   },
 }
 
-// For all available options, see:
-// https://github.com/getsentry/sentry-webpack-plugin#options.
-const sentryWebpackPluginOptions = {
-  silent: true, // Suppresses all logs
-}
-
 export default withBundleAnalyzerConfig(
-  withSentryConfig(nextConfig, sentryWebpackPluginOptions),
+  withSentryConfig(nextConfig, {
+    silent: false, // Suppresses all logs
+    autoInstrumentServerFunctions: true,
+    autoInstrumentMiddleware: true,
+    tunnelRoute: '/monitoring',
+    widenClientFileUpload: true,
+    hideSourceMaps: true,
+    // Source map generation + upload
+    disableServerWebpackPlugin: true,
+    disableClientWebpackPlugin: true,
+  }),
 )
