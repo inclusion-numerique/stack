@@ -2,7 +2,11 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export const DisplayOnCartography = () => (
+export const DisplayOnCartography = ({
+  canChangeVisibility = true,
+}: {
+  canChangeVisibility?: boolean
+}) => (
   <div className="fr-px-8v fr-py-10v fr-background-alt--blue-france fr-border-radius-top--8">
     <div className="fr-flex fr-flex-gap-6v fr-align-items-center">
       <Image
@@ -13,8 +17,17 @@ export const DisplayOnCartography = () => (
         height={56}
       />{' '}
       <p className="fr-text--lg fr-mb-0 fr-text-title--blue-france fr-text--bold">
-        Vous souhaitez apparaître sur la cartographie nationale des lieux
-        d’inclusion numérique&nbsp;?
+        {canChangeVisibility ? (
+          <>
+            Vous souhaitez apparaître sur la cartographie nationale des lieux
+            d’inclusion numérique&nbsp;?
+          </>
+        ) : (
+          <>
+            Votre lieu d’activité apparait sur la cartographie nationale des
+            lieux d’inclusion numérique
+          </>
+        )}
       </p>
     </div>
     <div className="fr-flex fr-mt-8v fr-flex-gap-3v fr-align-items-center">

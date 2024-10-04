@@ -12,12 +12,14 @@ const VisiblePourCartographieNationaleFields = ({
   visiblePourCartographieNationale,
   onChange,
   className,
+  canChangeVisibility = true,
   children,
 }: {
   id: string
   visiblePourCartographieNationale: boolean
   onChange?: (visible: boolean) => void
   className: string
+  canChangeVisibility?: boolean
   children?: ReactNode
 }) => {
   const router = useRouter()
@@ -58,22 +60,30 @@ const VisiblePourCartographieNationaleFields = ({
 
   return (
     <>
-      <div className={className}>
-        <ToggleSwitch
-          inputTitle="Visibilité du lieu d’activité sur la cartographie"
-          disabled={mutate.isPending}
-          checked={visiblePourCartographieNationale}
-          label={
-            <span className="fr-text--medium">
-              Rendre mon lieu d’activité visible sur la cartographie
-            </span>
-          }
-          labelPosition="left"
-          showCheckedHint
-          onChange={handleChange}
-        />
-      </div>
-      {visiblePourCartographieNationale && children}
+      {canChangeVisibility && (
+        <div className={className}>
+          <ToggleSwitch
+            inputTitle="Visibilité du lieu d’activité sur la cartographie"
+            disabled={mutate.isPending}
+            checked={visiblePourCartographieNationale}
+            label={
+              <span className="fr-text--medium fr-my-auto">
+                Rendre mon lieu d’activité visible sur la cartographie
+              </span>
+            }
+            labelPosition="left"
+            showCheckedHint
+            onChange={handleChange}
+          />
+        </div>
+      )}
+
+      {visiblePourCartographieNationale && (
+        <>
+          {canChangeVisibility && <hr className="fr-separator-1px" />}
+          {children}
+        </>
+      )}
     </>
   )
 }
