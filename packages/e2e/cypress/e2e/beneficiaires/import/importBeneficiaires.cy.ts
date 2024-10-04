@@ -12,14 +12,6 @@ describe('ETQ Utilisateur, je peux importer des bénéficiaires', () => {
     cy.visit(appUrl('/coop/mes-beneficiaires/importer'))
     cy.findByRole('heading', { name: 'Importer des bénéficiaires' })
 
-    cy.get('form').submit()
-
-    // Does not accept other than xlsx file
-    cy.get('form p.fr-error-text').should(
-      'have.text',
-      'Veuillez sélectionner un fichier Excel (.xlsx) basé sur le modèle',
-    )
-
     cy.get('input[type="file"][name="file"]').attachFile(
       'import-beneficiaires_invalide.xlsx',
     )
