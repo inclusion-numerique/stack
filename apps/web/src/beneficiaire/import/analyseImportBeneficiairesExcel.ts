@@ -4,9 +4,9 @@ import type { CellObject, WorkSheet } from 'xlsx'
 import * as XLSX from 'xlsx'
 import {
   type Commune,
-  CommunesClient,
-  getCommunesClient,
-} from '@app/web/communes/findCommune'
+  type CommunesClient,
+  createCommunesClient,
+} from '@app/web/communes/communesClient'
 import { anneeNaissanceValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { genreValues } from '@app/web/beneficiaire/beneficiaire'
 
@@ -243,7 +243,7 @@ export const analyseImportBeneficiairesExcel = async (
 
   let rowNumber = beneficiairesRowsStart
 
-  const communesClient = await getCommunesClient()
+  const communesClient = await createCommunesClient()
 
   let hasError = false
 

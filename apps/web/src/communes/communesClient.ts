@@ -64,7 +64,7 @@ const cleanupCommuneCodePostal = (commune: Commune) => {
 /**
  * Lazy loads communes.csv file and then o(1) lookup commune by codeInsee
  */
-export const getCommunesClient = async () => {
+export const createCommunesClient = async () => {
   if (communeMap.size === 0) {
     await buildCommuneMap()
   }
@@ -84,4 +84,4 @@ export const getCommunesClient = async () => {
   }
 }
 
-export type CommunesClient = Awaited<ReturnType<typeof getCommunesClient>>
+export type CommunesClient = Awaited<ReturnType<typeof createCommunesClient>>
