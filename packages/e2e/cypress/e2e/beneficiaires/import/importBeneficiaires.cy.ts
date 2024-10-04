@@ -11,7 +11,6 @@ describe('ETQ Utilisateur, je peux importer des bénéficiaires', () => {
 
     cy.visit(appUrl('/coop/mes-beneficiaires/importer'))
     cy.findByRole('heading', { name: 'Importer des bénéficiaires' })
-    cy.get('input[type="file"][name="file"]').attachFile('example.json')
 
     cy.get('form').submit()
 
