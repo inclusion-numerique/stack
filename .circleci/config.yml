@@ -422,7 +422,7 @@ jobs:
           command: |
             mv apps/web/.next/standalone ~/dist
             mv apps/web/public ~/dist/apps/web/public
-            mv apps/web/private-static ~/dist/apps/web/private-static
+            cp -r apps/web/private-static ~/dist/apps/web/private-static
             mv apps/web/.next/static ~/dist/apps/web/.next/static
             cd ~/dist
             NODE_TLS_REJECT_UNAUTHORIZED="0" HOSTNAME=localhost node apps/web/server.js
