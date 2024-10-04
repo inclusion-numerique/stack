@@ -10,8 +10,8 @@ import { profileListSelect } from '@app/web/server/profiles/getProfilesList'
 const featuredBaseIds = [
   // direction-interministerielle-du-numerique-dinum
   '7e552766-ec7a-4531-9bf4-eb81f364ac96',
-  // framasoft
-  'f14423bf-18d7-4b38-9868-534b808c188f',
+  // la-coop-de-la-mediation-numerique
+  '13c42351-4658-4f93-becf-1dac55264e01',
   // parentalite-et-numerique
   '543f91bc-8215-4b27-a9af-a7fb14348324',
 ]
