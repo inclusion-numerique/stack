@@ -16,8 +16,8 @@ COPY apps/web/.next/standalone .
 # Copy public assets
 COPY apps/web/public ./apps/web/public
 
-# Copy static files (csv, json, etc...)
-COPY apps/web/static ./apps/web/static
+# Copy static server files not imported by bundler (csv, json, etc...)
+COPY apps/web/private-static ./apps/web/private-static
 
 # Copy static built assets (js and css)
 COPY apps/web/.next/static ./apps/web/.next/static
