@@ -10,6 +10,9 @@ export const metadata = {
   title: metadataTitle('Usurpation'),
 }
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 const Page = async () => {
   const fixtureUsers = await prismaClient.user.findMany({
     where: {
