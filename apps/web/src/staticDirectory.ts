@@ -4,6 +4,7 @@ import { getDirname } from '@app/config/dirname'
 export const staticDirectory = () => {
   let dirname = getDirname(import.meta.url)
   console.log(dirname)
+  console.log('CWD', process.cwd())
   // TODO Different execution environments built / dev / e2e do not have the same dirname relative to staticDirectory
 
   if (dirname.includes('apps/web')) {
