@@ -15,7 +15,7 @@
     "node": "^22.9"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.556.0",
+    "@aws-sdk/client-s3": "^3.637.0",
     "@commander-js/extra-typings": "^12.1.0",
     "@octokit/core": "^6.1.2",
     "@octokit/plugin-rest-endpoint-methods": "^13.2.4",
@@ -26,9 +26,9 @@
     "csv-stringify": "^6.5.1",
     "dotenv": "^16.4.5",
     "form-data": "^4.0.0",
-    "nodemailer": "^6.9.13",
-    "octokit": "^3.2.0",
     "lodash-es": "^4.17.21",
+    "nodemailer": "^6.9.14",
+    "octokit": "^3.2.0",
     "picocolors": "^1.0.1",
     "slug": "^9.1.0",
     "tsconfig-paths": "^4.2.0",

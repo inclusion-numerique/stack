@@ -48,7 +48,7 @@ export const ServerWebAppConfig = {
   },
   ProConnect: {
     clientSecret: process.env.PROCONNECT_CLIENT_SECRET ?? '',
-    },
+  },
   ReportModerator: {
     email: process.env.REPORT_MODERATOR_EMAIL ?? '',
     name: process.env.REPORT_MODERATOR_NAME ?? '',
