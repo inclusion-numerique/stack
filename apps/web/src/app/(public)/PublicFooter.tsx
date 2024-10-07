@@ -26,6 +26,10 @@ const PublicFooter = () => (
         linkProps: { href: '/confidentialite' },
       },
       {
+        text: 'Mentions légales',
+        linkProps: { href: '/mentions-legales' },
+      },
+      {
         text: 'Code source',
         linkProps: {
           href: 'https://github.com/inclusion-numerique/coop-inclusion-numerique',
