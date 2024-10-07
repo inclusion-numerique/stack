@@ -118,8 +118,6 @@ const CraIndividuelForm = ({
 
   const router = useRouter()
 
-  console.log('ID', form.watch('id'))
-
   const beneficiaire = form.watch('beneficiaire')
   const showAnonymousForm =
     !beneficiaire || isBeneficiaireAnonymous(beneficiaire)
