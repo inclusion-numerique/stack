@@ -21,11 +21,12 @@ const SigninPage = async ({
   searchParams?: { error?: string } & LoginSearchParams
 }) => {
   const user = await getSessionUser()
-  if (user) {
-    redirect(getServerUrl(suivant ?? '/'))
-  }
 
-  const callbackUrl = suivant ?? '/'
+  const callbackUrl = suivant ?? '/connexion/suivant'
+
+  if (user) {
+    redirect(getServerUrl(callbackUrl))
+  }
 
   return (
     <>

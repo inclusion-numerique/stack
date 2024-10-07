@@ -9,7 +9,6 @@ import Breadcrumbs from '@app/web/components/Breadcrumbs'
 export const metadata: Metadata = {
   title: metadataTitle('Déclaration d’accessibilité'),
 }
-export const revalidate = 0
 const AccessibilityStatementPage = () => (
   <div className="fr-container">
     <SkipLinksPortal links={defaultSkipLinks} />
