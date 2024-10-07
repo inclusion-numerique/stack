@@ -5,3 +5,7 @@
 .fr-position-absolute {
   position: absolute;
 }
+
+.fr-overflow-visible {
+  overflow: visible;
+}

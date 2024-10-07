@@ -1,7 +1,7 @@
-import { NextRequest } from 'next/server'
+import type { NextApiRequest } from 'next'
 
-export const isFirewallUserAgent = (request: NextRequest): boolean => {
-  const userAgent = request.headers.get('user-agent') || ''
+export const isFirewallUserAgent = (request: NextApiRequest): boolean => {
+  const userAgent = request.headers['user-agent'] || ''
 
   // Liste étendue des signatures connues des agents utilisateurs de pare-feu
   const firewallUserAgents = [

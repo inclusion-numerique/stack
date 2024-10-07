@@ -4,6 +4,7 @@ import SwitchTheme from '@app/web/app/(public)/SwitchTheme'
 const PublicFooter = () => (
   <Footer
     accessibility="non compliant"
+    accessibilityLinkProps={{ href: '/accessibilite' }}
     brandTop={
       <>
         République
@@ -22,8 +23,20 @@ const PublicFooter = () => (
     }}
     bottomItems={[
       {
+        text: 'Mentions légales',
+        linkProps: { href: '/mentions-legales' },
+      },
+      {
         text: 'Politique de confidentialité',
         linkProps: { href: '/confidentialite' },
+      },
+      {
+        text: `Conditions générales d'utilisation`,
+        linkProps: { href: '/cgu' },
+      },
+      {
+        text: `Statistiques`,
+        linkProps: { href: '/statistiques' },
       },
       {
         text: 'Code source',

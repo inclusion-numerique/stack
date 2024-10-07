@@ -1,1 +1,1 @@
-export const executeJobApiTokenHeader = 'X-Api-Token'
+export const executeJobApiTokenHeader = 'x-api-token'

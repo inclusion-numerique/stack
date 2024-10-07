@@ -102,6 +102,10 @@ Cypress.Commands.add('dsfrCollapsesShouldBeBound', () => {
 Cypress.Commands.add('testId', (testId: string) =>
   cy.get(`[data-testid="${testId}"]`),
 )
+Cypress.Commands.add('removeHover', () =>
+  // reset hovering by putting mouse away (e.g. here top left corner of body)
+  cy.get('body').realHover({ position: 'topLeft' }),
+)
 
 Cypress.Commands.add('getToast', (contains: string | RegExp) =>
   cy.findAllByRole('status').contains(contains),
@@ -202,6 +206,8 @@ declare global {
       dsfrCollapsesShouldBeBound(): Chainable<void>
 
       testId(testId: string): Chainable<JQuery<HTMLElement>>
+
+      removeHover(): Chainable<JQuery<HTMLElement>>
 
       getToast(contains: string | RegExp): Chainable<JQuery<HTMLElement>>
 

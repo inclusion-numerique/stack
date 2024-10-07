@@ -22,8 +22,16 @@
   word-break: break-all;
 }
 
+.fr-text--semi-bold {
+  font-weight: 500 !important;
+}
+
+.fr-text--nowrap {
+  text-wrap: nowrap;
+}
+
 .fr-text--uppercase {
-  text-transform: uppercase;
+  text-transform: uppercase !important;
 }
 
 .fr-whitespace-nowrap {
@@ -36,4 +44,11 @@
 
 .fr-line-height-1 {
   line-height: 1 !important;
+}
+
+/* sm rules */
+@media (min-width: 36em) {
+  .fr-text-sm--right {
+    text-align: right !important;
+  }
 }

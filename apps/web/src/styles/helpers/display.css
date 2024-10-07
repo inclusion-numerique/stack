@@ -19,6 +19,10 @@
   .fr-display-block-md {
     display: block;
   }
+
+  .fr-display-inline-md {
+    display: inline !important;
+  }
 }
 
 /* xl display rules */

@@ -39,10 +39,10 @@ const SignupPanel = ({
       </div>
     )}
     <p className="fr-hr-or fr-mt-6v">ou</p>
-    <h5>Se créer un compte avec son email</h5>
+    <h2 className="fr-h5">Se créer un compte avec son email</h2>
     <EmailSignupForm callbackUrl={callbackUrl} email={email} />
     <hr className="fr-mt-6v" />
-    <h5 className="fr-mt-4v">Vous avez déjà un compte ?</h5>
+    <h2 className="fr-mt-4v fr-h5">Vous avez déjà un compte&nbsp;?</h2>
     <ButtonsGroup
       buttons={[
         {

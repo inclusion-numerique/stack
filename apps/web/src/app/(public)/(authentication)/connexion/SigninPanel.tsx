@@ -14,7 +14,7 @@ const SigninPanel = ({
   callbackUrl: Route
 }) => (
   <AuthCard>
-    <h4>Connexion à {PublicWebAppConfig.projectTitle}</h4>
+    <h1 className="fr-h4">Connexion à {PublicWebAppConfig.projectTitle}</h1>
     {error ? (
       <div className="fr-alert fr-alert--error fr-alert--sm fr-mb-6v">
         <p>{signinErrorMessage(error)}</p>
