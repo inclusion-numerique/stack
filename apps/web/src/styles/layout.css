@@ -25,7 +25,6 @@ textarea {
   --border-width: 1px;
   --border-style: solid;
 
-
   --edition-container-internal-width: 588px;
 
   /* We need padding for the drag button absolute positioning on the left of the edition content list */

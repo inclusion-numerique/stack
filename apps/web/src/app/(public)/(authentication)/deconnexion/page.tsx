@@ -6,6 +6,8 @@ import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import SignoutButton from '@app/web/app/(public)/(authentication)/deconnexion/SignoutButton'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
+import { getSessionUser } from '@app/web/auth/getSessionUser'
+import { getProconnectIdToken } from '@app/web/security/getProconnectIdToken'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 
 export const revalidate = 0
