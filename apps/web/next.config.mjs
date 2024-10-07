@@ -82,7 +82,6 @@ export default withBundleAnalyzerConfig(
     hideSourceMaps: true,
     disableServerWebpackPlugin: true,
     disableClientWebpackPlugin: true,
-    release: { create: enableRelease },
     sourcemaps: {
       disable: !enableRelease,
     },
