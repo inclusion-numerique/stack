@@ -6,8 +6,6 @@ import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
-export const revalidate = 0
-
 export const metadata: Metadata = {
   title: metadataTitle('Mentions légales'),
 }

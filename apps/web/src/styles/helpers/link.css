@@ -18,3 +18,11 @@
     --underline-hover-width: 0 !important;
   }
 }
+
+.fr-no-hover-bg:hover {
+  background-color: transparent;
+}
+
+.fr-no-hover-bg:active {
+  background-color: transparent;
+}

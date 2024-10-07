@@ -203,6 +203,8 @@ declare global {
 
       testId(testId: string): Chainable<JQuery<HTMLElement>>
 
+      removeHover(): Chainable<JQuery<HTMLElement>>
+
       getToast(contains: string | RegExp): Chainable<JQuery<HTMLElement>>
 
       positionToViewport(

@@ -17,10 +17,6 @@
 - [Docker](https://www.docker.com/) (optionnel) : Environnement d'exécution d'applications sous forme de conteneurs
 - [PostgreSQL](https://www.postgresql.org/) (optionnel si Docker est utilisé) : Système de gestion de base de données relationnelle
 
-### Mon compte pro
-
-Faire une demande de token OpenID pour votre service spécifiquement (procédure sur le site https://moncomptepro.beta.gouv.fr/partenaire)
-
 ### Recommandation
 
 > Pour une gestion plus facile de Node.js, envisagez d'utiliser [nvm](https://github.com/nvm-sh/nvm), qui vous permet d'obtenir rapidement et d'utiliser différentes versions de Node.js via la ligne de commande.

@@ -1,10 +1,15 @@
 /* eslint jsx-a11y/control-has-associated-label: 0  */
+import type { Metadata } from 'next'
+import Link from 'next/link'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 
-export const revalidate = 0
+export const metadata: Metadata = {
+  title: metadataTitle('Politique de confidentialité'),
+}
+
 const ConfidentialityPage = () => (
   <div className="fr-container">
     <SkipLinksPortal links={defaultSkipLinks} />
