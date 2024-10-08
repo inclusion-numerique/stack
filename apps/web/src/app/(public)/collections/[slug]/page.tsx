@@ -60,7 +60,7 @@ const CollectionPage = async ({ params }: { params: { slug: string } }) => {
 
   return (
     <>
-      <SkipLinksPortal links={defaultSkipLinks} />
+      <SkipLinksPortal />
       <div className="fr-container">
         <CollectionBreadcrumbs collection={collection} />
       </div>

@@ -41,7 +41,7 @@ const ProfilEditionPage = async ({ params }: ProfilRouteParams) => {
 
   return (
     <>
-      <SkipLinksPortal links={defaultSkipLinks} />
+      <SkipLinksPortal />
       <div className="fr-container">
         <Breadcrumbs
           parents={[

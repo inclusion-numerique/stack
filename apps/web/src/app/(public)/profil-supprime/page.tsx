@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const ProfilSupprimePage = () => (
   <>
-    <SkipLinksPortal links={defaultSkipLinks} />
+    <SkipLinksPortal />
     <main
       id={contentId}
       className="fr-container landing-main-container fr-my-8w"

@@ -53,7 +53,7 @@ const CollectionCreationPage = async ({
 
   return (
     <>
-      <SkipLinksPortal links={defaultSkipLinks} />
+      <SkipLinksPortal />
       <div className="fr-container">
         <Breadcrumbs parents={parents} currentPage="Créer une collection" />
       </div>

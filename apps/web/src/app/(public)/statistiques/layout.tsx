@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const StatisticsLayout = ({ children }: PropsWithChildren) => (
   <>
-    <SkipLinksPortal links={defaultSkipLinks} />
+    <SkipLinksPortal />
     <div className="fr-container">
       <Breadcrumbs currentPage="Statistiques" />
     </div>

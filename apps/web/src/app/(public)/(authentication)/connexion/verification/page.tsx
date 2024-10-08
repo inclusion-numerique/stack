@@ -22,7 +22,7 @@ const VerifyPage = async () => {
 
   return (
     <>
-      <SkipLinksPortal links={defaultSkipLinks} />
+      <SkipLinksPortal />
       <Breadcrumbs
         currentPage="Vérification"
         parents={[{ label: 'Connexion', linkProps: { href: '/connexion' } }]}

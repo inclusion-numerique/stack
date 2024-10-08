@@ -35,7 +35,7 @@ const SigninPage = async ({
 
   return (
     <>
-      <SkipLinksPortal links={defaultSkipLinks} />
+      <SkipLinksPortal />
       <Breadcrumbs currentPage="Créer un compte" />
       <main id={contentId}>
         <div className="fr-container fr-container--narrow">

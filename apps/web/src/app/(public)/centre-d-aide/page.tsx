@@ -40,7 +40,7 @@ const CardLink = ({ href }: { href: string }) => (
 
 const ContentPolicyPage = () => (
   <>
-    <SkipLinksPortal links={defaultSkipLinks} />
+    <SkipLinksPortal />
     <main id={contentId} className="fr-container fr-mb-15w">
       <Breadcrumbs currentPage="Centre d'aide" />
       <div className="fr-text--center fr-mb-6w">

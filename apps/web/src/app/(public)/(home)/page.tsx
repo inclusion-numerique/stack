@@ -20,7 +20,7 @@ const HomePage = async () => {
 
   return (
     <>
-      <SkipLinksPortal links={defaultSkipLinks} />
+      <SkipLinksPortal />
       <main id={contentId}>
         <Banner />
         <div className="fr-container fr-pt-8w fr-pb-0 fr-py-md-10w">

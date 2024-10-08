@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const LegalPage = () => (
   <div className="fr-container">
-    <SkipLinksPortal links={defaultSkipLinks} />
+    <SkipLinksPortal />
     <Breadcrumbs currentPage="Mentions légales" />
     <main
       id={contentId}

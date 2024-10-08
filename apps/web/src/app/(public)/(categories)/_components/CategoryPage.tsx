@@ -75,7 +75,7 @@ const CategoryPage = async ({
 
   return (
     <>
-      <SkipLinksPortal links={defaultSkipLinks} />
+      <SkipLinksPortal />
       <div className="fr-container fr-mb-30v">
         <Breadcrumbs currentPage={category} />
         <div className="fr-container fr-container--medium">

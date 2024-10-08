@@ -59,7 +59,7 @@ const MultipleSearchableSelect = ({
   const filteredOptions = useMemo(
     () =>
       allOptions.filter((option) =>
-        filter ? filter(option) : option.name.toLocaleLowerCase(),
+        filter ? filter(option) : option.label.toLocaleLowerCase(),
       ),
     [filter, inputValue, allOptions],
   )
@@ -105,7 +105,7 @@ const MultipleSearchableSelect = ({
       onInputChange('')
       const newSelection = [
         ...internalSelection,
-        { name: inputValue, value: inputValue, invalid: true },
+        { label: inputValue, value: inputValue, invalid: true },
       ]
       setInternalSelection(newSelection)
       onSelectProperty(newSelection)

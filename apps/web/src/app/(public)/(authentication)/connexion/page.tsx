@@ -7,7 +7,7 @@ import { getServerUrl } from '@app/web/utils/baseUrl'
 import { LoginSearchParams } from '@app/web/security/login'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import { contentId } from '@app/web/utils/skipLinks'
 
 export const revalidate = 0
 
@@ -30,7 +30,7 @@ const SigninPage = async ({
 
   return (
     <>
-      <SkipLinksPortal links={defaultSkipLinks} />
+      <SkipLinksPortal />
       <Breadcrumbs currentPage="Connexion" />
       <main id={contentId}>
         <SigninPanel

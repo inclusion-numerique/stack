@@ -63,7 +63,7 @@ const CollectionEditionPage = async ({
 
   return (
     <>
-      <SkipLinksPortal links={defaultSkipLinks} />
+      <SkipLinksPortal />
       <div className="fr-container">
         <CollectionBreadcrumbs
           collection={collection}

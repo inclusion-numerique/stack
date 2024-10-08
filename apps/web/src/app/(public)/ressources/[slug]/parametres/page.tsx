@@ -61,7 +61,7 @@ const ResourceParametersPage = async ({
 
   return (
     <>
-      <SkipLinksPortal links={defaultSkipLinks} />
+      <SkipLinksPortal />
       <div className="fr-container">
         <ResourceBreadcrumbs
           resource={resource}

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 const ContentPolicyPage = () => (
   <>
-    <SkipLinksPortal links={defaultSkipLinks} />
+    <SkipLinksPortal />
     <div className="fr-container">
       <Breadcrumbs
         parents={[

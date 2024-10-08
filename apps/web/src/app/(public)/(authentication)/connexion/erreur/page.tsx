@@ -27,7 +27,7 @@ const ErrorPage = ({
   searchParams?: { error?: string }
 }) => (
   <>
-    <SkipLinksPortal links={defaultSkipLinks} />
+    <SkipLinksPortal />
     <Breadcrumbs
       currentPage="Erreur"
       parents={[{ label: 'Connexion', linkProps: { href: '/connexion' } }]}

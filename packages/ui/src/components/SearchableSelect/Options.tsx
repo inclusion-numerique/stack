@@ -4,7 +4,7 @@ import styles from './Options.module.css'
 
 export type Option<T extends string> = {
   component?: ReactNode
-  name: string
+  label: string
   value: T
   disabled?: boolean
 }
@@ -51,7 +51,7 @@ const Options = <T extends string>({
             }
           }}
         >
-          {option.component || option.name}
+          {option.component || option.label}
         </div>
       ))}
     </>

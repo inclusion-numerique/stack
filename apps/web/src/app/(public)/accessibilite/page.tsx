@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 }
 const AccessibilityStatementPage = () => (
   <div className="fr-container">
-    <SkipLinksPortal links={defaultSkipLinks} />
+    <SkipLinksPortal />
     <Breadcrumbs currentPage="Accessibilité" />
 
     <main

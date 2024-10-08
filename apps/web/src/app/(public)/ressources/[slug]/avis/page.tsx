@@ -64,7 +64,7 @@ const ResourceFeedbackPage = async ({
 
   return (
     <>
-      <SkipLinksPortal links={defaultSkipLinks} />
+      <SkipLinksPortal />
       <div className="fr-container">
         <ResourceBreadcrumbs resource={resource} currentChildPage="Avis" />
         <main className="fr-mx-auto fr-container--slim" id={contentId}>

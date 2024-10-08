@@ -18,7 +18,7 @@ const BaseCreationPage = async () => {
   }
   return (
     <>
-      <SkipLinksPortal links={defaultSkipLinks} />
+      <SkipLinksPortal />
       <div className="fr-container">
         <Breadcrumbs currentPage="Créer une base" />
       </div>

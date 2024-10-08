@@ -5,8 +5,6 @@ import { signinErrorMessage } from '@app/web/app/(public)/(authentication)/authe
 import ProConnectSigninButton from '@app/web/app/(public)/(authentication)/connexion/ProConnectSigninButton'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { EmailSigninForm } from '@app/web/app/(public)/(authentication)/connexion/EmailSigninForm'
-import { EmailSigninForm } from '@app/web/app/(public)/(authentication)/connexion/EmailSigninForm'
-import InclusionConnectSigninButton from '@app/web/app/(public)/(authentication)/connexion/InclusionConnectSigninButton'
 import { getLoginTitle, LoginIntent } from '@app/web/security/login'
 
 const SigninPanel = ({
