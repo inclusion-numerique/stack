@@ -15,8 +15,8 @@ const cardButtonProps = {
   ...viewButtonProps,
   priority: 'tertiary no outline',
 } as const
-const defaultIconId = 'ri-bookmark-3-line' as const
-const alreadySavedIconId = 'ri-bookmark-3-fill' as const
+const defaultIconId = 'ri-bookmark-3-line'
+const alreadySavedIconId = 'ri-bookmark-3-fill'
 
 const SaveCollectionButton = ({
   className,

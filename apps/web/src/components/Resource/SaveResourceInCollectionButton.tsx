@@ -4,8 +4,8 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import OpenSaveResourceInCollectionModalButton from '@app/web/components/Resource/OpenSaveResourceInCollectionModalButton'
 import { loginUrl } from '@app/web/security/login'
 
-const defaultIconId = 'fr-icon-bookmark-line' as const
-const alreadySavedIconId = 'fr-icon-bookmark-fill' as const
+const defaultIconId = 'fr-icon-bookmark-line'
+const alreadySavedIconId = 'fr-icon-bookmark-fill'
 
 const secondaryButtonProps = {
   iconId: defaultIconId,
