@@ -237,7 +237,7 @@ export const analyseImportBeneficiairesExcel = async (
     }
   }
 
-  const beneficiairesRowsStart = 3
+  const beneficiairesRowsStart = 4
 
   const result: ParsedBeneficiaireRow[] = []
 
