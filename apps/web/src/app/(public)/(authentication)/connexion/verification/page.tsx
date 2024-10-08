@@ -6,7 +6,7 @@ import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { getServerUrl } from '@app/web/utils/baseUrl'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import { contentId } from '@app/web/utils/skipLinks'
 
 export const revalidate = 0
 

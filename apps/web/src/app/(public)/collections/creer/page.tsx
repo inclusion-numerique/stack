@@ -5,7 +5,7 @@ import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { createCollectionUrl } from '@app/web/collections/createCollectionUrl'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import { contentId } from '@app/web/utils/skipLinks'
 import { prismaClient } from '@app/web/prismaClient'
 import { baseAuthorizationTargetSelect } from '@app/web/authorization/models/baseAuthorizationTargetSelect'
 import {

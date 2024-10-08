@@ -1,15 +1,10 @@
 import type { Prisma } from '@prisma/client'
 import { fixtureUsers } from '@app/fixtures/users'
-import { Command } from '@commander-js/extra-typings'
-import { prismaClient } from '@app/web/prismaClient'
-import type { Prisma } from '@prisma/client'
-import { output } from '@app/web/utils/output'
 import { collections } from '@app/fixtures/collections'
 import { resourceContributors } from '@app/fixtures/resourceContributors'
 import { baseMembers } from '@app/fixtures/baseMembers'
 import { bases } from './bases'
 import { resources } from './resources'
-import { users } from './users'
 
 export const deleteAll = async (transaction: Prisma.TransactionClient) => {
   const tables = await transaction.$queryRaw<

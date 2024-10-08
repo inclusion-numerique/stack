@@ -11,11 +11,7 @@
 
 .fr-progress__bar {
   font-size: 0.75rem;
-  background-color: var(--blue-france-975-75);
   border-radius: var(--progress-radius);
-}
-
-.fr-progress__bar {
   display: flex;
   flex-direction: column;
   justify-content: center;

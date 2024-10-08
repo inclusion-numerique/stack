@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import { contentId } from '@app/web/utils/skipLinks'
 import { getFeatured } from '@app/web/app/(public)/(home)/_data/getFeatured'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Newsletter from '@app/web/app/(public)/Newsletter'

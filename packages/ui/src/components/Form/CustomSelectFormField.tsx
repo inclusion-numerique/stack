@@ -1,9 +1,14 @@
 import React, { ReactNode, useCallback } from 'react'
-import { Control, Controller, FieldValues, PathValue } from 'react-hook-form'
-import { FieldPath, Path, PathValue } from 'react-hook-form/dist/types/path'
+import {
+  Control,
+  Controller,
+  FieldPath,
+  FieldValues,
+  PathValue,
+} from 'react-hook-form'
 import classNames from 'classnames'
 import type { GroupBase, Options, OptionsOrGroups } from 'react-select'
-import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
+import type { UiComponentProps } from '@app/ui/utils/uiComponentProps'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 import CustomSelect, {
   CustomSelectProps,

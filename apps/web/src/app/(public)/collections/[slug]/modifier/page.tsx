@@ -8,7 +8,7 @@ import { prismaClient } from '@app/web/prismaClient'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import CollectionBreadcrumbs from '@app/web/components/CollectionBreadcrumbs'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import { contentId } from '@app/web/utils/skipLinks'
 import {
   collectionAuthorization,
   CollectionPermissions,

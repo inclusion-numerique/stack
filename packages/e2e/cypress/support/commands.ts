@@ -1,21 +1,20 @@
 import '@testing-library/cypress/add-commands'
-import { ResourceProjection } from '@app/web/server/resources/feature/createResourceProjection'
-import { ResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
+import type { ResourceProjection } from '@app/web/server/resources/feature/createResourceProjection'
+import type { ResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
 import {
   deserialize,
   serialize,
-  Serialized,
+  type Serialized,
 } from '@app/web/utils/serialization'
+import { appUrl } from '@app/e2e/support/helpers'
+import type { Tasks as CustomTasks } from '@app/e2e/tasks/tasks'
+import 'cypress-file-upload'
+import type { SendResourceCommandsInput } from '@app/e2e/tasks/handlers/resources.tasks'
 import type {
   CreateBaseInput,
   CreateCollectionInput,
   CreateUserInput,
-} from '@app/e2e/e2e/authentication/user.tasks'
-import { appUrl } from '@app/e2e/support/helpers'
-import type { SendResourceCommandsInput } from '@app/e2e/e2e/resources.tasks'
-import type { Tasks as CustomTasks } from '@app/e2e/tasks/tasks'
-import type { CreateUserInput } from '@app/e2e/tasks/handlers/user.tasks'
-import 'cypress-file-upload'
+} from '@app/e2e/tasks/handlers/user.tasks'
 import Timeoutable = Cypress.Timeoutable
 import Loggable = Cypress.Loggable
 

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import { contentId } from '@app/web/utils/skipLinks'
 
 export const metadata: Metadata = {
   title: metadataTitle('Mentions légales'),
