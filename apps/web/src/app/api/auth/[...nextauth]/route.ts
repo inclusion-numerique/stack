@@ -40,13 +40,27 @@ const authOptions: NextAuthOptions = {
         }),
       ],
   callbacks: {
-    signIn({ user }) {
-      // Everyone is allowed to sign in
+    signIn({ user, account }) {
+      const isAllowedToSignIn =
+        // ProConnect is a type of oauth and can login/register at the same time
+        account?.type === 'oauth' ||
+        // If user exists and comes from prisma, we will have User model properties defined
+        ('created' in user &&
+          !!user.created &&
+          'updated' in user &&
+          !!user.updated)
 
-      registerLastLogin({ userId: user.id }).catch((error) => {
-        Sentry.captureException(error)
-      })
-      return true
+      if (isAllowedToSignIn) {
+        registerLastLogin({ userId: user.id }).catch((error) => {
+          Sentry.captureException(error)
+        })
+        return true
+      }
+
+      // Cannot login unregistered email user, redirect to:
+      return `/creer-un-compte?raison=connexion-sans-compte&email=${
+        user?.email ?? ''
+      }`
     },
     session: ({ session, user }) => {
       if (session.user) {

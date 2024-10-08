@@ -27,9 +27,7 @@ const VerifyPage = async () => {
         currentPage="Vérification"
         parents={[{ label: 'Connexion', linkProps: { href: '/connexion' } }]}
       />
-      <main id={contentId}>
-        <Verify />
-      </main>
+      <Verify />
     </>
   )
 }

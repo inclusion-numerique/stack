@@ -1,8 +1,12 @@
 import {
+  createBase,
+  createCollection,
   createSession,
   createUser,
   deleteSession,
   deleteUser,
+  inviteUserToBase,
+  inviteUserToResource,
 } from '@app/e2e/tasks/handlers/user.tasks'
 import { deleteAllData } from '@app/e2e/tasks/handlers/deleteAllData'
 import { resetFixtures } from '@app/e2e/tasks/handlers/resetFixtures'
@@ -19,6 +23,10 @@ export const tasks = {
   deleteAllData,
   resetFixtures,
   getResourceReports,
+  createBase,
+  createCollection,
+  inviteUserToBase,
+  inviteUserToResource,
 }
 
 export type Tasks = typeof tasks

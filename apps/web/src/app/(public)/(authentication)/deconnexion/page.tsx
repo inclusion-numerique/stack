@@ -28,22 +28,20 @@ const SignoutPage = async () => {
     <>
       <SkipLinksPortal />
       <Breadcrumbs currentPage="Déconnexion" />
-      <main id={contentId}>
-        <AuthCard id={contentId}>
-          <h1 className="fr-h2">Déconnexion</h1>
-          <p>Êtes-vous sûr·e de vouloir vous déconnecter&nbsp;?</p>
-          <ul className="fr-btns-group">
-            <li>
-              <SignoutButton proConnectIdTokenHint={proConnectIdTokenHint} />
-            </li>
-          </ul>
-          <div className="fr-grid-row fr-grid-row--center">
-            <Link className="fr-link" href="/">
-              Retour à la page d’accueil
-            </Link>
-          </div>
-        </AuthCard>
-      </main>
+      <AuthCard id={contentId}>
+        <h1 className="fr-h2">Déconnexion</h1>
+        <p>Êtes-vous sûr·e de vouloir vous déconnecter&nbsp;?</p>
+        <ul className="fr-btns-group">
+          <li>
+            <SignoutButton proConnectIdTokenHint={proConnectIdTokenHint} />
+          </li>
+        </ul>
+        <div className="fr-grid-row fr-grid-row--center">
+          <Link className="fr-link" href="/">
+            Retour à la page d’accueil
+          </Link>
+        </div>
+      </AuthCard>
     </>
   )
 }
