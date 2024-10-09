@@ -1,10 +1,5 @@
 import { handleResourceCreationCommand } from '@app/web/server/resources/feature/handleResourceCreationCommand'
 import { handleResourceMutationCommand } from '@app/web/server/resources/feature/handleResourceMutationCommand'
-import {
-  Serialized,
-  deserialize,
-  serialize,
-} from '@app/web/utils/serialization'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import {
   ResourceCreationCommand,
@@ -17,18 +12,18 @@ export type SendResourceCommandsInput = {
 }
 
 export const sendResourceCommands = async (
-  input: Serialized<SendResourceCommandsInput>,
+  input: SendResourceCommandsInput,
 ) => {
   const {
     user,
     commands: [createCommand, ...mutateCommands],
-  } = deserialize(input)
+  } = input
   const { resource } = await handleResourceCreationCommand(createCommand, {
     user,
   })
 
   if (mutateCommands.length === 0) {
-    return serialize(resource)
+    return resource
   }
 
   let mutatedResource = resource
@@ -38,5 +33,5 @@ export const sendResourceCommands = async (
     mutatedResource = result.resource
   }
 
-  return serialize(mutatedResource)
+  return mutatedResource
 }

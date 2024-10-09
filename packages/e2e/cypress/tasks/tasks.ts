@@ -11,6 +11,7 @@ import {
 import { deleteAllData } from '@app/e2e/tasks/handlers/deleteAllData'
 import { resetFixtures } from '@app/e2e/tasks/handlers/resetFixtures'
 import { getResourceReports } from '@app/e2e/tasks/handlers/resourceReports.tasks'
+import { sendResourceCommands } from '@app/e2e/tasks/handlers/resources.tasks'
 
 /**
  * Export of custom tasks that can be run with cy.execute() type safe custom command
@@ -27,6 +28,7 @@ export const tasks = {
   createCollection,
   inviteUserToBase,
   inviteUserToResource,
+  sendResourceCommands,
 }
 
 export type Tasks = typeof tasks

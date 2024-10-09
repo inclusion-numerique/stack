@@ -1,11 +1,5 @@
 import '@testing-library/cypress/add-commands'
 import type { ResourceProjection } from '@app/web/server/resources/feature/createResourceProjection'
-import type { ResourceProjectionWithContext } from '@app/web/server/resources/getResourceFromEvents'
-import {
-  deserialize,
-  serialize,
-  type Serialized,
-} from '@app/web/utils/serialization'
 import { appUrl } from '@app/e2e/support/helpers'
 import type { Tasks as CustomTasks } from '@app/e2e/tasks/tasks'
 import 'cypress-file-upload'
@@ -105,9 +99,7 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   'sendResourceCommands',
   (input: SendResourceCommandsInput) => {
-    cy.task('sendResourceCommands', serialize(input)).then((result) =>
-      deserialize(result as Serialized<ResourceProjectionWithContext>),
-    )
+    cy.task('sendResourceCommands', input)
   },
 )
 
