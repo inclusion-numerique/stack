@@ -53,4 +53,21 @@ describe('encodeSerializableState and decodeSerializableState', () => {
     )
     expect(decodedState).toEqual(date)
   })
+
+  it('should work with non-unicode characters', () => {
+    const bizarreString = {
+      text:
+        'こんにちは世界🌍✨\n' + // Japonais + emoji
+        'مرحبا بكم\n' + // Arabe (écriture de droite à gauche)
+        '👻🤖💀🐉🧛‍♂️🧚‍♀️💫\n' + // Emojis variés
+        '特殊文字と𠀋𠮷𡈽\n' + // Caractères CJK (Chinois, Japonais, Coréen)
+        '‽¡¿\n' + // Punctuations bizarres
+        '\u200B\u200D\u2060', // Caractères invisibles (zero-width space, joiner)
+    }
+
+    const encodedState = encodeSerializableState(bizarreString)
+    const decodedState = decodeSerializableState(encodedState, { text: '' })
+
+    expect(decodedState).toEqual(bizarreString)
+  })
 })
