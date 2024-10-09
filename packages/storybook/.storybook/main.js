@@ -15,9 +15,6 @@ const dotenvVariables = () => {
   return parse(readFileSync(dotenvFile))
 }
 
-const getAbsolutePath = (value) =>
-  dirname(require.resolve(join(value, 'package.json')))
-
 // See https://github.com/storybookjs/storybook/blob/111edc3929eb8afff1b58285b0b9c49dd493ae85/code/frameworks/nextjs/README.md
 export default {
   stories: [
@@ -32,11 +29,11 @@ export default {
     '@storybook/addon-a11y',
     '@storybook/addon-viewport',
     'storybook-addon-module-mock',
-    '@storybook/addon-designs'
+    '@storybook/addon-designs',
   ],
 
   framework: {
-    name: getAbsolutePath('@storybook/nextjs'),
+    name: '@storybook/nextjs',
     options: {
       nextConfigPath: path.resolve(dirname, '../../../apps/web/next.config.js'),
     },

@@ -5,7 +5,6 @@ import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import { contentId } from '@app/web/utils/skipLinks'
 
 export const revalidate = 0
 
