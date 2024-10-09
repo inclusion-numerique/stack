@@ -145,6 +145,7 @@ export class WebAppStack extends TerraformStack {
           allowedOrigins: [`https://${hostname}`],
         },
       ],
+      forceDestroy: !isMain,
     })
 
     output('uploadsBucketName', uploadsBucket.name)
