@@ -50,10 +50,7 @@ const CheckboxFormField = <T extends FieldValues>({
         }
 
         return (
-          <div
-            className={classNames('fr-form-group', className)}
-            data-testid={dataTestId}
-          >
+          <div className={classNames('fr-form-group', className)}>
             <fieldset
               className={classNames('fr-fieldset fr-mb-0', {
                 'fr-fieldset--error': error,
