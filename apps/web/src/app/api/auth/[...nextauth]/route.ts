@@ -1,14 +1,13 @@
 import NextAuth, { type NextAuthOptions } from 'next-auth'
-import * as Sentry from '@sentry/nextjs'
 import type { NextRequest } from 'next/server'
 import Email from 'next-auth/providers/email'
 import { nextAuthAdapter } from '@app/web/auth/nextAuthAdapter'
 import { ProConnectProvider } from '@app/web/auth/ProConnectProvider'
-import { registerLastLogin } from '@app/web/security/registerLastLogin'
 import { isFirewallUserAgent } from '@app/web/app/api/auth/[...nextauth]/isFirewallUserAgent'
 import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import { signinCallback } from '@app/web/auth/signinCallback'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -40,28 +39,7 @@ const authOptions: NextAuthOptions = {
         }),
       ],
   callbacks: {
-    signIn({ user, account }) {
-      const isAllowedToSignIn =
-        // ProConnect is a type of oauth and can login/register at the same time
-        account?.type === 'oauth' ||
-        // If user exists and comes from prisma, we will have User model properties defined
-        ('created' in user &&
-          !!user.created &&
-          'updated' in user &&
-          !!user.updated)
-
-      if (isAllowedToSignIn) {
-        registerLastLogin({ userId: user.id }).catch((error) => {
-          Sentry.captureException(error)
-        })
-        return true
-      }
-
-      // Cannot login unregistered email user, redirect to:
-      return `/creer-un-compte?raison=connexion-sans-compte&email=${
-        user?.email ?? ''
-      }`
-    },
+    signIn: signinCallback,
     session: ({ session, user }) => {
       if (session.user) {
         // eslint-disable-next-line no-param-reassign

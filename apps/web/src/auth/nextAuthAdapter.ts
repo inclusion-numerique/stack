@@ -4,6 +4,7 @@ import type { Adapter, AdapterAccount, AdapterUser } from 'next-auth/adapters'
 import { prismaClient } from '@app/web/prismaClient'
 import { proConnectProviderId } from '@app/web/auth/proConnect'
 import { createAvailableSlug } from '@app/web/server/slug/createAvailableSlug'
+import { getUserEmailReconciliation } from '@app/web/auth/reconcileUserEmail'
 
 /**
  * Ensuring that needed methods are defined when creating adapter
@@ -39,8 +40,24 @@ export const nextAuthAdapter = {
   ...prismaAdapter,
   createUser: async (user) => {
     const { provider, ...rest } = user as Omit<AdapterUser, 'id'> & {
-      // We pass the provider along from Keycloak provider to be able to detect if the user comes from Inclusion Connect
+      // We pass the provider along to be able to detect if the user comes from ProConnect
       provider?: typeof proConnectProviderId
+    }
+
+    const emailReconciliationResult = await getUserEmailReconciliation(
+      rest.email,
+    )
+    // We update existing user if we have a reconciliation result
+    if (emailReconciliationResult) {
+      if (!prismaAdapter.updateUser) {
+        throw new Error('updateUser method not found in prismaAdapter')
+      }
+
+      return prismaAdapter.updateUser({
+        ...emailReconciliationResult.existingUser,
+        email:
+          emailReconciliationResult.emailReconcilation.expectedNewEmail.toLowerCase(),
+      })
     }
 
     const slug = await createAvailableSlug(rest.name || 'p', 'users')
