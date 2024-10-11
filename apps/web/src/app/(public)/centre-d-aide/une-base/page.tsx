@@ -27,8 +27,8 @@ const ContentPolicyPage = () => (
         currentPage="Une base"
       />
     </div>
-    <main id={contentId} className="fr-mt-1w fr-mb-15w">
-      <div className="fr-container fr-flex">
+    <main id={contentId} className="fr-mb-15w">
+      <div className="fr-container fr-flex fr-mt-6w">
         <BaseSideMenu />
         <div className="fr-flex-grow-1 ">
           <div className="fr-container landing-main-container">

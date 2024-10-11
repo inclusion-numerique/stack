@@ -25,10 +25,10 @@ const ContentPolicyPage = () => (
         currentPage="Pour bien commencer"
       />
     </div>
-    <main id={contentId} className="fr-mt-1w fr-mb-15w">
-      <div className="fr-container fr-flex">
+    <main id={contentId} className="fr-mb-15w">
+      <div className="fr-container fr-flex fr-mt-6w">
         <CommencerSideMenu />
-        <div className="fr-flex-grow-1 ">
+        <div className="fr-flex-grow-1">
           <div className="fr-container landing-main-container">
             <div className="fr-grid-row fr-grid-row--center">
               <div className="fr-col-md-8">
