@@ -75,6 +75,9 @@ const parseGenre = (
   if (genreRaw.startsWith('M')) {
     return { value: 'Masculin' }
   }
+  if (genreRaw.startsWith('N')) {
+    return { value: 'NonCommunique' }
+  }
 
   return { error: 'Genre invalide' }
 }
@@ -155,8 +158,8 @@ const parseBeneficiaireRow = (
   const nom = getCellValueAsString(worksheet, rowNumber, 1)
   const prenom = getCellValueAsString(worksheet, rowNumber, 2)
   const anneeNaissance = getCellValueAsNumber(worksheet, rowNumber, 3)
-  const communeCodeInsee = getCellValueAsString(worksheet, rowNumber, 4)
-  const communeNom = getCellValueAsString(worksheet, rowNumber, 5)
+  const communeNom = getCellValueAsString(worksheet, rowNumber, 4)
+  const communeCodeInsee = getCellValueAsString(worksheet, rowNumber, 5)
   const communeCodePostal = getCellValueAsString(worksheet, rowNumber, 6)
   const numeroTelephone = getCellValueAsString(worksheet, rowNumber, 7)
   const email = getCellValueAsString(worksheet, rowNumber, 8)
@@ -237,7 +240,7 @@ export const analyseImportBeneficiairesExcel = async (
     }
   }
 
-  const beneficiairesRowsStart = 3
+  const beneficiairesRowsStart = 4
 
   const result: ParsedBeneficiaireRow[] = []
 
