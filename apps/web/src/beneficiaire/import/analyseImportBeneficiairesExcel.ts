@@ -75,6 +75,9 @@ const parseGenre = (
   if (genreRaw.startsWith('M')) {
     return { value: 'Masculin' }
   }
+  if (genreRaw.startsWith('N')) {
+    return { value: 'NonCommunique' }
+  }
 
   return { error: 'Genre invalide' }
 }
