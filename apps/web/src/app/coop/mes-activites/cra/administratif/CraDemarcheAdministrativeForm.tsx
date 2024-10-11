@@ -362,7 +362,7 @@ const CraDemarcheAdministrativeForm = ({
           radioGroup: richCardRadioGroupClassName,
         }}
       />
-      {!!showStructureOrientation && (
+      {showStructureOrientation && (
         <CustomSelectFormField
           label=" "
           control={control}
@@ -384,8 +384,8 @@ const CraDemarcheAdministrativeForm = ({
           </p>
 
           <p className="fr-text--medium fr-mb-4v fr-mt-12v">
-            Le bénéficiaire va-t-il poursuivre son parcours
-            d’accompagnement&nbsp;?
+            Le bénéficiaire intègre un accompagnement de médiation
+            numérique&nbsp;?
           </p>
           <RadioFormField
             control={control}

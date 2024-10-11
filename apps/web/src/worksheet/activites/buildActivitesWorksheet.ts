@@ -96,7 +96,7 @@ export const buildActivitesWorksheet = ({
     'Le bénéficiaire est-il orienté vers une autre structure ?',
     'La démarche est-elle finalisée ?',
     'Structure de redirection',
-    'Le bénéficiaire va-t-il poursuivre son parcours d’accompagnement ?',
+    'Le bénéficiaire intègre un accompagnement de médiation numérique ?',
     'Commune de résidence du bénéficiaire',
     'Genre du bénéficiaire',
     'Tranche d’âge du bénéficiaire',
