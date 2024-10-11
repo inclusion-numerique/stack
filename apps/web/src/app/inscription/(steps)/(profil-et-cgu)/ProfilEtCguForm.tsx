@@ -85,7 +85,7 @@ const ProfilEtCguForm = ({ userId }: { userId: string }) => {
             </a>
             {'  '}
             ainsi que la{' '}
-            <a href="/" className="fr-link wip-outline" target="_blank">
+            <a href="/confidentialite" className="fr-link" target="_blank">
               politique de confidentialité
             </a>
             .
