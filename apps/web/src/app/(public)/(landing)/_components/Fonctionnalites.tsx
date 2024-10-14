@@ -48,6 +48,7 @@ export const Fonctionnalites = () => (
         <span>
           <Link
             href="https://incubateurdesterritoires.notion.site/Mes-b-n-ficiaires-bf63dd79e5344a06a72c243ef8cb6293"
+            target="_blank"
             className="fr-link"
           >
             En savoir plus
