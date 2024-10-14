@@ -109,7 +109,11 @@ export const OutilEspaceFranceNumeriqueEnsemble = ({
                   Vos statistiques d’activités contribuent à valoriser l’impact
                   de la médiation numérique sur votre territoire.
                   <br />
-                  <Link className="fr-link" href="/confidentialite">
+                  <Link
+                    className="fr-link"
+                    href="https://incubateurdesterritoires.notion.site/En-savoir-plus-sur-l-utilisation-des-donn-es-sur-la-Coop-de-la-m-diation-num-rique-82af14ef964b41c1bfb5cb4a01d6e40b"
+                    target="_blank"
+                  >
                     En savoir plus sur l’utilisation de vos données
                   </Link>
                 </div>

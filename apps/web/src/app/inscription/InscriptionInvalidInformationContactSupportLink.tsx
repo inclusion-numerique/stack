@@ -14,11 +14,8 @@ const InscriptionInvalidInformationContactSupportLink = ({
   >
     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
     <Link
-      className={classNames(
-        'wip-outline fr-link fr-link--sm fr-mb-0 ',
-        linkClassName,
-      )}
-      href="#"
+      className={classNames('fr-link fr-link--sm fr-mb-0 ', linkClassName)}
+      href="mailto:coop-numerique@anct.gouv.fr"
     >
       Ce ne sont pas vos informations&nbsp;? Contactez le support
     </Link>

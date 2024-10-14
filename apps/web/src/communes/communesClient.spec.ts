@@ -1,4 +1,4 @@
-import { getCommunesClient } from '@app/web/communes/findCommune'
+import { createCommunesClient } from '@app/web/communes/communesClient'
 
 describe('findCommune', () => {
   describe('getCommunesClient', () => {
@@ -12,7 +12,7 @@ describe('findCommune', () => {
     ])(
       'findCommuneByInsee(%s) should return %o',
       async (inseeCode, expectedResult) => {
-        const client = await getCommunesClient()
+        const client = await createCommunesClient()
         const result = client.findCommuneByInsee(inseeCode)
         expect(result).toEqual(expectedResult)
       },

@@ -1,11 +1,12 @@
-import type { Cell, Row, Workbook } from 'exceljs'
 import { z } from 'zod'
 import type { Genre } from '@prisma/client'
+import type { CellObject, WorkSheet } from 'xlsx'
+import * as XLSX from 'xlsx'
 import {
   type Commune,
-  CommunesClient,
-  getCommunesClient,
-} from '@app/web/communes/findCommune'
+  type CommunesClient,
+  createCommunesClient,
+} from '@app/web/communes/communesClient'
 import { anneeNaissanceValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { genreValues } from '@app/web/beneficiaire/beneficiaire'
 
@@ -74,6 +75,9 @@ const parseGenre = (
   if (genreRaw.startsWith('M')) {
     return { value: 'Masculin' }
   }
+  if (genreRaw.startsWith('N')) {
+    return { value: 'NonCommunique' }
+  }
 
   return { error: 'Genre invalide' }
 }
@@ -91,61 +95,76 @@ const parseAnneeNaissance = (anneeNaissanceRaw: number | null | undefined) => {
   return { value: anneeNaissanceRaw }
 }
 
-const getCellValue = (
-  cell: Cell | undefined,
-): string | number | Date | null => {
-  if (!cell) {
-    return null
-  }
-  if (typeof cell === 'object' && 'formula' in cell) {
-    return cell.result ?? null
-  }
-
-  return cell
+const getCell = (
+  worksheet: WorkSheet,
+  rowNumber: number,
+  colNumber: number,
+): CellObject | undefined => {
+  const cellAddress = XLSX.utils.encode_cell({
+    c: colNumber - 1,
+    r: rowNumber - 1,
+  })
+  return worksheet[cellAddress] as CellObject | undefined
 }
 
-const getCellValueAsString = (cell: Cell | undefined): string | null => {
-  const value = getCellValue(cell)
-  if (value === null) {
-    return null
+function getCellValueAsString(
+  worksheet: WorkSheet,
+  rowNumber: number,
+  colNumber: number,
+): string | null {
+  const cell = getCell(worksheet, rowNumber, colNumber)
+
+  if (cell && cell.v != null && cell.v !== 0) {
+    return cell.v.toString().trim()
   }
-  return value.toString().trim()
+  return null
 }
 
-const getCellValueAsNumber = (cell: Cell | undefined): number | null => {
-  const value = getCellValue(cell)
-  if (value === null) {
-    return null
+function getCellValueAsNumber(
+  worksheet: WorkSheet,
+  rowNumber: number,
+  colNumber: number,
+): number | null {
+  const cell = getCell(worksheet, rowNumber, colNumber)
+  if (cell && typeof cell.v === 'number') {
+    return cell.v
   }
 
-  const numberValue =
-    typeof value === 'number'
-      ? value
-      : Number.parseInt(value.toString().trim(), 10)
-
-  if (Number.isNaN(numberValue)) {
-    return null
+  if (cell && cell.v != null) {
+    const value = Number(cell.v)
+    if (!Number.isNaN(value)) {
+      return value
+    }
   }
-
-  return numberValue
+  return null
 }
 
-const rowIsEmpty = (row: Row) =>
-  (row.values as Cell[]).map(getCellValueAsString).every((value) => !value)
+const rowIsEmpty = (worksheet: WorkSheet, rowNumber: number): boolean => {
+  // eslint-disable-next-line no-plusplus
+  for (let colNumber = 1; colNumber <= 10; colNumber++) {
+    const value = getCellValueAsString(worksheet, rowNumber, colNumber)
+    if (value) {
+      return false
+    }
+  }
+  return true
+}
 
-const parseBeneficiaireRow = (row: Row, communesClient: CommunesClient) => {
-  const values = row.values as Cell[]
-
-  const nom = getCellValueAsString(values[1])
-  const prenom = getCellValueAsString(values[2])
-  const anneeNaissance = getCellValueAsNumber(values[3])
-  const communeCodeInsee = getCellValueAsString(values[4])
-  const communeNom = getCellValueAsString(values[5])
-  const communeCodePostal = getCellValueAsString(values[6])
-  const numeroTelephone = getCellValueAsString(values[7])
-  const email = getCellValueAsString(values[8])
-  const genre = getCellValueAsString(values[9])
-  const notesSupplementaires = getCellValueAsString(values[10])
+const parseBeneficiaireRow = (
+  worksheet: WorkSheet,
+  rowNumber: number,
+  communesClient: CommunesClient,
+) => {
+  const nom = getCellValueAsString(worksheet, rowNumber, 1)
+  const prenom = getCellValueAsString(worksheet, rowNumber, 2)
+  const anneeNaissance = getCellValueAsNumber(worksheet, rowNumber, 3)
+  const communeNom = getCellValueAsString(worksheet, rowNumber, 4)
+  const communeCodeInsee = getCellValueAsString(worksheet, rowNumber, 5)
+  const communeCodePostal = getCellValueAsString(worksheet, rowNumber, 6)
+  const numeroTelephone = getCellValueAsString(worksheet, rowNumber, 7)
+  const email = getCellValueAsString(worksheet, rowNumber, 8)
+  const genre = getCellValueAsString(worksheet, rowNumber, 9)
+  const notesSupplementaires = getCellValueAsString(worksheet, rowNumber, 10)
 
   const errors: ParsedBeneficiaireRow['errors'] = {}
 
@@ -209,11 +228,11 @@ const parseBeneficiaireRow = (row: Row, communesClient: CommunesClient) => {
   return result
 }
 
-export const analyseImportBeneficiairesExcel = async (
-  workbook: Workbook,
-): Promise<Analysis> => {
-  const beneficiairesWorksheet = workbook.getWorksheet('Bénéficiaires')
+export const importBeneficiaireWorksheetName = 'Bénéficiaires'
 
+export const analyseImportBeneficiairesExcel = async (
+  beneficiairesWorksheet: WorkSheet,
+): Promise<Analysis> => {
   if (!beneficiairesWorksheet) {
     return {
       status: 'error',
@@ -221,25 +240,27 @@ export const analyseImportBeneficiairesExcel = async (
     }
   }
 
-  const beneficiairesRowsStart = 3
+  const beneficiairesRowsStart = 4
 
   const result: ParsedBeneficiaireRow[] = []
 
   let rowNumber = beneficiairesRowsStart
-  let currentRow = beneficiairesWorksheet.getRow(rowNumber)
 
-  const communesClient = await getCommunesClient()
+  const communesClient = await createCommunesClient()
 
   let hasError = false
 
-  while (!rowIsEmpty(currentRow)) {
-    const parsed = parseBeneficiaireRow(currentRow, communesClient)
+  while (!rowIsEmpty(beneficiairesWorksheet, rowNumber)) {
+    const parsed = parseBeneficiaireRow(
+      beneficiairesWorksheet,
+      rowNumber,
+      communesClient,
+    )
     if (parsed.errors) {
       hasError = true
     }
     result.push(parsed)
     rowNumber += 1
-    currentRow = beneficiairesWorksheet.getRow(rowNumber)
   }
 
   return {

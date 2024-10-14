@@ -4,13 +4,16 @@ import { redirect } from 'next/navigation'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import SignoutButton from '@app/web/app/(public)/(authentication)/deconnexion/SignoutButton'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { getProconnectIdToken } from '@app/web/security/getProconnectIdToken'
+import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 
 export const revalidate = 0
 
 export const metadata: Metadata = {
-  title: 'Déconnexion',
+  title: metadataTitle('Déconnexion'),
 }
 
 const SignoutPage = async () => {
@@ -23,8 +26,9 @@ const SignoutPage = async () => {
 
   return (
     <>
+      <SkipLinksPortal links={defaultSkipLinks} />
       <Breadcrumbs currentPage="Déconnexion" />
-      <AuthCard>
+      <AuthCard id={contentId}>
         <h2>Déconnexion</h2>
         <p>Êtes-vous sûr·e de vouloir vous déconnecter&nbsp;?</p>
         <ul className="fr-btns-group">

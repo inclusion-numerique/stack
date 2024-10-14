@@ -10,6 +10,8 @@ import AdministrationBreadcrumbs from '@app/web/app/administration/Administratio
 export const metadata = {
   title: metadataTitle('Structures'),
 }
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 const Page = async () => {
   const structuresMeta = await prismaClient.structure.count()

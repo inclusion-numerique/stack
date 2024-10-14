@@ -16,9 +16,23 @@ export const isImageCropped = ({
 export const imageCropToRegion = (
   { cropLeft, cropTop, cropWidth, cropHeight }: ImageCropInformation,
   { width, height }: { width: number; height: number },
-) => ({
-  width: Math.ceil(cropWidth * width),
-  height: Math.ceil(cropHeight * height),
-  top: Math.floor(cropTop * height),
-  left: Math.floor(cropLeft * width),
-})
+) => {
+  // Calculate initial dimensions
+  let calculatedWidth = Math.ceil(cropWidth * width)
+  let calculatedHeight = Math.ceil(cropHeight * height)
+  let calculatedTop = Math.floor(cropTop * height)
+  let calculatedLeft = Math.floor(cropLeft * width)
+
+  // Ensure dimensions are within the bounds of the original image
+  calculatedWidth = Math.min(calculatedWidth, width - calculatedLeft)
+  calculatedHeight = Math.min(calculatedHeight, height - calculatedTop)
+  calculatedLeft = Math.min(calculatedLeft, width - calculatedWidth)
+  calculatedTop = Math.min(calculatedTop, height - calculatedHeight)
+
+  return {
+    width: calculatedWidth,
+    height: calculatedHeight,
+    top: calculatedTop,
+    left: calculatedLeft,
+  }
+}

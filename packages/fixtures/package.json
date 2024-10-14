@@ -4,19 +4,19 @@
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "scripts": {
-    "load": "dotenv -e ../../.env -- tsx src/seeds.ts",
-    "load:erase-all-data": "dotenv -e ../../.env -- tsx src/seeds.ts --erase-all-data",
+    "load": "dotenv -e ../../.env -- tsx src/load.ts",
+    "load:erase-all-data": "dotenv -e ../../.env -- tsx src/load.ts --erase-all-data",
     "lint": "eslint src",
     "tsc": "tsc --noEmit",
     "test": "jest --passWithNoTests"
   },
   "engines": {
-    "node": "^22.5"
+    "node": "^22.9"
   },
   "dependencies": {
     "@commander-js/extra-typings": "^12.1.0",
     "@faker-js/faker": "^8.4.1",
-    "@prisma/client": "^5.19.1",
+    "@prisma/client": "^5.20.0",
     "dotenv": "^16.4.5",
     "tsx": "^4.19.0",
     "typescript": "^5.5.4",

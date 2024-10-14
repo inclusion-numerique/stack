@@ -8,6 +8,11 @@
   }
 }
 
+.fr-container--slim {
+  /* 524 + padding */
+  max-width: 588px;
+}
+
 .fr-container--medium {
   /* 792 + padding */
   max-width: 824px;

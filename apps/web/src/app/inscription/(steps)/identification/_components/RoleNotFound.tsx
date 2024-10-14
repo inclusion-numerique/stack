@@ -60,7 +60,10 @@ export const RoleNotFound = async ({
       <p className="fr-mb-0">
         Vous pouvez également essayer de retrouver votre profil en renseignant
         une autre adresse email.{' '}
-        <Link href="/" className="fr-link wip">
+        <Link
+          href="https://incubateurdesterritoires.notion.site/Cr-er-son-compte-se-connecter-cceb0f6bfb394b039c61c9251d8d7a6a?pvs=74"
+          className="fr-link"
+        >
           En savoir plus
         </Link>
       </p>

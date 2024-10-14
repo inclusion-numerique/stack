@@ -21,6 +21,7 @@ export const sendVerificationRequest = async ({
   const result = await transport.sendMail({
     to: identifier,
     from: provider.from,
+    replyTo: PublicWebAppConfig.contactEmail,
     subject: `Connexion à ${PublicWebAppConfig.projectTitle}`,
     text: emailSignin.text({ url }),
     html: compileMjml(emailSignin.mjml({ url })),

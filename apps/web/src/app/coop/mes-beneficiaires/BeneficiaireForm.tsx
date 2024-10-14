@@ -71,9 +71,9 @@ const BeneficiaireForm = ({
 
   const enSavoirPlusLink = (
     <Link
-      href="/coop/mes-beneficiaires"
+      href="https://incubateurdesterritoires.notion.site/Mes-b-n-ficiaires-bf63dd79e5344a06a72c243ef8cb6293"
       target="_blank"
-      className="fr-link fr-link--xs wip-outline"
+      className="fr-link fr-link--xs"
     >
       En savoir plus
     </Link>

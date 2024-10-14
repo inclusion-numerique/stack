@@ -47,13 +47,12 @@ model Session {
   @@map("sessions")
 }
 
-// User roles are used for global app permissions
-// Domain roles are defined by relations between user and domain models
 enum UserRole {
-  Admin @map("admin")
-  User  @map("user")
+  User    @map("user")
+  Support @map("support")
+  Admin   @map("admin")
 
-  @@map("user_roles")
+  @@map("user_role")
 }
 
 enum ProfilInscription {
@@ -304,11 +303,14 @@ model Structure {
   ficheAccesLibre               String?    @map("fiche_acces_libre") // url vers fiche accès libre
   horaires                      String?
   priseRdv                      String?    @map("prise_rdv") // url vers le site de prise de rendez-vous
+  structureParente              String?    @map("structure_parente")
   services                      String[]   @default([])
   publicsSpecifiquementAdresses String[]   @default([]) @map("publics_specifiquement_adresses")
   priseEnChargeSpecifique       String[]   @default([]) @map("prise_en_charge_specifique")
   fraisACharge                  String[]   @default([]) @map("frais_a_charge")
   dispositifProgrammesNationaux String[]   @default([]) @map("dispositif_programmes_nationaux")
+  formationsLabels              String[]   @default([]) @map("formations_labels")
+  autresFormationsLabels        String[]   @default([]) @map("autres_formations_labels")
   itinerance                    String[]   @default([])
   modalitesAcces                String[]   @default([]) @map("modalites_acces")
   modalitesAccompagnement       String[]   @default([]) @map("modalites_accompagnement")

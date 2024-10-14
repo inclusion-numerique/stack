@@ -6,13 +6,13 @@ orbs:
 executors:
   node:
     docker:
-      - image: cimg/node:22.5.1
+      - image: cimg/node:22.9.0
         environment:
           TZ: 'UTC'
 
   node-postgres:
     docker:
-      - image: cimg/node:22.5.1
+      - image: cimg/node:22.9.0
         environment:
           TZ: 'UTC'
           CI_PG_ADMIN_URL: postgresql://postgres@localhost
@@ -22,12 +22,12 @@ executors:
           POSTGRES_USER: postgres
   node-browsers:
     docker:
-      - image: cimg/node:22.5.1-browsers
+      - image: cimg/node:22.9.0-browsers
         environment:
           TZ: 'UTC'
   node-e2e:
     docker:
-      - image: cimg/node:22.5.1-browsers
+      - image: cimg/node:22.9.0-browsers
         environment:
           TZ: 'UTC'
           CI_DATABASE_URL: postgresql://postgres@localhost/test
@@ -42,7 +42,7 @@ executors:
 parameters:
   cache_version:
     type: string
-    default: '2024-06-27-01'
+    default: '2024-10-03-01'
   virtual_store_dir:
     type: string
     default: './.pnpm'
@@ -312,7 +312,7 @@ jobs:
             - << pipeline.parameters.cache_version >>-next-prod-{{ checksum "<< pipeline.parameters.lockfile >>" }}-{{ checksum "./.env" }}
       - run:
           name: 'Build next app'
-          command: pnpm --silent -F @app/web build
+          command: SENTRY_RELEASE=true pnpm --silent -F @app/web build
       - save_cache:
           key: << pipeline.parameters.cache_version >>-next-prod-{{ checksum "<< pipeline.parameters.lockfile >>" }}-{{ checksum "./.env" }}
           paths:
@@ -331,6 +331,7 @@ jobs:
             - ./apps/web/.next/standalone
             - ./apps/web/.next/static
             - ./apps/web/public
+            - ./apps/web/private-static
 
   chromatic:
     executor: node
@@ -421,6 +422,7 @@ jobs:
           command: |
             mv apps/web/.next/standalone ~/dist
             mv apps/web/public ~/dist/apps/web/public
+            mv apps/web/private-static ~/dist/apps/web/private-static
             mv apps/web/.next/static ~/dist/apps/web/.next/static
             cd ~/dist
             NODE_TLS_REJECT_UNAUTHORIZED="0" HOSTNAME=localhost node apps/web/server.js
@@ -566,7 +568,6 @@ jobs:
           name: 'Compute diff'
           command: |
             pnpm --silent -F @app/cdk cdktf diff project --var-file .tfvars.json
-            
 
   project_infrastructure_deployment:
     executor: node

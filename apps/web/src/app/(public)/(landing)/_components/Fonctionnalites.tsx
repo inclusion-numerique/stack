@@ -46,7 +46,11 @@ export const Fonctionnalites = () => (
           vers l’autonomie.
         </p>
         <span>
-          <Link href="/" className="fr-link wip-outline">
+          <Link
+            href="https://incubateurdesterritoires.notion.site/Mes-b-n-ficiaires-bf63dd79e5344a06a72c243ef8cb6293"
+            target="_blank"
+            className="fr-link"
+          >
             En savoir plus
           </Link>
         </span>

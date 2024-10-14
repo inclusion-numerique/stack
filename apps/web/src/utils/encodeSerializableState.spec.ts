@@ -43,4 +43,14 @@ describe('encodeSerializableState and decodeSerializableState', () => {
     const invalidEncodedState = 'invalidString' as EncodedState<string>
     expect(decodeSerializableState(invalidEncodedState, 'ooof')).toEqual('ooof')
   })
+
+  it('should work with Date objects', () => {
+    const date = new Date('2024-07-09')
+    const encodedState = encodeSerializableState(date)
+    const decodedState = decodeSerializableState(
+      encodedState,
+      new Date('2024-07-09'),
+    )
+    expect(decodedState).toEqual(date)
+  })
 })

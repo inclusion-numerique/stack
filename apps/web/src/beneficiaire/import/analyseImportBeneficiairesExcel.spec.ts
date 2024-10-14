@@ -1,29 +1,25 @@
 import path from 'node:path'
-import ExcelJS from 'exceljs'
 import { readFileSync } from 'node:fs'
 import {
   analyseImportBeneficiairesExcel,
   AnalysisSchema,
 } from '@app/web/beneficiaire/import/analyseImportBeneficiairesExcel'
+import { getBeneficiaireImportSheet } from '@app/web/beneficiaire/import/getBeneficiaireImportSheet'
 
-const loadLocalExcelFile = async (file: string) => {
+const getSheetFromLocalFile = (file: string) => {
   const filePath = path.resolve(__dirname, `./_test/${file}`)
 
   const fileBuffer = readFileSync(filePath)
 
-  const workbook = new ExcelJS.Workbook()
-
-  await workbook.xlsx.load(fileBuffer)
-
-  return workbook
+  return getBeneficiaireImportSheet(fileBuffer)
 }
 
 jest.setTimeout(10_000)
 
 describe('analyseImportBeneficiairesExcel', () => {
-  it('should parse a valid excel file', async () => {
-    const workbook = await loadLocalExcelFile(
-      'import-beneficiaires_modele.xlsx',
+  it('should parse the downloadable model xlsx file', async () => {
+    const workbook = getSheetFromLocalFile(
+      '../../../../public/modeles/coop-numerique_import-beneficiaires.xlsx',
     )
 
     const result = await analyseImportBeneficiairesExcel(workbook)
@@ -61,7 +57,7 @@ describe('analyseImportBeneficiairesExcel', () => {
   })
 
   it('should parse an excel with errors', async () => {
-    const workbook = await loadLocalExcelFile('import-beneficiaire_errors.xlsx')
+    const workbook = getSheetFromLocalFile('import-beneficiaire_errors.xlsx')
     const result = await analyseImportBeneficiairesExcel(workbook)
 
     expect(result).toEqual({

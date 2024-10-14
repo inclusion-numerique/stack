@@ -3,6 +3,10 @@ import { Argument, Command } from '@commander-js/extra-typings'
 import { JobValidation } from '@app/web/jobs/jobs'
 import { executeJob, jobExecutors } from '@app/web/jobs/jobExecutors'
 import { output } from '@app/cli/output'
+import {
+  configureDeploymentTarget,
+  DeploymentTargetOption,
+} from '@app/cli/deploymentTarget'
 
 // eslint-disable-next-line unicorn/prevent-abbreviations
 export const executeJobCommand = new Command()
@@ -11,7 +15,9 @@ export const executeJobCommand = new Command()
     new Argument('<name>', 'Job name').choices(Object.keys(jobExecutors)),
   )
   .addArgument(new Argument('[data]', 'Job data'))
-  .action(async (name, dataAsString) => {
+  .addOption(DeploymentTargetOption)
+  .action(async (name, dataAsString, options) => {
+    await configureDeploymentTarget(options)
     const data: unknown = dataAsString ? JSON.parse(dataAsString) : undefined
 
     const jobPayload = await JobValidation.safeParseAsync({

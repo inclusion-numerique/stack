@@ -48,8 +48,8 @@ export const Contexte = () => (
           <strong>il s’agit d’abord d’un phénomène social</strong>.
         </p>
         <Link
-          className="fr-link wip-outline"
-          href="/"
+          className="fr-link"
+          href="https://labo.societenumerique.gouv.fr/fr/articles/la-soci%C3%A9t%C3%A9-num%C3%A9rique-fran%C3%A7aise-d%C3%A9finir-et-mesurer-l%C3%A9loignement-num%C3%A9rique/"
           target="_blank"
           rel="noreferrer"
           title="En savoir plus à propos des personnes éloignées du numérique - nouvel onglet"
@@ -91,8 +91,8 @@ export const Contexte = () => (
           sociaux, médiathèques, collectivités territoriales, associations,
           espace France Services, ils sont répartis sur{' '}
           <Link
-            className="fr-link wip-outline"
-            href="/"
+            className="fr-link"
+            href="https://cartographie.societenumerique.gouv.fr/cartographie"
             target="_blank"
             rel="noreferrer"
             title="Répartition des structures sur le territoire français - nouvel onglet"

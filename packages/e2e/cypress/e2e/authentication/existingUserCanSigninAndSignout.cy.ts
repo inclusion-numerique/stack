@@ -7,7 +7,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter 
    */
 
   // This user exists in mon compte pro, but not in our db
-  const inclusionConnectUser = {
+  const proConnectUser = {
     email: Cypress.env('PROCONNECT_TEST_USER_EMAIL') as string,
     password: Cypress.env('PROCONNECT_TEST_USER_PASSWORD') as string,
     firstName: 'Jean',
@@ -15,7 +15,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter 
   }
 
   before(() => {
-    cy.execute('deleteUser', { email: inclusionConnectUser.email })
+    cy.execute('deleteUser', { email: proConnectUser.email })
   })
 
   it('Préliminaire - Les pages de connexions sont accessibles', () => {
@@ -51,9 +51,9 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter 
       request.headers.cookie = authenticationCookies.join('; ')
     })
 
-    cy.get('#email-input').type(`${inclusionConnectUser.email}{enter}`)
+    cy.get('#email-input').type(`${proConnectUser.email}{enter}`)
 
-    cy.get('#password-input').type(`${inclusionConnectUser.password}{enter}`)
+    cy.get('#password-input').type(`${proConnectUser.password}{enter}`)
 
     // Click on the first a link .fr-tile__link
 
@@ -71,8 +71,8 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter 
     cy.dsfrShouldBeStarted()
     cy.dsfrCollapsesShouldBeBound()
     cy.get('.fr-header__tools button[aria-controls="header-user-menu"]')
-      .contains(inclusionConnectUser.firstName)
-      .contains(inclusionConnectUser.lastName)
+      .contains(proConnectUser.firstName)
+      .contains(proConnectUser.lastName)
       .click()
 
     cy.get('#header-user-menu').should('be.visible')

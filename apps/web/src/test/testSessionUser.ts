@@ -1,4 +1,4 @@
-import { SessionUser } from '@app/web/auth/sessionUser'
+import type { SessionUser } from '@app/web/auth/sessionUser'
 
 export const testSessionUser = {
   id: 'test',
@@ -7,11 +7,11 @@ export const testSessionUser = {
   firstName: 'Jean',
   lastName: 'Biche',
   name: 'Jean Biche',
+  role: 'User',
   updated: new Date('2023-05-05').toISOString(),
   created: new Date('2023-01-01').toISOString(),
   hasSeenOnboarding: new Date('2023-01-01').toISOString(),
   emailVerified: null,
-  role: 'User',
   isFixture: false,
   usurper: null,
   coordinateur: null,

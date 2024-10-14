@@ -1,3 +1,5 @@
+import superjson from 'superjson'
+
 /**
  * Utility functions to encode and decode form state for safe transmission via URL.
  *
@@ -15,7 +17,7 @@
 export type EncodedState<T> = string & { __encodedStateType: T }
 
 export const encodeSerializableState = <T>(formState: T): EncodedState<T> => {
-  const jsonString = JSON.stringify(formState)
+  const jsonString = superjson.stringify(formState)
   return btoa(jsonString) as EncodedState<T>
 }
 
@@ -25,7 +27,7 @@ export const decodeSerializableState = <T>(
 ): T => {
   try {
     const jsonString = atob(encodedState)
-    return JSON.parse(jsonString) as T
+    return superjson.parse<T>(jsonString)
   } catch {
     return defaultValue
   }

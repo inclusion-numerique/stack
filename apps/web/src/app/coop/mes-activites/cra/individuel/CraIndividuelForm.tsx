@@ -61,6 +61,7 @@ import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipality
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
 import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
+import { isBeneficiaireAnonymous } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
 import styles from '../CraForm.module.css'
 
 /**
@@ -117,8 +118,9 @@ const CraIndividuelForm = ({
 
   const router = useRouter()
 
-  const beneficiaireId = form.watch('beneficiaire.id')
-  const showAnonymousForm = !beneficiaireId
+  const beneficiaire = form.watch('beneficiaire')
+  const showAnonymousForm =
+    !beneficiaire || isBeneficiaireAnonymous(beneficiaire)
 
   const typeLieu = form.watch('typeLieu')
   const showLieuAccompagnementDomicileCommune = typeLieu === 'Domicile'
@@ -366,7 +368,7 @@ const CraIndividuelForm = ({
           radioGroup: richCardRadioGroupClassName,
         }}
       />
-      {!!showStructureOrientation && (
+      {showStructureOrientation && (
         <CustomSelectFormField
           label=" "
           control={control}
@@ -388,8 +390,8 @@ const CraIndividuelForm = ({
           </p>
 
           <p className="fr-text--medium fr-mb-4v fr-mt-12v">
-            Le bénéficiaire va-t-il poursuivre son parcours
-            d’accompagnement&nbsp;?
+            Le bénéficiaire intègre un accompagnement de médiation
+            numérique&nbsp;?
           </p>
           <RadioFormField
             control={control}

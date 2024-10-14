@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import classNames from 'classnames'
 import { storeBeneficiaireImportAnalysis } from '@app/web/app/coop/mes-beneficiaires/importer/analyse/beneficiaireImportAnalysisStorage'
 import type { AnalyseResponse } from '@app/web/app/coop/mes-beneficiaires/importer/analyse/route'
+import { isBrowser } from '@app/web/utils/isBrowser'
 
 // Create zod validation so the file is required and of type Fil
 // And the file must be an xlsx file
@@ -20,8 +21,11 @@ const UploadBeneficiaireFileFormValidation = z.object({
     .instanceof(File, { message: 'Veuillez sélectionner un fichier' })
     .refine(
       (file) =>
+        // Safari does not give file.type, we keep this validation for server side
+        // On client the file extension is set in the input element
+        isBrowser ||
         file.type ===
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       {
         message:
           'Veuillez sélectionner un fichier Excel (.xlsx) basé sur le modèle',

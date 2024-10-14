@@ -1,450 +1,328 @@
 /* eslint jsx-a11y/control-has-associated-label: 0  */
+import type { Metadata } from 'next'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
+import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import Breadcrumbs from '@app/web/components/Breadcrumbs'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 
-export const revalidate = 0
+export const metadata: Metadata = {
+  title: metadataTitle('Politique de confidentialité'),
+}
+
 const ConfidentialityPage = () => (
-  <div className="fr-container landing-main-container fr-my-8w">
-    <div className="fr-grid-row fr-grid-row--center">
-      <div className="fr-col-md-8">
-        <h1>Politique de confidentialité</h1>
+  <div className="fr-container">
+    <SkipLinksPortal links={defaultSkipLinks} />
+    <Breadcrumbs currentPage="Politique de confidentialité" />
+    <main
+      id={contentId}
+      className="fr-container landing-main-container fr-my-8w"
+    >
+      <h1>Politique de confidentialité - {process.env.NEXT_PUBLIC_APP_NAME}</h1>
 
-        <h2>Traitement des données à caractère personnel</h2>
+      <h2>Qui sommes-nous ?</h2>
 
-        <p>Ce site recueille des données à caractère personnel.</p>
+      <p>
+        La coop de la médiation numérique est un service public numérique
+        développé au sein de l’Incubateur des territoires de l’Agence Nationale
+        de la Cohésion des Territoires (ANCT). Son objectif est d’intégrer un
+        panel d’outils à destination des médiateurs et médiatrices numériques,
+        notamment pour faciliter l’interconnexion entre les outils développés
+        par le programme Société Numérique de l’ANCT et les acteurs de la
+        médiation numérique.
+      </p>
+      <p>
+        Le responsable de traitement est l’ANCT représentée par Monsieur
+        Stanislas Bourron, Directeur général de l’Agence
+      </p>
 
-        <p>
-          Seules sont recueillies les données expressément nécessaires au bon
-          fonctionnement du service et au respect des obligations légales de
-          l&apos;éditeur.
-        </p>
+      <h2>Pourquoi traitons-nous des données à caractère personnel ?</h2>
 
-        <p>
-          Les seules données recueillies sont celles fournies directement par
-          les usagers dans le contexte de l&apos;utilisation du service.
-        </p>
+      <p>
+        La coop de la médiation numérique traite des données à caractère
+        personnel pour mettre à disposition de tous les médiateurs numériques
+        une gamme d’outils qui les aide dans leurs activités professionnelles
+        d’accompagnement à la montée en compétence de la population sur les
+        compétences numériques.
+      </p>
 
-        <p>
-          Conformément à la Loi Informatique et Liberté du 06/01/78, vous
-          disposez d&apos;un droit d&apos;accès et de rectification des
-          informations nominatives vous concernant.
-        </p>
+      <p>
+        Les données sont notamment traitées pour fournir un accès authentifié à
+        la plateforme, gérer l’inscription et la diffusion de la newsletter et
+        recueillir les demandes au sein d’un formulaire de contact.
+      </p>
 
-        <p>
-          Pour toute question ou demande relative à vos droits, vous pouvez nous
-          contacter à l&apos;adresse&nbsp;
+      <br />
+      <h2>
+        Quelles sont les données à caractère personnel que nous traitons ?
+      </h2>
+
+      <p>Les données traitées sont les suivantes :</p>
+      <ul>
+        <li>
+          Données relatives au compte : nom, prénom, adresse e-mail, numéro de
+          téléphone (facultatif) ;
+        </li>
+        <li>
+          Données relatives à la lettre d’information : nom, prénom, adresse
+          e-mail ;
+        </li>
+        <li>
+          Données relatives au formulaire de contact : nom, prénom, adresse
+          e-mail.
+        </li>
+      </ul>
+
+      <br />
+
+      <h2>
+        Qu’est-ce qui nous autorise à traiter des données à caractère personnel
+        ?
+      </h2>
+
+      <p>
+        Le traitement est nécessaire à l’exécution d’une mission d’intérêt
+        public ou relevant de l’exercice de l’autorité publique dont est
+        investie l’ANCT en tant que responsable de traitement, au sens de
+        l’article 6-1 e) du RGPD.
+      </p>
+
+      <p>
+        Cette mission d’intérêt public se traduit en pratique notamment par
+        l’article L. 1231-2 du code général des collectivités territoriales.
+      </p>
+
+      <br />
+
+      <h2>Pendant combien de temps conservons-nous vos données ?</h2>
+
+      <div className="fr-table" data-fr-js-table="true">
+        <table className="data-table" data-fr-js-table-element="true">
+          <thead>
+            <tr>
+              <th scope="col">Catégories de données</th>
+              <th scope="col">Durée de conservation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Données relatives au compte</th>
+              <td>1 an après le dernier contact avec l’utilisateur</td>
+            </tr>
+            <tr>
+              <th>Données relatives à la lettre d’information</th>
+              <td>
+                Jusqu’à la désinscription de l’utilisateur et 1 an après sa
+                demande de désinscription
+              </td>
+            </tr>
+            <tr>
+              <th>Données relatives au formulaire de contact</th>
+              <td>1 an après l’envoi du message par l’utilisateur</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Quels sont vos droits ?</h2>
+
+      <p>Vous disposez :</p>
+
+      <ul>
+        <li>D’un droit d’information et d’accès à vos données ;</li>
+        <li>D’un droit de rectification ;</li>
+        <li>D’un droit d’opposition ;</li>
+        <li>D’un droit à la limitation du traitement de vos données.</li>
+      </ul>
+
+      <p>
+        Pour exercer vos droits, vous pouvez nous contacter à :
+        <a
+          href={
+            PublicWebAppConfig.contactEmail &&
+            `mailto:${PublicWebAppConfig.contactEmail}`
+          }
+        >
+          {PublicWebAppConfig.contactEmail}
+        </a>
+      </p>
+      <p>
+        Puisque ce sont des droits personnels, nous ne traiterons votre demande
+        que si nous sommes en mesure de vous identifier. Dans le cas contraire,
+        nous pouvons être amenés à vous demander une preuve de votre identité.
+      </p>
+      <p>
+        Nous nous engageons à répondre à votre demande dans un délai raisonnable
+        qui ne saurait excéder 1 mois à compter de la réception de votre
+        demande.
+      </p>
+      <p>
+        Si vous estimez que vos droits n’ont pas été respectés après nous avoir
+        contactés, vous pouvez adresser une réclamation à la CNIL.
+      </p>
+
+      <h2>Qui peut avoir accès à vos données ?</h2>
+
+      <p>
+        Seuls les membres habilités de l’équipe de la coop de la médiation
+        numérique (administrateurs, développeurs notamment) ont accès à vos
+        données, dans le cadre de leurs missions.
+      </p>
+
+      <h2>Qui nous aide à traiter vos données ?</h2>
+
+      <p>
+        Certaines données sont communiquées à des « sous-traitants » qui
+        agissent pour le compte de l’ANCT, selon ses instructions.
+      </p>
+
+      <div className="fr-table" data-fr-js-table="true">
+        <table className="data-table" data-fr-js-table-element="true">
+          <thead>
+            <tr>
+              <th scope="col">Sous-traitant</th>
+              <th scope="col">Traitement réalisé</th>
+              <th scope="col">Pays destinataire</th>
+              <th scope="col">Garanties</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Scaleway</th>
+              <td>Hébergement</td>
+              <td>France</td>
+              <td>
+                <a
+                  href="https://www-uploads.scaleway.com/DPA_FR_v17072024_439cb4fdae.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Lien vers les garanties
+                  <span className="fr-sr-only">Ouvre une nouvelle fenêtre</span>
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <th>Brevo</th>
+              <td>Gestion de la lettre d’information</td>
+              <td>France</td>
+              <td>
+                <a
+                  href="https://www.brevo.com/legal/termsofuse/#data-processing-agreement-dpa"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Lien vers les garanties
+                  <span className="fr-sr-only">Ouvre une nouvelle fenêtre</span>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Cookies et traceurs</h2>
+
+      <p>
+        Un cookie est un fichier déposé sur votre terminal lors de la visite
+        d’un site. Il a pour but de collecter des informations relatives à votre
+        navigation et de vous adresser des services adaptés à votre terminal
+        (ordinateur, mobile ou tablette).
+      </p>
+
+      <p>
+        En application de l’article 5-3 de la directive ePrivacy, transposée à
+        l’article 82 de la loi n° 78-17 du 6 janvier 1978 relative à
+        l’informatique, aux fichiers et aux libertés, les cookies et traceurs
+        suivent deux régimes distincts.
+      </p>
+
+      <p>
+        D’une part, les cookies strictement nécessaires au service ou ayant pour
+        finalité exclusive de faciliter la communication par voie électronique,
+        sont dispensés de consentement préalable.
+      </p>
+      <p>
+        D’autre part, les cookies n’étant pas strictement nécessaires au service
+        ou n’ayant pas pour finalité exclusive de faciliter la communication par
+        voie électronique, doivent être consenti par l’utilisateur.
+      </p>
+      <p>
+        Ce consentement de la personne concernée constitue une base légale au
+        sens du RGPD, à savoir l’article 6-1 a).
+      </p>
+      <p>
+        La coop de la médiation numérique ne dépose que des cookies et traceurs
+        strictement nécessaires au fonctionnement du service et la solution de
+        mesure d’audience « Matomo », configurée en mode « exempté » et ne
+        nécessitant pas de recueil du consentement, conformément aux
+        recommandations de la CNIL.
+      </p>
+
+      <div className="fr-mb-3w" id="piwik-consent">
+        <iframe
+          title="Matomo"
+          style={{ border: 0, height: 200, width: 600 }}
+          src="https://matomo.incubateur.anct.gouv.fr/index.php?module=CoreAdminHome&action=optOut&language=en&backgroundColor=&fontColor=&fontSize=16px&fontFamily=Helvetica"
+        />
+      </div>
+
+      <p>Pour en savoir plus sur les cookies :</p>
+      <ul>
+        <li>
           <a
-            href={
-              PublicWebAppConfig.contactEmail &&
-              `mailto:${PublicWebAppConfig.contactEmail}`
-            }
+            href="https://www.cnil.fr/fr/cookies-traceurs-que-dit-la-loi"
+            target="_blank"
+            rel="noreferrer"
           >
-            {PublicWebAppConfig.contactEmail}
-          </a>
-          .
-        </p>
-
-        <p>
-          Si vous souhaitez faire supprimer les données vous concernant, cela
-          aura potentiellement pour impact l&apos;impossibilité pour nous de
-          continuer à vous fournir les services proposés par ce site.
-        </p>
-
-        <h2>Responsable du traitement</h2>
-
-        <p>
-          La coop de la médiation numérique est développée au sein de
-          l’Incubateur des territoires de l’Agence Nationale de la Cohésion des
-          Territoires (ANCT).
-        </p>
-
-        <p>
-          Le responsable de traitement des données à caractère personnel
-          collectées par le site Les Bases du numérique d’intérêt général est
-          l’Agence Nationale de la Cohésion des Territoires, représentée par
-          Monsieur Stanislas Bourron, Directeur général.
-        </p>
-
-        <h2>Destinataires des données</h2>
-
-        <p>
-          Le responsable de traitement s’engage à ce que les données soient
-          traitées par les seules personnes autorisées.
-        </p>
-
-        <p>
-          Vos données ne sont pas transférées vers des Etats en dehors de
-          l&apos;Union Européenne.
-        </p>
-
-        <h2>Sous-traitants</h2>
-
-        <p>
-          Certaines des données sont envoyées à des sous-traitants pour réaliser
-          certaines missions. Le responsable de traitement s&apos;est assuré de
-          la mise en œuvre par ses sous-traitants de garanties adéquates et du
-          respect de conditions strictes de confidentialité, d’usage et de
-          protection des données.
-        </p>
-
-        <p>
-          Les sociétés Scalingo (hébergeur), Sendinblue (envoi emails)
-          interviennent en tant que sous-traitants.
-        </p>
-
-        <p>
-          La coop de la médiation numérique s’est assurée de la mise en œuvre
-          par ses sous-traitants de garanties adéquates et du respect de
-          conditions strictes de confidentialité, d’usage et de protection des
-          données.
-        </p>
-
-        <div className="fr-table" data-fr-js-table="true">
-          <table className="data-table" data-fr-js-table-element="true">
-            <thead>
-              <tr>
-                <th scope="col">Partenaire</th>
-                <th scope="col">Scalingo</th>
-                <th scope="col">SendinBlue</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th>Pays destinataire</th>
-                <td>France</td>
-                <td>France</td>
-              </tr>
-              <tr>
-                <th>Traitement réalisé</th>
-                <td>Hébergement du site</td>
-                <td>
-                  Envoi de mails et lettres d&apos;information aux utilisateurs
-                </td>
-              </tr>
-              <tr>
-                <th>Garanties</th>
-                <td>https://scalingo.com/fr/privacy-policy</td>
-                <td>https://fr.sendinblue.com/legal/privacypolicy/</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h2>Base légale du traitement</h2>
-
-        <p>
-          Le traitement de données est rendu licite parce qu&apos;il est
-          nécessaire à l&apos;exécution d&apos;une mission d&apos;intérêt public
-          ou relevant de l&apos;exercice de l&apos;autorité publique dont est
-          investi le responsable de traitement, telle qu&apos;entendue par
-          l&apos;article 6-e du règlement (UE) n°2016/679 du Parlement européen
-          et du Conseil relatif à la protection des personnes physiques à
-          l&apos;égard du traitement des données à caractère personnel et à la
-          libre circulation de ces données.
-        </p>
-
-        <p>
-          Les données sont également transférées sur les serveurs de notre
-          prestataire en charge de l&apos;envoi de la newsletter : Sendinblue,
-          Société par actions simplifiée au capital de 137.531 euros,
-          immatriculée au RCS de Paris sous le numéro 498 019 298 et dont le
-          siège social est situé 55 rue d&apos;Amsterdam, 75008 Paris, France.
-        </p>
-
-        <h2>Durée de conservation</h2>
-
-        <p>
-          Vous pouvez vous désincrire de la newsletter soit en nous envoyant un
-          email, soit en utilisant les liens de désinscription présents dans nos
-          emails d’alerte ou newsletter.
-        </p>
-
-        <p>
-          Vos coordonnées sont conservées jusqu’à un an après votre dernière
-          action sur le site, (dernière connexion), ou un an suite à votre
-          demande d&apos;effacement des données ou demande de désinscription.
-        </p>
-
-        <h2>Finalités du traitement</h2>
-
-        <p>
-          La finalité du traitement de données réalisé par La coop de la
-          médiation numérique est de mettre à disposition de tous les médiateurs
-          numériques une gamme d’outils pour les aider dans leurs activités
-          professionnelles d’accompagnement à la montée en compétence de la
-          population sur les compétences numériques.
-        </p>
-
-        <h2>Liste des traitements</h2>
-
-        <p>
-          En accord avec le Règlement Européen pour la Protection des données
-          (RGPD), vous trouverez ci-dessous la liste des traitements nécessitant
-          recueil de données à caractère personnel.
-        </p>
-
-        <div className="fr-table" data-fr-js-table="true">
-          <table className="data-table" data-fr-js-table-element="true">
-            <tbody>
-              <tr>
-                <th>Traitement&nbsp;→</th>
-                <th>Accès authentifié</th>
-                <th>Inscription newsletter</th>
-                <th>Formulaire de contact</th>
-              </tr>
-              <tr>
-                <th>Finalité du traitement&nbsp;→</th>
-                <td>
-                  fourniture du service permettant aux utilisateurs de se créer
-                  un compte, de remplir des comptes rendus d’activités, de
-                  suivre ses bénéficiaires et d’accéder à ses statistiques
-                  d’activités.
-                </td>
-                <td>
-                  envoi régulier (mensuel) d’une lettre d’info et d’informations
-                  personnalisées (rappels, notifications)
-                </td>
-                <td>
-                  demande adressée à l’équipe {process.env.NEXT_PUBLIC_APP_NAME}
-                  , en vue d’une réponse personnalisée
-                </td>
-              </tr>
-              <tr>
-                <th>Durée de conservation</th>
-                <td>
-                  Vos coordonnées sont conservées jusqu&apos;à un an après votre
-                  dernière action sur le site ou demande de suppression
-                </td>
-                <td>
-                  Vos coordonnées sont conservées jusqu&apos;à un an après une
-                  demande de désinscription à la newsletter
-                </td>
-                <td>
-                  Vos coordonnées sont conservées jusqu&apos;à un an après
-                  l’envoi de votre message
-                </td>
-              </tr>
-              <tr>
-                <th>Prénom/nom</th>
-                <td>Oui</td>
-                <td />
-                <td>Oui</td>
-              </tr>
-              <tr>
-                <th>Structure</th>
-                <td>Oui</td>
-                <td />
-                <td>Optionnel</td>
-              </tr>
-              <tr>
-                <th>Fonction</th>
-                <td>Oui</td>
-                <td />
-                <td>Optionnel</td>
-              </tr>
-              <tr>
-                <th>Adresse</th>
-                <td>Oui</td>
-                <td />
-                <td>Optionnel</td>
-              </tr>
-              <tr>
-                <th>Téléphone</th>
-                <td>Optionnel</td>
-                <td />
-                <td>Optionnel</td>
-              </tr>
-              <tr>
-                <th>Email</th>
-                <td>Oui</td>
-                <td>Oui</td>
-                <td>Oui</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h2>Suivi d&apos;audience et vie privée</h2>
-
-        <h3>Cookies et consentement</h3>
-
-        <p>
-          Un cookie est un fichier déposé sur votre terminal lors de la visite
-          d’un site. Il a pour but de collecter des informations relatives à
-          votre navigation et de vous adresser des services adaptés à votre
-          terminal (ordinateur, mobile ou tablette).
-        </p>
-
-        <p>
-          Le site dépose des cookies de mesure d’audience (nombre de visites,
-          pages consultées), respectant les conditions d’exemption du
-          consentement de l’internaute définies par la recommandation
-          «&nbsp;Cookies&nbsp;» de la Commission nationale informatique et
-          libertés (CNIL). Cela signifie, notamment, que ces cookies ne servent
-          qu’à la production de statistiques anonymes et ne permettent pas de
-          suivre la navigation de l’internaute sur d’autres sites.
-        </p>
-
-        <p>
-          <b>
-            Nous utilisons différents types de cookies, certains nécessitant
-            votre consentement.
-          </b>
-        </p>
-
-        <p>
-          <b>Nous utilisons pour cela Matomo,</b> un outil de mesure d’audience
-          web libre, paramétré pour être en conformité avec la recommandation
-          «&nbsp;Cookies&nbsp;» de la CNIL. Cela signifie que votre adresse IP,
-          par exemple, est anonymisée avant d’être enregistrée. Il est donc
-          impossible d’associer vos visites sur ce site à votre personne.
-        </p>
-
-        <p>Il convient d’indiquer que&nbsp;:</p>
-        <ul>
-          <li>
-            Les données collectées ne sont pas recoupées avec d’autres
-            traitements
-          </li>
-          <li>
-            Les cookies ne permettent pas de suivre la navigation de
-            l’internaute sur d’autres sites
-          </li>
-        </ul>
-        <p />
-
-        <p>
-          Vous pouvez choisir de ne pas transmettre d&apos;informations à
-          Matomo&nbsp;:
-        </p>
-
-        <div className="fr-mb-3w" id="piwik-consent">
-          <iframe
-            title="Matomo"
-            style={{ border: 0, height: 200, width: 600 }}
-            src="https://matomo.incubateur.anct.gouv.fr/index.php?module=CoreAdminHome&action=optOut&language=en&backgroundColor=&fontColor=&fontSize=16px&fontFamily=Helvetica"
-          />
-        </div>
-
-        <p>
-          À tout moment, vous pouvez refuser l’utilisation des cookies et
-          désactiver le dépôt sur votre ordinateur en utilisant la fonction
-          dédiée de votre navigateur (fonction disponible notamment sur
-          Microsoft Internet Explorer 11, Google Chrome, Mozilla Firefox, Apple
-          Safari et Opera).
-        </p>
-
-        <p>
-          Pour aller plus loin, vous pouvez consulter les fiches proposées par
-          la Commission Nationale de l&apos;Informatique et des Libertés (CNIL)
-          :
-        </p>
-        <ul>
-          <li>
-            <a
-              href="https://www.cnil.fr/fr/cookies-traceurs-que-dit-la-loi"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Cookies &amp; traceurs : que dit la loi ?
-              <span className="fr-sr-only">Ouvre une nouvelle fenêtre</span>
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.cnil.fr/fr/cookies-les-outils-pour-les-maitriser"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Cookies : les outils pour les maîtriser
-              <span className="fr-sr-only">Ouvre une nouvelle fenêtre</span>
-            </a>
-          </li>
-        </ul>
-        <p />
-
-        <h2>Sécurité et confidentialité</h2>
-
-        <p>
-          Les données personnelles sont traitées dans des conditions sécurisées,
-          selon les moyens actuels de la technique, dans le respect des
-          dispositions relatives à la protection de la vie privée et notamment
-          au référentiel général de sécurité, prévu à l’article 9 de
-          l’ordonnance 2005-1516 du 8 décembre 2005 relative aux échanges
-          électroniques entre les usagers et les autorités administratives et
-          entre les autorités administratives.
-        </p>
-
-        <p>
-          Les moyens de sécurisation suivants ont notamment été mis en
-          œuvre&nbsp;:
-        </p>
-
-        <ul>
-          <li>
-            Contrôle d’accès&nbsp;: la base de données des utilisateurs n’est
-            accessible qu’aux seuls membres de l’administration du service;
-          </li>
-          <li>
-            Mesures de traçabilité&nbsp;: les logs applicatifs permettent de
-            savoir qui a eu accès à cette base de données&nbsp;;
-          </li>
-          <li>
-            Mesures de protection des logiciels&nbsp;: les mises à jour et les
-            mesures de protection sont assurées par l&apos;hébergeur
-            Scalingo&nbsp;;
-          </li>
-          <li>
-            Sauvegarde des données&nbsp;: les sauvegardes sont assurées par
-            l&apos;hébergeur Scalingo&nbsp;;
-          </li>
-          <li>
-            Chiffrement des données&nbsp;: site uniquement accessible en HTTPS.
-          </li>
-        </ul>
-
-        <h2>Droit des personnes</h2>
-
-        <p>
-          Vous disposez des droits suivants concernant vos données à caractère
-          personnel&nbsp;:
-        </p>
-
-        <ul>
-          <li>
-            Droit d’information, d’accès et de communication des données&nbsp;;
-          </li>
-          <li>Droit à la limitation&nbsp;;</li>
-          <li>Droit de rectification des données&nbsp;;</li>
-          <li>Droit d&apos;opposition.</li>
-        </ul>
-
-        <p>
-          Pour toute demande, vous pouvez écrire un email à l’équipe La coop de
-          la médiation numérique&nbsp;:{' '}
-          <a
-            href={
-              PublicWebAppConfig.contactEmail &&
-              `mailto:${PublicWebAppConfig.contactEmail}`
-            }
-          >
-            {PublicWebAppConfig.contactEmail}
-          </a>
-          .
-        </p>
-
-        <p>
-          Si vous estimez, après nous avoir contactés, que vos droits ne sont
-          pas respectés ou que le traitement n’est pas conforme à la
-          réglementation sur la protection des données à caractère personnel,
-          vous pouvez adresser une réclamation à{' '}
-          <a href="https://www.cnil.fr" target="_blank" rel="noreferrer">
-            la CNIL
+            Cookies &amp; traceurs : que dit la loi ?
             <span className="fr-sr-only">Ouvre une nouvelle fenêtre</span>
           </a>
-          .
-        </p>
-      </div>
-    </div>
+        </li>
+        <li>
+          <a
+            href="https://www.cnil.fr/fr/cookies-les-outils-pour-les-maitriser"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Cookies : les outils pour les maîtriser
+            <span className="fr-sr-only">Ouvre une nouvelle fenêtre</span>
+          </a>
+        </li>
+      </ul>
+      <p />
+
+      <h2>
+        Quelles sont les mesures de sécurité que nous avons mis en place ?
+      </h2>
+
+      <p>
+        Les moyens de sécurisation suivants ont notamment été mis en œuvre :
+      </p>
+
+      <ul>
+        <li>
+          Contrôle d’accès&nbsp;: la base de données des utilisateurs n’est
+          accessible qu’aux seuls membres de l’administration du service;
+        </li>
+        <li>
+          Mesures de traçabilité&nbsp;: les logs applicatifs permettent de
+          savoir qui a eu accès à cette base de données&nbsp;;
+        </li>
+        <li>
+          Mesures de protection des logiciels&nbsp;: les mises à jour et les
+          mesures de protection sont assurées par l&apos;hébergeur
+          Scaleway&nbsp;;
+        </li>
+        <li>
+          Sauvegarde des données&nbsp;: les sauvegardes sont assurées par
+          l&apos;hébergeur Scaleway&nbsp;;
+        </li>
+        <li>
+          Chiffrement des données&nbsp;: site uniquement accessible en HTTPS.
+        </li>
+      </ul>
+    </main>
   </div>
 )
 export default ConfidentialityPage
