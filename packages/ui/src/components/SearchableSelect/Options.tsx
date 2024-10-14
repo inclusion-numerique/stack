@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useState } from 'react'
 import classNames from 'classnames'
 import styles from './Options.module.css'
 
@@ -12,20 +12,25 @@ export type Option<T extends string> = {
 const Options = <T extends string>({
   options,
   select,
+  selectedIndex = -1,
   limit,
   noResultMessage,
   hideNoResultMessage,
+  onHide,
   'data-testid': dataTestId,
 }: {
   options: Option<T>[]
   select: (option: Option<T>) => void
+  selectedIndex?: number
   limit: number
   noResultMessage?: string
   hideNoResultMessage?: boolean
+  onHide?: () => void
   'data-testid'?: string
 }) => {
   if (options.length === 0) {
     if (hideNoResultMessage) {
+      onHide?.()
       return null
     }
     return (
@@ -35,16 +40,22 @@ const Options = <T extends string>({
     )
   }
   return (
-    <>
+    <ul className="fr-list-group fr-mb-0" role="listbox">
       {options.slice(0, limit).map((option, index) => (
         // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-        <div
+        <li
+          role="option"
           data-testid={dataTestId ? `${dataTestId}-option-${index}` : undefined}
+          aria-selected={index === selectedIndex}
           key={option.value}
           defaultValue={option.value}
-          className={classNames(styles.option, {
-            [styles.disabled]: option.disabled,
-          })}
+          className={classNames(
+            styles.option,
+            selectedIndex === index ? styles.focused : '',
+            {
+              [styles.disabled]: option.disabled,
+            },
+          )}
           onMouseDown={() => {
             if (!option.disabled) {
               select(option)
@@ -52,9 +63,9 @@ const Options = <T extends string>({
           }}
         >
           {option.component || option.label}
-        </div>
+        </li>
       ))}
-    </>
+    </ul>
   )
 }
 
