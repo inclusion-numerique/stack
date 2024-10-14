@@ -20,8 +20,6 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "sourceMap": true,
-    "inlineSources": false,
     "baseUrl": ".",
     "types": [
       "node",
