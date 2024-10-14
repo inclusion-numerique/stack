@@ -2,6 +2,10 @@ import type { Account, Profile, User } from 'next-auth'
 import * as Sentry from '@sentry/nextjs'
 import { registerLastLogin } from '@app/web/security/registerLastLogin'
 import { updateUserEmailFromProvider } from '@app/web/auth/updateUserEmailFromProvider'
+import {
+  applyUserEmailReconciliation,
+  getUserEmailReconciliation,
+} from '@app/web/auth/reconcileUserEmail'
 
 export const signinCallback: <
   P extends Profile = Profile,
@@ -26,6 +30,21 @@ export const signinCallback: <
     verificationRequest?: boolean
   }
 }) => Promise<string | boolean> = async ({ account, profile, user }) => {
+  const userEmail = user.email
+
+  if (!userEmail) {
+    // Our providers always return an email, this case is not expected
+    return `/connexion?error=MissingProviderEmail`
+  }
+
+  // User that should be reconciled can sign in
+  const emailReconciliationResult = await getUserEmailReconciliation(userEmail)
+
+  if (emailReconciliationResult) {
+    await applyUserEmailReconciliation(emailReconciliationResult)
+    return true
+  }
+
   const isUserCreatedInDatabase =
     'created' in user && !!user.created && 'updated' in user && !!user.updated
 

@@ -4,7 +4,10 @@ import type { Adapter, AdapterAccount, AdapterUser } from 'next-auth/adapters'
 import { prismaClient } from '@app/web/prismaClient'
 import { proConnectProviderId } from '@app/web/auth/proConnect'
 import { createAvailableSlug } from '@app/web/server/slug/createAvailableSlug'
-import { getUserEmailReconciliation } from '@app/web/auth/reconcileUserEmail'
+import {
+  applyUserEmailReconciliation,
+  getUserEmailReconciliation,
+} from '@app/web/auth/reconcileUserEmail'
 
 /**
  * Ensuring that needed methods are defined when creating adapter
@@ -53,11 +56,7 @@ export const nextAuthAdapter = {
         throw new Error('updateUser method not found in prismaAdapter')
       }
 
-      return prismaAdapter.updateUser({
-        ...emailReconciliationResult.existingUser,
-        email:
-          emailReconciliationResult.emailReconcilation.expectedNewEmail.toLowerCase(),
-      })
+      return applyUserEmailReconciliation(emailReconciliationResult)
     }
 
     const slug = await createAvailableSlug(rest.name || 'p', 'users')
