@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode } from 'react'
 import classNames from 'classnames'
 import styles from './Options.module.css'
 
