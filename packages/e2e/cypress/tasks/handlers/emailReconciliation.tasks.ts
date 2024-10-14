@@ -6,11 +6,10 @@ export const createEmailReconciliation = async ({
 }: {
   expectedNewEmail: string
   oldEmail: string
-}) => {
-  return prismaClient.userEmailReconciliation.create({
+}) =>
+  prismaClient.userEmailReconciliation.create({
     data: {
       expectedNewEmail: expectedNewEmail.toLowerCase(),
       oldEmail: oldEmail.toLowerCase(),
     },
   })
-}
