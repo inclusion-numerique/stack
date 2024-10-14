@@ -6,6 +6,10 @@
   margin-bottom: 200px;
 }
 
+.fr-mb-18w {
+  margin-bottom: 9rem;
+}
+
 /* sm spaces */
 @media (min-width: 36em) {
   .fr-mt-sm-0 {
