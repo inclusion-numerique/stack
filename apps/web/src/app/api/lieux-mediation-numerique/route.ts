@@ -45,7 +45,7 @@ export const GET = async () => {
              'detail', presentation_detail
             )
         ) AS presentation,
-        'coop-numerique' AS source,
+        'Coop numérique' AS source,
         "itinerance",
         NULLIF(itinerance, '{}') AS itinerance,
         "modification" as "date_maj",

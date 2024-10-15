@@ -1,22 +1,37 @@
-import * as Sentry from '@sentry/nextjs'
 import { v4 } from 'uuid'
+import * as Sentry from '@sentry/nextjs'
 import type { Job, JobName, JobPayload } from '@app/web/jobs/jobs'
 import { executeBackupDatabaseJob } from '@app/web/jobs/backup-database/executeBackupDatabaseJob'
 import { createStopwatch } from '@app/web/utils/stopwatch'
 import { prismaClient } from '@app/web/prismaClient'
-import { executeUpdateStructuresCartographieNationale } from '@app/web/jobs/update-structures-cartographie-nationale/executeUpdateStructuresCartographieNationale'
+import {
+  downloadCartographieNationaleStructures,
+  getStructuresCartographieNationaleFromLocalFile,
+} from '../data/cartographie-nationale/cartographieNationaleStructures'
+import { output } from './output'
+import { updateStructureFromCartoDataApi } from './update-structures-cartographie-nationale/updateStructureFromCartoDataApi'
 
 export type JobExecutor<Name extends JobName, Result = unknown> = (
   job: Job & { name: Name; payload: JobPayload<Name> },
 ) => Promise<Result>
+
+const structuresCartographieNationale = async () => {
+  output.log(
+    `update-structures-carto: fetching existing and cartographie nationale dataset`,
+  )
+  return downloadCartographieNationaleStructures().then(() =>
+    getStructuresCartographieNationaleFromLocalFile(),
+  )
+}
 
 // Create an object that for each JobName, MUST has a JobExecutor<Name>
 export const jobExecutors: {
   [Name in JobName]: JobExecutor<Name>
 } = {
   'backup-database': executeBackupDatabaseJob,
-  'update-structures-cartographie-nationale':
-    executeUpdateStructuresCartographieNationale,
+  'update-structures-cartographie-nationale': updateStructureFromCartoDataApi({
+    structuresCartographieNationale: await structuresCartographieNationale(),
+  }),
 }
 
 export const executeJob = async (job: Job) => {
