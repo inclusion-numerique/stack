@@ -58,8 +58,7 @@ describe('ETQ Utilisateur, je peux me connecter avec un nouvel email qui a été
     cy.get('.fr-header__tools').should('not.contain', 'Se connecter')
   })
 
-  // TODO PROCONNECT enable this test when we have proconnect client id
-  it.skip('Acceptation 2 - Je peux me connecter avec mon nouvel email, par ProConnect', () => {
+  it('Acceptation 2 - Je peux me connecter avec mon nouvel email, par ProConnect', () => {
     cy.visit('/connexion')
 
     const existingUser = givenUser()

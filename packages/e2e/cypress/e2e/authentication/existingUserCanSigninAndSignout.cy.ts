@@ -60,8 +60,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     )
   })
 
-  // TODO PROCONNECT enable this test when we have proconnect client id
-  it.skip('Acceptation 1 - Connexion avec ProConnect', () => {
+  it('Acceptation 1 - Connexion avec ProConnect', () => {
     cy.visit('/connexion')
     // Cypress deletes some cookies on redirection between domains
     // See https://github.com/cypress-io/cypress/issues/20476
