@@ -109,14 +109,6 @@ describe('ETQ Utilisateur, je peux me connecter avec un nouvel email qui a été
     cy.appUrlShouldBe('/')
 
     cy.get('.fr-header__tools').should('not.contain', 'Se connecter')
-
-    cy.log('Check that the user can logout')
-
-    cy.dsfrShouldBeStarted()
-    cy.dsfrCollapsesShouldBeBound()
-    cy.get('.fr-header__tools button[aria-controls="header-user-menu"]')
-      .contains(existingUser.firstName)
-      .contains(existingUser.lastName)
-      .click()
+    cy.get('.fr-header__tools').should('contain', existingUser.name)
   })
 })

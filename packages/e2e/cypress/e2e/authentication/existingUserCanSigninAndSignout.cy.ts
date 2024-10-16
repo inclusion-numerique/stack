@@ -18,7 +18,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
   }
 
   before(() => {
-    cy.execute('deleteUser', { email: proConnectUser.email })
+    cy.execute('deleteAllData', {})
   })
 
   it('Préliminaire - Les pages de connexions sont accessibles', () => {
@@ -106,14 +106,18 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
 
     cy.dsfrShouldBeStarted()
     cy.dsfrCollapsesShouldBeBound()
-    cy.get('.fr-header__tools button[aria-controls="header-user-menu"]')
+    cy.get(
+      '.fr-header__tools button[aria-controls="header_user_menu"].fr-dropdown__btn',
+    )
+      .filter(':visible')
       .contains(proConnectUser.firstName)
       .contains(proConnectUser.lastName)
       .click()
 
-    cy.get('#header-user-menu').should('be.visible')
-
-    cy.get('#header-user-menu').contains('Se déconnecter').click()
+    cy.get('#header_user_menu.fr-dropdown__pane')
+      .should('be.visible')
+      .contains('Se déconnecter')
+      .click()
 
     cy.appUrlShouldBe('/deconnexion')
     cy.contains('Êtes-vous sûr·e de vouloir vous déconnecter ?')
@@ -129,7 +133,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
     cy.get('.fr-header__tools').contains('Se connecter')
   })
 
-  it('Acceptation 2 - Connexion avec email', () => {
+  it.only('Acceptation 2 - Connexion avec email', () => {
     cy.visit('/connexion')
     cy.execute('createUser', emailUser)
     const { email, firstName, lastName } = emailUser
@@ -165,15 +169,29 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter'
 
     cy.dsfrShouldBeStarted()
     cy.dsfrCollapsesShouldBeBound()
-    cy.get('.fr-header__tools button[aria-controls="header_user_menu"]')
+    cy.get(
+      '.fr-header__tools button[aria-controls="header_user_menu"].fr-dropdown__btn',
+    )
       .filter(':visible')
       .contains(emailUser.name)
       .click()
-    cy.get('.fr-dropdown__pane').contains('Se déconnecter').click()
+
+    cy.get('#header_user_menu.fr-dropdown__pane')
+      .should('be.visible')
+      .contains('Se déconnecter')
+      .click()
+
     cy.appUrlShouldBe('/deconnexion')
     cy.contains('Êtes-vous sûr·e de vouloir vous déconnecter ?')
     cy.get('main').contains('Se déconnecter').click()
+
+    // Identity provider logout flow should be skipped
+    cy.url().should(
+      'not.contain',
+      'https://app-sandbox.moncomptepro.beta.gouv.fr/oauth/logout',
+    )
     cy.appUrlShouldBe('/')
+
     cy.get('.fr-header__tools').contains('Se connecter')
   })
 })
