@@ -1,4 +1,4 @@
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { onlyDefinedAndNotNull } from './onlyDefinedAndNotNull'
 
 export const orderItemsByIndexMap = <T extends { id: string }>(
   items: T[],
@@ -18,7 +18,7 @@ export const orderItemsByIndexMap = <T extends { id: string }>(
   }
 
   // If the items size is not complete, some items will be undefined
-  return sortedItems.filter(isDefinedAndNotNull)
+  return sortedItems.filter(onlyDefinedAndNotNull)
 }
 
 export const orderItemsByIndexedValues = <T extends { id: string }>(

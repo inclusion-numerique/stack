@@ -1,3 +1,3 @@
-export const isDefinedAndNotNull = <T>(
+export const onlyDefinedAndNotNull = <T>(
   value: T | null | undefined,
 ): value is T => value !== null && value !== undefined

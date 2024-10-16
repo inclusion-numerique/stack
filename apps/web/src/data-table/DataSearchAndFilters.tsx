@@ -7,7 +7,7 @@ import {
 } from '@app/web/data-table/DataTableConfiguration'
 import DataSearchBar from '@app/web/data-table/DataSearchBar'
 import DataFilters from '@app/web/data-table/DataFilter/DataFilters'
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 
 /**
  * Server component orchestrating the render of search bar and filter client components
@@ -31,7 +31,7 @@ const DataSearchAndFilters = async <
 }) => {
   const filterConfigurations = configuration.columns
     .map((column) => column.filters)
-    .filter(isDefinedAndNotNull)
+    .filter(onlyDefinedAndNotNull)
     .flat()
 
   const filterComponents = await Promise.all(

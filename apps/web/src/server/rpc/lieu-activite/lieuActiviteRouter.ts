@@ -4,7 +4,7 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import {
   DescriptionData,
   DescriptionValidation,
@@ -144,7 +144,7 @@ const setModalitesAccesAuServiceFields = ({
         modalitesAcces.parMail
           ? modalitesAccesStructureValues['Contacter par mail']
           : undefined,
-      ].filter(isDefinedAndNotNull)
+      ].filter(onlyDefinedAndNotNull)
     : undefined,
   fraisACharge: fraisACharge ?? undefined,
 })

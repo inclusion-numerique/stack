@@ -4,10 +4,9 @@ import { metadataTitle } from '@app/web/app/metadataTitle'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 import { getStructureEmployeuseForInscription } from '@app/web/app/inscription/getStructureEmployeuseForInscription'
-import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
-import { conseillerNumeriqueInscriptionSteps } from '@app/web/app/inscription/(steps)/conseiller-numerique/conseillerNumeriqueinscriptionSteps'
 import RoleInscriptionNotice from '@app/web/app/inscription/RoleInscriptionNotice'
-import InscriptionRecapitulatif from '@app/web/app/inscription/InscriptionRecapitulatif'
+import { conseillerNumeriqueLieuxInscriptionStepsCount } from '@app/web/app/inscription/(steps)/conseiller-numerique-lieux/conseillerNumeriqueLieuxInscriptionSteps'
+import { coordinateurInscriptionSteps } from '../coordinateurInscriptionSteps'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),
@@ -26,33 +25,36 @@ const Page = async () => {
     userId: user.id,
   })
 
-  if (!emploi) {
-    throw new Error('No emploi found for conseiller numérique')
-  }
+  console.log(emploi)
 
-  const lieuxActivite = await getLieuxActiviteForInscription({
-    mediateurId: user.mediateur.id,
-  })
+  // if (!emploi) {
+  //   throw new Error('No emploi found for conseiller numérique')
+  // }
+  //
+  // const lieuxActivite = await getLieuxActiviteForInscription({
+  //   mediateurId: user.mediateur.id,
+  // })
 
   return (
     <InscriptionCard
       title="Récapitulatif de vos informations"
-      backHref={conseillerNumeriqueInscriptionSteps.intro}
+      backHref={coordinateurInscriptionSteps.accompagnement}
       subtitle="Vérifiez que ces informations sont exactes avant de valider votre inscription."
+      totalSteps={conseillerNumeriqueLieuxInscriptionStepsCount}
     >
       <RoleInscriptionNotice
-        roleInscription="conseiller numérique"
+        roleInscription="coordinateur de conseiller numérique"
         className="fr-mt-12v"
       />
-      <InscriptionRecapitulatif
-        editLieuxActiviteHref={
-          conseillerNumeriqueInscriptionSteps.lieuxActivite
-        }
-        user={user}
-        structureEmployeuse={emploi.structure}
-        lieuxActivite={lieuxActivite}
-        contactSupportLink
-      />
+      {/* <InscriptionRecapitulatif */}
+      {/*  editLieuxActiviteHref={ */}
+      {/*    conseillerNumeriqueLieuxInscriptionSteps.lieuxActivite */}
+      {/*  } */}
+      {/*  user={user} */}
+      {/*  structureEmployeuse={emploi.structure} */}
+      {/*  lieuxActivite={lieuxActivite} */}
+      {/*  contactSupportLink */}
+      {/* /> */}
     </InscriptionCard>
   )
 }

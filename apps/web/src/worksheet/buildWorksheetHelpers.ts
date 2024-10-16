@@ -3,7 +3,7 @@ import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
 import type { SessionUser } from '@app/web/auth/sessionUser'
 import { ActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
 import type { AuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 
 export type WorksheetUser = Pick<
   SessionUser,
@@ -36,7 +36,7 @@ const defaultCellLength = 10
 const getMaxStringLength = (strings: (string | null | undefined)[]) =>
   Math.max(
     ...strings
-      .filter(isDefinedAndNotNull)
+      .filter(onlyDefinedAndNotNull)
       .map((value) => value?.length ?? defaultCellLength),
   ) || defaultCellLength
 

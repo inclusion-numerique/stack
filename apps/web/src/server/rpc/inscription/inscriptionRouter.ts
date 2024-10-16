@@ -11,8 +11,8 @@ import { StructureEmployeuseLieuActiviteValidation } from '@app/web/inscription/
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { forbiddenError } from '@app/web/server/rpc/trpcErrors'
-import { cartoStructureToStructure } from '@app/web/structure/cartoStructureToStructure'
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { toStructureFromCartoStructure } from '@app/web/structure/toStructureFromCartoStructure'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import { ChoisirProfilEtAccepterCguValidation } from '@app/web/inscription/ChoisirProfilEtAccepterCguValidation'
 import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
 
@@ -289,11 +289,11 @@ export const inscriptionRouter = router({
               ({ structureCartographieNationaleId }) =>
                 structureCartographieNationaleId,
             )
-            .filter(isDefinedAndNotNull),
+            .filter(onlyDefinedAndNotNull),
         )
 
         const lieuxActiviteIds = new Set<string>(
-          lieuxActivite.map(({ id }) => id).filter(isDefinedAndNotNull),
+          lieuxActivite.map(({ id }) => id).filter(onlyDefinedAndNotNull),
         )
 
         // Delete all existing activite that are not in the new list of carto ids
@@ -425,7 +425,7 @@ export const inscriptionRouter = router({
                       },
                     },
                     structure: {
-                      create: cartoStructureToStructure(cartoStructure),
+                      create: toStructureFromCartoStructure(cartoStructure),
                     },
                   },
                 })
@@ -456,7 +456,7 @@ export const inscriptionRouter = router({
               ({ structureCartographieNationaleId }) =>
                 structureCartographieNationaleId,
             )
-            .filter(isDefinedAndNotNull),
+            .filter(onlyDefinedAndNotNull),
         )
 
         const existingStructuresForCartoIds =
@@ -564,7 +564,7 @@ export const inscriptionRouter = router({
                       },
                     },
                     structure: {
-                      create: cartoStructureToStructure(cartoStructure),
+                      create: toStructureFromCartoStructure(cartoStructure),
                     },
                   },
                 })

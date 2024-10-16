@@ -10,7 +10,7 @@ import {
   itineranceStructureValues,
   modalitesAccesStructureValues,
 } from '@app/web/app/structure/optionsStructure'
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 
 export const structuresRouter = router({
   search: protectedProcedure
@@ -115,7 +115,7 @@ export const structuresRouter = router({
                 modalitesAcces.parMail
                   ? modalitesAccesStructureValues['Contacter par mail']
                   : undefined,
-              ].filter(isDefinedAndNotNull)
+              ].filter(onlyDefinedAndNotNull)
             : undefined,
           telephone: modalitesAcces?.numeroTelephone ?? undefined,
           courriels: modalitesAcces?.adresseMail

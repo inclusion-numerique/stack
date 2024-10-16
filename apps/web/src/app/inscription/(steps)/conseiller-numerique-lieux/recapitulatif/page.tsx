@@ -5,7 +5,7 @@ import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 import { getStructureEmployeuseForInscription } from '@app/web/app/inscription/getStructureEmployeuseForInscription'
 import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
-import ConseillerNumeriqueInscriptionNotice from '@app/web/app/inscription/ConseillerNumeriqueInscriptionNotice'
+import RoleInscriptionNotice from '@app/web/app/inscription/RoleInscriptionNotice'
 import InscriptionRecapitulatif from '@app/web/app/inscription/InscriptionRecapitulatif'
 import {
   conseillerNumeriqueLieuxInscriptionSteps,
@@ -45,7 +45,10 @@ const Page = async () => {
       stepNumber={3}
       totalSteps={conseillerNumeriqueLieuxInscriptionStepsCount}
     >
-      <ConseillerNumeriqueInscriptionNotice className="fr-mt-12v" />
+      <RoleInscriptionNotice
+        roleInscription="conseiller numérique"
+        className="fr-mt-12v"
+      />
       <InscriptionRecapitulatif
         editLieuxActiviteHref={
           conseillerNumeriqueLieuxInscriptionSteps.lieuxActivite

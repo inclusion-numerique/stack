@@ -4,7 +4,7 @@ import {
   DataTableRow,
   DataTableSearchParams,
 } from '@app/web/data-table/DataTableConfiguration'
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 
 export const applyDataTableFilters = <
   Data extends DataTableRow,
@@ -16,7 +16,7 @@ export const applyDataTableFilters = <
 ) => {
   const filterConfigurations = configuration.columns
     .map((column) => column.filters)
-    .filter(isDefinedAndNotNull)
+    .filter(onlyDefinedAndNotNull)
     .flat()
 
   const filterValues = {} as DataTableFilterValues<Configuration>
