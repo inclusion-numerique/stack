@@ -7,8 +7,8 @@ import { useOnClickOutside } from 'usehooks-ts'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { getUserDisplayName } from '@app/web/utils/user'
 import TerminerUsurpationHeaderUserMenuItem from '@app/web/components/TerminerUsurpationHeaderUserMenuItem'
+import { isAuthenticatedConseillerNumerique } from '@app/web/auth/getAuthenticatedConseillerNumerique'
 import styles from './HeaderUserMenu.module.css'
-import { hasAccessToArchivesV1 } from '@app/web/app/coop/archives-v1/hasAccessToArchivesV1'
 
 export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
   // The click outside default behavior from dsfr js do not work in this case 🤷‍
@@ -67,7 +67,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
           Voir mon profil
         </Link>
       </li>
-      {hasAccessToArchivesV1(user) && (
+      {isAuthenticatedConseillerNumerique(user) && (
         <li>
           <Link
             className="fr-nav__link"

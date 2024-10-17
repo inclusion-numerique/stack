@@ -1,22 +1,17 @@
-import { AuthenticatedConseillerNumerique } from '@app/web/auth/getAuthenticatedConseillerNumerique'
 import { getConseillerNumeriqueCras } from '@app/web/external-apis/conseiller-numerique/conseillersNumeriquesCraQueries'
 
 export const getArchivesV1PageData = async ({
-  user,
+  conseillerNumeriqueId,
 }: {
-  user: AuthenticatedConseillerNumerique
+  conseillerNumeriqueId: string
 }) => {
-  const {
-    mediateur: { conseillerNumerique },
-  } = user
-
   const v1Cras = await getConseillerNumeriqueCras({
-    conseillerNumeriqueId: conseillerNumerique.id,
+    conseillerNumeriqueId,
   })
 
   return {
     v1Cras,
-    user,
+    conseillerNumeriqueId,
   }
 }
 

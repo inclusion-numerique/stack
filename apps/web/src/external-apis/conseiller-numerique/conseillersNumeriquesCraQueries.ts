@@ -1,5 +1,5 @@
-import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 import { type Filter, ObjectId } from 'mongodb'
+import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 import type { CraConseillerNumeriqueCollectionItem } from '@app/web/external-apis/conseiller-numerique/CraConseillerNumerique'
 import type { StructureConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/StructureConseillerNumerique'
 
@@ -39,17 +39,10 @@ export const getConseillerNumeriqueCras = async ({
     filter['conseiller.$id'] = new ObjectId(conseillerNumeriqueId)
   }
 
-  console.log('FILTER', filter)
-
   const cras = await crasCollection
     .find(filter)
     .sort({ createdAt: 1 })
     .toArray()
-
-  // Get a unique set of structure ids
-  // console.log('CRAS', cras)
-  console.log('FIRST CRA', cras.at(0))
-  console.log('LAST CRA', cras.at(-1))
 
   if (cras.length === 0) {
     return {
@@ -63,8 +56,6 @@ export const getConseillerNumeriqueCras = async ({
   const uniqueStructureIds = new Set(
     cras.map(({ structure }) => structure.oid.toString()),
   )
-
-  console.log('Structure ids', [...uniqueStructureIds.entries()])
 
   const structuresCollection =
     await conseillerNumeriqueMongoCollection<StructureConseillerNumerique>(
@@ -116,8 +107,6 @@ export const getConseillerNumeriqueCras = async ({
     | 'codeRegion'
   > & { id: string })[]
 
-  console.log('Structures', structures.length)
-
   const indexedStructures = new Map(
     structures.map((structure) => [structure.id, structure]),
   )
@@ -126,12 +115,9 @@ export const getConseillerNumeriqueCras = async ({
     const structure =
       indexedStructures.get(item.structure.oid.toString()) ?? null
 
-    const { duree, organismes, ...craRest } = item.cra
-
-    if (organismes) {
-      console.log('ORGANISMES', organismes)
-      throw new Error('ORGANISMES')
-    }
+    // const { duree, organismes, ...craRest } = item.cra
+    // TODO Debug and format organismes in toPrismaModel
+    const { duree, ...craRest } = item.cra
 
     return {
       id: item._id.toString(),

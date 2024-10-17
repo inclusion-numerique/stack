@@ -1,10 +1,10 @@
+import { addMonths } from 'date-fns'
 import { output } from '@app/web/jobs/output'
 import type { ImportCrasConseillerNumeriqueV1Job } from '@app/web/jobs/import-cras-conseiller-numerique-v1/ImportCrasConseillerNumeriqueV1Job'
 import {
   firstV1CrasMonth,
   importCrasConseillerNumeriqueV1,
 } from '@app/web/external-apis/conseiller-numerique/importCrasConseillerNumeriqueV1'
-import { addMonths } from 'date-fns'
 
 const createMonthsArrays = ({ from, until }: { from: Date; until: Date }) => {
   const firstMonth = new Date(from.getFullYear(), from.getMonth(), 1)

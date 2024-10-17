@@ -1,8 +1,8 @@
-import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { notFound } from 'next/navigation'
-import { hasAccessToArchivesV1 } from '@app/web/app/coop/archives-v1/hasAccessToArchivesV1'
+import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { getArchivesV1PageData } from '@app/web/app/coop/archives-v1/getArchivesV1PageData'
 import ArchivesV1PageContent from '@app/web/app/coop/archives-v1/ArchivesV1PageContent'
+import { isAuthenticatedConseillerNumerique } from '@app/web/auth/getAuthenticatedConseillerNumerique'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -10,12 +10,14 @@ export const revalidate = 0
 const ArchivesV1Page = async () => {
   const user = await getAuthenticatedMediateur()
 
-  if (!hasAccessToArchivesV1(user)) {
+  if (!isAuthenticatedConseillerNumerique(user)) {
     notFound()
     return null
   }
 
-  const getCrasResult = await getArchivesV1PageData({ user })
+  const getCrasResult = await getArchivesV1PageData({
+    conseillerNumeriqueId: user.mediateur.conseillerNumerique.id,
+  })
 
   return <ArchivesV1PageContent data={getCrasResult} />
 }

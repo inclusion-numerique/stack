@@ -233,8 +233,6 @@ describe('getConseillerNumeriqueCras', () => {
       ],
     }
 
-    console.log('RESULT', result)
-
     expect(result).toEqual(expectedResponse)
   })
 })

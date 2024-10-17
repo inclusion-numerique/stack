@@ -1,6 +1,5 @@
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
-import { AuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
-import { SessionUser } from '@app/web/auth/sessionUser'
+import type { AuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
+import type { SessionUser } from '@app/web/auth/sessionUser'
 
 export type AuthenticatedConseillerNumerique = AuthenticatedMediateur & {
   conseillerNumerique: Exclude<
@@ -22,11 +21,3 @@ export function isAuthenticatedConseillerNumerique<T extends SessionUser>(
 } {
   return !!user?.mediateur?.conseillerNumerique
 }
-
-export const getAuthenticatedConseillerNumerique = () =>
-  getAuthenticatedSessionUser().then((user): AuthenticatedMediateur => {
-    if (!user.mediateur?.conseillerNumerique) {
-      throw new Error('User is not a conseiller numerique')
-    }
-    return user as AuthenticatedConseillerNumerique
-  })
