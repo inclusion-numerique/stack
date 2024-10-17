@@ -15,7 +15,7 @@ describe('getConseillerNumeriqueCras', () => {
       })
 
     expect(empty).toBe(true)
-    expect(cras).toHaveLength(0)
+    expect(cras).toBeUndefined()
     expect(structures).toBeUndefined()
     expect(expectedStructures).toBeUndefined()
     expect(firstDate).toBeUndefined()
