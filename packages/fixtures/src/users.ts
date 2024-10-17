@@ -305,10 +305,10 @@ export const conseillerNumerique = givenUser({
         conseillerNumerique: {
           connectOrCreate: {
             where: {
-              id: 'conseiller-numerique-inscrit',
+              id: '60462162871498b5cec232e1',
             },
             create: {
-              id: 'conseiller-numerique-inscrit',
+              id: '60462162871498b5cec232e1',
             },
           },
         },

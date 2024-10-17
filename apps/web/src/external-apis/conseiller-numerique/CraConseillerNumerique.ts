@@ -1,10 +1,12 @@
 import type { DBRef, ObjectId } from 'mongodb'
 
-
 // TODO this is sketchy, do stats on the cras and fields and zod ?
 export type CraConseillerNumerique = {
   dateAccompagnement: Date
-  nbParticipantsRecurrents: number
+  canal: 'rattachement' | 'distance' | null
+  activite: 'individuel' | 'ponctuel' | null
+  nbParticipants: number
+  nbParticipantsRecurrents?: number
   age: {
     moins12ans: number
     de12a18ans: number
@@ -24,13 +26,31 @@ export type CraConseillerNumerique = {
     individuel: number
     redirection: number
   }
-  organismes: string | null
-  canal: 'rattachement' | null
-  activite: 'individuel' | null
-  nbParticipants: number
+  // E.g: [ { CCAS: 1 }
+  // TODO our model for organismes (json field?)
+  organismes: Record<string, number>[] | null
   themes: string[]
-  sousThemes: unknown[]
-  duree: number
+  // Prendre en main du materiel
+  // - Ordinateur
+  // - Tablette
+  // - Téléphone
+  // Accompagner un aidant
+  // - Parent, proche
+  // - Travailleur social
+  // - Enseignant
+  // Bureautique
+  // - Fourniture (impression, scanner)
+  // Santé
+  // - Mon espace santé
+  // TODO Trouver le précisier autre (annoter)
+  // TODO dans l'éxport tout est dans un champ "annotations"
+  sousThemes?: Record<string, string[]>[]
+  duree: string // 30mn, 30-60, ou champ libre par 15mn e.g. 2h15
+  // Poursuite
+  // - En accompagnement individuel (int)
+  // - En atelier (int)
+  // - Redirection
+  // -- Liste (genre gendarmerie, avec un int) ou autre
   codeCommune: string | null
   codePostal: string | null
   nomCommune: string | null
@@ -41,5 +61,6 @@ export type CraConseillerNumeriqueCollectionItem = {
   cra: CraConseillerNumerique
   conseiller: DBRef
   createdAt: Date
+  // TODO dernière modification ? est-ce qu'ils changent le created At
   structure: DBRef
 }

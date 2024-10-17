@@ -217,7 +217,85 @@ model ConseillerNumerique {
   mediateurId String    @unique @map("mediateur_id") @db.Uuid
   mediateur   Mediateur @relation(fields: [mediateurId], references: [id])
 
+  crasV1 CraConseillerNumeriqueV1[]
+
+  // Metadonnées des imports de cras v1
+  dernierImportCrasV1 DateTime? @map("dernier_import_cras_v1")
+  crasV1DateDebut     DateTime? @map("cras_v1_date_debut")
+  crasV1DateFin       DateTime? @map("cras_v1_date_fin")
+
   @@map("conseillers_numeriques")
+}
+
+model CraConseillerNumeriqueV1 {
+  id String @id // ID externe chez conseiller-numerique
+
+  importedAt DateTime @map("imported_at") // our field
+
+  // Will be null until we have the conseiller in our database
+  conseillerNumeriqueId String? @map("conseiller_numerique_id")
+  conseillerNumerique   ConseillerNumerique? @relation(fields: [conseillerNumeriqueId], references: [id])
+
+  // v1 id is the same as the conseiller id if conseiller exists in our database
+  v1ConseillerNumeriqueId String @map("v1_conseiller_numerique_id")
+
+  canal String
+  activite String
+  nbParticipants Int @map("nb_participants") @default(0)
+  nbParticipantsRecurrents Int @map("nb_participants_recurrents") @default(0)
+
+  ageMoins12Ans Int @map("age_moins_12_ans") @default(0)
+  ageDe12a18Ans Int @map("age_de_12_a_18_ans") @default(0)
+  ageDe18a35Ans Int @map("age_de_18_a_35_ans") @default(0)
+  ageDe35a60Ans Int @map("age_de_35_a_60_ans") @default(0)
+  agePlus60Ans  Int @map("age_plus_60_ans") @default(0)
+
+  statutEtudiant Int @map("statut_etudiant") @default(0)
+  statutSansEmploi Int @map("statut_sans_emploi") @default(0)
+  statutEnEmploi Int @map("statut_en_emploi") @default(0)
+  statutRetraite Int @map("statut_retraite") @default(0)
+  statutHeterogene Int @map("statut_heterogene") @default(0)
+
+  themes String[] @default([])
+  // In mongodb stored as e.g.
+  // "sousThemes": [
+  //   {
+  //     "equipement informatique": [
+  //     "ordinateur",
+  //     "telephone"
+  //   ]
+  // },
+  sousThemesEquipementsInformatiques String[] @default([]) @map("sous_themes_equipements_informatiques")
+  sousThemesSante String[] @default([]) @map("sous_themes_sante")
+  sousThemesAccompagnerEnfant String[] @default([]) @map("sous_themes_accompagner_enfant")
+
+  duree String
+
+  accompagnementIndividuel Int @map("accompagnement_individuel") @default(0)
+  accompagnementAtelier Int @map("accompagnement_atelier") @default(0)
+  accompagnementRedirection Int @map("accompagnement_redirection") @default(0)
+
+  codePostal String? @map("code_postal")
+  nomCommune String? @map("nom_commune")
+  dateAccompagnement DateTime @map("date_accompagnement")
+  codeCommune String? @map("code_commune")
+  organismes String? @map("organismes")
+
+  createdAt DateTime @map("created_at") // v1 field
+
+  structureId String? @map("structure_id")
+  structureIdPg Int? @map("structure_id_pg")
+  structureType String? @map("structure_type")
+  structureStatut String? @map("structure_statut")
+  structureNom String? @map("structure_nom")
+  structureSiret String? @map("structure_siret")
+  structureCodePostal String? @map("structure_code_postal")
+  structureNomCommune String? @map("structure_nom_commune")
+  structureCodeCommune String? @map("structure_code_commune")
+  structureCodeDepartement String? @map("structure_code_departement")
+  structureCodeRegion String? @map("structure_code_region")
+
+  @@map("cras_conseiller_numerique_v1")
 }
 
 // Tous les coordinateurs sont coordinateurs officiellement chez conseiller-numérique

@@ -5,7 +5,7 @@ import type { ConseillerNumeriqueMongoCollection } from '@app/web/external-apis/
 
 let client: mongoDB.MongoClient
 
-const getMongoClient = async () => {
+export const getMongoClient = async () => {
   if (client) {
     return client
   }
