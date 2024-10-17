@@ -139,28 +139,26 @@ export const Faq = () => (
           Nos prochains grands chantiers et évolutions à venir sur la plateforme
           portent notamment sur :
         </p>
-        <p>
-          <ul>
-            <li>
-              Un identifiant unique (ProConnect) pour se connecter aux
-              différents outils proposés.
-            </li>
-            <li>
-              L’interopérabilité des différents outils proposés afin d’améliorer
-              le partage d’informations entre ces outils pour fluidifier
-              l’organisation du travail.
-            </li>
-          </ul>
-          Nous vous tiendrons au courant de nos prochaines avancées sur ces
-          sujets via{' '}
-          <Link
-            className="fr-link"
-            href="https://incubateurdesterritoires.notion.site/105744bf03dd80349c26e76cd8459eac?v=8949acfdde544d12860f5c0ca89af72f"
-            target="_blank"
-          >
-            notre feuille de route publique.
-          </Link>
-        </p>
+        <ul>
+          <li>
+            Un identifiant unique (ProConnect) pour se connecter aux différents
+            outils proposés.
+          </li>
+          <li>
+            L’interopérabilité des différents outils proposés afin d’améliorer
+            le partage d’informations entre ces outils pour fluidifier
+            l’organisation du travail.
+          </li>
+        </ul>
+        Nous vous tiendrons au courant de nos prochaines avancées sur ces sujets
+        via{' '}
+        <Link
+          className="fr-link"
+          href="https://incubateurdesterritoires.notion.site/105744bf03dd80349c26e76cd8459eac?v=8949acfdde544d12860f5c0ca89af72f"
+          target="_blank"
+        >
+          notre feuille de route publique.
+        </Link>
       </Accordion>
     </div>
   </div>
