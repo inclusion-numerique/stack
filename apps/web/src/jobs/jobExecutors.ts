@@ -9,19 +9,29 @@ import {
   getStructuresCartographieNationaleFromLocalFile,
 } from '../data/cartographie-nationale/cartographieNationaleStructures'
 import { output } from './output'
-import { updateStructureFromCartoDataApi } from './update-structures-cartographie-nationale/updateStructureFromCartoDataApi'
+import { updateStructureFromCartoDataApi } from '@app/web/jobs/update-structures-cartographie-nationale/updateStructureFromCartoDataApi'
 
 export type JobExecutor<Name extends JobName, Result = unknown> = (
   job: Job & { name: Name; payload: JobPayload<Name> },
 ) => Promise<Result>
 
-const structuresCartographieNationale = async () => {
+const executeUpdateStructuresCartographieNationale = async () => {
   output.log(
     `update-structures-carto: fetching existing and cartographie nationale dataset`,
   )
-  return downloadCartographieNationaleStructures().then(() =>
-    getStructuresCartographieNationaleFromLocalFile(),
-  )
+
+  await downloadCartographieNationaleStructures()
+
+  const structuresCartographieNationale =
+    await getStructuresCartographieNationaleFromLocalFile()
+
+  const execute = updateStructureFromCartoDataApi({
+    structuresCartographieNationale,
+  })
+
+  const result = await execute()
+
+  return result
 }
 
 // Create an object that for each JobName, MUST has a JobExecutor<Name>
@@ -29,9 +39,8 @@ export const jobExecutors: {
   [Name in JobName]: JobExecutor<Name>
 } = {
   'backup-database': executeBackupDatabaseJob,
-  'update-structures-cartographie-nationale': updateStructureFromCartoDataApi({
-    structuresCartographieNationale: await structuresCartographieNationale(),
-  }),
+  'update-structures-cartographie-nationale':
+    executeUpdateStructuresCartographieNationale,
 }
 
 export const executeJob = async (job: Job) => {
