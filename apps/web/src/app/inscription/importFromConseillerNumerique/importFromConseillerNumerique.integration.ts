@@ -10,7 +10,10 @@ import { ObjectId } from 'mongodb'
 import { Conseiller } from '@app/web/external-apis/conseiller-numerique/conseillersProjection'
 import { StructureConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/StructureConseillerNumerique'
 import { PremanenceConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/PremanenceConseillerNumerique'
-import { importFromConseillerNumerique } from './importFromConseillerNumerique'
+import {
+  assignConseillerNumeriqueRoleToCoordinateur,
+  importFromConseillerNumerique,
+} from './importFromConseillerNumerique'
 
 const cannotFindConseillerNumeriqueByEmail =
   async (): Promise<ConseillerNumeriqueFound | null> => Promise.resolve(null)
@@ -120,7 +123,8 @@ describe('import from conseiller numerique', () => {
       where: { userId: user.id },
     })
 
-    expect(updatedUser?.checkConseillerNumeriqueInscription).toBeDefined()
+    expect(updatedUser?.checkConseillerNumeriqueInscription).toBeTruthy()
+    expect(updatedUser?.checkCoordinateurInscription).toBeFalsy()
     expect(updatedUser?.profilInscription).toStrictEqual(
       ProfilInscription.Mediateur,
     )
@@ -184,7 +188,8 @@ describe('import from conseiller numerique', () => {
       where: { mediateurId: mediateur?.id },
     })
 
-    expect(updatedUser?.checkConseillerNumeriqueInscription).toBeDefined()
+    expect(updatedUser?.checkConseillerNumeriqueInscription).toBeTruthy()
+    expect(updatedUser?.checkCoordinateurInscription).toBeFalsy()
     expect(updatedUser?.profilInscription).toStrictEqual(
       ProfilInscription.ConseillerNumerique,
     )
@@ -327,7 +332,8 @@ describe('import from conseiller numerique', () => {
       where: { coordinateurId: coordinateurCreated?.id },
     })
 
-    expect(updatedUser?.checkConseillerNumeriqueInscription).toBeDefined()
+    expect(updatedUser?.checkConseillerNumeriqueInscription).toBeFalsy()
+    expect(updatedUser?.checkCoordinateurInscription).toBeTruthy()
     expect(updatedUser?.profilInscription).toStrictEqual(
       ProfilInscription.Coordinateur,
     )
@@ -336,6 +342,48 @@ describe('import from conseiller numerique', () => {
     expect(lieuActivite).toBeFalsy()
     expect(mediateurEnActivite).toBeFalsy()
     expect(mediateurCoordonne).toBeTruthy()
+  })
+
+  it('should assign conseiller numérique role to médiateur', async () => {
+    const userCoordinateurCreated = await prismaClient.user.create({
+      data: {
+        email: `${coordinateur.prenom}.${coordinateur.nom}@example.com`,
+        firstName: coordinateur.prenom,
+        lastName: coordinateur.nom,
+        profilInscription: ProfilInscription.Coordinateur,
+      },
+    })
+
+    const user: SessionUser = {
+      ...testSessionUser,
+      id: userCoordinateurCreated.id,
+    }
+
+    const userImported = await importFromConseillerNumerique(
+      fakeFindConseillerNumeriqueByEmail,
+    )({
+      user,
+      profil: ProfilInscription.Coordinateur,
+    })
+
+    await assignConseillerNumeriqueRoleToCoordinateur(
+      fakeFindConseillerNumeriqueByEmail,
+    )(userImported)
+
+    const updatedUser = await prismaClient.user.findUnique({
+      where: { id: user.id },
+    })
+
+    const lieuActivite = await prismaClient.structure.findFirst({
+      where: {
+        siret: null,
+        nom: miseEnRelation.nom,
+      },
+    })
+
+    expect(updatedUser?.checkConseillerNumeriqueInscription).toBeTruthy()
+    expect(updatedUser?.checkCoordinateurInscription).toBeTruthy()
+    expect(lieuActivite).toBeTruthy()
   })
 })
 

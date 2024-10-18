@@ -29,6 +29,8 @@ import {
   markAsCheckedConseillerNumerique,
   markAsCheckedMediateur,
   toId,
+  markAsCheckedCoordinateur,
+  structureEmployeuseOf,
 } from './importFromConseillerNumerique.queries'
 
 type ImportFromConseillerNumeriquePayload = {
@@ -41,9 +43,13 @@ type StructureCartographieNationaleWithMatchingStructure =
     structures: { id: string }[] | null
   }
 
-// todo: review `|| user.mediateur == null` removed
-const alreadyProcessed = (user: SessionUser) =>
-  user.checkConseillerNumeriqueInscription != null
+const isAlreadyConseillerOrCoordinateur = (user: SessionUser) =>
+  user.checkConseillerNumeriqueInscription != null ||
+  user.checkCoordinateurInscription != null
+
+const isAlreadyConseillerOrNotCoordinateur = (user: SessionUser) =>
+  user.checkConseillerNumeriqueInscription != null ||
+  user.checkCoordinateurInscription == null
 
 const isConseillerNumerique = (
   mediateur?: SessionUser['mediateur'],
@@ -90,44 +96,9 @@ const createForProfilFor =
       ? createConseillerNumerique(conseiller, user)
       : createCoordinateur(conseiller, user)
 
-export const importFromConseillerNumerique =
-  (findConseillerNumeriqueByEmail: ConseillerNumeriqueByEmailFinder) =>
-  async ({ user, profil }: ImportFromConseillerNumeriquePayload) => {
-    if (alreadyProcessed(user)) return user
-
-    const conseillerFound = await findConseillerNumeriqueByEmail(user.email)
-
-    if (conseillerFound == null) return markAsCheckedMediateur(user)
-
-    const userWithProfile = isConseillerNumerique(user.mediateur)
-      ? { profileId: user.mediateur.id, id: user.id }
-      : await createForProfilFor(conseillerFound)(user, profil)
-
-    if (profil === ProfilInscription.ConseillerNumerique) {
-      const coordinateurs = await findCoordinateursFor(conseillerFound)
-      await associateCoordinateursTo(userWithProfile)(coordinateurs)
-    } else {
-      const conseillers = await findConseillerNumeriquesFor(conseillerFound)
-      await associateConseillersCoordonnesTo(userWithProfile)(conseillers)
-    }
-
-    const existingStructure = await findExistingStructureFor(conseillerFound)
-
-    const structureCartographieNationale =
-      existingStructure?.structureCartographieNationaleId
-        ? { id: existingStructure.structureCartographieNationaleId }
-        : await findCartoStructureFor(conseillerFound)
-
-    const structureEmployeuse =
-      existingStructure ??
-      (await createStructureEmployeuseFor(conseillerFound)(
-        structureCartographieNationale,
-      ))
-
-    if (profil === ProfilInscription.Coordinateur) {
-      return markAsCheckedConseillerNumerique(user, profil, structureEmployeuse)
-    }
-
+const importLieuxActivitesFromConseillerNumerique =
+  (userWithProfile: { profileId: string }) =>
+  async (conseillerFound: ConseillerNumeriqueFound) => {
     const existingCartoStructures: StructureCartographieNationaleWithMatchingStructure[] =
       await findExistingStructuresCartoFor(conseillerFound)
 
@@ -164,10 +135,135 @@ export const importFromConseillerNumerique =
 
     await associateLieuxAtiviteFor(userWithProfile)(lieuxActiviteStructureIds)
 
+    return lieuxActiviteStructureIds
+  }
+
+const toSessionUser = (
+  user: Omit<
+    SessionUser,
+    | 'usurper'
+    | 'emailVerified'
+    | 'created'
+    | 'updated'
+    | 'hasSeenOnboarding'
+    | 'inscriptionValidee'
+    | 'structureEmployeuseRenseignee'
+    | 'checkConseillerNumeriqueInscription'
+    | 'checkCoordinateurInscription'
+    | 'lieuxActiviteRenseignes'
+  > & {
+    emailVerified: Date | null
+    created: Date
+    updated: Date
+    hasSeenOnboarding: Date | null
+    inscriptionValidee: Date | null
+    structureEmployeuseRenseignee: Date | null
+    checkConseillerNumeriqueInscription: Date | null
+    checkCoordinateurInscription: Date | null
+    lieuxActiviteRenseignes: Date | null
+  },
+): SessionUser => ({
+  ...user,
+  emailVerified: user.emailVerified?.toString() ?? null,
+  created: user.created.toString(),
+  updated: user.updated.toString(),
+  hasSeenOnboarding: user.hasSeenOnboarding?.toString() ?? null,
+  inscriptionValidee: user.inscriptionValidee?.toString() ?? null,
+  structureEmployeuseRenseignee:
+    user.structureEmployeuseRenseignee?.toString() ?? null,
+  checkConseillerNumeriqueInscription:
+    user.checkConseillerNumeriqueInscription?.toString() ?? null,
+  checkCoordinateurInscription:
+    user.checkCoordinateurInscription?.toString() ?? null,
+  lieuxActiviteRenseignes: user.lieuxActiviteRenseignes?.toString() ?? null,
+  usurper: null,
+})
+
+export const importFromConseillerNumerique =
+  (findConseillerNumeriqueByEmail: ConseillerNumeriqueByEmailFinder) =>
+  async ({
+    user,
+    profil,
+  }: ImportFromConseillerNumeriquePayload): Promise<SessionUser> => {
+    if (isAlreadyConseillerOrCoordinateur(user)) return user
+
+    const conseillerFound = await findConseillerNumeriqueByEmail(user.email)
+
+    if (conseillerFound == null) {
+      return markAsCheckedMediateur(user).then(toSessionUser)
+    }
+
+    const userWithProfile = isConseillerNumerique(user.mediateur)
+      ? { profileId: user.mediateur.id, id: user.id }
+      : await createForProfilFor(conseillerFound)(user, profil)
+
+    if (profil === ProfilInscription.ConseillerNumerique) {
+      const coordinateurs = await findCoordinateursFor(conseillerFound)
+      await associateCoordinateursTo(userWithProfile)(coordinateurs)
+    } else {
+      const conseillers = await findConseillerNumeriquesFor(conseillerFound)
+      await associateConseillersCoordonnesTo(userWithProfile)(conseillers)
+    }
+
+    const existingStructure = await findExistingStructureFor(conseillerFound)
+
+    const structureCartographieNationale =
+      existingStructure?.structureCartographieNationaleId
+        ? { id: existingStructure.structureCartographieNationaleId }
+        : await findCartoStructureFor(conseillerFound)
+
+    const structureEmployeuse =
+      existingStructure ??
+      (await createStructureEmployeuseFor(conseillerFound)(
+        structureCartographieNationale,
+      ))
+
+    if (profil === ProfilInscription.Coordinateur) {
+      return markAsCheckedCoordinateur(user, structureEmployeuse).then(
+        toSessionUser,
+      )
+    }
+
+    const lieuxActiviteStructureIds =
+      await importLieuxActivitesFromConseillerNumerique(userWithProfile)(
+        conseillerFound,
+      )
+
     return markAsCheckedConseillerNumerique(
       user,
-      profil,
       structureEmployeuse,
       lieuxActiviteStructureIds,
-    )
+    ).then(toSessionUser)
+  }
+
+export const assignConseillerNumeriqueRoleToCoordinateur =
+  (findConseillerNumeriqueByEmail: ConseillerNumeriqueByEmailFinder) =>
+  async (user: SessionUser): Promise<SessionUser> => {
+    if (isAlreadyConseillerOrNotCoordinateur(user)) return user
+
+    const conseillerFound = await findConseillerNumeriqueByEmail(user.email)
+
+    if (conseillerFound == null)
+      return markAsCheckedMediateur(user).then(toSessionUser)
+
+    const employe = await structureEmployeuseOf(user)
+    if (employe?.structure == null) return user
+
+    const userWithProfile = isConseillerNumerique(user.mediateur)
+      ? { profileId: user.mediateur.id, id: user.id }
+      : await createForProfilFor(conseillerFound)(
+          user,
+          ProfilInscription.ConseillerNumerique,
+        )
+
+    const lieuxActiviteStructureIds =
+      await importLieuxActivitesFromConseillerNumerique(userWithProfile)(
+        conseillerFound,
+      )
+
+    return markAsCheckedConseillerNumerique(
+      user,
+      employe.structure,
+      lieuxActiviteStructureIds,
+    ).then(toSessionUser)
   }

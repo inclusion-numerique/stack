@@ -93,6 +93,7 @@ model User {
   profilInscription                   ProfilInscription? @map("profil_inscription")
   acceptationCgu                      DateTime?          @map("acceptation_cgu")
   checkConseillerNumeriqueInscription DateTime?          @map("check_conseiller_numerique_inscription")
+  checkCoordinateurInscription        DateTime?          @map("check_coordinateur_inscription")
   structureEmployeuseRenseignee       DateTime?          @map("structure_employeuse_renseignee")
   lieuxActiviteRenseignes             DateTime?          @map("lieux_activite_renseignes")
   inscriptionValidee                  DateTime?          @map("inscription_validee")

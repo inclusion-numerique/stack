@@ -28,6 +28,7 @@ export type SessionUser = Pick<
   inscriptionValidee: string | null
   structureEmployeuseRenseignee: string | null
   checkConseillerNumeriqueInscription: string | null
+  checkCoordinateurInscription: string | null
   lieuxActiviteRenseignes: string | null
   usurper: { id: string } | null
   emplois: (Pick<EmployeStructure, 'id'> & {

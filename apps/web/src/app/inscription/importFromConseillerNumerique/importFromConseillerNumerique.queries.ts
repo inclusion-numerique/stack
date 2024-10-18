@@ -7,8 +7,8 @@ import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
 
 export const toId = ({ id }: { id: string }) => id.toString()
 
-export const markAsCheckedMediateur = async (user: SessionUser) => {
-  await prismaClient.user.update({
+export const markAsCheckedMediateur = (user: { id: string }) =>
+  prismaClient.user.update({
     where: {
       id: user.id,
     },
@@ -17,13 +17,11 @@ export const markAsCheckedMediateur = async (user: SessionUser) => {
       mediateur: { create: { id: v4() } },
       profilInscription: ProfilInscription.Mediateur,
     },
+    select: sessionUserSelect,
   })
-  return user
-}
 
 export const markAsCheckedConseillerNumerique = (
-  user: SessionUser,
-  profil: ProfilInscription,
+  user: { id: string },
   { id }: { id: string },
   lieuxActiviteStructureIds: string[] = [],
 ) =>
@@ -33,10 +31,29 @@ export const markAsCheckedConseillerNumerique = (
     },
     data: {
       checkConseillerNumeriqueInscription: new Date(),
-      profilInscription: profil,
+      profilInscription: ProfilInscription.ConseillerNumerique,
       structureEmployeuseRenseignee: new Date(),
       lieuxActiviteRenseignes:
         lieuxActiviteStructureIds.length > 0 ? new Date() : undefined,
+      emplois: {
+        deleteMany: {},
+        create: { id: v4(), structureId: id },
+      },
+    },
+    select: sessionUserSelect,
+  })
+
+export const markAsCheckedCoordinateur = (
+  user: { id: string },
+  { id }: { id: string },
+) =>
+  prismaClient.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      checkCoordinateurInscription: new Date(),
+      profilInscription: ProfilInscription.Coordinateur,
       emplois: {
         deleteMany: {},
         create: { id: v4(), structureId: id },
@@ -71,7 +88,7 @@ export const createConseillerNumerique = async (
   }
 }
 
-export const findConseillerNumeriquesFor = async ({
+export const findConseillerNumeriquesFor = ({
   conseillersCoordonnes,
 }: ConseillerNumeriqueFound) =>
   prismaClient.conseillerNumerique.findMany({
@@ -99,7 +116,7 @@ export const createCoordinateur = async (
   }
 }
 
-export const findExistingStructureFor = async ({
+export const findExistingStructureFor = ({
   miseEnRelation: { siret, nom },
 }: ConseillerNumeriqueFound) =>
   prismaClient.structure.findFirst({
@@ -107,7 +124,7 @@ export const findExistingStructureFor = async ({
     select: { id: true, structureCartographieNationaleId: true },
   })
 
-export const findCartoStructureFor = async ({
+export const findCartoStructureFor = ({
   miseEnRelation: { siret, nom },
 }: ConseillerNumeriqueFound) =>
   prismaClient.structureCartographieNationale.findFirst({
@@ -118,7 +135,7 @@ export const createStructureEmployeuseFor =
   ({
     miseEnRelation: { nom, adresseInsee2Ban, siret },
   }: ConseillerNumeriqueFound) =>
-  async (structureCartographieNationale: { id: string } | null) =>
+  (structureCartographieNationale: { id: string } | null) =>
     prismaClient.structure.create({
       data: {
         id: v4(),
@@ -154,7 +171,7 @@ export const createStructures = async (
 
 export const associateLieuxAtiviteFor =
   ({ profileId }: { profileId: string }) =>
-  async (lieuxActiviteStructureIds: string[]) =>
+  (lieuxActiviteStructureIds: string[]) =>
     prismaClient.mediateurEnActivite.createMany({
       data: lieuxActiviteStructureIds.map((structureId) => ({
         structureId,
@@ -163,7 +180,7 @@ export const associateLieuxAtiviteFor =
       })),
     })
 
-export const findCoordinateursFor = async ({
+export const findCoordinateursFor = ({
   conseiller: { coordinateurs },
 }: ConseillerNumeriqueFound) =>
   prismaClient.coordinateur.findMany({
@@ -174,7 +191,7 @@ export const findCoordinateursFor = async ({
 
 export const associateCoordinateursTo =
   ({ profileId }: { profileId: string }) =>
-  async (coordinateurs: { id: string }[]) =>
+  (coordinateurs: { id: string }[]) =>
     prismaClient.mediateurCoordonne.createMany({
       data: coordinateurs.map((coordinateur) => ({
         mediateurId: profileId,
@@ -184,10 +201,16 @@ export const associateCoordinateursTo =
 
 export const associateConseillersCoordonnesTo =
   ({ id }: { id: string }) =>
-  async (conseillers: { mediateurId: string }[]) =>
+  (conseillers: { mediateurId: string }[]) =>
     prismaClient.mediateurCoordonne.createMany({
       data: conseillers.map(({ mediateurId }) => ({
         mediateurId,
         coordinateurId: id,
       })),
     })
+
+export const structureEmployeuseOf = (user: SessionUser) =>
+  prismaClient.employeStructure.findFirst({
+    where: { userId: user.id },
+    include: { structure: { select: { id: true } } },
+  })
