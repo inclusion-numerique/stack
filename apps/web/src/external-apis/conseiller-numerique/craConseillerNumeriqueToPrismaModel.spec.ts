@@ -102,7 +102,7 @@ describe('craConseillerNumeriqueToPrismaModel', () => {
       themes: givenCra.cra.themes,
       sousThemesEquipementInformatique: ['ordinateur', 'telephone'],
       sousThemesSante: ['mon espace santé'],
-      sousThemesAccompagnerEnfant: ['travailleur social'],
+      sousThemesAccompagner: ['travailleur social'],
       sousThemesTraitementTexte: ['fourniture'],
 
       duree: '30-60',
