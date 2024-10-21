@@ -1,10 +1,9 @@
 import type { DBRef, ObjectId } from 'mongodb'
 
-// TODO this is sketchy, do stats on the cras and fields and zod ?
 export type CraConseillerNumerique = {
   dateAccompagnement: Date
   canal: 'rattachement' | 'distance' | null
-  activite: 'individuel' | 'ponctuel' | null
+  activite: 'individuel' | 'ponctuel' | 'collectif' | null
   nbParticipants: number
   nbParticipantsRecurrents?: number
   age: {
@@ -26,15 +25,14 @@ export type CraConseillerNumerique = {
     individuel: number
     redirection: number
   }
-  // E.g: [ { CCAS: 1 }
-  // TODO our model for organismes (json field?)
-  organismes: Record<string, number>[] | null
+  // E.g: [ { CCAS: 1 }, {'Assistante sociale': 1} ]
+  organismes: { [index: string]: number }[] | null
   themes: string[]
   // Prendre en main du materiel
   // - Ordinateur
   // - Tablette
   // - Téléphone
-  // Accompagner un aidant
+  // Accompagner un aidant (accompagner)
   // - Parent, proche
   // - Travailleur social
   // - Enseignant

@@ -257,17 +257,11 @@ model CraConseillerNumeriqueV1 {
   statutHeterogene Int @map("statut_heterogene") @default(0)
 
   themes String[] @default([])
-  // In mongodb stored as e.g.
-  // "sousThemes": [
-  //   {
-  //     "equipement informatique": [
-  //     "ordinateur",
-  //     "telephone"
-  //   ]
-  // },
-  sousThemesEquipementsInformatiques String[] @default([]) @map("sous_themes_equipements_informatiques")
+
+  sousThemesEquipementInformatique String[] @default([]) @map("sous_themes_equipement_informatique")
   sousThemesSante String[] @default([]) @map("sous_themes_sante")
-  sousThemesAccompagnerEnfant String[] @default([]) @map("sous_themes_accompagner_enfant")
+  sousThemesAccompagner String[] @default([]) @map("sous_themes_accompagner")
+  sousThemesTraitementTexte String[] @default([]) @map("sous_themes_traitement_texte")
 
   duree String
 
@@ -279,7 +273,8 @@ model CraConseillerNumeriqueV1 {
   nomCommune String? @map("nom_commune")
   dateAccompagnement DateTime @map("date_accompagnement")
   codeCommune String? @map("code_commune")
-  organismes String? @map("organismes")
+  organismes Json?
+  annotation String?
 
   createdAt DateTime @map("created_at") // v1 field
 

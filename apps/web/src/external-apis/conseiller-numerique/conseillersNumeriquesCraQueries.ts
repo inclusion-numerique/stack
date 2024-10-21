@@ -154,3 +154,6 @@ export type NonEmptyConseillerNumeriqueCrasResult =
   GetConseillerNumeriqueCrasResult & {
     empty: false
   }
+
+export type ConseillerNumeriqueCraWithStructure =
+  NonEmptyConseillerNumeriqueCrasResult['cras'][number]

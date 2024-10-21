@@ -4,7 +4,7 @@ import {
   setWorkbookMetadata,
 } from '@app/web/worksheet/buildWorksheetHelpers'
 import { NonEmptyConseillerNumeriqueCrasResult } from '@app/web/external-apis/conseiller-numerique/conseillersNumeriquesCraQueries'
-import { craConseillerNumeriqueToPrismaModel } from '@app/web/external-apis/conseiller-numerique/importCrasConseillerNumeriqueV1'
+import { craConseillerNumeriqueToPrismaModel } from '@app/web/external-apis/conseiller-numerique/crasConseillerNumeriqueToPrismaModel'
 
 export type BuildArchivesCrasV1WorksheetInput = {
   v1Cras: NonEmptyConseillerNumeriqueCrasResult
@@ -46,9 +46,11 @@ const v1CraHeaders = [
   'Âge 35-60 ans',
   'Âge >60 ans',
   'Thèmes',
-  'Sous-Thème Enfant',
-  'Sous-Thème Informatique',
-  'Sous-Thème Santé',
+  'Annotation',
+  'Sous-Thèmes Informatique',
+  'Sous-Thèmes Accompagner',
+  'Sous-Thèmes Santé',
+  'Sous-Thèmes Bureautique',
   'ID interne',
 ]
 
@@ -104,9 +106,11 @@ export const buildArchivesCrasV1Worksheet = ({
         ageDe35a60Ans,
         ageMoins12Ans,
         agePlus60Ans,
-        sousThemesAccompagnerEnfant,
-        sousThemesEquipementsInformatiques,
+        sousThemesEquipementInformatique,
         sousThemesSante,
+        sousThemesAccompagner,
+        sousThemesTraitementTexte,
+        annotation,
         statutEnEmploi,
         statutEtudiant,
         statutHeterogene,
@@ -151,9 +155,11 @@ export const buildArchivesCrasV1Worksheet = ({
         // 16. Nb Participants Récurrents
         nbParticipantsRecurrents,
         // 17. Organismes (peut être un tableau)
-        Array.isArray(organismes)
-          ? multilineCellContent(organismes)
-          : organismes,
+        organismes
+          ? Object.entries(organismes)
+              .map(([key, value]) => `${key}: ${value?.toString()}`)
+              .join(', ')
+          : null,
         // 18. Atelier
         accompagnementAtelier ? 'Oui' : 'Non',
         // 19. Individuel
@@ -182,19 +188,26 @@ export const buildArchivesCrasV1Worksheet = ({
         agePlus60Ans,
         // 31. Thèmes (peut être un tableau)
         Array.isArray(themes) ? multilineCellContent(themes) : themes,
-        // 32. Sous-Thème Enfant (peut être un tableau)
-        Array.isArray(sousThemesAccompagnerEnfant)
-          ? multilineCellContent(sousThemesAccompagnerEnfant)
-          : sousThemesAccompagnerEnfant,
-        // 33. Sous-Thème Informatique (peut être un tableau)
-        Array.isArray(sousThemesEquipementsInformatiques)
-          ? multilineCellContent(sousThemesEquipementsInformatiques)
-          : sousThemesEquipementsInformatiques,
-        // 34. Sous-Thème Santé (peut être un tableau)
+        // Annotation
+        annotation,
+        // 32. Sous-Thèmes Informatique (peut être un tableau)
+        Array.isArray(sousThemesEquipementInformatique)
+          ? multilineCellContent(sousThemesEquipementInformatique)
+          : null,
+        // 33. Sous-Thèmes Accompagner (peut être un tableau)
+        Array.isArray(sousThemesAccompagner)
+          ? multilineCellContent(sousThemesAccompagner)
+          : null,
+        // 34. Sous-Thèmes Santé (peut être un tableau)
         Array.isArray(sousThemesSante)
           ? multilineCellContent(sousThemesSante)
-          : sousThemesSante,
-        // 35. ID interne
+          : null,
+        // 35. Sous-Thèmes Bureautique (peut être un tableau)
+        Array.isArray(sousThemesTraitementTexte)
+          ? multilineCellContent(sousThemesTraitementTexte)
+          : null,
+
+        // 36. ID interne
         id,
       ]
     }),

@@ -2,9 +2,10 @@ import React, { PropsWithChildren } from 'react'
 import Link from 'next/link'
 import IconInSquare from '@app/web/components/IconInSquare'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 
 const ArchivesV1Layout = ({ children }: PropsWithChildren) => (
-  <div className="fr-container">
+  <CoopPageContainer size={794} className="fr-pt-8v">
     <CoopBreadcrumbs currentPage="Mes archives - Coop V.1" />
     <div className="fr-flex fr-align-items-center fr-flex-gap-3v fr-my-12v">
       <IconInSquare iconId="fr-icon-archive-line" size="medium" />
@@ -37,7 +38,7 @@ const ArchivesV1Layout = ({ children }: PropsWithChildren) => (
       </div>
     </div>
     {children}
-  </div>
+  </CoopPageContainer>
 )
 
 export default ArchivesV1Layout
