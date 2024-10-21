@@ -80,7 +80,6 @@ const CheckboxFormField = <T extends FieldValues>({
                       'undefined'
                     }`}
                     type="checkbox"
-                    data-testid={dataTestId}
                     id={id}
                     defaultChecked={value}
                     disabled={disabled}
