@@ -83,11 +83,6 @@ const ProfilEtCguForm = ({ userId }: { userId: string }) => {
             <a href="/" className="fr-link wip-outline" target="_blank">
               conditions générales d’utilisation du service
             </a>
-            {'  '}
-            ainsi que la{' '}
-            <a href="/confidentialite" className="fr-link" target="_blank">
-              politique de confidentialité
-            </a>
             .
           </>
         }

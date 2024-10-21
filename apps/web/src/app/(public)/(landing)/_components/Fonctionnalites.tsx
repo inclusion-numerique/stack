@@ -75,7 +75,11 @@ export const Fonctionnalites = () => (
           travail.
         </p>
         <span>
-          <Link href="/" className="fr-link wip-outline">
+          <Link
+            target="_blank"
+            href="https://incubateurdesterritoires.notion.site/Mes-outils-111744bf03dd80869445fe5ce3f07307"
+            className="fr-link"
+          >
             Voir la liste des outils
           </Link>
         </span>

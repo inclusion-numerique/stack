@@ -1,6 +1,5 @@
 import React from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
@@ -32,9 +31,6 @@ export const MesOutils = () => (
               Amélioration du partage d’informations entre ces outils pour
               fluidifier l’organisation du travail.
             </span>
-            <Link href="/" className="wip-outline fr-link fr-text--sm">
-              En savoir plus
-            </Link>
           </span>
         }
       />
@@ -80,7 +76,7 @@ export const MesOutils = () => (
           <div className="fr-col-xl-6 fr-col-12">
             <CardOutil
               logo="/images/services/pix.svg"
-              title="PIX"
+              title="Pix"
               inforef="pix"
             >
               Proposez des tutoriels PIX adaptés aux besoins de vos apprenants

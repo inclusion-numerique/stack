@@ -183,9 +183,9 @@ export const Outils = () => (
             alt=""
           />
           <div className="fr-my-3w">
-            <h3 className="fr-h6 fr-mb-2w">PIX</h3>
+            <h3 className="fr-h6 fr-mb-2w">Pix</h3>
             <p className="fr-mb-0 fr-text-mention--grey">
-              Proposez des tutoriels PIX adaptés aux besoins de vos apprenants
+              Proposez des tutoriels Pix adaptés aux besoins de vos apprenants
               et suivez leur progression.
             </p>
           </div>
@@ -195,7 +195,7 @@ export const Outils = () => (
               href="https://pix.fr"
               target="_blank"
               rel="noreferrer"
-              title="Accéder à PIX - nouvel onglet"
+              title="Accéder à Pix - nouvel onglet"
             >
               Découvrir
             </Link>
