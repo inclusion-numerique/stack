@@ -1,9 +1,9 @@
-import Button from '@codegouvfr/react-dsfr/Button'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import React from 'react'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import InscriptionCard from '../../InscriptionCard'
+import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 import { coordinateurInscriptionSteps } from '../coordinateurInscriptionSteps'
+import CoordinateurAndMediateur from './CoordinateurAndMediateur'
 
 export const metadata = {
   title: metadataTitle('Réalisez-vous des accompagnements ?'),
@@ -31,24 +31,7 @@ const Page = () => (
         </span>
       }
     />
-    <div className="fr-btns-group fr-flex fr-direction-row fr-mt-6w">
-      <Button
-        title="J'ai seulment une activité de coordination"
-        className="fr-col fr-mb-0"
-        priority="secondary"
-        linkProps={{ href: 'recapitulatif' }}
-      >
-        Non
-      </Button>
-      <Button
-        title="Je réalise des accompagnements de médiation numérique"
-        className="fr-col fr-mb-0"
-        priority="primary"
-        linkProps={{ href: 'recapitulatif' }}
-      >
-        Oui
-      </Button>
-    </div>
+    <CoordinateurAndMediateur />
   </InscriptionCard>
 )
 

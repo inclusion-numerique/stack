@@ -1,4 +1,4 @@
-import type { Document } from 'mongodb'
+import type { Collection, Document } from 'mongodb'
 import * as mongoDB from 'mongodb'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import type { ConseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoCollections'
@@ -32,7 +32,7 @@ export const conseillerNumeriqueMongoCollection = async <
   TSchema extends Document = Document,
 >(
   collectionName: ConseillerNumeriqueMongoCollection,
-) =>
+): Promise<Collection<TSchema>> =>
   getMongoClient().then((mongoClient) =>
     mongoClient.db().collection<TSchema>(collectionName),
   )

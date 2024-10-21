@@ -31,6 +31,8 @@ import {
   toId,
   markAsCheckedCoordinateur,
   structureEmployeuseOf,
+  removeMediateurCheck,
+  removeLieuxActiviteFor,
 } from './importFromConseillerNumerique.queries'
 
 type ImportFromConseillerNumeriquePayload = {
@@ -49,6 +51,10 @@ const isAlreadyConseillerOrCoordinateur = (user: SessionUser) =>
 
 const isAlreadyConseillerOrNotCoordinateur = (user: SessionUser) =>
   user.checkConseillerNumeriqueInscription != null ||
+  user.checkCoordinateurInscription == null
+
+const isNotConseillerAndCoordinateur = (user: SessionUser) =>
+  user.checkConseillerNumeriqueInscription == null ||
   user.checkCoordinateurInscription == null
 
 const isConseillerNumerique = (
@@ -267,3 +273,13 @@ export const assignConseillerNumeriqueRoleToCoordinateur =
       lieuxActiviteStructureIds,
     ).then(toSessionUser)
   }
+
+export const removeConseillerNumeriqueRoleToCoordinateur = async (
+  user: SessionUser,
+): Promise<SessionUser> => {
+  if (isNotConseillerAndCoordinateur(user)) return user
+
+  await removeLieuxActiviteFor(user)
+
+  return removeMediateurCheck(user).then(toSessionUser)
+}

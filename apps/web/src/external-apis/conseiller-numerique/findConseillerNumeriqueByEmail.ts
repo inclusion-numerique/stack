@@ -1,4 +1,4 @@
-import type { ObjectId } from 'mongodb'
+import { Collection, type Document, Filter, ObjectId } from 'mongodb'
 import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 import {
   cleanConseillerProjection,
@@ -20,6 +20,50 @@ export type ConseillerNumeriqueByEmailFinder = (
   email: string,
 ) => Promise<ConseillerNumeriqueFound | null>
 
+const findConseillersCoordonnesById =
+  <TSchema extends Document = Document>(
+    conseillerCollection: Collection<TSchema>,
+  ) =>
+  async (id: string) => {
+    const conseillersCoordonnesDocument = (await conseillerCollection
+      .find(
+        { coordinateurs: { $elemMatch: { id } } },
+        { projection: mongoQueryConseillerProjection },
+      )
+      .toArray()) as unknown as ConseillerNumeriqueProjection[]
+
+    return conseillersCoordonnesDocument.map(cleanConseillerProjection)
+  }
+
+const findConseillerDocumentByEmail =
+  <TSchema extends Document = Document>(
+    conseillerCollection: Collection<TSchema>,
+  ) =>
+  async (email: string) =>
+    (await conseillerCollection.findOne(
+      {
+        deletedAt: { $in: [null, undefined] },
+        $or: [{ email }, { emailPro: email }, { 'emailCN.address': email }],
+      } as unknown as Filter<TSchema>,
+      { projection: mongoQueryConseillerProjection },
+    )) as unknown as ConseillerNumeriqueProjection | null
+
+export const findConseillersCoordonnesByEmail = async (userEmail: string) => {
+  const conseillerCollection =
+    await conseillerNumeriqueMongoCollection('conseillers')
+
+  const email = userEmail.trim().toLowerCase()
+
+  const conseillerNumerique =
+    await findConseillerDocumentByEmail(conseillerCollection)(email)
+
+  return conseillerNumerique == null
+    ? []
+    : findConseillersCoordonnesById(conseillerCollection)(
+        conseillerNumerique._id,
+      )
+}
+
 export const findConseillerNumeriqueByEmail: ConseillerNumeriqueByEmailFinder =
   async (userEmail: string): Promise<ConseillerNumeriqueFound | null> => {
     const conseillerCollection =
@@ -28,13 +72,8 @@ export const findConseillerNumeriqueByEmail: ConseillerNumeriqueByEmailFinder =
     const email = userEmail.trim().toLowerCase()
 
     // Mongodb select but only the fields we need
-    const conseillerDocument = (await conseillerCollection.findOne(
-      {
-        deletedAt: { $in: [null, undefined] },
-        $or: [{ email }, { emailPro: email }, { 'emailCN.address': email }],
-      },
-      { projection: mongoQueryConseillerProjection },
-    )) as unknown as ConseillerNumeriqueProjection | null
+    const conseillerDocument =
+      await findConseillerDocumentByEmail(conseillerCollection)(email)
 
     if (!conseillerDocument) return null
 
@@ -106,21 +145,14 @@ export const findConseillerNumeriqueByEmail: ConseillerNumeriqueByEmailFinder =
       updatedBy: ObjectId
     }[]
 
-    const conseillersCoordonnesDocument = (await conseillerCollection
-      .find(
-        { coordinateurs: { $elemMatch: { id: conseillerDocument._id } } },
-        { projection: mongoQueryConseillerProjection },
-      )
-      .toArray()) as unknown as ConseillerNumeriqueProjection[]
-
     return conseillerDocument
       ? {
           conseiller: cleanConseillerProjection(conseillerDocument),
           miseEnRelation: miseEnRelation.structureObj,
           permanences,
-          conseillersCoordonnes: conseillersCoordonnesDocument.map(
-            cleanConseillerProjection,
-          ),
+          conseillersCoordonnes: await findConseillersCoordonnesById(
+            conseillerCollection,
+          )(conseillerDocument._id),
         }
       : null
   }

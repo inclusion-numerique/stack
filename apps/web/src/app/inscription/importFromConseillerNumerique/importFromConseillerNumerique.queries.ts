@@ -1,20 +1,25 @@
 import { type Prisma, ProfilInscription } from '@prisma/client'
 import { v4 } from 'uuid'
-import { prismaClient } from '@app/web/prismaClient'
+import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { ConseillerNumeriqueFound } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
-import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
+import { prismaClient } from '@app/web/prismaClient'
 
 export const toId = ({ id }: { id: string }) => id.toString()
 
-export const markAsCheckedMediateur = (user: { id: string }) =>
+export const markAsCheckedMediateur = async (user: SessionUser) =>
   prismaClient.user.update({
     where: {
       id: user.id,
     },
     data: {
       checkConseillerNumeriqueInscription: new Date(),
-      mediateur: { create: { id: v4() } },
+      mediateur: {
+        connectOrCreate: {
+          where: { userId: user.id },
+          create: { id: v4() },
+        },
+      },
       profilInscription: ProfilInscription.Mediateur,
     },
     select: sessionUserSelect,
@@ -39,6 +44,20 @@ export const markAsCheckedConseillerNumerique = (
         deleteMany: {},
         create: { id: v4(), structureId: id },
       },
+    },
+    select: sessionUserSelect,
+  })
+
+export const removeMediateurCheck = (user: { id: string }) =>
+  prismaClient.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      checkConseillerNumeriqueInscription: null,
+      profilInscription: ProfilInscription.Coordinateur,
+      lieuxActiviteRenseignes: null,
+      mediateur: { delete: true },
     },
     select: sessionUserSelect,
   })
@@ -179,6 +198,13 @@ export const associateLieuxAtiviteFor =
         mediateurId: profileId,
       })),
     })
+
+export const removeLieuxActiviteFor = ({ mediateur }: SessionUser) =>
+  prismaClient.mediateurEnActivite.deleteMany({
+    where: {
+      mediateurId: mediateur?.id,
+    },
+  })
 
 export const findCoordinateursFor = ({
   conseiller: { coordinateurs },

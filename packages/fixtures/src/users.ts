@@ -31,41 +31,26 @@ export const coordinateurInscription = givenUser({
       },
     },
   },
-  mediateur: {
+  emplois: {
     connectOrCreate: {
       where: {
-        id: '5bf9e0e4-aefd-48da-a1c5-b1d575422c6f',
+        id: 'c9501fea-d9de-4020-9763-59e5ccd41275',
       },
       create: {
-        id: '5bf9e0e4-aefd-48da-a1c5-b1d575422c6f',
-        conseillerNumerique: {
-          connectOrCreate: {
-            where: {
-              id: 'fixture-coordinateur-inscription',
-            },
-            create: {
-              id: 'fixture-coordinateur-inscription',
-            },
-          },
-        },
+        id: 'c9501fea-d9de-4020-9763-59e5ccd41275',
+        structureId: structureEmployeuse.id,
       },
     },
   },
-  checkConseillerNumeriqueInscription: new Date(),
+  checkCoordinateurInscription: new Date(),
 }) satisfies Prisma.UserCreateInput
 
 export const coordinateur = givenUser({
   id: '8c8824f0-a10d-4e30-baf0-8d4fab5c7a74',
-  profilInscription: 'Coordinateur',
-  acceptationCgu: new Date(),
   firstName: 'Coordinateur',
   lastName: 'Inscrit',
   isFixture: true,
   role: 'User',
-  checkConseillerNumeriqueInscription: new Date(),
-  inscriptionValidee: new Date(),
-  lieuxActiviteRenseignes: new Date(),
-  structureEmployeuseRenseignee: new Date(),
   coordinateur: {
     connectOrCreate: {
       where: {
@@ -77,26 +62,22 @@ export const coordinateur = givenUser({
       },
     },
   },
-  mediateur: {
+  emplois: {
     connectOrCreate: {
       where: {
-        id: 'beb2c7fb-3149-4913-ab3d-67b441616531',
+        id: '2511530d-a8f1-49e2-b62e-cca5f3b3d9e4',
       },
       create: {
-        id: 'beb2c7fb-3149-4913-ab3d-67b441616531',
-        conseillerNumerique: {
-          connectOrCreate: {
-            where: {
-              id: 'fixture-coordinateur',
-            },
-            create: {
-              id: 'fixture-coordinateur',
-            },
-          },
-        },
+        id: '2511530d-a8f1-49e2-b62e-cca5f3b3d9e4',
+        structureId: structureEmployeuse.id,
       },
     },
   },
+  checkCoordinateurInscription: new Date(),
+  profilInscription: 'Coordinateur',
+  acceptationCgu: new Date(),
+  inscriptionValidee: new Date(),
+  structureEmployeuseRenseignee: new Date(),
 })
 
 export const mediateurInscription = givenUser({

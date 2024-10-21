@@ -1,6 +1,15 @@
-import { findConseillerNumeriqueByEmail } from './findConseillerNumeriqueByEmail'
+import { getMongoClient } from './conseillerNumeriqueMongoClient'
+import {
+  findConseillerNumeriqueByEmail,
+  findConseillersCoordonnesByEmail,
+} from './findConseillerNumeriqueByEmail'
 
 describe('find conseiller numérique by email', () => {
+  afterAll(async () => {
+    const mongoClient = await getMongoClient()
+    await mongoClient.close()
+  })
+
   it('gets null when there is no conseiller matching mail', async () => {
     const conseiller = await findConseillerNumeriqueByEmail('test@test.com')
 
@@ -30,5 +39,13 @@ describe('find conseiller numérique by email', () => {
     expect(result?.miseEnRelation).toBeDefined()
     expect(result?.conseillersCoordonnes.length).toBeGreaterThan(0)
     expect(result?.permanences.length).toBeGreaterThan(0)
+  })
+
+  it('should find conseillers coordonnés by email', async () => {
+    const result = await findConseillersCoordonnesByEmail(
+      'fabien.lagarde@conseiller-numerique.fr',
+    )
+
+    expect(result.length).toBeGreaterThan(0)
   })
 })

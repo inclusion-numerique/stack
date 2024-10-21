@@ -103,7 +103,7 @@ const RichCardLabel = memo(
           {!!option.extra?.illustration && (
             <div className="fr-flex-shrink-0 fr-flex fr-align-items-center">
               <img
-                className={styles.illustration}
+                className="fr-display-block"
                 alt=""
                 src={option.extra.illustration}
               />

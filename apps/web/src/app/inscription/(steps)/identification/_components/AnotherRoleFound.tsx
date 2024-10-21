@@ -2,12 +2,24 @@ import Link from 'next/link'
 import React from 'react'
 import { InscriptionRole, inscriptionRolesToText } from './inscriptionRole'
 
+const roleNextPageMap: Map<
+  InscriptionRole,
+  (lieuActiviteCount: number) => string
+> = new Map([
+  ['coordinateur', (_: number) => `coordinateur/accompagnement`],
+  [
+    'conseiller-numerique',
+    (lieuActiviteCount: number) =>
+      lieuActiviteCount > 0
+        ? `conseiller-numerique/recapitulatif`
+        : 'conseiller-numerique-lieux/verifier',
+  ],
+  ['mediateur', (_: number) => ''],
+])
+
 const nextPageFor =
   (roleFound: InscriptionRole) => (lieuActiviteCount: number) =>
-    roleFound === 'coordinateur' ||
-    (roleFound === 'conseiller-numerique' && lieuActiviteCount > 0)
-      ? `${roleFound}/recapitulatif`
-      : 'conseiller-numerique-lieux/verifier'
+    roleNextPageMap.get(roleFound)?.(lieuActiviteCount)
 
 export const AnotherRoleFound = ({
   roleFound,
@@ -56,7 +68,7 @@ export const AnotherRoleFound = ({
     </div>
     <div className="fr-text--center">
       <Link
-        className="fr-width-full fr-display-block fr-mb-3w fr-btn fr-btn--lg"
+        className="fr-btn fr-btn--lg fr-btn--responsive fr-mb-3w"
         href={`/inscription/${nextPageFor(roleFound)(lieuActiviteCount)}`}
       >
         Continuer mon inscription
