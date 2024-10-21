@@ -6,7 +6,12 @@
 
 */
 -- AlterTable
-ALTER TABLE "structures_cartographie_nationale" ADD COLUMN     "hash" TEXT NOT NULL;
+ALTER TABLE "structures_cartographie_nationale" ADD COLUMN "hash" TEXT;
+
+UPDATE "structures_cartographie_nationale" SET "hash" = "id";
+
+/* Add not null constraint to hash */
+ALTER TABLE "structures_cartographie_nationale" ALTER COLUMN "hash" SET NOT NULL;
 
 -- CreateIndex
 CREATE UNIQUE INDEX "structures_cartographie_nationale_hash_key" ON "structures_cartographie_nationale"("hash");

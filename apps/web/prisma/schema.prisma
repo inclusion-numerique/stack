@@ -340,6 +340,8 @@ model StructureCartographieNationale {
   suppressionImport  DateTime? @map("suppression_import")
 
   // # Relations
+  // There should be only one but we need to be able to have multiple for temporary
+  // duplicate detections
   structures Structure[]
 
   // # Id extractions
