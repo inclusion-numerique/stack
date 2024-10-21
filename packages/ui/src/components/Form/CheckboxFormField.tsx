@@ -88,6 +88,7 @@ const CheckboxFormField = <T extends FieldValues>({
                     onChange={(event) => {
                       onChange(event.target.checked as PathValue<T, Path<T>>)
                     }}
+                    data-testid={dataTestId}
                     name={name}
                     ref={ref}
                   />
