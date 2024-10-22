@@ -1,5 +1,3 @@
--- AlterEnum
-ALTER TYPE "user_role" ADD VALUE 'support';
 
 -- AlterTable
 ALTER TABLE "conseillers_numeriques" ADD COLUMN     "cras_v1_date_debut" TIMESTAMP(3),
