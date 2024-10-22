@@ -2,12 +2,12 @@
 import { Argument, Command } from '@commander-js/extra-typings'
 import { JobValidation } from '@app/web/jobs/jobs'
 import { executeJob, jobExecutors } from '@app/web/jobs/jobExecutors'
+import { closeMongoClient } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 import { output } from '@app/cli/output'
 import {
   configureDeploymentTarget,
   DeploymentTargetOption,
 } from '@app/cli/deploymentTarget'
-import { closeMongoClient } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 
 const cleanupAfterJob = async () => {
   await closeMongoClient()
