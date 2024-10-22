@@ -1,4 +1,5 @@
 import {
+  deleteConseillerNumeriqueV1Cras,
   getConseillerNumeriqueCras,
   type GetConseillerNumeriqueCrasOptions,
 } from '@app/web/external-apis/conseiller-numerique/conseillersNumeriquesCraQueries'
@@ -8,10 +9,20 @@ import { craConseillerNumeriqueToPrismaModel } from '@app/web/external-apis/cons
 // no v1 cras before this date
 export const firstV1CrasMonth = new Date('2021-06-01')
 
-export const importCrasConseillerNumeriqueV1 = async (
-  getConseillerNumeriqueCrasOptions: GetConseillerNumeriqueCrasOptions,
-) => {
+export type ImportCrasConseillerNumeriqueV1Options =
+  GetConseillerNumeriqueCrasOptions & {
+    reset?: boolean
+  }
+
+export const importCrasConseillerNumeriqueV1 = async ({
+  reset = false,
+  ...getConseillerNumeriqueCrasOptions
+}: ImportCrasConseillerNumeriqueV1Options) => {
   const importedAt = new Date()
+
+  if (reset) {
+    await deleteConseillerNumeriqueV1Cras(getConseillerNumeriqueCrasOptions)
+  }
 
   const crasList = await getConseillerNumeriqueCras(
     getConseillerNumeriqueCrasOptions,

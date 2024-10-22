@@ -2,11 +2,49 @@ import { type Filter, ObjectId } from 'mongodb'
 import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 import type { CraConseillerNumeriqueCollectionItem } from '@app/web/external-apis/conseiller-numerique/CraConseillerNumerique'
 import type { StructureConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/StructureConseillerNumerique'
+import { prismaClient } from '@app/web/prismaClient'
 
 export type GetConseillerNumeriqueCrasOptions = {
   conseillerNumeriqueId?: string
   createdAtSince?: Date // included bound
   createdAtUntil?: Date // excluded bound
+}
+
+export const deleteConseillerNumeriqueV1Cras = async ({
+  createdAtUntil,
+  createdAtSince,
+  conseillerNumeriqueId,
+}: GetConseillerNumeriqueCrasOptions) => {
+  const deleted = await prismaClient.craConseillerNumeriqueV1.deleteMany({
+    where: {
+      createdAt: {
+        gte: createdAtSince,
+        lt: createdAtUntil,
+      },
+      v1ConseillerNumeriqueId: conseillerNumeriqueId,
+    },
+  })
+
+  return {
+    deleted: deleted.count,
+  }
+}
+
+export const assignConseillerNumeriqueV1CrasToConseillerNumerique =
+  async () => {
+    await prismaClient.$queryRaw`
+        UPDATE "cras_conseiller_numerique_v1" v1
+        SET "conseiller_numerique_id" = conseillers.id
+        FROM "conseillers_numeriques" conseillers
+        WHERE v1."conseiller_numerique_id" IS NULL
+          AND v1."v1_conseiller_numerique_id" = conseillers.id
+    `
+  }
+
+export const vacuumAnalyzeConseillerNumeriqueV1Cras = async () => {
+  await prismaClient.$queryRaw`
+      VACUUM ANALYZE "cras_conseiller_numerique_v1"
+    `
 }
 
 export const getConseillerNumeriqueCras = async ({
@@ -125,7 +163,7 @@ export const getConseillerNumeriqueCras = async ({
       conseillerId: item.conseiller.oid.toString(),
       cra: {
         ...craRest,
-        duree: duree.toString(),
+        duree: duree?.toString() ?? '',
       },
       structure,
     }

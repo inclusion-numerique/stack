@@ -43,7 +43,7 @@ export type CraConseillerNumerique = {
   // TODO Trouver le précisier autre (annoter)
   // TODO dans l'éxport tout est dans un champ "annotations"
   sousThemes?: Record<string, string[]>[]
-  duree: string // 30mn, 30-60, ou champ libre par 15mn e.g. 2h15
+  duree: string | null // 30mn, 30-60, ou champ libre par 15mn e.g. 2h15
   // Poursuite
   // - En accompagnement individuel (int)
   // - En atelier (int)
