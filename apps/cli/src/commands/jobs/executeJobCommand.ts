@@ -7,6 +7,11 @@ import {
   configureDeploymentTarget,
   DeploymentTargetOption,
 } from '@app/cli/deploymentTarget'
+import { closeMongoClient } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
+
+const cleanupAfterJob = async () => {
+  await closeMongoClient()
+}
 
 // eslint-disable-next-line unicorn/prevent-abbreviations
 export const executeJobCommand = new Command()
@@ -39,9 +44,11 @@ export const executeJobCommand = new Command()
       output('Job failed')
       output(result.error.message)
       output(result.error.stack)
+      await cleanupAfterJob()
       process.exit(1)
       return
     }
     output('Job executed successfully')
     output(JSON.stringify(result, null, 2))
+    await cleanupAfterJob()
   })

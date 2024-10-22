@@ -2,10 +2,10 @@ import {
   getConseillerNumeriqueCras,
   GetConseillerNumeriqueCrasResult,
 } from '@app/web/external-apis/conseiller-numerique/conseillersNumeriquesCraQueries'
-import { getMongoClient } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
+import { closeMongoClient } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 
 describe('getConseillerNumeriqueCras', () => {
-  afterAll(() => getMongoClient().then((client) => client.close(true)))
+  afterAll(() => closeMongoClient())
 
   it('should return empty dataset for a out of bound filter', async () => {
     const { cras, structures, expectedStructures, empty, firstDate, lastDate } =

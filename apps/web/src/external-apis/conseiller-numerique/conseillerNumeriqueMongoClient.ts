@@ -21,6 +21,13 @@ export const getMongoClient = async () => {
   return client
 }
 
+export const closeMongoClient = () => {
+  if (client) {
+    return client.close(true)
+  }
+  return Promise.resolve()
+}
+
 export const conseillerNumeriqueMongoCollection = async <
   TSchema extends Document = Document,
 >(

@@ -290,6 +290,8 @@ model CraConseillerNumeriqueV1 {
   structureCodeDepartement String? @map("structure_code_departement")
   structureCodeRegion String? @map("structure_code_region")
 
+  @@index([conseillerNumeriqueId])
+  @@index([v1ConseillerNumeriqueId])
   @@map("cras_conseiller_numerique_v1")
 }
 
