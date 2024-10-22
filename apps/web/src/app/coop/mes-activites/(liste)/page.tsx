@@ -36,6 +36,7 @@ const MesActivitesPage = async ({
       departementsOptions,
       initialBeneficiairesOptions,
       lieuxActiviteOptions,
+      activiteDates,
     } = await getFiltersOptionsForMediateur({
       mediateurId: user.mediateur.id,
       includeBeneficiaireId: searchParams.beneficiaire,
@@ -50,6 +51,7 @@ const MesActivitesPage = async ({
           communesOptions={communesOptions}
           departementsOptions={departementsOptions}
           lieuxActiviteOptions={lieuxActiviteOptions}
+          activiteDates={activiteDates}
         />
         <MesActivitesListePage data={data} />
       </MesActivitesListeLayout>

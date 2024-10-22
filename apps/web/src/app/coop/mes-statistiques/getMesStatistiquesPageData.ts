@@ -66,6 +66,7 @@ export const getMesStatistiquesPageData = async ({
     departementsOptions,
     initialBeneficiairesOptions,
     lieuxActiviteOptions,
+    activiteDates,
   } = await getFiltersOptionsForMediateur({
     mediateurId,
     includeBeneficiaireId: activitesFilters.beneficiaire,
@@ -83,6 +84,7 @@ export const getMesStatistiquesPageData = async ({
     departementsOptions,
     initialBeneficiairesOptions,
     lieuxActiviteOptions,
+    activiteDates,
   }
 }
 

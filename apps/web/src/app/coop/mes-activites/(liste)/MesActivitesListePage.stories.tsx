@@ -42,6 +42,10 @@ const dataAvecActivites = {
     totalPages: 1,
     activites: activitesForModalStories,
   },
+  activiteDates: {
+    first: new Date('2024-03-02'),
+    last: new Date('2024-08-30'),
+  },
 } satisfies ActivitesListPageData
 
 export const AvecActivites: Story = {

@@ -159,6 +159,10 @@ const emptyData: MesStatistiquesPageData = {
   departementsOptions: [],
   initialBeneficiairesOptions: [],
   lieuxActiviteOptions: [],
+  activiteDates: {
+    first: undefined,
+    last: undefined,
+  },
 }
 
 const createExpectedData = (

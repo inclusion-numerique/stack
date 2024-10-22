@@ -21,6 +21,7 @@ export const MesStatistiques = (
     departementsOptions,
     initialBeneficiairesOptions,
     lieuxActiviteOptions,
+    activiteDates,
   } = mesStatistiquesProps
 
   return (
@@ -38,6 +39,7 @@ export const MesStatistiques = (
             departementsOptions={departementsOptions}
             lieuxActiviteOptions={lieuxActiviteOptions}
             initialBeneficiairesOptions={initialBeneficiairesOptions}
+            minDate={activiteDates.first}
           />
           <ExportStatistiques
             filters={activitesFilters}

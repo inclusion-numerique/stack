@@ -72,6 +72,7 @@ const ActivitesFilterTags = ({
   communesOptions,
   departementsOptions,
   lieuxActiviteOptions,
+  minDate,
   className,
 }: {
   defaultFilters: ActivitesFilters
@@ -79,6 +80,7 @@ const ActivitesFilterTags = ({
   communesOptions: SelectOption[]
   lieuxActiviteOptions: SelectOption[]
   departementsOptions: SelectOption[]
+  minDate?: Date
   className?: string
 }) => {
   const router = useRouter()
@@ -186,7 +188,11 @@ const ActivitesFilterTags = ({
         Filtres&nbsp;:
       </p>
       <div className="fr-flex fr-flex-gap-2v fr-flex-wrap">
-        <PeriodFilter onChange={onPeriodChange} defaultValue={defaultPeriod} />
+        <PeriodFilter
+          onChange={onPeriodChange}
+          minDate={minDate ?? new Date()}
+          defaultValue={defaultPeriod}
+        />
         <LocationFilter
           onChange={onLocationChange}
           defaultValue={defaultLocation}

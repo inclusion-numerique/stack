@@ -7,6 +7,7 @@ import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOptio
 import ExportActivitesDisabledButton from '@app/web/app/coop/mes-activites/(liste)/ExportActivitesDisabledButton'
 import ExportActivitesButton from '@app/web/app/coop/mes-activites/(liste)/ExportActivitesButton'
 import { generateActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
+import type { ActiviteDates } from '@app/web/app/coop/mes-statistiques/_queries/getFirstAndLastActiviteDate'
 
 const ExportActivitesButtonWrapper = async ({
   lieuxActiviteOptions,
@@ -53,12 +54,14 @@ const MesActivitesListeHeader = ({
   initialBeneficiairesOptions,
   lieuxActiviteOptions,
   searchResultMatchesCount,
+  activiteDates,
 }: {
   defaultFilters: ActivitesFilters
   initialBeneficiairesOptions: BeneficiaireOption[]
   communesOptions: SelectOption[]
   lieuxActiviteOptions: SelectOption[]
   departementsOptions: SelectOption[]
+  activiteDates: ActiviteDates
   className?: string
   searchResultMatchesCount: Promise<number>
 }) => (
@@ -75,6 +78,7 @@ const MesActivitesListeHeader = ({
       communesOptions={communesOptions}
       departementsOptions={departementsOptions}
       lieuxActiviteOptions={lieuxActiviteOptions}
+      minDate={activiteDates.first ?? new Date()}
     />
     <Suspense fallback={<ExportActivitesDisabledButton />}>
       <ExportActivitesButtonWrapper
