@@ -23,18 +23,18 @@ const v1CraHeaders = [
   'Code Postal',
   'Département',
   'Région',
-  'Nom Structure',
-  'Type Structure',
+  'Lieu d’activité',
+  'Type lieu d’activité',
   'SIRET',
   'Canal',
-  'Activité',
+  'Type d’activité',
   'Durée (min)',
   'Nb Participants',
   'Nb Participants Récurrents',
-  'Organismes',
-  'Atelier',
-  'Individuel',
-  'Redirection',
+  'Nb poursuivi individuel',
+  'Nb poursuivi atelier',
+  'Nb redirection',
+  'Structures de redirection',
   'Statut Emploi',
   'Statut Étudiant',
   'Statut Retraité',
@@ -154,18 +154,18 @@ export const buildArchivesCrasV1Worksheet = ({
         nbParticipants,
         // 16. Nb Participants Récurrents
         nbParticipantsRecurrents,
+        // 19. Individuel
+        accompagnementIndividuel,
+        // 18. Atelier
+        accompagnementAtelier,
+        // 20. Redirection
+        accompagnementRedirection,
         // 17. Organismes (peut être un tableau)
         organismes
           ? Object.entries(organismes)
               .map(([key, value]) => `${key}: ${value?.toString()}`)
               .join(', ')
           : null,
-        // 18. Atelier
-        accompagnementAtelier ? 'Oui' : 'Non',
-        // 19. Individuel
-        accompagnementIndividuel ? 'Oui' : 'Non',
-        // 20. Redirection
-        accompagnementRedirection ? 'Oui' : 'Non',
         // 21. Statut Emploi
         statutEnEmploi,
         // 22. Statut Étudiant

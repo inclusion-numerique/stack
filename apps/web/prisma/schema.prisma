@@ -265,6 +265,7 @@ model CraConseillerNumeriqueV1 {
 
   duree String
 
+  // Poursuites accompagnements
   accompagnementIndividuel Int @map("accompagnement_individuel") @default(0)
   accompagnementAtelier Int @map("accompagnement_atelier") @default(0)
   accompagnementRedirection Int @map("accompagnement_redirection") @default(0)
@@ -273,7 +274,7 @@ model CraConseillerNumeriqueV1 {
   nomCommune String? @map("nom_commune")
   dateAccompagnement DateTime @map("date_accompagnement")
   codeCommune String? @map("code_commune")
-  organismes Json?
+  organismes Json? // Poursuite vers autre structures
   annotation String?
 
   createdAt DateTime @map("created_at") // v1 field
