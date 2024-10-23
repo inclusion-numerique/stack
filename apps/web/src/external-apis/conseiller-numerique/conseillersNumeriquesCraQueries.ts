@@ -87,6 +87,9 @@ export const getConseillerNumeriqueCras = async ({
     }
   }
 
+  console.log('CANAL', await crasCollection.distinct('cra.canal'))
+  // console.log('THEMES', await crasCollection.distinct('cra.themes'))
+
   const cras = await crasCollection
     .find(filter)
     .sort({ createdAt: 1 })
