@@ -25,11 +25,7 @@ import {
   typeLieuAtelierLabels,
   typeLieuLabels,
 } from '@app/web/cra/cra'
-import {
-  genreLabels,
-  statutSocialLabels,
-  trancheAgeLabels,
-} from '@app/web/beneficiaire/beneficiaire'
+import { genreLabels, statutSocialLabels, trancheAgeLabels } from '@app/web/beneficiaire/beneficiaire'
 import { emptyQuantifiedSharesFromEnum } from '@app/web/app/coop/mes-statistiques/statistiquesFixturesHelpers'
 import { prismaClient } from '@app/web/prismaClient'
 import { QuantifiedShare } from '@app/web/app/coop/mes-statistiques/quantifiedShare'
@@ -466,6 +462,9 @@ describe('getMesStatistiquesPageData', () => {
               label: mediateque.nom,
             },
           ]
+
+          data.activiteDates.first = new Date('2024-06-15')
+          data.activiteDates.last = new Date('2024-08-05')
 
           return data
         }),
