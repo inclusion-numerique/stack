@@ -1,4 +1,5 @@
 import { type Filter, ObjectId } from 'mongodb'
+import * as Sentry from '@sentry/nextjs'
 import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 import type { CraConseillerNumeriqueCollectionItem } from '@app/web/external-apis/conseiller-numerique/CraConseillerNumerique'
 import type { StructureConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/StructureConseillerNumerique'
@@ -73,8 +74,17 @@ export const getConseillerNumeriqueCras = async ({
       $lt: createdAtUntil,
     }
   }
+
   if (conseillerNumeriqueId) {
-    filter['conseiller.$id'] = new ObjectId(conseillerNumeriqueId)
+    try {
+      filter['conseiller.$id'] = new ObjectId(conseillerNumeriqueId)
+    } catch {
+      const error = new Error(
+        `Conseiller numerique has invalid mongo id: "${conseillerNumeriqueId}"`,
+      )
+      Sentry.captureException(error)
+      throw error
+    }
   }
 
   const cras = await crasCollection
