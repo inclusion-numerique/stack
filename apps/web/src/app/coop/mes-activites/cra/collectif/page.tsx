@@ -47,7 +47,7 @@ const CreateCraCollectifPage = async ({
 
   const { lieuxActiviteOptions, mostUsedLieuActivite } =
     await getInitialLieuxActiviteOptionsForSearch({
-      mediateurId: user.mediateur.id,
+      mediateurIds: [user.mediateur.id],
     })
 
   if (!defaultValues.structureId) {
@@ -56,7 +56,7 @@ const CreateCraCollectifPage = async ({
 
   const initialBeneficiairesOptions =
     await getInitialBeneficiairesOptionsForSearch({
-      mediateurId,
+      mediateurIds: [mediateurId],
     })
 
   // TODO: get most probable communes using the filter helper functions

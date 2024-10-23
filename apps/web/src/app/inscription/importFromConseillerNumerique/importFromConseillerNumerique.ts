@@ -31,8 +31,9 @@ import {
   toId,
   markAsCheckedCoordinateur,
   structureEmployeuseOf,
-  removeMediateurCheck,
+  removeMediateur,
   removeLieuxActiviteFor,
+  removeConseillerNumeriqueFor,
 } from './importFromConseillerNumerique.queries'
 
 type ImportFromConseillerNumeriquePayload = {
@@ -280,6 +281,7 @@ export const removeConseillerNumeriqueRoleToCoordinateur = async (
   if (isNotConseillerAndCoordinateur(user)) return user
 
   await removeLieuxActiviteFor(user)
+  await removeConseillerNumeriqueFor(user)
 
-  return removeMediateurCheck(user).then(toSessionUser)
+  return removeMediateur(user).then(toSessionUser)
 }

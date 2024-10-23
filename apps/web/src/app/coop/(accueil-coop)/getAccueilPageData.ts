@@ -14,12 +14,12 @@ const activitesFiltersLastDays = (daysCount: number) => {
 
 export const getAccueilPageData = async (mediateurId: string) => {
   const totalCountsStats7Days = await getTotalCountsStats({
-    mediateurId,
+    mediateurIds: [mediateurId],
     activitesFilters: activitesFiltersLastDays(7),
   })
 
   const totalCountsStats30Days = await getTotalCountsStats({
-    mediateurId,
+    mediateurIds: [mediateurId],
     activitesFilters: activitesFiltersLastDays(30),
   })
 

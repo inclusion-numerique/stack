@@ -31,7 +31,7 @@ export const getActivitesWorksheetInput = async ({
     initialBeneficiairesOptions,
     lieuxActiviteOptions,
   } = await getFiltersOptionsForMediateur({
-    mediateurId: user.mediateur.id,
+    mediateurIds: [user.mediateur.id],
     includeBeneficiaireId: filters.beneficiaire,
   })
 

@@ -1,5 +1,9 @@
 import type { Prisma } from '@prisma/client'
-import { fixtureUsers, teamAdministrateurs } from '@app/fixtures/users'
+import {
+  coordinations,
+  fixtureUsers,
+  teamAdministrateurs,
+} from '@app/fixtures/users'
 import { seedStructures } from '@app/fixtures/structures'
 import { fixtureBeneficiaires } from '@app/fixtures/beneficiaires'
 import {
@@ -8,6 +12,7 @@ import {
   fixtureCrasIndividuels,
 } from '@app/fixtures/activites'
 import { upsertCraFixtures } from '@app/fixtures/upsertCraFixtures'
+import { upsertCoordinationFixtures } from './upsertCoordinationFixture'
 
 export const deleteAll = async (transaction: Prisma.TransactionClient) => {
   const tables = await transaction.$queryRaw<
@@ -60,6 +65,8 @@ export const seed = async (transaction: Prisma.TransactionClient) => {
       }),
     ),
   )
+
+  await upsertCoordinationFixtures(transaction)(coordinations)
 
   await upsertCraFixtures({
     transaction,

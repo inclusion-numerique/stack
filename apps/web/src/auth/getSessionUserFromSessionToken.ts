@@ -64,6 +64,11 @@ export const sessionUserSelect = {
   coordinateur: {
     select: {
       id: true,
+      mediateursCoordonnes: {
+        select: {
+          mediateurId: true,
+        },
+      },
     },
   },
 } satisfies Prisma.UserSelect

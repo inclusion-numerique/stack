@@ -17,11 +17,11 @@ export type MesStatistiquesGraphOptions = {
 }
 
 export const getMesStatistiquesPageData = async ({
-  mediateurId,
+  mediateurIds,
   activitesFilters,
   graphOptions = {},
 }: {
-  mediateurId: string
+  mediateurIds: string[]
   activitesFilters: ActivitesFilters
   graphOptions?: MesStatistiquesGraphOptions
 }) => {
@@ -34,29 +34,29 @@ export const getMesStatistiquesPageData = async ({
     totalCounts,
   ] = await Promise.all([
     getAccompagnementsCountByDay({
-      mediateurId,
+      mediateurIds,
       activitesFilters,
       periodEnd: graphOptions.fin ? dateAsIsoDay(graphOptions.fin) : undefined,
     }),
     getAccompagnementsCountByMonth({
-      mediateurId,
+      mediateurIds,
       activitesFilters,
       periodEnd: graphOptions.fin ? dateAsIsoDay(graphOptions.fin) : undefined,
     }),
     getBeneficiaireStats({
-      mediateurId,
+      mediateurIds,
       activitesFilters,
     }),
     getActivitesStats({
-      mediateurId,
+      mediateurIds,
       activitesFilters,
     }),
     getActivitesStructuresStats({
-      mediateurId,
+      mediateurIds,
       activitesFilters,
     }),
     getTotalCountsStats({
-      mediateurId,
+      mediateurIds,
       activitesFilters,
     }),
   ])
@@ -68,7 +68,7 @@ export const getMesStatistiquesPageData = async ({
     lieuxActiviteOptions,
     activiteDates,
   } = await getFiltersOptionsForMediateur({
-    mediateurId,
+    mediateurIds,
     includeBeneficiaireId: activitesFilters.beneficiaire,
   })
 

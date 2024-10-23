@@ -2,7 +2,7 @@ import { getBeneficiaireInformationsPageData } from '@app/web/app/coop/mes-benef
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import { CountThematiquesResult } from '@app/web/beneficiaire/beneficiaireQueries'
 import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
-import { mediateurAvecActivite } from '@app/fixtures/users'
+import { mediateurAvecActivite } from '@app/fixtures/users/mediateurAvecActivite'
 import {
   beneficiaireMaximaleMediateurAvecActivite,
   beneficiaireSansAccompagnementsMediateurAvecActivite,
@@ -13,7 +13,7 @@ import { prismaClient } from '@app/web/prismaClient'
 describe('getBeneficiaireInformationsData', () => {
   beforeAll(async () => {
     await seedStructures(prismaClient)
-    await resetFixtureUser(mediateurAvecActivite)
+    await resetFixtureUser(mediateurAvecActivite, false)
   })
 
   it('returns no thematiques for beneficiaire with no data', async () => {

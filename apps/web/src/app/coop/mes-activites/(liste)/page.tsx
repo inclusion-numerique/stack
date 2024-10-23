@@ -38,7 +38,7 @@ const MesActivitesPage = async ({
       lieuxActiviteOptions,
       activiteDates,
     } = await getFiltersOptionsForMediateur({
-      mediateurId: user.mediateur.id,
+      mediateurIds: [user.mediateur.id],
       includeBeneficiaireId: searchParams.beneficiaire,
     })
 

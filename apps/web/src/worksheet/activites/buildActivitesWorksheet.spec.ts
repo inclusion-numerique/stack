@@ -13,7 +13,7 @@ describe('buildActivitesWorksheet', () => {
         lastName: 'Doe',
         role: 'Admin',
         id: '1',
-        coordinateur: { id: '1' },
+        coordinateur: { id: '1', mediateursCoordonnes: [] },
         mediateur: {
           id: '1',
           conseillerNumerique: { id: '3' },

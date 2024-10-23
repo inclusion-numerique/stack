@@ -54,7 +54,10 @@ const Page = async () => {
         editLieuxActiviteHref={coordinateurInscriptionSteps.lieuxActivite}
         user={user}
         structureEmployeuse={emploi.structure}
-        mediateursCoordonnesCount={mediateursCoordonnes.length}
+        mediateursCoordonnesCount={Math.max(
+          mediateursCoordonnes.length,
+          user.coordinateur.mediateursCoordonnes.length,
+        )}
         lieuxActivite={lieuxActivite}
         contactSupportLink
       />

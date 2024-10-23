@@ -14,7 +14,7 @@ export const getActivitesListPageData = async ({
       mediateurId,
       searchParams,
     }),
-    getFirstAndLastActiviteDate({ mediateurId }),
+    getFirstAndLastActiviteDate({ mediateurIds: [mediateurId] }),
   ])
 
   return {

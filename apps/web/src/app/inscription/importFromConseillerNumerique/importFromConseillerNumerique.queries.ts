@@ -48,7 +48,18 @@ export const markAsCheckedConseillerNumerique = (
     select: sessionUserSelect,
   })
 
-export const removeMediateurCheck = (user: { id: string }) =>
+export const removeConseillerNumeriqueFor = async (user: {
+  id: string
+  mediateur: { id: string } | null
+}) =>
+  prismaClient.conseillerNumerique.deleteMany({
+    where: { mediateurId: user.mediateur?.id },
+  })
+
+export const removeMediateur = async (user: {
+  id: string
+  mediateur: { id: string } | null
+}) =>
   prismaClient.user.update({
     where: {
       id: user.id,

@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import {
@@ -45,10 +46,10 @@ export type AccompagnementsStats = {
   }
 }
 export const getTotalCountsStats = async ({
-  mediateurId,
+  mediateurIds,
   activitesFilters,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
   activitesFilters: ActivitesFilters
 }): Promise<AccompagnementsStats> =>
   prismaClient.$queryRaw<
@@ -78,7 +79,7 @@ export const getTotalCountsStats = async ({
     LEFT JOIN accompagnements ON accompagnements.activite_id = activites.id
     LEFT JOIN beneficiaires ON beneficiaires.id = accompagnements.beneficiaire_id
     LEFT JOIN structures ON structures.id = activites.structure_id
-    WHERE activites.mediateur_id = ${mediateurId}::UUID
+    WHERE activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
       AND activites.suppression IS NULL
       AND ${getActiviteFiltersSqlFragment(
         getActivitesFiltersWhereConditions(activitesFilters),

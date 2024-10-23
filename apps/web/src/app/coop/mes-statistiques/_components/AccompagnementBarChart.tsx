@@ -35,7 +35,7 @@ export const AccompagnementBarChart = ({
   <ResponsiveContainer width="100%" height={200}>
     <BarChart
       data={data}
-      margin={{ top: 5, right: 30, left: -20, bottom: 10 }}
+      margin={{ top: 15, right: 30, left: -20, bottom: 10 }}
       barSize={data.length > 12 ? 6 : 16}
     >
       <XAxis

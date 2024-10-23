@@ -2,6 +2,7 @@ import type { Prisma, TypeLieu, TypeLieuAtelier } from '@prisma/client'
 import { v4 } from 'uuid'
 import type { ParticipantsAnonymesCraCollectifData } from '@app/web/cra/ParticipantsAnonymesCraCollectifValidation'
 import { createBeneficiairesForParticipantsAnonymes } from '@app/web/beneficiaire/createBeneficiairesForParticipantsAnonymes'
+import { mergeUuids } from './mergeUuids'
 
 /**
  * Create a CRA individuel prisma data with associated entities
@@ -114,13 +115,6 @@ export const givenCraDemarcheAdministrative = <
     accompagnements,
   }
 }
-
-/**
- * We use deterministic related entity ids for easier upsert / merging logic
- * Use first half of a and second half of b uuid v4
- */
-const mergeUuids = (a: string, b: string): string =>
-  a.slice(0, 16) + b.slice(16)
 
 /**
  * Create a CRA collectif prisma data with associated entities

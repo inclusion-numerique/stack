@@ -1,11 +1,12 @@
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
+import { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
 import { getDepartementsFromCodesInsee } from '@app/web/utils/getDepartementFromCodeInsee'
 
 export const getMediateurCommunesAndDepartementsOptions = async ({
-  mediateurId,
+  mediateurIds,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
 }) => {
   const communes = await prismaClient.$queryRaw<
     {
@@ -21,7 +22,7 @@ export const getMediateurCommunesAndDepartementsOptions = async ({
               COALESCE(structures.code_postal, activites.lieu_code_postal) AS code_postal
           FROM activites
                    LEFT JOIN structures ON structures.id = activites.structure_id
-          WHERE activites.mediateur_id = ${mediateurId}::UUID
+          WHERE activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
       )
       SELECT
           code_insee AS code,

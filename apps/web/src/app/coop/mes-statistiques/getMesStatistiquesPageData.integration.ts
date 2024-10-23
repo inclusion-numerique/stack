@@ -1,12 +1,14 @@
 /* eslint no-param-reassign: 0 */
 import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
+import { conseillerNumerique } from '@app/fixtures/users/conseillerNumerique'
 import {
-  conseillerNumerique,
   mediateurAvecActivite,
   mediateurAvecActiviteMediateurId,
+} from '@app/fixtures/users/mediateurAvecActivite'
+import {
   mediateurSansActivites,
   mediateurSansActivitesMediateurId,
-} from '@app/fixtures/users'
+} from '@app/fixtures/users/mediateurSansActivites'
 import {
   getMesStatistiquesPageData,
   MesStatistiquesGraphOptions,
@@ -210,15 +212,15 @@ const expectEnum = <T extends string>(
 describe('getMesStatistiquesPageData', () => {
   beforeAll(async () => {
     await seedStructures(prismaClient)
-    await resetFixtureUser(mediateurAvecActivite)
-    await resetFixtureUser(mediateurSansActivites)
-    await resetFixtureUser(conseillerNumerique)
+    await resetFixtureUser(mediateurAvecActivite, false)
+    await resetFixtureUser(mediateurSansActivites, false)
+    await resetFixtureUser(conseillerNumerique, false)
   })
 
   describe('mediateur sans activites', () => {
     test('should give empty data without filters', async () => {
       const data = await getMesStatistiquesPageData({
-        mediateurId: mediateurSansActivitesMediateurId,
+        mediateurIds: [mediateurSansActivitesMediateurId],
         activitesFilters: {},
         graphOptions,
       })
@@ -509,7 +511,7 @@ describe('getMesStatistiquesPageData', () => {
         ],
         initialBeneficiairesOptions:
           await getInitialBeneficiairesOptionsForSearch({
-            mediateurId,
+            mediateurIds: [mediateurId],
           }),
         lieuxActiviteOptions: [{ label: mediateque.nom, value: mediateque.id }],
       }
@@ -517,7 +519,7 @@ describe('getMesStatistiquesPageData', () => {
 
     test.each(cases)('$title', async ({ activitesFilters, expected }) => {
       const data = await getMesStatistiquesPageData({
-        mediateurId: mediateurAvecActiviteMediateurId,
+        mediateurIds: [mediateurAvecActiviteMediateurId],
         activitesFilters,
         graphOptions,
       })

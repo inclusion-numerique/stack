@@ -602,7 +602,6 @@ export const inscriptionRouter = router({
   removeMediationNumeriqueForCoordinateur: protectedProcedure.mutation(
     async ({ ctx: { user: sessionUser } }) => {
       inscriptionGuard(sessionUser.id, sessionUser)
-
       await removeConseillerNumeriqueRoleToCoordinateur(sessionUser)
     },
   ),

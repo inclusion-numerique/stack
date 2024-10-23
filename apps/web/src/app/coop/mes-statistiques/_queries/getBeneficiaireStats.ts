@@ -1,4 +1,4 @@
-import { Genre, StatutSocial, TrancheAge } from '@prisma/client'
+import { Genre, Prisma, StatutSocial, TrancheAge } from '@prisma/client'
 import { snakeCase } from 'change-case'
 import { prismaClient } from '@app/web/prismaClient'
 import {
@@ -56,10 +56,10 @@ export const sortEnumProportions = <
   )
 
 export const getBeneficiaireStatsRaw = async ({
-  mediateurId,
+  mediateurIds,
   activitesFilters,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
   activitesFilters: ActivitesFilters
 }) =>
   prismaClient.$queryRaw<[BeneficiairesStatsRaw]>`
@@ -74,7 +74,7 @@ export const getBeneficiaireStatsRaw = async ({
                                                INNER JOIN accompagnements ON accompagnements.beneficiaire_id = beneficiaires.id
                                                INNER JOIN activites ON
                                                     activites.id = accompagnements.activite_id
-                                              AND activites.mediateur_id = ${mediateurId}::UUID
+                                              AND activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
                                               AND activites.suppression IS NULL
                                               AND ${getActiviteFiltersSqlFragment(
                                                 getActivitesFiltersWhereConditions(
@@ -151,10 +151,10 @@ export type BeneficiairesCommunesRaw = {
 }
 
 export const getBeneficiairesCommunesRaw = async ({
-  mediateurId,
+  mediateurIds,
   activitesFilters,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
   activitesFilters: ActivitesFilters
 }) =>
   prismaClient.$queryRaw<BeneficiairesCommunesRaw[]>`
@@ -172,7 +172,7 @@ export const getBeneficiairesCommunesRaw = async ({
           accompagnements.beneficiaire_id = beneficiaires.id
                INNER JOIN activites ON
           activites.id = accompagnements.activite_id
-              AND activites.mediateur_id = ${mediateurId}::UUID
+              AND activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
               AND activites.suppression IS NULL
               AND ${getActiviteFiltersSqlFragment(
                 getActivitesFiltersWhereConditions(activitesFilters),
@@ -208,19 +208,19 @@ export const normalizeBeneficiairesCommunesRaw = (
 }
 
 export const getBeneficiaireStats = async ({
-  mediateurId,
+  mediateurIds,
   activitesFilters,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
   activitesFilters: ActivitesFilters
 }) => {
   const statsRaw = await getBeneficiaireStatsRaw({
-    mediateurId,
+    mediateurIds,
     activitesFilters,
   })
 
   const rawCommunes = await getBeneficiairesCommunesRaw({
-    mediateurId,
+    mediateurIds,
     activitesFilters,
   })
 

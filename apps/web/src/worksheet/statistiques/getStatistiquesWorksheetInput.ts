@@ -13,7 +13,7 @@ export const getStatistiquesWorksheetInput = async ({
   filters: ActivitesFilters
 }): Promise<BuildStatistiquesWorksheetInput> => {
   const statistiques = await getMesStatistiquesPageData({
-    mediateurId: user.mediateur.id,
+    mediateurIds: [user.mediateur.id],
     activitesFilters: filters,
   })
 
@@ -23,7 +23,7 @@ export const getStatistiquesWorksheetInput = async ({
     initialBeneficiairesOptions,
     lieuxActiviteOptions,
   } = await getFiltersOptionsForMediateur({
-    mediateurId: user.mediateur.id,
+    mediateurIds: [user.mediateur.id],
     includeBeneficiaireId: filters.beneficiaire,
   })
 

@@ -1,9 +1,7 @@
 import { Thematique, ThematiqueDemarcheAdministrative } from '@prisma/client'
 import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
-import {
-  conseillerNumeriqueMediateurId,
-  mediateurAvecActiviteMediateurId,
-} from '@app/fixtures/users'
+import { conseillerNumeriqueMediateurId } from '@app/fixtures/users/conseillerNumerique'
+import { mediateurAvecActiviteMediateurId } from '@app/fixtures/users/mediateurAvecActivite'
 import {
   givenCraCollectif,
   givenCraDemarcheAdministrative,

@@ -1,17 +1,26 @@
 import type { Metadata } from 'next'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
+import { getAuthenticatedMediateurOrCoordinateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { getStructureEmployeuseAddress } from '@app/web/structure/getStructureEmployeuseAddress'
 import {
   type ActivitesFilters,
   validateActivitesFilters,
 } from '@app/web/cra/ActivitesFilters'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import { getMesStatistiquesPageData } from './getMesStatistiquesPageData'
 import { MesStatistiques } from './MesStatistiques'
 
 export const metadata: Metadata = {
   title: metadataTitle('Mes statistiques'),
 }
+
+const mediateurIdOf = (user: SessionUser) =>
+  user.mediateur ? [user.mediateur.id] : []
+
+const mediateurIdsCoordonnesBy = (user: SessionUser) =>
+  (user.coordinateur?.mediateursCoordonnes ?? []).map(
+    ({ mediateurId }) => mediateurId,
+  )
 
 const MesStatistiquesPage = async ({
   searchParams = {},
@@ -20,9 +29,10 @@ const MesStatistiquesPage = async ({
     graphique_fin?: string
   }
 }) => {
-  const user = await getAuthenticatedMediateur()
+  const user = await getAuthenticatedMediateurOrCoordinateur()
+
   const mesStatistiques = await getMesStatistiquesPageData({
-    mediateurId: user.mediateur.id,
+    mediateurIds: [...mediateurIdOf(user), ...mediateurIdsCoordonnesBy(user)],
     activitesFilters: validateActivitesFilters(searchParams),
     graphOptions: {
       fin: searchParams.graphique_fin

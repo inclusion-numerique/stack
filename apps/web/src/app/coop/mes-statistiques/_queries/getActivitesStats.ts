@@ -1,5 +1,6 @@
 import {
   Materiel,
+  Prisma,
   Thematique,
   ThematiqueDemarcheAdministrative,
   TypeActivite,
@@ -60,10 +61,10 @@ export type ActivitesStatsRaw = {
 }
 
 export const getActivitesStatsRaw = async ({
-  mediateurId,
+  mediateurIds,
   activitesFilters,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
   activitesFilters: ActivitesFilters
 }) =>
   prismaClient.$queryRaw<[ActivitesStatsRaw]>`
@@ -106,7 +107,7 @@ export const getActivitesStatsRaw = async ({
              })}
       FROM activites
         LEFT JOIN structures ON structures.id = activites.structure_id
-      WHERE activites.mediateur_id = ${mediateurId}::UUID
+      WHERE activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
         AND activites.suppression IS NULL
         AND ${getActiviteFiltersSqlFragment(
           getActivitesFiltersWhereConditions(activitesFilters),
@@ -222,14 +223,14 @@ export const normalizeActivitesStatsRaw = (stats: ActivitesStatsRaw) => {
 }
 
 export const getActivitesStats = async ({
-  mediateurId,
+  mediateurIds,
   activitesFilters,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
   activitesFilters: ActivitesFilters
 }) => {
   const statsRaw = await getActivitesStatsRaw({
-    mediateurId,
+    mediateurIds,
     activitesFilters,
   })
 
@@ -246,10 +247,10 @@ export type ActivitesStructuresStatsRaw = {
 }
 
 export const getActivitesStructuresStatsRaw = async ({
-  mediateurId,
+  mediateurIds,
   activitesFilters,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
   activitesFilters: ActivitesFilters
 }) => prismaClient.$queryRaw<ActivitesStructuresStatsRaw[]>`
     SELECT structures.id,
@@ -261,21 +262,21 @@ export const getActivitesStructuresStatsRaw = async ({
     FROM structures
              INNER JOIN activites ON activites.structure_id = structures.id
         AND activites.suppression IS NULL
-        AND activites.mediateur_id = ${mediateurId}::UUID
+        AND activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
         AND ${getActiviteFiltersSqlFragment(
           getActivitesFiltersWhereConditions(activitesFilters),
         )}
     GROUP BY structures.id`
 
 export const getActivitesStructuresStats = async ({
-  mediateurId,
+  mediateurIds,
   activitesFilters,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
   activitesFilters: ActivitesFilters
 }) => {
   const statsRaw = await getActivitesStructuresStatsRaw({
-    mediateurId,
+    mediateurIds,
     activitesFilters,
   })
   const sortedStructures = statsRaw.sort((a, b) => a.count - b.count)
