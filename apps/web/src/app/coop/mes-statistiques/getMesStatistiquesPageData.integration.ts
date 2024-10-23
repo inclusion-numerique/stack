@@ -25,7 +25,11 @@ import {
   typeLieuAtelierLabels,
   typeLieuLabels,
 } from '@app/web/cra/cra'
-import { genreLabels, statutSocialLabels, trancheAgeLabels } from '@app/web/beneficiaire/beneficiaire'
+import {
+  genreLabels,
+  statutSocialLabels,
+  trancheAgeLabels,
+} from '@app/web/beneficiaire/beneficiaire'
 import { emptyQuantifiedSharesFromEnum } from '@app/web/app/coop/mes-statistiques/statistiquesFixturesHelpers'
 import { prismaClient } from '@app/web/prismaClient'
 import { QuantifiedShare } from '@app/web/app/coop/mes-statistiques/quantifiedShare'
