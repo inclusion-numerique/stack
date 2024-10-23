@@ -197,6 +197,30 @@ model JobExecution {
   @@map("job_executions")
 }
 
+enum ApiClientScope {
+  Statistiques @map("statistiques")
+
+  @@map("api_client_scope")
+}
+
+model ApiClient {
+  id String @id @default(uuid()) @db.Uuid
+
+  name String
+
+  secret String // hashed secret
+
+  validFrom DateTime @map("valid_from")
+  validUntil DateTime? @map("valid_until")
+
+  scopes ApiClientScope[]
+
+  created DateTime
+  updated DateTime
+
+  @@map("api_clients")
+}
+
 // Domain model
 
 // Un médiateur numérique
