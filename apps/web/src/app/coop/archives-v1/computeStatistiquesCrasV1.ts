@@ -180,7 +180,7 @@ export const getRawStatistiquesCrasV1 = async ({
   const lastMonth = endOfMonth(dates.max)
 
   // month as iso string e.g. 2024-03
-  return prismaClient.$queryRaw<CrasV1StatRow[]>`
+  const monthlyStats = await prismaClient.$queryRaw<CrasV1StatRow[]>`
       WITH cras AS (SELECT *
                     FROM cras_conseiller_numerique_v1
                     WHERE ${whereV1ConseillerNumeriqueIds(conseillerNumeriqueIds)}),
@@ -189,10 +189,10 @@ export const getRawStatistiquesCrasV1 = async ({
                                      ${lastMonth}::DATE,
                                      '1 month'::INTERVAL
                              ) AS month)
-      SELECT TO_CHAR(months.month, 'YYYY-MM')                                               as month,
+      SELECT TO_CHAR(months.month, 'YYYY-MM')                                                    as month,
              COUNT(cras.*)::INT                                                                  as total,
-             SUM(cras.nb_participants)::INT                                                    as accompagnements,
-             (SUM(cras.nb_participants) - SUM(cras.nb_participants_recurrents))::INT            as personnes_accompagnees,
+             SUM(cras.nb_participants)::INT                                                      as accompagnements,
+             (SUM(cras.nb_participants) - SUM(cras.nb_participants_recurrents))::INT             as personnes_accompagnees,
           /* activite: 'individuel' | 'ponctuel' | 'collectif'  */
              COUNT(CASE WHEN cras.activite = 'individuel' THEN 1 END)::INT                       as individuels,
              COUNT(CASE WHEN cras.activite = 'ponctuel' THEN 1 END)::INT                         as ponctuels,
@@ -299,7 +299,18 @@ export const getRawStatistiquesCrasV1 = async ({
                LEFT JOIN cras
                          ON DATE_TRUNC('month', cras.date_accompagnement) = months.month
       GROUP BY months.month
-      ORDER BY months.month DESC`.then((rows) =>
-    rows.map(postProcessV1CraStatRow),
-  )
+      ORDER BY months.month DESC`
+
+  return {
+    firstMonth,
+    lastMonth,
+    monthlyStats: monthlyStats.map(postProcessV1CraStatRow),
+  }
 }
+
+export type StatistiquesV1 = Exclude<
+  Awaited<ReturnType<typeof getRawStatistiquesCrasV1>>,
+  null
+>
+
+export type MonthlyStatistiquesV1 = StatistiquesV1['monthlyStats'][number]
