@@ -17,6 +17,8 @@ import LocationFilter, {
   LocationFilterValue,
 } from '@app/web/components/filters/LocationFilter'
 import { TypeActiviteSlug } from '@app/web/cra/cra'
+import MediateurFilter from '@app/web/components/filters/MediateurFilter'
+import { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 
 // Allows to replace the current route with new query params
 const replaceRouteWithNewParams = ({
@@ -68,6 +70,7 @@ const createRouteParamsReplacer =
 
 const ActivitesFilterTags = ({
   defaultFilters,
+  initialMediateursOptions,
   initialBeneficiairesOptions,
   communesOptions,
   departementsOptions,
@@ -76,6 +79,7 @@ const ActivitesFilterTags = ({
   className,
 }: {
   defaultFilters: ActivitesFilters
+  initialMediateursOptions: MediateurOption[]
   initialBeneficiairesOptions: BeneficiaireOption[]
   communesOptions: SelectOption[]
   lieuxActiviteOptions: SelectOption[]
@@ -119,15 +123,15 @@ const ActivitesFilterTags = ({
     )
   }
   const onActiviteTypeChange = (type: TypeActiviteSlug | null) => {
-    replaceRouteParams({
-      type,
-    })
+    replaceRouteParams({ type })
   }
 
   const onBeneficiaireChange = (beneficiaireId: string | null) => {
-    replaceRouteParams({
-      beneficiaire: beneficiaireId,
-    })
+    replaceRouteParams({ beneficiaire: beneficiaireId })
+  }
+
+  const onMediateurChange = (mediateurId: string | null) => {
+    replaceRouteParams({ mediateur: mediateurId })
   }
 
   const defaultLocation: LocationFilterValue | undefined = defaultFilters.lieu
@@ -188,6 +192,11 @@ const ActivitesFilterTags = ({
         Filtres&nbsp;:
       </p>
       <div className="fr-flex fr-flex-gap-2v fr-flex-wrap">
+        <MediateurFilter
+          onChange={onMediateurChange}
+          initialMediateursOptions={initialMediateursOptions}
+          defaultValue={defaultFilters.beneficiaire}
+        />
         <PeriodFilter
           onChange={onPeriodChange}
           minDate={minDate ?? new Date()}

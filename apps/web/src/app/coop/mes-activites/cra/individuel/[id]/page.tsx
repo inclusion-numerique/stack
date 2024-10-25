@@ -39,7 +39,7 @@ const UpdateCraIndividuelPage = async ({
 
   const initialBeneficiairesOptions =
     await getInitialBeneficiairesOptionsForSearch({
-      mediateurIds: [user.mediateur.id],
+      mediateurId: user.mediateur.id,
       includeBeneficiaireId: defaultValues.beneficiaire?.id ?? undefined,
     })
 

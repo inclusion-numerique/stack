@@ -63,6 +63,7 @@ export const activiteLieuCodeInseeSelect = Prisma.raw(`COALESCE(
 export const getActivitesFiltersWhereConditions = ({
   du,
   au,
+  mediateur,
   beneficiaire,
   commune,
   departement,
@@ -81,10 +82,13 @@ export const getActivitesFiltersWhereConditions = ({
     : null,
   beneficiaire: beneficiaire
     ? Prisma.raw(`EXISTS (
-              SELECT 1
-              FROM accompagnements
-              WHERE accompagnements.beneficiaire_id = '${beneficiaire}'::UUID
-                AND accompagnements.activite_id = activites.id
-            ) `)
+            SELECT 1
+            FROM accompagnements
+            WHERE accompagnements.beneficiaire_id = '${beneficiaire}'::UUID
+              AND accompagnements.activite_id = activites.id
+          ) `)
+    : null,
+  mediateur: mediateur
+    ? Prisma.raw(`activites.mediateur_id = '${mediateur}'::UUID`)
     : null,
 })

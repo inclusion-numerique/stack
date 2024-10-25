@@ -160,6 +160,7 @@ const emptyData: MesStatistiquesPageData = {
   communesOptions: [],
   departementsOptions: [],
   initialBeneficiairesOptions: [],
+  initialMediateursOptions: [],
   lieuxActiviteOptions: [],
   activiteDates: {
     first: undefined,
@@ -220,7 +221,7 @@ describe('getMesStatistiquesPageData', () => {
   describe('mediateur sans activites', () => {
     test('should give empty data without filters', async () => {
       const data = await getMesStatistiquesPageData({
-        mediateurIds: [mediateurSansActivitesMediateurId],
+        mediateurCoordonnesIds: [mediateurSansActivitesMediateurId],
         activitesFilters: {},
         graphOptions,
       })
@@ -510,16 +511,14 @@ describe('getMesStatistiquesPageData', () => {
           },
         ],
         initialBeneficiairesOptions:
-          await getInitialBeneficiairesOptionsForSearch({
-            mediateurIds: [mediateurId],
-          }),
+          await getInitialBeneficiairesOptionsForSearch({ mediateurId }),
         lieuxActiviteOptions: [{ label: mediateque.nom, value: mediateque.id }],
       }
     })
 
     test.each(cases)('$title', async ({ activitesFilters, expected }) => {
       const data = await getMesStatistiquesPageData({
-        mediateurIds: [mediateurAvecActiviteMediateurId],
+        mediateurCoordonnesIds: [mediateurAvecActiviteMediateurId],
         activitesFilters,
         graphOptions,
       })

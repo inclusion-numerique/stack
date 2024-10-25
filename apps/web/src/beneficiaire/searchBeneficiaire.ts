@@ -14,10 +14,10 @@ type SearchBeneficiaireOptions = {
 }
 
 // List beneficiaires not anonymous
-export const beneficiairesListWhere = (mediateurIds?: string[]) =>
+export const beneficiairesListWhere = (mediateurId?: string) =>
   ({
     suppression: null,
-    mediateurId: { in: mediateurIds },
+    mediateurId,
     anonyme: false,
   }) satisfies Prisma.BeneficiaireWhereInput
 
@@ -41,7 +41,7 @@ export const searchBeneficiaire = async (
   const queryParts = searchParams.recherche?.split(' ') ?? []
 
   const matchesWhere = {
-    ...beneficiairesListWhere(mediateurId ? [mediateurId] : []),
+    ...beneficiairesListWhere(mediateurId),
     AND: queryParts.map((part) => ({
       OR: [
         {

@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 import ActivitesFilterTags from '@app/web/app/coop/mes-activites/(liste)/ActivitesFilterTags'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
+import type { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 import ExportActivitesDisabledButton from '@app/web/app/coop/mes-activites/(liste)/ExportActivitesDisabledButton'
 import ExportActivitesButton from '@app/web/app/coop/mes-activites/(liste)/ExportActivitesButton'
 import { generateActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
@@ -51,12 +52,14 @@ const MesActivitesListeHeader = ({
   communesOptions,
   defaultFilters,
   departementsOptions,
+  initialMediateursOptions,
   initialBeneficiairesOptions,
   lieuxActiviteOptions,
   searchResultMatchesCount,
   activiteDates,
 }: {
   defaultFilters: ActivitesFilters
+  initialMediateursOptions: MediateurOption[]
   initialBeneficiairesOptions: BeneficiaireOption[]
   communesOptions: SelectOption[]
   lieuxActiviteOptions: SelectOption[]
@@ -74,6 +77,7 @@ const MesActivitesListeHeader = ({
     <ActivitesFilterTags
       className="fr-mt-0-5v"
       defaultFilters={defaultFilters}
+      initialMediateursOptions={initialMediateursOptions}
       initialBeneficiairesOptions={initialBeneficiairesOptions}
       communesOptions={communesOptions}
       departementsOptions={departementsOptions}

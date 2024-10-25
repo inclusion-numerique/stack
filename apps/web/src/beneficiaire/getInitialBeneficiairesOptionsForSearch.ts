@@ -6,36 +6,25 @@ import { prismaBeneficiaireToBeneficiaireData } from '@app/web/beneficiaire/pris
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 
 export const getInitialBeneficiairesOptionsForSearch = async ({
-  mediateurIds,
+  mediateurId,
   includeBeneficiaireId,
 }: {
-  mediateurIds: string[]
+  mediateurId?: string
   includeBeneficiaireId?: string
 }) => {
   // Initial list of beneficiaires for pre-populating selected beneficiary or quick select search
-  const whereBeneficiaire = beneficiairesListWhere(mediateurIds)
+  const whereBeneficiaire = beneficiairesListWhere(mediateurId)
   const beneficiariesForSelect = await prismaClient.beneficiaire.findMany({
     // If we require an included beneficiaire, we exclude it from the search
     // as it will be added in subsequent query
     where: includeBeneficiaireId
-      ? {
-          AND: [
-            {
-              id: { not: includeBeneficiaireId },
-            },
-            whereBeneficiaire,
-          ],
-        }
+      ? { AND: [{ id: { not: includeBeneficiaireId } }, whereBeneficiaire] }
       : whereBeneficiaire,
     select: searchBeneficiaireSelect,
     orderBy: [
       { accompagnements: { _count: 'desc' } },
-      {
-        nom: 'asc',
-      },
-      {
-        prenom: 'asc',
-      },
+      { nom: 'asc' },
+      { prenom: 'asc' },
     ],
     take: 20,
   })

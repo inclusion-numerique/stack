@@ -30,6 +30,7 @@ const MesActivitesVueTableauPage = async ({
     const {
       communesOptions,
       departementsOptions,
+      initialMediateursOptions,
       initialBeneficiairesOptions,
       lieuxActiviteOptions,
       activiteDates,
@@ -42,6 +43,7 @@ const MesActivitesVueTableauPage = async ({
       <MesActivitesListeLayout vue="tableau">
         <ActivitesFilterTags
           defaultFilters={searchParams}
+          initialMediateursOptions={initialMediateursOptions}
           initialBeneficiairesOptions={initialBeneficiairesOptions}
           lieuxActiviteOptions={lieuxActiviteOptions}
           communesOptions={communesOptions}

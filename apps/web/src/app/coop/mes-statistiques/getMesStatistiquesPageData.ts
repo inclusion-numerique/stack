@@ -17,11 +17,13 @@ export type MesStatistiquesGraphOptions = {
 }
 
 export const getMesStatistiquesPageData = async ({
-  mediateurIds,
+  mediateurId,
+  mediateurCoordonnesIds,
   activitesFilters,
   graphOptions = {},
 }: {
-  mediateurIds: string[]
+  mediateurId?: string
+  mediateurCoordonnesIds: string[]
   activitesFilters: ActivitesFilters
   graphOptions?: MesStatistiquesGraphOptions
 }) => {
@@ -34,29 +36,29 @@ export const getMesStatistiquesPageData = async ({
     totalCounts,
   ] = await Promise.all([
     getAccompagnementsCountByDay({
-      mediateurIds,
+      mediateurIds: mediateurCoordonnesIds,
       activitesFilters,
       periodEnd: graphOptions.fin ? dateAsIsoDay(graphOptions.fin) : undefined,
     }),
     getAccompagnementsCountByMonth({
-      mediateurIds,
+      mediateurIds: mediateurCoordonnesIds,
       activitesFilters,
       periodEnd: graphOptions.fin ? dateAsIsoDay(graphOptions.fin) : undefined,
     }),
     getBeneficiaireStats({
-      mediateurIds,
+      mediateurIds: mediateurCoordonnesIds,
       activitesFilters,
     }),
     getActivitesStats({
-      mediateurIds,
+      mediateurIds: mediateurCoordonnesIds,
       activitesFilters,
     }),
     getActivitesStructuresStats({
-      mediateurIds,
+      mediateurIds: mediateurCoordonnesIds,
       activitesFilters,
     }),
     getTotalCountsStats({
-      mediateurIds,
+      mediateurIds: mediateurCoordonnesIds,
       activitesFilters,
     }),
   ])
@@ -64,11 +66,13 @@ export const getMesStatistiquesPageData = async ({
   const {
     communesOptions,
     departementsOptions,
+    initialMediateursOptions,
     initialBeneficiairesOptions,
     lieuxActiviteOptions,
     activiteDates,
   } = await getFiltersOptionsForMediateur({
-    mediateurIds,
+    mediateurId,
+    mediateurIds: mediateurCoordonnesIds,
     includeBeneficiaireId: activitesFilters.beneficiaire,
   })
 
@@ -82,6 +86,7 @@ export const getMesStatistiquesPageData = async ({
     activitesFilters,
     communesOptions,
     departementsOptions,
+    initialMediateursOptions,
     initialBeneficiairesOptions,
     lieuxActiviteOptions,
     activiteDates,

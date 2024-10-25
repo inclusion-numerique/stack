@@ -35,6 +35,7 @@ const MesActivitesPage = async ({
       communesOptions,
       departementsOptions,
       initialBeneficiairesOptions,
+      initialMediateursOptions,
       lieuxActiviteOptions,
       activiteDates,
     } = await getFiltersOptionsForMediateur({
@@ -48,6 +49,7 @@ const MesActivitesPage = async ({
           searchResultMatchesCount={searchResultMatchesCount}
           defaultFilters={searchParams}
           initialBeneficiairesOptions={initialBeneficiairesOptions}
+          initialMediateursOptions={initialMediateursOptions}
           communesOptions={communesOptions}
           departementsOptions={departementsOptions}
           lieuxActiviteOptions={lieuxActiviteOptions}

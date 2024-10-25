@@ -14,10 +14,7 @@ export const metadata: Metadata = {
   title: metadataTitle('Mes statistiques'),
 }
 
-const mediateurIdOf = (user: SessionUser) =>
-  user.mediateur ? [user.mediateur.id] : []
-
-const mediateurIdsCoordonnesBy = (user: SessionUser) =>
+const mediateurCoordonnesIdsFor = (user: SessionUser) =>
   (user.coordinateur?.mediateursCoordonnes ?? []).map(
     ({ mediateurId }) => mediateurId,
   )
@@ -32,7 +29,8 @@ const MesStatistiquesPage = async ({
   const user = await getAuthenticatedMediateurOrCoordinateur()
 
   const mesStatistiques = await getMesStatistiquesPageData({
-    mediateurIds: [...mediateurIdOf(user), ...mediateurIdsCoordonnesBy(user)],
+    mediateurId: user.mediateur?.id,
+    mediateurCoordonnesIds: mediateurCoordonnesIdsFor(user),
     activitesFilters: validateActivitesFilters(searchParams),
     graphOptions: {
       fin: searchParams.graphique_fin

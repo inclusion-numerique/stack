@@ -9,6 +9,7 @@ import { inscriptionRouter } from '@app/web/server/rpc/inscription/inscriptionRo
 import { conseillersNumeriqueRouter } from '@app/web/server/rpc/conseillers-numerique/conseillersNumeriqueRouter'
 import { craRouter } from '@app/web/server/rpc/cra/craRouter'
 import { beneficiairesRouter } from '@app/web/server/rpc/beneficiaires/beneficiairesRouter'
+import { mediateursRouter } from '@app/web/server/rpc/mediateur/mediateursRouter'
 import { lieuActiviteRouter } from '@app/web/server/rpc/lieu-activite/lieuActiviteRouter'
 
 export const appRouter = router({
@@ -19,6 +20,7 @@ export const appRouter = router({
   siret: siretRouter,
   structures: structuresRouter,
   beneficiaires: beneficiairesRouter,
+  mediateur: mediateursRouter,
   cra: craRouter,
   usurpation: usurpationRouter,
   conseillersNumerique: conseillersNumeriqueRouter,

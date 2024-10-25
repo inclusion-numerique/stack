@@ -19,6 +19,7 @@ export const MesStatistiques = (
     activitesFilters,
     communesOptions,
     departementsOptions,
+    initialMediateursOptions,
     initialBeneficiairesOptions,
     lieuxActiviteOptions,
     activiteDates,
@@ -38,6 +39,7 @@ export const MesStatistiques = (
             communesOptions={communesOptions}
             departementsOptions={departementsOptions}
             lieuxActiviteOptions={lieuxActiviteOptions}
+            initialMediateursOptions={initialMediateursOptions}
             initialBeneficiairesOptions={initialBeneficiairesOptions}
             minDate={activiteDates.first}
           />
