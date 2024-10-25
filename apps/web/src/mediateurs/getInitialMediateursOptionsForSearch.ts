@@ -1,41 +1,81 @@
 import { prismaClient } from '@app/web/prismaClient'
-import { getUserDisplayName } from '../utils/user'
+import { getUserDisplayName, UserDisplayName } from '@app/web/utils/user'
 import { MediateurOption } from './MediateurOption'
+
+const mediateurSelect = {
+  id: true,
+  user: {
+    select: {
+      id: true,
+      lastName: true,
+      firstName: true,
+      name: true,
+      email: true,
+    },
+  },
+}
+
+const cannotSearchMediateurCoordonnesWith = (
+  coordinateurId?: string,
+  mediateurId?: string,
+  mediateurCoordonnesIds: string[] = [],
+) =>
+  coordinateurId == null ||
+  (mediateurId == null && mediateurCoordonnesIds.length === 0)
+
+const initialOptionFor = (
+  mediateur?: {
+    id: string
+    user: UserDisplayName
+  } | null,
+) =>
+  mediateur?.id && mediateur?.user
+    ? [
+        {
+          label: `${getUserDisplayName(mediateur.user)} (Mes statistiques)`,
+          value: { mediateurId: mediateur.id },
+        },
+      ]
+    : []
 
 export const getInitialMediateursOptionsForSearch = async ({
   mediateurId,
-  mediateurIds,
+  coordinateurId,
+  mediateurCoordonnesIds = [],
 }: {
   mediateurId?: string
-  mediateurIds: string[]
+  coordinateurId?: string
+  mediateurCoordonnesIds?: string[]
 }) => {
-  const mediateurSelect = {
-    id: true,
-    user: {
-      select: {
-        id: true,
-        lastName: true,
-        firstName: true,
-        name: true,
-        email: true,
-      },
-    },
-  }
+  if (
+    cannotSearchMediateurCoordonnesWith(
+      coordinateurId,
+      mediateurId,
+      mediateurCoordonnesIds,
+    )
+  )
+    return []
 
-  const mediateur = await prismaClient.mediateur.findUnique({
-    where: { id: mediateurId },
-    select: mediateurSelect,
-  })
+  const mediateur =
+    mediateurId == null
+      ? undefined
+      : await prismaClient.mediateur.findUnique({
+          where: { id: mediateurId },
+          select: mediateurSelect,
+        })
+
+  if (mediateurCoordonnesIds.length === 0 && mediateur != null)
+    return initialOptionFor(mediateur)
 
   const mediateursForSelect = await prismaClient.mediateur.findMany({
-    where: { id: { in: mediateurIds } },
+    where: { id: { in: mediateurCoordonnesIds } },
     select: mediateurSelect,
     orderBy: [{ user: { lastName: 'asc' } }, { user: { firstName: 'asc' } }],
     take: 20,
   })
 
   const totalCountMediateurs = await prismaClient.mediateur.count({
-    where: { id: { in: mediateurIds } },
+    where: { id: { in: mediateurCoordonnesIds } },
   })
 
   const initialMedtateursOptions: MediateurOption[] = mediateursForSelect.map(
@@ -59,14 +99,7 @@ export const getInitialMediateursOptionsForSearch = async ({
           },
         ]
       : []),
-    ...(mediateurId == null || mediateur?.user == null
-      ? []
-      : [
-          {
-            label: `${getUserDisplayName(mediateur.user)} (Mes statistiques)`,
-            value: { mediateurId },
-          },
-        ]),
+    ...initialOptionFor(mediateur),
     ...initialMedtateursOptions,
   ]
 }

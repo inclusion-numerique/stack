@@ -29,7 +29,7 @@ const MesStatistiquesPage = async ({
   const user = await getAuthenticatedMediateurOrCoordinateur()
 
   const mesStatistiques = await getMesStatistiquesPageData({
-    mediateurId: user.mediateur?.id,
+    user,
     mediateurCoordonnesIds: mediateurCoordonnesIdsFor(user),
     activitesFilters: validateActivitesFilters(searchParams),
     graphOptions: {
@@ -38,6 +38,7 @@ const MesStatistiquesPage = async ({
         : undefined,
     },
   })
+
   const employeStructure = await getStructureEmployeuseAddress(user.id)
 
   return (

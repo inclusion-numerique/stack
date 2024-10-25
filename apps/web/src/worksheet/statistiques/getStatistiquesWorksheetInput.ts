@@ -1,20 +1,27 @@
+import { SessionUser } from '@app/web/auth/sessionUser'
 import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFiltersOptionsForMediateur'
 import { generateActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
-import type { WorksheetUser } from '@app/web/worksheet/buildWorksheetHelpers'
 import { getMesStatistiquesPageData } from '@app/web/app/coop/mes-statistiques/getMesStatistiquesPageData'
 import type { BuildStatistiquesWorksheetInput } from '@app/web/worksheet/statistiques/buildStatistiquesWorksheet'
+
+const mediateurCoordonnesIdsFor = (user: SessionUser) =>
+  (user.coordinateur?.mediateursCoordonnes ?? []).map(
+    ({ mediateurId }) => mediateurId,
+  )
 
 export const getStatistiquesWorksheetInput = async ({
   user,
   filters,
 }: {
-  user: WorksheetUser & { mediateur: { id: string } }
+  user: SessionUser
   filters: ActivitesFilters
 }): Promise<BuildStatistiquesWorksheetInput> => {
+  const mediateurCoordonnesIds = mediateurCoordonnesIdsFor(user)
+
   const statistiques = await getMesStatistiquesPageData({
-    mediateurId: user.mediateur.id,
-    mediateurCoordonnesIds: [], // todo: add mediateur coordonnes ids
+    user,
+    mediateurCoordonnesIds,
     activitesFilters: filters,
   })
 
@@ -22,9 +29,11 @@ export const getStatistiquesWorksheetInput = async ({
     communesOptions,
     departementsOptions,
     initialBeneficiairesOptions,
+    initialMediateursOptions,
     lieuxActiviteOptions,
   } = await getFiltersOptionsForMediateur({
-    mediateurIds: [user.mediateur.id],
+    user,
+    mediateurCoordonnesIds,
     includeBeneficiaireId: filters.beneficiaire,
   })
 
@@ -33,6 +42,7 @@ export const getStatistiquesWorksheetInput = async ({
     departementsOptions,
     lieuxActiviteOptions,
     beneficiairesOptions: initialBeneficiairesOptions,
+    mediateursOptions: initialMediateursOptions,
   })
 
   return {

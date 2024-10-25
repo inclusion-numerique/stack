@@ -48,6 +48,7 @@ export const MesStatistiques = (
             communesOptions={communesOptions}
             departementsOptions={departementsOptions}
             lieuxActiviteOptions={lieuxActiviteOptions}
+            mediateursOptions={initialMediateursOptions}
             beneficiairesOptions={initialBeneficiairesOptions}
           />
         </div>

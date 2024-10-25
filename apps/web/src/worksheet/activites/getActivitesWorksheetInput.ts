@@ -2,18 +2,18 @@ import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { searchActivite } from '@app/web/cra/searchActivite'
 import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFiltersOptionsForMediateur'
 import { generateActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
-import { WorksheetUser } from '@app/web/worksheet/buildWorksheetHelpers'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import type { BuildActivitesWorksheetInput } from './buildActivitesWorksheet'
 
 export const getActivitesWorksheetInput = async ({
   user,
   filters,
 }: {
-  user: WorksheetUser & { mediateur: { id: string } }
+  user: SessionUser
   filters: ActivitesFilters
 }): Promise<BuildActivitesWorksheetInput> => {
   const { activites, totalPages } = await searchActivite({
-    mediateurId: user.mediateur.id,
+    mediateurId: user.mediateur?.id,
     beneficiaireId: filters.beneficiaire,
     searchParams: {
       ...filters,
@@ -29,9 +29,10 @@ export const getActivitesWorksheetInput = async ({
     communesOptions,
     departementsOptions,
     initialBeneficiairesOptions,
+    initialMediateursOptions,
     lieuxActiviteOptions,
   } = await getFiltersOptionsForMediateur({
-    mediateurIds: [user.mediateur.id],
+    user,
     includeBeneficiaireId: filters.beneficiaire,
   })
 
@@ -40,6 +41,7 @@ export const getActivitesWorksheetInput = async ({
     departementsOptions,
     lieuxActiviteOptions,
     beneficiairesOptions: initialBeneficiairesOptions,
+    mediateursOptions: initialMediateursOptions,
   })
 
   return {

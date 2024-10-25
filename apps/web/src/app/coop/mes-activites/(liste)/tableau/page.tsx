@@ -35,7 +35,7 @@ const MesActivitesVueTableauPage = async ({
       lieuxActiviteOptions,
       activiteDates,
     } = await getFiltersOptionsForMediateur({
-      mediateurIds: [user.mediateur.id],
+      user,
       includeBeneficiaireId: searchParams.beneficiaire,
     })
 

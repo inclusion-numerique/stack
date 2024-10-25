@@ -9,6 +9,7 @@ import {
   getActivitesStats,
   getActivitesStructuresStats,
 } from '@app/web/app/coop/mes-statistiques/_queries/getActivitesStats'
+import { UserDisplayName, UserProfile } from '@app/web/utils/user'
 import { getBeneficiaireStats } from './_queries/getBeneficiaireStats'
 import { getTotalCountsStats } from './_queries/getTotalCountsStats'
 
@@ -17,16 +18,21 @@ export type MesStatistiquesGraphOptions = {
 }
 
 export const getMesStatistiquesPageData = async ({
-  mediateurId,
+  user,
   mediateurCoordonnesIds,
   activitesFilters,
   graphOptions = {},
 }: {
-  mediateurId?: string
-  mediateurCoordonnesIds: string[]
+  user: UserDisplayName & UserProfile
+  mediateurCoordonnesIds?: string[]
   activitesFilters: ActivitesFilters
   graphOptions?: MesStatistiquesGraphOptions
 }) => {
+  const mediateurIds = [
+    ...(user.mediateur?.id ? [user.mediateur.id] : []),
+    ...(mediateurCoordonnesIds ?? []),
+  ]
+
   const [
     accompagnementsParJour,
     accompagnementsParMois,
@@ -36,31 +42,19 @@ export const getMesStatistiquesPageData = async ({
     totalCounts,
   ] = await Promise.all([
     getAccompagnementsCountByDay({
-      mediateurIds: mediateurCoordonnesIds,
+      mediateurIds,
       activitesFilters,
       periodEnd: graphOptions.fin ? dateAsIsoDay(graphOptions.fin) : undefined,
     }),
     getAccompagnementsCountByMonth({
-      mediateurIds: mediateurCoordonnesIds,
+      mediateurIds,
       activitesFilters,
       periodEnd: graphOptions.fin ? dateAsIsoDay(graphOptions.fin) : undefined,
     }),
-    getBeneficiaireStats({
-      mediateurIds: mediateurCoordonnesIds,
-      activitesFilters,
-    }),
-    getActivitesStats({
-      mediateurIds: mediateurCoordonnesIds,
-      activitesFilters,
-    }),
-    getActivitesStructuresStats({
-      mediateurIds: mediateurCoordonnesIds,
-      activitesFilters,
-    }),
-    getTotalCountsStats({
-      mediateurIds: mediateurCoordonnesIds,
-      activitesFilters,
-    }),
+    getBeneficiaireStats({ mediateurIds, activitesFilters }),
+    getActivitesStats({ mediateurIds, activitesFilters }),
+    getActivitesStructuresStats({ mediateurIds, activitesFilters }),
+    getTotalCountsStats({ mediateurIds, activitesFilters }),
   ])
 
   const {
@@ -71,8 +65,8 @@ export const getMesStatistiquesPageData = async ({
     lieuxActiviteOptions,
     activiteDates,
   } = await getFiltersOptionsForMediateur({
-    mediateurId,
-    mediateurIds: mediateurCoordonnesIds,
+    user,
+    mediateurCoordonnesIds,
     includeBeneficiaireId: activitesFilters.beneficiaire,
   })
 

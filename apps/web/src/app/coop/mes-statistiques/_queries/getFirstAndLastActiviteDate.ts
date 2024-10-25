@@ -6,6 +6,13 @@ export const getFirstAndLastActiviteDate = async ({
 }: {
   mediateurIds: string[]
 }): Promise<ActiviteDates> => {
+  if (mediateurIds.length === 0) {
+    return {
+      first: undefined,
+      last: undefined,
+    }
+  }
+
   const firstDate = await prismaClient.$queryRaw<{ date: Date }[]>`
       SELECT MIN(date) AS date
       FROM activites

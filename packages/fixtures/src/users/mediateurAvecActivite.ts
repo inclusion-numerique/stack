@@ -1,11 +1,14 @@
 import { givenUser } from '../givenUser'
 import { mediateque, structureEmployeuse } from '../structures'
 
+export const mediateurAvecActiviteUserId =
+  'd10844c6-b6de-402a-a68d-f8328b1d1b0c'
+
 export const mediateurAvecActiviteMediateurId =
   '303381cc-3da7-433d-a553-1a5f76465989'
 
 export const mediateurAvecActivite = givenUser({
-  id: 'd10844c6-b6de-402a-a68d-f8328b1d1b0c',
+  id: mediateurAvecActiviteUserId,
   acceptationCgu: new Date(),
   firstName: 'Médiateur',
   lastName: 'Avec activités',

@@ -12,6 +12,8 @@ export const getInitialBeneficiairesOptionsForSearch = async ({
   mediateurId?: string
   includeBeneficiaireId?: string
 }) => {
+  if (mediateurId == null) return []
+
   // Initial list of beneficiaires for pre-populating selected beneficiary or quick select search
   const whereBeneficiaire = beneficiairesListWhere(mediateurId)
   const beneficiariesForSelect = await prismaClient.beneficiaire.findMany({

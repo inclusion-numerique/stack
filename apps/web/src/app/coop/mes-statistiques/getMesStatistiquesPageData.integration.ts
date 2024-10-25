@@ -4,10 +4,11 @@ import { conseillerNumerique } from '@app/fixtures/users/conseillerNumerique'
 import {
   mediateurAvecActivite,
   mediateurAvecActiviteMediateurId,
+  mediateurAvecActiviteUserId,
 } from '@app/fixtures/users/mediateurAvecActivite'
 import {
   mediateurSansActivites,
-  mediateurSansActivitesMediateurId,
+  mediateurSansActivitesUserId,
 } from '@app/fixtures/users/mediateurSansActivites'
 import {
   getMesStatistiquesPageData,
@@ -36,6 +37,7 @@ import { emptyQuantifiedSharesFromEnum } from '@app/web/app/coop/mes-statistique
 import { prismaClient } from '@app/web/prismaClient'
 import { QuantifiedShare } from '@app/web/app/coop/mes-statistiques/quantifiedShare'
 import { computeProportion } from '@app/web/app/coop/mes-statistiques/_queries/allocatePercentages'
+import { UserDisplayName, UserProfile } from '@app/web/utils/user'
 
 /**
  * Base empty data for all tests
@@ -220,8 +222,13 @@ describe('getMesStatistiquesPageData', () => {
 
   describe('mediateur sans activites', () => {
     test('should give empty data without filters', async () => {
+      const user = await prismaClient.user.findUnique({
+        where: { id: mediateurSansActivitesUserId },
+        select: { mediateur: true },
+      })
+
       const data = await getMesStatistiquesPageData({
-        mediateurCoordonnesIds: [mediateurSansActivitesMediateurId],
+        user: user as unknown as UserDisplayName & UserProfile,
         activitesFilters: {},
         graphOptions,
       })
@@ -517,8 +524,13 @@ describe('getMesStatistiquesPageData', () => {
     })
 
     test.each(cases)('$title', async ({ activitesFilters, expected }) => {
+      const user = await prismaClient.user.findUnique({
+        where: { id: mediateurAvecActiviteUserId },
+        select: { mediateur: true },
+      })
+
       const data = await getMesStatistiquesPageData({
-        mediateurCoordonnesIds: [mediateurAvecActiviteMediateurId],
+        user: user as unknown as UserDisplayName & UserProfile,
         activitesFilters,
         graphOptions,
       })

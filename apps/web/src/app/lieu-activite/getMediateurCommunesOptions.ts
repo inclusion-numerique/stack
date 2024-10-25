@@ -8,6 +8,10 @@ export const getMediateurCommunesAndDepartementsOptions = async ({
 }: {
   mediateurIds: string[]
 }) => {
+  if (mediateurIds.length === 0) {
+    return { communesOptions: [], departementsOptions: [] }
+  }
+
   const communes = await prismaClient.$queryRaw<
     {
       code: string

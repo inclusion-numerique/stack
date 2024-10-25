@@ -39,6 +39,7 @@ describe('buildActivitesWorksheet', () => {
         lieu: null, // unused in worksheet
         type: 'Accompagnement',
         beneficiaire: 'Beneficiaire Name',
+        mediateur: null,
       },
       activites: [], // empty activities for now
     } satisfies BuildActivitesWorksheetInput

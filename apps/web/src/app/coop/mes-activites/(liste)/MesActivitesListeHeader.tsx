@@ -13,6 +13,7 @@ import type { ActiviteDates } from '@app/web/app/coop/mes-statistiques/_queries/
 const ExportActivitesButtonWrapper = async ({
   lieuxActiviteOptions,
   beneficiairesOptions,
+  mediateursOptions,
   departementsOptions,
   communesOptions,
   filters,
@@ -20,6 +21,7 @@ const ExportActivitesButtonWrapper = async ({
 }: {
   filters: ActivitesFilters
   beneficiairesOptions: BeneficiaireOption[]
+  mediateursOptions: MediateurOption[]
   communesOptions: SelectOption[]
   lieuxActiviteOptions: SelectOption[]
   departementsOptions: SelectOption[]
@@ -30,6 +32,7 @@ const ExportActivitesButtonWrapper = async ({
     departementsOptions,
     lieuxActiviteOptions,
     beneficiairesOptions,
+    mediateursOptions,
   })
 
   const matchesCount = await searchResultMatchesCount
@@ -91,6 +94,7 @@ const MesActivitesListeHeader = ({
         departementsOptions={departementsOptions}
         lieuxActiviteOptions={lieuxActiviteOptions}
         beneficiairesOptions={initialBeneficiairesOptions}
+        mediateursOptions={initialMediateursOptions}
         searchResultMatchesCount={searchResultMatchesCount}
       />
     </Suspense>

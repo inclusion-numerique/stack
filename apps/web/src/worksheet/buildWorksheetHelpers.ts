@@ -118,6 +118,7 @@ export const addFilters =
     },
   ) => {
     addTitleRow(worksheet)('Filtres')
+
     return worksheet.addRows(
       [
         ['Début de période', filters.du ?? '-'],
@@ -128,13 +129,13 @@ export const addFilters =
         filters.beneficiaire
           ? ['Bénéficiaire', filters.beneficiaire]
           : undefined,
+        filters.mediateur ? ['Médiateur', `${filters.mediateur}`] : undefined,
         mediateurScope
           ? [
               'Médiateur',
               `${mediateurScope.firstName} ${mediateurScope.lastName}`,
             ]
           : undefined,
-
         [],
       ].filter(Boolean),
     )
