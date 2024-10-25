@@ -5,6 +5,8 @@ import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import UsurpUserButton from '@app/web/app/administration/usurpation/UsurpUserButton'
 import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
 import ResetUserFixtureButton from '@app/web/app/administration/usurpation/ResetUserFixtureButton'
+import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
+import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 
 export const metadata = {
   title: metadataTitle('Usurpation'),
@@ -24,11 +26,11 @@ const Page = async () => {
   })
 
   return (
-    <div className="fr-container">
+    <CoopPageContainer>
       <AdministrationBreadcrumbs currentPage="Usurpation" />
-      <h1 className="fr-h2 fr-text-title--blue-france fr-mb-8v">
+      <AdministrationTitle icon="ri-spy-line">
         Usurpation d’utilisateurs de test
-      </h1>
+      </AdministrationTitle>
       <p>
         Sur les instances de preview, vous pouvez vous connecter en tant
         qu’utilisateur de test (fixture) pour tester différent parcours.
@@ -80,7 +82,7 @@ const Page = async () => {
           </div>
         </div>
       )}
-    </div>
+    </CoopPageContainer>
   )
 }
 

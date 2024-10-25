@@ -3,10 +3,13 @@ import classNames from 'classnames'
 import styles from './CoopLayout.module.css'
 
 const CoopPageContainer = ({
-  size,
+  size = 944,
   children,
   className,
-}: PropsWithChildren<{ size: 944 | 894 | 794; className?: string }>) => (
+}: PropsWithChildren<{
+  size?: 944 | 894 | 794 | 'full'
+  className?: string
+}>) => (
   <div
     className={classNames(
       styles.contentContainer,

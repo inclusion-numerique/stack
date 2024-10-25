@@ -47,3 +47,7 @@
 .contentContainer--794 {
   max-width: 794px;
 }
+
+.contentContainer--full {
+  max-width: 100%;
+}

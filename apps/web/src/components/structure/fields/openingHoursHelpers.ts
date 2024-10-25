@@ -15,6 +15,16 @@ export const daysTexts: Record<OsmDaysOfWeek, string> = {
   Su: 'dimanche',
 }
 
+export const indexedDayLabels: Record<number, string> = {
+  0: 'Lundi',
+  1: 'Mardi',
+  2: 'Mercredi',
+  3: 'Jeudi',
+  4: 'Vendredi',
+  5: 'Samedi',
+  6: 'Dimanche',
+}
+
 export const periodsTexts: Record<Period, string> = {
   am: 'matin',
   pm: 'après-midi',

@@ -1,0 +1,191 @@
+import { Filter, ObjectId } from 'mongodb'
+import escapeStringRegexp from 'escape-string-regexp'
+import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
+import {
+  cleanConseillerProjection,
+  type ConseillerNumeriqueCollectionItem,
+} from '@app/web/external-apis/conseiller-numerique/conseillersProjection'
+import type { StructureConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/StructureConseillerNumerique'
+
+export type FindConseillerNumeriqueV1Input =
+  | {
+      email: string
+      id?: undefined
+      includeDeleted?: boolean
+    }
+  | {
+      id: string
+      email?: undefined
+      includeDeleted?: boolean
+    }
+
+export const findConseillerNumeriqueV1 = async (
+  input: FindConseillerNumeriqueV1Input,
+) => {
+  if (!input.email && !input.id) {
+    return null
+  }
+  const conseillerCollection =
+    await conseillerNumeriqueMongoCollection<ConseillerNumeriqueCollectionItem>(
+      'conseillers',
+    )
+
+  const email = input.email?.trim().toLowerCase()
+
+  const filter: Filter<ConseillerNumeriqueCollectionItem> = email
+    ? {
+        $or: [{ email }, { emailPro: email }, { 'emailCN.address': email }],
+      }
+    : {
+        _id: new ObjectId(input.id),
+      }
+
+  if (!input.includeDeleted) {
+    // deletedAt is null or not present
+    filter.deletedAt = {
+      $in: [null, undefined],
+    }
+  }
+
+  // Mongodb select but only the fields we need
+  const conseillerDocument = (await conseillerCollection.findOne(
+    filter,
+  )) as unknown as ConseillerNumeriqueCollectionItem | null
+
+  if (!conseillerDocument) {
+    return null
+  }
+
+  const miseEnRelationCollection =
+    await conseillerNumeriqueMongoCollection('misesEnRelation')
+
+  const miseEnRelationDocument = (await miseEnRelationCollection.findOne(
+    {
+      statut: 'finalisee',
+      'conseillerObj._id': conseillerDocument._id,
+    },
+    {
+      projection: {
+        _id: 1,
+        statut: 1,
+        structureObj: 1,
+        dateRecrutement: 1,
+        dateDebutDeContrat: 1,
+        dateFinDeContrat: 1,
+        typeDeContrat: 1,
+      },
+    },
+  )) as unknown as {
+    _id: ObjectId
+    statut: 'finalisee'
+    structureObj: StructureConseillerNumerique
+    dateRecrutement: Date | null
+    dateDebutDeContrat: Date | null
+    dateFinDeContrat: Date | null
+    typeDeContrat: string // 'CDD' or other values
+  }
+
+  const permanencesCollection =
+    await conseillerNumeriqueMongoCollection('permanences')
+
+  const permanenceDocuments = (await permanencesCollection
+    .find({
+      // Where "conseillers" array field  CONTAINS conseiller id
+      conseillers: conseillerDocument._id,
+    })
+    .toArray()) as unknown as {
+    _id: ObjectId
+    estStructure: boolean
+    nomEnseigne: string
+    numeroTelephone: string | null
+    email: string | null
+    siteWeb: string | null
+    siret: string
+    adresse: {
+      numeroRue: string
+      rue: string
+      codePostal: string
+      ville: string
+      codeCommune: string
+    }
+    location: {
+      type: 'Point'
+      coordinates: number[]
+    }
+    horaires: {
+      matin: string[]
+      apresMidi: string[]
+    }[]
+    typeAcces: string[]
+    conseillers: ObjectId[]
+    lieuPrincipalPour: ObjectId[]
+    conseillersItinerants: ObjectId[]
+    structure: {
+      _id: ObjectId
+    }
+    updatedAt: Date
+    updatedBy: ObjectId
+  }[]
+
+  const conseiller = cleanConseillerProjection(conseillerDocument)
+
+  return conseillerDocument
+    ? {
+        conseiller,
+        // Relation contractuelle avec structure employeuse
+        miseEnRelation: miseEnRelationDocument,
+        permanences: permanenceDocuments,
+      }
+    : null
+}
+
+const mongoRegex = (value: string) => ({
+  // escape value so it is valid regex
+  // e.g. { $regex: 'ic.bliaux@ville-draguignan.fr', $options: 'i' }
+  $regex: escapeStringRegexp(value),
+  $options: 'i',
+})
+
+export const searchConseillerNumeriqueV1 = async ({
+  recherche,
+}: {
+  recherche: string
+}) => {
+  const conseillerCollection =
+    await conseillerNumeriqueMongoCollection('conseillers')
+
+  const rechercheParts = recherche.trim().toLowerCase().split(' ')
+  if (rechercheParts.length === 0) {
+    return []
+  }
+
+  const filter = {
+    $and: rechercheParts.map((part) => {
+      const regex = mongoRegex(part)
+
+      return {
+        $or: [
+          { nom: regex },
+          { prenom: regex },
+          { nomCommune: regex },
+          {
+            email: regex,
+          },
+          {
+            emailPro: regex,
+          },
+          {
+            'emailCN.address': regex,
+          },
+        ],
+      }
+    }),
+  }
+
+  // Mongodb select but only the fields we need
+  const conseillers = (await conseillerCollection
+    .find(filter)
+    .toArray()) as unknown as ConseillerNumeriqueCollectionItem[]
+
+  return conseillers.map(cleanConseillerProjection)
+}
