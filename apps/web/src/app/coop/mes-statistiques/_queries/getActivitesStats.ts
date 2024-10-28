@@ -57,55 +57,54 @@ export const getActivitesStatsRaw = async ({
 }: {
   mediateurIds: string[]
   activitesFilters: ActivitesFilters
-}): Promise<ActivitesStatsRaw> => {
+}) => {
   if (mediateurIds.length === 0) return EMPTY_ACTIVITES_STATS
 
   return prismaClient.$queryRaw<[ActivitesStatsRaw]>`
-    SELECT COALESCE(COUNT(*), 0)::integer AS total_activites,
-             -- Enum count selects for type, type_lieu, type_lieu_atelier, duree, thematiques, thematiques_demarche, materiel ${createEnumCountSelect(
-               {
-                 enumObj: TypeActivite,
-                 column: 'activites.type',
-                 as: 'type',
-               },
-             )},
-       ${createIntArrayCountSelect({
-         values: dureeAcompagnementsIntegerValues,
-         column: 'activites.duree',
-         as: 'duree',
-       })},
-       ${createEnumCountSelect({
-         enumObj: TypeLieu,
-         column: 'activites.type_lieu',
-         as: 'type_lieu',
-       })},
-       ${createEnumCountSelect({
-         enumObj: TypeLieuAtelier,
-         column: 'activites.type_lieu_atelier',
-         as: 'type_lieu_atelier',
-       })},
-       ${createEnumArrayCountSelect({
-         enumObj: Thematique,
-         column: 'activites.thematiques',
-         as: 'thematiques',
-       })},
-       ${createEnumArrayCountSelect({
-         enumObj: ThematiqueDemarcheAdministrative,
-         column: 'activites.thematiques_demarche',
-         as: 'thematiques_demarche',
-       })},
-       ${createEnumArrayCountSelect({
-         enumObj: Materiel,
-         column: 'activites.materiel',
-         as: 'materiel',
-       })}
-    FROM activites
-         LEFT JOIN structures ON structures.id = activites.structure_id
-    WHERE activites.mediateur_id = ANY (ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
-    AND activites.suppression IS NULL
-    AND ${getActiviteFiltersSqlFragment(
-      getActivitesFiltersWhereConditions(activitesFilters),
-    )}
+      SELECT COALESCE(COUNT(*), 0)::integer AS total_activites,
+             -- Enum count selects for type, type_lieu, type_lieu_atelier, duree, thematiques, thematiques_demarche, materiel
+             ${createEnumCountSelect({
+               enumObj: TypeActivite,
+               column: 'activites.type',
+               as: 'type',
+             })},
+             ${createIntArrayCountSelect({
+               values: dureeAcompagnementsIntegerValues,
+               column: 'activites.duree',
+               as: 'duree',
+             })},
+             ${createEnumCountSelect({
+               enumObj: TypeLieu,
+               column: 'activites.type_lieu',
+               as: 'type_lieu',
+             })},
+             ${createEnumCountSelect({
+               enumObj: TypeLieuAtelier,
+               column: 'activites.type_lieu_atelier',
+               as: 'type_lieu_atelier',
+             })},
+             ${createEnumArrayCountSelect({
+               enumObj: Thematique,
+               column: 'activites.thematiques',
+               as: 'thematiques',
+             })},
+             ${createEnumArrayCountSelect({
+               enumObj: ThematiqueDemarcheAdministrative,
+               column: 'activites.thematiques_demarche',
+               as: 'thematiques_demarche',
+             })},
+             ${createEnumArrayCountSelect({
+               enumObj: Materiel,
+               column: 'activites.materiel',
+               as: 'materiel',
+             })}
+      FROM activites
+        LEFT JOIN structures ON structures.id = activites.structure_id
+      WHERE activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
+        AND activites.suppression IS NULL
+        AND ${getActiviteFiltersSqlFragment(
+          getActivitesFiltersWhereConditions(activitesFilters),
+        )}
   `.then((result) => result[0])
 }
 
@@ -113,25 +112,25 @@ export const normalizeActivitesStatsRaw = (stats: ActivitesStatsRaw) => {
   const typeActivitesData = typeActiviteValues.map((typeActivite) => ({
     value: typeActivite,
     label: typeActiviteLabels[typeActivite],
-    count: stats[`type_${snakeCase(typeActivite)}_count`],
+    count: stats[`type_${snakeCase(typeActivite)}_count`] ?? 0,
   }))
 
   const dureesData = dureeAccompagnementValues.map((duree) => ({
     value: duree,
     label: dureeAccompagnementLabels[duree],
-    count: stats[`duree_${duree}_count`],
+    count: stats[`duree_${duree}_count`] ?? 0,
   }))
 
   const typeLieuData = typeLieuValues.map((typeLieu) => ({
     value: typeLieu,
     label: typeLieuLabels[typeLieu],
-    count: stats[`type_lieu_${snakeCase(typeLieu)}_count`],
+    count: stats[`type_lieu_${snakeCase(typeLieu)}_count`] ?? 0,
   }))
 
   const typeLieuAtelierData = typeLieuAtelierValues.map((typeLieuAtelier) => ({
     value: typeLieuAtelier,
     label: typeLieuAtelierLabels[typeLieuAtelier],
-    count: stats[`type_lieu_atelier_${snakeCase(typeLieuAtelier)}_count`],
+    count: stats[`type_lieu_atelier_${snakeCase(typeLieuAtelier)}_count`] ?? 0,
   }))
 
   const mergedTypeLieuData = [...typeLieuData, ...typeLieuAtelierData].reduce<
@@ -142,7 +141,7 @@ export const normalizeActivitesStatsRaw = (stats: ActivitesStatsRaw) => {
     }[]
   >((accumulator, item) => {
     const existingItem = accumulator.find(({ value }) => value === item.value)
-    if (existingItem?.count) {
+    if (existingItem) {
       existingItem.count += item.count
     } else {
       accumulator.push(item)
@@ -153,7 +152,7 @@ export const normalizeActivitesStatsRaw = (stats: ActivitesStatsRaw) => {
   const thematiquesData = thematiqueValues.map((thematique) => ({
     value: thematique,
     label: thematiqueLabels[thematique],
-    count: stats[`thematiques_${snakeCase(thematique)}_count`],
+    count: stats[`thematiques_${snakeCase(thematique)}_count`] ?? 0,
   }))
 
   const thematiquesDemarchesData = thematiqueDemarcheAdministrativeValues.map(
@@ -173,7 +172,7 @@ export const normalizeActivitesStatsRaw = (stats: ActivitesStatsRaw) => {
   const materielsData = materielValues.map((materiel) => ({
     value: materiel,
     label: materielLabels[materiel],
-    count: stats[`materiel_${snakeCase(materiel)}_count`],
+    count: stats[`materiel_${snakeCase(materiel)}_count`] ?? 0,
   }))
 
   return {

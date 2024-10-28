@@ -32,51 +32,52 @@ export const getBeneficiaireStatsRaw = async ({
 }: {
   mediateurIds: string[]
   activitesFilters: ActivitesFilters
-}): Promise<BeneficiairesStatsRaw> => {
+}) => {
   if (mediateurIds.length === 0) return EMPTY_BENEFICIAIRES_STATS
 
   return prismaClient.$queryRaw<[BeneficiairesStatsRaw]>`
-    WITH distinct_beneficiaires AS (SELECT DISTINCT beneficiaires.id,
-                            beneficiaires.genre,
-                            beneficiaires.statut_social,
-                            beneficiaires.tranche_age,
-                            beneficiaires.commune,
-                            beneficiaires.commune_code_postal,
-                            beneficiaires.commune_code_insee
-                    FROM beneficiaires
-                         INNER JOIN accompagnements ON accompagnements.beneficiaire_id = beneficiaires.id
-                         INNER JOIN activites ON
-                      activites.id = accompagnements.activite_id
-                        AND activites.mediateur_id = ANY
-                          (ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
-                        AND activites.suppression IS NULL
-                        AND ${getActiviteFiltersSqlFragment(
-                          getActivitesFiltersWhereConditions(activitesFilters),
-                        )}
-                         LEFT JOIN structures ON structures.id = activites.structure_id)
-    SELECT COUNT(distinct_beneficiaires.id)::integer AS total_beneficiaires,
+      WITH distinct_beneficiaires AS (SELECT DISTINCT beneficiaires.id,
+                                                      beneficiaires.genre,
+                                                      beneficiaires.statut_social,
+                                                      beneficiaires.tranche_age,
+                                                      beneficiaires.commune,
+                                                      beneficiaires.commune_code_postal,
+                                                      beneficiaires.commune_code_insee
+                                      FROM beneficiaires
+                                               INNER JOIN accompagnements ON accompagnements.beneficiaire_id = beneficiaires.id
+                                               INNER JOIN activites ON
+                                                    activites.id = accompagnements.activite_id
+                                              AND activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
+                                              AND activites.suppression IS NULL
+                                              AND ${getActiviteFiltersSqlFragment(
+                                                getActivitesFiltersWhereConditions(
+                                                  activitesFilters,
+                                                ),
+                                              )}
+                                               LEFT JOIN structures ON structures.id = activites.structure_id
+                                      )
+      SELECT COUNT(distinct_beneficiaires.id)::integer AS total_beneficiaires,
 
-             -- Enum count selects for genre, statut_social, tranche_age ${createEnumCountSelect(
-               {
-                 enumObj: Genre,
-                 column: 'distinct_beneficiaires.genre',
-                 as: 'genre',
-                 defaultEnumValue: Genre.NonCommunique,
-               },
-             )},
-       ${createEnumCountSelect({
-         enumObj: StatutSocial,
-         column: 'distinct_beneficiaires.statut_social',
-         as: 'statut_social',
-         defaultEnumValue: StatutSocial.NonCommunique,
-       })},
-       ${createEnumCountSelect({
-         enumObj: TrancheAge,
-         column: 'distinct_beneficiaires.tranche_age',
-         as: 'tranche_age',
-         defaultEnumValue: TrancheAge.NonCommunique,
-       })}
-    FROM distinct_beneficiaires`.then((result) => result[0])
+             -- Enum count selects for genre, statut_social, tranche_age
+             ${createEnumCountSelect({
+               enumObj: Genre,
+               column: 'distinct_beneficiaires.genre',
+               as: 'genre',
+               defaultEnumValue: Genre.NonCommunique,
+             })},
+             ${createEnumCountSelect({
+               enumObj: StatutSocial,
+               column: 'distinct_beneficiaires.statut_social',
+               as: 'statut_social',
+               defaultEnumValue: StatutSocial.NonCommunique,
+             })},
+             ${createEnumCountSelect({
+               enumObj: TrancheAge,
+               column: 'distinct_beneficiaires.tranche_age',
+               as: 'tranche_age',
+               defaultEnumValue: TrancheAge.NonCommunique,
+             })}
+      FROM distinct_beneficiaires`.then((result) => result[0])
 }
 
 export const normalizeBeneficiairesStatsRaw = (
