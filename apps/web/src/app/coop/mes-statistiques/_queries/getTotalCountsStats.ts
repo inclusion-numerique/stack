@@ -45,14 +45,33 @@ export type AccompagnementsStats = {
     anonymes: number
   }
 }
+
+const EMPTY_COUNT_STATS = {
+  activites: {
+    total: 0,
+    individuels: { total: 0, proportion: 0 },
+    collectifs: { total: 0, proportion: 0, participants: 0 },
+    demarches: { total: 0, proportion: 0 },
+  },
+  accompagnements: {
+    total: 0,
+    individuels: { total: 0, proportion: 0 },
+    collectifs: { total: 0, proportion: 0 },
+    demarches: { total: 0, proportion: 0 },
+  },
+  beneficiaires: { total: 0, anonymes: 0, suivis: 0 },
+}
+
 export const getTotalCountsStats = async ({
   mediateurIds,
   activitesFilters,
 }: {
   mediateurIds: string[]
   activitesFilters: ActivitesFilters
-}): Promise<AccompagnementsStats> =>
-  prismaClient.$queryRaw<
+}): Promise<AccompagnementsStats> => {
+  if (mediateurIds.length === 0) return EMPTY_COUNT_STATS
+
+  return prismaClient.$queryRaw<
     [
       {
         total_activites: number
@@ -66,7 +85,7 @@ export const getTotalCountsStats = async ({
       },
     ]
   >`
-    SELECT 
+    SELECT
         COUNT(DISTINCT activites.id)::integer AS total_activites,
         COUNT(DISTINCT CASE WHEN activites.type = 'individuel' THEN activites.id END)::integer AS total_individuels,
         COUNT(DISTINCT CASE WHEN activites.type = 'collectif' THEN activites.id END)::integer AS total_collectifs,
@@ -74,16 +93,16 @@ export const getTotalCountsStats = async ({
         COUNT(DISTINCT beneficiaires.id)::integer AS total_beneficiaires,
         COUNT(DISTINCT CASE WHEN beneficiaires.anonyme = false THEN beneficiaires.id END)::integer AS total_beneficiaires_suivis,
         COUNT(DISTINCT accompagnements.id)::integer AS total_accompagnements,
-        COUNT(DISTINCT CASE WHEN activites.type = 'collectif' THEN accompagnements.id END)::integer AS total_accompagnements_collectifs
+        COUNT(DISTINCT CASE WHEN activites.type = 'collectif' THEN accompagnements.id END) ::integer AS total_accompagnements_collectifs
     FROM activites
-    LEFT JOIN accompagnements ON accompagnements.activite_id = activites.id
-    LEFT JOIN beneficiaires ON beneficiaires.id = accompagnements.beneficiaire_id
-    LEFT JOIN structures ON structures.id = activites.structure_id
-    WHERE activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
-      AND activites.suppression IS NULL
-      AND ${getActiviteFiltersSqlFragment(
-        getActivitesFiltersWhereConditions(activitesFilters),
-      )}
+         LEFT JOIN accompagnements ON accompagnements.activite_id = activites.id
+         LEFT JOIN beneficiaires ON beneficiaires.id = accompagnements.beneficiaire_id
+         LEFT JOIN structures ON structures.id = activites.structure_id
+    WHERE activites.mediateur_id = ANY (ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
+    AND activites.suppression IS NULL
+    AND ${getActiviteFiltersSqlFragment(
+      getActivitesFiltersWhereConditions(activitesFilters),
+    )}
   `.then(([result]) => {
     const [
       proportionActivitesIndividuels,
@@ -145,3 +164,4 @@ export const getTotalCountsStats = async ({
       },
     }
   })
+}

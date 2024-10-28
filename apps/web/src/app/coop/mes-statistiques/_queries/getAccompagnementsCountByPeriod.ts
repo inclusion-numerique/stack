@@ -5,8 +5,15 @@ import {
   getActiviteFiltersSqlFragment,
   getActivitesFiltersWhereConditions,
 } from '@app/web/cra/activitesFiltersSqlWhereConditions'
-import { monthShortLabels } from '@app/web/utils/monthShortLabels'
+import {
+  MonthShortLabel,
+  monthShortLabels,
+} from '@app/web/utils/monthShortLabels'
 import { LabelAndCount } from '../quantifiedShare'
+
+const EMPTY_ACCOMPAGNEMENTS_COUNT = monthShortLabels.map(
+  (label: MonthShortLabel) => ({ label, count: 0 }),
+)
 
 export const getAccompagnementsCountByMonth = async ({
   mediateurIds,
@@ -19,6 +26,8 @@ export const getAccompagnementsCountByMonth = async ({
   periodEnd?: string // Format should be 'YYYY-MM', defaults to CURRENT_DATE if not provided
   intervals?: number // Default to 12 if not provided
 }) => {
+  if (mediateurIds.length === 0) return EMPTY_ACCOMPAGNEMENTS_COUNT
+
   const endDate = periodEnd
     ? `TO_DATE('${periodEnd}', 'YYYY-MM')`
     : `CURRENT_DATE`
@@ -69,6 +78,8 @@ export const getAccompagnementsCountByDay = async ({
   periodEnd?: string // Format should be 'YYYY-MM-DD', defaults to CURRENT_DATE if not provided
   intervals?: number // Default to 30 if not provided
 }) => {
+  if (mediateurIds.length === 0) return EMPTY_ACCOMPAGNEMENTS_COUNT
+
   const endDate = periodEnd
     ? `TO_DATE('${periodEnd}', 'YYYY-MM-DD')`
     : `CURRENT_DATE`

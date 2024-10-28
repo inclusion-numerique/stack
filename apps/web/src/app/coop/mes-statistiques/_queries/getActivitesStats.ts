@@ -38,17 +38,6 @@ import {
 } from '@app/web/app/coop/mes-statistiques/_queries/createEnumCountSelect'
 import { allocatePercentagesFromRecords } from '@app/web/app/coop/mes-statistiques/_queries/allocatePercentages'
 
-const accompagnementCategories = [
-  'canauxAccompagnements',
-  'dureesAccompagnements',
-  'lieuxAccompagnements',
-  'thematiquesAccompagnements',
-  'thematiquesDemarchesAdministratives',
-  'materielsAccompagnements',
-] as const
-
-export type AccompagnementCategory = (typeof accompagnementCategories)[number]
-
 export type ActivitesStatsRaw = {
   total_activites: number
   [key: `type_${string}_count`]: number
@@ -60,59 +49,65 @@ export type ActivitesStatsRaw = {
   [key: `materiel_${string}_count`]: number
 }
 
+const EMPTY_ACTIVITES_STATS: ActivitesStatsRaw = { total_activites: 0 }
+
 export const getActivitesStatsRaw = async ({
   mediateurIds,
   activitesFilters,
 }: {
   mediateurIds: string[]
   activitesFilters: ActivitesFilters
-}) =>
-  prismaClient.$queryRaw<[ActivitesStatsRaw]>`
-      SELECT COALESCE(COUNT(*), 0)::integer AS total_activites,
-             -- Enum count selects for type, type_lieu, type_lieu_atelier, duree, thematiques, thematiques_demarche, materiel
-             ${createEnumCountSelect({
-               enumObj: TypeActivite,
-               column: 'activites.type',
-               as: 'type',
-             })},
-             ${createIntArrayCountSelect({
-               values: dureeAcompagnementsIntegerValues,
-               column: 'activites.duree',
-               as: 'duree',
-             })},
-             ${createEnumCountSelect({
-               enumObj: TypeLieu,
-               column: 'activites.type_lieu',
-               as: 'type_lieu',
-             })},
-             ${createEnumCountSelect({
-               enumObj: TypeLieuAtelier,
-               column: 'activites.type_lieu_atelier',
-               as: 'type_lieu_atelier',
-             })},
-             ${createEnumArrayCountSelect({
-               enumObj: Thematique,
-               column: 'activites.thematiques',
-               as: 'thematiques',
-             })},
-             ${createEnumArrayCountSelect({
-               enumObj: ThematiqueDemarcheAdministrative,
-               column: 'activites.thematiques_demarche',
-               as: 'thematiques_demarche',
-             })},
-             ${createEnumArrayCountSelect({
-               enumObj: Materiel,
-               column: 'activites.materiel',
-               as: 'materiel',
-             })}
-      FROM activites
-        LEFT JOIN structures ON structures.id = activites.structure_id
-      WHERE activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
-        AND activites.suppression IS NULL
-        AND ${getActiviteFiltersSqlFragment(
-          getActivitesFiltersWhereConditions(activitesFilters),
-        )}
+}): Promise<ActivitesStatsRaw> => {
+  if (mediateurIds.length === 0) return EMPTY_ACTIVITES_STATS
+
+  return prismaClient.$queryRaw<[ActivitesStatsRaw]>`
+    SELECT COALESCE(COUNT(*), 0)::integer AS total_activites,
+             -- Enum count selects for type, type_lieu, type_lieu_atelier, duree, thematiques, thematiques_demarche, materiel ${createEnumCountSelect(
+               {
+                 enumObj: TypeActivite,
+                 column: 'activites.type',
+                 as: 'type',
+               },
+             )},
+       ${createIntArrayCountSelect({
+         values: dureeAcompagnementsIntegerValues,
+         column: 'activites.duree',
+         as: 'duree',
+       })},
+       ${createEnumCountSelect({
+         enumObj: TypeLieu,
+         column: 'activites.type_lieu',
+         as: 'type_lieu',
+       })},
+       ${createEnumCountSelect({
+         enumObj: TypeLieuAtelier,
+         column: 'activites.type_lieu_atelier',
+         as: 'type_lieu_atelier',
+       })},
+       ${createEnumArrayCountSelect({
+         enumObj: Thematique,
+         column: 'activites.thematiques',
+         as: 'thematiques',
+       })},
+       ${createEnumArrayCountSelect({
+         enumObj: ThematiqueDemarcheAdministrative,
+         column: 'activites.thematiques_demarche',
+         as: 'thematiques_demarche',
+       })},
+       ${createEnumArrayCountSelect({
+         enumObj: Materiel,
+         column: 'activites.materiel',
+         as: 'materiel',
+       })}
+    FROM activites
+         LEFT JOIN structures ON structures.id = activites.structure_id
+    WHERE activites.mediateur_id = ANY (ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
+    AND activites.suppression IS NULL
+    AND ${getActiviteFiltersSqlFragment(
+      getActivitesFiltersWhereConditions(activitesFilters),
+    )}
   `.then((result) => result[0])
+}
 
 export const normalizeActivitesStatsRaw = (stats: ActivitesStatsRaw) => {
   const typeActivitesData = typeActiviteValues.map((typeActivite) => ({
@@ -147,7 +142,7 @@ export const normalizeActivitesStatsRaw = (stats: ActivitesStatsRaw) => {
     }[]
   >((accumulator, item) => {
     const existingItem = accumulator.find(({ value }) => value === item.value)
-    if (existingItem) {
+    if (existingItem?.count) {
       existingItem.count += item.count
     } else {
       accumulator.push(item)
@@ -252,21 +247,26 @@ export const getActivitesStructuresStatsRaw = async ({
 }: {
   mediateurIds: string[]
   activitesFilters: ActivitesFilters
-}) => prismaClient.$queryRaw<ActivitesStructuresStatsRaw[]>`
+}) => {
+  if (mediateurIds.length === 0) return []
+
+  return prismaClient.$queryRaw<ActivitesStructuresStatsRaw[]>`
     SELECT structures.id,
-           structures.nom,
-           structures.commune,
-           structures.code_postal,
-           structures.code_insee,
-           COALESCE(COUNT(*), 0)::int AS count
+       structures.nom,
+       structures.commune,
+       structures.code_postal,
+       structures.code_insee,
+       COALESCE(COUNT(*), 0) ::int AS count
     FROM structures
-             INNER JOIN activites ON activites.structure_id = structures.id
-        AND activites.suppression IS NULL
-        AND activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
-        AND ${getActiviteFiltersSqlFragment(
-          getActivitesFiltersWhereConditions(activitesFilters),
-        )}
+      INNER JOIN activites
+    ON activites.structure_id = structures.id
+      AND activites.suppression IS NULL
+      AND activites.mediateur_id = ANY (ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
+      AND ${getActiviteFiltersSqlFragment(
+        getActivitesFiltersWhereConditions(activitesFilters),
+      )}
     GROUP BY structures.id`
+}
 
 export const getActivitesStructuresStats = async ({
   mediateurIds,

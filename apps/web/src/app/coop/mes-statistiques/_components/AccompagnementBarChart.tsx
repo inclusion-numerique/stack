@@ -17,7 +17,8 @@ const CustomTooltip = ({
   label,
 }: TooltipProps<number, string>) =>
   active &&
-  payload && (
+  payload &&
+  payload.length > 1 && (
     <ul className="fr-background-default--grey fr-p-1w fr-list-group fr-raw-list fr-tile--shadow">
       <li className="fr-text--bold">{label}</li>
       <li>

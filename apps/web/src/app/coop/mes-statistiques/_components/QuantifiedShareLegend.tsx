@@ -19,7 +19,7 @@ export const QuantifiedShareLegend = ({
           style={{ color: colors[index % colors.length] }}
         />
         <span className="fr-col">{label}</span>
-        <span className="fr-pr-2w fr-text--bold">{count}</span>
+        <span className="fr-pr-2w fr-text--bold">{count ?? 0}</span>
         <span className="fr-col-3 fr-text--medium fr-text-mention--grey fr-text--right">
           {numberToPercentage(proportion)}
         </span>

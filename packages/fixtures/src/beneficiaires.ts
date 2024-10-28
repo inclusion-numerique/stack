@@ -4,6 +4,7 @@ import {
 } from '@app/fixtures/givenBeneficiaire'
 import { conseillerNumeriqueMediateurId } from '@app/fixtures/users/conseillerNumerique'
 import { mediateurAvecActiviteMediateurId } from '@app/fixtures/users/mediateurAvecActivite'
+import { coordinateurInscritAvecToutMediateurId } from '@app/fixtures/users/coordinateurInscritAvecTout'
 
 export const beneficiaireMinimaleMediateurAvecActivite = givenBeneficiaire({
   id: 'f4dbca97-6fe8-4be1-97be-bdf5e66b9ea8',
@@ -182,7 +183,95 @@ export const beneficiairesConseillerNumerique = [
   beneficiaireAnonymeConseillerNumerique,
 ]
 
+export const beneficiaireMinimaleCoordinateur = givenBeneficiaire({
+  id: 'd1f66756-4566-465c-acc7-e6f59898ed42',
+  prenom: 'Juliette',
+  nom: 'Minimale',
+  mediateurId: coordinateurInscritAvecToutMediateurId,
+  telephone: null,
+  pasDeTelephone: null,
+  email: null,
+  anneeNaissance: null,
+  adresse: null,
+  commune: null,
+  communeCodePostal: null,
+  communeCodeInsee: null,
+  vaPoursuivreParcoursAccompagnement: null,
+  genre: null,
+  trancheAge: null,
+  statutSocial: null,
+  notes: null,
+  creation: new Date('2024-01-01'),
+  modification: new Date('2024-05-05'),
+  suppression: null,
+})
+
+export const beneficiaireMaximaleCoordinateur = givenBeneficiaire({
+  id: '7d6091bc-dc91-4d1b-b357-f101e9eb6217',
+  prenom: 'Georges',
+  nom: 'Maximal',
+  mediateurId: coordinateurInscritAvecToutMediateurId,
+  telephone: '0123456789',
+  pasDeTelephone: false,
+  email: 'georges.maximal@coop-mediation-numerique.incubateur.anct.gouv.fr',
+  anneeNaissance: 1980,
+  adresse: '2 rue de la République',
+  commune: 'Lyon',
+  communeCodePostal: '69002',
+  communeCodeInsee: '69382',
+  vaPoursuivreParcoursAccompagnement: false,
+  genre: 'Masculin',
+  trancheAge: 'QuaranteCinquanteNeuf',
+  statutSocial: 'EnEmploi',
+  notes: 'Notes de Georges Maximal',
+  creation: new Date('2024-01-01'),
+  modification: new Date('2024-05-05'),
+  suppression: null,
+})
+
+export const beneficiaireSansAccompagnementsCoordinateur = givenBeneficiaire({
+  id: 'afcbdd63-7dd9-4342-9fa6-084e7a785406',
+  mediateurId: coordinateurInscritAvecToutMediateurId,
+  anonyme: false,
+  prenom: 'Marcel',
+  nom: 'Sans accompagnements',
+  commune: 'Crolles',
+  communeCodePostal: '38920',
+  communeCodeInsee: '38140',
+  vaPoursuivreParcoursAccompagnement: null,
+  genre: 'Masculin',
+  trancheAge: 'VingtCinqTrenteNeuf',
+  statutSocial: 'SansEmploi',
+  notes: null,
+  creation: new Date('2024-08-03'),
+  modification: new Date('2024-08-06'),
+  suppression: null,
+})
+
+export const beneficiaireAnonymeCoordinateur = givenBeneficiaireAnonyme({
+  id: '6085814c-8ac0-483f-a5d8-3a15493974cd',
+  mediateurId: coordinateurInscritAvecToutMediateurId,
+  anonyme: true,
+  commune: null,
+  communeCodePostal: null,
+  communeCodeInsee: null,
+  vaPoursuivreParcoursAccompagnement: true,
+  genre: 'Feminin',
+  trancheAge: null,
+  creation: new Date('2024-08-08'),
+  modification: new Date('2024-08-12'),
+  suppression: null,
+})
+
+export const beneficiairesCoordinateur = [
+  beneficiaireMinimaleCoordinateur,
+  beneficiaireMaximaleCoordinateur,
+  beneficiaireSansAccompagnementsCoordinateur,
+  beneficiaireAnonymeCoordinateur,
+]
+
 export const fixtureBeneficiaires = [
   ...beneficiairesMediateurAvecActivite,
   ...beneficiairesConseillerNumerique,
+  ...beneficiairesCoordinateur,
 ]
