@@ -31,7 +31,7 @@ export const GET = async (request: NextRequest) => {
     return new Response('Unauthorized', { status: 401 })
   }
 
-  if (!user.mediateur || !user.coordinateur) {
+  if (!user.mediateur && !user.coordinateur) {
     return new Response('Forbidden', { status: 403 })
   }
 
