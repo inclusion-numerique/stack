@@ -86,6 +86,8 @@ const MesActivitesListeHeader = ({
       departementsOptions={departementsOptions}
       lieuxActiviteOptions={lieuxActiviteOptions}
       minDate={activiteDates.first ?? new Date()}
+      isCoordinateur={false}
+      isMediateur
     />
     <Suspense fallback={<ExportActivitesDisabledButton />}>
       <ExportActivitesButtonWrapper

@@ -3,8 +3,9 @@ import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import ActivitesFilterTags from '@app/web/app/coop/mes-activites/(liste)/ActivitesFilterTags'
 import { StatistiquesActivites } from '@app/web/app/coop/mes-statistiques/_sections/StatistiquesActivites'
 import { StatistiquesBeneficiaires } from '@app/web/app/coop/mes-statistiques/_sections/StatistiquesBeneficiaires'
-import CoopBreadcrumbs from '../CoopBreadcrumbs'
-import CoopPageContainer from '../CoopPageContainer'
+import { SessionUser } from '@app/web/auth/sessionUser'
+import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import { ExportStatistiques } from './_components/ExportStatistiques'
 import { StatistiquesTerritoriales } from './_components/StatistiquesTerritoriales'
 import { StatistiquesGenerales } from './_sections/StatistiquesGenerales'
@@ -12,6 +13,7 @@ import { MesStatistiquesPageData } from './getMesStatistiquesPageData'
 
 export const MesStatistiques = (
   mesStatistiquesProps: MesStatistiquesPageData & {
+    user: SessionUser
     codeInsee?: string | null
   },
 ) => {
@@ -23,6 +25,7 @@ export const MesStatistiques = (
     initialBeneficiairesOptions,
     lieuxActiviteOptions,
     activiteDates,
+    user,
   } = mesStatistiquesProps
 
   return (
@@ -42,6 +45,8 @@ export const MesStatistiques = (
             initialMediateursOptions={initialMediateursOptions}
             initialBeneficiairesOptions={initialBeneficiairesOptions}
             minDate={activiteDates.first}
+            isCoordinateur={user.coordinateur?.id != null}
+            isMediateur={user.mediateur?.id != null}
           />
           <ExportStatistiques
             filters={activitesFilters}

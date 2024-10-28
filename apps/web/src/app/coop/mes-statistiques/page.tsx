@@ -43,6 +43,7 @@ const MesStatistiquesPage = async ({
 
   return (
     <MesStatistiques
+      user={user}
       {...mesStatistiques}
       codeInsee={employeStructure?.structure.codeInsee}
     />

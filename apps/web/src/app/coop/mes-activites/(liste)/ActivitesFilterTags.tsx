@@ -75,6 +75,8 @@ const ActivitesFilterTags = ({
   communesOptions,
   departementsOptions,
   lieuxActiviteOptions,
+  isCoordinateur,
+  isMediateur,
   minDate,
   className,
 }: {
@@ -84,6 +86,8 @@ const ActivitesFilterTags = ({
   communesOptions: SelectOption[]
   lieuxActiviteOptions: SelectOption[]
   departementsOptions: SelectOption[]
+  isCoordinateur: boolean
+  isMediateur: boolean
   minDate?: Date
   className?: string
 }) => {
@@ -192,11 +196,13 @@ const ActivitesFilterTags = ({
         Filtres&nbsp;:
       </p>
       <div className="fr-flex fr-flex-gap-2v fr-flex-wrap">
-        <MediateurFilter
-          onChange={onMediateurChange}
-          initialMediateursOptions={initialMediateursOptions}
-          defaultValue={defaultFilters.beneficiaire}
-        />
+        {isCoordinateur && (
+          <MediateurFilter
+            onChange={onMediateurChange}
+            initialMediateursOptions={initialMediateursOptions}
+            defaultValue={defaultFilters.mediateur}
+          />
+        )}
         <PeriodFilter
           onChange={onPeriodChange}
           minDate={minDate ?? new Date()}
@@ -213,11 +219,13 @@ const ActivitesFilterTags = ({
           onChange={onActiviteTypeChange}
           defaultValue={defaultFilters.type}
         />
-        <BeneficiaireFilter
-          onChange={onBeneficiaireChange}
-          initialBeneficiairesOptions={initialBeneficiairesOptions}
-          defaultValue={defaultFilters.beneficiaire}
-        />
+        {isMediateur && (
+          <BeneficiaireFilter
+            onChange={onBeneficiaireChange}
+            initialBeneficiairesOptions={initialBeneficiairesOptions}
+            defaultValue={defaultFilters.beneficiaire}
+          />
+        )}
       </div>
     </div>
   )

@@ -49,6 +49,8 @@ const MesActivitesVueTableauPage = async ({
           communesOptions={communesOptions}
           departementsOptions={departementsOptions}
           minDate={activiteDates.first}
+          isCoordinateur={false}
+          isMediateur
         />
         <MesActivitesTableauPage data={data} />
       </MesActivitesListeLayout>
