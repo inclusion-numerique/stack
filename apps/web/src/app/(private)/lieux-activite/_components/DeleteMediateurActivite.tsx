@@ -8,13 +8,17 @@ import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 
-const DeleteMediateurActivite = ({ structureId }: { structureId: string }) => {
+const DeleteMediateurActivite = ({
+  mediateurEnActiviteId,
+}: {
+  mediateurEnActiviteId: string
+}) => {
   const {
     Component: DeleteModal,
     close: closeDeleteModal,
     buttonProps: deleteModalNativeButtonProps,
   } = createModal({
-    id: `delete-activite-${structureId}`,
+    id: `delete-activite-${mediateurEnActiviteId}`,
     isOpenedByDefault: false,
   })
 
@@ -25,7 +29,7 @@ const DeleteMediateurActivite = ({ structureId }: { structureId: string }) => {
 
   const handleDeleteMediateurActivite = async () => {
     try {
-      await deleteMutation.mutateAsync({ structureId })
+      await deleteMutation.mutateAsync({ mediateurEnActiviteId })
 
       closeDeleteModal()
       router.refresh()
@@ -33,7 +37,7 @@ const DeleteMediateurActivite = ({ structureId }: { structureId: string }) => {
       createToast({
         priority: 'success',
         message:
-          'Le lieu d’activité a bien été supprimé de votre liste de lieu d’activité !',
+          'Le lieu d’activité a bien été supprimé de votre liste de lieu d’activité !',
       })
     } catch {
       createToast({
@@ -74,7 +78,7 @@ const DeleteMediateurActivite = ({ structureId }: { structureId: string }) => {
         ]}
       >
         Êtes-vous sûr de vouloir supprimer ce lieu de votre liste de lieu
-        d’activité ?
+        d’activité&nbsp;?
       </DeleteModal>
     </>
   )

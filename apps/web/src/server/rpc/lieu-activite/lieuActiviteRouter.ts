@@ -187,31 +187,30 @@ export const lieuActiviteRouter = router({
   delete: protectedProcedure
     .input(
       z.object({
-        structureId: lieuActiviteValidation,
+        mediateurEnActiviteId: lieuActiviteValidation,
       }),
     )
-    .mutation(async ({ input, ctx: { user } }) => {
+    .mutation(async ({ input: { mediateurEnActiviteId }, ctx: { user } }) => {
       if (!user.mediateur) {
         throw forbiddenError("Cet utilisateur n'est pas un médiateur")
       }
 
-      const lieuActivite = await prismaClient.mediateurEnActivite.findMany({
+      const lieuActivite = await prismaClient.mediateurEnActivite.findUnique({
         where: {
+          id: mediateurEnActiviteId,
           mediateurId: user.mediateur.id,
-          structureId: input.structureId,
           suppression: null,
         },
       })
 
       if (!lieuActivite) {
-        throw invalidError("Ce lieu d' activité n'existe pas")
+        throw invalidError("Ce lieu d’activité n'existe pas pour ce médiateur")
       }
 
       const timestamp = new Date()
       return prismaClient.mediateurEnActivite.updateMany({
         where: {
-          mediateurId: user.mediateur.id,
-          structureId: input.structureId,
+          id: mediateurEnActiviteId,
         },
         data: {
           suppression: timestamp,
