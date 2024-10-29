@@ -2,7 +2,7 @@ import React from 'react'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import ActiviteDetailsModal from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsModal'
-import CoopPageContainer from '../CoopPageContainer'
+import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import {
   ActionsRapides,
   DernieresActivites,

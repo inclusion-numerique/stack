@@ -30,11 +30,12 @@ const MesActivitesVueTableauPage = async ({
     const {
       communesOptions,
       departementsOptions,
+      initialMediateursOptions,
       initialBeneficiairesOptions,
       lieuxActiviteOptions,
       activiteDates,
     } = await getFiltersOptionsForMediateur({
-      mediateurId: user.mediateur.id,
+      user,
       includeBeneficiaireId: searchParams.beneficiaire,
     })
 
@@ -42,11 +43,14 @@ const MesActivitesVueTableauPage = async ({
       <MesActivitesListeLayout vue="tableau">
         <ActivitesFilterTags
           defaultFilters={searchParams}
+          initialMediateursOptions={initialMediateursOptions}
           initialBeneficiairesOptions={initialBeneficiairesOptions}
           lieuxActiviteOptions={lieuxActiviteOptions}
           communesOptions={communesOptions}
           departementsOptions={departementsOptions}
           minDate={activiteDates.first}
+          isCoordinateur={false}
+          isMediateur
         />
         <MesActivitesTableauPage data={data} />
       </MesActivitesListeLayout>

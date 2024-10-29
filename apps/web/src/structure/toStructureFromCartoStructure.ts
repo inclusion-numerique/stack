@@ -6,7 +6,7 @@ import {
 import { validateValidSiretDigits } from '@app/web/siret/siretValidation'
 import { validateValidRnaDigits } from '@app/web/rna/rnaValidation'
 
-export const cartoStructureToStructure = ({
+export const toStructureFromCartoStructure = ({
   adresse,
   codeInsee,
   codePostal,

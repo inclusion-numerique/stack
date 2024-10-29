@@ -19,7 +19,7 @@ import {
   LieuxActiviteValidation,
 } from '@app/web/inscription/LieuxActivite'
 import { SearchStructureCartographieNationaleResultStructure } from '@app/web/structure/searchStructureCartographieNationale'
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 
 const LieuxActiviteForm = ({
   userId,
@@ -101,7 +101,7 @@ const LieuxActiviteForm = ({
     form
       .watch('lieuxActivite')
       .map((structure) => structure.structureCartographieNationaleId)
-      .filter(isDefinedAndNotNull),
+      .filter(onlyDefinedAndNotNull),
   )
 
   const loadOptions = async (search: string) => {

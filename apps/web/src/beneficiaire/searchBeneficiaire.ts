@@ -14,11 +14,7 @@ type SearchBeneficiaireOptions = {
 }
 
 // List beneficiaires not anonymous
-export const beneficiairesListWhere = ({
-  mediateurId,
-}: {
-  mediateurId?: string
-}) =>
+export const beneficiairesListWhere = (mediateurId?: string) =>
   ({
     suppression: null,
     mediateurId,
@@ -45,9 +41,7 @@ export const searchBeneficiaire = async (
   const queryParts = searchParams.recherche?.split(' ') ?? []
 
   const matchesWhere = {
-    ...beneficiairesListWhere({
-      mediateurId,
-    }),
+    ...beneficiairesListWhere(mediateurId),
     AND: queryParts.map((part) => ({
       OR: [
         {

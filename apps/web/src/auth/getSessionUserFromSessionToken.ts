@@ -22,6 +22,7 @@ export const sessionUserSelect = {
   acceptationCgu: true,
   hasSeenOnboarding: true,
   checkConseillerNumeriqueInscription: true,
+  checkCoordinateurInscription: true,
   structureEmployeuseRenseignee: true,
   lieuxActiviteRenseignes: true,
   inscriptionValidee: true,
@@ -63,6 +64,11 @@ export const sessionUserSelect = {
   coordinateur: {
     select: {
       id: true,
+      mediateursCoordonnes: {
+        select: {
+          mediateurId: true,
+        },
+      },
     },
   },
 } satisfies Prisma.UserSelect
@@ -106,6 +112,8 @@ export const getSessionUserFromSessionToken = async (
     emailVerified: res.user.emailVerified?.toISOString() ?? null,
     checkConseillerNumeriqueInscription:
       res.user.checkConseillerNumeriqueInscription?.toISOString() ?? null,
+    checkCoordinateurInscription:
+      res.user.checkCoordinateurInscription?.toISOString() ?? null,
     inscriptionValidee: res.user.inscriptionValidee?.toISOString() ?? null,
     structureEmployeuseRenseignee:
       res.user.structureEmployeuseRenseignee?.toISOString() ?? null,

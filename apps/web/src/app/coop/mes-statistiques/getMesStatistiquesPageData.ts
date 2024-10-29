@@ -9,6 +9,7 @@ import {
   getActivitesStats,
   getActivitesStructuresStats,
 } from '@app/web/app/coop/mes-statistiques/_queries/getActivitesStats'
+import { UserDisplayName, UserProfile } from '@app/web/utils/user'
 import { getBeneficiaireStats } from './_queries/getBeneficiaireStats'
 import { getTotalCountsStats } from './_queries/getTotalCountsStats'
 
@@ -17,14 +18,21 @@ export type MesStatistiquesGraphOptions = {
 }
 
 export const getMesStatistiquesPageData = async ({
-  mediateurId,
+  user,
+  mediateurCoordonnesIds,
   activitesFilters,
   graphOptions = {},
 }: {
-  mediateurId: string
+  user: UserDisplayName & UserProfile
+  mediateurCoordonnesIds?: string[]
   activitesFilters: ActivitesFilters
   graphOptions?: MesStatistiquesGraphOptions
 }) => {
+  const mediateurIds = [
+    ...(user.mediateur?.id ? [user.mediateur.id] : []),
+    ...(mediateurCoordonnesIds ?? []),
+  ]
+
   const [
     accompagnementsParJour,
     accompagnementsParMois,
@@ -34,41 +42,31 @@ export const getMesStatistiquesPageData = async ({
     totalCounts,
   ] = await Promise.all([
     getAccompagnementsCountByDay({
-      mediateurId,
+      mediateurIds,
       activitesFilters,
       periodEnd: graphOptions.fin ? dateAsIsoDay(graphOptions.fin) : undefined,
     }),
     getAccompagnementsCountByMonth({
-      mediateurId,
+      mediateurIds,
       activitesFilters,
       periodEnd: graphOptions.fin ? dateAsIsoDay(graphOptions.fin) : undefined,
     }),
-    getBeneficiaireStats({
-      mediateurId,
-      activitesFilters,
-    }),
-    getActivitesStats({
-      mediateurId,
-      activitesFilters,
-    }),
-    getActivitesStructuresStats({
-      mediateurId,
-      activitesFilters,
-    }),
-    getTotalCountsStats({
-      mediateurId,
-      activitesFilters,
-    }),
+    getBeneficiaireStats({ mediateurIds, activitesFilters }),
+    getActivitesStats({ mediateurIds, activitesFilters }),
+    getActivitesStructuresStats({ mediateurIds, activitesFilters }),
+    getTotalCountsStats({ mediateurIds, activitesFilters }),
   ])
 
   const {
     communesOptions,
     departementsOptions,
+    initialMediateursOptions,
     initialBeneficiairesOptions,
     lieuxActiviteOptions,
     activiteDates,
   } = await getFiltersOptionsForMediateur({
-    mediateurId,
+    user,
+    mediateurCoordonnesIds,
     includeBeneficiaireId: activitesFilters.beneficiaire,
   })
 
@@ -82,6 +80,7 @@ export const getMesStatistiquesPageData = async ({
     activitesFilters,
     communesOptions,
     departementsOptions,
+    initialMediateursOptions,
     initialBeneficiairesOptions,
     lieuxActiviteOptions,
     activiteDates,

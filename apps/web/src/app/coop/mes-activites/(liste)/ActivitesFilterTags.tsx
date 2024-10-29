@@ -17,6 +17,8 @@ import LocationFilter, {
   LocationFilterValue,
 } from '@app/web/components/filters/LocationFilter'
 import { TypeActiviteSlug } from '@app/web/cra/cra'
+import MediateurFilter from '@app/web/components/filters/MediateurFilter'
+import { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 
 // Allows to replace the current route with new query params
 const replaceRouteWithNewParams = ({
@@ -68,18 +70,24 @@ const createRouteParamsReplacer =
 
 const ActivitesFilterTags = ({
   defaultFilters,
+  initialMediateursOptions,
   initialBeneficiairesOptions,
   communesOptions,
   departementsOptions,
   lieuxActiviteOptions,
+  isCoordinateur,
+  isMediateur,
   minDate,
   className,
 }: {
   defaultFilters: ActivitesFilters
+  initialMediateursOptions: MediateurOption[]
   initialBeneficiairesOptions: BeneficiaireOption[]
   communesOptions: SelectOption[]
   lieuxActiviteOptions: SelectOption[]
   departementsOptions: SelectOption[]
+  isCoordinateur: boolean
+  isMediateur: boolean
   minDate?: Date
   className?: string
 }) => {
@@ -119,15 +127,15 @@ const ActivitesFilterTags = ({
     )
   }
   const onActiviteTypeChange = (type: TypeActiviteSlug | null) => {
-    replaceRouteParams({
-      type,
-    })
+    replaceRouteParams({ type })
   }
 
   const onBeneficiaireChange = (beneficiaireId: string | null) => {
-    replaceRouteParams({
-      beneficiaire: beneficiaireId,
-    })
+    replaceRouteParams({ beneficiaire: beneficiaireId })
+  }
+
+  const onMediateurChange = (mediateurId: string | null) => {
+    replaceRouteParams({ mediateur: mediateurId })
   }
 
   const defaultLocation: LocationFilterValue | undefined = defaultFilters.lieu
@@ -188,6 +196,13 @@ const ActivitesFilterTags = ({
         Filtres&nbsp;:
       </p>
       <div className="fr-flex fr-flex-gap-2v fr-flex-wrap">
+        {isCoordinateur && (
+          <MediateurFilter
+            onChange={onMediateurChange}
+            initialMediateursOptions={initialMediateursOptions}
+            defaultValue={defaultFilters.mediateur}
+          />
+        )}
         <PeriodFilter
           onChange={onPeriodChange}
           minDate={minDate ?? new Date()}
@@ -204,11 +219,13 @@ const ActivitesFilterTags = ({
           onChange={onActiviteTypeChange}
           defaultValue={defaultFilters.type}
         />
-        <BeneficiaireFilter
-          onChange={onBeneficiaireChange}
-          initialBeneficiairesOptions={initialBeneficiairesOptions}
-          defaultValue={defaultFilters.beneficiaire}
-        />
+        {isMediateur && (
+          <BeneficiaireFilter
+            onChange={onBeneficiaireChange}
+            initialBeneficiairesOptions={initialBeneficiairesOptions}
+            defaultValue={defaultFilters.beneficiaire}
+          />
+        )}
       </div>
     </div>
   )

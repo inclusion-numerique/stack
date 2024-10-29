@@ -1,13 +1,15 @@
 import { seedStructures } from '@app/fixtures/structures'
-import { prismaClient } from '@app/web/prismaClient'
-import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
 import {
   conseillerNumerique,
   conseillerNumeriqueMediateurId,
-  mediateurAvecActivite,
+} from '@app/fixtures/users/conseillerNumerique'
+import { mediateurAvecActivite } from '@app/fixtures/users/mediateurAvecActivite'
+import {
   mediateurSansActivites,
   mediateurSansActivitesMediateurId,
-} from '@app/fixtures/users'
+} from '@app/fixtures/users/mediateurSansActivites'
+import { prismaClient } from '@app/web/prismaClient'
+import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
 import { getBeneficiairesListPageData } from '@app/web/app/coop/mes-beneficiaires/(liste)/getBeneficiairesListPageData'
 import {
   beneficiaireMaximaleConseillerNumerique,
@@ -18,9 +20,9 @@ import {
 describe('getBeneficiairesListPageData', () => {
   beforeAll(async () => {
     await seedStructures(prismaClient)
-    await resetFixtureUser(mediateurAvecActivite)
-    await resetFixtureUser(mediateurSansActivites)
-    await resetFixtureUser(conseillerNumerique)
+    await resetFixtureUser(mediateurAvecActivite, false)
+    await resetFixtureUser(mediateurSansActivites, false)
+    await resetFixtureUser(conseillerNumerique, false)
   })
 
   describe('mediateur sans activites', () => {

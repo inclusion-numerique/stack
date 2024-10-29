@@ -6,18 +6,22 @@ import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import { ActivitesFilterValidations } from '@app/web/cra/ActivitesFilters'
 import { buildStatistiquesWorksheet } from '@app/web/worksheet/statistiques/buildStatistiquesWorksheet'
 import { getStatistiquesWorksheetInput } from '@app/web/worksheet/statistiques/getStatistiquesWorksheetInput'
-import { AuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
+import { SessionUser } from '@app/web/auth/sessionUser'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-const ExportActivitesValidation = z
-  .object({
-    // If you want to filter by a specific mediateur, you can add it here
-    // By default this will export for current user if he is a mediateur
-    mediateur: z.string().uuid().optional(),
-  })
-  .extend(ActivitesFilterValidations)
+const ExportActivitesValidation = z.object(ActivitesFilterValidations)
+
+const toMediateurId = ({ mediateurId }: { mediateurId: string }) => mediateurId
+
+const disallowExportFor =
+  (user: SessionUser) => (exportForMediateurId?: string) =>
+    exportForMediateurId &&
+    exportForMediateurId !== user.mediateur?.id &&
+    !user.coordinateur?.mediateursCoordonnes
+      .map(toMediateurId)
+      .includes(exportForMediateurId)
 
 export const GET = async (request: NextRequest) => {
   const sessionToken = getSessionTokenFromNextRequestCookies(request.cookies)
@@ -27,12 +31,9 @@ export const GET = async (request: NextRequest) => {
     return new Response('Unauthorized', { status: 401 })
   }
 
-  if (!user.mediateur) {
+  if (!user.mediateur && !user.coordinateur) {
     return new Response('Forbidden', { status: 403 })
   }
-
-  // Do not know why but TS does not understand user.mediateur is not null after previous check
-  const typedUser = user as AuthenticatedMediateur
 
   const parsedQueryParams = ExportActivitesValidation.safeParse(
     Object.fromEntries(request.nextUrl.searchParams.entries()),
@@ -42,14 +43,14 @@ export const GET = async (request: NextRequest) => {
     return new Response('Invalid query params', { status: 400 })
   }
 
-  const { mediateur: exportForMediateurId, ...filters } = parsedQueryParams.data
+  const filters = parsedQueryParams.data
 
-  if (exportForMediateurId && exportForMediateurId !== user.mediateur.id) {
+  if (disallowExportFor(user)(filters.mediateur)) {
     return new Response('Cannot export for another mediateur', { status: 403 })
   }
 
   const statistiquesWorksheetInput = await getStatistiquesWorksheetInput({
-    user: typedUser,
+    user,
     filters,
   })
 

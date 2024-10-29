@@ -13,7 +13,7 @@ describe('buildActivitesWorksheet', () => {
         lastName: 'Doe',
         role: 'Admin',
         id: '1',
-        coordinateur: { id: '1' },
+        coordinateur: { id: '1', mediateursCoordonnes: [] },
         mediateur: {
           id: '1',
           conseillerNumerique: { id: '3' },
@@ -39,6 +39,7 @@ describe('buildActivitesWorksheet', () => {
         lieu: null, // unused in worksheet
         type: 'Accompagnement',
         beneficiaire: 'Beneficiaire Name',
+        mediateur: null,
       },
       activites: [], // empty activities for now
     } satisfies BuildActivitesWorksheetInput

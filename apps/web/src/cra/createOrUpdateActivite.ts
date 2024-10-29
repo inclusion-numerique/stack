@@ -8,7 +8,7 @@ import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
 import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
 import { CraDemarcheAdministrativeData } from '@app/web/cra/CraDemarcheAdministrativeValidation'
 import { createBeneficiairesForParticipantsAnonymes } from '@app/web/beneficiaire/createBeneficiairesForParticipantsAnonymes'
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import { createStopwatch } from '@app/web/utils/stopwatch'
 import { addMutationLog } from '@app/web/utils/addMutationLog'
 
@@ -23,7 +23,7 @@ const getExistingBeneficiairesSuivis = async ({
 
   const existingBeneficiairesIds = beneficiaires
     .map((beneficiaire) => beneficiaire.id)
-    .filter(isDefinedAndNotNull)
+    .filter(onlyDefinedAndNotNull)
 
   const existingBeneficiaires = await prismaClient.beneficiaire.findMany({
     where: {
@@ -317,7 +317,7 @@ export const createOrUpdateActivite = async ({
             ...prismaData,
           },
         }),
-      ].filter(isDefinedAndNotNull),
+      ].filter(onlyDefinedAndNotNull),
     )
 
     // Create mutation for audit log
@@ -382,7 +382,7 @@ export const createOrUpdateActivite = async ({
             : []),
         ],
       }),
-    ].filter(isDefinedAndNotNull),
+    ].filter(onlyDefinedAndNotNull),
   )
 
   // Create mutation for audit log

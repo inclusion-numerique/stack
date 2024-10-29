@@ -7,6 +7,7 @@ export const ActivitesFilterValidations = {
   du: z.string().regex(isoDayRegex).optional(),
   au: z.string().regex(isoDayRegex).optional(),
   type: z.enum(typeActiviteSlugValues).optional(),
+  mediateur: z.string().uuid().optional(),
   beneficiaire: z.string().uuid().optional(),
   commune: z.string().length(5).optional(),
   departement: z.string().max(3).optional(),
@@ -17,6 +18,7 @@ export type ActivitesFilters = {
   du?: string // Iso date e.g. '2022-01-01'
   au?: string // Iso date e.g. '2022-01-01'
   type?: TypeActiviteSlug
+  mediateur?: string // UUID of mediateur
   beneficiaire?: string // UUID of beneficiaire
   commune?: string // Code INSEE of commune
   departement?: string // Code département

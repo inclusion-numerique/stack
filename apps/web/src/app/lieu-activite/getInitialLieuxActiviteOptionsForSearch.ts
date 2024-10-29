@@ -2,9 +2,9 @@ import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import { prismaClient } from '@app/web/prismaClient'
 
 export const mediateurStructureSelect = ({
-  mediateurId,
+  mediateurIds,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
 }) => ({
   nom: true,
   id: true,
@@ -12,7 +12,7 @@ export const mediateurStructureSelect = ({
     select: {
       activites: {
         where: {
-          mediateurId,
+          mediateurId: { in: mediateurIds },
         },
       },
     },
@@ -20,17 +20,17 @@ export const mediateurStructureSelect = ({
 })
 
 export const getInitialLieuxActiviteOptionsForSearch = async ({
-  mediateurId,
+  mediateurIds,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
 }) => {
   const structureSelect = mediateurStructureSelect({
-    mediateurId,
+    mediateurIds,
   })
 
   const lieuxActivite = await prismaClient.mediateurEnActivite.findMany({
     where: {
-      mediateurId,
+      mediateurId: { in: mediateurIds },
       suppression: null,
     },
     select: {

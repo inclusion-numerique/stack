@@ -230,6 +230,7 @@ const statistiquesPageData = {
   communesOptions: [],
   departementsOptions: [],
   initialBeneficiairesOptions: [],
+  initialMediateursOptions: [],
   lieuxActiviteOptions: [],
 } satisfies MesStatistiquesPageData
 

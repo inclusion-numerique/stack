@@ -7,6 +7,7 @@ import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import Tag from '@codegouvfr/react-dsfr/Tag'
 import { generateActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
+import { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { download } from '@app/web/utils/download'
 
@@ -18,11 +19,13 @@ const ExportStatistiquesModal = createModal({
 export const ExportStatistiques = ({
   filters,
   lieuxActiviteOptions,
+  mediateursOptions,
   beneficiairesOptions,
   departementsOptions,
   communesOptions,
 }: {
   filters: ActivitesFilters
+  mediateursOptions: MediateurOption[]
   beneficiairesOptions: BeneficiaireOption[]
   lieuxActiviteOptions: SelectOption[]
   departementsOptions: SelectOption[]
@@ -56,6 +59,7 @@ export const ExportStatistiques = ({
       departementsOptions,
       lieuxActiviteOptions,
       beneficiairesOptions,
+      mediateursOptions,
     }),
   )
     .filter(

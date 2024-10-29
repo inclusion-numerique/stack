@@ -1,4 +1,5 @@
 import Button from '@codegouvfr/react-dsfr/Button'
+import Notice from '@codegouvfr/react-dsfr/Notice'
 import React, { ReactNode } from 'react'
 import IconInSquare from '@app/web/components/IconInSquare'
 import InfoLabelValue from '@app/web/components/InfoLabelValue'
@@ -16,6 +17,7 @@ const InscriptionRecapitulatif = ({
   editLieuxActiviteHref,
   editStructureEmployeuseHref,
   structureEmployeuse,
+  mediateursCoordonnesCount,
   lieuxActivite,
   user,
   contactSupportLink = false,
@@ -28,6 +30,7 @@ const InscriptionRecapitulatif = ({
     'profilInscription' | 'id' | 'email' | 'name' | 'mediateur' | 'coordinateur'
   >
   structureEmployeuse: StructureData
+  mediateursCoordonnesCount?: number
   lieuxActivite?: StructureData[]
   contactSupportLink?: boolean
   button?: ReactNode
@@ -57,6 +60,56 @@ const InscriptionRecapitulatif = ({
         value={user.email}
       />
     </div>
+    {mediateursCoordonnesCount != null && (
+      <>
+        <hr className="fr-separator-12v" />
+        <div className="fr-flex fr-align-items-center fr-flex-gap-3v fr-mt-12v fr-mb-6v">
+          <IconInSquare iconId="ri-group-2-line" size="small" />
+          <h2 className="fr-h6 fr-mb-0 fr-text-title--blue-france">
+            Mon équipe
+          </h2>
+        </div>
+        {mediateursCoordonnesCount > 0 ? (
+          <>
+            <div className="fr-width-full fr-border-radius--8 fr-p-6v fr-border fr-my-6v fr-flex fr-align-items-center fr-flex-gap-3v">
+              <img
+                alt=""
+                src="/images/iconographie/profil-conseiller-numerique.svg"
+              />
+              <div className="fr-h2 fr-mb-0">{mediateursCoordonnesCount}</div>
+              <div>Conseillers numériques identifiés</div>
+            </div>
+            <Notice
+              className="fr-notice--flex"
+              title={
+                <span className="fr-text--regular fr-text-default--grey fr-ml-1w">
+                  Retrouvez et gérez la liste des conseillers numériques que
+                  vous coordonnez sur votre espace dans la section{' '}
+                  <strong>Mon équipe</strong>.
+                </span>
+              }
+            />
+          </>
+        ) : (
+          <>
+            <div className="fr-width-full fr-border-radius--8 fr-p-6v fr-border fr-my-6v fr-flex fr-align-items-center fr-flex-gap-3v">
+              <div className="fr-h2 fr-mb-0">0</div>
+              <div>Membres identifiés</div>
+            </div>
+            <Notice
+              className="fr-notice--flex"
+              title={
+                <span className="fr-text--regular fr-text-default--grey fr-ml-1w">
+                  Vous pourrez inviter des médiateur·rice·s numériques (dont des
+                  conseillers numériques) que vous souhaitez coordonner sur
+                  votre espace dans la section <strong>Mon équipe</strong>.
+                </span>
+              }
+            />
+          </>
+        )}
+      </>
+    )}
     <hr className="fr-separator-12v" />
     <div className="fr-flex fr-align-items-center fr-flex-gap-3v fr-mt-12v fr-mb-6v">
       <IconInSquare iconId="ri-home-smile-2-line" size="small" />

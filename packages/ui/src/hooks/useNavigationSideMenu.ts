@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { SideMenuProps } from '@codegouvfr/react-dsfr/SideMenu'
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import { isBrowser } from '@app/web/utils/isBrowser'
 
 const getIdFromItem = (item: SideMenuProps.Item): string | null =>
@@ -42,7 +42,7 @@ export const useNavigationSideMenu = ({
   }, [contentId])
 
   const navigableItemIds = useMemo(
-    () => items.flatMap(getIdsFromItem).filter(isDefinedAndNotNull),
+    () => items.flatMap(getIdsFromItem).filter(onlyDefinedAndNotNull),
     [items],
   )
 
@@ -68,7 +68,7 @@ export const useNavigationSideMenu = ({
         // No id means the empty '#' anchor, which is the top of the page, so we use the body
         // eslint-disable-next-line unicorn/prefer-query-selector
         .map((id) => (id === '' ? document.body : document.getElementById(id)))
-        .filter(isDefinedAndNotNull)
+        .filter(onlyDefinedAndNotNull)
 
       if (elements.length === 0) {
         return

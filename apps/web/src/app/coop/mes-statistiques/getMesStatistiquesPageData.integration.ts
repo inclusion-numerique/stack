@@ -1,12 +1,15 @@
 /* eslint no-param-reassign: 0 */
 import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
+import { conseillerNumerique } from '@app/fixtures/users/conseillerNumerique'
 import {
-  conseillerNumerique,
   mediateurAvecActivite,
   mediateurAvecActiviteMediateurId,
+  mediateurAvecActiviteUserId,
+} from '@app/fixtures/users/mediateurAvecActivite'
+import {
   mediateurSansActivites,
-  mediateurSansActivitesMediateurId,
-} from '@app/fixtures/users'
+  mediateurSansActivitesUserId,
+} from '@app/fixtures/users/mediateurSansActivites'
 import {
   getMesStatistiquesPageData,
   MesStatistiquesGraphOptions,
@@ -34,6 +37,7 @@ import { emptyQuantifiedSharesFromEnum } from '@app/web/app/coop/mes-statistique
 import { prismaClient } from '@app/web/prismaClient'
 import { QuantifiedShare } from '@app/web/app/coop/mes-statistiques/quantifiedShare'
 import { computeProportion } from '@app/web/app/coop/mes-statistiques/_queries/allocatePercentages'
+import { UserDisplayName, UserProfile } from '@app/web/utils/user'
 
 /**
  * Base empty data for all tests
@@ -158,6 +162,7 @@ const emptyData: MesStatistiquesPageData = {
   communesOptions: [],
   departementsOptions: [],
   initialBeneficiairesOptions: [],
+  initialMediateursOptions: [],
   lieuxActiviteOptions: [],
   activiteDates: {
     first: undefined,
@@ -210,15 +215,20 @@ const expectEnum = <T extends string>(
 describe('getMesStatistiquesPageData', () => {
   beforeAll(async () => {
     await seedStructures(prismaClient)
-    await resetFixtureUser(mediateurAvecActivite)
-    await resetFixtureUser(mediateurSansActivites)
-    await resetFixtureUser(conseillerNumerique)
+    await resetFixtureUser(mediateurAvecActivite, false)
+    await resetFixtureUser(mediateurSansActivites, false)
+    await resetFixtureUser(conseillerNumerique, false)
   })
 
   describe('mediateur sans activites', () => {
     test('should give empty data without filters', async () => {
+      const user = await prismaClient.user.findUnique({
+        where: { id: mediateurSansActivitesUserId },
+        select: { mediateur: true },
+      })
+
       const data = await getMesStatistiquesPageData({
-        mediateurId: mediateurSansActivitesMediateurId,
+        user: user as unknown as UserDisplayName & UserProfile,
         activitesFilters: {},
         graphOptions,
       })
@@ -508,16 +518,19 @@ describe('getMesStatistiquesPageData', () => {
           },
         ],
         initialBeneficiairesOptions:
-          await getInitialBeneficiairesOptionsForSearch({
-            mediateurId,
-          }),
+          await getInitialBeneficiairesOptionsForSearch({ mediateurId }),
         lieuxActiviteOptions: [{ label: mediateque.nom, value: mediateque.id }],
       }
     })
 
     test.each(cases)('$title', async ({ activitesFilters, expected }) => {
+      const user = await prismaClient.user.findUnique({
+        where: { id: mediateurAvecActiviteUserId },
+        select: { mediateur: true },
+      })
+
       const data = await getMesStatistiquesPageData({
-        mediateurId: mediateurAvecActiviteMediateurId,
+        user: user as unknown as UserDisplayName & UserProfile,
         activitesFilters,
         graphOptions,
       })

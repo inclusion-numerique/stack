@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 import ActivitesFilterTags from '@app/web/app/coop/mes-activites/(liste)/ActivitesFilterTags'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
+import type { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 import ExportActivitesDisabledButton from '@app/web/app/coop/mes-activites/(liste)/ExportActivitesDisabledButton'
 import ExportActivitesButton from '@app/web/app/coop/mes-activites/(liste)/ExportActivitesButton'
 import { generateActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
@@ -12,6 +13,7 @@ import type { ActiviteDates } from '@app/web/app/coop/mes-statistiques/_queries/
 const ExportActivitesButtonWrapper = async ({
   lieuxActiviteOptions,
   beneficiairesOptions,
+  mediateursOptions,
   departementsOptions,
   communesOptions,
   filters,
@@ -19,6 +21,7 @@ const ExportActivitesButtonWrapper = async ({
 }: {
   filters: ActivitesFilters
   beneficiairesOptions: BeneficiaireOption[]
+  mediateursOptions: MediateurOption[]
   communesOptions: SelectOption[]
   lieuxActiviteOptions: SelectOption[]
   departementsOptions: SelectOption[]
@@ -29,6 +32,7 @@ const ExportActivitesButtonWrapper = async ({
     departementsOptions,
     lieuxActiviteOptions,
     beneficiairesOptions,
+    mediateursOptions,
   })
 
   const matchesCount = await searchResultMatchesCount
@@ -51,12 +55,14 @@ const MesActivitesListeHeader = ({
   communesOptions,
   defaultFilters,
   departementsOptions,
+  initialMediateursOptions,
   initialBeneficiairesOptions,
   lieuxActiviteOptions,
   searchResultMatchesCount,
   activiteDates,
 }: {
   defaultFilters: ActivitesFilters
+  initialMediateursOptions: MediateurOption[]
   initialBeneficiairesOptions: BeneficiaireOption[]
   communesOptions: SelectOption[]
   lieuxActiviteOptions: SelectOption[]
@@ -74,11 +80,14 @@ const MesActivitesListeHeader = ({
     <ActivitesFilterTags
       className="fr-mt-0-5v"
       defaultFilters={defaultFilters}
+      initialMediateursOptions={initialMediateursOptions}
       initialBeneficiairesOptions={initialBeneficiairesOptions}
       communesOptions={communesOptions}
       departementsOptions={departementsOptions}
       lieuxActiviteOptions={lieuxActiviteOptions}
       minDate={activiteDates.first ?? new Date()}
+      isCoordinateur={false}
+      isMediateur
     />
     <Suspense fallback={<ExportActivitesDisabledButton />}>
       <ExportActivitesButtonWrapper
@@ -87,6 +96,7 @@ const MesActivitesListeHeader = ({
         departementsOptions={departementsOptions}
         lieuxActiviteOptions={lieuxActiviteOptions}
         beneficiairesOptions={initialBeneficiairesOptions}
+        mediateursOptions={initialMediateursOptions}
         searchResultMatchesCount={searchResultMatchesCount}
       />
     </Suspense>
