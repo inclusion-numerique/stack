@@ -36,14 +36,12 @@ const DeleteMediateurActivite = ({
 
       createToast({
         priority: 'success',
-        message:
-          'Le lieu d’activité a bien été supprimé de votre liste de lieu d’activité !',
+        message: 'Le lieu d’activité a bien été supprimé de votre liste !',
       })
     } catch {
       createToast({
         priority: 'error',
-        message:
-          'Le lieu d’activité n’a pas pu être supprimé de votre liste de lieu d’activité',
+        message: 'Le lieu d’activité n’a pas pu être supprimé de votre liste',
       })
     }
   }

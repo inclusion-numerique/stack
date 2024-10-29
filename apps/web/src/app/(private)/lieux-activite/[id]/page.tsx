@@ -18,12 +18,13 @@ const LieuActiviteDetailPage = async ({
     redirect(`/connexion?suivant=/lieux-activite/${params.id}`)
   }
 
-  const lieuActivite = await prismaClient.mediateurEnActivite.findFirst({
+  const lieuActivite = await prismaClient.mediateurEnActivite.findUnique({
     where: {
+      id: params.id,
       mediateurId: user.mediateur.id,
-      structureId: params.id,
     },
     select: {
+      id: true,
       structure: true,
     },
   })

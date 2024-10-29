@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { v4 } from 'uuid'
 import { LieuActivite } from './LieuActivite'
 
 const meta = {
@@ -10,9 +11,11 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const mediateurEnActiviteId = v4()
+
 export const Full: Story = {
   args: {
-    id: '64258318456999069aa3c9bb',
+    mediateurEnActiviteId,
     nom: "Bibliotheque Musee de l'Opera · Bibliotheque Nationale de France",
     adresse: '19 Rue Proudhon',
     complementAdresse: 'Bâtiment 5',
@@ -31,7 +34,7 @@ export const Full: Story = {
 
 export const Minimal: Story = {
   args: {
-    id: '64258318456999069aa3c9bb',
+    mediateurEnActiviteId,
     nom: "Bibliotheque Musee de l'Opera · Bibliotheque Nationale de France",
     adresse: '19 Rue Proudhon',
     codePostal: '93210',
@@ -43,7 +46,7 @@ export const Minimal: Story = {
 
 export const LieuEnCoursDAjout: Story = {
   args: {
-    id: '64258318456999069aa3c9bb',
+    mediateurEnActiviteId,
     nom: "Bibliotheque Musee de l'Opera · Bibliotheque Nationale de France",
     adresse: '19 Rue Proudhon',
     codePostal: '93210',
@@ -56,7 +59,7 @@ export const LieuEnCoursDAjout: Story = {
 
 export const LieuNonSupprimable: Story = {
   args: {
-    id: '64258318456999069aa3c9bb',
+    mediateurEnActiviteId,
     nom: "Bibliotheque Musee de l'Opera · Bibliotheque Nationale de France",
     adresse: '19 Rue Proudhon',
     codePostal: '93210',
