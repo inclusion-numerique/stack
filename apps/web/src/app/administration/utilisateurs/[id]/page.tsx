@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import Link from 'next/link'
 import Tag from '@codegouvfr/react-dsfr/Tag'
+import type { Structure } from '@prisma/client'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
 import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
@@ -17,7 +18,6 @@ import AdministrationMailtoLink from '@app/web/app/administration/Administration
 import { getUserDisplayName } from '@app/web/utils/user'
 import { getUserStatusBadge } from '@app/web/app/administration/utilisateurs/getUserStatusBadge'
 import { numberToString } from '@app/web/utils/formatNumber'
-import type { Structure } from '@prisma/client'
 
 export const metadata = {
   title: metadataTitle('Utilisateurs - Détails'),

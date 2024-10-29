@@ -1,13 +1,13 @@
 'use client'
 
-import AdministrationInfoCard from '@app/web/app/administration/AdministrationInfoCard'
 import { ChangeEvent, useState } from 'react'
+import AdministrationInfoCard from '@app/web/app/administration/AdministrationInfoCard'
 import UsurpUserButton from '@app/web/app/administration/usurpation/UsurpUserButton'
 
 export const SudoUsurpation = () => {
   const [userId, setUserId] = useState('')
 
-  const onChange = async (event: ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUserId(event.target.value)
     event.preventDefault()
     event.stopPropagation()
