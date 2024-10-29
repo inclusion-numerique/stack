@@ -61,4 +61,8 @@ export const ServerWebAppConfig = {
   ConseillerNumerique: {
     mongodbUrl: process.env.CONSEILLER_NUMERIQUE_MONGODB_URL ?? '',
   },
+  // Local development only
+  Sudo: {
+    usurpation: process.env.SUDO_USURPATION === '1' || false,
+  },
 }

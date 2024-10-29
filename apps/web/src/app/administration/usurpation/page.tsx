@@ -7,6 +7,8 @@ import AdministrationBreadcrumbs from '@app/web/app/administration/Administratio
 import ResetUserFixtureButton from '@app/web/app/administration/usurpation/ResetUserFixtureButton'
 import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import SudoUsurpation from '@app/web/app/administration/usurpation/SudoUsurpation'
 
 export const metadata = {
   title: metadataTitle('Usurpation'),
@@ -35,6 +37,8 @@ const Page = async () => {
         Sur les instances de preview, vous pouvez vous connecter en tant
         qu’utilisateur de test (fixture) pour tester différent parcours.
       </p>
+
+      {ServerWebAppConfig.Sudo.usurpation && <SudoUsurpation />}
 
       {PublicWebAppConfig.isMain && (
         <Notice

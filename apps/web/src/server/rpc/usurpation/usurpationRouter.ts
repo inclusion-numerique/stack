@@ -4,6 +4,7 @@ import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { prismaClient } from '@app/web/prismaClient'
 import { enforceIsAdmin } from '@app/web/server/rpc/enforceIsAdmin'
 import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 
 export const usurpationRouter = router({
   usurpUser: protectedProcedure
@@ -18,7 +19,7 @@ export const usurpationRouter = router({
         const user = await prismaClient.user.findUnique({
           where: {
             id: userId,
-            isFixture: true,
+            isFixture: ServerWebAppConfig.Sudo.usurpation ? undefined : true,
           },
         })
 

@@ -7,7 +7,9 @@ import AdministrationBreadcrumbs from '@app/web/app/administration/Administratio
 import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import AdministrationInfoCard from '@app/web/app/administration/AdministrationInfoCard'
-import AdministrationInlineLabelsValues from '@app/web/app/administration/AdministrationInlineLabelsValues'
+import AdministrationInlineLabelsValues, {
+  LabelAndValue,
+} from '@app/web/app/administration/AdministrationInlineLabelsValues'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { prismaClient } from '@app/web/prismaClient'
 import { dateAsDayAndTime } from '@app/web/utils/dateAsDayAndTime'
@@ -15,12 +17,71 @@ import AdministrationMailtoLink from '@app/web/app/administration/Administration
 import { getUserDisplayName } from '@app/web/utils/user'
 import { getUserStatusBadge } from '@app/web/app/administration/utilisateurs/getUserStatusBadge'
 import { numberToString } from '@app/web/utils/formatNumber'
+import type { Structure } from '@prisma/client'
 
 export const metadata = {
   title: metadataTitle('Utilisateurs - Détails'),
 }
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+
+const getStructuresInfos = ({
+  id,
+  commune,
+  adresse,
+  codeInsee,
+  codePostal,
+  siret,
+  rna,
+  nom,
+  creation,
+  suppression,
+}: Structure): LabelAndValue[] => [
+  {
+    label: 'Nom',
+    value: nom,
+  },
+  {
+    label: 'Id',
+    value: (
+      <Link href={`/administration/structures/${id}`} target="_blank">
+        {id}
+      </Link>
+    ),
+  },
+  {
+    label: 'Adresse',
+    value: adresse || 'Non renseignée',
+  },
+  {
+    label: 'Siret',
+    value: siret || 'Non renseigné',
+  },
+  {
+    label: 'Rna',
+    value: rna || 'Non renseigné',
+  },
+  {
+    label: 'Commune',
+    value: commune || 'Non renseignée',
+  },
+  {
+    label: 'Code Insee',
+    value: codeInsee || 'Non renseigné',
+  },
+  {
+    label: 'Code postal',
+    value: codePostal || 'Non renseigné',
+  },
+  {
+    label: 'Créé le',
+    value: dateAsDay(creation),
+  },
+  {
+    label: 'Supprimée le',
+    value: suppression ? dateAsDay(suppression) : '-',
+  },
+]
 
 const Page = async ({ params: { id } }: { params: { id: string } }) => {
   const user = await prismaClient.user.findUnique({
@@ -113,6 +174,8 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
     emplois,
   } = user
 
+  const enActivite = mediateur ? mediateur.enActivite : []
+
   const isMediateur = !!mediateur
   const isCoordinateur = !!coordinateur
   const inscriptionEnCours =
@@ -165,6 +228,10 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
       <AdministrationInfoCard title="Détails de l'utilisateur">
         <AdministrationInlineLabelsValues
           items={[
+            {
+              label: 'Id',
+              value: id,
+            },
             {
               label: 'Prénom',
               value: firstName || 'Non renseigné',
@@ -236,10 +303,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
               },
               {
                 label: 'Lieux d’activité',
-                value:
-                  mediateur.enActivite
-                    .map((enActivite) => enActivite.structure.nom)
-                    .join(', ') || 'Non renseigné',
+                value: mediateur.enActivite.length,
               },
             ]}
           />
@@ -317,7 +381,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
           />
         </AdministrationInfoCard>
       )}
-      {emplois.length > 0 && (
+      {emplois.length > 0 ? (
         <AdministrationInfoCard title="Structures employeuses">
           {emplois.map((emploi) => (
             <div key={emploi.id}>
@@ -326,28 +390,64 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
               </p>
               <AdministrationInlineLabelsValues
                 items={[
+                  ...getStructuresInfos(emploi.structure),
                   {
-                    label: 'Adresse',
-                    value: emploi.structure.adresse || 'Non renseignée',
-                  },
-                  {
-                    label: 'Commune',
-                    value: emploi.structure.commune || 'Non renseignée',
-                  },
-                  {
-                    label: 'Code postal',
-                    value: emploi.structure.codePostal || 'Non renseigné',
-                  },
-                  {
-                    label: 'Créé le',
+                    label: 'Lien d’emploi créé le',
                     value: dateAsDay(emploi.creation),
+                  },
+                  {
+                    label: 'Lien d’emploi supprimé le',
+                    value: emploi.suppression
+                      ? dateAsDay(emploi.suppression)
+                      : '-',
                   },
                 ]}
               />
             </div>
           ))}
         </AdministrationInfoCard>
+      ) : (
+        (!!coordinateur || !!mediateur) && (
+          <Notice
+            className="fr-notice--alert"
+            title={<>Aucune structure employeuse</>}
+          />
+        )
       )}
+      {enActivite.length > 0 ? (
+        <AdministrationInfoCard title="Lieux d’activité">
+          {enActivite.map((activite) => (
+            <div key={activite.id}>
+              <p className="fr-text--lg fr-text--medium fr-mb-4v fr-mt-8v">
+                {activite.structure.nom}
+              </p>
+              <AdministrationInlineLabelsValues
+                items={[
+                  ...getStructuresInfos(activite.structure),
+                  {
+                    label: 'Lien d’activité créé le',
+                    value: dateAsDay(activite.creation),
+                  },
+                  {
+                    label: 'Lien d’activité supprimé le',
+                    value: activite.suppression
+                      ? dateAsDay(activite.suppression)
+                      : '-',
+                  },
+                ]}
+              />
+            </div>
+          ))}
+        </AdministrationInfoCard>
+      ) : (
+        !!mediateur && (
+          <Notice
+            className="fr-notice--alert"
+            title={<>Aucun lieu d’activité</>}
+          />
+        )
+      )}
+
       <AdministrationInfoCard title="Sessions et comptes liés">
         <AdministrationInlineLabelsValues
           items={[
