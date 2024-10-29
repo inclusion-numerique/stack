@@ -297,7 +297,8 @@ model CraConseillerNumeriqueV1 {
   @@map("cras_conseiller_numerique_v1")
 }
 
-// Tous les coordinateurs sont coordinateurs officiellement chez conseiller-numérique
+// Les coordinateurs peuvent être dans le dispositif conseiller-numerique
+// ou non. Ils peuvent être associés à plusieurs médiateurs.
 model Coordinateur {
   id String @id @default(uuid()) @db.Uuid
 

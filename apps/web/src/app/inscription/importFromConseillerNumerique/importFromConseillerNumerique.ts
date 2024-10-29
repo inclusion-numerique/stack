@@ -6,17 +6,17 @@ import {
   StructureCartographieNationale,
 } from '@prisma/client'
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
-import { SessionUser } from '@app/web/auth/sessionUser'
-import {
+import type { SessionUser } from '@app/web/auth/sessionUser'
+import type { PremanenceConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/PremanenceConseillerNumerique'
+import { toStructureFromCartoStructure } from '@app/web/structure/toStructureFromCartoStructure'
+import type {
   ConseillerNumeriqueByEmailFinder,
   ConseillerNumeriqueFound,
 } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
-import { PremanenceConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/PremanenceConseillerNumerique'
-import { toStructureFromCartoStructure } from '@app/web/structure/toStructureFromCartoStructure'
 import {
+  associateConseillersCoordonnesTo,
   associateCoordinateursTo,
   associateLieuxAtiviteFor,
-  associateConseillersCoordonnesTo,
   createConseillerNumerique,
   createCoordinateur,
   createStructureEmployeuseFor,
@@ -27,13 +27,13 @@ import {
   findExistingStructureFor,
   findExistingStructuresCartoFor,
   markAsCheckedConseillerNumerique,
-  markAsCheckedMediateur,
-  toId,
   markAsCheckedCoordinateur,
-  structureEmployeuseOf,
-  removeMediateur,
-  removeLieuxActiviteFor,
+  markAsCheckedMediateur,
   removeConseillerNumeriqueFor,
+  removeLieuxActiviteFor,
+  removeMediateur,
+  structureEmployeuseOf,
+  toId,
 } from './importFromConseillerNumerique.queries'
 
 type ImportFromConseillerNumeriquePayload = {

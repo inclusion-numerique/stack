@@ -1,6 +1,6 @@
-import type { ObjectId } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 
-export type ConseillerNumeriqueCollectionItem = {
+export type ConseillerNumeriqueV1Document = {
   _id: ObjectId
   aUneExperienceMedNum?: boolean
   certificationPixFormation?: boolean
@@ -35,12 +35,17 @@ export type ConseillerNumeriqueCollectionItem = {
   emailConfirmationKey?: string
   emailConfirmedAt: Date | null
   emailPro?: string | null
+  estCoordinateur?: boolean
   estDemandeurEmploi?: boolean
   estDiplomeMedNum?: boolean
   estEnEmploi: boolean
   estEnFormation: boolean
   estRecrute: boolean
   groupeCRA?: number
+  listeSubordonnes?: {
+    type: 'codeDepartement' | 'codeCommune' | 'conseillers'
+    liste: string[] | { $oid: string }[]
+  }
   groupeCRAHistorique?: {
     dateDeChangement?: Date
     dateMailSendConseillerM1?: Date
@@ -111,14 +116,19 @@ export type ConseillerNumeriqueCollectionItem = {
   userCreated: boolean
 }
 
-export const cleanConseillerProjection = ({
+export type ConseillerNumeriqueV1Collection =
+  Collection<ConseillerNumeriqueV1Document>
+
+export const cleanConseillerNumeriqueV1Document = ({
   _id,
   emailCN,
   ...rest
-}: ConseillerNumeriqueCollectionItem) => ({
-  id: _id,
+}: ConseillerNumeriqueV1Document) => ({
+  id: _id.toString('hex'),
   emailConseillerNumerique: emailCN?.address ?? null,
   ...rest,
 })
 
-export type Conseiller = ReturnType<typeof cleanConseillerProjection>
+export type ConseillerNumeriqueV1 = ReturnType<
+  typeof cleanConseillerNumeriqueV1Document
+>

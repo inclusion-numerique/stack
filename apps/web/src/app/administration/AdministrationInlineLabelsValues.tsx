@@ -1,7 +1,7 @@
 import { Fragment, ReactNode } from 'react'
 
 import classNames from 'classnames'
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import styles from './AdministrationInlineLabelsValues.module.css'
 
 export type LabelAndValue = {
@@ -17,7 +17,7 @@ const AdministrationInlineLabelsValues = ({
   className?: string
 }) => (
   <div className={classNames(styles.grid, className)}>
-    {items.filter(isDefinedAndNotNull).map(({ label, value }, index) => (
+    {items.filter(onlyDefinedAndNotNull).map(({ label, value }, index) => (
       // eslint-disable-next-line react/no-array-index-key
       <Fragment key={index}>
         <p className="fr-text--sm fr-mb-0">

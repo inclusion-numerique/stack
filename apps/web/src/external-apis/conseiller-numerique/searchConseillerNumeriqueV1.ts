@@ -1,11 +1,11 @@
 import { Filter, ObjectId } from 'mongodb'
 import escapeStringRegexp from 'escape-string-regexp'
 import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
-import {
-  cleanConseillerProjection,
-  type ConseillerNumeriqueCollectionItem,
-} from '@app/web/external-apis/conseiller-numerique/conseillersProjection'
 import type { StructureConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/StructureConseillerNumerique'
+import {
+  cleanConseillerNumeriqueV1Document,
+  ConseillerNumeriqueV1Document,
+} from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Document'
 
 export type FindConseillerNumeriqueV1Input =
   | {
@@ -26,13 +26,11 @@ export const findConseillerNumeriqueV1 = async (
     return null
   }
   const conseillerCollection =
-    await conseillerNumeriqueMongoCollection<ConseillerNumeriqueCollectionItem>(
-      'conseillers',
-    )
+    await conseillerNumeriqueMongoCollection('conseillers')
 
   const email = input.email?.trim().toLowerCase()
 
-  const filter: Filter<ConseillerNumeriqueCollectionItem> = email
+  const filter: Filter<ConseillerNumeriqueV1Document> = email
     ? {
         $or: [{ email }, { emailPro: email }, { 'emailCN.address': email }],
       }
@@ -48,9 +46,7 @@ export const findConseillerNumeriqueV1 = async (
   }
 
   // Mongodb select but only the fields we need
-  const conseillerDocument = (await conseillerCollection.findOne(
-    filter,
-  )) as unknown as ConseillerNumeriqueCollectionItem | null
+  const conseillerDocument = await conseillerCollection.findOne(filter)
 
   if (!conseillerDocument) {
     return null
@@ -127,7 +123,7 @@ export const findConseillerNumeriqueV1 = async (
     updatedBy: ObjectId
   }[]
 
-  const conseiller = cleanConseillerProjection(conseillerDocument)
+  const conseiller = cleanConseillerNumeriqueV1Document(conseillerDocument)
 
   return conseillerDocument
     ? {
@@ -183,9 +179,7 @@ export const searchConseillerNumeriqueV1 = async ({
   }
 
   // Mongodb select but only the fields we need
-  const conseillers = (await conseillerCollection
-    .find(filter)
-    .toArray()) as unknown as ConseillerNumeriqueCollectionItem[]
+  const conseillers = await conseillerCollection.find(filter).toArray()
 
-  return conseillers.map(cleanConseillerProjection)
+  return conseillers.map(cleanConseillerNumeriqueV1Document)
 }

@@ -15,8 +15,8 @@ import { createOpenStreetMapLink } from '@app/web/utils/createOpenStreetMapLink'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { prismaClient } from '@app/web/prismaClient'
 import { dateAsDayAndTime } from '@app/web/utils/dateAsDayAndTime'
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
 import AdministrationMailtoLink from '@app/web/app/administration/AdministrationMailtoLink'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 
 export const metadata = {
   title: metadataTitle('Conseillers V1 - Détails'),
@@ -66,7 +66,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
         conseiller.emailConseillerNumerique
           ? { email: conseiller.emailConseillerNumerique.trim().toLowerCase() }
           : null,
-      ].filter(isDefinedAndNotNull),
+      ].filter(onlyDefinedAndNotNull),
     },
   })
 

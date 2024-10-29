@@ -42,7 +42,7 @@ const AdministrationConseillersNumeriquesV1 = async ({
                   <tbody>
                     {v1ConseillersNumeriques.map((row) => (
                       <tr
-                        key={row.id.toString('hex')}
+                        key={row.id}
                         className={classNames(
                           'fr-enlarge-link',
                           styles.rowWithLink,
@@ -57,7 +57,7 @@ const AdministrationConseillersNumeriquesV1 = async ({
                         <td>{row.nomCommune}</td>
                         <td className={styles.rowLinkCell}>
                           <Link
-                            href={`/administration/conseillers-v1/${row.id.toString('hex')}`}
+                            href={`/administration/conseillers-v1/${row.id}`}
                           />
                         </td>
                       </tr>

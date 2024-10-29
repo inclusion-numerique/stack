@@ -7,9 +7,9 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import { testSessionUser } from '@app/web/test/testSessionUser'
 import { ConseillerNumeriqueFound } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
 import { ObjectId } from 'mongodb'
-import { Conseiller } from '@app/web/external-apis/conseiller-numerique/conseillersProjection'
 import { StructureConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/StructureConseillerNumerique'
-import { PremanenceConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/PremanenceConseillerNumerique'
+import type { PremanenceConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/PremanenceConseillerNumerique'
+import type { ConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Document'
 import {
   assignConseillerNumeriqueRoleToCoordinateur,
   importFromConseillerNumerique,
@@ -25,15 +25,15 @@ const coordinateur = {
   nonAffichageCarto: false,
 }
 
-const conseillerCoordonne: Conseiller = {
-  id: new ObjectId('988ab78e4c4b904b4cad78e4'),
+const conseillerCoordonne: ConseillerNumeriqueV1 = {
+  id: new ObjectId('988ab78e4c4b904b4cad78e4').toString('hex'),
   coordinateurs: [coordinateur],
-} as unknown as Conseiller
+} as unknown as ConseillerNumeriqueV1
 
-const conseiller: Conseiller = {
+const conseiller: ConseillerNumeriqueV1 = {
   id: new ObjectId('60462000871498b5cec20c14'),
   coordinateurs: [coordinateur],
-} as unknown as Conseiller
+} as unknown as ConseillerNumeriqueV1
 
 const miseEnRelation: StructureConseillerNumerique = {
   siret: '81834687600019',
