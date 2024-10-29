@@ -11,6 +11,7 @@ import {
   Statistiques,
   Support,
 } from './_components'
+import { Equipe } from './_components/Equipe'
 import { AccueilPageData } from './getAccueilPageData'
 
 export const Accueil = ({
@@ -18,13 +19,18 @@ export const Accueil = ({
   name,
   email,
   statistiques,
+  mediateurs,
   activites,
   hasSeenOnboarding,
+  isMediateur,
+  isCoordinateur,
 }: {
   firstName: string | null
   name: string | null
   hasSeenOnboarding: string | null
   email: string
+  isMediateur: boolean
+  isCoordinateur: boolean
 } & AccueilPageData) => (
   <CoopPageContainer size={794}>
     <SkipLinksPortal links={defaultSkipLinks} />
@@ -32,17 +38,30 @@ export const Accueil = ({
       <h1 className="fr-text-title--blue-france fr-mt-10v">
         👋 Bonjour {firstName || name || email}
       </h1>
-      <OnboardingInfo hasSeenOnboarding={hasSeenOnboarding} />
-      <section className="fr-my-6w">
-        <ActionsRapides />
-      </section>
-      <section className="fr-my-6w">
-        <Statistiques {...statistiques} />
-      </section>
-      <section className="fr-my-6w">
-        <DernieresActivites activites={activites} />
-      </section>
-      <hr className="fr-separator-1px" />
+      {isMediateur && (
+        <>
+          <OnboardingInfo hasSeenOnboarding={hasSeenOnboarding} />
+          <section className="fr-my-6w">
+            <ActionsRapides />
+          </section>
+        </>
+      )}
+      {isCoordinateur && (
+        <section className="fr-my-6w">
+          <Equipe mediateurs={mediateurs} />
+        </section>
+      )}
+      {isMediateur && (
+        <>
+          <section className="fr-my-6w">
+            <Statistiques {...statistiques} />
+          </section>
+          <section className="fr-my-6w">
+            <DernieresActivites activites={activites} />
+          </section>
+          <hr className="fr-separator-1px" />
+        </>
+      )}
       <section className="fr-my-6w">
         <InformationsCoop />
       </section>

@@ -6,19 +6,13 @@ import {
   type ActivitesFilters,
   validateActivitesFilters,
 } from '@app/web/cra/ActivitesFilters'
-import { SessionUser } from '@app/web/auth/sessionUser'
+import { mediateurCoordonnesIdsFor } from '@app/web/mediateurs/mediateurCoordonnesIdsFor'
 import { getMesStatistiquesPageData } from './getMesStatistiquesPageData'
 import { MesStatistiques } from './MesStatistiques'
 
 export const metadata: Metadata = {
   title: metadataTitle('Mes statistiques'),
 }
-
-const mediateurCoordonnesIdsFor = (user: SessionUser) =>
-  (user.coordinateur?.mediateursCoordonnes ?? []).map(
-    ({ mediateurId }) => mediateurId,
-  )
-
 const MesStatistiquesPage = async ({
   searchParams = {},
 }: {
