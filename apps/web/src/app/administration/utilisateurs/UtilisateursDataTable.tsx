@@ -9,8 +9,8 @@ import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import { UtilisateurForList } from '@app/web/app/administration/utilisateurs/queryUtilisateursForList'
 import { booleanToYesNo } from '@app/web/utils/yesNoBooleanOptions'
 import { optionalNumberToString } from '@app/web/utils/formatNumber'
-import { getUserStatus } from '@app/web/app/administration/utilisateurs/getUserStatus'
-import { getUserStatusBadge } from '@app/web/app/administration/utilisateurs/getUserStatusBadge'
+import { getUserLifecycle } from '@app/web/app/administration/utilisateurs/getUserLifecycle'
+import { getUserLifecycleBadge } from '@app/web/app/administration/utilisateurs/getUserLifecycleBadge'
 import { dateAsDayAndTime } from '@app/web/utils/dateAsDayAndTime'
 
 export type UtilisateursDataTableConfiguration = DataTableConfiguration<
@@ -28,8 +28,8 @@ export const UtilisateursDataTable = {
       name: 'statut',
       header: 'Statut',
       csvHeaders: ['Statut'],
-      csvValues: (user) => [getUserStatus(user)],
-      cell: (user) => getUserStatusBadge(user),
+      csvValues: (user) => [getUserLifecycle(user)],
+      cell: (user) => getUserLifecycleBadge(user),
     },
     {
       name: 'creation',

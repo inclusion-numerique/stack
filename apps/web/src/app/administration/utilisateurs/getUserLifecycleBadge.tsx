@@ -1,7 +1,9 @@
 import Badge from '@codegouvfr/react-dsfr/Badge'
 import { UtilisateurForList } from '@app/web/app/administration/utilisateurs/queryUtilisateursForList'
+import { getUserLifecycle } from '@app/web/app/administration/utilisateurs/getUserLifecycle'
+import { profileInscriptionLabels } from '@app/web/inscription/profilInscription'
 
-export const getUserStatusBadge = (
+export const getUserLifecycleBadge = (
   user: Pick<
     UtilisateurForList,
     'deleted' | 'profilInscription' | 'inscriptionValidee' | 'role'
@@ -12,23 +14,23 @@ export const getUserStatusBadge = (
 ) => {
   const small = !!options && 'small' in options ? options.small : true
 
-  if (user.deleted) {
+  const lifeCycle = getUserLifecycle(user)
+
+  if (lifeCycle === 'Supprimé') {
     return (
       <Badge small={small} severity="error">
         Supprimé
       </Badge>
     )
   }
-
-  if (user.inscriptionValidee) {
+  if (lifeCycle === 'Inscrit') {
     return (
       <Badge small={small} severity="success">
         Inscrit
       </Badge>
     )
   }
-
-  if (user.role === 'Admin') {
+  if (lifeCycle === 'Administrateur') {
     return (
       <Badge small={small} severity="info">
         Admin
@@ -36,7 +38,7 @@ export const getUserStatusBadge = (
     )
   }
 
-  if (user.role === 'Support') {
+  if (lifeCycle === 'Support') {
     return (
       <Badge small={small} severity="info">
         Support
@@ -47,13 +49,14 @@ export const getUserStatusBadge = (
   if (user.profilInscription) {
     return (
       <Badge small={small} severity="new">
-        Inscription {user.profilInscription}
+        Inscription{' '}
+        {profileInscriptionLabels[user.profilInscription].toLowerCase()}
       </Badge>
     )
   }
   return (
     <Badge small={small} severity="new">
-      Inscription
+      Inscription en cours
     </Badge>
   )
 }

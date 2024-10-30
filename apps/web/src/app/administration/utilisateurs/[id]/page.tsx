@@ -3,6 +3,7 @@ import Notice from '@codegouvfr/react-dsfr/Notice'
 import Link from 'next/link'
 import Tag from '@codegouvfr/react-dsfr/Tag'
 import type { Structure } from '@prisma/client'
+import Button from '@codegouvfr/react-dsfr/Button'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
 import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
@@ -16,8 +17,9 @@ import { prismaClient } from '@app/web/prismaClient'
 import { dateAsDayAndTime } from '@app/web/utils/dateAsDayAndTime'
 import AdministrationMailtoLink from '@app/web/app/administration/AdministrationMailtoLink'
 import { getUserDisplayName } from '@app/web/utils/user'
-import { getUserStatusBadge } from '@app/web/app/administration/utilisateurs/getUserStatusBadge'
+import { getUserLifecycleBadge } from '@app/web/app/administration/utilisateurs/getUserLifecycleBadge'
 import { numberToString } from '@app/web/utils/formatNumber'
+import { findConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
 
 export const metadata = {
   title: metadataTitle('Utilisateurs - Détails'),
@@ -194,6 +196,11 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
     (a, b) => b.created.getTime() - a.created.getTime(),
   )
 
+  const conseillerNumeriqueInfo = await findConseillerNumeriqueV1({
+    email: user.email,
+    includeDeleted: true,
+  })
+
   return (
     <CoopPageContainer>
       <AdministrationBreadcrumbs
@@ -207,7 +214,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
       />
       <AdministrationTitle icon="fr-icon-user-line">
         {name} <span className="fr-mx-1v" />{' '}
-        {getUserStatusBadge(user, { small: false })}
+        {getUserLifecycleBadge(user, { small: false })}
       </AdministrationTitle>
       {inscriptionEnCours && !isMediateur && !isCoordinateur && (
         <Notice
@@ -225,6 +232,32 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
         )}
         {isCoordinateur && <Tag small>Coordinateur</Tag>}
       </div>
+      {conseillerNumeriqueInfo ? (
+        <Notice
+          className="fr-notice--success fr-mb-8v"
+          title={
+            <>
+              Trouvé dans la base de données des conseillers numériques V1{' '}
+              <Button
+                size="small"
+                className="fr-ml-2v"
+                priority="tertiary no outline"
+                iconId="fr-icon-arrow-right-line"
+                linkProps={{
+                  href: `/administration/conseillers-v1/${conseillerNumeriqueInfo.conseiller.id}`,
+                }}
+              >
+                Voir les détails du conseiller V1
+              </Button>
+            </>
+          }
+        />
+      ) : (
+        <Notice
+          className="fr-notice--info fr-mb-8v"
+          title="Inexistant dans la base de données des conseillers numériques V1"
+        />
+      )}
       <AdministrationInfoCard title="Détails de l'utilisateur">
         <AdministrationInlineLabelsValues
           items={[
@@ -409,7 +442,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
       ) : (
         (!!coordinateur || !!mediateur) && (
           <Notice
-            className="fr-notice--alert"
+            className="fr-notice--alert fr-mb-6v"
             title={<>Aucune structure employeuse</>}
           />
         )
@@ -442,7 +475,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
       ) : (
         !!mediateur && (
           <Notice
-            className="fr-notice--alert"
+            className="fr-notice--alert fr-mb-6v"
             title={<>Aucun lieu d’activité</>}
           />
         )
