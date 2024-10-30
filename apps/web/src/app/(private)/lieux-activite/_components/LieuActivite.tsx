@@ -6,7 +6,7 @@ import { typologieStructureLabels } from '@app/web/app/structure/typologieStruct
 import DeleteMediateurActivite from './DeleteMediateurActivite'
 
 export const LieuActivite = ({
-  id,
+  mediateurEnActiviteId,
   nom,
   adresse,
   complementAdresse,
@@ -21,7 +21,7 @@ export const LieuActivite = ({
   modification,
   canDelete = true,
 }: {
-  id: string
+  mediateurEnActiviteId: string
   nom: string
   adresse: string
   complementAdresse?: string | null
@@ -48,11 +48,15 @@ export const LieuActivite = ({
       <span>
         <Link
           className="fr-btn fr-btn--sm fr-btn--tertiary-no-outline"
-          href={`lieux-activite/${id}`}
+          href={`lieux-activite/${mediateurEnActiviteId}`}
         >
           Modifier <span className="ri-edit-line fr-ml-1w" />
         </Link>
-        {canDelete && <DeleteMediateurActivite structureId={id} />}
+        {canDelete && (
+          <DeleteMediateurActivite
+            mediateurEnActiviteId={mediateurEnActiviteId}
+          />
+        )}
       </span>
     </div>
     <div className="fr-my-2w">
@@ -70,13 +74,13 @@ export const LieuActivite = ({
             <Button
               className="fr-btn--tooltip"
               priority="tertiary no outline"
-              aria-describedby={`tooltip-typologie-${id}`}
+              aria-describedby={`tooltip-typologie-${mediateurEnActiviteId}`}
             >
               Détail des acronymes
             </Button>
             <span
               className="fr-tooltip fr-placement"
-              id={`tooltip-typologie-${id}`}
+              id={`tooltip-typologie-${mediateurEnActiviteId}`}
               role="tooltip"
               aria-hidden="true"
             >
@@ -119,13 +123,13 @@ export const LieuActivite = ({
           type="button"
           className="fr-btn--tooltip"
           priority="tertiary no outline"
-          aria-describedby={`tooltip-visible-no-id-${id}`}
+          aria-describedby={`tooltip-visible-no-id-${mediateurEnActiviteId}`}
         >
           Plus d’information
         </Button>
         <span
           className="fr-tooltip fr-placement"
-          id={`tooltip-visible-no-id-${id}`}
+          id={`tooltip-visible-no-id-${mediateurEnActiviteId}`}
           role="tooltip"
           aria-hidden="true"
         >
@@ -141,13 +145,13 @@ export const LieuActivite = ({
         <Button
           className="fr-btn--tooltip"
           priority="tertiary no outline"
-          aria-describedby={`tooltip-visible-${id}`}
+          aria-describedby={`tooltip-visible-${mediateurEnActiviteId}`}
         >
           Plus d’information
         </Button>
         <span
           className="fr-tooltip fr-placement"
-          id={`tooltip-visible-${id}`}
+          id={`tooltip-visible-${mediateurEnActiviteId}`}
           role="tooltip"
           aria-hidden="true"
         >

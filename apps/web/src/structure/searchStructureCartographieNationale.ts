@@ -60,7 +60,7 @@ export const searchStructureCartographieNationale = async (
         nom: 'asc',
       },
       include: {
-        structure: {
+        structures: {
           select: {
             id: true,
           },

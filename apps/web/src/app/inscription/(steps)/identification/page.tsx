@@ -4,8 +4,9 @@ import {
   ProfileInscriptionSlug,
 } from '@app/web/inscription/profilInscription'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
-import { checkInscriptionConseillerNumerique } from '@app/web/app/inscription/checkInscriptionConseillerNumerique'
 import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
+import { importFromConseillerNumerique } from '@app/web/app/inscription/importFromConseillerNumerique/importFromConseillerNumerique'
+import { findConseillerNumeriqueByEmail } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
 import { FinaliserInscriptionConseiller } from './_components/FinaliserInscriptionConseiller/FinaliserInscriptionConseiller'
 import { FinaliserInscriptionCoordinateur } from './_components/FinaliserInscriptionCoordinateur/FinaliserInscriptionCoordinateur'
 import { FinaliserInscriptionMediateur } from './_components/FinaliserInscriptionMediateur/FinaliserInscriptionMediateur'
@@ -48,9 +49,12 @@ const IntroPage = async ({
     : (user.profilInscription ?? undefined)
 
   const checkedUser =
-    !check && user.checkConseillerNumeriqueInscription
+    !(check && user.checkConseillerNumeriqueInscription) || !profil
       ? user
-      : await checkInscriptionConseillerNumerique({ user, profil })
+      : await importFromConseillerNumerique(findConseillerNumeriqueByEmail)({
+          user,
+          profil,
+        })
 
   const lieuxActivite = user.mediateur?.conseillerNumerique
     ? await getLieuxActiviteForInscription({ mediateurId: user.mediateur.id })

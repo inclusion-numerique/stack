@@ -1,7 +1,7 @@
 import { Sql } from '@prisma/client/runtime/library'
 import { Prisma } from '@prisma/client'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 
 export type ActivitesFiltersWhereConditions = {
   [key in keyof ActivitesFilters]: Sql | null
@@ -10,7 +10,7 @@ export type ActivitesFiltersWhereConditions = {
 export const getActiviteFiltersSqlFragment = (
   conditions: ActivitesFiltersWhereConditions,
 ) => {
-  const parts = Object.values(conditions).filter(isDefinedAndNotNull)
+  const parts = Object.values(conditions).filter(onlyDefinedAndNotNull)
 
   if (parts.length === 0) return Prisma.raw('1=1')
 
@@ -63,6 +63,7 @@ export const activiteLieuCodeInseeSelect = Prisma.raw(`COALESCE(
 export const getActivitesFiltersWhereConditions = ({
   du,
   au,
+  mediateur,
   beneficiaire,
   commune,
   departement,
@@ -81,10 +82,13 @@ export const getActivitesFiltersWhereConditions = ({
     : null,
   beneficiaire: beneficiaire
     ? Prisma.raw(`EXISTS (
-              SELECT 1
-              FROM accompagnements
-              WHERE accompagnements.beneficiaire_id = '${beneficiaire}'::UUID
-                AND accompagnements.activite_id = activites.id
-            ) `)
+            SELECT 1
+            FROM accompagnements
+            WHERE accompagnements.beneficiaire_id = '${beneficiaire}'::UUID
+              AND accompagnements.activite_id = activites.id
+          ) `)
+    : null,
+  mediateur: mediateur
+    ? Prisma.raw(`activites.mediateur_id = '${mediateur}'::UUID`)
     : null,
 })

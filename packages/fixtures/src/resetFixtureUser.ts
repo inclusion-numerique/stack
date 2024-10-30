@@ -1,7 +1,7 @@
 import { prismaClient } from '@app/web/prismaClient'
 import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
 import type { Session } from '@prisma/client'
-import { fixtureUsers } from '@app/fixtures/users'
+import { coordinations, fixtureUsers } from '@app/fixtures/users'
 import { fixtureBeneficiaires } from '@app/fixtures/beneficiaires'
 import {
   fixtureCrasCollectifs,
@@ -9,8 +9,41 @@ import {
   fixtureCrasIndividuels,
 } from '@app/fixtures/activites'
 import { upsertCraFixtures } from '@app/fixtures/upsertCraFixtures'
+import {
+  Coordination,
+  upsertCoordinationFixtures,
+} from './upsertCoordinationFixture'
 
-export const resetFixtureUser = async ({ id }: { id: string }) => {
+const isCoordinateur = (resetedUser: {
+  coordinateur: { id: string } | null
+}): resetedUser is { coordinateur: { id: string } } =>
+  resetedUser.coordinateur?.id != null
+
+const isMediateur = (user: {
+  mediateur: { id: string } | null
+}): user is { mediateur: { id: string } } => user.mediateur?.id != null
+
+const onlyForCoordinateur =
+  ({ coordinateur }: { coordinateur: { id: string } }) =>
+  ({ coordinateurId }: Coordination) =>
+    coordinateurId === coordinateur.id
+
+const onlyForMediateur =
+  ({ mediateur }: { mediateur: { id: string } }) =>
+  ({ mediateurIds }: Coordination) =>
+    mediateurIds.includes(mediateur.id)
+
+const toCoordinationFor =
+  ({ mediateur }: { mediateur: { id: string } }) =>
+  ({ coordinateurId }: Coordination) => ({
+    coordinateurId,
+    mediateurIds: [mediateur.id],
+  })
+
+export const resetFixtureUser = async (
+  { id }: { id: string },
+  processCoordinations: boolean = true,
+) => {
   const userId = id
 
   const user = await prismaClient.user.findUnique({
@@ -136,7 +169,7 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
   /**
    * Re-create mediateur owned data
    */
-  if (resetedUser.mediateur?.id) {
+  if (isMediateur(resetedUser)) {
     const mediateurId = resetedUser.mediateur.id
     await prismaClient.beneficiaire.createMany({
       data: fixtureBeneficiaires.filter(
@@ -161,6 +194,20 @@ export const resetFixtureUser = async ({ id }: { id: string }) => {
       crasDemarchesAdministratives: mediateurCraDemarcheAdministrativeFixtures,
       crasCollectifs: mediateurCraCollectifFixtures,
     })
+
+    if (processCoordinations) {
+      await upsertCoordinationFixtures(prismaClient)(
+        coordinations
+          .filter(onlyForMediateur(resetedUser))
+          .map(toCoordinationFor(resetedUser)),
+      )
+    }
+  }
+
+  if (isCoordinateur(resetedUser) && processCoordinations) {
+    await upsertCoordinationFixtures(prismaClient)(
+      coordinations.filter(onlyForCoordinateur(resetedUser)),
+    )
   }
 
   return resetedUser

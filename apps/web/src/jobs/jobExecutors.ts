@@ -1,14 +1,39 @@
-import * as Sentry from '@sentry/nextjs'
 import { v4 } from 'uuid'
+import * as Sentry from '@sentry/nextjs'
 import type { Job, JobName, JobPayload } from '@app/web/jobs/jobs'
 import { executeBackupDatabaseJob } from '@app/web/jobs/backup-database/executeBackupDatabaseJob'
 import { createStopwatch } from '@app/web/utils/stopwatch'
 import { prismaClient } from '@app/web/prismaClient'
-import { executeUpdateStructuresCartographieNationale } from '@app/web/jobs/update-structures-cartographie-nationale/executeUpdateStructuresCartographieNationale'
+import { updateStructureFromCartoDataApi } from '@app/web/jobs/update-structures-cartographie-nationale/updateStructureFromCartoDataApi'
+import { executeImportCrasConseillerNumeriqueV1 } from '@app/web/jobs/import-cras-conseiller-numerique-v1/executeImportCrasConseillerNumeriqueV1'
+import {
+  downloadCartographieNationaleStructures,
+  getStructuresCartographieNationaleFromLocalFile,
+} from '../data/cartographie-nationale/cartographieNationaleStructures'
+import { output } from './output'
 
 export type JobExecutor<Name extends JobName, Result = unknown> = (
   job: Job & { name: Name; payload: JobPayload<Name> },
 ) => Promise<Result>
+
+const executeUpdateStructuresCartographieNationale = async () => {
+  output.log(
+    `update-structures-carto: fetching existing and cartographie nationale dataset`,
+  )
+
+  await downloadCartographieNationaleStructures()
+
+  const structuresCartographieNationale =
+    await getStructuresCartographieNationaleFromLocalFile()
+
+  const execute = updateStructureFromCartoDataApi({
+    structuresCartographieNationale,
+  })
+
+  const result = await execute()
+
+  return result
+}
 
 // Create an object that for each JobName, MUST has a JobExecutor<Name>
 export const jobExecutors: {
@@ -17,6 +42,7 @@ export const jobExecutors: {
   'backup-database': executeBackupDatabaseJob,
   'update-structures-cartographie-nationale':
     executeUpdateStructuresCartographieNationale,
+  'import-cras-conseiller-numerique-v1': executeImportCrasConseillerNumeriqueV1,
 }
 
 export const executeJob = async (job: Job) => {

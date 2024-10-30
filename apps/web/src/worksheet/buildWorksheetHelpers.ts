@@ -3,7 +3,7 @@ import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
 import type { SessionUser } from '@app/web/auth/sessionUser'
 import { ActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
 import type { AuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 
 export type WorksheetUser = Pick<
   SessionUser,
@@ -36,7 +36,7 @@ const defaultCellLength = 10
 const getMaxStringLength = (strings: (string | null | undefined)[]) =>
   Math.max(
     ...strings
-      .filter(isDefinedAndNotNull)
+      .filter(onlyDefinedAndNotNull)
       .map((value) => value?.length ?? defaultCellLength),
   ) || defaultCellLength
 
@@ -118,6 +118,7 @@ export const addFilters =
     },
   ) => {
     addTitleRow(worksheet)('Filtres')
+
     return worksheet.addRows(
       [
         ['Début de période', filters.du ?? '-'],
@@ -128,13 +129,13 @@ export const addFilters =
         filters.beneficiaire
           ? ['Bénéficiaire', filters.beneficiaire]
           : undefined,
+        filters.mediateur ? ['Médiateur', `${filters.mediateur}`] : undefined,
         mediateurScope
           ? [
               'Médiateur',
               `${mediateurScope.firstName} ${mediateurScope.lastName}`,
             ]
           : undefined,
-
         [],
       ].filter(Boolean),
     )

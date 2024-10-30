@@ -48,7 +48,7 @@ const CreateCraDemarcheAdministrativePage = async ({
 
   const { lieuxActiviteOptions, mostUsedLieuActivite } =
     await getInitialLieuxActiviteOptionsForSearch({
-      mediateurId: user.mediateur.id,
+      mediateurIds: [user.mediateur.id],
     })
 
   if (!defaultValues.structureId) {

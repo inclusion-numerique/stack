@@ -1,9 +1,7 @@
 import { Thematique, ThematiqueDemarcheAdministrative } from '@prisma/client'
 import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
-import {
-  conseillerNumeriqueMediateurId,
-  mediateurAvecActiviteMediateurId,
-} from '@app/fixtures/users'
+import { conseillerNumeriqueMediateurId } from '@app/fixtures/users/conseillerNumerique'
+import { mediateurAvecActiviteMediateurId } from '@app/fixtures/users/mediateurAvecActivite'
 import {
   givenCraCollectif,
   givenCraDemarcheAdministrative,
@@ -13,11 +11,14 @@ import {
   beneficiaireAnonymeConseillerNumerique,
   beneficiaireAnonymeMediateurAvecActivite,
   beneficiaireMaximaleConseillerNumerique,
+  beneficiaireMaximaleCoordinateur,
   beneficiaireMaximaleMediateurAvecActivite,
   beneficiaireMinimaleConseillerNumerique,
+  beneficiaireMinimaleCoordinateur,
   beneficiaireMinimaleMediateurAvecActivite,
 } from '@app/fixtures/beneficiaires'
 import { mediateque } from '@app/fixtures/structures'
+import { coordinateurInscritAvecToutMediateurId } from './users/coordinateurInscritAvecTout'
 
 export const mediateurAvecActiviteCrasIndividuels = [
   givenCraIndividuel({
@@ -132,7 +133,6 @@ export const mediateurAvecActiviteCrasCollectifs = [
     participantsAnonymes: participantsAnonymesDefault,
     materiel: ['Ordinateur', 'Tablette', 'Autre'],
   }),
-
   givenCraCollectif({
     id: 'ae49f9d3-f7ee-454b-b54b-f4683757cb70',
     mediateurId: mediateurAvecActiviteMediateurId,
@@ -156,12 +156,6 @@ export const mediateurAvecActiviteCrasCollectifs = [
       trancheAgeNonCommunique: 2,
     },
   }),
-]
-
-export const fixturesActivitesMediateurAvecActivite = [
-  ...mediateurAvecActiviteCrasCollectifs,
-  ...mediateurAvecActiviteCrasDemarchesAdministratives,
-  ...mediateurAvecActiviteCrasIndividuels,
 ]
 
 export const conseillerNumeriqueCrasIndividuels = [
@@ -277,7 +271,6 @@ export const conseillerNumeriqueCrasCollectifs = [
     participantsAnonymes: participantsAnonymesDefault,
     materiel: ['Ordinateur', 'Tablette', 'Autre'],
   }),
-
   givenCraCollectif({
     id: '608de160-f16d-41af-a388-024ba4a79493',
     mediateurId: conseillerNumeriqueMediateurId,
@@ -309,19 +302,63 @@ export const fixturesActivitesConseillerNumerique = [
   ...conseillerNumeriqueCrasIndividuels,
 ]
 
+export const coordinateurCrasIndividuels = [
+  givenCraIndividuel({
+    id: '4ffd3052-bb5d-4289-897e-45aac4333af2',
+    beneficiaireId: beneficiaireMinimaleCoordinateur.id,
+    mediateurId: beneficiaireMinimaleCoordinateur.mediateurId,
+    thematiques: [Thematique.Sante, Thematique.CultureNumerique],
+    date: new Date('2024-06-15'),
+    creation: new Date('2024-06-15T09:30:00'),
+  }),
+]
+
+export const coordinateurCrasDemarchesAdministratives = [
+  givenCraDemarcheAdministrative({
+    id: 'd250af76-6ad2-4407-87a4-840ad6e593ed',
+    beneficiaireId: beneficiaireMinimaleCoordinateur.id,
+    mediateurId: beneficiaireMinimaleCoordinateur.mediateurId,
+    thematiquesDemarche: [
+      ThematiqueDemarcheAdministrative.SocialSante,
+      ThematiqueDemarcheAdministrative.EtrangersEurope,
+    ],
+    date: new Date('2024-08-02'),
+    creation: new Date('2024-08-02T14:00:00'),
+  }),
+]
+
+export const coordinateurCrasCollectifs = [
+  givenCraCollectif({
+    id: '99098367-7fa3-4d82-9ac4-3aa1e87878d0',
+    mediateurId: coordinateurInscritAvecToutMediateurId,
+    thematiques: [Thematique.Email, Thematique.ReseauxSociaux],
+    date: new Date('2024-08-04'),
+    creation: new Date('2024-08-04T08:00:00'),
+    beneficiaireIds: [
+      beneficiaireMinimaleCoordinateur,
+      beneficiaireMaximaleCoordinateur,
+    ].map((b) => b.id),
+    participantsAnonymes: participantsAnonymesDefault,
+    materiel: ['Ordinateur', 'Tablette', 'Autre'],
+  }),
+]
+
 export const fixtureCrasIndividuels = [
   ...mediateurAvecActiviteCrasIndividuels,
   ...conseillerNumeriqueCrasIndividuels,
+  ...coordinateurCrasIndividuels,
 ]
 
 export const fixtureCrasDemarchesAdministratives = [
   ...mediateurAvecActiviteCrasDemarchesAdministratives,
   ...conseillerNumeriqueCrasDemarchesAdministratives,
+  ...coordinateurCrasDemarchesAdministratives,
 ]
 
 export const fixtureCrasCollectifs = [
   ...mediateurAvecActiviteCrasCollectifs,
   ...conseillerNumeriqueCrasCollectifs,
+  ...coordinateurCrasCollectifs,
 ]
 
 export const fixtureCras = [

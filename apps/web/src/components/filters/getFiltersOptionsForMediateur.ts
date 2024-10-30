@@ -1,35 +1,51 @@
 import { getMediateurCommunesAndDepartementsOptions } from '@app/web/app/lieu-activite/getMediateurCommunesOptions'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
+import { getInitialMediateursOptionsForSearch } from '@app/web/mediateurs/getInitialMediateursOptionsForSearch'
 import { getInitialLieuxActiviteOptionsForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
+import { getFirstAndLastActiviteDate } from '@app/web/app/coop/mes-statistiques/_queries/getFirstAndLastActiviteDate'
+import { UserDisplayName, UserProfile } from '@app/web/utils/user'
 
 export const getFiltersOptionsForMediateur = async ({
-  mediateurId,
+  user,
+  mediateurCoordonnesIds,
   includeBeneficiaireId,
 }: {
-  mediateurId: string
+  user: UserDisplayName & UserProfile
+  mediateurCoordonnesIds?: string[]
   includeBeneficiaireId?: string
 }) => {
+  const mediateurIds = [
+    ...(user.mediateur?.id ? [user.mediateur.id] : []),
+    ...(mediateurCoordonnesIds ?? []),
+  ]
+
   const [
     { communesOptions, departementsOptions },
     initialBeneficiairesOptions,
+    initialMediateursOptions,
     { lieuxActiviteOptions },
+    activiteDates,
   ] = await Promise.all([
-    getMediateurCommunesAndDepartementsOptions({
-      mediateurId,
-    }),
+    getMediateurCommunesAndDepartementsOptions({ mediateurIds }),
     getInitialBeneficiairesOptionsForSearch({
-      mediateurId,
+      mediateurId: user.mediateur?.id,
       includeBeneficiaireId,
     }),
-    getInitialLieuxActiviteOptionsForSearch({
-      mediateurId,
+    getInitialMediateursOptionsForSearch({
+      mediateurId: user.mediateur?.id,
+      coordinateurId: user.coordinateur?.id,
+      mediateurCoordonnesIds,
     }),
+    getInitialLieuxActiviteOptionsForSearch({ mediateurIds }),
+    getFirstAndLastActiviteDate({ mediateurIds }),
   ])
 
   return {
     communesOptions,
     departementsOptions,
     initialBeneficiairesOptions,
+    initialMediateursOptions,
     lieuxActiviteOptions,
+    activiteDates,
   }
 }

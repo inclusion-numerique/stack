@@ -18,6 +18,10 @@ import {
 import { MesStatistiques } from './MesStatistiques'
 
 const statistiquesPageData = {
+  activiteDates: {
+    first: new Date('2024-03-02'),
+    last: new Date('2024-08-30'),
+  },
   accompagnementsParJour: [
     { label: '01/08', count: 8 },
     { label: '02/08', count: 7 },
@@ -226,6 +230,7 @@ const statistiquesPageData = {
   communesOptions: [],
   departementsOptions: [],
   initialBeneficiairesOptions: [],
+  initialMediateursOptions: [],
   lieuxActiviteOptions: [],
 } satisfies MesStatistiquesPageData
 

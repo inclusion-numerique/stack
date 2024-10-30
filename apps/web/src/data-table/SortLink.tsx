@@ -32,6 +32,7 @@ const SortLink = ({
       className={`fr-btn fr-ml-2v fr-btn--tertiary-no-outline fr-btn--sm ${icon}`}
       title={title}
       href={href}
+      scroll={false}
       style={{
         color: isActive ? undefined : 'var(--text-disabled-grey)',
       }}

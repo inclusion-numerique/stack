@@ -4,6 +4,7 @@ import { dateAsDay } from '@app/web/utils/dateAsDay'
 import type { LocationFilterType } from '@app/web/components/filters/LocationFilter'
 import { typeActiviteSlugLabels } from '@app/web/cra/cra'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
+import { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 
 export const locationTypeLabels: {
   [key in LocationFilterType]: string
@@ -88,15 +89,38 @@ const generateBeneficiaireFilterLabel = (
   )
 }
 
+const generateMediateurFilterLabel = (
+  { mediateur }: Pick<ActivitesFilters, 'mediateur'>,
+  { mediateursOptions = [] }: { mediateursOptions: MediateurOption[] },
+) => {
+  if (!mediateur) return null
+
+  return (
+    mediateursOptions.find((option) => option.value?.mediateurId === mediateur)
+      ?.label ?? null
+  )
+}
+
 export const generateActivitesFiltersLabels = (
-  { beneficiaire, type, departement, commune, lieu, au, du }: ActivitesFilters,
+  {
+    beneficiaire,
+    mediateur,
+    type,
+    departement,
+    commune,
+    lieu,
+    au,
+    du,
+  }: ActivitesFilters,
   {
     beneficiairesOptions,
+    mediateursOptions,
     communesOptions,
     departementsOptions,
     lieuxActiviteOptions,
   }: {
     beneficiairesOptions: BeneficiaireOption[]
+    mediateursOptions: MediateurOption[]
     communesOptions: SelectOption[]
     lieuxActiviteOptions: SelectOption[]
     departementsOptions: SelectOption[]
@@ -114,9 +138,12 @@ export const generateActivitesFiltersLabels = (
 
   const beneficiaireLabel = generateBeneficiaireFilterLabel(
     { beneficiaire },
-    {
-      beneficiairesOptions,
-    },
+    { beneficiairesOptions },
+  )
+
+  const mediateurLabel = generateMediateurFilterLabel(
+    { mediateur },
+    { mediateursOptions },
   )
 
   const typeLieu = generateActivitesLocationTypeFilterLabel({
@@ -141,6 +168,7 @@ export const generateActivitesFiltersLabels = (
     au: au ? dateAsDay(new Date(au)) : null,
     periode,
     type: typeLabel,
+    mediateur: mediateurLabel,
     beneficiaire: beneficiaireLabel,
     typeLieu,
     nomLieu,

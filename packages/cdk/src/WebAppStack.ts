@@ -290,6 +290,16 @@ export class WebAppStack extends TerraformStack {
     }
 
     createJobExecutionCron(this, {
+      name: `import-cras-conseiller-numerique-v1`,
+      job: {
+        name: 'import-cras-conseiller-numerique-v1',
+        payload: {},
+      },
+      schedule: '0 2 * * *',
+      containerId: container.id,
+    })
+
+    createJobExecutionCron(this, {
       name: `update-structures-cartographie-nationale`,
       job: {
         name: 'update-structures-cartographie-nationale',

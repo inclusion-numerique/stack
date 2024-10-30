@@ -21,6 +21,7 @@ const LieuActiviteListPage = async () => {
       suppression: null,
     },
     select: {
+      id: true,
       creation: true,
       modification: true,
       structure: {
@@ -72,9 +73,10 @@ const LieuActiviteListPage = async () => {
           <div className="fr-flex fr-direction-column fr-flex-gap-4v">
             {lieuxActivite.map((lieuActivite) => (
               <LieuActivite
-                key={lieuActivite.structure.id}
-                canDelete={lieuxActivite.length > 1}
+                key={lieuActivite.id}
                 {...lieuActivite.structure}
+                mediateurEnActiviteId={lieuActivite.id}
+                canDelete={lieuxActivite.length > 1}
                 creation={lieuActivite.creation}
                 modification={lieuActivite.modification}
               />

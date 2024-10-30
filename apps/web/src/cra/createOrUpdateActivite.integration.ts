@@ -1,9 +1,9 @@
 /* eslint @typescript-eslint/no-unsafe-assignment: 0 */
 
 import {
-  mediateurAvecActivite,
   mediateurAvecActiviteMediateurId,
-} from '@app/fixtures/users'
+  mediateurAvecActivite,
+} from '@app/fixtures/users/mediateurAvecActivite'
 import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
 import { prismaClient } from '@app/web/prismaClient'
 import { seedStructures } from '@app/fixtures/structures'
@@ -46,7 +46,7 @@ const nullActivite: Omit<
 describe('createOrUpdateActivite', () => {
   beforeAll(async () => {
     await seedStructures(prismaClient)
-    await resetFixtureUser(mediateurAvecActivite)
+    await resetFixtureUser(mediateurAvecActivite, false)
   })
 
   it('should create activite individuelle for anonyme', async () => {

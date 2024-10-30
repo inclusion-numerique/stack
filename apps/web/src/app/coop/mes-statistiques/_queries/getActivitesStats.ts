@@ -1,5 +1,6 @@
 import {
   Materiel,
+  Prisma,
   Thematique,
   ThematiqueDemarcheAdministrative,
   TypeActivite,
@@ -37,17 +38,6 @@ import {
 } from '@app/web/app/coop/mes-statistiques/_queries/createEnumCountSelect'
 import { allocatePercentagesFromRecords } from '@app/web/app/coop/mes-statistiques/_queries/allocatePercentages'
 
-const accompagnementCategories = [
-  'canauxAccompagnements',
-  'dureesAccompagnements',
-  'lieuxAccompagnements',
-  'thematiquesAccompagnements',
-  'thematiquesDemarchesAdministratives',
-  'materielsAccompagnements',
-] as const
-
-export type AccompagnementCategory = (typeof accompagnementCategories)[number]
-
 export type ActivitesStatsRaw = {
   total_activites: number
   [key: `type_${string}_count`]: number
@@ -59,14 +49,18 @@ export type ActivitesStatsRaw = {
   [key: `materiel_${string}_count`]: number
 }
 
+const EMPTY_ACTIVITES_STATS: ActivitesStatsRaw = { total_activites: 0 }
+
 export const getActivitesStatsRaw = async ({
-  mediateurId,
+  mediateurIds,
   activitesFilters,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
   activitesFilters: ActivitesFilters
-}) =>
-  prismaClient.$queryRaw<[ActivitesStatsRaw]>`
+}) => {
+  if (mediateurIds.length === 0) return EMPTY_ACTIVITES_STATS
+
+  return prismaClient.$queryRaw<[ActivitesStatsRaw]>`
       SELECT COALESCE(COUNT(*), 0)::integer AS total_activites,
              -- Enum count selects for type, type_lieu, type_lieu_atelier, duree, thematiques, thematiques_demarche, materiel
              ${createEnumCountSelect({
@@ -106,36 +100,37 @@ export const getActivitesStatsRaw = async ({
              })}
       FROM activites
         LEFT JOIN structures ON structures.id = activites.structure_id
-      WHERE activites.mediateur_id = ${mediateurId}::UUID
+      WHERE activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
         AND activites.suppression IS NULL
         AND ${getActiviteFiltersSqlFragment(
           getActivitesFiltersWhereConditions(activitesFilters),
         )}
   `.then((result) => result[0])
+}
 
 export const normalizeActivitesStatsRaw = (stats: ActivitesStatsRaw) => {
   const typeActivitesData = typeActiviteValues.map((typeActivite) => ({
     value: typeActivite,
     label: typeActiviteLabels[typeActivite],
-    count: stats[`type_${snakeCase(typeActivite)}_count`],
+    count: stats[`type_${snakeCase(typeActivite)}_count`] ?? 0,
   }))
 
   const dureesData = dureeAccompagnementValues.map((duree) => ({
     value: duree,
     label: dureeAccompagnementLabels[duree],
-    count: stats[`duree_${duree}_count`],
+    count: stats[`duree_${duree}_count`] ?? 0,
   }))
 
   const typeLieuData = typeLieuValues.map((typeLieu) => ({
     value: typeLieu,
     label: typeLieuLabels[typeLieu],
-    count: stats[`type_lieu_${snakeCase(typeLieu)}_count`],
+    count: stats[`type_lieu_${snakeCase(typeLieu)}_count`] ?? 0,
   }))
 
   const typeLieuAtelierData = typeLieuAtelierValues.map((typeLieuAtelier) => ({
     value: typeLieuAtelier,
     label: typeLieuAtelierLabels[typeLieuAtelier],
-    count: stats[`type_lieu_atelier_${snakeCase(typeLieuAtelier)}_count`],
+    count: stats[`type_lieu_atelier_${snakeCase(typeLieuAtelier)}_count`] ?? 0,
   }))
 
   const mergedTypeLieuData = [...typeLieuData, ...typeLieuAtelierData].reduce<
@@ -157,7 +152,7 @@ export const normalizeActivitesStatsRaw = (stats: ActivitesStatsRaw) => {
   const thematiquesData = thematiqueValues.map((thematique) => ({
     value: thematique,
     label: thematiqueLabels[thematique],
-    count: stats[`thematiques_${snakeCase(thematique)}_count`],
+    count: stats[`thematiques_${snakeCase(thematique)}_count`] ?? 0,
   }))
 
   const thematiquesDemarchesData = thematiqueDemarcheAdministrativeValues.map(
@@ -177,7 +172,7 @@ export const normalizeActivitesStatsRaw = (stats: ActivitesStatsRaw) => {
   const materielsData = materielValues.map((materiel) => ({
     value: materiel,
     label: materielLabels[materiel],
-    count: stats[`materiel_${snakeCase(materiel)}_count`],
+    count: stats[`materiel_${snakeCase(materiel)}_count`] ?? 0,
   }))
 
   return {
@@ -222,14 +217,14 @@ export const normalizeActivitesStatsRaw = (stats: ActivitesStatsRaw) => {
 }
 
 export const getActivitesStats = async ({
-  mediateurId,
+  mediateurIds,
   activitesFilters,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
   activitesFilters: ActivitesFilters
 }) => {
   const statsRaw = await getActivitesStatsRaw({
-    mediateurId,
+    mediateurIds,
     activitesFilters,
   })
 
@@ -246,36 +241,41 @@ export type ActivitesStructuresStatsRaw = {
 }
 
 export const getActivitesStructuresStatsRaw = async ({
-  mediateurId,
+  mediateurIds,
   activitesFilters,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
   activitesFilters: ActivitesFilters
-}) => prismaClient.$queryRaw<ActivitesStructuresStatsRaw[]>`
+}) => {
+  if (mediateurIds.length === 0) return []
+
+  return prismaClient.$queryRaw<ActivitesStructuresStatsRaw[]>`
     SELECT structures.id,
-           structures.nom,
-           structures.commune,
-           structures.code_postal,
-           structures.code_insee,
-           COALESCE(COUNT(*), 0)::int AS count
+       structures.nom,
+       structures.commune,
+       structures.code_postal,
+       structures.code_insee,
+       COALESCE(COUNT(*), 0) ::int AS count
     FROM structures
-             INNER JOIN activites ON activites.structure_id = structures.id
-        AND activites.suppression IS NULL
-        AND activites.mediateur_id = ${mediateurId}::UUID
-        AND ${getActiviteFiltersSqlFragment(
-          getActivitesFiltersWhereConditions(activitesFilters),
-        )}
+      INNER JOIN activites
+    ON activites.structure_id = structures.id
+      AND activites.suppression IS NULL
+      AND activites.mediateur_id = ANY (ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
+      AND ${getActiviteFiltersSqlFragment(
+        getActivitesFiltersWhereConditions(activitesFilters),
+      )}
     GROUP BY structures.id`
+}
 
 export const getActivitesStructuresStats = async ({
-  mediateurId,
+  mediateurIds,
   activitesFilters,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
   activitesFilters: ActivitesFilters
 }) => {
   const statsRaw = await getActivitesStructuresStatsRaw({
-    mediateurId,
+    mediateurIds,
     activitesFilters,
   })
   const sortedStructures = statsRaw.sort((a, b) => a.count - b.count)

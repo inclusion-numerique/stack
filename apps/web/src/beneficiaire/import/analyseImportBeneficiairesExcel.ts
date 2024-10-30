@@ -184,7 +184,7 @@ const parseBeneficiaireRow = (
         errors.communeCodePostal =
           'Le code postal de la commune ne correspond pas'
       }
-      if (commune.nom !== communeNom) {
+      if (commune.nom.toLocaleLowerCase() !== communeNom?.toLocaleLowerCase()) {
         errors.communeNom = 'Le nom de la commune ne correspond pas'
       }
     } else {

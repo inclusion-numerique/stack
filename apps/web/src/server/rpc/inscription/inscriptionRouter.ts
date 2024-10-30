@@ -1,20 +1,26 @@
+import { ProfilInscription } from '@prisma/client'
 import * as Sentry from '@sentry/nextjs'
 import { v4 } from 'uuid'
 import z from 'zod'
 import { StructureCreationDataWithSiret } from '@app/web/app/structure/StructureValidation'
+import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { searchAdresse } from '@app/web/external-apis/apiAdresse'
 import { banFeatureToAdresseBanData } from '@app/web/external-apis/ban/banFeatureToAdresseBanData'
+import { ChoisirProfilEtAccepterCguValidation } from '@app/web/inscription/ChoisirProfilEtAccepterCguValidation'
 import { LieuxActiviteValidation } from '@app/web/inscription/LieuxActivite'
 import { RenseignerStructureEmployeuseValidation } from '@app/web/inscription/RenseignerStructureEmployeuse'
 import { StructureEmployeuseLieuActiviteValidation } from '@app/web/inscription/StructureEmployeuseLieuActivite'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { forbiddenError } from '@app/web/server/rpc/trpcErrors'
-import { cartoStructureToStructure } from '@app/web/structure/cartoStructureToStructure'
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
-import { ChoisirProfilEtAccepterCguValidation } from '@app/web/inscription/ChoisirProfilEtAccepterCguValidation'
-import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
+import { toStructureFromCartoStructure } from '@app/web/structure/toStructureFromCartoStructure'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
+import { findConseillerNumeriqueByEmail } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
+import {
+  assignConseillerNumeriqueRoleToCoordinateur,
+  removeConseillerNumeriqueRoleToCoordinateur,
+} from '@app/web/app/inscription/importFromConseillerNumerique/importFromConseillerNumerique'
 
 const inscriptionGuard = (
   targetUserId: string,
@@ -130,23 +136,18 @@ export const inscriptionRouter = router({
       async ({ input: { userId, profil }, ctx: { user: sessionUser } }) => {
         inscriptionGuard(userId, sessionUser)
 
-        const user = await prismaClient.user.update({
+        return prismaClient.user.update({
           where: { id: userId },
           data: {
             profilInscription: profil,
             acceptationCgu: new Date(),
-            mediateur: sessionUser.mediateur
-              ? undefined
-              : {
-                  create: {
-                    id: v4(),
-                  },
-                },
+            mediateur:
+              sessionUser.mediateur || profil === ProfilInscription.Coordinateur
+                ? undefined
+                : { create: { id: v4() } },
           },
           select: sessionUserSelect,
         })
-
-        return user
       },
     ),
   renseignerStructureEmployeuse: protectedProcedure
@@ -289,11 +290,11 @@ export const inscriptionRouter = router({
               ({ structureCartographieNationaleId }) =>
                 structureCartographieNationaleId,
             )
-            .filter(isDefinedAndNotNull),
+            .filter(onlyDefinedAndNotNull),
         )
 
         const lieuxActiviteIds = new Set<string>(
-          lieuxActivite.map(({ id }) => id).filter(isDefinedAndNotNull),
+          lieuxActivite.map(({ id }) => id).filter(onlyDefinedAndNotNull),
         )
 
         // Delete all existing activite that are not in the new list of carto ids
@@ -374,6 +375,18 @@ export const inscriptionRouter = router({
                 )
 
                 if (structure) {
+                  const existingStructure =
+                    await transaction.structure.findFirst({
+                      where: {
+                        structureCartographieNationaleId:
+                          lieu.structureCartographieNationaleId,
+                      },
+                    })
+
+                  if (!existingStructure) {
+                    throw new Error('Structure not found')
+                  }
+
                   // Structure already exists, we just create the lieu, linking with carto id
                   return transaction.mediateurEnActivite.create({
                     data: {
@@ -385,8 +398,7 @@ export const inscriptionRouter = router({
                       },
                       structure: {
                         connect: {
-                          structureCartographieNationaleId:
-                            lieu.structureCartographieNationaleId,
+                          id: existingStructure.id,
                         },
                       },
                     },
@@ -414,7 +426,7 @@ export const inscriptionRouter = router({
                       },
                     },
                     structure: {
-                      create: cartoStructureToStructure(cartoStructure),
+                      create: toStructureFromCartoStructure(cartoStructure),
                     },
                   },
                 })
@@ -445,7 +457,7 @@ export const inscriptionRouter = router({
               ({ structureCartographieNationaleId }) =>
                 structureCartographieNationaleId,
             )
-            .filter(isDefinedAndNotNull),
+            .filter(onlyDefinedAndNotNull),
         )
 
         const existingStructuresForCartoIds =
@@ -502,6 +514,18 @@ export const inscriptionRouter = router({
                 )
 
                 if (structure) {
+                  const existingStructure =
+                    await transaction.structure.findFirst({
+                      where: {
+                        structureCartographieNationaleId:
+                          lieu.structureCartographieNationaleId,
+                      },
+                    })
+
+                  if (!existingStructure) {
+                    throw new Error('Structure not found')
+                  }
+
                   // Structure already exists, we just create the lieu, linking with carto id
                   return transaction.mediateurEnActivite.create({
                     data: {
@@ -513,8 +537,7 @@ export const inscriptionRouter = router({
                       },
                       structure: {
                         connect: {
-                          structureCartographieNationaleId:
-                            lieu.structureCartographieNationaleId,
+                          id: existingStructure.id,
                         },
                       },
                     },
@@ -542,7 +565,7 @@ export const inscriptionRouter = router({
                       },
                     },
                     structure: {
-                      create: cartoStructureToStructure(cartoStructure),
+                      create: toStructureFromCartoStructure(cartoStructure),
                     },
                   },
                 })
@@ -567,4 +590,19 @@ export const inscriptionRouter = router({
         },
       })
     }),
+  addMediationNumeriqueToCoordinateur: protectedProcedure.mutation(
+    async ({ ctx: { user: sessionUser } }) => {
+      inscriptionGuard(sessionUser.id, sessionUser)
+
+      await assignConseillerNumeriqueRoleToCoordinateur(
+        findConseillerNumeriqueByEmail,
+      )(sessionUser)
+    },
+  ),
+  removeMediationNumeriqueForCoordinateur: protectedProcedure.mutation(
+    async ({ ctx: { user: sessionUser } }) => {
+      inscriptionGuard(sessionUser.id, sessionUser)
+      await removeConseillerNumeriqueRoleToCoordinateur(sessionUser)
+    },
+  ),
 })

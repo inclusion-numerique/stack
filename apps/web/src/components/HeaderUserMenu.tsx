@@ -7,6 +7,7 @@ import { useOnClickOutside } from 'usehooks-ts'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { getUserDisplayName } from '@app/web/utils/user'
 import TerminerUsurpationHeaderUserMenuItem from '@app/web/components/TerminerUsurpationHeaderUserMenuItem'
+import { isAuthenticatedConseillerNumerique } from '@app/web/auth/getAuthenticatedConseillerNumerique'
 import styles from './HeaderUserMenu.module.css'
 
 export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
@@ -54,7 +55,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
       </li>
       <li>
         <Link
-          className="fr-nav__link fr-border--bottom"
+          className="fr-nav__link"
           href="/mon-profil"
           style={{ boxShadow: 'none' }}
         >
@@ -66,6 +67,22 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
           Voir mon profil
         </Link>
       </li>
+      {isAuthenticatedConseillerNumerique(user) && (
+        <li>
+          <Link
+            className="fr-nav__link"
+            href="/coop/archives-v1"
+            style={{ boxShadow: 'none' }}
+          >
+            <span
+              className="fr-icon--sm fr-icon-archive-line fr-mr-1-5v"
+              style={{ color: 'var(--blue-france-sun-113-625)' }}
+              aria-hidden
+            />
+            Mes archives&nbsp;-&nbsp;Coop V.1
+          </Link>
+        </li>
+      )}
       {user.mediateur && user.mediateur._count.enActivite > 0 && (
         <li>
           <Link

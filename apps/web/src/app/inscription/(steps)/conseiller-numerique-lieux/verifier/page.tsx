@@ -5,7 +5,7 @@ import { metadataTitle } from '@app/web/app/metadataTitle'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 import { getStructureEmployeuseForInscription } from '@app/web/app/inscription/getStructureEmployeuseForInscription'
-import ConseillerNumeriqueInscriptionNotice from '@app/web/app/inscription/ConseillerNumeriqueInscriptionNotice'
+import RoleInscriptionNotice from '@app/web/app/inscription/RoleInscriptionNotice'
 import InscriptionRecapitulatif from '@app/web/app/inscription/InscriptionRecapitulatif'
 import {
   conseillerNumeriqueLieuxInscriptionSteps,
@@ -41,7 +41,10 @@ const Page = async () => {
       nextStepTitle="Renseignez vos lieux d’activité"
       backHref={conseillerNumeriqueLieuxInscriptionSteps.intro}
     >
-      <ConseillerNumeriqueInscriptionNotice className="fr-mt-12v" />
+      <RoleInscriptionNotice
+        roleInscription="conseiller numérique"
+        className="fr-mt-12v"
+      />
       <InscriptionRecapitulatif
         editLieuxActiviteHref={
           conseillerNumeriqueLieuxInscriptionSteps.lieuxActivite

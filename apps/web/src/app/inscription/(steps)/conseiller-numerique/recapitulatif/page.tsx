@@ -6,7 +6,7 @@ import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 import { getStructureEmployeuseForInscription } from '@app/web/app/inscription/getStructureEmployeuseForInscription'
 import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
 import { conseillerNumeriqueInscriptionSteps } from '@app/web/app/inscription/(steps)/conseiller-numerique/conseillerNumeriqueinscriptionSteps'
-import ConseillerNumeriqueInscriptionNotice from '@app/web/app/inscription/ConseillerNumeriqueInscriptionNotice'
+import RoleInscriptionNotice from '@app/web/app/inscription/RoleInscriptionNotice'
 import InscriptionRecapitulatif from '@app/web/app/inscription/InscriptionRecapitulatif'
 
 export const metadata = {
@@ -40,7 +40,10 @@ const Page = async () => {
       backHref={conseillerNumeriqueInscriptionSteps.intro}
       subtitle="Vérifiez que ces informations sont exactes avant de valider votre inscription."
     >
-      <ConseillerNumeriqueInscriptionNotice className="fr-mt-12v" />
+      <RoleInscriptionNotice
+        roleInscription="conseiller numérique"
+        className="fr-mt-12v"
+      />
       <InscriptionRecapitulatif
         editLieuxActiviteHref={
           conseillerNumeriqueInscriptionSteps.lieuxActivite

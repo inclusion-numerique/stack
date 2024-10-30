@@ -28,6 +28,7 @@ export type SessionUser = Pick<
   inscriptionValidee: string | null
   structureEmployeuseRenseignee: string | null
   checkConseillerNumeriqueInscription: string | null
+  checkCoordinateurInscription: string | null
   lieuxActiviteRenseignes: string | null
   usurper: { id: string } | null
   emplois: (Pick<EmployeStructure, 'id'> & {
@@ -39,5 +40,9 @@ export type SessionUser = Pick<
         _count: { enActivite: number }
       })
     | null
-  coordinateur: Pick<Coordinateur, 'id'> | null
+  coordinateur:
+    | (Pick<Coordinateur, 'id'> & {
+        mediateursCoordonnes: { mediateurId: string }[]
+      })
+    | null
 }

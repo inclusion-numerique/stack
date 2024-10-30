@@ -13,6 +13,7 @@ import { searchBeneficiaire } from '@app/web/beneficiaire/searchBeneficiaire'
 import { addMutationLog } from '@app/web/utils/addMutationLog'
 import { createStopwatch } from '@app/web/utils/stopwatch'
 import { AnalysisSchema } from '@app/web/beneficiaire/import/analyseImportBeneficiairesExcel'
+import { trancheAgeFromAnneeNaissance } from '@app/web/beneficiaire/trancheAgeFromAnneeNaissance'
 
 const checkExistingBeneficiaire = async ({
   beneficiaireId,
@@ -205,6 +206,9 @@ export const beneficiairesRouter = router({
             prenom: row.values.prenom ?? '',
             nom: row.values.nom ?? '',
             anneeNaissance: row.parsed.anneeNaissance || undefined,
+            trancheAge:
+              trancheAgeFromAnneeNaissance(row.parsed.anneeNaissance) ||
+              undefined,
             telephone: row.values.numeroTelephone || undefined,
             email: row.values.email,
             genre: row.parsed.genre,

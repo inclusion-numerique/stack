@@ -22,7 +22,6 @@ const valueLabel = (value: PeriodFilterCalendarValue): ReactNode => (
   </>
 )
 
-const minDate = new Date('2024-01-01')
 const maxDate = new Date()
 
 const FilterCalendar = ({
@@ -30,8 +29,10 @@ const FilterCalendar = ({
   onChange,
   title,
   value,
+  minDate = new Date('2024-01-01'),
 }: Pick<CalendarProps, 'onChange' | 'defaultValue' | 'value'> & {
   title: ReactNode
+  minDate?: Date
 }) => (
   <div
     className={classNames('fr-flex fr-align-items-center fr-direction-column')}
@@ -57,9 +58,11 @@ export type PeriodFilterValue = {
 export type PeriodFilterOnChange = (value: PeriodFilterValue | null) => void
 
 const PeriodFilter = ({
+  minDate,
   onChange,
   defaultValue,
 }: {
+  minDate?: Date
   onChange: PeriodFilterOnChange
   defaultValue?: PeriodFilterValue
 }) => {
@@ -132,8 +135,18 @@ const PeriodFilter = ({
       label="Période"
     >
       <div className="fr-flex fr-flex-gap-4v">
-        <FilterCalendar onChange={onStartChange} title="Début" value={start} />
-        <FilterCalendar onChange={onEndChange} title="Fin" value={end} />
+        <FilterCalendar
+          minDate={minDate}
+          onChange={onStartChange}
+          title="Début"
+          value={start}
+        />
+        <FilterCalendar
+          minDate={minDate}
+          onChange={onEndChange}
+          title="Fin"
+          value={end}
+        />
       </div>
     </FilterTag>
   )

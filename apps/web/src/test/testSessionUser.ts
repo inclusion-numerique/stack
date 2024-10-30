@@ -17,6 +17,7 @@ export const testSessionUser = {
   coordinateur: null,
   emplois: [],
   checkConseillerNumeriqueInscription: null,
+  checkCoordinateurInscription: null,
   inscriptionValidee: null,
   lieuxActiviteRenseignes: null,
   mediateur: null,

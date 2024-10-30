@@ -5,20 +5,29 @@ import {
   getActiviteFiltersSqlFragment,
   getActivitesFiltersWhereConditions,
 } from '@app/web/cra/activitesFiltersSqlWhereConditions'
-import { monthShortLabels } from '@app/web/utils/monthShortLabels'
+import {
+  MonthShortLabel,
+  monthShortLabels,
+} from '@app/web/utils/monthShortLabels'
 import { LabelAndCount } from '../quantifiedShare'
 
+const EMPTY_ACCOMPAGNEMENTS_COUNT = monthShortLabels.map(
+  (label: MonthShortLabel) => ({ label, count: 0 }),
+)
+
 export const getAccompagnementsCountByMonth = async ({
-  mediateurId,
+  mediateurIds,
   activitesFilters,
   periodEnd,
   intervals = 12,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
   activitesFilters: ActivitesFilters
   periodEnd?: string // Format should be 'YYYY-MM', defaults to CURRENT_DATE if not provided
   intervals?: number // Default to 12 if not provided
 }) => {
+  if (mediateurIds.length === 0) return EMPTY_ACCOMPAGNEMENTS_COUNT
+
   const endDate = periodEnd
     ? `TO_DATE('${periodEnd}', 'YYYY-MM')`
     : `CURRENT_DATE`
@@ -29,7 +38,7 @@ export const getAccompagnementsCountByMonth = async ({
                                         FROM activites
                                                  INNER JOIN accompagnements ON accompagnements.activite_id = activites.id
                                                  LEFT JOIN structures ON structures.id = activites.structure_id
-                                        WHERE activites.mediateur_id = ${mediateurId}::UUID
+                                        WHERE activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
                                           AND activites.suppression IS NULL
                                           AND ${getActiviteFiltersSqlFragment(
                                             getActivitesFiltersWhereConditions(
@@ -59,16 +68,18 @@ export const getAccompagnementsCountByMonth = async ({
 }
 
 export const getAccompagnementsCountByDay = async ({
-  mediateurId,
+  mediateurIds,
   activitesFilters,
   periodEnd,
   intervals = 30,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
   activitesFilters: ActivitesFilters
   periodEnd?: string // Format should be 'YYYY-MM-DD', defaults to CURRENT_DATE if not provided
   intervals?: number // Default to 30 if not provided
 }) => {
+  if (mediateurIds.length === 0) return EMPTY_ACCOMPAGNEMENTS_COUNT
+
   const endDate = periodEnd
     ? `TO_DATE('${periodEnd}', 'YYYY-MM-DD')`
     : `CURRENT_DATE`
@@ -79,8 +90,8 @@ export const getAccompagnementsCountByDay = async ({
                                         FROM activites
                                                  INNER JOIN accompagnements ON accompagnements.activite_id = activites.id
                                                  LEFT JOIN structures ON structures.id = activites.structure_id
-                                        WHERE activites.mediateur_id = ${mediateurId}::UUID
-                                          AND activites.suppression IS NULL
+                                        WHERE activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
+		                                      AND activites.suppression IS NULL
                                           AND ${getActiviteFiltersSqlFragment(
                                             getActivitesFiltersWhereConditions(
                                               activitesFilters,

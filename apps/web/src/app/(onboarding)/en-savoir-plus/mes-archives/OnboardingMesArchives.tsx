@@ -26,7 +26,7 @@ export const OnboardingMesArchives = () => (
     closeHref="/coop"
   >
     <p className="fr-text--xl">
-      Retrouvez l’historique de vos compte-rendu d’activités (CRA) et vos
+      Retrouvez l’historique de vos compte-rendus d’activités (CRA) et vos
       statistiques de la version précédente de l’espace Coop disponibles sous
       forme d’exports sur une page dédiée&nbsp;:{' '}
       <strong>Mes archives - Coop V.1</strong>.

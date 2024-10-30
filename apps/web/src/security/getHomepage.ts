@@ -34,7 +34,7 @@ export const getLoginRedirectUrl = (
   }
 
   if (user.role === 'Admin') {
-    return '/administration/usurpation'
+    return '/administration/utilisateurs'
   }
 
   if (!user.inscriptionValidee) {

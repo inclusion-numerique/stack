@@ -1,4 +1,4 @@
-import { Genre, StatutSocial, TrancheAge } from '@prisma/client'
+import { Genre, Prisma, StatutSocial, TrancheAge } from '@prisma/client'
 import { snakeCase } from 'change-case'
 import { prismaClient } from '@app/web/prismaClient'
 import {
@@ -16,20 +16,6 @@ import {
 } from '@app/web/cra/activitesFiltersSqlWhereConditions'
 import { createEnumCountSelect } from '@app/web/app/coop/mes-statistiques/_queries/createEnumCountSelect'
 import { allocatePercentagesFromRecords } from '@app/web/app/coop/mes-statistiques/_queries/allocatePercentages'
-import { QuantifiedShare } from '../quantifiedShare'
-
-const beneficiaireCategories = [
-  'genresBeneficiaires',
-  'statusBeneficiaires',
-  'tranchesAgeBeneficiaires',
-  'communesBeneficiaires',
-] as const
-
-type BeneficiaireCategory = (typeof beneficiaireCategories)[number]
-
-export type BeneficiaireQuantifiedShare = QuantifiedShare & {
-  category_type: BeneficiaireCategory
-}
 
 export type BeneficiairesStatsRaw = {
   total_beneficiaires: number
@@ -38,31 +24,18 @@ export type BeneficiairesStatsRaw = {
   [key: `statut_social_${string}`]: number
 }
 
-export const sortEnumProportions = <
-  Item extends {
-    proportion: number
-    value: TrancheAge | StatutSocial | Genre
-  },
->(
-  items: Item[],
-) =>
-  items.sort(
-    // If the value is 'NonCommunique', it should be last
-    (a, b) => {
-      if (a.value === 'NonCommunique') return 1
-      if (b.value === 'NonCommunique') return -1
-      return b.proportion - a.proportion
-    },
-  )
+const EMPTY_BENEFICIAIRES_STATS = { total_beneficiaires: 0 }
 
 export const getBeneficiaireStatsRaw = async ({
-  mediateurId,
+  mediateurIds,
   activitesFilters,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
   activitesFilters: ActivitesFilters
-}) =>
-  prismaClient.$queryRaw<[BeneficiairesStatsRaw]>`
+}) => {
+  if (mediateurIds.length === 0) return EMPTY_BENEFICIAIRES_STATS
+
+  return prismaClient.$queryRaw<[BeneficiairesStatsRaw]>`
       WITH distinct_beneficiaires AS (SELECT DISTINCT beneficiaires.id,
                                                       beneficiaires.genre,
                                                       beneficiaires.statut_social,
@@ -74,7 +47,7 @@ export const getBeneficiaireStatsRaw = async ({
                                                INNER JOIN accompagnements ON accompagnements.beneficiaire_id = beneficiaires.id
                                                INNER JOIN activites ON
                                                     activites.id = accompagnements.activite_id
-                                              AND activites.mediateur_id = ${mediateurId}::UUID
+                                              AND activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
                                               AND activites.suppression IS NULL
                                               AND ${getActiviteFiltersSqlFragment(
                                                 getActivitesFiltersWhereConditions(
@@ -105,6 +78,7 @@ export const getBeneficiaireStatsRaw = async ({
                defaultEnumValue: TrancheAge.NonCommunique,
              })}
       FROM distinct_beneficiaires`.then((result) => result[0])
+}
 
 export const normalizeBeneficiairesStatsRaw = (
   stats: BeneficiairesStatsRaw,
@@ -151,38 +125,41 @@ export type BeneficiairesCommunesRaw = {
 }
 
 export const getBeneficiairesCommunesRaw = async ({
-  mediateurId,
+  mediateurIds,
   activitesFilters,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
   activitesFilters: ActivitesFilters
-}) =>
-  prismaClient.$queryRaw<BeneficiairesCommunesRaw[]>`
-      SELECT DISTINCT COALESCE(
-                              beneficiaires.commune_code_insee,
-                              CASE
-                                  WHEN activites.type != 'collectif' THEN activites.lieu_code_insee
-                                  END
-                      )                                                                            AS coalesced_code_insee,
-                      MIN(COALESCE(beneficiaires.commune, activites.lieu_commune))                 AS commune,
-                      MIN(COALESCE(beneficiaires.commune_code_postal, activites.lieu_code_postal)) AS code_postal,
-                      COUNT(DISTINCT beneficiaires.id)::integer                                    AS count_beneficiaires
-      FROM beneficiaires
-               INNER JOIN accompagnements ON
-          accompagnements.beneficiaire_id = beneficiaires.id
-               INNER JOIN activites ON
-          activites.id = accompagnements.activite_id
-              AND activites.mediateur_id = ${mediateurId}::UUID
-              AND activites.suppression IS NULL
-              AND ${getActiviteFiltersSqlFragment(
-                getActivitesFiltersWhereConditions(activitesFilters),
-              )}
-               LEFT JOIN structures ON structures.id = activites.structure_id
-      GROUP BY coalesced_code_insee
+}) => {
+  if (mediateurIds.length === 0) return []
+
+  return prismaClient.$queryRaw<BeneficiairesCommunesRaw[]>`
+    SELECT DISTINCT COALESCE(
+                beneficiaires.commune_code_insee,
+                CASE
+                  WHEN activites.type != 'collectif' THEN activites.lieu_code_insee
+                  END
+            )                                                                            AS coalesced_code_insee,
+            MIN(COALESCE(beneficiaires.commune, activites.lieu_commune))                 AS commune,
+            MIN(COALESCE(beneficiaires.commune_code_postal, activites.lieu_code_postal)) AS code_postal,
+            COUNT(DISTINCT beneficiaires.id) ::integer                                    AS count_beneficiaires
+    FROM beneficiaires
+         INNER JOIN accompagnements ON
+      accompagnements.beneficiaire_id = beneficiaires.id
+         INNER JOIN activites ON
+      activites.id = accompagnements.activite_id
+        AND activites.mediateur_id = ANY (ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
+        AND activites.suppression IS NULL
+        AND ${getActiviteFiltersSqlFragment(
+          getActivitesFiltersWhereConditions(activitesFilters),
+        )}
+         LEFT JOIN structures ON structures.id = activites.structure_id
+    GROUP BY coalesced_code_insee
   `.then((result) =>
     // Filter out null codeInsee for when there is no commune in beneficiaire or activite
     result.filter(({ coalesced_code_insee }) => !!coalesced_code_insee),
   )
+}
 
 export const normalizeBeneficiairesCommunesRaw = (
   rawCommunes: BeneficiairesCommunesRaw[],
@@ -208,19 +185,19 @@ export const normalizeBeneficiairesCommunesRaw = (
 }
 
 export const getBeneficiaireStats = async ({
-  mediateurId,
+  mediateurIds,
   activitesFilters,
 }: {
-  mediateurId: string
+  mediateurIds: string[]
   activitesFilters: ActivitesFilters
 }) => {
   const statsRaw = await getBeneficiaireStatsRaw({
-    mediateurId,
+    mediateurIds,
     activitesFilters,
   })
 
   const rawCommunes = await getBeneficiairesCommunesRaw({
-    mediateurId,
+    mediateurIds,
     activitesFilters,
   })
 

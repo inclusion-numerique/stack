@@ -1,10 +1,8 @@
 import { getBeneficiaireAccompagnementsPageData } from '@app/web/app/coop/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/getBeneficiaireAccompagnementsPageData'
 import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
-import {
-  conseillerNumerique,
-  mediateurAvecActivite,
-  mediateurSansActivites,
-} from '@app/fixtures/users'
+import { conseillerNumerique } from '@app/fixtures/users/conseillerNumerique'
+import { mediateurAvecActivite } from '@app/fixtures/users/mediateurAvecActivite'
+import { mediateurSansActivites } from '@app/fixtures/users/mediateurSansActivites'
 import {
   beneficiaireMaximaleMediateurAvecActivite,
   beneficiaireSansAccompagnementsMediateurAvecActivite,
@@ -20,9 +18,9 @@ import { prismaClient } from '@app/web/prismaClient'
 describe('getBeneficiaireAccompagnementsData', () => {
   beforeAll(async () => {
     await seedStructures(prismaClient)
-    await resetFixtureUser(mediateurAvecActivite)
-    await resetFixtureUser(mediateurSansActivites)
-    await resetFixtureUser(conseillerNumerique)
+    await resetFixtureUser(mediateurAvecActivite, false)
+    await resetFixtureUser(mediateurSansActivites, false)
+    await resetFixtureUser(conseillerNumerique, false)
   })
 
   it('returns no activites for beneficiaire with no data', async () => {

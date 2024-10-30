@@ -11,7 +11,10 @@ import {
 
 const DATE = new Date('2024-09-11T17:42:00.000Z')
 
-const STATISTIQUES_WORKSHEET_INPUT: BuildStatistiquesWorksheetInput = {
+const STATISTIQUES_WORKSHEET_INPUT_BASE: Omit<
+  BuildStatistiquesWorksheetInput,
+  'mediateur' | 'filters'
+> = {
   worksheetGenerationDate: DATE,
   user: {
     id: '1',
@@ -23,27 +26,6 @@ const STATISTIQUES_WORKSHEET_INPUT: BuildStatistiquesWorksheetInput = {
       conseillerNumerique: { id: '4' },
     },
     coordinateur: null,
-  },
-  mediateur: {
-    id: '1',
-    firstName: 'John',
-    lastName: 'Doe',
-    role: 'User',
-    mediateur: {
-      id: '5',
-      conseillerNumerique: { id: '4' },
-    },
-    coordinateur: null,
-  },
-  filters: {
-    du: '01/08/2024',
-    au: '31/08/2024',
-    typeLieu: 'Commune',
-    nomLieu: 'Lyon',
-    type: 'Accompagnement',
-    beneficiaire: null,
-    lieu: null,
-    periode: null,
   },
   statistiques: {
     totalCounts: {
@@ -379,6 +361,57 @@ const STATISTIQUES_WORKSHEET_INPUT: BuildStatistiquesWorksheetInput = {
   } as MesStatistiquesPageData,
 }
 
+const STATISTIQUES_WORKSHEET_INPUT_FOR_MEDIATEUR: BuildStatistiquesWorksheetInput =
+  {
+    ...STATISTIQUES_WORKSHEET_INPUT_BASE,
+    mediateur: {
+      id: '1',
+      firstName: 'John',
+      lastName: 'Doe',
+      role: 'User',
+      mediateur: {
+        id: '5',
+        conseillerNumerique: { id: '4' },
+      },
+      coordinateur: null,
+    },
+    filters: {
+      du: '01/08/2024',
+      au: '31/08/2024',
+      typeLieu: 'Commune',
+      nomLieu: 'Lyon',
+      type: 'Accompagnement',
+      beneficiaire: null,
+      mediateur: null,
+      lieu: null,
+      periode: null,
+    },
+  }
+
+const STATISTIQUES_WORKSHEET_INPUT_FOR_COORDINATEUR: BuildStatistiquesWorksheetInput =
+  {
+    ...STATISTIQUES_WORKSHEET_INPUT_BASE,
+    mediateur: {
+      id: '1',
+      firstName: 'John',
+      lastName: 'Doe',
+      role: 'User',
+      mediateur: null,
+      coordinateur: { id: '1', mediateursCoordonnes: [] },
+    },
+    filters: {
+      du: '01/08/2024',
+      au: '31/08/2024',
+      typeLieu: 'Commune',
+      nomLieu: 'Lyon',
+      type: 'Accompagnement',
+      beneficiaire: null,
+      mediateur: 'Marie Doe',
+      lieu: null,
+      periode: null,
+    },
+  }
+
 const expectQuantifiedShareRows = (
   // label, count
   expectedRows: [string, number][],
@@ -396,12 +429,14 @@ const expectQuantifiedShareRows = (
   ])
 }
 
-describe('buildStatistiquesWorksheet', () => {
+describe('build statistiques worksheet for médiateur', () => {
   let workbook: Workbook
   let worksheet: Worksheet
 
   beforeAll(() => {
-    workbook = buildStatistiquesWorksheet(STATISTIQUES_WORKSHEET_INPUT)
+    workbook = buildStatistiquesWorksheet(
+      STATISTIQUES_WORKSHEET_INPUT_FOR_MEDIATEUR,
+    )
     const generatedWorksheet = workbook.getWorksheet('Statistiques')
     if (!generatedWorksheet) {
       throw new Error('Worksheet "Statistiques" not found')
@@ -739,6 +774,28 @@ describe('buildStatistiquesWorksheet', () => {
       ]),
       [],
     ])
+  })
+})
+
+describe('build statistiques worksheet for coordinateur', () => {
+  let workbook: Workbook
+  let worksheet: Worksheet
+
+  beforeAll(() => {
+    workbook = buildStatistiquesWorksheet(
+      STATISTIQUES_WORKSHEET_INPUT_FOR_COORDINATEUR,
+    )
+    const generatedWorksheet = workbook.getWorksheet('Statistiques')
+    if (!generatedWorksheet) {
+      throw new Error('Worksheet "Statistiques" not found')
+    }
+    worksheet = generatedWorksheet
+  })
+
+  it('should contains médiateur filter in Statistiques worksheet in row 16 when', () => {
+    const rows = worksheet.getRows(14, 2)?.map((row) => row.values)
+
+    expect(rows).toStrictEqual([[, 'Médiateur', 'Marie Doe'], []])
   })
 })
 

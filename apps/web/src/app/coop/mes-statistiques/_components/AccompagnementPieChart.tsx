@@ -11,7 +11,8 @@ import {
 
 const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) =>
   active &&
-  payload && (
+  payload &&
+  payload.length > 1 && (
     <div className="fr-background-default--grey fr-p-1w fr-list-group fr-tile--shadow fr-whitespace-nowrap">
       {payload[0].name} :{' '}
       <span className="fr-text--bold">{payload[0].value}</span>

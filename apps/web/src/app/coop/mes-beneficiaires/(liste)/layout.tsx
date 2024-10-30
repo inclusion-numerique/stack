@@ -10,6 +10,7 @@ const MesBeneficiairesLayout = async ({ children }: PropsWithChildren) => {
     where: {
       mediateurId: user.mediateur.id,
       suppression: null,
+      anonyme: false,
     },
   })
 

@@ -6,6 +6,8 @@ import { numberToString } from '@app/web/utils/formatNumber'
 import AdministrationCheckSiret from '@app/web/app/administration/structures/AdministrationCheckSiret'
 import { getServerUrl } from '@app/web/utils/baseUrl'
 import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
+import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
+import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 
 export const metadata = {
   title: metadataTitle('Structures'),
@@ -17,11 +19,11 @@ const Page = async () => {
   const structuresMeta = await prismaClient.structure.count()
 
   return (
-    <div className="fr-container">
+    <CoopPageContainer>
       <AdministrationBreadcrumbs currentPage="Structures" />
-      <h1 className="fr-h2 fr-text-title--blue-france fr-mb-8v">
+      <AdministrationTitle icon="fr-icon-home-4-line">
         Structures cartographie nationale
-      </h1>
+      </AdministrationTitle>
 
       <p className="fr-text--sm">
         <b>{numberToString(structuresMeta)}</b> structures importées depuis data
@@ -49,7 +51,7 @@ const Page = async () => {
         <h2 className="fr-h6">Vérifier un SIRET</h2>
         <AdministrationCheckSiret />
       </div>
-    </div>
+    </CoopPageContainer>
   )
 }
 
