@@ -1,12 +1,8 @@
 import { ProfilInscription } from '@prisma/client'
-import * as Sentry from '@sentry/nextjs'
 import { v4 } from 'uuid'
 import z from 'zod'
-import { StructureCreationDataWithSiret } from '@app/web/app/structure/StructureValidation'
 import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import { searchAdresse } from '@app/web/external-apis/apiAdresse'
-import { banFeatureToAdresseBanData } from '@app/web/external-apis/ban/banFeatureToAdresseBanData'
 import { ChoisirProfilEtAccepterCguValidation } from '@app/web/inscription/ChoisirProfilEtAccepterCguValidation'
 import { LieuxActiviteValidation } from '@app/web/inscription/LieuxActivite'
 import { RenseignerStructureEmployeuseValidation } from '@app/web/inscription/RenseignerStructureEmployeuse'
@@ -21,6 +17,7 @@ import {
   assignConseillerNumeriqueRoleToCoordinateur,
   removeConseillerNumeriqueRoleToCoordinateur,
 } from '@app/web/app/inscription/importFromConseillerNumerique/importFromConseillerNumerique'
+import { getOrCreateStructureEmployeuse } from '@app/web/server/rpc/inscription/getOrCreateStructureEmployeuse'
 
 const inscriptionGuard = (
   targetUserId: string,
@@ -29,73 +26,6 @@ const inscriptionGuard = (
   if (grantee.role !== 'Admin' && grantee.id !== targetUserId) {
     throw forbiddenError()
   }
-}
-
-const getOrCreateStructureEmployeuse = async (
-  structureEmployeuse: StructureCreationDataWithSiret,
-) => {
-  const existingStructure = await prismaClient.structure.findFirst({
-    where: {
-      id: structureEmployeuse.id ?? undefined,
-      siret: structureEmployeuse.siret,
-      suppression: null,
-    },
-    select: {
-      id: true,
-    },
-  })
-
-  if (existingStructure) {
-    return existingStructure
-  }
-
-  const adresseResult = await searchAdresse(structureEmployeuse.adresse)
-
-  if (!adresseResult) {
-    // We create with default data if no adresse found but raise a Sentry exception
-    Sentry.captureException(new Error('No adresse info found on api adresse'), {
-      data: {
-        structureEmployeuse,
-      },
-    })
-
-    return prismaClient.structure.create({
-      data: {
-        id: v4(),
-        siret: structureEmployeuse.siret,
-        codeInsee: structureEmployeuse.codeInsee,
-        nom: structureEmployeuse.nom,
-        adresse: structureEmployeuse.adresse,
-        commune: structureEmployeuse.commune,
-        codePostal: '',
-      },
-      select: {
-        id: true,
-      },
-    })
-  }
-
-  const {
-    commune,
-    codePostal,
-    longitude,
-    latitude,
-    nom: adresse,
-  } = banFeatureToAdresseBanData(adresseResult)
-
-  return prismaClient.structure.create({
-    data: {
-      id: v4(),
-      siret: structureEmployeuse.siret,
-      codeInsee: structureEmployeuse.codeInsee,
-      nom: structureEmployeuse.nom,
-      adresse,
-      commune,
-      codePostal,
-      longitude,
-      latitude,
-    },
-  })
 }
 
 const onlyLieuxActiviteToCreate =
