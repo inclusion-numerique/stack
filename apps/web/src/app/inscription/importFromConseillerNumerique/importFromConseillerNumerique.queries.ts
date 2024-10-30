@@ -1,11 +1,12 @@
 import { type Prisma, ProfilInscription } from '@prisma/client'
 import { v4 } from 'uuid'
+import type { ObjectId } from 'mongodb'
 import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
-import { SessionUser } from '@app/web/auth/sessionUser'
-import { ConseillerNumeriqueFound } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
+import type { SessionUser } from '@app/web/auth/sessionUser'
+import type { ConseillerNumeriqueFound } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
 import { prismaClient } from '@app/web/prismaClient'
 
-export const toId = ({ id }: { id: string }) => id.toString()
+export const toId = ({ id }: { id: string | ObjectId }) => id.toString()
 
 export const markAsCheckedMediateur = async (user: SessionUser) =>
   prismaClient.user.update({

@@ -1,19 +1,18 @@
-import { Collection, type Document, Filter, ObjectId } from 'mongodb'
+import { ObjectId } from 'mongodb'
 import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 import {
-  cleanConseillerProjection,
-  Conseiller,
-  ConseillerNumeriqueProjection,
-  mongoQueryConseillerProjection,
-} from '@app/web/external-apis/conseiller-numerique/conseillersProjection'
+  cleanConseillerNumeriqueV1Document,
+  type ConseillerNumeriqueV1,
+  type ConseillerNumeriqueV1Collection,
+} from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Document'
 import { PremanenceConseillerNumerique } from './PremanenceConseillerNumerique'
 import { StructureConseillerNumerique } from './StructureConseillerNumerique'
 
 export type ConseillerNumeriqueFound = {
-  conseiller: Conseiller
+  conseiller: ConseillerNumeriqueV1
   miseEnRelation: StructureConseillerNumerique
   permanences: PremanenceConseillerNumerique[]
-  conseillersCoordonnes: Conseiller[]
+  conseillersCoordonnes: ConseillerNumeriqueV1[]
 }
 
 export type ConseillerNumeriqueByEmailFinder = (
@@ -21,32 +20,21 @@ export type ConseillerNumeriqueByEmailFinder = (
 ) => Promise<ConseillerNumeriqueFound | null>
 
 const findConseillersCoordonnesById =
-  <TSchema extends Document = Document>(
-    conseillerCollection: Collection<TSchema>,
-  ) =>
+  (conseillerCollection: ConseillerNumeriqueV1Collection) =>
   async (id: string) => {
-    const conseillersCoordonnesDocument = (await conseillerCollection
-      .find(
-        { coordinateurs: { $elemMatch: { id } } },
-        { projection: mongoQueryConseillerProjection },
-      )
-      .toArray()) as unknown as ConseillerNumeriqueProjection[]
+    const conseillersCoordonnesDocument = await conseillerCollection
+      .find({ coordinateurs: { $elemMatch: { id: new ObjectId(id) } } })
+      .toArray()
 
-    return conseillersCoordonnesDocument.map(cleanConseillerProjection)
+    return conseillersCoordonnesDocument.map(cleanConseillerNumeriqueV1Document)
   }
 
 const findConseillerDocumentByEmail =
-  <TSchema extends Document = Document>(
-    conseillerCollection: Collection<TSchema>,
-  ) =>
-  async (email: string) =>
-    (await conseillerCollection.findOne(
-      {
-        deletedAt: { $in: [null, undefined] },
-        $or: [{ email }, { emailPro: email }, { 'emailCN.address': email }],
-      } as unknown as Filter<TSchema>,
-      { projection: mongoQueryConseillerProjection },
-    )) as unknown as ConseillerNumeriqueProjection | null
+  (conseillerCollection: ConseillerNumeriqueV1Collection) => (email: string) =>
+    conseillerCollection.findOne({
+      deletedAt: { $in: [null, undefined] },
+      $or: [{ email }, { emailPro: email }, { 'emailCN.address': email }],
+    })
 
 export const findConseillersCoordonnesByEmail = async (userEmail: string) => {
   const conseillerCollection =
@@ -60,7 +48,7 @@ export const findConseillersCoordonnesByEmail = async (userEmail: string) => {
   return conseillerNumerique == null
     ? []
     : findConseillersCoordonnesById(conseillerCollection)(
-        conseillerNumerique._id,
+        conseillerNumerique._id.toString(),
       )
 }
 
@@ -147,12 +135,12 @@ export const findConseillerNumeriqueByEmail: ConseillerNumeriqueByEmailFinder =
 
     return conseillerDocument
       ? {
-          conseiller: cleanConseillerProjection(conseillerDocument),
+          conseiller: cleanConseillerNumeriqueV1Document(conseillerDocument),
           miseEnRelation: miseEnRelation.structureObj,
           permanences,
           conseillersCoordonnes: await findConseillersCoordonnesById(
             conseillerCollection,
-          )(conseillerDocument._id),
+          )(conseillerDocument._id.toString('hex')),
         }
       : null
   }

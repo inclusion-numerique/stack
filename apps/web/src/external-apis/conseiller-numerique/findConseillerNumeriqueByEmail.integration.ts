@@ -1,4 +1,4 @@
-import { getMongoClient } from './conseillerNumeriqueMongoClient'
+import { closeMongoClient } from './conseillerNumeriqueMongoClient'
 import {
   findConseillerNumeriqueByEmail,
   findConseillersCoordonnesByEmail,
@@ -6,8 +6,7 @@ import {
 
 describe('find conseiller numérique by email', () => {
   afterAll(async () => {
-    const mongoClient = await getMongoClient()
-    await mongoClient.close()
+    await closeMongoClient()
   })
 
   it('gets null when there is no conseiller matching mail', async () => {

@@ -63,7 +63,21 @@ export type StructureConseillerNumerique = {
   qpvStatut: string // 'Sans objet' | other possible statuses
   codeCom: string | null
   conventionnement: {
-    dossierConventionnement: Record<string, unknown>
+    dossierConventionnement: {
+      statut: string // 'accepte' | other possible statuts
+      numero: number
+      dateDeCreation: Date
+      dateDerniereModification: Date
+      dateDeValidation: Date
+    }
+    dossierReconventionnement: {
+      statut: string // 'accepte' | other possible statuts
+      numero: number
+      dateDeCreation: Date
+      dateFinProchainContrat: Date
+      dateDerniereModification: Date
+      nbPostesAttribuees?: number | null
+    }
     statut: string // 'CONVENTIONNEMENT_VALIDÉ' | other possible statuses
   }
   adresseInsee2Ban: {
