@@ -55,9 +55,15 @@ const ProfileEditCard = (profileData: {
   return (
     <EditCard
       canEdit={false}
+      noBorder
+      className="fr-border fr-border-radius--8"
       contentSeparator
       id="description"
-      title="Vos informations personnelles"
+      title={
+        <span className="fr-text-title--blue-france">
+          Vos informations personnelles
+        </span>
+      }
       titleAs="h2"
       form={form}
       mutation={handleMutation}
