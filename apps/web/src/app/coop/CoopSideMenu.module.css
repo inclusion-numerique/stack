@@ -14,6 +14,7 @@
         font-weight: 500;
         padding: 8px;
         line-height: 24px;
+
         &:before {
             bottom: 10px !important;
             top: 10px !important;
@@ -21,8 +22,6 @@
     }
 
     :global .fr-sidemenu__link:has(.fr-btn) {
-        margin-top: 28px;
-        margin-bottom: 32px;
         padding: 0 !important;
 
         &:hover {

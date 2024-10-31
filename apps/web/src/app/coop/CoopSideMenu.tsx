@@ -7,6 +7,8 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { CreateCraModalDefinition } from '@app/web/app/coop/mes-activites/CreateCraModalDefinition'
 import styles from './CoopSideMenu.module.css'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import classNames from 'classnames'
 
 const CoopSideMenu = ({ user }: { user: SessionUser }) => {
   const pathname = usePathname()
@@ -96,7 +98,7 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
           type="button"
           {...CreateCraModalDefinition.buttonProps}
           iconId="fr-icon-add-line"
-          className="fr-whitespace-nowrap"
+          className="fr-width-full fr-my-7v"
         >
           Enregistrer une activité
         </Button>
@@ -105,6 +107,22 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
       linkProps: undefined as unknown as { href: string },
     })
   }
+
+  items.push({
+    text: (
+      <Button
+        type="button"
+        {...CreateCraModalDefinition.buttonProps}
+        iconId="fr-icon-question-answer-line"
+        priority="tertiary"
+        className={classNames('fr-width-full', styles.supportButton)}
+      >
+        Contacter le support
+      </Button>
+    ),
+    isActive: false,
+    linkProps: { href: `mailto:${PublicWebAppConfig.contactEmail}` },
+  })
 
   return (
     <SideMenu
