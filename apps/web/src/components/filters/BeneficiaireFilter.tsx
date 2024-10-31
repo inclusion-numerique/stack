@@ -28,9 +28,11 @@ const BeneficiaireFilter = ({
   })
 
   const [beneficiaire, setBeneficiaire] = useState<BeneficiaireOption | null>(
-    initialBeneficiairesOptions.find(
-      (option) => option.value?.id === defaultValue,
-    ) ?? null,
+    defaultValue
+      ? (initialBeneficiairesOptions.find(
+          (option) => option.value?.id === defaultValue,
+        ) ?? null)
+      : null,
   )
 
   const onClear = () => {
