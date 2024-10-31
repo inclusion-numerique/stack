@@ -15,7 +15,7 @@ const PrivateLayout = async ({ children }: PropsWithChildren) => {
       style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}
     >
       <div id="skip-links" />
-      <Header user={user} />
+      <Header user={user} variant="coop" />
       {children}
       <PublicFooter />
     </div>

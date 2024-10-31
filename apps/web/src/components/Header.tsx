@@ -9,14 +9,18 @@ import { getHomepage } from '@app/web/security/getHomepage'
 import LogoCoop from '@app/web/components/LogoCoop'
 import styles from './Header.module.css'
 
+export type HeaderVariant = 'public' | 'coop'
+
 const Header = ({
   user,
   backLink,
   fullWidth,
+  variant,
 }: {
   user?: SessionUser | null
   backLink?: boolean
   fullWidth?: boolean
+  variant: HeaderVariant // public header with "République Française" logo and text variant
 }) => (
   <header role="banner" className="fr-header">
     <div className="fr-header__body">
@@ -27,20 +31,22 @@ const Header = ({
               {backLink ? (
                 <HeaderBackLink />
               ) : (
-                <div className="fr-header__logo">
-                  <Link
-                    href={getHomepage(user)}
-                    aria-current="page"
-                    target="_self"
-                    title={process.env.NEXT_PUBLIC_APP_NAME}
-                  >
-                    <p className="fr-logo">
-                      République
-                      <br />
-                      Française
-                    </p>
-                  </Link>
-                </div>
+                variant === 'public' && (
+                  <div className="fr-header__logo">
+                    <Link
+                      href={getHomepage(user)}
+                      aria-current="page"
+                      target="_self"
+                      title={process.env.NEXT_PUBLIC_APP_NAME}
+                    >
+                      <p className="fr-logo">
+                        République
+                        <br />
+                        Française
+                      </p>
+                    </Link>
+                  </div>
+                )
               )}
               <div className="fr-header__navbar">
                 <button
@@ -68,6 +74,7 @@ const Header = ({
                   className={classNames(
                     'fr-header__service-title fr-flex fr-align-items-center',
                     styles.serviceTitle,
+                    variant === 'public' && styles.public,
                   )}
                 >
                   <LogoCoop className={classNames(styles.logo, 'fr-mr-4v')} />

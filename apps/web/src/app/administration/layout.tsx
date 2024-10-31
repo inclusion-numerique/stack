@@ -17,7 +17,7 @@ const AdministrationLayout = async ({ children }: PropsWithChildren) => {
       style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}
     >
       <div id="skip-links" />
-      <Header user={user} />
+      <Header user={user} variant="coop" />
       <div
         className={classNames('fr-grid-row fr-width-full', styles.container)}
       >
