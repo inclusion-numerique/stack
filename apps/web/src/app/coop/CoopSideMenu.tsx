@@ -94,9 +94,9 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
       text: (
         <Button
           type="button"
-          className="fr-ml-4v"
           {...CreateCraModalDefinition.buttonProps}
           iconId="fr-icon-add-line"
+          className="fr-whitespace-nowrap"
         >
           Enregistrer une activité
         </Button>
