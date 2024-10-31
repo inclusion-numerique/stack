@@ -74,10 +74,16 @@ const Header = ({
                   className={classNames(
                     'fr-header__service-title fr-flex fr-align-items-center',
                     styles.serviceTitle,
-                    variant === 'public' && styles.public,
+                    variant === 'public' ? styles.public : styles.nonPublic,
                   )}
                 >
-                  <LogoCoop className={classNames(styles.logo, 'fr-mr-4v')} />
+                  <LogoCoop
+                    className={classNames(
+                      styles.logo,
+                      'fr-mr-4v',
+                      variant !== 'public' && styles.nonPublic,
+                    )}
+                  />
                   {PublicWebAppConfig.projectTitle}
                 </p>
               </Link>
