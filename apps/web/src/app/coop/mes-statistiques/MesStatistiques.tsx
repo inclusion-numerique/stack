@@ -22,7 +22,6 @@ export const MesStatistiques = (
     communesOptions,
     departementsOptions,
     initialMediateursOptions,
-    initialBeneficiairesOptions,
     lieuxActiviteOptions,
     activiteDates,
     user,
@@ -43,7 +42,8 @@ export const MesStatistiques = (
             departementsOptions={departementsOptions}
             lieuxActiviteOptions={lieuxActiviteOptions}
             initialMediateursOptions={initialMediateursOptions}
-            initialBeneficiairesOptions={initialBeneficiairesOptions}
+            initialBeneficiairesOptions={[]}
+            beneficiairesFilter={false}
             minDate={activiteDates.first}
             isCoordinateur={user.coordinateur?.id != null}
             isMediateur={user.mediateur?.id != null}
@@ -54,7 +54,7 @@ export const MesStatistiques = (
             departementsOptions={departementsOptions}
             lieuxActiviteOptions={lieuxActiviteOptions}
             mediateursOptions={initialMediateursOptions}
-            beneficiairesOptions={initialBeneficiairesOptions}
+            beneficiairesOptions={[]}
           />
         </div>
         <hr />

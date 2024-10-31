@@ -77,6 +77,7 @@ const ActivitesFilterTags = ({
   lieuxActiviteOptions,
   isCoordinateur,
   isMediateur,
+  beneficiairesFilter = true,
   minDate,
   className,
 }: {
@@ -88,6 +89,7 @@ const ActivitesFilterTags = ({
   departementsOptions: SelectOption[]
   isCoordinateur: boolean
   isMediateur: boolean
+  beneficiairesFilter?: boolean // display beneficiaire filters. defaults to true
   minDate?: Date
   className?: string
 }) => {
@@ -219,7 +221,7 @@ const ActivitesFilterTags = ({
           onChange={onActiviteTypeChange}
           defaultValue={defaultFilters.type}
         />
-        {isMediateur && (
+        {isMediateur && beneficiairesFilter && (
           <BeneficiaireFilter
             onChange={onBeneficiaireChange}
             initialBeneficiairesOptions={initialBeneficiairesOptions}
