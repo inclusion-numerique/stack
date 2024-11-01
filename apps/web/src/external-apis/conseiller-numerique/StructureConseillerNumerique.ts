@@ -9,7 +9,7 @@ export type StructureConseillerNumerique = {
   siret: string
   aIdentifieCandidat: boolean
   dateDebutMission: Date
-  nombreConseillersSouhaites: number
+  nombreConseillersSouhaites: number | null
   estLabelliseFranceServices: 'OUI' | 'NON' // assuming possible values
   codePostal: string
   location: {

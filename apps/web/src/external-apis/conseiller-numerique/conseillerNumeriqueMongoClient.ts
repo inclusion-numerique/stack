@@ -1,5 +1,5 @@
-import type { Collection, Document } from 'mongodb'
 import * as mongoDB from 'mongodb'
+import { type Collection, type Document, ObjectId } from 'mongodb'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import type { ConseillerNumeriqueV1Collection } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Document'
 
@@ -67,4 +67,12 @@ export function conseillerNumeriqueMongoCollection<
     }
     return mongoClient.db().collection<TSchema>(collectionName)
   })
+}
+
+export const objectIdFromString = (id: string) => {
+  try {
+    return new ObjectId(id)
+  } catch {
+    return null
+  }
 }
