@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Header from '@app/web/components/Header'
 import AdministrationSideMenu from '@app/web/app/administration/AdministrationSideMenu'
+import MinimalFooter from '@app/web/app/coop/MinimalFooter'
 import styles from './AdministrationLayout.module.css'
 
 const AdministrationLayout = async ({ children }: PropsWithChildren) => {
@@ -13,18 +14,22 @@ const AdministrationLayout = async ({ children }: PropsWithChildren) => {
     notFound()
   }
   return (
-    <div
-      style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}
-    >
-      <div id="skip-links" />
-      <Header user={user} variant="coop" />
-      <div
-        className={classNames('fr-grid-row fr-width-full', styles.container)}
-      >
-        <div className={styles.sideNavContainer}>
-          <AdministrationSideMenu />
+    <div className="fr-layout">
+      <div className="fr-layout__inner">
+        <div id="skip-links" />
+        <Header user={user} variant="coop" />
+        <div
+          className={classNames(
+            'fr-grid-row fr-width-full fr-layout__main',
+            styles.container,
+          )}
+        >
+          <div className={styles.sideNavContainer}>
+            <AdministrationSideMenu />
+          </div>
+          <div className={styles.pageContainer}>{children}</div>
         </div>
-        <div className={styles.pageContainer}>{children}</div>
+        <MinimalFooter />
       </div>
     </div>
   )

@@ -12,6 +12,8 @@ const HeaderBackLink = ({ className }: { className?: string }) => {
         'fr-btn',
         'fr-btn--sm',
         'fr-btn--tertiary-no-outline',
+        'fr-ml-6v',
+        'fr-my-5v', // This margin ensures right height for all variants of the Header component
         className,
       )}
       onClick={router.back}

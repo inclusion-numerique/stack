@@ -62,9 +62,9 @@ const AdministrationSideMenu = () => {
   return (
     <SideMenu
       title={
-        <h5 className="fr-mt-md-4v fr-pl-4v fr-text-title--blue-france">
+        <p className="fr-text-title--blue-france fr-h5 fr-mb-0">
           Administration
-        </h5>
+        </p>
       }
       classes={{ item: styles.item, root: styles.sideMenu }}
       items={items}

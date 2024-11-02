@@ -35,12 +35,18 @@ const Header = ({
       <div className="fr-header__body">
         <div className={isFullWidth ? styles.bodyContainer : 'fr-container'}>
           <div className="fr-header__body-row">
-            <div className="fr-header__brand fr-enlarge-link">
+            <div
+              className={classNames(
+                'fr-header__brand',
+                !backLink && 'fr-enlarge-link',
+              )}
+            >
               <div className="fr-header__brand-top">
                 {backLink ? (
                   <HeaderBackLink />
                 ) : (
-                  variant === 'public' && (
+                  variant === 'public' &&
+                  !backLink && (
                     <div className="fr-header__logo">
                       <Link
                         href={getHomepage(user)}
@@ -72,31 +78,33 @@ const Header = ({
                   </button>
                 </div>
               </div>
-              <div className="fr-header__service">
-                <Link
-                  href={getHomepage(user)}
-                  aria-current="page"
-                  target="_self"
-                  title={`Accueil - ${PublicWebAppConfig.projectTitle}`}
-                >
-                  <p
-                    className={classNames(
-                      'fr-header__service-title fr-flex fr-align-items-center',
-                      styles.serviceTitle,
-                      variantStyle,
-                    )}
+              {!backLink && (
+                <div className="fr-header__service">
+                  <Link
+                    href={getHomepage(user)}
+                    aria-current="page"
+                    target="_self"
+                    title={`Accueil - ${PublicWebAppConfig.projectTitle}`}
                   >
-                    <LogoCoop
+                    <p
                       className={classNames(
-                        styles.logo,
-                        'fr-mr-4v',
+                        'fr-header__service-title fr-flex fr-align-items-center',
+                        styles.serviceTitle,
                         variantStyle,
                       )}
-                    />
-                    {PublicWebAppConfig.projectTitle}
-                  </p>
-                </Link>
-              </div>
+                    >
+                      <LogoCoop
+                        className={classNames(
+                          styles.logo,
+                          'fr-mr-4v',
+                          variantStyle,
+                        )}
+                      />
+                      {PublicWebAppConfig.projectTitle}
+                    </p>
+                  </Link>
+                </div>
+              )}
             </div>
             <div className="fr-header__tools">
               <div className="fr-header__tools-links">

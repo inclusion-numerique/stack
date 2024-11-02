@@ -41,8 +41,8 @@ import {
   type ActiviteDetailsDynamicModalState,
 } from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsDynamicModal'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { createDupliquerActiviteLink } from '@app/web/app/coop/mes-activites/cra/createDupliquerActiviteLink'
-import { createModifierActiviteLink } from '@app/web/app/coop/mes-activites/cra/createModifierActiviteLink'
+import { createDupliquerActiviteLink } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/createDupliquerActiviteLink'
+import { createModifierActiviteLink } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/createModifierActiviteLink'
 import type { ActiviteForList } from '@app/web/cra/activitesQueries'
 import { createParticipantsAnonymesForBeneficiaires } from '@app/web/beneficiaire/createParticipantsAnonymesForBeneficiaires'
 import styles from './ActiviteDetailsModal.module.css'

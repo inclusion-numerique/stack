@@ -1,14 +1,10 @@
 import { redirect } from 'next/navigation'
 import React, { PropsWithChildren } from 'react'
 import Link from 'next/link'
-import classNames from 'classnames'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import InscriptionStepsLayout from '@app/web/app/inscription/(steps)/layout'
 import Header from '@app/web/components/Header'
 import PublicFooter from '@app/web/app/(public)/PublicFooter'
-import CoopSideMenu from '@app/web/app/coop/CoopSideMenu'
-import CreateCraModal from '@app/web/app/coop/mes-activites/CreateCraModal'
-import styles from './CoopLayout.module.css'
 
 const Layout = async ({ children }: PropsWithChildren) => {
   const user = await getSessionUser()
@@ -20,9 +16,7 @@ const Layout = async ({ children }: PropsWithChildren) => {
   if (user.role === 'Admin') {
     // Admins cannot access the coop features
     return (
-      <div
-        style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}
-      >
+      <div className="fr-layout">
         <div id="skip-links" />
         <Header user={user} fullWidth variant="coop" />
         <InscriptionStepsLayout>
@@ -49,22 +43,9 @@ const Layout = async ({ children }: PropsWithChildren) => {
   }
 
   return (
-    <div
-      style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}
-    >
+    <div className="fr-layout">
       <div id="skip-links" />
-      <Header user={user} fullWidth variant="coop" />
-
-      <div
-        className={classNames('fr-grid-row fr-width-full', styles.container)}
-      >
-        <div className={styles.sideNavContainer}>
-          <CoopSideMenu user={user} />
-        </div>
-        <div className={styles.pageContainer}>{children}</div>
-      </div>
-      <CreateCraModal />
-      <PublicFooter />
+      {children}
     </div>
   )
 }

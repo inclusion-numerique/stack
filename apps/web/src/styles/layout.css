@@ -1,9 +1,7 @@
 /* Layout setup */
-html,
-body,
-body > div:not(#environment-information, #print) {
-  min-height: 100% !important;
+html, body {
   height: 100%;
+  margin: 0;
 }
 
 html {
@@ -36,6 +34,6 @@ textarea {
 }
 
 body {
-  --hover-alpha: color-mix(in srgb, var(--hover), transparent 66%);
-  --active-alpha: color-mix(in srgb, var(--active), transparent 66%);
+  --hover-alpha: color-mix(in srgb, var(--hover), transparent 20%);
+  --active-alpha: color-mix(in srgb, var(--active), transparent 20%);
 }

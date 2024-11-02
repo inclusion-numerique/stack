@@ -33,6 +33,7 @@
 
     &.nonPublic {
         white-space: nowrap;
+        width: 352px;
     }
 
     &.public {

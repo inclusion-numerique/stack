@@ -4,11 +4,11 @@ import { usePathname } from 'next/navigation'
 import type { SideMenuProps } from '@codegouvfr/react-dsfr/SideMenu'
 import SideMenu from '@codegouvfr/react-dsfr/SideMenu'
 import Button from '@codegouvfr/react-dsfr/Button'
-import { SessionUser } from '@app/web/auth/sessionUser'
-import { CreateCraModalDefinition } from '@app/web/app/coop/mes-activites/CreateCraModalDefinition'
-import styles from './CoopSideMenu.module.css'
-import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import classNames from 'classnames'
+import { SessionUser } from '@app/web/auth/sessionUser'
+import { CreateCraModalDefinition } from '@app/web/app/coop/(full-width-layout)/mes-activites/CreateCraModalDefinition'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import styles from './CoopSideMenu.module.css'
 
 const CoopSideMenu = ({ user }: { user: SessionUser }) => {
   const pathname = usePathname()
@@ -16,7 +16,7 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
   // TODO real check ?
   const canCreateCra = !!user.id
 
-  const items = [
+  const items: SideMenuProps.Item[] = [
     {
       text: (
         <>
@@ -115,18 +115,23 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
         {...CreateCraModalDefinition.buttonProps}
         iconId="fr-icon-question-answer-line"
         priority="tertiary"
-        className={classNames('fr-width-full', styles.supportButton)}
+        className="fr-width-full"
       >
         Contacter le support
       </Button>
     ),
     isActive: false,
-    linkProps: { href: `mailto:${PublicWebAppConfig.contactEmail}` },
+    linkProps: {
+      href: `mailto:${PublicWebAppConfig.contactEmail}`,
+    },
   })
 
   return (
     <SideMenu
-      classes={{ item: styles.item, root: styles.sideMenu }}
+      classes={{
+        item: classNames(styles.item, styles.lastItemAtTheBottom),
+        root: styles.sideMenu,
+      }}
       items={items}
       burgerMenuButtonText="Menu"
       sticky

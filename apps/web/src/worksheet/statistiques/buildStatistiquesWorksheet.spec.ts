@@ -1,9 +1,9 @@
 /* eslint-disable no-sparse-arrays */
 
-import { MesStatistiquesPageData } from '@app/web/app/coop/mes-statistiques/getMesStatistiquesPageData'
+import { MesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
 import type { Workbook, Worksheet } from 'exceljs'
 import { numberToPercentage } from '@app/web/utils/formatNumber'
-import { computeProportion } from '@app/web/app/coop/mes-statistiques/_queries/allocatePercentages'
+import { computeProportion } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/allocatePercentages'
 import {
   buildStatistiquesWorksheet,
   BuildStatistiquesWorksheetInput,

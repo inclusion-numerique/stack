@@ -2,6 +2,10 @@
     padding: 0 !important;
 }
 
+.cell {
+    line-height: 32px !important;
+}
+
 a.cellLink {
     padding: 16px;
     background: none;

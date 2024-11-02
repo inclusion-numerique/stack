@@ -22,6 +22,7 @@ type CommonProps<T extends FieldValues> = {
   info?: ReactNode | ((value?: string | null) => ReactNode)
   asterisk?: boolean
   classes?: {
+    container?: string
     label?: string
     input?: string
     inputWrap?: string
