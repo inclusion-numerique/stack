@@ -41,8 +41,8 @@ export const Support = () => (
           className="ri-mail-line ri-lg fr-text--light"
           aria-hidden="true"
         />
-        <Link href="https://tally.so/r/mBDDX5" target="_blank">
-          Formulaire de retour
+        <Link href="mailto:coop-numerique@anct.gouv.fr" target="_blank">
+          coop-numerique@anct.gouv.fr
         </Link>
       </div>
     </div>
