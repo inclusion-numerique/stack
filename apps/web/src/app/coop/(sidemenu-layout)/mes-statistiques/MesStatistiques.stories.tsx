@@ -7,7 +7,7 @@ import {
   trancheAgeLabels,
 } from '@app/web/beneficiaire/beneficiaire'
 import {
-  dureeAccompagnementLabels,
+  dureeAccompagnementParDefautLabels,
   materielLabels,
   thematiqueDemarcheAdministrativeLabels,
   thematiqueLabels,
@@ -131,7 +131,7 @@ const statistiquesPageData = {
       fixedValues: [250, 450, 50, 250],
     }),
     durees: quantifiedSharesFromFixedValues({
-      enumObject: dureeAccompagnementLabels,
+      enumObject: dureeAccompagnementParDefautLabels,
       fixedValues: [300, 400, 200, 100],
     }),
   },

@@ -20,7 +20,7 @@ import { cloneDeep } from 'lodash-es'
 import { mediateque, seedStructures } from '@app/fixtures/structures'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import {
-  dureeAccompagnementLabels,
+  dureeAccompagnementStatisticsRanges,
   materielLabels,
   thematiqueDemarcheAdministrativeLabels,
   thematiqueLabels,
@@ -147,7 +147,14 @@ const emptyData: MesStatistiquesPageData = {
       ...typeLieuLabels,
       ...typeLieuAtelierLabels,
     }),
-    durees: emptyQuantifiedSharesFromEnum(dureeAccompagnementLabels),
+    durees: Object.values(dureeAccompagnementStatisticsRanges).map(
+      ({ key, label }) => ({
+        value: key,
+        label,
+        count: 0,
+        proportion: 0,
+      }),
+    ),
   },
   beneficiaires: {
     total: 0,

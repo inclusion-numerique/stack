@@ -1,8 +1,8 @@
 /* eslint @typescript-eslint/no-unsafe-assignment: 0 */
 
 import {
-  mediateurAvecActiviteMediateurId,
   mediateurAvecActivite,
+  mediateurAvecActiviteMediateurId,
 } from '@app/fixtures/users/mediateurAvecActivite'
 import { resetFixtureUser } from '@app/fixtures/resetFixtureUser'
 import { prismaClient } from '@app/web/prismaClient'
@@ -17,6 +17,7 @@ import {
   activiteListSelect,
 } from '@app/web/cra/activitesQueries'
 import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
+import { craDureeDataToMinutes } from '@app/web/cra/minutesToCraDuree'
 
 const nullActivite: Omit<
   ActiviteForList,
@@ -66,7 +67,9 @@ describe('createOrUpdateActivite', () => {
           codePostal: '75001',
           codeInsee: '75056',
         }),
-        duree: '90',
+        duree: {
+          duree: '90',
+        },
         autonomie: 'EntierementAccompagne',
         beneficiaire: {
           mediateurId: mediateurAvecActiviteMediateurId,
@@ -103,7 +106,7 @@ describe('createOrUpdateActivite', () => {
       autonomie: input.data.autonomie,
       date: new Date(input.data.date),
       degreDeFinalisation: input.data.orienteVersStructure ?? null,
-      duree: Number.parseInt(input.data.duree, 10),
+      duree: craDureeDataToMinutes(input.data.duree),
       lieuCodeInsee:
         input.data.lieuAccompagnementDomicileCommune?.codeInsee ?? null,
       lieuCodePostal:

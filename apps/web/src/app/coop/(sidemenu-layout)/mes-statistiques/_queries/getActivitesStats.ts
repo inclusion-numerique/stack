@@ -10,9 +10,7 @@ import {
 import { snakeCase } from 'change-case'
 import { prismaClient } from '@app/web/prismaClient'
 import {
-  dureeAccompagnementLabels,
-  dureeAccompagnementValues,
-  dureeAcompagnementsIntegerValues,
+  dureeAccompagnementStatisticsRanges,
   materielLabels,
   materielValues,
   thematiqueDemarcheAdministrativeLabels,
@@ -32,9 +30,9 @@ import {
   getActivitesFiltersWhereConditions,
 } from '@app/web/cra/activitesFiltersSqlWhereConditions'
 import {
+  createDureesRangesSelect,
   createEnumArrayCountSelect,
   createEnumCountSelect,
-  createIntArrayCountSelect,
 } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/createEnumCountSelect'
 import { allocatePercentagesFromRecords } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/allocatePercentages'
 
@@ -68,8 +66,7 @@ export const getActivitesStatsRaw = async ({
                column: 'activites.type',
                as: 'type',
              })},
-             ${createIntArrayCountSelect({
-               values: dureeAcompagnementsIntegerValues,
+             ${createDureesRangesSelect({
                column: 'activites.duree',
                as: 'duree',
              })},
@@ -99,8 +96,8 @@ export const getActivitesStatsRaw = async ({
                as: 'materiel',
              })}
       FROM activites
-        LEFT JOIN structures ON structures.id = activites.structure_id
-      WHERE activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
+               LEFT JOIN structures ON structures.id = activites.structure_id
+      WHERE activites.mediateur_id = ANY (ARRAY [${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
         AND activites.suppression IS NULL
         AND ${getActiviteFiltersSqlFragment(
           getActivitesFiltersWhereConditions(activitesFilters),
@@ -115,11 +112,13 @@ export const normalizeActivitesStatsRaw = (stats: ActivitesStatsRaw) => {
     count: stats[`type_${snakeCase(typeActivite)}_count`] ?? 0,
   }))
 
-  const dureesData = dureeAccompagnementValues.map((duree) => ({
-    value: duree,
-    label: dureeAccompagnementLabels[duree],
-    count: stats[`duree_${duree}_count`] ?? 0,
-  }))
+  const dureesData = Object.values(dureeAccompagnementStatisticsRanges).map(
+    ({ key, label }) => ({
+      value: key,
+      label,
+      count: stats[`duree_${key}_count`] ?? 0,
+    }),
+  )
 
   const typeLieuData = typeLieuValues.map((typeLieu) => ({
     value: typeLieu,
@@ -250,21 +249,24 @@ export const getActivitesStructuresStatsRaw = async ({
   if (mediateurIds.length === 0) return []
 
   return prismaClient.$queryRaw<ActivitesStructuresStatsRaw[]>`
-    SELECT structures.id,
-       structures.nom,
-       structures.commune,
-       structures.code_postal,
-       structures.code_insee,
-       COALESCE(COUNT(*), 0) ::int AS count
-    FROM structures
-      INNER JOIN activites
-    ON activites.structure_id = structures.id
-      AND activites.suppression IS NULL
-      AND activites.mediateur_id = ANY (ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
-      AND ${getActiviteFiltersSqlFragment(
-        getActivitesFiltersWhereConditions(activitesFilters),
-      )}
-    GROUP BY structures.id`
+      SELECT structures.id,
+             structures.nom,
+             structures.commune,
+             structures.code_postal,
+             structures.code_insee,
+             COALESCE(COUNT(*), 0) ::int AS count
+      FROM structures
+               INNER JOIN activites
+                          ON activites.structure_id = structures.id
+                              AND activites.suppression IS NULL
+                              AND activites.mediateur_id = ANY
+                                  (ARRAY [${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
+                              AND ${getActiviteFiltersSqlFragment(
+                                getActivitesFiltersWhereConditions(
+                                  activitesFilters,
+                                ),
+                              )}
+      GROUP BY structures.id`
 }
 
 export const getActivitesStructuresStats = async ({

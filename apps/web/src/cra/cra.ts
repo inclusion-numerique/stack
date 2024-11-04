@@ -11,6 +11,7 @@ import {
   TypeLieuAtelier,
 } from '@prisma/client'
 import { labelsToOptions } from '@app/ui/components/Form/utils/options'
+import { dureeAsString } from '@app/web/utils/dureeAsString'
 
 export const typeActiviteLabels: {
   [key in TypeActivite]: string
@@ -72,36 +73,95 @@ export const typeActiviteSlugValues = Object.keys(typeActiviteSlugLabels) as [
   ...TypeActiviteSlug[],
 ]
 
-export const dureeAccompagnementLabels = {
-  '30': '30min',
-  '60': '1h',
-  '90': '1h30',
-  '120': '2h',
+export const dureeAccompagnementPersonnaliseeValue = 'personnaliser'
+
+export const dureeAccompagnementParDefautLabels = {
+  '15': dureeAsString(15),
+  '30': dureeAsString(30),
+  '45': dureeAsString(45),
+  '60': dureeAsString(60),
+  '90': dureeAsString(90),
+  '120': dureeAsString(120),
+  [dureeAccompagnementPersonnaliseeValue]: 'Personnaliser',
 } as const
 
-export const dureeAccompagnementLabelFromIntegerValue = (
-  value: number,
-): string => {
-  const asString = value.toString(10)
-  if (asString in dureeAccompagnementLabels) {
-    return dureeAccompagnementLabels[asString as DureeAccompagnement]
-  }
-
-  return `${asString}min`
+export const dureeAccompagnementStatisticsRanges = {
+  '15': {
+    key: '15',
+    min: 0,
+    max: 15,
+    label: 'Moins de 15 min',
+  },
+  '30': {
+    key: '30',
+    min: 15,
+    max: 30,
+    label: '15 - 30 min',
+  },
+  '45': {
+    key: '45',
+    min: 30,
+    max: 45,
+    label: '30 - 45 min',
+  },
+  '60': {
+    key: '60',
+    min: 45,
+    max: 60,
+    label: '45 - 60 min',
+  },
+  '90': {
+    key: '90',
+    min: 60,
+    max: 90,
+    label: '60 - 90 min',
+  },
+  '120': {
+    key: '120',
+    min: 90,
+    max: 120,
+    label: '90 - 120 min',
+  },
+  more: {
+    key: 'more',
+    min: 120,
+    max: null,
+    label: 'Plus de 120 min',
+  },
 }
 
-export const dureeAccompagnementOptions = labelsToOptions(
-  dureeAccompagnementLabels,
+export type DefaultDureeAccompagnementParDefaut =
+  keyof typeof dureeAccompagnementParDefautLabels
+
+export const dureeAcompagnementParDefautDefaultValues = Object.keys(
+  dureeAccompagnementParDefautLabels,
+) as [
+  DefaultDureeAccompagnementParDefaut,
+  ...DefaultDureeAccompagnementParDefaut[],
+]
+
+export const dureeAccompagnementParDefautOptions = labelsToOptions(
+  dureeAccompagnementParDefautLabels,
 )
 
-export type DureeAccompagnement = keyof typeof dureeAccompagnementLabels
+export const dureeAccompagnementPersonnaliseeTypeLabels = {
+  minutes: 'minutes',
+  heures: 'heures',
+}
 
-export const dureeAccompagnementValues = Object.keys(
-  dureeAccompagnementLabels,
-) as [DureeAccompagnement, ...DureeAccompagnement[]]
+export type DureeAccompagnementPersonnaliseeType =
+  keyof typeof dureeAccompagnementPersonnaliseeTypeLabels
 
-export const dureeAcompagnementsIntegerValues =
-  dureeAccompagnementValues.map(Number)
+export const dureeAccompagnementPersonnaliseeTypeOptions = labelsToOptions(
+  dureeAccompagnementPersonnaliseeTypeLabels,
+)
+
+export const dureeAccompagnementPersonnaliseeTypeValues = Object.keys(
+  dureeAccompagnementPersonnaliseeTypeLabels,
+) as [
+  DureeAccompagnementPersonnaliseeType,
+  ...DureeAccompagnementPersonnaliseeType[],
+]
 
 export const typeLieuLabels: { [key in TypeLieu]: string } = {
   LieuActivite: 'Lieu d’activité',
