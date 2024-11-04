@@ -10,10 +10,9 @@ export const CraDureeValidation = z
       required_error: 'Veuillez renseigner une durée',
     }),
     // Should be positive integer string
-    dureePersonnalisee: z.string().optional(),
-    dureePersonnaliseeType: z.enum(['minutes', 'heures']).optional(),
+    dureePersonnalisee: z.string().nullish(),
+    dureePersonnaliseeType: z.enum(['minutes', 'heures']).nullish(),
   })
-  // Todo if duree is personnalisee, dureePersonnaliseeType  and dureePersonnalisee are required
   .refine(
     (data) =>
       data.duree !== dureeAccompagnementPersonnaliseeValue ||
