@@ -41,7 +41,7 @@ export const Support = () => (
           className="ri-mail-line ri-lg fr-text--light"
           aria-hidden="true"
         />
-        <Link href="mailto:coop-numerique@anct.gouv.fr" target="_blank">
+        <Link href="mailto:coop-numerique@anct.gouv.fr">
           coop-numerique@anct.gouv.fr
         </Link>
       </div>

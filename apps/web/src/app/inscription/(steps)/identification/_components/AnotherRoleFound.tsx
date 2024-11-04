@@ -61,7 +61,7 @@ export const AnotherRoleFound = ({
         Si ce rôle ne correspond pas à votre situation actuelle, si vous ne
         faites plus partie du dispositif conseiller numérique :
       </p>
-      <Link href="mailto:coop-numerique@anct.gouv.fr" target="_blank">
+      <Link href="mailto:coop-numerique@anct.gouv.fr">
         <span role="img" className="ri-mail-line fr-mr-1w" aria-hidden />
         Veuillez contacter le support
       </Link>
