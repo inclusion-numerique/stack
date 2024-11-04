@@ -1,10 +1,10 @@
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
+import classNames from 'classnames'
 import { typeActiviteIllustrations, typeActiviteLabels } from '@app/web/cra/cra'
 import ActiviteBeneficiaireCardOpenModalLink from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/ActiviteBeneficiaireCardOpenModalLink'
 import type { ActiviteForList } from '@app/web/cra/activitesQueries'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import { formatActiviteDayDate } from '@app/web/utils/activiteDayDateFormat'
-import classNames from 'classnames'
 
 const ActiviteMediateurCard = ({
   activite,
