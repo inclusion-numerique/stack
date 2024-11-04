@@ -4,6 +4,7 @@ import ActiviteBeneficiaireCardOpenModalLink from '@app/web/app/coop/(sidemenu-l
 import type { ActiviteForList } from '@app/web/cra/activitesQueries'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import { formatActiviteDayDate } from '@app/web/utils/activiteDayDateFormat'
+import classNames from 'classnames'
 
 const ActiviteMediateurCard = ({
   activite,
@@ -52,11 +53,21 @@ const ActiviteMediateurCard = ({
         )}
       </p>
       {displayDate && (
-        <p className="fr-text--xs fr-text-mention--grey fr-text--bold fr-text--uppercase flex-1 fr-ml-auto fr-pl-3w fr-my-4v fr-whitespace-nowrap">
+        <p
+          className={classNames(
+            'fr-text--xs fr-text-mention--grey fr-text--bold fr-text--uppercase flex-1 fr-ml-auto fr-pl-3w fr-my-4v fr-whitespace-nowrap',
+            displayDate && 'fr-ml-auto',
+          )}
+        >
           {formatActiviteDayDate(activite.date)}
         </p>
       )}
-      <span className="fr-icon-more-line fr-pl-2v fr-ml-auto fr-text-title--blue-france" />
+      <span
+        className={classNames(
+          'fr-icon-more-line fr-pl-4v fr-text-title--blue-france',
+          !displayDate && 'fr-ml-auto',
+        )}
+      />
 
       <ActiviteBeneficiaireCardOpenModalLink activite={activite} />
     </div>
