@@ -9,7 +9,8 @@ export const participantsAnonymesDefault: ParticipantsAnonymesCraCollectifData =
     genreFeminin: 0,
     genreNonCommunique: 0,
 
-    trancheAgeMineur: 0,
+    trancheAgeMoinsDeDouze: 0,
+    trancheAgeDouzeDixHuit: 0,
     trancheAgeDixHuitVingtQuatre: 0,
     trancheAgeVingtCinqTrenteNeuf: 0,
     trancheAgeQuaranteCinquanteNeuf: 0,
@@ -33,7 +34,8 @@ export const countGenreNonCommunique = ({
 
 export const countTrancheAgeNonCommunique = ({
   total,
-  trancheAgeMineur,
+  trancheAgeMoinsDeDouze,
+  trancheAgeDouzeDixHuit,
   trancheAgeDixHuitVingtQuatre,
   trancheAgeVingtCinqTrenteNeuf,
   trancheAgeQuaranteCinquanteNeuf,
@@ -41,7 +43,8 @@ export const countTrancheAgeNonCommunique = ({
   trancheAgeSoixanteDixPlus,
 }: DefaultValues<ParticipantsAnonymesCraCollectifData>): number =>
   (total ?? 0) -
-  (trancheAgeMineur ?? 0) -
+  (trancheAgeMoinsDeDouze ?? 0) -
+  (trancheAgeDouzeDixHuit ?? 0) -
   (trancheAgeDixHuitVingtQuatre ?? 0) -
   (trancheAgeVingtCinqTrenteNeuf ?? 0) -
   (trancheAgeQuaranteCinquanteNeuf ?? 0) -
@@ -75,7 +78,8 @@ export const countTotalGenre = ({
   (genreFeminin ?? 0) + (genreMasculin ?? 0) + (genreNonCommunique ?? 0)
 
 export const countTotalTrancheAge = ({
-  trancheAgeMineur,
+  trancheAgeMoinsDeDouze,
+  trancheAgeDouzeDixHuit,
   trancheAgeDixHuitVingtQuatre,
   trancheAgeVingtCinqTrenteNeuf,
   trancheAgeQuaranteCinquanteNeuf,
@@ -83,7 +87,8 @@ export const countTotalTrancheAge = ({
   trancheAgeSoixanteDixPlus,
   trancheAgeNonCommunique,
 }: DefaultValues<ParticipantsAnonymesCraCollectifData>): number =>
-  (trancheAgeMineur ?? 0) +
+  (trancheAgeMoinsDeDouze ?? 0) +
+  (trancheAgeDouzeDixHuit ?? 0) +
   (trancheAgeDixHuitVingtQuatre ?? 0) +
   (trancheAgeVingtCinqTrenteNeuf ?? 0) +
   (trancheAgeQuaranteCinquanteNeuf ?? 0) +

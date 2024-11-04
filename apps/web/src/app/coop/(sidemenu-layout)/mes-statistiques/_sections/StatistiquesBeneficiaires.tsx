@@ -12,6 +12,7 @@ const tranchesAgeColors = [
   '#5770BE',
   '#FF0185',
   '#F88AEF',
+  '#FFF480',
   '#E3E3FD',
 ]
 const statusColors = ['#FFF480', '#B68B65', '#A3A6BC', '#C6C6FB', '#FFDBD2']
