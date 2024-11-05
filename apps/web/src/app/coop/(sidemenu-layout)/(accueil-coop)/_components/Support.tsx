@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export const Support = () => (
   <>
@@ -41,8 +42,8 @@ export const Support = () => (
           className="ri-mail-line ri-lg fr-text--light"
           aria-hidden="true"
         />
-        <Link href="mailto:coop-numerique@anct.gouv.fr">
-          coop-numerique@anct.gouv.fr
+        <Link href={`mailto:${PublicWebAppConfig.contactEmail}`}>
+          {PublicWebAppConfig.contactEmail}
         </Link>
       </div>
     </div>
