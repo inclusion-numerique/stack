@@ -38,7 +38,7 @@ const findConseillerDocumentByEmail =
   (conseillerCollection: ConseillerNumeriqueV1Collection) => (email: string) =>
     conseillerCollection.findOne({
       deletedAt: { $in: [null, undefined] },
-      $or: [{ email }, { emailPro: email }, { 'emailCN.address': email }],
+      emailPro: email,
     })
 
 export const findConseillersCoordonnesByEmail = async (userEmail: string) => {

@@ -32,7 +32,7 @@ export const findConseillerNumeriqueV1 = async (
 
   const filter: Filter<ConseillerNumeriqueV1Document> = email
     ? {
-        $or: [{ email }, { emailPro: email }, { 'emailCN.address': email }],
+        emailPro: email,
       }
     : {
         _id: new ObjectId(input.id),
