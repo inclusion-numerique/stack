@@ -20,7 +20,7 @@ import { cloneDeep } from 'lodash-es'
 import { mediateque, seedStructures } from '@app/fixtures/structures'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import {
-  dureeAccompagnementLabels,
+  dureeAccompagnementStatisticsRanges,
   materielLabels,
   thematiqueDemarcheAdministrativeLabels,
   thematiqueLabels,
@@ -147,7 +147,12 @@ const emptyData: MesStatistiquesPageData = {
       ...typeLieuLabels,
       ...typeLieuAtelierLabels,
     }),
-    durees: emptyQuantifiedSharesFromEnum(dureeAccompagnementLabels),
+    durees: dureeAccompagnementStatisticsRanges.map(({ key, label }) => ({
+      value: key,
+      label,
+      count: 0,
+      proportion: 0,
+    })),
   },
   beneficiaires: {
     total: 0,
@@ -326,7 +331,7 @@ describe('getMesStatistiquesPageData', () => {
           )
           expectEnum(data.activites.mergedTypeLieu, 'Autre', 2, totalActivites)
 
-          expectEnum(data.activites.durees, '90', 10, totalActivites)
+          expectEnum(data.activites.durees, '120', 10, totalActivites)
 
           expectEnum(data.activites.materiels, 'Ordinateur', 3, 10)
           expectEnum(data.activites.materiels, 'Telephone', 2, 10)

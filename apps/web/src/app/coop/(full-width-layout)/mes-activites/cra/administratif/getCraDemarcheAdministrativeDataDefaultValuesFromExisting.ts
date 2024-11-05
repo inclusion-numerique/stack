@@ -1,10 +1,10 @@
 import { DefaultValues } from 'react-hook-form'
 import { CraDemarcheAdministrativeData } from '@app/web/cra/CraDemarcheAdministrativeValidation'
 import { prismaClient } from '@app/web/prismaClient'
-import { DureeAccompagnement } from '@app/web/cra/cra'
 import { getBeneficiaireDefaulCratDataFromExisting } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/getBeneficiaireDefaulCratDataFromExisting'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
+import { minutesToCraDureeData } from '@app/web/cra/minutesToCraDuree'
 
 export const getCraDemarcheAdministrativeDataDefaultValuesFromExisting =
   async ({
@@ -79,7 +79,9 @@ export const getCraDemarcheAdministrativeDataDefaultValuesFromExisting =
         ? getBeneficiaireDefaulCratDataFromExisting(beneficiaire)
         : { mediateurId },
       date: dateAsIsoDay(date),
-      duree: duree.toString() as DureeAccompagnement,
+      duree: minutesToCraDureeData(duree) ?? {
+        dureePersonnaliseeType: 'minutes',
+      },
       notes: notes ?? undefined,
       autonomie: autonomie ?? undefined,
       degreDeFinalisation: degreDeFinalisation ?? undefined,

@@ -36,6 +36,9 @@ const CreateCraIndividuelPage = async ({
       mediateurId: user.mediateur.id,
       ...urlFormState.beneficiaire,
     },
+    duree: {
+      dureePersonnaliseeType: 'minutes',
+    },
     // If no value for domicile usager, then default to beneficiaire adresse
     lieuAccompagnementDomicileCommune:
       urlFormState.lieuAccompagnementDomicileCommune ??

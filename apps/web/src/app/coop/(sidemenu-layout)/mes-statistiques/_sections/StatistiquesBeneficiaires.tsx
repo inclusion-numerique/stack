@@ -12,10 +12,11 @@ const tranchesAgeColors = [
   '#5770BE',
   '#FF0185',
   '#F88AEF',
+  '#FFF480',
   '#E3E3FD',
 ]
 const statusColors = ['#FFF480', '#B68B65', '#A3A6BC', '#C6C6FB', '#FFDBD2']
-const grenresColors = ['#C08C65', '#009099', '#E3E3FD']
+const genresColors = ['#C08C65', '#009099', '#E3E3FD']
 const communeColor = '#6A6AF4'
 
 const toProgress = ({
@@ -96,7 +97,7 @@ export const StatistiquesBeneficiaires = ({
             </div>
             <QuantifiedShareLegend
               quantifiedShares={beneficiaires.genres}
-              colors={grenresColors}
+              colors={genresColors}
             />
           </div>
           <div className="fr-col-lg-6 fr-col-12">
@@ -104,7 +105,7 @@ export const StatistiquesBeneficiaires = ({
               size={140}
               className="fr-mx-auto"
               data={beneficiaires.genres}
-              colors={grenresColors}
+              colors={genresColors}
             />
           </div>
         </div>

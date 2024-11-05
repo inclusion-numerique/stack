@@ -2,13 +2,13 @@ import z from 'zod'
 import {
   autonomieValues,
   degreDeFinalisationDemarcheValues,
-  dureeAccompagnementValues,
   structuresRedirectionValues,
   thematiqueDemarcheAdministrativeValues,
   typeLieuValues,
 } from '@app/web/cra/cra'
 import { BeneficiaireCraValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { AdresseBanValidation } from '@app/web/external-apis/ban/AdresseBanValidation'
+import { CraDureeValidation } from '@app/web/cra/CraDureeValidation'
 
 export const CraDemarcheAdministrativeValidation = z
   .object({
@@ -20,9 +20,7 @@ export const CraDemarcheAdministrativeValidation = z
     date: z
       .string({ required_error: 'Veuillez renseigner une date' })
       .date('Veuillez renseigner une date valide'),
-    duree: z.enum(dureeAccompagnementValues, {
-      required_error: 'Veuillez renseigner une durée',
-    }),
+    duree: CraDureeValidation,
     typeLieu: z.enum(typeLieuValues, {
       required_error: 'Veuillez renseigner un lieu d’accompagnement',
     }),

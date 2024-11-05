@@ -1,4 +1,5 @@
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
+import classNames from 'classnames'
 import { typeActiviteIllustrations, typeActiviteLabels } from '@app/web/cra/cra'
 import ActiviteBeneficiaireCardOpenModalLink from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/ActiviteBeneficiaireCardOpenModalLink'
 import type { ActiviteForList } from '@app/web/cra/activitesQueries'
@@ -52,11 +53,21 @@ const ActiviteMediateurCard = ({
         )}
       </p>
       {displayDate && (
-        <p className="fr-text--xs fr-text-mention--grey fr-text--bold fr-text--uppercase flex-1 fr-ml-auto fr-pl-3w fr-my-4v fr-whitespace-nowrap">
+        <p
+          className={classNames(
+            'fr-text--xs fr-text-mention--grey fr-text--bold fr-text--uppercase flex-1 fr-ml-auto fr-pl-3w fr-my-4v fr-whitespace-nowrap',
+            displayDate && 'fr-ml-auto',
+          )}
+        >
           {formatActiviteDayDate(activite.date)}
         </p>
       )}
-      <span className="fr-icon-more-line fr-pl-2v fr-ml-auto fr-text-title--blue-france" />
+      <span
+        className={classNames(
+          'fr-icon-more-line fr-pl-4v fr-text-title--blue-france',
+          !displayDate && 'fr-ml-auto',
+        )}
+      />
 
       <ActiviteBeneficiaireCardOpenModalLink activite={activite} />
     </div>

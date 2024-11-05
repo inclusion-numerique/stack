@@ -40,7 +40,6 @@ import RichCardLabel, {
 } from '@app/web/components/form/RichCardLabel'
 import {
   autonomieOptionsWithExtras,
-  dureeAccompagnementOptions,
   materielOptions,
   structuresRedirectionOptions,
   thematiqueOptionsWithExtras,
@@ -62,6 +61,7 @@ import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banD
 import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import { isBeneficiaireAnonymous } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
+import CraDureeSubForm from '@app/web/components/form/CraDureeSubForm'
 import styles from '../CraForm.module.css'
 
 /**
@@ -238,30 +238,14 @@ const CraIndividuelForm = ({
           type="date"
           asterisk
           label="Date de l’accompagnement"
-          className="fr-flex-grow-1"
+          className="fr-flex-basis-0 fr-flex-grow-1"
           classes={{
             label: 'fr-text--medium fr-mb-3v',
             input: 'fr-input--white fr-input--14v',
           }}
         />
-        <div className="fr-flex-grow-2">
-          <CraFormLabel required as="p" className="fr-mb-3v">
-            Durée de l’accompagnement
-          </CraFormLabel>
-          <RadioFormField
-            control={control}
-            disabled={isLoading}
-            path="duree"
-            options={dureeAccompagnementOptions}
-            components={{
-              label: RichCardLabel,
-            }}
-            classes={{
-              fieldsetElement: richCardFieldsetElementClassName,
-              fieldset: craFormFieldsetClassname(styles.durationFieldset),
-              radioGroup: richCardRadioGroupClassName,
-            }}
-          />
+        <div className="fr-flex-basis-0 fr-flex-grow-1">
+          <CraDureeSubForm form={form} />
         </div>
       </div>
       <CraFormLabel required as="p" className="fr-mb-3v fr-mt-8v">

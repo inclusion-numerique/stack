@@ -4,16 +4,6 @@ import {
   anneeNaissanceMin,
 } from '@app/web/beneficiaire/BeneficiaireValidation'
 
-/**
- * Mineur: 'Mineur',
- *   DixHuitVingtQuatre: 'DixHuitVingtQuatre',
- *   VingtCinqTrenteNeuf: 'VingtCinqTrenteNeuf',
- *   QuaranteCinquanteNeuf: 'QuaranteCinquanteNeuf',
- *   SoixanteSoixanteNeuf: 'SoixanteSoixanteNeuf',
- *   SoixanteDixPlus: 'SoixanteDixPlus',
- *   NonCommunique: 'NonCommunique'
- */
-
 export const trancheAgeFromAnneeNaissance = (
   anneeNaissance?: string | number | null,
 ): TrancheAge | null => {
@@ -28,7 +18,8 @@ export const trancheAgeFromAnneeNaissance = (
 
   const age = new Date().getFullYear() - anneeInt
 
-  if (age < 18) return 'Mineur'
+  if (age < 12) return 'MoinsDeDouze'
+  if (age < 18) return 'DouzeDixHuit'
   if (age < 25) return 'DixHuitVingtQuatre'
   if (age < 40) return 'VingtCinqTrenteNeuf'
   if (age < 60) return 'QuaranteCinquanteNeuf'

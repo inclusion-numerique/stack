@@ -35,8 +35,11 @@ export const ParticipantsAnonymesCraCollectifValidation = z
       maxMessage: `Le nombre de participants anonymes de genre non communiqué ne doit pas dépasser ${participantsAnonymesMaxLocaleString}`,
     }),
 
-    trancheAgeMineur: participantsAnonymeNumber({
-      maxMessage: `Le nombre de participants anonymes de tranche d’âge mineur ne doit pas dépasser ${participantsAnonymesMaxLocaleString}`,
+    trancheAgeMoinsDeDouze: participantsAnonymeNumber({
+      maxMessage: `Le nombre de participants anonymes de tranche d’âge moins de douze ne doit pas dépasser ${participantsAnonymesMaxLocaleString}`,
+    }),
+    trancheAgeDouzeDixHuit: participantsAnonymeNumber({
+      maxMessage: `Le nombre de participants anonymes de tranche d’âge douze à dix-huit ne doit pas dépasser ${participantsAnonymesMaxLocaleString}`,
     }),
     trancheAgeDixHuitVingtQuatre: participantsAnonymeNumber({
       maxMessage: `Le nombre de participants anonymes de tranche d’âge 18-24 ans ne doit pas dépasser ${participantsAnonymesMaxLocaleString}`,
@@ -97,7 +100,8 @@ export type ParticipantsAnonymesCraCollectifData = {
   genreMasculin: number
   genreNonCommunique: number
 
-  trancheAgeMineur: number
+  trancheAgeMoinsDeDouze: number
+  trancheAgeDouzeDixHuit: number
   trancheAgeDixHuitVingtQuatre: number
   trancheAgeVingtCinqTrenteNeuf: number
   trancheAgeQuaranteCinquanteNeuf: number

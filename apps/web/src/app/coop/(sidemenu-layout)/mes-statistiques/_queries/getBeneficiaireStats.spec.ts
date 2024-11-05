@@ -22,7 +22,8 @@ describe('getBeneficiaireStats', () => {
           tranche_age_quarante_cinquante_neuf_count: 6,
           tranche_age_soixante_soixante_neuf_count: 0,
           tranche_age_soixante_dix_plus_count: 1,
-          tranche_age_mineur_count: 0,
+          tranche_age_douze_dix_huit_count: 0,
+          tranche_age_moins_de_douze_count: 0,
           tranche_age_non_communique_count: 0,
         }),
       ).toEqual({
@@ -79,8 +80,14 @@ describe('getBeneficiaireStats', () => {
             proportion: 0,
           },
           {
-            value: 'Mineur',
-            label: 'Mineur(e)',
+            value: 'DouzeDixHuit',
+            label: '12 - 18 ans',
+            count: 0,
+            proportion: 0,
+          },
+          {
+            value: 'MoinsDeDouze',
+            label: 'Moins de 12 ans',
             count: 0,
             proportion: 0,
           },
