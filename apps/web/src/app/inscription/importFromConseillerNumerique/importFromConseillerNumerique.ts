@@ -192,9 +192,17 @@ export const importFromConseillerNumerique =
     user,
     profil,
   }: ImportFromConseillerNumeriquePayload): Promise<SessionUser> => {
+    console.log(
+      'IS ALREADY CONSEILLER OR COORDINATEUR',
+      isAlreadyConseillerOrCoordinateur(user),
+    )
+
     if (isAlreadyConseillerOrCoordinateur(user)) return user
 
     const conseillerFound = await findConseillerNumeriqueByEmail(user.email)
+
+    console.log('CHECK USER', user)
+    console.log('CONSEILLER FOUND', conseillerFound)
 
     if (conseillerFound == null) {
       return markAsCheckedMediateur(user).then(toSessionUser)

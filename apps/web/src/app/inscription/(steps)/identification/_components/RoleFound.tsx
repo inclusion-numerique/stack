@@ -2,10 +2,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import RoleInscriptionNotice from '@app/web/app/inscription/RoleInscriptionNotice'
-import { InscriptionRole, inscriptionRolesToText } from './inscriptionRole'
+import {
+  profileInscriptionFromSlug,
+  profileInscriptionLabels,
+  type ProfileInscriptionSlug,
+} from '@app/web/inscription/profilInscription'
 
 const roleNextPageMap: Map<
-  InscriptionRole,
+  ProfileInscriptionSlug,
   (lieuActiviteCount: number) => string
 > = new Map([
   ['coordinateur', (_: number) => `coordinateur/accompagnement`],
@@ -20,14 +24,14 @@ const roleNextPageMap: Map<
 ])
 
 const nextPageFor =
-  (roleFound: InscriptionRole) => (lieuActiviteCount: number) =>
+  (roleFound: ProfileInscriptionSlug) => (lieuActiviteCount: number) =>
     roleNextPageMap.get(roleFound)?.(lieuActiviteCount)
 
 export const RoleFound = ({
   roleFound,
   lieuActiviteCount,
 }: {
-  roleFound: InscriptionRole
+  roleFound: ProfileInscriptionSlug
   lieuActiviteCount: number
 }) => (
   <div className="fr-flex fr-direction-column fr-flex-gap-12v">
@@ -43,7 +47,9 @@ export const RoleFound = ({
       </h1>
     </div>
     <RoleInscriptionNotice
-      roleInscription={inscriptionRolesToText[roleFound]}
+      roleInscription={profileInscriptionLabels[
+        profileInscriptionFromSlug[roleFound]
+      ].toLocaleLowerCase()}
     />
     <div className="fr-text--center">
       <Link

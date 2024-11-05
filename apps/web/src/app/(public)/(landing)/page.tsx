@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { getHomepage } from '@app/web/security/getHomepage'
+import { isUserInscriptionEnCours } from '@app/web/auth/isUserInscriptionEnCours'
 import { Contexte } from './_components/Contexte'
 import { Faq } from './_components/Faq'
 import { Fonctionnalites } from './_components/Fonctionnalites'
@@ -13,7 +14,7 @@ import { Solution } from './_components/Solution'
 const LandingPage = async () => {
   // Redirect to custom homepage if user is logged in
   const user = await getSessionUser()
-  if (user) {
+  if (user && !isUserInscriptionEnCours(user)) {
     redirect(getHomepage(user))
     return null
   }
