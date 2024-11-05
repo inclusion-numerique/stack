@@ -72,6 +72,46 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
           </Link>
         </li>
       )}
+      {!restricted &&
+        user.mediateur &&
+        user.mediateur._count.enActivite > 0 && (
+          <li>
+            <Link
+              className="fr-nav__link"
+              href="/coop/lieux-activite"
+              style={{ boxShadow: 'none' }}
+            >
+              <span
+                className="ri-home-office-line fr-mr-1w"
+                style={{ color: 'var(--blue-france-sun-113-625)' }}
+                aria-hidden
+              />
+              Voir mes lieux d’activités ·{' '}
+              <span className="fr-text--bold">
+                {user.mediateur?._count.enActivite}
+              </span>
+            </Link>
+          </li>
+        )}
+      {user.coordinateur && (
+        <li>
+          <Link
+            className="fr-nav__link fr-border--bottom-0"
+            href="/coop/mon-equipe"
+            style={{ boxShadow: 'none' }}
+          >
+            <span
+              className="ri-group-2-line fr-mr-1w"
+              style={{ color: 'var(--blue-france-sun-113-625)' }}
+              aria-hidden
+            />
+            Voir mon équipe ·{' '}
+            <span className="fr-text--bold">
+              {user.coordinateur.mediateursCoordonnes.length}
+            </span>
+          </Link>
+        </li>
+      )}
       {!restricted && isAuthenticatedConseillerNumerique(user) && (
         <li>
           <Link
@@ -88,29 +128,8 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
           </Link>
         </li>
       )}
-      {!restricted &&
-        user.mediateur &&
-        user.mediateur._count.enActivite > 0 && (
-          <li>
-            <Link
-              className="fr-nav__link fr-border--bottom"
-              href="/coop/lieux-activite"
-              style={{ boxShadow: 'none' }}
-            >
-              <span
-                className="ri-home-office-line fr-mr-1w"
-                style={{ color: 'var(--blue-france-sun-113-625)' }}
-                aria-hidden
-              />
-              Voir mes lieux d’activités ·{' '}
-              <span className="fr-text--bold">
-                {user.mediateur?._count.enActivite}
-              </span>
-            </Link>
-          </li>
-        )}
       {!restricted && structureEmployeuse && (
-        <li>
+        <li className="fr-border--top">
           <span className="fr-nav__link fr-pb-0 fr-text-mention--grey fr-text--medium fr-text--sm">
             Ma structure employeuse
           </span>
