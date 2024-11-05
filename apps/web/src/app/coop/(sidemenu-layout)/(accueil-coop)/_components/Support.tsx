@@ -37,7 +37,7 @@ export const Support = () => (
         En cas de problèmes rencontrés sur la plateforme, n’hésitez pas à nous
         contacter&nbsp;:
       </p>
-      <div className="fr-text--lg fr-text-label--blue-france fr-flex fr-flex-gap-3v fr-align-items-center fr-mb-0">
+      <div className="fr-text-label--blue-france fr-flex fr-flex-gap-3v fr-align-items-center fr-mb-0">
         <span
           className="ri-mail-line ri-lg fr-text--light"
           aria-hidden="true"
