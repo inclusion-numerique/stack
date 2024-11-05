@@ -112,7 +112,7 @@ export const normalizeActivitesStatsRaw = (stats: ActivitesStatsRaw) => {
     count: stats[`type_${snakeCase(typeActivite)}_count`] ?? 0,
   }))
 
-  const dureesData = Object.values(dureeAccompagnementStatisticsRanges).map(
+  const dureesData = dureeAccompagnementStatisticsRanges.map(
     ({ key, label }) => ({
       value: key,
       label,

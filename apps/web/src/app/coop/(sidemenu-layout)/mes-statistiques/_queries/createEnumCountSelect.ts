@@ -68,7 +68,7 @@ export const createDureesRangesSelect = ({
   column: string
   as: string
 }): Prisma.Sql => {
-  const sumStatements = Object.values(dureeAccompagnementStatisticsRanges).map(
+  const sumStatements = dureeAccompagnementStatisticsRanges.map(
     ({ key, min, max }) => {
       const maxValue = max !== null && max !== undefined ? max : 2_147_483_647
       return `COALESCE(SUM((${column} >= ${min} AND ${column} < ${maxValue})::int), 0)::int AS ${as}_${key}_count`

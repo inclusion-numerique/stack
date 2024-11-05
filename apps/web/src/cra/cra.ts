@@ -85,50 +85,32 @@ export const dureeAccompagnementParDefautLabels = {
   [dureeAccompagnementPersonnaliseeValue]: 'Personnaliser',
 } as const
 
-export const dureeAccompagnementStatisticsRanges = {
-  '15': {
-    key: '15',
-    min: 0,
-    max: 15,
-    label: 'Moins de 15 min',
-  },
-  '30': {
+export const dureeAccompagnementStatisticsRanges = [
+  {
     key: '30',
-    min: 15,
+    min: 0,
     max: 30,
-    label: '15 - 30 min',
+    label: 'Moins de 30 min',
   },
-  '45': {
-    key: '45',
-    min: 30,
-    max: 45,
-    label: '30 - 45 min',
-  },
-  '60': {
+  {
     key: '60',
-    min: 45,
+    min: 30,
     max: 60,
-    label: '45 - 60 min',
+    label: '30min à 1 h',
   },
-  '90': {
-    key: '90',
-    min: 60,
-    max: 90,
-    label: '60 - 90 min',
-  },
-  '120': {
+  {
     key: '120',
     min: 90,
     max: 120,
-    label: '90 - 120 min',
+    label: '1 h à 2 h',
   },
-  more: {
+  {
     key: 'more',
     min: 120,
     max: null,
-    label: 'Plus de 120 min',
+    label: '2 h et plus',
   },
-}
+]
 
 export type DefaultDureeAccompagnementParDefaut =
   keyof typeof dureeAccompagnementParDefautLabels

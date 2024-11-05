@@ -6,10 +6,7 @@ import {
   mediateurAvecActiviteMediateurId,
   mediateurAvecActiviteUserId,
 } from '@app/fixtures/users/mediateurAvecActivite'
-import {
-  mediateurSansActivites,
-  mediateurSansActivitesUserId,
-} from '@app/fixtures/users/mediateurSansActivites'
+import { mediateurSansActivites, mediateurSansActivitesUserId } from '@app/fixtures/users/mediateurSansActivites'
 import {
   getMesStatistiquesPageData,
   MesStatistiquesGraphOptions,
@@ -28,12 +25,10 @@ import {
   typeLieuAtelierLabels,
   typeLieuLabels,
 } from '@app/web/cra/cra'
+import { genreLabels, statutSocialLabels, trancheAgeLabels } from '@app/web/beneficiaire/beneficiaire'
 import {
-  genreLabels,
-  statutSocialLabels,
-  trancheAgeLabels,
-} from '@app/web/beneficiaire/beneficiaire'
-import { emptyQuantifiedSharesFromEnum } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/statistiquesFixturesHelpers'
+  emptyQuantifiedSharesFromEnum,
+} from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/statistiquesFixturesHelpers'
 import { prismaClient } from '@app/web/prismaClient'
 import { QuantifiedShare } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/quantifiedShare'
 import { computeProportion } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/allocatePercentages'
@@ -147,14 +142,12 @@ const emptyData: MesStatistiquesPageData = {
       ...typeLieuLabels,
       ...typeLieuAtelierLabels,
     }),
-    durees: Object.values(dureeAccompagnementStatisticsRanges).map(
-      ({ key, label }) => ({
-        value: key,
-        label,
-        count: 0,
-        proportion: 0,
-      }),
-    ),
+    durees: dureeAccompagnementStatisticsRanges.map(({ key, label }) => ({
+      value: key,
+      label,
+      count: 0,
+      proportion: 0,
+    })),
   },
   beneficiaires: {
     total: 0,
@@ -333,7 +326,7 @@ describe('getMesStatistiquesPageData', () => {
           )
           expectEnum(data.activites.mergedTypeLieu, 'Autre', 2, totalActivites)
 
-          expectEnum(data.activites.durees, '90', 10, totalActivites)
+          expectEnum(data.activites.durees, '120', 10, totalActivites)
 
           expectEnum(data.activites.materiels, 'Ordinateur', 3, 10)
           expectEnum(data.activites.materiels, 'Telephone', 2, 10)
