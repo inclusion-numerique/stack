@@ -15,7 +15,7 @@ const RoleInscriptionNotice = ({
       className,
     )}
   >
-    <img alt="" src="/images/services/conseillers-numerique-logo.svg" />
+    <img alt="" src="/images/illustrations/role/conseillers-numerique.svg" />
     <div>
       <p className="fr-text--bold fr-mb-0">
         Vous avez été identifié en tant que {roleInscription}
