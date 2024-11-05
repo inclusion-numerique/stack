@@ -1,12 +1,12 @@
+import type { ProfileInscriptionSlug } from '@app/web/inscription/profilInscription'
 import { AnotherRoleFound } from '../AnotherRoleFound'
-import { InscriptionRole } from '../inscriptionRole'
 import { MediateurRoleFound } from './MediateurRoleFound'
 
 export const FinaliserInscriptionMediateur = ({
   inscriptionRole,
   lieuActiviteCount,
 }: {
-  inscriptionRole: InscriptionRole
+  inscriptionRole: ProfileInscriptionSlug
   lieuActiviteCount: number
 }) =>
   inscriptionRole === 'mediateur' ? (

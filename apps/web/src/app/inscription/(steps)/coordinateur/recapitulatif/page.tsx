@@ -8,6 +8,7 @@ import RoleInscriptionNotice from '@app/web/app/inscription/RoleInscriptionNotic
 import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
 import { findConseillersCoordonnesByEmail } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
 import InscriptionRecapitulatif from '@app/web/app/inscription/InscriptionRecapitulatif'
+import { profileInscriptionLabels } from '@app/web/inscription/profilInscription'
 import { coordinateurInscriptionSteps } from '../coordinateurInscriptionSteps'
 
 export const metadata = {
@@ -47,7 +48,7 @@ const Page = async () => {
       subtitle="Vérifiez que ces informations sont exactes avant de valider votre inscription."
     >
       <RoleInscriptionNotice
-        roleInscription="coordinateur de conseiller numérique"
+        roleInscription={profileInscriptionLabels.Coordinateur.toLocaleLowerCase()}
         className="fr-mt-12v"
       />
       <InscriptionRecapitulatif

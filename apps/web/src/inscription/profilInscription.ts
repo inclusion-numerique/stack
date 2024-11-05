@@ -1,6 +1,6 @@
 import type { ProfilInscription } from '@prisma/client'
 import { labelsToOptions } from '@app/ui/components/Form/utils/options'
-import { SessionUser } from '@app/web/auth/sessionUser'
+import type { SessionUser } from '@app/web/auth/sessionUser'
 
 export const profileInscriptionSlugs = {
   ConseillerNumerique: 'conseiller-numerique',

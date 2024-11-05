@@ -1,10 +1,14 @@
 import Link from 'next/link'
 import React from 'react'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
-import { InscriptionRole, inscriptionRolesToText } from './inscriptionRole'
+import {
+  profileInscriptionFromSlug,
+  profileInscriptionLabels,
+  type ProfileInscriptionSlug,
+} from '@app/web/inscription/profilInscription'
 
 const roleNextPageMap: Map<
-  InscriptionRole,
+  ProfileInscriptionSlug,
   (lieuActiviteCount: number) => string
 > = new Map([
   ['coordinateur', (_: number) => `coordinateur/accompagnement`],
@@ -19,14 +23,14 @@ const roleNextPageMap: Map<
 ])
 
 const nextPageFor =
-  (roleFound: InscriptionRole) => (lieuActiviteCount: number) =>
+  (roleFound: ProfileInscriptionSlug) => (lieuActiviteCount: number) =>
     roleNextPageMap.get(roleFound)?.(lieuActiviteCount)
 
 export const AnotherRoleFound = ({
   roleFound,
   lieuActiviteCount,
 }: {
-  roleFound: InscriptionRole
+  roleFound: ProfileInscriptionSlug
   lieuActiviteCount: number
 }) => (
   <div className="fr-flex fr-direction-column fr-flex-gap-12v">
@@ -41,10 +45,17 @@ export const AnotherRoleFound = ({
           src="/images/services/conseillers-numerique-logo.svg"
         />
         <h2 className="fr-h6 fr-mb-0">
-          Profil de {inscriptionRolesToText[roleFound]} identifié
+          Profil de{' '}
+          {profileInscriptionLabels[
+            profileInscriptionFromSlug[roleFound]
+          ].toLocaleLowerCase()}{' '}
+          identifié
         </h2>
         <div>
-          Nous avons identifié un profil de {inscriptionRolesToText[roleFound]}{' '}
+          Nous avons identifié un profil de{' '}
+          {profileInscriptionLabels[
+            profileInscriptionFromSlug[roleFound]
+          ].toLocaleLowerCase()}{' '}
           correspondant aux informations que vous avez renseignées.
         </div>
         <div className="fr-text--sm fr-text-mention--grey">
