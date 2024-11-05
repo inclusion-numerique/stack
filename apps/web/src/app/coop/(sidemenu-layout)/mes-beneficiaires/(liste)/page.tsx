@@ -1,9 +1,15 @@
+import type { Metadata } from 'next'
 import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { prismaClient } from '@app/web/prismaClient'
 import MesBeneficiairesListeEmptyPage from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/(liste)/MesBeneficiairesListeEmptyPage'
 import { getBeneficiairesListPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/(liste)/getBeneficiairesListPageData'
 import MesBeneficiairesListePage from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/(liste)/MesBeneficiairesListePage'
 import { BeneficiairesDataTableSearchParams } from '@app/web/beneficiaire/BeneficiairesDataTable'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+
+export const metadata: Metadata = {
+  title: metadataTitle('Mes bénéficiaires'),
+}
 
 const MesBeneficiairesPage = async ({
   searchParams = {},
