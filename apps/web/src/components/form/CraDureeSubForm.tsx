@@ -22,8 +22,9 @@ const CraDureeSubForm = ({
 
   const dureeData = watch('duree')
 
-  const step = dureeData?.dureePersonnaliseeType === 'minutes' ? 5 : 1
+  const step = 1
   const max = dureeData?.dureePersonnaliseeType === 'minutes' ? 600 : 20
+  const min = 0
 
   const showCustomFields =
     dureeData?.duree === dureeAccompagnementPersonnaliseeValue
@@ -51,7 +52,7 @@ const CraDureeSubForm = ({
             type="number"
             label=" "
             className="fr-flex-basis-0 fr-flex-grow-1"
-            min={0}
+            min={min}
             max={max}
             step={step}
             classes={{

@@ -15,10 +15,10 @@ export const craDureeDataToMinutes = ({
   }
 
   if (dureePersonnaliseeType === 'heures') {
-    return Number.parseInt(dureePersonnalisee ?? '0', 10) * 60
+    return (dureePersonnalisee || 0) * 60
   }
 
-  return Number.parseInt(dureePersonnalisee ?? '0', 10)
+  return dureePersonnalisee || 0
 }
 
 export const minutesToCraDureeData = (
@@ -28,29 +28,27 @@ export const minutesToCraDureeData = (
     return null
   }
 
-  const isNegative = minutes < 0
   // eslint-disable-next-line no-param-reassign
   minutes = Math.abs(minutes)
 
   const minutesString = minutes.toString()
 
   if (
-    !isNegative &&
     minutesString in dureeAccompagnementParDefautLabels &&
     minutesString !== dureeAccompagnementPersonnaliseeValue
   ) {
     return {
       duree: minutesString as DefaultDureeAccompagnementParDefaut,
       dureePersonnalisee: undefined,
-      dureePersonnaliseeType: undefined,
+      dureePersonnaliseeType: 'minutes',
     }
   }
 
   if (minutesString === '0') {
     return {
       duree: dureeAccompagnementPersonnaliseeValue,
-      dureePersonnalisee: '0',
-      dureePersonnaliseeType: 'minutes' as const,
+      dureePersonnalisee: 0,
+      dureePersonnaliseeType: 'minutes',
     }
   }
 
@@ -60,14 +58,14 @@ export const minutesToCraDureeData = (
   if (minutesLeft === 0) {
     return {
       duree: dureeAccompagnementPersonnaliseeValue,
-      dureePersonnalisee: `${isNegative ? '-' : ''}${hours.toString()}`,
+      dureePersonnalisee: hours,
       dureePersonnaliseeType: 'heures' as const,
     }
   }
 
   return {
     duree: dureeAccompagnementPersonnaliseeValue,
-    dureePersonnalisee: `${isNegative ? '-' : ''}${(hours * 60 + minutesLeft).toString()}`,
+    dureePersonnalisee: hours * 60 + minutesLeft,
     dureePersonnaliseeType: 'minutes' as const,
   }
 }

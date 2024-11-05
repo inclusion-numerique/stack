@@ -12,7 +12,7 @@ describe('CraDureeValidation Schema', () => {
   it('should validate valid personnalisee duration with all required fields', () => {
     const data = {
       duree: 'personnaliser',
-      dureePersonnalisee: '90',
+      dureePersonnalisee: 90,
       dureePersonnaliseeType: 'minutes',
     }
 
@@ -30,15 +30,13 @@ describe('CraDureeValidation Schema', () => {
     )
   })
 
-  it('should fail validation when duree is personnaliser but dureePersonnaliseeType is missing', () => {
+  it('should default to minuteswhen duree is personnaliser but dureePersonnaliseeType is missing', () => {
     const data = {
       duree: 'personnaliser',
-      dureePersonnalisee: '90',
+      dureePersonnalisee: 90,
     }
 
-    expect(() => CraDureeValidation.parse(data)).toThrow(
-      'Veuillez renseigner une durée personnalisée',
-    )
+    expect(() => CraDureeValidation.parse(data)).not.toThrow()
   })
 
   it('should fail validation when duree is not in default values or personnaliser', () => {
@@ -51,7 +49,7 @@ describe('CraDureeValidation Schema', () => {
 
   it('should fail validation when duree is missing', () => {
     const data = {
-      dureePersonnalisee: '90',
+      dureePersonnalisee: 90,
       dureePersonnaliseeType: 'minutes',
     }
 

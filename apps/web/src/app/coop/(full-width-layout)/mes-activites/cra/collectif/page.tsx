@@ -33,6 +33,9 @@ const CreateCraCollectifPage = async ({
     ...urlFormState,
     date: new Date().toISOString().slice(0, 10),
     mediateurId,
+    duree: {
+      dureePersonnaliseeType: 'minutes',
+    },
     participantsAnonymes: {
       ...participantsAnonymesDefault,
       ...urlFormState.participantsAnonymes,

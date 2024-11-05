@@ -10,7 +10,7 @@ describe('minutesToCraDuree', () => {
       const data: CraDureeData = {
         duree: '30',
         dureePersonnalisee: undefined,
-        dureePersonnaliseeType: undefined,
+        dureePersonnaliseeType: 'minutes',
       }
 
       expect(craDureeDataToMinutes(data)).toBe(30)
@@ -19,7 +19,7 @@ describe('minutesToCraDuree', () => {
     it('should convert personnalisee duree in minutes to total minutes', () => {
       const data: CraDureeData = {
         duree: 'personnaliser',
-        dureePersonnalisee: '90',
+        dureePersonnalisee: 90,
         dureePersonnaliseeType: 'minutes',
       }
 
@@ -29,7 +29,7 @@ describe('minutesToCraDuree', () => {
     it('should convert personnalisee duree in heures to total minutes', () => {
       const data: CraDureeData = {
         duree: 'personnaliser',
-        dureePersonnalisee: '2',
+        dureePersonnalisee: 2,
         dureePersonnaliseeType: 'heures',
       }
 
@@ -46,26 +46,14 @@ describe('minutesToCraDuree', () => {
       expect(craDureeDataToMinutes(data)).toBe(0)
     })
 
-    it('should handle personnalisee duree with missing dureePersonnaliseeType gracefully', () => {
-      const data: CraDureeData = {
-        duree: 'personnaliser',
-        dureePersonnalisee: '45',
-        dureePersonnaliseeType: undefined,
-      }
-
-      // Since dureePersonnaliseeType is undefined, default to minutes
-      expect(craDureeDataToMinutes(data)).toBe(45)
-    })
-
     it('should handle non-numeric duree gracefully', () => {
       const data: CraDureeData = {
         duree: 'personnaliser',
-        dureePersonnalisee: 'abc',
+        dureePersonnalisee: Number.NaN,
         dureePersonnaliseeType: 'minutes',
       }
 
-      // parseInt('abc', 10) returns NaN, but Number.parseInt('abc', 10) returns NaN, which coerces to NaN
-      expect(craDureeDataToMinutes(data)).toBeNaN()
+      expect(craDureeDataToMinutes(data)).toEqual(0)
     })
   })
 
@@ -85,7 +73,7 @@ describe('minutesToCraDuree', () => {
       const expected = {
         duree: '30',
         dureePersonnalisee: undefined,
-        dureePersonnaliseeType: undefined,
+        dureePersonnaliseeType: 'minutes',
       }
 
       expect(minutesToCraDureeData(minutes)).toEqual(expected)
@@ -96,7 +84,7 @@ describe('minutesToCraDuree', () => {
 
       const expected = {
         duree: 'personnaliser',
-        dureePersonnalisee: '100',
+        dureePersonnalisee: 100,
         dureePersonnaliseeType: 'minutes',
       }
 
@@ -108,7 +96,7 @@ describe('minutesToCraDuree', () => {
 
       const expected = {
         duree: 'personnaliser',
-        dureePersonnalisee: '125',
+        dureePersonnalisee: 125,
         dureePersonnaliseeType: 'minutes',
       }
 
@@ -120,7 +108,7 @@ describe('minutesToCraDuree', () => {
 
       const expected = {
         duree: 'personnaliser',
-        dureePersonnalisee: '3',
+        dureePersonnalisee: 3,
         dureePersonnaliseeType: 'heures',
       }
 
@@ -132,19 +120,7 @@ describe('minutesToCraDuree', () => {
 
       const expected = {
         duree: 'personnaliser',
-        dureePersonnalisee: '0',
-        dureePersonnaliseeType: 'minutes',
-      }
-
-      expect(minutesToCraDureeData(minutes)).toEqual(expected)
-    })
-
-    it('should handle negative minutes', () => {
-      const minutes = -30
-
-      const expected = {
-        duree: 'personnaliser',
-        dureePersonnalisee: '-30',
+        dureePersonnalisee: 0,
         dureePersonnaliseeType: 'minutes',
       }
 
@@ -156,7 +132,7 @@ describe('minutesToCraDuree', () => {
 
       const expected = {
         duree: 'personnaliser',
-        dureePersonnalisee: '65',
+        dureePersonnalisee: 65,
         dureePersonnaliseeType: 'minutes',
       }
 
@@ -169,7 +145,7 @@ describe('minutesToCraDuree', () => {
       const expected = {
         duree: '30',
         dureePersonnalisee: undefined,
-        dureePersonnaliseeType: undefined,
+        dureePersonnaliseeType: 'minutes',
       }
 
       expect(minutesToCraDureeData(minutes)).toEqual(expected)

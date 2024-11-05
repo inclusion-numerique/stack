@@ -6,7 +6,10 @@ import {
   mediateurAvecActiviteMediateurId,
   mediateurAvecActiviteUserId,
 } from '@app/fixtures/users/mediateurAvecActivite'
-import { mediateurSansActivites, mediateurSansActivitesUserId } from '@app/fixtures/users/mediateurSansActivites'
+import {
+  mediateurSansActivites,
+  mediateurSansActivitesUserId,
+} from '@app/fixtures/users/mediateurSansActivites'
 import {
   getMesStatistiquesPageData,
   MesStatistiquesGraphOptions,
@@ -25,10 +28,12 @@ import {
   typeLieuAtelierLabels,
   typeLieuLabels,
 } from '@app/web/cra/cra'
-import { genreLabels, statutSocialLabels, trancheAgeLabels } from '@app/web/beneficiaire/beneficiaire'
 import {
-  emptyQuantifiedSharesFromEnum,
-} from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/statistiquesFixturesHelpers'
+  genreLabels,
+  statutSocialLabels,
+  trancheAgeLabels,
+} from '@app/web/beneficiaire/beneficiaire'
+import { emptyQuantifiedSharesFromEnum } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/statistiquesFixturesHelpers'
 import { prismaClient } from '@app/web/prismaClient'
 import { QuantifiedShare } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/quantifiedShare'
 import { computeProportion } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/allocatePercentages'

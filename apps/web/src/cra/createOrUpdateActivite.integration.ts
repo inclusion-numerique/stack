@@ -9,14 +9,14 @@ import { prismaClient } from '@app/web/prismaClient'
 import { seedStructures } from '@app/fixtures/structures'
 import {
   createOrUpdateActivite,
-  CreateOrUpdateActiviteInput,
+  type CreateOrUpdateActiviteInput,
 } from '@app/web/cra/createOrUpdateActivite'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
 import {
-  ActiviteForList,
+  type ActiviteForList,
   activiteListSelect,
 } from '@app/web/cra/activitesQueries'
-import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
+import type { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
 import { craDureeDataToMinutes } from '@app/web/cra/minutesToCraDuree'
 
 const nullActivite: Omit<
@@ -69,6 +69,7 @@ describe('createOrUpdateActivite', () => {
         }),
         duree: {
           duree: '90',
+          dureePersonnaliseeType: 'minutes',
         },
         autonomie: 'EntierementAccompagne',
         beneficiaire: {
