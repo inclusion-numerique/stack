@@ -16,4 +16,5 @@ export type PremanenceConseillerNumerique = {
     codeCommune: string
     ville: string
   }
+  nonAffichageCarto: boolean
 }
