@@ -1,9 +1,10 @@
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import Link from 'next/link'
 import React from 'react'
-import SignoutButton from '@app/web/app/(public)/(authentication)/deconnexion/SignoutButton'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { getProconnectIdToken } from '@app/web/security/getProconnectIdToken'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import SignoutButton from '@app/web/app/(public)/(authentication)/deconnexion/SignoutButton'
 import {
   type InscriptionRole,
   inscriptionRolesErrorTitles,
@@ -50,7 +51,7 @@ export const RoleNotFound = async ({
             </span>
             <br />
             <br />
-            <Link href="mailto:coop-numerique@anct.gouv.fr">
+            <Link href={`mailto:${PublicWebAppConfig.contactEmail}`}>
               <span role="img" className="ri-mail-line fr-mr-1w" aria-hidden />
               Veuillez contacter le support
             </Link>

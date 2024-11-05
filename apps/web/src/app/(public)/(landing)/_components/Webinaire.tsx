@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 const Webinaire = () => (
   <div className="fr-background-action-low--blue-france fr-py-6w">
@@ -37,8 +38,8 @@ const Webinaire = () => (
           </p>
           <div className="fr-text--lg fr-text-label--blue-france">
             <span className="ri-mail-line fr-mr-1w" aria-hidden="true" />
-            <Link href="mailto:coop-numerique@anct.gouv.fr">
-              coop-numerique@anct.gouv.fr
+            <Link href={`mailto:${PublicWebAppConfig.contactEmail}`}>
+              {PublicWebAppConfig.contactEmail}
             </Link>
           </div>
         </div>

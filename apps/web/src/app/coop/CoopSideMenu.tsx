@@ -90,7 +90,6 @@ const CoopSideMenu = ({ user }: { user: SessionUser }) => {
       text: (
         <Button
           type="button"
-          {...CreateCraModalDefinition.buttonProps}
           iconId="fr-icon-question-answer-line"
           priority="tertiary"
           className="fr-width-full"
