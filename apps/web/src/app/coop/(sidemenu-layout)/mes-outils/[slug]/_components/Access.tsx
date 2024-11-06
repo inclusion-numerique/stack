@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { OutilPageData } from '../../outilPageData'
 import { AccessInfoLink } from './AccessInfoLink'
@@ -12,24 +12,24 @@ export const Access = ({
   title,
   description,
   callToAction,
-}: Pick<
-  NonNullable<OutilPageData['access']>,
-  'illustration' | 'icon' | 'title' | 'description' | 'callToAction' | 'info'
-> & { how: ReactNode }) => (
+  callToActionComponent,
+}: NonNullable<OutilPageData['access']>) => (
   <>
     <h2 className="fr-text--sm fr-text-mention--grey fr-text--uppercase">
-      Comment accéder à l’outil ?
+      Comment accéder à l’outil&nbsp;?
     </h2>
-    {info.share ? (
-      <AccessInfoShare info={info} how={how} />
-    ) : (
-      <AccessInfoLink
-        info={info}
-        how={how}
-        illustration={illustration}
-        icon={icon}
-      />
-    )}
+    {info ? (
+      info.share ? (
+        <AccessInfoShare info={info} how={how} />
+      ) : (
+        <AccessInfoLink
+          info={info}
+          how={how}
+          illustration={illustration}
+          icon={icon}
+        />
+      )
+    ) : null}
     {(title || description) && (
       <div className="fr-text--center">
         <hr className="fr-mb-0" />
@@ -37,18 +37,21 @@ export const Access = ({
         {description && <p>{description}</p>}
       </div>
     )}
-    <Button
-      iconId={
-        callToAction.label === 'Se connecter'
-          ? 'fr-icon-account-circle-line'
-          : undefined
-      }
-      className="fr-btn--responsive"
-      size="large"
-      title={`${callToAction.label} - nouvel onglet`}
-      linkProps={{ href: callToAction.link }}
-    >
-      {callToAction.label}
-    </Button>
+    {callToActionComponent ||
+      (callToAction ? (
+        <Button
+          iconId={
+            callToAction.label === 'Se connecter'
+              ? 'fr-icon-account-circle-line'
+              : undefined
+          }
+          className="fr-btn--responsive"
+          size="large"
+          title={`${callToAction.label} - nouvel onglet`}
+          linkProps={{ href: callToAction.link }}
+        >
+          {callToAction.label}
+        </Button>
+      ) : null)}
   </>
 )

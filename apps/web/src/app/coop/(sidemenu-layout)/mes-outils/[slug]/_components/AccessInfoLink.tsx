@@ -1,7 +1,6 @@
-import { ReactNode } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { OutilPageData } from '../../outilPageData'
+import type { OutilPageData } from '../../outilPageData'
 
 export const AccessInfoLink = ({
   illustration,
@@ -10,8 +9,8 @@ export const AccessInfoLink = ({
   info,
 }: Pick<
   NonNullable<OutilPageData['access']>,
-  'illustration' | 'icon' | 'info'
-> & { how: ReactNode }) => (
+  'illustration' | 'icon' | 'info' | 'how'
+>) => (
   <div className="fr-text--center fr-background-alt--blue-france fr-border-radius--8 fr-p-3w fr-mb-3w">
     {illustration && (
       <Image width={114} height={48} src={illustration} alt="" />
@@ -24,7 +23,7 @@ export const AccessInfoLink = ({
     )}
     <p className="fr-text--medium fr-my-2w">{how}</p>
 
-    {info.link.startsWith('http') ? (
+    {info?.link.startsWith('http') ? (
       <Link
         className="fr-link"
         target="_blank"
@@ -34,10 +33,10 @@ export const AccessInfoLink = ({
       >
         {info.label}
       </Link>
-    ) : (
+    ) : info ? (
       <Link className="fr-link" href={info.link}>
         {info.label} <span className="ri-arrow-right-line" aria-hidden />
       </Link>
-    )}
+    ) : null}
   </div>
 )

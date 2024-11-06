@@ -1,13 +1,18 @@
 'use client'
 
-import { ReactNode, useState } from 'react'
+import { useState } from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
-import { OutilPageData } from '../../outilPageData'
+import type {
+  OutilPageDataAccess,
+  OutilPageDataAccessInfo,
+} from '../../outilPageData'
 
 export const AccessInfoShare = ({
   how,
   info,
-}: Pick<NonNullable<OutilPageData['access']>, 'info'> & { how: ReactNode }) => {
+}: Pick<OutilPageDataAccess, 'how' | 'info'> & {
+  info: OutilPageDataAccessInfo
+}) => {
   const [copied, setCopied] = useState(false)
   const onCopy = () => {
     setCopied(true)
