@@ -22,7 +22,7 @@ describe('find conseiller numérique by email', () => {
 
     expect(result?.conseiller).toBeDefined()
     expect(result?.conseiller.estCoordinateur).toBeFalsy()
-    expect(result?.miseEnRelation).toBeDefined()
+    expect(result?.miseEnRelationActive).toBeDefined()
     expect(result?.conseillersCoordonnes.length).toBe(0)
     expect(result?.permanences.length).toBeGreaterThan(0)
     expect(result?.conseiller.coordinateurs?.length).toBeGreaterThan(0)
@@ -49,7 +49,7 @@ describe('find conseiller numérique by email', () => {
 
     expect(result?.conseiller).toBeDefined()
     expect(result?.conseiller.estCoordinateur).toBeTrue()
-    expect(result?.miseEnRelation).toBeDefined()
+    expect(result?.miseEnRelationActive).toBeDefined()
     expect(result?.conseillersCoordonnes.length).toBeGreaterThan(0)
     expect(result?.permanences.length).toBeGreaterThan(0)
   })

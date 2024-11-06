@@ -1,7 +1,7 @@
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import Button from '@codegouvfr/react-dsfr/Button'
 import React from 'react'
-import { ArchivesV1PageData } from '@app/web/app/coop/(sidemenu-layout)/archives-v1/getArchivesV1PageData'
+import { ArchivesV1PageData } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1PageData'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import ContactSupportLink from '@app/web/components/ContactSupportLink'
 import IconInSquare from '@app/web/components/IconInSquare'

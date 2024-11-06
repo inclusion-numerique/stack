@@ -10,7 +10,7 @@ import { CoordinatorContract } from './_components/CoordinatorContract'
 import MediationNumerique from './_components/MediationNumerique'
 import ProfileEditCard from './_components/ProfileEditCard'
 
-const formatDate = (date?: string | number | Date) =>
+const formatDate = (date?: string | number | Date | null) =>
   date && isValid(date) ? format(date, 'dd/MM/yyyy') : null
 
 const typeWithDuration = ({
@@ -19,10 +19,13 @@ const typeWithDuration = ({
   dateFinDeContrat,
 }: {
   typeDeContrat: string
-  dateDebutDeContrat: Date
-  dateFinDeContrat?: Date
+  dateDebutDeContrat: Date | null
+  dateFinDeContrat?: Date | null
 }): string =>
-  isValid(dateDebutDeContrat) && dateFinDeContrat && isValid(dateFinDeContrat)
+  !!dateDebutDeContrat &&
+  isValid(dateDebutDeContrat) &&
+  !!dateFinDeContrat &&
+  isValid(dateFinDeContrat)
     ? `${typeDeContrat} - Durée ${differenceInMonths(dateFinDeContrat, dateDebutDeContrat)} mois`
     : typeDeContrat
 
@@ -36,15 +39,17 @@ const MonProfilPage = async () => {
   const conseiller = await findConseillerNumeriqueByEmail(user.email)
 
   const contract =
-    conseiller?.miseEnRelation == null
+    conseiller?.miseEnRelationActive == null
       ? undefined
       : {
-          type: typeWithDuration(conseiller.miseEnRelation).replaceAll(
+          type: typeWithDuration(conseiller.miseEnRelationActive).replaceAll(
             '_',
             ' ',
           ),
-          start: formatDate(conseiller.miseEnRelation?.dateDebutDeContrat),
-          end: formatDate(conseiller.miseEnRelation?.dateFinDeContrat),
+          start: formatDate(
+            conseiller.miseEnRelationActive?.dateDebutDeContrat,
+          ),
+          end: formatDate(conseiller.miseEnRelationActive?.dateFinDeContrat),
         }
 
   return (

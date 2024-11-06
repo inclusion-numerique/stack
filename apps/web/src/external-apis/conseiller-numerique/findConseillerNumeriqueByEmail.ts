@@ -5,19 +5,32 @@ import {
   type ConseillerNumeriqueV1,
   type ConseillerNumeriqueV1Collection,
 } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Document'
-import { PremanenceConseillerNumerique } from './PremanenceConseillerNumerique'
-import { StructureConseillerNumerique } from './StructureConseillerNumerique'
+import type { MiseEnRelationConseillerNumeriqueV1MinimalProjection } from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
+import { getActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/getActiveMiseEnRelation'
+import type { PremanenceConseillerNumerique } from './PremanenceConseillerNumerique'
 
 export type ConseillerNumeriqueFound = {
   conseiller: ConseillerNumeriqueV1
-  miseEnRelation: {
-    structureObj: StructureConseillerNumerique
-    typeDeContrat: string
-    dateDebutDeContrat: Date
-    dateFinDeContrat?: Date
-  }
+  miseEnRelations: MiseEnRelationConseillerNumeriqueV1MinimalProjection[]
+  // Si le conseiller est conventionné, c'est la première mise en relation qui correspond au critères de contrat actif
+  // Si il n'y a pas de mise en relation active, on considère que le conseiller n’est pas / plus en contrat
+  miseEnRelationActive: MiseEnRelationConseillerNumeriqueV1MinimalProjection | null
   permanences: PremanenceConseillerNumerique[]
   conseillersCoordonnes: ConseillerNumeriqueV1[]
+}
+
+export type ConseillerNumeriqueFoundWithActiveMiseEnRelation =
+  ConseillerNumeriqueFound & {
+    miseEnRelationActive: Exclude<
+      ConseillerNumeriqueFound['miseEnRelationActive'],
+      null
+    >
+  }
+
+export function isConseillerNumeriqueFoundWithActiveMiseEnRelation(
+  conseillerNumeriqueFound: ConseillerNumeriqueFound | null,
+): conseillerNumeriqueFound is ConseillerNumeriqueFoundWithActiveMiseEnRelation {
+  return !!conseillerNumeriqueFound?.miseEnRelationActive
 }
 
 export type ConseillerNumeriqueByEmailFinder = (
@@ -41,11 +54,13 @@ const findConseillerDocumentByEmail =
       emailPro: email,
     })
 
-export const findConseillersCoordonnesByEmail = async (userEmail: string) => {
+export const findConseillersCoordonnesByEmail = async (
+  coordinateurEmail: string,
+) => {
   const conseillerCollection =
     await conseillerNumeriqueMongoCollection('conseillers')
 
-  const email = userEmail.trim().toLowerCase()
+  const email = coordinateurEmail.trim().toLowerCase()
 
   const conseillerNumerique =
     await findConseillerDocumentByEmail(conseillerCollection)(email)
@@ -73,31 +88,24 @@ export const findConseillerNumeriqueByEmail: ConseillerNumeriqueByEmailFinder =
     const miseEnRelationCollection =
       await conseillerNumeriqueMongoCollection('misesEnRelation')
 
-    const miseEnRelation = (await miseEnRelationCollection.findOne(
-      {
-        statut: 'finalisee',
-        'conseillerObj._id': conseillerDocument._id,
-      },
-      {
-        projection: {
-          _id: 1,
-          statut: 1,
-          structureObj: 1,
-          dateRecrutement: 1,
-          dateDebutDeContrat: 1,
-          dateFinDeContrat: 1,
-          typeDeContrat: 1,
+    const miseEnRelations = (await miseEnRelationCollection
+      .find(
+        {
+          'conseillerObj._id': conseillerDocument._id,
         },
-      },
-    )) as unknown as {
-      _id: ObjectId
-      statut: 'finalisee'
-      structureObj: StructureConseillerNumerique
-      dateRecrutement: Date
-      dateDebutDeContrat: Date
-      dateFinDeContrat: Date
-      typeDeContrat: string // 'CDD' or other values
-    }
+        {
+          projection: {
+            _id: 1,
+            statut: 1,
+            structureObj: 1,
+            dateRecrutement: 1,
+            dateDebutDeContrat: 1,
+            dateFinDeContrat: 1,
+            typeDeContrat: 1,
+          },
+        },
+      )
+      .toArray()) as unknown as MiseEnRelationConseillerNumeriqueV1MinimalProjection[]
 
     const permanencesCollection =
       await conseillerNumeriqueMongoCollection('permanences')
@@ -141,7 +149,8 @@ export const findConseillerNumeriqueByEmail: ConseillerNumeriqueByEmailFinder =
     return conseillerDocument
       ? {
           conseiller: cleanConseillerNumeriqueV1Document(conseillerDocument),
-          miseEnRelation,
+          miseEnRelations,
+          miseEnRelationActive: getActiveMiseEnRelation(miseEnRelations),
           permanences,
           conseillersCoordonnes: await findConseillersCoordonnesById(
             conseillerCollection,

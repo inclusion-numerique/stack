@@ -1,11 +1,12 @@
 import { Filter, ObjectId } from 'mongodb'
 import escapeStringRegexp from 'escape-string-regexp'
 import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
-import type { StructureConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/StructureConseillerNumerique'
 import {
   cleanConseillerNumeriqueV1Document,
   ConseillerNumeriqueV1Document,
 } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Document'
+import { MiseEnRelationConseillerNumeriqueV1MinimalProjection } from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
+import { getActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/getActiveMiseEnRelation'
 
 export type FindConseillerNumeriqueV1Input =
   | {
@@ -55,31 +56,24 @@ export const findConseillerNumeriqueV1 = async (
   const miseEnRelationCollection =
     await conseillerNumeriqueMongoCollection('misesEnRelation')
 
-  const miseEnRelationDocument = (await miseEnRelationCollection.findOne(
-    {
-      statut: 'finalisee',
-      'conseillerObj._id': conseillerDocument._id,
-    },
-    {
-      projection: {
-        _id: 1,
-        statut: 1,
-        structureObj: 1,
-        dateRecrutement: 1,
-        dateDebutDeContrat: 1,
-        dateFinDeContrat: 1,
-        typeDeContrat: 1,
+  const miseEnRelationDocuments = (await miseEnRelationCollection
+    .find(
+      {
+        'conseillerObj._id': conseillerDocument._id,
       },
-    },
-  )) as unknown as {
-    _id: ObjectId
-    statut: 'finalisee'
-    structureObj: StructureConseillerNumerique
-    dateRecrutement: Date | null
-    dateDebutDeContrat: Date | null
-    dateFinDeContrat: Date | null
-    typeDeContrat: string // 'CDD' or other values
-  }
+      {
+        projection: {
+          _id: 1,
+          statut: 1,
+          structureObj: 1,
+          dateRecrutement: 1,
+          dateDebutDeContrat: 1,
+          dateFinDeContrat: 1,
+          typeDeContrat: 1,
+        },
+      },
+    )
+    .toArray()) as unknown as MiseEnRelationConseillerNumeriqueV1MinimalProjection[]
 
   const permanencesCollection =
     await conseillerNumeriqueMongoCollection('permanences')
@@ -129,7 +123,8 @@ export const findConseillerNumeriqueV1 = async (
     ? {
         conseiller,
         // Relation contractuelle avec structure employeuse
-        miseEnRelation: miseEnRelationDocument,
+        miseEnRelations: miseEnRelationDocuments,
+        miseEnRelationActive: getActiveMiseEnRelation(miseEnRelationDocuments),
         permanences: permanenceDocuments,
       }
     : null

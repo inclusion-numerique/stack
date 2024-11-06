@@ -9,9 +9,10 @@ import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import type { SessionUser } from '@app/web/auth/sessionUser'
 import type { PremanenceConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/PremanenceConseillerNumerique'
 import { toStructureFromCartoStructure } from '@app/web/structure/toStructureFromCartoStructure'
-import type {
+import {
   ConseillerNumeriqueByEmailFinder,
   ConseillerNumeriqueFound,
+  isConseillerNumeriqueFoundWithActiveMiseEnRelation,
 } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
 import {
   associateConseillersCoordonnesTo,
@@ -196,7 +197,7 @@ export const importFromConseillerNumerique =
 
     const conseillerFound = await findConseillerNumeriqueByEmail(user.email)
 
-    if (conseillerFound == null) {
+    if (!isConseillerNumeriqueFoundWithActiveMiseEnRelation(conseillerFound)) {
       return markAsCheckedMediateur(user).then(toSessionUser)
     }
 

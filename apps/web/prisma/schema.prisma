@@ -105,6 +105,7 @@ model User {
   mutations    Mutation[]
   emplois      EmployeStructure[]
   usurpateur   Session?           @relation(name: "usurper")
+  rdvAccount   RdvAccount?
 
   @@map("users")
 }
@@ -234,63 +235,63 @@ model CraConseillerNumeriqueV1 {
   importedAt DateTime @map("imported_at") // our field
 
   // Will be null until we have the conseiller in our database
-  conseillerNumeriqueId String? @map("conseiller_numerique_id")
+  conseillerNumeriqueId String?              @map("conseiller_numerique_id")
   conseillerNumerique   ConseillerNumerique? @relation(fields: [conseillerNumeriqueId], references: [id])
 
   // v1 id is the same as the conseiller id if conseiller exists in our database
   v1ConseillerNumeriqueId String @map("v1_conseiller_numerique_id")
 
-  canal String
-  activite String
-  nbParticipants Int @map("nb_participants") @default(0)
-  nbParticipantsRecurrents Int @map("nb_participants_recurrents") @default(0)
+  canal                    String
+  activite                 String
+  nbParticipants           Int    @default(0) @map("nb_participants")
+  nbParticipantsRecurrents Int    @default(0) @map("nb_participants_recurrents")
 
-  ageMoins12Ans Int @map("age_moins_12_ans") @default(0)
-  ageDe12a18Ans Int @map("age_de_12_a_18_ans") @default(0)
-  ageDe18a35Ans Int @map("age_de_18_a_35_ans") @default(0)
-  ageDe35a60Ans Int @map("age_de_35_a_60_ans") @default(0)
-  agePlus60Ans  Int @map("age_plus_60_ans") @default(0)
+  ageMoins12Ans Int @default(0) @map("age_moins_12_ans")
+  ageDe12a18Ans Int @default(0) @map("age_de_12_a_18_ans")
+  ageDe18a35Ans Int @default(0) @map("age_de_18_a_35_ans")
+  ageDe35a60Ans Int @default(0) @map("age_de_35_a_60_ans")
+  agePlus60Ans  Int @default(0) @map("age_plus_60_ans")
 
-  statutEtudiant Int @map("statut_etudiant") @default(0)
-  statutSansEmploi Int @map("statut_sans_emploi") @default(0)
-  statutEnEmploi Int @map("statut_en_emploi") @default(0)
-  statutRetraite Int @map("statut_retraite") @default(0)
-  statutHeterogene Int @map("statut_heterogene") @default(0)
+  statutEtudiant   Int @default(0) @map("statut_etudiant")
+  statutSansEmploi Int @default(0) @map("statut_sans_emploi")
+  statutEnEmploi   Int @default(0) @map("statut_en_emploi")
+  statutRetraite   Int @default(0) @map("statut_retraite")
+  statutHeterogene Int @default(0) @map("statut_heterogene")
 
   themes String[] @default([])
 
   sousThemesEquipementInformatique String[] @default([]) @map("sous_themes_equipement_informatique")
-  sousThemesSante String[] @default([]) @map("sous_themes_sante")
-  sousThemesAccompagner String[] @default([]) @map("sous_themes_accompagner")
-  sousThemesTraitementTexte String[] @default([]) @map("sous_themes_traitement_texte")
+  sousThemesSante                  String[] @default([]) @map("sous_themes_sante")
+  sousThemesAccompagner            String[] @default([]) @map("sous_themes_accompagner")
+  sousThemesTraitementTexte        String[] @default([]) @map("sous_themes_traitement_texte")
 
   duree String
 
   // Poursuites accompagnements
-  accompagnementIndividuel Int @map("accompagnement_individuel") @default(0)
-  accompagnementAtelier Int @map("accompagnement_atelier") @default(0)
-  accompagnementRedirection Int @map("accompagnement_redirection") @default(0)
+  accompagnementIndividuel  Int @default(0) @map("accompagnement_individuel")
+  accompagnementAtelier     Int @default(0) @map("accompagnement_atelier")
+  accompagnementRedirection Int @default(0) @map("accompagnement_redirection")
 
-  codePostal String? @map("code_postal")
-  nomCommune String? @map("nom_commune")
+  codePostal         String?  @map("code_postal")
+  nomCommune         String?  @map("nom_commune")
   dateAccompagnement DateTime @map("date_accompagnement")
-  codeCommune String? @map("code_commune")
-  organismes Json? // Poursuite vers autre structures
-  annotation String?
+  codeCommune        String?  @map("code_commune")
+  organismes         Json? // Poursuite vers autre structures
+  annotation         String?
 
   createdAt DateTime @map("created_at") // v1 field
 
-  structureId String? @map("structure_id")
-  structureIdPg Int? @map("structure_id_pg")
-  structureType String? @map("structure_type")
-  structureStatut String? @map("structure_statut")
-  structureNom String? @map("structure_nom")
-  structureSiret String? @map("structure_siret")
-  structureCodePostal String? @map("structure_code_postal")
-  structureNomCommune String? @map("structure_nom_commune")
-  structureCodeCommune String? @map("structure_code_commune")
+  structureId              String? @map("structure_id")
+  structureIdPg            Int?    @map("structure_id_pg")
+  structureType            String? @map("structure_type")
+  structureStatut          String? @map("structure_statut")
+  structureNom             String? @map("structure_nom")
+  structureSiret           String? @map("structure_siret")
+  structureCodePostal      String? @map("structure_code_postal")
+  structureNomCommune      String? @map("structure_nom_commune")
+  structureCodeCommune     String? @map("structure_code_commune")
   structureCodeDepartement String? @map("structure_code_departement")
-  structureCodeRegion String? @map("structure_code_region")
+  structureCodeRegion      String? @map("structure_code_region")
 
   @@index([conseillerNumeriqueId])
   @@index([v1ConseillerNumeriqueId])
@@ -815,6 +816,27 @@ enum DegreDeFinalisationDemarche {
   OrienteVersStructure  @map("oriente_vers_structure")
 
   @@map("degre_de_finalisation_demarche")
+}
+
+// An account linked in the Rdv service
+// https://www.rdv-solidarites.fr
+// Stores the external id of the account and the oauth credentials
+model RdvAccount {
+  id String @id // external id of the account
+
+  userId String @unique @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id])
+
+  accessToken  String    @map("access_token")
+  refreshToken String?   @map("refresh_token")
+  expiresAt    DateTime? @map("expires_at")
+  scope        String?
+  metadata     Json?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("rdv_accounts")
 }
 
 enum MutationName {

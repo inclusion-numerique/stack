@@ -3,7 +3,10 @@ import { v4 } from 'uuid'
 import type { ObjectId } from 'mongodb'
 import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
 import type { SessionUser } from '@app/web/auth/sessionUser'
-import type { ConseillerNumeriqueFound } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
+import {
+  ConseillerNumeriqueFound,
+  ConseillerNumeriqueFoundWithActiveMiseEnRelation,
+} from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
 import { prismaClient } from '@app/web/prismaClient'
 
 export const toId = ({ id }: { id: string | ObjectId }) => id.toString()
@@ -148,30 +151,36 @@ export const createCoordinateur = async (
 }
 
 export const findExistingStructureFor = ({
-  miseEnRelation: {
-    structureObj: { siret, nom },
-  },
+  miseEnRelationActive,
 }: ConseillerNumeriqueFound) =>
-  prismaClient.structure.findFirst({
-    where: { siret, nom },
-    select: { id: true, structureCartographieNationaleId: true },
-  })
+  miseEnRelationActive
+    ? prismaClient.structure.findFirst({
+        where: {
+          siret: miseEnRelationActive.structureObj.siret,
+          nom: miseEnRelationActive.structureObj.nom,
+        },
+        select: { id: true, structureCartographieNationaleId: true },
+      })
+    : null
 
 export const findCartoStructureFor = ({
-  miseEnRelation: {
-    structureObj: { siret, nom },
-  },
+  miseEnRelationActive,
 }: ConseillerNumeriqueFound) =>
-  prismaClient.structureCartographieNationale.findFirst({
-    where: { pivot: siret, nom },
-  })
+  miseEnRelationActive
+    ? prismaClient.structureCartographieNationale.findFirst({
+        where: {
+          pivot: miseEnRelationActive.structureObj.siret,
+          nom: miseEnRelationActive.structureObj.nom,
+        },
+      })
+    : null
 
 export const createStructureEmployeuseFor =
   ({
-    miseEnRelation: {
+    miseEnRelationActive: {
       structureObj: { nom, adresseInsee2Ban, siret },
     },
-  }: ConseillerNumeriqueFound) =>
+  }: ConseillerNumeriqueFoundWithActiveMiseEnRelation) =>
   (structureCartographieNationale: { id: string } | null) =>
     prismaClient.structure.create({
       data: {

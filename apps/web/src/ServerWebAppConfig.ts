@@ -65,4 +65,7 @@ export const ServerWebAppConfig = {
   Sudo: {
     usurpation: process.env.SUDO_USURPATION === '1' || false,
   },
+  Rdv: {
+    apiKey: process.env.RDV_API_KEY ?? '',
+  },
 }
