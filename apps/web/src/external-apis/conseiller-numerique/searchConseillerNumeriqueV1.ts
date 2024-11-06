@@ -55,22 +55,24 @@ export const findConseillerNumeriqueV1 = async (
   const miseEnRelationCollection =
     await conseillerNumeriqueMongoCollection('misesEnRelation')
 
-  const miseEnRelationDocuments = (await miseEnRelationCollection.findOne(
-    {
-      'conseillerObj._id': conseillerDocument._id,
-    },
-    {
-      projection: {
-        _id: 1,
-        statut: 1,
-        structureObj: 1,
-        dateRecrutement: 1,
-        dateDebutDeContrat: 1,
-        dateFinDeContrat: 1,
-        typeDeContrat: 1,
+  const miseEnRelationDocuments = (await miseEnRelationCollection
+    .find(
+      {
+        'conseillerObj._id': conseillerDocument._id,
       },
-    },
-  )) as unknown as MiseEnRelationConseillerNumeriqueV1MinimalProjection
+      {
+        projection: {
+          _id: 1,
+          statut: 1,
+          structureObj: 1,
+          dateRecrutement: 1,
+          dateDebutDeContrat: 1,
+          dateFinDeContrat: 1,
+          typeDeContrat: 1,
+        },
+      },
+    )
+    .toArray()) as unknown as MiseEnRelationConseillerNumeriqueV1MinimalProjection[]
 
   const permanencesCollection =
     await conseillerNumeriqueMongoCollection('permanences')
