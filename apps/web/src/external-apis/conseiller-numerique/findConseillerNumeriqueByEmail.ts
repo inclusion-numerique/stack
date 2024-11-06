@@ -41,11 +41,13 @@ const findConseillerDocumentByEmail =
       emailPro: email,
     })
 
-export const findConseillersCoordonnesByEmail = async (userEmail: string) => {
+export const findConseillersCoordonnesByEmail = async (
+  coordinateurEmail: string,
+) => {
   const conseillerCollection =
     await conseillerNumeriqueMongoCollection('conseillers')
 
-  const email = userEmail.trim().toLowerCase()
+  const email = coordinateurEmail.trim().toLowerCase()
 
   const conseillerNumerique =
     await findConseillerDocumentByEmail(conseillerCollection)(email)
