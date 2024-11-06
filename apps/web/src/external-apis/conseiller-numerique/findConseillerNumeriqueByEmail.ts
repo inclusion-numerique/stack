@@ -7,10 +7,14 @@ import {
 } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Document'
 import type { PremanenceConseillerNumerique } from './PremanenceConseillerNumerique'
 import type { MiseEnRelationConseillerNumeriqueV1MinimalProjection } from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
+import { getActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/getActiveMiseEnRelation'
 
 export type ConseillerNumeriqueFound = {
   conseiller: ConseillerNumeriqueV1
   miseEnRelations: MiseEnRelationConseillerNumeriqueV1MinimalProjection[]
+  // Si le conseiller est conventionné, c'est la première mise en relation qui correspond au critères de contrat actif
+  // Si il n'y a pas de mise en relation active, on considère que le conseiller n’est pas / plus en contrat
+  miseEnRelationActive: MiseEnRelationConseillerNumeriqueV1MinimalProjection | null
   permanences: PremanenceConseillerNumerique[]
   conseillersCoordonnes: ConseillerNumeriqueV1[]
 }
@@ -132,6 +136,7 @@ export const findConseillerNumeriqueByEmail: ConseillerNumeriqueByEmailFinder =
       ? {
           conseiller: cleanConseillerNumeriqueV1Document(conseillerDocument),
           miseEnRelations,
+          miseEnRelationActive: getActiveMiseEnRelation(miseEnRelations),
           permanences,
           conseillersCoordonnes: await findConseillersCoordonnesById(
             conseillerCollection,

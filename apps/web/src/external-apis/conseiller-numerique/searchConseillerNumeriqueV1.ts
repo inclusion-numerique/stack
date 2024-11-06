@@ -6,6 +6,7 @@ import {
   ConseillerNumeriqueV1Document,
 } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Document'
 import { MiseEnRelationConseillerNumeriqueV1MinimalProjection } from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
+import { getActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/getActiveMiseEnRelation'
 
 export type FindConseillerNumeriqueV1Input =
   | {
@@ -123,6 +124,7 @@ export const findConseillerNumeriqueV1 = async (
         conseiller,
         // Relation contractuelle avec structure employeuse
         miseEnRelations: miseEnRelationDocuments,
+        miseEnRelationActive: getActiveMiseEnRelation(miseEnRelationDocuments),
         permanences: permanenceDocuments,
       }
     : null
