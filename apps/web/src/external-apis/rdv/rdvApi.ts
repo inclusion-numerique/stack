@@ -142,5 +142,7 @@ export const createAccount = async ({
   console.log('RDV RESPONSE STATUS', response.status)
   console.log('RDV RESPONSE DATA', response.data)
 
+  // TODO create a RDV account, ignore existing ?
+
   return response.data
 }
