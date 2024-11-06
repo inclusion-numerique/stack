@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
-import { getAuthenticatedCoordinateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import MonEquipeListePage from './_components/MonEquipeListePage'
 import { getMonEquipePageData } from './getMonEquipePageData'
+import { MonEquipeSearchParams } from './searchMediateursCordonneBy'
 
 export const metadata: Metadata = {
   title: metadataTitle('Mon équipe'),
@@ -11,18 +11,12 @@ export const metadata: Metadata = {
 const Page = async ({
   searchParams,
 }: {
-  searchParams: { lignes?: string; page?: string; recherche?: string }
+  searchParams: MonEquipeSearchParams
 }) => {
-  const user = await getAuthenticatedCoordinateur()
-
-  const monEquipePageData = await getMonEquipePageData(user)
+  const monEquipePageData = await getMonEquipePageData(searchParams)
 
   return (
-    <MonEquipeListePage
-      {...monEquipePageData}
-      searchParams={searchParams}
-      totalPages={1}
-    />
+    <MonEquipeListePage {...monEquipePageData} searchParams={searchParams} />
   )
 }
 

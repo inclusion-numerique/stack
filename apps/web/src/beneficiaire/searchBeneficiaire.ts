@@ -7,6 +7,12 @@ import {
 import { getDataTableOrderBy } from '@app/web/data-table/getDataTableOrderBy'
 import { takeAndSkipFromPage } from '@app/web/data-table/takeAndSkipFromPage'
 import { queryBeneficiairesForList } from '@app/web/beneficiaire/queryBeneficiairesForList'
+import { toQueryParts } from '@app/web/data-table/toQueryParts'
+import {
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
+  toNumberOr,
+} from '@app/web/data-table/toNumberOr'
 
 type SearchBeneficiaireOptions = {
   mediateurId?: string
@@ -28,52 +34,21 @@ export const searchBeneficiaire = async (
   const { mediateurId } = options
 
   const orderBy = getDataTableOrderBy(searchParams, BeneficiairesDataTable)
-  const pageSize = searchParams?.lignes
-    ? Number.parseInt(searchParams.lignes, 10)
-    : 10
-  const page = searchParams?.page ? Number.parseInt(searchParams.page, 10) : 1
 
   const { take, skip } = takeAndSkipFromPage({
-    page,
-    pageSize,
+    page: toNumberOr(searchParams?.page)(DEFAULT_PAGE),
+    pageSize: toNumberOr(searchParams?.lignes)(DEFAULT_PAGE_SIZE),
   })
-
-  const queryParts = searchParams.recherche?.split(' ') ?? []
 
   const matchesWhere = {
     ...beneficiairesListWhere(mediateurId),
-    AND: queryParts.map((part) => ({
+    AND: toQueryParts(searchParams).map((part) => ({
       OR: [
-        {
-          prenom: {
-            contains: part,
-            mode: 'insensitive',
-          },
-        },
-        {
-          nom: {
-            contains: part,
-            mode: 'insensitive',
-          },
-        },
-        {
-          commune: {
-            contains: part,
-            mode: 'insensitive',
-          },
-        },
-        {
-          email: {
-            contains: part,
-            mode: 'insensitive',
-          },
-        },
-        {
-          communeCodePostal: {
-            contains: part,
-            mode: 'insensitive',
-          },
-        },
+        { prenom: { contains: part, mode: 'insensitive' } },
+        { nom: { contains: part, mode: 'insensitive' } },
+        { commune: { contains: part, mode: 'insensitive' } },
+        { email: { contains: part, mode: 'insensitive' } },
+        { communeCodePostal: { contains: part, mode: 'insensitive' } },
       ],
     })),
   } satisfies Prisma.BeneficiaireWhereInput

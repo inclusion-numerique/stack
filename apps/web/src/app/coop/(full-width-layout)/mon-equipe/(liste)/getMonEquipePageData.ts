@@ -1,9 +1,12 @@
 import { addMonths, format, isAfter, isBefore, subMonths } from 'date-fns'
-import { prismaClient } from '@app/web/prismaClient'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { getMediateursCount } from '@app/web/mediateurs/getMediateursCount'
-import { AuthenticatedCoordinateur } from '@app/web/auth/getAuthenticatedMediateur'
+import { getAuthenticatedCoordinateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { findConseillersNumeriquesContractInfoByEmails } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
+import {
+  MonEquipeSearchParams,
+  searchMediateursCordonneBy,
+} from './searchMediateursCordonneBy'
 
 const toId = ({ id }: { id: string }) => id
 
@@ -42,35 +45,13 @@ const finDeContratFor =
       : undefined
   }
 
-export const getMonEquipePageData = async ({
-  coordinateur,
-}: AuthenticatedCoordinateur) => {
-  const mediateurs = await prismaClient.mediateur.findMany({
-    where: {
-      coordinations: {
-        some: { coordinateurId: coordinateur.id },
-      },
-    },
-    select: {
-      id: true,
-      user: {
-        select: {
-          firstName: true,
-          lastName: true,
-          email: true,
-          phone: true,
-        },
-      },
-      conseillerNumerique: {
-        select: { id: true },
-      },
-      activites: {
-        select: { date: true },
-        orderBy: { date: 'desc' },
-        take: 1,
-      },
-    },
-  })
+export const getMonEquipePageData = async (
+  searchParams: MonEquipeSearchParams,
+) => {
+  const { coordinateur } = await getAuthenticatedCoordinateur()
+
+  const { mediateurs, matchesCount, totalPages } =
+    await searchMediateursCordonneBy(coordinateur)(searchParams)
 
   const conseillersNumeriquesWithContrats =
     await findConseillersNumeriquesContractInfoByEmails(
@@ -96,6 +77,8 @@ export const getMonEquipePageData = async ({
       conseillerNumerique: mediateurCount[1],
       mediateurNumerique: mediateurCount[2],
     },
+    matchesCount,
+    totalPages,
   }
 }
 
