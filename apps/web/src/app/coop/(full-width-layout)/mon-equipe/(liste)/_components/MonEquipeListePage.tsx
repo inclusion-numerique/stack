@@ -1,3 +1,4 @@
+import React from 'react'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
@@ -5,6 +6,7 @@ import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import DataSearchBar from '@app/web/data-table/DataSearchBar'
 import { generatePageSizeSelectOptions } from '@app/web/data-table/pageSizeSelectOptions'
 import PaginationNavWithPageSizeSelect from '@app/web/data-table/PaginationNavWithPageSizeSelect'
+import SortSelect from '@app/web/data-table/SortSelect'
 import { MonEquipePageData } from '../getMonEquipePageData'
 import { MediateurList } from './MediateurList'
 
@@ -44,17 +46,27 @@ const MonEquipeListePage = ({
             placeholder="Rechercher par nom ou adresse e-mail"
           />
         </div>
-        <p className="fr-text--lg fr-text--bold fr-flex fr-flex-gap-2v fr-direction-column fr-direction-sm-row">
-          <span>
-            {conseillerNumerique}{' '}
-            {pluralize('conseiller numérique', conseillerNumerique)}
-          </span>
-          <span className="fr-hidden fr-unhidden-sm">·</span>
-          <span>
-            {mediateurNumerique}{' '}
-            {pluralize('médiateur numérique', mediateurNumerique)}
-          </span>
-        </p>
+        <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-mb-2w">
+          <p className="fr-text--lg fr-text--bold fr-flex fr-flex-gap-2v fr-direction-column fr-direction-sm-row fr-mb-0">
+            <span>
+              {conseillerNumerique}{' '}
+              {pluralize('conseiller numérique', conseillerNumerique)}
+            </span>
+            <span className="fr-hidden fr-unhidden-sm">·</span>
+            <span>
+              {mediateurNumerique}{' '}
+              {pluralize('médiateur numérique', mediateurNumerique)}
+            </span>
+          </p>
+          <SortSelect
+            options={[
+              { label: 'Ordre alphabétique', value: 'alphabetique' },
+              { label: 'Les plus récents', value: 'recent' },
+              { label: 'Les plus anciens', value: 'ancien' },
+            ]}
+            baseHref="/coop/mon-equipe"
+          />
+        </div>
         <MediateurList mediateurs={mediateurs} />
         <PaginationNavWithPageSizeSelect
           className="fr-mt-5w"

@@ -12,6 +12,20 @@ export type MonEquipeSearchParams = {
   lignes?: string
   page?: string
   recherche?: string
+  tri?: 'alphabetique' | 'recent' | 'ancien'
+}
+
+const DEFAULT_TRI: Prisma.MediateurOrderByWithRelationInput = {
+  user: { lastName: 'asc' },
+}
+
+const triMap: Record<
+  NonNullable<MonEquipeSearchParams['tri']>,
+  Prisma.MediateurOrderByWithRelationInput
+> = {
+  ancien: { creation: 'asc' },
+  recent: { creation: 'desc' },
+  alphabetique: DEFAULT_TRI,
 }
 
 export const searchMediateursCordonneBy =
@@ -58,6 +72,7 @@ export const searchMediateursCordonneBy =
       },
       take,
       skip,
+      orderBy: searchParams.tri ? triMap[searchParams.tri] : DEFAULT_TRI,
     })
 
     const matchesCount = await prismaClient.mediateur.count({
