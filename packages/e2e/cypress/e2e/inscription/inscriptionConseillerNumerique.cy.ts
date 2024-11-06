@@ -1,27 +1,32 @@
-import { appUrl } from '@app/e2e/support/helpers'
-import { profileInscriptionLabels } from '@app/web/inscription/profilInscription'
+import { conseillersV1ThatShouldSignupAsConseiller } from '@app/e2e/e2e/inscription/inscriptionE2eCases'
+import { startInscriptionAs } from '@app/e2e/e2e/inscription/inscriptionE2eHelpers'
 
 describe('ETQ Utilisateur, je peux importer des bénéficiaires', () => {
-  before(() => {
+  beforeEach(() => {
     cy.execute('resetFixtures', {})
   })
 
-  it('ETQ Conseiller numérique A, je peux m’inscrire', () => {
-    cy.createUserAndSignin({
-      email: 'sonia.hamila@saintlaurentduvar.fr',
-      firstName: 'Conseiller numérique',
-      lastName: 'A',
-      emailVerified: new Date(),
+  it.only('ETQ Conseiller numérique A, je peux m’inscrire en tant que conseiller numérique', () => {
+    startInscriptionAs({
+      user: conseillersV1ThatShouldSignupAsConseiller.a,
+      profilInscription: 'ConseillerNumerique',
+      roleShouldBeCheckedAndFound: true,
     })
+  })
 
-    cy.visit(appUrl('/'))
-    cy.appUrlShouldBe('/inscription')
+  it('ETQ Conseiller numérique B, je ne peux pas m’inscrire en tant que coordinateur de conseiller numérique', () => {
+    startInscriptionAs({
+      user: conseillersV1ThatShouldSignupAsConseiller.a,
+      profilInscription: 'Coordinateur',
+      roleShouldBeCheckedAndFound: false,
+    })
+  })
 
-    cy.contains(profileInscriptionLabels.ConseillerNumerique).click()
-    cy.contains('J’ai lu et j’accepte').click()
-
-    cy.get('button').contains('Continuer').click()
-
-    cy.appUrlShouldBe('/inscription/identification?profil=conseiller-numerique')
+  it('ETQ Conseiller numérique C, je ne peux pas m’inscrire en tant que médiateur', () => {
+    startInscriptionAs({
+      user: conseillersV1ThatShouldSignupAsConseiller.a,
+      profilInscription: 'Mediateur',
+      roleShouldBeCheckedAndFound: false,
+    })
   })
 })

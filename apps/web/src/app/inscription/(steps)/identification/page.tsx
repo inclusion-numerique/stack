@@ -60,8 +60,6 @@ const IntroPage = async ({
     // If param "check" is set to "1", we should check the user
     check === '1'
 
-  console.log('SHOULD CHECK USER', shouldCheckUser)
-
   const checkedUser = shouldCheckUser
     ? await importFromConseillerNumerique(findConseillerNumeriqueByEmail)({
         user,

@@ -24,6 +24,17 @@ export const profileInscriptionLabels: { [key in ProfilInscription]: string } =
     Coordinateur: 'Coordinateur·rice de conseillers numériques',
   }
 
+export const lowerCaseProfileInscriptionLabels: {
+  [key in ProfilInscription]: string
+} = Object.fromEntries(
+  Object.entries(profileInscriptionLabels).map(([key, value]) => [
+    key,
+    value.toLowerCase(),
+  ]),
+) as {
+  [key in ProfilInscription]: string
+}
+
 export const profileInscriptionValues = Object.keys(
   profileInscriptionLabels,
 ) as [ProfilInscription, ...ProfilInscription[]]
