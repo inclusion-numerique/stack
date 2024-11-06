@@ -1,11 +1,11 @@
 import { Filter, ObjectId } from 'mongodb'
 import escapeStringRegexp from 'escape-string-regexp'
 import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
-import type { StructureConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/StructureConseillerNumerique'
 import {
   cleanConseillerNumeriqueV1Document,
   ConseillerNumeriqueV1Document,
 } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Document'
+import { MiseEnRelationConseillerNumeriqueV1MinimalProjection } from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
 
 export type FindConseillerNumeriqueV1Input =
   | {
@@ -55,9 +55,8 @@ export const findConseillerNumeriqueV1 = async (
   const miseEnRelationCollection =
     await conseillerNumeriqueMongoCollection('misesEnRelation')
 
-  const miseEnRelationDocument = (await miseEnRelationCollection.findOne(
+  const miseEnRelationDocuments = (await miseEnRelationCollection.findOne(
     {
-      statut: 'finalisee',
       'conseillerObj._id': conseillerDocument._id,
     },
     {
@@ -71,15 +70,7 @@ export const findConseillerNumeriqueV1 = async (
         typeDeContrat: 1,
       },
     },
-  )) as unknown as {
-    _id: ObjectId
-    statut: 'finalisee'
-    structureObj: StructureConseillerNumerique
-    dateRecrutement: Date | null
-    dateDebutDeContrat: Date | null
-    dateFinDeContrat: Date | null
-    typeDeContrat: string // 'CDD' or other values
-  }
+  )) as unknown as MiseEnRelationConseillerNumeriqueV1MinimalProjection
 
   const permanencesCollection =
     await conseillerNumeriqueMongoCollection('permanences')
@@ -129,7 +120,7 @@ export const findConseillerNumeriqueV1 = async (
     ? {
         conseiller,
         // Relation contractuelle avec structure employeuse
-        miseEnRelation: miseEnRelationDocument,
+        miseEnRelations: miseEnRelationDocuments,
         permanences: permanenceDocuments,
       }
     : null
