@@ -17,8 +17,6 @@ const AdministrationConseillersNumeriquesV1 = async ({
       recherche,
     })
 
-    console.log('RESULTS', v1ConseillersNumeriques)
-
     return (
       <>
         <p className="fr-mb-2v">

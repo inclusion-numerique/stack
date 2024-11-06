@@ -2,7 +2,7 @@ import { getMediateurCommunesAndDepartementsOptions } from '@app/web/app/lieu-ac
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import { getInitialMediateursOptionsForSearch } from '@app/web/mediateurs/getInitialMediateursOptionsForSearch'
 import { getInitialLieuxActiviteOptionsForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
-import { getFirstAndLastActiviteDate } from '@app/web/app/coop/mes-statistiques/_queries/getFirstAndLastActiviteDate'
+import { getFirstAndLastActiviteDate } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getFirstAndLastActiviteDate'
 import { UserDisplayName, UserProfile } from '@app/web/utils/user'
 
 export const getFiltersOptionsForMediateur = async ({

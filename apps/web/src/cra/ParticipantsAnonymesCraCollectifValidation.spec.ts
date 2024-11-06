@@ -9,8 +9,9 @@ describe('ParticipantsAnonymesCraCollectifValidation', () => {
     genreFeminin: 3,
     genreMasculin: 3,
     genreNonCommunique: 3,
-    trancheAgeMineur: 2,
 
+    trancheAgeMoinsDeDouze: 2,
+    trancheAgeDouzeDixHuit: 0,
     trancheAgeDixHuitVingtQuatre: 2,
     trancheAgeVingtCinqTrenteNeuf: 2,
     trancheAgeQuaranteCinquanteNeuf: 2,

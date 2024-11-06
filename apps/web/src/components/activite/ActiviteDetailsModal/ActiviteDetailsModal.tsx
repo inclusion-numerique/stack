@@ -26,8 +26,6 @@ import {
   autonomieStars,
   degreDeFinalisationDemarcheHints,
   degreDeFinalisationDemarcheLabels,
-  type DureeAccompagnement,
-  dureeAccompagnementLabels,
   materielLabels,
   niveauAtelierStars,
   structuresRedirectionLabels,
@@ -41,10 +39,11 @@ import {
   type ActiviteDetailsDynamicModalState,
 } from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsDynamicModal'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { createDupliquerActiviteLink } from '@app/web/app/coop/mes-activites/cra/createDupliquerActiviteLink'
-import { createModifierActiviteLink } from '@app/web/app/coop/mes-activites/cra/createModifierActiviteLink'
+import { createDupliquerActiviteLink } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/createDupliquerActiviteLink'
+import { createModifierActiviteLink } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/createModifierActiviteLink'
 import type { ActiviteForList } from '@app/web/cra/activitesQueries'
 import { createParticipantsAnonymesForBeneficiaires } from '@app/web/beneficiaire/createParticipantsAnonymesForBeneficiaires'
+import { dureeAsString } from '@app/web/utils/dureeAsString'
 import styles from './ActiviteDetailsModal.module.css'
 
 const ListItem = ({
@@ -106,7 +105,7 @@ const ActiviteDetailsModal = ({
   const {
     type,
     id,
-    duree: dureeInteger,
+    duree,
     autonomie,
     date,
     degreDeFinalisation,
@@ -149,7 +148,7 @@ const ActiviteDetailsModal = ({
 
   const isLoading = mutation.isPending || mutation.isSuccess
 
-  const duree = dureeInteger.toString() as DureeAccompagnement
+  const dureeString = dureeAsString(duree)
   const locationString = getActiviteLocationString(activite)
 
   const thematiqueTags = [
@@ -414,9 +413,9 @@ const ActiviteDetailsModal = ({
         )}
       </div>
       <p className="fr-mt-2v fr-text--sm fr-mb-0 fr-text-mention--grey">
-        <span className="fr-icon-time-line fr-icon--sm" /> Durée :{' '}
-        {dureeAccompagnementLabels[duree]} ·{' '}
-        <span className="fr-icon-map-pin-2-line fr-icon--sm" /> {locationString}
+        <span className="fr-icon-time-line fr-icon--sm" /> Durée&nbsp;:{' '}
+        {dureeString} · <span className="fr-icon-map-pin-2-line fr-icon--sm" />{' '}
+        {locationString}
       </p>
       {!deletionConfirmation && (
         <>

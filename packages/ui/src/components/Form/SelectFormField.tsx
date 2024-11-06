@@ -16,6 +16,10 @@ export type SelectFormFieldProps<T extends FieldValues> = {
   valid?: string
   asterisk?: boolean
   placeholder?: string
+  classes?: {
+    label?: string
+    select?: string
+  }
 }
 
 const SelectFormField = <T extends FieldValues>({
@@ -29,6 +33,7 @@ const SelectFormField = <T extends FieldValues>({
   asterisk,
   className,
   placeholder,
+  classes,
 }: UiComponentProps & SelectFormFieldProps<T>) => {
   const id = `select-form-field__${path}`
 
@@ -59,15 +64,22 @@ const SelectFormField = <T extends FieldValues>({
               className,
             )}
           >
-            <label className="fr-label" htmlFor={id}>
+            <label
+              className={classNames('fr-label', classes?.label)}
+              htmlFor={id}
+            >
               {label} {asterisk && <RedAsterisk />}
               {hint ? <span className="fr-hint-text">{hint}</span> : null}
             </label>
             <select
-              className={classNames('fr-select', {
-                'fr-select--error': error,
-                'fr-select--valid': isDirty && !invalid,
-              })}
+              className={classNames(
+                'fr-select',
+                {
+                  'fr-select--error': error,
+                  'fr-select--valid': isDirty && !invalid,
+                },
+                classes?.select,
+              )}
               aria-describedby={ariaDescribedBy}
               id={id}
               disabled={disabled}

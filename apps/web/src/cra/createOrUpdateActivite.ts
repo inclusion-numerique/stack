@@ -11,6 +11,7 @@ import { createBeneficiairesForParticipantsAnonymes } from '@app/web/beneficiair
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import { createStopwatch } from '@app/web/utils/stopwatch'
 import { addMutationLog } from '@app/web/utils/addMutationLog'
+import { craDureeDataToMinutes } from '@app/web/cra/minutesToCraDuree'
 
 const getExistingBeneficiairesSuivis = async ({
   beneficiaires,
@@ -95,7 +96,9 @@ const beneficiaireAnonymeCreateDataFromForm = ({
   statutSocial,
   notes,
   mediateurId,
-}: BeneficiaireCraData): Prisma.BeneficiaireCreateInput & { id: string } => ({
+}: BeneficiaireCraData): Prisma.BeneficiaireCreateInput & {
+  id: string
+} => ({
   id: v4(),
   mediateur: {
     connect: { id: mediateurId },
@@ -212,7 +215,7 @@ export const createOrUpdateActivite = async ({
     mediateur: {
       connect: { id: mediateurId },
     },
-    duree: Number.parseInt(duree, 10),
+    duree: craDureeDataToMinutes(duree),
     typeLieu: 'typeLieu' in data ? data.typeLieu : undefined,
     typeLieuAtelier:
       'typeLieuAtelier' in data ? data.typeLieuAtelier : undefined,

@@ -35,7 +35,7 @@ const conseiller: ConseillerNumeriqueV1 = {
   coordinateurs: [coordinateur],
 } as unknown as ConseillerNumeriqueV1
 
-const miseEnRelation: StructureConseillerNumerique = {
+const structure: StructureConseillerNumerique = {
   siret: '81834687600019',
   nom: 'ESPACE NUMERIQUE SUD CHARENTE',
   adresseInsee2Ban: {
@@ -68,7 +68,11 @@ const fakeFindConseillerNumeriqueByEmail =
   async (): Promise<ConseillerNumeriqueFound> =>
     Promise.resolve({
       conseiller,
-      miseEnRelation,
+      miseEnRelation: {
+        structureObj: structure,
+        dateDebutDeContrat: new Date('2021-10-16'),
+        typeDeContrat: 'CDI',
+      },
       permanences,
       conseillersCoordonnes: [conseillerCoordonne],
     })
@@ -167,15 +171,15 @@ describe('import from conseiller numerique', () => {
 
     const structureEmployeuse = await prismaClient.structure.findFirst({
       where: {
-        siret: miseEnRelation.siret,
-        nom: miseEnRelation.nom,
+        siret: structure.siret,
+        nom: structure.nom,
       },
     })
 
     const lieuActivite = await prismaClient.structure.findFirst({
       where: {
         siret: null,
-        nom: miseEnRelation.nom,
+        nom: structure.nom,
       },
     })
 
@@ -308,15 +312,15 @@ describe('import from conseiller numerique', () => {
 
     const structureEmployeuse = await prismaClient.structure.findFirst({
       where: {
-        siret: miseEnRelation.siret,
-        nom: miseEnRelation.nom,
+        siret: structure.siret,
+        nom: structure.nom,
       },
     })
 
     const lieuActivite = await prismaClient.structure.findFirst({
       where: {
         siret: null,
-        nom: miseEnRelation.nom,
+        nom: structure.nom,
       },
     })
 
@@ -377,7 +381,7 @@ describe('import from conseiller numerique', () => {
     const lieuActivite = await prismaClient.structure.findFirst({
       where: {
         siret: null,
-        nom: miseEnRelation.nom,
+        nom: structure.nom,
       },
     })
 

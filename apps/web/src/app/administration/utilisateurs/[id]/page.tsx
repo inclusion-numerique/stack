@@ -20,6 +20,7 @@ import { getUserDisplayName } from '@app/web/utils/user'
 import { getUserLifecycleBadge } from '@app/web/app/administration/utilisateurs/getUserLifecycleBadge'
 import { numberToString } from '@app/web/utils/formatNumber'
 import { findConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
+import { isUserInscriptionEnCours } from '@app/web/auth/isUserInscriptionEnCours'
 
 export const metadata = {
   title: metadataTitle('Utilisateurs - Détails'),
@@ -180,8 +181,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
 
   const isMediateur = !!mediateur
   const isCoordinateur = !!coordinateur
-  const inscriptionEnCours =
-    !inscriptionValidee && role !== 'Admin' && role !== 'Support'
+  const inscriptionEnCours = isUserInscriptionEnCours(user)
 
   // Sort sessions and other lists by most recent first
   const sortedSessions = sessions.sort(

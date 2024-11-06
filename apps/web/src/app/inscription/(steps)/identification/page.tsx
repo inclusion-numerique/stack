@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import {
   profileInscriptionFromSlug,
@@ -7,18 +8,18 @@ import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
 import { importFromConseillerNumerique } from '@app/web/app/inscription/importFromConseillerNumerique/importFromConseillerNumerique'
 import { findConseillerNumeriqueByEmail } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
+import { getProconnectIdToken } from '@app/web/security/getProconnectIdToken'
 import { FinaliserInscriptionConseiller } from './_components/FinaliserInscriptionConseiller/FinaliserInscriptionConseiller'
 import { FinaliserInscriptionCoordinateur } from './_components/FinaliserInscriptionCoordinateur/FinaliserInscriptionCoordinateur'
 import { FinaliserInscriptionMediateur } from './_components/FinaliserInscriptionMediateur/FinaliserInscriptionMediateur'
-import { InscriptionRole } from './_components/inscriptionRole'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),
 }
 
 const introFor =
-  (profil: InscriptionRole) =>
-  (role: InscriptionRole, urlProfil?: InscriptionRole) =>
+  (profil: ProfileInscriptionSlug) =>
+  (role: ProfileInscriptionSlug, urlProfil?: ProfileInscriptionSlug) =>
     urlProfil === profil || (urlProfil == null && role === profil)
 
 const mediateurRole = (
@@ -48,19 +49,31 @@ const IntroPage = async ({
     ? profileInscriptionFromSlug[urlProfil]
     : (user.profilInscription ?? undefined)
 
-  const checkedUser =
-    !(check && user.checkConseillerNumeriqueInscription) || !profil
-      ? user
-      : await importFromConseillerNumerique(findConseillerNumeriqueByEmail)({
-          user,
-          profil,
-        })
+  if (!profil) {
+    redirect('/inscription')
+    return null
+  }
+
+  const shouldCheckUser =
+    // if the checkConseillerNumeriqueInscription is not set, we should check the user
+    !user.checkConseillerNumeriqueInscription ||
+    // If param "check" is set to "1", we should check the user
+    check === '1'
+
+  const checkedUser = shouldCheckUser
+    ? await importFromConseillerNumerique(findConseillerNumeriqueByEmail)({
+        user,
+        profil,
+      })
+    : user
 
   const lieuxActivite = user.mediateur?.conseillerNumerique
     ? await getLieuxActiviteForInscription({ mediateurId: user.mediateur.id })
     : []
 
   const role = userRole(checkedUser)
+
+  const proConnectIdTokenHint = await getProconnectIdToken(user)
 
   return (
     <div className="fr-mb-32v fr-p-12v fr-width-full fr-border-radius--8 fr-background-default--grey fr-mt-32v">
@@ -69,6 +82,7 @@ const IntroPage = async ({
           inscriptionRole={role}
           user={user}
           lieuActiviteCount={lieuxActivite.length}
+          proConnectIdTokenHint={proConnectIdTokenHint}
         />
       )}
       {introFor('mediateur')(role, urlProfil) && (
@@ -82,6 +96,7 @@ const IntroPage = async ({
           inscriptionRole={role}
           user={user}
           lieuActiviteCount={lieuxActivite.length}
+          proConnectIdTokenHint={proConnectIdTokenHint}
         />
       )}
     </div>

@@ -1,6 +1,6 @@
 import type { SessionUser } from '@app/web/auth/sessionUser'
+import type { ProfileInscriptionSlug } from '@app/web/inscription/profilInscription'
 import { AnotherRoleFound } from '../AnotherRoleFound'
-import type { InscriptionRole } from '../inscriptionRole'
 import { RoleFound } from '../RoleFound'
 import { RoleNotFound } from '../RoleNotFound'
 
@@ -8,10 +8,12 @@ export const FinaliserInscriptionCoordinateur = ({
   inscriptionRole,
   lieuActiviteCount,
   user,
+  proConnectIdTokenHint,
 }: {
-  inscriptionRole: InscriptionRole
+  inscriptionRole: ProfileInscriptionSlug
   lieuActiviteCount: number
   user: Pick<SessionUser, 'email' | 'id' | 'usurper'>
+  proConnectIdTokenHint: string | null
 }) => {
   switch (inscriptionRole) {
     case 'conseiller-numerique': {
@@ -23,7 +25,13 @@ export const FinaliserInscriptionCoordinateur = ({
       )
     }
     case 'mediateur': {
-      return <RoleNotFound roleNotFound="coordinateur" user={user} />
+      return (
+        <RoleNotFound
+          roleNotFound="coordinateur"
+          user={user}
+          proConnectIdTokenHint={proConnectIdTokenHint}
+        />
+      )
     }
     default: {
       return (

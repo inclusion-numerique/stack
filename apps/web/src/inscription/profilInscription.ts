@@ -1,6 +1,6 @@
 import type { ProfilInscription } from '@prisma/client'
 import { labelsToOptions } from '@app/ui/components/Form/utils/options'
-import { SessionUser } from '@app/web/auth/sessionUser'
+import type { SessionUser } from '@app/web/auth/sessionUser'
 
 export const profileInscriptionSlugs = {
   ConseillerNumerique: 'conseiller-numerique',
@@ -23,6 +23,17 @@ export const profileInscriptionLabels: { [key in ProfilInscription]: string } =
     ConseillerNumerique: 'Conseiller·ère numérique',
     Coordinateur: 'Coordinateur·rice de conseillers numériques',
   }
+
+export const lowerCaseProfileInscriptionLabels: {
+  [key in ProfilInscription]: string
+} = Object.fromEntries(
+  Object.entries(profileInscriptionLabels).map(([key, value]) => [
+    key,
+    value.toLowerCase(),
+  ]),
+) as {
+  [key in ProfilInscription]: string
+}
 
 export const profileInscriptionValues = Object.keys(
   profileInscriptionLabels,

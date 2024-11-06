@@ -148,7 +148,9 @@ export const createCoordinateur = async (
 }
 
 export const findExistingStructureFor = ({
-  miseEnRelation: { siret, nom },
+  miseEnRelation: {
+    structureObj: { siret, nom },
+  },
 }: ConseillerNumeriqueFound) =>
   prismaClient.structure.findFirst({
     where: { siret, nom },
@@ -156,7 +158,9 @@ export const findExistingStructureFor = ({
   })
 
 export const findCartoStructureFor = ({
-  miseEnRelation: { siret, nom },
+  miseEnRelation: {
+    structureObj: { siret, nom },
+  },
 }: ConseillerNumeriqueFound) =>
   prismaClient.structureCartographieNationale.findFirst({
     where: { pivot: siret, nom },
@@ -164,7 +168,9 @@ export const findCartoStructureFor = ({
 
 export const createStructureEmployeuseFor =
   ({
-    miseEnRelation: { nom, adresseInsee2Ban, siret },
+    miseEnRelation: {
+      structureObj: { nom, adresseInsee2Ban, siret },
+    },
   }: ConseillerNumeriqueFound) =>
   (structureCartographieNationale: { id: string } | null) =>
     prismaClient.structure.create({

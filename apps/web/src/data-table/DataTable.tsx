@@ -122,7 +122,7 @@ const DataTable = <
 
                         return (
                           <Component
-                            className={classNames(cellClassName)}
+                            className={classNames(styles.cell, cellClassName)}
                             key={name}
                           >
                             {cell(row)}

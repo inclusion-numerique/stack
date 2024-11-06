@@ -72,7 +72,7 @@ export const searchAdresses = async (
   const response = await fetch(url.toString())
   const body = (await response.json()) as FeatureCollection
 
-  return body.features
+  return body.features || []
 }
 
 export const searchAdresse = (adresse: string): Promise<Feature | null> =>

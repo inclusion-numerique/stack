@@ -10,7 +10,12 @@ import { StructureConseillerNumerique } from './StructureConseillerNumerique'
 
 export type ConseillerNumeriqueFound = {
   conseiller: ConseillerNumeriqueV1
-  miseEnRelation: StructureConseillerNumerique
+  miseEnRelation: {
+    structureObj: StructureConseillerNumerique
+    typeDeContrat: string
+    dateDebutDeContrat: Date
+    dateFinDeContrat?: Date
+  }
   permanences: PremanenceConseillerNumerique[]
   conseillersCoordonnes: ConseillerNumeriqueV1[]
 }
@@ -33,7 +38,7 @@ const findConseillerDocumentByEmail =
   (conseillerCollection: ConseillerNumeriqueV1Collection) => (email: string) =>
     conseillerCollection.findOne({
       deletedAt: { $in: [null, undefined] },
-      $or: [{ email }, { emailPro: email }, { 'emailCN.address': email }],
+      emailPro: email,
     })
 
 export const findConseillersCoordonnesByEmail = async (userEmail: string) => {
@@ -88,9 +93,9 @@ export const findConseillerNumeriqueByEmail: ConseillerNumeriqueByEmailFinder =
       _id: ObjectId
       statut: 'finalisee'
       structureObj: StructureConseillerNumerique
-      dateRecrutement: Date | null
-      dateDebutDeContrat: Date | null
-      dateFinDeContrat: Date | null
+      dateRecrutement: Date
+      dateDebutDeContrat: Date
+      dateFinDeContrat: Date
       typeDeContrat: string // 'CDD' or other values
     }
 
@@ -136,7 +141,7 @@ export const findConseillerNumeriqueByEmail: ConseillerNumeriqueByEmailFinder =
     return conseillerDocument
       ? {
           conseiller: cleanConseillerNumeriqueV1Document(conseillerDocument),
-          miseEnRelation: miseEnRelation.structureObj,
+          miseEnRelation,
           permanences,
           conseillersCoordonnes: await findConseillersCoordonnesById(
             conseillerCollection,

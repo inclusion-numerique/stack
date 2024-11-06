@@ -15,9 +15,10 @@ const InscriptionInvalidInformationContactSupportLink = ({
     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
     <Link
       className={classNames('fr-link fr-link--sm fr-mb-0 ', linkClassName)}
-      href="mailto:coop-numerique@anct.gouv.fr"
+      href="mailto:conseiller-numerique@anct.gouv.fr"
     >
-      Ce ne sont pas vos informations&nbsp;? Contactez le support
+      Ce ne sont pas vos informations&nbsp;? Vous pouvez contactez le support du
+      dispositif Conseiller Numérique
     </Link>
   </div>
 )

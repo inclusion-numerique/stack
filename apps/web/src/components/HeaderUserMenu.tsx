@@ -8,6 +8,7 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import { getUserDisplayName } from '@app/web/utils/user'
 import TerminerUsurpationHeaderUserMenuItem from '@app/web/components/TerminerUsurpationHeaderUserMenuItem'
 import { isAuthenticatedConseillerNumerique } from '@app/web/auth/getAuthenticatedConseillerNumerique'
+import { isLimitedToInscription } from '@app/web/app/administration/utilisateurs/getUserLifecycle'
 import styles from './HeaderUserMenu.module.css'
 
 export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
@@ -39,6 +40,8 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
   })
   const structureEmployeuse = user.emplois.at(0)
 
+  const restricted = isLimitedToInscription(user)
+
   const menuContent = (
     <ul className="fr-menu__list">
       <li>
@@ -53,21 +56,23 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
           </span>
         </span>
       </li>
-      <li>
-        <Link
-          className="fr-nav__link"
-          href="/mon-profil"
-          style={{ boxShadow: 'none' }}
-        >
-          <span
-            className="ri-account-circle-line fr-mr-1w"
-            style={{ color: 'var(--blue-france-sun-113-625)' }}
-            aria-hidden
-          />
-          Voir mon profil
-        </Link>
-      </li>
-      {isAuthenticatedConseillerNumerique(user) && (
+      {!restricted && (
+        <li>
+          <Link
+            className="fr-nav__link"
+            href="/coop/mon-profil"
+            style={{ boxShadow: 'none' }}
+          >
+            <span
+              className="ri-account-circle-line fr-mr-1w"
+              style={{ color: 'var(--blue-france-sun-113-625)' }}
+              aria-hidden
+            />
+            Voir mon profil
+          </Link>
+        </li>
+      )}
+      {!restricted && isAuthenticatedConseillerNumerique(user) && (
         <li>
           <Link
             className="fr-nav__link"
@@ -83,33 +88,35 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
           </Link>
         </li>
       )}
-      {user.mediateur && user.mediateur._count.enActivite > 0 && (
-        <li>
-          <Link
-            className="fr-nav__link fr-border--bottom"
-            href="/lieux-activite"
-            style={{ boxShadow: 'none' }}
-          >
-            <span
-              className="ri-home-office-line fr-mr-1w"
-              style={{ color: 'var(--blue-france-sun-113-625)' }}
-              aria-hidden
-            />
-            Voir mes lieux d’activités ·{' '}
-            <span className="fr-text--bold">
-              {user.mediateur?._count.enActivite}
-            </span>
-          </Link>
-        </li>
-      )}
-      {structureEmployeuse && (
+      {!restricted &&
+        user.mediateur &&
+        user.mediateur._count.enActivite > 0 && (
+          <li>
+            <Link
+              className="fr-nav__link fr-border--bottom"
+              href="/coop/lieux-activite"
+              style={{ boxShadow: 'none' }}
+            >
+              <span
+                className="ri-home-office-line fr-mr-1w"
+                style={{ color: 'var(--blue-france-sun-113-625)' }}
+                aria-hidden
+              />
+              Voir mes lieux d’activités ·{' '}
+              <span className="fr-text--bold">
+                {user.mediateur?._count.enActivite}
+              </span>
+            </Link>
+          </li>
+        )}
+      {!restricted && structureEmployeuse && (
         <li>
           <span className="fr-nav__link fr-pb-0 fr-text-mention--grey fr-text--medium fr-text--sm">
             Ma structure employeuse
           </span>
           <Link
             className="fr-nav__link fr-border--bottom"
-            href="/ma-structure-employeuse"
+            href="/coop/ma-structure-employeuse"
             style={{ boxShadow: 'none' }}
           >
             <span

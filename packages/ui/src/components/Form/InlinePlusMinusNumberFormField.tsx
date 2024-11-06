@@ -41,7 +41,7 @@ const InlinePlusMinusNumberFormField = <T extends FieldValues = FieldValues>({
   }
 
   return (
-    <div className={styles.container} ref={ref}>
+    <div className={classNames(styles.container, classes?.container)} ref={ref}>
       <InputFormField
         {...props}
         type="number"

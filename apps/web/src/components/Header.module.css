@@ -18,11 +18,26 @@
     height: 56px;
     flex-basis: 56px;
     flex-shrink: 0;
+
+    &.nonPublic {
+        width: 40px;
+        height: 40px;
+        margin-right: 4px !important;
+    }
 }
 
 .serviceTitle {
     font-weight: 500;
-    max-width: 280px;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 24px;
+
+    &.nonPublic {
+        white-space: nowrap;
+        width: 352px;
+    }
+
+    &.public {
+        max-width: 280px;
+        font-size: 18px;
+    }
 }

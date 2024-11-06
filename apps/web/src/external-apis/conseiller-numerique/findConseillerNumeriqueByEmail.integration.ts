@@ -15,7 +15,7 @@ describe('find conseiller numérique by email', () => {
     expect(conseiller).toBeNull()
   })
 
-  it('gets conseiller coordonné matching email', async () => {
+  it('gets conseiller by professional email', async () => {
     const result = await findConseillerNumeriqueByEmail(
       'michele.ladik@grand-cognac.fr',
     )
@@ -28,9 +28,23 @@ describe('find conseiller numérique by email', () => {
     expect(result?.conseiller.coordinateurs?.length).toBeGreaterThan(0)
   })
 
+  it.skip('should not get conseiller by personal email', async () => {
+    const result = await findConseillerNumeriqueByEmail(
+      'xxxx@gmail.com', // no personal email in codebase
+    )
+    expect(result).toBeNull()
+  })
+
+  it('should not get conseiller by legacy @conseiller-numerique email', async () => {
+    const result = await findConseillerNumeriqueByEmail(
+      'michele.ladik@conseiller-numerique.fr',
+    )
+    expect(result).toBeNull()
+  })
+
   it('gets conseiller coordinateur matching mail', async () => {
     const result = await findConseillerNumeriqueByEmail(
-      'fabien.lagarde@conseiller-numerique.fr',
+      'fabien.lagarde@numeriquesudcharente.com',
     )
 
     expect(result?.conseiller).toBeDefined()
@@ -42,7 +56,7 @@ describe('find conseiller numérique by email', () => {
 
   it('should find conseillers coordonnés by email', async () => {
     const result = await findConseillersCoordonnesByEmail(
-      'fabien.lagarde@conseiller-numerique.fr',
+      'fabien.lagarde@numeriquesudcharente.com',
     )
 
     expect(result.length).toBeGreaterThan(0)

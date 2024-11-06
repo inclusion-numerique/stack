@@ -11,6 +11,7 @@ import {
   conseillerNumeriqueLieuxInscriptionSteps,
   conseillerNumeriqueLieuxInscriptionStepsCount,
 } from '@app/web/app/inscription/(steps)/conseiller-numerique-lieux/conseillerNumeriqueLieuxInscriptionSteps'
+import { profileInscriptionLabels } from '@app/web/inscription/profilInscription'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),
@@ -46,7 +47,7 @@ const Page = async () => {
       totalSteps={conseillerNumeriqueLieuxInscriptionStepsCount}
     >
       <RoleInscriptionNotice
-        roleInscription="conseiller numérique"
+        roleInscription={profileInscriptionLabels.ConseillerNumerique.toLocaleLowerCase()}
         className="fr-mt-12v"
       />
       <InscriptionRecapitulatif

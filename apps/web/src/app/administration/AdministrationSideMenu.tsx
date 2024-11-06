@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation'
 import type { SideMenuProps } from '@codegouvfr/react-dsfr/SideMenu'
 import SideMenu from '@codegouvfr/react-dsfr/SideMenu'
+import styles from '../coop/CoopSideMenu.module.css'
 
 const AdministrationSideMenu = () => {
   const pathname = usePathname()
@@ -56,36 +57,16 @@ const AdministrationSideMenu = () => {
       },
       isActive: pathname?.startsWith('/administration/usurpation'),
     },
-    {
-      text: (
-        <>
-          <span className="fr-icon-links-line ri-xl fr-mr-1w fr-text--regular" />
-          Intégrations
-        </>
-      ),
-      isActive: pathname?.startsWith('/administration/integrations'),
-      expandedByDefault: pathname?.startsWith('/administration/integrations'),
-      items: [
-        {
-          text: 'Conseillers numérique',
-          isActive: pathname?.startsWith(
-            '/administration/integrations/conseillers-numerique',
-          ),
-          linkProps: {
-            href: '/administration/integrations/conseillers-numerique',
-          },
-        },
-      ],
-    },
   ] satisfies SideMenuProps.Item[]
 
   return (
     <SideMenu
       title={
-        <h5 className="fr-mt-md-4v fr-pl-4v fr-text-title--blue-france">
+        <p className="fr-text-title--blue-france fr-h5 fr-mb-0">
           Administration
-        </h5>
+        </p>
       }
+      classes={{ item: styles.item, root: styles.sideMenu }}
       items={items}
       burgerMenuButtonText="Menu Administration"
       sticky

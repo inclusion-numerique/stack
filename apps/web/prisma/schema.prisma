@@ -570,7 +570,8 @@ enum Genre {
 }
 
 enum TrancheAge {
-  Mineur                @map("mineur")
+  MoinsDeDouze          @map("moins_de_douze")
+  DouzeDixHuit          @map("douze_dix_huit")
   DixHuitVingtQuatre    @map("dix_huit_vingt_quatre")
   VingtCinqTrenteNeuf   @map("vingt_cinq_trente_neuf")
   QuaranteCinquanteNeuf @map("quarante_cinquante_neuf")

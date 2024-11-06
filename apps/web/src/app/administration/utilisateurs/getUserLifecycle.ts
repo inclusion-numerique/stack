@@ -1,4 +1,5 @@
-import { UtilisateurForList } from '@app/web/app/administration/utilisateurs/queryUtilisateursForList'
+import type { UtilisateurForList } from '@app/web/app/administration/utilisateurs/queryUtilisateursForList'
+import type { SessionUser } from '@app/web/auth/sessionUser'
 
 export const getUserLifecycle = (
   user: Pick<UtilisateurForList, 'deleted' | 'inscriptionValidee' | 'role'>,
@@ -23,3 +24,8 @@ export const getUserLifecycle = (
 }
 
 export type UserLifecycle = ReturnType<typeof getUserLifecycle>
+
+export const isLimitedToInscription = (user: {
+  role: SessionUser['role']
+  inscriptionValidee: Date | string | null
+}) => user.role === 'User' && !user.inscriptionValidee

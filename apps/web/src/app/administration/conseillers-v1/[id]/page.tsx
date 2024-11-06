@@ -716,7 +716,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
                 {
                   label: 'Nombre de conseillers souhaités',
                   value:
-                    miseEnRelation.structureObj.nombreConseillersSouhaites.toString(),
+                    miseEnRelation.structureObj.nombreConseillersSouhaites?.toString(),
                 },
                 {
                   label: 'Conventionnement statut',

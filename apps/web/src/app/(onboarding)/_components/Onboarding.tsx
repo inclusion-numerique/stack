@@ -23,7 +23,7 @@ const Onboarding = ({
   next?: { href: string; label?: string; isComplete?: boolean }
   closeHref: string
 }>) => (
-  <div className="fr-container-fluid">
+  <div className="fr-layout__main fr-container-fluid">
     <div className="fr-grid-row fr-height-full">
       <div className="fr-col-md-6 fr-col-12">
         <div className="fr-flex fr-align-items-center fr-mx-auto fr-height-full ">
