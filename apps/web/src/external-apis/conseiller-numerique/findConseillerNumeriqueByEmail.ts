@@ -5,9 +5,9 @@ import {
   type ConseillerNumeriqueV1,
   type ConseillerNumeriqueV1Collection,
 } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Document'
-import type { PremanenceConseillerNumerique } from './PremanenceConseillerNumerique'
 import type { MiseEnRelationConseillerNumeriqueV1MinimalProjection } from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
 import { getActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/getActiveMiseEnRelation'
+import type { PremanenceConseillerNumerique } from './PremanenceConseillerNumerique'
 
 export type ConseillerNumeriqueFound = {
   conseiller: ConseillerNumeriqueV1
@@ -17,6 +17,20 @@ export type ConseillerNumeriqueFound = {
   miseEnRelationActive: MiseEnRelationConseillerNumeriqueV1MinimalProjection | null
   permanences: PremanenceConseillerNumerique[]
   conseillersCoordonnes: ConseillerNumeriqueV1[]
+}
+
+export type ConseillerNumeriqueFoundWithActiveMiseEnRelation =
+  ConseillerNumeriqueFound & {
+    miseEnRelationActive: Exclude<
+      ConseillerNumeriqueFound['miseEnRelationActive'],
+      null
+    >
+  }
+
+export function isConseillerNumeriqueFoundWithActiveMiseEnRelation(
+  conseillerNumeriqueFound: ConseillerNumeriqueFound | null,
+): conseillerNumeriqueFound is ConseillerNumeriqueFoundWithActiveMiseEnRelation {
+  return !!conseillerNumeriqueFound?.miseEnRelationActive
 }
 
 export type ConseillerNumeriqueByEmailFinder = (

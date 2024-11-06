@@ -32,7 +32,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
     return null
   }
 
-  const { conseiller, miseEnRelation, permanences } = result
+  const { conseiller, miseEnRelationActive, permanences } = result
 
   const coopInfo = await prismaClient.conseillerNumerique.findUnique({
     where: {
@@ -633,44 +633,54 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
       </AdministrationInfoCard>
 
       <AdministrationInfoCard title="Structure employeuse">
-        {!miseEnRelation && (
+        {!miseEnRelationActive && (
           <Notice
-            title={<>Aucune mise en relation trouvée</>}
+            title={<>Aucune mise en relation active trouvée</>}
             className="fr-notice--alert"
           />
         )}
-        {!!miseEnRelation && (
-          <div key={miseEnRelation._id.toString('hex')}>
+        {!!miseEnRelationActive && (
+          <div key={miseEnRelationActive._id.toString('hex')}>
             <p className="fr-text--lg fr-text--medium fr-mb-4v fr-mt-8v">
-              {miseEnRelation.structureObj.nom}
+              {miseEnRelationActive.structureObj.nom}
             </p>
 
             <AdministrationInlineLabelsValues
               items={[
                 {
                   label: 'Identifiant structure',
-                  value: miseEnRelation.structureObj._id.toString('hex'),
+                  value: miseEnRelationActive.structureObj._id.toString('hex'),
                 },
                 {
                   label: 'Adresse',
                   value: (
                     <>
-                      {miseEnRelation.structureObj.insee.adresse.numero_voie}{' '}
-                      {miseEnRelation.structureObj.insee.adresse.libelle_voie},{' '}
-                      {miseEnRelation.structureObj.insee.adresse.code_postal}{' '}
                       {
-                        miseEnRelation.structureObj.insee.adresse
+                        miseEnRelationActive.structureObj.insee.adresse
+                          .numero_voie
+                      }{' '}
+                      {
+                        miseEnRelationActive.structureObj.insee.adresse
+                          .libelle_voie
+                      }
+                      ,{' '}
+                      {
+                        miseEnRelationActive.structureObj.insee.adresse
+                          .code_postal
+                      }{' '}
+                      {
+                        miseEnRelationActive.structureObj.insee.adresse
                           .libelle_commune
                       }
                     </>
                   ),
                 },
-                miseEnRelation.structureObj.location?.coordinates
+                miseEnRelationActive.structureObj.location?.coordinates
                   ? {
                       label: 'Géolocalisation',
                       value: (
                         <a
-                          href={`https://www.openstreetmap.org/?mlat=${miseEnRelation.structureObj.location.coordinates[1]}&mlon=${miseEnRelation.structureObj.location.coordinates[0]}#map=15/${miseEnRelation.structureObj.location.coordinates[1]}/${miseEnRelation.structureObj.location.coordinates[0]}`}
+                          href={`https://www.openstreetmap.org/?mlat=${miseEnRelationActive.structureObj.location.coordinates[1]}&mlon=${miseEnRelationActive.structureObj.location.coordinates[0]}#map=15/${miseEnRelationActive.structureObj.location.coordinates[1]}/${miseEnRelationActive.structureObj.location.coordinates[0]}`}
                           target="_blank"
                           rel="noreferrer"
                         >
@@ -681,51 +691,54 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
                   : null,
                 {
                   label: 'Directeur/trice',
-                  value: `${miseEnRelation.structureObj.contact.prenom} ${miseEnRelation.structureObj.contact.nom}`,
+                  value: `${miseEnRelationActive.structureObj.contact.prenom} ${miseEnRelationActive.structureObj.contact.nom}`,
                 },
                 {
                   label: 'Fonction',
-                  value: miseEnRelation.structureObj.contact.fonction,
+                  value: miseEnRelationActive.structureObj.contact.fonction,
                 },
                 {
                   label: 'Téléphone',
                   value:
-                    miseEnRelation.structureObj.contact.telephone ||
+                    miseEnRelationActive.structureObj.contact.telephone ||
                     'Non renseigné',
                 },
                 {
                   label: 'Email',
                   value:
-                    miseEnRelation.structureObj.contact.email ||
+                    miseEnRelationActive.structureObj.contact.email ||
                     'Non renseigné',
                 },
                 {
                   label: 'SIRET',
-                  value: miseEnRelation.structureObj.siret,
+                  value: miseEnRelationActive.structureObj.siret,
                 },
                 {
                   label: 'Type',
-                  value: miseEnRelation.structureObj.type,
+                  value: miseEnRelationActive.structureObj.type,
                 },
                 {
                   label: 'Date de début de mission',
                   value: dateAsDay(
-                    new Date(miseEnRelation.structureObj.dateDebutMission),
+                    new Date(
+                      miseEnRelationActive.structureObj.dateDebutMission,
+                    ),
                   ),
                 },
                 {
                   label: 'Nombre de conseillers souhaités',
                   value:
-                    miseEnRelation.structureObj.nombreConseillersSouhaites?.toString(),
+                    miseEnRelationActive.structureObj.nombreConseillersSouhaites?.toString(),
                 },
                 {
                   label: 'Conventionnement statut',
-                  value: miseEnRelation.structureObj.conventionnement.statut,
+                  value:
+                    miseEnRelationActive.structureObj.conventionnement.statut,
                 },
                 {
                   label: 'Nb de postes attribués',
                   value:
-                    miseEnRelation.structureObj.conventionnement?.dossierReconventionnement?.nbPostesAttribuees?.toString(),
+                    miseEnRelationActive.structureObj.conventionnement?.dossierReconventionnement?.nbPostesAttribuees?.toString(),
                 },
               ]}
             />
@@ -737,29 +750,31 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
               items={[
                 {
                   label: 'Date de recrutement',
-                  value: miseEnRelation.dateRecrutement
-                    ? dateAsDay(new Date(miseEnRelation.dateRecrutement))
+                  value: miseEnRelationActive.dateRecrutement
+                    ? dateAsDay(new Date(miseEnRelationActive.dateRecrutement))
                     : 'Non renseigné',
                 },
                 {
                   label: 'Date de début de contrat',
-                  value: miseEnRelation.dateDebutDeContrat
-                    ? dateAsDay(new Date(miseEnRelation.dateDebutDeContrat))
+                  value: miseEnRelationActive.dateDebutDeContrat
+                    ? dateAsDay(
+                        new Date(miseEnRelationActive.dateDebutDeContrat),
+                      )
                     : 'Non renseigné',
                 },
                 {
                   label: 'Date de fin de contrat',
-                  value: miseEnRelation.dateFinDeContrat
-                    ? dateAsDay(new Date(miseEnRelation.dateFinDeContrat))
+                  value: miseEnRelationActive.dateFinDeContrat
+                    ? dateAsDay(new Date(miseEnRelationActive.dateFinDeContrat))
                     : 'Non renseigné',
                 },
                 {
                   label: 'Type de contrat',
-                  value: miseEnRelation.typeDeContrat,
+                  value: miseEnRelationActive.typeDeContrat,
                 },
                 {
                   label: 'Statut de la mise en relation',
-                  value: miseEnRelation.statut,
+                  value: miseEnRelationActive.statut,
                 },
               ]}
             />

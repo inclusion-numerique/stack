@@ -68,7 +68,24 @@ const fakeFindConseillerNumeriqueByEmail =
   async (): Promise<ConseillerNumeriqueFound> =>
     Promise.resolve({
       conseiller,
-      miseEnRelation: {
+      miseEnRelations: [
+        {
+          _id: new ObjectId('60462162871498b5cec20c14'),
+          statut: 'finalisee',
+          dateRecrutement: new Date('2021-10-16'),
+          dateFinDeContrat: new Date('2021-12-16'),
+
+          structureObj: structure,
+          dateDebutDeContrat: new Date('2021-10-16'),
+          typeDeContrat: 'CDI',
+        },
+      ],
+      miseEnRelationActive: {
+        _id: new ObjectId('60462162871498b5cec20c14'),
+        statut: 'finalisee',
+        dateRecrutement: new Date('2021-10-16'),
+        dateFinDeContrat: new Date('2021-12-16'),
+
         structureObj: structure,
         dateDebutDeContrat: new Date('2021-10-16'),
         typeDeContrat: 'CDI',
