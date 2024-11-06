@@ -1,5 +1,5 @@
-import Button from '@codegouvfr/react-dsfr/Button'
 import { PropsWithChildren } from 'react'
+import Button from '@codegouvfr/react-dsfr/Button'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 

@@ -29,10 +29,10 @@ const MonEquipeListePage = ({
 }) => (
   <>
     <SkipLinksPortal links={defaultSkipLinks} />
-    <div className="fr-container fr-mt-2w">
+    <div className="fr-container fr-container--800">
       <CoopBreadcrumbs currentPage="Mon équipe" />
-      <main id={contentId} className="fr-container fr-container--800 fr-mb-16w">
-        <div className="fr-flex fr-flex-wrap fr-direction-row fr-align-items-center fr-flex-gap-4v fr-my-5w">
+      <main id={contentId} className="fr-mb-16w">
+        <div className="fr-flex fr-flex-wrap fr-direction-row fr-align-items-center fr-flex-gap-4v fr-my-12v">
           <span
             className="ri-group-2-line ri-lg fr-line-height-1 fr-text-label--blue-france fr-background-alt--blue-france fr-p-2w fr-m-0 fr-border-radius--8"
             aria-hidden

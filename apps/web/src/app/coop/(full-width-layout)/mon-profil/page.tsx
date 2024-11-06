@@ -16,7 +16,7 @@ import { CoordinatorContract } from './_components/CoordinatorContract'
 import ProfileEditCard from './_components/ProfileEditCard'
 
 export const metadata: Metadata = {
-  title: metadataTitle('Mes profil'),
+  title: metadataTitle('Mon profil'),
 }
 
 const formatDate = (date?: string | number | Date | null) =>
