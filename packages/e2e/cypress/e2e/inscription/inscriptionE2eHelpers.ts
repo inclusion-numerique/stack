@@ -6,7 +6,6 @@ import {
   profileInscriptionLabels,
   profileInscriptionSlugs,
 } from '@app/web/inscription/profilInscription'
-import type { ProfilInscription } from '@prisma/client'
 import { appUrl } from '@app/e2e/support/helpers'
 
 export const startInscriptionAs = ({
@@ -15,7 +14,7 @@ export const startInscriptionAs = ({
   user,
 }: {
   user: CreateUserInput
-  profilInscription: ProfilInscription
+  profilInscription: keyof typeof profileInscriptionLabels
   roleShouldBeCheckedAndFound: boolean
 }) => {
   cy.createUserAndSignin(user)
