@@ -7,6 +7,9 @@ import {
   profileInscriptionSlugs,
 } from '@app/web/inscription/profilInscription'
 import { appUrl } from '@app/e2e/support/helpers'
+import {
+  inscriptionRolesErrorTitles,
+} from '@app/web/app/inscription/(steps)/identification/_components/inscriptionRole'
 
 export const startInscriptionAs = ({
   profilInscription,
@@ -32,10 +35,18 @@ export const startInscriptionAs = ({
   )
 
   if (roleShouldBeCheckedAndFound) {
-    cy.contains(
-      `Vous avez été identifié en tant que ${lowerCaseProfileInscriptionLabels[profilInscription]}`,
-    )
+    if (profilInscription === 'Mediateur') {
+      cy.contains('Finaliser votre inscription pour accéder à votre espace')
+    } else {
+      cy.contains(
+        `Vous avez été identifié en tant que ${lowerCaseProfileInscriptionLabels[profilInscription]}`,
+      )
+    }
+    cy.findByRole('link', { name: 'Continuer' })
   } else {
-    cy.contains('todo wording for role not found')
+    cy.contains(
+      inscriptionRolesErrorTitles[profileInscriptionSlugs[profilInscription]],
+    )
+    cy.findByRole('button', { name: 'Essayer une autre adresse email' })
   }
 }
