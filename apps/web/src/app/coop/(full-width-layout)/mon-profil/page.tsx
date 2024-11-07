@@ -7,8 +7,8 @@ import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
 import { findConseillerNumeriqueByEmail } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
 import { CoordinatorContract } from './_components/CoordinatorContract'
-import MediationNumerique from './_components/MediationNumerique'
 import ProfileEditCard from './_components/ProfileEditCard'
+import FonctionnalitesDeMediationNumeriqueCoordinateur from '@app/web/app/coop/(full-width-layout)/mon-profil/_components/FonctionnalitesDeMediationNumeriqueCoordinateur'
 
 const formatDate = (date?: string | number | Date | null) =>
   date && isValid(date) ? format(date, 'dd/MM/yyyy') : null
@@ -78,9 +78,13 @@ const MonProfilPage = async () => {
               <CoordinatorContract {...contract} />
             </section>
           )}
-          <section>
-            <MediationNumerique isActive={user.mediateur?.id != null} />
-          </section>
+          {user.coordinateur ? (
+            <section>
+              <FonctionnalitesDeMediationNumeriqueCoordinateur
+                isActive={user.mediateur?.id != null}
+              />
+            </section>
+          ) : null}
         </main>
       </div>
     </>

@@ -18,7 +18,11 @@ const {
   isOpenedByDefault: false,
 })
 
-const MediationNumerique = ({ isActive }: { isActive: boolean }) => {
+const FonctionnalitesDeMediationNumeriqueCoordinateur = ({
+  isActive,
+}: {
+  isActive: boolean
+}) => {
   const router = useRouter()
   const [isLoading, setIsLoading] = React.useState(false)
 
@@ -97,4 +101,4 @@ const MediationNumerique = ({ isActive }: { isActive: boolean }) => {
   )
 }
 
-export default withTrpc(MediationNumerique)
+export default withTrpc(FonctionnalitesDeMediationNumeriqueCoordinateur)
