@@ -1,7 +1,6 @@
 import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDisclamer'
 import { DefaultValues } from 'react-hook-form'
 import { notFound } from 'next/navigation'
-import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
@@ -115,7 +114,7 @@ const PageModifierBeneficiaire = async ({
   }
 
   return (
-    <CoopPageContainer size={794}>
+    <div className="fr-container fr-container--medium">
       <CoopBreadcrumbs
         currentPage="Modifier"
         parents={[
@@ -144,7 +143,7 @@ const PageModifierBeneficiaire = async ({
         retour={retour}
         communeResidenceDefaultOptions={communeResidenceDefaultOptions}
       />
-    </CoopPageContainer>
+    </div>
   )
 }
 
