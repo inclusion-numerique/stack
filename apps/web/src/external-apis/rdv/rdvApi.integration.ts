@@ -18,11 +18,21 @@ describe.skip('rdvApi', () => {
           name: 'test',
           address: 'test',
         },
+        lieux: [
+          {
+            name: 'Bureaux test',
+            address: '20 avenue de Ségur, Paris, 75007',
+          },
+          {
+            name: 'Bureaux PIX',
+            address: '21 rue des Ardennes, Paris, 75019',
+          },
+        ],
       },
     })
 
     expect(result).toEqual({
-      id: 'todo',
+      id: expect.any(String),
     })
   })
 })
