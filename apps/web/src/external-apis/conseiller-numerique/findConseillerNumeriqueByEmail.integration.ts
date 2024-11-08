@@ -1,8 +1,5 @@
 import { closeMongoClient } from './conseillerNumeriqueMongoClient'
-import {
-  findConseillerNumeriqueByEmail,
-  findConseillersCoordonnesByEmail,
-} from './findConseillerNumeriqueByEmail'
+import { findConseillerNumeriqueByEmail } from './findConseillerNumeriqueByEmail'
 
 describe('find conseiller numérique by email', () => {
   afterAll(async () => {
@@ -23,7 +20,7 @@ describe('find conseiller numérique by email', () => {
     expect(result?.conseiller).toBeDefined()
     expect(result?.conseiller.estCoordinateur).toBeFalsy()
     expect(result?.miseEnRelationActive).toBeDefined()
-    expect(result?.conseillersCoordonnes.length).toBe(0)
+    expect(result?.conseillersCoordonnes).toBeNull()
     expect(result?.permanences.length).toBeGreaterThan(0)
     expect(result?.conseiller.coordinateurs?.length).toBeGreaterThan(0)
   })
@@ -50,15 +47,7 @@ describe('find conseiller numérique by email', () => {
     expect(result?.conseiller).toBeDefined()
     expect(result?.conseiller.estCoordinateur).toBeTrue()
     expect(result?.miseEnRelationActive).toBeDefined()
-    expect(result?.conseillersCoordonnes.length).toBeGreaterThan(0)
+    expect(result?.conseillersCoordonnes?.length).toBeGreaterThan(0)
     expect(result?.permanences.length).toBeGreaterThan(0)
-  })
-
-  it('should find conseillers coordonnés by email', async () => {
-    const result = await findConseillersCoordonnesByEmail(
-      'fabien.lagarde@numeriquesudcharente.com',
-    )
-
-    expect(result.length).toBeGreaterThan(0)
   })
 })

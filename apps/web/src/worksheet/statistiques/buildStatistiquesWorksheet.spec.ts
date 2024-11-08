@@ -386,7 +386,11 @@ const STATISTIQUES_WORKSHEET_INPUT_FOR_COORDINATEUR: BuildStatistiquesWorksheetI
       lastName: 'Doe',
       role: 'User',
       mediateur: null,
-      coordinateur: { id: '1', mediateursCoordonnes: [] },
+      coordinateur: {
+        id: '1',
+        conseillerNumeriqueId: '2',
+        mediateursCoordonnes: [],
+      },
     },
     filters: {
       du: '01/08/2024',

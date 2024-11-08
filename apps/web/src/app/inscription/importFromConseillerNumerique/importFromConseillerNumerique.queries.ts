@@ -11,7 +11,7 @@ import { prismaClient } from '@app/web/prismaClient'
 
 export const toId = ({ id }: { id: string | ObjectId }) => id.toString()
 
-export const markAsCheckedMediateur = async (user: SessionUser) =>
+export const markAsCheckedMediateur = (user: SessionUser) =>
   prismaClient.user.update({
     where: {
       id: user.id,
@@ -25,6 +25,20 @@ export const markAsCheckedMediateur = async (user: SessionUser) =>
         },
       },
       profilInscription: ProfilInscription.Mediateur,
+    },
+    select: sessionUserSelect,
+  })
+
+export const updateUserProfileInscription = (
+  user: SessionUser,
+  profil: ProfilInscription,
+) =>
+  prismaClient.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      profilInscription: profil,
     },
     select: sessionUserSelect,
   })
@@ -125,9 +139,11 @@ export const createConseillerNumerique = async (
 export const findConseillerNumeriquesFor = ({
   conseillersCoordonnes,
 }: ConseillerNumeriqueFound) =>
-  prismaClient.conseillerNumerique.findMany({
-    where: { id: { in: conseillersCoordonnes.map(toId) } },
-  })
+  !!conseillersCoordonnes && conseillersCoordonnes.length > 0
+    ? prismaClient.conseillerNumerique.findMany({
+        where: { id: { in: conseillersCoordonnes.map(toId) } },
+      })
+    : Promise.resolve([])
 
 export const createCoordinateur = async (
   { conseiller: { id } }: { conseiller: { id: string } },

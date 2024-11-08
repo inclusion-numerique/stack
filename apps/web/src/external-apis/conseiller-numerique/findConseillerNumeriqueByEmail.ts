@@ -7,6 +7,7 @@ import {
 } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Document'
 import type { MiseEnRelationConseillerNumeriqueV1MinimalProjection } from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
 import { getActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/getActiveMiseEnRelation'
+import { fetchConseillersCoordonnes } from '@app/web/external-apis/conseiller-numerique/fetchConseillersCoordonnes'
 import type { PremanenceConseillerNumerique } from './PremanenceConseillerNumerique'
 
 export type ConseillerNumeriqueFound = {
@@ -16,7 +17,7 @@ export type ConseillerNumeriqueFound = {
   // Si il n'y a pas de mise en relation active, on considère que le conseiller n’est pas / plus en contrat
   miseEnRelationActive: MiseEnRelationConseillerNumeriqueV1MinimalProjection | null
   permanences: PremanenceConseillerNumerique[]
-  conseillersCoordonnes: ConseillerNumeriqueV1[]
+  conseillersCoordonnes: ConseillerNumeriqueV1[] | null // null if not a coordinateur
 }
 
 export type ConseillerNumeriqueFoundWithActiveMiseEnRelation =
@@ -37,40 +38,12 @@ export type ConseillerNumeriqueByEmailFinder = (
   email: string,
 ) => Promise<ConseillerNumeriqueFound | null>
 
-const findConseillersCoordonnesById =
-  (conseillerCollection: ConseillerNumeriqueV1Collection) =>
-  async (id: string) => {
-    const conseillersCoordonnesDocument = await conseillerCollection
-      .find({ coordinateurs: { $elemMatch: { id: new ObjectId(id) } } })
-      .toArray()
-
-    return conseillersCoordonnesDocument.map(cleanConseillerNumeriqueV1Document)
-  }
-
 const findConseillerDocumentByEmail =
   (conseillerCollection: ConseillerNumeriqueV1Collection) => (email: string) =>
     conseillerCollection.findOne({
       deletedAt: { $in: [null, undefined] },
       emailPro: email,
     })
-
-export const findConseillersCoordonnesByEmail = async (
-  coordinateurEmail: string,
-) => {
-  const conseillerCollection =
-    await conseillerNumeriqueMongoCollection('conseillers')
-
-  const email = coordinateurEmail.trim().toLowerCase()
-
-  const conseillerNumerique =
-    await findConseillerDocumentByEmail(conseillerCollection)(email)
-
-  return conseillerNumerique == null
-    ? []
-    : findConseillersCoordonnesById(conseillerCollection)(
-        conseillerNumerique._id.toString(),
-      )
-}
 
 export const findConseillerNumeriqueByEmail: ConseillerNumeriqueByEmailFinder =
   async (userEmail: string): Promise<ConseillerNumeriqueFound | null> => {
@@ -146,15 +119,19 @@ export const findConseillerNumeriqueByEmail: ConseillerNumeriqueByEmailFinder =
       updatedBy: ObjectId
     }[]
 
+    const conseillersCoordonnes = conseillerDocument.estCoordinateur
+      ? await fetchConseillersCoordonnes({
+          coordinateurV1Id: conseillerDocument._id.toString('hex'),
+        })
+      : null
+
     return conseillerDocument
       ? {
           conseiller: cleanConseillerNumeriqueV1Document(conseillerDocument),
           miseEnRelations,
           miseEnRelationActive: getActiveMiseEnRelation(miseEnRelations),
           permanences,
-          conseillersCoordonnes: await findConseillersCoordonnesById(
-            conseillerCollection,
-          )(conseillerDocument._id.toString('hex')),
+          conseillersCoordonnes,
         }
       : null
   }

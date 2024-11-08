@@ -64,6 +64,7 @@ export const sessionUserSelect = {
   coordinateur: {
     select: {
       id: true,
+      conseillerNumeriqueId: true,
       mediateursCoordonnes: {
         select: {
           mediateurId: true,

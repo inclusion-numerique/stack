@@ -73,6 +73,13 @@ const IntroPage = async ({
 
   const role = userRole(checkedUser)
 
+  console.log({
+    profil,
+    shouldCheckUser,
+    checkedUser,
+    role,
+  })
+
   const proConnectIdTokenHint = await getProconnectIdToken(user)
 
   return (

@@ -35,6 +35,7 @@ import {
   removeMediateur,
   structureEmployeuseOf,
   toId,
+  updateUserProfileInscription,
 } from './importFromConseillerNumerique.queries'
 
 type ImportFromConseillerNumeriquePayload = {
@@ -196,6 +197,40 @@ export const importFromConseillerNumerique =
     if (isAlreadyConseillerOrCoordinateur(user)) return user
 
     const conseillerFound = await findConseillerNumeriqueByEmail(user.email)
+    console.log('CONSEILLER FOUND', conseillerFound)
+
+    // TODO user is coordinateur or not in v1 but has started as conseiller
+    if (
+      profil === ProfilInscription.ConseillerNumerique &&
+      (!conseillerFound || conseillerFound.conseiller.estCoordinateur)
+    ) {
+      return updateUserProfileInscription(
+        user,
+        ProfilInscription.Coordinateur,
+      ).then(toSessionUser)
+    }
+
+    // TODO user is conseiller or not in v1 but has started as coordinateur
+    if (
+      profil === ProfilInscription.Coordinateur &&
+      (!conseillerFound || !conseillerFound.conseiller.estCoordinateur)
+    ) {
+      return updateUserProfileInscription(
+        user,
+        ProfilInscription.ConseillerNumerique,
+      ).then(toSessionUser)
+    }
+
+    // TODO user is in v1 but has started as mediateur
+    if (profil === ProfilInscription.Mediateur && !!conseillerFound) {
+      console.log('USER IS IN V1 BUT HAS STARTED AS MEDIATEUR')
+      return updateUserProfileInscription(
+        user,
+        conseillerFound.conseiller.estCoordinateur
+          ? ProfilInscription.Coordinateur
+          : ProfilInscription.ConseillerNumerique,
+      ).then(toSessionUser)
+    }
 
     if (!isConseillerNumeriqueFoundWithActiveMiseEnRelation(conseillerFound)) {
       return markAsCheckedMediateur(user).then(toSessionUser)
