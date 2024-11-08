@@ -80,7 +80,7 @@ const ProfilEtCguForm = ({ userId }: { userId: string }) => {
         label={
           <>
             J’ai lu et j’accepte les{' '}
-            <a href="/" className="fr-link wip-outline" target="_blank">
+            <a href="/cgu" className="fr-link" target="_blank">
               conditions générales d’utilisation du service
             </a>
             .

@@ -1,6 +1,4 @@
 import React from 'react'
-import Notice from '@codegouvfr/react-dsfr/Notice'
-import Link from 'next/link'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
