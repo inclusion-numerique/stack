@@ -28,11 +28,11 @@ export default {
     },
   ],
   access: {
-    how: 'Accédez à ce service grâce à votre identifiant unique ProConnect.',
-    illustration: '/images/services/pro-connect.svg',
+    how: 'Accédez à ce service grâce à ProConnect, votre identifiant unique pour accéder à plusieurs services de l’État.',
+    illustration: '/images/services/pro-connect-logo.svg',
     info: {
-      label: 'En savoir plus sur Pro Connect',
-      link: '',
+      label: 'En savoir plus sur ProConnect',
+      link: 'https://www.proconnect.gouv.fr',
     },
     callToAction: {
       label: 'Se connecter',
