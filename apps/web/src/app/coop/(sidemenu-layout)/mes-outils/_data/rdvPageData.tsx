@@ -1,6 +1,10 @@
 import { OutilPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/outilPageData'
 
 export default {
+  notice:
+    ' Vos données seront partagées entre votre profil sur La Coop de la\n' +
+    '          médiation numérique et RDV Aide Numérique afin d’éviter les doubles\n' +
+    '          saisies',
   title: 'RDV Aide Numérique',
   description:
     'Un outil de prise de rendez-vous en ligne, simplifiant votre organisation et rappelant aux usagers leurs rendez-vous par SMS.',
