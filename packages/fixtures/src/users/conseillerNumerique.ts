@@ -12,7 +12,6 @@ export const conseillerNumerique = givenUser({
   role: 'User',
   profilInscription: 'ConseillerNumerique',
   acceptationCgu: new Date(),
-  checkConseillerNumeriqueInscription: new Date(),
   structureEmployeuseRenseignee: new Date(),
   lieuxActiviteRenseignes: new Date(),
   inscriptionValidee: new Date(),

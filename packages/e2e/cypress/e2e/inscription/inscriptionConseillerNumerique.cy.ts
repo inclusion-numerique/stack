@@ -11,23 +11,25 @@ describe('ETQ Conseiller numérique, je peux m’inscrire en suivant le bon parc
       startInscriptionAs({
         user,
         profilInscription: 'ConseillerNumerique',
-        roleShouldBeCheckedAndFound: true,
+        identificationResult: 'matching',
       })
     })
 
-    it(`ETQ Conseiller numérique ${user.lastName}, je ne peux pas m’inscrire en tant que coordinateur de conseiller numérique`, () => {
+    it(`ETQ Conseiller numérique ${user.lastName}, je ne peux m’inscrire en tant que conseiller même si j’ai choisi "coordinateur"`, () => {
       startInscriptionAs({
         user,
         profilInscription: 'Coordinateur',
-        roleShouldBeCheckedAndFound: false,
+        identificationResult: 'different',
+        expectedCheckedProfilInscription: 'ConseillerNumerique',
       })
     })
 
-    it.skip(`ETQ Conseiller numérique ${user.lastName}, je ne peux pas m’inscrire en tant que médiateur`, () => {
+    it(`ETQ Conseiller numérique ${user.lastName}, je peux m’inscrire en tant que conseiller même si j’ai choisi "médiateur"`, () => {
       startInscriptionAs({
         user,
         profilInscription: 'Mediateur',
-        roleShouldBeCheckedAndFound: false,
+        identificationResult: 'different',
+        expectedCheckedProfilInscription: 'ConseillerNumerique',
       })
     })
   }

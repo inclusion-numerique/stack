@@ -90,10 +90,19 @@ model User {
   lastLogin DateTime? @map("last_login")
 
   // Flux d’inscription
+
+  // Le profil déclaré par l’utilisateur à la première étape de l’inscription
   profilInscription                   ProfilInscription? @map("profil_inscription")
   acceptationCgu                      DateTime?          @map("acceptation_cgu")
-  checkConseillerNumeriqueInscription DateTime?          @map("check_conseiller_numerique_inscription")
-  checkCoordinateurInscription        DateTime?          @map("check_coordinateur_inscription")
+
+  // Checked profil vérifié avec la base de données conseiller-numerique-v1
+  checkedProfilInscription            ProfilInscription? @map("checked_profil_inscription")
+
+  // Timestamp des imports de données v1 à l'inscription
+  donneesConseillerNumeriqueV1Importees DateTime?          @map("donnees_conseiller_numerique_v1_importees")
+  donneesCoordinateurConseillerNumeriqueV1Importees DateTime?          @map("donnees_coordinateur_conseiller_numerique_v1_importees")
+
+  // Autres étapes d'inscription
   structureEmployeuseRenseignee       DateTime?          @map("structure_employeuse_renseignee")
   lieuxActiviteRenseignes             DateTime?          @map("lieux_activite_renseignes")
   inscriptionValidee                  DateTime?          @map("inscription_validee")
@@ -213,8 +222,9 @@ model Mediateur {
 
 // Source de vérité https://api.conseiller-numerique.gouv.fr
 model ConseillerNumerique {
-  // ID externe chez conseiller-numerique
+  // IDs externe chez conseiller-numerique
   id String @id
+  idPg Int? @unique @map("id_pg") @db.Integer
 
   mediateurId String    @unique @map("mediateur_id") @db.Uuid
   mediateur   Mediateur @relation(fields: [mediateurId], references: [id])
@@ -305,6 +315,7 @@ model Coordinateur {
 
   // Clé primaire chez conseiller-numerique
   conseillerNumeriqueId String @unique @map("conseiller_numerique_id")
+  conseillerNumeriqueIdPg Int? @unique @map("conseiller_numerique_id_pg")
 
   userId String @unique @map("user_id") @db.Uuid
   user   User   @relation(fields: [userId], references: [id])

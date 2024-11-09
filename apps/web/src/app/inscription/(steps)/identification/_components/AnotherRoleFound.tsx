@@ -71,7 +71,7 @@ export const AnotherRoleFound = ({
       </div>
       <p className="fr-mb-1w fr-text--sm fr-text--medium">
         Si ce rôle ne correspond pas à votre situation actuelle, si vous ne
-        faites plus partie du dispositif conseiller numérique :
+        faites plus partie du dispositif conseiller numérique&nbsp;:
       </p>
       <Link href={`mailto:${PublicWebAppConfig.contactEmail}`}>
         <span role="img" className="ri-mail-line fr-mr-1w" aria-hidden />

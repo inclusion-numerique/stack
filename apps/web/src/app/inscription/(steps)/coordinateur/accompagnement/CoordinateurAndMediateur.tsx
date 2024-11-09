@@ -11,23 +11,16 @@ const CoordinateurAndMediateur = () => {
   const [isLoading, setIsLoading] = React.useState(false)
   const addMediationNumeriqueToCoordinateurMutation =
     trpc.inscription.addMediationNumeriqueToCoordinateur.useMutation()
-  const removeMediationNumeriqueToCoordinateurMutation =
-    trpc.inscription.removeMediationNumeriqueForCoordinateur.useMutation()
 
-  const onRemoveMediationNumerique = async () => {
+  const onSkipMediationNumerique = () => {
     setIsLoading(true)
-    await removeMediationNumeriqueToCoordinateurMutation
-      .mutateAsync()
-      .then(() => setIsLoading(false))
     router.push(`recapitulatif`)
     router.refresh()
   }
 
   const onAddMediationNumerique = async () => {
     setIsLoading(true)
-    await addMediationNumeriqueToCoordinateurMutation
-      .mutateAsync()
-      .then(() => setIsLoading(false))
+    await addMediationNumeriqueToCoordinateurMutation.mutateAsync()
     router.push(`recapitulatif`)
     router.refresh()
   }
@@ -36,10 +29,10 @@ const CoordinateurAndMediateur = () => {
     <div className="fr-btns-group fr-flex fr-direction-row fr-mt-6w">
       <Button
         disabled={isLoading}
-        title="J'ai seulment une activité de coordination"
+        title="J’ai seulment une activité de coordination"
         className="fr-col fr-mb-0"
         priority="secondary"
-        onClick={onRemoveMediationNumerique}
+        onClick={onSkipMediationNumerique}
       >
         Non
       </Button>

@@ -9,11 +9,12 @@ describe('ETQ Coordinateur conseiller numérique, je peux m’inscrire en suivan
   for (const user of Object.values(
     coordinateursV1ThatShouldSignupAsCoordinateur,
   )) {
-    it(`ETQ Coordinateur ${user.lastName}, je ne peux pas m’inscrire en tant que conseiller numérique`, () => {
+    it(`ETQ Coordinateur ${user.lastName}, je peux m’inscrire en tant que coordinateur même si j’ai choisi "conseiller numérique"`, () => {
       startInscriptionAs({
         user,
         profilInscription: 'ConseillerNumerique',
-        roleShouldBeCheckedAndFound: false,
+        identificationResult: 'different',
+        expectedCheckedProfilInscription: 'Coordinateur',
       })
     })
 
@@ -21,15 +22,16 @@ describe('ETQ Coordinateur conseiller numérique, je peux m’inscrire en suivan
       startInscriptionAs({
         user,
         profilInscription: 'Coordinateur',
-        roleShouldBeCheckedAndFound: true,
+        identificationResult: 'matching',
       })
     })
 
-    it.skip(`ETQ Coordinateur ${user.lastName}, je ne peux pas m’inscrire en tant que médiateur`, () => {
+    it(`ETQ Coordinateur ${user.lastName}, je peux m’inscrire en tant que coordinateur même si j’ai choisi "médiateur"`, () => {
       startInscriptionAs({
         user,
         profilInscription: 'Mediateur',
-        roleShouldBeCheckedAndFound: false,
+        identificationResult: 'different',
+        expectedCheckedProfilInscription: 'Coordinateur',
       })
     })
   }

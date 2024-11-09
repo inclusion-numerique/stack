@@ -16,7 +16,7 @@ describe('ETQ médiateur, je peux m’inscrire en suivant le bon parcours', () =
     startInscriptionAs({
       user,
       profilInscription: 'ConseillerNumerique',
-      roleShouldBeCheckedAndFound: false,
+      identificationResult: 'not-found',
     })
   })
 
@@ -24,7 +24,7 @@ describe('ETQ médiateur, je peux m’inscrire en suivant le bon parcours', () =
     startInscriptionAs({
       user,
       profilInscription: 'Coordinateur',
-      roleShouldBeCheckedAndFound: false,
+      identificationResult: 'not-found',
     })
   })
 
@@ -32,7 +32,7 @@ describe('ETQ médiateur, je peux m’inscrire en suivant le bon parcours', () =
     startInscriptionAs({
       user,
       profilInscription: 'Mediateur',
-      roleShouldBeCheckedAndFound: true,
+      identificationResult: 'matching',
     })
   })
 })

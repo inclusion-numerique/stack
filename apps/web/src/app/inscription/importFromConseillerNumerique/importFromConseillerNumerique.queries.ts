@@ -1,174 +1,25 @@
-import { type Prisma, ProfilInscription } from '@prisma/client'
+import { type Prisma } from '@prisma/client'
 import { v4 } from 'uuid'
 import type { ObjectId } from 'mongodb'
-import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
-import type { SessionUser } from '@app/web/auth/sessionUser'
-import {
-  ConseillerNumeriqueFound,
-  ConseillerNumeriqueFoundWithActiveMiseEnRelation,
-} from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
 import { prismaClient } from '@app/web/prismaClient'
+import type { ConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Data'
+import type { ConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
+import type { MiseEnRelationConseillerNumeriqueV1MinimalProjection } from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
 
 export const toId = ({ id }: { id: string | ObjectId }) => id.toString()
 
-export const markAsCheckedMediateur = (user: SessionUser) =>
-  prismaClient.user.update({
-    where: {
-      id: user.id,
-    },
-    data: {
-      checkConseillerNumeriqueInscription: new Date(),
-      mediateur: {
-        connectOrCreate: {
-          where: { userId: user.id },
-          create: { id: v4() },
-        },
-      },
-      profilInscription: ProfilInscription.Mediateur,
-    },
-    select: sessionUserSelect,
-  })
-
-export const updateUserProfileInscription = (
-  user: SessionUser,
-  profil: ProfilInscription,
-) =>
-  prismaClient.user.update({
-    where: {
-      id: user.id,
-    },
-    data: {
-      profilInscription: profil,
-    },
-    select: sessionUserSelect,
-  })
-
-export const markAsCheckedConseillerNumerique = (
-  user: { id: string },
-  { id }: { id: string },
-  lieuxActiviteStructureIds: string[] = [],
-) =>
-  prismaClient.user.update({
-    where: {
-      id: user.id,
-    },
-    data: {
-      checkConseillerNumeriqueInscription: new Date(),
-      profilInscription: ProfilInscription.ConseillerNumerique,
-      structureEmployeuseRenseignee: new Date(),
-      lieuxActiviteRenseignes:
-        lieuxActiviteStructureIds.length > 0 ? new Date() : undefined,
-      emplois: {
-        deleteMany: {},
-        create: { id: v4(), structureId: id },
-      },
-    },
-    select: sessionUserSelect,
-  })
-
-export const removeConseillerNumeriqueFor = async (user: {
-  id: string
-  mediateur: { id: string } | null
-}) =>
-  prismaClient.conseillerNumerique.deleteMany({
-    where: { mediateurId: user.mediateur?.id },
-  })
-
-export const removeMediateur = async (user: {
-  id: string
-  mediateur: { id: string } | null
-}) =>
-  prismaClient.user.update({
-    where: {
-      id: user.id,
-    },
-    data: {
-      checkConseillerNumeriqueInscription: null,
-      profilInscription: ProfilInscription.Coordinateur,
-      lieuxActiviteRenseignes: null,
-      mediateur: { delete: true },
-    },
-    select: sessionUserSelect,
-  })
-
-export const markAsCheckedCoordinateur = (
-  user: { id: string },
-  { id }: { id: string },
-) =>
-  prismaClient.user.update({
-    where: {
-      id: user.id,
-    },
-    data: {
-      checkCoordinateurInscription: new Date(),
-      profilInscription: ProfilInscription.Coordinateur,
-      emplois: {
-        deleteMany: {},
-        create: { id: v4(), structureId: id },
-      },
-    },
-    select: sessionUserSelect,
-  })
-
-export const createConseillerNumerique = async (
-  { conseiller: { id } }: { conseiller: { id: string } },
-  user: SessionUser,
-) => {
-  const result = await prismaClient.conseillerNumerique.create({
-    data: {
-      id,
-      mediateur: {
-        connectOrCreate: {
-          where: { userId: user.id },
-          create: { userId: user.id },
-        },
-      },
-    },
-    select: {
-      id: true,
-      mediateurId: true,
-    },
-  })
-
-  return {
-    ...result,
-    profileId: result.mediateurId,
-  }
-}
-
-export const findConseillerNumeriquesFor = ({
+export const findConseillerNumeriquesFromConseillersCoordonnesV1 = ({
   conseillersCoordonnes,
-}: ConseillerNumeriqueFound) =>
+}: ConseillerNumeriqueV1Data) =>
   !!conseillersCoordonnes && conseillersCoordonnes.length > 0
     ? prismaClient.conseillerNumerique.findMany({
         where: { id: { in: conseillersCoordonnes.map(toId) } },
       })
     : Promise.resolve([])
 
-export const createCoordinateur = async (
-  { conseiller: { id } }: { conseiller: { id: string } },
-  user: SessionUser,
-) => {
-  const result = await prismaClient.coordinateur.create({
-    data: {
-      conseillerNumeriqueId: id,
-      userId: user.id,
-    },
-    select: {
-      id: true,
-      conseillerNumeriqueId: true,
-    },
-  })
-
-  return {
-    ...result,
-    profileId: result.conseillerNumeriqueId,
-  }
-}
-
-export const findExistingStructureFor = ({
+export const findExistingStructureForMiseEnRelationActive = ({
   miseEnRelationActive,
-}: ConseillerNumeriqueFound) =>
+}: ConseillerNumeriqueV1Data) =>
   miseEnRelationActive
     ? prismaClient.structure.findFirst({
         where: {
@@ -179,24 +30,22 @@ export const findExistingStructureFor = ({
       })
     : null
 
-export const findCartoStructureFor = ({
-  miseEnRelationActive,
-}: ConseillerNumeriqueFound) =>
-  miseEnRelationActive
-    ? prismaClient.structureCartographieNationale.findFirst({
-        where: {
-          pivot: miseEnRelationActive.structureObj.siret,
-          nom: miseEnRelationActive.structureObj.nom,
-        },
-      })
-    : null
+export const findStructureCartographieNationaleFromMiseEnRelation = ({
+  structureObj,
+}: MiseEnRelationConseillerNumeriqueV1MinimalProjection) =>
+  prismaClient.structureCartographieNationale.findFirst({
+    where: {
+      pivot: structureObj.siret,
+      nom: structureObj.nom,
+    },
+  })
 
 export const createStructureEmployeuseFor =
   ({
     miseEnRelationActive: {
       structureObj: { nom, adresseInsee2Ban, siret },
     },
-  }: ConseillerNumeriqueFoundWithActiveMiseEnRelation) =>
+  }: ConseillerNumeriqueV1DataWithActiveMiseEnRelation) =>
   (structureCartographieNationale: { id: string } | null) =>
     prismaClient.structure.create({
       data: {
@@ -213,8 +62,8 @@ export const createStructureEmployeuseFor =
       },
     })
 
-export const findExistingStructuresCartoFor = async (
-  conseillerFound: ConseillerNumeriqueFound,
+export const findExistingStructuresCartoFromPermanencesV1 = async (
+  conseillerFound: ConseillerNumeriqueV1Data,
 ) =>
   prismaClient.structureCartographieNationale.findMany({
     where: {
@@ -227,59 +76,123 @@ export const findExistingStructuresCartoFor = async (
     include: { structures: { select: { id: true } } },
   })
 
+export type ExistingStructuresCartoFromPermanencesV1 = Awaited<
+  ReturnType<typeof findExistingStructuresCartoFromPermanencesV1>
+>
+export type ExistingStructureCartoFromPermanencesV1 =
+  ExistingStructuresCartoFromPermanencesV1[number]
+
 export const createStructures = async (
   structuresToCreate: Prisma.StructureCreateManyInput[],
 ) => prismaClient.structure.createMany({ data: structuresToCreate })
 
-export const associateLieuxAtiviteFor =
-  ({ profileId }: { profileId: string }) =>
-  (lieuxActiviteStructureIds: string[]) =>
-    prismaClient.mediateurEnActivite.createMany({
-      data: lieuxActiviteStructureIds.map((structureId) => ({
-        structureId,
-        id: v4(),
-        mediateurId: profileId,
-      })),
-    })
-
-export const removeLieuxActiviteFor = ({ mediateur }: SessionUser) =>
-  prismaClient.mediateurEnActivite.deleteMany({
+export const upsertMediateurEnActivite = async ({
+  mediateurId,
+  structureId,
+}: {
+  mediateurId: string
+  structureId: string
+}) => {
+  const existing = await prismaClient.mediateurEnActivite.findFirst({
     where: {
-      mediateurId: mediateur?.id,
+      mediateurId,
+      structureId,
     },
   })
 
+  if (existing) {
+    return existing
+  }
+
+  return prismaClient.mediateurEnActivite.create({
+    data: {
+      id: v4(),
+      mediateurId,
+      structureId,
+    },
+  })
+}
+
+export const createMediateurEnActivites = ({
+  mediateurId,
+  structureIds,
+}: {
+  mediateurId: string
+  structureIds: string[]
+}) =>
+  Promise.all(
+    structureIds.map((structureId) =>
+      upsertMediateurEnActivite({
+        mediateurId,
+        structureId,
+      }),
+    ),
+  )
+
 export const findCoordinateursFor = ({
   conseiller: { coordinateurs },
-}: ConseillerNumeriqueFound) =>
+}: ConseillerNumeriqueV1Data) =>
   prismaClient.coordinateur.findMany({
     where: {
       conseillerNumeriqueId: { in: coordinateurs?.map(toId) },
     },
   })
 
-export const associateCoordinateursTo =
-  ({ profileId }: { profileId: string }) =>
-  (coordinateurs: { id: string }[]) =>
-    prismaClient.mediateurCoordonne.createMany({
-      data: coordinateurs.map((coordinateur) => ({
-        mediateurId: profileId,
-        coordinateurId: coordinateur.id,
-      })),
-    })
-
-export const associateConseillersCoordonnesTo =
-  ({ id }: { id: string }) =>
-  (conseillers: { mediateurId: string }[]) =>
-    prismaClient.mediateurCoordonne.createMany({
-      data: conseillers.map(({ mediateurId }) => ({
-        mediateurId,
-        coordinateurId: id,
-      })),
-    })
-
-export const structureEmployeuseOf = (user: SessionUser) =>
-  prismaClient.employeStructure.findFirst({
-    where: { userId: user.id },
-    include: { structure: { select: { id: true } } },
+export const upsertMediateurCoordonne = async ({
+  mediateurId,
+  coordinateurId,
+}: {
+  mediateurId: string
+  coordinateurId: string
+}) => {
+  const existing = await prismaClient.mediateurCoordonne.findFirst({
+    where: {
+      mediateurId,
+      coordinateurId,
+    },
   })
+
+  if (existing) {
+    return existing
+  }
+
+  return prismaClient.mediateurCoordonne.create({
+    data: {
+      id: v4(),
+      mediateurId,
+      coordinateurId,
+    },
+  })
+}
+
+export const upsertCoordinationsForMediateur = ({
+  mediateurId,
+  coordinateurIds,
+}: {
+  mediateurId: string
+  coordinateurIds: string[]
+}) =>
+  Promise.all(
+    coordinateurIds.map((coordinateurId) =>
+      upsertMediateurCoordonne({
+        mediateurId,
+        coordinateurId,
+      }),
+    ),
+  )
+
+export const upsertCoordinationsForCoordinateur = ({
+  coordinateurId,
+  mediateurIds,
+}: {
+  coordinateurId: string
+  mediateurIds: string[]
+}) =>
+  Promise.all(
+    mediateurIds.map((mediateurId) =>
+      upsertMediateurCoordonne({
+        mediateurId,
+        coordinateurId,
+      }),
+    ),
+  )

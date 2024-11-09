@@ -7,7 +7,6 @@ export const conseillerInscription = givenUser({
   lastName: 'Inscription',
   isFixture: true,
   role: 'User',
-  checkConseillerNumeriqueInscription: new Date(),
   mediateur: {
     connectOrCreate: {
       where: {

@@ -10,16 +10,16 @@ type Story = StoryObj<typeof FinaliserInscriptionConseiller>
 
 export const ConseillerNumeriqueTrouve: Story = {
   args: {
-    user: { email: 'john-doe@acme.fr', id: '1', usurper: null },
-    inscriptionRole: 'conseiller-numerique',
+    user: { email: 'john-doe@acme.fr', id: '1' },
+    checkedProfilInscription: 'conseiller-numerique',
   },
 }
 ConseillerNumeriqueTrouve.storyName = 'Conseiller numérique identifié'
 
 export const CoordinateurConseillerNumeriqueTrouve: Story = {
   args: {
-    user: { email: 'john-doe@acme.fr', id: '1', usurper: null },
-    inscriptionRole: 'coordinateur',
+    user: { email: 'john-doe@acme.fr', id: '1' },
+    checkedProfilInscription: 'coordinateur',
   },
 }
 CoordinateurConseillerNumeriqueTrouve.storyName =
@@ -27,8 +27,8 @@ CoordinateurConseillerNumeriqueTrouve.storyName =
 
 export const MediateurTrouve: Story = {
   args: {
-    user: { email: 'john-doe@acme.fr', id: '1', usurper: null },
-    inscriptionRole: 'mediateur',
+    user: { email: 'john-doe@acme.fr', id: '1' },
+    checkedProfilInscription: 'mediateur',
   },
 }
 MediateurTrouve.storyName = 'Médiateur'

@@ -17,7 +17,7 @@ export const RoleNotFound = ({
   proConnectIdTokenHint,
 }: {
   roleNotFound: ProfileInscriptionSlug
-  user: Pick<SessionUser, 'email' | 'id' | 'usurper'>
+  user: Pick<SessionUser, 'email' | 'id'>
   proConnectIdTokenHint: string | null
 }) => (
   <div className="fr-flex fr-direction-column fr-flex-gap-10v">
