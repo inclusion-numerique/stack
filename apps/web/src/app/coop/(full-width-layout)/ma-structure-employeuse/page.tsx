@@ -60,26 +60,16 @@ const MaStructureEmployeusePage = async () => {
       <div className="fr-container fr-container--800">
         <CoopBreadcrumbs currentPage="Ma structure employeuse" />
         <main id={contentId} className="fr-mb-16w">
-          <Button
-            priority="tertiary no outline"
-            size="small"
-            linkProps={{
-              href: '/',
-            }}
-            className="fr-mt-8v"
-            iconId="fr-icon-arrow-left-line"
-          >
-            Retour
-          </Button>
-          <span className="fr-flex fr-flex-wrap fr-direction-row fr-align-items-center fr-flex-gap-4v fr-my-5w">
+          <div className="fr-flex fr-flex-wrap fr-direction-row fr-align-items-center fr-flex-gap-4v fr-my-12v">
             <span
               className="ri-home-smile-line ri-lg fr-line-height-1 fr-text-label--blue-france fr-background-alt--blue-france fr-p-2w fr-m-0 fr-border-radius--8"
               aria-hidden
             />
-            <h1 className="fr-h3 fr-page-title fr-m-0">
+            <h1 className="fr-h2 fr-page-title fr-m-0">
               Ma structure employeuse
             </h1>
-          </span>
+          </div>
+
           {structureEmployeuse ? (
             <StructureEmployeuse
               {...structureEmployeuse}
@@ -95,9 +85,6 @@ const MaStructureEmployeusePage = async () => {
                 ne serez plus identifié sur votre territoire comme faisant
                 partie de la communauté de la médiation numérique
               </p>
-              <Link className="fr-link wip" href="/">
-                En savoir plus
-              </Link>
             </div>
           )}
         </main>

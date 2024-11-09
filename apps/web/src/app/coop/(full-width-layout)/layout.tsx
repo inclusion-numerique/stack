@@ -12,7 +12,7 @@ const CoopFullWidthLayout = async ({
   const user = await getAuthenticatedSessionUser()
   return (
     <div className="fr-layout__inner">
-      <Header backLink user={user} fullWidth variant="coop" />
+      <Header user={user} fullWidth variant="coop" />
       <div className="fr-layout__main">{children}</div>
       <CreateCraModal />
       <MinimalFooter />
