@@ -1,6 +1,5 @@
 import React from 'react'
 import { redirect } from 'next/navigation'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
@@ -30,10 +29,9 @@ const AjouterLieuPage = async () => {
           currentPage={"Ajouter un lieu d'activité"}
         />
         <main id={contentId} className="fr-mb-30v">
-          <BackButton
-            href="/coop/lieux-activite"
-            children={"Retour à mes lieux d'activité"}
-          />
+          <BackButton href="/coop/lieux-activite">
+            Retour à mes lieux d&apos;activité
+          </BackButton>
           <span className="fr-flex fr-direction-row fr-align-items-center fr-flex-gap-6v fr-mb-5w">
             <IconInSquare iconId="ri-home-office-line" />
             <h1 className="fr-page-title fr-m-0 fr-h2">

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { ReactNode, useState } from 'react'
-import Button from '@codegouvfr/react-dsfr/Button'
 import IconInSquare from '@app/web/components/IconInSquare'
 import { DisplayOnCartography } from '@app/web/components/structure/DisplayOnCartography'
 import { LieuAccueillantPublicTitle } from '@app/web/components/structure/titles/LieuAccueillantPublicTitle'
@@ -53,10 +52,9 @@ export const LieuActivitePageContent = ({
       </div>
       <div className="fr-container fr-container--narrow fr-ml-0 fr-mb-30v">
         {contentTop}
-        <BackButton
-          href="/coop/lieux-activite"
-          children={"Retour à mes lieux d'activité"}
-        />
+        <BackButton href="/coop/lieux-activite">
+          Retour à mes lieux d&apos;activité
+        </BackButton>
 
         <span className="fr-flex fr-direction-row fr-align-items-center fr-flex-gap-6v fr-mb-5w">
           <IconInSquare iconId="ri-home-office-line" />

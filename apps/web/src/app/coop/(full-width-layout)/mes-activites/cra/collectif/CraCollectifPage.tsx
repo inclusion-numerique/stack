@@ -1,6 +1,5 @@
 import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDisclamer'
 import { DefaultValues } from 'react-hook-form'
-import Button from '@codegouvfr/react-dsfr/Button'
 import React from 'react'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
