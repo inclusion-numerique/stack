@@ -111,7 +111,7 @@ export const OutilEspaceFranceNumeriqueEnsemble = ({
                       territoire.  
                       <Link
                         className="fr-link fr-text--sm"
-                        href="https://incubateurdesterritoires.notion.site/105744bf03dd80349c26e76cd8459eac?v=8949acfdde544d12860f5c0ca89af72f"
+                        href="https://www.notion.so/incubateurdesterritoires/En-savoir-plus-sur-l-utilisation-des-donn-es-sur-la-Coop-de-la-m-diation-num-rique-82af14ef964b41c1bfb5cb4a01d6e40b#6052168a99a84eca9b4c12c1b905d354"
                         target="_blank"
                       >
                         En savoir plus sur l’utilisation de vos données

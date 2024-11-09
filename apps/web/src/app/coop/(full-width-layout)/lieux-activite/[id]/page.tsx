@@ -36,7 +36,7 @@ const LieuActiviteDetailPage = async ({
   return (
     <>
       <SkipLinksPortal links={defaultSkipLinks} />
-      <div className="fr-container fr-mt-2w">
+      <div className="fr-container ">
         <main id={contentId} className="fr-container fr-flex">
           <LieuActivitePageContent
             structure={lieuActivite.structure}

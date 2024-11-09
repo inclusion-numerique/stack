@@ -28,7 +28,7 @@ export const CreerLieuActivitePageContent = ({
           linkProps={{
             href: '/coop/lieux-activite',
           }}
-          className="fr-mt-8v fr-mb-4v"
+          className="fr-mt-2v fr-mb-10v"
           iconId="fr-icon-arrow-left-line"
         >
           Retour aux lieux d’activité
