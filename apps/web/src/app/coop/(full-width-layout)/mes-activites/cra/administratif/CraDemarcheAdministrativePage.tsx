@@ -1,5 +1,7 @@
 import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDisclamer'
 import type { DefaultValues } from 'react-hook-form'
+import Button from '@codegouvfr/react-dsfr/Button'
+import React from 'react'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import type { CraDemarcheAdministrativeData } from '@app/web/cra/CraDemarcheAdministrativeValidation'
 import CraDemarcheAdministrativeForm from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/administratif/CraDemarcheAdministrativeForm'
@@ -23,10 +25,27 @@ export const CraDemarcheAdministrativePage = ({
 }: CraDemarcheAdministrativePageData) => (
   <div className="fr-container fr-container--800">
     <CoopBreadcrumbs currentPage="Enregistrer une aide aux démarches administratives" />
-    <h1 className="fr-text-title--blue-france fr-mb-2v fr-mt-12v">
+    <Button
+      priority="tertiary no outline"
+      size="small"
+      linkProps={{
+        href: '/coop',
+      }}
+      className="fr-mt-6v fr-mb-6v"
+      iconId="fr-icon-arrow-left-line"
+    >
+      Retour
+    </Button>
+    <h1 className="fr-text-title--blue-france fr-mb-2v">
       Aide aux démarches administratives
     </h1>
-    <RequiredFieldsDisclamer className="fr-mb-12v" />
+    <RequiredFieldsDisclamer
+      className="fr-mb-12v"
+      helpLink={{
+        href: 'https://incubateurdesterritoires.notion.site/Aide-aux-d-marches-administratives-9845c6b41a984eaaa330c59b7aeef282',
+        text: 'En savoir plus sur comment compléter un CRA',
+      }}
+    />
 
     <CraDemarcheAdministrativeForm
       defaultValues={{ ...defaultValues, mediateurId }}
