@@ -8,6 +8,7 @@ import CraCollectifForm from '@app/web/app/coop/(full-width-layout)/mes-activite
 import { AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
 import { type MostUsedBeneficiairesForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import { type MostUsedLieuActiviteForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
+import BackButton from '@app/web/components/BackButton'
 
 export type CraCollectifPageData = {
   defaultValues: DefaultValues<CraCollectifData>
@@ -28,17 +29,8 @@ const CraCollectifPage = ({
 }: CraCollectifPageData) => (
   <div className="fr-container fr-container--800">
     <CoopBreadcrumbs currentPage="Enregistrer un atelier collectif" />
-    <Button
-      priority="tertiary no outline"
-      size="small"
-      linkProps={{
-        href: '/coop',
-      }}
-      className="fr-mt-6v fr-mb-6v"
-      iconId="fr-icon-arrow-left-line"
-    >
-      Retour
-    </Button>
+    <BackButton href="/coop" />
+
     <h1 className="fr-text-title--blue-france fr-mb-2v ">Atelier collectif</h1>
     <RequiredFieldsDisclamer
       className="fr-mb-12v"

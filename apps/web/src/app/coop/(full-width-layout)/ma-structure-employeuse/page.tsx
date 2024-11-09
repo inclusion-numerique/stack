@@ -1,6 +1,4 @@
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'

@@ -7,6 +7,7 @@ import type { CraDemarcheAdministrativeData } from '@app/web/cra/CraDemarcheAdmi
 import CraDemarcheAdministrativeForm from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/administratif/CraDemarcheAdministrativeForm'
 import { type MostUsedBeneficiairesForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import type { MostUsedLieuActiviteForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
+import BackButton from '@app/web/components/BackButton'
 
 export type CraDemarcheAdministrativePageData = {
   defaultValues: DefaultValues<CraDemarcheAdministrativeData>
@@ -25,17 +26,7 @@ export const CraDemarcheAdministrativePage = ({
 }: CraDemarcheAdministrativePageData) => (
   <div className="fr-container fr-container--800">
     <CoopBreadcrumbs currentPage="Enregistrer une aide aux démarches administratives" />
-    <Button
-      priority="tertiary no outline"
-      size="small"
-      linkProps={{
-        href: '/coop',
-      }}
-      className="fr-mt-6v fr-mb-6v"
-      iconId="fr-icon-arrow-left-line"
-    >
-      Retour
-    </Button>
+    <BackButton href="/coop" />
     <h1 className="fr-text-title--blue-france fr-mb-2v">
       Aide aux démarches administratives
     </h1>

@@ -7,6 +7,7 @@ import CraIndividuelForm from '@app/web/app/coop/(full-width-layout)/mes-activit
 import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
 import { type MostUsedBeneficiairesForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import { type MostUsedLieuActiviteForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
+import BackButton from '@app/web/components/BackButton'
 
 export type CraIndividuelPageData = {
   defaultValues: DefaultValues<CraIndividuelData>
@@ -25,17 +26,8 @@ const CraIndividuelPage = ({
 }: CraIndividuelPageData) => (
   <div className="fr-container fr-container--800">
     <CoopBreadcrumbs currentPage="Enregistrer un accompagnement individuel" />
-    <Button
-      priority="tertiary no outline"
-      size="small"
-      linkProps={{
-        href: '/coop',
-      }}
-      className="fr-mt-6v fr-mb-6v"
-      iconId="fr-icon-arrow-left-line"
-    >
-      Retour
-    </Button>
+    <BackButton href="/coop" />
+
     <h1 className="fr-text-title--blue-france fr-mb-2v ">
       Accompagnement individuel
     </h1>
