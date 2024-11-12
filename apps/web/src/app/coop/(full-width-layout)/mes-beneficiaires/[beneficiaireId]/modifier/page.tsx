@@ -13,6 +13,7 @@ import { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { beneficiaireCommuneResidenceToPreviewBanData } from '@app/web/beneficiaire/prismaBeneficiaireToBeneficiaireData'
 import { AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
 import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipalityLabel'
+import BackButton from '@app/web/components/BackButton'
 
 const PageModifierBeneficiaire = async ({
   searchParams: { retour } = {},
@@ -130,6 +131,9 @@ const PageModifierBeneficiaire = async ({
           },
         ]}
       />
+      <BackButton href={`/coop/mes-beneficiaires/${beneficiaire.id}`}>
+        Retour à la fiche
+      </BackButton>
       <div className="fr-flex fr-flex-gap-6v fr-align-items-start fr-mb-12v">
         <IconInSquare iconId="fr-icon-user-setting-line" size="large" />
         <div className="fr-flex-grow-1">
@@ -142,6 +146,7 @@ const PageModifierBeneficiaire = async ({
         defaultValues={beneficiaireDefaultValues}
         retour={retour}
         communeResidenceDefaultOptions={communeResidenceDefaultOptions}
+        edit
       />
     </div>
   )
