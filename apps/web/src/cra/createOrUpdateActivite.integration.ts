@@ -18,6 +18,8 @@ import {
 } from '@app/web/cra/activitesQueries'
 import type { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
 import { craDureeDataToMinutes } from '@app/web/cra/minutesToCraDuree'
+import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
+import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
 
 const nullActivite: Omit<
   ActiviteForList,
@@ -121,6 +123,81 @@ describe('createOrUpdateActivite', () => {
       thematiques: input.data.thematiques,
       thematiquesDemarche: [],
       typeLieu: input.data.typeLieu,
+    })
+  })
+
+  it('should create atelier collectif for anonyme', async () => {
+    const input: {
+      type: 'Collectif'
+      data: CraCollectifData
+    } = {
+      type: 'Collectif',
+      data: {
+        mediateurId: mediateurAvecActiviteMediateurId,
+        typeLieuAtelier: 'Autre',
+        participants: [],
+        participantsAnonymes: {
+          ...participantsAnonymesDefault,
+          total: 10,
+          genreNonCommunique: 10,
+          statutSocialScolarise: 2,
+          statutSocialEnEmploi: 7,
+          statutSocialNonCommunique: 1,
+          trancheAgeMoinsDeDouze: 2,
+          trancheAgeDixHuitVingtQuatre: 2,
+          trancheAgeVingtCinqTrenteNeuf: 2,
+          trancheAgeQuaranteCinquanteNeuf: 2,
+          trancheAgeSoixanteSoixanteNeuf: 1,
+          trancheAgeSoixanteDixPlus: 1,
+        },
+        titreAtelier: 'Titre atelier',
+        thematiques: ['SecuriteNumerique'],
+        date: '2024-08-01',
+        materiel: [],
+        duree: {
+          duree: '90',
+          dureePersonnaliseeType: 'minutes',
+        },
+        niveau: 'Avance',
+      },
+    } satisfies CreateOrUpdateActiviteInput
+
+    const result = await createOrUpdateActivite({
+      userId: mediateurAvecActivite.id,
+      input,
+    })
+
+    const activite = await prismaClient.activite.findUnique({
+      where: {
+        id: result.id,
+      },
+      select: activiteListSelect,
+    })
+
+    expect(activite).toEqual({
+      ...nullActivite,
+      id: result.id,
+      type: 'Collectif',
+      mediateurId: mediateurAvecActiviteMediateurId,
+      // expect an array of 10 participants object containing anonyme
+      accompagnements: expect.arrayContaining(
+        Array.from({ length: 10 }).fill({
+          beneficiaire: expect.objectContaining({
+            id: expect.any(String),
+            anonyme: true,
+            attributionsAleatoires: true,
+          }),
+        }),
+      ),
+      niveau: 'Avance',
+      date: new Date(input.data.date),
+      duree: craDureeDataToMinutes(input.data.duree),
+      titreAtelier: input.data.titreAtelier,
+      materiel: input.data.materiel,
+      notes: input.data.notes ?? null,
+      typeLieuAtelier: input.data.typeLieuAtelier,
+      thematiques: input.data.thematiques,
+      thematiquesDemarche: [],
     })
   })
 })

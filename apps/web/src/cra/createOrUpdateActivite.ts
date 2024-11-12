@@ -221,6 +221,9 @@ export const createOrUpdateActivite = async ({
       'typeLieuAtelier' in data ? data.typeLieuAtelier : undefined,
     niveau: 'niveau' in data ? data.niveau : undefined,
     materiel: 'materiel' in data ? data.materiel : undefined,
+    titreAtelier: 'titreAtelier' in data ? data.titreAtelier : undefined,
+    precisionsDemarche:
+      'precisionsDemarche' in data ? data.precisionsDemarche : undefined,
     lieuCommune,
     lieuCodePostal,
     lieuCodeInsee,

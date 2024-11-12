@@ -62,19 +62,38 @@ export const createStructureEmployeuseFor =
       },
     })
 
-export const findExistingStructuresCartoFromPermanencesV1 = async (
-  conseillerFound: ConseillerNumeriqueV1Data,
-) =>
-  prismaClient.structureCartographieNationale.findMany({
-    where: {
-      conseillerNumeriquePermanenceIds: {
-        hasSome: conseillerFound.permanences.map((permanence) =>
-          permanence._id.toString(),
-        ),
+/**
+ * This attaches our data to a list of v1 permanences
+ */
+export const findExistingStructuresCartoFromPermanencesV1 = async ({
+  permanences,
+}: Pick<ConseillerNumeriqueV1Data, 'permanences'>) => {
+  const structuresCarto =
+    await prismaClient.structureCartographieNationale.findMany({
+      where: {
+        conseillerNumeriquePermanenceIds: {
+          hasSome: permanences.map((permanence) => permanence._id.toString()),
+        },
       },
-    },
-    include: { structures: { select: { id: true } } },
+      include: { structures: { select: { id: true } } },
+    })
+
+  // We create an object with {permanence, structureCarto, structure} for each permanence
+  return permanences.map((permanence) => {
+    const permanenceId = permanence._id.toString('hex')
+    const structureCarto = structuresCarto.find((existingStructureCarto) =>
+      existingStructureCarto.conseillerNumeriquePermanenceIds.includes(
+        permanenceId,
+      ),
+    )
+
+    return {
+      permanence,
+      structureCarto,
+      structure: structureCarto?.structures.at(0) ?? null,
+    }
   })
+}
 
 export type ExistingStructuresCartoFromPermanencesV1 = Awaited<
   ReturnType<typeof findExistingStructuresCartoFromPermanencesV1>
