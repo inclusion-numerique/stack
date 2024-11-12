@@ -6,9 +6,9 @@ export default {
   description:
     'Proposez des parcours de montée en compétences et des tests Pix adaptés à vos bénéficiaires et suivez leur progression.',
   website: 'https://pix.fr/mediation-numerique',
-  logo: '/images/services/pix.svg',
+  logo: '/images/services/pix-orga.svg',
   illustration: '/images/illustrations/mes-outils/pix.webp',
-  illustrationWidth: 50,
+  illustrationWidth: 100,
   features: [
     {
       title:

@@ -2,22 +2,17 @@ import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
-import { OnboardingMesOutilsCoordinateur } from './OnboardingMesOutilsCoordinateur'
-
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+import { OnboardingMesArchivesCoordinateur } from '@app/web/app/(onboarding)/en-savoir-plus/coordinateur/mes-archives/OnboardingMesArchivesCoordinateur'
 
 export const metadata: Metadata = {
-  title: metadataTitle('En savoir plus - Mes outils'),
+  title: metadataTitle('En savoir plus - Mes activités'),
 }
 
 const Page = async () => {
   const user = await getAuthenticatedSessionUser()
 
-  return user.mediateur ? (
-    <OnboardingMesOutilsCoordinateur
-      isConseillerNumerique={user.mediateur.conseillerNumerique?.id != null}
-    />
+  return user.coordinateur ? (
+    <OnboardingMesArchivesCoordinateur />
   ) : (
     redirect('/')
   )
