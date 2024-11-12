@@ -8,21 +8,32 @@ describe.skip('rdvApi', () => {
       deployment: 'staging',
       input: {
         agent: {
-          email: 'test@test.com',
-          external_id: 'test-1',
-          first_name: 'test',
-          last_name: 'test',
+          email: 'test2@test.com',
+          external_id: 'test-2',
+          first_name: 'test2',
+          last_name: 'test2',
         },
         organisation: {
-          external_id: 'test-1',
-          name: 'test',
-          address: 'test',
+          external_id: 'test-2',
+          name: 'test2',
+          address: 'test2',
         },
+        lieux: [
+          {
+            name: 'Bureaux test',
+            address: '20 avenue de Ségur, Paris, 75007',
+          },
+          {
+            name: 'Bureaux PIX',
+            address: '21 rue des Ardennes, Paris, 75019',
+          },
+        ],
       },
     })
 
     expect(result).toEqual({
-      id: 'todo',
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      id: expect.any(Number),
     })
   })
 })

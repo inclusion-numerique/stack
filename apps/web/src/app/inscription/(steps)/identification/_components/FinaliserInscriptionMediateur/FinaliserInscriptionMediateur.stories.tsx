@@ -10,21 +10,21 @@ type Story = StoryObj<typeof FinaliserInscriptionMediateur>
 
 export const Mediateur: Story = {
   args: {
-    inscriptionRole: 'mediateur',
+    checkedProfilInscription: 'mediateur',
   },
 }
 Mediateur.storyName = 'Médiateur'
 
 export const ConseillerNumeriqueTrouve: Story = {
   args: {
-    inscriptionRole: 'conseiller-numerique',
+    checkedProfilInscription: 'conseiller-numerique',
   },
 }
 ConseillerNumeriqueTrouve.storyName = 'Conseiller Numerique identifié'
 
 export const CoordinateurConseillerNumeriqueTrouve: Story = {
   args: {
-    inscriptionRole: 'coordinateur',
+    checkedProfilInscription: 'coordinateur',
   },
 }
 CoordinateurConseillerNumeriqueTrouve.storyName =

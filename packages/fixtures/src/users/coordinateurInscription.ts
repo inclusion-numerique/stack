@@ -30,5 +30,4 @@ export const coordinateurInscription = givenUser({
       },
     },
   },
-  checkCoordinateurInscription: new Date(),
 }) satisfies Prisma.UserCreateInput

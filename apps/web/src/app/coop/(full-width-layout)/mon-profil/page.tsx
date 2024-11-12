@@ -5,10 +5,10 @@ import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
-import { findConseillerNumeriqueByEmail } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
+import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
+import FonctionnalitesDeMediationNumeriqueCoordinateur from '@app/web/app/coop/(full-width-layout)/mon-profil/_components/FonctionnalitesDeMediationNumeriqueCoordinateur'
 import { CoordinatorContract } from './_components/CoordinatorContract'
 import ProfileEditCard from './_components/ProfileEditCard'
-import FonctionnalitesDeMediationNumeriqueCoordinateur from '@app/web/app/coop/(full-width-layout)/mon-profil/_components/FonctionnalitesDeMediationNumeriqueCoordinateur'
 
 const formatDate = (date?: string | number | Date | null) =>
   date && isValid(date) ? format(date, 'dd/MM/yyyy') : null
@@ -36,7 +36,7 @@ const MonProfilPage = async () => {
     return redirect('/')
   }
 
-  const conseiller = await findConseillerNumeriqueByEmail(user.email)
+  const conseiller = await fetchConseillerNumeriqueV1Data({ email: user.email })
 
   const contract =
     conseiller?.miseEnRelationActive == null
