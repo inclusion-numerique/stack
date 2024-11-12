@@ -1,11 +1,7 @@
 import Image from 'next/image'
 import Onboarding from '../../_components/Onboarding'
 
-export const OnboardingMesStatistiques = ({
-  isConseillerNumerique,
-}: {
-  isConseillerNumerique: boolean
-}) => (
+export const OnboardingMesStatistiquesCoordinateur = () => (
   <Onboarding
     image={
       <Image
@@ -16,7 +12,7 @@ export const OnboardingMesStatistiques = ({
         alt=""
       />
     }
-    title="Profitez de statistiques pour comprendre et suivre l’évolution de votre activité"
+    title="Profitez de statistiques pour comprendre et suivre l’évolution de l'activité de votre équipe"
     label={
       <>
         <span className="ri-chat-poll-line ri-lg fr-mr-1w" aria-hidden />
@@ -24,14 +20,14 @@ export const OnboardingMesStatistiques = ({
       </>
     }
     stepIndex={2}
-    totalSteps={isConseillerNumerique ? 6 : 5}
-    previous={{ href: '/en-savoir-plus/mes-activites' }}
-    next={{ href: '/en-savoir-plus/mes-beneficiaires' }}
+    totalSteps={6}
+    previous={{ href: '/en-savoir-plus/' }}
+    next={{ href: '/en-savoir-plus/mon-equipe-coordinateur' }}
     closeHref="/coop"
   >
     <div className="fr-text--lg">
       <ul>
-        <li>Filtrez-les par période, lieu et type d’activité.</li>
+        <li>Filtrez-les par médiateurs, période, lieu et type d’activité.</li>
         <li>
           Exportez et partagez-les facilement auprès de différents partenaires
           (structure employeuse, lieux d’activités, collectivités…) pour

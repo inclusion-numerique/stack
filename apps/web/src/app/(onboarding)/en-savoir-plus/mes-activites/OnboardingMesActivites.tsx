@@ -28,7 +28,7 @@ export const OnboardingMesActivites = ({
     next={{ href: '/en-savoir-plus/mes-statistiques' }}
     closeHref="/coop"
   >
-    <p className="fr-text--xl">
+    <p className="fr-text--lg">
       Grâce à des comptes rendus d’activités adaptés à{' '}
       <strong>3 types d’accompagnement</strong>&nbsp;:
     </p>
