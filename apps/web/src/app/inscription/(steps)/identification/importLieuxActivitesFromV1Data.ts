@@ -1,11 +1,8 @@
 import { v4 } from 'uuid'
 import type { Prisma } from '@prisma/client'
-import { ObjectId } from 'mongodb'
 import {
   createMediateurEnActivites,
   createStructures,
-  type ExistingStructureCartoFromPermanencesV1,
-  type ExistingStructuresCartoFromPermanencesV1,
   findExistingStructuresCartoFromPermanencesV1,
   toId,
 } from '@app/web/app/inscription/importFromConseillerNumerique/importFromConseillerNumerique.queries'
@@ -14,7 +11,9 @@ import { toStructureFromCartoStructure } from '@app/web/structure/toStructureFro
 import type { ConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Data'
 import type { PremanenceConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/PremanenceConseillerNumerique'
 
-const toStructureToCreate = (permanence: PremanenceConseillerNumerique) =>
+const createStructureDataFromPermanence = (
+  permanence: PremanenceConseillerNumerique,
+) =>
   ({
     id: v4(),
     nom: permanence.nomEnseigne,
@@ -28,25 +27,6 @@ const toStructureToCreate = (permanence: PremanenceConseillerNumerique) =>
     codeInsee: permanence.adresse.codeCommune,
   }) satisfies Prisma.StructureCreateManyInput
 
-const onlyWithoutStructure = (
-  structureCarto: ExistingStructureCartoFromPermanencesV1,
-) => !structureCarto.structures
-
-const withAPermanenceMatchingIdOf =
-  ({ _id }: { _id: ObjectId }) =>
-  (structure: ExistingStructureCartoFromPermanencesV1) =>
-    structure.conseillerNumeriquePermanenceIds.includes(_id.toString())
-
-const toMatchingCartoStructureIn =
-  (structures: ExistingStructuresCartoFromPermanencesV1) =>
-  (permanence: { _id: ObjectId }) =>
-    structures.find(withAPermanenceMatchingIdOf(permanence))
-
-const onlyWithoutMatchingPermanenceIn =
-  (structures: ExistingStructuresCartoFromPermanencesV1) =>
-  (permanence: { _id: ObjectId }) =>
-    !structures.some(withAPermanenceMatchingIdOf(permanence))
-
 /**
  * Create needed structures and mediateurEnActivite for a given conseiller v1 data
  * This should be idempotent
@@ -58,38 +38,47 @@ export const importLieuxActivitesFromV1Data = async ({
   mediateurId: string
   conseillerV1Data: ConseillerNumeriqueV1Data
 }) => {
-  const existingCartoStructures =
+  const existingCartoStructuresFromPermanences =
     await findExistingStructuresCartoFromPermanencesV1(conseillerV1Data)
 
-  const noExistingCartoNorStructureWithThePermanenceIds =
-    conseillerV1Data.permanences
-      .filter(onlyWithoutMatchingPermanenceIn(existingCartoStructures))
-      .map(toStructureToCreate)
+  const permanencesWithoutExistingStructureNorCartoStructure =
+    existingCartoStructuresFromPermanences
+      // We only keep permanences that do not have an existing structure or a structure carto
+      .filter(({ structure, structureCarto }) => !structure && !structureCarto)
+      .map(({ permanence }) => createStructureDataFromPermanence(permanence))
 
   const existingCartoButNoStructureWithThePermanenceIds =
-    conseillerV1Data.permanences
-      .map(toMatchingCartoStructureIn(existingCartoStructures))
-      .filter(onlyDefinedAndNotNull)
-      .filter(onlyWithoutStructure)
+    existingCartoStructuresFromPermanences
+      // We only keep permanences that have an existing carto structure but no structure
+      .filter(({ structure, structureCarto }) => !structure && !!structureCarto)
+      .map(({ structureCarto }) => structureCarto)
+      .filter(onlyDefinedAndNotNull) // Already filtered but need type safety
+
       .map(toStructureFromCartoStructure)
 
+  // No need to create data for permanences that already have a structure and a carto structure
   const existingCartoAndStructureWithThePermanenceIds =
-    conseillerV1Data.permanences
-      .map(toMatchingCartoStructureIn(existingCartoStructures))
-      .filter(onlyDefinedAndNotNull)
-      .map(toId)
+    existingCartoStructuresFromPermanences
+      // We only keep permanences that have an existing carto structure and a structure
+      .filter(
+        ({ structure, structureCarto }) => !!structure && !!structureCarto,
+      )
+      .map(({ structure }) => structure)
+      .filter(onlyDefinedAndNotNull) // Already filtered but need type safeity
 
   const structuresToCreate = [
-    ...noExistingCartoNorStructureWithThePermanenceIds,
+    ...permanencesWithoutExistingStructureNorCartoStructure,
     ...existingCartoButNoStructureWithThePermanenceIds,
   ]
 
+  // We create the missing structures
   await createStructures(structuresToCreate)
 
+  // We concatenate the structure ids to create the "mediateurEnActivite" relation
   const lieuxActiviteStructureIds = [
-    ...existingCartoAndStructureWithThePermanenceIds,
-    ...noExistingCartoNorStructureWithThePermanenceIds.map(toId),
+    ...permanencesWithoutExistingStructureNorCartoStructure.map(toId),
     ...existingCartoButNoStructureWithThePermanenceIds.map(toId),
+    ...existingCartoAndStructureWithThePermanenceIds.map(toId),
   ]
 
   await createMediateurEnActivites({

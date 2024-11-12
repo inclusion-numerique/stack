@@ -18,34 +18,36 @@ export const importConseillerNumeriqueDataFromV1 = async ({
   v1Conseiller: ConseillerNumeriqueV1DataWithActiveMiseEnRelation
 }) => {
   // 1. Create the mediateur and conseiller numerique objects
-  const data = {
+  const upsertedMediateur = await prismaClient.mediateur.upsert({
+    where: { userId: user.id },
+    create: {
+      userId: user.id,
+    },
+    update: {},
+  })
+
+  const conseillerData = {
     id: v1Conseiller.conseiller.id,
     idPg: v1Conseiller.conseiller.idPG,
-    mediateur: {
-      connectOrCreate: {
-        where: { userId: user.id },
-        create: { userId: user.id },
-      },
-    },
-  } satisfies Prisma.ConseillerNumeriqueCreateInput
+    mediateurId: upsertedMediateur.id,
+  } satisfies Prisma.ConseillerNumeriqueUncheckedCreateInput
 
-  const upsertedConseillerNumerique =
-    await prismaClient.conseillerNumerique.upsert({
-      where: { id: v1Conseiller.conseiller.id },
-      create: data,
-      update: data,
-      select: {
-        id: true,
-        idPg: true,
-        mediateurId: true,
-      },
-    })
+  await prismaClient.conseillerNumerique.upsert({
+    where: { id: v1Conseiller.conseiller.id },
+    create: conseillerData,
+    update: conseillerData,
+    select: {
+      id: true,
+      idPg: true,
+      mediateurId: true,
+    },
+  })
 
   // 2. Associate the coordinateurs to the conseiller
   const coordinateurs = await findCoordinateursFor(v1Conseiller)
 
   await upsertCoordinationsForMediateur({
-    mediateurId: upsertedConseillerNumerique.id,
+    mediateurId: upsertedMediateur.id,
     coordinateurIds: coordinateurs.map(({ id }) => id),
   })
 
@@ -58,7 +60,7 @@ export const importConseillerNumeriqueDataFromV1 = async ({
   // 4. Import or link to lieux activité
 
   const lieuxActivites = await importLieuxActivitesFromV1Data({
-    mediateurId: upsertedConseillerNumerique.mediateurId,
+    mediateurId: upsertedMediateur.id,
     conseillerV1Data: v1Conseiller,
   })
 
