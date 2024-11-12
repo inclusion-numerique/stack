@@ -2,11 +2,7 @@ import Image from 'next/image'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import Onboarding from '../../_components/Onboarding'
 
-export const OnboardingMesOutils = ({
-  isConseillerNumerique,
-}: {
-  isConseillerNumerique: boolean
-}) => (
+export const OnboardingMesOutilsCoordinateur = () => (
   <Onboarding
     image={
       <Image
@@ -24,10 +20,10 @@ export const OnboardingMesOutils = ({
         Mes outils
       </>
     }
-    stepIndex={4}
-    totalSteps={isConseillerNumerique ? 6 : 5}
-    previous={{ href: '/en-savoir-plus/mes-beneficiaires' }}
-    next={{ href: '/en-savoir-plus/france-numerique-ensemble' }}
+    stepIndex={5}
+    totalSteps={6}
+    previous={{ href: '/en-savoir-plus/mes-archives-coordinateur' }}
+    next={{ href: '/en-savoir-plus/france-numerique-ensemble-coordinateur' }}
     closeHref="/coop"
   >
     <p className="fr-text--lg">
