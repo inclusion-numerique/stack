@@ -29,7 +29,6 @@ export const coordinateurInscrit = givenUser({
       },
     },
   },
-  checkCoordinateurInscription: new Date(),
   profilInscription: 'Coordinateur',
   acceptationCgu: new Date(),
   inscriptionValidee: new Date(),

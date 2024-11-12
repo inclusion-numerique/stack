@@ -1,6 +1,7 @@
 import type { Prisma } from '@prisma/client'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { prismaClient } from '@app/web/prismaClient'
+import { serializePrismaSessionUser } from '@app/web/auth/serializePrismaSessionUser'
 
 export const sessionUserSelect = {
   id: true,
@@ -19,10 +20,9 @@ export const sessionUserSelect = {
   role: true,
   isFixture: true,
   profilInscription: true,
+  checkedProfilInscription: true,
   acceptationCgu: true,
   hasSeenOnboarding: true,
-  checkConseillerNumeriqueInscription: true,
-  checkCoordinateurInscription: true,
   structureEmployeuseRenseignee: true,
   lieuxActiviteRenseignes: true,
   inscriptionValidee: true,
@@ -64,6 +64,7 @@ export const sessionUserSelect = {
   coordinateur: {
     select: {
       id: true,
+      conseillerNumeriqueId: true,
       mediateursCoordonnes: {
         select: {
           mediateurId: true,
@@ -73,14 +74,8 @@ export const sessionUserSelect = {
   },
 } satisfies Prisma.UserSelect
 
-export const getSessionUserFromSessionToken = async (
-  sessionToken: string | null,
-): Promise<SessionUser | null> => {
-  if (!sessionToken) {
-    return null
-  }
-
-  const res = await prismaClient.session.findFirst({
+const querySessionUser = async (sessionToken: string) =>
+  prismaClient.session.findFirst({
     where: {
       sessionToken,
       expires: { gt: new Date() },
@@ -100,25 +95,26 @@ export const getSessionUserFromSessionToken = async (
     },
   })
 
+export type PrismaSession = Exclude<
+  Awaited<ReturnType<typeof querySessionUser>>,
+  null
+>
+
+export type PrismaSessionUser = PrismaSession['user']
+export type PrismaSessionUsupper = PrismaSession['usurper']
+
+export const getSessionUserFromSessionToken = async (
+  sessionToken: string | null,
+): Promise<SessionUser | null> => {
+  if (!sessionToken) {
+    return null
+  }
+
+  const res = await querySessionUser(sessionToken)
+
   if (!res?.user) {
     return null
   }
 
-  return {
-    ...res.user,
-    created: res.user.created.toISOString(),
-    updated: res.user.updated.toISOString(),
-    hasSeenOnboarding: res.user.hasSeenOnboarding?.toISOString() ?? null,
-    emailVerified: res.user.emailVerified?.toISOString() ?? null,
-    checkConseillerNumeriqueInscription:
-      res.user.checkConseillerNumeriqueInscription?.toISOString() ?? null,
-    checkCoordinateurInscription:
-      res.user.checkCoordinateurInscription?.toISOString() ?? null,
-    inscriptionValidee: res.user.inscriptionValidee?.toISOString() ?? null,
-    structureEmployeuseRenseignee:
-      res.user.structureEmployeuseRenseignee?.toISOString() ?? null,
-    lieuxActiviteRenseignes:
-      res.user.lieuxActiviteRenseignes?.toISOString() ?? null,
-    usurper: res.usurper,
-  }
+  return serializePrismaSessionUser(res.user, res.usurper)
 }

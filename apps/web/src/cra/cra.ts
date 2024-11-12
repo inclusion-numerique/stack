@@ -276,7 +276,6 @@ export const thematiqueHints: {
     'Outils pour gérer mon entreprise : comptabilité, gestion, collaboration, etc.',
   ],
   InsertionProfessionnelle: [
-    'Santé',
     'France Travail, Mon Compte Formation…',
     'Créer & diffuser son CV en ligne',
     'Rechercher un emploi en ligne',

@@ -1,11 +1,11 @@
 import React from 'react'
 import { redirect } from 'next/navigation'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import IconInSquare from '@app/web/components/IconInSquare'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import BackButton from '@app/web/components/BackButton'
 import LieuxActiviteForm from './_components/LieuxActiviteForm'
 
 const AjouterLieuPage = async () => {
@@ -29,17 +29,9 @@ const AjouterLieuPage = async () => {
           currentPage={"Ajouter un lieu d'activité"}
         />
         <main id={contentId} className="fr-mb-30v">
-          <Button
-            priority="tertiary no outline"
-            size="small"
-            linkProps={{
-              href: '/coop/lieux-activite',
-            }}
-            className="fr-mt-2v fr-mb-10v"
-            iconId="fr-icon-arrow-left-line"
-          >
-            Retour aux lieux d’activité
-          </Button>
+          <BackButton href="/coop/lieux-activite">
+            Retour à mes lieux d&apos;activité
+          </BackButton>
           <span className="fr-flex fr-direction-row fr-align-items-center fr-flex-gap-6v fr-mb-5w">
             <IconInSquare iconId="ri-home-office-line" />
             <h1 className="fr-page-title fr-m-0 fr-h2">

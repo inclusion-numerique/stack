@@ -3,11 +3,13 @@ import { redirect } from 'next/navigation'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { getStructureEmployeuseAddress } from '@app/web/structure/getStructureEmployeuseAddress'
-import pageData from '../_data/espace-france-numerique-ensemble.json'
+import espaceFranceNumeriqueEnsemblePageData from '@app/web/app/coop/(sidemenu-layout)/mes-outils/_data/espaceFranceNumeriqueEnsemblePageData'
 import { OutilEspaceFranceNumeriqueEnsemble } from './OutilEspaceFranceNumeriqueEnsemble'
 
 export const metadata = {
-  title: metadataTitle(`${pageData.title} - Mes outils`),
+  title: metadataTitle(
+    `${espaceFranceNumeriqueEnsemblePageData.title} - Mes outils`,
+  ),
 }
 
 const Page = async () => {
@@ -21,7 +23,7 @@ const Page = async () => {
 
   return (
     <OutilEspaceFranceNumeriqueEnsemble
-      {...pageData}
+      {...espaceFranceNumeriqueEnsemblePageData}
       codeInsee={employeStructure?.structure.codeInsee}
     />
   )

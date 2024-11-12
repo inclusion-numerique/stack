@@ -5,12 +5,12 @@ import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
-import { findConseillerNumeriqueByEmail } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
+import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
+import FonctionnalitesDeMediationNumeriqueCoordinateur from '@app/web/app/coop/(full-width-layout)/mon-profil/_components/FonctionnalitesDeMediationNumeriqueCoordinateur'
 import { CoordinatorContract } from './_components/CoordinatorContract'
-import MediationNumerique from './_components/MediationNumerique'
 import ProfileEditCard from './_components/ProfileEditCard'
 
-const formatDate = (date?: string | number | Date) =>
+const formatDate = (date?: string | number | Date | null) =>
   date && isValid(date) ? format(date, 'dd/MM/yyyy') : null
 
 const typeWithDuration = ({
@@ -19,10 +19,13 @@ const typeWithDuration = ({
   dateFinDeContrat,
 }: {
   typeDeContrat: string
-  dateDebutDeContrat: Date
-  dateFinDeContrat?: Date
+  dateDebutDeContrat: Date | null
+  dateFinDeContrat?: Date | null
 }): string =>
-  isValid(dateDebutDeContrat) && dateFinDeContrat && isValid(dateFinDeContrat)
+  !!dateDebutDeContrat &&
+  isValid(dateDebutDeContrat) &&
+  !!dateFinDeContrat &&
+  isValid(dateFinDeContrat)
     ? `${typeDeContrat} - Durée ${differenceInMonths(dateFinDeContrat, dateDebutDeContrat)} mois`
     : typeDeContrat
 
@@ -33,18 +36,20 @@ const MonProfilPage = async () => {
     return redirect('/')
   }
 
-  const conseiller = await findConseillerNumeriqueByEmail(user.email)
+  const conseiller = await fetchConseillerNumeriqueV1Data({ email: user.email })
 
   const contract =
-    conseiller?.miseEnRelation == null
+    conseiller?.miseEnRelationActive == null
       ? undefined
       : {
-          type: typeWithDuration(conseiller.miseEnRelation).replaceAll(
+          type: typeWithDuration(conseiller.miseEnRelationActive).replaceAll(
             '_',
             ' ',
           ),
-          start: formatDate(conseiller.miseEnRelation?.dateDebutDeContrat),
-          end: formatDate(conseiller.miseEnRelation?.dateFinDeContrat),
+          start: formatDate(
+            conseiller.miseEnRelationActive?.dateDebutDeContrat,
+          ),
+          end: formatDate(conseiller.miseEnRelationActive?.dateFinDeContrat),
         }
 
   return (
@@ -73,9 +78,13 @@ const MonProfilPage = async () => {
               <CoordinatorContract {...contract} />
             </section>
           )}
-          <section>
-            <MediationNumerique isActive={user.mediateur?.id != null} />
-          </section>
+          {user.coordinateur ? (
+            <section>
+              <FonctionnalitesDeMediationNumeriqueCoordinateur
+                isActive={user.mediateur?.id != null}
+              />
+            </section>
+          ) : null}
         </main>
       </div>
     </>

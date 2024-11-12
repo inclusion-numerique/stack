@@ -6,9 +6,9 @@ import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 import { getStructureEmployeuseForInscription } from '@app/web/app/inscription/getStructureEmployeuseForInscription'
 import RoleInscriptionNotice from '@app/web/app/inscription/RoleInscriptionNotice'
 import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
-import { findConseillersCoordonnesByEmail } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
 import InscriptionRecapitulatif from '@app/web/app/inscription/InscriptionRecapitulatif'
 import { profileInscriptionLabels } from '@app/web/inscription/profilInscription'
+import { fetchConseillersCoordonnes } from '@app/web/external-apis/conseiller-numerique/fetchConseillersCoordonnes'
 import { coordinateurInscriptionSteps } from '../coordinateurInscriptionSteps'
 
 export const metadata = {
@@ -37,9 +37,9 @@ const Page = async () => {
       })
     : undefined
 
-  const mediateursCoordonnes = await findConseillersCoordonnesByEmail(
-    user.email,
-  )
+  const mediateursCoordonnes = await fetchConseillersCoordonnes({
+    coordinateurV1Id: user.coordinateur.conseillerNumeriqueId,
+  })
 
   return (
     <InscriptionCard

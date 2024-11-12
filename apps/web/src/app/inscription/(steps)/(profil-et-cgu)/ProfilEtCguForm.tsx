@@ -10,10 +10,7 @@ import { useRouter } from 'next/navigation'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
 import React from 'react'
 import RadioFormField from '@app/ui/components/Form/RadioFormField'
-import {
-  profileInscriptionOptionsWithExtras,
-  profileInscriptionSlugs,
-} from '@app/web/inscription/profilInscription'
+import { profileInscriptionOptionsWithExtras } from '@app/web/inscription/profilInscription'
 import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import {
@@ -39,9 +36,7 @@ const ProfilEtCguForm = ({ userId }: { userId: string }) => {
   const router = useRouter()
 
   const onSubmit = async (data: ChoisirProfilEtAccepterCguData) => {
-    router.push(
-      `/inscription/identification?profil=${profileInscriptionSlugs[data.profil]}`,
-    )
+    router.push(`/inscription/identification`)
     router.refresh()
 
     try {
@@ -80,7 +75,7 @@ const ProfilEtCguForm = ({ userId }: { userId: string }) => {
         label={
           <>
             J’ai lu et j’accepte les{' '}
-            <a href="/" className="fr-link wip-outline" target="_blank">
+            <a href="/cgu" className="fr-link" target="_blank">
               conditions générales d’utilisation du service
             </a>
             .

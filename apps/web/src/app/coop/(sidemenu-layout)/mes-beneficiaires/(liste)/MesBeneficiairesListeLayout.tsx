@@ -7,9 +7,7 @@ const MesBeneficiairesListeLayout = ({ children }: PropsWithChildren) => (
   <CoopPageContainer size={794}>
     <CoopBreadcrumbs currentPage="Mes bénéficiaires" />
     <div className="fr-mt-6v fr-mb-4v fr-width-full fr-flex fr-justify-content-space-between fr-align-items-center">
-      <h1 className="fr-h2 fr-text-title--blue-france fr-mb-0">
-        Mes bénéficiaires
-      </h1>
+      <h1 className="fr-text-title--blue-france fr-mb-0">Mes bénéficiaires</h1>
       <Button
         iconId="fr-icon-user-add-line"
         linkProps={{

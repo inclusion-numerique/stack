@@ -19,6 +19,7 @@ export type SessionUser = Pick<
   | 'role'
   | 'isFixture'
   | 'profilInscription'
+  | 'checkedProfilInscription'
   | 'acceptationCgu'
 > & {
   emailVerified: string | null
@@ -27,8 +28,6 @@ export type SessionUser = Pick<
   hasSeenOnboarding: string | null
   inscriptionValidee: string | null
   structureEmployeuseRenseignee: string | null
-  checkConseillerNumeriqueInscription: string | null
-  checkCoordinateurInscription: string | null
   lieuxActiviteRenseignes: string | null
   usurper: { id: string } | null
   emplois: (Pick<EmployeStructure, 'id'> & {
@@ -41,7 +40,7 @@ export type SessionUser = Pick<
       })
     | null
   coordinateur:
-    | (Pick<Coordinateur, 'id'> & {
+    | (Pick<Coordinateur, 'id' | 'conseillerNumeriqueId'> & {
         mediateursCoordonnes: { mediateurId: string }[]
       })
     | null

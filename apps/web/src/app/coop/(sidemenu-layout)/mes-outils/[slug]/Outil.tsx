@@ -4,12 +4,14 @@ import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import HeaderBackLink from '@app/web/components/HeaderBackLink'
+import { ComingSoon } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/[slug]/_components/ComingSoon'
 import { OutilPageData } from '../outilPageData'
 import { Access } from './_components/Access'
 import { Features } from './_components/Features'
 import { Hero } from './_components/Hero'
 
 export const Outil = ({
+  notice,
   title,
   illustration,
   illustrationWidth,
@@ -18,6 +20,7 @@ export const Outil = ({
   website,
   features,
   access,
+  accessComponent,
 }: OutilPageData) => (
   <CoopPageContainer size={894}>
     <CoopBreadcrumbs
@@ -29,6 +32,7 @@ export const Outil = ({
     <HeaderBackLink className="fr-mb-3w" />
     <SkipLinksPortal links={defaultSkipLinks} />
     <main id={contentId}>
+      {notice ? <ComingSoon text={notice} /> : null}
       <Hero
         title={title}
         illustration={illustration}
@@ -45,7 +49,7 @@ export const Outil = ({
         </div>
         <div className="fr-col-xl-5 fr-col-12">
           <div className="fr-border fr-border-radius--8 fr-px-3w fr-py-4w fr-height-full">
-            {access && <Access {...access} />}
+            {accessComponent || (access ? <Access {...access} /> : null)}
           </div>
         </div>
       </section>

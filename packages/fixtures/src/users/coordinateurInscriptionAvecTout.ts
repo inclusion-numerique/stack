@@ -75,6 +75,4 @@ export const coordinateurInscriptionAvecTout = givenUser({
       },
     },
   },
-  checkConseillerNumeriqueInscription: new Date(),
-  checkCoordinateurInscription: new Date(),
 }) satisfies Prisma.UserCreateInput

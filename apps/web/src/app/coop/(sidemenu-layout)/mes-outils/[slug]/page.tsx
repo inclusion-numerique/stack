@@ -1,28 +1,33 @@
 import React from 'react'
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import { OutilPageData } from '../outilPageData'
+import { getOutilsPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/[slug]/outilsPageData'
 import { Outil } from './Outil'
 
-const importPageDataFor = async (slug: string): Promise<OutilPageData> =>
-  import(`../_data/${slug}.json`).then(
-    (module: { default: OutilPageData }) => module.default,
-  )
-
-export const generateMetadata = async ({
+export const generateMetadata = ({
   params,
 }: {
   params: { slug: string }
-}): Promise<Metadata> => {
-  const pageData: OutilPageData = await importPageDataFor(params.slug)
+}): Metadata | null => {
+  const pageData = getOutilsPageData(params.slug)
+  if (!pageData) {
+    notFound()
+    return null
+  }
 
   return {
     title: metadataTitle(`${pageData.title} - Mes outils`),
   }
 }
 
-const Page = async ({ params }: { params: { slug: string } }) => {
-  const pageData: OutilPageData = await importPageDataFor(params.slug)
+const Page = ({ params }: { params: { slug: string } }) => {
+  const pageData = getOutilsPageData(params.slug)
+
+  if (!pageData) {
+    notFound()
+    return null
+  }
 
   return <Outil {...pageData} />
 }
