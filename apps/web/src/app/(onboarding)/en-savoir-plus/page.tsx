@@ -14,7 +14,7 @@ const Page = async () => {
   const user = await getAuthenticatedSessionUser()
 
   const nextPageRoute = user.coordinateur
-    ? '/en-savoir-plus/mes-statistiques-coordinateur'
+    ? '/en-savoir-plus/coordinateur/mes-statistiques'
     : '/en-savoir-plus/mes-activites'
 
   return (
