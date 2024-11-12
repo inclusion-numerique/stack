@@ -16,7 +16,6 @@ export const mediateurSansActivites = givenUser({
   email: 'mediation@numerique.fr',
   isFixture: true,
   role: 'User',
-  checkConseillerNumeriqueInscription: new Date(),
   inscriptionValidee: new Date(),
   lieuxActiviteRenseignes: new Date(),
   structureEmployeuseRenseignee: new Date(),

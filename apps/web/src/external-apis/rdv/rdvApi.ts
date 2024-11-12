@@ -2,6 +2,12 @@ import axios, { AxiosError } from 'axios'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { prismaClient } from '@app/web/prismaClient'
 
+export type RdvApiLieuInput = {
+  // external_id: string // not yet implemented on rdv side
+  name: string
+  address: string
+}
+
 export type RdvApiCreateAccountInput = {
   agent: {
     email: string
@@ -14,6 +20,7 @@ export type RdvApiCreateAccountInput = {
     address: string
     external_id: string // our user id
   }
+  lieux: RdvApiLieuInput[]
 }
 
 export type RdvApiCreateAccountResponse = {
@@ -37,6 +44,11 @@ export const getUserRdvApiData = async ({ userId }: { userId: string }) => {
       email: true,
       firstName: true,
       lastName: true,
+      mediateur: {
+        select: {
+          id: true,
+        },
+      },
       emplois: {
         where: {},
       },
@@ -73,9 +85,30 @@ export const getUserRdvApiData = async ({ userId }: { userId: string }) => {
     return null
   }
 
+  const lieux = user.mediateur
+    ? await prismaClient.structure.findMany({
+        where: {
+          mediateursEnActivite: {
+            some: {
+              mediateurId: user.mediateur.id,
+              suppression: null,
+            },
+          },
+        },
+        select: {
+          id: true,
+          nom: true,
+          adresse: true,
+          codePostal: true,
+          commune: true,
+        },
+      })
+    : []
+
   return {
     user,
     emploi,
+    lieux,
   }
 }
 
@@ -98,6 +131,7 @@ const adresseStructureForRdvApi = ({
 export const userToRdvApiInput = ({
   user,
   emploi,
+  lieux,
 }: UserDataForRdvApiAccountInput): RdvApiCreateAccountInput => ({
   agent: {
     email: user.email,
@@ -110,6 +144,10 @@ export const userToRdvApiInput = ({
     name: emploi.structure.nom,
     address: adresseStructureForRdvApi(emploi.structure),
   },
+  lieux: lieux.map((structure) => ({
+    name: structure.nom,
+    address: adresseStructureForRdvApi(structure),
+  })),
 })
 
 /**

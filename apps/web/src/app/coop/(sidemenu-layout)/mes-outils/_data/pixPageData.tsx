@@ -1,10 +1,11 @@
 import { OutilPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/outilPageData'
+import PixOutilAccess from '@app/web/app/coop/(sidemenu-layout)/mes-outils/_components/PixOutilAccess'
 
 export default {
-  title: 'Pix',
+  title: 'Pix Orga',
   description:
     'Proposez des parcours de montée en compétences et des tests Pix adaptés à vos bénéficiaires et suivez leur progression.',
-  website: 'https://pix.fr',
+  website: 'https://pix.fr/mediation-numerique',
   logo: '/images/services/pix.svg',
   illustration: '/images/illustrations/mes-outils/pix.webp',
   illustrationWidth: 50,
@@ -29,19 +30,5 @@ export default {
       icon: 'ri-line-chart-line',
     },
   ],
-  access: {
-    how: 'Votre structure doit déposer une demande d’accès à Pix Orga.',
-    icon: 'ri-home-smile-2-line',
-    info: {
-      label: 'Demander l’accès',
-      link: 'https://pix.fr/abc-pix-cnfs',
-    },
-    title: 'Ma structure a déjà accès à Pix',
-    description:
-      'Si votre structure a déjà un accès, vous pouvez vous connecter avec votre identifiant Pix :',
-    callToAction: {
-      label: 'Se connecter',
-      link: 'https://orga.pix.fr/connexion',
-    },
-  },
+  accessComponent: <PixOutilAccess />,
 } satisfies OutilPageData

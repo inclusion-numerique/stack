@@ -18,7 +18,16 @@ export const conseillersV1ThatShouldSignupAsConseiller = {
   c: {
     email: 'nketficharif@lyonmetropole-mmie.fr',
     firstName: 'Conseiller numérique',
-    lastName: 'D',
+    lastName: 'C',
     emailVerified: new Date(),
   },
 } satisfies Record<string, CreateUserInput>
+
+export const coordinateursV1ThatShouldSignupAsCoordinateur = {
+  a: {
+    email: 'cberge@hubdusud.fr',
+    firstName: 'Coordinateur',
+    lastName: 'A',
+    emailVerified: new Date(),
+  },
+}
