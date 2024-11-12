@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import Onboarding from '../../_components/Onboarding'
+import Onboarding from '@app/web/app/(onboarding)/_components/Onboarding'
 
 export const OnboardingMonEquipeCoordinateur = () => (
   <Onboarding
@@ -21,8 +21,8 @@ export const OnboardingMonEquipeCoordinateur = () => (
     }
     stepIndex={3}
     totalSteps={6}
-    previous={{ href: '/en-savoir-plus/mes-statistiques-coordinateur' }}
-    next={{ href: '/en-savoir-plus/mes-archives-coordinateur' }}
+    previous={{ href: '/en-savoir-plus/coordinateur/mes-statistiques' }}
+    next={{ href: '/en-savoir-plus/coordinateur/mes-archives' }}
     closeHref="/coop"
   >
     <p className="fr-text--lg">
