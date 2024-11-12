@@ -1,32 +1,31 @@
 :root {
-    --header-height: 80px;
-    --header-height-72: 72px;
+  --header-height: 80px;
+  --header-height-72: 72px;
 }
 
 .fr-layout {
-    height: 100vh;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+  height: 100vh;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 
-    &#environment-information, &#print {
-        min-height: auto;
-    }
+  &#environment-information,
+  &#print {
+    min-height: auto;
+  }
 }
 
 .fr-layout__inner {
-    flex: 1 0 auto;
-    display: flex;
-    flex-direction: column;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .fr-layout__main {
-    flex: 1 0 auto;
+  flex: 1 0 auto;
 }
 
 .fr-layout__inner--header-72 {
-    height: calc(100% - var(--header-height));
-
+  height: calc(100% - var(--header-height));
 }
-

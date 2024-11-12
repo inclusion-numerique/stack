@@ -1,8 +1,18 @@
-const LogoCoop = ({ className }: { className?: string }) => (
+const LogoCoop = ({
+  backgroundColor = 'var(--blue-france-975-75)',
+  className,
+  width = 88,
+  height = 88,
+}: {
+  backgroundColor?: string
+  className?: string
+  width?: number
+  height?: number
+}) => (
   <svg
     className={className}
-    width="88"
-    height="88"
+    width={width}
+    height={height}
     viewBox="0 0 88 88"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -12,7 +22,7 @@ const LogoCoop = ({ className }: { className?: string }) => (
       width="88"
       height="88"
       rx="16"
-      fill="var(--blue-france-975-75)"
+      fill={backgroundColor}
     />
     <path
       d="M21.5 26.4999C21.5 24.9467 21.5 24.1702 21.7537 23.5576C22.092 22.7408 22.741 22.0919 23.5577 21.7536C24.1703 21.4999 24.9469 21.4999 26.5 21.4999C31.1594 21.4999 33.4891 21.4999 35.3268 22.2611C37.7772 23.276 39.7238 25.2228 40.7388 27.673C41.5 29.5108 41.5 31.8405 41.5 36.4999C41.5 38.053 41.5 38.8296 41.2463 39.4421C40.908 40.259 40.259 40.9078 39.4423 41.2461C38.8297 41.4998 38.0532 41.4998 36.5 41.4998C31.8406 41.4998 29.5109 41.4998 27.6732 40.7386C25.2229 39.7238 23.2761 37.777 22.2612 35.3267C21.5 33.489 21.5 31.1593 21.5 26.4999Z"

@@ -21,4 +21,8 @@
   .fr-mr-xl-0 {
     margin-right: 0;
   }
+
+  .fr-p-xl-24v {
+    padding: 6rem !important;
+  }
 }
