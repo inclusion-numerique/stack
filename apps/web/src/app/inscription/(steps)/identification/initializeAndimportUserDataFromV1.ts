@@ -1,17 +1,11 @@
 import type { ProfilInscription } from '@prisma/client'
 import type { SessionUser } from '@app/web/auth/sessionUser'
-import {
-  importCoordinateurConseillerNumeriqueDataFromV1,
-} from '@app/web/app/inscription/(steps)/identification/importCoordinateurConseillerNumeriqueDataFromV1'
-import {
-  importConseillerNumeriqueDataFromV1,
-} from '@app/web/app/inscription/(steps)/identification/importConseillerNumeriqueDataFromV1'
+import { importCoordinateurConseillerNumeriqueDataFromV1 } from '@app/web/app/inscription/(steps)/identification/importCoordinateurConseillerNumeriqueDataFromV1'
+import { importConseillerNumeriqueDataFromV1 } from '@app/web/app/inscription/(steps)/identification/importConseillerNumeriqueDataFromV1'
 import type { ConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Data'
 import { prismaClient } from '@app/web/prismaClient'
 import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
-import {
-  isConseillerNumeriqueV1DataWithActiveMiseEnRelation,
-} from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
+import { isConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
 
 /**
  * Creates the mediateur object if needed
