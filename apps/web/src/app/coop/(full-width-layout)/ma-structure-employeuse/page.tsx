@@ -63,9 +63,7 @@ const MaStructureEmployeusePage = async () => {
               className="ri-home-smile-line ri-lg fr-line-height-1 fr-text-label--blue-france fr-background-alt--blue-france fr-p-2w fr-m-0 fr-border-radius--8"
               aria-hidden
             />
-            <h1 className="fr-h2 fr-page-title fr-m-0">
-              Ma structure employeuse
-            </h1>
+            <h1 className="fr-page-title fr-m-0">Ma structure employeuse</h1>
           </div>
 
           {structureEmployeuse ? (
