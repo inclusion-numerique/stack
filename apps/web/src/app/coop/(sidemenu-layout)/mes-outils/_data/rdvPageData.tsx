@@ -1,6 +1,10 @@
 import { OutilPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/outilPageData'
 
 export default {
+  notice:
+    ' Vos données seront partagées entre votre profil sur La Coop de la\n' +
+    '          médiation numérique et RDV Aide Numérique afin d’éviter les doubles\n' +
+    '          saisies',
   title: 'RDV Aide Numérique',
   description:
     'Un outil de prise de rendez-vous en ligne, simplifiant votre organisation et rappelant aux usagers leurs rendez-vous par SMS.',
@@ -28,11 +32,11 @@ export default {
     },
   ],
   access: {
-    how: 'Accédez à ce service grâce à votre identifiant unique ProConnect.',
-    illustration: '/images/services/pro-connect.svg',
+    how: 'Accédez à ce service grâce à ProConnect, votre identifiant unique pour accéder à plusieurs services de l’État.',
+    illustration: '/images/services/pro-connect-logo.svg',
     info: {
-      label: 'En savoir plus sur Pro Connect',
-      link: '',
+      label: 'En savoir plus sur ProConnect',
+      link: 'https://www.proconnect.gouv.fr',
     },
     callToAction: {
       label: 'Se connecter',

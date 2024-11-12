@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Notice from '@codegouvfr/react-dsfr/Notice'
+import Link from 'next/link'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
@@ -29,7 +30,14 @@ export const MesOutils = () => (
             </span>
             <span className="fr-display-block fr-text--sm fr-my-1v">
               Amélioration du partage d’informations entre ces outils pour
-              fluidifier l’organisation du travail.
+              fluidifier l’organisation du travail.  
+              <Link
+                className="fr-link fr-text--sm"
+                href="https://incubateurdesterritoires.notion.site/105744bf03dd80349c26e76cd8459eac?v=8949acfdde544d12860f5c0ca89af72f"
+                target="_blank"
+              >
+                En savoir plus sur les prochaines évolutions de la plateforme
+              </Link>
             </span>
           </span>
         }

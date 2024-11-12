@@ -28,6 +28,7 @@ export type OutilPageDataAccess = {
 }
 
 export type OutilPageData = {
+  notice?: string
   title: string
   description: string
   website: string
