@@ -47,13 +47,13 @@ const LieuActiviteListPage = async () => {
       <SkipLinksPortal links={defaultSkipLinks} />
       <div className="fr-container fr-container--800 fr-mb-32v">
         <CoopBreadcrumbs currentPage="Mes lieux d'activités" />
-        <main id={contentId}>
-          <span className="fr-flex fr-flex-wrap fr-direction-row fr-align-items-center fr-flex-gap-4v fr-my-5w">
+        <main id={contentId} className="fr-mb-16w">
+          <span className="fr-flex fr-flex-wrap fr-direction-row fr-align-items-center fr-flex-gap-4v fr-my-12v">
             <span
               className="ri-home-office-line ri-lg fr-line-height-1 fr-text-label--blue-france fr-background-alt--blue-france fr-p-2w fr-m-0 fr-border-radius--8"
               aria-hidden
             />
-            <h1 className="fr-h3 fr-page-title fr-m-0">
+            <h1 className="fr-h2 fr-page-title fr-m-0">
               Mes lieux d’activités · {user.mediateur._count.enActivite}
             </h1>
             <Button

@@ -4,11 +4,11 @@ import IconInSquare from '@app/web/components/IconInSquare'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 
 const ArchivesV1Layout = ({ children }: PropsWithChildren) => (
-  <div className="fr-container fr-container--medium">
+  <div className="fr-container fr-container--800">
     <CoopBreadcrumbs currentPage="Mes archives - Coop V.1" />
     <div className="fr-flex fr-align-items-center fr-flex-gap-3v fr-my-12v">
       <IconInSquare iconId="fr-icon-archive-line" size="medium" />
-      <h1 className="fr-h3 fr-mb-0 fr-text-title--blue-france">
+      <h1 className="fr-h2 fr-mb-0 fr-text-title--blue-france">
         Mes archives&nbsp;-&nbsp;Coop V.1
       </h1>
     </div>

@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import Notice from '@codegouvfr/react-dsfr/Notice'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
@@ -47,7 +48,7 @@ export const OutilEspaceFranceNumeriqueEnsemble = ({
                 politiques publiques mises en place dans le cadre de la feuille
                 de route{' '}
                 <Link
-                  className="fr-link"
+                  className="fr-link fr-text--sm"
                   href="https://inclusion-numerique.anct.gouv.fr/"
                   target="_blank"
                   rel="noreferrer"
@@ -65,7 +66,7 @@ export const OutilEspaceFranceNumeriqueEnsemble = ({
                   Le déploiement des dispositifs d’inclusion numérique portés
                   par le programme{' '}
                   <Link
-                    className="fr-link"
+                    className="fr-link fr-text--sm"
                     href="https://societenumerique.gouv.fr"
                     target="_blank"
                     rel="noreferrer"
@@ -78,7 +79,7 @@ export const OutilEspaceFranceNumeriqueEnsemble = ({
                   Les données relatives aux lieux de médiation numérique tels
                   que référencés sur la{' '}
                   <Link
-                    className="fr-link"
+                    className="fr-link fr-text--sm"
                     href="https://cartographie.societenumerique.gouv.fr/presentation"
                     target="_blank"
                     rel="noreferrer"
@@ -90,7 +91,7 @@ export const OutilEspaceFranceNumeriqueEnsemble = ({
                 <li>
                   Des données statistiques territoriales révélatrices des{' '}
                   <Link
-                    className="fr-link"
+                    className="fr-link fr-text--sm"
                     href="https://fragilite-numerique.fr"
                     target="_blank"
                     rel="noreferrer"
@@ -100,24 +101,25 @@ export const OutilEspaceFranceNumeriqueEnsemble = ({
                   des populations (Ref : Mednum).
                 </li>
               </ul>
-              <p className="fr-mb-0 fr-p-3w fr-background-alt--brown-caramel fr-border-radius--8 fr-flex fr-flex-gap-4v">
-                <div
-                  className="ri-chat-poll-fill ri-lg fr-mt-1v fr-text-label--brown-caramel"
-                  aria-hidden
-                />
-                <div className="fr-text--sm fr-mb-0">
-                  Vos statistiques d’activités contribuent à valoriser l’impact
-                  de la médiation numérique sur votre territoire.
-                  <br />
-                  <Link
-                    className="fr-link"
-                    href="https://incubateurdesterritoires.notion.site/En-savoir-plus-sur-l-utilisation-des-donn-es-sur-la-Coop-de-la-m-diation-num-rique-82af14ef964b41c1bfb5cb4a01d6e40b"
-                    target="_blank"
-                  >
-                    En savoir plus sur l’utilisation de vos données
-                  </Link>
-                </div>
-              </p>
+              <Notice
+                className="fr-notice--new fr-notice--flex"
+                title={
+                  <span className="fr-text--regular">
+                    <span className="fr-display-block fr-text--sm fr-my-1v fr-ml-1w">
+                      Vos statistiques vont prochainement contribuer à valoriser
+                      et comprendre l’impact de l’inclusion numérique sur votre
+                      territoire.  
+                      <Link
+                        className="fr-link fr-text--sm"
+                        href="https://www.notion.so/incubateurdesterritoires/En-savoir-plus-sur-l-utilisation-des-donn-es-sur-la-Coop-de-la-m-diation-num-rique-82af14ef964b41c1bfb5cb4a01d6e40b#6052168a99a84eca9b4c12c1b905d354"
+                        target="_blank"
+                      >
+                        En savoir plus sur l’utilisation de vos données
+                      </Link>
+                    </span>
+                  </span>
+                }
+              />
             </div>
           </div>
           <div className="fr-col-xl-5 fr-col-12">

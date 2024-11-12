@@ -1,10 +1,12 @@
 import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDisclamer'
 import { DefaultValues } from 'react-hook-form'
+import React from 'react'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import CraIndividuelForm from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/CraIndividuelForm'
 import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
 import { type MostUsedBeneficiairesForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import { type MostUsedLieuActiviteForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
+import BackButton from '@app/web/components/BackButton'
 
 export type CraIndividuelPageData = {
   defaultValues: DefaultValues<CraIndividuelData>
@@ -23,10 +25,18 @@ const CraIndividuelPage = ({
 }: CraIndividuelPageData) => (
   <div className="fr-container fr-container--800">
     <CoopBreadcrumbs currentPage="Enregistrer un accompagnement individuel" />
-    <h1 className="fr-text-title--blue-france fr-mb-2v fr-mt-12v">
+    <BackButton href="/coop">Retour à l&apos;accueil</BackButton>
+
+    <h1 className="fr-text-title--blue-france fr-mb-2v ">
       Accompagnement individuel
     </h1>
-    <RequiredFieldsDisclamer className="fr-mb-12v" />
+    <RequiredFieldsDisclamer
+      className="fr-mb-12v"
+      helpLink={{
+        href: 'https://incubateurdesterritoires.notion.site/Accompagnement-individuel-de-m-diation-num-rique-94011d45a214412981168bdd5e9d66c7',
+        text: 'En savoir plus sur comment compléter un CRA',
+      }}
+    />
 
     <CraIndividuelForm
       defaultValues={{ ...defaultValues, mediateurId }}

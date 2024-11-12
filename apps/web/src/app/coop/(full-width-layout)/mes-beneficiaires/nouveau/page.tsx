@@ -9,6 +9,7 @@ import {
 } from '@app/web/utils/encodeSerializableState'
 import IconInSquare from '@app/web/components/IconInSquare'
 import BeneficiaireForm from '@app/web/app/coop/(full-width-layout)/mes-beneficiaires/BeneficiaireForm'
+import BackButton from '@app/web/components/BackButton'
 
 const PageCreerBeneficiaire = async ({
   searchParams: { cra, retour } = {},
@@ -35,7 +36,10 @@ const PageCreerBeneficiaire = async ({
           },
         ]}
       />
-      <div className="fr-flex fr-flex-gap-6v fr-align-items-start fr-my-12v">
+      <BackButton href="/coop/mes-beneficiaires">
+        Retour à mes bénéficiaires
+      </BackButton>
+      <div className="fr-flex fr-flex-gap-6v fr-align-items-start fr-mb-12v">
         <IconInSquare iconId="fr-icon-user-add-line" size="large" />
         <div className="fr-flex-grow-1">
           <h1 className="fr-text-title--blue-france fr-mb-2v">
