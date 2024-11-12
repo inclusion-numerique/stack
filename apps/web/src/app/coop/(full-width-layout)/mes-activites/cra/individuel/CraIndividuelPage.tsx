@@ -25,7 +25,7 @@ const CraIndividuelPage = ({
 }: CraIndividuelPageData) => (
   <div className="fr-container fr-container--800">
     <CoopBreadcrumbs currentPage="Enregistrer un accompagnement individuel" />
-    <BackButton href="/coop" />
+    <BackButton href="/coop">Retour à l&apos;accueil</BackButton>
 
     <h1 className="fr-text-title--blue-france fr-mb-2v ">
       Accompagnement individuel

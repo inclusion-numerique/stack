@@ -8,8 +8,9 @@ export const StatistiquesTerritoriales = ({
 }: {
   codeInsee?: string | null
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const departement = codeInsee ? getDepartementFromCodeInsee(codeInsee) : null
-  console.log(departement)
+
   return (
     // <div className="fr-background-alt--blue-france fr-p-4w fr-mb-3w fr-border-radius--16">
     //   <div className="fr-text--uppercase fr-text--medium fr-text--sm fr-mb-2w">

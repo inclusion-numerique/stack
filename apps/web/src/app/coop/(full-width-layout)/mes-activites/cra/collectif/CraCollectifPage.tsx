@@ -28,7 +28,7 @@ const CraCollectifPage = ({
 }: CraCollectifPageData) => (
   <div className="fr-container fr-container--800">
     <CoopBreadcrumbs currentPage="Enregistrer un atelier collectif" />
-    <BackButton href="/coop" />
+    <BackButton href="/coop">Retour à l&apos;accueil</BackButton>
 
     <h1 className="fr-text-title--blue-france fr-mb-2v ">Atelier collectif</h1>
     <RequiredFieldsDisclamer

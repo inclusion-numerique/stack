@@ -25,7 +25,7 @@ export const CraDemarcheAdministrativePage = ({
 }: CraDemarcheAdministrativePageData) => (
   <div className="fr-container fr-container--800">
     <CoopBreadcrumbs currentPage="Enregistrer une aide aux démarches administratives" />
-    <BackButton href="/coop" />
+    <BackButton href="/coop">Retour à l&apos;accueil</BackButton>
     <h1 className="fr-text-title--blue-france fr-mb-2v">
       Aide aux démarches administratives
     </h1>
