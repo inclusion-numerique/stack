@@ -7,15 +7,18 @@ import {
   profileInscriptionSlugs,
 } from '@app/web/inscription/profilInscription'
 import { appUrl } from '@app/e2e/support/helpers'
+import { inscriptionRolesErrorTitles } from '@app/web/app/inscription/(steps)/identification/_components/inscriptionRole'
 
 export const startInscriptionAs = ({
   profilInscription,
-  roleShouldBeCheckedAndFound,
+  identificationResult,
   user,
+  expectedCheckedProfilInscription,
 }: {
   user: CreateUserInput
   profilInscription: keyof typeof profileInscriptionLabels
-  roleShouldBeCheckedAndFound: boolean
+  identificationResult: 'matching' | 'different' | 'not-found'
+  expectedCheckedProfilInscription?: keyof typeof profileInscriptionLabels
 }) => {
   cy.createUserAndSignin(user)
 
@@ -26,16 +29,32 @@ export const startInscriptionAs = ({
 
   cy.get('button').contains('Continuer').click()
 
-  cy.appUrlShouldBe(
-    `/inscription/identification?profil=${profileInscriptionSlugs[profilInscription]}`,
-    { timeout: 15_000 },
-  )
+  cy.appUrlShouldBe(`/inscription/identification`, { timeout: 15_000 })
 
-  if (roleShouldBeCheckedAndFound) {
+  if (identificationResult === 'matching') {
+    if (profilInscription === 'Mediateur') {
+      cy.contains('Finaliser votre inscription pour accéder à votre espace')
+    } else {
+      cy.contains(
+        `Vous avez été identifié en tant que ${lowerCaseProfileInscriptionLabels[profilInscription]}`,
+      )
+    }
+    cy.findByRole('link', { name: 'Continuer' })
+  } else if (identificationResult === 'different') {
+    cy.contains('Finaliser votre inscription pour accéder à votre espace')
+    if (!expectedCheckedProfilInscription) {
+      throw new Error(
+        'Expected checked profil inscription not provided in cy test : "expectedCheckedProfilInscription" needed',
+      )
+    }
     cy.contains(
-      `Vous avez été identifié en tant que ${lowerCaseProfileInscriptionLabels[profilInscription]}`,
+      `Profil de ${profileInscriptionLabels[expectedCheckedProfilInscription].toLocaleLowerCase()} identifié`,
     )
+    cy.findByRole('link', { name: 'Continuer mon inscription' })
   } else {
-    cy.contains('todo wording for role not found')
+    cy.contains(
+      inscriptionRolesErrorTitles[profileInscriptionSlugs[profilInscription]],
+    )
+    cy.findByRole('button', { name: 'Essayer une autre adresse email' })
   }
 }

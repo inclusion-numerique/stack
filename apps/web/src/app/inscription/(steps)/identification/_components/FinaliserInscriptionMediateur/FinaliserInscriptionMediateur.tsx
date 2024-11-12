@@ -3,17 +3,17 @@ import { AnotherRoleFound } from '../AnotherRoleFound'
 import { MediateurRoleFound } from './MediateurRoleFound'
 
 export const FinaliserInscriptionMediateur = ({
-  inscriptionRole,
+  checkedProfilInscription,
   lieuActiviteCount,
 }: {
-  inscriptionRole: ProfileInscriptionSlug
+  checkedProfilInscription: ProfileInscriptionSlug
   lieuActiviteCount: number
 }) =>
-  inscriptionRole === 'mediateur' ? (
+  checkedProfilInscription === 'mediateur' ? (
     <MediateurRoleFound />
   ) : (
     <AnotherRoleFound
-      roleFound={inscriptionRole}
+      roleFound={checkedProfilInscription}
       lieuActiviteCount={lieuActiviteCount}
     />
   )

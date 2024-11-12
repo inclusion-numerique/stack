@@ -7,7 +7,6 @@ export const conseillerSansLieuInscription = givenUser({
   lastName: 'Sans Lieu Inscription',
   isFixture: true,
   role: 'User',
-  checkConseillerNumeriqueInscription: new Date(),
   mediateur: {
     connectOrCreate: {
       where: {

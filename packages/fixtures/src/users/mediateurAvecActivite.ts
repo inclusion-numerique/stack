@@ -14,7 +14,6 @@ export const mediateurAvecActivite = givenUser({
   lastName: 'Avec activités',
   isFixture: true,
   role: 'User',
-  checkConseillerNumeriqueInscription: new Date(),
   inscriptionValidee: new Date(),
   lieuxActiviteRenseignes: new Date(),
   structureEmployeuseRenseignee: new Date(),

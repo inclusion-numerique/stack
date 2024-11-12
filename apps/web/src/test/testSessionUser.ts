@@ -16,12 +16,11 @@ export const testSessionUser = {
   usurper: null,
   coordinateur: null,
   emplois: [],
-  checkConseillerNumeriqueInscription: null,
-  checkCoordinateurInscription: null,
   inscriptionValidee: null,
   lieuxActiviteRenseignes: null,
   mediateur: null,
   profilInscription: null,
+  checkedProfilInscription: null,
   acceptationCgu: null,
   structureEmployeuseRenseignee: null,
 } satisfies SessionUser

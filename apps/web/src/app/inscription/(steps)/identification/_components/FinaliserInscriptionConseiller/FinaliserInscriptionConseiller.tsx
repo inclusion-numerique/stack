@@ -5,21 +5,21 @@ import { RoleFound } from '../RoleFound'
 import { RoleNotFound } from '../RoleNotFound'
 
 export const FinaliserInscriptionConseiller = ({
-  inscriptionRole,
+  checkedProfilInscription,
   lieuActiviteCount,
   user,
   proConnectIdTokenHint,
 }: {
-  inscriptionRole: ProfileInscriptionSlug
+  checkedProfilInscription: ProfileInscriptionSlug
   lieuActiviteCount: number
-  user: Pick<SessionUser, 'email' | 'id' | 'usurper'>
+  user: Pick<SessionUser, 'email' | 'id'>
   proConnectIdTokenHint: string | null
 }) => {
-  switch (inscriptionRole) {
+  switch (checkedProfilInscription) {
     case 'coordinateur': {
       return (
         <AnotherRoleFound
-          roleFound={inscriptionRole}
+          roleFound={checkedProfilInscription}
           lieuActiviteCount={lieuActiviteCount}
         />
       )
@@ -36,7 +36,7 @@ export const FinaliserInscriptionConseiller = ({
     default: {
       return (
         <RoleFound
-          roleFound={inscriptionRole}
+          roleFound={checkedProfilInscription}
           lieuActiviteCount={lieuActiviteCount}
         />
       )

@@ -12,12 +12,10 @@ import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { forbiddenError } from '@app/web/server/rpc/trpcErrors'
 import { toStructureFromCartoStructure } from '@app/web/structure/toStructureFromCartoStructure'
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
-import { findConseillerNumeriqueByEmail } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
-import {
-  assignConseillerNumeriqueRoleToCoordinateur,
-  removeConseillerNumeriqueRoleToCoordinateur,
-} from '@app/web/app/inscription/importFromConseillerNumerique/importFromConseillerNumerique'
+import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
 import { getOrCreateStructureEmployeuse } from '@app/web/server/rpc/inscription/getOrCreateStructureEmployeuse'
+import { importCoordinateurMediationDataFromV1 } from '@app/web/app/inscription/(steps)/identification/importCoordinateurMediationDataFromV1'
+import { isConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
 
 const inscriptionGuard = (
   targetUserId: string,
@@ -524,15 +522,25 @@ export const inscriptionRouter = router({
     async ({ ctx: { user: sessionUser } }) => {
       inscriptionGuard(sessionUser.id, sessionUser)
 
-      await assignConseillerNumeriqueRoleToCoordinateur(
-        findConseillerNumeriqueByEmail,
-      )(sessionUser)
-    },
-  ),
-  removeMediationNumeriqueForCoordinateur: protectedProcedure.mutation(
-    async ({ ctx: { user: sessionUser } }) => {
-      inscriptionGuard(sessionUser.id, sessionUser)
-      await removeConseillerNumeriqueRoleToCoordinateur(sessionUser)
+      if (!sessionUser.coordinateur) {
+        throw forbiddenError()
+      }
+
+      const v1Conseiller = await fetchConseillerNumeriqueV1Data({
+        v1ConseillerId: sessionUser.coordinateur.conseillerNumeriqueId,
+      })
+
+      if (
+        !v1Conseiller ||
+        !isConseillerNumeriqueV1DataWithActiveMiseEnRelation(v1Conseiller)
+      ) {
+        throw forbiddenError()
+      }
+
+      await importCoordinateurMediationDataFromV1({
+        user: sessionUser,
+        v1Conseiller,
+      })
     },
   ),
 })
