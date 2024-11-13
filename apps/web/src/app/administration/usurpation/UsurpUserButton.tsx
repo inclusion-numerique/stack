@@ -8,7 +8,13 @@ import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { getLoginRedirectUrl } from '@app/web/security/getHomepage'
 
-const UsurpUserButton = ({ userId }: { userId: string }) => {
+const UsurpUserButton = ({
+  userId,
+  disabled,
+}: {
+  userId: string
+  disabled?: boolean
+}) => {
   const mutation = trpc.usurpation.usurpUser.useMutation()
   const router = useRouter()
 
@@ -36,8 +42,8 @@ const UsurpUserButton = ({ userId }: { userId: string }) => {
     <Button
       type="button"
       iconId="fr-icon-user-star-line"
-      size="small"
       priority="secondary"
+      disabled={disabled}
       onClick={usurpUser}
       {...buttonLoadingClassname(mutation.isPending || mutation.isSuccess)}
     >

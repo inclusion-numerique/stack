@@ -8,8 +8,15 @@ export type ConseillerNumeriqueV1DataWithActiveMiseEnRelation =
     >
   }
 
-export function isConseillerNumeriqueV1DataWithActiveMiseEnRelation(
-  conseillerNumeriqueV1Data: ConseillerNumeriqueV1Data | null,
-): conseillerNumeriqueV1Data is ConseillerNumeriqueV1DataWithActiveMiseEnRelation {
+export function isConseillerNumeriqueV1DataWithActiveMiseEnRelation<
+  T extends Pick<ConseillerNumeriqueV1Data, 'miseEnRelationActive'>,
+>(
+  conseillerNumeriqueV1Data: T | null,
+): conseillerNumeriqueV1Data is T & {
+  miseEnRelationActive: Exclude<
+    ConseillerNumeriqueV1Data['miseEnRelationActive'],
+    null
+  >
+} {
   return !!conseillerNumeriqueV1Data?.miseEnRelationActive
 }
