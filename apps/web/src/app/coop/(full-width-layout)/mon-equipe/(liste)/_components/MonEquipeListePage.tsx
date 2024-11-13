@@ -37,7 +37,7 @@ const MonEquipeListePage = ({
             className="ri-group-2-line ri-lg fr-line-height-1 fr-text-label--blue-france fr-background-alt--blue-france fr-p-2w fr-m-0 fr-border-radius--8"
             aria-hidden
           />
-          <h1 className="fr-h3 fr-page-title fr-m-0">Mon équipe · {total}</h1>
+          <h1 className="fr-page-title fr-m-0">Mon équipe · {total}</h1>
         </div>
         <div className="fr-border--top fr-border--bottom fr-py-3w fr-mb-5w">
           <DataSearchBar
