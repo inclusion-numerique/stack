@@ -21,6 +21,7 @@ import { getUserLifecycleBadge } from '@app/web/app/administration/utilisateurs/
 import { numberToString } from '@app/web/utils/formatNumber'
 import { findConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
 import { isUserInscriptionEnCours } from '@app/web/auth/isUserInscriptionEnCours'
+import { isConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
 
 export const metadata = {
   title: metadataTitle('Utilisateurs - Détails'),
@@ -233,25 +234,51 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
         {isCoordinateur && <Tag small>Coordinateur</Tag>}
       </div>
       {conseillerNumeriqueInfo ? (
-        <Notice
-          className="fr-notice--success fr-mb-8v"
-          title={
-            <>
-              Trouvé dans la base de données des conseillers numériques V1{' '}
-              <Button
-                size="small"
-                className="fr-ml-2v"
-                priority="tertiary no outline"
-                iconId="fr-icon-arrow-right-line"
-                linkProps={{
-                  href: `/administration/conseillers-v1/${conseillerNumeriqueInfo.conseiller.id}`,
-                }}
-              >
-                Voir les détails du conseiller V1
-              </Button>
-            </>
-          }
-        />
+        isConseillerNumeriqueV1DataWithActiveMiseEnRelation(
+          conseillerNumeriqueInfo,
+        ) ? (
+          <Notice
+            className="fr-notice--success fr-mb-8v"
+            title={
+              <>
+                Dans la base de données des conseillers numériques V1 avec
+                contrat actif{' '}
+                <Button
+                  size="small"
+                  className="fr-ml-2v"
+                  priority="tertiary no outline"
+                  iconId="fr-icon-arrow-right-line"
+                  linkProps={{
+                    href: `/administration/conseillers-v1/${conseillerNumeriqueInfo.conseiller.id}`,
+                  }}
+                >
+                  Voir les détails du conseiller V1
+                </Button>
+              </>
+            }
+          />
+        ) : (
+          <Notice
+            className="fr-notice--warning fr-mb-8v"
+            title={
+              <>
+                Dans la base de données des conseillers numériques V1 sans
+                contrat actif{' '}
+                <Button
+                  size="small"
+                  className="fr-ml-2v"
+                  priority="tertiary no outline"
+                  iconId="fr-icon-arrow-right-line"
+                  linkProps={{
+                    href: `/administration/conseillers-v1/${conseillerNumeriqueInfo.conseiller.id}`,
+                  }}
+                >
+                  Voir les détails du conseiller V1
+                </Button>
+              </>
+            }
+          />
+        )
       ) : (
         <Notice
           className="fr-notice--info fr-mb-8v"

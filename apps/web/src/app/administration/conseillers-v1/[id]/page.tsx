@@ -17,6 +17,7 @@ import { prismaClient } from '@app/web/prismaClient'
 import { dateAsDayAndTime } from '@app/web/utils/dateAsDayAndTime'
 import AdministrationMailtoLink from '@app/web/app/administration/AdministrationMailtoLink'
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
+import { isConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
 
 export const metadata = {
   title: metadataTitle('Conseillers V1 - Détails'),
@@ -32,7 +33,8 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
     return null
   }
 
-  const { conseiller, miseEnRelationActive, permanences } = result
+  const { conseiller, miseEnRelationActive, permanences, miseEnRelations } =
+    result
 
   const coopInfo = await prismaClient.conseillerNumerique.findUnique({
     where: {
@@ -157,13 +159,24 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
       )}
       {noAccount && (
         <Notice
-          className="fr-notice--error fr-mb-8v"
+          className="fr-notice--error fr-mb-6v"
           title={<>N’a pas de compte sur la Coop</>}
+        />
+      )}
+      {isConseillerNumeriqueV1DataWithActiveMiseEnRelation(result) ? (
+        <Notice
+          className="fr-notice--success fr-mb-8v"
+          title={<>Contrat actif</>}
+        />
+      ) : (
+        <Notice
+          className="fr-notice--warning fr-mb-8v"
+          title={<>Pas de contrat actif</>}
         />
       )}
 
       <AdministrationInfoCard title="Détails du conseiller">
-        <p className="fr-text--lg fr-text--medium fr-mb-4v fr-mt-8v">
+        <p className="fr-text--lg fr-text--bold fr-mb-4v fr-mt-8v">
           {conseiller.prenom} {conseiller.nom}
         </p>
 
@@ -632,10 +645,10 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
         />
       </AdministrationInfoCard>
 
-      <AdministrationInfoCard title="Structure employeuse">
+      <AdministrationInfoCard title="Contrat actif">
         {!miseEnRelationActive && (
           <Notice
-            title={<>Aucune mise en relation active trouvée</>}
+            title={<>Aucun contrat actif trouvé</>}
             className="fr-notice--alert"
           />
         )}
@@ -645,6 +658,44 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
               {miseEnRelationActive.structureObj.nom}
             </p>
 
+            <p className="fr-text--medium fr-mb-4v fr-mt-8v">
+              Informations sur le contrat&nbsp;:
+            </p>
+            <AdministrationInlineLabelsValues
+              items={[
+                {
+                  label: 'Date de recrutement',
+                  value: miseEnRelationActive.dateRecrutement
+                    ? dateAsDay(new Date(miseEnRelationActive.dateRecrutement))
+                    : 'Non renseigné',
+                },
+                {
+                  label: 'Date de début de contrat',
+                  value: miseEnRelationActive.dateDebutDeContrat
+                    ? dateAsDay(
+                        new Date(miseEnRelationActive.dateDebutDeContrat),
+                      )
+                    : 'Non renseigné',
+                },
+                {
+                  label: 'Date de fin de contrat',
+                  value: miseEnRelationActive.dateFinDeContrat
+                    ? dateAsDay(new Date(miseEnRelationActive.dateFinDeContrat))
+                    : 'Non renseigné',
+                },
+                {
+                  label: 'Type de contrat',
+                  value: miseEnRelationActive.typeDeContrat,
+                },
+                {
+                  label: 'Statut de la mise en relation',
+                  value: miseEnRelationActive.statut,
+                },
+              ]}
+            />
+            <p className="fr-text--medium fr-mb-4v fr-mt-8v">
+              Informations sur la structure&nbsp;:
+            </p>
             <AdministrationInlineLabelsValues
               items={[
                 {
@@ -742,42 +793,6 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
                 },
               ]}
             />
-
-            <p className="fr-text--medium fr-mb-4v fr-mt-8v">
-              Informations sur la mission&nbsp;:
-            </p>
-            <AdministrationInlineLabelsValues
-              items={[
-                {
-                  label: 'Date de recrutement',
-                  value: miseEnRelationActive.dateRecrutement
-                    ? dateAsDay(new Date(miseEnRelationActive.dateRecrutement))
-                    : 'Non renseigné',
-                },
-                {
-                  label: 'Date de début de contrat',
-                  value: miseEnRelationActive.dateDebutDeContrat
-                    ? dateAsDay(
-                        new Date(miseEnRelationActive.dateDebutDeContrat),
-                      )
-                    : 'Non renseigné',
-                },
-                {
-                  label: 'Date de fin de contrat',
-                  value: miseEnRelationActive.dateFinDeContrat
-                    ? dateAsDay(new Date(miseEnRelationActive.dateFinDeContrat))
-                    : 'Non renseigné',
-                },
-                {
-                  label: 'Type de contrat',
-                  value: miseEnRelationActive.typeDeContrat,
-                },
-                {
-                  label: 'Statut de la mise en relation',
-                  value: miseEnRelationActive.statut,
-                },
-              ]}
-            />
           </div>
         )}
       </AdministrationInfoCard>
@@ -854,6 +869,145 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
                   </>
                 ),
               }))}
+            />
+          </div>
+        ))}
+      </AdministrationInfoCard>
+
+      <AdministrationInfoCard title="Historique des mises en relation (contrats)">
+        {miseEnRelations.length === 0 && (
+          <Notice
+            title={<>Aucune mise en relation trouvée</>}
+            className="fr-notice--alert"
+          />
+        )}
+        {miseEnRelations.map((miseEnRelation, index) => (
+          <div key={miseEnRelation._id.toString('hex')}>
+            {index !== 0 && <hr className="fr-separator-6v" />}
+
+            <p className="fr-text--lg fr-text--medium fr-mb-4v fr-mt-8v">
+              {miseEnRelation.structureObj.nom}
+            </p>
+
+            <p className="fr-text--medium fr-mb-4v fr-mt-8v">
+              Informations sur le contrat&nbsp;:
+            </p>
+            <AdministrationInlineLabelsValues
+              items={[
+                {
+                  label: 'Date de recrutement',
+                  value: miseEnRelation.dateRecrutement
+                    ? dateAsDay(new Date(miseEnRelation.dateRecrutement))
+                    : 'Non renseigné',
+                },
+                {
+                  label: 'Date de début de contrat',
+                  value: miseEnRelation.dateDebutDeContrat
+                    ? dateAsDay(new Date(miseEnRelation.dateDebutDeContrat))
+                    : 'Non renseigné',
+                },
+                {
+                  label: 'Date de fin de contrat',
+                  value: miseEnRelation.dateFinDeContrat
+                    ? dateAsDay(new Date(miseEnRelation.dateFinDeContrat))
+                    : 'Non renseigné',
+                },
+                {
+                  label: 'Type de contrat',
+                  value: miseEnRelation.typeDeContrat,
+                },
+                {
+                  label: 'Statut de la mise en relation',
+                  value: miseEnRelation.statut,
+                },
+              ]}
+            />
+            <p className="fr-text--medium fr-mb-4v fr-mt-8v">
+              Informations sur la structure&nbsp;:
+            </p>
+            <AdministrationInlineLabelsValues
+              items={[
+                {
+                  label: 'Identifiant structure',
+                  value: miseEnRelation.structureObj._id.toString('hex'),
+                },
+                {
+                  label: 'Adresse',
+                  value: (
+                    <>
+                      {miseEnRelation.structureObj.insee.adresse.numero_voie}{' '}
+                      {miseEnRelation.structureObj.insee.adresse.libelle_voie},{' '}
+                      {miseEnRelation.structureObj.insee.adresse.code_postal}{' '}
+                      {
+                        miseEnRelation.structureObj.insee.adresse
+                          .libelle_commune
+                      }
+                    </>
+                  ),
+                },
+                miseEnRelation.structureObj.location?.coordinates
+                  ? {
+                      label: 'Géolocalisation',
+                      value: (
+                        <a
+                          href={`https://www.openstreetmap.org/?mlat=${miseEnRelation.structureObj.location.coordinates[1]}&mlon=${miseEnRelation.structureObj.location.coordinates[0]}#map=15/${miseEnRelation.structureObj.location.coordinates[1]}/${miseEnRelation.structureObj.location.coordinates[0]}`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Voir sur OpenStreetMap
+                        </a>
+                      ),
+                    }
+                  : null,
+                {
+                  label: 'Directeur/trice',
+                  value: `${miseEnRelation.structureObj.contact.prenom} ${miseEnRelation.structureObj.contact.nom}`,
+                },
+                {
+                  label: 'Fonction',
+                  value: miseEnRelation.structureObj.contact.fonction,
+                },
+                {
+                  label: 'Téléphone',
+                  value:
+                    miseEnRelation.structureObj.contact.telephone ||
+                    'Non renseigné',
+                },
+                {
+                  label: 'Email',
+                  value:
+                    miseEnRelation.structureObj.contact.email ||
+                    'Non renseigné',
+                },
+                {
+                  label: 'SIRET',
+                  value: miseEnRelation.structureObj.siret,
+                },
+                {
+                  label: 'Type',
+                  value: miseEnRelation.structureObj.type,
+                },
+                {
+                  label: 'Date de début de mission',
+                  value: dateAsDay(
+                    new Date(miseEnRelation.structureObj.dateDebutMission),
+                  ),
+                },
+                {
+                  label: 'Nombre de conseillers souhaités',
+                  value:
+                    miseEnRelation.structureObj.nombreConseillersSouhaites?.toString(),
+                },
+                {
+                  label: 'Conventionnement statut',
+                  value: miseEnRelation.structureObj.conventionnement.statut,
+                },
+                {
+                  label: 'Nb de postes attribués',
+                  value:
+                    miseEnRelation.structureObj.conventionnement?.dossierReconventionnement?.nbPostesAttribuees?.toString(),
+                },
+              ]}
             />
           </div>
         ))}

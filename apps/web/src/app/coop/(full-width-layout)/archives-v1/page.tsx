@@ -15,8 +15,13 @@ const ArchivesV1Page = async () => {
     return null
   }
 
+  const conseillerNumeriqueId = user.mediateur.conseillerNumerique.id
+
+  // Feature is disabled for now
+  if (true) return null
+
   const getCrasResult = await getArchivesV1PageData({
-    conseillerNumeriqueId: user.mediateur.conseillerNumerique.id,
+    conseillerNumeriqueId,
   })
 
   return <ArchivesV1PageContent data={getCrasResult} />

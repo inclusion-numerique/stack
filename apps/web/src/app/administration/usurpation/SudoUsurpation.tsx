@@ -15,12 +15,14 @@ export const SudoUsurpation = () => {
 
   return (
     <AdministrationInfoCard title="Sudo usurpation">
-      <input
-        placeholder="User id"
-        className="fr-input fr-mb-4v"
-        onChange={onChange}
-      />
-      {!!userId && <UsurpUserButton userId={userId} />}
+      <div className="fr-flex fr-flex-row fr-flex-gap-4v fr-align-items-center">
+        <input
+          placeholder="User id"
+          className="fr-input fr-mb-0"
+          onChange={onChange}
+        />
+        <UsurpUserButton disabled={!userId} userId={userId} />
+      </div>
     </AdministrationInfoCard>
   )
 }

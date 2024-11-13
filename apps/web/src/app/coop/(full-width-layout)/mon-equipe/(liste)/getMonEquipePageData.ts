@@ -41,7 +41,7 @@ const finDeContratFor =
 
     return contractInfo?.dateFinDeContrat &&
       isBefore(contractInfo.dateFinDeContrat, addMonths(new Date(), 3))
-      ? `Fin de contrat le ${format(new Date(contractInfo.dateFinDeContrat), 'dd.MM.yyyy')}`
+      ? `${format(new Date(contractInfo.dateFinDeContrat), 'dd.MM.yyyy')}`
       : undefined
   }
 

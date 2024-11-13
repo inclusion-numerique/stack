@@ -58,17 +58,11 @@ export const MediateurListItem = ({
             {[firstName, lastName].filter(Boolean).join(' ')}
           </span>
           {finDeContrat && (
-            <Badge className="fr-text--uppercase" severity="warning">
-              Fin de contrat le {finDeContrat}
-            </Badge>
+            <Badge severity="warning">Fin de contrat le {finDeContrat}</Badge>
           )}
         </div>
         <div>
-          <Badge
-            className="fr-text--uppercase"
-            severity={statusSeverity(status)}
-            noIcon
-          >
+          <Badge severity={statusSeverity(status)} noIcon>
             {status}
           </Badge>
         </div>
@@ -102,11 +96,7 @@ export const MediateurListItem = ({
   ) : (
     <div className="fr-text--bold fr-py-9v fr-flex fr-justify-content-space-between fr-direction-md-row fr-direction-column">
       {email}
-      <Badge
-        className="fr-text--uppercase"
-        severity={statusSeverity(status)}
-        noIcon
-      >
+      <Badge severity={statusSeverity(status)} noIcon>
         {status}
       </Badge>
     </div>
