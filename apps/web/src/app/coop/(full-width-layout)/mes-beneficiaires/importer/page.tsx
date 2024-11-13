@@ -15,7 +15,7 @@ const ImporterPage = () => (
       className="fr-mb-12v"
     />
     <BackButton href="/coop/mes-beneficiaires">Retour à la liste</BackButton>
-    <h1 className="fr-h2 fr-text-title--blue-france fr-mb-2v">
+    <h1 className="fr-h3 fr-text-title--blue-france fr-mb-2v">
       Importer des bénéficiaires
     </h1>
     <p className="fr-text-mention--grey">

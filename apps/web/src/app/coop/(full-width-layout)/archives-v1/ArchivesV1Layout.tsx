@@ -14,7 +14,7 @@ const ArchivesV1Layout = ({ children }: PropsWithChildren) => (
     </div>
     <div className="fr-border-radius--8 fr-py-8v fr-px-10v fr-background-alt--blue-france fr-flex fr-align-items-center fr-flex-gap-10v fr-mb-6v">
       <img
-        src="/images/services/conseillers-numerique-logo.svg"
+        src="/images/illustrations/role/conseillers-numerique.svg"
         alt="Logo Conseillers Numériques"
       />
       <div>

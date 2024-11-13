@@ -16,7 +16,7 @@ const PaginationNavWithPageSizeSelect = ({
 }: PaginationNavWithPageSizeProps) => (
   <div
     className={classNames(
-      'fr-flex fr-width-full fr-justify-content-space-between fr-align-items-center',
+      'fr-flex fr-width-full fr-justify-content-space-between fr-align-items-center fr-direction-column fr-direction-sm-row fr-flex-gap-4v',
       className,
     )}
   >

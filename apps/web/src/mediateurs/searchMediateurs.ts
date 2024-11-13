@@ -1,6 +1,8 @@
 import type { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
 import { takeAndSkipFromPage } from '@app/web/data-table/takeAndSkipFromPage'
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@app/web/data-table/toNumberOr'
+import { toQueryParts } from '@app/web/data-table/toQueryParts'
 
 type SearchMediateurOptions = {
   coordinateurId?: string
@@ -11,11 +13,10 @@ export const searchMediateur = async (options: SearchMediateurOptions) => {
   const searchParams = options.searchParams ?? {}
   const { coordinateurId } = options
 
-  const pageSize = 10
-  const page = 1
-  const { take, skip } = takeAndSkipFromPage({ page, pageSize })
-
-  const queryParts = searchParams.recherche?.split(' ') ?? []
+  const { take, skip } = takeAndSkipFromPage({
+    page: DEFAULT_PAGE,
+    pageSize: DEFAULT_PAGE_SIZE,
+  })
 
   const mediateurIds = await prismaClient.mediateurCoordonne.findMany({
     where: { coordinateurId },
@@ -25,7 +26,7 @@ export const searchMediateur = async (options: SearchMediateurOptions) => {
   const matchesWhere = {
     id: { in: mediateurIds.map(({ mediateurId }) => mediateurId) },
     user: {
-      AND: queryParts.map((part) => ({
+      AND: toQueryParts(searchParams).map((part) => ({
         OR: [
           { firstName: { contains: part, mode: 'insensitive' } },
           { lastName: { contains: part, mode: 'insensitive' } },

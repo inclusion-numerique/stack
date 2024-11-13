@@ -24,7 +24,7 @@ const AnalysePage = ({ params: { id } }: { params: { id: string } }) => (
     <BackButton href="/coop/mes-beneficiaires/importer">
       Retour à l’import
     </BackButton>
-    <h1 className="fr-h2 fr-text-title--blue-france fr-mb-2v">
+    <h1 className="fr-h3 fr-text-title--blue-france fr-mb-2v">
       Analyse du fichier à importer
     </h1>
     <p className="fr-text-mention--grey fr-mb-12v">

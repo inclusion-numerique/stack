@@ -9,10 +9,10 @@ import {
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import { toStructureFromCartoStructure } from '@app/web/structure/toStructureFromCartoStructure'
 import type { ConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Data'
-import type { PremanenceConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/PremanenceConseillerNumerique'
+import type { PermanenceConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/PermanenceConseillerNumerique'
 
 const createStructureDataFromPermanence = (
-  permanence: PremanenceConseillerNumerique,
+  permanence: PermanenceConseillerNumerique,
 ) =>
   ({
     id: v4(),
@@ -25,6 +25,7 @@ const createStructureDataFromPermanence = (
     longitude: permanence.location.coordinates[0],
     siret: permanence.siret,
     codeInsee: permanence.adresse.codeCommune,
+    visiblePourCartographieNationale: !permanence.nonAffichageCarto,
   }) satisfies Prisma.StructureCreateManyInput
 
 /**

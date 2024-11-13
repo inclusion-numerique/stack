@@ -1,15 +1,21 @@
+import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { prismaClient } from '@app/web/prismaClient'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { StructureEmployeuse } from './_components/StructureEmployeuse'
+
+export const metadata: Metadata = {
+  title: metadataTitle('Ma structure employeuse'),
+}
 
 const MaStructureEmployeusePage = async () => {
   const user = await getAuthenticatedSessionUser()
 
-  if (!user.mediateur) {
+  if (!user.mediateur && !user.coordinateur) {
     return redirect('/')
   }
 
@@ -42,15 +48,16 @@ const MaStructureEmployeusePage = async () => {
 
   const structureEmployeuse = structuresEmployeuses.at(0)?.structure
 
-  const matchingLieuActivite = structureEmployeuse
-    ? await prismaClient.mediateurEnActivite.findFirst({
-        where: {
-          mediateurId: user.mediateur.id,
-          structureId: structureEmployeuse.id,
-          suppression: null,
-        },
-      })
-    : null
+  const matchingLieuActivite =
+    structureEmployeuse && user.mediateur
+      ? await prismaClient.mediateurEnActivite.findFirst({
+          where: {
+            mediateurId: user.mediateur.id,
+            structureId: structureEmployeuse.id,
+            suppression: null,
+          },
+        })
+      : null
 
   return (
     <>
