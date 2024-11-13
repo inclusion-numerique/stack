@@ -32,7 +32,7 @@ const MigrationPage = () => (
                 <span className="fr-text--bold fr-text--nowrap">
                   @conseiller-numerique.fr
                 </span>{' '}
-                ainsi que l’ancienne version de l’espace Coop ont été supprimés
+                ainsi que l’ancienne version de l’espace Coop ont été supprimées
                 aujourd’hui.
               </span>
             </div>
