@@ -1,12 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import Onboarding from '../../_components/Onboarding'
+import Onboarding from '@app/web/app/(onboarding)/_components/Onboarding'
 
-export const OnboardingFranceNumeriqueEnsemble = ({
-  isConseillerNumerique,
-}: {
-  isConseillerNumerique: boolean
-}) => (
+export const OnboardingFranceNumeriqueEnsembleCoordinateur = () => (
   <Onboarding
     image={
       <Image
@@ -26,19 +22,15 @@ export const OnboardingFranceNumeriqueEnsemble = ({
         alt=""
       />
     }
-    stepIndex={5}
-    totalSteps={isConseillerNumerique ? 6 : 5}
-    previous={{ href: '/en-savoir-plus/mes-outils' }}
-    next={
-      isConseillerNumerique
-        ? { href: '/en-savoir-plus/mes-archives' }
-        : { href: '/coop', isComplete: true }
-    }
+    stepIndex={6}
+    totalSteps={6}
+    previous={{ href: '/en-savoir-plus/coordinateur/mes-outils' }}
+    next={{ href: '/coop', isComplete: true }}
     closeHref="/coop"
   >
     <p className="fr-text--lg">
-      Vos statistiques d’activités anonymisées contribuent à valoriser l’impact
-      de la médiation numérique sur votre territoire.
+      Les statistiques d’activités anonymisées de votre équipe contribuent à
+      valoriser l’impact de la médiation numérique sur votre territoire.
     </p>
     <p className="fr-text--lg">
       Les différents acteurs de l’inclusion numérique pourront ainsi suivre

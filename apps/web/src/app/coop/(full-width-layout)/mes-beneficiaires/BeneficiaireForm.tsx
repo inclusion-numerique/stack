@@ -51,12 +51,14 @@ const BeneficiaireForm = ({
   cra,
   retour,
   communeResidenceDefaultOptions,
+  edit = false,
 }: {
   defaultValues: DefaultValues<BeneficiaireData> & { mediateurId: string }
   // If present, used to merge with state on retour redirection
   cra?: DefaultValues<CraIndividuelData> | DefaultValues<CraCollectifData>
   retour?: string
   communeResidenceDefaultOptions?: AdressBanFormFieldOption[]
+  edit?: boolean
 }) => {
   const form = useForm<BeneficiaireData>({
     resolver: zodResolver(BeneficiaireValidation),
@@ -401,7 +403,7 @@ const BeneficiaireForm = ({
 
       <div className="fr-btns-group fr-mt-12v fr-mb-30v">
         <Button type="submit" {...buttonLoadingClassname(isLoading)}>
-          Enregistrer le bénéficiaire
+          {edit ? 'Modifier le bénéficiaire' : 'Enregistrer le bénéficiaire'}
         </Button>
         <Button
           priority="secondary"
