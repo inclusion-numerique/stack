@@ -30,7 +30,7 @@ export const OnboardingMesOutils = ({
     next={{ href: '/en-savoir-plus/france-numerique-ensemble' }}
     closeHref="/coop"
   >
-    <p className="fr-text--xl">
+    <p className="fr-text--lg">
       Retrouvez une sélection d’outils et de services numériques dédiées à la
       médiation numérique dans une seule et même plateforme&nbsp;!
     </p>

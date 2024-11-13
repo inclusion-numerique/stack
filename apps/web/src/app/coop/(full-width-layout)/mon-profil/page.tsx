@@ -1,5 +1,7 @@
+import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { differenceInMonths, format, isValid } from 'date-fns'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
@@ -7,8 +9,12 @@ import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
 import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
 import FonctionnalitesDeMediationNumeriqueCoordinateur from '@app/web/app/coop/(full-width-layout)/mon-profil/_components/FonctionnalitesDeMediationNumeriqueCoordinateur'
-import { CoordinatorContract } from './_components/CoordinatorContract'
+import CoordinatorContract from './_components/CoordinatorContract'
 import ProfileEditCard from './_components/ProfileEditCard'
+
+export const metadata: Metadata = {
+  title: metadataTitle('Mon profil'),
+}
 
 const formatDate = (date?: string | number | Date | null) =>
   date && isValid(date) ? format(date, 'dd/MM/yyyy') : null
@@ -36,21 +42,24 @@ const MonProfilPage = async () => {
     return redirect('/')
   }
 
-  const conseiller = await fetchConseillerNumeriqueV1Data({ email: user.email })
+  // Fetch contract if user is a coordinateur
+  // TODO extract this logic
+  const contratCoordinateur = user.coordinateur
+    ? await fetchConseillerNumeriqueV1Data({ email: user.email }).then(
+        (conseiller) => {
+          const miseEnRelationActive = conseiller?.miseEnRelationActive
+          if (!miseEnRelationActive) {
+            return null
+          }
 
-  const contract =
-    conseiller?.miseEnRelationActive == null
-      ? undefined
-      : {
-          type: typeWithDuration(conseiller.miseEnRelationActive).replaceAll(
-            '_',
-            ' ',
-          ),
-          start: formatDate(
-            conseiller.miseEnRelationActive?.dateDebutDeContrat,
-          ),
-          end: formatDate(conseiller.miseEnRelationActive?.dateFinDeContrat),
-        }
+          return {
+            type: typeWithDuration(miseEnRelationActive).replaceAll('_', ' '),
+            start: formatDate(miseEnRelationActive.dateDebutDeContrat),
+            end: formatDate(miseEnRelationActive.dateFinDeContrat),
+          }
+        },
+      )
+    : null
 
   return (
     <>
@@ -63,7 +72,7 @@ const MonProfilPage = async () => {
               className="ri-account-circle-fill ri-lg fr-line-height-1 fr-text-label--blue-france fr-background-alt--blue-france fr-p-2w fr-m-0 fr-border-radius--8"
               aria-hidden
             />
-            <h1 className="fr-h2 fr-page-title fr-m-0">Mon profil</h1>
+            <h1 className="fr-page-title fr-m-0">Mon profil</h1>
           </div>
           <section className="fr-mb-2w">
             <ProfileEditCard
@@ -73,17 +82,19 @@ const MonProfilPage = async () => {
               userRole={getUserRoleLabel(user)}
             />
           </section>
-          {contract?.type != null && (
-            <section className="fr-mb-2w">
-              <CoordinatorContract {...contract} />
-            </section>
-          )}
           {user.coordinateur ? (
-            <section>
-              <FonctionnalitesDeMediationNumeriqueCoordinateur
-                isActive={user.mediateur?.id != null}
-              />
-            </section>
+            <>
+              {!!contratCoordinateur && (
+                <section className="fr-mb-2w">
+                  <CoordinatorContract {...contratCoordinateur} />
+                </section>
+              )}
+              <section>
+                <FonctionnalitesDeMediationNumeriqueCoordinateur
+                  isActive={user.mediateur?.id != null}
+                />
+              </section>
+            </>
           ) : null}
         </main>
       </div>

@@ -6,27 +6,33 @@ export default {
   description:
     'Proposez des parcours de montée en compétences et des tests Pix adaptés à vos bénéficiaires et suivez leur progression.',
   website: 'https://pix.fr/mediation-numerique',
-  logo: '/images/services/pix.svg',
+  logo: '/images/services/pix-orga.svg',
   illustration: '/images/illustrations/mes-outils/pix.webp',
-  illustrationWidth: 50,
+  illustrationWidth: 100,
   features: [
     {
       title:
         'Pour tous les niveaux, sur tous les sujets de la médiation numérique',
       description:
-        'De débutant à confirmé, les exercices proposés s’adaptent au niveau de chacun réponse après réponse, pour une expérience personnalisée.',
+        'Des parcours qui s’adaptent au niveau de chacun, réponse après réponse, grâce à un algorithme adaptatif.',
       icon: 'ri-star-line',
     },
     {
       title: 'Ludique et motivant',
       description:
-        'Motivez vos publics à progresser avec des défis ludiques et inspirés de situations réelles d’utilisation dans un environnement bienveillant.',
+        'Avec des mises en situations inspirées du réel dans un environnement bienveillant qui valorise chaque pas.',
       icon: 'ri-lightbulb-line',
     },
     {
-      title: 'Suivre la progression de vos publics',
+      title: 'Jouables en 5 à 30 minutes',
       description:
-        'Suivez leurs progressions, analysez leurs résultats et accédez à des tutoriels recommandés en fonction de leurs résultats pour alimenter vos séquences pédagogiques.',
+        'Des parcours thématiques à intégrer dans un accompagnement ou une animation, ou à jouer en autonomie.',
+      icon: 'ri-timer-line',
+    },
+    {
+      title: 'Accessibles à tous',
+      description:
+        'Avec des tests accessibles sans compte et sur smartphone, et des énoncés en FALC.',
       icon: 'ri-line-chart-line',
     },
   ],

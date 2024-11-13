@@ -16,6 +16,11 @@ import {
   getActivitesFiltersWhereConditions,
 } from '@app/web/cra/activitesFiltersSqlWhereConditions'
 import { activiteListSelect } from '@app/web/cra/activitesQueries'
+import {
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
+  toNumberOr,
+} from '@app/web/data-table/toNumberOr'
 
 type SearchActiviteOptions = {
   mediateurId?: string
@@ -26,19 +31,14 @@ type SearchActiviteOptions = {
 export const searchActivite = async (options: SearchActiviteOptions) => {
   const searchParams = options.searchParams ?? {}
 
-  const pageSize = searchParams?.lignes
-    ? Number.parseInt(searchParams.lignes, 10)
-    : 10
-  const page = searchParams?.page ? Number.parseInt(searchParams.page, 10) : 1
-
   const { sortBy, sortDirection } = getDataTableSortParams(
     searchParams,
     ActivitesDataTable,
   )
 
   const { take, skip } = takeAndSkipFromPage({
-    page,
-    pageSize,
+    page: toNumberOr(searchParams?.page)(DEFAULT_PAGE),
+    pageSize: toNumberOr(searchParams?.lignes)(DEFAULT_PAGE_SIZE),
   })
 
   const mediateurIdMatch = options?.mediateurId ?? '_any_'

@@ -83,8 +83,8 @@ export const MesOutils = () => (
         <div className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-xl-6 fr-col-12">
             <CardOutil
-              logo="/images/services/pix.svg"
-              title="Pix"
+              logo="/images/services/pix-orga.svg"
+              title="Pix Orga"
               inforef="pix"
             >
               Proposez des tutoriels PIX adaptés aux besoins de vos apprenants

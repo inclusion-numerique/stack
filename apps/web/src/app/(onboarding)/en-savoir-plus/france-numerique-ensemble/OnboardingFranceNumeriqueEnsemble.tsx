@@ -36,16 +36,16 @@ export const OnboardingFranceNumeriqueEnsemble = ({
     }
     closeHref="/coop"
   >
-    <p>
+    <p className="fr-text--lg">
       Vos statistiques d’activités anonymisées contribuent à valoriser l’impact
       de la médiation numérique sur votre territoire.
     </p>
-    <p>
+    <p className="fr-text--lg">
       Les différents acteurs de l’inclusion numérique pourront ainsi suivre
       l’évolution et les effets des politiques publiques mises en place
       localement via l’
       <Link
-        className="fr-link"
+        className="fr-link fr-text--lg"
         href="https://inclusion-numerique.anct.gouv.fr/donnees/choix-du-departement"
         target="_blank"
         rel="noreferrer"

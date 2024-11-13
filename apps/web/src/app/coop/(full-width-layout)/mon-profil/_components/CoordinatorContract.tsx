@@ -2,7 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 import Card from '@app/web/components/Card'
 
-export const CoordinatorContract = ({
+const CoordinatorContract = ({
   type,
   start,
   end,
@@ -59,3 +59,5 @@ export const CoordinatorContract = ({
     }
   />
 )
+
+export default CoordinatorContract

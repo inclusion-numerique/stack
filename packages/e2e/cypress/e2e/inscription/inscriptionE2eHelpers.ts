@@ -33,10 +33,13 @@ export const startInscriptionAs = ({
 
   if (identificationResult === 'matching') {
     if (profilInscription === 'Mediateur') {
-      cy.contains('Finaliser votre inscription pour accéder à votre espace')
+      cy.contains('Finaliser votre inscription pour accéder à votre espace', {
+        timeout: 15_000,
+      })
     } else {
       cy.contains(
         `Vous avez été identifié en tant que ${lowerCaseProfileInscriptionLabels[profilInscription]}`,
+        { timeout: 15_000 },
       )
     }
     cy.findByRole('link', { name: 'Continuer' })

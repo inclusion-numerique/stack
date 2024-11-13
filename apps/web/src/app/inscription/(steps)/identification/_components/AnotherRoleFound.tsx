@@ -42,7 +42,7 @@ export const AnotherRoleFound = ({
         <img
           className="fr-mb-1w"
           alt=""
-          src="/images/services/conseillers-numerique-logo.svg"
+          src="/images/illustrations/role/conseillers-numerique.svg"
         />
         <h2 className="fr-h6 fr-mb-0">
           Profil de{' '}

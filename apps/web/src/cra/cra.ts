@@ -187,7 +187,7 @@ export const materielLabels: {
   Ordinateur: 'Ordinateur',
   Telephone: 'Téléphone',
   Tablette: 'Tablette',
-  Autre: 'Autre matériel',
+  Autre: 'Autre',
   Aucun: 'Pas de matériel',
 }
 
@@ -197,7 +197,7 @@ export const materielIcons: {
   Ordinateur: { icon: 'ri-computer-line' },
   Telephone: { icon: 'ri-smartphone-line' },
   Tablette: { icon: 'ri-tablet-line', rotation: -90 },
-  Autre: { icon: 'ri-vidicon-2-line' },
+  Autre: { icon: 'ri-remote-control-line' },
   Aucun: { icon: 'ri-loader-fill' },
 }
 

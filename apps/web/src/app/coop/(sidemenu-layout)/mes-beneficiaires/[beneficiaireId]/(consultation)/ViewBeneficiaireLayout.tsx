@@ -8,6 +8,7 @@ import BeneficiaireAjouterUneActivite from '@app/web/app/coop/(sidemenu-layout)/
 import type { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { DeleteBeneficiaireModal } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/DeleteBeneficiaireModal'
 import DeleteBeneficiaireModalContent from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/DeleteBeneficiaireModalContent'
+import BackButton from '@app/web/components/BackButton'
 
 const ViewBeneficiaireLayout = ({
   beneficiaire,
@@ -35,7 +36,7 @@ const ViewBeneficiaireLayout = ({
   } satisfies BeneficiaireCraData
 
   return (
-    <CoopPageContainer size={794} className="fr-pt-8v fr-pb-20v">
+    <CoopPageContainer size={794}>
       <CoopBreadcrumbs
         parents={[
           {
@@ -45,6 +46,9 @@ const ViewBeneficiaireLayout = ({
         ]}
         currentPage={displayName}
       />
+      <BackButton href="/coop/mes-beneficiaires">
+        Retour à mes bénéficiaires
+      </BackButton>
       <div className="fr-mb-4v fr-width-full fr-flex fr-justify-content-space-between fr-align-items-center fr-flex-gap-8v">
         <div>
           <h1 className="fr-text-title--blue-france fr-mb-0">{displayName}</h1>

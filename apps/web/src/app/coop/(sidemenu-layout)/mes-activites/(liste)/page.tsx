@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import MesActivitesListeEmptyPage from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListeEmptyPage'
 import { getActivitesListPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/getActivitesListPageData'
@@ -8,6 +9,11 @@ import { validateActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFiltersOptionsForMediateur'
 import { mediateurHasActivites } from '@app/web/cra/activitesQueries'
 import MesActivitesListeHeader from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListeHeader'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+
+export const metadata: Metadata = {
+  title: metadataTitle('Mes activités'),
+}
 
 const MesActivitesPage = async ({
   searchParams: rawSearchParams = {},

@@ -3,8 +3,8 @@ import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
-import HeaderBackLink from '@app/web/components/HeaderBackLink'
 import { ComingSoon } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/[slug]/_components/ComingSoon'
+import BackButton from '@app/web/components/BackButton'
 import { OutilPageData } from '../outilPageData'
 import { Access } from './_components/Access'
 import { Features } from './_components/Features'
@@ -29,9 +29,9 @@ export const Outil = ({
       ]}
       currentPage={title}
     />
-    <HeaderBackLink className="fr-mb-3w" />
     <SkipLinksPortal links={defaultSkipLinks} />
     <main id={contentId}>
+      <BackButton href="/coop/mes-outils">Retour aux outils</BackButton>
       {notice ? <ComingSoon text={notice} /> : null}
       <Hero
         title={title}

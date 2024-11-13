@@ -167,6 +167,10 @@
   .fr-flex-sm {
     display: flex;
   }
+
+  .fr-direction-sm-row {
+    flex-direction: row;
+  }
 }
 
 /* md flex rules */

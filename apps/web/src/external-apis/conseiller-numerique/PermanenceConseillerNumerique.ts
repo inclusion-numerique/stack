@@ -1,6 +1,6 @@
 import type { ObjectId } from 'mongodb'
 
-export type PremanenceConseillerNumerique = {
+export type PermanenceConseillerNumerique = {
   _id: ObjectId
   nomEnseigne: string
   siteWeb: string | null
@@ -16,4 +16,5 @@ export type PremanenceConseillerNumerique = {
     codeCommune: string
     ville: string
   }
+  nonAffichageCarto: boolean
 }

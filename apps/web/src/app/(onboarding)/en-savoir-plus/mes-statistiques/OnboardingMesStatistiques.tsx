@@ -29,13 +29,15 @@ export const OnboardingMesStatistiques = ({
     next={{ href: '/en-savoir-plus/mes-beneficiaires' }}
     closeHref="/coop"
   >
-    <ul>
-      <li>Filtrez-les par période, lieu et type d’activité.</li>
-      <li>
-        Exportez et partagez-les facilement auprès de différents partenaires
-        (structure employeuse, lieux d’activités, collectivités…) pour valoriser
-        votre travail.
-      </li>
-    </ul>
+    <div className="fr-text--lg">
+      <ul>
+        <li>Filtrez-les par période, lieu et type d’activité.</li>
+        <li>
+          Exportez et partagez-les facilement auprès de différents partenaires
+          (structure employeuse, lieux d’activités, collectivités…) pour
+          valoriser votre travail.
+        </li>
+      </ul>
+    </div>
   </Onboarding>
 )

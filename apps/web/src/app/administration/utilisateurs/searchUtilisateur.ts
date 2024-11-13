@@ -7,6 +7,8 @@ import {
   UtilisateursDataTableSearchParams,
 } from '@app/web/app/administration/utilisateurs/UtilisateursDataTable'
 import { queryUtilisateursForList } from '@app/web/app/administration/utilisateurs/queryUtilisateursForList'
+import { toQueryParts } from '@app/web/data-table/toQueryParts'
+import { DEFAULT_PAGE, toNumberOr } from '@app/web/data-table/toNumberOr'
 
 type SearchUtilisateurOptions = {
   mediateurId?: string
@@ -23,49 +25,28 @@ export const utilisateursListWhere = (
   },
 ) => ({}) satisfies Prisma.UserWhereInput
 
-const defaultResultSize = 1000
+const DEFAULT_PAGE_SIZE = 1000
 
 export const searchUtilisateur = async (options: SearchUtilisateurOptions) => {
   const searchParams = options.searchParams ?? {}
   const { mediateurId } = options
 
   const orderBy = getDataTableOrderBy(searchParams, UtilisateursDataTable)
-  const pageSize = searchParams?.lignes
-    ? Number.parseInt(searchParams.lignes, defaultResultSize)
-    : defaultResultSize
-  const page = searchParams?.page ? Number.parseInt(searchParams.page, 10) : 1
 
   const { take, skip } = takeAndSkipFromPage({
-    page,
-    pageSize,
+    page: toNumberOr(searchParams?.page)(DEFAULT_PAGE),
+    pageSize: toNumberOr(searchParams?.lignes)(DEFAULT_PAGE_SIZE),
   })
-
-  const queryParts = searchParams.recherche?.split(' ') ?? []
 
   const matchesWhere = {
     ...utilisateursListWhere({
       mediateurId,
     }),
-    AND: queryParts.map((part) => ({
+    AND: toQueryParts(searchParams).map((part) => ({
       OR: [
-        {
-          firstName: {
-            contains: part,
-            mode: 'insensitive',
-          },
-        },
-        {
-          lastName: {
-            contains: part,
-            mode: 'insensitive',
-          },
-        },
-        {
-          email: {
-            contains: part,
-            mode: 'insensitive',
-          },
-        },
+        { firstName: { contains: part, mode: 'insensitive' } },
+        { lastName: { contains: part, mode: 'insensitive' } },
+        { email: { contains: part, mode: 'insensitive' } },
       ],
     })),
   } satisfies Prisma.UserWhereInput

@@ -5,7 +5,10 @@ import {
   cleanConseillerNumeriqueV1Document,
   ConseillerNumeriqueV1Document,
 } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Document'
-import { MiseEnRelationConseillerNumeriqueV1MinimalProjection } from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
+import {
+  MiseEnRelationConseillerNumeriqueV1MinimalProjection,
+  MiseEnRelationV1MinimalProjection,
+} from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
 import { getActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/getActiveMiseEnRelation'
 
 export type FindConseillerNumeriqueV1Input =
@@ -62,15 +65,7 @@ export const findConseillerNumeriqueV1 = async (
         'conseillerObj._id': conseillerDocument._id,
       },
       {
-        projection: {
-          _id: 1,
-          statut: 1,
-          structureObj: 1,
-          dateRecrutement: 1,
-          dateDebutDeContrat: 1,
-          dateFinDeContrat: 1,
-          typeDeContrat: 1,
-        },
+        projection: MiseEnRelationV1MinimalProjection,
       },
     )
     .toArray()) as unknown as MiseEnRelationConseillerNumeriqueV1MinimalProjection[]
