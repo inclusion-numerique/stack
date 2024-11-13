@@ -2,7 +2,7 @@ import { addMonths, format, isAfter, isBefore, subMonths } from 'date-fns'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { getMediateursCount } from '@app/web/mediateurs/getMediateursCount'
 import { getAuthenticatedCoordinateur } from '@app/web/auth/getAuthenticatedMediateur'
-import { findConseillersNumeriquesContractInfoByEmails } from '@app/web/external-apis/conseiller-numerique/findConseillerNumeriqueByEmail'
+import { findConseillersNumeriquesContractInfoByEmails } from '@app/web/external-apis/conseiller-numerique/fetchConseillersCoordonnes'
 import {
   MonEquipeSearchParams,
   searchMediateursCordonneBy,
@@ -32,7 +32,7 @@ const finDeContratFor =
   (
     contracts: {
       conseillerNumeriqueId: string
-      contractInfo: { dateFinDeContrat?: Date } | null
+      contractInfo: { dateFinDeContrat: Date | null } | null
     }[],
   ) => {
     const contractInfo = contracts.find(

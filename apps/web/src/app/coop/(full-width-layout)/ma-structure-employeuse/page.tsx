@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'

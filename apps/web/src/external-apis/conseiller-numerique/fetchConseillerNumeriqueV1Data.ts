@@ -4,7 +4,10 @@ import {
   objectIdFromString,
 } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 import { cleanConseillerNumeriqueV1Document } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Document'
-import type { MiseEnRelationConseillerNumeriqueV1MinimalProjection } from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
+import {
+  MiseEnRelationConseillerNumeriqueV1MinimalProjection,
+  MiseEnRelationV1MinimalProjection,
+} from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
 import { getActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/getActiveMiseEnRelation'
 import { fetchConseillersCoordonnes } from '@app/web/external-apis/conseiller-numerique/fetchConseillersCoordonnes'
 import type { ConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Data'
@@ -56,15 +59,7 @@ export const fetchConseillerNumeriqueV1Data = async (
         'conseillerObj._id': conseillerDocument._id,
       },
       {
-        projection: {
-          _id: 1,
-          statut: 1,
-          structureObj: 1,
-          dateRecrutement: 1,
-          dateDebutDeContrat: 1,
-          dateFinDeContrat: 1,
-          typeDeContrat: 1,
-        },
+        projection: MiseEnRelationV1MinimalProjection,
       },
     )
     .toArray()) as unknown as MiseEnRelationConseillerNumeriqueV1MinimalProjection[]
@@ -106,6 +101,7 @@ export const fetchConseillerNumeriqueV1Data = async (
     }
     updatedAt: Date
     updatedBy: ObjectId
+    nonAffichageCarto: boolean
   }[]
 
   const conseillersCoordonnes = conseillerDocument.estCoordinateur
