@@ -43,7 +43,32 @@ export type StructureConseillerNumerique = {
     status_diffusion: string // 'diffusible' | other possible statuses
     date_creation: number // timestamp
     unite_legale: Record<string, unknown>
-    adresse: Record<string, unknown>
+    adresse: {
+      status_diffusion: 'diffusible'
+      complement_adresse: null | string
+      numero_voie: null | string
+      indice_repetition_voie: null | string
+      type_voie: null | string
+      libelle_voie: null | string
+      code_postal: string
+      libelle_commune: string
+      libelle_commune_etranger: null
+      distribution_speciale: null
+      code_commune: string
+      code_cedex: null
+      libelle_cedex: null
+      code_pays_etranger: null
+      libelle_pays_etranger: null
+      acheminement_postal: {
+        l1: string
+        l2: string
+        l3: string
+        l4: string
+        l5: string
+        l6: string
+        l7: string
+      }
+    }
   }
   coordonneesInsee: {
     type: 'Point'
