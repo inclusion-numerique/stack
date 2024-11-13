@@ -19,14 +19,14 @@ const ArchivesV1Layout = ({ children }: PropsWithChildren) => (
       />
       <div>
         <p className="fr-text--bold fr-mb-2v">
-          Retrouvez l’historique de vos compte-rendus d’activités (CRA) et vos
-          statistiques de la version précédente de l’espace Coop.
+          Retrouvez prochainement l’historique de vos compte-rendus d’activités
+          (CRA) et vos statistiques de la version précédente de l’espace Coop.
         </p>
         <p className="fr-text--sm fr-mb-2v">
           Les compte-rendus d’activités ainsi que les statistiques ont évolué
           avec cette nouvelle version. Vos données enregistrées sur la version
-          précédente sont archivées sur cette page et disponibles sous forme
-          d’exports.
+          précédente seront archivées sur cette page et disponibles sous forme
+          d’exports d’ici quelques semaines.
         </p>
         <p className="fr-text--xs fr-mb-0 fr-text-mention--grey">
           Source&nbsp;:{' '}

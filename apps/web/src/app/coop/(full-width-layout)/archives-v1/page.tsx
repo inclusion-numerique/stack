@@ -15,6 +15,8 @@ const ArchivesV1Page = async () => {
     return null
   }
 
+  if (true) return null
+
   const getCrasResult = await getArchivesV1PageData({
     conseillerNumeriqueId: user.mediateur.conseillerNumerique.id,
   })
