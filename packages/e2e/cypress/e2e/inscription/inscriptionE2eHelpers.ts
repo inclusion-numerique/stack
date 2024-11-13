@@ -7,9 +7,7 @@ import {
   profileInscriptionSlugs,
 } from '@app/web/inscription/profilInscription'
 import { appUrl } from '@app/e2e/support/helpers'
-import {
-  inscriptionRolesErrorTitles,
-} from '@app/web/app/inscription/(steps)/identification/_components/inscriptionRole'
+import { inscriptionRolesErrorTitles } from '@app/web/app/inscription/(steps)/identification/_components/inscriptionRole'
 
 export const startInscriptionAs = ({
   profilInscription,
