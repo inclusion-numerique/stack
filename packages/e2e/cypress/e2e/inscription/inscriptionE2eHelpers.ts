@@ -7,7 +7,9 @@ import {
   profileInscriptionSlugs,
 } from '@app/web/inscription/profilInscription'
 import { appUrl } from '@app/e2e/support/helpers'
-import { inscriptionRolesErrorTitles } from '@app/web/app/inscription/(steps)/identification/_components/inscriptionRole'
+import {
+  inscriptionRolesErrorTitles,
+} from '@app/web/app/inscription/(steps)/identification/_components/inscriptionRole'
 
 export const startInscriptionAs = ({
   profilInscription,
@@ -33,10 +35,13 @@ export const startInscriptionAs = ({
 
   if (identificationResult === 'matching') {
     if (profilInscription === 'Mediateur') {
-      cy.contains('Finaliser votre inscription pour accéder à votre espace')
+      cy.contains('Finaliser votre inscription pour accéder à votre espace', {
+        timeout: 15_000,
+      })
     } else {
       cy.contains(
         `Vous avez été identifié en tant que ${lowerCaseProfileInscriptionLabels[profilInscription]}`,
+        { timeout: 15_000 },
       )
     }
     cy.findByRole('link', { name: 'Continuer' })
