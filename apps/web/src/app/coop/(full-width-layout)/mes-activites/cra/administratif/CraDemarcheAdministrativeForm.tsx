@@ -50,7 +50,6 @@ import {
   CraDemarcheAdministrativeValidation,
 } from '@app/web/cra/CraDemarcheAdministrativeValidation'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { yesNoBooleanOptions } from '@app/web/utils/yesNoBooleanOptions'
 import { craFormFieldsetClassname } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/craFormFieldsetClassname'
 import CraBeneficiaryForm, {
   CraDataWithBeneficiaire,
@@ -366,26 +365,6 @@ const CraDemarcheAdministrativeForm = ({
             Vous pouvez renseigner des informations anonymes sur le bénéficiaire
             pour compléter vos statistiques.
           </p>
-
-          <p className="fr-text--medium fr-mb-4v fr-mt-12v">
-            Le bénéficiaire intègre un accompagnement de médiation
-            numérique&nbsp;?
-          </p>
-          <RadioFormField
-            control={control}
-            path="beneficiaire.vaPoursuivreParcoursAccompagnement"
-            options={yesNoBooleanOptions}
-            disabled={isLoading}
-            components={{
-              label: RichCardLabel,
-            }}
-            className="fr-mb-12v"
-            classes={{
-              fieldsetElement: richCardFieldsetElementClassName,
-              fieldset: craFormFieldsetClassname(styles.yesNoFieldset),
-              radioGroup: richCardRadioGroupClassName,
-            }}
-          />
           <AdresseBanFormField<CraDemarcheAdministrativeData>
             control={control}
             path="beneficiaire.communeResidence"

@@ -1,7 +1,6 @@
 import type { DefaultValues } from 'react-hook-form'
 import type { Beneficiaire } from '@prisma/client'
 import type { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireValidation'
-import { optionalBooleanToYesNo } from '@app/web/utils/yesNoBooleanOptions'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
 
 export const getBeneficiaireDefaulCratDataFromExisting = ({
@@ -21,7 +20,6 @@ export const getBeneficiaireDefaulCratDataFromExisting = ({
   statutSocial,
   telephone,
   trancheAge,
-  vaPoursuivreParcoursAccompagnement,
 }: Exclude<
   Beneficiaire,
   'supression' | 'creation' | 'modification'
@@ -47,6 +45,4 @@ export const getBeneficiaireDefaulCratDataFromExisting = ({
   telephone: telephone ?? undefined,
   trancheAge: trancheAge ?? undefined,
   notes: notes ?? undefined,
-  vaPoursuivreParcoursAccompagnement:
-    optionalBooleanToYesNo(vaPoursuivreParcoursAccompagnement) ?? undefined,
 })

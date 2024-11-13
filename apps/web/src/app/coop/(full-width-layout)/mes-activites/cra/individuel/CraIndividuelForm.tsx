@@ -372,26 +372,6 @@ const CraIndividuelForm = ({
             Vous pouvez renseigner des informations anonymes sur le bénéficiaire
             pour compléter vos statistiques.
           </p>
-
-          <p className="fr-text--medium fr-mb-4v fr-mt-12v">
-            Le bénéficiaire intègre un accompagnement de médiation
-            numérique&nbsp;?
-          </p>
-          <RadioFormField
-            control={control}
-            path="beneficiaire.vaPoursuivreParcoursAccompagnement"
-            options={yesNoBooleanOptions}
-            disabled={isLoading}
-            components={{
-              label: RichCardLabel,
-            }}
-            className="fr-mb-12v"
-            classes={{
-              fieldsetElement: richCardFieldsetElementClassName,
-              fieldset: craFormFieldsetClassname(styles.yesNoFieldset),
-              radioGroup: richCardRadioGroupClassName,
-            }}
-          />
           <AdresseBanFormField<CraIndividuelData>
             control={control}
             path="beneficiaire.communeResidence"
