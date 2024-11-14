@@ -243,7 +243,7 @@ const LieuxActiviteForm = ({
         isOptionDisabled={(option) => option.value === ''}
         cacheOptions
       />
-      <div>
+      <div className="fr-mb-12v">
         <Link
           className="fr-link fr-link--sm"
           href="https://annuaire-entreprises.data.gouv.fr/"
@@ -263,7 +263,7 @@ const LieuxActiviteForm = ({
         <StructureCard
           key={structure.id ?? structure.structureCartographieNationaleId}
           structure={structure}
-          className="fr-mt-6v"
+          className="fr-mt-4v"
           topRight={
             <Button
               type="button"
@@ -278,13 +278,26 @@ const LieuxActiviteForm = ({
           }
         />
       ))}
-      <Button
-        type="submit"
-        priority="primary"
-        {...buttonLoadingClassname(isLoading, 'fr-mb-0 fr-mt-4w')}
-      >
-        Ajouter
-      </Button>
+      <hr className="fr-separator-12v" />
+
+      <div className="fr-btns-group">
+        <Button
+          type="submit"
+          priority="primary"
+          {...buttonLoadingClassname(isLoading, 'fr-mb-0 ')}
+        >
+          Ajouter
+        </Button>
+        <Button
+          linkProps={{
+            href: '/coop/lieux-activite/',
+          }}
+          priority="tertiary"
+          {...buttonLoadingClassname(isLoading, 'fr-mb-0 fr-mt-4v')}
+        >
+          Annuler
+        </Button>
+      </div>
     </form>
   )
 }

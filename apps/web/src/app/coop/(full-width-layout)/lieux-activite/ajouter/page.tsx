@@ -18,30 +18,34 @@ const AjouterLieuPage = async () => {
   return (
     <>
       <SkipLinksPortal links={defaultSkipLinks} />
-      <div className="fr-container fr-container--narrow">
-        <CoopBreadcrumbs
-          parents={[
-            {
-              label: `Mes lieux d'activités`,
-              linkProps: { href: '/coop/lieux-activite/' },
-            },
-          ]}
-          currentPage={"Ajouter un lieu d'activité"}
-        />
-        <main id={contentId} className="fr-mb-30v">
+      <main
+        className="fr-layout__main fr-background-alt--blue-france fr-height-full"
+        id={contentId}
+      >
+        <div className="fr-container fr-container--narrow ">
+          <CoopBreadcrumbs
+            parents={[
+              {
+                label: `Mes lieux d'activités`,
+                linkProps: { href: '/coop/lieux-activite/' },
+              },
+            ]}
+            currentPage={"Ajouter un lieu d'activité"}
+          />
           <BackButton href="/coop/lieux-activite">
             Retour à mes lieux d&apos;activité
           </BackButton>
-          <span className="fr-flex fr-direction-row fr-align-items-center fr-flex-gap-6v fr-mb-5w">
-            <IconInSquare iconId="ri-home-office-line" />
-            <h1 className="fr-page-title fr-m-0 fr-h2">
-              Ajouter un lieu d’activité
-            </h1>
-          </span>
-          <div className="fr-border fr-border-radius--8 fr-p-4w">
+
+          <div className="fr-mb-32v fr-p-12v fr-width-full fr-border-radius--8 fr-background-default--grey">
+            <span className="fr-flex fr-direction-row fr-align-items-center fr-flex-gap-6v fr-mb-5w">
+              <IconInSquare iconId="ri-home-office-line" />
+              <h1 className="fr-h3 fr-page-title fr-m-0">
+                Ajouter des lieux d’activités
+              </h1>
+            </span>
             <p className="fr-mb-6w">
-              Rechercher dans les lieux déjà référencés. Si vous ne trouvez pas
-              vos lieux, vous pouvez les créer afin d’être référencé.
+              Recherchez dans les lieux déjà référencés. Si vous ne trouvez pas
+              vos lieux d’activité, vous pouvez les créer afin d’être référencé.
             </p>
             <LieuxActiviteForm
               nextHref="/coop/lieux-activite"
@@ -49,8 +53,8 @@ const AjouterLieuPage = async () => {
               userId={user.id}
             />
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
     </>
   )
 }
