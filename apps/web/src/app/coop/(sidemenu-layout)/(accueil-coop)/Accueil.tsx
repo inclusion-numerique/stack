@@ -3,6 +3,7 @@ import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import ActiviteDetailsModal from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsModal'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
+import { CommunicationConum } from '@app/web/app/coop/(sidemenu-layout)/(accueil-coop)/_components/CommunicationConum'
 import {
   ActionsRapides,
   DernieresActivites,
@@ -24,6 +25,7 @@ export const Accueil = ({
   hasSeenOnboarding,
   isMediateur,
   isCoordinateur,
+  isCoNum,
 }: {
   firstName: string | null
   name: string | null
@@ -31,6 +33,7 @@ export const Accueil = ({
   email: string
   isMediateur: boolean
   isCoordinateur: boolean
+  isCoNum: boolean
 } & AccueilPageData) => (
   <CoopPageContainer size={794}>
     <SkipLinksPortal links={defaultSkipLinks} />
@@ -61,6 +64,11 @@ export const Accueil = ({
           </section>
           <hr className="fr-separator-1px" />
         </>
+      )}
+      {isCoNum && (
+        <section className="fr-my-6w">
+          <CommunicationConum />
+        </section>
       )}
       <section className="fr-my-6w">
         <InformationsCoop />
