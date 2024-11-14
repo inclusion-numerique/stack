@@ -14,11 +14,11 @@ export const Support = () => (
         prochaines évolutions.
       </p>
       <Link
-        href="/"
+        href="https://tally.so/r/nr0ayL"
         target="_blank"
         rel="noreferrer"
         title="Accéder à l'inscription au prochain webinaire - nouvelle fenêtre"
-        className="fr-btn fr-btn--sm wip-outline"
+        className="fr-btn fr-btn--sm"
       >
         S’inscrire au prochain webinaire
       </Link>
