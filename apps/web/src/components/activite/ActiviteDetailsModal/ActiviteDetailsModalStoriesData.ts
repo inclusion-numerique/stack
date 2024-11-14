@@ -27,7 +27,6 @@ export const activiteIndividuelleInfosMinimum = {
         nom: null,
         commune: null,
         communeCodePostal: null,
-        vaPoursuivreParcoursAccompagnement: null,
         statutSocial: null,
         genre: null,
         trancheAge: null,
@@ -79,7 +78,6 @@ export const activiteIndividuelleBeneficiaireSuivi = {
         nom: 'Dupont',
         commune: null,
         communeCodePostal: null,
-        vaPoursuivreParcoursAccompagnement: null,
         statutSocial: 'EnEmploi',
         genre: 'Masculin',
         trancheAge: 'NonCommunique',
@@ -128,7 +126,6 @@ export const activiteIndividuelleBeneficiaireAnonyme = {
         nom: null,
         commune: 'Lyon',
         communeCodePostal: '69002',
-        vaPoursuivreParcoursAccompagnement: true,
         statutSocial: 'EnEmploi',
         genre: 'Masculin',
         trancheAge: 'QuaranteCinquanteNeuf',
@@ -180,7 +177,6 @@ export const activiteCollectifInfosRepliees = {
         statutSocial: null,
         commune: null,
         communeCodePostal: null,
-        vaPoursuivreParcoursAccompagnement: null,
         _count: {
           accompagnements: 1,
         },
@@ -198,7 +194,6 @@ export const activiteCollectifInfosRepliees = {
         statutSocial: null,
         commune: null,
         communeCodePostal: null,
-        vaPoursuivreParcoursAccompagnement: null,
         _count: {
           accompagnements: 1,
         },
@@ -254,7 +249,6 @@ export const activiteCollectifInfosDepliees = {
           nom: null,
           commune: null,
           communeCodePostal: null,
-          vaPoursuivreParcoursAccompagnement: null,
           _count: {
             accompagnements: 1,
           },
@@ -273,7 +267,6 @@ export const activiteCollectifInfosDepliees = {
         statutSocial: null,
         commune: null,
         communeCodePostal: null,
-        vaPoursuivreParcoursAccompagnement: null,
         _count: {
           accompagnements: 1,
         },
@@ -291,7 +284,6 @@ export const activiteCollectifInfosDepliees = {
         statutSocial: null,
         commune: null,
         communeCodePostal: null,
-        vaPoursuivreParcoursAccompagnement: null,
         _count: {
           accompagnements: 1,
         },

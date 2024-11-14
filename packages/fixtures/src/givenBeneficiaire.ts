@@ -27,8 +27,6 @@ export const givenBeneficiaire = <
     commune: data.commune ?? null,
     communeCodePostal: data.communeCodePostal ?? null,
     communeCodeInsee: data.communeCodeInsee ?? null,
-    vaPoursuivreParcoursAccompagnement:
-      data.vaPoursuivreParcoursAccompagnement ?? null,
     genre: data.genre ?? null,
     trancheAge: data.trancheAge ?? null,
     statutSocial: data.statutSocial ?? null,
@@ -66,8 +64,6 @@ export const givenBeneficiaireAnonyme = <
     commune: data.commune ?? null,
     communeCodePostal: data.communeCodePostal ?? null,
     communeCodeInsee: data.communeCodeInsee ?? null,
-    vaPoursuivreParcoursAccompagnement:
-      data.vaPoursuivreParcoursAccompagnement ?? null,
     genre: data.genre ?? null,
     trancheAge: data.trancheAge ?? null,
     statutSocial: data.statutSocial ?? null,

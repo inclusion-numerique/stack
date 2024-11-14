@@ -90,7 +90,6 @@ const beneficiaireAnonymeCreateDataFromForm = ({
   anneeNaissance,
   adresse,
   communeResidence,
-  vaPoursuivreParcoursAccompagnement,
   genre,
   trancheAge,
   statutSocial,
@@ -114,9 +113,6 @@ const beneficiaireAnonymeCreateDataFromForm = ({
   trancheAge: trancheAge ?? undefined,
   statutSocial: statutSocial ?? undefined,
   notes: notes ?? undefined,
-  vaPoursuivreParcoursAccompagnement: yesNoToOptionalBoolean(
-    vaPoursuivreParcoursAccompagnement ?? undefined,
-  ),
   commune: communeResidence?.nom ?? undefined,
   communeCodePostal: communeResidence?.codePostal ?? undefined,
   communeCodeInsee: communeResidence?.codeInsee ?? undefined,

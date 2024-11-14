@@ -17,7 +17,6 @@ export const activiteListeBeneficiaireSelect = {
   genre: true,
   commune: true,
   communeCodePostal: true,
-  vaPoursuivreParcoursAccompagnement: true,
   _count: {
     select: {
       accompagnements: true,

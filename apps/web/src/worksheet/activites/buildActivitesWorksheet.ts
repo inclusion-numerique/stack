@@ -96,7 +96,6 @@ export const buildActivitesWorksheet = ({
     'Le bénéficiaire est-il orienté vers une autre structure ?',
     'La démarche est-elle finalisée ?',
     'Structure de redirection',
-    'Le bénéficiaire intègre un accompagnement de médiation numérique ?',
     'Commune de résidence du bénéficiaire',
     'Genre du bénéficiaire',
     'Tranche d’âge du bénéficiaire',
@@ -183,11 +182,6 @@ export const buildActivitesWorksheet = ({
         structureDeRedirection
           ? structuresRedirectionLabels[structureDeRedirection]
           : '',
-        beneficiairesListCell(({ vaPoursuivreParcoursAccompagnement }) =>
-          vaPoursuivreParcoursAccompagnement === null
-            ? '-'
-            : booleanToYesNoLabel(vaPoursuivreParcoursAccompagnement),
-        ),
         beneficiairesListCell(({ commune, communeCodePostal }) =>
           commune ? `${communeCodePostal} ${commune}` : '-',
         ),

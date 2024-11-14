@@ -5,7 +5,6 @@ import {
   trancheAgeValues,
 } from '@app/web/beneficiaire/beneficiaire'
 import { AdresseBanValidation } from '@app/web/external-apis/ban/AdresseBanValidation'
-import { yesOrNo } from '@app/web/utils/yesNoBooleanOptions'
 
 export const anneeNaissanceMax = new Date().getFullYear()
 export const anneeNaissanceMin = 1900
@@ -73,8 +72,6 @@ export const BeneficiaireCraValidation = BeneficiaireValidation.omit({
   prenom: true,
   nom: true,
 }).extend({
-  vaPoursuivreParcoursAccompagnement: z.enum(yesOrNo).nullish(),
-  // Used if selected (id in object), to display the name of the beneficiaire to UI
   prenom: z.string().nullish(),
   nom: z.string().nullish(),
 })
