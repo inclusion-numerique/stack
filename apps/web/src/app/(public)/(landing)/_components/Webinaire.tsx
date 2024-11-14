@@ -17,11 +17,11 @@ const Webinaire = () => (
             prochaines évolutions.
           </p>
           <Link
-            href="/"
+            href="https://tally.so/r/nr0ayL"
             target="_blank"
             rel="noreferrer"
             title="Accéder à l'inscription au prochain webinaire - nouvel onglet"
-            className="fr-btn fr-btn--responsive-sm wip-outline"
+            className="fr-btn fr-btn--responsive-sm"
           >
             S’incrire au prochain webinaire
           </Link>

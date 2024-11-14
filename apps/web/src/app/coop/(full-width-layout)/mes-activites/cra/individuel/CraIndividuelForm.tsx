@@ -23,6 +23,7 @@ import React, { useCallback, useState } from 'react'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
+import Link from 'next/link'
 import CraFormLabel from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraFormLabel'
 import AdresseBanFormField, {
   type AdressBanFormFieldOption,
@@ -320,7 +321,14 @@ const CraIndividuelForm = ({
         }}
       />
       <p className="fr-text--medium fr-mb-4v fr-mt-12v">
-        Niveau d’autonomie du bénéficiaire
+        Niveau d’autonomie du bénéficiaire{' '}
+        <Link
+          className="fr-link"
+          href="https://incubateurdesterritoires.notion.site/Accompagnement-individuel-de-m-diation-num-rique-94011d45a214412981168bdd5e9d66c7#a94b64aef227422ca23b064d476ac6f7"
+          target="_blank"
+        >
+          En savoir plus
+        </Link>
       </p>
       <RadioFormField
         control={control}
@@ -368,30 +376,10 @@ const CraIndividuelForm = ({
           <h2 className="fr-h3 fr-mb-1v fr-text-title--blue-france">
             Informations optionnelles sur le bénéficiaire
           </h2>
-          <p className="fr-text--xs fr-text-mention--grey fr-mb-0">
+          <p className="fr-text--xs fr-text-mention--grey fr-mb-12v">
             Vous pouvez renseigner des informations anonymes sur le bénéficiaire
             pour compléter vos statistiques.
           </p>
-
-          <p className="fr-text--medium fr-mb-4v fr-mt-12v">
-            Le bénéficiaire intègre un accompagnement de médiation
-            numérique&nbsp;?
-          </p>
-          <RadioFormField
-            control={control}
-            path="beneficiaire.vaPoursuivreParcoursAccompagnement"
-            options={yesNoBooleanOptions}
-            disabled={isLoading}
-            components={{
-              label: RichCardLabel,
-            }}
-            className="fr-mb-12v"
-            classes={{
-              fieldsetElement: richCardFieldsetElementClassName,
-              fieldset: craFormFieldsetClassname(styles.yesNoFieldset),
-              radioGroup: richCardRadioGroupClassName,
-            }}
-          />
           <AdresseBanFormField<CraIndividuelData>
             control={control}
             path="beneficiaire.communeResidence"

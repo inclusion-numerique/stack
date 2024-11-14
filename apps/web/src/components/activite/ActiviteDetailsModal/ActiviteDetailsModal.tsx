@@ -239,11 +239,6 @@ const ActiviteDetailsModal = ({
             .join(', '),
           !!beneficiaireUnique.commune &&
             `${beneficiaireUnique.communeCodePostal} ${beneficiaireUnique.commune}`.trim(),
-          beneficiaireUnique.vaPoursuivreParcoursAccompagnement === null
-            ? null
-            : beneficiaireUnique.vaPoursuivreParcoursAccompagnement
-              ? 'Poursuit son parcours d’accompagnement de médiation numérique'
-              : 'Ne poursuit pas son parcours d’accompagnement de médiation numérique',
         ].filter(Boolean)
       : null
 
