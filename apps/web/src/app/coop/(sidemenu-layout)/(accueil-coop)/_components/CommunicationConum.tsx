@@ -36,7 +36,7 @@ export const CommunicationConum = () => (
             </span>
           }
           description="Accédez à la plateforme de discussions des conseillers numériques"
-          href="https://incubateurdesterritoires.notion.site/Centre-d-aide-de-La-Coop-de-la-m-diation-num-rique-e2db421ac63249769c1a9aa155af5f2f"
+          href="https://discussion.conseiller-numerique.gouv.fr/"
           isExternal
         />
       </div>

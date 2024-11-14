@@ -1,5 +1,9 @@
 import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDisclamer'
 import { DefaultValues } from 'react-hook-form'
+import Notice from '@codegouvfr/react-dsfr/Notice'
+import Image from 'next/image'
+import Link from 'next/link'
+import { Icon } from '@app/ui/components/Form/InputFormField.stories'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
@@ -48,6 +52,34 @@ const PageCreerBeneficiaire = async ({
           <RequiredFieldsDisclamer className="fr-my-0" />
         </div>
       </div>
+
+      <Notice
+        className="fr-notice--hint fr-notice--no-icon fr-notice--flex fr-border-radius--16 fr-mb-8v"
+        title={
+          <span className="fr-flex fr-align-items-center fr-flex-gap-8v fr-py-1w">
+            <span className="ri-admin-line ri-xl fr-mx-1w fr-text--regular" />
+
+            <span>
+              <span className="fr-notice__title fr-text--md fr-text-title--blue-france fr-mb-1w fr-display-block">
+                N’oubliez pas d’informer vos bénéficiaires sur leurs droits
+                lorsque vous collecter leurs données personnelles.
+              </span>
+              <span className="fr-mb-1w fr-text--regular fr-text--sm fr-text-default--grey fr-display-block">
+                Un modèle de mention d’information à destination des
+                bénéficiaires que vous accompagnez est à votre disposition dans
+                notre centre d’aide.{' '}
+                <Link
+                  className="fr-link fr-text--sm"
+                  href="https://incubateurdesterritoires.notion.site/Mod-le-de-mention-d-information-destination-des-b-n-ficiaires-accompagn-s-par-les-m-diateurs-num-r-13e744bf03dd80fd9f5ec066c97391b9?pvs=74"
+                  target="_blank"
+                >
+                  Consulter via ce lien
+                </Link>
+              </span>
+            </span>
+          </span>
+        }
+      />
 
       <BeneficiaireForm
         defaultValues={{
