@@ -44,7 +44,7 @@ export const fetchConseillerNumeriqueV1Data = async (
         }
       : {
           deletedAt: { $in: [null, undefined] },
-          emailPro: email,
+          emailPro: { $regex: `^${email}$`, $options: 'i' },
         },
   )
 

@@ -55,6 +55,13 @@ describe('fetchConseillerNumeriqueV1Data', () => {
     expect(result).toBeNull()
   })
 
+  it('should get conseiller by mail when case si not the same', async () => {
+    const result = await fetchConseillerNumeriqueV1Data({
+      email: 'hugo.lacombe@christianefaure.fr',
+    })
+    expect(result).not.toBeNull()
+  })
+
   it('should not get conseiller by legacy @conseiller-numerique email', async () => {
     const result = await fetchConseillerNumeriqueV1Data({
       email: 'michele.ladik@conseiller-numerique.fr',

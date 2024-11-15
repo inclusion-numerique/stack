@@ -33,7 +33,9 @@ const findConseillersDocumentByEmails =
     return conseillerCollection
       .find({
         deletedAt: { $in: [null, undefined] },
-        emailPro: { $in: formattedEmails },
+        $or: formattedEmails.map((email) => ({
+          emailPro: { $regex: `^${email}$`, $options: 'i' },
+        })),
       })
       .toArray()
   }
