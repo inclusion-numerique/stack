@@ -36,7 +36,7 @@ export const findConseillerNumeriqueV1 = async (
 
   const filter: Filter<ConseillerNumeriqueV1Document> = email
     ? {
-        emailPro: email,
+        emailPro: { $regex: `^${email}$`, $options: 'i' },
       }
     : {
         _id: new ObjectId(input.id),
