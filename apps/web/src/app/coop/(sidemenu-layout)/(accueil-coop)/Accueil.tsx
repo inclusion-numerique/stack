@@ -13,7 +13,7 @@ import {
   Support,
 } from './_components'
 import { Equipe } from './_components/Equipe'
-import { AccueilPageData } from './getAccueilPageData'
+import { AccueilPageData } from './getAccueilPageDataFor'
 
 export const Accueil = ({
   firstName,

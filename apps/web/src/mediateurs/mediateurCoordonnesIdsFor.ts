@@ -1,6 +1,6 @@
-import { SessionUser } from '@app/web/auth/sessionUser'
-
-export const mediateurCoordonnesIdsFor = (user: SessionUser) =>
+export const mediateurCoordonnesIdsFor = (user: {
+  coordinateur?: { mediateursCoordonnes: { mediateurId: string }[] } | null
+}) =>
   (user.coordinateur?.mediateursCoordonnes ?? []).map(
     ({ mediateurId }) => mediateurId,
   )

@@ -2,9 +2,8 @@ import type { Metadata } from 'next'
 import React from 'react'
 import { getAuthenticatedMediateurOrCoordinateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import { mediateurCoordonnesIdsFor } from '@app/web/mediateurs/mediateurCoordonnesIdsFor'
 import { Accueil } from './Accueil'
-import { getAccueilPageData } from './getAccueilPageData'
+import { getAccueilPageDataFor } from './getAccueilPageDataFor'
 
 export const metadata: Metadata = {
   title: metadataTitle('Accueil'),
@@ -13,10 +12,7 @@ export const metadata: Metadata = {
 const Page = async () => {
   const user = await getAuthenticatedMediateurOrCoordinateur()
 
-  const dashboardPageData = await getAccueilPageData({
-    user,
-    mediateurCoordonnesIds: mediateurCoordonnesIdsFor(user),
-  })
+  const dashboardPageData = await getAccueilPageDataFor(user)
 
   return (
     <Accueil

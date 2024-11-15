@@ -4,7 +4,7 @@ export default {
   title: 'ABC Diag',
   description:
     'Diagnostiquez en 10 questions la maîtrise de compétences numériques de base.',
-  website: 'https://aidantsconnect.beta.gouv.fr',
+  website: 'https://pix.fr/abc-diag',
   logo: '/images/services/abc-diag.svg',
   illustration: '/images/illustrations/mes-outils/abc-diag.svg',
   illustrationWidth: 100,

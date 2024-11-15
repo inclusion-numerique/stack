@@ -2,6 +2,7 @@ import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { UserDisplayName, UserProfile } from '@app/web/utils/user'
 import { getMediateursCount } from '@app/web/mediateurs/getMediateursCount'
 import { getActivitesListPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/getActivitesListPageData'
+import { mediateurCoordonnesIdsFor } from '@app/web/mediateurs/mediateurCoordonnesIdsFor'
 import { getTotalCountsStats } from '../mes-statistiques/_queries/getTotalCountsStats'
 
 const activitesFiltersLastDays = (daysCount: number) => {
@@ -32,14 +33,12 @@ const EMPTY_STATISTIQUES = {
     },
   },
 }
-export const getAccueilPageData = async ({
-  user,
-  mediateurCoordonnesIds = [],
-}: {
-  user: UserDisplayName & UserProfile
-  mediateurCoordonnesIds?: string[]
-}) => {
-  const mediateurCount = await getMediateursCount(mediateurCoordonnesIds)
+export const getAccueilPageDataFor = async (
+  user: UserDisplayName & UserProfile,
+) => {
+  const mediateurCount = await getMediateursCount(
+    mediateurCoordonnesIdsFor(user),
+  )
 
   if (user.mediateur?.id != null) {
     const totalCountsStats7Days = await getTotalCountsStats({
@@ -84,4 +83,4 @@ export const getAccueilPageData = async ({
   }
 }
 
-export type AccueilPageData = Awaited<ReturnType<typeof getAccueilPageData>>
+export type AccueilPageData = Awaited<ReturnType<typeof getAccueilPageDataFor>>
