@@ -26,6 +26,10 @@ export const publicFooterProps = {
         rel: 'noreferrer',
       },
     },
+    {
+      text: `Budget`,
+      linkProps: { href: '/budget' },
+    },
   ],
 } satisfies Pick<
   FooterProps,
