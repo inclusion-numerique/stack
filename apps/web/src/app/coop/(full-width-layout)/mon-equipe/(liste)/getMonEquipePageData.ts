@@ -3,12 +3,11 @@ import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { getMediateursCount } from '@app/web/mediateurs/getMediateursCount'
 import { getAuthenticatedCoordinateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { findConseillersNumeriquesContractInfoByEmails } from '@app/web/external-apis/conseiller-numerique/fetchConseillersCoordonnes'
+import { mediateurCoordonnesIdsFor } from '@app/web/mediateurs/mediateurCoordonnesIdsFor'
 import {
   MonEquipeSearchParams,
   searchMediateursCordonneBy,
 } from './searchMediateursCordonneBy'
-
-const toId = ({ id }: { id: string }) => id
 
 const statusFor = (activites: { date: Date }[]) => {
   if (activites.length === 0) return 'Inactif'
@@ -58,7 +57,9 @@ export const getMonEquipePageData = async (
       mediateurs.map(toUserEmail),
     )
 
-  const mediateurCount = await getMediateursCount(mediateurs.map(toId))
+  const mediateurCount = await getMediateursCount(
+    mediateurCoordonnesIdsFor({ coordinateur }),
+  )
 
   return {
     mediateurs: mediateurs.map(({ user, conseillerNumerique, activites }) => ({
