@@ -150,12 +150,17 @@ export const createMediateurEnActivites = ({
 
 export const findCoordinateursFor = ({
   conseiller: { coordinateurs },
-}: ConseillerNumeriqueV1Data) =>
-  prismaClient.coordinateur.findMany({
+}: ConseillerNumeriqueV1Data) => {
+  if (!coordinateurs?.length) {
+    return []
+  }
+
+  return prismaClient.coordinateur.findMany({
     where: {
       conseillerNumeriqueId: { in: coordinateurs?.map(toId) },
     },
   })
+}
 
 export const upsertMediateurCoordonne = async ({
   mediateurId,
