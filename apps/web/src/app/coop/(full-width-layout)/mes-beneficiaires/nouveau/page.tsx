@@ -60,7 +60,7 @@ const PageCreerBeneficiaire = async ({
             <span>
               <span className="fr-notice__title fr-text--md fr-text-title--blue-france fr-mb-1w fr-display-block">
                 N’oubliez pas d’informer vos bénéficiaires sur leurs droits
-                lorsque vous collecter leurs données personnelles.
+                lorsque vous collectez leurs données personnelles.
               </span>
               <span className="fr-mb-1w fr-text--regular fr-text--sm fr-text-default--grey fr-display-block">
                 Un modèle de mention d’information à destination des
