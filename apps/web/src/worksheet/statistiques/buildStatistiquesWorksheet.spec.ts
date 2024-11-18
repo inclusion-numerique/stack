@@ -1,14 +1,13 @@
 /* eslint-disable no-sparse-arrays */
 
-import type { MesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
+import type {
+  MesStatistiquesPageData,
+} from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
 import type { Workbook, Worksheet } from 'exceljs'
 import { numberToPercentage } from '@app/web/utils/formatNumber'
 import { computeProportion } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/allocatePercentages'
 import { dureeAccompagnementStatisticsRanges } from '@app/web/cra/cra'
-import {
-  buildStatistiquesWorksheet,
-  type BuildStatistiquesWorksheetInput,
-} from './buildStatistiquesWorksheet'
+import { buildStatistiquesWorksheet, type BuildStatistiquesWorksheetInput } from './buildStatistiquesWorksheet'
 
 const DATE = new Date('2024-09-11T17:42:00.000Z')
 
@@ -90,7 +89,7 @@ const STATISTIQUES_WORKSHEET_INPUT_BASE: Omit<
           proportion: 4.3,
         },
         {
-          label: '12 - 18 ans',
+          label: '12 - 17 ans',
           count: 0,
           proportion: 0,
         },
@@ -719,7 +718,7 @@ describe('build statistiques worksheet for médiateur', () => {
         ['40 - 59 ans', 11],
         ['25 - 39 ans', 8],
         ['18 - 24 ans', 1],
-        ['12 - 18 ans', 0],
+        ['12 - 17 ans', 0],
         ['Moins de 12 ans', 0],
         ['Non communiqué', 3],
       ]),

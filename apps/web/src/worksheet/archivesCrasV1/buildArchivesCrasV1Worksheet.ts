@@ -38,7 +38,7 @@ const v1CraHeaders = [
   'Statut Sans Emploi',
   'Statut Hétérogène',
   'Âge <12 ans',
-  'Âge 12-18 ans',
+  'Âge 12-17 ans',
   'Âge 18-35 ans',
   'Âge 35-60 ans',
   'Âge >60 ans',
@@ -170,7 +170,7 @@ export const buildArchivesCrasV1Worksheet = ({
         statutHeterogene,
         // 26. Âge <12 ans
         ageMoins12Ans,
-        // 27. Âge 12-18 ans
+        // 27. Âge 12-17 ans
         ageDe12a18Ans,
         // 28. Âge 18-35 ans
         ageDe18a35Ans,

@@ -247,7 +247,7 @@ model CraConseillerNumeriqueV1 {
   nbParticipantsRecurrents Int    @default(0) @map("nb_participants_recurrents")
 
   ageMoins12Ans Int @default(0) @map("age_moins_12_ans")
-  ageDe12a18Ans Int @default(0) @map("age_de_12_a_18_ans")
+  ageDe12a18Ans Int @default(0) @map("age_de_12_a_18_ans") // XXX this is actually 12-17
   ageDe18a35Ans Int @default(0) @map("age_de_18_a_35_ans")
   ageDe35a60Ans Int @default(0) @map("age_de_35_a_60_ans")
   agePlus60Ans  Int @default(0) @map("age_plus_60_ans")
