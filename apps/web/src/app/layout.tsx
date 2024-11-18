@@ -13,6 +13,7 @@ import { EnvInformation } from '@app/web/app/EnvInformation'
 import { Matomo } from '@app/web/app/Matomo'
 import { PreloadResources } from '@app/web/app/PreloadResources'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import { getServerDsfrTheme } from '@app/web/app/getServerDsfrTheme'
 
 declare module '@codegouvfr/react-dsfr/link' {
   interface RegisterLink {
@@ -49,8 +50,9 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   // Do we want to disable SSG for CSFR on this website ?
   // const nonce = headers().get('x-sde-script-nonce') ?? undefined
   const nonce = undefined
+  const theme = getServerDsfrTheme()
   return (
-    <html lang="fr" data-fr-theme="light" data-fr-scheme="light">
+    <html lang="fr" data-fr-theme={theme} data-fr-scheme={theme}>
       <head>
         <link
           rel="preload"
