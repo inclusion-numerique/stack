@@ -13,10 +13,12 @@ import { listSecrets } from '@app/cli/commands/secrets/listSecrets'
 import { setupDatabaseSecret } from '@app/cli/commands/secrets/setupDatabaseSecret'
 import { executeJobCommand } from '@app/cli/commands/jobs/executeJobCommand'
 import { locallyRestoreLatestMainBackup } from '@app/cli/commands/infrastructure/locallyRestoreLatestMainBackup'
+import { executeJobApiCommand } from '@app/cli/commands/jobs/executeJobApiCommand'
 
 const program = new Command()
 
 program.addCommand(executeJobCommand)
+program.addCommand(executeJobApiCommand)
 program.addCommand(listSecrets)
 program.addCommand(getSecretValue)
 program.addCommand(setupDatabaseSecret)
