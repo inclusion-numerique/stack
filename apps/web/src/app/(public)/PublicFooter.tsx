@@ -26,7 +26,6 @@ export const publicFooterProps = {
         rel: 'noreferrer',
       },
     },
-    <SwitchTheme key="switch-theme" initialTheme={getServerDsfrTheme()} />,
   ],
 } satisfies Pick<
   FooterProps,
@@ -53,7 +52,10 @@ const PublicFooter = () => (
       href: '/',
       title: 'Accueil',
     }}
-    bottomItems={publicFooterProps.bottomItems}
+    bottomItems={[
+      ...publicFooterProps.bottomItems,
+      <SwitchTheme key="switch-theme" initialTheme={getServerDsfrTheme()} />,
+    ]}
   />
 )
 export default PublicFooter
