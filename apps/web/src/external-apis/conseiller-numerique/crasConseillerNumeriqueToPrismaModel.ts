@@ -42,6 +42,9 @@ export const craConseillerNumeriqueToPrismaModel = ({
   item: ConseillerNumeriqueCraWithStructure
   importedAt: Date
 }) => {
+  if (!cra.nomCommune || !cra.codeCommune || !cra.codePostal) {
+    throw new Error('Missing commune data for V1 cra')
+  }
   const result = {
     importedAt,
     id,

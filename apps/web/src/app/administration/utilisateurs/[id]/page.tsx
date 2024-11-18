@@ -22,6 +22,7 @@ import { numberToString } from '@app/web/utils/formatNumber'
 import { findConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
 import { isUserInscriptionEnCours } from '@app/web/auth/isUserInscriptionEnCours'
 import { isConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
+import { countCrasConseillerNumeriqueV1 } from '@app/web/v1/v1CraQueries'
 
 export const metadata = {
   title: metadataTitle('Utilisateurs - Détails'),
@@ -95,15 +96,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
     include: {
       mediateur: {
         include: {
-          conseillerNumerique: {
-            include: {
-              _count: {
-                select: {
-                  crasV1: true,
-                },
-              },
-            },
-          },
+          conseillerNumerique: true,
           coordinations: {
             include: {
               coordinateur: {
@@ -177,6 +170,12 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
     uploads,
     emplois,
   } = user
+
+  const crasConseillerNumeriqueV1Count = mediateur?.conseillerNumerique
+    ? await countCrasConseillerNumeriqueV1({
+        conseillerNumeriqueV1Id: mediateur.conseillerNumerique.id,
+      })
+    : null
 
   const enActivite = mediateur ? mediateur.enActivite : []
 
@@ -386,28 +385,11 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
                 ),
               },
               {
-                label: 'Dernier import de CRAs v1',
-                value: mediateur.conseillerNumerique.dernierImportCrasV1
-                  ? dateAsDay(mediateur.conseillerNumerique.dernierImportCrasV1)
-                  : 'Jamais',
-              },
-              {
-                label: 'CRAs v1 date début',
-                value: mediateur.conseillerNumerique.crasV1DateDebut
-                  ? dateAsDay(mediateur.conseillerNumerique.crasV1DateDebut)
-                  : '-',
-              },
-              {
-                label: 'CRAs v1 date fin',
-                value: mediateur.conseillerNumerique.crasV1DateFin
-                  ? dateAsDay(mediateur.conseillerNumerique.crasV1DateFin)
-                  : '-',
-              },
-              {
                 label: 'Nombre de CRAs v1 importés',
-                value: numberToString(
-                  mediateur.conseillerNumerique._count.crasV1,
-                ),
+                value:
+                  crasConseillerNumeriqueV1Count === null
+                    ? 'Aucun'
+                    : numberToString(crasConseillerNumeriqueV1Count),
               },
             ]}
           />
