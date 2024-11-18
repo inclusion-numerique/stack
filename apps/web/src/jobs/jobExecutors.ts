@@ -6,6 +6,7 @@ import { createStopwatch } from '@app/web/utils/stopwatch'
 import { prismaClient } from '@app/web/prismaClient'
 import { updateStructureFromCartoDataApi } from '@app/web/jobs/update-structures-cartographie-nationale/updateStructureFromCartoDataApi'
 import { executeImportCrasConseillerNumeriqueV1 } from '@app/web/jobs/import-cras-conseiller-numerique-v1/executeImportCrasConseillerNumeriqueV1'
+import { executeFixCoordinationsV1 } from '@app/web/jobs/fix-coordinations-v1/executeFixCoordinationsV1'
 import {
   downloadCartographieNationaleStructures,
   getStructuresCartographieNationaleFromLocalFile,
@@ -43,6 +44,7 @@ export const jobExecutors: {
   'update-structures-cartographie-nationale':
     executeUpdateStructuresCartographieNationale,
   'import-cras-conseiller-numerique-v1': executeImportCrasConseillerNumeriqueV1,
+  'fix-coordinations-v1': executeFixCoordinationsV1,
 }
 
 export const executeJob = async (job: Job) => {
