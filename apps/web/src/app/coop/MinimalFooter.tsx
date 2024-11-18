@@ -2,6 +2,8 @@ import React from 'react'
 import { FooterBottomItem } from '@codegouvfr/react-dsfr/Footer'
 import classNames from 'classnames'
 import { publicFooterProps } from '@app/web/app/(public)/PublicFooter'
+import SwitchTheme from '@app/web/app/(public)/SwitchTheme'
+import { getServerDsfrTheme } from '@app/web/app/getServerDsfrTheme'
 import styles from './MinimalFooter.module.css'
 
 const MinimalFooter = () => (
@@ -21,6 +23,9 @@ const MinimalFooter = () => (
           )}
         </li>
       ))}
+      <li className="fr-footer__bottom-item">
+        <SwitchTheme key="switch-theme" initialTheme={getServerDsfrTheme()} />
+      </li>
     </ul>
   </footer>
 )

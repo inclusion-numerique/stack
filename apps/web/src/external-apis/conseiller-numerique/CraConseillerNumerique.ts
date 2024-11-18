@@ -59,6 +59,6 @@ export type CraConseillerNumeriqueCollectionItem = {
   cra: CraConseillerNumerique
   conseiller: DBRef
   createdAt: Date
-  // TODO dernière modification ? est-ce qu'ils changent le created At
+  updatedAt?: Date
   structure: DBRef
 }

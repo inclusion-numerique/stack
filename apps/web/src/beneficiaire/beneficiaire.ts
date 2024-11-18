@@ -25,7 +25,7 @@ export const trancheAgeLabels: {
   QuaranteCinquanteNeuf: '40 - 59 ans',
   VingtCinqTrenteNeuf: '25 - 39 ans',
   DixHuitVingtQuatre: '18 - 24 ans',
-  DouzeDixHuit: '12 - 18 ans',
+  DouzeDixHuit: '12 - 17 ans',
   MoinsDeDouze: 'Moins de 12 ans',
   NonCommunique: 'Non communiqué',
 }

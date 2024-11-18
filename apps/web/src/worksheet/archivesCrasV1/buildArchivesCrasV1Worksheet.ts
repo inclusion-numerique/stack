@@ -3,12 +3,9 @@ import {
   autosizeColumns,
   setWorkbookMetadata,
 } from '@app/web/worksheet/buildWorksheetHelpers'
-import { NonEmptyConseillerNumeriqueCrasResult } from '@app/web/external-apis/conseiller-numerique/conseillersNumeriquesCraQueries'
-import { craConseillerNumeriqueToPrismaModel } from '@app/web/external-apis/conseiller-numerique/crasConseillerNumeriqueToPrismaModel'
+import { ArchivesV1PageData } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1PageData'
 
-export type BuildArchivesCrasV1WorksheetInput = {
-  v1Cras: NonEmptyConseillerNumeriqueCrasResult
-}
+export type BuildArchivesCrasV1WorksheetInput = ArchivesV1PageData
 
 const intraCellLineBreak = '\n'
 
@@ -41,7 +38,7 @@ const v1CraHeaders = [
   'Statut Sans Emploi',
   'Statut Hétérogène',
   'Âge <12 ans',
-  'Âge 12-18 ans',
+  'Âge 12-17 ans',
   'Âge 18-35 ans',
   'Âge 35-60 ans',
   'Âge >60 ans',
@@ -68,12 +65,6 @@ export const buildArchivesCrasV1Worksheet = ({
   const dateColumnIndex = 1
   const createdAtColumnIndex = 2
 
-  // TODO will use query from our own database
-  const importedAt = new Date()
-  const cleanedCras = v1Cras.cras.map((item) =>
-    craConseillerNumeriqueToPrismaModel({ item, importedAt }),
-  )
-
   worksheet.addTable({
     name: 'Cras',
     ref: `A${tableStartRowNumber}`,
@@ -83,7 +74,7 @@ export const buildArchivesCrasV1Worksheet = ({
       name: label,
       filterButton: true,
     })),
-    rows: cleanedCras.map((item) => {
+    rows: v1Cras.map((item) => {
       const {
         themes,
         nomCommune,
@@ -163,6 +154,7 @@ export const buildArchivesCrasV1Worksheet = ({
         // 17. Organismes (peut être un tableau)
         organismes
           ? Object.entries(organismes)
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
               .map(([key, value]) => `${key}: ${value?.toString()}`)
               .join(', ')
           : null,
@@ -178,7 +170,7 @@ export const buildArchivesCrasV1Worksheet = ({
         statutHeterogene,
         // 26. Âge <12 ans
         ageMoins12Ans,
-        // 27. Âge 12-18 ans
+        // 27. Âge 12-17 ans
         ageDe12a18Ans,
         // 28. Âge 18-35 ans
         ageDe18a35Ans,

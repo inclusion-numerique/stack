@@ -35,23 +35,12 @@ export const getInitialLieuxActiviteOptionsForSearch = async ({
     },
     select: {
       id: true,
-      structure: {
-        select: structureSelect,
-      },
+      structure: { select: structureSelect },
     },
+    distinct: ['structureId'],
     orderBy: [
-      {
-        structure: {
-          activites: {
-            _count: 'desc',
-          },
-        },
-      },
-      {
-        structure: {
-          nom: 'asc',
-        },
-      },
+      { structure: { activites: { _count: 'desc' } } },
+      { structure: { nom: 'asc' } },
     ],
   })
 

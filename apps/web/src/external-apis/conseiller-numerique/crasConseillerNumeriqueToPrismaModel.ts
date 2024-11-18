@@ -36,16 +36,20 @@ const flattenOrganismes = (
 }
 
 export const craConseillerNumeriqueToPrismaModel = ({
-  item: { id, conseillerId, cra, createdAt, structure },
+  item: { id, conseillerId, cra, createdAt, updatedAt, structure },
   importedAt,
 }: {
   item: ConseillerNumeriqueCraWithStructure
   importedAt: Date
 }) => {
+  if (!cra.nomCommune || !cra.codeCommune || !cra.codePostal) {
+    throw new Error('Missing commune data for V1 cra')
+  }
   const result = {
     importedAt,
     id,
     createdAt,
+    updatedAt,
     v1ConseillerNumeriqueId: conseillerId,
     canal: cra.canal ?? '',
     activite: cra.activite ?? '',

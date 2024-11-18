@@ -90,7 +90,7 @@ const STATISTIQUES_WORKSHEET_INPUT_BASE: Omit<
           proportion: 4.3,
         },
         {
-          label: '12 - 18 ans',
+          label: '12 - 17 ans',
           count: 0,
           proportion: 0,
         },
@@ -719,7 +719,7 @@ describe('build statistiques worksheet for médiateur', () => {
         ['40 - 59 ans', 11],
         ['25 - 39 ans', 8],
         ['18 - 24 ans', 1],
-        ['12 - 18 ans', 0],
+        ['12 - 17 ans', 0],
         ['Moins de 12 ans', 0],
         ['Non communiqué', 3],
       ]),

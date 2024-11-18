@@ -81,7 +81,7 @@ describe('getBeneficiaireStats', () => {
           },
           {
             value: 'DouzeDixHuit',
-            label: '12 - 18 ans',
+            label: '12 - 17 ans',
             count: 0,
             proportion: 0,
           },

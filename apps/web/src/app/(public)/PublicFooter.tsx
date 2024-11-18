@@ -1,5 +1,6 @@
 import Footer, { type FooterProps } from '@codegouvfr/react-dsfr/Footer'
 import SwitchTheme from '@app/web/app/(public)/SwitchTheme'
+import { getServerDsfrTheme } from '@app/web/app/getServerDsfrTheme'
 
 export const publicFooterProps = {
   accessibility: 'non compliant',
@@ -25,7 +26,6 @@ export const publicFooterProps = {
         rel: 'noreferrer',
       },
     },
-    <SwitchTheme key="switch-theme" />,
   ],
 } satisfies Pick<
   FooterProps,
@@ -52,7 +52,10 @@ const PublicFooter = () => (
       href: '/',
       title: 'Accueil',
     }}
-    bottomItems={publicFooterProps.bottomItems}
+    bottomItems={[
+      ...publicFooterProps.bottomItems,
+      <SwitchTheme key="switch-theme" initialTheme={getServerDsfrTheme()} />,
+    ]}
   />
 )
 export default PublicFooter

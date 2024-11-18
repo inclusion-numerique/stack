@@ -6,6 +6,7 @@ describe('craConseillerNumeriqueToPrismaModel', () => {
     const givenCra = {
       id: '64946ce97d775e05b617e743',
       createdAt: new Date(),
+      updatedAt: new Date(),
       conseillerId: '619bbf20838083d33922e27d',
       cra: {
         themes: ['equipement informatique', 'vocabulaire', 'demarche en ligne'],
@@ -123,6 +124,7 @@ describe('craConseillerNumeriqueToPrismaModel', () => {
       annotation: 'aide compte retraite',
 
       createdAt: givenCra.createdAt,
+      updatedAt: givenCra.updatedAt,
 
       structureId: givenCra.structure.id,
       structureIdPg: givenCra.structure.idPG,

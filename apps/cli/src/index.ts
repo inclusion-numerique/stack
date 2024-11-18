@@ -13,10 +13,13 @@ import { listSecrets } from '@app/cli/commands/secrets/listSecrets'
 import { setupDatabaseSecret } from '@app/cli/commands/secrets/setupDatabaseSecret'
 import { executeJobCommand } from '@app/cli/commands/jobs/executeJobCommand'
 import { locallyRestoreLatestMainBackup } from '@app/cli/commands/infrastructure/locallyRestoreLatestMainBackup'
+import { executeJobApiCommand } from '@app/cli/commands/jobs/executeJobApiCommand'
+import { listV1Emails } from '@app/cli/commands/v1/listEmails'
 
 const program = new Command()
 
 program.addCommand(executeJobCommand)
+program.addCommand(executeJobApiCommand)
 program.addCommand(listSecrets)
 program.addCommand(getSecretValue)
 program.addCommand(setupDatabaseSecret)
@@ -30,5 +33,6 @@ program.addCommand(deactivateGithubDeployment)
 program.addCommand(createTfVarsFileFromEnvironment)
 program.addCommand(checkDeploymentStatus)
 program.addCommand(locallyRestoreLatestMainBackup)
+program.addCommand(listV1Emails)
 
 program.parse()
