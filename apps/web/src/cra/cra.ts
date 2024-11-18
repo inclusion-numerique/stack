@@ -100,7 +100,7 @@ export const dureeAccompagnementStatisticsRanges = [
   },
   {
     key: '120',
-    min: 90,
+    min: 60,
     max: 120,
     label: '1 h à 2 h',
   },
