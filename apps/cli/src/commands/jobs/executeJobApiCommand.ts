@@ -2,7 +2,7 @@
 import { Argument, Command } from '@commander-js/extra-typings'
 import { jobExecutors } from '@app/web/jobs/jobExecutors'
 import { closeMongoClient } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
-import { mainDomain, previewRootDomain } from '@app/config/config'
+import { mainRootDomain, previewRootDomain } from '@app/config/config'
 import axios from 'axios'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { executeJobApiTokenHeader } from '@app/web/app/api/jobs/executeJobApiTokenHeader'
@@ -31,7 +31,7 @@ export const executeJobApiCommand = new Command()
 
     const isMain = target === 'main'
 
-    const domain = isMain ? mainDomain : `${target}.${previewRootDomain}`
+    const domain = isMain ? mainRootDomain : `${target}.${previewRootDomain}`
 
     const endpoint = `https://${domain}/api/jobs`
 
