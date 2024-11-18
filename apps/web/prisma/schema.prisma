@@ -229,13 +229,6 @@ model ConseillerNumerique {
   mediateurId String    @unique @map("mediateur_id") @db.Uuid
   mediateur   Mediateur @relation(fields: [mediateurId], references: [id])
 
-  crasV1 CraConseillerNumeriqueV1[]
-
-  // Metadonnées des imports de cras v1
-  dernierImportCrasV1 DateTime? @map("dernier_import_cras_v1")
-  crasV1DateDebut     DateTime? @map("cras_v1_date_debut")
-  crasV1DateFin       DateTime? @map("cras_v1_date_fin")
-
   @@map("conseillers_numeriques")
 }
 
@@ -244,11 +237,8 @@ model CraConseillerNumeriqueV1 {
 
   importedAt DateTime @map("imported_at") // our field
 
-  // Will be null until we have the conseiller in our database
-  conseillerNumeriqueId String?              @map("conseiller_numerique_id")
-  conseillerNumerique   ConseillerNumerique? @relation(fields: [conseillerNumeriqueId], references: [id])
-
   // v1 id is the same as the conseiller id if conseiller exists in our database
+  // it is present even if the conseiller does not exist in our database
   v1ConseillerNumeriqueId String @map("v1_conseiller_numerique_id")
 
   canal                    String
@@ -290,6 +280,7 @@ model CraConseillerNumeriqueV1 {
   annotation         String?
 
   createdAt DateTime @map("created_at") // v1 field
+  updatedAt DateTime? @map("updated_at") // v1 field
 
   structureId              String? @map("structure_id")
   structureIdPg            Int?    @map("structure_id_pg")

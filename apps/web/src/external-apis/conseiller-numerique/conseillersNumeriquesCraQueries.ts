@@ -1,8 +1,5 @@
 import { type Filter, ObjectId } from 'mongodb'
-import {
-  conseillerNumeriqueMongoCollection,
-  objectIdFromString,
-} from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
+import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 import type { CraConseillerNumeriqueCollectionItem } from '@app/web/external-apis/conseiller-numerique/CraConseillerNumerique'
 import type { StructureConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/StructureConseillerNumerique'
 import { prismaClient } from '@app/web/prismaClient'
@@ -13,45 +10,13 @@ export type GetConseillerNumeriqueCrasOptions = {
   createdAtUntil?: Date // excluded bound
 }
 
-export const deleteConseillerNumeriqueV1Cras = async ({
-  createdAtUntil,
-  createdAtSince,
-  conseillerNumeriqueId,
-}: GetConseillerNumeriqueCrasOptions) => {
-  const deleted = await prismaClient.craConseillerNumeriqueV1.deleteMany({
-    where: {
-      createdAt: {
-        gte: createdAtSince,
-        lt: createdAtUntil,
-      },
-      v1ConseillerNumeriqueId: conseillerNumeriqueId,
-    },
-  })
-
-  return {
-    deleted: deleted.count,
-  }
-}
-
-export const assignConseillerNumeriqueV1CrasToConseillerNumerique =
-  async () => {
-    await prismaClient.$queryRaw`
-        UPDATE "cras_conseiller_numerique_v1" v1
-        SET "conseiller_numerique_id" = conseillers.id
-        FROM "conseillers_numeriques" conseillers
-        WHERE v1."conseiller_numerique_id" IS NULL
-          AND v1."v1_conseiller_numerique_id" = conseillers.id
-    `
-  }
-
 export const vacuumAnalyzeConseillerNumeriqueV1Cras = async () => {
   await prismaClient.$queryRaw`
       VACUUM ANALYZE "cras_conseiller_numerique_v1"
     `
 }
 
-export const getConseillerNumeriqueCras = async ({
-  conseillerNumeriqueId,
+export const getConseillerNumeriqueCrasFromMongo = async ({
   createdAtSince,
   createdAtUntil,
 }: GetConseillerNumeriqueCrasOptions) => {
@@ -76,14 +41,6 @@ export const getConseillerNumeriqueCras = async ({
       $lt: createdAtUntil,
     }
   }
-  if (conseillerNumeriqueId) {
-    const conseillerObjectId = objectIdFromString(conseillerNumeriqueId)
-
-    filter['conseiller.$id'] = conseillerObjectId ?? {
-      // defaults to never return any result
-      $exists: false,
-    }
-  }
 
   const cras = await crasCollection
     .find(filter)
@@ -95,9 +52,6 @@ export const getConseillerNumeriqueCras = async ({
       empty: true as const,
     }
   }
-
-  const firstDate = cras[0].createdAt
-  const lastDate = cras.at(-1)?.createdAt ?? new Date() // will never happen has we tested length above
 
   const uniqueStructureIds = new Set(
     cras.map(({ structure }) => structure.oid.toString()),
@@ -168,6 +122,7 @@ export const getConseillerNumeriqueCras = async ({
     return {
       id: item._id.toString(),
       createdAt: item.createdAt,
+      updatedAt: item.updatedAt,
       conseillerId: item.conseiller.oid.toString(),
       cra: {
         ...craRest,
@@ -182,13 +137,11 @@ export const getConseillerNumeriqueCras = async ({
     structures,
     expectedStructures: uniqueStructureIds.size,
     empty: false as const,
-    firstDate,
-    lastDate,
   }
 }
 
 export type GetConseillerNumeriqueCrasResult = Awaited<
-  ReturnType<typeof getConseillerNumeriqueCras>
+  ReturnType<typeof getConseillerNumeriqueCrasFromMongo>
 >
 
 export type EmptyConseillerNumeriqueCrasResult =

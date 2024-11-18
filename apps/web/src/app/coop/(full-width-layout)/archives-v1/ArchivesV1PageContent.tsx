@@ -7,12 +7,8 @@ import ContactSupportLink from '@app/web/components/ContactSupportLink'
 import IconInSquare from '@app/web/components/IconInSquare'
 import { numberToString } from '@app/web/utils/formatNumber'
 
-const ArchivesV1PageContent = ({
-  data: { v1Cras, conseillerNumeriqueId },
-}: {
-  data: ArchivesV1PageData
-}) => {
-  if (v1Cras.empty) {
+const ArchivesV1PageContent = ({ data }: { data: ArchivesV1PageData }) => {
+  if (data.empty) {
     return (
       <div className="fr-border fr-border-radius--8 fr-p-10v fr-flex fr-direction-column fr-align-items-center fr-flex-gap-10v">
         <h2 className="fr-h6 fr-mb-0">
@@ -28,12 +24,19 @@ const ArchivesV1PageContent = ({
       </div>
     )
   }
+
+  const {
+    firstDate,
+    lastDate,
+    v1Cras,
+    input: { conseillerNumeriqueV1Id },
+  } = data
+
   return (
     <div className="fr-border fr-border-radius--8 fr-p-10v">
       <IconInSquare iconId="ri-service-line" size="medium" />
       <h2 className="fr-h6 fr-text-title--blue-france fr-mt-6v fr-mb-1v">
-        Vos compte-rendus d’activités enregistrés jusqu’au{' '}
-        {dateAsDay(v1Cras.lastDate)}
+        Vos compte-rendus d’activités enregistrés jusqu’au {dateAsDay(lastDate)}
       </h2>
       <p className="fr-text--xs fr-text-mention--grey fr-mb-6v">
         Retrouvez l’historique de l’ensemble de vos activités enregistrées sur
@@ -43,19 +46,20 @@ const ArchivesV1PageContent = ({
       <div className="fr-border--top fr-border--bottom fr-py-4v fr-flex fr-justify-content-space-between fr-flex-gap-4v fr-align-items-center">
         <div>
           <span className="fr-text--medium">
-            CRA enregistrés du {dateAsDay(v1Cras.firstDate)} au{' '}
-            {dateAsDay(v1Cras.lastDate)}&nbsp;·&nbsp;
+            CRA enregistrés du {dateAsDay(firstDate)} au {dateAsDay(lastDate)}
+            &nbsp;·&nbsp;
           </span>
           <span className="fr-text-mention--grey">
-            {numberToString(v1Cras.cras.length)} activité
-            {sPluriel(v1Cras.cras.length)}
+            {numberToString(v1Cras.length)} activité
+            {sPluriel(v1Cras.length)}
           </span>
         </div>
         <Button
           size="small"
           priority="tertiary no outline"
           linkProps={{
-            href: `/coop/archives-v1/exporter/cras/${conseillerNumeriqueId}`,
+            // TODO href with different query params ?
+            href: `/coop/archives-v1/exporter/cras?conseillerNumeriqueV1Id=${conseillerNumeriqueV1Id}`,
             download: true,
           }}
         >

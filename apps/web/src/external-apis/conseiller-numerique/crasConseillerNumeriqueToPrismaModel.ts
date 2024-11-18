@@ -36,7 +36,7 @@ const flattenOrganismes = (
 }
 
 export const craConseillerNumeriqueToPrismaModel = ({
-  item: { id, conseillerId, cra, createdAt, structure },
+  item: { id, conseillerId, cra, createdAt, updatedAt, structure },
   importedAt,
 }: {
   item: ConseillerNumeriqueCraWithStructure
@@ -46,6 +46,7 @@ export const craConseillerNumeriqueToPrismaModel = ({
     importedAt,
     id,
     createdAt,
+    updatedAt,
     v1ConseillerNumeriqueId: conseillerId,
     canal: cra.canal ?? '',
     activite: cra.activite ?? '',
