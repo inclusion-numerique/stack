@@ -7,6 +7,7 @@ export const coordinateurInscription = givenUser({
   firstName: 'Coordinateur',
   lastName: 'Inscription',
   isFixture: true,
+  email: 'vbousset@var.fr',
   role: 'User',
   coordinateur: {
     connectOrCreate: {
@@ -15,7 +16,7 @@ export const coordinateurInscription = givenUser({
       },
       create: {
         id: '2e4d546c-9312-4ac1-a771-a6ec48180136',
-        conseillerNumeriqueId: 'coordinateur-inscription',
+        conseillerNumeriqueId: '60c89697838083d3399c9f7f',
       },
     },
   },

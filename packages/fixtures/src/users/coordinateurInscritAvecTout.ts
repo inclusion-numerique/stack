@@ -20,7 +20,7 @@ export const coordinateurInscritAvecTout = givenUser({
       },
       create: {
         id: coordinateurInscritAvecToutCoordinateurId,
-        conseillerNumeriqueId: 'coordinateur-inscrit-avec-tout',
+        conseillerNumeriqueId: '657070ed7a10c4da5bdd1d57',
       },
     },
   },
@@ -34,10 +34,10 @@ export const coordinateurInscritAvecTout = givenUser({
         conseillerNumerique: {
           connectOrCreate: {
             where: {
-              id: 'coordinateur-inscrit-avec-tout',
+              id: '657070ed7a10c4da5bdd1d57',
             },
             create: {
-              id: 'coordinateur-inscrit-avec-tout',
+              id: '657070ed7a10c4da5bdd1d57',
             },
           },
         },

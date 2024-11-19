@@ -9,6 +9,7 @@ export const coordinateurInscriptionAvecTout = givenUser({
   id: '057c3fce-3c7e-4bc7-9596-8d30ef559c1a',
   firstName: 'Coordinateur',
   lastName: 'Inscription avec tout',
+  email: 'mlemonnier@vosges.fr',
   isFixture: true,
   role: 'User',
   coordinateur: {
@@ -18,7 +19,7 @@ export const coordinateurInscriptionAvecTout = givenUser({
       },
       create: {
         id: coordinateurInscriptionAvecToutCoordinateurId,
-        conseillerNumeriqueId: 'coordinateur-inscription-avec-conseillers',
+        conseillerNumeriqueId: '6656ef7e6c7471084348131a',
       },
     },
   },
@@ -32,10 +33,10 @@ export const coordinateurInscriptionAvecTout = givenUser({
         conseillerNumerique: {
           connectOrCreate: {
             where: {
-              id: 'coordinateur-inscription-avec-tout',
+              id: '6656ef7e6c7471084348131a',
             },
             create: {
-              id: 'coordinateur-inscription-avec-tout',
+              id: '6656ef7e6c7471084348131a',
             },
           },
         },
