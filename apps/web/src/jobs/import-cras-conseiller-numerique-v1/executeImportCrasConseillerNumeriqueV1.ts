@@ -90,7 +90,10 @@ export const executeImportCrasConseillerNumeriqueV1 = (
 
   // Async execution
   importCrasConseillerNumeriqueV1ByWeeks().catch((error) => {
-    Sentry.captureException(error)
+    if (Sentry.captureException) {
+      Sentry.captureException(error)
+    }
+    console.error(error)
   })
 
   return Promise.resolve({})
