@@ -43,6 +43,8 @@ const findConseillersDocumentByEmails =
 export const findConseillersNumeriquesContractInfoByEmails = async (
   userEmails: string[],
 ) => {
+  if (userEmails.length === 0) return []
+
   const conseillerCollection =
     await conseillerNumeriqueMongoCollection('conseillers')
 

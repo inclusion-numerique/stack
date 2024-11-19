@@ -26,8 +26,8 @@ const Page = () => (
       className="fr-notice--flex"
       title={
         <span className="fr-text--regular fr-text-default--grey fr-ml-1w">
-          Si votre situation évolue, vous pourrez activer ou désactiver cette
-          option à tout moment via les paramètres de votre profil.
+          Si votre situation évolue, vous pourrez activer cette option à tout
+          moment via les paramètres de votre profil.
         </span>
       }
     />
