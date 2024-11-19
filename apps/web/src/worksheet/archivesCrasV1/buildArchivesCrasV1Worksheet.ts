@@ -229,7 +229,13 @@ export const buildArchivesCrasV1Worksheet = ({
     row.alignment = { wrapText: true, vertical: 'top' }
   })
 
-  autosizeColumns(worksheet)
+  autosizeColumns(worksheet, {
+    fixedColumns: {
+      1: 16.5,
+      2: 16.5,
+    },
+    extraPadding: 1,
+  })
 
   return workbook
 }
