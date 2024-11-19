@@ -5,7 +5,7 @@ const globalForPrisma = global as unknown as {
   prismaClient: PrismaClient | undefined
 }
 
-const debugLog = false
+const debugLog = true
 
 export const prismaClient =
   globalForPrisma.prismaClient ??
