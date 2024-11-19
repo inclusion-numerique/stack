@@ -1,6 +1,9 @@
 import { Filter, ObjectId } from 'mongodb'
 import escapeStringRegexp from 'escape-string-regexp'
-import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
+import {
+  conseillerNumeriqueMongoCollection,
+  objectIdFromString,
+} from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 import {
   cleanConseillerNumeriqueV1Document,
   ConseillerNumeriqueV1Document,
@@ -148,6 +151,15 @@ export const searchConseillerNumeriqueV1 = async ({
   const filter = {
     $and: rechercheParts.map((part) => {
       const regex = mongoRegex(part)
+
+      // Check if it is a valid mongo id
+      const searchId = objectIdFromString(part)
+
+      if (searchId) {
+        return {
+          _id: searchId,
+        }
+      }
 
       return {
         $or: [
