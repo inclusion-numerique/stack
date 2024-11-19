@@ -13,6 +13,7 @@ export const deleteAllData = async (
       AND table_name != '_prisma_migrations' 
       AND table_name != '_prisma_migrations_lock'
       AND table_name != 'structures'
+      AND table_name != 'cras_conseiller_numerique_V1'
   `
 
   await prismaClient.$queryRawUnsafe(

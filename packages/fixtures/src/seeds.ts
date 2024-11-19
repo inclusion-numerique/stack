@@ -22,7 +22,10 @@ export const deleteAll = async (transaction: Prisma.TransactionClient) => {
     WHERE table_schema = 'public'
       AND table_type = 'BASE TABLE'
       AND table_name != '_prisma_migrations'
-      AND table_name != '_prisma_migrations_lock'`
+      AND table_name != '_prisma_migrations_lock' 
+      AND table_name != 'structures'
+      AND table_name != 'cras_conseiller_numerique_V1'
+  `
 
   await transaction.$queryRawUnsafe(
     `TRUNCATE TABLE "${tables
