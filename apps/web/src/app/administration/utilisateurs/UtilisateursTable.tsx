@@ -8,7 +8,7 @@ import {
 import { SearchUtilisateurResult } from '@app/web/app/administration/utilisateurs/searchUtilisateur'
 import styles from './UtilisateursPage.module.css'
 
-const defaultPageSize = 1000
+const defaultPageSize = 100
 
 const pageSizeOptions = generatePageSizeSelectOptions([
   10, 20, 50, 100, 250, 500, 1000,

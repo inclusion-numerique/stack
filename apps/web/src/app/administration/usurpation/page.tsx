@@ -65,7 +65,7 @@ const Page = async () => {
                       <tr key={row.id}>
                         <th>{row.name}</th>
                         <td>
-                          <UsurpUserButton userId={row.id} />
+                          <UsurpUserButton size="small" userId={row.id} />
                         </td>
                         <td>
                           <ResetUserFixtureButton userId={row.id} />

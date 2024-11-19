@@ -25,7 +25,7 @@ export const utilisateursListWhere = (
   },
 ) => ({}) satisfies Prisma.UserWhereInput
 
-const DEFAULT_PAGE_SIZE = 1000
+const DEFAULT_PAGE_SIZE = 100
 
 export const searchUtilisateur = async (options: SearchUtilisateurOptions) => {
   const searchParams = options.searchParams ?? {}

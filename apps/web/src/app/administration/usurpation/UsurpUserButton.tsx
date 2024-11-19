@@ -11,9 +11,11 @@ import { getLoginRedirectUrl } from '@app/web/security/getHomepage'
 const UsurpUserButton = ({
   userId,
   disabled,
+  size = 'medium',
 }: {
   userId: string
   disabled?: boolean
+  size?: 'small' | 'large' | 'medium'
 }) => {
   const mutation = trpc.usurpation.usurpUser.useMutation()
   const router = useRouter()
@@ -43,6 +45,7 @@ const UsurpUserButton = ({
       type="button"
       iconId="fr-icon-user-star-line"
       priority="secondary"
+      size={size}
       disabled={disabled}
       onClick={usurpUser}
       {...buttonLoadingClassname(mutation.isPending || mutation.isSuccess)}

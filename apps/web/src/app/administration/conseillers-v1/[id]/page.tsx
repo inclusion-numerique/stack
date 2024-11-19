@@ -190,6 +190,10 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
         <AdministrationInlineLabelsValues
           items={[
             {
+              label: 'Identifiant conseiller numérique',
+              value: conseiller.id,
+            },
+            {
               label: 'Email professionnel',
               value: conseiller.emailPro ? (
                 <AdministrationMailtoLink email={conseiller.emailPro} />
