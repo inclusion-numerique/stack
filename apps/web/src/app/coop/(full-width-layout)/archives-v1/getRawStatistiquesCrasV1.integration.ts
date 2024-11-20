@@ -1,12 +1,11 @@
-import { importCrasConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/importCrasConseillerNumeriqueV1'
-import { conseillerNumeriqueConseillerNumeriqueId } from '@app/fixtures/users'
-import { getRawStatistiquesCrasV1 } from '@app/web/app/coop/archives-v1/computeStatistiquesCrasV1'
 import { closeMongoClient } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
+import { conseillerNumeriqueConseillerNumeriqueId } from '@app/fixtures/users/conseillerNumerique'
+import { importCrasConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/importCrasConseillerNumeriqueV1'
+import { getRawStatistiquesCrasV1 } from '@app/web/app/coop/(full-width-layout)/archives-v1/computeStatistiquesCrasV1'
 
 describe('getRawStatistiquesCrasV1', () => {
   beforeAll(async () => {
     await importCrasConseillerNumeriqueV1({
-      reset: true,
       conseillerNumeriqueId: conseillerNumeriqueConseillerNumeriqueId,
     })
   })

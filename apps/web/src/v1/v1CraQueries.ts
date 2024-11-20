@@ -3,7 +3,7 @@ import { prismaClient } from '@app/web/prismaClient'
 import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
 import type { GetCrasConseillerNumeriqueV1Input } from '@app/web/v1/GetCrasConseillerNumeriqueV1Input'
 
-const getConseillerCoordonnesIds = async ({
+export const getConseillerCoordonnesIds = async ({
   coordinateurV1Id,
 }: GetCrasConseillerNumeriqueV1Input) => {
   if (!coordinateurV1Id) {

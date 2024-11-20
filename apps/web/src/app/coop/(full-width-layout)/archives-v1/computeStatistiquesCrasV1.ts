@@ -1,11 +1,11 @@
+import { endOfMonth, startOfMonth } from 'date-fns'
+import { prismaClient } from '@app/web/prismaClient'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import {
-  type ConseillerNumeriqueV1QueryInput,
+  ConseillerNumeriqueV1QueryInput,
   getMinMaxDateAccompagnement,
   whereV1ConseillerNumeriqueIds,
-} from '@app/web/app/coop/archives-v1/crasConseillerNumeriqueV1Queries'
-import { prismaClient } from '@app/web/prismaClient'
-import { endOfMonth, startOfMonth } from 'date-fns'
-import { isDefinedAndNotNull } from '@app/web/utils/isDefinedAndNotNull'
+} from '@app/web/app/coop/(full-width-layout)/archives-v1/crasConseillerNumeriqueV1Queries'
 
 export type CrasV1StatRow = {
   month: string
@@ -109,7 +109,7 @@ export const postProcessV1CraStatRow = (row: CrasV1StatRow) => {
         }
         return null
       })
-      .filter(isDefinedAndNotNull),
+      .filter(onlyDefinedAndNotNull),
   ) as Pick<
     CrasV1StatRow,
     | 'theme_autre'

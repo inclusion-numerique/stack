@@ -1,5 +1,8 @@
 import { type Filter, ObjectId } from 'mongodb'
-import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
+import {
+  conseillerNumeriqueMongoCollection,
+  objectIdFromString,
+} from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 import type { CraConseillerNumeriqueCollectionItem } from '@app/web/external-apis/conseiller-numerique/CraConseillerNumerique'
 import type { StructureConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/StructureConseillerNumerique'
 import { prismaClient } from '@app/web/prismaClient'
@@ -19,6 +22,7 @@ export const vacuumAnalyzeConseillerNumeriqueV1Cras = async () => {
 export const getConseillerNumeriqueCrasFromMongo = async ({
   createdAtSince,
   createdAtUntil,
+  conseillerNumeriqueId,
 }: GetConseillerNumeriqueCrasOptions) => {
   const crasCollection =
     await conseillerNumeriqueMongoCollection<CraConseillerNumeriqueCollectionItem>(
@@ -40,6 +44,9 @@ export const getConseillerNumeriqueCrasFromMongo = async ({
       ...(filter.createdAt ?? null),
       $lt: createdAtUntil,
     }
+  }
+  if (conseillerNumeriqueId) {
+    filter['conseiller._id'] = objectIdFromString(conseillerNumeriqueId)
   }
 
   const cras = await crasCollection

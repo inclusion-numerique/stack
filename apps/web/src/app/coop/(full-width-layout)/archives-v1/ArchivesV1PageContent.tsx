@@ -7,11 +7,12 @@ import ContactSupportLink from '@app/web/components/ContactSupportLink'
 import IconInSquare from '@app/web/components/IconInSquare'
 import { numberToString } from '@app/web/utils/formatNumber'
 import { dateAsMonthFull } from '@app/web/utils/dateAsMonth'
+import ArchivesV1Card from '@app/web/app/coop/(full-width-layout)/archives-v1/ArchivesV1Card'
 
 const ArchivesV1PageContent = ({ data }: { data: ArchivesV1PageData }) => {
   if (data.empty) {
     return (
-      <div className="fr-border fr-border-radius--8 fr-p-10v fr-flex fr-direction-column fr-align-items-center fr-flex-gap-10v">
+      <ArchivesV1Card>
         <h2 className="fr-h6 fr-mb-0">
           Vos archives de compte-rendus d’activités
         </h2>
@@ -22,7 +23,7 @@ const ArchivesV1PageContent = ({ data }: { data: ArchivesV1PageData }) => {
           <ContactSupportLink>veuillez contacter le support</ContactSupportLink>
           .
         </p>
-      </div>
+      </ArchivesV1Card>
     )
   }
 
