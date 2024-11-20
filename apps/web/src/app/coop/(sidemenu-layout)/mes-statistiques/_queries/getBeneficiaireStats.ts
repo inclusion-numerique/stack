@@ -46,16 +46,16 @@ export const getBeneficiaireStatsRaw = async ({
                                       FROM beneficiaires
                                                INNER JOIN accompagnements ON accompagnements.beneficiaire_id = beneficiaires.id
                                                INNER JOIN activites ON
-                                                    activites.id = accompagnements.activite_id
-                                              AND activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
+                                          activites.id = accompagnements.activite_id
+                                              AND activites.mediateur_id = ANY
+                                                  (ARRAY [${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
                                               AND activites.suppression IS NULL
-                                              AND ${getActiviteFiltersSqlFragment(
-                                                getActivitesFiltersWhereConditions(
-                                                  activitesFilters,
-                                                ),
-                                              )}
                                                LEFT JOIN structures ON structures.id = activites.structure_id
-                                      )
+                                      WHERE ${getActiviteFiltersSqlFragment(
+                                        getActivitesFiltersWhereConditions(
+                                          activitesFilters,
+                                        ),
+                                      )})
       SELECT COUNT(distinct_beneficiaires.id)::integer AS total_beneficiaires,
 
              -- Enum count selects for genre, statut_social, tranche_age
@@ -134,27 +134,27 @@ export const getBeneficiairesCommunesRaw = async ({
   if (mediateurIds.length === 0) return []
 
   return prismaClient.$queryRaw<BeneficiairesCommunesRaw[]>`
-    SELECT DISTINCT COALESCE(
-                beneficiaires.commune_code_insee,
-                CASE
-                  WHEN activites.type != 'collectif' THEN activites.lieu_code_insee
-                  END
-            )                                                                            AS coalesced_code_insee,
-            MIN(COALESCE(beneficiaires.commune, activites.lieu_commune))                 AS commune,
-            MIN(COALESCE(beneficiaires.commune_code_postal, activites.lieu_code_postal)) AS code_postal,
-            COUNT(DISTINCT beneficiaires.id) ::integer                                    AS count_beneficiaires
-    FROM beneficiaires
-         INNER JOIN accompagnements ON
-      accompagnements.beneficiaire_id = beneficiaires.id
-         INNER JOIN activites ON
-      activites.id = accompagnements.activite_id
-        AND activites.mediateur_id = ANY (ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
-        AND activites.suppression IS NULL
-        AND ${getActiviteFiltersSqlFragment(
-          getActivitesFiltersWhereConditions(activitesFilters),
-        )}
-         LEFT JOIN structures ON structures.id = activites.structure_id
-    GROUP BY coalesced_code_insee
+      SELECT DISTINCT COALESCE(
+                              beneficiaires.commune_code_insee,
+                              CASE
+                                  WHEN activites.type != 'collectif' THEN activites.lieu_code_insee
+                                  END
+                      )                                                                            AS coalesced_code_insee,
+                      MIN(COALESCE(beneficiaires.commune, activites.lieu_commune))                 AS commune,
+                      MIN(COALESCE(beneficiaires.commune_code_postal, activites.lieu_code_postal)) AS code_postal,
+                      COUNT(DISTINCT beneficiaires.id) ::integer                                   AS count_beneficiaires
+      FROM beneficiaires
+               INNER JOIN accompagnements ON
+          accompagnements.beneficiaire_id = beneficiaires.id
+               INNER JOIN activites ON
+          activites.id = accompagnements.activite_id
+              AND activites.mediateur_id = ANY (ARRAY [${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
+              AND activites.suppression IS NULL
+               LEFT JOIN structures ON structures.id = activites.structure_id
+      WHERE ${getActiviteFiltersSqlFragment(
+        getActivitesFiltersWhereConditions(activitesFilters),
+      )}
+      GROUP BY coalesced_code_insee
   `.then((result) =>
     // Filter out null codeInsee for when there is no commune in beneficiaire or activite
     result.filter(({ coalesced_code_insee }) => !!coalesced_code_insee),
