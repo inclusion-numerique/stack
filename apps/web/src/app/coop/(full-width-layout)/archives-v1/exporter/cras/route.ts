@@ -60,8 +60,6 @@ export const GET = async (request: NextRequest) => {
       },
     })
 
-    console.log(coordinateur)
-
     if (!coordinateur) {
       return new Response('Coordinateur not found', { status: 404 })
     }
