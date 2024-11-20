@@ -1,39 +1,19 @@
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
-import { differenceInMonths, format, isValid } from 'date-fns'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
-import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
 import FonctionnalitesDeMediationNumeriqueCoordinateur from '@app/web/app/coop/(full-width-layout)/mon-profil/_components/FonctionnalitesDeMediationNumeriqueCoordinateur'
-import CoordinatorContract from './_components/CoordinatorContract'
+import Contract from '@app/web/components/conseiller-numerique/Contract'
+import { getContractInfo } from '@app/web/conseiller-numerique/getContractInfo'
 import ProfileEditCard from './_components/ProfileEditCard'
 
 export const metadata: Metadata = {
   title: metadataTitle('Mon profil'),
 }
-
-const formatDate = (date?: string | number | Date | null) =>
-  date && isValid(date) ? format(date, 'dd/MM/yyyy') : null
-
-const typeWithDuration = ({
-  typeDeContrat,
-  dateDebutDeContrat,
-  dateFinDeContrat,
-}: {
-  typeDeContrat: string
-  dateDebutDeContrat: Date | null
-  dateFinDeContrat?: Date | null
-}): string =>
-  !!dateDebutDeContrat &&
-  isValid(dateDebutDeContrat) &&
-  !!dateFinDeContrat &&
-  isValid(dateFinDeContrat)
-    ? `${typeDeContrat} - Durée ${differenceInMonths(dateFinDeContrat, dateDebutDeContrat)} mois`
-    : typeDeContrat
 
 const MonProfilPage = async () => {
   const user = await getAuthenticatedSessionUser()
@@ -42,23 +22,8 @@ const MonProfilPage = async () => {
     return redirect('/')
   }
 
-  // Fetch contract if user is a coordinateur
-  // TODO extract this logic
   const contratCoordinateur = user.coordinateur
-    ? await fetchConseillerNumeriqueV1Data({ email: user.email }).then(
-        (conseiller) => {
-          const miseEnRelationActive = conseiller?.miseEnRelationActive
-          if (!miseEnRelationActive) {
-            return null
-          }
-
-          return {
-            type: typeWithDuration(miseEnRelationActive).replaceAll('_', ' '),
-            start: formatDate(miseEnRelationActive.dateDebutDeContrat),
-            end: formatDate(miseEnRelationActive.dateFinDeContrat),
-          }
-        },
-      )
+    ? await getContractInfo(user.email)
     : null
 
   return (
@@ -86,7 +51,7 @@ const MonProfilPage = async () => {
             <>
               {!!contratCoordinateur && (
                 <section className="fr-mb-2w">
-                  <CoordinatorContract {...contratCoordinateur} />
+                  <Contract isCoordinateur {...contratCoordinateur} />
                 </section>
               )}
               <section>

@@ -6,7 +6,7 @@ import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { prismaClient } from '@app/web/prismaClient'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
-import { StructureEmployeuse } from './_components/StructureEmployeuse'
+import { StructureEmployeuse } from '@app/web/components/structure/StructureEmployeuse'
 
 export const metadata: Metadata = {
   title: metadataTitle('Ma structure employeuse'),

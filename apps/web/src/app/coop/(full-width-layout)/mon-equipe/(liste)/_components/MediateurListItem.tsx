@@ -1,16 +1,7 @@
 import React from 'react'
 import type { AlertProps } from '@codegouvfr/react-dsfr/src/Alert'
 import Badge from '@codegouvfr/react-dsfr/Badge'
-
-export type MediateurListItemProps = {
-  email: string
-  firstName?: string
-  lastName?: string
-  phone?: string
-  isConseillerNumerique: boolean
-  status: string
-  finDeContrat?: string
-}
+import { type MediateurListProps } from './MediateurList'
 
 const UserRole = ({
   isConseillerNumerique,
@@ -49,9 +40,9 @@ export const MediateurListItem = ({
   status,
   isConseillerNumerique,
   finDeContrat,
-}: MediateurListItemProps) =>
+}: MediateurListProps) =>
   firstName || lastName ? (
-    <div className="fr-py-5v">
+    <div className="fr-py-5v fr-px-2v">
       <div className="fr-mb-2w fr-flex fr-flex-gap-2v fr-justify-content-space-between fr-direction-md-row fr-direction-column">
         <div className="fr-flex fr-flex-gap-2v fr-direction-md-row fr-direction-column">
           <span className="fr-text--bold ">

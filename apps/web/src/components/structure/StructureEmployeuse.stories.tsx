@@ -12,6 +12,7 @@ type Story = StoryObj<typeof meta>
 
 export const Complet: Story = {
   args: {
+    id: '1',
     nom: 'Anonymal',
     adresse: '12 bis rue du Général Leclerc',
     complementAdresse: '4e étage',
@@ -25,6 +26,7 @@ export const Complet: Story = {
 
 export const Minimal: Story = {
   args: {
+    id: '1',
     nom: 'Anonymal',
     adresse: '12 bis rue du Général Leclerc',
     commune: 'Reims',
@@ -35,6 +37,7 @@ export const Minimal: Story = {
 
 export const MinimalAvecSiret: Story = {
   args: {
+    id: '1',
     nom: 'Anonymal',
     adresse: '12 bis rue du Général Leclerc',
     commune: 'Reims',
@@ -46,6 +49,7 @@ export const MinimalAvecSiret: Story = {
 
 export const MinimalAvecTypologies: Story = {
   args: {
+    id: '1',
     nom: 'Anonymal',
     adresse: '12 bis rue du Général Leclerc',
     commune: 'Reims',

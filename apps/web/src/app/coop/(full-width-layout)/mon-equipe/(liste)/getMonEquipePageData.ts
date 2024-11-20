@@ -64,17 +64,20 @@ export const getMonEquipePageData = async ({
   )
 
   return {
-    mediateurs: mediateurs.map(({ user, conseillerNumerique, activites }) => ({
-      firstName: user.firstName ?? undefined,
-      lastName: user.lastName ?? undefined,
-      phone: user.phone ?? undefined,
-      email: user.email,
-      isConseillerNumerique: conseillerNumerique?.id != null,
-      status: statusFor(activites),
-      finDeContrat: finDeContratFor(conseillerNumerique)(
-        conseillersNumeriquesWithContrats,
-      ),
-    })),
+    mediateurs: mediateurs.map(
+      ({ id, user, conseillerNumerique, activites }) => ({
+        id,
+        firstName: user.firstName ?? undefined,
+        lastName: user.lastName ?? undefined,
+        phone: user.phone ?? undefined,
+        email: user.email,
+        isConseillerNumerique: conseillerNumerique?.id != null,
+        status: statusFor(activites),
+        finDeContrat: finDeContratFor(conseillerNumerique)(
+          conseillersNumeriquesWithContrats,
+        ),
+      }),
+    ),
     stats: {
       total: mediateurCount[0],
       conseillerNumerique: mediateurCount[1],
