@@ -3,7 +3,7 @@ import {
   autosizeColumns,
   setWorkbookMetadata,
 } from '@app/web/worksheet/buildWorksheetHelpers'
-import { dateAsMonth } from '@app/web/utils/dateAsMonth'
+import { dateAsMonth, dateAsMonthFull } from '@app/web/utils/dateAsMonth'
 import {
   CrasV1StatRow,
   MonthlyStatistiquesV1,
@@ -44,7 +44,7 @@ const createSetCell =
     if (typeof value === 'number') {
       cell.numFmt = '#\u00A0##0' // Utiliser un espace échappé pour le séparateur des milliers
     }
-    if (options?.format) {
+    if (options?.numFmt) {
       cell.numFmt = options.numFmt
     }
     if (options?.percentage) {
@@ -92,21 +92,25 @@ export const buildArchivesStatistiquesV1Worksheet = ({
 
   const { firstMonth, lastMonth, monthlyStats } = stats
 
-  worksheet.addRow([{ value: 'Archives - Coop V.1', font: { bold: true } }])
-  worksheet.addRow([{ value: `Statistiques mensuelles`, font: { bold: true } }])
-  worksheet.addRow([
-    {
-      value: `${conseiller.name} : ${dateAsMonth(firstMonth)} - ${dateAsMonth(lastMonth)}`,
-    },
-  ])
+  const titleRow1 = worksheet.addRow([])
+  titleRow1.getCell(1).value = 'Archives - Coop V.1'
+  titleRow1.getCell(1).font = { bold: true }
 
-  worksheet.getCell()
+  const titleRow2 = worksheet.addRow([])
+  titleRow2.getCell(1).value = 'Statistiques mensuelles'
+  titleRow2.getCell(1).font = { bold: true }
+
+  worksheet.addRow([
+    `${conseiller.name} : de ${dateAsMonthFull(firstMonth)} à ${dateAsMonthFull(lastMonth)}`,
+  ])
 
   const setCell = createSetCell(worksheet)
 
   addTitlesColumns(setCell)
 
-  for (const [index, monthly] of Object.entries(monthlyStats)) {
+  for (const [index, monthly] of Object.values(monthlyStats).map(
+    (value, valueIndex): [number, MonthlyStatistiquesV1] => [valueIndex, value],
+  )) {
     const column = index * 2 + 2
     addMontlyStatColumns(column, setCell, monthly, worksheet)
   }
