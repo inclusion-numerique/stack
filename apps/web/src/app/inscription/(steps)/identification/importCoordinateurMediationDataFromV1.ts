@@ -1,17 +1,13 @@
 import type { Prisma } from '@prisma/client'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import {
-  ConseillerNumeriqueV1DataWithActiveMiseEnRelation,
-} from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
+import { ConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
 import { prismaClient } from '@app/web/prismaClient'
 import {
   findCoordinateursFor,
   upsertCoordinationsForMediateur,
 } from '@app/web/app/inscription/importFromConseillerNumerique/importFromConseillerNumerique.queries'
 import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
-import {
-  importLieuxActivitesFromV1Data,
-} from '@app/web/app/inscription/(steps)/identification/importLieuxActivitesFromV1Data'
+import { importLieuxActivitesFromV1Data } from '@app/web/app/inscription/(steps)/identification/importLieuxActivitesFromV1Data'
 
 /**
  * This is to add mediation (lieux activités...) to a coordinateur
