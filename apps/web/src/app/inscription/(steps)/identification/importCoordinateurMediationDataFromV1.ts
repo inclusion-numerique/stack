@@ -24,7 +24,6 @@ export const importCoordinateurMediationDataFromV1 = async ({
   user: Pick<SessionUser, 'id'>
   v1Conseiller: ConseillerNumeriqueV1DataWithActiveMiseEnRelation
 }) => {
-
   // 1.1 Create the mediateur object
   const upsertedMediateur = await prismaClient.mediateur.upsert({
     where: { userId: user.id },
