@@ -1,5 +1,5 @@
-import { prismaClient } from '@app/web/prismaClient'
 import { Prisma } from '@prisma/client'
+import { prismaClient } from '@app/web/prismaClient'
 
 export type ConseillerNumeriqueV1QueryInput = {
   conseillerNumeriqueIds: string[]
