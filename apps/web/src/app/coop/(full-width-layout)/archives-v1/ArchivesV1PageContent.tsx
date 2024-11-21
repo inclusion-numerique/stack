@@ -9,9 +9,15 @@ import { numberToString } from '@app/web/utils/formatNumber'
 import { dateAsMonthFull } from '@app/web/utils/dateAsMonth'
 import ArchivesV1Card from '@app/web/app/coop/(full-width-layout)/archives-v1/ArchivesV1Card'
 
-const ArchivesV1PageContent = ({ data }: { data: ArchivesV1PageData }) => {
+const ArchivesV1PageContent = ({
+  data,
+  hideEmptyDisclamer,
+}: {
+  data: ArchivesV1PageData
+  hideEmptyDisclamer?: boolean
+}) => {
   if (data.empty) {
-    return (
+    return hideEmptyDisclamer ? null : (
       <ArchivesV1Card>
         <h2 className="fr-h6 fr-mb-0">
           Vos archives de compte-rendus d’activités
