@@ -1,13 +1,17 @@
 import type { Prisma } from '@prisma/client'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import { ConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
+import {
+  ConseillerNumeriqueV1DataWithActiveMiseEnRelation,
+} from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
 import { prismaClient } from '@app/web/prismaClient'
 import {
   findCoordinateursFor,
   upsertCoordinationsForMediateur,
 } from '@app/web/app/inscription/importFromConseillerNumerique/importFromConseillerNumerique.queries'
 import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
-import { importLieuxActivitesFromV1Data } from '@app/web/app/inscription/(steps)/identification/importLieuxActivitesFromV1Data'
+import {
+  importLieuxActivitesFromV1Data,
+} from '@app/web/app/inscription/(steps)/identification/importLieuxActivitesFromV1Data'
 
 /**
  * This is to add mediation (lieux activités...) to a coordinateur
@@ -20,18 +24,25 @@ export const importCoordinateurMediationDataFromV1 = async ({
   user: Pick<SessionUser, 'id'>
   v1Conseiller: ConseillerNumeriqueV1DataWithActiveMiseEnRelation
 }) => {
-  // 1. Create the mediateur and conseiller numerique objects
+
+  // 1.1 Create the mediateur object
+  const upsertedMediateur = await prismaClient.mediateur.upsert({
+    where: { userId: user.id },
+    create: {
+      userId: user.id,
+    },
+    update: {},
+  })
+
   const data = {
     id: v1Conseiller.conseiller.id,
     idPg: v1Conseiller.conseiller.idPG,
     mediateur: {
-      connectOrCreate: {
-        where: { userId: user.id },
-        create: { userId: user.id },
-      },
+      connect: { id: upsertedMediateur.id },
     },
   } satisfies Prisma.ConseillerNumeriqueCreateInput
 
+  // 1.2 Create the conseiller numerique object
   const upsertedConseillerNumerique =
     await prismaClient.conseillerNumerique.upsert({
       where: { id: v1Conseiller.conseiller.id },
