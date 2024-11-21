@@ -20,18 +20,24 @@ export const importCoordinateurMediationDataFromV1 = async ({
   user: Pick<SessionUser, 'id'>
   v1Conseiller: ConseillerNumeriqueV1DataWithActiveMiseEnRelation
 }) => {
-  // 1. Create the mediateur and conseiller numerique objects
+  // 1.1 Create the mediateur object
+  const upsertedMediateur = await prismaClient.mediateur.upsert({
+    where: { userId: user.id },
+    create: {
+      userId: user.id,
+    },
+    update: {},
+  })
+
   const data = {
     id: v1Conseiller.conseiller.id,
     idPg: v1Conseiller.conseiller.idPG,
     mediateur: {
-      connectOrCreate: {
-        where: { userId: user.id },
-        create: { userId: user.id },
-      },
+      connect: { id: upsertedMediateur.id },
     },
   } satisfies Prisma.ConseillerNumeriqueCreateInput
 
+  // 1.2 Create the conseiller numerique object
   const upsertedConseillerNumerique =
     await prismaClient.conseillerNumerique.upsert({
       where: { id: v1Conseiller.conseiller.id },

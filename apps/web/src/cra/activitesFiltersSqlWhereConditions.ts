@@ -78,7 +78,8 @@ export const getActivitesFiltersWhereConditions = ({
     ? Prisma.raw(`${activiteLieuCodeInseeSelect.text} = '${commune}'`)
     : null,
   departement: departement
-    ? Prisma.raw(`${activiteLieuCodeInseeSelect.text} LIKE '${departement}%'`)
+    ? // ? Prisma.raw(`${activiteLieuCodeInseeSelect.text} LIKE '${departement}%'`)
+      null
     : null,
   beneficiaire: beneficiaire
     ? Prisma.raw(`EXISTS (
