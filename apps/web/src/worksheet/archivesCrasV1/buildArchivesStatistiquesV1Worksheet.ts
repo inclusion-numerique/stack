@@ -102,9 +102,10 @@ const rowForStat: { [index in CrasV1StatKey]: number } = {
 const lastRow = statsStartRow + 66
 
 const titleForStat: { [index in CrasV1StatKey]: string } = {
-  total: 'Total des accompagnements',
-  accompagnements: 'Accompagnements totaux enregistrés (dont récurrent)',
-  personnes_accompagnees: 'Personnes totales accompagnées',
+  total: 'Nombre de CRAs enregistrés',
+  accompagnements: 'Nombre d’accompagnements',
+  personnes_accompagnees: 'Nombre d’usagers accompagnés',
+
   individuels: 'Accompagnements individuels',
   collectifs: 'Ateliers collectifs',
   participants_ateliers: 'Total des participants aux ateliers',
@@ -176,7 +177,7 @@ const createSetCell =
   ) => {
     const cell = worksheet.getCell(row, column)
     if (typeof value === 'number') {
-      cell.numFmt = '#\u00A0##0' // Utiliser un espace échappé pour le séparateur des milliers
+      // no format for maximum compatibility with pages, open office, etc.
     }
     if (options?.numFmt) {
       cell.numFmt = options.numFmt
