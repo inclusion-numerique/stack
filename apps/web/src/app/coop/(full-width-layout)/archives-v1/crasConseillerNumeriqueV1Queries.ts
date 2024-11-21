@@ -25,16 +25,24 @@ export const getMinMaxDateAccompagnement = async ({
   if (conseillerNumeriqueIds.length === 0) {
     return null
   }
+
+  // We need the filtered_cras subquery to avoid scans on the cras_conseiller_numerique_v1 table
+  // as postgresql does not use the index on the cras_conseiller_numerique_v1.v1_conseiller_numerique_id
+  // for some reason
   const rawResult = await prismaClient.$queryRaw<
     {
       min_date_accompagnement: Date
       max_date_accompagnement: Date
     }[]
   >`
-        SELECT MIN(date_accompagnement) AS min_date_accompagnement,
-               MAX(date_accompagnement) AS max_date_accompagnement
-        FROM cras_conseiller_numerique_v1
-        WHERE ${whereV1ConseillerNumeriqueIds(conseillerNumeriqueIds)}
+      WITH filtered_cras AS (
+          SELECT date_accompagnement
+          FROM cras_conseiller_numerique_v1
+          WHERE ${whereV1ConseillerNumeriqueIds(conseillerNumeriqueIds)}
+      )
+      SELECT MIN(date_accompagnement) AS min_date_accompagnement,
+             MAX(date_accompagnement) AS max_date_accompagnement
+      FROM filtered_cras
     `
 
   const result = rawResult.at(0)
