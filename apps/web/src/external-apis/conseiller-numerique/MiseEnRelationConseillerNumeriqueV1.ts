@@ -11,6 +11,9 @@ export const MiseEnRelationV1MinimalProjection = {
   typeDeContrat: 1,
 } as const
 
+// Les statuts considérés comme "contract actif" pour nous sont uniquement :
+//  - finalisee
+//  - nouvelle_rupture
 export type StatutMiseEnRelationV1 =
   | 'finalisee'
   | 'finalisee_rupture'
