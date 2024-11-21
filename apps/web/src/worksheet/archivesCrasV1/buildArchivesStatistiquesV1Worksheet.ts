@@ -17,16 +17,17 @@ export type BuildArchivesStatistiquesV1WorksheetInput = {
   }
 }
 
-const statsStartRow = 3
+const statsStartRow = 2
 
 const titles = {
   Général: statsStartRow + 1,
-  'Canaux d’accompagnements': statsStartRow + 13,
-  'Temps en accompagnements': statsStartRow + 19,
-  'Durée des accompagnements': statsStartRow + 25,
-  'Tranches d’âge des usagers': statsStartRow + 31,
-  'Statut des usagers': statsStartRow + 38,
-  'Thèmes des accompagnements': statsStartRow + 45,
+  'Accompagnements poursuivis': statsStartRow + 10,
+  'Canaux d’accompagnements': statsStartRow + 15,
+  'Temps en accompagnements': statsStartRow + 21,
+  'Durée des accompagnements': statsStartRow + 27,
+  'Tranches d’âge des usagers': statsStartRow + 33,
+  'Statut des usagers': statsStartRow + 40,
+  'Thèmes des accompagnements': statsStartRow + 47,
 }
 
 const rowForStat: { [index in CrasV1StatKey]: number } = {
@@ -38,77 +39,79 @@ const rowForStat: { [index in CrasV1StatKey]: number } = {
   participants_ateliers: statsStartRow + 7,
   ponctuels: statsStartRow + 8,
 
-  suivi_individuel: statsStartRow + 9,
-  suivi_atelier: statsStartRow + 10,
-  suivi_redirection: statsStartRow + 11,
+  // one empty, one with title
+  suivi_individuel: statsStartRow + 11,
+  suivi_atelier: statsStartRow + 12,
+  suivi_redirection: statsStartRow + 13,
 
   // one empty, one with title
-  canal_domicile: statsStartRow + 14,
-  canal_distance: statsStartRow + 15,
-  canal_rattachement: statsStartRow + 16,
-  canal_autre: statsStartRow + 17,
+  canal_domicile: statsStartRow + 16,
+  canal_distance: statsStartRow + 17,
+  canal_rattachement: statsStartRow + 18,
+  canal_autre: statsStartRow + 19,
 
   // one empty, one with title
-  temps_total: statsStartRow + 20,
-  temps_individuel: statsStartRow + 21,
-  temps_collectif: statsStartRow + 22,
-  temps_ponctuel: statsStartRow + 23,
+  temps_total: statsStartRow + 22,
+  temps_individuel: statsStartRow + 23,
+  temps_collectif: statsStartRow + 24,
+  temps_ponctuel: statsStartRow + 25,
 
   // one empty, one with title
-  duree_0_30: statsStartRow + 26,
-  duree_30_60: statsStartRow + 27,
-  duree_60_120: statsStartRow + 28,
-  duree_120_plus: statsStartRow + 29,
+  duree_0_30: statsStartRow + 28,
+  duree_30_60: statsStartRow + 29,
+  duree_60_120: statsStartRow + 30,
+  duree_120_plus: statsStartRow + 31,
 
   // one empty, one with title
-  age_moins_12_ans: statsStartRow + 32,
-  age_de_12_a_18_ans: statsStartRow + 33,
-  age_de_18_a_35_ans: statsStartRow + 34,
-  age_de_35_a_60_ans: statsStartRow + 35,
-  age_plus_60_ans: statsStartRow + 36,
+  age_moins_12_ans: statsStartRow + 34,
+  age_de_12_a_18_ans: statsStartRow + 35,
+  age_de_18_a_35_ans: statsStartRow + 36,
+  age_de_35_a_60_ans: statsStartRow + 37,
+  age_plus_60_ans: statsStartRow + 38,
 
   // one empty, one with title
-  statut_etudiant: statsStartRow + 39,
-  statut_sans_emploi: statsStartRow + 40,
-  statut_en_emploi: statsStartRow + 41,
-  statut_retraite: statsStartRow + 42,
-  statut_heterogene: statsStartRow + 43,
+  statut_etudiant: statsStartRow + 41,
+  statut_sans_emploi: statsStartRow + 42,
+  statut_en_emploi: statsStartRow + 43,
+  statut_retraite: statsStartRow + 44,
+  statut_heterogene: statsStartRow + 45,
 
   // one empty, one with title
-  theme_accompagner_enfant: statsStartRow + 46,
-  theme_budget: statsStartRow + 47,
-  theme_contenus_numeriques: statsStartRow + 48,
-  theme_courriel: statsStartRow + 49,
-  theme_demarche_en_ligne: statsStartRow + 50,
-  theme_diagnostic: statsStartRow + 51,
-  theme_echanger: statsStartRow + 52,
-  theme_equipement_informatique: statsStartRow + 53,
-  theme_fraude_et_harcelement: statsStartRow + 54,
-  theme_internet: statsStartRow + 55,
-  theme_sante: statsStartRow + 56,
-  theme_scolaire: statsStartRow + 57,
-  theme_securite: statsStartRow + 58,
-  theme_smartphone: statsStartRow + 59,
-  theme_tpe_pme: statsStartRow + 60,
-  theme_traitement_texte: statsStartRow + 61,
-  theme_trouver_emploi: statsStartRow + 62,
-  theme_vocabulaire: statsStartRow + 63,
-  theme_autre: statsStartRow + 64,
+  theme_accompagner_enfant: statsStartRow + 48,
+  theme_budget: statsStartRow + 49,
+  theme_contenus_numeriques: statsStartRow + 50,
+  theme_courriel: statsStartRow + 51,
+  theme_vocabulaire: statsStartRow + 52,
+
+  theme_demarche_en_ligne: statsStartRow + 53,
+  theme_diagnostic: statsStartRow + 54,
+  theme_echanger: statsStartRow + 55,
+  theme_equipement_informatique: statsStartRow + 56,
+  theme_fraude_et_harcelement: statsStartRow + 57,
+  theme_internet: statsStartRow + 58,
+  theme_sante: statsStartRow + 59,
+  theme_scolaire: statsStartRow + 60,
+  theme_securite: statsStartRow + 61,
+  theme_smartphone: statsStartRow + 62,
+  theme_tpe_pme: statsStartRow + 63,
+  theme_traitement_texte: statsStartRow + 64,
+  theme_trouver_emploi: statsStartRow + 65,
+  theme_autre: statsStartRow + 66,
 }
 
-const lastRow = statsStartRow + 64
+const lastRow = statsStartRow + 66
 
 const titleForStat: { [index in CrasV1StatKey]: string } = {
   total: 'Total des accompagnements',
   accompagnements: 'Accompagnements totaux enregistrés (dont récurrent)',
   personnes_accompagnees: 'Personnes totales accompagnées',
   individuels: 'Accompagnements individuels',
-  collectifs: 'Accompagnements en atelier collectif',
+  collectifs: 'Ateliers collectifs',
   participants_ateliers: 'Total des participants aux ateliers',
   ponctuels: 'Demandes ponctuelles',
 
-  suivi_individuel: 'Accompagnements individuels avec suivi',
-  suivi_atelier: 'Accompagnements en atelier collectif avec suivi',
+  suivi_individuel: 'Poursuite en accompagnement individuels',
+  suivi_atelier: 'Poursuite en atelier collectif',
   suivi_redirection: 'Redirections vers une autre structure agréée',
 
   canal_domicile: 'À domicile',
@@ -142,6 +145,7 @@ const titleForStat: { [index in CrasV1StatKey]: string } = {
   theme_budget: 'Budget',
   theme_contenus_numeriques: 'Gestion de contenus numériques',
   theme_courriel: 'Courriels',
+  theme_vocabulaire: 'Culture numérique',
   theme_demarche_en_ligne: 'Démarche en ligne',
   theme_diagnostic: 'Diagnostic numérique',
   theme_echanger: 'Échanger avec ses proches',
@@ -150,12 +154,11 @@ const titleForStat: { [index in CrasV1StatKey]: string } = {
   theme_internet: 'Naviguer sur Internet',
   theme_sante: 'Santé',
   theme_scolaire: 'Scolaire',
-  theme_securite: 'Sécurité',
+  theme_securite: 'Sécuriser un équipement',
   theme_smartphone: 'Smartphone',
   theme_tpe_pme: 'Numérique et TPE/PME',
   theme_traitement_texte: 'Bureautique',
   theme_trouver_emploi: 'Emploi et formation',
-  theme_vocabulaire: 'Vocabulaire',
   theme_autre: 'Autre',
 }
 
@@ -249,16 +252,13 @@ export const buildArchivesStatistiquesV1Worksheet = ({
   const { firstMonth, lastMonth, monthlyStats } = stats
 
   const titleRow1 = worksheet.addRow([])
-  titleRow1.getCell(1).value = 'Archives - Coop V.1'
+  titleRow1.getCell(1).value = 'Archives - Coop V.1 - Statistiques mensuelles'
   titleRow1.getCell(1).font = { bold: true }
 
   const titleRow2 = worksheet.addRow([])
-  titleRow2.getCell(1).value = 'Statistiques mensuelles'
+  titleRow2.getCell(1).value =
+    `${conseiller.name} : de ${dateAsMonthFull(firstMonth)} à ${dateAsMonthFull(lastMonth)}`
   titleRow2.getCell(1).font = { bold: true }
-
-  worksheet.addRow([
-    `${conseiller.name} : de ${dateAsMonthFull(firstMonth)} à ${dateAsMonthFull(lastMonth)}`,
-  ])
 
   const setCell = createSetCell(worksheet)
 
