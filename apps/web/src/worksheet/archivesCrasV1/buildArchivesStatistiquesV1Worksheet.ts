@@ -12,9 +12,7 @@ import {
 
 export type BuildArchivesStatistiquesV1WorksheetInput = {
   stats: StatistiquesV1
-  conseiller: {
-    name: string
-  }
+  scopeTitle: string
 }
 
 const statsStartRow = 2
@@ -242,7 +240,7 @@ const addMontlyStatColumns = (
 
 export const buildArchivesStatistiquesV1Worksheet = ({
   stats,
-  conseiller,
+  scopeTitle,
 }: BuildArchivesStatistiquesV1WorksheetInput): Excel.Workbook => {
   const workbook = new Excel.Workbook()
 
@@ -253,13 +251,14 @@ export const buildArchivesStatistiquesV1Worksheet = ({
   const { firstMonth, lastMonth, monthlyStats } = stats
 
   const titleRow1 = worksheet.addRow([])
-  titleRow1.getCell(1).value = 'Archives - Coop V.1 - Statistiques mensuelles'
+  titleRow1.getCell(1).value =
+    `Archives - Coop V.1 - Statistiques mensuelles - ${scopeTitle}`
   titleRow1.getCell(1).font = { bold: true }
 
   const titleRow2 = worksheet.addRow([])
   titleRow2.getCell(1).value =
-    `${conseiller.name} : de ${dateAsMonthFull(firstMonth)} à ${dateAsMonthFull(lastMonth)}`
-  titleRow2.getCell(1).font = { bold: true }
+    `${dateAsMonthFull(firstMonth)} à ${dateAsMonthFull(lastMonth)}`
+  // titleRow2.getCell(1).font = { bold: true }
 
   const setCell = createSetCell(worksheet)
 

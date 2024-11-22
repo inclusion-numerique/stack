@@ -4,14 +4,15 @@ import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionT
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
 import { buildArchivesCrasV1Worksheet } from '@app/web/worksheet/archivesCrasV1/buildArchivesCrasV1Worksheet'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
-import { getArchivesV1PageData } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1PageData'
-import { GetCrasConseillerNumeriqueV1InputValidation } from '@app/web/v1/GetCrasConseillerNumeriqueV1Input'
+import { getArchivesV1PageDataWithCras } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1PageData'
+import { GetCrasConseillerNumeriqueV1QueryParamsValidation } from '@app/web/v1/GetCrasConseillerNumeriqueV1QueryParamsValidation'
 
 export const GET = async (request: NextRequest) => {
   // parse url search params as object with zod
-  const parsedInput = GetCrasConseillerNumeriqueV1InputValidation.safeParse(
-    Object.fromEntries(request.nextUrl.searchParams.entries()),
-  )
+  const parsedInput =
+    GetCrasConseillerNumeriqueV1QueryParamsValidation.safeParse(
+      Object.fromEntries(request.nextUrl.searchParams.entries()),
+    )
 
   if (!parsedInput.success) {
     return new Response(JSON.stringify(parsedInput.error), {
@@ -33,11 +34,11 @@ export const GET = async (request: NextRequest) => {
 
   const input = parsedInput.data
 
-  if (input.conseillerNumeriqueV1Id) {
+  if (input.conseiller) {
     const conseillerNumerique =
       await prismaClient.conseillerNumerique.findUnique({
         where: {
-          id: input.conseillerNumeriqueV1Id,
+          id: input.conseiller,
         },
         include: {
           mediateur: {
@@ -53,36 +54,43 @@ export const GET = async (request: NextRequest) => {
     }
   }
 
-  if (input.coordinateurV1Id) {
+  if (input.coordinateur) {
     const coordinateur = await prismaClient.coordinateur.findUnique({
       where: {
-        conseillerNumeriqueId: input.coordinateurV1Id,
+        conseillerNumeriqueId: input.coordinateur,
       },
     })
-
-    console.log(coordinateur)
 
     if (!coordinateur) {
       return new Response('Coordinateur not found', { status: 404 })
     }
   }
 
-  // TODO Security rule for this access for coordo/admins/support etc
   // Can only access own CRAs
   if (
-    input.conseillerNumeriqueV1Id &&
-    user.mediateur?.conseillerNumerique?.id !== input.conseillerNumeriqueV1Id
+    input.conseiller &&
+    user.mediateur?.conseillerNumerique?.id !== input.conseiller
   ) {
     return new Response('Forbidden', { status: 403 })
   }
   if (
-    input.coordinateurV1Id &&
-    user.coordinateur?.conseillerNumeriqueId !== input.coordinateurV1Id
+    input.coordinateur &&
+    user.coordinateur?.conseillerNumeriqueId !== input.coordinateur
   ) {
     return new Response('Forbidden', { status: 403 })
   }
 
-  const data = await getArchivesV1PageData(input)
+  const conseillerId = input.conseiller ?? input.coordinateur
+
+  if (!conseillerId) {
+    return new Response('Invalid scope (conseiller or coordinateur needed)', {
+      status: 400,
+    })
+  }
+
+  const data = await getArchivesV1PageDataWithCras({
+    conseillerNumeriqueIds: [conseillerId],
+  })
 
   if (data.empty) {
     return new Response('No CRAs found', { status: 404 })
@@ -92,7 +100,7 @@ export const GET = async (request: NextRequest) => {
 
   const workbookData = await workbook.xlsx.writeBuffer()
 
-  const filename = `coop-numerique_archives-cras-v1_${dateAsIsoDay(new Date())}.xlsx`
+  const filename = `coop-numerique_archives-v1_cras_${dateAsIsoDay(new Date())}.xlsx`
 
   return new Response(workbookData, {
     status: 200,

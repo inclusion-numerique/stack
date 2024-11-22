@@ -1,5 +1,10 @@
 import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
-import { getArchivesV1PageData } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1PageData'
+import {
+  getArchivesV1PageData,
+  getArchivesV1PageDataWithCras,
+} from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1PageData'
+import { getCrasV1Communes } from '@app/web/app/coop/(full-width-layout)/archives-v1/crasConseillerNumeriqueV1Queries'
+import { getConseillerCoordonnesIds } from '@app/web/v1/v1CraQueries'
 
 export const getArchivesV1CoordinateurPageData = async ({
   coordinateurV1Id,
@@ -16,14 +21,22 @@ export const getArchivesV1CoordinateurPageData = async ({
 
   const conseillers = v1Data.conseillersCoordonnes ?? []
 
-  const ownData = await getArchivesV1PageData({
-    conseillerNumeriqueV1Id: coordinateurV1Id,
+  const ownData = await getArchivesV1PageDataWithCras({
+    conseillerNumeriqueIds: [coordinateurV1Id],
+  })
+
+  const conseillersCoordonnesIds = await getConseillerCoordonnesIds({
+    coordinateurV1Id,
+    includeCoordinateur: true,
+  })
+  const aggregatedData = await getArchivesV1PageDataWithCras({
+    conseillerNumeriqueIds: conseillersCoordonnesIds,
   })
 
   const conseillersData = await Promise.all(
     conseillers.map(async (conseiller) => {
       const data = await getArchivesV1PageData({
-        conseillerNumeriqueV1Id: conseiller.id,
+        conseillerNumeriqueIds: [conseiller.id],
       })
 
       return {
@@ -38,9 +51,36 @@ export const getArchivesV1CoordinateurPageData = async ({
     a.conseiller.nom.localeCompare(b.conseiller.nom),
   )
 
+  const communes = await getCrasV1Communes({
+    conseillerNumeriqueIds: [
+      coordinateurV1Id,
+      ...conseillers.map(({ id }) => id),
+    ],
+  })
+
+  const communesData = await Promise.all(
+    communes.map(async (commune) => {
+      const data = await getArchivesV1PageData({
+        codeCommune: commune.codeInsee,
+        conseillerNumeriqueIds: conseillersCoordonnesIds,
+      })
+      return {
+        commune,
+        data,
+      }
+    }),
+  )
+
+  const sortedCommunesData = communesData.sort((a, b) =>
+    a.commune.nom.localeCompare(b.commune.nom),
+  )
+
   return {
     ownData,
+    aggregatedData,
     conseillersData: sortedConseillersData,
+    communesData: sortedCommunesData,
+    coordinateurV1Id,
   }
 }
 

@@ -12,7 +12,7 @@ import AdministrationTitle from '@app/web/app/administration/AdministrationTitle
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import AdministrationInfoCard from '@app/web/app/administration/AdministrationInfoCard'
 import AdministrationInlineLabelsValues, {
-  LabelAndValue,
+  type LabelAndValue,
 } from '@app/web/app/administration/AdministrationInlineLabelsValues'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { prismaClient } from '@app/web/prismaClient'
@@ -188,7 +188,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
 
   const crasConseillerNumeriqueV1Count = mediateur?.conseillerNumerique
     ? await countCrasConseillerNumeriqueV1({
-        conseillerNumeriqueV1Id: mediateur.conseillerNumerique.id,
+        conseillerNumeriqueIds: [mediateur.conseillerNumerique.id],
       })
     : null
 

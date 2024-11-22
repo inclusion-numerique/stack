@@ -1,7 +1,7 @@
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import Button from '@codegouvfr/react-dsfr/Button'
 import React from 'react'
-import type { ArchivesV1PageData } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1PageData'
+import type { ArchivesV1PageDataWithCras } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1PageData'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import ContactSupportLink from '@app/web/components/ContactSupportLink'
 import IconInSquare from '@app/web/components/IconInSquare'
@@ -12,9 +12,11 @@ import ArchivesV1Card from '@app/web/app/coop/(full-width-layout)/archives-v1/Ar
 const ArchivesV1PageContent = ({
   data,
   hideEmptyDisclamer,
+  conseillerNumeriqueV1Id,
 }: {
-  data: ArchivesV1PageData
+  data: ArchivesV1PageDataWithCras
   hideEmptyDisclamer?: boolean
+  conseillerNumeriqueV1Id: string
 }) => {
   if (data.empty) {
     return hideEmptyDisclamer ? null : (
@@ -33,12 +35,7 @@ const ArchivesV1PageContent = ({
     )
   }
 
-  const {
-    firstDate,
-    lastDate,
-    v1Cras,
-    input: { conseillerNumeriqueV1Id },
-  } = data
+  const { firstDate, lastDate, v1Cras } = data
 
   return (
     <>
@@ -68,7 +65,7 @@ const ArchivesV1PageContent = ({
             size="small"
             priority="tertiary no outline"
             linkProps={{
-              href: `/coop/archives-v1/exporter/cras?conseillerNumeriqueV1Id=${conseillerNumeriqueV1Id}`,
+              href: `/coop/archives-v1/exporter/cras?conseiller=${conseillerNumeriqueV1Id}`,
               download: true,
             }}
           >
@@ -98,7 +95,7 @@ const ArchivesV1PageContent = ({
             size="small"
             priority="tertiary no outline"
             linkProps={{
-              href: `/coop/archives-v1/exporter/statistiques?conseillerNumeriqueV1Id=${conseillerNumeriqueV1Id}`,
+              href: `/coop/archives-v1/exporter/statistiques?conseiller=${conseillerNumeriqueV1Id}`,
               download: true,
             }}
           >

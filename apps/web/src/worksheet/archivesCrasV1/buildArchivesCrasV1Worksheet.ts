@@ -3,9 +3,9 @@ import {
   autosizeColumns,
   setWorkbookMetadata,
 } from '@app/web/worksheet/buildWorksheetHelpers'
-import { ArchivesV1PageData } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1PageData'
+import type { ArchivesV1PageDataWithCras } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1PageData'
 
-export type BuildArchivesCrasV1WorksheetInput = ArchivesV1PageData
+export type BuildArchivesCrasV1WorksheetInput = ArchivesV1PageDataWithCras
 
 const intraCellLineBreak = '\n'
 

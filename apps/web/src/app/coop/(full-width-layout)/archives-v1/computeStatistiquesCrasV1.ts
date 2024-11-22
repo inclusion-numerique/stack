@@ -2,9 +2,9 @@ import { endOfMonth, startOfMonth } from 'date-fns'
 import { prismaClient } from '@app/web/prismaClient'
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import {
-  ConseillerNumeriqueV1QueryInput,
-  getMinMaxDateAccompagnement,
-  whereV1ConseillerNumeriqueIds,
+  CrasConseillerNumeriqueV1FilterOptions,
+  getCrasV1MinMaxDateAccompagnement,
+  whereV1QueryInput,
 } from '@app/web/app/coop/(full-width-layout)/archives-v1/crasConseillerNumeriqueV1Queries'
 
 export type CrasV1StatRow = {
@@ -169,14 +169,15 @@ export const postProcessV1CraStatRow = (row: CrasV1StatRow) => {
   }
 }
 
-export const getRawStatistiquesCrasV1 = async ({
-  conseillerNumeriqueIds,
-}: ConseillerNumeriqueV1QueryInput) => {
-  const dates = await getMinMaxDateAccompagnement({ conseillerNumeriqueIds })
+export const getRawStatistiquesCrasV1 = async (
+  input: CrasConseillerNumeriqueV1FilterOptions,
+) => {
+  const dates = await getCrasV1MinMaxDateAccompagnement(input)
   if (!dates) {
     // No CRAs found
     return null
   }
+
   const firstMonth = startOfMonth(dates.min)
   const lastMonth = endOfMonth(dates.max)
 
@@ -184,119 +185,122 @@ export const getRawStatistiquesCrasV1 = async ({
   const monthlyStats = await prismaClient.$queryRaw<CrasV1StatRow[]>`
       WITH cras AS (SELECT *
                     FROM cras_conseiller_numerique_v1
-                    WHERE ${whereV1ConseillerNumeriqueIds(conseillerNumeriqueIds)}),
-           months AS (SELECT generate_series(
-                                     ${firstMonth}::DATE,
-                                     ${lastMonth}::DATE,
-                                     '1 month'::INTERVAL
-                             ) AS month)
-      SELECT TO_CHAR(months.month, 'YYYY-MM')                                                         as month,
-             COUNT(cras.*)::INT                                                                       as total,
-             SUM(cras.nb_participants)::INT                                                           as accompagnements,
-             (SUM(cras.nb_participants) - SUM(cras.nb_participants_recurrents))::INT                  as personnes_accompagnees,
+                    WHERE ${whereV1QueryInput(input)}),
+           generated_months AS (SELECT generate_series(
+                                               ${firstMonth}::DATE,
+                                               ${lastMonth}::DATE,
+                                               '1 month'::INTERVAL
+                                       ) AS generated_month),
+           months AS (SELECT generated_month AS month
+                      FROM generated_months
+                      WHERE generated_month < ${lastMonth}::DATE)
+      SELECT TO_CHAR(months.month, 'YYYY-MM')                                                       as month,
+             COUNT(cras.*)::INT                                                                     as total,
+             SUM(cras.nb_participants)::INT                                                         as accompagnements,
+             (SUM(cras.nb_participants) - SUM(cras.nb_participants_recurrents))::INT                as personnes_accompagnees,
           /* activite: 'individuel' | 'ponctuel' | 'collectif'  */
-             COUNT(CASE WHEN cras.activite = 'individuel' THEN 1 END)::INT                            as individuels,
-             COUNT(CASE WHEN cras.activite = 'ponctuel' THEN 1 END)::INT                              as ponctuels,
-             COUNT(CASE WHEN cras.activite = 'collectif' THEN 1 END)::INT                             as collectifs,
+             COUNT(CASE WHEN cras.activite = 'individuel' THEN 1 END)::INT                          as individuels,
+             COUNT(CASE WHEN cras.activite = 'ponctuel' THEN 1 END)::INT                            as ponctuels,
+             COUNT(CASE WHEN cras.activite = 'collectif' THEN 1 END)::INT                           as collectifs,
           /* participants ateliers */
              SUM(CASE
                      WHEN cras.activite = 'collectif' THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as participants_ateliers,
+                     ELSE 0 END)::INT                                                               as participants_ateliers,
           /* Suivis */
-             SUM(cras.accompagnement_individuel)::INT                                                 as suivi_individuel,
-             SUM(cras.accompagnement_atelier)::INT                                                    as suivi_atelier,
-             SUM(cras.accompagnement_redirection)::INT                                                as suivi_redirection,
+             SUM(cras.accompagnement_individuel)::INT                                               as suivi_individuel,
+             SUM(cras.accompagnement_atelier)::INT                                                  as suivi_atelier,
+             SUM(cras.accompagnement_redirection)::INT                                              as suivi_redirection,
           /*  canal: 'rattachement' | 'distance' | 'domicile' | 'autre lieu'  */
-             COUNT(CASE WHEN cras.canal = 'domicile' THEN 1 END)::INT                                 as canal_domicile,
-             COUNT(CASE WHEN cras.canal = 'rattachement' THEN 1 END)::INT                             as canal_rattachement,
-             COUNT(CASE WHEN cras.canal = 'distance' THEN 1 END)::INT                                 as canal_distance,
-             COUNT(CASE WHEN cras.canal = 'autre lieu' THEN 1 END)::INT                               as canal_autre,
+             COUNT(CASE WHEN cras.canal = 'domicile' THEN 1 END)::INT                               as canal_domicile,
+             COUNT(CASE WHEN cras.canal = 'rattachement' THEN 1 END)::INT                           as canal_rattachement,
+             COUNT(CASE WHEN cras.canal = 'distance' THEN 1 END)::INT                               as canal_distance,
+             COUNT(CASE WHEN cras.canal = 'autre lieu' THEN 1 END)::INT                             as canal_autre,
           /* Temps par type "activite" */
-             SUM(cras.duree_minutes)::INT / 60                                                        as temps_total,
+             SUM(cras.duree_minutes)::INT / 60                                                      as temps_total,
              SUM(CASE WHEN cras.activite = 'individuel' THEN cras.duree_minutes ELSE 0 END)::INT /
-             60                                                                                       as temps_individuel,
-             SUM(CASE WHEN cras.activite = 'ponctuel' THEN cras.duree_minutes ELSE 0 END)::INT / 60   as temps_ponctuel,
+             60                                                                                     as temps_individuel,
+             SUM(CASE WHEN cras.activite = 'ponctuel' THEN cras.duree_minutes ELSE 0 END)::INT / 60 as temps_ponctuel,
              SUM(CASE WHEN cras.activite = 'collectif' THEN cras.duree_minutes ELSE 0 END)::INT /
-             60                                                                                       as temps_collectif,
+             60                                                                                     as temps_collectif,
           /* Count par tranche de duree_minutes */
-             COUNT(CASE WHEN cras.duree_minutes < 30 THEN 1 END)::INT                                 as duree_0_30,
+             COUNT(CASE WHEN cras.duree_minutes < 30 THEN 1 END)::INT                               as duree_0_30,
              COUNT(CASE
                        WHEN (cras.duree_minutes >= 30 AND cras.duree_minutes < 60)
-                           THEN 1 END)::INT                                                           as duree_30_60,
+                           THEN 1 END)::INT                                                         as duree_30_60,
              COUNT(CASE
                        WHEN (cras.duree_minutes >= 60 AND cras.duree_minutes < 120)
-                           THEN 1 END)::INT                                                           as duree_60_120,
-             COUNT(CASE WHEN cras.duree_minutes >= 120 THEN 1 END)::INT                               as duree_120_plus,
+                           THEN 1 END)::INT                                                         as duree_60_120,
+             COUNT(CASE WHEN cras.duree_minutes >= 120 THEN 1 END)::INT                             as duree_120_plus,
           /* tranche ages */
-             SUM(cras.age_moins_12_ans)::INT                                                          as age_moins_12_ans,
-             SUM(cras.age_de_12_a_18_ans)::INT                                                        as age_de_12_a_18_ans,
-             SUM(cras.age_de_18_a_35_ans)::INT                                                        as age_de_18_a_35_ans,
-             SUM(cras.age_de_35_a_60_ans)::INT                                                        as age_de_35_a_60_ans,
-             SUM(cras.age_plus_60_ans)::INT                                                           as age_plus_60_ans,
+             SUM(cras.age_moins_12_ans)::INT                                                        as age_moins_12_ans,
+             SUM(cras.age_de_12_a_18_ans)::INT                                                      as age_de_12_a_18_ans,
+             SUM(cras.age_de_18_a_35_ans)::INT                                                      as age_de_18_a_35_ans,
+             SUM(cras.age_de_35_a_60_ans)::INT                                                      as age_de_35_a_60_ans,
+             SUM(cras.age_plus_60_ans)::INT                                                         as age_plus_60_ans,
           /* statuts socials */
-             SUM(cras.statut_etudiant)::INT                                                           as statut_etudiant,
-             SUM(cras.statut_sans_emploi)::INT                                                        as statut_sans_emploi,
-             SUM(cras.statut_en_emploi)::INT                                                          as statut_en_emploi,
-             SUM(cras.statut_retraite)::INT                                                           as statut_retraite,
-             SUM(cras.statut_heterogene)::INT                                                         as statut_heterogene,
+             SUM(cras.statut_etudiant)::INT                                                         as statut_etudiant,
+             SUM(cras.statut_sans_emploi)::INT                                                      as statut_sans_emploi,
+             SUM(cras.statut_en_emploi)::INT                                                        as statut_en_emploi,
+             SUM(cras.statut_retraite)::INT                                                         as statut_retraite,
+             SUM(cras.statut_heterogene)::INT                                                       as statut_heterogene,
           /* sum nb_participants per theme */
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['autre'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_autre,
+                     ELSE 0 END)::INT                                                               as theme_autre,
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['equipement informatique'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_equipement_informatique,
+                     ELSE 0 END)::INT                                                               as theme_equipement_informatique,
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['demarche en ligne'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_demarche_en_ligne,
+                     ELSE 0 END)::INT                                                               as theme_demarche_en_ligne,
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['smartphone'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_smartphone,
+                     ELSE 0 END)::INT                                                               as theme_smartphone,
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['courriel'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_courriel,
+                     ELSE 0 END)::INT                                                               as theme_courriel,
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['internet'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_internet,
+                     ELSE 0 END)::INT                                                               as theme_internet,
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['vocabulaire'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_vocabulaire,
+                     ELSE 0 END)::INT                                                               as theme_vocabulaire,
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['echanger'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_echanger,
+                     ELSE 0 END)::INT                                                               as theme_echanger,
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['contenus numeriques'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_contenus_numeriques,
+                     ELSE 0 END)::INT                                                               as theme_contenus_numeriques,
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['traitement texte'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_traitement_texte,
+                     ELSE 0 END)::INT                                                               as theme_traitement_texte,
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['accompagner enfant'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_accompagner_enfant,
+                     ELSE 0 END)::INT                                                               as theme_accompagner_enfant,
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['trouver emploi'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_trouver_emploi,
+                     ELSE 0 END)::INT                                                               as theme_trouver_emploi,
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['tpe/pme'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_tpe_pme,
+                     ELSE 0 END)::INT                                                               as theme_tpe_pme,
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['sante'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_sante,
+                     ELSE 0 END)::INT                                                               as theme_sante,
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['diagnostic'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_diagnostic,
+                     ELSE 0 END)::INT                                                               as theme_diagnostic,
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['fraude et harcelement'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_fraude_et_harcelement,
+                     ELSE 0 END)::INT                                                               as theme_fraude_et_harcelement,
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['securite'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_securite,
+                     ELSE 0 END)::INT                                                               as theme_securite,
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['budget'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_budget,
+                     ELSE 0 END)::INT                                                               as theme_budget,
              SUM(CASE
                      WHEN cras.themes @> ARRAY ['scolaire'] THEN cras.nb_participants
-                     ELSE 0 END)::INT                                                                 as theme_scolaire
+                     ELSE 0 END)::INT                                                               as theme_scolaire
 
       FROM months
                LEFT JOIN cras
