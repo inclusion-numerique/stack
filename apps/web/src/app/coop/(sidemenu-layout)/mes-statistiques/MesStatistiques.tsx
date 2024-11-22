@@ -7,6 +7,7 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import { ExportStatistiques } from './_components/ExportStatistiques'
+import { PrintStatistiques } from './_components/PrintStatistiques'
 import { StatistiquesTerritoriales } from './_components/StatistiquesTerritoriales'
 import { StatistiquesGenerales } from './_sections/StatistiquesGenerales'
 import { MesStatistiquesPageData } from './getMesStatistiquesPageData'
@@ -31,7 +32,8 @@ export const MesStatistiques = (
     <CoopPageContainer size={794}>
       <CoopBreadcrumbs currentPage="Mes statistiques" />
       <SkipLinksPortal links={defaultSkipLinks} />
-      <main id={contentId}>
+      <PrintStatistiques {...mesStatistiquesProps} />
+      <main className="fr-no-print" id={contentId}>
         <h1 className="fr-text-title--blue-france fr-mb-2w">
           Mes statistiques
         </h1>
@@ -75,7 +77,7 @@ export const MesStatistiques = (
             />
             Statistiques départementales France Numérique Ensemble
           </h2>
-          <StatistiquesTerritoriales {...mesStatistiquesProps} />
+          <StatistiquesTerritoriales />
         </section>
       </main>
     </CoopPageContainer>

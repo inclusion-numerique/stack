@@ -31,7 +31,7 @@ export const ExportStatistiques = ({
   departementsOptions: SelectOption[]
   communesOptions: SelectOption[]
 }) => {
-  const onExport = () => {
+  const onExportXlsx = () => {
     const exportPath = '/coop/mes-statistiques/export'
     const searchParams = new URLSearchParams()
 
@@ -49,7 +49,16 @@ export const ExportStatistiques = ({
     ExportStatistiquesModal.close()
     createToast({
       priority: 'success',
-      message: `Le téléchargement de vos statistiques est en cours.`,
+      message: 'Le téléchargement de vos statistiques est en cours.',
+    })
+  }
+
+  const onExportPdf = () => {
+    ExportStatistiquesModal.close()
+    window.print()
+    createToast({
+      priority: 'success',
+      message: 'Le téléchargement de vos statistiques est en cours.',
     })
   }
 
@@ -90,11 +99,19 @@ export const ExportStatistiques = ({
             type: 'button',
           },
           {
-            title: 'Exporter',
-            doClosesModal: false,
-            children: 'Exporter',
+            title: 'Exporter pdf',
+            doClosesModal: true,
+            children: 'Exporter en pdf',
             type: 'button',
-            onClick: onExport,
+            priority: 'primary',
+            onClick: onExportPdf,
+          },
+          {
+            title: 'Exporter xlsx',
+            doClosesModal: false,
+            children: 'Exporter en xlsx',
+            type: 'button',
+            onClick: onExportXlsx,
           },
         ]}
       >

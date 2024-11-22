@@ -10,26 +10,12 @@ import { ProgressListItem } from '../_components/ProgressListItem'
 import { QuantifiedShareList } from '../_components/QuantifiedShareList'
 import { StatistiqueAccompagnement } from '../_components/StatistiqueAccompagnement'
 import { StatistiqueMateriel } from '../_components/StatistiqueMateriel'
-
-const thematiquesAccompagnementColors = [
-  '#68A532',
-  '#465F9D',
-  '#A558A0',
-  '#E18B76',
-  '#C8AA39',
-  '#E4794A',
-  '#D1B781',
-  '#AEA397',
-  '#00A95F',
-  '#417DC4',
-  '#CE614A',
-  '#C3992A',
-  '#009081',
-  '#BD987A',
-]
-const nombreAccompagnementParLieuColor = '#009099'
-const canauxAccompagnementColors = ['#C7F6FC', '#60E0EB', '#009099', '#006A6F']
-const dureesAccompagnementColors = ['#F7EBE5', '#EAC7B2', '#C08C65', '#855D48']
+import {
+  canauxAccompagnementColors,
+  dureesAccompagnementColors,
+  nombreAccompagnementParLieuColor,
+  thematiquesAccompagnementColors,
+} from './colors'
 
 export const StatistiquesActivites = ({
   activites,
@@ -126,7 +112,6 @@ export const StatistiquesActivites = ({
         </div>
         <ul className="fr-px-0 fr-mb-0">
           {thematiquesToDisplay
-            // sort desc on count
             .sort((a, b) => b.count - a.count)
             .map(({ value, proportion, label, count }, index) => (
               <ProgressListItem
