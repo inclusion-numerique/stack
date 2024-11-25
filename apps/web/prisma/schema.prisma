@@ -199,6 +199,8 @@ model JobExecution {
 
 enum ApiClientScope {
   Statistiques @map("statistiques")
+  Cras @map("cras") // Cras anonymisés
+  ArchivesV1Cras @map("archives_v1_cras")
 
   @@map("api_client_scope")
 }
@@ -206,7 +208,7 @@ enum ApiClientScope {
 model ApiClient {
   id String @id @default(uuid()) @db.Uuid
 
-  name String
+  name String @unique
 
   secret String // hashed secret
 
@@ -215,8 +217,8 @@ model ApiClient {
 
   scopes ApiClientScope[]
 
-  created DateTime
-  updated DateTime
+  created DateTime @default(now())
+  updated DateTime @default(now())
 
   @@map("api_clients")
 }

@@ -39,10 +39,37 @@ export const createApiClient = async ({
   }
 }
 
+export const changeApiClientScopes = async ({
+  clientId,
+  scopes,
+}: {
+  clientId: string
+  scopes: ApiClientScope[]
+}) => {
+  const apiClient = await prismaClient.apiClient.findUnique({
+    where: { id: clientId },
+  })
+
+  if (!apiClient) {
+    throw new Error('Api client not found')
+  }
+
+  await prismaClient.apiClient.update({
+    where: { id: clientId },
+    data: {
+      scopes,
+      updated: new Date(),
+    },
+  })
+}
+
 export const authenticateApiCient = async (
   clientId: string,
   clientSecret: string,
 ): Promise<ApiClient | null> => {
+  // Ensure that clientId is a uuid v4 using regex
+  if (!/^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/.test(clientId)) return null
+
   const apiClient = await prismaClient.apiClient.findUnique({
     where: { id: clientId },
   })
@@ -54,7 +81,11 @@ export const authenticateApiCient = async (
   if (!isValid) return null
 
   const now = new Date()
-  if (apiClient.validFrom > now || apiClient.validUntil < now) return null
+  if (apiClient.validFrom > now) return null
+
+  if (apiClient.validUntil && apiClient.validUntil > now) {
+    return null
+  }
 
   return apiClient
 }
