@@ -14,9 +14,7 @@ const BackButton = ({
   <Button
     priority="tertiary no outline"
     size="small"
-    linkProps={{
-      href,
-    }}
+    linkProps={{ href }}
     className={classNames('fr-mt-4v fr-mb-4v', className)}
     iconId="fr-icon-arrow-left-line"
   >
