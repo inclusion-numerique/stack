@@ -1,5 +1,11 @@
-.fr-hidden-print {
+.fr-print {
+  height: 0;
+  visibility: hidden;
+  overflow: hidden;
+
   @media print {
-    display: none !important;
+    height: auto;
+    visibility: visible;
+    print-color-adjust: exact;
   }
 }

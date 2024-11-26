@@ -117,15 +117,7 @@ const ActivitesFilterTags = ({
 
   const onPeriodChange = (value: PeriodFilterValue | null) => {
     replaceRouteParams(
-      value === null
-        ? {
-            du: null,
-            au: null,
-          }
-        : {
-            du: value.du,
-            au: value.au,
-          },
+      value === null ? { du: null, au: null } : { du: value.du, au: value.au },
     )
   }
   const onActiviteTypeChange = (type: TypeActiviteSlug | null) => {

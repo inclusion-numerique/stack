@@ -22,12 +22,14 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) =>
 export const AccompagnementPieChart = ({
   data,
   size,
+  isAnimationActive = true,
   width = 24,
   colors = [],
   className,
 }: {
   data: { label: string; count: number; proportion: number }[]
   size: number
+  isAnimationActive?: boolean
   width?: number
   colors?: string[]
   className?: string
@@ -38,7 +40,7 @@ export const AccompagnementPieChart = ({
         strokeWidth={0}
         dataKey="count"
         nameKey="label"
-        isAnimationActive
+        isAnimationActive={isAnimationActive}
         data={data}
         cx="50%"
         cy="50%"

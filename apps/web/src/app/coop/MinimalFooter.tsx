@@ -10,7 +10,10 @@ const MinimalFooter = () => (
   <footer
     role="contentinfo"
     id="fr-footer"
-    className={classNames('fr-footer__bottom fr-px-8v', styles.footer)}
+    className={classNames(
+      'fr-footer__bottom fr-px-8v fr-no-print',
+      styles.footer,
+    )}
   >
     <ul className="fr-footer__bottom-list">
       {...publicFooterProps.bottomItems.map((bottomItem, index) => (
