@@ -246,6 +246,13 @@ const sumStats = (rows: CrasV1StatRow[]) => {
 export const getRawStatistiquesCrasV1 = async (
   input: CrasConseillerNumeriqueV1FilterOptions,
 ) => {
+  if (
+    !input.codeCommune &&
+    (!input.conseillerNumeriqueIds || input.conseillerNumeriqueIds.length === 0)
+  ) {
+    return null
+  }
+
   const dates = await getCrasV1MinMaxDateAccompagnement(input)
   if (!dates) {
     // No CRAs found
