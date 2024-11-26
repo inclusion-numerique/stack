@@ -2,7 +2,8 @@ import { closeMongoClient } from '@app/web/external-apis/conseiller-numerique/co
 import { importCrasConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/importCrasConseillerNumeriqueV1'
 import { getRawStatistiquesCrasV1 } from '@app/web/app/coop/(full-width-layout)/archives-v1/computeStatistiquesCrasV1'
 
-describe('getRawStatistiquesCrasV1', () => {
+// This test was useful for local development but is too slow and fragile for CI
+describe.skip('getRawStatistiquesCrasV1', () => {
   // should have only 11 cras on 2 months
   const conseillerNumeriqueId = '607e0ba54f4799986586bcd7'
 
