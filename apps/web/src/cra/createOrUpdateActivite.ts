@@ -99,9 +99,7 @@ const beneficiaireAnonymeCreateDataFromForm = ({
   id: string
 } => ({
   id: v4(),
-  mediateur: {
-    connect: { id: mediateurId },
-  },
+  mediateur: { connect: { id: mediateurId } },
   prenom: prenom ?? undefined,
   nom: nom ?? undefined,
   anonyme: true,
@@ -113,7 +111,7 @@ const beneficiaireAnonymeCreateDataFromForm = ({
   trancheAge: trancheAge ?? undefined,
   statutSocial: statutSocial ?? undefined,
   notes: notes ?? undefined,
-  commune: communeResidence?.nom ?? undefined,
+  commune: communeResidence?.commune ?? undefined,
   communeCodePostal: communeResidence?.codePostal ?? undefined,
   communeCodeInsee: communeResidence?.codeInsee ?? undefined,
 })
@@ -245,12 +243,8 @@ export const createOrUpdateActivite = async ({
       structure
         ? { connect: { id: structure.id } }
         : id
-          ? // disconnect if this is an update
-            {
-              disconnect: true,
-            }
-          : // no data if creation
-            undefined,
+          ? { disconnect: true } // disconnect if this is an update
+          : undefined, // no data if creation
   } satisfies Prisma.ActiviteUpdateInput
 
   if (id) {
@@ -263,20 +257,16 @@ export const createOrUpdateActivite = async ({
             activiteId: id,
           },
         }),
-        // If collectif, delete all beneficiaires anonymes as we will recreate them from counters
-        // or data if not selected in form
-        input.type === 'Collectif'
-          ? prismaClient.beneficiaire.deleteMany({
-              where: {
-                anonyme: true,
-                accompagnements: {
-                  every: {
-                    activiteId: id,
-                  },
-                },
+        prismaClient.beneficiaire.deleteMany({
+          where: {
+            anonyme: true,
+            accompagnements: {
+              every: {
+                activiteId: id,
               },
-            })
-          : null,
+            },
+          },
+        }),
         // (re)Create beneficiaire anonyme for one-to-one cra
         beneficiaireAnonymeToCreate
           ? prismaClient.beneficiaire.create({

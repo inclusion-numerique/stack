@@ -126,6 +126,64 @@ describe('createOrUpdateActivite', () => {
     })
   })
 
+  it('should create and update activite individuelle for single anonyme', async () => {
+    const input: {
+      type: 'Individuel'
+      data: CraIndividuelData
+    } = {
+      type: 'Individuel',
+      data: {
+        mediateurId: mediateurAvecActiviteMediateurId,
+        typeLieu: 'Domicile',
+        thematiques: ['SecuriteNumerique'],
+        date: '2024-08-01',
+        materiel: [],
+        lieuAccompagnementDomicileCommune: banDefaultValueToAdresseBanData({
+          commune: 'Paris',
+          codePostal: '75001',
+          codeInsee: '75056',
+        }),
+        duree: {
+          duree: '90',
+          dureePersonnaliseeType: 'minutes',
+        },
+        autonomie: 'EntierementAccompagne',
+        beneficiaire: {
+          mediateurId: mediateurAvecActiviteMediateurId,
+        },
+      },
+    } satisfies CreateOrUpdateActiviteInput
+
+    const resultToUpdate = await createOrUpdateActivite({
+      userId: mediateurAvecActivite.id,
+      input,
+    })
+
+    const result = await createOrUpdateActivite({
+      userId: mediateurAvecActivite.id,
+      input: {
+        ...input,
+        data: {
+          ...input.data,
+          id: resultToUpdate.id,
+        },
+      },
+    })
+
+    const beneficiaire = await prismaClient.beneficiaire.findMany({
+      where: {
+        anonyme: true,
+        accompagnements: {
+          every: {
+            activiteId: result.id,
+          },
+        },
+      },
+    })
+
+    expect(beneficiaire.length).toBe(1)
+  })
+
   it('should create atelier collectif for anonyme', async () => {
     const input: {
       type: 'Collectif'
