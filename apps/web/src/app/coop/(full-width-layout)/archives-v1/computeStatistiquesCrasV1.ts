@@ -245,61 +245,61 @@ export const getRawStatistiquesCrasV1 = async (
              SUM(cras.statut_heterogene)::INT                                                       as statut_heterogene,
           /* sum nb_participants per theme */
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['autre'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['autre'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_autre,
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['equipement informatique'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['equipement informatique'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_equipement_informatique,
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['demarche en ligne'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['demarche en ligne'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_demarche_en_ligne,
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['smartphone'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['smartphone'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_smartphone,
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['courriel'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['courriel'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_courriel,
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['internet'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['internet'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_internet,
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['vocabulaire'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['vocabulaire'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_vocabulaire,
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['echanger'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['echanger'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_echanger,
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['contenus numeriques'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['contenus numeriques'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_contenus_numeriques,
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['traitement texte'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['traitement texte'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_traitement_texte,
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['accompagner enfant'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['accompagner enfant'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_accompagner_enfant,
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['trouver emploi'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['trouver emploi'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_trouver_emploi,
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['tpe/pme'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['tpe/pme'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_tpe_pme,
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['sante'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['sante'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_sante,
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['diagnostic'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['diagnostic'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_diagnostic,
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['fraude et harcelement'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['fraude et harcelement'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_fraude_et_harcelement,
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['securite'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['securite'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_securite,
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['budget'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['budget'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_budget,
              SUM(CASE
-                     WHEN cras.themes @> ARRAY ['scolaire'] THEN cras.nb_participants
+                     WHEN cras.themes @> ARRAY ['scolaire'] THEN 1
                      ELSE 0 END)::INT                                                               as theme_scolaire
 
       FROM months
