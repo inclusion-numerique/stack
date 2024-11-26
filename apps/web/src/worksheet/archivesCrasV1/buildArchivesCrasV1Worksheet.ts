@@ -51,6 +51,21 @@ const v1CraHeaders = [
   'ID interne',
 ]
 
+// Type de lieu dans la base CRAS V1 -> label utilisé dans le tableau
+const typeLieuActivitev1Labels: { [key: string]: string } = {
+  EPCI: 'EPCI',
+  COMMUNE: 'Commune',
+  GIP: 'GIP',
+  DEPARTEMENT: 'Département',
+  PRIVATE: 'Privée',
+  COLLECTIVITE: 'Collectivité',
+}
+
+const typeLieuLabel = (typeLieu: string): string =>
+  typeLieu in typeLieuActivitev1Labels
+    ? typeLieuActivitev1Labels[typeLieu]
+    : typeLieu
+
 export const buildArchivesCrasV1Worksheet = ({
   v1Cras,
 }: BuildArchivesCrasV1WorksheetInput): Excel.Workbook => {
@@ -132,7 +147,7 @@ export const buildArchivesCrasV1Worksheet = ({
         // 8. Nom Structure
         structureNom,
         // 9. Type Structure
-        structureType,
+        structureType ? typeLieuLabel(structureType) : null,
         // 10. SIRET
         structureSiret,
         // 12. Canal
