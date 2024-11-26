@@ -63,35 +63,55 @@ export const LieuxActivites = ({
             },
           }) => (
             <li className="fr-border--top fr-py-5v" key={structureId}>
-              <div className="fr-text--xs fr-mb-0">
-                Mis à jour le {formatDate(new Date(modification), 'dd.MM.yyyy')}
-              </div>
-              <div className="fr-text--bold fr-my-1v">{nom}</div>
-              <div className="fr-text--sm fr-mb-0 fr-text-mention--grey">
-                <Typologies
-                  id={`typologies-lieu-activite-${structureId}`}
-                  typologies={typologies}
-                />
-                <div className="fr-flex fr-flex-gap-2v">
-                  <span>
-                    <span className="ri-map-pin-2-line" aria-hidden /> {adresse}
-                    {complementAdresse && ` (${complementAdresse})`},{' '}
-                    {codePostal} {commune}
-                  </span>
-                  {mediateursCount > 1 && (
-                    <>
-                      <span>·</span>
+              <div className="fr-flex fr-align-items-center">
+                <div className="fr-flex-grow-1">
+                  <div className="fr-text--xs fr-mb-0">
+                    Mis à jour le{' '}
+                    {formatDate(new Date(modification), 'dd.MM.yyyy')}
+                  </div>
+                  <div className="fr-text--bold fr-my-1v">{nom}</div>
+                  <div className="fr-text--sm fr-mb-0 fr-text-mention--grey">
+                    <Typologies
+                      id={`typologies-lieu-activite-${structureId}`}
+                      typologies={typologies}
+                    />
+                    <div className="fr-flex fr-flex-gap-2v">
                       <span>
-                        <Badge severity="info" small noIcon>
-                          <span
-                            className="ri-account-circle-fill fr-mr-1v"
-                            aria-hidden
-                          />{' '}
-                          {mediateursCount}
-                        </Badge>
+                        <span className="ri-map-pin-2-line" aria-hidden />{' '}
+                        {adresse}
+                        {complementAdresse && ` (${complementAdresse})`},{' '}
+                        {codePostal} {commune}
                       </span>
-                    </>
-                  )}
+                      {mediateursCount > 1 && (
+                        <>
+                          <span>·</span>
+                          <span>
+                            <Badge severity="info" small noIcon>
+                              <span
+                                className="ri-account-circle-fill fr-mr-1v"
+                                aria-hidden
+                              />{' '}
+                              {mediateursCount}
+                            </Badge>
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <Button
+                    title="Voir la fiche du lieu"
+                    size="small"
+                    iconId="fr-icon-arrow-right-line"
+                    iconPosition="right"
+                    priority="tertiary no outline"
+                    linkProps={{
+                      href: `/coop/lieux-activite/${structureId}`,
+                    }}
+                  >
+                    Voir
+                  </Button>
                 </div>
               </div>
             </li>

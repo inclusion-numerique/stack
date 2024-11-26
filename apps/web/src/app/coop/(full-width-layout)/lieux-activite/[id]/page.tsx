@@ -21,7 +21,6 @@ const LieuActiviteDetailPage = async ({
   const lieuActivite = await prismaClient.mediateurEnActivite.findUnique({
     where: {
       id: params.id,
-      mediateurId: user.mediateur.id,
     },
     select: {
       id: true,
