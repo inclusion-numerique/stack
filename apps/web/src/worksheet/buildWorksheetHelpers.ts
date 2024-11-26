@@ -40,10 +40,27 @@ const getMaxStringLength = (strings: (string | null | undefined)[]) =>
       .map((value) => value?.length ?? defaultCellLength),
   ) || defaultCellLength
 
+export type AutosizeColumnsOptions = {
+  fixedColumns?: Record<number, number>
+  extraPadding?: number
+  minWidth?: number // Defaults to 10
+}
 // Adjust column width automatically based on content
-export const autosizeColumns = (worksheet: Worksheet) => {
+export const autosizeColumns = (
+  worksheet: Worksheet,
+  options?: AutosizeColumnsOptions,
+) => {
   for (const column of worksheet.columns) {
-    let columnMaxLength = 10
+    if (
+      options?.fixedColumns &&
+      column.number &&
+      options.fixedColumns[column.number]
+    ) {
+      column.width = options.fixedColumns[column.number]
+      continue
+    }
+
+    let columnMaxLength = options?.minWidth ?? 10
 
     if (!column.eachCell) continue
 
@@ -54,7 +71,7 @@ export const autosizeColumns = (worksheet: Worksheet) => {
         columnMaxLength = cellLength
       }
     })
-    column.width = columnMaxLength
+    column.width = columnMaxLength + (options?.extraPadding ?? 0)
   }
 }
 

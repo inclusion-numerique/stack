@@ -13,7 +13,7 @@ export type ConseillerNumeriqueV1Document = {
   codeRegion: string
   codeRegionStructure?: string
   coordinateurs?: {
-    id: string
+    id: ObjectId
     nom: string
     prenom: string
     nonAffichageCarto?: boolean

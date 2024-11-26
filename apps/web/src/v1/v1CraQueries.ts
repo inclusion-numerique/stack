@@ -1,65 +1,78 @@
-import type { Prisma } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
 import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
-import type { GetCrasConseillerNumeriqueV1Input } from '@app/web/v1/GetCrasConseillerNumeriqueV1Input'
+import { CrasConseillerNumeriqueV1FilterOptions } from '@app/web/app/coop/(full-width-layout)/archives-v1/crasConseillerNumeriqueV1Queries'
 
-const getConseillerCoordonnesIds = async ({
+export const getConseillerCoordonnesIds = async ({
   coordinateurV1Id,
-}: GetCrasConseillerNumeriqueV1Input) => {
-  if (!coordinateurV1Id) {
-    return null
-  }
+  includeCoordinateur,
+}: {
+  coordinateurV1Id: string
+  includeCoordinateur: boolean
+}) => {
   // Coordinateur gets all V1 stats from his conseillers coordonés
   const found = await fetchConseillerNumeriqueV1Data({
     v1ConseillerId: coordinateurV1Id,
   })
   if (!found) {
     // Coordinateur does not exist in v1
-    return null
+    return []
   }
 
   const conseillersCoordonnes = found.conseillersCoordonnes ?? []
 
-  return conseillersCoordonnes.map(({ id }) => id)
+  const conseillersCoordonnesIds = conseillersCoordonnes.map(({ id }) => id)
+
+  if (includeCoordinateur) {
+    conseillersCoordonnesIds.push(coordinateurV1Id)
+  }
+
+  return conseillersCoordonnesIds
 }
 
-const crasConseillerNumeriqueV1Where = ({
-  input: {
-    conseillerNumeriqueV1Id,
-    accompagnementSince,
-    accompagnementUntil,
-    codeCommune,
-  },
-  conseillerCoordonnesIds,
-}: {
-  input: GetCrasConseillerNumeriqueV1Input
-  conseillerCoordonnesIds: string[] | null
-}) =>
+// Keep in sync with below crasConseillerNumeriqueV1WhereRawSql
+export const crasConseillerNumeriqueV1Where = (
+  input: CrasConseillerNumeriqueV1FilterOptions,
+) =>
   ({
-    v1ConseillerNumeriqueId: conseillerCoordonnesIds
-      ? {
-          in: conseillerCoordonnesIds,
-        }
-      : conseillerNumeriqueV1Id,
-    dateAccompagnement: {
-      gte: accompagnementSince,
-      lt: accompagnementUntil,
-    },
-    codeCommune,
+    v1ConseillerNumeriqueId:
+      input.conseillerNumeriqueIds && input.conseillerNumeriqueIds.length > 0
+        ? {
+            in: input.conseillerNumeriqueIds,
+          }
+        : undefined,
+    codeCommune: input.codeCommune ?? undefined,
   }) satisfies Prisma.CraConseillerNumeriqueV1WhereInput
 
-export const getCrasConseillerNumeriqueV1 = async (
-  input: GetCrasConseillerNumeriqueV1Input,
+// Keep in sync with above crasConseillerNumeriqueV1Where
+export const crasConseillerNumeriqueV1WhereRawSql = (
+  input: CrasConseillerNumeriqueV1FilterOptions,
 ) => {
-  const { coordinateurV1Id } = input
+  const conditions: string[] = []
 
+  if (input.codeCommune) {
+    conditions.push(`code_commune  = '${input.codeCommune}'`)
+  }
+  if (
+    !!input.conseillerNumeriqueIds &&
+    input.conseillerNumeriqueIds.length > 0
+  ) {
+    conditions.push(
+      `id IN (${input.conseillerNumeriqueIds.map((id) => `'${id}'`).join(', ')})`,
+    )
+  }
+
+  if (conditions.length === 0) {
+    return Prisma.raw('1 = 1')
+  }
+  return Prisma.raw(conditions.join(' AND '))
+}
+
+export const getCrasConseillerNumeriqueV1 = async (
+  input: CrasConseillerNumeriqueV1FilterOptions,
+) => {
   const result = await prismaClient.craConseillerNumeriqueV1.findMany({
-    where: crasConseillerNumeriqueV1Where({
-      input,
-      conseillerCoordonnesIds: await getConseillerCoordonnesIds({
-        coordinateurV1Id,
-      }),
-    }),
+    where: crasConseillerNumeriqueV1Where(input),
     orderBy: {
       dateAccompagnement: 'asc',
     },
@@ -73,16 +86,8 @@ export type CraConseillerNumeriqueV1Item = Awaited<
 >[number]
 
 export const countCrasConseillerNumeriqueV1 = async (
-  input: GetCrasConseillerNumeriqueV1Input,
-) => {
-  const { coordinateurV1Id } = input
-
-  return prismaClient.craConseillerNumeriqueV1.count({
-    where: crasConseillerNumeriqueV1Where({
-      input,
-      conseillerCoordonnesIds: await getConseillerCoordonnesIds({
-        coordinateurV1Id,
-      }),
-    }),
+  input: CrasConseillerNumeriqueV1FilterOptions,
+) =>
+  prismaClient.craConseillerNumeriqueV1.count({
+    where: crasConseillerNumeriqueV1Where(input),
   })
-}

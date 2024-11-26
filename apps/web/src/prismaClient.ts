@@ -5,7 +5,7 @@ const globalForPrisma = global as unknown as {
   prismaClient: PrismaClient | undefined
 }
 
-const debugLog = false
+const debugLog = process.env.PRISMA_ENABLE_LOGGING === '1'
 
 export const prismaClient =
   globalForPrisma.prismaClient ??

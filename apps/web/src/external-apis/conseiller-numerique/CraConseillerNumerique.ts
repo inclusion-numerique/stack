@@ -1,8 +1,29 @@
 import type { DBRef, ObjectId } from 'mongodb'
 
+export type CraConseillerNumeriqueTheme =
+  | 'autre'
+  | 'equipement informatique'
+  | 'demarche en ligne'
+  | 'smartphone'
+  | 'courriel'
+  | 'internet'
+  | 'vocabulaire'
+  | 'echanger'
+  | 'contenus numeriques'
+  | 'traitement texte'
+  | 'accompagner enfant'
+  | 'trouver emploi'
+  | 'tpe/pme'
+  | 'sante'
+  | 'diagnostic'
+  | 'fraude et harcelement'
+  | 'securite'
+  | 'budget'
+  | 'scolaire'
+
 export type CraConseillerNumerique = {
   dateAccompagnement: Date
-  canal: 'rattachement' | 'distance' | null
+  canal: 'rattachement' | 'distance' | 'domicile' | 'autre lieu'
   activite: 'individuel' | 'ponctuel' | 'collectif' | null
   nbParticipants: number
   nbParticipantsRecurrents?: number
@@ -27,7 +48,7 @@ export type CraConseillerNumerique = {
   }
   // E.g: [ { CCAS: 1 }, {'Assistante sociale': 1} ]
   organismes: { [index: string]: number }[] | null
-  themes: string[]
+  themes: CraConseillerNumeriqueTheme[]
   // Prendre en main du materiel
   // - Ordinateur
   // - Tablette
@@ -43,7 +64,7 @@ export type CraConseillerNumerique = {
   // TODO Trouver le précisier autre (annoter)
   // TODO dans l'éxport tout est dans un champ "annotations"
   sousThemes?: Record<string, string[]>[]
-  duree: string | null // 30mn, 30-60, ou champ libre par 15mn e.g. 2h15
+  duree: string | number | null //  '0-30', '30-60', '60', '90', numbers or null
   // Poursuite
   // - En accompagnement individuel (int)
   // - En atelier (int)
