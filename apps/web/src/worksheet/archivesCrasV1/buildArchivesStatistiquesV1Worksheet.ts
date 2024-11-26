@@ -201,6 +201,42 @@ const addTitlesColumns = (setCell: CellSetter) => {
   }
 }
 
+const addTotalsColumns = (
+  setCell: CellSetter,
+  totalStats: MonthlyStatistiquesV1,
+  worksheet: Excel.Worksheet,
+) => {
+  const column = 2
+  const percentageColumn = column + 1
+  // worksheet.mergeCells(statsStartRow, column, statsStartRow, percentageColumn)
+  setCell(statsStartRow, column, 'Total', {
+    font: { bold: true },
+  })
+
+  for (const [key, row] of Object.entries(rowForStat)) {
+    const value = totalStats[key as CrasV1StatKey] || 0
+    setCell(row, column, value, {
+      font: { bold: true },
+    })
+  }
+
+  for (const [key, percentage] of Object.entries(totalStats.percentages)) {
+    const row = rowForStat[key as CrasV1StatKey]
+    setCell(row, percentageColumn, percentage, {
+      numFmt: '0.0%',
+    })
+  }
+
+  // Add right border from titles to lastRow
+  // eslint-disable-next-line no-plusplus
+  for (let row = statsStartRow; row <= lastRow; row++) {
+    const cell = worksheet.getCell(row, percentageColumn)
+    cell.border = {
+      right: { style: 'thin' },
+    }
+  }
+}
+
 // Each month have 2 columns
 const addMontlyStatColumns = (
   column: number,
@@ -248,7 +284,7 @@ export const buildArchivesStatistiquesV1Worksheet = ({
 
   const worksheet = workbook.addWorksheet('Statistiques mensuelles')
 
-  const { firstMonth, lastMonth, monthlyStats } = stats
+  const { firstMonth, lastMonth, monthlyStats, totalStats } = stats
 
   const titleRow1 = worksheet.addRow([])
   titleRow1.getCell(1).value =
@@ -264,10 +300,12 @@ export const buildArchivesStatistiquesV1Worksheet = ({
 
   addTitlesColumns(setCell)
 
+  addTotalsColumns(setCell, totalStats, worksheet)
+
   for (const [index, monthly] of Object.values(monthlyStats).map(
     (value, valueIndex): [number, MonthlyStatistiquesV1] => [valueIndex, value],
   )) {
-    const column = index * 2 + 2
+    const column = index * 2 + 4
     addMontlyStatColumns(column, setCell, monthly, worksheet)
   }
 
@@ -275,7 +313,7 @@ export const buildArchivesStatistiquesV1Worksheet = ({
 
   // add border top to startRow for monthsCount *2 columns, skip first column
   // eslint-disable-next-line no-plusplus
-  for (let column = 2; column < monthsCount * 2 + 2; column++) {
+  for (let column = 2; column < monthsCount * 2 + 4; column++) {
     const cell = worksheet.getCell(statsStartRow, column)
     cell.border = {
       top: { style: 'thin' },
@@ -284,7 +322,7 @@ export const buildArchivesStatistiquesV1Worksheet = ({
 
   // add border bottom to lastRow for 1+monthsCount *2 columns, and first column
   // eslint-disable-next-line no-plusplus
-  for (let column = 1; column <= monthsCount * 2 + 1; column++) {
+  for (let column = 1; column <= monthsCount * 2 + 3; column++) {
     const cell = worksheet.getCell(lastRow, column)
     cell.border = {
       bottom: { style: 'thin' },
@@ -294,10 +332,11 @@ export const buildArchivesStatistiquesV1Worksheet = ({
   const statColumnWidth = 8
 
   const monthColumnSizes = Object.fromEntries(
-    Array.from({ length: monthsCount * 2 }).map((_, index) => [
-      index + 2,
-      statColumnWidth,
-    ]),
+    Array.from({
+      length:
+        // Months  + Totals
+        (monthsCount + 1) * 2,
+    }).map((_, index) => [index + 2, statColumnWidth]),
   )
 
   autosizeColumns(worksheet, {

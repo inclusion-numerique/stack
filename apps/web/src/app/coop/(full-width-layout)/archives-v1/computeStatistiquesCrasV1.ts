@@ -169,6 +169,80 @@ export const postProcessV1CraStatRow = (row: CrasV1StatRow) => {
   }
 }
 
+const sumStats = (rows: CrasV1StatRow[]) => {
+  const totals = {
+    month: 'total',
+    total: 0,
+    accompagnements: 0,
+    personnes_accompagnees: 0,
+    individuels: 0,
+    ponctuels: 0,
+    collectifs: 0,
+    participants_ateliers: 0,
+    suivi_individuel: 0,
+    suivi_atelier: 0,
+    suivi_redirection: 0,
+    canal_domicile: 0,
+    canal_rattachement: 0,
+    canal_distance: 0,
+    canal_autre: 0,
+    temps_total: 0,
+    temps_individuel: 0,
+    temps_ponctuel: 0,
+    temps_collectif: 0,
+    duree_0_30: 0,
+    duree_30_60: 0,
+    duree_60_120: 0,
+    duree_120_plus: 0,
+    age_moins_12_ans: 0,
+    age_de_12_a_18_ans: 0,
+    age_de_18_a_35_ans: 0,
+    age_de_35_a_60_ans: 0,
+    age_plus_60_ans: 0,
+    statut_etudiant: 0,
+    statut_sans_emploi: 0,
+    statut_en_emploi: 0,
+    statut_retraite: 0,
+    statut_heterogene: 0,
+    theme_accompagner_enfant: 0,
+    theme_budget: 0,
+    theme_contenus_numeriques: 0,
+    theme_courriel: 0,
+    theme_demarche_en_ligne: 0,
+    theme_diagnostic: 0,
+    theme_echanger: 0,
+    theme_equipement_informatique: 0,
+    theme_fraude_et_harcelement: 0,
+    theme_internet: 0,
+    theme_sante: 0,
+    theme_scolaire: 0,
+    theme_securite: 0,
+    theme_smartphone: 0,
+    theme_tpe_pme: 0,
+    theme_traitement_texte: 0,
+    theme_trouver_emploi: 0,
+    theme_vocabulaire: 0,
+    theme_autre: 0,
+  } satisfies CrasV1StatRow
+
+  for (const row of rows) {
+    for (const [key, value] of Object.entries(row)) {
+      const typedKey = key as keyof CrasV1StatRow
+
+      if (
+        typedKey === 'month' ||
+        !(typedKey in totals) ||
+        typeof value !== 'number'
+      )
+        continue
+
+      totals[typedKey] += value
+    }
+  }
+
+  return postProcessV1CraStatRow(totals)
+}
+
 export const getRawStatistiquesCrasV1 = async (
   input: CrasConseillerNumeriqueV1FilterOptions,
 ) => {
@@ -312,6 +386,7 @@ export const getRawStatistiquesCrasV1 = async (
     firstMonth,
     lastMonth,
     monthlyStats: monthlyStats.map(postProcessV1CraStatRow),
+    totalStats: sumStats(monthlyStats),
   }
 }
 
