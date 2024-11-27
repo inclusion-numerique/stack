@@ -47,7 +47,7 @@ export const CraCollectifValidation = z
     niveau: z.enum(niveauAtelierValues).nullish(),
     notes: z.string().nullish(),
   })
-  // structureId is required if lieuAccompagnement ===  LieuActivite
+  // structureId is required if typeLieu ===  LieuActivite
   .refine(
     (data) => {
       if (data.typeLieu === 'LieuActivite') {
@@ -60,7 +60,7 @@ export const CraCollectifValidation = z
       path: ['structureId'],
     },
   )
-  // lieuCommuneData is required if lieuAtelier === Autre
+  // lieuCommuneData is required if typeLieu === Domicile ou typeLieu === Autre
   .refine(
     (data) =>
       (data.typeLieu !== 'Autre' && data.typeLieu !== 'Domicile') ||

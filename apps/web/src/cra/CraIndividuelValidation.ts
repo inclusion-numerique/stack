@@ -38,7 +38,7 @@ export const CraIndividuelValidation = z
     structureDeRedirection: z.enum(structuresRedirectionValues).nullish(),
     notes: z.string().nullish(),
   })
-  // structureId is required if lieuAccompagnement ===  LieuActivite
+  // structureId is required if typeLieu ===  LieuActivite
   .refine(
     (data) => {
       if (data.typeLieu === 'LieuActivite') {
@@ -51,10 +51,15 @@ export const CraIndividuelValidation = z
       path: ['structureId'],
     },
   )
-  // lieuCommuneData is required if lieuAccompagnement === Domicile
-  .refine((data) => data.typeLieu !== 'Domicile' || !!data.lieuCommuneData, {
-    message: 'Veuillez renseigner la commune',
-    path: ['lieuCommuneData'],
-  })
+  // lieuCommuneData is required if typeLieu === Domicile ou typeLieu === Autre
+  .refine(
+    (data) =>
+      (data.typeLieu !== 'Autre' && data.typeLieu !== 'Domicile') ||
+      !!data.lieuCommuneData,
+    {
+      message: 'Veuillez renseigner la commune',
+      path: ['lieuCommuneData'],
+    },
+  )
 
 export type CraIndividuelData = z.infer<typeof CraIndividuelValidation>
