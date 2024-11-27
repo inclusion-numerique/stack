@@ -9,6 +9,7 @@ import { Typologies } from '@app/web/components/structure/Typologies'
 
 export const LieuxActivites = ({
   lieuxActivites,
+  mediateurId,
 }: {
   lieuxActivites: {
     id: string
@@ -27,6 +28,7 @@ export const LieuxActivites = ({
     }
     creation: Date
   }[]
+  mediateurId: string
 }) => {
   const [showMore, setShowMore] = useState(false)
 
@@ -107,7 +109,7 @@ export const LieuxActivites = ({
                     iconPosition="right"
                     priority="tertiary no outline"
                     linkProps={{
-                      href: `/coop/lieux-activite/${structureId}`,
+                      href: `${mediateurId}/${structureId}`,
                     }}
                   >
                     Voir
