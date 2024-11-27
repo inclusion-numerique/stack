@@ -266,18 +266,18 @@ model CraConseillerNumeriqueV1 {
   sousThemesAccompagner            String[] @default([]) @map("sous_themes_accompagner")
   sousThemesTraitementTexte        String[] @default([]) @map("sous_themes_traitement_texte")
 
-  duree String
-  dureeMinutes Int @map("duree_minutes")
+  duree        String
+  dureeMinutes Int    @map("duree_minutes")
 
   // Poursuites accompagnements
   accompagnementIndividuel  Int @default(0) @map("accompagnement_individuel")
   accompagnementAtelier     Int @default(0) @map("accompagnement_atelier")
   accompagnementRedirection Int @default(0) @map("accompagnement_redirection")
 
-  codePostal         String  @map("code_postal")
-  nomCommune         String  @map("nom_commune")
+  codePostal         String   @map("code_postal")
+  nomCommune         String   @map("nom_commune")
   dateAccompagnement DateTime @map("date_accompagnement")
-  codeCommune        String  @map("code_commune")
+  codeCommune        String   @map("code_commune")
   organismes         Json? // Poursuite vers autre structures
   annotation         String?
 
@@ -693,7 +693,7 @@ model Activite {
   suppression  DateTime?
 
   // CHAMPS CRA INDIVIDUELS ET DEMARCHE ADMINISTRATIVE
-  typeLieu               TypeLieu               @map("type_lieu")
+  typeLieu               TypeLieu                @map("type_lieu")
   autonomie              Autonomie?
   structureDeRedirection StructureDeRedirection? @map("structure_de_redirection")
 
@@ -710,8 +710,8 @@ model Activite {
   degreDeFinalisation DegreDeFinalisationDemarche?       @map("degre_de_finalisation")
 
   // CHAMPS CRA COLLECTIF
-  titreAtelier    String?          @map("titre_atelier")
-  niveau          NiveauAtelier?
+  titreAtelier String?        @map("titre_atelier")
+  niveau       NiveauAtelier?
 
   @@index([structureId])
   @@index([mediateurId])
@@ -758,6 +758,7 @@ enum Materiel {
 
 // Thematiques d’inclusion numérique
 enum Thematique {
+  DiagnosticNumerique      @map("diagnostic_numerique")
   PrendreEnMainDuMateriel  @map("prendre_en_main_du_materiel")
   NavigationSurInternet    @map("navigation_sur_internet")
   Email                    @map("email")

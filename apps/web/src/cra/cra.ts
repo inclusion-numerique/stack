@@ -207,6 +207,7 @@ export const materielValues = Object.keys(materielLabels) as [
 export const thematiqueLabels: {
   [key in Thematique]: string
 } = {
+  DiagnosticNumerique: 'Diagnostic numérique',
   PrendreEnMainDuMateriel: 'Prendre en main du matériel',
   NavigationSurInternet: 'Navigation sur internet',
   Email: 'E-mail',
@@ -232,6 +233,10 @@ export const thematiqueShortLabels = {
 export const thematiqueHints: {
   [key in Thematique]?: string[]
 } = {
+  DiagnosticNumerique: [
+    'Évaluation des compétences numériques des bénéficiaires',
+    'Réaliser un questionnaire d’évaluation (ex : ABC Diag de Pix)',
+  ],
   PrendreEnMainDuMateriel: [
     'Utiliser un ordinateur, une tablette ou un smartphone',
     'Utiliser des périphériques (réseau wifi, clé USB, imprimante, scanner…)',
@@ -305,6 +310,7 @@ export const thematiqueHints: {
 export const thematiqueIllustrations: {
   [key in Thematique]?: string
 } = {
+  DiagnosticNumerique: '/images/iconographie/mednum-diagnostic.svg',
   PrendreEnMainDuMateriel: '/images/iconographie/mednum-materiel.svg',
   NavigationSurInternet: '/images/iconographie/mednum-internet.svg',
   Email: '/images/iconographie/mednum-email.svg',
