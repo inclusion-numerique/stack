@@ -26,7 +26,7 @@ const UsurpUserButton = ({
 
       createToast({
         priority: 'success',
-        message: `Vous êtes maintenant connécté en tant que ${usurped.name || usurped.email}`,
+        message: `Vous êtes maintenant connecté en tant que ${usurped.name || usurped.email}`,
       })
 
       router.replace(getLoginRedirectUrl(usurped))

@@ -18,7 +18,7 @@ export const typeActiviteLabels: {
 } = {
   Individuel: 'Accompagnement individuel',
   Demarche: 'Aide aux démarches administratives',
-  Collectif: 'Ateliers collectif',
+  Collectif: 'Atelier collectif',
 }
 
 export const typeActivitePluralLabels: {
