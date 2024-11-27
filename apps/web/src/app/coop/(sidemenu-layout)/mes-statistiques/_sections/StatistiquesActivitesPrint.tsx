@@ -112,13 +112,13 @@ export const StatistiquesActivitesPrint = ({
       <div className="fr-flex fr-align-items-center">
         <AccompagnementPieChart
           size={128}
-          data={activites.mergedTypeLieu}
+          data={activites.typeLieu}
           colors={canauxAccompagnementColors}
           isAnimationActive={false}
         />
         <QuantifiedShareLegend
           classeName="fr-pl-3w"
-          quantifiedShares={activites.mergedTypeLieu}
+          quantifiedShares={activites.typeLieu}
           colors={canauxAccompagnementColors}
         />
       </div>

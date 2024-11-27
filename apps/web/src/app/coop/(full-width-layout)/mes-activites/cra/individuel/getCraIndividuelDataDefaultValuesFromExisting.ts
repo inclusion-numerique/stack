@@ -89,7 +89,7 @@ export const getCraIndividuelDataDefaultValuesFromExisting = async ({
     thematiques: thematiques ?? undefined,
     structureDeRedirection: structureDeRedirection ?? undefined,
     structureId: structureId ?? undefined,
-    lieuAccompagnementDomicileCommune:
+    lieuCommuneData:
       lieuCommune && lieuCodePostal && lieuCodeInsee
         ? banDefaultValueToAdresseBanData({
             commune: lieuCommune ?? undefined,

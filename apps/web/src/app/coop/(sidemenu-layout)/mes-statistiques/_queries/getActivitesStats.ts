@@ -5,7 +5,6 @@ import {
   ThematiqueDemarcheAdministrative,
   TypeActivite,
   TypeLieu,
-  TypeLieuAtelier,
 } from '@prisma/client'
 import { snakeCase } from 'change-case'
 import { prismaClient } from '@app/web/prismaClient'
@@ -19,8 +18,6 @@ import {
   thematiqueValues,
   typeActiviteLabels,
   typeActiviteValues,
-  typeLieuAtelierLabels,
-  typeLieuAtelierValues,
   typeLieuLabels,
   typeLieuValues,
 } from '@app/web/cra/cra'
@@ -41,7 +38,6 @@ export type ActivitesStatsRaw = {
   [key: `type_${string}_count`]: number
   [key: `duree_${string}_count`]: number
   [key: `type_lieu_${string}_count`]: number
-  [key: `type_lieu_atelier_${string}_count`]: number
   [key: `thematiques_${string}_count`]: number
   [key: `thematiques_demarche_${string}_count`]: number
   [key: `materiel_${string}_count`]: number
@@ -60,7 +56,7 @@ export const getActivitesStatsRaw = async ({
 
   return prismaClient.$queryRaw<[ActivitesStatsRaw]>`
       SELECT COALESCE(COUNT(*), 0)::integer AS total_activites,
-             -- Enum count selects for type, type_lieu, type_lieu_atelier, duree, thematiques, thematiques_demarche, materiel
+             -- Enum count selects for type, type_lieu, duree, thematiques, thematiques_demarche, materiel
              ${createEnumCountSelect({
                enumObj: TypeActivite,
                column: 'activites.type',
@@ -74,11 +70,6 @@ export const getActivitesStatsRaw = async ({
                enumObj: TypeLieu,
                column: 'activites.type_lieu',
                as: 'type_lieu',
-             })},
-             ${createEnumCountSelect({
-               enumObj: TypeLieuAtelier,
-               column: 'activites.type_lieu_atelier',
-               as: 'type_lieu_atelier',
              })},
              ${createEnumArrayCountSelect({
                enumObj: Thematique,
@@ -126,28 +117,6 @@ export const normalizeActivitesStatsRaw = (stats: ActivitesStatsRaw) => {
     count: stats[`type_lieu_${snakeCase(typeLieu)}_count`] ?? 0,
   }))
 
-  const typeLieuAtelierData = typeLieuAtelierValues.map((typeLieuAtelier) => ({
-    value: typeLieuAtelier,
-    label: typeLieuAtelierLabels[typeLieuAtelier],
-    count: stats[`type_lieu_atelier_${snakeCase(typeLieuAtelier)}_count`] ?? 0,
-  }))
-
-  const mergedTypeLieuData = [...typeLieuData, ...typeLieuAtelierData].reduce<
-    {
-      value: TypeLieu | TypeLieuAtelier
-      label: string
-      count: number
-    }[]
-  >((accumulator, item) => {
-    const existingItem = accumulator.find(({ value }) => value === item.value)
-    if (existingItem) {
-      existingItem.count += item.count
-    } else {
-      accumulator.push(item)
-    }
-    return accumulator
-  }, [])
-
   const thematiquesData = thematiqueValues.map((thematique) => ({
     value: thematique,
     label: thematiqueLabels[thematique],
@@ -184,16 +153,6 @@ export const normalizeActivitesStatsRaw = (stats: ActivitesStatsRaw) => {
     durees: allocatePercentagesFromRecords(dureesData, 'count', 'proportion'),
     typeLieu: allocatePercentagesFromRecords(
       typeLieuData,
-      'count',
-      'proportion',
-    ),
-    typeLieuAtelier: allocatePercentagesFromRecords(
-      typeLieuAtelierData,
-      'count',
-      'proportion',
-    ),
-    mergedTypeLieu: allocatePercentagesFromRecords(
-      mergedTypeLieuData,
       'count',
       'proportion',
     ),

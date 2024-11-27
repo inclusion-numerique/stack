@@ -25,7 +25,6 @@ import {
   thematiqueDemarcheAdministrativeLabels,
   thematiqueLabels,
   typeActiviteLabels,
-  typeLieuAtelierLabels,
   typeLieuLabels,
 } from '@app/web/cra/cra'
 import {
@@ -142,11 +141,6 @@ const emptyData: MesStatistiquesPageData = {
     ),
     materiels: emptyQuantifiedSharesFromEnum(materielLabels),
     typeLieu: emptyQuantifiedSharesFromEnum(typeLieuLabels),
-    typeLieuAtelier: emptyQuantifiedSharesFromEnum(typeLieuAtelierLabels),
-    mergedTypeLieu: emptyQuantifiedSharesFromEnum({
-      ...typeLieuLabels,
-      ...typeLieuAtelierLabels,
-    }),
     durees: dureeAccompagnementStatisticsRanges.map(({ key, label }) => ({
       value: key,
       label,
@@ -314,22 +308,7 @@ describe('getMesStatistiquesPageData', () => {
 
           expectEnum(data.activites.typeLieu, 'Domicile', 2, 8)
           expectEnum(data.activites.typeLieu, 'ADistance', 6, 8)
-
-          expectEnum(data.activites.typeLieuAtelier, 'Autre', 2, 2)
-
-          expectEnum(
-            data.activites.mergedTypeLieu,
-            'Domicile',
-            2,
-            totalActivites,
-          )
-          expectEnum(
-            data.activites.mergedTypeLieu,
-            'ADistance',
-            6,
-            totalActivites,
-          )
-          expectEnum(data.activites.mergedTypeLieu, 'Autre', 2, totalActivites)
+          expectEnum(data.activites.typeLieu, 'Autre', 2, 2)
 
           expectEnum(data.activites.durees, '120', 10, totalActivites)
 

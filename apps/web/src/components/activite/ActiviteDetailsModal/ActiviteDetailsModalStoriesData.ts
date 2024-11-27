@@ -53,7 +53,6 @@ export const activiteIndividuelleInfosMinimum = {
   precisionsDemarche: null,
   degreDeFinalisation: null,
   titreAtelier: null,
-  typeLieuAtelier: null,
   niveau: null,
 } satisfies ActiviteForList
 
@@ -99,7 +98,6 @@ export const activiteIndividuelleBeneficiaireSuivi = {
   precisionsDemarche: null,
   degreDeFinalisation: null,
   titreAtelier: null,
-  typeLieuAtelier: null,
   niveau: null,
 } satisfies ActiviteForList
 
@@ -147,7 +145,6 @@ export const activiteIndividuelleBeneficiaireAnonyme = {
   precisionsDemarche: null,
   degreDeFinalisation: null,
   titreAtelier: null,
-  typeLieuAtelier: null,
   niveau: null,
 } satisfies ActiviteForList
 
@@ -200,7 +197,7 @@ export const activiteCollectifInfosRepliees = {
       },
     },
   ],
-  typeLieu: null,
+  typeLieu: 'Autre',
   autonomie: null,
   materiel: [],
   lieuCommune: 'Lyon',
@@ -212,7 +209,6 @@ export const activiteCollectifInfosRepliees = {
   precisionsDemarche: null,
   degreDeFinalisation: null,
   titreAtelier: 'Atelier de découverte de la vacuité de toute chose',
-  typeLieuAtelier: 'Autre',
   niveau: 'Debutant',
 } satisfies ActiviteForList
 
@@ -308,7 +304,6 @@ export const activiteCollectifInfosDepliees = {
   precisionsDemarche: null,
   degreDeFinalisation: null,
   titreAtelier: null,
-  typeLieuAtelier: 'LieuActivite',
   niveau: 'Debutant',
 } satisfies ActiviteForList
 

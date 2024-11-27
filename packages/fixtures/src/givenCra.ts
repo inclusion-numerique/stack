@@ -1,7 +1,9 @@
-import type { Prisma, TypeLieu, TypeLieuAtelier } from '@prisma/client'
+import type { Prisma, TypeLieu } from '@prisma/client'
 import { v4 } from 'uuid'
 import type { ParticipantsAnonymesCraCollectifData } from '@app/web/cra/ParticipantsAnonymesCraCollectifValidation'
-import { createBeneficiairesForParticipantsAnonymes } from '@app/web/beneficiaire/createBeneficiairesForParticipantsAnonymes'
+import {
+  createBeneficiairesForParticipantsAnonymes,
+} from '@app/web/beneficiaire/createBeneficiairesForParticipantsAnonymes'
 import { mergeUuids } from './mergeUuids'
 
 /**
@@ -132,7 +134,7 @@ export const givenCraCollectif = <
     id: string
     type: 'Collectif'
     duree: number
-    typeLieuAtelier: TypeLieuAtelier
+    typeLieu: TypeLieu
     date: string | Date
   }
   accompagnements: Prisma.AccompagnementUncheckedCreateInput[]
@@ -142,7 +144,7 @@ export const givenCraCollectif = <
 
   const duree = rest.duree ?? 90
   const date = rest.date ?? new Date().toISOString()
-  const typeLieuAtelier: TypeLieuAtelier = rest.typeLieuAtelier ?? 'Autre'
+  const typeLieu: TypeLieu = rest.typeLieu ?? 'ADistance'
 
   const givenId = id ?? v4()
 
@@ -176,7 +178,7 @@ export const givenCraCollectif = <
     type: 'Collectif',
     duree,
     date,
-    typeLieuAtelier,
+    typeLieu,
   } satisfies Omit<T, 'id' | 'participantsAnonymes' | 'beneficiaireIds'> & {
     id: string
   }

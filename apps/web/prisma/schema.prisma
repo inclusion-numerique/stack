@@ -678,12 +678,12 @@ model Activite {
 
   // Structure est renseigné
   // - si typeLieu = LieuActivite
-  // - ou typeLieuAtelier = LieuActivite
   structureId    String?    @map("structure_id") @db.Uuid
   structure      Structure? @relation(fields: [structureId], references: [id], name: "activite_structure")
   // lieu* est renseigné
-  // - si lieuAccompagnement = Domicile pour individuel/demarche
-  // - ou si lieuAtelier = Autre pour les cras collectifs
+  // - si typeLieu = A Domicile
+  // - ou si typeLieu = Autre
+  // - ou si typeLieu = A Distance -> assigné à la commune de la structure employeuse
   lieuCodePostal String?    @map("lieu_code_postal")
   lieuCommune    String?    @map("lieu_commune")
   lieuCodeInsee  String?    @map("lieu_code_insee")
@@ -693,7 +693,7 @@ model Activite {
   suppression  DateTime?
 
   // CHAMPS CRA INDIVIDUELS ET DEMARCHE ADMINISTRATIVE
-  typeLieu               TypeLieu?               @map("type_lieu")
+  typeLieu               TypeLieu               @map("type_lieu")
   autonomie              Autonomie?
   structureDeRedirection StructureDeRedirection? @map("structure_de_redirection")
 
@@ -711,7 +711,6 @@ model Activite {
 
   // CHAMPS CRA COLLECTIF
   titreAtelier    String?          @map("titre_atelier")
-  typeLieuAtelier TypeLieuAtelier? @map("type_lieu_atelier")
   niveau          NiveauAtelier?
 
   @@index([structureId])
@@ -742,6 +741,7 @@ enum TypeLieu {
   LieuActivite @map("lieu_activite")
   Domicile     @map("domicile")
   ADistance    @map("a_distance")
+  Autre        @map("autre")
 
   @@map("type_lieu")
 }
@@ -792,13 +792,6 @@ enum StructureDeRedirection {
   Autre                           @map("autre")
 
   @@map("structure_de_redirection")
-}
-
-enum TypeLieuAtelier {
-  LieuActivite @map("lieu_activite")
-  Autre        @map("autre")
-
-  @@map("type_lieu_atelier")
 }
 
 enum NiveauAtelier {

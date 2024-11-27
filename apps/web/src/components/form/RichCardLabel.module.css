@@ -1,117 +1,138 @@
 .label {
-  --idle: transparent;
-  --hover: var(--background-default-grey-hover);
-  --active: var(--background-default-grey-active);
+    --idle: transparent;
+    --hover: var(--background-default-grey-hover);
+    --active: var(--background-default-grey-active);
 
-  position: relative;
-  height: 100%;
+    position: relative;
+    height: 100%;
 
-  /* 15px to be able to have 56px height total, 16 wierdly makes it 58px */
-  padding-top: 15px !important;
-  padding-bottom: 15px !important;
-  background: var(--background-default-grey) !important;
-  align-items: center;
+    /* 15px to be able to have 56px height total, 16 wierdly makes it 58px */
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    background: var(--background-default-grey) !important;
+    align-items: center;
 
-  &.paddingX16 {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-  }
+    &.paddingX16 {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
 
-  &.paddingX24 {
-    padding-left: 24px !important;
-    padding-right: 24px !important;
-  }
+    &.paddingX24 {
+        padding-left: 24px !important;
+        padding-right: 24px !important;
+    }
+
+    &.paddingRight16 {
+        padding-right: 16px !important;
+    }
+
+    &.paddingRight24 {
+        padding-right: 24px !important;
+    }
 }
 
 .tooltipContainer {
-  position: absolute;
-  top: 1px;
-  right: 1px;
-  z-index: 0;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    z-index: 0;
 
-  button {
-    background: transparent !important;
-  }
+    button {
+        background: transparent !important;
+    }
 }
 
 /* integration with dsfr components */
 
 .radioGroup {
-  max-width: none;
+    max-width: none;
 }
 
 .fieldsetElement {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  max-width: initial;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  > * {
+    margin: 0;
+    padding: 0;
     height: 100%;
-  }
+    width: 100%;
+    max-width: initial;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
-  input {
-    display: none;
-  }
-
-  input + label.label {
-    margin-left: 0; /* override dsfr margin */
-  }
-
-  label::before {
-    content: none !important;
-  }
-
-  input:checked + .label {
-    border: 2px solid var(--border-action-high-blue-france);
-
-    /* Adjust padding for border width change */
-
-    padding-top: 14px !important;
-    padding-bottom: 14px !important;
-
-    &.paddingX16 {
-      padding-left: 15px !important;
-      padding-right: 15px !important;
+    > * {
+        height: 100%;
     }
 
-    &.paddingX24 {
-      padding-left: 23px !important;
-      padding-right: 23px !important;
+    input {
+        display: none;
     }
 
-    .tooltipContainer {
-      top: 0;
-      right: 0;
-    }
-  }
-
-  input:not(:disabled) + .label {
-    --hover-tint: var(--hover);
-    --active-tint: var(--active);
-
-    &:hover {
-      background: var(--hover-tint) !important;
+    input + label.label {
+        margin-left: 0; /* override dsfr margin */
     }
 
-    &:active {
-      background: var(--active-tint) !important;
+    label::before {
+        content: none !important;
     }
 
-    &:has(button:hover) {
-      background: initial !important; /* Reset the background if info button is hovered */
+    input:checked + .label {
+        border: 2px solid var(--border-action-high-blue-france);
+
+        /* Adjust padding for border width change */
+
+        padding-top: 14px !important;
+        padding-bottom: 14px !important;
+
+        &.paddingX16 {
+            padding-left: 15px !important;
+            padding-right: 15px !important;
+        }
+
+        &.paddingX24 {
+            padding-left: 23px !important;
+            padding-right: 23px !important;
+        }
+
+        &.paddingRight16 {
+            padding-right: 15px !important;
+        }
+
+        &.paddingRight24 {
+            padding-right: 23px !important;
+        }
+
+        .tooltipContainer {
+            top: 0;
+            right: 0;
+        }
     }
 
-    &:has(button:active) {
-      background: initial !important; /* Reset the background if info button is active */
-    }
-  }
+    input:not(:disabled) + .label {
+        --hover-tint: var(--hover);
+        --active-tint: var(--active);
 
-  input[type='radio'] + label.label {
-    justify-content: center;
-  }
+        &:hover {
+            background: var(--hover-tint) !important;
+        }
+
+        &:active {
+            background: var(--active-tint) !important;
+        }
+
+        &:has(button:hover) {
+            background: initial !important; /* Reset the background if info button is hovered */
+        }
+
+        &:has(button:active) {
+            background: initial !important; /* Reset the background if info button is active */
+        }
+    }
+
+    input[type='radio'] + label.label {
+        justify-content: center;
+    }
+}
+
+.illustration {
+    display: block;
+    width: 56px;
 }

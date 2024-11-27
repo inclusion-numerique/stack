@@ -177,6 +177,7 @@ describe('updateStructureFromCartoDataApi', () => {
     await prismaClient.activite.create({
       data: {
         type: 'Individuel',
+        typeLieu: 'ADistance',
         mediateurId: mediateur.id,
         date: NOW,
         duree: 60,

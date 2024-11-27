@@ -172,8 +172,7 @@ export const createOrUpdateActivite = async ({
       : beneficiaireAnonymeCreateDataFromForm(input.data.beneficiaire)
 
   const structure =
-    ('typeLieuAtelier' in data && data.typeLieuAtelier === 'LieuActivite') ||
-    ('typeLieu' in data && data.typeLieu === 'LieuActivite')
+    'typeLieu' in data && data.typeLieu === 'LieuActivite'
       ? await getExistingStructure({
           structureId,
           mediateurId,
@@ -187,15 +186,15 @@ export const createOrUpdateActivite = async ({
   const { lieuCommune, lieuCodePostal, lieuCodeInsee } =
     'typeLieuAtelier' in data && data.typeLieuAtelier === 'Autre'
       ? {
-          lieuCommune: data.lieuAtelierAutreCommune?.commune,
-          lieuCodePostal: data.lieuAtelierAutreCommune?.codePostal,
-          lieuCodeInsee: data.lieuAtelierAutreCommune?.codeInsee,
+          lieuCommune: data.lieuCommuneData?.commune,
+          lieuCodePostal: data.lieuCommuneData?.codePostal,
+          lieuCodeInsee: data.lieuCommuneData?.codeInsee,
         }
       : 'typeLieu' in data && data.typeLieu === 'Domicile'
         ? {
-            lieuCommune: data.lieuAccompagnementDomicileCommune?.commune,
-            lieuCodePostal: data.lieuAccompagnementDomicileCommune?.codePostal,
-            lieuCodeInsee: data.lieuAccompagnementDomicileCommune?.codeInsee,
+            lieuCommune: data.lieuCommuneData?.commune,
+            lieuCodePostal: data.lieuCommuneData?.codePostal,
+            lieuCodeInsee: data.lieuCommuneData?.codeInsee,
           }
         : {
             lieuCommune: undefined,
@@ -210,9 +209,7 @@ export const createOrUpdateActivite = async ({
       connect: { id: mediateurId },
     },
     duree: craDureeDataToMinutes(duree),
-    typeLieu: 'typeLieu' in data ? data.typeLieu : undefined,
-    typeLieuAtelier:
-      'typeLieuAtelier' in data ? data.typeLieuAtelier : undefined,
+    typeLieu: data.typeLieu ?? undefined,
     niveau: 'niveau' in data ? data.niveau : undefined,
     materiel: 'materiel' in data ? data.materiel : undefined,
     titreAtelier: 'titreAtelier' in data ? data.titreAtelier : undefined,

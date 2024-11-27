@@ -38,8 +38,8 @@ const CreateCraDemarcheAdministrativePage = async ({
     },
     duree: urlFormState.duree ?? { dureePersonnaliseeType: 'minutes' },
     // If no value for domicile usager, then default to beneficiaire adresse
-    lieuAccompagnementDomicileCommune:
-      urlFormState.lieuAccompagnementDomicileCommune ??
+    lieuCommuneData:
+      urlFormState.lieuCommuneData ??
       (urlFormState.beneficiaire?.communeResidence
         ? banDefaultValueToAdresseBanData(
             urlFormState.beneficiaire.communeResidence,

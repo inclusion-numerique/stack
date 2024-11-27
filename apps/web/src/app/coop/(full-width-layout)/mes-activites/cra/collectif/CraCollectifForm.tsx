@@ -30,7 +30,7 @@ import {
   materielOptions,
   niveauAtelierOptionsWithExtras,
   thematiqueOptionsWithExtras,
-  typeLieuAtelierOptionsWithExtras,
+  typeLieuOptionsWithExtras,
 } from '@app/web/cra/cra'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { craFormFieldsetClassname } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/craFormFieldsetClassname'
@@ -70,9 +70,9 @@ const CraCollectifForm = ({
 
   const router = useRouter()
 
-  const typeLieuAtelier = form.watch('typeLieuAtelier')
-  const showLieuAtelierAutreCommune = typeLieuAtelier === 'Autre'
-  const showStructure = typeLieuAtelier === 'LieuActivite'
+  const typeLieu = form.watch('typeLieu')
+  const showLieuCommuneData = typeLieu === 'Autre' || typeLieu === 'Domicile'
+  const showStructure = typeLieu === 'LieuActivite'
 
   const {
     control,
@@ -110,15 +110,12 @@ const CraCollectifForm = ({
 
   useScrollToError({ errors })
 
-  const lieuAtelierAutreCommuneDefaultValue =
-    defaultValues.lieuAtelierAutreCommune
-      ? {
-          label: banMunicipalityLabel(defaultValues.lieuAtelierAutreCommune),
-          value: banDefaultValueToAdresseBanData(
-            defaultValues.lieuAtelierAutreCommune,
-          ),
-        }
-      : undefined
+  const lieuCommuneDataDefaultValue = defaultValues.lieuCommuneData
+    ? {
+        label: banMunicipalityLabel(defaultValues.lieuCommuneData),
+        value: banDefaultValueToAdresseBanData(defaultValues.lieuCommuneData),
+      }
+    : undefined
 
   useWatchSubscription(
     watch,
@@ -175,28 +172,31 @@ const CraCollectifForm = ({
       </CraFormLabel>
       <RadioFormField
         control={control}
-        path="typeLieuAtelier"
+        path="typeLieu"
         disabled={isLoading}
-        options={typeLieuAtelierOptionsWithExtras}
+        options={typeLieuOptionsWithExtras}
         components={{
           label: RichCardLabel,
+          labelProps: {
+            paddingRight: 16,
+          },
         }}
         classes={{
           fieldsetElement: richCardFieldsetElementClassName,
-          fieldset: craFormFieldsetClassname(styles.lieuAtelierFieldset),
+          fieldset: craFormFieldsetClassname(styles.lieuFieldset),
           radioGroup: richCardRadioGroupClassName,
         }}
       />
-      {showLieuAtelierAutreCommune && (
+      {showLieuCommuneData && (
         <AdresseBanFormField<CraCollectifData>
           label=" "
           control={control}
-          path="lieuAtelierAutreCommune"
+          path="lieuCommuneData"
           disabled={isLoading}
           placeholder="Rechercher une commune par son nom ou son code postal"
           searchOptions={{ type: 'municipality' }}
           defaultOptions={initialCommunesOptions}
-          defaultValue={lieuAtelierAutreCommuneDefaultValue}
+          defaultValue={lieuCommuneDataDefaultValue}
         />
       )}
       {showStructure && (
@@ -226,7 +226,7 @@ const CraCollectifForm = ({
         }}
       />
       <p className="fr-text--medium fr-mb-4v fr-mt-12v">
-        Thématique(s) d’accompagnement <RedAsterisk />
+        Thématique(s) d’accompagnement de médiation numérique <RedAsterisk />
       </p>
       <CheckboxGroupFormField
         control={control}

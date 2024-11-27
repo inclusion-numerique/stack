@@ -1,13 +1,6 @@
 'use client'
 
-import {
-  Control,
-  DefaultValues,
-  useForm,
-  UseFormGetValues,
-  UseFormSetValue,
-  UseFormWatch,
-} from 'react-hook-form'
+import { Control, DefaultValues, useForm, UseFormGetValues, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
@@ -25,14 +18,8 @@ import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import Link from 'next/link'
 import CraFormLabel from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraFormLabel'
-import AdresseBanFormField, {
-  type AdressBanFormFieldOption,
-} from '@app/web/components/form/AdresseBanFormField'
-import {
-  genreOptions,
-  statutSocialOptions,
-  trancheAgeOptions,
-} from '@app/web/beneficiaire/beneficiaire'
+import AdresseBanFormField, { type AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
+import { genreOptions, statutSocialOptions, trancheAgeOptions } from '@app/web/beneficiaire/beneficiaire'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { trpc } from '@app/web/trpc'
 import RichCardLabel, {
@@ -51,7 +38,9 @@ import {
   CraDemarcheAdministrativeValidation,
 } from '@app/web/cra/CraDemarcheAdministrativeValidation'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { craFormFieldsetClassname } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/craFormFieldsetClassname'
+import {
+  craFormFieldsetClassname,
+} from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/craFormFieldsetClassname'
 import CraBeneficiaryForm, {
   CraDataWithBeneficiaire,
 } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraBeneficiaryForm'
@@ -71,12 +60,10 @@ const lieuResidenceOptionsFromFormData = (
   data: DefaultValues<CraDemarcheAdministrativeData>,
 ): AdressBanFormFieldOption[] => {
   const result: AdressBanFormFieldOption[] = []
-  if (data.lieuAccompagnementDomicileCommune?.codeInsee) {
+  if (data.lieuCommuneData?.codeInsee) {
     result.push({
-      label: banMunicipalityLabel(data.lieuAccompagnementDomicileCommune),
-      value: banDefaultValueToAdresseBanData(
-        data.lieuAccompagnementDomicileCommune,
-      ),
+      label: banMunicipalityLabel(data.lieuCommuneData),
+      value: banDefaultValueToAdresseBanData(data.lieuCommuneData),
     })
   }
 
@@ -84,7 +71,7 @@ const lieuResidenceOptionsFromFormData = (
   if (
     !data.beneficiaire?.communeResidence?.codeInsee ||
     data.beneficiaire?.communeResidence?.codeInsee ===
-      data.lieuAccompagnementDomicileCommune?.codeInsee
+      data.lieuCommuneData?.codeInsee
   ) {
     return result
   }
@@ -125,7 +112,7 @@ const CraDemarcheAdministrativeForm = ({
     !beneficiaire || isBeneficiaireAnonymous(beneficiaire)
 
   const typeLieu = form.watch('typeLieu')
-  const showLieuAccompagnementDomicileCommune = typeLieu === 'Domicile'
+  const showLieuCommuneData = typeLieu === 'Autre' || typeLieu === 'Domicile'
   const showStructure = typeLieu === 'LieuActivite'
 
   const degreDeFinalisation = form.watch('degreDeFinalisation')
@@ -171,21 +158,17 @@ const CraDemarcheAdministrativeForm = ({
       lieuResidenceOptionsFromFormData(defaultValues),
     )
 
-  const [
-    lieuAccompagnementDomicileCommuneDefaultValue,
-    setLieuAccompagnementDomicileCommuneDefaultValue,
-  ] = useState<AdressBanFormFieldOption | undefined>(
-    defaultValues.lieuAccompagnementDomicileCommune
-      ? {
-          label: banMunicipalityLabel(
-            defaultValues.lieuAccompagnementDomicileCommune,
-          ),
-          value: banDefaultValueToAdresseBanData(
-            defaultValues.lieuAccompagnementDomicileCommune,
-          ),
-        }
-      : undefined,
-  )
+  const [lieuCommuneDataDefaultValue, setLieuCommuneDataDefaultValue] =
+    useState<AdressBanFormFieldOption | undefined>(
+      defaultValues.lieuCommuneData
+        ? {
+            label: banMunicipalityLabel(defaultValues.lieuCommuneData),
+            value: banDefaultValueToAdresseBanData(
+              defaultValues.lieuCommuneData,
+            ),
+          }
+        : undefined,
+    )
 
   const [
     communeResidenceBeneficiaireDefaultValue,
@@ -220,11 +203,11 @@ const CraDemarcheAdministrativeForm = ({
           const newDomicileValue = banDefaultValueToAdresseBanData(
             data.beneficiaire.communeResidence,
           )
-          setLieuAccompagnementDomicileCommuneDefaultValue({
+          setLieuCommuneDataDefaultValue({
             label: banMunicipalityLabel(data.beneficiaire.communeResidence),
             value: newDomicileValue,
           })
-          setValue('lieuAccompagnementDomicileCommune', newDomicileValue)
+          setValue('lieuCommuneData', newDomicileValue)
           setCommuneResidenceBeneficiaireDefaultValue({
             label: banMunicipalityLabel(data.beneficiaire.communeResidence),
             value: newDomicileValue,
@@ -279,6 +262,9 @@ const CraDemarcheAdministrativeForm = ({
         options={typeLieuOptionsWithExtras}
         components={{
           label: RichCardLabel,
+          labelProps: {
+            paddingRight: 16,
+          },
         }}
         classes={{
           fieldsetElement: richCardFieldsetElementClassName,
@@ -286,16 +272,16 @@ const CraDemarcheAdministrativeForm = ({
           radioGroup: richCardRadioGroupClassName,
         }}
       />
-      {showLieuAccompagnementDomicileCommune && (
+      {showLieuCommuneData && (
         <AdresseBanFormField<CraDemarcheAdministrativeData>
           label=" "
           control={control}
-          path="lieuAccompagnementDomicileCommune"
+          path="lieuCommuneData"
           disabled={isLoading}
           placeholder="Rechercher une commune par son nom ou son code postal"
           searchOptions={{ type: 'municipality' }}
           defaultOptions={initialLieuResidenceOptions}
-          defaultValue={lieuAccompagnementDomicileCommuneDefaultValue}
+          defaultValue={lieuCommuneDataDefaultValue}
         />
       )}
       {showStructure && (
@@ -309,7 +295,7 @@ const CraDemarcheAdministrativeForm = ({
       )}
       <hr className="fr-separator-12v" />
       <p className="fr-text--medium fr-mb-4v fr-mt-12v">
-        Thématique(s) d’accompagnement <RedAsterisk />
+        Thématique(s) de la démarche administrative <RedAsterisk />
       </p>
       <CheckboxGroupFormField
         control={control}
@@ -401,7 +387,7 @@ const CraDemarcheAdministrativeForm = ({
             defaultOptions={initialLieuResidenceOptions}
             defaultValue={
               communeResidenceBeneficiaireDefaultValue ??
-              lieuAccompagnementDomicileCommuneDefaultValue
+              lieuCommuneDataDefaultValue
             }
             label={
               <span className="fr-text--medium fr-mb-4v fr-display-block">

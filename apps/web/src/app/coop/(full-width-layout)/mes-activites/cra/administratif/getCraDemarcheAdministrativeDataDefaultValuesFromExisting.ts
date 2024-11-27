@@ -89,7 +89,7 @@ export const getCraDemarcheAdministrativeDataDefaultValuesFromExisting =
       structureDeRedirection: structureDeRedirection ?? undefined,
       precisionsDemarche: precisionsDemarche ?? undefined,
       structureId: structureId ?? undefined,
-      lieuAccompagnementDomicileCommune:
+      lieuCommuneData:
         lieuCommune && lieuCodePostal && lieuCodeInsee
           ? banDefaultValueToAdresseBanData({
               commune: lieuCommune ?? undefined,

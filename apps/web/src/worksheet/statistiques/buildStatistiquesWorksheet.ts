@@ -101,9 +101,9 @@ const addStatistiquesMaterielUtilises =
 
 const addStatistiquesCanauxActivites =
   (worksheet: Excel.Worksheet) =>
-  ({ activites: { mergedTypeLieu } }: MesStatistiquesPageData) => {
+  ({ activites: { typeLieu } }: MesStatistiquesPageData) => {
     addTitleRow(worksheet)('Canaux des activités')
-    addQuantifiedShareRows(worksheet, mergedTypeLieu)
+    addQuantifiedShareRows(worksheet, typeLieu)
     worksheet.addRow([])
   }
 

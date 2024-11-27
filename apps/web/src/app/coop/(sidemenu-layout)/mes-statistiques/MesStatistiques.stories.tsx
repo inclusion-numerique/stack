@@ -12,7 +12,6 @@ import {
   thematiqueDemarcheAdministrativeLabels,
   thematiqueLabels,
   typeActiviteLabels,
-  typeLieuAtelierLabels,
   typeLieuLabels,
 } from '@app/web/cra/cra'
 import { MesStatistiques } from './MesStatistiques'
@@ -120,14 +119,6 @@ const statistiquesPageData = {
     }),
     typeLieu: quantifiedSharesFromFixedValues({
       enumObject: typeLieuLabels,
-      fixedValues: [400, 300, 300],
-    }),
-    typeLieuAtelier: quantifiedSharesFromFixedValues({
-      enumObject: typeLieuAtelierLabels,
-      fixedValues: [400, 600],
-    }),
-    mergedTypeLieu: quantifiedSharesFromFixedValues({
-      enumObject: { ...typeLieuLabels, ...typeLieuAtelierLabels },
       fixedValues: [250, 450, 50, 250],
     }),
     durees: quantifiedSharesFromFixedValues({

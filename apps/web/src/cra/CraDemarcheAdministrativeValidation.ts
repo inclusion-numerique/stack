@@ -25,7 +25,7 @@ export const CraDemarcheAdministrativeValidation = z
       required_error: 'Veuillez renseigner un lieu d’accompagnement',
     }),
     structureId: z.string().uuid().nullish(),
-    lieuAccompagnementDomicileCommune: AdresseBanValidation.nullish(),
+    lieuCommuneData: AdresseBanValidation.nullish(),
     thematiques: z
       .array(z.enum(thematiqueDemarcheAdministrativeValues), {
         required_error: 'Veuillez renseigner au moins une thématique',
@@ -50,15 +50,11 @@ export const CraDemarcheAdministrativeValidation = z
       path: ['structureId'],
     },
   )
-  // lieuAccompagnementDomicileCommune is required if lieuAccompagnement === Domicile
-  .refine(
-    (data) =>
-      data.typeLieu !== 'Domicile' || !!data.lieuAccompagnementDomicileCommune,
-    {
-      message: 'Veuillez renseigner la commune',
-      path: ['lieuAccompagnementDomicileCommune'],
-    },
-  )
+  // lieuCommuneData is required if lieuAccompagnement === Domicile
+  .refine((data) => data.typeLieu !== 'Domicile' || !!data.lieuCommuneData, {
+    message: 'Veuillez renseigner la commune',
+    path: ['lieuCommuneData'],
+  })
 
 export type CraDemarcheAdministrativeData = z.infer<
   typeof CraDemarcheAdministrativeValidation

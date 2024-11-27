@@ -66,7 +66,6 @@ export const activiteListSelect = {
   degreDeFinalisation: true,
 
   titreAtelier: true,
-  typeLieuAtelier: true,
   niveau: true,
 } satisfies Prisma.ActiviteSelect
 
