@@ -113,6 +113,7 @@ const RichCardLabel = memo(
                 'fr-flex-shrink-0 fr-flex fr-align-items-center',
               )}
             >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className={styles.illustration}
                 alt=""

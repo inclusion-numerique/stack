@@ -1,6 +1,7 @@
 import React from 'react'
 import { DefaultValues } from 'react-hook-form'
 import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDisclamer'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import CraIndividuelForm from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/CraIndividuelForm'
 import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
@@ -13,6 +14,7 @@ export type CraIndividuelPageData = {
   mediateurId: string
   initialBeneficiairesOptions: MostUsedBeneficiairesForSearch
   lieuxActiviteOptions: LieuActiviteOption[]
+  dureeOptions: SelectOption[]
   retour?: string
 }
 
@@ -20,6 +22,7 @@ const CraIndividuelPage = ({
   defaultValues,
   initialBeneficiairesOptions,
   lieuxActiviteOptions,
+  dureeOptions,
   mediateurId,
   retour,
 }: CraIndividuelPageData) => (
@@ -48,6 +51,7 @@ const CraIndividuelPage = ({
       lieuActiviteOptions={lieuxActiviteOptions}
       initialBeneficiairesOptions={initialBeneficiairesOptions}
       retour={retour}
+      dureeOptions={dureeOptions}
     />
   </div>
 )

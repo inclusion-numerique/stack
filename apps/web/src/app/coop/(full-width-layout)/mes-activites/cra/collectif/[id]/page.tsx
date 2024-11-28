@@ -5,6 +5,7 @@ import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActi
 import CraCollectifPage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/collectif/CraCollectifPage'
 import { getCraCollectifDataDefaultValuesFromExisting } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/collectif/getCraCollectifDataDefaultValuesFromExisting'
 import type { AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
+import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
 
 const UpdateCraCollectifPage = async ({
   params: { id },
@@ -45,6 +46,11 @@ const UpdateCraCollectifPage = async ({
   // TODO: get most probable communes using the filter helper functions
   const initialCommunesOptions: AdressBanFormFieldOption[] = []
 
+  const dureeOptions = await getAdaptiveDureeOptions({
+    mediateurId: user.mediateur.id,
+    include: defaultValues.duree?.duree,
+  })
+
   return (
     <CraCollectifPage
       defaultValues={defaultValues}
@@ -52,6 +58,7 @@ const UpdateCraCollectifPage = async ({
       lieuxActiviteOptions={lieuxActiviteOptions}
       initialBeneficiairesOptions={initialBeneficiairesOptions}
       initialCommunesOptions={initialCommunesOptions}
+      dureeOptions={dureeOptions}
       retour={retour}
     />
   )

@@ -9,6 +9,7 @@ import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banD
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import CraDemarcheAdministrativePage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/administratif/CraDemarcheAdministrativePage'
+import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
 
 const CreateCraDemarcheAdministrativePage = async ({
   searchParams: { v, retour } = {},
@@ -61,12 +62,18 @@ const CreateCraDemarcheAdministrativePage = async ({
       includeBeneficiaireId: defaultValues.beneficiaire?.id ?? undefined,
     })
 
+  const dureeOptions = await getAdaptiveDureeOptions({
+    mediateurId: user.mediateur.id,
+    include: defaultValues.duree?.duree,
+  })
+
   return (
     <CraDemarcheAdministrativePage
       defaultValues={defaultValues}
       mediateurId={user.mediateur.id}
       lieuxActiviteOptions={lieuxActiviteOptions}
       initialBeneficiairesOptions={initialBeneficiairesOptions}
+      dureeOptions={dureeOptions}
       retour={retour}
     />
   )

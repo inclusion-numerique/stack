@@ -4,6 +4,7 @@ import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/g
 import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import CraDemarcheAdministrativePage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/administratif/CraDemarcheAdministrativePage'
 import { getCraDemarcheAdministrativeDataDefaultValuesFromExisting } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/administratif/getCraDemarcheAdministrativeDataDefaultValuesFromExisting'
+import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
 
 const UpdateCraDemarcheAdministrativePage = async ({
   params: { id },
@@ -43,12 +44,18 @@ const UpdateCraDemarcheAdministrativePage = async ({
       includeBeneficiaireId: defaultValues.beneficiaire?.id ?? undefined,
     })
 
+  const dureeOptions = await getAdaptiveDureeOptions({
+    mediateurId: user.mediateur.id,
+    include: defaultValues.duree?.duree,
+  })
+
   return (
     <CraDemarcheAdministrativePage
       defaultValues={defaultValues}
       mediateurId={user.mediateur.id}
       lieuxActiviteOptions={lieuxActiviteOptions}
       initialBeneficiairesOptions={initialBeneficiairesOptions}
+      dureeOptions={dureeOptions}
       retour={retour}
     />
   )

@@ -23,6 +23,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import Link from 'next/link'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import CraFormLabel from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraFormLabel'
 import AdresseBanFormField, {
   type AdressBanFormFieldOption,
@@ -103,6 +104,7 @@ const CraDemarcheAdministrativeForm = ({
   defaultValues,
   lieuActiviteOptions,
   initialBeneficiairesOptions,
+  dureeOptions,
   retour,
 }: {
   defaultValues: DefaultValues<CraDemarcheAdministrativeData> & {
@@ -110,6 +112,7 @@ const CraDemarcheAdministrativeForm = ({
   }
   lieuActiviteOptions: LieuActiviteOption[]
   initialBeneficiairesOptions: BeneficiaireOption[]
+  dureeOptions: SelectOption[]
   retour?: string
 }) => {
   const form = useForm<CraDemarcheAdministrativeData>({
@@ -269,7 +272,7 @@ const CraDemarcheAdministrativeForm = ({
           }}
         />
         <div className="fr-flex-basis-0 fr-flex-grow-1">
-          <CraDureeSubForm form={form} />
+          <CraDureeSubForm form={form} dureeOptions={dureeOptions} />
         </div>
       </div>
       <CraFormLabel required as="p" className="fr-mb-3v fr-mt-8v">

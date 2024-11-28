@@ -1,12 +1,9 @@
 import { z } from 'zod'
-import {
-  dureeAccompagnementPersonnaliseeValue,
-  dureeAcompagnementParDefautDefaultValues,
-} from '@app/web/cra/cra'
+import { dureeAccompagnementPersonnaliseeValue } from '@app/web/cra/cra'
 
 export const CraDureeValidation = z
   .object({
-    duree: z.enum(dureeAcompagnementParDefautDefaultValues, {
+    duree: z.string({
       required_error: 'Veuillez renseigner une durée',
     }),
     dureePersonnalisee: z.number().nullish(),

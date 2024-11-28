@@ -1,22 +1,24 @@
-import { UseFormReturn } from 'react-hook-form'
+import type { UseFormReturn } from 'react-hook-form'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import SelectFormField from '@app/ui/components/Form/SelectFormField'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import {
-  dureeAccompagnementParDefautOptions,
   dureeAccompagnementPersonnaliseeTypeOptions,
   dureeAccompagnementPersonnaliseeValue,
 } from '@app/web/cra/cra'
-import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
-import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
-import { CraDemarcheAdministrativeData } from '@app/web/cra/CraDemarcheAdministrativeValidation'
+import type { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
+import type { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
+import type { CraDemarcheAdministrativeData } from '@app/web/cra/CraDemarcheAdministrativeValidation'
 
 const CraDureeSubForm = ({
   form,
+  dureeOptions,
 }: {
   form:
     | UseFormReturn<CraIndividuelData>
     | UseFormReturn<CraCollectifData>
     | UseFormReturn<CraDemarcheAdministrativeData>
+  dureeOptions: SelectOption[]
 }) => {
   const { watch, control } = form as UseFormReturn<CraIndividuelData> // cannot union types with react-hook-form
 
@@ -35,7 +37,7 @@ const CraDureeSubForm = ({
         label="Durée"
         path="duree.duree"
         control={control}
-        options={dureeAccompagnementParDefautOptions}
+        options={dureeOptions}
         placeholder="Sélectionnez une durée"
         asterisk
         className="fr-mb-1v"

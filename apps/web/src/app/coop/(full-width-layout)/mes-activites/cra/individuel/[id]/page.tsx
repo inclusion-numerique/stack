@@ -4,6 +4,7 @@ import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/g
 import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import CraIndividuelPage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/CraIndividuelPage'
 import { getCraIndividuelDataDefaultValuesFromExisting } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/getCraIndividuelDataDefaultValuesFromExisting'
+import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
 
 const UpdateCraIndividuelPage = async ({
   params: { id },
@@ -42,12 +43,18 @@ const UpdateCraIndividuelPage = async ({
       includeBeneficiaireId: defaultValues.beneficiaire?.id ?? undefined,
     })
 
+  const dureeOptions = await getAdaptiveDureeOptions({
+    mediateurId: user.mediateur.id,
+    include: defaultValues.duree?.duree,
+  })
+
   return (
     <CraIndividuelPage
       defaultValues={defaultValues}
       mediateurId={user.mediateur.id}
       lieuxActiviteOptions={lieuxActiviteOptions}
       initialBeneficiairesOptions={initialBeneficiairesOptions}
+      dureeOptions={dureeOptions}
       retour={retour}
     />
   )

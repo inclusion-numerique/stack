@@ -9,6 +9,7 @@ import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banD
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import CraIndividuelPage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/CraIndividuelPage'
+import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
 
 const CreateCraIndividuelPage = async ({
   searchParams: { v, retour } = {},
@@ -60,12 +61,18 @@ const CreateCraIndividuelPage = async ({
       mediateurId: user.mediateur.id,
     })
 
+  const dureeOptions = await getAdaptiveDureeOptions({
+    mediateurId: user.mediateur.id,
+    include: defaultValues.duree?.duree,
+  })
+
   return (
     <CraIndividuelPage
       lieuxActiviteOptions={lieuxActiviteOptions}
       initialBeneficiairesOptions={initialBeneficiairesOptions}
       mediateurId={user.mediateur.id}
       defaultValues={defaultValues}
+      dureeOptions={dureeOptions}
       retour={retour}
     />
   )

@@ -1,8 +1,4 @@
-import {
-  DefaultDureeAccompagnementParDefaut,
-  dureeAccompagnementParDefautLabels,
-  dureeAccompagnementPersonnaliseeValue,
-} from '@app/web/cra/cra'
+import { dureeAccompagnementPersonnaliseeValue } from '@app/web/cra/cra'
 import type { CraDureeData } from '@app/web/cra/CraDureeValidation'
 
 export const craDureeDataToMinutes = ({
@@ -33,17 +29,6 @@ export const minutesToCraDureeData = (
 
   const minutesString = minutes.toString()
 
-  if (
-    minutesString in dureeAccompagnementParDefautLabels &&
-    minutesString !== dureeAccompagnementPersonnaliseeValue
-  ) {
-    return {
-      duree: minutesString as DefaultDureeAccompagnementParDefaut,
-      dureePersonnalisee: undefined,
-      dureePersonnaliseeType: 'minutes',
-    }
-  }
-
   if (minutesString === '0') {
     return {
       duree: dureeAccompagnementPersonnaliseeValue,
@@ -52,20 +37,9 @@ export const minutesToCraDureeData = (
     }
   }
 
-  const hours = Math.floor(minutes / 60)
-  const minutesLeft = minutes % 60
-
-  if (minutesLeft === 0) {
-    return {
-      duree: dureeAccompagnementPersonnaliseeValue,
-      dureePersonnalisee: hours,
-      dureePersonnaliseeType: 'heures' as const,
-    }
-  }
-
   return {
-    duree: dureeAccompagnementPersonnaliseeValue,
-    dureePersonnalisee: hours * 60 + minutesLeft,
-    dureePersonnaliseeType: 'minutes' as const,
+    duree: minutesString,
+    dureePersonnalisee: undefined,
+    dureePersonnaliseeType: 'minutes',
   }
 }

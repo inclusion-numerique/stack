@@ -15,6 +15,7 @@ import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField
 import React, { useCallback, useMemo } from 'react'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import CraFormLabel from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraFormLabel'
 import AdresseBanFormField, {
   AdressBanFormFieldOption,
@@ -56,12 +57,14 @@ const CraCollectifForm = ({
   lieuActiviteOptions,
   initialBeneficiairesOptions,
   initialCommunesOptions,
+  dureeOptions,
   retour,
 }: {
   defaultValues: DefaultValues<CraCollectifData> & { mediateurId: string }
   lieuActiviteOptions: LieuActiviteOption[]
   initialCommunesOptions: AdressBanFormFieldOption[]
   initialBeneficiairesOptions: BeneficiaireOption[]
+  dureeOptions: SelectOption[]
   retour?: string
 }) => {
   const form = useForm<CraCollectifData>({
@@ -173,7 +176,7 @@ const CraCollectifForm = ({
           }}
         />
         <div className="fr-flex-basis-0 fr-flex-grow-1">
-          <CraDureeSubForm form={form} />
+          <CraDureeSubForm form={form} dureeOptions={dureeOptions} />
         </div>
       </div>
       <CraFormLabel required as="p" className="fr-mb-3v fr-mt-8v">

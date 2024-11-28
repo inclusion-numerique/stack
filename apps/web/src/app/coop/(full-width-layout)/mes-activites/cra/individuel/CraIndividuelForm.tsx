@@ -23,6 +23,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import Link from 'next/link'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import CraFormLabel from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraFormLabel'
 import AdresseBanFormField, {
   type AdressBanFormFieldOption,
@@ -105,11 +106,13 @@ const CraIndividuelForm = ({
   lieuActiviteOptions,
   initialBeneficiairesOptions,
   retour,
+  dureeOptions,
 }: {
   defaultValues: DefaultValues<CraIndividuelData> & { mediateurId: string }
   lieuActiviteOptions: LieuActiviteOption[]
   initialBeneficiairesOptions: BeneficiaireOption[]
   retour?: string
+  dureeOptions: SelectOption[]
 }) => {
   const form = useForm<CraIndividuelData>({
     resolver: zodResolver(CraIndividuelValidation),
@@ -270,7 +273,7 @@ const CraIndividuelForm = ({
           }}
         />
         <div className="fr-flex-basis-0 fr-flex-grow-1">
-          <CraDureeSubForm form={form} />
+          <CraDureeSubForm form={form} dureeOptions={dureeOptions} />
         </div>
       </div>
       <CraFormLabel required as="p" className="fr-mb-3v fr-mt-8v">

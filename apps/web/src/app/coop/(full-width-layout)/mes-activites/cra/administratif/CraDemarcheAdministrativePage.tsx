@@ -1,6 +1,7 @@
 import React from 'react'
 import type { DefaultValues } from 'react-hook-form'
 import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDisclamer'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import type { CraDemarcheAdministrativeData } from '@app/web/cra/CraDemarcheAdministrativeValidation'
 import CraDemarcheAdministrativeForm from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/administratif/CraDemarcheAdministrativeForm'
@@ -13,6 +14,7 @@ export type CraDemarcheAdministrativePageData = {
   mediateurId: string
   initialBeneficiairesOptions: MostUsedBeneficiairesForSearch
   lieuxActiviteOptions: LieuActiviteOption[]
+  dureeOptions: SelectOption[]
   retour?: string
 }
 
@@ -21,6 +23,7 @@ export const CraDemarcheAdministrativePage = ({
   mediateurId,
   lieuxActiviteOptions,
   initialBeneficiairesOptions,
+  dureeOptions,
   retour,
 }: CraDemarcheAdministrativePageData) => (
   <div className="fr-container fr-container--800">
@@ -47,6 +50,7 @@ export const CraDemarcheAdministrativePage = ({
       defaultValues={{ ...defaultValues, mediateurId }}
       lieuActiviteOptions={lieuxActiviteOptions}
       initialBeneficiairesOptions={initialBeneficiairesOptions}
+      dureeOptions={dureeOptions}
       retour={retour}
     />
   </div>
