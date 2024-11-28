@@ -8,7 +8,7 @@ import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
 import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
 import { AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
-import { getInitialLieuxActiviteOptionsForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
+import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import CraCollectifPage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/collectif/CraCollectifPage'
 
 const CreateCraCollectifPage = async ({
@@ -46,13 +46,12 @@ const CreateCraCollectifPage = async ({
       ) ?? [],
   }
 
-  const { lieuxActiviteOptions, mostUsedLieuActivite } =
-    await getInitialLieuxActiviteOptionsForSearch({
-      mediateurIds: [user.mediateur.id],
-    })
+  const lieuxActiviteOptions = await getLieuxActiviteOptions({
+    mediateurIds: [user.mediateur.id],
+  })
 
   if (!defaultValues.structureId) {
-    defaultValues.structureId = mostUsedLieuActivite?.structure.id ?? undefined
+    defaultValues.structureId = lieuxActiviteOptions.at(0)?.value ?? undefined
   }
 
   const initialBeneficiairesOptions =

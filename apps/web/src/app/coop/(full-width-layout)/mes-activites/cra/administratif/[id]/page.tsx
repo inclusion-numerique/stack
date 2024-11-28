@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
-import { getInitialLieuxActiviteOptionsForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
+import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import CraDemarcheAdministrativePage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/administratif/CraDemarcheAdministrativePage'
 import { getCraDemarcheAdministrativeDataDefaultValuesFromExisting } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/administratif/getCraDemarcheAdministrativeDataDefaultValuesFromExisting'
 
@@ -29,13 +29,12 @@ const UpdateCraDemarcheAdministrativePage = async ({
     return null
   }
 
-  const { lieuxActiviteOptions, mostUsedLieuActivite } =
-    await getInitialLieuxActiviteOptionsForSearch({
-      mediateurIds: [user.mediateur.id],
-    })
+  const lieuxActiviteOptions = await getLieuxActiviteOptions({
+    mediateurIds: [user.mediateur.id],
+  })
 
   if (!defaultValues.structureId) {
-    defaultValues.structureId = mostUsedLieuActivite?.structure.id ?? undefined
+    defaultValues.structureId = lieuxActiviteOptions.at(0)?.value ?? undefined
   }
 
   const initialBeneficiairesOptions =

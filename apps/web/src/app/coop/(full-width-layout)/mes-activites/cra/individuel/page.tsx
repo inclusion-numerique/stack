@@ -7,7 +7,7 @@ import {
 } from '@app/web/utils/encodeSerializableState'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
-import { getInitialLieuxActiviteOptionsForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
+import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import CraIndividuelPage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/CraIndividuelPage'
 
 const CreateCraIndividuelPage = async ({
@@ -47,13 +47,12 @@ const CreateCraIndividuelPage = async ({
         : null),
   }
 
-  const { lieuxActiviteOptions, mostUsedLieuActivite } =
-    await getInitialLieuxActiviteOptionsForSearch({
-      mediateurIds: [user.mediateur.id],
-    })
+  const lieuxActiviteOptions = await getLieuxActiviteOptions({
+    mediateurIds: [user.mediateur.id],
+  })
 
   if (!defaultValues.structureId) {
-    defaultValues.structureId = mostUsedLieuActivite?.structure.id ?? undefined
+    defaultValues.structureId = lieuxActiviteOptions.at(0)?.value ?? undefined
   }
 
   const initialBeneficiairesOptions =

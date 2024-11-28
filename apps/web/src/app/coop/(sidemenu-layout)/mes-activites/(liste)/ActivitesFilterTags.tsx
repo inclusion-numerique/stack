@@ -19,6 +19,7 @@ import LocationFilter, {
 import { TypeActiviteSlug } from '@app/web/cra/cra'
 import MediateurFilter from '@app/web/components/filters/MediateurFilter'
 import { MediateurOption } from '@app/web/mediateurs/MediateurOption'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 
 // Allows to replace the current route with new query params
 const replaceRouteWithNewParams = ({
@@ -85,7 +86,7 @@ const ActivitesFilterTags = ({
   initialMediateursOptions: MediateurOption[]
   initialBeneficiairesOptions: BeneficiaireOption[]
   communesOptions: SelectOption[]
-  lieuxActiviteOptions: SelectOption[]
+  lieuxActiviteOptions: LieuActiviteOption[]
   departementsOptions: SelectOption[]
   isCoordinateur: boolean
   isMediateur: boolean

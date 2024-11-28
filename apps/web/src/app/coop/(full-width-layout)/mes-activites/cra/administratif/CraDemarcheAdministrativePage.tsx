@@ -5,14 +5,14 @@ import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import type { CraDemarcheAdministrativeData } from '@app/web/cra/CraDemarcheAdministrativeValidation'
 import CraDemarcheAdministrativeForm from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/administratif/CraDemarcheAdministrativeForm'
 import { type MostUsedBeneficiairesForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
-import type { MostUsedLieuActiviteForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
 import BackButtonWithModal from '@app/web/components/BackButtonWithModal'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 
 export type CraDemarcheAdministrativePageData = {
   defaultValues: DefaultValues<CraDemarcheAdministrativeData>
   mediateurId: string
   initialBeneficiairesOptions: MostUsedBeneficiairesForSearch
-  lieuxActiviteOptions: MostUsedLieuActiviteForSearch['lieuxActiviteOptions']
+  lieuxActiviteOptions: LieuActiviteOption[]
   retour?: string
 }
 

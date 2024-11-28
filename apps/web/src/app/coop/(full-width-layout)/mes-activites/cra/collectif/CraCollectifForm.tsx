@@ -12,8 +12,7 @@ import { createToast } from '@app/ui/toast/createToast'
 import { useRouter } from 'next/navigation'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import React, { useCallback } from 'react'
-import type { SelectOption } from '@app/ui/components/Form/utils/options'
+import React, { useCallback, useMemo } from 'react'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import CraFormLabel from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraFormLabel'
@@ -45,6 +44,11 @@ import CraBeneficiairesMultiplesForm from '@app/web/app/coop/(full-width-layout)
 import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import CraDureeSubForm from '@app/web/components/form/CraDureeSubForm'
+import {
+  lieuActiviteFilterOption,
+  toLieuActiviteRichOptions,
+} from '@app/web/components/activite/lieuActiviteOptions'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import styles from '../CraForm.module.css'
 
 const CraCollectifForm = ({
@@ -55,7 +59,7 @@ const CraCollectifForm = ({
   retour,
 }: {
   defaultValues: DefaultValues<CraCollectifData> & { mediateurId: string }
-  lieuActiviteOptions: SelectOption[]
+  lieuActiviteOptions: LieuActiviteOption[]
   initialCommunesOptions: AdressBanFormFieldOption[]
   initialBeneficiairesOptions: BeneficiaireOption[]
   retour?: string
@@ -73,6 +77,11 @@ const CraCollectifForm = ({
   const typeLieu = form.watch('typeLieu')
   const showLieuCommuneData = typeLieu === 'Autre' || typeLieu === 'Domicile'
   const showStructure = typeLieu === 'LieuActivite'
+
+  const lieuActiviteRichOptions = useMemo(
+    () => toLieuActiviteRichOptions(lieuActiviteOptions),
+    [lieuActiviteOptions],
+  )
 
   const {
     control,
@@ -205,7 +214,8 @@ const CraCollectifForm = ({
           control={control}
           path="structureId"
           placeholder="Rechercher un lieu d’activité"
-          options={lieuActiviteOptions}
+          options={lieuActiviteRichOptions}
+          filterOption={lieuActiviteFilterOption}
         />
       )}
       <hr className="fr-separator-12v" />

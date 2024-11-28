@@ -19,8 +19,7 @@ import { createToast } from '@app/ui/toast/createToast'
 import { useRouter } from 'next/navigation'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import React, { useCallback, useState } from 'react'
-import type { SelectOption } from '@app/ui/components/Form/utils/options'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import Link from 'next/link'
@@ -62,6 +61,11 @@ import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutR
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import { isBeneficiaireAnonymous } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
 import CraDureeSubForm from '@app/web/components/form/CraDureeSubForm'
+import {
+  lieuActiviteFilterOption,
+  toLieuActiviteRichOptions,
+} from '@app/web/components/activite/lieuActiviteOptions'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import styles from '../CraForm.module.css'
 
 /**
@@ -104,7 +108,7 @@ const CraDemarcheAdministrativeForm = ({
   defaultValues: DefaultValues<CraDemarcheAdministrativeData> & {
     mediateurId: string
   }
-  lieuActiviteOptions: SelectOption[]
+  lieuActiviteOptions: LieuActiviteOption[]
   initialBeneficiairesOptions: BeneficiaireOption[]
   retour?: string
 }) => {
@@ -129,6 +133,11 @@ const CraDemarcheAdministrativeForm = ({
   const degreDeFinalisation = form.watch('degreDeFinalisation')
   const showStructureOrientation =
     degreDeFinalisation === 'OrienteVersStructure'
+
+  const lieuActiviteRichOptions = useMemo(
+    () => toLieuActiviteRichOptions(lieuActiviteOptions),
+    [lieuActiviteOptions],
+  )
 
   const {
     control,
@@ -301,7 +310,8 @@ const CraDemarcheAdministrativeForm = ({
           control={control}
           path="structureId"
           placeholder="Rechercher un lieu d’activité"
-          options={lieuActiviteOptions}
+          options={lieuActiviteRichOptions}
+          filterOption={lieuActiviteFilterOption}
         />
       )}
       <hr className="fr-separator-12v" />

@@ -5,6 +5,7 @@ import type { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 import { generateActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
 import ExportActivitesButton from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/ExportActivitesButton'
 import ExportActivitesDisabledButton from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/ExportActivitesDisabledButton'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 
 const ExportActivitesButtonWrapper = async ({
   lieuxActiviteOptions,
@@ -19,7 +20,7 @@ const ExportActivitesButtonWrapper = async ({
   beneficiairesOptions: BeneficiaireOption[]
   mediateursOptions: MediateurOption[]
   communesOptions: SelectOption[]
-  lieuxActiviteOptions: SelectOption[]
+  lieuxActiviteOptions: LieuActiviteOption[]
   departementsOptions: SelectOption[]
   searchResultMatchesCount: Promise<number>
 }) => {

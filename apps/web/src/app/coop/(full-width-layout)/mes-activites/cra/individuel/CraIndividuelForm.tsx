@@ -19,8 +19,7 @@ import { createToast } from '@app/ui/toast/createToast'
 import { useRouter } from 'next/navigation'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import React, { useCallback, useState } from 'react'
-import type { SelectOption } from '@app/ui/components/Form/utils/options'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import Link from 'next/link'
@@ -47,14 +46,14 @@ import {
   typeLieuOptionsWithExtras,
 } from '@app/web/cra/cra'
 import {
-  CraIndividuelData,
+  type CraIndividuelData,
   CraIndividuelValidation,
 } from '@app/web/cra/CraIndividuelValidation'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { yesNoBooleanOptions } from '@app/web/utils/yesNoBooleanOptions'
 import { craFormFieldsetClassname } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/craFormFieldsetClassname'
 import CraBeneficiaryForm, {
-  CraDataWithBeneficiaire,
+  type CraDataWithBeneficiaire,
 } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraBeneficiaryForm'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipalityLabel'
@@ -63,6 +62,11 @@ import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutR
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import { isBeneficiaireAnonymous } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
 import CraDureeSubForm from '@app/web/components/form/CraDureeSubForm'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
+import {
+  lieuActiviteFilterOption,
+  toLieuActiviteRichOptions,
+} from '@app/web/components/activite/lieuActiviteOptions'
 import styles from '../CraForm.module.css'
 
 /**
@@ -103,7 +107,7 @@ const CraIndividuelForm = ({
   retour,
 }: {
   defaultValues: DefaultValues<CraIndividuelData> & { mediateurId: string }
-  lieuActiviteOptions: SelectOption[]
+  lieuActiviteOptions: LieuActiviteOption[]
   initialBeneficiairesOptions: BeneficiaireOption[]
   retour?: string
 }) => {
@@ -127,6 +131,11 @@ const CraIndividuelForm = ({
 
   const orienteVersStructure = form.watch('orienteVersStructure')
   const showStructureOrientation = orienteVersStructure === 'yes'
+
+  const lieuActiviteRichOptions = useMemo(
+    () => toLieuActiviteRichOptions(lieuActiviteOptions),
+    [lieuActiviteOptions],
+  )
 
   const {
     control,
@@ -302,7 +311,8 @@ const CraIndividuelForm = ({
           control={control}
           path="structureId"
           placeholder="Rechercher un lieu d’activité"
-          options={lieuActiviteOptions}
+          options={lieuActiviteRichOptions}
+          filterOption={lieuActiviteFilterOption}
         />
       )}
       <hr className="fr-separator-12v" />
