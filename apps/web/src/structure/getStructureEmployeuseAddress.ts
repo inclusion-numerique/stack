@@ -26,3 +26,32 @@ export const getStructureEmployeuseAddress = (userId: string) =>
       },
     },
   })
+
+export const getStructureEmployeuseAddressForMediateur = (
+  mediateurId: string,
+) =>
+  prismaClient.employeStructure.findFirst({
+    where: {
+      user: {
+        mediateur: {
+          id: mediateurId,
+        },
+      },
+      suppression: null,
+    },
+    orderBy: {
+      creation: 'desc',
+    },
+    select: {
+      id: true,
+      structure: {
+        select: {
+          commune: true,
+          codePostal: true,
+          codeInsee: true,
+          adresse: true,
+          complementAdresse: true,
+        },
+      },
+    },
+  })

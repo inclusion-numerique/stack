@@ -1,4 +1,4 @@
-import { Prisma, TypeActivite } from '@prisma/client'
+import { Prisma, Structure, TypeActivite } from '@prisma/client'
 import { v4 } from 'uuid'
 import { prismaClient } from '@app/web/prismaClient'
 import { invalidError } from '@app/web/server/rpc/trpcErrors'
@@ -12,6 +12,7 @@ import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import { createStopwatch } from '@app/web/utils/stopwatch'
 import { addMutationLog } from '@app/web/utils/addMutationLog'
 import { craDureeDataToMinutes } from '@app/web/cra/minutesToCraDuree'
+import { getStructureEmployeuseAddressForMediateur } from '@app/web/structure/getStructureEmployeuseAddress'
 
 const getExistingBeneficiairesSuivis = async ({
   beneficiaires,
@@ -116,6 +117,12 @@ const beneficiaireAnonymeCreateDataFromForm = ({
   communeCodeInsee: communeResidence?.codeInsee ?? undefined,
 })
 
+// Utilisée comme localisation fallback pour les activités à distance
+export type StructureEmployeuseCraInfo = Pick<
+  Structure,
+  'commune' | 'codePostal' | 'codeInsee'
+>
+
 export type CreateOrUpdateActiviteInput =
   | {
       type: 'Collectif'
@@ -130,7 +137,7 @@ export type CreateOrUpdateActiviteInput =
       data: CraDemarcheAdministrativeData
     }
 
-// TODO integration test on this one
+// TODO more integration test cases on this critical function
 export const createOrUpdateActivite = async ({
   input,
   userId,
@@ -172,11 +179,17 @@ export const createOrUpdateActivite = async ({
       : beneficiaireAnonymeCreateDataFromForm(input.data.beneficiaire)
 
   const structure =
-    'typeLieu' in data && data.typeLieu === 'LieuActivite'
+    data.typeLieu === 'LieuActivite'
       ? await getExistingStructure({
           structureId,
           mediateurId,
         })
+      : null
+
+  // If accompagnement is "A distance", we fetch the structure employeuse to assign location
+  const structureEmployeuse =
+    data.typeLieu === 'ADistance'
+      ? await getStructureEmployeuseAddressForMediateur(mediateurId)
       : null
 
   const orienteVersStructure = yesNoToOptionalBoolean(
@@ -184,22 +197,22 @@ export const createOrUpdateActivite = async ({
   )
 
   const { lieuCommune, lieuCodePostal, lieuCodeInsee } =
-    'typeLieuAtelier' in data && data.typeLieuAtelier === 'Autre'
+    data.typeLieu === 'Domicile' || data.typeLieu === 'Autre'
       ? {
           lieuCommune: data.lieuCommuneData?.commune,
           lieuCodePostal: data.lieuCommuneData?.codePostal,
           lieuCodeInsee: data.lieuCommuneData?.codeInsee,
         }
-      : 'typeLieu' in data && data.typeLieu === 'Domicile'
+      : data.typeLieu === 'ADistance'
         ? {
-            lieuCommune: data.lieuCommuneData?.commune,
-            lieuCodePostal: data.lieuCommuneData?.codePostal,
-            lieuCodeInsee: data.lieuCommuneData?.codeInsee,
+            lieuCommune: structureEmployeuse?.structure.commune ?? null,
+            lieuCodePostal: structureEmployeuse?.structure.codePostal ?? null,
+            lieuCodeInsee: structureEmployeuse?.structure.codeInsee ?? null,
           }
         : {
-            lieuCommune: undefined,
-            lieuCodePostal: undefined,
-            lieuCodeInsee: undefined,
+            lieuCommune: null,
+            lieuCodePostal: null,
+            lieuCodeInsee: null,
           }
 
   const prismaData = {
