@@ -78,14 +78,10 @@ export const getLieuxActiviteOptions = async ({
         label: nom,
         extra: {
           nom,
-          adresse: `${adresse} · ${codePostal} ${commune}`,
+          adresse: `${adresse}, ${codePostal} ${commune}`,
           activites,
           mostUsed: index === 0,
         },
       }) satisfies LieuActiviteOption,
   )
 }
-
-export type MostUsedLieuActiviteForSearch = Awaited<
-  ReturnType<typeof getLieuxActiviteOptions>
->

@@ -8,11 +8,13 @@ export const toLieuActiviteRichOptions = (options: LieuActiviteOption[]) =>
           label: (
             <span className="fr-flex fr-align-items-center">
               {extra.mostUsed && (
-                <span className="fr-text-title--blue-france fr-icon-star-line fr-mr-1w" />
+                <span className="fr-text-title--blue-france fr-icon--sm fr-icon-star-line fr-mr-2v" />
               )}
               <span className="fr-flex fr-direction-column ">
-                <span className="fr-text--medium">{extra.nom}</span>
-                <span className="fr-text-mention--grey">{extra.adresse}</span>
+                <span className="fr-text--sm fr-mb-0">{extra.nom}</span>
+                <span className="fr-text--xs fr-mb-0 fr-text-mention--grey">
+                  {extra.adresse}
+                </span>
               </span>
             </span>
           ),

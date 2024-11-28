@@ -1,12 +1,7 @@
 /* eslint react/destructuring-assignment: 0 */
 
 import React, { ReactNode } from 'react'
-import type {
-  GroupBase,
-  SelectComponentsConfig,
-  StylesConfig,
-  ThemeConfig,
-} from 'react-select'
+import type { GroupBase, SelectComponentsConfig, StylesConfig, ThemeConfig } from 'react-select'
 import Select from 'react-select'
 import type { AsyncProps } from 'react-select/async'
 import AsyncSelect from 'react-select/async'
@@ -111,6 +106,7 @@ const CustomSelect = <
     container: () => styles.container,
     control: () => styles.control,
     valueContainer: () => styles.valueContainer,
+    ...props.classNames,
   }
 
   const componentsWithValueContainer: SelectComponentsConfig<
