@@ -80,7 +80,7 @@ export const getLieuxActiviteOptions = async ({
           nom,
           adresse: `${adresse}, ${codePostal} ${commune}`,
           activites,
-          mostUsed: index === 0,
+          mostUsed: index === 0 && activites > 0,
         },
       }) satisfies LieuActiviteOption,
   )
