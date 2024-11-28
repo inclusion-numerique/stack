@@ -93,7 +93,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
             </Link>
           </li>
         )}
-      {user.coordinateur && (
+      {!restricted && user.coordinateur && (
         <li>
           <Link
             className="fr-nav__link fr-border--bottom-0"
@@ -112,6 +112,30 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
           </Link>
         </li>
       )}
+      {!restricted &&
+        !user.coordinateur &&
+        user.mediateur?.coordinations.length === 1 && (
+          <li>
+            <Link
+              className="fr-nav__link fr-border--bottom-0"
+              href={`/coop/mes-equipes/${user.mediateur?.coordinations.at(0)?.coordinateur.id}`}
+              style={{ boxShadow: 'none' }}
+            >
+              <span
+                className="ri-group-2-line fr-mr-1w"
+                style={{ color: 'var(--blue-france-sun-113-625)' }}
+                aria-hidden
+              />
+              Voir mon équipe ·{' '}
+              <span className="fr-text--bold">
+                {
+                  user.mediateur.coordinations.at(0)?.coordinateur
+                    .mediateursCoordonnes.length
+                }
+              </span>
+            </Link>
+          </li>
+        )}
       {!restricted && isAuthenticatedConseillerNumerique(user) && (
         <li>
           <Link
@@ -128,6 +152,42 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
           </Link>
         </li>
       )}
+      {!restricted &&
+        !user.coordinateur &&
+        (user.mediateur?.coordinations.length ?? 0) > 1 && (
+          <li className="fr-border--top">
+            <span className="fr-nav__link fr-pb-0 fr-text-mention--grey fr-text--medium fr-text--sm">
+              Mes équipes
+            </span>
+            {user.mediateur?.coordinations.map((coordination, index) => (
+              <Link
+                key={coordination.coordinateur.id}
+                className="fr-nav__link"
+                href={`/coop/mes-equipes/${coordination.coordinateur.id}`}
+                style={{ boxShadow: 'none' }}
+              >
+                <span className="fr-flex fr-align-items-center">
+                  <span
+                    className="ri-group-2-line fr-mr-1w"
+                    style={{ color: 'var(--blue-france-sun-113-625)' }}
+                    aria-hidden
+                  />
+                  <span className="fr-flex fr-direction-column">
+                    <span>
+                      Équipe {index + 1} ·{' '}
+                      <span className="fr-text--bold">
+                        {coordination.coordinateur.mediateursCoordonnes.length}
+                      </span>
+                    </span>
+                    <small className="fr-text-mention--grey">
+                      Coordonnée par {coordination.coordinateur.user.name}
+                    </small>
+                  </span>
+                </span>
+              </Link>
+            ))}
+          </li>
+        )}
       {!restricted && structureEmployeuse && (
         <li className="fr-border--top">
           <span className="fr-nav__link fr-pb-0 fr-text-mention--grey fr-text--medium fr-text--sm">
