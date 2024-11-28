@@ -39,12 +39,12 @@ describe('CraDureeValidation Schema', () => {
     expect(() => CraDureeValidation.parse(data)).not.toThrow()
   })
 
-  it('should fail validation when duree is not in default values or personnaliser', () => {
+  it('should validate when duree is not in default values or personnaliser', () => {
     const data = {
       duree: '70',
     }
 
-    expect(() => CraDureeValidation.parse(data)).toThrow()
+    expect(() => CraDureeValidation.parse(data)).not.toThrow()
   })
 
   it('should fail validation when duree is missing', () => {
