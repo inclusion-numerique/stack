@@ -19,7 +19,12 @@ import { createToast } from '@app/ui/toast/createToast'
 import { useRouter } from 'next/navigation'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, {
+  type MouseEventHandler,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import Link from 'next/link'
@@ -44,6 +49,7 @@ import {
   degreDeFinalisationDemarcheOptionsWithExtras,
   structuresRedirectionOptions,
   thematiqueDemarcheAdministrativeOptionsWithExtras,
+  thematiqueOptionsWithExtras,
   typeLieuOptionsWithExtras,
 } from '@app/web/cra/cra'
 import {
@@ -175,6 +181,20 @@ const CraDemarcheAdministrativeForm = ({
   const isLoading = isSubmitting || isSubmitSuccessful
 
   useScrollToError({ errors })
+
+  const [
+    showThematiquesMediationNumerique,
+    setShowThematiquesMediationNumerique,
+  ] = useState(
+    !!defaultValues.thematiquesMediationNumerique &&
+      defaultValues.thematiquesMediationNumerique.length > 0,
+  )
+
+  const onAddThematiquesMediationNumerique: MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
+    setShowThematiquesMediationNumerique(true)
+  }
 
   const [initialLieuResidenceOptions, setInitialLieuResidenceOptions] =
     useState<AdressBanFormFieldOption[]>(
@@ -338,10 +358,49 @@ const CraDemarcheAdministrativeForm = ({
         control={control}
         disabled={isLoading}
         path="precisionsDemarche"
-        label="Préciser la démarche"
+        label="Préciser le nom de la démarche administrative réalisée"
         className="fr-flex-grow-1 fr-mt-12v"
         classes={{ label: 'fr-text--medium fr-mb-3v' }}
       />
+      {showThematiquesMediationNumerique ? (
+        <>
+          <p className="fr-text--medium fr-mb-4v fr-mt-12v">
+            Thématique(s) d’accompagnement de médiation numérique
+          </p>
+          <CheckboxGroupFormField
+            control={control}
+            path="thematiquesMediationNumerique"
+            options={thematiqueOptionsWithExtras}
+            disabled={isLoading}
+            components={{
+              label: RichCardLabel,
+            }}
+            classes={{
+              fieldsetElement: richCardFieldsetElementClassName,
+              fieldset: craFormFieldsetClassname(styles.thematiquesFieldset),
+            }}
+          />
+        </>
+      ) : (
+        <>
+          <p className="fr-text--medium fr-mb-4v fr-mt-12v">
+            Avez-vous également réalisé de la médiation numérique lors de cet
+            accompagnement&nbsp;?
+          </p>
+          <div className="fr-btns-group fr-my-0 fr-btns-group--icon-left">
+            <Button
+              type="button"
+              iconId="fr-icon-add-line"
+              priority="secondary"
+              onClick={onAddThematiquesMediationNumerique}
+              className="fr-width-full fr-my-0"
+            >
+              Ajouter thématique(s) de médiation numérique
+            </Button>
+          </div>
+        </>
+      )}
+
       <p className="fr-text--medium fr-mb-4v fr-mt-12v">
         Niveau d’autonomie du bénéficiaire{' '}
         <Link

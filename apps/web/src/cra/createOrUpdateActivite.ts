@@ -232,7 +232,10 @@ export const createOrUpdateActivite = async ({
           ? data.structureDeRedirection
           : undefined,
 
-    thematiques: input.type === 'Demarche' ? undefined : input.data.thematiques,
+    thematiques:
+      input.type === 'Demarche'
+        ? (input.data.thematiquesMediationNumerique ?? [])
+        : input.data.thematiques,
     thematiquesDemarche:
       input.type === 'Demarche' ? input.data.thematiques : undefined,
     structure:

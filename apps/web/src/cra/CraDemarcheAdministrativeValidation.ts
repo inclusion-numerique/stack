@@ -4,6 +4,7 @@ import {
   degreDeFinalisationDemarcheValues,
   structuresRedirectionValues,
   thematiqueDemarcheAdministrativeValues,
+  thematiqueValues,
   typeLieuValues,
 } from '@app/web/cra/cra'
 import { BeneficiaireCraValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
@@ -31,6 +32,7 @@ export const CraDemarcheAdministrativeValidation = z
         required_error: 'Veuillez renseigner au moins une thématique',
       })
       .min(1, 'Veuillez renseigner au moins une thématique'),
+    thematiquesMediationNumerique: z.array(z.enum(thematiqueValues)).nullish(),
     precisionsDemarche: z.string().nullish(),
     autonomie: z.enum(autonomieValues).nullish(),
     degreDeFinalisation: z.enum(degreDeFinalisationDemarcheValues).nullish(),
