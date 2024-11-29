@@ -69,7 +69,7 @@ export const MonEquipeMediateurPage = ({
         currentPage={user.name ?? 'Médiateur'}
       />
       <main id={contentId} className="fr-mb-16w">
-        <section className="fr-my-12v">
+        <section className="fr-my-10v">
           <Identity
             {...user}
             mediateurId={id}
