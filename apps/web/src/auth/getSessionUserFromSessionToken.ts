@@ -54,6 +54,25 @@ export const sessionUserSelect = {
           id: true,
         },
       },
+      coordinations: {
+        select: {
+          coordinateur: {
+            select: {
+              id: true,
+              mediateursCoordonnes: {
+                select: {
+                  id: true,
+                },
+              },
+              user: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      },
       _count: {
         select: {
           enActivite: { where: { suppression: null } },

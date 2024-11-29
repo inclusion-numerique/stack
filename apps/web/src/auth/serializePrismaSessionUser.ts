@@ -9,10 +9,10 @@ export const serializePrismaSessionUser = (
   usurper?: PrismaSessionUsupper,
 ): SessionUser => ({
   ...prismaSessionUser,
+  emailVerified: prismaSessionUser.emailVerified?.toISOString() ?? null,
   created: prismaSessionUser.created.toISOString(),
   updated: prismaSessionUser.updated.toISOString(),
   hasSeenOnboarding: prismaSessionUser.hasSeenOnboarding?.toISOString() ?? null,
-  emailVerified: prismaSessionUser.emailVerified?.toISOString() ?? null,
   inscriptionValidee:
     prismaSessionUser.inscriptionValidee?.toISOString() ?? null,
   structureEmployeuseRenseignee:

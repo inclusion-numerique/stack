@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
-import { typologieStructureLabels } from '@app/web/app/structure/typologieStructure'
+import { Typologies } from '@app/web/components/structure/Typologies'
 import DeleteMediateurActivite from './DeleteMediateurActivite'
 
 export const LieuActivite = ({
@@ -67,29 +67,10 @@ export const LieuActivite = ({
           {complementAdresse ? ` ${complementAdresse}` : ''}, {codePostal}{' '}
           {commune}
         </div>
-        {typologies.length > 0 && (
-          <div className="fr-flex fr-align-items-center">
-            <span className="ri-government-line fr-mr-1v" />
-            {typologies?.join(', ')}
-            <Button
-              className="fr-btn--tooltip"
-              priority="tertiary no outline"
-              aria-describedby={`tooltip-typologie-${mediateurEnActiviteId}`}
-            >
-              Détail des acronymes
-            </Button>
-            <span
-              className="fr-tooltip fr-placement"
-              id={`tooltip-typologie-${mediateurEnActiviteId}`}
-              role="tooltip"
-              aria-hidden="true"
-            >
-              {typologies
-                .map((typologie) => typologieStructureLabels[typologie])
-                ?.join(', ')}
-            </span>
-          </div>
-        )}
+        <Typologies
+          id={`typologies-lieu-activite-${mediateurEnActiviteId}`}
+          typologies={typologies}
+        />
         {siret && <div>SIRET : {siret}</div>}
         {rna && <div>RNA : {rna}</div>}
       </div>

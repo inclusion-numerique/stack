@@ -1,29 +1,50 @@
+import Badge from '@codegouvfr/react-dsfr/Badge'
 import Link from 'next/link'
 import React from 'react'
 import Card from '@app/web/components/Card'
 
-const CoordinatorContract = ({
+const Contract = ({
+  isCoordinateur,
   type,
   start,
   end,
+  finDeContrat,
 }: {
+  isCoordinateur: boolean
   type: string
   start: string | null
   end: string | null
+  finDeContrat: boolean | null
 }) => (
   <Card
     noBorder
     className="fr-border fr-border-radius--8"
     titleAs="h2"
     title={
-      <span className="fr-flex fr-flex-gap-3v fr-align-items-end">
-        <img
-          className="fr-background-alt--blue-france fr-p-1w fr-border-radius--8"
-          src="/images/illustrations/mon-profil/coordination.svg"
-          alt=""
-        />
-        <span className="fr-text-title--blue-france">
-          Contrat coordinateur de conseiller numérique
+      <span className="fr-flex fr-justify-content-space-between fr-align-items-end fr-mb-4v">
+        <span className="fr-flex fr-flex-gap-3v fr-align-items-end fr-h6 fr-mb-0">
+          <span className="fr-flex fr-background-alt--blue-france fr-p-2v fr-border-radius--8">
+            <img
+              width="20px"
+              height="20px"
+              src={
+                isCoordinateur
+                  ? '/images/illustrations/role/coordination.svg'
+                  : '/images/illustrations/role/conseillers-numerique.svg'
+              }
+              alt=""
+            />
+          </span>
+          <span className="fr-text-title--blue-france">
+            {isCoordinateur
+              ? 'Contrat coordinateur de conseiller numérique'
+              : 'Contrat conseiller numérique'}
+          </span>
+        </span>
+        <span>
+          {finDeContrat && (
+            <Badge severity="warning">Fin de contrat prochaine</Badge>
+          )}
         </span>
       </span>
     }
@@ -60,4 +81,4 @@ const CoordinatorContract = ({
   />
 )
 
-export default CoordinatorContract
+export default Contract

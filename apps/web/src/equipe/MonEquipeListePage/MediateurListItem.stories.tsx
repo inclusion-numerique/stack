@@ -1,7 +1,7 @@
 import React from 'react'
 import { Meta, StoryObj } from '@storybook/react'
-import { MediateurList } from './MediateurList'
-import { MediateurListItem, MediateurListItemProps } from './MediateurListItem'
+import { MediateurList, MediateurListProps } from './MediateurList'
+import { MediateurListItem } from './MediateurListItem'
 
 export default {
   title: 'Équipe/Liste des médiateurs',
@@ -10,8 +10,8 @@ export default {
 
 type Story = StoryObj<typeof MediateurListItem>
 
-const Template = (props: MediateurListItemProps) => (
-  <MediateurList mediateurs={[props]} />
+const Template = (props: MediateurListProps) => (
+  <MediateurList mediateurs={[props]} baseHref="/" />
 )
 
 export const conseillerNumeriqueFinDeContrat: Story = {

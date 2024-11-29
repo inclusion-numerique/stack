@@ -6,7 +6,6 @@ import { DisplayOnCartography } from '@app/web/components/structure/DisplayOnCar
 import { LieuAccueillantPublicTitle } from '@app/web/components/structure/titles/LieuAccueillantPublicTitle'
 import { ServiceInclusionNumeriqueTitle } from '@app/web/components/structure/titles/ServiceInclusionNumeriqueTitle'
 import LieuActiviteSideMenu from '@app/web/app/coop/(full-width-layout)/lieux-activite/_components/LieuActiviteSideMenu'
-import BackButton from '@app/web/components/BackButton'
 import DescriptionEditCard from './description/DescriptionEditCard'
 import InformationsGeneralesEditCard from './informations-generales/InformationsGeneralesEditCard'
 import InformationsPratiquesEditCard from './informations-pratiques/InformationsPratiquesEditCard'
@@ -52,10 +51,6 @@ export const LieuActivitePageContent = ({
       </div>
       <div className="fr-container fr-container--narrow fr-ml-0 fr-mb-30v">
         {contentTop}
-        <BackButton href="/coop/lieux-activite">
-          Retour à mes lieux d&apos;activité
-        </BackButton>
-
         <span className="fr-flex fr-direction-row fr-align-items-center fr-flex-gap-6v fr-mb-5w">
           <IconInSquare iconId="ri-home-office-line" />
           <h1 className="fr-page-title fr-m-0 fr-h2">{structure.nom}</h1>

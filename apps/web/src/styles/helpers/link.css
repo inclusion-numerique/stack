@@ -10,6 +10,13 @@
   }
 }
 
+.fr-link--background-on-hover {
+  &:hover,
+  &:active {
+    background-color: var(--hover) !important;
+  }
+}
+
 .fr-link--no-underline {
   background-image: none !important;
 

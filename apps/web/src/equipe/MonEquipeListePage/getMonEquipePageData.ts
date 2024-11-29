@@ -1,7 +1,6 @@
 import { addMonths, format, isAfter, isBefore, subMonths } from 'date-fns'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { getMediateursCount } from '@app/web/mediateurs/getMediateursCount'
-import type { AuthenticatedCoordinateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { findConseillersNumeriquesContractInfoByEmails } from '@app/web/external-apis/conseiller-numerique/fetchConseillersCoordonnes'
 import { mediateurCoordonnesIdsFor } from '@app/web/mediateurs/mediateurCoordonnesIdsFor'
 import {
@@ -49,7 +48,10 @@ export const getMonEquipePageData = async ({
   coordinateur,
 }: {
   searchParams: MonEquipeSearchParams
-  coordinateur: AuthenticatedCoordinateur['coordinateur']
+  coordinateur: {
+    id: string
+    mediateursCoordonnes: { mediateurId: string }[]
+  }
 }) => {
   const { mediateurs, matchesCount, totalPages } =
     await searchMediateursCordonneBy(coordinateur)(searchParams)
@@ -64,17 +66,20 @@ export const getMonEquipePageData = async ({
   )
 
   return {
-    mediateurs: mediateurs.map(({ user, conseillerNumerique, activites }) => ({
-      firstName: user.firstName ?? undefined,
-      lastName: user.lastName ?? undefined,
-      phone: user.phone ?? undefined,
-      email: user.email,
-      isConseillerNumerique: conseillerNumerique?.id != null,
-      status: statusFor(activites),
-      finDeContrat: finDeContratFor(conseillerNumerique)(
-        conseillersNumeriquesWithContrats,
-      ),
-    })),
+    mediateurs: mediateurs.map(
+      ({ id, user, conseillerNumerique, activites }) => ({
+        id,
+        firstName: user.firstName ?? undefined,
+        lastName: user.lastName ?? undefined,
+        phone: user.phone ?? undefined,
+        email: user.email,
+        isConseillerNumerique: conseillerNumerique?.id != null,
+        status: statusFor(activites),
+        finDeContrat: finDeContratFor(conseillerNumerique)(
+          conseillersNumeriquesWithContrats,
+        ),
+      }),
+    ),
     stats: {
       total: mediateurCount[0],
       conseillerNumerique: mediateurCount[1],

@@ -20,14 +20,14 @@ const Page = () => (
 
     <Button
       iconId="fr-icon-download-line"
-      title="Télécharger la liste des utisateurs de la V1 pour ProConnect"
+      title="Télécharger la liste des utilisateurs de la V1 pour ProConnect"
       priority="secondary"
       linkProps={{
         href: '/api/proconnect/users.csv',
         download: true,
       }}
     >
-      Télécharger la liste des utisateurs de la V1 pour ProConnect
+      Télécharger la liste des utilisateurs de la V1 pour ProConnect
     </Button>
   </CoopPageContainer>
 )

@@ -4,20 +4,26 @@ import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
-import BackButton from '@app/web/components/BackButton'
 import { LieuActivitePageContent } from '@app/web/app/lieu-activite/components/LieuActivitePageContent'
 import { getLieuActiviteById } from '@app/web/app/lieu-activite/getLieuActiviteById'
+import BackButton from '@app/web/components/BackButton'
+import { prismaClient } from '@app/web/prismaClient'
 
 const LieuActiviteDetailPage = async ({
   params,
 }: {
-  params: { id: string }
+  params: { mediateurId: string; lieuId: string }
 }) => {
   await getAuthenticatedSessionUser().catch(() =>
-    redirect(`/connexion?suivant=/lieux-activite/${params.id}`),
+    redirect(`/connexion?suivant=/lieux-activite/${params.lieuId}`),
   )
 
-  const lieuActivite = await getLieuActiviteById(params.id)
+  const mediateur = await prismaClient.mediateur.findUnique({
+    where: { id: params.mediateurId },
+    select: { user: { select: { name: true } } },
+  })
+
+  const lieuActivite = await getLieuActiviteById(params.lieuId)
 
   return lieuActivite?.structure == null ? (
     redirect('/coop/lieux-activite')
@@ -33,14 +39,20 @@ const LieuActiviteDetailPage = async ({
                 <CoopBreadcrumbs
                   parents={[
                     {
-                      label: "Mes lieux d'activités",
-                      linkProps: { href: '/coop/lieux-activite/' },
+                      label: 'Mon équipe',
+                      linkProps: { href: '/coop/mon-equipe/' },
+                    },
+                    {
+                      label: mediateur?.user.name ?? 'Médiateur',
+                      linkProps: {
+                        href: `/coop/mon-equipe/${params.mediateurId}`,
+                      },
                     },
                   ]}
                   currentPage={lieuActivite.structure.nom}
                 />
-                <BackButton href="/coop/lieux-activite">
-                  Retour à mes lieux d&apos;activité
+                <BackButton href={`/coop/mon-equipe/${params.mediateurId}`}>
+                  Retour à la fiche de {mediateur?.user.name}
                 </BackButton>
               </>
             }

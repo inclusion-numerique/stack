@@ -3,11 +3,11 @@ import { redirect } from 'next/navigation'
 import Button from '@codegouvfr/react-dsfr/Button'
 import React from 'react'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
-import { prismaClient } from '@app/web/prismaClient'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { metadataTitle } from '@app/web/app/metadataTitle'
+import { getLieuxActivites } from '@app/web/lieu-activite/getLieuxActivites'
 import { LieuActivite } from './_components/LieuActivite'
 
 export const metadata: Metadata = {
@@ -21,32 +21,7 @@ const LieuActiviteListPage = async () => {
     return redirect('/')
   }
 
-  const lieuxActivite = await prismaClient.mediateurEnActivite.findMany({
-    where: {
-      mediateurId: user.mediateur.id,
-      suppression: null,
-    },
-    select: {
-      id: true,
-      creation: true,
-      modification: true,
-      structure: {
-        select: {
-          id: true,
-          nom: true,
-          adresse: true,
-          commune: true,
-          codePostal: true,
-          complementAdresse: true,
-          siret: true,
-          rna: true,
-          visiblePourCartographieNationale: true,
-          structureCartographieNationaleId: true,
-          typologies: true,
-        },
-      },
-    },
-  })
+  const lieuxActivites = await getLieuxActivites(user.mediateur.id)
 
   return (
     <>
@@ -74,12 +49,12 @@ const LieuActiviteListPage = async () => {
             </Button>
           </span>
           <div className="fr-flex fr-direction-column fr-flex-gap-4v">
-            {lieuxActivite.map((lieuActivite) => (
+            {lieuxActivites.map((lieuActivite) => (
               <LieuActivite
                 key={lieuActivite.id}
                 {...lieuActivite.structure}
                 mediateurEnActiviteId={lieuActivite.id}
-                canDelete={lieuxActivite.length > 1}
+                canDelete={lieuxActivites.length > 1}
                 creation={lieuActivite.creation}
                 modification={lieuActivite.modification}
               />

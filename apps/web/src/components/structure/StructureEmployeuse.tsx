@@ -1,6 +1,10 @@
+import React from 'react'
 import Badge from '@codegouvfr/react-dsfr/Badge'
+import { Typologies } from './Typologies'
 
 export const StructureEmployeuse = ({
+  id,
+  showTitle = false,
   nom,
   adresse,
   complementAdresse,
@@ -11,6 +15,8 @@ export const StructureEmployeuse = ({
   rna,
   isLieuActivite,
 }: {
+  id: string
+  showTitle?: boolean
   nom: string
   adresse: string
   complementAdresse?: string | null
@@ -22,7 +28,18 @@ export const StructureEmployeuse = ({
   isLieuActivite: boolean
 }) => (
   <div className="fr-border fr-border-radius--8 fr-p-4w">
-    <h2 className="fr-text--lg fr-mb-0">{nom}</h2>
+    {showTitle && (
+      <span className="fr-flex fr-flex-gap-3v fr-align-items-end fr-mb-6v">
+        <span
+          className="ri-home-smile-2-line ri-lg fr-line-height-1 fr-text-label--blue-france fr-background-alt--blue-france fr-p-2v fr-border-radius--8"
+          aria-hidden
+        />
+        <h2 className="fr-text-title--blue-france fr-h6 fr-m-0">
+          Structure employeuse
+        </h2>
+      </span>
+    )}
+    <span className="fr-text--lg fr-text--bold fr-mb-0">{nom}</span>
     <div className="fr-text--sm fr-mb-0 fr-text-mention--grey fr-flex fr-direction-column fr-flex-gap-1v">
       <div>
         <span className="ri-map-pin-2-line fr-mr-1v" />{' '}
@@ -32,25 +49,24 @@ export const StructureEmployeuse = ({
         ].join(' ')}
         , {codePostal} {commune}
       </div>
-      <div className="fr-flex fr-flex-gap-2v">
-        {typologies.length > 0 && (
-          <span className="fr-flex fr-align-items-center">
-            <span className="ri-government-line fr-mr-1w" />
-            {typologies?.join(', ')}
-          </span>
-        )}
-        {typologies.length > 0 && (siret || rna) && <span>·</span>}
-        {siret && (
-          <span>
-            <span className="fr-text--medium">SIRET</span> : {siret}
-          </span>
-        )}
-        {rna && (
-          <span>
-            <span className="fr-text--medium">RNA</span> : {rna}
-          </span>
-        )}
-      </div>
+      <Typologies
+        id={`typologies-structure-employeuse-${id}`}
+        typologies={typologies}
+      />
+      {(siret || rna) && (
+        <>
+          {siret && (
+            <span>
+              <span className="fr-text--medium">SIRET</span> : {siret}
+            </span>
+          )}
+          {rna && (
+            <span>
+              <span className="fr-text--medium">RNA</span> : {rna}
+            </span>
+          )}
+        </>
+      )}
     </div>
     {isLieuActivite && (
       <Badge className="fr-mt-3w fr-text--uppercase" noIcon severity="info">
