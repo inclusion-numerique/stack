@@ -1,6 +1,13 @@
 'use client'
 
-import { Control, DefaultValues, useForm, UseFormGetValues, UseFormSetValue, UseFormWatch } from 'react-hook-form'
+import {
+  Control,
+  DefaultValues,
+  useForm,
+  UseFormGetValues,
+  UseFormSetValue,
+  UseFormWatch,
+} from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
@@ -18,8 +25,14 @@ import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import Link from 'next/link'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import CraFormLabel from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraFormLabel'
-import AdresseBanFormField, { type AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
-import { genreOptions, statutSocialOptions, trancheAgeOptions } from '@app/web/beneficiaire/beneficiaire'
+import AdresseBanFormField, {
+  type AdressBanFormFieldOption,
+} from '@app/web/components/form/AdresseBanFormField'
+import {
+  genreOptions,
+  statutSocialOptions,
+  trancheAgeOptions,
+} from '@app/web/beneficiaire/beneficiaire'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { trpc } from '@app/web/trpc'
 import RichCardLabel, {
@@ -33,12 +46,13 @@ import {
   thematiqueOptionsWithExtras,
   typeLieuOptionsWithExtras,
 } from '@app/web/cra/cra'
-import { type CraIndividuelData, CraIndividuelValidation } from '@app/web/cra/CraIndividuelValidation'
+import {
+  type CraIndividuelData,
+  CraIndividuelValidation,
+} from '@app/web/cra/CraIndividuelValidation'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { yesNoBooleanOptions } from '@app/web/utils/yesNoBooleanOptions'
-import {
-  craFormFieldsetClassname,
-} from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/craFormFieldsetClassname'
+import { craFormFieldsetClassname } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/craFormFieldsetClassname'
 import CraBeneficiaryForm, {
   type CraDataWithBeneficiaire,
 } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraBeneficiaryForm'
@@ -50,7 +64,10 @@ import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOptio
 import { isBeneficiaireAnonymous } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
 import CraDureeSubForm from '@app/web/components/form/CraDureeSubForm'
 import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
-import { lieuActiviteFilterOption, toLieuActiviteRichOptions } from '@app/web/components/activite/lieuActiviteOptions'
+import {
+  lieuActiviteFilterOption,
+  toLieuActiviteRichOptions,
+} from '@app/web/components/activite/lieuActiviteOptions'
 import styles from '../CraForm.module.css'
 
 /**
