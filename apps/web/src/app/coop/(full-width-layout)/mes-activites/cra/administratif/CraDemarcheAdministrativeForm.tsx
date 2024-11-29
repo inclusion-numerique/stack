@@ -1,13 +1,6 @@
 'use client'
 
-import {
-  Control,
-  DefaultValues,
-  useForm,
-  UseFormGetValues,
-  UseFormSetValue,
-  UseFormWatch,
-} from 'react-hook-form'
+import { Control, DefaultValues, useForm, UseFormGetValues, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
@@ -19,25 +12,14 @@ import { createToast } from '@app/ui/toast/createToast'
 import { useRouter } from 'next/navigation'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import React, {
-  type MouseEventHandler,
-  useCallback,
-  useMemo,
-  useState,
-} from 'react'
+import React, { type MouseEventHandler, useCallback, useMemo, useState } from 'react'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import Link from 'next/link'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import CraFormLabel from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraFormLabel'
-import AdresseBanFormField, {
-  type AdressBanFormFieldOption,
-} from '@app/web/components/form/AdresseBanFormField'
-import {
-  genreOptions,
-  statutSocialOptions,
-  trancheAgeOptions,
-} from '@app/web/beneficiaire/beneficiaire'
+import AdresseBanFormField, { type AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
+import { genreOptions, statutSocialOptions, trancheAgeOptions } from '@app/web/beneficiaire/beneficiaire'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { trpc } from '@app/web/trpc'
 import RichCardLabel, {
@@ -57,7 +39,9 @@ import {
   CraDemarcheAdministrativeValidation,
 } from '@app/web/cra/CraDemarcheAdministrativeValidation'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { craFormFieldsetClassname } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/craFormFieldsetClassname'
+import {
+  craFormFieldsetClassname,
+} from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/craFormFieldsetClassname'
 import CraBeneficiaryForm, {
   CraDataWithBeneficiaire,
 } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraBeneficiaryForm'
@@ -68,10 +52,7 @@ import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutR
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import { isBeneficiaireAnonymous } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
 import CraDureeSubForm from '@app/web/components/form/CraDureeSubForm'
-import {
-  lieuActiviteFilterOption,
-  toLieuActiviteRichOptions,
-} from '@app/web/components/activite/lieuActiviteOptions'
+import { lieuActiviteFilterOption, toLieuActiviteRichOptions } from '@app/web/components/activite/lieuActiviteOptions'
 import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import styles from '../CraForm.module.css'
 
@@ -237,7 +218,9 @@ const CraDemarcheAdministrativeForm = ({
           `/coop/mes-activites/cra/administratif?v=${encodeSerializableState(data)}`,
         )
 
-        // Set the initial options for the lieu de residence
+        // When changing the beneficiaire
+        // we populate the initial options for the lieu of the CRA
+        // and set the value
         if (
           name === 'beneficiaire' &&
           data.beneficiaire?.communeResidence?.codeInsee
@@ -253,6 +236,25 @@ const CraDemarcheAdministrativeForm = ({
           setValue('lieuCommuneData', newDomicileValue)
           setCommuneResidenceBeneficiaireDefaultValue({
             label: banMunicipalityLabel(data.beneficiaire.communeResidence),
+            value: newDomicileValue,
+          })
+          setValue('beneficiaire.communeResidence', newDomicileValue)
+        }
+
+        // When changing the lieu of the CRA for a Domicile CRA
+        // we populate the initial options for the commune of the beneficiaire
+        // and set the value
+        if (
+          (name === 'lieuCommuneData' || name === 'typeLieu') &&
+          data.typeLieu === 'Domicile' &&
+          data.lieuCommuneData
+        ) {
+          setInitialLieuResidenceOptions(lieuResidenceOptionsFromFormData(data))
+          const newDomicileValue = banDefaultValueToAdresseBanData(
+            data.lieuCommuneData,
+          )
+          setCommuneResidenceBeneficiaireDefaultValue({
+            label: banMunicipalityLabel(data.lieuCommuneData),
             value: newDomicileValue,
           })
           setValue('beneficiaire.communeResidence', newDomicileValue)
