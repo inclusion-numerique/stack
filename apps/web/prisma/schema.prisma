@@ -44,6 +44,7 @@ model Session {
   usurperId String? @unique @map("usurper_id") @db.Uuid
   usurper   User?   @relation(fields: [usurperId], references: [id], name: "usurper")
 
+  @@index([userId])
   @@map("sessions")
 }
 
@@ -319,6 +320,7 @@ model Coordinateur {
 
   mediateursCoordonnes MediateurCoordonne[]
 
+  @@index([userId])
   @@map("coordinateurs")
 }
 
@@ -335,6 +337,8 @@ model MediateurCoordonne {
   modification DateTime  @default(now())
   suppression  DateTime?
 
+  @@index([mediateurId])
+  @@index([coordinateurId])
   @@map("mediateurs_coordonnes")
 }
 
@@ -399,6 +403,7 @@ model Structure {
   modalitesAccompagnement       String[]   @default([]) @map("modalites_accompagnement")
   activites                     Activite[] @relation(name: "activite_structure")
 
+  @@index([structureCartographieNationaleId])
   @@map("structures")
 }
 
@@ -547,6 +552,8 @@ model EmployeStructure {
   modification DateTime  @default(now())
   suppression  DateTime?
 
+  @@index([userId])
+  @@index([structureId])
   @@map("employes_structures")
 }
 
@@ -563,6 +570,8 @@ model MediateurEnActivite {
   modification DateTime  @default(now())
   suppression  DateTime?
 
+  @@index([mediateurId])
+  @@index([structureId])
   @@map("mediateurs_en_activite")
 }
 
@@ -639,6 +648,7 @@ model Beneficiaire {
 
   accompagnements Accompagnement[]
 
+  @@index([mediateurId])
   @@map("beneficiaires")
 }
 
@@ -704,6 +714,8 @@ model Activite {
   typeLieuAtelier TypeLieuAtelier? @map("type_lieu_atelier")
   niveau          NiveauAtelier?
 
+  @@index([structureId])
+  @@index([mediateurId])
   @@map("activites")
 }
 
@@ -720,6 +732,8 @@ model Accompagnement {
   activiteId String   @map("activite_id") @db.Uuid
   activite   Activite @relation(fields: [activiteId], references: [id])
 
+  @@index([beneficiaireId])
+  @@index([activiteId])
   @@unique([beneficiaireId, activiteId])
   @@map("accompagnements")
 }
@@ -837,6 +851,7 @@ model RdvAccount {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  @@index([userId])
   @@map("rdv_accounts")
 }
 
@@ -882,5 +897,6 @@ model Mutation {
 
   timestamp DateTime @default(now()) @map("timestamp")
 
+  @@index([userId])
   @@map("mutations")
 }
