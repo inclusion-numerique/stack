@@ -1,12 +1,12 @@
-import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDisclamer'
-import { DefaultValues } from 'react-hook-form'
 import React from 'react'
+import { DefaultValues } from 'react-hook-form'
+import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDisclamer'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import CraIndividuelForm from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/CraIndividuelForm'
 import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
 import { type MostUsedBeneficiairesForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import { type MostUsedLieuActiviteForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
-import BackButton from '@app/web/components/BackButton'
+import BackButtonWithModal from '@app/web/components/BackButtonWithModal'
 
 export type CraIndividuelPageData = {
   defaultValues: DefaultValues<CraIndividuelData>
@@ -25,8 +25,13 @@ const CraIndividuelPage = ({
 }: CraIndividuelPageData) => (
   <div className="fr-container fr-container--800">
     <CoopBreadcrumbs currentPage="Enregistrer un accompagnement individuel" />
-    <BackButton href="/coop">Retour à l&apos;accueil</BackButton>
-
+    <BackButtonWithModal
+      href="/coop"
+      modalTitle="Quitter sans enregistrer"
+      modalContent="Êtes-vous sur de vouloir quitter votre compe-rendu d’activité sans enregistrer ?"
+    >
+      Retour à l&apos;accueil
+    </BackButtonWithModal>
     <h1 className="fr-text-title--blue-france fr-mb-2v ">
       Accompagnement individuel
     </h1>

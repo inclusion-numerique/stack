@@ -34,7 +34,7 @@ export const OnboardingMesActivites = ({
     </p>
     <ul>
       <li>Accompagnement individuel</li>
-      <li>Atelier collectif</li>
+      <li>Ateliers collectif</li>
       <li>Aide aux démarches administratives</li>
     </ul>
   </Onboarding>

@@ -4,13 +4,15 @@ import Link from 'next/link'
 import Tag from '@codegouvfr/react-dsfr/Tag'
 import type { Structure } from '@prisma/client'
 import Button from '@codegouvfr/react-dsfr/Button'
+import { Fragment } from 'react'
+import Badge from '@codegouvfr/react-dsfr/Badge'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
 import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import AdministrationInfoCard from '@app/web/app/administration/AdministrationInfoCard'
 import AdministrationInlineLabelsValues, {
-  LabelAndValue,
+  type LabelAndValue,
 } from '@app/web/app/administration/AdministrationInlineLabelsValues'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { prismaClient } from '@app/web/prismaClient'
@@ -100,8 +102,15 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
           coordinations: {
             include: {
               coordinateur: {
-                include: {
-                  user: true,
+                select: {
+                  id: true,
+                  user: {
+                    select: {
+                      id: true,
+                      name: true,
+                      email: true,
+                    },
+                  },
                 },
               },
             },
@@ -125,7 +134,13 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
             include: {
               mediateur: {
                 include: {
-                  user: true,
+                  user: {
+                    select: {
+                      id: true,
+                      name: true,
+                      email: true,
+                    },
+                  },
                 },
               },
             },
@@ -173,7 +188,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
 
   const crasConseillerNumeriqueV1Count = mediateur?.conseillerNumerique
     ? await countCrasConseillerNumeriqueV1({
-        conseillerNumeriqueV1Id: mediateur.conseillerNumerique.id,
+        conseillerNumeriqueIds: [mediateur.conseillerNumerique.id],
       })
     : null
 
@@ -182,6 +197,10 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
   const isMediateur = !!mediateur
   const isCoordinateur = !!coordinateur
   const inscriptionEnCours = isUserInscriptionEnCours(user)
+
+  const coordinations = mediateur?.coordinations?.filter(
+    ({ suppression }) => !suppression,
+  )
 
   // Sort sessions and other lists by most recent first
   const sortedSessions = sessions.sort(
@@ -337,7 +356,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
         />
       </AdministrationInfoCard>
       {isMediateur && mediateur && (
-        <AdministrationInfoCard title="Infos médiateur">
+        <AdministrationInfoCard title="Rôle médiateur">
           <AdministrationInlineLabelsValues
             items={[
               {
@@ -364,12 +383,29 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
                 label: 'Lieux d’activité',
                 value: mediateur.enActivite.length,
               },
+              {
+                label: 'Coordoné(e) par',
+                value:
+                  !!coordinations && coordinations.length > 0 ? (
+                    coordinations.map((coordination) => (
+                      <Link
+                        key={coordination.id}
+                        href={`/administration/utilisateurs/${coordination.coordinateur.user.id}`}
+                        target="_blank"
+                      >
+                        {coordination.coordinateur.user.name}
+                      </Link>
+                    ))
+                  ) : (
+                    <Badge severity="warning">Aucune coordination</Badge>
+                  ),
+              },
             ]}
           />
         </AdministrationInfoCard>
       )}
       {isMediateur && mediateur?.conseillerNumerique && (
-        <AdministrationInfoCard title="Infos conseiller numérique">
+        <AdministrationInfoCard title="Rôle conseiller numérique">
           <AdministrationInlineLabelsValues
             items={[
               {
@@ -396,7 +432,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
         </AdministrationInfoCard>
       )}
       {coordinateur && (
-        <AdministrationInfoCard title="Infos coordinateur">
+        <AdministrationInfoCard title="Rôle coordinateur">
           <AdministrationInlineLabelsValues
             items={[
               {
@@ -418,6 +454,30 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
               {
                 label: 'Nombre de médiateurs coordonnés',
                 value: numberToString(coordinateur.mediateursCoordonnes.length),
+              },
+              {
+                label: 'Médiateurs coordonés',
+                value:
+                  coordinateur.mediateursCoordonnes.length > 0 ? (
+                    coordinateur.mediateursCoordonnes.map(
+                      (coordination, index) => (
+                        <Fragment key={coordination.id}>
+                          {index > 0 && <br />}
+                          <Link
+                            key={id}
+                            href={`/administration/utilisateurs/${id}`}
+                            target="_blank"
+                          >
+                            {coordination.mediateur.user.name}
+                            &nbsp;&nbsp;·&nbsp;&nbsp;
+                            {coordination.mediateur.user.email}
+                          </Link>
+                        </Fragment>
+                      ),
+                    )
+                  ) : (
+                    <Badge severity="warning">Aucun médiateur coordonné</Badge>
+                  ),
               },
             ]}
           />
@@ -490,7 +550,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
         )
       )}
 
-      <AdministrationInfoCard title="Sessions et comptes liés">
+      <AdministrationInfoCard title="Sessions de connexion et comptes liés">
         <AdministrationInlineLabelsValues
           items={[
             ...(accounts.length > 0

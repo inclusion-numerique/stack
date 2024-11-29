@@ -60,6 +60,7 @@ const DataSearchBar = <
       allowEmptySearch
       ref={searchBarRef}
       label={placeholder}
+      big
     />
   )
 }

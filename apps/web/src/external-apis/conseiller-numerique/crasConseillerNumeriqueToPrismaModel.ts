@@ -35,6 +35,26 @@ const flattenOrganismes = (
   ) as Record<string, number>
 }
 
+const dureeToMinutes = (duree: string | number | null) => {
+  if (!duree) {
+    return 0
+  }
+
+  if (typeof duree === 'number') {
+    return duree
+  }
+
+  if (duree === '0-30') {
+    return 15
+  }
+
+  if (duree === '30-60') {
+    return 45
+  }
+
+  return Number.parseInt(duree, 10) || 0
+}
+
 export const craConseillerNumeriqueToPrismaModel = ({
   item: { id, conseillerId, cra, createdAt, updatedAt, structure },
   importedAt,
@@ -80,6 +100,7 @@ export const craConseillerNumeriqueToPrismaModel = ({
     annotation: getSousTheme(cra.sousThemes, 'annotation').join(', ') || null,
 
     duree: cra.duree,
+    dureeMinutes: dureeToMinutes(cra.duree),
 
     accompagnementIndividuel: cra.accompagnement.individuel ?? 0,
     accompagnementAtelier: cra.accompagnement.atelier ?? 0,

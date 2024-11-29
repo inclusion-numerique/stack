@@ -107,6 +107,7 @@ describe('craConseillerNumeriqueToPrismaModel', () => {
       sousThemesTraitementTexte: ['fourniture'],
 
       duree: '30-60',
+      dureeMinutes: 45,
 
       accompagnementIndividuel: givenCra.cra.accompagnement.individuel,
       accompagnementAtelier: givenCra.cra.accompagnement.atelier,

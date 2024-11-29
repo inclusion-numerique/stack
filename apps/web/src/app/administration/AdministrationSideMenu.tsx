@@ -57,6 +57,18 @@ const AdministrationSideMenu = () => {
       },
       isActive: pathname?.startsWith('/administration/usurpation'),
     },
+    {
+      text: (
+        <>
+          <span className="fr-icon-settings-5-line ri-xl fr-mr-1w fr-text--regular" />
+          Outils
+        </>
+      ),
+      linkProps: {
+        href: '/administration/outils',
+      },
+      isActive: pathname?.startsWith('/administration/outils'),
+    },
   ] satisfies SideMenuProps.Item[]
 
   return (

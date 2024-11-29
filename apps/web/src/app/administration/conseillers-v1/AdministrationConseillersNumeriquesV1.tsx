@@ -5,6 +5,7 @@ import React from 'react'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { searchConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
 import styles from '@app/web/data-table/DataTable.module.css'
+import CopyToClipboardButton from '@app/web/components/CopyToClipboardButton'
 
 const AdministrationConseillersNumeriquesV1 = async ({
   recherche,
@@ -31,7 +32,7 @@ const AdministrationConseillersNumeriquesV1 = async ({
                   <thead>
                     <tr>
                       <th scope="col">Nom</th>
-                      <th scope="col">Email</th>
+                      <th scope="col">Email personnel</th>
                       <th scope="col">Email pro</th>
                       <th scope="col">Email CN</th>
                       <th scope="col">Nom commune</th>
@@ -49,9 +50,57 @@ const AdministrationConseillersNumeriquesV1 = async ({
                         <th>
                           {row.prenom} {row.nom}
                         </th>
-                        <td>{row.email}</td>
-                        <td>{row.emailPro}</td>
-                        <td>{row.emailConseillerNumerique}</td>
+                        <td>
+                          {!!row.email && (
+                            <div className="fr-position-relative fr-pl-11v">
+                              {row.email}{' '}
+                              <CopyToClipboardButton
+                                size="small"
+                                value={row.email}
+                                style={{
+                                  zIndex: 10,
+                                  position: 'absolute',
+                                  left: 0,
+                                  top: -4,
+                                }}
+                              />
+                            </div>
+                          )}
+                        </td>
+                        <td>
+                          {row.emailPro && (
+                            <div className="fr-position-relative fr-pl-11v">
+                              {row.emailPro}{' '}
+                              <CopyToClipboardButton
+                                size="small"
+                                value={row.emailPro}
+                                style={{
+                                  zIndex: 10,
+                                  position: 'absolute',
+                                  left: 0,
+                                  top: -4,
+                                }}
+                              />
+                            </div>
+                          )}
+                        </td>
+                        <td>
+                          {row.emailConseillerNumerique && (
+                            <div className="fr-position-relative fr-pl-11v">
+                              {row.emailConseillerNumerique}{' '}
+                              <CopyToClipboardButton
+                                size="small"
+                                value={row.emailConseillerNumerique}
+                                style={{
+                                  zIndex: 10,
+                                  position: 'absolute',
+                                  left: 0,
+                                  top: -4,
+                                }}
+                              />
+                            </div>
+                          )}
+                        </td>
                         <td>{row.nomCommune}</td>
                         <td className={styles.rowLinkCell}>
                           <Link

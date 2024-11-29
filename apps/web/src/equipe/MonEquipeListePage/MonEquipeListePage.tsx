@@ -7,7 +7,7 @@ import DataSearchBar from '@app/web/data-table/DataSearchBar'
 import { generatePageSizeSelectOptions } from '@app/web/data-table/pageSizeSelectOptions'
 import PaginationNavWithPageSizeSelect from '@app/web/data-table/PaginationNavWithPageSizeSelect'
 import SortSelect from '@app/web/data-table/SortSelect'
-import { MonEquipePageData } from '../getMonEquipePageData'
+import { MonEquipePageData } from './getMonEquipePageData'
 import { MediateurList } from './MediateurList'
 
 const pluralize = (expression: string, count: number) =>
@@ -22,26 +22,56 @@ const MonEquipeListePage = ({
   mediateurs,
   searchParams,
   totalPages,
+  baseHref,
+  coordinateur: {
+    user: { name, email, phone },
+  },
+  canSeeMediateursDetails = true,
   stats: { total, conseillerNumerique, mediateurNumerique },
 }: MonEquipePageData & {
   searchParams: { lignes?: string; page?: string; recherche?: string }
   totalPages: number
+  baseHref: string
+  coordinateur: {
+    user: { name: string | null; email: string | null; phone: string | null }
+  }
+  canSeeMediateursDetails?: boolean
 }) => (
   <>
     <SkipLinksPortal links={defaultSkipLinks} />
     <div className="fr-container fr-container--800">
       <CoopBreadcrumbs currentPage="Mon équipe" />
       <main id={contentId} className="fr-mb-16w">
-        <div className="fr-flex fr-flex-wrap fr-direction-row fr-align-items-center fr-flex-gap-4v fr-my-12v">
+        <div className="fr-flex fr-flex-wrap fr-direction-row fr-align-items-center fr-flex-gap-4v fr-mt-12v fr-mb-6v">
           <span
             className="ri-group-2-line ri-lg fr-line-height-1 fr-text-label--blue-france fr-background-alt--blue-france fr-p-2w fr-m-0 fr-border-radius--8"
             aria-hidden
           />
           <h1 className="fr-page-title fr-m-0">Mon équipe · {total}</h1>
         </div>
-        <div className="fr-border--top fr-border--bottom fr-py-3w fr-mb-5w">
+        <div>
+          Équipe coordonnée par <span className="fr-text--bold">{name}</span>
+          <div className="fr-flex fr-text-mention--grey fr-text--sm fr-mb-0 fr-flex-gap-2v">
+            <span>
+              <span className="ri-mail-line fr-mr-2v" aria-hidden />
+              {email}
+            </span>
+            {phone && (
+              <>
+                <span className="fr-hidden fr-unhidden-md" aria-hidden>
+                  ·
+                </span>
+                <span>
+                  <span className="ri-phone-line fr-mr-2v" aria-hidden />
+                  {phone}
+                </span>
+              </>
+            )}
+          </div>
+        </div>
+        <div className="fr-my-12v">
           <DataSearchBar
-            baseHref="/coop/mon-equipe"
+            baseHref={baseHref}
             searchParams={searchParams}
             placeholder="Rechercher par nom ou adresse e-mail"
           />
@@ -64,16 +94,20 @@ const MonEquipeListePage = ({
               { label: 'Les plus récents', value: 'recent' },
               { label: 'Les plus anciens', value: 'ancien' },
             ]}
-            baseHref="/coop/mon-equipe"
+            baseHref={baseHref}
           />
         </div>
-        <MediateurList mediateurs={mediateurs} />
+        <MediateurList
+          mediateurs={mediateurs}
+          canSeeMediateursDetails={canSeeMediateursDetails}
+          baseHref={baseHref}
+        />
         <PaginationNavWithPageSizeSelect
-          className="fr-mt-5w"
+          className="fr-mt-12v"
           defaultPageSize={10}
           pageSizeOptions={pageSizeOptions}
           totalPages={totalPages}
-          baseHref="/coop/mon-equipe"
+          baseHref={baseHref}
           searchParams={searchParams}
         />
       </main>

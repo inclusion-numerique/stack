@@ -95,7 +95,7 @@ export const MonEquipeMediateurPage = ({
           </section>
         )}
         <section className="fr-mt-6v">
-          <LieuxActivites lieuxActivites={lieuxActivites} />
+          <LieuxActivites lieuxActivites={lieuxActivites} mediateurId={id} />
         </section>
       </main>
     </div>

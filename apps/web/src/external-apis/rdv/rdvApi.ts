@@ -173,7 +173,6 @@ export const createAccount = async ({
     )
     .catch((error: AxiosError) => {
       console.error('RDV API ERROR', error.toJSON())
-      console.log('')
       throw error
     })
 

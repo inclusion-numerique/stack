@@ -2,38 +2,26 @@ import React from 'react'
 import { redirect } from 'next/navigation'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import { getSessionUser } from '@app/web/auth/getSessionUser'
-import { prismaClient } from '@app/web/prismaClient'
+import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
-import { LieuActivitePageContent } from './_components/LieuActivitePageContent'
+import BackButton from '@app/web/components/BackButton'
+import { LieuActivitePageContent } from '@app/web/app/lieu-activite/components/LieuActivitePageContent'
+import { getLieuActiviteById } from '@app/web/app/lieu-activite/getLieuActiviteById'
 
 const LieuActiviteDetailPage = async ({
   params,
 }: {
   params: { id: string }
 }) => {
-  const user = await getSessionUser()
+  await getAuthenticatedSessionUser().catch(() =>
+    redirect(`/connexion?suivant=/lieux-activite/${params.id}`),
+  )
 
-  if (!user || !user.mediateur) {
-    redirect(`/connexion?suivant=/lieux-activite/${params.id}`)
-  }
+  const lieuActivite = await getLieuActiviteById(params.id)
 
-  const lieuActivite = await prismaClient.mediateurEnActivite.findUnique({
-    where: {
-      id: params.id,
-      mediateurId: user.mediateur.id,
-    },
-    select: {
-      id: true,
-      structure: true,
-    },
-  })
-
-  if (lieuActivite?.structure == null) {
-    return redirect('/coop/lieux-activite')
-  }
-
-  return (
+  return lieuActivite?.structure == null ? (
+    redirect('/coop/lieux-activite')
+  ) : (
     <>
       <SkipLinksPortal links={defaultSkipLinks} />
       <div className="fr-container ">
@@ -41,15 +29,20 @@ const LieuActiviteDetailPage = async ({
           <LieuActivitePageContent
             structure={lieuActivite.structure}
             contentTop={
-              <CoopBreadcrumbs
-                parents={[
-                  {
-                    label: `Mes lieux d'activités`,
-                    linkProps: { href: '/coop/lieux-activite/' },
-                  },
-                ]}
-                currentPage={lieuActivite.structure.nom}
-              />
+              <>
+                <CoopBreadcrumbs
+                  parents={[
+                    {
+                      label: "Mes lieux d'activités",
+                      linkProps: { href: '/coop/lieux-activite/' },
+                    },
+                  ]}
+                  currentPage={lieuActivite.structure.nom}
+                />
+                <BackButton href="/coop/lieux-activite">
+                  Retour à mes lieux d&apos;activité
+                </BackButton>
+              </>
             }
           />
         </main>

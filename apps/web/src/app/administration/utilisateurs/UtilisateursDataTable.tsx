@@ -12,6 +12,7 @@ import { optionalNumberToString } from '@app/web/utils/formatNumber'
 import { getUserLifecycle } from '@app/web/app/administration/utilisateurs/getUserLifecycle'
 import { getUserLifecycleBadge } from '@app/web/app/administration/utilisateurs/getUserLifecycleBadge'
 import { dateAsDayAndTime } from '@app/web/utils/dateAsDayAndTime'
+import CopyToClipboardButton from '@app/web/components/CopyToClipboardButton'
 
 export type UtilisateursDataTableConfiguration = DataTableConfiguration<
   UtilisateurForList,
@@ -62,7 +63,16 @@ export const UtilisateursDataTable = {
       header: 'Email',
       csvHeaders: ['Email'],
       csvValues: ({ email }) => [email],
-      cell: ({ email }) => email,
+      cell: ({ email }) => (
+        <div className="fr-position-relative fr-pl-11v">
+          {email}
+          <CopyToClipboardButton
+            size="small"
+            value={email}
+            style={{ zIndex: 10, position: 'absolute', left: 0 }}
+          />
+        </div>
+      ),
       orderBy: (direction) => [
         {
           email: direction,

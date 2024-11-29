@@ -27,8 +27,6 @@ const CartographieNationaleOutilAccess = async () => {
     ? await getLieuxActiviteForCartographie(user.mediateur.id)
     : null
 
-  console.log('ACCESS OUTIL', lieuxActivite)
-
   return (
     <Access
       {...access}

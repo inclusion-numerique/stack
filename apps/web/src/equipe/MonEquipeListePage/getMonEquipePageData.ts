@@ -1,7 +1,6 @@
 import { addMonths, format, isAfter, isBefore, subMonths } from 'date-fns'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { getMediateursCount } from '@app/web/mediateurs/getMediateursCount'
-import type { AuthenticatedCoordinateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { findConseillersNumeriquesContractInfoByEmails } from '@app/web/external-apis/conseiller-numerique/fetchConseillersCoordonnes'
 import { mediateurCoordonnesIdsFor } from '@app/web/mediateurs/mediateurCoordonnesIdsFor'
 import {
@@ -49,7 +48,10 @@ export const getMonEquipePageData = async ({
   coordinateur,
 }: {
   searchParams: MonEquipeSearchParams
-  coordinateur: AuthenticatedCoordinateur['coordinateur']
+  coordinateur: {
+    id: string
+    mediateursCoordonnes: { mediateurId: string }[]
+  }
 }) => {
   const { mediateurs, matchesCount, totalPages } =
     await searchMediateursCordonneBy(coordinateur)(searchParams)

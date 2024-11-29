@@ -4,6 +4,9 @@ import { centreSocial, mediateque, structureEmployeuse } from '../structures'
 export const conseillerNumeriqueMediateurId =
   '1ae07d95-316c-489f-893a-d17052c883b7'
 
+export const conseillerNumeriqueConseillerNumeriqueId =
+  '6217b9ff9ee981b6489c10fc'
+
 export const conseillerNumerique = givenUser({
   id: 'b66d2370-4245-4492-a630-02749a98237d',
   firstName: 'Conseiller Num',
@@ -25,10 +28,10 @@ export const conseillerNumerique = givenUser({
         conseillerNumerique: {
           connectOrCreate: {
             where: {
-              id: 'conseiller-numerique-inscrit',
+              id: conseillerNumeriqueConseillerNumeriqueId,
             },
             create: {
-              id: 'conseiller-numerique-inscrit',
+              id: conseillerNumeriqueConseillerNumeriqueId,
             },
           },
         },

@@ -187,6 +187,22 @@ const CraDemarcheAdministrativeForm = ({
       : undefined,
   )
 
+  const [
+    communeResidenceBeneficiaireDefaultValue,
+    setCommuneResidenceBeneficiaireDefaultValue,
+  ] = useState<AdressBanFormFieldOption | undefined>(
+    defaultValues.beneficiaire?.communeResidence
+      ? {
+          label: banMunicipalityLabel(
+            defaultValues.beneficiaire.communeResidence,
+          ),
+          value: banDefaultValueToAdresseBanData(
+            defaultValues.beneficiaire.communeResidence,
+          ),
+        }
+      : undefined,
+  )
+
   useWatchSubscription(
     watch,
     useCallback(
@@ -209,6 +225,11 @@ const CraDemarcheAdministrativeForm = ({
             value: newDomicileValue,
           })
           setValue('lieuAccompagnementDomicileCommune', newDomicileValue)
+          setCommuneResidenceBeneficiaireDefaultValue({
+            label: banMunicipalityLabel(data.beneficiaire.communeResidence),
+            value: newDomicileValue,
+          })
+          setValue('beneficiaire.communeResidence', newDomicileValue)
         }
       },
       [setValue],
@@ -378,6 +399,10 @@ const CraDemarcheAdministrativeForm = ({
             path="beneficiaire.communeResidence"
             disabled={isLoading}
             defaultOptions={initialLieuResidenceOptions}
+            defaultValue={
+              communeResidenceBeneficiaireDefaultValue ??
+              lieuAccompagnementDomicileCommuneDefaultValue
+            }
             label={
               <span className="fr-text--medium fr-mb-4v fr-display-block">
                 Commune de résidence du bénéficiaire

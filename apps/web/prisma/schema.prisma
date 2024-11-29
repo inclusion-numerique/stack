@@ -266,6 +266,7 @@ model CraConseillerNumeriqueV1 {
   sousThemesTraitementTexte        String[] @default([]) @map("sous_themes_traitement_texte")
 
   duree String
+  dureeMinutes Int @map("duree_minutes")
 
   // Poursuites accompagnements
   accompagnementIndividuel  Int @default(0) @map("accompagnement_individuel")

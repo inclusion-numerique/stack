@@ -24,7 +24,8 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter 
     cy.url().should('equal', appUrl('/connexion'))
   })
 
-  it('Acceptation 1 - Connexion avec ProConnect', () => {
+  // TODO Proconnect has added 2FA for the sandbox user, we skip for now
+  it.skip('Acceptation 1 - Connexion avec ProConnect', () => {
     cy.visit('/connexion')
     // Cypress deletes some cookies on redirection between domains
     // See https://github.com/cypress-io/cypress/issues/20476

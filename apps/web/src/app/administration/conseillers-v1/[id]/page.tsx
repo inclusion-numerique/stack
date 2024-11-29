@@ -357,8 +357,8 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
                   label: 'Coordinateur',
                   value: conseiller.coordinateurs.map((coord) => (
                     <Link
-                      href={`/administration/conseillers-v1/${coord.id}`}
-                      key={coord.id}
+                      href={`/administration/conseillers-v1/${coord.id.toString('hex')}`}
+                      key={coord.id.toString('hex')}
                     >
                       {coord.prenom} {coord.nom}
                     </Link>

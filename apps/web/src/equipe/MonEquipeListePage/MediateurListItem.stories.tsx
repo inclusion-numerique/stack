@@ -11,7 +11,7 @@ export default {
 type Story = StoryObj<typeof MediateurListItem>
 
 const Template = (props: MediateurListProps) => (
-  <MediateurList mediateurs={[props]} />
+  <MediateurList mediateurs={[props]} baseHref="/" />
 )
 
 export const conseillerNumeriqueFinDeContrat: Story = {

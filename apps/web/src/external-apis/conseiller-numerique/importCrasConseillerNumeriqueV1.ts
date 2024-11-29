@@ -8,6 +8,7 @@ export const firstV1CrasMonth = new Date('2021-06-01')
 export type ImportCrasConseillerNumeriqueV1Options = {
   createdAtSince?: Date // included bound
   createdAtUntil?: Date // excluded bound
+  conseillerNumeriqueId?: string
 }
 
 export const importCrasConseillerNumeriqueV1 = async ({
