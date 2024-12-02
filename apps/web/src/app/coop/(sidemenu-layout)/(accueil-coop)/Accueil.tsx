@@ -65,7 +65,7 @@ export const Accueil = ({
           <hr className="fr-separator-1px" />
         </>
       )}
-      {isCoNum && (
+      {(isCoNum || isCoordinateur) && (
         <section className="fr-my-6w">
           <CommunicationConum />
         </section>
