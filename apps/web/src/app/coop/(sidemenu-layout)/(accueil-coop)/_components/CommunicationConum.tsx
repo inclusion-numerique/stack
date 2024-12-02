@@ -2,11 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import Card from '@app/web/components/Card'
 
-export const CommunicationConum = ({
-  isCoordinateur,
-}: {
-  isCoordinateur: boolean
-}) => (
+export const CommunicationConum = () => (
   <>
     <h2 className="fr-h5 fr-text-mention--grey">
       <Image
@@ -67,57 +63,5 @@ export const CommunicationConum = ({
         />
       </div>
     </div>
-
-    {isCoordinateur && (
-      <div className="fr-grid-row fr-grid-row--gutters">
-        <div className="fr-col-lg-6 fr-col-md-12 fr-col-sm-6 fr-col-12">
-          <Card
-            noBorder
-            arrowTop
-            arrowSm
-            className="fr-border fr-border-radius--16 "
-            title={
-              <span className="fr-inline-flex fr-align-items-center">
-                <Image
-                  className="fr-mr-1w"
-                  width={24}
-                  height={24}
-                  src="/images/services/mattermost.svg"
-                  alt=""
-                />
-                <span className="fr-text--uppercase fr-text--sm fr-mb-0 fr-text-label--grey">
-                  Mattermost - Coordinateurs
-                </span>
-              </span>
-            }
-            description="Accédez à la plateforme de discussions des coordinateurs de conseillers numériques"
-            href="https://discussion.conseiller-numerique.gouv.fr/hubs"
-            isExternal
-          />
-        </div>
-        <div className="fr-col-lg-6 fr-col-md-12 fr-col-sm-6 fr-col-12">
-          <Card
-            noBorder
-            arrowTop
-            arrowSm
-            className="fr-border fr-border-radius--16"
-            title={
-              <span className="fr-inline-flex fr-align-items-center">
-                <span
-                  className="fr-icon-suitcase-2-line fr-text-title--blue-france fr-mr-1w"
-                  aria-hidden
-                />
-                <span className="fr-text--uppercase fr-text--sm fr-mb-0 fr-text-label--grey">
-                  Malette coordinateurs
-                </span>
-              </span>
-            }
-            description="Apprenez les grands principes d'animation de réseau, les outils et les initiatives existantes."
-            href="https://lesbases.anct.gouv.fr/ressources/mallette-coordinateurs"
-            isExternal
-          />
-        </div>
-      </div>
-    )}
   </>
 )

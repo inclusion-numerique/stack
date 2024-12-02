@@ -67,7 +67,7 @@ export const Accueil = ({
       )}
       {(isCoNum || isCoordinateur) && (
         <section className="fr-my-6w">
-          <CommunicationConum isCoordinateur={isCoordinateur} />
+          <CommunicationConum />
         </section>
       )}
       <section className="fr-my-6w">
