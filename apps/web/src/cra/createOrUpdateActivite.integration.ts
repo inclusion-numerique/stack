@@ -69,8 +69,8 @@ describe('createOrUpdateActivite', () => {
           codeInsee: '75056',
         }),
         duree: {
-          duree: '90',
-          dureePersonnaliseeType: 'minutes',
+          duree: 'personnaliser',
+          dureePersonnaliseeMinutes: 90,
         },
         autonomie: 'EntierementAccompagne',
         beneficiaire: {
@@ -141,7 +141,6 @@ describe('createOrUpdateActivite', () => {
         }),
         duree: {
           duree: '90',
-          dureePersonnaliseeType: 'minutes',
         },
         autonomie: 'EntierementAccompagne',
         beneficiaire: {
@@ -209,8 +208,9 @@ describe('createOrUpdateActivite', () => {
         date: '2024-08-01',
         materiel: [],
         duree: {
-          duree: '90',
-          dureePersonnaliseeType: 'minutes',
+          duree: 'personnaliser',
+          dureePersonnaliseeHeures: 1,
+          dureePersonnaliseeMinutes: 30,
         },
         niveau: 'Avance',
       },

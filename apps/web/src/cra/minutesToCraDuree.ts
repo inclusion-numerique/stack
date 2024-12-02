@@ -3,18 +3,26 @@ import type { CraDureeData } from '@app/web/cra/CraDureeValidation'
 
 export const craDureeDataToMinutes = ({
   duree,
-  dureePersonnalisee,
-  dureePersonnaliseeType,
+  dureePersonnaliseeHeures,
+  dureePersonnaliseeMinutes,
 }: CraDureeData): number => {
   if (duree !== 'personnaliser') {
     return Number.parseInt(duree, 10)
   }
 
-  if (dureePersonnaliseeType === 'heures') {
-    return (dureePersonnalisee || 0) * 60
-  }
+  const hours =
+    typeof dureePersonnaliseeHeures === 'number' &&
+    !Number.isNaN(dureePersonnaliseeHeures)
+      ? dureePersonnaliseeHeures
+      : 0
 
-  return dureePersonnalisee || 0
+  const minutes =
+    typeof dureePersonnaliseeMinutes === 'number' &&
+    !Number.isNaN(dureePersonnaliseeMinutes)
+      ? dureePersonnaliseeMinutes
+      : 0
+
+  return hours * 60 + minutes
 }
 
 export const minutesToCraDureeData = (
@@ -32,14 +40,14 @@ export const minutesToCraDureeData = (
   if (minutesString === '0') {
     return {
       duree: dureeAccompagnementPersonnaliseeValue,
-      dureePersonnalisee: 0,
-      dureePersonnaliseeType: 'minutes',
+      dureePersonnaliseeHeures: undefined,
+      dureePersonnaliseeMinutes: undefined,
     }
   }
 
   return {
     duree: minutesString,
-    dureePersonnalisee: undefined,
-    dureePersonnaliseeType: 'minutes',
+    dureePersonnaliseeHeures: undefined,
+    dureePersonnaliseeMinutes: undefined,
   }
 }

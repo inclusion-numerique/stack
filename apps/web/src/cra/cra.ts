@@ -125,25 +125,6 @@ export const dureeAccompagnementParDefautOptions = labelsToOptions(
   dureeAccompagnementParDefautLabels,
 )
 
-export const dureeAccompagnementPersonnaliseeTypeLabels = {
-  minutes: 'minutes',
-  heures: 'heures',
-}
-
-export type DureeAccompagnementPersonnaliseeType =
-  keyof typeof dureeAccompagnementPersonnaliseeTypeLabels
-
-export const dureeAccompagnementPersonnaliseeTypeOptions = labelsToOptions(
-  dureeAccompagnementPersonnaliseeTypeLabels,
-)
-
-export const dureeAccompagnementPersonnaliseeTypeValues = Object.keys(
-  dureeAccompagnementPersonnaliseeTypeLabels,
-) as [
-  DureeAccompagnementPersonnaliseeType,
-  ...DureeAccompagnementPersonnaliseeType[],
-]
-
 export const typeLieuLabels: { [key in TypeLieu]: string } = {
   LieuActivite: 'Lieu d’activité',
   Autre: 'Autre lieu',

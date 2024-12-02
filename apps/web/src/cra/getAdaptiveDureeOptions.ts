@@ -32,10 +32,12 @@ export const getAdaptiveDureeOptions = async ({
       ...Object.entries(dureeAccompagnementParDefautLabels),
       ...(include
         ? [
-            [include, dureeAsString(Number.parseInt(include, 10))] satisfies [
-              string,
-              string,
-            ],
+            [
+              include,
+              include === 'personnaliser'
+                ? dureeAccompagnementParDefautLabels.personnaliser
+                : dureeAsString(Number.parseInt(include, 10)),
+            ] satisfies [string, string],
           ]
         : []),
     ].sort((a, b) => {
@@ -50,6 +52,8 @@ export const getAdaptiveDureeOptions = async ({
       return aInt - bInt
     }),
   )
+
+  console.log('DUREES MAP', dureesMap)
 
   return labelsToOptions(Object.fromEntries(dureesMap))
 }

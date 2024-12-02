@@ -1,0 +1,19 @@
+.hours {
+    &::after{
+        content: 'h';
+        right: 36px;
+        top: 28px;
+        position: absolute;
+        color: var(--grey-425-625);
+    }
+}
+
+.minutes {
+    &::after{
+        content: 'min';
+        right: 36px;
+        top: 28px;
+        position: absolute;
+        color: var(--grey-425-625);
+    }
+}

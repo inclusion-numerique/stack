@@ -79,9 +79,7 @@ export const getCraIndividuelDataDefaultValuesFromExisting = async ({
       ? getBeneficiaireDefaulCratDataFromExisting(beneficiaire)
       : { mediateurId },
     date: dateAsIsoDay(date),
-    duree: minutesToCraDureeData(duree) ?? {
-      dureePersonnaliseeType: 'minutes',
-    },
+    duree: minutesToCraDureeData(duree) ?? {},
     notes: notes ?? undefined,
     autonomie: autonomie ?? undefined,
     orienteVersStructure: optionalBooleanToYesNo(orienteVersStructure),

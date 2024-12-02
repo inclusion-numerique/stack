@@ -86,9 +86,7 @@ export const getCraCollectifDataDefaultValuesFromExisting = async ({
     mediateurId,
     participants: participantsDefaultValues,
     date: dateAsIsoDay(date),
-    duree: minutesToCraDureeData(duree) ?? {
-      dureePersonnaliseeType: 'minutes',
-    },
+    duree: minutesToCraDureeData(duree) ?? {},
     notes: notes ?? undefined,
     materiel: materiel ?? undefined,
     thematiques: thematiques ?? undefined,

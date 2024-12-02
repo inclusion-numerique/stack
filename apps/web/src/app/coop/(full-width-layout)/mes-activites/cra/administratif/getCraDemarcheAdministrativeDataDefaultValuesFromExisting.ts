@@ -81,9 +81,7 @@ export const getCraDemarcheAdministrativeDataDefaultValuesFromExisting =
         ? getBeneficiaireDefaulCratDataFromExisting(beneficiaire)
         : { mediateurId },
       date: dateAsIsoDay(date),
-      duree: minutesToCraDureeData(duree) ?? {
-        dureePersonnaliseeType: 'minutes',
-      },
+      duree: minutesToCraDureeData(duree) ?? {},
       notes: notes ?? undefined,
       autonomie: autonomie ?? undefined,
       degreDeFinalisation: degreDeFinalisation ?? undefined,
