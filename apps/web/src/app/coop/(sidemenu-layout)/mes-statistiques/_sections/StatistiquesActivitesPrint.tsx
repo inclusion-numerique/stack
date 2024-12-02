@@ -12,6 +12,7 @@ import {
   nombreAccompagnementParLieuColor,
   thematiquesAccompagnementColors,
 } from './colors'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 
 export const StatistiquesActivitesPrint = ({
   totalCounts,
@@ -44,7 +45,7 @@ export const StatistiquesActivitesPrint = ({
           <li key={value}>
             <b>{count}</b> {typeActivitePluralLabels[value]}
             {value === 'Collectif' &&
-              `, ${totalCounts.accompagnements.collectifs.total} participants au total`}{' '}
+              `, ${totalCounts.accompagnements.collectifs.total} participation${sPluriel(totalCounts.accompagnements.collectifs.total)} au total`}{' '}
             ({numberToPercentage(proportion)} des activités)
           </li>
         ))}

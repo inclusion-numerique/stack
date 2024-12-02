@@ -58,7 +58,7 @@ const AccompagnementsStatistiques = ({
         individuel{sPluriel(individuels.total)}
       </li>
       <li>
-        {collectifs.participants} participant{sPluriel(collectifs.participants)}{' '}
+        {collectifs.participants} participation{sPluriel(collectifs.participants)}{' '}
         lors de {collectifs.total} atelier{sPluriel(collectifs.total)}
       </li>
       <li>

@@ -16,6 +16,7 @@ import {
   nombreAccompagnementParLieuColor,
   thematiquesAccompagnementColors,
 } from './colors'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 
 export const StatistiquesActivites = ({
   activites,
@@ -57,7 +58,7 @@ export const StatistiquesActivites = ({
                 <span className="fr-text--bold">
                   {totalCounts.accompagnements.collectifs.total}
                 </span>{' '}
-                participants
+                participation{sPluriel(totalCounts.accompagnements.collectifs.total)}
               </>
             )}
           </StatistiqueAccompagnement>
