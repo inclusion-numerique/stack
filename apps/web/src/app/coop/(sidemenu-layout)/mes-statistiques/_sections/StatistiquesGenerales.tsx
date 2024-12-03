@@ -59,7 +59,9 @@ export const StatistiquesGenerales = ({
                     accompagnements individuels
                   </li>
                   <li>
-                    {totalCounts.activites.collectifs.participants} participants
+                    {totalCounts.activites.collectifs.participants}{' '}
+                    participation
+                    {sPluriel(totalCounts.activites.collectifs.participants)} 
                     lors de {totalCounts.activites.collectifs.total} ateliers*
                   </li>
                   <li>

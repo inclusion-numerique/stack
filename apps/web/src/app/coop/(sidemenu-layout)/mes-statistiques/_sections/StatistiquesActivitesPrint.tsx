@@ -1,4 +1,7 @@
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import type { MesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
+import { numberToPercentage } from '@app/web/utils/formatNumber'
+import { typeActivitePluralLabels } from '@app/web/cra/cra'
 import { AccompagnementPieChart } from '../_components/AccompagnementPieChart'
 import { ProgressListItem } from '../_components/ProgressListItem'
 import { QuantifiedShareLegend } from '../_components/QuantifiedShareLegend'
@@ -12,6 +15,7 @@ import {
 } from './colors'
 
 export const StatistiquesActivitesPrint = ({
+  totalCounts,
   activites,
   structures,
 }: MesStatistiquesPageData) => {
@@ -37,12 +41,12 @@ export const StatistiquesActivitesPrint = ({
       <h2 className="fr-h3">Statistiques sur vos activités</h2>
       <h3 className="fr-h5">Types d’activités</h3>
       <ul>
-        {activites.typeActivites.map((typeActivite) => (
-          <li key={typeActivite.value}>
-            <b>{typeActivite.count}</b> {typeActivite.label}{' '}
-            {typeActivite.value === 'Collectif' &&
-              `, ${activites.total} participants au total`}{' '}
-            ({typeActivite.proportion} % des activités)
+        {activites.typeActivites.map(({ count, proportion, value }) => (
+          <li key={value}>
+            <b>{count}</b> {typeActivitePluralLabels[value]}
+            {value === 'Collectif' &&
+              `, ${totalCounts.accompagnements.collectifs.total} participation${sPluriel(totalCounts.accompagnements.collectifs.total)} au total`}{' '}
+            ({numberToPercentage(proportion)} des activités)
           </li>
         ))}
       </ul>
