@@ -40,9 +40,7 @@ const addStatistiquesGenerales =
 
 const addStatistiquesActivites =
   (worksheet: Excel.Worksheet) =>
-  ({
-    totalCounts: { activites },
-  }: MesStatistiquesPageData) => {
+  ({ totalCounts: { activites } }: MesStatistiquesPageData) => {
     addTitleRow(worksheet)('Statistiques sur vos activités')
     worksheet.addRow([
       'Accompagnements individuels',
@@ -63,10 +61,7 @@ const addStatistiquesActivites =
       activites.demarches.total,
       numberToPercentage(activites.demarches.proportion),
     ])
-    worksheet.addRow([
-      'Nombre total d’activités',
-      activites.total,
-    ])
+    worksheet.addRow(['Nombre total d’activités', activites.total])
     worksheet.addRow([])
   }
 
