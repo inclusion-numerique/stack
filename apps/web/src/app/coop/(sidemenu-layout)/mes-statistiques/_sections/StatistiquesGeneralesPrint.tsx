@@ -23,7 +23,8 @@ export const StatistiquesGeneralesPrint = ({
       total
       <br />
       <small role="note" className="fr-mb-6v fr-display-block">
-        *Les ateliers collectifs comptent pour 1 accompagnement par participation.
+        *Les ateliers collectifs comptent pour 1 accompagnement par
+        participation.
         <br />
         Ex : Un atelier collectif avec 10 participations compte pour 10
         accompagnements.

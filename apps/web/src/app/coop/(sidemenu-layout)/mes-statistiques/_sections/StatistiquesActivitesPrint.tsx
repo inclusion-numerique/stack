@@ -1,3 +1,4 @@
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import type { MesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
 import { numberToPercentage } from '@app/web/utils/formatNumber'
 import { typeActivitePluralLabels } from '@app/web/cra/cra'
@@ -12,7 +13,6 @@ import {
   nombreAccompagnementParLieuColor,
   thematiquesAccompagnementColors,
 } from './colors'
-import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 
 export const StatistiquesActivitesPrint = ({
   totalCounts,
