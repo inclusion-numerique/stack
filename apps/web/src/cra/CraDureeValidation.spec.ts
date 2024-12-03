@@ -12,8 +12,8 @@ describe('CraDureeValidation Schema', () => {
   it('should validate valid personnalisee duration with all required fields', () => {
     const data = {
       duree: 'personnaliser',
-      dureePersonnaliseeHeures: 90,
-      dureePersonnaliseeMinutes: 60,
+      dureePersonnaliseeHeures: 2,
+      dureePersonnaliseeMinutes: 0,
     }
 
     expect(() => CraDureeValidation.parse(data)).not.toThrow()
@@ -24,7 +24,7 @@ describe('CraDureeValidation Schema', () => {
   it('should validate valid personnalisee duration with heures field only', () => {
     const data = {
       duree: 'personnaliser',
-      dureePersonnaliseeHeures: 90,
+      dureePersonnaliseeHeures: 8,
     }
 
     expect(() => CraDureeValidation.parse(data)).not.toThrow()
@@ -33,10 +33,28 @@ describe('CraDureeValidation Schema', () => {
   it('should validate valid personnalisee duration with minutes field only', () => {
     const data = {
       duree: 'personnaliser',
-      dureePersonnaliseeMinutes: 90,
+      dureePersonnaliseeMinutes: 48,
     }
 
     expect(() => CraDureeValidation.parse(data)).not.toThrow()
+  })
+
+  it('should fail for too many hours', () => {
+    const data = {
+      duree: 'personnaliser',
+      dureePersonnaliseeHeures: 25,
+    }
+
+    expect(() => CraDureeValidation.parse(data)).toThrow()
+  })
+
+  it('should fail for too many minutes', () => {
+    const data = {
+      duree: 'personnaliser',
+      dureePersonnaliseeMinutes: 60,
+    }
+
+    expect(() => CraDureeValidation.parse(data)).toThrow()
   })
 
   it('should fail validation when duree is personnaliser but dureePersonnalisee is missing', () => {
