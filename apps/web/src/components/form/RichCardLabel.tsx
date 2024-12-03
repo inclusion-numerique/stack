@@ -28,11 +28,13 @@ const RichCardLabel = memo(
     htmlFor,
     className,
     paddingX = 24,
+    paddingRight,
   }: {
     option: RichCardOption<T>
     className?: string
     htmlFor: string
     paddingX?: 16 | 24
+    paddingRight?: 16 | 24
   }) => {
     const tooltipId = `${htmlFor}-tooltip`
     const hintsTooltip = option.extra?.tooltips ? (
@@ -78,6 +80,11 @@ const RichCardLabel = memo(
           'fr-border-radius--4 fr-border',
           styles.label,
           paddingX === 16 ? styles.paddingX16 : styles.paddingX24,
+          paddingRight
+            ? paddingRight === 16
+              ? styles.paddingRight16
+              : styles.paddingRight24
+            : null,
           className,
         )}
         tabIndex={0}
@@ -101,9 +108,14 @@ const RichCardLabel = memo(
 
           {/* eslint-disable-next-line @next/next/no-img-element */}
           {!!option.extra?.illustration && (
-            <div className="fr-flex-shrink-0 fr-flex fr-align-items-center">
+            <div
+              className={classNames(
+                'fr-flex-shrink-0 fr-flex fr-align-items-center',
+              )}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                className="fr-display-block"
+                className={styles.illustration}
                 alt=""
                 src={option.extra.illustration}
               />

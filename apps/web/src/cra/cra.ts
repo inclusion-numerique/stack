@@ -8,7 +8,6 @@ import {
   ThematiqueDemarcheAdministrative,
   TypeActivite,
   TypeLieu,
-  TypeLieuAtelier,
 } from '@prisma/client'
 import { labelsToOptions } from '@app/ui/components/Form/utils/options'
 import { dureeAsString } from '@app/web/utils/dureeAsString'
@@ -126,27 +125,9 @@ export const dureeAccompagnementParDefautOptions = labelsToOptions(
   dureeAccompagnementParDefautLabels,
 )
 
-export const dureeAccompagnementPersonnaliseeTypeLabels = {
-  minutes: 'minutes',
-  heures: 'heures',
-}
-
-export type DureeAccompagnementPersonnaliseeType =
-  keyof typeof dureeAccompagnementPersonnaliseeTypeLabels
-
-export const dureeAccompagnementPersonnaliseeTypeOptions = labelsToOptions(
-  dureeAccompagnementPersonnaliseeTypeLabels,
-)
-
-export const dureeAccompagnementPersonnaliseeTypeValues = Object.keys(
-  dureeAccompagnementPersonnaliseeTypeLabels,
-) as [
-  DureeAccompagnementPersonnaliseeType,
-  ...DureeAccompagnementPersonnaliseeType[],
-]
-
 export const typeLieuLabels: { [key in TypeLieu]: string } = {
   LieuActivite: 'Lieu d’activité',
+  Autre: 'Autre lieu',
   Domicile: 'À domicile',
   ADistance: 'À distance',
 }
@@ -155,21 +136,17 @@ export const typeLieuIllustrations: {
   [key in TypeLieu]?: string
 } = {
   LieuActivite: '/dsfr/artwork/pictograms/buildings/city-hall.svg',
+  Autre: '/dsfr/artwork/pictograms/buildings/school.svg',
   Domicile: '/images/iconographie/thematique-logement.svg',
   ADistance: '/images/iconographie/mednum-internet.svg',
 }
 
 export const typeLieuOptions = labelsToOptions(typeLieuLabels)
 
-export const typeLieuHints: { [key in TypeLieu]?: string } = {
-  ADistance: 'Téléphone ou visio-conférence',
-}
-
 export const typeLieuOptionsWithExtras = typeLieuOptions.map(
   ({ label, value }) => ({
     label,
     value,
-    hint: typeLieuHints[value],
     extra: {
       illustration: typeLieuIllustrations[value],
     },
@@ -211,6 +188,7 @@ export const materielValues = Object.keys(materielLabels) as [
 export const thematiqueLabels: {
   [key in Thematique]: string
 } = {
+  DiagnosticNumerique: 'Diagnostic numérique',
   PrendreEnMainDuMateriel: 'Prendre en main du matériel',
   NavigationSurInternet: 'Navigation sur internet',
   Email: 'E-mail',
@@ -236,6 +214,10 @@ export const thematiqueShortLabels = {
 export const thematiqueHints: {
   [key in Thematique]?: string[]
 } = {
+  DiagnosticNumerique: [
+    'Évaluation des compétences numériques des bénéficiaires',
+    'Réaliser un questionnaire d’évaluation (ex : ABC Diag de Pix)',
+  ],
   PrendreEnMainDuMateriel: [
     'Utiliser un ordinateur, une tablette ou un smartphone',
     'Utiliser des périphériques (réseau wifi, clé USB, imprimante, scanner…)',
@@ -309,6 +291,7 @@ export const thematiqueHints: {
 export const thematiqueIllustrations: {
   [key in Thematique]?: string
 } = {
+  DiagnosticNumerique: '/images/iconographie/mednum-diagnostic.svg',
   PrendreEnMainDuMateriel: '/images/iconographie/mednum-materiel.svg',
   NavigationSurInternet: '/images/iconographie/mednum-internet.svg',
   Email: '/images/iconographie/mednum-email.svg',
@@ -489,37 +472,6 @@ export const structuresRedirectionOptions = labelsToOptions(
 export const structuresRedirectionValues = Object.keys(
   structuresRedirectionLabels,
 ) as [StructureDeRedirection, ...StructureDeRedirection[]]
-
-export const typeLieuAtelierLabels: {
-  [key in TypeLieuAtelier]: string
-} = {
-  LieuActivite: 'Lieu d’activité',
-  Autre: 'Autre lieu',
-}
-
-export const typeLieuAtelierOptions = labelsToOptions(typeLieuAtelierLabels)
-
-export const typeLieuAtelierIllustrations: {
-  [key in TypeLieuAtelier]?: string
-} = {
-  LieuActivite: '/dsfr/artwork/pictograms/buildings/city-hall.svg',
-  Autre: '/dsfr/artwork/pictograms/buildings/school.svg',
-}
-
-export const typeLieuAtelierOptionsWithExtras = typeLieuAtelierOptions.map(
-  ({ label, value }) => ({
-    label,
-    value,
-    extra: {
-      illustration: typeLieuAtelierIllustrations[value],
-    },
-  }),
-)
-
-export const typeLieuAtelierValues = Object.keys(typeLieuAtelierLabels) as [
-  TypeLieuAtelier,
-  ...TypeLieuAtelier[],
-]
 
 /**
  *

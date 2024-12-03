@@ -12,17 +12,56 @@ describe('CraDureeValidation Schema', () => {
   it('should validate valid personnalisee duration with all required fields', () => {
     const data = {
       duree: 'personnaliser',
-      dureePersonnalisee: 90,
-      dureePersonnaliseeType: 'minutes',
+      dureePersonnaliseeHeures: 2,
+      dureePersonnaliseeMinutes: 0,
     }
 
     expect(() => CraDureeValidation.parse(data)).not.toThrow()
   })
 
+  // test case ok for only one of the two personnalisee fields
+
+  it('should validate valid personnalisee duration with heures field only', () => {
+    const data = {
+      duree: 'personnaliser',
+      dureePersonnaliseeHeures: 8,
+    }
+
+    expect(() => CraDureeValidation.parse(data)).not.toThrow()
+  })
+
+  it('should validate valid personnalisee duration with minutes field only', () => {
+    const data = {
+      duree: 'personnaliser',
+      dureePersonnaliseeMinutes: 48,
+    }
+
+    expect(() => CraDureeValidation.parse(data)).not.toThrow()
+  })
+
+  it('should fail for too many hours', () => {
+    const data = {
+      duree: 'personnaliser',
+      dureePersonnaliseeHeures: 25,
+    }
+
+    expect(() => CraDureeValidation.parse(data)).toThrow()
+  })
+
+  it('should fail for too many minutes', () => {
+    const data = {
+      duree: 'personnaliser',
+      dureePersonnaliseeMinutes: 60,
+    }
+
+    expect(() => CraDureeValidation.parse(data)).toThrow()
+  })
+
   it('should fail validation when duree is personnaliser but dureePersonnalisee is missing', () => {
     const data = {
       duree: 'personnaliser',
-      dureePersonnaliseeType: 'minutes',
+      dureePersonnaliseeHeures: null,
+      dureePersonnaliseeMinutes: null,
     }
 
     expect(() => CraDureeValidation.parse(data)).toThrow(
@@ -30,27 +69,10 @@ describe('CraDureeValidation Schema', () => {
     )
   })
 
-  it('should default to minuteswhen duree is personnaliser but dureePersonnaliseeType is missing', () => {
-    const data = {
-      duree: 'personnaliser',
-      dureePersonnalisee: 90,
-    }
-
-    expect(() => CraDureeValidation.parse(data)).not.toThrow()
-  })
-
-  it('should fail validation when duree is not in default values or personnaliser', () => {
-    const data = {
-      duree: '70',
-    }
-
-    expect(() => CraDureeValidation.parse(data)).toThrow()
-  })
-
   it('should fail validation when duree is missing', () => {
     const data = {
-      dureePersonnalisee: 90,
-      dureePersonnaliseeType: 'minutes',
+      dureePersonnaliseeHeures: 90,
+      dureePersonnaliseeMinutes: 60,
     }
 
     expect(() => CraDureeValidation.parse(data)).toThrow(

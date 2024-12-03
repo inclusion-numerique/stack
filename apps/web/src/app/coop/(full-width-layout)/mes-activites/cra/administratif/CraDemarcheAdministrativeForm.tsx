@@ -19,11 +19,16 @@ import { createToast } from '@app/ui/toast/createToast'
 import { useRouter } from 'next/navigation'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import React, { useCallback, useState } from 'react'
-import type { SelectOption } from '@app/ui/components/Form/utils/options'
+import React, {
+  type MouseEventHandler,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import Link from 'next/link'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import CraFormLabel from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraFormLabel'
 import AdresseBanFormField, {
   type AdressBanFormFieldOption,
@@ -44,6 +49,7 @@ import {
   degreDeFinalisationDemarcheOptionsWithExtras,
   structuresRedirectionOptions,
   thematiqueDemarcheAdministrativeOptionsWithExtras,
+  thematiqueOptionsWithExtras,
   typeLieuOptionsWithExtras,
 } from '@app/web/cra/cra'
 import {
@@ -62,6 +68,11 @@ import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutR
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import { isBeneficiaireAnonymous } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
 import CraDureeSubForm from '@app/web/components/form/CraDureeSubForm'
+import {
+  lieuActiviteFilterOption,
+  toLieuActiviteRichOptions,
+} from '@app/web/components/activite/lieuActiviteOptions'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import styles from '../CraForm.module.css'
 
 /**
@@ -71,12 +82,10 @@ const lieuResidenceOptionsFromFormData = (
   data: DefaultValues<CraDemarcheAdministrativeData>,
 ): AdressBanFormFieldOption[] => {
   const result: AdressBanFormFieldOption[] = []
-  if (data.lieuAccompagnementDomicileCommune?.codeInsee) {
+  if (data.lieuCommuneData?.codeInsee) {
     result.push({
-      label: banMunicipalityLabel(data.lieuAccompagnementDomicileCommune),
-      value: banDefaultValueToAdresseBanData(
-        data.lieuAccompagnementDomicileCommune,
-      ),
+      label: banMunicipalityLabel(data.lieuCommuneData),
+      value: banDefaultValueToAdresseBanData(data.lieuCommuneData),
     })
   }
 
@@ -84,7 +93,7 @@ const lieuResidenceOptionsFromFormData = (
   if (
     !data.beneficiaire?.communeResidence?.codeInsee ||
     data.beneficiaire?.communeResidence?.codeInsee ===
-      data.lieuAccompagnementDomicileCommune?.codeInsee
+      data.lieuCommuneData?.codeInsee
   ) {
     return result
   }
@@ -101,13 +110,15 @@ const CraDemarcheAdministrativeForm = ({
   defaultValues,
   lieuActiviteOptions,
   initialBeneficiairesOptions,
+  dureeOptions,
   retour,
 }: {
   defaultValues: DefaultValues<CraDemarcheAdministrativeData> & {
     mediateurId: string
   }
-  lieuActiviteOptions: SelectOption[]
+  lieuActiviteOptions: LieuActiviteOption[]
   initialBeneficiairesOptions: BeneficiaireOption[]
+  dureeOptions: SelectOption[]
   retour?: string
 }) => {
   const form = useForm<CraDemarcheAdministrativeData>({
@@ -125,12 +136,17 @@ const CraDemarcheAdministrativeForm = ({
     !beneficiaire || isBeneficiaireAnonymous(beneficiaire)
 
   const typeLieu = form.watch('typeLieu')
-  const showLieuAccompagnementDomicileCommune = typeLieu === 'Domicile'
+  const showLieuCommuneData = typeLieu === 'Autre' || typeLieu === 'Domicile'
   const showStructure = typeLieu === 'LieuActivite'
 
   const degreDeFinalisation = form.watch('degreDeFinalisation')
   const showStructureOrientation =
     degreDeFinalisation === 'OrienteVersStructure'
+
+  const lieuActiviteRichOptions = useMemo(
+    () => toLieuActiviteRichOptions(lieuActiviteOptions),
+    [lieuActiviteOptions],
+  )
 
   const {
     control,
@@ -166,26 +182,36 @@ const CraDemarcheAdministrativeForm = ({
 
   useScrollToError({ errors })
 
+  const [
+    showThematiquesMediationNumerique,
+    setShowThematiquesMediationNumerique,
+  ] = useState(
+    !!defaultValues.thematiquesMediationNumerique &&
+      defaultValues.thematiquesMediationNumerique.length > 0,
+  )
+
+  const onAddThematiquesMediationNumerique: MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
+    setShowThematiquesMediationNumerique(true)
+  }
+
   const [initialLieuResidenceOptions, setInitialLieuResidenceOptions] =
     useState<AdressBanFormFieldOption[]>(
       lieuResidenceOptionsFromFormData(defaultValues),
     )
 
-  const [
-    lieuAccompagnementDomicileCommuneDefaultValue,
-    setLieuAccompagnementDomicileCommuneDefaultValue,
-  ] = useState<AdressBanFormFieldOption | undefined>(
-    defaultValues.lieuAccompagnementDomicileCommune
-      ? {
-          label: banMunicipalityLabel(
-            defaultValues.lieuAccompagnementDomicileCommune,
-          ),
-          value: banDefaultValueToAdresseBanData(
-            defaultValues.lieuAccompagnementDomicileCommune,
-          ),
-        }
-      : undefined,
-  )
+  const [lieuCommuneDataDefaultValue, setLieuCommuneDataDefaultValue] =
+    useState<AdressBanFormFieldOption | undefined>(
+      defaultValues.lieuCommuneData
+        ? {
+            label: banMunicipalityLabel(defaultValues.lieuCommuneData),
+            value: banDefaultValueToAdresseBanData(
+              defaultValues.lieuCommuneData,
+            ),
+          }
+        : undefined,
+    )
 
   const [
     communeResidenceBeneficiaireDefaultValue,
@@ -211,7 +237,9 @@ const CraDemarcheAdministrativeForm = ({
           `/coop/mes-activites/cra/administratif?v=${encodeSerializableState(data)}`,
         )
 
-        // Set the initial options for the lieu de residence
+        // When changing the beneficiaire
+        // we populate the initial options for the lieu of the CRA
+        // and set the value
         if (
           name === 'beneficiaire' &&
           data.beneficiaire?.communeResidence?.codeInsee
@@ -220,13 +248,32 @@ const CraDemarcheAdministrativeForm = ({
           const newDomicileValue = banDefaultValueToAdresseBanData(
             data.beneficiaire.communeResidence,
           )
-          setLieuAccompagnementDomicileCommuneDefaultValue({
+          setLieuCommuneDataDefaultValue({
             label: banMunicipalityLabel(data.beneficiaire.communeResidence),
             value: newDomicileValue,
           })
-          setValue('lieuAccompagnementDomicileCommune', newDomicileValue)
+          setValue('lieuCommuneData', newDomicileValue)
           setCommuneResidenceBeneficiaireDefaultValue({
             label: banMunicipalityLabel(data.beneficiaire.communeResidence),
+            value: newDomicileValue,
+          })
+          setValue('beneficiaire.communeResidence', newDomicileValue)
+        }
+
+        // When changing the lieu of the CRA for a Domicile CRA
+        // we populate the initial options for the commune of the beneficiaire
+        // and set the value
+        if (
+          (name === 'lieuCommuneData' || name === 'typeLieu') &&
+          data.typeLieu === 'Domicile' &&
+          data.lieuCommuneData
+        ) {
+          setInitialLieuResidenceOptions(lieuResidenceOptionsFromFormData(data))
+          const newDomicileValue = banDefaultValueToAdresseBanData(
+            data.lieuCommuneData,
+          )
+          setCommuneResidenceBeneficiaireDefaultValue({
+            label: banMunicipalityLabel(data.lieuCommuneData),
             value: newDomicileValue,
           })
           setValue('beneficiaire.communeResidence', newDomicileValue)
@@ -266,7 +313,7 @@ const CraDemarcheAdministrativeForm = ({
           }}
         />
         <div className="fr-flex-basis-0 fr-flex-grow-1">
-          <CraDureeSubForm form={form} />
+          <CraDureeSubForm form={form} dureeOptions={dureeOptions} />
         </div>
       </div>
       <CraFormLabel required as="p" className="fr-mb-3v fr-mt-8v">
@@ -279,6 +326,9 @@ const CraDemarcheAdministrativeForm = ({
         options={typeLieuOptionsWithExtras}
         components={{
           label: RichCardLabel,
+          labelProps: {
+            paddingRight: 16,
+          },
         }}
         classes={{
           fieldsetElement: richCardFieldsetElementClassName,
@@ -286,16 +336,16 @@ const CraDemarcheAdministrativeForm = ({
           radioGroup: richCardRadioGroupClassName,
         }}
       />
-      {showLieuAccompagnementDomicileCommune && (
+      {showLieuCommuneData && (
         <AdresseBanFormField<CraDemarcheAdministrativeData>
           label=" "
           control={control}
-          path="lieuAccompagnementDomicileCommune"
+          path="lieuCommuneData"
           disabled={isLoading}
           placeholder="Rechercher une commune par son nom ou son code postal"
           searchOptions={{ type: 'municipality' }}
           defaultOptions={initialLieuResidenceOptions}
-          defaultValue={lieuAccompagnementDomicileCommuneDefaultValue}
+          defaultValue={lieuCommuneDataDefaultValue}
         />
       )}
       {showStructure && (
@@ -304,12 +354,13 @@ const CraDemarcheAdministrativeForm = ({
           control={control}
           path="structureId"
           placeholder="Rechercher un lieu d’activité"
-          options={lieuActiviteOptions}
+          options={lieuActiviteRichOptions}
+          filterOption={lieuActiviteFilterOption}
         />
       )}
       <hr className="fr-separator-12v" />
       <p className="fr-text--medium fr-mb-4v fr-mt-12v">
-        Thématique(s) d’accompagnement <RedAsterisk />
+        Thématique(s) de la démarche administrative <RedAsterisk />
       </p>
       <CheckboxGroupFormField
         control={control}
@@ -328,10 +379,49 @@ const CraDemarcheAdministrativeForm = ({
         control={control}
         disabled={isLoading}
         path="precisionsDemarche"
-        label="Préciser la démarche"
+        label="Préciser le nom de la démarche administrative réalisée"
         className="fr-flex-grow-1 fr-mt-12v"
         classes={{ label: 'fr-text--medium fr-mb-3v' }}
       />
+      {showThematiquesMediationNumerique ? (
+        <>
+          <p className="fr-text--medium fr-mb-4v fr-mt-12v">
+            Thématique(s) d’accompagnement de médiation numérique
+          </p>
+          <CheckboxGroupFormField
+            control={control}
+            path="thematiquesMediationNumerique"
+            options={thematiqueOptionsWithExtras}
+            disabled={isLoading}
+            components={{
+              label: RichCardLabel,
+            }}
+            classes={{
+              fieldsetElement: richCardFieldsetElementClassName,
+              fieldset: craFormFieldsetClassname(styles.thematiquesFieldset),
+            }}
+          />
+        </>
+      ) : (
+        <>
+          <p className="fr-text--medium fr-mb-4v fr-mt-12v">
+            Avez-vous également réalisé de la médiation numérique lors de cet
+            accompagnement&nbsp;?
+          </p>
+          <div className="fr-btns-group fr-my-0 fr-btns-group--icon-left">
+            <Button
+              type="button"
+              iconId="fr-icon-add-line"
+              priority="secondary"
+              onClick={onAddThematiquesMediationNumerique}
+              className="fr-width-full fr-my-0"
+            >
+              Ajouter thématique(s) de médiation numérique
+            </Button>
+          </div>
+        </>
+      )}
+
       <p className="fr-text--medium fr-mb-4v fr-mt-12v">
         Niveau d’autonomie du bénéficiaire{' '}
         <Link
@@ -401,7 +491,7 @@ const CraDemarcheAdministrativeForm = ({
             defaultOptions={initialLieuResidenceOptions}
             defaultValue={
               communeResidenceBeneficiaireDefaultValue ??
-              lieuAccompagnementDomicileCommuneDefaultValue
+              lieuCommuneDataDefaultValue
             }
             label={
               <span className="fr-text--medium fr-mb-4v fr-display-block">

@@ -19,11 +19,11 @@ import { createToast } from '@app/ui/toast/createToast'
 import { useRouter } from 'next/navigation'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import React, { useCallback, useState } from 'react'
-import type { SelectOption } from '@app/ui/components/Form/utils/options'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import Link from 'next/link'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import CraFormLabel from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraFormLabel'
 import AdresseBanFormField, {
   type AdressBanFormFieldOption,
@@ -47,14 +47,14 @@ import {
   typeLieuOptionsWithExtras,
 } from '@app/web/cra/cra'
 import {
-  CraIndividuelData,
+  type CraIndividuelData,
   CraIndividuelValidation,
 } from '@app/web/cra/CraIndividuelValidation'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { yesNoBooleanOptions } from '@app/web/utils/yesNoBooleanOptions'
 import { craFormFieldsetClassname } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/craFormFieldsetClassname'
 import CraBeneficiaryForm, {
-  CraDataWithBeneficiaire,
+  type CraDataWithBeneficiaire,
 } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraBeneficiaryForm'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipalityLabel'
@@ -63,6 +63,11 @@ import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutR
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import { isBeneficiaireAnonymous } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
 import CraDureeSubForm from '@app/web/components/form/CraDureeSubForm'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
+import {
+  lieuActiviteFilterOption,
+  toLieuActiviteRichOptions,
+} from '@app/web/components/activite/lieuActiviteOptions'
 import styles from '../CraForm.module.css'
 
 /**
@@ -72,12 +77,10 @@ const lieuResidenceOptionsFromFormData = (
   data: DefaultValues<CraIndividuelData>,
 ): AdressBanFormFieldOption[] => {
   const result: AdressBanFormFieldOption[] = []
-  if (data.lieuAccompagnementDomicileCommune?.codeInsee) {
+  if (data.lieuCommuneData?.codeInsee) {
     result.push({
-      label: banMunicipalityLabel(data.lieuAccompagnementDomicileCommune),
-      value: banDefaultValueToAdresseBanData(
-        data.lieuAccompagnementDomicileCommune,
-      ),
+      label: banMunicipalityLabel(data.lieuCommuneData),
+      value: banDefaultValueToAdresseBanData(data.lieuCommuneData),
     })
   }
 
@@ -85,7 +88,7 @@ const lieuResidenceOptionsFromFormData = (
   if (
     !data.beneficiaire?.communeResidence?.codeInsee ||
     data.beneficiaire?.communeResidence?.codeInsee ===
-      data.lieuAccompagnementDomicileCommune?.codeInsee
+      data.lieuCommuneData?.codeInsee
   ) {
     return result
   }
@@ -103,11 +106,13 @@ const CraIndividuelForm = ({
   lieuActiviteOptions,
   initialBeneficiairesOptions,
   retour,
+  dureeOptions,
 }: {
   defaultValues: DefaultValues<CraIndividuelData> & { mediateurId: string }
-  lieuActiviteOptions: SelectOption[]
+  lieuActiviteOptions: LieuActiviteOption[]
   initialBeneficiairesOptions: BeneficiaireOption[]
   retour?: string
+  dureeOptions: SelectOption[]
 }) => {
   const form = useForm<CraIndividuelData>({
     resolver: zodResolver(CraIndividuelValidation),
@@ -124,11 +129,16 @@ const CraIndividuelForm = ({
     !beneficiaire || isBeneficiaireAnonymous(beneficiaire)
 
   const typeLieu = form.watch('typeLieu')
-  const showLieuAccompagnementDomicileCommune = typeLieu === 'Domicile'
+  const showLieuCommuneData = typeLieu === 'Autre' || typeLieu === 'Domicile'
   const showStructure = typeLieu === 'LieuActivite'
 
   const orienteVersStructure = form.watch('orienteVersStructure')
   const showStructureOrientation = orienteVersStructure === 'yes'
+
+  const lieuActiviteRichOptions = useMemo(
+    () => toLieuActiviteRichOptions(lieuActiviteOptions),
+    [lieuActiviteOptions],
+  )
 
   const {
     control,
@@ -171,21 +181,17 @@ const CraIndividuelForm = ({
       lieuResidenceOptionsFromFormData(defaultValues),
     )
 
-  const [
-    lieuAccompagnementDomicileCommuneDefaultValue,
-    setLieuAccompagnementDomicileCommuneDefaultValue,
-  ] = useState<AdressBanFormFieldOption | undefined>(
-    defaultValues.lieuAccompagnementDomicileCommune
-      ? {
-          label: banMunicipalityLabel(
-            defaultValues.lieuAccompagnementDomicileCommune,
-          ),
-          value: banDefaultValueToAdresseBanData(
-            defaultValues.lieuAccompagnementDomicileCommune,
-          ),
-        }
-      : undefined,
-  )
+  const [lieuCommuneDataDefaultValue, setLieuCommuneDataDefaultValue] =
+    useState<AdressBanFormFieldOption | undefined>(
+      defaultValues.lieuCommuneData
+        ? {
+            label: banMunicipalityLabel(defaultValues.lieuCommuneData),
+            value: banDefaultValueToAdresseBanData(
+              defaultValues.lieuCommuneData,
+            ),
+          }
+        : undefined,
+    )
 
   const [
     communeResidenceBeneficiaireDefaultValue,
@@ -211,7 +217,9 @@ const CraIndividuelForm = ({
           `/coop/mes-activites/cra/individuel?v=${encodeSerializableState(data)}`,
         )
 
-        // Set the initial options for the lieu de residence
+        // When changing the beneficiaire
+        // we populate the initial options for the lieu of the CRA
+        // and set the value
         if (
           name === 'beneficiaire' &&
           data.beneficiaire?.communeResidence?.codeInsee
@@ -220,13 +228,32 @@ const CraIndividuelForm = ({
           const newDomicileValue = banDefaultValueToAdresseBanData(
             data.beneficiaire.communeResidence,
           )
-          setLieuAccompagnementDomicileCommuneDefaultValue({
+          setLieuCommuneDataDefaultValue({
             label: banMunicipalityLabel(data.beneficiaire.communeResidence),
             value: newDomicileValue,
           })
-          setValue('lieuAccompagnementDomicileCommune', newDomicileValue)
+          setValue('lieuCommuneData', newDomicileValue)
           setCommuneResidenceBeneficiaireDefaultValue({
             label: banMunicipalityLabel(data.beneficiaire.communeResidence),
+            value: newDomicileValue,
+          })
+          setValue('beneficiaire.communeResidence', newDomicileValue)
+        }
+
+        // When changing the lieu of the CRA for a Domicile CRA
+        // we populate the initial options for the commune of the beneficiaire
+        // and set the value
+        if (
+          (name === 'lieuCommuneData' || name === 'typeLieu') &&
+          data.typeLieu === 'Domicile' &&
+          data.lieuCommuneData
+        ) {
+          setInitialLieuResidenceOptions(lieuResidenceOptionsFromFormData(data))
+          const newDomicileValue = banDefaultValueToAdresseBanData(
+            data.lieuCommuneData,
+          )
+          setCommuneResidenceBeneficiaireDefaultValue({
+            label: banMunicipalityLabel(data.lieuCommuneData),
             value: newDomicileValue,
           })
           setValue('beneficiaire.communeResidence', newDomicileValue)
@@ -267,7 +294,7 @@ const CraIndividuelForm = ({
           }}
         />
         <div className="fr-flex-basis-0 fr-flex-grow-1">
-          <CraDureeSubForm form={form} />
+          <CraDureeSubForm form={form} dureeOptions={dureeOptions} />
         </div>
       </div>
       <CraFormLabel required as="p" className="fr-mb-3v fr-mt-8v">
@@ -280,6 +307,9 @@ const CraIndividuelForm = ({
         options={typeLieuOptionsWithExtras}
         components={{
           label: RichCardLabel,
+          labelProps: {
+            paddingRight: 16,
+          },
         }}
         classes={{
           fieldsetElement: richCardFieldsetElementClassName,
@@ -287,16 +317,16 @@ const CraIndividuelForm = ({
           radioGroup: richCardRadioGroupClassName,
         }}
       />
-      {showLieuAccompagnementDomicileCommune && (
+      {showLieuCommuneData && (
         <AdresseBanFormField<CraIndividuelData>
           label=" "
           control={control}
-          path="lieuAccompagnementDomicileCommune"
+          path="lieuCommuneData"
           disabled={isLoading}
           placeholder="Rechercher une commune par son nom ou son code postal"
           searchOptions={{ type: 'municipality' }}
           defaultOptions={initialLieuResidenceOptions}
-          defaultValue={lieuAccompagnementDomicileCommuneDefaultValue}
+          defaultValue={lieuCommuneDataDefaultValue}
         />
       )}
       {showStructure && (
@@ -305,7 +335,8 @@ const CraIndividuelForm = ({
           control={control}
           path="structureId"
           placeholder="Rechercher un lieu d’activité"
-          options={lieuActiviteOptions}
+          options={lieuActiviteRichOptions}
+          filterOption={lieuActiviteFilterOption}
         />
       )}
       <hr className="fr-separator-12v" />
@@ -326,7 +357,7 @@ const CraIndividuelForm = ({
         }}
       />
       <p className="fr-text--medium fr-mb-4v fr-mt-12v">
-        Thématique(s) d’accompagnement <RedAsterisk />
+        Thématique(s) d’accompagnement de médiation numérique <RedAsterisk />
       </p>
       <CheckboxGroupFormField
         control={control}
@@ -408,7 +439,7 @@ const CraIndividuelForm = ({
             defaultOptions={initialLieuResidenceOptions}
             defaultValue={
               communeResidenceBeneficiaireDefaultValue ??
-              lieuAccompagnementDomicileCommuneDefaultValue
+              lieuCommuneDataDefaultValue
             }
             label={
               <span className="fr-text--medium fr-mb-4v fr-display-block">

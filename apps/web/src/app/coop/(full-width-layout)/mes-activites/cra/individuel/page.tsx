@@ -7,8 +7,9 @@ import {
 } from '@app/web/utils/encodeSerializableState'
 import { banDefaultValueToAdresseBanData } from '@app/web/external-apis/ban/banDefaultValueToAdresseBanData'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
-import { getInitialLieuxActiviteOptionsForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
+import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import CraIndividuelPage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/CraIndividuelPage'
+import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
 
 const CreateCraIndividuelPage = async ({
   searchParams: { v, retour } = {},
@@ -36,10 +37,10 @@ const CreateCraIndividuelPage = async ({
       mediateurId: user.mediateur.id,
       ...urlFormState.beneficiaire,
     },
-    duree: urlFormState.duree ?? { dureePersonnaliseeType: 'minutes' },
+    duree: urlFormState.duree ?? {},
     // If no value for domicile usager, then default to beneficiaire adresse
-    lieuAccompagnementDomicileCommune:
-      urlFormState.lieuAccompagnementDomicileCommune ??
+    lieuCommuneData:
+      urlFormState.lieuCommuneData ??
       (urlFormState.beneficiaire?.communeResidence
         ? banDefaultValueToAdresseBanData(
             urlFormState.beneficiaire.communeResidence,
@@ -47,13 +48,12 @@ const CreateCraIndividuelPage = async ({
         : null),
   }
 
-  const { lieuxActiviteOptions, mostUsedLieuActivite } =
-    await getInitialLieuxActiviteOptionsForSearch({
-      mediateurIds: [user.mediateur.id],
-    })
+  const lieuxActiviteOptions = await getLieuxActiviteOptions({
+    mediateurIds: [user.mediateur.id],
+  })
 
   if (!defaultValues.structureId) {
-    defaultValues.structureId = mostUsedLieuActivite?.structure.id ?? undefined
+    defaultValues.structureId = lieuxActiviteOptions.at(0)?.value ?? undefined
   }
 
   const initialBeneficiairesOptions =
@@ -61,12 +61,18 @@ const CreateCraIndividuelPage = async ({
       mediateurId: user.mediateur.id,
     })
 
+  const dureeOptions = await getAdaptiveDureeOptions({
+    mediateurId: user.mediateur.id,
+    include: defaultValues.duree?.duree,
+  })
+
   return (
     <CraIndividuelPage
       lieuxActiviteOptions={lieuxActiviteOptions}
       initialBeneficiairesOptions={initialBeneficiairesOptions}
       mediateurId={user.mediateur.id}
       defaultValues={defaultValues}
+      dureeOptions={dureeOptions}
       retour={retour}
     />
   )

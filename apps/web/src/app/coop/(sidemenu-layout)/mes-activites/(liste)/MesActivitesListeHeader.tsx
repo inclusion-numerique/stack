@@ -8,6 +8,7 @@ import type { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 import ExportActivitesDisabledButton from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/ExportActivitesDisabledButton'
 import type { ActiviteDates } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getFirstAndLastActiviteDate'
 import ExportActivitesButtonWrapper from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/ExportActivitesButtonWrapper'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 
 const MesActivitesListeHeader = ({
   className,
@@ -24,7 +25,7 @@ const MesActivitesListeHeader = ({
   initialMediateursOptions: MediateurOption[]
   initialBeneficiairesOptions: BeneficiaireOption[]
   communesOptions: SelectOption[]
-  lieuxActiviteOptions: SelectOption[]
+  lieuxActiviteOptions: LieuActiviteOption[]
   departementsOptions: SelectOption[]
   activiteDates: ActiviteDates
   className?: string

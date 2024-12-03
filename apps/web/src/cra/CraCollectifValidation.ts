@@ -3,7 +3,7 @@ import {
   materielValues,
   niveauAtelierValues,
   thematiqueValues,
-  typeLieuAtelierValues,
+  typeLieuValues,
 } from '@app/web/cra/cra'
 import { BeneficiaireCraValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { AdresseBanValidation } from '@app/web/external-apis/ban/AdresseBanValidation'
@@ -32,11 +32,11 @@ export const CraCollectifValidation = z
       .string({ required_error: 'Veuillez renseigner une date' })
       .date('Veuillez renseigner une date valide'),
     duree: CraDureeValidation,
-    typeLieuAtelier: z.enum(typeLieuAtelierValues, {
-      required_error: 'Veuillez renseigner un lieu',
+    typeLieu: z.enum(typeLieuValues, {
+      required_error: 'Veuillez renseigner un lieu d’accompagnement',
     }),
     structureId: z.string().uuid().nullish(),
-    lieuAtelierAutreCommune: AdresseBanValidation.nullish(),
+    lieuCommuneData: AdresseBanValidation.nullish(),
     materiel: z.array(z.enum(materielValues)).default([]),
     thematiques: z
       .array(z.enum(thematiqueValues), {
@@ -47,10 +47,10 @@ export const CraCollectifValidation = z
     niveau: z.enum(niveauAtelierValues).nullish(),
     notes: z.string().nullish(),
   })
-  // structureId is required if lieuAtelier ===  LieuActivite
+  // structureId is required if typeLieu ===  LieuActivite
   .refine(
     (data) => {
-      if (data.typeLieuAtelier === 'LieuActivite') {
+      if (data.typeLieu === 'LieuActivite') {
         return !!data.structureId
       }
       return true
@@ -60,13 +60,14 @@ export const CraCollectifValidation = z
       path: ['structureId'],
     },
   )
-  // lieuAtelierAutreCommune is required if lieuAtelier === Autre
+  // lieuCommuneData is required if typeLieu === Domicile ou typeLieu === Autre
   .refine(
     (data) =>
-      data.typeLieuAtelier !== 'Autre' || !!data.lieuAtelierAutreCommune,
+      (data.typeLieu !== 'Autre' && data.typeLieu !== 'Domicile') ||
+      !!data.lieuCommuneData,
     {
       message: 'Veuillez renseigner la commune',
-      path: ['lieuAtelierAutreCommune'],
+      path: ['lieuCommuneData'],
     },
   )
 

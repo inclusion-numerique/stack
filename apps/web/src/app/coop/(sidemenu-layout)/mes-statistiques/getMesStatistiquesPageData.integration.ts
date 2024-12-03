@@ -25,7 +25,6 @@ import {
   thematiqueDemarcheAdministrativeLabels,
   thematiqueLabels,
   typeActiviteLabels,
-  typeLieuAtelierLabels,
   typeLieuLabels,
 } from '@app/web/cra/cra'
 import {
@@ -142,11 +141,6 @@ const emptyData: MesStatistiquesPageData = {
     ),
     materiels: emptyQuantifiedSharesFromEnum(materielLabels),
     typeLieu: emptyQuantifiedSharesFromEnum(typeLieuLabels),
-    typeLieuAtelier: emptyQuantifiedSharesFromEnum(typeLieuAtelierLabels),
-    mergedTypeLieu: emptyQuantifiedSharesFromEnum({
-      ...typeLieuLabels,
-      ...typeLieuAtelierLabels,
-    }),
     durees: dureeAccompagnementStatisticsRanges.map(({ key, label }) => ({
       value: key,
       label,
@@ -239,7 +233,18 @@ describe('getMesStatistiquesPageData', () => {
       })
       expect(data).toEqual({
         ...emptyData,
-        lieuxActiviteOptions: [{ label: mediateque.nom, value: mediateque.id }],
+        lieuxActiviteOptions: [
+          {
+            label: mediateque.nom,
+            value: mediateque.id,
+            extra: {
+              activites: 0,
+              adresse: '2 rue des livres, 69002 Lyon 2eme',
+              mostUsed: false,
+              nom: 'Exemple de Mediateque',
+            },
+          },
+        ],
       })
     })
   })
@@ -312,24 +317,10 @@ describe('getMesStatistiquesPageData', () => {
           expectMonthCount(data, 'Juin', 1)
           expectMonthCount(data, 'Juil.', 14)
 
-          expectEnum(data.activites.typeLieu, 'Domicile', 2, 8)
-          expectEnum(data.activites.typeLieu, 'ADistance', 6, 8)
-
-          expectEnum(data.activites.typeLieuAtelier, 'Autre', 2, 2)
-
-          expectEnum(
-            data.activites.mergedTypeLieu,
-            'Domicile',
-            2,
-            totalActivites,
-          )
-          expectEnum(
-            data.activites.mergedTypeLieu,
-            'ADistance',
-            6,
-            totalActivites,
-          )
-          expectEnum(data.activites.mergedTypeLieu, 'Autre', 2, totalActivites)
+          expectEnum(data.activites.typeLieu, 'Domicile', 2, 10)
+          expectEnum(data.activites.typeLieu, 'ADistance', 8, 10)
+          expectEnum(data.activites.typeLieu, 'LieuActivite', 0, 10)
+          expectEnum(data.activites.typeLieu, 'Autre', 0, 10)
 
           expectEnum(data.activites.durees, '120', 10, totalActivites)
 
@@ -524,7 +515,18 @@ describe('getMesStatistiquesPageData', () => {
         ],
         initialBeneficiairesOptions:
           await getInitialBeneficiairesOptionsForSearch({ mediateurId }),
-        lieuxActiviteOptions: [{ label: mediateque.nom, value: mediateque.id }],
+        lieuxActiviteOptions: [
+          {
+            label: mediateque.nom,
+            value: mediateque.id,
+            extra: {
+              activites: 2,
+              adresse: '2 rue des livres, 69002 Lyon 2eme',
+              mostUsed: true,
+              nom: 'Exemple de Mediateque',
+            },
+          },
+        ],
       }
     })
 

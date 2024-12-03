@@ -1,9 +1,10 @@
 import { notFound } from 'next/navigation'
 import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
-import { getInitialLieuxActiviteOptionsForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
+import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import CraIndividuelPage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/CraIndividuelPage'
 import { getCraIndividuelDataDefaultValuesFromExisting } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/getCraIndividuelDataDefaultValuesFromExisting'
+import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
 
 const UpdateCraIndividuelPage = async ({
   params: { id },
@@ -28,13 +29,12 @@ const UpdateCraIndividuelPage = async ({
     return null
   }
 
-  const { lieuxActiviteOptions, mostUsedLieuActivite } =
-    await getInitialLieuxActiviteOptionsForSearch({
-      mediateurIds: [user.mediateur.id],
-    })
+  const lieuxActiviteOptions = await getLieuxActiviteOptions({
+    mediateurIds: [user.mediateur.id],
+  })
 
   if (!defaultValues.structureId) {
-    defaultValues.structureId = mostUsedLieuActivite?.structure.id ?? undefined
+    defaultValues.structureId = lieuxActiviteOptions.at(0)?.value ?? undefined
   }
 
   const initialBeneficiairesOptions =
@@ -43,12 +43,18 @@ const UpdateCraIndividuelPage = async ({
       includeBeneficiaireId: defaultValues.beneficiaire?.id ?? undefined,
     })
 
+  const dureeOptions = await getAdaptiveDureeOptions({
+    mediateurId: user.mediateur.id,
+    include: defaultValues.duree?.duree,
+  })
+
   return (
     <CraIndividuelPage
       defaultValues={defaultValues}
       mediateurId={user.mediateur.id}
       lieuxActiviteOptions={lieuxActiviteOptions}
       initialBeneficiairesOptions={initialBeneficiairesOptions}
+      dureeOptions={dureeOptions}
       retour={retour}
     />
   )

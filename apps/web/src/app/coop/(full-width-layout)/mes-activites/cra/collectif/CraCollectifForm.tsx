@@ -12,10 +12,10 @@ import { createToast } from '@app/ui/toast/createToast'
 import { useRouter } from 'next/navigation'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
-import React, { useCallback } from 'react'
-import type { SelectOption } from '@app/ui/components/Form/utils/options'
+import React, { useCallback, useMemo } from 'react'
 import { useScrollToError } from '@app/ui/hooks/useScrollToError'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import CraFormLabel from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/CraFormLabel'
 import AdresseBanFormField, {
   AdressBanFormFieldOption,
@@ -30,7 +30,7 @@ import {
   materielOptions,
   niveauAtelierOptionsWithExtras,
   thematiqueOptionsWithExtras,
-  typeLieuAtelierOptionsWithExtras,
+  typeLieuOptionsWithExtras,
 } from '@app/web/cra/cra'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { craFormFieldsetClassname } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/craFormFieldsetClassname'
@@ -45,6 +45,11 @@ import CraBeneficiairesMultiplesForm from '@app/web/app/coop/(full-width-layout)
 import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import CraDureeSubForm from '@app/web/components/form/CraDureeSubForm'
+import {
+  lieuActiviteFilterOption,
+  toLieuActiviteRichOptions,
+} from '@app/web/components/activite/lieuActiviteOptions'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import styles from '../CraForm.module.css'
 
 const CraCollectifForm = ({
@@ -52,12 +57,14 @@ const CraCollectifForm = ({
   lieuActiviteOptions,
   initialBeneficiairesOptions,
   initialCommunesOptions,
+  dureeOptions,
   retour,
 }: {
   defaultValues: DefaultValues<CraCollectifData> & { mediateurId: string }
-  lieuActiviteOptions: SelectOption[]
+  lieuActiviteOptions: LieuActiviteOption[]
   initialCommunesOptions: AdressBanFormFieldOption[]
   initialBeneficiairesOptions: BeneficiaireOption[]
+  dureeOptions: SelectOption[]
   retour?: string
 }) => {
   const form = useForm<CraCollectifData>({
@@ -70,9 +77,14 @@ const CraCollectifForm = ({
 
   const router = useRouter()
 
-  const typeLieuAtelier = form.watch('typeLieuAtelier')
-  const showLieuAtelierAutreCommune = typeLieuAtelier === 'Autre'
-  const showStructure = typeLieuAtelier === 'LieuActivite'
+  const typeLieu = form.watch('typeLieu')
+  const showLieuCommuneData = typeLieu === 'Autre' || typeLieu === 'Domicile'
+  const showStructure = typeLieu === 'LieuActivite'
+
+  const lieuActiviteRichOptions = useMemo(
+    () => toLieuActiviteRichOptions(lieuActiviteOptions),
+    [lieuActiviteOptions],
+  )
 
   const {
     control,
@@ -110,15 +122,12 @@ const CraCollectifForm = ({
 
   useScrollToError({ errors })
 
-  const lieuAtelierAutreCommuneDefaultValue =
-    defaultValues.lieuAtelierAutreCommune
-      ? {
-          label: banMunicipalityLabel(defaultValues.lieuAtelierAutreCommune),
-          value: banDefaultValueToAdresseBanData(
-            defaultValues.lieuAtelierAutreCommune,
-          ),
-        }
-      : undefined
+  const lieuCommuneDataDefaultValue = defaultValues.lieuCommuneData
+    ? {
+        label: banMunicipalityLabel(defaultValues.lieuCommuneData),
+        value: banDefaultValueToAdresseBanData(defaultValues.lieuCommuneData),
+      }
+    : undefined
 
   useWatchSubscription(
     watch,
@@ -167,7 +176,7 @@ const CraCollectifForm = ({
           }}
         />
         <div className="fr-flex-basis-0 fr-flex-grow-1">
-          <CraDureeSubForm form={form} />
+          <CraDureeSubForm form={form} dureeOptions={dureeOptions} />
         </div>
       </div>
       <CraFormLabel required as="p" className="fr-mb-3v fr-mt-8v">
@@ -175,28 +184,31 @@ const CraCollectifForm = ({
       </CraFormLabel>
       <RadioFormField
         control={control}
-        path="typeLieuAtelier"
+        path="typeLieu"
         disabled={isLoading}
-        options={typeLieuAtelierOptionsWithExtras}
+        options={typeLieuOptionsWithExtras}
         components={{
           label: RichCardLabel,
+          labelProps: {
+            paddingRight: 16,
+          },
         }}
         classes={{
           fieldsetElement: richCardFieldsetElementClassName,
-          fieldset: craFormFieldsetClassname(styles.lieuAtelierFieldset),
+          fieldset: craFormFieldsetClassname(styles.lieuFieldset),
           radioGroup: richCardRadioGroupClassName,
         }}
       />
-      {showLieuAtelierAutreCommune && (
+      {showLieuCommuneData && (
         <AdresseBanFormField<CraCollectifData>
           label=" "
           control={control}
-          path="lieuAtelierAutreCommune"
+          path="lieuCommuneData"
           disabled={isLoading}
           placeholder="Rechercher une commune par son nom ou son code postal"
           searchOptions={{ type: 'municipality' }}
           defaultOptions={initialCommunesOptions}
-          defaultValue={lieuAtelierAutreCommuneDefaultValue}
+          defaultValue={lieuCommuneDataDefaultValue}
         />
       )}
       {showStructure && (
@@ -205,7 +217,8 @@ const CraCollectifForm = ({
           control={control}
           path="structureId"
           placeholder="Rechercher un lieu d’activité"
-          options={lieuActiviteOptions}
+          options={lieuActiviteRichOptions}
+          filterOption={lieuActiviteFilterOption}
         />
       )}
       <hr className="fr-separator-12v" />
@@ -226,7 +239,7 @@ const CraCollectifForm = ({
         }}
       />
       <p className="fr-text--medium fr-mb-4v fr-mt-12v">
-        Thématique(s) d’accompagnement <RedAsterisk />
+        Thématique(s) d’accompagnement de médiation numérique <RedAsterisk />
       </p>
       <CheckboxGroupFormField
         control={control}

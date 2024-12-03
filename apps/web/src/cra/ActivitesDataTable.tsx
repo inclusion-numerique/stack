@@ -55,15 +55,8 @@ export const ActivitesDataTable = {
       header: 'Lieu',
       csvHeaders: ['Lieu'],
       csvValues: () => [],
-      cell: ({
-        structure,
-        lieuCommune,
-        lieuCodePostal,
-        typeLieu,
-        typeLieuAtelier,
-      }) =>
-        (typeLieu === 'LieuActivite' || typeLieuAtelier === 'LieuActivite') &&
-        structure
+      cell: ({ structure, lieuCommune, lieuCodePostal, typeLieu }) =>
+        typeLieu === 'LieuActivite' && structure
           ? structure.nom
           : typeLieu === 'ADistance'
             ? 'À distance'

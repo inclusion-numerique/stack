@@ -4,6 +4,7 @@ import {
   degreDeFinalisationDemarcheValues,
   structuresRedirectionValues,
   thematiqueDemarcheAdministrativeValues,
+  thematiqueValues,
   typeLieuValues,
 } from '@app/web/cra/cra'
 import { BeneficiaireCraValidation } from '@app/web/beneficiaire/BeneficiaireValidation'
@@ -25,19 +26,20 @@ export const CraDemarcheAdministrativeValidation = z
       required_error: 'Veuillez renseigner un lieu d’accompagnement',
     }),
     structureId: z.string().uuid().nullish(),
-    lieuAccompagnementDomicileCommune: AdresseBanValidation.nullish(),
+    lieuCommuneData: AdresseBanValidation.nullish(),
     thematiques: z
       .array(z.enum(thematiqueDemarcheAdministrativeValues), {
         required_error: 'Veuillez renseigner au moins une thématique',
       })
       .min(1, 'Veuillez renseigner au moins une thématique'),
+    thematiquesMediationNumerique: z.array(z.enum(thematiqueValues)).nullish(),
     precisionsDemarche: z.string().nullish(),
     autonomie: z.enum(autonomieValues).nullish(),
     degreDeFinalisation: z.enum(degreDeFinalisationDemarcheValues).nullish(),
     structureDeRedirection: z.enum(structuresRedirectionValues).nullish(),
     notes: z.string().nullish(),
   })
-  // structureId is required if lieuAccompagnement ===  LieuActivite
+  // structureId is required if typeLieu ===  LieuActivite
   .refine(
     (data) => {
       if (data.typeLieu === 'LieuActivite') {
@@ -50,13 +52,14 @@ export const CraDemarcheAdministrativeValidation = z
       path: ['structureId'],
     },
   )
-  // lieuAccompagnementDomicileCommune is required if lieuAccompagnement === Domicile
+  // lieuCommuneData is required if typeLieu === Domicile ou typeLieu === Autre
   .refine(
     (data) =>
-      data.typeLieu !== 'Domicile' || !!data.lieuAccompagnementDomicileCommune,
+      (data.typeLieu !== 'Autre' && data.typeLieu !== 'Domicile') ||
+      !!data.lieuCommuneData,
     {
       message: 'Veuillez renseigner la commune',
-      path: ['lieuAccompagnementDomicileCommune'],
+      path: ['lieuCommuneData'],
     },
   )
 

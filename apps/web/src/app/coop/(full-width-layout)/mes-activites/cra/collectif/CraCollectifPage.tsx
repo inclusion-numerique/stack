@@ -1,20 +1,22 @@
 import React from 'react'
 import { DefaultValues } from 'react-hook-form'
 import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDisclamer'
+import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
 import CraCollectifForm from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/collectif/CraCollectifForm'
 import { AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
 import { type MostUsedBeneficiairesForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
-import { type MostUsedLieuActiviteForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
 import BackButtonWithModal from '@app/web/components/BackButtonWithModal'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 
 export type CraCollectifPageData = {
   defaultValues: DefaultValues<CraCollectifData>
   mediateurId: string
-  lieuxActiviteOptions: MostUsedLieuActiviteForSearch['lieuxActiviteOptions']
+  lieuxActiviteOptions: LieuActiviteOption[]
   initialBeneficiairesOptions: MostUsedBeneficiairesForSearch
   initialCommunesOptions: AdressBanFormFieldOption[]
+  dureeOptions: SelectOption[]
   retour?: string
 }
 
@@ -22,6 +24,7 @@ const CraCollectifPage = ({
   defaultValues,
   initialBeneficiairesOptions,
   initialCommunesOptions,
+  dureeOptions,
   lieuxActiviteOptions,
   mediateurId,
   retour,
@@ -50,6 +53,7 @@ const CraCollectifPage = ({
       lieuActiviteOptions={lieuxActiviteOptions}
       initialBeneficiairesOptions={initialBeneficiairesOptions}
       initialCommunesOptions={initialCommunesOptions}
+      dureeOptions={dureeOptions}
       retour={retour}
     />
   </div>

@@ -8,8 +8,9 @@ import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
 import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
 import { AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
-import { getInitialLieuxActiviteOptionsForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
+import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import CraCollectifPage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/collectif/CraCollectifPage'
+import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
 
 const CreateCraCollectifPage = async ({
   searchParams: { v, retour } = {},
@@ -33,7 +34,7 @@ const CreateCraCollectifPage = async ({
     ...urlFormState,
     date: new Date().toISOString().slice(0, 10),
     mediateurId,
-    duree: urlFormState.duree ?? { dureePersonnaliseeType: 'minutes' },
+    duree: urlFormState.duree ?? {},
     participantsAnonymes: {
       ...participantsAnonymesDefault,
       ...urlFormState.participantsAnonymes,
@@ -46,13 +47,12 @@ const CreateCraCollectifPage = async ({
       ) ?? [],
   }
 
-  const { lieuxActiviteOptions, mostUsedLieuActivite } =
-    await getInitialLieuxActiviteOptionsForSearch({
-      mediateurIds: [user.mediateur.id],
-    })
+  const lieuxActiviteOptions = await getLieuxActiviteOptions({
+    mediateurIds: [user.mediateur.id],
+  })
 
   if (!defaultValues.structureId) {
-    defaultValues.structureId = mostUsedLieuActivite?.structure.id ?? undefined
+    defaultValues.structureId = lieuxActiviteOptions.at(0)?.value ?? undefined
   }
 
   const initialBeneficiairesOptions =
@@ -63,12 +63,18 @@ const CreateCraCollectifPage = async ({
   // TODO: get most probable communes using the filter helper functions
   const initialCommunesOptions: AdressBanFormFieldOption[] = []
 
+  const dureeOptions = await getAdaptiveDureeOptions({
+    mediateurId: user.mediateur.id,
+    include: defaultValues.duree?.duree,
+  })
+
   return (
     <CraCollectifPage
       defaultValues={defaultValues}
       initialBeneficiairesOptions={initialBeneficiairesOptions}
       initialCommunesOptions={initialCommunesOptions}
       lieuxActiviteOptions={lieuxActiviteOptions}
+      dureeOptions={dureeOptions}
       mediateurId={user.mediateur.id}
       retour={retour}
     />

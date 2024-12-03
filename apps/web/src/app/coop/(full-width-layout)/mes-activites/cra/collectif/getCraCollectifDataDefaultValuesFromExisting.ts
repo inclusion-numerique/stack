@@ -36,7 +36,7 @@ export const getCraCollectifDataDefaultValuesFromExisting = async ({
       date: true,
       duree: true,
       titreAtelier: true,
-      typeLieuAtelier: true,
+      typeLieu: true,
       lieuCodeInsee: true,
       lieuCodePostal: true,
       lieuCommune: true,
@@ -63,7 +63,7 @@ export const getCraCollectifDataDefaultValuesFromExisting = async ({
     lieuCodeInsee,
     structureId,
     accompagnements,
-    typeLieuAtelier,
+    typeLieu,
     niveau,
     titreAtelier,
   } = cra
@@ -86,14 +86,12 @@ export const getCraCollectifDataDefaultValuesFromExisting = async ({
     mediateurId,
     participants: participantsDefaultValues,
     date: dateAsIsoDay(date),
-    duree: minutesToCraDureeData(duree) ?? {
-      dureePersonnaliseeType: 'minutes',
-    },
+    duree: minutesToCraDureeData(duree) ?? {},
     notes: notes ?? undefined,
     materiel: materiel ?? undefined,
     thematiques: thematiques ?? undefined,
     structureId: structureId ?? undefined,
-    lieuAtelierAutreCommune:
+    lieuCommuneData:
       lieuCommune && lieuCodePostal && lieuCodeInsee
         ? banDefaultValueToAdresseBanData({
             commune: lieuCommune ?? undefined,
@@ -102,7 +100,7 @@ export const getCraCollectifDataDefaultValuesFromExisting = async ({
           })
         : undefined,
     participantsAnonymes,
-    typeLieuAtelier: typeLieuAtelier ?? undefined,
+    typeLieu: typeLieu ?? undefined,
     niveau: niveau ?? undefined,
     titreAtelier: titreAtelier ?? undefined,
   } satisfies DefaultValues<CraCollectifData>

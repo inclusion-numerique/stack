@@ -1,4 +1,4 @@
-import { Prisma, TypeActivite } from '@prisma/client'
+import { Prisma, Structure, TypeActivite } from '@prisma/client'
 import { v4 } from 'uuid'
 import { prismaClient } from '@app/web/prismaClient'
 import { invalidError } from '@app/web/server/rpc/trpcErrors'
@@ -12,6 +12,7 @@ import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import { createStopwatch } from '@app/web/utils/stopwatch'
 import { addMutationLog } from '@app/web/utils/addMutationLog'
 import { craDureeDataToMinutes } from '@app/web/cra/minutesToCraDuree'
+import { getStructureEmployeuseAddressForMediateur } from '@app/web/structure/getStructureEmployeuseAddress'
 
 const getExistingBeneficiairesSuivis = async ({
   beneficiaires,
@@ -116,6 +117,12 @@ const beneficiaireAnonymeCreateDataFromForm = ({
   communeCodeInsee: communeResidence?.codeInsee ?? undefined,
 })
 
+// Utilisée comme localisation fallback pour les activités à distance
+export type StructureEmployeuseCraInfo = Pick<
+  Structure,
+  'commune' | 'codePostal' | 'codeInsee'
+>
+
 export type CreateOrUpdateActiviteInput =
   | {
       type: 'Collectif'
@@ -130,7 +137,7 @@ export type CreateOrUpdateActiviteInput =
       data: CraDemarcheAdministrativeData
     }
 
-// TODO integration test on this one
+// TODO more integration test cases on this critical function
 export const createOrUpdateActivite = async ({
   input,
   userId,
@@ -172,12 +179,17 @@ export const createOrUpdateActivite = async ({
       : beneficiaireAnonymeCreateDataFromForm(input.data.beneficiaire)
 
   const structure =
-    ('typeLieuAtelier' in data && data.typeLieuAtelier === 'LieuActivite') ||
-    ('typeLieu' in data && data.typeLieu === 'LieuActivite')
+    data.typeLieu === 'LieuActivite'
       ? await getExistingStructure({
           structureId,
           mediateurId,
         })
+      : null
+
+  // If accompagnement is "A distance", we fetch the structure employeuse to assign location
+  const structureEmployeuse =
+    data.typeLieu === 'ADistance'
+      ? await getStructureEmployeuseAddressForMediateur(mediateurId)
       : null
 
   const orienteVersStructure = yesNoToOptionalBoolean(
@@ -185,22 +197,22 @@ export const createOrUpdateActivite = async ({
   )
 
   const { lieuCommune, lieuCodePostal, lieuCodeInsee } =
-    'typeLieuAtelier' in data && data.typeLieuAtelier === 'Autre'
+    data.typeLieu === 'Domicile' || data.typeLieu === 'Autre'
       ? {
-          lieuCommune: data.lieuAtelierAutreCommune?.commune,
-          lieuCodePostal: data.lieuAtelierAutreCommune?.codePostal,
-          lieuCodeInsee: data.lieuAtelierAutreCommune?.codeInsee,
+          lieuCommune: data.lieuCommuneData?.commune,
+          lieuCodePostal: data.lieuCommuneData?.codePostal,
+          lieuCodeInsee: data.lieuCommuneData?.codeInsee,
         }
-      : 'typeLieu' in data && data.typeLieu === 'Domicile'
+      : data.typeLieu === 'ADistance'
         ? {
-            lieuCommune: data.lieuAccompagnementDomicileCommune?.commune,
-            lieuCodePostal: data.lieuAccompagnementDomicileCommune?.codePostal,
-            lieuCodeInsee: data.lieuAccompagnementDomicileCommune?.codeInsee,
+            lieuCommune: structureEmployeuse?.structure.commune ?? null,
+            lieuCodePostal: structureEmployeuse?.structure.codePostal ?? null,
+            lieuCodeInsee: structureEmployeuse?.structure.codeInsee ?? null,
           }
         : {
-            lieuCommune: undefined,
-            lieuCodePostal: undefined,
-            lieuCodeInsee: undefined,
+            lieuCommune: null,
+            lieuCodePostal: null,
+            lieuCodeInsee: null,
           }
 
   const prismaData = {
@@ -210,9 +222,7 @@ export const createOrUpdateActivite = async ({
       connect: { id: mediateurId },
     },
     duree: craDureeDataToMinutes(duree),
-    typeLieu: 'typeLieu' in data ? data.typeLieu : undefined,
-    typeLieuAtelier:
-      'typeLieuAtelier' in data ? data.typeLieuAtelier : undefined,
+    typeLieu: data.typeLieu ?? undefined,
     niveau: 'niveau' in data ? data.niveau : undefined,
     materiel: 'materiel' in data ? data.materiel : undefined,
     titreAtelier: 'titreAtelier' in data ? data.titreAtelier : undefined,
@@ -235,7 +245,10 @@ export const createOrUpdateActivite = async ({
           ? data.structureDeRedirection
           : undefined,
 
-    thematiques: input.type === 'Demarche' ? undefined : input.data.thematiques,
+    thematiques:
+      input.type === 'Demarche'
+        ? (input.data.thematiquesMediationNumerique ?? [])
+        : input.data.thematiques,
     thematiquesDemarche:
       input.type === 'Demarche' ? input.data.thematiques : undefined,
     structure:

@@ -1,24 +1,28 @@
-import {
-  DefaultDureeAccompagnementParDefaut,
-  dureeAccompagnementParDefautLabels,
-  dureeAccompagnementPersonnaliseeValue,
-} from '@app/web/cra/cra'
+import { dureeAccompagnementPersonnaliseeValue } from '@app/web/cra/cra'
 import type { CraDureeData } from '@app/web/cra/CraDureeValidation'
 
 export const craDureeDataToMinutes = ({
   duree,
-  dureePersonnalisee,
-  dureePersonnaliseeType,
+  dureePersonnaliseeHeures,
+  dureePersonnaliseeMinutes,
 }: CraDureeData): number => {
   if (duree !== 'personnaliser') {
     return Number.parseInt(duree, 10)
   }
 
-  if (dureePersonnaliseeType === 'heures') {
-    return (dureePersonnalisee || 0) * 60
-  }
+  const hours =
+    typeof dureePersonnaliseeHeures === 'number' &&
+    !Number.isNaN(dureePersonnaliseeHeures)
+      ? dureePersonnaliseeHeures
+      : 0
 
-  return dureePersonnalisee || 0
+  const minutes =
+    typeof dureePersonnaliseeMinutes === 'number' &&
+    !Number.isNaN(dureePersonnaliseeMinutes)
+      ? dureePersonnaliseeMinutes
+      : 0
+
+  return hours * 60 + minutes
 }
 
 export const minutesToCraDureeData = (
@@ -33,39 +37,17 @@ export const minutesToCraDureeData = (
 
   const minutesString = minutes.toString()
 
-  if (
-    minutesString in dureeAccompagnementParDefautLabels &&
-    minutesString !== dureeAccompagnementPersonnaliseeValue
-  ) {
-    return {
-      duree: minutesString as DefaultDureeAccompagnementParDefaut,
-      dureePersonnalisee: undefined,
-      dureePersonnaliseeType: 'minutes',
-    }
-  }
-
   if (minutesString === '0') {
     return {
       duree: dureeAccompagnementPersonnaliseeValue,
-      dureePersonnalisee: 0,
-      dureePersonnaliseeType: 'minutes',
-    }
-  }
-
-  const hours = Math.floor(minutes / 60)
-  const minutesLeft = minutes % 60
-
-  if (minutesLeft === 0) {
-    return {
-      duree: dureeAccompagnementPersonnaliseeValue,
-      dureePersonnalisee: hours,
-      dureePersonnaliseeType: 'heures' as const,
+      dureePersonnaliseeHeures: undefined,
+      dureePersonnaliseeMinutes: undefined,
     }
   }
 
   return {
-    duree: dureeAccompagnementPersonnaliseeValue,
-    dureePersonnalisee: hours * 60 + minutesLeft,
-    dureePersonnaliseeType: 'minutes' as const,
+    duree: minutesString,
+    dureePersonnaliseeHeures: undefined,
+    dureePersonnaliseeMinutes: undefined,
   }
 }

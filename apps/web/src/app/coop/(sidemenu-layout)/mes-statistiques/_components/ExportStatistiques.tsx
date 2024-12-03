@@ -10,6 +10,7 @@ import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOptio
 import { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { download } from '@app/web/utils/download'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 
 const ExportStatistiquesModal = createModal({
   id: 'export-statistiques',
@@ -27,7 +28,7 @@ export const ExportStatistiques = ({
   filters: ActivitesFilters
   mediateursOptions: MediateurOption[]
   beneficiairesOptions: BeneficiaireOption[]
-  lieuxActiviteOptions: SelectOption[]
+  lieuxActiviteOptions: LieuActiviteOption[]
   departementsOptions: SelectOption[]
   communesOptions: SelectOption[]
 }) => {

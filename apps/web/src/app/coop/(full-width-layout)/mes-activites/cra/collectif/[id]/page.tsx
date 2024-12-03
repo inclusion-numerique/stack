@@ -1,10 +1,11 @@
 import { notFound } from 'next/navigation'
 import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
-import { getInitialLieuxActiviteOptionsForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
+import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import CraCollectifPage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/collectif/CraCollectifPage'
 import { getCraCollectifDataDefaultValuesFromExisting } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/collectif/getCraCollectifDataDefaultValuesFromExisting'
 import type { AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
+import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
 
 const UpdateCraCollectifPage = async ({
   params: { id },
@@ -29,13 +30,12 @@ const UpdateCraCollectifPage = async ({
     return null
   }
 
-  const { lieuxActiviteOptions, mostUsedLieuActivite } =
-    await getInitialLieuxActiviteOptionsForSearch({
-      mediateurIds: [user.mediateur.id],
-    })
+  const lieuxActiviteOptions = await getLieuxActiviteOptions({
+    mediateurIds: [user.mediateur.id],
+  })
 
   if (!defaultValues.structureId) {
-    defaultValues.structureId = mostUsedLieuActivite?.structure.id ?? undefined
+    defaultValues.structureId = lieuxActiviteOptions.at(0)?.value ?? undefined
   }
 
   const initialBeneficiairesOptions =
@@ -46,6 +46,11 @@ const UpdateCraCollectifPage = async ({
   // TODO: get most probable communes using the filter helper functions
   const initialCommunesOptions: AdressBanFormFieldOption[] = []
 
+  const dureeOptions = await getAdaptiveDureeOptions({
+    mediateurId: user.mediateur.id,
+    include: defaultValues.duree?.duree,
+  })
+
   return (
     <CraCollectifPage
       defaultValues={defaultValues}
@@ -53,6 +58,7 @@ const UpdateCraCollectifPage = async ({
       lieuxActiviteOptions={lieuxActiviteOptions}
       initialBeneficiairesOptions={initialBeneficiairesOptions}
       initialCommunesOptions={initialCommunesOptions}
+      dureeOptions={dureeOptions}
       retour={retour}
     />
   )

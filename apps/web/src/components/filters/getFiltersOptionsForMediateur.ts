@@ -1,9 +1,9 @@
 import { getMediateurCommunesAndDepartementsOptions } from '@app/web/app/lieu-activite/getMediateurCommunesOptions'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import { getInitialMediateursOptionsForSearch } from '@app/web/mediateurs/getInitialMediateursOptionsForSearch'
-import { getInitialLieuxActiviteOptionsForSearch } from '@app/web/app/lieu-activite/getInitialLieuxActiviteOptionsForSearch'
+import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import { getFirstAndLastActiviteDate } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getFirstAndLastActiviteDate'
-import { UserDisplayName, UserProfile } from '@app/web/utils/user'
+import type { UserDisplayName, UserProfile } from '@app/web/utils/user'
 
 export const getFiltersOptionsForMediateur = async ({
   user,
@@ -23,7 +23,7 @@ export const getFiltersOptionsForMediateur = async ({
     { communesOptions, departementsOptions },
     initialBeneficiairesOptions,
     initialMediateursOptions,
-    { lieuxActiviteOptions },
+    lieuxActiviteOptions,
     activiteDates,
   ] = await Promise.all([
     getMediateurCommunesAndDepartementsOptions({ mediateurIds }),
@@ -36,7 +36,7 @@ export const getFiltersOptionsForMediateur = async ({
       coordinateurId: user.coordinateur?.id,
       mediateurCoordonnesIds,
     }),
-    getInitialLieuxActiviteOptionsForSearch({ mediateurIds }),
+    getLieuxActiviteOptions({ mediateurIds }),
     getFirstAndLastActiviteDate({ mediateurIds }),
   ])
 

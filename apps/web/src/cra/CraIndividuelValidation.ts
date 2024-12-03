@@ -26,7 +26,7 @@ export const CraIndividuelValidation = z
       required_error: 'Veuillez renseigner un lieu d’accompagnement',
     }),
     structureId: z.string().uuid().nullish(),
-    lieuAccompagnementDomicileCommune: AdresseBanValidation.nullish(),
+    lieuCommuneData: AdresseBanValidation.nullish(),
     materiel: z.array(z.enum(materielValues)).default([]),
     thematiques: z
       .array(z.enum(thematiqueValues), {
@@ -38,7 +38,7 @@ export const CraIndividuelValidation = z
     structureDeRedirection: z.enum(structuresRedirectionValues).nullish(),
     notes: z.string().nullish(),
   })
-  // structureId is required if lieuAccompagnement ===  LieuActivite
+  // structureId is required if typeLieu ===  LieuActivite
   .refine(
     (data) => {
       if (data.typeLieu === 'LieuActivite') {
@@ -51,13 +51,14 @@ export const CraIndividuelValidation = z
       path: ['structureId'],
     },
   )
-  // lieuAccompagnementDomicileCommune is required if lieuAccompagnement === Domicile
+  // lieuCommuneData is required if typeLieu === Domicile ou typeLieu === Autre
   .refine(
     (data) =>
-      data.typeLieu !== 'Domicile' || !!data.lieuAccompagnementDomicileCommune,
+      (data.typeLieu !== 'Autre' && data.typeLieu !== 'Domicile') ||
+      !!data.lieuCommuneData,
     {
       message: 'Veuillez renseigner la commune',
-      path: ['lieuAccompagnementDomicileCommune'],
+      path: ['lieuCommuneData'],
     },
   )
 

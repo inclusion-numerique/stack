@@ -311,7 +311,7 @@ const STATISTIQUES_WORKSHEET_INPUT_BASE: Omit<
           proportion: 0,
         },
       ],
-      mergedTypeLieu: [
+      typeLieu: [
         {
           label: 'Lieu d’activité',
           count: 0,

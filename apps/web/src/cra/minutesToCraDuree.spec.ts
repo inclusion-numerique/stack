@@ -9,38 +9,43 @@ describe('minutesToCraDuree', () => {
     it('should convert default duree to minutes', () => {
       const data: CraDureeData = {
         duree: '30',
-        dureePersonnalisee: undefined,
-        dureePersonnaliseeType: 'minutes',
+        dureePersonnaliseeHeures: 4,
       }
 
       expect(craDureeDataToMinutes(data)).toBe(30)
     })
 
-    it('should convert personnalisee duree in minutes to total minutes', () => {
-      const data: CraDureeData = {
-        duree: 'personnaliser',
-        dureePersonnalisee: 90,
-        dureePersonnaliseeType: 'minutes',
-      }
-
-      expect(craDureeDataToMinutes(data)).toBe(90)
-    })
-
     it('should convert personnalisee duree in heures to total minutes', () => {
       const data: CraDureeData = {
         duree: 'personnaliser',
-        dureePersonnalisee: 2,
-        dureePersonnaliseeType: 'heures',
+        dureePersonnaliseeHeures: 3,
       }
 
-      expect(craDureeDataToMinutes(data)).toBe(120)
+      expect(craDureeDataToMinutes(data)).toBe(180)
+    })
+
+    it('should convert personnalisee duree in minutes to total minutes', () => {
+      const data: CraDureeData = {
+        duree: 'personnaliser',
+        dureePersonnaliseeMinutes: 59,
+      }
+
+      expect(craDureeDataToMinutes(data)).toBe(59)
+    })
+
+    it('should convert personnalisee duree in heures  and minutes to total minutes', () => {
+      const data: CraDureeData = {
+        duree: 'personnaliser',
+        dureePersonnaliseeHeures: 1,
+        dureePersonnaliseeMinutes: 15,
+      }
+
+      expect(craDureeDataToMinutes(data)).toBe(75)
     })
 
     it('should handle personnalisee duree with missing dureePersonnalisee gracefully', () => {
       const data: CraDureeData = {
         duree: 'personnaliser',
-        dureePersonnalisee: undefined,
-        dureePersonnaliseeType: 'minutes',
       }
 
       expect(craDureeDataToMinutes(data)).toBe(0)
@@ -49,8 +54,7 @@ describe('minutesToCraDuree', () => {
     it('should handle non-numeric duree gracefully', () => {
       const data: CraDureeData = {
         duree: 'personnaliser',
-        dureePersonnalisee: Number.NaN,
-        dureePersonnaliseeType: 'minutes',
+        dureePersonnaliseeHeures: Number.NaN,
       }
 
       expect(craDureeDataToMinutes(data)).toEqual(0)
@@ -72,32 +76,20 @@ describe('minutesToCraDuree', () => {
 
       const expected = {
         duree: '30',
-        dureePersonnalisee: undefined,
-        dureePersonnaliseeType: 'minutes',
+        dureePersonnaliseeHeures: undefined,
+        dureePersonnaliseeMinutes: undefined,
       }
 
       expect(minutesToCraDureeData(minutes)).toEqual(expected)
     })
 
-    it('should convert minutes not in default values to personnalisee duree in minutes', () => {
+    it('should convert minutes not in default values to durée in minutes', () => {
       const minutes = 100
 
       const expected = {
-        duree: 'personnaliser',
-        dureePersonnalisee: 100,
-        dureePersonnaliseeType: 'minutes',
-      }
-
-      expect(minutesToCraDureeData(minutes)).toEqual(expected)
-    })
-
-    it('should convert minutes not in default values to personnalisee duree in heures and minutes', () => {
-      const minutes = 125 // 2 hours and 5 minutes
-
-      const expected = {
-        duree: 'personnaliser',
-        dureePersonnalisee: 125,
-        dureePersonnaliseeType: 'minutes',
+        duree: '100',
+        dureePersonnaliseeHeures: undefined,
+        dureePersonnaliseeMinutes: undefined,
       }
 
       expect(minutesToCraDureeData(minutes)).toEqual(expected)
@@ -107,9 +99,9 @@ describe('minutesToCraDuree', () => {
       const minutes = 180 // 3 hours
 
       const expected = {
-        duree: 'personnaliser',
-        dureePersonnalisee: 3,
-        dureePersonnaliseeType: 'heures',
+        duree: '180',
+        dureePersonnaliseeHeures: undefined,
+        dureePersonnaliseeMinutes: undefined,
       }
 
       expect(minutesToCraDureeData(minutes)).toEqual(expected)
@@ -120,20 +112,8 @@ describe('minutesToCraDuree', () => {
 
       const expected = {
         duree: 'personnaliser',
-        dureePersonnalisee: 0,
-        dureePersonnaliseeType: 'minutes',
-      }
-
-      expect(minutesToCraDureeData(minutes)).toEqual(expected)
-    })
-
-    it('should convert minutes to personnalisee duree in heures when applicable', () => {
-      const minutes = 65 // 1 hour and 5 minutes
-
-      const expected = {
-        duree: 'personnaliser',
-        dureePersonnalisee: 65,
-        dureePersonnaliseeType: 'minutes',
+        dureePersonnaliseeHeures: undefined,
+        dureePersonnaliseeMinutes: undefined,
       }
 
       expect(minutesToCraDureeData(minutes)).toEqual(expected)
@@ -144,8 +124,8 @@ describe('minutesToCraDuree', () => {
 
       const expected = {
         duree: '30',
-        dureePersonnalisee: undefined,
-        dureePersonnaliseeType: 'minutes',
+        dureePersonnaliseeHeures: undefined,
+        dureePersonnaliseeMinutes: undefined,
       }
 
       expect(minutesToCraDureeData(minutes)).toEqual(expected)

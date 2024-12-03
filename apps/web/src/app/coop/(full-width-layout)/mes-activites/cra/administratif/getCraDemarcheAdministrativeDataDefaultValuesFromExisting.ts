@@ -44,6 +44,7 @@ export const getCraDemarcheAdministrativeDataDefaultValuesFromExisting =
         precisionsDemarche: true,
         structureDeRedirection: true,
         thematiquesDemarche: true,
+        thematiques: true,
         degreDeFinalisation: true,
         autonomie: true,
       },
@@ -61,6 +62,7 @@ export const getCraDemarcheAdministrativeDataDefaultValuesFromExisting =
       autonomie,
       degreDeFinalisation,
       thematiquesDemarche,
+      thematiques,
       structureDeRedirection,
       precisionsDemarche,
       typeLieu,
@@ -79,17 +81,16 @@ export const getCraDemarcheAdministrativeDataDefaultValuesFromExisting =
         ? getBeneficiaireDefaulCratDataFromExisting(beneficiaire)
         : { mediateurId },
       date: dateAsIsoDay(date),
-      duree: minutesToCraDureeData(duree) ?? {
-        dureePersonnaliseeType: 'minutes',
-      },
+      duree: minutesToCraDureeData(duree) ?? {},
       notes: notes ?? undefined,
       autonomie: autonomie ?? undefined,
       degreDeFinalisation: degreDeFinalisation ?? undefined,
       thematiques: thematiquesDemarche ?? undefined,
+      thematiquesMediationNumerique: thematiques ?? undefined,
       structureDeRedirection: structureDeRedirection ?? undefined,
       precisionsDemarche: precisionsDemarche ?? undefined,
       structureId: structureId ?? undefined,
-      lieuAccompagnementDomicileCommune:
+      lieuCommuneData:
         lieuCommune && lieuCodePostal && lieuCodeInsee
           ? banDefaultValueToAdresseBanData({
               commune: lieuCommune ?? undefined,

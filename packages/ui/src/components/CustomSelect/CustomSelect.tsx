@@ -111,6 +111,7 @@ const CustomSelect = <
     container: () => styles.container,
     control: () => styles.control,
     valueContainer: () => styles.valueContainer,
+    ...props.classNames,
   }
 
   const componentsWithValueContainer: SelectComponentsConfig<

@@ -12,7 +12,6 @@ import {
   thematiqueDemarcheAdministrativeLabels,
   thematiqueLabels,
   typeActiviteLabels,
-  typeLieuAtelierLabels,
   typeLieuLabels,
 } from '@app/web/cra/cra'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
@@ -122,7 +121,6 @@ export const buildActivitesWorksheet = ({
         date,
         type,
         typeLieu,
-        typeLieuAtelier,
         lieuCommune,
         lieuCodePostal,
         structure,
@@ -145,11 +143,7 @@ export const buildActivitesWorksheet = ({
         typeActiviteLabels[type],
         activite.accompagnements.length,
         beneficiairesListCell(getBeneficiaireDisplayName),
-        typeLieu
-          ? typeLieuLabels[typeLieu]
-          : typeLieuAtelier
-            ? typeLieuAtelierLabels[typeLieuAtelier]
-            : '',
+        typeLieuLabels[typeLieu],
         structure
           ? `${structure.nom}, ${structure.codePostal} ${structure.commune}`
           : lieuCommune

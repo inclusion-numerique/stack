@@ -35,7 +35,7 @@ enum CraBeneficiaryFormState {
 
 export type CraDataWithBeneficiaire = {
   beneficiaire: BeneficiaireCraData | null | undefined
-  lieuAccompagnementDomicileCommune: AdresseBanData | null | undefined
+  lieuCommuneData: AdresseBanData | null | undefined
 }
 
 const initialStateFromValues = (values: CraDataWithBeneficiaire) => {
@@ -107,12 +107,9 @@ const CraBeneficiaryForm = ({
         if (name === 'beneficiaire' && data.beneficiaire?.id) {
           setState(CraBeneficiaryFormState.Selected)
           // Pre select domicile beneficiaire
-          if (
-            !data.lieuAccompagnementDomicileCommune &&
-            data.beneficiaire.communeResidence
-          ) {
+          if (!data.lieuCommuneData && data.beneficiaire.communeResidence) {
             setValue(
-              'lieuAccompagnementDomicileCommune',
+              'lieuCommuneData',
               data.beneficiaire.communeResidence as AdresseBanData,
             )
           }

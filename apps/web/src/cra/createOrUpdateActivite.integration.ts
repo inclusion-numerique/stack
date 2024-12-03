@@ -39,8 +39,7 @@ const nullActivite: Omit<
   structureDeRedirection: null,
   thematiques: [],
   thematiquesDemarche: [],
-  typeLieu: null,
-  typeLieuAtelier: null,
+  typeLieu: 'ADistance',
   niveau: null,
   structure: null,
   titreAtelier: null,
@@ -64,14 +63,14 @@ describe('createOrUpdateActivite', () => {
         thematiques: ['SecuriteNumerique'],
         date: '2024-08-01',
         materiel: [],
-        lieuAccompagnementDomicileCommune: banDefaultValueToAdresseBanData({
+        lieuCommuneData: banDefaultValueToAdresseBanData({
           commune: 'Paris',
           codePostal: '75001',
           codeInsee: '75056',
         }),
         duree: {
-          duree: '90',
-          dureePersonnaliseeType: 'minutes',
+          duree: 'personnaliser',
+          dureePersonnaliseeMinutes: 90,
         },
         autonomie: 'EntierementAccompagne',
         beneficiaire: {
@@ -110,12 +109,9 @@ describe('createOrUpdateActivite', () => {
       date: new Date(input.data.date),
       degreDeFinalisation: input.data.orienteVersStructure ?? null,
       duree: craDureeDataToMinutes(input.data.duree),
-      lieuCodeInsee:
-        input.data.lieuAccompagnementDomicileCommune?.codeInsee ?? null,
-      lieuCodePostal:
-        input.data.lieuAccompagnementDomicileCommune?.codePostal ?? null,
-      lieuCommune:
-        input.data.lieuAccompagnementDomicileCommune?.commune ?? null,
+      lieuCodeInsee: input.data.lieuCommuneData?.codeInsee ?? null,
+      lieuCodePostal: input.data.lieuCommuneData?.codePostal ?? null,
+      lieuCommune: input.data.lieuCommuneData?.commune ?? null,
       materiel: input.data.materiel,
       notes: input.data.notes ?? null,
       orienteVersStructure: input.data.orienteVersStructure ?? null,
@@ -138,14 +134,13 @@ describe('createOrUpdateActivite', () => {
         thematiques: ['SecuriteNumerique'],
         date: '2024-08-01',
         materiel: [],
-        lieuAccompagnementDomicileCommune: banDefaultValueToAdresseBanData({
+        lieuCommuneData: banDefaultValueToAdresseBanData({
           commune: 'Paris',
           codePostal: '75001',
           codeInsee: '75056',
         }),
         duree: {
           duree: '90',
-          dureePersonnaliseeType: 'minutes',
         },
         autonomie: 'EntierementAccompagne',
         beneficiaire: {
@@ -192,7 +187,7 @@ describe('createOrUpdateActivite', () => {
       type: 'Collectif',
       data: {
         mediateurId: mediateurAvecActiviteMediateurId,
-        typeLieuAtelier: 'Autre',
+        typeLieu: 'Autre',
         participants: [],
         participantsAnonymes: {
           ...participantsAnonymesDefault,
@@ -213,8 +208,9 @@ describe('createOrUpdateActivite', () => {
         date: '2024-08-01',
         materiel: [],
         duree: {
-          duree: '90',
-          dureePersonnaliseeType: 'minutes',
+          duree: 'personnaliser',
+          dureePersonnaliseeHeures: 1,
+          dureePersonnaliseeMinutes: 30,
         },
         niveau: 'Avance',
       },
@@ -253,7 +249,7 @@ describe('createOrUpdateActivite', () => {
       titreAtelier: input.data.titreAtelier,
       materiel: input.data.materiel,
       notes: input.data.notes ?? null,
-      typeLieuAtelier: input.data.typeLieuAtelier,
+      typeLieu: input.data.typeLieu,
       thematiques: input.data.thematiques,
       thematiquesDemarche: [],
     })
