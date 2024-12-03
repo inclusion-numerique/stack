@@ -32,6 +32,8 @@ const statusSeverity = (status: string): AlertProps.Severity => {
   return 'info'
 }
 
+const showFinDeContratFeatureFlag = false
+
 export const MediateurListItem = ({
   email,
   firstName,
@@ -48,7 +50,7 @@ export const MediateurListItem = ({
           <span className="fr-text--bold ">
             {[firstName, lastName].filter(Boolean).join(' ')}
           </span>
-          {finDeContrat && (
+          {showFinDeContratFeatureFlag && finDeContrat && (
             <Badge severity="warning">Fin de contrat le {finDeContrat}</Badge>
           )}
         </div>

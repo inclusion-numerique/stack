@@ -69,10 +69,18 @@ export const StructureEmployeuse = ({
       )}
     </div>
     {isLieuActivite && (
-      <Badge className="fr-mt-3w fr-text--uppercase" noIcon severity="info">
+      <Badge className="fr-mt-6v fr-text--uppercase" noIcon severity="info">
         <span className="ri-home-office-line fr-mr-1v" aria-hidden />
         Référencé dans vos Lieux d’activité
       </Badge>
     )}
+    <p className="fr-mt-6v fr-text--xs fr-text-mention--grey fr-mb-0">
+      Si vous constatez une erreur sur les informations concernant cette
+      structure, veuillez contacter le support du dispositif conseiller
+      numérique&nbsp;:{' '}
+      <a href="mailto:conseiller - numerique@anct.gouv.fr">
+        conseiller-numerique@anct.gouv.fr
+      </a>
+    </p>
   </div>
 )
