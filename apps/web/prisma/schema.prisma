@@ -412,8 +412,7 @@ model Structure {
 // Ce model joue le role de local data cache / search index pour les lieux
 model StructureCartographieNationale {
   // Id externe chez cartographie-nationale
-  id   String @id
-  hash String @unique
+  id String @id
 
   // Timestamps internes à coop-mediation-numerique
   creation     DateTime  @default(now())
@@ -731,9 +730,9 @@ model Accompagnement {
   activiteId String   @map("activite_id") @db.Uuid
   activite   Activite @relation(fields: [activiteId], references: [id])
 
+  @@unique([beneficiaireId, activiteId])
   @@index([beneficiaireId])
   @@index([activiteId])
-  @@unique([beneficiaireId, activiteId])
   @@map("accompagnements")
 }
 
