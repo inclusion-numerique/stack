@@ -10,6 +10,7 @@ import styles from './RichCardLabel.module.css'
 export type RichCardOptionExtras = {
   illustration?: string
   stars?: number
+  maxStars?: number
   tooltips?: string[]
 }
 
@@ -17,6 +18,19 @@ export type RichCardOption<T extends string> = SelectOption<
   T,
   RichCardOptionExtras
 >
+
+export type RichCardLabelClasses = {
+  labelContainer?: string
+}
+
+export type RichCardLabelProps<T extends string> = {
+  option: RichCardOption<T>
+  htmlFor: string
+  className?: string
+  paddingX?: 16 | 24
+  paddingRight?: 16 | 24
+  classes?: RichCardLabelClasses
+}
 
 export const richCardFieldsetElementClassName = styles.fieldsetElement
 
@@ -29,13 +43,8 @@ const RichCardLabel = memo(
     className,
     paddingX = 24,
     paddingRight,
-  }: {
-    option: RichCardOption<T>
-    className?: string
-    htmlFor: string
-    paddingX?: 16 | 24
-    paddingRight?: 16 | 24
-  }) => {
+    classes,
+  }: RichCardLabelProps<T>) => {
     const tooltipId = `${htmlFor}-tooltip`
     const hintsTooltip = option.extra?.tooltips ? (
       <div className={styles.tooltipContainer}>
@@ -91,9 +100,18 @@ const RichCardLabel = memo(
         onKeyDown={handleKeyPress}
       >
         <div className="fr-flex fr-justify-content-space-between fr-flex-gap-4v fr-width-full fr-height-full">
-          <div className="fr-text--sm fr-mb-0 fr-text--medium fr-flex-grow-1 fr-flex fr-justify-content-center fr-direction-column">
+          <div
+            className={classNames(
+              'fr-text--sm fr-mb-0 fr-text--medium fr-flex-grow-1 fr-flex fr-justify-content-center fr-direction-column',
+              classes?.labelContainer,
+            )}
+          >
             {typeof option.extra?.stars === 'number' && (
-              <Stars count={option.extra.stars} className="fr-mb-1v" />
+              <Stars
+                count={option.extra.stars}
+                max={option.extra.maxStars}
+                className="fr-mb-1v"
+              />
             )}
             {option.label}
             {!!option.hint && (

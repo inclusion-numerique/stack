@@ -329,9 +329,9 @@ export const thematiqueValues = Object.keys(thematiqueLabels) as [
 export const autonomieLabels: {
   [key in Autonomie]: string
 } = {
-  EntierementAccompagne: 'L’usager a été entièrement accompagné',
-  PartiellementAutonome: 'L’usager a participé à l’accompagnement',
-  Autonome: 'L’usager a été plutôt autonome',
+  EntierementAccompagne: 'Avec guidage',
+  PartiellementAutonome: 'Autonome avec guidage en cas de besoin',
+  Autonome: 'Autonome',
 }
 
 // Same thing as thematiques for ThematiqueDemarcheAdministrative
@@ -449,6 +449,7 @@ export const autonomieOptionsWithExtras = autonomieOptions.map(
     value,
     extra: {
       stars: autonomieStars[value],
+      maxStars: 3,
     },
   }),
 )
@@ -472,17 +473,6 @@ export const structuresRedirectionOptions = labelsToOptions(
 export const structuresRedirectionValues = Object.keys(
   structuresRedirectionLabels,
 ) as [StructureDeRedirection, ...StructureDeRedirection[]]
-
-/**
- *
- * enum NiveauAtelier {
- *   Debutant      @map("debutant")
- *   Intermediaire @map("intermediaire")
- *   Avance        @map("avance")
- *   }
- *
- *   USE 1, 2 and 3 stars
- */
 
 export const niveauAtelierLabels: {
   [key in NiveauAtelier]: string
@@ -508,6 +498,7 @@ export const niveauAtelierOptionsWithExtras = niveauAtelierOptions.map(
     value,
     extra: {
       stars: niveauAtelierStars[value],
+      maxStars: 3,
     },
   }),
 )

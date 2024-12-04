@@ -376,7 +376,7 @@ const CraIndividuelForm = ({
         Niveau d’autonomie du bénéficiaire{' '}
         <Link
           className="fr-link"
-          href="https://incubateurdesterritoires.notion.site/Accompagnement-individuel-de-m-diation-num-rique-94011d45a214412981168bdd5e9d66c7#a94b64aef227422ca23b064d476ac6f7"
+          href="https://www.notion.so/incubateurdesterritoires/Accompagnement-individuel-de-m-diation-num-rique-94011d45a214412981168bdd5e9d66c7?pvs=4#492e5cab20aa4431b817be4e9f1a4329"
           target="_blank"
         >
           En savoir plus
@@ -389,10 +389,16 @@ const CraIndividuelForm = ({
         disabled={isLoading}
         components={{
           label: RichCardLabel,
+          labelProps: {
+            classes: {
+              labelContainer: 'fr-justify-content-start',
+            },
+          },
         }}
         classes={{
           fieldsetElement: richCardFieldsetElementClassName,
           fieldset: craFormFieldsetClassname(styles.thematiquesFieldset),
+          radioGroup: richCardRadioGroupClassName,
         }}
       />
       <p className="fr-text--medium fr-mb-4v fr-mt-12v">

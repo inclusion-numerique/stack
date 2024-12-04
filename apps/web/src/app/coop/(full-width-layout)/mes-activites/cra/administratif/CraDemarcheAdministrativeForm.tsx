@@ -439,10 +439,16 @@ const CraDemarcheAdministrativeForm = ({
         disabled={isLoading}
         components={{
           label: RichCardLabel,
+          labelProps: {
+            classes: {
+              labelContainer: 'fr-justify-content-start',
+            },
+          },
         }}
         classes={{
           fieldsetElement: richCardFieldsetElementClassName,
           fieldset: craFormFieldsetClassname(styles.thematiquesFieldset),
+          radioGroup: richCardRadioGroupClassName,
         }}
       />
       <p className="fr-text--medium fr-mb-4v fr-mt-12v">
