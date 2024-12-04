@@ -196,7 +196,7 @@ export const thematiqueLabels: {
   ReseauxSociaux: 'Réseaux sociaux communication',
   Sante: 'Santé',
   BanqueEtAchatsEnLigne: 'Banque et achats en ligne',
-  Entrepreneuriat: 'Entrepreneuriat',
+  Entrepreneuriat: 'Accompagner un professionnel',
   InsertionProfessionnelle: 'Insertion professionnelle',
   SecuriteNumerique: 'Prévention en sécurité numérique',
   Parentalite: 'Parentalité',
