@@ -53,7 +53,5 @@ export const getAdaptiveDureeOptions = async ({
     }),
   )
 
-  console.log('DUREES MAP', dureesMap)
-
   return labelsToOptions(Object.fromEntries(dureesMap))
 }
