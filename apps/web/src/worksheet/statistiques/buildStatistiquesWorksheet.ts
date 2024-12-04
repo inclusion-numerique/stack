@@ -27,7 +27,7 @@ const addStatistiquesGenerales =
     ])
     worksheet.addRow(['Bénéficiaires suivis', totalCounts.beneficiaires.suivis])
     worksheet.addRow([
-      'Nom Bénéficiaires anonymes',
+      'Nombre de bénéficiaires anonymes',
       totalCounts.beneficiaires.anonymes,
     ])
     worksheet.addRow([
@@ -40,29 +40,28 @@ const addStatistiquesGenerales =
 
 const addStatistiquesActivites =
   (worksheet: Excel.Worksheet) =>
-  ({
-    totalCounts: { accompagnements, activites },
-  }: MesStatistiquesPageData) => {
+  ({ totalCounts: { activites } }: MesStatistiquesPageData) => {
     addTitleRow(worksheet)('Statistiques sur vos activités')
     worksheet.addRow([
       'Accompagnements individuels',
-      accompagnements.individuels.total,
-      numberToPercentage(accompagnements.individuels.proportion),
+      activites.individuels.total,
+      numberToPercentage(activites.individuels.proportion),
     ])
     worksheet.addRow([
       'Ateliers collectifs',
-      accompagnements.collectifs.total,
-      numberToPercentage(accompagnements.collectifs.proportion),
-    ])
-    worksheet.addRow([
-      'Aide aux démarches administratives',
-      accompagnements.demarches.total,
-      numberToPercentage(accompagnements.demarches.proportion),
+      activites.collectifs.total,
+      numberToPercentage(activites.collectifs.proportion),
     ])
     worksheet.addRow([
       'Nombre total de participants aux ateliers',
       activites.collectifs.participants,
     ])
+    worksheet.addRow([
+      'Aide aux démarches administratives',
+      activites.demarches.total,
+      numberToPercentage(activites.demarches.proportion),
+    ])
+    worksheet.addRow(['Nombre total d’activités', activites.total])
     worksheet.addRow([])
   }
 
