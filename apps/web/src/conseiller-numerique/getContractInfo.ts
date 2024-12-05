@@ -15,8 +15,10 @@ const typeWithDuration = ({
   dateDebutDeContrat,
   dateFinDeContrat,
 }: {
-  typeDeContrat: string
-  dateDebutDeContrat: Date | null
+  // Some of those data are actually missing from v1 data and were causing a crash
+  // that's why we add null and undefined in this type
+  typeDeContrat?: string | null
+  dateDebutDeContrat?: Date | null
   dateFinDeContrat?: Date | null
 }): string =>
   !!dateDebutDeContrat &&
@@ -24,7 +26,7 @@ const typeWithDuration = ({
   !!dateFinDeContrat &&
   isValid(dateFinDeContrat)
     ? `${typeDeContrat} - Durée ${differenceInMonths(dateFinDeContrat, dateDebutDeContrat)} mois`
-    : typeDeContrat
+    : (typeDeContrat ?? '')
 
 export const getContractInfo = async (email: string) =>
   fetchConseillerNumeriqueV1Data({ email }).then((conseiller) => {
