@@ -22,7 +22,7 @@ export const deleteAll = async (transaction: Prisma.TransactionClient) => {
     WHERE table_schema = 'public'
       AND table_type = 'BASE TABLE'
       AND table_name != '_prisma_migrations'
-      AND table_name != '_prisma_migrations_lock' 
+      AND table_name != '_prisma_migrations_lock'
       AND table_name != 'structures'
       AND table_name != 'cras_conseiller_numerique_V1'
   `
@@ -41,31 +41,46 @@ export const seed = async (transaction: Prisma.TransactionClient) => {
 
   await Promise.all(
     fixtureUsers.map((user) =>
-      transaction.user.upsert({
-        where: { id: user.id },
-        create: user,
-        update: user,
-      }),
+      transaction.user
+        .upsert({
+          where: { id: user.id },
+          create: user,
+          update: user,
+        })
+        .catch((error) => {
+          console.error('Error upserting user fixture', user)
+          throw error
+        }),
     ),
   )
 
   await Promise.all(
     teamAdministrateurs.map((team) =>
-      transaction.user.upsert({
-        where: { id: team.id },
-        create: team,
-        update: team,
-      }),
+      transaction.user
+        .upsert({
+          where: { id: team.id },
+          create: team,
+          update: team,
+        })
+        .catch((error) => {
+          console.error('Error upserting team administrator fixture', team)
+          throw error
+        }),
     ),
   )
 
   await Promise.all(
     fixtureBeneficiaires.map((beneficiaire) =>
-      transaction.beneficiaire.upsert({
-        where: { id: beneficiaire.id },
-        create: beneficiaire,
-        update: beneficiaire,
-      }),
+      transaction.beneficiaire
+        .upsert({
+          where: { id: beneficiaire.id },
+          create: beneficiaire,
+          update: beneficiaire,
+        })
+        .catch((error) => {
+          console.error('Error upserting beneficiaire fixture', beneficiaire)
+          throw error
+        }),
     ),
   )
 
