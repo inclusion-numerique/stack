@@ -5,6 +5,9 @@ import { centreSocial, mediateque, structureEmployeuse } from '../structures'
 export const coordinateurInscriptionAvecToutCoordinateurId =
   'b0ebe56a-b1eb-49c0-9963-26dbbaa1c15e'
 
+export const coordinateurInscriptionAvecToutConseillerNumeriqueId =
+  '6656ef7e6c7471084348131a'
+
 export const coordinateurInscriptionAvecTout = givenUser({
   id: '057c3fce-3c7e-4bc7-9596-8d30ef559c1a',
   firstName: 'Coordinateur',
@@ -19,7 +22,8 @@ export const coordinateurInscriptionAvecTout = givenUser({
       },
       create: {
         id: coordinateurInscriptionAvecToutCoordinateurId,
-        conseillerNumeriqueId: '6656ef7e6c7471084348131a',
+        conseillerNumeriqueId:
+          coordinateurInscriptionAvecToutConseillerNumeriqueId,
       },
     },
   },
@@ -33,10 +37,10 @@ export const coordinateurInscriptionAvecTout = givenUser({
         conseillerNumerique: {
           connectOrCreate: {
             where: {
-              id: '6656ef7e6c7471084348131a',
+              id: coordinateurInscriptionAvecToutConseillerNumeriqueId,
             },
             create: {
-              id: '6656ef7e6c7471084348131a',
+              id: coordinateurInscriptionAvecToutConseillerNumeriqueId,
             },
           },
         },
