@@ -311,6 +311,9 @@ jobs:
           keys:
             - << pipeline.parameters.cache_version >>-next-prod-{{ checksum "<< pipeline.parameters.lockfile >>" }}-{{ checksum "./.env" }}
       - run:
+          name: 'Generate swagger docs for api v1'
+          command: pnpm --silent -F @app/web api-v1-doc:generate
+      - run:
           name: 'Build next app'
           command: SENTRY_RELEASE=true pnpm --silent -F @app/web build
       - save_cache:
@@ -403,6 +406,9 @@ jobs:
       - restore_cache:
           keys:
             - << pipeline.parameters.cache_version >>-next-e2e-{{ checksum "<< pipeline.parameters.lockfile >>" }}-{{ checksum "./.env" }}
+      - run:
+          name: 'Generate swagger docs for api v1'
+          command: pnpm --silent -F @app/web api-v1-doc:generate
       - run:
           # We build in the e2e job, using --local NEXT_PUBLIC_* env variables as they are inlined at compile time
           name: 'Build next app'
