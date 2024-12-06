@@ -49,6 +49,9 @@ export const searchMediateur = async (options: SearchMediateurOptions) => {
           email: true,
         },
       },
+      conseillerNumerique: {
+        select: { id: true },
+      },
     },
     orderBy: [{ user: { lastName: 'asc' } }, { user: { firstName: 'asc' } }],
     take,

@@ -37,7 +37,7 @@ const Page = async ({
     <MonEquipeListePage
       {...monEquipePageData}
       searchParams={searchParams}
-      canSeeMediateursDetails={false}
+      coordinateurView={false}
       baseHref={`/coop/mes-equipes/${coordinateurId}`}
       coordinateur={coordinateur}
     />

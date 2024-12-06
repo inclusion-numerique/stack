@@ -14,8 +14,10 @@ type UserRef = {
 
 export const useMediateursSearch = ({
   initialMediateursOptions,
+  allowTextValue = false,
 }: {
   initialMediateursOptions: MediateurOption[]
+  allowTextValue?: boolean
 }) => {
   const mediateursMapRef = useRef(new Map<string, UserRef>())
 
@@ -30,6 +32,7 @@ export const useMediateursSearch = ({
           {
             label: `La recherche doit contenir au moins 3 caractères`,
             value: null,
+            isDisabled: true,
           },
         ]
       }
@@ -54,12 +57,27 @@ export const useMediateursSearch = ({
         {
           label: `${result.matchesCount} résultat${sPluriel(result.matchesCount)}`,
           value: null,
+          isDisabled: true,
         },
         ...result.mediateurs.map((mediateur) => ({
           label: getUserDisplayName(mediateur.user),
-          value: { mediateurId: mediateur.id },
+          value: {
+            mediateurId: mediateur.id,
+            email: mediateur.user.email,
+            isConseillerNumerique: mediateur.conseillerNumerique != null,
+          },
         })),
-        ...(hasMoreMessage ? [{ label: hasMoreMessage, value: null }] : []),
+        ...(allowTextValue
+          ? [
+              {
+                label: search,
+                value: { email: search, mediateurId: search },
+              },
+            ]
+          : []),
+        ...(hasMoreMessage
+          ? [{ label: hasMoreMessage, value: null, isDisabled: true }]
+          : []),
       ]
     },
     [mediateursMapRef, trpcClient],
