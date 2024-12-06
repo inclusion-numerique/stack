@@ -1,8 +1,8 @@
 import { NextRequest } from 'next/server'
 import { ApiClientScope } from '@prisma/client'
 import {
-  apiV1ClientIdHeader,
-  apiV1ClientSecretHeader,
+  apiV1AuthorizationHeader,
+  apiV1AuthorizationScheme,
 } from '@app/web/app/api/v1/apiV1Headers'
 import { authenticateApiCient } from '@app/web/api-client/apiClient'
 
@@ -11,15 +11,25 @@ export const isAuthenticatedApiClientRequest = async (
   scopes: ApiClientScope[],
 ) => {
   // Get api key from header
-  const clientId = request.headers.get(apiV1ClientIdHeader)
+  const authorizationString = request.headers.get(apiV1AuthorizationHeader)
 
-  if (!clientId) {
+  if (!authorizationString) {
     return false
   }
 
-  const clientSecret = request.headers.get(apiV1ClientSecretHeader)
+  const [scheme, value] = authorizationString.split(' ')
 
-  if (!clientSecret) {
+  if (scheme !== apiV1AuthorizationScheme) {
+    return false
+  }
+
+  if (!value) {
+    return false
+  }
+
+  const [clientId, clientSecret] = value.split(':')
+
+  if (!clientId || !clientSecret) {
     return false
   }
 

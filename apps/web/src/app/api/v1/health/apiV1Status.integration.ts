@@ -1,5 +1,4 @@
 import { createTestApiV1Request } from '@app/web/app/api/v1/createTestApiV1Request'
-import { apiV1Version } from '@app/web/app/api/v1/apiV1Version'
 import {
   expect403ApiResponse,
   expectV1ApiResponse,
@@ -10,7 +9,7 @@ import {
 } from '@app/web/app/api/v1/testApiClient'
 import { GET } from './route'
 
-describe('api v1 /status', () => {
+describe('api v1 /health', () => {
   beforeAll(async () => {
     await createTestApiClientWithScopes({
       scopes: [],
@@ -20,7 +19,7 @@ describe('api v1 /status', () => {
   it('403 on invalid api key', async () => {
     const response = await GET(
       createTestApiV1Request({
-        url: '/api/v1/status',
+        url: '/api/v1/health',
         method: 'GET',
       }),
     )
@@ -31,7 +30,7 @@ describe('api v1 /status', () => {
   it('returns status', async () => {
     const response = await GET(
       createTestApiV1Request({
-        url: '/api/v1/status',
+        url: '/api/v1/health',
         method: 'GET',
         client: testApiClient,
       }),
@@ -40,7 +39,6 @@ describe('api v1 /status', () => {
     await expectV1ApiResponse(response, {
       data: {
         status: 'ok',
-        version: apiV1Version,
       },
     })
   })

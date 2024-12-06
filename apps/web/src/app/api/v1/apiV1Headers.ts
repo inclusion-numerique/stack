@@ -1,2 +1,3 @@
-export const apiV1ClientIdHeader = 'x-api-client-id'
-export const apiV1ClientSecretHeader = 'x-api-client-secret'
+export const apiV1AuthorizationHeader = 'authorization'
+
+export const apiV1AuthorizationScheme = 'Client'

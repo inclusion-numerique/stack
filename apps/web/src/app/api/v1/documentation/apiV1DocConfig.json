@@ -1,0 +1,38 @@
+{
+  "apiFolder": "./src/app/api/v1",
+  "definition": {
+    "openapi": "3.0.0",
+    "info": {
+      "title": "La coop - API",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000/api/v1",
+        "description": "Local"
+      },
+      {
+        "url": "https://dev.coop-mediation-numerique.incubateur.anct.gouv.fr/api/v1",
+        "description": "Staging"
+      },
+      {
+        "url": "https://coop-numerique.anct.gouv.fr/api/v1",
+        "description": "Production"
+      }
+    ],
+    "components": {
+      "securitySchemes": {
+        "ClientAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "description": "Identification avec un couple client-id:client-secret"
+        }
+      }
+    },
+    "security": [
+      {
+        "ClientAuth": []
+      }
+    ]
+  }
+}

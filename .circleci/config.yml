@@ -223,10 +223,38 @@ jobs:
       - run:
           name: 'Tsc'
           command: pnpm tsc
+
+      # check that the openapi file is the same before and after generating (developers should have generated it)
       - run:
-          name: 'Lint @app/web'
-          command: pnpm -F '@app/web' lint
-          no_output_timeout: 30m
+          name: 'Get openapi spec file hash before generating'
+          command: |
+            echo "OPENAPI_SPEC_FILE_HASH_BEFORE_GENERATING=$(cat apps/web/src/app/api/v1/documentation/v1.openapi.json | shasum -a 256)" >> $BASH_ENV
+      - run:
+          name: 'Generate openapi docs for api v1'
+          command: pnpm --silent -F @app/web api-v1-doc:generate
+      - run:
+          name: 'Get openapi spec file hash after generating'
+          command: |
+            echo "OPENAPI_SPEC_FILE_HASH_AFTER_GENERATING=$(cat apps/web/src/app/api/v1/documentation/v1.openapi.json | shasum -a 256)" >> $BASH_ENV
+      - run:
+          name: 'Check that versioning of openapi spec file has not changed'
+          command: |
+            if [[ "$OPENAPI_SPEC_FILE_HASH_BEFORE_GENERATING" != "$OPENAPI_SPEC_FILE_HASH_AFTER_GENERATING" ]]; then
+              echo "Openapi spec file has changed, please run 'pnpm --silent -F @app/web api-v1-doc:generate' to update the openapi spec file and commit the changes"
+              exit 1
+            fi
+
+      - run:
+          name: 'Lint @app/web - eslint'
+          command: pnpm -F '@app/web' lint:eslint
+          no_output_timeout: 10m
+      - run:
+          name: 'Lint @app/web - styles'
+          command: pnpm -F '@app/web' lint:style
+          no_output_timeout: 4m
+      - run:
+          name: 'Lint @app/web - api'
+          command: pnpm -F '@app/web' lint:api
 
   lint_packages:
     executor: node
@@ -310,9 +338,6 @@ jobs:
       - restore_cache:
           keys:
             - << pipeline.parameters.cache_version >>-next-prod-{{ checksum "<< pipeline.parameters.lockfile >>" }}-{{ checksum "./.env" }}
-      - run:
-          name: 'Generate swagger docs for api v1'
-          command: pnpm --silent -F @app/web api-v1-doc:generate
       - run:
           name: 'Build next app'
           command: SENTRY_RELEASE=true pnpm --silent -F @app/web build
@@ -406,9 +431,6 @@ jobs:
       - restore_cache:
           keys:
             - << pipeline.parameters.cache_version >>-next-e2e-{{ checksum "<< pipeline.parameters.lockfile >>" }}-{{ checksum "./.env" }}
-      - run:
-          name: 'Generate swagger docs for api v1'
-          command: pnpm --silent -F @app/web api-v1-doc:generate
       - run:
           # We build in the e2e job, using --local NEXT_PUBLIC_* env variables as they are inlined at compile time
           name: 'Build next app'

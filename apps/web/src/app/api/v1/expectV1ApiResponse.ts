@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 
 export const expectV1ApiResponse = async (
-  response: NextResponse,
+  response: NextResponse | Response,
   options?: {
     status?: number
     data?: unknown

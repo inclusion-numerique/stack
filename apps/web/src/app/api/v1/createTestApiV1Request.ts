@@ -1,8 +1,8 @@
 /* eslint no-param-reassign: 0 */
 import { NextRequest } from 'next/server'
 import {
-  apiV1ClientIdHeader,
-  apiV1ClientSecretHeader,
+  apiV1AuthorizationHeader,
+  apiV1AuthorizationScheme,
 } from '@app/web/app/api/v1/apiV1Headers'
 
 export const createTestApiV1Request = ({
@@ -25,8 +25,7 @@ export const createTestApiV1Request = ({
     headers: {
       ...(client
         ? {
-            [apiV1ClientIdHeader]: client.id,
-            [apiV1ClientSecretHeader]: client.secret,
+            [apiV1AuthorizationHeader]: `${apiV1AuthorizationScheme} ${client?.id}:${client?.secret}`,
           }
         : {}),
       ...headers,
