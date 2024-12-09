@@ -1,12 +1,35 @@
 import type { NextRequest } from 'next/server'
+import type { infer as ZodInfer, ZodError } from 'zod'
+import { transformJsonApiQueryParamsToObject } from '@app/web/app/api/v1/transformJsonApiQueryParamsToObject'
+import type { ApiV1QueryParamsSchema } from '@app/web/app/api/v1/ApiV1QueryParams'
 
-// TODO automatic params parsing from json:api specifications
-export const getApiRequestParams = <RequestParams = never>(
+export const getApiRequestParams = <
+  QueryParamsSchema extends ApiV1QueryParamsSchema = ApiV1QueryParamsSchema,
+>(
   request: NextRequest,
-): RequestParams => {
+  queryParamsValidation: QueryParamsSchema,
+):
+  | { success: true; params: ZodInfer<QueryParamsSchema>; error?: undefined }
+  | {
+      success: false
+      error: ZodError
+      params?: undefined
+    } => {
   const { searchParams } = request.nextUrl
 
-  console.log(searchParams)
+  const queryParams = transformJsonApiQueryParamsToObject(searchParams)
 
-  return searchParams as unknown as RequestParams
+  const parsed = queryParamsValidation.strict().safeParse(queryParams)
+
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: parsed.error,
+    }
+  }
+
+  return {
+    success: true,
+    params: parsed.data as unknown as ZodInfer<QueryParamsSchema>,
+  }
 }

@@ -1,11 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { apiRoute } from '@app/web/app/api/v1/apiRoute'
-import type {
-  JsonApiListResponse,
-  JsonApiResource,
-} from '@app/web/app/api/v1/JsonApiTypes'
+import { NextResponse } from 'next/server'
+import type { JsonApiListResponse, JsonApiResource } from '@app/web/app/api/v1/JsonApiTypes'
 import { prismaClient } from '@app/web/prismaClient'
 import { apiV1Url } from '@app/web/app/api/v1/apiV1Url'
+import {
+  JsonApiCursorPaginationQueryParamsValidation,
+  prismaCursorPagination,
+} from '@app/web/app/api/v1/CursorPagination'
+import { createApiV1Route } from '@app/web/app/api/v1/createApiV1Route'
 
 /**
  * API response types MUST be manually defined to NOT be infered
@@ -85,10 +86,12 @@ export type CraV1ListResponse = JsonApiListResponse<CraV1Resource>
  *   get:
  *     summary: liste les cras v1 archivés
  *     description: >
- *       retourne la liste des cras importés depuis la version 1 de la coop réalisée par
+ *       Retourne la liste des cras importés depuis la version 1 de la coop réalisée par
  *       l'équipe du dispositif conseiller-numérique et importés dans cette version de la coop
  *       pour archivage. pour toute question sur les données, veuillez vous adresser à l'équipe
  *       du dispositif conseiller-numérique. les données suivent la spécification json:api.
+ *
+ *       Les cras sont triés par date de création décroissante
  *     tags:
  *       - Cras
  *     parameters:
@@ -97,15 +100,22 @@ export type CraV1ListResponse = JsonApiListResponse<CraV1Resource>
  *         schema:
  *           type: integer
  *           minimum: 1
+ *           maximum: 500
+ *           default: 500
  *         required: false
- *         description: nombre maximum d'éléments à retourner
+ *         description: nombre maximum d'éléments à retourner,
  *       - in: query
- *         name: page[number]
+ *         name: page[after]
  *         schema:
- *           type: integer
- *           minimum: 1
+ *           type: string
  *         required: false
- *         description: numéro de la page à retourner
+ *         description: curseur de pagination pour obtenir les éléments suivants
+ *       - in: query
+ *         name: page[before]
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: curseur de pagination pour obtenir les éléments précédents
  *     responses:
  *       200:
  *         description: liste de cras v1
@@ -366,12 +376,27 @@ export type CraV1ListResponse = JsonApiListResponse<CraV1Resource>
  *                       type: boolean
  *                       description: indique s'il existe une page précédente
  */
-export const GET = apiRoute<CraV1ListResponse>(
-  ['Cras'],
-  async (_request: NextRequest) => {
+export const GET = createApiV1Route
+  .configure({
+    scopes: ['Cras'],
+  })
+  .queryParams(JsonApiCursorPaginationQueryParamsValidation)
+  .handle(async ({ params }) => {
+    const { take, skip, cursor } = prismaCursorPagination(params)
+
     const cras = await prismaClient.craConseillerNumeriqueV1.findMany({
-      take: 100,
+      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+      take,
+      skip,
+      cursor: {
+        id: cursor,
+      },
     })
+
+    const totalCount = await prismaClient.craConseillerNumeriqueV1.count()
+
+    const nextCursor = cras.at(-1)?.id
+    const previousCursor = cras.at(0)?.id
 
     const response: CraV1ListResponse = {
       data: cras.map(
@@ -496,17 +521,25 @@ export const GET = apiRoute<CraV1ListResponse>(
       ),
       links: {
         self: { href: apiV1Url('/archives-v1/cras') },
+        next: nextCursor
+          ? { href: apiV1Url(`/archives-v1/cras?page[after]=${nextCursor}`) }
+          : undefined,
+        prev: previousCursor
+          ? {
+              href: apiV1Url(
+                `/archives-v1/cras?page[before]=${previousCursor}`,
+              ),
+            }
+          : undefined,
       },
       meta: {
-        total_count: cras.length,
-        items_per_page: 100,
-        total_pages: 1,
-        current_page: 1,
-        has_next_page: false,
-        has_prev_page: false,
+        total_count: totalCount,
+        items_per_page: take,
+        total_pages: Math.ceil(totalCount / take),
+        has_next_page: !!nextCursor,
+        has_prev_page: !!previousCursor,
       },
     }
 
     return NextResponse.json(response)
-  },
-)
+  })

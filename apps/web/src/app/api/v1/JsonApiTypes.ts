@@ -39,9 +39,8 @@ export type JsonApiListMeta = {
   total_count: number
   items_per_page: number
   total_pages: number
-  current_page: number
-  has_next_page: false
-  has_prev_page: false
+  has_next_page: boolean
+  has_prev_page: boolean
 }
 
 export type JsonApiMeta = {

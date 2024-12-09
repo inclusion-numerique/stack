@@ -324,6 +324,7 @@ model CraConseillerNumeriqueV1 {
 
   @@index([v1ConseillerNumeriqueId])
   @@index([dateAccompagnement(sort: Asc)])
+  @@index([createdAt(sort: Desc)])
   @@index([codeCommune])
   @@map("cras_conseiller_numerique_v1")
 }

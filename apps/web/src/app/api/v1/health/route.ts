@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server'
-import { apiRoute } from '@app/web/app/api/v1/apiRoute'
+import { createApiV1Route } from '@app/web/app/api/v1/createApiV1Route'
+
+export type HealthResponse = {
+  status: 'ok' | 'error'
+}
 
 /**
  * @openapi
@@ -9,7 +13,7 @@ import { apiRoute } from '@app/web/app/api/v1/apiRoute'
  *     description: Returns the server status info in JSON format.
  *     responses:
  *       200:
- *         description: Successful response with a status message.
+ *         description: API status message.
  *         content:
  *           application/json:
  *             schema:
@@ -19,10 +23,14 @@ import { apiRoute } from '@app/web/app/api/v1/apiRoute'
  *                   type: string
  *                   example: ok
  */
-export const GET = apiRoute(['Cras'], () =>
-  Promise.resolve(
-    NextResponse.json({
-      status: 'ok',
-    }),
-  ),
-)
+export const GET = createApiV1Route
+  .configure<HealthResponse>({
+    scopes: ['Cras'],
+  })
+  .handle(() =>
+    Promise.resolve(
+      NextResponse.json({
+        status: 'ok',
+      }),
+    ),
+  )
