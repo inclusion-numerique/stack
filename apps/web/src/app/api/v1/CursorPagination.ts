@@ -23,11 +23,12 @@ export const prismaCursorPagination = (
 
   const cursor = cursorQueryParams.page.after || cursorQueryParams.page.before
 
-  if (!cursor) return { take }
+  if (!cursor) return { take, skip: undefined, cursor: undefined }
 
   const isBefore = !!cursorQueryParams.page.before
 
   return {
+    isBefore,
     take: isBefore ? -take : take,
     skip: 1,
     cursor,

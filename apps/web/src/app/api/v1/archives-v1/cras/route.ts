@@ -382,21 +382,21 @@ export const GET = createApiV1Route
   })
   .queryParams(JsonApiCursorPaginationQueryParamsValidation)
   .handle(async ({ params }) => {
-    const { take, skip, cursor } = prismaCursorPagination(params)
+    const cursorPagination = prismaCursorPagination(params)
 
     const cras = await prismaClient.craConseillerNumeriqueV1.findMany({
-      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
-      take,
-      skip,
+      orderBy: [{ createdAt: 'desc' }],
+      take: cursorPagination.take,
+      skip: cursorPagination.skip,
       cursor: {
-        id: cursor,
+        id: cursorPagination.cursor,
       },
     })
 
     const totalCount = await prismaClient.craConseillerNumeriqueV1.count()
 
-    const nextCursor = cras.at(-1)?.id
-    const previousCursor = cras.at(0)?.id
+    const nextCursor = cras.at(-1)?.createdAt.toISOString()
+    const previousCursor = cras.at(0)?.createdAt.toISOString()
 
     const response: CraV1ListResponse = {
       data: cras.map(
@@ -520,7 +520,17 @@ export const GET = createApiV1Route
           }) satisfies CraV1Resource,
       ),
       links: {
-        self: { href: apiV1Url('/archives-v1/cras') },
+        self: {
+          href: cursorPagination.cursor
+            ? cursorPagination.isBefore
+              ? apiV1Url(
+                  `/archives-v1/cras?page[before]=${cursorPagination.cursor}`,
+                )
+              : apiV1Url(
+                  `/archives-v1/cras?page[after]=${cursorPagination.cursor}`,
+                )
+            : apiV1Url('/archives-v1/cras'),
+        },
         next: nextCursor
           ? { href: apiV1Url(`/archives-v1/cras?page[after]=${nextCursor}`) }
           : undefined,
@@ -533,9 +543,10 @@ export const GET = createApiV1Route
           : undefined,
       },
       meta: {
+        // TODO helper function for meta for lists ?
         total_count: totalCount,
-        items_per_page: take,
-        total_pages: Math.ceil(totalCount / take),
+        items_per_page: cursorPagination.take,
+        total_pages: Math.ceil(totalCount / cursorPagination.take),
         has_next_page: !!nextCursor,
         has_prev_page: !!previousCursor,
       },
