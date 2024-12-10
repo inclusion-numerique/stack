@@ -84,7 +84,7 @@ export const authenticateApiCient = async (
 
   if (apiClient.validFrom > now) return null
 
-  if (apiClient.validUntil && apiClient.validUntil < now) {
+  if (!!apiClient.validUntil && apiClient.validUntil < now) {
     return null
   }
 

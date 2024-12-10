@@ -25,7 +25,7 @@ export const createTestApiV1Request = ({
     headers: {
       ...(client
         ? {
-            [apiV1AuthorizationHeader]: `${apiV1AuthorizationScheme} ${client?.id}:${client?.secret}`,
+            [apiV1AuthorizationHeader]: `${apiV1AuthorizationScheme} ${client.id}:${client.secret}`,
           }
         : {}),
       ...headers,

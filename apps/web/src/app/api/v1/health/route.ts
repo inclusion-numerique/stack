@@ -25,7 +25,7 @@ export type HealthResponse = {
  */
 export const GET = createApiV1Route
   .configure<HealthResponse>({
-    scopes: ['Cras'],
+    scopes: [],
   })
   .handle(() =>
     NextResponse.json({
