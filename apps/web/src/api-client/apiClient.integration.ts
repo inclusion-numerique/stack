@@ -39,10 +39,14 @@ describe('apiClient', () => {
         where: { id: createdClient.id },
       })
 
-      expect(savedClient).toBeDefined()
-      expect(savedClient?.name).toBe(name)
-      expect(savedClient?.scopes).toEqual(scopes)
-      expect(savedClient?.secret).not.toBe(createdClient.secret) // Secret should be hashed in the DB
+      expect(savedClient).toEqual(
+        expect.objectContaining({
+          id: createdClient.id,
+          name,
+          scopes,
+        }),
+      )
+      expect(savedClient?.secret).not.toBe(createdClient.secret) // Secret should be hashed in the DB,
     })
   })
 
@@ -75,15 +79,14 @@ describe('apiClient', () => {
         },
       })
 
-      // Act
       const authenticatedClient = await authenticateApiCient(
         validClient.id,
         plainSecret,
       )
 
-      // Assert
-      expect(authenticatedClient).toBeDefined()
-      expect(authenticatedClient?.id).toBe(validClient.id)
+      expect(authenticatedClient).toEqual(
+        expect.objectContaining({ id: validClient.id }),
+      )
     })
 
     it('should return null for an invalid secret', async () => {
