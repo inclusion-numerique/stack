@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server'
 import { z, type ZodError } from 'zod'
-import type {
-  JsonApiListResponse,
-  JsonApiResource,
-} from '@app/web/app/api/v1/JsonApiTypes'
+import type { JsonApiListResponse, JsonApiResource } from '@app/web/app/api/v1/JsonApiTypes'
 import { prismaClient } from '@app/web/prismaClient'
 import { apiV1Url } from '@app/web/app/api/v1/apiV1Url'
 import {
@@ -343,12 +340,12 @@ const ActiviteCursorValidation = z.object({
  *                       type: string
  *                       format: uri
  *                       description: lien vers la page suivante
- *                       example: "https://api.example.com/v1/activites?page[after]=cursor"
+ *                       example: "https://api.example.com/v1/activites"
  *                     prev:
  *                       type: string
  *                       format: uri
  *                       description: lien vers la page précédente
- *                       example: "https://api.example.com/v1/activites?page[before]=cursor"
+ *                       example: "https://api.example.com/v1/activites"
  *                 meta:
  *                   type: object
  *                   properties:

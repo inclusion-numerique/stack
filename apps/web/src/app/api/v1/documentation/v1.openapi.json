@@ -362,13 +362,13 @@
                           "type": "string",
                           "format": "uri",
                           "description": "lien vers la page suivante",
-                          "example": "https://api.example.com/v1/activites?page[after]=cursor"
+                          "example": "https://api.example.com/v1/activites"
                         },
                         "prev": {
                           "type": "string",
                           "format": "uri",
                           "description": "lien vers la page précédente",
-                          "example": "https://api.example.com/v1/activites?page[before]=cursor"
+                          "example": "https://api.example.com/v1/activites"
                         }
                       }
                     },
