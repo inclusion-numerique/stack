@@ -16,7 +16,7 @@ describe('api v1 /openapi', () => {
         openapi: '3.0.0',
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         info: expect.objectContaining({
-          title: 'La coop de la médiation numérique - API',
+          title: 'La coop - API',
         }),
       }),
     })
