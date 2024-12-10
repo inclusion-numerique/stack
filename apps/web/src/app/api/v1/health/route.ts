@@ -28,9 +28,7 @@ export const GET = createApiV1Route
     scopes: ['Cras'],
   })
   .handle(() =>
-    Promise.resolve(
-      NextResponse.json({
-        status: 'ok',
-      }),
-    ),
+    NextResponse.json({
+      status: 'ok',
+    }),
   )

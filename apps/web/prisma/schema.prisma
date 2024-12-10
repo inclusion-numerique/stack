@@ -198,8 +198,8 @@ model JobExecution {
 }
 
 enum ApiClientScope {
-  Statistiques @map("statistiques")
-  Cras @map("cras") // Cras anonymisés
+  Statistiques   @map("statistiques")
+  Cras           @map("cras") // Cras anonymisés
   ArchivesV1Cras @map("archives_v1_cras")
 
   @@map("api_client_scope")
@@ -212,7 +212,7 @@ model ApiClient {
 
   secret String // hashed secret
 
-  validFrom DateTime @map("valid_from")
+  validFrom  DateTime  @map("valid_from")
   validUntil DateTime? @map("valid_until")
 
   scopes ApiClientScope[]
@@ -307,7 +307,7 @@ model CraConseillerNumeriqueV1 {
   organismes         Json? // Poursuite vers autre structures
   annotation         String?
 
-  createdAt DateTime  @map("created_at") // v1 field
+  createdAt DateTime  @unique @map("created_at") // v1 field
   updatedAt DateTime? @map("updated_at") // v1 field
 
   structureId              String? @map("structure_id")
@@ -739,8 +739,13 @@ model Activite {
   titreAtelier String?        @map("titre_atelier")
   niveau       NiveauAtelier?
 
+  // "creation" cursor is used to paginate results for API queries
+  @@unique([creation, id])
+  // index relations
   @@index([structureId])
   @@index([mediateurId])
+  // descending sort on this cursor for api query performances
+  @@index([creation(sort: Desc), id(sort: Desc)])
   @@map("activites")
 }
 

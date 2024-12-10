@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import type { ApiClientScope } from '@prisma/client'
-import type { infer as ZodInfer } from 'zod'
+import { infer as ZodInfer, ZodError } from 'zod'
+import * as Sentry from '@sentry/nextjs'
 import { isAuthenticatedApiClientRequest } from '@app/web/app/api/v1/isAuthenticatedApiClientRequest'
 import { getApiRequestParams } from '@app/web/app/api/v1/getApiRequestParams'
 import {
@@ -25,7 +26,7 @@ export type ApiRouteHandler<
 > = (context: {
   request: NextRequest
   params: ZodInfer<QueryParamsSchema>
-}) => Promise<NextResponse<ResponseType>>
+}) => NextResponse<ResponseType> | Promise<NextResponse<ResponseType>>
 
 export const createHandlerWithValidation =
   <ResponseType, QueryParamsSchema extends ApiV1QueryParamsSchema>({
@@ -50,7 +51,25 @@ export const createHandlerWithValidation =
       return NextResponse.json({ error: parsedParams.error }, { status: 400 })
     }
 
-    return handler({ request, params: parsedParams.params })
+    try {
+      return await handler({ request, params: parsedParams.params })
+    } catch (error) {
+      // return 400 if this is a ZodError
+      if (error instanceof ZodError) {
+        // TODO check if this is the best way to return the error message in JSON:API specs
+        return NextResponse.json(
+          { error: error.issues[0].message },
+          { status: 400 },
+        )
+      }
+
+      Sentry.captureException(error)
+
+      return NextResponse.json(
+        { error: 'Internal server error' },
+        { status: 500 },
+      )
+    }
   }
 
 /**

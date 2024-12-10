@@ -380,7 +380,7 @@ export type CraV1ListResponse = JsonApiListResponse<CraV1Resource>
  *                       description: indique s'il existe une page précédente
  */
 export const GET = createApiV1Route
-  .configure({
+  .configure<CraV1ListResponse>({
     scopes: ['Cras'],
   })
   .queryParams(JsonApiCursorPaginationQueryParamsValidation)
@@ -392,7 +392,7 @@ export const GET = createApiV1Route
       take: cursorPagination.take,
       skip: cursorPagination.skip,
       cursor: {
-        id: cursorPagination.cursor,
+        createdAt: cursorPagination.cursor,
       },
     })
 

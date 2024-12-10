@@ -34,3 +34,9 @@ export const prismaCursorPagination = (
     cursor,
   }
 }
+
+export const createCompositeCursor = (...cursorParts: string[]) =>
+  cursorParts.join(':')
+
+export const parseCompositeCursor = (compositeCursor: string) =>
+  compositeCursor.split(':')

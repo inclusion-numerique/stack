@@ -72,6 +72,14 @@ export const typeActiviteSlugValues = Object.keys(typeActiviteSlugLabels) as [
   ...TypeActiviteSlug[],
 ]
 
+export const typeActiviteApiValues = {
+  Individuel: 'individuel',
+  Demarche: 'demarche_administrative',
+  Collectif: 'collectif',
+} as const satisfies {
+  [key in TypeActivite]: string
+}
+
 export const dureeAccompagnementPersonnaliseeValue = 'personnaliser'
 
 export const dureeAccompagnementParDefautLabels = {
@@ -158,6 +166,15 @@ export const typeLieuValues = Object.keys(typeLieuLabels) as [
   ...TypeLieu[],
 ]
 
+export const typeLieuApiValues = {
+  LieuActivite: 'lieu_activite',
+  Autre: 'autre',
+  Domicile: 'domicile',
+  ADistance: 'a_distance',
+} as const satisfies {
+  [key in TypeLieu]: string
+}
+
 export const materielLabels: {
   [key in Materiel]: string
 } = {
@@ -184,6 +201,16 @@ export const materielValues = Object.keys(materielLabels) as [
   Materiel,
   ...Materiel[],
 ]
+
+export const materielApiValues = {
+  Ordinateur: 'ordinateur',
+  Telephone: 'telephone',
+  Tablette: 'tablette',
+  Autre: 'autre',
+  Aucun: 'aucun',
+} as const satisfies {
+  [key in Materiel]: string
+}
 
 export const thematiqueLabels: {
   [key in Thematique]: string
@@ -326,12 +353,40 @@ export const thematiqueValues = Object.keys(thematiqueLabels) as [
   ...Thematique[],
 ]
 
+export const thematiqueApiValues = {
+  DiagnosticNumerique: 'diagnostic_numerique',
+  PrendreEnMainDuMateriel: 'prendre_en_main_du_materiel',
+  NavigationSurInternet: 'navigation_sur_internet',
+  Email: 'email',
+  Bureautique: 'bureautique',
+  ReseauxSociaux: 'reseaux_sociaux',
+  Sante: 'sante',
+  BanqueEtAchatsEnLigne: 'banque_et_achats_en_ligne',
+  Entrepreneuriat: 'entrepreneuriat',
+  InsertionProfessionnelle: 'insertion_professionnelle',
+  SecuriteNumerique: 'securite_numerique',
+  Parentalite: 'parentalite',
+  ScolariteEtNumerique: 'scolarite_et_numerique',
+  CreerAvecLeNumerique: 'creer_avec_le_numerique',
+  CultureNumerique: 'culture_numerique',
+} as const satisfies {
+  [key in Thematique]: string
+}
+
 export const autonomieLabels: {
   [key in Autonomie]: string
 } = {
   EntierementAccompagne: 'Avec guidage',
   PartiellementAutonome: 'Autonome avec guidage en cas de besoin',
   Autonome: 'Autonome',
+}
+
+export const autonomieApiValues = {
+  EntierementAccompagne: 'entierement_accompagne',
+  PartiellementAutonome: 'partiellement_autonome',
+  Autonome: 'autonome',
+} as const satisfies {
+  [key in Autonomie]: string
 }
 
 // Same thing as thematiques for ThematiqueDemarcheAdministrative
@@ -428,6 +483,21 @@ export const thematiqueDemarcheAdministrativeOptionsWithExtras =
     },
   }))
 
+export const thematiqueDemarcheAdministrativeApiValues = {
+  PapiersElectionsCitoyennete: 'papiers_elections_citoyennete',
+  FamilleScolarite: 'famille_scolarite',
+  SocialSante: 'social_sante',
+  TravailFormation: 'travail_formation',
+  Logement: 'logement',
+  TransportsMobilite: 'transports_mobilite',
+  ArgentImpots: 'argent_impots',
+  Justice: 'justice',
+  EtrangersEurope: 'etrangers_europe',
+  LoisirsSportsCulture: 'loisirs_sports_culture',
+} as const satisfies {
+  [key in ThematiqueDemarcheAdministrative]: string
+}
+
 export const autonomieStars: {
   [key in Autonomie]: number
 } = {
@@ -474,6 +544,16 @@ export const structuresRedirectionValues = Object.keys(
   structuresRedirectionLabels,
 ) as [StructureDeRedirection, ...StructureDeRedirection[]]
 
+export const structureDeRedirectionApiValues = {
+  OperateurOuOrganismeEnCharge: 'operateur_ou_organisme_en_charge',
+  AideAuxDemarchesAdministratives: 'aide_aux_demarches_administratives',
+  Administration: 'administration',
+  MediationNumerique: 'mediation_numerique',
+  Autre: 'autre',
+} as const satisfies {
+  [key in StructureDeRedirection]: string
+}
+
 export const niveauAtelierLabels: {
   [key in NiveauAtelier]: string
 } = {
@@ -508,6 +588,13 @@ export const niveauAtelierValues = Object.keys(niveauAtelierLabels) as [
   ...NiveauAtelier[],
 ]
 
+export const niveauAtelierApiValues = {
+  Debutant: 'debutant',
+  Intermediaire: 'intermediaire',
+  Avance: 'avance',
+} as const satisfies {
+  [key in NiveauAtelier]: string
+}
 export const degreDeFinalisationDemarcheLabels: {
   [key in DegreDeFinalisationDemarche]: string
 } = {
@@ -548,3 +635,12 @@ export const degreDeFinalisationDemarcheOptionsWithExtras =
 export const degreDeFinalisationDemarcheValues = Object.keys(
   degreDeFinalisationDemarcheLabels,
 ) as [DegreDeFinalisationDemarche, ...DegreDeFinalisationDemarche[]]
+
+export const degreDeFinalisationDemarcheApiValues = {
+  Finalisee: 'finalisee',
+  AFinaliserEnAutonomie: 'a_finaliser_en_autonomie',
+  DoitRevenir: 'doit_revenir',
+  OrienteVersStructure: 'oriente_vers_structure',
+} as const satisfies {
+  [key in DegreDeFinalisationDemarche]: string
+}
