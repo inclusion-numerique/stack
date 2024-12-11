@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Button from '@codegouvfr/react-dsfr/Button'
 import LogoCoop from '@app/web/components/LogoCoop'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 import { CloseButton } from '../_components/CloseButton'
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 }
 
 const Page = async () => {
-  const user = await getAuthenticatedSessionUser()
+  const user = await authenticateUser()
 
   const nextPageRoute = user.coordinateur
     ? '/en-savoir-plus/coordinateur/mes-statistiques'

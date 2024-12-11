@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { prismaClient } from '@app/web/prismaClient'
 import { metadataTitle } from '@app/web/app/metadataTitle'
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 const MaStructureEmployeusePage = async () => {
-  const user = await getAuthenticatedSessionUser()
+  const user = await authenticateUser()
 
   if (!user.mediateur && !user.coordinateur) {
     return redirect('/')

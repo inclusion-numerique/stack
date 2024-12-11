@@ -1,4 +1,3 @@
-import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import type { ActivitesDataTableSearchParams } from '@app/web/cra/ActivitesDataTable'
 import { validateActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFiltersOptionsForMediateur'
@@ -8,13 +7,14 @@ import MesActivitesListeLayout from '@app/web/app/coop/(sidemenu-layout)/mes-act
 import MesActivitesTableauPage from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/tableau/MesActivitesTableauPage'
 import MesActivitesListeEmptyPage from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListeEmptyPage'
 import MesActivitesListeHeader from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListeHeader'
+import { authenticateMediateur } from '@app/web/auth/authenticateUser'
 
 const MesActivitesVueTableauPage = async ({
   searchParams: rawSearchParams = {},
 }: {
   searchParams?: ActivitesDataTableSearchParams
 }) => {
-  const user = await getAuthenticatedMediateur()
+  const user = await authenticateMediateur()
 
   const hasActivites = await mediateurHasActivites({
     mediateurId: user.mediateur.id,

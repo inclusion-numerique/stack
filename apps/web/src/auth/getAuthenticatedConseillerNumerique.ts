@@ -1,5 +1,5 @@
-import type { AuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import type { SessionUser } from '@app/web/auth/sessionUser'
+import type { AuthenticatedMediateur } from '@app/web/auth/authenticateUser'
 
 export type AuthenticatedConseillerNumerique = AuthenticatedMediateur & {
   conseillerNumerique: Exclude<

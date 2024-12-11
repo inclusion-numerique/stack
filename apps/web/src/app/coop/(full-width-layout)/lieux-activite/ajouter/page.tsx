@@ -1,6 +1,6 @@
 import React from 'react'
 import { redirect } from 'next/navigation'
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import IconInSquare from '@app/web/components/IconInSquare'
@@ -9,7 +9,7 @@ import BackButton from '@app/web/components/BackButton'
 import LieuxActiviteForm from './_components/LieuxActiviteForm'
 
 const AjouterLieuPage = async () => {
-  const user = await getAuthenticatedSessionUser()
+  const user = await authenticateUser()
 
   if (!user.mediateur || user.mediateur._count.enActivite === 0) {
     return redirect('/')

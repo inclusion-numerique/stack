@@ -3,7 +3,6 @@ import { DefaultValues } from 'react-hook-form'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import Link from 'next/link'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
-import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
 import {
   decodeSerializableState,
@@ -12,6 +11,7 @@ import {
 import IconInSquare from '@app/web/components/IconInSquare'
 import BeneficiaireForm from '@app/web/app/coop/(full-width-layout)/mes-beneficiaires/BeneficiaireForm'
 import BackButton from '@app/web/components/BackButton'
+import { authenticateMediateur } from '@app/web/auth/authenticateUser'
 
 const PageCreerBeneficiaire = async ({
   searchParams: { cra, retour } = {},
@@ -21,7 +21,7 @@ const PageCreerBeneficiaire = async ({
     retour?: string
   }
 }) => {
-  const user = await getAuthenticatedMediateur()
+  const user = await authenticateMediateur()
 
   const parsedCra = cra ? decodeSerializableState(cra, {}) : undefined
 

@@ -1,5 +1,4 @@
 import type { DefaultValues } from 'react-hook-form'
-import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import type { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
 import {
   decodeSerializableState,
@@ -10,6 +9,7 @@ import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/g
 import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import CraIndividuelPage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/CraIndividuelPage'
 import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
+import { authenticateMediateur } from '@app/web/auth/authenticateUser'
 
 const CreateCraIndividuelPage = async ({
   searchParams: { v, retour } = {},
@@ -19,7 +19,7 @@ const CreateCraIndividuelPage = async ({
     retour?: string
   }
 }) => {
-  const user = await getAuthenticatedMediateur()
+  const user = await authenticateMediateur()
 
   const urlFormState = v ? decodeSerializableState(v, {}) : {}
 

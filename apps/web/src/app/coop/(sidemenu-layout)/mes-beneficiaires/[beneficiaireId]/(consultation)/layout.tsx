@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation'
 import { PropsWithChildren } from 'react'
-import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { prismaClient } from '@app/web/prismaClient'
 import ViewBeneficiaireLayout from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/ViewBeneficiaireLayout'
+import { authenticateMediateur } from '@app/web/auth/authenticateUser'
 
 const BeneficiaireLayout = async ({
   params: { beneficiaireId },
@@ -10,7 +10,7 @@ const BeneficiaireLayout = async ({
 }: PropsWithChildren<{
   params: { beneficiaireId: string }
 }>) => {
-  const user = await getAuthenticatedMediateur()
+  const user = await authenticateMediateur()
 
   const beneficiaire = await prismaClient.beneficiaire.findUnique({
     where: {

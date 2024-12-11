@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 import { OnboardingMesArchivesCoordinateur } from '@app/web/app/(onboarding)/en-savoir-plus/coordinateur/mes-archives/OnboardingMesArchivesCoordinateur'
 
 export const metadata: Metadata = {
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 const Page = async () => {
-  const user = await getAuthenticatedSessionUser()
+  const user = await authenticateUser()
 
   return user.coordinateur ? (
     <OnboardingMesArchivesCoordinateur />

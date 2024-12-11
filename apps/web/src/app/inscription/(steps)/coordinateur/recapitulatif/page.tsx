@@ -1,7 +1,6 @@
 import { redirect } from 'next/navigation'
 import React from 'react'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 import { getStructureEmployeuseForInscription } from '@app/web/app/inscription/getStructureEmployeuseForInscription'
 import RoleInscriptionNotice from '@app/web/app/inscription/RoleInscriptionNotice'
@@ -9,6 +8,7 @@ import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieu
 import InscriptionRecapitulatif from '@app/web/app/inscription/InscriptionRecapitulatif'
 import { profileInscriptionLabels } from '@app/web/inscription/profilInscription'
 import { fetchConseillersCoordonnes } from '@app/web/external-apis/conseiller-numerique/fetchConseillersCoordonnes'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 import { coordinateurInscriptionSteps } from '../coordinateurInscriptionSteps'
 
 export const metadata = {
@@ -16,7 +16,7 @@ export const metadata = {
 }
 
 const Page = async () => {
-  const user = await getAuthenticatedSessionUser()
+  const user = await authenticateUser()
 
   if (!user.coordinateur) {
     redirect('/')

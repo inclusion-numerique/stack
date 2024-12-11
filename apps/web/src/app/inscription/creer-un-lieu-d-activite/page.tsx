@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import CreerStructurePageContent from '@app/web/app/inscription/creer-un-lieu-d-activite/CreerStructurePageContent'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),
@@ -16,7 +16,7 @@ const Page = async ({
     retour?: string
   }
 }) => {
-  const user = await getAuthenticatedSessionUser()
+  const user = await authenticateUser()
 
   if (!user.mediateur) {
     redirect('/')

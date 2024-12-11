@@ -1,10 +1,10 @@
 import { notFound } from 'next/navigation'
-import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import CraIndividuelPage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/CraIndividuelPage'
 import { getCraIndividuelDataDefaultValuesFromExisting } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/getCraIndividuelDataDefaultValuesFromExisting'
 import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
+import { authenticateMediateur } from '@app/web/auth/authenticateUser'
 
 const UpdateCraIndividuelPage = async ({
   params: { id },
@@ -17,7 +17,7 @@ const UpdateCraIndividuelPage = async ({
     retour?: string
   }
 }) => {
-  const user = await getAuthenticatedMediateur()
+  const user = await authenticateMediateur()
 
   const defaultValues = await getCraIndividuelDataDefaultValuesFromExisting({
     id,

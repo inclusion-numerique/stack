@@ -4,15 +4,15 @@ import Header from '@app/web/components/Header'
 import styles from '@app/web/app/coop/CoopLayout.module.css'
 import CoopSideMenu from '@app/web/app/coop/CoopSideMenu'
 import CreateCraModal from '@app/web/app/coop/(full-width-layout)/mes-activites/CreateCraModal'
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import MinimalFooter from '@app/web/app/coop/MinimalFooter'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 
 const CoopSidemenuLayout = async ({
   children,
 }: {
   children: React.ReactNode
 }) => {
-  const user = await getAuthenticatedSessionUser()
+  const user = await authenticateUser()
   return (
     <div className="fr-layout__inner">
       <Header user={user} fullWidth variant="coop" />

@@ -1,5 +1,4 @@
 import { DefaultValues } from 'react-hook-form'
-import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import {
   decodeSerializableState,
   EncodedState,
@@ -11,6 +10,7 @@ import { getInitialBeneficiairesOptionsForSearch } from '@app/web/beneficiaire/g
 import { getLieuxActiviteOptions } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import CraCollectifPage from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/collectif/CraCollectifPage'
 import { getAdaptiveDureeOptions } from '@app/web/cra/getAdaptiveDureeOptions'
+import { authenticateMediateur } from '@app/web/auth/authenticateUser'
 
 const CreateCraCollectifPage = async ({
   searchParams: { v, retour } = {},
@@ -20,7 +20,7 @@ const CreateCraCollectifPage = async ({
     retour?: string
   }
 }) => {
-  const user = await getAuthenticatedMediateur()
+  const user = await authenticateMediateur()
   const mediateurId = user.mediateur.id
 
   const urlFormState = v ? decodeSerializableState(v, {}) : {}

@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 import LieuxActiviteForm from '@app/web/app/inscription/LieuxActiviteForm'
 import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
@@ -8,6 +7,7 @@ import {
   conseillerNumeriqueLieuxInscriptionSteps,
   conseillerNumeriqueLieuxInscriptionStepsCount,
 } from '@app/web/app/inscription/(steps)/conseiller-numerique-lieux/conseillerNumeriqueLieuxInscriptionSteps'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),
@@ -15,7 +15,7 @@ export const metadata = {
 
 // next js query params "profil": ProfilInscription
 const Page = async () => {
-  const user = await getAuthenticatedSessionUser()
+  const user = await authenticateUser()
 
   if (!user.mediateur || !user.mediateur.conseillerNumerique) {
     redirect('/')

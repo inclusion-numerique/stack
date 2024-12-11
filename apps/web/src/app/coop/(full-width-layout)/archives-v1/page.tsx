@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
+import { authenticateMediateur } from '@app/web/auth/authenticateUser'
 import { getArchivesV1PageDataWithCras } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1PageData'
 import ArchivesV1PageContent from '@app/web/app/coop/(full-width-layout)/archives-v1/ArchivesV1PageContent'
 import { isAuthenticatedConseillerNumerique } from '@app/web/auth/getAuthenticatedConseillerNumerique'
@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 const ArchivesV1Page = async () => {
-  const user = await getAuthenticatedMediateur()
+  const user = await authenticateMediateur()
 
   if (!isAuthenticatedConseillerNumerique(user)) {
     notFound()

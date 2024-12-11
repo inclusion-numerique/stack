@@ -1,14 +1,14 @@
 import { notFound } from 'next/navigation'
-import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { getBeneficiaireAccompagnementsPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/getBeneficiaireAccompagnementsPageData'
 import ViewBeneficiaireAccompagnementsPage from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/ViewBeneficiaireAccompagnementsPage'
+import { authenticateMediateur } from '@app/web/auth/authenticateUser'
 
 const BeneficiaireAccompagnementsPage = async ({
   params: { beneficiaireId },
 }: {
   params: { beneficiaireId: string }
 }) => {
-  const user = await getAuthenticatedMediateur()
+  const user = await authenticateMediateur()
 
   const data = await getBeneficiaireAccompagnementsPageData({
     beneficiaireId,

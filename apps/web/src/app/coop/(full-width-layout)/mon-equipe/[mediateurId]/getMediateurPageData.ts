@@ -3,7 +3,7 @@ import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { getStructureEmployeuseAddress } from '@app/web/structure/getStructureEmployeuseAddress'
 import { getContractInfo } from '@app/web/conseiller-numerique/getContractInfo'
 import { getLieuxActivites } from '@app/web/lieu-activite/getLieuxActivites'
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 import { getTotalCountsStats } from '../../../(sidemenu-layout)/mes-statistiques/_queries/getTotalCountsStats'
 
 const activitesFiltersLastDays = (daysCount: number) => {
@@ -17,7 +17,7 @@ const activitesFiltersLastDays = (daysCount: number) => {
 }
 
 export const getMediateurPageData = async (mediateurId: string) => {
-  const user = await getAuthenticatedSessionUser()
+  const user = await authenticateUser()
 
   if (
     user.coordinateur?.mediateursCoordonnes

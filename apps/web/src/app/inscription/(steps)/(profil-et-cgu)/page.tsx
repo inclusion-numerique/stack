@@ -1,5 +1,5 @@
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 import LogoCoop from '@app/web/components/LogoCoop'
 import ProfilEtCguForm from '@app/web/app/inscription/(steps)/(profil-et-cgu)/ProfilEtCguForm'
 
@@ -8,7 +8,7 @@ export const metadata = {
 }
 
 const IntroPage = async () => {
-  const user = await getAuthenticatedSessionUser()
+  const user = await authenticateUser()
 
   return (
     <div className="fr-mb-32v fr-p-12v fr-width-full fr-border-radius--8 fr-background-default--grey fr-mt-32v">

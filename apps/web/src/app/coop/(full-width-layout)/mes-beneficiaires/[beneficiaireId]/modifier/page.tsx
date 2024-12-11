@@ -2,7 +2,6 @@ import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDiscl
 import { DefaultValues } from 'react-hook-form'
 import { notFound } from 'next/navigation'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
-import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
 import { EncodedState } from '@app/web/utils/encodeSerializableState'
 import IconInSquare from '@app/web/components/IconInSquare'
@@ -14,6 +13,7 @@ import { beneficiaireCommuneResidenceToPreviewBanData } from '@app/web/beneficia
 import { AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
 import { banMunicipalityLabel } from '@app/web/external-apis/ban/banMunicipalityLabel'
 import BackButton from '@app/web/components/BackButton'
+import { authenticateMediateur } from '@app/web/auth/authenticateUser'
 
 const PageModifierBeneficiaire = async ({
   searchParams: { retour } = {},
@@ -25,7 +25,7 @@ const PageModifierBeneficiaire = async ({
   }
   params: { beneficiaireId: string }
 }) => {
-  const user = await getAuthenticatedMediateur()
+  const user = await authenticateMediateur()
 
   const beneficiaire = await prismaClient.beneficiaire.findUnique({
     where: {

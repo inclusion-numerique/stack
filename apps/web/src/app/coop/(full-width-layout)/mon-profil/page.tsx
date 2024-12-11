@@ -3,12 +3,12 @@ import { redirect } from 'next/navigation'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
 import FonctionnalitesDeMediationNumeriqueCoordinateur from '@app/web/app/coop/(full-width-layout)/mon-profil/_components/FonctionnalitesDeMediationNumeriqueCoordinateur'
 import Contract from '@app/web/components/conseiller-numerique/Contract'
 import { getContractInfo } from '@app/web/conseiller-numerique/getContractInfo'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 import ProfileEditCard from './_components/ProfileEditCard'
 
 export const metadata: Metadata = {
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 }
 
 const MonProfilPage = async () => {
-  const user = await getAuthenticatedSessionUser()
+  const user = await authenticateUser()
 
   if (!user) {
     return redirect('/')

@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import { getAuthenticatedMediateurOrCoordinateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { getStructureEmployeuseAddress } from '@app/web/structure/getStructureEmployeuseAddress'
 import {
   type ActivitesFilters,
   validateActivitesFilters,
 } from '@app/web/cra/ActivitesFilters'
 import { mediateurCoordonnesIdsFor } from '@app/web/mediateurs/mediateurCoordonnesIdsFor'
+import { authenticateMediateurOrCoordinateur } from '@app/web/auth/authenticateUser'
 import { getMesStatistiquesPageData } from './getMesStatistiquesPageData'
 import { MesStatistiques } from './MesStatistiques'
 
@@ -20,7 +20,7 @@ const MesStatistiquesPage = async ({
     graphique_fin?: string
   }
 }) => {
-  const user = await getAuthenticatedMediateurOrCoordinateur()
+  const user = await authenticateMediateurOrCoordinateur()
 
   const mesStatistiques = await getMesStatistiquesPageData({
     user,

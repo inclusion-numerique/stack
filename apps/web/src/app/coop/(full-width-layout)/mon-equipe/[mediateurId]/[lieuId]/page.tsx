@@ -2,21 +2,19 @@ import React from 'react'
 import { redirect } from 'next/navigation'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { LieuActivitePageContent } from '@app/web/app/lieu-activite/components/LieuActivitePageContent'
 import { getLieuActiviteById } from '@app/web/app/lieu-activite/getLieuActiviteById'
 import BackButton from '@app/web/components/BackButton'
 import { prismaClient } from '@app/web/prismaClient'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 
 const LieuActiviteDetailPage = async ({
   params,
 }: {
   params: { mediateurId: string; lieuId: string }
 }) => {
-  await getAuthenticatedSessionUser().catch(() =>
-    redirect(`/connexion?suivant=/lieux-activite/${params.lieuId}`),
-  )
+  await authenticateUser(`/connexion?suivant=/lieux-activite/${params.lieuId}`)
 
   const mediateur = await prismaClient.mediateur.findUnique({
     where: { id: params.mediateurId },

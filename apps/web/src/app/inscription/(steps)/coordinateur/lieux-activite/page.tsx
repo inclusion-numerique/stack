@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 import LieuxActiviteForm from '@app/web/app/inscription/LieuxActiviteForm'
 import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 import { coordinateurInscriptionSteps } from '../coordinateurInscriptionSteps'
 
 export const metadata = {
@@ -11,7 +11,7 @@ export const metadata = {
 }
 
 const Page = async () => {
-  const user = await getAuthenticatedSessionUser()
+  const user = await authenticateUser()
 
   if (!user.mediateur) {
     redirect('/')

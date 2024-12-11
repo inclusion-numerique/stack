@@ -7,6 +7,7 @@ import {
 } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
 import type { SessionUser } from '@app/web/auth/sessionUser'
+import { AuthenticationError } from '@app/web/auth/AuthenticationError'
 
 export const getSessionToken = (): string | null => {
   const allCookies = cookies()
@@ -22,7 +23,7 @@ export const getSessionToken = (): string | null => {
 export const getAuthenticatedSessionToken = (): string => {
   const token = getSessionToken()
   if (!token) {
-    throw new Error('Unauthenticated user')
+    throw new AuthenticationError('Unauthenticated user')
   }
   return token
 }
@@ -45,7 +46,7 @@ export const getSessionUser = async (): Promise<SessionUser | null> => {
 export const getAuthenticatedSessionUser = () =>
   getSessionUser().then((user) => {
     if (!user) {
-      throw new Error('Unauthenticated user')
+      throw new AuthenticationError('Unauthenticated user')
     }
     return user
   })

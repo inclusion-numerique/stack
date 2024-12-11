@@ -1,7 +1,7 @@
 import { notFound, redirect } from 'next/navigation'
-import { getAuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import { getCraIndividuelDataDefaultValuesFromExisting } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/getCraIndividuelDataDefaultValuesFromExisting'
+import { authenticateMediateur } from '@app/web/auth/authenticateUser'
 
 const DupliquerPage = async ({
   params: { id },
@@ -14,7 +14,7 @@ const DupliquerPage = async ({
     retour?: string
   }
 }) => {
-  const user = await getAuthenticatedMediateur()
+  const user = await authenticateMediateur()
 
   const defaultValues = await getCraIndividuelDataDefaultValuesFromExisting({
     id,

@@ -1,12 +1,12 @@
 import { redirect } from 'next/navigation'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { profileInscriptionSlugs } from '@app/web/inscription/profilInscription'
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
 import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
 import { getProconnectIdToken } from '@app/web/security/getProconnectIdToken'
 import { updateUserInscriptionProfileFromV1Data } from '@app/web/app/inscription/(steps)/identification/updateUserInscriptionProfileFromV1Data'
 import { initializeAndimportUserDataFromV1 } from '@app/web/app/inscription/(steps)/identification/initializeAndimportUserDataFromV1'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 import { FinaliserInscriptionConseiller } from './_components/FinaliserInscriptionConseiller/FinaliserInscriptionConseiller'
 import { FinaliserInscriptionCoordinateur } from './_components/FinaliserInscriptionCoordinateur/FinaliserInscriptionCoordinateur'
 import { FinaliserInscriptionMediateur } from './_components/FinaliserInscriptionMediateur/FinaliserInscriptionMediateur'
@@ -26,7 +26,7 @@ export const metadata = {
  *  - créé l'objet "mediateur" si le role correspond
  */
 const IdentificationPage = async () => {
-  const user = await getAuthenticatedSessionUser()
+  const user = await authenticateUser()
 
   const intendedProfileInscription = user.profilInscription
 

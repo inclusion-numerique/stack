@@ -6,7 +6,7 @@ import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import { ActivitesFilterValidations } from '@app/web/cra/ActivitesFilters'
 import { buildActivitesWorksheet } from '@app/web/worksheet/activites/buildActivitesWorksheet'
 import { getActivitesWorksheetInput } from '@app/web/worksheet/activites/getActivitesWorksheetInput'
-import { AuthenticatedMediateur } from '@app/web/auth/getAuthenticatedMediateur'
+import type { AuthenticatedMediateur } from '@app/web/auth/authenticateUser'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0

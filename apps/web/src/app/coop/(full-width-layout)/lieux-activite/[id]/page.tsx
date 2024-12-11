@@ -2,20 +2,18 @@ import React from 'react'
 import { redirect } from 'next/navigation'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import BackButton from '@app/web/components/BackButton'
 import { LieuActivitePageContent } from '@app/web/app/lieu-activite/components/LieuActivitePageContent'
 import { getLieuActiviteById } from '@app/web/app/lieu-activite/getLieuActiviteById'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 
 const LieuActiviteDetailPage = async ({
   params,
 }: {
   params: { id: string }
 }) => {
-  await getAuthenticatedSessionUser().catch(() =>
-    redirect(`/connexion?suivant=/lieux-activite/${params.id}`),
-  )
+  await authenticateUser(`/connexion?suivant=/lieux-activite/${params.id}`)
 
   const lieuActivite = await getLieuActiviteById(params.id)
 

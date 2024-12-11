@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 import RenseignerStructureEmployeuseForm from '@app/web/app/inscription/(steps)/mediateur/structure-employeuse/RenseignerStructureEmployeuseForm'
 import {
@@ -8,13 +7,14 @@ import {
   mediateurinscriptionStepsCount,
 } from '@app/web/app/inscription/(steps)/mediateur/mediateurinscriptionSteps'
 import { getStructureEmployeuseForInscription } from '@app/web/app/inscription/getStructureEmployeuseForInscription'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),
 }
 
 const Page = async () => {
-  const user = await getAuthenticatedSessionUser()
+  const user = await authenticateUser()
 
   if (!user.mediateur || user.mediateur.conseillerNumerique) {
     redirect('/')
