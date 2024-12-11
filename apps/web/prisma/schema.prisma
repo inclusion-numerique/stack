@@ -213,12 +213,28 @@ model Mediateur {
   modification DateTime @default(now())
   // Cannot soft delete as we need to keep userId and conseillerNumerique.mediateurId unique
 
-  coordinations MediateurCoordonne[]
-  enActivite    MediateurEnActivite[]
-  beneficiaires Beneficiaire[]
-  activites     Activite[]
+  coordinations    MediateurCoordonne[]
+  enActivite       MediateurEnActivite[]
+  beneficiaires    Beneficiaire[]
+  activites        Activite[]
+  InvitationEquipe InvitationEquipe[]
 
   @@map("mediateurs")
+}
+
+model InvitationEquipe {
+  email          String
+  coordinateurId String    @db.Uuid
+  mediateurId    String?   @db.Uuid
+  creation       DateTime? @default(now())
+  acceptee       DateTime?
+  refusee        DateTime?
+
+  mediateurInvite Mediateur?   @relation(fields: [mediateurId], references: [id])
+  coordinateur    Coordinateur @relation(fields: [coordinateurId], references: [id])
+
+  @@unique([email, coordinateurId])
+  @@map("invitations_equipes")
 }
 
 // Source de vérité https://api.conseiller-numerique.gouv.fr
@@ -319,6 +335,7 @@ model Coordinateur {
   // Cannot soft delete as we need to keep userId and conseillerNumeriqueId unique
 
   mediateursCoordonnes MediateurCoordonne[]
+  InvitationEquipe     InvitationEquipe[]
 
   @@index([userId])
   @@map("coordinateurs")

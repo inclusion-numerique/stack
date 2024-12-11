@@ -7,7 +7,11 @@ import {
 import React from 'react'
 import { emailAssetUrl } from '@app/emails/emailAssetUrl'
 
-const Footer = ({ padding = '15px 15px 0 15px' }: { padding?: string | number }) => (
+const Footer = ({
+  padding = '15px 15px 0 15px',
+}: {
+  padding?: string | number
+}) => (
   <>
     <MjmlSection padding={padding}>
       <MjmlColumn>

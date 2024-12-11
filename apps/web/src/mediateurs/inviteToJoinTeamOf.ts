@@ -1,10 +1,19 @@
 import { prismaClient } from '@app/web/prismaClient'
-import { AuthenticatedCoordinateur } from '../auth/getAuthenticatedMediateur'
+import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
+import type { CoordinateurUser } from '@app/web/auth/userTypeGuards'
 import { sendInviteMediateurEmail } from './sendInviteMediateurEmail'
 import { sendInviteNewMediateurEmail } from './sendInviteNewMediateurEmail'
 
+const withInvitationFrom =
+  (user: CoordinateurUser) =>
+  ({ email }: { email: string }) => ({
+    url: `/invitations/${encodeSerializableState({ email, coordinateurId: user.coordinateur.id })}`,
+    email,
+    from: user,
+  })
+
 export const inviteToJoinTeamOf =
-  (user: AuthenticatedCoordinateur) =>
+  (user: CoordinateurUser) =>
   async (members: { email: string; mediateurId?: string }[]) => {
     const alreadyCoordonneSet = new Set(
       user.coordinateur.mediateursCoordonnes.map((item) => item.mediateurId),
@@ -25,16 +34,8 @@ export const inviteToJoinTeamOf =
     await Promise.all(
       invitations.map(async (invitation) =>
         invitation.mediateurId == null
-          ? sendInviteNewMediateurEmail({
-              url: `https://example.com/invitation/${invitation.email}`,
-              email: invitation.email,
-              from: user,
-            })
-          : sendInviteMediateurEmail({
-              url: `https://example.com/invitation/${invitation.email}`,
-              email: invitation.email,
-              from: user,
-            }),
+          ? sendInviteNewMediateurEmail(withInvitationFrom(user)(invitation))
+          : sendInviteMediateurEmail(withInvitationFrom(user)(invitation)),
       ),
     )
 

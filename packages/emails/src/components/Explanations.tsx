@@ -39,7 +39,7 @@ const Explanations = () => (
         >
           La Coop de la médiation numérique est la plateforme dédiée aux
           médiateur·rice·s numériques (dont les conseillers numériques) pour les
-          accompagner dans leur pratique quotidienne de la médiation numérique.{' '}
+          accompagner dans leur pratique quotidienne de la médiation numérique.
         </MjmlText>
       </MjmlColumn>
     </MjmlSection>

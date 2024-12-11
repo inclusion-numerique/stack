@@ -1,7 +1,6 @@
 import z from 'zod'
 
 export const InviterMembreValidation = z.object({
-  coordinateurId: z.string().uuid(),
   members: z
     .array(
       z.object({

@@ -8,25 +8,23 @@ import {
   searchMediateursCordonneBy,
 } from './searchMediateursCordonneBy'
 
-const statusFor = (activites: { date: Date }[]) => {
-  if (activites.length === 0) return 'Inactif'
+const statusFor = (date: Date | null) => {
+  if (date == null) return 'Inactif'
 
-  const lastActivity = activites[0].date
-
-  return isAfter(lastActivity, subMonths(new Date(), 2))
+  return isAfter(date, subMonths(new Date(), 2))
     ? 'Actif'
-    : `Inactif depuis le ${dateAsDay(lastActivity)}`
+    : `Inactif depuis le ${dateAsDay(date)}`
 }
 
-const toUserEmail = ({ user: { email } }: { user: { email: string } }) => email
+const toUserEmail = ({ email }: { email: string }) => email
 
 const byConseillerNumeriqueId =
-  (conseillerNumerique: { id: string } | null) =>
+  (id: string | null) =>
   ({ conseillerNumeriqueId }: { conseillerNumeriqueId: string }) =>
-    conseillerNumeriqueId === conseillerNumerique?.id
+    conseillerNumeriqueId === id
 
 const finDeContratFor =
-  (conseillerNumerique: { id: string } | null) =>
+  (id: string | null) =>
   (
     contracts: {
       conseillerNumeriqueId: string
@@ -34,7 +32,7 @@ const finDeContratFor =
     }[],
   ) => {
     const contractInfo = contracts.find(
-      byConseillerNumeriqueId(conseillerNumerique),
+      byConseillerNumeriqueId(id),
     )?.contractInfo
 
     return contractInfo?.dateFinDeContrat &&
@@ -67,17 +65,27 @@ export const getMonEquipePageData = async ({
 
   return {
     mediateurs: mediateurs.map(
-      ({ id, user, conseillerNumerique, activites }) => ({
-        id,
-        firstName: user.firstName ?? undefined,
-        lastName: user.lastName ?? undefined,
-        phone: user.phone ?? undefined,
-        email: user.email,
-        isConseillerNumerique: conseillerNumerique?.id != null,
-        status: statusFor(activites),
-        finDeContrat: finDeContratFor(conseillerNumerique)(
+      ({
+        mediateur_id,
+        email,
+        phone,
+        first_name,
+        last_name,
+        conseiller_numerique_id,
+        date_derniere_activite,
+        type,
+      }) => ({
+        id: mediateur_id ?? undefined,
+        firstName: first_name ?? undefined,
+        lastName: last_name ?? undefined,
+        phone: phone ?? undefined,
+        email,
+        isConseillerNumerique: conseiller_numerique_id != null,
+        status: statusFor(date_derniere_activite),
+        finDeContrat: finDeContratFor(conseiller_numerique_id)(
           conseillersNumeriquesWithContrats,
         ),
+        type,
       }),
     ),
     stats: {

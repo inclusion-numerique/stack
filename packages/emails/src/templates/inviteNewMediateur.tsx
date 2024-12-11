@@ -11,7 +11,7 @@ import { renderToMjml } from '@faire/mjml-react/utils/renderToMjml'
 import { emailAssetUrl } from '@app/emails/emailAssetUrl'
 import LayoutWithFooter from '@app/emails/components/LayoutWithFooter'
 import Explanations from '@app/emails/components/Explanations'
-import { backgroundColor, brandColor } from '@app/emails/styles'
+import { backgroundColor } from '@app/emails/styles'
 import Invitation from '../components/Invitation'
 
 export const inviteNewMediateur = {
@@ -68,18 +68,7 @@ export const inviteNewMediateur = {
               fontSize="18px"
               href={emailAssetUrl(url)}
             >
-              Accepter l’invitation et créer mon compte
-            </MjmlButton>
-            <MjmlButton
-              width="100%"
-              fontWeight="500"
-              fontSize="18px"
-              href={emailAssetUrl('/')}
-              backgroundColor="white"
-              border="solid 1px #000091"
-              color={brandColor}
-            >
-              Refuser l’invitation
+              Voir l’invitation
             </MjmlButton>
             <MjmlSpacer height="32px" />
           </MjmlColumn>

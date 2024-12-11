@@ -1,5 +1,8 @@
 'use client'
 
+import { createToast } from '@app/ui/toast/createToast'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -12,6 +15,8 @@ import {
 } from '@app/web/equipe/InviterMembreValidation'
 import { useMediateursSearch } from '@app/web/hooks/useMediateurSearch'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { trpc } from '@app/web/trpc'
+import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { FormatOptionLabel } from './FormatOptionLabel'
 import { MediateurToAddOption } from './MediateurToAddOption'
 
@@ -43,10 +48,41 @@ const InviterMembreForm = () => {
     defaultValues: { members: [] },
   })
 
+  const mutation = trpc.mediateur.invite.useMutation()
+
+  const router = useRouter()
+
   const { append, fields, remove } = useFieldArray({
     control: form.control,
     name: 'members',
   })
+
+  const onSubmit = async (data: InviterMembreData) => {
+    try {
+      await mutation.mutateAsync(data)
+      createToast({
+        priority: 'success',
+        message:
+          data.members.length > 1
+            ? 'Un email d’invitation a été envoyé aux membres que vous souhaitez ajouter à votre équipe'
+            : `Un email d’invitation a été envoyé à ${data.members[0].nom ?? data.members[0].email}`,
+      })
+      router.push('/coop/mon-equipe')
+      router.refresh()
+    } catch (mutationError) {
+      if (
+        applyZodValidationMutationErrorsToForm(mutationError, form.setError)
+      ) {
+        return
+      }
+      createToast({
+        priority: 'error',
+        message:
+          'Une erreur est survenue lors de l’invitation, veuillez réessayer ultérieurement.',
+      })
+      throw mutationError
+    }
+  }
 
   const onSelectMediateurAInviter = (option: MediateurToAddOption | null) => {
     if (option?.value?.email == null) return
@@ -66,7 +102,7 @@ const InviterMembreForm = () => {
   }
 
   return (
-    <form action="">
+    <form onSubmit={form.handleSubmit(onSubmit)}>
       <CustomSelectFormField
         label={
           <span className="fr-display-block fr-mt-12v fr-mb-4v">
@@ -103,7 +139,15 @@ const InviterMembreForm = () => {
       <ButtonsGroup
         buttonsSize="large"
         buttons={[
-          { children: 'Inviter', disabled: fields.length === 0 },
+          {
+            children: 'Inviter',
+            type: 'submit',
+            disabled: fields.length === 0,
+            ...buttonLoadingClassname(
+              mutation.isPending,
+              'fr-display-block fr-width-full fr-mb-4w',
+            ),
+          },
           {
             children: 'Annuler',
             priority: 'secondary',
