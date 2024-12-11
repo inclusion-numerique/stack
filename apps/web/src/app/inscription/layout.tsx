@@ -1,17 +1,13 @@
 import { redirect } from 'next/navigation'
 import React, { PropsWithChildren } from 'react'
 import Link from 'next/link'
-import { getSessionUser } from '@app/web/auth/getSessionUser'
 import Header from '@app/web/components/Header'
 import InscriptionStepsLayout from '@app/web/app/inscription/(steps)/layout'
 import MinimalFooter from '@app/web/app/coop/MinimalFooter'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 
 const InscriptionLayout = async ({ children }: PropsWithChildren) => {
-  const user = await getSessionUser()
-  if (!user) {
-    redirect('/connexion')
-    return null
-  }
+  const user = await authenticateUser()
 
   if (user.inscriptionValidee) {
     redirect('/coop')

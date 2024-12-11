@@ -1,17 +1,14 @@
 import { redirect } from 'next/navigation'
 import React, { PropsWithChildren } from 'react'
 import Link from 'next/link'
-import { getSessionUser } from '@app/web/auth/getSessionUser'
 import InscriptionStepsLayout from '@app/web/app/inscription/(steps)/layout'
 import Header from '@app/web/components/Header'
 import PublicFooter from '@app/web/app/(public)/PublicFooter'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 
 const Layout = async ({ children }: PropsWithChildren) => {
-  const user = await getSessionUser()
-  if (!user) {
-    redirect('/connexion')
-    return null
-  }
+  const user = await authenticateUser()
+
   // Admin users are not allowed to access this page
   if (user.role === 'Admin') {
     // Admins cannot access the coop features

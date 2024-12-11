@@ -1,17 +1,12 @@
 import React from 'react'
-import { redirect } from 'next/navigation'
-import { getSessionUser } from '@app/web/auth/getSessionUser'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import { authenticateMediateur } from '@app/web/auth/authenticateUser'
 import { CreerLieuActivitePageContent } from './_components/CreerLieuActivitePageContent'
 
 const LieuActiviteCreerPage = async () => {
-  const user = await getSessionUser()
-
-  if (!user || !user.mediateur) {
-    redirect(`/connexion?suivant=/lieux-activite/`)
-  }
+  await authenticateMediateur(`/connexion?suivant=/lieux-activite/`)
 
   return (
     <>

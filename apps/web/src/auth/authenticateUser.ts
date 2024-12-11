@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import { AuthenticationError } from '@app/web/auth/AuthenticationError'
-import { SessionUser } from '@app/web/auth/sessionUser'
+import type { SessionUser } from '@app/web/auth/sessionUser'
 
 /**
  * This gets the session user from request cache and redirects to login
