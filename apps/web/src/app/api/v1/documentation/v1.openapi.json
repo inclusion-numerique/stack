@@ -25,6 +25,325 @@
         "scheme": "bearer",
         "description": "Identification avec un couple client-id:client-secret"
       }
+    },
+    "schemas": {
+      "Activite": {
+        "type": "object",
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "activite",
+            "enum": [
+              "activite"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "type",
+              "mediateur_id",
+              "accompagnements",
+              "date",
+              "duree",
+              "notes",
+              "type_lieu",
+              "structure_id",
+              "lieu_code_postal",
+              "lieu_commune",
+              "lieu_code_insee",
+              "creation",
+              "modification",
+              "autonomie",
+              "oriente_vers_structure",
+              "structure_de_redirection",
+              "materiel",
+              "thematiques",
+              "thematiques_demarche_administrative",
+              "precisions_demarche",
+              "degre_de_finalisation_demarche",
+              "titre_atelier",
+              "niveau_atelier"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "type d'activité",
+                "enum": [
+                  "individuel",
+                  "demarche_administrative",
+                  "collectif"
+                ],
+                "example": "individuel"
+              },
+              "mediateur_id": {
+                "type": "string",
+                "format": "uuid",
+                "description": "identifiant du médiateur",
+                "example": "123e4567-e89b-12d3-a456-426614174000"
+              },
+              "accompagnements": {
+                "type": "number",
+                "description": "nombre d'accompagnements",
+                "example": 2
+              },
+              "date": {
+                "type": "string",
+                "format": "date-time",
+                "description": "date à laquelle l'activité s'est déroulée",
+                "example": "2024-12-10T09:00:00Z"
+              },
+              "duree": {
+                "type": "number",
+                "description": "durée en minutes",
+                "example": 120
+              },
+              "notes": {
+                "type": "string",
+                "nullable": true,
+                "description": "notes supplémentaires concernant l'activité",
+                "example": "activité spéciale"
+              },
+              "type_lieu": {
+                "type": "string",
+                "description": "type de lieu où l'activité s'est déroulée",
+                "enum": [
+                  "lieu_activite",
+                  "domicile",
+                  "a_distance",
+                  "autre"
+                ],
+                "example": "lieu_activite"
+              },
+              "structure_id": {
+                "type": "string",
+                "format": "uuid",
+                "nullable": true,
+                "description": "identifiant de la structure (renseigné si type_lieu = lieu_activite)",
+                "example": "123e4567-e89b-12d3-a456-426614174001"
+              },
+              "lieu_code_postal": {
+                "type": "string",
+                "nullable": true,
+                "description": "code postal du lieu (renseigné si type_lieu = domicile, a_distance ou autre)",
+                "example": "69007"
+              },
+              "lieu_commune": {
+                "type": "string",
+                "nullable": true,
+                "description": "commune du lieu (renseignée si type_lieu = domicile, a_distance ou autre)",
+                "example": "Lyon"
+              },
+              "lieu_code_insee": {
+                "type": "string",
+                "nullable": true,
+                "description": "code INSEE de la commune (renseigné si type_lieu = domicile, a_distance ou autre)",
+                "example": "69123"
+              },
+              "creation": {
+                "type": "string",
+                "format": "date-time",
+                "description": "date de création de l'activité",
+                "example": "2024-12-10T12:00:00Z"
+              },
+              "modification": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "description": "date de dernière modification de l'activité",
+                "example": "2024-12-10T15:00:00Z"
+              },
+              "autonomie": {
+                "type": "string",
+                "nullable": true,
+                "description": "niveau d'autonomie lors de l'activité",
+                "enum": [
+                  "entierement_accompagne",
+                  "partiellement_autonome",
+                  "autonome"
+                ],
+                "example": "autonome"
+              },
+              "oriente_vers_structure": {
+                "type": "boolean",
+                "nullable": true,
+                "description": "indique si l'utilisateur a été orienté vers une structure",
+                "example": true
+              },
+              "structure_de_redirection": {
+                "type": "string",
+                "nullable": true,
+                "description": "type de structure vers laquelle l'utilisateur a été redirigé",
+                "enum": [
+                  "operateur_ou_organisme_en_charge",
+                  "aide_aux_demarches_administratives",
+                  "administration",
+                  "mediation_numerique",
+                  "autre"
+                ],
+                "example": "administration"
+              },
+              "materiel": {
+                "type": "array",
+                "description": "matériel utilisé lors de l'accompagnement",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "ordinateur",
+                    "telephone",
+                    "tablette",
+                    "autre",
+                    "aucun"
+                  ],
+                  "example": "ordinateur"
+                }
+              },
+              "thematiques": {
+                "type": "array",
+                "description": "thématiques abordées lors de l'accompagnement",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "diagnostic_numerique",
+                    "prendre_en_main_du_materiel",
+                    "navigation_sur_internet",
+                    "email",
+                    "bureautique",
+                    "reseaux_sociaux",
+                    "sante",
+                    "banque_et_achats_en_ligne",
+                    "entrepreneuriat",
+                    "insertion_professionnelle",
+                    "securite_numerique",
+                    "parentalite",
+                    "scolarite_et_numerique",
+                    "creer_avec_le_numerique",
+                    "culture_numerique"
+                  ],
+                  "example": "diagnostic_numerique"
+                }
+              },
+              "thematiques_demarche_administrative": {
+                "type": "array",
+                "description": "thématiques de la démarche administrative abordées",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "papiers_elections_citoyennete",
+                    "famille_scolarite",
+                    "social_sante",
+                    "travail_formation",
+                    "logement",
+                    "transports_mobilite",
+                    "argent_impots",
+                    "justice",
+                    "etrangers_europe",
+                    "loisirs_sports_culture"
+                  ],
+                  "example": "papiers_elections_citoyennete"
+                }
+              },
+              "precisions_demarche": {
+                "type": "string",
+                "nullable": true,
+                "description": "précisions sur la démarche administrative",
+                "example": "difficultés à compléter le formulaire"
+              },
+              "degre_de_finalisation_demarche": {
+                "type": "string",
+                "nullable": true,
+                "description": "degré de finalisation de la démarche administrative",
+                "enum": [
+                  "finalisee",
+                  "a_finaliser_en_autonomie",
+                  "doit_revenir",
+                  "oriente_vers_structure"
+                ],
+                "example": "finalisee"
+              },
+              "titre_atelier": {
+                "type": "string",
+                "nullable": true,
+                "description": "titre de l'atelier (pour un atelier collectif)",
+                "example": "découverte de l'email"
+              },
+              "niveau_atelier": {
+                "type": "string",
+                "nullable": true,
+                "description": "niveau de l'atelier collectif",
+                "enum": [
+                  "debutant",
+                  "intermediaire",
+                  "avance"
+                ],
+                "example": "debutant"
+              }
+            }
+          }
+        }
+      },
+      "ListMetadata": {
+        "type": "object",
+        "properties": {
+          "total_count": {
+            "description": "nombre total d’éléments correspondants à la requête",
+            "type": "integer",
+            "example": 10
+          },
+          "items_per_page": {
+            "type": "integer",
+            "description": "nombre d’éléments par page",
+            "example": 500
+          },
+          "total_pages": {
+            "description": "nombre total de pages",
+            "type": "integer",
+            "example": 2
+          },
+          "has_next_page": {
+            "description": "indique s'il existe une page suivante",
+            "type": "boolean",
+            "example": true
+          },
+          "has_prev_page": {
+            "description": "indique s'il existe une page précédente",
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "PaginationLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri",
+            "description": "lien vers cette page",
+            "example": "https://api.example.com/v1/activites"
+          },
+          "next": {
+            "type": "string",
+            "format": "uri",
+            "description": "lien vers la page suivante",
+            "example": "https://api.example.com/v1/activites"
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri",
+            "description": "lien vers la page précédente",
+            "example": "https://api.example.com/v1/activites"
+          }
+        }
+      }
     }
   },
   "security": [
@@ -88,319 +407,14 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "required": [
-                          "type",
-                          "id",
-                          "attributes"
-                        ],
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "example": "activite"
-                          },
-                          "id": {
-                            "type": "string",
-                            "format": "uuid",
-                            "example": "123e4567-e89b-12d3-a456-426614174000"
-                          },
-                          "attributes": {
-                            "type": "object",
-                            "required": [
-                              "type",
-                              "mediateur_id",
-                              "accompagnements",
-                              "date",
-                              "duree",
-                              "notes",
-                              "type_lieu",
-                              "structure_id",
-                              "lieu_code_postal",
-                              "lieu_commune",
-                              "lieu_code_insee",
-                              "creation",
-                              "modification",
-                              "autonomie",
-                              "oriente_vers_structure",
-                              "structure_de_redirection",
-                              "materiel",
-                              "thematiques",
-                              "thematiques_demarche_administrative",
-                              "precisions_demarche",
-                              "degre_de_finalisation_demarche",
-                              "titre_atelier",
-                              "niveau_atelier"
-                            ],
-                            "properties": {
-                              "type": {
-                                "type": "string",
-                                "description": "type d'activité",
-                                "enum": [
-                                  "individuel",
-                                  "demarche_administrative",
-                                  "collectif"
-                                ],
-                                "example": "individuel"
-                              },
-                              "mediateur_id": {
-                                "type": "string",
-                                "format": "uuid",
-                                "description": "identifiant du médiateur",
-                                "example": "123e4567-e89b-12d3-a456-426614174000"
-                              },
-                              "accompagnements": {
-                                "type": "number",
-                                "description": "nombre d'accompagnements",
-                                "example": 2
-                              },
-                              "date": {
-                                "type": "string",
-                                "format": "date-time",
-                                "description": "date à laquelle l'activité s'est déroulée",
-                                "example": "2024-12-10T09:00:00Z"
-                              },
-                              "duree": {
-                                "type": "number",
-                                "description": "durée en minutes",
-                                "example": 120
-                              },
-                              "notes": {
-                                "type": "string",
-                                "nullable": true,
-                                "description": "notes supplémentaires concernant l'activité",
-                                "example": "activité spéciale"
-                              },
-                              "type_lieu": {
-                                "type": "string",
-                                "description": "type de lieu où l'activité s'est déroulée",
-                                "enum": [
-                                  "lieu_activite",
-                                  "domicile",
-                                  "a_distance",
-                                  "autre"
-                                ],
-                                "example": "lieu_activite"
-                              },
-                              "structure_id": {
-                                "type": "string",
-                                "format": "uuid",
-                                "nullable": true,
-                                "description": "identifiant de la structure (renseigné si type_lieu = lieu_activite)",
-                                "example": "123e4567-e89b-12d3-a456-426614174001"
-                              },
-                              "lieu_code_postal": {
-                                "type": "string",
-                                "nullable": true,
-                                "description": "code postal du lieu (renseigné si type_lieu = domicile, a_distance ou autre)",
-                                "example": "69007"
-                              },
-                              "lieu_commune": {
-                                "type": "string",
-                                "nullable": true,
-                                "description": "commune du lieu (renseignée si type_lieu = domicile, a_distance ou autre)",
-                                "example": "Lyon"
-                              },
-                              "lieu_code_insee": {
-                                "type": "string",
-                                "nullable": true,
-                                "description": "code INSEE de la commune (renseigné si type_lieu = domicile, a_distance ou autre)",
-                                "example": "69123"
-                              },
-                              "creation": {
-                                "type": "string",
-                                "format": "date-time",
-                                "description": "date de création de l'activité",
-                                "example": "2024-12-10T12:00:00Z"
-                              },
-                              "modification": {
-                                "type": "string",
-                                "format": "date-time",
-                                "nullable": true,
-                                "description": "date de dernière modification de l'activité",
-                                "example": "2024-12-10T15:00:00Z"
-                              },
-                              "autonomie": {
-                                "type": "string",
-                                "nullable": true,
-                                "description": "niveau d'autonomie lors de l'activité",
-                                "enum": [
-                                  "entierement_accompagne",
-                                  "partiellement_autonome",
-                                  "autonome"
-                                ],
-                                "example": "autonome"
-                              },
-                              "oriente_vers_structure": {
-                                "type": "boolean",
-                                "nullable": true,
-                                "description": "indique si l'utilisateur a été orienté vers une structure",
-                                "example": true
-                              },
-                              "structure_de_redirection": {
-                                "type": "string",
-                                "nullable": true,
-                                "description": "type de structure vers laquelle l'utilisateur a été redirigé",
-                                "enum": [
-                                  "operateur_ou_organisme_en_charge",
-                                  "aide_aux_demarches_administratives",
-                                  "administration",
-                                  "mediation_numerique",
-                                  "autre"
-                                ],
-                                "example": "administration"
-                              },
-                              "materiel": {
-                                "type": "array",
-                                "description": "matériel utilisé lors de l'accompagnement",
-                                "items": {
-                                  "type": "string",
-                                  "enum": [
-                                    "ordinateur",
-                                    "telephone",
-                                    "tablette",
-                                    "autre",
-                                    "aucun"
-                                  ],
-                                  "example": "ordinateur"
-                                }
-                              },
-                              "thematiques": {
-                                "type": "array",
-                                "description": "thématiques abordées lors de l'accompagnement",
-                                "items": {
-                                  "type": "string",
-                                  "enum": [
-                                    "diagnostic_numerique",
-                                    "prendre_en_main_du_materiel",
-                                    "navigation_sur_internet",
-                                    "email",
-                                    "bureautique",
-                                    "reseaux_sociaux",
-                                    "sante",
-                                    "banque_et_achats_en_ligne",
-                                    "entrepreneuriat",
-                                    "insertion_professionnelle",
-                                    "securite_numerique",
-                                    "parentalite",
-                                    "scolarite_et_numerique",
-                                    "creer_avec_le_numerique",
-                                    "culture_numerique"
-                                  ],
-                                  "example": "diagnostic_numerique"
-                                }
-                              },
-                              "thematiques_demarche_administrative": {
-                                "type": "array",
-                                "description": "thématiques de la démarche administrative abordées",
-                                "items": {
-                                  "type": "string",
-                                  "enum": [
-                                    "papiers_elections_citoyennete",
-                                    "famille_scolarite",
-                                    "social_sante",
-                                    "travail_formation",
-                                    "logement",
-                                    "transports_mobilite",
-                                    "argent_impots",
-                                    "justice",
-                                    "etrangers_europe",
-                                    "loisirs_sports_culture"
-                                  ],
-                                  "example": "papiers_elections_citoyennete"
-                                }
-                              },
-                              "precisions_demarche": {
-                                "type": "string",
-                                "nullable": true,
-                                "description": "précisions sur la démarche administrative",
-                                "example": "difficultés à compléter le formulaire"
-                              },
-                              "degre_de_finalisation_demarche": {
-                                "type": "string",
-                                "nullable": true,
-                                "description": "degré de finalisation de la démarche administrative",
-                                "enum": [
-                                  "finalisee",
-                                  "a_finaliser_en_autonomie",
-                                  "doit_revenir",
-                                  "oriente_vers_structure"
-                                ],
-                                "example": "finalisee"
-                              },
-                              "titre_atelier": {
-                                "type": "string",
-                                "nullable": true,
-                                "description": "titre de l'atelier (pour un atelier collectif)",
-                                "example": "découverte de l'email"
-                              },
-                              "niveau_atelier": {
-                                "type": "string",
-                                "nullable": true,
-                                "description": "niveau de l'atelier collectif",
-                                "enum": [
-                                  "debutant",
-                                  "intermediaire",
-                                  "avance"
-                                ],
-                                "example": "debutant"
-                              }
-                            }
-                          }
-                        }
+                        "$ref": "#/components/schemas/Activite"
                       }
                     },
                     "links": {
-                      "type": "object",
-                      "properties": {
-                        "self": {
-                          "type": "string",
-                          "format": "uri",
-                          "description": "lien vers cette ressource",
-                          "example": "https://api.example.com/v1/activites"
-                        },
-                        "next": {
-                          "type": "string",
-                          "format": "uri",
-                          "description": "lien vers la page suivante",
-                          "example": "https://api.example.com/v1/activites"
-                        },
-                        "prev": {
-                          "type": "string",
-                          "format": "uri",
-                          "description": "lien vers la page précédente",
-                          "example": "https://api.example.com/v1/activites"
-                        }
-                      }
+                      "$ref": "#/components/schemas/PaginationLinks"
                     },
                     "meta": {
-                      "type": "object",
-                      "properties": {
-                        "total_count": {
-                          "description": "nombre total d'activités renvoyées",
-                          "type": "integer",
-                          "example": 10
-                        },
-                        "items_per_page": {
-                          "type": "integer",
-                          "description": "nombre d'activités par page",
-                          "example": 500
-                        },
-                        "total_pages": {
-                          "description": "nombre total de pages",
-                          "type": "integer",
-                          "example": 2
-                        },
-                        "has_next_page": {
-                          "description": "indique s'il existe une page suivante",
-                          "type": "boolean",
-                          "example": true
-                        },
-                        "has_prev_page": {
-                          "description": "indique s'il existe une page précédente",
-                          "type": "boolean",
-                          "example": true
-                        }
-                      }
+                      "$ref": "#/components/schemas/ListMetadata"
                     }
                   }
                 }
