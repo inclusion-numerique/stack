@@ -1,7 +1,14 @@
 import { redirect } from 'next/navigation'
 import { getAuthenticatedSessionUser } from '@app/web/auth/getSessionUser'
 import { AuthenticationError } from '@app/web/auth/AuthenticationError'
-import type { SessionUser } from '@app/web/auth/sessionUser'
+import {
+  type ConseillerNumeriqueUser,
+  type CoordinateurUser,
+  isConseillerNumerique,
+  isCoordinateur,
+  isMediateur,
+  type MediateurUser,
+} from '@app/web/auth/userTypeGuards'
 
 /**
  * This gets the session user from request cache and redirects to login
@@ -22,46 +29,34 @@ export const authenticateUser = async (redirectTo = '/connexion') => {
   }
 }
 
-export type AuthenticatedMediateur = SessionUser & {
-  mediateur: Exclude<SessionUser['mediateur'], null>
-}
-
-export type AuthenticatedCoordinateur = SessionUser & {
-  coordinateur: Exclude<SessionUser['coordinateur'], null>
-}
-
 export const authenticateMediateur = async (
   redirectTo = '/connexion',
-): Promise<AuthenticatedMediateur> => {
+): Promise<MediateurUser> => {
   const user = await authenticateUser(redirectTo)
-
-  if (!user.mediateur) {
-    redirect(redirectTo)
-  }
-
-  return user as AuthenticatedMediateur
+  if (isMediateur(user)) return user
+  redirect(redirectTo)
 }
 
 export const authenticateCoordinateur = async (
   redirectTo = '/connexion',
-): Promise<AuthenticatedCoordinateur> => {
+): Promise<CoordinateurUser> => {
   const user = await authenticateUser(redirectTo)
-
-  if (!user.coordinateur) {
-    redirect(redirectTo)
-  }
-
-  return user as AuthenticatedCoordinateur
+  if (isCoordinateur(user)) return user
+  redirect(redirectTo)
 }
 
 export const authenticateMediateurOrCoordinateur = async (
   redirectTo = '/connexion',
-): Promise<SessionUser> => {
+): Promise<MediateurUser | CoordinateurUser> => {
   const user = await authenticateUser(redirectTo)
+  if (isMediateur(user) || isCoordinateur(user)) return user
+  redirect(redirectTo)
+}
 
-  if (!user.mediateur && !user.coordinateur) {
-    redirect(redirectTo)
-  }
-
-  return user
+export const authenticateConseillerNumeriqueOrCoordinateur = async (
+  redirectTo = '/connexion',
+): Promise<ConseillerNumeriqueUser | CoordinateurUser> => {
+  const user = await authenticateUser(redirectTo)
+  if (isConseillerNumerique(user) || isCoordinateur(user)) return user
+  redirect(redirectTo)
 }

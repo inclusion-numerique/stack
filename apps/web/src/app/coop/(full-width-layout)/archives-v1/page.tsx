@@ -1,8 +1,7 @@
 import { notFound } from 'next/navigation'
-import { authenticateMediateur } from '@app/web/auth/authenticateUser'
+import { authenticateConseillerNumeriqueOrCoordinateur } from '@app/web/auth/authenticateUser'
 import { getArchivesV1PageDataWithCras } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1PageData'
 import ArchivesV1PageContent from '@app/web/app/coop/(full-width-layout)/archives-v1/ArchivesV1PageContent'
-import { isAuthenticatedConseillerNumerique } from '@app/web/auth/getAuthenticatedConseillerNumerique'
 import ArchivesV1CoordinateurPageContent from '@app/web/app/coop/(full-width-layout)/archives-v1/ArchivesV1CoordinateurPageContent'
 import { getArchivesV1CoordinateurPageData } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1CoordinateurPageData'
 
@@ -10,16 +9,11 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 const ArchivesV1Page = async () => {
-  const user = await authenticateMediateur()
+  const user = await authenticateConseillerNumeriqueOrCoordinateur()
 
-  if (!isAuthenticatedConseillerNumerique(user)) {
-    notFound()
-    return null
-  }
+  if (user.coordinateur) {
+    const coordinateurV1Id = user.coordinateur.conseillerNumeriqueId
 
-  const coordinateurV1Id = user.coordinateur?.conseillerNumeriqueId
-
-  if (coordinateurV1Id) {
     const archivesV1CoordinateurPageData =
       await getArchivesV1CoordinateurPageData({
         coordinateurV1Id,
@@ -32,18 +26,24 @@ const ArchivesV1Page = async () => {
     )
   }
 
-  const conseillerNumeriqueId = user.mediateur.conseillerNumerique.id
+  // Not necessary but typescript does not understand that at this point conseillerNumeriqueId is not null
+  if (user.mediateur?.conseillerNumerique) {
+    const conseillerNumeriqueId = user.mediateur.conseillerNumerique.id
 
-  const archivesV1PageData = await getArchivesV1PageDataWithCras({
-    conseillerNumeriqueIds: [conseillerNumeriqueId],
-  })
+    const archivesV1PageData = await getArchivesV1PageDataWithCras({
+      conseillerNumeriqueIds: [conseillerNumeriqueId],
+    })
 
-  return (
-    <ArchivesV1PageContent
-      data={archivesV1PageData}
-      conseillerNumeriqueV1Id={conseillerNumeriqueId}
-    />
-  )
+    return (
+      <ArchivesV1PageContent
+        data={archivesV1PageData}
+        conseillerNumeriqueV1Id={conseillerNumeriqueId}
+      />
+    )
+  }
+
+  notFound()
+  return null
 }
 
 export default ArchivesV1Page

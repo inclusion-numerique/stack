@@ -7,8 +7,11 @@ import { useOnClickOutside } from 'usehooks-ts'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { getUserDisplayName } from '@app/web/utils/user'
 import TerminerUsurpationHeaderUserMenuItem from '@app/web/components/TerminerUsurpationHeaderUserMenuItem'
-import { isAuthenticatedConseillerNumerique } from '@app/web/auth/getAuthenticatedConseillerNumerique'
 import { isLimitedToInscription } from '@app/web/app/administration/utilisateurs/getUserLifecycle'
+import {
+  isConseillerNumerique,
+  isCoordinateur,
+} from '@app/web/auth/userTypeGuards'
 import styles from './HeaderUserMenu.module.css'
 
 export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
@@ -136,7 +139,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
             </Link>
           </li>
         )}
-      {!restricted && isAuthenticatedConseillerNumerique(user) && (
+      {!restricted && (isConseillerNumerique(user) || isCoordinateur(user)) && (
         <li>
           <Link
             className="fr-nav__link"

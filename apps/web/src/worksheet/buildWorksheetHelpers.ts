@@ -3,14 +3,14 @@ import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
 import type { SessionUser } from '@app/web/auth/sessionUser'
 import type { ActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
-import type { AuthenticatedMediateur } from '@app/web/auth/authenticateUser'
+import type { MediateurUser } from '@app/web/auth/userTypeGuards'
 
 export type WorksheetUser = Pick<
   SessionUser,
   'firstName' | 'lastName' | 'role' | 'id' | 'coordinateur'
 > & {
   mediateur: Pick<
-    AuthenticatedMediateur['mediateur'],
+    MediateurUser['mediateur'],
     'id' | 'conseillerNumerique'
   > | null
 }

@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 import { z } from 'zod'
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
@@ -6,7 +6,7 @@ import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import { ActivitesFilterValidations } from '@app/web/cra/ActivitesFilters'
 import { buildActivitesWorksheet } from '@app/web/worksheet/activites/buildActivitesWorksheet'
 import { getActivitesWorksheetInput } from '@app/web/worksheet/activites/getActivitesWorksheetInput'
-import type { AuthenticatedMediateur } from '@app/web/auth/authenticateUser'
+import type { MediateurUser } from '@app/web/auth/userTypeGuards'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -36,7 +36,7 @@ export const GET = async (request: NextRequest) => {
   }
 
   // Do not know why but TS does not understand user.mediateur is not null after previous check
-  const typedUser = user as AuthenticatedMediateur
+  const typedUser = user as MediateurUser
 
   const parsedQueryParams = ExportActivitesValidation.safeParse(
     Object.fromEntries(request.nextUrl.searchParams.entries()),
