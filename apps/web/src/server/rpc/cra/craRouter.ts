@@ -6,9 +6,13 @@ import { prismaClient } from '@app/web/prismaClient'
 import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
 import { CraDemarcheAdministrativeValidation } from '@app/web/cra/CraDemarcheAdministrativeValidation'
 import { CraCollectifValidation } from '@app/web/cra/CraCollectifValidation'
-import { createOrUpdateActivite } from '@app/web/cra/createOrUpdateActivite'
+import {
+  createOrUpdateActivite,
+  getBeneficiairesAnonymesWithOnlyAccompagnementsForThisActivite,
+} from '@app/web/cra/createOrUpdateActivite'
 import { createStopwatch } from '@app/web/utils/stopwatch'
 import { addMutationLog } from '@app/web/utils/addMutationLog'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 
 export const craRouter = router({
   individuel: protectedProcedure
@@ -87,29 +91,37 @@ export const craRouter = router({
       if (activite.mediateurId !== user.mediateur.id) {
         throw forbiddenError('Cannot delete CRA for another mediateur')
       }
-      await prismaClient.$transaction([
-        // Delete accompagnements
-        prismaClient.accompagnement.deleteMany({
-          where: {
-            activiteId,
-          },
-        }),
-        // Delete beneficiaires anonymes liés à cette activité
-        prismaClient.beneficiaire.deleteMany({
-          where: {
-            anonyme: true,
-            accompagnements: {
-              every: {
-                activiteId,
-              },
+
+      const beneficiairesAnonymesIdsToDelete =
+        await getBeneficiairesAnonymesWithOnlyAccompagnementsForThisActivite({
+          activiteId,
+        })
+
+      await prismaClient.$transaction(
+        [
+          // Delete accompagnements
+          prismaClient.accompagnement.deleteMany({
+            where: {
+              activiteId,
             },
-          },
-        }),
-        // Delete activité
-        prismaClient.activite.delete({
-          where: { id: activiteId },
-        }),
-      ])
+          }),
+          // Delete beneficiaires anonymes liés uniquement à cette activité
+          beneficiairesAnonymesIdsToDelete.length > 0
+            ? prismaClient.beneficiaire.deleteMany({
+                where: {
+                  anonyme: true,
+                  id: {
+                    in: beneficiairesAnonymesIdsToDelete,
+                  },
+                },
+              })
+            : null,
+          // Delete activité
+          prismaClient.activite.delete({
+            where: { id: activiteId },
+          }),
+        ].filter(onlyDefinedAndNotNull),
+      )
 
       addMutationLog({
         userId: user.id,

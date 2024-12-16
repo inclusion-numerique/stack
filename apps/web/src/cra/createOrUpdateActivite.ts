@@ -55,6 +55,41 @@ const getExistingBeneficiairesSuivis = async ({
   return existingBeneficiaires.filter(({ anonyme }) => !anonyme)
 }
 
+export const getBeneficiairesAnonymesWithOnlyAccompagnementsForThisActivite =
+  async ({ activiteId }: { activiteId: string }) => {
+    /**
+     * We were using prisma :
+     * where: {
+     *         anonyme: true,
+     *         accompagnements: {
+     *           every: {
+     *             activiteId: id,
+     *           },
+     *         },
+     *       }
+     *
+     * but this was compiled as a  NOT IN ( ... subquery ) which is way too slow (o(n*m))
+     *
+     * so we now use a raw query that uses indexes effectively
+     */
+    const anonymesIds = await prismaClient.$queryRaw<
+      { beneficiaire_id: string }[]
+    >`
+        select a.beneficiaire_id
+        from accompagnements a
+                 inner join beneficiaires b
+                            on b.id = a.beneficiaire_id
+                                and b.anonyme = true
+        where a.activite_id = ${activiteId}::UUID
+          and not exists (select 1
+                          from accompagnements a2
+                          where a2.beneficiaire_id = a.beneficiaire_id
+                            and a2.activite_id <> ${activiteId}::UUID);
+    `
+
+    return anonymesIds.map(({ beneficiaire_id }) => beneficiaire_id)
+  }
+
 const getExistingStructure = async ({
   structureId,
   mediateurId,
@@ -261,6 +296,13 @@ export const createOrUpdateActivite = async ({
   } satisfies Prisma.ActiviteUpdateInput
 
   if (id) {
+    // We delete all the anonymes beneficiaires that have only this activite as accompagmements to ease the
+    // merge logic of old and new anonymous beneficiaires
+    const anonymesIdsToDelete =
+      await getBeneficiairesAnonymesWithOnlyAccompagnementsForThisActivite({
+        activiteId: id,
+      })
+
     // This is an Update operation
     await prismaClient.$transaction(
       [
@@ -270,16 +312,16 @@ export const createOrUpdateActivite = async ({
             activiteId: id,
           },
         }),
-        prismaClient.beneficiaire.deleteMany({
-          where: {
-            anonyme: true,
-            accompagnements: {
-              every: {
-                activiteId: id,
+        anonymesIdsToDelete.length > 0
+          ? prismaClient.beneficiaire.deleteMany({
+              where: {
+                anonyme: true,
+                id: {
+                  in: anonymesIdsToDelete,
+                },
               },
-            },
-          },
-        }),
+            })
+          : null,
         // (re)Create beneficiaire anonyme for one-to-one cra
         beneficiaireAnonymeToCreate
           ? prismaClient.beneficiaire.create({
