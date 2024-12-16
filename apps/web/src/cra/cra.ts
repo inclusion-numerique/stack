@@ -201,7 +201,7 @@ export const thematiqueLabels: {
   SecuriteNumerique: 'Prévention en sécurité numérique',
   Parentalite: 'Parentalité',
   ScolariteEtNumerique: 'Scolarité et numérique',
-  CreerAvecLeNumerique: 'Créer avec le numérique',
+  CreerAvecLeNumerique: 'Gérer ses contenus numériques',
   CultureNumerique: 'Culture numérique',
 }
 

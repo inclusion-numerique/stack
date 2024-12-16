@@ -225,7 +225,7 @@ const STATISTIQUES_WORKSHEET_INPUT_BASE: Omit<
           proportion: 0,
         },
         {
-          label: 'Créer avec le numérique',
+          label: 'Gérer ses contenus numériques',
           count: 0,
           proportion: 0,
         },
@@ -566,7 +566,7 @@ describe('build statistiques worksheet for médiateur', () => {
         ['Prévention en sécurité numérique', 0],
         ['Parentalité', 2],
         ['Scolarité et numérique', 0],
-        ['Créer avec le numérique', 0],
+        ['Gérer ses contenus numériques', 0],
         ['Culture numérique', 4],
       ]),
       [],
