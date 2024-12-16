@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import MonEquipeListePage from '@app/web/equipe/MonEquipeListePage/MonEquipeListePage'
 import { getMonEquipePageData } from '@app/web/equipe/MonEquipeListePage/getMonEquipePageData'
-import type { MonEquipeSearchParams } from '@app/web/equipe/MonEquipeListePage/searchMediateursCordonneBy'
+import type { MonEquipeSearchParams } from '@app/web/equipe/MonEquipeListePage/searchMediateursCoordonneBy'
 import { authenticateCoordinateur } from '@app/web/auth/authenticateUser'
 
 export const metadata: Metadata = {

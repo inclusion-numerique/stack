@@ -17,7 +17,7 @@ export const sendDeclineInvitation = async ({
     from: ServerWebAppConfig.Email.from,
     replyTo: PublicWebAppConfig.contactEmail,
 
-    subject: `${mediateur} a refusé votre invitation à rejoindre votre équipe`,
+    subject: `${mediateur} a refusé l‘invitation à rejoindre votre équipe`,
     text: declineInvitation.text({ mediateur: mediateur || '' }),
     html: compileMjml(declineInvitation.mjml({ mediateur: mediateur || '' })),
   })

@@ -224,8 +224,8 @@ model Mediateur {
 
 model InvitationEquipe {
   email          String
-  coordinateurId String    @db.Uuid
-  mediateurId    String?   @db.Uuid
+  coordinateurId String    @map("coordinateur_id") @db.Uuid
+  mediateurId    String?   @unique @map("mediateur_id") @db.Uuid
   creation       DateTime? @default(now())
   acceptee       DateTime?
   refusee        DateTime?

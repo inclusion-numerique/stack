@@ -52,22 +52,16 @@ export const MediateurListItem = ({
             {[firstName, lastName].filter(Boolean).join(' ')}
           </span>
           {showFinDeContratFeatureFlag && finDeContrat && (
-            <Badge className="fr-text--uppercase" severity="warning">
-              Fin de contrat le {finDeContrat}
-            </Badge>
+            <Badge severity="warning">Fin de contrat le {finDeContrat}</Badge>
           )}
         </div>
         <div>
           {type === 'invited' ? (
-            <Badge className="fr-text--uppercase" severity="info" noIcon>
+            <Badge severity="info" noIcon>
               Invitation envoyée
             </Badge>
           ) : (
-            <Badge
-              className="fr-text--uppercase"
-              severity={statusSeverity(status)}
-              noIcon
-            >
+            <Badge severity={statusSeverity(status)} noIcon>
               {status}
             </Badge>
           )}
@@ -103,15 +97,11 @@ export const MediateurListItem = ({
     <div className="fr-text--bold fr-py-9v fr-px-2v fr-flex fr-justify-content-space-between fr-direction-md-row fr-direction-column">
       {email}
       {type === 'invited' ? (
-        <Badge className="fr-text--uppercase" severity="info" noIcon>
+        <Badge severity="info" noIcon>
           Invitation envoyée
         </Badge>
       ) : (
-        <Badge
-          className="fr-text--uppercase"
-          severity={statusSeverity(status)}
-          noIcon
-        >
+        <Badge severity={statusSeverity(status)} noIcon>
           {status}
         </Badge>
       )}

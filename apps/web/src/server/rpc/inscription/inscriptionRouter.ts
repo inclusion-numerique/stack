@@ -1,6 +1,6 @@
-import { ProfilInscription } from '@prisma/client'
 import { v4 } from 'uuid'
 import z from 'zod'
+import { ProfilInscription } from '@prisma/client'
 import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { ChoisirProfilEtAccepterCguValidation } from '@app/web/inscription/ChoisirProfilEtAccepterCguValidation'
@@ -56,6 +56,11 @@ const existingActiviteFor = (userId: string) => ({
     },
   },
 })
+
+const isMediateur = (
+  user: { email: string; mediateur: { id: string } | null } | null,
+): user is { email: string; mediateur: { id: string } } =>
+  user?.mediateur?.id != null
 
 export const inscriptionRouter = router({
   choisirProfilEtAccepterCgu: protectedProcedure
@@ -516,6 +521,29 @@ export const inscriptionRouter = router({
         data: {
           inscriptionValidee: new Date(),
         },
+      })
+
+      const user = await prismaClient.user.findUnique({
+        where: {
+          id: userId,
+        },
+        select: { email: true, mediateur: { select: { id: true } } },
+      })
+
+      if (!isMediateur(user)) return
+
+      const invitations = await prismaClient.invitationEquipe.findMany({
+        where: {
+          email: user.email,
+          acceptee: { not: null },
+        },
+      })
+
+      await prismaClient.mediateurCoordonne.createMany({
+        data: invitations.map((invitation) => ({
+          coordinateurId: invitation.coordinateurId,
+          mediateurId: user.mediateur.id,
+        })),
       })
     }),
   addMediationNumeriqueToCoordinateur: protectedProcedure.mutation(

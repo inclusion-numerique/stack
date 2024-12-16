@@ -32,7 +32,7 @@ const triMap: Record<NonNullable<MonEquipeSearchParams['tri']>, string> = {
   alphabetique: 'email ASC',
 }
 
-export const searchMediateursCordonneBy =
+export const searchMediateursCoordonneBy =
   ({ id }: { id: string }) =>
   async (searchParams: MonEquipeSearchParams) => {
     const { take, skip } = takeAndSkipFromPage({
@@ -44,17 +44,20 @@ export const searchMediateursCordonneBy =
       WITH combined_data AS (
         SELECT
           invitations.email,
-          NULL AS mediateur_id,
-          NULL AS first_name,
-          NULL AS last_name,
-          NULL AS phone,
-          NULL AS conseiller_numerique_id,
+          invitations.mediateur_id AS mediateur_id,
+          users.first_name AS first_name,
+          users.last_name AS last_name,
+          users.phone AS phone,
+          conseillers.id AS conseiller_numerique_id,
           NULL AS date_derniere_activite,
           invitations.creation AS creation,
           'invited' AS type
-        FROM "invitations_equipes" AS invitations
-        WHERE invitations."coordinateurId" = ${id}::uuid
-        AND (invitations.acceptee IS NULL OR invitations.refusee IS NULL)
+      FROM "invitations_equipes" AS invitations
+        LEFT JOIN "mediateurs" AS mediateurs ON mediateurs.id = invitations.mediateur_id
+        LEFT JOIN "users" AS users ON users.id = mediateurs.user_id
+        LEFT JOIN "conseillers_numeriques" AS conseillers ON conseillers."mediateur_id" = mediateurs."id"
+        WHERE invitations."coordinateur_id" = ${id}::uuid
+        AND (invitations.acceptee IS NULL AND invitations.refusee IS NULL)
       UNION ALL
         SELECT
           users.email AS email,
@@ -101,7 +104,7 @@ export const searchMediateursCordonneBy =
           invitations.creation AS creation,
           'invited' AS type
         FROM "invitations_equipes" AS invitations
-        WHERE invitations."coordinateurId" = ${id}::uuid
+        WHERE invitations."coordinateur_id" = ${id}::uuid
         AND (invitations.acceptee IS NULL OR invitations.refusee IS NULL)
       UNION ALL
       SELECT

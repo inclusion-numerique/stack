@@ -97,10 +97,6 @@ const InviterMembreForm = () => {
     ])
   }
 
-  const onRemoveMediateurAInviter = (index: number) => {
-    remove(index)
-  }
-
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <CustomSelectFormField
@@ -125,7 +121,8 @@ const InviterMembreForm = () => {
             <li key={mediateurToAdd.email}>
               <Tag
                 nativeButtonProps={{
-                  onClick: () => onRemoveMediateurAInviter(index),
+                  type: 'button',
+                  onClick: () => remove(index),
                 }}
               >
                 {mediateurToAdd.nom ?? mediateurToAdd.email}&nbsp;
@@ -143,10 +140,7 @@ const InviterMembreForm = () => {
             children: 'Inviter',
             type: 'submit',
             disabled: fields.length === 0,
-            ...buttonLoadingClassname(
-              mutation.isPending,
-              'fr-display-block fr-width-full fr-mb-4w',
-            ),
+            ...buttonLoadingClassname(mutation.isPending),
           },
           {
             children: 'Annuler',

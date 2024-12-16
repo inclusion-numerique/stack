@@ -5,8 +5,8 @@ import { findConseillersNumeriquesContractInfoByEmails } from '@app/web/external
 import { mediateurCoordonnesIdsFor } from '@app/web/mediateurs/mediateurCoordonnesIdsFor'
 import {
   type MonEquipeSearchParams,
-  searchMediateursCordonneBy,
-} from './searchMediateursCordonneBy'
+  searchMediateursCoordonneBy,
+} from './searchMediateursCoordonneBy'
 
 const statusFor = (date: Date | null) => {
   if (date == null) return 'Inactif'
@@ -52,7 +52,7 @@ export const getMonEquipePageData = async ({
   }
 }) => {
   const { mediateurs, matchesCount, totalPages } =
-    await searchMediateursCordonneBy(coordinateur)(searchParams)
+    await searchMediateursCoordonneBy(coordinateur)(searchParams)
 
   const conseillersNumeriquesWithContrats =
     await findConseillersNumeriquesContractInfoByEmails(

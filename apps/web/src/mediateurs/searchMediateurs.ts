@@ -24,7 +24,11 @@ export const searchMediateur = async (options: SearchMediateurOptions) => {
   })
 
   const matchesWhere = {
-    id: { in: mediateurIds.map(({ mediateurId }) => mediateurId) },
+    id: {
+      not: {
+        in: mediateurIds.map(({ mediateurId }) => mediateurId),
+      },
+    },
     user: {
       AND: toQueryParts(searchParams).map((part) => ({
         OR: [
