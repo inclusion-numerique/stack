@@ -185,8 +185,8 @@ export const Outils = () => (
           <div className="fr-my-3w">
             <h3 className="fr-h6 fr-mb-2w">Pix</h3>
             <p className="fr-mb-0 fr-text-mention--grey">
-              Proposez des tutoriels Pix adaptés aux besoins de vos apprenants
-              et suivez leur progression.
+              Proposez des parcours Pix adaptés aux besoins de vos apprenants et
+              suivez leur progression.
             </p>
           </div>
           <span className="fr-mt-auto">

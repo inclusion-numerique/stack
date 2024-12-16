@@ -87,8 +87,8 @@ export const MesOutils = () => (
               title="Pix Orga"
               inforef="pix"
             >
-              Proposez des tutoriels PIX adaptés aux besoins de vos apprenants
-              et suivez leur progression.
+              Proposez des parcours PIX adaptés aux besoins de vos apprenants et
+              suivez leur progression.
             </CardOutil>
           </div>
           <div className="fr-col-xl-6 fr-col-12">
