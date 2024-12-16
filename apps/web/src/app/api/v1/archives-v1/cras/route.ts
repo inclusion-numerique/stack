@@ -96,7 +96,7 @@ export type CraV1ListResponse = JsonApiListResponse<CraV1Resource>
  *
  *       Les cras sont triés par date de création décroissante
  *     tags:
- *       - Cras
+ *       - Activités
  *     parameters:
  *       - in: query
  *         name: page[size]
@@ -381,7 +381,7 @@ export type CraV1ListResponse = JsonApiListResponse<CraV1Resource>
  */
 export const GET = createApiV1Route
   .configure<CraV1ListResponse>({
-    scopes: ['Cras'],
+    scopes: ['Activites'],
   })
   .queryParams(JsonApiCursorPaginationQueryParamsValidation)
   .handle(async ({ params }) => {

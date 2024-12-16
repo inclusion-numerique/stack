@@ -357,7 +357,7 @@
         "summary": "liste des activités",
         "description": "retourne la liste des activités renseignées par les médiateurs sur la coop.\nles activités sont triées par date de création décroissante.\n",
         "tags": [
-          "Cras"
+          "Activités"
         ],
         "parameters": [
           {
@@ -429,7 +429,7 @@
         "summary": "liste les cras v1 archivés",
         "description": "Retourne la liste des cras importés depuis la version 1 de la coop réalisée par l'équipe du dispositif conseiller-numérique et importés dans cette version de la coop pour archivage. pour toute question sur les données, veuillez vous adresser à l'équipe du dispositif conseiller-numérique. les données suivent la spécification json:api.\nLes cras sont triés par date de création décroissante\n",
         "tags": [
-          "Cras"
+          "Activités"
         ],
         "parameters": [
           {

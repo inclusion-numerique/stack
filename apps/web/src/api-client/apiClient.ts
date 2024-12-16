@@ -76,7 +76,7 @@ export const authenticateApiCient = async (
 
   if (!apiClient) return null
 
-  const isValid = verifySecret(clientSecret, apiClient.secret)
+  const isValid = verifySecret(apiClient.secret, clientSecret)
 
   if (!isValid) return null
 

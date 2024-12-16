@@ -76,12 +76,12 @@ export const createHandlerWithValidation =
  * Allow to create a safe api route with function chaining
  *
  * e.g. for a GET route without query params:
- * createApiV1Route.configure({ scopes: ['Cras'] }).handle(async (context) => {
+ * createApiV1Route.configure({ scopes: ['Activites'] }).handle(async (context) => {
  *   return NextResponse.json({ status: 'ok' })
  * })
  *
  * e.g. for a GET route with query params:
- * createApiV1Route.configure({ scopes: ['Cras'] })
+ * createApiV1Route.configure({ scopes: ['Activites'] })
  *   .queryParams(YourQueryParamsSchema)
  *   .handle(async ({params}) => {
  *     return NextResponse.json({ yourQueryParams: params })
@@ -107,18 +107,4 @@ export const createApiV1Route = {
       queryParamsSchema: NoQueryParamsValidation,
     }),
   }),
-
-  // configure: <QueryParamsSchema extends ApiV1QueryParamsSchema>(
-  //   config: ApiRouteConfig<QueryParamsSchema>,
-  // ): {
-  //   handle: <ResponseType>(
-  //     handler: ApiRouteHandler<ResponseType, QueryParamsSchema>,
-  //   ) => void
-  // } => ({
-  //   handle: createHandlerWithValidation<ResponseType, QueryParamsSchema>(
-  //     config,
-  //   ) as <ResponseType>(
-  //     handler: ApiRouteHandler<ResponseType, QueryParamsSchema>,
-  //   ) => void,
-  // }),
 }

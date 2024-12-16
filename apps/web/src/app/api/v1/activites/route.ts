@@ -300,7 +300,7 @@ const ActiviteCursorValidation = z.object({
  *
  *       les activités sont triées par date de création décroissante.
  *     tags:
- *       - Cras
+ *       - Activités
  *     parameters:
  *       - in: query
  *         name: page[size]
@@ -345,7 +345,7 @@ const ActiviteCursorValidation = z.object({
 
 export const GET = createApiV1Route
   .configure<ActiviteListResponse>({
-    scopes: ['Cras'],
+    scopes: ['Activites'],
   })
   .queryParams(JsonApiCursorPaginationQueryParamsValidation)
   .handle(async ({ params }) => {

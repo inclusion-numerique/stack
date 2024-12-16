@@ -199,8 +199,7 @@ model JobExecution {
 
 enum ApiClientScope {
   Statistiques   @map("statistiques")
-  Cras           @map("cras") // Cras anonymisés
-  ArchivesV1Cras @map("archives_v1_cras")
+  Activites           @map("activites") // Cras anonymisés
 
   @@map("api_client_scope")
 }

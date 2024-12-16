@@ -11,6 +11,7 @@ import { craRouter } from '@app/web/server/rpc/cra/craRouter'
 import { beneficiairesRouter } from '@app/web/server/rpc/beneficiaires/beneficiairesRouter'
 import { mediateursRouter } from '@app/web/server/rpc/mediateur/mediateursRouter'
 import { lieuActiviteRouter } from '@app/web/server/rpc/lieu-activite/lieuActiviteRouter'
+import { apiClientRouter } from '@app/web/server/rpc/apiClient/apiClientRouter'
 
 export const appRouter = router({
   user: userRouter,
@@ -25,6 +26,7 @@ export const appRouter = router({
   usurpation: usurpationRouter,
   conseillersNumerique: conseillersNumeriqueRouter,
   lieuActivite: lieuActiviteRouter,
+  apiClient: apiClientRouter,
 })
 // export type definition of API
 export type AppRouter = typeof appRouter
