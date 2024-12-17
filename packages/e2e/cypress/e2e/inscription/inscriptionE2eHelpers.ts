@@ -15,12 +15,12 @@ export const startInscriptionAs = ({
   user,
   expectedCheckedProfilInscription,
 }: {
-  user: CreateUserInput
+  user?: CreateUserInput
   profilInscription: keyof typeof profileInscriptionLabels
   identificationResult: 'matching' | 'different' | 'not-found'
   expectedCheckedProfilInscription?: keyof typeof profileInscriptionLabels
 }) => {
-  cy.createUserAndSignin(user)
+  if (user != null) cy.createUserAndSignin(user)
 
   cy.visit(appUrl('/inscription'))
 

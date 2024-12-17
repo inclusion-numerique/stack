@@ -1,5 +1,8 @@
 import { givenUser } from '../givenUser'
 
+export const mediateurInscriptionMediateurId =
+  '77ae444f-574c-4fcc-87cb-4f792725a496'
+
 export const mediateurInscription = givenUser({
   id: '1c8a6a72-c912-4eff-a45f-1252fa09f1b9',
   firstName: 'Médiateur',
@@ -9,10 +12,10 @@ export const mediateurInscription = givenUser({
   mediateur: {
     connectOrCreate: {
       where: {
-        id: '77ae444f-574c-4fcc-87cb-4f792725a496',
+        id: mediateurInscriptionMediateurId,
       },
       create: {
-        id: '77ae444f-574c-4fcc-87cb-4f792725a496',
+        id: mediateurInscriptionMediateurId,
       },
     },
   },

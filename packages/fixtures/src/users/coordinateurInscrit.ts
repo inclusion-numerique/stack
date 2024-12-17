@@ -1,6 +1,9 @@
 import { givenUser } from '../givenUser'
 import { structureEmployeuse } from '../structures'
 
+export const coordinateurInscritCoordinateurId =
+  'c2a5a5f3-56be-4632-9253-880fb3ff9ea4'
+
 export const coordinateurInscrit = givenUser({
   id: '28bd02a6-7096-4453-9cc3-5eb4f6efc955',
   firstName: 'Coordinateur',
@@ -10,10 +13,10 @@ export const coordinateurInscrit = givenUser({
   coordinateur: {
     connectOrCreate: {
       where: {
-        id: 'c2a5a5f3-56be-4632-9253-880fb3ff9ea4',
+        id: coordinateurInscritCoordinateurId,
       },
       create: {
-        id: 'c2a5a5f3-56be-4632-9253-880fb3ff9ea4',
+        id: coordinateurInscritCoordinateurId,
         conseillerNumeriqueId: 'coordinateur-inscrit',
       },
     },

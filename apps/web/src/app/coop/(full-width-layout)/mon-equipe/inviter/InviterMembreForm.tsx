@@ -1,13 +1,13 @@
 'use client'
 
-import { createToast } from '@app/ui/toast/createToast'
-import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import React from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import Tag from '@codegouvfr/react-dsfr/Tag'
+import { createToast } from '@app/ui/toast/createToast'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
 import {
   InviterMembreData,
@@ -42,6 +42,8 @@ const InviterMembreForm = () => {
     initialMediateursOptions: [],
     allowTextValue: true,
   })
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const form = useForm<InviterMembreData>({
     resolver: zodResolver(InviterMembreValidation),
@@ -114,6 +116,8 @@ const InviterMembreForm = () => {
         onChange={onSelectMediateurAInviter}
         clearInputOnChange
         getOptionLabel={FormatOptionLabel}
+        onMenuOpen={() => setIsMenuOpen(true)}
+        onMenuClose={() => setIsMenuOpen(false)}
       />
       {fields.length > 0 && (
         <ul className="fr-list-group fr-flex fr-flex-wrap fr-flex-gap-1v fr-mt-6v">
@@ -139,7 +143,7 @@ const InviterMembreForm = () => {
           {
             children: 'Inviter',
             type: 'submit',
-            disabled: fields.length === 0,
+            disabled: fields.length === 0 || mutation.isPending || isMenuOpen,
             ...buttonLoadingClassname(mutation.isPending),
           },
           {
