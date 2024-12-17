@@ -131,8 +131,8 @@ export const ExportStatistiques = ({
           </>
         ) : (
           <p className="fr-mb-2v">
-            Vous n’avez pas appliqué de filtre, toutes les activités seront
-            exportées.
+            Vous n’avez pas appliqué de filtre, les statistiques seront
+            exportées dans leur intégralité.
           </p>
         )}
       </ExportStatistiquesModal.Component>
