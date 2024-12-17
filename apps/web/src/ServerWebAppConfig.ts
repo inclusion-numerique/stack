@@ -68,4 +68,7 @@ export const ServerWebAppConfig = {
   Rdv: {
     apiKey: process.env.RDV_API_KEY ?? '',
   },
+  Security: {
+    hmacSecretKey: process.env.HMAC_SECRET_KEY ?? '',
+  },
 }

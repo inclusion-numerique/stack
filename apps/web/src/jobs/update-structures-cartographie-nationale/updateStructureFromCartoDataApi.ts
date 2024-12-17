@@ -114,4 +114,5 @@ export const updateStructureFromCartoDataApi =
       // eslint-disable-next-line no-await-in-loop
       await linkToCoopStructure(now)(structureLinkedToCarto)
     }
+    output(`4. updated finished successfully`)
   }

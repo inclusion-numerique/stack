@@ -197,6 +197,31 @@ model JobExecution {
   @@map("job_executions")
 }
 
+enum ApiClientScope {
+  Statistiques   @map("statistiques")
+  Activites           @map("activites") // Cras anonymisés
+
+  @@map("api_client_scope")
+}
+
+model ApiClient {
+  id String @id @default(uuid()) @db.Uuid
+
+  name String @unique
+
+  secretHash String @map("secret_hash") // we only store the hashed secret
+
+  validFrom  DateTime  @map("valid_from")
+  validUntil DateTime? @map("valid_until")
+
+  scopes ApiClientScope[]
+
+  created DateTime @default(now())
+  updated DateTime @default(now())
+
+  @@map("api_clients")
+}
+
 // Domain model
 
 // Un médiateur numérique
@@ -281,7 +306,7 @@ model CraConseillerNumeriqueV1 {
   organismes         Json? // Poursuite vers autre structures
   annotation         String?
 
-  createdAt DateTime  @map("created_at") // v1 field
+  createdAt DateTime  @unique @map("created_at") // v1 field
   updatedAt DateTime? @map("updated_at") // v1 field
 
   structureId              String? @map("structure_id")
@@ -298,6 +323,7 @@ model CraConseillerNumeriqueV1 {
 
   @@index([v1ConseillerNumeriqueId])
   @@index([dateAccompagnement(sort: Asc)])
+  @@index([createdAt(sort: Desc)])
   @@index([codeCommune])
   @@map("cras_conseiller_numerique_v1")
 }
@@ -712,8 +738,13 @@ model Activite {
   titreAtelier String?        @map("titre_atelier")
   niveau       NiveauAtelier?
 
+  // "creation" cursor is used to paginate results for API queries
+  @@unique([creation, id])
+  // index relations
   @@index([structureId])
   @@index([mediateurId])
+  // descending sort on this cursor for api query performances
+  @@index([creation(sort: Desc), id(sort: Desc)])
   @@map("activites")
 }
 

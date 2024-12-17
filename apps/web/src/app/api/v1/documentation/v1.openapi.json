@@ -1,0 +1,843 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "La coop - API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Local"
+    },
+    {
+      "url": "https://dev.coop-mediation-numerique.incubateur.anct.gouv.fr/api/v1",
+      "description": "Staging"
+    },
+    {
+      "url": "https://coop-numerique.anct.gouv.fr/api/v1",
+      "description": "Production"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "ClientAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Identification avec un couple client-id:client-secret"
+      }
+    },
+    "schemas": {
+      "Activite": {
+        "type": "object",
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "activite",
+            "enum": [
+              "activite"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "type",
+              "mediateur_id",
+              "accompagnements",
+              "date",
+              "duree",
+              "notes",
+              "type_lieu",
+              "structure_id",
+              "lieu_code_postal",
+              "lieu_commune",
+              "lieu_code_insee",
+              "creation",
+              "modification",
+              "autonomie",
+              "oriente_vers_structure",
+              "structure_de_redirection",
+              "materiel",
+              "thematiques",
+              "thematiques_demarche_administrative",
+              "precisions_demarche",
+              "degre_de_finalisation_demarche",
+              "titre_atelier",
+              "niveau_atelier"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "type d'activité",
+                "enum": [
+                  "individuel",
+                  "demarche_administrative",
+                  "collectif"
+                ],
+                "example": "individuel"
+              },
+              "mediateur_id": {
+                "type": "string",
+                "format": "uuid",
+                "description": "identifiant du médiateur",
+                "example": "123e4567-e89b-12d3-a456-426614174000"
+              },
+              "accompagnements": {
+                "type": "number",
+                "description": "nombre d'accompagnements",
+                "example": 2
+              },
+              "date": {
+                "type": "string",
+                "format": "date-time",
+                "description": "date à laquelle l'activité s'est déroulée",
+                "example": "2024-12-10T09:00:00Z"
+              },
+              "duree": {
+                "type": "number",
+                "description": "durée en minutes",
+                "example": 120
+              },
+              "notes": {
+                "type": "string",
+                "nullable": true,
+                "description": "notes supplémentaires concernant l'activité",
+                "example": "activité spéciale"
+              },
+              "type_lieu": {
+                "type": "string",
+                "description": "type de lieu où l'activité s'est déroulée",
+                "enum": [
+                  "lieu_activite",
+                  "domicile",
+                  "a_distance",
+                  "autre"
+                ],
+                "example": "lieu_activite"
+              },
+              "structure_id": {
+                "type": "string",
+                "format": "uuid",
+                "nullable": true,
+                "description": "identifiant de la structure (renseigné si type_lieu = lieu_activite)",
+                "example": "123e4567-e89b-12d3-a456-426614174001"
+              },
+              "lieu_code_postal": {
+                "type": "string",
+                "nullable": true,
+                "description": "code postal du lieu (renseigné si type_lieu = domicile, a_distance ou autre)",
+                "example": "69007"
+              },
+              "lieu_commune": {
+                "type": "string",
+                "nullable": true,
+                "description": "commune du lieu (renseignée si type_lieu = domicile, a_distance ou autre)",
+                "example": "Lyon"
+              },
+              "lieu_code_insee": {
+                "type": "string",
+                "nullable": true,
+                "description": "code INSEE de la commune (renseigné si type_lieu = domicile, a_distance ou autre)",
+                "example": "69123"
+              },
+              "creation": {
+                "type": "string",
+                "format": "date-time",
+                "description": "date de création de l'activité",
+                "example": "2024-12-10T12:00:00Z"
+              },
+              "modification": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "description": "date de dernière modification de l'activité",
+                "example": "2024-12-10T15:00:00Z"
+              },
+              "autonomie": {
+                "type": "string",
+                "nullable": true,
+                "description": "niveau d'autonomie lors de l'activité",
+                "enum": [
+                  "entierement_accompagne",
+                  "partiellement_autonome",
+                  "autonome"
+                ],
+                "example": "autonome"
+              },
+              "oriente_vers_structure": {
+                "type": "boolean",
+                "nullable": true,
+                "description": "indique si l'utilisateur a été orienté vers une structure",
+                "example": true
+              },
+              "structure_de_redirection": {
+                "type": "string",
+                "nullable": true,
+                "description": "type de structure vers laquelle l'utilisateur a été redirigé",
+                "enum": [
+                  "operateur_ou_organisme_en_charge",
+                  "aide_aux_demarches_administratives",
+                  "administration",
+                  "mediation_numerique",
+                  "autre"
+                ],
+                "example": "administration"
+              },
+              "materiel": {
+                "type": "array",
+                "description": "matériel utilisé lors de l'accompagnement",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "ordinateur",
+                    "telephone",
+                    "tablette",
+                    "autre",
+                    "aucun"
+                  ],
+                  "example": "ordinateur"
+                }
+              },
+              "thematiques": {
+                "type": "array",
+                "description": "thématiques abordées lors de l'accompagnement",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "diagnostic_numerique",
+                    "prendre_en_main_du_materiel",
+                    "navigation_sur_internet",
+                    "email",
+                    "bureautique",
+                    "reseaux_sociaux",
+                    "sante",
+                    "banque_et_achats_en_ligne",
+                    "entrepreneuriat",
+                    "insertion_professionnelle",
+                    "securite_numerique",
+                    "parentalite",
+                    "scolarite_et_numerique",
+                    "creer_avec_le_numerique",
+                    "culture_numerique"
+                  ],
+                  "example": "diagnostic_numerique"
+                }
+              },
+              "thematiques_demarche_administrative": {
+                "type": "array",
+                "description": "thématiques de la démarche administrative abordées",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "papiers_elections_citoyennete",
+                    "famille_scolarite",
+                    "social_sante",
+                    "travail_formation",
+                    "logement",
+                    "transports_mobilite",
+                    "argent_impots",
+                    "justice",
+                    "etrangers_europe",
+                    "loisirs_sports_culture"
+                  ],
+                  "example": "papiers_elections_citoyennete"
+                }
+              },
+              "precisions_demarche": {
+                "type": "string",
+                "nullable": true,
+                "description": "précisions sur la démarche administrative",
+                "example": "difficultés à compléter le formulaire"
+              },
+              "degre_de_finalisation_demarche": {
+                "type": "string",
+                "nullable": true,
+                "description": "degré de finalisation de la démarche administrative",
+                "enum": [
+                  "finalisee",
+                  "a_finaliser_en_autonomie",
+                  "doit_revenir",
+                  "oriente_vers_structure"
+                ],
+                "example": "finalisee"
+              },
+              "titre_atelier": {
+                "type": "string",
+                "nullable": true,
+                "description": "titre de l'atelier (pour un atelier collectif)",
+                "example": "découverte de l'email"
+              },
+              "niveau_atelier": {
+                "type": "string",
+                "nullable": true,
+                "description": "niveau de l'atelier collectif",
+                "enum": [
+                  "debutant",
+                  "intermediaire",
+                  "avance"
+                ],
+                "example": "debutant"
+              }
+            }
+          }
+        }
+      },
+      "ListMetadata": {
+        "type": "object",
+        "properties": {
+          "total_count": {
+            "description": "nombre total d’éléments correspondants à la requête",
+            "type": "integer",
+            "example": 10
+          },
+          "items_per_page": {
+            "type": "integer",
+            "description": "nombre d’éléments par page",
+            "example": 500
+          },
+          "total_pages": {
+            "description": "nombre total de pages",
+            "type": "integer",
+            "example": 2
+          },
+          "has_next_page": {
+            "description": "indique s'il existe une page suivante",
+            "type": "boolean",
+            "example": true
+          },
+          "has_prev_page": {
+            "description": "indique s'il existe une page précédente",
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "PaginationLinks": {
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string",
+            "format": "uri",
+            "description": "lien vers cette page",
+            "example": "https://api.example.com/v1/activites"
+          },
+          "next": {
+            "type": "string",
+            "format": "uri",
+            "description": "lien vers la page suivante",
+            "example": "https://api.example.com/v1/activites"
+          },
+          "prev": {
+            "type": "string",
+            "format": "uri",
+            "description": "lien vers la page précédente",
+            "example": "https://api.example.com/v1/activites"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "ClientAuth": []
+    }
+  ],
+  "paths": {
+    "/activites": {
+      "get": {
+        "summary": "liste des activités",
+        "description": "retourne la liste des activités renseignées par les médiateurs sur la coop.\nles activités sont triées par date de création décroissante.\n",
+        "tags": [
+          "Activités"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page[size]",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500,
+              "default": 500
+            },
+            "required": false,
+            "description": "nombre maximum d'éléments à retourner"
+          },
+          {
+            "in": "query",
+            "name": "page[after]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "curseur de pagination pour obtenir les éléments suivants"
+          },
+          {
+            "in": "query",
+            "name": "page[before]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "curseur de pagination pour obtenir les éléments précédents"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "liste des activités",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "links",
+                    "meta"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Activite"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/PaginationLinks"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/ListMetadata"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/archives-v1/cras": {
+      "get": {
+        "summary": "liste les cras v1 archivés",
+        "description": "Retourne la liste des cras importés depuis la version 1 de la coop réalisée par l'équipe du dispositif conseiller-numérique et importés dans cette version de la coop pour archivage. pour toute question sur les données, veuillez vous adresser à l'équipe du dispositif conseiller-numérique. les données suivent la spécification json:api.\nLes cras sont triés par date de création décroissante\n",
+        "tags": [
+          "Activités"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page[size]",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500,
+              "default": 500
+            },
+            "required": false,
+            "description": "nombre maximum d'éléments à retourner,"
+          },
+          {
+            "in": "query",
+            "name": "page[after]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "curseur de pagination pour obtenir les éléments suivants"
+          },
+          {
+            "in": "query",
+            "name": "page[before]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "curseur de pagination pour obtenir les éléments précédents"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "liste de cras v1",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "links",
+                    "meta"
+                  ],
+                  "properties": {
+                    "jsonapi": {
+                      "type": "object",
+                      "required": [
+                        "version"
+                      ],
+                      "properties": {
+                        "version": {
+                          "type": "string",
+                          "example": "1.0"
+                        }
+                      }
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "type",
+                          "id",
+                          "attributes"
+                        ],
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "craV1"
+                          },
+                          "id": {
+                            "type": "string",
+                            "example": "123e4567-e89b-12d3-a456-426614174000"
+                          },
+                          "attributes": {
+                            "type": "object",
+                            "required": [
+                              "imported_at",
+                              "conseiller_numerique_id",
+                              "canal",
+                              "activite",
+                              "nb_participants",
+                              "nb_participants_recurrents",
+                              "age_moins_12_ans",
+                              "age_de_12_a_18_ans",
+                              "age_de_18_a_35_ans",
+                              "age_de_35_a_60_ans",
+                              "age_plus_60_ans",
+                              "statut_etudiant",
+                              "statut_sans_emploi",
+                              "statut_en_emploi",
+                              "statut_retraite",
+                              "statut_heterogene",
+                              "themes",
+                              "sous_themes_equipement_informatique",
+                              "sous_themes_sante",
+                              "sous_themes_accompagner",
+                              "sous_themes_traitement_texte",
+                              "duree",
+                              "duree_minutes",
+                              "accompagnement_individuel",
+                              "accompagnement_atelier",
+                              "accompagnement_redirection",
+                              "code_postal",
+                              "nom_commune",
+                              "date_accompagnement",
+                              "code_commune",
+                              "created_at"
+                            ],
+                            "properties": {
+                              "imported_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "date d'import du cra dans la nouvelle coop"
+                              },
+                              "conseiller_numerique_id": {
+                                "type": "string",
+                                "description": "identifiant du conseiller numérique v1"
+                              },
+                              "canal": {
+                                "type": "string",
+                                "description": "canal de l'accompagnement"
+                              },
+                              "activite": {
+                                "type": "string",
+                                "description": "type d'activité"
+                              },
+                              "nb_participants": {
+                                "type": "number",
+                                "description": "nombre total de participants"
+                              },
+                              "nb_participants_recurrents": {
+                                "type": "number",
+                                "description": "nombre de participants récurrents"
+                              },
+                              "age_moins_12_ans": {
+                                "type": "number",
+                                "description": "nombre de participants de moins de 12 ans"
+                              },
+                              "age_de_12_a_18_ans": {
+                                "type": "number",
+                                "description": "nombre de participants entre 12 et 18 ans"
+                              },
+                              "age_de_18_a_35_ans": {
+                                "type": "number",
+                                "description": "nombre de participants entre 18 et 35 ans"
+                              },
+                              "age_de_35_a_60_ans": {
+                                "type": "number",
+                                "description": "nombre de participants entre 35 et 60 ans"
+                              },
+                              "age_plus_60_ans": {
+                                "type": "number",
+                                "description": "nombre de participants de plus de 60 ans"
+                              },
+                              "statut_etudiant": {
+                                "type": "number",
+                                "description": "nombre de participants étudiants"
+                              },
+                              "statut_sans_emploi": {
+                                "type": "number",
+                                "description": "nombre de participants sans emploi"
+                              },
+                              "statut_en_emploi": {
+                                "type": "number",
+                                "description": "nombre de participants en emploi"
+                              },
+                              "statut_retraite": {
+                                "type": "number",
+                                "description": "nombre de participants retraités"
+                              },
+                              "statut_heterogene": {
+                                "type": "number",
+                                "description": "nombre de participants statut hétérogène"
+                              },
+                              "themes": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "description": "liste des thèmes abordés"
+                              },
+                              "sous_themes_equipement_informatique": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "description": "liste des sous-thèmes d'équipement informatique"
+                              },
+                              "sous_themes_sante": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "description": "liste des sous-thèmes liés à la santé"
+                              },
+                              "sous_themes_accompagner": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "description": "liste des sous-thèmes liés à l'accompagnement"
+                              },
+                              "sous_themes_traitement_texte": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "description": "liste des sous-thèmes liés au traitement de texte"
+                              },
+                              "duree": {
+                                "type": "string",
+                                "description": "durée au format lisible (e.g. \"1h30\")"
+                              },
+                              "duree_minutes": {
+                                "type": "number",
+                                "description": "durée en minutes"
+                              },
+                              "accompagnement_individuel": {
+                                "type": "number",
+                                "description": "nombre d'accompagnements individuels"
+                              },
+                              "accompagnement_atelier": {
+                                "type": "number",
+                                "description": "nombre d'ateliers"
+                              },
+                              "accompagnement_redirection": {
+                                "type": "number",
+                                "description": "nombre d'accompagnements en redirection"
+                              },
+                              "code_postal": {
+                                "type": "string",
+                                "description": "code postal du lieu d'accompagnement"
+                              },
+                              "nom_commune": {
+                                "type": "string",
+                                "description": "nom de la commune"
+                              },
+                              "date_accompagnement": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "date de l'accompagnement"
+                              },
+                              "code_commune": {
+                                "type": "string",
+                                "description": "code commune (INSEE)"
+                              },
+                              "organismes": {
+                                "type": "object",
+                                "additionalProperties": {
+                                  "type": "number"
+                                },
+                                "nullable": true,
+                                "description": "objet clé-valeur représentant le nombre d'interactions par organisme"
+                              },
+                              "annotation": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "commentaire ou annotation complémentaire"
+                              },
+                              "created_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "date de création de l'entrée"
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "nullable": true,
+                                "description": "date de dernière mise à jour de l'entrée"
+                              },
+                              "structure_id": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "identifiant de la structure"
+                              },
+                              "structure_id_pg": {
+                                "type": "number",
+                                "nullable": true,
+                                "description": "identifiant numérique de la structure"
+                              },
+                              "structure_type": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "type de la structure"
+                              },
+                              "structure_statut": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "statut de la structure"
+                              },
+                              "structure_nom": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "nom de la structure"
+                              },
+                              "structure_siret": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "siret de la structure"
+                              },
+                              "structure_code_postal": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "code postal de la structure"
+                              },
+                              "structure_nom_commune": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "nom de commune de la structure"
+                              },
+                              "structure_code_commune": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "code commune (INSEE) de la structure"
+                              },
+                              "structure_code_departement": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "code du département"
+                              },
+                              "structure_code_region": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "code de la région"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "links": {
+                      "type": "object",
+                      "properties": {
+                        "self": {
+                          "type": "string",
+                          "format": "uri",
+                          "description": "lien vers cette ressource"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "totalItems": {
+                          "type": "integer",
+                          "description": "nombre total d'éléments renvoyés"
+                        },
+                        "itemCount": {
+                          "type": "integer",
+                          "description": "nombre d'éléments dans cette page"
+                        },
+                        "itemsPerPage": {
+                          "type": "integer",
+                          "description": "nombre d'éléments par page"
+                        },
+                        "totalPages": {
+                          "type": "integer",
+                          "description": "nombre total de pages"
+                        },
+                        "currentPage": {
+                          "type": "integer",
+                          "description": "page courante"
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "description": "indique s'il existe une page suivante"
+                        },
+                        "hasPrevPage": {
+                          "type": "boolean",
+                          "description": "indique s'il existe une page précédente"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "health",
+        "description": "Returns the server status info in JSON format.",
+        "responses": {
+          "200": {
+            "description": "API status message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}

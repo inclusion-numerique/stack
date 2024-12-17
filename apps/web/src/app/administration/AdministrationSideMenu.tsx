@@ -60,6 +60,18 @@ const AdministrationSideMenu = () => {
     {
       text: (
         <>
+          <span className="ri-key-2-line ri-xl fr-mr-1w fr-text--regular" />
+          Clients API
+        </>
+      ),
+      linkProps: {
+        href: '/administration/clients-api',
+      },
+      isActive: pathname?.startsWith('/administration/clients-api'),
+    },
+    {
+      text: (
+        <>
           <span className="fr-icon-settings-5-line ri-xl fr-mr-1w fr-text--regular" />
           Outils
         </>
