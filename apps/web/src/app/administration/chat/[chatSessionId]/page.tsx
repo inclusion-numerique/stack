@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import { getChatSession } from '@app/web/app/administration/(assistant)/chat/getChatSession'
-import ChatSession from '@app/web/app/administration/(assistant)/chat/ChatSession'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
 import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
+import { getChatSession } from '@app/web/assistant/getChatSession'
+import AssistantPageContent from '@app/web/assistant/AssistantPageContent'
+import { getAssistantPageData } from '@app/web/assistant/getAssistantPageData'
 
 export const generateMetadata = (): Metadata => ({
   title: metadataTitle('Assistant'),
@@ -22,6 +22,8 @@ const Page = async ({
     notFound()
   }
 
+  const data = await getAssistantPageData({ chatSessionId })
+
   return (
     <CoopPageContainer>
       <AdministrationBreadcrumbs currentPage="Assistant" />
@@ -29,7 +31,7 @@ const Page = async ({
         Assistant
       </AdministrationTitle>
 
-      <ChatSession chatSession={chatSession} />
+      <AssistantPageContent data={data} />
     </CoopPageContainer>
   )
 }

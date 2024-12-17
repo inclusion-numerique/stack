@@ -999,6 +999,8 @@ model AssistantChatSession {
   createdBy   User?   @relation(fields: [createdById], references: [id])
   createdById String? @map("created_by_id") @db.Uuid
 
+  title String?
+
   context String
 
   created  DateTime               @default(now())

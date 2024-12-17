@@ -15,4 +15,5 @@ export const generateMetadata = async (): Promise<Metadata> => {
   redirect(`/administration/chat/${chatSession.id}`)
 }
 
-export default () => null
+const Page = () => null
+export default Page

@@ -78,4 +78,20 @@ export const ServerWebAppConfig = {
   Security: {
     hmacSecretKey: process.env.HMAC_SECRET_KEY ?? '',
   },
+  Assistant: {
+    service: 'albert' as 'scaleway' | 'albert',
+    Mistral: {
+      apiKey: process.env.MISTRAL_API_KEY ?? '',
+    },
+    Scaleway: {
+      serviceUrl: process.env.SCW_GENERATIVE_API_SERVICE_URL ?? '',
+      apiKey: process.env.SCW_SECRET_KEY ?? '',
+      chatModel: 'mistral-nemo-instruct-2407',
+    },
+    Albert: {
+      serviceUrl: process.env.ALBERT_SERVICE_URL ?? '',
+      apiKey: process.env.ALBERT_API_KEY ?? '',
+      chatModel: 'mistral-nemo-instruct-2407',
+    },
+  },
 }

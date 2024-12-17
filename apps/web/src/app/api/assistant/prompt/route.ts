@@ -1,34 +1,41 @@
-import { NextRequest } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 import { v4 } from 'uuid'
-import { getChatSession } from '@app/web/app/(assistant)/chat/getChatSession'
 import { assistantMessageToMistralMessage } from '@app/web/assistant/assistantMessageToMistralMessage'
-import { executeMistralChat } from '@app/web/assistant/mistralChat'
 import { prismaClient } from '@app/web/prismaClient'
+import { AssistantPromptRequestDataValidation } from '@app/web/app/api/assistant/prompt/AssistantPromptRequestData'
+import { getChatSession } from '@app/web/assistant/getChatSession'
+import {
+  executeOpenAiChat,
+  executeOpenAiChatStream,
+  OpenAiChatMessage,
+} from '@app/web/assistant/openAiChat'
 
 const notFoundResponse = () =>
   new Response('', {
     status: 404,
   })
 
-export const POST = async (
-  request: NextRequest,
-  context: { params: { chatSessionId: string } },
-) => {
-  const { chatSessionId } = context.params
+export const POST = async (request: NextRequest) => {
+  // Get prompt from request json body
+  const body = await request.json()
+  const requestData = AssistantPromptRequestDataValidation.safeParse(body)
+
+  if (!requestData.success) {
+    return NextResponse.json(
+      {
+        error: requestData.error,
+      },
+      {
+        status: 400,
+      },
+    )
+  }
+
+  const { chatSessionId, prompt } = requestData.data
 
   const chatSession = await getChatSession(chatSessionId)
   if (!chatSession) {
     return notFoundResponse()
-  }
-
-  // Get prompt from request json body
-  const body = (await request.json()) as { prompt?: string }
-  const { prompt } = body
-
-  if (!prompt) {
-    return new Response('Prompt is required', {
-      status: 400,
-    })
   }
 
   await prismaClient.assistantChatMessage.create({
@@ -44,7 +51,7 @@ export const POST = async (
     role: 'system',
     content:
       'Répond TOUJOURS en français sauf si l’utilisateur demand de traduire',
-  }
+  } satisfies OpenAiChatMessage
 
   const messages = [
     systemMessage,
@@ -53,15 +60,32 @@ export const POST = async (
       role: 'user',
       content: prompt,
     },
-  ]
+  ] satisfies OpenAiChatMessage[]
+
+  console.log('MESSAGES', messages)
+
+  const asStream = false
+
+  if (!asStream) {
+    const result = await executeOpenAiChat({
+      messages,
+    }).catch((error) => ({
+      error,
+    }))
+    console.log('RESULT WITHOUT STREAM', result)
+
+    return NextResponse.json(result)
+  }
 
   const stream = new ReadableStream({
     start(controller) {
-      executeMistralChat({
+      console.log('Start stream')
+      executeOpenAiChatStream({
         messages,
         onChunk: (chunk) => controller.enqueue(chunk),
       })
         .then((response) => {
+          console.log('Response on prompt route', response)
           controller.close()
           return prismaClient.assistantChatMessage.create({
             data: {

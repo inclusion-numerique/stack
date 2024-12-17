@@ -6,9 +6,10 @@ import InputFormField from '@app/ui/components/Form/InputFormField'
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-
-import { ChatSessionData } from '@app/web/app/administration/(assistant)/chat/getChatSession'
-import ChatMessage from '@app/web/app/administration/(assistant)/chat/ChatMessage'
+import type { ChatSessionData } from '@app/web/assistant/getChatSession'
+import ChatMessage from '@app/web/assistant/ChatMessage'
+import { assistantEndpoints } from '@app/web/assistant/assistantEndpoints'
+import { AssistantPromptRequestData } from '@app/web/app/api/assistant/prompt/AssistantPromptRequestData'
 import styles from './ChatSession.module.css'
 
 const ChatSession = ({ chatSession }: { chatSession: ChatSessionData }) => {
@@ -59,19 +60,25 @@ const ChatSession = ({ chatSession }: { chatSession: ChatSessionData }) => {
 
     setIsSendingPrompt(true)
 
-    fetch(`/chat/${chatSession.id}/prompt`, {
+    const promptData: AssistantPromptRequestData = {
+      prompt: data.prompt,
+      chatSessionId: chatSession.id,
+    }
+
+    fetch(assistantEndpoints.prompt, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'text/event-stream',
       },
-      body: JSON.stringify({ prompt: data.prompt }),
+      body: JSON.stringify(promptData),
       signal: controller.signal,
     })
       .then(async (response) => {
         setIsSendingPrompt(false)
         form.reset({ prompt: '' })
 
+        const created = new Date()
         setMessages((previousMessages) => [
           ...previousMessages,
           {
@@ -84,8 +91,6 @@ const ChatSession = ({ chatSession }: { chatSession: ChatSessionData }) => {
         ])
 
         setIsStreamingResponse(true)
-
-        const created = new Date()
 
         const reader = response.body?.getReader()
         let streamContent = '' // To accumulate streaming response content
@@ -111,8 +116,10 @@ const ChatSession = ({ chatSession }: { chatSession: ChatSessionData }) => {
         }
 
         setIsStreamingResponse(false)
-        streamingResponseMessageRef.current &&
-          (streamingResponseMessageRef.current.textContent = '')
+        // Reset text content when streaming response ends
+        if (streamingResponseMessageRef.current) {
+          streamingResponseMessageRef.current.textContent = ''
+        }
 
         setMessages((previousMessages) => [
           ...previousMessages,
@@ -125,13 +132,16 @@ const ChatSession = ({ chatSession }: { chatSession: ChatSessionData }) => {
           },
         ])
       })
-      .catch((error) => {
-        console.error('Fetch error:', error)
+      .catch((promptError) => {
+        console.error('Prompt POST error:', promptError)
         setError('Une erreur est survenue')
         setIsStreamingResponse(false)
         setIsSendingPrompt(false)
-        streamingResponseMessageRef.current &&
-          (streamingResponseMessageRef.current.textContent = '')
+
+        // Reset text content if error occurs
+        if (streamingResponseMessageRef.current) {
+          streamingResponseMessageRef.current.textContent = ''
+        }
       })
 
     // Cleanup function to abort fetch on unmount
