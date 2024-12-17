@@ -4,6 +4,7 @@ import { hashSecret, verifySecret } from '@app/web/security/hashSecret'
 import { prismaClient } from '@app/web/prismaClient'
 
 export type CreateApiClientInput = {
+  id?: string
   name: string
   scopes: ApiClientScope[]
   validUntil?: Date
@@ -11,22 +12,24 @@ export type CreateApiClientInput = {
 }
 
 export const createApiClient = async ({
+  id,
   name,
   scopes,
   validFrom,
   validUntil,
 }: CreateApiClientInput): Promise<
-  Omit<ApiClient, 'secret'> & {
+  ApiClient & {
     secret: string
   }
 > => {
-  const plainSecret = generateRandomSecret()
-  const hashedSecret = hashSecret(plainSecret)
+  const secret = generateRandomSecret()
+  const secretHash = hashSecret(secret)
 
   const apiClient = await prismaClient.apiClient.create({
     data: {
+      id,
       name,
-      secret: hashedSecret,
+      secretHash, // Store the hashed secret in the database
       validFrom: validFrom ?? new Date(),
       validUntil,
       scopes,
@@ -35,7 +38,33 @@ export const createApiClient = async ({
 
   return {
     ...apiClient,
-    secret: plainSecret,
+    secret,
+    secretHash,
+  }
+}
+
+export type CreateApiClientOutput = Awaited<ReturnType<typeof createApiClient>>
+
+export const rotateApiClientSecret = async ({
+  clientId,
+}: {
+  clientId: string
+}) => {
+  const secret = generateRandomSecret()
+  const secretHash = hashSecret(secret)
+
+  await prismaClient.apiClient.update({
+    where: { id: clientId },
+    data: {
+      secretHash, // Store the hashed secret in the database
+      updated: new Date(),
+    },
+  })
+
+  return {
+    clientId,
+    secret,
+    secretHash,
   }
 }
 
@@ -76,7 +105,7 @@ export const authenticateApiCient = async (
 
   if (!apiClient) return null
 
-  const isValid = verifySecret(apiClient.secret, clientSecret)
+  const isValid = verifySecret(clientSecret, apiClient.secretHash)
 
   if (!isValid) return null
 

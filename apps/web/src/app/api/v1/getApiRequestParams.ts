@@ -19,7 +19,7 @@ export const getApiRequestParams = <
 
   const queryParams = transformJsonApiQueryParamsToObject(searchParams)
 
-  const parsed = queryParamsValidation.strict().safeParse(queryParams)
+  const parsed = queryParamsValidation.strict().safeParse(queryParams || {})
 
   if (!parsed.success) {
     return {

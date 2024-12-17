@@ -8,12 +8,8 @@ import Notice from '@codegouvfr/react-dsfr/Notice'
 import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 
-const GenerateUniqueClientApiSecretForm = ({
-  clientId,
-}: {
-  clientId: string
-}) => {
-  const mutation = trpc.apiClient.generateUniqueClientSecret.useMutation()
+const RotateApiClientSecretForm = ({ clientId }: { clientId: string }) => {
+  const mutation = trpc.apiClient.rotateApiClientSecret.useMutation()
 
   const [secret, setSecret] = useState('')
 
@@ -63,14 +59,20 @@ const GenerateUniqueClientApiSecretForm = ({
       </Button>
     </>
   ) : (
-    <Button
-      iconId="fr-icon-lock-line"
-      onClick={onGenerate}
-      {...buttonLoadingClassname(isLoading)}
-    >
-      Générer un secret unique
-    </Button>
+    <>
+      <Notice
+        className="fr-notice--new fr-mb-4v"
+        title="Générer un secret désactive les secrets précédents."
+      />
+      <Button
+        iconId="fr-icon-refresh-line"
+        onClick={onGenerate}
+        {...buttonLoadingClassname(isLoading)}
+      >
+        Générer un client secret
+      </Button>
+    </>
   )
 }
 
-export default withTrpc(GenerateUniqueClientApiSecretForm)
+export default withTrpc(RotateApiClientSecretForm)

@@ -3,6 +3,7 @@ import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 
 /**
  * Hashes a secret using HMAC with SHA-256.
+ * HMAC is deterministic, meaning that the same input will always produce the same output.
  * @param secret - The plain text secret to hash.
  * @returns The hexadecimal representation of the hashed secret.
  */

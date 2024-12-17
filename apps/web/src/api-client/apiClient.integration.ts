@@ -3,14 +3,35 @@ import { ApiClientScope } from '@prisma/client'
 import {
   authenticateApiCient,
   createApiClient,
+  CreateApiClientOutput,
+  rotateApiClientSecret,
 } from '@app/web/api-client/apiClient'
-import { generateRandomSecret } from '@app/web/security/generateRandomSecret'
-import { hashSecret } from '@app/web/security/hashSecret'
 
 describe('apiClient', () => {
+  const testClient = {
+    id: '212c5a27-c409-4657-817f-371928f59046',
+    name: 'test-integration-client',
+    scopes: [ApiClientScope.Statistiques],
+  }
+
+  const testClientToRotate = {
+    id: 'af10da01-e63e-421a-856a-efeb94948519',
+    name: 'test-integration-client-to-rotate',
+    scopes: [ApiClientScope.Statistiques, ApiClientScope.Activites],
+  }
+
+  let createdClient: CreateApiClientOutput
+
   beforeAll(async () => {
     // Clean up the database before starting the tests
-    await prismaClient.apiClient.deleteMany({})
+    await prismaClient.apiClient.deleteMany({
+      where: {
+        id: {
+          in: [testClient.id, testClientToRotate.id],
+        },
+      },
+    })
+    createdClient = await createApiClient(testClient)
   })
 
   afterAll(async () => {
@@ -20,33 +41,19 @@ describe('apiClient', () => {
 
   describe('createApiClient', () => {
     it('should create a new ApiClient and store the hashed secret', async () => {
-      // Arrange
-      const name = 'Test Client'
-      const scopes = [ApiClientScope.Statistiques]
-
-      // Act
-      const createdClient = await createApiClient({
-        name,
-        scopes,
-      })
-
-      // Assert
-      expect(createdClient).toHaveProperty('id')
-      expect(createdClient).toHaveProperty('secret') // The plain secret returned
+      expect(createdClient.id).toBe(testClient.id)
+      expect(createdClient.name).toBe(testClient.name)
+      expect(createdClient.scopes).toEqual(testClient.scopes)
       expect(createdClient.secret.length).toBeGreaterThan(0)
 
-      const savedClient = await prismaClient.apiClient.findUnique({
+      const savedClient = await prismaClient.apiClient.findUniqueOrThrow({
         where: { id: createdClient.id },
       })
 
-      expect(savedClient).toEqual(
-        expect.objectContaining({
-          id: createdClient.id,
-          name,
-          scopes,
-        }),
-      )
-      expect(savedClient?.secret).not.toBe(createdClient.secret) // Secret should be hashed in the DB,
+      expect(savedClient.id).toBe(createdClient.id)
+      expect(savedClient.name).toBe(createdClient.name)
+      expect(savedClient.scopes).toEqual(createdClient.scopes)
+      expect(savedClient.secretHash).not.toBe(createdClient.secret) // Secret should be hashed in the DB,
     })
   })
 
@@ -63,80 +70,60 @@ describe('apiClient', () => {
     })
 
     it('should authenticate an ApiClient with correct clientId and secret', async () => {
-      // Arrange
-      const plainSecret = generateRandomSecret()
-      const hashedSecret = hashSecret(plainSecret)
-      const now = new Date()
-
-      // Create a valid ApiClient in the database
-      const validClient = await prismaClient.apiClient.create({
-        data: {
-          name: 'Valid Client',
-          secret: hashedSecret,
-          validFrom: new Date(now.getTime() - 1000 * 60 * 60), // validFrom 1 hour ago
-          validUntil: new Date(now.getTime() + 1000 * 60 * 60), // validUntil 1 hour from now
-          scopes: [ApiClientScope.Statistiques],
-        },
-      })
-
       const authenticatedClient = await authenticateApiCient(
-        validClient.id,
-        plainSecret,
+        createdClient.id,
+        createdClient.secret,
       )
 
       expect(authenticatedClient).toEqual(
-        expect.objectContaining({ id: validClient.id }),
+        expect.objectContaining({
+          id: createdClient.id,
+          name: createdClient.name,
+          secretHash: createdClient.secretHash,
+        }),
       )
     })
 
     it('should return null for an invalid secret', async () => {
-      // Arrange
-      const plainSecret = generateRandomSecret()
-      const hashedSecret = hashSecret(plainSecret)
-      const now = new Date()
-
-      // Create a valid ApiClient in the database
-      const validClient = await prismaClient.apiClient.create({
-        data: {
-          name: 'Client with Invalid Secret Test',
-          secret: hashedSecret,
-          validFrom: new Date(now.getTime() - 1000 * 60 * 60),
-          validUntil: new Date(now.getTime() + 1000 * 60 * 60),
-          scopes: [ApiClientScope.Statistiques],
-        },
-      })
-
-      // Act
       const invalidClient = await authenticateApiCient(
-        validClient.id,
+        createdClient.id,
         'wrongSecret',
       )
 
-      // Assert
       expect(invalidClient).toBeNull()
     })
 
     it('should return null if the ApiClient is outside the valid date range', async () => {
-      // Arrange
-      const plainSecret = generateRandomSecret()
-      const hashedSecret = hashSecret(plainSecret)
-
-      // Create an ApiClient that is no longer valid
-      const expiredClient = await prismaClient.apiClient.create({
+      // Update validUntil to be in the past
+      await prismaClient.apiClient.update({
+        where: { id: createdClient.id },
         data: {
-          name: 'Expired Client',
-          secret: hashedSecret,
-          validFrom: new Date(Date.now() - 1000 * 60 * 60 * 24), // validFrom yesterday
           validUntil: new Date(Date.now() - 1000 * 60 * 60), // expired 1 hour ago
-          scopes: [ApiClientScope.Statistiques],
         },
       })
 
+      const result = await authenticateApiCient(
+        createdClient.id,
+        createdClient.secret,
+      )
+
+      expect(result).toBeNull()
+    })
+  })
+
+  describe('rotateApiClientSecret', () => {
+    it('should rotate the secret of an ApiClient', async () => {
+      const clientToRotate = await createApiClient(testClientToRotate)
+
       // Act
-      const result = await authenticateApiCient(expiredClient.id, plainSecret)
+      const rotatedClient = await rotateApiClientSecret({
+        clientId: clientToRotate.id,
+      })
 
       // Assert
-      expect(result).toBeNull()
+      expect(rotatedClient.clientId).toBe(clientToRotate.id)
+      expect(rotatedClient.secret).not.toBe(clientToRotate.secret)
+      expect(rotatedClient.secretHash).not.toBe(clientToRotate.secretHash)
     })
   })
 })

@@ -2,7 +2,11 @@
  * We use cursor pagination for the v1 list endpoints
  * See why: https://jsonapi.org/profiles/ethanresnick/cursor-pagination/
  */
-import { z } from 'zod'
+import { z, ZodError } from 'zod'
+import {
+  decodeSerializableState,
+  EncodedState,
+} from '@app/web/utils/encodeSerializableState'
 
 /**
  * @openapi
@@ -51,11 +55,13 @@ import { z } from 'zod'
  *           example: "https://api.example.com/v1/activites"
  */
 export const JsonApiCursorPaginationQueryParamsValidation = z.object({
-  page: z.object({
-    size: z.coerce.number().min(1).max(500).default(500),
-    after: z.string().optional(),
-    before: z.string().optional(),
-  }),
+  page: z
+    .object({
+      size: z.coerce.number().min(1).max(500).default(500),
+      after: z.string().optional(),
+      before: z.string().optional(),
+    })
+    .default({}),
 })
 
 export type JsonApiCursorPaginationQueryParams = z.infer<
@@ -67,11 +73,24 @@ export const prismaCursorPagination = (
 ) => {
   const take = cursorQueryParams.page.size
 
-  const cursor = cursorQueryParams.page.after || cursorQueryParams.page.before
+  const encodedCursor = (cursorQueryParams.page.after ||
+    cursorQueryParams.page.before) as EncodedState<string> | undefined
 
-  if (!cursor) return { take, skip: undefined, cursor: undefined }
+  if (!encodedCursor) return { take, skip: undefined, cursor: undefined }
+
+  const cursor = decodeSerializableState(encodedCursor, '')
 
   const isBefore = !!cursorQueryParams.page.before
+
+  if (!cursor) {
+    throw new ZodError([
+      {
+        message: 'Invalid cursor',
+        path: isBefore ? ['page', 'before'] : ['page', 'after'],
+        code: 'custom',
+      },
+    ])
+  }
 
   return {
     isBefore,
@@ -82,7 +101,7 @@ export const prismaCursorPagination = (
 }
 
 export const createCompositeCursor = (...cursorParts: string[]) =>
-  cursorParts.join(':')
+  cursorParts.join('###')
 
 export const parseCompositeCursor = (compositeCursor: string) =>
-  compositeCursor.split(':')
+  compositeCursor.split('###')

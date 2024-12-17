@@ -209,7 +209,7 @@ model ApiClient {
 
   name String @unique
 
-  secret String // hashed secret
+  secretHash String @map("secret_hash") // we only store the hashed secret
 
   validFrom  DateTime  @map("valid_from")
   validUntil DateTime? @map("valid_until")

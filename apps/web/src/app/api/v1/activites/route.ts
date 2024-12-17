@@ -24,6 +24,7 @@ import {
   typeActiviteApiValues,
   typeLieuApiValues,
 } from '@app/web/cra/cra'
+import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 
 /**
  * API response types MUST be manually defined to NOT be infered
@@ -360,8 +361,16 @@ export const GET = createApiV1Route
       : undefined
 
     // validate that parsedCursor 0 is a valid date and parsedCursor 1 is a valid id
-    const validatedCursor = ActiviteCursorValidation.safeParse(parsedCursor)
-    if (!validatedCursor.success) {
+    const validatedCursor = parsedCursor
+      ? ActiviteCursorValidation.safeParse({
+          creation_id: {
+            creation: parsedCursor[0],
+            id: parsedCursor[1],
+          },
+        })
+      : undefined
+
+    if (!!validatedCursor && !validatedCursor.success) {
       throw validatedCursor.error as ZodError
     }
 
@@ -379,7 +388,7 @@ export const GET = createApiV1Route
       },
       take: cursorPagination.take,
       skip: cursorPagination.skip,
-      cursor: parsedCursor
+      cursor: validatedCursor
         ? {
             creation_id: validatedCursor.data.creation_id,
           }
@@ -394,9 +403,10 @@ export const GET = createApiV1Route
     const nextCursor = lastItem
       ? createCompositeCursor(lastItem.creation.toISOString(), lastItem.id)
       : undefined
-    const previousCursor = firstItem
-      ? createCompositeCursor(firstItem.creation.toISOString(), firstItem.id)
-      : undefined
+    const previousCursor =
+      !!parsedCursor && firstItem
+        ? createCompositeCursor(firstItem.creation.toISOString(), firstItem.id)
+        : undefined
 
     const response: ActiviteListResponse = {
       data: cras.map(
@@ -471,16 +481,26 @@ export const GET = createApiV1Route
         self: {
           href: cursorPagination.cursor
             ? cursorPagination.isBefore
-              ? apiV1Url(`/activites?page[before]=${cursorPagination.cursor}`)
-              : apiV1Url(`/activites?page[after]=${cursorPagination.cursor}`)
+              ? apiV1Url(
+                  `/activites?page[before]=${encodeSerializableState(cursorPagination.cursor)}`,
+                )
+              : apiV1Url(
+                  `/activites?page[after]=${encodeSerializableState(cursorPagination.cursor)}`,
+                )
             : apiV1Url('/activites'),
         },
         next: nextCursor
-          ? { href: apiV1Url(`/activites?page[after]=${nextCursor}`) }
+          ? {
+              href: apiV1Url(
+                `/activites?page[after]=${encodeSerializableState(nextCursor)}`,
+              ),
+            }
           : undefined,
         prev: previousCursor
           ? {
-              href: apiV1Url(`/activites?page[before]=${previousCursor}`),
+              href: apiV1Url(
+                `/activites?page[before]=${encodeSerializableState(previousCursor)}`,
+              ),
             }
           : undefined,
       },

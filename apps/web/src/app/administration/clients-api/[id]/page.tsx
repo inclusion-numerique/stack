@@ -10,7 +10,7 @@ import ClientApiForm from '@app/web/app/administration/clients-api/ClientApiForm
 import { prismaClient } from '@app/web/prismaClient'
 import { ClientApiData } from '@app/web/app/administration/clients-api/ClientApiValidation'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
-import GenerateUniqueClientApiSecretForm from '@app/web/app/administration/clients-api/GenerateUniqueClientApiSecretForm'
+import GenerateUniqueClientApiSecretForm from '@app/web/app/administration/clients-api/RotateApiClientSecretForm'
 
 export const metadata = {
   title: metadataTitle('Client API - Détails'),

@@ -12,6 +12,7 @@ export const testApiClient = {
   id: 'will-be-set-after-creation',
   name: testApiClientName,
   secret: 'will-be-set-after-creation',
+  hashedSecret: 'will-be-set-after-creation',
 }
 
 export const createTestApiClientWithScopes = async ({
@@ -51,6 +52,7 @@ export const createTestApiClientWithScopes = async ({
   testApiClient.initialized = true
   testApiClient.id = client.id
   testApiClient.secret = client.secret
+  testApiClient.hashedSecret = client.secretHash
 
   return client
 }
