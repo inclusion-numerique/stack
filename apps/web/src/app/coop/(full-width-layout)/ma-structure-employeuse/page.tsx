@@ -77,6 +77,7 @@ const MaStructureEmployeusePage = async () => {
             <StructureEmployeuse
               {...structureEmployeuse}
               isLieuActivite={matchingLieuActivite != null}
+              isConseillerNumerique={false}
             />
           ) : (
             <div className="fr-text--center fr-background-alt--blue-france fr-border-radius--8 fr-p-6w">

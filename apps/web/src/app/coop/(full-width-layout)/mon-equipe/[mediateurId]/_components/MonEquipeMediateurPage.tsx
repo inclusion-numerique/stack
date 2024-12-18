@@ -90,6 +90,7 @@ export const MonEquipeMediateurPage = ({
               showTitle
               isLieuActivite={false}
               id={structureEmployeuse.id}
+              isConseillerNumerique={conseillerNumerique?.id != null}
               {...structureEmployeuse.structure}
             />
           </section>

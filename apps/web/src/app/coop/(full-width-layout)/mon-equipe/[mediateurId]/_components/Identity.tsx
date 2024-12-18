@@ -3,7 +3,6 @@
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import { ButtonProps } from '@codegouvfr/react-dsfr/Button'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import { trpc } from '@app/web/trpc'
@@ -108,22 +107,18 @@ const Identity = ({
             linkProps: { href: `mailto:${email}` },
             priority: 'tertiary',
           },
-          ...((isConseillerNumerique
-            ? []
-            : [
-                {
-                  children: (
-                    <span className="fr-flex fr-flex-gap-2v fr-text-default--error ">
-                      <span className="ri-user-unfollow-line" aria-hidden />
-                      Retirer de mon équipe
-                    </span>
-                  ),
-                  priority: 'tertiary',
-                  ...removeFromTeamModalNativeButtonProps,
-                  disabled: mutation.isPending,
-                  ...buttonLoadingClassname(mutation.isPending, 'fr-mb-0'),
-                },
-              ]) as ButtonProps[]),
+          {
+            children: (
+              <span className="fr-flex fr-flex-gap-2v fr-text-default--error ">
+                <span className="ri-user-unfollow-line" aria-hidden />
+                Retirer de mon équipe
+              </span>
+            ),
+            priority: 'tertiary',
+            ...removeFromTeamModalNativeButtonProps,
+            disabled: mutation.isPending,
+            ...buttonLoadingClassname(mutation.isPending, 'fr-mb-0'),
+          },
         ]}
         inlineLayoutWhen="md and up"
       />
