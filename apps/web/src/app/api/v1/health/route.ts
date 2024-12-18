@@ -11,6 +11,8 @@ export type HealthResponse = {
  *   get:
  *     summary: health
  *     description: Returns the server status info in JSON format.
+ *     tags:
+ *       - Utilitaires
  *     responses:
  *       200:
  *         description: API status message.

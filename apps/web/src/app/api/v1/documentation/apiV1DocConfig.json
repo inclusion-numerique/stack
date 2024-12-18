@@ -25,7 +25,7 @@
         "ClientAuth": {
           "type": "http",
           "scheme": "bearer",
-          "description": "Identification avec un couple client-id:client-secret"
+          "description": "Pour obtenir votre bearer token, concatenez votre client-id et votre client-secret, séparés par ':'. Exemple : 'monid:monsecret'"
         }
       }
     },
