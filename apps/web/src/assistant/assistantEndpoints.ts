@@ -1,3 +1,3 @@
 export const assistantEndpoints = {
-  prompt: '/api/assistant/prompt',
+  chat: '/api/assistant/chat',
 }

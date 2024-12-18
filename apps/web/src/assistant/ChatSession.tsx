@@ -9,7 +9,7 @@ import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import type { ChatSessionData } from '@app/web/assistant/getChatSession'
 import ChatMessage from '@app/web/assistant/ChatMessage'
 import { assistantEndpoints } from '@app/web/assistant/assistantEndpoints'
-import { AssistantPromptRequestData } from '@app/web/app/api/assistant/prompt/AssistantPromptRequestData'
+import type { AssistantChatRequestData } from '@app/web/app/api/assistant/chat/AssistantChatRequestData'
 import styles from './ChatSession.module.css'
 
 const ChatSession = ({ chatSession }: { chatSession: ChatSessionData }) => {
@@ -60,12 +60,12 @@ const ChatSession = ({ chatSession }: { chatSession: ChatSessionData }) => {
 
     setIsSendingPrompt(true)
 
-    const promptData: AssistantPromptRequestData = {
+    const promptData: AssistantChatRequestData = {
       prompt: data.prompt,
       chatSessionId: chatSession.id,
     }
 
-    fetch(assistantEndpoints.prompt, {
+    fetch(assistantEndpoints.chat, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -87,6 +87,10 @@ const ChatSession = ({ chatSession }: { chatSession: ChatSessionData }) => {
             role: 'User',
             sessionId: chatSession.id,
             created,
+            name: null,
+            refusal: null,
+            toolCalls: [],
+            toolCallId: null,
           },
         ])
 
@@ -117,6 +121,7 @@ const ChatSession = ({ chatSession }: { chatSession: ChatSessionData }) => {
 
         setIsStreamingResponse(false)
         // Reset text content when streaming response ends
+        // eslint-disable-next-line promise/always-return
         if (streamingResponseMessageRef.current) {
           streamingResponseMessageRef.current.textContent = ''
         }
@@ -129,6 +134,10 @@ const ChatSession = ({ chatSession }: { chatSession: ChatSessionData }) => {
             role: 'Assistant',
             sessionId: chatSession.id,
             created,
+            name: null,
+            refusal: null,
+            toolCalls: [],
+            toolCallId: null,
           },
         ])
       })

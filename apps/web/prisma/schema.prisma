@@ -1006,13 +1006,23 @@ model AssistantChatSession {
   created  DateTime               @default(now())
   updated  DateTime               @default(now())
   messages AssistantChatMessage[]
+
+  @@index([createdById])
+  @@map("assistant_chat_sessions")
 }
 
+// Based on the OpenAI API standard
 enum AssistantChatRole {
+  System    @map("system")
   User      @map("user")
   Assistant @map("assistant")
+  Tool      @map("tool")
+  Function  @map("function")
+
+  @@map("assistant_chat_roles")
 }
 
+// Based on the OpenAI API standard
 model AssistantChatMessage {
   id        String               @id @default(uuid()) @db.Uuid
   role      AssistantChatRole
@@ -1020,4 +1030,18 @@ model AssistantChatMessage {
   sessionId String               @map("session_id") @db.Uuid
   content   String
   created   DateTime             @default(now())
+
+  name String? // also used for "function" message function name
+
+  // Additional fields for assistant chat messages
+  refusal String?
+  toolCalls Json[] @map("tool_calls") @default([])
+
+  // Additional fields for tool calls
+  toolCallId String? @map("tool_call_id")
+
+  @@index([sessionId])
+  @@index([created(sort: Asc)])
+
+  @@map("assistant_chat_messages")
 }

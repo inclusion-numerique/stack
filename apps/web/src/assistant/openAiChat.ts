@@ -9,6 +9,7 @@ import {
 } from '@app/web/assistant/openAiClient'
 
 export type OpenAiChatMessage = ChatCompletionMessageParam
+export type OpenAiChatRole = OpenAiChatMessage['role']
 export type OpenAiFunctionCall =
   | 'none'
   | 'auto'
@@ -36,18 +37,15 @@ export const executeOpenAiChatStream = async ({
 
   let reponse = ''
 
-  console.log('STREAM RESPONSE', chatStreamResponse)
-
   for await (const chunk of chatStreamResponse) {
-    console.log('CHUNK', chunk)
-
-    const { content } = chunk.choices[0].delta
-
-    if (content !== undefined && content !== null) {
-      const streamText = content
-      onChunk(streamText)
-      reponse += streamText
+    const content = chunk.choices.at(0)?.delta.content
+    if (content === undefined || content === null) {
+      continue
     }
+
+    const streamText = content
+    onChunk(streamText)
+    reponse += streamText
   }
   return reponse
 }

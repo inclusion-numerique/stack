@@ -1,14 +1,17 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { v4 } from 'uuid'
-import { assistantMessageToMistralMessage } from '@app/web/assistant/assistantMessageToMistralMessage'
 import { prismaClient } from '@app/web/prismaClient'
-import { AssistantPromptRequestDataValidation } from '@app/web/app/api/assistant/prompt/AssistantPromptRequestData'
 import { getChatSession } from '@app/web/assistant/getChatSession'
 import {
   executeOpenAiChat,
   executeOpenAiChatStream,
   OpenAiChatMessage,
 } from '@app/web/assistant/openAiChat'
+import { AssistantChatRequestDataValidation } from '@app/web/app/api/assistant/chat/AssistantChatRequestData'
+import { assistantMessageToOpenAiMessage } from '@app/web/assistant/assistantMessageToOpenAiMessage'
+import { chatSystemMessage } from '@app/web/assistant/systemMessages'
+import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
+import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
 
 const notFoundResponse = () =>
   new Response('', {
@@ -16,9 +19,19 @@ const notFoundResponse = () =>
   })
 
 export const POST = async (request: NextRequest) => {
+  const sessionToken = getSessionTokenFromNextRequestCookies(request.cookies)
+  const user = await getSessionUserFromSessionToken(sessionToken)
+
+  // For now, only allow admin to access the assistant
+  if (user?.role !== 'Admin') {
+    return new Response('Unauthorized', {
+      status: 401,
+    })
+  }
+
   // Get prompt from request json body
-  const body = await request.json()
-  const requestData = AssistantPromptRequestDataValidation.safeParse(body)
+  const body = (await request.json()) as unknown
+  const requestData = AssistantChatRequestDataValidation.safeParse(body)
 
   if (!requestData.success) {
     return NextResponse.json(
@@ -38,6 +51,7 @@ export const POST = async (request: NextRequest) => {
     return notFoundResponse()
   }
 
+  // Create the new user prompt message
   await prismaClient.assistantChatMessage.create({
     data: {
       id: v4(),
@@ -47,46 +61,42 @@ export const POST = async (request: NextRequest) => {
     },
   })
 
-  const systemMessage = {
-    role: 'system',
-    content:
-      'Répond TOUJOURS en français sauf si l’utilisateur demand de traduire',
-  } satisfies OpenAiChatMessage
-
+  // Create the full history of messages
+  // with our system message and the session messages
   const messages = [
-    systemMessage,
-    ...chatSession.messages.map(assistantMessageToMistralMessage),
+    // Our system message is always up to date and the first message
+    chatSystemMessage,
+    // Session history
+    ...chatSession.messages.map(assistantMessageToOpenAiMessage),
+    // User prompt message
     {
       role: 'user',
       content: prompt,
     },
   ] satisfies OpenAiChatMessage[]
 
-  console.log('MESSAGES', messages)
-
-  const asStream = false
+  const asStream = true
 
   if (!asStream) {
     const result = await executeOpenAiChat({
       messages,
     }).catch((error) => ({
-      error,
+      error: error as Error,
     }))
-    console.log('RESULT WITHOUT STREAM', result)
 
     return NextResponse.json(result)
   }
 
   const stream = new ReadableStream({
     start(controller) {
-      console.log('Start stream')
       executeOpenAiChatStream({
         messages,
         onChunk: (chunk) => controller.enqueue(chunk),
       })
         .then((response) => {
-          console.log('Response on prompt route', response)
           controller.close()
+          // Add the assistant response
+          // TODO function calls, additional params etc ...
           return prismaClient.assistantChatMessage.create({
             data: {
               id: v4(),
@@ -99,7 +109,7 @@ export const POST = async (request: NextRequest) => {
         .catch((error) => controller.error(error))
     },
     cancel() {
-      console.log('Stream cancelled by client.')
+      console.warn('chat response stream cancelled by client.')
     },
   })
 
