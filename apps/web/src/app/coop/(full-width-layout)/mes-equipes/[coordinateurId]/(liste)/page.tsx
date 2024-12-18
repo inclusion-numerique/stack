@@ -4,7 +4,7 @@ import { prismaClient } from '@app/web/prismaClient'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import MonEquipeListePage from '@app/web/equipe/MonEquipeListePage/MonEquipeListePage'
 import { getMonEquipePageData } from '@app/web/equipe/MonEquipeListePage/getMonEquipePageData'
-import type { MonEquipeSearchParams } from '@app/web/equipe/MonEquipeListePage/searchMediateursCordonneBy'
+import type { MonEquipeSearchParams } from '@app/web/equipe/MonEquipeListePage/searchMediateursCoordonneBy'
 
 export const metadata: Metadata = {
   title: metadataTitle('Mon équipe'),
@@ -37,7 +37,7 @@ const Page = async ({
     <MonEquipeListePage
       {...monEquipePageData}
       searchParams={searchParams}
-      canSeeMediateursDetails={false}
+      coordinateurView={false}
       baseHref={`/coop/mes-equipes/${coordinateurId}`}
       coordinateur={coordinateur}
     />

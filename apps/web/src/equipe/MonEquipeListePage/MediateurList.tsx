@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { MediateurListItem } from './MediateurListItem'
 
 export type MediateurListProps = {
-  id: string
+  id?: string
   email: string
   firstName?: string
   lastName?: string
@@ -10,6 +10,7 @@ export type MediateurListProps = {
   isConseillerNumerique: boolean
   status: string
   finDeContrat?: string
+  type: 'coordinated' | 'invited'
 }
 
 export const MediateurList = ({
@@ -23,7 +24,7 @@ export const MediateurList = ({
 }) => (
   <ul className="fr-list-group fr-border--top fr-my-0">
     {mediateurs.map((mediateur) =>
-      canSeeMediateursDetails ? (
+      canSeeMediateursDetails && mediateur.type === 'coordinated' ? (
         <li
           className="fr-border--bottom fr-link--background-on-hover"
           key={mediateur.email}

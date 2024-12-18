@@ -2,7 +2,12 @@ import React, { ReactNode, useCallback } from 'react'
 import { Control, Controller, FieldValues, PathValue } from 'react-hook-form'
 import { FieldPath } from 'react-hook-form/dist/types/path'
 import classNames from 'classnames'
-import type { GroupBase, Options, OptionsOrGroups } from 'react-select'
+import type {
+  GroupBase,
+  OnChangeValue,
+  Options,
+  OptionsOrGroups,
+} from 'react-select'
 import { UiComponentProps } from '@app/ui/utils/uiComponentProps'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 import CustomSelect, {
@@ -24,6 +29,7 @@ export type CustomSelectFormFieldProps<
   valid?: string
   asterisk?: boolean
   info?: ReactNode
+  clearInputOnChange?: boolean
   // The value that will be set in the form controller for given PathProperty
   optionToFormValue?: (option: Option) => PathValue<FormData, PathProperty>
   // The unique key will be used internally to compare the value of the form controller with the options
@@ -37,6 +43,7 @@ export type CustomSelectFormFieldProps<
     b: Option,
   ) => boolean
   defaultOptions?: Option[]
+  onChange?: (options: OnChangeValue<Option, IsMulti>) => void
 } & Omit<
   CustomSelectProps<Option, IsMulti, Group>,
   'onChange' | 'name' | 'onBlur' | 'defaultOptions'
@@ -109,10 +116,12 @@ const CustomSelectFormField = <
   info,
   className,
   isMulti,
+  clearInputOnChange,
   getOptionLabel: getOptionLabelProperty,
   getValueKey: getValueKeyProperty,
   getOptionKey: getOptionKeyProperty,
   optionToFormValue: optionToFormValueProperty,
+  onChange: onChangeCustom,
   ...customSelectProps
 }: UiComponentProps &
   CustomSelectFormFieldProps<
@@ -246,6 +255,7 @@ const CustomSelectFormField = <
             : optionToFormValue(option as Option)
 
           onChange(newValue)
+          onChangeCustom?.(option)
         }
 
         const valueOption = options
@@ -272,7 +282,7 @@ const CustomSelectFormField = <
               {...customSelectProps}
               {...fieldProps}
               onChange={onChangeProperty}
-              value={valueOption}
+              value={clearInputOnChange ? [] : valueOption}
               defaultValue={defaultValue}
               getOptionValue={optionToFormValue}
               getOptionLabel={getOptionLabel}

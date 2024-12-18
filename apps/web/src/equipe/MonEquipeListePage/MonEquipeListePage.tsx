@@ -1,4 +1,5 @@
 import React from 'react'
+import Button from '@codegouvfr/react-dsfr/Button'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
@@ -26,7 +27,7 @@ const MonEquipeListePage = ({
   coordinateur: {
     user: { name, email, phone },
   },
-  canSeeMediateursDetails = true,
+  coordinateurView = true,
   stats: { total, conseillerNumerique, mediateurNumerique },
 }: MonEquipePageData & {
   searchParams: { lignes?: string; page?: string; recherche?: string }
@@ -35,19 +36,33 @@ const MonEquipeListePage = ({
   coordinateur: {
     user: { name: string | null; email: string | null; phone: string | null }
   }
-  canSeeMediateursDetails?: boolean
+  coordinateurView?: boolean
 }) => (
   <>
     <SkipLinksPortal links={defaultSkipLinks} />
     <div className="fr-container fr-container--800">
       <CoopBreadcrumbs currentPage="Mon équipe" />
       <main id={contentId} className="fr-mb-16w">
-        <div className="fr-flex fr-flex-wrap fr-direction-row fr-align-items-center fr-flex-gap-4v fr-mt-12v fr-mb-6v">
-          <span
-            className="ri-group-2-line ri-lg fr-line-height-1 fr-text-label--blue-france fr-background-alt--blue-france fr-p-2w fr-m-0 fr-border-radius--8"
-            aria-hidden
-          />
-          <h1 className="fr-page-title fr-m-0">Mon équipe · {total}</h1>
+        <div className="fr-flex fr-align-items-center fr-justify-content-space-between fr-mt-12v fr-mb-6v">
+          <span className="fr-flex fr-flex-wrap fr-direction-row fr-align-items-center fr-flex-gap-4v">
+            <span
+              className="ri-group-2-line ri-lg fr-line-height-1 fr-text-label--blue-france fr-background-alt--blue-france fr-p-2w fr-m-0 fr-border-radius--8"
+              aria-hidden
+            />
+            <h1 className="fr-page-title fr-m-0">Mon équipe · {total}</h1>
+          </span>
+          {coordinateurView && (
+            <span>
+              <Button
+                linkProps={{
+                  href: `${baseHref}/inviter`,
+                }}
+                iconId="fr-icon-user-add-line"
+              >
+                Inviter des membres
+              </Button>
+            </span>
+          )}
         </div>
         <div>
           Équipe coordonnée par <span className="fr-text--bold">{name}</span>
@@ -99,7 +114,7 @@ const MonEquipeListePage = ({
         </div>
         <MediateurList
           mediateurs={mediateurs}
-          canSeeMediateursDetails={canSeeMediateursDetails}
+          canSeeMediateursDetails={coordinateurView}
           baseHref={baseHref}
         />
         <PaginationNavWithPageSizeSelect

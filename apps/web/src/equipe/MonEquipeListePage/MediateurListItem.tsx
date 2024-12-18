@@ -42,6 +42,7 @@ export const MediateurListItem = ({
   status,
   isConseillerNumerique,
   finDeContrat,
+  type,
 }: MediateurListProps) =>
   firstName || lastName ? (
     <div className="fr-py-5v fr-px-2v">
@@ -55,9 +56,15 @@ export const MediateurListItem = ({
           )}
         </div>
         <div>
-          <Badge severity={statusSeverity(status)} noIcon>
-            {status}
-          </Badge>
+          {type === 'invited' ? (
+            <Badge severity="info" noIcon>
+              Invitation envoyée
+            </Badge>
+          ) : (
+            <Badge severity={statusSeverity(status)} noIcon>
+              {status}
+            </Badge>
+          )}
         </div>
       </div>
       <div className="fr-text-mention--grey fr-text--semi-bold fr-text--sm fr-mb-0 fr-flex fr-flex-gap-2v fr-direction-md-row fr-direction-column">
@@ -87,10 +94,16 @@ export const MediateurListItem = ({
       </div>
     </div>
   ) : (
-    <div className="fr-text--bold fr-py-9v fr-flex fr-justify-content-space-between fr-direction-md-row fr-direction-column">
+    <div className="fr-text--bold fr-py-9v fr-px-2v fr-flex fr-justify-content-space-between fr-direction-md-row fr-direction-column">
       {email}
-      <Badge severity={statusSeverity(status)} noIcon>
-        {status}
-      </Badge>
+      {type === 'invited' ? (
+        <Badge severity="info" noIcon>
+          Invitation envoyée
+        </Badge>
+      ) : (
+        <Badge severity={statusSeverity(status)} noIcon>
+          {status}
+        </Badge>
+      )}
     </div>
   )

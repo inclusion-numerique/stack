@@ -33,7 +33,7 @@ const initialOptionFor = (
     ? [
         {
           label: `${getUserDisplayName(mediateur.user)} (Mes statistiques)`,
-          value: { mediateurId: mediateur.id },
+          value: { mediateurId: mediateur.id, email: mediateur.user.email },
         },
       ]
     : []
@@ -81,7 +81,7 @@ export const getInitialMediateursOptionsForSearch = async ({
   const initialMedtateursOptions: MediateurOption[] = mediateursForSelect.map(
     ({ user, id }) => ({
       label: getUserDisplayName(user),
-      value: { mediateurId: id },
+      value: { mediateurId: id, email: user.email },
     }),
   )
 

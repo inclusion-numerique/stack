@@ -24,7 +24,11 @@ export const searchMediateur = async (options: SearchMediateurOptions) => {
   })
 
   const matchesWhere = {
-    id: { in: mediateurIds.map(({ mediateurId }) => mediateurId) },
+    id: {
+      not: {
+        in: mediateurIds.map(({ mediateurId }) => mediateurId),
+      },
+    },
     user: {
       AND: toQueryParts(searchParams).map((part) => ({
         OR: [
@@ -48,6 +52,9 @@ export const searchMediateur = async (options: SearchMediateurOptions) => {
           name: true,
           email: true,
         },
+      },
+      conseillerNumerique: {
+        select: { id: true },
       },
     },
     orderBy: [{ user: { lastName: 'asc' } }, { user: { firstName: 'asc' } }],

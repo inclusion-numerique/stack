@@ -1,6 +1,12 @@
 import { givenUser } from '../givenUser'
 import { centreSocial, mediateque, structureEmployeuse } from '../structures'
 
+export const conseillerInscriptionMediateurId =
+  'b119ef9d-5732-4429-8138-5452fe248497'
+
+export const conseillerInscriptionConseillerNumeriqueId =
+  'conseiller-numerique-inscription'
+
 export const conseillerInscription = givenUser({
   id: '0658cfe9-93aa-4de8-96a1-613452ac82ea',
   firstName: 'Conseiller Num',
@@ -10,17 +16,17 @@ export const conseillerInscription = givenUser({
   mediateur: {
     connectOrCreate: {
       where: {
-        id: 'b119ef9d-5732-4429-8138-5452fe248497',
+        id: conseillerInscriptionMediateurId,
       },
       create: {
-        id: 'b119ef9d-5732-4429-8138-5452fe248497',
+        id: conseillerInscriptionMediateurId,
         conseillerNumerique: {
           connectOrCreate: {
             where: {
-              id: 'conseiller-numerique-inscription',
+              id: conseillerInscriptionConseillerNumeriqueId,
             },
             create: {
-              id: 'conseiller-numerique-inscription',
+              id: conseillerInscriptionConseillerNumeriqueId,
             },
           },
         },

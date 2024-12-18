@@ -39,28 +39,37 @@ const LayoutWithFooter = ({
           <MjmlColumn width="20%" verticalAlign="middle">
             <MjmlImage
               align="center"
-              src={emailAssetUrl('/email/logo_anct.svg')}
-              alt={`Logo ${PublicWebAppConfig.projectTitle}`}
+              src={emailAssetUrl('/email/fr.svg')}
+              alt="République Française"
             />
           </MjmlColumn>
         </MjmlSection>
       ) : (
         <>
-          <MjmlSection paddingBottom={0}>
+          <MjmlSection padding="40px 40px 0 40px">
             <MjmlColumn width="20%" verticalAlign="middle">
               <MjmlImage
+                padding={0}
                 align="left"
-                src={emailAssetUrl('/email/logo_anct.svg')}
-                alt={`Logo ${PublicWebAppConfig.projectTitle}`}
+                src={emailAssetUrl('/email/fr.svg')}
+                alt="République Française"
               />
             </MjmlColumn>
-            <MjmlColumn width="80%" verticalAlign="middle">
-              <MjmlText fontWeight="500" fontSize="18px">
+            <MjmlColumn width="15%" verticalAlign="middle">
+              <MjmlImage
+                padding="0 10px 0 32px"
+                align="left"
+                src={emailAssetUrl('/email/coop.svg')}
+                alt="Logo coop de la médiation numérique"
+              />
+            </MjmlColumn>
+            <MjmlColumn width="65%" verticalAlign="middle">
+              <MjmlText padding={0} fontWeight="500" fontSize="18px">
                 {PublicWebAppConfig.projectTitle}
               </MjmlText>
             </MjmlColumn>
           </MjmlSection>
-          <MjmlSection padding="8px 0">
+          <MjmlSection padding="8px 15px">
             <MjmlColumn>
               <MjmlDivider
                 border-width="1px"
