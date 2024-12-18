@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server'
-import type { JsonApiListResponse, JsonApiResource } from '@app/web/app/api/v1/JsonApiTypes'
+import type {
+  JsonApiListResponse,
+  JsonApiResource,
+} from '@app/web/app/api/v1/JsonApiTypes'
 import { prismaClient } from '@app/web/prismaClient'
 import { apiV1Url } from '@app/web/app/api/v1/apiV1Url'
 import {

@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { DefaultValues } from 'react-hook-form'
+import Button from '@codegouvfr/react-dsfr/Button'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
 import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
@@ -11,7 +12,6 @@ import { prismaClient } from '@app/web/prismaClient'
 import { ClientApiData } from '@app/web/app/administration/clients-api/ClientApiValidation'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import GenerateUniqueClientApiSecretForm from '@app/web/app/administration/clients-api/RotateApiClientSecretForm'
-import Button from '@codegouvfr/react-dsfr/Button'
 
 export const metadata = {
   title: metadataTitle('Client API - Détails'),
