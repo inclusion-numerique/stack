@@ -16,31 +16,37 @@ const Page = async () => {
   const data = await getApiClientsListPageData()
 
   return (
-    <>
-      <CoopPageContainer>
-        <AdministrationBreadcrumbs currentPage="Clients API" />
-        <AdministrationTitle
-          icon="ri-key-2-line"
-          actions={
+    <CoopPageContainer size="full">
+      <AdministrationBreadcrumbs currentPage="Clients API" />
+      <AdministrationTitle
+        icon="ri-key-2-line"
+        actions={
+          <>
+            <Button
+              iconId="fr-icon-file-text-line"
+              linkProps={{ href: '/api/v1/documentation', target: '_blank' }}
+              className="fr-mr-2v"
+              priority="secondary"
+            >
+              Documentation
+            </Button>
             <Button
               iconId="fr-icon-add-line"
               linkProps={{ href: '/administration/clients-api/creer' }}
             >
               Ajouter un client API
             </Button>
-          }
-        >
-          Clients API
-        </AdministrationTitle>
-      </CoopPageContainer>
-      <CoopPageContainer size="full">
-        <ApiClientsTable
-          data={data.apiClients}
-          searchParams={{}}
-          baseHref="/administration/clients-api"
-        />
-      </CoopPageContainer>
-    </>
+          </>
+        }
+      >
+        Clients API
+      </AdministrationTitle>
+      <ApiClientsTable
+        data={data.apiClients}
+        searchParams={{}}
+        baseHref="/administration/clients-api"
+      />
+    </CoopPageContainer>
   )
 }
 

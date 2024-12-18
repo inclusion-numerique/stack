@@ -11,6 +11,7 @@ import { prismaClient } from '@app/web/prismaClient'
 import { ClientApiData } from '@app/web/app/administration/clients-api/ClientApiValidation'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import GenerateUniqueClientApiSecretForm from '@app/web/app/administration/clients-api/RotateApiClientSecretForm'
+import Button from '@codegouvfr/react-dsfr/Button'
 
 export const metadata = {
   title: metadataTitle('Client API - Détails'),
@@ -51,8 +52,20 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
           },
         ]}
       />
-      <AdministrationTitle icon="ri-key-2-line">
-        Client API {client.name}
+      <AdministrationTitle
+        icon="ri-key-2-line"
+        actions={
+          <Button
+            iconId="fr-icon-file-text-line"
+            linkProps={{ href: '/api/v1/documentation', target: '_blank' }}
+            className="fr-mr-2v"
+            priority="secondary"
+          >
+            Documentation
+          </Button>
+        }
+      >
+        {client.name}
       </AdministrationTitle>
 
       <AdministrationInfoCard>

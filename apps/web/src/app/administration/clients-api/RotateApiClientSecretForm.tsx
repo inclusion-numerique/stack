@@ -55,7 +55,7 @@ const RotateApiClientSecretForm = ({ clientId }: { clientId: string }) => {
         onClick={onGenerate}
         {...buttonLoadingClassname(isLoading)}
       >
-        Générer un nouveau secret unique
+        Générer un nouveau token secret
       </Button>
     </>
   ) : (
@@ -69,7 +69,7 @@ const RotateApiClientSecretForm = ({ clientId }: { clientId: string }) => {
         onClick={onGenerate}
         {...buttonLoadingClassname(isLoading)}
       >
-        Générer un client secret
+        Générer un token secret
       </Button>
     </>
   )
