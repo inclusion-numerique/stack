@@ -21,6 +21,7 @@ export const Complet: Story = {
     typologies: ['TIERS_LIEUX', 'ASSO'],
     siret: '43493312300029',
     isLieuActivite: true,
+    isConseillerNumerique: false,
   },
 }
 
@@ -32,6 +33,7 @@ export const Minimal: Story = {
     commune: 'Reims',
     codePostal: '51100',
     isLieuActivite: false,
+    isConseillerNumerique: false,
   },
 }
 
@@ -44,6 +46,7 @@ export const MinimalAvecSiret: Story = {
     codePostal: '51100',
     siret: '43493312300029',
     isLieuActivite: false,
+    isConseillerNumerique: true,
   },
 }
 
@@ -56,5 +59,6 @@ export const MinimalAvecTypologies: Story = {
     codePostal: '51100',
     typologies: ['TIERS_LIEUX', 'ASSO'],
     isLieuActivite: false,
+    isConseillerNumerique: true,
   },
 }
