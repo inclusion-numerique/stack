@@ -9,6 +9,7 @@ import { generatePageSizeSelectOptions } from '@app/web/data-table/pageSizeSelec
 import PaginationNavWithPageSizeSelect from '@app/web/data-table/PaginationNavWithPageSizeSelect'
 import SortSelect from '@app/web/data-table/SortSelect'
 import { MonEquipePageData } from './getMonEquipePageData'
+import LeaveTeamButton from './LeaveTeamButton'
 import { MediateurList } from './MediateurList'
 
 const pluralize = (expression: string, count: number) =>
@@ -25,6 +26,7 @@ const MonEquipeListePage = ({
   totalPages,
   baseHref,
   coordinateur: {
+    id: coordinateurId,
     user: { name, email, phone },
   },
   coordinateurView = true,
@@ -34,6 +36,7 @@ const MonEquipeListePage = ({
   totalPages: number
   baseHref: string
   coordinateur: {
+    id: string
     user: { name: string | null; email: string | null; phone: string | null }
   }
   coordinateurView?: boolean
@@ -51,7 +54,7 @@ const MonEquipeListePage = ({
             />
             <h1 className="fr-page-title fr-m-0">Mon équipe · {total}</h1>
           </span>
-          {coordinateurView && (
+          {coordinateurView ? (
             <span>
               <Button
                 linkProps={{
@@ -61,6 +64,10 @@ const MonEquipeListePage = ({
               >
                 Inviter des membres
               </Button>
+            </span>
+          ) : (
+            <span>
+              <LeaveTeamButton coordinateurId={coordinateurId} />
             </span>
           )}
         </div>
