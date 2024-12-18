@@ -48,6 +48,7 @@ export const webAppStackSensitiveVariables = [
   'PROCONNECT_MAIN_CLIENT_SECRET',
   'INTERNAL_API_PRIVATE_KEY',
   'CONSEILLER_NUMERIQUE_MONGODB_URL',
+  'HMAC_SECRET_KEY',
 ] as const
 
 /**
@@ -202,6 +203,7 @@ export class WebAppStack extends TerraformStack {
           sensitiveEnvironmentVariables.INTERNAL_API_PRIVATE_KEY.value,
         CONSEILLER_NUMERIQUE_MONGODB_URL:
           sensitiveEnvironmentVariables.CONSEILLER_NUMERIQUE_MONGODB_URL.value,
+        HMAC_SECRET_KEY: sensitiveEnvironmentVariables.HMAC_SECRET_KEY.value,
       },
       name: containerName,
       minScale: isMain ? 2 : namespace === 'dev' ? 1 : 0,
