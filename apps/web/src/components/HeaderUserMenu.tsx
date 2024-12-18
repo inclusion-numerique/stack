@@ -48,7 +48,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
   const menuContent = (
     <ul className="fr-menu__list">
       <li>
-        <span className="fr-nav__link fr-pt-4v fr-pb-2v">
+        <span className="fr-nav__link fr-display-block fr-pt-4v fr-pb-2v">
           {!!user.name && (
             <span className="fr-text--medium fr-text--sm fr-display-block">
               {user.name}
@@ -62,7 +62,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
       {!restricted && (
         <li>
           <Link
-            className="fr-nav__link"
+            className="fr-nav__link fr-display-block"
             href="/coop/mon-profil"
             style={{ boxShadow: 'none' }}
           >
@@ -80,7 +80,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
         user.mediateur._count.enActivite > 0 && (
           <li>
             <Link
-              className="fr-nav__link"
+              className="fr-nav__link fr-display-block"
               href="/coop/lieux-activite"
               style={{ boxShadow: 'none' }}
             >
@@ -99,7 +99,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
       {!restricted && user.coordinateur && (
         <li>
           <Link
-            className="fr-nav__link fr-border--bottom-0"
+            className="fr-nav__link fr-display-block fr-border--bottom-0"
             href="/coop/mon-equipe"
             style={{ boxShadow: 'none' }}
           >
@@ -120,7 +120,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
         user.mediateur?.coordinations.length === 1 && (
           <li>
             <Link
-              className="fr-nav__link fr-border--bottom-0"
+              className="fr-nav__link fr-display-block fr-border--bottom-0"
               href={`/coop/mes-equipes/${user.mediateur?.coordinations.at(0)?.coordinateur.id}`}
               style={{ boxShadow: 'none' }}
             >
@@ -142,7 +142,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
       {!restricted && (isConseillerNumerique(user) || isCoordinateur(user)) && (
         <li>
           <Link
-            className="fr-nav__link"
+            className="fr-nav__link fr-display-block"
             href="/coop/archives-v1"
             style={{ boxShadow: 'none' }}
           >
@@ -159,13 +159,13 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
         !user.coordinateur &&
         (user.mediateur?.coordinations.length ?? 0) > 1 && (
           <li className="fr-border--top">
-            <span className="fr-nav__link fr-pb-0 fr-text-mention--grey fr-text--medium fr-text--sm">
+            <span className="fr-nav__link fr-display-block fr-pb-0 fr-text-mention--grey fr-text--medium fr-text--sm">
               Mes équipes
             </span>
             {user.mediateur?.coordinations.map((coordination, index) => (
               <Link
                 key={coordination.coordinateur.id}
-                className="fr-nav__link"
+                className="fr-nav__link fr-display-block"
                 href={`/coop/mes-equipes/${coordination.coordinateur.id}`}
                 style={{ boxShadow: 'none' }}
               >
@@ -193,11 +193,11 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
         )}
       {!restricted && structureEmployeuse && (
         <li className="fr-border--top">
-          <span className="fr-nav__link fr-pb-0 fr-text-mention--grey fr-text--medium fr-text--sm">
+          <span className="fr-nav__link fr-display-block fr-pb-0 fr-text-mention--grey fr-text--medium fr-text--sm">
             Ma structure employeuse
           </span>
           <Link
-            className="fr-nav__link fr-border--bottom"
+            className="fr-nav__link fr-display-block fr-border--bottom"
             href="/coop/ma-structure-employeuse"
             style={{ boxShadow: 'none' }}
           >
@@ -212,7 +212,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
       )}
       {user.usurper && <TerminerUsurpationHeaderUserMenuItem />}
       <li>
-        <Link className="fr-nav__link" href="/deconnexion">
+        <Link className="fr-nav__link fr-display-block" href="/deconnexion">
           <span
             className="fr-icon-logout-box-r-line fr-icon--sm fr-mr-1w"
             style={{ color: 'var(--blue-france-sun-113-625)' }}
