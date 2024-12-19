@@ -46,7 +46,17 @@ export const POST = async (request: NextRequest) => {
 
   const { chatSessionId, prompt } = requestData.data
 
-  const chatSession = await getChatSession(chatSessionId)
+  const chatSession = chatSessionId
+    ? await getChatSession(chatSessionId)
+    : await prismaClient.assistantChatSession
+        .create({
+          data: {
+            createdById: user.id,
+            context: '',
+          },
+        })
+        .then((createdChatSession) => ({ ...createdChatSession, messages: [] }))
+
   if (!chatSession) {
     return notFoundResponse()
   }
@@ -110,6 +120,13 @@ export const POST = async (request: NextRequest) => {
     },
     cancel() {
       console.warn('chat response stream cancelled by client.')
+    },
+  })
+
+  await prismaClient.assistantChatSession.update({
+    where: { id: chatSessionId },
+    data: {
+      updated: new Date(),
     },
   })
 

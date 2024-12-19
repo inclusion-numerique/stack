@@ -101,9 +101,9 @@ const AdministrationSideMenu = () => {
         </>
       ),
       linkProps: {
-        href: '/administration/chat',
+        href: '/assistant/chat',
       },
-      isActive: pathname?.startsWith('/administration/outils'),
+      isActive: pathname?.startsWith('/assistant'),
     },
   ] satisfies SideMenuProps.Item[]
 

@@ -1,14 +1,24 @@
-import { getChatSession } from '@app/web/assistant/getChatSession'
+import {
+  getChatSession,
+  getUserChatSessions,
+} from '@app/web/assistant/getChatSession'
 
 export const getAssistantPageData = async ({
+  userId,
   chatSessionId,
 }: {
-  chatSessionId: string
+  userId: string
+  chatSessionId?: string
 }) => {
-  const chatSession = await getChatSession(chatSessionId)
+  const chatSession = chatSessionId
+    ? await getChatSession(chatSessionId)
+    : undefined
+
+  const chatSessions = await getUserChatSessions(userId)
 
   return {
-    chatSession,
+    chatSessions,
+    chatSession, // null if not found, undefined if not required in params
   }
 }
 

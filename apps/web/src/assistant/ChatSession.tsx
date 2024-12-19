@@ -11,14 +11,26 @@ import ChatMessage from '@app/web/assistant/ChatMessage'
 import { assistantEndpoints } from '@app/web/assistant/assistantEndpoints'
 import type { AssistantChatRequestData } from '@app/web/app/api/assistant/chat/AssistantChatRequestData'
 import styles from './ChatSession.module.css'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { trpc } from '@app/web/trpc'
+import { useRouter } from 'next/navigation'
 
-const ChatSession = ({ chatSession }: { chatSession: ChatSessionData }) => {
+const ChatSession = ({
+  chatSession,
+}: {
+  chatSession: ChatSessionData | null | undefined
+}) => {
+  const generateSessionTitleMutation =
+    trpc.assistant.generateSessionTitle.useMutation()
+  const createSessionMutation = trpc.assistant.createSession.useMutation()
+  const router = useRouter()
+
   const form = useForm<{ prompt: string }>()
   const [isStreamingResponse, setIsStreamingResponse] = useState(false)
   const [isSendingPrompt, setIsSendingPrompt] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const [messages, setMessages] = useState(chatSession.messages)
+  const [messages, setMessages] = useState(chatSession?.messages ?? [])
 
   const controllerRef = useRef<AbortController | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -51,7 +63,7 @@ const ChatSession = ({ chatSession }: { chatSession: ChatSessionData }) => {
 
   const streamingResponseMessageRef = useRef<HTMLDivElement>(null)
 
-  const onSubmit = form.handleSubmit((data) => {
+  const onSubmit = form.handleSubmit(async (data) => {
     if (!data.prompt?.trim()) return
 
     setError(null)
@@ -60,9 +72,17 @@ const ChatSession = ({ chatSession }: { chatSession: ChatSessionData }) => {
 
     setIsSendingPrompt(true)
 
+    let chatSessionId = chatSession?.id
+
+    if (!chatSessionId) {
+      const createSessionResponse = await createSessionMutation.mutateAsync()
+      chatSessionId = createSessionResponse.id
+      router.replace(`/assistant/chat/${chatSessionId}`, { scroll: false })
+    }
+
     const promptData: AssistantChatRequestData = {
       prompt: data.prompt,
-      chatSessionId: chatSession.id,
+      chatSessionId,
     }
 
     fetch(assistantEndpoints.chat, {
@@ -85,7 +105,7 @@ const ChatSession = ({ chatSession }: { chatSession: ChatSessionData }) => {
             id: new Date().toISOString(),
             content: data.prompt,
             role: 'User',
-            sessionId: chatSession.id,
+            sessionId: chatSessionId ?? 'not-created',
             created,
             name: null,
             refusal: null,
@@ -132,7 +152,7 @@ const ChatSession = ({ chatSession }: { chatSession: ChatSessionData }) => {
             id: new Date().toISOString(),
             content: streamContent,
             role: 'Assistant',
-            sessionId: chatSession.id,
+            sessionId: chatSessionId ?? 'not-created',
             created,
             name: null,
             refusal: null,
@@ -142,8 +162,16 @@ const ChatSession = ({ chatSession }: { chatSession: ChatSessionData }) => {
         ])
       })
       .catch((promptError) => {
-        console.error('Prompt POST error:', promptError)
-        setError('Une erreur est survenue')
+        console.error('Response stream error:', promptError)
+
+        // This is an expected error, the user aborted the request
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        if (promptError.name === 'AbortError') {
+          // no op
+        } else {
+          setError('Une erreur est survenue 🙁, veuillez réessayer.')
+        }
+
         setIsStreamingResponse(false)
         setIsSendingPrompt(false)
 
@@ -159,27 +187,37 @@ const ChatSession = ({ chatSession }: { chatSession: ChatSessionData }) => {
 
   return (
     <div className={styles.sessionContainer}>
-      <div className={styles.messages} ref={messagesContainerRef}>
-        {messages.length === 0 && (
-          <div className="fr-flex fr-width-full fr-direction-column fr-align-items-center fr-justify-content-center fr-height-full">
-            <h2>Comment puis-je vous aider ?</h2>
-          </div>
-        )}
-        {messages.map((message) => (
-          <ChatMessage key={message.id} message={message} />
-        ))}
-        <ChatMessage
-          contentRef={streamingResponseMessageRef}
-          style={{ display: isStreamingResponse ? 'block' : 'none' }}
-          message={{
-            role: 'Assistant',
-            content: '',
-          }}
-        />
-        {!!error && <p className="fr-error-text">{error}</p>}
+      <div className={styles.messagesContainer} ref={messagesContainerRef}>
+        <div className={styles.messages}>
+          {messages.length === 0 && (
+            <div className="fr-flex fr-width-full fr-direction-column fr-align-items-center fr-justify-content-center fr-height-full">
+              <h2>Comment puis-je vous aider ?</h2>
+            </div>
+          )}
+          {messages.map((message) => (
+            <ChatMessage key={message.id} message={message} />
+          ))}
+          <ChatMessage
+            contentRef={streamingResponseMessageRef}
+            style={{ display: isStreamingResponse ? 'block' : 'none' }}
+            message={{
+              role: 'Assistant',
+              content: '',
+            }}
+          />
+          {!!error && (
+            <ChatMessage
+              key="error"
+              message={{
+                role: 'Assistant',
+                content: error,
+              }}
+            />
+          )}
 
-        {/* This div is used as a marker for scrolling to the bottom */}
-        <div ref={messagesEndRef} />
+          {/* This div is used as a marker for scrolling to the bottom */}
+          <div ref={messagesEndRef} />
+        </div>
       </div>
       <div className={styles.inputContainer}>
         <form onSubmit={onSubmit}>
@@ -190,37 +228,45 @@ const ChatSession = ({ chatSession }: { chatSession: ChatSessionData }) => {
             )}
           >
             <InputFormField
-              className="fr-flex-grow-1"
+              className="fr-flex-grow-1 fr-m-0"
               control={form.control}
               path="prompt"
-              placeholder="Votre message..."
+              placeholder="Envoyer un message à l’assistant"
+              classes={{
+                input: 'fr-input--alt-blue-ecume',
+                label: 'fr-display-none',
+              }}
             />
             {isStreamingResponse ? (
               <Button
-                priority="secondary"
-                iconId="fr-icon-stop-circle-line"
+                priority="tertiary"
+                iconId="ri-stop-fill"
                 type="button"
+                className="fr-border-radius--32 fr-px-3v"
                 onClick={onAbort}
-                size="small"
-              >
-                Stop
-              </Button>
+                title="Arrêter"
+              />
             ) : (
               <Button
                 priority="primary"
                 iconId="fr-icon-check-line"
                 type="submit"
-                size="small"
-                {...buttonLoadingClassname(isSendingPrompt)}
-              >
-                Envoyer
-              </Button>
+                {...buttonLoadingClassname(
+                  isSendingPrompt,
+                  'fr-border-radius--32',
+                )}
+                title="Envoyer"
+              />
             )}
           </div>
         </form>
+        <p className="fr-mt-4v fr-mb-0 fr-text--xs fr-text-mention--grey fr-text--center">
+          L’assistant peut faire des erreurs. Vérifiez les informations
+          importantes.
+        </p>
       </div>
     </div>
   )
 }
 
-export default ChatSession
+export default withTrpc(ChatSession)

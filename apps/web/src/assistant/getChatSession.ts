@@ -19,3 +19,21 @@ export type ChatSessionData = Exclude<
   Awaited<ReturnType<typeof getChatSession>>,
   null
 >
+
+export const getUserChatSessions = async (userId: string) => {
+  const chatSessions = await prismaClient.assistantChatSession.findMany({
+    where: {
+      createdById: userId,
+    },
+
+    orderBy: {
+      created: 'desc',
+    },
+  })
+
+  return chatSessions
+}
+
+export type UserChatSessionsList = Awaited<
+  ReturnType<typeof getUserChatSessions>
+>

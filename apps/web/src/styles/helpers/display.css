@@ -10,6 +10,10 @@
   display: block;
 }
 
+.fr-display-none {
+  display: none;
+}
+
 .fr-display-inline-block {
   display: inline-block;
 }

@@ -1,7 +1,8 @@
 import type { AssistantChatMessage } from '@prisma/client'
 import { CSSProperties } from 'react'
-import classNames from 'classnames'
 import styles from './ChatSession.module.css'
+import LogoCoop from '@app/web/components/LogoCoop'
+import classNames from 'classnames'
 
 const ChatMessage = ({
   message: { content, role },
@@ -12,10 +13,13 @@ const ChatMessage = ({
   contentRef?: React.RefObject<HTMLDivElement>
   style?: CSSProperties
 }) => (
-  <div className={styles.message} style={style}>
-    <div className={classNames('fr-mb-2v fr-text--bold')}>
-      {role === 'Assistant' ? 'Assistant' : 'Vous'}
-    </div>
+  <div
+    className={classNames(styles.message, styles[`message${role}`])}
+    style={style}
+  >
+    {role === 'Assistant' && (
+      <LogoCoop className={styles.messageLogoCoop} height={32} width={32} />
+    )}
     <div
       ref={contentRef}
       dangerouslySetInnerHTML={{ __html: content.replaceAll('\n', '<br/>') }}

@@ -1,6 +1,19 @@
+.assistantPageContent {
+    --header-height: 72px;
+    --content-height: calc(100vh - var(--header-height));
+    min-height: var(--content-height);
+    height: var(--content-height);
+    max-height: var(--content-height);
+}
+
+.assistantSidemenu {
+    width: 280px;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
 .sessionContainer {
-    --header-height: 80px;
-    --page-top-height: 200px;
+    --header-height: 72px;
     --content-height: calc(100vh - var(--header-height));
 
     min-height: var(--content-height);
@@ -11,11 +24,21 @@
     align-items: center;
 }
 
-.messages {
+
+.messagesContainer {
     overflow-y: scroll;
     flex: 1;
     width: 100%;
 }
+
+.messages {
+    padding: 40px 64px 0 64px;
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
 
 .cta {
     margin-top: 40px;
@@ -26,12 +49,32 @@
 }
 
 .inputContainer {
-    padding-bottom: 48px;
+    padding: 0 64px 48px 64px;
+    max-width: 800px;
+    margin: 0 auto;
     width: 100%;
 }
 
 .message {
     width: 100%;
-    margin-top: 40px;
+    margin-bottom: 40px;
+    position: relative;
+    padding:  8px 16px;
+    border-radius: 24px;
+}
 
+.messageUser {
+    background-color: var(--blue-france-975-75);
+    width: auto;
+    max-width: 75%;
+    align-self: flex-end;
+}
+
+.messageAssistant {
+}
+
+.messageLogoCoop {
+    position: absolute;
+    top: 4px;
+    left: -32px;
 }
