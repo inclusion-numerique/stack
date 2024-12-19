@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import Breadcrumbs from '@app/web/components/Breadcrumbs'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import { contentId } from '@app/web/utils/skipLinks'
 
 export const metadata: Metadata = {
   title: 'Politique de confidentialité - Les Bases',
