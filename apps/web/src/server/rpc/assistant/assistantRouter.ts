@@ -16,11 +16,68 @@ export const assistantRouter = router({
 
     return chatSession
   }),
+  changeSessionTitle: protectedProcedure
+    .input(
+      z.object({
+        chatSessionId: z.string().uuid(),
+        title: z.string().min(1).max(80),
+      }),
+    )
+    .mutation(async ({ input: { chatSessionId, title }, ctx: { user } }) => {
+      const chatSession = await prismaClient.assistantChatSession.findUnique({
+        where: { id: chatSessionId, deleted: null },
+        include: {
+          messages: {
+            orderBy: { created: 'asc' },
+          },
+        },
+      })
+
+      if (!chatSession) throw invalidError('Chat session not found')
+
+      if (chatSession.createdById !== user.id)
+        throw forbiddenError('User is not the creator of this chat session')
+
+      await prismaClient.assistantChatSession.update({
+        where: { id: chatSessionId },
+        data: {
+          title,
+        },
+      })
+
+      return chatSession
+    }),
+  deleteSession: protectedProcedure
+    .input(z.object({ chatSessionId: z.string().uuid() }))
+    .mutation(async ({ input: { chatSessionId }, ctx: { user } }) => {
+      const chatSession = await prismaClient.assistantChatSession.findUnique({
+        where: { id: chatSessionId, deleted: null },
+        include: {
+          messages: {
+            orderBy: { created: 'asc' },
+          },
+        },
+      })
+
+      if (!chatSession) throw invalidError('Chat session not found')
+
+      if (chatSession.createdById !== user.id)
+        throw forbiddenError('User is not the creator of this chat session')
+
+      await prismaClient.assistantChatSession.update({
+        where: { id: chatSessionId },
+        data: {
+          deleted: new Date(),
+        },
+      })
+
+      return chatSession
+    }),
   generateSessionTitle: protectedProcedure
     .input(z.object({ chatSessionId: z.string().uuid() }))
     .mutation(async ({ input: { chatSessionId }, ctx: { user } }) => {
       const chatSession = await prismaClient.assistantChatSession.findUnique({
-        where: { id: chatSessionId },
+        where: { id: chatSessionId, deleted: null },
         include: {
           messages: {
             orderBy: { created: 'asc' },

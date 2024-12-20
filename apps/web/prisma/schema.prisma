@@ -1005,6 +1005,7 @@ model AssistantChatSession {
 
   created  DateTime               @default(now())
   updated  DateTime               @default(now())
+  deleted  DateTime?
   messages AssistantChatMessage[]
 
   @@index([createdById])
