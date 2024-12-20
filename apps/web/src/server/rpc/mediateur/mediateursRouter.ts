@@ -9,10 +9,11 @@ import { searchMediateur } from '@app/web/mediateurs/searchMediateurs'
 import { removeMediateurFromTeamOf } from '@app/web/mediateurs/removeMediateurFromTeamOf'
 import { findInvitationFrom } from '@app/web/mediateurs/findInvitationFrom'
 import { inviteToJoinTeamOf } from '@app/web/mediateurs/inviteToJoinTeamOf'
+import { leaveTeamOf } from '@app/web/mediateurs/leaveTeamOf'
 import { acceptInvitation } from '@app/web/mediateurs/acceptInvitation'
 import { declineInvitation } from '@app/web/mediateurs/declineInvitation'
 import { InviterMembreValidation } from '@app/web/equipe/InviterMembreValidation'
-import { isCoordinateur } from '@app/web/auth/userTypeGuards'
+import { isCoordinateur, isMediateur } from '@app/web/auth/userTypeGuards'
 import { InvitationValidation } from '@app/web/equipe/InvitationValidation'
 
 export const mediateursRouter = router({
@@ -34,6 +35,13 @@ export const mediateursRouter = router({
         throw forbiddenError('User is not a coordinateur')
 
       return removeMediateurFromTeamOf(user.coordinateur)(mediateurId)
+    }),
+  leaveTeam: protectedProcedure
+    .input(z.object({ coordinateurId: z.string() }))
+    .mutation(({ input: { coordinateurId }, ctx: { user } }) => {
+      if (!isMediateur(user)) throw forbiddenError('User is not a mediateur')
+
+      return leaveTeamOf(user.mediateur)(coordinateurId)
     }),
   invite: protectedProcedure
     .input(InviterMembreValidation)

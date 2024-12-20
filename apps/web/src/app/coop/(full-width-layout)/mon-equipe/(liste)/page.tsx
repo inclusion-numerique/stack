@@ -26,7 +26,10 @@ const Page = async ({
       {...monEquipePageData}
       searchParams={searchParams}
       baseHref="/coop/mon-equipe"
-      coordinateur={{ user: authenticatedCoordinateur }}
+      coordinateur={{
+        id: authenticatedCoordinateur.coordinateur.id,
+        user: authenticatedCoordinateur,
+      }}
     />
   )
 }
