@@ -684,6 +684,8 @@ model Beneficiaire {
 
   notes String?
 
+  import DateTime? // Uniquement défini si importé depuis un fichier
+
   creation     DateTime  @default(now())
   modification DateTime  @default(now())
   suppression  DateTime?

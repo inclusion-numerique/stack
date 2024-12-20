@@ -200,6 +200,8 @@ export const beneficiairesRouter = router({
 
       const { rows, status } = analysis
 
+      const imported = new Date()
+
       const beneficiairesData = rows
         .map(
           (row): Prisma.BeneficiaireCreateManyInput => ({
@@ -217,6 +219,7 @@ export const beneficiairesRouter = router({
             communeCodeInsee: row.parsed.commune?.codeInsee,
             commune: row.parsed.commune?.nom,
             communeCodePostal: row.parsed.commune?.codePostal,
+            import: imported,
           }),
         )
         .filter(({ prenom, nom }) => prenom && nom)
