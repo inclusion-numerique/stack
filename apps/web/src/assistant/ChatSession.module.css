@@ -61,6 +61,14 @@
     position: relative;
     padding:  8px 16px;
     border-radius: 24px;
+
+    code {
+        display: inline-block;
+        font-size: .875rem !important;
+        background-color: var(--background-alt-grey);
+        padding: 2px 8px;
+        border-radius: 4px;
+    }
 }
 
 .messageUser {

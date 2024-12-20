@@ -3,15 +3,16 @@ import { v4 } from 'uuid'
 import { prismaClient } from '@app/web/prismaClient'
 import { getChatSession } from '@app/web/assistant/getChatSession'
 import {
-  executeOpenAiChat,
   executeOpenAiChatStream,
   OpenAiChatMessage,
 } from '@app/web/assistant/openAiChat'
 import { AssistantChatRequestDataValidation } from '@app/web/app/api/assistant/chat/AssistantChatRequestData'
 import { assistantMessageToOpenAiMessage } from '@app/web/assistant/assistantMessageToOpenAiMessage'
-import { chatSystemMessage } from '@app/web/assistant/systemMessages'
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
+import { tools } from '@app/web/assistant/tools'
+import { chatSystemMessage } from '@app/web/assistant/systemMessages'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 
 const notFoundResponse = () =>
   new Response('', {
@@ -85,23 +86,23 @@ export const POST = async (request: NextRequest) => {
     },
   ] satisfies OpenAiChatMessage[]
 
-  const asStream = true
-
-  if (!asStream) {
-    const result = await executeOpenAiChat({
-      messages,
-    }).catch((error) => ({
-      error: error as Error,
-    }))
-
-    return NextResponse.json(result)
-  }
-
   const stream = new ReadableStream({
     start(controller) {
       executeOpenAiChatStream({
         messages,
-        onChunk: (chunk) => controller.enqueue(chunk),
+        onChunk: (choice) => {
+          // TODO send more info on the choice to indicate if client must display that
+          // the assistant is executing a tool call
+          if (onlyDefinedAndNotNull(choice.delta.content)) {
+            controller.enqueue(choice.delta.content)
+          }
+        },
+        onToolCall: (choice) => {
+          // TODO start a tool call ? or wait for the end of the execution in the then ?
+          // TODO implement the multi-shot tool call and abstract the stream
+          console.log('ON TOOL CALL IN route.ts', choice)
+        },
+        tools,
       })
         .then((response) => {
           controller.close()
@@ -112,7 +113,9 @@ export const POST = async (request: NextRequest) => {
               id: v4(),
               sessionId: chatSession.id,
               role: 'Assistant',
-              content: response,
+              content: response.message,
+              toolCalls: response.toolCalls,
+              finishReason: response.finishReason,
             },
           })
         })

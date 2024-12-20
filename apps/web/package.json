@@ -85,6 +85,7 @@
     "jsonwebtoken": "^9.0.2",
     "lodash-es": "^4.17.21",
     "maplibre-gl": "^4.7.1",
+    "marked": "^15.0.4",
     "mjml": "^4.15.3",
     "mjml-react": "^2.0.8",
     "mongodb": "^6.12.0",

@@ -1,69 +1,93 @@
 import {
-  ChatCompletionCreateParams,
-  ChatCompletionFunctionCallOption,
+  ChatCompletionChunk,
   ChatCompletionMessageParam,
+  ChatCompletionTool,
+  ChatCompletionToolChoiceOption,
+  Delta,
 } from 'openai/src/resources/chat/completions'
 import {
   openAiClient,
   openAiClientConfiguration,
 } from '@app/web/assistant/openAiClient'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 
 export type OpenAiChatMessage = ChatCompletionMessageParam
 export type OpenAiChatRole = OpenAiChatMessage['role']
-export type OpenAiFunctionCall =
-  | 'none'
-  | 'auto'
-  | ChatCompletionFunctionCallOption
-export type OpenAiFunction = ChatCompletionCreateParams.Function
+export type OpenAiToolChoice = ChatCompletionToolChoiceOption
+export type OpenAiTool = ChatCompletionTool
+export type OpenAiChunkChoice = ChatCompletionChunk.Choice
 
 export const executeOpenAiChatStream = async ({
   onChunk,
+  onToolCall,
   messages,
-  functionCall,
-  functions,
+  toolChoice,
+  tools,
 }: {
   messages: OpenAiChatMessage[]
-  onChunk: (chunk: string) => void
-  functionCall?: OpenAiFunctionCall
-  functions?: OpenAiFunction[]
+  onChunk: (choice: OpenAiChunkChoice) => void
+  onToolCall: (choice: OpenAiChunkChoice) => void
+  toolChoice?: OpenAiToolChoice
+  tools?: OpenAiTool[]
 }) => {
   const chatStreamResponse = await openAiClient.chat.completions.create({
     model: openAiClientConfiguration.chatModel,
     messages,
-    function_call: functionCall,
-    functions,
+    tool_choice: toolChoice,
+    tools,
     stream: true,
   })
 
-  let reponse = ''
+  let message = ''
+  const toolCalls: Delta.ToolCall[] = []
+  let finishReason: OpenAiChunkChoice['finish_reason'] | undefined
 
   for await (const chunk of chatStreamResponse) {
-    const content = chunk.choices.at(0)?.delta.content
-    if (content === undefined || content === null) {
+    if (message === '') {
+      console.log('FIRST RAW CHUNK', chunk)
+    }
+    const choice = chunk.choices.at(0)
+    if (!choice) {
       continue
     }
+    if (choice.finish_reason) {
+      finishReason = choice.finish_reason
+    }
+    onChunk(choice)
 
-    const streamText = content
-    onChunk(streamText)
-    reponse += streamText
+    console.log('CHOICES', chunk.choices)
+
+    const { content, tool_calls: choiceToolCalls } = choice.delta
+
+    if (choiceToolCalls) {
+      toolCalls.push(...choiceToolCalls)
+    }
+
+    if (onlyDefinedAndNotNull(content)) {
+      message += content
+    }
   }
-  return reponse
+  return {
+    message,
+    toolCalls,
+    finishReason,
+  }
 }
 
 export const executeOpenAiChat = async ({
   messages,
-  functionCall,
-  functions,
+  toolChoice,
+  tools,
 }: {
   messages: OpenAiChatMessage[]
-  functionCall?: OpenAiFunctionCall
-  functions?: OpenAiFunction[]
+  toolChoice?: OpenAiToolChoice
+  tools?: OpenAiTool[]
 }) => {
   const chatResponse = await openAiClient.chat.completions.create({
     model: 'mistral-nemo-instruct-2407',
     messages,
-    function_call: functionCall,
-    functions,
+    tool_choice: toolChoice,
+    tools,
     stream: false,
   })
 

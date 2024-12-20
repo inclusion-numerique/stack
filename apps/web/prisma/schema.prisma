@@ -1037,6 +1037,7 @@ model AssistantChatMessage {
   // Additional fields for assistant chat messages
   refusal String?
   toolCalls Json[] @map("tool_calls") @default([])
+  finishReason String? @map("finish_reason")
 
   // Additional fields for tool calls
   toolCallId String? @map("tool_call_id")
