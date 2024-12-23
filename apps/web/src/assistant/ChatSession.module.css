@@ -57,7 +57,6 @@
 
 .message {
     width: 100%;
-    margin-bottom: 40px;
     position: relative;
     padding:  8px 16px;
     border-radius: 24px;
@@ -72,8 +71,12 @@
 }
 
 .messageToolCall{
-    background-color: var(--background-action-low-brown-caramel);
-    padding: 16px;
+    &:not(:last-of-type) {
+        margin-bottom: 16px;
+    }
+    background-color: var(--background-alt-grey);
+    padding:  8px 16px;
+    border-radius: 24px;
     margin-bottom: 16px;
 }
 

@@ -159,15 +159,16 @@ export const executeChatInteraction = ({
             tool_choice: toolChoice,
             stream: true,
           })
+          .on('chatCompletion', async (completion) => {
+            console.log('ON CHAT COMPLETION', completion)
+          })
           .on('message', async (message) => {
             const toolCall =
               'tool_calls' in message ? message.tool_calls?.at(0) : undefined
             if (toolCall) {
               controller.enqueue(
                 serializeAssistantChatStreamChunk({
-                  toolCall: {
-                    name: toolCall.function.name,
-                  },
+                  toolCall,
                 }),
               )
               if (onToolCall) {
@@ -178,6 +179,9 @@ export const executeChatInteraction = ({
             await onMessage(message)
           })
           .on('content', (content) => {
+            if (!content) {
+              return
+            }
             controller.enqueue(serializeAssistantChatStreamChunk({ content }))
 
             if (onContent) {

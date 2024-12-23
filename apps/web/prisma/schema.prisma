@@ -1030,7 +1030,7 @@ model AssistantChatMessage {
   role      AssistantChatRole
   session   AssistantChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   sessionId String               @map("session_id") @db.Uuid
-  content   String
+  content   String? // Can be null for a tool call message
   created   DateTime             @default(now())
 
   name String? // also used for "function" message function name

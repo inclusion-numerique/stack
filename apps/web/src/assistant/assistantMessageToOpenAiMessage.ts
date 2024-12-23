@@ -60,7 +60,7 @@ export const openAiMessageToAssistantChatMessage = (
 ) =>
   ({
     id: v4(),
-    sessionId: chatSessionId,
+    session: { connect: { id: chatSessionId } },
     role: openAiRoleToAssistantChatRole[message.role],
     content: message.content as string,
     name: 'name' in message ? message.name : undefined,
@@ -73,4 +73,4 @@ export const openAiMessageToAssistantChatMessage = (
       'tool_calls' in message
         ? (message.tool_calls as unknown as InputJsonObject[])
         : undefined,
-  }) satisfies Prisma.AssistantChatMessageUncheckedCreateInput
+  }) satisfies Prisma.AssistantChatMessageCreateInput

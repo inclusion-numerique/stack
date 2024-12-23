@@ -95,5 +95,8 @@ export const ServerWebAppConfig = {
       apiKey: process.env.ALBERT_API_KEY ?? '',
       chatModel: 'meta-llama/Meta-Llama-3.1-70B-Instruct',
     },
+    Brave: {
+      apiKey: process.env.BRAVE_API_KEY ?? '',
+    },
   },
 }

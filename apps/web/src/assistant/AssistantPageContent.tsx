@@ -61,6 +61,20 @@ const groupHistoryChatSessionsByPeriod = (
   )
 }
 
+const filterChatSessionForClient = (
+  chatSession: AssistantPageData['chatSession'],
+) => {
+  if (!chatSession) {
+    return chatSession
+  }
+  return {
+    ...chatSession,
+    messages: chatSession.messages.filter(
+      (message) => message.role === 'User' || message.role === 'Assistant',
+    ),
+  }
+}
+
 const AssistantPageContent = async ({
   data: { chatSession, chatSessions },
   user,
@@ -127,7 +141,7 @@ const AssistantPageContent = async ({
     {/* TODO layout */}
     <div className="fr-flex-grow-1">
       <div className={styles.chatSessionContainer}>
-        <ChatSession chatSession={chatSession} />
+        <ChatSession chatSession={filterChatSessionForClient(chatSession)} />
       </div>
     </div>
   </div>

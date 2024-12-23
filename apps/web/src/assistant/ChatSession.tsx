@@ -90,6 +90,8 @@ const ChatSession = ({
       chatSessionId,
     }
 
+    // TODO make a hook with an event emitter to not refresh this page on stream change
+    // Or state management ?
     fetch(assistantEndpoints.chat, {
       method: 'POST',
       headers: {
@@ -134,28 +136,42 @@ const ChatSession = ({
 
           const rawChunk = new TextDecoder().decode(value)
 
+          // Chunks can be concatenated, we need to split them
+          // remove first and last char for the first and last {}
+          const chunks = rawChunk
+            .slice(1, -1)
+            .split('}{')
+            .map((chunk) => `{${chunk}}`)
+
+          console.log('RAW CHUNK', rawChunk)
+          console.log('CHUNKS', chunks)
+
           // TODO This can be different things
 
-          const chunk = deserializeAssistantChatStreamChunk(rawChunk)
+          const parsedChunks = chunks.map(deserializeAssistantChatStreamChunk)
+          console.log('PARSED CHUNKS', parsedChunks)
 
-          streamContent += chunk.content ?? ''
+          for (const chunk of parsedChunks) {
+            if (chunk.content) {
+              streamContent += chunk.content
+            }
+            // Add to the currenx t message
+            if (streamingResponseMessageRef.current) {
+              const htmlWithLineBreaks = (
+                streamingResponseMessageRef.current.innerHTML + streamContent
+              ).replaceAll('\n', '<br>')
+              streamingResponseMessageRef.current.innerHTML = htmlWithLineBreaks
+            }
 
-          // Add to the current message
-          if (streamingResponseMessageRef.current) {
-            const htmlWithLineBreaks = (
-              streamingResponseMessageRef.current.innerHTML + streamContent
-            ).replaceAll('\n', '<br>')
-            streamingResponseMessageRef.current.innerHTML = htmlWithLineBreaks
+            if (chunk.toolCall) {
+              setStreamingToolCalls((previousToolCalls) => [
+                ...previousToolCalls,
+                chunk.toolCall,
+              ])
+            }
+
+            scrollToBottomOfMessages()
           }
-
-          if (chunk.toolCall) {
-            setStreamingToolCalls((previousToolCalls) => [
-              ...previousToolCalls,
-              chunk.toolCall,
-            ])
-          }
-
-          scrollToBottomOfMessages()
         }
 
         setIsStreamingResponse(false)
@@ -214,8 +230,14 @@ const ChatSession = ({
               <h2>Comment puis-je vous aider ?</h2>
             </div>
           )}
-          {messages.map((message) => (
-            <ChatMessage key={message.id} message={message} />
+          {messages.map((message, index) => (
+            <ChatMessage
+              key={message.id}
+              message={message}
+              hideAssistantLogo={
+                index > 0 && messages.at(index - 1)?.role === 'Assistant'
+              }
+            />
           ))}
           <ChatMessage
             contentRef={streamingResponseMessageRef}

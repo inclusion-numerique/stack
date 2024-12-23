@@ -1,3 +1,5 @@
+import type { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
+
 export type AssistantChatStreamChunk =
   | {
       content: string
@@ -5,9 +7,7 @@ export type AssistantChatStreamChunk =
     }
   | {
       content?: undefined
-      toolCall: {
-        name: string
-      }
+      toolCall: ChatCompletionMessageToolCall
     }
 
 export const serializeAssistantChatStreamChunk = (
