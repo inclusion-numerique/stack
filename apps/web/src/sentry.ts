@@ -9,7 +9,7 @@ export const initializeSentry = ({ replay }: { replay?: boolean } = {}) => {
   Sentry.init({
     dsn: PublicWebAppConfig.Sentry.dsn,
     environment: PublicWebAppConfig.Sentry.environment,
-    tracesSampleRate: 1,
+    tracesSampleRate: 0.03,
     integrations: replay ? [Sentry.replayIntegration()] : [],
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1,
