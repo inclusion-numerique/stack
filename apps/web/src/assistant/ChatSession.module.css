@@ -71,6 +71,12 @@
     }
 }
 
+.messageToolCall{
+    background-color: var(--background-action-low-brown-caramel);
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
 .messageUser {
     background-color: var(--blue-france-975-75);
     width: auto;

@@ -14,6 +14,7 @@ import styles from './ChatSession.module.css'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import { useRouter } from 'next/navigation'
+import { deserializeAssistantChatStreamChunk } from '@app/web/assistant/assistantChatStream'
 
 const ChatSession = ({
   chatSession,
@@ -61,6 +62,9 @@ const ChatSession = ({
     }
   }
 
+  const [streamingToolCalls, setStreamingToolCalls] = useState<
+    { name: string }[]
+  >([])
   const streamingResponseMessageRef = useRef<HTMLDivElement>(null)
 
   const onSubmit = form.handleSubmit(async (data) => {
@@ -70,6 +74,7 @@ const ChatSession = ({
     const controller = new AbortController() // To be able to cancel the fetch request
     controllerRef.current = controller
 
+    setStreamingToolCalls([])
     setIsSendingPrompt(true)
 
     let chatSessionId = chatSession?.id
@@ -111,6 +116,7 @@ const ChatSession = ({
             refusal: null,
             toolCalls: [],
             toolCallId: null,
+            finishReason: null,
           },
         ])
 
@@ -126,14 +132,27 @@ const ChatSession = ({
           const { done, value } = await reader.read()
           if (done) break
 
-          const text = new TextDecoder().decode(value)
-          streamContent += text
+          const rawChunk = new TextDecoder().decode(value)
 
+          // TODO This can be different things
+
+          const chunk = deserializeAssistantChatStreamChunk(rawChunk)
+
+          streamContent += chunk.content ?? ''
+
+          // Add to the current message
           if (streamingResponseMessageRef.current) {
             const htmlWithLineBreaks = (
-              streamingResponseMessageRef.current.innerHTML + text
+              streamingResponseMessageRef.current.innerHTML + streamContent
             ).replaceAll('\n', '<br>')
             streamingResponseMessageRef.current.innerHTML = htmlWithLineBreaks
+          }
+
+          if (chunk.toolCall) {
+            setStreamingToolCalls((previousToolCalls) => [
+              ...previousToolCalls,
+              chunk.toolCall,
+            ])
           }
 
           scrollToBottomOfMessages()
@@ -158,6 +177,7 @@ const ChatSession = ({
             refusal: null,
             toolCalls: [],
             toolCallId: null,
+            finishReason: null,
           },
         ])
       })
@@ -203,6 +223,7 @@ const ChatSession = ({
             message={{
               role: 'Assistant',
               content: '',
+              toolCalls: streamingToolCalls,
             }}
           />
           {!!error && (
@@ -211,6 +232,7 @@ const ChatSession = ({
               message={{
                 role: 'Assistant',
                 content: error,
+                toolCalls: [],
               }}
             />
           )}

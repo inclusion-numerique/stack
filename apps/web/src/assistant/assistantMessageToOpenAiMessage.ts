@@ -1,13 +1,19 @@
-import type { AssistantChatMessage } from '@prisma/client'
-import type {
+import type { AssistantChatMessage, Prisma } from '@prisma/client'
+import {
   ChatCompletionAssistantMessageParam,
+  ChatCompletionDeveloperMessageParam,
   ChatCompletionFunctionMessageParam,
   ChatCompletionSystemMessageParam,
   ChatCompletionToolMessageParam,
   ChatCompletionUserMessageParam,
 } from 'openai/src/resources/chat/completions'
 import type { OpenAiChatMessage } from '@app/web/assistant/openAiChat'
-import { assistantChatRoleToOpenAiRole } from '@app/web/assistant/assistantChatRole'
+import {
+  assistantChatRoleToOpenAiRole,
+  openAiRoleToAssistantChatRole,
+} from '@app/web/assistant/assistantChatRole'
+import { v4 } from 'uuid'
+import type { InputJsonObject } from '@prisma/client/runtime/library'
 
 export const assistantMessageToOpenAiMessage = ({
   role,
@@ -45,4 +51,26 @@ export const assistantMessageToOpenAiMessage = ({
     | ChatCompletionSystemMessageParam
     | ChatCompletionUserMessageParam
     | ChatCompletionAssistantMessageParam
+    | ChatCompletionDeveloperMessageParam
 }
+
+export const openAiMessageToAssistantChatMessage = (
+  message: OpenAiChatMessage,
+  { chatSessionId }: { chatSessionId: string },
+) =>
+  ({
+    id: v4(),
+    sessionId: chatSessionId,
+    role: openAiRoleToAssistantChatRole[message.role],
+    content: message.content as string,
+    name: 'name' in message ? message.name : undefined,
+    refusal: 'refusal' in message ? message.refusal : undefined,
+    finishReason:
+      'finish_reason' in message
+        ? (message.finish_reason as string)
+        : undefined,
+    toolCalls:
+      'tool_calls' in message
+        ? (message.tool_calls as unknown as InputJsonObject[])
+        : undefined,
+  }) satisfies Prisma.AssistantChatMessageUncheckedCreateInput

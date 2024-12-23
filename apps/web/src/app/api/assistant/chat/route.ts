@@ -3,16 +3,18 @@ import { v4 } from 'uuid'
 import { prismaClient } from '@app/web/prismaClient'
 import { getChatSession } from '@app/web/assistant/getChatSession'
 import {
-  executeOpenAiChatStream,
+  executeChatInteraction,
   OpenAiChatMessage,
 } from '@app/web/assistant/openAiChat'
 import { AssistantChatRequestDataValidation } from '@app/web/app/api/assistant/chat/AssistantChatRequestData'
-import { assistantMessageToOpenAiMessage } from '@app/web/assistant/assistantMessageToOpenAiMessage'
+import {
+  assistantMessageToOpenAiMessage,
+  openAiMessageToAssistantChatMessage,
+} from '@app/web/assistant/assistantMessageToOpenAiMessage'
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
-import { tools } from '@app/web/assistant/tools'
 import { chatSystemMessage } from '@app/web/assistant/systemMessages'
-import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
+import { tools } from '@app/web/assistant/tools/tools'
 
 const notFoundResponse = () =>
   new Response('', {
@@ -86,44 +88,17 @@ export const POST = async (request: NextRequest) => {
     },
   ] satisfies OpenAiChatMessage[]
 
-  const stream = new ReadableStream({
-    start(controller) {
-      executeOpenAiChatStream({
-        messages,
-        onChunk: (choice) => {
-          // TODO send more info on the choice to indicate if client must display that
-          // the assistant is executing a tool call
-          if (onlyDefinedAndNotNull(choice.delta.content)) {
-            controller.enqueue(choice.delta.content)
-          }
-        },
-        onToolCall: (choice) => {
-          // TODO start a tool call ? or wait for the end of the execution in the then ?
-          // TODO implement the multi-shot tool call and abstract the stream
-          console.log('ON TOOL CALL IN route.ts', choice)
-        },
-        tools,
+  const { stream } = executeChatInteraction({
+    onMessage: async (message) => {
+      // TODO do not block the stream for this, should be asynchronous
+      await prismaClient.assistantChatMessage.create({
+        data: openAiMessageToAssistantChatMessage(message, {
+          chatSessionId,
+        }),
       })
-        .then((response) => {
-          controller.close()
-          // Add the assistant response
-          // TODO function calls, additional params etc ...
-          return prismaClient.assistantChatMessage.create({
-            data: {
-              id: v4(),
-              sessionId: chatSession.id,
-              role: 'Assistant',
-              content: response.message,
-              toolCalls: response.toolCalls,
-              finishReason: response.finishReason,
-            },
-          })
-        })
-        .catch((error) => controller.error(error))
     },
-    cancel() {
-      console.warn('chat response stream cancelled by client.')
-    },
+    messages,
+    tools,
   })
 
   await prismaClient.assistantChatSession.update({

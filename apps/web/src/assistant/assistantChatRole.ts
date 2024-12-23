@@ -7,6 +7,7 @@ export const assistantChatRoleLabels: { [key in AssistantChatRole]: string } = {
   Assistant: 'Assistant',
   Tool: 'Outil',
   Function: 'Fonction',
+  Developer: 'Développeur',
 }
 
 export const assistantChatRoleToOpenAiRole = {
@@ -15,6 +16,7 @@ export const assistantChatRoleToOpenAiRole = {
   Assistant: 'assistant',
   Tool: 'tool',
   Function: 'function',
+  Developer: 'developer',
 } as const satisfies {
   [key in AssistantChatRole]: OpenAiChatRole
 }
@@ -25,6 +27,7 @@ export const openAiRoleToAssistantChatRole = {
   assistant: 'Assistant',
   tool: 'Tool',
   function: 'Function',
+  developer: 'Developer',
 } as const satisfies {
   [key in OpenAiChatRole]: AssistantChatRole
 }
