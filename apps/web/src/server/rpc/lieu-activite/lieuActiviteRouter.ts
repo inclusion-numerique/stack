@@ -38,6 +38,8 @@ import {
   VisiblePourCartographieNationaleValidation,
 } from '@app/web/app/structure/VisiblePourCartographieNationaleValidation'
 import { CreerLieuActiviteValidation } from '@app/web/app/lieu-activite/CreerLieuActiviteValidation'
+import { createStopwatch } from '@app/web/utils/stopwatch'
+import { addMutationLog } from '@app/web/utils/addMutationLog'
 import { lieuActiviteValidation } from './lieuActiviteValidation'
 
 const lieuActiviteToUpdate = async (
@@ -195,6 +197,8 @@ export const lieuActiviteRouter = router({
         throw forbiddenError("Cet utilisateur n'est pas un médiateur")
       }
 
+      const stopwatch = createStopwatch()
+
       const lieuActivite = await prismaClient.mediateurEnActivite.findUnique({
         where: {
           id: mediateurEnActiviteId,
@@ -208,7 +212,7 @@ export const lieuActiviteRouter = router({
       }
 
       const timestamp = new Date()
-      return prismaClient.mediateurEnActivite.updateMany({
+      await prismaClient.mediateurEnActivite.updateMany({
         where: {
           id: mediateurEnActiviteId,
         },
@@ -217,15 +221,25 @@ export const lieuActiviteRouter = router({
           modification: timestamp,
         },
       })
+
+      addMutationLog({
+        userId: user.id,
+        nom: 'SupprimerMediateurEnActivite',
+        duration: stopwatch.stop().duration,
+        data: {
+          mediateurEnActiviteId,
+        },
+      })
     }),
   updateInformationsGenerales: protectedProcedure
     .input(InformationsGeneralesValidation)
     .mutation(async ({ input, ctx: { user } }) => {
+      const stopwatch = createStopwatch()
       const structure = await lieuActiviteToUpdate(user, input)
 
       if (structure == null) return
 
-      return prismaClient.structure.update({
+      const updated = await prismaClient.structure.update({
         where: { id: structure.id },
         data: {
           ...structure,
@@ -233,15 +247,25 @@ export const lieuActiviteRouter = router({
           modification: new Date(),
         },
       })
+
+      addMutationLog({
+        userId: user.id,
+        nom: 'ModifierStructure',
+        duration: stopwatch.stop().duration,
+        data: input,
+      })
+
+      return updated
     }),
   updateVisiblePourCartographieNationale: protectedProcedure
     .input(VisiblePourCartographieNationaleValidation)
     .mutation(async ({ input, ctx: { user } }) => {
+      const stopwatch = createStopwatch()
       const structure = await lieuActiviteToUpdate(user, input)
 
       if (structure == null) return
 
-      return prismaClient.structure.update({
+      const updated = await prismaClient.structure.update({
         where: { id: structure.id },
         data: {
           ...structure,
@@ -249,15 +273,25 @@ export const lieuActiviteRouter = router({
           modification: new Date(),
         },
       })
+
+      addMutationLog({
+        userId: user.id,
+        nom: 'ModifierStructure',
+        duration: stopwatch.stop().duration,
+        data: input,
+      })
+
+      return updated
     }),
   updateInformationsPratiques: protectedProcedure
     .input(InformationsPratiquesValidation)
     .mutation(async ({ input, ctx: { user } }) => {
+      const stopwatch = createStopwatch()
       const structure = await lieuActiviteToUpdate(user, input)
 
       if (structure == null) return
 
-      return prismaClient.structure.update({
+      const updated = await prismaClient.structure.update({
         where: { id: structure.id },
         data: {
           ...structure,
@@ -265,15 +299,25 @@ export const lieuActiviteRouter = router({
           modification: new Date(),
         },
       })
+
+      addMutationLog({
+        userId: user.id,
+        nom: 'ModifierStructure',
+        duration: stopwatch.stop().duration,
+        data: input,
+      })
+
+      return updated
     }),
   updateDescription: protectedProcedure
     .input(DescriptionValidation)
     .mutation(async ({ input, ctx: { user } }) => {
+      const stopwatch = createStopwatch()
       const structure = await lieuActiviteToUpdate(user, input)
 
       if (structure == null) return
 
-      return prismaClient.structure.update({
+      const updated = await prismaClient.structure.update({
         where: { id: structure.id },
         data: {
           ...structure,
@@ -281,15 +325,25 @@ export const lieuActiviteRouter = router({
           modification: new Date(),
         },
       })
+
+      addMutationLog({
+        userId: user.id,
+        nom: 'ModifierStructure',
+        duration: stopwatch.stop().duration,
+        data: input,
+      })
+
+      return updated
     }),
   updateServicesEtAccompagnement: protectedProcedure
     .input(ServicesEtAccompagnementValidation)
     .mutation(async ({ input, ctx: { user } }) => {
+      const stopwatch = createStopwatch()
       const structure = await lieuActiviteToUpdate(user, input)
 
       if (structure == null) return
 
-      return prismaClient.structure.update({
+      const updated = await prismaClient.structure.update({
         where: { id: structure.id },
         data: {
           ...structure,
@@ -297,15 +351,25 @@ export const lieuActiviteRouter = router({
           modification: new Date(),
         },
       })
+
+      addMutationLog({
+        userId: user.id,
+        nom: 'ModifierStructure',
+        duration: stopwatch.stop().duration,
+        data: input,
+      })
+
+      return updated
     }),
   updateModalitesAccesAuService: protectedProcedure
     .input(ModalitesAccesAuServiceValidation)
     .mutation(async ({ input, ctx: { user } }) => {
+      const stopwatch = createStopwatch()
       const structure = await lieuActiviteToUpdate(user, input)
 
       if (structure == null) return
 
-      return prismaClient.structure.update({
+      const updated = await prismaClient.structure.update({
         where: { id: structure.id },
         data: {
           ...structure,
@@ -313,15 +377,25 @@ export const lieuActiviteRouter = router({
           modification: new Date(),
         },
       })
+
+      addMutationLog({
+        userId: user.id,
+        nom: 'ModifierStructure',
+        duration: stopwatch.stop().duration,
+        data: input,
+      })
+
+      return updated
     }),
   updateTypesDePublicsAccueillis: protectedProcedure
     .input(TypesDePublicsAccueillisValidation)
     .mutation(async ({ input, ctx: { user } }) => {
+      const stopwatch = createStopwatch()
       const structure = await lieuActiviteToUpdate(user, input)
 
       if (structure == null) return
 
-      return prismaClient.structure.update({
+      const updated = await prismaClient.structure.update({
         where: { id: structure.id },
         data: {
           ...structure,
@@ -329,5 +403,14 @@ export const lieuActiviteRouter = router({
           modification: new Date(),
         },
       })
+
+      addMutationLog({
+        userId: user.id,
+        nom: 'ModifierStructure',
+        duration: stopwatch.stop().duration,
+        data: input,
+      })
+
+      return updated
     }),
 })

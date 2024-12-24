@@ -5,6 +5,8 @@ import { prismaClient } from '@app/web/prismaClient'
 import { enforceIsAdmin } from '@app/web/server/rpc/enforceIsAdmin'
 import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { createStopwatch } from '@app/web/utils/stopwatch'
+import { addMutationLog } from '@app/web/utils/addMutationLog'
 
 export const usurpationRouter = router({
   usurpUser: protectedProcedure
@@ -15,6 +17,8 @@ export const usurpationRouter = router({
         ctx: { sessionToken, user: initialUser },
       }) => {
         enforceIsAdmin(initialUser)
+
+        const stopwatch = createStopwatch()
 
         const user = await prismaClient.user.findUnique({
           where: {
@@ -41,6 +45,19 @@ export const usurpationRouter = router({
           data: {
             userId: user.id,
             usurperId: initialUser.id,
+          },
+        })
+
+        addMutationLog({
+          userId: initialUser.id,
+          nom: 'UsurperUtilisateur',
+          duration: stopwatch.stop().duration,
+          data: {
+            initialUserId: initialUser.id,
+            userId: user.id,
+            role: user.role,
+            name: user.name,
+            email: user.email,
           },
         })
 

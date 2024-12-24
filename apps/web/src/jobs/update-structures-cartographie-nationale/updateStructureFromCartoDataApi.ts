@@ -1,6 +1,8 @@
 import { output } from '@app/cli/output'
 import { SchemaLieuMediationNumerique } from '@gouvfr-anct/lieux-de-mediation-numerique'
 import { prismaClient } from '@app/web/prismaClient'
+import { createStopwatch } from '@app/web/utils/stopwatch'
+import { addMutationLog } from '@app/web/utils/addMutationLog'
 import { structureCartographieNationaleToPrismaModel } from './transform/structureCartographieNationaleToPrismaModel'
 import { structureToPrismaModel } from './transform/structureToPrismaModel'
 
@@ -11,23 +13,27 @@ type CoopIdsToMergeInSingleStructure = {
 
 const reset =
   (structuresCartographieNationale: SchemaLieuMediationNumerique[]) =>
-  async (now: Date) => {
-    await prismaClient.$transaction([
-      prismaClient.structure.updateMany({
-        data: { structureCartographieNationaleId: null },
-      }),
-      prismaClient.structureCartographieNationale.deleteMany(),
-      prismaClient.structureCartographieNationale.createMany({
-        data: structuresCartographieNationale.map((structure) => ({
-          ...structureCartographieNationaleToPrismaModel(structure),
-          creationImport: now,
-          modificationImport: now,
-          creation: now,
-          modification: now,
-        })),
-      }),
-    ])
-  }
+  (now: Date) =>
+    prismaClient
+      .$transaction([
+        prismaClient.structure.updateMany({
+          data: { structureCartographieNationaleId: null },
+        }),
+        prismaClient.structureCartographieNationale.deleteMany(),
+        prismaClient.structureCartographieNationale.createMany({
+          data: structuresCartographieNationale.map((structure) => ({
+            ...structureCartographieNationaleToPrismaModel(structure),
+            creationImport: now,
+            modificationImport: now,
+            creation: now,
+            modification: now,
+          })),
+        }),
+      ])
+      .then(([_preparation, deleted, created]) => ({
+        deleted: deleted.count,
+        created: created.count,
+      }))
 
 const latestChangesFromCoop = (structure: SchemaLieuMediationNumerique) =>
   structure.source === 'Coop numérique'
@@ -99,8 +105,12 @@ export const updateStructureFromCartoDataApi =
     now?: Date
   }) =>
   async () => {
+    const stopwatch = createStopwatch()
+
     output('1. Reset structures from cartographie nationale')
-    await reset(structuresCartographieNationale)(now)
+    const { created, deleted } = await reset(structuresCartographieNationale)(
+      now,
+    )
 
     output('2. Find structures linked to cartographie nationale')
     const structuresLinkedToCarto = structuresCartographieNationale
@@ -115,4 +125,14 @@ export const updateStructureFromCartoDataApi =
       await linkToCoopStructure(now)(structureLinkedToCarto)
     }
     output(`4. updated finished successfully`)
+    addMutationLog({
+      userId: null,
+      nom: 'MiseAJourStructuresCartographieNationale',
+      duration: stopwatch.stop().duration,
+      data: {
+        deleted,
+        created,
+        structuresLinkedToCarto: structuresLinkedToCarto.length,
+      },
+    })
   }

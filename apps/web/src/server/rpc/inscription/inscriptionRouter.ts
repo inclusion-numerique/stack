@@ -16,6 +16,8 @@ import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseille
 import { getOrCreateStructureEmployeuse } from '@app/web/server/rpc/inscription/getOrCreateStructureEmployeuse'
 import { importCoordinateurMediationDataFromV1 } from '@app/web/app/inscription/(steps)/identification/importCoordinateurMediationDataFromV1'
 import { isConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
+import { addMutationLog } from '@app/web/utils/addMutationLog'
+import { createStopwatch } from '@app/web/utils/stopwatch'
 
 const inscriptionGuard = (
   targetUserId: string,
@@ -92,8 +94,11 @@ export const inscriptionRouter = router({
       }) => {
         inscriptionGuard(userId, sessionUser)
 
-        const structure =
-          await getOrCreateStructureEmployeuse(structureEmployeuse)
+        const stopwatch = createStopwatch()
+        const structure = await getOrCreateStructureEmployeuse(
+          structureEmployeuse,
+          sessionUser,
+        )
 
         const transactionResult = await prismaClient.$transaction(
           async (transaction) => {
@@ -135,6 +140,16 @@ export const inscriptionRouter = router({
           },
         )
 
+        addMutationLog({
+          userId,
+          nom: 'CreerEmployeStructure',
+          duration: stopwatch.stop().duration,
+          data: {
+            userId,
+            emplois: transactionResult.emplois.at(0),
+          },
+        })
+
         return transactionResult
       },
     ),
@@ -166,6 +181,16 @@ export const inscriptionRouter = router({
             return existing
           }
 
+          addMutationLog({
+            userId,
+            nom: 'CreerMediateurEnActivite',
+            duration: 0,
+            data: {
+              userId,
+              structureId: structureEmployeuseId,
+            },
+          })
+
           return prismaClient.mediateurEnActivite.create({
             data: {
               id: v4(),
@@ -185,6 +210,16 @@ export const inscriptionRouter = router({
             },
           })
         }
+
+        addMutationLog({
+          userId,
+          nom: 'SupprimerMediateurEnActivite',
+          duration: 0,
+          data: {
+            userId,
+            structureId: structureEmployeuseId,
+          },
+        })
 
         // Remove the link between the user and the structure if it exists
         await prismaClient.mediateurEnActivite.updateMany({
@@ -460,6 +495,7 @@ export const inscriptionRouter = router({
                   }
 
                   // Structure already exists, we just create the lieu, linking with carto id
+
                   return transaction.mediateurEnActivite.create({
                     data: {
                       id: v4(),
@@ -489,6 +525,10 @@ export const inscriptionRouter = router({
                   throw new Error('Structure carto not found')
                 }
 
+                const createdStructure = await transaction.structure.create({
+                  data: toStructureFromCartoStructure(cartoStructure),
+                })
+
                 return transaction.mediateurEnActivite.create({
                   data: {
                     id: v4(),
@@ -498,7 +538,9 @@ export const inscriptionRouter = router({
                       },
                     },
                     structure: {
-                      create: toStructureFromCartoStructure(cartoStructure),
+                      connect: {
+                        id: createdStructure.id,
+                      },
                     },
                   },
                 })
@@ -513,6 +555,8 @@ export const inscriptionRouter = router({
     .input(z.object({ userId: z.string().uuid() }))
     .mutation(async ({ input: { userId }, ctx: { user: sessionUser } }) => {
       inscriptionGuard(userId, sessionUser)
+
+      const stopwatch = createStopwatch()
 
       await prismaClient.user.update({
         where: {
@@ -545,6 +589,13 @@ export const inscriptionRouter = router({
           mediateurId: user.mediateur.id,
         })),
       })
+
+      addMutationLog({
+        userId,
+        nom: 'ValiderInscription',
+        duration: stopwatch.stop().duration,
+        data: {},
+      })
     }),
   addMediationNumeriqueToCoordinateur: protectedProcedure.mutation(
     async ({ ctx: { user: sessionUser } }) => {
@@ -553,6 +604,8 @@ export const inscriptionRouter = router({
       if (!sessionUser.coordinateur) {
         throw forbiddenError()
       }
+
+      const stopwatch = createStopwatch()
 
       const v1Conseiller = await fetchConseillerNumeriqueV1Data({
         v1ConseillerId: sessionUser.coordinateur.conseillerNumeriqueId,
@@ -568,6 +621,15 @@ export const inscriptionRouter = router({
       await importCoordinateurMediationDataFromV1({
         user: sessionUser,
         v1Conseiller,
+      })
+
+      addMutationLog({
+        userId: sessionUser.id,
+        nom: 'CreerMediateur',
+        duration: stopwatch.stop().duration,
+        data: {
+          coordinateurId: sessionUser.coordinateur.id,
+        },
       })
     },
   ),

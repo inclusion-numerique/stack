@@ -3,9 +3,12 @@ import { StructureCreationDataWithSiret } from '@app/web/app/structure/Structure
 import { prismaClient } from '@app/web/prismaClient'
 import { searchAdresse } from '@app/web/external-apis/apiAdresse'
 import { banFeatureToAdresseBanData } from '@app/web/external-apis/ban/banFeatureToAdresseBanData'
+import type { SessionUser } from '@app/web/auth/sessionUser'
+import { addMutationLog } from '@app/web/utils/addMutationLog'
 
 export const getOrCreateStructureEmployeuse = async (
   structureEmployeuse: StructureCreationDataWithSiret,
+  user?: SessionUser,
 ) => {
   const existingStructure = await prismaClient.structure.findFirst({
     where: {
@@ -25,6 +28,12 @@ export const getOrCreateStructureEmployeuse = async (
   const adresseResult = await searchAdresse(structureEmployeuse.adresse)
 
   if (!adresseResult) {
+    addMutationLog({
+      userId: user?.id,
+      nom: 'CreerStructure',
+      duration: 0,
+      data: structureEmployeuse,
+    })
     return prismaClient.structure.create({
       data: {
         id: v4(),
@@ -48,6 +57,20 @@ export const getOrCreateStructureEmployeuse = async (
     latitude,
     nom: adresse,
   } = banFeatureToAdresseBanData(adresseResult)
+
+  addMutationLog({
+    userId: user?.id,
+    nom: 'CreerStructure',
+    duration: 0,
+    data: {
+      ...structureEmployeuse,
+      commune,
+      codePostal,
+      longitude,
+      latitude,
+      nom: adresse,
+    },
+  })
 
   return prismaClient.structure.create({
     data: {
