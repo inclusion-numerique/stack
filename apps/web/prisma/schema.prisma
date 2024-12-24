@@ -951,5 +951,6 @@ model Mutation {
   timestamp DateTime @default(now()) @map("timestamp")
 
   @@index([userId])
+  @@index([timestamp(sort: Desc)])
   @@map("mutations")
 }
