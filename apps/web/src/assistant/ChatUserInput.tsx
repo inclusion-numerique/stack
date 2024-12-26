@@ -31,8 +31,8 @@ const ChatUserInput = ({
   messagesContainerRef: React.RefObject<HTMLDivElement>
 }) => {
   // TODO Generate session title on completion when user and assistant messages > 1 each
-  const _generateSessionTitleMutation =
-    trpc.assistant.generateSessionTitle.useMutation()
+  // const _generateSessionTitleMutation =
+  //   trpc.assistant.generateSessionTitle.useMutation()
 
   const createSessionMutation = trpc.assistant.createSession.useMutation()
 
