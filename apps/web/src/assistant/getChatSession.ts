@@ -1,3 +1,4 @@
+import { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
 import { prismaClient } from '@app/web/prismaClient'
 
 export const getChatSession = async (chatSessionId: string) => {
@@ -19,6 +20,15 @@ export type ChatSessionData = Exclude<
   Awaited<ReturnType<typeof getChatSession>>,
   null
 >
+
+export type ChatSessionMessage = ChatSessionData['messages'][number]
+
+export type ChatCompletionMessageWithToolCalls = Omit<
+  ChatSessionMessage,
+  'toolCalls'
+> & {
+  toolCalls: ChatCompletionMessageToolCall[]
+}
 
 export const getUserChatSessions = async (userId: string) => {
   const chatSessions = await prismaClient.assistantChatSession.findMany({

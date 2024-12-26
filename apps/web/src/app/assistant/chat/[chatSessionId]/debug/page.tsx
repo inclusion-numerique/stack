@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { Fragment } from 'react'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { getAssistantPageData } from '@app/web/assistant/getAssistantPageData'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
-import { Fragment } from 'react'
 
 export const generateMetadata = (): Metadata => ({
   title: metadataTitle('Assistant - Chat'),

@@ -54,6 +54,7 @@
     "@trpc/client": "next",
     "@trpc/react-query": "next",
     "@trpc/server": "next",
+    "@xstate/store": "^2.6.2",
     "@xstyled/styled-components": "^4.0.0",
     "aws-crt": "^1.24.0",
     "axios": "^1.7.9",

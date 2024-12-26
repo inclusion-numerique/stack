@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { zodFunction } from 'openai/helpers/zod'
-import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import axios from 'axios'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { ZodFunctionOptions } from '@app/web/assistant/tools/zodFunctionType'
 
 // See https://api.search.brave.com/app/documentation/web-search/query#LocalSearchAPIQueryParameters

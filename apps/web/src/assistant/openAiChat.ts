@@ -4,14 +4,14 @@ import {
   ChatCompletionTool,
   ChatCompletionToolChoiceOption,
 } from 'openai/src/resources/chat/completions'
+import { ChatCompletionChunk } from 'openai/resources'
+import { AutoParseableTool } from 'openai/src/lib/parser'
+import * as Sentry from '@sentry/nextjs'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import {
   openAiClient,
   openAiClientConfiguration,
 } from '@app/web/assistant/openAiClient'
-import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
-import { ChatCompletionChunk } from 'openai/resources'
-import { AutoParseableTool } from 'openai/src/lib/parser'
-import * as Sentry from '@sentry/nextjs'
 import { serializeAssistantChatStreamChunk } from '@app/web/assistant/assistantChatStream'
 
 export type OpenAiChatMessage = ChatCompletionMessageParam
@@ -151,6 +151,7 @@ export const executeChatInteraction = ({
   const stream = new ReadableStream({
     start: async (controller) => {
       try {
+        console.log('EXECUTING RUNNER', messages)
         const runner = openAiClient.beta.chat.completions
           .runTools({
             model: openAiClientConfiguration.chatModel,
@@ -159,7 +160,10 @@ export const executeChatInteraction = ({
             tool_choice: toolChoice,
             stream: true,
           })
-          .on('chatCompletion', async (completion) => {
+          .on('content.delta', (content) => {
+            console.log('CONTENT DELTA', content)
+          })
+          .on('chatCompletion', (completion) => {
             console.log('ON CHAT COMPLETION', completion)
           })
           .on('message', async (message) => {
@@ -187,6 +191,11 @@ export const executeChatInteraction = ({
             if (onContent) {
               onContent(content)
             }
+          })
+          .on('error', (error) => {
+            Sentry.captureException(error)
+            controller.error(error)
+            console.error('Error in runner stream', error)
           })
 
         await runner.finalChatCompletion()

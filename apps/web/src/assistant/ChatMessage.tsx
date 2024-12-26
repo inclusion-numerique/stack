@@ -1,11 +1,11 @@
-import type { AssistantChatMessage } from '@prisma/client'
 import type { CSSProperties } from 'react'
-import styles from './ChatSession.module.css'
-import LogoCoop from '@app/web/components/LogoCoop'
 import classNames from 'classnames'
 import { marked, type Tokens } from 'marked'
 import type { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
+import LogoCoop from '@app/web/components/LogoCoop'
 import ToolCallMessage from '@app/web/assistant/ToolCallMessage'
+import type { ChatCompletionMessageWithToolCalls } from '@app/web/assistant/getChatSession'
+import styles from './ChatSession.module.css'
 
 const renderer = new marked.Renderer()
 const linkRenderer = renderer.link.bind(renderer)
@@ -25,7 +25,7 @@ const ChatMessage = ({
   isStreaming,
 }: {
   toolCalls?: { name: string }[]
-  message: Pick<AssistantChatMessage, 'content' | 'role' | 'toolCalls'>
+  message: ChatCompletionMessageWithToolCalls
   contentRef?: React.RefObject<HTMLDivElement>
   style?: CSSProperties
   hideAssistantLogo?: boolean

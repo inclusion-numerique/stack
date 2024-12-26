@@ -3,17 +3,18 @@ import {
   ChatCompletionAssistantMessageParam,
   ChatCompletionDeveloperMessageParam,
   ChatCompletionFunctionMessageParam,
+  ChatCompletionMessageToolCall,
   ChatCompletionSystemMessageParam,
   ChatCompletionToolMessageParam,
   ChatCompletionUserMessageParam,
 } from 'openai/src/resources/chat/completions'
+import { v4 } from 'uuid'
+import type { InputJsonObject } from '@prisma/client/runtime/library'
 import type { OpenAiChatMessage } from '@app/web/assistant/openAiChat'
 import {
   assistantChatRoleToOpenAiRole,
   openAiRoleToAssistantChatRole,
 } from '@app/web/assistant/assistantChatRole'
-import { v4 } from 'uuid'
-import type { InputJsonObject } from '@prisma/client/runtime/library'
 
 export const assistantMessageToOpenAiMessage = ({
   role,
@@ -21,13 +22,14 @@ export const assistantMessageToOpenAiMessage = ({
   name,
   refusal,
   toolCallId,
+  toolCalls,
 }: Pick<
   AssistantChatMessage,
   'content' | 'role' | 'refusal' | 'name' | 'toolCalls' | 'toolCallId'
 >): OpenAiChatMessage => {
   if (role === 'Tool') {
     return {
-      content,
+      content: content ?? '',
       role: 'tool',
       tool_call_id: toolCallId ?? 'unknown',
     } satisfies ChatCompletionToolMessageParam
@@ -42,15 +44,40 @@ export const assistantMessageToOpenAiMessage = ({
     } satisfies ChatCompletionFunctionMessageParam
   }
 
+  if (role === 'Assistant') {
+    const message: ChatCompletionAssistantMessageParam = {
+      content: content ?? '',
+      role: 'assistant',
+    }
+
+    if (name) {
+      message.name = name
+    }
+    if (refusal) {
+      message.refusal = refusal
+    }
+    if (toolCalls && toolCalls.length > 0) {
+      message.tool_calls =
+        toolCalls as unknown as ChatCompletionMessageToolCall[]
+    }
+
+    return message
+  }
+
+  if (role === 'User') {
+    return {
+      content: content ?? '',
+      role: 'user',
+      name: name ?? undefined,
+    } satisfies ChatCompletionUserMessageParam
+  }
+
   return {
+    content: content ?? '',
     role: assistantChatRoleToOpenAiRole[role],
-    content,
     name: name ?? undefined,
-    refusal: refusal ?? undefined,
   } satisfies
     | ChatCompletionSystemMessageParam
-    | ChatCompletionUserMessageParam
-    | ChatCompletionAssistantMessageParam
     | ChatCompletionDeveloperMessageParam
 }
 

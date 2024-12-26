@@ -22,7 +22,7 @@ const Page = async ({
     notFound()
   }
 
-  return <AssistantPageContent data={data} user={user} />
+  return <AssistantPageContent data={data} />
 }
 
 export default Page

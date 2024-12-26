@@ -18,7 +18,7 @@ const Page = async () => {
   console.log('USER IN PAGE', user)
   const data = await getAssistantPageData({ userId: user.id })
 
-  return <AssistantPageContent data={data} user={user} />
+  return <AssistantPageContent data={data} />
 }
 
 export default Page

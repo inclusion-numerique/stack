@@ -1,10 +1,9 @@
-import type { AssistantPageData } from '@app/web/assistant/getAssistantPageData'
-import ChatSession from '@app/web/assistant/ChatSession'
-import { SessionUser } from '@app/web/auth/sessionUser'
-import { dateAsDayAndTime } from '@app/web/utils/dateAsDayAndTime'
-import styles from './ChatSession.module.css'
 import classNames from 'classnames'
 import Button from '@codegouvfr/react-dsfr/Button'
+import type { AssistantPageData } from '@app/web/assistant/getAssistantPageData'
+import ChatSession from '@app/web/assistant/ChatSession'
+import { dateAsDayAndTime } from '@app/web/utils/dateAsDayAndTime'
+import styles from './ChatSession.module.css'
 
 // Groupe les messages pour la sidebar
 // "Aujourd'hui
@@ -77,10 +76,8 @@ const filterChatSessionForClient = (
 
 const AssistantPageContent = async ({
   data: { chatSession, chatSessions },
-  user,
 }: {
   data: AssistantPageData
-  user: SessionUser
   // eslint-disable-next-line @typescript-eslint/require-await
 }) => (
   <div
@@ -99,21 +96,19 @@ const AssistantPageContent = async ({
         <span className="fr-icon-chat-3-line fr-icon--md fr-mr-2v" />
         Assistant
       </h1>
-      {!!chatSession && (
-        <div className="fr-btns-group fr-btns-group--sm fr-btns-group--icon-left">
-          <Button
-            iconId="fr-icon-add-line"
-            className="fr-mb-2v"
-            priority="tertiary"
-            size="small"
-            linkProps={{
-              href: `/assistant/chat`,
-            }}
-          >
-            Nouveau chat
-          </Button>
-        </div>
-      )}
+      <div className="fr-btns-group fr-btns-group--sm fr-btns-group--icon-left">
+        <Button
+          iconId="fr-icon-add-line"
+          className="fr-mb-2v"
+          priority="tertiary"
+          size="small"
+          linkProps={{
+            href: `/assistant/chat`,
+          }}
+        >
+          Nouveau chat
+        </Button>
+      </div>
       {groupHistoryChatSessionsByPeriod(chatSessions).map(
         ({ period, chatSessions: historyChatSessions }) => (
           <>
