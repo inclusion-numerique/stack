@@ -34,22 +34,21 @@ const ChatStreamingMessage = () => {
           }}
         />
       )}
-      {!!streamingMessage && (
-        <ChatMessage
-          message={{
-            id: 'streaming-message-content',
-            role: 'Assistant',
-            content: streamingMessage,
-            toolCalls: [],
-            finishReason: null,
-            created,
-            sessionId: 'streaming-message',
-            name: null,
-            refusal: null,
-            toolCallId: null,
-          }}
-        />
-      )}
+      <ChatMessage
+        message={{
+          id: 'streaming-message-content',
+          role: 'Assistant',
+          content: streamingMessage,
+          toolCalls: [],
+          finishReason: null,
+          created,
+          sessionId: 'streaming-message',
+          name: null,
+          refusal: null,
+          toolCallId: null,
+        }}
+        cursor
+      />
     </>
   )
 }

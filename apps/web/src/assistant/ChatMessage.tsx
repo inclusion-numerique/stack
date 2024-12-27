@@ -23,6 +23,7 @@ const ChatMessage = ({
   style,
   hideAssistantLogo,
   isStreaming,
+  cursor,
 }: {
   toolCalls?: { name: string }[]
   message: ChatCompletionMessageWithToolCalls
@@ -30,16 +31,22 @@ const ChatMessage = ({
   style?: CSSProperties
   hideAssistantLogo?: boolean
   isStreaming?: boolean
+  cursor?: boolean // display blinking cursor at the end of the message
 }) => {
   if (role !== 'Assistant' && role !== 'User') {
     return null
   }
 
-  const parsedContent = content
+  const contentToParse =
+    cursor || 1
+      ? `${content ?? ''}<span class="chat-message__blinking-cursor"/>`
+      : content
+
+  const parsedContent = contentToParse
     ? role === 'Assistant'
-      ? marked.parse(content, { renderer })
-      : content.replaceAll('\n', '<br />')
-    : null
+      ? marked.parse(contentToParse, { renderer, async: false })
+      : contentToParse.replaceAll('\n', '<br />')
+    : ''
 
   return (
     <div
@@ -67,12 +74,10 @@ const ChatMessage = ({
           )}
         </div>
       )}
-      {!!parsedContent && (
-        <div
-          ref={contentRef}
-          dangerouslySetInnerHTML={{ __html: parsedContent }}
-        />
-      )}
+      <div
+        ref={contentRef}
+        dangerouslySetInnerHTML={{ __html: parsedContent }}
+      />
     </div>
   )
 }

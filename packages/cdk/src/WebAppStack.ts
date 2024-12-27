@@ -39,7 +39,7 @@ export const webAppStackVariables = [
   'BREVO_USERS_LIST_ID',
   'SCW_DEFAULT_ORGANIZATION_ID',
   'SCW_PROJECT_ID',
-  'SCW_GENERATIVE_API_SERVICE_URL',
+  'SCALEWAY_GENERATIVE_API_SERVICE_URL',
   'ALBERT_SERVICE_URL',
   'WEB_CONTAINER_IMAGE',
 ] as const
@@ -208,8 +208,8 @@ export class WebAppStack extends TerraformStack {
         NAMESPACE: namespace,
         // This env variable is reserved at the level of container namespace. We inject it here even if its shared.
         SCW_DEFAULT_REGION: region,
-        SCW_GENERATIVE_API_SERVICE_URL:
-          environmentVariables.SCW_GENERATIVE_API_SERVICE_URL.value,
+        SCALEWAY_GENERATIVE_API_SERVICE_URL:
+          environmentVariables.SCALEWAY_GENERATIVE_API_SERVICE_URL.value,
         ALBERT_SERVICE_URL: environmentVariables.ALBERT_SERVICE_URL.value,
       },
       secretEnvironmentVariables: {
