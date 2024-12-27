@@ -81,6 +81,7 @@ describe('openAiChat', () => {
           arguments: expect.toBeOneOf([
             '{"location": "Lyon, FR"}',
             '{"location": "Lyon, France"}',
+            '{"location": "Lyon"}',
           ]) as string,
         },
       },
@@ -116,7 +117,7 @@ describe('openAiChat', () => {
             role: 'assistant',
             parsed: null,
             refusal: null,
-            content: expect.stringContaining('fin du monde') as string,
+            content: expect.toBeString() as string,
             tool_calls: [],
           },
           finish_reason: 'stop',

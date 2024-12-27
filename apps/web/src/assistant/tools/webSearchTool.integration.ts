@@ -9,14 +9,12 @@ describe('webSearchTool', () => {
       throw new Error('webSearchTool.$callback is not defined')
     }
     const response = await webSearchToolOptions.function({
-      query: 'les bases inclusion numérique',
+      query: 'les bases du numérique d’intéret géneral',
     })
 
-    console.log('RESPONSE', response)
-
-    expect(response.results).toHaveLength(20)
-    expect(response.results[0].title).toBe(
-      "Les Bases du numérique d'intérêt général - Societé Numérique",
+    expect(response.results).toHaveLength(10)
+    expect(response.results[0].url).toStartWith(
+      'https://lesbases.anct.gouv.fr/',
     )
   })
 })

@@ -87,6 +87,7 @@ export const ServerWebAppConfig = {
     Scaleway: {
       serviceUrl: process.env.SCW_GENERATIVE_API_SERVICE_URL ?? '',
       apiKey: process.env.SCW_SECRET_KEY ?? '',
+      // chatModel: 'mistral-nemo-instruct-2407',
       chatModel: 'llama-3.1-70b-instruct',
     },
     Albert: {
