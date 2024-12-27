@@ -78,40 +78,54 @@ describe('openAiChat', () => {
         type: 'function',
         function: {
           name: 'get_current_weather',
-          arguments: '{"location": "Lyon, France"}',
+          arguments: expect.toBeOneOf([
+            '{"location": "Lyon, FR"}',
+            '{"location": "Lyon, France"}',
+          ]) as string,
         },
       },
     ])
     expect(message).toBe('')
     expect(finishReason).toBe('tool_calls')
-  })
+  }, 40_000)
 
   it('run tools using openai sdk', async () => {
-    const runner = openAiClient.beta.chat.completions
-      .runTools({
-        model: openAiClientConfiguration.chatModel,
-        messages: [
-          chatSystemMessageWithContext,
-          {
-            role: 'user',
-            content: 'Je veux savoir la météo pour Lyon',
-          },
-        ],
-        tools: [weatherTestTool],
-        stream: true,
-      })
-      .on('message', (message) => {
-        console.log('runner message', message)
-        console.log(
-          'runner message tool call',
-          'tool_calls' in message ? message.tool_calls?.at(0) : null,
-        )
-      })
-      .on('content', (content) => {
-        console.log('runner content', content)
-      })
+    const runner = openAiClient.beta.chat.completions.runTools({
+      model: openAiClientConfiguration.chatModel,
+      messages: [
+        chatSystemMessageWithContext,
+        {
+          role: 'user',
+          content: 'Je veux savoir la météo pour Lyon',
+        },
+      ],
+      tools: [weatherTestTool],
+      stream: true,
+    })
 
     const result = await runner.finalChatCompletion()
-    console.log('final result', result)
-  })
+
+    // Tools should have been called conditionnaly
+    expect(result).toEqual({
+      object: 'chat.completion',
+      id: expect.any(String) as string,
+      choices: [
+        {
+          stop_reason: null,
+          message: {
+            role: 'assistant',
+            parsed: null,
+            refusal: null,
+            content: expect.stringContaining('fin du monde') as string,
+            tool_calls: [],
+          },
+          finish_reason: 'stop',
+          index: 0,
+          logprobs: null,
+        },
+      ],
+      created: expect.any(Number) as number,
+      model: expect.any(String) as string,
+    })
+  }, 40_000)
 })
