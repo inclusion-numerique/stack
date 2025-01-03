@@ -112,7 +112,7 @@ export const webSearchToolOptions = {
       spellcheck: false,
       resultFilter: 'web,news',
       gogglesId:
-        'https://gist.githubusercontent.com/Clrk/800bf69ac450d9fd07846c1dcb012d1f/raw',
+        'https://gist.githubusercontent.com/Clrk/800bf69ac450d9fd07846c1dcb012d1f',
       extraSnippets: false,
       summary: true,
     }
