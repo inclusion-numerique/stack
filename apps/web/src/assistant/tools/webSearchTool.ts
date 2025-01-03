@@ -92,7 +92,8 @@ export const webSearchToolParameters = z.object({
 export const webSearchToolOptions = {
   name: 'web_search',
   description:
-    'Recherche sur internet, utilise les résultats pour trouver les quelles sont les informations utiles a utiliser pour mieux répondre.',
+    'Recherche sur internet, utilise les résultats pour trouver quelles sont les informations utiles a utiliser pour mieux répondre.' +
+    'Utilise ce tool pour toutes les questions en rapport avec la médiation numérique ou les démarches administratives.',
   parameters: webSearchToolParameters,
   function: async ({ query }) => {
     const headers = {
