@@ -14,12 +14,12 @@ export type BraveApiSearchParams = {
   offset?: number // The offset of the first result to return
   safesearch?: 'off' | 'moderate' | 'strict' // The safe search level
   freshness?: string // The freshness of the results
-  textDecorations?: boolean // Whether to show text decorations
+  text_decorations?: boolean // Whether to show text decorations
   spellcheck?: boolean // Whether to enable spellcheck
-  resultFilter?: string // The result filter
-  gogglesId?: string // The goggles ID
+  result_filter?: string // The result filter
+  goggles_id?: string // The goggles ID
   units?: 'metric' | 'imperial' // The units
-  extraSnippets?: boolean // Whether to show extra snippets
+  extra_snippets?: boolean // Whether to show extra snippets
   summary?: boolean // Whether to show a summary
 }
 
@@ -108,12 +108,12 @@ export const webSearchToolOptions = {
       ui_lang: 'fr-FR',
       count: 10,
       safesearch: 'strict',
-      textDecorations: false,
+      text_decorations: false,
       spellcheck: false,
-      resultFilter: 'web,news',
-      gogglesId:
+      result_filter: 'web,news',
+      goggles_id:
         'https://gist.githubusercontent.com/Clrk/800bf69ac450d9fd07846c1dcb012d1f',
-      extraSnippets: false,
+      extra_snippets: false,
       summary: true,
     }
 
