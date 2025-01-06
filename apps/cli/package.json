@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "cli": "dotenv -e ../../.env -- tsx src/index.ts",
+    "cli:target-deployment": "dotenv -e ../../.env -- bash -c 'export DATABASE_URL=$CLI_TARGET_DEPLOYMENT_DATABASE_URL && tsx src/index.ts \"$@\"' --",
     "lint": "biome check src",
     "tsc": "tsc --noEmit",
     "test": "jest --passWithNoTests",
@@ -16,6 +17,7 @@
   },
   "dependencies": {
     "@commander-js/extra-typings": "^12.1.0",
+    "@langchain/textsplitters": "^0.1.0",
     "@octokit/core": "^6.1.2",
     "@octokit/plugin-rest-endpoint-methods": "^13.2.6",
     "axios": "^1.7.9",
@@ -29,6 +31,7 @@
     "p-retry": "^6.2.1",
     "picocolors": "^1.1.1",
     "slug": "^9.1.0",
+    "slugify": "^1.6.6",
     "tsx": "^4.19.2",
     "undici": "^6.21.0",
     "zod": "^3.24.1"

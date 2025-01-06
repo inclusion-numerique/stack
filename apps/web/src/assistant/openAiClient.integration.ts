@@ -25,6 +25,13 @@ describe('openAiClient', () => {
         (model) => model.id === openAiClientConfiguration.chatModel,
       ),
     ).toBeDefined()
+
+    // Our configured embeddings model should be in the list
+    expect(
+      modelsList.find(
+        (model) => model.id === openAiClientConfiguration.embeddingsModel,
+      ),
+    ).toBeDefined()
   })
 
   it('should be able to create a completion', async () => {

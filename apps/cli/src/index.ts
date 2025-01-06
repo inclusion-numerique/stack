@@ -14,8 +14,27 @@ import { getSecretValue } from '@app/cli/commands/secrets/getSecretValue'
 import { listSecrets } from '@app/cli/commands/secrets/listSecrets'
 import { setupDatabaseSecret } from '@app/cli/commands/secrets/setupDatabaseSecret'
 import { listV1Emails } from '@app/cli/commands/v1/listEmails'
+import { ingestNotionHelpCenterExportedMarkdown } from '@app/cli/commands/rag/ingestNotionHelpCenterExportedMarkdown'
+import { output } from '@app/cli/output'
 import { fetchAccompagnements } from '@app/cli/fetchAccompagnement'
 import { Command } from '@commander-js/extra-typings'
+
+if (
+  process.env.DATABASE_URL &&
+  process.env.CLI_TARGET_DEPLOYMENT_DATABASE_URL === process.env.DATABASE_URL
+) {
+  output(
+    `⚠️⚠️⚠️ Executing command on target deployment ${
+      process.env.CLI_TARGET_DEPLOYMENT_BRANCH
+    }`,
+  )
+  const databaseUrl = new URL(process.env.DATABASE_URL)
+  output(`⚠️⚠️⚠️ Database: ${databaseUrl.hostname} ${databaseUrl.pathname}`)
+  output('⚠️⚠️⚠️ You have 8 seconds to cancel')
+  await new Promise((resolve) => {
+    setTimeout(resolve, 8000)
+  })
+}
 
 const program = new Command()
 
@@ -35,6 +54,7 @@ program.addCommand(createTfVarsFileFromEnvironment)
 program.addCommand(checkDeploymentStatus)
 program.addCommand(locallyRestoreLatestMainBackup)
 program.addCommand(listV1Emails)
+program.addCommand(ingestNotionHelpCenterExportedMarkdown)
 program.addCommand(fetchAccompagnements)
 
 program.parse()

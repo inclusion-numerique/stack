@@ -1,7 +1,8 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch", "nativeDistinct", "relationJoins"]
+  previewFeatures = ["fullTextSearch", "nativeDistinct", "relationJoins", "postgresqlExtensions"]
   binaryTargets   = ["native", "debian-openssl-1.1.x"]
+  extensions = [vector]
 }
 
 datasource db {
@@ -1036,8 +1037,8 @@ model AssistantChatMessage {
   name String? // also used for "function" message function name
 
   // Additional fields for assistant chat messages
-  refusal String?
-  toolCalls Json[] @map("tool_calls") @default([])
+  refusal      String?
+  toolCalls    Json[]  @default([]) @map("tool_calls")
   finishReason String? @map("finish_reason")
 
   // Additional fields for tool calls
@@ -1045,6 +1046,27 @@ model AssistantChatMessage {
 
   @@index([sessionId])
   @@index([created(sort: Asc)])
-
   @@map("assistant_chat_messages")
+}
+
+model RagDocumentChunk {
+  id String @id @default(uuid()) @db.Uuid // internal id of the chunk
+
+  source  String
+  type    String
+  content String // Raw content of the chunk
+  documentMd5 String @map("document_md5") // md5 hash of the source document to check if the chunk is still valid
+
+  sourceId String  @map("source_id") // id of the source document, can have multiple chunks for the same source
+  chunk    Int // chunk number for the same source id
+  url      String?
+
+  created DateTime @default(now())
+  updated DateTime @default(now())
+
+  embeddingModel String                @map("embedding_model")
+  embedding      Unsupported("vector")?
+
+  @@index([sourceId])
+  @@map("rag_document_chunks")
 }

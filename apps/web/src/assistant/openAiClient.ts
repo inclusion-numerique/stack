@@ -6,12 +6,13 @@ const openAiClientConfigurationWithSensitiveData =
     ? ServerWebAppConfig.Assistant.Scaleway
     : ServerWebAppConfig.Assistant.Albert
 
-const { chatModel, apiKey, serviceUrl } =
+const { chatModel, apiKey, serviceUrl, embeddingsModel } =
   openAiClientConfigurationWithSensitiveData
 
 // Do not export any sensitive data
 export const openAiClientConfiguration = {
   chatModel,
+  embeddingsModel,
 }
 
 export const openAiClient = new OpenAI({
