@@ -3,10 +3,22 @@ import { v4 } from 'uuid'
 import type { ObjectId } from 'mongodb'
 import { prismaClient } from '@app/web/prismaClient'
 import type { ConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Data'
-import type { ConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
 import type { MiseEnRelationConseillerNumeriqueV1MinimalProjection } from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
 
 export const toId = ({ id }: { id: string | ObjectId }) => id.toString()
+
+// eslint-disable-next-line unicorn/prevent-abbreviations
+export type MiseEnRelationWithStructureAdministrativeInfo = {
+  structureObj: Pick<
+    MiseEnRelationConseillerNumeriqueV1MinimalProjection['structureObj'],
+    'siret' | 'nom'
+  > & {
+    adresseInsee2Ban: Pick<
+      MiseEnRelationConseillerNumeriqueV1MinimalProjection['structureObj']['adresseInsee2Ban'],
+      'city' | 'postcode' | 'name' | 'y' | 'x' | 'citycode'
+    >
+  }
+}
 
 export const findConseillerNumeriquesFromConseillersCoordonnesV1 = ({
   conseillersCoordonnes,
@@ -19,7 +31,9 @@ export const findConseillerNumeriquesFromConseillersCoordonnesV1 = ({
 
 export const findExistingStructureForMiseEnRelationActive = ({
   miseEnRelationActive,
-}: ConseillerNumeriqueV1Data) =>
+}: {
+  miseEnRelationActive: MiseEnRelationWithStructureAdministrativeInfo
+}) =>
   miseEnRelationActive
     ? prismaClient.structure.findFirst({
         where: {
@@ -32,7 +46,7 @@ export const findExistingStructureForMiseEnRelationActive = ({
 
 export const findStructureCartographieNationaleFromMiseEnRelation = ({
   structureObj,
-}: MiseEnRelationConseillerNumeriqueV1MinimalProjection) =>
+}: MiseEnRelationWithStructureAdministrativeInfo) =>
   prismaClient.structureCartographieNationale.findFirst({
     where: {
       pivot: structureObj.siret,
@@ -45,7 +59,9 @@ export const createStructureEmployeuseFor =
     miseEnRelationActive: {
       structureObj: { nom, adresseInsee2Ban, siret },
     },
-  }: ConseillerNumeriqueV1DataWithActiveMiseEnRelation) =>
+  }: {
+    miseEnRelationActive: MiseEnRelationWithStructureAdministrativeInfo
+  }) =>
   (structureCartographieNationale: { id: string } | null) =>
     prismaClient.structure.create({
       data: {

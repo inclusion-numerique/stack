@@ -29,6 +29,7 @@ export const importStructureEmployeuseFromV1Data = async ({
       where: {
         userId: user.id,
         structureId: existingStructure.id,
+        suppression: null,
       },
       select: {
         id: true,

@@ -155,6 +155,9 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
         include: {
           structure: true,
         },
+        orderBy: {
+          creation: 'desc',
+        },
       },
       usurpateur: true,
     },
@@ -485,14 +488,29 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
       )}
       {emplois.length > 0 ? (
         <AdministrationInfoCard title="Structures employeuses">
+          <Button
+            title="Modifier la structure employeuse"
+            iconId="fr-icon-edit-line"
+            priority="tertiary"
+            size="small"
+            linkProps={{
+              href: `/administration/utilisateurs/${user.id}/structure-employeuse`,
+            }}
+          >
+            Modifier la structure employeuse
+          </Button>
           {emplois.map((emploi) => (
             <div key={emploi.id}>
               <p className="fr-text--lg fr-text--medium fr-mb-4v fr-mt-8v">
-                {emploi.structure.nom}
+                {emploi.structure.nom}{' '}
+                {!!emploi.suppression && (
+                  <Badge className="fr-ml-2w" severity="warning" small>
+                    Lien d’emploi supprimé
+                  </Badge>
+                )}
               </p>
               <AdministrationInlineLabelsValues
                 items={[
-                  ...getStructuresInfos(emploi.structure),
                   {
                     label: 'Lien d’emploi créé le',
                     value: dateAsDay(emploi.creation),
@@ -503,6 +521,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
                       ? dateAsDay(emploi.suppression)
                       : '-',
                   },
+                  ...getStructuresInfos(emploi.structure),
                 ]}
               />
             </div>
