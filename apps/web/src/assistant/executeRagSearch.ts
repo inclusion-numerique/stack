@@ -9,7 +9,7 @@ export const executeRagSearch = async ({
   model: string
   limit?: number
 }) => {
-  const embeddingVectorParam = JSON.stringify(embedding)
+  const embeddingVectorParam = `[${embedding.join(',')}]`
 
   const results = await prismaClient.$queryRawUnsafe<
     {

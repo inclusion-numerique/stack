@@ -8,10 +8,7 @@ import { MarkdownTextSplitter } from '@langchain/textsplitters'
 import { createEmbedding } from '@app/web/assistant/createEmbedding'
 import { prismaClient } from '@app/web/prismaClient'
 import { Command } from '@commander-js/extra-typings'
-import {
-  configureDeploymentTarget,
-  DeploymentTargetOption,
-} from '@app/cli/deploymentTarget'
+import { configureDeploymentTarget, DeploymentTargetOption } from '@app/cli/deploymentTarget'
 import { output } from '@app/cli/output'
 
 /**
@@ -124,7 +121,7 @@ const createOrUpdateNotionPageEmbeddingChunks = async (file: {
       })
 
       // Transform the number array vector in string format '[0.1, 0.2,...]'
-      const embeddingVectorParam = JSON.stringify(embedding)
+      const embeddingVectorParam = `[${embedding.join(',')}]`
 
       // Prisma client do not support setting vector fields
       await prismaClient.$queryRawUnsafe(`
