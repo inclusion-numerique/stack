@@ -8,8 +8,7 @@ describe('openAiClient', () => {
     expect(openAiClient).toBeDefined()
   })
 
-  // TODO 500 error from the provider API :(
-  it.skip('should be able to list models', async () => {
+  it('should be able to list models', async () => {
     const models = await openAiClient.models
       .list({
         method: 'post',
@@ -19,6 +18,13 @@ describe('openAiClient', () => {
 
     expect(modelsList).toBeInstanceOf(Array)
     expect(modelsList.length).toBeGreaterThan(0)
+
+    // Our configured model should be in the list
+    expect(
+      modelsList.find(
+        (model) => model.id === openAiClientConfiguration.chatModel,
+      ),
+    ).toBeDefined()
   })
 
   it('should be able to create a completion', async () => {

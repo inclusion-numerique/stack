@@ -106,7 +106,7 @@ describe('openAiChat', () => {
 
     const result = await runner.finalChatCompletion()
 
-    // Tools should have been called conditionnaly
+    // Tools should have been called conditionally
     expect(result).toEqual({
       object: 'chat.completion',
       id: expect.any(String) as string,
@@ -128,5 +128,5 @@ describe('openAiChat', () => {
       created: expect.any(Number) as number,
       model: expect.any(String) as string,
     })
-  }, 40_000)
+  }, 120_000)
 })
