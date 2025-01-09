@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@cypress/react18": "^2.0.1",
-    "cypress": "^13.16.1",
+    "cypress": "^13.17.0",
     "cypress-real-events": "^1.13.0",
     "next": "^14.2.20",
     "react": "^18.3.1",
