@@ -117,6 +117,10 @@ model User {
   usurpateur   Session?           @relation(name: "usurper")
   rdvAccount   RdvAccount?
 
+  // "creation" cursor is used to paginate results for API queries
+  @@unique([created, id])
+  // descending sort on this cursor for api query performances
+  @@index([created(sort: Desc), id(sort: Desc)])
   @@map("users")
 }
 
@@ -199,7 +203,13 @@ model JobExecution {
 
 enum ApiClientScope {
   Statistiques   @map("statistiques")
-  Activites           @map("activites") // Cras anonymisés
+
+  // Cras anonymisés
+  Activites           @map("activites")
+  Structures          @map("structures")
+
+  // Utilisateurs (excepté admins et supports), incluant données nominatives et leurs roles
+  Utilisateurs        @map("utilisateurs")
 
   @@map("api_client_scope")
 }
@@ -446,6 +456,10 @@ model Structure {
   modalitesAccompagnement       String[]   @default([]) @map("modalites_accompagnement")
   activites                     Activite[] @relation(name: "activite_structure")
 
+  // "creation" cursor is used to paginate results for API queries
+  @@unique([creation, id])
+  // descending sort on this cursor for api query performances
+  @@index([creation(sort: Desc), id(sort: Desc)])
   @@index([structureCartographieNationaleId])
   @@map("structures")
 }
