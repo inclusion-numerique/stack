@@ -218,10 +218,17 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
     (a, b) => b.created.getTime() - a.created.getTime(),
   )
 
-  const conseillerNumeriqueInfo = await findConseillerNumeriqueV1({
-    email: user.email,
-    includeDeleted: true,
-  })
+  const conseillerNumeriqueInfo = await findConseillerNumeriqueV1(
+    user.mediateur?.conseillerNumerique?.id
+      ? {
+          id: user.mediateur.conseillerNumerique.id,
+          includeDeleted: true,
+        }
+      : {
+          email: user.email,
+          includeDeleted: true,
+        },
+  )
 
   return (
     <CoopPageContainer>

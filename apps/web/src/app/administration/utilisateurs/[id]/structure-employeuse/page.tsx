@@ -163,10 +163,17 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
 
   const { mediateur, coordinateur, emplois } = user
 
-  const conseillerNumeriqueInfo = await findConseillerNumeriqueV1({
-    email: user.email,
-    includeDeleted: true,
-  })
+  const conseillerNumeriqueInfo = await findConseillerNumeriqueV1(
+    user.mediateur?.conseillerNumerique?.id
+      ? {
+          id: user.mediateur.conseillerNumerique.id,
+          includeDeleted: true,
+        }
+      : {
+          email: user.email,
+          includeDeleted: true,
+        },
+  )
 
   const miseEnRelationActive = conseillerNumeriqueInfo?.miseEnRelationActive
 
