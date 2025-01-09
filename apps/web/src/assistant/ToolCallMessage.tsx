@@ -1,7 +1,6 @@
 import type { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
 import classNames from 'classnames'
 import styles from '@app/web/assistant/ChatSession.module.css'
-import { webSearchToolOptions } from '@app/web/assistant/tools/webSearchTool'
 import { Spinner } from '@app/web/ui/Spinner'
 
 const ToolCallMessage = ({
@@ -26,8 +25,11 @@ const ToolCallMessage = ({
       <span className="fr-icon-error-line fr-icon--sm fr-text-default--success fr-mr-1w" />
     )}
 
-    {toolCall.function.name === webSearchToolOptions.name && (
+    {toolCall.function.name === 'web_search' && (
       <>Je recherche sur internet pour avoir plus d’informations</>
+    )}
+    {toolCall.function.name === 'rag' && (
+      <>Je recherche dans le centre d’aide pour répondre à votre question</>
     )}
   </div>
 )

@@ -83,7 +83,14 @@ const formatResultForAssistant = ({
 })
 
 export const webSearchToolParameters = z.object({
-  query: z.string().describe('The search query'),
+  query: z
+    .string()
+    .describe('Les termes de recherches pour le moteur de recherche web'),
+  objectif: z
+    .string()
+    .describe(
+      'L’objectif de la recherche dans le contexte de la discussion. Permet de ranker les résultats par ordre de pertinence.',
+    ),
 })
 
 // TODO Deeper search tool that crawls

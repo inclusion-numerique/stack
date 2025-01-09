@@ -77,14 +77,32 @@ describe('executeRagSearch', () => {
     // Should have A then B
     expect(result).toEqual([
       {
-        content: mostSimilarChunk.content,
         id: mostSimilarChunk.id,
+        chunk: 0,
+        content: mostSimilarChunk.content,
+        created: expect.toBeDateString() as string,
+        updated: expect.toBeDateString() as string,
+        documentMd5: 'A',
+        embeddingModel: 'test',
         similarity: expect.toBeNumber() as number,
+        source: 'test',
+        sourceId: 'A',
+        type: 'test',
+        url: null,
       },
       {
-        content: secondMostSimilarChunk.content,
         id: secondMostSimilarChunk.id,
+        chunk: 1,
+        content: secondMostSimilarChunk.content,
+        created: expect.toBeDateString() as string,
+        updated: expect.toBeDateString() as string,
+        documentMd5: 'B',
+        embeddingModel: 'test',
         similarity: expect.toBeNumber() as number,
+        source: 'test',
+        sourceId: 'B',
+        type: 'test',
+        url: null,
       },
     ])
   })

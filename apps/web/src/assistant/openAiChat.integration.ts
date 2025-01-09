@@ -3,7 +3,7 @@ import {
   executeOpenAiChatStream,
   OpenAiChunkChoice,
 } from '@app/web/assistant/openAiChat'
-import { chatSystemMessageWithContext } from '@app/web/assistant/systemMessages'
+import { minimalChatSystemMessage } from '@app/web/assistant/systemMessages'
 import {
   openAiClient,
   openAiClientConfiguration,
@@ -14,7 +14,7 @@ describe('openAiChat', () => {
   it('should trigger functions tools', async () => {
     const response = await executeOpenAiChat({
       messages: [
-        chatSystemMessageWithContext,
+        minimalChatSystemMessage,
         {
           role: 'user',
           content: 'Je veux savoir la météo pour Lyon',
@@ -62,7 +62,7 @@ describe('openAiChat', () => {
         chunksList.push(chunk)
       },
       messages: [
-        chatSystemMessageWithContext,
+        minimalChatSystemMessage,
         {
           role: 'user',
           content: 'Je veux savoir la météo pour Lyon',
@@ -94,7 +94,7 @@ describe('openAiChat', () => {
     const runner = openAiClient.beta.chat.completions.runTools({
       model: openAiClientConfiguration.chatModel,
       messages: [
-        chatSystemMessageWithContext,
+        minimalChatSystemMessage,
         {
           role: 'user',
           content: 'Je veux savoir la météo pour Lyon',

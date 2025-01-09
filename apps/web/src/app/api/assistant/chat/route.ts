@@ -13,7 +13,7 @@ import {
 } from '@app/web/assistant/assistantMessageToOpenAiMessage'
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
-import { chatSystemMessageWithContext } from '@app/web/assistant/systemMessages'
+import { minimalChatSystemMessage } from '@app/web/assistant/systemMessages'
 import { tools } from '@app/web/assistant/tools/tools'
 
 const notFoundResponse = () =>
@@ -79,7 +79,8 @@ export const POST = async (request: NextRequest) => {
   // with our system message and the session messages
   const messages = [
     // Our system message is always up to date and the first message
-    chatSystemMessageWithContext,
+    // chatSystemMessageWithContext,
+    minimalChatSystemMessage,
     // Session history
     ...chatSession.messages.map(assistantMessageToOpenAiMessage),
     // User prompt message
@@ -93,7 +94,6 @@ export const POST = async (request: NextRequest) => {
   const { stream } = executeChatInteraction({
     onMessage: async (message) => {
       // TODO do not block the stream for this, should be asynchronous
-      console.log('ON MESSAGE', message)
       await prismaClient.assistantChatMessage.create({
         data: openAiMessageToAssistantChatMessage(message, {
           chatSessionId,
