@@ -891,6 +891,255 @@
             }
           }
         }
+      },
+      "Utilisateur": {
+        "type": "object",
+        "required": [
+          "type",
+          "id",
+          "attributes"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "utilisateur",
+            "enum": [
+              "utilisateur"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "example": "john.doe@example.org"
+              },
+              "prenom": {
+                "type": "string",
+                "nullable": true,
+                "example": "john"
+              },
+              "nom": {
+                "type": "string",
+                "nullable": true,
+                "example": "doe"
+              },
+              "inscription_validee": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "example": "2024-01-05T10:00:00Z"
+              },
+              "telephone": {
+                "type": "string",
+                "nullable": true,
+                "example": "+33123456789"
+              },
+              "creation": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2024-01-01T12:00:00Z"
+              },
+              "modification": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2024-01-02T12:00:00Z"
+              },
+              "suppression": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "example": "2024-01-03T12:00:00Z"
+              },
+              "emplois": {
+                "type": "array",
+                "description": "liste des emplois (relation \"EmployeStructure\") avec uniquement l'id et l'id de la structure",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "structure_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "creation": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "modification": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "suppression": {
+                      "type": "string",
+                      "format": "date-time",
+                      "nullable": true
+                    }
+                  }
+                }
+              },
+              "mediateur": {
+                "type": "object",
+                "nullable": true,
+                "description": "données du médiateur",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "creation": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "modification": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "conseiller_numerique": {
+                    "type": "object",
+                    "nullable": true,
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "id externe chez conseiller-numerique"
+                      },
+                      "idPg": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "id_pg"
+                      }
+                    }
+                  },
+                  "lieux_activite": {
+                    "type": "array",
+                    "description": "liste des liens mediateur-structure (uniquement l'id, structure_id...)",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "structure_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "creation": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "modification": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "suppression": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        }
+                      }
+                    }
+                  },
+                  "coordinations": {
+                    "type": "array",
+                    "description": "liste des mediateurs_coordonnes",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "creation": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "modification": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "suppression": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "coordinateur_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "coordinateur": {
+                "type": "object",
+                "nullable": true,
+                "description": "données du coordinateur",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "creation": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "modification": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "conseiller_numerique_id": {
+                    "type": "string",
+                    "description": "id du conseiller numérique"
+                  },
+                  "conseiller_numerique_id_pg": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "mediateurs_coordonnes": {
+                    "type": "array",
+                    "description": "liste des mediateurs_coordonnes",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "creation": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "modification": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "suppression": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "mediateur_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -1139,6 +1388,78 @@
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/Structure"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/PaginationLinks"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/ListMetadata"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/utilisateurs": {
+      "get": {
+        "summary": "liste des utilisateurs",
+        "description": "retourne la liste des utilisateurs dont l'inscription est terminée (inscriptionValidee != null)\nles utilisateurs sont triés par date de création décroissante.\n",
+        "tags": [
+          "Utilisateurs"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page[size]",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500,
+              "default": 500
+            },
+            "required": false,
+            "description": "nombre maximum d'éléments à retourner"
+          },
+          {
+            "in": "query",
+            "name": "page[after]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "curseur de pagination pour obtenir les éléments suivants"
+          },
+          {
+            "in": "query",
+            "name": "page[before]",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "curseur de pagination pour obtenir les éléments précédents"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "liste des utilisateurs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "links",
+                    "meta"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Utilisateur"
                       }
                     },
                     "links": {
