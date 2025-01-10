@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { Materiel } from '@prisma/client'
 import { materielIcons } from '@app/web/cra/cra'
-import { numberToPercentage } from '@app/web/utils/formatNumber'
+import { numberToPercentage, numberToString } from '@app/web/utils/formatNumber'
 
 export const StatistiqueMateriel = ({
   label,
@@ -29,7 +29,7 @@ export const StatistiqueMateriel = ({
       />
     </div>
     <div className="fr-flex fr-flex-gap-2v fr-justify-content-center">
-      <span className="fr-text--bold">{count}</span>
+      <span className="fr-text--bold">{numberToString(count)}</span>
       <span className="fr-text-mention--grey">
         {numberToPercentage(proportion)}
       </span>

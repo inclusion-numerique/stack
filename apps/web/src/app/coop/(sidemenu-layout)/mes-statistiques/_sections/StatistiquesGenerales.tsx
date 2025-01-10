@@ -5,6 +5,7 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import type { MesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
+import { numberToString } from '@app/web/utils/formatNumber'
 import { AccompagnementBarChart } from '../_components/AccompagnementBarChart'
 
 export const StatistiquesGenerales = ({
@@ -26,7 +27,7 @@ export const StatistiquesGenerales = ({
           <div className="fr-p-3w fr-border-radius--16 fr-background-alt--brown-caramel fr-width-full">
             <div className="fr-flex fr-align-items-center fr-justify-content-space-between">
               <span className="fr-h2 fr-mb-0">
-                {totalCounts.accompagnements.total}
+                {numberToString(totalCounts.accompagnements.total)}
               </span>
               <span
                 className="ri-service-line ri-2x fr-text-label--brown-caramel"
@@ -51,18 +52,26 @@ export const StatistiquesGenerales = ({
                 role="tooltip"
                 aria-hidden
               >
-                {totalCounts.accompagnements.total} accompagnements au total
-                dont&nbsp;:
+                {numberToString(totalCounts.accompagnements.total)}{' '}
+                accompagnements au total dont&nbsp;:
                 <ul>
                   <li>
-                    {totalCounts.accompagnements.individuels.total}{' '}
+                    {numberToString(
+                      totalCounts.accompagnements.individuels.total,
+                    )}{' '}
                     accompagnements individuels
                   </li>
                   <li>
-                    {totalCounts.activites.collectifs.participants}{' '}
+                    {numberToString(
+                      totalCounts.activites.collectifs.participants,
+                    )}{' '}
                     participation
-                    {sPluriel(totalCounts.activites.collectifs.participants)} 
-                    lors de {totalCounts.activites.collectifs.total} ateliers*
+                    {sPluriel(totalCounts.activites.collectifs.participants)}
+                    lors de{' '}
+                    {numberToString(
+                      totalCounts.activites.collectifs.total,
+                    )}{' '}
+                    ateliers*
                   </li>
                   <li>
                     {totalCounts.accompagnements.demarches.total} aides aux
@@ -79,7 +88,7 @@ export const StatistiquesGenerales = ({
           <div className="fr-p-3w fr-border-radius--16 fr-background-alt--brown-caramel">
             <div className="fr-flex fr-align-items-center fr-justify-content-space-between">
               <span className="fr-h2 fr-mb-0">
-                {totalCounts.beneficiaires.total}
+                {numberToString(totalCounts.beneficiaires.total)}
               </span>
               <span
                 className="ri-user-heart-line ri-2x fr-text-label--brown-caramel"
@@ -91,12 +100,13 @@ export const StatistiquesGenerales = ({
             </div>
             <div className="fr-text-mention--grey">
               <div>
-                {totalCounts.beneficiaires.suivis} bénéficiaire
+                {numberToString(totalCounts.beneficiaires.suivis)} bénéficiaire
                 {sPluriel(totalCounts.beneficiaires.suivis)} suivi
                 {sPluriel(totalCounts.beneficiaires.suivis)}
               </div>
               <div>
-                {totalCounts.beneficiaires.anonymes} bénéficiaire
+                {numberToString(totalCounts.beneficiaires.anonymes)}{' '}
+                bénéficiaire
                 {sPluriel(totalCounts.beneficiaires.anonymes)} anonyme
                 {sPluriel(totalCounts.beneficiaires.anonymes)}
               </div>
@@ -128,8 +138,8 @@ export const StatistiquesGenerales = ({
                 collectif et aides aux démarches administratives).
                 <br />
                 <br />À noter&nbsp;: Les ateliers collectifs comptent pour 1
-                accompagnement par participant. Ex : Un atelier collectif avec
-                10 participants compte pour 10 accompagnements.
+                accompagnement par participant. Ex&nbsp;: Un atelier collectif
+                avec 10 participants compte pour 10 accompagnements.
               </span>
             </div>
             <SegmentedControl

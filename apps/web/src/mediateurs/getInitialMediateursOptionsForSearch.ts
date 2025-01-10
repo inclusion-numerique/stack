@@ -71,35 +71,14 @@ export const getInitialMediateursOptionsForSearch = async ({
     where: { id: { in: mediateurCoordonnesIds } },
     select: mediateurSelect,
     orderBy: [{ user: { lastName: 'asc' } }, { user: { firstName: 'asc' } }],
-    take: 20,
   })
 
-  const totalCountMediateurs = await prismaClient.mediateur.count({
-    where: { id: { in: mediateurCoordonnesIds } },
-  })
-
-  const initialMedtateursOptions: MediateurOption[] = mediateursForSelect.map(
+  const initialMediateursOptions: MediateurOption[] = mediateursForSelect.map(
     ({ user, id }) => ({
       label: getUserDisplayName(user),
       value: { mediateurId: id, email: user.email },
     }),
   )
 
-  const mediateursNotDisplayed =
-    totalCountMediateurs - initialMedtateursOptions.length
-
-  return [
-    ...(mediateursNotDisplayed > 0
-      ? [
-          {
-            label: `Veuillez préciser votre recherche - ${
-              mediateursNotDisplayed
-            } médiateur${mediateursNotDisplayed === 1 ? ' n’est pas affiché' : 's ne sont pas affichés'}`,
-            value: null,
-          },
-        ]
-      : []),
-    ...initialOptionFor(mediateur),
-    ...initialMedtateursOptions,
-  ]
+  return [...initialOptionFor(mediateur), ...initialMediateursOptions]
 }

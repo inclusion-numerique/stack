@@ -3,7 +3,6 @@
 import { ReactNode, useState } from 'react'
 import CustomSelect from '@app/ui/components/CustomSelect/CustomSelect'
 import FilterTag from '@app/web/components/filters/FilterTag'
-import { useMediateursSearch } from '@app/web/hooks/useMediateurSearch'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 
@@ -22,10 +21,6 @@ const MediateurFilter = ({
   defaultValue?: string
   initialMediateursOptions: MediateurOption[]
 }) => {
-  const { initialOptions, loadOptions } = useMediateursSearch({
-    initialMediateursOptions,
-  })
-
   const [mediateur, setMediateur] = useState<MediateurOption | null>(
     initialMediateursOptions.find(
       (option) => option.value?.mediateurId === defaultValue,
@@ -54,15 +49,14 @@ const MediateurFilter = ({
       value={mediateur}
       valueLabel={valueLabel}
       onClear={onClear}
-      label="Tous les Médiateurs"
+      label="Tous les médiateurs"
     >
       <div style={{ width: 460 }}>
         <CustomSelect
           instanceId="mediateur-filter-search"
           placeholder="Rechercher un médiateur"
           className="fr-mb-2v fr-mt-3v"
-          loadOptions={loadOptions}
-          defaultOptions={initialOptions}
+          options={initialMediateursOptions}
           onChange={onSelectChange}
         />
       </div>

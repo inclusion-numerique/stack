@@ -5,7 +5,7 @@ import {
   typeActiviteIllustrations,
   typeActivitePluralLabels,
 } from '@app/web/cra/cra'
-import { numberToPercentage } from '@app/web/utils/formatNumber'
+import { numberToPercentage, numberToString } from '@app/web/utils/formatNumber'
 
 export const StatistiqueAccompagnement = ({
   typeActivite,
@@ -31,7 +31,7 @@ export const StatistiqueAccompagnement = ({
     </div>
     <div>
       <div className="fr-flex fr-direction-row fr-flex-gap-3v fr-align-items-baseline">
-        <span className="fr-h4 fr-mb-0">{count ?? 0}</span>
+        <span className="fr-h4 fr-mb-0">{numberToString(count ?? 0)}</span>
         <span className="fr-text-mention--grey ">
           {numberToPercentage(proportion)}
         </span>

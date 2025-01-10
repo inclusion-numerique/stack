@@ -7,6 +7,7 @@ import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import type { MesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
 import { AccompagnementPieChart } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_components/AccompagnementPieChart'
 import { QuantifiedShareLegend } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_components/QuantifiedShareLegend'
+import { numberToString } from '@app/web/utils/formatNumber'
 import { ProgressListItem } from '../_components/ProgressListItem'
 import { QuantifiedShareList } from '../_components/QuantifiedShareList'
 import { StatistiqueAccompagnement } from '../_components/StatistiqueAccompagnement'
@@ -56,7 +57,7 @@ export const StatistiquesActivites = ({
             {value === 'Collectif' && (
               <>
                 <span className="fr-text--bold">
-                  {totalCounts.accompagnements.collectifs.total}
+                  {numberToString(totalCounts.accompagnements.collectifs.total)}
                 </span>{' '}
                 participation
                 {sPluriel(totalCounts.accompagnements.collectifs.total)}
@@ -151,8 +152,8 @@ export const StatistiquesActivites = ({
                 aria-hidden
               >
                 Matériel utilisé lors d’un accompagnement de médiation
-                numérique. À noter : Plusieurs matériels ont pu être utilisés
-                lors d’un même accompagnement.
+                numérique. À noter&nbsp;: Plusieurs matériels ont pu être
+                utilisés lors d’un même accompagnement.
               </span>
             </div>
 

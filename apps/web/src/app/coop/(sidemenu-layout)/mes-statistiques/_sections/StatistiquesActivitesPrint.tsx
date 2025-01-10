@@ -1,6 +1,6 @@
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import type { MesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
-import { numberToPercentage } from '@app/web/utils/formatNumber'
+import { numberToPercentage, numberToString } from '@app/web/utils/formatNumber'
 import { typeActivitePluralLabels } from '@app/web/cra/cra'
 import { AccompagnementPieChart } from '../_components/AccompagnementPieChart'
 import { ProgressListItem } from '../_components/ProgressListItem'
@@ -43,7 +43,7 @@ export const StatistiquesActivitesPrint = ({
       <ul>
         {activites.typeActivites.map(({ count, proportion, value }) => (
           <li key={value}>
-            <b>{count}</b> {typeActivitePluralLabels[value]}
+            <b>{numberToString(count)}</b> {typeActivitePluralLabels[value]}
             {value === 'Collectif' &&
               `, ${totalCounts.accompagnements.collectifs.total} participation${sPluriel(totalCounts.accompagnements.collectifs.total)} au total`}{' '}
             ({numberToPercentage(proportion)} des activités)
@@ -94,7 +94,7 @@ export const StatistiquesActivitesPrint = ({
       <h3 className="fr-h5 fr-mb-2v fr-mt-6v">Matériel utilisé</h3>
       <small role="note" className="fr-mb-6v fr-display-block">
         Matériel utilisé lors d’un accompagnement de médiation numérique. À
-        noter : Plusieurs matériels ont pu être utilisés lors d’un même
+        noter&nbsp;: Plusieurs matériels ont pu être utilisés lors d’un même
         accompagnement.
       </small>
       <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--center">

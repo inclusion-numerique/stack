@@ -1,5 +1,6 @@
 import Button from '@codegouvfr/react-dsfr/Button'
 import { MesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
+import { numberToString } from '@app/web/utils/formatNumber'
 import { AccompagnementPieChart } from '../_components/AccompagnementPieChart'
 import ProgressBar from '../_components/ProgressBar'
 import { QuantifiedShareList } from '../_components/QuantifiedShareList'
@@ -83,7 +84,8 @@ export const StatistiquesBeneficiaires = ({
                 <br />
                 <br />
                 Total des bénéficiaires dont le genre a été complété&nbsp;:{' '}
-                {totalWithGenre}/{beneficiaires.total} bénéficiaires suivis ou
+                {numberToString(totalWithGenre)}/
+                {numberToString(beneficiaires.total)} bénéficiaires suivis ou
                 anonymes
               </span>
             </div>
