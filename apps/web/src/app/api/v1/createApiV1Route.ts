@@ -41,6 +41,7 @@ export const createHandlerWithValidation =
       request,
       scopes,
     )
+
     if (!isAuthenticated) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
