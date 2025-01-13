@@ -202,14 +202,14 @@ model JobExecution {
 }
 
 enum ApiClientScope {
-  Statistiques   @map("statistiques")
+  Statistiques @map("statistiques")
 
   // Cras anonymisés
-  Activites           @map("activites")
-  Structures          @map("structures")
+  Activites  @map("activites")
+  Structures @map("structures")
 
   // Utilisateurs (excepté admins et supports), incluant données nominatives et leurs roles
-  Utilisateurs        @map("utilisateurs")
+  Utilisateurs @map("utilisateurs")
 
   @@map("api_client_scope")
 }
@@ -692,9 +692,10 @@ model Beneficiaire {
   communeCodePostal String? @map("commune_code_postal")
   communeCodeInsee  String? @map("commune_code_insee")
 
-  genre        Genre?
-  trancheAge   TrancheAge?   @map("tranche_age")
-  statutSocial StatutSocial? @map("statut_social")
+  alreadyAssisted Boolean?      @map("already_assisted")
+  genre           Genre?
+  trancheAge      TrancheAge?   @map("tranche_age")
+  statutSocial    StatutSocial? @map("statut_social")
 
   notes String?
 
@@ -913,9 +914,9 @@ model RdvAccount {
 }
 
 enum MutationName {
-  ValiderInscription @map("valider_inscription")
-  ModifierUtilisateur @map("modifier_utilisateur")
-  UsurperUtilisateur  @map("usurper_utilisateur")
+  ValiderInscription                       @map("valider_inscription")
+  ModifierUtilisateur                      @map("modifier_utilisateur")
+  UsurperUtilisateur                       @map("usurper_utilisateur")
   CreerMediateur                           @map("creer_mediateur")
   ModifierMediateur                        @map("modifier_mediateur")
   SupprimerMediateur                       @map("supprimer_mediateur")
@@ -923,10 +924,10 @@ enum MutationName {
   ModifierCoordinateur                     @map("modifier_coordinateur")
   SupprimerCoordinateur                    @map("supprimer_coordinateur")
   CreerMediateurCoordonne                  @map("creer_mediateur_coordonne")
-  SupprimerMediateurCoordonne             @map("supprimer_mediateur_coordonne")
-  InviterMediateursCoordonnes @map("inviter_mediateurs_coordonnes")
-  AccepterInvitationMediateurCoordonne @map("accepter_invitation_mediateur_coordonne")
-  RefuserInvitationMediateurCoordonne @map("refuser_invitation_mediateur_coordonne")
+  SupprimerMediateurCoordonne              @map("supprimer_mediateur_coordonne")
+  InviterMediateursCoordonnes              @map("inviter_mediateurs_coordonnes")
+  AccepterInvitationMediateurCoordonne     @map("accepter_invitation_mediateur_coordonne")
+  RefuserInvitationMediateurCoordonne      @map("refuser_invitation_mediateur_coordonne")
   CreerActivite                            @map("creer_activite")
   ModifierActivite                         @map("modifier_activite")
   SupprimerActivite                        @map("supprimer_activite")
@@ -937,10 +938,10 @@ enum MutationName {
   CreerStructure                           @map("creer_structure")
   ModifierStructure                        @map("modifier_structure")
   MiseAJourStructuresCartographieNationale @map("mise_a_jour_structures_cartographie_nationale")
-  CreerEmployeStructure @map("creer_employe_structure")
-  SupprimerEmployeStructure @map("supprimer_employe_structure")
-  CreerMediateurEnActivite @map("creer_mediateur_en_activite")
-  SupprimerMediateurEnActivite @map("supprimer_mediateur_en_activite")
+  CreerEmployeStructure                    @map("creer_employe_structure")
+  SupprimerEmployeStructure                @map("supprimer_employe_structure")
+  CreerMediateurEnActivite                 @map("creer_mediateur_en_activite")
+  SupprimerMediateurEnActivite             @map("supprimer_mediateur_en_activite")
 
   @@map("mutation_name")
 }

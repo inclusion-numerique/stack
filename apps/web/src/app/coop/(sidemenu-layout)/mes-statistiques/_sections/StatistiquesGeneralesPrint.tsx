@@ -11,7 +11,17 @@ export const StatistiquesGeneralesPrint = ({
     <h3 className="fr-h5">Accompagnements et bénéficiaires</h3>
     <p>
       <strong>{totalCounts.beneficiaires.total} Bénéficiaires</strong>{' '}
-      accompagnés, dont{' '}
+      accompagnés
+      {totalCounts.beneficiaires.nouveaux > 0 && (
+        <>
+          , dont{' '}
+          <strong>
+            {totalCounts.beneficiaires.nouveaux}{' '}
+            {totalCounts.beneficiaires.nouveaux === 1 ? 'nouveau' : 'nouveaux'}
+          </strong>
+        </>
+      )}
+      &nbsp;:{' '}
       <strong>{totalCounts.beneficiaires.suivis} bénéficiaires suivis</strong>{' '}
       et{' '}
       <strong>

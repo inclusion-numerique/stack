@@ -25,6 +25,10 @@ export const ParticipantsAnonymesCraCollectifValidation = z
       maxMessage: `Le nombre total de participants anonymes ne doit pas dépasser ${participantsAnonymesMaxLocaleString}`,
     }),
 
+    alreadyAssisted: participantsAnonymeNumber({
+      maxMessage: `Le nombre de participants déjà accompagnés ne doit pas dépasser ${participantsAnonymesMaxLocaleString}`,
+    }),
+
     genreFeminin: participantsAnonymeNumber({
       maxMessage: `Le nombre de participants anonymes de genre féminin ne doit pas dépasser ${participantsAnonymesMaxLocaleString}`,
     }),
@@ -95,6 +99,8 @@ export const ParticipantsAnonymesCraCollectifValidation = z
 // Cannot infer as the count functions would recursively type fail
 export type ParticipantsAnonymesCraCollectifData = {
   total: number
+
+  alreadyAssisted: number
 
   genreFeminin: number
   genreMasculin: number

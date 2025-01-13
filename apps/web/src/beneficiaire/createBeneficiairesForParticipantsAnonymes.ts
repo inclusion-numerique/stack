@@ -84,6 +84,12 @@ export const createBeneficiairesForParticipantsAnonymes = ({
         return false
       }) ?? 'NonCommunique'
 
+    const alreadyAssisted = mutableCounters.alreadyAssisted > 0
+
+    if (mutableCounters.alreadyAssisted > 0) {
+      mutableCounters.alreadyAssisted -= 1
+    }
+
     result.push({
       id: beneficiaireId,
       mediateurId,
@@ -92,6 +98,7 @@ export const createBeneficiairesForParticipantsAnonymes = ({
       trancheAge,
       statutSocial,
       genre,
+      alreadyAssisted,
     })
   }
 

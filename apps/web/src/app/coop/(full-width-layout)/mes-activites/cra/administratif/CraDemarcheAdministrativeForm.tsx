@@ -9,6 +9,7 @@ import {
   UseFormWatch,
 } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
 import RedAsterisk from '@app/ui/components/Form/RedAsterisk'
 import RadioFormField from '@app/ui/components/Form/RadioFormField'
@@ -490,6 +491,13 @@ const CraDemarcheAdministrativeForm = ({
             Vous pouvez renseigner des informations anonymes sur le bénéficiaire
             pour compléter vos statistiques.
           </p>
+          <CheckboxFormField
+            className="fr-flex-grow-1 fr-flex-basis-0 fr-mt-12v fr-mb-8v"
+            control={control}
+            path="beneficiaire.alreadyAssisted"
+            label="J’ai déjà accompagné ce bénéficiaire"
+            disabled={isLoading}
+          />
           <AdresseBanFormField<CraDemarcheAdministrativeData>
             control={control}
             path="beneficiaire.communeResidence"

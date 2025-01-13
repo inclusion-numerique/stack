@@ -25,9 +25,15 @@ const addStatistiquesGenerales =
       'Bénéficiaires accompagnés',
       totalCounts.beneficiaires.total,
     ])
+    if (totalCounts.beneficiaires.nouveaux > 0) {
+      worksheet.addRow([
+        'Nouveaux bénéficiaires',
+        totalCounts.beneficiaires.nouveaux,
+      ])
+    }
     worksheet.addRow(['Bénéficiaires suivis', totalCounts.beneficiaires.suivis])
     worksheet.addRow([
-      'Nombre de bénéficiaires anonymes',
+      'Bénéficiaires anonymes',
       totalCounts.beneficiaires.anonymes,
     ])
     worksheet.addRow([

@@ -47,7 +47,12 @@ describe('participantsAnonymes', () => {
     it('has no additional counts', () => {
       const { total, ...enumCounts } = participantsAnonymes
 
-      const modelKeys = [...genreKeys, ...trancheAgeKeys, ...statutSocialKeys]
+      const modelKeys = [
+        'alreadyAssisted',
+        ...genreKeys,
+        ...trancheAgeKeys,
+        ...statutSocialKeys,
+      ]
 
       expect(Object.keys(enumCounts)).toEqual(modelKeys)
     })

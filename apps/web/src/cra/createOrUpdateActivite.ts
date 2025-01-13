@@ -131,6 +131,7 @@ const beneficiaireAnonymeCreateDataFromForm = ({
   statutSocial,
   notes,
   mediateurId,
+  alreadyAssisted,
 }: BeneficiaireCraData): Prisma.BeneficiaireCreateInput & {
   id: string
 } => ({
@@ -150,6 +151,7 @@ const beneficiaireAnonymeCreateDataFromForm = ({
   commune: communeResidence?.commune ?? undefined,
   communeCodePostal: communeResidence?.codePostal ?? undefined,
   communeCodeInsee: communeResidence?.codeInsee ?? undefined,
+  alreadyAssisted: alreadyAssisted ?? false,
 })
 
 // Utilisée comme localisation fallback pour les activités à distance

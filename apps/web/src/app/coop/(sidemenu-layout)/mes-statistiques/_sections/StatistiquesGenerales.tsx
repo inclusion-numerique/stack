@@ -95,8 +95,19 @@ export const StatistiquesGenerales = ({
                 aria-hidden
               />
             </div>
-            <div className="fr-text--bold fr-my-1w">
-              Bénéficiaires accompagnés
+            <div className="fr-my-1w">
+              <div className="fr-text--bold">Bénéficiaires accompagnés</div>
+              {totalCounts.beneficiaires.nouveaux !== 0 && (
+                <div className="fr-text--medium fr-text-label--blue-france">
+                  dont{' '}
+                  <span className="fr-text--bold">
+                    {totalCounts.beneficiaires.nouveaux}
+                  </span>{' '}
+                  {totalCounts.beneficiaires.nouveaux === 1
+                    ? 'nouveau'
+                    : 'nouveaux'}
+                </div>
+              )}
             </div>
             <div className="fr-text-mention--grey">
               <div>
