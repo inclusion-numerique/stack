@@ -383,7 +383,8 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
                 {
                   label: 'Conventionnement statut',
                   value:
-                    miseEnRelationActive.structureObj.conventionnement.statut,
+                    miseEnRelationActive.structureObj.conventionnement
+                      ?.statut ?? '-',
                 },
                 {
                   label: 'Nb de postes attribués',

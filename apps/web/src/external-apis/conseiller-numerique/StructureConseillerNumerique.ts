@@ -87,24 +87,26 @@ export type StructureConseillerNumerique = {
   qpvListe: Array<unknown>
   qpvStatut: string // 'Sans objet' | other possible statuses
   codeCom: string | null
-  conventionnement: {
-    dossierConventionnement: {
-      statut: string // 'accepte' | other possible statuts
-      numero: number
-      dateDeCreation: Date
-      dateDerniereModification: Date
-      dateDeValidation: Date
-    }
-    dossierReconventionnement: {
-      statut: string // 'accepte' | other possible statuts
-      numero: number
-      dateDeCreation: Date
-      dateFinProchainContrat: Date
-      dateDerniereModification: Date
-      nbPostesAttribuees?: number | null
-    }
-    statut: string // 'CONVENTIONNEMENT_VALIDÉ' | other possible statuses
-  }
+  conventionnement:
+    | {
+        dossierConventionnement: {
+          statut: string // 'accepte' | other possible statuts
+          numero: number
+          dateDeCreation: Date
+          dateDerniereModification: Date
+          dateDeValidation: Date
+        }
+        dossierReconventionnement: {
+          statut: string // 'accepte' | other possible statuts
+          numero: number
+          dateDeCreation: Date
+          dateFinProchainContrat: Date
+          dateDerniereModification: Date
+          nbPostesAttribuees?: number | null
+        }
+        statut: string // 'CONVENTIONNEMENT_VALIDÉ' | other possible statuses
+      }
+    | undefined
   adresseInsee2Ban: {
     label: string
     score: number
