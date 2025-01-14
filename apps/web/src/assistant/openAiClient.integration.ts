@@ -16,7 +16,7 @@ describe('openAiClient', () => {
       .withResponse()
     const modelsList = models.data.data
 
-    expect(modelsList).toBeInstanceOf(Array)
+    expect(Array.isArray(modelsList)).toBe(true) // instanceof does not work on CI :/
     expect(modelsList.length).toBeGreaterThan(0)
 
     // Our configured model should be in the list
