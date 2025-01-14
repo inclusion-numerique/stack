@@ -3,6 +3,7 @@ import { zodFunction } from 'openai/helpers/zod'
 import { ZodFunctionOptions } from '@app/web/assistant/tools/zodFunctionType'
 import { getRagChunksForQuery } from '@app/web/assistant/rag/getRagChunksForQuery'
 import { ragSources } from '@app/web/assistant/rag/sources'
+import { formatRagSearchResultToMarkdown } from '@app/web/assistant/rag/formatRagSearchResultToMarkdown'
 
 export const centreAideRagToolParameters = z.object({
   query: z
@@ -17,7 +18,9 @@ export const centreAideRagToolParameters = z.object({
     ),
 })
 
-export type RagToolParameters = z.infer<typeof centreAideRagToolParameters>
+export type CentreAideRagToolParameters = z.infer<
+  typeof centreAideRagToolParameters
+>
 
 export const centreAideRagToolOptions = {
   name: 'centre_aide_rag',
@@ -30,7 +33,7 @@ export const centreAideRagToolOptions = {
       sources: [ragSources.centreAideNotion],
     })
 
-    return ragResult
+    return formatRagSearchResultToMarkdown(ragResult.chunkResults)
   },
 } satisfies ZodFunctionOptions<typeof centreAideRagToolParameters>
 

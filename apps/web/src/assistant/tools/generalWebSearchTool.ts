@@ -31,18 +31,15 @@ export const generalWebSearchToolOptions = {
       count: 4,
     })
 
-    return results.length > 0
-      ? {
-          sources: `
-       Voici les résultats de la recherche que l’assistant doit utiliser pour répondre (si pertinent) et générer les liens vers les sources pour l’utilisateur :
-       
-       ${results.map(formatResultToMarkdownForAssistant).join('\n\n')}
-      `,
-        }
-      : {
-          sources:
-            'Aucun résultat de recherche sur les sites de l’administration. L’assistant doit utiliser un autre tool pour répondre à la question.',
-        }
+    if (results.length === 0) {
+      return `Aucun résultat de recherche sur les sites de l’administration. L’assistant doit utiliser un autre tool pour répondre à la question.`
+    }
+
+    return `
+Voici les résultats de la recherche que l’assistant doit utiliser pour répondre (si pertinent) et générer les liens vers les sources pour l’utilisateur :
+
+${results.map(formatResultToMarkdownForAssistant).join('\n\n')}
+`
   },
 } satisfies ZodFunctionOptions<typeof generalWebSearchToolParameters>
 

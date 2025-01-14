@@ -14,8 +14,8 @@ describe('administrationWebSearchTool', () => {
         'l’utilisateur veut publier des ressources de médiation numérique',
     })
 
-    expect(response.sources.length).toBeGreaterThan(100)
-    expect(response.sources).toContain('https://lesbases.anct.gouv.fr/')
+    expect(response.length).toBeGreaterThan(100)
+    expect(response).toContain('https://lesbases.anct.gouv.fr/')
   })
 
   it('should not return result from general web search tools (cf. generalWebSearchTool.integration.ts)', async () => {
@@ -28,9 +28,9 @@ describe('administrationWebSearchTool', () => {
         'l’utilisateur veut trouver des informations sur son label préféré',
     })
 
-    expect(response.sources.length).toBeGreaterThan(100)
+    expect(response.length).toBeGreaterThan(100)
     // It should be a website from  e.g. gouv.fr
     // It is sufficient to check that it is not the expected result from the general web search tool
-    expect(response.sources).not.toContain('https://www.edbangerrecords.com/')
+    expect(response).not.toContain('https://www.edbangerrecords.com/')
   })
 })

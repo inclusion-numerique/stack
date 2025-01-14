@@ -131,6 +131,7 @@ export const ingestNotionHelpCenterExportedMarkdown = new Command()
               `Deleted ${deletedOutdatedChunks} existing chunks for document ${file.filename} that no longer exist`,
             )
           }
+          // eslint-disable-next-line promise/always-return
           if (insertedChunks > 0) {
             output(
               `Inserted ${insertedChunks} new chunks for document ${file.filename}`,

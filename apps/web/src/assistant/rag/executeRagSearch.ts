@@ -14,6 +14,7 @@ export type RagSearchChunkResult = {
   embeddingModel: string
   similarity: number
 }
+export type RagSearchResult = RagSearchChunkResult[]
 
 export const executeRagSearch = async ({
   embedding,
@@ -25,7 +26,7 @@ export const executeRagSearch = async ({
   model: string
   limit?: number
   sources?: string[]
-}) => {
+}): Promise<RagSearchResult> => {
   const embeddingVectorParam = `[${embedding.join(',')}]`
 
   const sourcesFragment =

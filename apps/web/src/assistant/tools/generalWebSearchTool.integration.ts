@@ -16,7 +16,7 @@ describe('generalWebSearchTool', () => {
 
     // The response should include results and sources from generic web
     // not limited to administration websites
-    expect(response.sources.length).toBeGreaterThan(100)
-    expect(response.sources).toContain('https://www.edbangerrecords.com/')
+    expect(response.length).toBeGreaterThan(100)
+    expect(response).toContain('https://www.edbangerrecords.com/')
   })
 })
