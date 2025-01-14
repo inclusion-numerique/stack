@@ -70,10 +70,23 @@ export const getInitialMediateursOptionsForSearch = async ({
   const mediateursForSelect = await prismaClient.mediateur.findMany({
     where: { id: { in: mediateurCoordonnesIds } },
     select: mediateurSelect,
-    orderBy: [{ user: { lastName: 'asc' } }, { user: { firstName: 'asc' } }],
   })
 
-  const initialMediateursOptions: MediateurOption[] = mediateursForSelect.map(
+  const sortedMediateurs = mediateursForSelect.sort((a, b) => {
+    const lastNameA = a.user?.lastName?.toLowerCase() || ''
+    const lastNameB = b.user?.lastName?.toLowerCase() || ''
+
+    const lastNameComparison = lastNameA.localeCompare(lastNameB)
+    if (lastNameComparison !== 0) {
+      return lastNameComparison
+    }
+
+    const firstNameA = a.user?.firstName?.toLowerCase() || ''
+    const firstNameB = b.user?.firstName?.toLowerCase() || ''
+    return firstNameA.localeCompare(firstNameB)
+  })
+
+  const initialMediateursOptions: MediateurOption[] = sortedMediateurs.map(
     ({ user, id }) => ({
       label: getUserDisplayName(user),
       value: { mediateurId: id, email: user.email },
