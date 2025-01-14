@@ -4,7 +4,6 @@ import { useChatContext } from '@app/web/assistant/chatStore'
 
 const ChatCompletionErrorMessage = () => {
   const completionError = useChatContext((context) => context.completionError)
-  const messageIndex = useChatContext((context) => context.messages.length)
   const previousMessageRole = useChatContext(
     (context) => context.messages.at(-1)?.role,
   )
@@ -25,7 +24,6 @@ const ChatCompletionErrorMessage = () => {
         refusal: null,
         toolCallId: null,
       }}
-      messageIndex={messageIndex}
       previousMessageRole={previousMessageRole}
     />
   )

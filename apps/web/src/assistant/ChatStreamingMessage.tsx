@@ -13,7 +13,6 @@ const ChatStreamingMessage = () => {
   const currentToolCalls = useChatContext((context) => context.currentToolCalls)
   const isGenerating = useChatContext((context) => context.isGenerating)
   const streamingMessage = useChatContext((context) => context.streamingMessage)
-  const messageIndex = useChatContext((context) => context.messages.length)
   const previousMessageRole = useChatContext(
     (context) => context.messages.at(-1)?.role,
   )
@@ -24,7 +23,6 @@ const ChatStreamingMessage = () => {
     <>
       {currentToolCalls.length > 0 && (
         <ChatMessage
-          messageIndex={messageIndex}
           previousMessageRole={previousMessageRole}
           isStreaming
           message={{
@@ -43,7 +41,6 @@ const ChatStreamingMessage = () => {
       )}
       {streamingMessage !== null && (
         <ChatMessage
-          messageIndex={messageIndex}
           previousMessageRole={previousMessageRole}
           isStreaming
           message={{

@@ -1,12 +1,8 @@
 import { z } from 'zod'
 import { zodFunction } from 'openai/helpers/zod'
-import axios from 'axios'
-import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { ZodFunctionOptions } from '@app/web/assistant/tools/zodFunctionType'
 import {
-  BraveApiSearchParams,
-  BraveApiSearchResponse,
-  braveSearchApiEndpoint,
+  executeBraveWebSearch,
   formatResultToMarkdownForAssistant,
 } from '@app/web/assistant/tools/brave/braveSearch'
 
@@ -30,42 +26,17 @@ export const administrationWebSearchToolOptions = {
     'la vie administrative ou la recherche d’informations officielles.',
   parameters: administrationWebSearchToolParameters,
   function: async ({ query }) => {
-    const headers = {
-      Accept: 'application/json',
-      'Accept-Encoding': 'gzip',
-      'X-Subscription-Token': ServerWebAppConfig.Assistant.Brave.apiKey,
-    }
-
-    const params: BraveApiSearchParams = {
+    const results = await executeBraveWebSearch({
       q: query,
-      country: 'FR',
-      search_lang: 'fr',
-      ui_lang: 'fr-FR',
       count: 4,
-      safesearch: 'strict',
-      text_decorations: false,
-      spellcheck: false,
-      result_filter: 'web,news',
       goggles_id:
         'https://gist.githubusercontent.com/Clrk/800bf69ac450d9fd07846c1dcb012d1f',
-      extra_snippets: false,
-      summary: true,
-    }
-
-    const response = await axios.get<BraveApiSearchResponse>(
-      braveSearchApiEndpoint,
-      {
-        params,
-        headers,
-      },
-    )
-
-    const { results } = response.data.web
+    })
 
     return results.length > 0
       ? {
           sources: `
-       Voici les résultats de la recherche que l’assistant doit utiliser pour répondre (si pertinent) et génerer les liens vers les sources pour l’utilisateur :
+       Voici les résultats de la recherche que l’assistant doit utiliser pour répondre (si pertinent) et générer les liens vers les sources pour l’utilisateur :
        
        ${results.map(formatResultToMarkdownForAssistant).join('\n\n')}
       `,

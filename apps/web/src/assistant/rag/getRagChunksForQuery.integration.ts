@@ -2,9 +2,9 @@ import { centreAideRagTool } from '@app/web/assistant/tools/centreAideRagTool'
 
 import { prismaClient } from '@app/web/prismaClient'
 import { openAiClientConfiguration } from '@app/web/assistant/openAiClient'
+import { getRagChunksForQuery } from '@app/web/assistant/rag/getRagChunksForQuery'
 import huitreEmbedding from './testing.huitre.embedding.json'
 import zebreEmbedding from './testing.zebre.embedding.json'
-import { getRagChunksForQuery } from '@app/web/assistant/rag/getRagChunksForQuery'
 
 describe('getRagChunksForQuery', () => {
   beforeAll(async () => {

@@ -26,7 +26,6 @@ const ChatMessagesList = () => {
           previousMessageRole={
             messageIndex > 0 ? messages.at(messageIndex - 1)?.role : undefined
           }
-          messageIndex={messageIndex}
         />
       ))}
     </>

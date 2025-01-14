@@ -14,9 +14,9 @@ describe('generalWebSearchTool', () => {
         'l’utilisateur veut trouver des informations sur son label préféré',
     })
 
-    expect(response.results.length).toBeGreaterThan(4)
-    expect(response.results.at(0)?.url).toStartWith(
-      'https://www.edbangerrecords.com/',
-    )
+    // The response should include results and sources from generic web
+    // not limited to administration websites
+    expect(response.sources.length).toBeGreaterThan(100)
+    expect(response.sources).toContain('https://www.edbangerrecords.com/')
   })
 })

@@ -2,11 +2,11 @@ import type { CSSProperties } from 'react'
 import classNames from 'classnames'
 import { marked, type Tokens } from 'marked'
 import type { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
+import type { AssistantChatRole } from '@prisma/client'
 import LogoCoop from '@app/web/components/LogoCoop'
 import ToolCallMessage from '@app/web/assistant/ToolCallMessage'
 import type { ChatCompletionMessageWithToolCalls } from '@app/web/assistant/getChatSession'
 import styles from './ChatSession.module.css'
-import type { AssistantChatRole } from '@prisma/client'
 
 const renderer = new marked.Renderer()
 const linkRenderer = renderer.link.bind(renderer)
@@ -20,7 +20,6 @@ renderer.link = (linkParameters: Tokens.Link) => {
 
 const ChatMessage = ({
   message: { content, role, toolCalls },
-  messageIndex,
   contentRef,
   style,
   previousMessageRole,
@@ -28,7 +27,6 @@ const ChatMessage = ({
   cursor,
 }: {
   toolCalls?: { name: string }[]
-  messageIndex: number
   message: ChatCompletionMessageWithToolCalls
   contentRef?: React.RefObject<HTMLDivElement>
   style?: CSSProperties

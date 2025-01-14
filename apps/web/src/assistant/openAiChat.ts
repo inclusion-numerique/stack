@@ -163,7 +163,7 @@ export const executeChatInteraction = ({
           .on('chatCompletion', (completion) => {
             console.log('ON CHAT COMPLETION', completion)
           })
-          .on('message', async (message) => {
+          .on('message', (message) => {
             const toolCall =
               'tool_calls' in message ? message.tool_calls?.at(0) : undefined
             if (toolCall) {

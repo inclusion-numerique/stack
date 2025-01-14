@@ -1,4 +1,8 @@
 // See https://api.search.brave.com/app/documentation/web-search/query#LocalSearchAPIQueryParameters
+import axios from 'axios'
+import pThrottle from 'p-throttle'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+
 export type BraveApiSearchParams = {
   q: string // The search query
   country?: string // The country code
@@ -62,7 +66,56 @@ export type BraveApiSearchResponse = {
   }
 }
 
-export const formatResultForAssistant = ({
+export const braveSearchApiEndpoint =
+  'https://api.search.brave.com/res/v1/web/search'
+
+// Our free tier allows for 1 request per second
+const throttle = pThrottle({
+  limit: 1,
+  interval: 1400, // Getting 429 even with a limit of 1 / 1000
+})
+
+const executeBraveWebSearchImmediate = async ({
+  q,
+  ...params
+}: Partial<BraveApiSearchParams> & { q: string }) => {
+  const headers = {
+    Accept: 'application/json',
+    'Accept-Encoding': 'gzip',
+    'X-Subscription-Token': ServerWebAppConfig.Assistant.Brave.apiKey,
+  }
+
+  const paramsMergedWithDefaults = {
+    q,
+    country: 'FR',
+    search_lang: 'fr',
+    ui_lang: 'fr-FR',
+    count: 4,
+    safesearch: 'strict',
+    text_decorations: false,
+    spellcheck: false,
+    result_filter: 'web,news',
+    extra_snippets: false,
+    summary: true,
+    ...params, // Allow to pass extra params
+  } satisfies BraveApiSearchParams
+
+  const response = await axios.get<BraveApiSearchResponse>(
+    braveSearchApiEndpoint,
+    {
+      params: paramsMergedWithDefaults,
+      headers,
+    },
+  )
+
+  const { results } = response.data.web
+
+  return results
+}
+
+export const executeBraveWebSearch = throttle(executeBraveWebSearchImmediate)
+
+export const formatResultToJsonForAssistant = ({
   description,
   // meta_url,
   // profile,
@@ -82,12 +135,9 @@ export const formatResultToMarkdownForAssistant = ({
   url,
 }: BraveApiSearchResponse['web']['results'][number]) =>
   `
-  ## ${title}
-  
-  Url: ${url}
-  
-  ${description}
-  `
+## ${title}
 
-export const braveSearchApiEndpoint =
-  'https://api.search.brave.com/res/v1/web/search'
+Url: ${url}
+
+${description}
+`

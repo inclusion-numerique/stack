@@ -6,7 +6,11 @@ import slugify from 'slugify'
 import { prismaClient } from '@app/web/prismaClient'
 import { Command } from '@commander-js/extra-typings'
 import { insertMarkdownRagChunks } from '@app/web/assistant/rag/insertMarkdownRagChunks'
-import { configureDeploymentTarget, DeploymentTargetOption } from '@app/cli/deploymentTarget'
+import { ragSources } from '@app/web/assistant/rag/sources'
+import {
+  configureDeploymentTarget,
+  DeploymentTargetOption,
+} from '@app/cli/deploymentTarget'
 import { output } from '@app/cli/output'
 
 /**
@@ -98,7 +102,7 @@ export const ingestNotionHelpCenterExportedMarkdown = new Command()
     // Remove all chunks that are no more existing in the markdown files
     const deleted = await prismaClient.ragDocumentChunk.deleteMany({
       where: {
-        source,
+        source: ragSources.centreAideNotion,
         sourceId: {
           notIn: markdownFiles.map((file) => file.filename),
         },
@@ -114,10 +118,29 @@ export const ingestNotionHelpCenterExportedMarkdown = new Command()
         insertMarkdownRagChunks({
           type,
           content: file.content,
-          source,
+          source: ragSources.centreAideNotion,
           sourceId: file.filename,
           url: file.url,
+        }).then(({ deletedOutdatedChunks, insertedChunks, unchanged }) => {
+          if (unchanged) {
+            output(`Document ${file.filename} is unchanged`)
+            return
+          }
+          if (deletedOutdatedChunks > 0) {
+            output(
+              `Deleted ${deletedOutdatedChunks} existing chunks for document ${file.filename} that no longer exist`,
+            )
+          }
+          if (insertedChunks > 0) {
+            output(
+              `Inserted ${insertedChunks} new chunks for document ${file.filename}`,
+            )
+          }
         }),
       ),
+    )
+
+    output(
+      `Generated chunks for ${markdownFiles.length} markdown files for the ${ragSources.centreAideNotion} source`,
     )
   })
