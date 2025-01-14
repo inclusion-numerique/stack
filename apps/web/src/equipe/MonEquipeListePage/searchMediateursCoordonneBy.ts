@@ -29,7 +29,7 @@ type MediateurFound = {
 const triMap: Record<NonNullable<MonEquipeSearchParams['tri']>, string> = {
   ancien: 'creation ASC',
   recent: 'creation DESC',
-  alphabetique: 'email ASC',
+  alphabetique: 'LOWER(last_name) ASC, LOWER(first_name) ASC',
 }
 
 export const searchMediateursCoordonneBy =
