@@ -44,19 +44,19 @@ describe('ETQ coordinateur, je peux inviter un médiateur à rejoindre mon équi
 
     cy.get('ul.fr-list-group>li')
       .eq(0)
+      .should('contain', 'Inscription')
+      .should('contain', 'Médiateur numérique')
+      .should('contain', 'Invitation envoyée')
+
+    cy.get('ul.fr-list-group>li')
+      .eq(1)
       .should('contain', 'Inscrit')
       .should('contain', 'Conseiller numérique')
       .should('contain', 'Invitation envoyée')
 
     cy.get('ul.fr-list-group>li')
-      .eq(1)
-      .should('contain', 'leo@med.fr')
-      .should('contain', 'Invitation envoyée')
-
-    cy.get('ul.fr-list-group>li')
       .eq(2)
-      .should('contain', 'Inscription')
-      .should('contain', 'Médiateur numérique')
+      .should('contain', 'leo@med.fr')
       .should('contain', 'Invitation envoyée')
 
     goToMostRecentEmailReceived({
