@@ -12,20 +12,21 @@ const ChatMessagesList = () => {
 
   if (messages.length === 0)
     return (
-      <div className="fr-flex fr-width-full fr-direction-column fr-align-items-center fr-justify-content-center fr-height-full">
+      <div className="fr-flex fr-width-full fr-direction-column fr-align-items-center fr-justify-content-center fr-height-full fr-my-auto fr-mt-10v">
         <h2>Comment puis-je vous aider ?</h2>
       </div>
     )
 
   return (
     <>
-      {messages.map((message, index) => (
+      {messages.map((message, messageIndex) => (
         <ChatMessage
           key={message.id}
           message={message}
-          hideAssistantLogo={
-            index > 0 && messages.at(index - 1)?.role === 'Assistant'
+          previousMessageRole={
+            messageIndex > 0 ? messages.at(messageIndex - 1)?.role : undefined
           }
+          messageIndex={messageIndex}
         />
       ))}
     </>

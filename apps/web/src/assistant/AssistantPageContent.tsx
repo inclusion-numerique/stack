@@ -133,7 +133,6 @@ const AssistantPageContent = async ({
         ),
       )}
     </div>
-    {/* TODO layout */}
     <div className="fr-flex-grow-1">
       <div className={styles.chatSessionContainer}>
         <ChatSession chatSession={filterChatSessionForClient(chatSession)} />

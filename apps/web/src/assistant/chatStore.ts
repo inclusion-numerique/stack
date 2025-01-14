@@ -14,8 +14,8 @@ export const chatStore = createStore({
     initialized: false,
     chatSessionId: null as string | null,
     messages: [] as ChatCompletionMessageWithToolCalls[],
-    currentToolCalls: [] as ChatCompletionMessageToolCall[],
-    streamingMessage: null as string | null,
+    currentToolCalls: [] as ChatCompletionMessageToolCall[], // tool calls currently being executed
+    streamingMessage: null as string | null, // null if not currently streaming, can be empty string if streaming
     isSendingMessage: false,
     isGenerating: false,
     completionError: null as string | null,

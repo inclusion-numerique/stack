@@ -160,9 +160,6 @@ export const executeChatInteraction = ({
             tool_choice: toolChoice,
             stream: true,
           })
-          .on('content.delta', (content) => {
-            console.log('CONTENT DELTA', content)
-          })
           .on('chatCompletion', (completion) => {
             console.log('ON CHAT COMPLETION', completion)
           })
@@ -176,11 +173,12 @@ export const executeChatInteraction = ({
                 }),
               )
               if (onToolCall) {
-                await onToolCall(toolCall)
+                // eslint-disable-next-line no-void
+                void onToolCall(toolCall)
               }
             }
-
-            await onMessage(message)
+            // eslint-disable-next-line no-void
+            void onMessage(message)
           })
           .on('content', (content) => {
             if (!content) {
@@ -189,7 +187,8 @@ export const executeChatInteraction = ({
             controller.enqueue(serializeAssistantChatStreamChunk({ content }))
 
             if (onContent) {
-              onContent(content)
+              // eslint-disable-next-line no-void
+              void onContent(content)
             }
           })
           .on('error', (error) => {

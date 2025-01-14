@@ -6,6 +6,7 @@ import LogoCoop from '@app/web/components/LogoCoop'
 import ToolCallMessage from '@app/web/assistant/ToolCallMessage'
 import type { ChatCompletionMessageWithToolCalls } from '@app/web/assistant/getChatSession'
 import styles from './ChatSession.module.css'
+import type { AssistantChatRole } from '@prisma/client'
 
 const renderer = new marked.Renderer()
 const linkRenderer = renderer.link.bind(renderer)
@@ -13,23 +14,25 @@ renderer.link = (linkParameters: Tokens.Link) => {
   const html = linkRenderer(linkParameters)
   return html.replace(
     /^<a /,
-    `<a target="_blank" rel="noreferrer noopener nofollow" `,
+    `<a target="_blank" class="fr-link" rel="noreferrer noopener nofollow" `,
   )
 }
 
 const ChatMessage = ({
   message: { content, role, toolCalls },
+  messageIndex,
   contentRef,
   style,
-  hideAssistantLogo,
+  previousMessageRole,
   isStreaming,
   cursor,
 }: {
   toolCalls?: { name: string }[]
+  messageIndex: number
   message: ChatCompletionMessageWithToolCalls
   contentRef?: React.RefObject<HTMLDivElement>
   style?: CSSProperties
-  hideAssistantLogo?: boolean
+  previousMessageRole?: AssistantChatRole
   isStreaming?: boolean
   cursor?: boolean // display blinking cursor at the end of the message
 }) => {
@@ -48,16 +51,18 @@ const ChatMessage = ({
       : contentToParse.replaceAll('\n', '<br />')
     : ''
 
+  const marginTop = role === previousMessageRole ? 'fr-mt-0' : 'fr-mt-10v'
+
   return (
     <div
       className={classNames(
         styles.message,
         styles[`message${role}`],
-        parsedContent ? 'fr-mb-10v' : 'fr-mb-0',
+        marginTop,
       )}
       style={style}
     >
-      {role === 'Assistant' && !hideAssistantLogo && (
+      {role === 'Assistant' && previousMessageRole !== 'Assistant' && (
         <LogoCoop className={styles.messageLogoCoop} height={32} width={32} />
       )}
       {!!toolCalls && toolCalls.length > 0 && (

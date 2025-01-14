@@ -2,7 +2,7 @@ generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch", "nativeDistinct", "relationJoins", "postgresqlExtensions"]
   binaryTargets   = ["native", "debian-openssl-1.1.x"]
-  extensions = [vector]
+  extensions      = [vector]
 }
 
 datasource db {
@@ -124,7 +124,7 @@ model User {
   coordinateur Coordinateur?
   mutations    Mutation[]
   emplois      EmployeStructure[]
-  usurpateur   Session?           @relation(name: "usurper")
+  usurpateur   Session?               @relation(name: "usurper")
   rdvAccount   RdvAccount?
   chatSessions AssistantChatSession[]
 
@@ -1052,21 +1052,22 @@ model AssistantChatMessage {
 model RagDocumentChunk {
   id String @id @default(uuid()) @db.Uuid // internal id of the chunk
 
-  source  String
-  type    String
-  content String // Raw content of the chunk
-  documentMd5 String @map("document_md5") // md5 hash of the source document to check if the chunk is still valid
+  source      String // Source of the document (e.g.: centre-aide-notion, les-bases, ...)
+  type        String // Type relative to the source (e.g.: article, user, webpage, ...)
+  content     String // Raw content of the chunk
+  documentMd5 String @map("document_md5") // md5 hash of the entire source document content to check if the chunk is still valid
 
-  sourceId String  @map("source_id") // id of the source document, can have multiple chunks for the same source
+  sourceId String  @map("source_id") // unique id of the source document within the source, can have multiple chunks for the same source
   chunk    Int // chunk number for the same source id
-  url      String?
+  url      String? // url of the source document if available
 
   created DateTime @default(now())
   updated DateTime @default(now())
 
-  embeddingModel String                @map("embedding_model")
-  embedding      Unsupported("vector")?
+  embeddingModel String                 @map("embedding_model")
+  embedding      Unsupported("vector")? // This is optional only to allow Prisma client generation, it will be always set
 
+  @@index([documentMd5])
   @@index([sourceId])
   @@map("rag_document_chunks")
 }

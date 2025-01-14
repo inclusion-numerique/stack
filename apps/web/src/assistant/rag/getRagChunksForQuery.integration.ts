@@ -1,15 +1,12 @@
-import {
-  ragTool,
-  ragToolOptions,
-  RagToolParameters,
-} from '@app/web/assistant/tools/ragTool'
+import { centreAideRagTool } from '@app/web/assistant/tools/centreAideRagTool'
 
-import huitreEmbedding from './ragTool.testing.huitre.embedding.json'
-import zebreEmbedding from './ragTool.testing.zebre.embedding.json'
 import { prismaClient } from '@app/web/prismaClient'
 import { openAiClientConfiguration } from '@app/web/assistant/openAiClient'
+import huitreEmbedding from './testing.huitre.embedding.json'
+import zebreEmbedding from './testing.zebre.embedding.json'
+import { getRagChunksForQuery } from '@app/web/assistant/rag/getRagChunksForQuery'
 
-describe('ragTool', () => {
+describe('getRagChunksForQuery', () => {
   beforeAll(async () => {
     await prismaClient.ragDocumentChunk.deleteMany({
       where: {
@@ -51,14 +48,13 @@ describe('ragTool', () => {
   })
 
   it('should return a list of results', async () => {
-    if (!ragTool.$callback) {
+    if (!centreAideRagTool.$callback) {
       throw new Error('ragTool.$callback is not defined')
     }
 
-    const response = await ragToolOptions.function({
-      query: 'girafe',
-      sources: ['test'], // hidden param used for testing but not documented for the LLM tool
-    } as RagToolParameters)
+    const response = await getRagChunksForQuery('girafe', {
+      sources: ['test'],
+    })
 
     expect(response.chunkResults).toEqual([
       {

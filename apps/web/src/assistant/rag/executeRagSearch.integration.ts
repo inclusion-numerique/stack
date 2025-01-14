@@ -1,5 +1,5 @@
-import { executeRagSearch } from '@app/web/assistant/executeRagSearch'
 import { prismaClient } from '@app/web/prismaClient'
+import { executeRagSearch } from '@app/web/assistant/rag/executeRagSearch'
 
 describe('executeRagSearch', () => {
   const mostSimilarChunk = {
