@@ -4,8 +4,9 @@ import type { SessionUser } from '@app/web/auth/sessionUser'
 
 export const profileInscriptionSlugs = {
   ConseillerNumerique: 'conseiller-numerique',
-  Coordinateur: 'coordinateur',
+  CoordinateurConseillerNumerique: 'coordinateur-conseiller-numerique',
   Mediateur: 'mediateur',
+  Coordinateur: 'coordinateur',
 } as const satisfies { [key in ProfilInscription]: string }
 
 export type ProfileInscriptionSlug =
@@ -13,21 +14,33 @@ export type ProfileInscriptionSlug =
 
 export const profileInscriptionFromSlug = {
   'conseiller-numerique': 'ConseillerNumerique',
-  coordinateur: 'Coordinateur',
+  'coordinateur-conseiller-numerique': 'CoordinateurConseillerNumerique',
   mediateur: 'Mediateur',
+  coordinateur: 'Coordinateur',
 } as const satisfies { [key in ProfileInscriptionSlug]: ProfilInscription }
 
-export const profileInscriptionLabels: { [key in ProfilInscription]: string } =
-  {
-    Mediateur: 'Médiateur·rice numérique professionnel·le',
-    ConseillerNumerique: 'Conseiller·ère numérique',
-    Coordinateur: 'Coordinateur·rice de conseillers numériques',
-  }
+export const profileInscriptionLabels = {
+  Mediateur: 'Médiateur·rice numérique professionnel·le',
+  Coordinateur: 'Coordinateur·rice',
+}
+
+export const profileInscriptionConseillerNumeriqueLabels = {
+  ConseillerNumerique: 'Conseiller·ère numérique',
+  CoordinateurConseillerNumerique:
+    'Coordinateur·rice de conseillers numériques',
+}
+
+export const allProfileInscriptionLabels: {
+  [key in ProfilInscription]: string
+} = {
+  ...profileInscriptionLabels,
+  ...profileInscriptionConseillerNumeriqueLabels,
+}
 
 export const lowerCaseProfileInscriptionLabels: {
   [key in ProfilInscription]: string
 } = Object.fromEntries(
-  Object.entries(profileInscriptionLabels).map(([key, value]) => [
+  Object.entries(allProfileInscriptionLabels).map(([key, value]) => [
     key,
     value.toLowerCase(),
   ]),
@@ -35,30 +48,41 @@ export const lowerCaseProfileInscriptionLabels: {
   [key in ProfilInscription]: string
 }
 
-export const profileInscriptionValues = Object.keys(
-  profileInscriptionLabels,
-) as [ProfilInscription, ...ProfilInscription[]]
-
-export const profileInscriptionOptions = labelsToOptions(
-  profileInscriptionLabels,
-)
+export const profileInscriptionValues = Object.keys({
+  ...profileInscriptionLabels,
+  ...profileInscriptionConseillerNumeriqueLabels,
+}) as [ProfilInscription, ...ProfilInscription[]]
 
 export const profileInscriptionIllustrations: {
   [key in ProfilInscription]: string
 } = {
   Mediateur: '/images/iconographie/profil-mediateur.svg',
-  ConseillerNumerique: '/images/iconographie/profil-conseiller-numerique.svg',
   Coordinateur: '/images/iconographie/profil-coordinateur.svg',
+  ConseillerNumerique: '/images/iconographie/profil-conseiller-numerique.svg',
+  CoordinateurConseillerNumerique:
+    '/images/iconographie/profil-coordinateur-conseiller-numerique.svg',
 }
 
-export const profileInscriptionOptionsWithExtras =
-  profileInscriptionOptions.map(({ label, value }) => ({
-    label,
-    value,
-    extra: {
-      illustration: profileInscriptionIllustrations[value],
-    },
-  }))
+export const profileInscriptionOptionsWithExtras = labelsToOptions(
+  profileInscriptionLabels,
+).map(({ label, value }) => ({
+  label,
+  value,
+  extra: {
+    illustration: profileInscriptionIllustrations[value],
+  },
+}))
+
+export const profileInscriptionConseillerNumeriqueOptionsWithExtras =
+  labelsToOptions(profileInscriptionConseillerNumeriqueLabels).map(
+    ({ label, value }) => ({
+      label,
+      value,
+      extra: {
+        illustration: profileInscriptionIllustrations[value],
+      },
+    }),
+  )
 
 export const computeUserProfile = (
   user: Pick<SessionUser, 'mediateur' | 'coordinateur'>,

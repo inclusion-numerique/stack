@@ -11,9 +11,11 @@ import { trpc } from '@app/web/trpc'
 const StructureEmployeuseLieuActiviteForm = ({
   userId,
   structureEmployeuseId,
+  nextStep,
 }: {
   userId: string
   structureEmployeuseId: string
+  nextStep: string
 }) => {
   const mutation =
     trpc.inscription.ajouterStructureEmployeuseEnLieuActivite.useMutation()
@@ -32,7 +34,7 @@ const StructureEmployeuseLieuActiviteForm = ({
         structureEmployeuseId,
         estLieuActivite,
       })
-      router.push('/inscription/mediateur/lieux-activite')
+      router.push(nextStep)
       router.refresh()
     } catch {
       createToast({

@@ -7,6 +7,20 @@ export type CreateUserInput = Parameters<
 export const createUser = async (user: CreateUserInput) =>
   prismaClient.user.create({ data: user })
 
+export const createCoordinateurFor = async ({ email }: { email: string }) => {
+  const user = await prismaClient.user.findUniqueOrThrow({
+    where: { email },
+    select: { id: true },
+  })
+
+  return prismaClient.coordinateur.create({
+    data: {
+      id: uuid.v4(),
+      userId: user.id,
+    },
+  })
+}
+
 export const deleteUser = async (user: { email: string }) => {
   const exists = await prismaClient.user.findUnique({
     where: user,

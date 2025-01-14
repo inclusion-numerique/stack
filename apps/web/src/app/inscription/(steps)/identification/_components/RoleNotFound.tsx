@@ -5,8 +5,8 @@ import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import SignoutButton from '@app/web/app/(public)/(authentication)/deconnexion/SignoutButton'
 import type { SessionUser } from '@app/web/auth/sessionUser'
 import {
+  allProfileInscriptionLabels,
   profileInscriptionFromSlug,
-  profileInscriptionLabels,
   type ProfileInscriptionSlug,
 } from '@app/web/inscription/profilInscription'
 import { inscriptionRolesErrorTitles } from './inscriptionRole'
@@ -21,18 +21,25 @@ export const RoleNotFound = ({
   proConnectIdTokenHint: string | null
 }) => (
   <div className="fr-flex fr-direction-column fr-flex-gap-10v">
-    <h1 className="fr-h3 fr-mb-0 fr-text-title--blue-france fr-text--center">
-      {inscriptionRolesErrorTitles[roleNotFound]}
-    </h1>
+    <div>
+      <img
+        src="/images/iconographie/visuel-erreur.svg"
+        alt=""
+        className="fr-mx-auto fr-display-block"
+      />
+      <h1 className="fr-h3 fr-mt-6v fr-mb-0 fr-text-title--blue-france fr-text--center">
+        {inscriptionRolesErrorTitles[roleNotFound]}
+      </h1>
+    </div>
     <Notice
-      className="fr-notice--warning"
+      className="fr-notice--warning fr-notice--flex fr-align-items-start"
       title={
         <span className="fr-text--regular fr-text-default--grey">
           <span className="fr-mb-2w">
             <span>
               Nous n’avons pas trouvé de profil de{' '}
               <span className="fr-text--bold">
-                {profileInscriptionLabels[
+                {allProfileInscriptionLabels[
                   profileInscriptionFromSlug[roleNotFound]
                 ].toLocaleLowerCase()}
               </span>{' '}
@@ -52,14 +59,17 @@ export const RoleNotFound = ({
           </span>
           <br />
           <br />
-          <Link href={`mailto:${PublicWebAppConfig.contactEmail}`}>
+          <Link
+            className="fr-text-label--blue-france"
+            href={`mailto:${PublicWebAppConfig.contactEmail}`}
+          >
             <span role="img" className="ri-mail-line fr-mr-1w" aria-hidden />
             Veuillez contacter le support
           </Link>
         </span>
       }
     />
-    <p className="fr-mb-0">
+    <p className="fr-mb-0 fr-text--center">
       Vous pouvez également essayer de retrouver votre profil en renseignant une
       autre adresse email.{' '}
       <Link

@@ -1,6 +1,6 @@
-import { PropsWithChildren, ReactNode } from 'react'
+import React, { PropsWithChildren, ReactNode } from 'react'
 import classNames from 'classnames'
-import Link from 'next/link'
+import BackButton from '@app/web/components/BackButton'
 
 const InscriptionCard = ({
   children,
@@ -22,14 +22,11 @@ const InscriptionCard = ({
 }>) => (
   <>
     {backHref && (
-      <Link
-        className="fr-link fr-display-inline-block fr-mt-12v fr-mb-10v fr-link--underline-on-hover"
-        href={backHref}
-      >
-        <span className="fr-icon-arrow-left-line fr-icon--sm fr-mr-1w" />
-        Précédent
-      </Link>
+      <div className="fr-mb-6v fr-mt-10v">
+        <BackButton href={backHref}>Précédent</BackButton>
+      </div>
     )}
+
     <div
       className={classNames(
         'fr-mb-32v fr-p-12v fr-width-full fr-border-radius--8 fr-background-default--grey',

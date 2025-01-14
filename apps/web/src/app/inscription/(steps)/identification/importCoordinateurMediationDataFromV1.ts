@@ -15,20 +15,14 @@ import { importLieuxActivitesFromV1Data } from '@app/web/app/inscription/(steps)
  */
 export const importCoordinateurMediationDataFromV1 = async ({
   user,
+  upsertedMediateur,
   v1Conseiller,
 }: {
   user: Pick<SessionUser, 'id'>
+  upsertedMediateur: { id: string }
   v1Conseiller: ConseillerNumeriqueV1DataWithActiveMiseEnRelation
 }) => {
-  // 1.1 Create the mediateur object
-  const upsertedMediateur = await prismaClient.mediateur.upsert({
-    where: { userId: user.id },
-    create: {
-      userId: user.id,
-    },
-    update: {},
-  })
-
+  // 1.1 Associate mediateur to the conseiller numerique
   const data = {
     id: v1Conseiller.conseiller.id,
     idPg: v1Conseiller.conseiller.idPG,

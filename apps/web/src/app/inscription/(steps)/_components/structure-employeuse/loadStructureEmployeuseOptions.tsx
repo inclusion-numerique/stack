@@ -5,7 +5,7 @@ import { structureCreationDataWithSiretFromUniteLegale } from '@app/web/structur
 import { rechercheApiEntreprise } from '@app/web/external-apis/rechercheApiEntreprise'
 import type { StructureCreationDataWithSiret } from '@app/web/app/structure/StructureValidation'
 
-export const loadStructureEmployeuseOptions = async (
+const loadStructureEmployeuseOptions = async (
   search: string,
   {
     structuresMap,

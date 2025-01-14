@@ -6,4 +6,5 @@ export const inscriptionRolesErrorTitles: {
   mediateur: 'Problème d’identification sur votre adresse email',
   coordinateur: 'Profil de coordinateur non reconnu',
   'conseiller-numerique': 'Profil de conseiller numérique non reconnu',
+  'coordinateur-conseiller-numerique': 'Profil de coordinateur non reconnu',
 }

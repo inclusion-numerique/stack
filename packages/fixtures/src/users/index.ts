@@ -7,6 +7,10 @@ import {
   conseillerNumeriqueMediateurId,
 } from './conseillerNumerique'
 import { conseillerSansLieuInscription } from './conseillerSansLieuInscription'
+import {
+  coordinateurHorsDispositifInscritAvecTout,
+  coordinateurHorsDispositifInscritAvecToutCoordinateurId,
+} from './coordinateurHorsDispositifInscritAvecTout'
 import { coordinateurInscription } from './coordinateurInscription'
 import {
   coordinateurInscriptionAvecTout,
@@ -21,6 +25,7 @@ import {
   mediateurAvecActivite,
   mediateurAvecActiviteMediateurId,
 } from './mediateurAvecActivite'
+import { coordinateurHorsDispositifInscription } from './coordinateurHorsDispositifInscription'
 import { mediateurInscription } from './mediateurInscription'
 import { mediateurSansActivites } from './mediateurSansActivites'
 
@@ -29,6 +34,8 @@ export const fixtureUsers = [
   conseillerInscription,
   conseillerSansLieuInscription,
   conseillerNumerique,
+  coordinateurHorsDispositifInscription,
+  coordinateurHorsDispositifInscritAvecTout,
   mediateurInscription,
   mediateurSansActivites,
   mediateurAvecActivite,
@@ -48,6 +55,13 @@ export const coordinations = [
   },
   {
     coordinateurId: coordinateurInscritAvecToutCoordinateurId,
+    mediateurIds: [
+      conseillerNumeriqueMediateurId,
+      mediateurAvecActiviteMediateurId,
+    ],
+  },
+  {
+    coordinateurId: coordinateurHorsDispositifInscritAvecToutCoordinateurId,
     mediateurIds: [
       conseillerNumeriqueMediateurId,
       mediateurAvecActiviteMediateurId,

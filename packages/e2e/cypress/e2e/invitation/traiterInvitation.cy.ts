@@ -5,8 +5,8 @@ import {
 } from '@app/fixtures/users/conseillerNumerique'
 import { coordinateurInscritCoordinateurId } from '@app/fixtures/users/coordinateurInscrit'
 import {
-  mediateurInscription,
   mediateurInscriptionMediateurId,
+  mediateurInscription,
 } from '@app/fixtures/users/mediateurInscription'
 import { goToMostRecentEmailReceived } from '../goToMostRecentEmailReceived'
 import { startInscriptionAs } from '../inscription/inscriptionE2eHelpers'

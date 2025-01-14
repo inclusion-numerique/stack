@@ -77,7 +77,16 @@ export const inscriptionRouter = router({
             profilInscription: profil,
             acceptationCgu: new Date(),
             mediateur:
-              sessionUser.mediateur || profil === ProfilInscription.Coordinateur
+              sessionUser.mediateur ||
+              profil === ProfilInscription.Coordinateur ||
+              profil === ProfilInscription.CoordinateurConseillerNumerique
+                ? undefined
+                : { create: { id: v4() } },
+            coordinateur:
+              sessionUser.coordinateur ||
+              profil === ProfilInscription.ConseillerNumerique ||
+              profil === ProfilInscription.Mediateur ||
+              profil === ProfilInscription.CoordinateurConseillerNumerique
                 ? undefined
                 : { create: { id: v4() } },
           },
@@ -607,25 +616,72 @@ export const inscriptionRouter = router({
 
       const stopwatch = createStopwatch()
 
-      const v1Conseiller = await fetchConseillerNumeriqueV1Data({
-        v1ConseillerId: sessionUser.coordinateur.conseillerNumeriqueId,
+      const upsertedMediateur = await prismaClient.mediateur.upsert({
+        where: { userId: sessionUser.id },
+        create: { userId: sessionUser.id },
+        update: {},
       })
 
-      if (
-        !v1Conseiller ||
-        !isConseillerNumeriqueV1DataWithActiveMiseEnRelation(v1Conseiller)
-      ) {
-        throw forbiddenError()
+      if (sessionUser.coordinateur.conseillerNumeriqueId != null) {
+        const v1Conseiller = await fetchConseillerNumeriqueV1Data({
+          v1ConseillerId: sessionUser.coordinateur.conseillerNumeriqueId,
+        })
+
+        if (
+          !v1Conseiller ||
+          !isConseillerNumeriqueV1DataWithActiveMiseEnRelation(v1Conseiller)
+        ) {
+          throw forbiddenError()
+        }
+
+        await importCoordinateurMediationDataFromV1({
+          user: sessionUser,
+          upsertedMediateur,
+          v1Conseiller,
+        })
       }
-
-      await importCoordinateurMediationDataFromV1({
-        user: sessionUser,
-        v1Conseiller,
-      })
 
       addMutationLog({
         userId: sessionUser.id,
         nom: 'CreerMediateur',
+        duration: stopwatch.stop().duration,
+        data: {
+          coordinateurId: sessionUser.coordinateur.id,
+        },
+      })
+    },
+  ),
+  removeMediationNumeriqueFromCoordinateur: protectedProcedure.mutation(
+    async ({ ctx: { user: sessionUser } }) => {
+      inscriptionGuard(sessionUser.id, sessionUser)
+
+      if (!sessionUser.coordinateur) {
+        throw forbiddenError()
+      }
+
+      const stopwatch = createStopwatch()
+
+      const mediateur = await prismaClient.mediateur.findUnique({
+        where: { userId: sessionUser.id },
+      })
+
+      if (!mediateur) return
+
+      await prismaClient.mediateurEnActivite.deleteMany({
+        where: { mediateurId: mediateur.id },
+      })
+
+      await prismaClient.conseillerNumerique.deleteMany({
+        where: { mediateurId: mediateur.id },
+      })
+
+      await prismaClient.mediateur.delete({
+        where: { id: mediateur.id },
+      })
+
+      addMutationLog({
+        userId: sessionUser.id,
+        nom: 'SupprimerMediateur',
         duration: stopwatch.stop().duration,
         data: {
           coordinateurId: sessionUser.coordinateur.id,

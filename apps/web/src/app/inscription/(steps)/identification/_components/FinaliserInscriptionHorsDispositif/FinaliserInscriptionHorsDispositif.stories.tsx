@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { FinaliserInscriptionMediateur } from './FinaliserInscriptionMediateur'
+import { FinaliserInscriptionHorsDispositif } from './FinaliserInscriptionHorsDispositif'
 
 export default {
   title: 'Inscription/Finaliser inscription médiateur',
-  component: FinaliserInscriptionMediateur,
-} as Meta<typeof FinaliserInscriptionMediateur>
+  component: FinaliserInscriptionHorsDispositif,
+} as Meta<typeof FinaliserInscriptionHorsDispositif>
 
-type Story = StoryObj<typeof FinaliserInscriptionMediateur>
+type Story = StoryObj<typeof FinaliserInscriptionHorsDispositif>
 
 export const Mediateur: Story = {
   args: {

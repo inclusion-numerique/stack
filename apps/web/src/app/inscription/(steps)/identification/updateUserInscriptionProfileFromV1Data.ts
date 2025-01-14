@@ -19,7 +19,7 @@ export const getProfileInscriptionFromV1Data = ({
   }
 
   if (v1Conseiller.conseiller.estCoordinateur) {
-    return 'Coordinateur'
+    return 'CoordinateurConseillerNumerique'
   }
   return 'ConseillerNumerique'
 }

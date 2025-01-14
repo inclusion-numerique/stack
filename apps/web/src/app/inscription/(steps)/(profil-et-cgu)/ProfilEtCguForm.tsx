@@ -10,7 +10,10 @@ import { useRouter } from 'next/navigation'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
 import React from 'react'
 import RadioFormField from '@app/ui/components/Form/RadioFormField'
-import { profileInscriptionOptionsWithExtras } from '@app/web/inscription/profilInscription'
+import {
+  profileInscriptionConseillerNumeriqueOptionsWithExtras,
+  profileInscriptionOptionsWithExtras,
+} from '@app/web/inscription/profilInscription'
 import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import {
@@ -55,11 +58,29 @@ const ProfilEtCguForm = ({ userId }: { userId: string }) => {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
+      <h2 className="fr-h6 fr-mb-4v">Dispositif Conseiller Numérique</h2>
+      <RadioFormField
+        control={control}
+        path="profil"
+        options={profileInscriptionConseillerNumeriqueOptionsWithExtras}
+        disabled={isLoading}
+        components={{
+          label: RichCardLabel,
+          labelProps: { paddingX: 16 },
+        }}
+        classes={{
+          radioGroup: styles.radioGroup,
+          fieldsetElement: richCardFieldsetElementClassName,
+        }}
+      />
+      <hr className="fr-separator-6v fr-mb-10v" />
+      <h2 className="fr-h6 fr-mb-4v">Hors dispositif Conseiller Numérique</h2>
       <RadioFormField
         control={control}
         path="profil"
         options={profileInscriptionOptionsWithExtras}
         disabled={isLoading}
+        startIndex={2}
         components={{
           label: RichCardLabel,
           labelProps: { paddingX: 16 },
@@ -78,7 +99,6 @@ const ProfilEtCguForm = ({ userId }: { userId: string }) => {
             <a href="/cgu" className="fr-link" target="_blank">
               conditions générales d’utilisation du service
             </a>
-            .
           </>
         }
         classes={{

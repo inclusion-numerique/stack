@@ -292,7 +292,7 @@ export type UtilisateurAttributes = {
     id: string
     creation: string
     modification: string
-    conseiller_numerique_id: string
+    conseiller_numerique_id: string | null
     conseiller_numerique_id_pg: number | null
     mediateurs_coordonnes: Array<{
       id: string

@@ -40,3 +40,9 @@ export const isCoordinateur = <
 >(
   user: T,
 ): user is CoordinateurUser<T> => !!user.coordinateur
+
+export const isCoordinateurConseillerNumerique = <
+  T extends Pick<SessionUser, 'coordinateur'> = SessionUser,
+>(
+  user: T,
+): user is CoordinateurUser<T> => !!user.coordinateur?.conseillerNumeriqueId

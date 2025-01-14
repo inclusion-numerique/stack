@@ -29,7 +29,7 @@ const StructureCard = ({
   return (
     <div
       className={classNames(
-        'fr-width-full fr-border-radius--8 fr-border fr-p-6v fr-p-md-8v',
+        'fr-width-full fr-border-radius--8 fr-border fr-p-6v fr-p-md-8v fr-mt-12v',
         className,
       )}
     >

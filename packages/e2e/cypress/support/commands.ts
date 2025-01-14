@@ -66,8 +66,13 @@ Cypress.Commands.add('createUserAndSignin', (user: CreateUserInput) => {
   cy.task('createUser', user)
   return cy.signin(user)
 })
+
 Cypress.Commands.add('createUser', (user: CreateUserInput) => {
   cy.task('createUser', user)
+})
+
+Cypress.Commands.add('createCoordinateurFor', (user: { email: string }) => {
+  cy.task('createCoordinateurFor', user)
 })
 
 Cypress.Commands.add('dsfrStylesShouldBeLoaded', () => {
@@ -184,6 +189,8 @@ declare global {
       createUserAndSignin(user: CreateUserInput): Chainable<string>
 
       createUser(user: CreateUserInput): Chainable<void>
+
+      createCoordinateurFor(user: { email: string }): Chainable<void>
 
       signin(user: { email: string }): Chainable<string>
 
