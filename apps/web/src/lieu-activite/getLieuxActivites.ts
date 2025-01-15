@@ -18,6 +18,8 @@ export const getLieuxActivites = async (mediateurId: string) =>
           commune: true,
           codePostal: true,
           complementAdresse: true,
+          visiblePourCartographieNationale: true,
+          structureCartographieNationaleId: true,
           siret: true,
           rna: true,
           typologies: true,
