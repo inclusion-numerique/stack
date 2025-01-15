@@ -1,27 +1,18 @@
+import TurndownService from 'turndown'
 import type { BaseForMarkdown } from '@app/web/bases/getBaseForMarkdown'
+
+const turndownService = new TurndownService()
 
 /**
  * Converts a public base to markdown
  */
 export const baseToMarkdown = ({
-  id,
   title,
   slug,
   description,
-  department,
-  email,
-  emailIsPublic,
-  website,
-  facebook,
-  twitter,
-  linkedin,
-  created,
-  updated,
-  coverImage,
-}: BaseForMarkdown): string => {
-  const parts: string[] = []
+}: BaseForMarkdown): string => `# ${title}
+Type: Base
+Url: https://lesbases.anct.gouv.fr/bases/${slug}
 
-  parts.push(`# ${title}`)
-
-  return parts.join('\n')
-}
+${description ? turndownService.turndown(description) : ''}
+`
