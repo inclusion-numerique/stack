@@ -64,6 +64,15 @@ const linkToCoopStructure =
     structure,
   }: CoopIdsToMergeInSingleStructure) =>
     prismaClient.$transaction(async (prisma) => {
+      const existingStructure = await prisma.structure.findUnique({
+        where: { id: structureId },
+      })
+
+      if (!existingStructure) {
+        output(`Skipping non-existent structureId: ${structureId}`)
+        return
+      }
+
       await prisma.structure.update({
         where: { id: structureId },
         data: {
