@@ -16,6 +16,7 @@ import { setupDatabaseSecret } from '@app/cli/commands/secrets/setupDatabaseSecr
 import { listV1Emails } from '@app/cli/commands/v1/listEmails'
 import { ingestNotionHelpCenterExportedMarkdown } from '@app/cli/commands/rag/ingestNotionHelpCenterExportedMarkdown'
 import { output } from '@app/cli/output'
+import { ingestLesBasesMarkdown } from '@app/cli/commands/rag/ingestLesBasesMarkdown'
 import { fetchAccompagnements } from '@app/cli/fetchAccompagnement'
 import { Command } from '@commander-js/extra-typings'
 
@@ -55,6 +56,7 @@ program.addCommand(checkDeploymentStatus)
 program.addCommand(locallyRestoreLatestMainBackup)
 program.addCommand(listV1Emails)
 program.addCommand(ingestNotionHelpCenterExportedMarkdown)
+program.addCommand(ingestLesBasesMarkdown)
 program.addCommand(fetchAccompagnements)
 
 program.parse()
