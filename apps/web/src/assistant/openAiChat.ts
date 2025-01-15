@@ -40,6 +40,7 @@ export const executeOpenAiChatStream = async ({
     tool_choice: toolChoice,
     tools,
     stream: true,
+    parallel_tool_calls: true,
   })
 
   let message = ''
@@ -121,6 +122,7 @@ export const executeOpenAiChat = async ({
     tool_choice: toolChoice,
     tools,
     stream: false,
+    parallel_tool_calls: true,
   })
 
   return chatResponse
@@ -159,6 +161,11 @@ export const executeChatInteraction = ({
             tools,
             tool_choice: toolChoice,
             stream: true,
+            parallel_tool_calls: true,
+            temperature: 0.2,
+            top_p: 0.85,
+            frequency_penalty: 0.1,
+            presence_penalty: 0.1,
           })
           .on('chatCompletion', (completion) => {
             console.log('ON CHAT COMPLETION', completion)

@@ -99,6 +99,7 @@
     "nodemailer": "^6.9.16",
     "openai": "^4.77.0",
     "opening_hours": "^3.8.0",
+    "p-retry": "^6.2.1",
     "p-throttle": "^7.0.0",
     "p-retry": "^6.2.1",
     "pako": "^2.1.0",

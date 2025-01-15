@@ -13,7 +13,7 @@ import {
 } from '@app/web/assistant/assistantMessageToOpenAiMessage'
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
-import { minimalChatSystemMessage } from '@app/web/assistant/systemMessages'
+import { mediationAssistantSystemMessage } from '@app/web/assistant/systemMessages'
 import { tools } from '@app/web/assistant/tools/tools'
 
 const notFoundResponse = () =>
@@ -80,7 +80,7 @@ export const POST = async (request: NextRequest) => {
   const messages = [
     // Our system message is always up to date and the first message
     // chatSystemMessageWithContext,
-    minimalChatSystemMessage,
+    mediationAssistantSystemMessage,
     // Session history
     ...chatSession.messages.map(assistantMessageToOpenAiMessage),
     // User prompt message

@@ -12,8 +12,7 @@ const toolsLoadingMessages = {
     'Je recherche sur les sites officiels pour avoir plus d’informations',
   centre_aide_rag:
     'Je recherche dans le centre d’aide pour répondre à votre question',
-  les_bases_rag:
-    'Je recherche sur les bases du numérique d’intérêt général pour répondre à votre question',
+  les_bases_rag: 'Je recherche sur les bases du numérique d’intérêt général',
 }
 
 const ToolCallMessage = ({

@@ -2,6 +2,7 @@ import { MarkdownTextSplitter } from '@langchain/textsplitters'
 import { prismaClient } from '@app/web/prismaClient'
 import { createEmbedding } from '@app/web/assistant/createEmbedding'
 import { createMd5Hash } from '@app/web/assistant/rag/createMd5Hash'
+import { checkIfRagDocumentExists } from '@app/web/assistant/rag/checkIfRagDocumentExists'
 
 export type InsertMarkdownRagChunksOptions = {
   type: string
@@ -51,15 +52,11 @@ export const insertMarkdownRagChunks = async ({
   })
 
   // Check if chunks already exist for this md5 (only need to check the first chunk)
-  const existingChunk = await prismaClient.ragDocumentChunk.findFirst({
-    where: {
-      source,
-      sourceId,
-      documentMd5,
-    },
-    select: {
-      id: true,
-    },
+  const existingChunk = await checkIfRagDocumentExists({
+    type,
+    source,
+    sourceId,
+    documentMd5,
   })
 
   if (existingChunk) {

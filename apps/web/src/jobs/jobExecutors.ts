@@ -2,6 +2,7 @@ import { executeBackupDatabaseJob } from '@app/web/jobs/backup-database/executeB
 import { executeFixCoordinationsV1 } from '@app/web/jobs/fix-coordinations-v1/executeFixCoordinationsV1'
 import { executeImportCrasConseillerNumeriqueV1 } from '@app/web/jobs/import-cras-conseiller-numerique-v1/executeImportCrasConseillerNumeriqueV1'
 import type { Job, JobName, JobPayload } from '@app/web/jobs/jobs'
+import { executeIngestLesBasesInRag } from '@app/web/jobs/ingest-les-bases-in-rag/executeIngestLesBasesInRag'
 import { executeUpdateConumStructureReferent } from '@app/web/jobs/update-conum-structure-referent/executeUpdateConumStructureReferent'
 import { updateStructureFromCartoDataApi } from '@app/web/jobs/update-structures-cartographie-nationale/updateStructureFromCartoDataApi'
 import { prismaClient } from '@app/web/prismaClient'
@@ -49,6 +50,7 @@ export const jobExecutors: {
   'fix-coordinations-v1': executeFixCoordinationsV1,
   'update-conum-structure-referent': executeUpdateConumStructureReferent,
   'import-contacts-to-brevo': executeImportContactsToBrevo,
+  'ingest-les-bases-in-rag': executeIngestLesBasesInRag,
 }
 
 export const executeJob = async (job: Job) => {
