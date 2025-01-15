@@ -58,6 +58,7 @@ export const BeneficiaireValidation = z.object({
     .nullish(),
   anneeNaissance: anneeNaissanceValidation,
   adresse: z.string().nullish(),
+  alreadyAssisted: z.boolean().nullish(),
   communeResidence: AdresseBanValidation.nullish(),
   genre: z.enum(genreValues).nullish(),
   trancheAge: z.enum(trancheAgeValues).nullish(),

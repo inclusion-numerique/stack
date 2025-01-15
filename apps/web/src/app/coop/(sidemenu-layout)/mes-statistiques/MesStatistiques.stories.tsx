@@ -95,6 +95,7 @@ const statistiquesPageData = {
     },
     beneficiaires: {
       total: 550,
+      nouveaux: 0,
       anonymes: 120,
       suivis: 430,
     },

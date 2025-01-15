@@ -5,6 +5,8 @@ export const participantsAnonymesDefault: ParticipantsAnonymesCraCollectifData =
   {
     total: 0,
 
+    alreadyAssisted: 0,
+
     genreMasculin: 0,
     genreFeminin: 0,
     genreNonCommunique: 0,

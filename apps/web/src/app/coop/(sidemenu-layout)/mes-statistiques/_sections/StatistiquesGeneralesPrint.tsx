@@ -1,3 +1,4 @@
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import type { MesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
 import { AccompagnementBarChart } from '../_components/AccompagnementBarChart'
 
@@ -10,17 +11,39 @@ export const StatistiquesGeneralesPrint = ({
     <h2 className="fr-h3">Statistiques générales sur vos accompagnements</h2>
     <h3 className="fr-h5">Accompagnements et bénéficiaires</h3>
     <p>
-      <strong>{totalCounts.beneficiaires.total} Bénéficiaires</strong>{' '}
-      accompagnés, dont{' '}
-      <strong>{totalCounts.beneficiaires.suivis} bénéficiaires suivis</strong>{' '}
+      <strong>
+        {totalCounts.beneficiaires.total} Bénéficiaire
+        {sPluriel(totalCounts.beneficiaires.total)}
+      </strong>{' '}
+      accompagné{sPluriel(totalCounts.beneficiaires.total)}{' '}
+      {totalCounts.beneficiaires.nouveaux > 0 && (
+        <>
+          , dont{' '}
+          <strong>
+            {totalCounts.beneficiaires.nouveaux}{' '}
+            {totalCounts.beneficiaires.nouveaux === 1 ? 'nouveau' : 'nouveaux'}
+          </strong>
+        </>
+      )}
+      &nbsp;:{' '}
+      <strong>
+        {totalCounts.beneficiaires.suivis} bénéficiaire
+        {sPluriel(totalCounts.beneficiaires.suivis)} suivi
+        {sPluriel(totalCounts.beneficiaires.suivis)}
+      </strong>{' '}
       et{' '}
       <strong>
-        {totalCounts.beneficiaires.anonymes} bénéficiaires anonymes
+        {totalCounts.beneficiaires.anonymes} bénéficiaire
+        {sPluriel(totalCounts.beneficiaires.anonymes)} anonyme
+        {sPluriel(totalCounts.beneficiaires.anonymes)}
       </strong>
     </p>
     <p>
-      <strong>{totalCounts.accompagnements.total} accompagnements</strong> au
-      total
+      <strong>
+        {totalCounts.accompagnements.total} accompagnement
+        {sPluriel(totalCounts.accompagnements.total)}
+      </strong>{' '}
+      au total
       <br />
       <small role="note" className="fr-mb-6v fr-display-block">
         *Les ateliers collectifs comptent pour 1 accompagnement par

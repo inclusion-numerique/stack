@@ -128,6 +128,7 @@ const emptyData: MesStatistiquesPageData = {
     },
     beneficiaires: {
       total: 0,
+      nouveaux: 0,
       anonymes: 0,
       suivis: 0,
     },
@@ -286,6 +287,7 @@ describe('getMesStatistiquesPageData', () => {
             },
             beneficiaires: {
               total: totalBeneficiaires,
+              nouveaux: 0,
               suivis: 2,
               anonymes: 11,
             },

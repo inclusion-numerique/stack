@@ -35,7 +35,7 @@ export const StatistiquesGenerales = ({
               />
             </div>
             <div className="fr-text--bold fr-mt-1w">
-              Accompagnements{' '}
+              Accompagnement{sPluriel(totalCounts.accompagnements.total)}{' '}
               <Button
                 className="fr-px-2v"
                 title="Plus d’information à propos des accompagnements"
@@ -59,7 +59,12 @@ export const StatistiquesGenerales = ({
                     {numberToString(
                       totalCounts.accompagnements.individuels.total,
                     )}{' '}
-                    accompagnements individuels
+                    accompagnement
+                    {sPluriel(
+                      totalCounts.accompagnements.individuels.total,
+                    )}{' '}
+                    individuel
+                    {sPluriel(totalCounts.accompagnements.individuels.total)}
                   </li>
                   <li>
                     {numberToString(
@@ -95,8 +100,22 @@ export const StatistiquesGenerales = ({
                 aria-hidden
               />
             </div>
-            <div className="fr-text--bold fr-my-1w">
-              Bénéficiaires accompagnés
+            <div className="fr-my-1w">
+              <div className="fr-text--bold">
+                Bénéficiaire{sPluriel(totalCounts.beneficiaires.total)}{' '}
+                accompagné{sPluriel(totalCounts.beneficiaires.total)}
+              </div>
+              {totalCounts.beneficiaires.nouveaux !== 0 && (
+                <div className="fr-text--medium fr-text-label--blue-france">
+                  dont{' '}
+                  <span className="fr-text--bold">
+                    {totalCounts.beneficiaires.nouveaux}
+                  </span>{' '}
+                  {totalCounts.beneficiaires.nouveaux === 1
+                    ? 'nouveau'
+                    : 'nouveaux'}
+                </div>
+              )}
             </div>
             <div className="fr-text-mention--grey">
               <div>

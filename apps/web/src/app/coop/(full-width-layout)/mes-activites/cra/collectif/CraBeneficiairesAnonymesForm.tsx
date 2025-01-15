@@ -143,6 +143,7 @@ const CraBeneficiairesMultiplesForm = ({
   const statutSocialNonCommuniqueCount = watch(
     'participantsAnonymes.statutSocialNonCommunique',
   )
+  const alreadyAssistedCount = watch('participantsAnonymes.alreadyAssisted')
 
   const disableAddGenre = totalGenre - genreNonCommuniqueCount >= total
   const disableAddTrancheAge =
@@ -177,6 +178,14 @@ const CraBeneficiairesMultiplesForm = ({
             Ajoutez des informations anonymes sur les bénéficiaires que vous ne
             souhaitez pas enregistrer afin d’enrichir vos statistiques.
           </p>
+          <PlusMinusNumberFormField
+            control={control}
+            disabled={isLoading}
+            path="participantsAnonymes.alreadyAssisted"
+            min={0}
+            label="Bénéficiaires déjà accompagnés"
+            disabledAdd={alreadyAssistedCount >= total}
+          />
           <p className="fr-text--medium fr-mb-3v fr-mt-6v">Genre</p>
           <div className={styles.genreContainer}>
             {genreValues.map((genre) =>
