@@ -232,6 +232,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
     <>
       <button
         className="fr-nav__btn fr-btn fr-hidden fr-unhidden-lg"
+        style={{ fontWeight: 500 }}
         type="button"
         aria-expanded="false"
         aria-controls="header-user-menu"
