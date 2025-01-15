@@ -1,6 +1,7 @@
 /* eslint @typescript-eslint/no-redundant-type-constituents: 0 */
 
-import { UniteLegale } from '@app/web/external-apis/apiEntrepriseApiModels'
+import pRetry from 'p-retry'
+import type { UniteLegale } from '@app/web/external-apis/apiEntrepriseApiModels'
 
 const rechercheApiEntrepriseEndpoint =
   'https://recherche-entreprises.api.gouv.fr/search'
@@ -99,13 +100,22 @@ export const rechercheApiEntreprise = async (
 ): Promise<RechercheApiResponse> => {
   const queryUrl = `${rechercheApiEntrepriseEndpoint}?${convertQueryParams(queryParams).toString()}`
 
-  const response = await fetch(queryUrl)
+  const executeFetch = async () => {
+    const response = await fetch(queryUrl)
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch API: ${response.statusText}`)
+    if (!response.ok) {
+      throw new Error(`Failed to fetch API: ${response.statusText}`)
+    }
+
+    return response.json() as Promise<RechercheApiResponse>
   }
 
-  return response.json() as Promise<RechercheApiResponse>
+  return pRetry(executeFetch, {
+    retries: 5,
+    factor: 2,
+    minTimeout: 1000,
+    maxTimeout: 10_000,
+  })
 }
 
 export const openEtablissementsFromUniteLegale = ({
