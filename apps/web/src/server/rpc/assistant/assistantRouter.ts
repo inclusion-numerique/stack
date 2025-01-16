@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { prismaClient } from '@app/web/prismaClient'
 import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
+import { generateChatSessionTitle } from '@app/web/assistant/tasks/generateChatSessionTitle'
 
 export const assistantRouter = router({
   createSession: protectedProcedure.mutation(async ({ ctx: { user } }) => {
@@ -87,11 +88,21 @@ export const assistantRouter = router({
 
       if (!chatSession) throw invalidError('Chat session not found')
 
-      // TODO add logic to call LLM to generate a title
-
       if (chatSession.createdById !== user.id)
         throw forbiddenError('User is not the creator of this chat session')
 
-      return chatSession
+      const newTitle = await generateChatSessionTitle(chatSession)
+
+      return prismaClient.assistantChatSession.update({
+        where: { id: chatSessionId },
+        data: {
+          title: newTitle,
+        },
+        select: {
+          id: true,
+          title: true,
+          created: true,
+        },
+      })
     }),
 })

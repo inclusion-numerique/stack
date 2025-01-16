@@ -36,7 +36,17 @@ export const getUserChatSessions = async (userId: string) => {
       createdById: userId,
       deleted: null,
     },
-
+    select: {
+      id: true,
+      title: true,
+      created: true,
+      updated: true,
+      _count: {
+        select: {
+          messages: true,
+        },
+      },
+    },
     orderBy: {
       created: 'desc',
     },

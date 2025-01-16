@@ -14,12 +14,15 @@ export const getAssistantPageData = async ({
     ? await getChatSession(chatSessionId)
     : undefined
 
-  const chatSessions = await getUserChatSessions(userId)
+  const chatSessionHistory = await getUserChatSessions(userId)
 
   return {
-    chatSessions,
+    chatSessionHistory,
     chatSession, // null if not found, undefined if not required in params
   }
 }
 
 export type AssistantPageData = Awaited<ReturnType<typeof getAssistantPageData>>
+
+export type AssistantPageDataChatSessionHistoryItem =
+  AssistantPageData['chatSessionHistory'][number]

@@ -24,7 +24,7 @@ const ChatStreamingMessage = () => {
       {currentToolCalls.length > 0 && (
         <ChatMessage
           previousMessageRole={previousMessageRole}
-          isStreaming
+          isStreaming={streamingMessage === null}
           message={{
             id: 'streaming-message-tool-calls',
             role: 'Assistant',
@@ -41,7 +41,9 @@ const ChatStreamingMessage = () => {
       )}
       {streamingMessage !== null && (
         <ChatMessage
-          previousMessageRole={previousMessageRole}
+          previousMessageRole={
+            currentToolCalls.length > 0 ? 'Assistant' : previousMessageRole
+          }
           isStreaming
           message={{
             id: 'streaming-message-content',

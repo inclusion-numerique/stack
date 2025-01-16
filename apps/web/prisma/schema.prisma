@@ -89,7 +89,8 @@ model User {
   description       String?
   accounts          Account[]
   sessions          Session[]
-  hasSeenOnboarding DateTime?         @map("has_seen_onboarding")
+  hasSeenOnboarding DateTime? @map("has_seen_onboarding")
+  timezone          String   @default("Europe/Paris")
   featureFlags      UserFeatureFlag[] @default([]) @map("feature_flags")
 
   // Created by a fixture system, can be reset and will only be here on preview envs

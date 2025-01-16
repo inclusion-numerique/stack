@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import Button from '@codegouvfr/react-dsfr/Button'
 import type { AssistantPageData } from '@app/web/assistant/getAssistantPageData'
 import ChatSession from '@app/web/assistant/ChatSession'
-import { dateAsDayAndTime } from '@app/web/utils/dateAsDayAndTime'
+import HistoryChatSessionButton from '@app/web/assistant/HistoryChatSessionButton'
 import styles from './ChatSession.module.css'
 
 // Groupe les messages pour la sidebar
@@ -11,7 +11,7 @@ import styles from './ChatSession.module.css'
 // "7 derniers jours"
 // "30 derniers jours"
 const groupHistoryChatSessionsByPeriod = (
-  chatSessions: AssistantPageData['chatSessions'],
+  chatSessionHistory: AssistantPageData['chatSessionHistory'],
 ) => {
   const today = new Date()
   const yesterday = new Date()
@@ -27,13 +27,13 @@ const groupHistoryChatSessionsByPeriod = (
   return [
     {
       period: 'Aujourd’hui',
-      chatSessions: chatSessions.filter(
+      chatSessions: chatSessionHistory.filter(
         (chatSession) => chatSession.updated.getTime() >= today.getTime(),
       ),
     },
     {
       period: 'Hier',
-      chatSessions: chatSessions.filter(
+      chatSessions: chatSessionHistory.filter(
         (chatSession) =>
           chatSession.updated.getTime() >= yesterday.getTime() &&
           chatSession.updated.getTime() < today.getTime(),
@@ -41,7 +41,7 @@ const groupHistoryChatSessionsByPeriod = (
     },
     {
       period: '7 derniers jours',
-      chatSessions: chatSessions.filter(
+      chatSessions: chatSessionHistory.filter(
         (chatSession) =>
           chatSession.updated.getTime() >= last7Days.getTime() &&
           chatSession.updated.getTime() < yesterday.getTime(),
@@ -49,7 +49,7 @@ const groupHistoryChatSessionsByPeriod = (
     },
     {
       period: '30 derniers jours',
-      chatSessions: chatSessions.filter(
+      chatSessions: chatSessionHistory.filter(
         (chatSession) =>
           chatSession.updated.getTime() >= last30Days.getTime() &&
           chatSession.updated.getTime() < last7Days.getTime(),
@@ -75,7 +75,7 @@ const filterChatSessionForClient = (
 }
 
 const AssistantPageContent = async ({
-  data: { chatSession, chatSessions },
+  data: { chatSession, chatSessionHistory },
 }: {
   data: AssistantPageData
   // eslint-disable-next-line @typescript-eslint/require-await
@@ -109,24 +109,16 @@ const AssistantPageContent = async ({
           Nouveau chat
         </Button>
       </div>
-      {groupHistoryChatSessionsByPeriod(chatSessions).map(
-        ({ period, chatSessions: historyChatSessions }) => (
+      {groupHistoryChatSessionsByPeriod(chatSessionHistory).map(
+        ({ period, chatSessions: periodChatSessionHistory }) => (
           <>
             <h2 className="fr-text--sm fr-text--medium fr-mb-0">{period}</h2>
             <div className="fr-btns-group fr-btns-group--sm">
-              {historyChatSessions.map((historyChatSession) => (
-                <Button
-                  className="fr-display-block fr-mb-0"
-                  size="small"
-                  priority="tertiary no outline"
+              {periodChatSessionHistory.map((historyChatSession) => (
+                <HistoryChatSessionButton
                   key={historyChatSession.id}
-                  linkProps={{
-                    href: `/assistant/chat/${historyChatSession.id}`,
-                  }}
-                >
-                  {historyChatSession.title ??
-                    `Chat du ${dateAsDayAndTime(historyChatSession.created)}`}
-                </Button>
+                  sessionHistoryItem={historyChatSession}
+                />
               ))}
             </div>
           </>

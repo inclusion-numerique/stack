@@ -13,9 +13,7 @@ export const generateMetadata = (): Metadata => ({
  * and the user will be redirected to the chat session page with the chatSessionId
  */
 const Page = async () => {
-  console.log('PAGE BOOT CHAT')
   const user = await authenticateUser()
-  console.log('USER IN PAGE', user)
   const data = await getAssistantPageData({ userId: user.id })
 
   return <AssistantPageContent data={data} />

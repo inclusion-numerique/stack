@@ -67,6 +67,7 @@
     "csv-parse": "^5.6.0",
     "csv-stringify": "^6.5.2",
     "date-fns": "^3.6.0",
+    "date-fns-tz": "^3.2.0",
     "debounce-promise": "^3.1.2",
     "decimal.js": "^10.4.3",
     "deep-object-diff": "^1.1.9",
