@@ -30,7 +30,7 @@ const MonEquipeListePage = ({
     user: { name, email, phone },
   },
   coordinateurView = true,
-  stats: { total, conseillerNumerique, mediateurNumerique },
+  stats: { total, conseillersNumeriques, mediateursNumeriques },
 }: MonEquipePageData & {
   searchParams: { lignes?: string; page?: string; recherche?: string }
   totalPages: number
@@ -101,13 +101,13 @@ const MonEquipeListePage = ({
         <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-mb-2w">
           <p className="fr-text--lg fr-text--bold fr-flex fr-flex-gap-2v fr-direction-column fr-direction-sm-row fr-mb-0">
             <span>
-              {conseillerNumerique}{' '}
-              {pluralize('conseiller numérique', conseillerNumerique)}
+              {conseillersNumeriques}{' '}
+              {pluralize('conseiller numérique', conseillersNumeriques)}
             </span>
             <span className="fr-hidden fr-unhidden-sm">·</span>
             <span>
-              {mediateurNumerique}{' '}
-              {pluralize('médiateur numérique', mediateurNumerique)}
+              {mediateursNumeriques}{' '}
+              {pluralize('médiateur numérique', mediateursNumeriques)}
             </span>
           </p>
           <SortSelect
