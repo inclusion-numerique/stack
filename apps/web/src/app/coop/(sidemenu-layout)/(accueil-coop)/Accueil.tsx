@@ -4,6 +4,7 @@ import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import ActiviteDetailsModal from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsModal'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import { CommunicationConum } from '@app/web/app/coop/(sidemenu-layout)/(accueil-coop)/_components/CommunicationConum'
+import { EquipeVide } from '@app/web/app/coop/EquipeVide'
 import {
   ActionsRapides,
   DernieresActivites,
@@ -25,6 +26,7 @@ export const Accueil = ({
   hasSeenOnboarding,
   isMediateur,
   isCoordinateur,
+  isCoordinateurCoNum,
   isCoNum,
 }: {
   firstName: string | null
@@ -33,6 +35,7 @@ export const Accueil = ({
   email: string
   isMediateur: boolean
   isCoordinateur: boolean
+  isCoordinateurCoNum: boolean
   isCoNum: boolean
 } & AccueilPageData) => (
   <CoopPageContainer size={794}>
@@ -51,7 +54,15 @@ export const Accueil = ({
       )}
       {isCoordinateur && (
         <section className="fr-my-6w">
-          <Equipe mediateurs={mediateurs} />
+          <h2 className="fr-h5 fr-text-mention--grey">
+            <span className="ri-group-2-line fr-mr-1w" aria-hidden />
+            Mon équipe
+          </h2>
+          {mediateurs.total > 0 ? (
+            <Equipe mediateurs={mediateurs} />
+          ) : (
+            <EquipeVide />
+          )}
         </section>
       )}
       {isMediateur && (
@@ -65,7 +76,7 @@ export const Accueil = ({
           <hr className="fr-separator-1px" />
         </>
       )}
-      {(isCoNum || isCoordinateur) && (
+      {(isCoNum || isCoordinateurCoNum) && (
         <section className="fr-my-6w">
           <CommunicationConum />
         </section>

@@ -8,6 +8,7 @@ import DataSearchBar from '@app/web/data-table/DataSearchBar'
 import { generatePageSizeSelectOptions } from '@app/web/data-table/pageSizeSelectOptions'
 import PaginationNavWithPageSizeSelect from '@app/web/data-table/PaginationNavWithPageSizeSelect'
 import SortSelect from '@app/web/data-table/SortSelect'
+import { EquipeVide } from '@app/web/app/coop/EquipeVide'
 import { MonEquipePageData } from './getMonEquipePageData'
 import LeaveTeamButton from './LeaveTeamButton'
 import { MediateurList } from './MediateurList'
@@ -98,32 +99,38 @@ const MonEquipeListePage = ({
             placeholder="Rechercher par nom ou adresse e-mail"
           />
         </div>
-        <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-mb-2w">
-          <p className="fr-text--lg fr-text--bold fr-flex fr-flex-gap-2v fr-direction-column fr-direction-sm-row fr-mb-0">
-            <span>
-              {conseillersNumeriques}{' '}
-              {pluralize('conseiller numérique', conseillersNumeriques)}
-            </span>
-            <span className="fr-hidden fr-unhidden-sm">·</span>
-            <span>
-              {mediateursNumeriques}{' '}
-              {pluralize('médiateur numérique', mediateursNumeriques)}
-            </span>
-          </p>
-          <SortSelect
-            options={[
-              { label: 'Ordre alphabétique', value: 'alphabetique' },
-              { label: 'Les plus récents', value: 'recent' },
-              { label: 'Les plus anciens', value: 'ancien' },
-            ]}
-            baseHref={baseHref}
-          />
-        </div>
-        <MediateurList
-          mediateurs={mediateurs}
-          canSeeMediateursDetails={coordinateurView}
-          baseHref={baseHref}
-        />
+        {mediateurs.length === 0 ? (
+          <EquipeVide />
+        ) : (
+          <>
+            <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-mb-2w">
+              <p className="fr-text--lg fr-text--bold fr-flex fr-flex-gap-2v fr-direction-column fr-direction-sm-row fr-mb-0">
+                <span>
+                  {conseillersNumeriques}{' '}
+                  {pluralize('conseiller numérique', conseillersNumeriques)}
+                </span>
+                <span className="fr-hidden fr-unhidden-sm">·</span>
+                <span>
+                  {mediateursNumeriques}{' '}
+                  {pluralize('médiateur numérique', mediateursNumeriques)}
+                </span>
+              </p>
+              <SortSelect
+                options={[
+                  { label: 'Ordre alphabétique', value: 'alphabetique' },
+                  { label: 'Les plus récents', value: 'recent' },
+                  { label: 'Les plus anciens', value: 'ancien' },
+                ]}
+                baseHref={baseHref}
+              />
+            </div>
+            <MediateurList
+              mediateurs={mediateurs}
+              canSeeMediateursDetails={coordinateurView}
+              baseHref={baseHref}
+            />
+          </>
+        )}
         <PaginationNavWithPageSizeSelect
           className="fr-mt-12v"
           defaultPageSize={10}

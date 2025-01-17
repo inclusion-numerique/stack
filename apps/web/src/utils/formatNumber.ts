@@ -1,4 +1,4 @@
-export const numberToString = (value: number) => value.toLocaleString('fr-FR')
+export const numberToString = (value: number) => value?.toLocaleString('fr-FR')
 
 export const optionalNumberToString = <T>(
   value?: number | null,

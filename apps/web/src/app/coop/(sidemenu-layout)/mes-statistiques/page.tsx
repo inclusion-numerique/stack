@@ -22,9 +22,11 @@ const MesStatistiquesPage = async ({
 }) => {
   const user = await authenticateMediateurOrCoordinateur()
 
+  const mediateurCoordonnesIds = mediateurCoordonnesIdsFor(user)
+
   const mesStatistiques = await getMesStatistiquesPageData({
     user,
-    mediateurCoordonnesIds: mediateurCoordonnesIdsFor(user),
+    mediateurCoordonnesIds,
     activitesFilters: validateActivitesFilters(searchParams),
     graphOptions: {
       fin: searchParams.graphique_fin
@@ -38,6 +40,7 @@ const MesStatistiquesPage = async ({
   return (
     <MesStatistiques
       user={user}
+      mediateurCoordonnesCount={mediateurCoordonnesIds.length}
       {...mesStatistiques}
       codeInsee={employeStructure?.structure.codeInsee}
     />
