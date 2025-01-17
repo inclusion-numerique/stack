@@ -3,6 +3,7 @@ import type {
   Coordinateur,
   EmployeStructure,
   Mediateur,
+  RdvAccount,
   Structure,
   User,
 } from '@prisma/client'
@@ -51,6 +52,13 @@ export type SessionUser = Pick<
   coordinateur:
     | (Pick<Coordinateur, 'id' | 'conseillerNumeriqueId'> & {
         mediateursCoordonnes: { mediateurId: string }[]
+      })
+    | null
+  rdvAccount:
+    | (Pick<RdvAccount, 'id'> & {
+        hasOauthTokens: boolean
+        created: string | null
+        updated: string | null
       })
     | null
 }

@@ -110,12 +110,12 @@ model User {
 
   uploads Upload[]
 
-  mediateur    Mediateur?
-  coordinateur Coordinateur?
-  mutations    Mutation[]
-  emplois      EmployeStructure[]
-  usurpateur   Session?           @relation(name: "usurper")
-  rdvAccount   RdvAccount?
+  mediateur               Mediateur?
+  coordinateur            Coordinateur?
+  mutations               Mutation[]
+  emplois                 EmployeStructure[]
+  usurpateur              Session?                 @relation(name: "usurper")
+  rdvAccount              RdvAccount?
 
   // "creation" cursor is used to paginate results for API queries
   @@unique([created, id])
@@ -900,14 +900,14 @@ model RdvAccount {
   userId String @unique @map("user_id") @db.Uuid
   user   User   @relation(fields: [userId], references: [id])
 
-  accessToken  String    @map("access_token")
+  accessToken  String?   @map("access_token") // Empty if account created but oauth not linked
   refreshToken String?   @map("refresh_token")
   expiresAt    DateTime? @map("expires_at")
   scope        String?
-  metadata     Json?
+  metadata     Json? // metadata on the account coming from the rdv service
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  created DateTime @default(now()) @map("created")
+  updated DateTime @updatedAt @map("updated")
 
   @@index([userId])
   @@map("rdv_accounts")

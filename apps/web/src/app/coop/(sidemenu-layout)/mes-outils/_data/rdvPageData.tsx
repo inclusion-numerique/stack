@@ -1,4 +1,6 @@
 import { OutilPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/outilPageData'
+import { getServerUrl } from '@app/web/utils/baseUrl'
+import RdvServicePublicAccess from '@app/web/rdv-service-public/RdvServicePublicAccess'
 
 export default {
   notice:
@@ -38,9 +40,12 @@ export default {
       label: 'En savoir plus sur ProConnect',
       link: 'https://www.proconnect.gouv.fr',
     },
-    callToAction: {
-      label: 'Se connecter',
-      link: 'https://www.rdv-aide-numerique.fr/agents/sign_in',
-    },
+    callToActionComponent: (
+      <RdvServicePublicAccess
+        callbackUrl={getServerUrl('/coop/mes-outils/rdv-aide-numerique', {
+          absolutePath: true,
+        })}
+      />
+    ),
   },
 } satisfies OutilPageData

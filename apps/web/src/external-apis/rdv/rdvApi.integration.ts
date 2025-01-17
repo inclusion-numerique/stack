@@ -5,7 +5,6 @@ import { createAccount } from '@app/web/external-apis/rdv/rdvApi'
 describe.skip('rdvApi', () => {
   it('should create an account', async () => {
     const result = await createAccount({
-      deployment: 'staging',
       input: {
         agent: {
           email: 'test2@test.com',

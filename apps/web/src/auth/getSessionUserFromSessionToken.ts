@@ -91,6 +91,15 @@ export const sessionUserSelect = {
       },
     },
   },
+  rdvAccount: {
+    select: {
+      id: true,
+      created: true,
+      updated: true,
+      accessToken: true,
+      refreshToken: true,
+    },
+  },
 } satisfies Prisma.UserSelect
 
 const querySessionUser = async (sessionToken: string) =>

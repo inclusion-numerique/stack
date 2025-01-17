@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { prismaClient } from '@app/web/prismaClient'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 export type RdvApiLieuInput = {
   // external_id: string // not yet implemented on rdv side
@@ -27,12 +28,6 @@ export type RdvApiCreateAccountResponse = {
   id: string
 }
 
-const rdvApiStagingUrl =
-  'https://demo-rdv-solidarites-pr4786.osc-secnum-fr1.scalingo.io'
-
-const rdvApiProductionUrl =
-  'https://demo-rdv-solidarites-todotodo.osc-secnum-fr1.scalingo.io'
-
 export const getUserRdvApiData = async ({ userId }: { userId: string }) => {
   const user = await prismaClient.user.findUnique({
     where: {
@@ -44,13 +39,38 @@ export const getUserRdvApiData = async ({ userId }: { userId: string }) => {
       email: true,
       firstName: true,
       lastName: true,
+      name: true,
       mediateur: {
         select: {
           id: true,
+          coordinations: {
+            select: {
+              id: true,
+              coordinateur: {
+                select: {
+                  id: true,
+                  user: {
+                    select: {
+                      id: true,
+                      name: true,
+                    },
+                  },
+                },
+              },
+            },
+            where: {
+              suppression: null,
+            },
+            orderBy: {
+              creation: 'desc',
+            },
+          },
         },
       },
-      emplois: {
-        where: {},
+      coordinateur: {
+        select: {
+          id: true,
+        },
       },
     },
   })
@@ -59,31 +79,28 @@ export const getUserRdvApiData = async ({ userId }: { userId: string }) => {
     return null
   }
 
-  const emploi = await prismaClient.employeStructure.findFirst({
-    where: {
-      userId,
-      suppression: null,
-    },
-    select: {
-      id: true,
-      structure: {
-        select: {
-          id: true,
-          nom: true,
-          adresse: true,
-          codePostal: true,
-          commune: true,
-        },
-      },
-    },
-    orderBy: {
-      creation: 'desc',
-    },
-  })
+  // L’organisation côté RDV service public sera l'équipe de l'utilisateur
+  // Sinon l'utilisateur lui meme si il est coordinateur ou sans équipe
 
-  if (!emploi) {
-    return null
-  }
+  const coordinationLaPlusRecente = user.mediateur?.coordinations?.at(0)
+
+  const equipe = user.coordinateur
+    ? {
+        // If user is coordinateur, we use the team of the coordinateur
+        id: user.coordinateur.id,
+        name: user.name,
+      }
+    : coordinationLaPlusRecente
+      ? {
+          // Si mediateur coordonné et a au moins un coordo, on utilise la coordination la plus récente
+          id: coordinationLaPlusRecente.coordinateur.user.id,
+          name: coordinationLaPlusRecente.coordinateur.user.name,
+        }
+      : {
+          // Sinon on utilise l’utilisateur lui meme
+          id: user.id,
+          name: user.name,
+        }
 
   const lieux = user.mediateur
     ? await prismaClient.structure.findMany({
@@ -107,7 +124,7 @@ export const getUserRdvApiData = async ({ userId }: { userId: string }) => {
 
   return {
     user,
-    emploi,
+    equipe,
     lieux,
   }
 }
@@ -130,7 +147,7 @@ const adresseStructureForRdvApi = ({
 
 export const userToRdvApiInput = ({
   user,
-  emploi,
+  equipe,
   lieux,
 }: UserDataForRdvApiAccountInput): RdvApiCreateAccountInput => ({
   agent: {
@@ -140,9 +157,9 @@ export const userToRdvApiInput = ({
     last_name: user.lastName ?? '',
   },
   organisation: {
-    external_id: emploi.structure.id,
-    name: emploi.structure.nom,
-    address: adresseStructureForRdvApi(emploi.structure),
+    external_id: equipe.id,
+    name: equipe.name || 'Mon équipe',
+    address: 'Mon équipe',
   },
   lieux: lieux.map((structure) => ({
     name: structure.nom,
@@ -155,18 +172,17 @@ export const userToRdvApiInput = ({
  */
 export const createAccount = async ({
   input,
-  deployment = 'production',
 }: {
   input: RdvApiCreateAccountInput
-  deployment?: 'staging' | 'production'
 }) => {
   const response = await axios
     .post<RdvApiCreateAccountResponse>(
-      `${deployment === 'production' ? rdvApiProductionUrl : rdvApiStagingUrl}/api/accounts`,
+      `https://${PublicWebAppConfig.RdvServicePublic.OAuth.hostname}/api/accounts`,
       input,
       {
         headers: {
-          'X-COOP-MEDIATION-NUMERIQUE-API-KEY': ServerWebAppConfig.Rdv.apiKey,
+          'X-COOP-MEDIATION-NUMERIQUE-API-KEY':
+            ServerWebAppConfig.RdvServicePublic.apiKey,
           'Content-Type': 'application/json',
         },
       },

@@ -23,4 +23,5 @@ export const testSessionUser = {
   checkedProfilInscription: null,
   acceptationCgu: null,
   structureEmployeuseRenseignee: null,
+  rdvAccount: null,
 } satisfies SessionUser
