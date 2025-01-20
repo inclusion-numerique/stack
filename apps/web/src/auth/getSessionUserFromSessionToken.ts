@@ -26,6 +26,7 @@ export const sessionUserSelect = {
   structureEmployeuseRenseignee: true,
   lieuxActiviteRenseignes: true,
   inscriptionValidee: true,
+  featureFlags: true,
   emplois: {
     select: {
       id: true,

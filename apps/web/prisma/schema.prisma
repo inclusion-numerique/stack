@@ -64,6 +64,13 @@ enum ProfilInscription {
   @@map("profil_inscription")
 }
 
+enum UserFeatureFlag {
+  RdvServicePublic @map("rdv-service-public")
+  Assistant @map("assistant")
+
+  @@map("user_feature_flag")
+}
+
 model User {
   id                String    @id @default(uuid()) @db.Uuid
   firstName         String?   @map("first_name")
@@ -81,6 +88,7 @@ model User {
   accounts          Account[]
   sessions          Session[]
   hasSeenOnboarding DateTime? @map("has_seen_onboarding")
+  featureFlags      UserFeatureFlag[] @default([]) @map("feature_flags")
 
   // Created by a fixture system, can be reset and will only be here on preview envs
   isFixture Boolean @default(false) @map("is_fixture")
@@ -895,7 +903,7 @@ enum DegreDeFinalisationDemarche {
 // https://www.rdv-solidarites.fr
 // Stores the external id of the account and the oauth credentials
 model RdvAccount {
-  id String @id // external id of the account
+  id Int @id // external id of the "agent" account in rdv systems
 
   userId String @unique @map("user_id") @db.Uuid
   user   User   @relation(fields: [userId], references: [id])

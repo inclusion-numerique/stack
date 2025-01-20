@@ -10,6 +10,9 @@ import Contract from '@app/web/components/conseiller-numerique/Contract'
 import { getContractInfo } from '@app/web/conseiller-numerique/getContractInfo'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
 import ProfileEditCard from './_components/ProfileEditCard'
+import { hasFeatureFlag } from '@app/web/security/hasFeatureFlag'
+import React from 'react'
+import RdvServicePublicAccountStatusCard from '@app/web/app/coop/(full-width-layout)/mon-profil/RdvServicePublicAccountStatusCard'
 
 export const metadata: Metadata = {
   title: metadataTitle('Mon profil'),
@@ -26,12 +29,18 @@ const MonProfilPage = async () => {
     ? await getContractInfo(user.email)
     : null
 
+  const hasRdvFeature = hasFeatureFlag(user, 'RdvServicePublic')
+
+  const rdvAccount = user.rdvAccount
+
+  console.log('USER', user.featureFlags)
+
   return (
     <>
       <SkipLinksPortal links={defaultSkipLinks} />
-      <div className="fr-container fr-container--800">
+      <div className="fr-container fr-container--800 fr-pb-16w">
         <CoopBreadcrumbs currentPage="Mon profil" />
-        <main id={contentId} className="fr-mb-16w">
+        <main id={contentId}>
           <div className="fr-flex fr-flex-wrap fr-direction-row fr-align-items-center fr-flex-gap-4v fr-my-12v">
             <span
               className="ri-account-circle-fill ri-lg fr-line-height-1 fr-text-label--blue-france fr-background-alt--blue-france fr-p-2w fr-m-0 fr-border-radius--8"
@@ -62,6 +71,12 @@ const MonProfilPage = async () => {
             </>
           ) : null}
         </main>
+        {hasRdvFeature && (
+          <RdvServicePublicAccountStatusCard
+            user={user}
+            oAuthFlowRedirectTo="/coop/mon-profil"
+          />
+        )}
       </div>
     </>
   )

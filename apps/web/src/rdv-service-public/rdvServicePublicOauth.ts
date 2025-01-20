@@ -12,7 +12,7 @@ export const rdvServicePublicOAuthConfig = {
   redirectUri: rdvServicePublicOauthCallbackUrl,
   oauthHostname: PublicWebAppConfig.RdvServicePublic.OAuth.hostname,
   responseType: 'code',
-  scope: 'read write',
+  scope: 'write',
 }
 
 export const rdvServicePublicOAuthTokenEndpoint = `https://${rdvServicePublicOAuthConfig.oauthHostname}/oauth/token`

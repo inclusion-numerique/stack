@@ -17,8 +17,6 @@ const RdvServicePublicAccess = async ({
     return null
   }
 
-  console.log('USER RDV ACCOUNT', user.rdvAccount)
-
   return (
     <RdvServicePublicSigninButton
       callbackUrl={callbackUrl}

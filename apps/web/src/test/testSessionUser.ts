@@ -24,4 +24,5 @@ export const testSessionUser = {
   acceptationCgu: null,
   structureEmployeuseRenseignee: null,
   rdvAccount: null,
+  featureFlags: [],
 } satisfies SessionUser

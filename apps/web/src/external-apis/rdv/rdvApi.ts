@@ -25,7 +25,7 @@ export type RdvApiCreateAccountInput = {
 }
 
 export type RdvApiCreateAccountResponse = {
-  id: string
+  id: number // integer id
 }
 
 export const getUserRdvApiData = async ({ userId }: { userId: string }) => {
@@ -167,8 +167,11 @@ export const userToRdvApiInput = ({
   })),
 })
 
+const rdvServicePublicAccountsApiUrl = `https://${PublicWebAppConfig.RdvServicePublic.OAuth.hostname}/api/coop-mediation-numerique/accounts`
+
 /**
  * "Permet de créer un compte et une organisation pour un agent. Si le compte ou l'organisation existe déjà, il sera réutilisé"
+ * Cette fonction n’impacte pas la base de données de la coop et ne modifie pas l'utilisateur.
  */
 export const createAccount = async ({
   input,
@@ -176,26 +179,17 @@ export const createAccount = async ({
   input: RdvApiCreateAccountInput
 }) => {
   const response = await axios
-    .post<RdvApiCreateAccountResponse>(
-      `https://${PublicWebAppConfig.RdvServicePublic.OAuth.hostname}/api/accounts`,
-      input,
-      {
-        headers: {
-          'X-COOP-MEDIATION-NUMERIQUE-API-KEY':
-            ServerWebAppConfig.RdvServicePublic.apiKey,
-          'Content-Type': 'application/json',
-        },
+    .post<RdvApiCreateAccountResponse>(rdvServicePublicAccountsApiUrl, input, {
+      headers: {
+        'X-COOP-MEDIATION-NUMERIQUE-API-KEY':
+          ServerWebAppConfig.RdvServicePublic.apiKey,
+        'Content-Type': 'application/json',
       },
-    )
+    })
     .catch((error: AxiosError) => {
       console.error('RDV API ERROR', error.toJSON())
       throw error
     })
-
-  console.log('RDV RESPONSE STATUS', response.status)
-  console.log('RDV RESPONSE DATA', response.data)
-
-  // TODO create a RDV account, ignore existing ?
 
   return response.data
 }

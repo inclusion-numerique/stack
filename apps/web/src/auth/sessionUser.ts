@@ -22,6 +22,7 @@ export type SessionUser = Pick<
   | 'profilInscription'
   | 'checkedProfilInscription'
   | 'acceptationCgu'
+  | 'featureFlags'
 > & {
   emailVerified: string | null
   created: string | null
