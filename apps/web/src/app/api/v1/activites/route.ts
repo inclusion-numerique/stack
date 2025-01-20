@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server'
 import { z, type ZodError } from 'zod'
-import type {
-  JsonApiListResponse,
-  JsonApiResource,
-} from '@app/web/app/api/v1/JsonApiTypes'
+import type { JsonApiListResponse, JsonApiResource } from '@app/web/app/api/v1/JsonApiTypes'
 import { prismaClient } from '@app/web/prismaClient'
 import { apiV1Url } from '@app/web/app/api/v1/apiV1Url'
 import {
@@ -37,7 +34,6 @@ type ActiviteAttributes = {
   accompagnements: number
   date: string
   duree: number // minutes
-  notes: string | null
 
   type_lieu: 'lieu_activite' | 'domicile' | 'a_distance' | 'autre'
   structure_id: string | null // renseigné si type_lieu = lieu_activite
@@ -149,7 +145,6 @@ const ActiviteCursorValidation = z.object({
  *             - accompagnements
  *             - date
  *             - duree
- *             - notes
  *             - type_lieu
  *             - structure_id
  *             - lieu_code_postal
@@ -191,11 +186,6 @@ const ActiviteCursorValidation = z.object({
  *               type: number
  *               description: durée en minutes
  *               example: 120
- *             notes:
- *               type: string
- *               nullable: true
- *               description: notes supplémentaires concernant l'activité
- *               example: "activité spéciale"
  *             type_lieu:
  *               type: string
  *               description: type de lieu où l'activité s'est déroulée
@@ -415,7 +405,6 @@ export const GET = createApiV1Route
           mediateurId,
           date,
           duree,
-          notes,
           structureId,
           lieuCodePostal,
           lieuCommune,
@@ -443,7 +432,6 @@ export const GET = createApiV1Route
               mediateur_id: mediateurId,
               date: date.toISOString(),
               duree,
-              notes,
               structure_id: structureId,
               lieu_code_postal: lieuCodePostal,
               lieu_commune: lieuCommune,
