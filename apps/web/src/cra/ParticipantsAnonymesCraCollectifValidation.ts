@@ -25,7 +25,7 @@ export const ParticipantsAnonymesCraCollectifValidation = z
       maxMessage: `Le nombre total de participants anonymes ne doit pas dépasser ${participantsAnonymesMaxLocaleString}`,
     }),
 
-    alreadyAssisted: participantsAnonymeNumber({
+    dejaAccompagne: participantsAnonymeNumber({
       maxMessage: `Le nombre de participants déjà accompagnés ne doit pas dépasser ${participantsAnonymesMaxLocaleString}`,
     }),
 
@@ -100,7 +100,7 @@ export const ParticipantsAnonymesCraCollectifValidation = z
 export type ParticipantsAnonymesCraCollectifData = {
   total: number
 
-  alreadyAssisted: number
+  dejaAccompagne: number
 
   genreFeminin: number
   genreMasculin: number

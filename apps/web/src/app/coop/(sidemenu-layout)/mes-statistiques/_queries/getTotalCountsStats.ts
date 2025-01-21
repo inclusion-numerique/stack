@@ -80,23 +80,13 @@ export const getTotalCountsStats = async ({
         total_collectifs: number
         total_demarches: number
         total_beneficiaires: number
-        total_beneficiaires_nouveaux: number
+        total_accompagnements_nouveaux: number
         total_beneficiaires_suivis: number
         total_accompagnements: number
         total_accompagnements_collectifs: number
       },
     ]
   >`
-      WITH first_accompagnements AS (
-          SELECT
-            accompagnements.beneficiaire_id,
-            MIN(activites.date) AS first_accompagnement_date
-          FROM accompagnements
-            JOIN activites ON accompagnements.activite_id = activites.id
-            JOIN beneficiaires ON accompagnements.beneficiaire_id = beneficiaires.id
-          WHERE beneficiaires.anonyme = false
-          GROUP BY accompagnements.beneficiaire_id
-      )
       SELECT
         COUNT(DISTINCT activites.id)::integer AS total_activites,
         COUNT(DISTINCT CASE WHEN activites.type = 'individuel' THEN activites.id END)::integer AS total_individuels,
@@ -104,26 +94,17 @@ export const getTotalCountsStats = async ({
         COUNT(DISTINCT CASE WHEN activites.type = 'demarche' THEN activites.id END)::integer AS total_demarches,
         COUNT(DISTINCT beneficiaires.id)::integer AS total_beneficiaires,
         COUNT(DISTINCT CASE WHEN beneficiaires.anonyme = false THEN beneficiaires.id END)::integer AS total_beneficiaires_suivis,
-        COUNT(DISTINCT CASE
-            WHEN (
-                (
-                    first_accompagnements.first_accompagnement_date >= ${activitesFilters.du}::timestamp
-                    AND first_accompagnements.first_accompagnement_date <= ${activitesFilters.au}::timestamp)
-                OR
-                (
-                    beneficiaires.already_assisted = false AND beneficiaires.anonyme = true
-                    AND activites.date >= ${activitesFilters.du}::timestamp
-                    AND activites.date <= ${activitesFilters.au}::timestamp)
-                )
-                THEN beneficiaires.id
-            END)::integer AS total_beneficiaires_nouveaux,
+
+        COUNT(DISTINCT CASE WHEN accompagnements.premier_accompagnement = true
+                AND ${activitesFilters.du}::timestamp IS NOT NULL
+                AND ${activitesFilters.au}::timestamp IS NOT NULL
+              THEN accompagnements.id END)::integer AS total_accompagnements_nouveaux,
         COUNT(DISTINCT accompagnements.id)::integer AS total_accompagnements,
         COUNT(DISTINCT CASE WHEN activites.type = 'collectif' THEN accompagnements.id END) ::integer AS total_accompagnements_collectifs
     FROM activites
          LEFT JOIN accompagnements ON accompagnements.activite_id = activites.id
          LEFT JOIN beneficiaires ON beneficiaires.id = accompagnements.beneficiaire_id
          LEFT JOIN structures ON structures.id = activites.structure_id
-         LEFT JOIN first_accompagnements ON first_accompagnements.beneficiaire_id = beneficiaires.id
     WHERE activites.mediateur_id = ANY (ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
     AND activites.suppression IS NULL
     AND ${getActiviteFiltersSqlFragment(
@@ -184,7 +165,7 @@ export const getTotalCountsStats = async ({
       },
       beneficiaires: {
         total: result.total_beneficiaires,
-        nouveaux: result.total_beneficiaires_nouveaux,
+        nouveaux: result.total_accompagnements_nouveaux,
         suivis: result.total_beneficiaires_suivis,
         anonymes:
           result.total_beneficiaires - result.total_beneficiaires_suivis,

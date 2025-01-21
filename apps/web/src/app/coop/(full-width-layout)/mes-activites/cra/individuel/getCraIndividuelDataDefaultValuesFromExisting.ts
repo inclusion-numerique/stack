@@ -31,6 +31,7 @@ export const getCraIndividuelDataDefaultValuesFromExisting = async ({
       accompagnements: {
         select: {
           beneficiaire: true,
+          premierAccompagnement: true,
         },
       },
       date: true,
@@ -76,7 +77,9 @@ export const getCraIndividuelDataDefaultValuesFromExisting = async ({
     id,
     mediateurId,
     beneficiaire: beneficiaire
-      ? getBeneficiaireDefaulCratDataFromExisting(beneficiaire)
+      ? getBeneficiaireDefaulCratDataFromExisting(beneficiaire)(
+          accompagnements[0].premierAccompagnement,
+        )
       : { mediateurId },
     date: dateAsIsoDay(date),
     duree: minutesToCraDureeData(duree) ?? {},

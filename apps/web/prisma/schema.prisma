@@ -692,10 +692,9 @@ model Beneficiaire {
   communeCodePostal String? @map("commune_code_postal")
   communeCodeInsee  String? @map("commune_code_insee")
 
-  alreadyAssisted Boolean?      @map("already_assisted")
-  genre           Genre?
-  trancheAge      TrancheAge?   @map("tranche_age")
-  statutSocial    StatutSocial? @map("statut_social")
+  genre        Genre?
+  trancheAge   TrancheAge?   @map("tranche_age")
+  statutSocial StatutSocial? @map("statut_social")
 
   notes String?
 
@@ -794,6 +793,8 @@ model Accompagnement {
 
   activiteId String   @map("activite_id") @db.Uuid
   activite   Activite @relation(fields: [activiteId], references: [id])
+
+  premierAccompagnement Boolean @default(false) @map("premier_accompagnement")
 
   @@unique([beneficiaireId, activiteId])
   @@index([beneficiaireId])

@@ -48,7 +48,7 @@ describe('participantsAnonymes', () => {
       const { total, ...enumCounts } = participantsAnonymes
 
       const modelKeys = [
-        'alreadyAssisted',
+        'dejaAccompagne',
         ...genreKeys,
         ...trancheAgeKeys,
         ...statutSocialKeys,

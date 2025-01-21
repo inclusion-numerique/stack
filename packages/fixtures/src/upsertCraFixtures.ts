@@ -64,10 +64,12 @@ export const upsertCraFixtures = async ({
 
   const beneficiairesAnonymesData = crasCollectifs.flatMap(
     ({ beneficiairesAnonymes }) => beneficiairesAnonymes,
-  )
+  ) as (Prisma.BeneficiaireUncheckedCreateInput & { dejaAccompagne: boolean })[]
 
   await transaction.beneficiaire.createMany({
-    data: beneficiairesAnonymesData,
+    data: beneficiairesAnonymesData.map(
+      ({ dejaAccompagne: _, ...beneficiaire }) => beneficiaire,
+    ),
   })
 
   const accompagnementsData = allCras.flatMap(
