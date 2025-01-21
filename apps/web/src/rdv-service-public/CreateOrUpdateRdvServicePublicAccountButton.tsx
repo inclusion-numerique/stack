@@ -5,10 +5,10 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import classNames from 'classnames'
 import { createToast } from '@app/ui/toast/createToast'
+import type { FrIconClassName } from '@codegouvfr/react-dsfr'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import type { FrIconClassName } from '@codegouvfr/react-dsfr'
 
 /**
  * This creates an account for the user email if it does not exist yet.
@@ -31,12 +31,10 @@ const CreateOrUpdateRdvServicepublicAccountButton = ({
     if (isLoading) return
     setIsLoading(true)
 
-    console.log('CREATE ACCOUNT')
     try {
-      const createAccountResult = await createAccountMutation.mutateAsync({
+      await createAccountMutation.mutateAsync({
         userId: user.id,
       })
-      console.log('CREATE ACCOUNT RESULT', createAccountResult)
 
       createToast({
         priority: 'success',
@@ -55,7 +53,7 @@ const CreateOrUpdateRdvServicepublicAccountButton = ({
   const title = user.rdvAccount
     ? 'Mettre à jour mon compte RDV Aide Numérique'
     : 'Créer mon compte RDV Aide Numérique'
-  
+
   const iconId: FrIconClassName = user.rdvAccount
     ? 'fr-icon-refresh-line'
     : 'fr-icon-user-add-line'

@@ -3,8 +3,40 @@ import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
 import { createRdvServicePublicAccount } from '@app/web/rdv-service-public/createRdvServicePublicAccount'
-import { OAuthRdvApiCallInputValidation } from '@app/web/rdv-service-public/OAuthRdvApiCallInput'
+import {
+  OAuthRdvApiCallInputValidation,
+  OauthRdvApiMeInputValidation,
+  type OauthRdvApiMeResponse,
+} from '@app/web/rdv-service-public/OAuthRdvApiCallInput'
 import { executeOAuthRdvApiCall } from '@app/web/rdv-service-public/executeOAuthRdvApiCall'
+import type { SessionUser } from '@app/web/auth/sessionUser'
+
+const getContextForOAuthApiCall = async ({
+  user,
+}: {
+  user: Pick<SessionUser, 'id' | 'rdvAccount'>
+}) => {
+  const userWithSecretData = await prismaClient.user.findUnique({
+    where: {
+      id: user.id,
+    },
+    include: {
+      rdvAccount: true,
+    },
+  })
+
+  if (!userWithSecretData) {
+    throw invalidError('Utilisateur introuvable')
+  }
+
+  const { rdvAccount } = userWithSecretData
+
+  if (!rdvAccount || !user.rdvAccount?.hasOauthTokens) {
+    throw invalidError('Compte RDV Aide Numérique non connecté')
+  }
+
+  return { ...userWithSecretData, rdvAccount }
+}
 
 export const rdvServicePublicRouter = router({
   createAccount: protectedProcedure
@@ -46,32 +78,30 @@ export const rdvServicePublicRouter = router({
   executeOauthApiCall: protectedProcedure
     .input(OAuthRdvApiCallInputValidation)
     .mutation(async ({ input, ctx: { user } }) => {
-      const userWithSecretData = await prismaClient.user.findUnique({
-        where: {
-          id: user.id,
-        },
-        include: {
-          rdvAccount: true,
-        },
-      })
-
-      if (!userWithSecretData) {
-        throw invalidError('Utilisateur introuvable')
-      }
-
-      if (!userWithSecretData.rdvAccount || !user.rdvAccount?.hasOauthTokens) {
-        throw invalidError('Compte RDV Aide Numérique non connecté')
-      }
+      const oAuthCallUser = await getContextForOAuthApiCall({ user })
 
       const result = await executeOAuthRdvApiCall({
         path: input.endpoint,
-        rdvAccount: userWithSecretData.rdvAccount,
+        rdvAccount: oAuthCallUser.rdvAccount,
         config: {
           data: input.data,
         },
       })
 
-      console.log('OAUTH API CALL RESULT', result)
+      return result
+    }),
+  oAuthApiMe: protectedProcedure
+    .input(OauthRdvApiMeInputValidation)
+    .mutation(async ({ input, ctx: { user } }) => {
+      const oAuthCallUser = await getContextForOAuthApiCall({ user })
+
+      const result = await executeOAuthRdvApiCall<OauthRdvApiMeResponse>({
+        path: input.endpoint,
+        rdvAccount: oAuthCallUser.rdvAccount,
+        config: {
+          data: input.data,
+        },
+      })
 
       return result
     }),

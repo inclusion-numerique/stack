@@ -36,7 +36,7 @@ export const executeOAuthRdvApiCall = async <ResponseType = unknown>({
 
   const requestConfig: AxiosRequestConfig = {
     ...config,
-    url: `https://${PublicWebAppConfig.RdvServicePublic.OAuth.hostname}${path}`,
+    url: `https://${PublicWebAppConfig.RdvServicePublic.OAuth.hostname}/api/v1${path}`,
     headers: {
       Authorization: `Bearer ${currentAccessToken}`,
       ...config.headers,

@@ -1,7 +1,12 @@
 import { NextRequest } from 'next/server'
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
-import { findConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
+import {
+  findConseillerNumeriqueV1,
+  FindConseillerNumeriqueV1Result,
+} from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
+import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
+import { ConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Data'
 
 export const GET = async (request: NextRequest) => {
   const conseillerNumeriqueId = request.nextUrl.pathname.split('/').at(-2)
@@ -19,7 +24,17 @@ export const GET = async (request: NextRequest) => {
     })
   }
 
-  const result = await findConseillerNumeriqueV1({ id: conseillerNumeriqueId })
+  let result:
+    | FindConseillerNumeriqueV1Result
+    | ConseillerNumeriqueV1Data
+    | null = await fetchConseillerNumeriqueV1Data({
+    v1ConseillerId: conseillerNumeriqueId,
+  })
+
+  // This first endpoint does not returns data for deleted conseillers, we try the other one if neede
+  if (!result) {
+    result = await findConseillerNumeriqueV1({ id: conseillerNumeriqueId })
+  }
 
   if (!result) {
     return new Response('Conseiller not found', { status: 404 })

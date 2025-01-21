@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
+import React from 'react'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
@@ -9,10 +10,9 @@ import FonctionnalitesDeMediationNumeriqueCoordinateur from '@app/web/app/coop/(
 import Contract from '@app/web/components/conseiller-numerique/Contract'
 import { getContractInfo } from '@app/web/conseiller-numerique/getContractInfo'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
-import ProfileEditCard from './_components/ProfileEditCard'
 import { hasFeatureFlag } from '@app/web/security/hasFeatureFlag'
-import React from 'react'
 import RdvServicePublicAccountStatusCard from '@app/web/app/coop/(full-width-layout)/mon-profil/RdvServicePublicAccountStatusCard'
+import ProfileEditCard from './_components/ProfileEditCard'
 
 export const metadata: Metadata = {
   title: metadataTitle('Mon profil'),
@@ -30,10 +30,6 @@ const MonProfilPage = async () => {
     : null
 
   const hasRdvFeature = hasFeatureFlag(user, 'RdvServicePublic')
-
-  const rdvAccount = user.rdvAccount
-
-  console.log('USER', user.featureFlags)
 
   return (
     <>

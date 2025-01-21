@@ -1,16 +1,16 @@
 'use client'
 
+import React, { useEffect } from 'react'
+import Notice from '@codegouvfr/react-dsfr/Notice'
+import Button from '@codegouvfr/react-dsfr/Button'
+import classNames from 'classnames'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import Card from '@app/web/components/Card'
-import React, { useEffect } from 'react'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
 import CreateOrUpdateRdvServicepublicAccountButton from '@app/web/rdv-service-public/CreateOrUpdateRdvServicePublicAccountButton'
 import { Spinner } from '@app/web/ui/Spinner'
-import Notice from '@codegouvfr/react-dsfr/Notice'
 import { rdvOauthLinkAccountFlowUrl } from '@app/web/rdv-service-public/rdvServicePublicOauth'
-import Button from '@codegouvfr/react-dsfr/Button'
-import classNames from 'classnames'
 
 const RdvServicePublicAccountStatusCard = ({
   user,
@@ -19,14 +19,13 @@ const RdvServicePublicAccountStatusCard = ({
   user: Pick<SessionUser, 'id' | 'rdvAccount'>
   oAuthFlowRedirectTo: string
 }) => {
-  const oauthApiCallMutation =
-    trpc.rdvServicePublic.executeOauthApiCall.useMutation()
+  const oauthApiCallMutation = trpc.rdvServicePublic.oAuthApiMe.useMutation()
   const { rdvAccount } = user
 
   useEffect(() => {
     if (!rdvAccount?.hasOauthTokens) return
     oauthApiCallMutation.mutate({
-      endpoint: '/authorized_applications',
+      endpoint: '/agents/me',
       data: undefined,
     })
   }, [rdvAccount])
@@ -42,7 +41,7 @@ const RdvServicePublicAccountStatusCard = ({
       }
       titleAs="h2"
     >
-      <p className="fr-text--medium">
+      <p className="fr-text--medium fr-mb-4v">
         Reliez votre compte RDV Aide Numérique pour accéder à vos rendez-vous en
         2 étapes :
       </p>
@@ -51,20 +50,20 @@ const RdvServicePublicAccountStatusCard = ({
           1. Configurez votre compte RDV Aide Numérique avec votre équipe et vos
           lieux d’activités de la coop en un clic
         </strong>
-        <ul>
-          <li>
-            Si vous n’avez pas de compte RDV Aide Numérique, il sera
-            automatiquement créé pour vous. Vous recevrez un email de
-            confirmation pour choisir votre mot de passe RDV Aide Numérique et
-            activer votre compte avant de passer à l’étape suivante.
-          </li>
-          <li>
-            Si vous avez déjà un compte RDV Aide Numérique, il sera
-            automatiquement mis à jour avec vos informations de l’équipe et vos
-            lieux d’activités de la coop.
-          </li>
-        </ul>
       </p>
+      <ul className="fr-mb-4v">
+        <li>
+          Si vous n’avez pas de compte RDV Aide Numérique, il sera
+          automatiquement créé pour vous. Vous recevrez un email de confirmation
+          pour choisir votre mot de passe RDV Aide Numérique et activer votre
+          compte avant de passer à l’étape suivante.
+        </li>
+        <li>
+          Si vous avez déjà un compte RDV Aide Numérique, il sera
+          automatiquement mis à jour avec vos informations de l’équipe et vos
+          lieux d’activités de la coop.
+        </li>
+      </ul>
       <CreateOrUpdateRdvServicepublicAccountButton user={user} />
       <hr className="fr-separator-4v" />
       <p>
@@ -115,10 +114,11 @@ const RdvServicePublicAccountStatusCard = ({
         {oauthApiCallMutation.isSuccess && (
           <>
             <Notice
-              title="La communication avec votre compte RDV Aide Numérique est configurée correctement."
+              title="Votre compte RDV Aide Numérique est configurée correctement."
               className="fr-mt-4v fr-notice--success"
             />
             <Button
+              className="fr-mt-4v"
               priority="tertiary"
               iconId="fr-icon-lock-line"
               linkProps={{
@@ -127,8 +127,7 @@ const RdvServicePublicAccountStatusCard = ({
                 }),
               }}
             >
-              Autoriser à nouveau la Coop à communiquer avec votre compte RDV
-              Aide Numérique en cas de problème.
+              Reconnecter votre compte RDV Aide Numérique
             </Button>
           </>
         )}

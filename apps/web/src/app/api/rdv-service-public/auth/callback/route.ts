@@ -12,6 +12,7 @@ import {
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
 import { prismaClient } from '@app/web/prismaClient'
+import { getServerUrl } from '@app/web/utils/baseUrl'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -27,6 +28,8 @@ type OAuthTokenResponse = {
 /**
  * This is the OAuth callback url route where rdv redirects to after the user has logged in.
  * It is used to get the user's tokens and update his RdvAccount.
+ *
+ * The User RDV Account should already exists and be created (id) before the oauth flow.
  *
  */
 export const GET = async (request: NextRequest) => {
@@ -56,6 +59,14 @@ export const GET = async (request: NextRequest) => {
       { status: 400 },
     )
   }
+
+  if (!user.rdvAccount?.id) {
+    return NextResponse.json(
+      { error: 'Missing rdv account id for user' },
+      { status: 400 },
+    )
+  }
+
   const decodedState = decodeSerializableState(
     state as EncodedState<{ redirectTo?: string }>,
     {},
@@ -80,49 +91,29 @@ export const GET = async (request: NextRequest) => {
   )
   const tokens = tokenResponse.data
 
-  // TODO I SHOULD HAVE THE USER ID FROM THE RDV SYSTEM TO CREATE THE RDV ACCOUNT
-  const metadata = {}
+  const authUserData = {
+    accessToken: tokens.access_token,
+    refreshToken: tokens.refresh_token,
+    expiresAt: new Date(Date.now() + tokens.expires_in * 1000),
+    scope: tokens.scope,
+    metadata: {},
+  }
 
-  // Stocker les tokens pour l'utilisateur en base ou ailleurs.
-
-  const rdvAccount = user.rdvAccount?.id
-    ? await prismaClient.rdvAccount.update({
-        where: { id: user.rdvAccount.id },
-        data: {
-          accessToken: tokens.access_token,
-          refreshToken: tokens.refresh_token,
-          expiresAt: new Date(Date.now() + tokens.expires_in * 1000),
-          scope: tokens.scope,
-          metadata,
-        },
-        select: {
-          id: true,
-          accessToken: true,
-          refreshToken: true,
-          expiresAt: true,
-        },
-      })
-    : await prismaClient.rdvAccount.create({
-        data: {
-          id: user.id, // TODO USER THE RDV SYSTEM ID OF THE USER (agent)
-          userId: user.id,
-          accessToken: tokens.access_token,
-          refreshToken: tokens.refresh_token,
-          expiresAt: new Date(Date.now() + tokens.expires_in * 1000),
-          scope: tokens.scope,
-          metadata,
-        },
-        select: {
-          id: true,
-          accessToken: true,
-          refreshToken: true,
-          expiresAt: true,
-        },
-      })
-
-  console.log('Updated rdv account', rdvAccount)
+  // Update the rdv account
+  await prismaClient.rdvAccount.update({
+    where: { id: user.rdvAccount.id },
+    data: {
+      ...authUserData,
+    },
+    select: {
+      id: true,
+      accessToken: true,
+      refreshToken: true,
+      expiresAt: true,
+    },
+  })
 
   // Rediriger vers une route de succès ou une page front.
 
-  return NextResponse.redirect(redirectTo)
+  return NextResponse.redirect(getServerUrl(redirectTo, { absolutePath: true }))
 }
