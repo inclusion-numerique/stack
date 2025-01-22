@@ -50,8 +50,10 @@ export const webAppStackSensitiveVariables = [
   'CONSEILLER_NUMERIQUE_MONGODB_URL',
   'HMAC_SECRET_KEY',
   'RDV_SERVICE_PUBLIC_PREVIEW_API_KEY',
+  'RDV_SERVICE_PUBLIC_PREVIEW_OAUTH_CLIENT_ID',
   'RDV_SERVICE_PUBLIC_PREVIEW_OAUTH_CLIENT_SECRET',
   'RDV_SERVICE_PUBLIC_MAIN_API_KEY',
+  'RDV_SERVICE_PUBLIC_MAIN_OAUTH_CLIENT_ID',
   'RDV_SERVICE_PUBLIC_MAIN_OAUTH_CLIENT_SECRET',
 ] as const
 
@@ -203,6 +205,11 @@ export class WebAppStack extends TerraformStack {
           ? sensitiveEnvironmentVariables.PROCONNECT_MAIN_CLIENT_SECRET.value
           : sensitiveEnvironmentVariables.PROCONNECT_PREVIEW_CLIENT_SECRET
               .value,
+        RDV_SERVICE_PUBLIC_OAUTH_CLIENT_ID: isMain
+          ? sensitiveEnvironmentVariables
+              .RDV_SERVICE_PUBLIC_MAIN_OAUTH_CLIENT_ID.value
+          : sensitiveEnvironmentVariables
+              .RDV_SERVICE_PUBLIC_PREVIEW_OAUTH_CLIENT_ID.value,
         RDV_SERVICE_PUBLIC_OAUTH_CLIENT_SECRET: isMain
           ? sensitiveEnvironmentVariables
               .RDV_SERVICE_PUBLIC_MAIN_OAUTH_CLIENT_SECRET.value
