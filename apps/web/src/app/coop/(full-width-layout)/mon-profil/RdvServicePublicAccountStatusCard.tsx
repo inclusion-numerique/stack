@@ -33,7 +33,7 @@ const RdvServicePublicAccountStatusCard = ({
   return (
     <Card
       noBorder
-      className="fr-border fr-border-radius--8 fr-mt-8v"
+      className="fr-border fr-border-radius--8"
       contentSeparator
       id="description"
       title={

@@ -10,8 +10,6 @@ import FonctionnalitesDeMediationNumeriqueCoordinateur from '@app/web/app/coop/(
 import Contract from '@app/web/components/conseiller-numerique/Contract'
 import { getContractInfo } from '@app/web/conseiller-numerique/getContractInfo'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
-import { hasFeatureFlag } from '@app/web/security/hasFeatureFlag'
-import RdvServicePublicAccountStatusCard from '@app/web/app/coop/(full-width-layout)/mon-profil/RdvServicePublicAccountStatusCard'
 import ProfileEditCard from './_components/ProfileEditCard'
 
 export const metadata: Metadata = {
@@ -28,8 +26,6 @@ const MonProfilPage = async () => {
   const contratCoordinateur = user.coordinateur
     ? await getContractInfo(user.email)
     : null
-
-  const hasRdvFeature = hasFeatureFlag(user, 'RdvServicePublic')
 
   return (
     <>
@@ -67,12 +63,6 @@ const MonProfilPage = async () => {
             </>
           ) : null}
         </main>
-        {hasRdvFeature && (
-          <RdvServicePublicAccountStatusCard
-            user={user}
-            oAuthFlowRedirectTo="/coop/mon-profil"
-          />
-        )}
       </div>
     </>
   )

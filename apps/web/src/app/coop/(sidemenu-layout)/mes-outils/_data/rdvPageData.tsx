@@ -1,6 +1,7 @@
 import { OutilPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/outilPageData'
 import { getServerUrl } from '@app/web/utils/baseUrl'
 import RdvServicePublicAccess from '@app/web/rdv-service-public/RdvServicePublicAccess'
+import RdvServicePublicMesOutilsMore from '@app/web/rdv-service-public/RdvServicePublicMesOutilsMore'
 
 export default {
   notice:
@@ -48,4 +49,5 @@ export default {
       />
     ),
   },
+  more: <RdvServicePublicMesOutilsMore />,
 } satisfies OutilPageData
