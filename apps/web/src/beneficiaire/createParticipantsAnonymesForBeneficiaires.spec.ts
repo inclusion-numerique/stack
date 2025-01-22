@@ -13,10 +13,10 @@ describe('createParticipantsAnonymesForBeneficiaires', () => {
 
   const cases: {
     description: string
-    beneficiaires: Pick<
+    beneficiaires: (Pick<
       Beneficiaire,
       'anonyme' | 'statutSocial' | 'genre' | 'trancheAge'
-    >[]
+    > & { premierAccompagnement: boolean })[]
     expected: ReturnType<typeof createParticipantsAnonymesForBeneficiaires>
   }[] = [
     {
@@ -27,6 +27,7 @@ describe('createParticipantsAnonymesForBeneficiaires', () => {
           genre: 'Feminin',
           statutSocial: 'Scolarise',
           trancheAge: 'DixHuitVingtQuatre',
+          premierAccompagnement: false,
         },
       ],
       expected: {
@@ -36,6 +37,7 @@ describe('createParticipantsAnonymesForBeneficiaires', () => {
           genreFeminin: 1,
           statutSocialScolarise: 1,
           trancheAgeDixHuitVingtQuatre: 1,
+          dejaAccompagne: 1,
         },
         beneficiairesSuivis: [],
       },
@@ -48,12 +50,14 @@ describe('createParticipantsAnonymesForBeneficiaires', () => {
           genre: 'Masculin',
           statutSocial: 'EnEmploi',
           trancheAge: 'VingtCinqTrenteNeuf',
+          premierAccompagnement: false,
         },
       ],
       expected: {
         participantsAnonymes: { ...participantsAnonymesDefault },
         beneficiairesSuivis: [
           {
+            premierAccompagnement: false,
             anonyme: false,
             genre: 'Masculin',
             statutSocial: 'EnEmploi',
@@ -70,12 +74,14 @@ describe('createParticipantsAnonymesForBeneficiaires', () => {
           genre: 'NonCommunique',
           statutSocial: 'SansEmploi',
           trancheAge: 'QuaranteCinquanteNeuf',
+          premierAccompagnement: false,
         },
         {
           anonyme: true,
           genre: 'Masculin',
           statutSocial: 'EnEmploi',
           trancheAge: 'VingtCinqTrenteNeuf',
+          premierAccompagnement: false,
         },
       ],
       expected: {
@@ -88,6 +94,7 @@ describe('createParticipantsAnonymesForBeneficiaires', () => {
           statutSocialEnEmploi: 1,
           trancheAgeQuaranteCinquanteNeuf: 1,
           trancheAgeVingtCinqTrenteNeuf: 1,
+          dejaAccompagne: 2,
         },
         beneficiairesSuivis: [],
       },
@@ -101,12 +108,14 @@ describe('createParticipantsAnonymesForBeneficiaires', () => {
           genre: 'Feminin',
           statutSocial: 'Retraite',
           trancheAge: 'SoixanteDixPlus',
+          premierAccompagnement: false,
         },
         {
           anonyme: false,
           genre: 'NonCommunique',
           statutSocial: 'NonCommunique',
           trancheAge: 'NonCommunique',
+          premierAccompagnement: false,
         },
       ],
       expected: {
@@ -116,9 +125,11 @@ describe('createParticipantsAnonymesForBeneficiaires', () => {
           genreFeminin: 1,
           statutSocialRetraite: 1,
           trancheAgeSoixanteDixPlus: 1,
+          dejaAccompagne: 1,
         },
         beneficiairesSuivis: [
           {
+            premierAccompagnement: false,
             anonyme: false,
             genre: 'NonCommunique',
             statutSocial: 'NonCommunique',

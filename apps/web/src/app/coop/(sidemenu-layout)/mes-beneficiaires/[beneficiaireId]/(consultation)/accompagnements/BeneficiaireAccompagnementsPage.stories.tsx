@@ -78,6 +78,7 @@ const avecAccompagnements = {
           notes: null,
           accompagnements: [
             {
+              premierAccompagnement: false,
               beneficiaire: beneficiaireAvecAccompagnements,
             },
           ],
@@ -95,6 +96,7 @@ const avecAccompagnements = {
           mediateurId: '3',
           accompagnements: [
             {
+              premierAccompagnement: false,
               beneficiaire: beneficiaireAvecAccompagnements,
             },
           ],
@@ -125,6 +127,7 @@ const avecAccompagnements = {
           mediateurId: '3',
           accompagnements: [
             {
+              premierAccompagnement: false,
               beneficiaire: beneficiaireAvecAccompagnements,
             },
           ],
@@ -164,6 +167,7 @@ const avecAccompagnements = {
           mediateurId: '3',
           accompagnements: [
             {
+              premierAccompagnement: false,
               beneficiaire: beneficiaireAvecAccompagnements,
             },
           ],
@@ -194,6 +198,7 @@ const avecAccompagnements = {
           mediateurId: '3',
           accompagnements: [
             {
+              premierAccompagnement: false,
               beneficiaire: beneficiaireAvecAccompagnements,
             },
           ],
@@ -224,6 +229,7 @@ const avecAccompagnements = {
           mediateurId: '3',
           accompagnements: [
             {
+              premierAccompagnement: false,
               beneficiaire: beneficiaireAvecAccompagnements,
             },
           ],

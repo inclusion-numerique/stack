@@ -22,7 +22,7 @@ export const getBeneficiaireDefaulCratDataFromExisting =
     telephone,
     trancheAge,
   }: Exclude<Beneficiaire, 'supression' | 'creation' | 'modification'>) =>
-  (premierAccompagenment?: boolean): DefaultValues<BeneficiaireCraData> => ({
+  (premierAccompagnement?: boolean): DefaultValues<BeneficiaireCraData> => ({
     id: id ?? undefined,
     communeResidence:
       commune && communeCodeInsee && communeCodePostal
@@ -45,5 +45,5 @@ export const getBeneficiaireDefaulCratDataFromExisting =
     trancheAge: trancheAge ?? undefined,
     notes: notes ?? undefined,
     dejaAccompagne:
-      premierAccompagenment == null ? undefined : !premierAccompagenment,
+      premierAccompagnement == null ? undefined : !premierAccompagnement,
   })

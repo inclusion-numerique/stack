@@ -19,6 +19,7 @@ export const activiteIndividuelleInfosMinimum = {
   notes: null,
   accompagnements: [
     {
+      premierAccompagnement: false,
       beneficiaire: {
         id: '2',
         anonyme: true,
@@ -69,6 +70,7 @@ export const activiteIndividuelleBeneficiaireSuivi = {
   notes: null,
   accompagnements: [
     {
+      premierAccompagnement: false,
       beneficiaire: {
         id: '2',
         anonyme: false,
@@ -116,6 +118,7 @@ export const activiteIndividuelleBeneficiaireAnonyme = {
     '<p>Lörem ipsum ladeniliga douche <strong>plaledes</strong>. Nining son. Mipära kavun joskap juling lanar. Segyde snålsurfa då jevis. Dorade preng posad. Spefuv ter i kvasitiskap då mobilblottare dir. Häbel epihet i tegt. Ultrar. Digt hän. Polytt doskapet tempopatologi. Use betårta, tena. Biktiga pojuren.</p><p>Segyde snålsurfa då jevis. <strong>Dorade preng posad</strong>. Spefuv ter i kvasitiskap då mobilblottare dir. Häbel epihet i tegt. Ultrar. Digt hän. Polytt doskapet tempopatologi. Use betårta, tena. Biktiga pojuren</p>',
   accompagnements: [
     {
+      premierAccompagnement: false,
       beneficiaire: {
         id: '2',
         anonyme: true,
@@ -163,6 +166,7 @@ export const activiteCollectifInfosRepliees = {
     '<p>Lörem ipsum ladeniliga douche <strong>plaledes</strong>. Nining son. Mipära kavun joskap juling lanar. Segyde snålsurfa då jevis. Dorade preng posad. Spefuv ter i kvasitiskap då mobilblottare dir. Häbel epihet i tegt. Ultrar. Digt hän. Polytt doskapet tempopatologi. Use betårta, tena. Biktiga pojuren.</p><p>Segyde snålsurfa då jevis. <strong>Dorade preng posad</strong>. Spefuv ter i kvasitiskap då mobilblottare dir. Häbel epihet i tegt. Ultrar. Digt hän. Polytt doskapet tempopatologi. Use betårta, tena. Biktiga pojuren</p>',
   accompagnements: [
     {
+      premierAccompagnement: false,
       beneficiaire: {
         id: '3',
         anonyme: false,
@@ -180,6 +184,7 @@ export const activiteCollectifInfosRepliees = {
       },
     },
     {
+      premierAccompagnement: false,
       beneficiaire: {
         id: '2',
         anonyme: false,
@@ -238,6 +243,7 @@ export const activiteCollectifInfosDepliees = {
       },
     }).map(
       (beneficiaire, index): ActiviteForList['accompagnements'][number] => ({
+        premierAccompagnement: false,
         beneficiaire: {
           ...beneficiaire,
           id: `3${index.toString()}`,
@@ -252,6 +258,7 @@ export const activiteCollectifInfosDepliees = {
       }),
     ),
     {
+      premierAccompagnement: false,
       beneficiaire: {
         id: '3',
         anonyme: false,
@@ -269,6 +276,7 @@ export const activiteCollectifInfosDepliees = {
       },
     },
     {
+      premierAccompagnement: false,
       beneficiaire: {
         id: '2',
         anonyme: false,

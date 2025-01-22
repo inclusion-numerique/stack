@@ -6,7 +6,7 @@ export const createParticipantsAnonymesForBeneficiaires = <
   T extends Pick<
     Beneficiaire,
     'anonyme' | 'statutSocial' | 'genre' | 'trancheAge'
-  >,
+  > & { premierAccompagnement: boolean },
 >(
   beneficiaires: T[],
 ): {
@@ -20,6 +20,10 @@ export const createParticipantsAnonymesForBeneficiaires = <
     if (beneficiaire.anonyme) {
       // Increment total number of anonymous participants
       participantsAnonymes.total += 1
+
+      participantsAnonymes.dejaAccompagne += beneficiaire.premierAccompagnement
+        ? 0
+        : 1
 
       // Increment the corresponding counters for genre, statut social, and tranche d'âge
       participantsAnonymes[`genre${beneficiaire.genre ?? 'NonCommunique'}`] += 1

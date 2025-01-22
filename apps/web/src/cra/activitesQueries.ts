@@ -35,6 +35,7 @@ export const activiteListSelect = {
           ...activiteListeBeneficiaireSelect,
         },
       },
+      premierAccompagnement: true,
     },
   },
   date: true,

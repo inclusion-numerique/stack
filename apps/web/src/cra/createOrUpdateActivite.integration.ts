@@ -98,6 +98,7 @@ describe('createOrUpdateActivite', () => {
       mediateurId: mediateurAvecActiviteMediateurId,
       accompagnements: [
         {
+          premierAccompagnement: true,
           beneficiaire: expect.objectContaining({
             id: expect.any(String),
             anonyme: true,
@@ -241,6 +242,7 @@ describe('createOrUpdateActivite', () => {
             anonyme: true,
             attributionsAleatoires: true,
           }),
+          premierAccompagnement: true,
         }),
       ),
       niveau: 'Avance',

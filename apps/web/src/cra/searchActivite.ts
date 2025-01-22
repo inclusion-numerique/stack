@@ -57,8 +57,8 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
   const activiteIdsSearch = await prismaClient.$queryRaw<{ id: string }[]>`
       SELECT activites.id                          as id,
              activites.date                        as date,
+             activites.type                        as type,
              ${activiteAccompagnementsCountSelect} as participant_count,
-             activites.type                as type,
              ${crasTypeOrderSelect}                as type_order,
              ${crasLieuLabelSelect}                as lieu
 
