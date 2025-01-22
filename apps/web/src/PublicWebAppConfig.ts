@@ -28,6 +28,13 @@ export const PublicWebAppConfig = {
     hostname: process.env.NEXT_PUBLIC_PROCONNECT_HOSTNAME ?? '',
     clientId: process.env.NEXT_PUBLIC_PROCONNECT_CLIENT_ID ?? '',
   },
+  RdvServicePublic: {
+    OAuth: {
+      hostname: process.env.NEXT_PUBLIC_RDV_SERVICE_PUBLIC_OAUTH_HOSTNAME ?? '',
+      clientId:
+        process.env.NEXT_PUBLIC_RDV_SERVICE_PUBLIC_OAUTH_CLIENT_ID ?? '',
+    },
+  },
   Sentry: {
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN ?? '',
     environment: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT ?? 'local',

@@ -39,4 +39,5 @@ export type OutilPageData = {
   access?: OutilPageDataAccess
   accessComponent?: ReactNode
   how?: ReactNode
+  more?: ReactNode
 }

@@ -29,6 +29,14 @@ export const addNextPublicVariablesToDotEnv = new Command()
           name: 'NEXT_PUBLIC_PROCONNECT_CLIENT_ID',
           value: `$PROCONNECT_${targetEnv.toUpperCase()}_CLIENT_ID`,
         },
+        {
+          name: 'NEXT_PUBLIC_RDV_SERVICE_PUBLIC_OAUTH_HOSTNAME',
+          value: `$RDV_SERVICE_PUBLIC_${targetEnv.toUpperCase()}_OAUTH_HOSTNAME`,
+        },
+        {
+          name: 'NEXT_PUBLIC_RDV_SERVICE_PUBLIC_OAUTH_CLIENT_ID',
+          value: `$RDV_SERVICE_PUBLIC_${targetEnv.toUpperCase()}_OAUTH_CLIENT_ID`,
+        },
       ],
     })
   })

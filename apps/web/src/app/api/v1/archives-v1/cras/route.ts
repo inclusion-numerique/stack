@@ -365,8 +365,6 @@ export const GET = createApiV1Route
   .handle(async ({ params }) => {
     const cursorPagination = prismaCursorPagination(params)
 
-    console.log('CURSOR PAGINATION', cursorPagination)
-
     const cras = await prismaClient.craConseillerNumeriqueV1.findMany({
       orderBy: [{ createdAt: 'desc' }],
       take: cursorPagination.take,
@@ -377,8 +375,6 @@ export const GET = createApiV1Route
           }
         : undefined,
     })
-
-    console.log('CRAS', cras)
 
     const totalCount = await prismaClient.craConseillerNumeriqueV1.count()
 

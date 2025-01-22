@@ -21,6 +21,7 @@ export const Outil = ({
   features,
   access,
   accessComponent,
+  more,
 }: OutilPageData) => (
   <CoopPageContainer size={894}>
     <CoopBreadcrumbs
@@ -52,6 +53,7 @@ export const Outil = ({
             {accessComponent || (access ? <Access {...access} /> : null)}
           </div>
         </div>
+        {!!more && <div className=" fr-col-12">{more}</div>}
       </section>
     </main>
   </CoopPageContainer>

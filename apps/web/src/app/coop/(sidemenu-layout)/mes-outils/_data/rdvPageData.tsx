@@ -1,4 +1,5 @@
 import { OutilPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/outilPageData'
+import RdvServicePublicMesOutilsMore from '@app/web/rdv-service-public/RdvServicePublicMesOutilsMore'
 
 export default {
   notice:
@@ -38,9 +39,6 @@ export default {
       label: 'En savoir plus sur ProConnect',
       link: 'https://www.proconnect.gouv.fr',
     },
-    callToAction: {
-      label: 'Se connecter',
-      link: 'https://www.rdv-aide-numerique.fr/agents/sign_in',
-    },
   },
+  more: <RdvServicePublicMesOutilsMore />,
 } satisfies OutilPageData

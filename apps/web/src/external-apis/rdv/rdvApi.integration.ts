@@ -2,10 +2,9 @@ import { createAccount } from '@app/web/external-apis/rdv/rdvApi'
 
 // This test is only to be run manually by a developer on a staging instance
 // Skip this test on CI
-describe.skip('rdvApi', () => {
+describe('rdvApi', () => {
   it('should create an account', async () => {
     const result = await createAccount({
-      deployment: 'staging',
       input: {
         agent: {
           email: 'test2@test.com',

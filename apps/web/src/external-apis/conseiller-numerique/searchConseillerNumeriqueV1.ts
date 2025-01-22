@@ -185,3 +185,7 @@ export const searchConseillerNumeriqueV1 = async ({
 
   return conseillers.map(cleanConseillerNumeriqueV1Document)
 }
+
+export type FindConseillerNumeriqueV1Result = Awaited<
+  ReturnType<typeof findConseillerNumeriqueV1>
+>

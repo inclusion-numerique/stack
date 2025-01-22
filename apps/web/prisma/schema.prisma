@@ -64,6 +64,13 @@ enum ProfilInscription {
   @@map("profil_inscription")
 }
 
+enum UserFeatureFlag {
+  RdvServicePublic @map("rdv-service-public")
+  Assistant @map("assistant")
+
+  @@map("user_feature_flag")
+}
+
 model User {
   id                String    @id @default(uuid()) @db.Uuid
   firstName         String?   @map("first_name")
@@ -81,6 +88,7 @@ model User {
   accounts          Account[]
   sessions          Session[]
   hasSeenOnboarding DateTime? @map("has_seen_onboarding")
+  featureFlags      UserFeatureFlag[] @default([]) @map("feature_flags")
 
   // Created by a fixture system, can be reset and will only be here on preview envs
   isFixture Boolean @default(false) @map("is_fixture")
@@ -110,12 +118,12 @@ model User {
 
   uploads Upload[]
 
-  mediateur    Mediateur?
-  coordinateur Coordinateur?
-  mutations    Mutation[]
-  emplois      EmployeStructure[]
-  usurpateur   Session?           @relation(name: "usurper")
-  rdvAccount   RdvAccount?
+  mediateur               Mediateur?
+  coordinateur            Coordinateur?
+  mutations               Mutation[]
+  emplois                 EmployeStructure[]
+  usurpateur              Session?                 @relation(name: "usurper")
+  rdvAccount              RdvAccount?
 
   // "creation" cursor is used to paginate results for API queries
   @@unique([created, id])
@@ -895,19 +903,19 @@ enum DegreDeFinalisationDemarche {
 // https://www.rdv-solidarites.fr
 // Stores the external id of the account and the oauth credentials
 model RdvAccount {
-  id String @id // external id of the account
+  id Int @id // external id of the "agent" account in rdv systems
 
   userId String @unique @map("user_id") @db.Uuid
   user   User   @relation(fields: [userId], references: [id])
 
-  accessToken  String    @map("access_token")
+  accessToken  String?   @map("access_token") // Empty if account created but oauth not linked
   refreshToken String?   @map("refresh_token")
   expiresAt    DateTime? @map("expires_at")
   scope        String?
-  metadata     Json?
+  metadata     Json? // metadata on the account coming from the rdv service
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  created DateTime @default(now()) @map("created")
+  updated DateTime @updatedAt @map("updated")
 
   @@index([userId])
   @@map("rdv_accounts")

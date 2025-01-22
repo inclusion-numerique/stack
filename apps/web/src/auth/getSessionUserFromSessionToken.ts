@@ -26,6 +26,7 @@ export const sessionUserSelect = {
   structureEmployeuseRenseignee: true,
   lieuxActiviteRenseignes: true,
   inscriptionValidee: true,
+  featureFlags: true,
   emplois: {
     select: {
       id: true,
@@ -89,6 +90,15 @@ export const sessionUserSelect = {
           mediateurId: true,
         },
       },
+    },
+  },
+  rdvAccount: {
+    select: {
+      id: true,
+      created: true,
+      updated: true,
+      accessToken: true,
+      refreshToken: true,
     },
   },
 } satisfies Prisma.UserSelect

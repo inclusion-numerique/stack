@@ -425,6 +425,10 @@ jobs:
             echo "SMTP_PASSWORD=mailpassword" >> .env
             echo "IS_E2E=true" >> .env
             echo 'PROCONNECT_CLIENT_SECRET=$PROCONNECT_LOCAL_CLIENT_SECRET' >> .env
+            echo 'NEXT_PUBLIC_RDV_SERVICE_PUBLIC_OAUTH_HOSTNAME="$RDV_SERVICE_PUBLIC_LOCAL_OAUTH_HOSTNAME"' >> .env
+            echo 'NEXT_PUBLIC_RDV_SERVICE_PUBLIC_OAUTH_CLIENT_ID="$RDV_SERVICE_PUBLIC_LOCAL_OAUTH_CLIENT_ID"' >> .env
+            echo 'RDV_SERVICE_PUBLIC_OAUTH_CLIENT_SECRET="$RDV_SERVICE_PUBLIC_LOCAL_OAUTH_CLIENT_SECRET"' >> .env
+            echo 'RDV_SERVICE_PUBLIC_API_KEY="$RDV_SERVICE_PUBLIC_LOCAL_API_KEY"' >> .env
             echo 'CYPRESS_PROCONNECT_TEST_USER_EMAIL=$PROCONNECT_TEST_USER_EMAIL' >> .env
             echo 'CYPRESS_PROCONNECT_TEST_USER_PASSWORD=$PROCONNECT_TEST_USER_PASSWORD' >> .env
       - add_dotenv_vars_to_bash_env
@@ -479,6 +483,10 @@ jobs:
             echo "SMTP_PORT=1025" >> .env
             echo "SMTP_USERNAME=mailuser" >> .env
             echo "SMTP_PASSWORD=mailpassword" >> .env
+            echo 'NEXT_PUBLIC_RDV_SERVICE_PUBLIC_OAUTH_HOSTNAME="$RDV_SERVICE_PUBLIC_LOCAL_OAUTH_HOSTNAME"' >> .env
+            echo 'NEXT_PUBLIC_RDV_SERVICE_PUBLIC_OAUTH_CLIENT_ID="$RDV_SERVICE_PUBLIC_LOCAL_OAUTH_CLIENT_ID"' >> .env
+            echo 'RDV_SERVICE_PUBLIC_OAUTH_CLIENT_SECRET="$RDV_SERVICE_PUBLIC_LOCAL_OAUTH_CLIENT_SECRET"' >> .env
+            echo 'RDV_SERVICE_PUBLIC_API_KEY="$RDV_SERVICE_PUBLIC_LOCAL_API_KEY"' >> .env
       - run:
           name: 'Prisma generate'
           command: pnpm --silent -F @app/web prisma generate

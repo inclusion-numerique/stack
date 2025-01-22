@@ -65,8 +65,11 @@ export const ServerWebAppConfig = {
   Sudo: {
     usurpation: process.env.SUDO_USURPATION === '1' || false,
   },
-  Rdv: {
-    apiKey: process.env.RDV_API_KEY ?? '',
+  RdvServicePublic: {
+    apiKey: process.env.RDV_SERVICE_PUBLIC_API_KEY ?? '',
+    OAuth: {
+      clientSecret: process.env.RDV_SERVICE_PUBLIC_OAUTH_CLIENT_SECRET ?? '',
+    },
   },
   Security: {
     hmacSecretKey: process.env.HMAC_SECRET_KEY ?? '',
