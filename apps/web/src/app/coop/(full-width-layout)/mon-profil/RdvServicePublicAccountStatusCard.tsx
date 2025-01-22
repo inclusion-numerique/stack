@@ -37,7 +37,9 @@ const RdvServicePublicAccountStatusCard = ({
       contentSeparator
       id="description"
       title={
-        <span className="fr-text-title--blue-france">RDV Aide Numérique</span>
+        <span className="fr-text-title--blue-france">
+          Accéder à RDV Aide Numérique
+        </span>
       }
       titleAs="h2"
     >
