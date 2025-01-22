@@ -15,12 +15,24 @@ const withInvitationFrom =
 export const inviteToJoinTeamOf =
   (user: CoordinateurUser) =>
   async (members: { email: string; mediateurId?: string }[]) => {
-    const alreadyCoordonneSet = new Set(
-      user.coordinateur.mediateursCoordonnes.map((item) => item.mediateurId),
-    )
+    const mediateurs = await prismaClient.invitationEquipe.findMany({
+      where: {
+        mediateurId: {
+          in: user.coordinateur.mediateursCoordonnes.map(
+            (item) => item.mediateurId,
+          ),
+        },
+      },
+      select: { email: true },
+    })
 
     const invitations = members
-      .filter((member) => !alreadyCoordonneSet.has(member.mediateurId ?? ''))
+      .filter((member) =>
+        mediateurs.every(
+          (mediateur) =>
+            mediateur.email.toLowerCase() !== member.email.toLowerCase(),
+        ),
+      )
       .map((member) => ({
         email: member.email,
         coordinateurId: user.coordinateur.id,
@@ -30,6 +42,10 @@ export const inviteToJoinTeamOf =
           ? {}
           : { mediateurId: member.mediateurId }),
       }))
+
+    if (invitations.length === 0) {
+      throw new Error('No new invitations to send')
+    }
 
     await Promise.all(
       invitations.map(async (invitation) =>
