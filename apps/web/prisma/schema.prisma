@@ -66,28 +66,28 @@ enum ProfilInscription {
 
 enum UserFeatureFlag {
   RdvServicePublic @map("rdv-service-public")
-  Assistant @map("assistant")
+  Assistant        @map("assistant")
 
   @@map("user_feature_flag")
 }
 
 model User {
-  id                String    @id @default(uuid()) @db.Uuid
-  firstName         String?   @map("first_name")
-  lastName          String?   @map("last_name")
+  id                String            @id @default(uuid()) @db.Uuid
+  firstName         String?           @map("first_name")
+  lastName          String?           @map("last_name")
   name              String?
-  role              UserRole  @default(User)
-  email             String    @unique
+  role              UserRole          @default(User)
+  email             String            @unique
   phone             String?
-  emailVerified     DateTime? @map("email_verified")
-  image             Image?    @relation(fields: [imageId], references: [id])
-  imageId           String?   @unique @map("image_id") @db.Uuid
+  emailVerified     DateTime?         @map("email_verified")
+  image             Image?            @relation(fields: [imageId], references: [id])
+  imageId           String?           @unique @map("image_id") @db.Uuid
   location          String?
   title             String?
   description       String?
   accounts          Account[]
   sessions          Session[]
-  hasSeenOnboarding DateTime? @map("has_seen_onboarding")
+  hasSeenOnboarding DateTime?         @map("has_seen_onboarding")
   featureFlags      UserFeatureFlag[] @default([]) @map("feature_flags")
 
   // Created by a fixture system, can be reset and will only be here on preview envs
@@ -118,12 +118,12 @@ model User {
 
   uploads Upload[]
 
-  mediateur               Mediateur?
-  coordinateur            Coordinateur?
-  mutations               Mutation[]
-  emplois                 EmployeStructure[]
-  usurpateur              Session?                 @relation(name: "usurper")
-  rdvAccount              RdvAccount?
+  mediateur    Mediateur?
+  coordinateur Coordinateur?
+  mutations    Mutation[]
+  emplois      EmployeStructure[]
+  usurpateur   Session?           @relation(name: "usurper")
+  rdvAccount   RdvAccount?
 
   // "creation" cursor is used to paginate results for API queries
   @@unique([created, id])
@@ -370,6 +370,10 @@ model Coordinateur {
   // Clé primaire chez conseiller-numerique
   conseillerNumeriqueId   String @unique @map("conseiller_numerique_id")
   conseillerNumeriqueIdPg Int?   @unique @map("conseiller_numerique_id_pg")
+
+  // utilisé pour ajouter à la main des conseillers v1 dans les archives de stats coordo
+  // ids mongo des conseillers v1 à ajouter
+  autresConseillersV1Coordonnes String[] @default([]) @map("autres_conseillers_v1_coordonnes")
 
   userId String @unique @map("user_id") @db.Uuid
   user   User   @relation(fields: [userId], references: [id])

@@ -2,6 +2,25 @@ import { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
 import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
 import { CrasConseillerNumeriqueV1FilterOptions } from '@app/web/app/coop/(full-width-layout)/archives-v1/crasConseillerNumeriqueV1Queries'
+import { ConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Data'
+
+export const conseillersCoordonnesIdsFromV1CoordinateurData = ({
+  v1CoordinateurData,
+  includeCoordinateur,
+}: {
+  v1CoordinateurData: ConseillerNumeriqueV1Data
+  includeCoordinateur: boolean
+}) => {
+  const conseillersCoordonnes = v1CoordinateurData.conseillersCoordonnes ?? []
+
+  const conseillersCoordonnesIds = conseillersCoordonnes.map(({ id }) => id)
+
+  if (includeCoordinateur) {
+    conseillersCoordonnesIds.push(v1CoordinateurData.conseiller.id)
+  }
+
+  return conseillersCoordonnesIds
+}
 
 export const getConseillerCoordonnesIds = async ({
   coordinateurV1Id,
@@ -19,15 +38,10 @@ export const getConseillerCoordonnesIds = async ({
     return []
   }
 
-  const conseillersCoordonnes = found.conseillersCoordonnes ?? []
-
-  const conseillersCoordonnesIds = conseillersCoordonnes.map(({ id }) => id)
-
-  if (includeCoordinateur) {
-    conseillersCoordonnesIds.push(coordinateurV1Id)
-  }
-
-  return conseillersCoordonnesIds
+  return conseillersCoordonnesIdsFromV1CoordinateurData({
+    v1CoordinateurData: found,
+    includeCoordinateur,
+  })
 }
 
 // Keep in sync with below crasConseillerNumeriqueV1WhereRawSql
