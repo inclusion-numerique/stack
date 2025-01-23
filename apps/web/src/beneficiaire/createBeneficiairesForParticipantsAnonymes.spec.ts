@@ -55,7 +55,7 @@ describe('createBeneficiairesForParticipantsAnonymes', () => {
       {
         id: createCounterUuid(id, 0),
         mediateurId: 'mediateur-id',
-        alreadyAssisted: false,
+        dejaAccompagne: false,
         anonyme: true,
         attributionsAleatoires: true,
         trancheAge: 'QuaranteCinquanteNeuf',
@@ -84,7 +84,7 @@ describe('createBeneficiairesForParticipantsAnonymes', () => {
       {
         id: createCounterUuid(id, 0),
         mediateurId: 'mediateur-id',
-        alreadyAssisted: false,
+        dejaAccompagne: false,
         anonyme: true,
         attributionsAleatoires: true,
         trancheAge: 'QuaranteCinquanteNeuf',
@@ -94,7 +94,7 @@ describe('createBeneficiairesForParticipantsAnonymes', () => {
       {
         id: createCounterUuid(id, 1),
         mediateurId: 'mediateur-id',
-        alreadyAssisted: false,
+        dejaAccompagne: false,
         anonyme: true,
         attributionsAleatoires: true,
         trancheAge: 'NonCommunique',

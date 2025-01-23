@@ -17,9 +17,11 @@ import { getStructureEmployeuseAddressForMediateur } from '@app/web/structure/ge
 const getExistingBeneficiairesSuivis = async ({
   beneficiaires,
   mediateurId,
+  activiteId,
 }: {
   beneficiaires: { id?: string | null }[]
   mediateurId: string
+  activiteId?: string | null
 }) => {
   if (beneficiaires.length === 0) return []
 
@@ -37,6 +39,9 @@ const getExistingBeneficiairesSuivis = async ({
       id: true,
       mediateurId: true,
       anonyme: true,
+      accompagnements: {
+        select: { id: true, activiteId: true },
+      },
     },
   })
 
@@ -50,9 +55,21 @@ const getExistingBeneficiairesSuivis = async ({
     }
   }
 
+  const beneficiairesWithPremierAccompagnement = existingBeneficiaires.map(
+    ({ accompagnements, ...rest }) => ({
+      ...rest,
+      premierAccompagnement:
+        accompagnements.length === 0 ||
+        (accompagnements.length === 1 &&
+          accompagnements[0].activiteId === activiteId),
+    }),
+  )
+
   // Beneficiaire anonyme returned from cra individuel / demarche should not be included
   // as we delete/recreate them from anonymous data given in the form
-  return existingBeneficiaires.filter(({ anonyme }) => !anonyme)
+  return beneficiairesWithPremierAccompagnement.filter(
+    ({ anonyme }) => !anonyme,
+  )
 }
 
 export const getBeneficiairesAnonymesWithOnlyAccompagnementsForThisActivite =
@@ -131,9 +148,10 @@ const beneficiaireAnonymeCreateDataFromForm = ({
   statutSocial,
   notes,
   mediateurId,
-  alreadyAssisted,
+  dejaAccompagne,
 }: BeneficiaireCraData): Prisma.BeneficiaireCreateInput & {
   id: string
+  dejaAccompagne: boolean
 } => ({
   id: v4(),
   mediateur: { connect: { id: mediateurId } },
@@ -151,7 +169,7 @@ const beneficiaireAnonymeCreateDataFromForm = ({
   commune: communeResidence?.commune ?? undefined,
   communeCodePostal: communeResidence?.codePostal ?? undefined,
   communeCodeInsee: communeResidence?.codeInsee ?? undefined,
-  alreadyAssisted: alreadyAssisted ?? false,
+  dejaAccompagne: dejaAccompagne ?? false,
 })
 
 // Utilisée comme localisation fallback pour les activités à distance
@@ -173,6 +191,11 @@ export type CreateOrUpdateActiviteInput =
       type: 'Demarche'
       data: CraDemarcheAdministrativeData
     }
+
+const withoutDejaAccompagne = <T>({
+  dejaAccompagne: _,
+  ...beneficiaireAnonymeToCreate
+}: T & { id: string; dejaAccompagne: boolean }) => beneficiaireAnonymeToCreate
 
 // TODO more integration test cases on this critical function
 export const createOrUpdateActivite = async ({
@@ -196,6 +219,7 @@ export const createOrUpdateActivite = async ({
       input.type === TypeActivite.Collectif
         ? input.data.participants
         : [input.data.beneficiaire],
+    activiteId: id,
   })
 
   const beneficiairesAnonymesCollectif =
@@ -325,16 +349,18 @@ export const createOrUpdateActivite = async ({
             })
           : null,
         // (re)Create beneficiaire anonyme for one-to-one cra
-        beneficiaireAnonymeToCreate
+        beneficiaireAnonymeToCreate?.id
           ? prismaClient.beneficiaire.create({
-              data: beneficiaireAnonymeToCreate,
+              data: withoutDejaAccompagne(beneficiaireAnonymeToCreate),
               select: { id: true },
             })
           : null,
         // Create beneficiairesAnonymesCollectif
         beneficiairesAnonymesCollectif.length > 0
           ? prismaClient.beneficiaire.createMany({
-              data: beneficiairesAnonymesCollectif,
+              data: beneficiairesAnonymesCollectif.map((beneficiaire) =>
+                withoutDejaAccompagne(beneficiaire),
+              ),
             })
           : null,
         // Create accompagnements
@@ -344,11 +370,13 @@ export const createOrUpdateActivite = async ({
               id: v4(),
               beneficiaireId: beneficiaire.id,
               activiteId: id,
+              premierAccompagnement: beneficiaire.premierAccompagnement,
             })),
             ...beneficiairesAnonymesCollectif.map((beneficiaire) => ({
               id: v4(),
               beneficiaireId: beneficiaire.id,
               activiteId: id,
+              premierAccompagnement: !beneficiaire.dejaAccompagne,
             })),
             ...(beneficiaireAnonymeToCreate
               ? [
@@ -356,6 +384,8 @@ export const createOrUpdateActivite = async ({
                     id: v4(),
                     beneficiaireId: beneficiaireAnonymeToCreate.id,
                     activiteId: id,
+                    premierAccompagnement:
+                      !beneficiaireAnonymeToCreate.dejaAccompagne,
                   },
                 ]
               : []),
@@ -387,17 +417,19 @@ export const createOrUpdateActivite = async ({
 
   await prismaClient.$transaction(
     [
-      // Create beneficiaires anonymes
-      beneficiairesAnonymesCollectif.length > 0
-        ? prismaClient.beneficiaire.createMany({
-            data: beneficiairesAnonymesCollectif,
-          })
-        : null,
       // Create beneficiaire anonyme for one to one cras,
       beneficiaireAnonymeToCreate
         ? prismaClient.beneficiaire.create({
-            data: beneficiaireAnonymeToCreate,
+            data: withoutDejaAccompagne(beneficiaireAnonymeToCreate),
             select: { id: true },
+          })
+        : null,
+      // Create beneficiaires anonymes
+      beneficiairesAnonymesCollectif.length > 0
+        ? prismaClient.beneficiaire.createMany({
+            data: beneficiairesAnonymesCollectif.map((beneficiaire) =>
+              withoutDejaAccompagne(beneficiaire),
+            ),
           })
         : null,
       // Create activite
@@ -416,11 +448,13 @@ export const createOrUpdateActivite = async ({
             id: v4(),
             beneficiaireId: beneficiaire.id,
             activiteId: creationId,
+            premierAccompagnement: beneficiaire.premierAccompagnement,
           })),
           ...beneficiairesAnonymesCollectif.map((beneficiaire) => ({
             id: v4(),
             beneficiaireId: beneficiaire.id,
             activiteId: creationId,
+            premierAccompagnement: !beneficiaire.dejaAccompagne,
           })),
           ...(beneficiaireAnonymeToCreate
             ? [
@@ -428,6 +462,8 @@ export const createOrUpdateActivite = async ({
                   id: v4(),
                   beneficiaireId: beneficiaireAnonymeToCreate.id,
                   activiteId: creationId,
+                  premierAccompagnement:
+                    !beneficiaireAnonymeToCreate.dejaAccompagne,
                 },
               ]
             : []),

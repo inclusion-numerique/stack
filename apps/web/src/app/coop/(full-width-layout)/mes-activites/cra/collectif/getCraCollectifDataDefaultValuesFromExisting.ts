@@ -31,6 +31,7 @@ export const getCraCollectifDataDefaultValuesFromExisting = async ({
       accompagnements: {
         select: {
           beneficiaire: true,
+          premierAccompagnement: true,
         },
       },
       date: true,
@@ -70,7 +71,10 @@ export const getCraCollectifDataDefaultValuesFromExisting = async ({
 
   const { beneficiairesSuivis, participantsAnonymes } =
     createParticipantsAnonymesForBeneficiaires(
-      accompagnements.map(({ beneficiaire }) => beneficiaire),
+      accompagnements.map(({ beneficiaire, premierAccompagnement }) => ({
+        ...beneficiaire,
+        premierAccompagnement,
+      })),
     )
 
   const participantsDefaultValues = beneficiairesSuivis.map(

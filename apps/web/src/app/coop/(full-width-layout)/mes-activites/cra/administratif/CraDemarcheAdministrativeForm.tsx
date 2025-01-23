@@ -494,7 +494,7 @@ const CraDemarcheAdministrativeForm = ({
           <CheckboxFormField
             className="fr-flex-grow-1 fr-flex-basis-0 fr-mt-12v fr-mb-8v"
             control={control}
-            path="beneficiaire.alreadyAssisted"
+            path="beneficiaire.dejaAccompagne"
             label="J’ai déjà accompagné ce bénéficiaire"
             disabled={isLoading}
           />

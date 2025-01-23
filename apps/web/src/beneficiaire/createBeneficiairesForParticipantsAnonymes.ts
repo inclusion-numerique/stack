@@ -38,6 +38,7 @@ type CreatedBeneficiairesForParticipantsAnonymes =
     genre: Genre
     anonyme: true
     attributionsAleatoires: true
+    dejaAccompagne: boolean
   }
 
 export const createBeneficiairesForParticipantsAnonymes = ({
@@ -84,10 +85,10 @@ export const createBeneficiairesForParticipantsAnonymes = ({
         return false
       }) ?? 'NonCommunique'
 
-    const alreadyAssisted = mutableCounters.alreadyAssisted > 0
+    const dejaAccompagne = mutableCounters.dejaAccompagne > 0
 
-    if (mutableCounters.alreadyAssisted > 0) {
-      mutableCounters.alreadyAssisted -= 1
+    if (mutableCounters.dejaAccompagne > 0) {
+      mutableCounters.dejaAccompagne -= 1
     }
 
     result.push({
@@ -98,7 +99,7 @@ export const createBeneficiairesForParticipantsAnonymes = ({
       trancheAge,
       statutSocial,
       genre,
-      alreadyAssisted,
+      dejaAccompagne,
     })
   }
 

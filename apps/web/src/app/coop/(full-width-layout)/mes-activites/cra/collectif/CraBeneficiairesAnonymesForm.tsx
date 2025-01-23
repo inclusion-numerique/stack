@@ -143,7 +143,7 @@ const CraBeneficiairesMultiplesForm = ({
   const statutSocialNonCommuniqueCount = watch(
     'participantsAnonymes.statutSocialNonCommunique',
   )
-  const alreadyAssistedCount = watch('participantsAnonymes.alreadyAssisted')
+  const dejaAccompagneCount = watch('participantsAnonymes.dejaAccompagne')
 
   const disableAddGenre = totalGenre - genreNonCommuniqueCount >= total
   const disableAddTrancheAge =
@@ -181,10 +181,10 @@ const CraBeneficiairesMultiplesForm = ({
           <PlusMinusNumberFormField
             control={control}
             disabled={isLoading}
-            path="participantsAnonymes.alreadyAssisted"
+            path="participantsAnonymes.dejaAccompagne"
             min={0}
             label="Bénéficiaires déjà accompagnés"
-            disabledAdd={alreadyAssistedCount >= total}
+            disabledAdd={dejaAccompagneCount >= total}
           />
           <p className="fr-text--medium fr-mb-3v fr-mt-6v">Genre</p>
           <div className={styles.genreContainer}>

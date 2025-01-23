@@ -31,6 +31,7 @@ export const getCraDemarcheAdministrativeDataDefaultValuesFromExisting =
         accompagnements: {
           select: {
             beneficiaire: true,
+            premierAccompagnement: true,
           },
         },
         date: true,
@@ -78,7 +79,9 @@ export const getCraDemarcheAdministrativeDataDefaultValuesFromExisting =
       id,
       mediateurId,
       beneficiaire: beneficiaire
-        ? getBeneficiaireDefaulCratDataFromExisting(beneficiaire)
+        ? getBeneficiaireDefaulCratDataFromExisting(beneficiaire)(
+            accompagnements[0].premierAccompagnement,
+          )
         : { mediateurId },
       date: dateAsIsoDay(date),
       duree: minutesToCraDureeData(duree) ?? {},

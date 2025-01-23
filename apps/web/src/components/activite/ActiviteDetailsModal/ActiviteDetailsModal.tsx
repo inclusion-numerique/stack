@@ -10,7 +10,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { createToast } from '@app/ui/toast/createToast'
 import Accordion from '@codegouvfr/react-dsfr/Accordion'
 import Stars from '@app/web/components/Stars'
-import { isBeneficiaireEmpty } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
+import { isBeneficiaireAnonymous } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import { trpc } from '@app/web/trpc'
 import {
@@ -71,6 +71,14 @@ const getActiviteLocationString = (activite: ActiviteForList) => {
       ? 'À distance'
       : 'Non renseigné'
 }
+
+const premierAccompagnement = (
+  nouveauxParticipants: number,
+  participantsDejaAccompagnes: number,
+) => [
+  `${nouveauxParticipants} ${nouveauxParticipants > 1 ? 'nouveaux bénéficiaires' : 'nouveau bénéficiaire'}`,
+  `${participantsDejaAccompagnes} ${participantsDejaAccompagnes > 1 ? 'bénéficiaires déjà accompagnés' : 'bénéficiaire déjà accompagné'}`,
+]
 
 const ActiviteDetailsModal = ({
   initialState,
@@ -210,9 +218,10 @@ const ActiviteDetailsModal = ({
     ),
   ].filter(Boolean)
 
-  const beneficiaires = accompagnements.map(
-    (accompagnement) => accompagnement.beneficiaire,
-  )
+  const beneficiaires = accompagnements.map((accompagnement) => ({
+    ...accompagnement.beneficiaire,
+    premierAccompagnement: accompagnement.premierAccompagnement,
+  }))
 
   const beneficiaireUnique = type === 'Collectif' ? null : beneficiaires[0]
 
@@ -220,10 +229,11 @@ const ActiviteDetailsModal = ({
 
   // Informations si le beneficiaire est anonyme et à des informations supplémentaires
   const infosBeneficiaireAnonyme =
-    !!beneficiaireUnique &&
-    beneficiaireUnique.anonyme &&
-    !isBeneficiaireEmpty(beneficiaireUnique)
+    !!beneficiaireUnique && beneficiaireUnique.anonyme
       ? [
+          beneficiaireUnique.premierAccompagnement
+            ? 'Nouveau bénéficiaire'
+            : 'Bénéficiaire déjà accompagné',
           [
             beneficiaireUnique.genre &&
               beneficiaireUnique.genre !== 'NonCommunique' &&
@@ -267,6 +277,11 @@ const ActiviteDetailsModal = ({
   const participantsAnonymesInfos =
     participants && participants.participantsAnonymes.total > 0
       ? [
+          premierAccompagnement(
+            participants.participantsAnonymes.total -
+              participants.participantsAnonymes.dejaAccompagne,
+            participants.participantsAnonymes.dejaAccompagne,
+          ).join(', '),
           genreValues
             .map((enumValue) => ({
               enumValue,
@@ -423,17 +438,18 @@ const ActiviteDetailsModal = ({
           </ul>
 
           <hr className="fr-separator-6v" />
-          {!!beneficiaireUnique && isBeneficiaireEmpty(beneficiaireUnique) && (
-            <div className="fr-flex fr-justify-content-space-between fr-flex-gap-4v fr-text-mention--grey">
-              <p className="fr-text--xs fr-mb-0 fr-text--bold fr-text--uppercase">
-                <span className="fr-icon-user-heart-line fr-icon--sm fr-mr-1w" />
-                Infos bénéficiaire
-              </p>
-              <p className="fr-text--xs fr-mb-0 fr-text--medium">
-                <i>Non renseignées</i>
-              </p>
-            </div>
-          )}
+          {!!beneficiaireUnique &&
+            !isBeneficiaireAnonymous(beneficiaireUnique) && (
+              <div className="fr-flex fr-justify-content-space-between fr-flex-gap-4v fr-text-mention--grey">
+                <p className="fr-text--xs fr-mb-0 fr-text--bold fr-text--uppercase">
+                  <span className="fr-icon-user-heart-line fr-icon--sm fr-mr-1w" />
+                  Infos bénéficiaire
+                </p>
+                <p className="fr-text--xs fr-mb-0 fr-text--medium">
+                  <i>Non renseignées</i>
+                </p>
+              </div>
+            )}
           {!!infosBeneficiaireAnonyme && (
             <>
               <p className="fr-text-mention--grey fr-text--xs fr-mb-0 fr-text--bold fr-text--uppercase">
@@ -481,7 +497,7 @@ const ActiviteDetailsModal = ({
                   {/* Only add title if both type of participants are present */}
                   {participants.participantsAnonymes.total > 0 && (
                     <p className="fr-text--sm fr-text--bold fr-mb-1v">
-                      {participants.beneficiairesSuivis.length} bénéficiaire
+                      {participants.beneficiairesSuivis.length} Participant
                       {sPluriel(participants.beneficiairesSuivis.length)} suivi
                       {sPluriel(participants.beneficiairesSuivis.length)}&nbsp;:
                     </p>
@@ -506,7 +522,7 @@ const ActiviteDetailsModal = ({
                     {/* Only add title if both type of participants are present */}
                     {participants.beneficiairesSuivis.length > 0 && (
                       <p className="fr-text--sm fr-text--bold fr-mb-1v">
-                        {participants.participantsAnonymes.total} participant
+                        {participants.participantsAnonymes.total} Participant
                         {sPluriel(participants.participantsAnonymes.total)}{' '}
                         anonyme
                         {sPluriel(participants.participantsAnonymes.total)}

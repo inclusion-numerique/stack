@@ -6,7 +6,7 @@ describe('ParticipantsAnonymesCraCollectifValidation', () => {
     id: null,
     total: 10,
 
-    alreadyAssisted: 5,
+    dejaAccompagne: 5,
 
     genreFeminin: 3,
     genreMasculin: 3,

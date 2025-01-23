@@ -92,6 +92,35 @@ export const craRouter = router({
         throw forbiddenError('Cannot delete CRA for another mediateur')
       }
 
+      const accompagnements = await prismaClient.accompagnement.findMany({
+        where: { activiteId },
+        select: { id: true, premierAccompagnement: true, beneficiaireId: true },
+      })
+
+      const premierAccompagnement = accompagnements.find(
+        (a) => a.premierAccompagnement,
+      )
+
+      if (premierAccompagnement) {
+        const nextAccompagnement = await prismaClient.accompagnement.findFirst({
+          where: {
+            beneficiaireId: premierAccompagnement.beneficiaireId,
+            id: { not: premierAccompagnement.id },
+          },
+          orderBy: {
+            activite: { date: 'asc' },
+          },
+          select: { id: true },
+        })
+
+        if (nextAccompagnement) {
+          await prismaClient.accompagnement.update({
+            where: { id: nextAccompagnement.id },
+            data: { premierAccompagnement: true },
+          })
+        }
+      }
+
       const beneficiairesAnonymesIdsToDelete =
         await getBeneficiairesAnonymesWithOnlyAccompagnementsForThisActivite({
           activiteId,
