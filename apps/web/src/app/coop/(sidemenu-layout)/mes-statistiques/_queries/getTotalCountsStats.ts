@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import {
@@ -6,6 +5,7 @@ import {
   getActivitesFiltersWhereConditions,
 } from '@app/web/cra/activitesFiltersSqlWhereConditions'
 import { allocatePercentages } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/allocatePercentages'
+import { activitesMediateurIdsWhereCondition } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/activitesMediateurIdsWhereCondition'
 
 export type AccompagnementsStats = {
   activites: {
@@ -67,10 +67,10 @@ export const getTotalCountsStats = async ({
   mediateurIds,
   activitesFilters,
 }: {
-  mediateurIds: string[]
+  mediateurIds?: string[] // Undefined means no filter, empty array means no mediateur / no data.
   activitesFilters: ActivitesFilters
 }): Promise<AccompagnementsStats> => {
-  if (mediateurIds.length === 0) return EMPTY_COUNT_STATS
+  if (mediateurIds?.length === 0) return EMPTY_COUNT_STATS
 
   return prismaClient.$queryRaw<
     [
@@ -105,7 +105,7 @@ export const getTotalCountsStats = async ({
          LEFT JOIN accompagnements ON accompagnements.activite_id = activites.id
          LEFT JOIN beneficiaires ON beneficiaires.id = accompagnements.beneficiaire_id
          LEFT JOIN structures ON structures.id = activites.structure_id
-    WHERE activites.mediateur_id = ANY (ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
+    WHERE ${activitesMediateurIdsWhereCondition(mediateurIds)}
     AND activites.suppression IS NULL
     AND ${getActiviteFiltersSqlFragment(
       getActivitesFiltersWhereConditions(activitesFilters),

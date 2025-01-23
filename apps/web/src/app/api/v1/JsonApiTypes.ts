@@ -71,3 +71,11 @@ export type JsonApiListResponse<
   meta: JsonApiListMeta
   included?: JsonApiResource<string, object>[]
 }
+
+export type JsonApiItemResponse<
+  TResource extends JsonApiResource<string, object>,
+> = {
+  data: TResource
+  links: JsonApiLinks
+  meta: JsonApiMeta
+}

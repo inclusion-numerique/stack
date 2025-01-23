@@ -1,6 +1,5 @@
 import {
   Materiel,
-  Prisma,
   Thematique,
   ThematiqueDemarcheAdministrative,
   TypeActivite,
@@ -32,6 +31,7 @@ import {
   createEnumCountSelect,
 } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/createEnumCountSelect'
 import { allocatePercentagesFromRecords } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/allocatePercentages'
+import { activitesMediateurIdsWhereCondition } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/activitesMediateurIdsWhereCondition'
 
 export type ActivitesStatsRaw = {
   total_activites: number
@@ -49,10 +49,10 @@ export const getActivitesStatsRaw = async ({
   mediateurIds,
   activitesFilters,
 }: {
-  mediateurIds: string[]
+  mediateurIds?: string[] // Undefined means no filter, empty array means no mediateur / no data.
   activitesFilters: ActivitesFilters
 }) => {
-  if (mediateurIds.length === 0) return EMPTY_ACTIVITES_STATS
+  if (mediateurIds?.length === 0) return EMPTY_ACTIVITES_STATS
 
   return prismaClient.$queryRaw<[ActivitesStatsRaw]>`
       SELECT COALESCE(COUNT(*), 0)::integer AS total_activites,
@@ -88,7 +88,7 @@ export const getActivitesStatsRaw = async ({
              })}
       FROM activites
                LEFT JOIN structures ON structures.id = activites.structure_id
-      WHERE activites.mediateur_id = ANY (ARRAY [${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
+      WHERE ${activitesMediateurIdsWhereCondition(mediateurIds)}
         AND activites.suppression IS NULL
         AND ${getActiviteFiltersSqlFragment(
           getActivitesFiltersWhereConditions(activitesFilters),
@@ -178,7 +178,7 @@ export const getActivitesStats = async ({
   mediateurIds,
   activitesFilters,
 }: {
-  mediateurIds: string[]
+  mediateurIds?: string[] // Undefined means no filter, empty array means no mediateur / no data.
   activitesFilters: ActivitesFilters
 }) => {
   const statsRaw = await getActivitesStatsRaw({
@@ -202,10 +202,10 @@ export const getActivitesStructuresStatsRaw = async ({
   mediateurIds,
   activitesFilters,
 }: {
-  mediateurIds: string[]
+  mediateurIds?: string[] // Undefined means no filter, empty array means no mediateur / no data.
   activitesFilters: ActivitesFilters
 }) => {
-  if (mediateurIds.length === 0) return []
+  if (mediateurIds?.length === 0) return []
 
   return prismaClient.$queryRaw<ActivitesStructuresStatsRaw[]>`
       SELECT structures.id,
@@ -218,8 +218,7 @@ export const getActivitesStructuresStatsRaw = async ({
                INNER JOIN activites
                           ON activites.structure_id = structures.id
                               AND activites.suppression IS NULL
-                              AND activites.mediateur_id = ANY
-                                  (ARRAY [${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
+                              AND ${activitesMediateurIdsWhereCondition(mediateurIds)}
                               AND ${getActiviteFiltersSqlFragment(
                                 getActivitesFiltersWhereConditions(
                                   activitesFilters,
@@ -232,7 +231,7 @@ export const getActivitesStructuresStats = async ({
   mediateurIds,
   activitesFilters,
 }: {
-  mediateurIds: string[]
+  mediateurIds?: string[] // Undefined means no filter, empty array means no mediateur / no data.
   activitesFilters: ActivitesFilters
 }) => {
   const statsRaw = await getActivitesStructuresStatsRaw({
