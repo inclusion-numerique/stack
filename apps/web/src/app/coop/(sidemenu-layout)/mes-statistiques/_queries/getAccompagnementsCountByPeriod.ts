@@ -9,8 +9,8 @@ import {
   MonthShortLabel,
   monthShortLabels,
 } from '@app/web/utils/monthShortLabels'
-import { LabelAndCount } from '../quantifiedShare'
 import { activitesMediateurIdsWhereCondition } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/activitesMediateurIdsWhereCondition'
+import { LabelAndCount } from '../quantifiedShare'
 
 const EMPTY_ACCOMPAGNEMENTS_COUNT = monthShortLabels.map(
   (label: MonthShortLabel) => ({ label, count: 0 }),

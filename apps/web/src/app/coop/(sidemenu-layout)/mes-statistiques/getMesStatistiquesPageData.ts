@@ -10,7 +10,7 @@ import {
   getActivitesStructuresStats,
 } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getActivitesStats'
 import { UserDisplayName, UserProfile } from '@app/web/utils/user'
-import { getBeneficiaireStats } from './_queries/getBeneficiaireStats'
+import { getBeneficiaireStatsWithCommunes } from './_queries/getBeneficiaireStats'
 import { getTotalCountsStats } from './_queries/getTotalCountsStats'
 
 export type MesStatistiquesGraphOptions = {
@@ -51,7 +51,7 @@ export const getMesStatistiquesPageData = async ({
       activitesFilters,
       periodEnd: graphOptions.fin ? dateAsIsoDay(graphOptions.fin) : undefined,
     }),
-    getBeneficiaireStats({ mediateurIds, activitesFilters }),
+    getBeneficiaireStatsWithCommunes({ mediateurIds, activitesFilters }),
     getActivitesStats({ mediateurIds, activitesFilters }),
     getActivitesStructuresStats({ mediateurIds, activitesFilters }),
     getTotalCountsStats({ mediateurIds, activitesFilters }),

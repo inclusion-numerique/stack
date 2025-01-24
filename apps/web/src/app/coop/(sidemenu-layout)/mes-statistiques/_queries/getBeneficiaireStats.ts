@@ -196,13 +196,34 @@ export const getBeneficiaireStats = async ({
     activitesFilters,
   })
 
+  return normalizeBeneficiairesStatsRaw(statsRaw)
+}
+
+export type BeneficiaireStats = Awaited<ReturnType<typeof getBeneficiaireStats>>
+
+export const getBeneficiaireStatsWithCommunes = async ({
+  mediateurIds,
+  activitesFilters,
+}: {
+  mediateurIds?: string[] // Undefined means no filter, empty array means no mediateur / no data.
+  activitesFilters: ActivitesFilters
+}) => {
+  const beneficiairesStats = await getBeneficiaireStats({
+    mediateurIds,
+    activitesFilters,
+  })
+
   const rawCommunes = await getBeneficiairesCommunesRaw({
     mediateurIds,
     activitesFilters,
   })
 
   return {
-    ...normalizeBeneficiairesStatsRaw(statsRaw),
+    ...beneficiairesStats,
     communes: normalizeBeneficiairesCommunesRaw(rawCommunes),
   }
 }
+
+export type BeneficiairesStatsWithCommunes = Awaited<
+  ReturnType<typeof getBeneficiaireStatsWithCommunes>
+>

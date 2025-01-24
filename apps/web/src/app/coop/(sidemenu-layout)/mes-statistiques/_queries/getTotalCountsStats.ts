@@ -87,29 +87,41 @@ export const getTotalCountsStats = async ({
       },
     ]
   >`
-      SELECT
-        COUNT(DISTINCT activites.id)::integer AS total_activites,
-        COUNT(DISTINCT CASE WHEN activites.type = 'individuel' THEN activites.id END)::integer AS total_individuels,
-        COUNT(DISTINCT CASE WHEN activites.type = 'collectif' THEN activites.id END)::integer AS total_collectifs,
-        COUNT(DISTINCT CASE WHEN activites.type = 'demarche' THEN activites.id END)::integer AS total_demarches,
-        COUNT(DISTINCT beneficiaires.id)::integer AS total_beneficiaires,
-        COUNT(DISTINCT CASE WHEN beneficiaires.anonyme = false THEN beneficiaires.id END)::integer AS total_beneficiaires_suivis,
-
-        COUNT(DISTINCT CASE WHEN accompagnements.premier_accompagnement = true
-                AND ${activitesFilters.du}::timestamp IS NOT NULL
-                AND ${activitesFilters.au}::timestamp IS NOT NULL
-              THEN accompagnements.id END)::integer AS total_accompagnements_nouveaux,
-        COUNT(DISTINCT accompagnements.id)::integer AS total_accompagnements,
-        COUNT(DISTINCT CASE WHEN activites.type = 'collectif' THEN accompagnements.id END) ::integer AS total_accompagnements_collectifs
-    FROM activites
-         LEFT JOIN accompagnements ON accompagnements.activite_id = activites.id
-         LEFT JOIN beneficiaires ON beneficiaires.id = accompagnements.beneficiaire_id
-         LEFT JOIN structures ON structures.id = activites.structure_id
-    WHERE ${activitesMediateurIdsWhereCondition(mediateurIds)}
-    AND activites.suppression IS NULL
-    AND ${getActiviteFiltersSqlFragment(
-      getActivitesFiltersWhereConditions(activitesFilters),
-    )}
+      
+      SELECT COUNT(DISTINCT activites.id)::integer                         AS total_activites,
+             COUNT(DISTINCT CASE
+                                WHEN activites.type = 'individuel'
+                                    THEN activites.id END)::integer        AS total_individuels,
+             COUNT(DISTINCT CASE
+                                WHEN activites.type = 'collectif'
+                                    THEN activites.id END)::integer        AS total_collectifs,
+             COUNT(DISTINCT CASE
+                                WHEN activites.type = 'demarche'
+                                    THEN activites.id END)::integer        AS total_demarches,
+             COUNT(DISTINCT beneficiaires.id)::integer                     AS total_beneficiaires,
+             COUNT(DISTINCT CASE
+                                WHEN beneficiaires.anonyme = false
+                                    THEN beneficiaires.id END)::integer    AS total_beneficiaires_suivis,
+             COUNT(DISTINCT CASE
+                                WHEN accompagnements.premier_accompagnement = true
+                                            AND ${activitesFilters.du}::timestamp IS NOT NULL
+                                            AND ${activitesFilters.au}::timestamp IS NOT NULL
+                                    THEN accompagnements.id
+                 END)::integer                                             AS total_accompagnements_nouveaux,
+             COUNT(DISTINCT accompagnements.id)::integer                   AS total_accompagnements,
+             COUNT(DISTINCT CASE
+                                WHEN activites.type = 'collectif'
+                                    THEN accompagnements.id END) ::integer AS total_accompagnements_collectifs
+      FROM activites
+               LEFT JOIN accompagnements ON accompagnements.activite_id = activites.id
+               LEFT JOIN beneficiaires ON beneficiaires.id = accompagnements.beneficiaire_id
+               LEFT JOIN structures ON structures.id = activites.structure_id
+               
+      WHERE ${activitesMediateurIdsWhereCondition(mediateurIds)}
+        AND activites.suppression IS NULL
+        AND ${getActiviteFiltersSqlFragment(
+          getActivitesFiltersWhereConditions(activitesFilters),
+        )}
   `.then(([result]) => {
     const [
       proportionActivitesIndividuels,
@@ -173,3 +185,5 @@ export const getTotalCountsStats = async ({
     }
   })
 }
+
+export type TotalCountsStats = Awaited<ReturnType<typeof getTotalCountsStats>>

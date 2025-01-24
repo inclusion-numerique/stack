@@ -10,19 +10,57 @@ import {
   getAccompagnementsCountByDay,
   getAccompagnementsCountByMonth,
 } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getAccompagnementsCountByPeriod'
-import { getBeneficiaireStats } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getBeneficiaireStats'
 import {
+  BeneficiaireStats,
+  getBeneficiaireStats,
+} from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getBeneficiaireStats'
+import {
+  ActivitesStats,
   getActivitesStats,
-  getActivitesStructuresStats,
 } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getActivitesStats'
-import { getTotalCountsStats } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getTotalCountsStats'
+import {
+  getTotalCountsStats,
+  TotalCountsStats,
+} from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getTotalCountsStats'
+import {
+  ChangeObjectKeysCaseRecursive,
+  changeObjectKeysCaseRecursive,
+} from '@app/web/utils/changeObjectKeysCaseRecursive'
+import type { LabelAndCount } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/quantifiedShare'
 
-type StatistiquesAttributes = {}
+/**
+ * @openapi
+ * /statistiques:
+ *   get:
+ *     summary: Statistiques
+ *     description: Retourne les statistiques des accompagnements de la coop, filtrés par les paramètres de la requête.
+ *     tags:
+ *       - Statistiques
+ *     responses:
+ *       200:
+ *         description: Les statistiques
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: ok
+ */
+
+type StatistiquesAttributes = {
+  accompagnements_par_jour: LabelAndCount[]
+  accompagnements_par_mois: LabelAndCount[]
+  beneficiaires: ChangeObjectKeysCaseRecursive<BeneficiaireStats, 'snake'>
+  activites: ChangeObjectKeysCaseRecursive<ActivitesStats, 'snake'>
+  totaux: ChangeObjectKeysCaseRecursive<TotalCountsStats, 'snake'>
+}
 
 type StructureRelationships = never
 
 export type StatistiqueResource = JsonApiResource<
-  'statistique',
+  'statistiques',
   StatistiquesAttributes,
   StructureRelationships
 >
@@ -42,7 +80,6 @@ export const GET = createApiV1Route
       accompagnementsParMois,
       beneficiaires,
       activites,
-      structures,
       totalCounts,
     ] = await Promise.all([
       getAccompagnementsCountByDay({
@@ -53,25 +90,34 @@ export const GET = createApiV1Route
       }),
       getBeneficiaireStats({ activitesFilters }),
       getActivitesStats({ activitesFilters }),
-      getActivitesStructuresStats({ activitesFilters }),
       getTotalCountsStats({ activitesFilters }),
     ])
 
-    const data = {
-      accompagnements_par_jour: accompagnementsParJour,
-      accompagnements_par_mois: accompagnementsParMois,
-      beneficiaires,
-      activites,
-      structures,
-      totaux: totalCounts,
-    } satisfies StatistiquesAttributes
+    const attributes = changeObjectKeysCaseRecursive(
+      {
+        accompagnementsParJour,
+        accompagnementsParMois,
+        beneficiaires,
+        activites,
+        totaux: totalCounts,
+      },
+      'snake',
+    ) satisfies StatistiquesAttributes
+
+    const currentUrlSearchParams = new URLSearchParams(params).toString()
 
     const response: StatistiquesResponse = {
-      data,
+      data: {
+        type: 'statistiques',
+        id: 'statistiques',
+        attributes,
+      },
       links: {
         self: {
           href: apiV1Url(
-            `/statistiques?${new URLSearchParams(params).toString()}`,
+            currentUrlSearchParams.length > 0
+              ? `/statistiques?${currentUrlSearchParams}`
+              : '/statistiques',
           ),
         },
       },

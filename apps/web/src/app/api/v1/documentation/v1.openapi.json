@@ -55,7 +55,6 @@
               "accompagnements",
               "date",
               "duree",
-              "notes",
               "type_lieu",
               "structure_id",
               "lieu_code_postal",
@@ -106,12 +105,6 @@
                 "type": "number",
                 "description": "durée en minutes",
                 "example": 120
-              },
-              "notes": {
-                "type": "string",
-                "nullable": true,
-                "description": "notes supplémentaires concernant l'activité",
-                "example": "activité spéciale"
               },
               "type_lieu": {
                 "type": "string",
@@ -887,6 +880,14 @@
                   "type": "string",
                   "example": "en_personne"
                 }
+              },
+              "mediateurs_en_activite": {
+                "type": "integer",
+                "example": 1
+              },
+              "emplois": {
+                "type": "integer",
+                "example": 1
               }
             }
           }
@@ -1018,7 +1019,7 @@
                       }
                     }
                   },
-                  "lieux_activite": {
+                  "en_activite": {
                     "type": "array",
                     "description": "liste des liens mediateur-structure (uniquement l'id, structure_id...)",
                     "items": {
@@ -1332,6 +1333,33 @@
         }
       }
     },
+    "/statistiques": {
+      "get": {
+        "summary": "Statistiques",
+        "description": "Retourne les statistiques des accompagnements de la coop, filtrés par les paramètres de la requête.",
+        "tags": [
+          "Statistiques"
+        ],
+        "responses": {
+          "200": {
+            "description": "Les statistiques",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/structures": {
       "get": {
         "summary": "liste des structures",
@@ -1407,7 +1435,7 @@
     "/utilisateurs": {
       "get": {
         "summary": "liste des utilisateurs",
-        "description": "retourne la liste des utilisateurs dont l'inscription est terminée (inscriptionValidee != null)\nles utilisateurs sont triés par date de création décroissante.\n",
+        "description": "Retourne la liste des utilisateurs dont l'inscription est terminée. Les utilisateurs sont triés par date de création décroissante.\n",
         "tags": [
           "Utilisateurs"
         ],

@@ -4,10 +4,14 @@ import { useState } from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
-import type { MesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
 import { AccompagnementPieChart } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_components/AccompagnementPieChart'
 import { QuantifiedShareLegend } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_components/QuantifiedShareLegend'
 import { numberToString } from '@app/web/utils/formatNumber'
+import type {
+  ActivitesStats,
+  ActivitesStructuresStats,
+} from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getActivitesStats'
+import type { TotalCountsStats } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getTotalCountsStats'
 import { ProgressListItem } from '../_components/ProgressListItem'
 import { QuantifiedShareList } from '../_components/QuantifiedShareList'
 import { StatistiqueAccompagnement } from '../_components/StatistiqueAccompagnement'
@@ -23,7 +27,13 @@ export const StatistiquesActivites = ({
   activites,
   structures,
   totalCounts,
-}: MesStatistiquesPageData) => {
+  wording = 'personnel',
+}: {
+  wording?: 'personnel' | 'generique'
+  activites: ActivitesStats
+  structures?: ActivitesStructuresStats
+  totalCounts: TotalCountsStats
+}) => {
   const [
     isMediationNumeriqueAccompagnement,
     setIsMediationNumeriqueAccompagnement,
@@ -43,7 +53,8 @@ export const StatistiquesActivites = ({
     <>
       <h2 className="fr-h5 fr-text-mention--grey">
         <span className="ri-service-line fr-mr-1w" aria-hidden />
-        Statistiques sur vos activités
+        Statistiques sur{' '}
+        {wording === 'personnel' ? 'vos activités' : 'les activités'}
       </h2>
       <div className="fr-background-alt--blue-france fr-p-4w fr-mb-3w fr-border-radius--16 fr-grid-row fr-flex-gap-4v">
         {activites.typeActivites.map(({ count, proportion, value }) => (
@@ -250,42 +261,48 @@ export const StatistiquesActivites = ({
             </div>
           </div>
         </div>
-        <hr className="fr-separator-1px fr-my-5w" />
-        <div className="fr-mb-0 fr-col fr-flex fr-align-items-center fr-mb-3w">
-          <h3 className="fr-text--lg fr-mb-0">Nombre d’activités par lieux</h3>
-          <Button
-            className="fr-px-1v fr-ml-1v"
-            title="Plus d’information à propos du nombre d’accompagnements par lieux"
-            priority="tertiary no outline"
-            size="small"
-            type="button"
-            aria-describedby="tooltip-nombre-accompagnements-par-lieux"
-          >
-            <span className="ri-information-line fr-text--lg" aria-hidden />
-          </Button>
-          <span
-            className="fr-tooltip fr-placement"
-            id="tooltip-nombre-accompagnements-par-lieux"
-            role="tooltip"
-            aria-hidden
-          >
-            Il s’agit de la répartition des activités enregistrées par lieu
-            d’activité.
-          </span>
-        </div>
-        <div className="fr-text--bold fr-text--uppercase fr-text--sm fr-text-mention--grey fr-mb-1w">
-          Lieux d’activités
-        </div>
-        <QuantifiedShareList
-          limit={{
-            showLabel: 'Voir tout mes lieux',
-            hideLabel: 'Réduire',
-            count: 5,
-          }}
-          order="desc"
-          quantifiedShares={structures}
-          colors={[nombreAccompagnementParLieuColor]}
-        />
+        {!!structures && (
+          <>
+            <hr className="fr-separator-1px fr-my-5w" />
+            <div className="fr-mb-0 fr-col fr-flex fr-align-items-center fr-mb-3w">
+              <h3 className="fr-text--lg fr-mb-0">
+                Nombre d’activités par lieux
+              </h3>
+              <Button
+                className="fr-px-1v fr-ml-1v"
+                title="Plus d’information à propos du nombre d’accompagnements par lieux"
+                priority="tertiary no outline"
+                size="small"
+                type="button"
+                aria-describedby="tooltip-nombre-accompagnements-par-lieux"
+              >
+                <span className="ri-information-line fr-text--lg" aria-hidden />
+              </Button>
+              <span
+                className="fr-tooltip fr-placement"
+                id="tooltip-nombre-accompagnements-par-lieux"
+                role="tooltip"
+                aria-hidden
+              >
+                Il s’agit de la répartition des activités enregistrées par lieu
+                d’activité.
+              </span>
+            </div>
+            <div className="fr-text--bold fr-text--uppercase fr-text--sm fr-text-mention--grey fr-mb-1w">
+              Lieux d’activités
+            </div>
+            <QuantifiedShareList
+              limit={{
+                showLabel: 'Voir tout mes lieux',
+                hideLabel: 'Réduire',
+                count: 5,
+              }}
+              order="desc"
+              quantifiedShares={structures}
+              colors={[nombreAccompagnementParLieuColor]}
+            />
+          </>
+        )}
       </div>
     </>
   )

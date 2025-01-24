@@ -1,6 +1,9 @@
 import Button from '@codegouvfr/react-dsfr/Button'
-import { MesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
 import { numberToString } from '@app/web/utils/formatNumber'
+import type {
+  BeneficiairesStatsWithCommunes,
+  BeneficiaireStats,
+} from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getBeneficiaireStats'
 import { AccompagnementPieChart } from '../_components/AccompagnementPieChart'
 import ProgressBar from '../_components/ProgressBar'
 import { QuantifiedShareList } from '../_components/QuantifiedShareList'
@@ -28,7 +31,11 @@ const toProgress = ({
 
 export const StatistiquesBeneficiaires = ({
   beneficiaires,
-}: MesStatistiquesPageData) => {
+  wording = 'personnel',
+}: {
+  wording?: 'personnel' | 'generique'
+  beneficiaires: BeneficiairesStatsWithCommunes | BeneficiaireStats
+}) => {
   const totalWithGenre = beneficiaires.genres.reduce(
     (total: number, { count, value }) =>
       value === 'NonCommunique' ? total : total + count,
@@ -47,16 +54,20 @@ export const StatistiquesBeneficiaires = ({
     0,
   )
 
-  const totalWithCommune = beneficiaires.communes.reduce(
-    (total: number, { count }) => total + count,
-    0,
-  )
+  const totalWithCommune =
+    'communes' in beneficiaires
+      ? beneficiaires.communes.reduce(
+          (total: number, { count }) => total + count,
+          0,
+        )
+      : null
 
   return (
     <>
       <h2 className="fr-h5 fr-text-mention--grey">
         <span className="ri-user-heart-line fr-mr-1w" aria-hidden />
-        Statistiques sur vos bénéficiaires
+        Statistiques sur{' '}
+        {wording === 'personnel' ? 'vos bénéficiaires' : 'les bénéficiaires'}
       </h2>
       <div className="fr-border fr-p-4w fr-border-radius--16">
         <div className="fr-grid-row fr-grid-row--gutters">
@@ -191,49 +202,53 @@ export const StatistiquesBeneficiaires = ({
         </div>
         <hr className="fr-separator-1px fr-my-5w" />
 
-        <div className="fr-mb-0 fr-col fr-flex fr-align-items-center fr-mb-3w">
-          <h3 className="fr-text--lg fr-mb-0">
-            Commune de résidence des bénéficiaires
-          </h3>
-          <Button
-            className="fr-px-1v fr-ml-1v"
-            title="Plus d’information à propos des communes de résidence des bénéficiaires"
-            priority="tertiary no outline"
-            size="small"
-            type="button"
-            aria-describedby="tooltip-communes-beneficiaires"
-          >
-            <span className="ri-information-line fr-text--lg" aria-hidden />
-          </Button>
-          <span
-            className="fr-tooltip fr-placement"
-            id="tooltip-communes-beneficiaires"
-            role="tooltip"
-            aria-hidden
-          >
-            Les statistiques prennent en compte les bénéficiaires suivis et
-            anonymes dont la commune de résidence a été complétée.
-            <br />
-            <br />
-            Total des bénéficiaires dont la commune de résidence a été
-            complétée&nbsp;: {totalWithCommune}/{beneficiaires.total}{' '}
-            bénéficiaires suivis ou anonymes
-          </span>
-        </div>
+        {'communes' in beneficiaires && (
+          <>
+            <div className="fr-mb-0 fr-col fr-flex fr-align-items-center fr-mb-3w">
+              <h3 className="fr-text--lg fr-mb-0">
+                Commune de résidence des bénéficiaires
+              </h3>
+              <Button
+                className="fr-px-1v fr-ml-1v"
+                title="Plus d’information à propos des communes de résidence des bénéficiaires"
+                priority="tertiary no outline"
+                size="small"
+                type="button"
+                aria-describedby="tooltip-communes-beneficiaires"
+              >
+                <span className="ri-information-line fr-text--lg" aria-hidden />
+              </Button>
+              <span
+                className="fr-tooltip fr-placement"
+                id="tooltip-communes-beneficiaires"
+                role="tooltip"
+                aria-hidden
+              >
+                Les statistiques prennent en compte les bénéficiaires suivis et
+                anonymes dont la commune de résidence a été complétée.
+                <br />
+                <br />
+                Total des bénéficiaires dont la commune de résidence a été
+                complétée&nbsp;: {totalWithCommune}/{beneficiaires.total}{' '}
+                bénéficiaires suivis ou anonymes
+              </span>
+            </div>
 
-        <div className="fr-text--bold fr-text--uppercase fr-text--sm fr-text-mention--grey fr-mb-1w">
-          Commune
-        </div>
-        <QuantifiedShareList
-          order="desc"
-          limit={{
-            showLabel: 'Voir toutes les communes',
-            hideLabel: 'Réduire',
-            count: 5,
-          }}
-          quantifiedShares={beneficiaires.communes}
-          colors={[communeColor]}
-        />
+            <div className="fr-text--bold fr-text--uppercase fr-text--sm fr-text-mention--grey fr-mb-1w">
+              Commune
+            </div>
+            <QuantifiedShareList
+              order="desc"
+              limit={{
+                showLabel: 'Voir toutes les communes',
+                hideLabel: 'Réduire',
+                count: 5,
+              }}
+              quantifiedShares={beneficiaires.communes}
+              colors={[communeColor]}
+            />
+          </>
+        )}
       </div>
     </>
   )

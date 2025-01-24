@@ -189,6 +189,8 @@ export const getActivitesStats = async ({
   return normalizeActivitesStatsRaw(statsRaw)
 }
 
+export type ActivitesStats = Awaited<ReturnType<typeof getActivitesStats>>
+
 export type ActivitesStructuresStatsRaw = {
   id: string
   nom: string
@@ -257,3 +259,7 @@ export const getActivitesStructuresStats = async ({
     'proportion',
   )
 }
+
+export type ActivitesStructuresStats = Awaited<
+  ReturnType<typeof getActivitesStructuresStats>
+>
