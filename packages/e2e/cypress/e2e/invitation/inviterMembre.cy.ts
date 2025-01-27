@@ -11,7 +11,7 @@ describe('ETQ coordinateur, je peux inviter un médiateur à rejoindre mon équi
     cy.signin(coordinateurInscrit)
 
     cy.visit(appUrl('/coop/mon-equipe'))
-    cy.findByRole('link', { name: 'Inviter des membres' }).click()
+    cy.findAllByRole('link', { name: 'Inviter des membres' }).first().click()
 
     cy.contains('Rechercher par nom ou adresse e-mail').click()
 

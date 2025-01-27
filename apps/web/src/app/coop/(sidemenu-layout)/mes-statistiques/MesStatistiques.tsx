@@ -6,6 +6,7 @@ import { StatistiquesBeneficiaires } from '@app/web/app/coop/(sidemenu-layout)/m
 import { SessionUser } from '@app/web/auth/sessionUser'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
+import { EquipeVide } from '@app/web/app/coop/EquipeVide'
 import { ExportStatistiques } from './_components/ExportStatistiques'
 import { PrintStatistiques } from './_components/PrintStatistiques'
 import { StatistiquesTerritoriales } from './_components/StatistiquesTerritoriales'
@@ -16,6 +17,7 @@ export const MesStatistiques = (
   mesStatistiquesProps: MesStatistiquesPageData & {
     user: SessionUser
     codeInsee?: string | null
+    mediateurCoordonnesCount: number
   },
 ) => {
   const {
@@ -26,6 +28,7 @@ export const MesStatistiques = (
     lieuxActiviteOptions,
     activiteDates,
     user,
+    mediateurCoordonnesCount,
   } = mesStatistiquesProps
 
   return (
@@ -60,25 +63,31 @@ export const MesStatistiques = (
           />
         </div>
         <hr />
-        <section className="fr-mb-6w">
-          <StatistiquesGenerales {...mesStatistiquesProps} />
-        </section>
-        <section className="fr-mb-6w">
-          <StatistiquesActivites {...mesStatistiquesProps} />
-        </section>
-        <section className="fr-mb-6w">
-          <StatistiquesBeneficiaires {...mesStatistiquesProps} />
-        </section>
-        <section>
-          <h2 className="fr-h5 fr-text-mention--grey fr-flex fr-align-items-center fr-flex-gap-2v">
-            <img
-              src="/images/services/conseillers-numerique-logo-small.svg"
-              alt=""
-            />
-            Statistiques départementales France Numérique Ensemble
-          </h2>
-          <StatistiquesTerritoriales />
-        </section>
+        {user.coordinateur?.id != null && mediateurCoordonnesCount === 0 ? (
+          <EquipeVide />
+        ) : (
+          <>
+            <section className="fr-mb-6w">
+              <StatistiquesGenerales {...mesStatistiquesProps} />
+            </section>
+            <section className="fr-mb-6w">
+              <StatistiquesActivites {...mesStatistiquesProps} />
+            </section>
+            <section className="fr-mb-6w">
+              <StatistiquesBeneficiaires {...mesStatistiquesProps} />
+            </section>
+            <section>
+              <h2 className="fr-h5 fr-text-mention--grey fr-flex fr-align-items-center fr-flex-gap-2v">
+                <img
+                  src="/images/services/conseillers-numerique-logo-small.svg"
+                  alt=""
+                />
+                Statistiques départementales France Numérique Ensemble
+              </h2>
+              <StatistiquesTerritoriales />
+            </section>
+          </>
+        )}
       </main>
     </CoopPageContainer>
   )
