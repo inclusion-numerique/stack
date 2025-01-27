@@ -27,10 +27,10 @@ export const executeFixCoordinationsV1 = async (
   })
 
   const mongoCoordinateurs = await runPromisesSequentially(
-    coordinateurs.map(({ conseillerNumeriqueId }) =>
-      fetchConseillerNumeriqueV1Data({
-        v1ConseillerId: conseillerNumeriqueId,
-      }),
+    coordinateurs.map(({ conseillerNumeriqueId: v1ConseillerId }) =>
+      v1ConseillerId == null
+        ? null
+        : fetchConseillerNumeriqueV1Data({ v1ConseillerId }),
     ),
   ).then((coordinateursFromMongo) =>
     coordinateursFromMongo.filter(onlyDefinedAndNotNull),

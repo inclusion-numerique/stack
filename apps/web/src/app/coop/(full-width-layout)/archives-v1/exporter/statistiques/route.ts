@@ -57,7 +57,7 @@ export const GET = async (request: NextRequest) => {
       },
     })
 
-    if (!coordinateur) {
+    if (!coordinateur?.conseillerNumeriqueId) {
       return new Response('Coordinateur not found', { status: 404 })
     }
 

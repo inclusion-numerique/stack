@@ -5,6 +5,7 @@ import LieuxActiviteForm from '@app/web/app/inscription/LieuxActiviteForm'
 import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieuxActiviteForInscription'
 import { conseillerNumeriqueInscriptionSteps } from '@app/web/app/inscription/(steps)/conseiller-numerique/conseillerNumeriqueinscriptionSteps'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
+import { mediateurinscriptionStepsCount } from '@app/web/app/inscription/(steps)/mediateur/mediateurinscriptionSteps'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),
@@ -26,7 +27,10 @@ const Page = async () => {
     <InscriptionCard
       title="Renseignez vos lieux d’activité"
       backHref={conseillerNumeriqueInscriptionSteps.recapitulatif}
-      subtitle="Vos lieux d’activité sont les lieux ou vous accueillez et accompagnez vos bénéficiaires (e.g. : lieu de permanence...)"
+      nextStepTitle="Récapitulatif de vos informations"
+      stepNumber={2}
+      totalSteps={mediateurinscriptionStepsCount}
+      subtitle="Vos lieux d’activité sont les lieux où vous accueillez et accompagnez vos bénéficiaires (e.g. : lieu de permanence...)"
     >
       <LieuxActiviteForm
         nextHref={conseillerNumeriqueInscriptionSteps.recapitulatif}

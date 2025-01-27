@@ -1,7 +1,7 @@
 import Badge from '@codegouvfr/react-dsfr/Badge'
 import { UtilisateurForList } from '@app/web/app/administration/utilisateurs/queryUtilisateursForList'
 import { getUserLifecycle } from '@app/web/app/administration/utilisateurs/getUserLifecycle'
-import { profileInscriptionLabels } from '@app/web/inscription/profilInscription'
+import { allProfileInscriptionLabels } from '@app/web/inscription/profilInscription'
 
 export const getUserLifecycleBadge = (
   user: Pick<
@@ -50,7 +50,7 @@ export const getUserLifecycleBadge = (
     return (
       <Badge small={small} severity="new">
         Inscription{' '}
-        {profileInscriptionLabels[user.profilInscription].toLowerCase()}
+        {allProfileInscriptionLabels[user.profilInscription].toLowerCase()}
       </Badge>
     )
   }

@@ -13,12 +13,24 @@ describe('ETQ Conseiller numérique, je peux m’inscrire en suivant le bon parc
         profilInscription: 'ConseillerNumerique',
         identificationResult: 'matching',
       })
+
+      cy.findByText('Continuer').click()
+
+      cy.findByText('Valider').click()
+
+      cy.findByText('Suivant').click()
+
+      cy.findByText('Valider mon inscription').click()
+
+      cy.findByText('Voir plus tard').click()
+
+      cy.get('h1').should('contain', 'Bonjour')
     })
 
     it(`ETQ Conseiller numérique ${user.lastName}, je ne peux m’inscrire en tant que conseiller même si j’ai choisi "coordinateur"`, () => {
       startInscriptionAs({
         user,
-        profilInscription: 'Coordinateur',
+        profilInscription: 'CoordinateurConseillerNumerique',
         identificationResult: 'different',
         expectedCheckedProfilInscription: 'ConseillerNumerique',
       })

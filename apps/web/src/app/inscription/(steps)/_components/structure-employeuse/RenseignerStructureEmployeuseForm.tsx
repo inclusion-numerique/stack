@@ -18,13 +18,15 @@ import { trpc } from '@app/web/trpc'
 import SiretInputInfo from '@app/web/siret/SiretInputInfo'
 import StructureCard from '@app/web/components/structure/StructureCard'
 import type { StructureCreationDataWithSiret } from '@app/web/app/structure/StructureValidation'
-import { debouncedLoadStructureEmployeuseOptions } from '@app/web/app/inscription/(steps)/mediateur/structure-employeuse/loadStructureEmployeuseOptions'
+import { debouncedLoadStructureEmployeuseOptions } from './loadStructureEmployeuseOptions'
 
 const RenseignerStructureEmployeuseForm = ({
   defaultValues,
+  nextStep,
   structureEmployeuse,
 }: {
   defaultValues: DefaultValues<RenseignerStructureEmployeuseData>
+  nextStep: string
   structureEmployeuse: StructureCreationDataWithSiret | null
 }) => {
   const form = useForm<RenseignerStructureEmployeuseData>({
@@ -77,7 +79,7 @@ const RenseignerStructureEmployeuseForm = ({
   const onSubmit = async (data: RenseignerStructureEmployeuseData) => {
     try {
       await mutation.mutateAsync(data)
-      router.push('/inscription/mediateur/structure-employeuse-lieu-activite')
+      router.push(nextStep)
       router.refresh()
     } catch (mutationError) {
       if (applyZodValidationMutationErrorsToForm(mutationError, setError)) {
@@ -102,7 +104,7 @@ const RenseignerStructureEmployeuseForm = ({
     <form onSubmit={handleSubmit(onSubmit)}>
       <CustomSelectFormField
         key={selectedStructure?.siret}
-        label={null}
+        label="Rechercher par SIRET, nom ou adresse de votre structure"
         control={control}
         path="structureEmployeuse.siret"
         placeholder="Rechercher"

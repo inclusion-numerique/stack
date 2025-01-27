@@ -55,12 +55,8 @@ export const fetchConseillerNumeriqueV1Data = async (
 
   const miseEnRelations = (await miseEnRelationCollection
     .find(
-      {
-        'conseillerObj._id': conseillerDocument._id,
-      },
-      {
-        projection: MiseEnRelationV1MinimalProjection,
-      },
+      { 'conseillerObj._id': conseillerDocument._id },
+      { projection: MiseEnRelationV1MinimalProjection },
     )
     .toArray()) as unknown as MiseEnRelationConseillerNumeriqueV1MinimalProjection[]
 

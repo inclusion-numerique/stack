@@ -30,7 +30,7 @@ const Page = async () => {
       title="Renseignez vos lieux d’activité"
       backHref={conseillerNumeriqueLieuxInscriptionSteps.verifier}
       nextStepTitle="Récapitulatif de vos informations"
-      subtitle="Vos lieux d’activité sont les lieux ou vous accueillez et accompagnez vos bénéficiaires (e.g. : lieu de permanence...)"
+      subtitle="Vos lieux d’activité sont les lieux où vous accueillez et accompagnez vos bénéficiaires (e.g. : lieu de permanence...)"
       stepNumber={2}
       totalSteps={conseillerNumeriqueLieuxInscriptionStepsCount}
     >

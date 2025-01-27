@@ -1,6 +1,6 @@
 .fr-notice--flex .fr-notice__title {
   display: flex;
-  align-items: center;
+  gap: 0.5rem;
 }
 
 /* Fix notice padding right bug and add border radius */

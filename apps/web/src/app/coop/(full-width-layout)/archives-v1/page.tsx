@@ -14,6 +14,9 @@ const ArchivesV1Page = async () => {
   if (user.coordinateur) {
     const coordinateurV1Id = user.coordinateur.conseillerNumeriqueId
 
+    if (coordinateurV1Id === null)
+      throw new Error('Coordinateur is not linked to a conseiller numerique')
+
     const archivesV1CoordinateurPageData =
       await getArchivesV1CoordinateurPageData({
         coordinateurV1Id,

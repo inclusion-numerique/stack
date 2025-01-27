@@ -4,7 +4,7 @@ export const mediateurInscriptionMediateurId =
   '77ae444f-574c-4fcc-87cb-4f792725a496'
 
 export const mediateurInscription = givenUser({
-  id: '1c8a6a72-c912-4eff-a45f-1252fa09f1b9',
+  id: 'fd139d0a-8b52-47c8-820e-716b611564fc',
   firstName: 'Médiateur',
   lastName: 'Inscription',
   isFixture: true,

@@ -1,9 +1,10 @@
-import Link from 'next/link'
 import React from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import {
+  allProfileInscriptionLabels,
   profileInscriptionFromSlug,
-  profileInscriptionLabels,
   type ProfileInscriptionSlug,
 } from '@app/web/inscription/profilInscription'
 
@@ -34,9 +35,18 @@ export const AnotherRoleFound = ({
   lieuActiviteCount: number
 }) => (
   <div className="fr-flex fr-direction-column fr-flex-gap-12v">
-    <h1 className="fr-h3 fr-mb-0 fr-text-title--blue-france">
-      Finaliser votre inscription pour accéder à votre espace
-    </h1>
+    <div className="fr-text--center">
+      <Image
+        className="fr-mb-6v"
+        width={94}
+        height={88}
+        src="/images/illustrations/landing-page/contexte/identifier.svg"
+        alt=""
+      />
+      <h1 className="fr-h3 fr-mb-0 fr-text-title--blue-france">
+        Finaliser votre inscription pour accéder à votre espace
+      </h1>
+    </div>
     <div className="fr-background-contrast--info fr-p-3w fr-border-radius--8">
       <div className="fr-mb-2w">
         <img
@@ -46,14 +56,14 @@ export const AnotherRoleFound = ({
         />
         <h2 className="fr-h6 fr-mb-0">
           Profil de{' '}
-          {profileInscriptionLabels[
+          {allProfileInscriptionLabels[
             profileInscriptionFromSlug[roleFound]
           ].toLocaleLowerCase()}{' '}
           identifié
         </h2>
         <div>
           Nous avons identifié un profil de{' '}
-          {profileInscriptionLabels[
+          {allProfileInscriptionLabels[
             profileInscriptionFromSlug[roleFound]
           ].toLocaleLowerCase()}{' '}
           correspondant aux informations que vous avez renseignées.

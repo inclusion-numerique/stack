@@ -1,4 +1,5 @@
 import {
+  createCoordinateurFor,
   createSession,
   createUser,
   deleteSession,
@@ -19,6 +20,7 @@ export const tasks = {
   deleteAllData,
   resetFixtures,
   createInvitation,
+  createCoordinateurFor,
 }
 
 export type Tasks = typeof tasks

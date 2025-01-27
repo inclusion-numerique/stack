@@ -7,8 +7,9 @@ import { getLieuxActiviteForInscription } from '@app/web/app/inscription/getLieu
 import { conseillerNumeriqueInscriptionSteps } from '@app/web/app/inscription/(steps)/conseiller-numerique/conseillerNumeriqueinscriptionSteps'
 import RoleInscriptionNotice from '@app/web/app/inscription/RoleInscriptionNotice'
 import InscriptionRecapitulatif from '@app/web/app/inscription/InscriptionRecapitulatif'
-import { profileInscriptionLabels } from '@app/web/inscription/profilInscription'
+import { allProfileInscriptionLabels } from '@app/web/inscription/profilInscription'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
+import { conseillerNumeriqueLieuxInscriptionStepsCount } from '@app/web/app/inscription/(steps)/conseiller-numerique-lieux/conseillerNumeriqueLieuxInscriptionSteps'
 
 export const metadata = {
   title: metadataTitle('Finaliser mon inscription'),
@@ -40,9 +41,11 @@ const Page = async () => {
       title="Récapitulatif de vos informations"
       backHref={conseillerNumeriqueInscriptionSteps.intro}
       subtitle="Vérifiez que ces informations sont exactes avant de valider votre inscription."
+      stepNumber={3}
+      totalSteps={conseillerNumeriqueLieuxInscriptionStepsCount}
     >
       <RoleInscriptionNotice
-        roleInscription={profileInscriptionLabels.ConseillerNumerique.toLocaleLowerCase()}
+        roleInscription={allProfileInscriptionLabels.ConseillerNumerique.toLocaleLowerCase()}
         className="fr-mt-12v"
       />
       <InscriptionRecapitulatif
