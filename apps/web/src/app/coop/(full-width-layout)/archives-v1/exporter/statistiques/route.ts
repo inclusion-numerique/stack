@@ -9,6 +9,7 @@ import { getRawStatistiquesCrasV1 } from '@app/web/app/coop/(full-width-layout)/
 import { getConseillerCoordonnesIds } from '@app/web/v1/v1CraQueries'
 import { createSlug } from '@app/web/utils/createSlug'
 import { createCommunesClient } from '@app/web/communes/communesClient'
+import { getCoordinateurConseillersCoordonnesV1 } from '@app/web/external-apis/conseiller-numerique/getCoordinateurConseillersCoordonnesV1'
 import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
 
 export const GET = async (request: NextRequest) => {
@@ -73,6 +74,9 @@ export const GET = async (request: NextRequest) => {
   // Check that user is allowed to access this data (is the conseiller himself or is its coordinateur)
   // Check in v1 because coordinateur can access v1 conseillers that are not yet in our database
   if (input.conseiller && user.coordinateur) {
+    if (!user.coordinateur.conseillerNumeriqueId) {
+      return new Response('Forbidden', { status: 403 })
+    }
     const v1Conseiller = await fetchConseillerNumeriqueV1Data({
       v1ConseillerId: input.conseiller,
     })
@@ -81,11 +85,16 @@ export const GET = async (request: NextRequest) => {
       return new Response('Conseiller not found', { status: 404 })
     }
 
+    const { conseillersV1CoordonnesIds, coordinateur } =
+      await getCoordinateurConseillersCoordonnesV1({
+        coordinateur: {
+          conseillerNumeriqueId: user.coordinateur.conseillerNumeriqueId,
+        },
+      })
+
     if (
-      !v1Conseiller.conseiller.coordinateurs?.find(
-        ({ id }) =>
-          id.toString('hex') === user.coordinateur?.conseillerNumeriqueId,
-      )
+      input.conseiller !== coordinateur.id &&
+      !conseillersV1CoordonnesIds.includes(input.conseiller)
     ) {
       return new Response('Forbidden', { status: 403 })
     }

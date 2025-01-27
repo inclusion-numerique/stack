@@ -6,6 +6,7 @@ import { buildArchivesCrasV1Worksheet } from '@app/web/worksheet/archivesCrasV1/
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import { getArchivesV1PageDataWithCras } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1PageData'
 import { GetCrasConseillerNumeriqueV1QueryParamsValidation } from '@app/web/v1/GetCrasConseillerNumeriqueV1QueryParamsValidation'
+import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
 
 export const GET = async (request: NextRequest) => {
   // parse url search params as object with zod
@@ -34,30 +35,25 @@ export const GET = async (request: NextRequest) => {
 
   const input = parsedInput.data
 
+  // Check existence in V1
   if (input.conseiller) {
-    const conseillerNumerique =
-      await prismaClient.conseillerNumerique.findUnique({
-        where: {
-          id: input.conseiller,
-        },
-        include: {
-          mediateur: {
-            include: {
-              user: true,
-            },
-          },
-        },
-      })
+    const v1ConseillerNumerique = await fetchConseillerNumeriqueV1Data({
+      v1ConseillerId: input.conseiller,
+    })
 
-    if (!conseillerNumerique) {
+    if (!v1ConseillerNumerique) {
       return new Response('Conseiller numerique not found', { status: 404 })
     }
   }
 
+  // Check existence
   if (input.coordinateur) {
     const coordinateur = await prismaClient.coordinateur.findUnique({
       where: {
         conseillerNumeriqueId: input.coordinateur,
+      },
+      select: {
+        id: true,
       },
     })
 
@@ -69,10 +65,12 @@ export const GET = async (request: NextRequest) => {
   // Can only access own CRAs
   if (
     input.conseiller &&
-    user.mediateur?.conseillerNumerique?.id !== input.conseiller
+    user.mediateur?.conseillerNumerique?.id !== input.conseiller &&
+    user.coordinateur?.conseillerNumeriqueId !== input.conseiller
   ) {
     return new Response('Forbidden', { status: 403 })
   }
+
   if (
     input.coordinateur &&
     user.coordinateur?.conseillerNumeriqueId !== input.coordinateur
