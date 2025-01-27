@@ -230,12 +230,14 @@ export const thematiqueLabels: {
   ScolariteEtNumerique: 'Scolarité et numérique',
   CreerAvecLeNumerique: 'Gérer ses contenus numériques',
   CultureNumerique: 'Culture numérique',
+  IntelligenceArtificielle: 'Intelligence artificielle (IA)',
 }
 
 export const thematiqueShortLabels = {
   ...thematiqueLabels,
   ReseauxSociaux: 'Réseaux sociaux',
   SecuriteNumerique: 'Sécurité numérique',
+  IntelligenceArtificielle: 'Intelligence artificielle',
 }
 
 export const thematiqueHints: {
@@ -313,6 +315,11 @@ export const thematiqueHints: {
     'Citoyenneté & engagement',
     'RGPD, Open Source, Licences libres…',
   ],
+  IntelligenceArtificielle: [
+    'Comprendre les enjeux autour de l’IA',
+    'Utiliser et interagir de manière critique avec les outils d’IA',
+    'Animer un Café IA dans le cadre d’un atelier collectif',
+  ],
 }
 
 export const thematiqueIllustrations: {
@@ -333,6 +340,8 @@ export const thematiqueIllustrations: {
   ScolariteEtNumerique: '/images/iconographie/mednum-scolarite.svg',
   CreerAvecLeNumerique: '/images/iconographie/mednum-creer.svg',
   CultureNumerique: '/images/iconographie/mednum-culture-numerique.svg',
+  IntelligenceArtificielle:
+    '/images/iconographie/intelligence-artificielle.svg',
 }
 
 export const thematiqueOptions = labelsToOptions(thematiqueLabels)
@@ -369,6 +378,7 @@ export const thematiqueApiValues = {
   ScolariteEtNumerique: 'scolarite_et_numerique',
   CreerAvecLeNumerique: 'creer_avec_le_numerique',
   CultureNumerique: 'culture_numerique',
+  IntelligenceArtificielle: 'intelligence_artificielle',
 } as const satisfies {
   [key in Thematique]: string
 }

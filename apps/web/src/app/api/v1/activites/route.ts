@@ -80,6 +80,7 @@ type ActiviteAttributes = {
     | 'scolarite_et_numerique'
     | 'creer_avec_le_numerique'
     | 'culture_numerique'
+    | 'intelligence_artificielle'
   )[]
 
   thematiques_demarche_administrative: (
@@ -255,7 +256,7 @@ const ActiviteCursorValidation = z.object({
  *               description: thématiques abordées lors de l'accompagnement
  *               items:
  *                 type: string
- *                 enum: [diagnostic_numerique, prendre_en_main_du_materiel, navigation_sur_internet, email, bureautique, reseaux_sociaux, sante, banque_et_achats_en_ligne, entrepreneuriat, insertion_professionnelle, securite_numerique, parentalite, scolarite_et_numerique, creer_avec_le_numerique, culture_numerique]
+ *                 enum: [diagnostic_numerique, prendre_en_main_du_materiel, navigation_sur_internet, email, bureautique, reseaux_sociaux, sante, banque_et_achats_en_ligne, entrepreneuriat, insertion_professionnelle, securite_numerique, parentalite, scolarite_et_numerique, creer_avec_le_numerique, culture_numerique, intelligence_artificielle]
  *                 example: "diagnostic_numerique"
  *             thematiques_demarche_administrative:
  *               type: array

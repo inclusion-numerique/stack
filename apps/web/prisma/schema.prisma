@@ -851,6 +851,7 @@ enum Thematique {
   ScolariteEtNumerique     @map("scolarite_et_numerique")
   CreerAvecLeNumerique     @map("creer_avec_le_numerique")
   CultureNumerique         @map("culture_numerique")
+  IntelligenceArtificielle @map("intelligence_artificielle")
 
   @@map("thematique")
 }
