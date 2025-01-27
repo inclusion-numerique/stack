@@ -14,7 +14,7 @@ export const Support = () => (
         prochaines évolutions.
       </p>
       <Link
-        href="https://tally.so/r/nr0ayL"
+        href="https://tally.so/r/nWDMXv"
         target="_blank"
         rel="noreferrer"
         title="Accéder à l'inscription au prochain webinaire - nouvelle fenêtre"
