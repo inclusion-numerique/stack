@@ -78,7 +78,7 @@ export const getCraCollectifDataDefaultValuesFromExisting = async ({
     )
 
   const participantsDefaultValues = beneficiairesSuivis.map(
-    (beneficiaire) => getBeneficiaireDefaulCratDataFromExisting(beneficiaire),
+    (beneficiaire) => getBeneficiaireDefaulCratDataFromExisting(beneficiaire)(),
     // I cannot figure out how to make the type checker happy without this cast
   ) as Exclude<
     DefaultValues<CraCollectifData>['participants'],
