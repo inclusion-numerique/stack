@@ -165,7 +165,7 @@ export const normalizeBeneficiairesCommunesRaw = (
   rawCommunes: BeneficiairesCommunesRaw[],
 ) => {
   const sortedCommunes = rawCommunes.sort(
-    (a, b) => a.count_beneficiaires - b.count_beneficiaires,
+    (a, b) => b.count_beneficiaires - a.count_beneficiaires,
   )
   const normalizedCommunes = sortedCommunes.map(
     ({ commune, coalesced_code_insee, code_postal, count_beneficiaires }) => ({
@@ -181,7 +181,7 @@ export const normalizeBeneficiairesCommunesRaw = (
     normalizedCommunes,
     'count',
     'proportion',
-  ).sort((a, b) => b.count - a.count)
+  )
 }
 
 export const getBeneficiaireStats = async ({

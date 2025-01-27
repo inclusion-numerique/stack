@@ -239,7 +239,7 @@ export const getActivitesStructuresStats = async ({
     mediateurIds,
     activitesFilters,
   })
-  const sortedStructures = statsRaw.sort((a, b) => a.count - b.count)
+  const sortedStructures = statsRaw.sort((a, b) => b.count - a.count)
   const normalizedStructures = sortedStructures.map(
     ({ id, nom, commune, code_postal, code_insee, count }) => ({
       id,
