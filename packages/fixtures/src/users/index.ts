@@ -99,17 +99,17 @@ export const teamAdministrateurs = [
     role: 'Admin',
   }),
   givenUser({
-    id: '7d4ca05b-369b-4b3b-b42b-fc01a64c62d0',
-    email: 'vincent.jarrige@beta.gouv.fr',
-    firstName: 'Vincent',
-    lastName: 'Jarrige',
-    role: 'Admin',
-  }),
-  givenUser({
     id: '7faedd26-8603-4309-a614-062bba9161d8',
     email: 'sylvain.aubry@beta.gouv.fr',
     firstName: 'Sylvain',
     lastName: 'Aubry',
+    role: 'Admin',
+  }),
+  givenUser({
+    id: '36846ce2-a0d2-4468-965d-cbc3bc1e2fbe',
+    firstName: 'Contact',
+    lastName: 'Mednum',
+    email: 'contact@lamednum.coop',
     role: 'Admin',
   }),
 ] satisfies Prisma.UserCreateInput[]
