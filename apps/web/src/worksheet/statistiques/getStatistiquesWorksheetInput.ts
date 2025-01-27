@@ -4,11 +4,7 @@ import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFi
 import { generateActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
 import { getMesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
 import type { BuildStatistiquesWorksheetInput } from '@app/web/worksheet/statistiques/buildStatistiquesWorksheet'
-
-const mediateurCoordonnesIdsFor = (user: SessionUser) =>
-  (user.coordinateur?.mediateursCoordonnes ?? []).map(
-    ({ mediateurId }) => mediateurId,
-  )
+import { mediateurCoordonnesIdsFor } from '@app/web/mediateurs/mediateurCoordonnesIdsFor'
 
 export const getStatistiquesWorksheetInput = async ({
   user,

@@ -37,12 +37,12 @@ const EquipeCount = ({
 )
 
 export const Equipe = ({
-  mediateurs: { total, conseillerNumerique, mediateurNumerique },
+  mediateurs: { total, conseillersNumeriques, mediateursNumeriques },
 }: {
   mediateurs: {
     total: number
-    conseillerNumerique: number
-    mediateurNumerique: number
+    conseillersNumeriques: number
+    mediateursNumeriques: number
   }
 }) => (
   <>
@@ -58,12 +58,12 @@ export const Equipe = ({
       />
       <EquipeCount
         label="Conseillers numériques"
-        count={conseillerNumerique}
+        count={conseillersNumeriques}
         icon="/images/services/conseillers-numerique-icon.svg"
       />
       <EquipeCount
         label="Médiateurs numériques"
-        count={mediateurNumerique}
+        count={mediateursNumeriques}
         icon="ri-account-circle-line"
       />
     </div>

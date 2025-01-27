@@ -77,11 +77,23 @@ const InviterMembreForm = () => {
       ) {
         return
       }
+      if (
+        mutationError instanceof Error &&
+        mutationError.message === 'No new invitations to send'
+      ) {
+        createToast({
+          priority: 'error',
+          message: `Aucune invitation à envoyer pour ${data.members.length > 1 ? 'ces membres' : 'ce membre'}`,
+        })
+        return
+      }
+
       createToast({
         priority: 'error',
         message:
           'Une erreur est survenue lors de l’invitation, veuillez réessayer ultérieurement.',
       })
+
       throw mutationError
     }
   }

@@ -1,8 +1,7 @@
 import { addMonths, format, isAfter, isBefore, subMonths } from 'date-fns'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
-import { getMediateursCount } from '@app/web/mediateurs/getMediateursCount'
+import { countMediateursCoordonnesBy } from '@app/web/mediateurs/countMediateursCoordonnesBy'
 import { findConseillersNumeriquesContractInfoByEmails } from '@app/web/external-apis/conseiller-numerique/fetchConseillersCoordonnes'
-import { mediateurCoordonnesIdsFor } from '@app/web/mediateurs/mediateurCoordonnesIdsFor'
 import {
   type MonEquipeSearchParams,
   searchMediateursCoordonneBy,
@@ -59,9 +58,7 @@ export const getMonEquipePageData = async ({
       mediateurs.map(toUserEmail),
     )
 
-  const mediateurCount = await getMediateursCount(
-    mediateurCoordonnesIdsFor({ coordinateur }),
-  )
+  const stats = await countMediateursCoordonnesBy(coordinateur)
 
   return {
     mediateurs: mediateurs.map(
@@ -88,11 +85,7 @@ export const getMonEquipePageData = async ({
         type,
       }),
     ),
-    stats: {
-      total: mediateurCount[0],
-      conseillerNumerique: mediateurCount[1],
-      mediateurNumerique: mediateurCount[2],
-    },
+    stats,
     matchesCount,
     totalPages,
   }
