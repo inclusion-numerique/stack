@@ -250,6 +250,11 @@ const CustomSelectFormField = <
           IsMulti,
           Group
         >['onChange'] = (option) => {
+          if (option == null) {
+            onChange(null)
+            return
+          }
+
           const newValue = Array.isArray(option)
             ? option.map(optionToFormValue)
             : optionToFormValue(option as Option)

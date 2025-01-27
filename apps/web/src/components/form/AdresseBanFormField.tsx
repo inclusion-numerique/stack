@@ -80,6 +80,7 @@ interface AdresseBanFormFieldProps<
   searchOptions?: SearchAdresseOptions
   asterisk?: boolean
   disabled?: boolean
+  isClearable?: boolean
   hint?: string
   valid?: string
   info?: ReactNode
@@ -99,6 +100,7 @@ const AdresseBanFormField = <
   searchOptions,
   asterisk,
   disabled,
+  isClearable = false,
   hint,
   info,
   valid,
@@ -112,6 +114,7 @@ const AdresseBanFormField = <
     control={control}
     asterisk={asterisk}
     disabled={disabled}
+    isClearable={isClearable}
     path={path}
     hint={hint}
     valid={valid}
