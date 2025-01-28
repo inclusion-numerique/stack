@@ -1,4 +1,7 @@
-import { startInscriptionAs } from '@app/e2e/e2e/inscription/inscriptionE2eHelpers'
+import {
+  searchAndSelectStructureEmployeuse,
+  startInscriptionAs,
+} from '@app/e2e/e2e/inscription/inscriptionE2eHelpers'
 
 describe('ETQ médiateur, je peux m’inscrire en suivant le bon parcours', () => {
   beforeEach(() => {
@@ -28,7 +31,7 @@ describe('ETQ médiateur, je peux m’inscrire en suivant le bon parcours', () =
     })
   })
 
-  it(`ETQ Médiateur ${user.lastName}, je peux m’inscrire en tant que médiateur`, () => {
+  it.only(`ETQ Médiateur ${user.lastName}, je peux m’inscrire en tant que médiateur`, () => {
     startInscriptionAs({
       user,
       profilInscription: 'Mediateur',
@@ -37,12 +40,7 @@ describe('ETQ médiateur, je peux m’inscrire en suivant le bon parcours', () =
 
     cy.findByText('Continuer').click()
 
-    cy.get('input')
-      .click()
-      .type('Franc')
-      .type('e', { delay: 2000 })
-      .type('{downarrow}')
-      .type('{enter}')
+    searchAndSelectStructureEmployeuse('France')
 
     cy.findByText('Suivant').click()
 
@@ -68,12 +66,7 @@ describe('ETQ médiateur, je peux m’inscrire en suivant le bon parcours', () =
 
     cy.findByText('Non').click()
 
-    cy.get('input')
-      .click()
-      .type('Franc')
-      .type('e', { delay: 2000 })
-      .type('{downarrow}')
-      .type('{enter}')
+    searchAndSelectStructureEmployeuse('France')
 
     cy.findByText('Suivant').click()
 

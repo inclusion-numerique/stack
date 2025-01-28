@@ -52,7 +52,12 @@ const loadStructureEmployeuseOptions = async (
     ...structures.map(({ adresse, nom, siret, typologies }) => ({
       label: (
         <>
-          <div className="fr-width-full fr-text--sm fr-mb-0">{nom}</div>
+          <div
+            className="fr-width-full fr-text--sm fr-mb-0"
+            data-structure-employeuse-option={nom}
+          >
+            {nom}
+          </div>
           <div className="fr-width-full fr-text--xs fr-text-mention--grey fr-mb-0">
             {typologies ? `${typologies.join(', ')} · ` : null}
             {adresse}

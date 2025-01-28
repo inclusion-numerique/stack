@@ -66,3 +66,23 @@ export const startInscriptionAs = ({
     cy.findByRole('button', { name: 'Essayer une autre adresse email' })
   }
 }
+
+export const searchAndSelectStructureEmployeuse = (search: string) => {
+  cy.intercept('https://recherche-entreprises.api.gouv.fr/search?q=*').as(
+    'search',
+  )
+
+  // select the structure employeuse input
+  cy.get(
+    'input[id="custom-select-form-field__structureEmployeuse.siret"]',
+  ).type(search)
+
+  cy.wait('@search')
+
+  // The option should be visible
+  cy.get(`div[data-structure-employeuse-option="${search}"]`, {
+    timeout: 20_000, // We have a retry with backoff for avoiding 429 errors. This can be long
+  })
+    .eq(0)
+    .click()
+}
