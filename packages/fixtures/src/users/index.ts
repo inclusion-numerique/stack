@@ -105,11 +105,4 @@ export const teamAdministrateurs = [
     lastName: 'Aubry',
     role: 'Admin',
   }),
-  givenUser({
-    id: '6c198fb4-5765-4c60-9896-79f054d62220',
-    firstName: 'Contact',
-    lastName: 'Mednum',
-    email: 'contact@lamednum.coop',
-    role: 'Admin',
-  }),
 ] satisfies Prisma.UserCreateInput[]
