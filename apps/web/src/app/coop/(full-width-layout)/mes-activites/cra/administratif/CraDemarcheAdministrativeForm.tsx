@@ -502,6 +502,7 @@ const CraDemarcheAdministrativeForm = ({
             control={control}
             path="beneficiaire.communeResidence"
             disabled={isLoading}
+            isClearable
             defaultOptions={initialLieuResidenceOptions}
             defaultValue={
               communeResidenceBeneficiaireDefaultValue ??
