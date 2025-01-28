@@ -111,10 +111,10 @@ export const rechercheApiEntreprise = async (
   }
 
   return pRetry(executeFetch, {
-    retries: 5,
-    factor: 2,
-    minTimeout: 1000,
-    maxTimeout: 10_000,
+    retries: 8,
+    factor: 1.2,
+    minTimeout: 2500,
+    maxTimeout: 20_000,
   })
 }
 
