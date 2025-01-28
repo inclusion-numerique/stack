@@ -24,14 +24,15 @@ const authOptions: NextAuthOptions = {
     // This would be the first page the user sees after signing up
     // newUser: '/bienvenue',
   },
-  providers: PublicWebAppConfig.isPreview
-    ? [
-        Email({
-          ...ServerWebAppConfig.Email,
-          sendVerificationRequest,
-        }),
-      ]
-    : [ProConnectProvider()],
+  providers:
+    PublicWebAppConfig.isPreview || PublicWebAppConfig.isSante
+      ? [
+          Email({
+            ...ServerWebAppConfig.Email,
+            sendVerificationRequest,
+          }),
+        ]
+      : [ProConnectProvider()],
   callbacks: {
     signIn({ user }) {
       // Everyone is allowed to sign in
