@@ -19,6 +19,7 @@ export const PublicWebAppConfig = {
   isLocal,
   isPreview,
   isSante,
+  isE2e,
   Chromatic: {
     appId: process.env.CHROMATIC_APP_ID ?? '',
   },

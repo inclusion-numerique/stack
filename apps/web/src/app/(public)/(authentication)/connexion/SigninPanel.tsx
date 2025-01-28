@@ -39,7 +39,7 @@ const SigninPanel = ({
         </p>
         <EmailSigninForm callbackUrl={callbackUrl} />
       </>
-    ) : PublicWebAppConfig.isSante ? (
+    ) : PublicWebAppConfig.isSante && !PublicWebAppConfig.isE2e ? (
       <EmailSigninForm callbackUrl={callbackUrl} />
     ) : (
       <ProConnectSigninButton className="fr-mt-8v" callbackUrl={callbackUrl} />
