@@ -74,6 +74,9 @@ export class WebAppStack extends TerraformStack {
 
     const isMain = namespace === 'main'
 
+    // Specific prod instance
+    const isSante = namespace === 'sante'
+
     const { hostname, subdomain } = isMain
       ? { hostname: mainDomain, subdomain: '' }
       : createPreviewSubdomain(namespace, previewDomain)
@@ -226,10 +229,10 @@ export class WebAppStack extends TerraformStack {
         HMAC_SECRET_KEY: sensitiveEnvironmentVariables.HMAC_SECRET_KEY.value,
       },
       name: containerName,
-      minScale: isMain ? 2 : namespace === 'dev' ? 1 : 0,
+      minScale: isMain ? 2 : isSante ? 1 : namespace === 'dev' ? 1 : 0,
       maxScale: isMain ? 5 : 1,
-      cpuLimit: isMain ? 3000 : 1120, // mVPCU
-      memoryLimit: isMain ? 3072 : 2048, // mB
+      cpuLimit: isMain || isSante ? 3000 : 1120, // mVPCU
+      memoryLimit: isMain || isSante ? 3072 : 2048, // mB
       deploy: true,
     })
 

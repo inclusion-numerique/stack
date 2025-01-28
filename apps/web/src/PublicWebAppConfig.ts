@@ -4,12 +4,13 @@
 import { mainLiveUrl, projectTitle, repositoryUrl } from '@app/config/config'
 
 const isMain = process.env.BRANCH === 'main'
+const isSante = process.env.BRANCH === 'sante'
 // eslint-disable-next-line unicorn/prevent-abbreviations
 const isDev = process.env.BRANCH === 'dev'
 const isLocal = !process.env.BRANCH
 // eslint-disable-next-line unicorn/prevent-abbreviations
 const isE2e = !!process.env.IS_E2E
-const isPreview = !isMain && !isDev && !isLocal && !isE2e
+const isPreview = !isMain && !isDev && !isSante && !isLocal && !isE2e
 
 export const PublicWebAppConfig = {
   Branch: process.env.BRANCH ?? '',
