@@ -257,11 +257,11 @@ model Mediateur {
   modification DateTime @default(now())
   // Cannot soft delete as we need to keep userId and conseillerNumerique.mediateurId unique
 
-  coordinations    MediateurCoordonne[]
-  enActivite       MediateurEnActivite[]
-  beneficiaires    Beneficiaire[]
-  activites        Activite[]
-  InvitationEquipe InvitationEquipe[]
+  coordinations MediateurCoordonne[]
+  enActivite    MediateurEnActivite[]
+  beneficiaires Beneficiaire[]
+  activites     Activite[]
+  invitations   InvitationEquipe[]
 
   @@map("mediateurs")
 }
@@ -384,7 +384,7 @@ model Coordinateur {
   // Cannot soft delete as we need to keep userId and conseillerNumeriqueId unique
 
   mediateursCoordonnes MediateurCoordonne[]
-  InvitationEquipe     InvitationEquipe[]
+  invitations          InvitationEquipe[]
 
   @@index([userId])
   @@map("coordinateurs")
