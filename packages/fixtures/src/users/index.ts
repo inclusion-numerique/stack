@@ -106,7 +106,7 @@ export const teamAdministrateurs = [
     role: 'Admin',
   }),
   givenUser({
-    id: '36846ce2-a0d2-4468-965d-cbc3bc1e2fbe',
+    id: '6c198fb4-5765-4c60-9896-79f054d62220',
     firstName: 'Contact',
     lastName: 'Mednum',
     email: 'contact@lamednum.coop',
