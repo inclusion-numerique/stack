@@ -5,6 +5,10 @@ import ProConnectSigninButton from '@app/web/app/(public)/(authentication)/conne
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { EmailSigninForm } from '@app/web/app/(public)/(authentication)/connexion/EmailSigninForm'
 import LogoCoop from '@app/web/components/LogoCoop'
+import {
+  authenticationViaEmailMagicLink,
+  authenticationViaProconnect,
+} from '@app/web/auth/authenticationProvider'
 
 const SigninPanel = ({
   error,
@@ -27,22 +31,24 @@ const SigninPanel = ({
         <p>{signinErrorMessage(error)}</p>
       </div>
     ) : null}
-    {PublicWebAppConfig.isPreview ? (
+    {authenticationViaProconnect && (
+      <ProConnectSigninButton className="fr-mt-8v" callbackUrl={callbackUrl} />
+    )}
+    {authenticationViaEmailMagicLink && (
       <>
-        <p>
-          La connexion avec ProConnect est uniquement disponible sur les
-          environnement de production <i>main</i> et de recette <i>dev</i>.
-          <br />
-          <br />
-          Sur cette environnement de preview <i>{PublicWebAppConfig.Branch}</i>,
-          vous pouvez vous connecter avec votre email.
-        </p>
+        {PublicWebAppConfig.isPreview && (
+          <p>
+            La connexion avec ProConnect est uniquement disponible sur les
+            environnement de production <i>main</i> et de recette <i>dev</i>.
+            <br />
+            <br />
+            Sur cette environnement de preview{' '}
+            <i>{PublicWebAppConfig.Branch}</i>, vous pouvez vous connecter avec
+            votre email.
+          </p>
+        )}
         <EmailSigninForm callbackUrl={callbackUrl} />
       </>
-    ) : PublicWebAppConfig.isSante && !PublicWebAppConfig.isE2e ? (
-      <EmailSigninForm callbackUrl={callbackUrl} />
-    ) : (
-      <ProConnectSigninButton className="fr-mt-8v" callbackUrl={callbackUrl} />
     )}
   </AuthCard>
 )

@@ -8,7 +8,7 @@ import { registerLastLogin } from '@app/web/security/registerLastLogin'
 import { isFirewallUserAgent } from '@app/web/app/api/auth/[...nextauth]/isFirewallUserAgent'
 import { sendVerificationRequest } from '@app/web/auth/sendVerificationRequest'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
-import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import { authenticationViaProconnect } from '@app/web/auth/authenticationProvider'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -24,15 +24,14 @@ const authOptions: NextAuthOptions = {
     // This would be the first page the user sees after signing up
     // newUser: '/bienvenue',
   },
-  providers:
-    PublicWebAppConfig.isPreview || PublicWebAppConfig.isSante
-      ? [
-          Email({
-            ...ServerWebAppConfig.Email,
-            sendVerificationRequest,
-          }),
-        ]
-      : [ProConnectProvider()],
+  providers: authenticationViaProconnect
+    ? [ProConnectProvider()]
+    : [
+        Email({
+          ...ServerWebAppConfig.Email,
+          sendVerificationRequest,
+        }),
+      ],
   callbacks: {
     signIn({ user }) {
       // Everyone is allowed to sign in
