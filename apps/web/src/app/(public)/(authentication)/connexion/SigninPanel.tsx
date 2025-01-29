@@ -21,10 +21,17 @@ const SigninPanel = ({
     <div className="fr-flex fr-width-full fr-justify-content-center">
       <LogoCoop />
     </div>
-    <p className="fr-text--xl fr-text--center fr-mb-0 fr-mt-8v">
-      Accédez à ce service grâce à <strong>ProConnect</strong>, votre
-      identifiant unique pour accéder à plusieurs services de l’État.
-    </p>
+    {authenticationViaProconnect && (
+      <p className="fr-text--xl fr-text--center fr-mb-0 fr-mt-8v">
+        Accédez à ce service grâce à <strong>ProConnect</strong>, votre
+        identifiant unique pour accéder à plusieurs services de l’État.
+      </p>
+    )}
+    {authenticationViaEmailMagicLink && (
+      <p className="fr-text--xl fr-text--center fr-mb-0 fr-mt-8v">
+        Connexion par réception d’un lien unique par email
+      </p>
+    )}
 
     {error ? (
       <div className="fr-alert fr-alert--error fr-alert--sm fr-mb-6v">
