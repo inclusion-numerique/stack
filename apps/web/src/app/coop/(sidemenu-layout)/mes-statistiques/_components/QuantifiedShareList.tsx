@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { QuantifiedShare } from '../quantifiedShare'
 import { ProgressListItem } from './ProgressListItem'
@@ -29,6 +29,9 @@ export const QuantifiedShareList = ({
 }: {
   quantifiedShares: QuantifiedShare[]
   order?: 'asc' | 'desc'
+
+  // If limit is defined, the list will be truncated to the first limit.count items
+  // and a button will be displayed to display the full list
   limit?: {
     showLabel: string
     hideLabel: string
@@ -36,50 +39,60 @@ export const QuantifiedShareList = ({
   }
   colors?: string[]
 }) => {
-  const [displayFullList, setDisplayFullList] = useState(false)
+  const listShouldBeTruncacted =
+    !!limit?.count && quantifiedShares.length > limit.count
 
-  const maxProportion = quantifiedShares.reduce(
-    (max, quantifiedShare) =>
-      quantifiedShare.proportion > max ? quantifiedShare.proportion : max,
-    0,
+  const [displayFullList, setdisplayFullList] = useState(false)
+
+  const maxProportion = useMemo(
+    () =>
+      quantifiedShares.reduce(
+        (max, quantifiedShare) =>
+          quantifiedShare.proportion > max ? quantifiedShare.proportion : max,
+        0,
+      ),
+    [quantifiedShares],
   )
 
   const orderedQuantifiedShares = orderQuantifiedShares(quantifiedShares, order)
 
+  const quantifiedSharesToDisplay =
+    !listShouldBeTruncacted || displayFullList
+      ? orderedQuantifiedShares
+      : orderedQuantifiedShares.slice(0, limit.count)
+
   return (
     <>
       <ul className="fr-px-0">
-        {orderedQuantifiedShares
-          .slice(0, displayFullList && limit != null ? limit.count : undefined)
-          .map((item) => (
-            <ProgressListItem
-              {...item}
-              key={item.label}
-              colors={colors}
-              maxProportion={maxProportion}
-            />
-          ))}
+        {quantifiedSharesToDisplay.map((item) => (
+          <ProgressListItem
+            {...item}
+            key={item.label}
+            colors={colors}
+            maxProportion={maxProportion}
+          />
+        ))}
       </ul>
-      {limit && quantifiedShares.length - limit.count > 0 && (
+      {listShouldBeTruncacted && (
         <Button
           type="button"
           size="small"
           priority="tertiary no outline"
           className="fr-mt-2w"
-          onClick={() => setDisplayFullList(!displayFullList)}
+          onClick={() => setdisplayFullList(!displayFullList)}
         >
           {displayFullList ? (
+            limit.hideLabel
+          ) : (
             <>
               {limit.showLabel} · {quantifiedShares.length - limit.count}
             </>
-          ) : (
-            limit.hideLabel
           )}
           <span
             className={
               displayFullList
-                ? 'fr-ml-1w ri-arrow-down-s-line'
-                : 'fr-ml-1w ri-arrow-up-s-line'
+                ? 'fr-ml-1w ri-arrow-up-s-line'
+                : 'fr-ml-1w ri-arrow-down-s-line'
             }
             aria-hidden
           />
