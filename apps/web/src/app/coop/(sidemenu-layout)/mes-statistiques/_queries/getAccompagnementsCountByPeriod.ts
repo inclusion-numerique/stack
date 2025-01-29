@@ -9,6 +9,7 @@ import {
   MonthShortLabel,
   monthShortLabels,
 } from '@app/web/utils/monthShortLabels'
+import { activitesMediateurIdsWhereCondition } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/activitesMediateurIdsWhereCondition'
 import { LabelAndCount } from '../quantifiedShare'
 
 const EMPTY_ACCOMPAGNEMENTS_COUNT = monthShortLabels.map(
@@ -21,12 +22,12 @@ export const getAccompagnementsCountByMonth = async ({
   periodEnd,
   intervals = 12,
 }: {
-  mediateurIds: string[]
+  mediateurIds?: string[] // Undefined means no filter, empty array means no mediateur / no data.
   activitesFilters: ActivitesFilters
   periodEnd?: string // Format should be 'YYYY-MM', defaults to CURRENT_DATE if not provided
   intervals?: number // Default to 12 if not provided
 }) => {
-  if (mediateurIds.length === 0) return EMPTY_ACCOMPAGNEMENTS_COUNT
+  if (mediateurIds?.length === 0) return EMPTY_ACCOMPAGNEMENTS_COUNT
 
   const endDate = periodEnd
     ? `TO_DATE('${periodEnd}', 'YYYY-MM')`
@@ -38,7 +39,7 @@ export const getAccompagnementsCountByMonth = async ({
                                         FROM activites
                                                  INNER JOIN accompagnements ON accompagnements.activite_id = activites.id
                                                  LEFT JOIN structures ON structures.id = activites.structure_id
-                                        WHERE activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
+                                        WHERE ${activitesMediateurIdsWhereCondition(mediateurIds)}
                                           AND activites.suppression IS NULL
                                           AND ${getActiviteFiltersSqlFragment(
                                             getActivitesFiltersWhereConditions(
@@ -73,12 +74,12 @@ export const getAccompagnementsCountByDay = async ({
   periodEnd,
   intervals = 30,
 }: {
-  mediateurIds: string[]
+  mediateurIds?: string[] // Undefined means no filter, empty array means no mediateur / no data.
   activitesFilters: ActivitesFilters
   periodEnd?: string // Format should be 'YYYY-MM-DD', defaults to CURRENT_DATE if not provided
   intervals?: number // Default to 30 if not provided
 }) => {
-  if (mediateurIds.length === 0) return EMPTY_ACCOMPAGNEMENTS_COUNT
+  if (mediateurIds?.length === 0) return EMPTY_ACCOMPAGNEMENTS_COUNT
 
   const endDate = periodEnd
     ? `TO_DATE('${periodEnd}', 'YYYY-MM-DD')`
@@ -90,8 +91,8 @@ export const getAccompagnementsCountByDay = async ({
                                         FROM activites
                                                  INNER JOIN accompagnements ON accompagnements.activite_id = activites.id
                                                  LEFT JOIN structures ON structures.id = activites.structure_id
-                                        WHERE activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
-		                                      AND activites.suppression IS NULL
+                                        WHERE ${activitesMediateurIdsWhereCondition(mediateurIds)}
+                                          AND activites.suppression IS NULL
                                           AND ${getActiviteFiltersSqlFragment(
                                             getActivitesFiltersWhereConditions(
                                               activitesFilters,

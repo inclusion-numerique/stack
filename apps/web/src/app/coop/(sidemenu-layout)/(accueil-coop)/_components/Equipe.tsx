@@ -45,27 +45,21 @@ export const Equipe = ({
     mediateursNumeriques: number
   }
 }) => (
-  <>
-    <h2 className="fr-h5 fr-text-mention--grey">
-      <span className="ri-group-2-line fr-mr-1w" aria-hidden />
-      Mon équipe
-    </h2>
-    <div className="fr-background-alt--brown-caramel-950 fr-border-radius--8 fr-flex fr-p-3w fr-flex-gap-6v fr-direction-lg-row fr-direction-column">
-      <EquipeCount
-        label="Membres au total"
-        count={total}
-        icon="ri-group-2-line"
-      />
-      <EquipeCount
-        label="Conseillers numériques"
-        count={conseillersNumeriques}
-        icon="/images/services/conseillers-numerique-icon.svg"
-      />
-      <EquipeCount
-        label="Médiateurs numériques"
-        count={mediateursNumeriques}
-        icon="ri-account-circle-line"
-      />
-    </div>
-  </>
+  <div className="fr-background-alt--brown-caramel-950 fr-border-radius--8 fr-flex fr-p-3w fr-flex-gap-6v fr-direction-lg-row fr-direction-column">
+    <EquipeCount
+      label="Membres au total"
+      count={total}
+      icon="ri-group-2-line"
+    />
+    <EquipeCount
+      label="Conseillers numériques"
+      count={conseillersNumeriques}
+      icon="/images/services/conseillers-numerique-icon.svg"
+    />
+    <EquipeCount
+      label="Médiateurs numériques"
+      count={mediateursNumeriques}
+      icon="ri-account-circle-line"
+    />
+  </div>
 )

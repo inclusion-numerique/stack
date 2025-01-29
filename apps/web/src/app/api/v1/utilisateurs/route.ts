@@ -114,7 +114,7 @@ import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
  *                       type: number
  *                       nullable: true
  *                       description: id_pg
- *                 lieux_activite:
+ *                 en_activite:
  *                   type: array
  *                   description: liste des liens mediateur-structure (uniquement l'id, structure_id...)
  *                   items:
@@ -273,7 +273,7 @@ export type UtilisateurAttributes = {
       id: string
       idPg: number | null
     } | null
-    lieux_activite: Array<{
+    en_activite: Array<{
       id: string
       structure_id: string
       creation: string
@@ -440,7 +440,7 @@ export const GET = createApiV1Route
                       idPg: u.mediateur.conseillerNumerique.idPg ?? null,
                     }
                   : null,
-                lieux_activite: u.mediateur.enActivite.map((ma) => ({
+                en_activite: u.mediateur.enActivite.map((ma) => ({
                   id: ma.id,
                   structure_id: ma.structureId,
                   creation: ma.creation.toISOString(),

@@ -12,7 +12,11 @@ export const StatistiquesGenerales = ({
   totalCounts,
   accompagnementsParMois,
   accompagnementsParJour,
-}: MesStatistiquesPageData) => {
+  wording = 'personnel',
+}: { wording?: 'personnel' | 'generique' } & Pick<
+  MesStatistiquesPageData,
+  'accompagnementsParJour' | 'accompagnementsParMois' | 'totalCounts'
+>) => {
   const [isAccompagnementCountByMonth, setIsAccompagnementCountByMonth] =
     useState(true)
 
@@ -20,7 +24,8 @@ export const StatistiquesGenerales = ({
     <>
       <h2 className="fr-h5 fr-text-mention--grey">
         <span className="ri-line-chart-line fr-mr-1w" aria-hidden />
-        Statistiques générales sur vos accompagnements
+        Statistiques générales{' '}
+        {wording === 'personnel' && 'sur vos accompagnements'}
       </h2>
       <div className="fr-grid-row fr-flex-gap-6v">
         <div className="fr-flex fr-direction-column fr-flex-gap-6v fr-col-xl-4 fr-col-12">

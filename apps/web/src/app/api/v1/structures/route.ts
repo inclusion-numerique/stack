@@ -235,6 +235,12 @@ import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
  *               items:
  *                 type: string
  *                 example: "en_personne"
+ *             mediateurs_en_activite:
+ *               type: integer
+ *               example: 1
+ *             emplois:
+ *               type: integer
+ *               example: 1
  * /structures:
  *   get:
  *     summary: liste des structures
@@ -321,6 +327,8 @@ type StructureAttributes = {
   itinerance: string[]
   modalites_acces: string[]
   modalites_accompagnement: string[]
+  mediateurs_en_activite: number
+  emplois: number
 }
 
 type StructureRelationships = never
@@ -375,6 +383,22 @@ export const GET = createApiV1Route
       orderBy: [{ creation: 'desc' }],
       take: cursorPagination.take,
       skip: cursorPagination.skip,
+      include: {
+        _count: {
+          select: {
+            mediateursEnActivite: {
+              where: {
+                suppression: null,
+              },
+            },
+            emplois: {
+              where: {
+                suppression: null,
+              },
+            },
+          },
+        },
+      },
       cursor: validatedCursor
         ? {
             creation_id: {
@@ -440,6 +464,8 @@ export const GET = createApiV1Route
           itinerance: s.itinerance,
           modalites_acces: s.modalitesAcces,
           modalites_accompagnement: s.modalitesAccompagnement,
+          mediateurs_en_activite: s._count.mediateursEnActivite,
+          emplois: s._count.emplois,
         },
       })),
       links: {

@@ -72,6 +72,18 @@ const AdministrationSideMenu = () => {
     {
       text: (
         <>
+          <span className="fr-icon-line-chart-line ri-xl fr-mr-1w fr-text--regular" />
+          Statistiques
+        </>
+      ),
+      linkProps: {
+        href: '/administration/statistiques',
+      },
+      isActive: pathname?.startsWith('/administration/statistiques'),
+    },
+    {
+      text: (
+        <>
           <span className="fr-icon-settings-5-line ri-xl fr-mr-1w fr-text--regular" />
           Outils
         </>
