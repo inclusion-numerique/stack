@@ -32,6 +32,7 @@ import {
 } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/createEnumCountSelect'
 import { allocatePercentagesFromRecords } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/allocatePercentages'
 import { activitesMediateurIdsWhereCondition } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/activitesMediateurIdsWhereCondition'
+import { UserProfile } from '@app/web/utils/user'
 
 export type ActivitesStatsRaw = {
   total_activites: number
@@ -46,9 +47,11 @@ export type ActivitesStatsRaw = {
 const EMPTY_ACTIVITES_STATS: ActivitesStatsRaw = { total_activites: 0 }
 
 export const getActivitesStatsRaw = async ({
+  user,
   mediateurIds,
   activitesFilters,
 }: {
+  user?: UserProfile
   mediateurIds?: string[] // Undefined means no filter, empty array means no mediateur / no data.
   activitesFilters: ActivitesFilters
 }) => {
@@ -56,45 +59,22 @@ export const getActivitesStatsRaw = async ({
 
   return prismaClient.$queryRaw<[ActivitesStatsRaw]>`
       SELECT COALESCE(COUNT(*), 0)::integer AS total_activites,
-             -- Enum count selects for type, type_lieu, duree, thematiques, thematiques_demarche, materiel
-             ${createEnumCountSelect({
-               enumObj: TypeActivite,
-               column: 'activites.type',
-               as: 'type',
-             })},
-             ${createDureesRangesSelect({
-               column: 'activites.duree',
-               as: 'duree',
-             })},
-             ${createEnumCountSelect({
-               enumObj: TypeLieu,
-               column: 'activites.type_lieu',
-               as: 'type_lieu',
-             })},
-             ${createEnumArrayCountSelect({
-               enumObj: Thematique,
-               column: 'activites.thematiques',
-               as: 'thematiques',
-             })},
-             ${createEnumArrayCountSelect({
-               enumObj: ThematiqueDemarcheAdministrative,
-               column: 'activites.thematiques_demarche',
-               as: 'thematiques_demarche',
-             })},
-             ${createEnumArrayCountSelect({
-               enumObj: Materiel,
-               column: 'activites.materiel',
-               as: 'materiel',
-             })}
-      FROM activites
-               LEFT JOIN structures ON structures.id = activites.structure_id
-               LEFT JOIN mediateurs ON activites.mediateur_id = mediateurs.id
-               LEFT JOIN conseillers_numeriques ON mediateurs.id = conseillers_numeriques.mediateur_id
+        -- Enum count selects for type, type_lieu, duree, thematiques, thematiques_demarche, materiel
+        ${createEnumCountSelect({ enumObj: TypeActivite, column: 'act.type', as: 'type' })},
+        ${createDureesRangesSelect({ column: 'act.duree', as: 'duree' })},
+        ${createEnumCountSelect({ enumObj: TypeLieu, column: 'act.type_lieu', as: 'type_lieu' })},
+        ${createEnumArrayCountSelect({ enumObj: Thematique, column: 'act.thematiques', as: 'thematiques' })},
+        ${createEnumArrayCountSelect({ enumObj: ThematiqueDemarcheAdministrative, column: 'act.thematiques_demarche', as: 'thematiques_demarche' })},
+        ${createEnumArrayCountSelect({ enumObj: Materiel, column: 'act.materiel', as: 'materiel' })}
+      FROM activites act
+        LEFT JOIN structures str ON str.id = act.structure_id
+        LEFT JOIN mediateurs med ON act.mediateur_id = med.id
+        LEFT JOIN conseillers_numeriques cn ON med.id = cn.mediateur_id
+        FULL OUTER JOIN mediateurs_coordonnes mc ON mc.mediateur_id = act.mediateur_id AND mc.coordinateur_id = ${user?.coordinateur?.id}::UUID
       WHERE ${activitesMediateurIdsWhereCondition(mediateurIds)}
-        AND activites.suppression IS NULL
-        AND ${getActiviteFiltersSqlFragment(
-          getActivitesFiltersWhereConditions(activitesFilters),
-        )}
+        AND (act.date <= mc.suppression OR mc.suppression IS NULL)
+        AND act.suppression IS NULL
+        AND ${getActiviteFiltersSqlFragment(getActivitesFiltersWhereConditions(activitesFilters))}
   `.then((result) => result[0])
 }
 
@@ -177,13 +157,16 @@ export const normalizeActivitesStatsRaw = (stats: ActivitesStatsRaw) => {
 }
 
 export const getActivitesStats = async ({
+  user,
   mediateurIds,
   activitesFilters,
 }: {
+  user?: UserProfile
   mediateurIds?: string[] // Undefined means no filter, empty array means no mediateur / no data.
   activitesFilters: ActivitesFilters
 }) => {
   const statsRaw = await getActivitesStatsRaw({
+    user,
     mediateurIds,
     activitesFilters,
   })
@@ -203,42 +186,47 @@ export type ActivitesStructuresStatsRaw = {
 }
 
 export const getActivitesStructuresStatsRaw = async ({
+  user,
   mediateurIds,
   activitesFilters,
 }: {
+  user: UserProfile
   mediateurIds?: string[] // Undefined means no filter, empty array means no mediateur / no data.
   activitesFilters: ActivitesFilters
 }) => {
   if (mediateurIds?.length === 0) return []
 
   return prismaClient.$queryRaw<ActivitesStructuresStatsRaw[]>`
-      SELECT structures.id,
-             structures.nom,
-             structures.commune,
-             structures.code_postal,
-             structures.code_insee,
-             COALESCE(COUNT(*), 0) ::int AS count
-      FROM structures
-               INNER JOIN activites
-                          ON activites.structure_id = structures.id
-                              AND activites.suppression IS NULL
-               LEFT JOIN mediateurs ON activites.mediateur_id = mediateurs.id
-               LEFT JOIN conseillers_numeriques ON mediateurs.id = conseillers_numeriques.mediateur_id
-      WHERE ${activitesMediateurIdsWhereCondition(mediateurIds)}
-        AND ${getActiviteFiltersSqlFragment(
-          getActivitesFiltersWhereConditions(activitesFilters),
-        )}
-      GROUP BY structures.id`
+    SELECT
+      str.id,
+      str.nom,
+      str.commune,
+      str.code_postal,
+      str.code_insee,
+      COALESCE(COUNT(*), 0) ::int AS count
+    FROM structures str
+      INNER JOIN activites act ON act.structure_id = str.id
+      LEFT JOIN mediateurs med ON act.mediateur_id = med.id
+      LEFT JOIN conseillers_numeriques cn ON med.id = cn.mediateur_id
+      FULL OUTER JOIN mediateurs_coordonnes mc ON mc.mediateur_id = act.mediateur_id AND mc.coordinateur_id = ${user?.coordinateur?.id}::UUID
+        WHERE (act.date <= mc.suppression OR mc.suppression IS NULL)
+          AND act.suppression IS NULL
+          AND ${activitesMediateurIdsWhereCondition(mediateurIds)}
+          AND ${getActiviteFiltersSqlFragment(getActivitesFiltersWhereConditions(activitesFilters))}
+      GROUP BY str.id`
 }
 
 export const getActivitesStructuresStats = async ({
+  user,
   mediateurIds,
   activitesFilters,
 }: {
+  user: UserProfile
   mediateurIds?: string[] // Undefined means no filter, empty array means no mediateur / no data.
   activitesFilters: ActivitesFilters
 }) => {
   const statsRaw = await getActivitesStructuresStatsRaw({
+    user,
     mediateurIds,
     activitesFilters,
   })

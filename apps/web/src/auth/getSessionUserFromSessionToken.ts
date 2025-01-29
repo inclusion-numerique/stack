@@ -77,7 +77,7 @@ export const sessionUserSelect = {
         where: {
           coordinateur: {
             mediateursCoordonnes: {
-              some: {
+              every: {
                 suppression: null,
               },
             },

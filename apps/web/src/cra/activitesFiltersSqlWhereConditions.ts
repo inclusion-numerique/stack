@@ -22,7 +22,7 @@ export const getActiviteFiltersSqlFragment = (
  */
 
 export const activiteAccompagnementsCountSelect = Prisma.raw(
-  '(SELECT COUNT(*) FROM accompagnements WHERE accompagnements.activite_id = activites.id)',
+  '(SELECT COUNT(*) FROM accompagnements acc WHERE acc.activite_id = act.id)',
 )
 
 /**
@@ -34,7 +34,7 @@ export const activitesBeneficiaireInnerJoin = (
 ) =>
   Prisma.raw(
     beneficiaireId
-      ? `INNER JOIN accompagnements ON (accompagnements.activite_id = activites.id AND accompagnements.beneficiaire_id = '${beneficiaireId}'::UUID) `
+      ? `INNER JOIN accompagnements acc ON (acc.activite_id = act.id AND acc.beneficiaire_id = '${beneficiaireId}'::UUID) `
       : '',
   )
 
@@ -47,7 +47,7 @@ export const crasTypeOrderSelect = Prisma.raw(
 )
 
 export const crasLieuLabelSelect = Prisma.raw(
-  `COALESCE(structures.nom, activites.lieu_commune, 'À distance')`,
+  `COALESCE(str.nom, act.lieu_commune, 'À distance')`,
 )
 
 export const crasNotDeletedCondition = Prisma.raw(`(
@@ -57,8 +57,8 @@ export const crasNotDeletedCondition = Prisma.raw(`(
           )`)
 
 export const activiteLieuCodeInseeSelect = Prisma.raw(`COALESCE(
-                structures.code_insee, 
-                activites.lieu_code_insee)`)
+                str.code_insee, 
+                act.lieu_code_insee)`)
 
 export const getActivitesFiltersWhereConditions = ({
   du,
@@ -71,10 +71,10 @@ export const getActivitesFiltersWhereConditions = ({
   type,
   conseiller_numerique,
 }: ActivitesFilters): ActivitesFiltersWhereConditions => ({
-  du: du ? Prisma.raw(`activites.date >= '${du}'::timestamp`) : null,
-  au: au ? Prisma.raw(`activites.date <= '${au}'::timestamp`) : null,
-  type: type ? Prisma.raw(`activites.type = '${type}'`) : null,
-  lieu: lieu ? Prisma.raw(`activites.structure_id = '${lieu}'::UUID`) : null,
+  du: du ? Prisma.raw(`act.date >= '${du}'::timestamp`) : null,
+  au: au ? Prisma.raw(`act.date <= '${au}'::timestamp`) : null,
+  type: type ? Prisma.raw(`act.type = '${type}'`) : null,
+  lieu: lieu ? Prisma.raw(`act.structure_id = '${lieu}'::UUID`) : null,
   commune: commune
     ? Prisma.raw(`${activiteLieuCodeInseeSelect.text} = '${commune}'`)
     : null,
@@ -84,17 +84,17 @@ export const getActivitesFiltersWhereConditions = ({
   beneficiaire: beneficiaire
     ? Prisma.raw(`EXISTS (
             SELECT 1
-            FROM accompagnements
-            WHERE accompagnements.beneficiaire_id = '${beneficiaire}'::UUID
-              AND accompagnements.activite_id = activites.id
+            FROM accompagnements acc
+            WHERE acc.beneficiaire_id = '${beneficiaire}'::UUID
+              AND acc.activite_id = act.id
           ) `)
     : null,
   mediateur: mediateur
-    ? Prisma.raw(`activites.mediateur_id = '${mediateur}'::UUID`)
+    ? Prisma.raw(`act.mediateur_id = '${mediateur}'::UUID`)
     : null,
   conseiller_numerique: conseiller_numerique
     ? conseiller_numerique === '1'
-      ? Prisma.raw(`conseillers_numeriques.id IS NOT NULL`)
-      : Prisma.raw(`conseillers_numeriques.id IS NULL`)
+      ? Prisma.raw(`cn.id IS NOT NULL`)
+      : Prisma.raw(`cn.id IS NULL`)
     : null,
 })

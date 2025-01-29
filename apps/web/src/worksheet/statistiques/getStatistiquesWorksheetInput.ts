@@ -17,7 +17,6 @@ export const getStatistiquesWorksheetInput = async ({
 
   const statistiques = await getMesStatistiquesPageData({
     user,
-    mediateurCoordonnesIds,
     activitesFilters: filters,
   })
 

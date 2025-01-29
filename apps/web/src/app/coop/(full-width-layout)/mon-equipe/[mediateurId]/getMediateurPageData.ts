@@ -44,6 +44,7 @@ export const getMediateurPageData = async (mediateurId: string) => {
   const contract = await getContractInfo(mediateur.user.email)
 
   const { beneficiaires, accompagnements } = await getTotalCountsStats({
+    user,
     mediateurIds: [mediateur.id],
     activitesFilters: activitesFiltersLastDays(30),
   })

@@ -29,12 +29,8 @@ const Page = async () => {
     activites,
     totalCounts,
   ] = await Promise.all([
-    getAccompagnementsCountByDay({
-      activitesFilters,
-    }),
-    getAccompagnementsCountByMonth({
-      activitesFilters,
-    }),
+    getAccompagnementsCountByDay({ activitesFilters }),
+    getAccompagnementsCountByMonth({ activitesFilters }),
     getBeneficiaireStats({ activitesFilters }),
     getActivitesStats({ activitesFilters }),
     getTotalCountsStats({ activitesFilters }),

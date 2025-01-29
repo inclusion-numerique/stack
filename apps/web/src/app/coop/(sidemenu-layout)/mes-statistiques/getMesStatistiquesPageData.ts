@@ -1,3 +1,4 @@
+import { prismaClient } from '@app/web/prismaClient'
 import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFiltersOptionsForMediateur'
 import {
@@ -17,17 +18,27 @@ export type MesStatistiquesGraphOptions = {
   fin?: Date
 }
 
+const toMediateurId = ({ mediateurId }: { mediateurId: string }) => mediateurId
+
 export const getMesStatistiquesPageData = async ({
   user,
-  mediateurCoordonnesIds,
   activitesFilters,
   graphOptions = {},
 }: {
   user: UserDisplayName & UserProfile
-  mediateurCoordonnesIds?: string[]
   activitesFilters: ActivitesFilters
   graphOptions?: MesStatistiquesGraphOptions
 }) => {
+  const mediateurCoordonnes =
+    user.coordinateur == null
+      ? []
+      : await prismaClient.mediateurCoordonne.findMany({
+          where: { coordinateurId: user.coordinateur.id },
+          select: { mediateurId: true },
+        })
+
+  const mediateurCoordonnesIds = mediateurCoordonnes.map(toMediateurId)
+
   const mediateurIds = [
     ...(user.mediateur?.id ? [user.mediateur.id] : []),
     ...(mediateurCoordonnesIds ?? []),
@@ -42,19 +53,21 @@ export const getMesStatistiquesPageData = async ({
     totalCounts,
   ] = await Promise.all([
     getAccompagnementsCountByDay({
+      user,
       mediateurIds,
       activitesFilters,
       periodEnd: graphOptions.fin ? dateAsIsoDay(graphOptions.fin) : undefined,
     }),
     getAccompagnementsCountByMonth({
+      user,
       mediateurIds,
       activitesFilters,
       periodEnd: graphOptions.fin ? dateAsIsoDay(graphOptions.fin) : undefined,
     }),
-    getBeneficiaireStatsWithCommunes({ mediateurIds, activitesFilters }),
-    getActivitesStats({ mediateurIds, activitesFilters }),
-    getActivitesStructuresStats({ mediateurIds, activitesFilters }),
-    getTotalCountsStats({ mediateurIds, activitesFilters }),
+    getBeneficiaireStatsWithCommunes({ user, mediateurIds, activitesFilters }),
+    getActivitesStats({ user, mediateurIds, activitesFilters }),
+    getActivitesStructuresStats({ user, mediateurIds, activitesFilters }),
+    getTotalCountsStats({ user, mediateurIds, activitesFilters }),
   ])
 
   const {
