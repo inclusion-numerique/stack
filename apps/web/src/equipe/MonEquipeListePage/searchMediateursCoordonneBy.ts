@@ -75,7 +75,7 @@ export const searchMediateursCoordonneBy =
         LEFT JOIN "users" AS users ON users."id" = mediateurs."user_id"
         LEFT JOIN "conseillers_numeriques" AS conseillers ON conseillers."mediateur_id" = mediateurs."id"
         INNER JOIN "mediateurs_coordonnes" AS mc ON mc."mediateur_id" = mediateurs."id"
-      WHERE mc."coordinateur_id" = ${id}::uuid
+      WHERE mc."coordinateur_id" = ${id}::uuid AND mc.suppression IS NULL
     )
       SELECT *
       FROM combined_data

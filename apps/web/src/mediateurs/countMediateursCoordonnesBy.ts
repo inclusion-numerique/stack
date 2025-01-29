@@ -13,11 +13,12 @@ export const countMediateursCoordonnesBy = async (
 
   const [total, conseillersNumeriques] = await Promise.all([
     prismaClient.mediateurCoordonne.count({
-      where: { coordinateurId: coordinateur.id },
+      where: { coordinateurId: coordinateur.id, suppression: null },
     }),
     prismaClient.mediateurCoordonne.count({
       where: {
         coordinateurId: coordinateur.id,
+        suppression: null,
         mediateur: { conseillerNumerique: { isNot: null } },
       },
     }),
