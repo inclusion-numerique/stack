@@ -111,7 +111,7 @@ export const UtilisateursDataTable = {
     },
     {
       name: 'beneficiaires',
-      header: 'Bénéficiaires',
+      header: 'Bénéficiaires suivis',
       csvHeaders: ['Bénéficiaires'],
       csvValues: ({ mediateur }) => [mediateur?._count.beneficiaires],
       cell: ({ mediateur }) =>

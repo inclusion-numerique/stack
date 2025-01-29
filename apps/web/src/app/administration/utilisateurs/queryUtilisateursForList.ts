@@ -20,7 +20,9 @@ export const searchUtilisateurSelect = {
         select: {
           activites: true,
           enActivite: true,
-          beneficiaires: true,
+          beneficiaires: {
+            where: { anonyme: false },
+          },
           coordinations: true,
         },
       },
