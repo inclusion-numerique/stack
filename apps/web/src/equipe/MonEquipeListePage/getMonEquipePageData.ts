@@ -42,16 +42,21 @@ const finDeContratFor =
 
 export const getMonEquipePageData = async ({
   searchParams,
+  anciensMembres = false,
   coordinateur,
 }: {
   searchParams: MonEquipeSearchParams
+  anciensMembres?: boolean
   coordinateur: {
     id: string
     mediateursCoordonnes: { mediateurId: string }[]
   }
 }) => {
   const { mediateurs, matchesCount, totalPages } =
-    await searchMediateursCoordonneBy(coordinateur)(searchParams)
+    await searchMediateursCoordonneBy(coordinateur)(
+      searchParams,
+      anciensMembres,
+    )
 
   const conseillersNumeriquesWithContrats =
     await findConseillersNumeriquesContractInfoByEmails(
@@ -70,6 +75,7 @@ export const getMonEquipePageData = async ({
         last_name,
         conseiller_numerique_id,
         date_derniere_activite,
+        suppression,
         type,
       }) => ({
         id: mediateur_id ?? undefined,
@@ -78,7 +84,10 @@ export const getMonEquipePageData = async ({
         phone: phone ?? undefined,
         email,
         isConseillerNumerique: conseiller_numerique_id != null,
-        status: statusFor(date_derniere_activite),
+        status:
+          suppression == null
+            ? statusFor(date_derniere_activite)
+            : `Ancien membre depuis le ${dateAsDay(suppression)}`,
         finDeContrat: finDeContratFor(conseiller_numerique_id)(
           conseillersNumeriquesWithContrats,
         ),

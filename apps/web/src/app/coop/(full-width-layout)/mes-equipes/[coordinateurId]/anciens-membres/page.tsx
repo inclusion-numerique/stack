@@ -7,7 +7,7 @@ import { getMonEquipePageData } from '@app/web/equipe/MonEquipeListePage/getMonE
 import type { MonEquipeSearchParams } from '@app/web/equipe/MonEquipeListePage/searchMediateursCoordonneBy'
 
 export const metadata: Metadata = {
-  title: metadataTitle('Mon équipe'),
+  title: metadataTitle('Anciens membres'),
 }
 
 const Page = async ({
@@ -30,6 +30,7 @@ const Page = async ({
 
   const monEquipePageData = await getMonEquipePageData({
     searchParams,
+    anciensMembres: true,
     coordinateur,
   })
 
@@ -39,7 +40,8 @@ const Page = async ({
       searchParams={searchParams}
       coordinateurView={false}
       baseHref={`/coop/mes-equipes/${coordinateurId}`}
-      baseHrefSearch={`/coop/mes-equipes/${coordinateurId}`}
+      baseHrefSearch={`/coop/mes-equipes/${coordinateurId}/anciens-membres`}
+      anciensMembres
       coordinateur={coordinateur}
     />
   )

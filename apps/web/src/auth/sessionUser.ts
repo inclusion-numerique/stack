@@ -43,6 +43,8 @@ export type SessionUser = Pick<
             user: { name: string | null }
             mediateursCoordonnes: {
               id: string
+              mediateurId: string
+              suppression: Date | null
             }[]
           }
         }[]

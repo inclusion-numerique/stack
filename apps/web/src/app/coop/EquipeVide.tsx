@@ -2,7 +2,7 @@ import React from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
 
 export const EquipeVide = () => (
-  <div className="fr-text--center fr-background-alt--blue-france fr-p-12v fr-border-radius--8">
+  <div className="fr-text--center fr-background-alt--blue-france fr-p-12v fr-border-radius--8 fr-mb-4w">
     <span className="fr-text--bold fr-text--xl">
       Actuellement, vous n’avez aucun membre dans votre équipe.
     </span>

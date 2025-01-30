@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
@@ -23,19 +24,23 @@ const pageSizeOptions = generatePageSizeSelectOptions([10, 20, 50, 100])
 
 const MonEquipeListePage = ({
   mediateurs,
+  anciensMembres = false,
   searchParams,
   totalPages,
   baseHref,
+  baseHrefSearch,
   coordinateur: {
     id: coordinateurId,
     user: { name, email, phone },
   },
   coordinateurView = true,
-  stats: { total, conseillersNumeriques, mediateursNumeriques },
+  stats: { total, totalAncien, conseillersNumeriques, mediateursNumeriques },
 }: MonEquipePageData & {
+  anciensMembres?: boolean
   searchParams: { lignes?: string; page?: string; recherche?: string }
   totalPages: number
   baseHref: string
+  baseHrefSearch: string
   coordinateur: {
     id: string
     user: { name: string | null; email: string | null; phone: string | null }
@@ -94,41 +99,80 @@ const MonEquipeListePage = ({
         </div>
         <div className="fr-my-12v">
           <DataSearchBar
-            baseHref={baseHref}
+            baseHref={baseHrefSearch}
             searchParams={searchParams}
             placeholder="Rechercher par nom ou adresse e-mail"
           />
         </div>
-        {mediateurs.length === 0 ? (
-          <EquipeVide />
-        ) : (
+        {total === 0 && mediateurs?.length === 0 && <EquipeVide />}
+        {(total !== 0 || totalAncien !== 0 || mediateurs?.length !== 0) && (
           <>
-            <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-mb-2w">
-              <p className="fr-text--lg fr-text--bold fr-flex fr-flex-gap-2v fr-direction-column fr-direction-sm-row fr-mb-0">
-                <span>
-                  {conseillersNumeriques}{' '}
-                  {pluralize('conseiller numérique', conseillersNumeriques)}
-                </span>
-                <span className="fr-hidden fr-unhidden-sm">·</span>
-                <span>
-                  {mediateursNumeriques}{' '}
-                  {pluralize('médiateur numérique', mediateursNumeriques)}
-                </span>
-              </p>
+            <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-mb-4w">
+              {totalAncien === 0 && (
+                <p className="fr-text--lg fr-text--bold fr-flex fr-flex-gap-2v fr-direction-column fr-direction-sm-row fr-mb-0">
+                  <span>
+                    {conseillersNumeriques}{' '}
+                    {pluralize('conseiller numérique', conseillersNumeriques)}
+                  </span>
+                  <span className="fr-hidden fr-unhidden-sm">·</span>
+                  <span>
+                    {mediateursNumeriques}{' '}
+                    {pluralize('médiateur numérique', mediateursNumeriques)}
+                  </span>
+                </p>
+              )}
               <SortSelect
                 options={[
                   { label: 'Ordre alphabétique', value: 'alphabetique' },
                   { label: 'Les plus récents', value: 'recent' },
                   { label: 'Les plus anciens', value: 'ancien' },
                 ]}
-                baseHref={baseHref}
+                baseHref={baseHrefSearch}
               />
             </div>
-            <MediateurList
-              mediateurs={mediateurs}
-              canSeeMediateursDetails={coordinateurView}
-              baseHref={baseHref}
-            />
+
+            {totalAncien === 0 ? (
+              <MediateurList
+                mediateurs={mediateurs}
+                canSeeMediateursDetails={coordinateurView && !anciensMembres}
+                baseHref={baseHref}
+              />
+            ) : (
+              <div className="fr-tabs">
+                <ul className="fr-tabs__list">
+                  <li role="presentation">
+                    <Link
+                      href={baseHref}
+                      className="fr-tabs__tab"
+                      aria-selected={!anciensMembres}
+                    >
+                      Membres · {total}
+                    </Link>
+                  </li>
+                  <li role="presentation">
+                    <Link
+                      href={`${baseHref}/anciens-membres`}
+                      className="fr-tabs__tab"
+                      aria-selected={anciensMembres}
+                    >
+                      Anciens membres · {totalAncien}
+                    </Link>
+                  </li>
+                </ul>
+                <div
+                  className="fr-tabs__panel fr-tabs__panel--selected fr-p-0"
+                  style={{ marginTop: '-1px' }}
+                >
+                  <MediateurList
+                    mediateurs={mediateurs}
+                    canSeeMediateursDetails={
+                      coordinateurView && !anciensMembres
+                    }
+                    baseHref={baseHref}
+                  />
+                </div>
+              </div>
+            )}
           </>
         )}
         <PaginationNavWithPageSizeSelect
@@ -136,7 +180,7 @@ const MonEquipeListePage = ({
           defaultPageSize={10}
           pageSizeOptions={pageSizeOptions}
           totalPages={totalPages}
-          baseHref={baseHref}
+          baseHref={baseHrefSearch}
           searchParams={searchParams}
         />
       </main>

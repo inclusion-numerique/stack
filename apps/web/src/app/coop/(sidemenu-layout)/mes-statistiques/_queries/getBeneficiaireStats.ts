@@ -50,13 +50,13 @@ export const getBeneficiaireStatsRaw = async ({
           ben.commune_code_postal,
           ben.commune_code_insee
         FROM beneficiaires ben
-            INNER JOIN accompagnements acc ON acc.beneficiaire_id = ben.id
-            INNER JOIN activites act ON act.id = acc.activite_id
-            FULL OUTER JOIN mediateurs_coordonnes mc ON mc.mediateur_id = act.mediateur_id AND mc.coordinateur_id = ${user?.coordinateur?.id}::UUID
-            LEFT JOIN mediateurs med ON act.mediateur_id = med.id
-            LEFT JOIN conseillers_numeriques cn ON med.id = cn.mediateur_id
-            LEFT JOIN structures str ON str.id = act.structure_id
-        WHERE (act.date <= mc.suppression OR mc.suppression IS NULL)
+          INNER JOIN accompagnements acc ON acc.beneficiaire_id = ben.id
+          INNER JOIN activites act ON act.id = acc.activite_id
+          FULL OUTER JOIN mediateurs_coordonnes mc ON mc.mediateur_id = act.mediateur_id AND mc.coordinateur_id = ${user?.coordinateur?.id}::UUID
+          LEFT JOIN mediateurs med ON act.mediateur_id = med.id
+          LEFT JOIN conseillers_numeriques cn ON med.id = cn.mediateur_id
+          LEFT JOIN structures str ON str.id = act.structure_id
+          WHERE (act.date <= mc.suppression OR mc.suppression IS NULL)
             AND act.suppression IS NULL
             AND ${activitesMediateurIdsWhereCondition(mediateurIds)}
             AND ${getActiviteFiltersSqlFragment(getActivitesFiltersWhereConditions(activitesFilters))})
@@ -148,20 +148,20 @@ export const getBeneficiairesCommunesRaw = async ({
             WHEN act.type != 'collectif' THEN act.lieu_code_insee
             END
         ) AS coalesced_code_insee,
-        MIN(COALESCE(ben.commune, act.lieu_commune))                 AS commune,
+        MIN(COALESCE(ben.commune, act.lieu_commune)) AS commune,
         MIN(COALESCE(ben.commune_code_postal, act.lieu_code_postal)) AS code_postal,
-        COUNT(DISTINCT ben.id) ::integer                                   AS count_beneficiaires
+        COUNT(DISTINCT ben.id) ::integer AS count_beneficiaires
       FROM beneficiaires ben
         INNER JOIN accompagnements acc ON acc.beneficiaire_id = ben.id
-          INNER JOIN activites act ON  act.id = acc.activite_id
-            AND ${activitesMediateurIdsWhereCondition(mediateurIds)}
-            AND act.suppression IS NULL
-              LEFT JOIN structures str ON str.id = act.structure_id
-              LEFT JOIN mediateurs med ON act.mediateur_id = med.id
-              LEFT JOIN conseillers_numeriques cn ON med.id = cn.mediateur_id
-              FULL OUTER JOIN mediateurs_coordonnes mc ON mc.mediateur_id = act.mediateur_id AND mc.coordinateur_id = ${user.coordinateur?.id}::UUID
-      WHERE (act.date <= mc.suppression OR mc.suppression IS NULL)
-        AND ${getActiviteFiltersSqlFragment(getActivitesFiltersWhereConditions(activitesFilters))}
+        INNER JOIN activites act ON  act.id = acc.activite_id
+          AND ${activitesMediateurIdsWhereCondition(mediateurIds)}
+          AND act.suppression IS NULL
+            LEFT JOIN structures str ON str.id = act.structure_id
+            LEFT JOIN mediateurs med ON act.mediateur_id = med.id
+            LEFT JOIN conseillers_numeriques cn ON med.id = cn.mediateur_id
+            FULL OUTER JOIN mediateurs_coordonnes mc ON mc.mediateur_id = act.mediateur_id AND mc.coordinateur_id = ${user.coordinateur?.id}::UUID
+        WHERE (act.date <= mc.suppression OR mc.suppression IS NULL)
+          AND ${getActiviteFiltersSqlFragment(getActivitesFiltersWhereConditions(activitesFilters))}
       GROUP BY coalesced_code_insee
   `.then((result) =>
     // Filter out null codeInsee for when there is no commune in beneficiaire or activite

@@ -209,11 +209,11 @@ export const getActivitesStructuresStatsRaw = async ({
       LEFT JOIN mediateurs med ON act.mediateur_id = med.id
       LEFT JOIN conseillers_numeriques cn ON med.id = cn.mediateur_id
       FULL OUTER JOIN mediateurs_coordonnes mc ON mc.mediateur_id = act.mediateur_id AND mc.coordinateur_id = ${user?.coordinateur?.id}::UUID
-        WHERE (act.date <= mc.suppression OR mc.suppression IS NULL)
-          AND act.suppression IS NULL
-          AND ${activitesMediateurIdsWhereCondition(mediateurIds)}
-          AND ${getActiviteFiltersSqlFragment(getActivitesFiltersWhereConditions(activitesFilters))}
-      GROUP BY str.id`
+      WHERE (act.date <= mc.suppression OR mc.suppression IS NULL)
+        AND act.suppression IS NULL
+        AND ${activitesMediateurIdsWhereCondition(mediateurIds)}
+        AND ${getActiviteFiltersSqlFragment(getActivitesFiltersWhereConditions(activitesFilters))}
+    GROUP BY str.id`
 }
 
 export const getActivitesStructuresStats = async ({
