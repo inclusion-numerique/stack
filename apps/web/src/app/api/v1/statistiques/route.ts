@@ -256,16 +256,15 @@ import { serializeApiRequestParams } from '@app/web/app/api/v1/serializeApiReque
  *       - in: query
  *         name: filter[du]
  *         required: false
- *         description: date de début, au format ISO (YYYY-MM-DD)
+ *         description: Date de l’activité minimum, au format ISO (YYYY-MM-DD)
  *         schema:
  *           type: string
  *           pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'
  *           example: '2022-01-01'
- *
  *       - in: query
  *         name: filter[au]
  *         required: false
- *         description: date de fin, au format ISO (YYYY-MM-DD)
+ *         description: Date de l’activité maximum, au format ISO (YYYY-MM-DD)
  *         schema:
  *           type: string
  *           pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'
@@ -274,7 +273,7 @@ import { serializeApiRequestParams } from '@app/web/app/api/v1/serializeApiReque
  *       - in: query
  *         name: filter[type]
  *         required: false
- *         description: type d’activité (individuel, démarche ou collectif)
+ *         description: Type d’activité (individuel, démarche ou collectif)
  *         schema:
  *           type: string
  *           enum: [Individuel, Demarche, Collectif]
@@ -283,7 +282,7 @@ import { serializeApiRequestParams } from '@app/web/app/api/v1/serializeApiReque
  *       - in: query
  *         name: filter[mediateur]
  *         required: false
- *         description: uuid du médiateur
+ *         description: UUID du médiateur ayant réalisé l’activité
  *         schema:
  *           type: string
  *           format: uuid
@@ -292,16 +291,15 @@ import { serializeApiRequestParams } from '@app/web/app/api/v1/serializeApiReque
  *       - in: query
  *         name: filter[beneficiaire]
  *         required: false
- *         description: uuid du bénéficiaire
+ *         description: UUID du bénéficiaire de l’activité
  *         schema:
  *           type: string
  *           format: uuid
  *           example: '123e4567-e89b-12d3-a456-426614174000'
- *
  *       - in: query
  *         name: filter[commune]
  *         required: false
- *         description: code insee de la commune (5 caractères)
+ *         description: Code INSEE de la commune où l’activité a été réalisée (5 caractères)
  *         schema:
  *           type: string
  *           minLength: 5
@@ -311,7 +309,7 @@ import { serializeApiRequestParams } from '@app/web/app/api/v1/serializeApiReque
  *       - in: query
  *         name: filter[departement]
  *         required: false
- *         description: code du département (1 à 3 caractères)
+ *         description: Code du département où l’activité a été réalisée (1 à 3 caractères)
  *         schema:
  *           type: string
  *           maxLength: 3
@@ -320,11 +318,20 @@ import { serializeApiRequestParams } from '@app/web/app/api/v1/serializeApiReque
  *       - in: query
  *         name: filter[lieu]
  *         required: false
- *         description: uuid du lieu d’activité
+ *         description: UUID du lieu où l’activité a été réalisée
  *         schema:
  *           type: string
  *           format: uuid
  *           example: '123e4567-e89b-12d3-a456-426614174000'
+ *
+ *       - in: query
+ *         name: filter[conseiller_numerique]
+ *         schema:
+ *           type: string
+ *           enum: ['0', '1']
+ *         required: false
+ *         description: Indique si l’activité a été effectuée par un médiateur dans le cadre du dispositif "conseiller numérique". '0' signifie hors dispositif, '1' signifie dans le dispositif.
+ *
  *     responses:
  *       200:
  *         description: données statistiques

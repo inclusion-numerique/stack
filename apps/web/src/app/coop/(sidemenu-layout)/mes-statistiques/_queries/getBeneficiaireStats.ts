@@ -50,6 +50,8 @@ export const getBeneficiaireStatsRaw = async ({
                                           activites.id = accompagnements.activite_id
                                               AND ${activitesMediateurIdsWhereCondition(mediateurIds)}
                                               AND activites.suppression IS NULL
+                                               LEFT JOIN mediateurs ON activites.mediateur_id = mediateurs.id
+                                               LEFT JOIN conseillers_numeriques ON mediateurs.id = conseillers_numeriques.mediateur_id
                                                LEFT JOIN structures ON structures.id = activites.structure_id
                                       WHERE ${getActiviteFiltersSqlFragment(
                                         getActivitesFiltersWhereConditions(
@@ -151,6 +153,8 @@ export const getBeneficiairesCommunesRaw = async ({
               AND ${activitesMediateurIdsWhereCondition(mediateurIds)}
               AND activites.suppression IS NULL
                LEFT JOIN structures ON structures.id = activites.structure_id
+               LEFT JOIN mediateurs ON activites.mediateur_id = mediateurs.id
+               LEFT JOIN conseillers_numeriques ON mediateurs.id = conseillers_numeriques.mediateur_id
       WHERE ${getActiviteFiltersSqlFragment(
         getActivitesFiltersWhereConditions(activitesFilters),
       )}

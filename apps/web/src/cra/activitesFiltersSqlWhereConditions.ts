@@ -69,6 +69,7 @@ export const getActivitesFiltersWhereConditions = ({
   departement,
   lieu,
   type,
+  conseiller_numerique,
 }: ActivitesFilters): ActivitesFiltersWhereConditions => ({
   du: du ? Prisma.raw(`activites.date >= '${du}'::timestamp`) : null,
   au: au ? Prisma.raw(`activites.date <= '${au}'::timestamp`) : null,
@@ -90,5 +91,10 @@ export const getActivitesFiltersWhereConditions = ({
     : null,
   mediateur: mediateur
     ? Prisma.raw(`activites.mediateur_id = '${mediateur}'::UUID`)
+    : null,
+  conseiller_numerique: conseiller_numerique
+    ? conseiller_numerique === '1'
+      ? Prisma.raw(`conseillers_numeriques.id IS NOT NULL`)
+      : Prisma.raw(`conseillers_numeriques.id IS NULL`)
     : null,
 })

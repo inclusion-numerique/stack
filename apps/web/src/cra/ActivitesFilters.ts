@@ -12,6 +12,7 @@ export const ActivitesFilterValidations = {
   commune: z.string().length(5).optional(),
   departement: z.string().max(3).optional(),
   lieu: z.string().uuid().optional(),
+  conseiller_numerique: z.enum(['0', '1']).optional(),
 }
 
 export type ActivitesFilters = {
@@ -23,6 +24,7 @@ export type ActivitesFilters = {
   commune?: string // Code INSEE of commune
   departement?: string // Code département
   lieu?: string // UUID du lieu d’activité
+  conseiller_numerique?: string // '0' or '1' (0 = non, 1 = oui)
 }
 
 /**

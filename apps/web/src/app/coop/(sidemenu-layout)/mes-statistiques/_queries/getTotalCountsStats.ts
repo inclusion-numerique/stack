@@ -116,6 +116,8 @@ export const getTotalCountsStats = async ({
                LEFT JOIN accompagnements ON accompagnements.activite_id = activites.id
                LEFT JOIN beneficiaires ON beneficiaires.id = accompagnements.beneficiaire_id
                LEFT JOIN structures ON structures.id = activites.structure_id
+               LEFT JOIN mediateurs ON activites.mediateur_id = mediateurs.id
+               LEFT JOIN conseillers_numeriques ON mediateurs.id = conseillers_numeriques.mediateur_id
                
       WHERE ${activitesMediateurIdsWhereCondition(mediateurIds)}
         AND activites.suppression IS NULL

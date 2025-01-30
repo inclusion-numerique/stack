@@ -65,6 +65,8 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
       FROM activites
                ${activitesBeneficiaireInnerJoin(options.beneficiaireId)}
                LEFT JOIN structures ON activites.structure_id = structures.id
+               LEFT JOIN mediateurs ON activites.mediateur_id = mediateurs.id
+               LEFT JOIN conseillers_numeriques ON mediateurs.id = conseillers_numeriques.mediateur_id
 
       WHERE (activites.mediateur_id = ${mediateurIdMatch}::UUID OR ${mediateurIdMatch} = '_any_')
         AND activites.suppression IS NULL

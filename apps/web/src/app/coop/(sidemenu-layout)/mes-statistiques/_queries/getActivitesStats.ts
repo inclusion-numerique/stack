@@ -88,6 +88,8 @@ export const getActivitesStatsRaw = async ({
              })}
       FROM activites
                LEFT JOIN structures ON structures.id = activites.structure_id
+               LEFT JOIN mediateurs ON activites.mediateur_id = mediateurs.id
+               LEFT JOIN conseillers_numeriques ON mediateurs.id = conseillers_numeriques.mediateur_id
       WHERE ${activitesMediateurIdsWhereCondition(mediateurIds)}
         AND activites.suppression IS NULL
         AND ${getActiviteFiltersSqlFragment(
@@ -220,12 +222,12 @@ export const getActivitesStructuresStatsRaw = async ({
                INNER JOIN activites
                           ON activites.structure_id = structures.id
                               AND activites.suppression IS NULL
-                              AND ${activitesMediateurIdsWhereCondition(mediateurIds)}
-                              AND ${getActiviteFiltersSqlFragment(
-                                getActivitesFiltersWhereConditions(
-                                  activitesFilters,
-                                ),
-                              )}
+               LEFT JOIN mediateurs ON activites.mediateur_id = mediateurs.id
+               LEFT JOIN conseillers_numeriques ON mediateurs.id = conseillers_numeriques.mediateur_id
+      WHERE ${activitesMediateurIdsWhereCondition(mediateurIds)}
+        AND ${getActiviteFiltersSqlFragment(
+          getActivitesFiltersWhereConditions(activitesFilters),
+        )}
       GROUP BY structures.id`
 }
 
