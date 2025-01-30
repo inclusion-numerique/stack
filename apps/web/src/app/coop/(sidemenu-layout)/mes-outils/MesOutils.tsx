@@ -51,7 +51,7 @@ export const MesOutils = () => (
           <div className="fr-col-xl-6 fr-col-12">
             <CardOutil
               logo="/images/services/rdv-aide-numerique.svg"
-              title="RDV Aide Numérique"
+              title="RDV Service Public"
               inforef="rdv-aide-numerique"
             >
               Faciliter la gestion des rendez-vous avec vos bénéficiaires.

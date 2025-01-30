@@ -9,8 +9,9 @@ import type { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireVali
 import { DeleteBeneficiaireModal } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/DeleteBeneficiaireModal'
 import DeleteBeneficiaireModalContent from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/DeleteBeneficiaireModalContent'
 import BackButton from '@app/web/components/BackButton'
+import { getSessionUser } from '@app/web/auth/getSessionUser'
 
-const ViewBeneficiaireLayout = ({
+const ViewBeneficiaireLayout = async ({
   beneficiaire,
   children,
 }: PropsWithChildren<{
@@ -19,6 +20,8 @@ const ViewBeneficiaireLayout = ({
     'id' | 'prenom' | 'nom' | 'anneeNaissance' | 'mediateurId'
   >
 }>) => {
+  const user = await getSessionUser()
+
   const displayName = getBeneficiaireDisplayName(beneficiaire)
   const {
     anneeNaissance,
@@ -60,6 +63,7 @@ const ViewBeneficiaireLayout = ({
         </div>
         <div className="fr-flex fr-flex-gap-4v fr-flex-nowrap fr-flex-shrink-0">
           <BeneficiaireAjouterUneActivite
+            user={user}
             beneficiaire={beneficiaireCraData}
             displayName={displayName}
           />
