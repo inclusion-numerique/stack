@@ -31,7 +31,7 @@ export const listV1Emails = new Command()
     // 2 headers lines (email conseiller numérique, email pro)
     await new Promise((resolve, reject) => {
       const writeStream = createWriteStream(destination)
-      writeStream.on('finish', resolve)
+      writeStream.on('finish', () => resolve(true))
       writeStream.on('error', reject)
       writeStream.write('email conseiller numérique,email pro\n')
       for (const email of emails) {

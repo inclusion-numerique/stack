@@ -109,7 +109,7 @@ export const downloadDataInclusionStructures = async () => {
   const writeStream = createWriteStream(dataInclusionStructuresFilePath)
 
   const streamPromise = new Promise((resolve, reject) => {
-    writeStream.on('finish', resolve)
+    writeStream.on('finish', () => resolve(true))
     writeStream.on('error', reject)
   })
   response.data.pipe(writeStream)

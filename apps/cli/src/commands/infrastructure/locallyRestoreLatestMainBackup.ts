@@ -168,7 +168,7 @@ export const locallyRestoreLatestMainBackup = new Command(
     downloadResponse.data.pipe(writeStream)
 
     await new Promise((resolve, reject) => {
-      writeStream.on('finish', resolve)
+      writeStream.on('finish', () => resolve(true))
       writeStream.on('error', reject)
     })
 
