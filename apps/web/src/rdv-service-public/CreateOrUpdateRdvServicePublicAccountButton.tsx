@@ -6,6 +6,7 @@ import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import classNames from 'classnames'
 import { createToast } from '@app/ui/toast/createToast'
 import type { FrIconClassName } from '@codegouvfr/react-dsfr'
+import { useRouter } from 'next/navigation'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
@@ -18,14 +19,24 @@ import { withTrpc } from '@app/web/components/trpc/withTrpc'
 const CreateOrUpdateRdvServicepublicAccountButton = ({
   className,
   user,
+  variant,
 }: {
   className?: string
   user: Pick<SessionUser, 'id' | 'rdvAccount'>
+  variant?: 'creation' | 'synchronisation'
 }) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const createAccountMutation =
     trpc.rdvServicePublic.createAccount.useMutation()
+
+  const creation = variant
+    ? variant === 'creation'
+    : user.rdvAccount
+      ? 'synchronisation'
+      : 'creation'
+
+  const router = useRouter()
 
   const onClick = async () => {
     if (isLoading) return
@@ -38,7 +49,9 @@ const CreateOrUpdateRdvServicepublicAccountButton = ({
 
       createToast({
         priority: 'success',
-        message: 'Votre compte à bien été mis à jour sur RDV Aide Numérique.',
+        message: creation
+          ? 'Votre compte à bien été créé sur RDV Service Public. Veuillez finaliser la création de votre compte depuis l’email d’invitation que nous vous avons envoyé.'
+          : 'Votre compte à bien été synchronisé RDV Service Public.',
       })
     } catch {
       createToast({
@@ -48,15 +61,16 @@ const CreateOrUpdateRdvServicepublicAccountButton = ({
       })
     }
     setIsLoading(false)
+    router.refresh()
   }
 
-  const title = user.rdvAccount
-    ? 'Mettre à jour mon compte RDV Aide Numérique'
-    : 'Créer mon compte RDV Aide Numérique'
+  const title = creation
+    ? 'Créer mon compte RDV Service Public'
+    : 'Synchroniser mon compte'
 
-  const iconId: FrIconClassName = user.rdvAccount
-    ? 'fr-icon-refresh-line'
-    : 'fr-icon-user-add-line'
+  const iconId: FrIconClassName = creation
+    ? 'fr-icon-user-add-line'
+    : 'fr-icon-refresh-line'
 
   return (
     <div
@@ -70,6 +84,7 @@ const CreateOrUpdateRdvServicepublicAccountButton = ({
         {...buttonLoadingClassname(isLoading, 'fr-mb-4v')}
         onClick={onClick}
         iconId={iconId}
+        priority={creation ? 'primary' : 'tertiary'}
       >
         {title}
       </Button>

@@ -1,16 +1,27 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React from 'react'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import Card from '@app/web/components/Card'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { trpc } from '@app/web/trpc'
 import CreateOrUpdateRdvServicepublicAccountButton from '@app/web/rdv-service-public/CreateOrUpdateRdvServicePublicAccountButton'
 import { Spinner } from '@app/web/ui/Spinner'
 import { rdvOauthLinkAccountFlowUrl } from '@app/web/rdv-service-public/rdvServicePublicOauth'
+import { useRdvOauthStatus } from '@app/web/hooks/useRdvOauthStatus'
+
+const statusIcons = {
+  success: (
+    <span className="fr-icon-checkbox-line fr-mr-1w fr-text-default--success" />
+  ),
+  todo: (
+    <span className="fr-icon-arrow-right-line fr-mr-1w fr-text-title--blue-france" />
+  ),
+  warning: (
+    <span className="fr-icon-warning-fill fr-mr-1w fr-text-default--warning" />
+  ),
+}
 
 const RdvServicePublicAccountStatusCard = ({
   user,
@@ -19,122 +30,176 @@ const RdvServicePublicAccountStatusCard = ({
   user: Pick<SessionUser, 'id' | 'rdvAccount'>
   oAuthFlowRedirectTo: string
 }) => {
-  const oauthApiCallMutation = trpc.rdvServicePublic.oAuthApiMe.useMutation()
   const { rdvAccount } = user
 
-  useEffect(() => {
-    if (!rdvAccount?.hasOauthTokens) return
-    oauthApiCallMutation.mutate({
-      endpoint: '/agents/me',
-      data: undefined,
-    })
-  }, [rdvAccount])
+  const oauthStatus = useRdvOauthStatus({ user })
+
+  const hasOauthTokens = rdvAccount?.hasOauthTokens ?? false
+
+  const step1Status = rdvAccount ? 'success' : 'todo'
+  const step2Status = rdvAccount?.hasOauthTokens
+    ? 'success'
+    : rdvAccount
+      ? 'todo'
+      : 'warning'
 
   return (
-    <Card
-      noBorder
-      className="fr-border fr-border-radius--8"
-      contentSeparator
-      id="description"
-      title={
-        <span className="fr-text-title--blue-france">
-          Accéder à RDV Aide Numérique
-        </span>
-      }
-      titleAs="h2"
-    >
-      <p className="fr-text--medium fr-mb-4v">
-        Reliez votre compte RDV Aide Numérique pour accéder à vos rendez-vous en
-        2 étapes :
-      </p>
-      <p>
-        <strong>
-          1. Configurez votre compte RDV Aide Numérique avec votre équipe et vos
-          lieux d’activités de la coop en un clic
-        </strong>
-      </p>
-      <ul className="fr-mb-4v">
-        <li>
-          Si vous n’avez pas de compte RDV Aide Numérique, il sera
-          automatiquement créé pour vous. Vous recevrez un email de confirmation
-          pour choisir votre mot de passe RDV Aide Numérique et activer votre
-          compte avant de passer à l’étape suivante.
-        </li>
-        <li>
-          Si vous avez déjà un compte RDV Aide Numérique, il sera
-          automatiquement mis à jour avec vos informations de l’équipe et vos
-          lieux d’activités de la coop.
-        </li>
-      </ul>
-      <CreateOrUpdateRdvServicepublicAccountButton user={user} />
-      <hr className="fr-separator-4v" />
-      <p>
-        <strong>
-          2. Autorisez la Coop à communiquer avec votre compte RDV Aide
-          Numérique
-        </strong>
-        <br />
-        Une fois votre compte RDV Aide Numérique configuré et activé, vous
-        pouvez lier votre compte à la coop en cliquant sur le bouton ci-dessous.{' '}
-        <br />
-        Cela vous guidera sur une page sur RDV Aide Numérique où vous pourrez
-        autoriser la Coop à communiquer avec votre compte RDV Aide Numérique.
-        <br />
-        Cela permettra de vous connecter à vos rendez-vous et d’utiliser les
-        fonctionnalités d’intégration avec RDV Aide Numérique que nous sommes en
-        train de développer.
-      </p>
-      <div
-        className={classNames(
-          'fr-flex fr-direction-column fr-align-items-center fr-width-full',
-        )}
-      >
-        {!rdvAccount && (
-          <Notice
-            title="Vous devez avoir créé et activé votre compte RDV Aide Numérique à l'étape 1 avant de pouvoir autoriser la Coop à communiquer avec votre compte RDV Aide Numérique."
-            className="fr-mt-4v fr-notice--warning"
+    <>
+      <h2 className="fr-h4 fr-text-title--blue-france fr-mt-6v">
+        Accéder aux fonctionnalités de RDV Service Public
+      </h2>
+
+      <h3 className="fr-h6 fr-mt-6v">
+        {statusIcons[step1Status]}
+        Étape 1&nbsp;: je créé mon compte RDV Service Public
+      </h3>
+
+      {rdvAccount ? (
+        <div className="fr-flex-grow-1 fr-flex-basis-0  fr-border fr-border-radius--8 fr-p-6v">
+          <p className="fr-text--bold">
+            Votre compte RDV Service Public a bien été créé
+          </p>
+          <p>
+            Si besoin, vous pouvez mettre à jour vos lieux d’activités sur RDV
+            Service Public en cliquant sur le bouton ci-dessous&nbsp;:
+          </p>
+          <CreateOrUpdateRdvServicepublicAccountButton
+            user={user}
+            variant="synchronisation"
           />
-        )}
-        {oauthApiCallMutation.isIdle ||
-          (oauthApiCallMutation.isPending && (
-            <div className="fr-width-full fr-my-4v fr-flex fr-align-items-center fr-justify-content-center">
-              <Spinner />
+        </div>
+      ) : (
+        <div className="fr-flex fr-flex-gap-4v">
+          <div className="fr-flex fr-flex-gap-4v">
+            <div className="fr-flex-grow-1 fr-flex-basis-0 fr-border fr-border-radius--8 fr-p-6v">
+              <p className="fr-text--bold">
+                Je n’ai pas encore de compte RDV Service Public
+              </p>
+              <p>
+                La Coop de la médiation numérique vous permet de créer votre
+                compte RDV Service Public.
+                <br />
+                En cliquant sur le bouton ci-dessous, vous recevrez un email
+                d’invitation à créer votre compte sur RDV Service Public.
+                <br />
+                Une fois votre compte créé, revenez sur cette page pour
+                connecter votre compte RDV Service Public à la Coop de la
+                médiation numérique.
+              </p>
+              <CreateOrUpdateRdvServicepublicAccountButton
+                user={user}
+                variant="creation"
+              />
             </div>
-          ))}
-        {oauthApiCallMutation.isError && (
-          <Button
-            linkProps={{
-              href: rdvOauthLinkAccountFlowUrl({
-                redirectTo: oAuthFlowRedirectTo,
-              }),
-            }}
-            iconId="fr-icon-lock-line"
-          >
-            Autoriser la Coop à communiquer avec votre compte RDV Aide Numérique
-          </Button>
-        )}
-        {oauthApiCallMutation.isSuccess && (
+            <div className="fr-flex-grow-1 fr-flex-basis-0  fr-border fr-border-radius--8 fr-p-6v">
+              <p className="fr-text--bold">
+                J’ai déjà un compte RDV Service Public
+              </p>
+              <p>
+                Cliquez sur le bouton ci-dessous pour que nous puissions
+                synchroniser votre compte RDV Service Public.
+                <br />
+                Vous pourrez ensuite connecter RDV Service Public à la Coop de
+                la médiation numérique.
+              </p>
+              <CreateOrUpdateRdvServicepublicAccountButton
+                user={user}
+                variant="synchronisation"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+      <h3 className="fr-h6 fr-mt-6v">
+        {statusIcons[step2Status]}
+        Étape 2&nbsp;: Je connecte la Coop à RDV Service Public
+      </h3>
+      <div className="fr-border fr-border-radius--8 fr-p-6v">
+        {rdvAccount ? (
           <>
-            <Notice
-              title="Votre compte RDV Aide Numérique est configurée correctement."
-              className="fr-mt-4v fr-notice--success"
-            />
-            <Button
-              className="fr-mt-4v"
-              priority="tertiary"
-              iconId="fr-icon-lock-line"
-              linkProps={{
-                href: rdvOauthLinkAccountFlowUrl({
-                  redirectTo: oAuthFlowRedirectTo,
-                }),
-              }}
+            <p>
+              Connectez votre compte RDV Service Public à la Coop afin de
+              pouvoir vous connecter à vos rendez-vous et d’utiliser les
+              fonctionnalités d’intégration avec RDV Service Public que nous
+              sommes en train de développer.
+            </p>
+            <div
+              className={classNames(
+                'fr-flex fr-direction-column fr-align-items-center fr-width-full',
+              )}
             >
-              Reconnecter votre compte RDV Aide Numérique
-            </Button>
+              {oauthStatus.isLoading && (
+                <div className="fr-width-full fr-my-4v fr-flex fr-align-items-center fr-justify-content-center">
+                  <Spinner />
+                </div>
+              )}
+              {(!hasOauthTokens || oauthStatus.isError) && (
+                <Button
+                  linkProps={{
+                    href: rdvOauthLinkAccountFlowUrl({
+                      redirectTo: oAuthFlowRedirectTo,
+                    }),
+                  }}
+                  iconId="fr-icon-lock-line"
+                >
+                  Autoriser la Coop à communiquer avec votre compte RDV Service
+                  Public
+                </Button>
+              )}
+              {oauthStatus.isSuccess && (
+                <>
+                  <Notice
+                    title="Votre compte RDV Service Public est connecté"
+                    className="fr-mt-4v fr-notice--success"
+                  />
+                  <Button
+                    className="fr-mt-4v"
+                    priority="tertiary"
+                    iconId="fr-icon-lock-line"
+                    linkProps={{
+                      href: rdvOauthLinkAccountFlowUrl({
+                        redirectTo: oAuthFlowRedirectTo,
+                      }),
+                    }}
+                  >
+                    Reconnecter votre compte RDV Service Public
+                  </Button>
+                </>
+              )}
+            </div>
+          </>
+        ) : (
+          <>
+            <p>
+              Une fois votre compte RDV Service Public configuré et activé, vous
+              pourrez lier votre compte à la coop.
+            </p>
+            <div
+              className={classNames(
+                'fr-flex fr-direction-column fr-align-items-center fr-width-full',
+              )}
+            >
+              <Notice
+                title="Vous devez avoir créé et synchronisé votre compte RDV Service Public à l'étape 1 avant de pouvoir autoriser la Coop à communiquer avec votre compte RDV Service Public."
+                className="fr-mt-4v fr-notice--warning"
+              />
+            </div>
+            <div
+              className={classNames(
+                'fr-flex fr-direction-column fr-align-items-center fr-width-full',
+              )}
+            >
+              {!rdvAccount && (
+                <Notice
+                  title="Vous devez avoir créé et synchronisé votre compte RDV Service Public à l'étape 1 avant de pouvoir autoriser la Coop à communiquer avec votre compte RDV Service Public."
+                  className="fr-mt-4v fr-notice--warning"
+                />
+              )}
+            </div>
           </>
         )}
       </div>
-    </Card>
+    </>
   )
 }
 

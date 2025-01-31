@@ -678,6 +678,9 @@ enum StatutSocial {
 model Beneficiaire {
   id String @id @default(uuid()) @db.Uuid
 
+  // Identifiant chez RDV service public si le bénéficiaire est synchronisé avec RDV Service Public
+  rdvServicePublicId Int? @map("rdv_service_public_id")
+
   // Relation avec le médiateur à qui est "rattaché" le bénéficiaire
   // Si le beneficiaire est "partagé", cela gardera la trace du médiateur source
   mediateurId String    @map("mediateur_id") @db.Uuid
