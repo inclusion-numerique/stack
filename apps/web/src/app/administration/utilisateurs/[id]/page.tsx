@@ -475,7 +475,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
                           {index > 0 && <br />}
                           <Link
                             key={id}
-                            href={`/administration/utilisateurs/${id}`}
+                            href={`/administration/utilisateurs/${coordination.mediateur.user.id}`}
                             target="_blank"
                           >
                             {coordination.mediateur.user.name}
