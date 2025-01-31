@@ -2,6 +2,7 @@ import Link from 'next/link'
 import LogoCoop from '@app/web/components/LogoCoop'
 import { Invitation } from '@app/web/equipe/InvitationValidation'
 import { EncodedState } from '@app/web/utils/encodeSerializableState'
+import { getUserDisplayName, type UserDisplayName } from '@app/web/utils/user'
 import InvitationButtons from './InvitationButtons'
 
 export const JoinTeam = ({
@@ -11,7 +12,7 @@ export const JoinTeam = ({
 }: {
   data: EncodedState<Invitation>
   teamMemberCount: number
-  user: { email: string; name: string | null; phone: string | null }
+  user: UserDisplayName & { phone: string | null }
 }) => (
   <div className="fr-grid-row fr-height-full">
     <div className="fr-col-md-6 fr-col-12">
@@ -27,7 +28,10 @@ export const JoinTeam = ({
             <h1 className="fr-text-title--blue-france">
               Invitation à rejoindre une équipe
             </h1>
-            <p>En rejoignant cette équipe, {user.name} pourra&nbsp;:</p>
+            <p>
+              En rejoignant cette équipe, {getUserDisplayName(user)}{' '}
+              pourra&nbsp;:
+            </p>
             <ul>
               <li>
                 Voir vos informations de profil (Nom prénom, contacts mail et
