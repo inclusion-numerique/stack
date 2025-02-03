@@ -52,10 +52,15 @@ export const BeneficiaireValidation = z.object({
     .min(1, 'Veuillez renseigner un nom'),
   telephone: telephoneValidation,
   pasDeTelephone: z.boolean().nullish(),
-  email: z
-    .string()
-    .email('Veuillez renseigner une adresse email valide')
-    .nullish(),
+  email: z.union([
+    z.string().email('Veuillez renseigner une adresse email valide'),
+    z
+      .string()
+      .max(0)
+      .transform((value) => value || null),
+    z.null(),
+    z.undefined(),
+  ]),
   anneeNaissance: anneeNaissanceValidation,
   adresse: z.string().nullish(),
   dejaAccompagne: z.boolean().nullish(),
