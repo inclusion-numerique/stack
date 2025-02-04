@@ -140,7 +140,11 @@ export const rdvServicePublicRouter = router({
               phone_number: beneficiaire.telephone ?? undefined,
               // birth_date: beneficiaire.anneeNaissance // We don't have this field in the beneficiaire
             },
-            // return_url: _returnUrl, // TODO return_url -> 422 from rdv api
+            // TODO Reactivate this after localhost is implemented in the RDV Service Public
+            // return_url: returnUrl,
+            // dossier_url: getServerUrl(`/coop/beneficiaire/${beneficiaireId}`, {
+            //   absolutePath: true,
+            // }),
           },
         } satisfies OauthRdvApiCreateRdvPlanInput
 
@@ -154,7 +158,10 @@ export const rdvServicePublicRouter = router({
             },
           })
 
-        //  Update beneficiaire with RDV Service Public ID if needed
+        // Update beneficiaire with id from RDV Service Public if needed
+        // The rest of beneficiaire data could be updated after
+        // the plan is created (on redirection), to fetch email, tel, etc... if needed
+
         if (result.rdv_plan.user_id !== beneficiaire.rdvServicePublicId) {
           await prismaClient.beneficiaire.update({
             where: { id: beneficiaireId },
