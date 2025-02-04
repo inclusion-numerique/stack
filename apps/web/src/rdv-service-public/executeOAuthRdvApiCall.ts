@@ -3,10 +3,18 @@ import { RdvAccount } from '@prisma/client'
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 import { refreshRdvAccessToken } from '@app/web/rdv-service-public/refreshRdvAccessToken'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import { removeUndefinedValues } from '@app/web/utils/removeUndefinedValues'
+import { OauthRdvApiGetUserResponse } from '@app/web/rdv-service-public/OAuthRdvApiCallInput'
+
+export type OAuthRdvApiCallRdvAccount = Pick<
+  RdvAccount,
+  'id' | 'accessToken' | 'refreshToken' | 'scope' | 'expiresAt'
+>
 
 /**
  * executes an API call to the rdv system using the rdvAccount's tokens,
  * handles automatic token refresh, and retries once if the first call fails
+ * Pour la documentation des API RDV, voir https://rdv.anct.gouv.fr/api-docs/index.html
  */
 export const executeOAuthRdvApiCall = async <ResponseType = unknown>({
   rdvAccount,
@@ -14,10 +22,7 @@ export const executeOAuthRdvApiCall = async <ResponseType = unknown>({
   config,
 }: {
   path: string
-  rdvAccount: Pick<
-    RdvAccount,
-    'id' | 'accessToken' | 'refreshToken' | 'scope' | 'expiresAt'
-  >
+  rdvAccount: OAuthRdvApiCallRdvAccount
   config: Omit<AxiosRequestConfig, 'url'>
 }) => {
   // check if token is expired or about to expire
@@ -41,6 +46,7 @@ export const executeOAuthRdvApiCall = async <ResponseType = unknown>({
       Authorization: `Bearer ${currentAccessToken}`,
       ...config.headers,
     },
+    data: config.data ? removeUndefinedValues(config.data) : undefined,
   }
 
   try {
@@ -65,8 +71,24 @@ export const executeOAuthRdvApiCall = async <ResponseType = unknown>({
         const retryResponse = await axios<ResponseType>(retryConfig)
         return retryResponse.data
       }
+      console.error(`RDV API ERROR FOR ENDPOINT ${path}`, error.toJSON())
     }
     // otherwise rethrow
     throw error
   }
 }
+
+export const oAuthRdvApiGetUser = async ({
+  userId,
+  rdvAccount,
+}: {
+  userId: string // RDV Service Public user id
+  rdvAccount: OAuthRdvApiCallRdvAccount
+}) =>
+  executeOAuthRdvApiCall<OauthRdvApiGetUserResponse>({
+    path: `/users/${userId}`,
+    rdvAccount,
+    config: {
+      method: 'GET',
+    },
+  })
