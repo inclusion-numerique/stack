@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_database
+// https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_snapshot
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -6,61 +6,65 @@ import * as cdktf from 'cdktf';
 
 // Configuration
 
-export interface DocumentdbDatabaseConfig extends cdktf.TerraformMetaArguments {
+export interface MongodbSnapshotConfig extends cdktf.TerraformMetaArguments {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_database#id DocumentdbDatabase#id}
+  * Expiration date (Format ISO 8601). Cannot be removed.
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_snapshot#expires_at MongodbSnapshot#expires_at}
+  */
+  readonly expiresAt: string;
+  /**
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_snapshot#id MongodbSnapshot#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
   */
   readonly id?: string;
   /**
-  * Instance on which the database is created
+  * The ID of the instance from which the snapshot was created
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_database#instance_id DocumentdbDatabase#instance_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_snapshot#instance_id MongodbSnapshot#instance_id}
   */
   readonly instanceId: string;
   /**
-  * The database name
+  * Name of the snapshot
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_database#name DocumentdbDatabase#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_snapshot#name MongodbSnapshot#name}
   */
   readonly name?: string;
   /**
-  * The project_id you want to attach the resource to
-  *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_database#project_id DocumentdbDatabase#project_id}
-  */
-  readonly projectId?: string;
-  /**
   * The region you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_database#region DocumentdbDatabase#region}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_snapshot#region MongodbSnapshot#region}
   */
   readonly region?: string;
   /**
   * timeouts block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_database#timeouts DocumentdbDatabase#timeouts}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_snapshot#timeouts MongodbSnapshot#timeouts}
   */
-  readonly timeouts?: DocumentdbDatabaseTimeouts;
+  readonly timeouts?: MongodbSnapshotTimeouts;
 }
-export interface DocumentdbDatabaseTimeouts {
+export interface MongodbSnapshotTimeouts {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_database#create DocumentdbDatabase#create}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_snapshot#create MongodbSnapshot#create}
   */
   readonly create?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_database#default DocumentdbDatabase#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_snapshot#default MongodbSnapshot#default}
   */
   readonly default?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_database#delete DocumentdbDatabase#delete}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_snapshot#delete MongodbSnapshot#delete}
   */
   readonly delete?: string;
+  /**
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_snapshot#update MongodbSnapshot#update}
+  */
+  readonly update?: string;
 }
 
-export function documentdbDatabaseTimeoutsToTerraform(struct?: DocumentdbDatabaseTimeouts | cdktf.IResolvable): any {
+export function mongodbSnapshotTimeoutsToTerraform(struct?: MongodbSnapshotTimeouts | cdktf.IResolvable): any {
   if (!cdktf.canInspect(struct) || cdktf.Tokenization.isResolvable(struct)) { return struct; }
   if (cdktf.isComplexElement(struct)) {
     throw new Error("A complex element was used as configuration, this is not supported: https://cdk.tf/complex-object-as-configuration");
@@ -69,11 +73,12 @@ export function documentdbDatabaseTimeoutsToTerraform(struct?: DocumentdbDatabas
     create: cdktf.stringToTerraform(struct!.create),
     default: cdktf.stringToTerraform(struct!.default),
     delete: cdktf.stringToTerraform(struct!.delete),
+    update: cdktf.stringToTerraform(struct!.update),
   }
 }
 
 
-export function documentdbDatabaseTimeoutsToHclTerraform(struct?: DocumentdbDatabaseTimeouts | cdktf.IResolvable): any {
+export function mongodbSnapshotTimeoutsToHclTerraform(struct?: MongodbSnapshotTimeouts | cdktf.IResolvable): any {
   if (!cdktf.canInspect(struct) || cdktf.Tokenization.isResolvable(struct)) { return struct; }
   if (cdktf.isComplexElement(struct)) {
     throw new Error("A complex element was used as configuration, this is not supported: https://cdk.tf/complex-object-as-configuration");
@@ -97,13 +102,19 @@ export function documentdbDatabaseTimeoutsToHclTerraform(struct?: DocumentdbData
       type: "simple",
       storageClassType: "string",
     },
+    update: {
+      value: cdktf.stringToHclTerraform(struct!.update),
+      isBlock: false,
+      type: "simple",
+      storageClassType: "string",
+    },
   };
 
   // remove undefined attributes
   return Object.fromEntries(Object.entries(attrs).filter(([_, value]) => value !== undefined && value.value !== undefined));
 }
 
-export class DocumentdbDatabaseTimeoutsOutputReference extends cdktf.ComplexObject {
+export class MongodbSnapshotTimeoutsOutputReference extends cdktf.ComplexObject {
   private isEmptyObject = false;
   private resolvableValue?: cdktf.IResolvable;
 
@@ -115,7 +126,7 @@ export class DocumentdbDatabaseTimeoutsOutputReference extends cdktf.ComplexObje
     super(terraformResource, terraformAttribute, false);
   }
 
-  public get internalValue(): DocumentdbDatabaseTimeouts | cdktf.IResolvable | undefined {
+  public get internalValue(): MongodbSnapshotTimeouts | cdktf.IResolvable | undefined {
     if (this.resolvableValue) {
       return this.resolvableValue;
     }
@@ -133,16 +144,21 @@ export class DocumentdbDatabaseTimeoutsOutputReference extends cdktf.ComplexObje
       hasAnyValues = true;
       internalValueResult.delete = this._delete;
     }
+    if (this._update !== undefined) {
+      hasAnyValues = true;
+      internalValueResult.update = this._update;
+    }
     return hasAnyValues ? internalValueResult : undefined;
   }
 
-  public set internalValue(value: DocumentdbDatabaseTimeouts | cdktf.IResolvable | undefined) {
+  public set internalValue(value: MongodbSnapshotTimeouts | cdktf.IResolvable | undefined) {
     if (value === undefined) {
       this.isEmptyObject = false;
       this.resolvableValue = undefined;
       this._create = undefined;
       this._default = undefined;
       this._delete = undefined;
+      this._update = undefined;
     }
     else if (cdktf.Tokenization.isResolvable(value)) {
       this.isEmptyObject = false;
@@ -154,6 +170,7 @@ export class DocumentdbDatabaseTimeoutsOutputReference extends cdktf.ComplexObje
       this._create = value.create;
       this._default = value.default;
       this._delete = value.delete;
+      this._update = value.update;
     }
   }
 
@@ -204,30 +221,46 @@ export class DocumentdbDatabaseTimeoutsOutputReference extends cdktf.ComplexObje
   public get deleteInput() {
     return this._delete;
   }
+
+  // update - computed: false, optional: true, required: false
+  private _update?: string; 
+  public get update() {
+    return this.getStringAttribute('update');
+  }
+  public set update(value: string) {
+    this._update = value;
+  }
+  public resetUpdate() {
+    this._update = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get updateInput() {
+    return this._update;
+  }
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_database scaleway_documentdb_database}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_snapshot scaleway_mongodb_snapshot}
 */
-export class DocumentdbDatabase extends cdktf.TerraformResource {
+export class MongodbSnapshot extends cdktf.TerraformResource {
 
   // =================
   // STATIC PROPERTIES
   // =================
-  public static readonly tfResourceType = "scaleway_documentdb_database";
+  public static readonly tfResourceType = "scaleway_mongodb_snapshot";
 
   // ==============
   // STATIC Methods
   // ==============
   /**
-  * Generates CDKTF code for importing a DocumentdbDatabase resource upon running "cdktf plan <stack-name>"
+  * Generates CDKTF code for importing a MongodbSnapshot resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
-  * @param importToId The construct id used in the generated config for the DocumentdbDatabase to import
-  * @param importFromId The id of the existing DocumentdbDatabase that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_database#import import section} in the documentation of this resource for the id to use
-  * @param provider? Optional instance of the provider where the DocumentdbDatabase to import is found
+  * @param importToId The construct id used in the generated config for the MongodbSnapshot to import
+  * @param importFromId The id of the existing MongodbSnapshot that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_snapshot#import import section} in the documentation of this resource for the id to use
+  * @param provider? Optional instance of the provider where the MongodbSnapshot to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
-        return new cdktf.ImportableResource(scope, importToId, { terraformResourceType: "scaleway_documentdb_database", importId: importFromId, provider });
+        return new cdktf.ImportableResource(scope, importToId, { terraformResourceType: "scaleway_mongodb_snapshot", importId: importFromId, provider });
       }
 
   // ===========
@@ -235,19 +268,19 @@ export class DocumentdbDatabase extends cdktf.TerraformResource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_database scaleway_documentdb_database} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_snapshot scaleway_mongodb_snapshot} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
-  * @param options DocumentdbDatabaseConfig
+  * @param options MongodbSnapshotConfig
   */
-  public constructor(scope: Construct, id: string, config: DocumentdbDatabaseConfig) {
+  public constructor(scope: Construct, id: string, config: MongodbSnapshotConfig) {
     super(scope, id, {
-      terraformResourceType: 'scaleway_documentdb_database',
+      terraformResourceType: 'scaleway_mongodb_snapshot',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.42.1',
-        providerVersionConstraint: '>= 2.42.1'
+        providerVersion: '2.49.0',
+        providerVersionConstraint: '>= 2.49.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -257,10 +290,10 @@ export class DocumentdbDatabase extends cdktf.TerraformResource {
       connection: config.connection,
       forEach: config.forEach
     });
+    this._expiresAt = config.expiresAt;
     this._id = config.id;
     this._instanceId = config.instanceId;
     this._name = config.name;
-    this._projectId = config.projectId;
     this._region = config.region;
     this._timeouts.internalValue = config.timeouts;
   }
@@ -268,6 +301,24 @@ export class DocumentdbDatabase extends cdktf.TerraformResource {
   // ==========
   // ATTRIBUTES
   // ==========
+
+  // created_at - computed: true, optional: false, required: false
+  public get createdAt() {
+    return this.getStringAttribute('created_at');
+  }
+
+  // expires_at - computed: false, optional: false, required: true
+  private _expiresAt?: string; 
+  public get expiresAt() {
+    return this.getStringAttribute('expires_at');
+  }
+  public set expiresAt(value: string) {
+    this._expiresAt = value;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get expiresAtInput() {
+    return this._expiresAt;
+  }
 
   // id - computed: true, optional: true, required: false
   private _id?: string; 
@@ -298,9 +349,9 @@ export class DocumentdbDatabase extends cdktf.TerraformResource {
     return this._instanceId;
   }
 
-  // managed - computed: true, optional: false, required: false
-  public get managed() {
-    return this.getBooleanAttribute('managed');
+  // instance_name - computed: true, optional: false, required: false
+  public get instanceName() {
+    return this.getStringAttribute('instance_name');
   }
 
   // name - computed: true, optional: true, required: false
@@ -319,25 +370,9 @@ export class DocumentdbDatabase extends cdktf.TerraformResource {
     return this._name;
   }
 
-  // owner - computed: true, optional: false, required: false
-  public get owner() {
-    return this.getStringAttribute('owner');
-  }
-
-  // project_id - computed: true, optional: true, required: false
-  private _projectId?: string; 
-  public get projectId() {
-    return this.getStringAttribute('project_id');
-  }
-  public set projectId(value: string) {
-    this._projectId = value;
-  }
-  public resetProjectId() {
-    this._projectId = undefined;
-  }
-  // Temporarily expose input value. Use with caution.
-  public get projectIdInput() {
-    return this._projectId;
+  // node_type - computed: true, optional: false, required: false
+  public get nodeType() {
+    return this.getStringAttribute('node_type');
   }
 
   // region - computed: true, optional: true, required: false
@@ -358,15 +393,25 @@ export class DocumentdbDatabase extends cdktf.TerraformResource {
 
   // size - computed: true, optional: false, required: false
   public get size() {
-    return this.getStringAttribute('size');
+    return this.getNumberAttribute('size');
+  }
+
+  // updated_at - computed: true, optional: false, required: false
+  public get updatedAt() {
+    return this.getStringAttribute('updated_at');
+  }
+
+  // volume_type - computed: true, optional: false, required: false
+  public get volumeType() {
+    return this.getStringAttribute('volume_type');
   }
 
   // timeouts - computed: false, optional: true, required: false
-  private _timeouts = new DocumentdbDatabaseTimeoutsOutputReference(this, "timeouts");
+  private _timeouts = new MongodbSnapshotTimeoutsOutputReference(this, "timeouts");
   public get timeouts() {
     return this._timeouts;
   }
-  public putTimeouts(value: DocumentdbDatabaseTimeouts) {
+  public putTimeouts(value: MongodbSnapshotTimeouts) {
     this._timeouts.internalValue = value;
   }
   public resetTimeouts() {
@@ -383,17 +428,23 @@ export class DocumentdbDatabase extends cdktf.TerraformResource {
 
   protected synthesizeAttributes(): { [name: string]: any } {
     return {
+      expires_at: cdktf.stringToTerraform(this._expiresAt),
       id: cdktf.stringToTerraform(this._id),
       instance_id: cdktf.stringToTerraform(this._instanceId),
       name: cdktf.stringToTerraform(this._name),
-      project_id: cdktf.stringToTerraform(this._projectId),
       region: cdktf.stringToTerraform(this._region),
-      timeouts: documentdbDatabaseTimeoutsToTerraform(this._timeouts.internalValue),
+      timeouts: mongodbSnapshotTimeoutsToTerraform(this._timeouts.internalValue),
     };
   }
 
   protected synthesizeHclAttributes(): { [name: string]: any } {
     const attrs = {
+      expires_at: {
+        value: cdktf.stringToHclTerraform(this._expiresAt),
+        isBlock: false,
+        type: "simple",
+        storageClassType: "string",
+      },
       id: {
         value: cdktf.stringToHclTerraform(this._id),
         isBlock: false,
@@ -412,12 +463,6 @@ export class DocumentdbDatabase extends cdktf.TerraformResource {
         type: "simple",
         storageClassType: "string",
       },
-      project_id: {
-        value: cdktf.stringToHclTerraform(this._projectId),
-        isBlock: false,
-        type: "simple",
-        storageClassType: "string",
-      },
       region: {
         value: cdktf.stringToHclTerraform(this._region),
         isBlock: false,
@@ -425,10 +470,10 @@ export class DocumentdbDatabase extends cdktf.TerraformResource {
         storageClassType: "string",
       },
       timeouts: {
-        value: documentdbDatabaseTimeoutsToHclTerraform(this._timeouts.internalValue),
+        value: mongodbSnapshotTimeoutsToHclTerraform(this._timeouts.internalValue),
         isBlock: true,
         type: "struct",
-        storageClassType: "DocumentdbDatabaseTimeouts",
+        storageClassType: "MongodbSnapshotTimeouts",
       },
     };
 

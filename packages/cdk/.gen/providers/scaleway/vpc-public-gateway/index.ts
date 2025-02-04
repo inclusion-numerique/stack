@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway
+// https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -10,23 +10,23 @@ export interface VpcPublicGatewayConfig extends cdktf.TerraformMetaArguments {
   /**
   * Enable SSH bastion on the gateway
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#bastion_enabled VpcPublicGateway#bastion_enabled}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#bastion_enabled VpcPublicGateway#bastion_enabled}
   */
   readonly bastionEnabled?: boolean | cdktf.IResolvable;
   /**
   * Port of the SSH bastion
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#bastion_port VpcPublicGateway#bastion_port}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#bastion_port VpcPublicGateway#bastion_port}
   */
   readonly bastionPort?: number;
   /**
   * Enable SMTP on the gateway
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#enable_smtp VpcPublicGateway#enable_smtp}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#enable_smtp VpcPublicGateway#enable_smtp}
   */
   readonly enableSmtp?: boolean | cdktf.IResolvable;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#id VpcPublicGateway#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#id VpcPublicGateway#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -35,77 +35,77 @@ export interface VpcPublicGatewayConfig extends cdktf.TerraformMetaArguments {
   /**
   * attach an existing IP to the gateway
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#ip_id VpcPublicGateway#ip_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#ip_id VpcPublicGateway#ip_id}
   */
   readonly ipId?: string;
   /**
   * name of the gateway
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#name VpcPublicGateway#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#name VpcPublicGateway#name}
   */
   readonly name?: string;
   /**
   * The project_id you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#project_id VpcPublicGateway#project_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#project_id VpcPublicGateway#project_id}
   */
   readonly projectId?: string;
   /**
   * Trigger a refresh of the SSH keys for a given Public Gateway by changing this field's value
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#refresh_ssh_keys VpcPublicGateway#refresh_ssh_keys}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#refresh_ssh_keys VpcPublicGateway#refresh_ssh_keys}
   */
   readonly refreshSshKeys?: string;
   /**
   * The tags associated with public gateway
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#tags VpcPublicGateway#tags}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#tags VpcPublicGateway#tags}
   */
   readonly tags?: string[];
   /**
   * gateway type
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#type VpcPublicGateway#type}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#type VpcPublicGateway#type}
   */
   readonly type: string;
   /**
   * override the gateway's default recursive DNS servers, if DNS features are enabled
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#upstream_dns_servers VpcPublicGateway#upstream_dns_servers}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#upstream_dns_servers VpcPublicGateway#upstream_dns_servers}
   */
   readonly upstreamDnsServers?: string[];
   /**
   * The zone you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#zone VpcPublicGateway#zone}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#zone VpcPublicGateway#zone}
   */
   readonly zone?: string;
   /**
   * timeouts block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#timeouts VpcPublicGateway#timeouts}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#timeouts VpcPublicGateway#timeouts}
   */
   readonly timeouts?: VpcPublicGatewayTimeouts;
 }
 export interface VpcPublicGatewayTimeouts {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#create VpcPublicGateway#create}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#create VpcPublicGateway#create}
   */
   readonly create?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#default VpcPublicGateway#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#default VpcPublicGateway#default}
   */
   readonly default?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#delete VpcPublicGateway#delete}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#delete VpcPublicGateway#delete}
   */
   readonly delete?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#read VpcPublicGateway#read}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#read VpcPublicGateway#read}
   */
   readonly read?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#update VpcPublicGateway#update}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#update VpcPublicGateway#update}
   */
   readonly update?: string;
 }
@@ -315,7 +315,7 @@ export class VpcPublicGatewayTimeoutsOutputReference extends cdktf.ComplexObject
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway scaleway_vpc_public_gateway}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway scaleway_vpc_public_gateway}
 */
 export class VpcPublicGateway extends cdktf.TerraformResource {
 
@@ -331,7 +331,7 @@ export class VpcPublicGateway extends cdktf.TerraformResource {
   * Generates CDKTF code for importing a VpcPublicGateway resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
   * @param importToId The construct id used in the generated config for the VpcPublicGateway to import
-  * @param importFromId The id of the existing VpcPublicGateway that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway#import import section} in the documentation of this resource for the id to use
+  * @param importFromId The id of the existing VpcPublicGateway that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway#import import section} in the documentation of this resource for the id to use
   * @param provider? Optional instance of the provider where the VpcPublicGateway to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
@@ -343,7 +343,7 @@ export class VpcPublicGateway extends cdktf.TerraformResource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/vpc_public_gateway scaleway_vpc_public_gateway} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/vpc_public_gateway scaleway_vpc_public_gateway} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -354,8 +354,8 @@ export class VpcPublicGateway extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_vpc_public_gateway',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.42.1',
-        providerVersionConstraint: '>= 2.42.1'
+        providerVersion: '2.49.0',
+        providerVersionConstraint: '>= 2.49.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,

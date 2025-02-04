@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance
+// https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -6,117 +6,189 @@ import * as cdktf from 'cdktf';
 
 // Configuration
 
-export interface DocumentdbInstanceConfig extends cdktf.TerraformMetaArguments {
+export interface MongodbInstanceConfig extends cdktf.TerraformMetaArguments {
   /**
-  * Database's engine version id
-  *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#engine DocumentdbInstance#engine}
-  */
-  readonly engine: string;
-  /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#id DocumentdbInstance#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#id MongodbInstance#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
   */
   readonly id?: string;
   /**
-  * Enable or disable high availability for the database instance
+  * Name of the MongoDB cluster
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#is_ha_cluster DocumentdbInstance#is_ha_cluster}
-  */
-  readonly isHaCluster?: boolean | cdktf.IResolvable;
-  /**
-  * The document db instance name
-  *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#name DocumentdbInstance#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#name MongodbInstance#name}
   */
   readonly name?: string;
   /**
-  * The type of database instance you want to create
+  * Number of nodes in the instance
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#node_type DocumentdbInstance#node_type}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#node_number MongodbInstance#node_number}
+  */
+  readonly nodeNumber: number;
+  /**
+  * Type of node to use for the instance
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#node_type MongodbInstance#node_type}
   */
   readonly nodeType: string;
   /**
-  * Password for the first user of the database instance
+  * Password of the user
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#password DocumentdbInstance#password}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#password MongodbInstance#password}
   */
   readonly password?: string;
   /**
   * The project_id you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#project_id DocumentdbInstance#project_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#project_id MongodbInstance#project_id}
   */
   readonly projectId?: string;
   /**
   * The region you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#region DocumentdbInstance#region}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#region MongodbInstance#region}
   */
   readonly region?: string;
   /**
-  * List of tags ["tag1", "tag2", ...] attached to a database instance
+  * Map of settings to define for the instance.
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#tags DocumentdbInstance#tags}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#settings MongodbInstance#settings}
+  */
+  readonly settings?: { [key: string]: string };
+  /**
+  * Snapshot ID to restore the MongoDB instance from
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#snapshot_id MongodbInstance#snapshot_id}
+  */
+  readonly snapshotId?: string;
+  /**
+  * List of tags ["tag1", "tag2", ...] attached to a MongoDB instance
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#tags MongodbInstance#tags}
   */
   readonly tags?: string[];
   /**
-  *  Enable telemetry to collects basic anonymous usage data and sends them to FerretDB telemetry service
+  * Name of the user created when the cluster is created
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#telemetry_enabled DocumentdbInstance#telemetry_enabled}
-  */
-  readonly telemetryEnabled?: boolean | cdktf.IResolvable;
-  /**
-  * Identifier for the first user of the database instance
-  *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#user_name DocumentdbInstance#user_name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#user_name MongodbInstance#user_name}
   */
   readonly userName?: string;
   /**
-  * Volume size (in GB) when volume_type is not lssd
+  * MongoDB version of the instance
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#volume_size_in_gb DocumentdbInstance#volume_size_in_gb}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#version MongodbInstance#version}
+  */
+  readonly version?: string;
+  /**
+  * Volume size (in GB)
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#volume_size_in_gb MongodbInstance#volume_size_in_gb}
   */
   readonly volumeSizeInGb?: number;
   /**
-  * Type of volume where data are stored
+  * Volume type of the instance
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#volume_type DocumentdbInstance#volume_type}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#volume_type MongodbInstance#volume_type}
   */
   readonly volumeType?: string;
   /**
+  * public_network block
+  *
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#public_network MongodbInstance#public_network}
+  */
+  readonly publicNetwork?: MongodbInstancePublicNetwork;
+  /**
   * timeouts block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#timeouts DocumentdbInstance#timeouts}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#timeouts MongodbInstance#timeouts}
   */
-  readonly timeouts?: DocumentdbInstanceTimeouts;
+  readonly timeouts?: MongodbInstanceTimeouts;
 }
-export interface DocumentdbInstanceTimeouts {
+export interface MongodbInstancePublicNetwork {
+}
+
+export function mongodbInstancePublicNetworkToTerraform(struct?: MongodbInstancePublicNetworkOutputReference | MongodbInstancePublicNetwork): any {
+  if (!cdktf.canInspect(struct) || cdktf.Tokenization.isResolvable(struct)) { return struct; }
+  if (cdktf.isComplexElement(struct)) {
+    throw new Error("A complex element was used as configuration, this is not supported: https://cdk.tf/complex-object-as-configuration");
+  }
+  return {
+  }
+}
+
+
+export function mongodbInstancePublicNetworkToHclTerraform(struct?: MongodbInstancePublicNetworkOutputReference | MongodbInstancePublicNetwork): any {
+  if (!cdktf.canInspect(struct) || cdktf.Tokenization.isResolvable(struct)) { return struct; }
+  if (cdktf.isComplexElement(struct)) {
+    throw new Error("A complex element was used as configuration, this is not supported: https://cdk.tf/complex-object-as-configuration");
+  }
+  const attrs = {
+  };
+  return attrs;
+}
+
+export class MongodbInstancePublicNetworkOutputReference extends cdktf.ComplexObject {
+  private isEmptyObject = false;
+
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#create DocumentdbInstance#create}
+  * @param terraformResource The parent resource
+  * @param terraformAttribute The attribute on the parent resource this class is referencing
+  */
+  public constructor(terraformResource: cdktf.IInterpolatingParent, terraformAttribute: string) {
+    super(terraformResource, terraformAttribute, false, 0);
+  }
+
+  public get internalValue(): MongodbInstancePublicNetwork | undefined {
+    let hasAnyValues = this.isEmptyObject;
+    const internalValueResult: any = {};
+    return hasAnyValues ? internalValueResult : undefined;
+  }
+
+  public set internalValue(value: MongodbInstancePublicNetwork | undefined) {
+    if (value === undefined) {
+      this.isEmptyObject = false;
+    }
+    else {
+      this.isEmptyObject = Object.keys(value).length === 0;
+    }
+  }
+
+  // dns_record - computed: true, optional: false, required: false
+  public get dnsRecord() {
+    return this.getStringAttribute('dns_record');
+  }
+
+  // id - computed: true, optional: false, required: false
+  public get id() {
+    return this.getStringAttribute('id');
+  }
+
+  // port - computed: true, optional: false, required: false
+  public get port() {
+    return this.getNumberAttribute('port');
+  }
+}
+export interface MongodbInstanceTimeouts {
+  /**
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#create MongodbInstance#create}
   */
   readonly create?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#default DocumentdbInstance#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#default MongodbInstance#default}
   */
   readonly default?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#delete DocumentdbInstance#delete}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#delete MongodbInstance#delete}
   */
   readonly delete?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#read DocumentdbInstance#read}
-  */
-  readonly read?: string;
-  /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#update DocumentdbInstance#update}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#update MongodbInstance#update}
   */
   readonly update?: string;
 }
 
-export function documentdbInstanceTimeoutsToTerraform(struct?: DocumentdbInstanceTimeouts | cdktf.IResolvable): any {
+export function mongodbInstanceTimeoutsToTerraform(struct?: MongodbInstanceTimeouts | cdktf.IResolvable): any {
   if (!cdktf.canInspect(struct) || cdktf.Tokenization.isResolvable(struct)) { return struct; }
   if (cdktf.isComplexElement(struct)) {
     throw new Error("A complex element was used as configuration, this is not supported: https://cdk.tf/complex-object-as-configuration");
@@ -125,13 +197,12 @@ export function documentdbInstanceTimeoutsToTerraform(struct?: DocumentdbInstanc
     create: cdktf.stringToTerraform(struct!.create),
     default: cdktf.stringToTerraform(struct!.default),
     delete: cdktf.stringToTerraform(struct!.delete),
-    read: cdktf.stringToTerraform(struct!.read),
     update: cdktf.stringToTerraform(struct!.update),
   }
 }
 
 
-export function documentdbInstanceTimeoutsToHclTerraform(struct?: DocumentdbInstanceTimeouts | cdktf.IResolvable): any {
+export function mongodbInstanceTimeoutsToHclTerraform(struct?: MongodbInstanceTimeouts | cdktf.IResolvable): any {
   if (!cdktf.canInspect(struct) || cdktf.Tokenization.isResolvable(struct)) { return struct; }
   if (cdktf.isComplexElement(struct)) {
     throw new Error("A complex element was used as configuration, this is not supported: https://cdk.tf/complex-object-as-configuration");
@@ -155,12 +226,6 @@ export function documentdbInstanceTimeoutsToHclTerraform(struct?: DocumentdbInst
       type: "simple",
       storageClassType: "string",
     },
-    read: {
-      value: cdktf.stringToHclTerraform(struct!.read),
-      isBlock: false,
-      type: "simple",
-      storageClassType: "string",
-    },
     update: {
       value: cdktf.stringToHclTerraform(struct!.update),
       isBlock: false,
@@ -173,7 +238,7 @@ export function documentdbInstanceTimeoutsToHclTerraform(struct?: DocumentdbInst
   return Object.fromEntries(Object.entries(attrs).filter(([_, value]) => value !== undefined && value.value !== undefined));
 }
 
-export class DocumentdbInstanceTimeoutsOutputReference extends cdktf.ComplexObject {
+export class MongodbInstanceTimeoutsOutputReference extends cdktf.ComplexObject {
   private isEmptyObject = false;
   private resolvableValue?: cdktf.IResolvable;
 
@@ -185,7 +250,7 @@ export class DocumentdbInstanceTimeoutsOutputReference extends cdktf.ComplexObje
     super(terraformResource, terraformAttribute, false);
   }
 
-  public get internalValue(): DocumentdbInstanceTimeouts | cdktf.IResolvable | undefined {
+  public get internalValue(): MongodbInstanceTimeouts | cdktf.IResolvable | undefined {
     if (this.resolvableValue) {
       return this.resolvableValue;
     }
@@ -203,10 +268,6 @@ export class DocumentdbInstanceTimeoutsOutputReference extends cdktf.ComplexObje
       hasAnyValues = true;
       internalValueResult.delete = this._delete;
     }
-    if (this._read !== undefined) {
-      hasAnyValues = true;
-      internalValueResult.read = this._read;
-    }
     if (this._update !== undefined) {
       hasAnyValues = true;
       internalValueResult.update = this._update;
@@ -214,14 +275,13 @@ export class DocumentdbInstanceTimeoutsOutputReference extends cdktf.ComplexObje
     return hasAnyValues ? internalValueResult : undefined;
   }
 
-  public set internalValue(value: DocumentdbInstanceTimeouts | cdktf.IResolvable | undefined) {
+  public set internalValue(value: MongodbInstanceTimeouts | cdktf.IResolvable | undefined) {
     if (value === undefined) {
       this.isEmptyObject = false;
       this.resolvableValue = undefined;
       this._create = undefined;
       this._default = undefined;
       this._delete = undefined;
-      this._read = undefined;
       this._update = undefined;
     }
     else if (cdktf.Tokenization.isResolvable(value)) {
@@ -234,7 +294,6 @@ export class DocumentdbInstanceTimeoutsOutputReference extends cdktf.ComplexObje
       this._create = value.create;
       this._default = value.default;
       this._delete = value.delete;
-      this._read = value.read;
       this._update = value.update;
     }
   }
@@ -287,22 +346,6 @@ export class DocumentdbInstanceTimeoutsOutputReference extends cdktf.ComplexObje
     return this._delete;
   }
 
-  // read - computed: false, optional: true, required: false
-  private _read?: string; 
-  public get read() {
-    return this.getStringAttribute('read');
-  }
-  public set read(value: string) {
-    this._read = value;
-  }
-  public resetRead() {
-    this._read = undefined;
-  }
-  // Temporarily expose input value. Use with caution.
-  public get readInput() {
-    return this._read;
-  }
-
   // update - computed: false, optional: true, required: false
   private _update?: string; 
   public get update() {
@@ -321,27 +364,27 @@ export class DocumentdbInstanceTimeoutsOutputReference extends cdktf.ComplexObje
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance scaleway_documentdb_instance}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance scaleway_mongodb_instance}
 */
-export class DocumentdbInstance extends cdktf.TerraformResource {
+export class MongodbInstance extends cdktf.TerraformResource {
 
   // =================
   // STATIC PROPERTIES
   // =================
-  public static readonly tfResourceType = "scaleway_documentdb_instance";
+  public static readonly tfResourceType = "scaleway_mongodb_instance";
 
   // ==============
   // STATIC Methods
   // ==============
   /**
-  * Generates CDKTF code for importing a DocumentdbInstance resource upon running "cdktf plan <stack-name>"
+  * Generates CDKTF code for importing a MongodbInstance resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
-  * @param importToId The construct id used in the generated config for the DocumentdbInstance to import
-  * @param importFromId The id of the existing DocumentdbInstance that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance#import import section} in the documentation of this resource for the id to use
-  * @param provider? Optional instance of the provider where the DocumentdbInstance to import is found
+  * @param importToId The construct id used in the generated config for the MongodbInstance to import
+  * @param importFromId The id of the existing MongodbInstance that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance#import import section} in the documentation of this resource for the id to use
+  * @param provider? Optional instance of the provider where the MongodbInstance to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
-        return new cdktf.ImportableResource(scope, importToId, { terraformResourceType: "scaleway_documentdb_instance", importId: importFromId, provider });
+        return new cdktf.ImportableResource(scope, importToId, { terraformResourceType: "scaleway_mongodb_instance", importId: importFromId, provider });
       }
 
   // ===========
@@ -349,19 +392,19 @@ export class DocumentdbInstance extends cdktf.TerraformResource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/documentdb_instance scaleway_documentdb_instance} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/mongodb_instance scaleway_mongodb_instance} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
-  * @param options DocumentdbInstanceConfig
+  * @param options MongodbInstanceConfig
   */
-  public constructor(scope: Construct, id: string, config: DocumentdbInstanceConfig) {
+  public constructor(scope: Construct, id: string, config: MongodbInstanceConfig) {
     super(scope, id, {
-      terraformResourceType: 'scaleway_documentdb_instance',
+      terraformResourceType: 'scaleway_mongodb_instance',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.42.1',
-        providerVersionConstraint: '>= 2.42.1'
+        providerVersion: '2.49.0',
+        providerVersionConstraint: '>= 2.49.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,
@@ -371,19 +414,21 @@ export class DocumentdbInstance extends cdktf.TerraformResource {
       connection: config.connection,
       forEach: config.forEach
     });
-    this._engine = config.engine;
     this._id = config.id;
-    this._isHaCluster = config.isHaCluster;
     this._name = config.name;
+    this._nodeNumber = config.nodeNumber;
     this._nodeType = config.nodeType;
     this._password = config.password;
     this._projectId = config.projectId;
     this._region = config.region;
+    this._settings = config.settings;
+    this._snapshotId = config.snapshotId;
     this._tags = config.tags;
-    this._telemetryEnabled = config.telemetryEnabled;
     this._userName = config.userName;
+    this._version = config.version;
     this._volumeSizeInGb = config.volumeSizeInGb;
     this._volumeType = config.volumeType;
+    this._publicNetwork.internalValue = config.publicNetwork;
     this._timeouts.internalValue = config.timeouts;
   }
 
@@ -391,17 +436,9 @@ export class DocumentdbInstance extends cdktf.TerraformResource {
   // ATTRIBUTES
   // ==========
 
-  // engine - computed: false, optional: false, required: true
-  private _engine?: string; 
-  public get engine() {
-    return this.getStringAttribute('engine');
-  }
-  public set engine(value: string) {
-    this._engine = value;
-  }
-  // Temporarily expose input value. Use with caution.
-  public get engineInput() {
-    return this._engine;
+  // created_at - computed: true, optional: false, required: false
+  public get createdAt() {
+    return this.getStringAttribute('created_at');
   }
 
   // id - computed: true, optional: true, required: false
@@ -420,22 +457,6 @@ export class DocumentdbInstance extends cdktf.TerraformResource {
     return this._id;
   }
 
-  // is_ha_cluster - computed: false, optional: true, required: false
-  private _isHaCluster?: boolean | cdktf.IResolvable; 
-  public get isHaCluster() {
-    return this.getBooleanAttribute('is_ha_cluster');
-  }
-  public set isHaCluster(value: boolean | cdktf.IResolvable) {
-    this._isHaCluster = value;
-  }
-  public resetIsHaCluster() {
-    this._isHaCluster = undefined;
-  }
-  // Temporarily expose input value. Use with caution.
-  public get isHaClusterInput() {
-    return this._isHaCluster;
-  }
-
   // name - computed: true, optional: true, required: false
   private _name?: string; 
   public get name() {
@@ -450,6 +471,19 @@ export class DocumentdbInstance extends cdktf.TerraformResource {
   // Temporarily expose input value. Use with caution.
   public get nameInput() {
     return this._name;
+  }
+
+  // node_number - computed: false, optional: false, required: true
+  private _nodeNumber?: number; 
+  public get nodeNumber() {
+    return this.getNumberAttribute('node_number');
+  }
+  public set nodeNumber(value: number) {
+    this._nodeNumber = value;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get nodeNumberInput() {
+    return this._nodeNumber;
   }
 
   // node_type - computed: false, optional: false, required: true
@@ -513,6 +547,38 @@ export class DocumentdbInstance extends cdktf.TerraformResource {
     return this._region;
   }
 
+  // settings - computed: false, optional: true, required: false
+  private _settings?: { [key: string]: string }; 
+  public get settings() {
+    return this.getStringMapAttribute('settings');
+  }
+  public set settings(value: { [key: string]: string }) {
+    this._settings = value;
+  }
+  public resetSettings() {
+    this._settings = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get settingsInput() {
+    return this._settings;
+  }
+
+  // snapshot_id - computed: false, optional: true, required: false
+  private _snapshotId?: string; 
+  public get snapshotId() {
+    return this.getStringAttribute('snapshot_id');
+  }
+  public set snapshotId(value: string) {
+    this._snapshotId = value;
+  }
+  public resetSnapshotId() {
+    this._snapshotId = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get snapshotIdInput() {
+    return this._snapshotId;
+  }
+
   // tags - computed: false, optional: true, required: false
   private _tags?: string[]; 
   public get tags() {
@@ -529,20 +595,9 @@ export class DocumentdbInstance extends cdktf.TerraformResource {
     return this._tags;
   }
 
-  // telemetry_enabled - computed: false, optional: true, required: false
-  private _telemetryEnabled?: boolean | cdktf.IResolvable; 
-  public get telemetryEnabled() {
-    return this.getBooleanAttribute('telemetry_enabled');
-  }
-  public set telemetryEnabled(value: boolean | cdktf.IResolvable) {
-    this._telemetryEnabled = value;
-  }
-  public resetTelemetryEnabled() {
-    this._telemetryEnabled = undefined;
-  }
-  // Temporarily expose input value. Use with caution.
-  public get telemetryEnabledInput() {
-    return this._telemetryEnabled;
+  // updated_at - computed: true, optional: false, required: false
+  public get updatedAt() {
+    return this.getStringAttribute('updated_at');
   }
 
   // user_name - computed: false, optional: true, required: false
@@ -559,6 +614,22 @@ export class DocumentdbInstance extends cdktf.TerraformResource {
   // Temporarily expose input value. Use with caution.
   public get userNameInput() {
     return this._userName;
+  }
+
+  // version - computed: true, optional: true, required: false
+  private _version?: string; 
+  public get version() {
+    return this.getStringAttribute('version');
+  }
+  public set version(value: string) {
+    this._version = value;
+  }
+  public resetVersion() {
+    this._version = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get versionInput() {
+    return this._version;
   }
 
   // volume_size_in_gb - computed: true, optional: true, required: false
@@ -593,12 +664,28 @@ export class DocumentdbInstance extends cdktf.TerraformResource {
     return this._volumeType;
   }
 
+  // public_network - computed: false, optional: true, required: false
+  private _publicNetwork = new MongodbInstancePublicNetworkOutputReference(this, "public_network");
+  public get publicNetwork() {
+    return this._publicNetwork;
+  }
+  public putPublicNetwork(value: MongodbInstancePublicNetwork) {
+    this._publicNetwork.internalValue = value;
+  }
+  public resetPublicNetwork() {
+    this._publicNetwork.internalValue = undefined;
+  }
+  // Temporarily expose input value. Use with caution.
+  public get publicNetworkInput() {
+    return this._publicNetwork.internalValue;
+  }
+
   // timeouts - computed: false, optional: true, required: false
-  private _timeouts = new DocumentdbInstanceTimeoutsOutputReference(this, "timeouts");
+  private _timeouts = new MongodbInstanceTimeoutsOutputReference(this, "timeouts");
   public get timeouts() {
     return this._timeouts;
   }
-  public putTimeouts(value: DocumentdbInstanceTimeouts) {
+  public putTimeouts(value: MongodbInstanceTimeouts) {
     this._timeouts.internalValue = value;
   }
   public resetTimeouts() {
@@ -615,48 +702,44 @@ export class DocumentdbInstance extends cdktf.TerraformResource {
 
   protected synthesizeAttributes(): { [name: string]: any } {
     return {
-      engine: cdktf.stringToTerraform(this._engine),
       id: cdktf.stringToTerraform(this._id),
-      is_ha_cluster: cdktf.booleanToTerraform(this._isHaCluster),
       name: cdktf.stringToTerraform(this._name),
+      node_number: cdktf.numberToTerraform(this._nodeNumber),
       node_type: cdktf.stringToTerraform(this._nodeType),
       password: cdktf.stringToTerraform(this._password),
       project_id: cdktf.stringToTerraform(this._projectId),
       region: cdktf.stringToTerraform(this._region),
+      settings: cdktf.hashMapper(cdktf.stringToTerraform)(this._settings),
+      snapshot_id: cdktf.stringToTerraform(this._snapshotId),
       tags: cdktf.listMapper(cdktf.stringToTerraform, false)(this._tags),
-      telemetry_enabled: cdktf.booleanToTerraform(this._telemetryEnabled),
       user_name: cdktf.stringToTerraform(this._userName),
+      version: cdktf.stringToTerraform(this._version),
       volume_size_in_gb: cdktf.numberToTerraform(this._volumeSizeInGb),
       volume_type: cdktf.stringToTerraform(this._volumeType),
-      timeouts: documentdbInstanceTimeoutsToTerraform(this._timeouts.internalValue),
+      public_network: mongodbInstancePublicNetworkToTerraform(this._publicNetwork.internalValue),
+      timeouts: mongodbInstanceTimeoutsToTerraform(this._timeouts.internalValue),
     };
   }
 
   protected synthesizeHclAttributes(): { [name: string]: any } {
     const attrs = {
-      engine: {
-        value: cdktf.stringToHclTerraform(this._engine),
-        isBlock: false,
-        type: "simple",
-        storageClassType: "string",
-      },
       id: {
         value: cdktf.stringToHclTerraform(this._id),
         isBlock: false,
         type: "simple",
         storageClassType: "string",
       },
-      is_ha_cluster: {
-        value: cdktf.booleanToHclTerraform(this._isHaCluster),
-        isBlock: false,
-        type: "simple",
-        storageClassType: "boolean",
-      },
       name: {
         value: cdktf.stringToHclTerraform(this._name),
         isBlock: false,
         type: "simple",
         storageClassType: "string",
+      },
+      node_number: {
+        value: cdktf.numberToHclTerraform(this._nodeNumber),
+        isBlock: false,
+        type: "simple",
+        storageClassType: "number",
       },
       node_type: {
         value: cdktf.stringToHclTerraform(this._nodeType),
@@ -682,20 +765,32 @@ export class DocumentdbInstance extends cdktf.TerraformResource {
         type: "simple",
         storageClassType: "string",
       },
+      settings: {
+        value: cdktf.hashMapperHcl(cdktf.stringToHclTerraform)(this._settings),
+        isBlock: false,
+        type: "map",
+        storageClassType: "stringMap",
+      },
+      snapshot_id: {
+        value: cdktf.stringToHclTerraform(this._snapshotId),
+        isBlock: false,
+        type: "simple",
+        storageClassType: "string",
+      },
       tags: {
         value: cdktf.listMapperHcl(cdktf.stringToHclTerraform, false)(this._tags),
         isBlock: false,
         type: "list",
         storageClassType: "stringList",
       },
-      telemetry_enabled: {
-        value: cdktf.booleanToHclTerraform(this._telemetryEnabled),
-        isBlock: false,
-        type: "simple",
-        storageClassType: "boolean",
-      },
       user_name: {
         value: cdktf.stringToHclTerraform(this._userName),
+        isBlock: false,
+        type: "simple",
+        storageClassType: "string",
+      },
+      version: {
+        value: cdktf.stringToHclTerraform(this._version),
         isBlock: false,
         type: "simple",
         storageClassType: "string",
@@ -712,11 +807,17 @@ export class DocumentdbInstance extends cdktf.TerraformResource {
         type: "simple",
         storageClassType: "string",
       },
+      public_network: {
+        value: mongodbInstancePublicNetworkToHclTerraform(this._publicNetwork.internalValue),
+        isBlock: true,
+        type: "list",
+        storageClassType: "MongodbInstancePublicNetworkList",
+      },
       timeouts: {
-        value: documentdbInstanceTimeoutsToHclTerraform(this._timeouts.internalValue),
+        value: mongodbInstanceTimeoutsToHclTerraform(this._timeouts.internalValue),
         isBlock: true,
         type: "struct",
-        storageClassType: "DocumentdbInstanceTimeouts",
+        storageClassType: "MongodbInstanceTimeouts",
       },
     };
 

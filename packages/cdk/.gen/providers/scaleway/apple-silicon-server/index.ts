@@ -1,4 +1,4 @@
-// https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/apple_silicon_server
+// https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/apple_silicon_server
 // generated from terraform resource schema
 
 import { Construct } from 'constructs';
@@ -8,7 +8,7 @@ import * as cdktf from 'cdktf';
 
 export interface AppleSiliconServerConfig extends cdktf.TerraformMetaArguments {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/apple_silicon_server#id AppleSiliconServer#id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/apple_silicon_server#id AppleSiliconServer#id}
   *
   * Please be aware that the id field is automatically added to all resources in Terraform providers using a Terraform provider SDK version below 2.
   * If you experience problems setting this value it might not be settable. Please take a look at the provider documentation to ensure it should be settable.
@@ -17,41 +17,41 @@ export interface AppleSiliconServerConfig extends cdktf.TerraformMetaArguments {
   /**
   * Name of the server
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/apple_silicon_server#name AppleSiliconServer#name}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/apple_silicon_server#name AppleSiliconServer#name}
   */
   readonly name?: string;
   /**
   * The project_id you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/apple_silicon_server#project_id AppleSiliconServer#project_id}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/apple_silicon_server#project_id AppleSiliconServer#project_id}
   */
   readonly projectId?: string;
   /**
   * Type of the server
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/apple_silicon_server#type AppleSiliconServer#type}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/apple_silicon_server#type AppleSiliconServer#type}
   */
   readonly type: string;
   /**
   * The zone you want to attach the resource to
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/apple_silicon_server#zone AppleSiliconServer#zone}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/apple_silicon_server#zone AppleSiliconServer#zone}
   */
   readonly zone?: string;
   /**
   * timeouts block
   *
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/apple_silicon_server#timeouts AppleSiliconServer#timeouts}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/apple_silicon_server#timeouts AppleSiliconServer#timeouts}
   */
   readonly timeouts?: AppleSiliconServerTimeouts;
 }
 export interface AppleSiliconServerTimeouts {
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/apple_silicon_server#create AppleSiliconServer#create}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/apple_silicon_server#create AppleSiliconServer#create}
   */
   readonly create?: string;
   /**
-  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/apple_silicon_server#default AppleSiliconServer#default}
+  * Docs at Terraform Registry: {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/apple_silicon_server#default AppleSiliconServer#default}
   */
   readonly default?: string;
 }
@@ -174,7 +174,7 @@ export class AppleSiliconServerTimeoutsOutputReference extends cdktf.ComplexObje
 }
 
 /**
-* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/apple_silicon_server scaleway_apple_silicon_server}
+* Represents a {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/apple_silicon_server scaleway_apple_silicon_server}
 */
 export class AppleSiliconServer extends cdktf.TerraformResource {
 
@@ -190,7 +190,7 @@ export class AppleSiliconServer extends cdktf.TerraformResource {
   * Generates CDKTF code for importing a AppleSiliconServer resource upon running "cdktf plan <stack-name>"
   * @param scope The scope in which to define this construct
   * @param importToId The construct id used in the generated config for the AppleSiliconServer to import
-  * @param importFromId The id of the existing AppleSiliconServer that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/apple_silicon_server#import import section} in the documentation of this resource for the id to use
+  * @param importFromId The id of the existing AppleSiliconServer that should be imported. Refer to the {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/apple_silicon_server#import import section} in the documentation of this resource for the id to use
   * @param provider? Optional instance of the provider where the AppleSiliconServer to import is found
   */
   public static generateConfigForImport(scope: Construct, importToId: string, importFromId: string, provider?: cdktf.TerraformProvider) {
@@ -202,7 +202,7 @@ export class AppleSiliconServer extends cdktf.TerraformResource {
   // ===========
 
   /**
-  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.42.1/docs/resources/apple_silicon_server scaleway_apple_silicon_server} Resource
+  * Create a new {@link https://registry.terraform.io/providers/scaleway/scaleway/2.49.0/docs/resources/apple_silicon_server scaleway_apple_silicon_server} Resource
   *
   * @param scope The scope in which to define this construct
   * @param id The scoped construct ID. Must be unique amongst siblings in the same scope
@@ -213,8 +213,8 @@ export class AppleSiliconServer extends cdktf.TerraformResource {
       terraformResourceType: 'scaleway_apple_silicon_server',
       terraformGeneratorMetadata: {
         providerName: 'scaleway',
-        providerVersion: '2.42.1',
-        providerVersionConstraint: '>= 2.42.1'
+        providerVersion: '2.49.0',
+        providerVersionConstraint: '>= 2.49.0'
       },
       provider: config.provider,
       dependsOn: config.dependsOn,

@@ -16,12 +16,6 @@ Object.defineProperty(exports, 'containerDomain', { get: function () { return re
 Object.defineProperty(exports, 'containerNamespace', { get: function () { return require('./container-namespace'); } });
 Object.defineProperty(exports, 'containerToken', { get: function () { return require('./container-token'); } });
 Object.defineProperty(exports, 'containerTrigger', { get: function () { return require('./container-trigger'); } });
-Object.defineProperty(exports, 'documentdbDatabase', { get: function () { return require('./documentdb-database'); } });
-Object.defineProperty(exports, 'documentdbInstance', { get: function () { return require('./documentdb-instance'); } });
-Object.defineProperty(exports, 'documentdbPrivateNetworkEndpoint', { get: function () { return require('./documentdb-private-network-endpoint'); } });
-Object.defineProperty(exports, 'documentdbPrivilege', { get: function () { return require('./documentdb-privilege'); } });
-Object.defineProperty(exports, 'documentdbReadReplica', { get: function () { return require('./documentdb-read-replica'); } });
-Object.defineProperty(exports, 'documentdbUser', { get: function () { return require('./documentdb-user'); } });
 Object.defineProperty(exports, 'domainRecord', { get: function () { return require('./domain-record'); } });
 Object.defineProperty(exports, 'domainZone', { get: function () { return require('./domain-zone'); } });
 Object.defineProperty(exports, 'flexibleIp', { get: function () { return require('./flexible-ip'); } });
@@ -39,6 +33,7 @@ Object.defineProperty(exports, 'iamGroupMembership', { get: function () { return
 Object.defineProperty(exports, 'iamPolicy', { get: function () { return require('./iam-policy'); } });
 Object.defineProperty(exports, 'iamSshKey', { get: function () { return require('./iam-ssh-key'); } });
 Object.defineProperty(exports, 'iamUser', { get: function () { return require('./iam-user'); } });
+Object.defineProperty(exports, 'inferenceDeployment', { get: function () { return require('./inference-deployment'); } });
 Object.defineProperty(exports, 'instanceImage', { get: function () { return require('./instance-image'); } });
 Object.defineProperty(exports, 'instanceIp', { get: function () { return require('./instance-ip'); } });
 Object.defineProperty(exports, 'instanceIpReverseDns', { get: function () { return require('./instance-ip-reverse-dns'); } });
@@ -75,6 +70,8 @@ Object.defineProperty(exports, 'mnqSnsTopicSubscription', { get: function () { r
 Object.defineProperty(exports, 'mnqSqs', { get: function () { return require('./mnq-sqs'); } });
 Object.defineProperty(exports, 'mnqSqsCredentials', { get: function () { return require('./mnq-sqs-credentials'); } });
 Object.defineProperty(exports, 'mnqSqsQueue', { get: function () { return require('./mnq-sqs-queue'); } });
+Object.defineProperty(exports, 'mongodbInstance', { get: function () { return require('./mongodb-instance'); } });
+Object.defineProperty(exports, 'mongodbSnapshot', { get: function () { return require('./mongodb-snapshot'); } });
 Object.defineProperty(exports, 'objectResource', { get: function () { return require('./object-resource'); } });
 Object.defineProperty(exports, 'objectBucket', { get: function () { return require('./object-bucket'); } });
 Object.defineProperty(exports, 'objectBucketAcl', { get: function () { return require('./object-bucket-acl'); } });
@@ -95,6 +92,7 @@ Object.defineProperty(exports, 'secret', { get: function () { return require('./
 Object.defineProperty(exports, 'secretVersion', { get: function () { return require('./secret-version'); } });
 Object.defineProperty(exports, 'temDomain', { get: function () { return require('./tem-domain'); } });
 Object.defineProperty(exports, 'temDomainValidation', { get: function () { return require('./tem-domain-validation'); } });
+Object.defineProperty(exports, 'temWebhook', { get: function () { return require('./tem-webhook'); } });
 Object.defineProperty(exports, 'vpc', { get: function () { return require('./vpc'); } });
 Object.defineProperty(exports, 'vpcGatewayNetwork', { get: function () { return require('./vpc-gateway-network'); } });
 Object.defineProperty(exports, 'vpcPrivateNetwork', { get: function () { return require('./vpc-private-network'); } });
@@ -104,6 +102,7 @@ Object.defineProperty(exports, 'vpcPublicGatewayDhcpReservation', { get: functio
 Object.defineProperty(exports, 'vpcPublicGatewayIp', { get: function () { return require('./vpc-public-gateway-ip'); } });
 Object.defineProperty(exports, 'vpcPublicGatewayIpReverseDns', { get: function () { return require('./vpc-public-gateway-ip-reverse-dns'); } });
 Object.defineProperty(exports, 'vpcPublicGatewayPatRule', { get: function () { return require('./vpc-public-gateway-pat-rule'); } });
+Object.defineProperty(exports, 'vpcRoute', { get: function () { return require('./vpc-route'); } });
 Object.defineProperty(exports, 'webhosting', { get: function () { return require('./webhosting'); } });
 Object.defineProperty(exports, 'dataScalewayAccountProject', { get: function () { return require('./data-scaleway-account-project'); } });
 Object.defineProperty(exports, 'dataScalewayAccountSshKey', { get: function () { return require('./data-scaleway-account-ssh-key'); } });
@@ -118,12 +117,10 @@ Object.defineProperty(exports, 'dataScalewayBlockSnapshot', { get: function () {
 Object.defineProperty(exports, 'dataScalewayBlockVolume', { get: function () { return require('./data-scaleway-block-volume'); } });
 Object.defineProperty(exports, 'dataScalewayCockpit', { get: function () { return require('./data-scaleway-cockpit'); } });
 Object.defineProperty(exports, 'dataScalewayCockpitPlan', { get: function () { return require('./data-scaleway-cockpit-plan'); } });
+Object.defineProperty(exports, 'dataScalewayCockpitSource', { get: function () { return require('./data-scaleway-cockpit-source'); } });
 Object.defineProperty(exports, 'dataScalewayConfig', { get: function () { return require('./data-scaleway-config'); } });
 Object.defineProperty(exports, 'dataScalewayContainer', { get: function () { return require('./data-scaleway-container'); } });
 Object.defineProperty(exports, 'dataScalewayContainerNamespace', { get: function () { return require('./data-scaleway-container-namespace'); } });
-Object.defineProperty(exports, 'dataScalewayDocumentdbDatabase', { get: function () { return require('./data-scaleway-documentdb-database'); } });
-Object.defineProperty(exports, 'dataScalewayDocumentdbInstance', { get: function () { return require('./data-scaleway-documentdb-instance'); } });
-Object.defineProperty(exports, 'dataScalewayDocumentdbLoadBalancerEndpoint', { get: function () { return require('./data-scaleway-documentdb-load-balancer-endpoint'); } });
 Object.defineProperty(exports, 'dataScalewayDomainRecord', { get: function () { return require('./data-scaleway-domain-record'); } });
 Object.defineProperty(exports, 'dataScalewayDomainZone', { get: function () { return require('./data-scaleway-domain-zone'); } });
 Object.defineProperty(exports, 'dataScalewayFlexibleIp', { get: function () { return require('./data-scaleway-flexible-ip'); } });
@@ -164,7 +161,9 @@ Object.defineProperty(exports, 'dataScalewayLbRoute', { get: function () { retur
 Object.defineProperty(exports, 'dataScalewayLbRoutes', { get: function () { return require('./data-scaleway-lb-routes'); } });
 Object.defineProperty(exports, 'dataScalewayLbs', { get: function () { return require('./data-scaleway-lbs'); } });
 Object.defineProperty(exports, 'dataScalewayMarketplaceImage', { get: function () { return require('./data-scaleway-marketplace-image'); } });
+Object.defineProperty(exports, 'dataScalewayMnqSns', { get: function () { return require('./data-scaleway-mnq-sns'); } });
 Object.defineProperty(exports, 'dataScalewayMnqSqs', { get: function () { return require('./data-scaleway-mnq-sqs'); } });
+Object.defineProperty(exports, 'dataScalewayMongodbInstance', { get: function () { return require('./data-scaleway-mongodb-instance'); } });
 Object.defineProperty(exports, 'dataScalewayObjectBucket', { get: function () { return require('./data-scaleway-object-bucket'); } });
 Object.defineProperty(exports, 'dataScalewayObjectBucketPolicy', { get: function () { return require('./data-scaleway-object-bucket-policy'); } });
 Object.defineProperty(exports, 'dataScalewayRdbAcl', { get: function () { return require('./data-scaleway-rdb-acl'); } });
@@ -174,6 +173,7 @@ Object.defineProperty(exports, 'dataScalewayRdbInstance', { get: function () { r
 Object.defineProperty(exports, 'dataScalewayRdbPrivilege', { get: function () { return require('./data-scaleway-rdb-privilege'); } });
 Object.defineProperty(exports, 'dataScalewayRedisCluster', { get: function () { return require('./data-scaleway-redis-cluster'); } });
 Object.defineProperty(exports, 'dataScalewayRegistryImage', { get: function () { return require('./data-scaleway-registry-image'); } });
+Object.defineProperty(exports, 'dataScalewayRegistryImageTag', { get: function () { return require('./data-scaleway-registry-image-tag'); } });
 Object.defineProperty(exports, 'dataScalewayRegistryNamespace', { get: function () { return require('./data-scaleway-registry-namespace'); } });
 Object.defineProperty(exports, 'dataScalewaySecret', { get: function () { return require('./data-scaleway-secret'); } });
 Object.defineProperty(exports, 'dataScalewaySecretVersion', { get: function () { return require('./data-scaleway-secret-version'); } });
