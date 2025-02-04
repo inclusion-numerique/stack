@@ -1303,21 +1303,6 @@
                     "type": "string",
                     "format": "date-time"
                   },
-                  "conseiller_numerique": {
-                    "type": "object",
-                    "nullable": true,
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "description": "id externe chez conseiller-numerique"
-                      },
-                      "idPg": {
-                        "type": "number",
-                        "nullable": true,
-                        "description": "id_pg"
-                      }
-                    }
-                  },
                   "en_activite": {
                     "type": "array",
                     "description": "liste des liens mediateur-structure (uniquement l'id, structure_id...)",
@@ -1397,14 +1382,6 @@
                     "type": "string",
                     "format": "date-time"
                   },
-                  "conseiller_numerique_id": {
-                    "type": "string",
-                    "description": "id du conseiller numérique"
-                  },
-                  "conseiller_numerique_id_pg": {
-                    "type": "number",
-                    "nullable": true
-                  },
                   "mediateurs_coordonnes": {
                     "type": "array",
                     "description": "liste des mediateurs_coordonnes",
@@ -1434,6 +1411,22 @@
                         }
                       }
                     }
+                  }
+                }
+              },
+              "conseiller_numerique": {
+                "type": "object",
+                "nullable": true,
+                "description": "si l’utilisateur est detecté dans le dispositif \"conseiller numérique\", ses identifiants externes sont stockés dans cet objet",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "identifiant de l’utilisateur dans le dispositif \"conseiller numérique\""
+                  },
+                  "id_pg": {
+                    "type": "number",
+                    "nullable": true,
+                    "description": "identifiant alternatif de l’utilisateur dans le dispositif \"conseiller numérique\""
                   }
                 }
               }
@@ -1899,6 +1892,18 @@
             },
             "required": false,
             "description": "curseur de pagination pour obtenir les éléments précédents"
+          },
+          {
+            "in": "query",
+            "name": "exclude[soft_deleted]",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1"
+              ]
+            },
+            "required": false,
+            "description": "exclure les elements soft-deleted, ce qui permet de ne pas inclure les utilisateurs et autres données qui ne sont plus d’actualité"
           }
         ],
         "responses": {

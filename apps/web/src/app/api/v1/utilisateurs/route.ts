@@ -103,17 +103,6 @@ import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
  *                 modification:
  *                   type: string
  *                   format: date-time
- *                 conseiller_numerique:
- *                   type: object
- *                   nullable: true
- *                   properties:
- *                     id:
- *                       type: string
- *                       description: id externe chez conseiller-numerique
- *                     idPg:
- *                       type: number
- *                       nullable: true
- *                       description: id_pg
  *                 en_activite:
  *                   type: array
  *                   description: liste des liens mediateur-structure (uniquement l'id, structure_id...)
@@ -172,12 +161,6 @@ import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
  *                 modification:
  *                   type: string
  *                   format: date-time
- *                 conseiller_numerique_id:
- *                   type: string
- *                   description: id du conseiller numérique
- *                 conseiller_numerique_id_pg:
- *                   type: number
- *                   nullable: true
  *                 mediateurs_coordonnes:
  *                   type: array
  *                   description: liste des mediateurs_coordonnes
@@ -200,6 +183,18 @@ import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
  *                       mediateur_id:
  *                         type: string
  *                         format: uuid
+ *             conseiller_numerique:
+ *               type: object
+ *               nullable: true
+ *               description: si l’utilisateur est detecté dans le dispositif "conseiller numérique", ses identifiants externes sont stockés dans cet objet
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   description: identifiant de l’utilisateur dans le dispositif "conseiller numérique"
+ *                 id_pg:
+ *                   type: number
+ *                   nullable: true
+ *                   description: identifiant alternatif de l’utilisateur dans le dispositif "conseiller numérique"
  * /utilisateurs:
  *   get:
  *     summary: liste des utilisateurs
@@ -230,6 +225,14 @@ import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
  *           type: string
  *         required: false
  *         description: curseur de pagination pour obtenir les éléments précédents
+ *       - in: query
+ *         name: exclude[soft_deleted]
+ *         schema:
+ *           type: string
+ *           enum: ['1']
+ *         required: false
+ *         description: exclure les elements soft-deleted, ce qui permet de ne pas inclure les utilisateurs et autres données qui ne sont plus d’actualité
+ *
  *     responses:
  *       200:
  *         description: liste des utilisateurs
@@ -269,10 +272,6 @@ export type UtilisateurAttributes = {
     id: string
     creation: string
     modification: string
-    conseiller_numerique: {
-      id: string
-      idPg: number | null
-    } | null
     en_activite: Array<{
       id: string
       structure_id: string
@@ -292,8 +291,6 @@ export type UtilisateurAttributes = {
     id: string
     creation: string
     modification: string
-    conseiller_numerique_id: string | null
-    conseiller_numerique_id_pg: number | null
     mediateurs_coordonnes: Array<{
       id: string
       creation: string
@@ -301,6 +298,10 @@ export type UtilisateurAttributes = {
       suppression: string | null
       mediateur_id: string
     }>
+  } | null
+  conseiller_numerique: {
+    id: string
+    id_pg: number | null
   } | null
 }
 
@@ -331,7 +332,15 @@ export const GET = createApiV1Route
   .configure<UtilisateurListResponse>({
     scopes: ['Utilisateurs'],
   })
-  .queryParams(JsonApiCursorPaginationQueryParamsValidation)
+  .queryParams(
+    JsonApiCursorPaginationQueryParamsValidation.extend({
+      exclude: z
+        .object({
+          soft_deleted: z.literal('1').optional(),
+        })
+        .default({}),
+    }),
+  )
   .handle(async ({ params }) => {
     const cursorPagination = prismaCursorPagination(params)
 
@@ -352,12 +361,22 @@ export const GET = createApiV1Route
       throw validatedCursor.error as ZodError
     }
 
+    const supressionFilter =
+      params.exclude.soft_deleted === '1' ? { suppression: null } : undefined
+    const deletedFilter =
+      params.exclude.soft_deleted === '1'
+        ? {
+            deleted: null,
+          }
+        : undefined
+
     const users = await prismaClient.user.findMany({
       where: {
         inscriptionValidee: {
           not: null,
         },
         role: 'User',
+        ...deletedFilter,
       },
       orderBy: [{ created: 'desc' }],
       take: cursorPagination.take,
@@ -371,17 +390,33 @@ export const GET = createApiV1Route
           }
         : undefined,
       include: {
-        emplois: true,
+        emplois: {
+          where: {
+            ...supressionFilter,
+          },
+        },
         mediateur: {
           include: {
             conseillerNumerique: true,
-            enActivite: true,
-            coordinations: true,
+            enActivite: {
+              where: {
+                ...supressionFilter,
+              },
+            },
+            coordinations: {
+              where: {
+                ...supressionFilter,
+              },
+            },
           },
         },
         coordinateur: {
           include: {
-            mediateursCoordonnes: true,
+            mediateursCoordonnes: {
+              where: {
+                ...supressionFilter,
+              },
+            },
           },
         },
       },
@@ -434,12 +469,6 @@ export const GET = createApiV1Route
                 id: u.mediateur.id,
                 creation: u.mediateur.creation.toISOString(),
                 modification: u.mediateur.modification.toISOString(),
-                conseiller_numerique: u.mediateur.conseillerNumerique
-                  ? {
-                      id: u.mediateur.conseillerNumerique.id,
-                      idPg: u.mediateur.conseillerNumerique.idPg ?? null,
-                    }
-                  : null,
                 en_activite: u.mediateur.enActivite.map((ma) => ({
                   id: ma.id,
                   structure_id: ma.structureId,
@@ -465,9 +494,6 @@ export const GET = createApiV1Route
                 id: u.coordinateur.id,
                 creation: u.coordinateur.creation.toISOString(),
                 modification: u.coordinateur.modification.toISOString(),
-                conseiller_numerique_id: u.coordinateur.conseillerNumeriqueId,
-                conseiller_numerique_id_pg:
-                  u.coordinateur.conseillerNumeriqueIdPg ?? null,
                 mediateurs_coordonnes: u.coordinateur.mediateursCoordonnes.map(
                   (mc) => ({
                     id: mc.id,
@@ -479,6 +505,17 @@ export const GET = createApiV1Route
                 ),
               }
             : null,
+          conseiller_numerique: u.mediateur?.conseillerNumerique?.id
+            ? {
+                id: u.mediateur.conseillerNumerique.id,
+                id_pg: u.mediateur.conseillerNumerique.idPg ?? null,
+              }
+            : u.coordinateur?.conseillerNumeriqueId
+              ? {
+                  id: u.coordinateur.conseillerNumeriqueId,
+                  id_pg: u.coordinateur.conseillerNumeriqueIdPg ?? null,
+                }
+              : null,
         },
       })),
       links: {
