@@ -1,9 +1,6 @@
 import { createWriteStream } from 'node:fs'
-import axios from 'axios'
 import { Command } from '@commander-js/extra-typings'
 import { varFile } from '@app/config/varDirectory'
-import { StatistiquesResponse } from '@app/web/app/api/v1/statistiques/route'
-import { now } from 'lodash-es'
 import { getTotalCountsStats } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getTotalCountsStats'
 import { output } from '@app/cli/output'
 
