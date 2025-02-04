@@ -15,6 +15,7 @@ import { executeJobCommand } from '@app/cli/commands/jobs/executeJobCommand'
 import { locallyRestoreLatestMainBackup } from '@app/cli/commands/infrastructure/locallyRestoreLatestMainBackup'
 import { executeJobApiCommand } from '@app/cli/commands/jobs/executeJobApiCommand'
 import { listV1Emails } from '@app/cli/commands/v1/listEmails'
+import { fetchAccompagnements } from '@app/cli/fetchAccompagnement'
 
 const program = new Command()
 
@@ -34,5 +35,6 @@ program.addCommand(createTfVarsFileFromEnvironment)
 program.addCommand(checkDeploymentStatus)
 program.addCommand(locallyRestoreLatestMainBackup)
 program.addCommand(listV1Emails)
+program.addCommand(fetchAccompagnements)
 
 program.parse()
