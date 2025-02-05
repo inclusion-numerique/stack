@@ -1,4 +1,4 @@
-import { secretClient } from '@app/config/secrets/secretClient'
+import { requestSecretClientWithRetry } from '@app/config/secrets/secretClient'
 
 /**
  * Returns decoded secret value
@@ -10,10 +10,11 @@ export const getSecretValue = ({
   id: string
   revision?: string
 }) =>
-  secretClient
-    .get<{
-      secret_id: string
-      revision: string
-      data: string
-    }>(`/${id}/versions/${revision}/access`)
-    .then(({ data }) => Buffer.from(data.data, 'base64').toString('utf8'))
+  requestSecretClientWithRetry<{
+    secret_id: string
+    revision: string
+    data: string
+  }>({
+    url: `/${id}/versions/${revision}/access`,
+    method: 'GET',
+  }).then(({ data }) => Buffer.from(data.data, 'base64').toString('utf8'))

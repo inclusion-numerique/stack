@@ -1,4 +1,5 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import pRetry, { type Options as PRetryOptions } from 'p-retry'
 import { region } from '@app/config/config'
 
 export const projectId = process.env.SCW_PROJECT_ID ?? ''
@@ -14,3 +15,17 @@ export const secretClient = axios.create({
     project_id: projectId,
   },
 })
+
+export const requestSecretClientWithRetry = async <T = unknown>(
+  config: AxiosRequestConfig,
+  retryOptions?: PRetryOptions,
+): Promise<AxiosResponse<T>> =>
+  pRetry(
+    async () => secretClient.request<T>(config),
+    retryOptions ?? {
+      retries: 7,
+      factor: 2,
+      minTimeout: 1000,
+      maxTimeout: 10_000,
+    },
+  )
