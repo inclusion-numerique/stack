@@ -3,6 +3,10 @@
   gap: 0.5rem;
 }
 
+.fr-align-items-center .fr-notice__title {
+  align-items: center;
+}
+
 /* Fix notice padding right bug and add border radius */
 .fr-notice {
   border-radius: 8px;
