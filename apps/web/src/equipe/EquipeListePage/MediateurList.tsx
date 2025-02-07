@@ -15,16 +15,15 @@ export type MediateurListProps = {
 
 export const MediateurList = ({
   mediateurs,
-  canSeeMediateursDetails,
   baseHref,
 }: {
   mediateurs: MediateurListProps[]
-  canSeeMediateursDetails?: boolean
   baseHref: string
 }) => (
   <ul className="fr-list-group fr-border--top fr-my-0">
     {mediateurs.map((mediateur) =>
-      canSeeMediateursDetails && mediateur.type === 'coordinated' ? (
+      mediateur.type === 'coordinated' &&
+      !mediateur.status.startsWith('Ancien') ? (
         <li
           className="fr-border--bottom fr-link--background-on-hover"
           key={mediateur.email}

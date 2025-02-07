@@ -8,7 +8,7 @@ import Identity from './Identity'
 import { LieuxActivites } from './LieuxActivites'
 import { Statistiques } from './Statistiques'
 
-export const MonEquipeMediateurPage = ({
+export const MediateurDetailPage = ({
   id,
   user,
   conseillerNumerique,
@@ -16,6 +16,8 @@ export const MonEquipeMediateurPage = ({
   structureEmployeuse,
   contract,
   lieuxActivites,
+  href,
+  coordinateurView = false,
 }: {
   id: string
   user: { name: string | null; email: string; phone: string | null }
@@ -58,14 +60,14 @@ export const MonEquipeMediateurPage = ({
     }
     creation: Date
   }[]
+  href: string
+  coordinateurView?: boolean
 }) => (
   <>
     <SkipLinksPortal links={defaultSkipLinks} />
     <div className="fr-container fr-container--800">
       <CoopBreadcrumbs
-        parents={[
-          { label: 'Mon équipe', linkProps: { href: '/coop/mon-equipe' } },
-        ]}
+        parents={[{ label: 'Mon équipe', linkProps: { href } }]}
         currentPage={user.name ?? 'Médiateur'}
       />
       <main id={contentId} className="fr-mb-16w">
@@ -74,12 +76,16 @@ export const MonEquipeMediateurPage = ({
             {...user}
             mediateurId={id}
             isConseillerNumerique={conseillerNumerique?.id != null}
+            href={href}
+            coordinateurView={coordinateurView}
           />
         </section>
-        <section className="fr-p-8v fr-border-radius--16 fr-background-alt--brown-caramel">
-          <Statistiques mediateurId={id} {...statistiques} />
-        </section>
-        {conseillerNumerique?.id != null && contract && (
+        {coordinateurView && (
+          <section className="fr-p-8v fr-border-radius--16 fr-background-alt--brown-caramel">
+            <Statistiques mediateurId={id} {...statistiques} />
+          </section>
+        )}
+        {coordinateurView && conseillerNumerique?.id != null && contract && (
           <section className="fr-mt-6v">
             <Contract isCoordinateur={false} {...contract} />
           </section>
@@ -95,7 +101,11 @@ export const MonEquipeMediateurPage = ({
           </section>
         )}
         <section className="fr-mt-6v">
-          <LieuxActivites lieuxActivites={lieuxActivites} mediateurId={id} />
+          <LieuxActivites
+            lieuxActivites={lieuxActivites}
+            mediateurId={id}
+            coordinateurView={coordinateurView}
+          />
         </section>
       </main>
     </div>

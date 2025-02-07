@@ -7,7 +7,7 @@ import {
   toNumberOr,
 } from '@app/web/data-table/toNumberOr'
 
-export type MonEquipeSearchParams = {
+export type EquipeSearchParams = {
   lignes?: string
   page?: string
   recherche?: string
@@ -27,7 +27,7 @@ type MediateurFound = {
   type: 'coordinated' | 'invited'
 }
 
-const triMap: Record<NonNullable<MonEquipeSearchParams['tri']>, string> = {
+const triMap: Record<NonNullable<EquipeSearchParams['tri']>, string> = {
   ancien: 'creation ASC',
   recent: 'creation DESC',
   alphabetique: 'LOWER(last_name) ASC, LOWER(first_name) ASC',
@@ -35,7 +35,7 @@ const triMap: Record<NonNullable<MonEquipeSearchParams['tri']>, string> = {
 
 export const searchMediateursCoordonneBy =
   ({ id }: { id: string }) =>
-  async (searchParams: MonEquipeSearchParams, anciensMembres: boolean) => {
+  async (searchParams: EquipeSearchParams, anciensMembres: boolean) => {
     const { take, skip } = takeAndSkipFromPage({
       page: toNumberOr(searchParams?.page)(DEFAULT_PAGE),
       pageSize: toNumberOr(searchParams?.lignes)(DEFAULT_PAGE_SIZE),

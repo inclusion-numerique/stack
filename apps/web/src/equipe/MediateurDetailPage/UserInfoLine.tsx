@@ -1,5 +1,5 @@
 import React from 'react'
-import { UserRole } from './UserRole'
+import { UserRole } from '../UserRole'
 
 export const UserInfoLine = ({
   withUserIcon = true,

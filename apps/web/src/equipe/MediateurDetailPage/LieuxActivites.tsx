@@ -10,6 +10,7 @@ import { Typologies } from '@app/web/components/structure/Typologies'
 export const LieuxActivites = ({
   lieuxActivites,
   mediateurId,
+  coordinateurView,
 }: {
   lieuxActivites: {
     id: string
@@ -29,6 +30,7 @@ export const LieuxActivites = ({
     creation: Date
   }[]
   mediateurId: string
+  coordinateurView: boolean
 }) => {
   const [showMore, setShowMore] = useState(false)
 
@@ -101,20 +103,22 @@ export const LieuxActivites = ({
                     </div>
                   </div>
                 </div>
-                <div>
-                  <Button
-                    title="Voir la fiche du lieu"
-                    size="small"
-                    iconId="fr-icon-arrow-right-line"
-                    iconPosition="right"
-                    priority="tertiary no outline"
-                    linkProps={{
-                      href: `${mediateurId}/${structureId}`,
-                    }}
-                  >
-                    Voir
-                  </Button>
-                </div>
+                {coordinateurView && (
+                  <div>
+                    <Button
+                      title="Voir la fiche du lieu"
+                      size="small"
+                      iconId="fr-icon-arrow-right-line"
+                      iconPosition="right"
+                      priority="tertiary no outline"
+                      linkProps={{
+                        href: `${mediateurId}/${structureId}`,
+                      }}
+                    >
+                      Voir
+                    </Button>
+                  </div>
+                )}
               </div>
             </li>
           ),

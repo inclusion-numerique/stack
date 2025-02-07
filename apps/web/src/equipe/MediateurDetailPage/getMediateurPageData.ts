@@ -4,7 +4,7 @@ import { getStructureEmployeuseAddress } from '@app/web/structure/getStructureEm
 import { getContractInfo } from '@app/web/conseiller-numerique/getContractInfo'
 import { getLieuxActivites } from '@app/web/lieu-activite/getLieuxActivites'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
-import { getTotalCountsStats } from '../../../(sidemenu-layout)/mes-statistiques/_queries/getTotalCountsStats'
+import { getTotalCountsStats } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getTotalCountsStats'
 
 const activitesFiltersLastDays = (daysCount: number) => {
   const currentDate = new Date()
@@ -16,13 +16,39 @@ const activitesFiltersLastDays = (daysCount: number) => {
   return activitesFilters
 }
 
-export const getMediateurPageData = async (mediateurId: string) => {
+const isNull = <T>(nullable: T | null) => nullable == null
+
+const coordinationFor =
+  (coordinateurId: string) => async (mediateurIds: string[]) =>
+    Promise.all(
+      mediateurIds.map((mediateurId: string) =>
+        prismaClient.mediateurCoordonne.findFirst({
+          where: { mediateurId, coordinateurId },
+        }),
+      ),
+    )
+
+export const getMediateurPageData = async (
+  mediateurId: string,
+  coordinateurId?: string,
+) => {
   const user = await authenticateUser()
 
+  if (coordinateurId != null && user.mediateur?.id != null) {
+    const mediateursCoordonnes = await coordinationFor(coordinateurId)([
+      mediateurId,
+      user.mediateur.id,
+    ])
+
+    if (mediateursCoordonnes.some(isNull)) return null
+  }
+
   if (
-    user.coordinateur?.mediateursCoordonnes
-      .map(({ mediateurId: id }) => id)
-      .includes(mediateurId) === false
+    coordinateurId == null &&
+    (user.coordinateur == null ||
+      !user.coordinateur.mediateursCoordonnes
+        .map(({ mediateurId: id }) => id)
+        .includes(mediateurId))
   )
     return null
 

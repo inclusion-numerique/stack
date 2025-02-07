@@ -1,6 +1,7 @@
 'use client'
 
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import { ButtonProps } from '@codegouvfr/react-dsfr/Button'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import ButtonsGroup from '@codegouvfr/react-dsfr/ButtonsGroup'
@@ -8,7 +9,7 @@ import { createModal } from '@codegouvfr/react-dsfr/Modal'
 import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import BackButton from '@app/web/components/BackButton'
-import { UserInfoLine } from '../../_components/UserInfoLine'
+import { UserInfoLine } from './UserInfoLine'
 
 const Identity = ({
   mediateurId,
@@ -16,12 +17,16 @@ const Identity = ({
   name,
   email,
   phone,
+  href,
+  coordinateurView,
 }: {
   mediateurId: string
   isConseillerNumerique: boolean
   name: string | null
   email: string
   phone: string | null
+  href: string
+  coordinateurView: boolean
 }) => {
   const {
     Component: RemoveFromTeamModal,
@@ -50,7 +55,7 @@ const Identity = ({
             children: 'Retirer de mon équipe',
             onClick: async () => {
               await mutation.mutateAsync({ mediateurId })
-              router.push('/coop/mon-equipe')
+              router.push(href)
               router.refresh()
             },
           },
@@ -60,7 +65,7 @@ const Identity = ({
         équipe&nbsp;? Vous n’aurez plus accès à ses informations de profil ainsi
         qu’à ses statistiques.
       </RemoveFromTeamModal>
-      <BackButton href="/coop/mon-equipe">Retour à la liste</BackButton>
+      <BackButton href={href}>Retour à la liste</BackButton>
       <div className="fr-flex fr-flex-wrap fr-direction-row fr-align-items-center fr-flex-gap-4v fr-mb-6v">
         <span
           className="fr-line-height-1 fr-text-label--blue-france fr-background-alt--blue-france fr-p-4v fr-m-0 fr-border-radius--8"
@@ -107,18 +112,22 @@ const Identity = ({
             linkProps: { href: `mailto:${email}` },
             priority: 'tertiary',
           },
-          {
-            children: (
-              <span className="fr-flex fr-flex-gap-2v fr-text-default--error ">
-                <span className="ri-user-unfollow-line" aria-hidden />
-                Retirer de mon équipe
-              </span>
-            ),
-            priority: 'tertiary',
-            ...removeFromTeamModalNativeButtonProps,
-            disabled: mutation.isPending,
-            ...buttonLoadingClassname(mutation.isPending, 'fr-mb-0'),
-          },
+          ...((coordinateurView
+            ? [
+                {
+                  children: (
+                    <span className="fr-flex fr-flex-gap-2v fr-text-default--error ">
+                      <span className="ri-user-unfollow-line" aria-hidden />
+                      Retirer de mon équipe
+                    </span>
+                  ),
+                  priority: 'tertiary',
+                  ...removeFromTeamModalNativeButtonProps,
+                  disabled: mutation.isPending,
+                  ...buttonLoadingClassname(mutation.isPending, 'fr-mb-0'),
+                },
+              ]
+            : []) as ButtonProps[]),
         ]}
         inlineLayoutWhen="md and up"
       />

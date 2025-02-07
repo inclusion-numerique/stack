@@ -10,7 +10,7 @@ import { generatePageSizeSelectOptions } from '@app/web/data-table/pageSizeSelec
 import PaginationNavWithPageSizeSelect from '@app/web/data-table/PaginationNavWithPageSizeSelect'
 import SortSelect from '@app/web/data-table/SortSelect'
 import { EquipeVide } from '@app/web/app/coop/EquipeVide'
-import { MonEquipePageData } from './getMonEquipePageData'
+import { MonEquipePageData } from './getEquipePageData'
 import LeaveTeamButton from './LeaveTeamButton'
 import { MediateurList } from './MediateurList'
 
@@ -22,7 +22,7 @@ const pluralize = (expression: string, count: number) =>
 
 const pageSizeOptions = generatePageSizeSelectOptions([10, 20, 50, 100])
 
-const MonEquipeListePage = ({
+const EquipeListePage = ({
   mediateurs,
   anciensMembres = false,
   searchParams,
@@ -132,11 +132,7 @@ const MonEquipeListePage = ({
             </div>
 
             {totalAncien === 0 ? (
-              <MediateurList
-                mediateurs={mediateurs}
-                canSeeMediateursDetails={coordinateurView && !anciensMembres}
-                baseHref={baseHref}
-              />
+              <MediateurList mediateurs={mediateurs} baseHref={baseHref} />
             ) : (
               <div className="fr-tabs">
                 <ul className="fr-tabs__list">
@@ -163,13 +159,7 @@ const MonEquipeListePage = ({
                   className="fr-tabs__panel fr-tabs__panel--selected fr-p-0"
                   style={{ marginTop: '-1px' }}
                 >
-                  <MediateurList
-                    mediateurs={mediateurs}
-                    canSeeMediateursDetails={
-                      coordinateurView && !anciensMembres
-                    }
-                    baseHref={baseHref}
-                  />
+                  <MediateurList mediateurs={mediateurs} baseHref={baseHref} />
                 </div>
               </div>
             )}
@@ -188,4 +178,4 @@ const MonEquipeListePage = ({
   </>
 )
 
-export default MonEquipeListePage
+export default EquipeListePage

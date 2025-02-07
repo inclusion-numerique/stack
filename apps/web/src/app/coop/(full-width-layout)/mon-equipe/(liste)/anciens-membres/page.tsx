@@ -1,29 +1,25 @@
 import type { Metadata } from 'next'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import MonEquipeListePage from '@app/web/equipe/MonEquipeListePage/MonEquipeListePage'
-import { getMonEquipePageData } from '@app/web/equipe/MonEquipeListePage/getMonEquipePageData'
-import type { MonEquipeSearchParams } from '@app/web/equipe/MonEquipeListePage/searchMediateursCoordonneBy'
 import { authenticateCoordinateur } from '@app/web/auth/authenticateUser'
+import EquipeListePage from '@app/web/equipe/EquipeListePage/EquipeListePage'
+import { getEquipePageData } from '@app/web/equipe/EquipeListePage/getEquipePageData'
+import { EquipeSearchParams } from '@app/web/equipe/EquipeListePage/searchMediateursCoordonneBy'
 
 export const metadata: Metadata = {
   title: metadataTitle('Anciens membres'),
 }
 
-const Page = async ({
-  searchParams,
-}: {
-  searchParams: MonEquipeSearchParams
-}) => {
+const Page = async ({ searchParams }: { searchParams: EquipeSearchParams }) => {
   const authenticatedCoordinateur = await authenticateCoordinateur()
 
-  const monEquipePageData = await getMonEquipePageData({
+  const monEquipePageData = await getEquipePageData({
     searchParams,
     anciensMembres: true,
     coordinateur: authenticatedCoordinateur.coordinateur,
   })
 
   return (
-    <MonEquipeListePage
+    <EquipeListePage
       {...monEquipePageData}
       searchParams={searchParams}
       baseHref="/coop/mon-equipe"
