@@ -1,5 +1,6 @@
 import { ChatSessionMessage } from '@app/web/assistant/getChatSession'
 import {
+  OpenAiClienChatModel,
   openAiClient,
   openAiClientConfiguration,
 } from '@app/web/assistant/openAiClient'
@@ -7,8 +8,10 @@ import { OpenAiChatMessage } from '@app/web/assistant/openAiChat'
 
 export const generateChatSessionTitle = async ({
   messages,
+  model,
 }: {
   messages: Pick<ChatSessionMessage, 'role' | 'content'>[]
+  model?: OpenAiClienChatModel
 }) => {
   const completionMessages: OpenAiChatMessage[] = [
     {
@@ -34,7 +37,7 @@ ${message.content}`,
   ]
 
   const result = await openAiClient.chat.completions.create({
-    model: openAiClientConfiguration.chatModel,
+    model: model ?? openAiClientConfiguration.chatModel,
     messages: completionMessages,
     stream: false,
     temperature: 0.2,

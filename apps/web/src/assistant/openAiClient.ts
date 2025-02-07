@@ -19,3 +19,5 @@ export const openAiClient = new OpenAI({
   baseURL: serviceUrl,
   apiKey,
 })
+
+export { ScalewayChatModel as OpenAiClienChatModel } from '@app/web/assistant/ScalewayChatModel'

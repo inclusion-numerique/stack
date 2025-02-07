@@ -1,9 +1,15 @@
+import pThrottle from 'p-throttle'
 import {
   openAiClient,
   openAiClientConfiguration,
 } from '@app/web/assistant/openAiClient'
 
-export const createEmbedding = async (text: string) => {
+const createEmbeddingThrottle = pThrottle({
+  limit: 5,
+  interval: 1000,
+})
+
+const createEmbeddingImmediate = async (text: string) => {
   const response = await openAiClient.embeddings.create({
     model: openAiClientConfiguration.embeddingsModel,
     input: text,
@@ -24,3 +30,5 @@ export const createEmbedding = async (text: string) => {
     embedding: response.data[0].embedding,
   }
 }
+
+export const createEmbedding = createEmbeddingThrottle(createEmbeddingImmediate)

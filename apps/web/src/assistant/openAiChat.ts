@@ -9,6 +9,7 @@ import { AutoParseableTool } from 'openai/src/lib/parser'
 import * as Sentry from '@sentry/nextjs'
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import {
+  OpenAiClienChatModel,
   openAiClient,
   openAiClientConfiguration,
 } from '@app/web/assistant/openAiClient'
@@ -26,6 +27,7 @@ export type ExecuteOpenAiChatStreamOptions = {
   onChunk: (choice: OpenAiChunkChoice) => void
   toolChoice?: OpenAiToolChoice
   tools?: OpenAiTool[]
+  model?: OpenAiClienChatModel
 }
 
 export const executeOpenAiChatStream = async ({
@@ -33,9 +35,10 @@ export const executeOpenAiChatStream = async ({
   messages,
   toolChoice,
   tools,
+  model,
 }: ExecuteOpenAiChatStreamOptions) => {
   const chatStreamResponse = await openAiClient.chat.completions.create({
-    model: openAiClientConfiguration.chatModel,
+    model: model ?? openAiClientConfiguration.chatModel,
     messages,
     tool_choice: toolChoice,
     tools,
@@ -111,13 +114,15 @@ export const executeOpenAiChat = async ({
   messages,
   toolChoice,
   tools,
+  model,
 }: {
   messages: OpenAiChatMessage[]
   toolChoice?: OpenAiToolChoice
   tools?: OpenAiTool[]
+  model?: OpenAiClienChatModel
 }) => {
   const chatResponse = await openAiClient.chat.completions.create({
-    model: 'mistral-nemo-instruct-2407',
+    model: model ?? openAiClientConfiguration.chatModel,
     messages,
     tool_choice: toolChoice,
     tools,
@@ -138,6 +143,7 @@ export const executeChatInteraction = ({
   messages,
   toolChoice,
   tools,
+  model,
 }: {
   onMessage: (message: OpenAiChatMessage) => void | Promise<void>
   onToolCall?: (message: ChatCompletionMessageToolCall) => void | Promise<void>
@@ -148,6 +154,7 @@ export const executeChatInteraction = ({
   tools: AutoParseableTool<any, true>[]
   maxToolsCalls?: number
   invalidToolCallRetries?: number
+  model?: OpenAiClienChatModel
 }): { stream: ReadableStream } => {
   // We create the stream that will be returned to the client
   const stream = new ReadableStream({
@@ -156,7 +163,7 @@ export const executeChatInteraction = ({
         console.log('EXECUTING RUNNER', messages)
         const runner = openAiClient.beta.chat.completions
           .runTools({
-            model: openAiClientConfiguration.chatModel,
+            model: model ?? openAiClientConfiguration.chatModel,
             messages,
             tools,
             tool_choice: toolChoice,
