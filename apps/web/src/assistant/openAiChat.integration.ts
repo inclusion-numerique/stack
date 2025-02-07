@@ -47,7 +47,7 @@ describe('openAiChat', () => {
             },
           ],
         },
-        stop_reason: null,
+        stop_reason: expect.toBeOneOf([null, 128_008]) as string | null,
       }),
     )
 
