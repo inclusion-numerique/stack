@@ -17,12 +17,8 @@ ${content}
 
 export const formatRagSearchResultToMarkdown = (ragResult: RagSearchResult) => {
   if (ragResult.length === 0) {
-    return 'Aucun résultat de recherche sur le centre d’aide. L’assistant doit peut-être utiliser un autre tool pour répondre à la question.'
+    return 'Aucun résultat pertinent.'
   }
 
-  return `
-Voici les résultats de la recherche dans le centre d’aide que l’assistant doit utiliser pour répondre (si pertinent) et générer les liens vers les sources pour l’utilisateur :
-
-${ragResult.map(formatRagChunkToMarkdown).join('\n\n')}
-`
+  return `\n${ragResult.map(formatRagChunkToMarkdown).join('\n\n')}\n`
 }
