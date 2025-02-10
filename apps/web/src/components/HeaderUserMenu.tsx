@@ -14,6 +14,18 @@ import {
 } from '@app/web/auth/userTypeGuards'
 import styles from './HeaderUserMenu.module.css'
 
+const toMediateurId = ({ mediateurId }: { mediateurId: string }) => mediateurId
+
+const onlyTeamsWith =
+  (user: SessionUser) =>
+  (coordination: {
+    coordinateur: { mediateursCoordonnes: { mediateurId: string }[] }
+  }) =>
+    user.mediateur?.id != null &&
+    coordination.coordinateur.mediateursCoordonnes
+      .map(toMediateurId)
+      .includes(user.mediateur.id)
+
 export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
   // The click outside default behavior from dsfr js do not work in this case 🤷‍
   // So we have to use client component and hooks to handle the click outside
@@ -44,6 +56,10 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
   const structureEmployeuse = user.emplois.at(0)
 
   const restricted = isLimitedToInscription(user)
+
+  const mediateurCoordinations = user.mediateur?.coordinations.filter(
+    onlyTeamsWith(user),
+  )
 
   const menuContent = (
     <ul className="fr-menu__list">
@@ -117,11 +133,11 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
       )}
       {!restricted &&
         !user.coordinateur &&
-        user.mediateur?.coordinations.length === 1 && (
+        mediateurCoordinations?.length === 1 && (
           <li>
             <Link
               className="fr-nav__link fr-display-block fr-border--bottom-0"
-              href={`/coop/mes-equipes/${user.mediateur?.coordinations.at(0)?.coordinateur.id}`}
+              href={`/coop/mes-equipes/${mediateurCoordinations.at(0)?.coordinateur.id}`}
               style={{ boxShadow: 'none' }}
             >
               <span
@@ -132,7 +148,7 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
               Voir mon équipe ·{' '}
               <span className="fr-text--bold">
                 {
-                  user.mediateur.coordinations.at(0)?.coordinateur
+                  mediateurCoordinations.at(0)?.coordinateur
                     .mediateursCoordonnes.length
                 }
               </span>
@@ -159,12 +175,12 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
         )}
       {!restricted &&
         !user.coordinateur &&
-        (user.mediateur?.coordinations.length ?? 0) > 1 && (
+        (mediateurCoordinations?.length ?? 0) > 1 && (
           <li className="fr-border--top">
             <span className="fr-nav__link fr-display-block fr-pb-0 fr-text-mention--grey fr-text--medium fr-text--sm">
               Mes équipes
             </span>
-            {user.mediateur?.coordinations.map((coordination, index) => (
+            {mediateurCoordinations?.map((coordination, index) => (
               <Link
                 key={coordination.coordinateur.id}
                 className="fr-nav__link fr-display-block"

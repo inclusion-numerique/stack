@@ -39,11 +39,13 @@ export const getAccueilPageDataFor = async (
 
   if (user.mediateur?.id != null) {
     const totalCountsStats7Days = await getTotalCountsStats({
+      user,
       mediateurIds: [user.mediateur.id],
       activitesFilters: activitesFiltersLastDays(7),
     })
 
     const totalCountsStats30Days = await getTotalCountsStats({
+      user,
       mediateurIds: [user.mediateur.id],
       activitesFilters: activitesFiltersLastDays(30),
     })

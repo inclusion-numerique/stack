@@ -63,6 +63,11 @@ export const sessionUserSelect = {
               mediateursCoordonnes: {
                 select: {
                   id: true,
+                  mediateurId: true,
+                  suppression: true,
+                },
+                where: {
+                  suppression: null,
                 },
               },
               user: {
@@ -88,6 +93,9 @@ export const sessionUserSelect = {
       mediateursCoordonnes: {
         select: {
           mediateurId: true,
+        },
+        where: {
+          suppression: null,
         },
       },
     },

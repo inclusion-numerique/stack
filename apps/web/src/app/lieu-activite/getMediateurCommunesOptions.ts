@@ -21,12 +21,12 @@ export const getMediateurCommunesAndDepartementsOptions = async ({
   >`
       WITH calculated_insee AS (
           SELECT
-              COALESCE(structures.code_insee, activites.lieu_code_insee) AS code_insee,
-              COALESCE(structures.commune, activites.lieu_commune) AS commune,
-              COALESCE(structures.code_postal, activites.lieu_code_postal) AS code_postal
-          FROM activites
-                   LEFT JOIN structures ON structures.id = activites.structure_id
-          WHERE activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
+              COALESCE(str.code_insee, act.lieu_code_insee) AS code_insee,
+              COALESCE(str.commune, act.lieu_commune) AS commune,
+              COALESCE(str.code_postal, act.lieu_code_postal) AS code_postal
+          FROM activites act
+                   LEFT JOIN structures str ON str.id = act.structure_id
+          WHERE act.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])
       )
       SELECT
           code_insee AS code,

@@ -6,7 +6,7 @@ import type { MonEquipeSearchParams } from '@app/web/equipe/MonEquipeListePage/s
 import { authenticateCoordinateur } from '@app/web/auth/authenticateUser'
 
 export const metadata: Metadata = {
-  title: metadataTitle('Mon équipe'),
+  title: metadataTitle('Anciens membres'),
 }
 
 const Page = async ({
@@ -18,6 +18,7 @@ const Page = async ({
 
   const monEquipePageData = await getMonEquipePageData({
     searchParams,
+    anciensMembres: true,
     coordinateur: authenticatedCoordinateur.coordinateur,
   })
 
@@ -26,7 +27,8 @@ const Page = async ({
       {...monEquipePageData}
       searchParams={searchParams}
       baseHref="/coop/mon-equipe"
-      baseHrefSearch="/coop/mon-equipe"
+      baseHrefSearch="/coop/mon-equipe/anciens-membres"
+      anciensMembres
       coordinateur={{
         id: authenticatedCoordinateur.coordinateur.id,
         user: authenticatedCoordinateur,

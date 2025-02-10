@@ -26,7 +26,6 @@ const MesStatistiquesPage = async ({
 
   const mesStatistiques = await getMesStatistiquesPageData({
     user,
-    mediateurCoordonnesIds,
     activitesFilters: validateActivitesFilters(searchParams),
     graphOptions: {
       fin: searchParams.graphique_fin

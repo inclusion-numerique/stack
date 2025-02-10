@@ -55,21 +55,21 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
   const filterFragment = getActiviteFiltersSqlFragment(filterConditions)
 
   const activiteIdsSearch = await prismaClient.$queryRaw<{ id: string }[]>`
-      SELECT activites.id                          as id,
-             activites.date                        as date,
-             activites.type                        as type,
+      SELECT act.id                          as id,
+             act.date                        as date,
+             act.type                        as type,
              ${activiteAccompagnementsCountSelect} as participant_count,
              ${crasTypeOrderSelect}                as type_order,
              ${crasLieuLabelSelect}                as lieu
 
-      FROM activites
+      FROM activites act
                ${activitesBeneficiaireInnerJoin(options.beneficiaireId)}
-               LEFT JOIN structures ON activites.structure_id = structures.id
-               LEFT JOIN mediateurs ON activites.mediateur_id = mediateurs.id
-               LEFT JOIN conseillers_numeriques ON mediateurs.id = conseillers_numeriques.mediateur_id
+               LEFT JOIN structures str ON act.structure_id = str.id
+               LEFT JOIN mediateurs med ON act.mediateur_id = med.id
+               LEFT JOIN conseillers_numeriques cn ON med.id = cn.mediateur_id
 
-      WHERE (activites.mediateur_id = ${mediateurIdMatch}::UUID OR ${mediateurIdMatch} = '_any_')
-        AND activites.suppression IS NULL
+      WHERE (act.mediateur_id = ${mediateurIdMatch}::UUID OR ${mediateurIdMatch} = '_any_')
+        AND act.suppression IS NULL
         AND ${filterFragment}
       ORDER BY ${orderByCondition},
                date DESC
@@ -93,12 +93,14 @@ export const searchActivite = async (options: SearchActiviteOptions) => {
   )
 
   const countQueryResult = await prismaClient.$queryRaw<{ count: number }[]>`
-      SELECT COUNT(activites.id)::INT as count
-      FROM activites
-               ${activitesBeneficiaireInnerJoin(options.beneficiaireId)}
-               LEFT JOIN structures ON activites.structure_id = structures.id
-      WHERE (activites.mediateur_id = ${mediateurIdMatch}::UUID OR ${mediateurIdMatch} = '_any_')
-        AND activites.suppression IS NULL
+      SELECT COUNT(act.id)::INT as count
+      FROM activites act
+          ${activitesBeneficiaireInnerJoin(options.beneficiaireId)}
+          LEFT JOIN structures str ON act.structure_id = str.id
+          LEFT JOIN mediateurs med ON act.mediateur_id = med.id
+          LEFT JOIN conseillers_numeriques cn ON med.id = cn.mediateur_id
+      WHERE (act.mediateur_id = ${mediateurIdMatch}::UUID OR ${mediateurIdMatch} = '_any_')
+        AND act.suppression IS NULL
         AND ${filterFragment}
   `
 

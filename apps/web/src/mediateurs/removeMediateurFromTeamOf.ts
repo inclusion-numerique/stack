@@ -11,7 +11,10 @@ export const removeMediateurFromTeamOf =
       return
     }
 
-    await prismaClient.mediateurCoordonne.delete({
+    await prismaClient.mediateurCoordonne.update({
       where: { id: mediateurCoordonne.id },
+      data: {
+        suppression: new Date(),
+      },
     })
   }

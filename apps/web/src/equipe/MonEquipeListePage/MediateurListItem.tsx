@@ -26,9 +26,10 @@ const UserRole = ({
     </span>
   )
 
-const statusSeverity = (status: string): AlertProps.Severity => {
+const statusSeverity = (status: string): AlertProps.Severity | undefined => {
   if (status.startsWith('Actif')) return 'success'
   if (status.startsWith('Inactif')) return 'warning'
+  if (status.startsWith('Ancien membre')) return undefined
   return 'info'
 }
 

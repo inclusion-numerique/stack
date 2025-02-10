@@ -23,6 +23,7 @@ type MediateurFound = {
   conseiller_numerique_id: string | null
   date_derniere_activite: Date | null
   creation: Date
+  suppression: Date
   type: 'coordinated' | 'invited'
 }
 
@@ -34,7 +35,7 @@ const triMap: Record<NonNullable<MonEquipeSearchParams['tri']>, string> = {
 
 export const searchMediateursCoordonneBy =
   ({ id }: { id: string }) =>
-  async (searchParams: MonEquipeSearchParams) => {
+  async (searchParams: MonEquipeSearchParams, anciensMembres: boolean) => {
     const { take, skip } = takeAndSkipFromPage({
       page: toNumberOr(searchParams?.page)(DEFAULT_PAGE),
       pageSize: toNumberOr(searchParams?.lignes)(DEFAULT_PAGE_SIZE),
@@ -49,6 +50,7 @@ export const searchMediateursCoordonneBy =
           users.last_name AS last_name,
           users.phone AS phone,
           conseillers.id AS conseiller_numerique_id,
+          NULL AS suppression,
           NULL AS date_derniere_activite,
           invitations.creation AS creation,
           'invited' AS type
@@ -66,6 +68,7 @@ export const searchMediateursCoordonneBy =
           users.last_name AS last_name,
           users.phone AS phone,
           conseillers.id AS conseiller_numerique_id,
+          mc.suppression AS suppression,
           (SELECT MAX(activites.date)
            FROM "activites" AS activites
            WHERE activites."mediateur_id" = mediateurs.id) AS date_derniere_activite,
@@ -75,8 +78,7 @@ export const searchMediateursCoordonneBy =
         LEFT JOIN "users" AS users ON users."id" = mediateurs."user_id"
         LEFT JOIN "conseillers_numeriques" AS conseillers ON conseillers."mediateur_id" = mediateurs."id"
         INNER JOIN "mediateurs_coordonnes" AS mc ON mc."mediateur_id" = mediateurs."id"
-      WHERE mc."coordinateur_id" = ${id}::uuid
-    )
+        WHERE mc.coordinateur_id = ${id}::uuid AND mc.suppression ${Prisma.raw(anciensMembres ? 'IS NOT NULL' : 'IS NULL')})
       SELECT *
       FROM combined_data
       WHERE (
@@ -116,7 +118,7 @@ export const searchMediateursCoordonneBy =
       FROM "mediateurs" AS mediateurs
         LEFT JOIN "users" AS users ON users."id" = mediateurs."user_id"
         INNER JOIN "mediateurs_coordonnes" AS mc ON mc."mediateur_id" = mediateurs."id"
-      WHERE mc."coordinateur_id" = ${id}::uuid
+        WHERE mc.coordinateur_id = ${id}::uuid AND mc.suppression ${Prisma.raw(anciensMembres ? 'IS NOT NULL' : 'IS NULL')}
     )
       SELECT COUNT(*)::int AS count
       FROM combined_data

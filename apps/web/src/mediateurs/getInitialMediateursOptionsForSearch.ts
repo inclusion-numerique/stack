@@ -38,6 +38,35 @@ const initialOptionFor = (
       ]
     : []
 
+const sortByName = (
+  a: { user: { firstName: string | null; lastName: string | null } },
+  b: { user: { firstName: string | null; lastName: string | null } },
+) => {
+  const lastNameA = a.user?.lastName?.toLowerCase() || ''
+  const lastNameB = b.user?.lastName?.toLowerCase() || ''
+  const lastNameComparison = lastNameA.localeCompare(lastNameB)
+
+  if (lastNameComparison !== 0) {
+    return lastNameComparison
+  }
+
+  const firstNameA = a.user?.firstName?.toLowerCase() || ''
+  const firstNameB = b.user?.firstName?.toLowerCase() || ''
+  return firstNameA.localeCompare(firstNameB)
+}
+
+const isRemoved = ({ suppression }: { suppression: Date | null }) => suppression
+
+const toMedtateursByTeam = <
+  T extends { coordinations: { suppression: Date | null }[] }[],
+>(
+  { actifs, anciens }: { actifs: T; anciens: T },
+  mediateur: T[number],
+): { actifs: T; anciens: T } =>
+  mediateur.coordinations.some(isRemoved)
+    ? { actifs, anciens: [...anciens, mediateur] as T }
+    : { actifs: [...actifs, mediateur] as T, anciens }
+
 export const getInitialMediateursOptionsForSearch = async ({
   mediateurId,
   coordinateurId,
@@ -69,29 +98,27 @@ export const getInitialMediateursOptionsForSearch = async ({
 
   const mediateursForSelect = await prismaClient.mediateur.findMany({
     where: { id: { in: mediateurCoordonnesIds } },
-    select: mediateurSelect,
+    select: {
+      ...mediateurSelect,
+      coordinations: {
+        where: { coordinateurId },
+        select: { suppression: true },
+      },
+    },
   })
 
-  const sortedMediateurs = mediateursForSelect.sort((a, b) => {
-    const lastNameA = a.user?.lastName?.toLowerCase() || ''
-    const lastNameB = b.user?.lastName?.toLowerCase() || ''
-
-    const lastNameComparison = lastNameA.localeCompare(lastNameB)
-    if (lastNameComparison !== 0) {
-      return lastNameComparison
-    }
-
-    const firstNameA = a.user?.firstName?.toLowerCase() || ''
-    const firstNameB = b.user?.firstName?.toLowerCase() || ''
-    return firstNameA.localeCompare(firstNameB)
-  })
-
-  const initialMediateursOptions: MediateurOption[] = sortedMediateurs.map(
-    ({ user, id }) => ({
-      label: getUserDisplayName(user),
-      value: { mediateurId: id, email: user.email },
-    }),
+  const { actifs, anciens } = mediateursForSelect.reduce(
+    toMedtateursByTeam<typeof mediateursForSelect>,
+    { actifs: [], anciens: [] },
   )
+
+  const initialMediateursOptions: MediateurOption[] = [
+    ...actifs.sort(sortByName),
+    ...anciens.sort(sortByName),
+  ].map(({ user, id, coordinations }) => ({
+    label: `${coordinations.some(isRemoved) ? 'Ancien membre - ' : ''}${getUserDisplayName(user)}`,
+    value: { mediateurId: id, email: user.email },
+  }))
 
   return [...initialOptionFor(mediateur), ...initialMediateursOptions]
 }

@@ -15,5 +15,5 @@ export const activitesMediateurIdsWhereCondition = (
     return Prisma.sql`1 = 0`
   }
 
-  return Prisma.sql`activites.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])`
+  return Prisma.sql`act.mediateur_id = ANY(ARRAY[${Prisma.join(mediateurIds.map((id) => `${id}`))}]::UUID[])`
 }
