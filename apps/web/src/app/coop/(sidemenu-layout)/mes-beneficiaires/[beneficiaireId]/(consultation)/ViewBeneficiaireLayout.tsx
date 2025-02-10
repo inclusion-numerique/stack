@@ -9,19 +9,19 @@ import type { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireVali
 import { DeleteBeneficiaireModal } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/DeleteBeneficiaireModal'
 import DeleteBeneficiaireModalContent from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/DeleteBeneficiaireModalContent'
 import BackButton from '@app/web/components/BackButton'
-import { getSessionUser } from '@app/web/auth/getSessionUser'
+import { SessionUser } from '@app/web/auth/sessionUser'
 
-const ViewBeneficiaireLayout = async ({
+const ViewBeneficiaireLayout = ({
   beneficiaire,
+  user,
   children,
 }: PropsWithChildren<{
+  user: SessionUser
   beneficiaire: Pick<
     Beneficiaire,
     'id' | 'prenom' | 'nom' | 'anneeNaissance' | 'mediateurId'
   >
 }>) => {
-  const user = await getSessionUser()
-
   const displayName = getBeneficiaireDisplayName(beneficiaire)
   const {
     anneeNaissance,

@@ -9,9 +9,13 @@ import type { BeneficiaireInformationsPageData } from '@app/web/app/coop/(sideme
 import ViewBeneficiaireLayout from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/ViewBeneficiaireLayout'
 import ViewBeneficiaireInformationsPage from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/(informations)/ViewBeneficiaireInformationsPage'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
+import { testSessionUser } from '@app/web/test/testSessionUser'
 
 const Template = ({ data }: { data: BeneficiaireInformationsPageData }) => (
-  <ViewBeneficiaireLayout beneficiaire={data.beneficiaire}>
+  <ViewBeneficiaireLayout
+    beneficiaire={data.beneficiaire}
+    user={testSessionUser}
+  >
     <ViewBeneficiaireInformationsPage data={data} />
   </ViewBeneficiaireLayout>
 )

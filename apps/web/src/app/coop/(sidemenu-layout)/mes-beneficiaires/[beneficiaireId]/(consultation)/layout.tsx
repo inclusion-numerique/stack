@@ -34,7 +34,7 @@ const BeneficiaireLayout = async ({
   }
 
   return (
-    <ViewBeneficiaireLayout beneficiaire={beneficiaire}>
+    <ViewBeneficiaireLayout beneficiaire={beneficiaire} user={user}>
       {children}
     </ViewBeneficiaireLayout>
   )
