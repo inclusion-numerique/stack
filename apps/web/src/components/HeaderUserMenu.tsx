@@ -91,27 +91,25 @@ export const HeaderUserMenu = ({ user }: { user: SessionUser }) => {
           </Link>
         </li>
       )}
-      {!restricted &&
-        user.mediateur &&
-        user.mediateur._count.enActivite > 0 && (
-          <li>
-            <Link
-              className="fr-nav__link fr-display-block"
-              href="/coop/lieux-activite"
-              style={{ boxShadow: 'none' }}
-            >
-              <span
-                className="ri-home-office-line fr-mr-1w"
-                style={{ color: 'var(--blue-france-sun-113-625)' }}
-                aria-hidden
-              />
-              Voir mes lieux d’activités ·{' '}
-              <span className="fr-text--bold">
-                {user.mediateur?._count.enActivite}
-              </span>
-            </Link>
-          </li>
-        )}
+      {!restricted && user.mediateur && (
+        <li>
+          <Link
+            className="fr-nav__link fr-display-block"
+            href="/coop/lieux-activite"
+            style={{ boxShadow: 'none' }}
+          >
+            <span
+              className="ri-home-office-line fr-mr-1w"
+              style={{ color: 'var(--blue-france-sun-113-625)' }}
+              aria-hidden
+            />
+            Voir mes lieux d’activités ·{' '}
+            <span className="fr-text--bold">
+              {user.mediateur?._count.enActivite}
+            </span>
+          </Link>
+        </li>
+      )}
       {!restricted && user.coordinateur && (
         <li>
           <Link

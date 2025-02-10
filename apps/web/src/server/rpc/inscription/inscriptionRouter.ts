@@ -628,17 +628,15 @@ export const inscriptionRouter = router({
         })
 
         if (
-          !v1Conseiller ||
-          !isConseillerNumeriqueV1DataWithActiveMiseEnRelation(v1Conseiller)
+          v1Conseiller &&
+          isConseillerNumeriqueV1DataWithActiveMiseEnRelation(v1Conseiller)
         ) {
-          throw forbiddenError()
+          await importCoordinateurMediationDataFromV1({
+            user: sessionUser,
+            upsertedMediateur,
+            v1Conseiller,
+          })
         }
-
-        await importCoordinateurMediationDataFromV1({
-          user: sessionUser,
-          upsertedMediateur,
-          v1Conseiller,
-        })
       }
 
       addMutationLog({
