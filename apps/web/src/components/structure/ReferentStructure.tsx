@@ -10,7 +10,7 @@ export const ReferentStructure = ({
   telephoneReferent: string | null
 }) => (
   <>
-    <h2 className="fr-text-title--blue-france fr-h6 fr-mb-2v">
+    <h2 className="fr-text-title--blue-france fr-text--xs fr-text--uppercase fr-mb-2v">
       Référent de la structure
     </h2>
     <div className="fr-flex fr-direction-column fr-flex-gap-1v">
