@@ -1,5 +1,4 @@
 import Tag from '@codegouvfr/react-dsfr/Tag'
-import BeneficiairePageNavigationBar from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/BeneficiairePageNavigationBar'
 import { BeneficiaireInformationsPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/(informations)/getBeneficiaireInformationsPageData'
 import InfoLabelValue from '@app/web/components/InfoLabelValue'
 import {
@@ -7,6 +6,7 @@ import {
   statutSocialLabels,
   trancheAgeLabels,
 } from '@app/web/beneficiaire/beneficiaire'
+import BeneficiairePageNavigationBar from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/BeneficiairePageNavigationBar'
 import styles from './ViewBeneficiaireInformationsPage.module.css'
 
 const ViewBeneficiaireInformationsPage = ({

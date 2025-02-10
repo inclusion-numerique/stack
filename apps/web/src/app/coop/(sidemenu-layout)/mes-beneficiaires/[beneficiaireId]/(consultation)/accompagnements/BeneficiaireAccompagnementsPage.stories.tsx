@@ -7,9 +7,13 @@ import {
 import ViewBeneficiaireLayout from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/ViewBeneficiaireLayout'
 import ViewBeneficiaireAccompagnementsPage from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/ViewBeneficiaireAccompagnementsPage'
 import { BeneficiaireAccompagnementsPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/getBeneficiaireAccompagnementsPageData'
+import { testSessionUser } from '@app/web/test/testSessionUser'
 
 const Template = ({ data }: { data: BeneficiaireAccompagnementsPageData }) => (
-  <ViewBeneficiaireLayout beneficiaire={data.beneficiaire}>
+  <ViewBeneficiaireLayout
+    beneficiaire={data.beneficiaire}
+    user={testSessionUser}
+  >
     <ViewBeneficiaireAccompagnementsPage data={data} />
   </ViewBeneficiaireLayout>
 )
