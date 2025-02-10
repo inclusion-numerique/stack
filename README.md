@@ -19,8 +19,7 @@ L'objectif de ce projet est d’outiller les professionels de la médiation num�
 - Accueil
 - Connexion par lien magique
 - Connexion avec Single Sign On
-  - [Inclusion Connect](https://inclusion.beta.gouv.fr/nos-services/inclusion-connect/)
-  - [Mon compte pro](https://moncomptepro.beta.gouv.fr/)
+  - [ProConnect](https://github.com/numerique-gouv/proconnect-documentation/blob/main/doc_fs/README.md)
 - Page profil
 - Politique de confidentialité
 - Mentions légales
