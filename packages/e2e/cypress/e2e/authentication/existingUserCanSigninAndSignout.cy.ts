@@ -86,7 +86,7 @@ describe('ETQ Utilisateur, je peux me connecter à mon compte / me déconnecter 
     // Identity provider logout flow
     cy.url().should(
       'contain',
-      'https://app-sandbox.moncomptepro.beta.gouv.fr/oauth/logout',
+      'https://identite-sandbox.proconnect.gouv.fr/oauth/logout',
     )
     cy.url().should('equal', appUrl('/'))
 
