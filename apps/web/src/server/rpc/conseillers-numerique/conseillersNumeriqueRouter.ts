@@ -1,16 +1,18 @@
-import { SearchConseillerNumeriqueByEmailValidation } from '@app/web/server/rpc/conseillers-numerique/SearchConseillerNumeriqueByEmailValidation'
+import { ObjectId } from 'mongodb'
+import { isConseillerNumerique } from '@app/web/auth/userTypeGuards'
+import { findConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
+import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
+import {
+  MiseEnRelationConseillerNumeriqueV1MinimalProjection,
+  MiseEnRelationV1MinimalProjection,
+} from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { forbiddenError } from '@app/web/server/rpc/trpcErrors'
-import { findConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
 import { MettreAJourStructureEmployeuseDepuisContratActifValidation } from '@app/web/server/rpc/conseillers-numerique/MettreAJourStructureEmployeuseDepuisContratActifValidation'
-import {
-  createStructureEmployeuseFor,
-  findExistingStructureForMiseEnRelationActive,
-  findStructureCartographieNationaleFromMiseEnRelation,
-} from '@app/web/app/inscription/importFromConseillerNumerique/importFromConseillerNumerique.queries'
-import { prismaClient } from '@app/web/prismaClient'
+import { SearchConseillerNumeriqueByEmailValidation } from '@app/web/server/rpc/conseillers-numerique/SearchConseillerNumeriqueByEmailValidation'
 import { createStopwatch } from '@app/web/utils/stopwatch'
 import { addMutationLog } from '@app/web/utils/addMutationLog'
+import { miseAJourStructureEmployeuseFor } from './miseAJourStructureEmployeuseFor'
 
 export const conseillersNumeriqueRouter = router({
   searchByEmail: protectedProcedure
@@ -30,62 +32,8 @@ export const conseillersNumeriqueRouter = router({
       }
       const stopwatch = createStopwatch()
 
-      let structure = await findExistingStructureForMiseEnRelationActive({
-        miseEnRelationActive: miseEnRelation,
-      })
-
-      if (!structure) {
-        // We create the structure employeuse and link it to structure carto nationale if possible
-
-        const structureCartographieNationale =
-          await findStructureCartographieNationaleFromMiseEnRelation(
-            miseEnRelation,
-          )
-
-        structure = await createStructureEmployeuseFor({
-          miseEnRelationActive: miseEnRelation,
-        })(structureCartographieNationale)
-      }
-
-      // On retire les anciens emplois
-      await prismaClient.employeStructure.updateMany({
-        where: {
-          userId,
-          suppression: null,
-          structureId: {
-            not: structure.id,
-          },
-        },
-        data: {
-          suppression: new Date(),
-        },
-      })
-
-      // We update the "emplois" for the user
-
-      const existingEmploi = await prismaClient.employeStructure.findFirst({
-        where: {
-          userId,
-          structureId: structure.id,
-          suppression: null,
-        },
-        select: {
-          id: true,
-        },
-      })
-
-      // Un doublon de cet emploi existe, on ne fait rien
-      if (existingEmploi) {
-        return structure
-      }
-
-      // On crée un nouvel emploi
-      await prismaClient.employeStructure.create({
-        data: {
-          userId,
-          structureId: structure.id,
-        },
-      })
+      const structure =
+        await miseAJourStructureEmployeuseFor(userId)(miseEnRelation)
 
       addMutationLog({
         userId: user.id,
@@ -99,4 +47,43 @@ export const conseillersNumeriqueRouter = router({
 
       return structure
     }),
+  mettreAJourStructureEmployeuse: protectedProcedure.mutation(
+    async ({ ctx: { user } }) => {
+      if (!isConseillerNumerique(user)) {
+        throw forbiddenError(
+          "Cet utilisateur n'est pas un conseiller numérique",
+        )
+      }
+
+      const stopwatch = createStopwatch()
+
+      const misesEnRelationCollection =
+        await conseillerNumeriqueMongoCollection('misesEnRelation')
+
+      const miseEnRelation = (await misesEnRelationCollection.findOne(
+        {
+          'conseillerObj._id': new ObjectId(
+            user.mediateur.conseillerNumerique.id,
+          ),
+        },
+        { projection: MiseEnRelationV1MinimalProjection },
+      )) as unknown as MiseEnRelationConseillerNumeriqueV1MinimalProjection
+
+      const structure = await miseAJourStructureEmployeuseFor(user.id)(
+        miseEnRelation,
+      )
+
+      addMutationLog({
+        userId: user.id,
+        nom: 'CreerEmployeStructure',
+        duration: stopwatch.stop().duration,
+        data: {
+          userId: user.id,
+          structureId: structure.id,
+        },
+      })
+
+      return structure
+    },
+  ),
 })

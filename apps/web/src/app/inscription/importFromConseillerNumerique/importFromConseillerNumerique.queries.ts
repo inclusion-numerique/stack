@@ -11,7 +11,7 @@ export const toId = ({ id }: { id: string | ObjectId }) => id.toString()
 export type MiseEnRelationWithStructureAdministrativeInfo = {
   structureObj: Pick<
     MiseEnRelationConseillerNumeriqueV1MinimalProjection['structureObj'],
-    'siret' | 'nom'
+    'siret' | 'nom' | 'contact'
   > & {
     adresseInsee2Ban: Pick<
       MiseEnRelationConseillerNumeriqueV1MinimalProjection['structureObj']['adresseInsee2Ban'],
@@ -40,7 +40,11 @@ export const findExistingStructureForMiseEnRelationActive = ({
           siret: miseEnRelationActive.structureObj.siret,
           nom: miseEnRelationActive.structureObj.nom,
         },
-        select: { id: true, structureCartographieNationaleId: true },
+        select: {
+          id: true,
+          structureCartographieNationaleId: true,
+          nomReferent: true,
+        },
       })
     : null
 
@@ -57,7 +61,7 @@ export const findStructureCartographieNationaleFromMiseEnRelation = ({
 export const createStructureEmployeuseFor =
   ({
     miseEnRelationActive: {
-      structureObj: { nom, adresseInsee2Ban, siret },
+      structureObj: { nom, adresseInsee2Ban, siret, contact },
     },
   }: {
     miseEnRelationActive: MiseEnRelationWithStructureAdministrativeInfo
@@ -75,6 +79,9 @@ export const createStructureEmployeuseFor =
         longitude: adresseInsee2Ban?.x,
         codeInsee: adresseInsee2Ban?.citycode,
         siret,
+        nomReferent: `${contact?.prenom} ${contact?.nom}`,
+        courrielReferent: contact?.email,
+        telephoneReferent: contact?.telephone,
       },
     })
 

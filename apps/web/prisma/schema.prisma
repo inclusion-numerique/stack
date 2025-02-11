@@ -469,6 +469,10 @@ model Structure {
   modalitesAccompagnement       String[]   @default([]) @map("modalites_accompagnement")
   activites                     Activite[] @relation(name: "activite_structure")
 
+  nomReferent       String? @map("nom_referent")
+  courrielReferent  String? @map("courriel_referent")
+  telephoneReferent String? @map("telephone_referent")
+
   // "creation" cursor is used to paginate results for API queries
   @@unique([creation, id])
   // descending sort on this cursor for api query performances

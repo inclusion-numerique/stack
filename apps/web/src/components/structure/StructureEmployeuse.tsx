@@ -14,7 +14,6 @@ export const StructureEmployeuse = ({
   siret,
   rna,
   isLieuActivite,
-  isConseillerNumerique,
 }: {
   id: string
   showTitle?: boolean
@@ -27,9 +26,8 @@ export const StructureEmployeuse = ({
   siret?: string | null
   rna?: string | null
   isLieuActivite: boolean
-  isConseillerNumerique: boolean
 }) => (
-  <div className="fr-border fr-border-radius--8 fr-p-4w">
+  <>
     {showTitle && (
       <span className="fr-flex fr-flex-gap-3v fr-align-items-end fr-mb-6v">
         <span
@@ -76,15 +74,5 @@ export const StructureEmployeuse = ({
         Référencé dans vos Lieux d’activité
       </Badge>
     )}
-    {isConseillerNumerique && (
-      <p className="fr-mt-6v fr-text--xs fr-text-mention--grey fr-mb-0">
-        Si vous constatez une erreur sur les informations concernant cette
-        structure, veuillez contacter le support du dispositif conseiller
-        numérique&nbsp;:{' '}
-        <a href="mailto:conseiller - numerique@anct.gouv.fr">
-          conseiller-numerique@anct.gouv.fr
-        </a>
-      </p>
-    )}
-  </div>
+  </>
 )

@@ -29,6 +29,13 @@ export const MettreAJourStructureEmployeuseDepuisContratActifValidation =
           city: z.string(),
           postcode: z.string(),
         }),
+        contact: z.object({
+          nom: z.string(),
+          prenom: z.string(),
+          fonction: z.string(),
+          email: z.string().email(),
+          telephone: z.string(),
+        }),
       }),
       dateRecrutement: z.date().optional(),
       dateDebutDeContrat: z.date().optional(),
