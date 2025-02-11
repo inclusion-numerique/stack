@@ -5,13 +5,14 @@ export const conseillerInscriptionMediateurId =
   'b119ef9d-5732-4429-8138-5452fe248497'
 
 export const conseillerInscriptionConseillerNumeriqueId =
-  'conseiller-numerique-inscription'
+  '630346008f4a3696aee73cfd'
 
 export const conseillerInscription = givenUser({
   id: '0658cfe9-93aa-4de8-96a1-613452ac82ea',
   firstName: 'Conseiller Num',
   lastName: 'Inscription',
   isFixture: true,
+  email: 'patrick.morie@conseiller-numerique.fr',
   role: 'User',
   mediateur: {
     connectOrCreate: {

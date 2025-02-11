@@ -12,6 +12,7 @@ import {
   downloadCartographieNationaleStructures,
   getStructuresCartographieNationaleFromLocalFile,
 } from '../data/cartographie-nationale/cartographieNationaleStructures'
+import { executeImportContactsToBrevo } from './import-contacts-to-brevo/executeImportContactsToBrevo'
 import { output } from './output'
 
 export type JobExecutor<Name extends JobName, Result = unknown> = (
@@ -47,6 +48,7 @@ export const jobExecutors: {
   'import-cras-conseiller-numerique-v1': executeImportCrasConseillerNumeriqueV1,
   'fix-coordinations-v1': executeFixCoordinationsV1,
   'update-conum-structure-referent': executeUpdateConumStructureReferent,
+  'import-contacts-to-brevo': executeImportContactsToBrevo,
 }
 
 export const executeJob = async (job: Job) => {

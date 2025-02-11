@@ -1,23 +1,27 @@
 import { v4 } from 'uuid'
 import z from 'zod'
 import { ProfilInscription } from '@prisma/client'
+import { importCoordinateurMediationDataFromV1 } from '@app/web/app/inscription/(steps)/identification/importCoordinateurMediationDataFromV1'
 import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import { createBrevoContact } from '@app/web/external-apis/brevo/api'
+import { toBrevoContact } from '@app/web/external-apis/brevo/contact'
+import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
+import { isConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
 import { ChoisirProfilEtAccepterCguValidation } from '@app/web/inscription/ChoisirProfilEtAccepterCguValidation'
 import { LieuxActiviteValidation } from '@app/web/inscription/LieuxActivite'
 import { RenseignerStructureEmployeuseValidation } from '@app/web/inscription/RenseignerStructureEmployeuse'
 import { StructureEmployeuseLieuActiviteValidation } from '@app/web/inscription/StructureEmployeuseLieuActivite'
 import { prismaClient } from '@app/web/prismaClient'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
-import { forbiddenError } from '@app/web/server/rpc/trpcErrors'
-import { toStructureFromCartoStructure } from '@app/web/structure/toStructureFromCartoStructure'
-import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
-import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
 import { getOrCreateStructureEmployeuse } from '@app/web/server/rpc/inscription/getOrCreateStructureEmployeuse'
-import { importCoordinateurMediationDataFromV1 } from '@app/web/app/inscription/(steps)/identification/importCoordinateurMediationDataFromV1'
-import { isConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
+import { forbiddenError } from '@app/web/server/rpc/trpcErrors'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { toStructureFromCartoStructure } from '@app/web/structure/toStructureFromCartoStructure'
 import { addMutationLog } from '@app/web/utils/addMutationLog'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import { createStopwatch } from '@app/web/utils/stopwatch'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 
 const inscriptionGuard = (
   targetUserId: string,
@@ -125,7 +129,7 @@ export const inscriptionRouter = router({
               },
             })
 
-            const updatedUser = await transaction.user.update({
+            return transaction.user.update({
               where: {
                 id: userId,
               },
@@ -144,8 +148,6 @@ export const inscriptionRouter = router({
                 emplois: true,
               },
             })
-
-            return updatedUser
           },
         )
 
@@ -580,8 +582,22 @@ export const inscriptionRouter = router({
         where: {
           id: userId,
         },
-        select: { email: true, mediateur: { select: { id: true } } },
+        select: {
+          id: true,
+          email: true,
+          firstName: true,
+          lastName: true,
+          phone: true,
+          coordinateur: true,
+          mediateur: { select: { id: true, conseillerNumerique: true } },
+        },
       })
+
+      if (user != null && PublicWebAppConfig.isMain) {
+        await createBrevoContact(ServerWebAppConfig.Brevo.usersListId)(
+          toBrevoContact(user),
+        )
+      }
 
       if (!isMediateur(user)) return
 
@@ -621,6 +637,15 @@ export const inscriptionRouter = router({
         create: { userId: sessionUser.id },
         update: {},
       })
+
+      if (sessionUser.inscriptionValidee != null && PublicWebAppConfig.isMain) {
+        await createBrevoContact(ServerWebAppConfig.Brevo.usersListId)(
+          toBrevoContact({
+            ...sessionUser,
+            mediateur: { ...upsertedMediateur, conseillerNumerique: null },
+          }),
+        )
+      }
 
       if (sessionUser.coordinateur.conseillerNumeriqueId != null) {
         const v1Conseiller = await fetchConseillerNumeriqueV1Data({

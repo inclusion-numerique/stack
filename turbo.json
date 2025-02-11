@@ -2,25 +2,16 @@
   "$schema": "https://turborepo.org/schema.json",
   "tasks": {
     "prisma generate": {
-      "inputs": [
-        "prisma/schema.prisma"
-      ],
+      "inputs": ["prisma/schema.prisma"],
       "cache": true
     },
     "dev": {
-      "dependsOn": [
-        "^prisma generate"
-      ],
+      "dependsOn": ["^prisma generate"],
       "cache": false
     },
     "build": {
-      "dependsOn": [
-        "^build",
-        "^prisma generate"
-      ],
-      "outputs": [
-        ".next/**"
-      ],
+      "dependsOn": ["^build", "^prisma generate"],
+      "outputs": [".next/**"],
       "cache": false
     },
     "lint": {
@@ -43,6 +34,8 @@
   },
   "globalEnv": [
     "ANALYZE",
+    "BREVO_API_KEY",
+    "BREVO_USERS_LIST_ID",
     "CI",
     "CHROMATIC_APP_ID",
     "DATABASE_URL",
