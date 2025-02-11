@@ -11,7 +11,7 @@ import LieuxActiviteForm from './_components/LieuxActiviteForm'
 const AjouterLieuPage = async () => {
   const user = await authenticateUser()
 
-  if (!user.mediateur || user.mediateur._count.enActivite === 0) {
+  if (!user.mediateur) {
     return redirect('/')
   }
 

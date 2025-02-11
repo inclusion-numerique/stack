@@ -9,6 +9,7 @@ import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { getLieuxActivites } from '@app/web/lieu-activite/getLieuxActivites'
 import { LieuActivite } from './_components/LieuActivite'
+import { AucunLieu } from './_components/AucunLieu'
 
 export const metadata: Metadata = {
   title: metadataTitle('Mes lieux d’activités'),
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
 const LieuActiviteListPage = async () => {
   const user = await authenticateUser()
 
-  if (!user.mediateur || user.mediateur._count.enActivite === 0) {
+  if (!user.mediateur) {
     return redirect('/')
   }
 
@@ -49,16 +50,20 @@ const LieuActiviteListPage = async () => {
             </Button>
           </span>
           <div className="fr-flex fr-direction-column fr-flex-gap-4v">
-            {lieuxActivites.map((lieuActivite) => (
-              <LieuActivite
-                key={lieuActivite.id}
-                {...lieuActivite.structure}
-                mediateurEnActiviteId={lieuActivite.id}
-                canDelete={lieuxActivites.length > 1}
-                creation={lieuActivite.creation}
-                modification={lieuActivite.modification}
-              />
-            ))}
+            {lieuxActivites.length === 0 ? (
+              <AucunLieu />
+            ) : (
+              lieuxActivites.map((lieuActivite) => (
+                <LieuActivite
+                  key={lieuActivite.id}
+                  {...lieuActivite.structure}
+                  mediateurEnActiviteId={lieuActivite.id}
+                  canDelete={lieuxActivites.length > 1}
+                  creation={lieuActivite.creation}
+                  modification={lieuActivite.modification}
+                />
+              ))
+            )}
           </div>
         </main>
       </div>
