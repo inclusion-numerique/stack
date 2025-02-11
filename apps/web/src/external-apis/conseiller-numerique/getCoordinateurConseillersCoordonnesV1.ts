@@ -102,7 +102,7 @@ export const getCoordinateurConseillersCoordonnesV1 = async ({
   const conseillersV1CoordonnesIds = conseillersCoordonnes.map(({ id }) => id)
 
   return {
-    conseillersV1Coordonnes: conseillersCoordonnesV1,
+    conseillersV1Coordonnes: conseillersCoordonnes,
     conseillersV1CoordonnesIds,
     coordinateur: coordinateurData,
   }
