@@ -1,4 +1,4 @@
-/* eslint jsx-a11y/control-has-associated-label: 0  */
+/* eslint jsx-a11y/control-has-associated-label: 0 */
 import type { Metadata } from 'next'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
@@ -33,7 +33,7 @@ const ConfidentialityPage = () => (
       </p>
       <p>
         Le responsable de traitement est l’ANCT représentée par Monsieur
-        Stanislas Bourron, Directeur général de l’Agence
+        Stanislas Bourron, Directeur général de l’Agence.
       </p>
 
       <h2>Pourquoi traitons-nous des données à caractère personnel ?</h2>
@@ -45,11 +45,24 @@ const ConfidentialityPage = () => (
         d’accompagnement à la montée en compétence de la population sur les
         compétences numériques.
       </p>
-
+      <p>Les données sont notamment traitées pour :</p>
+      <ul>
+        <li>
+          Fournir un accès authentifié à la plateforme aux médiateurs numériques
+          professionnels ;
+        </li>
+        <li>
+          Transmettre les données des bénéficiaires à l’entrepôt de données
+          partagé de l’inclusion numérique notamment pour mesurer la montée en
+          compétence de la population dans le numérique et s’interconnecter avec
+          d’autres dispositifs ;
+        </li>
+        <li>Gérer l’inscription et la diffusion de la newsletter ;</li>
+        <li>Recueillir les demandes au sein d’un formulaire de contact.</li>
+      </ul>
       <p>
-        Les données sont notamment traitées pour fournir un accès authentifié à
-        la plateforme, gérer l’inscription et la diffusion de la newsletter et
-        recueillir les demandes au sein d’un formulaire de contact.
+        Les médiateurs numériques professionnels sont responsables de traitement
+        des données des bénéficiaires uniquement pour assurer leur suivi.
       </p>
 
       <br />
@@ -60,16 +73,21 @@ const ConfidentialityPage = () => (
       <p>Les données traitées sont les suivantes :</p>
       <ul>
         <li>
-          Données relatives au compte : nom, prénom, adresse e-mail, numéro de
-          téléphone (facultatif) ;
+          Données relatives aux comptes des médiateurs : nom, prénom, courriel,
+          numéro de téléphone (facultatif) ;
+        </li>
+        <li>
+          Données relatives aux bénéficiaires pour la transmission à l’entrepôt
+          de données partagé de l’inclusion numérique : nom, prénom, année de
+          naissance ;
         </li>
         <li>
           Données relatives à la lettre d’information : nom, prénom, adresse
-          e-mail ;
+          courriel ;
         </li>
         <li>
           Données relatives au formulaire de contact : nom, prénom, adresse
-          e-mail.
+          courriel.
         </li>
       </ul>
 
@@ -106,8 +124,12 @@ const ConfidentialityPage = () => (
           </thead>
           <tbody>
             <tr>
-              <th>Données relatives au compte</th>
+              <th>Données relatives aux comptes des médiateurs</th>
               <td>1 an après le dernier contact avec l’utilisateur</td>
+            </tr>
+            <tr>
+              <th>Données relatives aux bénéficiaires</th>
+              <td>1 an après la dernière mise à jour des données</td>
             </tr>
             <tr>
               <th>Données relatives à la lettre d’information</th>
@@ -137,13 +159,8 @@ const ConfidentialityPage = () => (
 
       <p>
         Pour exercer vos droits, vous pouvez nous contacter à :
-        <a
-          href={
-            PublicWebAppConfig.contactEmail &&
-            `mailto:${PublicWebAppConfig.contactEmail}`
-          }
-        >
-          {PublicWebAppConfig.contactEmail}
+        <a href="mailto:coop-numerique@anct.gouv.fr">
+          coop-numerique@anct.gouv.fr
         </a>
       </p>
       <p>
@@ -167,6 +184,13 @@ const ConfidentialityPage = () => (
         Seuls les membres habilités de l’équipe de la coop de la médiation
         numérique (administrateurs, développeurs notamment) ont accès à vos
         données, dans le cadre de leurs missions.
+      </p>
+      <p>
+        L’entrepôt de données partagé de l’inclusion numérique est destinataire
+        des données des bénéficiaires pour notamment mesurer la montée en
+        compétence de la population dans l’usage du numérique et construire des
+        partenariats avec des prescripteurs d’accompagnements de médiation
+        numérique.
       </p>
 
       <h2>Qui nous aide à traiter vos données ?</h2>
@@ -221,30 +245,30 @@ const ConfidentialityPage = () => (
         </table>
       </div>
 
-      <h2>Cookies et traceurs</h2>
+      <h2>Témoins de connexion et traceurs</h2>
 
       <p>
-        Un cookie est un fichier déposé sur votre terminal lors de la visite
-        d’un site. Il a pour but de collecter des informations relatives à votre
-        navigation et de vous adresser des services adaptés à votre terminal
-        (ordinateur, mobile ou tablette).
+        Un témoin de connexion est un fichier déposé sur votre terminal lors de
+        la visite d’un site. Il a pour but de collecter des informations
+        relatives à votre navigation et de vous adresser des services adaptés à
+        votre terminal (ordinateur, mobile ou tablette).
       </p>
 
       <p>
         En application de l’article 5-3 de la directive ePrivacy, transposée à
         l’article 82 de la loi n° 78-17 du 6 janvier 1978 relative à
-        l’informatique, aux fichiers et aux libertés, les cookies et traceurs
-        suivent deux régimes distincts.
+        l’informatique, aux fichiers et aux libertés, les témoins de connexion
+        et traceurs suivent deux régimes distincts.
       </p>
 
       <p>
-        D’une part, les cookies strictement nécessaires au service ou ayant pour
+        D’une part, ceux strictement nécessaires au service ou ayant pour
         finalité exclusive de faciliter la communication par voie électronique,
         sont dispensés de consentement préalable.
       </p>
       <p>
-        D’autre part, les cookies n’étant pas strictement nécessaires au service
-        ou n’ayant pas pour finalité exclusive de faciliter la communication par
+        D’autre part, ceux n’étant pas strictement nécessaires au service ou
+        n’ayant pas pour finalité exclusive de faciliter la communication par
         voie électronique, doivent être consenti par l’utilisateur.
       </p>
       <p>
@@ -252,10 +276,10 @@ const ConfidentialityPage = () => (
         sens du RGPD, à savoir l’article 6-1 a).
       </p>
       <p>
-        La coop de la médiation numérique ne dépose que des cookies et traceurs
-        strictement nécessaires au fonctionnement du service et la solution de
-        mesure d’audience « Matomo », configurée en mode « exempté » et ne
-        nécessitant pas de recueil du consentement, conformément aux
+        La coop de la médiation numérique ne dépose que des témoins de connexion
+        et traceurs strictement nécessaires au fonctionnement du service et la
+        solution de mesure d’audience « Matomo », configurée en mode « exempté »
+        et ne nécessitant pas de recueil du consentement, conformément aux
         recommandations de la CNIL.
       </p>
 
@@ -302,25 +326,22 @@ const ConfidentialityPage = () => (
 
       <ul>
         <li>
-          Contrôle d’accès&nbsp;: la base de données des utilisateurs n’est
-          accessible qu’aux seuls membres de l’administration du service;
+          Contrôle d’accès : la base de données des utilisateurs n’est
+          accessible qu’aux seuls membres de l’administration du service ;
         </li>
         <li>
-          Mesures de traçabilité&nbsp;: les logs applicatifs permettent de
-          savoir qui a eu accès à cette base de données&nbsp;;
+          Mesures de traçabilité : les logs applicatifs permettent de savoir qui
+          a eu accès à cette base de données ;
         </li>
         <li>
-          Mesures de protection des logiciels&nbsp;: les mises à jour et les
-          mesures de protection sont assurées par l&apos;hébergeur
-          Scaleway&nbsp;;
+          Mesures de protection des logiciels : les mises à jour et les mesures
+          de protection sont assurées par l'hébergeur Scaleway ;
         </li>
         <li>
-          Sauvegarde des données&nbsp;: les sauvegardes sont assurées par
-          l&apos;hébergeur Scaleway&nbsp;;
+          Sauvegarde des données : les sauvegardes sont assurées par l'hébergeur
+          Scaleway ;
         </li>
-        <li>
-          Chiffrement des données&nbsp;: site uniquement accessible en HTTPS.
-        </li>
+        <li>Chiffrement des données : site uniquement accessible en HTTPS.</li>
       </ul>
     </main>
   </div>
