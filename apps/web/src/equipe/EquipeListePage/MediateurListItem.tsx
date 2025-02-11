@@ -1,30 +1,8 @@
 import React from 'react'
 import type { AlertProps } from '@codegouvfr/react-dsfr/src/Alert'
 import Badge from '@codegouvfr/react-dsfr/Badge'
+import { UserRole } from '../UserRole'
 import { type MediateurListProps } from './MediateurList'
-
-const UserRole = ({
-  isConseillerNumerique,
-}: {
-  isConseillerNumerique: boolean
-}) =>
-  isConseillerNumerique ? (
-    <span className="fr-flex fr-align-items-center">
-      <img
-        className="fr-mr-2v"
-        width="16px"
-        height="16px"
-        src="/images/illustrations/role/conseillers-numerique.svg"
-        alt=""
-      />
-      Conseiller numérique
-    </span>
-  ) : (
-    <span>
-      <span className="ri-account-circle-line fr-mr-2v" aria-hidden />
-      Médiateur numérique
-    </span>
-  )
 
 const statusSeverity = (status: string): AlertProps.Severity | undefined => {
   if (status.startsWith('Actif')) return 'success'

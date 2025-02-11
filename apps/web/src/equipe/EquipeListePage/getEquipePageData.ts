@@ -3,7 +3,7 @@ import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { countMediateursCoordonnesBy } from '@app/web/mediateurs/countMediateursCoordonnesBy'
 import { findConseillersNumeriquesContractInfoByEmails } from '@app/web/external-apis/conseiller-numerique/fetchConseillersCoordonnes'
 import {
-  type MonEquipeSearchParams,
+  type EquipeSearchParams,
   searchMediateursCoordonneBy,
 } from './searchMediateursCoordonneBy'
 
@@ -40,12 +40,12 @@ const finDeContratFor =
       : undefined
   }
 
-export const getMonEquipePageData = async ({
+export const getEquipePageData = async ({
   searchParams,
   anciensMembres = false,
   coordinateur,
 }: {
-  searchParams: MonEquipeSearchParams
+  searchParams: EquipeSearchParams
   anciensMembres?: boolean
   coordinateur: {
     id: string
@@ -100,4 +100,4 @@ export const getMonEquipePageData = async ({
   }
 }
 
-export type MonEquipePageData = Awaited<ReturnType<typeof getMonEquipePageData>>
+export type MonEquipePageData = Awaited<ReturnType<typeof getEquipePageData>>

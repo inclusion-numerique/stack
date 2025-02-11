@@ -20,14 +20,17 @@ export const generateMetadata = async ({
 }
 
 const Page = async ({
-  params: { mediateurId },
+  params: { coordinateurId, mediateurId },
 }: {
-  params: { mediateurId: string }
+  params: { coordinateurId: string; mediateurId: string }
 }) => {
-  const mediateurPageData = await getMediateurPageData(mediateurId)
+  const mediateurPageData = await getMediateurPageData(
+    mediateurId,
+    coordinateurId,
+  )
 
   if (mediateurPageData?.mediateur?.user == null) {
-    redirect('/mon-equipe')
+    redirect(`/coop/mes-equipes/${coordinateurId}`)
   }
 
   const {
@@ -37,16 +40,14 @@ const Page = async ({
     contract,
     lieuxActivites,
   } = mediateurPageData
-
   return (
     <MediateurDetailPage
       {...mediateur}
-      href="/coop/mon-equipe"
+      href={`/coop/mes-equipes/${coordinateurId}`}
       statistiques={statistiques}
       structureEmployeuse={structureEmployeuse}
       contract={contract}
       lieuxActivites={lieuxActivites}
-      coordinateurView
     />
   )
 }
