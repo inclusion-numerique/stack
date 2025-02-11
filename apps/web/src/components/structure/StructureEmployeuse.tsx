@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import Badge from '@codegouvfr/react-dsfr/Badge'
+import Card from '@app/web/components/Card'
 import { Typologies } from './Typologies'
 
 export const StructureEmployeuse = ({
   id,
-  showTitle = false,
   nom,
   adresse,
   complementAdresse,
@@ -14,9 +14,9 @@ export const StructureEmployeuse = ({
   siret,
   rna,
   isLieuActivite,
+  children,
 }: {
   id: string
-  showTitle?: boolean
   nom: string
   adresse: string
   complementAdresse?: string | null
@@ -26,19 +26,24 @@ export const StructureEmployeuse = ({
   siret?: string | null
   rna?: string | null
   isLieuActivite: boolean
+  children?: ReactNode
 }) => (
-  <>
-    {showTitle && (
-      <span className="fr-flex fr-flex-gap-3v fr-align-items-end fr-mb-6v">
+  <Card
+    noBorder
+    className="fr-border fr-border-radius--8"
+    titleAs="div"
+    title={
+      <span className="fr-flex fr-flex-gap-3v fr-align-items-end fr-mb-0">
         <span
-          className="ri-home-smile-2-line ri-lg fr-line-height-1 fr-text-label--blue-france fr-background-alt--blue-france fr-p-2v fr-border-radius--8"
+          className="ri-home-smile-2-line fr-line-height-1 fr-text--medium fr-text-label--blue-france fr-background-alt--blue-france fr-p-2v fr-border-radius--8"
           aria-hidden
         />
         <h2 className="fr-text-title--blue-france fr-h6 fr-m-0">
           Structure employeuse
         </h2>
       </span>
-    )}
+    }
+  >
     <span className="fr-text--lg fr-text--bold fr-mb-0">{nom}</span>
     <div className="fr-text--sm fr-mb-0 fr-text-mention--grey fr-flex fr-direction-column fr-flex-gap-1v">
       <div>
@@ -74,5 +79,6 @@ export const StructureEmployeuse = ({
         Référencé dans vos Lieux d’activité
       </Badge>
     )}
-  </>
+    {children}
+  </Card>
 )
