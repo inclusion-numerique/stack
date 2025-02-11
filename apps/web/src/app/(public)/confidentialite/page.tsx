@@ -159,8 +159,13 @@ const ConfidentialityPage = () => (
 
       <p>
         Pour exercer vos droits, vous pouvez nous contacter à :
-        <a href="mailto:coop-numerique@anct.gouv.fr">
-          coop-numerique@anct.gouv.fr
+        <a
+          href={
+            PublicWebAppConfig.contactEmail &&
+            `mailto:${PublicWebAppConfig.contactEmail}`
+          }
+        >
+          {PublicWebAppConfig.contactEmail}
         </a>
       </p>
       <p>
@@ -326,22 +331,22 @@ const ConfidentialityPage = () => (
 
       <ul>
         <li>
-          Contrôle d’accès : la base de données des utilisateurs n’est
+          Contrôle d’accès : la base de données des utilisateurs n’est
           accessible qu’aux seuls membres de l’administration du service ;
         </li>
         <li>
-          Mesures de traçabilité : les logs applicatifs permettent de savoir qui
+          Mesures de traçabilité : les logs applicatifs permettent de savoir qui
           a eu accès à cette base de données ;
         </li>
         <li>
-          Mesures de protection des logiciels : les mises à jour et les mesures
-          de protection sont assurées par l'hébergeur Scaleway ;
+          Mesures de protection des logiciels : les mises à jour et les mesures
+          de protection sont assurées par l’hébergeur Scaleway ;
         </li>
         <li>
-          Sauvegarde des données : les sauvegardes sont assurées par l'hébergeur
+          Sauvegarde des données : les sauvegardes sont assurées par l’hébergeur
           Scaleway ;
         </li>
-        <li>Chiffrement des données : site uniquement accessible en HTTPS.</li>
+        <li>Chiffrement des données : site uniquement accessible en HTTPS.</li>
       </ul>
     </main>
   </div>
