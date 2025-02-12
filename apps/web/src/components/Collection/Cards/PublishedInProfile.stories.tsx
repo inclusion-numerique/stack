@@ -30,6 +30,7 @@ const VisitorCollectionInProfileArguments: ComponentProps<
   collection: {
     ...collectionInProfile,
     isPublic: true,
+    isFavorites: false,
     slug: `${collectionInProfile.slug}-1`,
   },
   user: testSessionUser,
@@ -42,6 +43,7 @@ const ContributorPrivateCollectionInProfileArguments: ComponentProps<
   collection: {
     ...collectionInProfile,
     isPublic: false,
+    isFavorites: false,
     slug: `${collectionInBase.slug}-2`,
     createdBy: testSessionUser,
   },

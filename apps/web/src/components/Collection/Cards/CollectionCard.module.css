@@ -3,6 +3,7 @@
   flex-direction: column;
   width: 100%;
   border: 1px solid var(--border-default-grey);
+  border-radius: 8px;
 
   a {
     background: none;

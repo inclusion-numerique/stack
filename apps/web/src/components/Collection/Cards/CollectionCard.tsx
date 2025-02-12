@@ -25,6 +25,7 @@ const CollectionCard = ({
       <Link href={href}>
         <Images
           image={collection.image}
+          isFavoriteCollection={collection.isFavorites}
           resources={collection.resources.map(({ resource }) => resource)}
         />
       </Link>
@@ -42,7 +43,7 @@ const CollectionCard = ({
             </h3>
             {collection.description && (
               <div
-                className="fr-text--sm fr-mb-3v"
+                className="fr-text--sm fr-mb-3v fr-text-mention--grey"
                 dangerouslySetInnerHTML={{
                   __html: collection.description,
                 }}
@@ -57,6 +58,7 @@ const CollectionCard = ({
               id: collection.id,
               slug: collection.slug,
               isPublic: collection.isPublic,
+              isFavorites: collection.isFavorites,
             }}
             count={resourcesCount}
             context="card"

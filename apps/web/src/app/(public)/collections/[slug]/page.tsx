@@ -59,7 +59,6 @@ const CollectionPage = async ({ params }: { params: { slug: string } }) => {
     CollectionPermissions.ReadCollectionContent,
   )
   const canWrite = hasPermission(CollectionPermissions.WriteCollection)
-
   return (
     <>
       <SkipLinksPortal />

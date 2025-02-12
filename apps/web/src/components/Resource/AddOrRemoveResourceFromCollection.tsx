@@ -31,6 +31,7 @@ const AddOrRemoveResourceFromCollection = ({
             collection={{
               id: collection.id,
               slug: collection.slug,
+              isFavorites: collection.isFavorites,
               isPublic: collection.isPublic,
             }}
             count={collection.resources.length}

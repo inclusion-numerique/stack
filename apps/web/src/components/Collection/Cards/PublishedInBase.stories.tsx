@@ -25,6 +25,7 @@ const VisitorCollectionInBaseArguments: ComponentProps<typeof CollectionCard> =
     collection: {
       ...collectionInBase,
       isPublic: true,
+      isFavorites: false,
       slug: `${collectionInBase.slug}-1`,
     },
     user: testSessionUser,
@@ -37,6 +38,7 @@ const ContributorPrivateCollectionInBaseArguments: ComponentProps<
   collection: {
     ...collectionInBase,
     isPublic: false,
+    isFavorites: false,
     slug: `${collectionInBase.slug}-2`,
     createdBy: testSessionUser,
   },

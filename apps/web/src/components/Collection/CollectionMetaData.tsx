@@ -19,7 +19,12 @@ const CollectionMetaData = ({
   hideRessourceLabelOnSmallDevices = false,
 }: {
   user: SessionUser | null
-  collection: { isPublic: boolean; id: string; slug: string }
+  collection: {
+    isPublic: boolean
+    isFavorites: boolean
+    id: string
+    slug: string
+  }
   priority?: ButtonProps.Common['priority']
   count: number
   canWrite?: boolean
@@ -48,7 +53,7 @@ const CollectionMetaData = ({
       </div>
       {withButtons && (
         <div className="fr-flex fr-flex-gap-2v">
-          {canWrite && (
+          {canWrite && !collection.isFavorites && (
             <Link
               href={`./${collection.slug}/modifier`}
               className={classNames(
@@ -64,20 +69,28 @@ const CollectionMetaData = ({
               Modifier
             </Link>
           )}
-          <SaveCollectionButton
-            priority={context === 'view' ? 'tertiary' : 'tertiary no outline'}
-            user={user}
-            collection={collection}
-            context={context}
-          />
-          <CopyLinkButton
-            size="small"
-            className="fr-hidden fr-unhidden-md"
-            priority={context === 'view' ? 'tertiary' : 'tertiary no outline'}
-            url={getServerUrl(`/collections/${collection.slug}`, {
-              absolutePath: true,
-            })}
-          />
+          {!collection.isFavorites && (
+            <>
+              <SaveCollectionButton
+                priority={
+                  context === 'view' ? 'tertiary' : 'tertiary no outline'
+                }
+                user={user}
+                collection={collection}
+                context={context}
+              />
+              <CopyLinkButton
+                size="small"
+                className="fr-hidden fr-unhidden-md"
+                priority={
+                  context === 'view' ? 'tertiary' : 'tertiary no outline'
+                }
+                url={getServerUrl(`/collections/${collection.slug}`, {
+                  absolutePath: true,
+                })}
+              />
+            </>
+          )}
         </div>
       )}
     </div>

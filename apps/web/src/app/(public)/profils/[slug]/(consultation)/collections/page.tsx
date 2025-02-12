@@ -49,25 +49,6 @@ const ProfileCollectionsPage = async ({ params }: ProfilRouteParams) => {
           </EmptyBox>
         )
       }
-      emptySavedBox={
-        isOwner ? (
-          <EmptyBox
-            title="Vous n’avez pas enregistré de collections"
-            titleAs="h3"
-          >
-            Enregistrez la collection de quelqu’un d’autre et elle apparaîtra
-            ici.
-          </EmptyBox>
-        ) : (
-          <EmptyBox
-            title="Ce profil n’a pas enregistré de collections"
-            titleAs="h3"
-          >
-            Revenez plus tard ou suivez ce profil afin d’être tenu informé de
-            ses prochaines publications.
-          </EmptyBox>
-        )
-      }
     />
   )
 }

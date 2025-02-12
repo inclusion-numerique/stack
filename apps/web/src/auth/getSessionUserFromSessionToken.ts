@@ -7,6 +7,7 @@ const userCollectionFragment = {
     id: true,
     slug: true,
     isPublic: true,
+    isFavorites: true,
     title: true,
     resources: {
       select: { resourceId: true },
@@ -29,6 +30,7 @@ const baseCollectionFragment = {
   select: {
     id: true,
     isPublic: true,
+    isFavorites: true,
     title: true,
     slug: true,
     resources: {

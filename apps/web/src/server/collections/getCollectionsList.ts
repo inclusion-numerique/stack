@@ -80,6 +80,7 @@ export const collectionSelect = (user?: Pick<SessionUser, 'id'> | null) =>
     slug: true,
     description: true,
     isPublic: true,
+    isFavorites: true,
     image: {
       select: {
         id: true,
