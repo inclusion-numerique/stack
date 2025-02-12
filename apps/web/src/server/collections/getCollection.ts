@@ -82,6 +82,14 @@ export const getCollection = async (
   const collection = await prismaClient.collection.findFirst({
     select: collectionSelect(user),
     where: { id, slug, deleted: null },
+    orderBy: [
+      {
+        isFavorites: 'desc',
+      },
+      {
+        created: 'asc',
+      },
+    ],
   })
 
   return collection == null

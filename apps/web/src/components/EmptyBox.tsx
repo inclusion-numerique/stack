@@ -16,7 +16,9 @@ const EmptyBox = ({
     className={classNames(styles.container, className)}
     data-testid="empty-box"
   >
-    {title && <EmptyBoxTitle className="fr-mb-1w fr-h6">{title}</EmptyBoxTitle>}
+    {!!title && (
+      <EmptyBoxTitle className="fr-mb-1w fr-h6">{title}</EmptyBoxTitle>
+    )}
     {children}
   </div>
 )

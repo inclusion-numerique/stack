@@ -66,7 +66,7 @@ const Images = ({
     : classNames(styles.container, className)
 
   return (
-    <div className={cn}>
+    <div className={classNames(cn)}>
       {isFavoriteCollection && (
         <div className="fr-flex fr-justify-content-center fr-align-items-center fr-width-full">
           <HeartIconSvg />

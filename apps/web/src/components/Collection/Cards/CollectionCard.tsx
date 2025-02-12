@@ -21,7 +21,10 @@ const CollectionCard = ({
   const href = `/collections/${collection.slug}`
 
   return (
-    <article className={styles.card} data-testid="collection-card">
+    <article
+      className={classNames(styles.card, 'fr-border', 'fr-border-radius--8')}
+      data-testid="collection-card"
+    >
       <Link href={href}>
         <Images
           image={collection.image}

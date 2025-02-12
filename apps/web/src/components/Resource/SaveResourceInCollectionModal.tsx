@@ -47,7 +47,6 @@ export const SaveResourceInCollectionDynamicModal = createDynamicModal({
  */
 const SaveResourceInCollectionModal = ({ user }: { user: SessionUser }) => {
   const { resourceId } = SaveResourceInCollectionDynamicModal.useState()
-
   const router = useRouter()
 
   const bases = getBasesFromSessionUser(user)
