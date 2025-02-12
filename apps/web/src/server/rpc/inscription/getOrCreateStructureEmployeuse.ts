@@ -14,6 +14,10 @@ export const getOrCreateStructureEmployeuse = async (
     where: {
       id: structureEmployeuse.id ?? undefined,
       siret: structureEmployeuse.siret,
+      nom: structureEmployeuse.nom,
+      adresse: structureEmployeuse.adresse,
+      commune: structureEmployeuse.commune,
+      codeInsee: structureEmployeuse.codeInsee,
       suppression: null,
     },
     select: {
