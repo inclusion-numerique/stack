@@ -8,6 +8,7 @@ import IconInSquare from '@app/web/components/IconInSquare'
 import EmptyBox from '@app/web/components/EmptyBox'
 import { CreateCollectionButton } from '../CreateCollectionButton'
 import styles from './Collections.module.css'
+import DeleteCollectionModal from '@app/web/components/Collection/DeleteCollection/DeleteCollectionModal'
 
 const Collections = ({
   collections,
@@ -17,6 +18,7 @@ const Collections = ({
   emptyBox,
   baseId,
   user,
+  isOwner,
 }: {
   user: SessionUser | null
   collections: CollectionListItem[]
@@ -25,6 +27,7 @@ const Collections = ({
   withCreation: boolean
   emptyBox?: ReactNode
   baseId?: string
+  isOwner: boolean
 }) => {
   const favoriteCollection = collections.find((c) => c.isFavorites)
   const otherCollections = collections.filter((c) => !c.isFavorites)
@@ -33,7 +36,6 @@ const Collections = ({
   const combinedCollections = favoriteCollection
     ? [favoriteCollection, ...otherCollections, ...savedCollections]
     : [...otherCollections, ...savedCollections]
-
   return (
     <div data-testid="collections-list">
       {combinedCollections.length > 0 ? (
@@ -62,6 +64,7 @@ const Collections = ({
                 user={user}
                 collection={collection}
                 key={collection.id}
+                isOwner={isOwner}
               />
             ))}
             {combinedCollections.length === 1 && !!favoriteCollection && (
@@ -82,6 +85,7 @@ const Collections = ({
         emptyBox
       )}
       {!!user && <SaveCollectionModal user={user} />}
+      <DeleteCollectionModal />
     </div>
   )
 }

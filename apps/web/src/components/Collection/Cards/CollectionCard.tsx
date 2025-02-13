@@ -11,9 +11,11 @@ import styles from './CollectionCard.module.css'
 const CollectionCard = ({
   collection,
   user,
+  isOwner,
 }: {
   collection: CollectionListItem
   user: SessionUser | null
+  isOwner: boolean
 }) => {
   // eslint-disable-next-line no-underscore-dangle
   const resourcesCount = collection._count.resources
@@ -54,10 +56,27 @@ const CollectionCard = ({
             )}
           </Link>
         </div>
+        {!collection.isFavorites && (
+          <span className="fr-text--xs fr-mb-0">
+            Par&nbsp;
+            {collection.isPublic ? (
+              <Link
+                href={`/profils/${user?.slug}`}
+                className="fr-link fr-position-relative fr-link--xs"
+              >
+                {user?.name}
+              </Link>
+            ) : (
+              user?.name
+            )}
+          </span>
+        )}
         {collection.slug && (
           <CollectionMetaData
             user={user}
+            isOwner={isOwner}
             collection={{
+              title: collection.title,
               id: collection.id,
               slug: collection.slug,
               isPublic: collection.isPublic,

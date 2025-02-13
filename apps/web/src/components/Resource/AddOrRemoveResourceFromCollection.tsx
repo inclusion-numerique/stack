@@ -12,6 +12,7 @@ const AddOrRemoveResourceFromCollection = ({
   onRemove,
   disabled,
   loading,
+  isOwner,
 }: {
   user: SessionUser | null
   collection: SessionUser['collections'][number]
@@ -20,6 +21,7 @@ const AddOrRemoveResourceFromCollection = ({
   onRemove: (collectionId: string) => void
   loading?: boolean
   disabled?: boolean
+  isOwner: boolean
 }) => (
   <div className={styles.container} data-testid="add-in-collection-section">
     <div className={styles.content}>
@@ -27,8 +29,10 @@ const AddOrRemoveResourceFromCollection = ({
       <div className={styles.collections}>
         {collection.slug && (
           <CollectionMetaData
+            isOwner={isOwner}
             user={user}
             collection={{
+              title: collection.title,
               id: collection.id,
               slug: collection.slug,
               isFavorites: collection.isFavorites,

@@ -24,10 +24,12 @@ const CollectionView = ({
   collection,
   user,
   canWrite,
+  isOwner = false,
 }: {
   collection: Omit<CollectionPageData, 'image'> & WithMinimalImageData
   user: SessionUser | null
   canWrite: boolean
+  isOwner?: boolean
 }) => (
   <div className="fr-width-full">
     <OwnershipInformation
@@ -90,7 +92,9 @@ const CollectionView = ({
       <div className="fr-my-5v">
         <CollectionMetaData
           user={user}
+          isOwner={isOwner}
           collection={{
+            title: collection.title,
             id: collection.id,
             slug: collection.slug,
             isFavorites: collection.isFavorites,

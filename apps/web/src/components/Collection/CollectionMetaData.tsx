@@ -6,6 +6,7 @@ import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { getServerUrl } from '@app/web/utils/baseUrl'
 import SaveCollectionButton from '@app/web/components/Collection/SaveCollectionButton'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import { CollectionMoreActionsDropdown } from '@app/web/components/Collection/CollectionMoreActionsDropdown'
 import { PrivacyTag } from '../PrivacyTags'
 import CopyLinkButton from '../CopyLinkButton'
 
@@ -14,16 +15,19 @@ const CollectionMetaData = ({
   collection,
   count,
   priority,
+  isOwner,
   canWrite,
   context,
   hideRessourceLabelOnSmallDevices = false,
 }: {
   user: SessionUser | null
+  isOwner: boolean
   collection: {
     isPublic: boolean
     isFavorites: boolean
     id: string
     slug: string
+    title: string
   }
   priority?: ButtonProps.Common['priority']
   count: number
@@ -34,7 +38,7 @@ const CollectionMetaData = ({
   const withButtons = context === 'card' || context === 'view'
   return (
     <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-my-2v">
-      <div className="fr-flex fr-flex-gap-2v fr-text--sm fr-mb-0">
+      <div className="fr-flex fr-flex-gap-2v fr-text--sm fr-mb-0 fr-text-mention--grey">
         <span className="fr-icon-file-text-line fr-icon--sm" />
         <b>{count}</b>
         <span
@@ -51,6 +55,7 @@ const CollectionMetaData = ({
           label={collection.isPublic ? 'Publique' : 'Privée'}
         />
       </div>
+
       {withButtons && (
         <div className="fr-flex fr-flex-gap-2v">
           {canWrite && !collection.isFavorites && (
@@ -69,16 +74,24 @@ const CollectionMetaData = ({
               Modifier
             </Link>
           )}
+
           {!collection.isFavorites && (
             <>
-              <SaveCollectionButton
-                priority={
-                  context === 'view' ? 'tertiary' : 'tertiary no outline'
-                }
-                user={user}
-                collection={collection}
-                context={context}
-              />
+              {isOwner ? (
+                <CollectionMoreActionsDropdown
+                  collection={collection}
+                  user={user}
+                />
+              ) : (
+                <SaveCollectionButton
+                  priority={
+                    context === 'view' ? 'tertiary' : 'tertiary no outline'
+                  }
+                  user={user}
+                  collection={collection}
+                  context={context}
+                />
+              )}
               <CopyLinkButton
                 size="small"
                 className="fr-hidden fr-unhidden-md"
