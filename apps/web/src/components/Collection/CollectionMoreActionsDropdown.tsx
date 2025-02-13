@@ -3,7 +3,6 @@ import Button, { ButtonProps } from '@codegouvfr/react-dsfr/Button'
 import Link from 'next/link'
 import { Dropdown } from '@app/web/components/Dropdown/Dropdown'
 import OpenDeleteCollectionModalButton from '@app/web/components/Collection/OpenDeleteCollectionModalButton'
-import { SessionUser } from '@app/web/auth/sessionUser'
 import OpenSaveCollectionModalButton from '@app/web/components/Collection/OpenSaveCollectionModalButton'
 
 export const CollectionMoreActionsDropdown = ({
@@ -57,7 +56,7 @@ export const CollectionMoreActionsDropdown = ({
           </div>
         </Button>
       </li>
-      <div className="fr-border-bottom fr-border--grey fr-mx-3v" />
+      <div className="fr-hidden fr-unhidden-sm fr-border-bottom fr-border--grey fr-mx-3v" />
       <li>
         <OpenSaveCollectionModalButton
           className="fr-btn fr-btn--sm"
@@ -71,7 +70,7 @@ export const CollectionMoreActionsDropdown = ({
           Enregistrer la collection
         </OpenSaveCollectionModalButton>
       </li>
-      <div className="fr-border-bottom fr-border--grey fr-mx-3v" />
+      <div className="fr-hidden fr-unhidden-sm fr-border-bottom fr-border--grey fr-mx-3v" />
       <li>
         <Link
           className="fr-btn fr-btn--sm"
@@ -84,7 +83,7 @@ export const CollectionMoreActionsDropdown = ({
           Modifier les paramètres
         </Link>
       </li>
-      <div className="fr-border-bottom fr-border--grey fr-mx-3v" />
+      <div className="fr-hidden fr-unhidden-sm fr-border-bottom fr-border--grey fr-mx-3v" />
       <li>
         <OpenDeleteCollectionModalButton
           collectionId={collection.id}

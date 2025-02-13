@@ -52,6 +52,14 @@ const ContributorPrivateCollectionInProfileArguments: ComponentProps<
   isOwner: false,
 }
 
+// contributeur qui voit une collection depuis son profil et qui est propriétaire de la collection
+const ContributorOwnerCollectionInProfileArguments: ComponentProps<
+  typeof CollectionCard
+> = {
+  ...ContributorPrivateCollectionInProfileArguments,
+  isOwner: true,
+}
+
 export const PublishedInProfile: Story = mediumContainerStory({
   parameters: {
     design: {
@@ -63,6 +71,7 @@ export const PublishedInProfile: Story = mediumContainerStory({
     <>
       <Template {...VisitorCollectionInProfileArguments} />
       <Template {...ContributorPrivateCollectionInProfileArguments} />
+      <Template {...ContributorOwnerCollectionInProfileArguments} />
     </>
   ),
 })
@@ -79,6 +88,7 @@ export const PublishedInProfileMobile: Story = mobileStory({
     <>
       <Template {...VisitorCollectionInProfileArguments} />
       <Template {...ContributorPrivateCollectionInProfileArguments} />
+      <Template {...ContributorOwnerCollectionInProfileArguments} />
     </>
   ),
 })
