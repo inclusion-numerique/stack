@@ -6,9 +6,9 @@ import { SessionUser } from '@app/web/auth/sessionUser'
 import CollectionCard from '@app/web/components/Collection/Cards/CollectionCard'
 import IconInSquare from '@app/web/components/IconInSquare'
 import EmptyBox from '@app/web/components/EmptyBox'
+import DeleteCollectionModal from '@app/web/components/Collection/DeleteCollection/DeleteCollectionModal'
 import { CreateCollectionButton } from '../CreateCollectionButton'
 import styles from './Collections.module.css'
-import DeleteCollectionModal from '@app/web/components/Collection/DeleteCollection/DeleteCollectionModal'
 
 const Collections = ({
   collections,
@@ -18,7 +18,7 @@ const Collections = ({
   emptyBox,
   baseId,
   user,
-  isOwner,
+  isOwner = false,
 }: {
   user: SessionUser | null
   collections: CollectionListItem[]
@@ -27,7 +27,7 @@ const Collections = ({
   withCreation: boolean
   emptyBox?: ReactNode
   baseId?: string
-  isOwner: boolean
+  isOwner?: boolean
 }) => {
   const favoriteCollection = collections.find((c) => c.isFavorites)
   const otherCollections = collections.filter((c) => !c.isFavorites)

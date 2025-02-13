@@ -78,10 +78,7 @@ const CollectionMetaData = ({
           {!collection.isFavorites && (
             <>
               {isOwner ? (
-                <CollectionMoreActionsDropdown
-                  collection={collection}
-                  user={user}
-                />
+                <CollectionMoreActionsDropdown collection={collection} />
               ) : (
                 <SaveCollectionButton
                   priority={

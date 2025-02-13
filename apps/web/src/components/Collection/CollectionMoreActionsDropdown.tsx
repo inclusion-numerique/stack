@@ -3,13 +3,11 @@ import Button, { ButtonProps } from '@codegouvfr/react-dsfr/Button'
 import Link from 'next/link'
 import { Dropdown } from '@app/web/components/Dropdown/Dropdown'
 import OpenDeleteCollectionModalButton from '@app/web/components/Collection/OpenDeleteCollectionModalButton'
-import SaveCollectionButton from '@app/web/components/Collection/SaveCollectionButton'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import OpenSaveCollectionModalButton from '@app/web/components/Collection/OpenSaveCollectionModalButton'
 
 export const CollectionMoreActionsDropdown = ({
   collection,
-  user,
   priority = 'tertiary no outline',
   modalPriority = 'tertiary no outline',
   modalControlClassName,
@@ -23,7 +21,6 @@ export const CollectionMoreActionsDropdown = ({
     slug: string
     title: string
   }
-  user: SessionUser | null
   priority?: ButtonProps['priority']
   modalPriority?: ButtonProps['priority']
   modalControlClassName?: string

@@ -34,6 +34,7 @@ const VisitorCollectionInProfileArguments: ComponentProps<
     slug: `${collectionInProfile.slug}-1`,
   },
   user: testSessionUser,
+  isOwner: false,
 }
 
 // contributeur qui voit une collection privée dans un profil
@@ -48,6 +49,7 @@ const ContributorPrivateCollectionInProfileArguments: ComponentProps<
     createdBy: testSessionUser,
   },
   user: creatorUser,
+  isOwner: false,
 }
 
 export const PublishedInProfile: Story = mediumContainerStory({

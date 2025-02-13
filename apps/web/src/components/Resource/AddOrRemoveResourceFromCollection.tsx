@@ -12,7 +12,7 @@ const AddOrRemoveResourceFromCollection = ({
   onRemove,
   disabled,
   loading,
-  isOwner,
+  isOwner = false,
 }: {
   user: SessionUser | null
   collection: SessionUser['collections'][number]
@@ -21,7 +21,7 @@ const AddOrRemoveResourceFromCollection = ({
   onRemove: (collectionId: string) => void
   loading?: boolean
   disabled?: boolean
-  isOwner: boolean
+  isOwner?: boolean
 }) => (
   <div className={styles.container} data-testid="add-in-collection-section">
     <div className={styles.content}>

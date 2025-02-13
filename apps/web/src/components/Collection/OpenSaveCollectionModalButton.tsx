@@ -2,8 +2,8 @@
 
 import { ButtonProps } from '@codegouvfr/react-dsfr/src/Button'
 import Button from '@codegouvfr/react-dsfr/Button'
-import { SaveCollectionDynamicModal } from '@app/web/components/Collection/SaveCollectionModal'
 import { ReactNode } from 'react'
+import { SaveCollectionDynamicModal } from '@app/web/components/Collection/SaveCollectionModal'
 
 const OpenSaveCollectionModalButton = ({
   collectionId,
