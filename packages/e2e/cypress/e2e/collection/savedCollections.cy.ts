@@ -30,9 +30,10 @@ describe('Utilisateur connecté, je peux ajouter une ressource à une collection
     cy.visit(`/profils/${user.slug}/collections`)
     cy.dsfrModalsShouldBeBound()
 
-    cy.findAllByTitle(/enregistrer la collection/i)
-      .first()
-      .click()
+    cy.findAllByTestId('more-actions-button').first().click({ force: true })
+
+    cy.findAllByTestId('save-collection-button').first().click({ force: true })
+
     cy.findByRole('dialog').within(() => {
       cy.contains(
         'Vous pourrez enregistrer vos collections dans une base lorsque vous aurez créé ou serez membre d’une base',

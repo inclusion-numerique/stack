@@ -61,7 +61,7 @@ export const CollectionMoreActionsDropdown = ({
         <OpenSaveCollectionModalButton
           className="fr-btn fr-btn--sm"
           collectionId={collection.id}
-          data-testid="delete-collection-button"
+          data-testid="save-collection-button"
         >
           <span
             className="ri-bookmark-line fr-mr-1w fr-text-label--blue-france"
