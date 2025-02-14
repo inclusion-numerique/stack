@@ -6,6 +6,7 @@ import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import Contract from '@app/web/components/conseiller-numerique/Contract'
 import { StructureEmployeuse } from '@app/web/components/structure/StructureEmployeuse'
 import { ReferentStructure } from '@app/web/components/structure/ReferentStructure'
+import { AlerteFinContrat } from '@app/web/conseiller-numerique/getContractInfo'
 import Identity from './Identity'
 import { LieuxActivites } from './LieuxActivites'
 import { Statistiques } from './Statistiques'
@@ -46,7 +47,7 @@ export const MediateurDetailPage = ({
     type: string
     start: string | null
     end: string | null
-    finDeContrat: boolean | null
+    finDeContrat: AlerteFinContrat | null
   } | null
   lieuxActivites: {
     id: string

@@ -68,15 +68,14 @@ export const getMediateurPageData = async (
 
   if (mediateur == null) return null
 
-  if (mediateur.conseillerNumerique == null) {
-    mediateur.conseillerNumerique = { id: null, idPg: null }
-  }
-  if (mediateur.conseillerNumerique?.idPg == null) {
+  if (
+    mediateur.conseillerNumerique != null &&
+    mediateur.conseillerNumerique.idPg == null
+  ) {
     const conumV1 = await findConseillerNumeriqueV1({
       id: mediateur.conseillerNumerique.id,
       includeDeleted: true,
     })
-
     mediateur.conseillerNumerique.idPg = conumV1?.conseiller.idPG ?? null
   }
 
