@@ -113,6 +113,11 @@ const executeBraveWebSearchImmediate = async ({
   return results
 }
 
+export type BraveSearchResults = Awaited<
+  ReturnType<typeof executeBraveWebSearchImmediate>
+>
+export type BraveSearchResult = BraveSearchResults[number]
+
 export const executeBraveWebSearch = throttle(executeBraveWebSearchImmediate)
 
 export const formatResultToJsonForAssistant = ({
@@ -122,22 +127,66 @@ export const formatResultToJsonForAssistant = ({
   thumbnail,
   title,
   url,
-}: BraveApiSearchResponse['web']['results'][number]) => ({
-  title,
-  description,
+  summary,
+}: BraveSearchResult & { summary?: string | null }) => ({
   url,
+  title,
   thumbnail,
+  description,
+  summary,
 })
+
+export type BraveSearchResultForAssistant = ReturnType<typeof formatResultToJsonForAssistant>
+
+export const formatResultToYamlForAssistant = ({
+  description,
+  // meta_url,
+  // profile,
+  thumbnail,
+  title,
+  url,
+  summary,
+}: BraveSearchResult & { summary?: string | null }) => {
+  let yamlResult = `  - title: ${title}\n`
+  yamlResult += `    url: ${url}\n`
+
+  // gestion de la description en multilignes
+  if (description && description.includes('\n')) {
+    yamlResult += `    description: |\n`
+    description.split('\n').forEach((line) => {
+      yamlResult += `      ${line}\n`
+    })
+  } else {
+    yamlResult += `    description: ${description}\n`
+  }
+
+  if (thumbnail?.src) {
+    yamlResult += `    thumbnail: ${thumbnail.src}\n`
+  }
+
+  // gestion du summary en multilignes
+  if (summary) {
+    if (summary.includes('\n')) {
+      yamlResult += `    summary: |\n`
+      summary.split('\n').forEach((line) => {
+        yamlResult += `      ${line}\n`
+      })
+    } else {
+      yamlResult += `    summary: ${summary}\n`
+    }
+  }
+}
 
 export const formatResultToMarkdownForAssistant = ({
   description,
   title,
   url,
-}: BraveApiSearchResponse['web']['results'][number]) =>
+  summary,
+}: BraveSearchResult & { summary?: string | null }) =>
   `
-## ${title}
-
-Url: ${url}
-
-${description}
+---
+title: ${title}
+url: ${url}
+---
+${summary || description}
 `

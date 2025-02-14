@@ -1,3 +1,7 @@
+/**
+ * A stopwatch that can be used to measure durations.
+ * Automatically starts when created.
+ */
 export const createStopwatch = () => {
   const started = new Date()
   let lastCheck = started

@@ -160,7 +160,6 @@ export const executeChatInteraction = ({
   const stream = new ReadableStream({
     start: async (controller) => {
       try {
-        console.log('EXECUTING RUNNER', messages)
         const runner = openAiClient.beta.chat.completions
           .runTools({
             model: model ?? openAiClientConfiguration.chatModel,
@@ -168,14 +167,11 @@ export const executeChatInteraction = ({
             tools,
             tool_choice: toolChoice,
             stream: true,
-            parallel_tool_calls: true,
-            temperature: 0.2,
+            parallel_tool_calls: false, // not supported by scaleway or albert models right now
+            temperature: 0.7,
             top_p: 0.85,
             frequency_penalty: 0.1,
             presence_penalty: 0.1,
-          })
-          .on('chatCompletion', (completion) => {
-            console.log('ON CHAT COMPLETION', completion)
           })
           .on('message', (message) => {
             const toolCall =

@@ -3,13 +3,15 @@ import {
   openAiClient,
   openAiClientConfiguration,
 } from '@app/web/assistant/openAiClient'
+import { createStopwatch } from '@app/web/utils/stopwatch'
 
 const createEmbeddingThrottle = pThrottle({
-  limit: 5,
-  interval: 1000,
+  limit: 95,
+  interval: 60_000,
 })
 
 const createEmbeddingImmediate = async (text: string) => {
+  const stopwatch = createStopwatch()
   const response = await openAiClient.embeddings.create({
     model: openAiClientConfiguration.embeddingsModel,
     input: text,
@@ -28,6 +30,7 @@ const createEmbeddingImmediate = async (text: string) => {
   return {
     model: response.model,
     embedding: response.data[0].embedding,
+    duration: stopwatch.stop().duration,
   }
 }
 

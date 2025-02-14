@@ -14,6 +14,22 @@ export const generateMetadata = (): Metadata => ({
   title: metadataTitle('Assistant - Chat'),
 })
 
+const formatParsedArgumentValue = (value: string | boolean | null | number) => {
+  if (typeof value === 'string') {
+    return value
+  }
+
+  if (typeof value === 'boolean') {
+    return value ? 'true' : 'false'
+  }
+
+  if (typeof value === 'number') {
+    return value.toString()
+  }
+
+  return 'null'
+}
+
 const Page = async ({
   params: { chatSessionId },
 }: {
@@ -64,7 +80,10 @@ const Page = async ({
                       toolCall as unknown as ChatCompletionMessageToolCall & {
                         function: {
                           name: string
-                          parsed_arguments: Record<string, string>
+                          parsed_arguments: Record<
+                            string,
+                            string | boolean | null | number
+                          >
                         }
                       }
 
@@ -83,7 +102,7 @@ const Page = async ({
                             typedToolCall.function.parsed_arguments,
                           ).map(([key, value]) => (
                             <li key={key}>
-                              {key}: {value}
+                              {key}: {formatParsedArgumentValue(value)}
                             </li>
                           ))}
                         </ul>

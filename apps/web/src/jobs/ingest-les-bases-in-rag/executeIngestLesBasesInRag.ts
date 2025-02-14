@@ -60,7 +60,7 @@ const fetchMarkdown = async (url: string): Promise<string> => {
 
 const fetchMarkdownThrottle = pThrottle({
   limit: 5,
-  interval: 400,
+  interval: 250,
 })
 
 const throttledFetchMarkdown = fetchMarkdownThrottle(fetchMarkdown)
@@ -102,7 +102,49 @@ export const executeIngestLesBasesInRag = async (
     `Found ${bases.length} bases and ${resources.length} resources to ingest`,
   )
 
-  console.log('BASES', bases.slice(0, 2))
+  await runPromisesSequentially(
+    resources.map(async (resource) => {
+      if (!resourceShouldBeIncludedInRag(resource)) {
+        const exists = await checkIfRagDocumentExists({
+          type: 'ressource',
+          source: ragSources.lesBases,
+          sourceId: resource.id,
+        })
+
+        if (exists) {
+          await prismaClient.ragDocumentChunk.deleteMany({
+            where: {
+              source: ragSources.lesBases,
+              type: 'ressource',
+              sourceId: resource.id,
+            },
+          })
+
+          output.log(`Deleted resource ${resource.slug}`)
+        } else {
+          output.log(`Resource ${resource.slug} skipped (non public)`)
+        }
+
+        return
+      }
+      const markdownResponse = await throttledFetchMarkdown(
+        `${resource.url}/markdown`,
+      )
+
+      const { unchanged, insertedChunks, deletedOutdatedChunks } =
+        await insertMarkdownRagChunks({
+          source: ragSources.lesBases,
+          type: 'ressource',
+          sourceId: resource.id,
+          content: markdownResponse,
+          url: resource.url ?? undefined,
+        })
+
+      output.log(
+        `Resource ${resource.slug}: ${unchanged ? '✅ unchanged' : `${insertedChunks} inserted, ${deletedOutdatedChunks} deleted`}`,
+      )
+    }),
+  )
 
   await runPromisesSequentially(
     bases.map(async (base) => {
@@ -144,49 +186,6 @@ export const executeIngestLesBasesInRag = async (
 
       output.log(
         `Base ${base.slug}: ${unchanged ? '✅ unchanged' : `${insertedChunks} inserted, ${deletedOutdatedChunks} deleted`}`,
-      )
-    }),
-  )
-  await runPromisesSequentially(
-    resources.map(async (resource) => {
-      if (!resourceShouldBeIncludedInRag(resource)) {
-        const exists = await checkIfRagDocumentExists({
-          type: 'ressource',
-          source: ragSources.lesBases,
-          sourceId: resource.id,
-        })
-
-        if (exists) {
-          await prismaClient.ragDocumentChunk.deleteMany({
-            where: {
-              source: ragSources.lesBases,
-              type: 'ressource',
-              sourceId: resource.id,
-            },
-          })
-
-          output.log(`Deleted resource ${resource.slug}`)
-        } else {
-          output.log(`Resource ${resource.slug} skipped (non public)`)
-        }
-
-        return
-      }
-      const markdownResponse = await throttledFetchMarkdown(
-        `${resource.url}/markdown`,
-      )
-
-      const { unchanged, insertedChunks, deletedOutdatedChunks } =
-        await insertMarkdownRagChunks({
-          source: ragSources.lesBases,
-          type: 'ressource',
-          sourceId: resource.id,
-          content: markdownResponse,
-          url: resource.url ?? undefined,
-        })
-
-      output.log(
-        `Resource ${resource.slug}: ${unchanged ? '✅ unchanged' : `${insertedChunks} inserted, ${deletedOutdatedChunks} deleted`}`,
       )
     }),
   )
