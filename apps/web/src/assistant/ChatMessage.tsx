@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react'
+import { CSSProperties } from 'react'
 import classNames from 'classnames'
 import { marked, type Tokens } from 'marked'
 import type { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
@@ -122,9 +122,13 @@ const ChatMessage = ({
                       {result.url}
                     </a>
                   )}
-                  <p className="fr-text--xs fr-text-mention--grey">
-                    {result.content}
-                  </p>
+                  {!!result.content && (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: marked.parse(result.content, { async: false }),
+                      }}
+                    />
+                  )}
                 </div>
               ))
             : null}
