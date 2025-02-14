@@ -10,6 +10,7 @@ import FonctionnalitesDeMediationNumeriqueCoordinateur from '@app/web/app/coop/(
 import Contract from '@app/web/components/conseiller-numerique/Contract'
 import { getContractInfo } from '@app/web/conseiller-numerique/getContractInfo'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
+import { findConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
 import ProfileEditCard from './_components/ProfileEditCard'
 
 export const metadata: Metadata = {
@@ -26,6 +27,21 @@ const MonProfilPage = async () => {
   const contratCoordinateur = user.coordinateur
     ? await getContractInfo(user.email)
     : null
+
+  const contratConum =
+    user.mediateur?.conseillerNumerique?.id == null
+      ? null
+      : await getContractInfo(user.email)
+
+  let conumIdPg: number | null = null
+
+  if (user.mediateur != null && user.mediateur.conseillerNumerique != null) {
+    const conumV1 = await findConseillerNumeriqueV1({
+      id: user.mediateur.conseillerNumerique.id,
+      includeDeleted: true,
+    })
+    conumIdPg = conumV1?.conseiller.idPG ?? null
+  }
 
   return (
     <>
@@ -62,6 +78,15 @@ const MonProfilPage = async () => {
               </section>
             </>
           ) : null}
+          {!!contratConum && (
+            <section className="fr-mt-6v">
+              <Contract
+                isCoordinateur={false}
+                {...contratConum}
+                idPGConum={conumIdPg}
+              />
+            </section>
+          )}
         </main>
       </div>
     </>

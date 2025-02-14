@@ -48,6 +48,7 @@ const Page = async ({
       structureEmployeuse={structureEmployeuse}
       contract={contract}
       lieuxActivites={lieuxActivites}
+      conseillerNumerique={mediateur.conseillerNumerique}
     />
   )
 }

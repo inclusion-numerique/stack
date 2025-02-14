@@ -23,7 +23,7 @@ export const MediateurDetailPage = ({
 }: {
   id: string
   user: { name: string | null; email: string; phone: string | null }
-  conseillerNumerique: { id: string } | null
+  conseillerNumerique: { id: string; idPg: number | null } | null
   statistiques: { beneficiairesAccompagnes: number; accompagnements: number }
   structureEmployeuse: {
     id: string
@@ -92,7 +92,11 @@ export const MediateurDetailPage = ({
         )}
         {coordinateurView && conseillerNumerique?.id != null && contract && (
           <section className="fr-mt-6v">
-            <Contract isCoordinateur={false} {...contract} />
+            <Contract
+              isCoordinateur={false}
+              {...contract}
+              idPGConum={conseillerNumerique.idPg}
+            />
           </section>
         )}
         {structureEmployeuse != null && (
