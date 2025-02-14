@@ -36,7 +36,7 @@ const BaseCollectionsPage = async ({
           >
             <p>
               Créez une collection pour organiser et partager facilement des
-              ressources.&nsbp;
+              ressources.&nbsp;
               <Link href="/centre-d-aide/les-collections" className="fr-link">
                 En savoir plus
               </Link>

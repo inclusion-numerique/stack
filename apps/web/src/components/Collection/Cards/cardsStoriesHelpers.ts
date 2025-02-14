@@ -13,6 +13,8 @@ export const collectionInProfile = {
   isPublic: true,
   isFavorites: false,
   createdBy: creatorUser,
+  created: date,
+  updated,
   base: null,
   title:
     'Titre d’une collection sur deux ligne très longues comme comme sur deux ligne très longues',
@@ -34,6 +36,8 @@ export const collectionInBase = {
   isPublic: true,
   isFavorites: false,
   createdBy: creatorUser,
+  created: date,
+  updated,
   title:
     'Titre d’une collection sur deux ligne très longues comme comme sur deux ligne très longues',
   slug: 'titre-d-une-collection-sur-deux-ligne-tres-longues-comme-comme-sur-deux-ligne-tres-longues',

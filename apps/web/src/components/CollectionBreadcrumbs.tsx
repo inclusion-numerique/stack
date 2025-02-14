@@ -48,6 +48,7 @@ const CollectionBreadcrumbs = ({
     <Breadcrumbs
       parents={parents}
       currentPage={currentChildPage || collection.title}
+      className="fr-my-0"
     />
   )
 }

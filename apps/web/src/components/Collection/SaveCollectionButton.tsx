@@ -4,6 +4,7 @@ import type {
   FrIconClassName,
   RiIconClassName,
 } from '@codegouvfr/react-dsfr/src/fr/generatedFromCss/classNames'
+import classNames from 'classnames'
 import type { SessionUser } from '@app/web/auth/sessionUser'
 import { loginUrl } from '@app/web/security/login'
 import OpenSaveCollectionModalButton from '@app/web/components/Collection/OpenSaveCollectionModalButton'
@@ -29,6 +30,7 @@ const SaveCollectionButton = ({
   'data-testid': dataTestid,
   context,
   priority,
+  buttonTitle,
 }: {
   className?: string
   user: SessionUser | null
@@ -36,6 +38,7 @@ const SaveCollectionButton = ({
   'data-testid'?: string
   context: 'card' | 'view'
   priority: 'primary' | 'secondary' | 'tertiary' | 'tertiary no outline'
+  buttonTitle?: string
 }) => {
   const alreadySavedInProfile = !!user?.savedCollections.some(
     (savedCollection) => savedCollection.collectionId === collection.id,
@@ -51,15 +54,15 @@ const SaveCollectionButton = ({
 
   const alreadySaved = alreadySavedInProfile || alreadySavedInBases
 
-  const buttonProps = {
-    ...(context === 'card' ? cardButtonProps : viewButtonProps),
-    iconId: alreadySaved ? alreadySavedIconId : defaultIconId,
-  }
+  const buttonProps = context === 'card' ? cardButtonProps : viewButtonProps
+
+  const icon = alreadySaved ? alreadySavedIconId : defaultIconId
 
   if (user) {
     return (
       <OpenSaveCollectionModalButton
         {...buttonProps}
+        iconId={icon}
         nativeButtonProps={{
           'data-testid': dataTestid,
         }}
@@ -81,7 +84,10 @@ const SaveCollectionButton = ({
           next: `/collections/${collection.slug}`,
         }),
       }}
-    />
+    >
+      <span className={classNames('fr-mr-1w', icon)} />
+      {buttonTitle}
+    </Button>
   )
 }
 

@@ -28,6 +28,7 @@ export const Dropdown = ({
   dropdownControlClassName,
   size,
   displayDropdownArrow = true,
+  'data-testid': dataTestId,
 }: {
   id: string
   control: ReactNode
@@ -40,6 +41,7 @@ export const Dropdown = ({
   dropdownControlClassName?: string
   size?: ButtonProps['size']
   displayDropdownArrow?: boolean
+  'data-testid'?: string
 }) => {
   const formattedId = id.replace('-', '_')
 
@@ -88,7 +90,7 @@ export const Dropdown = ({
           title={title}
           type="button"
           size={size}
-          data-testid="more-actions-button"
+          data-testid={dataTestId}
           {...modal.buttonProps}
         >
           {control}
@@ -117,7 +119,7 @@ export const Dropdown = ({
           aria-expanded="false"
           aria-controls={formattedId}
           ref={buttonRef}
-          data-testid="more-actions-button"
+          data-testid={dataTestId}
         >
           {control}
         </Button>

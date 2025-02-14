@@ -81,6 +81,8 @@ export const collectionSelect = (user?: Pick<SessionUser, 'id'> | null) =>
     description: true,
     isPublic: true,
     isFavorites: true,
+    created: true,
+    updated: true,
     image: {
       select: {
         id: true,

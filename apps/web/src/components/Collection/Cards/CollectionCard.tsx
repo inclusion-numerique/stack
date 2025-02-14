@@ -2,25 +2,16 @@ import classNames from 'classnames'
 import React from 'react'
 import Link from 'next/link'
 import { CollectionListItem } from '@app/web/server/collections/getCollectionsList'
-import { SessionUser } from '@app/web/auth/sessionUser'
 import CollectionMetaData from '../CollectionMetaData'
 import Images from '../Images'
 import styles from './CollectionCard.module.css'
 
-const CollectionCard = ({
-  collection,
-  user,
-  isOwner,
-}: {
-  collection: CollectionListItem
-  user: SessionUser | null
-  isOwner: boolean
-}) => {
+const CollectionCard = ({ collection }: { collection: CollectionListItem }) => {
   // eslint-disable-next-line no-underscore-dangle
   const resourcesCount = collection._count.resources
 
   const href = `/collections/${collection.slug}`
- 
+
   return (
     <article
       className={classNames(styles.card, 'fr-border', 'fr-border-radius--8')}
@@ -65,20 +56,22 @@ const CollectionCard = ({
           </span>
         )}
         {collection.slug && (
-          <CollectionMetaData
-            user={user}
-            isOwner={isOwner}
-            collection={{
-              title: collection.title,
-              id: collection.id,
-              slug: collection.slug,
-              isPublic: collection.isPublic,
-              isFavorites: collection.isFavorites,
-            }}
-            count={resourcesCount}
-            context="card"
-            hideRessourceLabelOnSmallDevices
-          />
+          <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-my-2v">
+            <CollectionMetaData
+              collection={{
+                title: collection.title,
+                id: collection.id,
+                slug: collection.slug,
+                isPublic: collection.isPublic,
+                isFavorites: collection.isFavorites,
+                created: collection.created,
+                updated: collection.updated,
+              }}
+              count={resourcesCount}
+              context="card"
+              hideRessourceLabelOnSmallDevices
+            />
+          </div>
         )}
       </div>
     </article>

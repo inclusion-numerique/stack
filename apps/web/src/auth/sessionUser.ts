@@ -14,6 +14,8 @@ export type SessionUserCollectionFragment = Pick<
   'id' | 'isPublic' | 'title' | 'slug' | 'isFavorites'
 > & {
   resources: Pick<CollectionResource, 'resourceId'>[]
+  created: Date
+  updated: Date
 }
 
 export type SessionUserBase = Pick<

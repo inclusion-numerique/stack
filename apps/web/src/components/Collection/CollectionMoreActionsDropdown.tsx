@@ -1,9 +1,8 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import Button, { ButtonProps } from '@codegouvfr/react-dsfr/Button'
 import Link from 'next/link'
 import { Dropdown } from '@app/web/components/Dropdown/Dropdown'
 import OpenDeleteCollectionModalButton from '@app/web/components/Collection/OpenDeleteCollectionModalButton'
-import OpenSaveCollectionModalButton from '@app/web/components/Collection/OpenSaveCollectionModalButton'
 
 export const CollectionMoreActionsDropdown = ({
   collection,
@@ -11,7 +10,7 @@ export const CollectionMoreActionsDropdown = ({
   modalPriority = 'tertiary no outline',
   modalControlClassName,
   dropdownControlClassName,
-  children,
+  buttonTitle,
   size = 'small',
 }: {
   collection: {
@@ -24,11 +23,12 @@ export const CollectionMoreActionsDropdown = ({
   modalPriority?: ButtonProps['priority']
   modalControlClassName?: string
   dropdownControlClassName?: string
-  children?: ReactNode
+  buttonTitle?: string
   size?: ButtonProps['size']
 }) => (
   <Dropdown
     id={`more_actions_for_${collection.slug}`}
+    data-testid="more-actions-button"
     title="Options sur la collection"
     priority={priority}
     modalPriority={modalPriority}
@@ -39,14 +39,17 @@ export const CollectionMoreActionsDropdown = ({
     displayDropdownArrow={false}
     control={
       <>
-        <span className="ri-more-fill" aria-hidden />
-        {children}
+        <span
+          className={buttonTitle ? 'ri-more-fill fr-mr-1w' : 'ri-more-fill'}
+          aria-hidden
+        />
+        {buttonTitle}
       </>
     }
   >
     <ul>
       <li>
-        <Button className="fr-btn fr-btn--sm" disabled>
+        <Button className="fr-btn fr-btn--sm wip">
           <div>
             <span
               className="ri-folder-open-line fr-mr-1w fr-text-label--blue-france"
@@ -56,21 +59,7 @@ export const CollectionMoreActionsDropdown = ({
           </div>
         </Button>
       </li>
-      <div className="fr-hidden fr-unhidden-sm fr-border-bottom fr-border--grey fr-mx-3v" />
-      <li>
-        <OpenSaveCollectionModalButton
-          className="fr-btn fr-btn--sm"
-          collectionId={collection.id}
-          data-testid="save-collection-button"
-        >
-          <span
-            className="ri-bookmark-line fr-mr-1w fr-text-label--blue-france"
-            aria-hidden
-          />
-          Enregistrer la collection
-        </OpenSaveCollectionModalButton>
-      </li>
-      <div className="fr-hidden fr-unhidden-sm fr-border-bottom fr-border--grey fr-mx-3v" />
+      <hr className="fr-hidden fr-unhidden-sm fr-mx-3v fr-pb-1v" />
       <li>
         <Link
           className="fr-btn fr-btn--sm"
@@ -83,7 +72,7 @@ export const CollectionMoreActionsDropdown = ({
           Modifier les paramètres
         </Link>
       </li>
-      <div className="fr-hidden fr-unhidden-sm fr-border-bottom fr-border--grey fr-mx-3v" />
+      <hr className="fr-hidden fr-unhidden-sm fr-mx-3v fr-pb-1v" />
       <li>
         <OpenDeleteCollectionModalButton
           collectionId={collection.id}
