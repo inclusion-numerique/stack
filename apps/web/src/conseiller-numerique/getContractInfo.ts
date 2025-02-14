@@ -10,6 +10,11 @@ import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseille
 const formatDate = (date?: string | number | Date | null) =>
   date && isValid(date) ? format(date, 'dd/MM/yyyy') : null
 
+export enum AlerteFinContrat {
+  prochainement = 'prochainement',
+  termine = 'termine',
+}
+
 const typeWithDuration = ({
   typeDeContrat,
   dateDebutDeContrat,
@@ -39,11 +44,15 @@ export const getContractInfo = async (email: string) =>
       type: typeWithDuration(miseEnRelationActive).replaceAll('_', ' '),
       start: formatDate(miseEnRelationActive.dateDebutDeContrat),
       end: formatDate(miseEnRelationActive.dateFinDeContrat),
-      finDeContrat:
-        miseEnRelationActive.dateFinDeContrat &&
-        isBefore(
-          miseEnRelationActive.dateFinDeContrat,
-          addMonths(new Date(), 3),
-        ),
+      finDeContrat: miseEnRelationActive.dateFinDeContrat
+        ? isBefore(miseEnRelationActive.dateFinDeContrat, new Date())
+          ? AlerteFinContrat.termine
+          : isBefore(
+                miseEnRelationActive.dateFinDeContrat,
+                addMonths(new Date(), 3),
+              )
+            ? AlerteFinContrat.prochainement
+            : null
+        : null,
     }
   })

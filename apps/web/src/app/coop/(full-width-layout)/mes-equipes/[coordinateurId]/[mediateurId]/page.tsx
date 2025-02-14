@@ -40,6 +40,7 @@ const Page = async ({
     contract,
     lieuxActivites,
   } = mediateurPageData
+
   return (
     <MediateurDetailPage
       {...mediateur}

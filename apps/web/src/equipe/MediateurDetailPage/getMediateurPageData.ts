@@ -69,7 +69,7 @@ export const getMediateurPageData = async (
   if (mediateur == null) return null
 
   if (mediateur.conseillerNumerique == null) {
-    mediateur.conseillerNumerique = { id: '', idPg: null }
+    mediateur.conseillerNumerique = { id: null, idPg: null }
   }
   if (mediateur.conseillerNumerique?.idPg == null) {
     const conumV1 = await findConseillerNumeriqueV1({

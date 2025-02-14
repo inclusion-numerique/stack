@@ -2,6 +2,7 @@ import Badge from '@codegouvfr/react-dsfr/Badge'
 import Link from 'next/link'
 import React from 'react'
 import Card from '@app/web/components/Card'
+import { AlerteFinContrat } from '@app/web/conseiller-numerique/getContractInfo'
 
 const showContratInfoFeatureFlag = true
 
@@ -17,7 +18,7 @@ const Contract = ({
   type: string
   start: string | null
   end: string | null
-  finDeContrat: boolean | null
+  finDeContrat: AlerteFinContrat | null
   idPGConum?: number | null
 }) =>
   showContratInfoFeatureFlag ? (
@@ -47,9 +48,16 @@ const Contract = ({
             </span>
           </span>
           <span>
-            {finDeContrat && (
-              <Badge severity="warning">Fin de contrat prochaine</Badge>
-            )}
+            {finDeContrat &&
+              (finDeContrat === AlerteFinContrat.prochainement ? (
+                <Badge severity="warning">Fin de contrat prochaine</Badge>
+              ) : null)}
+            {finDeContrat &&
+              (finDeContrat === AlerteFinContrat.termine ? (
+                <Badge severity="error" noIcon>
+                  Contrat terminé
+                </Badge>
+              ) : null)}
           </span>
         </span>
       }
