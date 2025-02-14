@@ -1,8 +1,12 @@
 'use client'
 
 import React from 'react'
-import { useChatContext } from '@app/web/assistant/chatStore'
 import ChatMessage from '@app/web/assistant/ChatMessage'
+import {
+  useCurrentToolCalls,
+  useLastMessageRole,
+  useStreamingMessage,
+} from '@app/web/assistant/hooks/useAssistantChatController'
 
 const created = new Date() // no need for a real created date for the streaming message
 
@@ -10,20 +14,15 @@ const created = new Date() // no need for a real created date for the streaming 
  * Displays the chat completion currently being generated
  */
 const ChatStreamingMessage = () => {
-  const currentToolCalls = useChatContext((context) => context.currentToolCalls)
-  const isGenerating = useChatContext((context) => context.isGenerating)
-  const streamingMessage = useChatContext((context) => context.streamingMessage)
-  const previousMessageRole = useChatContext(
-    (context) => context.messages.at(-1)?.role,
-  )
-
-  if (!isGenerating) return null
+  const currentToolCalls = useCurrentToolCalls()
+  const streamingMessage = useStreamingMessage()
+  const lastMessageRole = useLastMessageRole()
 
   return (
     <>
       {currentToolCalls.length > 0 && (
         <ChatMessage
-          previousMessageRole={previousMessageRole}
+          previousMessageRole={lastMessageRole}
           isStreaming={streamingMessage === null}
           message={{
             id: 'streaming-message-tool-calls',
@@ -42,7 +41,7 @@ const ChatStreamingMessage = () => {
       {streamingMessage !== null && (
         <ChatMessage
           previousMessageRole={
-            currentToolCalls.length > 0 ? 'Assistant' : previousMessageRole
+            currentToolCalls.length > 0 ? 'Assistant' : lastMessageRole
           }
           isStreaming
           message={{

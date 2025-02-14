@@ -1,19 +1,14 @@
 'use client'
 
 import React, { useRef } from 'react'
-import type { ChatSessionData } from '@app/web/assistant/getChatSession'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import ChatMessagesList from '@app/web/assistant/ChatMessagesList'
-import ChatStreamingMessage from '@app/web/assistant/ChatStreamingMessage'
 import ChatCompletionErrorMessage from '@app/web/assistant/ChatCompletionErrorMessage'
 import ChatUserInput from '@app/web/assistant/ChatUserInput'
 import styles from './ChatSession.module.css'
+import ChatStreamingMessage from '@app/web/assistant/ChatStreamingMessage'
 
-const ChatSession = ({
-  chatSession,
-}: {
-  chatSession: ChatSessionData | null | undefined
-}) => {
+const ChatSession = () => {
   const messagesContainerRef = useRef<HTMLDivElement>(null)
 
   return (
@@ -27,10 +22,7 @@ const ChatSession = ({
           <div />
         </div>
       </div>
-      <ChatUserInput
-        chatSession={chatSession}
-        messagesContainerRef={messagesContainerRef}
-      />
+      <ChatUserInput messagesContainerRef={messagesContainerRef} />
     </div>
   )
 }

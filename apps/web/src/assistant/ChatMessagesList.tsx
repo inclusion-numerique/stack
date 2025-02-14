@@ -2,11 +2,14 @@
 
 import React from 'react'
 import ChatMessage from '@app/web/assistant/ChatMessage'
-import { useChatContext } from '@app/web/assistant/chatStore'
+import {
+  useChatInitialized,
+  useChatMessages,
+} from '@app/web/assistant/hooks/useAssistantChatController'
 
 const ChatMessagesList = () => {
-  const initialized = useChatContext((context) => context.initialized)
-  const messages = useChatContext((context) => context.messages)
+  const initialized = useChatInitialized()
+  const messages = useChatMessages()
 
   if (!initialized) return null
 

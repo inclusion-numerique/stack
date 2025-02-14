@@ -1,31 +1,44 @@
 import { createStore } from '@xstate/store'
 import type { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
-import type { SnapshotFromStore } from '@xstate/store/dist/declarations/src/types'
-import { useSelector } from '@xstate/store/react'
 import {
   ChatCompletionMessageWithToolCalls,
   ChatSessionData,
 } from '@app/web/assistant/getChatSession'
 import type { AssistantChatStreamChunk } from '@app/web/assistant/assistantChatStream'
+import { AssistantPageDataChatSessionHistoryItem } from '@app/web/assistant/getAssistantPageData'
 
 // Create a store
 export const chatStore = createStore({
   context: {
     initialized: false,
+    chatSessionHistory: [] as AssistantPageDataChatSessionHistoryItem[],
+    chatSession: null as ChatSessionData | null,
     chatSessionId: null as string | null,
     messages: [] as ChatCompletionMessageWithToolCalls[],
     currentToolCalls: [] as ChatCompletionMessageToolCall[], // tool calls currently being executed
     streamingMessage: null as string | null, // null if not currently streaming, can be empty string if streaming
-    isSendingMessage: false,
+    isSendingUserMessage: false,
     isGenerating: false,
     completionError: null as string | null,
   },
   on: {
-    resetChatSession: (
-      _context,
-      event: { chatSession: ChatSessionData | null | undefined },
+    initializeChatSession: (
+      context,
+      event: {
+        chatSession: ChatSessionData | null
+        // null means empty, undefined means "do not change"
+        chatSessionHistory:
+          | AssistantPageDataChatSessionHistoryItem[]
+          | null
+          | undefined
+      },
     ) => ({
       initialized: true,
+      chatSessionHistory:
+        event.chatSessionHistory === undefined
+          ? context.chatSessionHistory
+          : (event.chatSessionHistory ?? []),
+      chatSession: event.chatSession,
       chatSessionId: event.chatSession?.id,
       messages:
         (event.chatSession?.messages as
@@ -33,7 +46,7 @@ export const chatStore = createStore({
           | undefined) ?? [],
       currentToolCalls: [],
       streamingMessage: null,
-      isSendingMessage: false,
+      isSendingUserMessage: false,
       isGenerating: false,
       completionError: null,
     }),
@@ -41,11 +54,11 @@ export const chatStore = createStore({
       chatSessionId: event.chatSessionId,
     }),
     userMessageSubmitted: () => ({
-      isSendingMessage: true,
+      isSendingUserMessage: true,
       completionError: null,
     }),
     completionErrored: (_context, event: { error: string }) => ({
-      isSendingMessage: false,
+      isSendingUserMessage: false,
       isGenerating: false,
       completionError: event.error,
       streamingMessage: null,
@@ -70,7 +83,7 @@ export const chatStore = createStore({
 
       return {
         messages: [...context.messages, userMessage],
-        isSendingMessage: false,
+        isSendingUserMessage: false,
         isGenerating: true,
         completionError: null,
       }
@@ -79,6 +92,8 @@ export const chatStore = createStore({
       context,
       event: { chunk: AssistantChatStreamChunk },
     ) => {
+      console.log('CHUNK', event.chunk)
+
       const { content, toolCall } = event.chunk
 
       if (toolCall) {
@@ -145,13 +160,3 @@ export const chatStore = createStore({
     },
   },
 })
-
-// Subscribe to snapshot changes for debugging
-// chatStore.subscribe((snapshot) => {
-//   console.info(snapshot.context)
-// })
-
-export const useChatContext = <T>(
-  selector: (snapshot: SnapshotFromStore<typeof chatStore>['context']) => T,
-  compare?: (a: T | undefined, b: T) => boolean,
-) => useSelector(chatStore, ({ context }) => selector(context), compare)

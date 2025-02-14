@@ -3,19 +3,39 @@ import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { prismaClient } from '@app/web/prismaClient'
 import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
 import { generateChatSessionTitle } from '@app/web/assistant/tasks/generateChatSessionTitle'
+import { getCurrentAssistantConfigurationForUser } from '@app/web/assistant/configuration/assistantConfiguration'
+import { getUserChatSessions } from '@app/web/assistant/getChatSession'
+import type { AssistantPageData } from '@app/web/assistant/getAssistantPageData'
 
 export const assistantRouter = router({
   createSession: protectedProcedure.mutation(async ({ ctx: { user } }) => {
     if (user.role !== 'Admin') throw forbiddenError('User is not an admin')
 
+    const configuration = await getCurrentAssistantConfigurationForUser({
+      userId: user.id,
+    })
+
     const chatSession = await prismaClient.assistantChatSession.create({
       data: {
-        createdById: user.id,
+        createdBy: { connect: { id: user.id } },
         context: '',
+        configuration: {
+          connectOrCreate: {
+            where: { id: configuration.id },
+            create: {
+              ...configuration,
+            },
+          },
+        },
       },
     })
 
-    return chatSession
+    const chatSessionHistory = await getUserChatSessions(user.id)
+
+    return {
+      chatSessionHistory,
+      chatSession,
+    } satisfies AssistantPageData
   }),
   changeSessionTitle: protectedProcedure
     .input(

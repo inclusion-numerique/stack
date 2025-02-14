@@ -7,6 +7,8 @@ import LogoCoop from '@app/web/components/LogoCoop'
 import ToolCallMessage from '@app/web/assistant/ToolCallMessage'
 import type { ChatCompletionMessageWithToolCalls } from '@app/web/assistant/getChatSession'
 import styles from './ChatSession.module.css'
+import { parse } from 'yaml'
+import type { AgenticSearchToolYamlResult } from '@app/web/assistant/tools/agenticSearchTool'
 
 const renderer = new marked.Renderer()
 const linkRenderer = renderer.link.bind(renderer)
@@ -16,6 +18,17 @@ renderer.link = (linkParameters: Tokens.Link) => {
     /^<a /,
     `<a target="_blank" class="fr-link" rel="noreferrer noopener nofollow" `,
   )
+}
+
+const parseYamlToolContent = (content: string) => {
+  try {
+    const yaml = parse(content)
+
+    return yaml
+  } catch (error) {
+    console.error('Error parsing yaml', error)
+    return null
+  }
 }
 
 const ChatMessage = ({
@@ -34,22 +47,112 @@ const ChatMessage = ({
   isStreaming?: boolean
   cursor?: boolean // display blinking cursor at the end of the message
 }) => {
+  const marginTop = role === previousMessageRole ? 'fr-mt-0' : 'fr-mt-10v'
+
+  if (role === 'Tool') {
+    console.log('TOOL MESSAGE', { content, role, toolCalls })
+    if (!content) {
+      return null
+    }
+    const parsedToolContent = parseYamlToolContent(
+      content,
+    ) as AgenticSearchToolYamlResult | null
+
+    if (!parsedToolContent) {
+      return null
+    }
+
+    if ('error' in parsedToolContent) {
+      return (
+        <div
+          className={classNames(
+            styles.message,
+            styles[`message${role}`],
+            marginTop,
+          )}
+          style={style}
+        >
+          Je n’ai pas pu trouver de résultats pertinents
+        </div>
+      )
+    }
+
+    const webResults = [
+      ...(parsedToolContent.sources_sites_officiels ?? []),
+      ...(parsedToolContent.sources_sites_web ?? []),
+    ]
+
+    const ragResults = [
+      ...(parsedToolContent.sources_centre_aide ?? []),
+      ...(parsedToolContent.sources_les_bases ?? []),
+    ]
+
+    return (
+      <div
+        className={classNames(
+          styles.message,
+          styles[`message${role}`],
+          marginTop,
+        )}
+        style={style}
+      >
+        <div
+          className={classNames(
+            'fr-flex fr-flex-nowrap',
+            styles.sourceCardsContainer,
+          )}
+        >
+          {webResults.length > 0
+            ? webResults.map((result) => (
+                <div key={result.url} className={styles.sourceCard}>
+                  <a href={result.url} target="_blank">
+                    {result.title || result.url}
+                  </a>
+                  <p className="fr-text--xs fr-text-mention--grey">
+                    {result.description}
+                  </p>
+                </div>
+              ))
+            : null}
+          {ragResults.length > 0
+            ? ragResults.map((result) => (
+                <div key={result.url} className={styles.sourceCard}>
+                  {!!result.url && (
+                    <a href={result.url} target="_blank">
+                      {result.url}
+                    </a>
+                  )}
+                  <p className="fr-text--xs fr-text-mention--grey">
+                    {result.content}
+                  </p>
+                </div>
+              ))
+            : null}
+        </div>
+      </div>
+    )
+  }
+
   if (role !== 'Assistant' && role !== 'User') {
     return null
   }
 
   const contentToParse =
     cursor || 1
-      ? `${content ?? ''}<span class="chat-message__blinking-cursor"/>`
+      ? `${content ?? ''}<span class="chat-message__blinking-cursor" />`
       : content
 
   const parsedContent = contentToParse
     ? role === 'Assistant'
-      ? marked.parse(contentToParse, { renderer, async: false })
-      : contentToParse.replaceAll('\n', '<br />')
+      ? marked
+          .parse(contentToParse, { renderer, async: false })
+          // Replace all composed characters with non breakable spaces
+          .replaceAll(/ ([!%:;?»])/g, '&nbsp;$1')
+      : contentToParse
+          .replaceAll('\n', '<br />')
+          // Replace all composed characters with non breakable spaces
+          .replaceAll(/ ([!%:;?»])/g, '&nbsp;$1')
     : ''
-
-  const marginTop = role === previousMessageRole ? 'fr-mt-0' : 'fr-mt-10v'
 
   return (
     <div
