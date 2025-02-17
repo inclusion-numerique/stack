@@ -9,6 +9,7 @@ import { initialiseChatSession } from '@app/web/assistant/hooks/useAssistantChat
 import { useEffect } from 'react'
 import ChatSessionHistorySideMenu from '@app/web/assistant/ChatSessionHistorySideMenu'
 import NewChatButton from '@app/web/assistant/NewChatButton'
+import Button from '@codegouvfr/react-dsfr/Button'
 
 const AssistantPageContent = ({
   data: { chatSession, chatSessionHistory },
@@ -43,6 +44,13 @@ const AssistantPageContent = ({
           Assistant
         </h1>
         <div className="fr-btns-group fr-btns-group--sm fr-btns-group--icon-left">
+          <Button
+            linkProps={{ href: '/assistant/parametres' }}
+            iconId="fr-icon-settings-5-line"
+            priority="tertiary"
+          >
+            Paramètres
+          </Button>
           <NewChatButton />
         </div>
         <ChatSessionHistorySideMenu />

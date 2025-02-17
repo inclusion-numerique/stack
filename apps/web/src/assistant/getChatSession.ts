@@ -8,6 +8,7 @@ export const getChatSession = async (chatSessionId: string) => {
       messages: {
         orderBy: { created: 'asc' },
       },
+      configuration: true,
     },
   })
 

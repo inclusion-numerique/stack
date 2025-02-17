@@ -220,5 +220,9 @@ export const useIsSendingUserMessage = () =>
 export const useIsChatSessionEmpty = () =>
   useChatContext((context) => !context.chatSession)
 
-export const useCurrentToolCalls = ()=>useChatContext((context) => context.currentToolCalls)
-export const useStreamingMessage = ()=>useChatContext((context) => context.streamingMessage)
+export const useCurrentToolCalls = () =>
+  useChatContext((context) => context.currentToolCalls)
+export const useCurrentToolResults = () =>
+  useChatContext((context) => context.currentToolResults)
+export const useStreamingMessage = () =>
+  useChatContext((context) => context.streamingMessage)

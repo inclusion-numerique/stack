@@ -9,6 +9,8 @@ import { getAssistantPageData } from '@app/web/assistant/getAssistantPageData'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
 import { assistantChatRoleLabels } from '@app/web/assistant/assistantChatRole'
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
+import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
+import Accordion from '@codegouvfr/react-dsfr/Accordion'
 
 export const generateMetadata = (): Metadata => ({
   title: metadataTitle('Assistant - Chat'),
@@ -39,14 +41,70 @@ const Page = async ({
 
   const data = await getAssistantPageData({ chatSessionId, userId: user.id })
 
-  if (data.chatSession === null) {
+  if (!data.chatSession) {
     notFound()
+    return
   }
 
   return (
     <div className="fr-px-6v">
-      <h1 className="fr-h4">Chat session {chatSessionId} - Debug</h1>
-      <h2 className="fr-h6">Messages&nbsp;:</h2>
+      <AdministrationTitle icon="fr-icon-chat-2-line">
+        Chat session {chatSessionId} - Debug
+      </AdministrationTitle>
+      <Accordion
+        label={`Paramètres utilisés : ${data.chatSession.configuration.title}`}
+        className="fr-mb-4v"
+      >
+        <div
+          className="fr-table fr-table--no-scroll fr-table--bordered"
+          id="table-bordered-component"
+        >
+          <div className="fr-table__wrapper">
+            <div className="fr-table__container">
+              <div className="fr-table__content">
+                <table id="table-bordered">
+                  <tbody>
+                    <tr>
+                      <td>Température</td>
+                      <td>{data.chatSession.configuration.temperature}</td>
+                    </tr>
+                    <tr>
+                      <td>Top&nbsp;P</td>
+                      <td>{data.chatSession.configuration.topP}</td>
+                    </tr>
+                    <tr>
+                      <td>Presence&nbsp;penalty</td>
+                      <td>{data.chatSession.configuration.presencePenalty}</td>
+                    </tr>
+                    <tr>
+                      <td>Frequency&nbsp;penalty</td>
+                      <td>{data.chatSession.configuration.frequencyPenalty}</td>
+                    </tr>
+                    <tr>
+                      <td>System&nbsp;message</td>
+                      <td
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            data.chatSession.configuration.systemMessage?.replaceAll(
+                              '\n',
+                              '<br>',
+                            ) ?? '-',
+                        }}
+                      />
+                    </tr>
+                    <tr>
+                      <td>Search&nbsp;tool&nbsp;description</td>
+                      <td>
+                        {data.chatSession.configuration.searchToolDescription}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Accordion>
       {data.chatSession?.messages.map((message) => (
         <Fragment key={message.id}>
           <div className="fr-grid-row fr-grid-row--gutters">
@@ -67,7 +125,9 @@ const Page = async ({
                 >
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: marked.parse(message.content, { async: false }),
+                      __html: marked
+                        .parse(message.content, { async: false })
+                        .replaceAll('\n', '<br/>'),
                     }}
                   />
                 </div>
@@ -111,7 +171,7 @@ const Page = async ({
                   })}
             </div>
             <div className="fr-col-12 fr-col-lg-6">
-              <pre className="fr-text--xs">
+              <pre className="fr-text--xs fr-overflow-x-auto">
                 {JSON.stringify(message, null, 2)}
               </pre>
             </div>

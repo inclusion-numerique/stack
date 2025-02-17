@@ -4,6 +4,7 @@ import React from 'react'
 import ChatMessage from '@app/web/assistant/ChatMessage'
 import {
   useCurrentToolCalls,
+  useCurrentToolResults,
   useLastMessageRole,
   useStreamingMessage,
 } from '@app/web/assistant/hooks/useAssistantChatController'
@@ -15,6 +16,7 @@ const created = new Date() // no need for a real created date for the streaming 
  */
 const ChatStreamingMessage = () => {
   const currentToolCalls = useCurrentToolCalls()
+  const currentToolResults = useCurrentToolResults()
   const streamingMessage = useStreamingMessage()
   const lastMessageRole = useLastMessageRole()
 
@@ -38,6 +40,28 @@ const ChatStreamingMessage = () => {
           }}
         />
       )}
+      {currentToolResults.length > 0 &&
+        currentToolResults.map((toolResult, index) => (
+          <ChatMessage
+            key={index}
+            previousMessageRole={
+              currentToolCalls.length > 0 ? 'Assistant' : lastMessageRole
+            }
+            isStreaming
+            message={{
+              id: 'streaming-message-tool-result',
+              role: 'Tool',
+              content: toolResult,
+              toolCalls: [],
+              finishReason: null,
+              created,
+              sessionId: 'streaming-message',
+              name: null,
+              refusal: null,
+              toolCallId: null,
+            }}
+          />
+        ))}
       {streamingMessage !== null && (
         <ChatMessage
           previousMessageRole={

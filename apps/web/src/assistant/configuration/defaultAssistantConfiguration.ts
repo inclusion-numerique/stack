@@ -3,6 +3,10 @@ import { openAiClientConfiguration } from '@app/web/assistant/openAiClient'
 import { mediationAssistantSystemMessage } from '@app/web/assistant/systemMessages'
 import { agenticSearchToolDescription } from '@app/web/assistant/tools/agenticSearchToolConfig'
 
+export type DefaultAssistantConfiguration = Omit<
+  AssistantConfiguration,
+  'id' | 'userId' | 'created'
+>
 export const defaultAssistantConfiguration = {
   title: 'Configuration par défaut',
   model: openAiClientConfiguration.chatModel,
@@ -20,4 +24,4 @@ export const defaultAssistantConfiguration = {
   topP: null,
   systemMessage: mediationAssistantSystemMessage.content,
   searchToolDescription: agenticSearchToolDescription,
-} satisfies Omit<AssistantConfiguration, 'id' | 'userId' | 'created'>
+} satisfies DefaultAssistantConfiguration

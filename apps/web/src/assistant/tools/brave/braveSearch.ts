@@ -100,6 +100,8 @@ const executeBraveWebSearchImmediate = async ({
     ...params, // Allow to pass extra params
   } satisfies BraveApiSearchParams
 
+  console.log('BRAVE PARAMS', paramsMergedWithDefaults)
+
   const response = await axios.get<BraveApiSearchResponse>(
     braveSearchApiEndpoint,
     {
@@ -136,7 +138,9 @@ export const formatResultToJsonForAssistant = ({
   summary,
 })
 
-export type BraveSearchResultForAssistant = ReturnType<typeof formatResultToJsonForAssistant>
+export type BraveSearchResultForAssistant = ReturnType<
+  typeof formatResultToJsonForAssistant
+>
 
 export const formatResultToYamlForAssistant = ({
   description,

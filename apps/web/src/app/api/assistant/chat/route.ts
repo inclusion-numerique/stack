@@ -49,20 +49,24 @@ export const POST = async (request: NextRequest) => {
 
   const { chatSessionId, prompt } = requestData.data
 
-  const chatSession = chatSessionId
-    ? await getChatSession(chatSessionId)
-    : await prismaClient.assistantChatSession
-        .create({
-          data: {
-            createdById: user.id,
-            context: '',
-          },
-        })
-        .then((createdChatSession) => ({ ...createdChatSession, messages: [] }))
+  if (!chatSessionId) {
+    return NextResponse.json(
+      {
+        error: 'Chat session id is required',
+      },
+      {
+        status: 400,
+      },
+    )
+  }
+
+  const chatSession = await getChatSession(chatSessionId)
 
   if (!chatSession) {
     return notFoundResponse()
   }
+
+  const { configuration } = chatSession
 
   // Create the new user prompt message
   await prismaClient.assistantChatMessage.create({
@@ -80,7 +84,12 @@ export const POST = async (request: NextRequest) => {
   const messages = [
     // Our system message is always up to date and the first message
     // chatSystemMessageWithContext,
-    mediationAssistantSystemMessage,
+    configuration.systemMessage
+      ? {
+          role: 'system' as const,
+          content: configuration.systemMessage,
+        }
+      : mediationAssistantSystemMessage,
     // Session history
     ...chatSession.messages.map(assistantMessageToOpenAiMessage),
     // User prompt message
@@ -92,6 +101,7 @@ export const POST = async (request: NextRequest) => {
   ] satisfies OpenAiChatMessage[]
 
   const { stream } = executeChatInteraction({
+    configuration,
     onMessage: async (message) => {
       // TODO do not block the stream for this, should be asynchronous
       await prismaClient.assistantChatMessage.create({

@@ -16,6 +16,7 @@ const NewChatButton = () => {
     }
     initialiseChatSession({
       chatSession: null,
+      chatSessionHistory: undefined,
     })
   }
 

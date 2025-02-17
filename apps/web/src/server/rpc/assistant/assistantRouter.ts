@@ -3,9 +3,13 @@ import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { prismaClient } from '@app/web/prismaClient'
 import { forbiddenError, invalidError } from '@app/web/server/rpc/trpcErrors'
 import { generateChatSessionTitle } from '@app/web/assistant/tasks/generateChatSessionTitle'
-import { getCurrentAssistantConfigurationForUser } from '@app/web/assistant/configuration/assistantConfiguration'
+import {
+  getCurrentAssistantConfigurationForUser,
+  saveAssistantConfiguration,
+} from '@app/web/assistant/configuration/assistantConfiguration'
 import { getUserChatSessions } from '@app/web/assistant/getChatSession'
 import type { AssistantPageData } from '@app/web/assistant/getAssistantPageData'
+import { AssistantConfigurationValidation } from '@app/web/assistant/configuration/AssistantConfigurationValidation'
 
 export const assistantRouter = router({
   createSession: protectedProcedure.mutation(async ({ ctx: { user } }) => {
@@ -123,6 +127,17 @@ export const assistantRouter = router({
           title: true,
           created: true,
         },
+      })
+    }),
+  updateAssistantConfiguration: protectedProcedure
+    .input(AssistantConfigurationValidation)
+    .mutation(async ({ input: {}, ctx: { user } }) => {
+      if (user.role !== 'Admin') throw forbiddenError('User is not an admin')
+
+      await saveAssistantConfiguration({
+        userId: user.id,
+        configuration: input,
+        setAsCurrent: true,
       })
     }),
 })

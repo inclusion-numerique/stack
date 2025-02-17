@@ -16,6 +16,7 @@ export const chatStore = createStore({
     chatSessionId: null as string | null,
     messages: [] as ChatCompletionMessageWithToolCalls[],
     currentToolCalls: [] as ChatCompletionMessageToolCall[], // tool calls currently being executed
+    currentToolResults: [] as string[], // tool results currently being executed. Should be yaml encoded
     streamingMessage: null as string | null, // null if not currently streaming, can be empty string if streaming
     isSendingUserMessage: false,
     isGenerating: false,
@@ -50,7 +51,7 @@ export const chatStore = createStore({
       isGenerating: false,
       completionError: null,
     }),
-    chatSessionCreated: (context, event: { chatSessionId: string }) => ({
+    chatSessionCreated: (_context, event: { chatSessionId: string }) => ({
       chatSessionId: event.chatSessionId,
     }),
     userMessageSubmitted: () => ({
@@ -94,7 +95,13 @@ export const chatStore = createStore({
     ) => {
       console.log('CHUNK', event.chunk)
 
-      const { content, toolCall } = event.chunk
+      const { role, content, toolCall } = event.chunk
+
+      if (role === 'tool') {
+        return {
+          currentToolResults: [...context.currentToolResults, content],
+        }
+      }
 
       if (toolCall) {
         context.currentToolCalls.push(toolCall)

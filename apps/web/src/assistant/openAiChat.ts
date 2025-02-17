@@ -14,6 +14,9 @@ import {
   openAiClientConfiguration,
 } from '@app/web/assistant/openAiClient'
 import { serializeAssistantChatStreamChunk } from '@app/web/assistant/assistantChatStream'
+import { AssistantConfiguration } from '@prisma/client'
+import { defaultAssistantConfiguration } from '@app/web/assistant/configuration/defaultAssistantConfiguration'
+import { agenticSearchToolName } from '@app/web/assistant/tools/agenticSearchToolConfig'
 
 export type OpenAiChatMessage = ChatCompletionMessageParam
 export type OpenAiChatRole = OpenAiChatMessage['role']
@@ -139,14 +142,19 @@ export const executeOpenAiChat = async ({
 export const executeChatInteraction = ({
   onMessage,
   onToolCall,
+  onToolResult,
   onContent,
   messages,
   toolChoice,
   tools,
   model,
+  configuration,
 }: {
   onMessage: (message: OpenAiChatMessage) => void | Promise<void>
   onToolCall?: (message: ChatCompletionMessageToolCall) => void | Promise<void>
+  onToolResult?: (
+    message: OpenAiChatMessage & { role: 'tool' },
+  ) => void | Promise<void>
   onContent?: (content: string) => void | Promise<void>
   messages: OpenAiChatMessage[]
   toolChoice?: OpenAiToolChoice
@@ -155,6 +163,7 @@ export const executeChatInteraction = ({
   maxToolsCalls?: number
   invalidToolCallRetries?: number
   model?: OpenAiClienChatModel
+  configuration: AssistantConfiguration
 }): { stream: ReadableStream } => {
   // We create the stream that will be returned to the client
   const stream = new ReadableStream({
@@ -164,14 +173,35 @@ export const executeChatInteraction = ({
           .runTools({
             model: model ?? openAiClientConfiguration.chatModel,
             messages,
-            tools,
+            tools: tools.map((tool) => {
+              if (
+                tool.function.name === agenticSearchToolName &&
+                configuration.searchToolDescription
+              ) {
+                return {
+                  ...tool,
+                  function: {
+                    ...tool.function,
+                    description: configuration.searchToolDescription,
+                  },
+                }
+              }
+
+              return tool
+            }),
             tool_choice: toolChoice,
             stream: true,
             parallel_tool_calls: false, // not supported by scaleway or albert models right now
-            temperature: 0.7,
-            top_p: 0.85,
-            frequency_penalty: 0.1,
-            presence_penalty: 0.1,
+            temperature:
+              configuration.temperature ??
+              defaultAssistantConfiguration.temperature,
+            top_p: configuration.topP ?? defaultAssistantConfiguration.topP,
+            frequency_penalty:
+              configuration.frequencyPenalty ??
+              defaultAssistantConfiguration.frequencyPenalty,
+            presence_penalty:
+              configuration.presencePenalty ??
+              defaultAssistantConfiguration.presencePenalty,
           })
           .on('message', (message) => {
             const toolCall =
@@ -179,6 +209,7 @@ export const executeChatInteraction = ({
             if (toolCall) {
               controller.enqueue(
                 serializeAssistantChatStreamChunk({
+                  role: 'assistant',
                   toolCall,
                 }),
               )
@@ -187,6 +218,22 @@ export const executeChatInteraction = ({
                 void onToolCall(toolCall)
               }
             }
+
+            if (message.role === 'tool') {
+              controller.enqueue(
+                serializeAssistantChatStreamChunk({
+                  role: 'tool',
+                  content: Array.isArray(message.content)
+                    ? message.content.map((part) => part.text).join('') // should never happen foor tool responses
+                    : message.content,
+                }),
+              )
+              if (onToolResult) {
+                // eslint-disable-next-line no-void
+                void onToolResult(message)
+              }
+            }
+            console.log('onMessage', message)
             // eslint-disable-next-line no-void
             void onMessage(message)
           })
@@ -194,7 +241,12 @@ export const executeChatInteraction = ({
             if (!content) {
               return
             }
-            controller.enqueue(serializeAssistantChatStreamChunk({ content }))
+            controller.enqueue(
+              serializeAssistantChatStreamChunk({
+                role: 'assistant',
+                content,
+              }),
+            )
 
             if (onContent) {
               // eslint-disable-next-line no-void

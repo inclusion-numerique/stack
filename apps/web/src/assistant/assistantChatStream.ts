@@ -2,12 +2,19 @@ import type { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/co
 
 export type AssistantChatStreamChunk =
   | {
+      role: 'assistant'
       content: string
       toolCall?: undefined
     }
   | {
+      role: 'assistant'
       content?: undefined
       toolCall: ChatCompletionMessageToolCall
+    }
+  | {
+      role: 'tool'
+      content: string // yaml encoded tool result
+      toolCall?: undefined
     }
 
 export const serializeAssistantChatStreamChunk = (
