@@ -3,12 +3,12 @@ import classNames from 'classnames'
 import { marked, type Tokens } from 'marked'
 import type { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
 import type { AssistantChatRole } from '@prisma/client'
+import { parse } from 'yaml'
 import LogoCoop from '@app/web/components/LogoCoop'
 import ToolCallMessage from '@app/web/assistant/ToolCallMessage'
 import type { ChatCompletionMessageWithToolCalls } from '@app/web/assistant/getChatSession'
-import styles from './ChatSession.module.css'
-import { parse } from 'yaml'
 import type { AgenticSearchToolYamlResult } from '@app/web/assistant/tools/agenticSearchTool'
+import styles from './ChatSession.module.css'
 
 const renderer = new marked.Renderer()
 const linkRenderer = renderer.link.bind(renderer)
@@ -22,9 +22,7 @@ renderer.link = (linkParameters: Tokens.Link) => {
 
 const parseYamlToolContent = (content: string) => {
   try {
-    const yaml = parse(content)
-
-    return yaml
+    return parse(content) as AgenticSearchToolYamlResult
   } catch (error) {
     console.error('Error parsing yaml', error)
     return null
@@ -54,9 +52,7 @@ const ChatMessage = ({
     if (!content) {
       return null
     }
-    const parsedToolContent = parseYamlToolContent(
-      content,
-    ) as AgenticSearchToolYamlResult | null
+    const parsedToolContent = parseYamlToolContent(content)
 
     if (!parsedToolContent) {
       return null

@@ -1,4 +1,4 @@
-import { OpenAiChatMessage } from '@app/web/assistant/openAiChat'
+import type { OpenAiChatMessage } from '@app/web/assistant/openAiChat'
 
 export const mediationAssistantSystemMessage = {
   role: 'system',

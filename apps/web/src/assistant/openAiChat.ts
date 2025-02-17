@@ -7,6 +7,7 @@ import {
 import { ChatCompletionChunk } from 'openai/resources'
 import { AutoParseableTool } from 'openai/src/lib/parser'
 import * as Sentry from '@sentry/nextjs'
+import { AssistantConfiguration } from '@prisma/client'
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import {
   OpenAiClienChatModel,
@@ -14,7 +15,6 @@ import {
   openAiClientConfiguration,
 } from '@app/web/assistant/openAiClient'
 import { serializeAssistantChatStreamChunk } from '@app/web/assistant/assistantChatStream'
-import { AssistantConfiguration } from '@prisma/client'
 import { defaultAssistantConfiguration } from '@app/web/assistant/configuration/defaultAssistantConfiguration'
 import { agenticSearchToolName } from '@app/web/assistant/tools/agenticSearchToolConfig'
 

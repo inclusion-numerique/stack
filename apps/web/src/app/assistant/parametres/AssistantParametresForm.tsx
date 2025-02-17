@@ -1,18 +1,18 @@
 'use client'
 
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { DefaultValues, useForm } from 'react-hook-form'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import React from 'react'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import { createToast } from '@app/ui/toast/createToast'
+import { useRouter } from 'next/navigation'
 import { AssistantConfigurationData } from '@app/web/assistant/configuration/AssistantConfigurationValidation'
 import { DefaultAssistantConfiguration } from '@app/web/assistant/configuration/defaultAssistantConfiguration'
 import { trpc } from '@app/web/trpc'
 import { optionalNumberToString } from '@app/web/utils/formatNumber'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import { createToast } from '@app/ui/toast/createToast'
 import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
-import { useRouter } from 'next/navigation'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
 
 const AssistantParametresForm = ({
   defaultValues,
@@ -60,13 +60,13 @@ const AssistantParametresForm = ({
         disabled={isLoading}
         label="Titre de la configuration"
       />
-      {/*<InputFormField*/}
-      {/*  control={control}*/}
-      {/*  path="title"*/}
-      {/*  type="textarea"*/}
-      {/*  disabled={isLoading}*/}
-      {/*  label="Notes sur cette configuration"*/}
-      {/*/>*/}
+      {/* <InputFormField */}
+      {/*  control={control} */}
+      {/*  path="title" */}
+      {/*  type="textarea" */}
+      {/*  disabled={isLoading} */}
+      {/*  label="Notes sur cette configuration" */}
+      {/* /> */}
 
       <InputFormField
         control={control}

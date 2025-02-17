@@ -1,5 +1,4 @@
-
-export const agenticSearchToolName = 'agentic_search' as const
+export const agenticSearchToolName = 'agentic_search'
 export type AgenticSearchToolName = typeof agenticSearchToolName
 
 export const agenticSearchToolDescription =

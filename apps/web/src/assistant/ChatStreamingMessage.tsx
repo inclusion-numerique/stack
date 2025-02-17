@@ -43,7 +43,10 @@ const ChatStreamingMessage = () => {
       {currentToolResults.length > 0 &&
         currentToolResults.map((toolResult, index) => (
           <ChatMessage
-            key={index}
+            key={
+              // eslint-disable-next-line react/no-array-index-key
+              index
+            }
             previousMessageRole={
               currentToolCalls.length > 0 ? 'Assistant' : lastMessageRole
             }

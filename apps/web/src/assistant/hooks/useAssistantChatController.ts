@@ -1,14 +1,14 @@
+import type { SnapshotFromStore } from '@xstate/store/dist/declarations/src/types'
+import { useSelector } from '@xstate/store/react'
+import { useRef } from 'react'
 import { chatStore } from '@app/web/assistant/chatStore'
 import type { ChatSessionData } from '@app/web/assistant/getChatSession'
 import type { AssistantPageDataChatSessionHistoryItem } from '@app/web/assistant/getAssistantPageData'
 import { replaceRouteWithoutRerender } from '@app/web/utils/replaceRouteWithoutRerender'
 import { trpc } from '@app/web/trpc'
-import type { SnapshotFromStore } from '@xstate/store/dist/declarations/src/types'
-import { useSelector } from '@xstate/store/react'
 import type { AssistantChatRequestData } from '@app/web/app/api/assistant/chat/AssistantChatRequestData'
 import { assistantEndpoints } from '@app/web/assistant/assistantEndpoints'
 import { decodeStreamChunk } from '@app/web/assistant/decodeStreamChunk'
-import { useRef } from 'react'
 import type { AssistantChatStreamChunk } from '@app/web/assistant/assistantChatStream'
 
 /**

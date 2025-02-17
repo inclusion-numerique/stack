@@ -1,15 +1,15 @@
 'use client'
 
 import classNames from 'classnames'
+import { useEffect } from 'react'
+import Button from '@codegouvfr/react-dsfr/Button'
 import type { AssistantPageData } from '@app/web/assistant/getAssistantPageData'
 import ChatSession from '@app/web/assistant/ChatSession'
-import styles from './ChatSession.module.css'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { initialiseChatSession } from '@app/web/assistant/hooks/useAssistantChatController'
-import { useEffect } from 'react'
 import ChatSessionHistorySideMenu from '@app/web/assistant/ChatSessionHistorySideMenu'
 import NewChatButton from '@app/web/assistant/NewChatButton'
-import Button from '@codegouvfr/react-dsfr/Button'
+import styles from './ChatSession.module.css'
 
 const AssistantPageContent = ({
   data: { chatSession, chatSessionHistory },

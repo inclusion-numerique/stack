@@ -4,13 +4,13 @@ import { Fragment } from 'react'
 import { marked } from 'marked'
 import classNames from 'classnames'
 import type { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
+import Accordion from '@codegouvfr/react-dsfr/Accordion'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { getAssistantPageData } from '@app/web/assistant/getAssistantPageData'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
 import { assistantChatRoleLabels } from '@app/web/assistant/assistantChatRole'
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
-import Accordion from '@codegouvfr/react-dsfr/Accordion'
 
 export const generateMetadata = (): Metadata => ({
   title: metadataTitle('Assistant - Chat'),

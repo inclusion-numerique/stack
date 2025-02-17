@@ -64,9 +64,9 @@ export const formatRagChunkToYamlForAssistant = ({
 
   if (content.includes('\n')) {
     yamlResult += `    content: |\n`
-    content.split('\n').forEach((line) => {
+    for (const line of content.split('\n')) {
       yamlResult += `      ${line}\n`
-    })
+    }
   } else {
     yamlResult += `    content: ${content}\n`
   }

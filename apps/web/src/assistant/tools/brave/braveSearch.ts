@@ -141,46 +141,6 @@ export const formatResultToJsonForAssistant = ({
 export type BraveSearchResultForAssistant = ReturnType<
   typeof formatResultToJsonForAssistant
 >
-
-export const formatResultToYamlForAssistant = ({
-  description,
-  // meta_url,
-  // profile,
-  thumbnail,
-  title,
-  url,
-  summary,
-}: BraveSearchResult & { summary?: string | null }) => {
-  let yamlResult = `  - title: ${title}\n`
-  yamlResult += `    url: ${url}\n`
-
-  // gestion de la description en multilignes
-  if (description && description.includes('\n')) {
-    yamlResult += `    description: |\n`
-    description.split('\n').forEach((line) => {
-      yamlResult += `      ${line}\n`
-    })
-  } else {
-    yamlResult += `    description: ${description}\n`
-  }
-
-  if (thumbnail?.src) {
-    yamlResult += `    thumbnail: ${thumbnail.src}\n`
-  }
-
-  // gestion du summary en multilignes
-  if (summary) {
-    if (summary.includes('\n')) {
-      yamlResult += `    summary: |\n`
-      summary.split('\n').forEach((line) => {
-        yamlResult += `      ${line}\n`
-      })
-    } else {
-      yamlResult += `    summary: ${summary}\n`
-    }
-  }
-}
-
 export const formatResultToMarkdownForAssistant = ({
   description,
   title,

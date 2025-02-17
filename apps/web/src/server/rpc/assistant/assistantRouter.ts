@@ -32,6 +32,10 @@ export const assistantRouter = router({
           },
         },
       },
+      include: {
+        messages: true,
+        configuration: true,
+      },
     })
 
     const chatSessionHistory = await getUserChatSessions(user.id)
@@ -131,7 +135,7 @@ export const assistantRouter = router({
     }),
   updateAssistantConfiguration: protectedProcedure
     .input(AssistantConfigurationValidation)
-    .mutation(async ({ input: {}, ctx: { user } }) => {
+    .mutation(async ({ input, ctx: { user } }) => {
       if (user.role !== 'Admin') throw forbiddenError('User is not an admin')
 
       await saveAssistantConfiguration({

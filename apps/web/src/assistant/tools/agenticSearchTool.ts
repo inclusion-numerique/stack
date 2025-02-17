@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { zodFunction } from 'openai/helpers/zod'
+import { stringify } from 'yaml'
 import type { ZodFunctionOptions } from '@app/web/assistant/tools/zodFunctionType'
 import {
   type BraveSearchResult,
@@ -23,7 +24,6 @@ import {
   type AgenticSearchToolName,
   agenticSearchToolName,
 } from '@app/web/assistant/tools/agenticSearchToolConfig'
-import { stringify } from 'yaml'
 
 const stringBooleanValidation = (description: string) =>
   z
