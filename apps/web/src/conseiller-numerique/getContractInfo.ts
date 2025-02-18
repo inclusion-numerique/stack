@@ -33,6 +33,24 @@ const typeWithDuration = ({
     ? `${typeDeContrat} - Durée ${differenceInMonths(dateFinDeContrat, dateDebutDeContrat)} mois`
     : (typeDeContrat ?? '')
 
+const alerteFinDeContrat = (miseEnRelationActive: {
+  dateFinDeContrat: Date | null
+}) => {
+  if (miseEnRelationActive.dateFinDeContrat == null) {
+    return null
+  }
+  if (isBefore(miseEnRelationActive.dateFinDeContrat, new Date())) {
+    return AlerteFinContrat.termine
+  }
+  if (
+    isBefore(miseEnRelationActive.dateFinDeContrat, addMonths(new Date(), 3))
+  ) {
+    return AlerteFinContrat.prochainement
+  }
+
+  return null
+}
+
 export const getContractInfo = async (email: string) =>
   fetchConseillerNumeriqueV1Data({ email }).then((conseiller) => {
     const miseEnRelationActive = conseiller?.miseEnRelationActive
@@ -44,15 +62,6 @@ export const getContractInfo = async (email: string) =>
       type: typeWithDuration(miseEnRelationActive).replaceAll('_', ' '),
       start: formatDate(miseEnRelationActive.dateDebutDeContrat),
       end: formatDate(miseEnRelationActive.dateFinDeContrat),
-      finDeContrat: miseEnRelationActive.dateFinDeContrat
-        ? isBefore(miseEnRelationActive.dateFinDeContrat, new Date())
-          ? AlerteFinContrat.termine
-          : isBefore(
-                miseEnRelationActive.dateFinDeContrat,
-                addMonths(new Date(), 3),
-              )
-            ? AlerteFinContrat.prochainement
-            : null
-        : null,
+      finDeContrat: alerteFinDeContrat(miseEnRelationActive),
     }
   })

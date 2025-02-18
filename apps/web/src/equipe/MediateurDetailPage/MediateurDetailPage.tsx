@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import React from 'react'
+import Link from 'next/link'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'

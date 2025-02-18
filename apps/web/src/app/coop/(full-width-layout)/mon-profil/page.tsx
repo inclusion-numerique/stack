@@ -1,6 +1,7 @@
+import React from 'react'
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
-import React from 'react'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
@@ -15,6 +16,17 @@ import ProfileEditCard from './_components/ProfileEditCard'
 
 export const metadata: Metadata = {
   title: metadataTitle('Mon profil'),
+}
+
+const getConumIdPgFor = async (user: SessionUser) => {
+  if (user.mediateur?.conseillerNumerique == null) return null
+
+  const conumV1 = await findConseillerNumeriqueV1({
+    id: user.mediateur.conseillerNumerique.id,
+    includeDeleted: true,
+  })
+
+  return conumV1?.conseiller.idPG ?? null
 }
 
 const MonProfilPage = async () => {
@@ -33,15 +45,7 @@ const MonProfilPage = async () => {
       ? null
       : await getContractInfo(user.email)
 
-  let conumIdPg: number | null = null
-
-  if (user.mediateur != null && user.mediateur.conseillerNumerique != null) {
-    const conumV1 = await findConseillerNumeriqueV1({
-      id: user.mediateur.conseillerNumerique.id,
-      includeDeleted: true,
-    })
-    conumIdPg = conumV1?.conseiller.idPG ?? null
-  }
+  const conumIdPg = await getConumIdPgFor(user)
 
   return (
     <>
