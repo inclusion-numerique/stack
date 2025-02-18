@@ -5,9 +5,7 @@ describe('serializeJsonApiParams', () => {
     const params = { page: 2, filter: { from: '2022', items: [1, 4, 5] } }
     const searchParams = serializeApiRequestParams(params)
 
-    expect(searchParams).toBe(
-      'page=2&filter[from]=2022&filter[items][]=1&filter[items][]=4&filter[items][]=5',
-    )
+    expect(searchParams).toBe('page=2&filter[from]=2022&filter[items]=1,4,5')
   })
 
   it('should serialize an empty object', () => {

@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server'
 import { z, type ZodError } from 'zod'
-import type {
-  JsonApiListResponse,
-  JsonApiResource,
-} from '@app/web/app/api/v1/JsonApiTypes'
+import type { JsonApiListResponse, JsonApiResource } from '@app/web/app/api/v1/JsonApiTypes'
 import { prismaClient } from '@app/web/prismaClient'
 import { apiV1Url } from '@app/web/app/api/v1/apiV1Url'
 import {
@@ -226,13 +223,38 @@ import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
  *         required: false
  *         description: curseur de pagination pour obtenir les éléments précédents
  *       - in: query
- *         name: exclude[soft_deleted]
+ *         name: filter[soft_deleted]
  *         schema:
  *           type: string
- *           enum: ['1']
+ *           enum: ['0', '1']
  *         required: false
- *         description: exclure les elements soft-deleted, ce qui permet de ne pas inclure les utilisateurs et autres données qui ne sont plus d’actualité
- *
+ *         description: exclure les elements soft-deleted, ce qui permet de ne pas inclure les utilisateurs et leur données rattachées qui ne sont plus d’actualité. '0' pour exclure les utilisateurs supprimés, '1' pour inclure les utilisateurs supprimés uniquement
+ *       - in: query
+ *         name: filter[conseiller_numerique_id]
+ *         schema:
+ *            type: string
+ *         required: false
+ *         description: filtre sur l'identifiant du conseiller numérique, plusieurs valeurs sont possibles séparées par des virgules
+ *         examples:
+ *           single:
+ *             summary: une seule valeur
+ *             value: "abcd"
+ *           multiple:
+ *             summary: plusieurs valeurs
+ *             value: "abcd,efgh,ijkl"
+ *       - in: query
+ *         name: filter[conseiller_numerique_id_pg]
+ *         schema:
+ *            type: string
+ *         required: false
+ *         description: filtre sur l'identifiant pg du conseiller numérique, plusieurs valeurs sont possibles séparées par des virgules
+ *         examples:
+ *           single:
+ *             summary: une seule valeur
+ *             value: "123"
+ *           multiple:
+ *             summary: plusieurs valeurs
+ *             value: "123,456,789"
  *     responses:
  *       200:
  *         description: liste des utilisateurs
@@ -334,9 +356,27 @@ export const GET = createApiV1Route
   })
   .queryParams(
     JsonApiCursorPaginationQueryParamsValidation.extend({
-      exclude: z
+      filter: z
         .object({
-          soft_deleted: z.literal('1').optional(),
+          conseiller_numerique_id: z
+            .union([z.string(), z.array(z.string())])
+            .optional()
+            .transform((value) => {
+              if (typeof value === 'string') {
+                return [value]
+              }
+              return value
+            }),
+          conseiller_numerique_id_pg: z
+            .union([z.string(), z.array(z.string())])
+            .optional()
+            .transform((value) => {
+              if (typeof value === 'string') {
+                return [value]
+              }
+              return value
+            }),
+          soft_deleted: z.union([z.literal('0'), z.literal('1')]).optional(),
         })
         .default({}),
     }),
@@ -362,13 +402,68 @@ export const GET = createApiV1Route
     }
 
     const supressionFilter =
-      params.exclude.soft_deleted === '1' ? { suppression: null } : undefined
+      params.filter.soft_deleted === '0'
+        ? { suppression: null }
+        : params.filter.soft_deleted === '1'
+          ? { suppression: { not: null } }
+          : undefined
+
     const deletedFilter =
-      params.exclude.soft_deleted === '1'
+      params.filter.soft_deleted === '0'
         ? {
             deleted: null,
           }
-        : undefined
+        : params.filter.soft_deleted === '1'
+          ? {
+              deleted: { not: null },
+            }
+          : undefined
+
+    const conseillerNumeriqueIds = params.filter.conseiller_numerique_id
+    const conseillerNumeriqueIdsPg =
+      params.filter.conseiller_numerique_id_pg?.map((id) =>
+        Number.parseInt(id, 10),
+      )
+    const hasConseillerNumeriqueFilter =
+      conseillerNumeriqueIds || conseillerNumeriqueIdsPg
+
+    // Used to filter by conseiller_numerique_id or conseiller_numerique_id_pg
+    const conseillerNumeriqueIdsFilter = hasConseillerNumeriqueFilter
+      ? {
+          OR: [
+            {
+              mediateur: {
+                conseillerNumerique: {
+                  id: conseillerNumeriqueIds
+                    ? {
+                        in: conseillerNumeriqueIds,
+                      }
+                    : undefined,
+                  idPg: conseillerNumeriqueIdsPg
+                    ? {
+                        in: conseillerNumeriqueIdsPg,
+                      }
+                    : undefined,
+                },
+              },
+            },
+            {
+              coordinateur: {
+                conseillerNumeriqueId: conseillerNumeriqueIds
+                  ? {
+                      in: conseillerNumeriqueIds,
+                    }
+                  : undefined,
+                conseillerNumeriqueIdPg: conseillerNumeriqueIdsPg
+                  ? {
+                      in: conseillerNumeriqueIdsPg,
+                    }
+                  : undefined,
+              },
+            },
+          ],
+        }
+      : null
 
     const users = await prismaClient.user.findMany({
       where: {
@@ -377,6 +472,7 @@ export const GET = createApiV1Route
         },
         role: 'User',
         ...deletedFilter,
+        ...conseillerNumeriqueIdsFilter,
       },
       orderBy: [{ created: 'desc' }],
       take: cursorPagination.take,
@@ -428,6 +524,8 @@ export const GET = createApiV1Route
           not: null,
         },
         role: 'User',
+        ...deletedFilter,
+        ...conseillerNumeriqueIdsFilter,
       },
     })
 

@@ -1,8 +1,5 @@
 import { NextResponse } from 'next/server'
-import type {
-  JsonApiItemResponse,
-  JsonApiResource,
-} from '@app/web/app/api/v1/JsonApiTypes'
+import type { JsonApiItemResponse, JsonApiResource } from '@app/web/app/api/v1/JsonApiTypes'
 import { apiV1Url } from '@app/web/app/api/v1/apiV1Url'
 import { createApiV1Route } from '@app/web/app/api/v1/createApiV1Route'
 import { ApiV1StatistiquesQueryParamsValidation } from '@app/web/app/api/v1/statistiques/ApiV1StatistiquesQueryParams'
@@ -261,6 +258,7 @@ import { serializeApiRequestParams } from '@app/web/app/api/v1/serializeApiReque
  *           type: string
  *           pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'
  *           example: '2022-01-01'
+ *
  *       - in: query
  *         name: filter[au]
  *         required: false
@@ -296,6 +294,7 @@ import { serializeApiRequestParams } from '@app/web/app/api/v1/serializeApiReque
  *           type: string
  *           format: uuid
  *           example: '123e4567-e89b-12d3-a456-426614174000'
+ *
  *       - in: query
  *         name: filter[commune]
  *         required: false

@@ -1,41 +1,44 @@
-// @app/web/app/api/v1/serializeApiRequestParams.ts
-
 export const serializeApiRequestParams = (
   input: Record<string, unknown>,
 ): string => {
   const buildQueryParams = (value: unknown, keyPrefix = ''): string[] => {
     if (Array.isArray(value)) {
-      // handle array
-      return value.flatMap((item) => {
-        // if the item is an object (not an array), recurse with currentKey + "[]"
-        if (item && typeof item === 'object' && !Array.isArray(item)) {
-          return buildQueryParams(item, `${keyPrefix}[]`)
-        }
-        // otherwise, append scalar or sub-array items directly
-        return `${keyPrefix}[]=${encodeURIComponent(String(item))}`
-      })
+      // si le tableau est composé uniquement de valeurs scalaires, on les joint avec des virgules
+      const isScalarArray = value.every(
+        (item) =>
+          item === null || item === undefined || typeof item !== 'object',
+      )
+      if (isScalarArray) {
+        const filtered = value.filter(
+          (item) => item !== undefined && item !== null,
+        )
+        if (filtered.length === 0) return []
+        const joined = filtered
+          .map((item) => encodeURIComponent(String(item)))
+          .join(',')
+        return [`${keyPrefix}=${joined}`]
+      }
+      // sinon, on traite chaque élément individuellement en ajoutant des crochets
+      return value.flatMap((item) => buildQueryParams(item, `[${keyPrefix}]`))
     }
     if (value && typeof value === 'object') {
-      // handle nested object
+      // gestion des objets imbriqués
       return Object.entries(value).flatMap(([subKey, subValue]) => {
         const newPrefix = keyPrefix ? `${keyPrefix}[${subKey}]` : subKey
         return buildQueryParams(subValue, newPrefix)
       })
     }
     if (value === undefined || value === null) {
-      // skip undefined or null
+      // on ignore les valeurs undefined ou null
       return []
     }
-    // handle scalar
+    // gestion des scalaires
     return [`${keyPrefix}=${encodeURIComponent(String(value))}`]
   }
 
-  // flatten the object into an array of query strings
   const result: string[] = []
   for (const [key, value] of Object.entries(input)) {
     result.push(...buildQueryParams(value, key))
   }
-
-  // join them with '&'
   return result.join('&')
 }
