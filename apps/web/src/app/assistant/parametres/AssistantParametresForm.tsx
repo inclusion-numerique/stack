@@ -7,7 +7,11 @@ import Button from '@codegouvfr/react-dsfr/Button'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { createToast } from '@app/ui/toast/createToast'
 import { useRouter } from 'next/navigation'
-import { AssistantConfigurationData } from '@app/web/assistant/configuration/AssistantConfigurationValidation'
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+  AssistantConfigurationData,
+  AssistantConfigurationValidation,
+} from '@app/web/assistant/configuration/AssistantConfigurationValidation'
 import { DefaultAssistantConfiguration } from '@app/web/assistant/configuration/defaultAssistantConfiguration'
 import { trpc } from '@app/web/trpc'
 import { optionalNumberToString } from '@app/web/utils/formatNumber'
@@ -27,6 +31,7 @@ const AssistantParametresForm = ({
   const { handleSubmit, control, setError } =
     useForm<AssistantConfigurationData>({
       defaultValues,
+      resolver: zodResolver(AssistantConfigurationValidation),
     })
 
   const onSubmit = async (data: AssistantConfigurationData) => {

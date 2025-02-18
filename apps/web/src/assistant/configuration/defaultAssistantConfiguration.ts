@@ -2,6 +2,7 @@ import type { AssistantConfiguration } from '@prisma/client'
 import { openAiClientConfiguration } from '@app/web/assistant/openAiClient'
 import { mediationAssistantSystemMessage } from '@app/web/assistant/systemMessages'
 import { agenticSearchToolDescription } from '@app/web/assistant/tools/agenticSearchToolConfig'
+import { removeNullAndUndefinedValues } from '@app/web/utils/removeNullAndUndefinedValues'
 
 export type DefaultAssistantConfiguration = Omit<
   AssistantConfiguration,
@@ -25,3 +26,10 @@ export const defaultAssistantConfiguration = {
   systemMessage: mediationAssistantSystemMessage.content,
   searchToolDescription: agenticSearchToolDescription,
 } satisfies DefaultAssistantConfiguration
+
+export const mergeWithDefaultAssistantConfiguration = (
+  configuration: Omit<AssistantConfiguration, 'id' | 'userId' | 'created'>,
+) => ({
+  ...defaultAssistantConfiguration,
+  ...removeNullAndUndefinedValues(configuration),
+})

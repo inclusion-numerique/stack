@@ -64,6 +64,7 @@ export const chatStore = createStore({
       completionError: event.error,
       streamingMessage: null,
       currentToolCalls: [],
+      currentToolResults: [],
     }),
     completionStreamStarted: (context, event: { prompt: string }) => {
       // Append the sent user message to the chat session
@@ -119,24 +120,56 @@ export const chatStore = createStore({
 
       let updatedMessages = context.messages
 
-      // Append the current tool calls to messages
-      if (context.currentToolCalls.length > 0) {
-        updatedMessages = [
-          ...updatedMessages,
-          {
-            id: `${new Date().toISOString()}-tool-calls`,
-            content: null,
-            role: 'Assistant',
-            sessionId: context.chatSessionId ?? 'not-created',
-            created: new Date(),
-            name: null,
-            refusal: null,
-            toolCalls: context.currentToolCalls,
-            toolCallId: null,
-            finishReason: null,
-          },
-        ]
-      }
+      // Append the tool calls to messages
+      const toolMessages = context.currentToolCalls.map((message, index) => ({
+        type: 'call' as const,
+        index,
+        message,
+      }))
+      const toolResultsMessages = context.currentToolResults.map(
+        (message, index) => ({
+          type: 'result' as const,
+          index,
+          message,
+        }),
+      )
+
+      // Merge toolCalls and toolResults by index
+      const toolMessagesAndResults = [
+        ...toolMessages,
+        ...toolResultsMessages,
+      ].sort((a, b) => a.index - b.index || a.type.localeCompare(b.type))
+
+      updatedMessages = [
+        ...updatedMessages,
+        ...toolMessagesAndResults.map(({ type, message }) =>
+          type === 'call'
+            ? {
+                id: `${new Date().toISOString()}-tool-calls`,
+                content: null,
+                role: 'Assistant' as const,
+                sessionId: context.chatSessionId ?? 'not-created',
+                created: new Date(),
+                name: null,
+                refusal: null,
+                toolCalls: [message],
+                toolCallId: null,
+                finishReason: null,
+              }
+            : {
+                id: `${new Date().toISOString()}-tool-results`,
+                content: message,
+                role: 'Tool' as const,
+                sessionId: context.chatSessionId ?? 'not-created',
+                created: new Date(),
+                name: null,
+                refusal: null,
+                toolCalls: [],
+                toolCallId: null,
+                finishReason: null,
+              },
+        ),
+      ]
 
       // Append the current streaming message to the messages
       if (context.streamingMessage) {
@@ -162,6 +195,7 @@ export const chatStore = createStore({
         completionError: null,
         streamingMessage: null,
         currentToolCalls: [],
+        currentToolResults: [],
         messages: updatedMessages,
       }
     },

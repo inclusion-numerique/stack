@@ -38,6 +38,11 @@ export const initialiseChatSession = ({
     | null
     | undefined
 }) => {
+  if (chatSession?.id) {
+    replaceRouteWithoutRerender(`/assistant/chat/${chatSession.id}`)
+  } else {
+    replaceRouteWithoutRerender(`/assistant/chat`)
+  }
   chatStore.send({
     type: 'initializeChatSession',
     chatSession,

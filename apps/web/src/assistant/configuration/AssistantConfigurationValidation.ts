@@ -3,24 +3,27 @@ import type { DefaultValues } from 'react-hook-form'
 import type { AssistantParametresPageData } from '@app/web/app/assistant/parametres/getAssistantParametresPageData'
 import type { DefaultAssistantConfiguration } from '@app/web/assistant/configuration/defaultAssistantConfiguration'
 
+const emptyStringToNull = (value: string | undefined | null) =>
+  value?.trim() || null
+
 export const AssistantConfigurationValidation = z.object({
   id: z.string().uuid().nullish(), // missing if new configuration
-  title: z.string().nullish(),
-  notes: z.string().nullish(),
-  model: z.string().nullish(),
+  title: z.string().nullish().transform(emptyStringToNull),
+  notes: z.string().nullish().transform(emptyStringToNull),
+  model: z.string().nullish().transform(emptyStringToNull),
   frequencyPenalty: z.number().nullish(),
-  functionCall: z.string().nullish(),
+  functionCall: z.string().nullish().transform(emptyStringToNull),
   maxCompletionTokens: z.number().nullish(),
   maxTokens: z.number().nullish(),
   parallelToolCalls: z.boolean().nullish(),
   presencePenalty: z.number().nullish(),
-  reasoningEffort: z.string().nullish(),
+  reasoningEffort: z.string().nullish().transform(emptyStringToNull),
   seed: z.number().nullish(),
   temperature: z.number().nullish(),
   topLogProbs: z.number().nullish(),
   topP: z.number().nullish(),
-  systemMessage: z.string().nullish(),
-  searchToolDescription: z.string().nullish(),
+  systemMessage: z.string().nullish().transform(emptyStringToNull),
+  searchToolDescription: z.string().nullish().transform(emptyStringToNull),
 })
 
 export type AssistantConfigurationData = z.infer<

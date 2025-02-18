@@ -11,6 +11,7 @@ import { authenticateUser } from '@app/web/auth/authenticateUser'
 import { assistantChatRoleLabels } from '@app/web/assistant/assistantChatRole'
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
+import { mergeWithDefaultAssistantConfiguration } from '@app/web/assistant/configuration/defaultAssistantConfiguration'
 
 export const generateMetadata = (): Metadata => ({
   title: metadataTitle('Assistant - Chat'),
@@ -46,13 +47,17 @@ const Page = async ({
     return
   }
 
+  const configuration = mergeWithDefaultAssistantConfiguration(
+    data.chatSession.configuration,
+  )
+
   return (
     <div className="fr-px-6v">
       <AdministrationTitle icon="fr-icon-chat-2-line">
         Chat session {chatSessionId} - Debug
       </AdministrationTitle>
       <Accordion
-        label={`Paramètres utilisés : ${data.chatSession.configuration.title}`}
+        label={`Paramètres utilisés : ${configuration.title}`}
         className="fr-mb-4v"
       >
         <div
@@ -66,26 +71,26 @@ const Page = async ({
                   <tbody>
                     <tr>
                       <td>Température</td>
-                      <td>{data.chatSession.configuration.temperature}</td>
+                      <td>{configuration.temperature}</td>
                     </tr>
                     <tr>
                       <td>Top&nbsp;P</td>
-                      <td>{data.chatSession.configuration.topP}</td>
+                      <td>{configuration.topP}</td>
                     </tr>
                     <tr>
                       <td>Presence&nbsp;penalty</td>
-                      <td>{data.chatSession.configuration.presencePenalty}</td>
+                      <td>{configuration.presencePenalty}</td>
                     </tr>
                     <tr>
                       <td>Frequency&nbsp;penalty</td>
-                      <td>{data.chatSession.configuration.frequencyPenalty}</td>
+                      <td>{configuration.frequencyPenalty}</td>
                     </tr>
                     <tr>
                       <td>System&nbsp;message</td>
                       <td
                         dangerouslySetInnerHTML={{
                           __html:
-                            data.chatSession.configuration.systemMessage?.replaceAll(
+                            configuration.systemMessage?.replaceAll(
                               '\n',
                               '<br>',
                             ) ?? '-',
@@ -94,9 +99,7 @@ const Page = async ({
                     </tr>
                     <tr>
                       <td>Search&nbsp;tool&nbsp;description</td>
-                      <td>
-                        {data.chatSession.configuration.searchToolDescription}
-                      </td>
+                      <td>{configuration.searchToolDescription}</td>
                     </tr>
                   </tbody>
                 </table>

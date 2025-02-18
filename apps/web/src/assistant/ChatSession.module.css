@@ -74,12 +74,18 @@
     overflow-x: auto;
     width: 100%;
     gap: 16px;
+    align-items: flex-start;
 }
 
 .sourceCard {
     border-radius: 8px;
     border: var(--slim-grey-border);
     padding: 16px 12px;
+    width: 320px !important;
+    flex-shrink: 0;
+    flex-grow: 0;
+    max-height: 320px;
+    overflow-y: auto;
 
     a, h1, h2, h3, h4, h5, h6 {
         font-size: 14px !important;

@@ -1,7 +1,6 @@
 import { CSSProperties } from 'react'
 import classNames from 'classnames'
 import { marked, type Tokens } from 'marked'
-import type { ChatCompletionMessageToolCall } from 'openai/src/resources/chat/completions'
 import type { AssistantChatRole } from '@prisma/client'
 import { parse } from 'yaml'
 import LogoCoop from '@app/web/components/LogoCoop'
@@ -37,7 +36,6 @@ const ChatMessage = ({
   isStreaming,
   cursor,
 }: {
-  toolCalls?: { name: string }[]
   message: ChatCompletionMessageWithToolCalls
   contentRef?: React.RefObject<HTMLDivElement>
   style?: CSSProperties
@@ -45,10 +43,23 @@ const ChatMessage = ({
   isStreaming?: boolean
   cursor?: boolean // display blinking cursor at the end of the message
 }) => {
-  const marginTop = role === previousMessageRole ? 'fr-mt-0' : 'fr-mt-10v'
+  // Do not render non "interactive" messages
+  if (role !== 'Assistant' && role !== 'Tool' && role !== 'User') {
+    return null
+  }
+
+  const toolCall = toolCalls?.[0]
+
+  const previousMessageIsSameRole =
+    (previousMessageRole === 'User' && role === 'User') ||
+    ((previousMessageRole === 'Assistant' || previousMessageRole === 'Tool') &&
+      (role === 'Assistant' || role === 'Tool'))
+
+  const marginTop = previousMessageIsSameRole ? 'fr-mt-0' : 'fr-mt-10v'
+
+  console.log('MESSAGE', { content, role, toolCall })
 
   if (role === 'Tool') {
-    console.log('TOOL MESSAGE', { content, role, toolCalls })
     if (!content) {
       return null
     }
@@ -59,18 +70,7 @@ const ChatMessage = ({
     }
 
     if ('error' in parsedToolContent) {
-      return (
-        <div
-          className={classNames(
-            styles.message,
-            styles[`message${role}`],
-            marginTop,
-          )}
-          style={style}
-        >
-          Je n’ai pas pu trouver de résultats pertinents
-        </div>
-      )
+      return null
     }
 
     const webResults = [
@@ -104,8 +104,8 @@ const ChatMessage = ({
                   <a href={result.url} target="_blank">
                     {result.title || result.url}
                   </a>
-                  <p className="fr-text--xs fr-text-mention--grey">
-                    {result.description}
+                  <p className="fr-text--xs fr-text-mention--grey fr-mt-4v">
+                    {result.summary || result.description}
                   </p>
                 </div>
               ))
@@ -120,6 +120,7 @@ const ChatMessage = ({
                   )}
                   {!!result.content && (
                     <div
+                      className="fr-mt-4v"
                       dangerouslySetInnerHTML={{
                         __html: marked.parse(result.content, { async: false }),
                       }}
@@ -133,10 +134,6 @@ const ChatMessage = ({
     )
   }
 
-  if (role !== 'Assistant' && role !== 'User') {
-    return null
-  }
-
   const contentToParse =
     cursor || 1
       ? `${content ?? ''}<span class="chat-message__blinking-cursor" />`
@@ -144,15 +141,14 @@ const ChatMessage = ({
 
   const parsedContent = contentToParse
     ? role === 'Assistant'
-      ? marked
-          .parse(contentToParse, { renderer, async: false })
-          // Replace all composed characters with non breakable spaces
-          .replaceAll(/ ([!%:;?»])/g, '&nbsp;$1')
+      ? marked.parse(contentToParse, { renderer, async: false })
       : contentToParse
-          .replaceAll('\n', '<br />')
-          // Replace all composed characters with non breakable spaces
-          .replaceAll(/ ([!%:;?»])/g, '&nbsp;$1')
     : ''
+
+  const cleanedContent = parsedContent
+    .replaceAll('\n', '<br />')
+    // Replace all composed characters with non breakable spaces
+    .replaceAll(/ ([!%:;?»])/g, '&nbsp;$1')
 
   return (
     <div
@@ -163,26 +159,22 @@ const ChatMessage = ({
       )}
       style={style}
     >
-      {role === 'Assistant' && previousMessageRole !== 'Assistant' && (
+      {role !== 'User' && !previousMessageIsSameRole && (
         <LogoCoop className={styles.messageLogoCoop} height={32} width={32} />
       )}
-      {!!toolCalls && toolCalls.length > 0 && (
+      {!!toolCall && (
         <div className={styles.messageToolCalls}>
-          {(toolCalls as unknown as ChatCompletionMessageToolCall[]).map(
-            (toolCall) => (
-              <ToolCallMessage
-                key={toolCall.id}
-                // TODO errors for tools calls ?
-                status={isStreaming ? 'loading' : 'success'}
-                toolCall={toolCall}
-              />
-            ),
-          )}
+          <ToolCallMessage
+            key={toolCall.id}
+            // TODO errors for tools calls ?
+            status={isStreaming ? 'loading' : 'success'}
+            toolCall={toolCall}
+          />
         </div>
       )}
       <div
         ref={contentRef}
-        dangerouslySetInnerHTML={{ __html: parsedContent }}
+        dangerouslySetInnerHTML={{ __html: cleanedContent }}
       />
     </div>
   )

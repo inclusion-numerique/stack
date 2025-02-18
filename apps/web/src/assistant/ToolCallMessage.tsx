@@ -28,6 +28,19 @@ const ToolCallMessage = ({
           toolCall.function.name as keyof typeof toolsLoadingMessages // ts does not understand that the key is in the object after the check
         ]
       : defaultLoadingMessage
+
+  console.log('TOOLCALL', toolCall)
+
+  const objectif =
+    'parsed_arguments' in toolCall.function &&
+    'objectif' in (toolCall.function.parsed_arguments as Record<string, string>)
+      ? (toolCall.function.parsed_arguments as Record<string, string>).objectif
+      : null
+
+  const message = objectif
+    ? `${loadingMessage} pour ${objectif}`
+    : loadingMessage
+
   return (
     <div
       className={classNames(
@@ -38,19 +51,19 @@ const ToolCallMessage = ({
     >
       {status === 'loading' && (
         <>
-          <Spinner size="small" /> <span>{loadingMessage}</span>
+          <Spinner size="small" /> <span>{message}</span>
         </>
       )}
       {status === 'success' && (
         <>
           <span className="fr-icon-check-line fr-icon--sm fr-text-default--success" />
-          <span>{loadingMessage}</span>
+          <span>{message}</span>
         </>
       )}
       {status === 'error' && (
         <>
           <span className="fr-icon-error-line fr-icon--sm fr-text-default--error" />
-          <span>{loadingMessage}</span>
+          <span>{message}</span>
         </>
       )}
     </div>
