@@ -10,6 +10,11 @@ import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseille
 const formatDate = (date?: string | number | Date | null) =>
   date && isValid(date) ? format(date, 'dd/MM/yyyy') : null
 
+export enum AlerteFinContrat {
+  prochainement = 'prochainement',
+  termine = 'termine',
+}
+
 const typeWithDuration = ({
   typeDeContrat,
   dateDebutDeContrat,
@@ -28,6 +33,24 @@ const typeWithDuration = ({
     ? `${typeDeContrat} - Durée ${differenceInMonths(dateFinDeContrat, dateDebutDeContrat)} mois`
     : (typeDeContrat ?? '')
 
+const alerteFinDeContrat = (miseEnRelationActive: {
+  dateFinDeContrat: Date | null
+}) => {
+  if (miseEnRelationActive.dateFinDeContrat == null) {
+    return null
+  }
+  if (isBefore(miseEnRelationActive.dateFinDeContrat, new Date())) {
+    return AlerteFinContrat.termine
+  }
+  if (
+    isBefore(miseEnRelationActive.dateFinDeContrat, addMonths(new Date(), 3))
+  ) {
+    return AlerteFinContrat.prochainement
+  }
+
+  return null
+}
+
 export const getContractInfo = async (email: string) =>
   fetchConseillerNumeriqueV1Data({ email }).then((conseiller) => {
     const miseEnRelationActive = conseiller?.miseEnRelationActive
@@ -39,11 +62,6 @@ export const getContractInfo = async (email: string) =>
       type: typeWithDuration(miseEnRelationActive).replaceAll('_', ' '),
       start: formatDate(miseEnRelationActive.dateDebutDeContrat),
       end: formatDate(miseEnRelationActive.dateFinDeContrat),
-      finDeContrat:
-        miseEnRelationActive.dateFinDeContrat &&
-        isBefore(
-          miseEnRelationActive.dateFinDeContrat,
-          addMonths(new Date(), 3),
-        ),
+      finDeContrat: alerteFinDeContrat(miseEnRelationActive),
     }
   })

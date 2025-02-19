@@ -2,8 +2,9 @@ import Badge from '@codegouvfr/react-dsfr/Badge'
 import Link from 'next/link'
 import React from 'react'
 import Card from '@app/web/components/Card'
+import { AlerteFinContrat } from '@app/web/conseiller-numerique/getContractInfo'
 
-const showContratInfoFeatureFlag = false
+const showContratInfoFeatureFlag = true
 
 const Contract = ({
   isCoordinateur,
@@ -11,12 +12,14 @@ const Contract = ({
   start,
   end,
   finDeContrat,
+  idPGConum,
 }: {
   isCoordinateur: boolean
   type: string
   start: string | null
   end: string | null
-  finDeContrat: boolean | null
+  finDeContrat: AlerteFinContrat | null
+  idPGConum?: number | null
 }) =>
   showContratInfoFeatureFlag ? (
     <Card
@@ -45,27 +48,46 @@ const Contract = ({
             </span>
           </span>
           <span>
-            {finDeContrat && (
-              <Badge severity="warning">Fin de contrat prochaine</Badge>
-            )}
+            {finDeContrat &&
+              (finDeContrat === AlerteFinContrat.prochainement ? (
+                <Badge severity="warning">Fin de contrat prochaine</Badge>
+              ) : null)}
+            {finDeContrat &&
+              (finDeContrat === AlerteFinContrat.termine ? (
+                <Badge severity="error" noIcon>
+                  Contrat terminé
+                </Badge>
+              ) : null)}
           </span>
         </span>
       }
       description={
         <>
           <div className="fr-grid-row fr-text--md fr-mb-3w fr-mt-1w">
-            <div className="fr-col-4 fr-flex fr-direction-column">
+            {!!idPGConum && (
+              <div className="fr-col-3 fr-flex fr-direction-column">
+                <span className="fr-text-mention--grey">ID Conum</span>
+                <span className="fr-text--semi-bold">{idPGConum}</span>
+              </div>
+            )}
+            <div
+              className={`fr-col-${idPGConum == null ? '4' : '3'} fr-flex fr-direction-column`}
+            >
               <span className="fr-text-mention--grey">Type de contrat</span>
               <span className="fr-text--semi-bold">{type}</span>
             </div>
             {start && (
-              <div className="fr-col-4 fr-flex fr-direction-column">
+              <div
+                className={`fr-col-${idPGConum == null ? '4' : '3'} fr-flex fr-direction-column`}
+              >
                 <span className="fr-text-mention--grey">Date de début</span>
                 <span className="fr-text--semi-bold">{start}</span>
               </div>
             )}
             {end && (
-              <div className="fr-col-4 fr-flex fr-direction-column">
+              <div
+                className={`fr-col-${idPGConum == null ? '4' : '3'} fr-flex fr-direction-column`}
+              >
                 <span className="fr-text-mention--grey">Date de fin</span>
                 <span className="fr-text--semi-bold">{end}</span>
               </div>

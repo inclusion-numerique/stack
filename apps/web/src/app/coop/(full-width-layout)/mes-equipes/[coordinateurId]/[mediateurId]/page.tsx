@@ -40,6 +40,7 @@ const Page = async ({
     contract,
     lieuxActivites,
   } = mediateurPageData
+
   return (
     <MediateurDetailPage
       {...mediateur}
@@ -48,6 +49,7 @@ const Page = async ({
       structureEmployeuse={structureEmployeuse}
       contract={contract}
       lieuxActivites={lieuxActivites}
+      conseillerNumerique={mediateur.conseillerNumerique}
     />
   )
 }

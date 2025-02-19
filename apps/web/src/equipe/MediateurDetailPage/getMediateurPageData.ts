@@ -5,6 +5,7 @@ import { getContractInfo } from '@app/web/conseiller-numerique/getContractInfo'
 import { getLieuxActivites } from '@app/web/lieu-activite/getLieuxActivites'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
 import { getTotalCountsStats } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getTotalCountsStats'
+import { findConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
 
 const activitesFiltersLastDays = (daysCount: number) => {
   const currentDate = new Date()
@@ -60,12 +61,23 @@ export const getMediateurPageData = async (
         select: { id: true, name: true, email: true, phone: true },
       },
       conseillerNumerique: {
-        select: { id: true },
+        select: { id: true, idPg: true },
       },
     },
   })
 
   if (mediateur == null) return null
+
+  if (
+    mediateur.conseillerNumerique != null &&
+    mediateur.conseillerNumerique.idPg == null
+  ) {
+    const conumV1 = await findConseillerNumeriqueV1({
+      id: mediateur.conseillerNumerique.id,
+      includeDeleted: true,
+    })
+    mediateur.conseillerNumerique.idPg = conumV1?.conseiller.idPG ?? null
+  }
 
   const contract = await getContractInfo(mediateur.user.email)
 

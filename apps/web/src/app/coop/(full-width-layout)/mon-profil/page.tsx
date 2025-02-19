@@ -1,6 +1,7 @@
+import React from 'react'
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
-import React from 'react'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
@@ -10,10 +11,22 @@ import FonctionnalitesDeMediationNumeriqueCoordinateur from '@app/web/app/coop/(
 import Contract from '@app/web/components/conseiller-numerique/Contract'
 import { getContractInfo } from '@app/web/conseiller-numerique/getContractInfo'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
+import { findConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
 import ProfileEditCard from './_components/ProfileEditCard'
 
 export const metadata: Metadata = {
   title: metadataTitle('Mon profil'),
+}
+
+const getConumIdPgFor = async (user: SessionUser) => {
+  if (user.mediateur?.conseillerNumerique == null) return null
+
+  const conumV1 = await findConseillerNumeriqueV1({
+    id: user.mediateur.conseillerNumerique.id,
+    includeDeleted: true,
+  })
+
+  return conumV1?.conseiller.idPG ?? null
 }
 
 const MonProfilPage = async () => {
@@ -26,6 +39,13 @@ const MonProfilPage = async () => {
   const contratCoordinateur = user.coordinateur
     ? await getContractInfo(user.email)
     : null
+
+  const contratConum =
+    user.mediateur?.conseillerNumerique?.id == null
+      ? null
+      : await getContractInfo(user.email)
+
+  const conumIdPg = await getConumIdPgFor(user)
 
   return (
     <>
@@ -62,6 +82,15 @@ const MonProfilPage = async () => {
               </section>
             </>
           ) : null}
+          {!!contratConum && (
+            <section className="fr-mt-6v">
+              <Contract
+                isCoordinateur={false}
+                {...contratConum}
+                idPGConum={conumIdPg}
+              />
+            </section>
+          )}
         </main>
       </div>
     </>

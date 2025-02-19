@@ -80,20 +80,10 @@ const MaStructureEmployeusePage = async () => {
           </div>
 
           {structureEmployeuse ? (
-            <div className="fr-border fr-border-radius--8 fr-p-4w">
-              <div className="fr-flex fr-direction-row fr-align-items-center fr-flex-gap-2v fr-mb-6v">
-                <span
-                  className="ri-home-smile-2-line ri-lg fr-line-height-1 fr-text-label--blue-france fr-background-alt--blue-france fr-p-1w fr-m-0 fr-border-radius--8"
-                  aria-hidden="true"
-                />
-                <h2 className="fr-page-title fr-h5 fr-mb-0">
-                  Structure employeuse
-                </h2>
-              </div>
-              <StructureEmployeuse
-                {...structureEmployeuse}
-                isLieuActivite={matchingLieuActivite != null}
-              />
+            <StructureEmployeuse
+              {...structureEmployeuse}
+              isLieuActivite={matchingLieuActivite != null}
+            >
               {structureEmployeuse.nomReferent && (
                 <>
                   <hr className="fr-mt-6v fr-pb-6v" />
@@ -106,7 +96,7 @@ const MaStructureEmployeusePage = async () => {
                   <UpdateStructure />
                 </>
               )}
-            </div>
+            </StructureEmployeuse>
           ) : (
             <div className="fr-text--center fr-background-alt--blue-france fr-border-radius--8 fr-p-6w">
               <h2 className="fr-h6 fr-mb-1v">

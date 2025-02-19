@@ -1,9 +1,12 @@
 import React from 'react'
+import Link from 'next/link'
 import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import Contract from '@app/web/components/conseiller-numerique/Contract'
 import { StructureEmployeuse } from '@app/web/components/structure/StructureEmployeuse'
+import { ReferentStructure } from '@app/web/components/structure/ReferentStructure'
+import { AlerteFinContrat } from '@app/web/conseiller-numerique/getContractInfo'
 import Identity from './Identity'
 import { LieuxActivites } from './LieuxActivites'
 import { Statistiques } from './Statistiques'
@@ -21,7 +24,7 @@ export const MediateurDetailPage = ({
 }: {
   id: string
   user: { name: string | null; email: string; phone: string | null }
-  conseillerNumerique: { id: string } | null
+  conseillerNumerique: { id: string; idPg: number | null } | null
   statistiques: { beneficiairesAccompagnes: number; accompagnements: number }
   structureEmployeuse: {
     id: string
@@ -35,13 +38,16 @@ export const MediateurDetailPage = ({
       siret: string | null
       rna: string | null
       typologies: string[]
+      nomReferent: string | null
+      courrielReferent: string | null
+      telephoneReferent: string | null
     }
   } | null
   contract: {
     type: string
     start: string | null
     end: string | null
-    finDeContrat: boolean | null
+    finDeContrat: AlerteFinContrat | null
   } | null
   lieuxActivites: {
     id: string
@@ -87,17 +93,39 @@ export const MediateurDetailPage = ({
         )}
         {coordinateurView && conseillerNumerique?.id != null && contract && (
           <section className="fr-mt-6v">
-            <Contract isCoordinateur={false} {...contract} />
+            <Contract
+              isCoordinateur={false}
+              {...contract}
+              idPGConum={conseillerNumerique.idPg}
+            />
           </section>
         )}
         {structureEmployeuse != null && (
           <section className="fr-mt-6v">
             <StructureEmployeuse
-              showTitle
               isLieuActivite={false}
               id={structureEmployeuse.id}
               {...structureEmployeuse.structure}
-            />
+            >
+              {coordinateurView &&
+                structureEmployeuse.structure.nomReferent != null && (
+                  <>
+                    <div className="fr-background-alt--blue-france fr-p-6v fr-border-radius--16 fr-mt-6v">
+                      <ReferentStructure {...structureEmployeuse.structure} />
+                    </div>
+                    {conseillerNumerique?.id != null && (
+                      <em className="fr-text--xs fr-text-mention--grey fr-mb-0 fr-mt-6v">
+                        Si vous constatez une erreur sur les informations
+                        concernant cette structure, veuillez contacter le
+                        support du dispositif conseiller numérique&nbsp;:&nbsp;
+                        <Link href="mailto:conseiller-numerique@anct.gouv.fr">
+                          conseiller-numerique@anct.gouv.fr
+                        </Link>
+                      </em>
+                    )}
+                  </>
+                )}
+            </StructureEmployeuse>
           </section>
         )}
         <section className="fr-mt-6v">
