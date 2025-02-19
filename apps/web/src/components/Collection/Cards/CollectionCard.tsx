@@ -20,7 +20,7 @@ const CollectionCard = ({
   const resourcesCount = collection._count.resources
 
   const href = `/collections/${collection.slug}`
-
+ 
   return (
     <article
       className={classNames(styles.card, 'fr-border', 'fr-border-radius--8')}
