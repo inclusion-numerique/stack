@@ -40,7 +40,7 @@ const CollectionMetaData = ({
     <div className="fr-flex fr-justify-content-space-between fr-align-items-center fr-my-2v">
       <div className="fr-flex fr-flex-gap-2v fr-text--sm fr-mb-0 fr-text-mention--grey">
         <span className="fr-icon-file-text-line fr-icon--sm" />
-        <b>{count}</b>
+        {count}
         <span
           className={
             hideRessourceLabelOnSmallDevices ? 'fr-hidden fr-unhidden-sm' : ''

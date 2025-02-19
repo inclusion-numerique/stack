@@ -2,7 +2,6 @@ import classNames from 'classnames'
 import React from 'react'
 import Link from 'next/link'
 import { CollectionListItem } from '@app/web/server/collections/getCollectionsList'
-import OwnershipInformation from '@app/web/components/OwnershipInformation'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import CollectionMetaData from '../CollectionMetaData'
 import Images from '../Images'
@@ -36,12 +35,6 @@ const CollectionCard = ({
       </Link>
       <div className={styles.content}>
         <div>
-          <OwnershipInformation
-            className="fr-mb-4v"
-            base={collection.base}
-            user={collection.createdBy}
-            attributionWording="none"
-          />
           <Link href={href} data-testid="collection-card-link">
             <h3 className={classNames(styles.title, 'fr-h6')}>
               {collection.title}
@@ -61,13 +54,13 @@ const CollectionCard = ({
             Par&nbsp;
             {collection.isPublic ? (
               <Link
-                href={`/profils/${user?.slug}`}
+                href={`/profils/${collection.createdBy.slug}`}
                 className="fr-link fr-position-relative fr-link--xs"
               >
-                {user?.name}
+                {collection.createdBy.name}
               </Link>
             ) : (
-              user?.name
+              collection.createdBy.name
             )}
           </span>
         )}
