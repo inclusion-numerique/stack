@@ -38,10 +38,17 @@ const Page = async ({
     lieuxActivites,
   } = mediateurPageData
 
+  const coordinateionEnd = mediateur.coordinations[0]?.suppression ?? undefined
+
   return (
     <MediateurDetailPage
       {...mediateur}
-      href="/coop/mon-equipe"
+      coordinationEnd={coordinateionEnd}
+      href={
+        coordinateionEnd == null
+          ? '/coop/mon-equipe'
+          : '/coop/mon-equipe/anciens-membres'
+      }
       statistiques={statistiques}
       structureEmployeuse={structureEmployeuse}
       contract={contract}
