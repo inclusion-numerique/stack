@@ -18,6 +18,7 @@ const Collections = ({
   emptyBox,
   baseId,
   user,
+  isOwner = false,
 }: {
   user: SessionUser | null
   collections: CollectionListItem[]
@@ -26,6 +27,7 @@ const Collections = ({
   withCreation: boolean
   emptyBox?: ReactNode
   baseId?: string
+  isOwner?: boolean
 }) => {
   const favoriteCollection = collections.find((c) => c.isFavorites)
   const otherCollections = collections.filter((c) => !c.isFavorites)
@@ -58,7 +60,12 @@ const Collections = ({
           </div>
           <div className={styles.tabCards}>
             {combinedCollections.map((collection) => (
-              <CollectionCard collection={collection} key={collection.id} />
+              <CollectionCard
+                user={user}
+                collection={collection}
+                key={collection.id}
+                isOwner={isOwner}
+              />
             ))}
             {combinedCollections.length === 1 && !!favoriteCollection && (
               <EmptyBox className="fr-flex fr-justify-content-center">

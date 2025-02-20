@@ -2,11 +2,21 @@ import classNames from 'classnames'
 import React from 'react'
 import Link from 'next/link'
 import { CollectionListItem } from '@app/web/server/collections/getCollectionsList'
+import CollectionActions from '@app/web/components/Collection/CollectionActions'
+import { SessionUser } from '@app/web/auth/sessionUser'
 import CollectionMetaData from '../CollectionMetaData'
 import Images from '../Images'
 import styles from './CollectionCard.module.css'
 
-const CollectionCard = ({ collection }: { collection: CollectionListItem }) => {
+const CollectionCard = ({
+  collection,
+  user,
+  isOwner,
+}: {
+  collection: CollectionListItem
+  user: SessionUser | null
+  isOwner: boolean
+}) => {
   // eslint-disable-next-line no-underscore-dangle
   const resourcesCount = collection._count.resources
 
@@ -71,6 +81,14 @@ const CollectionCard = ({ collection }: { collection: CollectionListItem }) => {
               context="card"
               hideRessourceLabelOnSmallDevices
             />
+            {!collection.isFavorites && (
+              <CollectionActions
+                collection={collection}
+                isOwner={isOwner}
+                user={user}
+                context="card"
+              />
+            )}
           </div>
         )}
       </div>

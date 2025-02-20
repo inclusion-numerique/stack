@@ -63,6 +63,7 @@ const SaveCollectionButton = ({
       <OpenSaveCollectionModalButton
         {...buttonProps}
         iconId={icon}
+        context={context}
         nativeButtonProps={{
           'data-testid': dataTestid,
         }}
@@ -86,7 +87,7 @@ const SaveCollectionButton = ({
         }),
       }}
     >
-      <span className={classNames('fr-mr-1w', icon)} />
+      <span className={classNames(context === 'view' && 'fr-mr-1w', icon)} />
       {buttonTitle}
     </Button>
   )

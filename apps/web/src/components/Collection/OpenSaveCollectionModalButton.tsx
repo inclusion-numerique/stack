@@ -7,19 +7,21 @@ import { SaveCollectionDynamicModal } from '@app/web/components/Collection/SaveC
 
 const OpenSaveCollectionModalButton = ({
   collectionId,
+  context,
   buttonTitle,
   iconId,
   ...buttonProps
 }: ButtonProps.Common &
   ButtonProps.AsButton & {
     collectionId: string
+    context: 'view' | 'card'
     buttonTitle?: string
     iconId: string
   }) => {
   const open = SaveCollectionDynamicModal.useOpen()
   return (
     <Button {...buttonProps} onClick={() => open({ collectionId })}>
-      <span className={classNames('fr-mr-1w', iconId)} />
+      <span className={classNames(context === 'view' && 'fr-mr-1w', iconId)} />
       {buttonTitle}
     </Button>
   )
