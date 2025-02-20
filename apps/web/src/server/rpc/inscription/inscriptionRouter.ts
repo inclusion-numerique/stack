@@ -619,7 +619,9 @@ export const inscriptionRouter = router({
         userId,
         nom: 'ValiderInscription',
         duration: stopwatch.stop().duration,
-        data: {},
+        data: {
+          id: userId,
+        },
       })
     }),
   addMediationNumeriqueToCoordinateur: protectedProcedure.mutation(

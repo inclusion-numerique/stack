@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 
 const Page = () => {
-  redirect('/administration/structures')
+  redirect('/administration/utilisateurs')
   return null
 }
 

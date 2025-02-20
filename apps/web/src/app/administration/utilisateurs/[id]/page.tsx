@@ -25,6 +25,7 @@ import { findConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-num
 import { isUserInscriptionEnCours } from '@app/web/auth/isUserInscriptionEnCours'
 import { isConseillerNumeriqueV1DataWithActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/isConseillerNumeriqueV1WithActiveMiseEnRelation'
 import { countCrasConseillerNumeriqueV1 } from '@app/web/v1/v1CraQueries'
+import ResetUserInscriptionButton from '@app/web/app/administration/utilisateurs/[id]/ResetUserInscriptionButton'
 
 export const metadata = {
   title: metadataTitle('Utilisateurs - Détails'),
@@ -241,7 +242,10 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
           },
         ]}
       />
-      <AdministrationTitle icon="fr-icon-user-line">
+      <AdministrationTitle
+        icon="fr-icon-user-line"
+        actions={<ResetUserInscriptionButton userId={id} />}
+      >
         {name} <span className="fr-mx-1v" />{' '}
         {getUserLifecycleBadge(user, { small: false })}
       </AdministrationTitle>

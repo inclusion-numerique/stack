@@ -938,6 +938,7 @@ model RdvAccount {
 enum MutationName {
   ValiderInscription                       @map("valider_inscription")
   ModifierUtilisateur                      @map("modifier_utilisateur")
+  ResetInscription                         @map("reset_inscription")
   UsurperUtilisateur                       @map("usurper_utilisateur")
   CreerMediateur                           @map("creer_mediateur")
   ModifierMediateur                        @map("modifier_mediateur")
