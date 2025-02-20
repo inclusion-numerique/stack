@@ -8,9 +8,3 @@
     grid-template-columns: repeat(2, 1fr); /* 2 columns */
   }
 }
-
-.tabCards {
-  @media (min-width: 48em) {
-    margin: 0 -32px;
-  }
-}

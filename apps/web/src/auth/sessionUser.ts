@@ -11,7 +11,7 @@ import type {
 
 export type SessionUserCollectionFragment = Pick<
   Collection,
-  'id' | 'isPublic' | 'title' | 'slug'
+  'id' | 'isPublic' | 'title' | 'slug' | 'isFavorites'
 > & {
   resources: Pick<CollectionResource, 'resourceId'>[]
 }

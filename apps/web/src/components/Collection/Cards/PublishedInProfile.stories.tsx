@@ -30,9 +30,11 @@ const VisitorCollectionInProfileArguments: ComponentProps<
   collection: {
     ...collectionInProfile,
     isPublic: true,
+    isFavorites: false,
     slug: `${collectionInProfile.slug}-1`,
   },
   user: testSessionUser,
+  isOwner: false,
 }
 
 // contributeur qui voit une collection privée dans un profil
@@ -42,10 +44,20 @@ const ContributorPrivateCollectionInProfileArguments: ComponentProps<
   collection: {
     ...collectionInProfile,
     isPublic: false,
+    isFavorites: false,
     slug: `${collectionInBase.slug}-2`,
     createdBy: testSessionUser,
   },
   user: creatorUser,
+  isOwner: false,
+}
+
+// contributeur qui voit une collection depuis son profil et qui est propriétaire de la collection
+const ContributorOwnerCollectionInProfileArguments: ComponentProps<
+  typeof CollectionCard
+> = {
+  ...ContributorPrivateCollectionInProfileArguments,
+  isOwner: true,
 }
 
 export const PublishedInProfile: Story = mediumContainerStory({
@@ -59,6 +71,7 @@ export const PublishedInProfile: Story = mediumContainerStory({
     <>
       <Template {...VisitorCollectionInProfileArguments} />
       <Template {...ContributorPrivateCollectionInProfileArguments} />
+      <Template {...ContributorOwnerCollectionInProfileArguments} />
     </>
   ),
 })
@@ -75,6 +88,7 @@ export const PublishedInProfileMobile: Story = mobileStory({
     <>
       <Template {...VisitorCollectionInProfileArguments} />
       <Template {...ContributorPrivateCollectionInProfileArguments} />
+      <Template {...ContributorOwnerCollectionInProfileArguments} />
     </>
   ),
 })

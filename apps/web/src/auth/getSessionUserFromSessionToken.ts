@@ -7,6 +7,7 @@ const userCollectionFragment = {
     id: true,
     slug: true,
     isPublic: true,
+    isFavorites: true,
     title: true,
     resources: {
       select: { resourceId: true },
@@ -14,9 +15,14 @@ const userCollectionFragment = {
     },
   },
   where: { deleted: null, baseId: null },
-  orderBy: {
-    title: 'asc',
-  },
+  orderBy: [
+    {
+      isFavorites: 'desc',
+    },
+    {
+      title: 'asc',
+    },
+  ],
 } satisfies {
   select: Prisma.CollectionSelect
   where: Prisma.CollectionWhereInput
@@ -29,6 +35,7 @@ const baseCollectionFragment = {
   select: {
     id: true,
     isPublic: true,
+    isFavorites: true,
     title: true,
     slug: true,
     resources: {

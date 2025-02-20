@@ -25,9 +25,11 @@ const VisitorCollectionInBaseArguments: ComponentProps<typeof CollectionCard> =
     collection: {
       ...collectionInBase,
       isPublic: true,
+      isFavorites: false,
       slug: `${collectionInBase.slug}-1`,
     },
     user: testSessionUser,
+    isOwner: false,
   }
 
 // contributeur qui voit une collection privée dans une base
@@ -37,10 +39,12 @@ const ContributorPrivateCollectionInBaseArguments: ComponentProps<
   collection: {
     ...collectionInBase,
     isPublic: false,
+    isFavorites: false,
     slug: `${collectionInBase.slug}-2`,
     createdBy: testSessionUser,
   },
   user: creatorUser,
+  isOwner: false,
 }
 
 export const PublishedInBase: Story = mediumContainerStory({

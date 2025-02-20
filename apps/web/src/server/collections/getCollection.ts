@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client'
-import { prismaClient } from '@app/web/prismaClient'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import { prismaClient } from '@app/web/prismaClient'
 import {
   computeResourcesListWhereForUser,
   resourceListSelect,
@@ -15,6 +15,7 @@ export const collectionSelect = (user: Pick<SessionUser, 'id'> | null) =>
     slug: true,
     description: true,
     isPublic: true,
+    isFavorites: true,
     deleted: true,
     image: {
       select: {
@@ -81,6 +82,14 @@ export const getCollection = async (
   const collection = await prismaClient.collection.findFirst({
     select: collectionSelect(user),
     where: { id, slug, deleted: null },
+    orderBy: [
+      {
+        isFavorites: 'desc',
+      },
+      {
+        created: 'asc',
+      },
+    ],
   })
 
   return collection == null

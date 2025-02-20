@@ -88,6 +88,7 @@ export const Dropdown = ({
           title={title}
           type="button"
           size={size}
+          data-testid="more-actions-button"
           {...modal.buttonProps}
         >
           {control}
@@ -116,6 +117,7 @@ export const Dropdown = ({
           aria-expanded="false"
           aria-controls={formattedId}
           ref={buttonRef}
+          data-testid="more-actions-button"
         >
           {control}
         </Button>
