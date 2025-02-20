@@ -3,7 +3,8 @@ import { ComponentProps } from 'react'
 import { mediumContainerStory, mobileStory } from '@app/storybook/storyHelper'
 import { CollectionListWrapper } from '@app/storybook/components/CollectionListWrapper'
 import CollectionCard from '@app/web/components/Collection/Cards/CollectionCard'
-import { collectionInBase } from './cardsStoriesHelpers'
+import { testSessionUser } from '@app/web/test/testSessionUser'
+import { collectionInBase, creatorUser } from './cardsStoriesHelpers'
 
 export default {
   title: 'Collection/Collections publiée dans une base',
@@ -31,6 +32,8 @@ const VisitorCollectionInBaseArguments: ComponentProps<typeof CollectionCard> =
       slug: `${collectionInBase.slug}-1`,
       ...dates,
     },
+    user: testSessionUser,
+    isOwner: false,
   }
 
 // contributeur qui voit une collection privée dans une base
@@ -44,6 +47,8 @@ const ContributorPrivateCollectionInBaseArguments: ComponentProps<
     slug: `${collectionInBase.slug}-2`,
     ...dates,
   },
+  user: creatorUser,
+  isOwner: false,
 }
 
 export const PublishedInBase: Story = mediumContainerStory({

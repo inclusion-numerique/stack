@@ -3,7 +3,12 @@ import { ComponentProps } from 'react'
 import { mediumContainerStory, mobileStory } from '@app/storybook/storyHelper'
 import { CollectionListWrapper } from '@app/storybook/components/CollectionListWrapper'
 import CollectionCard from '@app/web/components/Collection/Cards/CollectionCard'
-import { collectionInBase, collectionInProfile } from './cardsStoriesHelpers'
+import { testSessionUser } from '@app/web/test/testSessionUser'
+import {
+  collectionInBase,
+  collectionInProfile,
+  creatorUser,
+} from './cardsStoriesHelpers'
 
 export default {
   title: 'Collection/Collections publiée dans un profil',
@@ -34,6 +39,8 @@ const VisitorCollectionInProfileArguments: ComponentProps<
     slug: `${collectionInProfile.slug}-1`,
     ...dates,
   },
+  user: testSessionUser,
+  isOwner: false,
 }
 
 // contributeur qui voit une collection privée dans un profil
@@ -47,6 +54,8 @@ const ContributorPrivateCollectionInProfileArguments: ComponentProps<
     slug: `${collectionInBase.slug}-2`,
     ...dates,
   },
+  user: creatorUser,
+  isOwner: false,
 }
 
 // contributeur qui voit une collection depuis son profil et qui est propriétaire de la collection
