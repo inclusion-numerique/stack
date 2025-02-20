@@ -36,11 +36,13 @@ import { RdbUser } from '@app/scaleway/rdb-user'
 import { createJobExecutionCron } from '@app/cdk/createJobExecutionCron'
 
 export const webAppStackVariables = [
-  'WEB_CONTAINER_IMAGE',
+  'BREVO_USERS_LIST_ID',
   'SCW_DEFAULT_ORGANIZATION_ID',
   'SCW_PROJECT_ID',
+  'WEB_CONTAINER_IMAGE',
 ] as const
 export const webAppStackSensitiveVariables = [
+  'BREVO_API_KEY',
   'SCW_ACCESS_KEY',
   'SCW_SECRET_KEY',
   'DATABASE_PASSWORD',
@@ -191,6 +193,7 @@ export class WebAppStack extends TerraformStack {
       namespaceId: containerNamespace.namespaceId,
       registryImage: environmentVariables.WEB_CONTAINER_IMAGE.value,
       environmentVariables: {
+        BREVO_USERS_LIST_ID: environmentVariables.BREVO_USERS_LIST_ID.value,
         EMAIL_FROM_ADDRESS: emailFromAddress,
         EMAIL_FROM_NAME: emailFromName,
         STACK_WEB_IMAGE: environmentVariables.WEB_CONTAINER_IMAGE.value,
@@ -203,6 +206,9 @@ export class WebAppStack extends TerraformStack {
         SCW_DEFAULT_REGION: region,
       },
       secretEnvironmentVariables: {
+        BREVO_API_KEY: isMain
+          ? sensitiveEnvironmentVariables.BREVO_API_KEY.value
+          : '',
         DATABASE_URL: databaseUrl,
         PROCONNECT_CLIENT_SECRET: isMain
           ? sensitiveEnvironmentVariables.PROCONNECT_MAIN_CLIENT_SECRET.value

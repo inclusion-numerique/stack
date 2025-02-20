@@ -12,7 +12,8 @@ const roleNextPageMap: Map<
   ProfileInscriptionSlug,
   (lieuActiviteCount: number) => string
 > = new Map([
-  ['coordinateur', (_: number) => `coordinateur/accompagnement`],
+  ['coordinateur', () => `coordinateur/accompagnement`],
+  ['coordinateur-conseiller-numerique', () => `coordinateur/accompagnement`],
   [
     'conseiller-numerique',
     (lieuActiviteCount: number) =>
