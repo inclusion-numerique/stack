@@ -3,7 +3,6 @@ import type { Prisma } from '@prisma/client'
 
 export const structureToPrismaModel = (
   structure: LieuStandardMediationNumerique,
-  now: Date,
 ): Prisma.StructureCreateManyInput => ({
   nom: structure.nom,
   latitude: structure.latitude,
@@ -36,5 +35,5 @@ export const structureToPrismaModel = (
   services: structure.services?.split('|'),
   structureParente: structure.structure_parente,
   structureCartographieNationaleId: structure.id === '' ? null : structure.id,
-  modification: now,
+  modification: new Date(structure.date_maj),
 })
