@@ -69,6 +69,7 @@ const SaveCollectionButton = ({
         className={className}
         collectionId={collection.id}
         priority={priority}
+        buttonTitle={buttonTitle}
       />
     )
   }
