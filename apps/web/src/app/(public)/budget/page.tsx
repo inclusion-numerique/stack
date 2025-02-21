@@ -17,12 +17,9 @@ const BudgetPage = () => (
       id={contentId}
       className="fr-container landing-main-container fr-my-8w"
     >
-      <h1>
-        Budget de {' '}
-        {process.env.NEXT_PUBLIC_APP_NAME}
-      </h1>
+      <h1>Budget de {process.env.NEXT_PUBLIC_APP_NAME}</h1>
       <p>
-      {process.env.NEXT_PUBLIC_APP_NAME} est un service public numérique
+        {process.env.NEXT_PUBLIC_APP_NAME} est un service public numérique
         développé au sein de l’Incubateur des territoires de l’Agence Nationale
         de la Cohésion des Territoires (ANCT). C’est la raison pour laquelle
         nous sommes transparents sur les ressources allouées et la manière dont
@@ -46,14 +43,14 @@ const BudgetPage = () => (
       <p>
         Membres de l’équipe : - Manon Galle, Intrapreneuse - Thibault Rouveyrol,
         Responsable de produit - Hugues Maignol, Développeur - Kevin Gallet,
-        Développeur - Sylvain Aubry, Designer - Alexandre Martinez, Chargé de 
-        déploiement/support - Sarah Ouali, Chargée de déploiement/support - 
+        Développeur - Sylvain Aubry, Designer - Alexandre Martinez, Chargé de
+        déploiement/support - Sarah Ouali, Chargée de déploiement/support -
         Timothée Gillet, Chargé de déploiement/support.
       </p>
       <p>
         L’ensemble des membres de l’équipe ne sont pas à temps plein sur le
-        développement de {process.env.NEXT_PUBLIC_APP_NAME} mais développe, 
-        en parallèle, d’autres produits numériques pour l’ANCT.
+        développement de {process.env.NEXT_PUBLIC_APP_NAME} mais développe, en
+        parallèle, d’autres produits numériques pour l’ANCT.
       </p>
 
       <h2>Budget</h2>
