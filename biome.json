@@ -251,6 +251,11 @@
       "bracketSpacing": true
     }
   },
+  "css": {
+    "parser": {
+      "cssModules": true
+    }
+  },
   "overrides": [
     {
       "include": ["*.spec.ts", "*.integration.ts", "*.jest.ts"],
