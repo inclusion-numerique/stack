@@ -6,6 +6,7 @@ import React, {
   KeyboardEvent,
   MouseEvent as ReactMouseEvent,
   ReactNode,
+  useEffect,
   useRef,
 } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
@@ -44,6 +45,7 @@ export const Dropdown = ({
   'data-testid'?: string
 }) => {
   const formattedId = id.replace('-', '_')
+  const [isOpen, setIsOpen] = React.useState(false)
 
   const modal = createModal({
     id: formattedId,
@@ -52,6 +54,10 @@ export const Dropdown = ({
 
   const buttonRef = useRef<HTMLButtonElement>(null)
   const collapseRef = useRef<HTMLDivElement>(null)
+
+  const handleButtonClick = React.useCallback(() => {
+    setIsOpen((previous) => !previous)
+  }, [])
 
   const onClickOrEnterInsideDropdown = (
     event: KeyboardEvent<HTMLDivElement> | ReactMouseEvent<HTMLDivElement>,
@@ -71,12 +77,14 @@ export const Dropdown = ({
       return
     }
 
-    if (buttonRef.current?.getAttribute('aria-expanded') !== 'true') {
-      return
-    }
-
-    buttonRef.current.click()
+    setIsOpen(false)
   })
+
+  useEffect(() => {
+    if (buttonRef.current) {
+      buttonRef.current.setAttribute('aria-expanded', `${isOpen}`)
+    }
+  }, [isOpen])
 
   return (
     <>
@@ -116,25 +124,28 @@ export const Dropdown = ({
           title={title}
           type="button"
           size={size}
-          aria-expanded="false"
+          aria-expanded={isOpen}
           aria-controls={formattedId}
           ref={buttonRef}
           data-testid={dataTestId}
+          onClick={handleButtonClick}
         >
           {control}
         </Button>
-        {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
-        <div
-          role="navigation"
-          className="fr-collapse fr-dropdown__pane fr-mr-1v"
-          style={{ [alignRight ? 'right' : 'left']: 0 }}
-          id={formattedId}
-          ref={collapseRef}
-          onClick={onClickOrEnterInsideDropdown}
-          onKeyDown={onClickOrEnterInsideDropdown}
-        >
-          {children}
-        </div>
+        {isOpen && (
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+          <div
+            role="navigation"
+            className="fr-collapse fr-dropdown__pane fr-mr-1v"
+            style={{ [alignRight ? 'right' : 'left']: 0 }}
+            id={formattedId}
+            ref={collapseRef}
+            onClick={onClickOrEnterInsideDropdown}
+            onKeyDown={onClickOrEnterInsideDropdown}
+          >
+            {children}
+          </div>
+        )}
       </div>
     </>
   )
