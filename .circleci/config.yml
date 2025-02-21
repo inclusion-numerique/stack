@@ -242,15 +242,12 @@ jobs:
               echo "Openapi spec file has changed, please run 'pnpm --silent -F @app/web api-v1-doc:generate' to update the openapi spec file and commit the changes"
               exit 1
             fi
-
       - run:
           name: 'Lint @app/web - eslint'
-          command: pnpm -F '@app/web' lint:eslint
-          no_output_timeout: 10m
+          command: pnpm -F '@app/web' lint:biome
       - run:
           name: 'Lint @app/web - styles'
           command: pnpm -F '@app/web' lint:style
-          no_output_timeout: 4m
       - run:
           name: 'Lint @app/web - api'
           command: pnpm -F '@app/web' lint:api
