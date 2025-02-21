@@ -30,12 +30,8 @@ const Collections = ({
   isOwner?: boolean
 }) => {
   const favoriteCollection = collections.find((c) => c.isFavorites)
-  const otherCollections = collections.filter((c) => !c.isFavorites)
+  const combinedCollections = [...collections, ...savedCollections]
 
-  // Favorite collection does not exist in base collections, so we exclude it
-  const combinedCollections = favoriteCollection
-    ? [favoriteCollection, ...otherCollections, ...savedCollections]
-    : [...otherCollections, ...savedCollections]
   return (
     <div data-testid="collections-list">
       {combinedCollections.length > 0 ? (
