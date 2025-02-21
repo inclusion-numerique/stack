@@ -1,9 +1,9 @@
-import React from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
+import MesBeneficiairesListeEmptyPage from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/(liste)/MesBeneficiairesListeEmptyPage'
 import MesBeneficiairesListeLayout from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/(liste)/MesBeneficiairesListeLayout'
 import MesBeneficiairesListePage from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/(liste)/MesBeneficiairesListePage'
 import { BeneficiairesListPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/(liste)/getBeneficiairesListPageData'
-import MesBeneficiairesListeEmptyPage from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/(liste)/MesBeneficiairesListeEmptyPage'
+import type { Meta, StoryObj } from '@storybook/react'
+import React from 'react'
 
 const TemplateListe = ({ data }: { data: BeneficiairesListPageData }) => (
   <MesBeneficiairesListeLayout>

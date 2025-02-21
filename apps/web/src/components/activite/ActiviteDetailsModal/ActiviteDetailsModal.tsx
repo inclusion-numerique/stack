@@ -1,18 +1,9 @@
 'use client'
 
-import React, { ReactNode, useEffect, useState } from 'react'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
-import Tag from '@codegouvfr/react-dsfr/Tag'
-import Link from 'next/link'
-import classNames from 'classnames'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { createToast } from '@app/ui/toast/createToast'
-import Accordion from '@codegouvfr/react-dsfr/Accordion'
-import Stars from '@app/web/components/Stars'
-import { isBeneficiaireAnonymous } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
-import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
-import { trpc } from '@app/web/trpc'
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
+import { createDupliquerActiviteLink } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/createDupliquerActiviteLink'
+import { createModifierActiviteLink } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/createModifierActiviteLink'
 import {
   genreValues,
   sexLabels,
@@ -21,7 +12,16 @@ import {
   trancheAgeLabels,
   trancheAgeValues,
 } from '@app/web/beneficiaire/beneficiaire'
-import { formatActiviteDayDate } from '@app/web/utils/activiteDayDateFormat'
+import { createParticipantsAnonymesForBeneficiaires } from '@app/web/beneficiaire/createParticipantsAnonymesForBeneficiaires'
+import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
+import { isBeneficiaireAnonymous } from '@app/web/beneficiaire/isBeneficiaireAnonymous'
+import Stars from '@app/web/components/Stars'
+import {
+  ActiviteDetailsDynamicModal,
+  type ActiviteDetailsDynamicModalState,
+} from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsDynamicModal'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import type { ActiviteForList } from '@app/web/cra/activitesQueries'
 import {
   autonomieStars,
   degreDeFinalisationDemarcheHints,
@@ -34,16 +34,16 @@ import {
   typeActiviteIllustrations,
   typeActiviteLabels,
 } from '@app/web/cra/cra'
-import {
-  ActiviteDetailsDynamicModal,
-  type ActiviteDetailsDynamicModalState,
-} from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsDynamicModal'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { createDupliquerActiviteLink } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/createDupliquerActiviteLink'
-import { createModifierActiviteLink } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/createModifierActiviteLink'
-import type { ActiviteForList } from '@app/web/cra/activitesQueries'
-import { createParticipantsAnonymesForBeneficiaires } from '@app/web/beneficiaire/createParticipantsAnonymesForBeneficiaires'
+import { trpc } from '@app/web/trpc'
+import { formatActiviteDayDate } from '@app/web/utils/activiteDayDateFormat'
 import { dureeAsString } from '@app/web/utils/dureeAsString'
+import Accordion from '@codegouvfr/react-dsfr/Accordion'
+import Button from '@codegouvfr/react-dsfr/Button'
+import Tag from '@codegouvfr/react-dsfr/Tag'
+import classNames from 'classnames'
+import Link from 'next/link'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import React, { ReactNode, useEffect, useState } from 'react'
 import styles from './ActiviteDetailsModal.module.css'
 
 const ListItem = ({

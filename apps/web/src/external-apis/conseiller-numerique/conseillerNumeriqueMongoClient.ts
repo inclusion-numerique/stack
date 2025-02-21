@@ -1,7 +1,7 @@
-import * as mongoDB from 'mongodb'
-import { type Collection, type Document, ObjectId } from 'mongodb'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import type { ConseillerNumeriqueV1Collection } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Document'
+import * as mongoDB from 'mongodb'
+import { type Collection, type Document, ObjectId } from 'mongodb'
 
 let client: mongoDB.MongoClient
 

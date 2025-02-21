@@ -1,42 +1,42 @@
 @keyframes rotate-animation {
-    0% {
-        transform: rotate(0deg);
-    }
+  0% {
+    transform: rotate(0deg);
+  }
 
-    50% {
-        transform: rotate(180deg);
-    }
+  50% {
+    transform: rotate(180deg);
+  }
 
-    100% {
-        transform: rotate(360deg);
-    }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .spinner {
-    display: block;
-    font-size:0;
-    mask-repeat: no-repeat;
-    mask-size: 100% 100%;
-    mask-image: url('/images/spinner.svg');
-    animation: rotate-animation 1.2s infinite linear;
-    background: currentcolor;
+  display: block;
+  font-size: 0;
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  mask-image: url("/images/spinner.svg");
+  animation: rotate-animation 1.2s infinite linear;
+  background: currentcolor;
 }
 
 .inline {
-    display: inline-block;
+  display: inline-block;
 }
 
 .spinner--sm {
-    width: 16px;
-    height: 16px;
+  width: 16px;
+  height: 16px;
 }
 
-.spinner--md{
-    width: 24px;
-    height: 24px;
+.spinner--md {
+  width: 24px;
+  height: 24px;
 }
 
-.spinner--lg  {
-    width: 32px;
-    height: 32px;
+.spinner--lg {
+  width: 32px;
+  height: 32px;
 }

@@ -1,12 +1,12 @@
+import {
+  EncodedState,
+  decodeSerializableState,
+} from '@app/web/utils/encodeSerializableState'
 /**
  * We use cursor pagination for the v1 list endpoints
  * See why: https://jsonapi.org/profiles/ethanresnick/cursor-pagination/
  */
-import { z, ZodError } from 'zod'
-import {
-  decodeSerializableState,
-  EncodedState,
-} from '@app/web/utils/encodeSerializableState'
+import { ZodError, z } from 'zod'
 
 /**
  * @openapi

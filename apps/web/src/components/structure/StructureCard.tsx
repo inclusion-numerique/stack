@@ -1,8 +1,8 @@
-import Button from '@codegouvfr/react-dsfr/Button'
-import classNames from 'classnames'
-import { addresseFromParts } from '@app/web/utils/addresseFromParts'
 import type { StructureData } from '@app/web/app/structure/StructureValidation'
 import { typologieStructureLabels } from '@app/web/app/structure/typologieStructure'
+import { addresseFromParts } from '@app/web/utils/addresseFromParts'
+import Button from '@codegouvfr/react-dsfr/Button'
+import classNames from 'classnames'
 
 const StructureCard = ({
   structure: { nom, adresse, rna, siret, codePostal, commune, typologies },

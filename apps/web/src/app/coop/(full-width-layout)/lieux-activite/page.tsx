@@ -1,15 +1,15 @@
-import type { Metadata } from 'next'
-import { redirect } from 'next/navigation'
-import Button from '@codegouvfr/react-dsfr/Button'
-import React from 'react'
-import { authenticateUser } from '@app/web/auth/authenticateUser'
-import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { metadataTitle } from '@app/web/app/metadataTitle'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
+import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { getLieuxActivites } from '@app/web/lieu-activite/getLieuxActivites'
-import { LieuActivite } from './_components/LieuActivite'
+import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import Button from '@codegouvfr/react-dsfr/Button'
+import type { Metadata } from 'next'
+import { redirect } from 'next/navigation'
+import React from 'react'
 import { AucunLieu } from './_components/AucunLieu'
+import { LieuActivite } from './_components/LieuActivite'
 
 export const metadata: Metadata = {
   title: metadataTitle('Mes lieux d’activités'),

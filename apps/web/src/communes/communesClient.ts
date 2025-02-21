@@ -14,7 +14,7 @@ const createCommuneReadline = () => {
   const fileStream = createReadStream(filePath)
   const readline = createInterface({
     input: fileStream,
-    crlfDelay: Infinity, // Recognize all instances of CR LF ('\r\n') in input as a single line break
+    crlfDelay: Number.POSITIVE_INFINITY, // Recognize all instances of CR LF ('\r\n') in input as a single line break
   })
   return readline
 }

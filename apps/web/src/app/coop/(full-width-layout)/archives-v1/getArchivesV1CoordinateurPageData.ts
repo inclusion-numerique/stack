@@ -1,9 +1,9 @@
-import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
+import { getCrasV1Communes } from '@app/web/app/coop/(full-width-layout)/archives-v1/crasConseillerNumeriqueV1Queries'
 import {
   getArchivesV1PageData,
   getArchivesV1PageDataWithCras,
 } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1PageData'
-import { getCrasV1Communes } from '@app/web/app/coop/(full-width-layout)/archives-v1/crasConseillerNumeriqueV1Queries'
+import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
 import { getCoordinateurConseillersCoordonnesV1 } from '@app/web/external-apis/conseiller-numerique/getCoordinateurConseillersCoordonnesV1'
 
 export const getArchivesV1CoordinateurPageData = async ({

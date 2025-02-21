@@ -1,6 +1,6 @@
+import type { ParticipantsAnonymesCraCollectifDataKey } from '@app/web/cra/ParticipantsAnonymesCraCollectifValidation'
 import { participantsAnonymesDefault } from '@app/web/cra/participantsAnonymes'
 import { Genre, StatutSocial, TrancheAge } from '@prisma/client'
-import type { ParticipantsAnonymesCraCollectifDataKey } from '@app/web/cra/ParticipantsAnonymesCraCollectifValidation'
 
 describe('participantsAnonymes', () => {
   /**

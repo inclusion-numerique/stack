@@ -1,6 +1,6 @@
-import { NextRequest } from 'next/server'
 import { prismaClient } from '@app/web/prismaClient'
 import { getImageData } from '@app/web/server/image/getImageData'
+import { NextRequest } from 'next/server'
 
 const notFoundResponse = () =>
   new Response('', {

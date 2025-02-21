@@ -1,10 +1,10 @@
-import z from 'zod'
 import {
   genreValues,
   statutSocialValues,
   trancheAgeValues,
 } from '@app/web/beneficiaire/beneficiaire'
 import { AdresseBanValidation } from '@app/web/external-apis/ban/AdresseBanValidation'
+import z from 'zod'
 
 export const anneeNaissanceMax = new Date().getFullYear()
 export const anneeNaissanceMin = 1900

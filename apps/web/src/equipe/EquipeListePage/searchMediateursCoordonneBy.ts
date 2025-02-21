@@ -1,11 +1,11 @@
-import { Prisma } from '@prisma/client'
-import { prismaClient } from '@app/web/prismaClient'
 import { takeAndSkipFromPage } from '@app/web/data-table/takeAndSkipFromPage'
 import {
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
   toNumberOr,
 } from '@app/web/data-table/toNumberOr'
+import { prismaClient } from '@app/web/prismaClient'
+import { Prisma } from '@prisma/client'
 
 export type EquipeSearchParams = {
   lignes?: string

@@ -1,4 +1,6 @@
-import Tag from '@codegouvfr/react-dsfr/Tag'
+import ActiviteBeneficiaireCardOpenModalLink from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/ActiviteBeneficiaireCardOpenModalLink'
+import Stars from '@app/web/components/Stars'
+import type { ActiviteForList } from '@app/web/cra/activitesQueries'
 import {
   autonomieStars,
   niveauAtelierStars,
@@ -7,9 +9,7 @@ import {
   typeActiviteIllustrations,
   typeActiviteLabels,
 } from '@app/web/cra/cra'
-import Stars from '@app/web/components/Stars'
-import ActiviteBeneficiaireCardOpenModalLink from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/ActiviteBeneficiaireCardOpenModalLink'
-import type { ActiviteForList } from '@app/web/cra/activitesQueries'
+import Tag from '@codegouvfr/react-dsfr/Tag'
 
 const ActiviteBeneficiaireCard = ({
   activite,

@@ -1,16 +1,16 @@
-import React from 'react'
-import type { Metadata } from 'next'
-import { redirect } from 'next/navigation'
 import { metadataTitle } from '@app/web/app/metadataTitle'
-import {
-  decodeSerializableState,
-  EncodedState,
-} from '@app/web/utils/encodeSerializableState'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
 import { Invitation } from '@app/web/equipe/InvitationValidation'
+import {
+  EncodedState,
+  decodeSerializableState,
+} from '@app/web/utils/encodeSerializableState'
+import type { Metadata } from 'next'
+import { redirect } from 'next/navigation'
+import React from 'react'
+import { JoinTeam } from './_components/JoinTeam'
 import { AlreadyProcessed } from './_components/alreadyProcessed'
 import { getInvitationData } from './_components/getInvitationData'
-import { JoinTeam } from './_components/JoinTeam'
 
 export const metadata: Metadata = {
   title: metadataTitle('Invitation à rejoindre une équipe'),

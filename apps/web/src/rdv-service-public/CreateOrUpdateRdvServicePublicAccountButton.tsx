@@ -1,15 +1,15 @@
 'use client'
 
-import React, { useState } from 'react'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import classNames from 'classnames'
 import { createToast } from '@app/ui/toast/createToast'
-import type { FrIconClassName } from '@codegouvfr/react-dsfr'
-import { useRouter } from 'next/navigation'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { SessionUser } from '@app/web/auth/sessionUser'
-import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { trpc } from '@app/web/trpc'
+import type { FrIconClassName } from '@codegouvfr/react-dsfr'
+import Button from '@codegouvfr/react-dsfr/Button'
+import classNames from 'classnames'
+import { useRouter } from 'next/navigation'
+import React, { useState } from 'react'
 
 /**
  * This creates an account for the user email if it does not exist yet.

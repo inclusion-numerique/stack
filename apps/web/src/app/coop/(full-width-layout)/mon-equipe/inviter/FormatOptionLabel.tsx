@@ -1,5 +1,5 @@
-import React from 'react'
 import { UserRole } from '@app/web/equipe/UserRole'
+import React from 'react'
 import { MediateurToAddOption } from './MediateurToAddOption'
 
 export const FormatOptionLabel = ({

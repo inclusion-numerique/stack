@@ -1,13 +1,13 @@
-import React from 'react'
-import { redirect } from 'next/navigation'
-import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
-import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import { LieuActivitePageContent } from '@app/web/app/lieu-activite/components/LieuActivitePageContent'
 import { getLieuActiviteById } from '@app/web/app/lieu-activite/getLieuActiviteById'
-import BackButton from '@app/web/components/BackButton'
-import { prismaClient } from '@app/web/prismaClient'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
+import BackButton from '@app/web/components/BackButton'
+import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
+import { prismaClient } from '@app/web/prismaClient'
+import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import { redirect } from 'next/navigation'
+import React from 'react'
 
 const LieuActiviteDetailPage = async ({
   params,

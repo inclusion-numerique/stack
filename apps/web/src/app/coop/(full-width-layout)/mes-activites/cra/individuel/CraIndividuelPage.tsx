@@ -1,13 +1,13 @@
-import React from 'react'
-import { DefaultValues } from 'react-hook-form'
 import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDisclamer'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
-import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import CraIndividuelForm from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/individuel/CraIndividuelForm'
-import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
+import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import { type MostUsedBeneficiairesForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import BackButtonWithModal from '@app/web/components/BackButtonWithModal'
-import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
+import { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
+import React from 'react'
+import { DefaultValues } from 'react-hook-form'
 
 export type CraIndividuelPageData = {
   defaultValues: DefaultValues<CraIndividuelData>

@@ -1,11 +1,11 @@
+import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
+import CopyToClipboardButton from '@app/web/components/CopyToClipboardButton'
+import styles from '@app/web/data-table/DataTable.module.css'
+import { searchConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
 import Notice from '@codegouvfr/react-dsfr/Notice'
 import classNames from 'classnames'
 import Link from 'next/link'
 import React from 'react'
-import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
-import { searchConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/searchConseillerNumeriqueV1'
-import styles from '@app/web/data-table/DataTable.module.css'
-import CopyToClipboardButton from '@app/web/components/CopyToClipboardButton'
 
 const AdministrationConseillersNumeriquesV1 = async ({
   recherche,

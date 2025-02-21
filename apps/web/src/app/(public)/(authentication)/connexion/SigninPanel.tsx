@@ -1,14 +1,14 @@
-import { Route } from 'next'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { AuthCard } from '@app/web/app/(public)/(authentication)/AuthCard'
 import { signinErrorMessage } from '@app/web/app/(public)/(authentication)/authenticationErrorMessage'
-import ProConnectSigninButton from '@app/web/app/(public)/(authentication)/connexion/ProConnectSigninButton'
-import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { EmailSigninForm } from '@app/web/app/(public)/(authentication)/connexion/EmailSigninForm'
-import LogoCoop from '@app/web/components/LogoCoop'
+import ProConnectSigninButton from '@app/web/app/(public)/(authentication)/connexion/ProConnectSigninButton'
 import {
   authenticationViaEmailMagicLink,
   authenticationViaProconnect,
 } from '@app/web/auth/authenticationProvider'
+import LogoCoop from '@app/web/components/LogoCoop'
+import { Route } from 'next'
 
 const SigninPanel = ({
   error,

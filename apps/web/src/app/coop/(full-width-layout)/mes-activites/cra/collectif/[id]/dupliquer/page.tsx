@@ -1,7 +1,7 @@
-import { notFound, redirect } from 'next/navigation'
-import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import { getCraCollectifDataDefaultValuesFromExisting } from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/collectif/getCraCollectifDataDefaultValuesFromExisting'
 import { authenticateMediateur } from '@app/web/auth/authenticateUser'
+import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
+import { notFound, redirect } from 'next/navigation'
 
 const DupliquerPage = async ({
   params: { id },

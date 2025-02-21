@@ -1,13 +1,13 @@
 'use client'
 
+import CreerStructureForm from '@app/web/app/inscription/creer-un-lieu-d-activite/CreerStructureForm'
+import CreerStructureSideMenu from '@app/web/app/inscription/creer-un-lieu-d-activite/CreerStructureSideMenu'
+import { CreerStructureData } from '@app/web/app/structure/CreerStructureValidation'
+import IconInSquare from '@app/web/components/IconInSquare'
 import Button from '@codegouvfr/react-dsfr/Button'
+import classNames from 'classnames'
 import React, { useState } from 'react'
 import { DefaultValues } from 'react-hook-form'
-import classNames from 'classnames'
-import CreerStructureForm from '@app/web/app/inscription/creer-un-lieu-d-activite/CreerStructureForm'
-import IconInSquare from '@app/web/components/IconInSquare'
-import { CreerStructureData } from '@app/web/app/structure/CreerStructureValidation'
-import CreerStructureSideMenu from '@app/web/app/inscription/creer-un-lieu-d-activite/CreerStructureSideMenu'
 import styles from './CreerStructurePageContent.module.css'
 
 const CreerStructurePageContent = ({

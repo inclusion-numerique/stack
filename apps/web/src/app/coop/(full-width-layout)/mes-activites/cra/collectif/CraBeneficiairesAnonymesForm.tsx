@@ -1,10 +1,7 @@
 'use client'
 
-import { Control, UseFormSetValue, UseFormWatch } from 'react-hook-form'
-import React, { useCallback } from 'react'
-import PlusMinusNumberFormField from '@app/ui/components/Form/PlusMinusNumberFormField'
 import InlinePlusMinusNumberFormField from '@app/ui/components/Form/InlinePlusMinusNumberFormField'
-import classNames from 'classnames'
+import PlusMinusNumberFormField from '@app/ui/components/Form/PlusMinusNumberFormField'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
 import {
   genreLabels,
@@ -22,6 +19,9 @@ import {
   countTotalStatutSocial,
   countTotalTrancheAge,
 } from '@app/web/cra/participantsAnonymes'
+import classNames from 'classnames'
+import React, { useCallback } from 'react'
+import { Control, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import styles from './CraBeneficiairesAnonymesForm.module.css'
 
 const NonCommuniqueCount = ({

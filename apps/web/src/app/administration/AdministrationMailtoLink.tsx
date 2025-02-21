@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import classNames from 'classnames'
+import Link from 'next/link'
 
 const AdministrationMailtoLink = ({
   email,

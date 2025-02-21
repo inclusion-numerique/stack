@@ -1,13 +1,13 @@
-import type { ActivitesDataTableSearchParams } from '@app/web/cra/ActivitesDataTable'
-import { validateActivitesFilters } from '@app/web/cra/ActivitesFilters'
-import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFiltersOptionsForMediateur'
-import { mediateurHasActivites } from '@app/web/cra/activitesQueries'
-import { getActivitesListPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/getActivitesListPageData'
-import MesActivitesListeLayout from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListeLayout'
-import MesActivitesTableauPage from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/tableau/MesActivitesTableauPage'
 import MesActivitesListeEmptyPage from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListeEmptyPage'
 import MesActivitesListeHeader from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListeHeader'
+import MesActivitesListeLayout from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/MesActivitesListeLayout'
+import { getActivitesListPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/getActivitesListPageData'
+import MesActivitesTableauPage from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/tableau/MesActivitesTableauPage'
 import { authenticateMediateur } from '@app/web/auth/authenticateUser'
+import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFiltersOptionsForMediateur'
+import type { ActivitesDataTableSearchParams } from '@app/web/cra/ActivitesDataTable'
+import { validateActivitesFilters } from '@app/web/cra/ActivitesFilters'
+import { mediateurHasActivites } from '@app/web/cra/activitesQueries'
 
 const MesActivitesVueTableauPage = async ({
   searchParams: rawSearchParams = {},

@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from 'react'
-import { formatDate } from 'date-fns'
-import Badge from '@codegouvfr/react-dsfr/Badge'
-import Button from '@codegouvfr/react-dsfr/Button'
 import Card from '@app/web/components/Card'
 import { Typologies } from '@app/web/components/structure/Typologies'
+import Badge from '@codegouvfr/react-dsfr/Badge'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { formatDate } from 'date-fns'
+import { useState } from 'react'
 
 export const LieuxActivites = ({
   lieuxActivites,

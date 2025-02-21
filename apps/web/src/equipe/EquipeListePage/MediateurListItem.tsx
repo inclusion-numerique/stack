@@ -1,6 +1,6 @@
-import React from 'react'
-import type { AlertProps } from '@codegouvfr/react-dsfr/src/Alert'
 import Badge from '@codegouvfr/react-dsfr/Badge'
+import type { AlertProps } from '@codegouvfr/react-dsfr/src/Alert'
+import React from 'react'
 import { UserRole } from '../UserRole'
 import { type MediateurListProps } from './MediateurList'
 

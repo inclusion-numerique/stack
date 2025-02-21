@@ -1,11 +1,11 @@
 'use client'
 
 import { createToast } from '@app/ui/toast/createToast'
-import { useRouter } from 'next/navigation'
-import classNames from 'classnames'
 import { DeleteBeneficiaireModal } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/DeleteBeneficiaireModal'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
+import classNames from 'classnames'
+import { useRouter } from 'next/navigation'
 
 const DeleteBeneficiaireModalContent = ({
   beneficiaireId,

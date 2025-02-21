@@ -1,6 +1,6 @@
-import React from 'react'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { typologieStructureLabels } from '@app/web/app/structure/typologieStructure'
+import Button from '@codegouvfr/react-dsfr/Button'
+import React from 'react'
 
 export const Typologies = ({
   id,

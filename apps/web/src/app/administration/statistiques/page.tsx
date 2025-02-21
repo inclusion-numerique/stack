@@ -1,16 +1,16 @@
-import { metadataTitle } from '@app/web/app/metadataTitle'
+import { StatistiquesTerritoriales } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_components/StatistiquesTerritoriales'
 import {
   getAccompagnementsCountByDay,
   getAccompagnementsCountByMonth,
 } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getAccompagnementsCountByPeriod'
-import { getBeneficiaireStats } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getBeneficiaireStats'
 import { getActivitesStats } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getActivitesStats'
+import { getBeneficiaireStats } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getBeneficiaireStats'
 import { getTotalCountsStats } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getTotalCountsStats'
-import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
-import { StatistiquesGenerales } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_sections/StatistiquesGenerales'
 import { StatistiquesActivites } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_sections/StatistiquesActivites'
 import { StatistiquesBeneficiaires } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_sections/StatistiquesBeneficiaires'
-import { StatistiquesTerritoriales } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_components/StatistiquesTerritoriales'
+import { StatistiquesGenerales } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_sections/StatistiquesGenerales'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 
 export const metadata = {
   title: metadataTitle('Usurpation'),

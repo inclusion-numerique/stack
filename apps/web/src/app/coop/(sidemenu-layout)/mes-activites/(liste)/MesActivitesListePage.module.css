@@ -3,21 +3,21 @@
 /* We impose manual width to be able to truncate beneficiaire and lieu names */
 
 .dateCell {
-    max-width: 100px;
+  max-width: 100px;
 }
 
 .typeCell {
-    max-width: 276px;
+  max-width: 276px;
 }
 
 .beneficiaireCell {
-    max-width: 209px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  max-width: 209px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .lieuCell {
-    max-width: 209px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  max-width: 209px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

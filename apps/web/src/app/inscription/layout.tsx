@@ -1,10 +1,10 @@
+import MinimalFooter from '@app/web/app/coop/MinimalFooter'
+import InscriptionStepsLayout from '@app/web/app/inscription/(steps)/layout'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
+import Header from '@app/web/components/Header'
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import React, { PropsWithChildren } from 'react'
-import Link from 'next/link'
-import Header from '@app/web/components/Header'
-import InscriptionStepsLayout from '@app/web/app/inscription/(steps)/layout'
-import MinimalFooter from '@app/web/app/coop/MinimalFooter'
-import { authenticateUser } from '@app/web/auth/authenticateUser'
 
 const InscriptionLayout = async ({ children }: PropsWithChildren) => {
   const user = await authenticateUser()

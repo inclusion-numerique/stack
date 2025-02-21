@@ -1,7 +1,7 @@
 import { Access } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/[slug]/_components/Access'
+import { getLieuxActiviteForCartographie } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/_data/getLieuxActiviteForCartographie'
 import type { OutilPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/outilPageData'
 import { getSessionUser } from '@app/web/auth/getSessionUser'
-import { getLieuxActiviteForCartographie } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/_data/getLieuxActiviteForCartographie'
 
 const access = {
   how: 'de vos lieux d’activités sont déjà visibles sur la cartographie.',

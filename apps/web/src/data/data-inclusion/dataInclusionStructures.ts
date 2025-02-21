@@ -1,10 +1,10 @@
 import { createWriteStream } from 'node:fs'
 import { readFile } from 'node:fs/promises'
 import type { Stream } from 'node:stream'
-import { varFile } from '@app/config/varDirectory'
-import axios from 'axios'
 import { createVarDirectory } from '@app/config/createVarDirectory'
+import { varFile } from '@app/config/varDirectory'
 import * as Sentry from '@sentry/nextjs'
+import axios from 'axios'
 
 const dataInclusionStructuresUrl = () =>
   `https://www.data.gouv.fr/fr/datasets/r/4fc64287-e869-4550-8fb9-b1e0b7809ffa`

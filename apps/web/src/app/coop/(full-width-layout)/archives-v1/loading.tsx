@@ -1,5 +1,5 @@
-import { Spinner } from '@app/web/ui/Spinner'
 import ArchivesV1Card from '@app/web/app/coop/(full-width-layout)/archives-v1/ArchivesV1Card'
+import { Spinner } from '@app/web/ui/Spinner'
 
 const Loading = () => (
   <ArchivesV1Card>

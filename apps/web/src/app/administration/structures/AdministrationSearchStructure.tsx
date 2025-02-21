@@ -1,13 +1,13 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
 import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
-import { useRef } from 'react'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import type { SearchStructureResultStructure } from '@app/web/structure/searchStructure'
+import { trpc } from '@app/web/trpc'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { useRef } from 'react'
+import { useForm } from 'react-hook-form'
 
 const AdministrationSearchStructure = () => {
   const form = useForm<{ structure: string }>()

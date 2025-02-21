@@ -1,7 +1,7 @@
 'use client'
 
-import { useMemo, useState } from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
+import { useMemo, useState } from 'react'
 import { QuantifiedShare } from '../quantifiedShare'
 import { ProgressListItem } from './ProgressListItem'
 

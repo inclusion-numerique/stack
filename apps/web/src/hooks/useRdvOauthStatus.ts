@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
 import { SessionUser } from '@app/web/auth/sessionUser'
 import { trpc } from '@app/web/trpc'
+import { useEffect, useState } from 'react'
 
 /**
  *  This hook checks if the user has an OAuth token for RDV

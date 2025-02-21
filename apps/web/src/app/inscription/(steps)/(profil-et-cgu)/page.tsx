@@ -1,7 +1,7 @@
+import ProfilEtCguForm from '@app/web/app/inscription/(steps)/(profil-et-cgu)/ProfilEtCguForm'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
 import LogoCoop from '@app/web/components/LogoCoop'
-import ProfilEtCguForm from '@app/web/app/inscription/(steps)/(profil-et-cgu)/ProfilEtCguForm'
 
 export const metadata = {
   title: metadataTitle('Inscription'),

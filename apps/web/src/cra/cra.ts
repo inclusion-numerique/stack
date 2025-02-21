@@ -1,3 +1,5 @@
+import { labelsToOptions } from '@app/ui/components/Form/utils/options'
+import { dureeAsString } from '@app/web/utils/dureeAsString'
 import {
   Autonomie,
   DegreDeFinalisationDemarche,
@@ -10,8 +12,6 @@ import {
   TypeActivite,
   TypeLieu,
 } from '@prisma/client'
-import { labelsToOptions } from '@app/ui/components/Form/utils/options'
-import { dureeAsString } from '@app/web/utils/dureeAsString'
 
 export const typeActivitePluralLabels: {
   [key in TypeActivite]: string

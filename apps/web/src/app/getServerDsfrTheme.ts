@@ -1,5 +1,5 @@
-import { cookies } from 'next/headers'
 import { dsfrThemeCookie } from '@app/web/app/dsfrThemeCookie'
+import { cookies } from 'next/headers'
 
 export const getServerDsfrTheme = (): 'light' | 'dark' => {
   const cookieStore = cookies()

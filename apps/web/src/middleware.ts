@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import {
   jobTriggerInfoFromRequest,
   rewriteTriggerToJobEndpoint,
 } from '@app/web/jobs/jobTriggerMiddleware'
-import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import { NextRequest, NextResponse } from 'next/server'
 
 const nodeEnvironment = process.env.NODE_ENV
 const isCI = !!process.env.CI

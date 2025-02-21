@@ -1,13 +1,13 @@
 /* eslint-disable no-sparse-arrays */
 
-import type { MesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
-import type { Workbook, Worksheet } from 'exceljs'
-import { numberToPercentage } from '@app/web/utils/formatNumber'
 import { computeProportion } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/allocatePercentages'
+import type { MesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
 import { dureeAccompagnementStatisticsRanges } from '@app/web/cra/cra'
+import { numberToPercentage } from '@app/web/utils/formatNumber'
+import type { Workbook, Worksheet } from 'exceljs'
 import {
-  buildStatistiquesWorksheet,
   type BuildStatistiquesWorksheetInput,
+  buildStatistiquesWorksheet,
 } from './buildStatistiquesWorksheet'
 
 const DATE = new Date('2024-09-11T17:42:00.000Z')

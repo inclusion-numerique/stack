@@ -1,14 +1,14 @@
-import sharp from 'sharp'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { s3 } from '@app/web/server/s3/s3'
+import { imageCropToRegion, isImageCropped } from '@app/web/utils/imageCrop'
 import {
   GetObjectCommand,
   NoSuchKey,
   PutObjectCommand,
 } from '@aws-sdk/client-s3'
-import * as Sentry from '@sentry/nextjs'
 import { Image } from '@prisma/client'
-import { s3 } from '@app/web/server/s3/s3'
-import { imageCropToRegion, isImageCropped } from '@app/web/utils/imageCrop'
-import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import * as Sentry from '@sentry/nextjs'
+import sharp from 'sharp'
 
 const computeImageVersionCacheKey = ({
   id,

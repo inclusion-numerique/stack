@@ -1,5 +1,5 @@
-import { OutilPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/outilPageData'
 import PixOutilAccess from '@app/web/app/coop/(sidemenu-layout)/mes-outils/_components/PixOutilAccess'
+import { OutilPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/outilPageData'
 
 export default {
   title: 'Pix Orga',

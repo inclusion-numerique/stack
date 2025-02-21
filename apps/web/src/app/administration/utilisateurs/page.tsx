@@ -1,11 +1,11 @@
-import { metadataTitle } from '@app/web/app/metadataTitle'
 import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
-import { UtilisateursDataTableSearchParams } from '@app/web/app/administration/utilisateurs/UtilisateursDataTable'
-import { getUtilisateursListPageData } from '@app/web/app/administration/utilisateurs/getUtilisateursListPageData'
-import UtilisateursTable from '@app/web/app/administration/utilisateurs/UtilisateursTable'
-import AdministrationSearchUtilisateur from '@app/web/app/administration/utilisateurs/AdministrationSearchUtilisateur'
 import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
+import AdministrationSearchUtilisateur from '@app/web/app/administration/utilisateurs/AdministrationSearchUtilisateur'
+import { UtilisateursDataTableSearchParams } from '@app/web/app/administration/utilisateurs/UtilisateursDataTable'
+import UtilisateursTable from '@app/web/app/administration/utilisateurs/UtilisateursTable'
+import { getUtilisateursListPageData } from '@app/web/app/administration/utilisateurs/getUtilisateursListPageData'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
+import { metadataTitle } from '@app/web/app/metadataTitle'
 
 export const metadata = {
   title: metadataTitle('Utilisateurs'),

@@ -1,14 +1,14 @@
-import React from 'react'
-import { DefaultValues } from 'react-hook-form'
 import RequiredFieldsDisclamer from '@app/ui/components/Form/RequiredFieldsDisclamer'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
-import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
-import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
 import CraCollectifForm from '@app/web/app/coop/(full-width-layout)/mes-activites/cra/collectif/CraCollectifForm'
-import { AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
+import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
 import { type MostUsedBeneficiairesForSearch } from '@app/web/beneficiaire/getInitialBeneficiairesOptionsForSearch'
 import BackButtonWithModal from '@app/web/components/BackButtonWithModal'
-import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
+import { AdressBanFormFieldOption } from '@app/web/components/form/AdresseBanFormField'
+import { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
+import React from 'react'
+import { DefaultValues } from 'react-hook-form'
 
 export type CraCollectifPageData = {
   defaultValues: DefaultValues<CraCollectifData>

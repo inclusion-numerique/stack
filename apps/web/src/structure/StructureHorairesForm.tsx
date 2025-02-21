@@ -1,7 +1,7 @@
 'use client'
 
-import { StructureDataForForm } from '@app/web/structure/getStructureDataForForm'
 import { stringToOpeningHours } from '@app/web/opening-hours/stringToOpeningHours'
+import { StructureDataForForm } from '@app/web/structure/getStructureDataForForm'
 
 const StructureHorairesForm = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

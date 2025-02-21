@@ -1,6 +1,6 @@
-import React from 'react'
-import classNames from 'classnames'
 import Button from '@codegouvfr/react-dsfr/Button'
+import classNames from 'classnames'
+import React from 'react'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 
 const StatistiqueElement = ({

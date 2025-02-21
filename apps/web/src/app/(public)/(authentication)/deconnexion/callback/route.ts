@@ -1,16 +1,16 @@
-import { NextRequest } from 'next/server'
+import { ProconnectSignoutState } from '@app/web/app/(public)/(authentication)/deconnexion/callback/proconnectSignout'
 import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
 import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
+import { prismaClient } from '@app/web/prismaClient'
 import {
   secureSessionCookie,
   sessionCookie,
 } from '@app/web/security/authentication'
 import {
-  decodeSerializableState,
   EncodedState,
+  decodeSerializableState,
 } from '@app/web/utils/encodeSerializableState'
-import { ProconnectSignoutState } from '@app/web/app/(public)/(authentication)/deconnexion/callback/proconnectSignout'
-import { prismaClient } from '@app/web/prismaClient'
+import { NextRequest } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0

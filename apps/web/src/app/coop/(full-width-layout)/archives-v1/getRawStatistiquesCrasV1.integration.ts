@@ -1,6 +1,6 @@
+import { getRawStatistiquesCrasV1 } from '@app/web/app/coop/(full-width-layout)/archives-v1/computeStatistiquesCrasV1'
 import { closeMongoClient } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 import { importCrasConseillerNumeriqueV1 } from '@app/web/external-apis/conseiller-numerique/importCrasConseillerNumeriqueV1'
-import { getRawStatistiquesCrasV1 } from '@app/web/app/coop/(full-width-layout)/archives-v1/computeStatistiquesCrasV1'
 
 // This test was useful for local development but is too slow and fragile for CI
 describe.skip('getRawStatistiquesCrasV1', () => {

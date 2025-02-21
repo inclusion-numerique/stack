@@ -1,5 +1,5 @@
-import z from 'zod'
 import { StructureValidation } from '@app/web/app/structure/StructureValidation'
+import z from 'zod'
 
 export const LieuxActiviteValidation = z.object({
   userId: z.string().uuid(),

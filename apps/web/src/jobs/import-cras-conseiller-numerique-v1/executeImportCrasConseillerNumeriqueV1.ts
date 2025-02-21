@@ -1,14 +1,14 @@
-import { addWeeks } from 'date-fns'
-import * as Sentry from '@sentry/nextjs'
-import { output } from '@app/web/jobs/output'
-import type { ImportCrasConseillerNumeriqueV1Job } from '@app/web/jobs/import-cras-conseiller-numerique-v1/ImportCrasConseillerNumeriqueV1Job'
+import { vacuumAnalyzeConseillerNumeriqueV1Cras } from '@app/web/external-apis/conseiller-numerique/conseillersNumeriquesCraQueries'
 import {
   firstV1CrasMonth,
   importCrasConseillerNumeriqueV1,
 } from '@app/web/external-apis/conseiller-numerique/importCrasConseillerNumeriqueV1'
-import { vacuumAnalyzeConseillerNumeriqueV1Cras } from '@app/web/external-apis/conseiller-numerique/conseillersNumeriquesCraQueries'
+import type { ImportCrasConseillerNumeriqueV1Job } from '@app/web/jobs/import-cras-conseiller-numerique-v1/ImportCrasConseillerNumeriqueV1Job'
+import { output } from '@app/web/jobs/output'
 import { prismaClient } from '@app/web/prismaClient'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
+import * as Sentry from '@sentry/nextjs'
+import { addWeeks } from 'date-fns'
 
 const createWeeksArrays = ({ from, until }: { from: Date; until: Date }) => {
   const firstWeek = new Date(

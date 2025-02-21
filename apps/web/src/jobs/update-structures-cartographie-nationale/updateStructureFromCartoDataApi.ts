@@ -1,8 +1,8 @@
 import { output } from '@app/cli/output'
-import { SchemaLieuMediationNumerique } from '@gouvfr-anct/lieux-de-mediation-numerique'
 import { prismaClient } from '@app/web/prismaClient'
-import { createStopwatch } from '@app/web/utils/stopwatch'
 import { addMutationLog } from '@app/web/utils/addMutationLog'
+import { createStopwatch } from '@app/web/utils/stopwatch'
+import { SchemaLieuMediationNumerique } from '@gouvfr-anct/lieux-de-mediation-numerique'
 import { structureCartographieNationaleToPrismaModel } from './transform/structureCartographieNationaleToPrismaModel'
 import { structureToPrismaModel } from './transform/structureToPrismaModel'
 

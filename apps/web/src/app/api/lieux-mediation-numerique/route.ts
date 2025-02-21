@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server'
+import { prismaClient } from '@app/web/prismaClient'
 import {
   LieuMediationNumerique,
   toSchemaLieuxDeMediationNumerique,
 } from '@gouvfr-anct/lieux-de-mediation-numerique'
-import { prismaClient } from '@app/web/prismaClient'
+import { NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0

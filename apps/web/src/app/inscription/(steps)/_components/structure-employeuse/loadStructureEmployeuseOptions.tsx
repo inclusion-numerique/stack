@@ -1,9 +1,9 @@
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
-import React from 'react'
-import debounce from 'debounce-promise'
-import { structureCreationDataWithSiretFromUniteLegale } from '@app/web/structure/structuresInfoFromUniteLegale'
-import { rechercheApiEntreprise } from '@app/web/external-apis/rechercheApiEntreprise'
 import type { StructureCreationDataWithSiret } from '@app/web/app/structure/StructureValidation'
+import { rechercheApiEntreprise } from '@app/web/external-apis/rechercheApiEntreprise'
+import { structureCreationDataWithSiretFromUniteLegale } from '@app/web/structure/structuresInfoFromUniteLegale'
+import debounce from 'debounce-promise'
+import React from 'react'
 
 const loadStructureEmployeuseOptions = async (
   search: string,

@@ -1,10 +1,10 @@
 'use client'
 
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { trpc } from '@app/web/trpc'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import { trpc } from '@app/web/trpc'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
 
 const CoordinateurAndMediateur = ({
   horsDispositif,

@@ -1,17 +1,17 @@
 'use client'
 
-import { useState } from 'react'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import { AccompagnementPieChart } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_components/AccompagnementPieChart'
 import { QuantifiedShareLegend } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_components/QuantifiedShareLegend'
-import { numberToString } from '@app/web/utils/formatNumber'
 import type {
   ActivitesStats,
   ActivitesStructuresStats,
 } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getActivitesStats'
 import type { TotalCountsStats } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getTotalCountsStats'
+import { numberToString } from '@app/web/utils/formatNumber'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
+import { useState } from 'react'
 import { ProgressListItem } from '../_components/ProgressListItem'
 import { QuantifiedShareList } from '../_components/QuantifiedShareList'
 import { StatistiqueAccompagnement } from '../_components/StatistiqueAccompagnement'

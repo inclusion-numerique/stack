@@ -1,14 +1,14 @@
-import { type NextRequest, NextResponse } from 'next/server'
-import type { ApiClientScope } from '@prisma/client'
-import { infer as ZodInfer, ZodError } from 'zod'
-import * as Sentry from '@sentry/nextjs'
-import { isAuthenticatedApiClientRequest } from '@app/web/app/api/v1/isAuthenticatedApiClientRequest'
-import { getApiRequestParams } from '@app/web/app/api/v1/getApiRequestParams'
 import {
   ApiV1QueryParamsSchema,
   NoQueryParamsValidation,
   NoQueryParamsValidationType,
 } from '@app/web/app/api/v1/ApiV1QueryParams'
+import { getApiRequestParams } from '@app/web/app/api/v1/getApiRequestParams'
+import { isAuthenticatedApiClientRequest } from '@app/web/app/api/v1/isAuthenticatedApiClientRequest'
+import type { ApiClientScope } from '@prisma/client'
+import * as Sentry from '@sentry/nextjs'
+import { type NextRequest, NextResponse } from 'next/server'
+import { ZodError, infer as ZodInfer } from 'zod'
 
 /**
  * Config to create a safe (Scopes and validate query params) API route

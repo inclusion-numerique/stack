@@ -1,5 +1,5 @@
-import type { ApiClientScope } from '@prisma/client'
 import { labelsToOptions } from '@app/ui/components/Form/utils/options'
+import type { ApiClientScope } from '@prisma/client'
 
 export const apiClientScopeLabels: { [key in ApiClientScope]: string } = {
   Activites: 'Activités',

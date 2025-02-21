@@ -1,5 +1,5 @@
-import { getOrCreateStructureEmployeuse } from '@app/web/server/rpc/inscription/getOrCreateStructureEmployeuse'
 import { prismaClient } from '@app/web/prismaClient'
+import { getOrCreateStructureEmployeuse } from '@app/web/server/rpc/inscription/getOrCreateStructureEmployeuse'
 
 describe('getOrCreateStructureEmployeuse', () => {
   const testSiret = '93429789600011'

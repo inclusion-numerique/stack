@@ -1,6 +1,6 @@
-import { Prisma } from '@prisma/client'
-import type { RawDataTableSqlConfiguration } from '@app/web/data-table/RawDataTableSqlConfiguration'
 import type { ActivitesDataTableConfiguration } from '@app/web/cra/ActivitesDataTableConfiguration'
+import type { RawDataTableSqlConfiguration } from '@app/web/data-table/RawDataTableSqlConfiguration'
+import { Prisma } from '@prisma/client'
 
 export const ActivitesRawSqlConfiguration = {
   date: {

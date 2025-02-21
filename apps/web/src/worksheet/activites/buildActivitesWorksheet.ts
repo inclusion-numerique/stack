@@ -1,4 +1,9 @@
-import * as Excel from 'exceljs'
+import {
+  genreLabels,
+  statutSocialLabels,
+  trancheAgeLabels,
+} from '@app/web/beneficiaire/beneficiaire'
+import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import { ActiviteForList } from '@app/web/cra/activitesQueries'
 import {
   autonomieStars,
@@ -14,21 +19,16 @@ import {
   typeActiviteLabels,
   typeLieuLabels,
 } from '@app/web/cra/cra'
-import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
+import { ActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
 import { booleanToYesNoLabel } from '@app/web/utils/yesNoBooleanOptions'
 import {
-  genreLabels,
-  statutSocialLabels,
-  trancheAgeLabels,
-} from '@app/web/beneficiaire/beneficiaire'
-import { ActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
-import {
+  WorksheetUser,
   addExportMetadata,
   addFilters,
   autosizeColumns,
   setWorkbookMetadata,
-  WorksheetUser,
 } from '@app/web/worksheet/buildWorksheetHelpers'
+import * as Excel from 'exceljs'
 
 export type BuildActivitesWorksheetInput = {
   // This is the user that requested the worksheet, it might not be the same user as the one that owns the activites

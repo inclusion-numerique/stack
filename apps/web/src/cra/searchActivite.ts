@@ -1,12 +1,8 @@
-import { prismaClient } from '@app/web/prismaClient'
 import {
   ActivitesDataTable,
   ActivitesDataTableSearchParams,
 } from '@app/web/cra/ActivitesDataTable'
-import { takeAndSkipFromPage } from '@app/web/data-table/takeAndSkipFromPage'
 import { ActivitesRawSqlConfiguration } from '@app/web/cra/ActivitesRawSqlConfiguration'
-import { orderItemsByIndexedValues } from '@app/web/utils/orderItemsByIndexedValues'
-import { getDataTableSortParams } from '@app/web/data-table/getDefaultDataTableSortParams'
 import {
   activiteAccompagnementsCountSelect,
   activitesBeneficiaireInnerJoin,
@@ -16,11 +12,15 @@ import {
   getActivitesFiltersWhereConditions,
 } from '@app/web/cra/activitesFiltersSqlWhereConditions'
 import { activiteListSelect } from '@app/web/cra/activitesQueries'
+import { getDataTableSortParams } from '@app/web/data-table/getDefaultDataTableSortParams'
+import { takeAndSkipFromPage } from '@app/web/data-table/takeAndSkipFromPage'
 import {
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
   toNumberOr,
 } from '@app/web/data-table/toNumberOr'
+import { prismaClient } from '@app/web/prismaClient'
+import { orderItemsByIndexedValues } from '@app/web/utils/orderItemsByIndexedValues'
 
 type SearchActiviteOptions = {
   mediateurId?: string

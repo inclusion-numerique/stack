@@ -1,3 +1,4 @@
+import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
 import {
   addMonths,
   differenceInMonths,
@@ -5,7 +6,6 @@ import {
   isBefore,
   isValid,
 } from 'date-fns'
-import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
 
 const formatDate = (date?: string | number | Date | null) =>
   date && isValid(date) ? format(date, 'dd/MM/yyyy') : null

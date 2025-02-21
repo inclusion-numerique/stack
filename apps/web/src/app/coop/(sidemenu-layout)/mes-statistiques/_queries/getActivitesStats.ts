@@ -1,12 +1,15 @@
+import { activitesMediateurIdsWhereCondition } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/activitesMediateurIdsWhereCondition'
+import { allocatePercentagesFromRecords } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/allocatePercentages'
 import {
-  Materiel,
-  Thematique,
-  ThematiqueDemarcheAdministrative,
-  TypeActivite,
-  TypeLieu,
-} from '@prisma/client'
-import { snakeCase } from 'change-case'
-import { prismaClient } from '@app/web/prismaClient'
+  createDureesRangesSelect,
+  createEnumArrayCountSelect,
+  createEnumCountSelect,
+} from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/createEnumCountSelect'
+import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
+import {
+  getActiviteFiltersSqlFragment,
+  getActivitesFiltersWhereConditions,
+} from '@app/web/cra/activitesFiltersSqlWhereConditions'
 import {
   dureeAccompagnementStatisticsRanges,
   materielLabels,
@@ -20,19 +23,16 @@ import {
   typeLieuLabels,
   typeLieuValues,
 } from '@app/web/cra/cra'
-import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
-import {
-  getActiviteFiltersSqlFragment,
-  getActivitesFiltersWhereConditions,
-} from '@app/web/cra/activitesFiltersSqlWhereConditions'
-import {
-  createDureesRangesSelect,
-  createEnumArrayCountSelect,
-  createEnumCountSelect,
-} from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/createEnumCountSelect'
-import { allocatePercentagesFromRecords } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/allocatePercentages'
-import { activitesMediateurIdsWhereCondition } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/activitesMediateurIdsWhereCondition'
+import { prismaClient } from '@app/web/prismaClient'
 import { UserProfile } from '@app/web/utils/user'
+import {
+  Materiel,
+  Thematique,
+  ThematiqueDemarcheAdministrative,
+  TypeActivite,
+  TypeLieu,
+} from '@prisma/client'
+import { snakeCase } from 'change-case'
 
 export type ActivitesStatsRaw = {
   total_activites: number

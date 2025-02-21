@@ -1,8 +1,8 @@
-import React, { ComponentProps } from 'react'
 import {
   GenerateUploadedImageSourceSetsInput,
   generateUploadedImageSourceSets,
 } from '@app/web/utils/responsiveImage'
+import React, { ComponentProps } from 'react'
 
 const ResponsiveUploadedImage = ({
   id,

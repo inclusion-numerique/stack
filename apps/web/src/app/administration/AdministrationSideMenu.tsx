@@ -1,8 +1,8 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
 import type { SideMenuProps } from '@codegouvfr/react-dsfr/SideMenu'
 import SideMenu from '@codegouvfr/react-dsfr/SideMenu'
+import { usePathname } from 'next/navigation'
 import styles from '../coop/CoopSideMenu.module.css'
 
 const AdministrationSideMenu = () => {

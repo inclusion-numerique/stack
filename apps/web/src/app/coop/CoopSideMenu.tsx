@@ -1,13 +1,13 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import { CreateCraModalDefinition } from '@app/web/app/coop/(full-width-layout)/mes-activites/CreateCraModalDefinition'
+import { SessionUser } from '@app/web/auth/sessionUser'
+import Button from '@codegouvfr/react-dsfr/Button'
 import type { SideMenuProps } from '@codegouvfr/react-dsfr/SideMenu'
 import SideMenu from '@codegouvfr/react-dsfr/SideMenu'
-import Button from '@codegouvfr/react-dsfr/Button'
 import classNames from 'classnames'
-import { SessionUser } from '@app/web/auth/sessionUser'
-import { CreateCraModalDefinition } from '@app/web/app/coop/(full-width-layout)/mes-activites/CreateCraModalDefinition'
-import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import { usePathname } from 'next/navigation'
 import styles from './CoopSideMenu.module.css'
 
 const onlyFor =

@@ -1,5 +1,5 @@
-import { Meta, StoryObj } from '@storybook/react'
 import SigninPanel from '@app/web/app/(public)/(authentication)/connexion/SigninPanel'
+import { Meta, StoryObj } from '@storybook/react'
 
 const meta: Meta<typeof SigninPanel> = {
   title: 'SigninPanel',

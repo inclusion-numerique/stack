@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useState } from 'react'
-import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
+import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
+import React, { useState } from 'react'
 import { AccueilPageData } from '../getAccueilPageDataFor'
 
 const BeneficiairesStatistiques = ({

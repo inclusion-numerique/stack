@@ -1,5 +1,5 @@
-import type { Prisma } from '@prisma/client'
 import type { LieuStandardMediationNumerique } from '@app/web/data/standard-mediation-numerique/LieuStandardMediationNumerique'
+import type { Prisma } from '@prisma/client'
 
 export const structureToPrismaModel = (
   structure: LieuStandardMediationNumerique,

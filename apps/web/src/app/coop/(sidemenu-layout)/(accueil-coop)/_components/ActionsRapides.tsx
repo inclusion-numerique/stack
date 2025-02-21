@@ -1,7 +1,7 @@
-import React from 'react'
-import Link from 'next/link'
-import { Button } from '@codegouvfr/react-dsfr/Button'
 import { CreateCraModalDefinition } from '@app/web/app/coop/(full-width-layout)/mes-activites/CreateCraModalDefinition'
+import { Button } from '@codegouvfr/react-dsfr/Button'
+import Link from 'next/link'
+import React from 'react'
 
 export const ActionsRapides = () => (
   <>

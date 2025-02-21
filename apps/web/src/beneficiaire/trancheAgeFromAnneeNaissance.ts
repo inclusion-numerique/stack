@@ -1,8 +1,8 @@
-import type { TrancheAge } from '@prisma/client'
 import {
   anneeNaissanceMax,
   anneeNaissanceMin,
 } from '@app/web/beneficiaire/BeneficiaireValidation'
+import type { TrancheAge } from '@prisma/client'
 
 export const trancheAgeFromAnneeNaissance = (
   anneeNaissance?: string | number | null,

@@ -1,4 +1,3 @@
-import z from 'zod'
 import { DescriptionShape } from '@app/web/app/structure/DescriptionValidation'
 import { InformationsGeneralesShape } from '@app/web/app/structure/InformationsGeneralesValidation'
 import { InformationsPratiquesShape } from '@app/web/app/structure/InformationsPratiquesValidation'
@@ -6,6 +5,7 @@ import { ModalitesAccesAuServiceShape } from '@app/web/app/structure/ModalitesAc
 import { ServicesEtAccompagnementShape } from '@app/web/app/structure/ServicesEtAccompagnementValidation'
 import { TypesDePublicsAccueillisShape } from '@app/web/app/structure/TypesDePublicsAccueillisValidation'
 import { VisiblePourCartographieNationaleShape } from '@app/web/app/structure/VisiblePourCartographieNationaleValidation'
+import z from 'zod'
 
 export const CreerLieuActiviteValidation = z.object({
   ...InformationsGeneralesShape,

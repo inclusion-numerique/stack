@@ -1,8 +1,8 @@
+import type { CraDureeData } from '@app/web/cra/CraDureeValidation'
 import {
   craDureeDataToMinutes,
   minutesToCraDureeData,
 } from '@app/web/cra/minutesToCraDuree'
-import type { CraDureeData } from '@app/web/cra/CraDureeValidation'
 
 describe('minutesToCraDuree', () => {
   describe('craDureeDataToMinutes Function', () => {

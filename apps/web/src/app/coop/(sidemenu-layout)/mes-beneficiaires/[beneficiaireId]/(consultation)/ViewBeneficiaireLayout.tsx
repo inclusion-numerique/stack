@@ -1,15 +1,15 @@
-import Button from '@codegouvfr/react-dsfr/Button'
-import type { PropsWithChildren } from 'react'
-import type { Beneficiaire } from '@prisma/client'
-import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
-import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
-import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import BeneficiaireAjouterUneActivite from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/BeneficiaireAjouterUneActivite'
-import type { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { DeleteBeneficiaireModal } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/DeleteBeneficiaireModal'
 import DeleteBeneficiaireModalContent from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/DeleteBeneficiaireModalContent'
-import BackButton from '@app/web/components/BackButton'
+import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import { SessionUser } from '@app/web/auth/sessionUser'
+import type { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireValidation'
+import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
+import BackButton from '@app/web/components/BackButton'
+import Button from '@codegouvfr/react-dsfr/Button'
+import type { Beneficiaire } from '@prisma/client'
+import type { PropsWithChildren } from 'react'
 
 const ViewBeneficiaireLayout = ({
   beneficiaire,

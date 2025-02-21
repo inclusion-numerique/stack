@@ -1,5 +1,5 @@
-import axios from 'axios'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import axios from 'axios'
 
 const stagingApiUrl = 'https://staging.entreprise.api.gouv.fr'
 const productionApiUrl = 'https://entreprise.api.gouv.fr'

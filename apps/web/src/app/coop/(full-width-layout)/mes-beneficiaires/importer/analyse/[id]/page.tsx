@@ -1,7 +1,7 @@
-import React from 'react'
-import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import ImportBeneficiairesAnalyseContent from '@app/web/app/coop/(full-width-layout)/mes-beneficiaires/importer/analyse/[id]/ImportBeneficiairesAnalyseContent'
+import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import BackButton from '@app/web/components/BackButton'
+import React from 'react'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0

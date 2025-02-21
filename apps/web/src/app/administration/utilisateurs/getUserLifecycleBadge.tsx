@@ -1,7 +1,7 @@
-import Badge from '@codegouvfr/react-dsfr/Badge'
-import { UtilisateurForList } from '@app/web/app/administration/utilisateurs/queryUtilisateursForList'
 import { getUserLifecycle } from '@app/web/app/administration/utilisateurs/getUserLifecycle'
+import { UtilisateurForList } from '@app/web/app/administration/utilisateurs/queryUtilisateursForList'
 import { allProfileInscriptionLabels } from '@app/web/inscription/profilInscription'
+import Badge from '@codegouvfr/react-dsfr/Badge'
 
 export const getUserLifecycleBadge = (
   user: Pick<

@@ -1,9 +1,9 @@
-import { useCallback, useMemo, useRef } from 'react'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
-import { trpc } from '@app/web/trpc'
+import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import type { BeneficiaireData } from '@app/web/beneficiaire/BeneficiaireValidation'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
-import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
+import { trpc } from '@app/web/trpc'
+import { useCallback, useMemo, useRef } from 'react'
 
 const beneficiaireOptionRichLabel = (value: BeneficiaireData) => {
   const { communeResidence } = value

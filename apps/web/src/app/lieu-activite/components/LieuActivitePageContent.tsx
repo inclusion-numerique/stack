@@ -1,18 +1,18 @@
 'use client'
 
-import React, { ReactNode, useState } from 'react'
+import LieuActiviteSideMenu from '@app/web/app/coop/(full-width-layout)/lieux-activite/_components/LieuActiviteSideMenu'
 import IconInSquare from '@app/web/components/IconInSquare'
 import { DisplayOnCartography } from '@app/web/components/structure/DisplayOnCartography'
 import { LieuAccueillantPublicTitle } from '@app/web/components/structure/titles/LieuAccueillantPublicTitle'
 import { ServiceInclusionNumeriqueTitle } from '@app/web/components/structure/titles/ServiceInclusionNumeriqueTitle'
-import LieuActiviteSideMenu from '@app/web/app/coop/(full-width-layout)/lieux-activite/_components/LieuActiviteSideMenu'
+import React, { ReactNode, useState } from 'react'
+import VisiblePourCartographieNationaleFields from './VisiblePourCartographieNationaleFields'
 import DescriptionEditCard from './description/DescriptionEditCard'
 import InformationsGeneralesEditCard from './informations-generales/InformationsGeneralesEditCard'
 import InformationsPratiquesEditCard from './informations-pratiques/InformationsPratiquesEditCard'
 import ModalitesAccesAuServiceEditCard from './modalites-acces-au-service/ModalitesAccesAuServiceEditCard'
 import ServicesEtAccompagnementEditCard from './services-et-accompagnement/ServicesEtAccompagnementEditCard'
 import TypesDePublicsAccueillisEditCard from './types-de-publics-accueillis/TypesDePublicsAccueillisEditCard'
-import VisiblePourCartographieNationaleFields from './VisiblePourCartographieNationaleFields'
 
 export const LieuActivitePageContent = ({
   structure,

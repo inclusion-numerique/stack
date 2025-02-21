@@ -1,13 +1,13 @@
-import Button from '@codegouvfr/react-dsfr/Button'
+import DataFilters from '@app/web/data-table/DataFilter/DataFilters'
+import DataSearchBar from '@app/web/data-table/DataSearchBar'
 import {
   DataTableConfiguration,
   DataTableFilterValues,
   DataTableRow,
   DataTableSearchParams,
 } from '@app/web/data-table/DataTableConfiguration'
-import DataSearchBar from '@app/web/data-table/DataSearchBar'
-import DataFilters from '@app/web/data-table/DataFilter/DataFilters'
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
+import Button from '@codegouvfr/react-dsfr/Button'
 
 /**
  * Server component orchestrating the render of search bar and filter client components

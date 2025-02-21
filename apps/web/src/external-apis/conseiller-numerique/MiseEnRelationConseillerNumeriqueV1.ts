@@ -1,5 +1,5 @@
-import { ObjectId } from 'mongodb'
 import type { StructureConseillerNumerique } from '@app/web/external-apis/conseiller-numerique/StructureConseillerNumerique'
+import { ObjectId } from 'mongodb'
 
 export const MiseEnRelationV1MinimalProjection = {
   _id: 1,

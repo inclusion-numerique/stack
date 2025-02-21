@@ -1,12 +1,12 @@
 'use client'
 
-import { createModal } from '@codegouvfr/react-dsfr/Modal'
-import Button from '@codegouvfr/react-dsfr/Button'
-import Tag from '@codegouvfr/react-dsfr/Tag'
 import { createToast } from '@app/ui/toast/createToast'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import type { ActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
 import { download } from '@app/web/utils/download'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { createModal } from '@codegouvfr/react-dsfr/Modal'
+import Tag from '@codegouvfr/react-dsfr/Tag'
 
 const ExportActiviteModal = createModal({
   id: 'export-activites',

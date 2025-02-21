@@ -1,5 +1,5 @@
-import z from 'zod'
 import { profileInscriptionValues } from '@app/web/inscription/profilInscription'
+import z from 'zod'
 
 export const ChoisirProfilEtAccepterCguValidation = z.object({
   userId: z.string().uuid(),

@@ -1,8 +1,8 @@
-import { notFound } from 'next/navigation'
-import { PropsWithChildren } from 'react'
-import { prismaClient } from '@app/web/prismaClient'
 import ViewBeneficiaireLayout from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/ViewBeneficiaireLayout'
 import { authenticateMediateur } from '@app/web/auth/authenticateUser'
+import { prismaClient } from '@app/web/prismaClient'
+import { notFound } from 'next/navigation'
+import { PropsWithChildren } from 'react'
 
 const BeneficiaireLayout = async ({
   params: { beneficiaireId },

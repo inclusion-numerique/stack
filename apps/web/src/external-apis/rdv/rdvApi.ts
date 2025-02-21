@@ -1,7 +1,7 @@
-import axios, { AxiosError } from 'axios'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
 import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { prismaClient } from '@app/web/prismaClient'
-import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import axios, { AxiosError } from 'axios'
 
 export type RdvApiLieuInput = {
   // external_id: string // not yet implemented on rdv side

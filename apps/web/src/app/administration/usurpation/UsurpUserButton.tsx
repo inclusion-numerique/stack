@@ -1,12 +1,12 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { createToast } from '@app/ui/toast/createToast'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import { trpc } from '@app/web/trpc'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { getLoginRedirectUrl } from '@app/web/security/getHomepage'
+import { trpc } from '@app/web/trpc'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { useRouter } from 'next/navigation'
 
 const UsurpUserButton = ({
   userId,

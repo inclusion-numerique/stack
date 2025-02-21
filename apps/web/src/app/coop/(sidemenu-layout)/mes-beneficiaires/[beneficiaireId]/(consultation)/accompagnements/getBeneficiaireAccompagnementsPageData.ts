@@ -1,9 +1,9 @@
-import { prismaClient } from '@app/web/prismaClient'
 import { beneficiaireAccompagnementsCountSelect } from '@app/web/beneficiaire/beneficiaireQueries'
 import {
   getAllActivites,
   groupActivitesByDate,
 } from '@app/web/cra/activitesQueries'
+import { prismaClient } from '@app/web/prismaClient'
 
 export const getBeneficiaireAccompagnementsPageData = async ({
   beneficiaireId,

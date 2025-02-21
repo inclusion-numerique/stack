@@ -1,5 +1,5 @@
-import { getServerUrl } from '@app/web/utils/baseUrl'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import { getServerUrl } from '@app/web/utils/baseUrl'
 import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 
 export const rdvServicePublicOauthCallbackUrl = getServerUrl(

@@ -1,5 +1,5 @@
-import { Meta, StoryObj } from '@storybook/react'
 import { Spinner } from '@app/web/ui/Spinner'
+import { Meta, StoryObj } from '@storybook/react'
 
 export default {
   title: 'Spinner',

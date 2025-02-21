@@ -1,11 +1,11 @@
 'use client'
 
 import { createToast } from '@app/ui/toast/createToast'
-import Button from '@codegouvfr/react-dsfr/Button'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import { useRouter } from 'next/navigation'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { useRouter } from 'next/navigation'
 
 const ResetUserInscriptionButton = ({ userId }: { userId: string }) => {
   const mutation = trpc.user.resetInscription.useMutation()

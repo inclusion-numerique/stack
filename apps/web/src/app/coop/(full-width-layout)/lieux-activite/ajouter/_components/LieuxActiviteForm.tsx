@@ -1,25 +1,25 @@
 'use client'
 
-import React, { ReactNode, useEffect, useRef } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useFieldArray, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import Button from '@codegouvfr/react-dsfr/Button'
+import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
 import { createToast } from '@app/ui/toast/createToast'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import CustomSelectFormField from '@app/ui/components/Form/CustomSelectFormField'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
-import { trpc } from '@app/web/trpc'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import StructureCard from '@app/web/components/structure/StructureCard'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import {
   LieuxActiviteData,
   LieuxActiviteValidation,
 } from '@app/web/inscription/LieuxActivite'
 import { SearchStructureCartographieNationaleResultStructure } from '@app/web/structure/searchStructureCartographieNationale'
+import { trpc } from '@app/web/trpc'
+import { applyZodValidationMutationErrorsToForm } from '@app/web/utils/applyZodValidationMutationErrorsToForm'
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { zodResolver } from '@hookform/resolvers/zod'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import React, { ReactNode, useEffect, useRef } from 'react'
+import { useFieldArray, useForm } from 'react-hook-form'
 
 const LieuxActiviteForm = ({
   userId,

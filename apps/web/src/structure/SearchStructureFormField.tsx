@@ -1,6 +1,13 @@
 'use client'
 
 import InputFormField from '@app/ui/components/Form/InputFormField'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import SiretInputInfo from '@app/web/siret/SiretInputInfo'
+import { getSiretInfoUrl } from '@app/web/siret/getSiretInfoUrl'
+import { requiredSiretValidation } from '@app/web/siret/siretValidation'
+import { trpc } from '@app/web/trpc'
+import { Spinner } from '@app/web/ui/Spinner'
+import Link from 'next/link'
 import React, { ReactNode, useEffect } from 'react'
 import type {
   DefaultValues,
@@ -9,13 +16,6 @@ import type {
   PathValue,
   UseFormReturn,
 } from 'react-hook-form'
-import Link from 'next/link'
-import { trpc } from '@app/web/trpc'
-import { Spinner } from '@app/web/ui/Spinner'
-import { requiredSiretValidation } from '@app/web/siret/siretValidation'
-import { getSiretInfoUrl } from '@app/web/siret/getSiretInfoUrl'
-import SiretInputInfo from '@app/web/siret/SiretInputInfo'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
 
 export type SearchStructureFormFieldProps<
   TFieldValues extends FieldValues = FieldValues,

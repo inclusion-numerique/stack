@@ -1,14 +1,14 @@
-import type { Prisma } from '@prisma/client'
-import { prismaClient } from '@app/web/prismaClient'
-import { getDataTableOrderBy } from '@app/web/data-table/getDataTableOrderBy'
-import { takeAndSkipFromPage } from '@app/web/data-table/takeAndSkipFromPage'
 import {
   UtilisateursDataTable,
   UtilisateursDataTableSearchParams,
 } from '@app/web/app/administration/utilisateurs/UtilisateursDataTable'
 import { queryUtilisateursForList } from '@app/web/app/administration/utilisateurs/queryUtilisateursForList'
-import { toQueryParts } from '@app/web/data-table/toQueryParts'
+import { getDataTableOrderBy } from '@app/web/data-table/getDataTableOrderBy'
+import { takeAndSkipFromPage } from '@app/web/data-table/takeAndSkipFromPage'
 import { DEFAULT_PAGE, toNumberOr } from '@app/web/data-table/toNumberOr'
+import { toQueryParts } from '@app/web/data-table/toQueryParts'
+import { prismaClient } from '@app/web/prismaClient'
+import type { Prisma } from '@prisma/client'
 
 type SearchUtilisateurOptions = {
   mediateurId?: string

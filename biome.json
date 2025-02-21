@@ -253,7 +253,7 @@
   },
   "overrides": [
     {
-      "include": ["*.spec.ts", "*.integration.ts"],
+      "include": ["*.spec.ts", "*.integration.ts", "*.jest.ts"],
       "javascript": {
         "globals": [
           "afterEach",

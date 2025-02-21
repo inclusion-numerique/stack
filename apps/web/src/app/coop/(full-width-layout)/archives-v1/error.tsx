@@ -1,7 +1,7 @@
 'use client'
 
-import ContactSupportLink from '@app/web/components/ContactSupportLink'
 import ArchivesV1Card from '@app/web/app/coop/(full-width-layout)/archives-v1/ArchivesV1Card'
+import ContactSupportLink from '@app/web/components/ContactSupportLink'
 
 const ErrorPage = () => (
   <ArchivesV1Card>

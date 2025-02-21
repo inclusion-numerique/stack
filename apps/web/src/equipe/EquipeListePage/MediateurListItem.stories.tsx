@@ -1,5 +1,5 @@
-import React from 'react'
 import { Meta, StoryObj } from '@storybook/react'
+import React from 'react'
 import { MediateurList, MediateurListProps } from './MediateurList'
 import { MediateurListItem } from './MediateurListItem'
 

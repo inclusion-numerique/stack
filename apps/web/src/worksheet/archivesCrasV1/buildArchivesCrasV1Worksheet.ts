@@ -1,9 +1,9 @@
-import * as Excel from 'exceljs'
+import type { ArchivesV1PageDataWithCras } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1PageData'
 import {
   autosizeColumns,
   setWorkbookMetadata,
 } from '@app/web/worksheet/buildWorksheetHelpers'
-import type { ArchivesV1PageDataWithCras } from '@app/web/app/coop/(full-width-layout)/archives-v1/getArchivesV1PageData'
+import * as Excel from 'exceljs'
 
 export type BuildArchivesCrasV1WorksheetInput = ArchivesV1PageDataWithCras
 

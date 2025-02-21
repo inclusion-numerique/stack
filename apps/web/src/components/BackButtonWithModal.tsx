@@ -1,9 +1,9 @@
 'use client'
 
-import React, { ReactNode } from 'react'
-import classNames from 'classnames'
 import Button from '@codegouvfr/react-dsfr/Button'
 import { createModal } from '@codegouvfr/react-dsfr/Modal'
+import classNames from 'classnames'
+import React, { ReactNode } from 'react'
 
 const BackButtonWithModal = ({
   modalTitle,

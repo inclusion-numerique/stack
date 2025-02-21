@@ -1,18 +1,18 @@
-import { Filter, ObjectId } from 'mongodb'
-import escapeStringRegexp from 'escape-string-regexp'
 import {
-  conseillerNumeriqueMongoCollection,
-  objectIdFromString,
-} from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
-import {
-  cleanConseillerNumeriqueV1Document,
   ConseillerNumeriqueV1Document,
+  cleanConseillerNumeriqueV1Document,
 } from '@app/web/external-apis/conseiller-numerique/ConseillerNumeriqueV1Document'
 import {
   MiseEnRelationConseillerNumeriqueV1MinimalProjection,
   MiseEnRelationV1MinimalProjection,
 } from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
+import {
+  conseillerNumeriqueMongoCollection,
+  objectIdFromString,
+} from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 import { getActiveMiseEnRelation } from '@app/web/external-apis/conseiller-numerique/getActiveMiseEnRelation'
+import escapeStringRegexp from 'escape-string-regexp'
+import { Filter, ObjectId } from 'mongodb'
 
 export type FindConseillerNumeriqueV1Input =
   | {

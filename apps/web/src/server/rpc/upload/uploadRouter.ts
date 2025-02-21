@@ -1,5 +1,5 @@
-import { z } from 'zod'
 import { fileValidation } from '@app/ui/components/Form/utils/fileValidation.server'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
 import { prismaClient } from '@app/web/prismaClient'
 import {
   createSignedGetUrl,
@@ -7,7 +7,7 @@ import {
 } from '@app/web/server/createSignedUrl'
 import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
 import { forbiddenError, notFoundError } from '@app/web/server/rpc/trpcErrors'
-import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { z } from 'zod'
 
 export const uploadRouter = router({
   create: protectedProcedure

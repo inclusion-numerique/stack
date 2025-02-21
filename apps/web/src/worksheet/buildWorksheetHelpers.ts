@@ -1,9 +1,9 @@
-import type { Workbook, Worksheet } from 'exceljs'
-import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
 import type { SessionUser } from '@app/web/auth/sessionUser'
-import type { ActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
-import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
 import type { MediateurUser } from '@app/web/auth/userTypeGuards'
+import type { ActivitesFiltersLabels } from '@app/web/cra/generateActivitesFiltersLabels'
+import { getUserRoleLabel } from '@app/web/utils/getUserRoleLabel'
+import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
+import type { Workbook, Worksheet } from 'exceljs'
 
 export type WorksheetUser = Pick<
   SessionUser,

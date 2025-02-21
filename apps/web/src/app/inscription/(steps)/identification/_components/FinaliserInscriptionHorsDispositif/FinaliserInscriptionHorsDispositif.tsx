@@ -1,5 +1,5 @@
-import React from 'react'
 import type { ProfileInscriptionSlug } from '@app/web/inscription/profilInscription'
+import React from 'react'
 import { AnotherRoleFound } from '../AnotherRoleFound'
 import { RoleFound } from '../RoleFound'
 

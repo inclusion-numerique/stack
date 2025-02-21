@@ -1,14 +1,14 @@
-import Notice from '@codegouvfr/react-dsfr/Notice'
+import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
+import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
+import ResetUserFixtureButton from '@app/web/app/administration/usurpation/ResetUserFixtureButton'
+import SudoUsurpation from '@app/web/app/administration/usurpation/SudoUsurpation'
+import UsurpUserButton from '@app/web/app/administration/usurpation/UsurpUserButton'
+import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { prismaClient } from '@app/web/prismaClient'
-import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
-import UsurpUserButton from '@app/web/app/administration/usurpation/UsurpUserButton'
-import AdministrationBreadcrumbs from '@app/web/app/administration/AdministrationBreadcrumbs'
-import ResetUserFixtureButton from '@app/web/app/administration/usurpation/ResetUserFixtureButton'
-import AdministrationTitle from '@app/web/app/administration/AdministrationTitle'
-import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
-import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
-import SudoUsurpation from '@app/web/app/administration/usurpation/SudoUsurpation'
+import Notice from '@codegouvfr/react-dsfr/Notice'
 
 export const metadata = {
   title: metadataTitle('Usurpation'),

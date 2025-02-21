@@ -1,18 +1,18 @@
-import { NextRequest, NextResponse } from 'next/server'
-import axios from 'axios'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
+import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
+import { prismaClient } from '@app/web/prismaClient'
 import {
   rdvServicePublicOAuthConfig,
   rdvServicePublicOAuthTokenEndpoint,
 } from '@app/web/rdv-service-public/rdvServicePublicOauth'
-import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
-import {
-  decodeSerializableState,
-  EncodedState,
-} from '@app/web/utils/encodeSerializableState'
-import { getSessionTokenFromNextRequestCookies } from '@app/web/auth/getSessionTokenFromCookies'
-import { getSessionUserFromSessionToken } from '@app/web/auth/getSessionUserFromSessionToken'
-import { prismaClient } from '@app/web/prismaClient'
 import { getServerUrl } from '@app/web/utils/baseUrl'
+import {
+  EncodedState,
+  decodeSerializableState,
+} from '@app/web/utils/encodeSerializableState'
+import axios from 'axios'
+import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0

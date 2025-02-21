@@ -1,10 +1,10 @@
+import PublicFooter from '@app/web/app/(public)/PublicFooter'
+import InscriptionStepsLayout from '@app/web/app/inscription/(steps)/layout'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
+import Header from '@app/web/components/Header'
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import React, { PropsWithChildren } from 'react'
-import Link from 'next/link'
-import InscriptionStepsLayout from '@app/web/app/inscription/(steps)/layout'
-import Header from '@app/web/components/Header'
-import PublicFooter from '@app/web/app/(public)/PublicFooter'
-import { authenticateUser } from '@app/web/auth/authenticateUser'
 
 const Layout = async ({ children }: PropsWithChildren) => {
   const user = await authenticateUser()

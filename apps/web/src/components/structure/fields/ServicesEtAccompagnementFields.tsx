@@ -1,13 +1,13 @@
-import React from 'react'
-import { UseFormReturn } from 'react-hook-form'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
-import { optionsWithEmptyValue } from '@app/ui/components/Form/utils/options'
 import MultipleSelectFormField from '@app/ui/components/Form/MultipleSelectFormField'
+import { optionsWithEmptyValue } from '@app/ui/components/Form/utils/options'
 import { ServicesEtAccompagnementData } from '@app/web/app/structure/ServicesEtAccompagnementValidation'
 import {
   modalitesAccompagnementStructureOptions,
   servicesStructureOptions,
 } from '@app/web/app/structure/optionsStructure'
+import React from 'react'
+import { UseFormReturn } from 'react-hook-form'
 
 export const ServicesEtAccompagnementFields = <
   T extends Omit<ServicesEtAccompagnementData, 'id'>,

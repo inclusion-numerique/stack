@@ -1,7 +1,7 @@
-import { PropsWithChildren } from 'react'
-import Button from '@codegouvfr/react-dsfr/Button'
-import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
+import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { PropsWithChildren } from 'react'
 
 const MesBeneficiairesListeLayout = ({ children }: PropsWithChildren) => (
   <CoopPageContainer size={794}>

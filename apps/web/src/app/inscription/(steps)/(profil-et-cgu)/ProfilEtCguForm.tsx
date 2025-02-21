@@ -1,28 +1,28 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
-import Button from '@codegouvfr/react-dsfr/Button'
-import Link from 'next/link'
-import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { createToast } from '@app/ui/toast/createToast'
-import { useRouter } from 'next/navigation'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
-import React from 'react'
 import RadioFormField from '@app/ui/components/Form/RadioFormField'
-import {
-  profileInscriptionConseillerNumeriqueOptionsWithExtras,
-  profileInscriptionOptionsWithExtras,
-} from '@app/web/inscription/profilInscription'
-import { trpc } from '@app/web/trpc'
+import { createToast } from '@app/ui/toast/createToast'
+import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
+import RichCardLabel, {
+  richCardFieldsetElementClassName,
+} from '@app/web/components/form/RichCardLabel'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import {
   ChoisirProfilEtAccepterCguData,
   ChoisirProfilEtAccepterCguValidation,
 } from '@app/web/inscription/ChoisirProfilEtAccepterCguValidation'
-import RichCardLabel, {
-  richCardFieldsetElementClassName,
-} from '@app/web/components/form/RichCardLabel'
+import {
+  profileInscriptionConseillerNumeriqueOptionsWithExtras,
+  profileInscriptionOptionsWithExtras,
+} from '@app/web/inscription/profilInscription'
+import { trpc } from '@app/web/trpc'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { zodResolver } from '@hookform/resolvers/zod'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import React from 'react'
+import { useForm } from 'react-hook-form'
 import styles from './ProfilEtCguForm.module.css'
 
 const ProfilEtCguForm = ({ userId }: { userId: string }) => {

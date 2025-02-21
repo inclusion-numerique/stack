@@ -1,9 +1,9 @@
-import { SearchBeneficiaireResult } from '@app/web/beneficiaire/searchBeneficiaire'
-import DataTable from '@app/web/data-table/DataTable'
 import {
   BeneficiairesDataTable,
   BeneficiairesDataTableSearchParams,
 } from '@app/web/beneficiaire/BeneficiairesDataTable'
+import { SearchBeneficiaireResult } from '@app/web/beneficiaire/searchBeneficiaire'
+import DataTable from '@app/web/data-table/DataTable'
 import PaginationNavWithPageSizeSelect from '@app/web/data-table/PaginationNavWithPageSizeSelect'
 import { generatePageSizeSelectOptions } from '@app/web/data-table/pageSizeSelectOptions'
 import styles from './MesBeneficiairesListePage.module.css'

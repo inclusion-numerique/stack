@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react'
+import { type ProfileInscriptionSlug } from '@app/web/inscription/profilInscription'
 import Image from 'next/image'
 import Link from 'next/link'
-import { type ProfileInscriptionSlug } from '@app/web/inscription/profilInscription'
+import React, { ReactNode } from 'react'
 
 const roleNextPageMap: Map<
   ProfileInscriptionSlug,

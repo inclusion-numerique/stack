@@ -1,6 +1,6 @@
-import React from 'react'
-import Link from 'next/link'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
+import Link from 'next/link'
+import React from 'react'
 
 export const Support = () => (
   <>

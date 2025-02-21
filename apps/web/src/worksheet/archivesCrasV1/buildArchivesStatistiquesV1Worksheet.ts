@@ -1,14 +1,14 @@
-import * as Excel from 'exceljs'
-import {
-  autosizeColumns,
-  setWorkbookMetadata,
-} from '@app/web/worksheet/buildWorksheetHelpers'
-import { dateAsMonth, dateAsMonthFull } from '@app/web/utils/dateAsMonth'
 import {
   CrasV1StatKey,
   MonthlyStatistiquesV1,
   StatistiquesV1,
 } from '@app/web/app/coop/(full-width-layout)/archives-v1/computeStatistiquesCrasV1'
+import { dateAsMonth, dateAsMonthFull } from '@app/web/utils/dateAsMonth'
+import {
+  autosizeColumns,
+  setWorkbookMetadata,
+} from '@app/web/worksheet/buildWorksheetHelpers'
+import * as Excel from 'exceljs'
 
 export type BuildArchivesStatistiquesV1WorksheetInput = {
   stats: StatistiquesV1

@@ -1,12 +1,12 @@
-import Tag from '@codegouvfr/react-dsfr/Tag'
 import { BeneficiaireInformationsPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/(informations)/getBeneficiaireInformationsPageData'
-import InfoLabelValue from '@app/web/components/InfoLabelValue'
+import BeneficiairePageNavigationBar from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/BeneficiairePageNavigationBar'
 import {
   genreLabels,
   statutSocialLabels,
   trancheAgeLabels,
 } from '@app/web/beneficiaire/beneficiaire'
-import BeneficiairePageNavigationBar from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/BeneficiairePageNavigationBar'
+import InfoLabelValue from '@app/web/components/InfoLabelValue'
+import Tag from '@codegouvfr/react-dsfr/Tag'
 import styles from './ViewBeneficiaireInformationsPage.module.css'
 
 const ViewBeneficiaireInformationsPage = ({

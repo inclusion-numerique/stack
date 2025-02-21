@@ -1,8 +1,8 @@
+import { closeMongoClient } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 import {
   fetchConseillersCoordonnes,
   findConseillersNumeriquesContractInfoByEmails,
 } from '@app/web/external-apis/conseiller-numerique/fetchConseillersCoordonnes'
-import { closeMongoClient } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
 
 describe('fetchConseillersCoordonnes', () => {
   afterAll(async () => {

@@ -1,5 +1,5 @@
-import z from 'zod'
 import { checkLuhnIntegrity } from '@app/web/siret/checkLuhnIntegrity'
+import z from 'zod'
 
 export const validateValidSiretDigits = (siret: string) =>
   // La poste has invalid siret for its structures, we whitelist La Poste SIREN

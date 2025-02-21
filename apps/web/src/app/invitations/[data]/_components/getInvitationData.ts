@@ -1,5 +1,5 @@
-import { prismaClient } from '@app/web/prismaClient'
 import { Invitation } from '@app/web/equipe/InvitationValidation'
+import { prismaClient } from '@app/web/prismaClient'
 
 export const getInvitationData = (invitation: Invitation) =>
   prismaClient.invitationEquipe.findFirst({

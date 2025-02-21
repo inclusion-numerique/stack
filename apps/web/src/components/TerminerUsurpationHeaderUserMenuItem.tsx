@@ -1,10 +1,10 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { createToast } from '@app/ui/toast/createToast'
 import { buttonLoadingClassname } from '@app/ui/utils/buttonLoadingClassname'
 import { withTrpc } from '@app/web/components/trpc/withTrpc'
 import { trpc } from '@app/web/trpc'
+import { useRouter } from 'next/navigation'
 
 const TerminerUsurpationHeaderUserMenuItem = () => {
   const mutation = trpc.usurpation.stopUsurpation.useMutation()

@@ -1,9 +1,9 @@
-import { Fragment } from 'react'
-import { BeneficiaireAccompagnementsPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/getBeneficiaireAccompagnementsPageData'
-import ActiviteBeneficiaireCard from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/ActiviteBeneficiaireCard'
-import { formatActiviteDayDate } from '@app/web/utils/activiteDayDateFormat'
 import BeneficiairePageNavigationBar from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/BeneficiairePageNavigationBar'
+import ActiviteBeneficiaireCard from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/ActiviteBeneficiaireCard'
+import { BeneficiaireAccompagnementsPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-beneficiaires/[beneficiaireId]/(consultation)/accompagnements/getBeneficiaireAccompagnementsPageData'
 import ActiviteDetailsModal from '@app/web/components/activite/ActiviteDetailsModal/ActiviteDetailsModal'
+import { formatActiviteDayDate } from '@app/web/utils/activiteDayDateFormat'
+import { Fragment } from 'react'
 
 const ViewBeneficiaireAccompagnementsPage = ({
   data: { activitesByDate, beneficiaire },

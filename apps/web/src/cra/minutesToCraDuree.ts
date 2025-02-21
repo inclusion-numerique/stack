@@ -1,5 +1,5 @@
-import { dureeAccompagnementPersonnaliseeValue } from '@app/web/cra/cra'
 import type { CraDureeData } from '@app/web/cra/CraDureeValidation'
+import { dureeAccompagnementPersonnaliseeValue } from '@app/web/cra/cra'
 
 export const craDureeDataToMinutes = ({
   duree,

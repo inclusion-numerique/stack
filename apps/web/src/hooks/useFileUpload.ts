@@ -1,6 +1,6 @@
+import { trpc } from '@app/web/trpc'
 import axios from 'axios'
 import { useState } from 'react'
-import { trpc } from '@app/web/trpc'
 
 export const useFileUpload = ({
   onProgress,

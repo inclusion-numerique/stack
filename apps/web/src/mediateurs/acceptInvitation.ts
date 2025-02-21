@@ -1,5 +1,5 @@
-import { v4 } from 'uuid'
 import { prismaClient } from '@app/web/prismaClient'
+import { v4 } from 'uuid'
 import { sendAcceptInvitation } from './sendAcceptInvitation'
 
 export const acceptInvitation = async (invitation: {

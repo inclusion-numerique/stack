@@ -1,12 +1,12 @@
 'use client'
 
-import { ReactNode, useState } from 'react'
 import CustomSelect from '@app/ui/components/CustomSelect/CustomSelect'
-import FilterTag from '@app/web/components/filters/FilterTag'
-import { useBeneficiaireSearch } from '@app/web/hooks/useBeneficiaireSearch'
-import { withTrpc } from '@app/web/components/trpc/withTrpc'
-import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
+import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
+import FilterTag from '@app/web/components/filters/FilterTag'
+import { withTrpc } from '@app/web/components/trpc/withTrpc'
+import { useBeneficiaireSearch } from '@app/web/hooks/useBeneficiaireSearch'
+import { ReactNode, useState } from 'react'
 
 export type BeneficiaireFilterValue = string // uuid of the beneficiaire
 

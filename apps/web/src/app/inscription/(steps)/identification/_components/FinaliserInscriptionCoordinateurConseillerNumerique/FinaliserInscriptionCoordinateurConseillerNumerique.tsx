@@ -1,11 +1,11 @@
-import React from 'react'
+import RoleInscriptionNotice from '@app/web/app/inscription/RoleInscriptionNotice'
 import type { SessionUser } from '@app/web/auth/sessionUser'
 import {
+  ProfileInscriptionSlug,
   allProfileInscriptionLabels,
   profileInscriptionFromSlug,
-  ProfileInscriptionSlug,
 } from '@app/web/inscription/profilInscription'
-import RoleInscriptionNotice from '@app/web/app/inscription/RoleInscriptionNotice'
+import React from 'react'
 import { AnotherRoleFound } from '../AnotherRoleFound'
 import { RoleFound } from '../RoleFound'
 import { RoleNotFound } from '../RoleNotFound'

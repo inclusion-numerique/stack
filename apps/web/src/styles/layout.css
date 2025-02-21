@@ -1,5 +1,6 @@
 /* Layout setup */
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
 }
@@ -27,8 +28,9 @@ textarea {
   /* We need padding for the drag button absolute positioning on the left of the edition content list */
   --edition-container-x-padding: 48px;
   --edition-container-max-width: calc(
-          var(--edition-container-internal-width) + var(--edition-container-x-padding) *
-          2
+    var(--edition-container-internal-width) +
+    var(--edition-container-x-padding) *
+    2
   );
   --big-smooth-shadow: 0px 12px 32px -8px rgb(0 0 36 / 12%);
 }

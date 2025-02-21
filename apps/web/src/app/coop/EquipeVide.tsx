@@ -1,5 +1,5 @@
-import React from 'react'
 import Button from '@codegouvfr/react-dsfr/Button'
+import React from 'react'
 
 export const EquipeVide = () => (
   <div className="fr-text--center fr-background-alt--blue-france fr-p-12v fr-border-radius--8 fr-mb-4w">

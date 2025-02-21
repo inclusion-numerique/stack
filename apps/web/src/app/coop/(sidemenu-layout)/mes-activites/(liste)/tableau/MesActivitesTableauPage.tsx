@@ -1,8 +1,8 @@
-import { Suspense } from 'react'
-import type { ActivitesListPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/getActivitesListPageData'
-import { Spinner } from '@app/web/ui/Spinner'
 import ActivitesTable from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/ActivitesTable'
+import type { ActivitesListPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/getActivitesListPageData'
 import { getActivitesResultCountLabel } from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/getActivitesResultCountLabel'
+import { Spinner } from '@app/web/ui/Spinner'
+import { Suspense } from 'react'
 
 const SuspensedContent = async ({
   data,

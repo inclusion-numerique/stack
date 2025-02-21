@@ -1,13 +1,13 @@
-import React from 'react'
-import { UseFormReturn } from 'react-hook-form'
-import MultipleSelectFormField from '@app/ui/components/Form/MultipleSelectFormField'
 import InputFormField from '@app/ui/components/Form/InputFormField'
+import MultipleSelectFormField from '@app/ui/components/Form/MultipleSelectFormField'
 import { optionsWithEmptyValue } from '@app/ui/components/Form/utils/options'
-import { typologieStructureOptions } from '@app/web/app/structure/typologieStructure'
 import {
   DescriptionData,
   descriptionMaxLength,
 } from '@app/web/app/structure/DescriptionValidation'
+import { typologieStructureOptions } from '@app/web/app/structure/typologieStructure'
+import React from 'react'
+import { UseFormReturn } from 'react-hook-form'
 
 const descriptionInfo = (description?: string | null) =>
   `${description?.length ?? 0}/${descriptionMaxLength} caractères`

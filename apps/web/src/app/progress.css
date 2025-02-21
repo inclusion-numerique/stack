@@ -1,4 +1,5 @@
-.fr-progress, .fr-progress-stacked {
+.fr-progress,
+.fr-progress-stacked {
   --progress-height: 12px;
   --progress-radius: 16px;
 

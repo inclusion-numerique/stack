@@ -1,9 +1,9 @@
 'use client'
 
-import React, { ReactNode, useEffect } from 'react'
-import { UseFormReturn } from 'react-hook-form'
 import ToggleFormField from '@app/ui/components/Form/ToggleFormField'
 import { CreerLieuActiviteData } from '@app/web/app/lieu-activite/CreerLieuActiviteValidation'
+import React, { ReactNode, useEffect } from 'react'
+import { UseFormReturn } from 'react-hook-form'
 
 export const VisiblePourCartographieNationaleFields = ({
   form: { control, formState, watch },

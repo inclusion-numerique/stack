@@ -1,5 +1,5 @@
-import { createTestApiV1Request } from '@app/web/app/api/v1/createTestApiV1Request'
 import { JsonApiCursorPaginationQueryParamsValidation } from '@app/web/app/api/v1/CursorPagination'
+import { createTestApiV1Request } from '@app/web/app/api/v1/createTestApiV1Request'
 import { getApiRequestParams } from '@app/web/app/api/v1/getApiRequestParams'
 
 describe('getApiRequestParams', () => {

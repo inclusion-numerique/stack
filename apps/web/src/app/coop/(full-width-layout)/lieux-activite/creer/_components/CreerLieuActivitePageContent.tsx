@@ -1,9 +1,9 @@
 'use client'
 
-import React, { ReactNode, useState } from 'react'
-import Button from '@codegouvfr/react-dsfr/Button'
-import IconInSquare from '@app/web/components/IconInSquare'
 import LieuActiviteSideMenu from '@app/web/app/coop/(full-width-layout)/lieux-activite/_components/LieuActiviteSideMenu'
+import IconInSquare from '@app/web/components/IconInSquare'
+import Button from '@codegouvfr/react-dsfr/Button'
+import React, { ReactNode, useState } from 'react'
 import CreateLieuActiviteForm from './CreerLieuActiviteForm'
 
 export const CreerLieuActivitePageContent = ({

@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from 'react'
-import Button from '@codegouvfr/react-dsfr/Button'
-import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
 import { sPluriel } from '@app/ui/utils/pluriel/sPluriel'
 import type { MesStatistiquesPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/getMesStatistiquesPageData'
 import { numberToString } from '@app/web/utils/formatNumber'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { SegmentedControl } from '@codegouvfr/react-dsfr/SegmentedControl'
+import { useState } from 'react'
 import { AccompagnementBarChart } from '../_components/AccompagnementBarChart'
 
 export const StatistiquesGenerales = ({
@@ -65,9 +65,7 @@ export const StatistiquesGenerales = ({
                       totalCounts.accompagnements.individuels.total,
                     )}{' '}
                     accompagnement
-                    {sPluriel(
-                      totalCounts.accompagnements.individuels.total,
-                    )}{' '}
+                    {sPluriel(totalCounts.accompagnements.individuels.total)}{' '}
                     individuel
                     {sPluriel(totalCounts.accompagnements.individuels.total)}
                   </li>
@@ -78,9 +76,7 @@ export const StatistiquesGenerales = ({
                     participation
                     {sPluriel(totalCounts.activites.collectifs.participants)}
                     lors de{' '}
-                    {numberToString(
-                      totalCounts.activites.collectifs.total,
-                    )}{' '}
+                    {numberToString(totalCounts.activites.collectifs.total)}{' '}
                     ateliers*
                   </li>
                   <li>

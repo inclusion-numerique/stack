@@ -1,15 +1,15 @@
-import { prismaClient } from '@app/web/prismaClient'
-import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
-import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFiltersOptionsForMediateur'
 import {
   getAccompagnementsCountByDay,
   getAccompagnementsCountByMonth,
 } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getAccompagnementsCountByPeriod'
-import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import {
   getActivitesStats,
   getActivitesStructuresStats,
 } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getActivitesStats'
+import { getFiltersOptionsForMediateur } from '@app/web/components/filters/getFiltersOptionsForMediateur'
+import { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
+import { prismaClient } from '@app/web/prismaClient'
+import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
 import { UserDisplayName, UserProfile } from '@app/web/utils/user'
 import { getBeneficiaireStatsWithCommunes } from './_queries/getBeneficiaireStats'
 import { getTotalCountsStats } from './_queries/getTotalCountsStats'

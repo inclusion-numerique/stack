@@ -1,13 +1,13 @@
-import type { UseFormReturn } from 'react-hook-form'
 import InputFormField from '@app/ui/components/Form/InputFormField'
 import SelectFormField from '@app/ui/components/Form/SelectFormField'
 import type { SelectOption } from '@app/ui/components/Form/utils/options'
-import classNames from 'classnames'
-import { dureeAccompagnementPersonnaliseeValue } from '@app/web/cra/cra'
-import type { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
 import type { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
 import type { CraDemarcheAdministrativeData } from '@app/web/cra/CraDemarcheAdministrativeValidation'
 import { maxHeures, maxMinutes } from '@app/web/cra/CraDureeValidation'
+import type { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
+import { dureeAccompagnementPersonnaliseeValue } from '@app/web/cra/cra'
+import classNames from 'classnames'
+import type { UseFormReturn } from 'react-hook-form'
 import styles from './CraDureeSubForm.module.css'
 
 const step = 1

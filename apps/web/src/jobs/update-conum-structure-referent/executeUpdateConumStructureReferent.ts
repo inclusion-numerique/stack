@@ -1,10 +1,10 @@
-import { ObjectId } from 'mongodb'
 import { output } from '@app/cli/output'
-import { prismaClient } from '@app/web/prismaClient'
-import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
-import { MiseEnRelationV1MinimalProjection } from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
-import { miseAJourStructureEmployeuseFor } from '@app/web/server/rpc/conseillers-numerique/miseAJourStructureEmployeuseFor'
 import { MiseEnRelationWithStructureAdministrativeInfo } from '@app/web/app/inscription/importFromConseillerNumerique/importFromConseillerNumerique.queries'
+import { MiseEnRelationV1MinimalProjection } from '@app/web/external-apis/conseiller-numerique/MiseEnRelationConseillerNumeriqueV1'
+import { conseillerNumeriqueMongoCollection } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
+import { prismaClient } from '@app/web/prismaClient'
+import { miseAJourStructureEmployeuseFor } from '@app/web/server/rpc/conseillers-numerique/miseAJourStructureEmployeuseFor'
+import { ObjectId } from 'mongodb'
 
 export const executeUpdateConumStructureReferent = async () => {
   output('Starting update conseillers numériques structure referents...')

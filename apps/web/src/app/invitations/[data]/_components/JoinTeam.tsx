@@ -1,8 +1,8 @@
-import Link from 'next/link'
 import LogoCoop from '@app/web/components/LogoCoop'
 import { Invitation } from '@app/web/equipe/InvitationValidation'
 import { EncodedState } from '@app/web/utils/encodeSerializableState'
-import { getUserDisplayName, type UserDisplayName } from '@app/web/utils/user'
+import { type UserDisplayName, getUserDisplayName } from '@app/web/utils/user'
+import Link from 'next/link'
 import InvitationButtons from './InvitationButtons'
 
 export const JoinTeam = ({

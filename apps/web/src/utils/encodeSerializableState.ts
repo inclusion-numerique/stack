@@ -1,5 +1,5 @@
-import superjson from 'superjson'
 import pako from 'pako'
+import superjson from 'superjson'
 
 /**
  * Utility functions to encode and decode form state for safe transmission via URL.

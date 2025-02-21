@@ -1,9 +1,9 @@
-/* eslint no-param-reassign: 0 */
-import { NextRequest } from 'next/server'
 import {
   apiV1AuthorizationHeader,
   apiV1AuthorizationScheme,
 } from '@app/web/app/api/v1/apiV1Headers'
+/* eslint no-param-reassign: 0 */
+import { NextRequest } from 'next/server'
 
 export const createTestApiV1Request = ({
   client,

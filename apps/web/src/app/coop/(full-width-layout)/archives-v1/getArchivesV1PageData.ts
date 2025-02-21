@@ -1,8 +1,8 @@
-import { getCrasConseillerNumeriqueV1 } from '@app/web/v1/v1CraQueries'
 import {
   CrasConseillerNumeriqueV1FilterOptions,
   getCrasV1MinMaxDateAccompagnement,
 } from '@app/web/app/coop/(full-width-layout)/archives-v1/crasConseillerNumeriqueV1Queries'
+import { getCrasConseillerNumeriqueV1 } from '@app/web/v1/v1CraQueries'
 
 export const getArchivesV1PageData = async (
   input: CrasConseillerNumeriqueV1FilterOptions,

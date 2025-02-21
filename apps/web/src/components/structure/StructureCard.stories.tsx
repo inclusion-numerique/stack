@@ -1,8 +1,8 @@
-import { Meta, StoryObj } from '@storybook/react'
 import { mediumContainerStory, mobileStory } from '@app/storybook/storyHelper'
-import Button from '@codegouvfr/react-dsfr/Button'
-import React from 'react'
 import type { StructureData } from '@app/web/app/structure/StructureValidation'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { Meta, StoryObj } from '@storybook/react'
+import React from 'react'
 import StructureCard from './StructureCard'
 
 const structureWithSiret = {

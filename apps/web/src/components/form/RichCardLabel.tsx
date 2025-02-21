@@ -3,8 +3,8 @@
 import { SelectOption } from '@app/ui/components/Form/utils/options'
 import classNames from 'classnames'
 
-import { Fragment, KeyboardEventHandler, memo } from 'react'
 import Stars from '@app/web/components/Stars'
+import { Fragment, KeyboardEventHandler, memo } from 'react'
 import styles from './RichCardLabel.module.css'
 
 export type RichCardOptionExtras = {

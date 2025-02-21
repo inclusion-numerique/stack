@@ -1,7 +1,7 @@
-import { metadataTitle } from '@app/web/app/metadataTitle'
-import { getStructureEmployeuseForInscription } from '@app/web/app/inscription/getStructureEmployeuseForInscription'
-import { authenticateUser } from '@app/web/auth/authenticateUser'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
+import { getStructureEmployeuseForInscription } from '@app/web/app/inscription/getStructureEmployeuseForInscription'
+import { metadataTitle } from '@app/web/app/metadataTitle'
+import { authenticateUser } from '@app/web/auth/authenticateUser'
 import RenseignerStructureEmployeuseForm from './RenseignerStructureEmployeuseForm'
 
 export const metadata = {

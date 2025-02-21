@@ -1,5 +1,5 @@
-import type { SiretApiResponse } from '@app/web/siret/SiretApiResponse'
 import { fetchFromApiEntreprise } from '@app/web/external-apis/apiEntreprise'
+import type { SiretApiResponse } from '@app/web/siret/SiretApiResponse'
 
 export const fetchSiretApiData = (siret: string) =>
   fetchFromApiEntreprise<SiretApiResponse>({

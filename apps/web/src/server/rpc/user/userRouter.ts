@@ -1,17 +1,17 @@
-import { v4 } from 'uuid'
+import { UpdateProfileValidation } from '@app/web/app/user/UpdateProfileValidation'
 import { prismaClient } from '@app/web/prismaClient'
 import {
   protectedProcedure,
   publicProcedure,
   router,
 } from '@app/web/server/rpc/createRouter'
-import { ServerUserSignupValidation } from '@app/web/server/rpc/user/userSignup.server'
-import { UpdateProfileValidation } from '@app/web/app/user/UpdateProfileValidation'
-import { addMutationLog } from '@app/web/utils/addMutationLog'
-import { createStopwatch } from '@app/web/utils/stopwatch'
 import { enforceIsAdmin } from '@app/web/server/rpc/enforceIsAdmin'
 import { invalidError } from '@app/web/server/rpc/trpcErrors'
 import { ResetInscriptionUtilisateurValidation } from '@app/web/server/rpc/user/ResetInscriptionUtilisateur'
+import { ServerUserSignupValidation } from '@app/web/server/rpc/user/userSignup.server'
+import { addMutationLog } from '@app/web/utils/addMutationLog'
+import { createStopwatch } from '@app/web/utils/stopwatch'
+import { v4 } from 'uuid'
 
 export const userRouter = router({
   signup: publicProcedure

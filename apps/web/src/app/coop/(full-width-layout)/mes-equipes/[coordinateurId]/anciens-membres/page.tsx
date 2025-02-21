@@ -1,10 +1,10 @@
-import type { Metadata } from 'next'
-import { redirect } from 'next/navigation'
-import { prismaClient } from '@app/web/prismaClient'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import EquipeListePage from '@app/web/equipe/EquipeListePage/EquipeListePage'
 import { getEquipePageData } from '@app/web/equipe/EquipeListePage/getEquipePageData'
 import type { EquipeSearchParams } from '@app/web/equipe/EquipeListePage/searchMediateursCoordonneBy'
+import { prismaClient } from '@app/web/prismaClient'
+import type { Metadata } from 'next'
+import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
   title: metadataTitle('Anciens membres'),

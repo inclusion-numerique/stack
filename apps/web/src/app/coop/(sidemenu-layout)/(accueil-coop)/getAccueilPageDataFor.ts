@@ -1,7 +1,7 @@
-import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
-import { UserDisplayName, UserProfile } from '@app/web/utils/user'
 import { getActivitesListPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-activites/(liste)/getActivitesListPageData'
+import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { countMediateursCoordonnesBy } from '@app/web/mediateurs/countMediateursCoordonnesBy'
+import { UserDisplayName, UserProfile } from '@app/web/utils/user'
 import { getTotalCountsStats } from '../mes-statistiques/_queries/getTotalCountsStats'
 
 const activitesFiltersLastDays = (daysCount: number) => {

@@ -1,5 +1,5 @@
-import { z } from 'zod'
 import { dureeAccompagnementPersonnaliseeValue } from '@app/web/cra/cra'
+import { z } from 'zod'
 
 export const maxMinutes = 59
 export const maxHeures = 23

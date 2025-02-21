@@ -1,7 +1,7 @@
-import z from 'zod'
 import { AdresseBanValidation } from '@app/web/external-apis/ban/AdresseBanValidation'
-import { validateValidSiretDigits } from '@app/web/siret/siretValidation'
 import { validateValidRnaDigits } from '@app/web/rna/rnaValidation'
+import { validateValidSiretDigits } from '@app/web/siret/siretValidation'
+import z from 'zod'
 
 export const InformationsGeneralesShape = {
   nom: z.string().trim().min(1, 'Veuillez renseigner le nom de la structure'),

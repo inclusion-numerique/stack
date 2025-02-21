@@ -1,12 +1,12 @@
-import React from 'react'
-import { redirect } from 'next/navigation'
-import classNames from 'classnames'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
-import StructureCard from '@app/web/components/structure/StructureCard'
+import StructureEmployeuseLieuActiviteForm from '@app/web/app/inscription/(steps)/_components/structure-employeuse-lieu-activite/StructureEmployeuseLieuActiviteForm'
 import { mediateurinscriptionStepsCount } from '@app/web/app/inscription/(steps)/mediateur/mediateurinscriptionSteps'
 import { getStructureEmployeuseForInscription } from '@app/web/app/inscription/getStructureEmployeuseForInscription'
 import { authenticateUser } from '@app/web/auth/authenticateUser'
-import StructureEmployeuseLieuActiviteForm from '@app/web/app/inscription/(steps)/_components/structure-employeuse-lieu-activite/StructureEmployeuseLieuActiviteForm'
+import StructureCard from '@app/web/components/structure/StructureCard'
+import classNames from 'classnames'
+import { redirect } from 'next/navigation'
+import React from 'react'
 
 export const StructureEmployeuseLieuActivitePage = async ({
   backHref,

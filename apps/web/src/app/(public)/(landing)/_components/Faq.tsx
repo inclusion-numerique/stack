@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import Accordion from '@codegouvfr/react-dsfr/Accordion'
+import Link from 'next/link'
 
 export const Faq = () => (
   <div className="fr-container fr-container--medium">

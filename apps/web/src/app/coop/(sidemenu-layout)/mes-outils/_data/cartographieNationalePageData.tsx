@@ -1,5 +1,5 @@
-import { OutilPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/outilPageData'
 import CartographieNationaleOutilAccess from '@app/web/app/coop/(sidemenu-layout)/mes-outils/_components/CartographieNationaleOutilAccess'
+import { OutilPageData } from '@app/web/app/coop/(sidemenu-layout)/mes-outils/outilPageData'
 
 export default {
   title: 'La Cartographie Nationale des lieux d’inclusion numérique',

@@ -1,12 +1,12 @@
 'use client'
 
-import { createModal } from '@codegouvfr/react-dsfr/Modal'
-import Button from '@codegouvfr/react-dsfr/Button'
 import CreateCraModalContent from '@app/web/app/coop/(full-width-layout)/mes-activites/CreateCraModalContent'
-import { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireValidation'
-import { SessionUser } from '@app/web/auth/sessionUser'
-import { hasFeatureFlag } from '@app/web/security/hasFeatureFlag'
 import PrendreRendezVousAvecBeneficiaireButton from '@app/web/app/coop/(full-width-layout)/mon-profil/PrendreRendezVousAvecBeneficiaireButton'
+import { SessionUser } from '@app/web/auth/sessionUser'
+import { BeneficiaireCraData } from '@app/web/beneficiaire/BeneficiaireValidation'
+import { hasFeatureFlag } from '@app/web/security/hasFeatureFlag'
+import Button from '@codegouvfr/react-dsfr/Button'
+import { createModal } from '@codegouvfr/react-dsfr/Modal'
 
 export const CreateCraBeneficiaireModalDefinition = createModal({
   id: 'create-cra-beneficiaire',

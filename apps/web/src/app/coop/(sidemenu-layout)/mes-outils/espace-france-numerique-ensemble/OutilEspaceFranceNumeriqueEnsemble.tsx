@@ -1,14 +1,14 @@
-import React from 'react'
-import Link from 'next/link'
-import Notice from '@codegouvfr/react-dsfr/Notice'
-import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
-import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
 import CoopBreadcrumbs from '@app/web/app/coop/CoopBreadcrumbs'
 import CoopPageContainer from '@app/web/app/coop/CoopPageContainer'
 import HeaderBackLink from '@app/web/components/HeaderBackLink'
+import SkipLinksPortal from '@app/web/components/SkipLinksPortal'
 import { getDepartementFromCodeInsee } from '@app/web/utils/getDepartementFromCodeInsee'
-import { OutilPageData } from '../outilPageData'
+import { contentId, defaultSkipLinks } from '@app/web/utils/skipLinks'
+import Notice from '@codegouvfr/react-dsfr/Notice'
+import Link from 'next/link'
+import React from 'react'
 import { Hero } from '../[slug]/_components/Hero'
+import { OutilPageData } from '../outilPageData'
 
 export const OutilEspaceFranceNumeriqueEnsemble = ({
   title,

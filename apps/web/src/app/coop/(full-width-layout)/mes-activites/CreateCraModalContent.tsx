@@ -1,13 +1,13 @@
 'use client'
 
-import { ReactNode, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import classNames from 'classnames'
-import type { DefaultValues } from 'react-hook-form'
-import type { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
-import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
 import type { CraCollectifData } from '@app/web/cra/CraCollectifValidation'
 import type { CraDemarcheAdministrativeData } from '@app/web/cra/CraDemarcheAdministrativeValidation'
+import type { CraIndividuelData } from '@app/web/cra/CraIndividuelValidation'
+import { encodeSerializableState } from '@app/web/utils/encodeSerializableState'
+import classNames from 'classnames'
+import { useRouter } from 'next/navigation'
+import { ReactNode, useEffect } from 'react'
+import type { DefaultValues } from 'react-hook-form'
 
 const ModalNavigationButton = ({
   children,

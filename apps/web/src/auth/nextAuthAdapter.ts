@@ -1,8 +1,8 @@
-import { v4 } from 'uuid'
+import { proConnectProviderId } from '@app/web/auth/proConnect'
+import { prismaClient } from '@app/web/prismaClient'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import type { Adapter, AdapterAccount, AdapterUser } from 'next-auth/adapters'
-import { prismaClient } from '@app/web/prismaClient'
-import { proConnectProviderId } from '@app/web/auth/proConnect'
+import { v4 } from 'uuid'
 
 /**
  * Ensuring that needed methods are defined when creating adapter

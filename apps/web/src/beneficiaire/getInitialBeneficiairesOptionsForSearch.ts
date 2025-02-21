@@ -1,9 +1,9 @@
-import { beneficiairesListWhere } from '@app/web/beneficiaire/searchBeneficiaire'
-import { prismaClient } from '@app/web/prismaClient'
-import { searchBeneficiaireSelect } from '@app/web/beneficiaire/queryBeneficiairesForList'
+import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import { getBeneficiaireDisplayName } from '@app/web/beneficiaire/getBeneficiaireDisplayName'
 import { prismaBeneficiaireToBeneficiaireData } from '@app/web/beneficiaire/prismaBeneficiaireToBeneficiaireData'
-import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
+import { searchBeneficiaireSelect } from '@app/web/beneficiaire/queryBeneficiairesForList'
+import { beneficiairesListWhere } from '@app/web/beneficiaire/searchBeneficiaire'
+import { prismaClient } from '@app/web/prismaClient'
 
 export const getInitialBeneficiairesOptionsForSearch = async ({
   mediateurId,

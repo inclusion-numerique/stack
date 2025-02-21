@@ -1,10 +1,10 @@
-import { v4 } from 'uuid'
+import { validateValidRnaDigits } from '@app/web/rna/rnaValidation'
+import { validateValidSiretDigits } from '@app/web/siret/siretValidation'
 import {
   type Prisma,
   type StructureCartographieNationale,
 } from '@prisma/client'
-import { validateValidSiretDigits } from '@app/web/siret/siretValidation'
-import { validateValidRnaDigits } from '@app/web/rna/rnaValidation'
+import { v4 } from 'uuid'
 
 export const toStructureFromCartoStructure = ({
   adresse,

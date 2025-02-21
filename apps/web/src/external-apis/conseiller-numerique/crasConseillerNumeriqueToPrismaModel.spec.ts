@@ -1,5 +1,5 @@
-import { craConseillerNumeriqueToPrismaModel } from '@app/web/external-apis/conseiller-numerique/crasConseillerNumeriqueToPrismaModel'
 import { ConseillerNumeriqueCraWithStructure } from '@app/web/external-apis/conseiller-numerique/conseillersNumeriquesCraQueries'
+import { craConseillerNumeriqueToPrismaModel } from '@app/web/external-apis/conseiller-numerique/crasConseillerNumeriqueToPrismaModel'
 
 describe('craConseillerNumeriqueToPrismaModel', () => {
   it('converts mongo cra to prisma model', () => {

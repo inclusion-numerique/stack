@@ -2,12 +2,12 @@ import Oh from 'opening_hours'
 
 import {
   type Closed,
-  closed,
   type DayOpeningHours,
-  days,
   type OpeningHours,
   type Timeslot,
   type WeekOpeningHours,
+  closed,
+  days,
 } from '@app/web/opening-hours/openingHours'
 
 const toOpeningHoursObject = (input: string | null) => {

@@ -1,12 +1,12 @@
 'use client'
 
-import { ReactNode, useState } from 'react'
-import { CalendarProps } from 'react-calendar/src/Calendar'
-import classNames from 'classnames'
-import FilterTag from '@app/web/components/filters/FilterTag'
 import Calendar from '@app/web/components/calendar/Calendar'
+import FilterTag from '@app/web/components/filters/FilterTag'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
+import classNames from 'classnames'
+import { ReactNode, useState } from 'react'
+import { CalendarProps } from 'react-calendar/src/Calendar'
 
 type ValuePiece = Date | null
 type Value = ValuePiece | [ValuePiece, ValuePiece]

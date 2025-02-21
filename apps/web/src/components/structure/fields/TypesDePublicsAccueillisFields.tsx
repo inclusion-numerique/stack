@@ -1,13 +1,13 @@
-import React, { useCallback } from 'react'
-import { UseFormReturn } from 'react-hook-form'
 import CheckboxFormField from '@app/ui/components/Form/CheckboxFormField'
 import CheckboxGroupFormField from '@app/ui/components/Form/CheckboxGroupFormField'
 import { useWatchSubscription } from '@app/ui/hooks/useWatchSubscription'
+import { TypesDePublicsAccueillisData } from '@app/web/app/structure/TypesDePublicsAccueillisValidation'
 import {
   priseEnChargeSpecifiqueStructureOptions,
   publicsAccueillisStructureOptions,
 } from '@app/web/app/structure/optionsStructure'
-import { TypesDePublicsAccueillisData } from '@app/web/app/structure/TypesDePublicsAccueillisValidation'
+import React, { useCallback } from 'react'
+import { UseFormReturn } from 'react-hook-form'
 
 export const TypesDePublicsAccueillisFields = <
   T extends Omit<TypesDePublicsAccueillisData, 'id'>,

@@ -1,10 +1,10 @@
-import z from 'zod'
 import {
   countTotalGenre,
   countTotalStatutSocial,
   countTotalTrancheAge,
 } from '@app/web/cra/participantsAnonymes'
 import { numberToString } from '@app/web/utils/formatNumber'
+import z from 'zod'
 
 const participantsAnonymesMax = 10_000
 const participantsAnonymesMaxLocaleString = numberToString(

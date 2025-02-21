@@ -1,6 +1,6 @@
-import type { Prisma } from '@prisma/client'
 import { prismaClient } from '@app/web/prismaClient'
 import { toTitleCase } from '@app/web/utils/toTitleCase'
+import type { Prisma } from '@prisma/client'
 
 type SearchStructureCartographieNationaleOptions = {
   limit?: number

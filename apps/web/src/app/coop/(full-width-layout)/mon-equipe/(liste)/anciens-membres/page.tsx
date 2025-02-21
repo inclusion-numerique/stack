@@ -1,9 +1,9 @@
-import type { Metadata } from 'next'
 import { metadataTitle } from '@app/web/app/metadataTitle'
 import { authenticateCoordinateur } from '@app/web/auth/authenticateUser'
 import EquipeListePage from '@app/web/equipe/EquipeListePage/EquipeListePage'
 import { getEquipePageData } from '@app/web/equipe/EquipeListePage/getEquipePageData'
 import { EquipeSearchParams } from '@app/web/equipe/EquipeListePage/searchMediateursCoordonneBy'
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: metadataTitle('Anciens membres'),

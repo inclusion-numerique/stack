@@ -1,6 +1,6 @@
-import React from 'react'
 import InscriptionCard from '@app/web/app/inscription/(steps)/InscriptionCard'
 import { Spinner } from '@app/web/ui/Spinner'
+import React from 'react'
 
 const InscriptionLoading = () => (
   <InscriptionCard

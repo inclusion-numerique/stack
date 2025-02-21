@@ -1,13 +1,13 @@
-import type { Prisma } from '@prisma/client'
+import { apiClientScopeLabels } from '@app/web/app/administration/clients-api/apiClient'
+import { ApiClientListItem } from '@app/web/app/administration/clients-api/getApiClientsListPageData'
 import type {
   DataTableConfiguration,
   DataTableFilterValues,
   DataTableSearchParams,
 } from '@app/web/data-table/DataTableConfiguration'
-import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
-import { ApiClientListItem } from '@app/web/app/administration/clients-api/getApiClientsListPageData'
 import { dateAsDayAndTime } from '@app/web/utils/dateAsDayAndTime'
-import { apiClientScopeLabels } from '@app/web/app/administration/clients-api/apiClient'
+import { dateAsIsoDay } from '@app/web/utils/dateAsIsoDay'
+import type { Prisma } from '@prisma/client'
 
 export type ApiClientsDataTableConfiguration = DataTableConfiguration<
   ApiClientListItem,

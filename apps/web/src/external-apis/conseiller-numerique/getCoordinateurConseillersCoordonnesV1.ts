@@ -1,6 +1,6 @@
+import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
 import { prismaClient } from '@app/web/prismaClient'
 import { onlyDefinedAndNotNull } from '@app/web/utils/onlyDefinedAndNotNull'
-import { fetchConseillerNumeriqueV1Data } from '@app/web/external-apis/conseiller-numerique/fetchConseillerNumeriqueV1Data'
 
 export type ConseillerV1Coordones = { prenom: string; nom: string; id: string }
 

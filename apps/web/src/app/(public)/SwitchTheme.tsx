@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { dsfrThemeCookie } from '@app/web/app/dsfrThemeCookie'
+import { isBrowser } from '@app/web/utils/isBrowser'
 import classNames from 'classnames'
 import Cookies from 'js-cookie'
-import { isBrowser } from '@app/web/utils/isBrowser'
-import { dsfrThemeCookie } from '@app/web/app/dsfrThemeCookie'
+import { useEffect, useState } from 'react'
 
 const getThemeFromHtmlTag = (): 'light' | 'dark' => {
   if (!isBrowser) {

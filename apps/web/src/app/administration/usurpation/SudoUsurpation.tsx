@@ -1,8 +1,8 @@
 'use client'
 
-import { ChangeEvent, useState } from 'react'
 import AdministrationInfoCard from '@app/web/app/administration/AdministrationInfoCard'
 import UsurpUserButton from '@app/web/app/administration/usurpation/UsurpUserButton'
+import { ChangeEvent, useState } from 'react'
 
 const SudoUsurpation = () => {
   const [userId, setUserId] = useState('')

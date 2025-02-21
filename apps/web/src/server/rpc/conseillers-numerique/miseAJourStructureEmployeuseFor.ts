@@ -1,10 +1,10 @@
-import { prismaClient } from '@app/web/prismaClient'
 import {
+  MiseEnRelationWithStructureAdministrativeInfo,
   createStructureEmployeuseFor,
   findExistingStructureForMiseEnRelationActive,
   findStructureCartographieNationaleFromMiseEnRelation,
-  MiseEnRelationWithStructureAdministrativeInfo,
 } from '@app/web/app/inscription/importFromConseillerNumerique/importFromConseillerNumerique.queries'
+import { prismaClient } from '@app/web/prismaClient'
 
 const createStructureFrom = async (
   miseEnRelation: MiseEnRelationWithStructureAdministrativeInfo,

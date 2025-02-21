@@ -1,11 +1,11 @@
-import { ReactNode } from 'react'
-import classNames from 'classnames'
-import { TypeActivite } from '@prisma/client'
 import {
   typeActiviteIllustrations,
   typeActivitePluralLabels,
 } from '@app/web/cra/cra'
 import { numberToPercentage, numberToString } from '@app/web/utils/formatNumber'
+import { TypeActivite } from '@prisma/client'
+import classNames from 'classnames'
+import { ReactNode } from 'react'
 
 export const StatistiqueAccompagnement = ({
   typeActivite,

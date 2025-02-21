@@ -1,10 +1,10 @@
 import { RdvAccount } from '@prisma/client'
 
-import axios, { AxiosError, AxiosRequestConfig } from 'axios'
-import { refreshRdvAccessToken } from '@app/web/rdv-service-public/refreshRdvAccessToken'
 import { PublicWebAppConfig } from '@app/web/PublicWebAppConfig'
-import { removeUndefinedValues } from '@app/web/utils/removeUndefinedValues'
 import { OauthRdvApiGetUserResponse } from '@app/web/rdv-service-public/OAuthRdvApiCallInput'
+import { refreshRdvAccessToken } from '@app/web/rdv-service-public/refreshRdvAccessToken'
+import { removeUndefinedValues } from '@app/web/utils/removeUndefinedValues'
+import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 
 export type OAuthRdvApiCallRdvAccount = Pick<
   RdvAccount,

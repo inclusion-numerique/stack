@@ -1,13 +1,13 @@
-import z from 'zod'
-import { prismaClient } from '@app/web/prismaClient'
-import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
-import { ClientApiValidation } from '@app/web/app/administration/clients-api/ClientApiValidation'
-import { enforceIsAdmin } from '@app/web/server/rpc/enforceIsAdmin'
 import {
   createApiClient,
   rotateApiClientSecret,
 } from '@app/web/api-client/apiClient'
+import { ClientApiValidation } from '@app/web/app/administration/clients-api/ClientApiValidation'
+import { prismaClient } from '@app/web/prismaClient'
+import { protectedProcedure, router } from '@app/web/server/rpc/createRouter'
+import { enforceIsAdmin } from '@app/web/server/rpc/enforceIsAdmin'
 import { invalidError } from '@app/web/server/rpc/trpcErrors'
+import z from 'zod'
 
 export const apiClientRouter = router({
   create: protectedProcedure

@@ -20,14 +20,14 @@
 .fr-btn.fr-btn--loading {
   &:not(.fr-btn--icon-right, .fr-connect) {
     &::before {
-      mask-image: url('/images/spinner.svg');
+      mask-image: url("/images/spinner.svg");
       animation: spinner-rotate-animation 1.2s infinite linear;
     }
   }
 
   &.fr-btn--icon-right {
     &::after {
-      mask-image: url('/images/spinner.svg');
+      mask-image: url("/images/spinner.svg");
       animation: spinner-rotate-animation 1.2s infinite linear;
     }
   }
@@ -36,7 +36,7 @@
 
   /* Complex implementation as we need to re-implement logic of the ::after like with the fr-icon classes */
 
-  &:not([class*=' fr-icon-']) {
+  &:not([class*=" fr-icon-"]) {
     position: relative;
     color: transparent;
 
@@ -47,7 +47,7 @@
 
       color: var(--text-inverted-blue-france);
       left: calc(50% - (var(--icon-size) / 2));
-      content: '';
+      content: "";
       background-color: currentcolor;
       display: inline-block;
       flex: 0 0 auto;
@@ -55,7 +55,7 @@
       mask-size: 100% 100%;
       vertical-align: calc((0.75em - var(--icon-size)) * 0.5);
       width: var(--icon-size);
-      mask-image: url('/images/spinner.svg');
+      mask-image: url("/images/spinner.svg");
       animation: spinner-rotate-animation 1.2s infinite linear;
     }
 
