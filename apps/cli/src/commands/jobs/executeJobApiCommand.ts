@@ -1,13 +1,13 @@
-// eslint-disable-next-line unicorn/prevent-abbreviations
-import { Argument, Command } from '@commander-js/extra-typings'
-import { jobExecutors } from '@app/web/jobs/jobExecutors'
-import { closeMongoClient } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
-import { mainRootDomain, previewRootDomain } from '@app/config/config'
-import axios from 'axios'
-import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
-import { executeJobApiTokenHeader } from '@app/web/app/api/jobs/executeJobApiTokenHeader'
 import { DeploymentTargetOption } from '@app/cli/deploymentTarget'
 import { output } from '@app/cli/output'
+import { mainRootDomain, previewRootDomain } from '@app/config/config'
+import { ServerWebAppConfig } from '@app/web/ServerWebAppConfig'
+import { executeJobApiTokenHeader } from '@app/web/app/api/jobs/executeJobApiTokenHeader'
+import { closeMongoClient } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
+import { jobExecutors } from '@app/web/jobs/jobExecutors'
+// eslint-disable-next-line unicorn/prevent-abbreviations
+import { Argument, Command } from '@commander-js/extra-typings'
+import axios from 'axios'
 
 const cleanupAfterJob = async () => {
   await closeMongoClient()

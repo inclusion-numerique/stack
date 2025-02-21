@@ -1,13 +1,13 @@
+import {
+  DeploymentTargetOption,
+  configureDeploymentTarget,
+} from '@app/cli/deploymentTarget'
+import { output } from '@app/cli/output'
+import { closeMongoClient } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
+import { executeJob, jobExecutors } from '@app/web/jobs/jobExecutors'
+import { JobValidation } from '@app/web/jobs/jobs'
 // eslint-disable-next-line unicorn/prevent-abbreviations
 import { Argument, Command } from '@commander-js/extra-typings'
-import { JobValidation } from '@app/web/jobs/jobs'
-import { executeJob, jobExecutors } from '@app/web/jobs/jobExecutors'
-import { closeMongoClient } from '@app/web/external-apis/conseiller-numerique/conseillerNumeriqueMongoClient'
-import { output } from '@app/cli/output'
-import {
-  configureDeploymentTarget,
-  DeploymentTargetOption,
-} from '@app/cli/deploymentTarget'
 
 const cleanupAfterJob = async () => {
   await closeMongoClient()

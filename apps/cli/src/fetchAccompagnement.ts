@@ -1,8 +1,8 @@
 import { createWriteStream } from 'node:fs'
-import { Command } from '@commander-js/extra-typings'
+import { output } from '@app/cli/output'
 import { varFile } from '@app/config/varDirectory'
 import { getTotalCountsStats } from '@app/web/app/coop/(sidemenu-layout)/mes-statistiques/_queries/getTotalCountsStats'
-import { output } from '@app/cli/output'
+import { Command } from '@commander-js/extra-typings'
 
 // const BASE_URL = 'http://localhost:3000/api/v1/statistiques'
 const departements: string[] = [
