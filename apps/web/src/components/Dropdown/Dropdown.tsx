@@ -82,7 +82,7 @@ export const Dropdown = ({
 
   useEffect(() => {
     if (buttonRef.current) {
-      buttonRef.current.setAttribute('aria-expanded', isOpen ? 'true' : 'false')
+      buttonRef.current.setAttribute('aria-expanded', `${isOpen}`)
     }
   }, [isOpen])
 
@@ -124,7 +124,7 @@ export const Dropdown = ({
           title={title}
           type="button"
           size={size}
-          aria-expanded={isOpen ? 'true' : 'false'}
+          aria-expanded={isOpen}
           aria-controls={formattedId}
           ref={buttonRef}
           data-testid={dataTestId}
