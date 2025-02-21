@@ -32,10 +32,9 @@ export const minutesToCraDureeData = (
     return null
   }
 
-  // eslint-disable-next-line no-param-reassign
-  minutes = Math.abs(minutes)
+  const absoluteMinutes = Math.abs(minutes)
 
-  const minutesString = minutes.toString()
+  const minutesString = absoluteMinutes.toString()
 
   if (minutesString === '0') {
     return {

@@ -21,14 +21,15 @@ const InvitationButtons = ({
   const router = useRouter()
 
   const invitation = decodeSerializableState(data, null)
+
+  const acceptMutation = trpc.mediateur.acceptInvitation.useMutation()
+  const declineMutation = trpc.mediateur.declineInvitation.useMutation()
+
   if (invitation == null) {
     router.push('/')
     return
   }
-
-  const acceptMutation = trpc.mediateur.acceptInvitation.useMutation()
-  const declineMutation = trpc.mediateur.declineInvitation.useMutation()
-  const isLading = acceptMutation.isPending || declineMutation.isPending
+  const isLoading = acceptMutation.isPending || declineMutation.isPending
 
   const onAccept = async () => {
     await acceptMutation.mutateAsync(invitation)
@@ -52,13 +53,13 @@ const InvitationButtons = ({
         {
           children: 'Accepter l’invitation',
           onClick: onAccept,
-          ...buttonLoadingClassname(isLading),
+          ...buttonLoadingClassname(isLoading),
         },
         {
           children: 'Refuser l’invitation',
           onClick: onDecline,
           priority: 'secondary',
-          ...buttonLoadingClassname(isLading),
+          ...buttonLoadingClassname(isLoading),
         },
       ]}
     />

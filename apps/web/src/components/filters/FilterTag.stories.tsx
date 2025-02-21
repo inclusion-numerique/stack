@@ -1,5 +1,6 @@
 import FilterTag from '@app/web/components/filters/FilterTag'
 import PeriodFilter from '@app/web/components/filters/PeriodFilter'
+import { noop } from '@app/web/utils/noop'
 import type { Meta, StoryObj } from '@storybook/react'
 import React from 'react'
 
@@ -14,11 +15,5 @@ type Story = StoryObj<typeof FilterTag>
 
 export const Periode: Story = {
   name: 'Période',
-  render: () => (
-    <PeriodFilter
-      onChange={(value) => {
-        console.log('onChange', value)
-      }}
-    />
-  ),
+  render: () => <PeriodFilter onChange={noop} />,
 }

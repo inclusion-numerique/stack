@@ -96,6 +96,8 @@ const ActiviteDetailsModal = ({
   const actionsRetourPath = `${currentPath}${searchParamsString ? `?${searchParamsString}` : ''}`
 
   const [deletionConfirmation, setDeletionConfirmation] = useState(false)
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: we want to close the modal when activity changes
   useEffect(() => {
     // Cancel deletion state on state change
     setDeletionConfirmation(false)

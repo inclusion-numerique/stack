@@ -41,7 +41,7 @@ export const useRdvOauthStatus = ({
     return () => {
       oauthApiCallMutation.reset()
     }
-  }, [hasOauthTokens])
+  }, [hasOauthTokens, oauthApiCallMutation.mutateAsync])
 
   return {
     status,

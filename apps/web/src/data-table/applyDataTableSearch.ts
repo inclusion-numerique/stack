@@ -30,7 +30,7 @@ export const applyDataTableSearch = <Data extends DataTableRow>(
   }
 
   const searchTokens = getSearchTokens(search)
-  if (!searchTokens?.length) {
+  if (!searchTokens || searchTokens.length === 0) {
     return data
   }
 

@@ -68,7 +68,7 @@ export const POST = async (request: NextRequest) => {
     )
   }
 
-  // eslint-disable-next-line no-console
+  // biome-ignore lint/suspicious/noConsole: job output
   console.info(`Executing job ${jobPayload.data.name}`)
 
   const start = Date.now()

@@ -49,7 +49,8 @@ export const TypesDePublicsAccueillisFields = <
             )
           } else if (
             !data.toutPublic &&
-            data.publicsSpecifiquementAdresses?.length !== 0
+            data.publicsSpecifiquementAdresses &&
+            data.publicsSpecifiquementAdresses.length > 0
           ) {
             setValue('publicsSpecifiquementAdresses', [])
           }

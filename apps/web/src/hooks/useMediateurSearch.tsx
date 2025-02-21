@@ -80,7 +80,7 @@ export const useMediateursSearch = ({
           : []),
       ]
     },
-    [mediateursMapRef, trpcClient],
+    [trpcClient, allowTextValue],
   )
 
   return {

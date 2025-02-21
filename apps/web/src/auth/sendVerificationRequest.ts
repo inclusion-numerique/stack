@@ -13,7 +13,7 @@ export const sendVerificationRequest = async ({
 }: SendVerificationRequestParams) => {
   // For quicker dev UX, display url in console in dev environment
   if (debugMagicLink) {
-    // eslint-disable-next-line no-console
+    // biome-ignore lint/suspicious/noConsole: needed for dev / debug
     console.log(`[AUTH] Magic link for ${identifier}: ${url}`)
   }
 

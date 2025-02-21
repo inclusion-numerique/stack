@@ -45,9 +45,7 @@ type ChangeCase<S extends string, C extends CaseType> = C extends 'snake'
 export type ChangeObjectKeysCaseRecursive<
   T,
   C extends CaseType,
-> = // si c’est un tableau, on applique récursivement à ses éléments
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-T extends readonly any[]
+> = T extends readonly any[] // eslint-disable-next-line @typescript-eslint/no-explicit-any // si c’est un tableau, on applique récursivement à ses éléments
   ? { [K in keyof T]: ChangeObjectKeysCaseRecursive<T[K], C> }
   : // si c’est un objet "pur" (pas un tableau), on renomme les clés
     T extends object

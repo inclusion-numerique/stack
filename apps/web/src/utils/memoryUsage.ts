@@ -19,8 +19,3 @@ export const getMemoryUsage = () => {
     external: `${formatMemoryUsage(memoryData.external)} -> V8 external memory`,
   }
 }
-
-export const outputMemoryUsage = () => {
-  // eslint-disable-next-line no-console
-  console.log(getMemoryUsage())
-}
