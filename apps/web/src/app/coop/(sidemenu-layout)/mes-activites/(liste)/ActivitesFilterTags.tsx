@@ -11,12 +11,13 @@ import PeriodFilter, {
 } from '@app/web/components/filters/PeriodFilter'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import ActiviteTypeFilter from '@app/web/components/filters/ActiviteTypeFilter'
+import ProfilFilter from '@app/web/components/filters/ProfilFilter'
 import BeneficiaireFilter from '@app/web/components/filters/BeneficiaireFilter'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import LocationFilter, {
   LocationFilterValue,
 } from '@app/web/components/filters/LocationFilter'
-import { TypeActiviteSlug } from '@app/web/cra/cra'
+import { ProfilSlug, TypeActiviteSlug } from '@app/web/cra/cra'
 import MediateurFilter from '@app/web/components/filters/MediateurFilter'
 import { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 import type { LieuActiviteOption } from '@app/web/app/lieu-activite/getLieuxActiviteOptions'
@@ -125,6 +126,10 @@ const ActivitesFilterTags = ({
     replaceRouteParams({ type })
   }
 
+  const onProfilChange = (profil: ProfilSlug | null) => {
+    replaceRouteParams({ profil })
+  }
+
   const onBeneficiaireChange = (beneficiaireId: string | null) => {
     replaceRouteParams({ beneficiaire: beneficiaireId })
   }
@@ -192,11 +197,17 @@ const ActivitesFilterTags = ({
       </p>
       <div className="fr-flex fr-flex-gap-2v fr-flex-wrap">
         {isCoordinateur && (
-          <MediateurFilter
-            onChange={onMediateurChange}
-            initialMediateursOptions={initialMediateursOptions}
-            defaultValue={defaultFilters.mediateur}
-          />
+          <>
+            <MediateurFilter
+              onChange={onMediateurChange}
+              initialMediateursOptions={initialMediateursOptions}
+              defaultValue={defaultFilters.mediateur}
+            />
+            <ProfilFilter
+              onChange={onProfilChange}
+              defaultValue={defaultFilters.profil}
+            />
+          </>
         )}
         <PeriodFilter
           onChange={onPeriodChange}

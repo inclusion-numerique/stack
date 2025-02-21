@@ -1,5 +1,10 @@
 import z from 'zod'
-import { TypeActiviteSlug, typeActiviteSlugValues } from '@app/web/cra/cra'
+import {
+  ProfilSlug,
+  profilSlugValues,
+  TypeActiviteSlug,
+  typeActiviteSlugValues,
+} from '@app/web/cra/cra'
 
 const isoDayRegex = /^\d{4}-\d{2}-\d{2}$/
 
@@ -7,6 +12,7 @@ export const ActivitesFilterValidations = {
   du: z.string().regex(isoDayRegex).optional(),
   au: z.string().regex(isoDayRegex).optional(),
   type: z.enum(typeActiviteSlugValues).optional(),
+  profil: z.enum(profilSlugValues).optional(),
   mediateur: z.string().uuid().optional(),
   beneficiaire: z.string().uuid().optional(),
   commune: z.string().length(5).optional(),
@@ -19,6 +25,7 @@ export type ActivitesFilters = {
   du?: string // Iso date e.g. '2022-01-01'
   au?: string // Iso date e.g. '2022-01-01'
   type?: TypeActiviteSlug
+  profil?: ProfilSlug
   mediateur?: string // UUID of mediateur
   beneficiaire?: string // UUID of beneficiaire
   commune?: string // Code INSEE of commune
@@ -49,7 +56,8 @@ export const validateActivitesFilters = <T extends ActivitesFilters>(
       validatedFilterValue.success &&
       validatedFilterValue.data !== undefined
     ) {
-      result[typedKey] = validatedFilterValue.data as TypeActiviteSlug
+      result[typedKey] = validatedFilterValue.data as TypeActiviteSlug &
+        ProfilSlug
     } else {
       delete result[typedKey]
     }

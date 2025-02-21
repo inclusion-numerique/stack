@@ -44,6 +44,7 @@ describe('buildActivitesWorksheet', () => {
         type: 'Accompagnement',
         beneficiaire: 'Beneficiaire Name',
         mediateur: null,
+        profil: 'Conseiller',
       },
       activites: [], // empty activities for now
     } satisfies BuildActivitesWorksheetInput

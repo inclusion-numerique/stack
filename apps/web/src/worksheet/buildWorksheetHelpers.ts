@@ -143,6 +143,7 @@ export const addFilters =
         ['Type de lieu', filters.typeLieu ?? '-'],
         ['Nom du lieu', filters.nomLieu ?? '-'],
         ['Type d’accompagnement', filters.type ?? '-'],
+        ['Profil', filters.profil ?? '-'],
         filters.beneficiaire
           ? ['Bénéficiaire', filters.beneficiaire]
           : undefined,
