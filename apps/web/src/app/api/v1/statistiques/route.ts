@@ -1,8 +1,5 @@
 import { NextResponse } from 'next/server'
-import type {
-  JsonApiItemResponse,
-  JsonApiResource,
-} from '@app/web/app/api/v1/JsonApiTypes'
+import type { JsonApiItemResponse, JsonApiResource } from '@app/web/app/api/v1/JsonApiTypes'
 import { apiV1Url } from '@app/web/app/api/v1/apiV1Url'
 import { createApiV1Route } from '@app/web/app/api/v1/createApiV1Route'
 import { ApiV1StatistiquesQueryParamsValidation } from '@app/web/app/api/v1/statistiques/ApiV1StatistiquesQueryParams'

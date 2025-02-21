@@ -200,7 +200,6 @@ jobs:
             - ./packages/config/node_modules
             - ./packages/e2e/node_modules
             - ./packages/emails/node_modules
-            - ./packages/lint/node_modules
             - ./packages/storybook/node_modules
             - ./packages/test/node_modules
             - ./packages/ui/node_modules

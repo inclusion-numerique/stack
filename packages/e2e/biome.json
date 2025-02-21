@@ -1,0 +1,28 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "extends": ["../../biome.json"],
+  "overrides": [
+    {
+      "include": [
+        "*.ts",
+        "*.tsx"
+      ],
+      "javascript": {
+        "formatter": {
+          "quoteStyle": "single"
+        },
+        "globals": [
+          "cy",
+          "afterEach",
+          "afterAll",
+          "beforeEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it",
+          "JQuery"
+        ]
+      }
+    }
+  ]
+}

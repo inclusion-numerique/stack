@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "with-env": "dotenv -e ../../.env --",
-    "lint": "eslint src",
+    "lint": "biome check src",
     "tsc": "tsc --noEmit",
     "test": "jest --passWithNoTests",
     "synth": "pnpm --silent with-env cdktf synth",
