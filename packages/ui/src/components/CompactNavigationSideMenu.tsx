@@ -1,11 +1,11 @@
 'use client'
 
-import type { SideMenuProps } from '@codegouvfr/react-dsfr/SideMenu'
-import React, { Fragment, memo } from 'react'
-import Link from 'next/link'
-import classNames from 'classnames'
 import { addActiveStateToItems } from '@app/ui/components/navigationSideMenuUtils'
 import { useNavigationSideMenu } from '@app/ui/hooks/useNavigationSideMenu'
+import type { SideMenuProps } from '@codegouvfr/react-dsfr/SideMenu'
+import classNames from 'classnames'
+import Link from 'next/link'
+import React, { Fragment, memo } from 'react'
 import styles from './CompactNavigationSideMenu.module.css'
 
 /**

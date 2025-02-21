@@ -9,8 +9,8 @@
 import { logToFile } from '@app/e2e/support/logToFile'
 import { TaskName, tasks } from '@app/e2e/tasks/tasks'
 import {
-  decodeSerializableState,
   EncodedState,
+  decodeSerializableState,
   encodeSerializableState,
 } from '@app/web/utils/encodeSerializableState'
 
@@ -41,14 +41,14 @@ const taskExecutor = async () => {
 taskExecutor()
   .then((result) => {
     // Output result must be the last stdout output to pass to other process
-    // eslint-disable-next-line no-console
+    // biome-ignore lint/suspicious/noConsole: job output
     console.log(encodeSerializableState(result))
     // eslint-disable-next-line unicorn/no-process-exit
     process.exit(0)
   })
   // eslint-disable-next-line unicorn/prefer-top-level-await
   .catch((error) => {
-    // eslint-disable-next-line no-console
+    // biome-ignore lint/suspicious/noConsole: job output
     console.error(error)
     logToFile({ error: error as unknown })
     // eslint-disable-next-line unicorn/no-process-exit

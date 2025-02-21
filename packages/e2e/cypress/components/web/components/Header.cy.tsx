@@ -1,5 +1,5 @@
-import React from 'react'
 import Header from '@app/web/components/Header'
+import React from 'react'
 
 /**
  * While cypress components do not support server actions, we cannot test Header

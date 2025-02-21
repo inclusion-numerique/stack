@@ -13,14 +13,17 @@
         },
         "globals": [
           "cy",
+          "Cypress",
+          "JQuery",
           "afterEach",
           "afterAll",
           "beforeEach",
           "beforeAll",
+          "before",
+          "after",
           "describe",
           "expect",
-          "it",
-          "JQuery"
+          "it"
         ]
       }
     }

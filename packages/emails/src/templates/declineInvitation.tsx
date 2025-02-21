@@ -1,7 +1,7 @@
-import React from 'react'
+import LayoutWithFooter from '@app/emails/components/LayoutWithFooter'
 import { MjmlColumn, MjmlSection, MjmlText } from '@faire/mjml-react'
 import { renderToMjml } from '@faire/mjml-react/utils/renderToMjml'
-import LayoutWithFooter from '@app/emails/components/LayoutWithFooter'
+import React from 'react'
 import { brandColor } from '../styles'
 
 export const declineInvitation = {

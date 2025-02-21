@@ -1,7 +1,7 @@
 import '@testing-library/cypress/add-commands'
 import { appUrl } from '@app/e2e/support/helpers'
-import type { Tasks as CustomTasks } from '@app/e2e/tasks/tasks'
 import type { CreateUserInput } from '@app/e2e/tasks/handlers/user.tasks'
+import type { Tasks as CustomTasks } from '@app/e2e/tasks/tasks'
 import 'cypress-file-upload'
 import Timeoutable = Cypress.Timeoutable
 import Loggable = Cypress.Loggable
@@ -135,7 +135,7 @@ Cypress.Commands.add(
           expect(rect.top + rect.height / 2).to.be.greaterThan(0)
           expect(rect.top + rect.height / 2).to.be.lessThan(height)
           expect(rect.left + rect.width / 2).to.be.greaterThan(0)
-          expect((rect.left, +(rect.width / 2))).to.be.lessThan(width)
+          expect(rect.left + rect.width / 2).to.be.lessThan(width)
 
           break
         }

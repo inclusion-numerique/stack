@@ -1,17 +1,17 @@
-import type { Prisma } from '@prisma/client'
-import {
-  coordinations,
-  fixtureUsers,
-  teamAdministrateurs,
-} from '@app/fixtures/users'
-import { seedStructures } from '@app/fixtures/structures'
-import { fixtureBeneficiaires } from '@app/fixtures/beneficiaires'
 import {
   fixtureCrasCollectifs,
   fixtureCrasDemarchesAdministratives,
   fixtureCrasIndividuels,
 } from '@app/fixtures/activites'
+import { fixtureBeneficiaires } from '@app/fixtures/beneficiaires'
+import { seedStructures } from '@app/fixtures/structures'
 import { upsertCraFixtures } from '@app/fixtures/upsertCraFixtures'
+import {
+  coordinations,
+  fixtureUsers,
+  teamAdministrateurs,
+} from '@app/fixtures/users'
+import type { Prisma } from '@prisma/client'
 import { upsertCoordinationFixtures } from './upsertCoordinationFixture'
 
 export const deleteAll = async (transaction: Prisma.TransactionClient) => {

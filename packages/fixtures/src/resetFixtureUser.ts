@@ -1,14 +1,14 @@
-import { prismaClient } from '@app/web/prismaClient'
-import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
-import type { Session } from '@prisma/client'
-import { coordinations, fixtureUsers } from '@app/fixtures/users'
-import { fixtureBeneficiaires } from '@app/fixtures/beneficiaires'
 import {
   fixtureCrasCollectifs,
   fixtureCrasDemarchesAdministratives,
   fixtureCrasIndividuels,
 } from '@app/fixtures/activites'
+import { fixtureBeneficiaires } from '@app/fixtures/beneficiaires'
 import { upsertCraFixtures } from '@app/fixtures/upsertCraFixtures'
+import { coordinations, fixtureUsers } from '@app/fixtures/users'
+import { sessionUserSelect } from '@app/web/auth/getSessionUserFromSessionToken'
+import { prismaClient } from '@app/web/prismaClient'
+import type { Session } from '@prisma/client'
 import {
   Coordination,
   upsertCoordinationFixtures,
