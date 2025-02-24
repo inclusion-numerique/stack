@@ -65,7 +65,7 @@
         "packages/test/src/*"
       ],
       "@prisma/client": [
-        "node_modules/.pnpm/@prisma+client@6.0.1_prisma@6.0.1/node_modules/@prisma/client"
+        "node_modules/.pnpm/@prisma+client@6.3.1_prisma@6.3.1/node_modules/@prisma/client"
       ]
     }
   },

@@ -1,0 +1,5 @@
+### GET request to example server
+GET https://api.scaleway.ai/61bfe597-bcc4-4f8b-8e2b-ff93ba2a2439/v1/models
+Authorization: Bearer b1fef96f-09bb-4650-9ef9-7a8a51ba4236
+Content-Type: application/json
+###

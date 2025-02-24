@@ -93,6 +93,18 @@ const AdministrationSideMenu = () => {
       },
       isActive: pathname?.startsWith('/administration/outils'),
     },
+    {
+      text: (
+        <>
+          <span className="fr-icon-chat-check-line ri-xl fr-mr-1w fr-text--regular" />
+          Assistant
+        </>
+      ),
+      linkProps: {
+        href: '/assistant/chat',
+      },
+      isActive: pathname?.startsWith('/assistant'),
+    },
   ] satisfies SideMenuProps.Item[]
 
   return (

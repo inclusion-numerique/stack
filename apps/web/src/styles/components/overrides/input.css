@@ -42,6 +42,22 @@
     background-color: var(--grey-1000-75);
   }
 
+  &.fr-input--grey-975-100 {
+    background-color: var(--grey-975-100);
+  }
+
+  &.fr-input--grey-975-125 {
+    background-color: var(--grey-975-125);
+  }
+
+  &.fr-input--grey-950-125 {
+    background-color: var(--grey-950-125);
+  }
+
+  &.fr-input---alt-blue-ecume {
+    background-color: var(--background-alt-blue-ecume);
+  }
+
   &.fr-input--14v {
     min-height: 56px !important;
     height: 56px !important;

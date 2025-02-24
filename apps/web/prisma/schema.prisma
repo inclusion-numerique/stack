@@ -1,7 +1,8 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch", "nativeDistinct", "relationJoins"]
+  previewFeatures = ["fullTextSearch", "nativeDistinct", "relationJoins", "postgresqlExtensions"]
   binaryTargets   = ["native", "debian-openssl-1.1.x"]
+  extensions      = [vector]
 }
 
 datasource db {
@@ -89,6 +90,7 @@ model User {
   accounts          Account[]
   sessions          Session[]
   hasSeenOnboarding DateTime?         @map("has_seen_onboarding")
+  timezone          String            @default("Europe/Paris")
   featureFlags      UserFeatureFlag[] @default([]) @map("feature_flags")
 
   // Created by a fixture system, can be reset and will only be here on preview envs
@@ -123,8 +125,14 @@ model User {
   coordinateur Coordinateur?
   mutations    Mutation[]
   emplois      EmployeStructure[]
-  usurpateur   Session?           @relation(name: "usurper")
+  usurpateur   Session?               @relation(name: "usurper")
   rdvAccount   RdvAccount?
+  chatSessions AssistantChatSession[]
+
+  currentAssistantConfiguration   AssistantConfiguration? @relation(name: "user_current_configuration", fields: [currentAssistantConfigurationId], references: [id]) // The configuration used by default for a new chat session
+  currentAssistantConfigurationId String?                 @unique @map("current_assistant_configuration_id") @db.Uuid
+
+  assistantConfigurations AssistantConfiguration[]
 
   // "creation" cursor is used to paginate results for API queries
   @@unique([created, id])
@@ -991,4 +999,117 @@ model Mutation {
   @@index([userId])
   @@index([timestamp(sort: Desc)])
   @@map("mutations")
+}
+
+model AssistantChatSession {
+  id          String  @id @default(uuid()) @db.Uuid
+  createdBy   User?   @relation(fields: [createdById], references: [id])
+  createdById String? @map("created_by_id") @db.Uuid
+
+  title String?
+
+  context String
+
+  created  DateTime               @default(now())
+  updated  DateTime               @default(now())
+  deleted  DateTime?
+  messages AssistantChatMessage[]
+
+  configuration            AssistantConfiguration @relation(fields: [assistantConfigurationId], references: [id])
+  assistantConfigurationId String                 @map("assistant_configuration_id") @db.Uuid
+
+  @@index([createdById])
+  @@map("assistant_chat_sessions")
+}
+
+// Based on the OpenAI API standard
+enum AssistantChatRole {
+  System    @map("system")
+  User      @map("user")
+  Assistant @map("assistant")
+  Tool      @map("tool")
+  Function  @map("function")
+  Developer @map("developer")
+
+  @@map("assistant_chat_roles")
+}
+
+model AssistantConfiguration {
+  id String @id @default(uuid()) @db.Uuid
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id") @db.Uuid
+
+  title String? // Optional title for the configuration
+  notes String? // User notes on the configuration
+
+  created             DateTime @default(now())
+  model               String
+  frequencyPenalty    Float?   @map("frequency_penalty")
+  functionCall        String?  @map("function_call") // none, auto
+  maxCompletionTokens Int?     @map("max_completion_tokens")
+  maxTokens           Int?     @map("max_tokens")
+  parallelToolCalls   Boolean? @map("parallel_tool_calls")
+  presencePenalty     Float?   @map("presence_penalty")
+  reasoningEffort     String?  @map("reasoning_effort") // low, medium, high
+  seed                Int?     @map("seed")
+  temperature         Float?   @map("temperature")
+  topLogProbs         Int?     @map("top_logprobs")
+  topP                Float?   @map("top_p")
+
+  systemMessage String? @map("system_message")
+
+  searchToolDescription       String?                @map("search_tool_description")
+  chatSessions                AssistantChatSession[]
+
+  currentConfigurationFor User?                  @relation(name: "user_current_configuration")
+
+  @@map("assistant_configurations")
+}
+
+// Based on the OpenAI API standard
+model AssistantChatMessage {
+  id        String               @id @default(uuid()) @db.Uuid
+  role      AssistantChatRole
+  session   AssistantChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sessionId String               @map("session_id") @db.Uuid
+  content   String? // Can be null for a tool call message
+  created   DateTime             @default(now())
+
+  name String? // also used for "function" message function name
+
+  // Additional fields for assistant chat messages
+  refusal      String?
+  toolCalls    Json[]  @default([]) @map("tool_calls")
+  finishReason String? @map("finish_reason")
+
+  // Additional fields for tool calls
+  toolCallId String? @map("tool_call_id")
+
+  @@index([sessionId])
+  @@index([created(sort: Asc)])
+  @@map("assistant_chat_messages")
+}
+
+model RagDocumentChunk {
+  id String @id @default(uuid()) @db.Uuid // internal id of the chunk
+
+  source      String // Source of the document (e.g.: centre-aide-notion, les-bases, ...)
+  type        String // Type relative to the source (e.g.: article, user, webpage, ...)
+  content     String // Raw content of the chunk
+  documentMd5 String @map("document_md5") // md5 hash of the entire source document content to check if the chunk is still valid
+
+  sourceId String  @map("source_id") // unique id of the source document within the source, can have multiple chunks for the same source
+  chunk    Int // chunk number for the same source id
+  url      String? // url of the source document if available
+
+  created DateTime @default(now())
+  updated DateTime @default(now())
+
+  embeddingModel String                 @map("embedding_model")
+  embedding      Unsupported("vector")? // This is optional only to allow Prisma client generation, it will be always set
+
+  @@index([documentMd5])
+  @@index([sourceId])
+  @@map("rag_document_chunks")
 }

@@ -4,3 +4,4 @@
  * forbidden by our lint rules
  */
 export const output = console.log
+export const outputError = console.error

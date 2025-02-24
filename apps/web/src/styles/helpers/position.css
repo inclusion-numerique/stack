@@ -9,3 +9,35 @@
 .fr-overflow-visible {
   overflow: visible;
 }
+
+.fr-overflow-x-auto {
+  overflow-x: auto;
+}
+
+.fr-overflow-y-auto {
+  overflow-y: auto;
+}
+
+.fr-overflow-hidden {
+  overflow: hidden;
+}
+
+.fr-overflow-scroll {
+  overflow: scroll;
+}
+
+.fr-overflow-x-visible {
+  overflow-x: visible;
+}
+
+.fr-overflow-y-visible {
+  overflow-y: visible;
+}
+
+.fr-overflow-x-hidden {
+  overflow-x: hidden;
+}
+
+.fr-overflow-y-hidden {
+  overflow-y: hidden;
+}
