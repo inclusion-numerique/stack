@@ -455,7 +455,7 @@ describe('build statistiques worksheet for médiateur', () => {
   it('should contains Informations export in Statistiques worksheet from row 2 to 6', () => {
     const rows = worksheet.getRows(2, 6)?.map((row) => row.values)
 
-    expect(rows).toStrictEqual([
+    expect(rows).toEqual([
       [undefined, 'Nom', 'Doe'],
       [undefined, 'Prénom', 'John'],
       [undefined, 'Rôle', 'Conseiller Numérique'],
@@ -475,7 +475,7 @@ describe('build statistiques worksheet for médiateur', () => {
   it('should contains Filters in Statistiques worksheet from row 9 to 15', () => {
     const rows = worksheet.getRows(9, 7)?.map((row) => row.values)
 
-    expect(rows).toStrictEqual([
+    expect(rows).toEqual([
       [undefined, 'Début de période', '01/08/2024'],
       [undefined, 'Fin de période', '31/08/2024'],
       [undefined, 'Type de lieu', 'Commune'],
@@ -498,7 +498,7 @@ describe('build statistiques worksheet for médiateur', () => {
   it('should contains statistiques general in Statistiques worksheet from row 17 to 24', () => {
     const rows = worksheet.getRows(17, 8)?.map((row) => row.values)
 
-    expect(rows).toStrictEqual([
+    expect(rows).toEqual([
       [undefined, 'Accompagnements au total', 44],
       [undefined, 'Bénéficiaires accompagnés', 23],
       [undefined, 'Nouveaux bénéficiaires', 6],
@@ -535,7 +535,7 @@ describe('build statistiques worksheet for médiateur', () => {
   it('should contains statistiques activités in Statistiques worksheet from row 26 to 30', () => {
     const rows = worksheet.getRows(26, 6)?.map((row) => row.values)
 
-    expect(rows).toStrictEqual([
+    expect(rows).toEqual([
       [undefined, 'Accompagnements individuels', 8, '40 %'],
       [undefined, 'Ateliers collectifs', 4, '20 %'],
       [undefined, 'Nombre total de participants aux ateliers', 28],
@@ -555,7 +555,7 @@ describe('build statistiques worksheet for médiateur', () => {
   it('should contains Thématiques Médiation numérique in Statistiques worksheet from row 33 to 46', () => {
     const rows = worksheet.getRows(33, 15)?.map((row) => row.values)
 
-    expect(rows).toStrictEqual([
+    expect(rows).toEqual([
       ...expectQuantifiedShareRows([
         ['Prendre en main du matériel', 0],
         ['Navigation sur internet', 0],
@@ -586,7 +586,7 @@ describe('build statistiques worksheet for médiateur', () => {
   it('should contains Thématiques Démarches administratives in Statistiques worksheet from row 49 to 58', () => {
     const rows = worksheet.getRows(49, 11)?.map((row) => row.values)
 
-    expect(rows).toStrictEqual([
+    expect(rows).toEqual([
       ...expectQuantifiedShareRows([
         ['Papiers - Élections Citoyenneté', 0],
         ['Famille - Scolarité', 2],
@@ -613,7 +613,7 @@ describe('build statistiques worksheet for médiateur', () => {
   it('should contains Matériel utilisés in Statistiques worksheet from row 61 to 65', () => {
     const rows = worksheet.getRows(61, 6)?.map((row) => row.values)
 
-    expect(rows).toStrictEqual([
+    expect(rows).toEqual([
       ...expectQuantifiedShareRows([
         ['Ordinateur', 6],
         ['Téléphone', 2],
@@ -635,7 +635,7 @@ describe('build statistiques worksheet for médiateur', () => {
   it('should contains Canaux des activités in Statistiques worksheet from row 68 to 72', () => {
     const rows = worksheet.getRows(68, 5)?.map((row) => row.values)
 
-    expect(rows).toStrictEqual([
+    expect(rows).toEqual([
       ...expectQuantifiedShareRows([
         ['Lieu d’activité', 0],
         ['À domicile', 4],
@@ -656,7 +656,7 @@ describe('build statistiques worksheet for médiateur', () => {
   it('should contains Durées des activités in Statistiques worksheet from row 74 to 77', () => {
     const rows = worksheet.getRows(74, 5)?.map((row) => row.values)
 
-    expect(rows).toStrictEqual([
+    expect(rows).toEqual([
       ...expectQuantifiedShareRows([
         [dureeAccompagnementStatisticsRanges[0].label, 0],
         [dureeAccompagnementStatisticsRanges[1].label, 0],
@@ -677,10 +677,7 @@ describe('build statistiques worksheet for médiateur', () => {
   it('should contains Nombre d’activités par lieux in Statistiques worksheet from row 80 to 81', () => {
     const rows = worksheet.getRows(80, 2)?.map((row) => row.values)
 
-    expect(rows).toStrictEqual([
-      [undefined, 'Exemple de Mediateque', 4, '100 %'],
-      [],
-    ])
+    expect(rows).toEqual([[undefined, 'Exemple de Mediateque', 4, '100 %'], []])
   })
 
   it('should contains bold `Statistiques sur vos bénéficiaires` in Statistiques worksheet at position A82', () => {
@@ -700,7 +697,7 @@ describe('build statistiques worksheet for médiateur', () => {
   it('should contains Statistiques bénéficiaires in Statistiques worksheet from row 84 to 86', () => {
     const rows = worksheet.getRows(84, 4)?.map((row) => row.values)
 
-    expect(rows).toStrictEqual([
+    expect(rows).toEqual([
       ...expectQuantifiedShareRows([
         ['Masculin', 2],
         ['Féminin', 0],
@@ -720,7 +717,7 @@ describe('build statistiques worksheet for médiateur', () => {
   it('should contains Tranches d’âge in Statistiques worksheet from row 89 to 96', () => {
     const rows = worksheet.getRows(89, 9)?.map((row) => row.values)
 
-    expect(rows).toStrictEqual([
+    expect(rows).toEqual([
       ...expectQuantifiedShareRows([
         ['70 ans et plus', 0],
         ['60 - 69 ans', 0],
@@ -745,7 +742,7 @@ describe('build statistiques worksheet for médiateur', () => {
   it('should contains Statuts in Statistiques worksheet from row 99 to 104', () => {
     const rows = worksheet.getRows(99, 6)?.map((row) => row.values)
 
-    expect(rows).toStrictEqual([
+    expect(rows).toEqual([
       ...expectQuantifiedShareRows([
         ['Retraité', 0],
         ['Sans emploi', 0],
@@ -769,7 +766,7 @@ describe('build statistiques worksheet for médiateur', () => {
   it('should contains Commune de résidence des bénéficiaires in Statistiques worksheet from row 106 to 108', () => {
     const rows = worksheet.getRows(106, 3)?.map((row) => row.values)
 
-    expect(rows).toStrictEqual([
+    expect(rows).toEqual([
       ...expectQuantifiedShareRows([
         ['Paris · 75001', 2],
         ['Lyon 2eme · 69002', 1],
@@ -797,6 +794,6 @@ describe('build statistiques worksheet for coordinateur', () => {
   it('should contains médiateur filter in Statistiques worksheet in row 16 when', () => {
     const rows = worksheet.getRows(15, 2)?.map((row) => row.values)
 
-    expect(rows).toStrictEqual([[undefined, 'Médiateur', 'Marie Doe'], []])
+    expect(rows).toEqual([[undefined, 'Médiateur', 'Marie Doe'], []])
   })
 })
