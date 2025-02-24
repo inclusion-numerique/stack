@@ -2,7 +2,7 @@ import type { SelectOption } from '@app/ui/components/Form/utils/options'
 import type { ActivitesFilters } from '@app/web/cra/ActivitesFilters'
 import { dateAsDay } from '@app/web/utils/dateAsDay'
 import type { LocationFilterType } from '@app/web/components/filters/LocationFilter'
-import { typeActiviteSlugLabels } from '@app/web/cra/cra'
+import { profilSlugLabels, typeActiviteSlugLabels } from '@app/web/cra/cra'
 import type { BeneficiaireOption } from '@app/web/beneficiaire/BeneficiaireOption'
 import { MediateurOption } from '@app/web/mediateurs/MediateurOption'
 
@@ -106,6 +106,7 @@ export const generateActivitesFiltersLabels = (
     beneficiaire,
     mediateur,
     type,
+    profil,
     departement,
     commune,
     lieu,
@@ -135,6 +136,7 @@ export const generateActivitesFiltersLabels = (
       : null
 
   const typeLabel = type ? typeActiviteSlugLabels[type] : null
+  const profilLabel = profil ? profilSlugLabels[profil] : null
 
   const beneficiaireLabel = generateBeneficiaireFilterLabel(
     { beneficiaire },
@@ -168,6 +170,7 @@ export const generateActivitesFiltersLabels = (
     au: au ? dateAsDay(new Date(au)) : null,
     periode,
     type: typeLabel,
+    profil: profilLabel,
     mediateur: mediateurLabel,
     beneficiaire: beneficiaireLabel,
     typeLieu,

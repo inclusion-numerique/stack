@@ -3,6 +3,7 @@ import {
   DegreDeFinalisationDemarche,
   Materiel,
   NiveauAtelier,
+  ProfilInscription,
   StructureDeRedirection,
   Thematique,
   ThematiqueDemarcheAdministrative,
@@ -11,14 +12,6 @@ import {
 } from '@prisma/client'
 import { labelsToOptions } from '@app/ui/components/Form/utils/options'
 import { dureeAsString } from '@app/web/utils/dureeAsString'
-
-export const typeActiviteLabels: {
-  [key in TypeActivite]: string
-} = {
-  Individuel: 'Accompagnement individuel',
-  Demarche: 'Aide aux démarches administratives',
-  Collectif: 'Atelier collectif',
-}
 
 export const typeActivitePluralLabels: {
   [key in TypeActivite]: string
@@ -35,6 +28,15 @@ export const typeActiviteSlugs: { [key in TypeActivite]: TypeActiviteSlug } = {
   Demarche: 'demarche',
   Collectif: 'collectif',
 }
+
+export const typeActiviteLabels: {
+  [key in TypeActivite]: string
+} = {
+  Individuel: 'Accompagnement individuel',
+  Demarche: 'Aide aux démarches administratives',
+  Collectif: 'Atelier collectif',
+}
+
 export const typeActiviteForSlug: { [key in TypeActiviteSlug]: TypeActivite } =
   {
     individuel: 'Individuel',
@@ -78,6 +80,60 @@ export const typeActiviteApiValues = {
   Collectif: 'collectif',
 } as const satisfies {
   [key in TypeActivite]: string
+}
+
+type FilterableProfils = Exclude<
+  ProfilInscription,
+  'Coordinateur' | 'CoordinateurConseillerNumerique'
+>
+
+export const profilPluralLabels: {
+  [key in FilterableProfils]: string
+} = {
+  Mediateur: 'Médiateurs',
+  ConseillerNumerique: 'Conseillers numériques',
+}
+
+export type ProfilSlug = 'mediateur' | 'conseiller-numerique'
+
+export const profilLabels: {
+  [key in FilterableProfils]: string
+} = {
+  Mediateur: 'Médiateur',
+  ConseillerNumerique: 'Conseiller numérique',
+}
+
+export const profilSlugs: { [key in ProfilSlug]: FilterableProfils } = {
+  mediateur: 'Mediateur',
+  'conseiller-numerique': 'ConseillerNumerique',
+}
+
+export const profilSlugLabels: {
+  [key in ProfilSlug]: string
+} = {
+  mediateur: profilLabels[profilSlugs.mediateur],
+  'conseiller-numerique': profilLabels[profilSlugs['conseiller-numerique']],
+}
+
+export const profilValues = Object.keys(profilLabels) as [
+  ProfilInscription,
+  ...ProfilInscription[],
+]
+
+export const profilOptions = labelsToOptions(profilLabels)
+
+export const profilSlugOptions = labelsToOptions(profilSlugLabels)
+
+export const profilSlugValues = Object.keys(profilSlugLabels) as [
+  ProfilSlug,
+  ...ProfilSlug[],
+]
+
+export const profilApiValues = {
+  Mediateur: profilSlugs.mediateur,
+  ConseillerNumerique: profilSlugs['conseiller-numerique'],
+} as const satisfies {
+  [key in FilterableProfils]: string
 }
 
 export const dureeAccompagnementPersonnaliseeValue = 'personnaliser'
