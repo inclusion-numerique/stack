@@ -81,10 +81,7 @@ workflows:
       equal: [ web_app_deployment, << pipeline.parameters.trigger_workflow >> ]
     jobs:
       - prepare_workspace_dependencies
-      - lint_web:
-          requires:
-            - prepare_workspace_dependencies
-      - lint_packages:
+      - lint:
           requires:
             - prepare_workspace_dependencies
       - test_packages:
@@ -110,8 +107,7 @@ workflows:
 
       - deploy_web:
           requires:
-            - lint_web
-            - lint_packages
+            - lint
             - build_web
             - test_packages
             - test_web
@@ -124,17 +120,13 @@ workflows:
       equal: [ chromatic_deployment, << pipeline.parameters.trigger_workflow >> ]
     jobs:
       - prepare_workspace_dependencies
-      - lint_web:
-          requires:
-            - prepare_workspace_dependencies
-      - lint_packages:
+      - lint:
           requires:
             - prepare_workspace_dependencies
       - chromatic:
           requires:
             - prepare_workspace_dependencies
-            - lint_web
-            - lint_packages
+            - lint
 
   project_infrastructure_deployment:
     when:
@@ -211,24 +203,7 @@ jobs:
           paths:
             - /home/circleci/.cache/Cypress
 
-  lint_web:
-    executor: node
-    resource_class: large
-    steps:
-      - checkout
-      - install_dependencies
-      - run:
-          name: 'Prisma generate'
-          command: pnpm --silent -F @app/web prisma generate
-      - run:
-          name: 'Tsc'
-          command: pnpm tsc
-      - run:
-          name: 'Lint @app/web'
-          command: pnpm -F '@app/web' lint
-          no_output_timeout: 30m
-
-  lint_packages:
+  lint:
     executor: node
     resource_class: large
     steps:
@@ -243,7 +218,9 @@ jobs:
       - run:
           name: 'Lint all packages except @app/web'
           command: pnpm -F '!@app/web' lint
-          no_output_timeout: 30m
+      - run:
+          name: 'Lint @app/web - biome'
+          command: pnpm -F '@app/web' lint:biome
 
   lint_and_test_cdk_package:
     executor: node
